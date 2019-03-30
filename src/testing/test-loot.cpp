@@ -60,7 +60,8 @@ TEST_CASE("Clients discern NPCs with no loot", "[loot]") {
   CHECK_FALSE(clientAnt.lootable());
 }
 
-TEST_CASE("Chance for strength-items as loot from object", "[loot][strength]") {
+TEST_CASE("Chance for strength-items as loot from object",
+          "[loot][strength][.flaky]") {
   // Given a running server and client;
   // And a snowflake item with 1 health;
   // And a snowman object type made of 1000 snowflakes;
@@ -80,7 +81,7 @@ TEST_CASE("Chance for strength-items as loot from object", "[loot][strength]") {
   ClientObject &clientSnowman = c.getFirstObject();
   c.waitForMessage(SV_LOOTABLE);
 
-  CHECK(clientSnowman.lootable());
+  WAIT_UNTIL(clientSnowman.lootable());
 
   SECTION("Looting works") {
     c.watchObject(clientSnowman);
