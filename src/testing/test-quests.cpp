@@ -642,7 +642,7 @@ TEST_CASE("Kill quests", "[quests]") {
 
         AND_WHEN("he kills another rat") {
           c.sendMessage(CL_TARGET_ENTITY, makeArgs(rat2Serial));
-          WAIT_UNTIL(rat2->isDead());
+          WAIT_UNTIL_TIMEOUT(rat2->isDead(), 10000);
 
           AND_WHEN("he tries to complete the quest") {
             c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
