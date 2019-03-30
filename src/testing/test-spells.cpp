@@ -67,7 +67,9 @@ TEST_CASE("Non-talent spells are persistent") {
 }
 
 TEST_CASE("Spell cooldowns", "[remote]") {
-  GIVEN("Alice and Bob know a range of self-damaging spells") {
+  GIVEN(
+      "Alice and Bob know a range of self-damaging spells, and extremely high "
+      "hit chance") {
     auto data = R"(
       <spell id="hurtSelf1s" cooldown="1" >
         <targets self=1 />
@@ -87,6 +89,11 @@ TEST_CASE("Spell cooldowns", "[remote]") {
       </spell>
     )";
     auto s = TestServer::WithDataString(data);
+
+    auto oldStats = User::OBJECT_TYPE.baseStats();
+    auto highHitChance = oldStats;
+    highHitChance.hit = 100;
+    User::OBJECT_TYPE.baseStats(highHitChance);
 
     auto cAlice = TestClient::WithUsername("Alice");
     s.waitForUsers(1);
@@ -177,6 +184,7 @@ TEST_CASE("Spell cooldowns", "[remote]") {
         }
       }
     }
+    User::OBJECT_TYPE.baseStats(oldStats);
   }
 }
 

@@ -79,6 +79,7 @@ bool Entity::combatTypeCanHaveOutcome(CombatType type, CombatResult outcome,
   Heal        X       X       X
   Debuff              X       X       X
   */
+  if (type == DAMAGE && (outcome == DODGE || outcome == BLOCK)) return false;
   if (type == HEAL && outcome == MISS) return false;
   if (type == DEBUFF && outcome != CRIT && outcome != HIT) return false;
   if (outcome == DODGE && range > Podes::MELEE_RANGE) return false;
