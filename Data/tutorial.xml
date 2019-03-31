@@ -20,7 +20,7 @@
 </objectType>
 
 
-<quest id="tutCombat" name="A new creation" startsAt="prometheus" endsAt="prometheus"
+<quest id="tutCombat" name="A New Creation" startsAt="prometheus" endsAt="prometheus"
     brief="Ah, finally free from the clay!  Welcome to Mt. Othrys--or what's left of it.  My name is Prometheus, and I created you.
     It looks like your eyes and ears are in working order, so let's test your arms and legs.  Head over to that grassy area nearby, and kill some pigs."
     debrief="Excellent, everything seems to be working as intended.  You're quite impressive, if I do say so myself!"
@@ -80,7 +80,7 @@
     <spawnPoint type="tutGoat" quantity="2" radius="120" respawnTime="90000" x="4880" y="59296" />
     <spawnPoint type="tutGoat" quantity="2" radius="120" respawnTime="90000" x="5096" y="59482" />
 
-<quest id="tutOfferings" name="An offer he can't refuse" startsAt="prometheus" endsAt="tutBrazier"
+<quest id="tutOfferings" name="An Offer he Can't Refuse" startsAt="prometheus" endsAt="tutBrazier"
     brief="Zeus wants to decide which parts of the animal should be sacrificed, and so you'll need to make two offerings and let him choose.  This gives us an opportunity to trick him.
     Don't look at me like that--we're talking about an eternity of sacrifices here, and this will make it easier for you humans!
     Follow the tiled path up north, until you find a smoking brazier.  That is where Zeus will make his choice.
@@ -130,7 +130,7 @@
     <prerequisite id="tutOfferings" />
 </quest>
 
-<quest id="tutLearnFire" name="Burning desire" startsAt="prometheus" endsAt="prometheus"
+<quest id="tutLearnFire" name="Burning Desire" startsAt="prometheus" endsAt="prometheus"
     brief="What?  He removed fire from the world?  But it's critical to . . . that would stop you from ever . . . hmm . . .
     I know what I must do.
     Head to the woods, westward, and pick up some sticks for me.  When you get back, I will restore fire to mankind."
@@ -186,7 +186,7 @@
     </npcType>
     <item id="tutEntrails3" name="Entrails" sounds="meat" stackSize="10" iconFile="entrails" />
     
-<quest id="tutCooking" name="Cooking" startsAt="prometheus" endsAt="atlas"
+<quest id="tutCooking" name="Hungry Work" startsAt="prometheus" endsAt="atlas"
     brief="My brother Atlas was a general in the war against the Olympians, and for that they devised a special punishment for him--a rather exhausting one.
     Now that you know how to cook, I would greatly appreciate it if you could pay him a visit and bring him some food.  If you manage to get a fire going, that experience will teach you all the knowledge necessary to cook raw boar meat into a nutritious meal.
     Now that I think about it, given his history fighting against the gods, Atlas might be able to offer you some guidance of his own.  Be sure to ask him for any advice he may have.
