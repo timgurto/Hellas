@@ -337,6 +337,20 @@ void Client::handleMessage(const std::string &msg) {
           if (distance(playerCollisionRect(), obj.collisionRect()) >
               ACTION_DISTANCE) {
             obj.hideWindow();
+
+            // Hide quest windows from this object
+            // Note: this doesn't check that the object itself is the source of
+            // the quest.  A more correct solution would make sure that there
+            // are no watched objects of the same type.
+            for (auto *questFromThisObject : obj.startsQuests()) {
+              auto *questWindow = questFromThisObject->window();
+              if (questWindow) const_cast<Window *>(questWindow)->hide();
+            }
+            for (auto *questFromThisObject : obj.completableQuests()) {
+              auto *questWindow = questFromThisObject->window();
+              if (questWindow) const_cast<Window *>(questWindow)->hide();
+            }
+
             unwatchObject(obj);
           }
         }
