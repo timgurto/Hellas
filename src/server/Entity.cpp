@@ -508,7 +508,8 @@ void Entity::teleportTo(const MapPoint &destination) {
 }
 
 Message Entity::teleportMessage(const MapPoint &destination) const {
-  return {NO_CODE};
+  return {SV_LOCATION_INSTANT_OBJECT,
+          makeArgs(serial(), destination.x, destination.y)};
 }
 
 const TerrainList &Entity::allowedTerrain() const {

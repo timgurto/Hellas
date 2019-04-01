@@ -12,7 +12,7 @@ class User;
 
 // Objects that can engage in combat, and that are AI-driven
 class NPC : public Entity, public QuestNode {
-  enum State { IDLE, CHASE, ATTACK, RETURN_TO_SPAWNER };
+  enum State { IDLE, CHASE, ATTACK };
   State _state;
   Level _level{0};
   ThreatTable _threatTable;

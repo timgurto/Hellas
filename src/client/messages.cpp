@@ -297,7 +297,7 @@ void Client::handleMessage(const std::string &msg) {
         break;
 
       case SV_LOCATION:  // Also the de-facto new-user announcement
-      case SV_LOCATION_INSTANT: {
+      case SV_LOCATION_INSTANT_USER: {
         std::string name;
         double x, y;
         singleMsg >> name >> del >> x >> del >> y >> del;
@@ -305,7 +305,7 @@ void Client::handleMessage(const std::string &msg) {
         Avatar *newUser = nullptr;
         const MapPoint p(x, y);
         if (name == _username) {
-          if (msgCode == SV_LOCATION_INSTANT) {
+          if (msgCode == SV_LOCATION_INSTANT_USER) {
             _pendingCharLoc = p;
             setEntityLocation(&_character, p);
           }
@@ -326,7 +326,7 @@ void Client::handleMessage(const std::string &msg) {
           if (_otherUsers.find(name) == _otherUsers.end()) addUser(name, p);
 
           _otherUsers[name]->destination(p);
-          if (msgCode == SV_LOCATION_INSTANT)
+          if (msgCode == SV_LOCATION_INSTANT_USER)
             setEntityLocation(_otherUsers[name], p);
         }
 

@@ -53,7 +53,8 @@ User::User(const Socket &rhs) : Object(MapPoint{}), _socket(rhs) {}
 User::User(const MapPoint &loc) : Object(loc), _socket(Socket::Empty()) {}
 
 Message User::teleportMessage(const MapPoint &destination) const {
-  return {SV_LOCATION_INSTANT, makeArgs(name(), destination.x, destination.y)};
+  return {SV_LOCATION_INSTANT_USER,
+          makeArgs(name(), destination.x, destination.y)};
 }
 
 void User::onTeleport() {
@@ -1042,9 +1043,9 @@ void User::moveToSpawnPoint(bool isNewPlayer) {
 
   if (isNewPlayer) return;
 
-  server.broadcastToArea(oldLoc, SV_LOCATION_INSTANT,
+  server.broadcastToArea(oldLoc, SV_LOCATION_INSTANT_USER,
                          makeArgs(name(), location().x, location().y));
-  server.broadcastToArea(location(), SV_LOCATION_INSTANT,
+  server.broadcastToArea(location(), SV_LOCATION_INSTANT_USER,
                          makeArgs(name(), location().x, location().y));
 
   server.sendRelevantEntitiesToUser(*this);

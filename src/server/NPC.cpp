@@ -171,12 +171,10 @@ void NPC::processAI(ms_t timeElapsed) {
   target(nullptr);
 
   // Become aware of nearby users
-  if (_state != RETURN_TO_SPAWNER) {
-    for (User *user :
-         Server::_instance->findUsersInArea(location(), AGGRO_RANGE)) {
-      if (distance(collisionRect(), user->collisionRect()) <= AGGRO_RANGE) {
-        makeAwareOf(*user);
-      }
+  for (User *user :
+       Server::_instance->findUsersInArea(location(), AGGRO_RANGE)) {
+    if (distance(collisionRect(), user->collisionRect()) <= AGGRO_RANGE) {
+      makeAwareOf(*user);
     }
   }
   target(_threatTable.getTarget());
@@ -186,15 +184,6 @@ void NPC::processAI(ms_t timeElapsed) {
 
   // Transition if necessary
   switch (_state) {
-    case RETURN_TO_SPAWNER: {
-      if (distance(_targetDestination, location()) <= RETURN_MARGIN) {
-        _state = IDLE;
-        break;
-      }
-    }
-    // Note: no break.
-
-    // case RETURN_TO_SPAWNER fallthrough:
     case IDLE:
       if (combatDamage() == 0 &&
           !npcType()->knownSpell())  // NPCs that can't attack won't try.
@@ -231,7 +220,8 @@ void NPC::processAI(ms_t timeElapsed) {
           _targetDestination = spawner()->getRandomPoint();
           target(nullptr);
           _threatTable.clear();
-          _state = RETURN_TO_SPAWNER;
+          _state = IDLE;
+          teleportTo(_targetDestination);
           break;
         }
       }
@@ -285,11 +275,6 @@ void NPC::processAI(ms_t timeElapsed) {
     case CHASE:
       // Move towards player
       updateLocation(target()->location());
-      break;
-
-    case RETURN_TO_SPAWNER:
-      // Move towards spawner
-      updateLocation(_targetDestination);
       break;
 
     case ATTACK:

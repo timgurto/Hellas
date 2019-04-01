@@ -227,7 +227,11 @@ enum MessageCode {
 
   // User ... is at location ..., and moved there instantly. (Used for respawning)
   // Arguments: username, x, y
-  SV_LOCATION_INSTANT,
+  SV_LOCATION_INSTANT_USER,
+
+  // Object #... is at location ..., and moved there instantly. (Used for respawning)
+  // Arguments: serial, x, y
+  SV_LOCATION_INSTANT_OBJECT,
 
   // An item is in the user's inventory, or a container object
   // Arguments: serial, slot, ID, quantity
