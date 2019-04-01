@@ -52,6 +52,14 @@ User::User(const Socket &rhs) : Object(MapPoint{}), _socket(rhs) {}
 
 User::User(const MapPoint &loc) : Object(loc), _socket(Socket::Empty()) {}
 
+Message User::teleportMessage(const MapPoint &destination) const {
+  return {SV_LOCATION_INSTANT, makeArgs(name(), destination.x, destination.y)};
+}
+
+void User::onTeleport() {
+  Server::instance().sendRelevantEntitiesToUser(*this);
+}
+
 void User::init() {
   auto baseStats = Stats{};
   baseStats.armor = 0;

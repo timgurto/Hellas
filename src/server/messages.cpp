@@ -1245,16 +1245,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         iss >> x >> del >> y >> del;
         if (del != MSG_END) return;
 
-        auto oldLoc = user->location();
-        auto newLoc = MapPoint{x, y};
-
-        user->location(newLoc);
-
-        broadcastToArea(oldLoc, SV_LOCATION_INSTANT,
-                        makeArgs(user->name(), newLoc.x, newLoc.y));
-        broadcastToArea(newLoc, SV_LOCATION_INSTANT,
-                        makeArgs(user->name(), newLoc.x, newLoc.y));
-        sendRelevantEntitiesToUser(*user);
+        user->teleportTo({x, y});
       }
 
       case DG_SPELLS: {

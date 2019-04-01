@@ -494,6 +494,23 @@ void Entity::location(const MapPoint &newLoc, bool firstInsertion) {
   }
 }
 
+void Entity::teleportTo(const MapPoint &destination) {
+  const auto &server = Server::instance();
+  auto startingLocation = location();
+
+  location(destination);
+
+  auto message = teleportMessage(destination);
+  server.broadcastToArea(startingLocation, message.code, message.args);
+  server.broadcastToArea(destination, message.code, message.args);
+
+  onTeleport();
+}
+
+Message Entity::teleportMessage(const MapPoint &destination) const {
+  return {NO_CODE};
+}
+
 const TerrainList &Entity::allowedTerrain() const {
   for (const auto &buff : buffs()) {
     auto newTerrainList = buff.changesAllowedTerrain();

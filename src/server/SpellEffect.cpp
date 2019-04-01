@@ -173,13 +173,8 @@ CombatResult SpellEffect::randomTeleport(const SpellEffect &effect,
 
   if (attempts == 0) return FAIL;
 
-  target.location(proposedLocation);
-  if (target.classTag() == 'u') {
-    const auto &targetAsUser = dynamic_cast<const User &>(target);
-    server.broadcastToArea(target.location(), SV_LOCATION_INSTANT,
-                           makeArgs(targetAsUser.name(), target.location().x,
-                                    target.location().y));
-  }
+  target.teleportTo(proposedLocation);
+
   return HIT;
 }
 

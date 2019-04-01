@@ -94,6 +94,8 @@ class User : public Object {  // TODO: Don't inherit from Object
 
   const std::string &name() const { return _name; }
   const Socket &socket() const { return _socket; }
+  Message teleportMessage(const MapPoint &destination) const override;
+  void onTeleport() override;
   const Class &getClass() const { return _class.value(); }
   Class &getClass() { return _class.value(); }
   void setClass(const ClassType &type) { _class = {type, *this}; }

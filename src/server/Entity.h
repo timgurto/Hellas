@@ -65,6 +65,9 @@ class Entity {
   // Space
   const MapPoint &location() const { return _location; }
   void location(const MapPoint &loc, bool firstInsertion = false);
+  void teleportTo(const MapPoint &destination);
+  virtual Message teleportMessage(const MapPoint &destination) const;
+  virtual void onTeleport() {}
   void changeDummyLocation(const MapPoint &loc) { _location = loc; }
   const MapRect collisionRect() const {
     return type()->collisionRect() + _location;
