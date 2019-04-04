@@ -1511,6 +1511,18 @@ TEST_CASE("Quests that give items when you start", "[quests]") {
         WAIT_UNTIL(user.hasItems(requiredItems));
       }
     }
+
+    WHEN("a user has a full inventory") {
+      for (auto i = 0; i != User::INVENTORY_SIZE; ++i)
+        user.giveItem(&s.getFirstItem());
+      AND_WHEN("he tries to accept an item-granting quest") {
+        c.sendMessage(CL_ACCEPT_QUEST, makeArgs("openTheDoor", serial));
+        THEN("he is not on a quest") {
+          REPEAT_FOR_MS(100);
+          CHECK_FALSE(user.isOnQuest("openTheDoor"));
+        }
+      }
+    }
   }
 }
 

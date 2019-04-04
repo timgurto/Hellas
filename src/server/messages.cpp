@@ -1844,6 +1844,11 @@ void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &questID,
       user.getClass().type().id() != quest->exclusiveToClass)
     return;
 
+  if (!user.hasRoomFor(quest->startsWithItems)) {
+    user.sendMessage(WARNING_INVENTORY_FULL);
+    return;
+  }
+
   user.startQuest(*quest);
 }
 

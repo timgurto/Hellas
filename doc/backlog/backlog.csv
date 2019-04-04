@@ -410,7 +410,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 464,Start-quest sound,5,3,Aesthetics,,,,
 465,End-quest sound,5,3,Aesthetics,,,,1
 466,Show shadow box in help-topic list in showHelpTopic(),1,5,Bug,,,,
-467,"If a quest gives items, make sure player has space",3,3,Bug,,,,1
+467,"If a quest gives items, make sure player has space",3,3,Bug,,TRUE,,1
 468,Destroy quest-exclusive items if quest is abandoned,3,3,Bug,469,,,
 469,A quest can be abandoned,8,5,Feature,440,TRUE,,1
 470,Draw correct corpses for humanoid NPCs and players,21,55,Bug,,,,
@@ -456,5 +456,4 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 511,Use complete outlines for all text,8,3,Aesthetics,,,,
 512,'That object doesn't exist' after looting,8,5,Bug,,,,
 513,Sparkles ignore tags,5,3,Bug,,,,
-514,Quest tracker reseting on client restart,13,8,Bug,,,,1
 515,"Low-res sprites, high-res game",34,13,Aesthetics,,,,

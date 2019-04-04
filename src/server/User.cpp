@@ -61,6 +61,64 @@ void User::onTeleport() {
   Server::instance().sendRelevantEntitiesToUser(*this);
 }
 
+bool User::hasRoomFor(std::set<std::string> itemNames) const {
+  auto &s = Server::instance();
+
+  // Work with copies
+  auto inventory = _inventory;
+  auto gear = _gear;
+
+  for (const auto &itemName : itemNames) {
+    auto remaining = 1;  // Assumption: one of each item type
+    auto itemAdded = false;
+
+    const auto *item = s.findItem(itemName);
+    if (!item) continue;
+    assert(item->stackSize() > 0);
+
+    // Gear pass 1: partial stacks
+    for (auto i = 0; i != GEAR_SLOTS; ++i) {
+      if (gear[i].first != item) continue;
+      auto spaceAvailable = static_cast<int>(item->stackSize()) -
+                            static_cast<int>(gear[i].second);
+      if (spaceAvailable > 0) {
+        gear[i].second++;
+        itemAdded = true;
+        break;
+      }
+    }
+    if (itemAdded) continue;  // Next item
+
+    // Inventory pass 1: partial stacks
+    for (auto i = 0; i != INVENTORY_SIZE; ++i) {
+      if (inventory[i].first != item) continue;
+      assert(!itemAdded);
+      auto spaceAvailable = static_cast<int>(item->stackSize()) -
+                            static_cast<int>(inventory[i].second);
+      if (spaceAvailable > 0) {
+        inventory[i].second++;
+        itemAdded = true;
+        break;
+      }
+    }
+    if (itemAdded) continue;  // Next item
+
+    // Inventory pass 2: empty slots
+    for (auto i = 0; i != INVENTORY_SIZE; ++i) {
+      auto slotIsEmpty = inventory[i].first == nullptr;
+      if (!slotIsEmpty) continue;
+      assert(!itemAdded);
+      inventory[i].first = item;
+      inventory[i].second = 1;
+      itemAdded = true;
+      break;
+    }
+
+    if (!itemAdded) return false;
+  }
+  return true;
+}
+
 void User::init() {
   auto baseStats = Stats{};
   baseStats.armor = 0;

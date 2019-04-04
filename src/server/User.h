@@ -133,6 +133,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   }
   ServerItem::vect_t &inventory() { return _inventory; }
   const ServerItem::vect_t &inventory() const { return _inventory; }
+  bool hasRoomFor(std::set<std::string> itemNames) const;
 
   // Gear getters/setters
   const std::pair<const ServerItem *, size_t> &gear(size_t index) const {
