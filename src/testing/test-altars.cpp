@@ -174,8 +174,6 @@ TEST_CASE("End-of-tutorial altar") {
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
 
-    const auto expectedLocation = MapPoint{30, 30};
-
     WHEN("the user has the required item") {
       user.giveItem(&s.getFirstItem());
 
@@ -186,6 +184,39 @@ TEST_CASE("End-of-tutorial altar") {
           REPEAT_FOR_MS(100);
           s.nop();
         }
+      }
+    }
+  }
+
+  GIVEN("the user owns an object") {
+    auto data = R"(
+      <objectType id="altar">
+        <action target="endTutorial" />
+      </objectType>
+      <objectType id="house" />
+      <item id="coin" />
+    )";
+
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    s.addObject("altar", {10, 15});
+    const auto &altar = s.getFirstObject();
+
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    s.addObject("house", {5, 5}, user.name());
+
+    WHEN("he worships at the altar") {
+      c.sendMessage(CL_PERFORM_OBJECT_ACTION, makeArgs(altar.serial(), "_"s));
+
+      THEN("he owns no objects") {
+        REPEAT_FOR_MS(100);
+        const auto &objectsOwnedByUser =
+            s.objectsByOwner().getObjectsWithSpecificOwner(
+                {Permissions::Owner::PLAYER, user.name()});
+        CHECK(objectsOwnedByUser.size() == 0);
       }
     }
   }

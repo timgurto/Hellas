@@ -234,6 +234,7 @@ class Server {
                           const User *userToExclude = nullptr);
   void removeEntity(Entity &ent, const User *userToExclude = nullptr);
   void gatherObject(size_t serial, User &user);
+  void removeAllObjectsOwnedBy(const Permissions::Owner &owner);
 
   friend class City;
   friend class DataLoader;

@@ -571,6 +571,14 @@ void Server::gatherObject(size_t serial, User &user) {
 #endif
 }
 
+void Server::removeAllObjectsOwnedBy(const Permissions::Owner &owner) {
+  auto serials = _objectsByOwner.getObjectsWithSpecificOwner(owner);
+  for (auto serial : serials) {
+    auto &entity = *this->_entities.find(serial);
+    this->removeEntity(entity);
+  }
+}
+
 void Server::spawnInitialObjects() {
   // From spawners
   auto timeOfLastReport = SDL_GetTicks();
