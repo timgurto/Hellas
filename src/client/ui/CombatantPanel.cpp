@@ -21,12 +21,12 @@ CombatantPanel::CombatantPanel(px_t panelX, px_t panelY,
       new ProgressBar<Hitpoints>({GAP, y, ELEMENT_WIDTH, BAR_HEIGHT}, health,
                                  maxHealth, Color::STAT_HEALTH);
   addChild(_healthBar);
-  _healthBar->showValuesInTooltip();
+  _healthBar->showValuesInTooltip(" health");
   y += BAR_HEIGHT + GAP;
 
   _energyBar = new ProgressBar<Energy>({GAP, y, ELEMENT_WIDTH, BAR_HEIGHT},
                                        energy, maxEnergy, Color::STAT_ENERGY);
-  _energyBar->showValuesInTooltip();
+  _energyBar->showValuesInTooltip(" energy");
   addChild(_energyBar);
   y += BAR_HEIGHT + GAP;
 
@@ -51,6 +51,6 @@ void CombatantPanel::addXPBar(const XP &xp, const XP &maxXP) {
   _xpBar = new ProgressBar<Energy>({GAP, height(), ELEMENT_WIDTH, BAR_HEIGHT},
                                    xp, maxXP, Color::STAT_XP);
   height(height() + BAR_HEIGHT + 2 * GAP);
-  _xpBar->showValuesInTooltip();
+  _xpBar->showValuesInTooltip(" experience");
   addChild(_xpBar);
 }

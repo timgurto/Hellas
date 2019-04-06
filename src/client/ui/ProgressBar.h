@@ -18,12 +18,14 @@ class ProgressBar : public Element {
   T _lastNumeratorVal, _lastDenominatorVal;
 
   bool _showValuesInTooltip = false;
+  std::string _tooltipSuffix{};
 
   void checkIfChanged() override;
 
   void refresh() override {
     if (_showValuesInTooltip) {
-      setTooltip(toString(_numerator) + "/"s + toString(_denominator));
+      setTooltip(toString(_numerator) + "/"s + toString(_denominator) +
+                 _tooltipSuffix);
     }
     Element::refresh();
   }
@@ -34,7 +36,10 @@ class ProgressBar : public Element {
               const Color &backgroundColor = Color::UI_PROGRESS_BAR);
   void changeColor(const Color &newColor) { _bar->changeColor(newColor); }
 
-  void showValuesInTooltip() { _showValuesInTooltip = true; }
+  void showValuesInTooltip(const std::string &suffix = "") {
+    _showValuesInTooltip = true;
+    _tooltipSuffix = suffix;
+  }
 };
 
 // Implementations
