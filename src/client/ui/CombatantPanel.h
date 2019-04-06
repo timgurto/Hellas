@@ -16,12 +16,15 @@ class CombatantPanel : public Element {
 
   void showEnergyBar();
   void hideEnergyBar();
+  void addXPBar(const XP &xp, const XP &maxXP);
 
   static const px_t WIDTH = 100, HEIGHT = 40, BAR_HEIGHT = 7, GAP = 2;
+  static const px_t ELEMENT_WIDTH = WIDTH - GAP * 2;
 
  private:
   ProgressBar<Hitpoints> *_healthBar;
   ProgressBar<Energy> *_energyBar;
+  ProgressBar<XP> *_xpBar;
 };
 
 #endif

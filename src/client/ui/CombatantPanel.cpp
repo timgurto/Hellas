@@ -11,7 +11,6 @@ CombatantPanel::CombatantPanel(px_t panelX, px_t panelY,
   addChild(new ColorBlock({0, 0, WIDTH, HEIGHT}));
   addChild(new ShadowBox({0, 0, WIDTH, HEIGHT}));
 
-  const auto ELEMENT_WIDTH = WIDTH - GAP * 2;
   auto y = GAP;
   addChild(new LinkedLabel<std::string>(
       {GAP, y, ELEMENT_WIDTH, Element::TEXT_HEIGHT}, name, {}, {},
@@ -46,4 +45,12 @@ void CombatantPanel::hideEnergyBar() {
     _energyBar->hide();
     height(height() - BAR_HEIGHT - GAP);
   }
+}
+
+void CombatantPanel::addXPBar(const XP &xp, const XP &maxXP) {
+  _xpBar = new ProgressBar<Energy>({GAP, height(), ELEMENT_WIDTH, BAR_HEIGHT},
+                                   xp, maxXP, Color::STAT_XP);
+  height(height() + BAR_HEIGHT + 2 * GAP);
+  _xpBar->showValuesInTooltip();
+  addChild(_xpBar);
 }

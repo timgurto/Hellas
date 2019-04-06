@@ -340,7 +340,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 384,Use in-class initialisers where possible,3,8,Code quality,,,,
 385,Remove asserts from server,89,13,Code quality,,,,2
 386,Disable unavailable-talent buttons,21,8,Usability,,,,
-387,Show XP bar in main UI,21,3,Usability,,,,2
+387,Show XP bar in main UI,21,3,Usability,,TRUE,,2
 388,Respond to server going down then up in login screen,34,13,Bug,371,TRUE,,
 389,Include equipped items in materials filter,13,5,Bug,,,,
 390,Restore health/energy on level up,13,2,Feature,,TRUE,,
