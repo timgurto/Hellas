@@ -485,9 +485,8 @@ void Entity::location(const MapPoint &newLoc, bool firstInsertion) {
   if (classTag() == 'u') {
     if (xChanged) server._usersByX.insert(selfAsUser);
     if (yChanged) server._usersByY.insert(selfAsUser);
-    if (server._entitiesByX.size() != server._entitiesByY.size())
-      Server::error(
-          "x-indexed and y-indexed entities lists have different sizes");
+    if (server._usersByX.size() != server._usersByY.size())
+      Server::error("x-indexed users lists have different sizes");
   }
   if (xChanged) server._entitiesByX.insert(this);
   if (yChanged) server._entitiesByY.insert(this);
