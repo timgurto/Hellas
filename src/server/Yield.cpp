@@ -1,7 +1,6 @@
-#include <cassert>
-
-#include "../util.h"
 #include "Yield.h"
+#include "../util.h"
+#include "Server.h"
 
 void Yield::addItem(const ServerItem *item, double initMean, double initSD,
                     size_t initMin, double gatherMean, double gatherSD) {
@@ -34,6 +33,9 @@ size_t Yield::generateGatherQuantity(const ServerItem *item) const {
 
 double Yield::gatherMean(const ServerItem *item) const {
   auto it = _entries.find(item);
-  assert(it != _entries.end());
+  if (it != _entries.end()) {
+    Server::error("Object doesn't yield that item");
+    return 0;
+  }
   return it->second._gatherMean;
 }

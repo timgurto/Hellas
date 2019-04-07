@@ -1,9 +1,9 @@
-#include <cassert>
-
 #include "TerrainList.h"
+#include "Server.h"
 
 std::map<std::string, TerrainList> TerrainList::_lists;
 const TerrainList *TerrainList::_default = nullptr;
+TerrainList TerrainList::_dummy{};
 
 void TerrainList::allow(char terrain) {
   _isWhitelist = true;
@@ -36,7 +36,11 @@ const TerrainList &TerrainList::defaultList() {
   if (_default != nullptr)
     return *_default;
   else {
-    assert(!_lists.empty());
+    if (_lists.empty()) {
+      Server::error(
+          "Can't get default terrain list because there are no lists");
+      return _dummy;
+    }
     return _lists.begin()->second;  // Use first alphabetical.
   }
 }

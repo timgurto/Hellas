@@ -1,4 +1,3 @@
-#include <cassert>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -534,7 +533,9 @@ void Server::removeEntity(Entity &ent, const User *userToExclude) {
   _entitiesByY.erase(&ent);
   auto numRemoved = _entities.erase(&ent);
   delete &ent;
-  assert(numRemoved == 1);
+  if (numRemoved != 1) {
+    error("Removed the wrong number of entities");
+  }
 }
 
 void Server::gatherObject(size_t serial, User &user) {
@@ -586,7 +587,10 @@ void Server::spawnInitialObjects() {
   auto numSpawners = _spawners.size();
   auto i = 0;
   for (auto &spawner : _spawners) {
-    assert(spawner.type() != nullptr);
+    if (!spawner.type()) {
+      error("Spawner has no type");
+      return;
+    }
     for (size_t i = 0; i != spawner.quantity(); ++i) spawner.spawn();
     ++i;
 
@@ -594,8 +598,9 @@ void Server::spawnInitialObjects() {
     auto currentTime = SDL_GetTicks();
     if (currentTime - timeOfLastReport >= REPORTING_TIME) {
       timeOfLastReport = currentTime;
-      _debug << "Loading spawners: " << i << "/" << numSpawners << " ("
-             << 100 * i / numSpawners << "%)" << Log::endl;
+      _debug << Color::CHAT_DEFAULT << "Loading spawners: " << i << "/"
+             << numSpawners << " (" << 100 * i / numSpawners << "%)"
+             << Log::endl;
     }
   }
 }
@@ -604,9 +609,16 @@ MapPoint Server::mapRand() const {
   return {randDouble() * (_mapX - 0.5) * TILE_W, randDouble() * _mapY * TILE_H};
 }
 
+void Server::error(const std::string &message) {
+  debug()(message, Color::CHAT_ERROR);
+}
+
 bool Server::itemIsTag(const ServerItem *item,
                        const std::string &tagName) const {
-  assert(item);
+  if (!item) {
+    error("Checking tags of null item");
+    return false;
+  }
   return item->isTag(tagName);
 }
 

@@ -1,4 +1,3 @@
-#include <cassert>
 #include <iomanip>
 
 #include "Stats.h"
@@ -68,7 +67,7 @@ const Stats &Stats::operator&=(const StatsMod &mod) {
   // ASSUMPTION: only one item, presumably the weapon, will have this stat.
   if (mod.attackTime > 0) attackTime = mod.attackTime;
 
-  assert(mod.speed >= 0);
+  if (mod.speed < 0) speed = 0;
   if (mod.speed != 1.0) speed *= mod.speed;
 
   stunned = stunned || mod.stuns;
@@ -88,8 +87,9 @@ Percentage Stats::resistanceByType(SpellSchool school) const {
   if (school == SpellSchool::EARTH) return earthResist;
   if (school == SpellSchool::FIRE) return fireResist;
   if (school == SpellSchool::WATER) return waterResist;
-  assert(false);
-  return 0;
+
+  // Can't report, as this could be the server or the client.
+  return armor;
 }
 
 std::string multiplicativeToString(double d) {

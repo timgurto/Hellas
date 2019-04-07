@@ -1,4 +1,3 @@
-#include <cassert>
 #include <map>
 
 #include "Color.h"
@@ -22,9 +21,9 @@ SpellSchool::operator std::string() const {
       return "Fire";
     case WATER:
       return "Water";
+    default:
+      return "Physical";
   }
-  assert(false);
-  return {};
 }
 
 std::string SpellSchool::midSentenceString() const {
@@ -38,10 +37,9 @@ std::string SpellSchool::midSentenceString() const {
     case WATER:
       return "water";
     case PHYSICAL:
+    default:
       return "physical";
   }
-  assert(false);
-  return {};
 }
 
 const Color &SpellSchool::color() const {
@@ -55,7 +53,6 @@ const Color &SpellSchool::color() const {
     case WATER:
       return Color::STAT_WATER;
   }
-  assert(false);
   return {Color::CHAT_ERROR};
 }
 

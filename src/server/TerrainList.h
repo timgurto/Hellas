@@ -13,6 +13,7 @@ which dictates what map tiles are valid locations for obejcts of that type.
 class TerrainList {
   static std::map<std::string, TerrainList> _lists;
   static const TerrainList *_default;
+  static TerrainList _dummy;
 
   std::set<char> _list;
   bool _isWhitelist;  // true if whitelist; false if blacklist.

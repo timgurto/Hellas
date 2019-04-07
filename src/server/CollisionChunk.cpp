@@ -1,5 +1,3 @@
-#include <cassert>
-
 #include "CollisionChunk.h"
 #include "Entity.h"
 

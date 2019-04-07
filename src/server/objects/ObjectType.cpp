@@ -1,5 +1,5 @@
 #include "ObjectType.h"
-#include <cassert>
+#include "../Server.h"
 
 ObjectType::ObjectType(const std::string &id)
     : EntityType(id),
@@ -24,11 +24,18 @@ void ObjectType::addYield(const ServerItem *item, double initMean,
 
 void ObjectType::initStrengthAndMaxHealth() const {
   _baseStats.maxHealth = _strength.get();
-  assert(_baseStats.maxHealth > 0);
+  if (_baseStats.maxHealth <= 0) {
+    Server::debug()("Max health from strength is nonpositive",
+                    Color::CHAT_ERROR);
+    _baseStats.maxHealth = 1;
+  }
 }
 
 void ObjectType::checkUniquenessInvariant() const {
-  if (_isUnique) assert(_numInWorld <= 1);
+  if (_isUnique && _numInWorld > 1) {
+    Server::debug()("There are more than one of a world-unique object",
+                    Color::CHAT_ERROR);
+  }
 }
 
 void ObjectType::setHealthBasedOnItems(const ServerItem *item,

@@ -1,5 +1,3 @@
-#include <cassert>
-
 #include "ObjectsByOwner.h"
 
 ObjectsByOwner::ObjectsWithSpecificOwner ObjectsByOwner::EmptyQueryResult;

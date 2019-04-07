@@ -1,5 +1,4 @@
 #include <algorithm>
-#include <cassert>
 #include <set>
 
 #include "../messageCodes.h"
@@ -292,7 +291,11 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           // isEntityInRange() sends error messages if applicable.
           break;
         }
-        assert(obj->type() != nullptr);
+        if (!obj->type()) {
+          error("Can't gather from object with no type");
+          break;
+        }
+
         // Check that the user meets the requirements
         if (obj->isBeingBuilt()) {
           sendMessage(client, ERROR_UNDER_CONSTRUCTION);
@@ -336,7 +339,12 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           sendMessage(client, ERROR_UNDER_CONSTRUCTION);
           break;
         }
-        assert(obj->type());
+
+        if (!obj->type()) {
+          error("Can't deconstruct object with no type");
+          break;
+        }
+
         if (!obj->permissions().doesUserHaveAccess(user->name())) {
           sendMessage(client, WARNING_NO_PERMISSION);
           break;
@@ -380,7 +388,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           sendMessage(client, WARNING_TOO_FAR);
           break;
         }
-        assert(obj->type());
+        if (!obj->type()) {
+          error("Can't demolish object with no type");
+          break;
+        }
         if (!obj->permissions().isOwnedByPlayer(user->name())) {
           sendMessage(client, WARNING_NO_PERMISSION);
           break;
@@ -522,7 +533,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         }
 
         auto &slotFrom = (*containerFrom)[slot1];
-        assert(slotFrom.first != nullptr);
+        if (!slotFrom.first) {
+          error("Attempting to move nonexistent item");
+          break;
+        }
 
         if (isConstructionMaterial) {
           size_t qtyInSlot = slotFrom.second,
@@ -1358,7 +1372,7 @@ void Server::handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum) {
     }
     pSlot = pEnt->getSlotToTakeFromAndSendErrors(slotNum, user);
   }
-  if (pSlot == nullptr) return;
+  if (!pSlot) return;
   ServerItem::Slot &slot = *pSlot;
 
   // Attempt to give item to user
@@ -1944,7 +1958,7 @@ void Server::sendInventoryMessageInner(
 void Server::sendInventoryMessage(const User &user, size_t slot,
                                   const Object &obj) const {
   if (!obj.hasContainer()) {
-    assert(false);
+    error("Can't send inventory message for containerless object");
     return;
   }
   sendInventoryMessageInner(user, obj.serial(), slot, obj.container().raw());
@@ -1962,14 +1976,20 @@ void Server::sendInventoryMessage(const User &user, size_t slot,
       container = &user.gear();
       break;
     default:
-      assert(false);
+      error(
+          "Trying to send inventory message with bad serial.  Using "
+          "inventory.");
+      container = &user.inventory();
   }
   sendInventoryMessageInner(user, serial, slot, *container);
 }
 
 void Server::sendMerchantSlotMessage(const User &user, const Object &obj,
                                      size_t slot) const {
-  assert(slot < obj.merchantSlots().size());
+  if (slot >= obj.merchantSlots().size()) {
+    error("Can't send merchant-slot message: slot index is too high");
+    return;
+  }
   const MerchantSlot &mSlot = obj.merchantSlot(slot);
   if (mSlot)
     sendMessage(user.socket(), SV_MERCHANT_SLOT,

@@ -1,5 +1,3 @@
-#include <cassert>
-
 #include "Server.h"
 #include "objects/Object.h"
 
@@ -37,7 +35,10 @@ void Entity::updateLocation(const MapPoint &dest) {
     journeyRect.h += displacementY;
     if (!server.isLocationValid(journeyRect, *this)) {
       newDest = _location;
-      assert(server.isLocationValid(newDest, *this));
+      if (!server.isLocationValid(newDest, *this)) {
+        Server::error(
+            "Reverting to previous location, but that is also invalid");
+      }
       static const double ACCURACY = 0.5;
       MapPoint displacementNorm(rawDisplacement.x / distanceToMove * ACCURACY,
                                 rawDisplacement.y / distanceToMove * ACCURACY);
@@ -60,7 +61,10 @@ void Entity::updateLocation(const MapPoint &dest) {
 
   // At this point, the new location has been finalized.  Now new information
   // must be propagated.
-  assert(server.isLocationValid(newDest, *this));
+  if (!server.isLocationValid(newDest, *this)) {
+    Server::debug()("Entity is in invalid location.  Server in bad state.",
+                    Color::CHAT_ERROR);
+  }
 
   double left, right, top, bottom;  // Area newly visible
   double forgetLeft, forgetRight, forgetTop,

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cassert>
 #include <memory>
 
 template <typename T>
@@ -20,18 +19,25 @@ class Optional {
     if (hasValue()) delete _p;
     _p = new T(rhs);
 
+    if (!_p) {
+      // Default value in lieu of null, to avoid the need for asserts.
+      static T dummy{};
+      return dummy;
+    }
+
     return *_p;
   }
 
   bool hasValue() const { return _p != nullptr; }
 
-  const T &value() const {
-    assert(_p);
-    return *_p;
-  }
-
+  const T &value() const { return *_p; }
   T &value() {
-    assert(_p);
+    if (!_p) {
+      // Default value in lieu of null, to avoid the need for asserts.
+      static T dummy{};
+      return dummy;
+    }
+
     return *_p;
   }
 

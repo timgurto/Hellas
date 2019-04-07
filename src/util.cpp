@@ -1,4 +1,3 @@
-#include <cassert>
 #include <cmath>
 #include <fstream>
 #include <sstream>
@@ -27,7 +26,9 @@ double distance(const MapPoint &p, const MapPoint &a, const MapPoint &b) {
       (b.y - a.y) * p.x - (b.x - a.x) * p.y + b.x * a.y - b.y * a.x;
   numerator = abs(numerator);
   double denominator = (b.y - a.y) * (b.y - a.y) + (b.x - a.x) * (b.x - a.x);
-  assert(denominator > 0);
+
+  if (denominator == 0) return 0;
+
   denominator = sqrt(denominator);
   return numerator / denominator;
 }
@@ -40,7 +41,8 @@ MapPoint interpolate(const MapPoint &a, const MapPoint &b, double dist) {
   const double xDelta = b.x - a.x, yDelta = b.y - a.y;
   if (xDelta == 0 && yDelta == 0) return a;
   const double lengthAB = sqrt(xDelta * xDelta + yDelta * yDelta);
-  assert(lengthAB > 0);
+
+  if (lengthAB == 0) return a;
 
   if (dist >= lengthAB)
     // Target point exceeds b
@@ -54,7 +56,8 @@ MapPoint extrapolate(const MapPoint &a, const MapPoint &b, double dist) {
   const double xDelta = b.x - a.x, yDelta = b.y - a.y;
   if (xDelta == 0 && yDelta == 0) return a;
   const double lengthAB = sqrt(xDelta * xDelta + yDelta * yDelta);
-  assert(lengthAB > 0);
+
+  if (lengthAB == 0) return a;
 
   if (dist <= lengthAB)
     // Target point is within interval

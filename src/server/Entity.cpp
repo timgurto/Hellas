@@ -1,8 +1,6 @@
-#include <algorithm>
-#include <cassert>
-
-#include "../util.h"
 #include "Entity.h"
+#include <algorithm>
+#include "../util.h"
 #include "Server.h"
 #include "Spawner.h"
 #include "Spell.h"
@@ -265,7 +263,8 @@ void Entity::update(ms_t timeElapsed) {
     args = makeArgs(dynamic_cast<const User *>(this)->name(),
                     dynamic_cast<const User *>(pTarget)->name());
   } else {
-    assert(false);
+    Server::error("Invalid attacker or defender tag");
+    return;
   }
   for (auto user : usersToInform) user->sendMessage(msgCode, args);
 
@@ -355,7 +354,7 @@ CombatResult Entity::castSpell(const Spell &spell) {
         spellHit = true;
         break;
       default:
-        assert(false);
+        Server::error("Invalid spell outcome");
     }
     auto msgCode = spellHit ? SV_SPELL_HIT : SV_SPELL_MISS;
     const auto &src = location(), &dst = target->location();
@@ -452,24 +451,31 @@ void Entity::location(const MapPoint &newLoc, bool firstInsertion) {
 
   if (!firstInsertion) {
     // Remove from location-indexed trees
-    assert(server._entitiesByX.size() == server._entitiesByY.size());
+    if (server._entitiesByX.size() != server._entitiesByY.size())
+      Server::error(
+          "x-indexed and y-indexed entities lists have different sizes");
+
     if (classTag() == 'u') {
       if (xChanged) {
         auto numRemoved = server._usersByX.erase(selfAsUser);
-        assert(numRemoved == 1);
+        if (numRemoved != 1)
+          Server::error("Unexpected number of entities removed");
       }
       if (yChanged) {
         auto numRemoved = server._usersByY.erase(selfAsUser);
-        assert(numRemoved == 1);
+        if (numRemoved != 1)
+          Server::error("Unexpected number of entities removed");
       }
     }
     if (xChanged) {
       auto numRemoved = server._entitiesByX.erase(this);
-      assert(numRemoved == 1);
+      if (numRemoved != 1)
+        Server::error("Unexpected number of entities removed");
     }
     if (yChanged) {
       auto numRemoved = server._entitiesByY.erase(this);
-      assert(numRemoved == 1);
+      if (numRemoved != 1)
+        Server::error("Unexpected number of entities removed");
     }
   }
 
@@ -479,11 +485,15 @@ void Entity::location(const MapPoint &newLoc, bool firstInsertion) {
   if (classTag() == 'u') {
     if (xChanged) server._usersByX.insert(selfAsUser);
     if (yChanged) server._usersByY.insert(selfAsUser);
-    assert(server._usersByX.size() == server._usersByY.size());
+    if (server._entitiesByX.size() != server._entitiesByY.size())
+      Server::error(
+          "x-indexed and y-indexed entities lists have different sizes");
   }
   if (xChanged) server._entitiesByX.insert(this);
   if (yChanged) server._entitiesByY.insert(this);
-  assert(server._entitiesByX.size() == server._entitiesByY.size());
+  if (server._entitiesByX.size() != server._entitiesByY.size())
+    Server::error(
+        "x-indexed and y-indexed entities lists have different sizes");
 
   // Move to a different collision chunk if needed
   auto &oldCollisionChunk = server.getCollisionChunk(oldLoc),
@@ -520,6 +530,17 @@ const TerrainList &Entity::allowedTerrain() const {
   }
 
   return _type->allowedTerrain();
+}
+
+const Loot &Entity::loot() const {
+  static Loot dummy{};
+
+  if (_loot != nullptr) {
+    Server::debug()("Entity::loot(): _loot is null", Color::CHAT_ERROR);
+    return dummy;
+  }
+
+  return *_loot;
 }
 
 std::vector<const Buff *> Entity::onHitBuffsAndDebuffs() {

@@ -1,7 +1,6 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include <cassert>
 #include <memory>
 
 #include "../Message.h"
@@ -176,10 +175,7 @@ class Entity {
     return false;
   }
 
-  const Loot &loot() const {
-    assert(_loot != nullptr);
-    return *_loot;
-  }
+  const Loot &loot() const;
 
   /*
   Determine whether the proposed new location is legal, considering movement

@@ -57,6 +57,7 @@ class Server {
 
   static Server &instance() { return *_instance; }
   static LogConsole &debug() { return *_debugInstance; }
+  static void error(const std::string &message);
 
   bool itemIsTag(const ServerItem *item, const std::string &tagName) const;
 

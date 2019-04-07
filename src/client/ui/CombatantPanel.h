@@ -24,7 +24,6 @@ class CombatantPanel : public Element {
   static const px_t WIDTH = 100, HEIGHT = 40, BAR_HEIGHT = 7, GAP = 2;
   static const px_t ELEMENT_WIDTH = WIDTH - GAP * 2;
 
-  // virtual px_t height() const override { return Element::height(); }
   virtual void height(px_t h) override;
 
  private:

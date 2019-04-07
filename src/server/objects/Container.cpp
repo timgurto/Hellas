@@ -1,9 +1,7 @@
-#include <cassert>
-
+#include "Container.h"
 #include "../../util.h"
 #include "../Server.h"
 #include "../User.h"
-#include "Container.h"
 #include "Object.h"
 
 ContainerType *ContainerType::WithSlots(size_t slots) {
@@ -90,7 +88,7 @@ void Container::addItems(const ServerItem *item, size_t qty) {
       if (qty == 0) break;
       ;
     }
-  assert(qty == 0);
+  Server::error("items left over when trying to add to a container");
 
   for (const auto &username : _parent.watchers()) {
     const auto &user = *Server::instance().getUserByName(username);

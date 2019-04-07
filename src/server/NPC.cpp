@@ -1,5 +1,3 @@
-#include <cassert>
-
 #include "NPC.h"
 #include "Server.h"
 #include "User.h"
@@ -144,7 +142,10 @@ px_t NPC::attackRange() const {
 }
 
 void NPC::sendRangedHitMessageTo(const User &userToInform) const {
-  assert(target());
+  if (!target()) {
+    Server::error("Trying to send ranged-hit message when target is null");
+    return;
+  }
   userToInform.sendMessage(
       SV_RANGED_NPC_HIT,
       makeArgs(type()->id(), location().x, location().y, target()->location().x,
@@ -152,7 +153,10 @@ void NPC::sendRangedHitMessageTo(const User &userToInform) const {
 }
 
 void NPC::sendRangedMissMessageTo(const User &userToInform) const {
-  assert(target());
+  if (!target()) {
+    Server::error("Trying to send ranged-miss message when target is null");
+    return;
+  }
   userToInform.sendMessage(
       SV_RANGED_NPC_MISS,
       makeArgs(type()->id(), location().x, location().y, target()->location().x,

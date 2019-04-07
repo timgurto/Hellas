@@ -1,4 +1,3 @@
-#include <cassert>
 #include <list>
 #include <utility>
 
@@ -31,14 +30,20 @@ MapRect Server::getTileRect(size_t x, size_t y) {
 
 std::set<char> Server::nearbyTerrainTypes(const MapRect &rect,
                                           double extraRadius) {
-  assert(extraRadius >= 0);
+  if (extraRadius < 0) {
+    error("Terrain-lookup radius is negative.  Setting to 0.");
+    extraRadius = 0;
+  }
   std::set<char> tilesInRect;
   const double left = max(0, rect.x - extraRadius),
                right = rect.x + rect.w + extraRadius,
                top = max(0, rect.y - extraRadius),
                bottom = rect.y + rect.h + extraRadius;
   size_t tileTop = getTileYCoord(top), tileBottom = getTileYCoord(bottom);
-  assert(tileBottom >= tileTop);
+  if (tileBottom < tileTop) {
+    error("Can't look up terrain: bottom index is less than top index.");
+    return tilesInRect;
+  }
 
   // Single row
   if (tileTop == tileBottom) {
@@ -57,7 +62,10 @@ std::set<char> Server::nearbyTerrainTypes(const MapRect &rect,
       bool yIsEven = y % 2 == 0;
       size_t tileLeft = yIsEven ? tileLeftEven : tileLeftOdd,
              tileRight = yIsEven ? tileRightEven : tileRightOdd;
-      assert(tileRight >= tileLeft);
+      if (tileRight < tileLeft) {
+        error("Can't look up terrain: right index is less than left index.");
+        return tilesInRect;
+      }
       for (size_t x = tileLeft; x <= tileRight; ++x) {
         char terrainIndex = _map[x][y];
         // Exclude if outside radius
@@ -119,7 +127,10 @@ bool Server::isLocationValid(const MapRect &rect,
 }
 
 size_t Server::getTileYCoord(double y) const {
-  assert(y >= 0);
+  if (y < 0) {
+    error("Attempting to get tile for negative y co-ord");
+    return 0;
+  }
   size_t yTile = static_cast<size_t>(y / TILE_H);
   if (yTile >= _mapY) {
     _debug << Color::CHAT_ERROR << "Invalid location; clipping y from " << yTile
@@ -130,7 +141,10 @@ size_t Server::getTileYCoord(double y) const {
 }
 
 size_t Server::getTileXCoord(double x, size_t yTile) const {
-  assert(x >= 0);
+  if (x < 0) {
+    error("Attempting to get tile for negative x co-ord");
+    return 0;
+  }
   double originalX = x;
   if (yTile % 2 == 1) x += TILE_W / 2;
   size_t xTile = static_cast<size_t>(x / TILE_W);

@@ -1,7 +1,5 @@
-#include <cassert>
-
-#include "../util.h"
 #include "ItemSet.h"
+#include "../util.h"
 
 ItemSet::ItemSet() : _totalQty(0) {}
 
@@ -41,7 +39,10 @@ size_t ItemSet::operator[](const Item *key) const {
 
 void ItemSet::set(const Item *item, size_t quantity) {
   size_t oldQty = _set[item];
-  assert(_totalQty >= oldQty);
+
+  // Can't report, as this could be the server or the client.
+  // assert(_totalQty >= oldQty);
+
   auto it = _set.find(item);
   it->second = quantity;
   _totalQty = _totalQty - oldQty + quantity;
@@ -102,7 +103,9 @@ void ItemSet::remove(const Item *item, size_t qty) {
 void ItemSet::checkTotalQty() const {
   size_t total = 0;
   for (const auto &pair : _set) total += pair.second;
-  assert(_totalQty == total);
+
+  // Can't report, as this could be the server or the client.
+  // assert(_totalQty == total);
 };
 
 bool operator<=(const ItemSet &itemSet, const Item::vect_t &vect) {

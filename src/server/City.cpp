@@ -1,8 +1,6 @@
-#include <cassert>
-
+#include "City.h"
 #include "../XmlReader.h"
 #include "../XmlWriter.h"
-#include "City.h"
 #include "Server.h"
 
 City::City(const Name &name = "") : _name(name) {}

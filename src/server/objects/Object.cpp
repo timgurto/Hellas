@@ -1,8 +1,6 @@
-#include <cassert>
-
+#include "Object.h"
 #include "../../util.h"
 #include "../Server.h"
-#include "Object.h"
 #include "ObjectLoot.h"
 
 Object::Object(const ObjectType *type, const MapPoint &loc)
@@ -37,14 +35,26 @@ Object::~Object() {
 void Object::contents(const ItemSet &contents) { _contents = contents; }
 
 void Object::removeItem(const ServerItem *item, size_t qty) {
-  assert(_contents[item] >= qty);
-  assert(_contents.totalQuantity() >= qty);
+  if (_contents[item] < qty) {
+    Server::error(
+        "Attempting to remove contents when quantity is insufficient");
+    qty = _contents[item];
+  }
+  if (_contents.totalQuantity() < qty) {
+    Server::error(
+        "Attempting to remove contents when total quantity is insufficient");
+  }
   _contents.remove(item, qty);
 }
 
 const ServerItem *Object::chooseGatherItem() const {
-  assert(!_contents.isEmpty());
-  assert(_contents.totalQuantity() > 0);
+  if (_contents.isEmpty()) {
+    Server::error("Can't gather from an empty object");
+    return nullptr;
+  }
+  if (_contents.isEmpty()) {
+    Server::error("Total contents quality is too low");
+  }
 
   // Count number of average gathers remaining for each item type.
   size_t totalGathersRemaining = 0;
@@ -64,8 +74,8 @@ const ServerItem *Object::chooseGatherItem() const {
     else
       i -= item.second;
   }
-  assert(false);
-  return 0;
+  Server::error("No item was found to gather");
+  return nullptr;
 }
 
 size_t Object::chooseGatherQuantity(const ServerItem *item) const {
@@ -148,7 +158,10 @@ void Object::onEnergyChange() {
 }
 
 void Object::setType(const ObjectType *type, bool skipConstruction) {
-  assert(type != nullptr);
+  if (!type) {
+    Server::error("Trying to set object type to null");
+    return;
+  }
 
   Server *server = Server::_instance;
 
@@ -342,7 +355,11 @@ ServerItem::Slot *Object::getSlotToTakeFromAndSendErrors(size_t slotNum,
     return nullptr;
   }
 
-  assert(hasContainer());
+  if (!hasContainer()) {
+    Server::error("Attempting to fetch slot from entity with no container");
+    return nullptr;
+  }
+
   ServerItem::Slot &slot = container().at(slotNum);
   if (slot.first == nullptr) {
     user.sendMessage(ERROR_EMPTY_SLOT);

@@ -338,7 +338,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 381,Use consistent colors for tooltip text,5,2,Usability,,TRUE,,
 382,Password-protect accounts,34,233,Exploit,,,,
 384,Use in-class initialisers where possible,3,8,Code quality,,,,
-385,Remove asserts from server,89,13,Code quality,,,,2
+385,Remove asserts from server,89,13,Code quality,,TRUE,,2
 386,Disable unavailable-talent buttons,21,8,Usability,,,,
 387,Show XP bar in main UI,21,3,Usability,,TRUE,,2
 388,Respond to server going down then up in login screen,34,13,Bug,371,TRUE,,

@@ -465,7 +465,7 @@ void Server::loadWorldState(const std::string &path, bool shouldKeepOldData) {
   // If execution reaches here, fresh objects will be generated instead of old
   // ones loaded.
 
-  _debug("Generating new objects.", Color::CHAT_ERROR);
+  _debug("Generating new objects.");
   _dataLoaded = true;
 }
 

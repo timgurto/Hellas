@@ -1,4 +1,3 @@
-#include <cassert>
 #include <map>
 
 #include "Permissions.h"
@@ -77,7 +76,7 @@ bool Permissions::doesUserHaveAccess(const std::string &username) const {
     }
 
     default:
-      assert(false);
+      Server::error("Checking permission when owner has no type");
       return false;
   }
 }
@@ -99,7 +98,7 @@ Permissions::Usernames Permissions::ownerAsUsernames() {
     case Owner::CITY:
       return server.cities().membersOf(_owner.name);
     default:
-      assert(false);
+      Server::error("Trying to fetch owning users when owner has no type");
       return {};
   }
 }

@@ -1,8 +1,6 @@
-#include <cassert>
-
+#include "LootTable.h"
 #include "../util.h"
 #include "Loot.h"
-#include "LootTable.h"
 #include "Server.h"
 #include "User.h"
 
@@ -21,7 +19,9 @@ void LootTable::addSimpleItem(const ServerItem *item, double chance) {
 }
 
 void LootTable::instantiate(Loot &loot, const User *killer) const {
-  assert(loot.empty());
+  if (!loot.empty()) {
+    Server::error("Loot object provided was not empty");
+  }
   for (const LootEntry &entry : _entries) {
     // Enforce quest exclusivity
     if (entry.item->isQuestExclusive()) {

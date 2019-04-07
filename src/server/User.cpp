@@ -1,8 +1,6 @@
-#include <cassert>
-
+#include "User.h"
 #include "ProgressLock.h"
 #include "Server.h"
-#include "User.h"
 
 ObjectType User::OBJECT_TYPE("__clientObjectType__");
 
@@ -74,7 +72,10 @@ bool User::hasRoomFor(std::set<std::string> itemNames) const {
 
     const auto *item = s.findItem(itemName);
     if (!item) continue;
-    assert(item->stackSize() > 0);
+    if (item->stackSize() == 0) {
+      Server::error("Item with stack size 0");
+      return false;
+    }
 
     // Gear pass 1: partial stacks
     for (auto i = 0; i != GEAR_SLOTS; ++i) {
@@ -92,7 +93,13 @@ bool User::hasRoomFor(std::set<std::string> itemNames) const {
     // Inventory pass 1: partial stacks
     for (auto i = 0; i != INVENTORY_SIZE; ++i) {
       if (inventory[i].first != item) continue;
-      assert(!itemAdded);
+
+      if (itemAdded) {
+        Server::error(
+            "Trying to find room for an item that has already been added");
+        return false;
+      }
+
       auto spaceAvailable = static_cast<int>(item->stackSize()) -
                             static_cast<int>(inventory[i].second);
       if (spaceAvailable > 0) {
@@ -107,7 +114,13 @@ bool User::hasRoomFor(std::set<std::string> itemNames) const {
     for (auto i = 0; i != INVENTORY_SIZE; ++i) {
       auto slotIsEmpty = inventory[i].first == nullptr;
       if (!slotIsEmpty) continue;
-      assert(!itemAdded);
+
+      if (itemAdded) {
+        Server::error(
+            "Trying to find room for an item that has already been added");
+        return false;
+      }
+
       inventory[i].first = item;
       inventory[i].second = 1;
       itemAdded = true;
@@ -192,8 +205,18 @@ size_t User::giveItem(const ServerItem *item, size_t quantity) {
   if (remaining > 0) {
     for (auto i = 0; i != INVENTORY_SIZE; ++i) {
       if (_inventory[i].first != item) continue;
-      assert(remaining > 0);
-      assert(item->stackSize() > 0);
+
+      if (remaining == 0) {
+        Server::error(
+            "Trying to find room for an item that has already been added");
+        return false;
+      }
+
+      if (item->stackSize() == 0) {
+        Server::error("Item with stack size 0");
+        return false;
+      }
+
       auto spaceAvailable = static_cast<int>(item->stackSize()) -
                             static_cast<int>(_inventory[i].second);
       if (spaceAvailable > 0) {
@@ -211,8 +234,18 @@ size_t User::giveItem(const ServerItem *item, size_t quantity) {
   if (remaining > 0) {
     for (auto i = 0; i != INVENTORY_SIZE; ++i) {
       if (_inventory[i].first != nullptr) continue;
-      assert(remaining > 0);
-      assert(item->stackSize() > 0);
+
+      if (remaining == 0) {
+        Server::error(
+            "Trying to find room for an item that has already been added");
+        return false;
+      }
+
+      if (item->stackSize() == 0) {
+        Server::error("Item with stack size 0");
+        return false;
+      }
+
       auto qtyInThisSlot = min(item->stackSize(), remaining);
       _inventory[i].first = item;
       _inventory[i].second = qtyInThisSlot;
@@ -282,7 +315,10 @@ void User::beginGathering(Object *obj) {
   _action = GATHER;
   _actionObject = obj;
   _actionObject->incrementGatheringUsers();
-  assert(obj->type());
+  if (!obj->type()) {
+    Server::error("Can't gather from object with no type");
+    return;
+  }
   _actionTime = obj->objType().gatherTime();
 }
 
@@ -452,7 +488,9 @@ void User::removeItems(const ItemSet &items) {
   for (size_t slotNum : slotsChanged)
     Server::instance().sendInventoryMessage(*this, slotNum, Server::GEAR);
 
-  assert(remaining.isEmpty());
+  if (!remaining.isEmpty()) {
+    Server::error("Failed to remove all necessary items from user");
+  }
 }
 
 static void removeItemsFrom(const std::string &tag, size_t &remaining,
@@ -568,7 +606,10 @@ void User::update(ms_t timeElapsed) {
         break;
       // Remove item from user's inventory
       std::pair<const ServerItem *, size_t> &slot = _inventory[_actionSlot];
-      assert(slot.first->constructsObject() == _actionObjectType);
+      if (slot.first->constructsObject() != _actionObjectType) {
+        Server::error("Trying to construct object from an invalid item");
+        break;
+      }
       --slot.second;
       if (slot.second == 0) slot.first = nullptr;
       server.sendInventoryMessage(*this, _actionSlot, Server::INVENTORY);
@@ -594,7 +635,7 @@ void User::update(ms_t timeElapsed) {
     }
 
     default:
-      assert(false);
+      Server::error("Unhandled message");
   }
 
   if (_action != ATTACK) {  // ATTACK is a repeating action.

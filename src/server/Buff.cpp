@@ -1,5 +1,3 @@
-#include <cassert>
-
 #include "Buff.h"
 #include "Server.h"
 
@@ -22,7 +20,10 @@ void Buff::clearCasterIfEqualTo(const Entity &casterToRemove) const {
 }
 
 void Buff::update(ms_t timeElapsed) {
-  assert(!_expired);
+  if (_expired) {
+    Server::error("Trying to update expired buff");
+    return;
+  }
 
   // Server::debug()(toString(_timeRemaining));
 
