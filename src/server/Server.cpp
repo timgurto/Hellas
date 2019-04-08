@@ -534,7 +534,7 @@ void Server::removeEntity(Entity &ent, const User *userToExclude) {
   auto numRemoved = _entities.erase(&ent);
   delete &ent;
   if (numRemoved != 1) {
-    error("Removed the wrong number of entities");
+    SERVER_ERROR("Removed the wrong number of entities");
   }
 }
 
@@ -588,7 +588,7 @@ void Server::spawnInitialObjects() {
   auto i = 0;
   for (auto &spawner : _spawners) {
     if (!spawner.type()) {
-      error("Spawner has no type");
+      SERVER_ERROR("Spawner has no type");
       return;
     }
     for (size_t i = 0; i != spawner.quantity(); ++i) spawner.spawn();
@@ -609,14 +609,10 @@ MapPoint Server::mapRand() const {
   return {randDouble() * (_mapX - 0.5) * TILE_W, randDouble() * _mapY * TILE_H};
 }
 
-void Server::error(const std::string &message) {
-  debug()(message, Color::CHAT_ERROR);
-}
-
 bool Server::itemIsTag(const ServerItem *item,
                        const std::string &tagName) const {
   if (!item) {
-    error("Checking tags of null item");
+    SERVER_ERROR("Checking tags of null item");
     return false;
   }
   return item->isTag(tagName);

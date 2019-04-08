@@ -31,7 +31,7 @@ MapRect Server::getTileRect(size_t x, size_t y) {
 std::set<char> Server::nearbyTerrainTypes(const MapRect &rect,
                                           double extraRadius) {
   if (extraRadius < 0) {
-    error("Terrain-lookup radius is negative.  Setting to 0.");
+    SERVER_ERROR("Terrain-lookup radius is negative.  Setting to 0.");
     extraRadius = 0;
   }
   std::set<char> tilesInRect;
@@ -41,7 +41,7 @@ std::set<char> Server::nearbyTerrainTypes(const MapRect &rect,
                bottom = rect.y + rect.h + extraRadius;
   size_t tileTop = getTileYCoord(top), tileBottom = getTileYCoord(bottom);
   if (tileBottom < tileTop) {
-    error("Can't look up terrain: bottom index is less than top index.");
+    SERVER_ERROR("Can't look up terrain: bottom index is less than top index.");
     return tilesInRect;
   }
 
@@ -63,7 +63,8 @@ std::set<char> Server::nearbyTerrainTypes(const MapRect &rect,
       size_t tileLeft = yIsEven ? tileLeftEven : tileLeftOdd,
              tileRight = yIsEven ? tileRightEven : tileRightOdd;
       if (tileRight < tileLeft) {
-        error("Can't look up terrain: right index is less than left index.");
+        SERVER_ERROR(
+            "Can't look up terrain: right index is less than left index.");
         return tilesInRect;
       }
       for (size_t x = tileLeft; x <= tileRight; ++x) {
@@ -128,7 +129,7 @@ bool Server::isLocationValid(const MapRect &rect,
 
 size_t Server::getTileYCoord(double y) const {
   if (y < 0) {
-    error("Attempting to get tile for negative y co-ord");
+    SERVER_ERROR("Attempting to get tile for negative y co-ord");
     return 0;
   }
   size_t yTile = static_cast<size_t>(y / TILE_H);
@@ -142,7 +143,7 @@ size_t Server::getTileYCoord(double y) const {
 
 size_t Server::getTileXCoord(double x, size_t yTile) const {
   if (x < 0) {
-    error("Attempting to get tile for negative x co-ord");
+    SERVER_ERROR("Attempting to get tile for negative x co-ord");
     return 0;
   }
   double originalX = x;

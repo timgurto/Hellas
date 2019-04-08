@@ -34,7 +34,7 @@ size_t Yield::generateGatherQuantity(const ServerItem *item) const {
 double Yield::gatherMean(const ServerItem *item) const {
   auto it = _entries.find(item);
   if (it != _entries.end()) {
-    Server::error("Object doesn't yield that item");
+    SERVER_ERROR("Object doesn't yield that item");
     return 0;
   }
   return it->second._gatherMean;

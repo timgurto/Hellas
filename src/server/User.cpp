@@ -73,7 +73,7 @@ bool User::hasRoomFor(std::set<std::string> itemNames) const {
     const auto *item = s.findItem(itemName);
     if (!item) continue;
     if (item->stackSize() == 0) {
-      Server::error("Item with stack size 0");
+      SERVER_ERROR("Item with stack size 0");
       return false;
     }
 
@@ -95,7 +95,7 @@ bool User::hasRoomFor(std::set<std::string> itemNames) const {
       if (inventory[i].first != item) continue;
 
       if (itemAdded) {
-        Server::error(
+        SERVER_ERROR(
             "Trying to find room for an item that has already been added");
         return false;
       }
@@ -116,7 +116,7 @@ bool User::hasRoomFor(std::set<std::string> itemNames) const {
       if (!slotIsEmpty) continue;
 
       if (itemAdded) {
-        Server::error(
+        SERVER_ERROR(
             "Trying to find room for an item that has already been added");
         return false;
       }
@@ -207,13 +207,13 @@ size_t User::giveItem(const ServerItem *item, size_t quantity) {
       if (_inventory[i].first != item) continue;
 
       if (remaining == 0) {
-        Server::error(
+        SERVER_ERROR(
             "Trying to find room for an item that has already been added");
         return false;
       }
 
       if (item->stackSize() == 0) {
-        Server::error("Item with stack size 0");
+        SERVER_ERROR("Item with stack size 0");
         return false;
       }
 
@@ -236,13 +236,13 @@ size_t User::giveItem(const ServerItem *item, size_t quantity) {
       if (_inventory[i].first != nullptr) continue;
 
       if (remaining == 0) {
-        Server::error(
+        SERVER_ERROR(
             "Trying to find room for an item that has already been added");
         return false;
       }
 
       if (item->stackSize() == 0) {
-        Server::error("Item with stack size 0");
+        SERVER_ERROR("Item with stack size 0");
         return false;
       }
 
@@ -316,7 +316,7 @@ void User::beginGathering(Object *obj) {
   _actionObject = obj;
   _actionObject->incrementGatheringUsers();
   if (!obj->type()) {
-    Server::error("Can't gather from object with no type");
+    SERVER_ERROR("Can't gather from object with no type");
     return;
   }
   _actionTime = obj->objType().gatherTime();
@@ -489,7 +489,7 @@ void User::removeItems(const ItemSet &items) {
     Server::instance().sendInventoryMessage(*this, slotNum, Server::GEAR);
 
   if (!remaining.isEmpty()) {
-    Server::error("Failed to remove all necessary items from user");
+    SERVER_ERROR("Failed to remove all necessary items from user");
   }
 }
 
@@ -607,7 +607,7 @@ void User::update(ms_t timeElapsed) {
       // Remove item from user's inventory
       std::pair<const ServerItem *, size_t> &slot = _inventory[_actionSlot];
       if (slot.first->constructsObject() != _actionObjectType) {
-        Server::error("Trying to construct object from an invalid item");
+        SERVER_ERROR("Trying to construct object from an invalid item");
         break;
       }
       --slot.second;
@@ -635,7 +635,7 @@ void User::update(ms_t timeElapsed) {
     }
 
     default:
-      Server::error("Unhandled message");
+      SERVER_ERROR("Unhandled message");
   }
 
   if (_action != ATTACK) {  // ATTACK is a repeating action.

@@ -76,7 +76,7 @@ bool Permissions::doesUserHaveAccess(const std::string &username) const {
     }
 
     default:
-      Server::error("Checking permission when owner has no type");
+      SERVER_ERROR("Checking permission when owner has no type");
       return false;
   }
 }
@@ -98,7 +98,7 @@ Permissions::Usernames Permissions::ownerAsUsernames() {
     case Owner::CITY:
       return server.cities().membersOf(_owner.name);
     default:
-      Server::error("Trying to fetch owning users when owner has no type");
+      SERVER_ERROR("Trying to fetch owning users when owner has no type");
       return {};
   }
 }

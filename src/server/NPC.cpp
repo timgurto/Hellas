@@ -143,7 +143,7 @@ px_t NPC::attackRange() const {
 
 void NPC::sendRangedHitMessageTo(const User &userToInform) const {
   if (!target()) {
-    Server::error("Trying to send ranged-hit message when target is null");
+    SERVER_ERROR("Trying to send ranged-hit message when target is null");
     return;
   }
   userToInform.sendMessage(
@@ -154,7 +154,7 @@ void NPC::sendRangedHitMessageTo(const User &userToInform) const {
 
 void NPC::sendRangedMissMessageTo(const User &userToInform) const {
   if (!target()) {
-    Server::error("Trying to send ranged-miss message when target is null");
+    SERVER_ERROR("Trying to send ranged-miss message when target is null");
     return;
   }
   userToInform.sendMessage(

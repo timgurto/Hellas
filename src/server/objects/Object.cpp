@@ -36,12 +36,11 @@ void Object::contents(const ItemSet &contents) { _contents = contents; }
 
 void Object::removeItem(const ServerItem *item, size_t qty) {
   if (_contents[item] < qty) {
-    Server::error(
-        "Attempting to remove contents when quantity is insufficient");
+    SERVER_ERROR("Attempting to remove contents when quantity is insufficient");
     qty = _contents[item];
   }
   if (_contents.totalQuantity() < qty) {
-    Server::error(
+    SERVER_ERROR(
         "Attempting to remove contents when total quantity is insufficient");
   }
   _contents.remove(item, qty);
@@ -49,11 +48,11 @@ void Object::removeItem(const ServerItem *item, size_t qty) {
 
 const ServerItem *Object::chooseGatherItem() const {
   if (_contents.isEmpty()) {
-    Server::error("Can't gather from an empty object");
+    SERVER_ERROR("Can't gather from an empty object");
     return nullptr;
   }
   if (_contents.isEmpty()) {
-    Server::error("Total contents quality is too low");
+    SERVER_ERROR("Total contents quality is too low");
   }
 
   // Count number of average gathers remaining for each item type.
@@ -74,7 +73,7 @@ const ServerItem *Object::chooseGatherItem() const {
     else
       i -= item.second;
   }
-  Server::error("No item was found to gather");
+  SERVER_ERROR("No item was found to gather");
   return nullptr;
 }
 
@@ -159,7 +158,7 @@ void Object::onEnergyChange() {
 
 void Object::setType(const ObjectType *type, bool skipConstruction) {
   if (!type) {
-    Server::error("Trying to set object type to null");
+    SERVER_ERROR("Trying to set object type to null");
     return;
   }
 
@@ -356,7 +355,7 @@ ServerItem::Slot *Object::getSlotToTakeFromAndSendErrors(size_t slotNum,
   }
 
   if (!hasContainer()) {
-    Server::error("Attempting to fetch slot from entity with no container");
+    SERVER_ERROR("Attempting to fetch slot from entity with no container");
     return nullptr;
   }
 

@@ -20,7 +20,7 @@ void LootTable::addSimpleItem(const ServerItem *item, double chance) {
 
 void LootTable::instantiate(Loot &loot, const User *killer) const {
   if (!loot.empty()) {
-    Server::error("Loot object provided was not empty");
+    SERVER_ERROR("Loot object provided was not empty");
   }
   for (const LootEntry &entry : _entries) {
     // Enforce quest exclusivity

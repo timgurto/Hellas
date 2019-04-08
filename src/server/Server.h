@@ -31,6 +31,11 @@
 #include "Wars.h"
 #include "objects/Object.h"
 
+#define SERVER_ERROR(msg)                                              \
+  Server::debug() << Color::CHAT_ERROR << msg << Log::endl             \
+                  << Color::CHAT_ERROR << __FILE__ << ":"s << __LINE__ \
+                  << Log::endl
+
 class Server {
  public:
   Server();
@@ -57,7 +62,6 @@ class Server {
 
   static Server &instance() { return *_instance; }
   static LogConsole &debug() { return *_debugInstance; }
-  static void error(const std::string &message);
 
   bool itemIsTag(const ServerItem *item, const std::string &tagName) const;
 

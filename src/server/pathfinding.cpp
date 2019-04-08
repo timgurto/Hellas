@@ -36,7 +36,7 @@ void Entity::updateLocation(const MapPoint &dest) {
     if (!server.isLocationValid(journeyRect, *this)) {
       newDest = _location;
       if (!server.isLocationValid(newDest, *this)) {
-        Server::error(
+        SERVER_ERROR(
             "Reverting to previous location, but that is also invalid");
       }
       static const double ACCURACY = 0.5;

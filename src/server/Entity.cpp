@@ -263,7 +263,7 @@ void Entity::update(ms_t timeElapsed) {
     args = makeArgs(dynamic_cast<const User *>(this)->name(),
                     dynamic_cast<const User *>(pTarget)->name());
   } else {
-    Server::error("Invalid attacker or defender tag");
+    SERVER_ERROR("Invalid attacker or defender tag");
     return;
   }
   for (auto user : usersToInform) user->sendMessage(msgCode, args);
@@ -354,7 +354,7 @@ CombatResult Entity::castSpell(const Spell &spell) {
         spellHit = true;
         break;
       default:
-        Server::error("Invalid spell outcome");
+        SERVER_ERROR("Invalid spell outcome");
     }
     auto msgCode = spellHit ? SV_SPELL_HIT : SV_SPELL_MISS;
     const auto &src = location(), &dst = target->location();
@@ -452,30 +452,30 @@ void Entity::location(const MapPoint &newLoc, bool firstInsertion) {
   if (!firstInsertion) {
     // Remove from location-indexed trees
     if (server._entitiesByX.size() != server._entitiesByY.size())
-      Server::error(
+      SERVER_ERROR(
           "x-indexed and y-indexed entities lists have different sizes");
 
     if (classTag() == 'u') {
       if (xChanged) {
         auto numRemoved = server._usersByX.erase(selfAsUser);
         if (numRemoved != 1)
-          Server::error("Unexpected number of entities removed");
+          SERVER_ERROR("Unexpected number of entities removed");
       }
       if (yChanged) {
         auto numRemoved = server._usersByY.erase(selfAsUser);
         if (numRemoved != 1)
-          Server::error("Unexpected number of entities removed");
+          SERVER_ERROR("Unexpected number of entities removed");
       }
     }
     if (xChanged) {
       auto numRemoved = server._entitiesByX.erase(this);
       if (numRemoved != 1)
-        Server::error("Unexpected number of entities removed");
+        SERVER_ERROR("Unexpected number of entities removed");
     }
     if (yChanged) {
       auto numRemoved = server._entitiesByY.erase(this);
       if (numRemoved != 1)
-        Server::error("Unexpected number of entities removed");
+        SERVER_ERROR("Unexpected number of entities removed");
     }
   }
 
@@ -486,13 +486,12 @@ void Entity::location(const MapPoint &newLoc, bool firstInsertion) {
     if (xChanged) server._usersByX.insert(selfAsUser);
     if (yChanged) server._usersByY.insert(selfAsUser);
     if (server._usersByX.size() != server._usersByY.size())
-      Server::error("x-indexed users lists have different sizes");
+      SERVER_ERROR("x-indexed users lists have different sizes");
   }
   if (xChanged) server._entitiesByX.insert(this);
   if (yChanged) server._entitiesByY.insert(this);
   if (server._entitiesByX.size() != server._entitiesByY.size())
-    Server::error(
-        "x-indexed and y-indexed entities lists have different sizes");
+    SERVER_ERROR("x-indexed and y-indexed entities lists have different sizes");
 
   // Move to a different collision chunk if needed
   auto &oldCollisionChunk = server.getCollisionChunk(oldLoc),

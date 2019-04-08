@@ -88,7 +88,7 @@ void Container::addItems(const ServerItem *item, size_t qty) {
       if (qty == 0) break;
       ;
     }
-  Server::error("items left over when trying to add to a container");
+  SERVER_ERROR("items left over when trying to add to a container");
 
   for (const auto &username : _parent.watchers()) {
     const auto &user = *Server::instance().getUserByName(username);

@@ -37,8 +37,7 @@ const TerrainList &TerrainList::defaultList() {
     return *_default;
   else {
     if (_lists.empty()) {
-      Server::error(
-          "Can't get default terrain list because there are no lists");
+      SERVER_ERROR("Can't get default terrain list because there are no lists");
       return _dummy;
     }
     return _lists.begin()->second;  // Use first alphabetical.

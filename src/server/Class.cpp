@@ -29,7 +29,7 @@ void Class::takeTalent(const Talent *talent) {
     _talentRanks[talent] = 1;
   } else {
     if (talent->type() != Talent::STATS && _talentRanks[talent] > 0) {
-      Server::error("Can't take a second rank of a non-stats talent");
+      SERVER_ERROR("Can't take a second rank of a non-stats talent");
       return;
     }
     ++_talentRanks[talent];

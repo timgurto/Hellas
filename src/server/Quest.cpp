@@ -27,7 +27,7 @@ bool Quest::canBeCompletedByUser(const User& user) const {
   for (const auto& objective : objectives) {
     switch (objective.type) {
       case Objective::NONE:
-        Server::error("Checking objective with no type");
+        SERVER_ERROR("Checking objective with no type");
         continue;
 
       case Objective::FETCH: {

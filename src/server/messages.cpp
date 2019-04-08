@@ -9,7 +9,7 @@
 #include "objects/Deconstruction.h"
 
 void Server::handleMessage(const Socket &client, const std::string &msg) {
-  _debug(msg);
+  //_debug(msg);
   int msgCode;
   char del;
   static char buffer[BUFFER_SIZE + 1];
@@ -292,7 +292,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           break;
         }
         if (!obj->type()) {
-          error("Can't gather from object with no type");
+          SERVER_ERROR("Can't gather from object with no type");
           break;
         }
 
@@ -341,7 +341,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         }
 
         if (!obj->type()) {
-          error("Can't deconstruct object with no type");
+          SERVER_ERROR("Can't deconstruct object with no type");
           break;
         }
 
@@ -389,7 +389,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           break;
         }
         if (!obj->type()) {
-          error("Can't demolish object with no type");
+          SERVER_ERROR("Can't demolish object with no type");
           break;
         }
         if (!obj->permissions().isOwnedByPlayer(user->name())) {
@@ -534,7 +534,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
 
         auto &slotFrom = (*containerFrom)[slot1];
         if (!slotFrom.first) {
-          error("Attempting to move nonexistent item");
+          SERVER_ERROR("Attempting to move nonexistent item");
           break;
         }
 
@@ -1958,7 +1958,7 @@ void Server::sendInventoryMessageInner(
 void Server::sendInventoryMessage(const User &user, size_t slot,
                                   const Object &obj) const {
   if (!obj.hasContainer()) {
-    error("Can't send inventory message for containerless object");
+    SERVER_ERROR("Can't send inventory message for containerless object");
     return;
   }
   sendInventoryMessageInner(user, obj.serial(), slot, obj.container().raw());
@@ -1976,7 +1976,7 @@ void Server::sendInventoryMessage(const User &user, size_t slot,
       container = &user.gear();
       break;
     default:
-      error(
+      SERVER_ERROR(
           "Trying to send inventory message with bad serial.  Using "
           "inventory.");
       container = &user.inventory();
@@ -1987,7 +1987,7 @@ void Server::sendInventoryMessage(const User &user, size_t slot,
 void Server::sendMerchantSlotMessage(const User &user, const Object &obj,
                                      size_t slot) const {
   if (slot >= obj.merchantSlots().size()) {
-    error("Can't send merchant-slot message: slot index is too high");
+    SERVER_ERROR("Can't send merchant-slot message: slot index is too high");
     return;
   }
   const MerchantSlot &mSlot = obj.merchantSlot(slot);

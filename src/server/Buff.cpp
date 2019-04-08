@@ -21,7 +21,7 @@ void Buff::clearCasterIfEqualTo(const Entity &casterToRemove) const {
 
 void Buff::update(ms_t timeElapsed) {
   if (_expired) {
-    Server::error("Trying to update expired buff");
+    SERVER_ERROR("Trying to update expired buff");
     return;
   }
 
