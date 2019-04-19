@@ -144,7 +144,6 @@ Client::Client()
 
       _drawingFinished(false),
 
-      _avatarSounds(nullptr),
       _channelsPlaying(0),
 
       _numEntities(0),

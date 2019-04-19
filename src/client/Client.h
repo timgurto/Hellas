@@ -84,6 +84,7 @@ class Client {
   bool isDismounting() const { return _isDismounting; }
   void attemptDismount() { _isDismounting = true; }
   const SoundProfile *avatarSounds() const { return _avatarSounds; }
+  const SoundProfile *generalSounds() const { return _generalSounds; }
   const std::string &tagName(const std::string &id) const {
     return _tagNames[id];
   }
@@ -516,7 +517,8 @@ class Client {
 
   typedef std::set<SoundProfile> soundProfiles_t;
   soundProfiles_t _soundProfiles;
-  const SoundProfile *_avatarSounds;
+  const SoundProfile *_avatarSounds{nullptr};
+  const SoundProfile *_generalSounds{nullptr};
 
   Images _icons{"Images/Icons"};
 
@@ -629,6 +631,7 @@ class Client {
   void handle_SV_QUEST_CAN_BE_FINISHED(const std::string &questID);
   void handle_SV_QUEST_COMPLETED(const std::string &questID);
   void handle_SV_QUEST_IN_PROGRESS(const std::string &questID);
+  void handle_SV_QUEST_ACCEPTED();
   void handle_SV_QUEST_PROGRESS(const std::string &questID,
                                 size_t objectiveIndex, int progress);
 

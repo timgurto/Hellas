@@ -194,7 +194,10 @@ void CDataLoader::loadSounds(XmlReader &xr) {
       continue;
     auto resultPair = _client._soundProfiles.insert(SoundProfile(id));
     SoundProfile &sp = const_cast<SoundProfile &>(*resultPair.first);
-    if (id == "avatar") _client._avatarSounds = &sp;
+    if (id == "avatar")
+      _client._avatarSounds = &sp;
+    else if (id == "general")
+      _client._generalSounds = &sp;
 
     ms_t period;
     if (xr.findAttr(elem, "period", period)) sp.period(period);

@@ -524,6 +524,9 @@ enum MessageCode {
   SV_QUEST_CAN_BE_FINISHED,
   SV_QUEST_COMPLETED,
 
+  // For aesthetics only.  Quest-completion aesthetics are handled by SV_QUEST_COMPLETED.
+  SV_QUEST_ACCEPTED,
+
   // Progress on a quest objective
   // Arguments: questID, objective index, progress
   SV_QUEST_PROGRESS,

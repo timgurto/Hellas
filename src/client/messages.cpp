@@ -1735,6 +1735,13 @@ void Client::handleMessage(const std::string &msg) {
         break;
       }
 
+      case SV_QUEST_ACCEPTED: {
+        singleMsg >> del;
+        if (del != MSG_END) return;
+
+        handle_SV_QUEST_ACCEPTED();
+      }
+
       case SV_QUEST_PROGRESS: {
         singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
         auto questID = std::string{buffer};
@@ -2285,6 +2292,8 @@ void Client::handle_SV_QUEST_COMPLETED(const std::string &questID) {
   populateQuestLog();
   refreshQuestProgress();
 }
+
+void Client::handle_SV_QUEST_ACCEPTED() { generalSounds()->playOnce("quest"); }
 
 void Client::handle_SV_QUEST_PROGRESS(const std::string &questID,
                                       size_t objectiveIndex, int progress) {

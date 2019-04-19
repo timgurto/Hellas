@@ -1,5 +1,9 @@
 <root>
 
+<soundProfile id="general" >
+    <sound type="quest" file="harpRiff" />
+</soundProfile>
+
 <soundProfile id="avatar" >
     <sound type="attack" file="punch0" />
     <sound type="attack" file="punch1" />
