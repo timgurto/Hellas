@@ -438,7 +438,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 492,Replace all instances of Color::TODO,8,5,Content,,TRUE,,1
 493,Get in-progress quests on login,13,8,Bug,,TRUE,,1
 494,Ignore entity if mouse is over a transparent pixel,21,3,Usability,,TRUE,,2
-495,XP bar looks overfull when leveling with a remainder,8,2,Bug,,,,2
+495,XP bar looks overfull when leveling with a remainder,8,2,Bug,,TRUE,,2
 496,Draw names/bars in front of everything else,2,2,Usability,,,,2
 497,Extinguished fire can't be clicked on,21,3,Bug,,TRUE,,
 498,It's too easy to select Atlas,2,3,Usability,,,,2

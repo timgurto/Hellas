@@ -89,6 +89,7 @@ class Client {
   }
   const HelpEntries &helpEntries() const { return _helpEntries; }
   const Window &helpWindow() const { return *_helpWindow; }
+  XP xp() const { return _xp; }
 
   bool isAtWarWith(const Avatar &user) const;
   bool isAtWarWith(const std::string &username) const;

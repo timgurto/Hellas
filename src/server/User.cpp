@@ -1157,6 +1157,7 @@ void User::startQuest(const Quest &quest) {
       quest.hasObjective() ? SV_QUEST_IN_PROGRESS : SV_QUEST_CAN_BE_FINISHED;
   auto &server = Server::instance();
   sendMessage(message, quest.id);
+  sendMessage(SV_QUEST_ACCEPTED);
 
   for (const auto &itemID : quest.startsWithItems) {
     auto item = server.findItem(itemID);
@@ -1274,19 +1275,21 @@ void User::addXP(XP amount) {
 
   Server &server = Server::instance();
   sendMessage(SV_XP_GAIN, makeArgs(amount));
-  sendXPMessage();
 
+  // Level up if appropriate
   const auto maxXpThisLevel = XP_PER_LEVEL[_level];
-  if (_xp < maxXpThisLevel) return;
+  if (_xp >= maxXpThisLevel) {
+    levelUp();
 
-  levelUp();
-
-  if (_level == MAX_LEVEL)
-    _xp = 0;
-  else {
-    auto surplus = _xp - maxXpThisLevel;
-    _xp = surplus;
+    if (_level == MAX_LEVEL)
+      _xp = 0;
+    else {
+      auto surplus = _xp - maxXpThisLevel;
+      _xp = surplus;
+    }
   }
+
+  sendXPMessage();
 }
 
 void User::levelUp() {
