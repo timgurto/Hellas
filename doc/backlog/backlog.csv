@@ -411,7 +411,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 465,End-quest sound,5,3,Aesthetics,,TRUE,,1
 466,Show shadow box in help-topic list in showHelpTopic(),1,5,Bug,,,,
 467,"If a quest gives items, make sure player has space",3,3,Bug,,TRUE,,1
-468,Destroy quest-exclusive items if quest is abandoned,3,3,Bug,469,,,
+468,Destroy quest-exclusive items if quest is abandoned,3,3,Bug,469,,,2
 469,A quest can be abandoned,8,5,Feature,440,TRUE,,1
 470,Draw correct corpses for humanoid NPCs and players,21,55,Bug,,,,
 471,"Show important error messages in chat log, to avoid being missed",5,2,Usability,,,,2
@@ -448,7 +448,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 503,Base aggro radius on level difference,8,5,Feature,,,,
 504,Anti-aliasing for map image,8,5,Aesthetics,,,,
 505,Show quest rewards in (de)briefs,8,8,Usability,,,,
-506,Add missing corpse images for offerings,2,3,Content,,,,1
+506,Add missing corpse images for offerings,2,3,Content,,TRUE,,1
 507,Clear quest progress if quest is abandoned,2,2,Bug,,,,
 508,Destroy all owned objects on tutorial completion,3,3,Exploit,,TRUE,,1
 509,Rename Cooking quest,5,2,Content,,TRUE,,1
