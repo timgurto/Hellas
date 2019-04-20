@@ -2291,6 +2291,8 @@ void Client::handle_SV_QUEST_COMPLETED(const std::string &questID) {
     if (obj.objectType()->id() == endNode) obj.assembleWindow(*this);
   }
 
+  generalSounds()->playOnce("quest");
+
   populateQuestLog();
   refreshQuestProgress();
 }
