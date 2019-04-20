@@ -2,6 +2,7 @@
 
 <soundProfile id="general" >
     <sound type="quest" file="harpRiff" />
+    <sound type="levelUp" file="levelUp" />
 </soundProfile>
 
 <soundProfile id="avatar" >

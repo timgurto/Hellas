@@ -2170,6 +2170,8 @@ void Client::handle_SV_LEVEL_UP(const std::string &username) {
   if (username == _username) {
     populateClassWindow();
 
+    generalSounds()->playOnce("levelUp");
+
     auto message =
         "You have reached level "s + toString(avatar->level()) + "!"s;
     toast("light", message);
