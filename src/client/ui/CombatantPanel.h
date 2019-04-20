@@ -13,16 +13,17 @@ class ShadowBox;
 // A panel displaying a combatant's health bar, name, etc.
 class CombatantPanel : public Element {
  public:
-  CombatantPanel(px_t x, px_t y, const std::string &name,
+  CombatantPanel(px_t panelX, px_t panelY, px_t width, const std::string &name,
                  const Hitpoints &health, const Hitpoints &maxHealth,
-                 const Energy &energy, const Energy &maxEnergy);
+                 const Energy &energy, const Energy &maxEnergy,
+                 const Level &level);
 
   void showEnergyBar();
   void hideEnergyBar();
   void addXPBar(const XP &xp, const XP &maxXP);
 
-  static const px_t WIDTH = 100, HEIGHT = 40, BAR_HEIGHT = 7, GAP = 2;
-  static const px_t ELEMENT_WIDTH = WIDTH - GAP * 2;
+  static const px_t STANDARD_WIDTH = 110, TARGET_WIDTH = 160, HEIGHT = 40,
+                    BAR_HEIGHT = 7, GAP = 2, SPACE_FOR_LEVEL = 20;
 
   virtual void height(px_t h) override;
 
@@ -33,6 +34,8 @@ class CombatantPanel : public Element {
 
   ColorBlock *_background;
   ShadowBox *_outline;
+
+  const px_t ELEMENT_WIDTH;
 };
 
 #endif

@@ -339,8 +339,9 @@ void Client::initPerformanceDisplay() {
 void Client::initPlayerPanels() {
   px_t playerPanelX = CombatantPanel::GAP, playerPanelY = CombatantPanel::GAP;
   CombatantPanel *playerPanel = new CombatantPanel(
-      playerPanelX, playerPanelY, _username, _character.health(),
-      _character.maxHealth(), _character.energy(), _character.maxEnergy());
+      playerPanelX, playerPanelY, CombatantPanel::STANDARD_WIDTH, _username,
+      _character.health(), _character.maxHealth(), _character.energy(),
+      _character.maxEnergy(), _character.level());
   playerPanel->addXPBar(_xp, _maxXP);
   addUI(playerPanel);
   /*

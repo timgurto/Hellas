@@ -3,18 +3,22 @@
 #include "LinkedLabel.h"
 #include "ShadowBox.h"
 
-CombatantPanel::CombatantPanel(px_t panelX, px_t panelY,
+CombatantPanel::CombatantPanel(px_t panelX, px_t panelY, px_t width,
                                const std::string &name, const Hitpoints &health,
                                const Hitpoints &maxHealth, const Energy &energy,
-                               const Energy &maxEnergy)
-    : Element({panelX, panelY, WIDTH, HEIGHT}) {
-  _background = new ColorBlock({0, 0, WIDTH, HEIGHT});
+                               const Energy &maxEnergy, const Level &level)
+    : Element({panelX, panelY, width, HEIGHT}), ELEMENT_WIDTH(width - GAP * 2) {
+  _background = new ColorBlock({0, 0, width, HEIGHT});
   addChild(_background);
 
-  _outline = new ShadowBox({0, 0, WIDTH, HEIGHT});
+  _outline = new ShadowBox({0, 0, width, HEIGHT});
   addChild(_outline);
 
   auto y = GAP;
+
+  addChild(new LinkedLabel<Level>{
+      {GAP * 2, y, SPACE_FOR_LEVEL, Element::TEXT_HEIGHT}, level});
+
   addChild(new LinkedLabel<std::string>(
       {GAP, y, ELEMENT_WIDTH, Element::TEXT_HEIGHT}, name, {}, {},
       Element::CENTER_JUSTIFIED));

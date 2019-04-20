@@ -298,7 +298,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 339,Display buffs in UI,13,5,Usability,267,TRUE,,
 340,Make talents persistent,21,21,Bug,,TRUE,,
 341,Make level/XP persistent,55,8,Bug,,TRUE,,
-342,Show levels in target panels,21,5,Usability,,,,2
+342,Show levels in target panels,21,5,Usability,,TRUE,,2
 343,Give NPCs levels,21,3,Feature,,TRUE,,
 344,Modify combat based on level difference,34,5,Feature,,TRUE,,
 345,Make objects always their attacker's level,8,8,Feature,344,TRUE,,

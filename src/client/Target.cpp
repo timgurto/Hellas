@@ -35,6 +35,7 @@ void Target::setAndAlertServer(const Sprite &asEntity,
   _maxHealth = _combatant->maxHealth();
   _energy = _combatant->energy();
   _maxEnergy = _combatant->maxEnergy();
+  _level = _combatant->level();
 
   if (_maxEnergy == 0)
     _panel->hideEnergyBar();
@@ -66,10 +67,11 @@ void Target::clear() {
 }
 
 void Target::initializePanel() {
-  static const px_t X = CombatantPanel::WIDTH + 2 * CombatantPanel::GAP,
+  static const px_t X = CombatantPanel::STANDARD_WIDTH +
+                        2 * CombatantPanel::GAP,
                     Y = CombatantPanel::GAP;
-  _panel =
-      new CombatantPanel(X, Y, _name, _health, _maxHealth, _energy, _maxEnergy);
+  _panel = new CombatantPanel(X, Y, CombatantPanel::TARGET_WIDTH, _name,
+                              _health, _maxHealth, _energy, _maxEnergy, _level);
   _panel->hide();
   _panel->setRightMouseDownFunction(openMenu, _menu);
 }

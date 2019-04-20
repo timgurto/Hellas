@@ -28,7 +28,7 @@ class ClientCombatant {
   void maxEnergy(Energy newMax) { _maxEnergy = newMax; }
   void drawHealthBarIfAppropriate(const MapPoint &objectLocation,
                                   px_t objHeight) const;
-  Level level() const { return _level; }
+  const Level &level() const { return _level; }
   void level(Level l) { _level = l; }
 
   virtual void sendTargetMessage() const = 0;

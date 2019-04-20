@@ -64,6 +64,7 @@ class Target {
   std::string _name;
   Hitpoints _health, _maxHealth;
   Energy _energy, _maxEnergy;
+  Level _level;
 
   void setAndAlertServer(const Sprite &asEntity,
                          const ClientCombatant &asCombatant,
