@@ -414,7 +414,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 468,Destroy quest-exclusive items if quest is abandoned,3,3,Bug,469,,,2 Work playtest 2019
 469,A quest can be abandoned,8,5,Feature,440,TRUE,,1 Fix tutorial
 470,Draw correct corpses for humanoid NPCs and players,21,55,Bug,,,,
-471,"Show important error messages in chat log, to avoid being missed",5,2,Usability,,,,2 Work playtest 2019
+471,"Show important error messages in chat log, to avoid being missed",5,2,Usability,,TRUE,,2 Work playtest 2019
 472,Include descriptive tooltips on active buffs,8,5,Usability,,,,2 Work playtest 2019
 473,"Selection broken after eating, fixed with right-click",13,5,Bug,,,,2 Work playtest 2019
 474,Remove buffs on death,8,2,Feature,,TRUE,,2 Work playtest 2019

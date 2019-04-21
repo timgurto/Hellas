@@ -14,6 +14,8 @@ void Client::showErrorMessage(const std::string &message, Color color) const {
   _errorMessageTimer = TIME_TO_SHOW_ERROR_MESSAGE;
 
   _lastErrorMessage->show();
+
+  _debug(message, color);
 }
 
 void Client::initUI() {
