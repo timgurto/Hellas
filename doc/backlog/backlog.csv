@@ -454,6 +454,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 509,Rename Cooking quest,5,2,Content,,TRUE,,1
 510,Make giant positioning more reliable,34,13,Bug,,TRUE,,1
 511,Use complete outlines for all text,8,3,Aesthetics,,,,
-512,'That object doesn't exist' after looting,8,5,Bug,,,,
+512,'That object doesn't exist' after looting,8,5,Bug,,TRUE,,
 513,Sparkles ignore tags,5,3,Bug,,,,
 515,"Low-res sprites, high-res game",34,13,Aesthetics,,,,

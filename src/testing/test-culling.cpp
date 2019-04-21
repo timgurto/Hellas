@@ -120,3 +120,38 @@ TEST_CASE(
   }
   CHECK(c.objects().size() == 1);
 }
+
+TEST_CASE("Unwatching NPCs") {
+  GIVEN("an NPC with a window") {
+    auto data = R"(
+      <npcType id="questgiver" />
+      <quest id="quest1" startsAt="questgiver" endsAt="questgiver" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    s.addNPC("questgiver", {10, 15});
+
+    WHEN("a user logs in") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+
+      AND_WHEN("he finds out about the NPC") {
+        WAIT_UNTIL(c.objects().size() == 1);
+        auto &clientNPC = c.getFirstNPC();
+
+        AND_WHEN("he opens the window") {
+          clientNPC.onRightClick(c.client());
+          CHECK(clientNPC.window());
+
+          AND_WHEN("he moves away from the NPC") {
+            auto &user = s.getFirstUser();
+            user.teleportTo({200, 200});
+
+            THEN("there is no error message") {
+              CHECK_FALSE(c.waitForMessage(WARNING_DOESNT_EXIST));
+            }
+          }
+        }
+      }
+    }
+  }
+}

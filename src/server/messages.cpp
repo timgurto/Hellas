@@ -937,13 +937,14 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         size_t serial;
         iss >> serial >> del;
         if (del != MSG_END) return;
-        Object *obj = _entities.find<Object>(serial);
-        if (obj == nullptr) {
+        auto asObject = _entities.find<Object>(serial);
+        auto asNPC = _entities.find<NPC>(serial);
+        if (asObject)
+          asObject->removeWatcher(user->name());
+        else if (asNPC)
+          asNPC->removeWatcher(user->name());
+        else
           sendMessage(client, WARNING_DOESNT_EXIST);
-          break;
-        }
-
-        obj->removeWatcher(user->name());
 
         break;
       }
