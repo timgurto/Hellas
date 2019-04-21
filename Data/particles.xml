@@ -186,6 +186,19 @@
     <variety imageFile="ray1L"> <drawRect x=-3 y=-62 w=7 h=64 /> </variety>
     <variety imageFile="ray1R"> <drawRect x=-3 y=-62 w=7 h=64 /> </variety>
 </particleProfile>
+    
+<particleProfile
+    id="levelUp"
+    gravityModifier=0 >
+    <particlesPerHit mean=200 />
+    <lifespan mean=600 sd=100 />
+    <distance mean=4 sd=2 />
+    <altitude mean=20 sd=10 />
+    <velocity mean=10 sd=3 />
+    <variety imageFile="sparkleLarge" />
+    <variety imageFile="sparkleSmall1" />
+    <variety imageFile="sparkleSmall2" />
+</particleProfile>
 
 <particleProfile
     id="heavyBlood">

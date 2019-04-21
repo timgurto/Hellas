@@ -2167,6 +2167,8 @@ void Client::handle_SV_LEVEL_UP(const std::string &username) {
   avatar->levelUp();
   avatar->refreshTooltip();
 
+  addParticles("levelUp", avatar->location());
+
   if (username == _username) {
     populateClassWindow();
 

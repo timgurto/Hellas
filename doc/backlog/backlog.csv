@@ -303,7 +303,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 344,Modify combat based on level difference,34,5,Feature,,TRUE,,
 345,Make objects always their attacker's level,8,8,Feature,344,TRUE,,
 346,"Implement DoTs properly, with combat modifiers, XP, aggro",21,21,Bug,,TRUE,,
-347,Add level-up particles,13,3,Aesthetics,,,,2 Work playtest 2019
+347,Add level-up particles,13,3,Aesthetics,,TRUE,,2 Work playtest 2019
 348,Add level-up sound,21,3,Aesthetics,,TRUE,,2 Work playtest 2019
 349,Server crashes on first assert in updateLocation(),89,21,Bug,,TRUE,,
 350,Update window title when object type changes,5,1,Bug,,,,
