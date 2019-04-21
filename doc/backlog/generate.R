@@ -35,6 +35,8 @@ for (i in 1:length(data$roi)){
         data$done[i] = FALSE
     if (is.na(data$milestone[i]))
         data$milestone[i] = 999
+    if (data$milestone[i] == "")
+        data$milestone[i] = 999
 }
 
 # Ignore blocks when the blocking task is done
@@ -306,7 +308,10 @@ for (i in 1:length(data$roi)){
         text = c(text, fieldNum("critical", "true"))
     }
 
-    text = c(text, fieldNum("milestone", data$milestone[i]))
+    milestoneEntry = data$milestone[i]
+    if (is.na(milestoneEntry))
+        milestoneEntry = "999"
+    text = c(text, fieldStr("milestone", milestoneEntry))
 
 
     text = c(text, "},")

@@ -48,7 +48,7 @@
     }
 
     .milestone{
-        text-align: right;
+        text-align: left;
     }
 
     .notes{
@@ -195,7 +195,7 @@
             cell.style.color = getfg(PBI.roiColor);
 
             cell = row.insertCell(-1);
-            if (PBI.milestone != 999)
+            if (PBI.milestone != "999")
                 cell.innerHTML = PBI.milestone;
             cell.className = "milestone";
 
