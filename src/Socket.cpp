@@ -76,11 +76,10 @@ void Socket::sendMessage(const std::string &msg,
   static std::mutex mutex;
   mutex.lock();
 
-  if (send(destSocket.getRaw(), msg.c_str(), (int)msg.length(), 0) < 0) {
-    if (debug)
-      *debug << Color::CHAT_ERROR << "Failed to send command \"" << msg
-             << "\" to socket " << destSocket.getRaw() << Log::endl;
-  }
+  auto result = send(destSocket.getRaw(), msg.c_str(), (int)msg.length(), 0);
+  if (result < 0 && debug)
+    *debug << Color::CHAT_ERROR << "Failed to send command \"" << msg
+           << "\" to socket " << destSocket.getRaw() << Log::endl;
 
   mutex.unlock();
 }
