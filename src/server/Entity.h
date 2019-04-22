@@ -149,13 +149,14 @@ class Entity {
   User *tagger() const { return _tagger; }
   void tagger(User &attacker) { _tagger = &attacker; }
   void clearTagger() { _tagger = nullptr; }
-  virtual void sendRangedMissMessageTo(const User &userToInform) const {
-  }  // Inform user that this entity has missed its target with a ranged attack.
-  virtual void sendRangedHitMessageTo(const User &userToInform) const {
-  }  // Inform user that this entity has hit its target with a ranged attack.
-  virtual bool canAttack() const {
-    return true;
-  }                           // Any final checks immediately before the attack
+  // Inform user that this entity has missed its target with a ranged attack.
+  virtual void sendRangedMissMessageTo(const User &userToInform) const {}
+  // Inform user that this entity has hit its target with a ranged attack.
+  virtual void sendRangedHitMessageTo(const User &userToInform) const {}
+  // Any final checks immediately before the attack
+  virtual bool canAttack() { return true; }
+  // Any reaction to a successful canAttack() check
+  virtual void onCanAttack() {}
   virtual void onAttack() {}  // Any actions immediately before the attack
   virtual void broadcastDamagedMessage(Hitpoints amount) const {}
   virtual void broadcastHealedMessage(Hitpoints amount) const {}

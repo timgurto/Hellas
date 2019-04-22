@@ -176,6 +176,8 @@ void Entity::update(ms_t timeElapsed) {
   if (pTarget->isDead()) return;
 
   if (!canAttack()) return;
+  onCanAttack();
+
   if (combatDamage() == 0) return;
 
   // Check if within range

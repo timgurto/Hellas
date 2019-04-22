@@ -55,6 +55,8 @@ class User : public Object {  // TODO: Don't inherit from Object
 
   ServerItem::vect_t _inventory, _gear;
 
+  bool _shouldSuppressAmmoWarnings{false};  // To prevent spam
+
   ms_t _lastContact;
   ms_t _latency;
 
@@ -177,7 +179,8 @@ class User : public Object {  // TODO: Don't inherit from Object
   void onNewOwnedObject(const ObjectType &type) const;
   void onDestroyedOwnedObject(const ObjectType &type) const;
   void onKilled(Entity &victim) override;
-  bool canAttack() const override;
+  bool canAttack() override;
+  void onCanAttack() override;
   void onAttack() override;
   void onSpellcast(const Spell::ID &id, const Spell &spell);
   void sendRangedHitMessageTo(const User &userToInform) const override;

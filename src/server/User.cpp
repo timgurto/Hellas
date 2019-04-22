@@ -298,7 +298,8 @@ void User::cancelAction() {
   }
 
   if (_action == ATTACK) {
-    resetAttackTimer();
+    // resetAttackTimer();
+    _shouldSuppressAmmoWarnings = false;
   } else {
     sendMessage(WARNING_ACTION_INTERRUPTED);
     _action = NO_ACTION;
@@ -344,6 +345,7 @@ void User::beginDeconstructing(Object &obj) {
 }
 
 void User::setTargetAndAttack(Entity *target) {
+  _shouldSuppressAmmoWarnings = false;
   this->target(target);
   if (target == nullptr) {
     cancelAction();
@@ -887,7 +889,7 @@ bool User::canStartQuest(const Quest::ID &id) const {
   return true;
 }
 
-bool User::canAttack() const {
+bool User::canAttack() {
   const auto &gearSlot = _gear[Item::WEAPON_SLOT];
 
   auto hasWeapon = gearSlot.first != nullptr;
@@ -902,9 +904,14 @@ bool User::canAttack() const {
   if (this->hasItems(itemSet)) return true;
 
   auto ammoID = gearSlot.first->weaponAmmo()->id();
-  sendMessage(WARNING_OUT_OF_AMMO, ammoID);
+  if (!_shouldSuppressAmmoWarnings) {
+    sendMessage(WARNING_OUT_OF_AMMO, ammoID);
+    _shouldSuppressAmmoWarnings = true;
+  }
   return false;
 }
+
+void User::onCanAttack() { _shouldSuppressAmmoWarnings = false; }
 
 void User::onAttack() {
   // Tag target
