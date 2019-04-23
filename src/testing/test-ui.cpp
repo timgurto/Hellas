@@ -218,3 +218,58 @@ TEST_CASE("Word wrapper", "[ui]") {
     }
   }
 }
+
+TEST_CASE("Object windows close if they change to allow only demolition") {
+  GIVEN("an object with a quest, owned by a user") {
+    auto data = R"(
+      <objectType id="A" />
+      <objectType id="B" />
+      <quest id="quest1" startsAt="A" endsAt="B" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    const auto &user = s.getFirstUser();
+    s.addObject("A", {10, 15}, user.name());
+
+    WHEN("he opens the object's window") {
+      WAIT_UNTIL(c.objects().size() == 1);
+      auto &cObject = c.getFirstObject();
+      // Wait, to avoid concurrent calls to ClientObject::assembleWindow()
+      REPEAT_FOR_MS(100);
+      cObject.onRightClick(c.client());
+      REQUIRE(cObject.window());
+      CHECK(cObject.window()->visible());
+
+      AND_WHEN("he accepts the quest") {
+        c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", cObject.serial()));
+
+        THEN("the window closes") { WAIT_UNTIL(!cObject.window()->visible()); }
+      }
+    }
+  }
+
+  GIVEN("an object owned by a user") {
+    auto data = R"(
+      <objectType id="A" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    const auto &user = s.getFirstUser();
+    s.addObject("A", {10, 15}, user.name());
+
+    WHEN("he opens the object's window") {
+      WAIT_UNTIL(c.objects().size() == 1);
+      auto &cObject = c.getFirstObject();
+      // Wait, to avoid concurrent calls to ClientObject::assembleWindow()
+      REPEAT_FOR_MS(100);
+      cObject.onRightClick(c.client());
+
+      THEN("it is visible") {
+        REQUIRE(cObject.window());
+        CHECK(cObject.window()->visible());
+      }
+    }
+  }
+}

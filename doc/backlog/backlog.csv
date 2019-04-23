@@ -315,7 +315,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 357,Prepopulate login-name field,21,3,Usability,,,,
 358,Nymphs are hard to target; player might be in the way,13,8,Bug,,TRUE,,
 359,Don't show extinguished ovens and intermediary farms as construction sites,5,5,Aesthetics,,,,
-360,Auto-close object window if only option is to destroy,8,3,Usability,,,,2 Work playtest 2019
+360,Auto-close object window if only option is to destroy,8,3,Usability,,TRUE,,2 Work playtest 2019
 361,Objects can be wrongly destroyed.  Attack state might persist after death,55,8,Bug,,TRUE,,
 362,Close windows on disconnect,5,3,Usability,,,,2 Work playtest 2019
 363,Failed assertion in Avatar.h line 36,55,8,Bug,,TRUE,,2 Work playtest 2019

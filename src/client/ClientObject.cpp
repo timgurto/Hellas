@@ -1,4 +1,7 @@
+#include "ClientObject.h"
+
 #include <SDL_mixer.h>
+
 #include <cassert>
 
 #include "../Color.h"
@@ -6,7 +9,6 @@
 #include "../util.h"
 #include "Client.h"
 #include "ClientNPC.h"
-#include "ClientObject.h"
 #include "ClientVehicle.h"
 #include "Particle.h"
 #include "Renderer.h"
@@ -613,6 +615,9 @@ void ClientObject::assembleWindow(Client &client) {
                    _owner == client.character().cityName()),
        canDemolish = _owner == Client::_instance->username(),
        hasAQuest = !(startsQuests().empty() && completableQuests().empty());
+
+  auto hasNonDemolitionContent = false;
+
   if (isAlive() &&
       (isMerchant ||
        userHasAccess() && (hasContainer || isVehicle || objType.hasAction() ||
@@ -622,6 +627,7 @@ void ClientObject::assembleWindow(Client &client) {
       _window = Window::WithRectAndTitle({}, objType.name());
 
     if (isBeingConstructed()) {
+      hasNonDemolitionContent = true;
       if (userHasAccess()) {
         client.watchObject(*this);
         addConstructionToWindow();
@@ -631,21 +637,44 @@ void ClientObject::assembleWindow(Client &client) {
 
     } else if (!userHasAccess()) {
       if (isMerchant) {
+        hasNonDemolitionContent = true;
         addMerchantTradeToWindow();
       }
 
     } else {
-      if (hasAQuest) addQuestsToWindow();
-      if (isMerchant) addMerchantSetupToWindow();
+      if (hasAQuest) {
+        addQuestsToWindow();
+        hasNonDemolitionContent = true;
+      }
+      if (isMerchant) {
+        addMerchantSetupToWindow();
+        hasNonDemolitionContent = true;
+      }
       if (hasContainer) {
+        hasNonDemolitionContent = true;
         client.watchObject(*this);
         addInventoryToWindow();
       }
-      if (isVehicle) addVehicleToWindow();
-      if (objType.hasAction()) addActionToWindow();
-      if (objType.canDeconstruct()) addDeconstructionToWindow();
-      if (canCede) addCedeButtonToWindow();
-      if (canGrant) addGrantButtonToWindow();
+      if (isVehicle) {
+        addVehicleToWindow();
+        hasNonDemolitionContent = true;
+      }
+      if (objType.hasAction()) {
+        addActionToWindow();
+        hasNonDemolitionContent = true;
+      }
+      if (objType.canDeconstruct()) {
+        addDeconstructionToWindow();
+        hasNonDemolitionContent = true;
+      }
+      if (canCede) {
+        addCedeButtonToWindow();
+        hasNonDemolitionContent = true;
+      }
+      if (canGrant) {
+        addGrantButtonToWindow();
+        hasNonDemolitionContent = true;
+      }
       if (canDemolish) addDemolishButtonToWindow();
     }
 
@@ -653,6 +682,7 @@ void ClientObject::assembleWindow(Client &client) {
          currentHeight = _window->contentHeight();
     _window->resize(currentWidth, currentHeight + BUTTON_GAP);
 
+    if (!hasNonDemolitionContent) _window->hide();
     return;
   }
 
