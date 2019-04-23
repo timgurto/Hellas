@@ -1139,6 +1139,7 @@ void Client::handleMessage(const std::string &msg) {
             _stats.fireResist >> del >> _stats.waterResist >> del >>
             _stats.attackTime >> del >> _stats.speed >> del;
         if (del != MSG_END) break;
+        _displaySpeed = Podes::displayFromPixels(_stats.speed);
         _character.maxHealth(_stats.maxHealth);
         _character.maxEnergy(_stats.maxEnergy);
         break;

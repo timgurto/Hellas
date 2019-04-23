@@ -14,6 +14,7 @@ class Podes {  // 1 Pous = 7 pixels = 1 foot
   operator px_t() const { return toPixels(); }
 
   static Podes FromPixels(px_t p);
+  static std::string displayFromPixels(double d);
 
  private:
   int _p;

@@ -118,7 +118,7 @@ void Client::initializeGearWindow() {
   addStat("Block value", _stats.blockValue, {}, {}, y, _gearWindow,
           "How much damage is reduced when an attack is blocked.");
   addGap(y, _gearWindow);
-  addStat("Speed", _stats.speed, {}, "px/s", y, _gearWindow);
+  addStat("Speed", _displaySpeed, {}, " podes/s", y, _gearWindow);
 
   y += 2;
   _gearWindow->height(y);
