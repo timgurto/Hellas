@@ -175,8 +175,13 @@ void ClientObject::onRightClick(Client &client) {
   client.setTarget(*this, canBeAttackedByPlayer());
 
   // Make sure object is in range
-  if (distance(client.playerCollisionRect(), collisionRect()) >
-      Client::ACTION_DISTANCE) {
+  auto relevantRange = Client::ACTION_DISTANCE;
+  if (canBeAttackedByPlayer()) {
+    const auto *weapon =
+        Client::instance().character().gear()[Item::WEAPON_SLOT].first;
+    if (weapon) relevantRange = weapon->weaponRange();
+  }
+  if (distance(client.playerCollisionRect(), collisionRect()) > relevantRange) {
     client.showErrorMessage("That object is too far away.",
                             Color::CHAT_WARNING);
     return;
