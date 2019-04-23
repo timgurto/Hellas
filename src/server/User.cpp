@@ -60,6 +60,10 @@ int User::secondsPlayed() const {
   return _secondsPlayedBeforeThisSession + secondsPlayedThisSession();
 }
 
+void User::sendTimePlayed() const {
+  sendMessage(SV_TIME_PLAYED, makeArgs(secondsPlayed()));
+}
+
 Message User::teleportMessage(const MapPoint &destination) const {
   return {SV_LOCATION_INSTANT_USER,
           makeArgs(name(), destination.x, destination.y)};

@@ -299,6 +299,7 @@ void Server::addUser(const Socket &socket, const std::string &name,
   _debug << " user, " << name << " has logged in." << Log::endl;
 
   sendMessage(socket, SV_WELCOME);
+  if (userExisted) newUser.sendTimePlayed();
 
   // Calculate and send him his stats
   newUser.updateStats();

@@ -105,6 +105,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   };
   int secondsPlayedThisSession() const;
   int secondsPlayed() const;
+  void sendTimePlayed() const;
   Message teleportMessage(const MapPoint &destination) const override;
   void onTeleport() override;
   const Class &getClass() const { return _class.value(); }
