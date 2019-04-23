@@ -418,7 +418,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 472,Include descriptive tooltips on active buffs,8,5,Usability,,,,2 Work playtest 2019
 473,"Selection broken after eating, fixed with right-click",13,5,Bug,,,,2 Work playtest 2019
 474,Remove buffs on death,8,2,Feature,,TRUE,,2 Work playtest 2019
-475,Add stat tooltips in gear window,8,3,Usability,,,,2 Work playtest 2019
+475,Add stat tooltips in gear window,8,3,Usability,,TRUE,,2 Work playtest 2019
 476,Spell hotkey numbers not visible,8,1,Bug,,TRUE,,
 477,Order hotbar deterministically,21,2,Usability,,TRUE,,2 Work playtest 2019
 478,Update missing-data page,55,21,Tooling,,,,

@@ -28,15 +28,20 @@ template <typename T>
 static void addStat(const std::string &label, const T &value,
                     const std::string &prefix, const std::string &suffix,
                     px_t &y, Element *gearWindow,
+                    const std::string &tooltip = {},
                     const Color &lineColor = Element::FONT_COLOR) {
+  auto shouldAddTooltip = !tooltip.empty();
+
   const auto X = 2_px, W = 98_px;
   auto labelRect = ScreenRect{X, y, W, Element::TEXT_HEIGHT};
   auto nameLabel = new Label(labelRect, label);
   nameLabel->setColor(lineColor);
+  if (shouldAddTooltip) nameLabel->setTooltip(tooltip);
   gearWindow->addChild(nameLabel);
   auto valueLabel = new LinkedLabel<T>(labelRect, value, prefix, suffix,
                                        Element::RIGHT_JUSTIFIED);
   valueLabel->setColor(lineColor);
+  if (shouldAddTooltip) valueLabel->setTooltip(tooltip);
   gearWindow->addChild(valueLabel);
 
   y += Element::TEXT_HEIGHT;
@@ -69,36 +74,51 @@ void Client::initializeGearWindow() {
 
   // Stats
   auto y = labelRect.y;
-  addStat("Max health", _stats.maxHealth, {}, {}, y, _gearWindow,
+  addStat("Max health", _stats.maxHealth, {}, {}, y, _gearWindow, {},
           Color::STAT_HEALTH);
-  addStat("Health regen", _stats.hps, {}, "/s", y, _gearWindow,
+  addStat("Health regen", _stats.hps, {}, "/s", y, _gearWindow, {},
           Color::STAT_HEALTH);
-  addStat("Max energy", _stats.maxEnergy, {}, {}, y, _gearWindow,
+  addStat("Max energy", _stats.maxEnergy, {}, {}, y, _gearWindow, {},
           Color::STAT_ENERGY);
-  addStat("Energy regen", _stats.eps, {}, "/s", y, _gearWindow,
+  addStat("Energy regen", _stats.eps, {}, "/s", y, _gearWindow, {},
           Color::STAT_ENERGY);
   addGap(y, _gearWindow);
-  addStat("Hit chance", _stats.hit, {}, "%", y, _gearWindow);
-  addStat("Crit chance", _stats.crit, {}, "%", y, _gearWindow);
-  addStat("Physical damage", _stats.physicalDamage, "+", {}, y, _gearWindow);
-  addStat("Magic damage", _stats.magicDamage, "+", {}, y, _gearWindow);
-  addStat("Healing power", _stats.healing, "+", {}, y, _gearWindow);
+  addStat("Hit chance", _stats.hit, {}, "%", y, _gearWindow,
+          "Extra chance to hit.  You have a baseline 10% chance to miss "
+          "enemies at the same level as you.");
+  addStat("Crit chance", _stats.crit, {}, "%", y, _gearWindow,
+          "Chance that an attack will do double damage.");
+  addStat("Physical damage", _stats.physicalDamage, "+", {}, y, _gearWindow,
+          "Additional damage added to physical attacks and spells.");
+  addStat("Magic damage", _stats.magicDamage, "+", {}, y, _gearWindow,
+          "Additional damage added to magical attacks and spells");
+  addStat("Healing power", _stats.healing, "+", {}, y, _gearWindow,
+          "Additional amount added to healing spells.");
   addGap(y, _gearWindow);
-  addStat("Armor", _stats.armor, {}, "%", y, _gearWindow);
+  addStat("Armor", _stats.armor, {}, "%", y, _gearWindow,
+          "A flat reduction applied to all incoming physical damage.");
   addStat("Air resistance", _stats.airResist, {}, "%", y, _gearWindow,
+          "A flat reduction applied to all incoming air damage.",
           Color::STAT_AIR);
   addStat("Earth resistance", _stats.earthResist, {}, "%", y, _gearWindow,
+          "A flat reduction applied to all incoming earth damage.",
           Color::STAT_EARTH);
   addStat("Fire resistance", _stats.fireResist, {}, "%", y, _gearWindow,
+          "A flat reduction applied to all incoming fire damage.",
           Color::STAT_FIRE);
   addStat("Water resistance", _stats.waterResist, {}, "%", y, _gearWindow,
+          "A flat reduction applied to all incoming water damage.",
           Color::STAT_WATER);
-  addStat("Crit avoidance", _stats.critResist, {}, "%", y, _gearWindow);
-  addStat("Dodge chance", _stats.dodge, {}, "%", y, _gearWindow);
-  addStat("Block chance", _stats.block, {}, "%", y, _gearWindow);
-  addStat("Block value", _stats.blockValue, {}, {}, y, _gearWindow);
+  addStat("Crit avoidance", _stats.critResist, {}, "%", y, _gearWindow,
+          "Lowers the chance for incoming attacks to be critical hits.");
+  addStat("Dodge chance", _stats.dodge, {}, "%", y, _gearWindow,
+          "Chance to outright avoid hand-to-hand physical attacks.");
+  addStat("Block chance", _stats.block, {}, "%", y, _gearWindow,
+          "Chance to reduce the damage of physical attacks by a flat amount.");
+  addStat("Block value", _stats.blockValue, {}, {}, y, _gearWindow,
+          "How much damage is reduced when an attack is blocked.");
   addGap(y, _gearWindow);
-  addStat("Speed", _stats.speed, {}, {}, y, _gearWindow);
+  addStat("Speed", _stats.speed, {}, "px/s", y, _gearWindow);
 
   y += 2;
   _gearWindow->height(y);
