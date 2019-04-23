@@ -273,6 +273,14 @@ void Client::handleMessage(const std::string &msg) {
         break;
       }
 
+      case SV_TIME_PLAYED: {
+        int secondsPlayed;
+        singleMsg >> secondsPlayed >> del;
+        if (del != MSG_END) break;
+        _debug("Time played: "s + sAsTimeDisplay(secondsPlayed));
+        break;
+      }
+
       case SV_ACTION_STARTED:
         ms_t time;
         singleMsg >> time >> del;
@@ -2340,6 +2348,7 @@ void Client::sendRawMessageStatic(void *data) {
 }
 
 void Client::initializeMessageNames() {
+  _messageCommands["played"] = CL_REQUEST_TIME_PLAYED;
   _messageCommands["location"] = CL_LOCATION;
   _messageCommands["cancel"] = CL_CANCEL_ACTION;
   _messageCommands["craft"] = CL_CRAFT;

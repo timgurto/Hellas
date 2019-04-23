@@ -387,11 +387,11 @@ class Client {
   std::string _username;
   void initializeUsername();
   void setRandomUsername();
-  Avatar _character;          // Describes the user's character
-  Stats _stats;               // The user's stats
-  std::string _displaySpeed;  // Speed for display as podes/s
-  MapPoint _pendingCharLoc;   // Where the player has told his character to go.
-                              // Unconfirmed by server.
+  Avatar _character;             // Describes the user's character
+  Stats _stats;                  // The user's stats
+  std::string _displaySpeed{0};  // Speed for display as podes/s
+  MapPoint _pendingCharLoc;  // Where the player has told his character to go.
+                             // Unconfirmed by server.
 
   // Login screen
   Texture _loginFront, _loginBack;

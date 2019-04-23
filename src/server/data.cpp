@@ -17,6 +17,11 @@ bool Server::readUserData(User &user) {
 
   {
     auto elem = xr.findChild("general");
+
+    auto secondsPlayed = 0;
+    if (xr.findAttr(elem, "secondsPlayed", secondsPlayed))
+      user.secondsPlayedBeforeThisSession(secondsPlayed);
+
     auto classID = ClassType::ID{};
     if (!xr.findAttr(elem, "class", classID)) return false;
     auto it = _classes.find(classID);
@@ -191,6 +196,7 @@ void Server::writeUserData(const User &user) const {
   XmlWriter xw(_userFilesPath + user.name() + ".usr");
 
   auto e = xw.addChild("general");
+  xw.setAttr(e, "secondsPlayed", user.secondsPlayed());
   xw.setAttr(e, "class", user.getClass().type().id());
   if (_kings.isPlayerAKing(user.name())) xw.setAttr(e, "isKing", 1);
   xw.setAttr(e, "level", user.level());

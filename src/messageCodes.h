@@ -24,6 +24,9 @@ enum MessageCode {
   // Arguments: username, class, version
   CL_LOGIN_NEW,
 
+  // "How long have I played?"
+  CL_REQUEST_TIME_PLAYED,
+
   // "My location has changed, and is now ..."
   // Arguments: x, y
   CL_LOCATION,
@@ -205,6 +208,9 @@ enum MessageCode {
 
   // The client has been successfully registered
   SV_WELCOME,
+
+  // You have played for ... seconds
+  SV_TIME_PLAYED,
 
   // A user has disconnected.
   // Arguments: username

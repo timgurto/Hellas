@@ -2,6 +2,7 @@
 #define USER_H
 
 #include <windows.h>
+
 #include <iostream>
 #include <string>
 
@@ -60,6 +61,9 @@ class User : public Object {  // TODO: Don't inherit from Object
   ms_t _lastContact;
   ms_t _latency;
 
+  int _secondsPlayedBeforeThisSession{0};
+  Uint32 _serverTicksAtLogin{SDL_GetTicks()};
+
   MapPoint _respawnPoint;
 
   bool _isInitialised{false};
@@ -96,6 +100,11 @@ class User : public Object {  // TODO: Don't inherit from Object
 
   const std::string &name() const { return _name; }
   const Socket &socket() const { return _socket; }
+  void secondsPlayedBeforeThisSession(int t) {
+    _secondsPlayedBeforeThisSession = t;
+  };
+  int secondsPlayedThisSession() const;
+  int secondsPlayed() const;
   Message teleportMessage(const MapPoint &destination) const override;
   void onTeleport() override;
   const Class &getClass() const { return _class.value(); }

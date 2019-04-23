@@ -1,4 +1,5 @@
 #include "User.h"
+
 #include "ProgressLock.h"
 #include "Server.h"
 
@@ -49,6 +50,15 @@ User::User(const std::string &name, const MapPoint &loc, const Socket &socket)
 User::User(const Socket &rhs) : Object(MapPoint{}), _socket(rhs) {}
 
 User::User(const MapPoint &loc) : Object(loc), _socket(Socket::Empty()) {}
+
+int User::secondsPlayedThisSession() const {
+  auto ticksThisSession = SDL_GetTicks() - _serverTicksAtLogin;
+  return toInt(ticksThisSession / 1000.0);
+}
+
+int User::secondsPlayed() const {
+  return _secondsPlayedBeforeThisSession + secondsPlayedThisSession();
+}
 
 Message User::teleportMessage(const MapPoint &destination) const {
   return {SV_LOCATION_INSTANT_USER,

@@ -76,6 +76,12 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         handle_CL_LOGIN_NEW(client, name, classID, clientVersion);
         break;
       }
+      case CL_REQUEST_TIME_PLAYED: {
+        iss >> del;
+        if (del != MSG_END) return;
+        sendMessage(client, SV_TIME_PLAYED, makeArgs(user->secondsPlayed()));
+        break;
+      }
 
       case CL_LOCATION: {
         double x, y;

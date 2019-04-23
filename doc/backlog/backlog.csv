@@ -356,7 +356,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 401,Allow granting unfinished objects,21,3,Bug,,,,
 402,City label jitters for some players,5,5,Bug,,,,
 403,Consume smaller stacks of mats first,13,3,Feature,,,,
-404,Log players' cumulative time online,13,5,Feature,,,,2 Work playtest 2019
+404,Log players' cumulative time online,13,5,Feature,,TRUE,,2 Work playtest 2019
 405,Save user data more frequently,55,5,Feature,,,,
 406,Scroll recipe list to top when filters change,5,2,Bug,,,,
 407,Make under-construction objects easier to kill,8,8,Exploit,,,,
