@@ -1,7 +1,8 @@
+#include "SoundProfile.h"
+
 #include <SDL_mixer.h>
 
 #include "Client.h"
-#include "SoundProfile.h"
 
 SoundsRecord SoundProfile::loopingSounds;
 
@@ -17,6 +18,11 @@ void SoundProfile::add(const SoundType &type, std::string &filename) {
 }
 
 void SoundProfile::playOnce(const SoundType &type) const {
+  if (!this) {
+    Client::_instance->showErrorMessage("Sound profile does not exist."s,
+                                        Color::CHAT_ERROR);
+    return;
+  }
   checkAndPlaySound(type, false);
 }
 
