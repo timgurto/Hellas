@@ -434,7 +434,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 488,Clay terrain for starting area,1,2,Content,,TRUE,,2 Work playtest 2019
 489,Clay particles coming from new users for ~15s,3,3,Content,,TRUE,,2 Work playtest 2019
 490,Allow line break on -,2,3,Bug,,,,
-491,Better blood colour,5,2,Content,,,,2 Work playtest 2019
+491,Better blood colour,5,2,Content,,TRUE,,2 Work playtest 2019
 492,Replace all instances of Color::TODO,8,5,Content,,TRUE,,1 Fix tutorial
 493,Get in-progress quests on login,13,8,Bug,,TRUE,,1 Fix tutorial
 494,Ignore entity if mouse is over a transparent pixel,21,3,Usability,,TRUE,,2 Work playtest 2019
