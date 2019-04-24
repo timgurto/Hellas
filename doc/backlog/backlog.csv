@@ -327,7 +327,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 369,Trees sometimes think they're being gathered when they're not.  Endless particles/sound.,55,5,Bug,,,,
 370,Avatar isn't playing death sound,13,5,Bug,,,,
 371,Make server connection an object with a lifetime,55,21,Bug,,TRUE,,
-372,Left-click doesn't always deselect neutral target,13,5,Bug,,,,2 Work playtest 2019
+372,Left-click doesn't always deselect neutral target,13,5,Bug,,TRUE,,2 Work playtest 2019
 373,Flash crafting and building buttons on unlock until opened,21,8,Usability,,,,
 374,Flash class button when talents are unspent,21,3,Usability,373,,,
 375,Allow war to be declared on an object,21,5,Usability,,,,
@@ -416,7 +416,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 470,Draw correct corpses for humanoid NPCs and players,21,55,Bug,,,,
 471,"Show important error messages in chat log, to avoid being missed",5,2,Usability,,TRUE,,2 Work playtest 2019
 472,Include descriptive tooltips on active buffs,8,5,Usability,,,,2 Work playtest 2019
-473,"Selection broken after eating, fixed with right-click",13,5,Bug,,,,2 Work playtest 2019
+473,"Selection broken after eating, fixed with right-click",13,5,Bug,,TRUE,,2 Work playtest 2019
 474,Remove buffs on death,8,2,Feature,,TRUE,,2 Work playtest 2019
 475,Add stat tooltips in gear window,8,3,Usability,,TRUE,,2 Work playtest 2019
 476,Spell hotkey numbers not visible,8,1,Bug,,TRUE,,

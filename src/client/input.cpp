@@ -407,6 +407,7 @@ void Client::handleInput(double delta) {
 
             if (useItem && useItem->castsSpellOnUse()) {
               sendMessage(CL_CAST_ITEM, makeArgs(ContainerGrid::useSlot));
+              ContainerGrid::clearUseItem();
               break;
             }
 
