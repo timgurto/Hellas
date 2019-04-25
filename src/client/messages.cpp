@@ -111,7 +111,21 @@ void Client::handleMessage(const std::string &msg) {
 
         _allOnlinePlayers.insert(name);
         populateOnlinePlayersList();
-      } break;
+        break;
+      }
+
+      case SV_USERS_ALREADY_ONLINE: {
+        int n;
+        singleMsg >> n >> del;
+        for (size_t i = 0; i != n; ++i) {
+          std::string name;
+          readString(singleMsg, name, i == n - 1 ? MSG_END : MSG_DELIM);
+          singleMsg >> del;
+          _allOnlinePlayers.insert(name);
+        }
+        populateOnlinePlayersList();
+        break;
+      }
 
       case SV_USER_DISCONNECTED:
       case SV_USER_OUT_OF_RANGE: {

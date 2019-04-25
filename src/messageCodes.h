@@ -216,6 +216,10 @@ enum MessageCode {
   // Arguments: username
   SV_USER_CONNECTED,
 
+  // These ... users are already online: ..., ..., ...
+  // Arguments: count, name1, name2, name3, ...
+  SV_USERS_ALREADY_ONLINE,
+
   // A user has disconnected. Broadcast to all players.
   // Arguments: username
   SV_USER_DISCONNECTED,

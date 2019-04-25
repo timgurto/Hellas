@@ -2096,3 +2096,19 @@ void Server::sendRelevantEntitiesToUser(const User &user) {
     entity->sendInfoToClient(user);
   }
 }
+
+void Server::sendOnlineUsersTo(const User &recipient) const {
+  auto numNames = 0;
+  auto args = ""s;
+  for (auto &user : _users) {
+    if (user.name() == recipient.name()) break;
+
+    args = makeArgs(args, user.name());
+    ++numNames;
+  }
+
+  if (numNames == 0) return;
+
+  args = makeArgs(numNames, args);
+  recipient.sendMessage(SV_USERS_ALREADY_ONLINE, args);
+}

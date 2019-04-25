@@ -290,6 +290,9 @@ void Server::addUser(const Socket &socket, const std::string &name,
   // Announce to all
   broadcast(SV_USER_CONNECTED, name);
 
+  // Announce others to him
+  sendOnlineUsersTo(newUser);
+
   const bool userExisted = readUserData(newUser);
   if (!userExisted) {
     newUser.setClass(_classes[classID]);

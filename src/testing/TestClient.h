@@ -64,6 +64,10 @@ class TestClient {
     return _client->_mapPinOutlines->children();
   }
   const std::vector<std::vector<char> > &map() const { return _client->_map; }
+  const std::set<std::string> &allOnlinePlayers() const {
+    return _client->_allOnlinePlayers;
+  }
+
   Window *craftingWindow() const { return _client->_craftingWindow; }
   Window *buildWindow() const { return _client->_buildWindow; }
   Window *gearWindow() const { return _client->_gearWindow; }

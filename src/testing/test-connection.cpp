@@ -108,3 +108,19 @@ TEST_CASE("The client handles a server appearing") {
   // Then the client connects to it
   s.waitForUsers(1);
 }
+
+TEST_CASE("Online-players list includes existing players") {
+  GIVEN("a server and client") {
+    auto s = TestServer{};
+    auto r = RemoteClient{};
+    s.waitForUsers(1);
+
+    WHEN("another client connects") {
+      auto c = TestClient{};
+
+      THEN("it knows there are two players online") {
+        WAIT_UNTIL(c.allOnlinePlayers().size() == 2);
+      }
+    }
+  }
+}

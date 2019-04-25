@@ -136,6 +136,7 @@ class Server {
                       const Belligerent &otherBelligerent,
                       bool isUserCityTheBelligerent) const;
   void sendRelevantEntitiesToUser(const User &user);
+  void sendOnlineUsersTo(const User &recipient) const;
 
   // Getters
   const Cities &cities() const { return _cities; }
