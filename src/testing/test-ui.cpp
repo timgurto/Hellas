@@ -273,3 +273,12 @@ TEST_CASE("Object windows close if they change to allow only demolition") {
     }
   }
 }
+
+TEST_CASE("Short time display") {
+  CHECK(sAsShortTimeDisplay(1) == "1s");
+  CHECK(sAsShortTimeDisplay(2) == "2s");
+  CHECK(sAsShortTimeDisplay(60) == "60s");
+  CHECK(sAsShortTimeDisplay(61) == "1m");
+  CHECK(sAsShortTimeDisplay(120) == "2m");
+  CHECK(sAsShortTimeDisplay(3601) == "1h");
+}

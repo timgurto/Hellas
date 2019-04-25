@@ -1,14 +1,14 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#include "Point.h"
-#include "Rect.h"
-#include "messageCodes.h"
-
 #include <cstdlib>
 #include <set>
 #include <sstream>
 #include <vector>
+
+#include "Point.h"
+#include "Rect.h"
+#include "messageCodes.h"
 
 const double PI = 3.1415926535897;
 const double SQRT_2 = 1.4142135623731;
@@ -113,6 +113,8 @@ T max(const T &lhs, const T &rhs) {
 
 std::string sAsTimeDisplay(int t);
 std::string msAsTimeDisplay(ms_t t);
+std::string sAsShortTimeDisplay(int t);
+std::string msAsShortTimeDisplay(ms_t t);
 
 bool fileExists(const std::string &path);
 

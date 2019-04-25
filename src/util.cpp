@@ -1,10 +1,11 @@
+#include "util.h"
+
 #include <cmath>
 #include <fstream>
 #include <sstream>
 
 #include "Args.h"
 #include "Point.h"
-#include "util.h"
 
 using namespace std::string_literals;
 
@@ -90,6 +91,24 @@ std::string sAsTimeDisplay(int t) {
 }
 
 std::string msAsTimeDisplay(ms_t t) { return sAsTimeDisplay(t / 1000); }
+
+std::string sAsShortTimeDisplay(int t) {
+  if (t <= 60) {
+    return toString(t) + "s";
+  }
+
+  if (t <= 3600) {
+    auto minutes = t / 60;
+    return toString(minutes) + "m";
+  }
+
+  auto hours = t / 3600;
+  return toString(hours) + "h";
+}
+
+std::string msAsShortTimeDisplay(ms_t t) {
+  return sAsShortTimeDisplay(t / 1000);
+}
 
 bool fileExists(const std::string &path) {
   std::ifstream fs(path);
