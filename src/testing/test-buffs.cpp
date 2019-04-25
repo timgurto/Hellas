@@ -298,3 +298,26 @@ TEST_CASE("Buff removal propagates to client") {
     }
   }
 }
+
+TEST_CASE("Returning users know their buffs") {
+  // Given a user with a buff
+  auto data = R"(
+      <buff id="grumpy" />
+    )";
+  auto s = TestServer::WithDataString(data);
+  auto username = ""s;
+  {
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    username = c.name();
+    auto &user = s.getFirstUser();
+    user.applyBuff(s.getFirstBuff(), user);
+
+    // When he logs out then back in
+  }
+  auto c = TestClient::WithUsernameAndDataString(username, data);
+  s.waitForUsers(1);
+
+  // Then he knows he still has the buff.
+  WAIT_UNTIL(c->character().buffs().size() == 1);
+}
