@@ -317,7 +317,8 @@ class Client {
   Element *_citySection{nullptr};
   void refreshCitySection();
   void populateWarsList();
-  List *_onlinePlayersList{};
+  Label *_numOnlinePlayersLabel{nullptr};
+  List *_onlinePlayersList{nullptr};
   void populateOnlinePlayersList();
   std::set<std::string> _allOnlinePlayers{};
 

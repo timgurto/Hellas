@@ -333,7 +333,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 188,Add unlock info to web docs,8,5,Tooling,,,,
 189,Add transform images to web docs,3,34,Tooling,,,,
 194,Ensure fellow citizens can be seen on the map,13,21,Bug,,,,
-199,Provide list of online players,21,8,Usability,,,,2 Work playtest 2019
+199,Provide list of online players,21,8,Usability,,TRUE,,2 Work playtest 2019
 203,Prevent object updates from interrupting crafting,5,3,Bug,,,,
 204,Prevent passive selection from interrupting crafting,5,3,Bug,,,,
 205,NPCs are never culled once discovered,8,3,Bug,,,,

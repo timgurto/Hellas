@@ -16,16 +16,17 @@ void Client::initializeSocialWindow() {
   auto y = GAP;
 
   const auto ONLINE_PLAYERS_SECTION_HEIGHT = 70_px;
-  auto _onlinePlayersSection =
+  auto onlinePlayersSection =
       new Element{{0, y, WIN_WIDTH, ONLINE_PLAYERS_SECTION_HEIGHT}};
-  _socialWindow->addChild(_onlinePlayersSection);
-  _onlinePlayersSection->addChild(new Label{
-      {GAP, GAP, WIN_WIDTH, Element::TEXT_HEIGHT}, "Online players:"s});
+  _socialWindow->addChild(onlinePlayersSection);
+  _numOnlinePlayersLabel =
+      new Label{{GAP, GAP, WIN_WIDTH, Element::TEXT_HEIGHT}, ""s};
+  onlinePlayersSection->addChild(_numOnlinePlayersLabel);
   _onlinePlayersList =
-      new List{{0, Element::TEXT_HEIGHT + GAP, WIN_WIDTH,
+      new List{{2 * GAP, Element::TEXT_HEIGHT + GAP, WIN_WIDTH - 2 * GAP,
                 ONLINE_PLAYERS_SECTION_HEIGHT - Element::TEXT_HEIGHT - GAP}};
-  _onlinePlayersSection->addChild(_onlinePlayersList);
-  y += _onlinePlayersSection->height() + GAP;
+  onlinePlayersSection->addChild(_onlinePlayersList);
+  y += onlinePlayersSection->height() + GAP;
 
   _socialWindow->addChild(new Line{0, y, WIN_WIDTH});
   y += 2 + GAP;
@@ -193,6 +194,11 @@ void Client::populateWarsList() {
 }
 
 void Client::populateOnlinePlayersList() {
+  auto plural = _allOnlinePlayers.size() > 1;
+  auto suffix = plural ? " players online:"s : " player online:";
+  _numOnlinePlayersLabel->changeText(toString(_allOnlinePlayers.size()) +
+                                     suffix);
+
   _onlinePlayersList->clearChildren();
   for (const auto &name : _allOnlinePlayers) {
     _onlinePlayersList->addChild(new Label{{}, name});
