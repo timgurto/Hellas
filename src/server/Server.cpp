@@ -287,6 +287,9 @@ void Server::addUser(const Socket &socket, const std::string &name,
   auto &newUser = const_cast<User &>(*it);
   _usersByName[name] = &*it;
 
+  // Announce to all
+  broadcast(SV_USER_CONNECTED, name);
+
   const bool userExisted = readUserData(newUser);
   if (!userExisted) {
     newUser.setClass(_classes[classID]);
@@ -406,10 +409,9 @@ void Server::addUser(const Socket &socket, const std::string &name,
 
 void Server::removeUser(const std::set<User>::iterator &it) {
   const auto &userToDelete = *it;
-  // Alert nearby users
-  for (const User *userP : findUsersInArea(userToDelete.location()))
-    if (userP != &userToDelete)
-      userP->sendMessage(SV_USER_DISCONNECTED, userToDelete.name());
+
+  // Alert all users
+  broadcast(SV_USER_DISCONNECTED, userToDelete.name());
 
   forceAllToUntarget(userToDelete);
 

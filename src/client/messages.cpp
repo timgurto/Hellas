@@ -89,6 +89,8 @@ void Client::handleMessage(const std::string &msg) {
         _debug("Successfully logged in to server", Color::CHAT_SUCCESS);
 #endif
         _debug("Welcome to Hellas!");
+        _allOnlinePlayers.insert(_username);
+        populateOnlinePlayersList();
         break;
       }
 
@@ -100,6 +102,16 @@ void Client::handleMessage(const std::string &msg) {
         _latency = (_time - timeSent) / 2;
         break;
       }
+
+      case SV_USER_CONNECTED: {
+        std::string name;
+        readString(singleMsg, name, MSG_END);
+        singleMsg >> del;
+        if (del != MSG_END) break;
+
+        _allOnlinePlayers.insert(name);
+        populateOnlinePlayersList();
+      } break;
 
       case SV_USER_DISCONNECTED:
       case SV_USER_OUT_OF_RANGE: {
@@ -125,8 +137,11 @@ void Client::handleMessage(const std::string &msg) {
           removeEntity(it->second);
           _otherUsers.erase(it);
         }
-        if (msgCode == SV_USER_DISCONNECTED)
+        if (msgCode == SV_USER_DISCONNECTED) {
           _debug << name << " disconnected." << Log::endl;
+          _allOnlinePlayers.erase(name);
+          populateOnlinePlayersList();
+        }
         break;
       }
 

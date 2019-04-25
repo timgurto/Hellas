@@ -212,7 +212,11 @@ enum MessageCode {
   // You have played for ... seconds
   SV_TIME_PLAYED,
 
-  // A user has disconnected.
+  // A user has connected.  Broadcast to all players.
+  // Arguments: username
+  SV_USER_CONNECTED,
+
+  // A user has disconnected. Broadcast to all players.
   // Arguments: username
   SV_USER_DISCONNECTED,
 

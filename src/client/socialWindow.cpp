@@ -15,6 +15,21 @@ void Client::initializeSocialWindow() {
 
   auto y = GAP;
 
+  const auto ONLINE_PLAYERS_SECTION_HEIGHT = 70_px;
+  auto _onlinePlayersSection =
+      new Element{{0, y, WIN_WIDTH, ONLINE_PLAYERS_SECTION_HEIGHT}};
+  _socialWindow->addChild(_onlinePlayersSection);
+  _onlinePlayersSection->addChild(new Label{
+      {GAP, GAP, WIN_WIDTH, Element::TEXT_HEIGHT}, "Online players:"s});
+  _onlinePlayersList =
+      new List{{0, Element::TEXT_HEIGHT + GAP, WIN_WIDTH,
+                ONLINE_PLAYERS_SECTION_HEIGHT - Element::TEXT_HEIGHT - GAP}};
+  _onlinePlayersSection->addChild(_onlinePlayersList);
+  y += _onlinePlayersSection->height() + GAP;
+
+  _socialWindow->addChild(new Line{0, y, WIN_WIDTH});
+  y += 2 + GAP;
+
   const auto CITY_SECTION_HEIGHT = 30_px;
   _citySection = new Element{{0, y, WIN_WIDTH, CITY_SECTION_HEIGHT}};
   _socialWindow->addChild(_citySection);
@@ -175,4 +190,11 @@ void Client::populateWarsList() {
   for (const auto &pair : _warsAgainstPlayers)
     _warsList->addChild(
         createWarRow(pair.first, PLAYER, PLAYER, pair.second, !isInCity));
+}
+
+void Client::populateOnlinePlayersList() {
+  _onlinePlayersList->clearChildren();
+  for (const auto &name : _allOnlinePlayers) {
+    _onlinePlayersList->addChild(new Label{{}, name});
+  }
 }

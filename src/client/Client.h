@@ -317,6 +317,9 @@ class Client {
   Element *_citySection{nullptr};
   void refreshCitySection();
   void populateWarsList();
+  List *_onlinePlayersList{};
+  void populateOnlinePlayersList();
+  std::set<std::string> _allOnlinePlayers{};
 
   Window *_helpWindow{nullptr};
   void initializeHelpWindow();
