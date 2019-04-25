@@ -30,38 +30,38 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 69,Distant players aren't being removed,8,8,Bug,,TRUE,,
 70,Make players and objects more visible on map,89,34,Usability,,TRUE,,
 74,"When a player joins a city, that city adopts his wars",13,5,Feature,55,TRUE,TRUE,
-76,Sounds for attacking and death,89,3,Aesthetics,,TRUE
-80,Make client connection failures more clean,5,13,Usability,,TRUE
-84,Prevent chat messages being cut off,55,34,Usability,,TRUE
-91,Stacks of the same item can be combined,21,13,Usability,,TRUE
-95,Object ownership is clearly visible,5,21,Usability,8,TRUE
-98,Send nearby users' health values,13,3,Usability,,TRUE
-99,Allow specification of minimum yields,8,1,Feature,,TRUE
-103,Make spawners' queues persistent,13,5,Bug,,TRUE
-104,Vehicles 'log off' with their drivers,8,144,Bug,,TRUE
-108,Add esc menu to release client,34,13,Usability,,TRUE
-109,Allow crafting if removing the ingredients will make room,13,3,Bug,,TRUE
-118,Allow tool objects to show an in-use image/animation,8,13,Aesthetics,,TRUE
-119,"Use doubles, not ints, in Rect class",1,3,Code quality,,TRUE
-126,Remove 'can ...' tooltips when player has no permissions,21,2,Bug,,TRUE
-127,Add fading unlock messages to the top of the screen,8,13,Usability,,TRUE
-143,Declaring war on a player in a city declares war on that city,21,3,Feature,55,TRUE
-146,Add toast messages for war events,8,2,Usability,127,TRUE
-155,Move object container into class,3,5,Code quality,163,TRUE
-156,Move loot into class,3,5,Code quality,163,TRUE
-164,Server sometimes gets in infinite loop when a client disconnects,144,21,Bug,,TRUE
-167,Loot random item(s?) on container destruction,55,5,Feature,15,TRUE
-176,Use Catch for tests,3,5,Code quality,,TRUE
-182,Maintain only one set of scroll-bar triangle images,2,2,Performance,,TRUE
-190,"Add recipes using the item, to web docs",13,5,Tooling,,TRUE
-191,Make city ownership persistent,21,21,Bug,,TRUE
-192,Fix allowed-terrain lists for objects,8,5,Bug,,TRUE
-193,Make kingship persistent,13,5,Bug,,TRUE
-195,Make NPC movement smooth,5,13,Aesthetics,,TRUE
-196,Container slots are sometimes invisible or broken,89,21,Bug,,TRUE
-197,Allow ceding of unfinished objects,21,5,Feature,,TRUE
-198,"Unowned-object colors sometimes green, sometimes grey",5,13,Bug,,TRUE
-200,Make login screen behave on disconnect,8,21,Usability,,TRUE
+76,Sounds for attacking and death,89,3,Aesthetics,,TRUE,,
+80,Make client connection failures more clean,5,13,Usability,,TRUE,,
+84,Prevent chat messages being cut off,55,34,Usability,,TRUE,,
+91,Stacks of the same item can be combined,21,13,Usability,,TRUE,,
+95,Object ownership is clearly visible,5,21,Usability,8,TRUE,,
+98,Send nearby users' health values,13,3,Usability,,TRUE,,
+99,Allow specification of minimum yields,8,1,Feature,,TRUE,,
+103,Make spawners' queues persistent,13,5,Bug,,TRUE,,
+104,Vehicles 'log off' with their drivers,8,144,Bug,,TRUE,,
+108,Add esc menu to release client,34,13,Usability,,TRUE,,
+109,Allow crafting if removing the ingredients will make room,13,3,Bug,,TRUE,,
+118,Allow tool objects to show an in-use image/animation,8,13,Aesthetics,,TRUE,,
+119,"Use doubles, not ints, in Rect class",1,3,Code quality,,TRUE,,
+126,Remove 'can ...' tooltips when player has no permissions,21,2,Bug,,TRUE,,
+127,Add fading unlock messages to the top of the screen,8,13,Usability,,TRUE,,
+143,Declaring war on a player in a city declares war on that city,21,3,Feature,55,TRUE,,
+146,Add toast messages for war events,8,2,Usability,127,TRUE,,
+155,Move object container into class,3,5,Code quality,163,TRUE,,
+156,Move loot into class,3,5,Code quality,163,TRUE,,
+164,Server sometimes gets in infinite loop when a client disconnects,144,21,Bug,,TRUE,,
+167,Loot random item(s?) on container destruction,55,5,Feature,15,TRUE,,
+176,Use Catch for tests,3,5,Code quality,,TRUE,,
+182,Maintain only one set of scroll-bar triangle images,2,2,Performance,,TRUE,,
+190,"Add recipes using the item, to web docs",13,5,Tooling,,TRUE,,
+191,Make city ownership persistent,21,21,Bug,,TRUE,,
+192,Fix allowed-terrain lists for objects,8,5,Bug,,TRUE,,
+193,Make kingship persistent,13,5,Bug,,TRUE,,
+195,Make NPC movement smooth,5,13,Aesthetics,,TRUE,,
+196,Container slots are sometimes invisible or broken,89,21,Bug,,TRUE,,
+197,Allow ceding of unfinished objects,21,5,Feature,,TRUE,,
+198,"Unowned-object colors sometimes green, sometimes grey",5,13,Bug,,TRUE,,
+200,Make login screen behave on disconnect,8,21,Usability,,TRUE,,
 201,Lower object names,8,2,Aesthetics,,TRUE,,
 202,Give back a small pot after constructing with a water vessel,21,21,Feature,,TRUE,,
 206,Objects are not culled on respawn/teleport,8,5,Bug,,TRUE,,
@@ -78,70 +78,70 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 230,Allow destroying one's own objects,13,8,Feature,,TRUE,,
 231,Under-construction objects get full loot on destruction,21,3,Bug,,TRUE,,
 232,Under-construction objects can't be looted on destruction,8,2,Bug,,TRUE,,
-233,"Object loot should be 5%, not 50%",21,1,Bug,,TRUE
-235,"Give ovens a fueled state, and remove fuel from recipes",13,5,Content,,TRUE
-237,Make players more clear on map,34,3,Usability,,TRUE
-238,Show time remaining until objects transform,5,3,Usability,,TRUE
-241,Can't build an altar if I have a zero-health one,34,3,Bug,,TRUE
-242,Make object health and respawn timers persistent,21,5,Bug,,TRUE
-243,Pots can't be ceded,34,8,Bug,,TRUE
-244,Enforce lower-case player/city names,3,2,Usability,,TRUE
-245,Display names with first letter capitalised,5,2,Aesthetics,244,TRUE
-246,A 'fireball' command that damages target by constant,34,5,Feature,,TRUE
-247,Fireballs consume an energy stat,13,8,Feature,246,TRUE
-248,A visible energy bar,13,5,Usability,247,TRUE
-249,Animated projectile for fireball,21,8,Aesthetics,246,TRUE
-252,Fireball impact particles,21,3,Aesthetics,249,TRUE
-255,Fireball impact sound,21,3,Aesthetics,249,TRUE
-257,Fireball launch sound,8,3,Aesthetics,249,TRUE
-259,Fireball damage modified by magic-damage stat,3,2,Feature,246,TRUE
-260,Energy-regen stat,3,2,Feature,247,TRUE
-261,Health-regen stat,3,5,Feature,,TRUE
-262,Fireball mitigated by fire-resistance stat,3,3,Feature,246,TRUE
-263,Chance for fireballs to crit,8,2,Feature,246,TRUE
-264,Crit-chance stat,3,2,Feature,263,TRUE
-265,A second spell,21,5,Feature,246,TRUE
-267,Random characters get +health buff,2,2,Feature,265,TRUE
-268,Buffs expire,2,5,Feature,267,TRUE
-269,Buffs can be cast on target (no longer random),21,5,Feature,267,TRUE
-271,Buffs can be restricted to self,2,5,Feature,269,TRUE
-272,A -resistance debuff (can't be dismissed),3,5,Feature,270,TRUE
-273,DoT debuff,13,5,Feature,267,TRUE
-274,Stun debuff,3,8,Feature,267,TRUE
-276,Healing spell,13,5,Feature,265,TRUE
-277,HoT buff,2,5,Feature,267,TRUE
-278,Spells are class-specific,2,5,Feature,265,TRUE
-279,A spell hotbar,13,8,Usability,265,TRUE
-283,"Spells must be learned, with commands",3,3,Feature,265,TRUE
-284,A window with buttons to learn spells,3,5,Usability,283,TRUE
-285,Learning spells can cost items,3,8,Feature,283,TRUE
-288,"On death, lose a leaf skill",5,13,Feature,295,TRUE
-292,Learning spells costs food,3,8,Feature,285,TRUE
-293,Food restores energy/health,8,8,Feature,247,TRUE
-295,Spells laid out in trees,3,34,Usability,278,TRUE
-299,Skill tree can include passive stats,5,13,Feature,295,TRUE
-302,Ranged weapons,21,5,Feature,,TRUE
-303,Projectiles for ranged weapons,5,5,Feature,302,TRUE
-304,Chance for spells/attacks to miss,5,2,Feature,246,TRUE
-305,Hit-chance stat,3,2,Feature,304,TRUE
-306,A melee-range spell,3,5,Feature,265,TRUE
-307,Non-magic damage can be blocked (reduced by k),5,5,Feature,306,TRUE
-308,Block-chance stat,5,2,Feature,307,TRUE
-309,Block-value stat,3,2,Feature,307,TRUE
-310,Physical-damage stat,3,2,Feature,,TRUE
-311,Water/air/earth-resistance stats,3,2,Feature,262,TRUE
-312,Armour-class stat,5,8,Feature,,TRUE
-313,NPCs have threat tables to dictate target,13,34,Feature,,TRUE
-314,Threat % stat,2,3,Feature,313,TRUE
-315,Threat-drop spell,3,5,Feature,313,TRUE
-319,Gather-yield % stat,1,3,Feature,,TRUE
-325,AoE spell,21,8,Feature,265,TRUE
-327,"Spells to cure curse, sleep, stun, fear",2,8,Feature,267,TRUE
-330,Damage-shield buff,5,8,Feature,267,TRUE
-332,Curse/sleep/stun/fear-resistance stats,2,3,Feature,326,TRUE
-333,Cap number of learned spells,3,2,Feature,283,TRUE
-334,Design Zealot trees,8,8,Content,,TRUE
-335,Find suitable names for abilities,34,21,Content,334,TRUE
+233,"Object loot should be 5%, not 50%",21,1,Bug,,TRUE,,
+235,"Give ovens a fueled state, and remove fuel from recipes",13,5,Content,,TRUE,,
+237,Make players more clear on map,34,3,Usability,,TRUE,,
+238,Show time remaining until objects transform,5,3,Usability,,TRUE,,
+241,Can't build an altar if I have a zero-health one,34,3,Bug,,TRUE,,
+242,Make object health and respawn timers persistent,21,5,Bug,,TRUE,,
+243,Pots can't be ceded,34,8,Bug,,TRUE,,
+244,Enforce lower-case player/city names,3,2,Usability,,TRUE,,
+245,Display names with first letter capitalised,5,2,Aesthetics,244,TRUE,,
+246,A 'fireball' command that damages target by constant,34,5,Feature,,TRUE,,
+247,Fireballs consume an energy stat,13,8,Feature,246,TRUE,,
+248,A visible energy bar,13,5,Usability,247,TRUE,,
+249,Animated projectile for fireball,21,8,Aesthetics,246,TRUE,,
+252,Fireball impact particles,21,3,Aesthetics,249,TRUE,,
+255,Fireball impact sound,21,3,Aesthetics,249,TRUE,,
+257,Fireball launch sound,8,3,Aesthetics,249,TRUE,,
+259,Fireball damage modified by magic-damage stat,3,2,Feature,246,TRUE,,
+260,Energy-regen stat,3,2,Feature,247,TRUE,,
+261,Health-regen stat,3,5,Feature,,TRUE,,
+262,Fireball mitigated by fire-resistance stat,3,3,Feature,246,TRUE,,
+263,Chance for fireballs to crit,8,2,Feature,246,TRUE,,
+264,Crit-chance stat,3,2,Feature,263,TRUE,,
+265,A second spell,21,5,Feature,246,TRUE,,
+267,Random characters get +health buff,2,2,Feature,265,TRUE,,
+268,Buffs expire,2,5,Feature,267,TRUE,,
+269,Buffs can be cast on target (no longer random),21,5,Feature,267,TRUE,,
+271,Buffs can be restricted to self,2,5,Feature,269,TRUE,,
+272,A -resistance debuff (can't be dismissed),3,5,Feature,270,TRUE,,
+273,DoT debuff,13,5,Feature,267,TRUE,,
+274,Stun debuff,3,8,Feature,267,TRUE,,
+276,Healing spell,13,5,Feature,265,TRUE,,
+277,HoT buff,2,5,Feature,267,TRUE,,
+278,Spells are class-specific,2,5,Feature,265,TRUE,,
+279,A spell hotbar,13,8,Usability,265,TRUE,,
+283,"Spells must be learned, with commands",3,3,Feature,265,TRUE,,
+284,A window with buttons to learn spells,3,5,Usability,283,TRUE,,
+285,Learning spells can cost items,3,8,Feature,283,TRUE,,
+288,"On death, lose a leaf skill",5,13,Feature,295,TRUE,,
+292,Learning spells costs food,3,8,Feature,285,TRUE,,
+293,Food restores energy/health,8,8,Feature,247,TRUE,,
+295,Spells laid out in trees,3,34,Usability,278,TRUE,,
+299,Skill tree can include passive stats,5,13,Feature,295,TRUE,,
+302,Ranged weapons,21,5,Feature,,TRUE,,
+303,Projectiles for ranged weapons,5,5,Feature,302,TRUE,,
+304,Chance for spells/attacks to miss,5,2,Feature,246,TRUE,,
+305,Hit-chance stat,3,2,Feature,304,TRUE,,
+306,A melee-range spell,3,5,Feature,265,TRUE,,
+307,Non-magic damage can be blocked (reduced by k),5,5,Feature,306,TRUE,,
+308,Block-chance stat,5,2,Feature,307,TRUE,,
+309,Block-value stat,3,2,Feature,307,TRUE,,
+310,Physical-damage stat,3,2,Feature,,TRUE,,
+311,Water/air/earth-resistance stats,3,2,Feature,262,TRUE,,
+312,Armour-class stat,5,8,Feature,,TRUE,,
+313,NPCs have threat tables to dictate target,13,34,Feature,,TRUE,,
+314,Threat % stat,2,3,Feature,313,TRUE,,
+315,Threat-drop spell,3,5,Feature,313,TRUE,,
+319,Gather-yield % stat,1,3,Feature,,TRUE,,
+325,AoE spell,21,8,Feature,265,TRUE,,
+327,"Spells to cure curse, sleep, stun, fear",2,8,Feature,267,TRUE,,
+330,Damage-shield buff,5,8,Feature,267,TRUE,,
+332,Curse/sleep/stun/fear-resistance stats,2,3,Feature,326,TRUE,,
+333,Cap number of learned spells,3,2,Feature,283,TRUE,,
+334,Design Zealot trees,8,8,Content,,TRUE,,
+335,Find suitable names for abilities,34,21,Content,334,TRUE,,
 337,A spell that does extra threat,3,5,Feature,313,TRUE,,
 338,Spell icons,13,34,Content,335,TRUE,,
 339,Display buffs in UI,13,5,Usability,267,TRUE,,
@@ -270,54 +270,54 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 96,Containers may be restricted by item class,5,5,Feature,,,,
 97,"Use collisionRects even on non-colliding objects, for distance checks",8,5,Bug,,,,
 100,Sounds for crafting,5,2,Aesthetics,,,,
-101,Particles for crafting,5,2,Aesthetics,,,
-102,Prevent landlocked gear outlines,3,34,Aesthetics,,,
-105,Vehicles can have different speeds,5,5,Feature,,,TRUE
-106,Mouse-down events are propagating to multiple windows,13,3,Bug,,,
-107,Reduce calls to findUsersInArea() in NPC AI,5,13,Performance,,,
-110,Load map in login-screen background,5,13,Usability,,,
-111,"Use gear-slot names, not numbers, in items.xml",3,5,Code quality,,,
-112,Use exceptions to check SDL-function failures,1,5,Code quality,,,
-113,"Use forward declarations where possible, to reduce unnecessary #includes",2,5,Code quality,,,
-114,Use polymorphism instead of classTag,3,144,Code quality,,,
-116,An altar that grants a buff,8,34,Feature,267,,
-117,Direct player trading,8,233,Feature,,,
-120,Make findObjectTypeByName() logarithmic in complexity,5,8,Performance,,,
-121,Smoother vehicle movement,5,8,Aesthetics,,,
-122,Replace const casts with map::at(),3,3,Code quality,,,
-123,Ensure window titles always fit,5,2,Bug,,,
-124,Right-clicking doesn't cancel dragging,8,2,Bug
-125,Tools can modify crafting/gathering speed,3,13,Feature
-128,Make oven and kiln larger,5,3,Content
-131,Move SDL functions and types to a namespace,2,5,Code quality
-132,Highlight newly unlocked recipes/constructions,13,21,Usability
-133,Change dynamic_casts that don't check their result to static_cast or check for nullptr,3,5,Code quality
-134,Use set::count() and map::count() to test set membership,2,3,Code quality
-135,Fix ambiguity of Object::removeItem() and Object::removeItems(),2,3,Code quality
-136,Users are drawn inside (front+back) of vehicles,5,5,Aesthetics
-137,Prevent fast travel via vehicle-hopping,2,34,Exploit
-140,Remove useItem info from Container class; move it into Client object,1,13,Code quality
-141,Prevent clipping in getTileCoords() due to random coord at map edge,1,3,Bug
-142,Calculate highlight borders by adjacency to magenta (sausage man),5,13,Aesthetics
-144,Prevent multiple copies of sounds between SoundProfiles,5,3,Performance
-145,Prevent users from spamming construction sites,5,8,Exploit
-147,Make crafting more fun,34,89,Aesthetics
-148,Make construction more fun,34,89,Aesthetics,
-149,Make chat more fun,21,89,Aesthetics,
-150,Make declarations of war more fun,21,89,Aesthetics,
-151,Make looting more fun,13,89,Aesthetics,
-152,Make containers more fun,13,89,Aesthetics,
-153,Make traveling more fun,34,89,Aesthetics,
-154,Make gathering more fun,34,89,Aesthetics,
-157,Move collisions into class,3,5,Code quality,163
-158,Move gathering into class,3,5,Code quality,163
-159,Move item-construction into class,3,5,Code quality,163
-160,Move material-construction into class,3,5,Code quality,163
-161,Move object transformation into class,3,5,Code quality,163
-161,Move merchant functionality into class,3,5,Code quality,163
-162,Make vehicle functionality a class owned by object,3,5,Code quality,163
-163,Generalize object components,5,8,Code quality,
-169,Add a spectrum of container strengths,13,13,Content,
+101,Particles for crafting,5,2,Aesthetics,,,,
+102,Prevent landlocked gear outlines,3,34,Aesthetics,,,,
+105,Vehicles can have different speeds,5,5,Feature,,,TRUE,
+106,Mouse-down events are propagating to multiple windows,13,3,Bug,,,,
+107,Reduce calls to findUsersInArea() in NPC AI,5,13,Performance,,,,
+110,Load map in login-screen background,5,13,Usability,,,,
+111,"Use gear-slot names, not numbers, in items.xml",3,5,Code quality,,,,
+112,Use exceptions to check SDL-function failures,1,5,Code quality,,,,
+113,"Use forward declarations where possible, to reduce unnecessary #includes",2,5,Code quality,,,,
+114,Use polymorphism instead of classTag,3,144,Code quality,,,,
+116,An altar that grants a buff,8,34,Feature,267,,,
+117,Direct player trading,8,233,Feature,,,,
+120,Make findObjectTypeByName() logarithmic in complexity,5,8,Performance,,,,
+121,Smoother vehicle movement,5,8,Aesthetics,,,,
+122,Replace const casts with map::at(),3,3,Code quality,,,,
+123,Ensure window titles always fit,5,2,Bug,,,,
+124,Right-clicking doesn't cancel dragging,8,2,Bug,,,,
+125,Tools can modify crafting/gathering speed,3,13,Feature,,,,
+128,Make oven and kiln larger,5,3,Content,,,,
+131,Move SDL functions and types to a namespace,2,5,Code quality,,,,
+132,Highlight newly unlocked recipes/constructions,13,21,Usability,,,,
+133,Change dynamic_casts that don't check their result to static_cast or check for nullptr,3,5,Code quality,,,,
+134,Use set::count() and map::count() to test set membership,2,3,Code quality,,,,
+135,Fix ambiguity of Object::removeItem() and Object::removeItems(),2,3,Code quality,,,,
+136,Users are drawn inside (front+back) of vehicles,5,5,Aesthetics,,,,
+137,Prevent fast travel via vehicle-hopping,2,34,Exploit,,,,
+140,Remove useItem info from Container class; move it into Client object,1,13,Code quality,,,,
+141,Prevent clipping in getTileCoords() due to random coord at map edge,1,3,Bug,,,,
+142,Calculate highlight borders by adjacency to magenta (sausage man),5,13,Aesthetics,,,,
+144,Prevent multiple copies of sounds between SoundProfiles,5,3,Performance,,,,
+145,Prevent users from spamming construction sites,5,8,Exploit,,,,
+147,Make crafting more fun,34,89,Aesthetics,,,,
+148,Make construction more fun,34,89,Aesthetics,,,,
+149,Make chat more fun,21,89,Aesthetics,,,,
+150,Make declarations of war more fun,21,89,Aesthetics,,,,
+151,Make looting more fun,13,89,Aesthetics,,,,
+152,Make containers more fun,13,89,Aesthetics,,,,
+153,Make traveling more fun,34,89,Aesthetics,,,,
+154,Make gathering more fun,34,89,Aesthetics,,,,
+157,Move collisions into class,3,5,Code quality,163,,,
+158,Move gathering into class,3,5,Code quality,163,,,
+159,Move item-construction into class,3,5,Code quality,163,,,
+160,Move material-construction into class,3,5,Code quality,163,,,
+161,Move object transformation into class,3,5,Code quality,163,,,
+161,Move merchant functionality into class,3,5,Code quality,163,,,
+162,Make vehicle functionality a class owned by object,3,5,Code quality,163,,,
+163,Generalize object components,5,8,Code quality,,,,
+169,Add a spectrum of container strengths,13,13,Content,,,,
 171,An item that damages the containing object's attacker,13,8,Feature,,,,
 172,Select target via keyboard,3,8,Usability,,,,
 173,Interact with target via keyboard,5,2,Usability,172,,,
@@ -366,22 +366,22 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 294,Hotbar can include right-clickable items,2,13,Usability,280,,,
 296,An options window and checkbox to automatically re-learn skills,1,5,Usability,288,,,
 297,Auto-relearn is a persistent setting,1,5,Usability,296,,,
-298,Leaf skills can be unlearned,5,21,Feature,295
-300,Skill tree can include recipes,2,13,Feature,295
-301,Skill tree can include constructions,2,13,Feature,295
-316,Taunt spell,3,5,Feature,313
-320,A buff to take damage for target,2,8,Feature,267
-321,Fear debuff,3,8,Feature,267
-322,Channeled +ep5 ability,3,8,Feature,250
-323,Cast/channel-interrupt spell,3,13,Feature,322
-324,Energy-drain spell,2,8,Feature,322
-328,Resurrect spell,5,13,Feature,265
-329,An object that gives nearby players a buff,3,8,Feature,267
-331,Spell-reflect buff,2,13,Feature,267
-350,Update window title when object type changes,5,1,Bug,
-351,Allow users to drop items onto construction sites,3,21,Usability,
-354,Show construction sites as pegs rather than a footprint,5,5,Aesthetics,
-357,Prepopulate login-name field,21,3,Usability,
+298,Leaf skills can be unlearned,5,21,Feature,295,,,
+300,Skill tree can include recipes,2,13,Feature,295,,,
+301,Skill tree can include constructions,2,13,Feature,295,,,
+316,Taunt spell,3,5,Feature,313,,,
+320,A buff to take damage for target,2,8,Feature,267,,,
+321,Fear debuff,3,8,Feature,267,,,
+322,Channeled +ep5 ability,3,8,Feature,250,,,
+323,Cast/channel-interrupt spell,3,13,Feature,322,,,
+324,Energy-drain spell,2,8,Feature,322,,,
+328,Resurrect spell,5,13,Feature,265,,,
+329,An object that gives nearby players a buff,3,8,Feature,267,,,
+331,Spell-reflect buff,2,13,Feature,267,,,
+350,Update window title when object type changes,5,1,Bug,,,,
+351,Allow users to drop items onto construction sites,3,21,Usability,,,,
+354,Show construction sites as pegs rather than a footprint,5,5,Aesthetics,,,,
+357,Prepopulate login-name field,21,3,Usability,,,,
 359,Don't show extinguished ovens and intermediary farms as construction sites,5,5,Aesthetics,,,,
 362,Close windows on disconnect,5,3,Usability,,,,2 Work playtest 2019
 364,Current-wars spam on login,3,3,Bug,,,,
