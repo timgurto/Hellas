@@ -1,4 +1,5 @@
 #include "Avatar.h"
+
 #include "../util.h"
 #include "Client.h"
 #include "Renderer.h"
@@ -40,8 +41,6 @@ void Avatar::draw(const Client &client) const {
     renderer.drawRect(toScreenRect(COLLISION_RECT + location()) +
                       client.offset());
   }
-
-  drawHealthBarIfAppropriate(location(), height());
 }
 
 void Avatar::drawName() const {

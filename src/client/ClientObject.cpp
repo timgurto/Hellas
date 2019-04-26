@@ -835,8 +835,6 @@ void ClientObject::draw(const Client &client) const {
         toScreenRect(location()) + client.offset() + questIndicatorOffset;
     questIndicator.draw(indicatorLocation);
   }
-
-  drawHealthBarIfAppropriate(location(), height());
 }
 
 const Texture &ClientObject::cursor(const Client &client) const {

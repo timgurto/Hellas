@@ -445,7 +445,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 486,Show chance to unlock when crafting,34,8,Usability,,,,
 487,Show chance to unlock when building,13,2,Usability,486,,,
 490,Allow line break on -,2,3,Bug,,,,
-496,Draw names/bars in front of everything else,2,2,Usability,,,,2 Work playtest 2019
+496,Draw names/bars in front of everything else,2,2,Usability,,TRUE,,2 Work playtest 2019
 498,It's too easy to select Atlas,2,3,Usability,,,,2 Work playtest 2019
 500,Show taggers in client,5,3,Usability,,,,
 501,Zoomable map,34,89,Usability,,,,

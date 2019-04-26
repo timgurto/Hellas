@@ -92,19 +92,32 @@ void Client::draw() const {
   }
   // Flat entities
   for (auto it = top; it != bottom; ++it) {
-    if ((*it)->isFlat()) {
-      // Cull by x
-      double x = (*it)->location().x;
-      if (x >= leftX && x <= rightX) (*it)->draw(*this);
-    }
+    if (!(*it)->isFlat()) continue;
+
+    double x = (*it)->location().x;
+    if (x < leftX && x > rightX) continue;
+
+    (*it)->draw(*this);
   }
   // Non-flat entities
   for (auto it = top; it != bottom; ++it) {
-    if (!(*it)->isFlat()) {
-      // Cull by x
-      double x = (*it)->location().x;
-      if (x >= leftX && x <= rightX) (*it)->draw(*this);
-    }
+    if ((*it)->isFlat()) continue;
+
+    double x = (*it)->location().x;
+    if (x < leftX && x > rightX) continue;
+
+    (*it)->draw(*this);
+  }
+  // All names and health bars, in front of all entities
+  for (auto it = top; it != bottom; ++it) {
+    double x = (*it)->location().x;
+    if (x < leftX && x > rightX) continue;
+
+    if ((*it)->shouldDrawName()) (*it)->drawName();
+
+    const auto *asCombatant = dynamic_cast<const ClientCombatant *>(*it);
+    if (!asCombatant) continue;
+    asCombatant->drawHealthBarIfAppropriate((*it)->location(), (*it)->height());
   }
 
   // Non-window UI

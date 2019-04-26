@@ -1,11 +1,11 @@
+#include "Sprite.h"
+
 #include <cassert>
 
+#include "../util.h"
 #include "Client.h"
 #include "Renderer.h"
-#include "Sprite.h"
 #include "Tooltip.h"
-
-#include "../util.h"
 
 extern Renderer renderer;
 
@@ -42,8 +42,6 @@ void Sprite::draw(const Client &client) const {
         toScreenRect(MapRect{_location.x - 5, _location.y - 5, 10, 10});
     renderer.fillRect(drawRect + client.offset());
   }
-
-  if (shouldDrawName()) drawName();
 }
 
 void Sprite::drawName() const {
