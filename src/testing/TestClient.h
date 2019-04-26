@@ -32,6 +32,7 @@ class TestClient {
   bool connected() const {
     return _client->_connection.state() == Connection::CONNECTED;
   }
+  bool loggedIn() const { return _client->_loggedIn; }
   void freeze();
   static void stopClientIfRunning();
 

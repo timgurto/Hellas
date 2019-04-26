@@ -1,9 +1,10 @@
+#include "Element.h"
+
 #include <cassert>
 
 #include "../../util.h"
 #include "../Client.h"
 #include "../Tooltip.h"
-#include "Element.h"
 #include "Window.h"
 
 extern Renderer renderer;

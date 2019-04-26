@@ -124,3 +124,24 @@ TEST_CASE("Online-players list includes existing players") {
     }
   }
 }
+
+TEST_CASE("Windows close on disconnect") {
+  // Given a client with windows open
+  auto c = TestClient{};
+  {
+    auto s = TestServer{};
+    WAIT_UNTIL(c.connected());
+    c.buildWindow()->show();
+    c.craftingWindow()->show();
+    CHECK(c.buildWindow()->visible());
+
+    // When the server goes offline
+  }
+
+  // And when the client disconnects
+  WAIT_UNTIL_TIMEOUT(!c.connected(), 15000);
+
+  // Then the client's windows are closed
+  WAIT_UNTIL(!c.buildWindow()->visible());
+  WAIT_UNTIL(!c.craftingWindow()->visible());
+}

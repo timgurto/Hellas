@@ -2417,6 +2417,13 @@ void Client::sendRawMessageStatic(void *data) {
   client.sendRawMessage(*message);
 }
 
+void Client::disconnect() {
+  _connection.state(Connection::CONNECTION_ERROR);
+
+  // Hide windows
+  for (auto *window : _windows) window->hide();
+}
+
 void Client::initializeMessageNames() {
   _messageCommands["played"] = CL_REQUEST_TIME_PLAYED;
   _messageCommands["location"] = CL_LOCATION;

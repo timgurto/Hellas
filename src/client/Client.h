@@ -212,6 +212,7 @@ class Client {
   static LogSDL *_debugInstance;
 
   Connection _connection;
+  void disconnect();
 
   static std::map<std::string, int> _messageCommands;
   static std::map<int, std::string> _errorMessages;
