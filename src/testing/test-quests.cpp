@@ -1303,6 +1303,14 @@ TEST_CASE("Quest items that drop only while on quest", "[quests]") {
                 CHECK_FALSE(dragon2.lootable());
               }
             }
+
+            AND_WHEN("he abandons the quest") {
+              c.sendMessage(CL_ABANDON_QUEST, "quest1");
+
+              THEN("he doesn't have the scale any more") {
+                WAIT_UNTIL(user.inventory(0).first == nullptr);
+              }
+            }
           }
         }
       }

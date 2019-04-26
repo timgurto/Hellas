@@ -1248,6 +1248,26 @@ bool User::hasCompletedAllPrerequisiteQuestsOf(const Quest::ID &id) const {
 
 void User::abandonQuest(const Quest::ID &id) {
   _quests.erase(id);
+
+  // Remove quest-exclusive items
+  auto &server = Server::instance();
+  for (auto i = 0; i != INVENTORY_SIZE; ++i) {
+    auto &slotPair = _inventory[i];
+    if (slotPair.first && slotPair.first->exclusiveToQuest() == id) {
+      slotPair.first = nullptr;
+      slotPair.second = 0;
+      server.sendInventoryMessage(*this, i, Server::INVENTORY);
+    }
+  }
+  for (auto i = 0; i != GEAR_SLOTS; ++i) {
+    auto &slotPair = _gear[i];
+    if (slotPair.first && slotPair.first->exclusiveToQuest() == id) {
+      slotPair.first = nullptr;
+      slotPair.second = 0;
+      server.sendInventoryMessage(*this, i, Server::GEAR);
+    }
+  }
+
   sendMessage(SV_QUEST_CAN_BE_STARTED, id);
 }
 

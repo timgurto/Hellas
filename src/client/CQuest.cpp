@@ -1,4 +1,5 @@
 #include "CQuest.h"
+
 #include "../Rect.h"
 #include "Client.h"
 #include "WordWrapper.h"
@@ -39,7 +40,7 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
   for (auto line : lines) {
     auto isHelpText = false;
 
-    if (line.front() == '?') {
+    if (!line.empty() && line.front() == '?') {
       isHelpText = true;
       line = line.substr(1);
     }
