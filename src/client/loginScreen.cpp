@@ -62,6 +62,8 @@ void Client::loginScreenLoop() {
 
   updateLoginParticles(delta);
 
+  updateToasts();
+
   drawLoginScreen();
 
   SDL_Delay(5);
@@ -345,6 +347,8 @@ void Client::initLoginScreen() {
 
   loginErrorLabel = new OutlinedLabel({0, 0, 200, 15}, {});
   _loginUI.push_back(loginErrorLabel);
+
+  _loginUI.push_back(_toasts);
 }
 
 void Client::cleanUpLoginScreen() {

@@ -383,7 +383,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 354,Show construction sites as pegs rather than a footprint,5,5,Aesthetics,,,,
 357,Prepopulate login-name field,21,3,Usability,,,,
 359,Don't show extinguished ovens and intermediary farms as construction sites,5,5,Aesthetics,,,,
-362,Close windows on disconnect,5,3,Usability,,,,2 Work playtest 2019
+362,Close windows on disconnect,5,3,Usability,,TRUE,,2 Work playtest 2019
 364,Current-wars spam on login,3,3,Bug,,,,
 365,Give XP for player kills,13,3,Feature,,,,
 367,Merchant object checking room for price doesn't consider ware slots,8,3,Bug,,,,

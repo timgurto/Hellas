@@ -1,4 +1,5 @@
 #include "Connection.h"
+
 #include "../Args.h"
 #include "../curlUtil.h"
 #include "Client.h"
@@ -98,7 +99,7 @@ bool Connection::shouldAttemptReconnection() const {
 void Connection::showError(const std::string &msg) const {
   if (!Client::clientExists()) return;
   Client::instance().showErrorMessage(msg, Color::CHAT_ERROR);
-  _client->infoWindow(msg);
+  _client->toast({}, msg);
 }
 
 std::string Connection::getServerIP() {
