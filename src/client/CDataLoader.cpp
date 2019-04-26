@@ -366,6 +366,10 @@ void CDataLoader::loadBuffs(XmlReader &xr) {
     auto name = ClientBuffType::Name{};
     if (xr.findAttr(elem, "name", name)) newBuff.name(name);
 
+    auto description = ClientBuffType::Description{};
+    if (xr.findAttr(elem, "description", description))
+      newBuff.description(description);
+
     int n;
     if (xr.findAttr(elem, "duration", n)) newBuff.duration(n);
 

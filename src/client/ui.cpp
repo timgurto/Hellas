@@ -196,8 +196,17 @@ Element *Client::assembleBuffEntry(const ClientBuffType &type, bool isDebuff) {
   e->addChild(new ColorBlock({ICON_X - 1, 1, 18, 18}, outlineColor));
 
   auto icon = new Picture({ICON_X, 2, 16, 16}, type.icon());
-  icon->setTooltip(type.name());
   e->addChild(icon);
+
+  auto tooltip = Tooltip{};
+  tooltip.setColor(Color::TOOLTIP_NAME);
+  tooltip.addLine(type.name());
+  if (type.hasDescription()) {
+    tooltip.addGap();
+    tooltip.setColor();
+    tooltip.addLine(type.description());
+  }
+  icon->setTooltip(tooltip);
 
   auto &timeRemainingMap = isDebuff ? instance()._debuffTimeRemaining
                                     : instance()._buffTimeRemaining;

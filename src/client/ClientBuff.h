@@ -8,6 +8,7 @@ class ClientBuffType {
  public:
   using ID = std::string;
   using Name = std::string;
+  using Description = std::string;
 
   ClientBuffType() {}
   ClientBuffType(const std::string &iconFile);
@@ -15,6 +16,11 @@ class ClientBuffType {
   const Name &name() const { return _name; }
   void id(const ID &id) { _id = id; }
   const ID &id() const { return _id; }
+  void description(const Description &description) {
+    _description = description;
+  }
+  const Description &description() const { return _description; }
+  bool hasDescription() const { return !_description.empty(); }
   const Texture &icon() const { return _icon; }
   void effectName(const std::string &name) { _effectName = name; }
   const std::string &effectName() const { return _effectName; }
@@ -41,6 +47,7 @@ class ClientBuffType {
   Texture _icon;
   ID _id{};
   Name _name{};
+  Description _description{};
   Texture _effect;
   ScreenPoint _effectOffset{};
 

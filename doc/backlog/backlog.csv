@@ -436,7 +436,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 466,Show shadow box in help-topic list in showHelpTopic(),1,5,Bug,,,,
 468,Destroy quest-exclusive items if quest is abandoned,3,3,Bug,469,,,2 Work playtest 2019
 470,Draw correct corpses for humanoid NPCs and players,21,55,Bug,,,,
-472,Include descriptive tooltips on active buffs,8,5,Usability,,,,2 Work playtest 2019
+472,Include descriptive tooltips on active buffs,8,5,Usability,,TRUE,,2 Work playtest 2019
 478,Update missing-data page,55,21,Tooling,,,,
 479,SFX for aggro,5,3,Usability,,,,
 480,SFX for swing,8,3,Usability,,,,

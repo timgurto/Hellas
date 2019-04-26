@@ -11,6 +11,7 @@
     <variety imageFile="clayLarge" />
 </particleProfile>
 <buff id="newPlayerClay" name="Born from Clay" icon="worship" duration="4"
+    description="Shaking off the excess clay left by your creator."
     onNewPlayers="1"
     particles="newPlayerClay" />
     
@@ -340,7 +341,8 @@
         <targets self=1 />
         <function name="buff" s1="tutShield" />
     </spell>
-    <buff id="tutShield" name="Hardened Shell" icon="shield" duration="5" >
+    <buff id="tutShield" name="Hardened Shell" icon="shield" duration="5"
+        description="Increased armour and resistances.">
         <effect image="shield" xOffset=-20 yOffset=-40 />
         <stats armor="50" airResist="50" earthResist="50" fireResist="50" waterResist="50" />
     </buff>
