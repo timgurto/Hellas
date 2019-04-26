@@ -171,7 +171,7 @@ void Client::populateHotbar() {
 }
 
 void Client::initBuffsDisplay() {
-  const px_t WIDTH = 30, HEIGHT = 300, ROW_HEIGHT = 20;
+  const px_t WIDTH = 60, HEIGHT = 300, ROW_HEIGHT = 20;
   _buffsDisplay = new List({SCREEN_X - WIDTH, 0, WIDTH, HEIGHT}, ROW_HEIGHT);
 
   addUI(_buffsDisplay);
@@ -190,8 +190,16 @@ void Client::refreshBuffsDisplay() {
 
 Element *Client::assembleBuffEntry(const ClientBuffType &type, bool isDebuff) {
   auto e = new Element();
-  if (isDebuff) e->addChild(new ColorBlock({1, 1, 18, 18}, Color::DEBUFF));
-  e->addChild(new Picture({2, 2, 16, 16}, type.icon()));
+  const auto ICON_X = instance()._buffsDisplay->width() - ICON_SIZE - 10;
+  if (isDebuff)
+    e->addChild(new ColorBlock({ICON_X - 1, 1, 18, 18}, Color::DEBUFF));
+  e->addChild(new Picture({ICON_X, 2, 16, 16}, type.icon()));
+  auto &timeRemaining = isDebuff ? instance()._debuffTimeRemaining
+                                 : instance()._buffTimeRemaining;
+  e->addChild(new LinkedLabel<ms_t>(
+      {0, 0, ICON_X - 3, instance()._buffsDisplay->childHeight()},
+      timeRemaining[type.id()], {}, {}, Element::RIGHT_JUSTIFIED,
+      Element::CENTER_JUSTIFIED));
   e->setTooltip(type.name());
   return e;
 }

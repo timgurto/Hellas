@@ -1,5 +1,7 @@
 #include "Entity.h"
+
 #include <algorithm>
+
 #include "../util.h"
 #include "Server.h"
 #include "Spawner.h"

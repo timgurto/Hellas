@@ -387,6 +387,10 @@ enum MessageCode {
   SV_PLAYER_LOST_BUFF,
   SV_ENTITY_LOST_DEBUFF,
   SV_PLAYER_LOST_DEBUFF,
+  // Your buff/debuff has a different time remaining than you would expect
+  // Arguments: (de)buff ID, time remaining (ms)
+  SV_REMAINING_BUFF_TIME,
+  SV_REMAINING_DEBUFF_TIME,
 
   // You know the following ... spells: ..., ..., etc.
   // Arguments: count, id1, id2, id3, ...

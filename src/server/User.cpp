@@ -1257,6 +1257,16 @@ void User::markQuestAsCompleted(const Quest::ID &id) {
 
 void User::markQuestAsStarted(const Quest::ID &id) { _quests.insert(id); }
 
+void User::loadBuff(const BuffType &type, ms_t timeRemaining) {
+  Object::loadBuff(type, timeRemaining);
+  sendMessage(SV_REMAINING_BUFF_TIME, makeArgs(type.id(), timeRemaining));
+}
+
+void User::loadDebuff(const BuffType &type, ms_t timeRemaining) {
+  Object::loadDebuff(type, timeRemaining);
+  sendMessage(SV_REMAINING_DEBUFF_TIME, makeArgs(type.id(), timeRemaining));
+}
+
 void User::sendBuffMsg(const Buff::ID &buff) const {
   const Server &server = Server::instance();
   server.broadcastToArea(location(), SV_PLAYER_GOT_BUFF, makeArgs(_name, buff));

@@ -1,4 +1,5 @@
 #include "ClientCombatant.h"
+
 #include "Client.h"
 #include "ClientCombatantType.h"
 #include "Renderer.h"
@@ -71,10 +72,12 @@ void ClientCombatant::addBuffOrDebuff(const ClientBuffType::ID &buff,
   auto it = client.buffTypes().find(buff);
   if (it == client.buffTypes().end()) return;
 
+  const auto &buffType = it->second;
+
   if (isBuff)
-    _buffs.insert(&it->second);
+    _buffs.insert(&buffType);
   else
-    _debuffs.insert(&it->second);
+    _debuffs.insert(&buffType);
 }
 
 void ClientCombatant::removeBuffOrDebuff(const ClientBuffType::ID &buff,

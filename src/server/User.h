@@ -178,10 +178,12 @@ class User : public Object {  // TODO: Don't inherit from Object
   void putInCombat() { _isInCombat = true; }
 
   char classTag() const override { return 'u'; }
-  virtual void sendBuffMsg(const Buff::ID &buff) const override;
-  virtual void sendDebuffMsg(const Buff::ID &buff) const override;
-  virtual void sendLostBuffMsg(const Buff::ID &buff) const override;
-  virtual void sendLostDebuffMsg(const Buff::ID &buff) const override;
+  void loadBuff(const BuffType &type, ms_t timeRemaining) override;
+  void loadDebuff(const BuffType &type, ms_t timeRemaining) override;
+  void sendBuffMsg(const Buff::ID &buff) const override;
+  void sendDebuffMsg(const Buff::ID &buff) const override;
+  void sendLostBuffMsg(const Buff::ID &buff) const override;
+  void sendLostDebuffMsg(const Buff::ID &buff) const override;
 
   void onHealthChange() override;
   void onEnergyChange() override;

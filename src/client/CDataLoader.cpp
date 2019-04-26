@@ -1,8 +1,9 @@
+#include "CDataLoader.h"
+
 #include <set>
 
 #include "../Podes.h"
 #include "../XmlReader.h"
-#include "CDataLoader.h"
 #include "ClassInfo.h"
 #include "Client.h"
 #include "ClientBuff.h"
@@ -353,12 +354,14 @@ void CDataLoader::loadBuffs(XmlReader &xr) {
   if (!xr) return;
 
   for (auto elem : xr.getChildren("buff")) {
-    std::string id;
+    auto id = ClientBuffType::ID{};
     if (!xr.findAttr(elem, "id", id)) continue;  // ID is mandatory.
 
     auto iconFile = id;
     xr.findAttr(elem, "icon", iconFile);
     auto newBuff = ClientBuffType{iconFile};
+
+    newBuff.id(id);
 
     auto name = ClientBuffType::Name{};
     if (xr.findAttr(elem, "name", name)) newBuff.name(name);

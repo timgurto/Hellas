@@ -1570,6 +1570,23 @@ void Client::handleMessage(const std::string &msg) {
         break;
       }
 
+      case SV_REMAINING_BUFF_TIME:
+      case SV_REMAINING_DEBUFF_TIME: {
+        singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
+        auto buffID = ClientBuffType::ID{buffer};
+        singleMsg >> del;
+
+        auto timeRemaining = ms_t{0};
+        singleMsg >> timeRemaining >> del;
+
+        if (del != MSG_END) return;
+
+        handle_SV_REMAINING_BUFF_TIME(buffID, timeRemaining,
+                                      msgCode == SV_REMAINING_BUFF_TIME);
+
+        break;
+      }
+
       case SV_PLAYER_GOT_BUFF:
       case SV_PLAYER_GOT_DEBUFF: {
         singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
@@ -2137,9 +2154,23 @@ void Client::handle_SV_PLAYER_GOT_BUFF(int msgCode, const std::string &username,
     avatar = it->second;
   }
 
-  avatar->addBuffOrDebuff(buffID, msgCode == SV_PLAYER_GOT_BUFF);
+  auto isBuff = msgCode == SV_PLAYER_GOT_BUFF;
+  avatar->addBuffOrDebuff(buffID, isBuff);
 
-  if (avatar == &_character) refreshBuffsDisplay();
+  if (avatar == &_character) {
+    auto it = buffTypes().find(buffID);
+    auto buffExists = it != buffTypes().end();
+    if (buffExists) {
+      ms_t duration = it->second.duration() * 1000;
+
+      if (isBuff)
+        _buffTimeRemaining[buffID] = duration;
+      else
+        _debuffTimeRemaining[buffID] = duration;
+    }
+
+    refreshBuffsDisplay();
+  }
 
   if (avatar == _target.entity()) refreshTargetBuffs();
 }
@@ -2161,6 +2192,16 @@ void Client::handle_SV_PLAYER_LOST_BUFF(int msgCode,
   if (avatar == &_character) refreshBuffsDisplay();
 
   if (avatar == _target.entity()) refreshTargetBuffs();
+}
+
+void Client::handle_SV_REMAINING_BUFF_TIME(const std::string &buffID,
+                                           ms_t timeRemaining, bool isBuff) {
+  if (isBuff)
+    _buffTimeRemaining[buffID] = timeRemaining;
+  else
+    _debuffTimeRemaining[buffID] = timeRemaining;
+
+  refreshBuffsDisplay();
 }
 
 void Client::handle_SV_KNOWN_SPELLS(

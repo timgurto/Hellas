@@ -344,6 +344,8 @@ class Client {
   Element *_castBar;
   Element *_hotbar{nullptr};
   std::vector<Button *> _hotbarButtons = {10, nullptr};
+  std::map<ClientBuffType::ID, ms_t> _buffTimeRemaining{},
+      _debuffTimeRemaining{};  // Used for the UI only.
   List *_buffsDisplay{nullptr};
   Element *_targetBuffs{nullptr};
   OutlinedLabel *_lastErrorMessage{nullptr};
@@ -623,6 +625,8 @@ class Client {
                                   const std::string &buffID);
   void handle_SV_PLAYER_LOST_BUFF(int msgCode, const std::string &username,
                                   const std::string &buffID);
+  void handle_SV_REMAINING_BUFF_TIME(const std::string &buffID,
+                                     ms_t timeRemaining, bool isBuff);
   void handle_SV_KNOWN_SPELLS(const std::set<std::string> &&knownSpellIDs);
   void handle_SV_LEARNED_SPELL(const std::string &spellID);
   void handle_SV_UNLEARNED_SPELL(const std::string &spellID);

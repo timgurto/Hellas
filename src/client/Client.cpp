@@ -1,5 +1,8 @@
+#include "Client.h"
+
 #include <SDL.h>
 #include <SDL_mixer.h>
+
 #include <algorithm>
 #include <cassert>
 #include <fstream>
@@ -16,7 +19,6 @@
 #include "../util.h"
 #include "../versionUtil.h"
 #include "CDataLoader.h"
-#include "Client.h"
 #include "ClientCombatant.h"
 #include "ClientNPC.h"
 #include "LogSDL.h"
@@ -398,6 +400,12 @@ void Client::gameLoop() {
       pair.second -= _timeElapsed;
     }
   }
+
+  // Update buff times
+  for (auto &pair : _buffTimeRemaining)
+    pair.second = _timeElapsed > pair.second ? 0 : pair.second - _timeElapsed;
+  for (auto &pair : _debuffTimeRemaining)
+    pair.second = _timeElapsed > pair.second ? 0 : pair.second - _timeElapsed;
 
   if (_mouseMoved) checkMouseOver();
 

@@ -108,8 +108,8 @@ class Entity {
   std::vector<BuffType::ID> buffsThatCancelOnOOE() const;
   void applyBuff(const BuffType &type, Entity &caster);
   void applyDebuff(const BuffType &type, Entity &caster);
-  void loadBuff(const BuffType &type, ms_t timeRemaining);
-  void loadDebuff(const BuffType &type, ms_t timeRemaining);
+  virtual void loadBuff(const BuffType &type, ms_t timeRemaining);
+  virtual void loadDebuff(const BuffType &type, ms_t timeRemaining);
   void removeBuff(Buff::ID id);
   void removeDebuff(Buff::ID id);
   void removeAllBuffsAndDebuffs();
