@@ -401,7 +401,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 384,Use in-class initialisers where possible,3,8,Code quality,,,,
 386,Disable unavailable-talent buttons,21,8,Usability,,,,
 389,Include equipped items in materials filter,13,5,Bug,,,,
-391,Show buff timers in client,21,8,Usability,,,,2 Work playtest 2019
+391,Show buff timers in client,21,8,Usability,,TRUE,,2 Work playtest 2019
 393,"Play defend/death sounds on projectile hit, not launch",8,5,Usability,,,,
 394,Tooltips for terrain tags,8,5,Usability,,,,
 395,Add simple object shadows,21,13,Aesthetics,,,,

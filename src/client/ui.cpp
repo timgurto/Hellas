@@ -191,9 +191,6 @@ void Client::refreshBuffsDisplay() {
 Element *Client::assembleBuffEntry(const ClientBuffType &type, bool isDebuff) {
   auto e = new Element();
   const auto ICON_X = instance()._buffsDisplay->width() - ICON_SIZE - 10;
-  auto &timeRemaining = isDebuff ? instance()._debuffTimeRemaining
-                                 : instance()._buffTimeRemaining;
-  e->addChild(new LinkedLabel<ms_t>(
 
   auto outlineColor = isDebuff ? Color::DEBUFF : Color::BUFF;
   e->addChild(new ColorBlock({ICON_X - 1, 1, 18, 18}, outlineColor));
@@ -201,9 +198,16 @@ Element *Client::assembleBuffEntry(const ClientBuffType &type, bool isDebuff) {
   auto icon = new Picture({ICON_X, 2, 16, 16}, type.icon());
   icon->setTooltip(type.name());
   e->addChild(icon);
+
+  auto &timeRemainingMap = isDebuff ? instance()._debuffTimeRemaining
+                                    : instance()._buffTimeRemaining;
+  auto timeRemainingLabel = new LinkedLabel<ms_t>(
       {0, 0, ICON_X - 3, instance()._buffsDisplay->childHeight()},
-      timeRemaining[type.id()], {}, {}, Element::RIGHT_JUSTIFIED,
-      Element::CENTER_JUSTIFIED));
+      timeRemainingMap[type.id()], {}, {}, Element::RIGHT_JUSTIFIED,
+      Element::CENTER_JUSTIFIED);
+  timeRemainingLabel->setFormatFunction(msAsShortTimeDisplay);
+  e->addChild(timeRemainingLabel);
+
   return e;
 }
 
