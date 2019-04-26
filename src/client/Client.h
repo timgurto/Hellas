@@ -404,7 +404,6 @@ class Client {
   Texture _loginFront, _loginBack;
   ui_t _loginUI;
   void initLoginScreen();
-  void cleanUpLoginScreen();
   void drawLoginScreen() const;
   std::list<Particle *> _loginParticles;
   void updateLoginParticles(double delta);

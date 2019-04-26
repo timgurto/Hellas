@@ -351,10 +351,6 @@ void Client::initLoginScreen() {
   _loginUI.push_back(_toasts);
 }
 
-void Client::cleanUpLoginScreen() {
-  for (Element *element : _loginUI) delete element;
-}
-
 void Client::handleLoginInput(double delta) {
   auto mouseEventWasOnWindow = false;
   static SDL_Event e;

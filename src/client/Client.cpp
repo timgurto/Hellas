@@ -235,7 +235,6 @@ void Client::initializeGearSlotNames() {
 
 Client::~Client() {
   SDL_ShowCursor(SDL_ENABLE);
-  cleanUpLoginScreen();
   ContainerGrid::cleanup();
   Element::cleanup();
   if (_defaultFont != nullptr) TTF_CloseFont(_defaultFont);
@@ -256,7 +255,11 @@ Client::~Client() {
 
   cleanupSocialWindow();
 
-  for (Element *element : _ui) delete element;
+  auto uniqueUIElements = std::set<Element *>{};
+  for (Element *mainUIElement : _ui) uniqueUIElements.insert(mainUIElement);
+  for (Element *loginElement : _loginUI) uniqueUIElements.insert(loginElement);
+  for (Element *element : uniqueUIElements) delete element;
+
   Mix_Quit();
 
   _instance = nullptr;
