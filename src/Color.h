@@ -69,6 +69,7 @@ class Color {
   static const Color FLOATING_MISS;
   static const Color FLOATING_CRIT;
 
+  static const Color BUFF;
   static const Color DEBUFF;
 
   static const Color UI_OUTLINE;
