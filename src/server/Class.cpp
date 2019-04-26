@@ -1,4 +1,5 @@
 #include "Class.h"
+
 #include "Server.h"
 #include "User.h"
 
@@ -164,8 +165,8 @@ bool Class::talentIsSupported(const Talent *talent, TalentRanks &talentRanks) {
     // 0 points = no support
     if (supportingTalent.second == 0) continue;
 
-    // This talent is more advanced, and so can't support it.
-    if (supportingTalent.first->tier().reqPointsInTree >
+    // This talent is at least as advanced, and so can't support it.
+    if (supportingTalent.first->tier().reqPointsInTree >=
         talent->tier().reqPointsInTree)
       continue;
 

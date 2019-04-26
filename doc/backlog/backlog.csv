@@ -417,7 +417,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 407,Make under-construction objects easier to kill,8,8,Exploit,,,,
 409,Change lighting/colors to simulate time of day,21,55,Aesthetics,,,,
 410,"Recruit via an invitation, not insta-join",21,13,Usability,,,,
-430,Sometimes non-leaf skills are lost on death,13,8,Bug,,,,2 Work playtest 2019
+430,Sometimes non-leaf skills are lost on death,13,8,Bug,,TRUE,,2 Work playtest 2019
 436,"New classes for ID and Name, used everywhere",2,5,Code quality,,,,
 438,Show a tooltip when terrain is inaccessible,2,3,Usability,,,,2 Work playtest 2019
 439,Account for vehicles in 'inaccessible' tooltips,2,3,Bug,438,,,
