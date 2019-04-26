@@ -668,6 +668,7 @@ void Client::handleMessage(const std::string &msg) {
         break;
       }
 
+      case SV_LOCATION_INSTANT_OBJECT:
       case SV_OBJECT_LOCATION: {
         int serial;
         double x, y;
@@ -680,6 +681,7 @@ void Client::handleMessage(const std::string &msg) {
           break;  // We didn't know about this object
         }
         it->second->destination({x, y});
+        if (msgCode == SV_LOCATION_INSTANT_OBJECT) it->second->location({x, y});
         break;
       }
 
