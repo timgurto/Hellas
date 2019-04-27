@@ -336,10 +336,10 @@ void Client::gameLoop() {
 
   // Update server with current location
   const bool atTarget = _pendingCharLoc == _character.location();
-  if (atTarget && !_locationHasChangedSinceLastUpdateToServer)
+  if (atTarget && !_serverHasOutOfDateLocationInfo)
     _timeSinceLocUpdate = 0;
   else {
-    _locationHasChangedSinceLastUpdateToServer = false;
+    _serverHasOutOfDateLocationInfo = false;
     _timeSinceLocUpdate += _timeElapsed;
     if (_timeSinceLocUpdate > TIME_BETWEEN_LOCATION_UPDATES) {
       sendMessage(CL_LOCATION, makeArgs(_pendingCharLoc.x, _pendingCharLoc.y));

@@ -505,7 +505,7 @@ void Client::handleInput(double delta) {
       }
 
       _mouseMoved = true;
-      _locationHasChangedSinceLastUpdateToServer = true;
+      _serverHasOutOfDateLocationInfo = true;
     }
   }
 }

@@ -1282,6 +1282,13 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         break;
       }
 
+      case DG_DIE: {
+        if (del != MSG_END) return;
+
+        user->kill();
+        break;
+      }
+
       default:
         _debug << Color::CHAT_ERROR << "Unhandled message: " << msg
                << Log::endl;

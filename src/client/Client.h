@@ -400,7 +400,7 @@ class Client {
   std::string _displaySpeed{0};  // Speed for display as podes/s
   MapPoint _pendingCharLoc;  // Where the player has told his character to go.
                              // Unconfirmed by server.
-  bool _locationHasChangedSinceLastUpdateToServer{true};
+  bool _serverHasOutOfDateLocationInfo{true};
 
   // Login screen
   Texture _loginFront, _loginBack;

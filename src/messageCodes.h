@@ -668,6 +668,9 @@ enum MessageCode {
   // "Teach me all spells"
   DG_SPELLS,
 
+  // "Kill me"
+  DG_DIE,
+
 
 
   // Messages used in tests

@@ -341,10 +341,12 @@ void Client::handleMessage(const std::string &msg) {
         if (del != MSG_END) break;
         Avatar *newUser = nullptr;
         const MapPoint p(x, y);
-        if (name == _username) {
+        auto isSelf = name == _username;
+        if (isSelf) {
           if (msgCode == SV_LOCATION_INSTANT_USER) {
             _pendingCharLoc = p;
             setEntityLocation(&_character, p);
+            _serverHasOutOfDateLocationInfo = false;
           }
           if (p.x == _character.location().x) _pendingCharLoc.x = p.x;
           if (p.y == _character.location().y) _pendingCharLoc.y = p.y;
@@ -2465,6 +2467,7 @@ void Client::initializeMessageNames() {
   _messageCommands["unlock"] = DG_UNLOCK;
   _messageCommands["level"] = DG_LEVEL;
   _messageCommands["spells"] = DG_SPELLS;
+  _messageCommands["die"] = DG_DIE;
 
   _errorMessages[WARNING_TOO_FAR] =
       "You are too far away to perform that action.";
