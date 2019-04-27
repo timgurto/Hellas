@@ -9,7 +9,7 @@
 #include "objects/Deconstruction.h"
 
 void Server::handleMessage(const Socket &client, const std::string &msg) {
-  //_debug(msg);
+  if (isDebug()) _debug(msg);
   int msgCode;
   char del;
   static char buffer[BUFFER_SIZE + 1];
