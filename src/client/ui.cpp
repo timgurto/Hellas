@@ -116,9 +116,20 @@ void Client::initCastBar() {
   _castBar = new Element(CAST_BAR_RECT);
   _castBar->addChild(
       new ProgressBar<ms_t>(CAST_BAR_DIMENSIONS, _actionTimer, _actionLength));
-  LinkedLabel<std::string> *castBarLabel = new LinkedLabel<std::string>(
+
+  for (auto x = -1; x <= 1; ++x)
+    for (auto y = -1; y <= 1; ++y) {
+      if (x == 0 && y == 0) continue;
+      auto rect = CAST_BAR_DIMENSIONS + ScreenRect{x, y};
+      auto *labelOutline = new LinkedLabel<std::string>(
+          rect, _actionMessage, "", "", Label::CENTER_JUSTIFIED);
+      labelOutline->setColor(Color::UI_OUTLINE);
+      _castBar->addChild(labelOutline);
+    }
+  auto *label = new LinkedLabel<std::string>(
       CAST_BAR_DIMENSIONS, _actionMessage, "", "", Label::CENTER_JUSTIFIED);
-  _castBar->addChild(castBarLabel);
+  _castBar->addChild(label);
+
   _castBar->hide();
   addUI(_castBar);
 }
