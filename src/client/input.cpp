@@ -494,10 +494,16 @@ void Client::handleInput(double delta) {
         newLoc.x += (up != down) ? diagDist : dist;
 
       _pendingCharLoc = newLoc;
-      const auto maxPendingDistance = 50.0 * _stats.speed / 80.0;
-      _pendingCharLoc = interpolate(_character.location(), _pendingCharLoc,
-                                    maxPendingDistance);
-      _character.destination(_pendingCharLoc);
+
+      auto serverWantsUsToGoSomewhereElse =
+          _character.location() != _character.destination();
+      if (!serverWantsUsToGoSomewhereElse) {  // Otherwise, keep existing target
+        const auto maxPendingDistance = 50.0 * _stats.speed / 80.0;
+        _pendingCharLoc = interpolate(_character.location(), _pendingCharLoc,
+                                      maxPendingDistance);
+        _character.destination(_pendingCharLoc);
+      }
+
       _mouseMoved = true;
       _locationHasChangedSinceLastUpdateToServer = true;
     }
