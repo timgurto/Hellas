@@ -1,4 +1,5 @@
 #include "NPC.h"
+
 #include "Server.h"
 #include "User.h"
 
@@ -186,6 +187,8 @@ void NPC::processAI(ms_t timeElapsed) {
   auto distToTarget =
       target() ? distance(collisionRect(), target()->collisionRect()) : 0;
 
+  auto previousState = _state;
+
   // Transition if necessary
   switch (_state) {
     case IDLE:
@@ -221,10 +224,8 @@ void NPC::processAI(ms_t timeElapsed) {
       if (spawner()) {
         auto distFromSpawner = spawner()->distanceFromEntity(*this);
         if (distFromSpawner > MAX_DISTANCE_FROM_SPAWNER) {
-          _targetDestination = spawner()->getRandomPoint();
-          target(nullptr);
-          _threatTable.clear();
           _state = IDLE;
+          _targetDestination = spawner()->getRandomPoint();
           teleportTo(_targetDestination);
           break;
         }
@@ -268,6 +269,13 @@ void NPC::processAI(ms_t timeElapsed) {
       break;
 
       break;
+  }
+
+  // On transition
+  if (previousState == CHASE && _state == IDLE) {
+    target(nullptr);
+    _threatTable.clear();
+    health(type()->baseStats().maxHealth);
   }
 
   // Act
