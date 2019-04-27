@@ -301,20 +301,19 @@ void Client::initMenuBar() {
                                   MENU_BUTTON_W * NUM_BUTTONS, MENU_BUTTON_H});
 
   addButtonToMenu(menuBar, 0, _buildWindow, "icon-build.png",
-                  "Build window (B)");
+                  "Build objects (B)");
   addButtonToMenu(menuBar, 1, _craftingWindow, "icon-crafting.png",
-                  "Crafting window (C)");
+                  "Craft items (C)");
   addButtonToMenu(menuBar, 2, _inventoryWindow, "icon-inventory.png",
-                  "Inventory window (I)");
+                  "Inventory (I)");
   addButtonToMenu(menuBar, 3, _gearWindow, "icon-gear.png", "Gear window (G)");
-  addButtonToMenu(menuBar, 4, _classWindow, "icon-class.png",
-                  "Class window (K)");
+  addButtonToMenu(menuBar, 4, _classWindow, "icon-class.png", "Talents (K)");
   addButtonToMenu(menuBar, 5, _questLog, "icon-quest.png", "Quest Log (Q)");
   addButtonToMenu(menuBar, 6, _socialWindow, "icon-social.png",
-                  "Social window (O)");
+                  "Social information (O)");
   addButtonToMenu(menuBar, 7, _chatContainer, "icon-chat.png",
                   "Toggle chat log");
-  addButtonToMenu(menuBar, 8, _mapWindow, "icon-map.png", "Map (M)");
+  addButtonToMenu(menuBar, 8, _mapWindow, "icon-map.png", "World map (M)");
   addButtonToMenu(menuBar, 9, _helpWindow, "icon-help.png", "Help (H)");
 
   addUI(menuBar);
