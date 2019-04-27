@@ -1505,11 +1505,12 @@ void Server::handle_CL_PERFORM_OBJECT_ACTION(User &user, size_t serial,
 }
 
 void Server::handle_CL_TARGET_ENTITY(User &user, size_t serial) {
-  user.cancelAction();
   if (serial == INVENTORY || serial == GEAR) {
     user.setTargetAndAttack(nullptr);
     return;
   }
+
+  user.cancelAction();
 
   auto target = _entities.find(serial);
   if (target == nullptr) {
@@ -1558,9 +1559,6 @@ void Server::handle_CL_TARGET_PLAYER(User &user,
 }
 
 void Server::handle_CL_SELECT_ENTITY(User &user, size_t serial) {
-  user.cancelAction();
-  user.action(User::NO_ACTION);
-
   if (serial == INVENTORY || serial == GEAR) {
     user.setTargetAndAttack(nullptr);
     return;
