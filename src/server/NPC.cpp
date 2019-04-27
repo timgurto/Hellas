@@ -188,6 +188,7 @@ void NPC::processAI(ms_t timeElapsed) {
       target() ? distance(collisionRect(), target()->collisionRect()) : 0;
 
   auto previousState = _state;
+  auto previousLocation = location();
 
   // Transition if necessary
   switch (_state) {
@@ -267,15 +268,22 @@ void NPC::processAI(ms_t timeElapsed) {
       }
 
       break;
-
-      break;
   }
 
   // On transition
   if (previousState == CHASE && _state == IDLE) {
     target(nullptr);
     _threatTable.clear();
-    health(type()->baseStats().maxHealth);
+
+    auto maxHealth = type()->baseStats().maxHealth;
+    if (health() < maxHealth) {
+      health(maxHealth);
+      onHealthChange();  // Only broadcasts to the new location, not the old.
+
+      const Server &server = *Server::_instance;
+      for (const User *user : server.findUsersInArea(previousLocation))
+        user->sendMessage(SV_ENTITY_HEALTH, makeArgs(serial(), health()));
+    }
   }
 
   // Act
