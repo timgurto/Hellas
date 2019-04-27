@@ -499,6 +499,7 @@ void Client::handleInput(double delta) {
                                     maxPendingDistance);
       _character.destination(_pendingCharLoc);
       _mouseMoved = true;
+      _locationHasChangedSinceLastUpdateToServer = true;
     }
   }
 }
