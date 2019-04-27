@@ -13,7 +13,7 @@ void Entity::updateLocation(const MapPoint &dest) {
 
   // Max legal distance: straight line
   double requestedDistance = distance(_location, dest);
-  double distanceToMove;
+  auto distanceToMove = 0.0;
   MapPoint newDest;
   if (classTag() == 'u' && userPtr->isDriving()) {
     distanceToMove = requestedDistance;
@@ -22,7 +22,13 @@ void Entity::updateLocation(const MapPoint &dest) {
     const double maxLegalDistance =
         min(Server::MAX_TIME_BETWEEN_LOCATION_UPDATES, timeElapsed) / 1000.0 *
         stats().speed;
-    distanceToMove = min(maxLegalDistance, requestedDistance);
+
+    static const auto TRUST_CLIENTS_WITH_MOVEMENT_SPEED = true;
+    if (!TRUST_CLIENTS_WITH_MOVEMENT_SPEED)
+      distanceToMove = min(maxLegalDistance, requestedDistance);
+    else
+      distanceToMove = requestedDistance;
+
     newDest = interpolate(_location, dest, distanceToMove);
 
     MapPoint rawDisplacement(newDest.x - _location.x, newDest.y - _location.y);
@@ -98,8 +104,11 @@ void Entity::updateLocation(const MapPoint &dest) {
     auto loY = server._entitiesByY.lower_bound(&Dummy::Location(0, top));
     auto hiY = server._entitiesByY.upper_bound(&Dummy::Location(0, bottom));
 
-    userPtr->sendMessage(SV_LOCATION,
-                         makeArgs(userPtr->name(), newDest.x, newDest.y));
+    // Tell user that he has moved
+    if (newDest != dest)
+      userPtr->sendMessage(SV_LOCATION,
+                           makeArgs(userPtr->name(), newDest.x, newDest.y));
+
     // Tell user about any additional objects he can now see
     std::list<const Entity *> nearbyEntities;
     for (auto it = loX; it != hiX; ++it) {

@@ -497,6 +497,7 @@ void Client::handleInput(double delta) {
       const auto maxPendingDistance = 50.0 * _stats.speed / 80.0;
       _pendingCharLoc = interpolate(_character.location(), _pendingCharLoc,
                                     maxPendingDistance);
+      _character.destination(_pendingCharLoc);
       _mouseMoved = true;
     }
   }

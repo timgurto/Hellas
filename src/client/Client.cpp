@@ -46,7 +46,7 @@ const ms_t Client::MAX_TICK_LENGTH = 100;
 const ms_t Client::SERVER_TIMEOUT = 10000;
 const ms_t Client::PING_FREQUENCY = 5000;
 
-const ms_t Client::TIME_BETWEEN_LOCATION_UPDATES = 50;
+const ms_t Client::TIME_BETWEEN_LOCATION_UPDATES = 100;
 
 const px_t Client::ICON_SIZE = 16;
 const px_t Client::HEADING_HEIGHT = 14;
@@ -336,7 +336,7 @@ void Client::gameLoop() {
 
   // Update server with current location
   const bool atTarget = _pendingCharLoc == _character.location();
-  if (atTarget)
+  if (atTarget && false)
     _timeSinceLocUpdate = 0;
   else {
     _timeSinceLocUpdate += _timeElapsed;
