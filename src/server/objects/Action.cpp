@@ -1,4 +1,5 @@
 #include "Action.h"
+
 #include "../Server.h"
 
 Action::FunctionMap Action::functionMap = {
@@ -32,7 +33,6 @@ bool Server::endTutorial(const Object &obj, User &performer,
   }
 
   performer.removeConstruction("tutFire");
-  server.sendMessage(performer.socket(), SV_UNLEARNED_CONSTRUCTION, "fire");
   performer.addConstruction("fire");
   server.sendMessage(performer.socket(), SV_CONSTRUCTIONS, makeArgs(1, "fire"));
 

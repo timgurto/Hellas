@@ -805,6 +805,8 @@ void Client::handleMessage(const std::string &msg) {
 
       case SV_CONSTRUCTIONS:
       case SV_NEW_CONSTRUCTIONS: {
+        if (msgCode == SV_CONSTRUCTIONS) _knownConstructions.clear();
+
         int n;
         singleMsg >> n >> del;
         for (size_t i = 0; i != n; ++i) {
