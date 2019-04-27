@@ -249,7 +249,17 @@ void Client::refreshTargetBuffs() {
   }
   for (const auto buff : _target.combatant()->debuffs()) {
     auto icon = new Picture({x, 0, 16, 16}, buff->icon());
-    icon->setTooltip(buff->name());
+
+    auto tooltip = Tooltip{};
+    tooltip.setColor(Color::TOOLTIP_NAME);
+    tooltip.addLine(buff->name());
+    if (buff->hasDescription()) {
+      tooltip.addGap();
+      tooltip.setColor();
+      tooltip.addLine(buff->description());
+    }
+    icon->setTooltip(tooltip);
+
     _targetBuffs->addChild(icon);
     x += 17;
   }
