@@ -388,6 +388,9 @@ enum MessageCode {
   SV_REMAINING_BUFF_TIME,
   SV_REMAINING_DEBUFF_TIME,
 
+  // You died
+  SV_YOU_DIED,
+
   // You know the following ... spells: ..., ..., etc.
   // Arguments: count, id1, id2, id3, ...
   SV_KNOWN_SPELLS,

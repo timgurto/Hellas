@@ -432,6 +432,13 @@ void Client::handleMessage(const std::string &msg) {
         break;
       }
 
+      case SV_YOU_DIED: {
+        if (del != MSG_END) break;
+
+        clearTarget();
+        break;
+      }
+
       case SV_SET_SPAWN: {
         if (del != MSG_END) break;
 
