@@ -814,6 +814,12 @@ void User::onDestroyedOwnedObject(const ObjectType &type) const {
   this->_playerUniqueCategoriesOwned.erase(type.playerUniqueCategory());
 }
 
+void User::onAttackedBy(Entity &attacker, Threat threat) {
+  cancelAction();
+
+  Object::onAttackedBy(attacker, threat);
+}
+
 void User::onKilled(Entity &victim) {
   auto levelDiff = victim.getLevelDifference(*this);
 
