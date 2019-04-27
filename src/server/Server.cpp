@@ -123,7 +123,7 @@ void Server::checkSockets() {
 
   // Activity on server socket: new connection
   if (FD_ISSET(_socket.getRaw(), &readFDs)) {
-    if (_clientSockets.size() == MAX_CLIENTS) {
+    if (false && _clientSockets.size() == MAX_CLIENTS) {
       _debug("No room for additional clients; all slots full");
       sockaddr_in clientAddr;
       SOCKET tempSocket = accept(_socket.getRaw(), (sockaddr *)&clientAddr,
