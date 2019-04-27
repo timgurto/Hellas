@@ -210,7 +210,12 @@ void Server::run() {
         ++next;
 
         auto socketIt = _clientSockets.find(it->socket());
-        assert(socketIt != _clientSockets.end());
+        if (socketIt == _clientSockets.end()) {
+          SERVER_ERROR(
+              "Trying to clean up user when socket number doesn't exist");
+          ++it;
+          continue;
+        }
         _clientSockets.erase(socketIt);
 
         removeUser(it);
