@@ -1,4 +1,5 @@
 #include "Yield.h"
+
 #include "../util.h"
 #include "Server.h"
 
@@ -33,7 +34,7 @@ size_t Yield::generateGatherQuantity(const ServerItem *item) const {
 
 double Yield::gatherMean(const ServerItem *item) const {
   auto it = _entries.find(item);
-  if (it != _entries.end()) {
+  if (it == _entries.end()) {
     SERVER_ERROR("Object doesn't yield that item");
     return 0;
   }

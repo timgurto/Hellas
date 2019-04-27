@@ -1,4 +1,5 @@
 #include "Object.h"
+
 #include "../../util.h"
 #include "../Server.h"
 #include "ObjectLoot.h"
@@ -51,9 +52,6 @@ const ServerItem *Object::chooseGatherItem() const {
     SERVER_ERROR("Can't gather from an empty object");
     return nullptr;
   }
-  if (_contents.isEmpty()) {
-    SERVER_ERROR("Total contents quality is too low");
-  }
 
   // Count number of average gathers remaining for each item type.
   size_t totalGathersRemaining = 0;
@@ -65,6 +63,12 @@ const ServerItem *Object::chooseGatherItem() const {
     gathersRemaining[item.first] = remaining;
     totalGathersRemaining += remaining;
   }
+
+  if (totalGathersRemaining == 0) {
+    SERVER_ERROR("Invalid gather count");
+    return nullptr;
+  }
+
   // Choose random item, weighted by remaining gathers.
   size_t i = rand() % totalGathersRemaining;
   for (auto item : gathersRemaining) {
