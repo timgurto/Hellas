@@ -295,7 +295,7 @@ void Client::updateUI() {
 }
 
 void Client::initMenuBar() {
-  static const px_t MENU_BUTTON_W = 12, MENU_BUTTON_H = 12, NUM_BUTTONS = 8;
+  static const px_t MENU_BUTTON_W = 12, MENU_BUTTON_H = 12, NUM_BUTTONS = 10;
   Element *menuBar = new Element({_hotbar->rect().x + _hotbar->width(),
                                   SCREEN_Y - MENU_BUTTON_H,
                                   MENU_BUTTON_W * NUM_BUTTONS, MENU_BUTTON_H});
