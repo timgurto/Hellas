@@ -219,11 +219,24 @@ Element *Client::assembleBuffEntry(const ClientBuffType &type, bool isDebuff) {
   }
   icon->setTooltip(tooltip);
 
+  // Duration display
   auto &timeRemainingMap = isDebuff ? instance()._debuffTimeRemaining
                                     : instance()._buffTimeRemaining;
+  auto timeRemainingRect =
+      ScreenRect{0, 0, ICON_X - 3, instance()._buffsDisplay->childHeight()};
+  const auto &msRemaining = timeRemainingMap[type.id()];
+  for (auto x = -1; x <= 1; ++x)
+    for (auto y = -1; y <= 1; ++y) {
+      if (x == 0 && y == 0) continue;
+      auto outline = new LinkedLabel<ms_t>(
+          timeRemainingRect + ScreenRect{x, y}, msRemaining, {}, {},
+          Element::RIGHT_JUSTIFIED, Element::CENTER_JUSTIFIED);
+      outline->setFormatFunction(msAsShortTimeDisplay);
+      outline->setColor(Color::UI_OUTLINE);
+      e->addChild(outline);
+    }
   auto timeRemainingLabel = new LinkedLabel<ms_t>(
-      {0, 0, ICON_X - 3, instance()._buffsDisplay->childHeight()},
-      timeRemainingMap[type.id()], {}, {}, Element::RIGHT_JUSTIFIED,
+      timeRemainingRect, msRemaining, {}, {}, Element::RIGHT_JUSTIFIED,
       Element::CENTER_JUSTIFIED);
   timeRemainingLabel->setFormatFunction(msAsShortTimeDisplay);
   e->addChild(timeRemainingLabel);
