@@ -57,6 +57,8 @@ void SpriteType::setImage(const std::string &imageFile) {
 void SpriteType::drawRect(const ScreenRect &rect) { _drawRect = rect; }
 
 const Texture &SpriteType::shadow() const {
+  if (isDecoration()) return _shadow;  // Will never get created.
+
   if (!_shadow || _timeGenerated < timeThatTheLastRedrawWasOrdered) {
     px_t shadowWidth = toInt(_drawRect.w * SHADOW_RATIO);
     px_t shadowHeight = toInt(shadowWidth / SHADOW_WIDTH_HEIGHT_RATIO);
