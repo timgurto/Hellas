@@ -25,16 +25,6 @@ ScreenRect Sprite::drawRect() const {
   return drawRect;
 }
 
-ScreenRect Sprite::shadowRect() const {
-  assert(_type);
-  auto r = _type->drawRect();
-  r.w = toInt(r.w * SpriteType::SHADOW_RATIO);
-  r.h = toInt(r.w / SpriteType::SHADOW_WIDTH_HEIGHT_RATIO);
-  r.x = toInt(r.x * SpriteType::SHADOW_RATIO);
-  r.y = -toInt(r.h / 2.0);
-  return r + toScreenPoint(_location);
-}
-
 double Sprite::speed() const {
   const auto &client = Client::instance();
   if (this == &client.character()) return client._stats.speed;
@@ -42,14 +32,12 @@ double Sprite::speed() const {
 }
 
 void Sprite::draw(const Client &client) const {
-  auto shadowDrawRect = shadowRect() + client.offset();
-  auto shadow = Texture{shadowDrawRect.w, shadowDrawRect.h};
-  shadow.setBlend();
-  shadow.setAlpha(0x7f);
-  renderer.pushRenderTarget(shadow);
-  client.shadowImage().draw({0, 0, shadowDrawRect.w, shadowDrawRect.h});
-  renderer.popRenderTarget();
-  shadow.draw(shadowDrawRect);
+  const auto &shadow = type()->shadow();
+  auto shadowX = toInt(type()->drawRect().x * SpriteType::SHADOW_RATIO);
+  auto shadowY = -toInt(shadow.height() / 2.0);
+  auto shadowPosition = toScreenPoint(_location) +
+                        ScreenPoint{shadowX, shadowY} + client.offset();
+  shadow.draw(shadowPosition);
 
   const Texture &imageToDraw =
       client.currentMouseOverEntity() == this ? highlightImage() : image();

@@ -11,10 +11,14 @@
 // properties
 class SpriteType {
   Texture _image, _imageHighlight;
+  mutable Texture _shadow;
   ScreenRect _drawRect;  // Where to draw the image, relative to its location
   bool _isFlat;  // Whether these objects appear flat, i.e., are drawn behind
                  // all other entities.
   bool _isDecoration;  // Whether this is invisible to mouse events.
+
+  static ms_t timeThatTheLastRedrawWasOrdered;
+  mutable ms_t _timeGenerated{0};
 
   struct Particles {
     std::string profile;
@@ -36,7 +40,8 @@ class SpriteType {
   void setImage(const std::string &filename);
   const Texture &highlightImage() const { return _imageHighlight; }
   const ScreenRect &drawRect() const { return _drawRect; }
-  void drawRect(const ScreenRect &rect) { _drawRect = rect; }
+  void drawRect(const ScreenRect &rect);
+  const Texture &shadow() const;
   bool isFlat() const { return _isFlat; }
   void isFlat(bool b) { _isFlat = b; }
   bool isDecoration() const { return _isDecoration; }
@@ -52,6 +57,10 @@ class SpriteType {
   virtual const Texture &image() const { return _image; }
 
   virtual char classTag() const { return 'e'; }
+
+  static void forceAllShadowsToRedraw() {
+    timeThatTheLastRedrawWasOrdered = SDL_GetTicks();
+  }
 };
 
 #endif

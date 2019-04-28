@@ -7,8 +7,10 @@
 #include "Client.h"
 #include "Surface.h"
 
-const double SpriteType::SHADOW_RATIO = 0.7;
-const double SpriteType::SHADOW_WIDTH_HEIGHT_RATIO = 2.0;
+ms_t SpriteType::timeThatTheLastRedrawWasOrdered{0};
+
+const double SpriteType::SHADOW_RATIO = 0.8;
+const double SpriteType::SHADOW_WIDTH_HEIGHT_RATIO = 1.8;
 
 SpriteType::SpriteType(const ScreenRect &drawRect, const std::string &imageFile)
     : _drawRect(drawRect), _isFlat(false), _isDecoration(false) {
@@ -50,4 +52,23 @@ void SpriteType::setImage(const std::string &imageFile) {
   _drawRect.w = _image.width();
   _drawRect.h = _image.height();
   setHighlightImage(imageFile);
+}
+
+void SpriteType::drawRect(const ScreenRect &rect) { _drawRect = rect; }
+
+const Texture &SpriteType::shadow() const {
+  if (!_shadow || _timeGenerated < timeThatTheLastRedrawWasOrdered) {
+    px_t shadowWidth = toInt(_drawRect.w * SHADOW_RATIO);
+    px_t shadowHeight = toInt(shadowWidth / SHADOW_WIDTH_HEIGHT_RATIO);
+    _shadow = {shadowWidth, shadowHeight};
+    _shadow.setBlend();
+    _shadow.setAlpha(0x7f);
+    renderer.pushRenderTarget(_shadow);
+    Client::instance().shadowImage().draw({0, 0, shadowWidth, shadowHeight});
+    renderer.popRenderTarget();
+
+    _timeGenerated = SDL_GetTicks();
+  }
+
+  return _shadow;
 }

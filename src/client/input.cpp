@@ -456,6 +456,7 @@ void Client::handleInput(double delta) {
             for (Window *window : _windows) window->forceRefresh();
             for (Element *element : _ui) element->forceRefresh();
             Tooltip::forceAllToRedraw();
+            SpriteType::forceAllShadowsToRedraw();
             populateClassWindow();
             break;
         }
