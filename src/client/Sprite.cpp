@@ -42,7 +42,14 @@ double Sprite::speed() const {
 }
 
 void Sprite::draw(const Client &client) const {
-  client.shadowImage().draw(shadowRect() + client.offset());
+  auto shadowDrawRect = shadowRect() + client.offset();
+  auto shadow = Texture{shadowDrawRect.w, shadowDrawRect.h};
+  shadow.setBlend();
+  shadow.setAlpha(0x7f);
+  renderer.pushRenderTarget(shadow);
+  client.shadowImage().draw({0, 0, shadowDrawRect.w, shadowDrawRect.h});
+  renderer.popRenderTarget();
+  shadow.draw(shadowDrawRect);
 
   const Texture &imageToDraw =
       client.currentMouseOverEntity() == this ? highlightImage() : image();
