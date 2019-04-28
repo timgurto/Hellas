@@ -64,7 +64,7 @@ const Texture &SpriteType::shadow() const {
     px_t shadowHeight = toInt(shadowWidth / SHADOW_WIDTH_HEIGHT_RATIO);
     _shadow = {shadowWidth, shadowHeight};
     _shadow.setBlend();
-    _shadow.setAlpha(0x7f);
+    _shadow.setAlpha(0x4f);
     renderer.pushRenderTarget(_shadow);
     Client::instance().shadowImage().draw({0, 0, shadowWidth, shadowHeight});
     renderer.popRenderTarget();
