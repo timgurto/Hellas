@@ -25,6 +25,8 @@ class SpriteType {
  public:
   enum Special { DECORATION };
 
+  static const double SHADOW_RATIO, SHADOW_WIDTH_HEIGHT_RATIO;
+
   SpriteType(const ScreenRect &drawRect = {},
              const std::string &imageFile = "");
   SpriteType(Special special);

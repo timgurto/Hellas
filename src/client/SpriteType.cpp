@@ -1,10 +1,14 @@
+#include "SpriteType.h"
+
 #include <SDL.h>
 #include <SDL_image.h>
 
 #include "../Color.h"
 #include "Client.h"
-#include "SpriteType.h"
 #include "Surface.h"
+
+const double SpriteType::SHADOW_RATIO = 0.7;
+const double SpriteType::SHADOW_WIDTH_HEIGHT_RATIO = 2.0;
 
 SpriteType::SpriteType(const ScreenRect &drawRect, const std::string &imageFile)
     : _drawRect(drawRect), _isFlat(false), _isDecoration(false) {
@@ -36,7 +40,8 @@ void SpriteType::addParticles(const std::string &profileName,
 void SpriteType::setHighlightImage(const std::string &imageFile) {
   Surface highlightSurface(imageFile, Color::MAGENTA);
   if (!highlightSurface) return;
-  highlightSurface.swapColors(Color::SPRITE_OUTLINE, Color::SPRITE_OUTLINE_HIGHLIGHT);
+  highlightSurface.swapColors(Color::SPRITE_OUTLINE,
+                              Color::SPRITE_OUTLINE_HIGHLIGHT);
   _imageHighlight = Texture(highlightSurface);
 }
 

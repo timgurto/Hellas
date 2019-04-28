@@ -28,10 +28,10 @@ ScreenRect Sprite::drawRect() const {
 ScreenRect Sprite::shadowRect() const {
   assert(_type);
   auto r = _type->drawRect();
-  r.w = toInt(r.w * 0.7);
-  r.h = r.w / 2;
-  r.x = toInt(r.x * 0.7);
-  r.y = -r.h / 2;
+  r.w = toInt(r.w * SpriteType::SHADOW_RATIO);
+  r.h = toInt(r.w / SpriteType::SHADOW_WIDTH_HEIGHT_RATIO);
+  r.x = toInt(r.x * SpriteType::SHADOW_RATIO);
+  r.y = -toInt(r.h / 2.0);
   return r + toScreenPoint(_location);
 }
 
