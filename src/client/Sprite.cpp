@@ -25,6 +25,16 @@ ScreenRect Sprite::drawRect() const {
   return drawRect;
 }
 
+ScreenRect Sprite::shadowRect() const {
+  assert(_type);
+  auto r = _type->drawRect();
+  r.w = toInt(r.w * 0.7);
+  r.h = r.w / 2;
+  r.x = toInt(r.x * 0.7);
+  r.y = -r.h / 2;
+  return r + toScreenPoint(_location);
+}
+
 double Sprite::speed() const {
   const auto &client = Client::instance();
   if (this == &client.character()) return client._stats.speed;
@@ -32,6 +42,8 @@ double Sprite::speed() const {
 }
 
 void Sprite::draw(const Client &client) const {
+  client.shadowImage().draw(shadowRect() + client.offset());
+
   const Texture &imageToDraw =
       client.currentMouseOverEntity() == this ? highlightImage() : image();
   if (imageToDraw)

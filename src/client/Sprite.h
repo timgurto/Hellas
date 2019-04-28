@@ -43,6 +43,7 @@ class Sprite {
   void location(const MapPoint &loc);  // yChanged() should be checked after
                                        // changing location.
   virtual ScreenRect drawRect() const;
+  virtual ScreenRect shadowRect() const;
   px_t width() const { return _type->width(); }
   px_t height() const { return _type->height(); }
   bool yChanged() const { return _yChanged; }

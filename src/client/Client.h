@@ -108,6 +108,7 @@ class Client {
   }
 
   const Texture &mapImage() const { return _mapImage; }
+  const Texture &shadowImage() const { return _shadowImage; }
 
   const ClientBuffTypes &buffTypes() const { return _buffTypes; }
 
@@ -301,6 +302,7 @@ class Client {
 
   Window *_mapWindow = nullptr;
   Texture _mapImage;
+  Texture _shadowImage;
   Element *_mapPins, *_mapPinOutlines;
   static const px_t MAP_IMAGE_W = 300, MAP_IMAGE_H = 300;
   void initializeMapWindow();

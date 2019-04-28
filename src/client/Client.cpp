@@ -161,6 +161,8 @@ Client::Client()
   _config.loadFromFile("client-config.xml");
   _connection.initialize(_config.serverHostDirectory);
 
+  _shadowImage = {"Images/shadow.png"};
+
   initUI();
   _wordWrapper = WordWrapper{_defaultFont, _chatLog->contentWidth()};
 
