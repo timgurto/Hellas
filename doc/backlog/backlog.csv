@@ -258,9 +258,9 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 72,"Sort _materials and _craftableItems by name, not ID",5,3,Usability,,,,
 75,NPC idling AI,5,5,Feature,,,,
 78,Release scrollbar on mouse up,5,8,Bug,,,,
-79,Make it more obvious when something is out of range,13,8,Usability,,,,2 Work playtest 2019
+79,Make it more obvious when something is out of range,13,8,Usability,,,,
 81,Allow actual dragging from containers,21,34,Usability,,,,
-82,Fix jumpy movement when laggy,5,34,Aesthetics,,,,
+82,Fix jumpy movement when laggy,5,34,Aesthetics,,TRUE,,
 83,Stack splitting,21,34,Feature,,,,
 85,Fix scroll-bar dragging offset,5,3,Bug,,,,
 86,Allow a recipe to create multiple item types,3,34,Feature,,,,
@@ -344,7 +344,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 226,"Avoid window overlap if possible, for object windows",13,13,Usability,,,,
 227,Allow trees to be planted,5,8,Content,,,,
 228,Add container contents to object tooltips,34,13,Usability,,,,
-234,Make allowed-terrain more intuitive for construction,8,8,Usability,,,,2 Work playtest 2019
+234,Make allowed-terrain more intuitive for construction,8,8,Usability,,,,
 236,Prevent construction near respawn altars,3,8,Exploit,,,,
 239,Add coinage,21,3,Content,235,,,
 240,XML-verifying git hook,21,34,Code quality,,,,
@@ -354,7 +354,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 254,Fireball launch particles,3,3,Aesthetics,249,,,
 256,Fireball casting sound,1,5,Aesthetics,250,,,
 266,Global cooldown for spells,3,13,Feature,265,,,
-270,Buffs can be dismissed,1,5,Feature,267,,,2 Work playtest 2019
+270,Buffs can be dismissed,1,5,Feature,267,,,
 275,Spell to summon a friendly NPC,2,5,Feature,265,,,
 280,Hotbar can be rearranged,13,34,Usability,279,,,
 281,Hotbar can include recipes,8,13,Usability,280,,,
@@ -404,7 +404,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 391,Show buff timers in client,21,8,Usability,,TRUE,,2 Work playtest 2019
 393,"Play defend/death sounds on projectile hit, not launch",8,5,Usability,,,,
 394,Tooltips for terrain tags,8,5,Usability,,,,
-395,Add simple object shadows,21,13,Aesthetics,,,,
+395,Add simple object shadows,21,13,Aesthetics,,TRUE,,
 396,Find a sink for small pots,8,8,Content,,,,
 397,Carve arrows instead of grinding them,8,2,Content,,,,
 398,"If login position blocked: try nearby, then spawn, then default spawn",21,3,Feature,,,,
@@ -419,9 +419,9 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 410,"Recruit via an invitation, not insta-join",21,13,Usability,,,,
 430,Sometimes non-leaf skills are lost on death,13,8,Bug,,TRUE,,2 Work playtest 2019
 436,"New classes for ID and Name, used everywhere",2,5,Code quality,,,,
-438,Show a tooltip when terrain is inaccessible,2,3,Usability,,,,2 Work playtest 2019
+438,Show a tooltip when terrain is inaccessible,2,3,Usability,,,,
 439,Account for vehicles in 'inaccessible' tooltips,2,3,Bug,438,,,
-442,Fade in from black on first login,21,21,Aesthetics,,,,2 Work playtest 2019
+442,Fade in from black on first login,21,21,Aesthetics,,,,
 452,Editor: change player spawn,5,5,Tooling,450,,,
 454,Editor: save static objects,8,3,Tooling,453,,,
 455,Editor: add static objects,13,13,Tooling,453,,,
@@ -446,7 +446,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 487,Show chance to unlock when building,13,2,Usability,486,,,
 490,Allow line break on -,2,3,Bug,,,,
 496,Draw names/bars in front of everything else,2,2,Usability,,TRUE,,2 Work playtest 2019
-498,It's too easy to select Atlas,2,3,Usability,,,,2 Work playtest 2019
+498,It's too easy to select Atlas,2,3,Usability,,,,
 500,Show taggers in client,5,3,Usability,,,,
 501,Zoomable map,34,89,Usability,,,,
 502,Add spell sounds/art to missing-data page,13,5,Tooling,,,,
