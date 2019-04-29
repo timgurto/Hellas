@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include "../Optional.h"
 #include "../Point.h"
 #include "../util.h"
 #include "Texture.h"
@@ -25,6 +26,8 @@ class SpriteType {
     MapPoint offset;  // From location
   };
   std::vector<Particles> _particles;
+
+  Optional<px_t> _customShadowWidth;
 
  public:
   enum Special { DECORATION };
@@ -61,6 +64,9 @@ class SpriteType {
   static void forceAllShadowsToRedraw() {
     timeThatTheLastRedrawWasOrdered = SDL_GetTicks();
   }
+  void useCustomShadowWidth(px_t width);
+  bool hasCustomShadowWidth() const { return _customShadowWidth.hasValue(); }
+  px_t customShadowWidth() const { return _customShadowWidth.value(); }
 };
 
 #endif

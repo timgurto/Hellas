@@ -33,7 +33,9 @@ double Sprite::speed() const {
 
 void Sprite::draw(const Client &client) const {
   const auto &shadow = type()->shadow();
-  auto shadowX = toInt(type()->drawRect().x * SpriteType::SHADOW_RATIO);
+  auto shadowX = type()->hasCustomShadowWidth()
+                     ? -type()->customShadowWidth() / 2
+                     : toInt(type()->drawRect().x * SpriteType::SHADOW_RATIO);
   auto shadowY = -toInt(shadow.height() / 2.0);
   auto shadowPosition = toScreenPoint(_location) +
                         ScreenPoint{shadowX, shadowY} + client.offset();

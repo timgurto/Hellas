@@ -818,6 +818,10 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
          ySet = xr.findAttr(elem, "yDrawOffset", drawRect.y);
     nt->drawRect(drawRect);
 
+    auto customShadowWidth = 0_px;
+    if (xr.findAttr(elem, "customShadowWidth", customShadowWidth))
+      nt->useCustomShadowWidth(customShadowWidth);
+
     // Collision rect
     if (humanoid) nt->collisionRect(Avatar::COLLISION_RECT);
     auto r = MapRect{};
