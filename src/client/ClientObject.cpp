@@ -1077,6 +1077,11 @@ bool ClientObject::shouldDrawName() const {
   return false;
 }
 
+bool ClientObject::shouldDrawShadow() const {
+  if (isBeingConstructed()) return false;
+  return Sprite::shouldDrawShadow();
+}
+
 bool ClientObject::belongsToPlayer() const {
   const Avatar &playerCharacter = Client::_instance->character();
   return owner() == playerCharacter.name();

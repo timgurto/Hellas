@@ -76,6 +76,7 @@ class Sprite {
   virtual const Texture &cursor(const Client &client) const;
   virtual const Tooltip &tooltip() const;
   virtual bool shouldDrawName() const { return false; }
+  virtual bool shouldDrawShadow() const { return true; }
   virtual const std::string &name() const { return EMPTY_NAME; }
   virtual const Color &nameColor() const { return Color::COMBATANT_NEUTRAL; }
   void refreshTooltip() const { _tooltip = Optional<Tooltip>{}; }

@@ -147,6 +147,7 @@ class ClientObject : public Sprite, public ClientCombatant {
   const Texture &cursor(const Client &client) const override;
   virtual const Color &nameColor() const override;
   virtual bool shouldDrawName() const override;
+  virtual bool shouldDrawShadow() const override;
   bool shouldAddParticles() const override {
     return isAlive() && !isBeingConstructed();
   }
