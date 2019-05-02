@@ -84,7 +84,6 @@ void Client::initWindows() {
 
   initializeInventoryWindow();
   addWindow(_inventoryWindow);
-  _inventoryWindow->show();
 
   _gearWindow =
       Window::InitializeLater(initializeGearWindow, "Gear (uninitialised)");

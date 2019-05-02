@@ -259,6 +259,8 @@ void Client::login() {
   else
     _instance->sendMessage(CL_LOGIN_EXISTING,
                            makeArgs(_instance->_username, version()));
+
+  _instance->_inventoryWindow->show();
 }
 
 void Client::initLoginScreen() {
