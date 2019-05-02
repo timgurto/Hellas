@@ -365,30 +365,7 @@ void Client::handleMessage(const std::string &msg) {
           if (msgCode == SV_LOCATION_INSTANT_USER) user.location(p);
         }
 
-        // Unwatch objects if out of range
-        for (auto it = _objectsWatched.begin(); it != _objectsWatched.end();) {
-          ClientObject &obj = **it;
-          ++it;
-          if (distance(playerCollisionRect(), obj.collisionRect()) >
-              ACTION_DISTANCE) {
-            obj.hideWindow();
-
-            // Hide quest windows from this object
-            // Note: this doesn't check that the object itself is the source of
-            // the quest.  A more correct solution would make sure that there
-            // are no watched objects of the same type.
-            for (auto *questFromThisObject : obj.startsQuests()) {
-              auto *questWindow = questFromThisObject->window();
-              if (questWindow) const_cast<Window *>(questWindow)->hide();
-            }
-            for (auto *questFromThisObject : obj.completableQuests()) {
-              auto *questWindow = questFromThisObject->window();
-              if (questWindow) const_cast<Window *>(questWindow)->hide();
-            }
-
-            unwatchObject(obj);
-          }
-        }
+        unwatchOutOfRangeObjects();
 
         bool shouldTryToCullObjects = name == _username;
         if (shouldTryToCullObjects) {

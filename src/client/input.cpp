@@ -499,6 +499,8 @@ void Client::handleInput(double delta) {
       _character.location(newLocation);
       _serverHasOutOfDateLocationInfo = true;
 
+      unwatchOutOfRangeObjects();
+
       _mouseMoved = true;
     }
   }

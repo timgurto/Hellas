@@ -523,6 +523,32 @@ void Client::unwatchObject(ClientObject &obj) {
   _objectsWatched.erase(&obj);
 }
 
+void Client::unwatchOutOfRangeObjects() {
+  for (auto it = _objectsWatched.begin(); it != _objectsWatched.end();) {
+    ClientObject &obj = **it;
+    ++it;
+    if (distance(playerCollisionRect(), obj.collisionRect()) >
+        ACTION_DISTANCE) {
+      obj.hideWindow();
+
+      // Hide quest windows from this object
+      // Note: this doesn't check that the object itself is the source of
+      // the quest.  A more correct solution would make sure that there
+      // are no watched objects of the same type.
+      for (auto *questFromThisObject : obj.startsQuests()) {
+        auto *questWindow = questFromThisObject->window();
+        if (questWindow) const_cast<Window *>(questWindow)->hide();
+      }
+      for (auto *questFromThisObject : obj.completableQuests()) {
+        auto *questWindow = questFromThisObject->window();
+        if (questWindow) const_cast<Window *>(questWindow)->hide();
+      }
+
+      unwatchObject(obj);
+    }
+  }
+}
+
 void Client::dropItemOnConfirmation(size_t serial, size_t slot,
                                     const ClientItem *item) {
   std::string windowText =

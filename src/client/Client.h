@@ -269,6 +269,7 @@ class Client {
   std::set<ClientObject *> _objectsWatched;
   void watchObject(ClientObject &obj);
   void unwatchObject(ClientObject &obj);
+  void unwatchOutOfRangeObjects();
 
   bool outsideCullRange(const MapPoint &loc, px_t hysteresis = 0) const;
 
