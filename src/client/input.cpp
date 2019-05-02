@@ -136,7 +136,7 @@ void Client::handleInput(double delta) {
               break;
 
             case SDLK_l:
-              _chatLog->toggleVisibility();
+              _chatContainer->toggleVisibility();
               break;
 
             case SDLK_g:
