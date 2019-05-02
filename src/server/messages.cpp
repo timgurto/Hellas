@@ -1820,7 +1820,11 @@ void Server::handle_CL_TAKE_TALENT(User &user, const Talent::Name &talentName) {
 }
 
 void Server::handle_CL_UNLEARN_TALENTS(User &user) {
-  user.getClass().unlearnAll();
+  auto &userClass = user.getClass();
+  userClass.unlearnAll();
+
+  auto knownSpellsString = userClass.generateKnownSpellsString();
+  user.sendMessage(SV_KNOWN_SPELLS, knownSpellsString);
 }
 
 CombatResult Server::handle_CL_CAST(User &user, const std::string &spellID,
