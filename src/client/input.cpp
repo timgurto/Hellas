@@ -500,6 +500,7 @@ void Client::handleInput(double delta) {
       _serverHasOutOfDateLocationInfo = true;
 
       unwatchOutOfRangeObjects();
+      _mapWindow->markChanged();
 
       _mouseMoved = true;
     }
