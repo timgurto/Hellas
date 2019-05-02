@@ -482,31 +482,24 @@ void Client::handleInput(double delta) {
           _character.isDriving() ? VEHICLE_SPEED : _stats.speed;
       const double DIAG_SPEED = SPEED / SQRT_2;
       const double dist = delta * SPEED, diagDist = delta * DIAG_SPEED;
-      MapPoint newLoc = _pendingCharLoc;
+
+      auto newLocation = _character.location();
+
       if (up != down) {
         if (up && !down)
-          newLoc.y -= (left != right) ? diagDist : dist;
+          newLocation.y -= (left != right) ? diagDist : dist;
         else if (down && !up)
-          newLoc.y += (left != right) ? diagDist : dist;
+          newLocation.y += (left != right) ? diagDist : dist;
       }
       if (left && !right)
-        newLoc.x -= (up != down) ? diagDist : dist;
+        newLocation.x -= (up != down) ? diagDist : dist;
       else if (right && !left)
-        newLoc.x += (up != down) ? diagDist : dist;
+        newLocation.x += (up != down) ? diagDist : dist;
 
-      _pendingCharLoc = newLoc;
-
-      auto serverWantsUsToGoSomewhereElse =
-          _character.location() != _character.destination();
-      if (!serverWantsUsToGoSomewhereElse) {  // Otherwise, keep existing target
-        const auto maxPendingDistance = 50.0 * _stats.speed / 80.0;
-        _pendingCharLoc = interpolate(_character.location(), _pendingCharLoc,
-                                      maxPendingDistance);
-        _character.destination(_pendingCharLoc);
-      }
+      _character.location(newLocation);
+      _serverHasOutOfDateLocationInfo = true;
 
       _mouseMoved = true;
-      _serverHasOutOfDateLocationInfo = true;
     }
   }
 }

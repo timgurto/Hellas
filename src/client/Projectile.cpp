@@ -1,8 +1,11 @@
 #include "Projectile.h"
+
 #include "Client.h"
 #include "SoundProfile.h"
 
 void Projectile::update(double delta) {
+  auto &client = Client::instance();
+
   auto distanceToMove = speed() * delta;
   auto distanceFromTarget = distance(location(), _end);
   auto reachedTarget = distanceToMove >= distanceFromTarget;
@@ -11,7 +14,7 @@ void Projectile::update(double delta) {
     auto shouldShowImpact = !_willMiss;
     if (shouldShowImpact) {
       if (!particlesAtEnd().empty())
-        Client::instance().addParticles(particlesAtEnd(), _end);
+        client.addParticles(particlesAtEnd(), _end);
 
       auto sounds = projectileType().sounds();
       if (sounds) sounds->playOnce("impact"s);
@@ -31,11 +34,11 @@ void Projectile::update(double delta) {
     // Update location
     auto oldSegmentLocation = segment->location();
     segment->location(oldSegmentLocation + locationDelta);
-    segment->destination(segment->location());
+    segment->newLocationFromServer(segment->location());
 
     // Add particles
     if (tailParticles != ""s) {
-      Client::instance().addParticles(tailParticles, segment->location());
+      client.addParticles(tailParticles, segment->location());
     }
   }
 }

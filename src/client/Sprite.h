@@ -20,13 +20,9 @@ class Sprite {
   MapPoint _location;
 
   // Lerping
-  MapPoint _destination;
-  /*
-  Get the next location towards destination, with distance determined by
-  this client's latency, and by time elapsed.
-  This is used to smooth the apparent movement of other users.
-  */
-  MapPoint interpolatedLocation(double delta);
+  MapPoint _locationOnServer;
+  bool _serverHasOrderedACorrection{true};
+  void driftTowardsServerLocation(double delta);
 
   bool _toRemove;  // No longer draw or update, and remove when possible.
 
@@ -42,6 +38,7 @@ class Sprite {
   const MapPoint &location() const { return _location; }
   void location(const MapPoint &loc);  // yChanged() should be checked after
                                        // changing location.
+
   virtual ScreenRect drawRect() const;
   px_t width() const { return _type->width(); }
   px_t height() const { return _type->height(); }
@@ -60,8 +57,14 @@ class Sprite {
   virtual bool shouldAddParticles() const { return true; }
 
   // Movement lerping
-  const MapPoint &destination() const { return _destination; }
-  void destination(const MapPoint &dst) { _destination = dst; }
+  const MapPoint &locationOnServer() const { return _locationOnServer; }
+  void newLocationFromServer(const MapPoint &loc) {
+    _locationOnServer = loc;
+    _serverHasOrderedACorrection = true;
+  }
+  bool serverHasOrderedACorrection() const {
+    return _serverHasOrderedACorrection;
+  }
   virtual px_t apparentMovementSpeed() const { return 0; }
   virtual double speed() const;
 

@@ -15,7 +15,7 @@ Sprite::Sprite(const SpriteType *type, const MapPoint &location)
     : _yChanged(false),
       _type(type),
       _location(location),
-      _destination(location),
+      _locationOnServer(location),
       _toRemove(false) {}
 
 ScreenRect Sprite::drawRect() const {
@@ -75,11 +75,12 @@ void Sprite::drawName() const {
 }
 
 void Sprite::update(double delta) {
-  location(interpolatedLocation(delta));
+  auto &client = Client::instance();
+
+  driftTowardsServerLocation(delta);
 
   if (!shouldAddParticles()) return;
 
-  auto &client = Client::instance();
   for (auto &p : _type->particles()) {
     auto particleX = _location.x + p.offset.x;
     auto particleY = bottomEdge();
@@ -127,10 +128,13 @@ const Tooltip &Sprite::tooltip() const {
   return Tooltip::noTooltip();
 }
 
-MapPoint Sprite::interpolatedLocation(double delta) {
-  if (_destination == location()) return _destination;
-  ;
+void Sprite::driftTowardsServerLocation(double delta) {
+  if (!_serverHasOrderedACorrection) return;
 
   const double maxLegalDistance = delta * speed();
-  return interpolate(location(), _destination, maxLegalDistance);
+  auto newLocation =
+      interpolate(location(), _locationOnServer, maxLegalDistance);
+  location(newLocation);
+
+  if (newLocation == _locationOnServer) _serverHasOrderedACorrection = false;
 }

@@ -39,20 +39,6 @@ void Client::draw() const {
     }
   }
 
-  // Character's target and actual location
-  if (isDebug()) {
-    renderer.setDrawColor(Color::YELLOW);
-    const ScreenPoint &actualLoc =
-        toScreenPoint(_character.destination()) + offset();
-    renderer.drawRect({actualLoc.x - 1, actualLoc.y - 1, 3, 3});
-
-    renderer.setDrawColor(Color::WHITE);
-    auto pendingLoc = ScreenPoint{toInt(_pendingCharLoc.x) + offset().x,
-                                  toInt(_pendingCharLoc.y) + offset().y};
-    renderer.drawRect({pendingLoc.x, pendingLoc.y, 1, 1});
-    renderer.drawRect({pendingLoc.x - 2, pendingLoc.y - 2, 5, 5});
-  }
-
   // Entities, sorted from back to front
   static const px_t DRAW_MARGIN_ABOVE = 160, DRAW_MARGIN_BELOW = 160,
                     DRAW_MARGIN_SIDES = 160;
@@ -118,6 +104,14 @@ void Client::draw() const {
     const auto *asCombatant = dynamic_cast<const ClientCombatant *>(*it);
     if (!asCombatant) continue;
     asCombatant->drawHealthBarIfAppropriate((*it)->location(), (*it)->height());
+  }
+
+  // Character's server location
+  if (isDebug()) {
+    renderer.setDrawColor(Color::YELLOW);
+    const ScreenPoint &serverLoc =
+        toScreenPoint(_character.locationOnServer()) + offset();
+    renderer.drawRect({serverLoc.x - 1, serverLoc.y - 1, 3, 3});
   }
 
   // Non-window UI

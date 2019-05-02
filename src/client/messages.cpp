@@ -63,7 +63,7 @@ void Client::handleMessage(const std::string &msg) {
       iss.ignore();  // Throw away ']'
     }
     std::istringstream singleMsg(buffer);
-    //_debug(buffer, Color::TODO);
+    //_debug(buffer, Color::CYAN);
     singleMsg >> del >> msgCode >> del;
 
     _messagesReceivedMutex.lock();
@@ -343,18 +343,14 @@ void Client::handleMessage(const std::string &msg) {
         const MapPoint p(x, y);
         auto isSelf = name == _username;
         if (isSelf) {
-          if (msgCode == SV_LOCATION_INSTANT_USER) {
-            _pendingCharLoc = p;
-            setEntityLocation(&_character, p);
+          _character.newLocationFromServer(p);
+
+          auto shouldTeleport = msgCode == SV_LOCATION_INSTANT_USER || !_loaded;
+          if (shouldTeleport) {
+            _character.location(p);
             _serverHasOutOfDateLocationInfo = false;
           }
-          if (p.x == _character.location().x) _pendingCharLoc.x = p.x;
-          if (p.y == _character.location().y) _pendingCharLoc.y = p.y;
-          _character.destination(p);
-          if (!_loaded) {
-            setEntityLocation(&_character, p);
-            _pendingCharLoc = p;
-          }
+
           updateOffset();
           _mapWindow->markChanged();
           _connection.state(Connection::LOADED);
@@ -363,10 +359,10 @@ void Client::handleMessage(const std::string &msg) {
           _mouseMoved = true;
         } else {
           if (_otherUsers.find(name) == _otherUsers.end()) addUser(name, p);
+          auto &user = *_otherUsers[name];
 
-          _otherUsers[name]->destination(p);
-          if (msgCode == SV_LOCATION_INSTANT_USER)
-            setEntityLocation(_otherUsers[name], p);
+          user.newLocationFromServer(p);
+          if (msgCode == SV_LOCATION_INSTANT_USER) user.location(p);
         }
 
         // Unwatch objects if out of range
@@ -642,7 +638,7 @@ void Client::handleMessage(const std::string &msg) {
         if (it != _objects.end()) {
           // Existing object: update its info.
           ClientObject &obj = *it->second;
-          obj.destination({x, y});
+          obj.newLocationFromServer({x, y});
           obj.type(cot);
           if (targetAsEntity() == &obj) _target.onTypeChange();
           // Redraw window
@@ -689,7 +685,7 @@ void Client::handleMessage(const std::string &msg) {
           // Color::TODO);
           break;  // We didn't know about this object
         }
-        it->second->destination({x, y});
+        it->second->newLocationFromServer({x, y});
         // if (msgCode == SV_LOCATION_INSTANT_OBJECT) it->second->location({x,
         // y});
         break;
@@ -1118,11 +1114,6 @@ void Client::handleMessage(const std::string &msg) {
         Avatar *userP = nullptr;
         if (user == _username) {
           userP = &_character;
-          /*
-          Cancel any requested movement; assumes that this message was preceded
-          by SV_LOCATION, sending us on top of the vehicle.
-          */
-          _pendingCharLoc = _character.destination();
         } else {
           auto it = _otherUsers.find(user);
           if (it == _otherUsers.end())
@@ -1154,11 +1145,6 @@ void Client::handleMessage(const std::string &msg) {
         if (user == _username) {
           userP = &_character;
           _isDismounting = false;
-          /*
-          Cancel any requested movement; assumes that this message was preceded
-          by SV_LOCATION, sending us to the dismount location.
-          */
-          _pendingCharLoc = _character.destination();
         } else {
           auto it = _otherUsers.find(user);
           if (it == _otherUsers.end())

@@ -400,8 +400,6 @@ class Client {
   Avatar _character;             // Describes the user's character
   Stats _stats;                  // The user's stats
   std::string _displaySpeed{0};  // Speed for display as podes/s
-  MapPoint _pendingCharLoc;  // Where the player has told his character to go.
-                             // Unconfirmed by server.
   bool _serverHasOutOfDateLocationInfo{true};
 
   // Login screen
@@ -544,8 +542,7 @@ class Client {
   void addEntity(Sprite *entity) { _entities.insert(entity); }
   void removeEntity(
       Sprite *const toRemove);  // Remove from _entities, and delete pointer
-  // Move the entity, and reorder it if necessary
-  void setEntityLocation(Sprite *entity, const MapPoint &location);
+
   Sprite *_currentMouseOverEntity;
   size_t _numEntities;  // Updated every tick
   void addUser(const std::string &name, const MapPoint &location);

@@ -337,16 +337,17 @@ void Client::gameLoop() {
   }
 
   // Update server with current location
-  const bool atTarget = _pendingCharLoc == _character.location();
-  if (atTarget && !_serverHasOutOfDateLocationInfo)
+  auto shouldTellServerAboutLocation = _serverHasOutOfDateLocationInfo;
+  if (!shouldTellServerAboutLocation)
     _timeSinceLocUpdate = 0;
   else {
-    _serverHasOutOfDateLocationInfo = false;
     _timeSinceLocUpdate += _timeElapsed;
     if (_timeSinceLocUpdate > TIME_BETWEEN_LOCATION_UPDATES) {
-      sendMessage(CL_LOCATION, makeArgs(_pendingCharLoc.x, _pendingCharLoc.y));
+      sendMessage(CL_LOCATION,
+                  makeArgs(_character.location().x, _character.location().y));
       _tooltipNeedsRefresh = true;
       _timeSinceLocUpdate = 0;
+      _serverHasOutOfDateLocationInfo = false;
     }
   }
 
@@ -452,20 +453,6 @@ void Client::removeEntity(Sprite *const toRemove) {
 }
 
 TTF_Font *Client::defaultFont() const { return _defaultFont; }
-
-void Client::setEntityLocation(Sprite *entity, const MapPoint &location) {
-  const Sprite::set_t::iterator it = _entities.find(entity);
-  if (it == _entities.end()) {
-    assert(false);  // Sprite is not in set.
-    return;
-  }
-  entity->location(location);
-  if (entity->yChanged()) {
-    _entities.erase(it);
-    _entities.insert(entity);
-    entity->yChanged(false);
-  }
-}
 
 void Client::updateOffset() {
   _offset = {SCREEN_X / 2 - _character.location().x,
