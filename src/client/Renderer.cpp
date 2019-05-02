@@ -1,11 +1,12 @@
-#include <cassert>
+#include "Renderer.h"
 
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 
+#include <cassert>
+
 #include "../Args.h"
 #include "../types.h"
-#include "Renderer.h"
 
 extern Args cmdLineArgs;
 
@@ -33,11 +34,11 @@ void Renderer::init() {
   const px_t screenH =
       cmdLineArgs.contains("height") ? cmdLineArgs.getInt("height") : 720;
 
-  bool windowedMode = isDebug() || cmdLineArgs.contains("window");
-  _window = SDL_CreateWindow(
-      "Client", screenX, screenY, screenW, screenH,
-      SDL_WINDOW_SHOWN |
-          (windowedMode ? SDL_WINDOW_RESIZABLE : SDL_WINDOW_FULLSCREEN));
+  bool fullScreen = cmdLineArgs.contains("fullscreen");
+  _window =
+      SDL_CreateWindow("Client", screenX, screenY, screenW, screenH,
+                       SDL_WINDOW_SHOWN | (fullScreen ? SDL_WINDOW_FULLSCREEN
+                                                      : SDL_WINDOW_RESIZABLE));
   if (_window == nullptr) return;
 
   _renderer = SDL_CreateRenderer(
