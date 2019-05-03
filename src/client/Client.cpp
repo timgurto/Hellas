@@ -753,8 +753,8 @@ void Client::applyCollisionChecksToPlayerMovement(MapPoint &pendingDest) const {
 
   // First check: rectangle around entire journey
   auto rawDisplacement = MapPoint{pendingDest.x - loc.x, pendingDest.y - loc.y};
-  auto displacementX = ceil(abs(rawDisplacement.x));
-  auto displacementY = ceil(abs(rawDisplacement.y));
+  auto displacementX = abs(rawDisplacement.x);
+  auto displacementY = abs(rawDisplacement.y);
   auto journeyRect = _character.collisionRect();
   if (rawDisplacement.x < 0) journeyRect.x -= displacementX;
   journeyRect.w += displacementX;
@@ -776,12 +776,9 @@ void Client::applyCollisionChecksToPlayerMovement(MapPoint &pendingDest) const {
     if (!isLocationValidForPlayer(testDest)) break;
     newDest.x = testDest.x;
   }
-  auto xDisplacement = ceil(abs(newDest.x - loc.x));
-  auto maxYDistanceAllowed =
-      sqrt(distanceToMove * distanceToMove - xDisplacement * xDisplacement);
   // Step along y axis until blocked
   for (auto testPointAlongLine = STEP_LENGTH;
-       testPointAlongLine <= maxYDistanceAllowed;
+       testPointAlongLine <= distanceToMove;
        testPointAlongLine += STEP_LENGTH) {
     testDest.y += STEP.y;
     if (!isLocationValidForPlayer(testDest)) break;

@@ -32,8 +32,8 @@ void Entity::updateLocation(const MapPoint &dest) {
     newDest = interpolate(_location, dest, distanceToMove);
 
     MapPoint rawDisplacement(newDest.x - _location.x, newDest.y - _location.y);
-    px_t displacementX = toInt(ceil(abs(rawDisplacement.x))),
-         displacementY = toInt(ceil(abs(rawDisplacement.y)));
+    auto displacementX = abs(rawDisplacement.x),
+         displacementY = abs(rawDisplacement.y);
     auto journeyRect = collisionRect();
     if (rawDisplacement.x < 0) journeyRect.x -= displacementX;
     journeyRect.w += displacementX;
