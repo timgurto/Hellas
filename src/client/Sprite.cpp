@@ -131,9 +131,9 @@ const Tooltip &Sprite::tooltip() const {
 void Sprite::driftTowardsServerLocation(double delta) {
   if (!_serverHasOrderedACorrection) return;
 
-  const double maxLegalDistance = delta * speed();
+  const double correctionAmount = delta * speed() * 1.5;
   auto newLocation =
-      interpolate(location(), _locationOnServer, maxLegalDistance);
+      interpolate(location(), _locationOnServer, correctionAmount);
   location(newLocation);
 
   if (newLocation == _locationOnServer) _serverHasOrderedACorrection = false;
