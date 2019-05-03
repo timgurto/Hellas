@@ -113,9 +113,9 @@ bool Server::isLocationValid(const MapRect &rect,
       if (!pEnt->collides()) continue;
 
       // Allow collisions between users and users/NPCs
-      /*if (thisObject != nullptr && thisObject->classTag() == 'u' &&
-          (pObj->classTag() == 'u' || pObj->classTag() == 'n'))
-              continue;*/
+      if (thisEntity && thisEntity->classTag() == 'u' &&
+          (pEnt->classTag() == 'u' || pEnt->classTag() == 'n'))
+        continue;
 
       if ((pEnt->classTag() == 'u') &&
           dynamic_cast<const User *>(pEnt)->isDriving())

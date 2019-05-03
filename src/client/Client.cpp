@@ -809,6 +809,10 @@ bool Client::isLocationValidForPlayer(const MapRect &rect) const {
     auto *obj = dynamic_cast<const ClientObject *>(sprite);
     if (!obj) continue;
     if (!obj->collides()) continue;
+
+    // Allow collisions between users and users/NPCs
+    if (obj->classTag() == 'u' || obj->classTag() == 'n') continue;
+
     if (obj->collisionRect().collides(rect)) return false;
   }
 
