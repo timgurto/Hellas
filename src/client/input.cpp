@@ -496,6 +496,8 @@ void Client::handleInput(double delta) {
       else if (right && !left)
         newLocation.x += (up != down) ? diagDist : dist;
 
+      applyCollisionChecksToPlayerMovement(newLocation);
+
       _character.location(newLocation);
       _serverHasOutOfDateLocationInfo = true;
 

@@ -748,6 +748,58 @@ int Client::totalTalentPointsAllocated() {
   return sum;
 }
 
+void Client::applyCollisionChecksToPlayerMovement(MapPoint &pendingDest) const {
+  auto loc = _character.location();
+
+  // First check: rectangle around entire journey
+  auto rawDisplacement = MapPoint{pendingDest.x - loc.x, pendingDest.y - loc.y};
+  auto displacementX = ceil(abs(rawDisplacement.x));
+  auto displacementY = ceil(abs(rawDisplacement.y));
+  auto journeyRect = _character.collisionRect();
+  if (rawDisplacement.x < 0) journeyRect.x -= displacementX;
+  journeyRect.w += displacementX;
+  if (rawDisplacement.y < 0) journeyRect.y -= displacementY;
+  journeyRect.h += displacementY;
+  if (isLocationValidForPlayer(journeyRect)) return;  // Proposal is fine.
+
+  // Second: step towards goal
+  auto distanceToMove = distance(pendingDest, loc);
+  static const auto STEP_LENGTH = 0.5;
+  const auto STEP = MapPoint{rawDisplacement.x / distanceToMove * STEP_LENGTH,
+                             rawDisplacement.y / distanceToMove * STEP_LENGTH};
+  auto newDest = loc, testDest = loc;
+  // Step along x axis until blocked
+  for (auto testPointAlongLine = STEP_LENGTH;
+       testPointAlongLine <= distanceToMove;
+       testPointAlongLine += STEP_LENGTH) {
+    testDest.x += STEP.x;
+    if (!isLocationValidForPlayer(testDest)) break;
+    newDest.x = testDest.x;
+  }
+  auto xDisplacement = ceil(abs(newDest.x - loc.x));
+  auto maxYDistanceAllowed =
+      sqrt(distanceToMove * distanceToMove - xDisplacement * xDisplacement);
+  // Step along y axis until blocked
+  for (auto testPointAlongLine = STEP_LENGTH;
+       testPointAlongLine <= maxYDistanceAllowed;
+       testPointAlongLine += STEP_LENGTH) {
+    testDest.y += STEP.y;
+    if (!isLocationValidForPlayer(testDest)) break;
+    newDest.y = testDest.y;
+  }
+
+  pendingDest = newDest;
+}
+
+bool Client::isLocationValidForPlayer(const MapPoint &location) const {
+  auto rect = _character.collisionRectRaw() + location;
+  return isLocationValidForPlayer(rect);
+}
+
+bool Client::isLocationValidForPlayer(const MapRect &rect) const {
+  return true;
+}
+
 bool Client::isWindowRegistered(const Window *toFind) {
   for (auto window : _windows) {
     if (window == toFind) return true;

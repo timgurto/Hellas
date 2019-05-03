@@ -552,6 +552,10 @@ class Client {
   std::unordered_map<Tree::Name, int> _pointsInTrees;
   int totalTalentPointsAllocated();
 
+  void applyCollisionChecksToPlayerMovement(MapPoint &pendingDestination) const;
+  bool isLocationValidForPlayer(const MapPoint &location) const;
+  bool isLocationValidForPlayer(const MapRect &rect) const;
+
   // Your wars, and your city's wars
   YourWars _warsAgainstPlayers;
   YourWars _warsAgainstCities;
