@@ -43,6 +43,7 @@ class ClientObjectType : public SpriteType, public ClientCombatantType {
   size_t _containerSlots;
   size_t _merchantSlots;
   MapRect _collisionRect;
+  bool _collides{false};
   const ParticleProfile *_gatherParticles;
   std::set<std::string> _tags;
   ItemSet _materials;
@@ -92,7 +93,11 @@ class ClientObjectType : public SpriteType, public ClientCombatantType {
   size_t merchantSlots() const { return _merchantSlots; }
   void merchantSlots(size_t n) { _merchantSlots = n; }
   const MapRect &collisionRect() const { return _collisionRect; }
-  void collisionRect(const MapRect &r) { _collisionRect = r; }
+  void collisionRect(const MapRect &r) {
+    _collisionRect = r;
+    _collides = true;
+  }
+  bool collides() const { return _collides; }
   const ParticleProfile *gatherParticles() const { return _gatherParticles; }
   void gatherParticles(const ParticleProfile *profile) {
     _gatherParticles = profile;

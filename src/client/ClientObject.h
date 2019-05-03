@@ -116,6 +116,7 @@ class ClientObject : public Sprite, public ClientCombatant {
   MapRect collisionRect() const {
     return objectType()->collisionRect() + location();
   }
+  bool collides() const { return objectType()->collides(); }
 
   virtual void onLeftClick(Client &client) override;
   virtual void onRightClick(Client &client) override;

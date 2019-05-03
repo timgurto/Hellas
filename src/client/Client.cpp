@@ -804,6 +804,14 @@ bool Client::isLocationValidForPlayer(const MapRect &rect) const {
   static const auto Y_LIM = _mapY * TILE_H;
   if (rect.y + rect.h > Y_LIM) return false;
 
+  // Objects
+  for (const auto *sprite : _entities) {
+    auto *obj = dynamic_cast<const ClientObject *>(sprite);
+    if (!obj) continue;
+    if (!obj->collides()) continue;
+    if (obj->collisionRect().collides(rect)) return false;
+  }
+
   return true;
 }
 
