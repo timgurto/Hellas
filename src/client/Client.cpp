@@ -777,6 +777,7 @@ void Client::applyCollisionChecksToPlayerMovement(MapPoint &pendingDest) const {
     newDest.x = testDest.x;
   }
   // Step along y axis until blocked
+  testDest.x = newDest.x;
   for (auto testPointAlongLine = STEP_LENGTH;
        testPointAlongLine <= distanceToMove;
        testPointAlongLine += STEP_LENGTH) {
