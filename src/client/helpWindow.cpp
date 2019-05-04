@@ -14,14 +14,14 @@ void showTopic();
 void Client::initializeHelpWindow() {
   loadHelpEntries(_helpEntries);
 
-  const px_t WIN_WIDTH = 350, WIN_HEIGHT = 250, WIN_X = (640 - WIN_WIDTH) / 2,
+  const px_t WIN_WIDTH = 400, WIN_HEIGHT = 250, WIN_X = (640 - WIN_WIDTH) / 2,
              WIN_Y = (360 - WIN_HEIGHT) / 2;
 
   _helpWindow =
       Window::WithRectAndTitle({WIN_X, WIN_Y, WIN_WIDTH, WIN_HEIGHT}, "Help");
 
   // Topic list
-  const px_t TOPIC_W = 85, TOPIC_BORDER = 2, TOPIC_GAP = 2;
+  const px_t TOPIC_W = 100, TOPIC_BORDER = 2, TOPIC_GAP = 2;
   auto *topicList =
       new ChoiceList({TOPIC_BORDER, TOPIC_BORDER, TOPIC_W - TOPIC_BORDER * 2,
                       WIN_HEIGHT - TOPIC_BORDER * 2},
