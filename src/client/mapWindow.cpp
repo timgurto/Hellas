@@ -3,6 +3,9 @@
 #include "ui/Picture.h"
 #include "ui/Window.h"
 
+static int zoomMultiplier{0};
+static ScreenPoint mapDisplacement{};
+
 void Client::onMapScrollUp(Element &e) {
   instance().zoomMapIn();
   updateMapWindow(e);
@@ -46,7 +49,7 @@ void Client::initializeMapWindow() {
 
 void Client::updateMapWindow(Element &) {
   Client &client = *Client::_instance;
-  auto zoomMultiplier = 1 << client._zoom;
+  zoomMultiplier = 1 << client._zoom;
 
   // Unit: point from far top/left to far bottom/right [0,1]
   auto charPosX = client._character.location().x / (client._mapX * TILE_W);
@@ -54,8 +57,8 @@ void Client::updateMapWindow(Element &) {
   auto mapDisplacementX = 0.5 - charPosX * zoomMultiplier;
   auto mapDisplacementY = 0.5 - charPosY * zoomMultiplier;
 
-  auto mapDisplacement = ScreenPoint{toInt(mapDisplacementX * MAP_IMAGE_W),
-                                     toInt(mapDisplacementY * MAP_IMAGE_H)};
+  mapDisplacement = {toInt(mapDisplacementX * MAP_IMAGE_W),
+                     toInt(mapDisplacementY * MAP_IMAGE_H)};
 
   // Make sure map always fills the screen
   auto xLim = -MAP_IMAGE_W * zoomMultiplier + MAP_IMAGE_W;
@@ -122,10 +125,10 @@ ScreenRect Client::convertToMapPosition(const MapPoint &worldPosition) const {
   const double MAP_FACTOR_X = 1.0 * _mapX * TILE_W / MAP_IMAGE_W,
                MAP_FACTOR_Y = 1.0 * _mapY * TILE_H / MAP_IMAGE_H;
 
-  px_t x = toInt(worldPosition.x / MAP_FACTOR_X),
-       y = toInt(worldPosition.y / MAP_FACTOR_Y);
+  px_t x = toInt(worldPosition.x / MAP_FACTOR_X * zoomMultiplier),
+       y = toInt(worldPosition.y / MAP_FACTOR_Y * zoomMultiplier);
 
-  return {x, y, 0, 0};
+  return mapDisplacement + ScreenRect{x, y, 0, 0};
 }
 
 void Client::zoomMapIn() { _zoom = min(_zoom + 1, MAX_ZOOM); }
