@@ -381,7 +381,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 362,Close windows on disconnect,5,3,Usability,,TRUE,,2 Work playtest 2019
 364,Current-wars spam on login,3,3,Bug,,,,
 365,Give XP for player kills,13,3,Feature,,,,
-367,Merchant object checking room for price doesn't consider ware slots,8,3,Bug,,,,
+367,Merchant object checking room for price doesn't consider ware slots,8,3,Bug,,TRUE,,
 368,Update object windows after joining/leaving a city,21,3,Bug,,,,
 369,Trees sometimes think they're being gathered when they're not.  Endless particles/sound.,55,5,Bug,,,,
 370,Avatar isn't playing death sound,13,5,Bug,,,,

@@ -737,7 +737,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           break;
         }
         auto wareItem = toServerItem(mSlot.wareItem);
-        if (!vectHasSpace(user->inventory(), wareItem, mSlot.wareQty)) {
+        auto priceItem = toServerItem(mSlot.priceItem);
+        if (!vectHasSpaceAfterRemovingItems(user->inventory(), wareItem,
+                                            mSlot.wareQty, priceItem,
+                                            mSlot.priceQty)) {
           sendMessage(client, WARNING_INVENTORY_FULL);
           break;
         }
@@ -752,8 +755,9 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
 
           // Check that object has inventory space
           auto priceItem = toServerItem(mSlot.priceItem);
-          if (!vectHasSpace(obj->container().raw(), priceItem,
-                            mSlot.priceQty)) {
+          if (!vectHasSpaceAfterRemovingItems(obj->container().raw(), priceItem,
+                                              mSlot.priceQty, wareItem,
+                                              mSlot.wareQty)) {
             sendMessage(client, WARNING_MERCHANT_INVENTORY_FULL);
             break;
           }

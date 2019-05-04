@@ -71,3 +71,36 @@ TEST_CASE("Client-side containers don't spontaneously clear", "[container]") {
   // Then the client-side box still has container slots
   CHECK_FALSE(c.getFirstObject().container().empty());
 }
+
+TEST_CASE("Merchant can use same slot for ware and price") {
+  GIVEN("a merchant object with one inventory slot, containing the ware") {
+    auto data = R"(
+        <item id="diamond" />
+        <item id="coin" />
+        <objectType id="diamondStore" merchantSlots="1" >
+          <container slots="1" />
+        </objectType>
+      )";
+    auto s = TestServer::WithDataString(data);
+    s.addObject("diamondStore", {10, 15});
+    auto &store = s.getFirstObject();
+    const auto *diamond = s->findItem("diamond");
+    const auto *coin = s->findItem("coin");
+    store.merchantSlot(0) = {diamond, 1, coin, 1};
+    store.container().addItems(diamond);
+
+    WHEN("a user with the price tries to buy the ware") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      user.giveItem(coin);
+
+      c.sendMessage(CL_TRADE, makeArgs(store.serial(), 0));
+
+      THEN("he has the ware") {
+        const auto &invSlot = user.inventory(0);
+        WAIT_UNTIL(invSlot.first == diamond);
+      }
+    }
+  }
+}

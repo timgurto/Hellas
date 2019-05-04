@@ -1,4 +1,5 @@
 #include "ServerItem.h"
+
 #include "Server.h"
 #include "objects/ObjectType.h"
 
@@ -35,6 +36,31 @@ bool vectHasSpace(const ServerItem::vect_t &vect, const ServerItem *item,
       continue;
   }
   return false;
+}
+
+bool vectHasSpaceAfterRemovingItems(const ServerItem::vect_t &vect,
+                                    const ServerItem *item, size_t qty,
+                                    const ServerItem *itemThatWillBeRemoved,
+                                    size_t qtyThatWillBeRemoved) {
+  // Make copy
+  auto v = vect;
+
+  // Remove items from copy
+  auto qtyLeft = qtyThatWillBeRemoved;
+  for (auto &slot : v) {
+    if (slot.first != itemThatWillBeRemoved) continue;
+    if (slot.second > qtyLeft) {
+      slot.first = nullptr;
+      slot.second = 0;
+      break;
+    }
+    qtyLeft -= slot.second;
+    slot.first = nullptr;
+    slot.second = 0;
+  }
+
+  // Call normal function on copy
+  return vectHasSpace(v, item, qty);
 }
 
 bool operator<=(const ItemSet &itemSet, const ServerItem::vect_t &vect) {

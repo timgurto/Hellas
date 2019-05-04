@@ -2,6 +2,7 @@
 #define SERVER_ITEM_H
 
 #include <SDL.h>
+
 #include <map>
 
 #include "../Item.h"
@@ -50,6 +51,10 @@ class ServerItem : public Item {
 
 bool vectHasSpace(const ServerItem::vect_t &vect, const ServerItem *item,
                   size_t qty = 1);
+bool vectHasSpaceAfterRemovingItems(const ServerItem::vect_t &vect,
+                                    const ServerItem *item, size_t qty,
+                                    const ServerItem *itemThatWillBeRemoved,
+                                    size_t qtyThatWillBeRemoved);
 
 bool operator<=(const ItemSet &itemSet, const ServerItem::vect_t &vect);
 bool operator>(const ItemSet &itemSet, const ServerItem::vect_t &vect);
