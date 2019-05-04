@@ -91,6 +91,7 @@ void Client::handleMessage(const std::string &msg) {
         _debug("Welcome to Hellas!");
         _allOnlinePlayers.insert(_username);
         populateOnlinePlayersList();
+        _inventoryWindow->show();
         break;
       }
 
