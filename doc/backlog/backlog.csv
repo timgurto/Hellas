@@ -381,7 +381,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 350,Update window title when object type changes,5,1,Bug,,,,
 351,Allow users to drop items onto construction sites,3,21,Usability,,,,
 354,Show construction sites as pegs rather than a footprint,5,5,Aesthetics,,,,
-357,Prepopulate login-name field,21,3,Usability,,,,
+357,Prepopulate login-name field,21,3,Usability,,TRUE,,
 359,Don't show extinguished ovens and intermediary farms as construction sites,5,5,Aesthetics,,,,
 362,Close windows on disconnect,5,3,Usability,,TRUE,,2 Work playtest 2019
 364,Current-wars spam on login,3,3,Bug,,,,

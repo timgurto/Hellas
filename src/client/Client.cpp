@@ -671,12 +671,21 @@ void Client::addFloatingCombatText(const std::string &text,
 }
 
 void Client::initializeUsername() {
-  if (cmdLineArgs.contains("username"))
+  if (cmdLineArgs.contains("username")) {
     _username = cmdLineArgs.getString("username");
-  else if (isDebug())
+    return;
+  }
+  if (isDebug()) {
     setRandomUsername();
-  else
-    _username = "";
+    return;
+  }
+  _username = "";
+
+  // Attempt to use last-used name
+  auto fs = std::ifstream{"lastLogin.txt"};
+  if (!fs) return;
+
+  fs >> _username;
 }
 
 void Client::setRandomUsername() {

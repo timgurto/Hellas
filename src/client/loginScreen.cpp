@@ -235,6 +235,11 @@ void Client::initCreateWindow() {
   _createWindow->addChild(createButton);
 }
 
+static void saveUsername(const std::string &username) {
+  auto fs = std::ofstream{"lastLogin.txt"};
+  fs << username;
+}
+
 void Client::createAccount() {
   auto username = newNameBox->text();
   newNameBox->text(username);
@@ -243,6 +248,8 @@ void Client::createAccount() {
   const auto &selectedClass = classList->getSelected();
   _instance->sendMessage(CL_LOGIN_NEW,
                          makeArgs(username, selectedClass, version()));
+
+  saveUsername(_instance->_username);
 }
 
 void Client::login() {
@@ -259,6 +266,8 @@ void Client::login() {
   else
     _instance->sendMessage(CL_LOGIN_EXISTING,
                            makeArgs(_instance->_username, version()));
+
+  saveUsername(_instance->_username);
 }
 
 void Client::initLoginScreen() {
