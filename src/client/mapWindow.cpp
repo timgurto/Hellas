@@ -43,12 +43,13 @@ void Client::initializeMapWindow() {
 }
 void Client::updateMapWindow(Element &) {
   Client &client = *Client::_instance;
+  auto zoomMultiplier = 1 << client._zoom;
 
   // Unit: point from far top/left to far bottom/right [0,1]
   auto charPosX = client._character.location().x / (client._mapX * TILE_W);
   auto charPosY = client._character.location().y / (client._mapY * TILE_H);
-  auto mapDisplacementX = 0.5 - charPosX;
-  auto mapDisplacementY = 0.5 - charPosY;
+  auto mapDisplacementX = 0.5 - charPosX * zoomMultiplier;
+  auto mapDisplacementY = 0.5 - charPosY * zoomMultiplier;
 
   auto mapDisplacement = ScreenPoint{toInt(mapDisplacementX * MAP_IMAGE_W),
                                      toInt(mapDisplacementY * MAP_IMAGE_H)};
