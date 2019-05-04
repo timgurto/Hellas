@@ -313,9 +313,9 @@ class Client {
   void Client::addOutlinedMapPin(const MapPoint &worldPosition,
                                  const Color &color);
   ScreenRect Client::convertToMapPosition(const MapPoint &worldPosition) const;
-  int _zoom{0};
+  int _zoom{3};
   static const int MIN_ZOOM{0};
-  static const int MAX_ZOOM{4};
+  static const int MAX_ZOOM{5};
   void zoomMapIn();
   void zoomMapOut();
   static void onMapScrollUp(Element &);

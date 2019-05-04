@@ -43,6 +43,7 @@ void Client::initializeMapWindow() {
 
   _mapWindow->setPreRefreshFunction(updateMapWindow);
 }
+
 void Client::updateMapWindow(Element &) {
   Client &client = *Client::_instance;
   auto zoomMultiplier = 1 << client._zoom;
@@ -55,6 +56,12 @@ void Client::updateMapWindow(Element &) {
 
   auto mapDisplacement = ScreenPoint{toInt(mapDisplacementX * MAP_IMAGE_W),
                                      toInt(mapDisplacementY * MAP_IMAGE_H)};
+
+  // Make sure map always fills the screen
+  auto xLim = -MAP_IMAGE_W * zoomMultiplier + MAP_IMAGE_W;
+  auto yLim = -MAP_IMAGE_H * zoomMultiplier + MAP_IMAGE_H;
+  mapDisplacement.x = max(xLim, min(mapDisplacement.x, 0));
+  mapDisplacement.y = max(yLim, min(mapDisplacement.y, 0));
 
   auto picRect = ScreenRect{};
   picRect.x = mapDisplacement.x;
