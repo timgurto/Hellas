@@ -44,8 +44,21 @@ void Client::initializeMapWindow() {
 void Client::updateMapWindow(Element &) {
   Client &client = *Client::_instance;
 
-  client._mapPicture->width(MAP_IMAGE_W * (1 << client._zoom));
-  client._mapPicture->height(MAP_IMAGE_H * (1 << client._zoom));
+  // Unit: point from far top/left to far bottom/right [0,1]
+  auto charPosX = client._character.location().x / (client._mapX * TILE_W);
+  auto charPosY = client._character.location().y / (client._mapY * TILE_H);
+  auto mapDisplacementX = 0.5 - charPosX;
+  auto mapDisplacementY = 0.5 - charPosY;
+
+  auto mapDisplacement = ScreenPoint{toInt(mapDisplacementX * MAP_IMAGE_W),
+                                     toInt(mapDisplacementY * MAP_IMAGE_H)};
+
+  auto picRect = ScreenRect{};
+  picRect.x = mapDisplacement.x;
+  picRect.y = mapDisplacement.y;
+  picRect.w = MAP_IMAGE_W * (1 << client._zoom);
+  picRect.h = MAP_IMAGE_H * (1 << client._zoom);
+  client._mapPicture->rect(picRect);
 
   client._mapPins->clearChildren();
   client._mapPinOutlines->clearChildren();
@@ -98,6 +111,7 @@ ScreenRect Client::convertToMapPosition(const MapPoint &worldPosition) const {
 
   px_t x = toInt(worldPosition.x / MAP_FACTOR_X),
        y = toInt(worldPosition.y / MAP_FACTOR_Y);
+
   return {x, y, 0, 0};
 }
 
