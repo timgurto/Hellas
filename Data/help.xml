@@ -92,4 +92,9 @@
         text="When you die, you lose one random talent point.  You can allocate the point again, but you must once again bear its food and item costs." />
 </entry>
 
+<entry name="Vehicles" >
+    <p text="Some objects are designated as 'vehicles', which means they can be entered by players.  Some vehicles can traverse terrain your character otherwise cannot." />
+    <p text="If you have permission to use it, you will find an 'Enter/exit' button in the vehicle's window.  Click it to enter the vehicle.  To exit, click this button again and then click somewhere on the ground nearby." />
+</entry>
+
 </root>
