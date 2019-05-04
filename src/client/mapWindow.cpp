@@ -29,12 +29,14 @@ void Client::initializeMapWindow() {
 
   // Zoom buttons
   static const auto ZOOM_BUTTON_SIZE = 11;
-  _mapWindow->addChild(new Button(
+  _zoomMapInButton = new Button(
       {MAP_IMAGE_W - ZOOM_BUTTON_SIZE, 0, ZOOM_BUTTON_SIZE, ZOOM_BUTTON_SIZE},
-      "+", [this]() { zoomMapIn(); }));
-  _mapWindow->addChild(new Button({MAP_IMAGE_W - ZOOM_BUTTON_SIZE * 2, 0,
-                                   ZOOM_BUTTON_SIZE, ZOOM_BUTTON_SIZE},
-                                  "-", [this]() { zoomMapOut(); }));
+      "+", [this]() { zoomMapIn(); });
+  _mapWindow->addChild(_zoomMapInButton);
+  _zoomMapOutButton = new Button({MAP_IMAGE_W - ZOOM_BUTTON_SIZE * 2, 0,
+                                  ZOOM_BUTTON_SIZE, ZOOM_BUTTON_SIZE},
+                                 "-", [this]() { zoomMapOut(); });
+  _mapWindow->addChild(_zoomMapOutButton);
 
   _mapWindow->setScrollUpFunction(onMapScrollUp);
   _mapWindow->setScrollDownFunction(onMapScrollDown);
@@ -75,6 +77,9 @@ void Client::updateMapWindow(Element &) {
   }
 
   client.addOutlinedMapPin(client._character.location(), Color::COMBATANT_SELF);
+
+  client._zoomMapInButton->setEnabled(client._zoom < Client::MAX_ZOOM);
+  client._zoomMapOutButton->setEnabled(client._zoom > Client::MIN_ZOOM);
 }
 
 void Client::addMapPin(const MapPoint &worldPosition, const Color &color) {

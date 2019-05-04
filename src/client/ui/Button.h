@@ -38,8 +38,9 @@ class Button : public Element {
   static void mouseMove(Element &e, const ScreenPoint &mousePos);
 
  public:
-  Button(const ScreenRect &rect, const std::string &caption = "",
-         clickFun_t clickFunction = []() {});
+  Button(
+      const ScreenRect &rect, const std::string &caption = "",
+      clickFun_t clickFunction = []() {});
   virtual void addChild(Element *child) override;
   virtual void clearChildren() override;
   virtual Element *findChild(const std::string id) const override;
@@ -51,6 +52,7 @@ class Button : public Element {
 
   void enable();
   void disable();
+  void setEnabled(bool enabled);
 
  private:
   void init(const std::string &caption);

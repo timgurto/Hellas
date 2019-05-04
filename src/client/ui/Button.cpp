@@ -116,3 +116,10 @@ void Button::disable() {
   _enabled = false;
   _disabledMask->show();
 }
+
+void Button::setEnabled(bool enabled) {
+  if (enabled)
+    enable();
+  else
+    disable();
+}
