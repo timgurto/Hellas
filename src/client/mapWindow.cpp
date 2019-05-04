@@ -18,30 +18,23 @@ void Client::initializeMapWindow() {
   _mapWindow->addChild(_mapPinOutlines);
   _mapWindow->addChild(_mapPins);
 
+  // Zoom buttons
   static const auto ZOOM_BUTTON_SIZE = 11;
   _mapWindow->addChild(new Button(
       {MAP_IMAGE_W - ZOOM_BUTTON_SIZE, 0, ZOOM_BUTTON_SIZE, ZOOM_BUTTON_SIZE},
-      "+", [this]() {
-        ++_zoom;
-        resizeMap();
-      }));
-  _mapWindow->addChild(new Button({MAP_IMAGE_W - ZOOM_BUTTON_SIZE * 2, 0,
-                                   ZOOM_BUTTON_SIZE, ZOOM_BUTTON_SIZE},
-                                  "-", [this]() {
-                                    --_zoom;
-                                    resizeMap();
-                                  }));
+      "+", [this]() { _zoom = min(_zoom + 1, MAX_ZOOM); }));
+  _mapWindow->addChild(
+      new Button({MAP_IMAGE_W - ZOOM_BUTTON_SIZE * 2, 0, ZOOM_BUTTON_SIZE,
+                  ZOOM_BUTTON_SIZE},
+                 "-", [this]() { _zoom = max(_zoom - 1, MIN_ZOOM); }));
 
   _mapWindow->setPreRefreshFunction(updateMapWindow);
 }
-
-void Client::resizeMap() {
-  _mapPicture->width(MAP_IMAGE_W * (1 << _zoom));
-  _mapPicture->height(MAP_IMAGE_H * (1 << _zoom));
-}
-
 void Client::updateMapWindow(Element &) {
   Client &client = *Client::_instance;
+
+  client._mapPicture->width(MAP_IMAGE_W * (1 << client._zoom));
+  client._mapPicture->height(MAP_IMAGE_H * (1 << client._zoom));
 
   client._mapPins->clearChildren();
   client._mapPinOutlines->clearChildren();

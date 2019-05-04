@@ -314,6 +314,8 @@ class Client {
                                  const Color &color);
   ScreenRect Client::convertToMapPosition(const MapPoint &worldPosition) const;
   int _zoom{0};
+  static const int MIN_ZOOM{0};
+  static const int MAX_ZOOM{5};
   void resizeMap();
 
   // Social window
