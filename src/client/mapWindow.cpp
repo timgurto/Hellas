@@ -3,6 +3,15 @@
 #include "ui/Picture.h"
 #include "ui/Window.h"
 
+void Client::onMapScrollUp(Element &e) {
+  instance().zoomMapIn();
+  updateMapWindow(e);
+}
+void Client::onMapScrollDown(Element &e) {
+  instance().zoomMapOut();
+  updateMapWindow(e);
+}
+
 void Client::initializeMapWindow() {
   _mapImage = {"Images/map.png"};
   _mapWindow = Window::WithRectAndTitle(
@@ -26,6 +35,9 @@ void Client::initializeMapWindow() {
   _mapWindow->addChild(new Button({MAP_IMAGE_W - ZOOM_BUTTON_SIZE * 2, 0,
                                    ZOOM_BUTTON_SIZE, ZOOM_BUTTON_SIZE},
                                   "-", [this]() { zoomMapOut(); }));
+
+  _mapWindow->setScrollUpFunction(onMapScrollUp);
+  _mapWindow->setScrollDownFunction(onMapScrollDown);
 
   _mapWindow->setPreRefreshFunction(updateMapWindow);
 }

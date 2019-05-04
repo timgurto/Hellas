@@ -318,6 +318,8 @@ class Client {
   static const int MAX_ZOOM{5};
   void zoomMapIn();
   void zoomMapOut();
+  static void onMapScrollUp(Element &);
+  static void onMapScrollDown(Element &);
 
   // Social window
   Window *_socialWindow{nullptr};
