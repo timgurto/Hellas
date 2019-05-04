@@ -304,6 +304,7 @@ class Client {
   Window *_mapWindow = nullptr;
   Texture _mapImage;
   Texture _shadowImage;
+  Picture *_mapPicture{nullptr};
   Element *_mapPins, *_mapPinOutlines;
   static const px_t MAP_IMAGE_W = 300, MAP_IMAGE_H = 300;
   void initializeMapWindow();
@@ -312,6 +313,8 @@ class Client {
   void Client::addOutlinedMapPin(const MapPoint &worldPosition,
                                  const Color &color);
   ScreenRect Client::convertToMapPosition(const MapPoint &worldPosition) const;
+  int _zoom{0};
+  void resizeMap();
 
   // Social window
   Window *_socialWindow{nullptr};

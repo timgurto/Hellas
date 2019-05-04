@@ -4,20 +4,40 @@
 #include "ui/Window.h"
 
 void Client::initializeMapWindow() {
-  _mapImage = Texture(std::string("Images/map.png"));
+  _mapImage = {"Images/map.png"};
   _mapWindow = Window::WithRectAndTitle(
       {(SCREEN_X - MAP_IMAGE_W) / 2, (SCREEN_Y - MAP_IMAGE_H) / 2,
        MAP_IMAGE_W + 1, MAP_IMAGE_H + 1},
       "Map");
-  _mapWindow->addChild(
-      new Picture(ScreenRect{0, 0, MAP_IMAGE_W, MAP_IMAGE_H}, _mapImage));
+  _mapPicture =
+      new Picture(ScreenRect{0, 0, MAP_IMAGE_W, MAP_IMAGE_H}, _mapImage);
+  _mapWindow->addChild(_mapPicture);
 
   _mapPinOutlines = new Element({0, 0, MAP_IMAGE_W, MAP_IMAGE_H});
   _mapPins = new Element({0, 0, MAP_IMAGE_W, MAP_IMAGE_H});
   _mapWindow->addChild(_mapPinOutlines);
   _mapWindow->addChild(_mapPins);
 
+  static const auto ZOOM_BUTTON_SIZE = 11;
+  _mapWindow->addChild(new Button(
+      {MAP_IMAGE_W - ZOOM_BUTTON_SIZE, 0, ZOOM_BUTTON_SIZE, ZOOM_BUTTON_SIZE},
+      "+", [this]() {
+        ++_zoom;
+        resizeMap();
+      }));
+  _mapWindow->addChild(new Button({MAP_IMAGE_W - ZOOM_BUTTON_SIZE * 2, 0,
+                                   ZOOM_BUTTON_SIZE, ZOOM_BUTTON_SIZE},
+                                  "-", [this]() {
+                                    --_zoom;
+                                    resizeMap();
+                                  }));
+
   _mapWindow->setPreRefreshFunction(updateMapWindow);
+}
+
+void Client::resizeMap() {
+  _mapPicture->width(MAP_IMAGE_W * (1 << _zoom));
+  _mapPicture->height(MAP_IMAGE_H * (1 << _zoom));
 }
 
 void Client::updateMapWindow(Element &) {
