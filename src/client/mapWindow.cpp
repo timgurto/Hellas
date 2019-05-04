@@ -22,11 +22,10 @@ void Client::initializeMapWindow() {
   static const auto ZOOM_BUTTON_SIZE = 11;
   _mapWindow->addChild(new Button(
       {MAP_IMAGE_W - ZOOM_BUTTON_SIZE, 0, ZOOM_BUTTON_SIZE, ZOOM_BUTTON_SIZE},
-      "+", [this]() { _zoom = min(_zoom + 1, MAX_ZOOM); }));
-  _mapWindow->addChild(
-      new Button({MAP_IMAGE_W - ZOOM_BUTTON_SIZE * 2, 0, ZOOM_BUTTON_SIZE,
-                  ZOOM_BUTTON_SIZE},
-                 "-", [this]() { _zoom = max(_zoom - 1, MIN_ZOOM); }));
+      "+", [this]() { zoomMapIn(); }));
+  _mapWindow->addChild(new Button({MAP_IMAGE_W - ZOOM_BUTTON_SIZE * 2, 0,
+                                   ZOOM_BUTTON_SIZE, ZOOM_BUTTON_SIZE},
+                                  "-", [this]() { zoomMapOut(); }));
 
   _mapWindow->setPreRefreshFunction(updateMapWindow);
 }
@@ -89,3 +88,7 @@ ScreenRect Client::convertToMapPosition(const MapPoint &worldPosition) const {
        y = toInt(worldPosition.y / MAP_FACTOR_Y);
   return {x, y, 0, 0};
 }
+
+void Client::zoomMapIn() { _zoom = min(_zoom + 1, MAX_ZOOM); }
+
+void Client::zoomMapOut() { _zoom = max(_zoom - 1, MIN_ZOOM); }

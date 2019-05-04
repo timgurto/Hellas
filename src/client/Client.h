@@ -316,7 +316,8 @@ class Client {
   int _zoom{0};
   static const int MIN_ZOOM{0};
   static const int MAX_ZOOM{5};
-  void resizeMap();
+  void zoomMapIn();
+  void zoomMapOut();
 
   // Social window
   Window *_socialWindow{nullptr};
