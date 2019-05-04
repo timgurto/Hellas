@@ -760,6 +760,8 @@ int Client::totalTalentPointsAllocated() {
 void Client::applyCollisionChecksToPlayerMovement(MapPoint &pendingDest) const {
   auto loc = _character.location();
 
+  if (_character.isDriving()) return;
+
   // First check: rectangle around entire journey
   auto rawDisplacement = MapPoint{pendingDest.x - loc.x, pendingDest.y - loc.y};
   auto displacementX = abs(rawDisplacement.x);
