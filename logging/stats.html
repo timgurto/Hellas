@@ -60,16 +60,16 @@
         
         cells += "<td>Level " + user.level + " " + user.class + "</td>";
         
-        cells += makeBarCell(user.xp, user.xpNeeded, "#3478D8");
+        cells += makeBarCell(user.xp, user.xpNeeded, "#801A9A");
         
         var cityText = user.city;
         if (user.isKing)
             cityText = cityText + " <span class='king'>&#x265B;</span>";
         cells += "<td>" + cityText + "</td>";
         
-        cells += makeBarCell(user.health, user.maxHealth, "#3478D8");
+        cells += makeBarCell(user.health, user.maxHealth, "#00CC00");
         
-        cells += makeBarCell(user.energy, user.maxEnergy, "#E8CE94");
+        cells += makeBarCell(user.energy, user.maxEnergy, "#FFCC00");
         
         cells += "<td>" + Math.round(user.x) + ", " + Math.round(user.y) + "</td>";
         
