@@ -802,6 +802,7 @@ void User::onDeath() {
   health(stats().maxHealth);
   energy(stats().maxEnergy);
   onHealthChange();
+  onEnergyChange();
 }
 
 void User::onNewOwnedObject(const ObjectType &type) const {
