@@ -300,7 +300,7 @@
     
 
 <quest id="tutSnakes" name="Gifts of the Wild" startsAt="prometheus" endsAt="prometheus"
-    brief="After Zeus took power, he asked my aunt Themis and I to populate the world with new types of creatures.
+    brief="After Zeus took power, he asked my aunt Themis and me to populate the world with new types of creatures.
     Themis quickly created all sorts of animals, giving them interesting gifts and talents.  I created you--and I'm afraid I took so long trying to get you right, that there are no gifts left!  All of the good ideas are already taken.
     Maybe inspecting Themis's work will give me some inspiration.  We've already seen goats and pigs, so let's take a look at some of the other sorts of animals she has created.  Head out and kill some snakes, taking note of anything that makes them special.  You can find them north, slithering around in a swamp."
     debrief="They attack from far away?  How interesting.
