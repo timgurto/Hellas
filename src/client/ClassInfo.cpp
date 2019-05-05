@@ -1,4 +1,5 @@
 #include "ClassInfo.h"
+
 #include "Client.h"
 #include "Tooltip.h"
 
@@ -40,7 +41,8 @@ const Tooltip &ClientTalent::tooltip() const {
   tooltip.setColor(Color::TOOLTIP_BODY);
   if (hasCost()) {
     auto tagName = Client::instance().tagName(costTag);
-    tooltip.addLine("Costs "s + toString(costQuantity) + " "s + tagName);
+    tooltip.addLine("Costs "s + toString(costQuantity) + " "s + tagName +
+                    " to learn"s);
   }
   if (reqPointsInTree > 0)
     tooltip.addLine("Requires "s + toString(reqPointsInTree) + " points in "s +
