@@ -77,7 +77,7 @@
             var qty = user.gear[i].qty;
             var icon = "<img width='16px'/>";
             if (id != "")
-                icon = "<img width='16px' src='../Images/Items/" + id + ".png'>";
+                icon = "<img width='16px' src='../Images/Items/" + id + ".png' title='" + id + "'>";
             gearText += icon;
         }
         cells += "<td>" + gearText + "</td>";
@@ -88,7 +88,7 @@
             var qty = user.inventory[i].qty;
             var icon = "<img width='16px'/>";
             if (id != "")
-                icon = "<img width='16px' src='../Images/Items/" + id + ".png'>";
+                icon = "<img width='16px' src='../Images/Items/" + id + ".png' title='" + id + "'>";
             inventoryText += icon;
         }
         cells += "<td>" + inventoryText + "</td>";
