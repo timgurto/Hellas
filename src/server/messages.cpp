@@ -1212,6 +1212,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         iss >> del;
         if (del != MSG_END) return;
         broadcast(SV_SAY, makeArgs(user->name(), message));
+
+        auto fs = std::ofstream{"chat.log", std::ios_base::app};
+        fs << user->name() << ": " << message << std::endl;
+
         break;
       }
 
@@ -1231,6 +1235,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         const User *target = it->second;
         sendMessage(target->socket(), SV_WHISPER,
                     makeArgs(user->name(), message));
+
+        auto fs = std::ofstream{"chat.log", std::ios_base::app};
+        fs << user->name() << ">" << username << ": " << message << std::endl;
+
         break;
       }
 
