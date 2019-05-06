@@ -1,0 +1,19 @@
+<root>
+<quest id="directionsToClay" name="A toy for the children" startsAt="grug" endsAt="grug"
+    brief="Grug have only bones and rocks to keep family happy.  Want make toy for Grugling, but need clay.
+    Shaman say there lots of clay past river, south, where land green and water big.
+    You bring Grug clay?"
+    debrief="You make Grug happy.  Toy will make Grugling happy." >
+    <objective type="fetch" id="clay" qty="1" />
+</quest>
+    <npcType
+        id="grug" name="Grug"
+        level="5" maxHealth="30" isCivilian="1" >
+        <humanoid base="soldier">
+            <gear id="flintstones" />
+            <gear id="bone" />
+        </humanoid>
+    </npcType>
+    <item id="flintstones" gearSlot="2" ><offset x="-5" y="-4" /> </item>
+    
+</root>

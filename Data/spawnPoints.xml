@@ -164,6 +164,7 @@
 <spawnPoint type="clay" quantity="10" radius="1500" respawnTime="600000" x="45664" y="49312" />
 <spawnPoint type="clay" quantity="10" radius="1500" respawnTime="600000" x="35024" y="44256" />
 <spawnPoint type="clay" quantity="10" radius="1500" respawnTime="600000" x="29408" y="44080" />
+<spawnPoint type="clay" quantity="10" radius="1500" respawnTime="600000" x="31864" y="42288" />
 <spawnPoint type="wildFlax" quantity="10" radius="1500" respawnTime="600000" x="33104" y="33632" />
 <spawnPoint type="wildFlax" quantity="10" radius="1500" respawnTime="600000" x="36224" y="33856" />
 <spawnPoint type="wildFlax" quantity="10" radius="1500" respawnTime="600000" x="37536" y="31232" />

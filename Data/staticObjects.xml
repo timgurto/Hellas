@@ -43,4 +43,7 @@
 
 <object id="tutorialAltar"> <location x="5058" y="58376" /> </object>
 
+
+<npc id="grug"> <location x="35031" y="22214" /> </npc>
+
 </root>
