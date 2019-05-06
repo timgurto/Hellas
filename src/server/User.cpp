@@ -1185,11 +1185,11 @@ void User::moveToSpawnPoint(bool isNewPlayer) {
 void User::startQuest(const Quest &quest) {
   _quests.insert(quest.id);
 
-  auto message =
-      quest.hasObjective() ? SV_QUEST_IN_PROGRESS : SV_QUEST_CAN_BE_FINISHED;
+  auto message = quest.canBeCompletedByUser(*this) ? SV_QUEST_CAN_BE_FINISHED
+                                                   : SV_QUEST_IN_PROGRESS;
   auto &server = Server::instance();
-  sendMessage(message, quest.id);
   sendMessage(SV_QUEST_ACCEPTED);
+  sendMessage(message, quest.id);
 
   for (const auto &itemID : quest.startsWithItems) {
     auto item = server.findItem(itemID);

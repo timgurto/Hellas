@@ -1052,7 +1052,7 @@ TEST_CASE("Quests give XP", "[quests]") {
 }
 
 TEST_CASE("Fetch quests", "[quests]") {
-  GIVEN("A user on a fetch quest") {
+  GIVEN("a fetch quest") {
     auto data = R"(
       <objectType id="A" />
       <item id="eyeball" />
@@ -1063,28 +1063,45 @@ TEST_CASE("Fetch quests", "[quests]") {
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
 
+    auto &eyeball = s.getFirstItem();
+
     s.addObject("A", {10, 15});
     auto serial = s.getFirstObject().serial();
 
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
-    user.startQuest(*s->findQuest("quest1"));
 
-    WHEN("he gets the item") {
-      auto &eyeball = s.getFirstItem();
+    WHEN("a user accepts the quest") {
+      user.startQuest(*s->findQuest("quest1"));
+
+      AND_WHEN("he gets the item") {
+        user.giveItem(&eyeball);
+
+        AND_WHEN("he tries to complete the quest") {
+          c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", serial));
+
+          THEN("he has completed the quest") {
+            WAIT_UNTIL(user.hasCompletedQuest("quest1"));
+
+            AND_THEN("he no longer has the item") {
+              auto itemSet = ItemSet{};
+              itemSet.add(&eyeball);
+              CHECK_FALSE(user.hasItems(itemSet));
+            }
+          }
+        }
+      }
+    }
+
+    WHEN("a user has the item already") {
       user.giveItem(&eyeball);
 
-      AND_WHEN("he tries to complete the quest") {
-        c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", serial));
+      AND_WHEN("he accepts the quest") {
+        user.startQuest(*s->findQuest("quest1"));
 
-        THEN("he has completed the quest") {
-          WAIT_UNTIL(user.hasCompletedQuest("quest1"));
-
-          AND_THEN("he no longer has the item") {
-            auto itemSet = ItemSet{};
-            itemSet.add(&eyeball);
-            CHECK_FALSE(user.hasItems(itemSet));
-          }
+        THEN("he knows he can complete it") {
+          const auto &cQuest = c.getFirstQuest();
+          WAIT_UNTIL(cQuest.state == CQuest::CAN_FINISH);
         }
       }
     }
