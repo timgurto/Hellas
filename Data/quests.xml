@@ -4,7 +4,7 @@
     Shaman say there lots of clay past river, south, where land green and water big.
     You bring Grug clay?"
     debrief="You make Grug happy.  Toy will make Grugling happy." >
-    <objective type="fetch" id="clay" qty="1" />
+    <objective type="fetch" id="crudeClay" qty="1" />
 </quest>
     <npcType
         id="grug" name="Grug"
