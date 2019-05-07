@@ -1584,6 +1584,7 @@ void Server::handle_CL_SELECT_ENTITY(User &user, size_t serial) {
   }
 
   user.target(target);
+  if (user.action() == User::ATTACK) user.action(User::NO_ACTION);
 }
 
 void Server::handle_CL_SELECT_PLAYER(User &user,
@@ -1597,6 +1598,7 @@ void Server::handle_CL_SELECT_PLAYER(User &user,
   }
   User *targetUser = const_cast<User *>(it->second);
   user.target(targetUser);
+  if (user.action() == User::ATTACK) user.action(User::NO_ACTION);
 }
 
 void Server::handle_CL_RECRUIT(User &user, const std::string &username) {

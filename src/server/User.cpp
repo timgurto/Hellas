@@ -788,6 +788,7 @@ void User::onDeath() {
   server.forceAllToUntarget(*this);
   setTargetAndAttack(nullptr);
   cancelAction();
+  _action = NO_ACTION;
 
   sendMessage(SV_YOU_DIED);
 
