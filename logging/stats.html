@@ -125,12 +125,19 @@
     $("#version").html(stats.version);
     $("#time").html(timeDisplay(stats.time));
     
+    stats.users.sort(function(a, b){
+        if (a.isOnline != b.isOnline)
+            return a.isOnline?-1:1;
+            
+        return a.name - b.name
+    });
+    
     for (var i = 0; i < stats.users.length; ++i)
         $("#users").append("<tr>" + makeUserRow(stats.users[i]) + "</tr>");
         
 </script>
 <script type="text/javascript">
-  setTimeout(function () { location.reload(true); }, 500);
+  setTimeout(function () { location.reload(true); }, 5000);
 </script>
 
 </html>

@@ -284,7 +284,7 @@ class Server {
   ms_t _lastSave;
 
   static void publishStats(Server *server);
-  static const ms_t PUBLISH_STATS_FREQUENCY = 1000;
+  static const ms_t PUBLISH_STATS_FREQUENCY = 5000;
   ms_t _timeStatsLastPublished;
   void writeUserToFile(const User &user, std::ofstream &file) const;
 

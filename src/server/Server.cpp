@@ -750,6 +750,7 @@ void Server::killAllObjectsOwnedBy(const Permissions::Owner &owner) {
 void Server::writeUserToFile(const User &user, std::ofstream &stream) const {
   stream << "\n{"
          << "name: \"" << user.name() << "\","
+         << "online: " << user.hasSocket() << ","
          << "class: \"" << user.getClass().type().id() << "\","
          << "level: \"" << user.level() << "\","
          << "xp: \"" << user.xp() << "\","
@@ -779,7 +780,7 @@ void Server::writeUserToFile(const User &user, std::ofstream &stream) const {
   }
   stream << "],";
 
-  stream << "},\n";
+  stream << "},";
 }
 
 static std::set<std::string> getUsernamesFromFiles() {
@@ -831,7 +832,7 @@ void Server::publishStats(Server *server) {
     server->writeUserToFile(user, statsFile);
   }
 
-  statsFile << "],\n";
+  statsFile << "\n],\n";
 
   statsFile << "\n};\n";
 

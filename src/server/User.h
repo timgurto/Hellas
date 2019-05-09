@@ -102,6 +102,7 @@ class User : public Object {  // TODO: Don't inherit from Object
 
   const std::string &name() const { return _name; }
   const Socket &socket() const { return _socket.value(); }
+  bool hasSocket() const { return _socket.hasValue(); }
   void secondsPlayedBeforeThisSession(int t) {
     _secondsPlayedBeforeThisSession = t;
   };
