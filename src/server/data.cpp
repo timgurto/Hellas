@@ -11,7 +11,7 @@
 
 extern Args cmdLineArgs;
 
-bool Server::readUserData(User &user) {
+bool Server::readUserData(User &user, bool allowSideEffects) {
   auto xr = XmlReader::FromFile(_userFilesPath + user.name() + ".usr");
   if (!xr) return false;
 
@@ -37,13 +37,15 @@ bool Server::readUserData(User &user) {
     auto xp = XP{0};
     if (xr.findAttr(elem, "xp", xp)) user.xp(xp);
 
-    auto n = 0;
-    if (xr.findAttr(elem, "isKing", n) && n == 1) makePlayerAKing(user);
+    if (allowSideEffects) {
+      auto n = 0;
+      if (xr.findAttr(elem, "isKing", n) && n == 1) makePlayerAKing(user);
 
-    if (xr.findAttr(elem, "isDriving", n) && n == 1) {
-      auto pVehicle = _entities.findVehicleDrivenBy(user);
-      if (pVehicle) {
-        user.driving(pVehicle->serial());
+      if (xr.findAttr(elem, "isDriving", n) && n == 1) {
+        auto pVehicle = _entities.findVehicleDrivenBy(user);
+        if (pVehicle) {
+          user.driving(pVehicle->serial());
+        }
       }
     }
   }
@@ -62,14 +64,18 @@ bool Server::readUserData(User &user) {
       xr.findAttr(elem, "y", respawnPoint.y))
     user.respawnPoint(respawnPoint);
 
-  bool s = false;
-  if (isLocationValid(location, user))
-    user.location(location, /* firstInsertion */ true);
-  else {
-    _debug << Color::CHAT_ERROR << "Player " << user.name()
-           << " was respawned due to an invalid or occupied location."
-           << Log::endl;
-    user.moveToSpawnPoint(/* firstInsertion */ true);
+  if (allowSideEffects) {
+    bool s = false;
+    if (isLocationValid(location, user))
+      user.location(location, /* firstInsertion */ true);
+    else {
+      _debug << Color::CHAT_ERROR << "Player " << user.name()
+             << " was respawned due to an invalid or occupied location."
+             << Log::endl;
+      user.moveToSpawnPoint(/* firstInsertion */ true);
+    }
+  } else {
+    user.setLocationWithNoOtherEffects(location);
   }
 
   elem = xr.findChild("inventory");

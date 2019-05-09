@@ -277,12 +277,13 @@ class Server {
                        const Entity *thisEntity = nullptr);
 
  private:
-  bool readUserData(User &user);  // true: save data existed
+  bool readUserData(User &user,
+                    bool allowSideEffects = true);  // true: save data existed
   void writeUserData(const User &user) const;
   static const ms_t SAVE_FREQUENCY = 30000;
   ms_t _lastSave;
 
-  static void publishStats(const Server *server);
+  static void publishStats(Server *server);
   static const ms_t PUBLISH_STATS_FREQUENCY = 1000;
   ms_t _timeStatsLastPublished;
   void writeUserToFile(const User &user, std::ofstream &file) const;

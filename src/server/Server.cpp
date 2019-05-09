@@ -285,7 +285,7 @@ void Server::run() {
 
 void Server::addUser(const Socket &socket, const std::string &name,
                      const std::string &classID) {
-  auto newUserToInsert = User{name, {}, socket};
+  auto newUserToInsert = User{name, {}, &socket};
 
   // Add new user to list
   std::set<User>::const_iterator it = _users.insert(newUserToInsert).first;
@@ -782,7 +782,25 @@ void Server::writeUserToFile(const User &user, std::ofstream &stream) const {
   stream << "},\n";
 }
 
-void Server::publishStats(const Server *server) {
+static std::set<std::string> getUsernamesFromFiles() {
+  std::set<std::string> names{};
+  auto findData = WIN32_FIND_DATA{};
+  auto handle = FindFirstFile("Users\\*.usr", &findData);
+  if (handle != INVALID_HANDLE_VALUE) {
+    BOOL fileFound = 1;
+    while (fileFound) {
+      auto name = std::string(findData.cFileName);
+      name = name.substr(0, name.size() - 4);
+      names.insert(name);
+
+      fileFound = FindNextFile(handle, &findData);
+    }
+  }
+
+  return names;
+}
+
+void Server::publishStats(Server *server) {
   ++server->_threadsOpen;
 
   auto statsFile = std::ofstream{"logging/stats.js"};
@@ -796,8 +814,23 @@ void Server::publishStats(const Server *server) {
   statsFile << "constructions: " << server->_numBuildableObjects << ",\n";
 
   statsFile << "users: [";
+
+  // Online users
   for (const auto userEntry : server->_usersByName)
     server->writeUserToFile(*userEntry.second, statsFile);
+
+  // Ofline users
+  auto namesFromFiles = getUsernamesFromFiles();
+  for (const auto &name : namesFromFiles) {
+    auto userIsOnline =
+        server->_usersByName.find(name) != server->_usersByName.end();
+    if (userIsOnline) continue;
+
+    auto user = User{name, {}, nullptr};
+    server->readUserData(user, false);
+    server->writeUserToFile(user, statsFile);
+  }
+
   statsFile << "],\n";
 
   statsFile << "\n};\n";

@@ -35,7 +35,7 @@ class User : public Object {  // TODO: Don't inherit from Object
 
  private:
   std::string _name;
-  Socket _socket;
+  Optional<Socket> _socket;
 
   Optional<Class> _class;
 
@@ -90,16 +90,18 @@ class User : public Object {  // TODO: Don't inherit from Object
   bool _isInCombat{false};
 
  public:
-  User(const std::string &name, const MapPoint &loc, const Socket &socket);
+  User(const std::string &name, const MapPoint &loc, const Socket *socket);
   User(const Socket &rhs);  // for use with set::find(), allowing find-by-socket
   User(const MapPoint
            &loc);  // for use with set::find(), allowing find-by-location
   virtual ~User() {}
 
-  bool operator<(const User &rhs) const { return _socket < rhs._socket; }
+  bool operator<(const User &rhs) const {
+    return _socket.value() < rhs._socket.value();
+  }
 
   const std::string &name() const { return _name; }
-  const Socket &socket() const { return _socket; }
+  const Socket &socket() const { return _socket.value(); }
   void secondsPlayedBeforeThisSession(int t) {
     _secondsPlayedBeforeThisSession = t;
   };

@@ -19,11 +19,10 @@ const std::vector<XP> User::XP_PER_LEVEL{
     14500, 14800, 15000, 15200, 15400, 15600, 15800, 16000, 16100, 16300,
     16500, 16700, 16900, 17000, 17200, 17400, 17500, 17700, 17800, 18000};
 
-User::User(const std::string &name, const MapPoint &loc, const Socket &socket)
+User::User(const std::string &name, const MapPoint &loc, const Socket *socket)
     : Object(&OBJECT_TYPE, loc),
 
       _name(name),
-      _socket(socket),
 
       _action(NO_ACTION),
       _actionTime(0),
@@ -40,6 +39,8 @@ User::User(const std::string &name, const MapPoint &loc, const Socket &socket)
       _inventory(INVENTORY_SIZE),
       _gear(GEAR_SLOTS),
       _lastContact(SDL_GetTicks()) {
+  if (socket) _socket = *socket;
+
   if (!OBJECT_TYPE.collides()) {
     OBJECT_TYPE.collisionRect({-5, -2, 10, 4});
   }
@@ -177,13 +178,15 @@ void User::init() {
 bool User::compareXThenSerial::operator()(const User *a, const User *b) const {
   if (a->location().x != b->location().x)
     return a->location().x < b->location().x;
-  return a->_socket < b->_socket;  // Just need something unique.
+  return a->_socket.value() <
+         b->_socket.value();  // Just need something unique.
 }
 
 bool User::compareYThenSerial::operator()(const User *a, const User *b) const {
   if (a->location().y != b->location().y)
     return a->location().y < b->location().y;
-  return a->_socket < b->_socket;  // Just need something unique.
+  return a->_socket.value() <
+         b->_socket.value();  // Just need something unique.
 }
 
 std::string User::makeLocationCommand() const {
@@ -559,8 +562,9 @@ int User::countItems(const ServerItem *item) const {
 }
 
 void User::sendMessage(MessageCode msgCode, const std::string &args) const {
+  if (!_socket.hasValue()) return;
   const Server &server = Server::instance();
-  server.sendMessage(_socket, msgCode, args);
+  server.sendMessage(_socket.value(), msgCode, args);
 }
 
 void User::update(ms_t timeElapsed) {

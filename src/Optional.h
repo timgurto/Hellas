@@ -28,6 +28,8 @@ class Optional {
     return *_p;
   }
 
+  Optional(const T &rhs) : _p(new T(rhs)) {}
+
   bool hasValue() const { return _p != nullptr; }
 
   const T &value() const { return *_p; }
