@@ -16,7 +16,8 @@
     <table id="users" >
     <tr>
         <td class="heading">Name</td>
-        <td class="heading">Time played</td>
+        <td class="heading">Offline/online</td>
+        <td class="heading">Total played</td>
         <td class="heading">Class</td>
         <!--td class="heading">XP</td-->
         <td class="heading">City</td>
@@ -59,6 +60,8 @@
     function makeUserRow(user){
         var cells = "";
         cells += '<td>' + user.name + "</td>";
+        
+        cells += '<td>' + timeDisplay(user.secondsOnlineOrOffline*1000) + "</td>";
         
         cells += '<td>' + timeDisplay(user.secondsPlayed*1000) + "</td>";
         
@@ -133,8 +136,10 @@
     stats.users.sort(function(a, b){
         if (a.online != b.online)
             return a.isOnline ? -1 : 1;
-        if (a.secondsPlayed != b.secondsPlayed)
-            return b.secondsPlayed - a.secondsPlayed;
+        if (a.online)
+            return b.secondsOnlineOrOffline - a.secondsOnlineOrOffline;
+        else
+            return a.secondsOnlineOrOffline - b.secondsOnlineOrOffline;
             
         return a.name - b.name
     });

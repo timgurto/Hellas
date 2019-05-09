@@ -747,11 +747,31 @@ void Server::killAllObjectsOwnedBy(const Permissions::Owner &owner) {
   }
 }
 
+static int toSeconds(_FILETIME windowsTime) {
+  ULONGLONG timeLastOnline = (((ULONGLONG)windowsTime.dwHighDateTime) << 32) +
+                             windowsTime.dwLowDateTime;
+  _FILETIME ftNow;
+  _SYSTEMTIME st;
+  GetSystemTime(&st);
+  SystemTimeToFileTime(&st, &ftNow);
+  ULONGLONG timeNow =
+      (((ULONGLONG)ftNow.dwHighDateTime) << 32) + ftNow.dwLowDateTime;
+
+  auto timeOffline = timeNow - timeLastOnline;
+
+  static const auto SECONDS = ((ULONGLONG)10000000);
+  return static_cast<int>(timeOffline / SECONDS);
+}
+
 void Server::writeUserToFile(const User &user, std::ofstream &stream) const {
+  auto secondsOnlineOrOffline =
+      user.hasSocket() ? user.secondsPlayedThisSession() : user.secondsOffline;
+
   stream << "\n{"
          << "name: \"" << user.name() << "\","
          << "online: " << user.hasSocket() << ","
          << "secondsPlayed: " << user.secondsPlayed() << ","
+         << "secondsOnlineOrOffline: " << secondsOnlineOrOffline << ","
          << "class: \"" << user.getClass().type().id() << "\","
          << "level: \"" << user.level() << "\","
          << "xp: \"" << user.xp() << "\","
@@ -785,8 +805,9 @@ void Server::writeUserToFile(const User &user, std::ofstream &stream) const {
   stream << "},";
 }
 
-static std::set<std::string> getUsernamesFromFiles() {
-  std::set<std::string> names{};
+static std::map<std::string, int> getUsersFromFiles() {
+  // Name -> seconds offline
+  std::map<std::string, int> users{};
   auto findData = WIN32_FIND_DATA{};
   auto handle = FindFirstFile("Users\\*.usr", &findData);
   if (handle != INVALID_HANDLE_VALUE) {
@@ -794,13 +815,14 @@ static std::set<std::string> getUsernamesFromFiles() {
     while (fileFound) {
       auto name = std::string(findData.cFileName);
       name = name.substr(0, name.size() - 4);
-      names.insert(name);
+      auto secondsOffline = toSeconds(findData.ftLastWriteTime);
+      users[name] = secondsOffline;
 
       fileFound = FindNextFile(handle, &findData);
     }
   }
 
-  return names;
+  return users;
 }
 
 void Server::publishStats(Server *server) {
@@ -824,14 +846,16 @@ void Server::publishStats(Server *server) {
     server->writeUserToFile(*userEntry.second, statsFile);
 
   // Ofline users
-  auto namesFromFiles = getUsernamesFromFiles();
-  for (const auto &name : namesFromFiles) {
-    auto userIsOnline =
-        server->_usersByName.find(name) != server->_usersByName.end();
+  auto offlineUsers = getUsersFromFiles();
+  for (const auto &offlineUser : offlineUsers) {
+    auto userIsOnline = server->_usersByName.find(offlineUser.first) !=
+                        server->_usersByName.end();
     if (userIsOnline) continue;
 
-    auto user = User{name, {}, nullptr};
+    auto user = User{offlineUser.first, {}, nullptr};
     server->readUserData(user, false);
+    user.secondsOffline = offlineUser.second;
+
     server->writeUserToFile(user, statsFile);
   }
 

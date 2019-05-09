@@ -108,6 +108,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   };
   int secondsPlayedThisSession() const;
   int secondsPlayed() const;
+  mutable int secondsOffline{0};  // Used only for logging; 0 for online players
   void sendTimePlayed() const;
   Message teleportMessage(const MapPoint &destination) const override;
   void onTeleport() override;
