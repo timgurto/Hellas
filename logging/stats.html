@@ -25,6 +25,7 @@
         <td class="heading">Location</td>
         <td class="heading">Gear</td>
         <td class="heading">Inventory</td>
+        <td class="heading">Quests</td>
         <td class="heading">Recipes</td>
         <td class="heading">Constructions</td>
     </tr>
@@ -96,9 +97,10 @@
         }
         cells += "<td>" + inventoryText + "</td>";
         
+        cells += makeBarCell(user.completedQuests, stats.quests, "#801A7C");
         cells += makeBarCell(user.knownRecipes, stats.recipes, "#bbb");
-        
         cells += makeBarCell(user.knownConstructions, stats.constructions, "#bbb");
+        
         
         return cells;
     }
@@ -145,7 +147,7 @@
         
 </script>
 <script type="text/javascript">
-  setTimeout(function () { location.reload(true); }, 500);
+  setTimeout(function () { location.reload(true); }, 2500);
 </script>
 
 </html>

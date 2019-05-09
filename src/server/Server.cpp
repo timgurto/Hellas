@@ -765,6 +765,7 @@ void Server::writeUserToFile(const User &user, std::ofstream &stream) const {
          << "energy: " << user.energy() << ","
          << "maxEnergy: " << user.stats().maxEnergy << ","
          << "knownRecipes: " << user.knownRecipes().size() << ","
+         << "completedQuests: " << user.questsCompleted().size() << ","
          << "knownConstructions: " << user.knownConstructions().size() << ",";
 
   stream << "inventory: [";
@@ -814,6 +815,7 @@ void Server::publishStats(Server *server) {
 
   statsFile << "recipes: " << server->_recipes.size() << ",\n";
   statsFile << "constructions: " << server->_numBuildableObjects << ",\n";
+  statsFile << "quests: " << server->_quests.size() << ",\n";
 
   statsFile << "users: [";
 
