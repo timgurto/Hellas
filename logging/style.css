@@ -4,6 +4,10 @@ body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+.offline {
+    color: #666666;
+}
+
 h1, h2 {
     color: #CE9B79;
 }

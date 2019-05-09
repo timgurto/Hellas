@@ -16,6 +16,7 @@
     <table id="users" >
     <tr>
         <td class="heading">Name</td>
+        <td class="heading">Time played</td>
         <td class="heading">Class</td>
         <!--td class="heading">XP</td-->
         <td class="heading">City</td>
@@ -56,7 +57,9 @@
     
     function makeUserRow(user){
         var cells = "";
-        cells += "<td>" + user.name + "</td>";
+        cells += '<td>' + user.name + "</td>";
+        
+        cells += '<td>' + timeDisplay(user.secondsPlayed*1000) + "</td>";
         
         cells += "<td>Level " + (parseInt(user.level) + user.xp / user.xpNeeded).toFixed(1) + " " + user.class + "</td>";
         
@@ -126,18 +129,23 @@
     $("#time").html(timeDisplay(stats.time));
     
     stats.users.sort(function(a, b){
-        if (a.isOnline != b.isOnline)
-            return a.isOnline?-1:1;
+        if (a.online != b.online)
+            return a.isOnline ? -1 : 1;
+        if (a.secondsPlayed != b.secondsPlayed)
+            return b.secondsPlayed - a.secondsPlayed;
             
         return a.name - b.name
     });
     
-    for (var i = 0; i < stats.users.length; ++i)
-        $("#users").append("<tr>" + makeUserRow(stats.users[i]) + "</tr>");
+    for (var i = 0; i < stats.users.length; ++i){
+        var classString = "";
+        if (!stats.users[i].online) classString = ' class="offline"';
+        $("#users").append("<tr" + classString + ">" + makeUserRow(stats.users[i]) + "</tr>");
+    }
         
 </script>
 <script type="text/javascript">
-  setTimeout(function () { location.reload(true); }, 5000);
+  setTimeout(function () { location.reload(true); }, 500);
 </script>
 
 </html>

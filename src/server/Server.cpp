@@ -751,6 +751,7 @@ void Server::writeUserToFile(const User &user, std::ofstream &stream) const {
   stream << "\n{"
          << "name: \"" << user.name() << "\","
          << "online: " << user.hasSocket() << ","
+         << "secondsPlayed: " << user.secondsPlayed() << ","
          << "class: \"" << user.getClass().type().id() << "\","
          << "level: \"" << user.level() << "\","
          << "xp: \"" << user.xp() << "\","
