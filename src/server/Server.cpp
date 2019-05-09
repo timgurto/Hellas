@@ -747,6 +747,41 @@ void Server::killAllObjectsOwnedBy(const Permissions::Owner &owner) {
   }
 }
 
+void Server::writeUserToFile(const User &user, std::ofstream &stream) const {
+  stream << "\n{"
+         << "name: \"" << user.name() << "\","
+         << "class: \"" << user.getClass().type().id() << "\","
+         << "level: \"" << user.level() << "\","
+         << "xp: \"" << user.xp() << "\","
+         << "xpNeeded: \"" << user.XP_PER_LEVEL[user.level()] << "\","
+         << "x: \"" << user.location().x << "\","
+         << "y: \"" << user.location().y << "\","
+         << "city: \"" << _cities.getPlayerCity(user.name()) << "\","
+         << "isKing: " << _kings.isPlayerAKing(user.name()) << ","
+         << "health: " << user.health() << ","
+         << "maxHealth: " << user.stats().maxHealth << ","
+         << "energy: " << user.energy() << ","
+         << "maxEnergy: " << user.stats().maxEnergy << ","
+         << "knownRecipes: " << user.knownRecipes().size() << ","
+         << "knownConstructions: " << user.knownConstructions().size() << ",";
+
+  stream << "inventory: [";
+  for (auto inventorySlot : user.inventory()) {
+    auto id = inventorySlot.first != nullptr ? inventorySlot.first->id() : ""s;
+    stream << "{id:\"" << id << "\", qty:" << inventorySlot.second << "},";
+  }
+  stream << "],";
+
+  stream << "gear: [";
+  for (auto gearSlot : user.gear()) {
+    auto id = gearSlot.first != nullptr ? gearSlot.first->id() : ""s;
+    stream << "{id:\"" << id << "\", qty:" << gearSlot.second << "},";
+  }
+  stream << "],";
+
+  stream << "},\n";
+}
+
 void Server::publishStats(const Server *server) {
   ++server->_threadsOpen;
 
@@ -761,44 +796,8 @@ void Server::publishStats(const Server *server) {
   statsFile << "constructions: " << server->_numBuildableObjects << ",\n";
 
   statsFile << "users: [";
-  for (const auto userEntry : server->_usersByName) {
-    const auto &user = *userEntry.second;
-    statsFile << "\n{"
-              << "name: \"" << user.name() << "\","
-              << "class: \"" << user.getClass().type().id() << "\","
-              << "level: \"" << user.level() << "\","
-              << "xp: \"" << user.xp() << "\","
-              << "xpNeeded: \"" << user.XP_PER_LEVEL[user.level()] << "\","
-              << "x: \"" << user.location().x << "\","
-              << "y: \"" << user.location().y << "\","
-              << "city: \"" << server->_cities.getPlayerCity(user.name())
-              << "\","
-              << "isKing: " << server->_kings.isPlayerAKing(user.name()) << ","
-              << "health: " << user.health() << ","
-              << "maxHealth: " << user.stats().maxHealth << ","
-              << "energy: " << user.energy() << ","
-              << "maxEnergy: " << user.stats().maxEnergy << ","
-              << "knownRecipes: " << user.knownRecipes().size() << ","
-              << "knownConstructions: " << user.knownConstructions().size()
-              << ",";
-
-    statsFile << "inventory: [";
-    for (auto inventorySlot : user.inventory()) {
-      auto id =
-          inventorySlot.first != nullptr ? inventorySlot.first->id() : ""s;
-      statsFile << "{id:\"" << id << "\", qty:" << inventorySlot.second << "},";
-    }
-    statsFile << "],";
-
-    statsFile << "gear: [";
-    for (auto gearSlot : user.gear()) {
-      auto id = gearSlot.first != nullptr ? gearSlot.first->id() : ""s;
-      statsFile << "{id:\"" << id << "\", qty:" << gearSlot.second << "},";
-    }
-    statsFile << "],";
-
-    statsFile << "},\n";
-  }
+  for (const auto userEntry : server->_usersByName)
+    server->writeUserToFile(*userEntry.second, statsFile);
   statsFile << "],\n";
 
   statsFile << "\n};\n";
