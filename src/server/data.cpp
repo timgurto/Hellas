@@ -75,7 +75,7 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
       user.moveToSpawnPoint(/* firstInsertion */ true);
     }
   } else {
-    user.setLocationWithNoOtherEffects(location);
+    user.changeDummyLocation(location);
   }
 
   elem = xr.findChild("inventory");

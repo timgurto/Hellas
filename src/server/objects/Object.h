@@ -93,8 +93,8 @@ class Object : public Entity, public QuestNode {
   void onDeath() override;
   bool canBeAttackedBy(const User &) const override;
 
-  void setType(const ObjectType *type,
-               bool skipConstruction = false);  // Set/change ObjectType
+  void setType(const ObjectType *type, bool skipConstruction = false,
+               bool wasCalledFromConstructor = false);  // Set/change ObjectType
 
   void sendInfoToClient(const User &targetUser) const override;
   void describeSelfToNewWatcher(const User &watcher) const override;

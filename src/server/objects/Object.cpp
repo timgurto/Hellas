@@ -11,7 +11,7 @@ Object::Object(const ObjectType *type, const MapPoint &loc)
       _transformTimer(0),
       _disappearTimer(type->disappearsAfter()),
       _permissions(*this) {
-  setType(type);
+  setType(type, false, true);
   objType().incrementCounter();
 
   if (type != &User::OBJECT_TYPE) type->initStrengthAndMaxHealth();
@@ -160,7 +160,8 @@ void Object::onEnergyChange() {
   Entity::onEnergyChange();
 }
 
-void Object::setType(const ObjectType *type, bool skipConstruction) {
+void Object::setType(const ObjectType *type, bool skipConstruction,
+                     bool wasCalledFromConstructor) {
   if (!type) {
     SERVER_ERROR("Trying to set object type to null");
     return;
@@ -174,10 +175,10 @@ void Object::setType(const ObjectType *type, bool skipConstruction) {
     type->yield().instantiate(_contents);
   }
 
-  // TODO skip these two when setType() is called from constructor, for
-  // efficiency.
-  server->forceAllToUntarget(*this);
-  removeAllGatheringUsers();
+  if (!wasCalledFromConstructor) {
+    server->forceAllToUntarget(*this);
+    removeAllGatheringUsers();
+  }
 
   delete _container;
   if (objType().hasContainer()) {
