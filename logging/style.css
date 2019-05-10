@@ -5,7 +5,7 @@ body {
 }
 
 .offline {
-    color: #666666;
+    opacity: 0.2;
 }
 
 h1, h2 {
