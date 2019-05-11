@@ -222,7 +222,7 @@ TEST_CASE("The map can be loaded from a string") {
 
     auto s = TestServer::WithDataString(data);
 
-    THEN("The map has width=2") { CHECK(s->mapX() == 2); }
+    THEN("The map has width=2") { CHECK(s->map().width() == 2); }
   }
 }
 

@@ -55,7 +55,7 @@ class TestServer {
     _server->sendMessage(socket, code, args);
   }
 
-  void nop() { _server->mapX(); }
+  void nop() { _server->map(); }
 
   User &findUser(const std::string &username);
   const Quest &findQuest(const Quest::ID &questID) const;

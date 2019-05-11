@@ -926,23 +926,22 @@ void DataLoader::loadMap(XmlReader &xr) {
   }
 
   elem = xr.findChild("size");
-  if (elem == nullptr || !xr.findAttr(elem, "x", _server._mapX) ||
-      !xr.findAttr(elem, "y", _server._mapY)) {
+  size_t w = 0, h = 0;
+  if (elem == nullptr || !xr.findAttr(elem, "x", w) ||
+      !xr.findAttr(elem, "y", h)) {
     _server._debug("Map size missing or incomplete.", Color::CHAT_ERROR);
   }
 
-  if (_server._map.size() != _server._mapX) {
-    _server._map = std::vector<std::vector<char> >(_server._mapX);
-    for (size_t x = 0; x != _server._mapX; ++x)
-      _server._map[x] = std::vector<char>(_server._mapY, 0);
-  }
+  auto mapNeedsResizing = _server._map.cols() != h;
+  if (mapNeedsResizing) _server._map = {w, h};
+
   for (auto row : xr.getChildren("row")) {
     size_t y;
-    if (!xr.findAttr(row, "y", y) || y >= _server._mapY) break;
+    if (!xr.findAttr(row, "y", y) || y >= _server._map.height()) break;
     std::string rowTerrain;
     if (!xr.findAttr(row, "terrain", rowTerrain)) break;
     for (size_t x = 0; x != rowTerrain.size(); ++x) {
-      if (x > _server._mapX) break;
+      if (x > _server._map.width()) break;
       _server._map[x][y] = rowTerrain[x];
     }
   }

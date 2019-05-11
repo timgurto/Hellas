@@ -45,8 +45,6 @@ Server::Server()
       _socket(),
       _loop(false),
       _running(false),
-      _mapX(0),
-      _mapY(0),
       _debug("server.log"),
       _userFilesPath("Users/"),
       _lastSave(_time),
@@ -617,7 +615,8 @@ void Server::spawnInitialObjects() {
 }
 
 MapPoint Server::mapRand() const {
-  return {randDouble() * (_mapX - 0.5) * TILE_W, randDouble() * _mapY * TILE_H};
+  return {randDouble() * (_map.width() - 0.5) * TILE_W,
+          randDouble() * _map.height() * TILE_H};
 }
 
 bool Server::itemIsTag(const ServerItem *item,

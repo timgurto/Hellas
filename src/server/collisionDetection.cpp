@@ -92,8 +92,8 @@ bool Server::isLocationValid(const MapRect &rect,
 
   const double right = rect.x + rect.w, bottom = rect.y + rect.h;
   // Map edges
-  const double xLimit = _mapX * Server::TILE_W - Server::TILE_W / 2,
-               yLimit = _mapY * Server::TILE_H;
+  const double xLimit = _map.width() * Server::TILE_W - Server::TILE_W / 2,
+               yLimit = _map.height() * Server::TILE_H;
   if (rect.x < 0 || right > xLimit || rect.y < 0 || bottom > yLimit) {
     return false;
   }
@@ -133,10 +133,11 @@ size_t Server::getTileYCoord(double y) const {
     return 0;
   }
   size_t yTile = static_cast<size_t>(y / TILE_H);
-  if (yTile >= _mapY) {
+  if (yTile >= _map.height()) {
     _debug << Color::CHAT_ERROR << "Invalid location; clipping y from " << yTile
-           << " to " << _mapY - 1 << ". original co-ord=" << y << Log::endl;
-    yTile = _mapY - 1;
+           << " to " << _map.height() - 1 << ". original co-ord=" << y
+           << Log::endl;
+    yTile = _map.height() - 1;
   }
   return yTile;
 }
@@ -149,11 +150,11 @@ size_t Server::getTileXCoord(double x, size_t yTile) const {
   double originalX = x;
   if (yTile % 2 == 1) x += TILE_W / 2;
   size_t xTile = static_cast<size_t>(x / TILE_W);
-  if (xTile >= _mapX) {
+  if (xTile >= _map.width()) {
     _debug << Color::CHAT_ERROR << "Invalid location; clipping x from "
-           << originalX << " to " << _mapX - 1 << ". original co-ord=" << x
-           << Log::endl;
-    xTile = _mapX - 1;
+           << originalX << " to " << _map.width() - 1
+           << ". original co-ord=" << x << Log::endl;
+    xTile = _map.width() - 1;
   }
   return xTile;
 }

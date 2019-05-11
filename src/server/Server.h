@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "../Args.h"
+#include "../Map.h"
 #include "../Socket.h"
 #include "../Terrain.h"
 #include "../TerrainList.h"
@@ -55,9 +56,6 @@ class Server {
                                       // circle with this radius.
 
   static const px_t TILE_W, TILE_H;
-  const size_t mapX() const { return _mapX; }
-  const size_t mapY() const { return _mapY; }
-  typedef std::vector<std::vector<char>> Map;
   const Map &map() { return _map; }
 
   static Server &instance() { return *_instance; }
@@ -217,7 +215,6 @@ class Server {
   volatile mutable int _threadsOpen{0};
 
   MapPoint mapRand() const;  // Return a random point on the map.
-  size_t _mapX, _mapY;       // Number of tiles in each dimension.
   Map _map;
 
   // World data

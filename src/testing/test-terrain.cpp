@@ -22,8 +22,8 @@ TEST_CASE("nearbyTerrainTypes with radius", "[terrain]") {
 
 TEST_CASE("Large map is read accurately", "[.slow][terrain]") {
   TestServer s = TestServer::WithData("signpost");
-  REQUIRE(s->mapX() == 315);
-  REQUIRE(s->mapY() == 315);
+  REQUIRE(s->map().width() == 315);
+  REQUIRE(s->map().height() == 315);
   for (size_t x = 0; x != 315; ++x)
     for (size_t y = 0; y != 315; ++y) {
       CAPTURE(x);
