@@ -454,7 +454,7 @@ std::set<User *> Server::findUsersInArea(MapPoint loc,
   auto loX = _usersByX.lower_bound(&dummy);
   dummy.changeDummyLocation(loc.x + squareRadius);
   auto hiX = _usersByX.upper_bound(&dummy);
-  for (auto it = loX; it != hiX; ++it)
+  for (auto it = loX; it != hiX && it != _usersByX.end(); ++it)
     if (abs(loc.y - (*it)->location().y) <= squareRadius)
       users.insert(const_cast<User *>(*it));
 

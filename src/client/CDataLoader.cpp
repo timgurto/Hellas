@@ -945,46 +945,5 @@ void CDataLoader::loadMap(XmlReader &xr) {
     return;
   }
 
-  auto elem = xr.findChild("size");
-  size_t w = 0, h = 0;
-  if (elem == nullptr || !xr.findAttr(elem, "x", w) ||
-      !xr.findAttr(elem, "y", h)) {
-    _client.showErrorMessage("Map size missing or incomplete.",
-                             Color::CHAT_ERROR);
-    return;
-  }
-  _client._map = {w, h};
-  for (auto row : xr.getChildren("row")) {
-    size_t y;
-    auto rowNumberSpecified = xr.findAttr(row, "y", y);
-    if (!rowNumberSpecified) {
-      _client.showErrorMessage("Map row is missing a row number.",
-                               Color::CHAT_ERROR);
-      return;
-    }
-    if (y >= _client._map.height()) {
-      _client.showErrorMessage("Map row number "s + toString(y) +
-                                   " exceeds y dimension of " +
-                                   toString(_client._map.height()),
-                               Color::CHAT_ERROR);
-      return;
-    }
-    std::string rowTerrain;
-    if (!xr.findAttr(row, "terrain", rowTerrain)) {
-      _client.showErrorMessage("Map row is missing terrain information.",
-                               Color::CHAT_ERROR);
-      return;
-    }
-    for (size_t x = 0; x != rowTerrain.size(); ++x) {
-      if (x > _client._map.width()) {
-        _client.showErrorMessage("Row length of "s + toString(x) +
-                                     " exceeds x dimension of " +
-                                     toString(_client._map.width()),
-                                 Color::CHAT_ERROR);
-        return;
-      }
-      _client._map[x][y] = rowTerrain[x];
-    }
-  }
-  return;
+  _client._map.loadFromXML(xr);
 }

@@ -925,24 +925,5 @@ void DataLoader::loadMap(XmlReader &xr) {
                    Color::CHAT_ERROR);
   }
 
-  elem = xr.findChild("size");
-  size_t w = 0, h = 0;
-  if (elem == nullptr || !xr.findAttr(elem, "x", w) ||
-      !xr.findAttr(elem, "y", h)) {
-    _server._debug("Map size missing or incomplete.", Color::CHAT_ERROR);
-  }
-
-  auto mapNeedsResizing = _server._map.cols() != h;
-  if (mapNeedsResizing) _server._map = {w, h};
-
-  for (auto row : xr.getChildren("row")) {
-    size_t y;
-    if (!xr.findAttr(row, "y", y) || y >= _server._map.height()) break;
-    std::string rowTerrain;
-    if (!xr.findAttr(row, "terrain", rowTerrain)) break;
-    for (size_t x = 0; x != rowTerrain.size(); ++x) {
-      if (x > _server._map.width()) break;
-      _server._map[x][y] = rowTerrain[x];
-    }
-  }
+  _server._map.loadFromXML(xr);
 }
