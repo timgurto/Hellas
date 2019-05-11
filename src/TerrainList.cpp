@@ -1,5 +1,6 @@
 #include "TerrainList.h"
-#include "Server.h"
+
+#include "XmlReader.h"
 
 std::map<std::string, TerrainList> TerrainList::_lists;
 const TerrainList *TerrainList::_default = nullptr;
@@ -37,9 +38,9 @@ const TerrainList &TerrainList::defaultList() {
     return *_default;
   else {
     if (_lists.empty()) {
-      SERVER_ERROR("Can't get default terrain list because there are no lists");
       return _dummy;
     }
     return _lists.begin()->second;  // Use first alphabetical.
   }
 }
+

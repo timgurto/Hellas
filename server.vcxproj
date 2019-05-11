@@ -140,7 +140,7 @@
     <ClCompile Include="src\server\Spawner.cpp" />
     <ClCompile Include="src\server\Spell.cpp" />
     <ClCompile Include="src\server\SpellEffect.cpp" />
-    <ClCompile Include="src\server\TerrainList.cpp" />
+    <ClCompile Include="src\TerrainList.cpp" />
     <ClCompile Include="src\server\ThreatTable.cpp" />
     <ClCompile Include="src\server\User.cpp" />
     <ClCompile Include="src\server\Vehicle.cpp" />
@@ -173,6 +173,7 @@
     <ClInclude Include="src\Podes.h" />
     <ClInclude Include="src\Point.h" />
     <ClInclude Include="src\Rect.h" />
+    <ClInclude Include="src\server\Buff.h" />
     <ClInclude Include="src\server\City.h" />
     <ClInclude Include="src\server\Class.h" />
     <ClInclude Include="src\server\CollisionChunk.h" />
@@ -205,7 +206,7 @@
     <ClInclude Include="src\server\Spawner.h" />
     <ClInclude Include="src\server\Spell.h" />
     <ClInclude Include="src\server\SpellEffect.h" />
-    <ClInclude Include="src\server\TerrainList.h" />
+    <ClInclude Include="src\TerrainList.h" />
     <ClInclude Include="src\server\ThreatTable.h" />
     <ClInclude Include="src\server\User.h" />
     <ClInclude Include="src\server\Vehicle.h" />

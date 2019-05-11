@@ -5,6 +5,8 @@
 #include <set>
 #include <string>
 
+class XmlReader;
+
 /*
 Describes an allowed set of terrain types.  Each object type will specify one,
 which dictates what map tiles are valid locations for obejcts of that type.
@@ -17,6 +19,7 @@ class TerrainList {
 
   std::set<char> _list;
   bool _isWhitelist;  // true if whitelist; false if blacklist.
+  static std::map<std::string, char> terrainCodes;
 
  public:
   void allow(char terrain);

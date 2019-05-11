@@ -5,7 +5,7 @@
 
 #include "../Rect.h"
 #include "../Stats.h"
-#include "TerrainList.h"
+#include "../TerrainList.h"
 
 class EntityType {
  public:
