@@ -33,6 +33,8 @@ class TerrainList {
   static void setDefault(const std::string &id);
   static const TerrainList *findList(const std::string &id);
   static const TerrainList &defaultList();
+
+  static void loadFromXML(XmlReader &xr);
 };
 
 #endif

@@ -15,6 +15,7 @@ class DataLoader {
 
   void load(bool keepOldData = false);
 
+  void loadTerrain(XmlReader &reader);
   void loadTerrainLists(XmlReader &reader);
   void loadObjectTypes(XmlReader &reader);
   void loadQuests(XmlReader &reader);

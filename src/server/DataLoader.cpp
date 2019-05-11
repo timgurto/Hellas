@@ -1,9 +1,11 @@
+#include "DataLoader.h"
+
 #include <windows.h>
+
 #include <algorithm>
 #include <set>
 
 #include "../XmlReader.h"
-#include "DataLoader.h"
 #include "ProgressLock.h"
 #include "Server.h"
 #include "VehicleType.h"
@@ -110,47 +112,26 @@ DataLoader::FilesList DataLoader::findDataFiles() const {
   return list;
 }
 
-void DataLoader::loadTerrainLists(XmlReader &xr) {
+void DataLoader::loadTerrain(XmlReader &xr) {
   if (!xr) return;
-
-  std::map<std::string, char>
-      terrainCodes;  // For easier lookup when compiling lists below.
 
   for (auto elem : xr.getChildren("terrain")) {
     char index;
     std::string id, tag;
     if (!xr.findAttr(elem, "index", index)) continue;
-    if (!xr.findAttr(elem, "id", id)) continue;
     Terrain *newTerrain = nullptr;
     if (xr.findAttr(elem, "tag", tag))
       newTerrain = Terrain::withTag(tag);
     else
       newTerrain = Terrain::empty();
     _server._terrainTypes[index] = newTerrain;
-    terrainCodes[id] = index;
   }
+}
 
-  for (auto elem : xr.getChildren("list")) {
-    std::string id;
-    if (!xr.findAttr(elem, "id", id)) continue;
-    TerrainList tl;
-    for (auto terrain : xr.getChildren("allow", elem)) {
-      std::string s;
-      if (xr.findAttr(terrain, "id", s) &&
-          terrainCodes.find(s) != terrainCodes.end())
-        tl.allow(terrainCodes[s]);
-    }
-    for (auto terrain : xr.getChildren("forbid", elem)) {
-      std::string s;
-      if (xr.findAttr(terrain, "id", s) &&
-          terrainCodes.find(s) != terrainCodes.end())
-        tl.forbid(terrainCodes[s]);
-    }
-    TerrainList::addList(id, tl);
-    size_t default = 0;
-    if (xr.findAttr(elem, "default", default) && default == 1)
-      TerrainList::setDefault(id);
-  }
+void DataLoader::loadTerrainLists(XmlReader &xr) {
+  if (!xr) return;
+
+  TerrainList::loadFromXML(xr);
 }
 
 void DataLoader::loadObjectTypes(XmlReader &xr) {
