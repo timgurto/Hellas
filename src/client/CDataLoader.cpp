@@ -946,15 +946,14 @@ void CDataLoader::loadMap(XmlReader &xr) {
   }
 
   auto elem = xr.findChild("size");
-  if (elem == nullptr || !xr.findAttr(elem, "x", _client._mapX) ||
-      !xr.findAttr(elem, "y", _client._mapY)) {
+  size_t w = 0, h = 0;
+  if (elem == nullptr || !xr.findAttr(elem, "x", w) ||
+      !xr.findAttr(elem, "y", h)) {
     _client.showErrorMessage("Map size missing or incomplete.",
                              Color::CHAT_ERROR);
     return;
   }
-  _client._map = std::vector<std::vector<char> >(_client._mapX);
-  for (size_t x = 0; x != _client._mapX; ++x)
-    _client._map[x] = std::vector<char>(_client._mapY, 0);
+  _client._map = {w, h};
   for (auto row : xr.getChildren("row")) {
     size_t y;
     auto rowNumberSpecified = xr.findAttr(row, "y", y);
@@ -963,10 +962,10 @@ void CDataLoader::loadMap(XmlReader &xr) {
                                Color::CHAT_ERROR);
       return;
     }
-    if (y >= _client._mapY) {
+    if (y >= _client._map.height()) {
       _client.showErrorMessage("Map row number "s + toString(y) +
                                    " exceeds y dimension of " +
-                                   toString(_client._mapY),
+                                   toString(_client._map.height()),
                                Color::CHAT_ERROR);
       return;
     }
@@ -977,10 +976,10 @@ void CDataLoader::loadMap(XmlReader &xr) {
       return;
     }
     for (size_t x = 0; x != rowTerrain.size(); ++x) {
-      if (x > _client._mapX) {
+      if (x > _client._map.width()) {
         _client.showErrorMessage("Row length of "s + toString(x) +
                                      " exceeds x dimension of " +
-                                     toString(_client._mapX),
+                                     toString(_client._map.width()),
                                  Color::CHAT_ERROR);
         return;
       }

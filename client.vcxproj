@@ -172,6 +172,7 @@
     <ClCompile Include="src\curlUtil.cpp" />
     <ClCompile Include="src\Item.cpp" />
     <ClCompile Include="src\Log.cpp" />
+    <ClCompile Include="src\Map.cpp" />
     <ClCompile Include="src\NormalVariable.cpp" />
     <ClCompile Include="src\Podes.cpp" />
     <ClCompile Include="src\Point.cpp" />
@@ -258,6 +259,7 @@
     <ClInclude Include="src\curlUtil.h" />
     <ClInclude Include="src\Item.h" />
     <ClInclude Include="src\Log.h" />
+    <ClInclude Include="src\Map.h" />
     <ClInclude Include="src\messageCodes.h" />
     <ClInclude Include="src\NormalVariable.h" />
     <ClInclude Include="src\Podes.h" />

@@ -10,6 +10,7 @@
 #include <unordered_map>
 
 #include "../Args.h"
+#include "../Map.h"
 #include "../Point.h"
 #include "../Rect.h"
 #include "../Socket.h"
@@ -543,8 +544,7 @@ class Client {
   Images _icons{"Images/Icons"};
 
   // Information about the state of the world
-  size_t _mapX, _mapY;
-  std::vector<std::vector<char> > _map;
+  Map _map;
   ClientItem::vect_t _inventory;
   std::map<std::string, Avatar *> _otherUsers;  // For lookup by name
   std::map<size_t, ClientObject *> _objects;    // For lookup by serial

@@ -64,7 +64,7 @@ class TestClient {
   const Element::children_t &mapPinOutlines() const {
     return _client->_mapPinOutlines->children();
   }
-  const std::vector<std::vector<char> > &map() const { return _client->_map; }
+  const Map &map() const { return _client->_map; }
   const std::set<std::string> &allOnlinePlayers() const {
     return _client->_allOnlinePlayers;
   }

@@ -52,8 +52,10 @@ void Client::updateMapWindow(Element &) {
   zoomMultiplier = 1 << client._zoom;
 
   // Unit: point from far top/left to far bottom/right [0,1]
-  auto charPosX = client._character.location().x / (client._mapX * TILE_W);
-  auto charPosY = client._character.location().y / (client._mapY * TILE_H);
+  auto charPosX =
+      client._character.location().x / (client._map.width() * TILE_W);
+  auto charPosY =
+      client._character.location().y / (client._map.height() * TILE_H);
   auto mapDisplacementX = 0.5 - charPosX * zoomMultiplier;
   auto mapDisplacementY = 0.5 - charPosY * zoomMultiplier;
 
@@ -122,8 +124,8 @@ void Client::addOutlinedMapPin(const MapPoint &worldPosition,
 }
 
 ScreenRect Client::convertToMapPosition(const MapPoint &worldPosition) const {
-  const double MAP_FACTOR_X = 1.0 * _mapX * TILE_W / MAP_IMAGE_W,
-               MAP_FACTOR_Y = 1.0 * _mapY * TILE_H / MAP_IMAGE_H;
+  const double MAP_FACTOR_X = 1.0 * _map.width() * TILE_W / MAP_IMAGE_W,
+               MAP_FACTOR_Y = 1.0 * _map.height() * TILE_H / MAP_IMAGE_H;
 
   px_t x = toInt(worldPosition.x / MAP_FACTOR_X * zoomMultiplier),
        y = toInt(worldPosition.y / MAP_FACTOR_Y * zoomMultiplier);

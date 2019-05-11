@@ -23,11 +23,11 @@ void Client::draw() const {
 
   // Terrain
   size_t xMin = static_cast<size_t>(max<double>(0, -offset().x / TILE_W)),
-         xMax = static_cast<size_t>(
-             min<double>(_mapX, 1.0 * (-offset().x + SCREEN_X) / TILE_W + 1.5)),
+         xMax = static_cast<size_t>(min<double>(
+             _map.width(), 1.0 * (-offset().x + SCREEN_X) / TILE_W + 1.5)),
          yMin = static_cast<size_t>(max<double>(0, -offset().y / TILE_H)),
          yMax = static_cast<size_t>(
-             min<double>(_mapY, (-offset().y + SCREEN_Y) / TILE_H + 1));
+             min<double>(_map.height(), (-offset().y + SCREEN_Y) / TILE_H + 1));
   assert(xMin <= xMax);
   assert(yMin <= yMax);
   for (size_t y = yMin; y != yMax; ++y) {
@@ -232,7 +232,7 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const {
   const bool yOdd = (y % 2 == 1);
   char tileID, L, R, E, F, G, H;
   tileID = _map[x][y];
-  R = x == _mapX - 1 ? tileID : _map[x + 1][y];
+  R = x == _map.width() - 1 ? tileID : _map[x + 1][y];
   L = x == 0 ? tileID : _map[x - 1][y];
   if (y == 0) {
     H = E = tileID;
@@ -241,15 +241,15 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const {
       E = _map[x][y - 1];
       H = x == 0 ? tileID : _map[x - 1][y - 1];
     } else {
-      E = x == _mapX - 1 ? tileID : _map[x + 1][y - 1];
+      E = x == _map.width() - 1 ? tileID : _map[x + 1][y - 1];
       H = _map[x][y - 1];
     }
   }
-  if (y == _mapY - 1) {
+  if (y == _map.height() - 1) {
     G = F = tileID;
   } else {
     if (!yOdd) {
-      F = x == _mapX - 1 ? tileID : _map[x + 1][y + 1];
+      F = x == _map.width() - 1 ? tileID : _map[x + 1][y + 1];
       G = _map[x][y + 1];
     } else {
       F = _map[x][y + 1];
@@ -269,7 +269,7 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const {
   renderer.setDrawColor(Color::BLACK);
   if (yOdd && x == 0) {
     renderer.fillRect(drawLoc + RIGHT_HALF);
-  } else if (!yOdd && x == _mapX - 1) {
+  } else if (!yOdd && x == _map.width() - 1) {
     renderer.fillRect(drawLoc + LEFT_HALF);
   } else {
     renderer.fillRect(drawLoc + FULL);
@@ -280,7 +280,7 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const {
   if (yOdd && x == 0) {
     _terrain.at(tileID).draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
     _terrain.at(tileID).draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
-  } else if (!yOdd && x == _mapX - 1) {
+  } else if (!yOdd && x == _map.width() - 1) {
     _terrain.at(tileID).draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
     _terrain.at(tileID).draw(drawLoc + TOP_LEFT, TOP_LEFT);
   } else {
@@ -298,7 +298,7 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const {
     _terrain.at(G).draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
     _terrain.at(H).draw(drawLoc + TOP_LEFT, TOP_LEFT);
   }
-  if (yOdd || x != _mapX - 1) {
+  if (yOdd || x != _map.width() - 1) {
     _terrain.at(R).draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
     _terrain.at(R).draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
     _terrain.at(E).draw(drawLoc + TOP_RIGHT, TOP_RIGHT);

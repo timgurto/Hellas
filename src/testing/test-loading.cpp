@@ -80,8 +80,8 @@ TEST_CASE("Clients load map properly") {
     TestServer s = TestServer::WithData("big_map");
     TestClient c = TestClient::WithData("big_map");
 
-    THEN("the client's map has 101 rows") {
-      WAIT_UNTIL(c.map().size() == 101);
+    THEN("the client's map has 101 columns") {
+      WAIT_UNTIL(c.map().cols() == 101);
 
       AND_THEN("the user spawned in the correct place") {
         WAIT_UNTIL(c->character().location() == MapPoint(1616, 1616));

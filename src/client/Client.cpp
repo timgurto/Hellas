@@ -137,9 +137,6 @@ Client::Client()
 
       _tooltipNeedsRefresh(false),
 
-      _mapX(0),
-      _mapY(0),
-
       _currentMouseOverEntity(nullptr),
 
       _confirmDropItem(nullptr),
@@ -808,9 +805,9 @@ bool Client::isLocationValidForPlayer(const MapPoint &location) const {
 bool Client::isLocationValidForPlayer(const MapRect &rect) const {
   // Map edges
   if (rect.x < 0 || rect.y < 0) return false;
-  static const auto X_LIM = _mapX * TILE_W - TILE_W / 2;
+  static const auto X_LIM = _map.width() * TILE_W - TILE_W / 2;
   if (rect.x + rect.w > X_LIM) return false;
-  static const auto Y_LIM = _mapY * TILE_H;
+  static const auto Y_LIM = _map.height() * TILE_H;
   if (rect.y + rect.h > Y_LIM) return false;
 
   // Objects
