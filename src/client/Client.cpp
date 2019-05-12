@@ -808,6 +808,12 @@ bool Client::isLocationValidForPlayer(const MapRect &rect) const {
   static const auto Y_LIM = _map.height() * Map::TILE_H;
   if (rect.y + rect.h > Y_LIM) return false;
 
+  // Terrain
+  const auto &allowedTerrain = TerrainList::defaultList();
+  auto terrainTypesCovered = _map.terrainTypesOverlapping(rect);
+  for (auto terrainType : terrainTypesCovered)
+    if (!allowedTerrain.allows(terrainType)) return false;
+
   // Objects
   for (const auto *sprite : _entities) {
     auto *obj = dynamic_cast<const ClientObject *>(sprite);

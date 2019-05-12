@@ -3,6 +3,7 @@
 #include <set>
 
 #include "../Podes.h"
+#include "../TerrainList.h"
 #include "../XmlReader.h"
 #include "ClassInfo.h"
 #include "Client.h"
@@ -45,6 +46,7 @@ void CDataLoader::load(bool keepOldData) {
     _files = findDataFiles();
 
     loadFromAllFiles(&CDataLoader::loadTerrain);
+    loadFromAllFiles(&CDataLoader::loadTerrainLists);
     loadFromAllFiles(&CDataLoader::loadParticles);
     loadFromAllFiles(&CDataLoader::loadSounds);
     loadFromAllFiles(&CDataLoader::loadProjectiles);
@@ -68,6 +70,7 @@ void CDataLoader::load(bool keepOldData) {
     loadMap(reader);
   } else {
     loadTerrain(XmlReader::FromString(_data));
+    loadTerrainLists(XmlReader::FromString(_data));
     loadParticles(XmlReader::FromString(_data));
     loadSounds(XmlReader::FromString(_data));
     loadProjectiles(XmlReader::FromString(_data));
@@ -129,6 +132,12 @@ void CDataLoader::loadTerrain(XmlReader &xr) {
     xr.findAttr(elem, "frameTime", frameTime);
     _client._terrain[index] = ClientTerrain(fileName, frames, frameTime);
   }
+}
+
+void CDataLoader::loadTerrainLists(XmlReader &xr) {
+  if (!xr) return;
+
+  TerrainList::loadFromXML(xr);
 }
 
 void CDataLoader::loadParticles(XmlReader &xr) {
