@@ -175,18 +175,22 @@ void User::init() {
   OBJECT_TYPE.baseStats(baseStats);
 }
 
-bool User::compareXThenSerial::operator()(const User *a, const User *b) const {
+bool User::compareXThenSocketThenAddress::operator()(const User *a,
+                                                     const User *b) const {
   if (a->location().x != b->location().x)
     return a->location().x < b->location().x;
-  return a->_socket.value() <
-         b->_socket.value();  // Just need something unique.
+  if (a->_socket.value() != b->_socket.value())
+    return a->_socket.value() < b->_socket.value();
+  return a < b;
 }
 
-bool User::compareYThenSerial::operator()(const User *a, const User *b) const {
+bool User::compareYThenSocketThenAddress::operator()(const User *a,
+                                                     const User *b) const {
   if (a->location().y != b->location().y)
     return a->location().y < b->location().y;
-  return a->_socket.value() <
-         b->_socket.value();  // Just need something unique.
+  if (a->_socket.value() != b->_socket.value())
+    return a->_socket.value() < b->_socket.value();
+  return a < b;
 }
 
 std::string User::makeLocationCommand() const {

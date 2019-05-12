@@ -446,12 +446,12 @@ void Server::removeUser(const Socket &socket) {
 
 std::set<User *> Server::findUsersInArea(MapPoint loc,
                                          double squareRadius) const {
-  static User dummy{MapPoint{0}};
+  static User lowDummy{MapPoint{}}, highDummy{MapPoint{}};
   std::set<User *> users;
-  dummy.changeDummyLocation(loc.x - squareRadius);
-  auto loX = _usersByX.lower_bound(&dummy);
-  dummy.changeDummyLocation(loc.x + squareRadius);
-  auto hiX = _usersByX.upper_bound(&dummy);
+  lowDummy.changeDummyLocation(loc.x - squareRadius);
+  auto loX = _usersByX.lower_bound(&lowDummy);
+  highDummy.changeDummyLocation(loc.x + squareRadius);
+  auto hiX = _usersByX.upper_bound(&highDummy);
   for (auto it = loX; it != hiX && it != _usersByX.end(); ++it)
     if (abs(loc.y - (*it)->location().y) <= squareRadius)
       users.insert(const_cast<User *>(*it));

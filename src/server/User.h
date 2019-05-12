@@ -302,14 +302,14 @@ class User : public Object {  // TODO: Don't inherit from Object
   }
   bool canStartQuest(const Quest::ID &quest) const;
 
-  struct compareXThenSerial {
+  struct compareXThenSocketThenAddress {
     bool operator()(const User *a, const User *b) const;
   };
-  struct compareYThenSerial {
+  struct compareYThenSocketThenAddress {
     bool operator()(const User *a, const User *b) const;
   };
-  typedef std::set<const User *, User::compareXThenSerial> byX_t;
-  typedef std::set<const User *, User::compareYThenSerial> byY_t;
+  typedef std::set<const User *, User::compareXThenSocketThenAddress> byX_t;
+  typedef std::set<const User *, User::compareYThenSocketThenAddress> byY_t;
 };
 
 #endif
