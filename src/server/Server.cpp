@@ -36,8 +36,6 @@ const ms_t Server::MAX_TIME_BETWEEN_LOCATION_UPDATES = 1000;
 
 const px_t Server::ACTION_DISTANCE = Podes{4}.toPixels();
 const px_t Server::CULL_DISTANCE = 450;
-const px_t Server::TILE_W = 32;
-const px_t Server::TILE_H = 32;
 
 Server::Server()
     : _time(SDL_GetTicks()),
@@ -612,11 +610,6 @@ void Server::spawnInitialObjects() {
              << Log::endl;
     }
   }
-}
-
-MapPoint Server::mapRand() const {
-  return {randDouble() * (_map.width() - 0.5) * TILE_W,
-          randDouble() * _map.height() * TILE_H};
 }
 
 bool Server::itemIsTag(const ServerItem *item,

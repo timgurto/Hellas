@@ -22,19 +22,19 @@ void Client::draw() const {
   renderer.clear();
 
   // Terrain
-  size_t xMin = static_cast<size_t>(max<double>(0, -offset().x / TILE_W)),
+  size_t xMin = static_cast<size_t>(max<double>(0, -offset().x / Map::TILE_W)),
          xMax = static_cast<size_t>(min<double>(
-             _map.width(), 1.0 * (-offset().x + SCREEN_X) / TILE_W + 1.5)),
-         yMin = static_cast<size_t>(max<double>(0, -offset().y / TILE_H)),
-         yMax = static_cast<size_t>(
-             min<double>(_map.height(), (-offset().y + SCREEN_Y) / TILE_H + 1));
+             _map.width(), 1.0 * (-offset().x + SCREEN_X) / Map::TILE_W + 1.5)),
+         yMin = static_cast<size_t>(max<double>(0, -offset().y / Map::TILE_H)),
+         yMax = static_cast<size_t>(min<double>(
+             _map.height(), (-offset().y + SCREEN_Y) / Map::TILE_H + 1));
   assert(xMin <= xMax);
   assert(yMin <= yMax);
   for (size_t y = yMin; y != yMax; ++y) {
-    const px_t yLoc = y * TILE_H + toInt(offset().y);
+    const px_t yLoc = y * Map::TILE_H + toInt(offset().y);
     for (size_t x = xMin; x != xMax; ++x) {
-      px_t xLoc = x * TILE_W + toInt(offset().x);
-      if (y % 2 == 1) xLoc -= TILE_W / 2;
+      px_t xLoc = x * Map::TILE_W + toInt(offset().x);
+      if (y % 2 == 1) xLoc -= Map::TILE_W / 2;
       drawTile(x, y, xLoc, yLoc);
     }
   }
@@ -257,12 +257,11 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const {
     }
   }
 
-  static const ScreenRect TOP_LEFT(0, 0, TILE_W / 2, TILE_H / 2),
-      TOP_RIGHT(TILE_W / 2, 0, TILE_W / 2, TILE_H / 2),
-      BOTTOM_LEFT(0, TILE_H / 2, TILE_W / 2, TILE_H / 2),
-      BOTTOM_RIGHT(TILE_W / 2, TILE_H / 2, TILE_W / 2, TILE_H / 2),
-      LEFT_HALF(0, 0, TILE_W / 2, TILE_H),
-      RIGHT_HALF(TILE_W / 2, 0, TILE_W / 2, TILE_H), FULL(0, 0, TILE_W, TILE_H);
+  static const px_t w = Map::TILE_W, h = Map::TILE_H;
+  static const ScreenRect TOP_LEFT(0, 0, w / 2, h / 2),
+      TOP_RIGHT(w / 2, 0, w / 2, h / 2), BOTTOM_LEFT(0, h / 2, w / 2, h / 2),
+      BOTTOM_RIGHT(w / 2, h / 2, w / 2, h / 2), LEFT_HALF(0, 0, w / 2, h),
+      RIGHT_HALF(w / 2, 0, w / 2, h), FULL(0, 0, w, h);
 
   // Black background
   // Assuming all tile images are set to SDL_BLENDMODE_ADD and quarter alpha

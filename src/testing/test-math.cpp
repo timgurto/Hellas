@@ -4,9 +4,8 @@
 #include "../NormalVariable.h"
 #include "../Point.h"
 #include "../server/Server.h"
-#include "testing.h"
-
 #include "catch.hpp"
+#include "testing.h"
 
 TEST_CASE("Convert from Uint32 to Color and back") {
   Uint32 testNum = rand();
@@ -61,16 +60,14 @@ TEST_CASE("Distance-to-line with A=B") {
 }
 
 TEST_CASE("getTileRect() behaves as expected") {
-  CHECK(Server::getTileRect(0, 0) == MapRect(-16, 0, 32, 32));
-  CHECK(Server::getTileRect(1, 0) == MapRect(16, 0, 32, 32));
-  CHECK(Server::getTileRect(0, 1) == MapRect(0, 32, 32, 32));
-  CHECK(Server::getTileRect(1, 1) == MapRect(32, 32, 32, 32));
-
-  CHECK(Server::getTileRect(4, 0) == MapRect(112, 0, 32, 32));
-  CHECK(Server::getTileRect(5, 0) == MapRect(144, 0, 32, 32));
-  CHECK(Server::getTileRect(0, 4) == MapRect(-16, 128, 32, 32));
-  CHECK(Server::getTileRect(0, 5) == MapRect(0, 160, 32, 32));
-
-  CHECK(Server::getTileRect(7, 5) == MapRect(224, 160, 32, 32));
-  CHECK(Server::getTileRect(7, 6) == MapRect(208, 192, 32, 32));
+  CHECK(Map::getTileRect(0, 0) == MapRect(-16, 0, 32, 32));
+  CHECK(Map::getTileRect(1, 0) == MapRect(16, 0, 32, 32));
+  CHECK(Map::getTileRect(0, 1) == MapRect(0, 32, 32, 32));
+  CHECK(Map::getTileRect(1, 1) == MapRect(32, 32, 32, 32));
+  CHECK(Map::getTileRect(4, 0) == MapRect(112, 0, 32, 32));
+  CHECK(Map::getTileRect(5, 0) == MapRect(144, 0, 32, 32));
+  CHECK(Map::getTileRect(0, 4) == MapRect(-16, 128, 32, 32));
+  CHECK(Map::getTileRect(0, 5) == MapRect(0, 160, 32, 32));
+  CHECK(Map::getTileRect(7, 5) == MapRect(224, 160, 32, 32));
+  CHECK(Map::getTileRect(7, 6) == MapRect(208, 192, 32, 32));
 }

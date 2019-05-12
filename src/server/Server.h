@@ -55,7 +55,6 @@ class Server {
   static const px_t CULL_DISTANCE;    // Users only get information within a
                                       // circle with this radius.
 
-  static const px_t TILE_W, TILE_H;
   const Map &map() { return _map; }
 
   static Server &instance() { return *_instance; }
@@ -76,17 +75,12 @@ class Server {
   char findTile(const MapPoint &p)
       const;  // Find the tile type at the specified location.
   std::pair<size_t, size_t> getTileCoords(const MapPoint &p) const;
-  size_t Server::getTileYCoord(double y) const;
-  size_t Server::getTileXCoord(double x, size_t yTile) const;
-  static MapRect getTileRect(size_t x, size_t y);
   std::set<User *> findUsersInArea(MapPoint loc,
                                    double squareRadius = CULL_DISTANCE) const;
   std::set<Entity *> findEntitiesInArea(
       MapPoint loc, double squareRadius = CULL_DISTANCE) const;
   ObjectType *findObjectTypeByName(
       const std::string &id) const;  // Linear complexity
-  std::set<char> nearbyTerrainTypes(const MapRect &rect,
-                                    double extraRadius = 0);
   User *getUserByName(const std::string &username);
   const BuffType *getBuffByName(const Buff::ID &id) const;
   const Quest *findQuest(const Quest::ID &id) const;
@@ -213,8 +207,6 @@ class Server {
                        const Cities &cities);
   void spawnInitialObjects();
   volatile mutable int _threadsOpen{0};
-
-  MapPoint mapRand() const;  // Return a random point on the map.
   Map _map;
 
   // World data

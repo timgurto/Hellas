@@ -21,66 +21,6 @@ bool Server::isLocationValid(const MapRect &rect, const Entity &thisEntity) {
   return isLocationValid(rect, thisEntity.allowedTerrain(), &thisEntity);
 }
 
-MapRect Server::getTileRect(size_t x, size_t y) {
-  MapRect r(static_cast<px_t>(x * TILE_W), static_cast<px_t>(y * TILE_H),
-            TILE_W, TILE_H);
-  if (y % 2 == 0) r.x -= TILE_W / 2;
-  return r;
-}
-
-std::set<char> Server::nearbyTerrainTypes(const MapRect &rect,
-                                          double extraRadius) {
-  if (extraRadius < 0) {
-    SERVER_ERROR("Terrain-lookup radius is negative.  Setting to 0.");
-    extraRadius = 0;
-  }
-  std::set<char> tilesInRect;
-  const double left = max(0, rect.x - extraRadius),
-               right = rect.x + rect.w + extraRadius,
-               top = max(0, rect.y - extraRadius),
-               bottom = rect.y + rect.h + extraRadius;
-  size_t tileTop = getTileYCoord(top), tileBottom = getTileYCoord(bottom);
-  if (tileBottom < tileTop) {
-    SERVER_ERROR("Can't look up terrain: bottom index is less than top index.");
-    return tilesInRect;
-  }
-
-  // Single row
-  if (tileTop == tileBottom) {
-    size_t tileLeft = getTileXCoord(rect.x, tileTop),
-           tileRight = getTileXCoord(right, tileTop);
-    for (size_t x = tileLeft; x <= tileRight; ++x)
-      tilesInRect.insert(_map[x][tileTop]);
-
-    // General case
-  } else {
-    size_t tileLeftEven = getTileXCoord(left, 0),
-           tileLeftOdd = getTileXCoord(left, 1),
-           tileRightEven = getTileXCoord(right, 0),
-           tileRightOdd = getTileXCoord(right, 1);
-    for (size_t y = tileTop; y <= tileBottom; ++y) {
-      bool yIsEven = y % 2 == 0;
-      size_t tileLeft = yIsEven ? tileLeftEven : tileLeftOdd,
-             tileRight = yIsEven ? tileRightEven : tileRightOdd;
-      if (tileRight < tileLeft) {
-        SERVER_ERROR(
-            "Can't look up terrain: right index is less than left index.");
-        return tilesInRect;
-      }
-      for (size_t x = tileLeft; x <= tileRight; ++x) {
-        char terrainIndex = _map[x][y];
-        // Exclude if outside radius
-        if (extraRadius != 0) {
-          if (tilesInRect.find(terrainIndex) != tilesInRect.end()) continue;
-          if (distance(rect, getTileRect(x, y)) > extraRadius) continue;
-        }
-        tilesInRect.insert(terrainIndex);
-      }
-    }
-  }
-  return tilesInRect;
-}
-
 bool Server::isLocationValid(const MapRect &rect,
                              const TerrainList &allowedTerrain,
                              const Entity *thisEntity) {
@@ -92,14 +32,14 @@ bool Server::isLocationValid(const MapRect &rect,
 
   const double right = rect.x + rect.w, bottom = rect.y + rect.h;
   // Map edges
-  const double xLimit = _map.width() * Server::TILE_W - Server::TILE_W / 2,
-               yLimit = _map.height() * Server::TILE_H;
+  const double xLimit = _map.width() * Map::TILE_W - Map::TILE_W / 2,
+               yLimit = _map.height() * Map::TILE_H;
   if (rect.x < 0 || right > xLimit || rect.y < 0 || bottom > yLimit) {
     return false;
   }
 
   // Terrain
-  auto terrainTypesCovered = nearbyTerrainTypes(rect);
+  auto terrainTypesCovered = _map.terrainTypesOverlapping(rect);
   for (char terrainType : terrainTypesCovered)
     if (!allowedTerrain.allows(terrainType)) return false;
 
@@ -127,40 +67,8 @@ bool Server::isLocationValid(const MapRect &rect,
   return true;
 }
 
-size_t Server::getTileYCoord(double y) const {
-  if (y < 0) {
-    SERVER_ERROR("Attempting to get tile for negative y co-ord");
-    return 0;
-  }
-  size_t yTile = static_cast<size_t>(y / TILE_H);
-  if (yTile >= _map.height()) {
-    _debug << Color::CHAT_ERROR << "Invalid location; clipping y from " << yTile
-           << " to " << _map.height() - 1 << ". original co-ord=" << y
-           << Log::endl;
-    yTile = _map.height() - 1;
-  }
-  return yTile;
-}
-
-size_t Server::getTileXCoord(double x, size_t yTile) const {
-  if (x < 0) {
-    SERVER_ERROR("Attempting to get tile for negative x co-ord");
-    return 0;
-  }
-  double originalX = x;
-  if (yTile % 2 == 1) x += TILE_W / 2;
-  size_t xTile = static_cast<size_t>(x / TILE_W);
-  if (xTile >= _map.width()) {
-    _debug << Color::CHAT_ERROR << "Invalid location; clipping x from "
-           << originalX << " to " << _map.width() - 1
-           << ". original co-ord=" << x << Log::endl;
-    xTile = _map.width() - 1;
-  }
-  return xTile;
-}
-
 std::pair<size_t, size_t> Server::getTileCoords(const MapPoint &p) const {
-  size_t y = getTileYCoord(p.y), x = getTileXCoord(p.x, y);
+  size_t y = _map.getRow(p.y), x = _map.getCol(p.x, y);
   return std::make_pair(x, y);
 }
 

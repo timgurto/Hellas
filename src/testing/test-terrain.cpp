@@ -4,7 +4,7 @@
 
 TEST_CASE("nearbyTerrainTypes without radius", "[terrain]") {
   TestServer s = TestServer::WithData("terrain_medley");
-  auto set = s->nearbyTerrainTypes({0, 0, 40, 40});
+  auto set = s->map().terrainTypesOverlapping({0, 0, 40, 40});
   CHECK(set.count('a') == 1);
   CHECK(set.count('b') == 1);
   CHECK(set.count('c') == 0);
@@ -13,7 +13,7 @@ TEST_CASE("nearbyTerrainTypes without radius", "[terrain]") {
 
 TEST_CASE("nearbyTerrainTypes with radius", "[terrain]") {
   TestServer s = TestServer::WithData("terrain_medley");
-  auto set = s->nearbyTerrainTypes({0, 0, 40, 40}, 200);
+  auto set = s->map().terrainTypesOverlapping({0, 0, 40, 40}, 200);
   CHECK(set.count('a') == 1);
   CHECK(set.count('b') == 1);
   CHECK(set.count('c') == 1);

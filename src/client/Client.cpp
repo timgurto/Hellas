@@ -52,8 +52,6 @@ const px_t Client::ICON_SIZE = 16;
 const px_t Client::HEADING_HEIGHT = 14;
 const px_t Client::LINE_GAP = 6;
 
-const px_t Client::TILE_W = 32;
-const px_t Client::TILE_H = 32;
 const double Client::MOVEMENT_SPEED = 80;
 const double Client::VEHICLE_SPEED = 20;
 const Hitpoints Client::MAX_PLAYER_HEALTH = 50;
@@ -805,9 +803,9 @@ bool Client::isLocationValidForPlayer(const MapPoint &location) const {
 bool Client::isLocationValidForPlayer(const MapRect &rect) const {
   // Map edges
   if (rect.x < 0 || rect.y < 0) return false;
-  static const auto X_LIM = _map.width() * TILE_W - TILE_W / 2;
+  static const auto X_LIM = _map.width() * Map::TILE_W - Map::TILE_W / 2;
   if (rect.x + rect.w > X_LIM) return false;
-  static const auto Y_LIM = _map.height() * TILE_H;
+  static const auto Y_LIM = _map.height() * Map::TILE_H;
   if (rect.y + rect.h > Y_LIM) return false;
 
   // Objects

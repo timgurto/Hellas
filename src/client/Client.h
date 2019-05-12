@@ -130,7 +130,6 @@ class Client {
   const Texture &cursorEndsQuest() const { return _cursorEndsQuest; }
 
   static const px_t ICON_SIZE;
-  static const px_t TILE_W, TILE_H;
   static const double MOVEMENT_SPEED;
   static const double VEHICLE_SPEED;
   static const Hitpoints MAX_PLAYER_HEALTH;
