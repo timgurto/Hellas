@@ -90,4 +90,6 @@ using ScreenPoint = Point<px_t>;
 MapPoint toMapPoint(const ScreenPoint &rhs);
 ScreenPoint toScreenPoint(const MapPoint &rhs);
 
+MapPoint normaliseVector(const MapPoint &v);
+
 #endif

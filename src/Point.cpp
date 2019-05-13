@@ -1,4 +1,5 @@
 #include "Point.h"
+
 #include "util.h"
 
 MapPoint toMapPoint(const ScreenPoint &rhs) {
@@ -7,4 +8,9 @@ MapPoint toMapPoint(const ScreenPoint &rhs) {
 
 ScreenPoint toScreenPoint(const MapPoint &rhs) {
   return {toInt(rhs.x), toInt(rhs.y)};
+}
+
+MapPoint normaliseVector(const MapPoint &v) {
+  auto length = sqrt(v.x * v.x + v.y * v.y);
+  return {v.x / length, v.y / length};
 }
