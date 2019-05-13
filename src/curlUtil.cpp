@@ -28,6 +28,6 @@ std::string readFromURL(const std::string &url) {
 }
 
 std::string getLocationFromIP(const std::string &ip) {
-  auto result = readFromURL("https://tools.keycdn.com/geo.json?host" + ip);
+  auto result = readFromURL("https://tools.keycdn.com/geo.json?host=" + ip);
   return result;
 }
