@@ -1,28 +1,22 @@
-#ifndef RECIPE_H
-#define RECIPE_H
+#pragma once
 
-#include <SDL.h>
 #include <set>
 #include <string>
 
-#include "../types.h"
-#include "ItemSet.h"
+#include "Server/ItemSet.h"
+#include "types.h"
 
 using namespace std::string_literals;
 
-// Couples materials with products that players can craft.
 class Recipe {
   std::string _id;
   ItemSet _materials;
   std::set<std::string> _tools;  // Tools required for crafting
-  const Item *_product;
-  size_t _quantity;  // Quantity produced
-  ms_t _time;
-  bool _knownByDefault;
-  std::string _name = ""s;  // Default: product name.  Not used on server.
+  const Item *_product{nullptr};
+  size_t _quantity{1};  // Quantity produced
 
  public:
-  Recipe(const std::string &id);  // time = 0, ptrs = nullptr
+  Recipe(const std::string &id);
 
   bool operator<(const Recipe &rhs) const { return _id < rhs._id; }
 
@@ -33,15 +27,7 @@ class Recipe {
   void product(const Item *item) { _product = item; }
   size_t quantity() const { return _quantity; }
   void quantity(size_t n) { _quantity = n; }
-  ms_t time() const { return _time; }
-  void time(ms_t time) { _time = time; }
-  void knownByDefault() { _knownByDefault = true; }
-  bool isKnownByDefault() const { return _knownByDefault; }
-  void name(const std::string &recipeName) { _name = recipeName; }
-  const std::string &name() const { return _name; }
 
   void addMaterial(const Item *item, size_t qty);
   void addTool(const std::string &name);
 };
-
-#endif

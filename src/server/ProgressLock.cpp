@@ -1,6 +1,7 @@
+#include "ProgressLock.h"
+
 #include <set>
 
-#include "ProgressLock.h"
 #include "Server.h"
 
 ProgressLock::locksByType_t ProgressLock::locksByType;
@@ -107,7 +108,7 @@ void ProgressLock::triggerUnlocks(User &user, Type triggerType,
     std::string id;
     switch (lock._effectType) {
       case RECIPE:
-        id = reinterpret_cast<const Recipe *>(lock._effect)->id();
+        id = reinterpret_cast<const SRecipe *>(lock._effect)->id();
         if (user.knowsRecipe(id)) continue;
         newRecipes.insert(id);
         user.addRecipe(id);

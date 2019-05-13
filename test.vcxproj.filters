@@ -171,6 +171,8 @@
     <ClCompile Include="src\testing\test-gear.cpp" />
     <ClCompile Include="src\TerrainList.cpp" />
     <ClCompile Include="src\Map.cpp" />
+    <ClCompile Include="src\Recipe.cpp" />
+    <ClCompile Include="src\server\SRecipe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -301,5 +303,8 @@
     <ClInclude Include="third-party\tinyxml\tinyxml.h" />
     <ClInclude Include="src\TerrainList.h" />
     <ClInclude Include="src\Map.h" />
+    <ClInclude Include="src\Recipe.h" />
+    <ClInclude Include="src\client\CRecipe.h" />
+    <ClInclude Include="src\server\SRecipe.h" />
   </ItemGroup>
 </Project>

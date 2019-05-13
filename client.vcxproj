@@ -176,9 +176,9 @@
     <ClCompile Include="src\NormalVariable.cpp" />
     <ClCompile Include="src\Podes.cpp" />
     <ClCompile Include="src\Point.cpp" />
+    <ClCompile Include="src\Recipe.cpp" />
     <ClCompile Include="src\Rect.cpp" />
     <ClCompile Include="src\server\ItemSet.cpp" />
-    <ClCompile Include="src\server\Recipe.cpp" />
     <ClCompile Include="src\Socket.cpp" />
     <ClCompile Include="src\SpellSchool.cpp" />
     <ClCompile Include="src\Stats.cpp" />
@@ -215,6 +215,7 @@
     <ClInclude Include="src\client\ClientWar.h" />
     <ClInclude Include="src\client\Connection.h" />
     <ClInclude Include="src\client\CQuest.h" />
+    <ClInclude Include="src\client\CRecipe.h" />
     <ClInclude Include="src\client\HelpEntry.h" />
     <ClInclude Include="src\client\Images.h" />
     <ClInclude Include="src\client\Projectile.h" />

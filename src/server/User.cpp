@@ -354,7 +354,7 @@ void User::beginGathering(Object *obj) {
   _actionTime = obj->objType().gatherTime();
 }
 
-void User::beginCrafting(const Recipe &recipe) {
+void User::beginCrafting(const SRecipe &recipe) {
   _action = CRAFT;
   _actionRecipe = &recipe;
   _actionTime = recipe.time();
@@ -680,7 +680,7 @@ void User::update(ms_t timeElapsed) {
   Entity::update(timeElapsed);
 }
 
-bool User::hasRoomToCraft(const Recipe &recipe) const {
+bool User::hasRoomToCraft(const SRecipe &recipe) const {
   size_t slotsFreedByMaterials = 0;
   ItemSet remainingMaterials = recipe.materials();
   ServerItem::vect_t inventoryCopy = _inventory;

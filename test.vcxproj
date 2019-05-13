@@ -171,6 +171,7 @@
     <ClCompile Include="src\NormalVariable.cpp" />
     <ClCompile Include="src\Podes.cpp" />
     <ClCompile Include="src\Point.cpp" />
+    <ClCompile Include="src\Recipe.cpp" />
     <ClCompile Include="src\Rect.cpp" />
     <ClCompile Include="src\server\Buff.cpp" />
     <ClCompile Include="src\server\City.cpp" />
@@ -214,6 +215,7 @@
     <ClCompile Include="src\server\Spawner.cpp" />
     <ClCompile Include="src\server\Spell.cpp" />
     <ClCompile Include="src\server\SpellEffect.cpp" />
+    <ClCompile Include="src\server\SRecipe.cpp" />
     <ClCompile Include="src\TerrainList.cpp" />
     <ClCompile Include="src\server\ThreatTable.cpp" />
     <ClCompile Include="src\server\User.cpp" />
@@ -292,6 +294,7 @@
     <ClInclude Include="src\client\Connection.h" />
     <ClInclude Include="src\client\CDataLoader.h" />
     <ClInclude Include="src\client\CQuest.h" />
+    <ClInclude Include="src\client\CRecipe.h" />
     <ClInclude Include="src\client\HelpEntry.h" />
     <ClInclude Include="src\client\Images.h" />
     <ClInclude Include="src\client\LogSDL.h" />
@@ -342,6 +345,7 @@
     <ClInclude Include="src\Optional.h" />
     <ClInclude Include="src\Podes.h" />
     <ClInclude Include="src\Point.h" />
+    <ClInclude Include="src\Recipe.h" />
     <ClInclude Include="src\Rect.h" />
     <ClInclude Include="src\server\Buff.h" />
     <ClInclude Include="src\server\City.h" />
@@ -375,6 +379,7 @@
     <ClInclude Include="src\server\Spawner.h" />
     <ClInclude Include="src\server\Spell.h" />
     <ClInclude Include="src\server\SpellEffect.h" />
+    <ClInclude Include="src\server\SRecipe.h" />
     <ClInclude Include="src\TerrainList.h" />
     <ClInclude Include="src\server\ThreatTable.h" />
     <ClInclude Include="src\server\User.h" />

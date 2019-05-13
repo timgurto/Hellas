@@ -16,7 +16,7 @@
 #include "NPC.h"
 #include "NPCType.h"
 #include "ProgressLock.h"
-#include "Recipe.h"
+#include "SRecipe.h"
 #include "Server.h"
 #include "User.h"
 #include "Vehicle.h"

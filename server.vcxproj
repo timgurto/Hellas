@@ -104,6 +104,7 @@
     <ClCompile Include="src\NormalVariable.cpp" />
     <ClCompile Include="src\Podes.cpp" />
     <ClCompile Include="src\Point.cpp" />
+    <ClCompile Include="src\Recipe.cpp" />
     <ClCompile Include="src\Rect.cpp" />
     <ClCompile Include="src\server\Buff.cpp" />
     <ClCompile Include="src\server\City.cpp" />
@@ -136,7 +137,7 @@
     <ClCompile Include="src\server\ProgressLock.cpp" />
     <ClCompile Include="src\server\Quest.cpp" />
     <ClCompile Include="src\server\QuestNode.cpp" />
-    <ClCompile Include="src\server\Recipe.cpp" />
+    <ClCompile Include="src\server\SRecipe.cpp" />
     <ClCompile Include="src\server\Server.cpp" />
     <ClCompile Include="src\server\ServerItem.cpp" />
     <ClCompile Include="src\server\Spawner.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="src\Optional.h" />
     <ClInclude Include="src\Podes.h" />
     <ClInclude Include="src\Point.h" />
+    <ClInclude Include="src\Recipe.h" />
     <ClInclude Include="src\Rect.h" />
     <ClInclude Include="src\server\Buff.h" />
     <ClInclude Include="src\server\City.h" />
@@ -204,7 +206,7 @@
     <ClInclude Include="src\server\ProgressLock.h" />
     <ClInclude Include="src\server\Quest.h" />
     <ClInclude Include="src\server\QuestNode.h" />
-    <ClInclude Include="src\server\Recipe.h" />
+    <ClInclude Include="src\server\SRecipe.h" />
     <ClInclude Include="src\server\Server.h" />
     <ClInclude Include="src\server\ServerItem.h" />
     <ClInclude Include="src\server\Spawner.h" />

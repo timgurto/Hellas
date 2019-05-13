@@ -13,7 +13,7 @@
 #include "City.h"
 #include "Class.h"
 #include "Entity.h"
-#include "Recipe.h"
+#include "SRecipe.h"
 #include "ServerItem.h"
 #include "objects/Object.h"
 
@@ -44,7 +44,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   ms_t _actionTime;  // Time remaining on current action.
   // Information used when action completes:
   Object *_actionObject;                // Gather, deconstruct
-  const Recipe *_actionRecipe;          // Craft
+  const SRecipe *_actionRecipe;         // Craft
   const ObjectType *_actionObjectType;  // Construct
   size_t _actionSlot;                   // Construct
   MapPoint _actionLocation;             // Construct
@@ -137,7 +137,7 @@ class User : public Object {  // TODO: Don't inherit from Object
     _knownConstructions.erase(id);
   }
   bool knowsConstruction(const std::string &id) const;
-  bool hasRoomToCraft(const Recipe &recipe) const;
+  bool hasRoomToCraft(const SRecipe &recipe) const;
   bool shouldGatherDoubleThisTime() const;
   bool hasPlayerUnique(const std::string &category) const {
     return _playerUniqueCategoriesOwned.find(category) !=
@@ -238,7 +238,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   void clearInventory();
   void clearGear();
 
-  void beginCrafting(const Recipe &item);  // Configure user to craft an item
+  void beginCrafting(const SRecipe &item);  // Configure user to craft an item
 
   // Configure user to construct an item, or an object from no item
   void beginConstructing(const ObjectType &obj, const MapPoint &location,

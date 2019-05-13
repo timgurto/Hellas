@@ -600,7 +600,7 @@ void DataLoader::loadRecipes(XmlReader &xr) {
   for (auto elem : xr.getChildren("recipe")) {
     std::string id, name;
     if (!xr.findAttr(elem, "id", id)) continue;  // ID is mandatory.
-    Recipe recipe(id);
+    SRecipe recipe(id);
 
     std::string product = id;
     xr.findAttr(elem, "product", product);

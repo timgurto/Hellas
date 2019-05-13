@@ -24,7 +24,7 @@
 #include "NPC.h"
 #include "ObjectsByOwner.h"
 #include "Quest.h"
-#include "Recipe.h"
+#include "SRecipe.h"
 #include "ServerItem.h"
 #include "Spawner.h"
 #include "Spell.h"
@@ -211,7 +211,7 @@ class Server {
 
   // World data
   std::set<ServerItem> _items;
-  std::set<Recipe> _recipes;
+  std::set<SRecipe> _recipes;
   std::set<const ObjectType *> _objectTypes;
   std::vector<Spawner> _spawners;
   std::map<char, Terrain *> _terrainTypes;

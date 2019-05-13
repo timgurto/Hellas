@@ -118,7 +118,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           break;
         }
         user->cancelAction();
-        const std::set<Recipe>::const_iterator it = _recipes.find(id);
+        const std::set<SRecipe>::const_iterator it = _recipes.find(id);
         if (!user->knowsRecipe(id)) {
           sendMessage(client, ERROR_UNKNOWN_RECIPE);
           break;

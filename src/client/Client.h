@@ -15,10 +15,10 @@
 #include "../Rect.h"
 #include "../Socket.h"
 #include "../messageCodes.h"
-#include "../server/Recipe.h"
 #include "../types.h"
 #include "Avatar.h"
 #include "CQuest.h"
+#include "CRecipe.h"
 #include "ClientBuff.h"
 #include "ClientCombatant.h"
 #include "ClientConfig.h"
@@ -247,16 +247,16 @@ class Client {
   void initializeCraftingWindow();
   bool _haveMatsFilter, _haveToolsFilter, _tagOr, _matOr;
   static const px_t HEADING_HEIGHT;  // The height of windows' section headings
-  static const px_t LINE_GAP;   // The total height occupied by a line and its
-                                // surrounding spacing
-  const Recipe *_activeRecipe;  // The recipe currently selected, if any
-  static void startCrafting();  // Called when the "Craft" button is clicked.
+  static const px_t LINE_GAP;    // The total height occupied by a line and its
+                                 // surrounding spacing
+  const CRecipe *_activeRecipe;  // The recipe currently selected, if any
+  static void startCrafting();   // Called when the "Craft" button is clicked.
   // Populated at load time, after _items
   std::map<std::string, bool> _tagFilters;
   std::map<const ClientItem *, bool> _matFilters;
   mutable bool _tagFilterSelected,
       _matFilterSelected;  // Whether any filters have been selected
-  bool recipeMatchesFilters(const Recipe &recipe) const;
+  bool recipeMatchesFilters(const CRecipe &recipe) const;
   // Called when filters pane is clicked, or new recipes are unlocked.
   static void populateRecipesList(Element &e);
   // Called when a recipe is selected.
@@ -519,7 +519,7 @@ class Client {
   void initialiseData();  // Any massaging necessary after everything is loaded.
   std::map<char, ClientTerrain> _terrain;
   std::map<std::string, ClientItem> _items;
-  std::set<Recipe> _recipes;
+  std::set<CRecipe> _recipes;
   typedef std::set<const ClientObjectType *, ClientObjectType::ptrCompare>
       objectTypes_t;
   objectTypes_t _objectTypes;

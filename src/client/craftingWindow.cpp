@@ -17,7 +17,7 @@ void Client::initializeCraftingWindow(Client &client) {
 
 void Client::initializeCraftingWindow() {
   // For crafting filters
-  for (const Recipe &recipe : _recipes) {
+  for (const CRecipe &recipe : _recipes) {
     for (auto matPair : recipe.materials())
       _matFilters[toClientItem(matPair.first)] = false;
     for (const std::string &tagName : recipe.product()->tags())
@@ -175,12 +175,12 @@ void Client::selectRecipe(Element &e, const ScreenPoint &mousePos) {
                             BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT},
                            "Craft", startCrafting));
 
-  const std::set<Recipe>::const_iterator it =
+  const std::set<CRecipe>::const_iterator it =
       _instance->_recipes.find(selectedID);
   if (it == _instance->_recipes.end()) {
     return;
   }
-  const Recipe &recipe = *it;
+  const CRecipe &recipe = *it;
   _instance->_activeRecipe = &recipe;
   const ClientItem &product = *toClientItem(recipe.product());
 
@@ -251,7 +251,7 @@ void Client::populateFilters() {
   // Restrict shown filters to known recipes
   std::set<std::string> knownTags;
   std::set<const ClientItem *> knownMats;
-  for (const Recipe &recipe : _recipes)
+  for (const CRecipe &recipe : _recipes)
     if (_knownRecipes.find(recipe.id()) !=
         _knownRecipes.end()) {  // user knows this recipe
       for (const std::string &tag : recipe.product()->tags())
@@ -310,7 +310,7 @@ void Client::populateRecipesList(Element &e) {
   recipesList.clearChildren();
 
   const std::set<std::string> knownRecipes = Client::_instance->_knownRecipes;
-  for (const Recipe &recipe : _instance->_recipes) {
+  for (const CRecipe &recipe : _instance->_recipes) {
     if (knownRecipes.find(recipe.id()) ==
         knownRecipes.end())  // User doesn't know it yet
       continue;
@@ -334,7 +334,7 @@ void Client::populateRecipesList(Element &e) {
     selectRecipe(recipesList, {});
 }
 
-bool Client::recipeMatchesFilters(const Recipe &recipe) const {
+bool Client::recipeMatchesFilters(const CRecipe &recipe) const {
   // "Have materials" filters
   if (_haveMatsFilter) {
     for (const std::pair<const Item *, size_t> &materialsNeeded :
