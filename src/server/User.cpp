@@ -1,5 +1,6 @@
 #include "User.h"
 
+#include "../curlUtil.h"
 #include "ProgressLock.h"
 #include "Server.h"
 
@@ -51,6 +52,15 @@ User::User(const std::string &name, const MapPoint &loc, const Socket *socket)
 User::User(const Socket &rhs) : Object(MapPoint{}), _socket(rhs) {}
 
 User::User(const MapPoint &loc) : Object(loc), _socket(Socket::Empty()) {}
+
+void User::findRealWorldLocation() {
+  _realWorldLocation = getLocationFromIP(socket().ip());
+}
+
+const std::string &User::realWorldLocation() const {
+  static const auto default = "{}"s;
+  return _realWorldLocation.empty() ? default : _realWorldLocation;
+}
 
 int User::secondsPlayedThisSession() const {
   auto ticksThisSession = SDL_GetTicks() - _serverTicksAtLogin;

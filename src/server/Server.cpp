@@ -124,7 +124,7 @@ void Server::checkSockets() {
       sockaddr_in clientAddr;
       SOCKET tempSocket = accept(_socket.getRaw(), (sockaddr *)&clientAddr,
                                  (int *)&Socket::sockAddrSize);
-      Socket s(tempSocket);
+      Socket s(tempSocket, {});
       // Allow time for rejection message to be sent before closing socket
       s.delayClosing(5000);
       sendMessage(s, WARNING_SERVER_FULL);
@@ -141,7 +141,7 @@ void Server::checkSockets() {
                << "Connection accepted: " << inet_ntoa(clientAddr.sin_addr)
                << ":" << ntohs(clientAddr.sin_port)
                << ", socket number = " << tempSocket << Log::endl;
-        _clientSockets.insert(tempSocket);
+        _clientSockets.insert({tempSocket, inet_ntoa(clientAddr.sin_addr)});
       }
     }
   }
@@ -159,7 +159,7 @@ void Server::checkSockets() {
         int err = WSAGetLastError();
         _debug << "Client " << raw << " disconnected; error code: " << err
                << Log::endl;
-        removeUser(raw);
+        removeUser({raw, {}});
         closesocket(raw);
         _clientSockets.erase(it++);
         continue;
@@ -304,6 +304,8 @@ void Server::addUser(const Socket &socket, const std::string &name,
     newUser.updateStats();
   }
   _debug << " user, " << name << " has logged in." << Log::endl;
+
+  newUser.findRealWorldLocation();
 
   sendMessage(socket, SV_WELCOME);
   if (userExisted) newUser.sendTimePlayed();
@@ -761,6 +763,7 @@ void Server::writeUserToFile(const User &user, std::ofstream &stream) const {
 
   stream << "\n{"
          << "name: \"" << user.name() << "\","
+         << "location: " << user.realWorldLocation() << ","
          << "online: " << user.hasSocket() << ","
          << "secondsPlayed: " << user.secondsPlayed() << ","
          << "secondsOnlineOrOffline: " << secondsOnlineOrOffline << ","

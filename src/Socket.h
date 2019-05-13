@@ -2,6 +2,7 @@
 #define SOCKET_H
 
 #include <windows.h>
+
 #include <iostream>
 #include <map>
 #include <string>
@@ -19,6 +20,7 @@ class Socket {
   static WSADATA _wsa;
   static bool _winsockInitialized;
   SOCKET _raw;
+  std::string _ip;
   ms_t _lingerTime;
   static std::map<SOCKET, int>
       _refCounts;  // Reference counters for each raw SOCKET
@@ -32,7 +34,7 @@ class Socket {
  public:
   Socket(const Socket &rhs);
   Socket();
-  Socket(SOCKET &rawSocket);
+  Socket(SOCKET &rawSocket, const std::string &ip);
   static Socket Empty();
   ~Socket();
   const Socket &operator=(const Socket &rhs);
@@ -48,6 +50,7 @@ class Socket {
   bool valid() const { return _raw != INVALID_SOCKET; }
 
   SOCKET getRaw() const { return _raw; }
+  const std::string &ip() const { return _ip; }
   void delayClosing(ms_t lingerTime);  // Delay closing of socket
 
   // No destination socket implies client->server message

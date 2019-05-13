@@ -43,15 +43,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)</OutDir>
     <IntDir>$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)third-party\tinyxml;$(SolutionDir)third-party\SDL2-2.0.3\include\SDL2;$(SolutionDir)third-party;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)third-party\SDL2-2.0.3\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)libcurl\include;$(SolutionDir)third-party\tinyxml;$(SolutionDir)third-party\SDL2-2.0.3\include\SDL2;$(SolutionDir)third-party;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)libcurl\lib;$(SolutionDir)third-party\SDL2-2.0.3\lib\x86;$(LibraryPath)</LibraryPath>
     <TargetName>$(ProjectName)-debug</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)</OutDir>
     <IntDir>$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)third-party\tinyxml;$(SolutionDir)third-party\SDL2-2.0.3\include\SDL2;$(SolutionDir)third-party;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)third-party\SDL2-2.0.3\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)libcurl\include;$(SolutionDir)third-party\tinyxml;$(SolutionDir)third-party\SDL2-2.0.3\include\SDL2;$(SolutionDir)third-party;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)libcurl\lib;$(SolutionDir)third-party\SDL2-2.0.3\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -67,7 +67,7 @@
     </ClCompile>
     <Link>
       <AdditionalOptions>/verbose:lib %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;ws2_32.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
@@ -86,7 +86,7 @@
       <ProgramDataBaseFileName>$(IntDir)$(ProjectName)\vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;ws2_32.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -97,6 +97,7 @@
   <ItemGroup>
     <ClCompile Include="src\Args.cpp" />
     <ClCompile Include="src\Color.cpp" />
+    <ClCompile Include="src\curlUtil.cpp" />
     <ClCompile Include="src\Item.cpp" />
     <ClCompile Include="src\Log.cpp" />
     <ClCompile Include="src\Map.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="src\Args.h" />
     <ClInclude Include="src\client\CQuest.h" />
     <ClInclude Include="src\Color.h" />
+    <ClInclude Include="src\curlUtil.h" />
     <ClInclude Include="src\Item.h" />
     <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\Map.h" />

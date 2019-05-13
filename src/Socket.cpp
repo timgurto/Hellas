@@ -1,6 +1,6 @@
-#include <mutex>
-
 #include "Socket.h"
+
+#include <mutex>
 
 Log *Socket::debug = nullptr;
 
@@ -16,7 +16,8 @@ Socket::Socket() : _lingerTime(0) {
   addRef();
 }
 
-Socket::Socket(SOCKET &rawSocket) : _raw(rawSocket), _lingerTime(0) {
+Socket::Socket(SOCKET &rawSocket, const std::string &ip)
+    : _raw(rawSocket), _ip(ip), _lingerTime(0) {
   addRef();
   rawSocket = INVALID_SOCKET;
 }
@@ -29,7 +30,7 @@ Socket::Socket(const Socket &rhs)
 
 Socket Socket::Empty() {
   SOCKET invalidSocket = INVALID_SOCKET;
-  return Socket(invalidSocket);
+  return {invalidSocket, {}};
 }
 
 Socket::~Socket() { close(); }

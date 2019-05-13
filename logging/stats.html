@@ -15,6 +15,7 @@
     <h2>Users</h2>
     <table id="users" >
     <tr>
+        <td class="heading"></td>
         <td class="heading">Name</td>
         <td class="heading">Offline/online</td>
         <td class="heading">Total played</td>
@@ -59,6 +60,14 @@
     
     function makeUserRow(user){
         var cells = "";
+        
+        var flag = "";
+        if (user.location.hasOwnProperty("data") && user.location.data.hasOwnProperty("geo")){
+            var countryName = user.location.data.geo.country_name;
+            flag = '<img src="https://www.countryflags.io/' + user.location.data.geo.country_code + '/flat/24.png" title="' + countryName + '">';
+        }
+        cells += '<td>' + flag + "</td>";
+        
         cells += '<td>' + user.name + "</td>";
         
         cells += '<td>' + timeDisplay(user.secondsOnlineOrOffline*1000) + "</td>";

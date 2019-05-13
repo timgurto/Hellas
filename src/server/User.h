@@ -36,6 +36,7 @@ class User : public Object {  // TODO: Don't inherit from Object
  private:
   std::string _name;
   Optional<Socket> _socket;
+  std::string _realWorldLocation;
 
   Optional<Class> _class;
 
@@ -103,6 +104,11 @@ class User : public Object {  // TODO: Don't inherit from Object
   const std::string &name() const { return _name; }
   const Socket &socket() const { return _socket.value(); }
   bool hasSocket() const { return _socket.hasValue(); }
+  void findRealWorldLocation();
+  void setRealWorldLocation(const std::string &location) {
+    _realWorldLocation = location;
+  }
+  const std::string &realWorldLocation() const;
   void secondsPlayedBeforeThisSession(int t) {
     _secondsPlayedBeforeThisSession = t;
   };

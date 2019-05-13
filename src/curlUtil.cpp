@@ -1,6 +1,6 @@
-#include <curl.h>
-
 #include "curlUtil.h"
+
+#include <curl.h>
 
 size_t writeMemoryCallback(void *ptr, size_t size, size_t nmemb, void *data) {
   size_t realSize = size * nmemb;
@@ -25,4 +25,9 @@ std::string readFromURL(const std::string &url) {
   curl_easy_cleanup(curl);
   curl_global_cleanup();
   return output;
+}
+
+std::string getLocationFromIP(const std::string &ip) {
+  auto result = readFromURL("https://tools.keycdn.com/geo.json?host" + ip);
+  return result;
 }
