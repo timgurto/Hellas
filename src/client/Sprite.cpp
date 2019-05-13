@@ -131,7 +131,10 @@ const Tooltip &Sprite::tooltip() const {
 void Sprite::driftTowardsServerLocation(double delta) {
   if (!_serverHasOrderedACorrection) return;
 
-  const double correctionAmount = delta * speed() * 1.5;
+  auto isThePlayer = this == &Client::instance().character();
+  auto speedMultiplier = isThePlayer ? 1.5 : 1.1;
+
+  const double correctionAmount = delta * speed() * speedMultiplier;
   auto newLocation =
       interpolate(location(), _locationOnServer, correctionAmount);
   location(newLocation);
