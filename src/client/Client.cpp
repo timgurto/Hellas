@@ -768,31 +768,26 @@ void Client::applyCollisionChecksToPlayerMovement(MapPoint &pendingDest) const {
   journeyRect.h += displacementY;
   if (isLocationValidForPlayer(journeyRect)) return;  // Proposal is fine.
 
-  // Second: step towards goal
-  auto distanceToMove = distance(pendingDest, loc);
-  static const auto STEP_LENGTH = 0.5;
-  const auto STEP = MapPoint{rawDisplacement.x / distanceToMove * STEP_LENGTH,
-                             rawDisplacement.y / distanceToMove * STEP_LENGTH};
-  auto newDest = loc, testDest = loc;
-  // Step along x axis until blocked
-  for (auto testPointAlongLine = STEP_LENGTH;
-       testPointAlongLine <= distanceToMove;
-       testPointAlongLine += STEP_LENGTH) {
-    testDest.x += STEP.x;
-    if (!isLocationValidForPlayer(testDest)) break;
-    newDest.x = testDest.x;
-  }
-  // Step along y axis until blocked
-  testDest.x = newDest.x;
-  for (auto testPointAlongLine = STEP_LENGTH;
-       testPointAlongLine <= distanceToMove;
-       testPointAlongLine += STEP_LENGTH) {
-    testDest.y += STEP.y;
-    if (!isLocationValidForPlayer(testDest)) break;
-    newDest.y = testDest.y;
+  // Try x alone
+  auto xOnlyRect = journeyRect;
+  xOnlyRect.y = _character.collisionRect().y;
+  xOnlyRect.h = _character.collisionRect().h;
+  if (isLocationValidForPlayer(xOnlyRect)) {
+    pendingDest.y = loc.y;
+    return;
   }
 
-  pendingDest = newDest;
+  // Try y alone
+  auto yOnlyRect = journeyRect;
+  yOnlyRect.x = _character.collisionRect().x;
+  yOnlyRect.w = _character.collisionRect().w;
+  if (isLocationValidForPlayer(yOnlyRect)) {
+    pendingDest.x = loc.x;
+    return;
+  }
+
+  pendingDest = loc;
+  return;
 }
 
 bool Client::isLocationValidForPlayer(const MapPoint &location) const {
