@@ -67,6 +67,7 @@ class ClientItem : public Item {
   const ClientObjectType *constructsObject() const { return _constructsObject; }
 
   const Tooltip &tooltip() const;  // Getter; creates tooltip on first call.
+  void refreshTooltip() { _tooltip = Optional<Tooltip>{}; }
 
   void draw(const MapPoint &loc) const;
 

@@ -784,6 +784,14 @@ void Client::handleMessage(const std::string &msg) {
           _recipeList->markChanged();
           populateFilters();
         }
+
+        // For unlock info in tooltips
+        for (auto &pair : _items) {
+          pair.second.refreshTooltip();
+        }
+        if (_detailsPane) selectRecipe(*_detailsPane, {});
+        populateBuildList();
+
         break;
       }
 
@@ -816,6 +824,13 @@ void Client::handleMessage(const std::string &msg) {
           _debug << "!" << Log::endl;
         }
         populateBuildList();
+
+        // For unlock info in tooltips
+        for (auto &pair : _items) {
+          pair.second.refreshTooltip();
+        }
+        if (_detailsPane) selectRecipe(*_detailsPane, {});
+
         break;
       }
 
