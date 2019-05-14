@@ -1,10 +1,11 @@
-#include <cassert>
+#include "ClientObjectType.h"
 
 #include <SDL.h>
 
+#include <cassert>
+
 #include "../Color.h"
 #include "Client.h"
-#include "ClientObjectType.h"
 #include "SoundProfile.h"
 #include "Surface.h"
 #include "Tooltip.h"
@@ -74,6 +75,14 @@ const Tooltip &ClientObjectType::constructionTooltip() const {
   if (!_constructionReq.empty()) {
     tooltip.addGap();
     tooltip.addLine("Requires tool: " + client.tagName(_constructionReq));
+  }
+
+  // Unlocks
+  auto unlockInfo = Unlocks::getEffectInfo({Unlocks::CONSTRUCT, id()});
+  if (unlockInfo.hasEffect) {
+    tooltip.addGap();
+    tooltip.setColor(unlockInfo.color);
+    tooltip.addLine(unlockInfo.message);
   }
 
   return tooltip;

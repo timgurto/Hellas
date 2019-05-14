@@ -558,6 +558,27 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
     }
 
     _client._objectTypes.insert(cot);
+
+    // Construction locks
+    for (auto unlockedBy : xr.getChildren("unlockedBy", elem)) {
+      double chance = 1.0;
+      xr.findAttr(unlockedBy, "chance", chance);
+
+      auto triggerID = ""s;
+      Unlocks::TriggerType triggerType;
+      if (xr.findAttr(unlockedBy, "item", triggerID))
+        triggerType = Unlocks::ACQUIRE;
+      else if (xr.findAttr(unlockedBy, "construction", triggerID))
+        triggerType = Unlocks::CONSTRUCT;
+      else if (xr.findAttr(unlockedBy, "gather", triggerID))
+        triggerType = Unlocks::GATHER;
+      else if (xr.findAttr(unlockedBy, "recipe", triggerID))
+        triggerType = Unlocks::CRAFT;
+      else
+        continue;  // Not a real lock, but blocks being known by default
+      Unlocks::add({triggerType, triggerID}, {Unlocks::CONSTRUCTION, id},
+                   chance);
+    }
   }
 }
 
@@ -786,6 +807,26 @@ void CDataLoader::loadRecipes(XmlReader &xr) {
       _client._knownRecipes.insert(id);
 
     _client._recipes.insert(recipe);
+
+    // Crafting locks
+    for (auto unlockedBy : xr.getChildren("unlockedBy", elem)) {
+      double chance = 1.0;
+      xr.findAttr(unlockedBy, "chance", chance);
+
+      auto triggerID = ""s;
+      Unlocks::TriggerType triggerType;
+      if (xr.findAttr(unlockedBy, "item", triggerID))
+        triggerType = Unlocks::ACQUIRE;
+      else if (xr.findAttr(unlockedBy, "construction", triggerID))
+        triggerType = Unlocks::CONSTRUCT;
+      else if (xr.findAttr(unlockedBy, "gather", triggerID))
+        triggerType = Unlocks::GATHER;
+      else if (xr.findAttr(unlockedBy, "recipe", triggerID))
+        triggerType = Unlocks::CRAFT;
+      else
+        continue;  // Not a real lock, but blocks being known by default
+      Unlocks::add({triggerType, triggerID}, {Unlocks::RECIPE, id}, chance);
+    }
   }
 }
 

@@ -172,6 +172,7 @@
     <ClCompile Include="src\Map.cpp" />
     <ClCompile Include="src\Recipe.cpp" />
     <ClCompile Include="src\server\SRecipe.cpp" />
+    <ClCompile Include="src\client\Unlocks.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -304,5 +305,6 @@
     <ClInclude Include="src\Recipe.h" />
     <ClInclude Include="src\client\CRecipe.h" />
     <ClInclude Include="src\server\SRecipe.h" />
+    <ClInclude Include="src\client\Unlocks.h" />
   </ItemGroup>
 </Project>
