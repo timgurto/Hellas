@@ -1260,15 +1260,15 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
       }
 
       case DG_UNLOCK: {
-        if (!isDebug()) break;
         if (del != MSG_END) return;
+        if (!isDebug()) break;
         ProgressLock::unlockAll(*user);
         break;
       }
 
       case DG_LEVEL: {
-        if (!isDebug()) break;
         if (del != MSG_END) return;
+        if (!isDebug()) break;
         auto remainingXP = User::XP_PER_LEVEL[user->level()] - user->xp();
         user->addXP(remainingXP);
         break;
@@ -1278,9 +1278,21 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         double x, y;
         iss >> x >> del >> y >> del;
         if (del != MSG_END) return;
+        if (!isDebug()) break;
 
         user->teleportTo({x, y});
+        break;
       }
+
+      case DG_SKIP_TUTORIAL:
+        if (del != MSG_END) return;
+        if (!isDebug()) break;
+
+        user->setSpawnPointToPostTutorial();
+        user->moveToSpawnPoint();
+        user->addConstruction("fire");
+        sendMessage(client, SV_CONSTRUCTIONS, makeArgs(1, "fire"));
+        break;
 
       case DG_SPELLS: {
         if (!isDebug()) break;

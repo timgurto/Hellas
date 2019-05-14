@@ -668,6 +668,9 @@ enum MessageCode {
   // Arguments: x, y
   DG_TELEPORT,
 
+  // End the tutorial
+  DG_SKIP_TUTORIAL,
+
   // "Teach me all spells"
   DG_SPELLS,
 
