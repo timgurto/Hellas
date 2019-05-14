@@ -64,7 +64,7 @@
         var flag = "";
         if (user.location.hasOwnProperty("data") && user.location.data.hasOwnProperty("geo")){
             var countryName = user.location.data.geo.country_name;
-            flag = '<img src="https://www.countryflags.io/' + user.location.data.geo.country_code + '/flat/24.png" title="' + countryName + '">';
+            flag = '<img src="https://www.countryflags.io/' + user.location.data.geo.country_code + '/flat/64.png" title="' + countryName + '" height="20px">';
         }
         cells += '<td>' + flag + "</td>";
         
