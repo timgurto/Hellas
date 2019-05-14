@@ -1,5 +1,7 @@
 #include "Unlocks.h"
 
+using namespace std::string_literals;
+
 Unlocks::Container Unlocks::_container;
 
 bool operator<(const Unlocks::Trigger &lhs, const Unlocks::Trigger &rhs) {
@@ -23,6 +25,23 @@ Unlocks::EffectInfo Unlocks::getEffectInfo(const Trigger &trigger) {
   EffectInfo ret;
   ret.hasEffect = true;
   ret.color = Color::TOOLTIP_BODY;
-  ret.message = "Might unlock something";
+
+  auto actionDescription = ""s;
+  switch (trigger.type) {
+    case CRAFT:
+      actionDescription = "Crafting this recipe";
+      break;
+    case ACQUIRE:
+      actionDescription = "Picking up this item";
+      break;
+    case GATHER:
+      actionDescription = "Gathering this item";
+      break;
+    case CONSTRUCT:
+      actionDescription = "Constructing this object";
+      break;
+  }
+
+  ret.message = actionDescription + " might unlock something.";
   return ret;
 }

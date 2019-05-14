@@ -207,8 +207,9 @@ void Client::selectRecipe(Element &e, const ScreenPoint &mousePos) {
   const px_t TOTAL_LIST_SPACE =
                  BUTTON_Y - BUTTON_GAP - y - 2 * Element::TEXT_HEIGHT,
              MATS_LIST_HEIGHT = TOTAL_LIST_SPACE / 2,
+             UNLOCKS_HEIGHT = Element::TEXT_HEIGHT * 2,
              TOOLS_LIST_HEIGHT = TOTAL_LIST_SPACE - MATS_LIST_HEIGHT -
-                                 LINE_GAP - Element::TEXT_HEIGHT;
+                                 LINE_GAP - UNLOCKS_HEIGHT;
   pane.addChild(new Label({0, y, paneRect.w, Element::TEXT_HEIGHT},
                           "Required materials:"));
   y += Element::TEXT_HEIGHT;
@@ -249,10 +250,14 @@ void Client::selectRecipe(Element &e, const ScreenPoint &mousePos) {
   // Unlocks
   auto unlockInfo = Unlocks::getEffectInfo({Unlocks::CRAFT, recipe.id()});
   if (unlockInfo.hasEffect) {
-    auto unlockLabel =
-        new Label({0, y, paneRect.w, Element::TEXT_HEIGHT}, unlockInfo.message);
-    unlockLabel->setColor(unlockInfo.color);
-    pane.addChild(unlockLabel);
+    auto wordWrapper = WordWrapper{Element::font(), paneRect.w};
+    auto lines = wordWrapper.wrap(unlockInfo.message);
+    for (const auto &line : lines) {
+      auto l = new Label({0, y, paneRect.w, Element::TEXT_HEIGHT}, line);
+      y += Element::TEXT_HEIGHT;
+      l->setColor(unlockInfo.color);
+      pane.addChild(l);
+    }
   }
 
   pane.markChanged();
