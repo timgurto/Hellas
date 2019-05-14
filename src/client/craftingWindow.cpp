@@ -2,6 +2,7 @@
 
 #include "Client.h"
 #include "Renderer.h"
+#include "Unlocks.h"
 #include "ui/Button.h"
 #include "ui/CheckBox.h"
 #include "ui/ColorBlock.h"
@@ -206,7 +207,8 @@ void Client::selectRecipe(Element &e, const ScreenPoint &mousePos) {
   const px_t TOTAL_LIST_SPACE =
                  BUTTON_Y - BUTTON_GAP - y - 2 * Element::TEXT_HEIGHT,
              MATS_LIST_HEIGHT = TOTAL_LIST_SPACE / 2,
-             TOOLS_LIST_HEIGHT = TOTAL_LIST_SPACE - MATS_LIST_HEIGHT;
+             TOOLS_LIST_HEIGHT = TOTAL_LIST_SPACE - MATS_LIST_HEIGHT -
+                                 LINE_GAP - Element::TEXT_HEIGHT;
   pane.addChild(new Label({0, y, paneRect.w, Element::TEXT_HEIGHT},
                           "Required materials:"));
   y += Element::TEXT_HEIGHT;
@@ -228,10 +230,13 @@ void Client::selectRecipe(Element &e, const ScreenPoint &mousePos) {
         {ICON_SIZE + CheckBox::GAP, 0, paneRect.w, ICON_SIZE}, entryText,
         Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
   }
+
+  // Tools list
   pane.addChild(
       new Label({0, y, paneRect.w, Element::TEXT_HEIGHT}, "Required tools:"));
   y += Element::TEXT_HEIGHT;
   List *const toolsList = new List({5, y, paneRect.w, TOOLS_LIST_HEIGHT});
+  y += TOOLS_LIST_HEIGHT + LINE_GAP;
   pane.addChild(toolsList);
   for (const std::string &tool : recipe.tools()) {
     static const px_t TOOL_MARGIN = 5;
@@ -240,6 +245,16 @@ void Client::selectRecipe(Element &e, const ScreenPoint &mousePos) {
         client.tagName(tool));
     toolsList->addChild(entry);
   }
+
+  // Unlocks
+  auto unlockInfo = Unlocks::getEffectInfo({Unlocks::CRAFT, recipe.id()});
+  if (unlockInfo.hasEffect) {
+    auto unlockLabel =
+        new Label({0, y, paneRect.w, Element::TEXT_HEIGHT}, unlockInfo.message);
+    unlockLabel->setColor(unlockInfo.color);
+    pane.addChild(unlockLabel);
+  }
+
   pane.markChanged();
 }
 
