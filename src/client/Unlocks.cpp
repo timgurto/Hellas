@@ -55,12 +55,14 @@ Unlocks::EffectInfo Unlocks::getEffectInfo(const Trigger &trigger) {
   auto chanceDescription = "";
   if (highestChance <= 0.05) {
     chanceDescription = "small";
+    ret.color = Color::CHANCE_SMALL;
   } else if (highestChance <= 0.4) {
     chanceDescription = "moderate";
+    ret.color = Color::CHANCE_MODERATE;
   } else {
     chanceDescription = "high";
+    ret.color = Color::CHANCE_HIGH;
   }
-  ret.color = Color::TOOLTIP_BODY;
 
   auto actionDescription = ""s;
   switch (trigger.type) {

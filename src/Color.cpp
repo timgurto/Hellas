@@ -73,6 +73,10 @@ const Color Color::UI_TEXT = YELLOW * 0.9;
 const Color Color::UI_DISABLED = WHITE * 0.6;
 const Color Color::UI_PROGRESS_BAR = WINDOW_LIGHT;
 
+const Color Color::CHANCE_SMALL = YELLOW * .4 + WHITE * .3;
+const Color Color::CHANCE_MODERATE = GREEN * .5 + WHITE * .4;
+const Color Color::CHANCE_HIGH = CYAN * .4 + BLUE * .2 + WHITE * .4;
+
 const Color Color::SPRITE_OUTLINE = 0x330a17;
 const Color Color::SPRITE_OUTLINE_HIGHLIGHT = 0xE5E5E5;
 

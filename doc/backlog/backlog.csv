@@ -437,8 +437,8 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 480,SFX for swing,8,3,Usability,,,,
 481,Marker for player in-combat,3,3,Usability,,,,
 482,Marker for aggro,8,5,Usability,,,,
-486,Show chance to unlock when crafting,34,8,Usability,,,,
-487,Show chance to unlock when building,13,2,Usability,486,,,
+486,Show chance to unlock when crafting,34,8,Usability,,TRUE,,
+487,Show chance to unlock when building,13,2,Usability,486,TRUE,,
 490,Allow line break on -,2,3,Bug,,,,
 496,Draw names/bars in front of everything else,2,2,Usability,,TRUE,,2 Work playtest 2019
 498,It's too easy to select Atlas,2,3,Usability,,,,
