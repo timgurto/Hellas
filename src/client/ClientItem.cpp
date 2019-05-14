@@ -1,7 +1,9 @@
 #include "ClientItem.h"
+
 #include "../XmlReader.h"
 #include "Client.h"
 #include "Tooltip.h"
+#include "Unlocks.h"
 
 std::map<int, size_t> ClientItem::gearDrawOrder;
 std::vector<ScreenPoint> ClientItem::gearOffsets(Client::GEAR_SLOTS);
@@ -141,6 +143,19 @@ const Tooltip &ClientItem::tooltip() const {
       tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
       tooltip.addLine("Right-click: "s + it->second->createEffectDescription());
     }
+  }
+
+  // Unlocks
+  auto acquireInfo = Unlocks::getEffectInfo({Unlocks::ACQUIRE, id()});
+  auto gatherInfo = Unlocks::getEffectInfo({Unlocks::GATHER, id()});
+  if (acquireInfo.hasEffect || gatherInfo.hasEffect) tooltip.addGap();
+  if (acquireInfo.hasEffect) {
+    tooltip.setColor(acquireInfo.color);
+    tooltip.addLine(acquireInfo.message);
+  }
+  if (gatherInfo.hasEffect) {
+    tooltip.setColor(gatherInfo.color);
+    tooltip.addLine(gatherInfo.message);
   }
 
   return tooltip;

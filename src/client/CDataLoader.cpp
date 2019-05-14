@@ -12,6 +12,7 @@
 #include "ClientVehicleType.h"
 #include "ParticleProfile.h"
 #include "SoundProfile.h"
+#include "Unlocks.h"
 
 CDataLoader::CDataLoader(Client &client) : _client(client) {}
 

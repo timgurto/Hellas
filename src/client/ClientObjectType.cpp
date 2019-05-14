@@ -9,6 +9,7 @@
 #include "SoundProfile.h"
 #include "Surface.h"
 #include "Tooltip.h"
+#include "Unlocks.h"
 
 ClientObjectType::ClientObjectType(const std::string &id)
     : SpriteType({}, {}),
