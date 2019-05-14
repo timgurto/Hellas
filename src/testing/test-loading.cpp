@@ -253,3 +253,10 @@ TEST_CASE("Weapon damage school is loaded") {
     }
   }
 }
+
+TEST_CASE("Server loads terrain types") {
+  GIVEN("a server") {
+    auto s = TestServer{};
+    THEN("there's one terrain type") { CHECK(s.terrainTypes().size() == 1); }
+  }
+}

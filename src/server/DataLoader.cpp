@@ -52,6 +52,7 @@ void DataLoader::load(bool keepOldData) {
       }
     }
 
+    loadFromAllFiles(&DataLoader::loadTerrain);
     loadFromAllFiles(&DataLoader::loadTerrainLists);
     loadFromAllFiles(&DataLoader::loadObjectTypes);
     loadFromAllFiles(&DataLoader::loadNPCTypes);
@@ -67,6 +68,7 @@ void DataLoader::load(bool keepOldData) {
     loadMap(reader);
 
   } else {
+    loadTerrain(XmlReader::FromString(_data));
     loadTerrainLists(XmlReader::FromString(_data));
     loadObjectTypes(XmlReader::FromString(_data));
     loadNPCTypes(XmlReader::FromString(_data));

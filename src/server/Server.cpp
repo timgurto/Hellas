@@ -709,8 +709,9 @@ const Spell *Server::findSpell(const Spell::ID &id) const {
 }
 
 const Terrain *Server::terrainType(char index) const {
-  auto &types = const_cast<std::map<char, Terrain *> &>(_terrainTypes);
-  return types[index];
+  auto it = _terrainTypes.find(index);
+  if (it == _terrainTypes.end()) return nullptr;
+  return it->second;
 }
 
 void Server::deleteUserFiles() {

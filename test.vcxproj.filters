@@ -76,7 +76,6 @@
     <ClCompile Include="src\server\messages.cpp" />
     <ClCompile Include="src\server\NPC.cpp" />
     <ClCompile Include="src\server\NPCType.cpp" />
-    <ClCompile Include="src\server\Recipe.cpp" />
     <ClCompile Include="src\server\Server.cpp" />
     <ClCompile Include="src\server\Spawner.cpp" />
     <ClCompile Include="src\server\User.cpp" />
@@ -241,7 +240,6 @@
     <ClInclude Include="src\server\MerchantSlot.h" />
     <ClInclude Include="src\server\NPC.h" />
     <ClInclude Include="src\server\NPCType.h" />
-    <ClInclude Include="src\server\Recipe.h" />
     <ClInclude Include="src\server\Server.h" />
     <ClInclude Include="src\server\Spawner.h" />
     <ClInclude Include="src\server\User.h" />
