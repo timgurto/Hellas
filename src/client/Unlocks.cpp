@@ -1,5 +1,7 @@
 #include "Unlocks.h"
 
+#include "../util.h"
+
 using namespace std::string_literals;
 
 Unlocks::Container Unlocks::_container;
@@ -35,6 +37,7 @@ Unlocks::EffectInfo Unlocks::getEffectInfo(const Trigger &trigger) {
   if (it == _container.end()) return ret;
 
   // Check against what has already been unlocked
+  auto highestChance = 0.0;
   for (const auto &effectPair : it->second) {
     const auto &effect = effectPair.first;
     const auto &knownEffects =
@@ -42,13 +45,21 @@ Unlocks::EffectInfo Unlocks::getEffectInfo(const Trigger &trigger) {
     auto alreadyKnown = knownEffects.find(effect.id) != knownEffects.end();
     if (!alreadyKnown) {
       ret.hasEffect = true;
+      highestChance = max(highestChance, effectPair.second);
       break;
     }
   }
 
   if (!ret.hasEffect) return ret;
 
-  ret.hasEffect = true;
+  auto chanceDescription = "";
+  if (highestChance <= 0.05) {
+    chanceDescription = "small";
+  } else if (highestChance <= 0.4) {
+    chanceDescription = "moderate";
+  } else {
+    chanceDescription = "high";
+  }
   ret.color = Color::TOOLTIP_BODY;
 
   auto actionDescription = ""s;
@@ -67,6 +78,7 @@ Unlocks::EffectInfo Unlocks::getEffectInfo(const Trigger &trigger) {
       break;
   }
 
-  ret.message = actionDescription + " might unlock something.";
+  ret.message = actionDescription + " has a "s + chanceDescription +
+                " chance to unlock something.";
   return ret;
 }
