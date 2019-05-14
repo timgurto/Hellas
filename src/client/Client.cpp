@@ -25,6 +25,7 @@
 #include "Particle.h"
 #include "SpriteType.h"
 #include "Tooltip.h"
+#include "Unlocks.h"
 #include "ui/Button.h"
 #include "ui/CombatantPanel.h"
 #include "ui/ConfirmationWindow.h"
@@ -180,6 +181,9 @@ Client::Client()
   Mix_AllocateChannels(MIXING_CHANNELS);
 
   _entities.insert(&_character);
+
+  Unlocks::linkToKnownRecipes(_knownRecipes);
+  Unlocks::linkToKnownConstructions(_knownConstructions);
 
   initializeUsername();
 

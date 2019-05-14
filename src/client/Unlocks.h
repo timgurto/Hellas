@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <set>
 #include <string>
 
 #include "../Color.h"
@@ -9,6 +10,10 @@
 // This is used to show chance-to-unlock to the user.
 class Unlocks {
  public:
+  using KnownEffects = std::set<std::string>;
+  static void linkToKnownRecipes(const KnownEffects &knownRecipes);
+  static void linkToKnownConstructions(const KnownEffects &knownConstructions);
+
   enum TriggerType { CRAFT, ACQUIRE, CONSTRUCT, GATHER };
   enum EffectType { RECIPE, CONSTRUCTION };
 
@@ -37,6 +42,7 @@ class Unlocks {
 
  private:
   static Container _container;
+  static const KnownEffects *_knownRecipes, *_knownConstructions;
 };
 
 bool operator<(const Unlocks::Trigger &lhs, const Unlocks::Trigger &rhs);
