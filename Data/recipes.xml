@@ -328,7 +328,7 @@
     <recipe
         id="woodArrow" time="4000" >
         <material id="stick" />
-        <tool class="grinding1" />
+        <tool class="carving" />
         <unlockedBy recipe="bow" />
         <unlockedBy gather="stick" chance="0.005" />
     </recipe>
