@@ -1,25 +1,29 @@
+#include "TestServer.h"
+
 #include <cassert>
 #include <thread>
 
 #include "../Args.h"
-#include "TestServer.h"
 #include "testing.h"
 
 extern Args cmdLineArgs;
 
 TestServer::TestServer() {
   _server = new Server;
+  _server->_isTestServer = true;
   DataLoader::FromPath(*_server, "testing/data/minimal").load();
   run();
 }
 
 TestServer::TestServer(NotRunning) {
   _server = new Server;
+  _server->_isTestServer = true;
   DataLoader::FromPath(*_server, "testing/data/minimal").load();
 }
 
 TestServer::TestServer(const std::string &string, StringType type) {
   _server = new Server;
+  _server->_isTestServer = true;
   DataLoader::FromPath(*_server, "testing/data/minimal").load();
   if (type == DATA_PATH)
     DataLoader::FromPath(*_server, "testing/data/" + string).load(true);
@@ -90,9 +94,9 @@ TestServer &TestServer::operator=(TestServer &rhs) {
 }
 
 void TestServer::run() {
-  Server &server = *_server;
+  auto &server = *_server;
   std::thread([&server]() { server.run(); }).detach();
-  WAIT_UNTIL(_server->_running);
+  WAIT_UNTIL(server._running);
 }
 
 void TestServer::stop() {
@@ -130,6 +134,10 @@ User &TestServer::findUser(const std::string &username) {
 
 const Quest &TestServer::findQuest(const Quest::ID &questID) const {
   return _server->_quests[questID];
+}
+
+const ServerItem &TestServer::findItem(const std::string &id) const {
+  return *_server->findItem(id);
 }
 
 User &TestServer::getFirstUser() {

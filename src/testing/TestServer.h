@@ -46,6 +46,10 @@ class TestServer {
   const Quest &getFirstQuest();
   const BuffType &getFirstBuff();
 
+  User &findUser(const std::string &username);
+  const Quest &findQuest(const Quest::ID &questID) const;
+  const ServerItem &findItem(const std::string &id) const;
+
   void addObject(const std::string &typeName, const MapPoint &loc = MapPoint{},
                  const std::string &owner = "");
   void addNPC(const std::string &typeName, const MapPoint &loc = MapPoint{});
@@ -59,9 +63,6 @@ class TestServer {
   }
 
   void nop() { _server->map(); }
-
-  User &findUser(const std::string &username);
-  const Quest &findQuest(const Quest::ID &questID) const;
 
  private:
   Server *_server;

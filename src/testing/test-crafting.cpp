@@ -85,3 +85,31 @@ TEST_CASE("NPCs don't cause tool checks to crash", "[tool][crash]") {
 
   // Then the server doesn't crash
 }
+
+TEST_CASE("Gear counts towards materials") {
+  GIVEN("A user wearing an item, and a recipe that needs that item") {
+    auto data = R"(
+      <item id="sock" gearSlot="5" />
+      <item id="sockPuppet" />
+      <recipe id="sockPuppet" time="1" >
+        <material id="sock" />
+      </recipe>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    auto &sock = s.findItem("sock");
+    user.gear(5) = std::make_pair(&sock, 1);
+
+    WHEN("he tries to craft the recipe") {
+      REPEAT_FOR_MS(100);
+      c.sendMessage(CL_CRAFT, "sockPuppet");
+
+      THEN("he has the new item") {
+        auto &sockPuppet = s.findItem("sockPuppet");
+        WAIT_UNTIL(user.inventory(0).first == &sockPuppet);
+      }
+    }
+  }
+}

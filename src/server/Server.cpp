@@ -236,11 +236,12 @@ void Server::run() {
     }
 
     // Publish stats
-    if (_time - _timeStatsLastPublished >= PUBLISH_STATS_FREQUENCY) {
-      std::thread(publishStats, this).detach();
+    if (!_isTestServer)
+      if (_time - _timeStatsLastPublished >= PUBLISH_STATS_FREQUENCY) {
+        std::thread(publishStats, this).detach();
 
-      _timeStatsLastPublished = _time;
-    }
+        _timeStatsLastPublished = _time;
+      }
 
     // Update users
     for (const User &user : _users)

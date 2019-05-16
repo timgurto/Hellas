@@ -313,7 +313,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 378,A Granary object that learning talents can draw from,13,8,Feature,377,,,4 Copper
 380,Allow water/air nymphs to float on water,5,2,Feature,,,,
 382,Password-protect accounts,34,233,Exploit,,,TRUE,
-389,Include equipped items in materials filter,13,5,Bug,,,,3 Tin wrapup
+389,Include equipped items in materials filter,13,5,Bug,,TRUE,,3 Tin wrapup
 393,"Play defend/death sounds on projectile hit, not launch",8,5,Usability,,,,
 396,Find a sink for small pots,8,8,Content,,,,3 Tin wrapup
 398,"If login position blocked: try nearby, then spawn, then default spawn",21,3,Feature,,,,
@@ -326,7 +326,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 436,"New classes for ID and Name, used everywhere",2,5,Code quality,,,,
 438,Show a tooltip when terrain is inaccessible,2,3,Usability,,,,
 442,Fade in from black on first login,21,21,Aesthetics,,,,
-463,An adventure (overworld),233,89,Content,,,TRUE,
+463,An adventure (overworld),233,89,Content,,,TRUE,5 First adventure
 466,Show shadow box in help-topic list in showHelpTopic(),1,5,Bug,,,,
 470,Draw correct corpses for humanoid NPCs and players,21,55,Bug,,,,3 Tin wrapup
 480,SFX for swing,8,3,Usability,,,,

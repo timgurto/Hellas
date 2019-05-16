@@ -64,6 +64,8 @@ class Server {
 
   mutable LogConsole _debug;
 
+  bool _isTestServer{false};
+
   enum SpecialSerial {
     INVENTORY = 0,
     GEAR = 1,
