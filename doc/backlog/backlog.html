@@ -74,6 +74,7 @@
 <input type="checkbox" id="showDone" onChange='applyOptions();'>Show 'done' items</input>
 <input type="checkbox" id="useFilter" onChange='applyOptions();'>Show only filtered items</input>
 <input type="checkbox" id="hideBlocked" onChange='applyOptions();'>Hide blocked items</input>
+<input type="button" value="Filter all" onClick='filterAll();' />
 
 <p>
 <table id="backlog">
@@ -213,7 +214,7 @@
             cell.className = "Notes";
 
             cell = row.insertCell(-1);
-            var checkboxCell = '<input type="checkbox" id="filter" onChange="toggleFilter(' + i + '); refreshTable();" ';
+            var checkboxCell = '<input type="checkbox" class="filterCheckbox" onChange="toggleFilter(' + i + '); refreshTable();" ';
             if (PBI.filter)
                 checkboxCell += ' checked ';
             else
@@ -238,6 +239,13 @@
 
         if ($("#hideBlocked").is(':checked'))
             $(".blockedRow").hide();
+    }
+    
+    function filterAll(){
+        for (i in PBIs){
+            PBIs[i].filter = true;
+        }
+        refreshTable();
     }
 
     function toggleFilter(i){
