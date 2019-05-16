@@ -259,6 +259,8 @@ class Client {
   bool recipeMatchesFilters(const CRecipe &recipe) const;
   // Called when filters pane is clicked, or new recipes are unlocked.
   static void populateRecipesList(Element &e);
+  // Called when filters change
+  void scrollRecipeListToTop();
   // Called when a recipe is selected.
   static void selectRecipe(Element &e, const ScreenPoint &mousePos);
   // Called when new recipes are unlocked.

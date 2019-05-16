@@ -320,7 +320,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 399,Client crashes sometimes on pot pickup.  Window/watchers?,55,8,Bug,,,,
 401,Allow granting unfinished objects,21,3,Bug,,,,
 403,Consume smaller stacks of mats first,13,3,Feature,,,,
-406,Scroll recipe list to top when filters change,5,2,Bug,,,,3 Tin wrapup
+406,Scroll recipe list to top when filters change,5,2,Bug,,TRUE,,3 Tin wrapup
 407,Make under-construction objects easier to kill,8,8,Exploit,,,,
 410,"Recruit via an invitation, not insta-join",21,13,Usability,,,,
 436,"New classes for ID and Name, used everywhere",2,5,Code quality,,,,

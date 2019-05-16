@@ -1,4 +1,5 @@
 #include "CheckBox.h"
+
 #include "ColorBlock.h"
 #include "Label.h"
 
@@ -30,6 +31,7 @@ void CheckBox::toggleBool() {
 
 void CheckBox::depress() {
   _depressed = true;
+  if (_onChangeFunction) _onChangeFunction();
   markChanged();
 }
 
@@ -37,6 +39,7 @@ void CheckBox::release(bool click) {
   if (click) toggleBool();
   markChanged();
   _depressed = false;
+  if (_onChangeFunction) _onChangeFunction();
 }
 
 void CheckBox::mouseDown(Element &e, const ScreenPoint &mousePos) {

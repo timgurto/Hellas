@@ -8,6 +8,9 @@
 // A button which can be clicked, showing visible feedback and performing a
 // function.
 class CheckBox : public Element {
+ public:
+  using OnChangeFunction = void (*)();
+
  private:
   static const px_t Y_OFFSET;  // Shifts the box vertically
 
@@ -29,6 +32,8 @@ class CheckBox : public Element {
   void release(
       bool click);  // click: whether, on release, the check box will toggle
 
+  OnChangeFunction _onChangeFunction{nullptr};
+
   static void mouseDown(Element &e, const ScreenPoint &mousePos);
   static void mouseUp(Element &e, const ScreenPoint &mousePos);
   static void mouseMove(Element &e, const ScreenPoint &mousePos);
@@ -41,6 +46,8 @@ class CheckBox : public Element {
 
   CheckBox(const ScreenRect &rect, bool &linkedBool,
            const std::string &caption = "", bool inverse = false);
+
+  void onChange(const OnChangeFunction f) { _onChangeFunction = f; }
 };
 
 #endif

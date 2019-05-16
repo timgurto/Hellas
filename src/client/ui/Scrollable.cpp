@@ -1,4 +1,5 @@
 #include "Scrollable.h"
+
 #include "../Renderer.h"
 #include "ColorBlock.h"
 #include "Label.h"
@@ -182,6 +183,11 @@ void Scrollable::scrollDownRaw(Element &e) {
     scrollable._scrolledToBottom = true;
   }
   scrollable.updateScrollBar();
+}
+
+void Scrollable::scrollToTop() {
+  _content->setPosition(0, 0);
+  updateScrollBar();
 }
 
 void Scrollable::scrollToBottom() {

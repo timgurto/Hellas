@@ -49,6 +49,7 @@ class Scrollable : public Element {
   void clearChildren() override;
   Element *findChild(const std::string id) const override;
 
+  void scrollToTop();
   void scrollToBottom();
   bool isScrolledToBottom() const { return _scrolledToBottom; }
   bool isScrollBarVisible() const { return _scrollBar->visible(); }
