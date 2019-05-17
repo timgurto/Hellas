@@ -1,10 +1,9 @@
 #define CATCH_CONFIG_RUNNER
-#include "catch.hpp"
-
 #include <SDL.h>
 
 #include "../Args.h"
 #include "../client/Renderer.h"
+#include "catch.hpp"
 
 extern "C" {
 FILE __iob_func[3] = {*stdin, *stdout, *stderr};
@@ -23,6 +22,7 @@ int main(int argc, char* argv[]) {
   cmdLineArgs.add("quiet");
   cmdLineArgs.add("user-files-path", "testing/users");
   cmdLineArgs.add("hideLoadingScreen");
+  cmdLineArgs.add("debug");
 
   renderer.init();
 
