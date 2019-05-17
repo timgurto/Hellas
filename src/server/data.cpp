@@ -206,6 +206,7 @@ void Server::writeUserData(const User &user) const {
   XmlWriter xw(_userFilesPath + user.name() + ".usr");
 
   auto e = xw.addChild("general");
+  xw.setAttr(e, "passwordHash", user.pwHash());
   xw.setAttr(e, "secondsPlayed", user.secondsPlayed());
   xw.setAttr(e, "realWorldLocation", user.realWorldLocation());
   xw.setAttr(e, "class", user.getClass().type().id());

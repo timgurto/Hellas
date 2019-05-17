@@ -281,13 +281,14 @@ void Server::run() {
 }
 
 void Server::addUser(const Socket &socket, const std::string &name,
-                     const std::string &classID) {
+                     const std::string &pwHash, const std::string &classID) {
   auto newUserToInsert = User{name, {}, &socket};
 
   // Add new user to list
   std::set<User>::const_iterator it = _users.insert(newUserToInsert).first;
   auto &newUser = const_cast<User &>(*it);
   _usersByName[name] = &*it;
+  newUser.pwHash(pwHash);
 
   // Announce to all
   broadcast(SV_USER_CONNECTED, name);

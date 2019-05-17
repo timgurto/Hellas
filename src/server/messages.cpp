@@ -50,18 +50,26 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         auto name = std::string(buffer);
         iss >> del;
 
+        iss.get(buffer, BUFFER_SIZE, MSG_DELIM);
+        auto pwHash = std::string(buffer);
+        iss >> del;
+
         iss.get(buffer, BUFFER_SIZE, MSG_END);
         auto clientVersion = std::string(buffer);
         iss >> del;
         if (del != MSG_END) return;
 
-        handle_CL_LOGIN_EXISTING(client, name, clientVersion);
+        handle_CL_LOGIN_EXISTING(client, name, pwHash, clientVersion);
         break;
       }
 
       case CL_LOGIN_NEW: {
         iss.get(buffer, BUFFER_SIZE, MSG_DELIM);
         auto name = std::string(buffer);
+        iss >> del;
+
+        iss.get(buffer, BUFFER_SIZE, MSG_DELIM);
+        auto pwHash = std::string(buffer);
         iss >> del;
 
         iss.get(buffer, BUFFER_SIZE, MSG_DELIM);
@@ -73,7 +81,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         iss >> del;
         if (del != MSG_END) return;
 
-        handle_CL_LOGIN_NEW(client, name, classID, clientVersion);
+        handle_CL_LOGIN_NEW(client, name, pwHash, classID, clientVersion);
         break;
       }
 
@@ -1330,6 +1338,7 @@ void Server::handle_CL_START_WATCHING(User &user, size_t serial) {
 
 void Server::handle_CL_LOGIN_EXISTING(const Socket &client,
                                       const std::string &name,
+                                      const std::string &pwHash,
                                       const std::string &clientVersion) {
 #ifndef _DEBUG
   // Check that version matches
@@ -1358,15 +1367,16 @@ void Server::handle_CL_LOGIN_EXISTING(const Socket &client,
     sendMessage(client, WARNING_USER_DOESNT_EXIST);
     return;
 #else
-    addUser(client, name, _classes.begin()->first);
+    addUser(client, name, pwHash, _classes.begin()->first);
     return;
 #endif
   }
 
-  addUser(client, name);
+  addUser(client, name, pwHash);
 }
 
 void Server::handle_CL_LOGIN_NEW(const Socket &client, const std::string &name,
+                                 const std::string &pwHash,
                                  const std::string &classID,
                                  std::string &clientVersion) {
 #ifndef _DEBUG
@@ -1390,7 +1400,7 @@ void Server::handle_CL_LOGIN_NEW(const Socket &client, const std::string &name,
     return;
   }
 
-  addUser(client, name, classID);
+  addUser(client, name, pwHash, classID);
 }
 
 void Server::handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum) {

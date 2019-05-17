@@ -1,3 +1,5 @@
+#include <picosha2.h>
+
 #include <algorithm>
 #include <thread>
 
@@ -14,6 +16,8 @@ extern Args cmdLineArgs;
 
 static TextBox *nameBox{nullptr};
 static TextBox *newNameBox{nullptr};
+static TextBox *pwBox{nullptr};
+static TextBox *newPwBox{nullptr};
 static Button *loginButton{nullptr};
 static Button *createButton{nullptr};
 static ChoiceList *classList{nullptr};
@@ -181,7 +185,7 @@ void Client::updateClassDescription() {
 }
 
 void Client::initCreateWindow() {
-  const auto L_PANE_W = 100_px, R_PANE_W = 200_px, MID_PANE = 40_px,
+  const auto L_PANE_W = 120_px, R_PANE_W = 200_px, MID_PANE = 50_px,
              PANE_H = 120_px, MARGIN = 10_px, BUTTON_HEIGHT = 20,
              BUTTON_WIDTH = 100, WIN_W = L_PANE_W + R_PANE_W + 3 * MARGIN,
              WIN_H = PANE_H + 3 * MARGIN + BUTTON_HEIGHT,
@@ -209,6 +213,12 @@ void Client::initCreateWindow() {
     infoPane->addChild(new Label({0, y, R_PANE_W, Element::TEXT_HEIGHT},
                                  "(Names must contain 3-20 characters)"s));
     y += newNameBox->height() + GAP;
+
+    inputPane->addChild(
+        new Label({0, y, 100, Element::TEXT_HEIGHT}, "Password:"s));
+    newPwBox = new TextBox({MID_PANE, y, L_PANE_W - MID_PANE, 0});
+    inputPane->addChild(newPwBox);
+    y += newPwBox->height() + GAP;
 
     inputPane->addChild(
         new Label({0, y, 100, Element::TEXT_HEIGHT}, "Class:"s));
@@ -246,8 +256,9 @@ void Client::createAccount() {
 
   _instance->_username = username;
   const auto &selectedClass = classList->getSelected();
+  auto pwHash = picosha2::hash256_hex_string(newPwBox->text());
   _instance->sendMessage(CL_LOGIN_NEW,
-                         makeArgs(username, selectedClass, version()));
+                         makeArgs(username, pwHash, selectedClass, version()));
 
   saveUsername(_instance->_username);
 }
@@ -261,13 +272,16 @@ void Client::login() {
   }
 
   auto shouldCallCreateInsteadOfLogin = !_instance->_autoClassID.empty();
-  if (shouldCallCreateInsteadOfLogin)
-    _instance->sendMessage(
-        CL_LOGIN_NEW,
-        makeArgs(_instance->_username, _instance->_autoClassID, version()));
-  else
+  if (shouldCallCreateInsteadOfLogin) {
+    auto pwHash = picosha2::hash256_hex_string(newPwBox->text());
+    _instance->sendMessage(CL_LOGIN_NEW,
+                           makeArgs(_instance->_username, pwHash,
+                                    _instance->_autoClassID, version()));
+  } else {
+    auto pwHash = picosha2::hash256_hex_string(pwBox->text());
     _instance->sendMessage(CL_LOGIN_EXISTING,
-                           makeArgs(_instance->_username, version()));
+                           makeArgs(_instance->_username, pwHash, version()));
+  }
 
   saveUsername(_instance->_username);
 }
@@ -292,6 +306,17 @@ void Client::initLoginScreen() {
   TextBox::focus(nameBox);
   nameBox->setOnChange(updateLoginButton);
   _loginUI.push_back(nameBox);
+  Y += nameBox->height() + GAP;
+
+  _loginUI.push_back(
+      new OutlinedLabel({BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT + 5},
+                        "Password:", Element::CENTER_JUSTIFIED));
+  Y += Element::TEXT_HEIGHT + 1;
+
+  pwBox = new TextBox({BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT});
+  if (nameBox->hasText()) TextBox::focus(pwBox);
+  _loginUI.push_back(pwBox);
+  Y += nameBox->height() + GAP;
 
   SDL_StartTextInput();
 

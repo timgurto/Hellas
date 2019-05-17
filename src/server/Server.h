@@ -178,7 +178,7 @@ class Server {
   created.
   */
   void addUser(const Socket &socket, const std::string &name,
-               const std::string &classID = {});
+               const std::string &pwHash, const std::string &classID = {});
   void checkSockets();
 
   // Remove traces of a user who has disconnected.
@@ -280,8 +280,10 @@ class Server {
   void writeUserToFile(const User &user, std::ofstream &file) const;
 
   void handle_CL_LOGIN_EXISTING(const Socket &client, const std::string &name,
+                                const std::string &pwHash,
                                 const std::string &clientVersion);
   void handle_CL_LOGIN_NEW(const Socket &client, const std::string &name,
+                           const std::string &pwHash,
                            const std::string &classID,
                            std::string &clientVersion);
   void handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum);

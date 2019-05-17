@@ -16,12 +16,12 @@ enum MessageCode {
 
   // "I'm an existing user.  My name is ... and my client version is ..."
   // This has the effect of registering the user with the server.
-  // Arguments: username, version
+  // Arguments: username, password hash, version
   CL_LOGIN_EXISTING,
 
-  // "I'm new; my name is ..., my class is ... and my client version is ..."
+  // "I'm new; my details are ... and I'm running client version ...
   // This has the effect of creating the account, then registering the user with the server.
-  // Arguments: username, class, version
+  // Arguments: username, password hash, class, version
   CL_LOGIN_NEW,
 
   // "How long have I played?"

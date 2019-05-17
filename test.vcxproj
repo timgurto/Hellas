@@ -43,7 +43,7 @@
     <OutDir>$(SolutionDir)</OutDir>
     <TargetName>$(ProjectName)-debug</TargetName>
     <LibraryPath>$(SolutionDir)third-party\SDL2_ttf-2.0.12\lib\x86;$(SolutionDir)third-party\SDL2_mixer-2.0.0\lib\x86;$(SolutionDir)third-party\SDL2_image-2.0.0\lib\x86;$(SolutionDir)third-party\SDL2-2.0.3\lib\x86;$(SolutionDir)libcurl\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)third-party\catch-2.3.0;$(SolutionDir)third-party\tinyxml;$(SolutionDir)third-party\SDL2_ttf-2.0.12\include;$(SolutionDir)third-party\SDL2_mixer-2.0.0\include;$(SolutionDir)third-party\SDL2_image-2.0.0\include;$(SolutionDir)third-party\SDL2-2.0.3\include\SDL2;$(SolutionDir)libcurl\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)third-party\PicoSHA2;$(SolutionDir)third-party\catch-2.3.0;$(SolutionDir)third-party\tinyxml;$(SolutionDir)third-party\SDL2_ttf-2.0.12\include;$(SolutionDir)third-party\SDL2_mixer-2.0.0\include;$(SolutionDir)third-party\SDL2_image-2.0.0\include;$(SolutionDir)third-party\SDL2-2.0.3\include\SDL2;$(SolutionDir)libcurl\include;$(IncludePath)</IncludePath>
     <IntDir>$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

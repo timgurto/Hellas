@@ -14,6 +14,7 @@ class TextBox : public Element {
 
   const std::string &text() const { return _text; }
   void text(const std::string &text);
+  bool hasText() const { return !_text.empty(); }
   size_t textAsNum() const;
 
   static void clearFocus();

@@ -35,6 +35,7 @@ class User : public Object {  // TODO: Don't inherit from Object
 
  private:
   std::string _name;
+  std::string _pwHash;
   Optional<Socket> _socket;
   std::string _realWorldLocation;
 
@@ -102,6 +103,8 @@ class User : public Object {  // TODO: Don't inherit from Object
   }
 
   const std::string &name() const { return _name; }
+  void pwHash(const std::string &hash) { _pwHash = hash; }
+  const std::string &pwHash() const { return _pwHash; }
   const Socket &socket() const { return _socket.value(); }
   bool hasSocket() const { return _socket.hasValue(); }
   void findRealWorldLocation();
