@@ -1,6 +1,7 @@
+#include "LogConsole.h"
+
 #include <sstream>
 
-#include "LogConsole.h"
 #include "Server.h"
 
 LogConsole::LogConsole(const std::string &logFileName)
@@ -24,15 +25,22 @@ static const std::string &colorCode(const Color &color = Color::NO_KEY) {
 }
 
 void LogConsole::operator()(const std::string &message, const Color &color) {
-  writeLineToFile(message);
+  writeLineToFile(timestamp() + message);
   if (_quiet) return;
-  std::cout << colorCode(color) << message << colorCode() << std::endl;
+  std::cout << colorCode(color) << timestamp() << message << colorCode()
+            << std::endl;
 }
 
 LogConsole &LogConsole::operator<<(const std::string &val) {
-  writeToFile(val);
+  auto valToWrite = val;
+  if (_thisLineNeedsATimestamp) valToWrite = timestamp() + valToWrite;
+  _thisLineNeedsATimestamp = false;
+
+  writeToFile(valToWrite);
+
   if (_quiet) return *this;
-  std::cout << val << std::flush;
+
+  std::cout << valToWrite << std::flush;
 
   return *this;
 }
@@ -45,7 +53,10 @@ LogConsole &LogConsole::operator<<(const Color &c) {
 }
 
 LogConsole &LogConsole::operator<<(const LogSpecial &val) {
-  if (val == endl) writeLineToFile("");
+  if (val == endl) {
+    writeLineToFile("");
+    _thisLineNeedsATimestamp = true;
+  }
 
   if (_quiet) return *this;
 

@@ -1,7 +1,10 @@
 #include "util.h"
 
 #include <cmath>
+#include <ctime>
 #include <fstream>
+#include <iomanip>
+#include <iostream>
 #include <sstream>
 
 #include "Args.h"
@@ -122,4 +125,13 @@ bool isUsernameValid(const std::string name) {
   for (char c : name)
     if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))) return false;
   return true;
+}
+
+std::string timestamp() {
+  auto t = std::time(nullptr);
+  auto tm = *std::localtime(&t);
+
+  std::ostringstream oss;
+  oss << std::put_time(&tm, "%H:%M:%S") << " ";
+  return oss.str();
 }

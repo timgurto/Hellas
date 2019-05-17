@@ -19,10 +19,18 @@ class LogConsole : public Log {
 
   template <typename T>
   LogConsole &operator<<(const T &val) {
+    if (_thisLineNeedsATimestamp) writeToFile(timestamp());
     writeToFile(val);
-    if (_quiet) return *this;
 
-    std::cout << val;
+    if (_quiet) {
+      _thisLineNeedsATimestamp = false;
+      return *this;
+    }
+
+    if (_thisLineNeedsATimestamp) std::cout << timestamp();
+    std::cout << val << std::flush;
+
+    _thisLineNeedsATimestamp = false;
     return *this;
   }
   LogConsole &operator<<(const std::string &val) override;
@@ -31,6 +39,7 @@ class LogConsole : public Log {
 
  private:
   bool _quiet;  // If true, suppress all messages.
+  bool _thisLineNeedsATimestamp{true};
 };
 
 #endif

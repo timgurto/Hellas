@@ -120,4 +120,6 @@ bool fileExists(const std::string &path);
 
 bool isUsernameValid(const std::string name);
 
+std::string timestamp();
+
 #endif
