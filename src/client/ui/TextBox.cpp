@@ -1,8 +1,9 @@
+#include "TextBox.h"
+
 #include <cassert>
 
 #include "../Renderer.h"
 #include "ShadowBox.h"
-#include "TextBox.h"
 
 extern Renderer renderer;
 
@@ -26,7 +27,10 @@ void TextBox::refresh() {
 
   // Text
   static const px_t TEXT_GAP = 2;
-  Texture text(Element::font(), _text);
+  auto textToDraw = _text;
+  if (_inputMask.hasValue())
+    textToDraw = std::string(_text.size(), _inputMask.value());
+  Texture text(Element::font(), textToDraw);
   text.draw(TEXT_GAP, TEXT_GAP);
 
   // Cursor

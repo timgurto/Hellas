@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include "../../Optional.h"
 #include "Element.h"
 #include "LinkedLabel.h"
 
@@ -32,9 +33,11 @@ class TextBox : public Element {
   static void click(Element &e, const ScreenPoint &mousePos);
 
   void forcePascalCase();
+  void maskContents(char mask = '?') { _inputMask = mask; }
 
  private:
   std::string _text;
+  Optional<char> _inputMask;
 
   ValidInput _validInput;
   bool isInputValid(char c) const;

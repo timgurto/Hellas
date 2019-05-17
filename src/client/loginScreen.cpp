@@ -217,6 +217,7 @@ void Client::initCreateWindow() {
     inputPane->addChild(
         new Label({0, y, 100, Element::TEXT_HEIGHT}, "Password:"s));
     newPwBox = new TextBox({MID_PANE, y, L_PANE_W - MID_PANE, 0});
+    newPwBox->maskContents();
     inputPane->addChild(newPwBox);
     y += newPwBox->height() + GAP;
 
@@ -314,6 +315,7 @@ void Client::initLoginScreen() {
   Y += Element::TEXT_HEIGHT + 1;
 
   pwBox = new TextBox({BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT});
+  pwBox->maskContents();
   if (nameBox->hasText()) TextBox::focus(pwBox);
   _loginUI.push_back(pwBox);
   Y += nameBox->height() + GAP;
