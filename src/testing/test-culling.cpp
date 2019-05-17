@@ -53,7 +53,10 @@ TEST_CASE("When one user approaches another, he finds out about him",
   CHECK(c.otherUsers().size() == 0);
 
   // When the first moves within range of the second
+  auto startTime = SDL_GetTicks();
   while (c->character().location().x < 900) {
+    if (SDL_GetTicks() - startTime > 100000) break;
+
     c.sendMessage(CL_LOCATION, makeArgs(1000, 10));
 
     // Then he becomes aware of him
@@ -77,7 +80,10 @@ TEST_CASE("When a player moves away from his object, he is still aware of it",
   WAIT_UNTIL(c.objects().size() == 1);
 
   // When Alice moves out of range of the signpost
+  auto startTime = SDL_GetTicks();
   while (c->character().location().x < 1000) {
+    if (SDL_GetTicks() - startTime > 100000) break;
+
     c.sendMessage(CL_LOCATION, makeArgs(1010, 10));
 
     // Then she is still aware of it
@@ -111,7 +117,10 @@ TEST_CASE(
 
   // When Alice moves out of range of the signpost
   WAIT_UNTIL(c.objects().size() == 1);
+  auto startTime = SDL_GetTicks();
   while (c->character().location().x < 1000) {
+    if (SDL_GetTicks() - startTime > 100000) break;
+
     c.sendMessage(CL_LOCATION, makeArgs(1010, 10));
 
     // Then she is still aware of it
