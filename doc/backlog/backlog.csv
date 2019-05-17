@@ -312,7 +312,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 377,Add context menus to online-users list,13,8,Usability,199,,,
 378,A Granary object that learning talents can draw from,13,8,Feature,377,,,4 Copper
 380,Allow water/air nymphs to float on water,5,2,Feature,,,,
-382,Password-protect accounts,34,233,Exploit,,,TRUE,
+382,Password-protect accounts,34,233,Exploit,,TRUE,TRUE,
 389,Include equipped items in materials filter,13,5,Bug,,TRUE,,3 Tin wrapup
 393,"Play defend/death sounds on projectile hit, not launch",8,5,Usability,,,,
 396,Find a sink for small pots,8,8,Content,,,,3 Tin wrapup

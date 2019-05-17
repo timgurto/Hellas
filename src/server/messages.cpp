@@ -1372,6 +1372,15 @@ void Server::handle_CL_LOGIN_EXISTING(const Socket &client,
 #endif
   }
 
+  auto xr = XmlReader::FromFile(_userFilesPath + name + ".usr");
+  auto elem = xr.findChild("general");
+  auto savedPwHash = ""s;
+  xr.findAttr(elem, "passwordHash", savedPwHash);
+  if (savedPwHash != pwHash) {
+    sendMessage(client, WARNING_WRONG_PASSWORD);
+    return;
+  }
+
   addUser(client, name, pwHash);
 }
 

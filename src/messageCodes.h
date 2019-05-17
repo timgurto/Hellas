@@ -14,7 +14,7 @@ enum MessageCode {
   // Arguments: time sent
   CL_PING,
 
-  // "I'm an existing user.  My name is ... and my client version is ..."
+  // "I'm an existing user.  My details are ... and my client version is ..."
   // This has the effect of registering the user with the server.
   // Arguments: username, password hash, version
   CL_LOGIN_EXISTING,
@@ -569,6 +569,7 @@ enum MessageCode {
   WARNING_SERVER_FULL, // There is no room for more clients
   WARNING_USER_DOESNT_EXIST, // User tried to log in to an account that doesn't exist
   WARNING_NAME_TAKEN, // User tried to create an account with an unavailable name
+  WARNING_WRONG_PASSWORD, // The attempted password doesn't match the existing username
 
   // Merchant objects
   ERROR_NOT_MERCHANT, // The user tried to perform a merchant function on a non-merchant object

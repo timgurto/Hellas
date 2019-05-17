@@ -182,6 +182,11 @@ void Client::handleMessage(const std::string &msg) {
         infoWindow("The username "s + _username + " is invalid."s);
         break;
 
+      case WARNING_WRONG_PASSWORD:
+        if (del != MSG_END) break;
+        infoWindow("Password does not match that username."s);
+        break;
+
       case WARNING_SERVER_FULL:
         if (del != MSG_END) break;
         _loggedIn = false;
