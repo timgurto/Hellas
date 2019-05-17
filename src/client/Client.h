@@ -433,6 +433,7 @@ class Client {
   static void updateClassDescription();
   std::string _autoClassID =
       {};  // For automated account creation, i.e., in tests
+  std::string _savedPwHash;
 
   // These are superficial, and relate only to the cast bar.
   ms_t _actionTimer;   // How long the character has been performing the current

@@ -66,4 +66,4 @@ src/version.h
 client-publish/*
 logging/stats.js
 doc/web/spells.js
-lastLogin.txt
+session.txt

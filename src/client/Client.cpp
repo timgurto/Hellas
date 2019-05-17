@@ -681,10 +681,12 @@ void Client::initializeUsername() {
   _username = "";
 
   // Attempt to use last-used name
-  auto fs = std::ifstream{"lastLogin.txt"};
-  if (!fs) return;
-
-  fs >> _username;
+  auto xr = XmlReader::FromFile("session.txt");
+  if (!xr) return;
+  auto user = xr.findChild("user");
+  if (!user) return;
+  xr.findAttr(user, "name", _username);
+  xr.findAttr(user, "passwordHash", _savedPwHash);
 }
 
 void Client::setRandomUsername() {

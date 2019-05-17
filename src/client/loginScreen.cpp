@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <thread>
 
+#include "../XmlWriter.h"
 #include "../versionUtil.h"
 #include "Client.h"
 #include "Particle.h"
@@ -246,9 +247,13 @@ void Client::initCreateWindow() {
   _createWindow->addChild(createButton);
 }
 
-static void saveUsername(const std::string &username) {
-  auto fs = std::ofstream{"lastLogin.txt"};
-  fs << username;
+static void saveUsernameAndPassword(const std::string &username,
+                                    const std::string &pwHash) {
+  auto xw = XmlWriter{"session.txt"};
+  auto user = xw.addChild("user");
+  xw.setAttr(user, "name", username);
+  xw.setAttr(user, "passwordHash", pwHash);
+  xw.publish();
 }
 
 void Client::createAccount() {
@@ -261,7 +266,7 @@ void Client::createAccount() {
   _instance->sendMessage(CL_LOGIN_NEW,
                          makeArgs(username, pwHash, selectedClass, version()));
 
-  saveUsername(_instance->_username);
+  saveUsernameAndPassword(_instance->_username, pwHash);
 }
 
 void Client::login() {
@@ -272,19 +277,21 @@ void Client::login() {
     _instance->_username = enteredName;
   }
 
+  auto pwHash = ""s;
   auto shouldCallCreateInsteadOfLogin = !_instance->_autoClassID.empty();
   if (shouldCallCreateInsteadOfLogin) {
-    auto pwHash = picosha2::hash256_hex_string(newPwBox->text());
+    pwHash = picosha2::hash256_hex_string(newPwBox->text());
     _instance->sendMessage(CL_LOGIN_NEW,
                            makeArgs(_instance->_username, pwHash,
                                     _instance->_autoClassID, version()));
   } else {
-    auto pwHash = picosha2::hash256_hex_string(pwBox->text());
+    pwHash = _instance->_savedPwHash;
+    if (pwHash.empty()) pwHash = picosha2::hash256_hex_string(pwBox->text());
     _instance->sendMessage(CL_LOGIN_EXISTING,
                            makeArgs(_instance->_username, pwHash, version()));
   }
 
-  saveUsername(_instance->_username);
+  saveUsernameAndPassword(_instance->_username, pwHash);
 }
 
 void Client::initLoginScreen() {
@@ -305,7 +312,11 @@ void Client::initLoginScreen() {
                         TextBox::LETTERS);
   nameBox->text(_username);
   TextBox::focus(nameBox);
-  nameBox->setOnChange(updateLoginButton);
+  nameBox->setOnChange([](void *) {
+    updateLoginButton(nullptr);
+    pwBox->text("");
+    _instance->_savedPwHash.clear();
+  });
   _loginUI.push_back(nameBox);
   Y += nameBox->height() + GAP;
 
@@ -316,6 +327,8 @@ void Client::initLoginScreen() {
 
   pwBox = new TextBox({BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT});
   pwBox->maskContents();
+  if (!_instance->_savedPwHash.empty()) pwBox->text("SAVED PW");
+  pwBox->setOnChange([](void *) { _instance->_savedPwHash.clear(); });
   if (nameBox->hasText()) TextBox::focus(pwBox);
   _loginUI.push_back(pwBox);
   Y += nameBox->height() + GAP;
