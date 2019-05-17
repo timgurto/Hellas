@@ -253,6 +253,8 @@ void Client::createAccount() {
 }
 
 void Client::login() {
+  _instance->_shouldAutoLogIn = false;
+
   auto enteredName = nameBox->text();
   if (!enteredName.empty()) {
     _instance->_username = enteredName;
