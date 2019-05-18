@@ -945,6 +945,7 @@ const Tooltip &ClientObject::tooltip() const {
         tooltip.addGap();
       }
       tooltip.addLine("Container: " + toString(ot.containerSlots()) + " slots");
+      tooltip.addItemGrid(_container);
     }
   }
 

@@ -1,7 +1,10 @@
+#include "Tooltip.h"
+
 #include <sstream>
 
+#include "Client.h"
+#include "ClientItem.h"
 #include "Renderer.h"
-#include "Tooltip.h"
 
 extern Renderer renderer;
 
@@ -42,6 +45,41 @@ void Tooltip::addLines(const Lines &lines) {
 void Tooltip::embed(const Tooltip &subTooltip) {
   subTooltip.generateIfNecessary();
   _content.push_back(subTooltip._generated);
+}
+
+void Tooltip::addItemGrid(const ClientItemVector &items) {
+  static const size_t MAX_COLS = 5;
+  static const auto GAP = 1_px;
+  auto cols = max(items.size(), MAX_COLS);
+  auto rows = (items.size() - 1) / MAX_COLS + 1;
+  auto gridW = static_cast<px_t>(cols * (Client::ICON_SIZE + GAP) - GAP);
+  auto gridH = static_cast<px_t>(rows * (Client::ICON_SIZE + GAP) - GAP);
+  auto grid = Texture{gridW, gridH};
+
+  auto xIndex = 0, yIndex = 0;
+  renderer.pushRenderTarget(grid);
+  for (auto slot : items) {
+    auto x = xIndex * (Client::ICON_SIZE + GAP);
+    auto y = yIndex * (Client::ICON_SIZE + GAP);
+
+    // Background
+    renderer.setDrawColor(Color::BLACK);
+    renderer.fillRect({x, y, Client::ICON_SIZE, Client::ICON_SIZE});
+
+    // Icon
+    auto item = slot.first;
+    if (item) item->icon().draw(x, y);
+
+    ++xIndex;
+    if (xIndex >= MAX_COLS) {
+      xIndex = 0;
+      ++yIndex;
+    }
+  }
+  renderer.popRenderTarget();
+
+  grid.setBlend();
+  _content.push_back(grid);
 }
 
 px_t Tooltip::width() const {

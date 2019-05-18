@@ -2,6 +2,7 @@
 #define TOOLTIP_BUILDER_H
 
 #include <SDL_ttf.h>
+
 #include <memory>
 #include <string>
 #include <vector>
@@ -10,6 +11,9 @@
 #include "../types.h"
 #include "Texture.h"
 #include "WordWrapper.h"
+
+class ClientItem;
+using ClientItemVector = std::vector<std::pair<const ClientItem *, size_t> >;
 
 class Tooltip {
   Color _color{Color::TOOLTIP_BODY};
@@ -41,6 +45,7 @@ class Tooltip {
   using Lines = std::vector<std::string>;
   void addLines(const Lines &lines);
   void embed(const Tooltip &subTooltip);
+  void addItemGrid(const ClientItemVector &items);
 
   px_t width() const;
   px_t height() const;
