@@ -56,7 +56,17 @@ User::User(const Socket &rhs) : Object(MapPoint{}), _socket(rhs) {}
 User::User(const MapPoint &loc) : Object(loc), _socket(Socket::Empty()) {}
 
 void User::findRealWorldLocationStatic(User *user) {
-  user->_realWorldLocation = getLocationFromIP(user->socket().ip());
+  auto &server = Server::instance();
+  server.incrementThreadCount();
+
+  auto username = user->name();
+  auto result = getLocationFromIP(user->socket().ip());
+
+  if (!Server::hasInstance()) return;
+  auto pUser = server.getUserByName(username);
+  if (pUser) pUser->_realWorldLocation = result;
+
+  server.decrementThreadCount();
 }
 
 void User::findRealWorldLocation() {

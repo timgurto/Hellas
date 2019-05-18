@@ -58,6 +58,7 @@ class Server {
   const Map &map() { return _map; }
 
   static Server &instance() { return *_instance; }
+  static bool hasInstance() { return _instance != nullptr; }
   static LogConsole &debug() { return *_debugInstance; }
 
   bool itemIsTag(const ServerItem *item, const std::string &tagName) const;
@@ -148,6 +149,9 @@ class Server {
   void makePlayerAKing(const User &user);
 
   void killAllObjectsOwnedBy(const Permissions::Owner &owner);
+
+  void incrementThreadCount() { ++_threadsOpen; }
+  void decrementThreadCount() { --_threadsOpen; }
 
  private:
   static Server *_instance;
