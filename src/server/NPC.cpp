@@ -115,7 +115,7 @@ void NPC::onDeath() {
   npcType()->lootTable().instantiate(*_loot, tagger());
   if (!_loot->empty())
     for (const User *user : server.findUsersInArea(location()))
-      user->sendMessage(SV_LOOTABLE, makeArgs(serial()));
+      sendLootableMessageToUserIfHeCanLoot(*user);
 
   /*
   Schedule a respawn, if this NPC came from a spawner.
@@ -325,7 +325,7 @@ void NPC::sendInfoToClient(const User &targetUser) const {
     targetUser.sendMessage(SV_ENTITY_HEALTH, makeArgs(serial(), health()));
 
   // Loot
-  if (!_loot->empty()) targetUser.sendMessage(SV_LOOTABLE, makeArgs(serial()));
+  if (!_loot->empty()) sendLootableMessageToUserIfHeCanLoot(targetUser);
 
   // Buffs/debuffs
   for (const auto &buff : buffs())

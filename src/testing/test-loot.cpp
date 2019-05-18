@@ -224,3 +224,22 @@ TEST_CASE("New users are alerted to lootable objects", "[loot]") {
   // Then the client finds out that it's lootable
   CHECK(c.waitForMessage(SV_LOOTABLE));
 }
+
+TEST_CASE("Non-taggers are not alerted to lootable objects", "[loot]") {
+  // Given a running server;
+  // And a snowflake item with 1 health;
+  // And a snowman object type made of 1000 snowflakes;
+  TestServer s = TestServer::WithData("snowman");
+  TestClient c = TestClient::WithData("snowman");
+  s.waitForUsers(1);
+
+  // And a snowman exists;
+  s.addObject("snowman", {10, 15});
+
+  // And the snowman dies without the user killing it
+  Object &snowman = s.getFirstObject();
+  snowman.reduceHealth(9999);
+
+  // Then the client doesn't finds out that it's lootable
+  CHECK_FALSE(c.waitForMessage(SV_LOOTABLE));
+}

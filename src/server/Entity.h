@@ -161,6 +161,7 @@ class Entity {
   virtual void broadcastDamagedMessage(Hitpoints amount) const {}
   virtual void broadcastHealedMessage(Hitpoints amount) const {}
   virtual int getLevelDifference(const User &user) const { return 0; }
+  virtual void sendLootableMessageToUserIfHeCanLoot(const User &looter) const;
 
   virtual void describeSelfToNewWatcher(const User &watcher) const {}
   virtual void alertWatcherOnInventoryChange(const User &watcher,

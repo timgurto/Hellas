@@ -6,6 +6,7 @@
 #include "Server.h"
 #include "Spawner.h"
 #include "Spell.h"
+//#include "User.h"
 
 const px_t Entity::MELEE_RANGE = Podes{4}.toPixels();
 
@@ -532,6 +533,11 @@ const TerrainList &Entity::allowedTerrain() const {
   }
 
   return _type->allowedTerrain();
+}
+
+void Entity::sendLootableMessageToUserIfHeCanLoot(const User &looter) const {
+  if (&looter != tagger()) return;
+  looter.sendMessage(SV_LOOTABLE, makeArgs(_serial));
 }
 
 const Loot &Entity::loot() const {

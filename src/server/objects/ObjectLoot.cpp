@@ -13,7 +13,7 @@ void ObjectLoot::populate() {
   if (empty()) return;
   const Server &server = Server::instance();
   for (const User *user : server.findUsersInArea(_parent.location()))
-    user->sendMessage(SV_LOOTABLE, makeArgs(_parent.serial()));
+    _parent.sendLootableMessageToUserIfHeCanLoot(*user);
 }
 
 void ObjectLoot::addStrengthItemsToLoot() {

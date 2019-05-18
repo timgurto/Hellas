@@ -338,7 +338,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 505,Show quest rewards in (de)briefs,8,8,Usability,,,,
 507,Clear quest progress if quest is abandoned,2,2,Bug,,,,
 511,Use complete outlines for all text,8,3,Aesthetics,,,,
-513,Show loot sparkles only to tagger,5,3,Bug,,,,3 Tin wrapup
+513,Show loot sparkles only to tagger,5,3,Bug,,TRUE,,3 Tin wrapup
 515,"Low-res sprites, high-res game",34,34,Aesthetics,,,,
 517,Grouping,89,144,Feature,,,,5 First adventure
 518,Copper + gear,55,8,Content,,,,4 Copper

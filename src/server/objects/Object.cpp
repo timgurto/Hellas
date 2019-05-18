@@ -291,7 +291,7 @@ void Object::sendInfoToClient(const User &targetUser) const {
 
   // Lootable
   if (_loot != nullptr && !_loot->empty())
-    targetUser.sendMessage(SV_LOOTABLE, makeArgs(serial()));
+    sendLootableMessageToUserIfHeCanLoot(targetUser);
 
   // Buffs/debuffs
   for (const auto &buff : buffs())
