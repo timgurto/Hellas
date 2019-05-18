@@ -1,5 +1,7 @@
 #include "User.h"
 
+#include <thread>
+
 #include "../curlUtil.h"
 #include "ProgressLock.h"
 #include "Server.h"
@@ -53,8 +55,12 @@ User::User(const Socket &rhs) : Object(MapPoint{}), _socket(rhs) {}
 
 User::User(const MapPoint &loc) : Object(loc), _socket(Socket::Empty()) {}
 
+void User::findRealWorldLocationStatic(User *user) {
+  user->_realWorldLocation = getLocationFromIP(user->socket().ip());
+}
+
 void User::findRealWorldLocation() {
-  _realWorldLocation = getLocationFromIP(socket().ip());
+  std::thread(findRealWorldLocationStatic, this).detach();
 }
 
 const std::string &User::realWorldLocation() const {

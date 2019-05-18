@@ -108,6 +108,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   const Socket &socket() const { return _socket.value(); }
   bool hasSocket() const { return _socket.hasValue(); }
   void findRealWorldLocation();
+  static void findRealWorldLocationStatic(User *user);
   void setRealWorldLocation(const std::string &location) {
     _realWorldLocation = location;
   }
