@@ -118,6 +118,7 @@
     <ClCompile Include="src\server\EntityType.cpp" />
     <ClCompile Include="src\server\ItemSet.cpp" />
     <ClCompile Include="src\server\LogConsole.cpp" />
+    <ClCompile Include="src\server\logging.cpp" />
     <ClCompile Include="src\server\Loot.cpp" />
     <ClCompile Include="src\server\LootTable.cpp" />
     <ClCompile Include="src\server\main.cpp" />

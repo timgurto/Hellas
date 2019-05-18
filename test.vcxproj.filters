@@ -173,6 +173,7 @@
     <ClCompile Include="src\Recipe.cpp" />
     <ClCompile Include="src\server\SRecipe.cpp" />
     <ClCompile Include="src\client\Unlocks.cpp" />
+    <ClCompile Include="src\server\logging.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
