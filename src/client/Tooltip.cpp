@@ -73,8 +73,8 @@ void Tooltip::addItemGrid(const ClientItemVector &items) {
     // Quantity
     auto qty = slot.second;
     if (qty > 1) {
-      auto fg = Texture{Element::font(), toString(qty), Element::FONT_COLOR};
-      auto bg = Texture{Element::font(), toString(qty), Color::UI_OUTLINE};
+      auto fg = Texture{font, toString(qty), Element::FONT_COLOR};
+      auto bg = Texture{font, toString(qty), Color::UI_OUTLINE};
       auto topLeft = ScreenPoint{x + Client::ICON_SIZE - fg.width(),
                                  y + Client::ICON_SIZE - fg.height() + 2};
       for (auto i = -1; i <= 1; ++i)
@@ -98,9 +98,13 @@ void Tooltip::addItemGrid(const ClientItemVector &items) {
 }
 
 void Tooltip::addMerchantSlots(const std::vector<ClientMerchantSlot> &slots) {
-  static const auto GAP = 1_px, SPACE_BETWEEN_ICONS = 20,
-                    WARE_X = Client::ICON_SIZE + SPACE_BETWEEN_ICONS,
-                    TOTAL_W = 2 * Client::ICON_SIZE + SPACE_BETWEEN_ICONS;
+  static const auto GAP = 1_px, ARROW_W = 30_px, QTY_W = 15_px,
+                    PRICE_ICON_X = 0_px,
+                    PRICE_QTY_X = PRICE_ICON_X + Client::ICON_SIZE,
+                    WARE_ICON_X = PRICE_QTY_X + ARROW_W,
+                    WARE_QTY_X = WARE_ICON_X + Client::ICON_SIZE + GAP,
+                    TOTAL_W = WARE_QTY_X + QTY_W,
+                    TEXT_Y = (Client::ICON_SIZE - Element::TEXT_HEIGHT) / 2 + 2;
 
   auto numActiveSlots = 0;
   for (const auto &slot : slots)
@@ -114,8 +118,17 @@ void Tooltip::addMerchantSlots(const std::vector<ClientMerchantSlot> &slots) {
   for (const auto &slot : slots) {
     if (!slot.priceItem && !slot.wareItem) continue;
 
-    if (slot.priceItem) slot.priceItem->icon().draw(0, y);
-    if (slot.wareItem) slot.wareItem->icon().draw(WARE_X, y);
+    if (slot.priceItem) slot.priceItem->icon().draw(PRICE_ICON_X, y);
+    if (slot.wareItem) slot.wareItem->icon().draw(WARE_ICON_X, y);
+    if (slot.priceQty > 1)
+      Texture{font, "x"s + toString(slot.priceQty), Color::TOOLTIP_BODY}.draw(
+          PRICE_QTY_X, y + TEXT_Y);
+    if (slot.wareQty > 1)
+      Texture{font, "x"s + toString(slot.wareQty), Color::TOOLTIP_BODY}.draw(
+          WARE_QTY_X, y + TEXT_Y);
+
+    static auto arrow = Texture{"Images/UI/arrow.png", Color::MAGENTA};
+    arrow.draw((TOTAL_W - arrow.width()) / 2, y + TEXT_Y);
 
     y += Client::ICON_SIZE + GAP;
   }
