@@ -62,8 +62,6 @@ ClientObject::ClientObject(size_t serialArg, const ClientObjectType *type,
   _merchantSlotElements = std::vector<Element *>(merchantSlots, nullptr);
   _wareQtyBoxes = std::vector<TextBox *>(merchantSlots, nullptr);
   _priceQtyBoxes = std::vector<TextBox *>(merchantSlots, nullptr);
-  for (auto i = 0; i != merchantSlots; ++i)
-    setMerchantSlot(i, ClientMerchantSlot{});
 }
 
 ClientObject::~ClientObject() {
@@ -132,6 +130,7 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg) {
 
   } else {  // Trade view
     if (!mSlot) {
+      refreshTooltip();
       return;  // Blank
     }
 
@@ -169,7 +168,6 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg) {
   }
 
   refreshTooltip();
-  assembleWindow(Client::instance());
 }
 
 void ClientObject::onLeftClick(Client &client) {
