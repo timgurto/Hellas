@@ -1850,16 +1850,14 @@ void Client::handle_SV_INVENTORY(size_t serial, size_t slot,
       auto shouldMarkAsLootable = object->isDead() && !object->lootable();
       if (shouldMarkAsLootable) {
         object->lootable(true);
-        object->container()
-            .clear();  // Make sure it doesn't have too many slots
-
         object->assembleWindow(*this);
         object->refreshTooltip();
+        container->clear();  // Make sure it doesn't have too many slots
       }
-      if (object->lootable() && slot >= object->container().size()) {
-        auto slotsToAdd = object->container().size() - slot + 1;
+      if (object->lootable() && slot >= container->size()) {
+        auto slotsToAdd = container->size() - slot + 1;
         for (auto i = 0; i != slotsToAdd; ++i)
-          object->container().push_back(std::make_pair(nullptr, 0));
+          container->push_back(std::make_pair(nullptr, 0));
       }
   }
   if (slot >= container->size()) {
@@ -1867,9 +1865,12 @@ void Client::handle_SV_INVENTORY(size_t serial, size_t slot,
     // Color::TODO);
     return;
   }
+
   auto &invSlot = (*container)[slot];
   invSlot.first = item;
   invSlot.second = quantity;
+
+  // Update any UI stuff
   if (_recipeList != nullptr) _recipeList->markChanged();
   switch (serial) {
     case INVENTORY:

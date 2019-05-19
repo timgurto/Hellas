@@ -690,8 +690,11 @@ void ClientObject::assembleWindow(Client &client) {
 }
 
 void ClientObject::onInventoryUpdate() {
-  if (_lootContainer != nullptr) _lootContainer->repopulate();
-  if (_window != nullptr) _window->forceRefresh();
+  if (_lootContainer != nullptr) {
+    _lootContainer->repopulate();
+    if (_lootContainer->size() == 0) hideWindow();
+  } else if (_window != nullptr)
+    _window->forceRefresh();
   refreshTooltip();
 }
 

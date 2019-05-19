@@ -1,3 +1,5 @@
+#include "TakeContainer.h"
+
 #include <cassert>
 #include <utility>
 
@@ -6,7 +8,6 @@
 #include "ColorBlock.h"
 #include "Label.h"
 #include "List.h"
-#include "TakeContainer.h"
 
 TakeContainer::TakeContainer(ClientItem::vect_t &linked, size_t serial,
                              const ScreenRect &rect)
@@ -30,9 +31,9 @@ void TakeContainer::repopulate() {
   for (; lastNonEmptySlot >= 0; --lastNonEmptySlot)
     if (_linked[lastNonEmptySlot].first != nullptr) break;
 
+  _list->clearChildren();
   if (lastNonEmptySlot == -1) return;
 
-  _list->clearChildren();
   for (int i = 0; i <= lastNonEmptySlot; ++i) {
     auto &slot = _linked[i];
     Element *dummy = new Element;
