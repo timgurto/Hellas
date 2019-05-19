@@ -70,6 +70,21 @@ void Tooltip::addItemGrid(const ClientItemVector &items) {
     auto item = slot.first;
     if (item) item->icon().draw(x, y);
 
+    // Quantity
+    auto qty = slot.second;
+    if (qty > 1) {
+      auto fg = Texture{Element::font(), toString(qty), Element::FONT_COLOR};
+      auto bg = Texture{Element::font(), toString(qty), Color::UI_OUTLINE};
+      auto topLeft = ScreenPoint{x + Client::ICON_SIZE - fg.width(),
+                                 y + Client::ICON_SIZE - fg.height() + 2};
+      for (auto i = -1; i <= 1; ++i)
+        for (auto j = -1; j <= 1; ++j) {
+          if (i == 0 && j == 0) continue;
+          bg.draw(topLeft + ScreenPoint{i, j});
+        }
+      fg.draw(topLeft);
+    }
+
     ++xIndex;
     if (xIndex >= MAX_COLS) {
       xIndex = 0;
