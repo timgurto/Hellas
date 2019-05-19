@@ -692,9 +692,14 @@ void ClientObject::assembleWindow(Client &client) {
 void ClientObject::onInventoryUpdate() {
   if (_lootContainer != nullptr) {
     _lootContainer->repopulate();
-    if (_lootContainer->size() == 0) hideWindow();
+    if (_lootContainer->size() == 0) {
+      hideWindow();
+    }
   } else if (_window != nullptr)
     _window->forceRefresh();
+
+  if (_lootable && containerIsEmpty()) _lootable = false;
+
   refreshTooltip();
 }
 
@@ -1080,6 +1085,12 @@ bool ClientObject::shouldDrawName() const {
 bool ClientObject::shouldDrawShadow() const {
   if (isBeingConstructed()) return false;
   return Sprite::shouldDrawShadow();
+}
+
+bool ClientObject::containerIsEmpty() const {
+  for (const auto &pair : _container)
+    if (pair.first && pair.second > 0) return false;
+  return true;
 }
 
 bool ClientObject::belongsToPlayer() const {

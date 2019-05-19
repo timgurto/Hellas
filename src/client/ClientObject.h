@@ -97,6 +97,7 @@ class ClientObject : public Sprite, public ClientCombatant {
   void transformTimer(ms_t remaining) { _transformTimer = remaining; }
   bool lootable() const { return _lootable; }
   void lootable(bool b) { _lootable = b; }
+  bool containerIsEmpty() const;
   const TakeContainer *lootContainer() { return _lootContainer; }
   bool belongsToPlayer() const;
   bool belongsToPlayerCity() const;
