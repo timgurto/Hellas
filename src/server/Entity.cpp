@@ -539,8 +539,8 @@ void Entity::tellRelevantUsersAboutLootSlot(size_t slot) const {
 const Loot &Entity::loot() const {
   static Loot dummy{};
 
-  if (_loot != nullptr) {
-    Server::debug()("Entity::loot(): _loot is null", Color::CHAT_ERROR);
+  if (_loot == nullptr) {
+    SERVER_ERROR("_loot is null");
     return dummy;
   }
 
