@@ -82,6 +82,34 @@ void Tooltip::addItemGrid(const ClientItemVector &items) {
   _content.push_back(grid);
 }
 
+void Tooltip::addMerchantSlots(const std::vector<ClientMerchantSlot> &slots) {
+  static const auto GAP = 1_px, SPACE_BETWEEN_ICONS = 20,
+                    WARE_X = Client::ICON_SIZE + SPACE_BETWEEN_ICONS,
+                    TOTAL_W = 2 * Client::ICON_SIZE + SPACE_BETWEEN_ICONS;
+
+  auto numActiveSlots = 0;
+  for (const auto &slot : slots)
+    if (slot.priceItem || slot.wareItem) ++numActiveSlots;
+
+  auto textureHeight = numActiveSlots * (Client::ICON_SIZE + GAP) - GAP;
+  auto texture = Texture{TOTAL_W, textureHeight};
+  renderer.pushRenderTarget(texture);
+
+  auto y = 0_px;
+  for (const auto &slot : slots) {
+    if (!slot.priceItem && !slot.wareItem) continue;
+
+    if (slot.priceItem) slot.priceItem->icon().draw(0, y);
+    if (slot.wareItem) slot.wareItem->icon().draw(WARE_X, y);
+
+    y += Client::ICON_SIZE + GAP;
+  }
+
+  texture.setBlend();
+  renderer.popRenderTarget();
+  _content.push_back(texture);
+}
+
 px_t Tooltip::width() const {
   generateIfNecessary();
   return _generated.width();

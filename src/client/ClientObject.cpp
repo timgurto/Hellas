@@ -62,6 +62,8 @@ ClientObject::ClientObject(size_t serialArg, const ClientObjectType *type,
   _merchantSlotElements = std::vector<Element *>(merchantSlots, nullptr);
   _wareQtyBoxes = std::vector<TextBox *>(merchantSlots, nullptr);
   _priceQtyBoxes = std::vector<TextBox *>(merchantSlots, nullptr);
+  for (auto i = 0; i != merchantSlots; ++i)
+    setMerchantSlot(i, ClientMerchantSlot{});
 }
 
 ClientObject::~ClientObject() {
@@ -165,6 +167,9 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg) {
     button->addChild(new Label({x, BUTTON_TEXT_TOP, NAME_WIDTH, TEXT_HEIGHT},
                                priceItem->name()));
   }
+
+  refreshTooltip();
+  assembleWindow(Client::instance());
 }
 
 void ClientObject::onLeftClick(Client &client) {
@@ -959,6 +964,7 @@ const Tooltip &ClientObject::tooltip() const {
       tooltip.addGap();
     }
     tooltip.addLine("Merchant: " + toString(ot.merchantSlots()) + " slots");
+    tooltip.addMerchantSlots(_merchantSlots);
   }
 
   // Tags

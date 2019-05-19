@@ -14,6 +14,7 @@
 
 class ClientItem;
 using ClientItemVector = std::vector<std::pair<const ClientItem *, size_t> >;
+struct ClientMerchantSlot;
 
 class Tooltip {
   Color _color{Color::TOOLTIP_BODY};
@@ -46,6 +47,7 @@ class Tooltip {
   void addLines(const Lines &lines);
   void embed(const Tooltip &subTooltip);
   void addItemGrid(const ClientItemVector &items);
+  void addMerchantSlots(const std::vector<ClientMerchantSlot> &slots);
 
   px_t width() const;
   px_t height() const;

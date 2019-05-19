@@ -292,6 +292,15 @@ void Object::sendInfoToClient(const User &targetUser) const {
   // Lootable
   if (_loot != nullptr && !_loot->empty()) sendAllLootToTagger();
 
+  // Container
+  if (hasContainer() && permissions().doesUserHaveAccess(targetUser.name()))
+    for (auto i = 0; i != objType().container().slots(); ++i)
+      server.sendInventoryMessage(targetUser, i, *this);
+
+  // Merchant slots
+  for (auto i = 0; i != _merchantSlots.size(); ++i)
+    server.sendMerchantSlotMessage(targetUser, *this, i);
+
   // Buffs/debuffs
   for (const auto &buff : buffs())
     targetUser.sendMessage(SV_ENTITY_GOT_BUFF, makeArgs(serial(), buff.type()));
