@@ -430,19 +430,6 @@ void Entity::onAttackedBy(Entity &attacker, Threat threat) {
 
 void Entity::startCorpseTimer() { _corpseTime = timeToRemainAsCorpse(); }
 
-void Entity::addWatcher(const std::string &username) {
-  _watchers.insert(username);
-  Server::debug() << username << " is now watching " << type()->id()
-                  << Log::endl;
-}
-
-void Entity::removeWatcher(const std::string &username) {
-  auto erased = _watchers.erase(username);
-  if (erased > 0)
-    Server::debug() << username << " is no longer watching " << type()->id()
-                    << Log::endl;
-}
-
 void Entity::location(const MapPoint &newLoc, bool firstInsertion) {
   Server &server = *Server::_instance;
 
@@ -535,9 +522,18 @@ const TerrainList &Entity::allowedTerrain() const {
   return _type->allowedTerrain();
 }
 
-void Entity::sendLootableMessageToUserIfHeCanLoot(const User &looter) const {
-  if (&looter != tagger()) return;
-  looter.sendMessage(SV_LOOTABLE, makeArgs(_serial));
+void Entity::sendAllLootToTagger() const {
+  if (!tagger()) return;
+  for (auto i = 0; i != loot().size(); ++i)
+    loot().sendSingleSlotToUser(*tagger(), serial(), i);
+}
+
+void Entity::tellRelevantUsersAboutLootSlot(size_t slot) const {
+  // Ultimately this might need a call to findUsersInArea().  For now, there's
+  // only one tagger and only he should get this information.
+  if (!tagger()) return;
+
+  _loot->sendSingleSlotToUser(*tagger(), serial(), slot);
 }
 
 const Loot &Entity::loot() const {

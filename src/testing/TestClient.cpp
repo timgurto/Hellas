@@ -1,7 +1,7 @@
+#include "TestClient.h"
+
 #include <cassert>
 #include <thread>
-
-#include "TestClient.h"
 
 TestClient::TestClient() : _client(new Client) {
   CDataLoader::FromPath(*_client, "testing/data/minimal").load();
@@ -179,8 +179,6 @@ void TestClient::showCraftingWindow() {
   _client->_craftingWindow->show();
   WAIT_UNTIL(!_client->_craftingWindow->changed());
 }
-
-void TestClient::watchObject(ClientObject &obj) { _client->watchObject(obj); }
 
 bool TestClient::knowsSpell(const std::string &id) const {
   for (const auto *spell : _client->_knownSpells) {

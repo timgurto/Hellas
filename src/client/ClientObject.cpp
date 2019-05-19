@@ -209,9 +209,6 @@ void ClientObject::onRightClick(Client &client) {
     if (_window != nullptr) client.addWindow(_window);
   }
 
-  // Watch object
-  client.watchObject(*this);
-
   if (_window != nullptr) {
     // Determine placement: below object, but keep entirely on screen.
     px_t x =
@@ -629,7 +626,6 @@ void ClientObject::assembleWindow(Client &client) {
     if (isBeingConstructed()) {
       hasNonDemolitionContent = true;
       if (userHasAccess()) {
-        client.watchObject(*this);
         addConstructionToWindow();
         if (canCede) addCedeButtonToWindow();
         if (canDemolish) addDemolishButtonToWindow();
@@ -652,7 +648,6 @@ void ClientObject::assembleWindow(Client &client) {
       }
       if (hasContainer) {
         hasNonDemolitionContent = true;
-        client.watchObject(*this);
         addInventoryToWindow();
       }
       if (isVehicle) {

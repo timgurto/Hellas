@@ -44,7 +44,6 @@ class TestClient {
   }
   const List &recipeList() const { return *_client->_recipeList; }
   void showCraftingWindow();
-  void watchObject(ClientObject &obj);
   bool knowsConstruction(const std::string &id) const {
     return _client->_knownConstructions.find(id) !=
            _client->_knownConstructions.end();

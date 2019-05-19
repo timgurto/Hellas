@@ -371,10 +371,10 @@ void Client::handleMessage(const std::string &msg) {
           if (msgCode == SV_LOCATION_INSTANT_USER) user.location(p);
         }
 
-        unwatchOutOfRangeObjects();
-
         bool shouldTryToCullObjects = name == _username;
         if (shouldTryToCullObjects) {
+          closeWindowsFromOutOfRangeObjects();
+
           std::list<std::pair<size_t, Sprite *> > objectsToRemove;
           for (auto pair : _objects) {
             if (pair.second->canAlwaysSee()) continue;
@@ -935,54 +935,6 @@ void Client::handleMessage(const std::string &msg) {
         attacker->playAttackSound();
 
         handle_SV_PLAYER_WAS_HIT(defenderName);
-        break;
-      }
-
-      case SV_LOOTABLE: {
-        size_t serial;
-        singleMsg >> serial >> del;
-        if (del != MSG_END) break;
-
-        handle_SV_LOOTABLE(serial);
-      }
-
-      case SV_NOT_LOOTABLE: {
-        size_t serial;
-        singleMsg >> serial >> del;
-        if (del != MSG_END) break;
-        const std::map<size_t, ClientObject *>::iterator it =
-            _objects.find(serial);
-        if (it == _objects.end()) {
-          // showErrorMessage("Received loot info for an unknown object.",
-          // Color::TODO);
-          break;
-        }
-        ClientObject &object = *it->second;
-
-        object.lootable(false);
-        object.refreshTooltip();
-        object.hideWindow();
-
-        break;
-      }
-
-      case SV_LOOT_COUNT: {
-        size_t serial, quantity;
-        singleMsg >> serial >> del >> quantity >> del;
-        if (del != MSG_END) break;
-        const std::map<size_t, ClientObject *>::iterator it =
-            _objects.find(serial);
-        if (it == _objects.end()) {
-          // showErrorMessage("Received loot info for an unknown object.",
-          // Color::TODO);
-          break;
-        }
-        ClientObject &object = *it->second;
-
-        object.container() =
-            ClientItem::vect_t(quantity, std::make_pair(nullptr, 0));
-        object.refreshTooltip();
-
         break;
       }
 
@@ -1862,20 +1814,6 @@ void Client::handleMessage(const std::string &msg) {
   }
 }
 
-void Client::handle_SV_LOOTABLE(size_t serial) {
-  const std::map<size_t, ClientObject *>::iterator it = _objects.find(serial);
-  if (it == _objects.end()) {
-    // showErrorMessage("Received loot info for an unknown object.",
-    // Color::TODO);
-    return;
-  }
-  ClientObject &object = *it->second;
-
-  object.lootable(true);
-  object.assembleWindow(*this);
-  object.refreshTooltip();
-}
-
 void Client::handle_SV_INVENTORY(size_t serial, size_t slot,
                                  const std::string &itemID, size_t quantity) {
   const ClientItem *item = nullptr;
@@ -1908,6 +1846,21 @@ void Client::handle_SV_INVENTORY(size_t serial, size_t slot,
       }
       object = it->second;
       container = &object->container();
+
+      auto shouldMarkAsLootable = object->isDead() && !object->lootable();
+      if (shouldMarkAsLootable) {
+        object->lootable(true);
+        object->container()
+            .clear();  // Make sure it doesn't have too many slots
+
+        object->assembleWindow(*this);
+        object->refreshTooltip();
+      }
+      if (object->lootable() && slot >= object->container().size()) {
+        auto slotsToAdd = object->container().size() - slot + 1;
+        for (auto i = 0; i != slotsToAdd; ++i)
+          object->container().push_back(std::make_pair(nullptr, 0));
+      }
   }
   if (slot >= container->size()) {
     // showErrorMessage("Received item in invalid inventory slot; ignored.",
@@ -2436,8 +2389,6 @@ void Client::initializeMessageNames() {
   _messageCommands["trade"] = CL_TRADE;
   _messageCommands["setMerchantSlot"] = CL_SET_MERCHANT_SLOT;
   _messageCommands["clearMerchantSlot"] = CL_CLEAR_MERCHANT_SLOT;
-  _messageCommands["startWatching"] = CL_START_WATCHING;
-  _messageCommands["stopWatching"] = CL_STOP_WATCHING;
   _messageCommands["targetNPC"] = CL_TARGET_ENTITY;
   _messageCommands["targetPlayer"] = CL_TARGET_PLAYER;
   _messageCommands["take"] = CL_TAKE_ITEM;

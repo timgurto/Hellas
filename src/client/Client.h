@@ -268,12 +268,8 @@ class Client {
   // Called when new construction items are unlocked
   void populateBuildList();
 
-  std::set<ClientObject *> _objectsWatched;
-  void watchObject(ClientObject &obj);
-  void unwatchObject(ClientObject &obj);
-  void unwatchOutOfRangeObjects();
-
   bool outsideCullRange(const MapPoint &loc, px_t hysteresis = 0) const;
+  void closeWindowsFromOutOfRangeObjects();
 
   ChoiceList *_recipeList = nullptr;
   Element *_detailsPane = nullptr;
@@ -610,7 +606,6 @@ class Client {
   }
 
  private:
-  void handle_SV_LOOTABLE(size_t serial);
   void handle_SV_INVENTORY(size_t serial, size_t slot,
                            const std::string &itemID, size_t quantity);
   void handle_SV_MAX_HEALTH(const std::string &username,

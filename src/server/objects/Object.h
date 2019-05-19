@@ -97,8 +97,8 @@ class Object : public Entity, public QuestNode {
                bool wasCalledFromConstructor = false);  // Set/change ObjectType
 
   void sendInfoToClient(const User &targetUser) const override;
-  void describeSelfToNewWatcher(const User &watcher) const override;
-  void alertWatcherOnInventoryChange(const User &watcher, size_t slot) const;
+  void tellRelevantUsersAboutInventorySlot(size_t slot) const;
+  void tellRelevantUsersAboutMerchantSlot(size_t slot) const;
   ServerItem::Slot *getSlotToTakeFromAndSendErrors(size_t slotNum,
                                                    const User &user) override;
   Message outOfRangeMessage() const override;

@@ -1,4 +1,5 @@
 #include "Loot.h"
+
 #include "../util.h"
 #include "Server.h"
 #include "User.h"
@@ -32,13 +33,6 @@ void Loot::add(const ItemSet &items) {
     const auto *pItem = dynamic_cast<const ServerItem *>(pair.first);
     add(pItem, pair.second);
   }
-}
-
-void Loot::sendContentsToUser(const User &recipient, size_t serial) const {
-  const Server &server = Server::instance();
-  recipient.sendMessage(SV_LOOT_COUNT, makeArgs(serial, _container.size()));
-  for (size_t i = 0; i != _container.size(); ++i)
-    server.sendInventoryMessageInner(recipient, serial, i, _container);
 }
 
 void Loot::sendSingleSlotToUser(const User &recipient, size_t serial,

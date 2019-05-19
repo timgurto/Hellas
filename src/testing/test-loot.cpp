@@ -17,7 +17,6 @@ TEST_CASE("Client gets loot info and can loot", "[loot]") {
 
   // Then the user can see one item in its loot window;
   ClientNPC &clientGoldbug = c.getFirstNPC();
-  c.watchObject(clientGoldbug);
   WAIT_UNTIL(clientGoldbug.container().size() == 1);
 
   // And the server survives a loot request;
@@ -79,12 +78,11 @@ TEST_CASE("Chance for strength-items as loot from object",
   // Then the client finds out that it's lootable
   WAIT_UNTIL(c.objects().size() == 1);
   ClientObject &clientSnowman = c.getFirstObject();
-  c.waitForMessage(SV_LOOTABLE);
+  c.waitForMessage(SV_INVENTORY);
 
   WAIT_UNTIL(clientSnowman.lootable());
 
   SECTION("Looting works") {
-    c.watchObject(clientSnowman);
     WAIT_UNTIL(clientSnowman.container().size() > 0);
 
     c.sendMessage(CL_TAKE_ITEM, makeArgs(snowman.serial(), 0));
@@ -130,7 +128,7 @@ TEST_CASE("Looting from a container", "[loot][container][only][.flaky]") {
     // And the chest is destroyed
     chest.reduceHealth(9999);
     REQUIRE_FALSE(chest.loot().empty());
-    REQUIRE(c.waitForMessage(SV_LOOTABLE));
+    REQUIRE(c.waitForMessage(SV_INVENTORY));
 
     auto &clientChest = c.getFirstObject();
     WAIT_UNTIL(clientChest.lootable());
@@ -196,7 +194,7 @@ TEST_CASE("Looting from a container", "[loot][container][only][.flaky]") {
     REQUIRE_FALSE(chest.loot().empty());
 
     // When he loots it
-    c.waitForMessage(SV_LOOTABLE);
+    c.waitForMessage(SV_INVENTORY);
     c.sendMessage(CL_TAKE_ITEM, makeArgs(chest.serial(), 0));
 
     // Then he gets some gold
@@ -222,7 +220,7 @@ TEST_CASE("New users are alerted to lootable objects", "[loot]") {
   s.waitForUsers(1);
 
   // Then the client finds out that it's lootable
-  CHECK(c.waitForMessage(SV_LOOTABLE));
+  CHECK(c.waitForMessage(SV_INVENTORY));
 }
 
 TEST_CASE("Non-taggers are not alerted to lootable objects", "[loot]") {
@@ -241,5 +239,5 @@ TEST_CASE("Non-taggers are not alerted to lootable objects", "[loot]") {
   snowman.reduceHealth(9999);
 
   // Then the client doesn't finds out that it's lootable
-  CHECK_FALSE(c.waitForMessage(SV_LOOTABLE));
+  CHECK_FALSE(c.waitForMessage(SV_INVENTORY));
 }

@@ -56,8 +56,6 @@ class NPC : public Entity, public QuestNode {
   char classTag() const override { return 'n'; }
 
   void sendInfoToClient(const User &targetUser) const override;
-  void describeSelfToNewWatcher(const User &watcher) const override;
-  void alertWatcherOnInventoryChange(const User &watcher, size_t slot) const;
   ServerItem::Slot *getSlotToTakeFromAndSendErrors(size_t slotNum,
                                                    const User &user) override;
 

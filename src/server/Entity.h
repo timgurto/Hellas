@@ -57,10 +57,6 @@ class Entity {
   Spawner *spawner() const { return _spawner; }
   void spawner(Spawner *p) { _spawner = p; }
 
-  const std::set<std::string> &watchers() const { return _watchers; }
-  void addWatcher(const std::string &username);
-  void removeWatcher(const std::string &username);
-
   // Space
   const MapPoint &location() const { return _location; }
   void location(const MapPoint &loc, bool firstInsertion = false);
@@ -161,11 +157,10 @@ class Entity {
   virtual void broadcastDamagedMessage(Hitpoints amount) const {}
   virtual void broadcastHealedMessage(Hitpoints amount) const {}
   virtual int getLevelDifference(const User &user) const { return 0; }
-  virtual void sendLootableMessageToUserIfHeCanLoot(const User &looter) const;
+  // const;
+  virtual void sendAllLootToTagger() const;
 
-  virtual void describeSelfToNewWatcher(const User &watcher) const {}
-  virtual void alertWatcherOnInventoryChange(const User &watcher,
-                                             size_t slot) const {}
+  void tellRelevantUsersAboutLootSlot(size_t slot) const;
   virtual ServerItem::Slot *getSlotToTakeFromAndSendErrors(size_t slotNum,
                                                            const User &user) {
     return nullptr;
@@ -199,9 +194,6 @@ class Entity {
   const EntityType *_type;
 
   Spawner *_spawner;  // The Spawner that created this entity, if any.
-
-  // Users watching this object for changes to inventory or merchant slots
-  std::set<std::string> _watchers;
 
   // Space
   size_t _serial;

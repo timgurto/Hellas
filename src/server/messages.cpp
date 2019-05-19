@@ -468,9 +468,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           if (serial == INVENTORY || serial == GEAR)
             sendInventoryMessage(*user, slot, serial);
           else
-            for (auto username : pObj->watchers())
-              if (pObj->permissions().doesUserHaveAccess(username))
-                sendInventoryMessage(*_usersByName[username], slot, *pObj);
+            pObj->tellRelevantUsersAboutInventorySlot(slot);
         }
         break;
       }
@@ -567,9 +565,9 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
 
           // Remove from object requirements
           pObj2->remainingMaterials().remove(slotFrom.first, qtyToTake);
-          for (auto username : pObj2->watchers())
-            if (pObj2->permissions().doesUserHaveAccess(username))
-              sendConstructionMaterialsMessage(*_usersByName[username], *pObj2);
+          for (const User *otherUser : findUsersInArea(user->location()))
+            if (pObj2->permissions().doesUserHaveAccess(otherUser->name()))
+              sendConstructionMaterialsMessage(*otherUser, *pObj2);
 
           // Remove items from user
           slotFrom.second -= qtyToTake;
@@ -674,16 +672,13 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         if (obj1 == INVENTORY || obj1 == GEAR)
           sendInventoryMessage(*user, slot1, obj1);
         else
-          for (auto username : pObj1->watchers())
-            if (pObj1->permissions().doesUserHaveAccess(username))
-              sendInventoryMessage(*_usersByName[username], slot1, *pObj1);
+          pObj1->tellRelevantUsersAboutInventorySlot(slot1);
+
         if (obj2 == INVENTORY || obj2 == GEAR) {
           sendInventoryMessage(*user, slot2, obj2);
           ProgressLock::triggerUnlocks(*user, ProgressLock::ITEM, slotTo.first);
         } else
-          for (auto username : pObj2->watchers())
-            if (pObj2->permissions().doesUserHaveAccess(username))
-              sendInventoryMessage(*_usersByName[username], slot2, *pObj2);
+          pObj2->tellRelevantUsersAboutInventorySlot(slot2);
 
         break;
       }
@@ -832,8 +827,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         mSlot = MerchantSlot(&*wareIt, wareQty, &*priceIt, priceQty);
 
         // Alert watchers
-        for (auto username : obj->watchers())
-          sendMerchantSlotMessage(*_usersByName[username], *obj, slot);
+        obj->tellRelevantUsersAboutMerchantSlot(slot);
         break;
       }
 
@@ -863,8 +857,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         obj->merchantSlot(slot) = MerchantSlot();
 
         // Alert watchers
-        for (auto username : obj->watchers())
-          sendMerchantSlotMessage(*_usersByName[username], *obj, slot);
+        obj->tellRelevantUsersAboutMerchantSlot(slot);
         break;
       }
 
@@ -940,30 +933,6 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         for (const User *u : findUsersInArea(user->location()))
           sendMessage(u->socket(), SV_UNMOUNTED,
                       makeArgs(serial, user->name()));
-
-        break;
-      }
-
-      case CL_START_WATCHING: {
-        size_t serial;
-        iss >> serial >> del;
-        if (del != MSG_END) return;
-        handle_CL_START_WATCHING(*user, serial);
-        break;
-      }
-
-      case CL_STOP_WATCHING: {
-        size_t serial;
-        iss >> serial >> del;
-        if (del != MSG_END) return;
-        auto asObject = _entities.find<Object>(serial);
-        auto asNPC = _entities.find<NPC>(serial);
-        if (asObject)
-          asObject->removeWatcher(user->name());
-        else if (asNPC)
-          asNPC->removeWatcher(user->name());
-        else
-          sendMessage(client, WARNING_DOESNT_EXIST);
 
         break;
       }
@@ -1328,14 +1297,6 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
   }
 }
 
-void Server::handle_CL_START_WATCHING(User &user, size_t serial) {
-  Entity *ent = _entities.find(serial);
-  if (!isEntityInRange(user.socket(), user, ent, true)) return;
-
-  ent->describeSelfToNewWatcher(user);
-  ent->addWatcher(user.name());
-}
-
 void Server::handle_CL_LOGIN_EXISTING(const Socket &client,
                                       const std::string &name,
                                       const std::string &pwHash,
@@ -1448,9 +1409,16 @@ void Server::handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum) {
     sendInventoryMessage(user, slotNum, GEAR);
     user.updateStats();
 
-  } else {  // Alert object's watchers
-    for (auto username : pEnt->watchers())
-      pEnt->alertWatcherOnInventoryChange(*_usersByName[username], slotNum);
+  } else if (pEnt->isDead())  // Loot?
+    pEnt->tellRelevantUsersAboutLootSlot(slotNum);
+
+  else {  // Container
+    auto *asObject = dynamic_cast<const Object *>(pEnt);
+    if (!asObject) {
+      SERVER_ERROR("Don't know how to handle TAKE_ITEM request");
+      return;
+    }
+    asObject->tellRelevantUsersAboutInventorySlot(slotNum);
   }
 }
 

@@ -285,7 +285,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 224,Don't require 'set' button for trade slots,8,8,Usability,,,,
 225,Find-item search doesn't work for more than 1 character,8,3,Bug,,,,
 226,"Avoid window overlap if possible, for object windows",13,13,Usability,,,,
-228,Add container contents to object tooltips,34,13,Usability,,,,3 Tin wrapup
+228,Add container contents to object tooltips,34,13,Usability,,TRUE,,3 Tin wrapup
 234,Make allowed-terrain more intuitive for construction,8,8,Usability,,,,
 236,Prevent construction near respawn altars,3,8,Exploit,,,,
 239,Add coinage,21,3,Content,519,,,6 Bronze

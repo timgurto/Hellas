@@ -290,8 +290,7 @@ void Object::sendInfoToClient(const User &targetUser) const {
     targetUser.sendMessage(SV_ENTITY_HEALTH, makeArgs(serial(), health()));
 
   // Lootable
-  if (_loot != nullptr && !_loot->empty())
-    sendLootableMessageToUserIfHeCanLoot(targetUser);
+  if (_loot != nullptr && !_loot->empty()) sendAllLootToTagger();
 
   // Buffs/debuffs
   for (const auto &buff : buffs())
@@ -304,22 +303,21 @@ void Object::sendInfoToClient(const User &targetUser) const {
   QuestNode::sendQuestsToUser(targetUser);
 }
 
-void Object::describeSelfToNewWatcher(const User &watcher) const {
+void Object::tellRelevantUsersAboutInventorySlot(size_t slot) const {
   const Server &server = Server::instance();
+  for (const auto *user : server.findUsersInArea(location())) {
+    if (!permissions().doesUserHaveAccess(user->name())) continue;
 
-  // Describe merchant slots, if any
-  size_t numMerchantSlots = merchantSlots().size();
-  for (size_t i = 0; i != numMerchantSlots; ++i)
-    server.sendMerchantSlotMessage(watcher, *this, i);
-
-  // Describe inventory, if user has permission
-  if (hasContainer() && permissions().doesUserHaveAccess(watcher.name())) {
-    size_t slots = objType().container().slots();
-    for (size_t i = 0; i != slots; ++i)
-      server.sendInventoryMessage(watcher, i, *this);
+    server.sendInventoryMessage(*user, slot, *this);
   }
+}
 
-  if (isDead()) _loot->sendContentsToUser(watcher, serial());
+void Object::tellRelevantUsersAboutMerchantSlot(size_t slot) const {
+  // All users are relevant; those with permissions can change the slots, and
+  // those without can use them.
+  const Server &server = Server::instance();
+  for (const auto *user : server.findUsersInArea(location()))
+    server.sendMerchantSlotMessage(*user, *this, slot);
 }
 
 ServerItem::Slot *Object::getSlotToTakeFromAndSendErrors(size_t slotNum,
@@ -371,24 +369,6 @@ ServerItem::Slot *Object::getSlotToTakeFromAndSendErrors(size_t slotNum,
   }
 
   return &slot;
-}
-
-void Object::alertWatcherOnInventoryChange(const User &watcher,
-                                           size_t slot) const {
-  const Server &server = Server::instance();
-
-  if (isDead()) {  // Assume this is regarding loot
-    _loot->sendSingleSlotToUser(watcher, serial(), slot);
-
-    if (_loot->empty())
-      watcher.sendMessage(SV_NOT_LOOTABLE, makeArgs(serial()));
-
-  } else {
-    const std::string &username = watcher.name();
-    if (!permissions().doesUserHaveAccess(username)) return;
-    if (!hasContainer()) return;
-    server.sendInventoryMessage(watcher, slot, *this);
-  }
 }
 
 Message Object::outOfRangeMessage() const {

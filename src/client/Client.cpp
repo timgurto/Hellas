@@ -512,38 +512,26 @@ void Client::addChatMessage(const std::string &msg, const Color &color) {
   _chatLog->scrollToBottom();
 }
 
-void Client::watchObject(ClientObject &obj) {
-  sendMessage(CL_START_WATCHING, makeArgs(obj.serial()));
-  _objectsWatched.insert(&obj);
-}
+void Client::closeWindowsFromOutOfRangeObjects() {
+  for (auto pair : _objects) {
+    auto &obj = *pair.second;
 
-void Client::unwatchObject(ClientObject &obj) {
-  sendMessage(CL_STOP_WATCHING, makeArgs(obj.serial()));
-  _objectsWatched.erase(&obj);
-}
+    if (distance(playerCollisionRect(), obj.collisionRect()) <= ACTION_DISTANCE)
+      continue;
 
-void Client::unwatchOutOfRangeObjects() {
-  for (auto it = _objectsWatched.begin(); it != _objectsWatched.end();) {
-    ClientObject &obj = **it;
-    ++it;
-    if (distance(playerCollisionRect(), obj.collisionRect()) >
-        ACTION_DISTANCE) {
-      obj.hideWindow();
+    obj.hideWindow();
 
-      // Hide quest windows from this object
-      // Note: this doesn't check that the object itself is the source of
-      // the quest.  A more correct solution would make sure that there
-      // are no watched objects of the same type.
-      for (auto *questFromThisObject : obj.startsQuests()) {
-        auto *questWindow = questFromThisObject->window();
-        if (questWindow) const_cast<Window *>(questWindow)->hide();
-      }
-      for (auto *questFromThisObject : obj.completableQuests()) {
-        auto *questWindow = questFromThisObject->window();
-        if (questWindow) const_cast<Window *>(questWindow)->hide();
-      }
-
-      unwatchObject(obj);
+    // Hide quest windows from this object
+    // Note: this doesn't check that the object itself is the source of
+    // the quest.  A more correct solution would make sure that there
+    // are no watched objects of the same type.
+    for (auto *questFromThisObject : obj.startsQuests()) {
+      auto *questWindow = questFromThisObject->window();
+      if (questWindow) const_cast<Window *>(questWindow)->hide();
+    }
+    for (auto *questFromThisObject : obj.completableQuests()) {
+      auto *questWindow = questFromThisObject->window();
+      if (questWindow) const_cast<Window *>(questWindow)->hide();
     }
   }
 }

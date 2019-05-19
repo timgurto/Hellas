@@ -512,7 +512,8 @@ void Client::handleInput(double delta) {
       _character.location(newLocation);
       _serverHasOutOfDateLocationInfo = true;
 
-      unwatchOutOfRangeObjects();
+      closeWindowsFromOutOfRangeObjects();
+
       _mapWindow->markChanged();
 
       _mouseMoved = true;

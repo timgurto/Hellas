@@ -95,14 +95,6 @@ enum MessageCode {
   // Arguments: x, y
   CL_DISMOUNT,
 
-  // "Tell me what's inside object ..., and let me know of changes in the future".
-  // Arguments: serial
-  CL_START_WATCHING,
-
-  // "I'm no longer interested in updates from object ...".
-  // Arguments: serial
-  CL_STOP_WATCHING,
-
   // "I want to give my object ... to my city".
   // Arguments: serial
   CL_CEDE,
@@ -431,16 +423,6 @@ enum MessageCode {
 
   // An object is not being gathered from
   SV_NOT_GATHERING_OBJECT,
-
-  // An NPC can be looted
-  SV_LOOTABLE,
-
-  // An NPC can no longer be looted
-  SV_NOT_LOOTABLE,
-
-  // The quantity of loot an NPC has available
-  // Arguments: serial, quantity
-  SV_LOOT_COUNT,
 
   // A vehicle has a driver.
   // Arguments: serial, username

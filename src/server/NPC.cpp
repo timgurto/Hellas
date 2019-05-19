@@ -113,9 +113,7 @@ void NPC::onDeath() {
   server.forceAllToUntarget(*this);
 
   npcType()->lootTable().instantiate(*_loot, tagger());
-  if (!_loot->empty())
-    for (const User *user : server.findUsersInArea(location()))
-      sendLootableMessageToUserIfHeCanLoot(*user);
+  if (!_loot->empty()) sendAllLootToTagger();
 
   /*
   Schedule a respawn, if this NPC came from a spawner.
@@ -325,7 +323,7 @@ void NPC::sendInfoToClient(const User &targetUser) const {
     targetUser.sendMessage(SV_ENTITY_HEALTH, makeArgs(serial(), health()));
 
   // Loot
-  if (!_loot->empty()) sendLootableMessageToUserIfHeCanLoot(targetUser);
+  if (!_loot->empty() && tagger() == &targetUser) sendAllLootToTagger();
 
   // Buffs/debuffs
   for (const auto &buff : buffs())
@@ -336,17 +334,6 @@ void NPC::sendInfoToClient(const User &targetUser) const {
 
   // Quests
   QuestNode::sendQuestsToUser(targetUser);
-}
-
-void NPC::describeSelfToNewWatcher(const User &watcher) const {
-  _loot->sendContentsToUser(watcher, serial());
-}
-
-void NPC::alertWatcherOnInventoryChange(const User &watcher,
-                                        size_t slot) const {
-  _loot->sendSingleSlotToUser(watcher, serial(), slot);
-
-  if (_loot->empty()) watcher.sendMessage(SV_NOT_LOOTABLE, makeArgs(serial()));
 }
 
 ServerItem::Slot *NPC::getSlotToTakeFromAndSendErrors(size_t slotNum,

@@ -9,11 +9,7 @@ void ObjectLoot::populate() {
   addStrengthItemsToLoot();
   addContainerItemsToLoot();
 
-  // Alert nearby users of loot
-  if (empty()) return;
-  const Server &server = Server::instance();
-  for (const User *user : server.findUsersInArea(_parent.location()))
-    _parent.sendLootableMessageToUserIfHeCanLoot(*user);
+  if (!empty()) _parent.sendAllLootToTagger();
 }
 
 void ObjectLoot::addStrengthItemsToLoot() {

@@ -1,4 +1,5 @@
 #include "Container.h"
+
 #include "../../util.h"
 #include "../Server.h"
 #include "../User.h"
@@ -38,12 +39,8 @@ void Container::removeItems(const ItemSet &items) {
       if (remaining.isEmpty()) break;
     }
   }
-  for (const std::string &username : _parent.watchers()) {
-    const auto &user = *Server::instance().getUserByName(username);
-    for (size_t slotNum : invSlotsChanged) {
-      Server::instance().sendInventoryMessage(user, slotNum, _parent);
-    }
-  }
+  for (size_t slotNum : invSlotsChanged)
+    _parent.tellRelevantUsersAboutInventorySlot(slotNum);
 }
 
 void Container::removeAll() {
@@ -52,12 +49,8 @@ void Container::removeAll() {
     invSlot.first = nullptr;
     invSlot.second = 0;
   }
-  for (const std::string &username : _parent.watchers()) {
-    const User &user = *Server::instance().getUserByName(username);
-    for (size_t slotNum = 0; slotNum != _container.size(); ++slotNum) {
-      Server::instance().sendInventoryMessage(user, slotNum, _parent);
-    }
-  }
+  for (size_t slotNum = 0; slotNum != _container.size(); ++slotNum)
+    _parent.tellRelevantUsersAboutInventorySlot(slotNum);
 }
 
 void Container::addItems(const ServerItem *item, size_t qty) {
@@ -88,13 +81,12 @@ void Container::addItems(const ServerItem *item, size_t qty) {
       if (qty == 0) break;
       ;
     }
-  SERVER_ERROR("items left over when trying to add to a container");
 
-  for (const auto &username : _parent.watchers()) {
-    const auto &user = *Server::instance().getUserByName(username);
-    for (auto slot : changedSlots)
-      Server::instance().sendInventoryMessage(user, slot, _parent);
-  }
+  if (qty > 0)
+    SERVER_ERROR("items left over when trying to add to a container");
+
+  for (auto slot : changedSlots)
+    _parent.tellRelevantUsersAboutInventorySlot(slot);
 }
 
 bool Container::isAbleToDeconstruct(const User &user) const {
