@@ -458,6 +458,7 @@ void Client::handleInput(double delta) {
             Tooltip::forceAllToRedraw();
             SpriteType::forceAllShadowsToRedraw();
             populateClassWindow();
+            redrawFogOfWar();
             break;
         }
 
