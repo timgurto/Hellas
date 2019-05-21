@@ -20,9 +20,27 @@ Exploration::Chunk Exploration::getChunk(const MapPoint &location) {
   return {col / CHUNK_SIZE, row / CHUNK_SIZE};
 }
 
-bool Exploration::explore(const Chunk &chunk) {
-  auto &isChunkExplored = _map[chunk.x][chunk.y];
-  auto wasAlreadyExplored = static_cast<bool>(isChunkExplored);
-  isChunkExplored = true;
-  return !wasAlreadyExplored;
+std::set<Exploration::Chunk> Exploration::explore(const Chunk &chunk) {
+  auto newlyExploredChunks = std::set<Chunk>{};
+
+  // 3x3 around central chunk
+  auto minX = chunk.x > 0 ? chunk.x - 1 : 0,
+       minY = chunk.y > 0 ? chunk.y - 1 : 0,
+       maxX = min(chunk.x + 1, _map.size() - 1),
+       maxY = min(chunk.y + 1, _map.front().size() - 1);
+  for (auto x = minX; x <= maxX; ++x)
+    for (auto y = minY; y <= maxY; ++y) {
+      auto &isChunkExplored = _map[x][y];
+      if (isChunkExplored) continue;
+
+      isChunkExplored = true;
+      newlyExploredChunks.insert(Chunk{x, y});
+    }
+
+  return newlyExploredChunks;
+}
+
+bool operator<(const Exploration::Chunk &lhs, const Exploration::Chunk &rhs) {
+  if (lhs.x != rhs.x) return lhs.x < rhs.x;
+  return lhs.y < rhs.y;
 }

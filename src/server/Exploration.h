@@ -1,4 +1,5 @@
 #pragma once
+#include <set>
 #include <vector>
 
 #include "../Point.h"
@@ -18,8 +19,10 @@ class Exploration {
 
   Chunk getChunk(const MapPoint &location);
 
-  bool explore(const Chunk &chunk);
+  std::set<Chunk> explore(const Chunk &chunk);  // Returns newly explored chunks
 
  private:
   std::vector<std::vector<bool> > _map;
 };
+
+bool operator<(const Exploration::Chunk &lhs, const Exploration::Chunk &rhs);
