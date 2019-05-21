@@ -280,7 +280,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 185,Require map to be explored,21,21,Feature,,TRUE,,3 Tin wrapup
 186,"Add terrain-specific weather particles, like leaves or rain",13,8,Aesthetics,,,,
 194,Ensure fellow citizens can be seen on the map,13,21,Bug,,,,
-205,NPCs are never culled once discovered,8,3,Bug,,,,
+205,NPCs are never culled once discovered,8,3,Bug,,TRUE,,
 223,Limit ware selection to items in container,8,13,Usability,,,,
 224,Don't require 'set' button for trade slots,8,8,Usability,,,,
 225,Find-item search doesn't work for more than 1 character,8,3,Bug,,,,

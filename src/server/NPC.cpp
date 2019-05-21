@@ -102,6 +102,10 @@ void NPC::addThreat(User &attacker, Threat amount) {
   _threatTable.addThreat(attacker, amount);
 }
 
+Message NPC::outOfRangeMessage() const {
+  return Message(SV_OBJECT_OUT_OF_RANGE, makeArgs(serial()));
+}
+
 void NPC::onHealthChange() {
   const Server &server = *Server::_instance;
   for (const User *user : server.findUsersInArea(location()))
