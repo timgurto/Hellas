@@ -557,6 +557,7 @@ class Client {
   void addEntity(Sprite *entity) { _entities.insert(entity); }
   void removeEntity(
       Sprite *const toRemove);  // Remove from _entities, and delete pointer
+  void cullObjects();
 
   Sprite *_currentMouseOverEntity;
   size_t _numEntities;  // Updated every tick

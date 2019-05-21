@@ -373,37 +373,7 @@ void Client::handleMessage(const std::string &msg) {
 
         bool shouldTryToCullObjects = name == _username;
         if (shouldTryToCullObjects) {
-          closeWindowsFromOutOfRangeObjects();
-
-          std::list<std::pair<size_t, Sprite *> > objectsToRemove;
-          for (auto pair : _objects) {
-            if (pair.second->canAlwaysSee()) continue;
-            if (outsideCullRange(pair.second->location(),
-                                 CULL_HYSTERESIS_DISTANCE))
-              objectsToRemove.push_back(pair);
-          }
-          for (auto pair : objectsToRemove) {
-            if (pair.second == _currentMouseOverEntity)
-              _currentMouseOverEntity = nullptr;
-            if (pair.second == targetAsEntity()) clearTarget();
-            removeEntity(pair.second);
-            _objects.erase(_objects.find(pair.first));
-          }
-        }
-        if (name == _username) {  // We moved; look at everyone else
-          std::list<Avatar *> usersToRemove;
-          for (auto pair : _otherUsers)
-            if (outsideCullRange(pair.second->location(),
-                                 CULL_HYSTERESIS_DISTANCE)) {
-              _debug("Removing other user");
-              usersToRemove.push_back(pair.second);
-            }
-          for (Avatar *avatar : usersToRemove) {
-            if (_currentMouseOverEntity == avatar)
-              _currentMouseOverEntity = nullptr;
-            _otherUsers.erase(_otherUsers.find(avatar->name()));
-            removeEntity(avatar);
-          }
+          cullObjects();
         }
 
         _mapWindow->markChanged();
