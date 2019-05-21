@@ -5,6 +5,7 @@
 
 static int zoomMultiplier{0};
 static ScreenPoint mapDisplacement{};
+static Picture *fogOfWar{nullptr};
 
 void Client::onMapScrollUp(Element &e) {
   instance().zoomMapIn();
@@ -24,6 +25,9 @@ void Client::initializeMapWindow() {
   _mapPicture =
       new Picture(ScreenRect{0, 0, MAP_IMAGE_W, MAP_IMAGE_H}, _mapImage);
   _mapWindow->addChild(_mapPicture);
+
+  fogOfWar = new Picture(0, 0, _fogOfWar);
+  _mapWindow->addChild(fogOfWar);
 
   _mapPinOutlines = new Element({0, 0, MAP_IMAGE_W, MAP_IMAGE_H});
   _mapPins = new Element({0, 0, MAP_IMAGE_W, MAP_IMAGE_H});
@@ -74,6 +78,19 @@ void Client::updateMapWindow(Element &) {
   picRect.w = MAP_IMAGE_W * (1 << client._zoom);
   picRect.h = MAP_IMAGE_H * (1 << client._zoom);
   client._mapPicture->rect(picRect);
+
+  // Draw black over unexplored chunks
+  /*for (auto x = 0; x != client._map.width() / TILES_PER_CHUNK; ++x)
+    for (auto y = 0; y != client._map.height() / TILES_PER_CHUNK; ++y)
+      if (client._mapExplored[x][y]) {
+        auto chunkSize = 4;
+        auto chunkRect =
+            ScreenRect{picRect.x + chunkSize * x, picRect.y + chunkSize * y,
+                       chunkSize, chunkSize};
+        client._mapPicture->addChild(new ColorBlock(chunkRect, Color::BLACK));
+      }*/
+  *fogOfWar = {0, 0, client._fogOfWar};
+  fogOfWar->rect(picRect);
 
   client._mapPins->clearChildren();
   client._mapPinOutlines->clearChildren();

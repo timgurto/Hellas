@@ -69,6 +69,7 @@ class Entity {
   }
   bool collides() const { return type()->collides() && _health != 0; }
   const TerrainList &allowedTerrain() const;
+  virtual void onMove() {}
 
   // Combat
   Entity *target() const { return _target; }

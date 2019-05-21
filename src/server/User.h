@@ -13,6 +13,7 @@
 #include "City.h"
 #include "Class.h"
 #include "Entity.h"
+#include "Exploration.h"
 #include "SRecipe.h"
 #include "ServerItem.h"
 #include "objects/Object.h"
@@ -49,6 +50,8 @@ class User : public Object {  // TODO: Don't inherit from Object
   const ObjectType *_actionObjectType;  // Construct
   size_t _actionSlot;                   // Construct
   MapPoint _actionLocation;             // Construct
+
+  Exploration _exploration;
 
   std::set<std::string> _knownRecipes, _knownConstructions;
   mutable std::set<std::string> _playerUniqueCategoriesOwned;
@@ -149,6 +152,8 @@ class User : public Object {  // TODO: Don't inherit from Object
   }
   const MapPoint &respawnPoint() const { return _respawnPoint; }
   void respawnPoint(const MapPoint &loc) { _respawnPoint = loc; }
+
+  void onMove() override;
 
   // Inventory getters/setters
   const std::pair<const ServerItem *, size_t> &inventory(size_t index) const {

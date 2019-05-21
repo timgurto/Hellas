@@ -546,6 +546,9 @@ class Client {
   ClientItem::vect_t _inventory;
   std::map<std::string, Avatar *> _otherUsers;  // For lookup by name
   std::map<size_t, ClientObject *> _objects;    // For lookup by serial
+  static const size_t TILES_PER_CHUNK = 20;
+  std::vector<std::vector<bool> > _mapExplored;
+  Texture _fogOfWar;
 
   Sprite::set_t _entities;
   void addEntity(Sprite *entity) { _entities.insert(entity); }
@@ -656,6 +659,7 @@ class Client {
   void handle_SV_QUEST_ACCEPTED();
   void handle_SV_QUEST_PROGRESS(const std::string &questID,
                                 size_t objectiveIndex, int progress);
+  void handle_SV_CHUNK_EXPLORED(size_t chunkX, size_t chunkY);
 
   void sendClearTargetMessage() const;
 

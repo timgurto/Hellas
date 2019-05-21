@@ -492,6 +492,8 @@ void Entity::location(const MapPoint &newLoc, bool firstInsertion) {
     oldCollisionChunk.removeEntity(_serial);
     newCollisionChunk.addEntity(this);
   }
+
+  onMove();
 }
 
 void Entity::teleportTo(const MapPoint &destination) {

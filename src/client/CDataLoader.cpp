@@ -997,4 +997,10 @@ void CDataLoader::loadMap(XmlReader &xr) {
   }
 
   _client._map.loadFromXML(xr);
+
+  auto chunksX = _client._map.width() / Client::TILES_PER_CHUNK;
+  auto chunksY = _client._map.height() / Client::TILES_PER_CHUNK;
+  _client._mapExplored = {chunksX, std::vector<bool>(chunksY, false)};
+  _client._fogOfWar = {static_cast<px_t>(chunksX), static_cast<px_t>(chunksY)};
+  _client._fogOfWar.setBlend();
 }

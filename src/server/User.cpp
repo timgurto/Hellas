@@ -35,6 +35,9 @@ User::User(const std::string &name, const MapPoint &loc, const Socket *socket)
       _actionSlot(INVENTORY_SIZE),
       _actionLocation(0, 0),
 
+      _exploration(Server::instance().map().width(),
+                   Server::instance().map().height()),
+
       _respawnPoint(newPlayerSpawn),
 
       _driving(0),
@@ -51,9 +54,11 @@ User::User(const std::string &name, const MapPoint &loc, const Socket *socket)
     _inventory[i] = std::make_pair<const ServerItem *, size_t>(0, 0);
 }
 
-User::User(const Socket &rhs) : Object(MapPoint{}), _socket(rhs) {}
+User::User(const Socket &rhs)
+    : Object(MapPoint{}), _socket(rhs), _exploration(0, 0) {}
 
-User::User(const MapPoint &loc) : Object(loc), _socket(Socket::Empty()) {}
+User::User(const MapPoint &loc)
+    : Object(loc), _socket(Socket::Empty()), _exploration(0, 0) {}
 
 void User::findRealWorldLocationStatic(User *user) {
   auto &server = Server::instance();
@@ -717,6 +722,12 @@ bool User::hasRoomToCraft(const SRecipe &recipe) const {
 
 bool User::shouldGatherDoubleThisTime() const {
   return randDouble() * 100 <= stats().gatherBonus;
+}
+
+void User::onMove() {
+  auto chunk = _exploration.getChunk(location());
+  auto newlyExplored = _exploration.explore(chunk);
+  if (newlyExplored) _exploration.sendSingleChunk(socket(), chunk);
 }
 
 const MapRect User::collisionRect() const {

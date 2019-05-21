@@ -1764,6 +1764,15 @@ void Client::handleMessage(const std::string &msg) {
         break;
       }
 
+      case SV_CHUNK_EXPLORED: {
+        size_t chunkX, chunkY;
+        singleMsg >> chunkX >> del >> chunkY >> del;
+        if (del != MSG_END) return;
+
+        handle_SV_CHUNK_EXPLORED(chunkX, chunkY);
+        break;
+      }
+
       case SV_SAY: {
         std::string username, message;
         singleMsg >> username >> del;
@@ -2343,6 +2352,31 @@ void Client::handle_SV_QUEST_PROGRESS(const std::string &questID,
 
   populateQuestLog();
   refreshQuestProgress();
+}
+
+void Client::handle_SV_CHUNK_EXPLORED(size_t chunkX, size_t chunkY) {
+  if (chunkX >= _mapExplored.size() || chunkY >= _mapExplored.front().size()) {
+    _debug << Color::CHAT_ERROR << "Explored chunk is out of range: ("s
+           << chunkX << "," << chunkY << ")" << Log::endl;
+    return;
+  }
+
+  _mapExplored[chunkX][chunkY] = true;
+  _debug << "Explored chunk ("s << chunkX << "," << chunkY << ")" << Log::endl;
+
+  _fogOfWar = {_fogOfWar.width(), _fogOfWar.height()};
+  _fogOfWar.setBlend();
+
+  renderer.pushRenderTarget(_fogOfWar);
+  renderer.setDrawColor(Color::BLACK);
+  for (auto x = 0; x != _fogOfWar.width(); ++x) {
+    for (auto y = 0; y != _fogOfWar.height(); ++y) {
+      if (!_mapExplored[x][y]) renderer.fillRect({x, y, 1, 1});
+    }
+  }
+  renderer.popRenderTarget();
+
+  updateMapWindow(Element{});
 }
 
 void Client::sendRawMessage(const std::string &msg) const {

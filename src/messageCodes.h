@@ -216,6 +216,10 @@ enum MessageCode {
   // Arguments: username
   SV_USER_DISCONNECTED,
 
+  // You have now explored chunk (..., ...)
+  // Arguments: x, y
+  SV_CHUNK_EXPLORED,
+
   // A user has moved far away from you, and you will stop getting updates from him.
   // Arguments: username
   SV_USER_OUT_OF_RANGE,
