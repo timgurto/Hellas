@@ -20,7 +20,8 @@ class Exploration {
   void writeTo(XmlWriter &xw) const;
   void readFrom(XmlReader &xr);
 
-  void sendSingleChunk(const Socket &socket, const Chunk &chunk);
+  void sendWholeMap(const Socket &socket) const;
+  void sendSingleChunk(const Socket &socket, const Chunk &chunk) const;
 
   Chunk getChunk(const MapPoint &location);
 

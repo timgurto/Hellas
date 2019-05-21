@@ -395,6 +395,9 @@ void Server::addUser(const Socket &socket, const std::string &name,
   auto knownSpellsString = userClass.generateKnownSpellsString();
   newUser.sendMessage(SV_KNOWN_SPELLS, knownSpellsString);
 
+  // Send him his map exploration
+  newUser.exploration().sendWholeMap(socket);
+
   // Give him starting buffs if he's a new user
   if (!userExisted) {
     for (auto &pair : _buffTypes) {

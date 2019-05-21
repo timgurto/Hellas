@@ -41,7 +41,16 @@ void Exploration::readFrom(XmlReader &xr) {
   }
 }
 
-void Exploration::sendSingleChunk(const Socket &socket, const Chunk &chunk) {
+void Exploration::sendWholeMap(const Socket &socket) const {
+  auto chunksX = _map.size();
+  auto chunksY = _map.front().size();
+  for (size_t x = 0; x != chunksX; ++x)
+    for (size_t y = 0; y != chunksY; ++y)
+      if (_map[x][y]) sendSingleChunk(socket, {x, y});
+}
+
+void Exploration::sendSingleChunk(const Socket &socket,
+                                  const Chunk &chunk) const {
   Server::instance().sendMessage(socket, SV_CHUNK_EXPLORED,
                                  makeArgs(chunk.x, chunk.y));
 }
