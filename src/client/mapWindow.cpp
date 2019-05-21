@@ -144,6 +144,18 @@ void Client::zoomMapIn() { _zoom = min(_zoom + 1, MAX_ZOOM); }
 
 void Client::zoomMapOut() { _zoom = max(_zoom - 1, MIN_ZOOM); }
 
+void Client::clearChunkFromFogOfWar(size_t x, size_t y) {
+  auto transparentPixel = Texture{1, 1};
+  transparentPixel.setAlpha(0);
+  transparentPixel.setBlend(SDL_BLENDMODE_NONE);
+
+  renderer.pushRenderTarget(_fogOfWar);
+
+  transparentPixel.draw(x, y);
+
+  renderer.popRenderTarget();
+}
+
 void Client::redrawFogOfWar() {
   _fogOfWar = {_fogOfWar.width(), _fogOfWar.height()};
   _fogOfWar.setBlend();

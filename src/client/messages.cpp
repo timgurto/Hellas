@@ -2363,7 +2363,8 @@ void Client::handle_SV_CHUNK_EXPLORED(size_t chunkX, size_t chunkY) {
 
   _mapExplored[chunkX][chunkY] = true;
 
-  redrawFogOfWar();
+  clearChunkFromFogOfWar(chunkX, chunkY);
+  updateMapWindow(Element{});
 }
 
 void Client::sendRawMessage(const std::string &msg) const {

@@ -1003,4 +1003,5 @@ void CDataLoader::loadMap(XmlReader &xr) {
   _client._mapExplored = {chunksX, std::vector<bool>(chunksY, false)};
   _client._fogOfWar = {static_cast<px_t>(chunksX), static_cast<px_t>(chunksY)};
   _client._fogOfWar.setBlend();
+  _client.redrawFogOfWar();
 }

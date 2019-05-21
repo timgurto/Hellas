@@ -277,7 +277,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 172,Select target via keyboard,3,8,Usability,,,,
 175,Click to move,8,3,Usability,,,,
 181,Send object-movement updates to owner and city's members,5,3,Bug,,,,
-185,Require map to be explored,21,21,Feature,,,,3 Tin wrapup
+185,Require map to be explored,21,21,Feature,,TRUE,,3 Tin wrapup
 186,"Add terrain-specific weather particles, like leaves or rain",13,8,Aesthetics,,,,
 194,Ensure fellow citizens can be seen on the map,13,21,Bug,,,,
 205,NPCs are never culled once discovered,8,3,Bug,,,,

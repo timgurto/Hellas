@@ -550,6 +550,7 @@ class Client {
   static const size_t TILES_PER_CHUNK = 10;
   std::vector<std::vector<bool> > _mapExplored;
   Texture _fogOfWar;
+  void clearChunkFromFogOfWar(size_t x, size_t y);
   void redrawFogOfWar();
 
   Sprite::set_t _entities;
