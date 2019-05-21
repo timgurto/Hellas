@@ -152,6 +152,8 @@ class User : public Object {  // TODO: Don't inherit from Object
   }
   const MapPoint &respawnPoint() const { return _respawnPoint; }
   void respawnPoint(const MapPoint &loc) { _respawnPoint = loc; }
+  const Exploration &exploration() const { return _exploration; }
+  Exploration &exploration() { return _exploration; }
 
   void onMove() override;
 

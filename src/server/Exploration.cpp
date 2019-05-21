@@ -1,11 +1,44 @@
 #include "Exploration.h"
 
+#include "../XmlReader.h"
+#include "../XmlWriter.h"
 #include "Server.h"
 
 Exploration::Exploration(size_t mapWidth, size_t mapHeight) {
   size_t chunksX = mapWidth / CHUNK_SIZE;
   size_t chunksY = mapHeight / CHUNK_SIZE;
   _map = {chunksX, std::vector<bool>(chunksY, false)};
+}
+
+void Exploration::writeTo(XmlWriter &xw) const {
+  auto e = xw.addChild("mapExploration");
+  auto chunksX = _map.size();
+  for (auto x = 0; x != chunksX; ++x) {
+    auto data = ""s;
+    for (auto y = 0; y != _map[x].size(); ++y) {
+      data.push_back(_map[x][y] ? ' ' : 'X');
+    }
+    auto col = xw.addChild("col", e);
+    xw.setAttr(col, "data", data);
+  }
+}
+
+void Exploration::readFrom(XmlReader &xr) {
+  auto e = xr.findChild("mapExploration");
+  if (!e) return;
+  auto colIndex = 0;
+  for (auto col : xr.getChildren("col", e)) {
+    auto data = ""s;
+    if (!xr.findAttr(col, "data", data)) continue;
+
+    auto colV = std::vector<bool>(data.size(), false);
+    for (auto i = 0; i != data.size(); ++i) {
+      if (data[i] == ' ') colV[i] = true;
+    }
+    _map[colIndex] = colV;
+
+    ++colIndex;
+  }
 }
 
 void Exploration::sendSingleChunk(const Socket &socket, const Chunk &chunk) {

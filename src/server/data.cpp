@@ -197,6 +197,8 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     }
   }
 
+  user.exploration().readFrom(xr);
+
   return true;
 }
 
@@ -301,6 +303,8 @@ void Server::writeUserData(const User &user) const {
       xw.setAttr(progressElem, "qty", progress);
     }
   }
+
+  user.exploration().writeTo(xw);
 
   xw.publish();
   --_threadsOpen;

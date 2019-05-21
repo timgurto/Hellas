@@ -5,6 +5,8 @@
 #include "../Point.h"
 
 class Socket;
+class XmlReader;
+class XmlWriter;
 
 // Contained in User
 class Exploration {
@@ -14,6 +16,9 @@ class Exploration {
   using Chunk = Point<size_t>;
 
   Exploration(size_t mapWidth, size_t mapHeight);
+
+  void writeTo(XmlWriter &xw) const;
+  void readFrom(XmlReader &xr);
 
   void sendSingleChunk(const Socket &socket, const Chunk &chunk);
 
