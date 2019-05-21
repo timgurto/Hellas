@@ -153,3 +153,19 @@ ScreenRect Client::convertToMapPosition(const MapPoint &worldPosition) const {
 void Client::zoomMapIn() { _zoom = min(_zoom + 1, MAX_ZOOM); }
 
 void Client::zoomMapOut() { _zoom = max(_zoom - 1, MIN_ZOOM); }
+
+void Client::redrawFogOfWar() {
+  _fogOfWar = {_fogOfWar.width(), _fogOfWar.height()};
+  _fogOfWar.setBlend();
+
+  renderer.pushRenderTarget(_fogOfWar);
+  renderer.setDrawColor(Color::BLACK);
+  for (auto x = 0; x != _fogOfWar.width(); ++x) {
+    for (auto y = 0; y != _fogOfWar.height(); ++y) {
+      if (!_mapExplored[x][y]) renderer.fillRect({x, y, 1, 1});
+    }
+  }
+  renderer.popRenderTarget();
+
+  updateMapWindow(Element{});
+}

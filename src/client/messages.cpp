@@ -2362,21 +2362,8 @@ void Client::handle_SV_CHUNK_EXPLORED(size_t chunkX, size_t chunkY) {
   }
 
   _mapExplored[chunkX][chunkY] = true;
-  _debug << "Explored chunk ("s << chunkX << "," << chunkY << ")" << Log::endl;
 
-  _fogOfWar = {_fogOfWar.width(), _fogOfWar.height()};
-  _fogOfWar.setBlend();
-
-  renderer.pushRenderTarget(_fogOfWar);
-  renderer.setDrawColor(Color::BLACK);
-  for (auto x = 0; x != _fogOfWar.width(); ++x) {
-    for (auto y = 0; y != _fogOfWar.height(); ++y) {
-      if (!_mapExplored[x][y]) renderer.fillRect({x, y, 1, 1});
-    }
-  }
-  renderer.popRenderTarget();
-
-  updateMapWindow(Element{});
+  redrawFogOfWar();
 }
 
 void Client::sendRawMessage(const std::string &msg) const {
