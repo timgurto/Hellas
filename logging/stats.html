@@ -74,7 +74,7 @@
         
         cells += '<td>' + timeDisplay(user.secondsPlayed*1000) + "</td>";
         
-        cells += "<td>Level " + (parseInt(user.level) + user.xp / user.xpNeeded).toFixed(1) + " " + user.class + "</td>";
+        cells += "<td>Level " + user.level + " " + user.class + "</td>";
         
         var cityText = user.city;
         if (user.isKing)
