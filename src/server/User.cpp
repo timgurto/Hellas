@@ -1229,6 +1229,10 @@ void User::moveToSpawnPoint(bool isNewPlayer) {
   server.sendRelevantEntitiesToUser(*this);
 }
 
+void User::onTerrainListChange(const std::string &listID) {
+  sendMessage(SV_NEW_TERRAIN_LIST_APPLICABLE, listID);
+}
+
 void User::startQuest(const Quest &quest) {
   _quests.insert(quest.id);
 

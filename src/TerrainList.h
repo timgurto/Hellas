@@ -20,14 +20,18 @@ class TerrainList {
   std::set<char> _list;
   bool _isWhitelist;  // true if whitelist; false if blacklist.
   static std::map<std::string, char> terrainCodes;
+  std::string _id;
 
  public:
   void allow(char terrain);
   void forbid(char terrain);
   bool allows(char terrain) const;
 
+  const std::string &id() const { return _id; }
+
   static void addList(const std::string &id, TerrainList &list) {
     _lists[id] = list;
+    _lists[id]._id = id;
   }
   static void clearLists() { _lists.clear(); }
   static void setDefault(const std::string &id);

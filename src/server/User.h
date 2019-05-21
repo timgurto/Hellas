@@ -294,6 +294,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   static double spawnRadius;
   void setSpawnPointToPostTutorial() { _respawnPoint = postTutorialSpawn; }
   void moveToSpawnPoint(bool isNewPlayer = false);
+  void onTerrainListChange(const std::string &listID);
 
   // Quests
   void startQuest(const Quest &quest);

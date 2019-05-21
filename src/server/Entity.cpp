@@ -585,6 +585,11 @@ void Entity::applyBuff(const BuffType &type, Entity &caster) {
   updateStats();
 
   sendBuffMsg(type.id());
+
+  if (classTag() == 'u' && type.changesAllowedTerrain()) {
+    auto &user = dynamic_cast<User &>(*this);
+    user.onTerrainListChange(type.changesAllowedTerrain()->id());
+  }
 }
 
 void Entity::applyDebuff(const BuffType &type, Entity &caster) {
@@ -611,6 +616,11 @@ void Entity::loadBuff(const BuffType &type, ms_t timeRemaining) {
   updateStats();
 
   sendBuffMsg(type.id());
+
+  if (classTag() == 'u' && type.changesAllowedTerrain()) {
+    auto &user = dynamic_cast<User &>(*this);
+    user.onTerrainListChange(type.changesAllowedTerrain()->id());
+  }
 }
 
 void Entity::loadDebuff(const BuffType &type, ms_t timeRemaining) {
@@ -629,10 +639,18 @@ void Entity::loadDebuff(const BuffType &type, ms_t timeRemaining) {
 void Entity::removeBuff(Buff::ID id) {
   for (auto it = _buffs.begin(); it != _buffs.end(); ++it)
     if (it->type() == id) {
+      const auto changesAllowedTerrain = it->changesAllowedTerrain();
+
       _buffs.erase(it);
       updateStats();
 
       sendLostBuffMsg(id);
+
+      if (classTag() == 'u' && changesAllowedTerrain) {
+        auto &user = dynamic_cast<User &>(*this);
+        user.sendMessage(SV_NEW_TERRAIN_LIST_APPLICABLE,
+                         TerrainList::defaultList().id());
+      }
 
       return;
     }

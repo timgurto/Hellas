@@ -410,6 +410,7 @@ class Client {
   Stats _stats;                  // The user's stats
   std::string _displaySpeed{0};  // Speed for display as podes/s
   bool _serverHasOutOfDateLocationInfo{true};
+  std::string _allowedTerrain{};  // TerrainList ID.  Empty: default.
 
   // Login screen
   Texture _loginFront, _loginBack;

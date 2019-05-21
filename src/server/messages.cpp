@@ -896,6 +896,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         for (const User *u : findUsersInArea(user->location()))
           sendMessage(u->socket(), SV_MOUNTED, makeArgs(serial, user->name()));
 
+        user->onTerrainListChange(v->allowedTerrain().id());
+
         break;
       }
 
@@ -933,6 +935,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         for (const User *u : findUsersInArea(user->location()))
           sendMessage(u->socket(), SV_UNMOUNTED,
                       makeArgs(serial, user->name()));
+
+        user->onTerrainListChange(TerrainList::defaultList().id());
 
         break;
       }

@@ -120,26 +120,28 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
         &*it, static_cast<size_t>(qty));
   }
 
-  elem = xr.findChild("buffs");
-  for (auto buffElem : xr.getChildren("buff", elem)) {
-    auto id = ""s;
-    if (!xr.findAttr(buffElem, "type", id)) continue;
-    auto buffTypeIt = _buffTypes.find(id);
-    if (buffTypeIt == _buffTypes.end()) continue;
+  if (allowSideEffects) {
+    elem = xr.findChild("buffs");
+    for (auto buffElem : xr.getChildren("buff", elem)) {
+      auto id = ""s;
+      if (!xr.findAttr(buffElem, "type", id)) continue;
+      auto buffTypeIt = _buffTypes.find(id);
+      if (buffTypeIt == _buffTypes.end()) continue;
 
-    auto timeRemaining = ms_t{};
-    if (!xr.findAttr(buffElem, "timeRemaining", timeRemaining)) continue;
-    user.loadBuff(buffTypeIt->second, timeRemaining);
-  }
-  for (auto buffElem : xr.getChildren("debuff", elem)) {
-    auto id = ""s;
-    if (!xr.findAttr(buffElem, "type", id)) continue;
-    auto buffTypeIt = _buffTypes.find(id);
-    if (buffTypeIt == _buffTypes.end()) continue;
+      auto timeRemaining = ms_t{};
+      if (!xr.findAttr(buffElem, "timeRemaining", timeRemaining)) continue;
+      user.loadBuff(buffTypeIt->second, timeRemaining);
+    }
+    for (auto buffElem : xr.getChildren("debuff", elem)) {
+      auto id = ""s;
+      if (!xr.findAttr(buffElem, "type", id)) continue;
+      auto buffTypeIt = _buffTypes.find(id);
+      if (buffTypeIt == _buffTypes.end()) continue;
 
-    auto timeRemaining = ms_t{};
-    if (!xr.findAttr(buffElem, "timeRemaining", timeRemaining)) continue;
-    user.loadDebuff(buffTypeIt->second, timeRemaining);
+      auto timeRemaining = ms_t{};
+      if (!xr.findAttr(buffElem, "timeRemaining", timeRemaining)) continue;
+      user.loadDebuff(buffTypeIt->second, timeRemaining);
+    }
   }
 
   elem = xr.findChild("knownRecipes");

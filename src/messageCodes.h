@@ -232,6 +232,10 @@ enum MessageCode {
   // Arguments: username, x, y
   SV_LOCATION,
 
+  // Your valid terrain is now the ... list.
+  // Arguments: listID
+  SV_NEW_TERRAIN_LIST_APPLICABLE,
+
   // The user's spawn point has changed
   SV_SET_SPAWN,
 

@@ -1085,6 +1085,11 @@ void Client::handleMessage(const std::string &msg) {
         break;
       }
 
+      case SV_NEW_TERRAIN_LIST_APPLICABLE:
+        readString(singleMsg, _allowedTerrain, MSG_END);
+        if (del != MSG_END) break;
+        break;
+
       case SV_YOUR_STATS: {
         singleMsg >> _stats.armor >> del >> _stats.maxHealth >> del >>
             _stats.maxEnergy >> del >> _stats.hps >> del >> _stats.eps >> del >>
