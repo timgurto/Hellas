@@ -11,7 +11,7 @@ class XmlWriter;
 // Contained in User
 class Exploration {
  public:
-  static const auto CHUNK_SIZE = 20;  // In tiles
+  static const auto CHUNK_SIZE = 10;  // In tiles
 
   using Chunk = Point<size_t>;
 

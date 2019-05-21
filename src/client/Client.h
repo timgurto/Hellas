@@ -546,7 +546,8 @@ class Client {
   ClientItem::vect_t _inventory;
   std::map<std::string, Avatar *> _otherUsers;  // For lookup by name
   std::map<size_t, ClientObject *> _objects;    // For lookup by serial
-  static const size_t TILES_PER_CHUNK = 20;
+
+  static const size_t TILES_PER_CHUNK = 10;
   std::vector<std::vector<bool> > _mapExplored;
   Texture _fogOfWar;
   void redrawFogOfWar();
