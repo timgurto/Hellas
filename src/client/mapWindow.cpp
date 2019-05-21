@@ -79,16 +79,6 @@ void Client::updateMapWindow(Element &) {
   picRect.h = MAP_IMAGE_H * (1 << client._zoom);
   client._mapPicture->rect(picRect);
 
-  // Draw black over unexplored chunks
-  /*for (auto x = 0; x != client._map.width() / TILES_PER_CHUNK; ++x)
-    for (auto y = 0; y != client._map.height() / TILES_PER_CHUNK; ++y)
-      if (client._mapExplored[x][y]) {
-        auto chunkSize = 4;
-        auto chunkRect =
-            ScreenRect{picRect.x + chunkSize * x, picRect.y + chunkSize * y,
-                       chunkSize, chunkSize};
-        client._mapPicture->addChild(new ColorBlock(chunkRect, Color::BLACK));
-      }*/
   *fogOfWar = {0, 0, client._fogOfWar};
   fogOfWar->rect(picRect);
 
@@ -158,13 +148,19 @@ void Client::redrawFogOfWar() {
   _fogOfWar = {_fogOfWar.width(), _fogOfWar.height()};
   _fogOfWar.setBlend();
 
+  auto transparentPixel = Texture{1, 1};
+  transparentPixel.setAlpha(0);
+  transparentPixel.setBlend(SDL_BLENDMODE_NONE);
+
   renderer.pushRenderTarget(_fogOfWar);
+
   renderer.setDrawColor(Color::BLACK);
-  for (auto x = 0; x != _fogOfWar.width(); ++x) {
-    for (auto y = 0; y != _fogOfWar.height(); ++y) {
-      if (!_mapExplored[x][y]) renderer.fillRect({x, y, 1, 1});
-    }
-  }
+  renderer.fill();
+
+  for (auto x = 0; x != _fogOfWar.width(); ++x)
+    for (auto y = 0; y != _fogOfWar.height(); ++y)
+      if (_mapExplored[x][y]) transparentPixel.draw(x, y);
+
   renderer.popRenderTarget();
 
   updateMapWindow(Element{});

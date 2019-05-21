@@ -726,8 +726,9 @@ bool User::shouldGatherDoubleThisTime() const {
 
 void User::onMove() {
   auto chunk = _exploration.getChunk(location());
-  auto newlyExplored = _exploration.explore(chunk);
-  if (newlyExplored) _exploration.sendSingleChunk(socket(), chunk);
+  auto newlyExploredChunks = _exploration.explore(chunk);
+  for (const auto &chunk : newlyExploredChunks)
+    _exploration.sendSingleChunk(socket(), chunk);
 }
 
 const MapRect User::collisionRect() const {
