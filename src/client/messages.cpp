@@ -1087,6 +1087,7 @@ void Client::handleMessage(const std::string &msg) {
 
       case SV_NEW_TERRAIN_LIST_APPLICABLE:
         readString(singleMsg, _allowedTerrain, MSG_END);
+        singleMsg >> del;
         if (del != MSG_END) break;
         break;
 
