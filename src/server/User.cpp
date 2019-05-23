@@ -1234,8 +1234,10 @@ void User::onTerrainListChange(const std::string &listID) {
   sendMessage(SV_NEW_TERRAIN_LIST_APPLICABLE, listID);
 
   // Check that current location is valid
-  sendMessage(WARNING_BAD_TERRAIN);
-  if (!Server::instance().isLocationValid(location(), *this)) kill();
+  if (!Server::instance().isLocationValid(location(), *this)) {
+    sendMessage(WARNING_BAD_TERRAIN);
+    kill();
+  }
 }
 
 void User::startQuest(const Quest &quest) {
