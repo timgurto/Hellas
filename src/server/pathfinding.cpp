@@ -42,8 +42,9 @@ void Entity::updateLocation(const MapPoint &dest) {
     if (!server.isLocationValid(journeyRect, *this)) {
       newDest = _location;
       if (!server.isLocationValid(newDest, *this)) {
-        SERVER_ERROR(
-            "Reverting to previous location, but that is also invalid");
+        SERVER_ERROR("New and previous location are both invalid.  Killing.");
+        kill();
+        return;
       }
       static const double ACCURACY = 0.5;
       MapPoint displacementNorm(rawDisplacement.x / distanceToMove * ACCURACY,
@@ -68,8 +69,10 @@ void Entity::updateLocation(const MapPoint &dest) {
   // At this point, the new location has been finalized.  Now new information
   // must be propagated.
   if (!server.isLocationValid(newDest, *this)) {
-    Server::debug()("Entity is in invalid location.  Server in bad state.",
+    Server::debug()("Entity is in invalid location.  Killing.",
                     Color::CHAT_ERROR);
+    kill();
+    return;
   }
 
   double left, right, top, bottom;  // Area newly visible

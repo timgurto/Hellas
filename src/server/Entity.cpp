@@ -278,27 +278,24 @@ void Entity::update(ms_t timeElapsed) {
 }
 
 void Entity::updateBuffs(ms_t timeElapsed) {
-  auto aBuffHasExpired = false;
-  for (auto i = 0; i != _buffs.size();) {
+  auto expiredBuffs = std::set<Buff::ID>{};
+  for (auto i = 0; i != _buffs.size(); ++i) {
     auto &buff = _buffs[i];
     buff.update(timeElapsed);
-    if (buff.hasExpired()) {
-      sendLostBuffMsg(buff.type());
-      _buffs.erase(_buffs.begin() + i);
-      aBuffHasExpired = true;
-    } else
-      ++i;
+    if (buff.hasExpired()) expiredBuffs.insert(buff.type());
   }
-  for (auto i = 0; i != _debuffs.size();) {
+
+  auto expiredDebuffs = std::set<Buff::ID>{};
+  for (auto i = 0; i != _debuffs.size(); ++i) {
     auto &debuff = _debuffs[i];
     debuff.update(timeElapsed);
-    if (debuff.hasExpired()) {
-      sendLostDebuffMsg(debuff.type());
-      _debuffs.erase(_debuffs.begin() + i);
-      aBuffHasExpired = true;
-    } else
-      ++i;
+    if (debuff.hasExpired()) expiredDebuffs.insert(debuff.type());
   }
+
+  for (auto buffID : expiredBuffs) removeBuff(buffID);
+  for (auto debuffID : expiredDebuffs) removeDebuff(debuffID);
+
+  auto aBuffHasExpired = !expiredBuffs.empty() || !expiredDebuffs.empty();
   if (aBuffHasExpired) updateStats();
 }
 
@@ -648,8 +645,7 @@ void Entity::removeBuff(Buff::ID id) {
 
       if (classTag() == 'u' && changesAllowedTerrain) {
         auto &user = dynamic_cast<User &>(*this);
-        user.sendMessage(SV_NEW_TERRAIN_LIST_APPLICABLE,
-                         TerrainList::defaultList().id());
+        user.onTerrainListChange(type()->allowedTerrain().id());
       }
 
       return;
@@ -659,10 +655,17 @@ void Entity::removeBuff(Buff::ID id) {
 void Entity::removeDebuff(Buff::ID id) {
   for (auto it = _debuffs.begin(); it != _debuffs.end(); ++it)
     if (it->type() == id) {
+      const auto changesAllowedTerrain = it->changesAllowedTerrain();
+
       _debuffs.erase(it);
       updateStats();
 
       sendLostDebuffMsg(id);
+
+      if (classTag() == 'u' && changesAllowedTerrain) {
+        auto &user = dynamic_cast<User &>(*this);
+        user.onTerrainListChange(type()->allowedTerrain().id());
+      }
 
       return;
     }

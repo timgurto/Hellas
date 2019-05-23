@@ -223,7 +223,8 @@ void Client::handleMessage(const std::string &msg) {
       case WARNING_STUNNED:
       case WARNING_YOU_ARE_ALREADY_IN_CITY:
       case WARNING_ITEM_NEEDED:
-        errorMessageColor = Color::CHAT_ERROR;  // Yellow above, red below
+      case WARNING_BAD_TERRAIN:
+        errorMessageColor = Color::CHAT_WARNING;  // Yellow above, red below
       case ERROR_INVALID_USER:
       case ERROR_INVALID_ITEM:
       case ERROR_CANNOT_CRAFT:
@@ -2525,6 +2526,8 @@ void Client::initializeMessageNames() {
   _errorMessages[WARNING_USER_DOESNT_EXIST] = "That account does not exist.";
   _errorMessages[WARNING_NAME_TAKEN] = "That name is taken.";
   _errorMessages[WARNING_ITEM_NEEDED] = "You are missing a required item.";
+  _errorMessages[WARNING_BAD_TERRAIN] =
+      "You have been killed by treacherous terrain.";
 }
 
 void Client::performCommand(const std::string &commandString) {

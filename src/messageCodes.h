@@ -645,6 +645,7 @@ enum MessageCode {
   ERROR_TARGET_DEAD, // The NPC is dead
   ERROR_NOT_GEAR, // The user tried to equip an item into a gear slot with which it isn't compatible.
   WARNING_STUNNED, // The user can't perform an action because he is stunned
+  WARNING_BAD_TERRAIN, // You have died due to being on invalid terrain.
 
 
 

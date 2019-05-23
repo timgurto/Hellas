@@ -613,6 +613,7 @@ void User::update(ms_t timeElapsed) {
 
   if (isStunned()) {
     cancelAction();
+    Entity::update(timeElapsed);
     return;
   }
 
@@ -640,6 +641,7 @@ void User::update(ms_t timeElapsed) {
       if (!hasRoomToCraft(*_actionRecipe)) {
         sendMessage(WARNING_INVENTORY_FULL);
         cancelAction();
+        Entity::update(timeElapsed);
         return;
       }
       // Remove materials from user's inventory
@@ -679,7 +681,7 @@ void User::update(ms_t timeElapsed) {
       if (!vectHasSpace(_inventory, item)) {
         sendMessage(WARNING_INVENTORY_FULL);
         cancelAction();
-        return;
+        break;
       }
       // Give user his item
       giveItem(item);
@@ -1230,6 +1232,10 @@ void User::moveToSpawnPoint(bool isNewPlayer) {
 
 void User::onTerrainListChange(const std::string &listID) {
   sendMessage(SV_NEW_TERRAIN_LIST_APPLICABLE, listID);
+
+  // Check that current location is valid
+  sendMessage(WARNING_BAD_TERRAIN);
+  if (!Server::instance().isLocationValid(location(), *this)) kill();
 }
 
 void User::startQuest(const Quest &quest) {
