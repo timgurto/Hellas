@@ -1,4 +1,5 @@
 #include <SDL.h>
+
 #include <list>
 
 #include "../../Color.h"

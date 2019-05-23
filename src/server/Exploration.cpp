@@ -46,11 +46,25 @@ void Exploration::readFrom(XmlReader &xr) {
 }
 
 void Exploration::sendWholeMap(const Socket &socket) const {
-  auto chunksX = _map.size();
-  auto chunksY = _map.front().size();
-  for (size_t x = 0; x != chunksX; ++x)
-    for (size_t y = 0; y != chunksY; ++y)
-      if (_map[x][y]) sendSingleChunk(socket, {x, y});
+  // One message per column
+  static const auto NUMBERS_PER_MESSAGE = 10;
+  static const auto CHUNKS_PER_NUMBER = 30;
+
+  for (auto col = 0; col != _map.size(); ++col) {
+    auto args = makeArgs(col);
+    for (auto numberIndex = 0; numberIndex != NUMBERS_PER_MESSAGE;
+         ++numberIndex) {
+      Uint32 number = 0;
+      for (auto i = 0; i != CHUNKS_PER_NUMBER; ++i) {
+        number = number << 1;
+        auto y = numberIndex * CHUNKS_PER_NUMBER + i;
+        if (_map[col][y]) ++number;
+      }
+
+      args = makeArgs(args, number);
+    }
+    Server::instance().sendMessage(socket, SV_MAP_EXPLORATION_DATA, args);
+  }
 }
 
 void Exploration::sendSingleChunk(const Socket &socket,

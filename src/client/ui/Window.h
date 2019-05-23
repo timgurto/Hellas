@@ -2,6 +2,7 @@
 #define WINDOW_H
 
 #include <SDL.h>
+
 #include <string>
 
 #include "Element.h"

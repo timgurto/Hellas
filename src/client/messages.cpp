@@ -1740,6 +1740,24 @@ void Client::handleMessage(const std::string &msg) {
         break;
       }
 
+      case SV_MAP_EXPLORATION_DATA: {
+        static const auto NUMBERS_PER_MESSAGE = 10;
+
+        auto column = 0;
+        singleMsg >> column >> del;
+
+        auto data = std::vector<Uint32>{};
+        for (auto i = 0; i != NUMBERS_PER_MESSAGE; ++i) {
+          auto number = Uint32{};
+          singleMsg >> number >> del;
+          data.push_back(number);
+        }
+        if (del != MSG_END) return;
+
+        handle_SV_MAP_EXPLORATION_DATA(column, data);
+        break;
+      }
+
       case SV_CHUNK_EXPLORED: {
         size_t chunkX, chunkY;
         singleMsg >> chunkX >> del >> chunkY >> del;
@@ -2328,6 +2346,26 @@ void Client::handle_SV_QUEST_PROGRESS(const std::string &questID,
 
   populateQuestLog();
   refreshQuestProgress();
+}
+
+void Client::handle_SV_MAP_EXPLORATION_DATA(size_t column,
+                                            std::vector<Uint32> data) {
+  static const auto CHUNKS_PER_NUMBER = 30;
+
+  auto colV = std::vector<bool>(CHUNKS_PER_NUMBER * data.size(), false);
+  for (auto i = 0; i != data.size(); ++i) {
+    auto number = data[i];
+    if (number == 0) continue;
+    for (auto bit = CHUNKS_PER_NUMBER - 1; bit >= 0; --bit) {
+      auto y = i * CHUNKS_PER_NUMBER + bit;
+      if ((number & 1) == 1) colV[y] = true;
+      number = number >> 1;
+    }
+  }
+
+  _mapExplored[column] = colV;
+
+  if (column == _mapExplored.size() - 1) redrawFogOfWar();
 }
 
 void Client::handle_SV_CHUNK_EXPLORED(size_t chunkX, size_t chunkY) {

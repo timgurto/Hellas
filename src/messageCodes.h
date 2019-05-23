@@ -216,6 +216,11 @@ enum MessageCode {
   // Arguments: username
   SV_USER_DISCONNECTED,
 
+  // A row of map-exploration details.
+  // Each segment is a 30+-bit number detailing 30 chunks.
+  // Arguments: col, segment1, segment2, ...
+  SV_MAP_EXPLORATION_DATA,
+
   // You have now explored chunk (..., ...)
   // Arguments: x, y
   SV_CHUNK_EXPLORED,

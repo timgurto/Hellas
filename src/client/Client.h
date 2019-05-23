@@ -664,6 +664,7 @@ class Client {
   void handle_SV_QUEST_ACCEPTED();
   void handle_SV_QUEST_PROGRESS(const std::string &questID,
                                 size_t objectiveIndex, int progress);
+  void handle_SV_MAP_EXPLORATION_DATA(size_t column, std::vector<Uint32> data);
   void handle_SV_CHUNK_EXPLORED(size_t chunkX, size_t chunkY);
 
   void sendClearTargetMessage() const;
