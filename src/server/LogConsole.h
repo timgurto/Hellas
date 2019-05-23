@@ -40,6 +40,9 @@ class LogConsole : public Log {
  private:
   bool _quiet;  // If true, suppress all messages.
   bool _thisLineNeedsATimestamp{true};
+  bool _useColours{true};
+
+  std::string colorCode(const Color &color = Color::NO_KEY);
 };
 
 #endif

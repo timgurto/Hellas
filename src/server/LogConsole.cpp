@@ -2,12 +2,19 @@
 
 #include <sstream>
 
+#include "../Args.h"
 #include "Server.h"
 
-LogConsole::LogConsole(const std::string &logFileName)
-    : Log(logFileName), _quiet(false) {}
+extern Args cmdLineArgs;
 
-static const std::string &colorCode(const Color &color = Color::NO_KEY) {
+LogConsole::LogConsole(const std::string &logFileName)
+    : Log(logFileName), _quiet(false) {
+  if (cmdLineArgs.contains("no-colours")) _useColours = false;
+}
+
+std::string LogConsole::colorCode(const Color &color) {
+  if (!_useColours) return {};
+
   static std::map<Color, std::string> colorCodes;
   auto ret = colorCodes.insert(std::make_pair(color, std::string()));
   if (ret.second) {  // Insert new color
