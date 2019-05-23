@@ -20,7 +20,7 @@ static int toSeconds(_FILETIME windowsTime) {
   return static_cast<int>(timeOffline / SECONDS);
 }
 
-void Server::writeUserToFile(const User &user, std::ofstream &stream) const {
+void Server::writeUserToFile(const User &user, std::ostream &stream) const {
   auto secondsOnlineOrOffline =
       user.hasSocket() ? user.secondsPlayedThisSession() : user.secondsOffline;
 
@@ -91,24 +91,23 @@ void Server::publishStats(Server *server) {
   publishingStats = true;
   ++server->_threadsOpen;
 
-  server->debug()("Started logging");
+  std::ostringstream oss;
 
-  auto statsFile = std::ofstream{"logging/stats.js"};
-  statsFile << "stats = {\n\n";
+  oss << "stats = {\n\n";
 
-  statsFile << "version: \"" << version() << "\",\n";
+  oss << "version: \"" << version() << "\",\n";
 
-  statsFile << "time: " << server->_time << ",\n";
+  oss << "time: " << server->_time << ",\n";
 
-  statsFile << "recipes: " << server->_recipes.size() << ",\n";
-  statsFile << "constructions: " << server->_numBuildableObjects << ",\n";
-  statsFile << "quests: " << server->_quests.size() << ",\n";
+  oss << "recipes: " << server->_recipes.size() << ",\n";
+  oss << "constructions: " << server->_numBuildableObjects << ",\n";
+  oss << "quests: " << server->_quests.size() << ",\n";
 
-  statsFile << "users: [";
+  oss << "users: [";
 
   // Online users
   for (const auto userEntry : server->_usersByName)
-    server->writeUserToFile(*userEntry.second, statsFile);
+    server->writeUserToFile(*userEntry.second, oss);
 
   // Ofline users
   auto offlineUsers = getUsersFromFiles();
@@ -121,14 +120,14 @@ void Server::publishStats(Server *server) {
     server->readUserData(user, false);
     user.secondsOffline = offlineUser.second;
 
-    server->writeUserToFile(user, statsFile);
+    server->writeUserToFile(user, oss);
   }
 
-  statsFile << "\n],\n";
+  oss << "\n],\n";
 
-  statsFile << "\n};\n";
+  oss << "\n};\n";
 
-  server->debug()("Finished logging");
+  std::ofstream{"logging/stats.js"} << oss.str();
 
   --server->_threadsOpen;
   publishingStats = false;
