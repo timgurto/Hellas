@@ -26,7 +26,6 @@ void Server::writeUserToFile(const User &user, std::ofstream &stream) const {
 
   stream << "\n{"
          << "name: \"" << user.name() << "\","
-         << "location: " << user.realWorldLocation() << ","
          << "online: " << user.hasSocket() << ","
          << "secondsPlayed: " << user.secondsPlayed() << ","
          << "secondsOnlineOrOffline: " << secondsOnlineOrOffline << ","
@@ -44,7 +43,10 @@ void Server::writeUserToFile(const User &user, std::ofstream &stream) const {
          << "maxEnergy: " << user.stats().maxEnergy << ","
          << "knownRecipes: " << user.knownRecipes().size() << ","
          << "completedQuests: " << user.questsCompleted().size() << ","
-         << "knownConstructions: " << user.knownConstructions().size() << ",";
+         << "knownConstructions: " << user.knownConstructions().size() << ","
+         << "chunksExplored: " << user.exploration().numChunksExplored() << ","
+         << "chunksTotal: " << user.exploration().numChunks() << ","
+         << "location: " << user.realWorldLocation() << ",";
 
   stream << "inventory: [";
   for (auto inventorySlot : user.inventory()) {
@@ -84,7 +86,12 @@ static std::map<std::string, int> getUsersFromFiles() {
 }
 
 void Server::publishStats(Server *server) {
+  static auto publishingStats = false;
+  if (publishingStats) return;
+  publishingStats = true;
   ++server->_threadsOpen;
+
+  server->debug()("Started logging");
 
   auto statsFile = std::ofstream{"logging/stats.js"};
   statsFile << "stats = {\n\n";
@@ -121,5 +128,8 @@ void Server::publishStats(Server *server) {
 
   statsFile << "\n};\n";
 
+  server->debug()("Finished logging");
+
   --server->_threadsOpen;
+  publishingStats = false;
 }

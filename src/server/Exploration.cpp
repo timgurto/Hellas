@@ -27,13 +27,17 @@ void Exploration::readFrom(XmlReader &xr) {
   auto e = xr.findChild("mapExploration");
   if (!e) return;
   auto colIndex = 0;
+  _numChunksExplored = 0;
   for (auto col : xr.getChildren("col", e)) {
     auto data = ""s;
     if (!xr.findAttr(col, "data", data)) continue;
 
     auto colV = std::vector<bool>(data.size(), false);
     for (auto i = 0; i != data.size(); ++i) {
-      if (data[i] == ' ') colV[i] = true;
+      if (data[i] == ' ') {
+        colV[i] = true;
+        ++_numChunksExplored;
+      }
     }
     _map[colIndex] = colV;
 

@@ -20,6 +20,9 @@ class Exploration {
   void writeTo(XmlWriter &xw) const;
   void readFrom(XmlReader &xr);
 
+  int numChunksExplored() const { return _numChunksExplored; }
+  int numChunks() const { return _map.size() * _map.front().size(); }
+
   void sendWholeMap(const Socket &socket) const;
   void sendSingleChunk(const Socket &socket, const Chunk &chunk) const;
 
@@ -29,6 +32,7 @@ class Exploration {
 
  private:
   std::vector<std::vector<bool> > _map;
+  int _numChunksExplored{0};  // Used only for data logging.
 };
 
 bool operator<(const Exploration::Chunk &lhs, const Exploration::Chunk &rhs);
