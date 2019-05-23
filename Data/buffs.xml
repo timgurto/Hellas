@@ -46,9 +46,10 @@
     description="Attackers take damage.">
     <function onHit="1" name="doDirectDamage" i1="2" />
 </buff>
-<buff id="waterWalking" name="Water Walking" icon="waterRipples" canBeInterrupted="1" school="air"
-    description="Can walk on both land and water.">
+<buff id="waterWalking" name="Water Walking" icon="waterRipples" canBeInterrupted="1" school="air"  cancelsOnOOE="1"
+    description="Can walk on both land and water; energy reduced each second.  Cancels if you are attacked.">
     <changeAllowedTerrain terrainList="notMountains" />
+    <stats eps="-20" />
 </buff>
 
 </root>
