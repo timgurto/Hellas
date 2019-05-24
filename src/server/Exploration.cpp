@@ -58,6 +58,7 @@ void Exploration::sendWholeMap(const Socket &socket) const {
       for (auto i = 0; i != CHUNKS_PER_NUMBER; ++i) {
         number = number << 1;
         auto y = numberIndex * CHUNKS_PER_NUMBER + i;
+        if (y >= _map[col].size()) continue;
         if (_map[col][y]) ++number;
       }
 
@@ -81,6 +82,8 @@ Exploration::Chunk Exploration::getChunk(const MapPoint &location) {
 }
 
 std::set<Exploration::Chunk> Exploration::explore(const Chunk &chunk) {
+  if (_map.empty() || _map.front().empty()) return {};
+
   auto newlyExploredChunks = std::set<Chunk>{};
 
   // 3x3 around central chunk
