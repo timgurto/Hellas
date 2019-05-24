@@ -98,6 +98,7 @@ class ClientObjectType : public SpriteType, public ClientCombatantType {
     _collides = true;
   }
   bool collides() const { return _collides; }
+  void collides(bool b) { _collides = b; }
   const ParticleProfile *gatherParticles() const { return _gatherParticles; }
   void gatherParticles(const ParticleProfile *profile) {
     _gatherParticles = profile;

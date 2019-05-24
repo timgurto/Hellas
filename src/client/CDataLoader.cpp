@@ -479,6 +479,7 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
     if (xr.findAttr(elem, "constructionText", s)) cot->constructionText(s);
     MapRect r;
     if (xr.findRectChild("collisionRect", elem, r)) cot->collisionRect(r);
+    if (xr.findAttr(elem, "collides", n)) cot->collides(n != 0);
 
     if (xr.findAttr(elem, "playerUnique", s)) {
       cot->makePlayerUnique();

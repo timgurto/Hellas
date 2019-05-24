@@ -17,6 +17,7 @@ class EntityType {
 
   // Space
   bool collides() const { return _collides; }
+  void collides(bool b) { _collides = b; }
   const MapRect &collisionRect() const { return _collisionRect; }
   void collisionRect(const MapRect &r) {
     _collisionRect = r;
