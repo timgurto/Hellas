@@ -10,6 +10,7 @@
 #include "Deconstruction.h"
 
 class ServerItem;
+class BuffType;
 
 // Describes a class of Objects, the "instances" of which share common
 // properties
@@ -66,6 +67,10 @@ class ObjectType : public EntityType, public QuestNodeType {
 
   std::string
       _playerUniqueCategory;  // Assumption: up to one category per object type.
+
+  const BuffType *_buffGranted{
+      nullptr};  // A buff granted to nearby, permitted users.
+  double _buffRadius{0};
 
  protected:
   ContainerType *_container;
@@ -162,6 +167,14 @@ class ObjectType : public EntityType, public QuestNodeType {
   const CallbackAction &onDestroy() const { return *_onDestroy; }
   bool hasAction() const { return _action != nullptr; }
   bool hasOnDestroy() const { return _onDestroy != nullptr; }
+
+  void grantsBuff(const BuffType *buff, double radius) {
+    _buffGranted = buff;
+    _buffRadius = radius;
+  }
+  bool grantsBuff() const { return _buffGranted != nullptr; }
+  const BuffType *buffGranted() const { return _buffGranted; }
+  double buffRadius() const { return _buffRadius; }
 
   void initStrengthAndMaxHealth() const;
 

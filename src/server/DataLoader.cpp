@@ -339,6 +339,18 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
       ot->onDestroy(pAction);
     }
 
+    // Grants buff on overlap
+    auto grantsBuff = xr.findChild("grantsBuff", elem);
+    if (grantsBuff) {
+      auto buffID = ""s;
+      auto radius = 0.0;
+      if (xr.findAttr(elem, "id", buffID) &&
+          xr.findAttr(elem, "radius", radius)) {
+      }
+      const auto *buff = &_server._buffTypes[buffID];
+      ot->grantsBuff(buff, radius);
+    }
+
     bool foundInPlace = false;
     for (auto it = _server._objectTypes.begin();
          it != _server._objectTypes.end(); ++it) {

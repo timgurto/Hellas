@@ -321,3 +321,30 @@ TEST_CASE("Returning users know their buffs") {
   // Then he knows he still has the buff.
   WAIT_UNTIL(c->character().buffs().size() == 1);
 }
+
+TEST_CASE("Object-granted buffs") {
+  GIVEN("a user owns a buff-granting object") {
+    auto data = R"(
+      <buff id="glowing" />
+      <objectType id="uranium">
+        <grantsBuff id="glowing" radius="5" />
+      </objectType>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    s.addObject("uranium", {20, 20}, user.name());
+
+    THEN("he has no buffs") { CHECK(user.buffs().empty()); }
+
+    WHEN("he touches the object") {
+      while (user.location() != MapPoint{20, 20}) {
+        c.sendMessage(CL_LOCATION, makeArgs(20, 20));
+        SDL_Delay(5);
+      }
+
+      THEN("he has a buff") { WAIT_UNTIL(user.buffs().size() == 1); }
+    }
+  }
+}

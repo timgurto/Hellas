@@ -726,10 +726,31 @@ bool User::shouldGatherDoubleThisTime() const {
 }
 
 void User::onMove() {
+  // Explore map
   auto chunk = _exploration.getChunk(location());
   auto newlyExploredChunks = _exploration.explore(chunk);
   for (const auto &chunk : newlyExploredChunks)
     _exploration.sendSingleChunk(socket(), chunk);
+
+  // Get buffs from objects
+  using ObjectBuff = std::pair<const BuffType *, Entity *>;
+  auto buffsToAdd = std::set<ObjectBuff>{};
+  for (auto *entity : Server::_instance->findEntitiesInArea(location())) {
+    const Object *pObj = dynamic_cast<const Object *>(entity);
+    if (pObj == nullptr) continue;
+    if (!pObj->permissions().doesUserHaveAccess(_name)) continue;
+    if (pObj->isBeingBuilt()) continue;
+    const auto &objType = pObj->objType();
+    if (!objType.grantsBuff()) continue;
+    if (distance(pObj->collisionRect(), collisionRect()) > objType.buffRadius())
+      continue;
+
+    buffsToAdd.insert(ObjectBuff{objType.buffGranted(), entity});
+  }
+
+  for (const auto &objectBuff : buffsToAdd) {
+    applyBuff(*objectBuff.first, *objectBuff.second);
+  }
 }
 
 const MapRect User::collisionRect() const {
@@ -917,7 +938,8 @@ void User::addQuestProgress(Quest::Objective::Type type,
       if (quest->canBeCompletedByUser(*this))
         sendMessage(SV_QUEST_CAN_BE_FINISHED, questID);
 
-      break;  // Assuming there will be a key match no more than once per quest
+      break;  // Assuming there will be a key match no more than once per
+              // quest
     }
   }
 }
