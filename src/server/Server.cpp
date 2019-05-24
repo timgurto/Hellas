@@ -305,7 +305,7 @@ void Server::addUser(const Socket &socket, const std::string &name,
   }
   _debug << " user, " << name << " has logged in." << Log::endl;
 
-  newUser.findRealWorldLocation();
+  if (!_isTestServer) newUser.findRealWorldLocation();
 
   sendMessage(socket, SV_WELCOME);
   if (userExisted) newUser.sendTimePlayed();
@@ -672,10 +672,10 @@ Entity &Server::addEntity(Entity *newEntity) {
 }
 
 User *Server::getUserByName(const std::string &username) {
+  if (_usersByName.empty()) return nullptr;
   auto it = _usersByName.find(username);
   if (it == _usersByName.end()) return nullptr;
-  auto ptr = _usersByName.find(username)->second;
-  return const_cast<User *>(ptr);
+  return const_cast<User *>(it->second);
 }
 
 const BuffType *Server::getBuffByName(const Buff::ID &id) const {
