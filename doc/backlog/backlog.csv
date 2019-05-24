@@ -260,7 +260,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 81,Allow actual dragging from containers,21,34,Usability,,,,
 83,Stack splitting,21,34,Feature,,,,
 85,Fix scroll-bar dragging offset,5,3,Bug,,,,
-94,A road object that affects movement speed,3,13,Feature,,,,
+94,A road object that affects movement speed,3,13,Feature,,,TRUE,
 100,Sounds for crafting,5,2,Aesthetics,,,,
 101,Particles for crafting,5,2,Aesthetics,,,,
 105,Vehicles can have different speeds,5,5,Feature,,,TRUE,4 Copper

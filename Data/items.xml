@@ -228,7 +228,7 @@
 
     <!-- Ammo -->
         <!-- Rock -->
-        <item id="smoothRock"   name="Smooth Rock"  stackSize="20"  sounds="rock" />
+        <item id="smoothRock"   name="Smooth Rock"  stackSize="20"  sounds="rock" strength="12" />
         <item id="woodArrow"    name="Arrow"        stackSize="20"  sounds="rock" />
         <!-- Tin Javelin -->
         <item id="boneDust"     name="Magic Dust"   stackSize="20" />

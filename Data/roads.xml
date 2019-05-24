@@ -1,0 +1,16 @@
+<root>
+
+<buff id="roadMovement1" name="Road" icon="outlineFoot" >
+    <stats speed="1.20" />
+</buff>
+
+<objectType id="stoneRoad" name="Stone Road"
+    xDrawOffset="-16" yDrawOffset="-16" collides="0" isFlat="1">
+    <collisionRect x="-16" y="-16" w="32" h="32" />
+    <grantsBuff id="roadMovement1" radius="0" />
+    <material id="smoothRock" quantity="9" />
+    <unlockedBy recipe="smoothRock" chance="0.2" />
+    <strength item="smoothRock" quantity="9" />
+</objectType>
+
+</root>
