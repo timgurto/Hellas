@@ -84,7 +84,7 @@ class ObjectType : public EntityType, public QuestNodeType {
 
   virtual ~ObjectType() {}
 
-  virtual void initialise() const {};
+  virtual void initialise() const;
 
   void gatherTime(ms_t t) { _gatherTime = t; }
   const std::string &gatherReq() const { return _gatherReq; }

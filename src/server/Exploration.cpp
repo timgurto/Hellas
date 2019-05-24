@@ -57,7 +57,7 @@ void Exploration::sendWholeMap(const Socket &socket) const {
       Uint32 number = 0;
       for (auto i = 0; i != CHUNKS_PER_NUMBER; ++i) {
         number = number << 1;
-        auto y = numberIndex * CHUNKS_PER_NUMBER + i;
+        size_t y = numberIndex * CHUNKS_PER_NUMBER + i;
         if (y >= _map[col].size()) continue;
         if (_map[col][y]) ++number;
       }

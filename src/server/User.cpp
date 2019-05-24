@@ -726,6 +726,8 @@ bool User::shouldGatherDoubleThisTime() const {
 }
 
 void User::onMove() {
+  auto &server = Server::instance();
+
   // Explore map
   auto chunk = _exploration.getChunk(location());
   auto newlyExploredChunks = _exploration.explore(chunk);
@@ -733,9 +735,8 @@ void User::onMove() {
     _exploration.sendSingleChunk(socket(), chunk);
 
   // Get buffs from objects
-  using ObjectBuff = std::pair<const BuffType *, Entity *>;
-  auto buffsToAdd = std::set<ObjectBuff>{};
-  for (auto *entity : Server::_instance->findEntitiesInArea(location())) {
+  auto buffsToAdd = std::map<const BuffType *, Entity *>{};
+  for (auto *entity : server.findEntitiesInArea(location())) {
     const Object *pObj = dynamic_cast<const Object *>(entity);
     if (pObj == nullptr) continue;
     if (!pObj->permissions().doesUserHaveAccess(_name)) continue;
@@ -745,11 +746,24 @@ void User::onMove() {
     if (distance(pObj->collisionRect(), collisionRect()) > objType.buffRadius())
       continue;
 
-    buffsToAdd.insert(ObjectBuff{objType.buffGranted(), entity});
+    buffsToAdd[objType.buffGranted()] = entity;
   }
 
-  for (const auto &objectBuff : buffsToAdd) {
-    applyBuff(*objectBuff.first, *objectBuff.second);
+  // Remove any disqualified pre-existing object buffs
+  auto buffsToRemove = std::set<std::string>{};
+  for (const auto &currentlyActiveBuff : buffs()) {
+    const auto *buffType = server.findBuff(currentlyActiveBuff.type());
+
+    if (!buffType->grantedByObject()) continue;
+
+    if (buffsToAdd.count(buffType) == 0) buffsToRemove.insert(buffType->id());
+  }
+
+  for (const auto buffID : buffsToRemove) removeBuff(buffID);
+
+  // Add buffs from objects
+  for (const auto &pair : buffsToAdd) {
+    applyBuff(*pair.first, *pair.second);
   }
 }
 

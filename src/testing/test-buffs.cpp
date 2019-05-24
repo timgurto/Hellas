@@ -344,7 +344,16 @@ TEST_CASE("Object-granted buffs") {
         SDL_Delay(5);
       }
 
-      THEN("he has a buff") { WAIT_UNTIL(user.buffs().size() == 1); }
+      THEN("he has a buff") { CHECK(user.buffs().size() == 1); }
+
+      AND_WHEN("he moves away from it") {
+        while (user.location() != MapPoint{10, 10}) {
+          c.sendMessage(CL_LOCATION, makeArgs(10, 10));
+          SDL_Delay(5);
+        }
+
+        THEN("he has no buffs") { CHECK(user.buffs().empty()); }
+      }
     }
   }
 }

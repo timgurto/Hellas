@@ -344,8 +344,8 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
     if (grantsBuff) {
       auto buffID = ""s;
       auto radius = 0.0;
-      if (xr.findAttr(elem, "id", buffID) &&
-          xr.findAttr(elem, "radius", radius)) {
+      if (xr.findAttr(grantsBuff, "id", buffID) &&
+          xr.findAttr(grantsBuff, "radius", radius)) {
       }
       const auto *buff = &_server._buffTypes[buffID];
       ot->grantsBuff(buff, radius);

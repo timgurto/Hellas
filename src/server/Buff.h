@@ -46,6 +46,8 @@ class BuffType {
   bool cancelsOnOOE() const { return _cancelsOnOOE; }
   void giveToNewPlayers() { _givenToNewPlayers = true; }
   bool shouldGiveToNewPlayers() const { return _givenToNewPlayers; }
+  void markAsGrantedByObject() const { _grantedByObject = true; }
+  bool grantedByObject() const { return _grantedByObject; }
 
   bool hasType() const { return _type != UNKNOWN; }
   bool hasEffectOnHit() const { return _type == SPELL_ON_HIT; }
@@ -64,6 +66,10 @@ class BuffType {
   bool _canBeInterrupted{false};  // Cancels when hit
   bool _cancelsOnOOE{false};      // Cancels when recipient has no energy
   bool _givenToNewPlayers{false};
+  // Assumption: if granted by an object, then it can't come from any other
+  // source.  This is important because if a user isn't overlapping an object
+  // that grants this, it will be removed from him.
+  mutable bool _grantedByObject{false};
 };
 
 // An instance of a buff type, on a specific target, from a specific caster

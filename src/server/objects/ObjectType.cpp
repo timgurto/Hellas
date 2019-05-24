@@ -1,4 +1,5 @@
 #include "ObjectType.h"
+
 #include "../Server.h"
 
 ObjectType::ObjectType(const std::string &id)
@@ -14,6 +15,10 @@ ObjectType::ObjectType(const std::string &id)
       _bottomlessMerchant(false),
       _container(nullptr) {
   if (_baseStats.maxHealth == 0) _baseStats.maxHealth = 1;
+}
+
+void ObjectType::initialise() const {
+  if (_buffGranted) _buffGranted->markAsGrantedByObject();
 }
 
 void ObjectType::addYield(const ServerItem *item, double initMean,
