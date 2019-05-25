@@ -282,6 +282,7 @@ void Entity::updateBuffs(ms_t timeElapsed) {
   for (auto i = 0; i != _buffs.size(); ++i) {
     auto &buff = _buffs[i];
     buff.update(timeElapsed);
+    if (isDead()) return;
     if (buff.hasExpired()) expiredBuffs.insert(buff.type());
   }
 
@@ -289,6 +290,7 @@ void Entity::updateBuffs(ms_t timeElapsed) {
   for (auto i = 0; i != _debuffs.size(); ++i) {
     auto &debuff = _debuffs[i];
     debuff.update(timeElapsed);
+    if (isDead()) return;
     if (debuff.hasExpired()) expiredDebuffs.insert(debuff.type());
   }
 
