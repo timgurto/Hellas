@@ -151,13 +151,12 @@ void Client::initializeCraftingWindow() {
   _detailsPane =
       new Element({DETAILS_PANE_X, CONTENT_Y, DETAILS_PANE_W, CONTENT_H});
   _craftingWindow->addChild(_detailsPane);
-  selectRecipe(*_detailsPane, {});  // Fill details pane initially
+  refreshRecipeDetailsPane(Element{}, {});  // Fill details pane initially
 }
 
-void Client::selectRecipe(Element &e, const ScreenPoint &mousePos) {
+void Client::refreshRecipeDetailsPane(Element &, const ScreenPoint &) {
   auto &client = *_instance;
 
-  if (!collision(mousePos, {0, 0, e.rect().w, e.rect().h})) return;
   Element &pane = *client._detailsPane;
   pane.clearChildren();
   const ScreenRect &paneRect = pane.rect();
@@ -352,13 +351,13 @@ void Client::populateRecipesList(Element &e) {
     recipeElement->addChild(new Label(
         {NAME_X, 0, recipeElement->rect().w - NAME_X, ICON_SIZE + 2},
         recipe.name(), Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
-    recipeElement->setLeftMouseUpFunction(selectRecipe);
+    recipeElement->setLeftMouseUpFunction(refreshRecipeDetailsPane);
     recipeElement->id(recipe.id());
   }
   const std::string oldSelectedRecipe = recipesList.getSelected();
   recipesList.verifyBoxes();
   if (recipesList.getSelected() != oldSelectedRecipe)
-    selectRecipe(recipesList, {});
+    refreshRecipeDetailsPane(Element{}, {});
 }
 
 void Client::scrollRecipeListToTop() { _recipeList->scrollToTop(); }
