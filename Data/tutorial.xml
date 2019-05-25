@@ -49,7 +49,7 @@
     <spawnPoint type="tutPig" quantity="5" radius="200" respawnTime="30000" x="4174" y="60220" />
 
 <quest id="tutParts" name="Goat Accumulator" startsAt="prometheus" endsAt="prometheus"
-    brief="My kin used to rule the cosmos, but cruelty and jealousy led to a war . . . a war that we lost.  Now the youngsters on Mt. Olympus rule, while the other Titans, my family, suffer imprisonment in the underworld.
+    brief="My kin used to rule the cosmos, but cruelty and jealousy led to a war ... a war that we lost.  Our beloved mountain was all but destroyed.  Now the youngsters on Mt. Olympus rule, while the other Titans, my family, suffer imprisonment in the underworld.
     Zeus, the king of these Olympian gods, wants you humans to worship his kind with animal sacrifices.
     Before we negotiate the details, you'll need to get your hands dirty.  There's a small pass north of the pigs you just encountered, that leads to a herd of wild goats.  Slay some, and gather what you can of their remains."
     debrief="These will do nicely."
@@ -123,7 +123,7 @@
     </objectType>
 
 <quest id="tutReturnFromZeus" name="Into Darkness" startsAt="tutBrazier" endsAt="prometheus"
-    brief="What the . . . disgusting!  Where is the meat?  What are we supposed to do with these revolting entrails?
+    brief="What the ... disgusting!  Where is the meat?  What are we supposed to do with these revolting entrails?
     The insolence to believe that you, a mere mortal, could outsmart a god!  Did you think you'd get away with this?
     What's done is done, and these are the sacrifices we must now accept.  But I can punish you in a different way.  I am banishing fire from your world; you and your kind can languish in primitive savagery for all time.
     Now get out of my sight, you worm--run along to your benefactor."
@@ -132,7 +132,7 @@
 </quest>
 
 <quest id="tutLearnFire" name="Burning Desire" startsAt="prometheus" endsAt="prometheus"
-    brief="What?  He removed fire from the world?  But it's critical to . . . that would stop you from ever . . . hmm . . .
+    brief="What?  He removed fire from the world?  But it's critical to ... that would stop you from ever ... hmm ...
     I know what I must do.
     Head to the woods, westward, and pick up some sticks for me.  When you get back, I will restore fire to mankind."
     debrief="Good.  Zeus won't let you leave this mountain with anything in your hand or on your back, especially fire, so instead you'll have to carry it in your heart--I'll teach you how to create fire yourself.  That way the gods can never take it from you again.
@@ -192,7 +192,7 @@
     Now that you know how to cook, I would greatly appreciate it if you could pay him a visit and bring him some food.  If you manage to get a fire going, that experience will teach you all the knowledge necessary to cook raw boar meat into a nutritious meal.
     Now that I think about it, given his history fighting against the gods, Atlas might be able to offer you some guidance of his own.  Be sure to ask him for any advice he may have.
     Head west.  Then keep going, until you reach the very edge of the world.  That's where you'll find Atlas."
-    debrief="Hello . . . urgh . . .  it's nice to have a visitor.  One of my brother's . . . ungh . . .  new creatures, are you?  What's that?  You brought me some food?"
+    debrief="Hello ... urgh ...  it's nice to have a visitor.  One of my brother's ... ungh ...  new creatures, are you?  What's that?  You brought me some food?"
     helpTopicOnAccept="Crafting" >
     <prerequisite id="tutLearnFire" />
     <objective type="fetch" id="cookedMeat" qty="3" />
@@ -216,7 +216,7 @@
     Hah, I'm joking; relax!
     Advice?  Actually, there is something that might prove useful to you.  Down the path to the south are the cyclops craftsmen that made weapons for Zeus during the war.  Go speak to them, and see if they have any surplus weapons now that the war is over.  Sure, they sided with the enemy, but the blood of the Titans flows through their veins and they might be willing to bargain."
     debrief="Good day.  You're a small one!
-    Surplus weapons?  Hmm, I don't know . . . the war is over, I suppose.  Plus, we're short on materials for our work, so maybe we can help each other.  My brother Brontes here will give you what you want in exchange for the metal ore that can be found on this mountain.">
+    Surplus weapons?  Hmm, I don't know ... the war is over, I suppose.  Plus, we're short on materials for our work, so maybe we can help each other.  My brother Brontes here will give you what you want in exchange for the metal ore that can be found on this mountain.">
     <prerequisite id="tutCooking" />
 </quest>
     <objectType
@@ -321,7 +321,7 @@
 
 <quest id="tutTortoises" name="Gifts of the Wild" startsAt="prometheus" endsAt="prometheus"
     brief="Another fascinating new animal Themis created is tortoises.  They look quite strange; go north-east to the beach, and see if you can discern their gift."
-    debrief="A shield that protects them from damage?  Huh . . ." >
+    debrief="A shield that protects them from damage?  Huh ..." >
     <prerequisite id="tutSnakes" />
 	<objective type="kill" id="tutTortoise" qty="5" />
 </quest>
@@ -350,7 +350,7 @@
 
 <quest id="tutLizards" name="Gifts of the Wild" startsAt="prometheus" endsAt="prometheus"
     brief="There's one final animal I want you to investigate: lizards.  I saw some crawling around out west past the forest, in a desert.  Please engage a few in combat."
-    debrief="How very strange . . . the lizards healed themselves while you fought?  That's quite a defense mechanism." >
+    debrief="How very strange ... the lizards healed themselves while you fought?  That's quite a defense mechanism." >
     <prerequisite id="tutTortoises" />
 	<objective type="kill" id="tutLizard" qty="5" />
 </quest>
@@ -377,7 +377,7 @@
     brief="Some animals can attack, up close or from far away.  Some do physical damage, and others draw on the elements.  Some can protect themselves with shields, and others can restore health.
     With your help, I have decided on a gift to bestow upon mankind: you will receive them all.  No man can excel at everything, but together you will have access to each of these gifts.  Another gift I grant you is reason--the ability to know and improve yourself, and choose how best to make the most of your talents.
     Now it's time to leave this mountain for good, and enter the wider world.  To do this, enlist the aid of my cousin Eos; she is the goddess of the dawn, and will gladly help to establish mankind in the mortal realm.  Travel northeast and look for her Altar."
-    debrief="As you can see, Zeus has seen fit to punish me for sharing fire with you against his wishes.  At least this bird isn't cooking my liver before eating it!  Heh heh . . .
+    debrief="As you can see, Zeus has seen fit to punish me for sharing fire with you against his wishes.  At least this bird isn't cooking my liver before eating it!  Heh heh ...
     No matter, I made my decision and I will live with it."
     helpTopicOnAccept="Talents" >
     <prerequisite id="tutLizards" />
