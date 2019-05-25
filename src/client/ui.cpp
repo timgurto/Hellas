@@ -220,6 +220,9 @@ Element *Client::assembleBuffEntry(const ClientBuffType &type, bool isDebuff) {
   icon->setTooltip(tooltip);
 
   // Duration display
+  auto hasNoDuration = type.duration() == 0;
+  if (hasNoDuration) return e;
+
   auto &timeRemainingMap = isDebuff ? instance()._debuffTimeRemaining
                                     : instance()._buffTimeRemaining;
   auto timeRemainingRect =
