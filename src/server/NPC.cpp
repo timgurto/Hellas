@@ -273,7 +273,7 @@ void NPC::processAI(ms_t timeElapsed) {
   }
 
   // On transition
-  if (previousState == CHASE && _state == IDLE) {
+  if ((previousState == CHASE || previousState == ATTACK) && _state == IDLE) {
     target(nullptr);
     _threatTable.clear();
 
