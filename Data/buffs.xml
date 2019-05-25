@@ -39,10 +39,10 @@
     description="Speed increased; energy reduced each second.">
     <stats eps="-20" speed="2" />
 </buff>
-<buff id="stun" name="Stunned" icon="shout" duration="10">
+<buff id="stun" name="Stunned" icon="shout" duration="6">
     <stats stuns="1" />
 </buff>
-<buff id="damageShield" name="Daemonic Armour" icon="orbBlue" duration="120" school="fire"
+<buff id="damageShield" name="Daemonic Armour" icon="orbRed" duration="120" school="fire"
     description="Attackers take damage.">
     <function onHit="1" name="doDirectDamage" i1="2" />
 </buff>

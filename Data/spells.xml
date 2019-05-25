@@ -62,24 +62,24 @@ Functions:
 </spell-->
 
 <!-- Philosopher -->
-<spell id="airDot" name="Logic" icon="lettersCopper" cost=10 range=30 school="air" >
+<spell id="airDot" name="Logic" icon="lettersCopper" cost=20 range=30 school="air" >
     <targets enemy=1 />
     <function name="debuff" s1="airDot" />
 </spell>
-<spell id="threatDropPhilosopher" name="Constant Flux" icon="waterRipples" cost=10 range=30 school="water" >
+<spell id="threatDropPhilosopher" name="Constant Flux" icon="waterRipples" cost=20 range=30 school="water" >
     <targets enemy=1 />
     <function name="scaleThreat" d1="0.75" />
 </spell>
 
 <!-- Magus -->
-<spell id="fireball" name="Fireball" icon="fireball" cost=10 range=30 school="fire" >
+<spell id="fireball" name="Fireball" icon="fireball" cost=15 range=30 school="fire" >
     <aesthetics projectile="fireball" sounds="fireball" />
     <targets enemy=1 />
     <function name="doDirectDamage" i1=5 />
 </spell>
 
 <!-- Naturalist -->
-<spell id="poison" name="Poison Stab" icon="dripGreen" cost=10 range=30 school="earth" >
+<spell id="poison" name="Poison Stab" icon="dripGreen" cost=20 range=30 school="earth" >
     <aesthetics impactParticles="poison" />
     <targets enemy=1 />
     <function name="debuff" s1="poison" />
@@ -90,13 +90,13 @@ Functions:
 </spell>
 
 <!-- Alchemist -->
-<spell id="threatDropAlchemist" name="Disappear" icon="shadow" cost=10 range=30 school="air" >
+<spell id="threatDropAlchemist" name="Disappear" icon="shadow" cost=20 range=30 school="air" >
     <targets enemy=1 />
     <function name="scaleThreat" d1="0.75" />
 </spell>
 
 <!-- Priest -->
-<spell id="priestEconHeal" name="Prayer" icon="light" cost=12 range=25 >
+<spell id="priestEconHeal" name="Prayer" icon="light" cost=25 range=25 >
     <aesthetics sounds="heal" impactParticles="lightRays" />
     <targets friendly=1 self=1 />
     <function name="heal" i1=20 />
@@ -107,22 +107,22 @@ Functions:
 </spell>
 
 <!-- Cultist -->
-<spell id="selfHeal" name="Selfish Request" icon="lightOnMan" cost=5 >
+<spell id="selfHeal" name="Selfish Request" icon="lightOnMan" cost=10 >
     <aesthetics sounds="heal" impactParticles="lightRays" />
     <targets self=1 />
     <function name="heal" i1=15 />
 </spell>
-<spell id="damageShield" name="Daemonic Shield" icon="orbBlue" cost=10 range=30 school="fire" >
+<spell id="damageShield" name="Daemonic Shield" icon="orbRed" cost=20 range=30 school="fire" >
     <targets self=1 />
     <function name="buff" s1="damageShield" />
 </spell>
 
 <!-- Poet -->
-<spell id="poetStun" name="Depressing Tragedy" icon="maskSad" cost=10 range=30 school="air" >
+<spell id="poetStun" name="Depressing Tragedy" icon="maskSad" cost=20 range=30 school="air" >
     <targets enemy=1 />
     <function name="debuff" s1="stun" />
 </spell>
-<spell id="threatDropPoet" name="Uplifting Comedy" icon="maskHappy" cost=10 range=30 school="air" >
+<spell id="threatDropPoet" name="Uplifting Comedy" icon="maskHappy" cost=20 range=30 school="air" >
     <targets enemy=1 />
     <function name="scaleThreat" d1="0.75" />
 </spell>
