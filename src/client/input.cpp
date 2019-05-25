@@ -542,14 +542,31 @@ Sprite *Client::getEntityAtMouse() {
       bottomEntity(nullptr, {0, mouseOffset.y + LOOKUP_MARGIN});
   auto lowerBound = _entities.lower_bound(&topEntity),
        upperBound = _entities.upper_bound(&bottomEntity);
+
+  // First pass: non-flat entities
   for (auto it = lowerBound; it != upperBound; ++it) {
     const auto &entity = **it;
+    if (entity.type()->isFlat()) continue;
     if (&entity == &_character) continue;  // Can't interact with self
     if (entity.type()->isDecoration()) continue;
     if (!entity.collision(mouseOffset)) continue;  // Crude collision check
     if (!entity.mouseIsOverRealPixel(mouseOffset)) continue;  // Detailed check
     mouseOverIt = it;
   }
+
+  // Second pass: flat entities
+  if (mouseOverIt == _entities.end())
+    for (auto it = lowerBound; it != upperBound; ++it) {
+      const auto &entity = **it;
+      if (!entity.type()->isFlat()) continue;
+      if (&entity == &_character) continue;  // Can't interact with self
+      if (entity.type()->isDecoration()) continue;
+      if (!entity.collision(mouseOffset)) continue;  // Crude collision check
+      if (!entity.mouseIsOverRealPixel(mouseOffset))
+        continue;  // Detailed check
+      mouseOverIt = it;
+    }
+
   if (mouseOverIt != _entities.end())
     return *mouseOverIt;
   else
