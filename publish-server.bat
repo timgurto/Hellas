@@ -9,6 +9,6 @@ xcopy logging "F:\Permanent\Hellas production server\logging\" /E /Y
 xcopy Images\Items "F:\Permanent\Hellas production server\Images\Items\" /E /Y
 
 rem Start server
-C:
+F:
 cd "F:\Permanent\Hellas production server"
 launch.bat
