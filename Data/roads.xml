@@ -1,6 +1,7 @@
 <root>
 
-<buff id="roadMovement1" name="Road" icon="outlineFoot" >
+<buff id="roadMovement1" name="Road" icon="outlineFoot"
+    description="Movement speed increased by 20%">
     <stats speed="1.20" />
 </buff>
 
