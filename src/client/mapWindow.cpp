@@ -87,12 +87,12 @@ void Client::updateMapWindow(Element &) {
 
   for (const auto &objPair : client._objects) {
     const auto &object = *objPair.second;
-    client.addMapPin(object.location(), object.nameColor());
+    client.addMapPin(object.location(), object.nameColor(), object.name());
   }
 
   for (const auto &pair : client._otherUsers) {
     const auto &avatar = *pair.second;
-    client.addMapPin(avatar.location(), avatar.nameColor());
+    client.addMapPin(avatar.location(), avatar.nameColor(), avatar.name());
   }
 
   client.addOutlinedMapPin(client._character.location(), Color::COMBATANT_SELF);
@@ -101,14 +101,19 @@ void Client::updateMapWindow(Element &) {
   client._zoomMapOutButton->setEnabled(client._zoom > Client::MIN_ZOOM);
 }
 
-void Client::addMapPin(const MapPoint &worldPosition, const Color &color) {
+void Client::addMapPin(const MapPoint &worldPosition, const Color &color,
+                       const std::string &tooltip) {
   static const ScreenRect PIN_RECT(0, 0, 1, 1), OUTLINE_RECT(-1, -1, 3, 3);
 
   auto mapPosition = convertToMapPosition(worldPosition);
 
-  _mapPins->addChild(new ColorBlock(PIN_RECT + mapPosition, color));
-  _mapPinOutlines->addChild(
-      new ColorBlock(OUTLINE_RECT + mapPosition, Color::UI_OUTLINE));
+  auto pin = new ColorBlock(PIN_RECT + mapPosition, color);
+  if (!tooltip.empty()) pin->setTooltip(tooltip);
+  _mapPins->addChild(pin);
+
+  auto outline = new ColorBlock(OUTLINE_RECT + mapPosition, Color::UI_OUTLINE);
+  if (!tooltip.empty()) outline->setTooltip(tooltip);
+  _mapPinOutlines->addChild(outline);
 }
 
 void Client::addOutlinedMapPin(const MapPoint &worldPosition,

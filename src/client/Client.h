@@ -307,7 +307,8 @@ class Client {
   static const px_t MAP_IMAGE_W = 300, MAP_IMAGE_H = 300;
   void initializeMapWindow();
   static void updateMapWindow(Element &);
-  void Client::addMapPin(const MapPoint &worldPosition, const Color &color);
+  void Client::addMapPin(const MapPoint &worldPosition, const Color &color,
+                         const std::string &tooltip = {});
   void Client::addOutlinedMapPin(const MapPoint &worldPosition,
                                  const Color &color);
   ScreenRect Client::convertToMapPosition(const MapPoint &worldPosition) const;
