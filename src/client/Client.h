@@ -119,7 +119,10 @@ class Client {
   void setTarget(const T &newTarget, bool aggressive = false) {
     _target.setAndAlertServer(newTarget, aggressive);
   }
-  void clearTarget() { _target.clear(); }
+  void clearTarget() {
+    _target.clear();
+    refreshTargetBuffs();
+  }
   void hideTargetMenu() { _target.hideMenu(); }
 
   const Texture &cursorNormal() const { return _cursorNormal; }
