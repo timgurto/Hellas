@@ -1023,9 +1023,6 @@ bool User::canAttack() {
 void User::onCanAttack() { _shouldSuppressAmmoWarnings = false; }
 
 void User::onAttack() {
-  // Tag target
-  if (!target()->tagger()) target()->tagger(*this);
-
   // Remove ammo if ranged weapon
   auto weapon = _gear[Item::WEAPON_SLOT].first;
   if (!weapon) return;

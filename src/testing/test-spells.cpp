@@ -259,3 +259,33 @@ TEST_CASE("NPC spells") {
     }
   }
 }
+
+TEST_CASE("Kills with spells give XP") {
+  GIVEN("a high-damage spell and low-health NPC") {
+    auto data = R"(
+      <spell id="nuke" range=30 >
+        <targets enemy=1 />
+        <function name="doDirectDamage" i1=99999 />
+      </spell>
+      <npcType id="critter" maxHealth=1 />
+    )";
+    auto s = TestServer::WithDataString(data);
+    s.addNPC("critter", {10, 15});
+
+    WHEN("a user knows the spell") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      user.getClass().teachSpell("nuke");
+
+      AND_WHEN("he kills the NPC with the spell") {
+        const auto &critter = s.getFirstNPC();
+        c.sendMessage(CL_SELECT_ENTITY, makeArgs(critter.serial()));
+        c.sendMessage(CL_CAST, "nuke");
+        WAIT_UNTIL(critter.isDead());
+
+        THEN("the user has some XP") { WAIT_UNTIL(user.xp() > 0); }
+      }
+    }
+  }
+}

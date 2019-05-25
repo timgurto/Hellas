@@ -411,6 +411,12 @@ void Entity::onDeath() {
 }
 
 void Entity::onAttackedBy(Entity &attacker, Threat threat) {
+  // Tag target
+  if (attacker.classTag() == 'u') {
+    auto &attackerAsUser = dynamic_cast<User &>(attacker);
+    if (!tagger()) tagger(attackerAsUser);
+  }
+
   for (const auto *buff : onHitBuffsAndDebuffs()) {
     buff->proc(&attacker);
   }
@@ -418,12 +424,12 @@ void Entity::onAttackedBy(Entity &attacker, Threat threat) {
   for (auto buff : interruptibleBuffs()) removeBuff(buff);
 
   if (isDead()) {
-    if (!this->tagger()) {
+    if (!tagger()) {
       Server::debug()("Entity died without being tagged; no credit given.",
                       Color::CHAT_ERROR);
       return;
     }
-    this->tagger()->onKilled(*this);
+    tagger()->onKilled(*this);
   }
 }
 
