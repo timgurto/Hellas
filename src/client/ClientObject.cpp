@@ -631,6 +631,7 @@ void ClientObject::assembleWindow(Client &client) {
       if (userHasAccess()) {
         addConstructionToWindow();
         if (canCede) addCedeButtonToWindow();
+        if (canGrant) addGrantButtonToWindow();
         if (canDemolish) addDemolishButtonToWindow();
       }
 
