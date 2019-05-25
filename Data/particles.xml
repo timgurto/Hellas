@@ -287,7 +287,7 @@
     id="waterSmall"
     particlesPerSecond=30
     alpha=192 >
-    <lifespan mean=400 sd=50 />
+    <lifespan mean=600 sd=80 />
     <distance mean=0 sd=2 />
     <altitude mean=0 sd=2 />
     <velocity mean=0 sd=2 />

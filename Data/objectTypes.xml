@@ -139,7 +139,7 @@
     xDrawOffset="-8" yDrawOffset="-16"
     deconstructs="smallPot" deconstructionTime="1000"
     sounds="pottery" damageParticles="ceramicShards" >
-    <collisionRect x="-8" y="-5" w="16" h="10" />
+    <collisionRect x="-7" y="-4" w="14" h="8" />
     <container slots="1" />
     <strength item="crudeClay" quantity="2" />
 </objectType>
