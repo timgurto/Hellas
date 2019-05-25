@@ -672,6 +672,7 @@
     id="skullCap" time="10000" >
     <material id="leather" quantity="4" />
     <material id="linenThread" />
+    <tool class="sewing" />
     <unlockedBy recipe="leather" chance="0.2" />
 </recipe>
 
@@ -679,6 +680,7 @@
     id="sandals" time="10000" >
     <material id="leather" quantity="3" />
     <material id="linenThread" />
+    <tool class="sewing" />
     <unlockedBy recipe="leather" chance="0.1" />
 </recipe>
 
@@ -686,6 +688,7 @@
     id="leatherGloves" time="10000" >
     <material id="leather" quantity="2" />
     <material id="linenThread" />
+    <tool class="sewing" />
     <unlockedBy recipe="leather" chance="0.2" />
 </recipe>
 
