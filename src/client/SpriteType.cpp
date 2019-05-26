@@ -61,21 +61,21 @@ void SpriteType::setImage(const std::string &imageFile) {
 void SpriteType::drawRect(const ScreenRect &rect) { _drawRect = rect; }
 
 const Texture &SpriteType::shadow() const {
-  if (isDecoration()) return _shadow;  // Will never get created.
+  auto shadowIsUpToDate =
+      _shadow && _timeGenerated >= timeThatTheLastRedrawWasOrdered;
+  if (shadowIsUpToDate) return _shadow;
 
-  if (!_shadow || _timeGenerated < timeThatTheLastRedrawWasOrdered) {
-    px_t shadowWidth = toInt(_drawRect.w * SHADOW_RATIO);
-    if (_customShadowWidth.hasValue()) shadowWidth = _customShadowWidth.value();
-    px_t shadowHeight = toInt(shadowWidth / SHADOW_WIDTH_HEIGHT_RATIO);
-    _shadow = {shadowWidth, shadowHeight};
-    _shadow.setBlend();
-    _shadow.setAlpha(0x4f);
-    renderer.pushRenderTarget(_shadow);
-    Client::instance().shadowImage().draw({0, 0, shadowWidth, shadowHeight});
-    renderer.popRenderTarget();
+  px_t shadowWidth = toInt(_drawRect.w * SHADOW_RATIO);
+  if (_customShadowWidth.hasValue()) shadowWidth = _customShadowWidth.value();
+  px_t shadowHeight = toInt(shadowWidth / SHADOW_WIDTH_HEIGHT_RATIO);
+  _shadow = {shadowWidth, shadowHeight};
+  _shadow.setBlend();
+  _shadow.setAlpha(0x4f);
+  renderer.pushRenderTarget(_shadow);
+  Client::instance().shadowImage().draw({0, 0, shadowWidth, shadowHeight});
+  renderer.popRenderTarget();
 
-    _timeGenerated = SDL_GetTicks();
-  }
+  _timeGenerated = SDL_GetTicks();
 
   return _shadow;
 }
