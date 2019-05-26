@@ -382,7 +382,9 @@ class Client {
   void initPerformanceDisplay();
   void initPlayerPanels();
   void initHotbar();
-  void populateHotbar();
+  void refreshHotbar();
+  void initAssignerWindow();
+  void populateAssignerWindow();
   void initBuffsDisplay();
   void refreshBuffsDisplay();
   static Element *assembleBuffEntry(const ClientBuffType &type,

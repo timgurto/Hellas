@@ -1656,7 +1656,7 @@ void Client::handleMessage(const std::string &msg) {
         _pointsInTrees.clear();
         _knownSpells.clear();
         populateClassWindow();
-        populateHotbar();
+        refreshHotbar();
         break;
       }
 
@@ -1669,7 +1669,7 @@ void Client::handleMessage(const std::string &msg) {
         if (del != MSG_END) return;
 
         _spellCooldowns[spellID] = timeRemaining;
-        populateHotbar();
+        refreshHotbar();
         break;
       }
 
@@ -2170,7 +2170,7 @@ void Client::handle_SV_KNOWN_SPELLS(
     _knownSpells.insert(it->second);
   }
 
-  populateHotbar();
+  refreshHotbar();
 }
 
 void Client::handle_SV_LEARNED_SPELL(const std::string &spellID) {
@@ -2178,7 +2178,7 @@ void Client::handle_SV_LEARNED_SPELL(const std::string &spellID) {
   if (it == _spells.end()) return;
   _knownSpells.insert(it->second);
 
-  populateHotbar();
+  refreshHotbar();
 }
 
 void Client::handle_SV_UNLEARNED_SPELL(const std::string &spellID) {
@@ -2186,7 +2186,7 @@ void Client::handle_SV_UNLEARNED_SPELL(const std::string &spellID) {
   if (it == _spells.end()) return;
   _knownSpells.erase(it->second);
 
-  populateHotbar();
+  refreshHotbar();
 }
 
 void Client::handle_SV_LEVEL_UP(const std::string &username) {

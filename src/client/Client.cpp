@@ -285,8 +285,6 @@ void Client::run() {
   }
   initialiseData();
 
-  populateHotbar();
-
   drawLoadingScreen("Initializing login screen", 0.9);
   initLoginScreen();
   _connection.state(Connection::TRYING_TO_CONNECT);
@@ -401,7 +399,7 @@ void Client::gameLoop() {
     if (pair.second == 0) continue;
     if (pair.second < _timeElapsed) {
       pair.second = 0;
-      populateHotbar();
+      refreshHotbar();
     } else {
       pair.second -= _timeElapsed;
     }
