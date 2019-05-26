@@ -213,16 +213,19 @@ void Client::handleInput(double delta) {
         break;
 
       case SDL_KEYUP:
-        switch (e.key.keysym.sym) {
-          case SDLK_1:
-            if (_hotbarButtons[0]) _hotbarButtons[0]->release(true);
-            break;
-          case SDLK_2:
-            if (_hotbarButtons[1]) _hotbarButtons[1]->release(true);
-            break;
-          case SDLK_3:
-            if (_hotbarButtons[2]) _hotbarButtons[2]->release(true);
-            break;
+        if (SDL_IsTextInputActive()) {
+        } else {
+          switch (e.key.keysym.sym) {
+            case SDLK_1:
+              if (_hotbarButtons[0]) _hotbarButtons[0]->release(true);
+              break;
+            case SDLK_2:
+              if (_hotbarButtons[1]) _hotbarButtons[1]->release(true);
+              break;
+            case SDLK_3:
+              if (_hotbarButtons[2]) _hotbarButtons[2]->release(true);
+              break;
+          }
         }
         break;
 
