@@ -2,27 +2,32 @@
 
 static Window *assigner{nullptr};
 static List *spellList{nullptr};
-using Icons = std::vector<const Texture *>;
-static Icons hotbarIcons;
+using Actions = std::vector<const ClientSpell *>;
+Actions actions;
 
 void Client::initHotbar() {
-  hotbarIcons = Icons(NUM_HOTBAR_BUTTONS, nullptr);
+  actions = Actions(NUM_HOTBAR_BUTTONS, nullptr);
   _hotbar = new Element({0, 0, NUM_HOTBAR_BUTTONS * 18, 18});
   _hotbar->setPosition((SCREEN_X - _hotbar->width()) / 2,
                        SCREEN_Y - _hotbar->height());
 
   for (auto i = 0; i != NUM_HOTBAR_BUTTONS; ++i) {
     auto button = new Button({i * 18, 0, 18, 18});
+
+    // Hotkey glyph
+    static const auto HOTKEY_GLYPHS = std::vector<std::string>{
+        "'", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="};
+    button->addChild(new OutlinedLabel({0, -1, 15, 18}, HOTKEY_GLYPHS[i],
+                                       Element::RIGHT_JUSTIFIED));
+
+    // RMB: Assign
     button->setRightMouseUpFunction(
         [](Element &, const ScreenPoint &) {
           Client::instance().populateAssignerWindow();
           assigner->show();
         },
         nullptr);
-    static const auto HOTKEY_GLYPHS = std::vector<std::string>{
-        "'", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="};
-    button->addChild(new OutlinedLabel({0, -1, 15, 18}, HOTKEY_GLYPHS[i],
-                                       Element::RIGHT_JUSTIFIED));
+
     _hotbar->addChild(button);
     _hotbarButtons[i] = button;
   }
