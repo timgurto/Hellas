@@ -277,6 +277,7 @@ void NPC::processAI(ms_t timeElapsed) {
   if ((previousState == CHASE || previousState == ATTACK) && _state == IDLE) {
     target(nullptr);
     _threatTable.clear();
+    clearTagger();
 
     auto maxHealth = type()->baseStats().maxHealth;
     if (health() < maxHealth) {
