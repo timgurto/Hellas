@@ -192,14 +192,44 @@ void Client::handleInput(double delta) {
               }
               break;
 
+            case SDLK_BACKQUOTE:
+              _hotbarButtons[0]->depress();
+              break;
             case SDLK_1:
-              if (_hotbarButtons[0]) _hotbarButtons[0]->depress();
+              _hotbarButtons[1]->depress();
               break;
             case SDLK_2:
-              if (_hotbarButtons[1]) _hotbarButtons[1]->depress();
+              _hotbarButtons[2]->depress();
               break;
             case SDLK_3:
-              if (_hotbarButtons[2]) _hotbarButtons[2]->depress();
+              _hotbarButtons[3]->depress();
+              break;
+            case SDLK_4:
+              _hotbarButtons[4]->depress();
+              break;
+            case SDLK_5:
+              _hotbarButtons[5]->depress();
+              break;
+            case SDLK_6:
+              _hotbarButtons[6]->depress();
+              break;
+            case SDLK_7:
+              _hotbarButtons[7]->depress();
+              break;
+            case SDLK_8:
+              _hotbarButtons[8]->depress();
+              break;
+            case SDLK_9:
+              _hotbarButtons[9]->depress();
+              break;
+            case SDLK_0:
+              _hotbarButtons[10]->depress();
+              break;
+            case SDLK_MINUS:
+              _hotbarButtons[11]->depress();
+              break;
+            case SDLK_EQUALS:
+              _hotbarButtons[12]->depress();
               break;
 
             case SDLK_F1:
@@ -216,14 +246,44 @@ void Client::handleInput(double delta) {
         if (SDL_IsTextInputActive()) {
         } else {
           switch (e.key.keysym.sym) {
+            case SDLK_BACKQUOTE:
+              _hotbarButtons[0]->release(true);
+              break;
             case SDLK_1:
-              if (_hotbarButtons[0]) _hotbarButtons[0]->release(true);
+              _hotbarButtons[1]->release(true);
               break;
             case SDLK_2:
-              if (_hotbarButtons[1]) _hotbarButtons[1]->release(true);
+              _hotbarButtons[2]->release(true);
               break;
             case SDLK_3:
-              if (_hotbarButtons[2]) _hotbarButtons[2]->release(true);
+              _hotbarButtons[3]->release(true);
+              break;
+            case SDLK_4:
+              _hotbarButtons[4]->release(true);
+              break;
+            case SDLK_5:
+              _hotbarButtons[5]->release(true);
+              break;
+            case SDLK_6:
+              _hotbarButtons[6]->release(true);
+              break;
+            case SDLK_7:
+              _hotbarButtons[7]->release(true);
+              break;
+            case SDLK_8:
+              _hotbarButtons[8]->release(true);
+              break;
+            case SDLK_9:
+              _hotbarButtons[9]->release(true);
+              break;
+            case SDLK_0:
+              _hotbarButtons[10]->release(true);
+              break;
+            case SDLK_MINUS:
+              _hotbarButtons[11]->release(true);
+              break;
+            case SDLK_EQUALS:
+              _hotbarButtons[12]->release(true);
               break;
           }
         }

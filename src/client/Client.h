@@ -168,6 +168,8 @@ class Client {
 
   static std::vector<std::string> GEAR_SLOT_NAMES;
 
+  static const size_t NUM_HOTBAR_BUTTONS{13};
+
   void infoWindow(const std::string &text);
 
   void showHelpTopic(const std::string &topic);
@@ -360,7 +362,7 @@ class Client {
   void addUI(Element *element);
   Element *_castBar;
   Element *_hotbar{nullptr};
-  std::vector<Button *> _hotbarButtons = {10, nullptr};
+  std::vector<Button *> _hotbarButtons = {NUM_HOTBAR_BUTTONS, nullptr};
   std::map<ClientBuffType::ID, ms_t> _buffTimeRemaining{},
       _debuffTimeRemaining{};  // Used for the UI only.
   List *_buffsDisplay{nullptr};

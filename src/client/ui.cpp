@@ -135,8 +135,7 @@ void Client::initCastBar() {
 }
 
 void Client::initHotbar() {
-  const auto NUM_BUTTONS = 10;
-  _hotbar = new Element({0, 0, NUM_BUTTONS * 18, 18});
+  _hotbar = new Element({0, 0, NUM_HOTBAR_BUTTONS * 18, 18});
   _hotbar->setPosition((SCREEN_X - _hotbar->width()) / 2,
                        SCREEN_Y - _hotbar->height());
   addUI(_hotbar);
@@ -145,39 +144,14 @@ void Client::initHotbar() {
 void Client::populateHotbar() {
   _hotbar->clearChildren();
 
-  // Alphabetise list
-  struct CompareSpellName {
-    bool operator()(const ClientSpell *lhs, const ClientSpell *rhs) {
-      if (lhs == rhs) return false;
-      if (!lhs) return false;
-      if (!rhs) return true;
-      return lhs->name() < rhs->name();
-    }
-  };
-  auto sortedSpells = std::set<const ClientSpell *, CompareSpellName>{};
-  for (auto *spell : _knownSpells) sortedSpells.insert(spell);
-
-  auto i = 0;
-  for (auto *spell : sortedSpells) {
-    void *castMessageVoidPtr = const_cast<void *>(
-        reinterpret_cast<const void *>(&spell->castMessage()));
-    auto button = new Button({i * 18, 0, 18, 18}, {}, [castMessageVoidPtr]() {
-      sendRawMessageStatic(castMessageVoidPtr);
-    });
-    button->addChild(new ColorBlock({0, 0, 18, 18}, Color::UI_OUTLINE));
-    button->addChild(new Picture(1, 1, spell->icon()));
-    button->addChild(new OutlinedLabel({0, -1, 16, 18}, toString((i + 1) % 10),
+  for (auto i = 0; i != NUM_HOTBAR_BUTTONS; ++i) {
+    auto button = new Button({i * 18, 0, 18, 18});
+    static const auto HOTKEY_GLYPHS = std::vector<std::string>{
+        "'", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="};
+    button->addChild(new OutlinedLabel({0, -1, 15, 18}, HOTKEY_GLYPHS[i],
                                        Element::RIGHT_JUSTIFIED));
-    button->setTooltip(spell->tooltip());
-
-    auto it = _spellCooldowns.find(spell->id());
-    auto spellIsCoolingDown = it != _spellCooldowns.end() && it->second > 0;
-    if (spellIsCoolingDown) button->disable();
-
     _hotbar->addChild(button);
     _hotbarButtons[i] = button;
-    ++i;
-    if (i == _hotbarButtons.size()) break;
   }
 }
 
