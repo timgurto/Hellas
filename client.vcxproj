@@ -122,6 +122,7 @@
     <ClCompile Include="src\client\drawing.cpp" />
     <ClCompile Include="src\client\HelpEntry.cpp" />
     <ClCompile Include="src\client\helpWindow.cpp" />
+    <ClCompile Include="src\client\hotbar.cpp" />
     <ClCompile Include="src\client\Images.cpp" />
     <ClCompile Include="src\client\Projectile.cpp" />
     <ClCompile Include="src\client\socialWindow.cpp" />

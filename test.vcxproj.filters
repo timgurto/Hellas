@@ -175,6 +175,7 @@
     <ClCompile Include="src\client\Unlocks.cpp" />
     <ClCompile Include="src\server\logging.cpp" />
     <ClCompile Include="src\server\Exploration.cpp" />
+    <ClCompile Include="src\client\hotbar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
