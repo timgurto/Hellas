@@ -265,7 +265,8 @@ class Client {
   // Called when filters change
   void scrollRecipeListToTop();
   // Called when a recipe is selected.
-  static void refreshRecipeDetailsPane(Element &, const ScreenPoint &);
+  static void onClickRecipe(Element &e, const ScreenPoint &mousePos);
+  static void refreshRecipeDetailsPane();
   // Called when new recipes are unlocked.
   void populateFilters();
   // Called when new construction items are unlocked

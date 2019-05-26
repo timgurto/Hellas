@@ -765,7 +765,7 @@ void Client::handleMessage(const std::string &msg) {
         for (auto &pair : _items) {
           pair.second.refreshTooltip();
         }
-        if (_detailsPane) refreshRecipeDetailsPane(Element{}, {});
+        if (_detailsPane) refreshRecipeDetailsPane();
         populateBuildList();
 
         break;
@@ -805,7 +805,7 @@ void Client::handleMessage(const std::string &msg) {
         for (auto &pair : _items) {
           pair.second.refreshTooltip();
         }
-        if (_detailsPane) refreshRecipeDetailsPane(Element{}, {});
+        if (_detailsPane) refreshRecipeDetailsPane();
 
         break;
       }

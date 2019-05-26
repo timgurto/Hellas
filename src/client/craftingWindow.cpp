@@ -151,10 +151,10 @@ void Client::initializeCraftingWindow() {
   _detailsPane =
       new Element({DETAILS_PANE_X, CONTENT_Y, DETAILS_PANE_W, CONTENT_H});
   _craftingWindow->addChild(_detailsPane);
-  refreshRecipeDetailsPane(Element{}, {});  // Fill details pane initially
+  refreshRecipeDetailsPane();  // Fill details pane initially
 }
 
-void Client::refreshRecipeDetailsPane(Element &, const ScreenPoint &) {
+void Client::refreshRecipeDetailsPane() {
   auto &client = *_instance;
 
   Element &pane = *client._detailsPane;
@@ -314,6 +314,15 @@ void Client::populateFilters() {
   }
 }
 
+void Client::onClickRecipe(Element &e, const ScreenPoint &mousePos) {
+  // This intermediary function is necessary because UI mouse events don't check
+  // for mouse collision, and so without it the details pane was redrawn between
+  // any mouse down and mouse up.  This effectively disabled the buttons in the
+  // pane.
+  if (!collision(mousePos, {0, 0, e.rect().w, e.rect().h})) return;
+  instance().refreshRecipeDetailsPane();
+}
+
 void Client::populateRecipesList(Element &e) {
   // Check which filters are applied
   _instance->_matFilterSelected = false;
@@ -351,13 +360,13 @@ void Client::populateRecipesList(Element &e) {
     recipeElement->addChild(new Label(
         {NAME_X, 0, recipeElement->rect().w - NAME_X, ICON_SIZE + 2},
         recipe.name(), Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
-    recipeElement->setLeftMouseUpFunction(refreshRecipeDetailsPane);
+    recipeElement->setLeftMouseUpFunction(onClickRecipe);
     recipeElement->id(recipe.id());
   }
   const std::string oldSelectedRecipe = recipesList.getSelected();
   recipesList.verifyBoxes();
   if (recipesList.getSelected() != oldSelectedRecipe)
-    refreshRecipeDetailsPane(Element{}, {});
+    refreshRecipeDetailsPane();
 }
 
 void Client::scrollRecipeListToTop() { _recipeList->scrollToTop(); }
