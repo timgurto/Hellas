@@ -10,6 +10,11 @@ Icons icons;
 static const int NO_BUTTON_BEING_ASSIGNED{-1};
 static int buttonBeingAssigned{NO_BUTTON_BEING_ASSIGNED};
 
+static void performAction(int i) {
+  auto &client = Client::instance();
+  if (actions[i]) client.sendMessage(CL_CAST, actions[i]->id());
+}
+
 void Client::initHotbar() {
   actions = Actions(NUM_HOTBAR_BUTTONS, nullptr);
   icons = Icons(NUM_HOTBAR_BUTTONS, nullptr);
@@ -18,7 +23,8 @@ void Client::initHotbar() {
                        SCREEN_Y - _hotbar->height());
 
   for (auto i = 0; i != NUM_HOTBAR_BUTTONS; ++i) {
-    auto button = new Button({i * 18, 0, 18, 18});
+    auto button =
+        new Button({i * 18, 0, 18, 18}, {}, [i]() { performAction(i); });
 
     // Icons
     auto picture = new Picture({0, 0, ICON_SIZE, ICON_SIZE}, {});
