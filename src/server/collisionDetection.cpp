@@ -44,6 +44,7 @@ bool Server::isLocationValid(const MapRect &rect,
     if (!allowedTerrain.allows(terrainType)) return false;
 
   // Objects
+  // TODO: Check if this type collides
   MapPoint rectCenter(rect.x + rect.w / 2, rect.y + rect.h / 2);
   auto superChunk = getCollisionSuperChunk(rectCenter);
   for (CollisionChunk *chunk : superChunk)

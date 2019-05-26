@@ -54,6 +54,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 167,Loot random item(s?) on container destruction,55,5,Feature,15,TRUE,,
 176,Use Catch for tests,3,5,Code quality,,TRUE,,
 182,Maintain only one set of scroll-bar triangle images,2,2,Performance,,TRUE,,
+185,Require map to be explored,21,21,Feature,,TRUE,,3 Tin wrapup
 190,"Add recipes using the item, to web docs",13,5,Tooling,,TRUE,,
 191,Make city ownership persistent,21,21,Bug,,TRUE,,
 192,Fix allowed-terrain lists for objects,8,5,Bug,,TRUE,,
@@ -67,6 +68,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 201,Lower object names,8,2,Aesthetics,,TRUE,,
 202,Give back a small pot after constructing with a water vessel,21,21,Feature,,TRUE,,
 204,Prevent passive selection from interrupting crafting,5,3,Bug,,TRUE,,
+205,NPCs are never culled once discovered,8,3,Bug,,TRUE,,
 206,Objects are not culled on respawn/teleport,8,5,Bug,,TRUE,,
 207,Hide object names unless hostile,13,1,Usability,,TRUE,,
 208,Fix disappearing tooltips; appears to get worse over time,21,8,Bug,,TRUE,,
@@ -78,6 +80,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 220,Space check on trade doesn't account for existing stacks,13,2,Bug,,TRUE,,
 221,Space check on trade doesn't account for items' stack size,13,2,Bug,,TRUE,,
 222,Add placeholder images for items/objects,21,5,Usability,,TRUE,,2 Work playtest 2019
+228,Add container contents to object tooltips,34,13,Usability,,TRUE,,3 Tin wrapup
 230,Allow destroying one's own objects,13,8,Feature,,TRUE,,
 231,Under-construction objects get full loot on destruction,21,3,Bug,,TRUE,,
 232,Under-construction objects can't be looted on destruction,8,2,Bug,,TRUE,,
@@ -172,14 +175,17 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 371,Make server connection an object with a lifetime,55,21,Bug,,TRUE,,
 372,Left-click doesn't always deselect neutral target,13,5,Bug,,TRUE,,2 Work playtest 2019
 381,Use consistent colors for tooltip text,5,2,Usability,,TRUE,,
+382,Password-protect accounts,34,233,Exploit,,TRUE,TRUE,
 385,Remove asserts from server,89,13,Code quality,,TRUE,,2 Work playtest 2019
 387,Show XP bar in main UI,21,3,Usability,,TRUE,,2 Work playtest 2019
 388,Respond to server going down then up in login screen,34,13,Bug,371,TRUE,,
+389,Include equipped items in materials filter,13,5,Bug,,TRUE,,3 Tin wrapup
 390,Restore health/energy on level up,13,2,Feature,,TRUE,,
 391,Show buff timers in client,21,8,Usability,,TRUE,,2 Work playtest 2019
 392,Screen events break embedded tooltips,13,5,Bug,,TRUE,,
 395,Add simple object shadows,21,13,Aesthetics,,TRUE,,
 404,Log players' cumulative time online,13,5,Feature,,TRUE,,2 Work playtest 2019
+406,Scroll recipe list to top when filters change,5,2,Bug,,TRUE,,3 Tin wrapup
 408,Tutorial,89,89,Feature,,TRUE,,1 Fix tutorial
 411,Failed assertion in Entity.cpp line 116,34,8,Bug,,TRUE,,2 Work playtest 2019
 412,Prevent picking up items while drop confirmation is open,8,3,Bug,,TRUE,,2 Work playtest 2019
@@ -243,6 +249,8 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 509,Rename Cooking quest,5,2,Content,,TRUE,,1 Fix tutorial
 510,Make giant positioning more reliable,34,13,Bug,,TRUE,,1 Fix tutorial
 512,'That object doesn't exist' after looting,8,5,Bug,,TRUE,,
+513,Show loot sparkles only to tagger,5,3,Bug,,TRUE,,3 Tin wrapup
+526,Add full map,21,8,Content,,TRUE,TRUE,4 Copper
 30,"Items have durability, affected by combat and use.",34,34,Feature,,,TRUE,3 Tin wrapup
 31,Objects can be repaired with materials,21,34,Feature,29,,TRUE,3 Tin wrapup
 32,Object repair can require tools,5,2,Feature,31,,TRUE,3 Tin wrapup
@@ -260,7 +268,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 81,Allow actual dragging from containers,21,34,Usability,,,,
 83,Stack splitting,21,34,Feature,,,,
 85,Fix scroll-bar dragging offset,5,3,Bug,,,,
-94,A road object that affects movement speed,3,13,Feature,,,TRUE,
+94,A road object that affects movement speed,3,13,Feature,,TRUE,,
 100,Sounds for crafting,5,2,Aesthetics,,,,
 101,Particles for crafting,5,2,Aesthetics,,,,
 105,Vehicles can have different speeds,5,5,Feature,,,TRUE,4 Copper
@@ -275,17 +283,13 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 144,Prevent multiple copies of sounds between SoundProfiles,5,3,Performance,,,,
 145,Prevent users from spamming construction sites,5,8,Exploit,,,,
 172,Select target via keyboard,3,8,Usability,,,,
-175,Click to move,8,3,Usability,,,,
 181,Send object-movement updates to owner and city's members,5,3,Bug,,,,
-185,Require map to be explored,21,21,Feature,,TRUE,,3 Tin wrapup
 186,"Add terrain-specific weather particles, like leaves or rain",13,8,Aesthetics,,,,
 194,Ensure fellow citizens can be seen on the map,13,21,Bug,,,,
-205,NPCs are never culled once discovered,8,3,Bug,,TRUE,,
 223,Limit ware selection to items in container,8,13,Usability,,,,
 224,Don't require 'set' button for trade slots,8,8,Usability,,,,
 225,Find-item search doesn't work for more than 1 character,8,3,Bug,,,,
 226,"Avoid window overlap if possible, for object windows",13,13,Usability,,,,
-228,Add container contents to object tooltips,34,13,Usability,,TRUE,,3 Tin wrapup
 234,Make allowed-terrain more intuitive for construction,8,8,Usability,,,,
 236,Prevent construction near respawn altars,3,8,Exploit,,,,
 239,Add coinage,21,3,Content,519,,,6 Bronze
@@ -304,7 +308,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 364,Current-wars spam on login,3,3,Bug,,,,
 365,Give XP for player kills,13,3,Feature,,,,
 368,Update object windows after joining/leaving a city,21,3,Bug,,,,
-369,Trees sometimes think they're being gathered when they're not.  Endless particles/sound.,55,5,Bug,,,,
+369,Trees sometimes think they're being gathered when they're not.  Endless particles/sound.,55,8,Bug,,,,
 370,Avatar isn't playing death sound,13,5,Bug,,,,
 373,Flash crafting/building/class buttons,21,8,Usability,,,,
 374,Flash class button when talents are unspent,21,3,Usability,373,,,
@@ -312,15 +316,12 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 377,Add context menus to online-users list,13,8,Usability,199,,,
 378,A Granary object that learning talents can draw from,13,8,Feature,377,,,4 Copper
 380,Allow water/air nymphs to float on water,5,2,Feature,,,,
-382,Password-protect accounts,34,233,Exploit,,TRUE,TRUE,
-389,Include equipped items in materials filter,13,5,Bug,,TRUE,,3 Tin wrapup
 393,"Play defend/death sounds on projectile hit, not launch",8,5,Usability,,,,
 396,Find a sink for small pots,8,8,Content,,,,3 Tin wrapup
 398,"If login position blocked: try nearby, then spawn, then default spawn",21,3,Feature,,,,
 399,Client crashes sometimes on pot pickup.  Window/watchers?,55,8,Bug,,,,
-401,Allow granting unfinished objects,21,3,Bug,,,,
+401,Allow granting unfinished objects,21,3,Bug,,TRUE,,
 403,Consume smaller stacks of mats first,13,3,Feature,,,,
-406,Scroll recipe list to top when filters change,5,2,Bug,,TRUE,,3 Tin wrapup
 407,Make under-construction objects easier to kill,8,8,Exploit,,,,
 410,"Recruit via an invitation, not insta-join",21,13,Usability,,,,
 436,"New classes for ID and Name, used everywhere",2,5,Code quality,,,,
@@ -338,7 +339,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 505,Show quest rewards in (de)briefs,8,8,Usability,,,,
 507,Clear quest progress if quest is abandoned,2,2,Bug,,,,
 511,Use complete outlines for all text,8,3,Aesthetics,,,,
-513,Show loot sparkles only to tagger,5,3,Bug,,TRUE,,3 Tin wrapup
 515,"Low-res sprites, high-res game",34,34,Aesthetics,,,,
 517,Grouping,89,144,Feature,,,,5 First adventure
 518,Copper + gear,55,8,Content,,,,4 Copper
@@ -349,7 +349,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 523,Silk + gear,34,144,Content,522,,,
 524,Boiled leather + gear,34,144,Content,,,,6 Bronze
 525,Class buildings,21,13,Feature,286,,TRUE,3 Tin wrapup
-526,Add full map,21,8,Content,,TRUE,TRUE,4 Copper
 527,Region locks,34,13,Content,526,,TRUE,4 Copper
 528,Subclass buildings,21,34,Content,286,,TRUE,6 Bronze
 529,Parchment,21,13,Feature,522,,,4 Copper
@@ -359,9 +358,8 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 534,Tier-5 talents,55,89,Feature,535,,,
 535,Wonders,21,55,Content,57,,TRUE,
 536,"Fix vehicle movement, mounting, dismounting",21,21,Usability,,,TRUE,3 Tin wrapup
-537,Quests for the adventure,13,21,Content,,,,5 First adventure
+537,Quests for the adventure,13,21,Content,463,,,5 First adventure
 538,Themed crafting/building/quest/social windows,55,55,Aesthetics,,,,
-539,Make farming more fun,21,13,Content,,,,3 Tin wrapup
 540,SFX for war/peace,5,34,Aesthetics,,,,
 541,Fishing,2,21,Content,,,,4 Copper
 542,More altars around the world,21,34,Feature,,,,
@@ -375,3 +373,23 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 550,Gold,34,13,Content,526,,TRUE,6 Bronze
 551,Acacia wood,34,13,Content,526,,TRUE,6 Bronze
 552,More boats/ships,21,21,Content,105,,,4 Copper
+554,Music,55,610,Aesthetics,,,,
+555,"On city destruction, make city objects attackable and claimable for 1d",13,13,Feature,,,,
+556,Can't build roads under other objects,5,5,Bug,,,,
+557,Provide list of names when granting objects,13,8,Usability,,,,3 Tin wrapup
+558,Add cursor for vehicles,3,2,Usability,,,,
+559,Reduce volume of distant SFX,3,5,Aesthetics,,,,
+560,Master volume control,3,5,Usability,,,,
+561,Make gigantes always run back to their spawn point,13,3,Bug,,,,3 Tin wrapup
+562,Prevent griefing of lowbies; watch towers?,8,13,Exploit,,,,
+563,Add flag objects with text entry to show labels on map,8,21,Feature,,,,
+564,Cull objects and NPCs on death,3,13,Bug,,,,3 Tin wrapup
+565,Reflect vehicle speed in stats window,3,3,Bug,105,,,
+566,Dropping an item deselects target,5,3,Bug,,,,
+567,Always create static objects on startup; don't save them,5,3,Performance,,,,
+568,Add missing crafting/gathering sounds,55,34,Aesthetics,100,,,
+569,Restrict price selection to coins,13,8,Usability,239,,,
+570,Add warning if merchant-object inventory is full,5,13,Usability,,,,
+571,Altar of Athena teaches port-to-city spell,8,13,Feature,,,,
+572,Sanitise /war and /cityWar calls,3,8,Usability,,,,
+573,Quests can reward items,34,3,Feature,,,,

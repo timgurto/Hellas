@@ -26,7 +26,7 @@ cols[6] = brewer.pal(8, "Set2")[6] # Normal yellow too light
 data$color = cols[data$typeID]
 
 # ROI
-vals = c(1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610)
+vals = c(1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987)
 data$roi = match(data$value, vals) - match(data$effort, vals)
 
 # Initialize NA values
