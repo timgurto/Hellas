@@ -12,10 +12,13 @@ void Client::initHotbar() {
                        SCREEN_Y - _hotbar->height());
 
   for (auto i = 0; i != NUM_HOTBAR_BUTTONS; ++i) {
-    auto button = new Button({i * 18, 0, 18, 18}, {}, [this]() {
-      this->populateAssignerWindow();
-      assigner->show();
-    });
+    auto button = new Button({i * 18, 0, 18, 18});
+    button->setRightMouseUpFunction(
+        [](Element &, const ScreenPoint &) {
+          Client::instance().populateAssignerWindow();
+          assigner->show();
+        },
+        nullptr);
     static const auto HOTKEY_GLYPHS = std::vector<std::string>{
         "'", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="};
     button->addChild(new OutlinedLabel({0, -1, 15, 18}, HOTKEY_GLYPHS[i],
@@ -31,7 +34,7 @@ void Client::initHotbar() {
 void Client::refreshHotbar() {}
 
 void Client::initAssignerWindow() {
-  static const auto LIST_WIDTH = 150_px, LIST_HEIGHT = 300_px;
+  static const auto LIST_WIDTH = 150_px, LIST_HEIGHT = 250_px;
   assigner = Window::WithRectAndTitle({0, 0, LIST_WIDTH, LIST_HEIGHT},
                                       "Assign action"s);
   auto x = (SCREEN_X - assigner->rect().w) / 2;
