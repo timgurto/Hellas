@@ -59,7 +59,14 @@ void Client::initHotbar() {
 
 void Client::refreshHotbar() {
   for (auto i = 0; i != NUM_HOTBAR_BUTTONS; ++i) {
-    if (actions[i]) icons[i]->changeTexture(actions[i]->icon());
+    if (actions[i]) {
+      const auto &spell = *actions[i];
+      icons[i]->changeTexture(spell.icon());
+      _hotbarButtons[i]->setTooltip(spell.tooltip());
+    } else {
+      _hotbarButtons[i]->setTooltip(
+          "Right-click to assign an action to this button."s);
+    }
   }
 }
 
