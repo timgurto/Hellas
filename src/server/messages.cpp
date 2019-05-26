@@ -419,6 +419,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         }
 
         obj->kill();
+        obj->setShorterCorpseTimerForFriendlyKill();
         break;
       }
 
