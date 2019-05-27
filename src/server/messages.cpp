@@ -1867,7 +1867,7 @@ CombatResult Server::handle_CL_CAST(User &user, const std::string &spellID,
 
   auto outcome = user.castSpell(spell);
 
-  user.onSpellcast(spellID, spell);
+  if (outcome != CombatResult::FAIL) user.onSpellcast(spellID, spell);
 
   return outcome;
 }
