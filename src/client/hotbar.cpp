@@ -2,7 +2,7 @@
 
 static Window *assigner{nullptr};
 static List *spellList{nullptr};
-using Actions = std::vector<const ClientSpell *>;
+using Actions = std::vector<std::string>;
 Actions actions;
 using Icons = std::vector<Picture *>;
 Icons icons;
@@ -12,11 +12,11 @@ static int buttonBeingAssigned{NO_BUTTON_BEING_ASSIGNED};
 
 static void performAction(int i) {
   auto &client = Client::instance();
-  if (actions[i]) client.sendMessage(CL_CAST, actions[i]->id());
+  if (!actions[i].empty()) client.sendMessage(CL_CAST, actions[i]);
 }
 
 void Client::initHotbar() {
-  actions = Actions(NUM_HOTBAR_BUTTONS, nullptr);
+  actions = Actions(NUM_HOTBAR_BUTTONS, {});
   icons = Icons(NUM_HOTBAR_BUTTONS, nullptr);
   _hotbar = new Element({0, 0, NUM_HOTBAR_BUTTONS * 18, 18});
   _hotbar->setPosition((SCREEN_X - _hotbar->width()) / 2,
@@ -59,17 +59,20 @@ void Client::initHotbar() {
 
 void Client::refreshHotbar() {
   for (auto i = 0; i != NUM_HOTBAR_BUTTONS; ++i) {
-    if (actions[i]) {
+    if (!actions[i].empty()) {
       _hotbarButtons[i]->enable();
-      const auto &spell = *actions[i];
+      const auto &spell = *_spells.find(actions[i])->second;
 
       icons[i]->changeTexture(spell.icon());
 
       _hotbarButtons[i]->setTooltip(spell.tooltip());
 
-      auto it = _spellCooldowns.find(spell.id());
+      auto it = _spellCooldowns.find(actions[i]);
       auto spellIsCoolingDown = it != _spellCooldowns.end() && it->second > 0;
       if (spellIsCoolingDown) _hotbarButtons[i]->disable();
+
+      auto spellIsKnown = _knownSpells.count(&spell) == 1;
+      if (!spellIsKnown) _hotbarButtons[i]->disable();
 
     } else {
       _hotbarButtons[i]->setTooltip(
@@ -97,7 +100,7 @@ void Client::populateAssignerWindow() {
   for (const auto *spell : _knownSpells) {
     auto button = new Button({}, {}, [this, spell]() {
       if (buttonBeingAssigned == NO_BUTTON_BEING_ASSIGNED) return;
-      actions[buttonBeingAssigned] = spell;
+      actions[buttonBeingAssigned] = spell->id();
       assigner->hide();
       buttonBeingAssigned = NO_BUTTON_BEING_ASSIGNED;
       refreshHotbar();
