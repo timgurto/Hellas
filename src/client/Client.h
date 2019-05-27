@@ -385,6 +385,8 @@ class Client {
   void refreshHotbar();
   void initAssignerWindow();
   void populateAssignerWindow();
+  void onHotbarKeyDown(SDL_Keycode key);
+  void onHotbarKeyUp(SDL_Keycode key);
   void initBuffsDisplay();
   void refreshBuffsDisplay();
   static Element *assembleBuffEntry(const ClientBuffType &type,

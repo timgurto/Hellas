@@ -7,6 +7,12 @@ Actions actions;
 using Icons = std::vector<Picture *>;
 Icons icons;
 
+static const auto HOTBAR_KEYS = std::map<SDL_Keycode, size_t>{
+    {SDLK_BACKQUOTE, 0}, {SDLK_1, 1}, {SDLK_2, 2},  {SDLK_3, 3},
+    {SDLK_4, 4},         {SDLK_5, 5}, {SDLK_6, 6},  {SDLK_7, 7},
+    {SDLK_8, 8},         {SDLK_9, 9}, {SDLK_0, 10}, {SDLK_MINUS, 11},
+    {SDLK_EQUALS, 12}};
+
 static const int NO_BUTTON_BEING_ASSIGNED{-1};
 static int buttonBeingAssigned{NO_BUTTON_BEING_ASSIGNED};
 
@@ -113,4 +119,20 @@ void Client::populateAssignerWindow() {
     button->setTooltip(spell->tooltip());
     spellList->addChild(button);
   }
+}
+
+void Client::onHotbarKeyDown(SDL_Keycode key) {
+  auto it = HOTBAR_KEYS.find(key);
+  if (it == HOTBAR_KEYS.end()) return;
+  auto index = it->second;
+
+  _hotbarButtons[index]->depress();
+}
+
+void Client::onHotbarKeyUp(SDL_Keycode key) {
+  auto it = HOTBAR_KEYS.find(key);
+  if (it == HOTBAR_KEYS.end()) return;
+  auto index = it->second;
+
+  _hotbarButtons[index]->release(true);
 }
