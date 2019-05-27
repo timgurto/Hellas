@@ -95,14 +95,19 @@ void Client::initAssignerWindow() {
 void Client::populateAssignerWindow() {
   spellList->clearChildren();
   for (const auto *spell : _knownSpells) {
-    auto button = new Button({}, spell->name(), [this, spell]() {
+    auto button = new Button({}, {}, [this, spell]() {
       if (buttonBeingAssigned == NO_BUTTON_BEING_ASSIGNED) return;
       actions[buttonBeingAssigned] = spell;
       assigner->hide();
       buttonBeingAssigned = NO_BUTTON_BEING_ASSIGNED;
       refreshHotbar();
     });
+    button->addChild(new Picture(0, 0, spell->icon()));
+    button->addChild(new Label({ICON_SIZE + 3, 0, 200, ICON_SIZE},
+                               spell->name(), Element::LEFT_JUSTIFIED,
+                               Element::CENTER_JUSTIFIED));
     button->id(spell->id());
+    button->setTooltip(spell->tooltip());
     spellList->addChild(button);
   }
 }
