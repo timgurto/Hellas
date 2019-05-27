@@ -51,7 +51,7 @@ Functions:
     <targets enemy=1 />
     <function name="debuff" s1="bleed" />
 </spell>
-<spell id="skirmisherStun" name="Head Crack" icon="shout" cost=10 range=4 >
+<spell id="skirmisherStun" name="Head Crack" icon="shout" cost=10 range=4 cooldown=10 >
     <targets enemy=1 />
     <function name="debuff" s1="stun" />
 </spell>
@@ -118,7 +118,7 @@ Functions:
 </spell>
 
 <!-- Poet -->
-<spell id="poetStun" name="Depressing Tragedy" icon="maskSad" cost=20 range=30 school="air" >
+<spell id="poetStun" name="Depressing Tragedy" icon="maskSad" cost=20 range=30 school="air" cooldown="10" >
     <targets enemy=1 />
     <function name="debuff" s1="stun" />
 </spell>
