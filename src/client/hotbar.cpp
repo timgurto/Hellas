@@ -126,6 +126,8 @@ void Client::onHotbarKeyDown(SDL_Keycode key) {
   if (it == HOTBAR_KEYS.end()) return;
   auto index = it->second;
 
+  if (actions[index].empty()) return;
+
   _hotbarButtons[index]->depress();
 }
 
@@ -133,6 +135,8 @@ void Client::onHotbarKeyUp(SDL_Keycode key) {
   auto it = HOTBAR_KEYS.find(key);
   if (it == HOTBAR_KEYS.end()) return;
   auto index = it->second;
+
+  if (actions[index].empty()) return;
 
   _hotbarButtons[index]->release(true);
 }
