@@ -60,12 +60,21 @@ void Client::initHotbar() {
 void Client::refreshHotbar() {
   for (auto i = 0; i != NUM_HOTBAR_BUTTONS; ++i) {
     if (actions[i]) {
+      _hotbarButtons[i]->enable();
       const auto &spell = *actions[i];
+
       icons[i]->changeTexture(spell.icon());
+
       _hotbarButtons[i]->setTooltip(spell.tooltip());
+
+      auto it = _spellCooldowns.find(spell.id());
+      auto spellIsCoolingDown = it != _spellCooldowns.end() && it->second > 0;
+      if (spellIsCoolingDown) _hotbarButtons[i]->disable();
+
     } else {
       _hotbarButtons[i]->setTooltip(
           "Right-click to assign an action to this button."s);
+      _hotbarButtons[i]->disable();
     }
   }
 }

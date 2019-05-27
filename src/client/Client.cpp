@@ -396,13 +396,16 @@ void Client::gameLoop() {
 
   // Update spell cooldowns
   for (auto &pair : _spellCooldowns) {
-    if (pair.second == 0) continue;
-    if (pair.second < _timeElapsed) {
+    if (pair.second == 0)
+      continue;
+
+    else if (pair.second < _timeElapsed) {
       pair.second = 0;
       refreshHotbar();
-    } else {
+      continue;
+
+    } else
       pair.second -= _timeElapsed;
-    }
   }
 
   // Update buff times
