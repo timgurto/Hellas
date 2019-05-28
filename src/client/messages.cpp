@@ -317,10 +317,6 @@ void Client::handleMessage(const std::string &msg) {
         break;
       }
 
-      case SV_FINISHED_TUTORIAL:
-        clearHotbar();
-        break;
-
       case SV_ACTION_STARTED:
         ms_t time;
         singleMsg >> time >> del;

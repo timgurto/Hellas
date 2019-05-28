@@ -225,9 +225,6 @@ enum MessageCode {
   // Arguments: x, y
   SV_CHUNK_EXPLORED,
 
-  // You just finished the tutorial.  Perform any necessary client-side reactions.
-  SV_FINISHED_TUTORIAL,
-
   // A user has moved far away from you, and you will stop getting updates from him.
   // Arguments: username
   SV_USER_OUT_OF_RANGE,
