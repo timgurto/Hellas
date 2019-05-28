@@ -296,13 +296,13 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 240,XML-verifying git hook,21,8,Code quality,,,,
 250,Fireball has interruptible cast time,2,8,Feature,246,,,5 First adventure
 270,Buffs can be dismissed,1,5,Feature,267,,,3 Tin wrapup
-280,Hotbar can be rearranged,13,34,Usability,279,,,3 Tin wrapup
-281,Hotbar can include recipes,8,13,Usability,280,,,3 Tin wrapup
+280,Hotbar can be rearranged,13,34,Usability,279,TRUE,,3 Tin wrapup
+281,Hotbar can include recipes,8,13,Usability,280,TRUE,,3 Tin wrapup
 286,Learning talents can require a tool,2,5,Feature,283,,TRUE,3 Tin wrapup
 289,"On death, drop region item if in lost talent's cost",2,13,Feature,288,,TRUE,4 Copper
 290,Region items are n-unique,13,8,Feature,285,,TRUE,4 Copper
 291,Region items are soulbound,5,8,Feature,285,,TRUE,4 Copper
-294,Hotbar can include right-clickable items,2,13,Usability,280,,,3 Tin wrapup
+294,Hotbar can include right-clickable items,2,8,Usability,280,,,3 Tin wrapup
 350,Update window title when object type changes,5,1,Bug,,,,
 351,Allow users to drop items onto construction sites,3,21,Usability,,,,3 Tin wrapup
 364,Current-wars spam on login,3,3,Bug,,,,

@@ -1,11 +1,11 @@
 #include "Client.h"
 
 static Window *assigner{nullptr};
-static List *spellList{nullptr};
+static List *spellList{nullptr}, *recipeList{nullptr};
 static ChoiceList *categoryList{nullptr};
 
 struct HotbarAction {
-  enum Category { NONE, SPELL };
+  enum Category { NONE, SPELL, RECIPE };
   HotbarAction() {}
   HotbarAction(Category c, std::string s) : category(c), id(s) {}
   Category category{NONE};
@@ -28,8 +28,12 @@ static int buttonBeingAssigned{NO_BUTTON_BEING_ASSIGNED};
 
 static void performAction(int i) {
   auto &client = Client::instance();
-  if (!actions[i].category == HotbarAction::SPELL)
+  if (actions[i].category == HotbarAction::SPELL)
     client.sendMessage(CL_CAST, actions[i].id);
+  else if (actions[i].category == HotbarAction::RECIPE) {
+    client.sendMessage(CL_CRAFT, actions[i].id);
+    Client::instance().prepareAction("Crafting"s);
+  }
 }
 
 void Client::initHotbar() {
@@ -110,16 +114,39 @@ void Client::refreshHotbar() {
 
       auto spellIsKnown = _knownSpells.count(&spell) == 1;
       if (!spellIsKnown) _hotbarButtons[i]->disable();
+
+    } else if (actions[i].category == HotbarAction::RECIPE) {
+      auto it = _recipes.find(actions[i].id);
+      if (it == _recipes.end()) {
+        debug()("Hotbar refers to invalid recipe, " + actions[i].id,
+                Color::CHAT_ERROR);
+        continue;
+      }
+
+      _hotbarButtons[i]->enable();
+      const auto &recipe = *it;
+
+      const auto *product = dynamic_cast<const ClientItem *>(recipe.product());
+      icons[i]->changeTexture(product->icon());
+
+      _hotbarButtons[i]->setTooltip("Craft recipe: "s + recipe.name());
+
+      auto recipeIsKnown = _knownRecipes.count(recipe.id()) == 1;
+      if (!recipeIsKnown) _hotbarButtons[i]->disable();
     }
   }
 }
 
 static void onCategoryChange() {
   spellList->hide();
+  recipeList->hide();
 
   auto category = categoryList->getSelected();
 
-  if (category == "spell") spellList->show();
+  if (category == "spell")
+    spellList->show();
+  else if (category == "recipe")
+    recipeList->show();
 }
 
 void Client::initAssignerWindow() {
@@ -139,15 +166,24 @@ void Client::initAssignerWindow() {
       new ChoiceList({0, 0, CATEGORY_WIDTH, WIN_HEIGHT}, Element::TEXT_HEIGHT);
   assigner->addChild(categoryList);
   categoryList->onSelect = onCategoryChange;
-  auto spellLabel = new Label({}, " Spell");
-  spellLabel->id("spell");
-  categoryList->addChild(spellLabel);
+  auto catLabel = new Label({}, " Spell");
+  catLabel->id("spell");
+  categoryList->addChild(catLabel);
+  catLabel = new Label({}, " Recipe");
+  catLabel->id("recipe");
+  categoryList->addChild(catLabel);
 
   // Spell list
   spellList = new List({CATEGORY_WIDTH, 0, LIST_WIDTH, WIN_HEIGHT},
                        Client::ICON_SIZE + 2);
   assigner->addChild(spellList);
   spellList->hide();
+
+  // Recipe list
+  recipeList = new List({CATEGORY_WIDTH, 0, LIST_WIDTH, WIN_HEIGHT},
+                        Client::ICON_SIZE + 2);
+  assigner->addChild(recipeList);
+  recipeList->hide();
 
   addWindow(assigner);
 }
@@ -169,6 +205,27 @@ void Client::populateAssignerWindow() {
     button->id(spell->id());
     button->setTooltip(spell->tooltip());
     spellList->addChild(button);
+  }
+
+  recipeList->clearChildren();
+  for (const auto &recipe : _recipes) {
+    auto recipeIsKnown = _knownRecipes.count(recipe.id()) == 1;
+    if (!recipeIsKnown) continue;
+
+    auto button = new Button({}, {}, [this, &recipe]() {
+      if (buttonBeingAssigned == NO_BUTTON_BEING_ASSIGNED) return;
+      actions[buttonBeingAssigned] = {HotbarAction::RECIPE, recipe.id()};
+      assigner->hide();
+      buttonBeingAssigned = NO_BUTTON_BEING_ASSIGNED;
+      refreshHotbar();
+    });
+    const auto *product = dynamic_cast<const ClientItem *>(recipe.product());
+    button->addChild(new Picture(1, 1, product->icon()));
+    button->addChild(new Label({ICON_SIZE + 3, 0, 200, ICON_SIZE},
+                               recipe.name(), Element::LEFT_JUSTIFIED,
+                               Element::CENTER_JUSTIFIED));
+    button->id(recipe.id());
+    recipeList->addChild(button);
   }
 }
 

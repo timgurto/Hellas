@@ -449,8 +449,10 @@ class Client {
                        // action.
   ms_t _actionLength;  // How long the current action should take.
   std::string _actionMessage;  // A description of the current action.
+ public:
   void prepareAction(const std::string &msg);  // Set up the action, awaiting
                                                // server confirmation.
+ private:
   void startAction(
       ms_t actionLength);  // Start the action timer.  If zero, stop the timer.
 
