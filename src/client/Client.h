@@ -383,6 +383,7 @@ class Client {
   void initPlayerPanels();
   void initHotbar();
   void refreshHotbar();
+  void clearHotbar();
   void initAssignerWindow();
   void populateAssignerWindow();
   void onHotbarKeyDown(SDL_Keycode key);

@@ -74,6 +74,11 @@ void Client::initHotbar() {
   initAssignerWindow();
 }
 
+void Client::clearHotbar() {
+  for (auto i = 0; i != NUM_HOTBAR_BUTTONS; ++i) actions[i] = {};
+  refreshHotbar();
+}
+
 void Client::refreshHotbar() {
   for (auto i = 0; i != NUM_HOTBAR_BUTTONS; ++i) {
     if (!actions[i]) {

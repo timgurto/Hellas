@@ -39,6 +39,8 @@ bool Server::endTutorial(const Object &obj, User &performer,
   server.removeAllObjectsOwnedBy(
       {Permissions::Owner::PLAYER, performer.name()});
 
+  server.sendMessage(performer.socket(), SV_FINISHED_TUTORIAL);
+
   return true;
 }
 
