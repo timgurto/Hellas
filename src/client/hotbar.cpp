@@ -2,16 +2,21 @@
 
 static Window *assigner{nullptr};
 static List *spellList{nullptr};
+static ChoiceList *categoryList{nullptr};
 using Actions = std::vector<std::string>;
 Actions actions;
 using Icons = std::vector<Picture *>;
 Icons icons;
+
+enum ActionCategory { SPELL_ACTION };
 
 static const auto HOTBAR_KEYS = std::map<SDL_Keycode, size_t>{
     {SDLK_BACKQUOTE, 0}, {SDLK_1, 1}, {SDLK_2, 2},  {SDLK_3, 3},
     {SDLK_4, 4},         {SDLK_5, 5}, {SDLK_6, 6},  {SDLK_7, 7},
     {SDLK_8, 8},         {SDLK_9, 9}, {SDLK_0, 10}, {SDLK_MINUS, 11},
     {SDLK_EQUALS, 12}};
+static const auto ACTION_CATEGORIES =
+    std::map<std::string, ActionCategory>{{"spell", SPELL_ACTION}};
 
 static const int NO_BUTTON_BEING_ASSIGNED{-1};
 static int buttonBeingAssigned{NO_BUTTON_BEING_ASSIGNED};
@@ -88,15 +93,46 @@ void Client::refreshHotbar() {
   }
 }
 
+static void onCategoryChange() {
+  spellList->hide();
+
+  auto categoryName = categoryList->getSelected();
+  auto it = ACTION_CATEGORIES.find(categoryName);
+  if (it == ACTION_CATEGORIES.end()) return;
+
+  switch (it->second) {
+    case SPELL_ACTION:
+      spellList->show();
+      break;
+  }
+}
+
 void Client::initAssignerWindow() {
-  static const auto LIST_WIDTH = 150_px, LIST_HEIGHT = 250_px;
-  assigner = Window::WithRectAndTitle({0, 0, LIST_WIDTH, LIST_HEIGHT},
-                                      "Assign action"s);
+  static const auto LIST_WIDTH = 150_px, WIN_HEIGHT = 250_px,
+                    CATEGORY_WIDTH = 50_px,
+                    WIN_WIDTH = LIST_WIDTH + CATEGORY_WIDTH;
+  assigner =
+      Window::WithRectAndTitle({0, 0, WIN_WIDTH, WIN_HEIGHT}, "Assign action"s);
+
+  // Center window above hotbar
   auto x = (SCREEN_X - assigner->rect().w) / 2;
   auto y = _hotbar->rect().y - assigner->rect().h;
-  assigner->rect({x, y, LIST_WIDTH, LIST_HEIGHT});
-  spellList = new List({0, 0, LIST_WIDTH, LIST_HEIGHT}, Client::ICON_SIZE + 2);
+  assigner->rect({x, y, LIST_WIDTH, WIN_HEIGHT});
+
+  // Category list
+  categoryList =
+      new ChoiceList({0, 0, CATEGORY_WIDTH, WIN_HEIGHT}, Element::TEXT_HEIGHT);
+  assigner->addChild(categoryList);
+  categoryList->onSelect = onCategoryChange;
+  auto spellLabel = new Label({}, " Spell");
+  spellLabel->id("spell");
+  categoryList->addChild(spellLabel);
+
+  // Spell list
+  spellList = new List({CATEGORY_WIDTH, 0, LIST_WIDTH, WIN_HEIGHT},
+                       Client::ICON_SIZE + 2);
   assigner->addChild(spellList);
+  spellList->hide();
 
   addWindow(assigner);
 }
@@ -111,7 +147,7 @@ void Client::populateAssignerWindow() {
       buttonBeingAssigned = NO_BUTTON_BEING_ASSIGNED;
       refreshHotbar();
     });
-    button->addChild(new Picture(0, 0, spell->icon()));
+    button->addChild(new Picture(1, 1, spell->icon()));
     button->addChild(new Label({ICON_SIZE + 3, 0, 200, ICON_SIZE},
                                spell->name(), Element::LEFT_JUSTIFIED,
                                Element::CENTER_JUSTIFIED));
