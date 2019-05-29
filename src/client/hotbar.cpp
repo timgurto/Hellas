@@ -5,12 +5,11 @@ static List *spellList{nullptr}, *recipeList{nullptr};
 static ChoiceList *categoryList{nullptr};
 
 struct HotbarAction {
-  enum Category { NONE, SPELL, RECIPE };
   HotbarAction() {}
-  HotbarAction(Category c, std::string s) : category(c), id(s) {}
-  Category category{NONE};
+  HotbarAction(HotbarCategory c, std::string s) : category(c), id(s) {}
+  HotbarCategory category{HotbarCategory::HOTBAR_NONE};
   std::string id{};
-  operator bool() const { return category != NONE; }
+  operator bool() const { return category != HotbarCategory::HOTBAR_NONE; }
 };
 
 std::vector<HotbarAction> actions;
@@ -28,9 +27,9 @@ static int buttonBeingAssigned{NO_BUTTON_BEING_ASSIGNED};
 
 static void performAction(int i) {
   auto &client = Client::instance();
-  if (actions[i].category == HotbarAction::SPELL)
+  if (actions[i].category == HotbarCategory::HOTBAR_SPELL)
     client.sendMessage(CL_CAST, actions[i].id);
-  else if (actions[i].category == HotbarAction::RECIPE) {
+  else if (actions[i].category == HotbarCategory::HOTBAR_RECIPE) {
     client.sendMessage(CL_CRAFT, actions[i].id);
     Client::instance().prepareAction("Crafting"s);
   }
@@ -66,7 +65,6 @@ void Client::initHotbar() {
           Client::instance().populateAssignerWindow();
           assigner->show();
           buttonBeingAssigned = i;
-          Client::debug() << "Assigning button " << i << Log::endl;
         },
         nullptr);
 
@@ -87,7 +85,7 @@ void Client::refreshHotbar() {
       continue;
     }
 
-    if (actions[i].category == HotbarAction::SPELL) {
+    if (actions[i].category == HotbarCategory::HOTBAR_SPELL) {
       auto spellIt = _spells.find(actions[i].id);
       if (spellIt == _spells.end()) {
         debug()("Hotbar refers to invalid spell, " + actions[i].id,
@@ -110,7 +108,7 @@ void Client::refreshHotbar() {
       auto spellIsKnown = _knownSpells.count(&spell) == 1;
       if (!spellIsKnown) _hotbarButtons[i]->disable();
 
-    } else if (actions[i].category == HotbarAction::RECIPE) {
+    } else if (actions[i].category == HotbarCategory::HOTBAR_RECIPE) {
       auto it = _recipes.find(actions[i].id);
       if (it == _recipes.end()) {
         debug()("Hotbar refers to invalid recipe, " + actions[i].id,
@@ -164,7 +162,7 @@ void Client::initAssignerWindow() {
   auto catLabel = new Label({}, " Spell");
   catLabel->id("spell");
   categoryList->addChild(catLabel);
-  catLabel = new Label({}, " Recipe");
+  catLabel = new Label({}, " Crafting");
   catLabel->id("recipe");
   categoryList->addChild(catLabel);
 
@@ -183,15 +181,21 @@ void Client::initAssignerWindow() {
   addWindow(assigner);
 }
 
+static void assignButton(HotbarCategory category, const std::string &id) {
+  if (buttonBeingAssigned == NO_BUTTON_BEING_ASSIGNED) return;
+
+  actions[buttonBeingAssigned] = {category, id};
+
+  assigner->hide();
+  buttonBeingAssigned = NO_BUTTON_BEING_ASSIGNED;
+  Client::instance().refreshHotbar();
+}
+
 void Client::populateAssignerWindow() {
   spellList->clearChildren();
   for (const auto *spell : _knownSpells) {
     auto button = new Button({}, {}, [this, spell]() {
-      if (buttonBeingAssigned == NO_BUTTON_BEING_ASSIGNED) return;
-      actions[buttonBeingAssigned] = {HotbarAction::SPELL, spell->id()};
-      assigner->hide();
-      buttonBeingAssigned = NO_BUTTON_BEING_ASSIGNED;
-      refreshHotbar();
+      assignButton(HotbarCategory::HOTBAR_SPELL, spell->id());
     });
     button->addChild(new Picture(1, 1, spell->icon()));
     button->addChild(new Label({ICON_SIZE + 3, 0, 200, ICON_SIZE},
@@ -208,11 +212,7 @@ void Client::populateAssignerWindow() {
     if (!recipeIsKnown) continue;
 
     auto button = new Button({}, {}, [this, &recipe]() {
-      if (buttonBeingAssigned == NO_BUTTON_BEING_ASSIGNED) return;
-      actions[buttonBeingAssigned] = {HotbarAction::RECIPE, recipe.id()};
-      assigner->hide();
-      buttonBeingAssigned = NO_BUTTON_BEING_ASSIGNED;
-      refreshHotbar();
+      assignButton(HotbarCategory::HOTBAR_RECIPE, recipe.id());
     });
     const auto *product = dynamic_cast<const ClientItem *>(recipe.product());
     button->addChild(new Picture(1, 1, product->icon()));

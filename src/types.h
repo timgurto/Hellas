@@ -17,3 +17,5 @@ using Regen = int;
 
 using Level = short;
 using XP = unsigned;
+
+enum HotbarCategory { HOTBAR_NONE, HOTBAR_SPELL, HOTBAR_RECIPE };
