@@ -76,6 +76,28 @@ void Client::initHotbar() {
   initAssignerWindow();
 }
 
+static void assignButton(HotbarCategory category, const std::string &id) {
+  if (buttonBeingAssigned == NO_BUTTON_BEING_ASSIGNED) return;
+
+  actions[buttonBeingAssigned] = {category, id};
+
+  Client::instance().sendMessage(CL_HOTBAR_BUTTON,
+                                 makeArgs(buttonBeingAssigned, category, id));
+
+  assigner->hide();
+  buttonBeingAssigned = NO_BUTTON_BEING_ASSIGNED;
+  Client::instance().refreshHotbar();
+}
+
+void Client::setHotbar(
+    const std::vector<std::pair<int, std::string>> &buttons) {
+  for (auto i = 0; i != buttons.size(); ++i) {
+    auto category = HotbarCategory(buttons[i].first);
+    buttonBeingAssigned = i;
+    assignButton(category, buttons[i].second);
+  }
+}
+
 void Client::refreshHotbar() {
   for (auto i = 0; i != NUM_HOTBAR_BUTTONS; ++i) {
     if (!actions[i]) {
@@ -179,16 +201,6 @@ void Client::initAssignerWindow() {
   recipeList->hide();
 
   addWindow(assigner);
-}
-
-static void assignButton(HotbarCategory category, const std::string &id) {
-  if (buttonBeingAssigned == NO_BUTTON_BEING_ASSIGNED) return;
-
-  actions[buttonBeingAssigned] = {category, id};
-
-  assigner->hide();
-  buttonBeingAssigned = NO_BUTTON_BEING_ASSIGNED;
-  Client::instance().refreshHotbar();
 }
 
 void Client::populateAssignerWindow() {

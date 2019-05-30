@@ -725,6 +725,26 @@ bool User::shouldGatherDoubleThisTime() const {
   return randDouble() * 100 <= stats().gatherBonus;
 }
 
+void User::setHotbarAction(size_t button, int category, const std::string &id) {
+  if (button >= _hotbar.size()) {
+    auto slotsToAdd = button - _hotbar.size() + 1;
+    for (auto i = 0; i != slotsToAdd; ++i) {
+      _hotbar.push_back({});
+    }
+  }
+
+  _hotbar[button].category = HotbarCategory(category);
+  _hotbar[button].id = id;
+}
+
+void User::sendHotbarMessage() {
+  auto args = makeArgs(_hotbar.size());
+  for (auto &slot : _hotbar) {
+    args = makeArgs(args, slot.category, slot.id);
+  }
+  sendMessage(SV_HOTBAR, args);
+}
+
 void User::onMove() {
   auto &server = Server::instance();
 

@@ -1188,6 +1188,17 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         break;
       }
 
+      case CL_HOTBAR_BUTTON: {
+        auto slot = 0, category = 0;
+        auto id = ""s;
+        iss >> slot >> del >> category >> del;
+        iss.get(buffer, BUFFER_SIZE, MSG_END);
+        id = buffer;
+        iss >> del;
+        user->setHotbarAction(slot, category, id);
+        break;
+      }
+
       case CL_SAY: {
         iss.get(buffer, BUFFER_SIZE, MSG_END);
         std::string message(buffer);

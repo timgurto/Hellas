@@ -199,6 +199,17 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     }
   }
 
+  elem = xr.findChild("hotbar");
+  for (auto button : xr.getChildren("button", elem)) {
+    auto slot = 0;
+    auto category = 0;
+    auto id = ""s;
+    if (!xr.findAttr(button, "slot", slot)) continue;
+    if (!xr.findAttr(button, "category", category)) continue;
+    if (!xr.findAttr(button, "id", id)) continue;
+    user.setHotbarAction(slot, category, id);
+  }
+
   user.exploration().readFrom(xr);
 
   return true;
@@ -304,6 +315,16 @@ void Server::writeUserData(const User &user) const {
       xw.setAttr(progressElem, "id", objective.id);
       xw.setAttr(progressElem, "qty", progress);
     }
+  }
+
+  e = xw.addChild("hotbar");
+  for (auto i = 0; i != user.hotbar().size(); ++i) {
+    const auto &action = user.hotbar()[i];
+    if (!action) continue;
+    auto actionElem = xw.addChild("button", e);
+    xw.setAttr(actionElem, "slot", i);
+    xw.setAttr(actionElem, "category", action.category);
+    xw.setAttr(actionElem, "id", action.id);
   }
 
   user.exploration().writeTo(xw);

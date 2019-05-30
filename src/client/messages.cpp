@@ -309,6 +309,29 @@ void Client::handleMessage(const std::string &msg) {
         break;
       }
 
+      case SV_HOTBAR: {
+        auto numSlots = 0;
+        singleMsg >> numSlots >> del;
+        auto buttons = std::vector<std::pair<int, std::string> >(numSlots);
+
+        for (auto i = 0; i != numSlots; ++i) {
+          auto category = 0;
+          auto id = ""s;
+          singleMsg >> category >> del;
+          auto delimiterToExpect = i == numSlots - 1 ? MSG_END : MSG_DELIM;
+          readString(singleMsg, id, delimiterToExpect);
+          singleMsg >> del;
+
+          buttons[i].first = category;
+          buttons[i].second = id;
+        }
+
+        if (del != MSG_END) break;
+
+        setHotbar(buttons);
+        break;
+      }
+
       case SV_TIME_PLAYED: {
         int secondsPlayed;
         singleMsg >> secondsPlayed >> del;

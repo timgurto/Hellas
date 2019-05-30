@@ -395,6 +395,9 @@ void Server::addUser(const Socket &socket, const std::string &name,
   auto knownSpellsString = userClass.generateKnownSpellsString();
   newUser.sendMessage(SV_KNOWN_SPELLS, knownSpellsString);
 
+  // Send him his hotbar
+  newUser.sendHotbarMessage();
+
   // Send him his map exploration
   if (userExisted) newUser.exploration().sendWholeMap(socket);
 

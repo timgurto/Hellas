@@ -61,6 +61,13 @@ class User : public Object {  // TODO: Don't inherit from Object
 
   ServerItem::vect_t _inventory, _gear;
 
+  struct HotbarAction {
+    HotbarCategory category{HOTBAR_NONE};
+    std::string id{};
+    operator bool() const { return category != HOTBAR_NONE; }
+  };
+  std::vector<HotbarAction> _hotbar;
+
   bool _shouldSuppressAmmoWarnings{false};  // To prevent spam
 
   ms_t _lastContact;
@@ -154,6 +161,9 @@ class User : public Object {  // TODO: Don't inherit from Object
   void respawnPoint(const MapPoint &loc) { _respawnPoint = loc; }
   const Exploration &exploration() const { return _exploration; }
   Exploration &exploration() { return _exploration; }
+  void setHotbarAction(size_t button, int category, const std::string &id);
+  void sendHotbarMessage();
+  const std::vector<HotbarAction> &hotbar() const { return _hotbar; }
 
   void onMove() override;
 
@@ -234,8 +244,8 @@ class User : public Object {  // TODO: Don't inherit from Object
   const Object *actionObject() const { return _actionObject; }
   void beginGathering(
       Object *object);  // Configure user to perform an action on an object
-  void setTargetAndAttack(
-      Entity *target);  // Configure user to prepare to attack an NPC or player
+  void setTargetAndAttack(Entity *target);  // Configure user to prepare to
+                                            // attack an NPC or player
 
   // Whether the user has enough materials to craft a recipe
   bool hasItems(const ItemSet &items) const;

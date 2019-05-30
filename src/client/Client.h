@@ -382,7 +382,12 @@ class Client {
   void initPerformanceDisplay();
   void initPlayerPanels();
   void initHotbar();
+  void setHotbar(const std::vector<std::pair<int, std::string> > &buttons);
+
+ public:
   void refreshHotbar();
+
+ private:
   void initAssignerWindow();
   void populateAssignerWindow();
   void onHotbarKeyDown(SDL_Keycode key);

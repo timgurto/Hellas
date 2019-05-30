@@ -182,6 +182,10 @@ enum MessageCode {
   // Arguments: questID
   CL_ABANDON_QUEST,
 
+  // I have configured hotbar button #... to do ...
+  // Arguments: index, category, ID.
+  CL_HOTBAR_BUTTON,
+
   // "I want to say ... to everybody". 
   // Arguments: message
   CL_SAY,
@@ -542,6 +546,10 @@ enum MessageCode {
   // Progress on a quest objective
   // Arguments: questID, objective index, progress
   SV_QUEST_PROGRESS,
+
+  // Your hotbar has .. slots, which are as follows: ..., ..., ...
+  // Arguments: numSlots, (category, ID), (category, ID), ...
+  SV_HOTBAR,
 
   // "User ... has said ...".
   // Arguments: username, message
