@@ -1,8 +1,8 @@
 <root>
 
-<class name="Soldier"
-    description="The soldier is a fearless warrior, and a master of physical combat. He is in his element drawing the fire of a strong enemy, or smiting him while establishing tactical control over the battlefield. In times of peace he dabbles in philosophy." >
-    <tree name="Hoplite" >
+<class name="Athlete"
+    description="The athlete is a fearless warrior, and a master of physical combat. He is in his element drawing the fire of a strong enemy, or smiting him while establishing tactical control over the battlefield. In times of peace he dabbles in philosophy." >
+    <tree name="Soldier" >
         <tier>
             <cost tag="food" quantity="1" />
             <talent type="stats" name="Train Reflexes" icon="outlineFoot" flavourText="Improved agility and reaction time help you to avoid being hit."><stats dodge="1" /> </talent>
@@ -16,7 +16,7 @@
             <talent type="spell" id="threatHit" flavourText="An attack that enrages your enemy, making him more likely to attack you." />
         </tier>
     </tree>
-    <tree name="Skirmisher" >
+    <tree name="Brute" >
         <tier>
             <cost tag="food" quantity="1" />
             <talent type="stats" name="Train Weapons" icon="outlineSword" flavourText="Learn how to best use different weapons, and get the most out of them."> <stats crit="1" /> </talent>

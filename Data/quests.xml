@@ -9,7 +9,7 @@
     <npcType
         id="grug" name="Grug"
         level="5" maxHealth="30" isCivilian="1" >
-        <humanoid base="soldier">
+        <humanoid base="athlete">
             <gear id="flintstones" />
             <gear id="bone" />
         </humanoid>
