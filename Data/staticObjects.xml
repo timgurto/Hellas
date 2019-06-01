@@ -44,6 +44,10 @@
 <object id="tutorialAltar"> <location x="5058" y="58376" /> </object>
 
 
-<npc id="grug"> <location x="35031" y="22214" /> </npc>
+<npc id="grug"> <location x="35503" y="22322" /> </npc>
+<object id="decoFire"> <location x="35066" y="22520" /> </object>
+<npc id="athleteQG"> <location x="35060" y="22501" /> </npc>
+<npc id="scholarQG"> <location x="35090" y="22532" /> </npc>
+<npc id="zealotQG"> <location x="35040" y="22545" /> </npc>
 
 </root>

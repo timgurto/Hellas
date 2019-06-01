@@ -62,6 +62,14 @@
     <particles profile="smoke" x="0" y="-10" />
     <unlockedBy />
 </objectType>
+        <objectType id="decoFire"
+            xDrawOffset="-10" yDrawOffset="-7" imageFile="fire" >
+            <collisionRect x="-10" y="-3" w="20" h="8" />
+            <strength item="stick" quantity="5" />
+            <particles profile="fire" x="0" y="-6" />
+            <particles profile="smoke" x="0" y="-10" />
+            <unlockedBy />
+        </objectType>
 <objectType id="extinguishedFire" name="Extinguished Cooking Fire"
     xDrawOffset="-10" yDrawOffset="-7"
     isUnbuildable="1" disappearAfter="300000"

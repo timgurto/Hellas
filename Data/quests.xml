@@ -16,4 +16,31 @@
     </npcType>
     <item id="flintstones" gearSlot="2" ><offset x="-5" y="-4" /> </item>
     
+<npcType
+    id="athleteQG" name="Kron the Hunter"
+    level="6" maxHealth="38" isCivilian="1" >
+    <humanoid base="athlete">
+        <gear id="bow" />
+        <gear id="horn" />
+    </humanoid>
+</npcType>
+    
+<npcType
+    id="scholarQG" name="Briv the Gatherer"
+    level="6" maxHealth="38" isCivilian="1" >
+    <humanoid base="scholar">
+        <gear id="stoneKnife" />
+        <gear id="knucklebones" />
+    </humanoid>
+</npcType>
+    
+<npcType
+    id="zealotQG" name="Zaar the Shaman"
+    level="6" maxHealth="38" isCivilian="1" >
+    <humanoid base="zealot">
+        <gear id="hide" />
+        <gear id="fireWand" />
+    </humanoid>
+</npcType>
+    
 </root>
