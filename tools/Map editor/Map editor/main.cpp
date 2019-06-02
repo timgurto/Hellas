@@ -125,6 +125,10 @@ void handleInput(unsigned timeElapsed) {
         loop = false;
         break;
 
+      case SDL_TEXTINPUT:
+        TextBox::addText(e.text.text);
+        break;
+
       case SDL_WINDOWEVENT: {
         case SDL_WINDOWEVENT_SIZE_CHANGED:
         case SDL_WINDOWEVENT_RESIZED:
@@ -162,19 +166,36 @@ void handleInput(unsigned timeElapsed) {
         break;
 
       case SDL_KEYDOWN:
-        switch (e.key.keysym.sym) {
-          case SDLK_UP:
-            pan(UP);
-            break;
-          case SDLK_DOWN:
-            pan(DOWN);
-            break;
-          case SDLK_LEFT:
-            pan(LEFT);
-            break;
-          case SDLK_RIGHT:
-            pan(RIGHT);
-            break;
+
+        if (SDL_IsTextInputActive()) {
+          // Text input
+
+          switch (e.key.keysym.sym) {
+            case SDLK_ESCAPE:
+              TextBox::clearFocus();
+              SDL_StopTextInput();
+              break;
+
+            case SDLK_BACKSPACE:
+              TextBox::backspace();
+              break;
+          }
+
+        } else {
+          switch (e.key.keysym.sym) {
+            case SDLK_UP:
+              pan(UP);
+              break;
+            case SDLK_DOWN:
+              pan(DOWN);
+              break;
+            case SDLK_LEFT:
+              pan(LEFT);
+              break;
+            case SDLK_RIGHT:
+              pan(RIGHT);
+              break;
+          }
         }
         break;
 
@@ -204,6 +225,8 @@ void handleInput(unsigned timeElapsed) {
       case SDL_MOUSEBUTTONDOWN:
         switch (e.button.button) {
           case SDL_BUTTON_LEFT: {
+            TextBox::clearFocus();
+
             for (auto window : windows)
               if (window->visible()) window->onLeftMouseDown(mouse);
 
@@ -218,6 +241,12 @@ void handleInput(unsigned timeElapsed) {
                 break;
               }
             }
+
+            if (SDL_IsTextInputActive() && !TextBox::focus())
+              SDL_StopTextInput();
+            else if (!SDL_IsTextInputActive() && TextBox::focus())
+              SDL_StartTextInput();
+
             if (windowWasClicked) break;
 
             if (mouse.y != 0) {
