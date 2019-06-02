@@ -40,6 +40,7 @@ Label *contextPixelLabel{nullptr};
 Label *contextTileLabel{nullptr};
 Label *contextTerrainLabel{nullptr};
 ChoiceList *terrainList{nullptr};
+ChoiceList *spawnList{nullptr};
 
 auto playerSpawn = MapPoint{};
 auto playerSpawnRange = 0;
@@ -60,6 +61,7 @@ Window *saveLoadWindow{nullptr};
 Window *optionsWindow{nullptr};
 Window *contextWindow{nullptr};
 Window *terrainWindow{nullptr};
+Window *spawnWindow{nullptr};
 
 #undef main
 int main(int argc, char *argv[]) {
@@ -470,7 +472,16 @@ void initUI() {
     static auto terrainIcon = Texture{"icons/terrain.png", Color::MAGENTA};
     auto button = new Button({x, y, BUTTON_SIZE, BUTTON_SIZE}, {},
                              [&]() { terrainWindow->toggleVisibility(); });
+    button->setTooltip("Draw terrain");
     button->addChild(new Picture({0, 0, ICON_SIZE, ICON_SIZE}, terrainIcon));
+    contextWindow->addChild(button);
+    x += BUTTON_SIZE + GAP;
+
+    static auto spawnIcon = Texture{"icons/spawn.png", Color::MAGENTA};
+    button = new Button({x, y, BUTTON_SIZE, BUTTON_SIZE}, {},
+                        [&]() { spawnWindow->toggleVisibility(); });
+    button->setTooltip("Add spawners");
+    button->addChild(new Picture({0, 0, ICON_SIZE, ICON_SIZE}, spawnIcon));
     contextWindow->addChild(button);
 
     y += BUTTON_SIZE + GAP;
@@ -495,4 +506,30 @@ void initUI() {
                               Element::LEFT_JUSTIFIED,
                               Element::CENTER_JUSTIFIED));
   }
+
+  // Spawn window
+  static const auto TEXT_ROW_H = 20;
+  spawnWindow = Window::WithRectAndTitle({300, 450, 200, 600}, "Spawn Points");
+  windows.push_front(spawnWindow);
+  spawnList =
+      new ChoiceList({0, 0, spawnWindow->contentWidth(),
+                      spawnWindow->contentHeight() - 3 * TEXT_ROW_H + 5},
+                     40);
+  spawnWindow->addChild(spawnList);
+  // Populate
+  static const auto RADIUS_Y =
+                        spawnWindow->contentHeight() - 3 * TEXT_ROW_H - 5,
+                    QUANTITY_Y =
+                        spawnWindow->contentHeight() - 2 * TEXT_ROW_H - 5,
+                    RESPAWN_TIME_Y =
+                        spawnWindow->contentHeight() - 1 * TEXT_ROW_H - 5;
+  spawnWindow->addChild(new Label(
+      {0, RADIUS_Y, spawnWindow->contentWidth(), Element::TEXT_HEIGHT},
+      "Radius"));
+  spawnWindow->addChild(new Label(
+      {0, QUANTITY_Y, spawnWindow->contentWidth(), Element::TEXT_HEIGHT},
+      "Quantity"));
+  spawnWindow->addChild(new Label(
+      {0, RESPAWN_TIME_Y, spawnWindow->contentWidth(), Element::TEXT_HEIGHT},
+      "Respawn"));
 }
