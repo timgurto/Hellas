@@ -221,13 +221,18 @@ void handleInput(unsigned timeElapsed) {
 
             if (mouse.y != 0) {
               mouseLeftIsDown = true;
-              auto *state = SDL_GetKeyboardState(nullptr);
-              auto shiftIsDown =
-                  state[SDL_SCANCODE_LSHIFT] || state[SDL_SCANCODE_RSHIFT];
-              if (shiftIsDown)
-                map.fill(contextTile.x, contextTile.y);
-              else
-                map.set(contextTile.x, contextTile.y);
+
+              if (activeTool == terrainWindow) {
+                auto *state = SDL_GetKeyboardState(nullptr);
+                auto shiftIsDown =
+                    state[SDL_SCANCODE_LSHIFT] || state[SDL_SCANCODE_RSHIFT];
+                if (shiftIsDown)
+                  map.fill(contextTile.x, contextTile.y);
+                else
+                  map.set(contextTile.x, contextTile.y);
+
+              } else if (activeTool == spawnWindow) {
+              }
             }
           } break;
 
