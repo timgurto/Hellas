@@ -29,6 +29,7 @@ auto zoomLevel = 1;
 std::pair<int, int> offset = {0, 0};
 auto mouse = ScreenPoint{};
 ScreenPoint contextTile;
+MapPoint mapPos{};
 
 auto dataFiles = FilesList{};
 
@@ -143,9 +144,9 @@ void handleInput(unsigned timeElapsed) {
         if (mouseLeftIsDown) map.set(contextTile.x, contextTile.y);
 
         {
-          auto mapPos = MapPoint{zoomed(1.0 * mouse.x) + offset.first,
-                                 zoomed(1.0 * mouse.y) + offset.second} *
-                        16.0;
+          mapPos = MapPoint{zoomed(1.0 * mouse.x) + offset.first,
+                            zoomed(1.0 * mouse.y) + offset.second} *
+                   16.0;
           contextPixelLabel->changeText("Pixel: (" + toString(mapPos.x) + "," +
                                         toString(mapPos.y) + ")");
           auto tile = MapPoint{mapPos.x / 32.0, mapPos.y / 32.0};
@@ -232,6 +233,21 @@ void handleInput(unsigned timeElapsed) {
                   map.set(contextTile.x, contextTile.y);
 
               } else if (activeTool == spawnWindow) {
+                const auto &selectedTypeID = spawnList->getSelected();
+                if (selectedTypeID.empty()) break;
+
+                auto quantity = spawnQuantityBox->textAsNum();
+                auto radius = spawnRadiusBox->textAsNum();
+                auto respawnTime = spawnTimeBox->textAsNum() * 1000;
+
+                auto sp = SpawnPoint{};
+                sp.id = selectedTypeID;
+                sp.quantity = quantity;
+                sp.radius = radius;
+                sp.respawnTime = respawnTime;
+                sp.loc = mapPos;
+
+                spawnPoints.insert(sp);
               }
             }
           } break;
