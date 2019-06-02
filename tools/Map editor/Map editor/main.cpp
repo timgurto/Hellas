@@ -1,3 +1,5 @@
+#include "main.h"
+
 #include <SDL.h>
 
 #include "../../../src/Args.h"
@@ -10,13 +12,11 @@
 #include "../../../src/client/ui/List.h"
 #include "../../../src/client/ui/OutlinedLabel.h"
 #include "../../../src/client/ui/Window.h"
-
 #include "EntityType.h"
 #include "Map.h"
 #include "SpawnPoint.h"
 #include "StaticObject.h"
 #include "Terrain.h"
-#include "main.h"
 #include "util.h"
 
 auto cmdLineArgs = Args{};   // MUST be defined before renderer
@@ -48,6 +48,8 @@ auto postTutorialPlayerSpawn = MapPoint{};
 // Options
 auto shouldDrawSpawnPointCircles = false;
 auto shouldScaleStaticImages = false;
+auto shouldDrawNPCs = true;
+auto shouldDrawObjects = true;
 
 auto mouseLeftIsDown = false;
 auto terrainToDraw = 'a';
@@ -61,7 +63,7 @@ Window *terrainWindow{nullptr};
 
 #undef main
 int main(int argc, char *argv[]) {
-  cmdLineArgs.add("width", "3800");
+  cmdLineArgs.add("width", "2950");
   cmdLineArgs.add("height", "2000");
 
   renderer.init();
@@ -277,6 +279,9 @@ void render() {
   if (shouldDrawSpawnPointCircles)
     for (const auto &sp : spawnPoints) {
       auto &entityType = entityTypes[sp.id];
+      if (entityType.category == EntityType::OBJECT && !shouldDrawObjects)
+        continue;
+      if (entityType.category == EntityType::NPC && !shouldDrawNPCs) continue;
       auto color =
           entityType.category == EntityType::OBJECT ? Color::CYAN : Color::RED;
       drawCircleOnMap(sp.loc, color, sp.radius);
@@ -287,6 +292,9 @@ void render() {
   }
   for (const auto &sp : spawnPoints) {
     auto &entityType = entityTypes[sp.id];
+    if (entityType.category == EntityType::OBJECT && !shouldDrawObjects)
+      continue;
+    if (entityType.category == EntityType::NPC && !shouldDrawNPCs) continue;
     drawImageOnMap(sp.loc, entityType.image, entityType.drawRect);
   }
   for (const auto &so : staticObjects) {
@@ -394,7 +402,7 @@ void initUI() {
       }));
 
   // Options window
-  optionsWindow = Window::WithRectAndTitle({0, 125, 200, 100}, "Options");
+  optionsWindow = Window::WithRectAndTitle({0, 175, 200, 100}, "Options");
   windows.push_front(optionsWindow);
   auto optionsList = new List(
       {0, 0, optionsWindow->contentWidth(), optionsWindow->contentHeight()});
@@ -405,6 +413,9 @@ void initUI() {
                                      "Draw spawn-point circles"));
   optionsList->addChild(
       new CheckBox(cbRect, shouldScaleStaticImages, "Scale static objects"));
+  optionsList->addChild(
+      new CheckBox(cbRect, shouldDrawObjects, "Draw objects"));
+  optionsList->addChild(new CheckBox(cbRect, shouldDrawNPCs, "Draw NPCs"));
 
   // Context window
   contextWindow = Window::WithRectAndTitle({0, 0, 200, 0}, "Context");

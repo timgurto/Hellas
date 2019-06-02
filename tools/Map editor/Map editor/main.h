@@ -2,6 +2,10 @@
 
 #include <string>
 
+#include "../../../src/Color.h"
+#include "../../../src/Point.h"
+#include "../../../src/client/Texture.h"
+
 void handleInput(unsigned timeElapsed);
 void render();
 
