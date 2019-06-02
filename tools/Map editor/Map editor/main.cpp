@@ -11,6 +11,7 @@
 #include "../../../src/client/ui/Line.h"
 #include "../../../src/client/ui/List.h"
 #include "../../../src/client/ui/OutlinedLabel.h"
+#include "../../../src/client/ui/TextBox.h"
 #include "../../../src/client/ui/Window.h"
 #include "EntityType.h"
 #include "Map.h"
@@ -62,6 +63,10 @@ Window *optionsWindow{nullptr};
 Window *contextWindow{nullptr};
 Window *terrainWindow{nullptr};
 Window *spawnWindow{nullptr};
+
+TextBox *spawnRadiusBox{nullptr};
+TextBox *spawnQuantityBox{nullptr};
+TextBox *spawnTimeBox{nullptr};
 
 #undef main
 int main(int argc, char *argv[]) {
@@ -512,27 +517,53 @@ void initUI() {
 
   // Spawn window
   static const auto TEXT_ROW_H = 20;
-  spawnWindow = Window::WithRectAndTitle({300, 450, 200, 600}, "Spawn Points");
+  spawnWindow = Window::WithRectAndTitle({300, 450, 300, 600}, "Spawn Points");
   windows.push_front(spawnWindow);
   spawnList =
       new ChoiceList({0, 0, spawnWindow->contentWidth(),
-                      spawnWindow->contentHeight() - 3 * TEXT_ROW_H + 5},
-                     40);
+                      spawnWindow->contentHeight() - 3 * TEXT_ROW_H - 5},
+                     20);
   spawnWindow->addChild(spawnList);
   // Populate
+  for (auto type : entityTypes) {
+    auto entry = new Label({}, type.first);
+    entry->id(type.first);
+    spawnList->addChild(entry);
+  }
   static const auto RADIUS_Y =
                         spawnWindow->contentHeight() - 3 * TEXT_ROW_H - 5,
                     QUANTITY_Y =
                         spawnWindow->contentHeight() - 2 * TEXT_ROW_H - 5,
                     RESPAWN_TIME_Y =
-                        spawnWindow->contentHeight() - 1 * TEXT_ROW_H - 5;
-  spawnWindow->addChild(new Label(
-      {0, RADIUS_Y, spawnWindow->contentWidth(), Element::TEXT_HEIGHT},
-      "Radius"));
-  spawnWindow->addChild(new Label(
-      {0, QUANTITY_Y, spawnWindow->contentWidth(), Element::TEXT_HEIGHT},
-      "Quantity"));
-  spawnWindow->addChild(new Label(
-      {0, RESPAWN_TIME_Y, spawnWindow->contentWidth(), Element::TEXT_HEIGHT},
-      "Respawn"));
+                        spawnWindow->contentHeight() - 1 * TEXT_ROW_H - 5,
+                    TEXT_BOX_X = 120,
+                    TEXT_BOX_W = spawnWindow->contentWidth() - TEXT_BOX_X;
+  {
+    spawnWindow->addChild(new Label(
+        {0, RADIUS_Y, spawnWindow->contentWidth(), Element::TEXT_HEIGHT},
+        "Radius"));
+    spawnRadiusBox = new TextBox({TEXT_BOX_X, RADIUS_Y, TEXT_BOX_W, TEXT_ROW_H},
+                                 TextBox::NUMERALS);
+    spawnRadiusBox->text("250");
+    spawnWindow->addChild(spawnRadiusBox);
+  }
+  {
+    spawnWindow->addChild(new Label(
+        {0, QUANTITY_Y, spawnWindow->contentWidth(), Element::TEXT_HEIGHT},
+        "Quantity"));
+    spawnQuantityBox = new TextBox(
+        {TEXT_BOX_X, QUANTITY_Y, TEXT_BOX_W, TEXT_ROW_H}, TextBox::NUMERALS);
+    spawnQuantityBox->text("5");
+    spawnWindow->addChild(spawnQuantityBox);
+  }
+  {
+    spawnWindow->addChild(new Label(
+        {0, RESPAWN_TIME_Y, spawnWindow->contentWidth(), Element::TEXT_HEIGHT},
+        "Respawn (s)"));
+    spawnTimeBox =
+        new TextBox({TEXT_BOX_X, RESPAWN_TIME_Y, TEXT_BOX_W, TEXT_ROW_H},
+                    TextBox::NUMERALS);
+    spawnTimeBox->text("300");
+    spawnWindow->addChild(spawnTimeBox);
+  }
 }

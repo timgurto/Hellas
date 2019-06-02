@@ -138,6 +138,7 @@
     <ClCompile Include="..\..\..\src\client\ui\Picture.cpp" />
     <ClCompile Include="..\..\..\src\client\ui\Scrollable.cpp" />
     <ClCompile Include="..\..\..\src\client\ui\ShadowBox.cpp" />
+    <ClCompile Include="..\..\..\src\client\ui\TextBox.cpp" />
     <ClCompile Include="..\..\..\src\client\ui\Window.cpp" />
     <ClCompile Include="..\..\..\src\client\WordWrapper.cpp" />
     <ClCompile Include="..\..\..\src\Color.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="..\..\..\src\client\ui\Picture.h" />
     <ClInclude Include="..\..\..\src\client\ui\Scrollable.h" />
     <ClInclude Include="..\..\..\src\client\ui\ShadowBox.h" />
+    <ClInclude Include="..\..\..\src\client\ui\TextBox.h" />
     <ClInclude Include="..\..\..\src\client\ui\Window.h" />
     <ClInclude Include="..\..\..\src\client\WordWrapper.h" />
     <ClInclude Include="..\..\..\src\Color.h" />

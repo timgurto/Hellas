@@ -126,6 +126,9 @@
     <ClCompile Include="..\..\..\src\client\ui\ChoiceList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\client\ui\TextBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\XmlReader.h">
@@ -222,6 +225,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\client\ui\ChoiceList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\client\ui\TextBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

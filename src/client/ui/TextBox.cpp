@@ -10,8 +10,9 @@ extern Renderer renderer;
 TextBox *TextBox::currentFocus = nullptr;
 
 TextBox::TextBox(const ScreenRect &rect, ValidInput validInput)
-    : Element({rect.x, rect.y, rect.w, HEIGHT}), _validInput(validInput) {
-  addChild(new ShadowBox({0, 0, rect.w, HEIGHT}, true));
+    : Element({rect.x, rect.y, rect.w, max(HEIGHT, rect.h)}),
+      _validInput(validInput) {
+  addChild(new ShadowBox({0, 0, rect.w, max(HEIGHT, rect.h)}, true));
   setLeftMouseDownFunction(&click);
 }
 
@@ -38,7 +39,7 @@ void TextBox::refresh() {
   if (currentFocus == this) {
     renderer.setDrawColor(Element::FONT_COLOR);
     renderer.fillRect(
-        {TEXT_GAP + text.width() + CURSOR_GAP, 1, CURSOR_WIDTH, HEIGHT - 2});
+        {TEXT_GAP + text.width() + CURSOR_GAP, 1, CURSOR_WIDTH, height() - 2});
   }
 }
 
