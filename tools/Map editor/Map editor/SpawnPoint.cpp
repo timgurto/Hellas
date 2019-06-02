@@ -1,6 +1,7 @@
-#include "../../../src/XmlReader.h"
-
 #include "SpawnPoint.h"
+
+#include "../../../src/XmlReader.h"
+#include "../../../src/XmlWriter.h"
 
 bool SpawnPoint::operator<(const SpawnPoint& rhs) const {
   if (loc.y != rhs.loc.y) return loc.y < rhs.loc.y;
@@ -27,4 +28,19 @@ void SpawnPoint::load(Container& container, const std::string& filename) {
 
     container.insert(sp);
   }
+}
+
+void SpawnPoint::save(const Container& container, const std::string& filename) {
+  auto xw = XmlWriter{filename};
+
+  for (const auto& sp : container) {
+    auto e = xw.addChild("spawnPoint");
+    xw.setAttr(e, "y", sp.loc.y);
+    xw.setAttr(e, "x", sp.loc.x);
+    xw.setAttr(e, "type", sp.id);
+    xw.setAttr(e, "quantity", sp.quantity);
+    xw.setAttr(e, "radius", sp.radius);
+    xw.setAttr(e, "respawnTime", sp.respawnTime);
+  }
+  xw.publish();
 }

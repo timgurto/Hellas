@@ -365,7 +365,7 @@ void drawRectOnMap(const MapPoint &mapLoc, Color color,
 
 void initUI() {
   // Save/load window
-  saveLoadWindow = Window::WithRectAndTitle({0, 200, 200, 100}, "Save/Load");
+  saveLoadWindow = Window::WithRectAndTitle({0, 200, 300, 100}, "Save/Load");
   windows.push_front(saveLoadWindow);
 
   const auto GAP = 2_px,
@@ -394,6 +394,9 @@ void initUI() {
         spawnPoints.clear();
         for (const auto &file : dataFiles) SpawnPoint::load(spawnPoints, file);
       }));
+  saveLoadWindow->addChild(new Button(
+      {COL2_X, y, BUTTON_W, BUTTON_H}, "Save spawn points",
+      []() { SpawnPoint::save(spawnPoints, "../../Data/spawnPoints.xml"); }));
   y += BUTTON_H + GAP;
 
   saveLoadWindow->addChild(

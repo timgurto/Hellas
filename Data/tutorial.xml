@@ -45,8 +45,6 @@
         imageFile="critter" sounds = "pig" >
         <collisionRect x="-9" y="-4" w="18" h="7" />
     </npcType>
-    <spawnPoint type="tutPig" quantity="20" radius="350" respawnTime="10000" x="4566" y="60376" />
-    <spawnPoint type="tutPig" quantity="5" radius="200" respawnTime="30000" x="4174" y="60220" />
 
 <quest id="tutParts" name="Goat Accumulator" startsAt="prometheus" endsAt="prometheus"
     brief="My kin used to rule the cosmos, but cruelty and jealousy led to a war ... a war that we lost.  Our beloved mountain was all but destroyed.  Now the youngsters on Mt. Olympus rule, while the other Titans, my family, suffer imprisonment in the underworld.
@@ -75,11 +73,6 @@
     <item id="tutHide"     name="Goat Hide"     iconFile="hide"     stackSize="10" exclusiveToQuest="tutParts" />
     <item id="tutEntrails" name="Goat Entrails" iconFile="entrails" stackSize="10" exclusiveToQuest="tutParts" />
     <item id="tutFat"      name="Goat Fat"      iconFile="fat"      stackSize="10" exclusiveToQuest="tutParts" />
-    <spawnPoint type="tutGoat" quantity="2" radius="120" respawnTime="90000" x="4396" y="59760" />
-    <spawnPoint type="tutGoat" quantity="2" radius="120" respawnTime="90000" x="4542" y="59490" />
-    <spawnPoint type="tutGoat" quantity="2" radius="120" respawnTime="90000" x="4762" y="59664" />
-    <spawnPoint type="tutGoat" quantity="2" radius="120" respawnTime="90000" x="4880" y="59296" />
-    <spawnPoint type="tutGoat" quantity="2" radius="120" respawnTime="90000" x="5096" y="59482" />
 
 <quest id="tutOfferings" name="An Offer he Can't Refuse" startsAt="prometheus" endsAt="tutBrazier"
     brief="Zeus wants to decide which parts of the animal should be sacrificed, and so you'll need to make two offerings and let him choose.  This gives us an opportunity to trick him.
@@ -171,11 +164,6 @@
         <yield id="tutStick" />
         <strength item="stick" quantity="1" />
     </objectType>
-    <spawnPoint type="tutStick" quantity="10" radius="450" respawnTime="0" x="3112" y="59956" />
-    <spawnPoint type="dummyTree" quantity="40" radius="450" respawnTime="60000" x="3112" y="59956" />
-    <spawnPoint type="dummyTree" quantity="7" radius="250" respawnTime="60000" x="3378" y="59472" />
-    <spawnPoint type="dummyTree" quantity="5" radius="200" respawnTime="60000" x="2486" y="59860" />
-    <spawnPoint type="tutBoar" quantity="12" radius="450" respawnTime="120000" x="3112" y="59956" />
     <npcType
         id="tutBoar" name="Boar"
         level="3" maxHealth="21" attack="6" attackTime="2780"
@@ -204,12 +192,6 @@
         <collisionRect x="-15" y="-3" w="23" h="6" />
         <class name="titan"/>
     </npcType>
-    <spawnPoint type="tutBoar" quantity="3" radius="120" respawnTime="120000" x="2910" y="59372" />
-    <spawnPoint type="tutBoar" quantity="3" radius="120" respawnTime="120000" x="2278" y="59356" />
-    <spawnPoint type="tutBoar" quantity="3" radius="120" respawnTime="120000" x="2062" y="59688" />
-    <spawnPoint type="tutBoar" quantity="3" radius="120" respawnTime="120000" x="1684" y="59460" />
-    <spawnPoint type="tutBoar" quantity="3" radius="120" respawnTime="120000" x="1200" y="59382" />
-    <spawnPoint type="tutBoar" quantity="3" radius="120" respawnTime="120000" x="638" y="59624" />
     
 <quest id="tutCyclops" name="Eye on the Prize" startsAt="atlas" endsAt="tutCyclopsQuestgiver"
     brief="Thank you, I feel much better.  Bearing the heavens for all eternity is hungry work.  Would you mind holding this for a moment while I wipe my mouth?
@@ -292,11 +274,6 @@
         <yield id="tutOre" />
         <strength item="tutOre" quantity="1" />
     </objectType>
-    <spawnPoint type="tutOre" quantity="3" radius="250" respawnTime="120000" x="2140" y="58400" />
-    <spawnPoint type="tutOre" quantity="3" radius="200" respawnTime="120000" x="2000" y="58745" />
-    <spawnPoint type="tutOre" quantity="6" radius="400" respawnTime="120000" x="3110" y="58400" />
-    <spawnPoint type="tutOre" quantity="3" radius="250" respawnTime="120000" x="4409" y="58596" />
-    <spawnPoint type="tutOre" quantity="3" radius="250" respawnTime="120000" x="4430" y="58989" />
     
 
 <quest id="tutSnakes" name="Gifts of the Wild" startsAt="prometheus" endsAt="prometheus"
@@ -317,7 +294,6 @@
         <loot id="meat" > <normal mean="0.6" sd="0.5" /> </loot>
         <loot id="tutEntrails3" chance="0.15" />
     </npcType>
-    <spawnPoint type="tutSnake" quantity="15" radius="560" respawnTime="120000" x="3139" y="58485" />
 
 <quest id="tutTortoises" name="Gifts of the Wild" startsAt="prometheus" endsAt="prometheus"
     brief="Another fascinating new animal Themis created is tortoises.  They look quite strange; go north-east to the beach, and see if you can discern their gift."
@@ -335,8 +311,6 @@
         <loot id="meat" > <normal mean="0.6" sd="0.5" /> </loot>
         <loot id="tutEntrails3" chance="0.15" />
     </npcType>
-    <spawnPoint type="tutTortoise" quantity="4" radius="150" respawnTime="120000" x="4364" y="58540" />
-    <spawnPoint type="tutTortoise" quantity="9" radius="250" respawnTime="120000" x="4423" y="58913" />
     <spell id="tutShield" cooldown=10 school="earth">
         <targets self=1 />
         <function name="buff" s1="tutShield" />
@@ -364,8 +338,6 @@
         <loot id="meat" > <normal mean="0.6" sd="0.5" /> </loot>
         <loot id="tutEntrails3" chance="0.15" />
     </npcType>
-    <spawnPoint type="tutLizard" quantity="7" radius="250" respawnTime="120000" x="2148" y="58382" />
-    <spawnPoint type="tutLizard" quantity="8" radius="280" respawnTime="120000" x="1950" y="58831" />
     <spell id="tutHeal" cooldown=10 school="water">
     <aesthetics sounds="heal" impactParticles="lightRays" />
         <targets self=1 />
@@ -439,8 +411,6 @@
             <gear id="dummyCopperSword" />
         </humanoid>
     </npcType>
-    <spawnPoint type="gigantis" quantity="1" radius="15" respawnTime="10000" x="5050" y="58897" />
-    <spawnPoint type="gigantis" quantity="1" radius="15" respawnTime="10000" x="4978" y="58777" />
     
     <objectType id="tutorialAltar" name="Altar to Eos"
         xDrawOffset="-18" yDrawOffset="-54"

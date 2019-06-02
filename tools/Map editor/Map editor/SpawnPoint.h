@@ -1,5 +1,6 @@
 #pragma once
 
+#include <set>
 #include <string>
 #include <vector>
 
@@ -16,4 +17,5 @@ struct SpawnPoint {
 
   using Container = std::set<SpawnPoint>;
   static void load(Container &container, const std::string &filename);
+  static void save(const Container &container, const std::string &filename);
 };
