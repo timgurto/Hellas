@@ -72,7 +72,8 @@ class Element {
 
   static void resetTooltip();  // To be called once, when the mouse moves.
 
-  typedef void (*mouseDownFunction_t)(Element &e, const ScreenPoint &mousePos);
+  using mouseDownFunction_t =
+      std::function<void(Element &e, const ScreenPoint &mousePos)>;
   using mouseUpFunction_t =
       std::function<void(Element &e, const ScreenPoint &mousePos)>;
   typedef void (*mouseMoveFunction_t)(Element &e, const ScreenPoint &mousePos);

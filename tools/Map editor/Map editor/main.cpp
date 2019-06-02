@@ -68,6 +68,8 @@ TextBox *spawnRadiusBox{nullptr};
 TextBox *spawnQuantityBox{nullptr};
 TextBox *spawnTimeBox{nullptr};
 
+Window *activeTool{nullptr};
+
 #undef main
 int main(int argc, char *argv[]) {
   cmdLineArgs.add("width", "2950");
@@ -312,7 +314,13 @@ void render() {
   for (auto it = windows.rbegin(); it != windows.rend(); ++it) {
     contextWindow->show();
     auto &window = **it;
-    if (window.visible()) window.draw();
+    if (window.visible()) {
+      if (&window == activeTool) {
+        renderer.setDrawColor(Color::YELLOW);
+        renderer.fillRect(window.rect() + ScreenRect{-4, -4, 8, 8});
+      }
+      window.draw();
+    }
   }
 
   renderer.present();
@@ -499,6 +507,12 @@ void initUI() {
 
   // Terrain window
   terrainWindow = Window::WithRectAndTitle({300, 0, 200, 400}, "Terrain");
+  terrainWindow->setMouseMoveFunction(
+      [](Element &e, const ScreenPoint &r) {
+        if (collision(r, {0, 0, e.width(), e.height()}))
+          activeTool = terrainWindow;
+      },
+      nullptr);
   windows.push_front(terrainWindow);
   terrainList = new ChoiceList(
       {0, 0, terrainWindow->contentWidth(), terrainWindow->contentHeight()},
@@ -518,6 +532,12 @@ void initUI() {
   // Spawn window
   static const auto TEXT_ROW_H = 20;
   spawnWindow = Window::WithRectAndTitle({300, 450, 300, 600}, "Spawn Points");
+  spawnWindow->setMouseMoveFunction(
+      [](Element &e, const ScreenPoint &r) {
+        if (collision(r, {0, 0, e.width(), e.height()}))
+          activeTool = spawnWindow;
+      },
+      nullptr);
   windows.push_front(spawnWindow);
   spawnList =
       new ChoiceList({0, 0, spawnWindow->contentWidth(),
