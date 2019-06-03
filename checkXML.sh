@@ -7,7 +7,7 @@ case "${1}" in
     * )
         for FILE in $(git diff --cached --diff-filter=ACMTR --name-only HEAD | grep -E '\.xml|\.usr|\.html'); do
             echo xmllint --noout $FILE;
-            third-party/xmllint/xmllint $FILE > out.txt;
+            third-party/xmllint/xmllint $FILE;
         done
         ;;
 esac

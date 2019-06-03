@@ -367,7 +367,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 544,Optimise map,8,5,Performance,,,,
 545,Online-users list is unreliable,13,13,Bug,,,,3 Tin wrapup
 546,"Show gather-unlock info on object, not item",21,13,Usability,,,,3 Tin wrapup
-547,Populate 1-20 map with animals,5,8,Content,,,,3 Tin wrapup
+547,Populate 1-20 map with animals,5,8,Content,,TRUE,,3 Tin wrapup
 548,Populate remaining map with NPCs,34,89,Content,526,,,4 Copper
 549,Horses,34,13,Content,521,,TRUE,6 Bronze
 550,Gold,34,13,Content,526,,TRUE,6 Bronze

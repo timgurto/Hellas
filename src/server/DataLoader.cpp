@@ -487,6 +487,7 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
     xr.findAttr(elem, "attack", baseStats.physicalDamage);
     xr.findAttr(elem, "attackTime", baseStats.attackTime);
     xr.findAttr(elem, "speed", baseStats.speed);
+    xr.findAttr(elem, "armor", baseStats.armor);
     nt->baseStats(baseStats);
 
     auto elemSpell = xr.findChild("spell", elem);

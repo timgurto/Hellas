@@ -30,7 +30,7 @@
 </quest>
     <npcType
         id="prometheus" name="Prometheus"
-        level="20" maxHealth="86" isCivilian="1" >
+        level="20" maxHealth="88" isCivilian="1" >
         <humanoid>
             <gear id="linenChitonOrange" />
             <gear id="sandals" />
@@ -40,7 +40,7 @@
     </npcType>
     <npcType
         id="tutPig" name="Pig"
-        level="1" maxHealth="20" attack="5" attackTime="3020" isNeutral="1"
+        level="1" maxHealth="27" attack="5" attackTime="3020" isNeutral="1"
         xDrawOffset="-11" yDrawOffset="-13"
         imageFile="critter" sounds = "pig" >
         <collisionRect x="-9" y="-4" w="18" h="7" />
@@ -60,7 +60,7 @@
 </quest>
     <npcType
         id="tutGoat" name="Goat"
-        level="2" maxHealth="21" attack="5" attackTime="2780" isNeutral="1"
+        level="2" maxHealth="26" attack="6" attackTime="2780" isNeutral="1"
         xDrawOffset="-17" yDrawOffset="-28"
         imageFile="goat" sounds = "goat" >
         <collisionRect x="-15" y="-4" w="31" h="7" />
@@ -166,7 +166,7 @@
     </objectType>
     <npcType
         id="tutBoar" name="Boar"
-        level="3" maxHealth="21" attack="6" attackTime="2780"
+        level="3" maxHealth="26" attack="7" attackTime="2780"
         xDrawOffset="-11" yDrawOffset="-13"
         imageFile="boar" sounds = "pig" >
         <collisionRect x="-9" y="-4" w="18" h="7" />

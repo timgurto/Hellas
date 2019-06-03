@@ -1,9 +1,9 @@
 <root>
 
 <npcType
-    id="goat" name="Goat"
-    level="5" maxHealth="25" attack="6" attackTime="2800"
-    sounds="goat" isNeutral="1"
+    id="goat5" name="Mild-Mannered Goat"
+    level="5" maxHealth="30" attack="7" attackTime="2750"
+    imageFile = "goat" sounds="goat" isNeutral="1"
     xDrawOffset="-17" yDrawOffset="-28" >
     <collisionRect x="-15" y="-4" w="31" h="7" />
     <loot id="meat" chance="0.3" />
@@ -13,12 +13,191 @@
     <loot id="knucklebones" chance="0.02" />
     <loot id="entrails" chance="0.1" />
 </npcType>
+<npcType
+    id="goat12" name="Stubborn Goat"
+    level="12" maxHealth="42" attack="10" attackTime="2750"
+    imageFile = "goat" sounds="goat"
+    xDrawOffset="-17" yDrawOffset="-28" >
+    <collisionRect x="-15" y="-4" w="31" h="7" />
+    <loot id="meat" chance="0.3" />
+    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
+    <loot id="fat" chance="0.05" />
+    <loot id="horn" chance="0.05" />
+    <loot id="knucklebones" chance="0.02" />
+    <loot id="entrails" chance="0.1" />
+</npcType>
+<npcType
+    id="goat15" name="Ornery Goat"
+    level="15" maxHealth="47" attack="12" attackTime="2750"
+    imageFile = "goat" sounds="goat"
+    xDrawOffset="-17" yDrawOffset="-28" >
+    <collisionRect x="-15" y="-4" w="31" h="7" />
+    <loot id="meat" chance="0.3" />
+    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
+    <loot id="fat" chance="0.05" />
+    <loot id="horn" chance="0.05" />
+    <loot id="knucklebones" chance="0.02" />
+    <loot id="entrails" chance="0.1" />
+</npcType>
+<npcType
+    id="goat16" name="Angry Goat"
+    level="16" maxHealth="51" attack="12" attackTime="2750"
+    imageFile = "goat" sounds="goat"
+    xDrawOffset="-17" yDrawOffset="-28" >
+    <collisionRect x="-15" y="-4" w="31" h="7" />
+    <loot id="meat" chance="0.3" />
+    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
+    <loot id="knucklebones" chance="0.02" />
+    <loot id="entrails" chance="0.1" />
+    <loot id="fat" chance="0.05" />
+    <loot id="horn" chance="0.05" />
+</npcType>
 
 <npcType
-    id="boar" name="Wild boar"
-	level="7" maxHealth="28" attack="7" attackTime="2900"
+    id="tortoise5" name="Tough-Shell Tortoise"
+    level="5" maxHealth="29" attack="5" attackTime="3500"
+    xDrawOffset="-18" yDrawOffset="-20"
+    imageFile="tortoise" sounds="tortoise" isNeutral="1" >
+    <spell id="tutShield" />
+    <collisionRect x="-15" y="-5" w="31" h="10" />
+    <loot id="meat" chance="0.3" />
+    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
+    <loot id="knucklebones" chance="0.02" />
+    <loot id="entrails" chance="0.1" />
+    <loot id="fat" chance="0.05" />
+</npcType>
+<npcType
+    id="tortoise11" name="Spike-Shell Tortoise"
+    level="11" maxHealth="33" attack="5" armor="1" attackTime="3500"
+    xDrawOffset="-18" yDrawOffset="-20"
+    imageFile="tortoise" sounds="tortoise" >
+    <spell id="tutShield" />
+    <collisionRect x="-15" y="-5" w="31" h="10" />
+    <loot id="meat" chance="0.3" />
+    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
+    <loot id="knucklebones" chance="0.02" />
+    <loot id="entrails" chance="0.1" />
+    <loot id="fat" chance="0.05" />
+</npcType>
+<npcType
+    id="tortoise19" name="Shear-Shell Tortoise"
+    level="11" maxHealth="58" attack="7" armor="1" attackTime="3500"
+    xDrawOffset="-18" yDrawOffset="-20"
+    imageFile="tortoise" sounds="tortoise" >
+    <spell id="tutShield" />
+    <collisionRect x="-15" y="-5" w="31" h="10" />
+    <loot id="meat" chance="0.3" />
+    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
+    <loot id="knucklebones" chance="0.02" />
+    <loot id="entrails" chance="0.1" />
+    <loot id="fat" chance="0.05" />
+</npcType>
+
+<npcType
+    id="lizard6" name="Plains Sunner"
+    level="6" maxHealth="30" attack="4" attackTime="2500"
+    xDrawOffset="-20" yDrawOffset="-12"
+    imageFile="lizard" sounds="lizard" >
+    <spell id="tutHeal" />
+    <collisionRect x="-18" y="-6" w="37" h="12" />
+    <loot id="meat" chance="0.3" />
+    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
+    <loot id="knucklebones" chance="0.02" />
+    <loot id="entrails" chance="0.1" />
+    <loot id="fat" chance="0.05" />
+</npcType>
+<npcType
+    id="lizard12" name="Coastal Sunbather"
+    level="12" maxHealth="41" attack="6" attackTime="2500"
+    xDrawOffset="-20" yDrawOffset="-12"
+    imageFile="lizard" sounds="lizard" >
+    <spell id="tutHeal" />
+    <collisionRect x="-18" y="-6" w="37" h="12" />
+    <loot id="meat" chance="0.3" />
+    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
+    <loot id="knucklebones" chance="0.02" />
+    <loot id="entrails" chance="0.1" />
+    <loot id="fat" chance="0.05" />
+</npcType>
+<npcType
+    id="lizard15" name="Mountain Sunner"
+    level="15" maxHealth="49" attack="7" attackTime="2500"
+    xDrawOffset="-20" yDrawOffset="-12"
+    imageFile="lizard" sounds="lizard" >
+    <spell id="tutHeal" />
+    <collisionRect x="-18" y="-6" w="37" h="12" />
+    <loot id="meat" chance="0.3" />
+    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
+    <loot id="knucklebones" chance="0.02" />
+    <loot id="entrails" chance="0.1" />
+    <loot id="fat" chance="0.05" />
+</npcType>
+<npcType
+    id="lizard18" name="Rock Lounger"
+    level="18" maxHealth="56" attack="9" attackTime="2500"
+    xDrawOffset="-20" yDrawOffset="-12"
+    imageFile="lizard" sounds="lizard" >
+    <spell id="tutHeal" />
+    <collisionRect x="-18" y="-6" w="37" h="12" />
+    <loot id="meat" chance="0.3" />
+    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
+    <loot id="knucklebones" chance="0.02" />
+    <loot id="entrails" chance="0.1" />
+    <loot id="fat" chance="0.05" />
+</npcType>
+
+<npcType
+    id="snake8" name="Valley Serpent" isFlat="1"
+    level="8" maxHealth="34" attack="7" attackTime="3250" isRanged="1" school="earth" projectile="poison"
+    xDrawOffset="-12" yDrawOffset="-12"
+    imageFile="snake" sounds="snake" >
+    <collisionRect x="-5" y="-5" w="10" h="10" />
+    <loot id="meat" chance="0.3" />
+    <loot id="entrails" chance="0.1" />
+    <loot id="fat" chance="0.05" />
+</npcType>
+<npcType
+    id="snake16" name="Undergrowth Lurker" isFlat="1"
+    level="16" maxHealth="10" attack="51" attackTime="3250" isRanged="1" school="earth" projectile="poison"
+    xDrawOffset="-12" yDrawOffset="-12"
+    imageFile="snake" sounds="snake" >
+    <collisionRect x="-5" y="-5" w="10" h="10" />
+    <loot id="meat" chance="0.3" />
+    <loot id="entrails" chance="0.1" />
+    <loot id="fat" chance="0.05" />
+</npcType>
+
+<npcType
+    id="boar10" name="Gravel Snuffler"
+	level="10" maxHealth="38" attack="10" attackTime="3000"
     xDrawOffset="-11" yDrawOffset="-13"
-    sounds = "pig" >
+    imageFile="boar" sounds = "pig" >
+    <collisionRect x="-9" y="-4" w="18" h="7" />
+    <loot id="hide" chance="0.3" />
+    <loot id="meat" chance="0.3" />
+    <loot id="fat" chance="0.05" />
+    <loot id="entrails" chance="0.1" />
+    <loot id="knucklebones" chance="0.02" />
+    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
+</npcType>
+<npcType
+    id="boar12" name="Leaftreader Companion"
+	level="12" maxHealth="42" attack="11" attackTime="3000"
+    xDrawOffset="-11" yDrawOffset="-13"
+    imageFile="boar" sounds = "pig" >
+    <collisionRect x="-9" y="-4" w="18" h="7" />
+    <loot id="hide" chance="0.3" />
+    <loot id="meat" chance="0.3" />
+    <loot id="fat" chance="0.05" />
+    <loot id="entrails" chance="0.1" />
+    <loot id="knucklebones" chance="0.02" />
+    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
+</npcType>
+<npcType
+    id="boar18" name="Undergrowth Gorer"
+	level="18" maxHealth="55" attack="15" attackTime="3000"
+    xDrawOffset="-11" yDrawOffset="-13"
+    imageFile="boar" sounds = "pig" >
     <collisionRect x="-9" y="-4" w="18" h="7" />
     <loot id="hide" chance="0.3" />
     <loot id="meat" chance="0.3" />
@@ -30,7 +209,7 @@
 
 <npcType
     id="waterNymph" name="Water Nymph"
-	level="10" maxHealth="27" attack="6" attackTime="2025" isRanged="1" school="water" projectile="waterball"
+	level="9" maxHealth="36" attack="5" attackTime="2250" isRanged="1" school="water" projectile="waterball"
     xDrawOffset="-18" yDrawOffset="-40"
     sounds="nymph" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
@@ -41,19 +220,20 @@
     <particles profile="waterSmall" x="-7" y="-21" />
     <particles profile="waterSmall" x="7" y="-28" />
 </npcType>
+
 <npcType
     id="airNymph" name="Air Nymph"
-	level="13" maxHealth="32" attack="6" attackTime="2010" speed="91" isRanged="1" school="air" projectile="lightning"
+	level="13" maxHealth="43" attack="4" attackTime="1750" speed="91" isRanged="1" school="air" projectile="lightning"
     xDrawOffset="-18" yDrawOffset="-40"
     sounds="nymph" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
     <loot id="airEssence" > <normal mean="0.3" sd="0.5" /> </loot>
     <particles profile="air" y="-22" />
 </npcType>
+
 <npcType
     id="earthNymph" name="Earth Nymph"
-	level="17" maxHealth="53" attack="13" attackTime="2850
-    " speed="49" school="earth"
+	level="17" maxHealth="53" attack="11" attackTime="2000" speed="49" school="earth"
     xDrawOffset="-18" yDrawOffset="-40"
     sounds="earthNymph" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
@@ -63,9 +243,10 @@
     <particles profile="earthSmall" x="-7" y="-21" />
     <particles profile="earthSmall" x="7" y="-28" />
 </npcType>
+
 <npcType
     id="fireNymph" name="Fire Nymph"
-	level="20" maxHealth="51" attack="10" attackTime="2027" isRanged="1" school="fire" projectile="fireball"
+	level="20" maxHealth="60" attack="8" attackTime="2000" isRanged="1" school="fire" projectile="fireball"
     xDrawOffset="-18" yDrawOffset="-40"
     sounds="nymph" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
@@ -75,5 +256,90 @@
     <particles profile="fireSmall" x="7" y="-28" />
 </npcType>
 
+<npcType
+    id="meleeMan6" name="River Scout"
+    level="6" maxHealth="31" attack="7" attackTime="2500" >
+    <humanoid base="default">
+        <gear id="rock" />
+    </humanoid>
+</npcType>
+<npcType
+    id="meleeMan7" name="River Bandit"
+    level="7" maxHealth="33" attack="7" attackTime="2500" >
+    <humanoid base="default">
+        <gear id="rock" />
+    </humanoid>
+</npcType>
+<npcType
+    id="meleeMan8" name="Badlands Brute"
+    level="8" maxHealth="33" attack="8" attackTime="2500" >
+    <humanoid base="default">
+        <gear id="rock" />
+    </humanoid>
+</npcType>
+<npcType
+    id="meleeMan13" name="River Ruffian"
+    level="13" maxHealth="45" attack="9" attackTime="2500" >
+    <humanoid base="default">
+        <gear id="rock" />
+    </humanoid>
+</npcType>
+<npcType
+    id="meleeMan14" name="Leaftreader Trapper"
+    level="14" maxHealth="46" attack="10" attackTime="2500" >
+    <humanoid base="default">
+        <gear id="rock" />
+    </humanoid>
+</npcType>
+<npcType
+    id="meleeMan15" name="Crossing Guard"
+    level="15" maxHealth="47" attack="11" attackTime="2500" >
+    <humanoid base="default">
+        <gear id="rock" />
+    </humanoid>
+</npcType>
+<npcType
+    id="meleeMan16" name="Mountain Settler"
+    level="16" maxHealth="51" attack="11" attackTime="2500" >
+    <humanoid base="default">
+        <gear id="rock" />
+    </humanoid>
+</npcType>
+<npcType
+    id="meleeMan17" name="Fire-Shrine Neophyte"
+    level="17" maxHealth="52" attack="12" attackTime="2500" >
+    <humanoid base="default">
+        <gear id="rock" />
+    </humanoid>
+</npcType>
+
+<npcType
+    id="rangedMan11" name="Valley Hunter"
+    level="11" maxHealth="40" attack="6" isRanged="1" projectile="rock" attackTime="2500" >
+    <humanoid base="default">
+        <gear id="rock" />
+    </humanoid>
+</npcType>
+<npcType
+    id="rangedMan13" name="Leaftreader Scout"
+    level="13" maxHealth="43" attack="7" isRanged="1" projectile="rock" attackTime="2500" >
+    <humanoid base="default">
+        <gear id="rock" />
+    </humanoid>
+</npcType>
+<npcType
+    id="rangedMan18" name="Fire-Shrine Cultist"
+    level="18" maxHealth="55" attack="9" isRanged="1" projectile="rock" attackTime="2500" >
+    <humanoid base="default">
+        <gear id="rock" />
+    </humanoid>
+</npcType>
+<npcType
+    id="rangedMan20" name="Trophy Hunter"
+    level="20" maxHealth="63" attack="9" isRanged="1" projectile="rock" attackTime="2500" >
+    <humanoid base="default">
+        <gear id="rock" />
+    </humanoid>
+</npcType>
 
 </root>
