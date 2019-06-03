@@ -293,7 +293,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 234,Make allowed-terrain more intuitive for construction,8,8,Usability,,,,
 236,Prevent construction near respawn altars,3,8,Exploit,,,,
 239,Add coinage,21,3,Content,519,,,6 Bronze
-240,XML-verifying git hook,21,8,Code quality,,,,
+240,XML-verifying git hook,21,8,Code quality,,TRUE,,
 250,Fireball has interruptible cast time,2,8,Feature,246,,,5 First adventure
 270,Buffs can be dismissed,1,5,Feature,267,,,3 Tin wrapup
 280,Hotbar can be rearranged,13,34,Usability,279,TRUE,,3 Tin wrapup
