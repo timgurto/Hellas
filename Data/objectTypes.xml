@@ -165,15 +165,45 @@
     <strength item="clay" quantity="5" />
 </objectType-->
 
-<objectType id="handCart" name="Trade Cart"
+<objectType id="handCart" name="Hand Cart"
     xDrawOffset="-13" yDrawOffset="-16"
-    merchantSlots="1" isVehicle="1" damageParticles="wood" sounds="wood" >
+    isVehicle="1" damageParticles="wood" sounds="wood" >
+    <container slots="5" />
     <collisionRect x="-13" y="-4" w="25" h="8" />
-    <container slots="2" />
     <material id="lumber" quantity="8" />
-    <unlockedBy recipe="lumber" />
+    <material id="smallPot" quantity="5" />
+    <unlockedBy recipe="lumber" chance="0.1" />
+    <unlockedBy recipe="smallPot" chance="0.05" />
     <strength item="lumber" quantity="8" />
 </objectType>
+<!--objectType
+    id="tradeMat" name="Trade Mat"
+    xDrawOffset="-20"
+    yDrawOffset="-35"
+    merchantSlots="1" >
+    <container slots="2" />
+    <collisionRect x="-16" y="-7" w="30" h="10" />
+    <material id="hide" quantity="1" />
+    <material id="smallPot" quantity="3" />
+    <unlockedBy recipe="smallPot" chance="0.1" />
+    <strength item="hide" quantity="1" />
+</objectType-->
+<objectType
+    id="tradeStall" name="Trade Stall"
+    xDrawOffset="-20"
+    yDrawOffset="-35"
+    merchantSlots="2" >
+    <container slots="4" />
+    <collisionRect x="-16" y="-7" w="30" h="10" />
+    <material id="linenCloth" quantity="2" />
+    <material id="lumber" quantity="12" />
+    <material id="mediumPot" quantity="1" />
+    <unlockedBy recipe="lumber" chance="0.05" />
+    <unlockedBy recipe="mediumPot" chance="0.1" />
+    <unlockedBy construction="tradeMat" chance="0.3" />
+    <strength item="lumber" quantity="12" />
+</objectType>
+
 <objectType
     id="raft" name="Raft"
     xDrawOffset="-16"
