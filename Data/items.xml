@@ -252,7 +252,7 @@
 	</item-->
 
 	<!-- Shoulders -->
-		<item id="hide" name="Animal Hide" gearSlot="3" sounds="leather" >
+		<item id="hide" name="Animal Hide" gearSlot="3" sounds="leather" strength="5" >
 			<stats critResist="1" />
 			<offset x="-4" y="-1" />
 		</item>
