@@ -2,11 +2,11 @@
 
 <particleProfile
     id="newPlayerClay"
-    particlesPerSecond=50>
-    <distance mean=5 sd=0 />
-    <altitude mean=30 sd=4 />
-    <velocity mean=15 sd=3 />
-    <fallSpeed mean=4 sd=2 />
+    particlesPerSecond="50">
+    <distance mean="5" sd="0" />
+    <altitude mean="30" sd="4" />
+    <velocity mean="15" sd="3" />
+    <fallSpeed mean="4" sd="2" />
     <variety imageFile="clay" count="2" />
     <variety imageFile="clayLarge" />
 </particleProfile>
@@ -15,9 +15,9 @@
     onNewPlayers="1"
     particles="newPlayerClay" />
     
-<objectType id="crater" isFlat=1 isDecoration=1
-    xDrawOffset=-20 yDrawOffset=-14 >
-    <particles profile="smoke" x=0 y=0 />
+<objectType id="crater" isFlat="1" isDecoration="1"
+    xDrawOffset="-20" yDrawOffset="-14" >
+    <particles profile="smoke" x="0" y="0" />
 </objectType>
 
 
@@ -214,25 +214,25 @@
         xDrawOffset="-20" yDrawOffset="-55" >
         <collisionRect x="-13" y="-3" w="26" h="7" />
         <class name="cyclops"/>
-        <particles profile="lightningSparks" x=3 y=-21 />
-        <particles profile="lightningSparks" x=4 y=-21 />
-        <particles profile="lightningSparks" x=5 y=-21 />
-        <particles profile="lightningSparks" x=5 y=-22 />
-        <particles profile="lightningSparks" x=6 y=-22 />
-        <particles profile="lightningSparks" x=7 y=-22 />
-        <particles profile="lightningSparks" x=7 y=-23 />
-        <particles profile="lightningSparks" x=8 y=-23 />
-        <particles profile="lightningSparks" x=9 y=-23 />
-        <particles profile="lightningSparks" x=13 y=-26 />
-        <particles profile="lightningSparks" x=14 y=-26 />
-        <particles profile="lightningSparks" x=15 y=-26 />
-        <particles profile="lightningSparks" x=15 y=-27 />
-        <particles profile="lightningSparks" x=16 y=-27 />
-        <particles profile="lightningSparks" x=17 y=-27 />
-        <particles profile="lightningSparks" x=17 y=-28 />
-        <particles profile="lightningSparks" x=18 y=-28 />
-        <particles profile="lightningSparks" x=19 y=-28 />
-        <particles profile="lightningSparks" x=19 y=-29 />
+        <particles profile="lightningSparks" x="3" y="-21" />
+        <particles profile="lightningSparks" x="4" y="-21" />
+        <particles profile="lightningSparks" x="5" y="-21" />
+        <particles profile="lightningSparks" x="5" y="-22" />
+        <particles profile="lightningSparks" x="6" y="-22" />
+        <particles profile="lightningSparks" x="7" y="-22" />
+        <particles profile="lightningSparks" x="7" y="-23" />
+        <particles profile="lightningSparks" x="8" y="-23" />
+        <particles profile="lightningSparks" x="9" y="-23" />
+        <particles profile="lightningSparks" x="13" y="-26" />
+        <particles profile="lightningSparks" x="14" y="-26" />
+        <particles profile="lightningSparks" x="15" y="-26" />
+        <particles profile="lightningSparks" x="15" y="-27" />
+        <particles profile="lightningSparks" x="16" y="-27" />
+        <particles profile="lightningSparks" x="17" y="-27" />
+        <particles profile="lightningSparks" x="17" y="-28" />
+        <particles profile="lightningSparks" x="18" y="-28" />
+        <particles profile="lightningSparks" x="19" y="-28" />
+        <particles profile="lightningSparks" x="19" y="-29" />
     </objectType>
     <objectType
         id="tutCyclopsSmithy" name="Stereopes"
@@ -250,23 +250,23 @@
     <item id="tutLightning" name="Handheld Lightning" stackSize="5" gearSlot="6" >
         <weapon damage="12" speed="2.1" range="25" consumes="tutLightning" projectile="lightning" sounds="lightning" />
         <offset x="-8" y="-6" />
-        <particles profile="lightningSparks" x=-7 y=-5 />
-        <particles profile="lightningSparks" x=-6 y=-4 />
-        <particles profile="lightningSparks" x=-5 y=-4 />
-        <particles profile="lightningSparks" x=-5 y=-3 />
-        <particles profile="lightningSparks" x=-4 y=-3 />
-        <particles profile="lightningSparks" x=-4 y=-2 />
-        <particles profile="lightningSparks" x=-3 y=-2 />
-        <particles profile="lightningSparks" x=-2 y=-2 />
-        <particles profile="lightningSparks" x=-1 y=-2 />
-        <particles profile="lightningSparks" x=-3 y=-1 />
-        <particles profile="lightningSparks" x=-2 y=-1 />
-        <particles profile="lightningSparks" x=-1 y=-1 />
-        <particles profile="lightningSparks" x=0 y=-1 />
-        <particles profile="lightningSparks" x=-1 y=0 />
-        <particles profile="lightningSparks" x=0 y=0 />
-        <particles profile="lightningSparks" x=1 y=0 />
-        <particles profile="lightningSparks" x=1 y=1 />
+        <particles profile="lightningSparks" x="-7" y="-5" />
+        <particles profile="lightningSparks" x="-6" y="-4" />
+        <particles profile="lightningSparks" x="-5" y="-4" />
+        <particles profile="lightningSparks" x="-5" y="-3" />
+        <particles profile="lightningSparks" x="-4" y="-3" />
+        <particles profile="lightningSparks" x="-4" y="-2" />
+        <particles profile="lightningSparks" x="-3" y="-2" />
+        <particles profile="lightningSparks" x="-2" y="-2" />
+        <particles profile="lightningSparks" x="-1" y="-2" />
+        <particles profile="lightningSparks" x="-3" y="-1" />
+        <particles profile="lightningSparks" x="-2" y="-1" />
+        <particles profile="lightningSparks" x="-1" y="-1" />
+        <particles profile="lightningSparks" x="0" y="-1" />
+        <particles profile="lightningSparks" x="-1" y="0" />
+        <particles profile="lightningSparks" x="0" y="0" />
+        <particles profile="lightningSparks" x="1" y="0" />
+        <particles profile="lightningSparks" x="1" y="1" />
     </item>
     <objectType id="tutOre" name="Othrysian Ore"
         xDrawOffset="-5" yDrawOffset="-5"
@@ -311,13 +311,13 @@
         <loot id="meat" > <normal mean="0.6" sd="0.5" /> </loot>
         <loot id="tutEntrails3" chance="0.15" />
     </npcType>
-    <spell id="tutShield" cooldown=10 school="earth">
-        <targets self=1 />
+    <spell id="tutShield" cooldown="10" school="earth">
+        <targets self="1" />
         <function name="buff" s1="tutShield" />
     </spell>
     <buff id="tutShield" name="Hardened Shell" icon="shield" duration="5"
         description="Increased armour and resistances.">
-        <effect image="shield" xOffset=-20 yOffset=-40 />
+        <effect image="shield" xOffset="-20" yOffset="-40" />
         <stats armor="50" airResist="50" earthResist="50" fireResist="50" waterResist="50" />
     </buff>
     
@@ -338,10 +338,10 @@
         <loot id="meat" > <normal mean="0.6" sd="0.5" /> </loot>
         <loot id="tutEntrails3" chance="0.15" />
     </npcType>
-    <spell id="tutHeal" cooldown=10 school="water">
+    <spell id="tutHeal" cooldown="10" school="water">
     <aesthetics sounds="heal" impactParticles="lightRays" />
-        <targets self=1 />
-    <function name="heal" i1=5 />
+        <targets self="1" />
+    <function name="heal" i1="5" />
     </spell>
 
     
@@ -360,7 +360,7 @@
         level="20" maxHealth="86" isCivilian="1" allowedTerrain="mountains"
         xDrawOffset="-20" yDrawOffset="-12" >
         <class name="titan"/>
-        <particles profile="wound" x=3 y=0 />
+        <particles profile="wound" x="3" y="0" />
     </npcType>
     
     
@@ -402,7 +402,7 @@
     </item>
     <npcType
         id="gigantis" name="Gigantis"
-        level="20" maxHealth="273" attack="40"
+        level="20" maxHealth="273" attack="47"
         maxDistanceFromSpawner = "40" >
         <humanoid base="gigantis">
             <gear id="dummyCopperCuirass" />
