@@ -257,23 +257,25 @@
 </npcType>
 
 <npcType
-    id="meleeMan6" name="River Scout"
+    id="meleeMan6" name="River Clubman"
     level="6" maxHealth="31" attack="7" attackTime="2500" >
-    <humanoid base="default">
-        <gear id="rock" />
+    <humanoid base="athlete">
+        <gear id="bone" />
     </humanoid>
 </npcType>
 <npcType
-    id="meleeMan7" name="River Bandit"
+    id="meleeMan7" name="River Axeman"
     level="7" maxHealth="33" attack="7" attackTime="2500" >
-    <humanoid base="default">
-        <gear id="rock" />
+    <humanoid base="athlete">
+        <gear id="stoneAxe" />
+        <gear id="flintstones" />
     </humanoid>
 </npcType>
 <npcType
     id="meleeMan8" name="Badlands Brute"
     level="8" maxHealth="33" attack="8" attackTime="2500" >
-    <humanoid base="default">
+    <humanoid base="zealot">
+        <gear id="hide" />
         <gear id="rock" />
     </humanoid>
 </npcType>
@@ -281,64 +283,82 @@
     id="meleeMan13" name="River Ruffian"
     level="13" maxHealth="45" attack="9" attackTime="2500" >
     <humanoid base="default">
-        <gear id="rock" />
+        <gear id="leatherGloves" />
+        <gear id="sandals" />
     </humanoid>
 </npcType>
 <npcType
     id="meleeMan14" name="Leaftreader Trapper"
     level="14" maxHealth="46" attack="10" attackTime="2500" >
     <humanoid base="default">
-        <gear id="rock" />
+        <gear id="tinKnife" />
+        <gear id="horn" />
+        <gear id="leatherLamellar" />
+        <gear id="sandals" />
     </humanoid>
 </npcType>
 <npcType
     id="meleeMan15" name="Crossing Guard"
     level="15" maxHealth="47" attack="11" attackTime="2500" >
     <humanoid base="default">
-        <gear id="rock" />
+        <gear id="tinSpear" />
+        <gear id="leatherShield" />
     </humanoid>
 </npcType>
 <npcType
     id="meleeMan16" name="Mountain Settler"
     level="16" maxHealth="51" attack="11" attackTime="2500" >
-    <humanoid base="default">
-        <gear id="rock" />
+    <humanoid base="athlete">
+        <gear id="horn" />
+        <gear id="tinLamellar" />
+        <gear id="tinKnife" />
     </humanoid>
 </npcType>
 <npcType
     id="meleeMan17" name="Fire-Shrine Neophyte"
-    level="17" maxHealth="52" attack="12" attackTime="2500" >
-    <humanoid base="default">
-        <gear id="rock" />
+    level="17" maxHealth="52" attack="12" attackTime="2500" school="fire" >
+    <humanoid base="zealot">
+        <gear id="linenChiton" />
+        <gear id="fireWand" />
+        <gear id="sandals" />
     </humanoid>
 </npcType>
 
 <npcType
     id="rangedMan11" name="Valley Hunter"
-    level="11" maxHealth="40" attack="6" isRanged="1" projectile="rock" attackTime="2500" >
-    <humanoid base="default">
-        <gear id="rock" />
+    level="11" maxHealth="40" attack="6" isRanged="1" projectile="arrow" attackTime="2500" >
+    <humanoid base="athlete">
+        <gear id="bow" />
+        <gear id="hide" />
     </humanoid>
 </npcType>
 <npcType
     id="rangedMan13" name="Leaftreader Scout"
-    level="13" maxHealth="43" attack="7" isRanged="1" projectile="rock" attackTime="2500" >
+    level="13" maxHealth="43" attack="7" isRanged="1" projectile="smoothRock" attackTime="2500" >
     <humanoid base="default">
-        <gear id="rock" />
+        <gear id="sling" />
+        <gear id="skullCap" />
+        <gear id="sandals" />
+        <gear id="horn" />
     </humanoid>
 </npcType>
 <npcType
     id="rangedMan18" name="Fire-Shrine Cultist"
-    level="18" maxHealth="55" attack="9" isRanged="1" projectile="rock" attackTime="2500" >
-    <humanoid base="default">
-        <gear id="rock" />
+    level="18" maxHealth="55" attack="9" isRanged="1" projectile="fireball" attackTime="2500" school="fire" >
+    <humanoid base="zealot">
+        <gear id="fireStaff" />
+        <gear id="leatherGloves" />
+        <gear id="linenChiton" />
+        <gear id="sandals" />
     </humanoid>
 </npcType>
 <npcType
     id="rangedMan20" name="Trophy Hunter"
-    level="20" maxHealth="63" attack="9" isRanged="1" projectile="rock" attackTime="2500" >
+    level="20" maxHealth="63" attack="9" isRanged="1" projectile="tinJavelin" attackTime="2500" >
     <humanoid base="default">
-        <gear id="rock" />
+        <gear id="tinJavelin" />
+        <gear id="tinLamellar" />
+        <gear id="sandals" />
     </humanoid>
 </npcType>
 
