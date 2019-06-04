@@ -317,7 +317,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 378,A Granary object that learning talents can draw from,13,8,Feature,377,,,4 Copper
 380,Allow water/air nymphs to float on water,5,2,Feature,,,,
 393,"Play defend/death sounds on projectile hit, not launch",8,5,Usability,,,,
-396,Find a sink for small pots,8,8,Content,,,,3 Tin wrapup
+396,Find a sink for small pots,8,8,Content,,TRUE,,3 Tin wrapup
 398,"If login position blocked: try nearby, then spawn, then default spawn",21,3,Feature,,,,
 399,Client crashes sometimes on pot pickup.  Window/watchers?,55,8,Bug,,,,
 401,Allow granting unfinished objects,21,3,Bug,,TRUE,,

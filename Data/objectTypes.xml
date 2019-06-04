@@ -176,18 +176,18 @@
     <unlockedBy recipe="smallPot" chance="0.05" />
     <strength item="lumber" quantity="8" />
 </objectType>
-<!--objectType
+<objectType
     id="tradeMat" name="Trade Mat"
-    xDrawOffset="-20"
-    yDrawOffset="-35"
+    xDrawOffset="-14"
+    yDrawOffset="-12"
     merchantSlots="1" >
     <container slots="2" />
-    <collisionRect x="-16" y="-7" w="30" h="10" />
+    <collisionRect x="-12" y="-8" w="25" h="17" />
     <material id="hide" quantity="1" />
     <material id="smallPot" quantity="3" />
     <unlockedBy recipe="smallPot" chance="0.1" />
     <strength item="hide" quantity="1" />
-</objectType-->
+</objectType>
 <objectType
     id="tradeStall" name="Trade Stall"
     xDrawOffset="-20"
