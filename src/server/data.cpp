@@ -419,6 +419,7 @@ void Server::loadWorldState(const std::string &path, bool shouldKeepOldData) {
       for (auto merchant : xr.getChildren("merchant", elem)) {
         size_t slot;
         if (!xr.findAttr(merchant, "slot", slot)) continue;
+        if (slot >= obj.objType().merchantSlots()) continue;
         std::string wareName, priceName;
         if (!xr.findAttr(merchant, "wareItem", wareName) ||
             !xr.findAttr(merchant, "priceItem", priceName))
