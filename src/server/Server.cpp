@@ -135,11 +135,11 @@ void Server::checkSockets() {
                << "Error accepting connection: " << WSAGetLastError()
                << Log::endl;
       } else {
-        _debug << Color::CHAT_SUCCESS
-               << "Connection accepted: " << inet_ntoa(clientAddr.sin_addr)
-               << ":" << ntohs(clientAddr.sin_port)
+        auto ip = std::string{inet_ntoa(clientAddr.sin_addr)};
+        _debug << Color::CHAT_SUCCESS << "Connection accepted: " << ip << ":"
+               << ntohs(clientAddr.sin_port)
                << ", socket number = " << tempSocket << Log::endl;
-        _clientSockets.insert({tempSocket, inet_ntoa(clientAddr.sin_addr)});
+        _clientSockets.insert({tempSocket, ip});
       }
     }
   }

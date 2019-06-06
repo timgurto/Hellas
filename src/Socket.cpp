@@ -41,6 +41,7 @@ const Socket &Socket::operator=(const Socket &rhs) {
   close();
 
   _raw = rhs._raw;
+  _ip = rhs._ip;
   addRef();
   _lingerTime = rhs._lingerTime;
   return *this;
