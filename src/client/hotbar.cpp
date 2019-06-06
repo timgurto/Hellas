@@ -47,7 +47,7 @@ void Client::initHotbar() {
         new Button({i * 18, 0, 18, 18}, {}, [i]() { performAction(i); });
 
     // Icons
-    auto picture = new Picture({0, 0, ICON_SIZE, ICON_SIZE}, {});
+    auto picture = new Picture({1, 1, ICON_SIZE, ICON_SIZE}, {});
     icons[i] = picture;
     button->addChild(picture);
 
