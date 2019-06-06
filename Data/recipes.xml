@@ -312,7 +312,7 @@
         <unlockedBy recipe="smoothRock" />
     </recipe>
     <recipe
-        id="smoothRock" time="4000" >
+        id="smoothRock" time="2500" >
         <material id="rock" quantity="2" />
         <unlockedBy recipe="sling" />
         <unlockedBy gather="rock" chance="0.05" />
