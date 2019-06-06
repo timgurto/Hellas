@@ -64,8 +64,9 @@
         
         var flag = "";
         if (user.location.hasOwnProperty("data") && user.location.data.hasOwnProperty("geo")){
-            var countryName = user.location.data.geo.country_name;
-            flag = '<img src="https://www.countryflags.io/' + user.location.data.geo.country_code + '/flat/64.png" title="' + countryName + '" height="20px">';
+            var geo = user.location.data.geo;
+            var tooltip = geo.city + ", " + geo.region_name + ", " + geo.country_name;
+            flag = '<img src="https://www.countryflags.io/' + user.location.data.geo.country_code + '/flat/64.png" title="' + tooltip + '" height="20px">';
         }
         cells += '<td>' + flag + "</td>";
         

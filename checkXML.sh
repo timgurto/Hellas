@@ -5,7 +5,7 @@ case "${1}" in
         echo "Checkint XML xmllint"
         ;;
     * )
-        for FILE in $(git diff --cached --diff-filter=ACMTR --name-only HEAD | grep -E '\.xml|\.usr|\.html'); do
+        for FILE in $(git diff --cached --diff-filter=ACMTR --name-only HEAD | grep -E '\.xml|\.usr'); do
             echo xmllint --noout $FILE;
             third-party/xmllint/xmllint $FILE;
         done
