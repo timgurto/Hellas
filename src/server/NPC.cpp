@@ -301,6 +301,8 @@ void NPC::processAI(ms_t timeElapsed) {
     target(nullptr);
     _threatTable.clear();
     clearTagger();
+    _targetDestination = spawner()->getRandomPoint();
+    teleportTo(_targetDestination);
 
     auto maxHealth = type()->baseStats().maxHealth;
     if (health() < maxHealth) {

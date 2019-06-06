@@ -402,8 +402,8 @@
     </item>
     <npcType
         id="gigantis" name="Gigantis"
-        level="20" maxHealth="246" attack="47"
-        maxDistanceFromSpawner = "40" >
+        level="20" maxHealth="530" attack="12" attackTime="1500"
+        maxDistanceFromSpawner = "150" >
         <humanoid base="gigantis">
             <gear id="dummyCopperCuirass" />
             <gear id="dummyCopperGreaves" />
