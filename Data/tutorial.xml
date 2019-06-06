@@ -364,7 +364,7 @@
     </npcType>
     
     
-<quest id="tutUtilitySoldier" name="Sprint Zero" startsAt="prometheusBound" endsAt="prometheusBound" exclusiveToClass="Soldier"
+<quest id="tutUtilitySoldier" name="Sprint Zero" startsAt="prometheusBound" endsAt="prometheusBound" exclusiveToClass="Athlete"
     brief="Zeus has put some of his servants between us and Eos's altar--I guess he's trying to keep us up here and out of trouble.  I have one final gift for you that might help: I will teach you a spell."
     debrief="I've set you on your feet, young Soldier, and it's up to you to find your path and walk it as best you can.
     Now go.  Get to the altar, worship there, and get off this accursed mountain.  I hope the gods look kindly upon you." >
