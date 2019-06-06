@@ -15,6 +15,8 @@ class ThreatTable {
   void scaleThreat(Entity &entity, double multiplier);
   Entity *getTarget();  // nullptr if table is empty
   void clear();
+  bool isEmpty() const;
+  size_t size() const;
 
  private:
   using Container = std::map<Entity *, Threat>;

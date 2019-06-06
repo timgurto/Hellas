@@ -76,6 +76,9 @@ void NPC::scaleThreatAgainst(Entity &target, double multiplier) {
 void NPC::makeAwareOf(User &user) {
   if (!npcType()->attacksNearby()) return;
 
+  // For when an aggressive NPC begins combat
+  if (_threatTable.isEmpty()) _timeEngaged = SDL_GetTicks();
+
   _threatTable.makeAwareOf(user);
   makeNearbyNPCsAwareOf(user);
   user.putInCombat();
@@ -117,6 +120,24 @@ void NPC::onDeath() {
   Server &server = *Server::_instance;
   server.forceAllToUntarget(*this);
 
+  if (_timeEngaged > 0) {
+    auto timeNow = SDL_GetTicks();
+    auto timeToKill = timeNow - _timeEngaged;
+
+    auto of = std::ofstream{"kills.log", std::ios_base::app};
+    of << type()->id()                             // NPC ID
+       << "," << tagger()->getClass().type().id()  // Killer's class
+       << "," << _threatTable.size()               // Entities in threat table
+       << "," << level()                           // NPC level
+       << "," << tagger()->level()                 // Killer's level
+       << "," << timeToKill             // Time between engagement and death
+       << "," << npcType()->isRanged()  //
+       << std::endl;
+
+  } else {
+    SERVER_ERROR("NPC killed without having been engaged by a user");
+  }
+
   npcType()->lootTable().instantiate(*_loot, tagger());
   if (!_loot->empty()) sendAllLootToTagger();
 
@@ -134,8 +155,10 @@ void NPC::onDeath() {
 }
 
 void NPC::onAttackedBy(Entity &attacker, Threat threat) {
-  if (attacker.classTag() == 'u')
+  if (attacker.classTag() == 'u') {
+    if (_threatTable.isEmpty()) _timeEngaged = SDL_GetTicks();
     addThreat(dynamic_cast<User &>(attacker), threat);
+  }
 
   Entity::onAttackedBy(attacker, threat);
 }

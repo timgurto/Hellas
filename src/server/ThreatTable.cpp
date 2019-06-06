@@ -1,4 +1,5 @@
 #include "ThreatTable.h"
+
 #include "Server.h"
 
 void ThreatTable::makeAwareOf(Entity& entity) {
@@ -48,3 +49,7 @@ Entity* ThreatTable::getTarget() {
 }
 
 void ThreatTable::clear() { _container.clear(); }
+
+bool ThreatTable::isEmpty() const { return _container.empty(); }
+
+size_t ThreatTable::size() const { return _container.size(); }

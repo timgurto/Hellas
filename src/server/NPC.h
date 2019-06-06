@@ -17,6 +17,7 @@ class NPC : public Entity, public QuestNode {
   Level _level{0};
   ThreatTable _threatTable;
   MapPoint _targetDestination{};
+  ms_t _timeEngaged{0};  // For logging purposes
 
  public:
   NPC(const NPCType *type, const MapPoint &loc);  // Generates a new serial
