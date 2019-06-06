@@ -2,7 +2,7 @@
 
 <npcType
     id="goat5" name="Mild-Mannered Goat"
-    level="5" maxHealth="30" attack="7" attackTime="2750"
+    level="5" maxHealth="25" attack="6" attackTime="2750"
     imageFile = "goat" sounds="goat" isNeutral="1"
     xDrawOffset="-17" yDrawOffset="-28" >
     <collisionRect x="-15" y="-4" w="31" h="7" />
@@ -15,7 +15,7 @@
 </npcType>
 <npcType
     id="goat12" name="Stubborn Goat"
-    level="12" maxHealth="42" attack="10" attackTime="2750"
+    level="12" maxHealth="37" attack="9" attackTime="2750"
     imageFile = "goat" sounds="goat"
     xDrawOffset="-17" yDrawOffset="-28" >
     <collisionRect x="-15" y="-4" w="31" h="7" />
@@ -28,7 +28,7 @@
 </npcType>
 <npcType
     id="goat15" name="Ornery Goat"
-    level="15" maxHealth="47" attack="12" attackTime="2750"
+    level="15" maxHealth="43" attack="11" attackTime="2750"
     imageFile = "goat" sounds="goat"
     xDrawOffset="-17" yDrawOffset="-28" >
     <collisionRect x="-15" y="-4" w="31" h="7" />
@@ -41,7 +41,7 @@
 </npcType>
 <npcType
     id="goat16" name="Angry Goat"
-    level="16" maxHealth="51" attack="12" attackTime="2750"
+    level="16" maxHealth="46" attack="11" attackTime="2750"
     imageFile = "goat" sounds="goat"
     xDrawOffset="-17" yDrawOffset="-28" >
     <collisionRect x="-15" y="-4" w="31" h="7" />
@@ -55,7 +55,7 @@
 
 <npcType
     id="tortoise5" name="Tough-Shell Tortoise"
-    level="5" maxHealth="29" attack="5" attackTime="3500"
+    level="5" maxHealth="23" attack="4" attackTime="3500"
     xDrawOffset="-18" yDrawOffset="-20"
     imageFile="tortoise" sounds="tortoise" isNeutral="1" >
     <spell id="tutShield" />
@@ -68,7 +68,7 @@
 </npcType>
 <npcType
     id="tortoise11" name="Spike-Shell Tortoise"
-    level="11" maxHealth="33" attack="5" armor="1" attackTime="3500"
+    level="11" maxHealth="27" attack="5" armor="1" attackTime="3500"
     xDrawOffset="-18" yDrawOffset="-20"
     imageFile="tortoise" sounds="tortoise" >
     <spell id="tutShield" />
@@ -81,7 +81,7 @@
 </npcType>
 <npcType
     id="tortoise19" name="Shear-Shell Tortoise"
-    level="11" maxHealth="58" attack="7" armor="1" attackTime="3500"
+    level="11" maxHealth="52" attack="6" armor="1" attackTime="3500"
     xDrawOffset="-18" yDrawOffset="-20"
     imageFile="tortoise" sounds="tortoise" >
     <spell id="tutShield" />
@@ -95,7 +95,7 @@
 
 <npcType
     id="lizard6" name="Plains Sunner"
-    level="6" maxHealth="30" attack="4" attackTime="2500"
+    level="6" maxHealth="23" attack="4" attackTime="2500"
     xDrawOffset="-20" yDrawOffset="-12"
     imageFile="lizard" sounds="lizard" >
     <spell id="tutHeal" />
@@ -108,7 +108,7 @@
 </npcType>
 <npcType
     id="lizard12" name="Coastal Sunbather"
-    level="12" maxHealth="41" attack="6" attackTime="2500"
+    level="12" maxHealth="35" attack="6" attackTime="2500"
     xDrawOffset="-20" yDrawOffset="-12"
     imageFile="lizard" sounds="lizard" >
     <spell id="tutHeal" />
@@ -121,7 +121,7 @@
 </npcType>
 <npcType
     id="lizard15" name="Mountain Sunner"
-    level="15" maxHealth="49" attack="7" attackTime="2500"
+    level="15" maxHealth="42" attack="7" attackTime="2500"
     xDrawOffset="-20" yDrawOffset="-12"
     imageFile="lizard" sounds="lizard" >
     <spell id="tutHeal" />
@@ -134,7 +134,7 @@
 </npcType>
 <npcType
     id="lizard18" name="Rock Lounger"
-    level="18" maxHealth="56" attack="9" attackTime="2500"
+    level="18" maxHealth="51" attack="8" attackTime="2500"
     xDrawOffset="-20" yDrawOffset="-12"
     imageFile="lizard" sounds="lizard" >
     <spell id="tutHeal" />
@@ -148,7 +148,7 @@
 
 <npcType
     id="snake8" name="Valley Serpent" isFlat="1"
-    level="8" maxHealth="34" attack="7" attackTime="3250" isRanged="1" school="earth" projectile="poison"
+    level="8" maxHealth="30" attack="6" attackTime="3250" isRanged="1" school="earth" projectile="poison"
     xDrawOffset="-12" yDrawOffset="-12"
     imageFile="snake" sounds="snake" >
     <collisionRect x="-5" y="-5" w="10" h="10" />
@@ -158,7 +158,7 @@
 </npcType>
 <npcType
     id="snake16" name="Undergrowth Lurker" isFlat="1"
-    level="16" maxHealth="10" attack="51" attackTime="3250" isRanged="1" school="earth" projectile="poison"
+    level="16" maxHealth="47" attack="9" attackTime="3250" isRanged="1" school="earth" projectile="poison"
     xDrawOffset="-12" yDrawOffset="-12"
     imageFile="snake" sounds="snake" >
     <collisionRect x="-5" y="-5" w="10" h="10" />
@@ -169,7 +169,7 @@
 
 <npcType
     id="boar10" name="Gravel Snuffler"
-	level="10" maxHealth="38" attack="10" attackTime="3000"
+	level="10" maxHealth="33" attack="9" attackTime="3000"
     xDrawOffset="-11" yDrawOffset="-13"
     imageFile="boar" sounds = "pig" >
     <collisionRect x="-9" y="-4" w="18" h="7" />
@@ -182,7 +182,7 @@
 </npcType>
 <npcType
     id="boar12" name="Leaftreader Companion"
-	level="12" maxHealth="42" attack="11" attackTime="3000"
+	level="12" maxHealth="37" attack="10" attackTime="3000"
     xDrawOffset="-11" yDrawOffset="-13"
     imageFile="boar" sounds = "pig" >
     <collisionRect x="-9" y="-4" w="18" h="7" />
@@ -195,7 +195,7 @@
 </npcType>
 <npcType
     id="boar18" name="Undergrowth Gorer"
-	level="18" maxHealth="55" attack="15" attackTime="3000"
+	level="18" maxHealth="50" attack="14" attackTime="3000"
     xDrawOffset="-11" yDrawOffset="-13"
     imageFile="boar" sounds = "pig" >
     <collisionRect x="-9" y="-4" w="18" h="7" />
@@ -209,7 +209,7 @@
 
 <npcType
     id="waterNymph" name="Water Nymph"
-	level="9" maxHealth="36" attack="5" attackTime="2250" isRanged="1" school="water" projectile="waterball"
+	level="9" maxHealth="33" attack="4" attackTime="2250" isRanged="1" school="water" projectile="waterball"
     xDrawOffset="-18" yDrawOffset="-40"
     sounds="nymph" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
@@ -223,7 +223,7 @@
 
 <npcType
     id="airNymph" name="Air Nymph"
-	level="13" maxHealth="43" attack="4" attackTime="1750" speed="91" isRanged="1" school="air" projectile="lightning"
+	level="13" maxHealth="36" attack="4" attackTime="1750" speed="91" isRanged="1" school="air" projectile="lightning"
     xDrawOffset="-18" yDrawOffset="-40"
     sounds="nymph" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
@@ -233,7 +233,7 @@
 
 <npcType
     id="earthNymph" name="Earth Nymph"
-	level="17" maxHealth="53" attack="11" attackTime="2000" speed="49" school="earth"
+	level="17" maxHealth="49" attack="10" attackTime="2000" speed="49" school="earth"
     xDrawOffset="-18" yDrawOffset="-40"
     sounds="earthNymph" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
@@ -246,7 +246,7 @@
 
 <npcType
     id="fireNymph" name="Fire Nymph"
-	level="20" maxHealth="60" attack="8" attackTime="2000" isRanged="1" school="fire" projectile="fireball"
+	level="20" maxHealth="57" attack="7" attackTime="2000" isRanged="1" school="fire" projectile="fireball"
     xDrawOffset="-18" yDrawOffset="-40"
     sounds="nymph" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
@@ -258,14 +258,14 @@
 
 <npcType
     id="meleeMan6" name="River Clubman"
-    level="6" maxHealth="31" attack="7" attackTime="2500" >
+    level="6" maxHealth="26" attack="6" attackTime="2500" >
     <humanoid base="athlete">
         <gear id="bone" />
     </humanoid>
 </npcType>
 <npcType
     id="meleeMan7" name="River Axeman"
-    level="7" maxHealth="33" attack="7" attackTime="2500" >
+    level="7" maxHealth="28" attack="6" attackTime="2500" >
     <humanoid base="athlete">
         <gear id="stoneAxe" />
         <gear id="flintstones" />
@@ -273,7 +273,7 @@
 </npcType>
 <npcType
     id="meleeMan8" name="Badlands Brute"
-    level="8" maxHealth="33" attack="8" attackTime="2500" >
+    level="8" maxHealth="29" attack="7" attackTime="2500" >
     <humanoid base="zealot">
         <gear id="hide" />
         <gear id="rock" />
@@ -281,7 +281,7 @@
 </npcType>
 <npcType
     id="meleeMan13" name="River Ruffian"
-    level="13" maxHealth="45" attack="9" attackTime="2500" >
+    level="13" maxHealth="40" attack="8" attackTime="2500" >
     <humanoid base="default">
         <gear id="leatherGloves" />
         <gear id="sandals" />
@@ -289,7 +289,7 @@
 </npcType>
 <npcType
     id="meleeMan14" name="Leaftreader Trapper"
-    level="14" maxHealth="46" attack="10" attackTime="2500" >
+    level="14" maxHealth="41" attack="9" attackTime="2500" >
     <humanoid base="default">
         <gear id="tinKnife" />
         <gear id="horn" />
@@ -299,7 +299,7 @@
 </npcType>
 <npcType
     id="meleeMan15" name="Crossing Guard"
-    level="15" maxHealth="47" attack="11" attackTime="2500" >
+    level="15" maxHealth="43" attack="10" attackTime="2500" >
     <humanoid base="default">
         <gear id="tinSpear" />
         <gear id="leatherShield" />
@@ -307,7 +307,7 @@
 </npcType>
 <npcType
     id="meleeMan16" name="Mountain Settler"
-    level="16" maxHealth="51" attack="11" attackTime="2500" >
+    level="16" maxHealth="46" attack="10" attackTime="2500" >
     <humanoid base="athlete">
         <gear id="horn" />
         <gear id="tinLamellar" />
@@ -316,7 +316,7 @@
 </npcType>
 <npcType
     id="meleeMan17" name="Fire-Shrine Neophyte"
-    level="17" maxHealth="52" attack="12" attackTime="2500" school="fire" >
+    level="17" maxHealth="48" attack="11" attackTime="2500" school="fire" >
     <humanoid base="zealot">
         <gear id="linenChiton" />
         <gear id="fireWand" />
@@ -326,7 +326,7 @@
 
 <npcType
     id="rangedMan11" name="Valley Hunter"
-    level="11" maxHealth="40" attack="6" isRanged="1" projectile="arrow" attackTime="2500" >
+    level="11" maxHealth="36" attack="5" isRanged="1" projectile="arrow" attackTime="2500" >
     <humanoid base="athlete">
         <gear id="bow" />
         <gear id="hide" />
@@ -334,7 +334,7 @@
 </npcType>
 <npcType
     id="rangedMan13" name="Leaftreader Scout"
-    level="13" maxHealth="43" attack="7" isRanged="1" projectile="smoothRock" attackTime="2500" >
+    level="13" maxHealth="39" attack="6" isRanged="1" projectile="smoothRock" attackTime="2500" >
     <humanoid base="default">
         <gear id="sling" />
         <gear id="skullCap" />
@@ -344,7 +344,7 @@
 </npcType>
 <npcType
     id="rangedMan18" name="Fire-Shrine Cultist"
-    level="18" maxHealth="55" attack="9" isRanged="1" projectile="fireball" attackTime="2500" school="fire" >
+    level="18" maxHealth="51" attack="8" isRanged="1" projectile="fireball" attackTime="2500" school="fire" >
     <humanoid base="zealot">
         <gear id="fireStaff" />
         <gear id="leatherGloves" />
@@ -354,7 +354,7 @@
 </npcType>
 <npcType
     id="rangedMan20" name="Trophy Hunter"
-    level="20" maxHealth="63" attack="9" isRanged="1" projectile="tinJavelin" attackTime="2500" >
+    level="20" maxHealth="59" attack="8" isRanged="1" projectile="tinJavelin" attackTime="2500" >
     <humanoid base="default">
         <gear id="tinJavelin" />
         <gear id="tinLamellar" />
