@@ -24,6 +24,8 @@ class NPCType : public ObjectType {
   Aggression _aggression{AGGRESSIVE};
   Spell::ID _knownSpellID;
   mutable const Spell *_knownSpell{nullptr};
+  static const px_t DEFAULT_MAX_DISTANCE_FROM_SPAWNER{500};
+  px_t _maxDistanceFromSpawner{DEFAULT_MAX_DISTANCE_FROM_SPAWNER};
 
  public:
   static Stats BASE_STATS;
@@ -47,6 +49,8 @@ class NPCType : public ObjectType {
   SpellSchool school() const { return _school; }
   void knowsSpell(const Spell::ID &spell) { _knownSpellID = spell; }
   const Spell *knownSpell() const { return _knownSpell; }
+  px_t maxDistanceFromSpawner() const { return _maxDistanceFromSpawner; }
+  void maxDistanceFromSpawner(px_t dist) { _maxDistanceFromSpawner = dist; }
 
   virtual char classTag() const override { return 'n'; }
 

@@ -195,9 +195,7 @@ void NPC::processAI(ms_t timeElapsed) {
       AGGRO_RANGE = 70_px,
       ATTACK_RANGE = attackRange() - Podes{1}.toPixels(),
       // Assumption: this is farther than any ranged attack/spell can reach.
-      PURSUIT_RANGE = Podes{35}.toPixels(),
-      MAX_DISTANCE_FROM_SPAWNER = Podes{80}.toPixels(),
-      RETURN_MARGIN = Podes{5}.toPixels();
+      PURSUIT_RANGE = Podes{35}.toPixels(), RETURN_MARGIN = Podes{5}.toPixels();
 
   target(nullptr);
 
@@ -250,7 +248,7 @@ void NPC::processAI(ms_t timeElapsed) {
       // NPC has gone too far from spawn point
       if (spawner()) {
         auto distFromSpawner = spawner()->distanceFromEntity(*this);
-        if (distFromSpawner > MAX_DISTANCE_FROM_SPAWNER) {
+        if (distFromSpawner > npcType()->maxDistanceFromSpawner()) {
           _state = IDLE;
           _targetDestination = spawner()->getRandomPoint();
           teleportTo(_targetDestination);

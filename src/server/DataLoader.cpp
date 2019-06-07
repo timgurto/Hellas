@@ -482,6 +482,9 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
     else if (xr.findAttr(elem, "isNeutral", n) && n != 0)
       nt->makeNeutral();
 
+    if (xr.findAttr(elem, "maxDistanceFromSpawner", n))
+      nt->maxDistanceFromSpawner(n);
+
     Stats baseStats = NPCType::BASE_STATS;
     xr.findAttr(elem, "maxHealth", baseStats.maxHealth);
     xr.findAttr(elem, "attack", baseStats.physicalDamage);
