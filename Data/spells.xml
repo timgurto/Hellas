@@ -15,115 +15,115 @@ Functions:
 
 <!-- General -->
 <spell id="food" name="Eat food" >
-    <targets self=1 />
+    <targets self="1" />
     <function name="buff" s1="food" />
 </spell>
 
 <!-- Class -->
 <spell id="sprint" name="Sprint" icon="outlineRun" >
-    <targets self=1 />
+    <targets self="1" />
     <function name="buff" s1="sprint" />
     <aesthetics sounds="sprint" />
 </spell>
-<spell id="blink" name="Teleport" icon="orbBlue" cost=20 >
-    <targets self=1 />
+<spell id="blink" name="Teleport" icon="orbBlue" cost="20" >
+    <targets self="1" />
     <function name="randomTeleport" i1="10" />
     <aesthetics sounds="teleport" />
 </spell>
 <spell id="waterWalking" name="Walk on Water" icon="waterRipples" customDescription="Grant yourself the ability to walk on water." >
-    <targets self=1 />
+    <targets self="1" />
     <function name="buff" s1="waterWalking" />
     <aesthetics sounds="waterWalking" />
 </spell>
 
 <!-- Hoplite -->
-<spell id="shieldBlock" name="Raise Shield" icon="shield" cost=10 >
-    <targets self=1 />
+<spell id="shieldBlock" name="Raise Shield" icon="shield" cost="10" >
+    <targets self="1" />
     <function name="buff" s1="shieldBlock" />
 </spell>
-<spell id="threatHit" name="Menacing Strike" icon="sword" cost=10 >
-    <targets enemy=1 />
+<spell id="threatHit" name="Menacing Strike" icon="sword" cost="10" >
+    <targets enemy="1" />
     <function name="doDirectDamageWithModifiedThreat" i1="3" d1="3.0" />
 </spell>
 
 <!-- Skirmisher -->
-<spell id="bleed" name="Lacerate" icon="dripRed" cost=10 range=4 >
-    <targets enemy=1 />
+<spell id="bleed" name="Lacerate" icon="dripRed" cost="10" range="4" >
+    <targets enemy="1" />
     <function name="debuff" s1="bleed" />
 </spell>
-<spell id="skirmisherStun" name="Head Crack" icon="shout" cost=10 range=4 cooldown=10 >
-    <targets enemy=1 />
+<spell id="skirmisherStun" name="Head Crack" icon="shout" cost="10" range="4" cooldown="10" >
+    <targets enemy="1" />
     <function name="debuff" s1="stun" />
 </spell>
-<!--spell id="whirlwind" name="Blade Storm" cost=30 radius=4 >
+<!--spell id="whirlwind" name="Blade Storm" cost="30" radius="4" >
     <aesthetics impactParticles="heavyBlood" />
-    <targets enemy=1 />
-    <function name="doDirectDamage" i1=5 />
+    <targets enemy="1" />
+    <function name="doDirectDamage" i1="5" />
 </spell-->
 
 <!-- Philosopher -->
-<spell id="airDot" name="Logic" icon="lettersCopper" cost=20 range=30 school="air" >
-    <targets enemy=1 />
+<spell id="airDot" name="Logic" icon="lettersCopper" cost="20" range="30" school="air" >
+    <targets enemy="1" />
     <function name="debuff" s1="airDot" />
 </spell>
-<spell id="threatDropPhilosopher" name="Constant Flux" icon="waterRipples" cost=20 range=30 school="water" >
-    <targets enemy=1 />
+<spell id="threatDropPhilosopher" name="Constant Flux" icon="waterRipples" cost="20" range="30" school="water" >
+    <targets enemy="1" />
     <function name="scaleThreat" d1="0.75" />
 </spell>
 
 <!-- Magus -->
-<spell id="fireball" name="Fireball" icon="fireball" cost=15 range=30 school="fire" >
+<spell id="fireball" name="Fireball" icon="fireball" cost="15" range="30" school="fire" >
     <aesthetics projectile="fireball" sounds="fireball" />
-    <targets enemy=1 />
-    <function name="doDirectDamage" i1=5 />
+    <targets enemy="1" />
+    <function name="doDirectDamage" i1="5" />
 </spell>
 
 <!-- Naturalist -->
-<spell id="poison" name="Poison Stab" icon="dripGreen" cost=20 range=30 school="earth" >
+<spell id="poison" name="Poison Stab" icon="dripGreen" cost="20" range="30" school="earth" >
     <aesthetics impactParticles="poison" />
-    <targets enemy=1 />
+    <targets enemy="1" />
     <function name="debuff" s1="poison" />
 </spell>
-<spell id="dispellEarthDebuff" name="Leeches" icon="leech" cost=10 range=30 school="earth" >
-    <targets friendly=1 self=1 />
+<spell id="dispellEarthDebuff" name="Leeches" icon="leech" cost="10" range="30" school="earth" >
+    <targets friendly="1" self="1" />
     <function name="dispellDebuff" s1="earth" />
 </spell>
 
 <!-- Alchemist -->
-<spell id="threatDropAlchemist" name="Disappear" icon="shadow" cost=20 range=30 school="air" >
-    <targets enemy=1 />
+<spell id="threatDropAlchemist" name="Disappear" icon="shadow" cost="20" range="30" school="air" >
+    <targets enemy="1" />
     <function name="scaleThreat" d1="0.75" />
 </spell>
 
 <!-- Priest -->
-<spell id="priestEconHeal" name="Prayer" icon="light" cost=25 range=25 >
+<spell id="priestEconHeal" name="Prayer" icon="light" cost="25" range="25" >
     <aesthetics sounds="heal" impactParticles="lightRays" />
-    <targets friendly=1 self=1 />
-    <function name="heal" i1=20 />
+    <targets friendly="1" self="1" />
+    <function name="heal" i1="20" />
 </spell>
-<spell id="majorEnergyBuff" name="Blessing of Apollo" icon="symbolApollo" cost=20 range=30 >
-    <targets friendly=1 self=1 />
+<spell id="majorEnergyBuff" name="Blessing of Apollo" icon="symbolApollo" cost="20" range="30" >
+    <targets friendly="1" self="1" />
     <function name="buff" s1="majorEnergy" />
 </spell>
 
 <!-- Cultist -->
-<spell id="selfHeal" name="Selfish Request" icon="lightOnMan" cost=10 >
+<spell id="selfHeal" name="Selfish Request" icon="lightOnMan" cost="10" >
     <aesthetics sounds="heal" impactParticles="lightRays" />
-    <targets self=1 />
-    <function name="heal" i1=15 />
+    <targets self="1" />
+    <function name="heal" i1="15" />
 </spell>
-<spell id="damageShield" name="Daemonic Shield" icon="orbRed" cost=20 range=30 school="fire" >
-    <targets self=1 />
+<spell id="damageShield" name="Daemonic Shield" icon="orbRed" cost="20" range="30" school="fire" >
+    <targets self="1" />
     <function name="buff" s1="damageShield" />
 </spell>
 
 <!-- Poet -->
-<spell id="poetStun" name="Depressing Tragedy" icon="maskSad" cost=20 range=30 school="air" cooldown="10" >
-    <targets enemy=1 />
+<spell id="poetStun" name="Depressing Tragedy" icon="maskSad" cost="20" range="30" school="air" cooldown="10" >
+    <targets enemy="1" />
     <function name="debuff" s1="stun" />
 </spell>
-<spell id="threatDropPoet" name="Uplifting Comedy" icon="maskHappy" cost=20 range=30 school="air" >
-    <targets enemy=1 />
+<spell id="threatDropPoet" name="Uplifting Comedy" icon="maskHappy" cost="20" range="30" school="air" >
+    <targets enemy="1" />
     <function name="scaleThreat" d1="0.75" />
 </spell>
 
