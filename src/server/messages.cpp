@@ -1800,6 +1800,8 @@ void Server::handle_CL_ACCEPT_PEACE_OFFER(User &user, MessageCode code,
 }
 
 void Server::handle_CL_TAKE_TALENT(User &user, const Talent::Name &talentName) {
+  return;
+
   auto &userClass = user.getClass();
   const auto &classType = userClass.type();
   auto talent = classType.findTalent(talentName);

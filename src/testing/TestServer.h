@@ -45,6 +45,7 @@ class TestServer {
   ServerItem &getFirstItem();
   const Quest &getFirstQuest();
   const BuffType &getFirstBuff();
+  const ClassType &getFirstClass();
 
   User &findUser(const std::string &username);
   const Quest &findQuest(const Quest::ID &questID) const;

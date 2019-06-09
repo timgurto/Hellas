@@ -186,3 +186,8 @@ const BuffType &TestServer::getFirstBuff() {
   REQUIRE(!_server->_buffTypes.empty());
   return _server->_buffTypes.begin()->second;
 }
+
+const ClassType &TestServer::getFirstClass() {
+  REQUIRE(!_server->_classes.empty());
+  return _server->_classes.begin()->second;
+}
