@@ -28,6 +28,7 @@ TEST_CASE("A talent tier can require a tool") {
       <class name="Doctor">
           <tree name="Surgeon">
               <tier>
+                  <requires />
                   <talent type="stats" name="Meditate"> <stats energy="1" /> </talent>
               </tier>
               <tier>

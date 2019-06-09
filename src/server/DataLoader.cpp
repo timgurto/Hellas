@@ -845,7 +845,7 @@ void DataLoader::loadClasses(XmlReader &xr) {
         auto req = xr.findChild("requires", tierElem);
         if (req) {
           xr.findAttr(req, "pointsInTree", tier.reqPointsInTree);
-          tier.hasRequirements = true;
+          xr.findAttr(req, "tool", tier.requiredTool);
         }
 
         for (auto talent : xr.getChildren("talent", tierElem)) {

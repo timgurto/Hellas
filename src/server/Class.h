@@ -9,7 +9,7 @@
 struct Tier {
   std::string costTag;
   size_t costQuantity{0};
-  bool hasRequirements{false};
+  std::string requiredTool{};
   size_t reqPointsInTree{0};
 
   bool hasItemCost() const { return !costTag.empty() && costQuantity > 0; }

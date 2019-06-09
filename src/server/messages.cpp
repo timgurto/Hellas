@@ -1811,7 +1811,8 @@ void Server::handle_CL_TAKE_TALENT(User &user, const Talent::Name &talentName) {
     sendMessage(user.socket(), WARNING_NO_TALENT_POINTS);
     return;
   }
-  if (talent->tier().hasRequirements) return;
+  auto requiresTool = !talent->tier().requiredTool.empty();
+  if (requiresTool) return;
 
   auto &tier = talent->tier();
 
