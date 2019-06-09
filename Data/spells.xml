@@ -20,7 +20,7 @@ Functions:
 </spell>
 
 <!-- Class -->
-<spell id="sprint" name="Sprint" icon="outlineRun" >
+<spell id="sprint" name="Sprint" icon="outlineRun" cost="20" >
     <targets self="1" />
     <function name="buff" s1="sprint" />
     <aesthetics sounds="sprint" />
