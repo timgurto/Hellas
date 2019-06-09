@@ -1812,7 +1812,7 @@ void Server::handle_CL_TAKE_TALENT(User &user, const Talent::Name &talentName) {
     return;
   }
   auto requiresTool = !talent->tier().requiredTool.empty();
-  if (requiresTool) return;
+  if (requiresTool && !user.hasTool("medicalSchool")) return;
 
   auto &tier = talent->tier();
 

@@ -23,8 +23,14 @@ TEST_CASE("Class can be specified in TestClients") {
 }
 
 TEST_CASE("A talent tier can require a tool") {
-  GIVEN("a level-2 user, and talent tiers with various requirements") {
+  GIVEN(
+      "a level-2 user, tagged objects, and talent tiers with various "
+      "requirements") {
     auto data = R"(
+      <objectType id="rpa">
+        <collisionRect x="0" y="0" w="1" h="1" />
+        <tag name="medicalSchool"/>
+      </objectType>
       <class name="Doctor">
           <tree name="Surgeon">
               <tier>
@@ -51,6 +57,20 @@ TEST_CASE("A talent tier can require a tool") {
       THEN("he has it") {
         const auto *talent = doctor.findTalent("Meditate");
         WAIT_UNTIL(user.getClass().hasTalent(talent));
+      }
+    }
+
+    WHEN("there's a medicalSchool object nearby") {
+      s.addObject("rpa", {10, 15});
+
+      AND_WHEN("he tries to take the Study talent with a tool requirement") {
+        c.sendMessage(CL_TAKE_TALENT, "Study");
+        REPEAT_FOR_MS(100);
+
+        THEN("he has it") {
+          const auto *talent = doctor.findTalent("Study");
+          WAIT_UNTIL(user.getClass().hasTalent(talent));
+        }
       }
     }
 
