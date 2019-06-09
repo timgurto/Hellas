@@ -1800,8 +1800,6 @@ void Server::handle_CL_ACCEPT_PEACE_OFFER(User &user, MessageCode code,
 }
 
 void Server::handle_CL_TAKE_TALENT(User &user, const Talent::Name &talentName) {
-  return;
-
   auto &userClass = user.getClass();
   const auto &classType = userClass.type();
   auto talent = classType.findTalent(talentName);
@@ -1813,6 +1811,7 @@ void Server::handle_CL_TAKE_TALENT(User &user, const Talent::Name &talentName) {
     sendMessage(user.socket(), WARNING_NO_TALENT_POINTS);
     return;
   }
+  if (talent->tier().hasRequirements) return;
 
   auto &tier = talent->tier();
 
