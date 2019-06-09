@@ -23,7 +23,7 @@ Socket::Socket(SOCKET &rawSocket, const std::string &ip)
 }
 
 Socket::Socket(const Socket &rhs)
-    : _raw(rhs._raw), _lingerTime(rhs._lingerTime) {
+    : _raw(rhs._raw), _lingerTime(rhs._lingerTime), _ip(rhs._ip) {
   if (_raw == INVALID_SOCKET) return;
   addRef();
 }
