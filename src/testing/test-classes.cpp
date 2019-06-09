@@ -22,40 +22,14 @@ TEST_CASE("Class can be specified in TestClients") {
   }
 }
 
-TEST_CASE("Talents can be taken") {
-  GIVEN("a simple class with a talent") {
-    auto data = R"(
-      <class name="Baby">
-          <tree name="Boy">
-              <tier>
-                  <talent type="stats" name="Crawl"> <stats speed="2" /> </talent>
-              </tier>
-          </tree>
-      </class>
-    )";
-    auto s = TestServer::WithDataString(data);
-
-    WHEN("a level-1 user tries to take that talent") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      user.levelUp();
-      c.sendMessage(CL_TAKE_TALENT, "Crawl");
-
-      THEN("he has has that talent") {
-        const auto &classType = s.getFirstClass();
-        const auto *talent = classType.findTalent("Crawl");
-        WAIT_UNTIL(user.getClass().hasTalent(talent));
-      }
-    }
-  }
-}
-
 TEST_CASE("A talent tier can require a tool") {
-  GIVEN("a talent tier that requires a tool") {
+  GIVEN("a level-2 user, and talent tiers with various requirements") {
     auto data = R"(
       <class name="Doctor">
           <tree name="Surgeon">
+              <tier>
+                  <talent type="stats" name="Meditate"> <stats energy="1" /> </talent>
+              </tier>
               <tier>
                   <requires tool="medicalSchool" />
                   <talent type="stats" name="Study"> <stats energy="1" /> </talent>
@@ -64,18 +38,27 @@ TEST_CASE("A talent tier can require a tool") {
       </class>
     )";
     auto s = TestServer::WithDataString(data);
+    const auto &doctor = s.getFirstClass();
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    user.levelUp();
 
-    WHEN("a level-1 user tries to take that talent") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      user.levelUp();
+    WHEN("he tries to take the simple talent") {
+      c.sendMessage(CL_TAKE_TALENT, "Meditate");
+
+      THEN("he has it") {
+        const auto *talent = doctor.findTalent("Meditate");
+        WAIT_UNTIL(user.getClass().hasTalent(talent));
+      }
+    }
+
+    WHEN("he tries to take the talent with a tool requirement") {
       c.sendMessage(CL_TAKE_TALENT, "Study");
       REPEAT_FOR_MS(100);
 
-      THEN("he does not have that talent") {
-        const auto &classType = s.getFirstClass();
-        const auto *talent = classType.findTalent("Study");
+      THEN("he doesn't have it") {
+        const auto *talent = doctor.findTalent("Study");
         CHECK_FALSE(user.getClass().hasTalent(talent));
       }
     }
