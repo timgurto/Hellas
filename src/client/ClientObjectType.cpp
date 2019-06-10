@@ -36,7 +36,7 @@ const Tooltip &ClientObjectType::constructionTooltip() const {
 
   auto gapDrawn = false;
 
-  if (isDebug()) descriptionLines.push_back(id());
+  if (isDebug()) descriptionLines.push_back("ID: "s + id());
 
   if (canGather()) {
     std::string text = "Gatherable";
