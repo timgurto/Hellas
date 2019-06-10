@@ -5,19 +5,25 @@
     constructionTime="1000" >
     <collisionRect x="-49" y="-63" w="96" h="96" />
     <tag name="classAthlete" />
-    <material id="smoothRock" quantity="15" />
-    <material id="log" quantity="10" />
-    <strength item="log" quantity="10" />
+    <material id="stick" quantity="25" />
+    <material id="pole1" />
+    <material item="water" quantity="2" />
+    <material item="rock" quantity="2" />
+    <strength id="stick" quantity="25" />
 </objectType>
 
 <objectType id="scholarBuilding" name="School"
-    xDrawOffset="-48" yDrawOffset="-48"
+    xDrawOffset="-45" yDrawOffset="-47"
     constructionTime="1000" >
-    <collisionRect x="-48" y="-48" w="96" h="96" />
+    <collisionRect x="-45" y="-47" w="90" h="94" />
     <tag name="classScholar" />
-    <material id="smallPot" quantity="5" />
-    <material id="log" quantity="10" />
-    <strength item="log" quantity="10" />
+    <material id="smallPot" quantity="3" />
+    <material id="water" />
+    <material id="tinOre" />
+    <material id="boneDust" quantity="5" />
+    <material id="crudeClay" />
+    <material id="log" quantity="6" />
+    <strength item="log" quantity="6" />
 </objectType>
 
 <objectType id="zealotBuilding" name="Shrine"
