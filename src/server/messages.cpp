@@ -1807,12 +1807,15 @@ void Server::handle_CL_TAKE_TALENT(User &user, const Talent::Name &talentName) {
     sendMessage(user.socket(), ERROR_INVALID_TALENT);
     return;
   }
+
   if (!user.getClass().canTakeATalent()) {
     sendMessage(user.socket(), WARNING_NO_TALENT_POINTS);
     return;
   }
-  auto requiresTool = !talent->tier().requiredTool.empty();
-  if (requiresTool && !user.hasTool("medicalSchool")) return;
+
+  const auto &requiredTool = talent->tier().requiredTool;
+  auto requiresTool = !requiredTool.empty();
+  if (requiresTool && !user.hasTool(requiredTool)) return;
 
   auto &tier = talent->tier();
 

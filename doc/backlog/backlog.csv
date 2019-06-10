@@ -298,7 +298,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 270,Buffs can be dismissed,1,5,Feature,267,,,3 Tin wrapup
 280,Hotbar can be rearranged,13,34,Usability,279,TRUE,,3 Tin wrapup
 281,Hotbar can include recipes,8,13,Usability,280,TRUE,,3 Tin wrapup
-286,Learning talents can require a tool,2,5,Feature,283,,TRUE,3 Tin wrapup
+286,Learning talents can require a tool,2,5,Feature,283,TRUE,TRUE,3 Tin wrapup
 289,"On death, drop region item if in lost talent's cost",2,13,Feature,288,,TRUE,4 Copper
 290,Region items are n-unique,13,8,Feature,285,,TRUE,4 Copper
 291,Region items are soulbound,5,8,Feature,285,,TRUE,4 Copper

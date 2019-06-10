@@ -41,6 +41,10 @@ TEST_CASE("A talent tier can require a tool") {
                   <requires tool="medicalSchool" />
                   <talent type="stats" name="Study"> <stats energy="1" /> </talent>
               </tier>
+              <tier>
+                  <requires tool="food" />
+                  <talent type="stats" name="Eat"> <stats health="1" /> </talent>
+              </tier>
           </tree>
       </class>
     )";
@@ -63,13 +67,22 @@ TEST_CASE("A talent tier can require a tool") {
     WHEN("there's a medicalSchool object nearby") {
       s.addObject("rpa", {10, 15});
 
-      AND_WHEN("he tries to take the Study talent with a tool requirement") {
+      AND_WHEN("he tries to take the talent requiring a medicalSchool") {
         c.sendMessage(CL_TAKE_TALENT, "Study");
-        REPEAT_FOR_MS(100);
 
         THEN("he has it") {
           const auto *talent = doctor.findTalent("Study");
           WAIT_UNTIL(user.getClass().hasTalent(talent));
+        }
+      }
+
+      AND_WHEN("he tries to take the talent requiring a different tool") {
+        c.sendMessage(CL_TAKE_TALENT, "Eat");
+        REPEAT_FOR_MS(100);
+
+        THEN("he doesn't have it") {
+          const auto *talent = doctor.findTalent("Eat");
+          CHECK_FALSE(user.getClass().hasTalent(talent));
         }
       }
     }
