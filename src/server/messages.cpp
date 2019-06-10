@@ -1815,7 +1815,10 @@ void Server::handle_CL_TAKE_TALENT(User &user, const Talent::Name &talentName) {
 
   const auto &requiredTool = talent->tier().requiredTool;
   auto requiresTool = !requiredTool.empty();
-  if (requiresTool && !user.hasTool(requiredTool)) return;
+  if (requiresTool && !user.hasTool(requiredTool)) {
+    sendMessage(user.socket(), WARNING_ITEM_TAG_NEEDED, requiredTool);
+    return;
+  }
 
   auto &tier = talent->tier();
 
