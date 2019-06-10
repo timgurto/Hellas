@@ -24,3 +24,8 @@ h1, h2 {
     stroke-width: 1;
     stroke: #bbbbbb;
 }
+
+td {
+    padding-left: 7px;
+    padding-right: 7px;
+}
