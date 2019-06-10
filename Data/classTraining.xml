@@ -1,0 +1,33 @@
+<root>
+
+<objectType id="athleteBuilding" name="Gymnasium"
+    xDrawOffset="-49" yDrawOffset="-63"  customShadowWidth="40" isFlat="1"
+    constructionTime="1000" >
+    <collisionRect x="-49" y="-63" w="96" h="96" />
+    <tag name="classAthlete" />
+    <material id="smoothRock" quantity="15" />
+    <material id="log" quantity="10" />
+    <strength item="log" quantity="10" />
+</objectType>
+
+<objectType id="scholarBuilding" name="School"
+    xDrawOffset="-48" yDrawOffset="-48"
+    constructionTime="1000" >
+    <collisionRect x="-48" y="-48" w="96" h="96" />
+    <tag name="classScholar" />
+    <material id="smallPot" quantity="5" />
+    <material id="log" quantity="10" />
+    <strength item="log" quantity="10" />
+</objectType>
+
+<objectType id="zealotBuilding" name="Shrine"
+    xDrawOffset="-48" yDrawOffset="-48"
+    constructionTime="1000" >
+    <collisionRect x="-48" y="-48" w="96" h="96" />
+    <tag name="classZealot" />
+    <material id="smallPot" quantity="5" />
+    <material id="log" quantity="10" />
+    <strength item="log" quantity="10" />
+</objectType>
+
+</root>

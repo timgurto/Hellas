@@ -10,7 +10,7 @@
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
-            <requires pointsInTree="5" />
+            <requires pointsInTree="5" tool="classAthlete" />
             <talent type="spell" id="shieldBlock" flavourText="Raise your shield for a few seconds, greatly increasing your chance to block attacks." />
             <talent type="stats" name="Train Endurance" icon="outlineRun" flavourText="Grueling physical training makes you stronger and tougher."> <stats armor="1" /> </talent>
             <talent type="spell" id="threatHit" flavourText="An attack that enrages your enemy, making him more likely to attack you." />
@@ -24,8 +24,7 @@
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
-            <requires pointsInTree="5" />
-            <!--talent type="spell" id="sprint" /-->
+            <requires pointsInTree="5" tool="classAthlete" />
             <talent type="spell" id="skirmisherStun" flavourText="Knock your enemy out with a strong blow to the head." />
             <talent type="spell" id="bleed" flavourText="Give your enemy a deep cut, causing blood loss and sustained damage" />
         </tier>
@@ -39,7 +38,7 @@
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
-            <requires pointsInTree="5" />
+            <requires pointsInTree="5" tool="classAthlete" />
             <talent type="spell" id="airDot" flavourText="Engage your enemy in dialectic argument, frustrating and annoying him." />
             <talent type="spell" id="threatDropPhilosopher" flavourText="All things flow like a river; nothing abides.  This includes you as a target, and your enemies' attention." />
         </tier>
@@ -56,7 +55,7 @@
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
-            <requires pointsInTree="5" />
+            <requires pointsInTree="5" tool="classScholar" />
             <talent type="stats" name="Study the Zodiac" icon="stars" flavourText="Each of us is born under a constellation.  Studying their effects helps you to live in harmony."> <stats health="10" /> </talent>
             <talent type="spell" id="fireball" flavourText="Conjur fire and propel it towards an enemy." />
         </tier>
@@ -69,7 +68,7 @@
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
-            <requires pointsInTree="5" />
+            <requires pointsInTree="5" tool="classScholar" />
             <talent type="spell" id="poison" flavourText="Stab your enemy with a poisoned weapon, causing sustained damage." />
             <talent type="stats" name="Study Classification" icon="classification" flavourText="A habit of collecting and categorising nature helps you to find more when foraging and mining." > <stats gatherBonus="1" /> </talent> 
             <talent type="spell" id="dispellEarthDebuff" flavourText="Apply leeches, to remove bad blood and associated disorders." />
@@ -83,7 +82,7 @@
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
-            <requires pointsInTree="5" />
+            <requires pointsInTree="5" tool="classScholar" />
             <talent type="spell" id="threatDropAlchemist" flavourText="Fade into darkness, making it harder for enemies to track you." />
             <talent type="stats" name="Eternal Life" icon="waterCup" flavourText="The quest for an elixir of life comes ever closer to fruition."> <stats hps="1" /> </talent>
             <!--talent type="spell" id="Transmute Metal" /-->
@@ -101,7 +100,7 @@
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
-            <requires pointsInTree="5" />
+            <requires pointsInTree="5" tool="classZealot" />
             <!--talent type="spell" id="Blessing of Hephaestus" /-->
             <talent type="spell" id="majorEnergyBuff" flavourText="The god of prophecy and truth grants increased knowledge to his friends." />
             <talent type="spell" id="priestEconHeal" flavourText="Plead with the gods to heal the sick or save a life." />
@@ -115,7 +114,7 @@
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
-            <requires pointsInTree="5" />
+            <requires pointsInTree="5" tool="classZealot" />
             <talent type="spell" id="damageShield" flavourText="Invoke the protection of a noble spirit, to smite all who harm you." />
             <talent type="stats" name="Devotion to Mithra" icon="symbolMithra" flavourText="The lord of light dazzles your enemies and fades their efforts."> <stats airResist="1" earthResist="1" fireResist="1" waterResist="1" /> </talent>
             <talent type="spell" id= "selfHeal" flavourText="Ask for a personal blessing that reinvigorates you." />
@@ -129,7 +128,7 @@
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
-            <requires pointsInTree="5" />
+            <requires pointsInTree="5" tool="classZealot" />
             <talent type="spell" id="threatDropPoet" flavourText="It's hard to stay angry while laughing." />
             <talent type="spell" id="poetStun" flavourText="Overcome your enemies with grief and regret." />
             <talent type="stats" name="Practice Taking Criticism" icon="helmet" flavourText="Keeping your head in the face of critics is essential to surviving the stage."> <stats dodge="1" /> </talent>
