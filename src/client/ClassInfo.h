@@ -39,6 +39,7 @@ struct ClientTalent {
   std::string costTag{};
   size_t costQuantity{0};
   size_t reqPointsInTree{0};
+  std::string reqTool{};
   std::string tree;
   bool hasCost() const { return !costTag.empty() && costQuantity > 0; }
 };

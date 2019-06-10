@@ -47,7 +47,10 @@ const Tooltip &ClientTalent::tooltip() const {
   if (reqPointsInTree > 0)
     tooltip.addLine("Requires "s + toString(reqPointsInTree) + " points in "s +
                     tree);
-  if (hasCost() || reqPointsInTree > 0) tooltip.addGap();
+  if (!reqTool.empty())
+    tooltip.addLine("Requires "s + Client::instance().tagName(reqTool) +
+                    " building"s);
+  if (hasCost() || reqPointsInTree > 0 || !reqTool.empty()) tooltip.addGap();
 
   if (!flavourText.empty()) {
     tooltip.setColor(Color::TOOLTIP_FLAVOUR);

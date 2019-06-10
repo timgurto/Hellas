@@ -695,6 +695,7 @@ void CDataLoader::loadClasses(XmlReader &xr) {
         auto cost = xr.findChild("cost", tier);
         auto costTag = ""s;
         auto costQty = 0;
+        auto reqTool = ""s;
         if (cost) {
           xr.findAttr(cost, "tag", costTag);
           xr.findAttr(cost, "quantity", costQty);
@@ -703,6 +704,7 @@ void CDataLoader::loadClasses(XmlReader &xr) {
         auto reqPointsInTree = 0;
         if (req) {
           xr.findAttr(req, "pointsInTree", reqPointsInTree);
+          xr.findAttr(req, "tool", reqTool);
         }
 
         for (auto talent : xr.getChildren("talent", tier)) {
@@ -716,6 +718,7 @@ void CDataLoader::loadClasses(XmlReader &xr) {
 
           t.costTag = costTag;
           t.costQuantity = costQty;
+          t.reqTool = reqTool;
           t.reqPointsInTree = reqPointsInTree;
           t.tree = treeName;
 
