@@ -1813,3 +1813,30 @@ TEST_CASE("A class-specific quests with a prerequisite") {
     }
   }
 }
+
+TEST_CASE("Quest-exclusive objects") {
+  GIVEN("a quest-exclusive tree that gives an acorn") {
+    auto data = R"(
+      <objectType id="tree" exclusiveToQuest="getAcorns">
+        <yield id="acorn" />
+      </objectType>
+      <item id="acorn" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+
+    s.addObject("tree");
+    const auto &tree = s.getFirstObject();
+
+    WHEN("a user tries to gather from it") {
+      c.sendMessage(CL_GATHER, makeArgs(tree.serial()));
+
+      THEN("he doesn't have an item") {
+        const auto &user = s.getFirstUser();
+        REPEAT_FOR_MS(100);
+        CHECK(user.inventory(0).first == nullptr);
+      }
+    }
+  }
+}

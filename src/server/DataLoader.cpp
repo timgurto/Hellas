@@ -165,6 +165,9 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
           DeconstructionType::ItemAndTime(&*itemIt, deconstructionTime));
     }
 
+    // Quest exclusivity
+    if (xr.findAttr(elem, "exclusiveToQuest", s)) ot->makeQuestExclusive();
+
     // Gathering yields
     for (auto yield : xr.getChildren("yield", elem)) {
       if (!xr.findAttr(yield, "id", s)) continue;

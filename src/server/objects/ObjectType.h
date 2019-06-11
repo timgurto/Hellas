@@ -68,6 +68,8 @@ class ObjectType : public EntityType, public QuestNodeType {
   std::string
       _playerUniqueCategory;  // Assumption: up to one category per object type.
 
+  bool _isQuestExclusive{false};
+
   const BuffType *_buffGranted{
       nullptr};  // A buff granted to nearby, permitted users.
   double _buffRadius{0};
@@ -117,6 +119,8 @@ class ObjectType : public EntityType, public QuestNodeType {
   const std::string &playerUniqueCategory() const {
     return _playerUniqueCategory;
   }
+  void makeQuestExclusive() { _isQuestExclusive = true; }
+  bool isQuestExclusive() const { return _isQuestExclusive; }
 
   virtual char classTag() const override { return 'o'; }
 

@@ -312,6 +312,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         }
 
         // Check that the user meets the requirements
+        if (obj->objType().isQuestExclusive()) break;
         if (obj->isBeingBuilt()) {
           sendMessage(client, ERROR_UNDER_CONSTRUCTION);
           break;
