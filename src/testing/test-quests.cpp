@@ -1817,25 +1817,38 @@ TEST_CASE("A class-specific quests with a prerequisite") {
 TEST_CASE("Quest-exclusive objects") {
   GIVEN("a quest-exclusive tree that gives an acorn") {
     auto data = R"(
-      <objectType id="tree" exclusiveToQuest="getAcorns">
+      <objectType id="tree" exclusiveToQuest="getAcorn">
         <yield id="acorn" />
       </objectType>
       <item id="acorn" />
+      <quest id="getAcorn" startsAt="tree" endsAt="tree" />
     )";
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
     s.waitForUsers(1);
+    const auto &user = s.getFirstUser();
 
-    s.addObject("tree");
+    s.addObject("tree", {10, 15});
     const auto &tree = s.getFirstObject();
 
     WHEN("a user tries to gather from it") {
       c.sendMessage(CL_GATHER, makeArgs(tree.serial()));
 
       THEN("he doesn't have an item") {
-        const auto &user = s.getFirstUser();
         REPEAT_FOR_MS(100);
         CHECK(user.inventory(0).first == nullptr);
+      }
+    }
+
+    WHEN("a user starts the quest") {
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("getAcorn", tree.serial()));
+
+      AND_WHEN("he tries to gather from it") {
+        c.sendMessage(CL_GATHER, makeArgs(tree.serial()));
+
+        THEN("he has an item") {
+          WAIT_UNTIL(user.inventory(0).first != nullptr);
+        }
       }
     }
   }
