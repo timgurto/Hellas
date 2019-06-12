@@ -1867,3 +1867,30 @@ TEST_CASE("Quest-exclusive objects") {
     }
   }
 }
+
+TEST_CASE("Quest with a time limit") {
+  GIVEN("a quest with a time limit of 1s") {
+    auto data = R"(
+      <objectType id="questgiver" />
+      <quest id="q1" startsAt="questgiver" endsAt="questgiver" timeLimit="1" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    s.addObject("questgiver", {10, 15});
+    const auto &questgiver = s.getFirstObject();
+
+    WHEN("a user starts the quest") {
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("q1", questgiver.serial()));
+
+      AND_WHEN("1.1s elapses") {
+        REPEAT_FOR_MS(100);
+
+        THEN("the user is not on a quest") {
+          CHECK(user.questsInProgress().empty());
+        }
+      }
+    }
+  }
+}
