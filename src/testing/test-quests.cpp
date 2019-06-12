@@ -1894,3 +1894,36 @@ TEST_CASE("Quest with a time limit") {
     }
   }
 }
+
+TEST_CASE("Quest time remaining is persistent") {
+  // Given a quest with a time limit of 1s
+  auto data = R"(
+      <objectType id="questgiver" />
+      <quest id="q1" startsAt="questgiver" endsAt="questgiver" timeLimit="1" />
+    )";
+  auto s = TestServer::WithDataString(data);
+  s.addObject("questgiver", {10, 15});
+  const auto &questgiver = s.getFirstObject();
+
+  // When Alice connects
+  {
+    auto c = TestClient::WithUsernameAndDataString("Alice", data);
+    s.waitForUsers(1);
+
+    // And she starts the quest
+    c.sendMessage(CL_ACCEPT_QUEST, makeArgs("q1", questgiver.serial()));
+
+    // And she disconnects and reconnects
+  }
+  {
+    auto c = TestClient::WithUsernameAndDataString("Alice", data);
+    s.waitForUsers(1);
+    auto &alice = s.getFirstUser();
+
+    // And 1.1s elapse, enough for the quest to expire
+    REPEAT_FOR_MS(1100);
+
+    // Then she is not on a quest
+    CHECK(alice.questsInProgress().empty());
+  }
+}
