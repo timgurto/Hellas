@@ -614,6 +614,7 @@ void User::update(ms_t timeElapsed) {
     // Time has run out
     if (timeElapsed >= pair.second) {
       questsToAbandon.insert(pair.first);
+      sendMessage(SV_QUEST_FAILED, pair.first);
       continue;
     }
 

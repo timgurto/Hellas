@@ -1764,6 +1764,18 @@ void Client::handleMessage(const std::string &msg) {
         break;
       }
 
+      case SV_QUEST_FAILED: {
+        singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
+        auto questID = std::string{buffer};
+        singleMsg >> del;
+
+        if (del != MSG_END) return;
+
+        toast("skullBlue", "Quest failed");
+
+        break;
+      }
+
       case SV_MAP_EXPLORATION_DATA: {
         static const auto NUMBERS_PER_MESSAGE = 10;
 
