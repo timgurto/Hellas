@@ -390,8 +390,7 @@ void DataLoader::loadQuests(XmlReader &xr) {
     auto endingObject = _server.findObjectTypeByName(endsAt);
     if (!endingObject) continue;
 
-    auto timeLimit = 0;
-    if (xr.findAttr(elem, "timeLimit", timeLimit)) continue;
+    xr.findAttr(elem, "timeLimit", q.timeLimit);
 
     for (auto objectiveElem : xr.getChildren("objective", elem)) {
       Quest::Objective objective;

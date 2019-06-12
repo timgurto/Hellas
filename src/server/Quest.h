@@ -13,6 +13,7 @@ struct Quest {
   using ID = std::string;
   ID id;
   std::set<std::string> startsWithItems{};
+  int timeLimit = 0;  // in seconds.  0 = no time limit
 
   struct Objective {
     enum Type { NONE, KILL, FETCH, CONSTRUCT };

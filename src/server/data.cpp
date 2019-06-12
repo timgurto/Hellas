@@ -303,7 +303,8 @@ void Server::writeUserData(const User &user) const {
     auto questElem = xw.addChild("completed", e);
     xw.setAttr(questElem, "quest", completedQuestID);
   }
-  for (const auto &questID : user.questsInProgress()) {
+  for (const auto &pair : user.questsInProgress()) {
+    const auto &questID = pair.first;
     auto questElem = xw.addChild("inProgress", e);
     xw.setAttr(questElem, "quest", questID);
     auto quest = findQuest(questID);

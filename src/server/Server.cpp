@@ -378,7 +378,8 @@ void Server::addUser(const Socket &socket, const std::string &name,
   }
 
   // Send him his quest progress
-  for (const auto &questID : newUser.questsInProgress()) {
+  for (const auto &pair : newUser.questsInProgress()) {
+    const auto &questID = pair.first;
     const auto *quest = findQuest(questID);
     if (quest->objectives.empty())
       newUser.sendMessage(SV_QUEST_CAN_BE_FINISHED, questID);

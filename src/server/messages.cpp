@@ -1914,6 +1914,7 @@ void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &questID,
   for (auto prereq : quest->prerequisiteQuests)
     if (!user.hasCompletedQuest(prereq)) return;
 
+  // Enforce class exclusivity
   auto hasExclusiveClass = !quest->exclusiveToClass.empty();
   if (hasExclusiveClass &&
       user.getClass().type().id() != quest->exclusiveToClass)

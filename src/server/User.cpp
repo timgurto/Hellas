@@ -310,7 +310,8 @@ size_t User::giveItem(const ServerItem *item, size_t quantity) {
   // Send client fetch-quest progress
   auto qtyHeld = 0;
   auto qtyHeldHasBeenCalculated = false;
-  for (const auto &questID : questsInProgress()) {
+  for (const auto &pair : questsInProgress()) {
+    const auto &questID = pair.first;
     auto quest = server.findQuest(questID);
     if (!quest) continue;
 
@@ -603,6 +604,23 @@ void User::sendMessage(MessageCode msgCode, const std::string &args) const {
 
 void User::update(ms_t timeElapsed) {
   regen(timeElapsed);
+
+  // Quests
+  auto questsToAbandon = std::set<std::string>{};
+  for (auto &pair : _quests) {
+    // No time limit
+    if (pair.second == 0) continue;
+
+    // Time has run out
+    if (timeElapsed >= pair.second) {
+      questsToAbandon.insert(pair.first);
+      continue;
+    }
+
+    // Count down
+    pair.second -= timeElapsed;
+  }
+  for (auto questID : questsToAbandon) abandonQuest(questID);
 
   if (_action == NO_ACTION) {
     Entity::update(timeElapsed);
@@ -952,7 +970,8 @@ void User::onKilled(Entity &victim) {
 void User::addQuestProgress(Quest::Objective::Type type,
                             const std::string &id) {
   const auto &server = Server::instance();
-  for (const auto &questID : _quests) {
+  for (const auto &pair : _quests) {
+    const auto &questID = pair.first;
     auto quest = server.findQuest(questID);
     for (auto i = 0; i != quest->objectives.size(); ++i) {
       auto &objective = quest->objectives[i];
@@ -1296,7 +1315,7 @@ void User::onTerrainListChange(const std::string &listID) {
 }
 
 void User::startQuest(const Quest &quest) {
-  _quests.insert(quest.id);
+  _quests[quest.id] = quest.timeLimit;
 
   auto message = quest.canBeCompletedByUser(*this) ? SV_QUEST_CAN_BE_FINISHED
                                                    : SV_QUEST_IN_PROGRESS;
@@ -1370,7 +1389,7 @@ bool User::hasCompletedAllPrerequisiteQuestsOf(const Quest::ID &id) const {
   return true;
 }
 
-void User::abandonQuest(const Quest::ID &id) {
+void User::abandonQuest(Quest::ID id) {
   _quests.erase(id);
 
   // Remove quest-exclusive items
@@ -1399,7 +1418,7 @@ void User::markQuestAsCompleted(const Quest::ID &id) {
   _questsCompleted.insert(id);
 }
 
-void User::markQuestAsStarted(const Quest::ID &id) { _quests.insert(id); }
+void User::markQuestAsStarted(const Quest::ID &id) { _quests[id] = 0; }
 
 void User::loadBuff(const BuffType &type, ms_t timeRemaining) {
   Object::loadBuff(type, timeRemaining);

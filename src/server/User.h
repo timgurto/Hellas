@@ -89,7 +89,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   void sendXPMessage() const;
   void announceLevelUp() const;
 
-  std::set<Quest::ID> _quests;
+  std::map<Quest::ID, ms_t> _quests;  // second: time remaining of time limit
   struct QuestProgress {
     Quest::ID quest;
     Quest::Objective::Type type;
@@ -315,8 +315,8 @@ class User : public Object {  // TODO: Don't inherit from Object
   const std::set<Quest::ID> &questsCompleted() const {
     return _questsCompleted;
   }
-  void abandonQuest(const Quest::ID &id);
-  const std::set<Quest::ID> &questsInProgress() const { return _quests; }
+  void abandonQuest(Quest::ID id);
+  const std::map<Quest::ID, ms_t> &questsInProgress() const { return _quests; }
   void markQuestAsCompleted(const Quest::ID &id);
   void markQuestAsStarted(const Quest::ID &id);
   void addQuestProgress(Quest::Objective::Type type, const std::string &id);
