@@ -22,6 +22,13 @@ ClientObjectType::ClientObjectType(const std::string &id)
       _gatherParticles(nullptr),
       _transformTime(0) {}
 
+bool ClientObjectType::canGather() const {
+  if (!_canGather) return false;
+  if (_exclusiveToQuest.empty()) return true;
+  auto isOnQuest = Client::instance().quests().count(_exclusiveToQuest) == 1;
+  return isOnQuest;
+}
+
 const Tooltip &ClientObjectType::constructionTooltip() const {
   if (_constructionTooltip.hasValue()) return _constructionTooltip.value();
 

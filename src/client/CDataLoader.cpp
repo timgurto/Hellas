@@ -586,6 +586,10 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
       Unlocks::add({triggerType, triggerID}, {Unlocks::CONSTRUCTION, id},
                    chance);
     }
+
+    auto questID = ""s;
+    if (xr.findAttr(elem, "exclusiveToQuest", questID))
+      cot->exclusiveToQuest(questID);
   }
 }
 

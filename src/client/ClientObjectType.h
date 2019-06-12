@@ -68,6 +68,7 @@ class ClientObjectType : public SpriteType, public ClientCombatantType {
 
   std::set<CQuest *> _startsQuests;
   std::set<CQuest *> _endsQuests;
+  std::string _exclusiveToQuest{};
 
  public:
   ClientObjectType(const std::string &id);
@@ -78,7 +79,7 @@ class ClientObjectType : public SpriteType, public ClientCombatantType {
   const std::string &imageFile() const { return _imageFile; }
   void imageFile(const std::string &s) { _imageFile = s; }
   void imageSet(const std::string &fileName) { _images = ImageSet(fileName); }
-  bool canGather() const { return _canGather; }
+  bool canGather() const;
   void canGather(bool b) { _canGather = b; }
   const std::string &gatherReq() const { return _gatherReq; }
   void gatherReq(const std::string &req) { _gatherReq = req; }
@@ -130,6 +131,10 @@ class ClientObjectType : public SpriteType, public ClientCombatantType {
   void endsQuest(CQuest &quest) { _endsQuests.insert(&quest); }
   std::set<CQuest *> &endsQuests() { return _endsQuests; }
   const std::set<CQuest *> &endsQuests() const { return _endsQuests; }
+  void exclusiveToQuest(const std::string &questID) {
+    _exclusiveToQuest = questID;
+  }
+  const std::string &exclusiveToQuest() const { return _exclusiveToQuest; }
 
   const ImageSet &getProgressImage(ms_t timeRemaining) const;
   void corpseImage(const std::string &filename);
