@@ -1315,7 +1315,8 @@ void User::onTerrainListChange(const std::string &listID) {
 }
 
 void User::startQuest(const Quest &quest) {
-  _quests[quest.id] = quest.timeLimit;
+  auto timeRemaining = static_cast<ms_t>(quest.timeLimit * 1000);
+  _quests[quest.id] = timeRemaining;
 
   auto message = quest.canBeCompletedByUser(*this) ? SV_QUEST_CAN_BE_FINISHED
                                                    : SV_QUEST_IN_PROGRESS;

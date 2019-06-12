@@ -1883,7 +1883,8 @@ TEST_CASE("Quest with a time limit") {
 
     WHEN("a user starts the quest") {
       c.sendMessage(CL_ACCEPT_QUEST, makeArgs("q1", questgiver.serial()));
-      WAIT_UNTIL(user.questsInProgress().size() == 1);
+      REPEAT_FOR_MS(500);
+      CHECK(user.questsInProgress().size() == 1);
 
       AND_WHEN("1.1s elapses") {
         REPEAT_FOR_MS(1100);
