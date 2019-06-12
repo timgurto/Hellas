@@ -1822,6 +1822,7 @@ TEST_CASE("Quest-exclusive objects") {
       </objectType>
       <item id="acorn" />
       <quest id="getAcorn" startsAt="tree" endsAt="tree" />
+      <quest id="differentQuest" startsAt="tree" endsAt="tree" />
     )";
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
@@ -1848,6 +1849,19 @@ TEST_CASE("Quest-exclusive objects") {
 
         THEN("he has an item") {
           WAIT_UNTIL(user.inventory(0).first != nullptr);
+        }
+      }
+    }
+
+    WHEN("a user starts a different quest") {
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("differentQuest", tree.serial()));
+
+      AND_WHEN("he tries to gather from it") {
+        c.sendMessage(CL_GATHER, makeArgs(tree.serial()));
+
+        THEN("he doesn't have an item") {
+          REPEAT_FOR_MS(100);
+          CHECK(user.inventory(0).first == nullptr);
         }
       }
     }

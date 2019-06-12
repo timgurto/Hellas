@@ -312,9 +312,13 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         }
 
         // Check that the user meets the requirements
-        if (obj->objType().isQuestExclusive() &&
-            user->questsInProgress().empty())
-          break;
+        const auto &exclusiveQuestID = obj->objType().exclusiveToQuest();
+        auto isQuestExclusive = !exclusiveQuestID.empty();
+        if (isQuestExclusive) {
+          auto userIsOnQuest =
+              user->questsInProgress().count(exclusiveQuestID) == 1;
+          if (!userIsOnQuest) break;
+        }
         if (obj->isBeingBuilt()) {
           sendMessage(client, ERROR_UNDER_CONSTRUCTION);
           break;

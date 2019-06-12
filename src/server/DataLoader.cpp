@@ -166,7 +166,7 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
     }
 
     // Quest exclusivity
-    if (xr.findAttr(elem, "exclusiveToQuest", s)) ot->makeQuestExclusive();
+    if (xr.findAttr(elem, "exclusiveToQuest", s)) ot->exclusiveToQuest(s);
 
     // Gathering yields
     for (auto yield : xr.getChildren("yield", elem)) {
