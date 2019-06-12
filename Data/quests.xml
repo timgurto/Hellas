@@ -16,14 +16,28 @@
     </npcType>
     <item id="flintstones" gearSlot="2" ><offset x="-5" y="-4" /> </item>
     
-<npcType
-    id="athleteQG" name="Kron the Hunter"
-    level="6" maxHealth="38" isCivilian="1" >
-    <humanoid base="athlete">
-        <gear id="bow" />
-        <gear id="horn" />
-    </humanoid>
-</npcType>
+<quest id="learnAthleteBuilding" name="Kron's Kill" startsAt="athleteQG" endsAt="athleteQG"
+    brief="Kron hunt big goat today for tribe, but too much meat to carry.  Meat rotting; soon no good to eat.  You get rest of meat?
+    Kron remember hunting west, near river.  Go fast, before meat rot!"
+    debrief="You bring meat!  Now whole tribe can eat big.
+    You very fast and strong.  Kron have idea to make men even more fast and strong--what we need is place to practice and learn.  Kron tell you idea and you build, yes?" >
+    <objective type="fetch" id="kronMeat" qty="1" />
+    <reward type="construction" id="tutFire" />
+</quest>
+    <npcType
+        id="athleteQG" name="Kron the Hunter"
+        level="6" maxHealth="38" isCivilian="1" >
+        <humanoid base="athlete">
+            <gear id="bow" />
+            <gear id="horn" />
+        </humanoid>
+    </npcType>
+    <item id="kronMeat" name="Goat Meat" iconFile="meat" exclusiveToQuest="learnAthleteBuilding" />
+    <objectType id="kronsKill" name="Kron's Kill"
+        xDrawOffset="-19" yDrawOffset="-9" isFlat="1"
+        canGather="1" exclusiveToQuest="learnAthleteBuilding" >
+        <yield id="kronMeat" />
+    </objectType>
     
 <npcType
     id="scholarQG" name="Briv the Gatherer"
@@ -42,5 +56,6 @@
         <gear id="fireWand" />
     </humanoid>
 </npcType>
+
     
 </root>

@@ -9,7 +9,8 @@
     <material id="pole1" />
     <material item="water" quantity="2" />
     <material item="rock" quantity="2" />
-    <strength id="stick" quantity="25" />
+    <strength item="stick" quantity="25" />
+    <unlockedBy />
 </objectType>
 
 <objectType id="scholarBuilding" name="School"

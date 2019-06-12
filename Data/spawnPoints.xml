@@ -80,6 +80,7 @@
     <spawnPoint y="22368" x="23104" type="boar10" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="22432" x="21536" type="boar10" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="22432" x="35200" type="stick" quantity="50" radius="1500" respawnTime="600000" />
+    <spawnPoint y="22468" x="33811" type="kronsKill" quantity="1" radius="60" respawnTime="5000" />
     <spawnPoint y="22488" x="26240" type="boar10" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="22608" x="35248" type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="22696" x="24984" type="boar10" quantity="5" radius="250" respawnTime="300000" />
