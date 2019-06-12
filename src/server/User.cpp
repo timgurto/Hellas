@@ -1419,7 +1419,9 @@ void User::markQuestAsCompleted(const Quest::ID &id) {
   _questsCompleted.insert(id);
 }
 
-void User::markQuestAsStarted(const Quest::ID &id) { _quests[id] = 1; }
+void User::markQuestAsStarted(const Quest::ID &id, ms_t timeRemaining) {
+  _quests[id] = timeRemaining;
+}
 
 void User::loadBuff(const BuffType &type, ms_t timeRemaining) {
   Object::loadBuff(type, timeRemaining);

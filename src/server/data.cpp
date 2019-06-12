@@ -185,7 +185,9 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
   for (auto questElem : xr.getChildren("inProgress", elem)) {
     auto questID = ""s;
     if (!xr.findAttr(questElem, "quest", questID)) continue;
-    user.markQuestAsStarted(questID);
+    auto timeRemaining = ms_t{0};  // Default: no time limit
+    xr.findAttr(questElem, "timeRemaining", timeRemaining);
+    user.markQuestAsStarted(questID, timeRemaining);
 
     for (auto progress : xr.getChildren("progress", questElem)) {
       auto typeAsString = ""s;
@@ -307,6 +309,7 @@ void Server::writeUserData(const User &user) const {
     const auto &questID = pair.first;
     auto questElem = xw.addChild("inProgress", e);
     xw.setAttr(questElem, "quest", questID);
+    if (pair.second > 0) xw.setAttr(questElem, "timeRemaining", pair.second);
     auto quest = findQuest(questID);
     for (const auto &objective : quest->objectives) {
       auto progress = user.questProgress(questID, objective.type, objective.id);

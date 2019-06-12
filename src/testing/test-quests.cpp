@@ -1910,18 +1910,24 @@ TEST_CASE("Quest time remaining is persistent") {
     auto c = TestClient::WithUsernameAndDataString("Alice", data);
     s.waitForUsers(1);
 
-    // And she starts the quest
+    // And when she starts the quest
     c.sendMessage(CL_ACCEPT_QUEST, makeArgs("q1", questgiver.serial()));
 
-    // And she disconnects and reconnects
+    // And when she disconnects and reconnects
   }
   {
     auto c = TestClient::WithUsernameAndDataString("Alice", data);
     s.waitForUsers(1);
     auto &alice = s.getFirstUser();
 
-    // And 1.1s elapse, enough for the quest to expire
-    REPEAT_FOR_MS(1100);
+    // And 0.5s elapse
+    REPEAT_FOR_MS(500);
+
+    // Then she is on a quest
+    CHECK_FALSE(alice.questsInProgress().empty());
+
+    // And when 0.6s elapse, enough for the quest to expire
+    REPEAT_FOR_MS(600);
 
     // Then she is not on a quest
     CHECK(alice.questsInProgress().empty());
