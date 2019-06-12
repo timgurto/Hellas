@@ -1776,6 +1776,24 @@ void Client::handleMessage(const std::string &msg) {
         break;
       }
 
+      case SV_QUEST_TIME_LEFT: {
+        singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
+        auto questID = std::string{buffer};
+        singleMsg >> del;
+
+        auto timeRemaining = ms_t{0};
+        singleMsg >> timeRemaining >> del;
+
+        if (del != MSG_END) return;
+
+        auto it = _quests.find(questID);
+        if (it == _quests.end()) break;
+        it->second.setTimeRemaining(timeRemaining);
+        refreshQuestProgress();
+
+        break;
+      }
+
       case SV_MAP_EXPLORATION_DATA: {
         static const auto NUMBERS_PER_MESSAGE = 10;
 

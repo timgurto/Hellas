@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include "../types.h"
+
 class Window;
 
 class CQuest {
@@ -51,11 +53,14 @@ class CQuest {
 
   void setProgress(size_t objective, int progress);
   int getProgress(size_t objective) const;
+  void setTimeRemaining(ms_t t) { _timeRemaining = t; }
+  std::string nameInProgressUI() const;
 
  private:
   Info _info;
   Window *_window{nullptr};
   std::vector<int> _progress;  // objective index -> progress
+  ms_t _timeRemaining{0};      // If >0, display.
 };
 
 using CQuests = std::map<CQuest::Info::ID, CQuest>;

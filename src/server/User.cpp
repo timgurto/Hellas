@@ -1317,6 +1317,8 @@ void User::onTerrainListChange(const std::string &listID) {
 
 void User::startQuest(const Quest &quest) {
   auto timeRemaining = static_cast<ms_t>(quest.timeLimit * 1000);
+
+  // NOTE: the insertion is the important bit here
   _quests[quest.id] = timeRemaining;
 
   auto message = quest.canBeCompletedByUser(*this) ? SV_QUEST_CAN_BE_FINISHED
@@ -1324,6 +1326,9 @@ void User::startQuest(const Quest &quest) {
   auto &server = Server::instance();
   sendMessage(SV_QUEST_ACCEPTED);
   sendMessage(message, quest.id);
+
+  if (timeRemaining > 0)
+    sendMessage(SV_QUEST_TIME_LEFT, makeArgs(quest.id, timeRemaining));
 
   for (const auto &itemID : quest.startsWithItems) {
     auto item = server.findItem(itemID);
@@ -1422,6 +1427,8 @@ void User::markQuestAsCompleted(const Quest::ID &id) {
 
 void User::markQuestAsStarted(const Quest::ID &id, ms_t timeRemaining) {
   _quests[id] = timeRemaining;
+  if (timeRemaining > 0)
+    sendMessage(SV_QUEST_TIME_LEFT, makeArgs(id, timeRemaining));
 }
 
 void User::loadBuff(const BuffType &type, ms_t timeRemaining) {

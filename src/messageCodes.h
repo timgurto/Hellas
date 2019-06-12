@@ -541,6 +541,10 @@ enum MessageCode {
   SV_QUEST_COMPLETED,
   SV_QUEST_FAILED, // Sent in addition to SV_QUEST_CAN_BE_STARTED
 
+  // You have ... left to finish a quest
+  // Args: questID, ms remaining
+  SV_QUEST_TIME_LEFT,
+
   // For aesthetics only.  Quest-completion aesthetics are handled by SV_QUEST_COMPLETED.
   SV_QUEST_ACCEPTED,
 

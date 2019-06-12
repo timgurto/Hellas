@@ -423,7 +423,7 @@ void Client::refreshQuestProgress() {
     if (!isEmpty) _questProgress->addGap();
     isEmpty = false;
 
-    auto questName = new OutlinedLabel({}, quest.info().name);
+    auto questName = new OutlinedLabel({}, quest.nameInProgressUI());
     questName->setColor(Color::UI_TEXT);
     _questProgress->addChild(questName);
 

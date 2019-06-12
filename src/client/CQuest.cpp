@@ -1,6 +1,8 @@
 #include "CQuest.h"
 
 #include "../Rect.h"
+#include "../util.h"
+#include "CQuest.h"
 #include "Client.h"
 #include "WordWrapper.h"
 #include "ui/Line.h"
@@ -130,4 +132,11 @@ void CQuest::setProgress(size_t objective, int progress) {
 
 int CQuest::getProgress(size_t objective) const {
   return _progress.at(objective);
+}
+
+std::string CQuest::nameInProgressUI() const {
+  auto ret = _info.name;
+  if (_timeRemaining > 0)
+    ret += " (" + msAsShortTimeDisplay(_timeRemaining) + ")";
+  return ret;
 }
