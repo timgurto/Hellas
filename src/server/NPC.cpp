@@ -250,8 +250,15 @@ void NPC::processAI(ms_t timeElapsed) {
         auto distFromSpawner = spawner()->distanceFromEntity(*this);
         if (distFromSpawner > npcType()->maxDistanceFromSpawner()) {
           _state = IDLE;
-          _targetDestination = spawner()->getRandomPoint();
-          teleportTo(_targetDestination);
+          static const auto ATTEMPTS = 20;
+          for (auto i = 0; i != ATTEMPTS; ++i) {
+            auto dest = spawner()->getRandomPoint();
+            if (Server::instance().isLocationValid(dest, *type())) {
+              _targetDestination = dest;
+              teleportTo(_targetDestination);
+              break;
+            }
+          }
           break;
         }
       }
@@ -299,8 +306,16 @@ void NPC::processAI(ms_t timeElapsed) {
     target(nullptr);
     _threatTable.clear();
     clearTagger();
-    _targetDestination = spawner()->getRandomPoint();
-    teleportTo(_targetDestination);
+
+    static const auto ATTEMPTS = 20;
+    for (auto i = 0; i != ATTEMPTS; ++i) {
+      auto dest = spawner()->getRandomPoint();
+      if (Server::instance().isLocationValid(dest, *type())) {
+        _targetDestination = dest;
+        teleportTo(_targetDestination);
+        break;
+      }
+    }
 
     auto maxHealth = type()->baseStats().maxHealth;
     if (health() < maxHealth) {
