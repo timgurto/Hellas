@@ -100,6 +100,7 @@
     <spawnPoint y="23584" x="13488" type="wildFlax" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="23616" x="13008" type="tree" quantity="30" radius="1500" respawnTime="300000" />
     <spawnPoint y="23648" x="35648" type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" />
+    <spawnPoint y="23672" x="37412" type="athleteQuestTortoise" quantity="1" radius="1300" respawnTime="30000" />
     <spawnPoint y="23680" x="28664" type="tin" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="23728" x="27352" type="boar10" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="23784" x="25792" type="waterNymph" quantity="5" radius="250" respawnTime="300000" />

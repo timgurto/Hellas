@@ -16,13 +16,12 @@
     </npcType>
     <item id="flintstones" gearSlot="2" ><offset x="-5" y="-4" /> </item>
     
-<quest id="learnAthleteBuilding" name="Kron's Kill" startsAt="athleteQG" endsAt="athleteQG" timeLimit="60"
-    brief="Kron hunt big goat today for tribe, but too much meat to carry.  Meat rotting; soon no good to eat.  You get rest of meat?
+<quest id="learnAthleteBuilding1" name="Kron's Kill" startsAt="athleteQG" endsAt="athleteQG" timeLimit="40"
+    brief="You look fast; you help Kron?
+    Kron hunt big goat today for tribe, but too much meat to carry.  Meat rotting; soon no good to eat.  You get rest of meat?
     Kron remember hunting west, near river.  Go fast, before meat rot!"
-    debrief="You bring meat!  Now whole tribe can eat big.
-    You very fast and strong.  Kron have idea to make men even more fast and strong--what we need is place to practice and learn.  Kron tell you idea and you build, yes?" >
+    debrief="You bring meat!  Now whole tribe can eat big." >
     <objective type="fetch" id="kronMeat" qty="1" />
-    <reward type="construction" id="tutFire" />
 </quest>
     <npcType
         id="athleteQG" name="Kron the Hunter"
@@ -32,12 +31,34 @@
             <gear id="horn" />
         </humanoid>
     </npcType>
-    <item id="kronMeat" name="Goat Meat" iconFile="meat" exclusiveToQuest="learnAthleteBuilding" />
+    <item id="kronMeat" name="Goat Meat" iconFile="meat" exclusiveToQuest="learnAthleteBuilding1" />
     <objectType id="kronsKill" name="Kron's Kill"
         xDrawOffset="-19" yDrawOffset="-9" isFlat="1"
-        canGather="1" gatherTime="1000" exclusiveToQuest="learnAthleteBuilding" >
+        canGather="1" gatherTime="1000" exclusiveToQuest="learnAthleteBuilding1" >
         <yield id="kronMeat" />
     </objectType>
+<quest id="learnAthleteBuilding2" name="Tortoise Trouble" startsAt="athleteQG" endsAt="athleteQG"
+    brief="Maybe you help Kron with another problem.  A monster threatens tribe!  Big creature with lots of meat, but wears hard armour.
+    We can't break him; maybe you can.  We call him Heirax.  He on the coast, southeast."
+    debrief="You save tribe!  Thank you.
+    You very fast, and strong.  Kron have idea to make men even more fast and strong--what we need is place to practice and learn.  Kron tell you idea and you build, yes?" >
+    <prerequisite id="learnAthleteBuilding1" />
+    <objective type="kill" id="athleteQuestTortoise" qty="1" />
+    <reward type="construction" id="athleteBuilding" />
+</quest>
+    <npcType
+        id="athleteQuestTortoise" name="Heirax"
+        level="10" maxHealth="30" attack="8" attackTime="3500"
+        xDrawOffset="-18" yDrawOffset="-20"
+        imageFile="tortoiseBlue" sounds="tortoise" isNeutral="1" >
+        <spell id="tutShield" />
+        <collisionRect x="-15" y="-5" w="31" h="10" />
+        <loot id="meat" chance="0.3" />
+        <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
+        <loot id="knucklebones" chance="0.02" />
+        <loot id="entrails" chance="0.1" />
+        <loot id="fat" chance="0.05" />
+    </npcType>
     
 <npcType
     id="scholarQG" name="Briv the Gatherer"
