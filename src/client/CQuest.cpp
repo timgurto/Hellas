@@ -140,3 +140,17 @@ std::string CQuest::nameInProgressUI() const {
     ret += " (" + msAsShortTimeDisplay(_timeRemaining) + ")";
   return ret;
 }
+
+void CQuest::update(ms_t timeElapsed) {
+  if (_timeRemaining > 0) {
+    if (timeElapsed > _timeRemaining)
+      _timeRemaining = 0;
+    else
+      _timeRemaining -= timeElapsed;
+
+    auto oldTimeDisplay = _lastTimeDisplay;
+    _lastTimeDisplay = msAsShortTimeDisplay(_timeRemaining);
+    if (_lastTimeDisplay != oldTimeDisplay)
+      Client::instance().refreshQuestProgress();
+  }
+}

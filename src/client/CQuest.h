@@ -56,11 +56,15 @@ class CQuest {
   void setTimeRemaining(ms_t t) { _timeRemaining = t; }
   std::string nameInProgressUI() const;
 
+  void update(ms_t timeElapsed);
+
  private:
   Info _info;
   Window *_window{nullptr};
   std::vector<int> _progress;  // objective index -> progress
-  ms_t _timeRemaining{0};      // If >0, display.
+
+  ms_t _timeRemaining{0};  // If >0, display.
+  std::string _lastTimeDisplay{};
 };
 
 using CQuests = std::map<CQuest::Info::ID, CQuest>;

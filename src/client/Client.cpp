@@ -414,6 +414,11 @@ void Client::gameLoop() {
   for (auto &pair : _debuffTimeRemaining)
     pair.second = _timeElapsed > pair.second ? 0 : pair.second - _timeElapsed;
 
+  // Update quest time limits
+  for (auto &pair : _quests) {
+    pair.second.update(_timeElapsed);
+  }
+
   if (_mouseMoved) checkMouseOver();
 
   updateUI();

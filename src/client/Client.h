@@ -386,6 +386,7 @@ class Client {
 
  public:
   void refreshHotbar();
+  void refreshQuestProgress();
 
  private:
   void initAssignerWindow();
@@ -406,7 +407,6 @@ class Client {
   void populateToastsList();
   void toast(const std::string &icon, const std::string &message);
   void initQuestProgress();
-  void refreshQuestProgress();
 
   // Chat
   Element *_chatContainer;
