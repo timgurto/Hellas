@@ -16,7 +16,7 @@
     </npcType>
     <item id="flintstones" gearSlot="2" ><offset x="-5" y="-4" /> </item>
     
-<quest id="learnAthleteBuilding" name="Kron's Kill" startsAt="athleteQG" endsAt="athleteQG"
+<quest id="learnAthleteBuilding" name="Kron's Kill" startsAt="athleteQG" endsAt="athleteQG" timeLimit="60"
     brief="Kron hunt big goat today for tribe, but too much meat to carry.  Meat rotting; soon no good to eat.  You get rest of meat?
     Kron remember hunting west, near river.  Go fast, before meat rot!"
     debrief="You bring meat!  Now whole tribe can eat big.
@@ -35,7 +35,7 @@
     <item id="kronMeat" name="Goat Meat" iconFile="meat" exclusiveToQuest="learnAthleteBuilding" />
     <objectType id="kronsKill" name="Kron's Kill"
         xDrawOffset="-19" yDrawOffset="-9" isFlat="1"
-        canGather="1" exclusiveToQuest="learnAthleteBuilding" >
+        canGather="1" gatherTime="1000" exclusiveToQuest="learnAthleteBuilding" >
         <yield id="kronMeat" />
     </objectType>
     
