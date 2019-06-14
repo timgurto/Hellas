@@ -168,7 +168,7 @@
 		<item id="bow" name="Bow" gearSlot="6" sounds="bow" >
             <weapon damage="2" speed="1.9" range="25" consumes="woodArrow" projectile="arrow" />
             <stats hit="1"/>
-            <offset x="-7" y=-3 />
+            <offset x="-7" y="-3" />
 		</item>
 		<item id="tinJavelin" name="Light Javelin" stackSize="20" gearSlot="6" sounds="spear" >
             <weapon damage="2" speed="1.9" range="25" consumes="tinJavelin" projectile="tinJavelin" />
@@ -181,49 +181,49 @@
             <tag name="wand" />
             <weapon damage="2" speed="1.8" range="25" school="air" consumes="boneDust" projectile="airball" />
 			<offset x="-5" y="-2" />
-            <particles profile="airSmall" x=-4 y=0 />
+            <particles profile="airSmall" x="-4" y="0" />
 		</item>
 		<item id="earthWand" name="Wand of Earth" gearSlot="6" >
             <tag name="wand" />
             <weapon damage="4" speed="1.8" range="25" school="earth" consumes="boneDust" projectile="earthball" />
 			<offset x="-5" y="-2" />
-            <particles profile="earthSmall" x=-4 y=0 />
+            <particles profile="earthSmall" x="-4" y="0" />
 		</item>
 		<item id="fireWand" name="Wand of Fire" gearSlot="6" >
             <tag name="wand" />
             <weapon damage="4" speed="1.8" range="25" school="fire" consumes="boneDust" projectile="fireball" />
 			<offset x="-5" y="-2" />
-            <particles profile="fireSmall" x=-4 y=0 />
+            <particles profile="fireSmall" x="-4" y="0" />
 		</item>
 		<item id="waterWand" name="Wand of Water" gearSlot="6" >
             <tag name="wand" />
             <weapon damage="2" speed="1.8" range="25" school="water" consumes="boneDust" projectile="waterball" />
 			<offset x="-5" y="-2" />
-            <particles profile="waterSmall" x=-4 y=0 />
+            <particles profile="waterSmall" x="-4" y="0" />
 		</item>
 		<item id="airStaff" name="Staff of Air" gearSlot="6" >
             <weapon damage="7" speed="2.1" range="25" school="air" consumes="airDust" projectile="airball" />
             <offset x="-5" y="-20" />
-            <particles profile="airSmall" x=-4 y=-19 />
-            <particles profile="airSmall" x=5 y=16 />
+            <particles profile="airSmall" x="-4" y="-19" />
+            <particles profile="airSmall" x="5" y="16" />
 		</item>
 		<item id="earthStaff" name="Staff of Earth" gearSlot="6" >
             <weapon damage="9" speed="2.1" range="25" school="earth" consumes="earthDust" projectile="earthball" />
             <offset x="-5" y="-20" />
-            <particles profile="earthSmall" x=-4 y=-19 />
-            <particles profile="earthSmall" x=5 y=16 />
+            <particles profile="earthSmall" x="-4" y="-19" />
+            <particles profile="earthSmall" x="5" y="16" />
 		</item>
 		<item id="fireStaff" name="Staff of Fire" gearSlot="6" >
             <weapon damage="9" speed="2.1" range="25" school="fire" consumes="fireDust" projectile="fireball" />
             <offset x="-5" y="-20" />
-            <particles profile="fireSmall" x=-4 y=-19 />
-            <particles profile="fireSmall" x=5 y=16 />
+            <particles profile="fireSmall" x="-4" y="-19" />
+            <particles profile="fireSmall" x="5" y="16" />
 		</item>
 		<item id="waterStaff" name="Staff of Water" gearSlot="6" >
             <weapon damage="7" speed="2.1" range="25" school="water" consumes="waterDust" projectile="waterball" />
             <offset x="-5" y="-20" />
-            <particles profile="waterSmall" x=-4 y=-19 />
-            <particles profile="waterSmall" x=5 y=16 />
+            <particles profile="waterSmall" x="-4" y="-19" />
+            <particles profile="waterSmall" x="5" y="16" />
 		</item>
 
     <!-- Ammo -->
