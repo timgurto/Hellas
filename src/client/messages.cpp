@@ -2330,6 +2330,15 @@ void Client::handle_SV_QUEST_CAN_BE_STARTED(const std::string &questID) {
 
   it->second.state = CQuest::CAN_START;
 
+  // Update quest nodes
+  const auto &startNode = it->second.info().startsAt;
+  const auto &endNode = it->second.info().endsAt;
+  for (auto pair : _objects) {
+    auto &obj = *pair.second;
+    auto objType = obj.objectType()->id();
+    if (objType == startNode || objType == endNode) obj.assembleWindow(*this);
+  }
+
   populateQuestLog();
   refreshQuestProgress();
 }
@@ -2340,11 +2349,13 @@ void Client::handle_SV_QUEST_IN_PROGRESS(const std::string &questID) {
 
   it->second.state = CQuest::IN_PROGRESS;
 
-  // Start node could start this, but now can't
+  // Update quest nodes
   const auto &startNode = it->second.info().startsAt;
+  const auto &endNode = it->second.info().endsAt;
   for (auto pair : _objects) {
     auto &obj = *pair.second;
-    if (obj.objectType()->id() == startNode) obj.assembleWindow(*this);
+    auto objType = obj.objectType()->id();
+    if (objType == startNode || objType == endNode) obj.assembleWindow(*this);
   }
 
   populateQuestLog();
@@ -2357,11 +2368,13 @@ void Client::handle_SV_QUEST_CAN_BE_FINISHED(const std::string &questID) {
 
   it->second.state = CQuest::CAN_FINISH;
 
-  // Start node could start this, but now can't
+  // Update quest nodes
   const auto &startNode = it->second.info().startsAt;
+  const auto &endNode = it->second.info().endsAt;
   for (auto pair : _objects) {
     auto &obj = *pair.second;
-    if (obj.objectType()->id() == startNode) obj.assembleWindow(*this);
+    auto objType = obj.objectType()->id();
+    if (objType == startNode || objType == endNode) obj.assembleWindow(*this);
   }
 
   populateQuestLog();
@@ -2374,11 +2387,13 @@ void Client::handle_SV_QUEST_COMPLETED(const std::string &questID) {
 
   it->second.state = CQuest::NONE;
 
-  // End node could finish this, but now can't
+  // Update quest nodes
+  const auto &startNode = it->second.info().startsAt;
   const auto &endNode = it->second.info().endsAt;
   for (auto pair : _objects) {
     auto &obj = *pair.second;
-    if (obj.objectType()->id() == endNode) obj.assembleWindow(*this);
+    auto objType = obj.objectType()->id();
+    if (objType == startNode || objType == endNode) obj.assembleWindow(*this);
   }
 
   generalSounds()->playOnce("quest");
