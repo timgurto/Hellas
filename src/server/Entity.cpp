@@ -249,6 +249,10 @@ void Entity::update(ms_t timeElapsed) {
       damage -= _stats.blockValue;
   }
 
+  // Give target opportunity to react.  This includes tagging, and so must be
+  // done before damage (and possible death)
+  pTarget->onAttackedBy(*this, damage);
+
   pTarget->reduceHealth(damage);
 
   // Alert nearby clients.  This must be done after the damage, so that the
@@ -272,9 +276,6 @@ void Entity::update(ms_t timeElapsed) {
     return;
   }
   for (auto user : usersToInform) user->sendMessage(msgCode, args);
-
-  // Give target opportunity to react
-  pTarget->onAttackedBy(*this, damage);
 }
 
 void Entity::updateBuffs(ms_t timeElapsed) {
@@ -404,6 +405,13 @@ void Entity::onEnergyChange() {
 void Entity::onDeath() {
   removeAllBuffsAndDebuffs();
 
+  if (!tagger()) {
+    Server::debug()("Entity died without being tagged; no credit given.",
+                    Color::CHAT_ERROR);
+    return;
+  }
+  tagger()->onKilled(*this);
+
   if (timeToRemainAsCorpse() == 0)
     markForRemoval();
   else
@@ -422,15 +430,6 @@ void Entity::onAttackedBy(Entity &attacker, Threat threat) {
   }
 
   for (auto buff : interruptibleBuffs()) removeBuff(buff);
-
-  if (isDead()) {
-    if (!tagger()) {
-      Server::debug()("Entity died without being tagged; no credit given.",
-                      Color::CHAT_ERROR);
-      return;
-    }
-    tagger()->onKilled(*this);
-  }
 }
 
 void Entity::startCorpseTimer() { _corpseTime = timeToRemainAsCorpse(); }
