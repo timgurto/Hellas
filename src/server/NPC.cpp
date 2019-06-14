@@ -124,14 +124,21 @@ void NPC::onDeath() {
     auto timeNow = SDL_GetTicks();
     auto timeToKill = timeNow - _timeEngaged;
 
+    auto killerClass = ""s;
+    auto killerLevel = 0;
+    if (tagger() != nullptr) {
+      killerClass = tagger()->getClass().type().id();
+      killerLevel = tagger()->level();
+    }
+
     auto of = std::ofstream{"kills.log", std::ios_base::app};
-    of << type()->id()                             // NPC ID
-       << "," << tagger()->getClass().type().id()  // Killer's class
-       << "," << _threatTable.size()               // Entities in threat table
-       << "," << level()                           // NPC level
-       << "," << tagger()->level()                 // Killer's level
+    of << type()->id()                  // NPC ID
+       << "," << killerClass            // Killer's class
+       << "," << _threatTable.size()    // Entities in threat table
+       << "," << level()                // NPC level
+       << "," << killerLevel            // Killer's level
        << "," << timeToKill             // Time between engagement and death
-       << "," << npcType()->isRanged()  //
+       << "," << npcType()->isRanged()  // Whether NPC is ranged
        << std::endl;
 
   } else {
