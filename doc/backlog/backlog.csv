@@ -386,7 +386,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 564,Cull objects and NPCs on death,3,13,Bug,,,,3 Tin wrapup
 565,Reflect vehicle speed in stats window,3,3,Bug,105,,,
 566,Dropping an item deselects target,5,3,Bug,,,,
-567,Always create static objects on startup; don't save them,5,3,Performance,,,,
+567,Always create static objects on startup; don't save them,5,3,Performance,,TRUE,,
 568,Add missing crafting/gathering sounds,55,34,Aesthetics,100,,,
 569,Restrict price selection to coins,13,8,Usability,239,,,
 570,Add warning if merchant-object inventory is full,5,13,Usability,,,,

@@ -161,6 +161,10 @@ class Entity {
   virtual int getLevelDifference(const User &user) const { return 0; }
   // const;
   virtual void sendAllLootToTagger() const;
+  void excludeFromPersistentState() { _excludedFromPersistentState = true; }
+  bool excludedFromPersistentState() const {
+    return _excludedFromPersistentState;
+  }
 
   void tellRelevantUsersAboutLootSlot(size_t slot) const;
   virtual ServerItem::Slot *getSlotToTakeFromAndSendErrors(size_t slotNum,
@@ -194,6 +198,8 @@ class Entity {
  private:
   static size_t generateSerial();
   const EntityType *_type;
+
+  bool _excludedFromPersistentState{false};
 
   Spawner *_spawner;  // The Spawner that created this entity, if any.
 

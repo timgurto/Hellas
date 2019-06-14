@@ -337,6 +337,169 @@ void Server::writeUserData(const User &user) const {
   --_threadsOpen;
 }
 
+void Server::loadEntitiesFromFile(const std::string &path,
+                                  bool shouldBeExcludedFromPersistentState) {
+  // If static, mark them as such.  They will be excluded from being saved to
+  // file.
+
+  auto xr = XmlReader::FromFile(path);
+
+  for (auto elem : xr.getChildren("object")) {
+    std::string s;
+    if (!xr.findAttr(elem, "id", s)) {
+      _debug("Skipping importing object with no type.", Color::CHAT_ERROR);
+      continue;
+    }
+
+    MapPoint p;
+    auto loc = xr.findChild("location", elem);
+    if (!xr.findAttr(loc, "x", p.x) || !xr.findAttr(loc, "y", p.y)) {
+      _debug("Skipping importing object with invalid/no location",
+             Color::CHAT_ERROR);
+      continue;
+    }
+
+    const ObjectType *type = findObjectTypeByName(s);
+    if (type == nullptr) {
+      _debug << Color::CHAT_ERROR
+             << "Skipping importing object with unknown type \"" << s << "\"."
+             << Log::endl;
+      continue;
+    }
+
+    Object &obj = addObject(type, p, "");
+
+    if (shouldBeExcludedFromPersistentState) obj.excludeFromPersistentState();
+
+    auto owner = xr.findChild("owner", elem);
+    if (owner) {
+      std::string type, name;
+      xr.findAttr(owner, "type", type);
+      xr.findAttr(owner, "name", name);
+      if (type == "player")
+        obj.permissions().setPlayerOwner(name);
+      else if (type == "city")
+        obj.permissions().setCityOwner(name);
+      else
+        _debug << Color::CHAT_ERROR << "Skipping bad object owner type \""
+               << type << "\"." << Log::endl;
+    }
+
+    size_t n;
+    ItemSet contents;
+    for (auto content : xr.getChildren("gatherable", elem)) {
+      if (!xr.findAttr(content, "id", s)) continue;
+      n = 1;
+      xr.findAttr(content, "quantity", n);
+      auto it = _items.find(s);
+      if (it == _items.end()) continue;
+      contents.set(&*it, n);
+    }
+    obj.contents(contents);
+
+    size_t q;
+    for (auto inventory : xr.getChildren("inventory", elem)) {
+      assert(obj.hasContainer());
+      if (!xr.findAttr(inventory, "item", s)) continue;
+      if (!xr.findAttr(inventory, "slot", n)) continue;
+      q = 1;
+      xr.findAttr(inventory, "qty", q);
+      if (obj.objType().container().slots() <= n) {
+        _debug << Color::CHAT_ERROR
+               << "Skipping object with invalid inventory slot." << Log::endl;
+        continue;
+      }
+      auto &invSlot = obj.container().at(n);
+      invSlot.first = &*_items.find(s);
+      invSlot.second = q;
+    }
+
+    for (auto merchant : xr.getChildren("merchant", elem)) {
+      size_t slot;
+      if (!xr.findAttr(merchant, "slot", slot)) continue;
+      if (slot >= obj.objType().merchantSlots()) continue;
+      std::string wareName, priceName;
+      if (!xr.findAttr(merchant, "wareItem", wareName) ||
+          !xr.findAttr(merchant, "priceItem", priceName))
+        continue;
+      auto wareIt = _items.find(wareName);
+      if (wareIt == _items.end()) continue;
+      auto priceIt = _items.find(priceName);
+      if (priceIt == _items.end()) continue;
+      size_t wareQty = 1, priceQty = 1;
+      xr.findAttr(merchant, "wareQty", wareQty);
+      xr.findAttr(merchant, "priceQty", priceQty);
+      obj.merchantSlot(slot) =
+          MerchantSlot(&*wareIt, wareQty, &*priceIt, priceQty);
+    }
+
+    obj.clearMaterialsRequired();
+    for (auto material : xr.getChildren("material", elem)) {
+      if (!xr.findAttr(material, "id", s)) continue;
+      if (!xr.findAttr(material, "qty", n)) continue;
+      auto it = _items.find(s);
+      if (it == _items.end()) continue;
+      obj.remainingMaterials().set(&*it, n);
+    }
+
+    auto health = Hitpoints{};
+    if (xr.findAttr(elem, "health", health)) obj.health(health);
+
+    auto corpseTime = ms_t{};
+    if (xr.findAttr(elem, "corpseTime", corpseTime)) obj.corpseTime(corpseTime);
+
+    auto transformTimer = ms_t{};
+    if (xr.findAttr(elem, "transformTime", transformTimer))
+      obj.transformTimer(transformTimer);
+
+    auto vehicle = xr.findChild("vehicle", elem);
+    if (vehicle) {
+      auto driver = ""s;
+      if (xr.findAttr(vehicle, "driver", driver) && !driver.empty()) {
+        auto objAsVehicle = dynamic_cast<Vehicle *>(&obj);
+        if (objAsVehicle) {
+          objAsVehicle->driver(driver);
+        }
+      }
+    }
+  }
+
+  for (auto elem : xr.getChildren("npc")) {
+    std::string s;
+    if (!xr.findAttr(elem, "id", s)) {
+      _debug("Skipping importing NPC with no type.", Color::CHAT_ERROR);
+      continue;
+    }
+
+    MapPoint p;
+    auto loc = xr.findChild("location", elem);
+    if (!xr.findAttr(loc, "x", p.x) || !xr.findAttr(loc, "y", p.y)) {
+      _debug("Skipping importing object with invalid/no location",
+             Color::CHAT_ERROR);
+      continue;
+    }
+
+    const NPCType *type =
+        dynamic_cast<const NPCType *>(findObjectTypeByName(s));
+    if (type == nullptr) {
+      _debug << Color::CHAT_ERROR
+             << "Skipping importing NPC with unknown type \"" << s << "\"."
+             << Log::endl;
+      continue;
+    }
+
+    NPC &npc = addNPC(type, p);
+
+    if (shouldBeExcludedFromPersistentState) npc.excludeFromPersistentState();
+
+    auto health = Hitpoints{};
+    if (xr.findAttr(elem, "health", health)) npc.health(health);
+
+    auto corpseTime = ms_t{};
+    if (xr.findAttr(elem, "corpseTime", corpseTime)) npc.corpseTime(corpseTime);
+  }
+}
+
 void Server::loadWorldState(const std::string &path, bool shouldKeepOldData) {
   auto xr = XmlReader::FromFile("");
 
@@ -348,162 +511,8 @@ void Server::loadWorldState(const std::string &path, bool shouldKeepOldData) {
     if (loadExistingData) _cities.readFromXMLFile("World/cities.world");
 
     // Entities
-    if (loadExistingData)
-      xr.newFile("World/entities.world");
-    else
-      xr.newFile(path + "/staticObjects.xml");
-    for (auto elem : xr.getChildren("object")) {
-      std::string s;
-      if (!xr.findAttr(elem, "id", s)) {
-        _debug("Skipping importing object with no type.", Color::CHAT_ERROR);
-        continue;
-      }
-
-      MapPoint p;
-      auto loc = xr.findChild("location", elem);
-      if (!xr.findAttr(loc, "x", p.x) || !xr.findAttr(loc, "y", p.y)) {
-        _debug("Skipping importing object with invalid/no location",
-               Color::CHAT_ERROR);
-        continue;
-      }
-
-      const ObjectType *type = findObjectTypeByName(s);
-      if (type == nullptr) {
-        _debug << Color::CHAT_ERROR
-               << "Skipping importing object with unknown type \"" << s << "\"."
-               << Log::endl;
-        continue;
-      }
-
-      Object &obj = addObject(type, p, "");
-
-      auto owner = xr.findChild("owner", elem);
-      if (owner) {
-        std::string type, name;
-        xr.findAttr(owner, "type", type);
-        xr.findAttr(owner, "name", name);
-        if (type == "player")
-          obj.permissions().setPlayerOwner(name);
-        else if (type == "city")
-          obj.permissions().setCityOwner(name);
-        else
-          _debug << Color::CHAT_ERROR << "Skipping bad object owner type \""
-                 << type << "\"." << Log::endl;
-      }
-
-      size_t n;
-      ItemSet contents;
-      for (auto content : xr.getChildren("gatherable", elem)) {
-        if (!xr.findAttr(content, "id", s)) continue;
-        n = 1;
-        xr.findAttr(content, "quantity", n);
-        auto it = _items.find(s);
-        if (it == _items.end()) continue;
-        contents.set(&*it, n);
-      }
-      obj.contents(contents);
-
-      size_t q;
-      for (auto inventory : xr.getChildren("inventory", elem)) {
-        assert(obj.hasContainer());
-        if (!xr.findAttr(inventory, "item", s)) continue;
-        if (!xr.findAttr(inventory, "slot", n)) continue;
-        q = 1;
-        xr.findAttr(inventory, "qty", q);
-        if (obj.objType().container().slots() <= n) {
-          _debug << Color::CHAT_ERROR
-                 << "Skipping object with invalid inventory slot." << Log::endl;
-          continue;
-        }
-        auto &invSlot = obj.container().at(n);
-        invSlot.first = &*_items.find(s);
-        invSlot.second = q;
-      }
-
-      for (auto merchant : xr.getChildren("merchant", elem)) {
-        size_t slot;
-        if (!xr.findAttr(merchant, "slot", slot)) continue;
-        if (slot >= obj.objType().merchantSlots()) continue;
-        std::string wareName, priceName;
-        if (!xr.findAttr(merchant, "wareItem", wareName) ||
-            !xr.findAttr(merchant, "priceItem", priceName))
-          continue;
-        auto wareIt = _items.find(wareName);
-        if (wareIt == _items.end()) continue;
-        auto priceIt = _items.find(priceName);
-        if (priceIt == _items.end()) continue;
-        size_t wareQty = 1, priceQty = 1;
-        xr.findAttr(merchant, "wareQty", wareQty);
-        xr.findAttr(merchant, "priceQty", priceQty);
-        obj.merchantSlot(slot) =
-            MerchantSlot(&*wareIt, wareQty, &*priceIt, priceQty);
-      }
-
-      obj.clearMaterialsRequired();
-      for (auto material : xr.getChildren("material", elem)) {
-        if (!xr.findAttr(material, "id", s)) continue;
-        if (!xr.findAttr(material, "qty", n)) continue;
-        auto it = _items.find(s);
-        if (it == _items.end()) continue;
-        obj.remainingMaterials().set(&*it, n);
-      }
-
-      auto health = Hitpoints{};
-      if (xr.findAttr(elem, "health", health)) obj.health(health);
-
-      auto corpseTime = ms_t{};
-      if (xr.findAttr(elem, "corpseTime", corpseTime))
-        obj.corpseTime(corpseTime);
-
-      auto transformTimer = ms_t{};
-      if (xr.findAttr(elem, "transformTime", transformTimer))
-        obj.transformTimer(transformTimer);
-
-      auto vehicle = xr.findChild("vehicle", elem);
-      if (vehicle) {
-        auto driver = ""s;
-        if (xr.findAttr(vehicle, "driver", driver) && !driver.empty()) {
-          auto objAsVehicle = dynamic_cast<Vehicle *>(&obj);
-          if (objAsVehicle) {
-            objAsVehicle->driver(driver);
-          }
-        }
-      }
-    }
-
-    for (auto elem : xr.getChildren("npc")) {
-      std::string s;
-      if (!xr.findAttr(elem, "id", s)) {
-        _debug("Skipping importing NPC with no type.", Color::CHAT_ERROR);
-        continue;
-      }
-
-      MapPoint p;
-      auto loc = xr.findChild("location", elem);
-      if (!xr.findAttr(loc, "x", p.x) || !xr.findAttr(loc, "y", p.y)) {
-        _debug("Skipping importing object with invalid/no location",
-               Color::CHAT_ERROR);
-        continue;
-      }
-
-      const NPCType *type =
-          dynamic_cast<const NPCType *>(findObjectTypeByName(s));
-      if (type == nullptr) {
-        _debug << Color::CHAT_ERROR
-               << "Skipping importing NPC with unknown type \"" << s << "\"."
-               << Log::endl;
-        continue;
-      }
-
-      NPC &npc = addNPC(type, p);
-
-      auto health = Hitpoints{};
-      if (xr.findAttr(elem, "health", health)) npc.health(health);
-
-      auto corpseTime = ms_t{};
-      if (xr.findAttr(elem, "corpseTime", corpseTime))
-        npc.corpseTime(corpseTime);
-    }
+    loadEntitiesFromFile(path + "/staticObjects.xml", true);
+    if (loadExistingData) loadEntitiesFromFile("World/entities.world", false);
 
     if (!loadExistingData) break;
 
@@ -606,8 +615,10 @@ void Server::saveData(const Entities &entities, const Wars &wars,
 #endif
   XmlWriter xw("World/entities.world");
 
-  for (const Entity *entity : entities)
-    if (entity->spawner() == nullptr) entity->writeToXML(xw);
+  for (const Entity *entity : entities) {
+    if (entity->excludedFromPersistentState()) continue;
+    entity->writeToXML(xw);
+  }
 
   xw.publish();
 #ifndef SINGLE_THREAD

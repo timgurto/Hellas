@@ -1,4 +1,5 @@
 #include "Spawner.h"
+
 #include "Server.h"
 
 Spawner::Spawner(const MapPoint &location, const ObjectType *type)
@@ -47,6 +48,7 @@ void Spawner::spawn() {
     else
       entity = &server.addObject(dynamic_cast<const ObjectType *>(_type), p);
     entity->spawner(this);
+    entity->excludeFromPersistentState();
     return;
   }
 

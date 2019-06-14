@@ -207,6 +207,8 @@ class Server {
   void loadWorldState(
       const std::string &path = "Data",
       bool shouldKeepOldData = false);  // Attempt to load data from files.
+  void loadEntitiesFromFile(const std::string &path,
+                            bool shouldBeExcludedFromPersistentState);
   void initialiseData();
   bool _dataLoaded;  // If false when run() is called, load default data.
   static void saveData(const Entities &entities, const Wars &wars,
