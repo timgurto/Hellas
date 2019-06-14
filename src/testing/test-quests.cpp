@@ -1933,3 +1933,42 @@ TEST_CASE("Quest time remaining is persistent") {
     CHECK(alice.questsInProgress().empty());
   }
 }
+
+TEST_CASE("Quest objective: cast a spell") {
+  GIVEN("a quest to cast a spell") {
+    auto data = R"(
+      <objectType id="questgiver" />
+      <spell id="fireball" range=30 cooldown=2 >
+        <targets enemy=1 />
+        <function name="doDirectDamage" />
+      </spell>
+      <quest id="castAFireball" startsAt="questgiver" endsAt="questgiver">
+        <objective type="cast" id="fireball" />
+      </quest>
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    s.addObject("questgiver", {10, 15});
+    const auto &questgiver = s.getFirstObject();
+
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    WHEN("a user accepts it") {
+      c.sendMessage(CL_ACCEPT_QUEST,
+                    makeArgs("castAFireball", questgiver.serial()));
+      REPEAT_FOR_MS(100);
+
+      AND_WHEN("he tries to complete it") {
+        c.sendMessage(CL_COMPLETE_QUEST,
+                      makeArgs("castAFireball", questgiver.serial()));
+        REPEAT_FOR_MS(100);
+
+        THEN("he is still on a quest") {
+          CHECK(user.questsInProgress().size() == 1);
+        }
+      }
+    }
+  }
+}

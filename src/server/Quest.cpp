@@ -1,4 +1,5 @@
 #include "Quest.h"
+
 #include "Server.h"
 #include "User.h"
 
@@ -28,7 +29,7 @@ bool Quest::canBeCompletedByUser(const User& user) const {
     switch (objective.type) {
       case Objective::NONE:
         SERVER_ERROR("Checking objective with no type");
-        continue;
+        return false;
 
       case Objective::FETCH: {
         auto requiredItem = ItemSet{};
