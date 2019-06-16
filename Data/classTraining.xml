@@ -7,8 +7,8 @@
     <tag name="classAthlete" />
     <material id="stick" quantity="25" />
     <material id="pole1" />
-    <material item="water" quantity="2" />
-    <material item="rock" quantity="2" />
+    <material id="water" quantity="2" />
+    <material id="rock" quantity="2" />
     <strength item="stick" quantity="25" />
     <unlockedBy />
 </objectType>
