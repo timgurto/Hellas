@@ -62,7 +62,7 @@
     <particles profile="smoke" x="0" y="-10" />
     <unlockedBy />
 </objectType>
-        <objectType id="decoFire"
+        <objectType id="decoFire" isDecoration="1"
             xDrawOffset="-10" yDrawOffset="-7" imageFile="fire" >
             <collisionRect x="-10" y="-3" w="20" h="8" />
             <strength item="stick" quantity="5" />
