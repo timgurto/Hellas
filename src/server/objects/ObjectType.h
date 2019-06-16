@@ -68,7 +68,7 @@ class ObjectType : public EntityType, public QuestNodeType {
   std::string
       _playerUniqueCategory;  // Assumption: up to one category per object type.
 
-  std::string _exclusiveToQuest{false};
+  std::string _exclusiveToQuest{};
 
   const BuffType *_buffGranted{
       nullptr};  // A buff granted to nearby, permitted users.
