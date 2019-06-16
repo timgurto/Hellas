@@ -336,7 +336,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 498,It's too easy to select Atlas,2,3,Usability,,,,
 500,Show taggers in client,5,3,Usability,,,,
 503,Base aggro radius on level difference,8,5,Feature,,,,5 First adventure
-505,Show quest rewards in (de)briefs,8,8,Usability,,,,
+505,Show quest rewards in (de)briefs,8,8,Usability,,TRUE,,
 507,Clear quest progress if quest is abandoned,2,2,Bug,,,,
 511,Use complete outlines for all text,8,3,Aesthetics,,,,
 515,"Low-res sprites, high-res game",34,34,Aesthetics,,,,

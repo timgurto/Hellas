@@ -21,11 +21,18 @@ class CQuest {
       int qty;
     };
 
+    struct Reward {
+      enum Type { NONE, LEARN_SPELL, LEARN_CONSTRUCTION };
+      Type type{NONE};
+      std::string id{};
+    };
+
     ID id;
     Name name;
     Prose brief, debrief;
     ID startsAt, endsAt;
     std::vector<Objective> objectives;
+    Reward reward;
     std::string helpTopicOnAccept, helpTopicOnComplete;
   };
 

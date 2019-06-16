@@ -766,6 +766,12 @@ bool Client::isAtWarWith(const std::string &username) const {
     return isCityAtWarWithPlayerDirectly(username);
 }
 
+const ClientSpell *Client::findSpell(const std::string &spellID) const {
+  auto it = _spells.find(spellID);
+  if (it == _spells.end()) return nullptr;
+  return it->second;
+}
+
 bool Client::isAtWarWith(const Avatar &user) const {
   return isAtWarWith(user.name());
 }

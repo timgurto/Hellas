@@ -13,10 +13,12 @@ CQuest::CQuest(const Info &info)
 
 void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
                             Transition pendingTransition) {
+  auto &client = Client::instance();
+
   const auto WIN_W = 200_px, WIN_H = 200_px;
 
   if (quest->_window) {
-    Client::instance().removeWindow(quest->_window);
+    client.removeWindow(quest->_window);
     delete quest->_window;
   }
 
@@ -68,6 +70,38 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
     }
   }
 
+  // Body: reward
+  const auto &reward = quest->_info.reward;
+  auto shouldShowReward = reward.type != Info::Reward::NONE;
+  if (shouldShowReward) {
+    body->addGap();
+    auto heading = new Label({}, "Reward:");
+    heading->setColor(Color::WINDOW_HEADING);
+    body->addChild(heading);
+
+    auto rewardDescription = ""s;
+    const Tooltip *rewardTooltip{nullptr};
+    switch (reward.type) {
+      case Info::Reward::LEARN_SPELL: {
+        const auto *spell = client.findSpell(reward.id);
+        auto name = spell ? spell->name() : reward.id;
+        rewardDescription = "Learn spell: " + name;
+        if (spell) rewardTooltip = &spell->tooltip();
+        break;
+      }
+      case Info::Reward::LEARN_CONSTRUCTION: {
+        const auto *type = client.findObjectType(reward.id);
+        auto name = type ? type->name() : reward.id;
+        rewardDescription = "Learn construction: " + name;
+        if (type) rewardTooltip = &type->constructionTooltip();
+        break;
+      }
+    }
+    auto rewardLabel = new Label({}, rewardDescription);
+    if (rewardTooltip) rewardLabel->setTooltip(*rewardTooltip);
+    body->addChild(rewardLabel);
+  }
+
   y += BODY_H + GAP;
 
   // Transition button
@@ -84,7 +118,7 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
     quest->_window->addChild(transitionButton);
   }
 
-  Client::instance().addWindow(quest->_window);
+  client.addWindow(quest->_window);
   quest->_window->show();
 }
 

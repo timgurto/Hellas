@@ -112,8 +112,9 @@ class Client {
   const Texture &shadowImage() const { return _shadowImage; }
 
   const ClientBuffTypes &buffTypes() const { return _buffTypes; }
-
   const CQuests &quests() const { return _quests; }
+
+  const ClientSpell *findSpell(const std::string &spellID) const;
 
   template <typename T>
   void setTarget(const T &newTarget, bool aggressive = false) {
@@ -693,12 +694,14 @@ class Client {
                               const ClientItem *item);
 
   // Searches
+ public:
   const ParticleProfile *findParticleProfile(const std::string &id);
   const SoundProfile *findSoundProfile(const std::string &id) const;
   const Projectile::Type *findProjectileType(const std::string &id) const;
   ClientObjectType *findObjectType(const std::string &id);
   ClientNPCType *findNPCType(const std::string &id);
 
+ private:
   friend class ContainerGrid;  // Needs to send CL_SWAP_ITEMS messages, and open
                                // a confirmation window
   friend class ClientCombatant;

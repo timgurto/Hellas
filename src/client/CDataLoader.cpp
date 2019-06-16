@@ -1004,6 +1004,23 @@ void CDataLoader::loadQuests(XmlReader &xr) {
       questInfo.objectives.push_back(objective);
     }
 
+    auto rewardElem = xr.findChild("reward", elem);
+    if (rewardElem) {
+      auto typeString = ""s;
+      xr.findAttr(rewardElem, "type", typeString);
+      auto type = CQuest::Info::Reward::Type{};
+      if (typeString == "spell")
+        type = CQuest::Info::Reward::LEARN_SPELL;
+      else if (typeString == "construction")
+        type = CQuest::Info::Reward::LEARN_CONSTRUCTION;
+
+      auto id = ""s;
+      xr.findAttr(rewardElem, "id", id);
+
+      questInfo.reward.type = type;
+      questInfo.reward.id = id;
+    }
+
     _client._quests[questInfo.id] = {questInfo};
   }
 }
