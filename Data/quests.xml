@@ -16,7 +16,7 @@
     </npcType>
     <item id="flintstones" gearSlot="2" ><offset x="-5" y="-4" /> </item>
     
-<quest id="learnAthleteBuilding1" name="Kron's Kill" startsAt="athleteQG" endsAt="athleteQG" timeLimit="40" exclusiveToClass="athlete"
+<quest id="learnAthleteBuilding1" name="Kron's Kill" startsAt="athleteQG" endsAt="athleteQG" timeLimit="40" exclusiveToClass="Athlete"
     brief="You look fast; you help Kron?
     Kron hunt big goat today for tribe, but too much meat to carry.  Meat rotting; soon no good to eat.  You get rest of meat?
     Kron remember hunting west, near river.  Go fast, before meat rot!"
@@ -37,7 +37,7 @@
         canGather="1" gatherTime="1000" exclusiveToQuest="learnAthleteBuilding1" >
         <yield id="kronMeat" />
     </objectType>
-<quest id="learnAthleteBuilding2" name="Tortoise Trouble" startsAt="athleteQG" endsAt="athleteQG" exclusiveToClass="athlete"
+<quest id="learnAthleteBuilding2" name="Tortoise Trouble" startsAt="athleteQG" endsAt="athleteQG" exclusiveToClass="Athlete"
     brief="Maybe you help Kron with another problem.  A monster threatens tribe!  Big creature with lots of meat, but wears hard armour.
     We can't break him; maybe you can.  We call him Heirax.  He on the coast, southeast."
     debrief="You save tribe!  Thank you.
@@ -60,7 +60,7 @@
         <loot id="fat" chance="0.05" />
     </npcType>
 
-<quest id="learnScholarBuilding1" name="A Shortcut to Mushrooms" startsAt="scholarQG" endsAt="scholarQG" exclusiveToClass="scholar"
+<quest id="learnScholarBuilding1" name="A Shortcut to Mushrooms" startsAt="scholarQG" endsAt="scholarQG" exclusiveToClass="Scholar"
     brief="Mushrooms can be good to eat, and Briv want to help tribe eat well.
     Briv see big mushroom patch nearby, northwest; lots of different mushrooms.  Go pick some, bring back, then we test them."
     debrief="Wow, many different mushrooms!  You have good eye for foraging." >
@@ -94,7 +94,7 @@
         canGather="1" gatherTime="1000" exclusiveToQuest="learnScholarBuilding1" >
         <yield id="whiteMushroomGather" />
     </objectType>
-<quest id="learnScholarBuilding2" name="Poison, Poison, tasty mushroom!" startsAt="scholarQG" endsAt="scholarQG" exclusiveToClass="scholar"
+<quest id="learnScholarBuilding2" name="Poison; Poison; tasty mushroom" startsAt="scholarQG" endsAt="scholarQG" exclusiveToClass="Scholar"
     brief="Three different mushrooms.  Might be bad, might be good.  Before feeding to tribe, need to test them.
     You put your body on line for greater good?  Good way to learn more about world!"
     debrief="You real hero!  Now we know that brown mushrooms good to eat, and others not.
@@ -131,15 +131,25 @@
         description="Reduced health and energy.">
         <stats health="-49" energy="-49" />
     </buff>
-    
-<npcType
-    id="zealotQG" name="Shaman Zaar"
-    level="6" maxHealth="38" isCivilian="1" >
-    <humanoid base="zealot">
-        <gear id="hide" />
-        <gear id="fireWand" />
-    </humanoid>
-</npcType>
+
+<quest id="learnZealotBuilding" name="Divination" startsAt="zealotQG" endsAt="zealotQG" exclusiveToClass="Zealot"
+    brief="Zaar the shaman of tribe, but not heard gods' wishes for many days.
+    Watching birds, reading entrails, nothing works.  Last resort is throwing knucklebones from animal paws; they land in special ways.
+    You bring knucklebones?  Lots of work, but hearing gods very important!"
+    debrief="Zaar throw the bones and get answer!
+    Gods teach Zaar to get visions from them.  You work hard helping Zaar, show devotion to gods, so Zaar teach you.
+    Find deep chasm, breathe vapours.  Then gods speak to you.  Hear gods, be better shaman.  Share chasm with others.  Serve gods." >
+    <objective type="fetch" id="knucklebones" />
+    <reward type="construction" id="zealotBuilding" />
+</quest>
+    <npcType
+        id="zealotQG" name="Shaman Zaar"
+        level="6" maxHealth="38" isCivilian="1" >
+        <humanoid base="zealot">
+            <gear id="hide" />
+            <gear id="fireWand" />
+        </humanoid>
+    </npcType>
 
     
 </root>

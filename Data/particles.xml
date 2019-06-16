@@ -157,6 +157,20 @@
     <variety imageFile="smoke2" />
     <variety imageFile="smoke4" />
 </particleProfile>
+<particleProfile
+    id="vapour"
+    particlesPerSecond=7
+    gravityModifier=0
+    alpha=127 >
+    <lifespan mean=2000 sd=200 />
+    <distance mean=1 sd=3 />
+    <altitude mean=0 sd=0 />
+    <velocity mean=0 sd=0.5 />
+    <fallSpeed mean=-10 sd=3 />
+    <direction x=2.5 y=1 />
+    <variety imageFile="vapourSmall" />
+    <variety imageFile="vapourLarge" />
+</particleProfile>
 
 <particleProfile
     id="fireball"

@@ -348,7 +348,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 522,Wool + gear,34,144,Content,521,,,4 Copper
 523,Silk + gear,34,144,Content,522,,,
 524,Boiled leather + gear,34,144,Content,,,,6 Bronze
-525,Class buildings,21,13,Feature,286,,TRUE,3 Tin wrapup
+525,Class buildings,21,13,Feature,286,TRUE,TRUE,3 Tin wrapup
 527,Region locks,34,13,Content,526,,TRUE,4 Copper
 528,Subclass buildings,21,34,Content,286,,TRUE,6 Bronze
 529,Parchment,21,13,Feature,522,,,4 Copper
