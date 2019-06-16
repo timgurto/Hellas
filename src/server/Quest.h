@@ -16,7 +16,7 @@ struct Quest {
   int timeLimit = 0;  // in seconds.  0 = no time limit
 
   struct Objective {
-    enum Type { NONE, KILL, FETCH, CONSTRUCT };
+    enum Type { NONE, KILL, FETCH, CONSTRUCT, CAST_SPELL };
     Type type{NONE};
     static Type typeFromString(const std::string &asString);
     void setType(const std::string &asString);

@@ -1938,7 +1938,11 @@ TEST_CASE("Quest objective: cast a spell") {
   GIVEN("a quest to cast a spell") {
     auto data = R"(
       <objectType id="questgiver" />
-      <spell id="fireball" range=30 cooldown=2 >
+      <spell id="fireball" range=30 >
+        <targets self=1 />
+        <function name="doDirectDamage" />
+      </spell>
+      <spell id="iceball" range=30 >
         <targets self=1 />
         <function name="doDirectDamage" />
       </spell>
@@ -1981,6 +1985,20 @@ TEST_CASE("Quest objective: cast a spell") {
 
           THEN("he is not on a quest") {
             WAIT_UNTIL(user.questsInProgress().size() == 0);
+          }
+        }
+      }
+
+      AND_WHEN("he casts a different spell") {
+        c.sendMessage(CL_CAST, "iceball");
+
+        AND_WHEN("he tries to complete it") {
+          c.sendMessage(CL_COMPLETE_QUEST,
+                        makeArgs("castAFireball", questgiver.serial()));
+          REPEAT_FOR_MS(100);
+
+          THEN("he is still on a quest") {
+            CHECK(user.questsInProgress().size() == 1);
           }
         }
       }

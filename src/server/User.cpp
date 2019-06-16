@@ -1079,8 +1079,10 @@ void User::onAttack() {
 }
 
 void User::onSpellcast(const Spell::ID &id, const Spell &spell) {
-  if (spell.cooldown() == 0) return;
-  sendMessage(SV_SPELL_COOLING_DOWN, makeArgs(id, spell.cooldown()));
+  if (spell.cooldown() != 0)
+    sendMessage(SV_SPELL_COOLING_DOWN, makeArgs(id, spell.cooldown()));
+
+  addQuestProgress(Quest::Objective::CAST_SPELL, id);
 }
 
 void User::sendRangedHitMessageTo(const User &userToInform) const {

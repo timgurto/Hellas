@@ -1873,11 +1873,6 @@ void Server::handle_CL_UNLEARN_TALENTS(User &user) {
 
 CombatResult Server::handle_CL_CAST(User &user, const std::string &spellID,
                                     bool castingFromItem) {
-  auto questsInProgress = user.questsInProgress();
-  for (auto &quest : questsInProgress) {
-    user.abandonQuest(quest.first);
-  }
-
   auto it = _spells.find(spellID);
   if (it == _spells.end()) return FAIL;
   const auto &spell = *it->second;
