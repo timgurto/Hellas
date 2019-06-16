@@ -73,6 +73,9 @@
     <spawnPoint y="21120" x="16568" type="rangedMan11" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="21168" x="13600" type="stick" quantity="60" radius="1500" respawnTime="300000" />
     <spawnPoint y="21536" x="27936" type="rock" quantity="50" radius="1500" respawnTime="600000" />
+    <spawnPoint y="21580" x="34230" type="brownMushroom" quantity="5" radius="300" respawnTime="30000" />
+    <spawnPoint y="21580" x="34230" type="whiteMushroom" quantity="3" radius="300" respawnTime="30000" />
+    <spawnPoint y="21580" x="34230" type="redMushroom" quantity="4" radius="300" respawnTime="30000" />
     <spawnPoint y="21704" x="14280" type="snake16" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="21720" x="36400" type="tortoise5" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="21888" x="18896" type="stick" quantity="60" radius="1500" respawnTime="300000" />

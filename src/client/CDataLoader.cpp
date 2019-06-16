@@ -992,6 +992,10 @@ void CDataLoader::loadQuests(XmlReader &xr) {
       } else if (type == "fetch") {
         auto &it = client._items.find(id);
         objective.text = it->second.name();
+
+      } else if (type == "cast") {
+        auto &it = client._spells.find(id);
+        objective.text = it->second->name();
       }
 
       objective.qty = 1;

@@ -16,15 +16,15 @@
     </npcType>
     <item id="flintstones" gearSlot="2" ><offset x="-5" y="-4" /> </item>
     
-<quest id="learnAthleteBuilding1" name="Kron's Kill" startsAt="athleteQG" endsAt="athleteQG" timeLimit="40"
+<quest id="learnAthleteBuilding1" name="Kron's Kill" startsAt="athleteQG" endsAt="athleteQG" timeLimit="40" exclusiveToClass="athlete"
     brief="You look fast; you help Kron?
     Kron hunt big goat today for tribe, but too much meat to carry.  Meat rotting; soon no good to eat.  You get rest of meat?
     Kron remember hunting west, near river.  Go fast, before meat rot!"
     debrief="You bring meat!  Now whole tribe can eat big." >
-    <objective type="fetch" id="kronMeat" qty="1" />
+    <objective type="fetch" id="kronMeat" />
 </quest>
     <npcType
-        id="athleteQG" name="Kron the Hunter"
+        id="athleteQG" name="Hunter Kron"
         level="6" maxHealth="38" isCivilian="1" >
         <humanoid base="athlete">
             <gear id="bow" />
@@ -37,13 +37,13 @@
         canGather="1" gatherTime="1000" exclusiveToQuest="learnAthleteBuilding1" >
         <yield id="kronMeat" />
     </objectType>
-<quest id="learnAthleteBuilding2" name="Tortoise Trouble" startsAt="athleteQG" endsAt="athleteQG"
+<quest id="learnAthleteBuilding2" name="Tortoise Trouble" startsAt="athleteQG" endsAt="athleteQG" exclusiveToClass="athlete"
     brief="Maybe you help Kron with another problem.  A monster threatens tribe!  Big creature with lots of meat, but wears hard armour.
     We can't break him; maybe you can.  We call him Heirax.  He on the coast, southeast."
     debrief="You save tribe!  Thank you.
-    You very fast, and strong.  Kron have idea to make men even more fast and strong--what we need is place to practice and learn.  Kron tell you idea and you build, yes?" >
+    You very fast, and strong.  Kron have idea to make men even more fast and strong--we need place to practice and learn.  Kron tell you idea and you build, yes?" >
     <prerequisite id="learnAthleteBuilding1" />
-    <objective type="kill" id="athleteQuestTortoise" qty="1" />
+    <objective type="kill" id="athleteQuestTortoise" />
     <reward type="construction" id="athleteBuilding" />
 </quest>
     <npcType
@@ -59,18 +59,81 @@
         <loot id="entrails" chance="0.1" />
         <loot id="fat" chance="0.05" />
     </npcType>
+
+<quest id="learnScholarBuilding1" name="A Shortcut to Mushrooms" startsAt="scholarQG" endsAt="scholarQG" exclusiveToClass="scholar"
+    brief="Mushrooms can be good to eat, and Briv want to help tribe eat well.
+    Briv see big mushroom patch nearby, northwest; lots of different mushrooms.  Go pick some, bring back, then we test them."
+    debrief="Wow, many different mushrooms!  You have good eye for foraging." >
+    <objective type="fetch" id="redMushroomGather" />
+    <objective type="fetch" id="brownMushroomGather" />
+    <objective type="fetch" id="whiteMushroomGather" />
+</quest>
+    <npcType
+        id="scholarQG" name="Gatherer Briv"
+        level="6" maxHealth="38" isCivilian="1" >
+        <humanoid base="scholar">
+            <gear id="stoneKnife" />
+            <gear id="knucklebones" />
+        </humanoid>
+    </npcType>
+    <item id="redMushroomGather"   name="Red Mushroom"   iconFile="mushroomRed"   exclusiveToQuest="learnScholarBuilding1" />
+    <item id="brownMushroomGather" name="Brown Mushroom" iconFile="mushroomBrown" exclusiveToQuest="learnScholarBuilding1" />
+    <item id="whiteMushroomGather" name="White Mushroom" iconFile="mushroomWhite" exclusiveToQuest="learnScholarBuilding1" />
+    <objectType id="redMushroom" name="Red Mushroom"
+        xDrawOffset="-4" yDrawOffset="-7"
+        canGather="1" gatherTime="1000" exclusiveToQuest="learnScholarBuilding1" >
+        <yield id="redMushroomGather" />
+    </objectType>
+    <objectType id="brownMushroom" name="Brown Mushroom"
+        xDrawOffset="-4" yDrawOffset="-7"
+        canGather="1" gatherTime="1000" exclusiveToQuest="learnScholarBuilding1" >
+        <yield id="brownMushroomGather" />
+    </objectType>
+    <objectType id="whiteMushroom" name="White Mushroom"
+        xDrawOffset="-4" yDrawOffset="-7"
+        canGather="1" gatherTime="1000" exclusiveToQuest="learnScholarBuilding1" >
+        <yield id="whiteMushroomGather" />
+    </objectType>
+<quest id="learnScholarBuilding2" name="Poison, Poison, tasty mushroom!" startsAt="scholarQG" endsAt="scholarQG" exclusiveToClass="scholar"
+    brief="Three different mushrooms.  Might be bad, might be good.  Before feeding to tribe, need to test them.
+    You put your body on line for greater good?  Good way to learn more about world!"
+    debrief="You real hero!  Now we know that brown mushrooms good to eat, and others not.
+    You sharp-eyed and willing to learn.  Briv have idea, for place you can learn more and teach others.  Briv tell you idea and you build?" >
+    <prerequisite id="learnScholarBuilding1" />
+    <startsWithItem id="redMushroomEat" />
+    <startsWithItem id="brownMushroomEat" />
+    <startsWithItem id="whiteMushroomEat" />
+    <objective type="cast" id="eatRedMushroom" />
+    <objective type="cast" id="eatBrownMushroom" />
+    <objective type="cast" id="eatWhiteMushroom" />
+    <reward type="construction" id="scholarBuilding" />
+</quest>
+    <item id="redMushroomEat"   name="Red Mushroom"   iconFile="mushroomRed"   castsSpellOnUse="eatRedMushroom" exclusiveToQuest="learnScholarBuilding2" />
+    <item id="brownMushroomEat" name="Brown Mushroom" iconFile="mushroomBrown" castsSpellOnUse="eatBrownMushroom" exclusiveToQuest="learnScholarBuilding2" />
+    <item id="whiteMushroomEat" name="White Mushroom" iconFile="mushroomWhite" castsSpellOnUse="eatWhiteMushroom" exclusiveToQuest="learnScholarBuilding2" />
+    <spell id="eatRedMushroom" name="Eat red mushroom" customDescription="Eat mushroom" >
+        <targets self="1" />
+        <function name="buff" s1="mushroomPoison" />
+    </spell>
+    <buff id="mushroomPoison" name="Poisoned" icon="dripGreen" duration="11" school="earth"
+        description="Taking damage over time.">
+        <function name="doDirectDamage" i1="5" tickTime="1000" />
+    </buff>
+    <spell id="eatBrownMushroom" name="Eat brown mushroom" customDescription="Eat mushroom" >
+        <targets self="1" />
+        <function name="buff" s1="food" />
+    </spell>
+    <spell id="eatWhiteMushroom" name="Eat white mushroom" customDescription="Eat mushroom">
+        <targets self="1" />
+        <function name="buff" s1="mushroomDebuff" />
+    </spell>
+    <buff id="mushroomDebuff" name="Ill" icon="skullBlue" duration="30" school="earth"
+        description="Reduced health and energy.">
+        <stats health="-49" energy="-49" />
+    </buff>
     
 <npcType
-    id="scholarQG" name="Briv the Gatherer"
-    level="6" maxHealth="38" isCivilian="1" >
-    <humanoid base="scholar">
-        <gear id="stoneKnife" />
-        <gear id="knucklebones" />
-    </humanoid>
-</npcType>
-    
-<npcType
-    id="zealotQG" name="Zaar the Shaman"
+    id="zealotQG" name="Shaman Zaar"
     level="6" maxHealth="38" isCivilian="1" >
     <humanoid base="zealot">
         <gear id="hide" />
