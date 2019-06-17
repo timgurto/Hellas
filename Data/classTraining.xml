@@ -8,6 +8,7 @@
     <material id="stick" quantity="25" />
     <material id="pole1" />
     <material id="water" quantity="2" />
+    <material id="smallPot" quantity="2" />
     <material id="rock" quantity="2" />
     <strength item="stick" quantity="25" />
     <unlockedBy />
@@ -18,7 +19,7 @@
     constructionTime="1000" >
     <collisionRect x="-45" y="-47" w="90" h="94" />
     <tag name="classScholar" />
-    <material id="smallPot" quantity="3" />
+    <material id="smallPot" quantity="4" />
     <material id="water" />
     <material id="tinOre" />
     <material id="boneDust" quantity="5" />
