@@ -36,13 +36,20 @@ for (i in 1:length(data$npcID)){
     classIndex = match(data$killingClass[i], classes)
     color = classColors[classIndex]
     
-    if (data$killerLevel[i] != data$npcLevel[i])
+    pch = 1
+    if (data$killerLevel[i] != data$npcLevel[i]){
         color = add.alpha(color, 0.2)
+        if (data$killerLevel[i] > data$npcLevel[i])
+            pch = '+'
+        else
+            pch = '-'
+    }
 
     points(
         x=jitter(data$npcLevel[i]),
         y=data$duration[i],
-        col=color
+        col=color,
+        pch=pch
     )
 }
 legend(
