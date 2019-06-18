@@ -67,3 +67,4 @@ client-publish/*
 logging/stats.js
 doc/web/spells.js
 session.txt
+logging/kills.svg
