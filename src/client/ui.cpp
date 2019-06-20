@@ -48,6 +48,13 @@ void Client::initUI() {
       {0, SCREEN_Y - ERROR_FROM_BOTTOM, SCREEN_X, Element::TEXT_HEIGHT + 4}, {},
       Element::CENTER_JUSTIFIED);
   addUI(_lastErrorMessage);
+
+  const auto INSTRUCTIONS_Y = 100;
+  _instructionsLabel =
+      new OutlinedLabel({0, INSTRUCTIONS_Y, SCREEN_X, Element::TEXT_HEIGHT + 2},
+                        {}, Element::CENTER_JUSTIFIED);
+  _instructionsLabel->setColor(Color::UI_TEXT);
+  addUI(_instructionsLabel);
 }
 
 void Client::initChatLog() {

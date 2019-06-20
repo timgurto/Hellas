@@ -408,6 +408,7 @@ class Client {
   void populateToastsList();
   void toast(const std::string &icon, const std::string &message);
   void initQuestProgress();
+  OutlinedLabel *_instructionsLabel{nullptr};
 
   // Chat
   Element *_chatContainer;

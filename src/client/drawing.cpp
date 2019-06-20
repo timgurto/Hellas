@@ -130,6 +130,7 @@ void Client::draw() const {
     draggedItem->icon().draw(_mouse + MOUSE_ICON_OFFSET);
 
   // Construction footprint
+  _instructionsLabel->changeText({});
   if (_constructionFootprint) {
     const ClientObjectType *ot =
         _selectedConstruction == nullptr
@@ -150,7 +151,8 @@ void Client::draw() const {
       renderer.setDrawColor(Color::FOOTPRINT_BAD);
       renderer.fillRect(toScreenRect(footprintRect + _offset));
     }
-    // TODO: Show message explaining controls
+    _instructionsLabel->changeText("Click to build "s + ot->name() +
+                                   "; right-click to cancel."s);
   } else if (_isDismounting) {
     const SpriteType &charType = *_character.type();
     MapPoint footprintRect =
@@ -164,6 +166,8 @@ void Client::draw() const {
       renderer.setDrawColor(Color::FOOTPRINT_BAD);
       renderer.fillRect(toScreenRect(footprintRect + _offset));
     }
+    _instructionsLabel->changeText(
+        "Click on the ground nearby to dismount; right-click to cancel.");
   }
 
   // Cull distance
