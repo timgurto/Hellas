@@ -341,7 +341,10 @@ void Client::handleInput(double delta) {
               px_t x = toInt(_mouse.x - offset().x),
                    y = toInt(_mouse.y - offset().y);
               if (useItem->constructsObject()) {
-                sendMessage(CL_CONSTRUCT_ITEM,
+                auto messageCode = isCtrlPressed()
+                                       ? CL_CONSTRUCT_FROM_ITEM_FOR_CITY
+                                       : CL_CONSTRUCT_FROM_ITEM;
+                sendMessage(messageCode,
                             makeArgs(ContainerGrid::useSlot, x, y));
                 prepareAction(std::string("Constructing ") +
                               _inventory[ContainerGrid::useSlot]
@@ -354,7 +357,9 @@ void Client::handleInput(double delta) {
             } else if (_selectedConstruction != nullptr) {
               px_t x = toInt(_mouse.x - offset().x),
                    y = toInt(_mouse.y - offset().y);
-              sendMessage(CL_CONSTRUCT,
+              auto messageCode =
+                  isCtrlPressed() ? CL_CONSTRUCT_FOR_CITY : CL_CONSTRUCT;
+              sendMessage(messageCode,
                           makeArgs(_selectedConstruction->id(), x, y));
               prepareAction(std::string("Constructing ") +
                             _selectedConstruction->name());
@@ -483,7 +488,7 @@ void Client::handleInput(double delta) {
     }
   }
   // Poll keys (whether they are currently pressed; not key events)
-  static const Uint8 *keyboardState = SDL_GetKeyboardState(0);
+  static const Uint8 *keyboardState = SDL_GetKeyboardState(nullptr);
   if (_loggedIn && !SDL_IsTextInputActive()) {
     bool up = keyboardState[SDL_SCANCODE_UP] == SDL_PRESSED ||
               keyboardState[SDL_SCANCODE_W] == SDL_PRESSED,
@@ -535,6 +540,13 @@ void Client::handleInput(double delta) {
       _mouseMoved = true;
     }
   }
+}
+
+bool Client::isCtrlPressed() const {
+  static const auto *keyboardState = SDL_GetKeyboardState(nullptr);
+  if (keyboardState[SDL_SCANCODE_LCTRL] == SDL_PRESSED) return true;
+  if (keyboardState[SDL_SCANCODE_RCTRL] == SDL_PRESSED) return true;
+  return false;
 }
 
 void Client::onMouseMove() {

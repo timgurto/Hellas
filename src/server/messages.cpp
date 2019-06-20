@@ -145,7 +145,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         break;
       }
 
-      case CL_CONSTRUCT: {
+      case CL_CONSTRUCT:
+      case CL_CONSTRUCT_FOR_CITY: {
         double x, y;
         iss.get(buffer, BUFFER_SIZE, MSG_DELIM);
         std::string id(buffer);
@@ -194,13 +195,15 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           sendMessage(client, WARNING_BLOCKED);
           break;
         }
-        user->beginConstructing(*objType, location);
+        auto ownerIsCity = msgCode == CL_CONSTRUCT_FOR_CITY;
+        user->beginConstructing(*objType, location, ownerIsCity);
         sendMessage(client, SV_ACTION_STARTED,
                     makeArgs(objType->constructionTime()));
         break;
       }
 
-      case CL_CONSTRUCT_ITEM: {
+      case CL_CONSTRUCT_FROM_ITEM:
+      case CL_CONSTRUCT_FROM_ITEM_FOR_CITY: {
         size_t slot;
         double x, y;
         iss >> slot >> del >> x >> del >> y >> del;
@@ -241,7 +244,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           sendMessage(client, WARNING_ITEM_TAG_NEEDED, constructionReq);
           break;
         }
-        user->beginConstructing(objType, location, slot);
+        auto ownerIsCity = msgCode == CL_CONSTRUCT_FROM_ITEM_FOR_CITY;
+        user->beginConstructing(objType, location, ownerIsCity, slot);
         sendMessage(client, SV_ACTION_STARTED,
                     makeArgs(objType.constructionTime()));
         break;

@@ -253,7 +253,7 @@ class Server {
 
   NPC &addNPC(const NPCType *type, const MapPoint &location);
   Object &addObject(const ObjectType *type, const MapPoint &location,
-                    const std::string &owner = "");
+                    const Permissions::Owner &owner);
   Entity &addEntity(Entity *newEntity);
 
   // Collision detection

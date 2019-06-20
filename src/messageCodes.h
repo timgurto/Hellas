@@ -40,11 +40,13 @@ enum MessageCode {
 
   // "I want to construct the item in inventory slot ..., at location ..."
   // Arguments: slot, x, y
-  CL_CONSTRUCT_ITEM,
+  CL_CONSTRUCT_FROM_ITEM,
+  CL_CONSTRUCT_FROM_ITEM_FOR_CITY,
 
   // "I want to construct object ..., at location ..."
   // Arguments: id, x, y
   CL_CONSTRUCT,
+  CL_CONSTRUCT_FOR_CITY,
 
   // "I want to pick up an object"
   // Arguments: serial

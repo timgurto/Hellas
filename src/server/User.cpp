@@ -382,12 +382,13 @@ void User::beginCrafting(const SRecipe &recipe) {
 }
 
 void User::beginConstructing(const ObjectType &obj, const MapPoint &location,
-                             size_t slot) {
+                             bool cityOwned, size_t slot) {
   _action = CONSTRUCT;
   _actionObjectType = &obj;
   _actionTime = obj.constructionTime();
   _actionSlot = slot;
   _actionLocation = location;
+  _actionOwnedByCity = cityOwned;
 }
 
 void User::beginDeconstructing(Object &obj) {
@@ -674,11 +675,21 @@ void User::update(ms_t timeElapsed) {
     }
 
     case CONSTRUCT: {
+      auto owner = Permissions::Owner{};
+      if (_actionOwnedByCity && server.cities().isPlayerInACity(_name)) {
+        owner.type = Permissions::Owner::CITY;
+        owner.name = server.cities().getPlayerCity(_name);
+      } else {
+        owner.type = Permissions::Owner::PLAYER;
+        owner.name = _name;
+      }
+
       // Create object
-      server.addObject(_actionObjectType, _actionLocation, _name);
+      server.addObject(_actionObjectType, _actionLocation, owner);
       if (_actionSlot ==
           INVENTORY_SIZE)  // Constructing an object without an item
         break;
+
       // Remove item from user's inventory
       std::pair<const ServerItem *, size_t> &slot = _inventory[_actionSlot];
       if (slot.first->constructsObject() != _actionObjectType) {
@@ -688,6 +699,7 @@ void User::update(ms_t timeElapsed) {
       --slot.second;
       if (slot.second == 0) slot.first = nullptr;
       server.sendInventoryMessage(*this, _actionSlot, Server::INVENTORY);
+
       // Trigger any new unlocks
       ProgressLock::triggerUnlocks(*this, ProgressLock::CONSTRUCTION,
                                    _actionObjectType);

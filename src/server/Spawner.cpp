@@ -46,7 +46,8 @@ void Spawner::spawn() {
     if (_type->classTag() == 'n')
       entity = &server.addNPC(dynamic_cast<const NPCType *>(_type), p);
     else
-      entity = &server.addObject(dynamic_cast<const ObjectType *>(_type), p);
+      entity =
+          &server.addObject(dynamic_cast<const ObjectType *>(_type), p, {});
     entity->spawner(this);
     entity->excludeFromPersistentState();
     return;

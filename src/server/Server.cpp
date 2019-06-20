@@ -642,19 +642,29 @@ ObjectType *Server::findObjectTypeByName(const std::string &id) const {
 }
 
 Object &Server::addObject(const ObjectType *type, const MapPoint &location,
-                          const std::string &owner) {
+                          const Permissions::Owner &owner) {
   Object *newObj =
       type->classTag() == 'v'
           ? new Vehicle(dynamic_cast<const VehicleType *>(type), location)
           : new Object(type, location);
-  if (!owner.empty()) {
-    newObj->permissions().setPlayerOwner(owner);
-    _objectsByOwner.add(Permissions::Owner(Permissions::Owner::PLAYER, owner),
-                        newObj->serial());
 
-    const auto *user = this->getUserByName(owner);
-    if (user != nullptr) user->onNewOwnedObject(*type);
+  switch (owner.type) {
+    case Permissions::Owner::NONE:
+      break;
+    case Permissions::Owner::PLAYER:
+      newObj->permissions().setPlayerOwner(owner.name);
+      _objectsByOwner.add(owner, newObj->serial());
+      {
+        const auto *user = this->getUserByName(owner.name);
+        if (user != nullptr) user->onNewOwnedObject(*type);
+      }
+
+      break;
+    case Permissions::Owner::CITY:
+      newObj->permissions().setCityOwner(owner.name);
+      break;
   }
+
   return dynamic_cast<Object &>(addEntity(newObj));
 }
 

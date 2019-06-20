@@ -105,9 +105,14 @@ void TestServer::stop() {
 }
 
 void TestServer::addObject(const std::string &typeName, const MapPoint &loc,
-                           const std::string &owner) {
+                           const std::string &ownerName) {
   const ObjectType *const type = _server->findObjectTypeByName(typeName);
   REQUIRE(type != nullptr);
+  auto owner = Permissions::Owner{};
+  if (!ownerName.empty()) {
+    owner.type = Permissions::Owner::PLAYER;
+    owner.name = ownerName;
+  }
   _server->addObject(type, loc, owner);
 }
 

@@ -367,23 +367,25 @@ void Server::loadEntitiesFromFile(const std::string &path,
       continue;
     }
 
-    Object &obj = addObject(type, p, "");
-
-    if (shouldBeExcludedFromPersistentState) obj.excludeFromPersistentState();
-
-    auto owner = xr.findChild("owner", elem);
-    if (owner) {
+    auto owner = Permissions::Owner{};
+    auto ownerElem = xr.findChild("owner", elem);
+    if (ownerElem) {
       std::string type, name;
-      xr.findAttr(owner, "type", type);
-      xr.findAttr(owner, "name", name);
+      xr.findAttr(ownerElem, "type", type);
+      xr.findAttr(ownerElem, "name", name);
       if (type == "player")
-        obj.permissions().setPlayerOwner(name);
+        owner.type = Permissions::Owner::PLAYER;
       else if (type == "city")
-        obj.permissions().setCityOwner(name);
+        owner.type = Permissions::Owner::CITY;
       else
         _debug << Color::CHAT_ERROR << "Skipping bad object owner type \""
                << type << "\"." << Log::endl;
+      owner.name = name;
     }
+
+    Object &obj = addObject(type, p, owner);
+
+    if (shouldBeExcludedFromPersistentState) obj.excludeFromPersistentState();
 
     size_t n;
     ItemSet contents;

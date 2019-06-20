@@ -50,6 +50,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   const ObjectType *_actionObjectType;  // Construct
   size_t _actionSlot;                   // Construct
   MapPoint _actionLocation;             // Construct
+  bool _actionOwnedByCity;              // Construct
 
   Exploration _exploration;
 
@@ -263,7 +264,7 @@ class User : public Object {  // TODO: Don't inherit from Object
 
   // Configure user to construct an item, or an object from no item
   void beginConstructing(const ObjectType &obj, const MapPoint &location,
-                         size_t slot = INVENTORY_SIZE);
+                         bool cityOwned, size_t slot = INVENTORY_SIZE);
 
   // Configure user to deconstruct an object
   void beginDeconstructing(Object &obj);

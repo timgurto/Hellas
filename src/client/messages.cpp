@@ -2486,7 +2486,7 @@ void Client::initializeMessageNames() {
   _messageCommands["location"] = CL_LOCATION;
   _messageCommands["cancel"] = CL_CANCEL_ACTION;
   _messageCommands["craft"] = CL_CRAFT;
-  _messageCommands["constructItem"] = CL_CONSTRUCT_ITEM;
+  _messageCommands["constructItem"] = CL_CONSTRUCT_FROM_ITEM;
   _messageCommands["construct"] = CL_CONSTRUCT;
   _messageCommands["gather"] = CL_GATHER;
   _messageCommands["deconstruct"] = CL_DECONSTRUCT;
