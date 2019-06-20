@@ -151,8 +151,19 @@ void Client::draw() const {
       renderer.setDrawColor(Color::FOOTPRINT_BAD);
       renderer.fillRect(toScreenRect(footprintRect + _offset));
     }
-    _instructionsLabel->changeText("Click to build "s + ot->name() +
-                                   "; right-click to cancel."s);
+    auto isInCity = !_character.cityName().empty();
+    auto instruction =
+        "Click to build "s + ot->name() + "; right-click to cancel."s;
+    if (isCtrlPressed()) {
+      if (isInCity)
+        instruction += "  It will be owned by your city."s;
+      else
+        instruction += "  (You are not in a city)"s;
+    } else if (isInCity) {
+      instruction += "  Hold Ctrl to build an object for your city.";
+    }
+    _instructionsLabel->changeText(instruction);
+
   } else if (_isDismounting) {
     const SpriteType &charType = *_character.type();
     MapPoint footprintRect =
