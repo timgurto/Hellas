@@ -1292,6 +1292,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         if (del != MSG_END) return;
         if (!isDebug()) break;
 
+        user->exploration().unexploreAll(user->socket());
         user->setSpawnPointToPostTutorial();
         user->moveToSpawnPoint();
         user->addConstruction("fire");

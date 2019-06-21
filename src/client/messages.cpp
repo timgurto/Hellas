@@ -1821,6 +1821,17 @@ void Client::handleMessage(const std::string &msg) {
         break;
       }
 
+      case SV_UNEXPLORE_MAP: {
+        if (del != MSG_END) return;
+
+        auto chunksX = _map.width() / Client::TILES_PER_CHUNK;
+        auto chunksY = _map.height() / Client::TILES_PER_CHUNK;
+        _mapExplored = {chunksX, std::vector<bool>(chunksY, false)};
+        redrawFogOfWar();
+        updateMapWindow(Element{});
+        break;
+      }
+
       case SV_SAY: {
         std::string username, message;
         singleMsg >> username >> del;

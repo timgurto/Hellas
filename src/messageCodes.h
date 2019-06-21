@@ -231,6 +231,9 @@ enum MessageCode {
   // Arguments: x, y
   SV_CHUNK_EXPLORED,
 
+  // Your map is now completely unexplored
+  SV_UNEXPLORE_MAP,
+
   // A user has moved far away from you, and you will stop getting updates from him.
   // Arguments: username
   SV_USER_OUT_OF_RANGE,

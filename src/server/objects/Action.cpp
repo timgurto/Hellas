@@ -14,6 +14,8 @@ bool Server::endTutorial(const Object &obj, User &performer,
                          const std::string &textArg) {
   auto &server = Server::instance();
 
+  performer.exploration().unexploreAll(performer.socket());
+
   performer.setSpawnPointToPostTutorial();
   performer.moveToSpawnPoint();
 

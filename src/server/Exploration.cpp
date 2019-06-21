@@ -103,6 +103,14 @@ std::set<Exploration::Chunk> Exploration::explore(const Chunk &chunk) {
   return newlyExploredChunks;
 }
 
+void Exploration::unexploreAll(const Socket &socket) {
+  auto chunksX = _map.size();
+  auto chunksY = chunksX == 0 ? 0 : _map.front().size();
+  _map = {chunksX, std::vector<bool>(chunksY, false)};
+
+  Server::instance().sendMessage(socket, SV_UNEXPLORE_MAP);
+}
+
 bool operator<(const Exploration::Chunk &lhs, const Exploration::Chunk &rhs) {
   if (lhs.x != rhs.x) return lhs.x < rhs.x;
   return lhs.y < rhs.y;

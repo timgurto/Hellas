@@ -29,6 +29,7 @@ class Exploration {
   Chunk getChunk(const MapPoint &location);
 
   std::set<Chunk> explore(const Chunk &chunk);  // Returns newly explored chunks
+  void unexploreAll(const Socket &socket);
 
  private:
   std::vector<std::vector<bool> > _map;
