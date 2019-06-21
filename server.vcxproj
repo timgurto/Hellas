@@ -112,6 +112,7 @@
     <ClCompile Include="src\server\CollisionChunk.cpp" />
     <ClCompile Include="src\server\collisionDetection.cpp" />
     <ClCompile Include="src\server\DataLoader.cpp" />
+    <ClCompile Include="src\server\Durability.cpp" />
     <ClCompile Include="src\server\Entities.cpp" />
     <ClCompile Include="src\server\Entity.cpp" />
     <ClCompile Include="src\server\data.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="src\server\CollisionChunk.h" />
     <ClInclude Include="src\server\combat.h" />
     <ClInclude Include="src\server\DataLoader.h" />
+    <ClInclude Include="src\server\Durability.h" />
     <ClInclude Include="src\server\Entities.h" />
     <ClInclude Include="src\server\Entity.h" />
     <ClInclude Include="src\server\EntityType.h" />

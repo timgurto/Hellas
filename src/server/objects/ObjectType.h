@@ -2,6 +2,7 @@
 #define OBJECT_TYPE_H
 
 #include "../../types.h"
+#include "../Durability.h"
 #include "../EntityType.h"
 #include "../QuestNode.h"
 #include "../Yield.h"
@@ -15,20 +16,6 @@ class BuffType;
 // Describes a class of Objects, the "instances" of which share common
 // properties
 class ObjectType : public EntityType, public QuestNodeType {
-  class Strength {
-   public:
-    Strength();
-    void set(const ServerItem *item, size_t quantity);
-    Hitpoints get() const;
-    const ServerItem *item() const { return _item; }
-    size_t quantity() const { return _quantity; }
-
-   private:
-    const ServerItem *_item;
-    size_t _quantity;
-    mutable Hitpoints _calculatedStrength;
-    mutable bool _strengthCalculated;
-  };
   Strength _strength;
 
   mutable size_t _numInWorld;
