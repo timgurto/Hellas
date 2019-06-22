@@ -30,7 +30,7 @@ const Color Color::WINDOW_LIGHT = WHITE * 0.2;
 const Color Color::WINDOW_FONT{0xcc, 0xcc, 0xcc};
 const Color Color::WINDOW_HEADING = BLUE * .4 + CYAN * .6;
 
-const Color Color::COMBATANT_SELF = GREEN + BLUE * 0.1;
+const Color Color::COMBATANT_SELF = GREEN * 0.8 + BLUE;
 const Color Color::COMBATANT_ALLY = GREEN * 0.8;
 const Color Color::COMBATANT_DEFENSIVE = YELLOW * 0.9;
 const Color Color::COMBATANT_ENEMY = RED * 0.8 + WHITE * 0.2;
