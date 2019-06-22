@@ -400,6 +400,16 @@
     <durability item="flax" quantity="5" />
 </objectType>
 
+<objectType id="loom" name="Loom"
+    constructionTime="0"
+    damageParticles="wood" sounds="wood">
+    <material id="stick" quantity="5" />
+    <material id="linenThread" quantity="5" />
+    <tag name="weaving" />
+    <unlockedBy recipe="linenThread" />
+    <durability item="linenThrad" quantity="5" />
+</objectType>
+
 <objectType id="stretchingFrame" name="Stretching Frame"
     constructionTime="0" 
     xDrawOffset="-10" yDrawOffset="-9"

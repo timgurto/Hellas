@@ -631,9 +631,9 @@
 <recipe
     id="linenCloth" time="4000" >
     <material id="linenThread" quantity="5" />
-    <tool class="sewing" />
+    <tool class="weaving" />
     <unlockedBy recipe="linenThread" />
-    <unlockedBy recipe="boneNeedle" />
+    <unlockedBy construction="loom" />
 </recipe>
 <recipe
     id="linothorax" time="10000" >
