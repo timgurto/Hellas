@@ -217,13 +217,12 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           sendMessage(client, ERROR_INVALID_SLOT);
           break;
         }
-        const std::pair<const ServerItem *, size_t> &invSlot =
-            user->inventory(slot);
-        if (invSlot.first == nullptr) {
+        const auto &invSlot = user->inventory(slot);
+        if (!invSlot.first.hasItem()) {
           sendMessage(client, ERROR_EMPTY_SLOT);
           break;
         }
-        const ServerItem &item = *invSlot.first;
+        const ServerItem &item = *invSlot.first.type;
         if (item.constructsObject() == nullptr) {
           sendMessage(client, ERROR_CANNOT_CONSTRUCT);
           break;
@@ -264,12 +263,12 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           sendMessage(client, ERROR_INVALID_SLOT);
           break;
         }
-        std::pair<const ServerItem *, size_t> &invSlot = user->inventory(slot);
-        if (invSlot.first == nullptr) {
+        auto &invSlot = user->inventory(slot);
+        if (!invSlot.first.hasItem()) {
           sendMessage(client, ERROR_EMPTY_SLOT);
           break;
         }
-        const ServerItem &item = *invSlot.first;
+        const ServerItem &item = *invSlot.first.type;
         if (!item.castsSpellOnUse()) {
           sendMessage(client, ERROR_CANNOT_CAST_ITEM);
           break;
@@ -282,7 +281,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         if (result == FAIL) break;
 
         --invSlot.second;
-        if (invSlot.second == 0) invSlot.first = nullptr;
+        if (invSlot.second == 0) invSlot.first = {};
         ;
         sendInventoryMessage(*user, slot, INVENTORY);
 
@@ -473,7 +472,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         }
         auto &containerSlot = (*container)[slot];
         if (containerSlot.second != 0) {
-          containerSlot.first = nullptr;
+          containerSlot.first = {};
           containerSlot.second = 0;
 
           // Alert relevant users
@@ -558,14 +557,14 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         }
 
         auto &slotFrom = (*containerFrom)[slot1];
-        if (!slotFrom.first) {
+        if (!slotFrom.first.hasItem()) {
           SERVER_ERROR("Attempting to move nonexistent item");
           break;
         }
 
         if (isConstructionMaterial) {
           size_t qtyInSlot = slotFrom.second,
-                 qtyNeeded = pObj2->remainingMaterials()[slotFrom.first],
+                 qtyNeeded = pObj2->remainingMaterials()[slotFrom.first.type],
                  qtyToTake = min(qtyInSlot, qtyNeeded);
 
           if (qtyNeeded == 0) {
@@ -573,17 +572,17 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
             break;
           }
 
-          auto itemToReturn = slotFrom.first->returnsOnConstruction();
+          auto itemToReturn = slotFrom.first.type->returnsOnConstruction();
 
           // Remove from object requirements
-          pObj2->remainingMaterials().remove(slotFrom.first, qtyToTake);
+          pObj2->remainingMaterials().remove(slotFrom.first.type, qtyToTake);
           for (const User *otherUser : findUsersInArea(user->location()))
             if (pObj2->permissions().doesUserHaveAccess(otherUser->name()))
               sendConstructionMaterialsMessage(*otherUser, *pObj2);
 
           // Remove items from user
           slotFrom.second -= qtyToTake;
-          if (slotFrom.second == 0) slotFrom.first = nullptr;
+          if (slotFrom.second == 0) slotFrom.first = {};
           sendInventoryMessage(*user, slot1, obj1);
 
           // Check if this action completed construction
@@ -617,18 +616,18 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         auto &slotTo = (*containerTo)[slot2];
 
         if (pObj1 != nullptr && pObj1->classTag() == 'n' &&
-                slotTo.first != nullptr ||
+                slotTo.first.hasItem() ||
             pObj2 != nullptr && pObj2->classTag() == 'n' &&
-                slotFrom.first != nullptr) {
+                slotFrom.first.hasItem()) {
           sendMessage(client, ERROR_NPC_SWAP);
           break;
         }
 
         // Check gear-slot compatibility
-        if (obj1 == GEAR && slotTo.first != nullptr &&
-                slotTo.first->gearSlot() != slot1 ||
-            obj2 == GEAR && slotFrom.first != nullptr &&
-                slotFrom.first->gearSlot() != slot2) {
+        if (obj1 == GEAR && slotTo.first.hasItem() &&
+                slotTo.first.type->gearSlot() != slot1 ||
+            obj2 == GEAR && slotFrom.first.hasItem() &&
+                slotFrom.first.type->gearSlot() != slot2) {
           sendMessage(client, ERROR_NOT_GEAR);
           break;
         }
@@ -636,16 +635,16 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         // Combine stack, if identical types
         auto shouldPerformNormalSwap = true;
         do {
-          if (slotFrom.first == nullptr || slotTo.first == nullptr) break;
-          auto identicalItems = slotFrom.first == slotTo.first;
+          if (!(slotFrom.first.hasItem() && slotTo.first.hasItem())) break;
+          auto identicalItems = slotFrom.first.type == slotTo.first.type;
           if (!identicalItems) break;
-          auto roomInDest = slotTo.first->stackSize() - slotTo.second;
+          auto roomInDest = slotTo.first.type->stackSize() - slotTo.second;
           if (roomInDest == 0) break;
 
           auto qtyToMove = min(roomInDest, slotFrom.second);
           slotFrom.second -= qtyToMove;
           slotTo.second += qtyToMove;
-          if (slotFrom.second == 0) slotFrom.first = nullptr;
+          if (slotFrom.second == 0) slotFrom.first = {};
           shouldPerformNormalSwap = false;
 
         } while (false);
@@ -667,10 +666,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
             size_t gearSlot;
             if (obj1 == GEAR) {
               gearSlot = slot1;
-              if (slotFrom.first != nullptr) gearID = slotFrom.first->id();
+              if (slotFrom.first.hasItem()) gearID = slotFrom.first.type->id();
             } else {
               gearSlot = slot2;
-              if (slotTo.first != nullptr) gearID = slotTo.first->id();
+              if (slotTo.first.hasItem()) gearID = slotTo.first.type->id();
             }
             for (const User *otherUser : findUsersInArea(user->location())) {
               if (otherUser == user) continue;
@@ -688,7 +687,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
 
         if (obj2 == INVENTORY || obj2 == GEAR) {
           sendInventoryMessage(*user, slot2, obj2);
-          ProgressLock::triggerUnlocks(*user, ProgressLock::ITEM, slotTo.first);
+          ProgressLock::triggerUnlocks(*user, ProgressLock::ITEM,
+                                       slotTo.first.type);
         } else
           pObj2->tellRelevantUsersAboutInventorySlot(slot2);
 
@@ -1423,12 +1423,12 @@ void Server::handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum) {
   ServerItem::Slot &slot = *pSlot;
 
   // Attempt to give item to user
-  size_t remainder = user.giveItem(slot.first, slot.second);
+  size_t remainder = user.giveItem(slot.first.type, slot.second);
   if (remainder > 0) {
     slot.second = remainder;
     sendMessage(user.socket(), WARNING_INVENTORY_FULL);
   } else {
-    slot.first = nullptr;
+    slot.first = {};
     slot.second = 0;
   }
 
@@ -2017,7 +2017,8 @@ void Server::sendInventoryMessageInner(
     return;
   }
   const auto &containerSlot = itemVect[slot];
-  std::string itemID = containerSlot.first ? containerSlot.first->id() : "none";
+  std::string itemID =
+      containerSlot.first.hasItem() ? containerSlot.first.type->id() : "none";
   sendMessage(user.socket(), SV_INVENTORY,
               makeArgs(serial, slot, itemID, containerSlot.second));
 }

@@ -404,7 +404,7 @@ ServerItem::Slot *NPC::getSlotToTakeFromAndSendErrors(size_t slotNum,
   }
 
   ServerItem::Slot &slot = _loot->at(slotNum);
-  if (slot.first == nullptr) {
+  if (!slot.first.hasItem()) {
     user.sendMessage(ERROR_EMPTY_SLOT);
     return nullptr;
   }

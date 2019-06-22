@@ -17,7 +17,7 @@ TEST_CASE("Damage is updated when a weapon depletes") {
     auto &user = s.getFirstUser();
 
     const auto rock = &s.getFirstItem();
-    user.gear(Item::WEAPON_SLOT).first = rock;
+    user.gear(Item::WEAPON_SLOT).first = {rock};
     user.gear(Item::WEAPON_SLOT).second = 1;
     user.updateStats();
 

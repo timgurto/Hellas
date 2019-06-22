@@ -162,5 +162,5 @@ TEST_CASE("A construction material can 'return' an item", "[construction]") {
 
   // Then he receives a matchbox
   const auto &pItem = user.inventory()[0].first;
-  WAIT_UNTIL(pItem != nullptr && pItem->id() == "matchbox");
+  WAIT_UNTIL(pItem.hasItem() && pItem.type->id() == "matchbox");
 }

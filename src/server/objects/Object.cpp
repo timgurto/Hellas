@@ -349,7 +349,7 @@ ServerItem::Slot *Object::getSlotToTakeFromAndSendErrors(size_t slotNum,
 
   if (hasLoot) {
     ServerItem::Slot &slot = _loot->at(slotNum);
-    if (slot.first == nullptr) {
+    if (!slot.first.hasItem()) {
       user.sendMessage(ERROR_EMPTY_SLOT);
       return nullptr;
     }
@@ -372,7 +372,7 @@ ServerItem::Slot *Object::getSlotToTakeFromAndSendErrors(size_t slotNum,
   }
 
   ServerItem::Slot &slot = container().at(slotNum);
-  if (slot.first == nullptr) {
+  if (!slot.first.hasItem()) {
     user.sendMessage(ERROR_EMPTY_SLOT);
     return nullptr;
   }

@@ -12,7 +12,20 @@ class ObjectType;
 
 // Describes an item type
 class ServerItem : public Item {
-  size_t _stackSize = 1;
+ public:
+  struct Instance {
+    // Assumption: any item type that can have a meaningful state, cannot stack.
+    const ServerItem *type{nullptr};
+    ItemHealth health{0};
+
+    Instance() = default;
+    Instance(const ServerItem *siType) : type(siType) {}
+
+    bool hasItem() const { return type != nullptr; }
+  };
+
+ private:
+  size_t _stackSize{1};
 
   // The object that this item can construct
   const ObjectType *_constructsObject{nullptr};
@@ -27,7 +40,7 @@ class ServerItem : public Item {
  public:
   ServerItem(const std::string &id);
 
-  typedef std::pair<const ServerItem *, size_t> Slot;
+  typedef std::pair<ServerItem::Instance, size_t> Slot;
   typedef std::vector<Slot> vect_t;
 
   size_t stackSize() const { return _stackSize; }

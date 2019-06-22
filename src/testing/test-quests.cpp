@@ -1325,7 +1325,7 @@ TEST_CASE("Quest items that drop only while on quest", "[quests]") {
               c.sendMessage(CL_ABANDON_QUEST, "quest1");
 
               THEN("he doesn't have the scale any more") {
-                WAIT_UNTIL(user.inventory(0).first == nullptr);
+                WAIT_UNTIL(!user.inventory(0).first.hasItem());
               }
             }
           }
@@ -1496,7 +1496,7 @@ TEST_CASE("Quests that give items when you start", "[quests]") {
 
       THEN("the user has a key") {
         const auto &firstSlot = user.inventory()[0];
-        WAIT_UNTIL(firstSlot.first != nullptr);
+        WAIT_UNTIL(firstSlot.first.hasItem());
       }
     }
 
@@ -1506,7 +1506,7 @@ TEST_CASE("Quests that give items when you start", "[quests]") {
       THEN("the user has no items") {
         REPEAT_FOR_MS(100);
         const auto &firstSlot = user.inventory()[0];
-        CHECK(firstSlot.first == nullptr);
+        CHECK_FALSE(firstSlot.first.hasItem());
       }
     }
 
@@ -1837,7 +1837,7 @@ TEST_CASE("Quest-exclusive objects") {
 
       THEN("he doesn't have an item") {
         REPEAT_FOR_MS(100);
-        CHECK(user.inventory(0).first == nullptr);
+        CHECK_FALSE(user.inventory(0).first.hasItem());
       }
     }
 
@@ -1848,7 +1848,7 @@ TEST_CASE("Quest-exclusive objects") {
         c.sendMessage(CL_GATHER, makeArgs(tree.serial()));
 
         THEN("he has an item") {
-          WAIT_UNTIL(user.inventory(0).first != nullptr);
+          WAIT_UNTIL(user.inventory(0).first.hasItem());
         }
       }
     }
@@ -1861,7 +1861,7 @@ TEST_CASE("Quest-exclusive objects") {
 
         THEN("he doesn't have an item") {
           REPEAT_FOR_MS(100);
-          CHECK(user.inventory(0).first == nullptr);
+          CHECK_FALSE(user.inventory(0).first.hasItem());
         }
       }
     }

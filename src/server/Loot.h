@@ -14,7 +14,7 @@ class Loot {
   void sendSingleSlotToUser(const User &recipient, size_t serial,
                             size_t slot) const;
   bool isValidSlot(size_t slot) const { return _container.size() > slot; }
-  std::pair<const ServerItem *, size_t> &at(size_t i) { return _container[i]; }
+  ServerItem::Slot &at(size_t i) { return _container[i]; }
   size_t size() const { return _container.size(); }
 
  private:

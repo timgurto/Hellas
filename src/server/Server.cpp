@@ -337,14 +337,13 @@ void Server::addUser(const Socket &socket, const std::string &name,
 
   // Send him his inventory
   for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
-    if (newUser.inventory(i).first != nullptr)
+    if (newUser.inventory(i).first.hasItem())
       sendInventoryMessage(newUser, i, INVENTORY);
   }
 
   // Send him his gear
   for (size_t i = 0; i != User::GEAR_SLOTS; ++i) {
-    if (newUser.gear(i).first != nullptr)
-      sendInventoryMessage(newUser, i, GEAR);
+    if (newUser.gear(i).first.hasItem()) sendInventoryMessage(newUser, i, GEAR);
   }
 
   // Send him the recipes he knows

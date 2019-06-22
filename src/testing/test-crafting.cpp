@@ -14,7 +14,7 @@ TEST_CASE("Recipes can be known by default") {
   WAIT_UNTIL(user.action() ==
              User::Action::NO_ACTION);  // Wait for gathering to finish
 
-  const ServerItem *itemInFirstSlot = user.inventory()[0].first;
+  const ServerItem *itemInFirstSlot = user.inventory()[0].first.type;
   REQUIRE(itemInFirstSlot != nullptr);
   CHECK(itemInFirstSlot->id() == "box");
 }
@@ -31,7 +31,7 @@ TEST_CASE("Terrain as tool", "[tool]") {
   WAIT_UNTIL(user.action() ==
              User::Action::NO_ACTION);  // Wait for gathering to finish
 
-  const ServerItem *itemInFirstSlot = user.inventory()[0].first;
+  const ServerItem *itemInFirstSlot = user.inventory()[0].first.type;
   REQUIRE(itemInFirstSlot != nullptr);
   CHECK(itemInFirstSlot->id() == "daisyChain");
 }
@@ -65,7 +65,7 @@ TEST_CASE("Crafting is allowed if materials will vacate a slot") {
              User::Action::NO_ACTION);  // Wait for gathering to finish
 
   // Then his inventory contains cooked meat
-  const ServerItem *itemInFirstSlot = u.inventory()[0].first;
+  const ServerItem *itemInFirstSlot = u.inventory()[0].first.type;
   REQUIRE(itemInFirstSlot != nullptr);
   CHECK(itemInFirstSlot->id() == "cookedMeat");
 }
@@ -108,7 +108,7 @@ TEST_CASE("Gear counts towards materials") {
 
       THEN("he has the new item") {
         auto &sockPuppet = s.findItem("sockPuppet");
-        WAIT_UNTIL(user.inventory(0).first == &sockPuppet);
+        WAIT_UNTIL(user.inventory(0).first.type == &sockPuppet);
       }
     }
   }

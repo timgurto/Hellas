@@ -46,7 +46,7 @@ TEST_CASE("Public-access objects", "[ownership]") {
   WAIT_UNTIL(user.action() == User::Action::NO_ACTION);
   WAIT_UNTIL_TIMEOUT(s.entities().empty(), 200);
   const Item &rockItem = s.getFirstItem();
-  WAIT_UNTIL_TIMEOUT(user.inventory()[0].first == &rockItem, 200);
+  WAIT_UNTIL_TIMEOUT(user.inventory()[0].first.type == &rockItem, 200);
 }
 
 TEST_CASE("The owner can access an owned object", "[ownership]") {
@@ -67,7 +67,7 @@ TEST_CASE("The owner can access an owned object", "[ownership]") {
   WAIT_UNTIL(user.action() == User::Action::NO_ACTION);
   WAIT_UNTIL_TIMEOUT(s.entities().empty(), 200);
   const Item &rockItem = s.getFirstItem();
-  WAIT_UNTIL_TIMEOUT(user.inventory()[0].first == &rockItem, 200);
+  WAIT_UNTIL_TIMEOUT(user.inventory()[0].first.type == &rockItem, 200);
 }
 
 TEST_CASE("A non-owner cannot access an owned object", "[ownership]") {
@@ -87,7 +87,7 @@ TEST_CASE("A non-owner cannot access an owned object", "[ownership]") {
   // Then the rock remains, and his inventory remains empty
   CHECK_FALSE(s.entities().empty());
   User &user = s.getFirstUser();
-  CHECK(user.inventory()[0].first == nullptr);
+  CHECK_FALSE(user.inventory()[0].first.hasItem());
 }
 
 TEST_CASE("A city can own an object", "[city][ownership]") {
@@ -148,7 +148,7 @@ TEST_CASE("City members can use city objects", "[city][ownership]") {
   WAIT_UNTIL(user.action() == User::Action::NO_ACTION);
   // And he receives a Rock item;
   const Item &rockItem = s.getFirstItem();
-  WAIT_UNTIL_TIMEOUT(user.inventory()[0].first == &rockItem, 200);
+  WAIT_UNTIL_TIMEOUT(user.inventory()[0].first.type == &rockItem, 200);
   // And the Rock object disappears
   WAIT_UNTIL_TIMEOUT(s.entities().empty(), 200);
 }
@@ -175,7 +175,7 @@ TEST_CASE("Non-members cannot use city objects", "[city][ownership]") {
 
   // And his inventory remains empty
   User &user = s.getFirstUser();
-  CHECK(user.inventory()[0].first == nullptr);
+  CHECK_FALSE(user.inventory()[0].first.hasItem());
 }
 
 TEST_CASE("Non-existent cities can't own objects", "[city][ownership]") {

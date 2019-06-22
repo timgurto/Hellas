@@ -169,23 +169,17 @@ class User : public Object {  // TODO: Don't inherit from Object
   void onMove() override;
 
   // Inventory getters/setters
-  const std::pair<const ServerItem *, size_t> &inventory(size_t index) const {
+  const ServerItem::Slot &inventory(size_t index) const {
     return _inventory[index];
   }
-  std::pair<const ServerItem *, size_t> &inventory(size_t index) {
-    return _inventory[index];
-  }
+  ServerItem::Slot &inventory(size_t index) { return _inventory[index]; }
   ServerItem::vect_t &inventory() { return _inventory; }
   const ServerItem::vect_t &inventory() const { return _inventory; }
   bool hasRoomFor(std::set<std::string> itemNames) const;
 
   // Gear getters/setters
-  const std::pair<const ServerItem *, size_t> &gear(size_t index) const {
-    return _gear[index];
-  }
-  std::pair<const ServerItem *, size_t> &gear(size_t index) {
-    return _gear[index];
-  }
+  const ServerItem::Slot &gear(size_t index) const { return _gear[index]; }
+  ServerItem::Slot &gear(size_t index) { return _gear[index]; }
   ServerItem::vect_t &gear() { return _gear; }
   const ServerItem::vect_t &gear() const { return _gear; }
 

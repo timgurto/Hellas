@@ -22,7 +22,7 @@ TEST_CASE("Gather an item from an object") {
 
   // Make sure user has item
   const auto &item = *s.items().begin();
-  CHECK(user.inventory()[0].first == &item);
+  CHECK(user.inventory()[0].first.type == &item);
 
   // Make sure object no longer exists
   CHECK(s.entities().empty());
@@ -54,7 +54,7 @@ TEST_CASE("Gather chance is by gathers, not quantity") {
 
   // Make sure user has a rock, and not the iron
   const auto &item = *s.items().find(ServerItem("rock"));
-  CHECK(user.inventory()[0].first == &item);
+  CHECK(user.inventory()[0].first.type == &item);
 }
 
 TEST_CASE("Minimum yields") {
