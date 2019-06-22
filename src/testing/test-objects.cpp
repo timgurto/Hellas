@@ -89,7 +89,7 @@ TEST_CASE("Out-of-range objects are forgotten", "[.slow][culling][only]") {
   CHECK(c.objects().size() == 0);
 }
 
-TEST_CASE("Objects with no strength have 1 health in client") {
+TEST_CASE("Objects with no durability have 1 health in client") {
   // Given an object type A with no strength;
   auto data = R"(
       <objectType id="A" />
@@ -107,6 +107,27 @@ TEST_CASE("Objects with no strength have 1 health in client") {
   // Then the client knows it has 1 health
   auto &obj = c.getFirstObject();
   CHECK(obj.health() == 1);
+}
+
+TEST_CASE("Object durability") {
+  GIVEN("n item of durability 3, and an object type of durability item*5") {
+    auto data = R"(
+      <item id="brick" durability="3" />
+      <objectType id="wall">
+        <durability item="brick" quantity="5"/>
+      </objectType>
+    )";
+    TestServer s = TestServer::WithDataString(data);
+
+    WHEN("one of the objects is added") {
+      s.addObject("wall");
+
+      THEN("it has 15 health") {
+        const auto &wall = s.getFirstObject();
+        CHECK(wall.health() == 15);
+      }
+    }
+  }
 }
 
 TEST_CASE("Objects that disappear after a time") {
