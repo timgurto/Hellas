@@ -548,7 +548,7 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
       if (xr.findAttr(strength, "item", s) &&
           xr.findAttr(strength, "quantity", n)) {
         ClientItem &item = _client._items[s];
-        cot->strength(&item, n);
+        cot->durability(&item, n);
       } else
         _client.showErrorMessage(
             "Transformation specified without target id; skipping.",
@@ -616,8 +616,9 @@ void CDataLoader::loadItems(XmlReader &xr) {
 
     if (xr.findAttr(elem, "sounds", s)) item.sounds(s);
 
-    Hitpoints strength;
-    if (xr.findAttr(elem, "strength", strength)) item.strength(strength);
+    Hitpoints durability;
+    if (xr.findAttr(elem, "durability", durability))
+      item.durability(durability);
 
     auto offset = xr.findChild("offset", elem);
     if (offset != nullptr) {

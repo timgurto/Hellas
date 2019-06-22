@@ -4,9 +4,9 @@
 
 class ServerItem;
 
-class Strength {
+class Durability {
  public:
-  Strength();
+  Durability();
   void set(const ServerItem *item, size_t quantity);
   Hitpoints get() const;
   const ServerItem *item() const { return _item; }

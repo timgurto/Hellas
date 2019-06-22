@@ -16,7 +16,7 @@ class BuffType;
 // Describes a class of Objects, the "instances" of which share common
 // properties
 class ObjectType : public EntityType, public QuestNodeType {
-  Strength _strength;
+  Durability _strength;
 
   mutable size_t _numInWorld;
 

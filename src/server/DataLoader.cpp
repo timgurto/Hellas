@@ -279,16 +279,16 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
     if (xr.findAttr(elem, "disappearAfter", disappearTime))
       ot->disappearsAfter(disappearTime);
 
-    // Strength
-    auto strength = xr.findChild("strength", elem);
-    if (strength) {
-      if (xr.findAttr(strength, "item", s) &&
-          xr.findAttr(strength, "quantity", n)) {
+    // Durability
+    auto durability = xr.findChild("durability", elem);
+    if (durability) {
+      if (xr.findAttr(durability, "item", s) &&
+          xr.findAttr(durability, "quantity", n)) {
         std::set<ServerItem>::const_iterator itemIt =
             _server._items.insert(ServerItem(s)).first;
         ot->setHealthBasedOnItems(&*itemIt, n);
       } else
-        _server._debug("Strength specified without item type; skipping.",
+        _server._debug("Durability specified without item type; skipping.",
                        Color::CHAT_ERROR);
     }
 
@@ -605,7 +605,7 @@ void DataLoader::loadItems(XmlReader &xr) {
     for (auto child : xr.getChildren("tag", elem))
       if (xr.findAttr(child, "name", s)) item.addTag(s);
 
-    if (xr.findAttr(elem, "strength", n)) item.strength(n);
+    if (xr.findAttr(elem, "durability", n)) item.durability(n);
 
     item.loaded();
 

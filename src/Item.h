@@ -21,8 +21,8 @@ class Item {
   size_t gearSlot() const { return _gearSlot; }
   void stats(const StatsMod &stats) { _stats = stats; }
   const StatsMod &stats() const { return _stats; }
-  Hitpoints strength() const { return _strength; }
-  void strength(Hitpoints n) { _strength = n; }
+  Hitpoints durability() const { return _durability; }
+  void durability(Hitpoints n) { _durability = n; }
   void makeWeapon(Hitpoints damage, double speedInS, SpellSchool school);
   void weaponRange(Podes range) { _weaponRange = range.toPixels(); }
   px_t weaponRange() const { return _weaponRange; }
@@ -57,7 +57,7 @@ class Item {
   mutable const Item *_weaponAmmo{nullptr};  // Fetched in fetchAmmoItem()
 
  private:
-  Hitpoints _strength;
+  Hitpoints _durability;
 
   std::string _castsSpellOnUse{};
 };

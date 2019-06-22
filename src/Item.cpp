@@ -1,6 +1,6 @@
 #include "Item.h"
 
-Item::Item(const std::string &id) : _id(id), _strength(0) {}
+Item::Item(const std::string &id) : _id(id), _durability(0) {}
 
 void Item::makeWeapon(Hitpoints damage, double speedInS, SpellSchool school) {
   _stats.weaponDamage = damage;

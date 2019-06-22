@@ -205,7 +205,7 @@ void Client::initialiseData() {
   // Initialize object-type strengths
   for (auto *objectType : _objectTypes) {
     auto nonConstType = const_cast<ClientObjectType *>(objectType);
-    nonConstType->calculateAndInitStrength();
+    nonConstType->calculateAndInitDurability();
   }
 
   populateBuildList();

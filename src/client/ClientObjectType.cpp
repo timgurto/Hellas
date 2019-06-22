@@ -146,11 +146,11 @@ void ClientObjectType::sounds(const std::string &id) {
   _sounds = client.findSoundProfile(id);
 }
 
-void ClientObjectType::calculateAndInitStrength() {
+void ClientObjectType::calculateAndInitDurability() {
   auto isNPC = classTag() == 'n';
   if (isNPC) return;
-  if (_strength.item == nullptr || _strength.quantity == 0)
+  if (_durability.item == nullptr || _durability.quantity == 0)
     maxHealth(1);
   else
-    maxHealth(_strength.item->strength() * _strength.quantity);
+    maxHealth(_durability.item->durability() * _durability.quantity);
 }

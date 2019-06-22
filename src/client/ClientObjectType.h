@@ -53,12 +53,12 @@ class ClientObjectType : public SpriteType, public ClientCombatantType {
   const SoundProfile *_sounds;
   bool _isPlayerUnique = false;
 
-  struct Strength {
-    Strength() : item(nullptr), quantity(0) {}
+  struct Durability {
+    Durability() : item(nullptr), quantity(0) {}
     const ClientItem *item;
     size_t quantity;
   };
-  Strength _strength;
+  Durability _durability;
 
   // To show transformations.  Which image is displayed depends on progress.
   std::vector<ImageSet> _transformImages;
@@ -116,9 +116,9 @@ class ClientObjectType : public SpriteType, public ClientCombatantType {
   const ImageSet &constructionImage() const { return _constructionImage; }
   void sounds(const std::string &id);
   const SoundProfile *sounds() const { return _sounds; }
-  void strength(const ClientItem *item, size_t quantity) {
-    _strength.item = item;
-    _strength.quantity = quantity;
+  void durability(const ClientItem *item, size_t quantity) {
+    _durability.item = item;
+    _durability.quantity = quantity;
   }
   bool isPlayerUnique() const { return _isPlayerUnique; }
   void makePlayerUnique() { _isPlayerUnique = true; }
@@ -146,7 +146,7 @@ class ClientObjectType : public SpriteType, public ClientCombatantType {
 
   void addTag(const std::string &tagName) { _tags.insert(tagName); }
 
-  void calculateAndInitStrength();
+  void calculateAndInitDurability();
 
   struct ptrCompare {
     bool operator()(const ClientObjectType *lhs,
