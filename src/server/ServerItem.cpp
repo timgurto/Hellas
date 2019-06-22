@@ -3,8 +3,7 @@
 #include "Server.h"
 #include "objects/ObjectType.h"
 
-ServerItem::ServerItem(const std::string &idArg)
-    : Item(idArg), _constructsObject(nullptr) {}
+ServerItem::ServerItem(const std::string &idArg) : Item(idArg) {}
 
 void ServerItem::fetchAmmoItem() const {
   if (_weaponAmmoID.empty()) return;

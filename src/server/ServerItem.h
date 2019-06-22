@@ -15,10 +15,10 @@ class ServerItem : public Item {
   size_t _stackSize = 1;
 
   // The object that this item can construct
-  const ObjectType *_constructsObject;
+  const ObjectType *_constructsObject{nullptr};
 
   // An item returned to the user after this is used as a construction material
-  const ServerItem *_returnsOnConstruction = nullptr;
+  const ServerItem *_returnsOnConstruction{nullptr};
 
   bool _loaded{false};
 
