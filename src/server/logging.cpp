@@ -132,3 +132,26 @@ void Server::publishStats(Server *server) {
   --server->_threadsOpen;
   publishingStats = false;
 }
+
+void Server::generateDurabilityList() {
+  auto os = std::ofstream{"durability.csv"};
+
+  for (const auto &item : _items) {
+    auto isGear = item.gearSlot() != User::GEAR_SLOTS;
+    auto isTool = item.hasTags();
+
+    if (!isTool && !isGear) continue;
+
+    auto description = isGear ? "gear" : "tool";  // If both, just call it gear
+
+    os << description << "," << item.id() << "," << item.durability()
+       << std::endl;
+  }
+
+  for (const auto *object : _objectTypes) {
+    if (object->classTag() == 'n') continue;
+    object->initStrengthAndMaxHealth();
+    os << "object," << object->id() << "," << object->baseStats().maxHealth
+       << std::endl;
+  }
+}

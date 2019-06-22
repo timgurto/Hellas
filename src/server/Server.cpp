@@ -188,6 +188,7 @@ void Server::checkSockets() {
 void Server::run() {
   if (!_dataLoaded) DataLoader::FromPath(*this).load();
   initialiseData();
+  if (isDebug()) Server::instance().generateDurabilityList();
   loadWorldState();
   if (!cmdLineArgs.contains("nospawn")) spawnInitialObjects();
 

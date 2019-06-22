@@ -349,35 +349,4 @@
 		<offset x="-5" y="-2" />
     </item>
 
-<!-- Test -->
-<item id="ring" name="Ring" gearSlot="1" sounds="" iconFile="" gearFile="" >
-    <stats
-        armor="5"
-        health="5"
-        energy="5"
-        hps="5"
-        eps="5"
-        hit="5"
-        crit="5"
-        critResist="5"
-        dodge="5"
-        block="5"
-        blockValue="5"
-        magicDamage="5"
-        physicalDamage="5"
-        healing="5"
-        airResist="5"
-        earthResist="5"
-        fireResist="5"
-        waterResist="5"
-    />
-</item>
-
-<item id="fireRing" name="Ring of Fire" gearSlot="1" sounds="" iconFile="" gearFile="" >
-    <stats fireResist="80" />
-</item>
-<item id="earthRing" name="Ring of Earth" gearSlot="1" sounds="" iconFile="" gearFile="" >
-    <stats earthResist="80" />
-</item>
-
 </root>
