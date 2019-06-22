@@ -11,7 +11,7 @@
         level="5" maxHealth="30" isCivilian="1" >
         <humanoid base="athlete">
             <gear id="flintstones" />
-            <gear id="bone" />
+            <gear id="boneClub" />
         </humanoid>
     </npcType>
     <item id="flintstones" gearSlot="2" ><offset x="-5" y="-4" /> </item>

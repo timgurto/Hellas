@@ -260,7 +260,7 @@
     id="meleeMan6" name="River Clubman"
     level="6" maxHealth="26" attack="6" attackTime="2500" >
     <humanoid base="athlete">
-        <gear id="bone" />
+        <gear id="boneClub" />
     </humanoid>
 </npcType>
 <npcType

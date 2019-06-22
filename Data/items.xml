@@ -67,11 +67,14 @@
 
 <item id="stick" name="Stick" stackSize="10" strength="2" sounds="stick" >
     <offset x="-8" y="-1" />
-    <tag name="planting" />
+</item>
+<item id="knapper" name="Knapper" sounds="rock" >
+    <tag name="grinding1" />
 </item>
 
 
-<item id="bone" name="Bone" stackSize="10" gearSlot="6" sounds="bone" >
+<item id="bone" name="Bone" stackSize="10" sounds="bone" />
+<item id="boneClub" name="Bone Club" gearSlot="6" sounds="bone" > <!-- TODO: allow player to get one -->
     <weapon damage="3" speed="2.8" />
 	<offset x="-6" y="-15" />
 </item>
@@ -159,7 +162,6 @@
         <item id="rock" name="Rock" stackSize="100" strength="6" gearSlot="6" sounds="rock" >
             <weapon damage="2" speed="2.1" range="25" consumes="rock" projectile="rock" />
             <offset x="-3" />
-            <tag name="grinding1" />
         </item>
 		<item id="sling" name="Sling" gearSlot="6" >
             <weapon damage="4" speed="2" range="25" consumes="smoothRock" projectile="smoothRock" />

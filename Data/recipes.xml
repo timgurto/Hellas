@@ -33,7 +33,8 @@
 <!-- Knives -->
     <recipe id="stoneKnife"
         time="4000" >
-        <material id="rock" quantity="2"/>
+        <material id="rock" />
+        <tool class="grinding1" />
         <unlockedBy gather="rock" />
     </recipe>
     <recipe id="tinKnife"
@@ -313,7 +314,8 @@
     </recipe>
     <recipe
         id="smoothRock" time="2500" >
-        <material id="rock" quantity="2" />
+        <material id="rock" />
+        <tool class="grinding1" />
         <unlockedBy recipe="sling" />
         <unlockedBy gather="rock" chance="0.05" />
     </recipe>
@@ -571,6 +573,12 @@
     </recipe>
 
 <recipe
+    id="knapper" time="6000" >
+    <material id="rock" quantity="2" />
+    <unlockedBy item="rock" />
+</recipe>
+    
+<recipe
     id="elutriator" time="4000" >
     <material id="smallPot" />
     <material id="water" />
@@ -611,7 +619,7 @@
     id="boneNeedle" time="4000" >
     <material id="bone" />
     <tool class="grinding1" />
-    <unlockedBy item="bone" />
+    <unlockedBy item="bone" chance="0.1" />
 </recipe>
 
 <!-- Linen -->
