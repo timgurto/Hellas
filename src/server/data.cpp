@@ -246,7 +246,7 @@ void Server::writeUserData(const User &user) const {
     if (slot.first.hasItem()) {
       auto slotElement = xw.addChild("slot", e);
       xw.setAttr(slotElement, "slot", i);
-      xw.setAttr(slotElement, "id", slot.first.type->id());
+      xw.setAttr(slotElement, "id", slot.first.type()->id());
       xw.setAttr(slotElement, "quantity", slot.second);
     }
   }
@@ -257,7 +257,7 @@ void Server::writeUserData(const User &user) const {
     if (slot.first.hasItem()) {
       auto slotElement = xw.addChild("slot", e);
       xw.setAttr(slotElement, "slot", i);
-      xw.setAttr(slotElement, "id", slot.first.type->id());
+      xw.setAttr(slotElement, "id", slot.first.type()->id());
       xw.setAttr(slotElement, "quantity", slot.second);
     }
   }
@@ -412,7 +412,7 @@ void Server::loadEntitiesFromFile(const std::string &path,
         continue;
       }
       auto &invSlot = obj.container().at(n);
-      invSlot.first.type = {&*_items.find(s)};
+      invSlot.first = {&*_items.find(s)};
       invSlot.second = q;
     }
 
@@ -565,7 +565,7 @@ void Object::writeToXML(XmlWriter &xw) const {
       if (container().at(i).second == 0) continue;
       auto invSlotE = xw.addChild("inventory", e);
       xw.setAttr(invSlotE, "slot", i);
-      xw.setAttr(invSlotE, "item", container().at(i).first.type->id());
+      xw.setAttr(invSlotE, "item", container().at(i).first.type()->id());
       xw.setAttr(invSlotE, "qty", container().at(i).second);
     }
   }

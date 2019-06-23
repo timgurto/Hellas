@@ -222,7 +222,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           sendMessage(client, ERROR_EMPTY_SLOT);
           break;
         }
-        const ServerItem &item = *invSlot.first.type;
+        const ServerItem &item = *invSlot.first.type();
         if (item.constructsObject() == nullptr) {
           sendMessage(client, ERROR_CANNOT_CONSTRUCT);
           break;
@@ -268,7 +268,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           sendMessage(client, ERROR_EMPTY_SLOT);
           break;
         }
-        const ServerItem &item = *invSlot.first.type;
+        const ServerItem &item = *invSlot.first.type();
         if (!item.castsSpellOnUse()) {
           sendMessage(client, ERROR_CANNOT_CAST_ITEM);
           break;
@@ -563,8 +563,9 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         }
 
         if (isConstructionMaterial) {
+          const auto *materialType = slotFrom.first.type();
           size_t qtyInSlot = slotFrom.second,
-                 qtyNeeded = pObj2->remainingMaterials()[slotFrom.first.type],
+                 qtyNeeded = pObj2->remainingMaterials()[materialType],
                  qtyToTake = min(qtyInSlot, qtyNeeded);
 
           if (qtyNeeded == 0) {
@@ -572,10 +573,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
             break;
           }
 
-          auto itemToReturn = slotFrom.first.type->returnsOnConstruction();
+          auto itemToReturn = materialType->returnsOnConstruction();
 
           // Remove from object requirements
-          pObj2->remainingMaterials().remove(slotFrom.first.type, qtyToTake);
+          pObj2->remainingMaterials().remove(materialType, qtyToTake);
           for (const User *otherUser : findUsersInArea(user->location()))
             if (pObj2->permissions().doesUserHaveAccess(otherUser->name()))
               sendConstructionMaterialsMessage(*otherUser, *pObj2);
@@ -625,9 +626,9 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
 
         // Check gear-slot compatibility
         if (obj1 == GEAR && slotTo.first.hasItem() &&
-                slotTo.first.type->gearSlot() != slot1 ||
+                slotTo.first.type()->gearSlot() != slot1 ||
             obj2 == GEAR && slotFrom.first.hasItem() &&
-                slotFrom.first.type->gearSlot() != slot2) {
+                slotFrom.first.type()->gearSlot() != slot2) {
           sendMessage(client, ERROR_NOT_GEAR);
           break;
         }
@@ -636,9 +637,9 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         auto shouldPerformNormalSwap = true;
         do {
           if (!(slotFrom.first.hasItem() && slotTo.first.hasItem())) break;
-          auto identicalItems = slotFrom.first.type == slotTo.first.type;
+          auto identicalItems = slotFrom.first.type() == slotTo.first.type();
           if (!identicalItems) break;
-          auto roomInDest = slotTo.first.type->stackSize() - slotTo.second;
+          auto roomInDest = slotTo.first.type()->stackSize() - slotTo.second;
           if (roomInDest == 0) break;
 
           auto qtyToMove = min(roomInDest, slotFrom.second);
@@ -666,10 +667,11 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
             size_t gearSlot;
             if (obj1 == GEAR) {
               gearSlot = slot1;
-              if (slotFrom.first.hasItem()) gearID = slotFrom.first.type->id();
+              if (slotFrom.first.hasItem())
+                gearID = slotFrom.first.type()->id();
             } else {
               gearSlot = slot2;
-              if (slotTo.first.hasItem()) gearID = slotTo.first.type->id();
+              if (slotTo.first.hasItem()) gearID = slotTo.first.type()->id();
             }
             for (const User *otherUser : findUsersInArea(user->location())) {
               if (otherUser == user) continue;
@@ -688,7 +690,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         if (obj2 == INVENTORY || obj2 == GEAR) {
           sendInventoryMessage(*user, slot2, obj2);
           ProgressLock::triggerUnlocks(*user, ProgressLock::ITEM,
-                                       slotTo.first.type);
+                                       slotTo.first.type());
         } else
           pObj2->tellRelevantUsersAboutInventorySlot(slot2);
 
@@ -1423,7 +1425,7 @@ void Server::handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum) {
   ServerItem::Slot &slot = *pSlot;
 
   // Attempt to give item to user
-  size_t remainder = user.giveItem(slot.first.type, slot.second);
+  size_t remainder = user.giveItem(slot.first.type(), slot.second);
   if (remainder > 0) {
     slot.second = remainder;
     sendMessage(user.socket(), WARNING_INVENTORY_FULL);
@@ -2018,7 +2020,7 @@ void Server::sendInventoryMessageInner(
   }
   const auto &containerSlot = itemVect[slot];
   std::string itemID =
-      containerSlot.first.hasItem() ? containerSlot.first.type->id() : "none";
+      containerSlot.first.hasItem() ? containerSlot.first.type()->id() : "none";
   sendMessage(user.socket(), SV_INVENTORY,
               makeArgs(serial, slot, itemID, containerSlot.second));
 }

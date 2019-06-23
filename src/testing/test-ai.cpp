@@ -20,7 +20,7 @@ TEST_CASE("NPCs chain pull", "[ai]") {
     user.giveItem(spear);
     c.sendMessage(CL_SWAP_ITEMS,
                   makeArgs(Client::INVENTORY, 0, Client::GEAR, 6));
-    WAIT_UNTIL(user.gear()[6].first.type == spear);
+    WAIT_UNTIL(user.gear(6).first.type() == spear);
 
     WHEN("there are two bears close to each other but out of aggro range") {
       s.addNPC("bear", {100, 5});

@@ -15,15 +15,22 @@ class ServerItem : public Item {
  public:
   static const ItemHealth MAX_HEALTH = 100;
 
-  struct Instance {
+  class Instance {
     // Assumption: any item type that can have a meaningful state, cannot stack.
-    const ServerItem *type{nullptr};
-    ItemHealth health{0};
 
+   public:
     Instance() = default;
-    Instance(const ServerItem *typeArg);
+    Instance(const ServerItem *type);
 
-    bool hasItem() const { return type != nullptr; }
+    bool hasItem() const { return _type != nullptr; }
+    const ServerItem *type() const { return _type; }
+    const ItemHealth health() const { return _health; }
+
+    void onUse();
+
+   private:
+    const ServerItem *_type{nullptr};
+    ItemHealth _health{0};
   };
 
  private:

@@ -99,7 +99,7 @@ TEST_CASE("Merchant can use same slot for ware and price") {
 
       THEN("he has the ware") {
         const auto &invSlot = user.inventory(0);
-        WAIT_UNTIL(invSlot.first.type == diamond);
+        WAIT_UNTIL(invSlot.first.type() == diamond);
       }
     }
   }

@@ -31,9 +31,10 @@ void Container::removeItems(const ItemSet &items) {
   ItemSet remaining = items;
   for (size_t i = 0; i != _container.size(); ++i) {
     auto &invSlot = _container[i];
-    if (remaining.contains(invSlot.first.type)) {
-      size_t itemsToRemove = min(invSlot.second, remaining[invSlot.first.type]);
-      remaining.remove(invSlot.first.type, itemsToRemove);
+    if (remaining.contains(invSlot.first.type())) {
+      size_t itemsToRemove =
+          min(invSlot.second, remaining[invSlot.first.type()]);
+      remaining.remove(invSlot.first.type(), itemsToRemove);
       _container[i].second -= itemsToRemove;
       if (_container[i].second == 0) _container[i].first = {};
       invSlotsChanged.insert(i);
@@ -58,7 +59,7 @@ void Container::addItems(const ServerItem *item, size_t qty) {
   std::set<size_t> changedSlots;
   // First pass: partial stacks
   for (size_t i = 0; i != _container.size(); ++i) {
-    if (_container[i].first.type != item) continue;
+    if (_container[i].first.type() != item) continue;
     size_t spaceAvailable = item->stackSize() - _container[i].second;
     if (spaceAvailable > 0) {
       size_t qtyInThisSlot = min(spaceAvailable, qty);
@@ -102,7 +103,7 @@ ItemSet Container::generateLootWithChance(double chance) const {
   ItemSet loot;
 
   for (size_t slot = 0; slot != _container.size(); ++slot) {
-    const auto *pItem = _container[slot].first.type;
+    const auto *pItem = _container[slot].first.type();
     if (pItem == nullptr) continue;
     size_t qty = 0;
     auto numInSlot = _container[slot].second;

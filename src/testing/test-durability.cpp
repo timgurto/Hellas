@@ -18,7 +18,7 @@ TEST_CASE("Items in inventory have full health") {
       user.giveItem(&apple);
 
       THEN("it has full health") {
-        CHECK(user.inventory(0).first.health == ServerItem::MAX_HEALTH);
+        CHECK(user.inventory(0).first.health() == ServerItem::MAX_HEALTH);
       }
     }
   }
@@ -50,11 +50,11 @@ TEST_CASE("Using items reduces health") {
       // Should result in about 1000 hits.  Hopefully enough for durability to
       // kick in.
       REPEAT_FOR_MS(10000) {
-        if (weapon.health < ServerItem::MAX_HEALTH) break;
+        if (weapon.health() < ServerItem::MAX_HEALTH) break;
       }
 
       THEN("the weapon's health is reduced") {
-        CHECK(weapon.health < ServerItem::MAX_HEALTH);
+        CHECK(weapon.health() < ServerItem::MAX_HEALTH);
       }
     }
   }

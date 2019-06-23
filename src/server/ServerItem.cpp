@@ -21,7 +21,7 @@ void ServerItem::fetchAmmoItem() const {
 bool vectHasSpace(const ServerItem::vect_t &vect, const ServerItem *item,
                   size_t qty) {
   for (const auto &slot : vect) {
-    auto itemInSlot = slot.first.type;
+    auto itemInSlot = slot.first.type();
     auto qtyInSlot = slot.second;
 
     if (!itemInSlot) {
@@ -47,7 +47,7 @@ bool vectHasSpaceAfterRemovingItems(const ServerItem::vect_t &vect,
   // Remove items from copy
   auto qtyLeft = qtyThatWillBeRemoved;
   for (auto &slot : v) {
-    if (slot.first.type != itemThatWillBeRemoved) continue;
+    if (slot.first.type() != itemThatWillBeRemoved) continue;
     if (slot.second > qtyLeft) {
       slot.first = {};
       slot.second = 0;
@@ -66,7 +66,7 @@ bool operator<=(const ItemSet &itemSet, const ServerItem::vect_t &vect) {
   ItemSet remaining = itemSet;
   for (size_t i = 0; i != vect.size(); ++i) {
     const auto &invSlot = vect[i];
-    remaining.remove(invSlot.first.type, invSlot.second);
+    remaining.remove(invSlot.first.type(), invSlot.second);
     if (remaining.isEmpty()) return true;
   }
   return false;
@@ -84,6 +84,8 @@ const ServerItem *toServerItem(const Item *item) {
   return dynamic_cast<const ServerItem *>(item);
 }
 
-ServerItem::Instance::Instance(const ServerItem *typeArg) : type(typeArg) {
-  if (type) health = MAX_HEALTH;
+ServerItem::Instance::Instance(const ServerItem *type) : _type(type) {
+  if (type) _health = MAX_HEALTH;
 }
+
+void ServerItem::Instance::onUse() { _health = 0; }
