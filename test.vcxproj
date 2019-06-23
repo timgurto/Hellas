@@ -241,6 +241,7 @@
     <ClCompile Include="src\testing\test-containers.cpp" />
     <ClCompile Include="src\testing\test-culling.cpp" />
     <ClCompile Include="src\testing\test-death.cpp" />
+    <ClCompile Include="src\testing\test-durability.cpp" />
     <ClCompile Include="src\testing\test-gathering.cpp" />
     <ClCompile Include="src\testing\test-gear.cpp" />
     <ClCompile Include="src\testing\test-loading.cpp" />

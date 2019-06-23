@@ -177,6 +177,7 @@
     <ClCompile Include="src\server\Exploration.cpp" />
     <ClCompile Include="src\client\hotbar.cpp" />
     <ClCompile Include="src\server\Durability.cpp" />
+    <ClCompile Include="src\testing\test-durability.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />

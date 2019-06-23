@@ -83,3 +83,7 @@ bool operator>(const ServerItem::vect_t &vect, const ItemSet &itemSet) {
 const ServerItem *toServerItem(const Item *item) {
   return dynamic_cast<const ServerItem *>(item);
 }
+
+ServerItem::Instance::Instance(const ServerItem *typeArg) : type(typeArg) {
+  if (type) health = MAX_HEALTH;
+}

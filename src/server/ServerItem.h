@@ -13,13 +13,15 @@ class ObjectType;
 // Describes an item type
 class ServerItem : public Item {
  public:
+  static const ItemHealth MAX_HEALTH = 100;
+
   struct Instance {
     // Assumption: any item type that can have a meaningful state, cannot stack.
     const ServerItem *type{nullptr};
     ItemHealth health{0};
 
     Instance() = default;
-    Instance(const ServerItem *siType) : type(siType) {}
+    Instance(const ServerItem *typeArg);
 
     bool hasItem() const { return type != nullptr; }
   };
