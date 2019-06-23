@@ -45,7 +45,7 @@ TEST_CASE("When one user approaches another, he finds out about him",
   s.waitForUsers(1);
 
   // And a client at (1000, 10);
-  User::newPlayerSpawn = {1000, 10};
+  User::newPlayerSpawn = {1000, 10};  // TODO pop this state after test
   User::spawnRadius = 0;
   RemoteClient rc("-data testing/data/signpost");
   s.waitForUsers(2);

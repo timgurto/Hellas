@@ -1078,16 +1078,19 @@ void User::onCanAttack() { _shouldSuppressAmmoWarnings = false; }
 
 void User::onAttack() {
   // Remove ammo if ranged weapon
-  auto weapon = _gear[Item::WEAPON_SLOT].first.type;
-  if (!weapon) return;
-  auto ammoType = weapon->weaponAmmo();
-  if (!ammoType) return;
-  auto ammo = ItemSet{};
-  ammo.add(ammoType);
-  removeItems(ammo);
+  auto &weapon = _gear[Item::WEAPON_SLOT].first;
+  if (weapon.hasItem() && weapon.type->weaponAmmo()) {
+    auto ammo = ItemSet{};
+    ammo.add(weapon.type->weaponAmmo());
+    removeItems(ammo);
 
-  // The weapon itself is gone
-  if (!_gear[Item::WEAPON_SLOT].first.hasItem()) updateStats();
+    // If the weapon itself is used as ammo and there are none left
+    if (!weapon.hasItem()) updateStats();
+  }
+
+  if (weapon.hasItem()) {
+    weapon.health = 0;
+  }
 }
 
 void User::onSpellcast(const Spell::ID &id, const Spell &spell) {
