@@ -425,10 +425,12 @@ void Entity::onAttackedBy(Entity &attacker, Threat threat) {
     if (!tagger()) tagger(attackerAsUser);
   }
 
+  // Proc on-hit buffs
   for (const auto *buff : onHitBuffsAndDebuffs()) {
     buff->proc(&attacker);
   }
 
+  // Remove interruptible buffs
   for (auto buff : interruptibleBuffs()) removeBuff(buff);
 }
 

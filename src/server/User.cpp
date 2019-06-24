@@ -955,6 +955,11 @@ void User::onDestroyedOwnedObject(const ObjectType &type) const {
 void User::onAttackedBy(Entity &attacker, Threat threat) {
   cancelAction();
 
+  // Damage armour
+  for (auto &slot : _gear) {
+    slot.first.onUse();
+  }
+
   Object::onAttackedBy(attacker, threat);
 }
 

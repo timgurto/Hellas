@@ -26,13 +26,16 @@ TEST_CASE("Newly given items have full health") {
   }
 }
 
-TEST_CASE("Attacking reduces weapon health") {
-  GIVEN("a very fast, low-damage weapon, and an enemy") {
+TEST_CASE("Combat reduces weapon/armour health") {
+  GIVEN(
+      "a very fast, low-damage weapon; a very fast, low-damage enemy; some "
+      "armour") {
     auto data = R"(
-      <item id="tuning fork" gearSlot="6" >
+      <item id="tuningFork" gearSlot="6" >
         <weapon damage="1"  speed="0.01" />
       </item>
-      <npcType id="hummingbird" level="1" maxHealth="1000000000" />
+      <item id="hat" gearSlot="0" />
+      <npcType id="hummingbird" level="1" attack="1" attackTime="10" maxHealth="1000000000" />
     )";
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
@@ -42,25 +45,46 @@ TEST_CASE("Attacking reduces weapon health") {
     s.addNPC("hummingbird", {10, 15});
     const auto &hummingbird = s.getFirstNPC();
 
-    WHEN("a player attacks the enemy with the weapon for a while") {
+    WHEN("a player has the weapon equipped") {
       auto &weaponSlot = user.gear(Item::WEAPON_SLOT);
-      weaponSlot.first = {&s.getFirstItem()};
+      const auto &tuningFork = s.findItem("tuningFork");
+      weaponSlot.first = {&tuningFork};
       weaponSlot.second = 1;
-      c.sendMessage(CL_TARGET_ENTITY, makeArgs(hummingbird.serial()));
 
-      const auto &weapon = weaponSlot.first;
-      // Should result in about 1000 hits.  Hopefully enough for durability to
-      // kick in.
-      REPEAT_FOR_MS(10000) {
-        if (weapon.health() < ServerItem::MAX_HEALTH) break;
+      AND_WHEN("he attacks the enemy with the weapon for a while") {
+        c.sendMessage(CL_TARGET_ENTITY, makeArgs(hummingbird.serial()));
+
+        THEN("the weapon's health is reduced") {
+          const auto &weapon = weaponSlot.first;
+          // Should result in about 1000 hits.  Hopefully enough for durability
+          // to kick in.
+          WAIT_UNTIL_TIMEOUT(weapon.health() < ServerItem::MAX_HEALTH, 10000);
+        }
       }
+    }
 
-      THEN("the weapon's health is reduced") {
-        CHECK(weapon.health() < ServerItem::MAX_HEALTH);
+    WHEN("a player has the armour equipped") {
+      const auto HEAD_SLOT = 0;
+      auto &headSlot = user.gear(HEAD_SLOT);
+      const auto &hat = s.findItem("hat");
+      headSlot.first = {&hat};
+      headSlot.second = 1;
+
+      AND_WHEN("the enemy attacks for a while") {
+        auto &hummingbird = s.getFirstNPC();
+
+        THEN("the armour's health is reduced") {
+          WAIT_UNTIL_TIMEOUT(headSlot.first.health() < ServerItem::MAX_HEALTH,
+                             10000);
+        }
       }
     }
   }
 }
+
+// Shield
+// Tool items
+// Tool objects
 
 TEST_CASE("Broken items don't work") {
   GIVEN("a weapon that deals 42 damage") {
@@ -97,4 +121,21 @@ TEST_CASE("Broken items don't work") {
       }
     }
   }
+
+  // Armour
+  // Shield
+  // Tool items
+  // Construction from item
+  // Cast from item
+  // Use as material
 }
+
+// Tool objects
+
+// Preserved when swapping
+// Saved in container XML
+
+// Ranged weapons that deplete themselves don't damage the stack
+
+// Max 1 health loss per hit
+// Health loss is a chance only
