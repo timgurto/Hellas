@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include "TestClient.h"
 #include "TestServer.h"
 #include "testing.h"
@@ -55,6 +57,46 @@ TEST_CASE("Using items reduces health") {
 
       THEN("the weapon's health is reduced") {
         CHECK(weapon.health() < ServerItem::MAX_HEALTH);
+      }
+    }
+  }
+}
+
+static void breakItem(ServerItem::Instance &item) {
+  for (auto i = 0; i != 100000; ++i) {
+    item.onUse();
+    if (item.isBroken()) return;
+  }
+  assert(item.isBroken());
+}
+
+TEST_CASE("Broken items don't work") {
+  GIVEN("a weapon that deals 42 damage") {
+    auto data = R"(
+      <item id="sword" gearSlot="6" >
+        <weapon damage="42"  speed="1" />
+      </item>
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    WHEN("a player has one equipped") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      const auto DEFAULT_DAMAGE = user.stats().weaponDamage;
+
+      auto &weaponSlot = user.gear(Item::WEAPON_SLOT);
+      weaponSlot.first = {&s.getFirstItem()};
+      weaponSlot.second = 1;
+
+      user.updateStats();
+
+      AND_WHEN("it is broken") {
+        breakItem(weaponSlot.first);
+
+        THEN("his attack is the baseline User attack") {
+          CHECK(user.stats().weaponDamage == DEFAULT_DAMAGE);
+        }
       }
     }
   }

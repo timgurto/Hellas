@@ -1147,7 +1147,7 @@ void User::updateStats() {
   // Apply gear
   for (size_t i = 0; i != GEAR_SLOTS; ++i) {
     const ServerItem *item = _gear[i].first.type();
-    if (item != nullptr) newStats &= item->stats();
+    // if (item != nullptr) newStats &= item->stats();
   }
 
   // Apply buffs

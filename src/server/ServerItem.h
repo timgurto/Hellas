@@ -25,6 +25,7 @@ class ServerItem : public Item {
     bool hasItem() const { return _type != nullptr; }
     const ServerItem *type() const { return _type; }
     const ItemHealth health() const { return _health; }
+    bool isBroken() const { return _health == 0; }
 
     void onUse();
 
