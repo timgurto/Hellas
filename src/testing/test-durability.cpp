@@ -62,14 +62,6 @@ TEST_CASE("Using items reduces health") {
   }
 }
 
-static void breakItem(ServerItem::Instance &item) {
-  for (auto i = 0; i != 100000; ++i) {
-    item.onUse();
-    if (item.isBroken()) return;
-  }
-  assert(item.isBroken());
-}
-
 TEST_CASE("Broken items don't work") {
   GIVEN("a weapon that deals 42 damage") {
     auto data = R"(
@@ -90,9 +82,14 @@ TEST_CASE("Broken items don't work") {
       weaponSlot.second = 1;
 
       user.updateStats();
+      CHECK(user.stats().weaponDamage == 42);
 
       AND_WHEN("it is broken") {
-        breakItem(weaponSlot.first);
+        for (auto i = 0; i != 100000; ++i) {
+          user.onAttack();
+          if (weaponSlot.first.isBroken()) break;
+        }
+        CHECK(weaponSlot.first.isBroken());
 
         THEN("his attack is the baseline User attack") {
           CHECK(user.stats().weaponDamage == DEFAULT_DAMAGE);
