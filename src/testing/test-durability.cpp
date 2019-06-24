@@ -42,12 +42,16 @@ TEST_CASE("Combat reduces weapon/armour health") {
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
 
+    const auto HEAD_SLOT = 0;
+    auto &weaponSlot = user.gear(Item::WEAPON_SLOT);
+    auto &headSlot = user.gear(HEAD_SLOT);
+    const auto &tuningFork = s.findItem("tuningFork");
+    const auto &hat = s.findItem("hat");
+
     s.addNPC("hummingbird", {10, 15});
     const auto &hummingbird = s.getFirstNPC();
 
     WHEN("a player has the weapon equipped") {
-      auto &weaponSlot = user.gear(Item::WEAPON_SLOT);
-      const auto &tuningFork = s.findItem("tuningFork");
       weaponSlot.first = {&tuningFork};
       weaponSlot.second = 1;
 
@@ -63,10 +67,9 @@ TEST_CASE("Combat reduces weapon/armour health") {
       }
     }
 
-    WHEN("a player has the armour equipped") {
-      const auto HEAD_SLOT = 0;
-      auto &headSlot = user.gear(HEAD_SLOT);
-      const auto &hat = s.findItem("hat");
+    WHEN("a player has the weapon and armour equipped") {
+      weaponSlot.first = {&tuningFork};
+      weaponSlot.second = 1;
       headSlot.first = {&hat};
       headSlot.second = 1;
 
@@ -76,6 +79,12 @@ TEST_CASE("Combat reduces weapon/armour health") {
         THEN("the armour's health is reduced") {
           WAIT_UNTIL_TIMEOUT(headSlot.first.health() < ServerItem::MAX_HEALTH,
                              10000);
+        }
+
+        THEN("the weapon's health is not reduced") {
+          // Note: this will kill/respawn the player repeatedly.
+          REPEAT_FOR_MS(10000);
+          CHECK(weaponSlot.first.health() == ServerItem::MAX_HEALTH);
         }
       }
     }
