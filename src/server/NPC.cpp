@@ -316,6 +316,8 @@ void NPC::processAI(ms_t timeElapsed) {
 
     static const auto ATTEMPTS = 20;
     for (auto i = 0; i != ATTEMPTS; ++i) {
+      if (!spawner()) break;
+
       auto dest = spawner()->getRandomPoint();
       if (Server::instance().isLocationValid(dest, *type())) {
         _targetDestination = dest;

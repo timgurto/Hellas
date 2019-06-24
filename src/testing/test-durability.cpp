@@ -82,7 +82,7 @@ TEST_CASE("Combat reduces weapon/armour health") {
       feetSlot.second = 1;
 
       AND_WHEN("the enemy attacks for a while") {
-        auto &hummingbird = s.getFirstNPC();
+        // Should happen automatically
 
         THEN("all armour gets damaged") {
           WAIT_UNTIL_TIMEOUT(headSlot.first.health() < ServerItem::MAX_HEALTH,
@@ -95,6 +95,29 @@ TEST_CASE("Combat reduces weapon/armour health") {
           // Note: this will kill/respawn the player repeatedly.
           REPEAT_FOR_MS(10000);
           CHECK(weaponSlot.first.health() == ServerItem::MAX_HEALTH);
+        }
+      }
+
+      AND_WHEN("the enemy attacks once") {
+        auto &hummingbird = s.getFirstNPC();
+        auto stats = hummingbird.stats();
+        stats.attackTime = 1000;
+        stats.crit = 0;
+        hummingbird.stats(stats);
+
+        CHECK(headSlot.first.health() == ServerItem::MAX_HEALTH);
+        CHECK(feetSlot.first.health() == ServerItem::MAX_HEALTH);
+        auto healthBefore = user.health();
+
+        REPEAT_FOR_MS(1000);
+
+        CHECK(user.health() >= healthBefore - 1);
+
+        THEN("a maximum of one piece of armour is damaged") {
+          auto hatDamaged = headSlot.first.health() < ServerItem::MAX_HEALTH;
+          auto shoesDamaged = feetSlot.first.health() < ServerItem::MAX_HEALTH;
+          auto bothDamaged = hatDamaged && shoesDamaged;
+          CHECK_FALSE(bothDamaged);
         }
       }
     }
