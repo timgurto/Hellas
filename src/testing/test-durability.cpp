@@ -4,8 +4,8 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Items in inventory have full health") {
-  GIVEN("an item type") {
+TEST_CASE("Newly given items have full health") {
+  GIVEN("apple items") {
     auto data = R"(
       <item id="apple" />
     )";
@@ -26,7 +26,7 @@ TEST_CASE("Items in inventory have full health") {
   }
 }
 
-TEST_CASE("Using items reduces health") {
+TEST_CASE("Attacking reduces weapon health") {
   GIVEN("a very fast, low-damage weapon, and an enemy") {
     auto data = R"(
       <item id="tuning fork" gearSlot="6" >
@@ -75,7 +75,7 @@ TEST_CASE("Broken items don't work") {
       auto c = TestClient::WithDataString(data);
       s.waitForUsers(1);
       auto &user = s.getFirstUser();
-      const auto DEFAULT_DAMAGE = user.stats().weaponDamage;
+      const auto DEFAULT_DAMAGE = User::OBJECT_TYPE.baseStats().weaponDamage;
 
       auto &weaponSlot = user.gear(Item::WEAPON_SLOT);
       weaponSlot.first = {&s.getFirstItem()};
