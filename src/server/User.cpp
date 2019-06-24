@@ -956,8 +956,10 @@ void User::onAttackedBy(Entity &attacker, Threat threat) {
   cancelAction();
 
   // Damage armour
-  const auto HEAD_SLOT = 0;
-  _gear[HEAD_SLOT].first.onUse();
+  for (auto i = 0; i != User::GEAR_SLOTS; ++i) {
+    if (i == Item::WEAPON_SLOT) continue;
+    _gear[i].first.onUse();
+  }
 
   Object::onAttackedBy(attacker, threat);
 }

@@ -35,6 +35,7 @@ TEST_CASE("Combat reduces weapon/armour health") {
         <weapon damage="1"  speed="0.01" />
       </item>
       <item id="hat" gearSlot="0" />
+      <item id="shoes" gearSlot="5" />
       <npcType id="hummingbird" level="1" attack="1" attackTime="10" maxHealth="1000000000" />
     )";
     auto s = TestServer::WithDataString(data);
@@ -43,10 +44,13 @@ TEST_CASE("Combat reduces weapon/armour health") {
     auto &user = s.getFirstUser();
 
     const auto HEAD_SLOT = 0;
+    const auto FEET_SLOT = 5;
     auto &weaponSlot = user.gear(Item::WEAPON_SLOT);
     auto &headSlot = user.gear(HEAD_SLOT);
+    auto &feetSlot = user.gear(FEET_SLOT);
     const auto &tuningFork = s.findItem("tuningFork");
     const auto &hat = s.findItem("hat");
+    const auto &shoes = s.findItem("shoes");
 
     s.addNPC("hummingbird", {10, 15});
     const auto &hummingbird = s.getFirstNPC();
@@ -59,10 +63,10 @@ TEST_CASE("Combat reduces weapon/armour health") {
         c.sendMessage(CL_TARGET_ENTITY, makeArgs(hummingbird.serial()));
 
         THEN("the weapon's health is reduced") {
-          const auto &weapon = weaponSlot.first;
           // Should result in about 1000 hits.  Hopefully enough for durability
           // to kick in.
-          WAIT_UNTIL_TIMEOUT(weapon.health() < ServerItem::MAX_HEALTH, 10000);
+          WAIT_UNTIL_TIMEOUT(weaponSlot.first.health() < ServerItem::MAX_HEALTH,
+                             10000);
         }
       }
     }
@@ -70,14 +74,20 @@ TEST_CASE("Combat reduces weapon/armour health") {
     WHEN("a player has the weapon and armour equipped") {
       weaponSlot.first = {&tuningFork};
       weaponSlot.second = 1;
+
       headSlot.first = {&hat};
       headSlot.second = 1;
+
+      feetSlot.first = {&shoes};
+      feetSlot.second = 1;
 
       AND_WHEN("the enemy attacks for a while") {
         auto &hummingbird = s.getFirstNPC();
 
-        THEN("the armour's health is reduced") {
+        THEN("all armour gets damaged") {
           WAIT_UNTIL_TIMEOUT(headSlot.first.health() < ServerItem::MAX_HEALTH,
+                             10000);
+          WAIT_UNTIL_TIMEOUT(feetSlot.first.health() < ServerItem::MAX_HEALTH,
                              10000);
         }
 
