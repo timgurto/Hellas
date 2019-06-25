@@ -27,6 +27,7 @@ class ContainerGrid : public Element {
   static Texture _highlight,  // Emphasizes any slot the mouse is over.
       _highlightGood,         // Used to indicate matching gear slots.
       _highlightBad;
+  static Texture _damaged, _broken;  // Drawn over icons to indicate durability
 
   static size_t dragSlot;  // The slot currently being dragged from.
   static const ContainerGrid

@@ -23,6 +23,7 @@ class ClientItem : public Item {
         : _type(type), _health(health) {}
 
     const ClientItem *type() const { return _type; }
+    ItemHealth health() const { return _health; }
     const Tooltip &tooltip() const;  // Getter; creates tooltip on first call.
 
    private:

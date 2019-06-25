@@ -85,6 +85,9 @@ class Color {
   static const Color SPRITE_OUTLINE;
   static const Color SPRITE_OUTLINE_HIGHLIGHT;
 
+  static const Color DURABILITY_LOW;
+  static const Color DURABILITY_BROKEN;
+
   Color(Uint8 r, Uint8 g, Uint8 b);
   Color(const SDL_Color &rhs);
   Color(Uint32 rhs = 0);

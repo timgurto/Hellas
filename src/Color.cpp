@@ -80,6 +80,9 @@ const Color Color::CHANCE_HIGH = CYAN * .4 + BLUE * .2 + WHITE * .4;
 const Color Color::SPRITE_OUTLINE = 0x330a17;
 const Color Color::SPRITE_OUTLINE_HIGHLIGHT = 0xE5E5E5;
 
+const Color Color::DURABILITY_LOW = YELLOW;
+const Color Color::DURABILITY_BROKEN = RED;
+
 Color::Color(Uint8 r, Uint8 g, Uint8 b) : _r(r), _g(g), _b(b) {}
 
 Color::Color(const SDL_Color &rhs) : _r(rhs.r), _g(rhs.g), _b(rhs.b) {}

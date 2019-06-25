@@ -22,6 +22,8 @@ const ContainerGrid *ContainerGrid::useGrid = nullptr;
 Texture ContainerGrid::_highlight;
 Texture ContainerGrid::_highlightGood;
 Texture ContainerGrid::_highlightBad;
+Texture ContainerGrid::_damaged;
+Texture ContainerGrid::_broken;
 
 ContainerGrid::ContainerGrid(size_t rows, size_t cols,
                              ClientItem::vect_t &linked, size_t serial, px_t x,
@@ -45,6 +47,22 @@ ContainerGrid::ContainerGrid(size_t rows, size_t cols,
         Texture(std::string("Images/Items/highlightGood.png"), Color::MAGENTA);
     _highlightBad =
         Texture(std::string("Images/Items/highlightBad.png"), Color::MAGENTA);
+
+    _damaged = {Client::ICON_SIZE, Client::ICON_SIZE};
+    renderer.pushRenderTarget(_damaged);
+    renderer.setDrawColor(Color::DURABILITY_LOW);
+    renderer.fill();
+    renderer.popRenderTarget();
+    _damaged.setAlpha(0x7f);
+    _damaged.setBlend();
+
+    _broken = {Client::ICON_SIZE, Client::ICON_SIZE};
+    renderer.pushRenderTarget(_broken);
+    renderer.setDrawColor(Color::DURABILITY_BROKEN);
+    renderer.fill();
+    renderer.popRenderTarget();
+    _broken.setAlpha(0x7f);
+    _broken.setBlend();
   }
 
   for (size_t i = 0; i != _linked.size(); ++i) {
@@ -63,9 +81,11 @@ ContainerGrid::ContainerGrid(size_t rows, size_t cols,
 }
 
 void ContainerGrid::cleanup() {
-  ContainerGrid::_highlight = {};
-  ContainerGrid::_highlightGood = {};
-  ContainerGrid::_highlightBad = {};
+  _highlight = {};
+  _highlightGood = {};
+  _highlightBad = {};
+  _damaged = {};
+  _broken = {};
 }
 
 void ContainerGrid::refresh() {
@@ -85,6 +105,12 @@ void ContainerGrid::refresh() {
       const auto &slot = _linked[i];
       if (slot.first.type() != nullptr) {
         slot.first.type()->icon().draw(slotRect.x + 1, slotRect.y + 1);
+
+        if (slot.first.health() == 0)
+          _broken.draw(slotRect.x + 1, slotRect.y + 1);
+        else if (slot.first.health() <= 20)
+          _damaged.draw(slotRect.x + 1, slotRect.y + 1);
+
         if (slot.second > 1) {
           Texture label(font(), makeArgs(slot.second), FONT_COLOR),
               labelOutline(font(), toString(slot.second), Color::UI_OUTLINE);

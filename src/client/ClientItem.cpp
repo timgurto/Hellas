@@ -203,10 +203,17 @@ const Tooltip &ClientItem::Instance::tooltip() const {
   _tooltip = _type->tooltip();
   auto &tooltip = _tooltip.value();
 
-  tooltip.addGap();
-  tooltip.setColor(Color::TOOLTIP_BODY);
+  auto color = Color::TOOLTIP_BODY;
+  if (_health == 0)
+    color = Color::DURABILITY_BROKEN;
+  else if (_health <= 20)
+    color = Color::DURABILITY_LOW;
+  tooltip.setColor(color);
+
   auto oss = std::ostringstream{};
   oss << "Durability: "s << _health << "/"s << Item::MAX_HEALTH;
+
+  tooltip.addGap();
   tooltip.addLine(oss.str());
 
   return tooltip;
