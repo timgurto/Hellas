@@ -203,11 +203,11 @@ const Tooltip &ClientItem::Instance::tooltip() const {
   _tooltip = _type->tooltip();
   auto &tooltip = _tooltip.value();
 
-  if (isDebug()) {
-    tooltip.addGap();
-    tooltip.setColor(Color::TOOLTIP_BODY);
-    tooltip.addLine("(Item instance)");
-  }
+  tooltip.addGap();
+  tooltip.setColor(Color::TOOLTIP_BODY);
+  auto oss = std::ostringstream{};
+  oss << "Durability"s << _health << "/"s << Item::MAX_HEALTH;
+  tooltip.addLine(oss.str());
 
   return tooltip;
 }
