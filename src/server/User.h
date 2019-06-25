@@ -228,6 +228,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   void broadcastHealedMessage(Hitpoints amount) const override;
 
   void sendInfoToClient(const User &targetUser) const override;
+  void sendInventorySlot(size_t slot) const;
 
   void onOutOfRange(const Entity &rhs) const override;
   Message outOfRangeMessage() const override;

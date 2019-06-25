@@ -664,19 +664,25 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
             // Alert nearby users of the new equipment
             // Assumption: gear can only match a single gear slot.
             std::string gearID = "";
-            size_t gearSlot;
+            auto gearSlot = size_t{};
+            auto itemHealth = ItemHealth{};
             if (obj1 == GEAR) {
               gearSlot = slot1;
-              if (slotFrom.first.hasItem())
+              if (slotFrom.first.hasItem()) {
                 gearID = slotFrom.first.type()->id();
+                itemHealth = slotFrom.first.health();
+              }
             } else {
               gearSlot = slot2;
-              if (slotTo.first.hasItem()) gearID = slotTo.first.type()->id();
+              if (slotTo.first.hasItem()) {
+                gearID = slotTo.first.type()->id();
+                itemHealth = slotTo.first.health();
+              }
             }
             for (const User *otherUser : findUsersInArea(user->location())) {
               if (otherUser == user) continue;
               sendMessage(otherUser->socket(), SV_GEAR,
-                          makeArgs(user->name(), gearSlot, gearID));
+                          makeArgs(user->name(), gearSlot, gearID, itemHealth));
             }
           }
         }
@@ -2022,7 +2028,8 @@ void Server::sendInventoryMessageInner(
   std::string itemID =
       containerSlot.first.hasItem() ? containerSlot.first.type()->id() : "none";
   sendMessage(user.socket(), SV_INVENTORY,
-              makeArgs(serial, slot, itemID, containerSlot.second));
+              makeArgs(serial, slot, itemID, containerSlot.second,
+                       containerSlot.first.health()));
 }
 
 void Server::sendInventoryMessage(const User &user, size_t slot,

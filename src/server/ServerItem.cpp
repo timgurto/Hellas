@@ -88,4 +88,7 @@ ServerItem::Instance::Instance(const ServerItem *type) : _type(type) {
   if (type) _health = MAX_HEALTH;
 }
 
-void ServerItem::Instance::onUse() { _health = 0; }
+bool ServerItem::Instance::onUse() {
+  _health = 0;
+  return true;
+}

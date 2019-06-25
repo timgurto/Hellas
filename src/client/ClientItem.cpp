@@ -206,7 +206,7 @@ const Tooltip &ClientItem::Instance::tooltip() const {
   tooltip.addGap();
   tooltip.setColor(Color::TOOLTIP_BODY);
   auto oss = std::ostringstream{};
-  oss << "Durability"s << _health << "/"s << Item::MAX_HEALTH;
+  oss << "Durability: "s << _health << "/"s << Item::MAX_HEALTH;
   tooltip.addLine(oss.str());
 
   return tooltip;

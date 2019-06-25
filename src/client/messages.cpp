@@ -452,7 +452,8 @@ void Client::handleMessage(const std::string &msg) {
       case SV_GEAR: {
         std::string username, id;
         size_t slot;
-        singleMsg >> username >> del >> slot >> del;
+        ItemHealth itemHealth;
+        singleMsg >> username >> del >> slot >> del >> itemHealth >> del;
         readString(singleMsg, id, MSG_END);
         singleMsg >> del;
         if (del != MSG_END) break;
@@ -485,18 +486,19 @@ void Client::handleMessage(const std::string &msg) {
                            Color::CHAT_ERROR);
           break;
         }
-        _otherUsers[username]->gear()[slot].first = {&item, 60};
+        _otherUsers[username]->gear()[slot].first = {&item, itemHealth};
         break;
       }
 
       case SV_INVENTORY: {
         size_t serial, slot, quantity;
+        ItemHealth itemHealth;
         std::string itemID;
         singleMsg >> serial >> del >> slot >> del >> itemID >> del >>
-            quantity >> del;
+            quantity >> del >> itemHealth >> del;
         if (del != MSG_END) break;
 
-        handle_SV_INVENTORY(serial, slot, itemID, quantity);
+        handle_SV_INVENTORY(serial, slot, itemID, quantity, itemHealth);
         break;
       }
 
@@ -1883,7 +1885,8 @@ void Client::handleMessage(const std::string &msg) {
 }
 
 void Client::handle_SV_INVENTORY(size_t serial, size_t slot,
-                                 const std::string &itemID, size_t quantity) {
+                                 const std::string &itemID, size_t quantity,
+                                 ItemHealth itemHealth) {
   const ClientItem *item = nullptr;
   if (quantity > 0) {
     const auto it = _items.find(itemID);
@@ -1935,7 +1938,7 @@ void Client::handle_SV_INVENTORY(size_t serial, size_t slot,
   }
 
   auto &invSlot = (*container)[slot];
-  invSlot.first = ClientItem::Instance{item, 42};
+  invSlot.first = ClientItem::Instance{item, itemHealth};
   invSlot.second = quantity;
 
   // Update any UI stuff

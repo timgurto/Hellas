@@ -498,7 +498,7 @@ void User::clearInventory() {
       _inventory[i].first = {};
       _inventory[i].second = 0;
       server.sendMessage(socket(), SV_INVENTORY,
-                         makeArgs(Server::INVENTORY, i, "", 0));
+                         makeArgs(Server::INVENTORY, i, "", 0, 0));
     }
 }
 
@@ -509,7 +509,7 @@ void User::clearGear() {
       _gear[i].first = {};
       _gear[i].second = 0;
       server.sendMessage(socket(), SV_INVENTORY,
-                         makeArgs(Server::GEAR, i, "", 0));
+                         makeArgs(Server::GEAR, i, "", 0, 0));
     }
 }
 
@@ -955,7 +955,10 @@ void User::onDestroyedOwnedObject(const ObjectType &type) const {
 void User::onAttackedBy(Entity &attacker, Threat threat) {
   cancelAction();
 
-  _gear[Item::getRandomArmorSlot()].first.onUse();
+  auto armourSlotToUse = Item::getRandomArmorSlot();
+  auto armourWasDamaged = _gear[armourSlotToUse].first.onUse();
+
+  if (armourWasDamaged) sendInventorySlot(armourSlotToUse);
 
   Object::onAttackedBy(attacker, threat);
 }
@@ -1091,7 +1094,8 @@ void User::onAttack() {
   }
 
   if (weapon.hasItem()) {
-    weapon.onUse();
+    auto weaponTookDamage = weapon.onUse();
+    if (weaponTookDamage) sendInventorySlot(Item::WEAPON_SLOT);
     if (weapon.isBroken()) updateStats();
   }
 }
@@ -1272,7 +1276,9 @@ void User::sendInfoToClient(const User &targetUser) const {
   for (size_t i = 0; i != User::GEAR_SLOTS; ++i) {
     const ServerItem *item = gear(i).first.type();
     if (item != nullptr)
-      server.sendMessage(client, SV_GEAR, makeArgs(_name, i, item->id()));
+      server.sendMessage(
+          client, SV_GEAR,
+          makeArgs(_name, i, item->id(), gear(i).first.health()));
   }
 
   // Buffs/debuffs
@@ -1286,6 +1292,14 @@ void User::sendInfoToClient(const User &targetUser) const {
   // Vehicle?
   if (isDriving())
     server.sendMessage(client, SV_MOUNTED, makeArgs(driving(), _name));
+}
+
+void User::sendInventorySlot(size_t slotIndex) const {
+  const auto &slot = _gear[slotIndex];
+  const auto &item = slot.first;
+  if (!item.type()) return;
+  sendMessage(SV_INVENTORY, makeArgs(Server::GEAR, slotIndex, item.type()->id(),
+                                     slot.second, item.health()));
 }
 
 void User::onOutOfRange(const Entity &rhs) const {

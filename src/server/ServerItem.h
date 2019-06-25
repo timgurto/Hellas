@@ -25,7 +25,9 @@ class ServerItem : public Item {
     const ItemHealth health() const { return _health; }
     bool isBroken() const { return _health == 0; }
 
-    void onUse();
+    // Return value: whether item health changed as a result. Whenever true, the
+    // owner should be udpated.
+    bool onUse();
 
    private:
     const ServerItem *_type{nullptr};

@@ -262,7 +262,7 @@ enum MessageCode {
   SV_LOCATION_INSTANT_OBJECT,
 
   // An item is in the user's inventory, or a container object
-  // Arguments: serial, slot, ID, quantity
+  // Arguments: serial, slot, ID, quantity, item health
   SV_INVENTORY,
 
   // A client received something.  Signal for aesthetics (e.g., floating combat text); the more
@@ -313,8 +313,8 @@ enum MessageCode {
   // Arguments: username, classID, level
   SV_CLASS,
 
-  // A user's gear
-  // Arguments: username, slot, id
+  // A user's gear.
+  // Arguments: username, slot, id, item health
   SV_GEAR,
 
   // The recipes a user knows
