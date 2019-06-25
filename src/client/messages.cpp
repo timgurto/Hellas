@@ -453,9 +453,9 @@ void Client::handleMessage(const std::string &msg) {
         std::string username, id;
         size_t slot;
         ItemHealth itemHealth;
-        singleMsg >> username >> del >> slot >> del >> itemHealth >> del;
-        readString(singleMsg, id, MSG_END);
-        singleMsg >> del;
+        singleMsg >> username >> del >> slot >> del;
+        readString(singleMsg, id, MSG_DELIM);
+        singleMsg >> del >> itemHealth >> del;
         if (del != MSG_END) break;
         if (username == _username) {
           // showErrorMessage("Own gear info received by wrong channel.
