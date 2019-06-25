@@ -183,7 +183,7 @@ void ClientObject::onRightClick(Client &client) {
   auto relevantRange = Client::ACTION_DISTANCE;
   if (canBeAttackedByPlayer()) {
     const auto *weapon =
-        Client::instance().character().gear()[Item::WEAPON_SLOT].first.type;
+        Client::instance().character().gear()[Item::WEAPON_SLOT].first.type();
     if (weapon) relevantRange = weapon->weaponRange();
   }
   if (distance(client.playerCollisionRect(), collisionRect()) > relevantRange) {
@@ -1094,7 +1094,7 @@ bool ClientObject::shouldDrawShadow() const {
 
 bool ClientObject::containerIsEmpty() const {
   for (const auto &pair : _container)
-    if (pair.first.type != nullptr && pair.second > 0) return false;
+    if (pair.first.type() != nullptr && pair.second > 0) return false;
   return true;
 }
 

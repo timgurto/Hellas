@@ -11,6 +11,7 @@
 class Item {
  public:
   static const size_t WEAPON_SLOT = 6, OFFHAND_SLOT = 7;
+  static const ItemHealth MAX_HEALTH = 100;
 
   Item(const std::string &id);
   virtual ~Item() {}

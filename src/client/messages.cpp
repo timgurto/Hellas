@@ -469,7 +469,7 @@ void Client::handleMessage(const std::string &msg) {
 
         // Handle empty id (item was unequipped)
         if (id == "") {
-          _otherUsers[username]->gear()[slot].first.type = nullptr;
+          _otherUsers[username]->gear()[slot].first = {};
           break;
         }
 
@@ -485,7 +485,7 @@ void Client::handleMessage(const std::string &msg) {
                            Color::CHAT_ERROR);
           break;
         }
-        _otherUsers[username]->gear()[slot].first.type = &item;
+        _otherUsers[username]->gear()[slot].first = {&item, 60};
         break;
       }
 
@@ -1935,7 +1935,7 @@ void Client::handle_SV_INVENTORY(size_t serial, size_t slot,
   }
 
   auto &invSlot = (*container)[slot];
-  invSlot.first.type = item;
+  invSlot.first = ClientItem::Instance{item, 42};
   invSlot.second = quantity;
 
   // Update any UI stuff

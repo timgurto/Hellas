@@ -69,7 +69,7 @@ void Tooltip::addItemGrid(const void *itemVector) {
     renderer.fillRect({x, y, Client::ICON_SIZE, Client::ICON_SIZE});
 
     // Icon
-    auto item = slot.first.type;
+    auto item = slot.first.type();
     if (item) item->icon().draw(x, y);
 
     // Quantity

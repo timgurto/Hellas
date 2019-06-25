@@ -29,14 +29,14 @@ void TakeContainer::repopulate() {
   // Find the highest non-empty slot, to exclude all subsequent slots
   int lastNonEmptySlot = _linked.size() - 1;
   for (; lastNonEmptySlot >= 0; --lastNonEmptySlot)
-    if (_linked[lastNonEmptySlot].first.type != nullptr) break;
+    if (_linked[lastNonEmptySlot].first.type() != nullptr) break;
 
   _list->clearChildren();
   if (lastNonEmptySlot == -1) return;
 
   for (int i = 0; i <= lastNonEmptySlot; ++i) {
     auto &slot = _linked[i];
-    const auto *itemType = slot.first.type;
+    const auto *itemType = slot.first.type();
     Element *dummy = new Element;
     _list->addChild(dummy);
     if (itemType != nullptr) {

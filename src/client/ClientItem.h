@@ -16,8 +16,17 @@ class SoundProfile;
 // The client-side representation of an item type
 class ClientItem : public Item {
  public:
-  struct Instance {
-    const ClientItem *type{nullptr};
+  class Instance {
+   public:
+    Instance() = default;
+    Instance(const ClientItem *type, ItemHealth health)
+        : _type(type), _health(health) {}
+
+    const ClientItem *type() const { return _type; }
+
+   private:
+    const ClientItem *_type{nullptr};
+    ItemHealth _health{0};
   };
 
  private:

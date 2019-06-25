@@ -39,7 +39,7 @@ class Avatar : public Sprite, public ClientCombatant {
   void driving(bool b) { _driving = b; }
   bool isDriving() const { return _driving; }
   const ClientItem *getRandomArmor() const {
-    return _gear[Item::getRandomArmorSlot()].first.type;
+    return _gear[Item::getRandomArmorSlot()].first.type();
   }
   void cityName(const std::string &name) { _city = name; }
   const std::string &cityName() const { return _city; }

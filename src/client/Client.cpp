@@ -441,7 +441,7 @@ void Client::startCrafting() {
 bool Client::playerHasItem(const Item *item, size_t quantity) const {
   for (size_t i = 0; i != INVENTORY_SIZE; ++i) {
     const auto &slot = _inventory[i];
-    if (slot.first.type == item) {
+    if (slot.first.type() == item) {
       if (slot.second >= quantity)
         return true;
       else
@@ -499,9 +499,9 @@ void Client::drawGearParticles(const ClientItem::vect_t &gear,
                                const MapPoint &location, double delta) {
   for (const auto &pair : gear) {
     const auto item = pair.first;
-    if (item.type == nullptr) continue;
-    for (const auto &particles : item.type->particles()) {
-      auto gearOffsetScreen = ClientItem::gearOffset(item.type->gearSlot());
+    if (item.type() == nullptr) continue;
+    for (const auto &particles : item.type()->particles()) {
+      auto gearOffsetScreen = ClientItem::gearOffset(item.type()->gearSlot());
       auto gearOffset = MapPoint{static_cast<double>(gearOffsetScreen.x),
                                  static_cast<double>(gearOffsetScreen.y)};
 

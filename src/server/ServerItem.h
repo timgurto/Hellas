@@ -13,8 +13,6 @@ class ObjectType;
 // Describes an item type
 class ServerItem : public Item {
  public:
-  static const ItemHealth MAX_HEALTH = 100;
-
   class Instance {
     // Assumption: any item type that can have a meaningful state, cannot stack.
 

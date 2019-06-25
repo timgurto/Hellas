@@ -23,7 +23,7 @@ TEST_CASE("Client gets loot info and can loot", "[loot]") {
   c.sendMessage(CL_TAKE_ITEM, makeArgs(goldbug.serial(), 0));
 
   // And the client receives the item
-  WAIT_UNTIL(c.inventory()[0].first.type != nullptr);
+  WAIT_UNTIL(c.inventory()[0].first.type() != nullptr);
 }
 
 TEST_CASE("Objects have health", "[strength]") {
@@ -86,7 +86,7 @@ TEST_CASE("Chance for strength-items as loot from object",
     WAIT_UNTIL(clientSnowman.container().size() > 0);
 
     c.sendMessage(CL_TAKE_ITEM, makeArgs(snowman.serial(), 0));
-    WAIT_UNTIL(c.inventory()[0].first.type != nullptr);
+    WAIT_UNTIL(c.inventory()[0].first.type() != nullptr);
   }
 
   SECTION("The loot window works") {
@@ -103,7 +103,7 @@ TEST_CASE("Chance for strength-items as loot from object",
         clientSnowman.lootContainer()->rect() + ScreenRect{5, 5};
     c.simulateClick(buttonPos);
 
-    WAIT_UNTIL(c.inventory()[0].first.type != nullptr);
+    WAIT_UNTIL(c.inventory()[0].first.type() != nullptr);
   }
 }
 
@@ -139,7 +139,7 @@ TEST_CASE("Looting from a container", "[loot][container][only][.flaky]") {
         c.sendMessage(CL_TAKE_ITEM, makeArgs(chest.serial(), i));
 
       // Then he gets some gold;
-      WAIT_UNTIL(c.inventory()[0].first.type != nullptr);
+      WAIT_UNTIL(c.inventory()[0].first.type() != nullptr);
 
       // And he doesn't get all 1000
       WAIT_UNTIL(chest.container().isEmpty());
@@ -167,7 +167,7 @@ TEST_CASE("Looting from a container", "[loot][container][only][.flaky]") {
           clientChest.lootContainer()->rect() + ScreenRect{5, 5};
       c.simulateClick(buttonPos);
 
-      WAIT_UNTIL(c.inventory()[0].first.type != nullptr);
+      WAIT_UNTIL(c.inventory()[0].first.type() != nullptr);
     }
   }
 
@@ -179,7 +179,7 @@ TEST_CASE("Looting from a container", "[loot][container][only][.flaky]") {
     REPEAT_FOR_MS(200);
     c.sendMessage(CL_TAKE_ITEM, makeArgs(chest.serial(), 0));
     REPEAT_FOR_MS(200);
-    CHECK(c.inventory()[0].first.type == nullptr);
+    CHECK(c.inventory()[0].first.type() == nullptr);
   }
 
   SECTION("An owned container can be looted from") {
@@ -198,7 +198,7 @@ TEST_CASE("Looting from a container", "[loot][container][only][.flaky]") {
     c.sendMessage(CL_TAKE_ITEM, makeArgs(chest.serial(), 0));
 
     // Then he gets some gold
-    WAIT_UNTIL(c.inventory()[0].first.type != nullptr);
+    WAIT_UNTIL(c.inventory()[0].first.type() != nullptr);
   }
 }
 

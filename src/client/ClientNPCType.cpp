@@ -22,11 +22,11 @@ void ClientNPCType::addGear(const ClientItem &item) {
   if (_gear.empty()) {
     _gear = {Client::GEAR_SLOTS, {ClientItem::Instance{}, 0}};
   }
-  _gear[slot].first.type = &item;
+  _gear[slot].first = ClientItem::Instance{&item, Item::MAX_HEALTH};
   _gear[slot].second = 1;
 }
 
 const ClientItem *ClientNPCType::gear(size_t slot) const {
   if (_gear.empty()) return nullptr;
-  return _gear[slot].first.type;
+  return _gear[slot].first.type();
 }
