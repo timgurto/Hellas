@@ -58,6 +58,7 @@ TEST_CASE("Combat reduces weapon/armour health") {
     WHEN("a player has the weapon equipped") {
       weaponSlot.first = {&tuningFork};
       weaponSlot.second = 1;
+      user.updateStats();
 
       AND_WHEN("he attacks the enemy with the weapon for a while") {
         c.sendMessage(CL_TARGET_ENTITY, makeArgs(hummingbird.serial()));
@@ -161,7 +162,7 @@ TEST_CASE("Broken items don't work") {
   }
 }
 
-TEST_CASE("Item damage is limited") {
+TEST_CASE("Item damage is limited to 1") {
   GIVEN("a user with an item") {
     auto data = R"(
       <item id="thing" />
@@ -176,8 +177,30 @@ TEST_CASE("Item damage is limited") {
       auto &itemInInventory = user.inventory(0).first;
       itemInInventory.onUse();
 
-      THEN("its has lost at most 1 health") {
+      THEN("it has lost at most 1 health") {
         CHECK(itemInInventory.health() >= Item::MAX_HEALTH - 1);
+      }
+    }
+  }
+}
+
+TEST_CASE("Item damage happens randomly") {
+  GIVEN("a user with an item") {
+    auto data = R"(
+      <item id="thing" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    user.giveItem(&s.getFirstItem());
+
+    WHEN("it is used {max-health} times") {
+      auto &itemInInventory = user.inventory(0).first;
+      for (auto i = 0; i != Item::MAX_HEALTH; ++i) itemInInventory.onUse();
+
+      THEN("it still has at least 1 health") {
+        CHECK(itemInInventory.health() >= 1);
       }
     }
   }
@@ -204,5 +227,3 @@ TEST_CASE("Item damage is limited") {
 // Health of items in containers is persistent
 
 // Ranged weapons that deplete themselves don't damage the stack
-
-// Health loss is a chance only
