@@ -89,6 +89,6 @@ ServerItem::Instance::Instance(const ServerItem *type) : _type(type) {
 }
 
 bool ServerItem::Instance::onUse() {
-  _health = 0;
+  if (_health > 0) --_health;
   return true;
 }

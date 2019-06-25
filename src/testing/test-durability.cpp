@@ -124,10 +124,6 @@ TEST_CASE("Combat reduces weapon/armour health") {
   }
 }
 
-// Shield takes damage on block, not hit
-// Tool items damaged by use
-// Tool objects damaged by use
-
 TEST_CASE("Broken items don't work") {
   GIVEN("a weapon that deals 42 damage") {
     auto data = R"(
@@ -163,13 +159,44 @@ TEST_CASE("Broken items don't work") {
       }
     }
   }
-
-  // Can't block if shield is broken
-  // Can't use broken tool items
-  // Can't construct from broken item
-  // Can't cast from broken item
-  // Can't use broken item as material
 }
+
+TEST_CASE("Item damage is limited") {
+  GIVEN("a user with an item") {
+    auto data = R"(
+      <item id="thing" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    user.giveItem(&s.getFirstItem());
+
+    WHEN("it is used") {
+      auto &itemInInventory = user.inventory(0).first;
+      itemInInventory.onUse();
+
+      THEN("its has lost at most 1 health") {
+        CHECK(itemInInventory.health() >= Item::MAX_HEALTH - 1);
+      }
+    }
+  }
+}
+
+// TODO:
+
+// Shield takes damage on block, not hit
+// Armour doesn't take damage on block
+// Weapon/armour don't take damage on miss/dodge
+// Tool items damaged by use
+// Tool objects damaged by use
+
+// Can't block if shield is broken
+// Can't use broken tool items
+// Can't construct from broken item
+// Can't cast from broken item
+// Can't use broken item as material
+// Merchant objects can't trade with damaged items
 
 // Can't use broken tool objects
 
@@ -178,5 +205,4 @@ TEST_CASE("Broken items don't work") {
 
 // Ranged weapons that deplete themselves don't damage the stack
 
-// Max 1 health loss per hit
 // Health loss is a chance only
