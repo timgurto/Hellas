@@ -191,3 +191,23 @@ void ClientItem::addParticles(const std::string &profileName,
   p.offset = offset;
   _particles.push_back(p);
 }
+
+const Tooltip &ClientItem::Instance::tooltip() const {
+  if (_tooltip.hasValue()) return _tooltip.value();
+
+  if (!_type) {
+    _tooltip = Tooltip{};
+    return _tooltip.value();
+  }
+
+  _tooltip = _type->tooltip();
+  auto &tooltip = _tooltip.value();
+
+  if (isDebug()) {
+    tooltip.addGap();
+    tooltip.setColor(Color::TOOLTIP_BODY);
+    tooltip.addLine("(Item instance)");
+  }
+
+  return tooltip;
+}

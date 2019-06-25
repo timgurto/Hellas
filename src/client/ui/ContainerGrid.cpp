@@ -113,11 +113,11 @@ void ContainerGrid::refresh() {
 
   // Item tooltip
   if (_mouseOverSlot != NO_SLOT) {
-    const ClientItem *item = _linked[_mouseOverSlot].first.type();
-    if (item == nullptr)
+    const auto &item = _linked[_mouseOverSlot].first;
+    if (!item.type())
       clearTooltip();
     else
-      setTooltip(item->tooltip());
+      setTooltip(item.tooltip());
   }
 }
 
