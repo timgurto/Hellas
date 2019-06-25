@@ -11,7 +11,7 @@ TEST_CASE("Construction materials can be added", "[construction]") {
   s.waitForUsers(1);
   User &user = s.getFirstUser();
   user.giveItem(&*s.items().begin());
-  WAIT_UNTIL(c.inventory()[0].first != nullptr);
+  WAIT_UNTIL(c.inventory()[0].first.type != nullptr);
 
   // When the user places a construction site;
   c.sendMessage(CL_CONSTRUCT, makeArgs("wall", 10, 10));
@@ -149,7 +149,7 @@ TEST_CASE("A construction material can 'return' an item", "[construction]") {
   auto &user = s.getFirstUser();
   auto &matches = *s.items().find(ServerItem{"matches"});
   user.giveItem(&matches);
-  WAIT_UNTIL(c.inventory()[0].first != nullptr);
+  WAIT_UNTIL(c.inventory()[0].first.type != nullptr);
 
   // When the user places a fire construction site;
   c.sendMessage(CL_CONSTRUCT, makeArgs("fire", 10, 10));

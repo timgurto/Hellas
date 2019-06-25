@@ -120,7 +120,7 @@ Client::Client()
       _basePassive(std::string("Images/targetPassive.png"), Color::MAGENTA),
       _baseAggressive(std::string("Images/targetAggressive.png"),
                       Color::MAGENTA),
-      _inventory(INVENTORY_SIZE, std::make_pair(nullptr, 0)),
+      _inventory(INVENTORY_SIZE, std::make_pair(ClientItem::Instance{}, 0)),
 
       _time(SDL_GetTicks()),
       _timeElapsed(0),
@@ -440,8 +440,8 @@ void Client::startCrafting() {
 
 bool Client::playerHasItem(const Item *item, size_t quantity) const {
   for (size_t i = 0; i != INVENTORY_SIZE; ++i) {
-    const std::pair<const ClientItem *, size_t> slot = _inventory[i];
-    if (slot.first == item) {
+    const auto &slot = _inventory[i];
+    if (slot.first.type == item) {
       if (slot.second >= quantity)
         return true;
       else
@@ -499,9 +499,9 @@ void Client::drawGearParticles(const ClientItem::vect_t &gear,
                                const MapPoint &location, double delta) {
   for (const auto &pair : gear) {
     const auto item = pair.first;
-    if (!item) continue;
-    for (const auto &particles : item->particles()) {
-      auto gearOffsetScreen = ClientItem::gearOffset(item->gearSlot());
+    if (item.type == nullptr) continue;
+    for (const auto &particles : item.type->particles()) {
+      auto gearOffsetScreen = ClientItem::gearOffset(item.type->gearSlot());
       auto gearOffset = MapPoint{static_cast<double>(gearOffsetScreen.x),
                                  static_cast<double>(gearOffsetScreen.y)};
 

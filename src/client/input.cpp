@@ -348,7 +348,7 @@ void Client::handleInput(double delta) {
                             makeArgs(ContainerGrid::useSlot, x, y));
                 prepareAction(std::string("Constructing ") +
                               _inventory[ContainerGrid::useSlot]
-                                  .first->constructsObject()
+                                  .first.type->constructsObject()
                                   ->name());
               }
               break;

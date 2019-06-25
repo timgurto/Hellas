@@ -1303,7 +1303,7 @@ TEST_CASE("Quest items that drop only while on quest", "[quests]") {
 
           AND_WHEN("he loots it") {
             c.sendMessage(CL_TAKE_ITEM, makeArgs(dragon.serial(), 0));
-            WAIT_UNTIL(c.inventory()[0].first != nullptr);
+            WAIT_UNTIL(c.inventory()[0].first.type != nullptr);
 
             AND_WHEN("he kills another dragon") {
               s.addNPC("dragon", {10, 5});

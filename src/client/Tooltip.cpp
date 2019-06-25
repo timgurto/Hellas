@@ -47,7 +47,9 @@ void Tooltip::embed(const Tooltip &subTooltip) {
   _content.push_back(subTooltip._generated);
 }
 
-void Tooltip::addItemGrid(const ClientItemVector &items) {
+void Tooltip::addItemGrid(const void *itemVector) {
+  const auto &items = *reinterpret_cast<const ClientItem::vect_t *>(itemVector);
+
   static const size_t MAX_COLS = 5;
   static const auto GAP = 1_px;
   auto cols = max(items.size(), MAX_COLS);
@@ -67,7 +69,7 @@ void Tooltip::addItemGrid(const ClientItemVector &items) {
     renderer.fillRect({x, y, Client::ICON_SIZE, Client::ICON_SIZE});
 
     // Icon
-    auto item = slot.first;
+    auto item = slot.first.type;
     if (item) item->icon().draw(x, y);
 
     // Quantity

@@ -18,7 +18,7 @@ Avatar::Avatar(const std::string &name, const MapPoint &location)
     : Sprite(&_spriteType, location),
       ClientCombatant(&_combatantType),
       _name(name),
-      _gear(Client::GEAR_SLOTS, std::make_pair(nullptr, 0)),
+      _gear(Client::GEAR_SLOTS, std::make_pair(ClientItem::Instance{}, 0)),
       _driving(false) {}
 
 void Avatar::draw(const Client &client) const {
@@ -30,7 +30,7 @@ void Avatar::draw(const Client &client) const {
 
   // Draw gear
   for (const auto &pair : ClientItem::drawOrder()) {
-    const ClientItem *item = _gear[pair.second].first;
+    const ClientItem *item = _gear[pair.second].first.type;
     if (item != nullptr) item->draw(location());
   }
 
@@ -115,7 +115,7 @@ const Tooltip &Avatar::tooltip() const {
 
 void Avatar::playAttackSound() const {
   static const size_t WEAPON_SLOT = 6;
-  const ClientItem *weapon = _gear[WEAPON_SLOT].first;
+  const ClientItem *weapon = _gear[WEAPON_SLOT].first.type;
   const Client &client = *Client::_instance;
   const SoundProfile *weaponSound =
       weapon == nullptr ? client.avatarSounds() : weapon->sounds();

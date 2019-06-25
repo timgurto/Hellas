@@ -29,25 +29,26 @@ void TakeContainer::repopulate() {
   // Find the highest non-empty slot, to exclude all subsequent slots
   int lastNonEmptySlot = _linked.size() - 1;
   for (; lastNonEmptySlot >= 0; --lastNonEmptySlot)
-    if (_linked[lastNonEmptySlot].first != nullptr) break;
+    if (_linked[lastNonEmptySlot].first.type != nullptr) break;
 
   _list->clearChildren();
   if (lastNonEmptySlot == -1) return;
 
   for (int i = 0; i <= lastNonEmptySlot; ++i) {
     auto &slot = _linked[i];
+    const auto *itemType = slot.first.type;
     Element *dummy = new Element;
     _list->addChild(dummy);
-    if (slot.first != nullptr) {
+    if (itemType != nullptr) {
       auto pSlot = &_slots[i];
       Button *button = new Button({0, 0, dummy->width(), dummy->height()}, "",
                                   [pSlot]() { take(pSlot); });
       dummy->addChild(button);
-      button->addChild(new Picture(1, 1, slot.first->icon()));
+      button->addChild(new Picture(1, 1, itemType->icon()));
       px_t labX = Client::ICON_SIZE + 2;
       button->addChild(
           new Label({labX, 0, dummy->width() - labX, dummy->height()},
-                    slot.first->name(), LEFT_JUSTIFIED, CENTER_JUSTIFIED));
+                    itemType->name(), LEFT_JUSTIFIED, CENTER_JUSTIFIED));
       if (slot.second > 1)
         button->addChild(
             new Label({labX, 0, dummy->width() - labX, dummy->height()},

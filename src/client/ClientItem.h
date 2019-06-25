@@ -15,6 +15,12 @@ class SoundProfile;
 
 // The client-side representation of an item type
 class ClientItem : public Item {
+ public:
+  struct Instance {
+    const ClientItem *type{nullptr};
+  };
+
+ private:
   std::string _name;
   Texture _icon;
   Texture _gearImage;
@@ -59,7 +65,7 @@ class ClientItem : public Item {
   void addParticles(const std::string &profileName, const MapPoint &offset);
   const std::vector<Particles> &particles() const { return _particles; }
 
-  typedef std::vector<std::pair<const ClientItem *, size_t> > vect_t;
+  typedef std::vector<std::pair<ClientItem::Instance, size_t> > vect_t;
 
   void constructsObject(const ClientObjectType *obj) {
     _constructsObject = obj;

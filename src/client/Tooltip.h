@@ -13,7 +13,6 @@
 #include "WordWrapper.h"
 
 class ClientItem;
-using ClientItemVector = std::vector<std::pair<const ClientItem *, size_t> >;
 struct ClientMerchantSlot;
 
 class Tooltip {
@@ -46,7 +45,7 @@ class Tooltip {
   using Lines = std::vector<std::string>;
   void addLines(const Lines &lines);
   void embed(const Tooltip &subTooltip);
-  void addItemGrid(const ClientItemVector &items);
+  void addItemGrid(const void *itemVector);  // To avoid recursive #includes
   void addMerchantSlots(const std::vector<ClientMerchantSlot> &slots);
 
   px_t width() const;

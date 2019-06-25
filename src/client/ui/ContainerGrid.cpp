@@ -1,4 +1,5 @@
 #include "ContainerGrid.h"
+
 #include "../../server/User.h"
 #include "../Client.h"
 #include "../Renderer.h"
@@ -79,11 +80,11 @@ void ContainerGrid::refresh() {
       static const auto SLOT_BACKGROUND_OFFSET = ScreenRect{1, 1, -2, -2};
       renderer.fillRect(slotRect + SLOT_BACKGROUND_OFFSET);
     }
-    if (dragSlot != i ||
-        dragGrid != this) {  // Don't draw an item being moved by the mouse.
-      const std::pair<const ClientItem *, size_t> &slot = _linked[i];
-      if (slot.first != nullptr) {
-        slot.first->icon().draw(slotRect.x + 1, slotRect.y + 1);
+    // Don't draw an item being moved by the mouse.
+    if (dragSlot != i || dragGrid != this) {
+      const auto &slot = _linked[i];
+      if (slot.first.type != nullptr) {
+        slot.first.type->icon().draw(slotRect.x + 1, slotRect.y + 1);
         if (slot.second > 1) {
           Texture label(font(), makeArgs(slot.second), FONT_COLOR),
               labelOutline(font(), toString(slot.second), Color::UI_OUTLINE);
@@ -104,7 +105,7 @@ void ContainerGrid::refresh() {
 
       // Indicate matching gear slot if an item is being dragged
     } else if (_serial == Client::GEAR && dragGrid != nullptr) {
-      size_t itemSlot = dragGrid->_linked[dragSlot].first->gearSlot();
+      size_t itemSlot = dragGrid->_linked[dragSlot].first.type->gearSlot();
       (i == itemSlot ? _highlightGood : _highlightBad)
           .draw(slotRect.x + 1, slotRect.y + 1);
     }
@@ -112,7 +113,7 @@ void ContainerGrid::refresh() {
 
   // Item tooltip
   if (_mouseOverSlot != NO_SLOT) {
-    const ClientItem *item = _linked[_mouseOverSlot].first;
+    const ClientItem *item = _linked[_mouseOverSlot].first.type;
     if (item == nullptr)
       clearTooltip();
     else
@@ -153,10 +154,10 @@ void ContainerGrid::leftMouseUp(Element &e, const ScreenPoint &mousePos) {
     // Enforce gear slots
     if (dragGrid != nullptr) {
       if (dragGrid->_serial == Client::GEAR) {  // From gear slot
-        const ClientItem *item = grid._linked[slot].first;
+        const ClientItem *item = grid._linked[slot].first.type;
         if (item != nullptr && item->gearSlot() != dragSlot) return;
       } else if (grid._serial == Client::GEAR) {  // To gear slot
-        const ClientItem *item = dragGrid->_linked[dragSlot].first;
+        const ClientItem *item = dragGrid->_linked[dragSlot].first.type;
         if (item != nullptr && item->gearSlot() != slot) return;
       }
     }
@@ -166,7 +167,7 @@ void ContainerGrid::leftMouseUp(Element &e, const ScreenPoint &mousePos) {
       Client::_instance->sendMessage(
           CL_SWAP_ITEMS,
           makeArgs(dragGrid->_serial, dragSlot, grid._serial, slot));
-      const ClientItem *item = dragGrid->_linked[dragSlot].first;
+      const ClientItem *item = dragGrid->_linked[dragSlot].first.type;
       if (item != nullptr && item->sounds() != nullptr)
         item->sounds()->playOnce("drop");
 
@@ -183,7 +184,7 @@ void ContainerGrid::leftMouseUp(Element &e, const ScreenPoint &mousePos) {
 
       // Same grid and slot that mouse went down on and slot isn't empty: start
       // dragging.
-    } else if (mouseDownSlot == slot && grid._linked[slot].first) {
+    } else if (mouseDownSlot == slot && grid._linked[slot].first.type) {
       dragSlot = slot;
       dragGrid = &grid;
       Client::_instance->onChangeDragItem();
@@ -211,7 +212,7 @@ void ContainerGrid::rightMouseUp(Element &e, const ScreenPoint &mousePos) {
     useSlot = NO_SLOT;
     useGrid = nullptr;
   } else if (slot != NO_SLOT) {  // Right-clicked a slot
-    const ClientItem *item = grid._linked[slot].first;
+    const ClientItem *item = grid._linked[slot].first.type;
     if (item != nullptr) {  // Slot is not empty
       if (grid._serial == Client::INVENTORY) {
         if (item->canUse()) {
@@ -246,19 +247,19 @@ const ClientItem *ContainerGrid::getDragItem() {
   if (dragSlot == NO_SLOT || !dragGrid)
     return nullptr;
   else
-    return dragGrid->_linked[dragSlot].first;
+    return dragGrid->_linked[dragSlot].first.type;
 }
 
 const ClientItem *ContainerGrid::getUseItem() {
   if (useSlot == NO_SLOT || !useGrid)
     return nullptr;
   else
-    return useGrid->_linked[useSlot].first;
+    return useGrid->_linked[useSlot].first.type;
 }
 
 void ContainerGrid::dropItem() {
   if (dragSlot != NO_SLOT && dragGrid != nullptr) {
-    const ClientItem *item = dragGrid->_linked[dragSlot].first;
+    const ClientItem *item = dragGrid->_linked[dragSlot].first.type;
     Client::_instance->dropItemOnConfirmation(dragGrid->_serial, dragSlot,
                                               item);
     dragSlot = NO_SLOT;
