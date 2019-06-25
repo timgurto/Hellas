@@ -91,7 +91,7 @@ ServerItem::Instance::Instance(const ServerItem *type) : _type(type) {
 bool ServerItem::Instance::onUse() {
   if (_health == 0) return false;
 
-  const auto DAMAGE_CHANCE = 0.1;
+  const auto DAMAGE_CHANCE = 0.05;
   if (randDouble() > DAMAGE_CHANCE) return false;
 
   --_health;
