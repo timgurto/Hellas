@@ -189,8 +189,6 @@ void Entity::update(ms_t timeElapsed) {
 
   resetAttackTimer();
 
-  onAttack();
-
   const Server &server = Server::instance();
   MapPoint locus = midpoint(location(), pTarget->location());
 
@@ -248,6 +246,10 @@ void Entity::update(ms_t timeElapsed) {
     else
       damage -= _stats.blockValue;
   }
+
+  // This is called after damage is determined, as it may result in the weapon
+  // breaking.
+  onAttack();
 
   // Give target opportunity to react.  This includes tagging, and so must be
   // done before damage (and possible death)
