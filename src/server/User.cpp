@@ -955,15 +955,7 @@ void User::onDestroyedOwnedObject(const ObjectType &type) const {
 void User::onAttackedBy(Entity &attacker, Threat threat) {
   cancelAction();
 
-  // Damage armour
-  auto gearSlotToDamage = size_t{};
-  const auto ATTEMPTS = 20;
-  for (auto i = 0; i != ATTEMPTS; ++i) {
-    gearSlotToDamage = rand() % User::GEAR_SLOTS;
-    if (gearSlotToDamage == Item::WEAPON_SLOT) continue;
-    break;
-  }
-  _gear[gearSlotToDamage].first.onUse();
+  _gear[Item::getRandomArmorSlot()].first.onUse();
 
   Object::onAttackedBy(attacker, threat);
 }

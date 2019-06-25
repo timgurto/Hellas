@@ -124,9 +124,9 @@ TEST_CASE("Combat reduces weapon/armour health") {
   }
 }
 
-// Shield
-// Tool items
-// Tool objects
+// Shield takes damage on block, not hit
+// Tool items damaged by use
+// Tool objects damaged by use
 
 TEST_CASE("Broken items don't work") {
   GIVEN("a weapon that deals 42 damage") {
@@ -164,18 +164,17 @@ TEST_CASE("Broken items don't work") {
     }
   }
 
-  // Armour
-  // Shield
-  // Tool items
-  // Construction from item
-  // Cast from item
-  // Use as material
+  // Can't block if shield is broken
+  // Can't use broken tool items
+  // Can't construct from broken item
+  // Can't cast from broken item
+  // Can't use broken item as material
 }
 
-// Tool objects
+// Can't use broken tool objects
 
-// Preserved when swapping
-// Saved in container XML
+// Item health preserved when swapping
+// Health of items in containers is persistent
 
 // Ranged weapons that deplete themselves don't damage the stack
 
