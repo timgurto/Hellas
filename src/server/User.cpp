@@ -501,6 +501,13 @@ bool User::checkAndDamageTools(const std::set<std::string> &tags) {
   return true;
 }
 
+bool User::checkAndDamageTool(const std::string &tag) {
+  auto tool = findTool(tag);
+  if (!tool) return false;
+  tool.use();
+  return true;
+}
+
 void User::clearInventory() {
   const Server &server = *Server::_instance;
   for (auto i = 0; i != INVENTORY_SIZE; ++i)

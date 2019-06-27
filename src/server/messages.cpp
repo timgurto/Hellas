@@ -136,6 +136,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           sendMessage(client, WARNING_NEED_MATERIALS);
           break;
         }
+
+        // Tool check must be the last check, as it damages the tools.
         auto userHasRequiredTools = user->checkAndDamageTools(it->tools());
         if (!userHasRequiredTools) {
           sendMessage(client, WARNING_NEED_TOOLS);
@@ -181,11 +183,6 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           sendMessage(client, ERROR_UNBUILDABLE);
           break;
         }
-        bool requiresTool = !objType->constructionReq().empty();
-        if (requiresTool && !user->findTool(objType->constructionReq())) {
-          sendMessage(client, WARNING_NEED_TOOLS);
-          break;
-        }
         const MapPoint location(x, y);
         if (distance(user->collisionRect(),
                      objType->collisionRect() + location) > ACTION_DISTANCE) {
@@ -196,6 +193,15 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           sendMessage(client, WARNING_BLOCKED);
           break;
         }
+
+        // Tool check must be the last check, as it damages the tools.
+        bool requiresTool = !objType->constructionReq().empty();
+        if (requiresTool &&
+            !user->checkAndDamageTool(objType->constructionReq())) {
+          sendMessage(client, WARNING_NEED_TOOLS);
+          break;
+        }
+
         auto ownerIsCity = msgCode == CL_CONSTRUCT_FOR_CITY;
         user->beginConstructing(*objType, location, ownerIsCity);
         sendMessage(client, SV_ACTION_STARTED,
@@ -239,11 +245,15 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           sendMessage(client, WARNING_BLOCKED);
           break;
         }
+
+        // Tool check must be the last check, as it damages the tools.
         const std::string constructionReq = objType.constructionReq();
-        if (!(constructionReq.empty() || user->findTool(constructionReq))) {
+        if (!(constructionReq.empty() ||
+              user->checkAndDamageTool(constructionReq))) {
           sendMessage(client, WARNING_ITEM_TAG_NEEDED, constructionReq);
           break;
         }
+
         auto ownerIsCity = msgCode == CL_CONSTRUCT_FROM_ITEM_FOR_CITY;
         user->beginConstructing(objType, location, ownerIsCity, slot);
         sendMessage(client, SV_ACTION_STARTED,
@@ -331,16 +341,19 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           sendMessage(client, WARNING_NO_PERMISSION);
           break;
         }
-        const std::string &gatherReq = obj->objType().gatherReq();
-        if (gatherReq != "none" && !user->findTool(gatherReq)) {
-          sendMessage(client, WARNING_ITEM_TAG_NEEDED, gatherReq);
-          break;
-        }
         // Check that it has an inventory
         if (obj->hasContainer() && !obj->container().isEmpty()) {
           sendMessage(client, WARNING_NOT_EMPTY);
           break;
         }
+
+        // Tool check must be the last check, as it damages the tools.
+        const std::string &gatherReq = obj->objType().gatherReq();
+        if (gatherReq != "none" && !user->checkAndDamageTool(gatherReq)) {
+          sendMessage(client, WARNING_ITEM_TAG_NEEDED, gatherReq);
+          break;
+        }
+
         user->beginGathering(obj);
         sendMessage(client, SV_ACTION_STARTED,
                     makeArgs(obj->objType().gatherTime()));
@@ -1834,9 +1847,10 @@ void Server::handle_CL_TAKE_TALENT(User &user, const Talent::Name &talentName) {
     return;
   }
 
+  // Tool check must be the last check, as it damages the tools.
   const auto &requiredTool = talent->tier().requiredTool;
   auto requiresTool = !requiredTool.empty();
-  if (requiresTool && !user.findTool(requiredTool)) {
+  if (requiresTool && !user.checkAndDamageTool(requiredTool)) {
     sendMessage(user.socket(), WARNING_ITEM_TAG_NEEDED, requiredTool);
     return;
   }

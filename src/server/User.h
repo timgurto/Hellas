@@ -261,9 +261,13 @@ class User : public Object {  // TODO: Don't inherit from Object
     Type _type{NOT_FOUND};
     ServerItem::Instance *_item{nullptr};
   };
-  ToolSearchResult findTool(const std::string &tagName);
   bool checkAndDamageTools(const std::set<std::string> &tags);
+  bool checkAndDamageTool(const std::string &tag);
 
+ private:
+  ToolSearchResult findTool(const std::string &tagName);
+
+ public:
   void clearInventory();
   void clearGear();
 

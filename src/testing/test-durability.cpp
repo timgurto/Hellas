@@ -207,7 +207,7 @@ TEST_CASE("Item damage happens randomly") {
 }
 
 TEST_CASE("Crafting tools lose durability") {
-  GIVEN("a recipe that requires a tool") {
+  GIVEN("a user with a crafting tool") {
     auto data = R"(
       <item id="rabbit" stackSize="1000" />
       <item id="hat">
@@ -226,7 +226,7 @@ TEST_CASE("Crafting tools lose durability") {
     WHEN("the recipe is crafted many times") {
       const auto &hat = user.inventory(0).first;
 
-      for (auto i = 0; i != 1000; ++i) {
+      for (auto i = 0; i != 200; ++i) {
         c.sendMessage(CL_CRAFT, "rabbit");
         REPEAT_FOR_MS(20);
         if (hat.health() < Item::MAX_HEALTH) break;
@@ -237,13 +237,40 @@ TEST_CASE("Crafting tools lose durability") {
   }
 }
 
+TEST_CASE("Construction tools lose durability") {
+  GIVEN("a user with a construction tool") {
+    auto data = R"(
+      <objectType id="hole" constructionReq="digging" />
+      <item id="shovel">
+        <tag name="digging" />
+      </item>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    user.giveItem(&s.findItem("shovel"));
+    user.addConstruction("hole");
+
+    WHEN("many objects are constructed") {
+      const auto &shovel = user.inventory(0).first;
+
+      for (auto i = 0; i != 200; ++i) {
+        c.sendMessage(CL_CONSTRUCT, makeArgs("hole", 10, 15));
+        REPEAT_FOR_MS(20);
+        if (shovel.health() < Item::MAX_HEALTH) break;
+      }
+
+      THEN("the tool is damaged") { CHECK(shovel.health() < Item::MAX_HEALTH); }
+    }
+  }
+}
+
 // TODO:
 
 // Shield takes damage on block, not hit
 // Armour doesn't take damage on block
 // Weapon/armour don't take damage on miss/dodge
-// Tool items damaged by use (construct, construct from item, gather, take
-// talent)
 // Tool objects damaged by use
 
 // Can't block if shield is broken
