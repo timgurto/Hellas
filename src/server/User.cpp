@@ -443,17 +443,17 @@ bool User::hasItems(const std::string &tag, size_t quantity) const {
   return false;
 }
 
-bool User::hasTool(const std::string &tagName) const {
+User::ToolSearchResult User::findTool(const std::string &tagName) {
   // Check gear
   for (size_t i = 0; i != User::GEAR_SLOTS; ++i) {
-    const ServerItem *item = _gear[i].first.type();
-    if (item && item->isTag(tagName)) return true;
+    auto &slot = _gear[i].first;
+    if (slot.hasItem() && slot.type()->isTag(tagName)) return {slot};
   }
 
   // Check inventory
   for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
-    const ServerItem *item = _inventory[i].first.type();
-    if (item && item->isTag(tagName)) return true;
+    auto &slot = _inventory[i].first;
+    if (slot.hasItem() && slot.type()->isTag(tagName)) return {slot};
   }
 
   // Check nearby terrain
@@ -461,7 +461,8 @@ bool User::hasTool(const std::string &tagName) const {
   auto nearbyTerrain = server.map().terrainTypesOverlapping(
       collisionRect(), Server::ACTION_DISTANCE);
   for (char terrainType : nearbyTerrain) {
-    if (server.terrainType(terrainType)->tag() == tagName) return true;
+    if (server.terrainType(terrainType)->tag() == tagName)
+      return {ToolSearchResult::TERRAIN};
   }
 
   // Check nearby objects
@@ -479,15 +480,24 @@ bool User::hasTool(const std::string &tagName) const {
         continue;
       if (!pObj->permissions().doesUserHaveAccess(_name)) continue;
 
-      return true;
+      return {ToolSearchResult::OBJECT};
     }
 
-  return false;
+  return {ToolSearchResult::NOT_FOUND};
 }
 
-bool User::hasTools(const std::set<std::string> &classes) const {
-  for (const std::string &tagName : classes)
-    if (!hasTool(tagName)) return false;
+bool User::checkAndDamageTools(const std::set<std::string> &tags) {
+  auto toolsFound = std::vector<ToolSearchResult>{};
+  for (const std::string &tagName : tags) {
+    auto result = findTool(tagName);
+    if (!result) return false;
+    toolsFound.push_back(result);
+  }
+
+  // At this point, all tools were found and true will be returned.  Only now
+  // should all tools be damaged.
+  for (const auto &tool : toolsFound) tool.use();
+
   return true;
 }
 
@@ -1547,4 +1557,16 @@ bool User::QuestProgress::operator<(const QuestProgress &rhs) const {
   if (quest != rhs.quest) return quest < rhs.quest;
   if (type != rhs.type) return type < rhs.type;
   return ID < rhs.ID;
+}
+
+User::ToolSearchResult::ToolSearchResult(Type type) : _type(type) {
+  if (type == ITEM) SERVER_ERROR("Bad tool search");
+}
+
+void User::ToolSearchResult::use() const {
+  switch (_type) {
+    case ITEM:
+      _item->onUse();
+      break;
+  }
 }

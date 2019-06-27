@@ -75,13 +75,13 @@ TEST_CASE("NPCs don't cause tool checks to crash", "[tool][crash]") {
   auto s = TestServer::WithData("wolf");
   auto c = TestClient::WithData("wolf");
   s.waitForUsers(1);
-  const auto &user = s.getFirstUser();
+  auto &user = s.getFirstUser();
 
   // And an NPC;
   s.addNPC("wolf", user.location() + MapPoint{0, 5});
 
   // When hasTool() is called
-  user.hasTool("fakeTool");
+  user.findTool("fakeTool");
 
   // Then the server doesn't crash
 }

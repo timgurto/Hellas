@@ -249,8 +249,20 @@ class User : public Object {  // TODO: Don't inherit from Object
   void removeItems(const ItemSet &items);
   void removeItems(const std::string &tag, size_t quantity);
   int countItems(const ServerItem *item) const;
-  bool hasTool(const std::string &tagName) const;
-  bool hasTools(const std::set<std::string> &classes) const;
+  class ToolSearchResult {
+   public:
+    enum Type { NOT_FOUND, ITEM, OBJECT, TERRAIN };
+    ToolSearchResult(ServerItem::Instance &item) : _type(ITEM), _item(&item) {}
+    ToolSearchResult(Type type);
+    operator bool() const { return _type != NOT_FOUND; }
+    void use() const;
+
+   private:
+    Type _type{NOT_FOUND};
+    ServerItem::Instance *_item{nullptr};
+  };
+  ToolSearchResult findTool(const std::string &tagName);
+  bool checkAndDamageTools(const std::set<std::string> &tags);
 
   void clearInventory();
   void clearGear();

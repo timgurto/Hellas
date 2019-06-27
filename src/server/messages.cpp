@@ -136,7 +136,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           sendMessage(client, WARNING_NEED_MATERIALS);
           break;
         }
-        if (!user->hasTools(it->tools())) {
+        auto userHasRequiredTools = user->checkAndDamageTools(it->tools());
+        if (!userHasRequiredTools) {
           sendMessage(client, WARNING_NEED_TOOLS);
           break;
         }
@@ -181,7 +182,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           break;
         }
         bool requiresTool = !objType->constructionReq().empty();
-        if (requiresTool && !user->hasTool(objType->constructionReq())) {
+        if (requiresTool && !user->findTool(objType->constructionReq())) {
           sendMessage(client, WARNING_NEED_TOOLS);
           break;
         }
@@ -239,7 +240,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           break;
         }
         const std::string constructionReq = objType.constructionReq();
-        if (!(constructionReq.empty() || user->hasTool(constructionReq))) {
+        if (!(constructionReq.empty() || user->findTool(constructionReq))) {
           sendMessage(client, WARNING_ITEM_TAG_NEEDED, constructionReq);
           break;
         }
@@ -331,7 +332,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           break;
         }
         const std::string &gatherReq = obj->objType().gatherReq();
-        if (gatherReq != "none" && !user->hasTool(gatherReq)) {
+        if (gatherReq != "none" && !user->findTool(gatherReq)) {
           sendMessage(client, WARNING_ITEM_TAG_NEEDED, gatherReq);
           break;
         }
@@ -1835,7 +1836,7 @@ void Server::handle_CL_TAKE_TALENT(User &user, const Talent::Name &talentName) {
 
   const auto &requiredTool = talent->tier().requiredTool;
   auto requiresTool = !requiredTool.empty();
-  if (requiresTool && !user.hasTool(requiredTool)) {
+  if (requiresTool && !user.findTool(requiredTool)) {
     sendMessage(user.socket(), WARNING_ITEM_TAG_NEEDED, requiredTool);
     return;
   }
