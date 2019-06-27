@@ -222,10 +222,9 @@ TEST_CASE("Crafting tools lose durability") {
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
     user.giveItem(&s.findItem("hat"));
+    auto &hat = user.inventory(0).first;
 
     WHEN("the recipe is crafted many times") {
-      const auto &hat = user.inventory(0).first;
-
       for (auto i = 0; i != 200; ++i) {
         c.sendMessage(CL_CRAFT, "rabbit");
         REPEAT_FOR_MS(20);
@@ -233,6 +232,23 @@ TEST_CASE("Crafting tools lose durability") {
       }
 
       THEN("the tool is damaged") { CHECK(hat.health() < Item::MAX_HEALTH); }
+    }
+
+    WHEN("the tool is broken") {
+      for (auto i = 0; i != 100000; ++i) {
+        hat.onUse();
+        if (hat.isBroken()) break;
+      }
+      CHECK(hat.isBroken());
+
+      AND_WHEN("the user tries to craft the recipe") {
+        c.sendMessage(CL_CRAFT, "rabbit");
+
+        THEN("he doesn't have any products") {
+          REPEAT_FOR_MS(100);
+          CHECK_FALSE(user.inventory(1).first.hasItem());
+        }
+      }
     }
   }
 }
@@ -274,7 +290,6 @@ TEST_CASE("Construction tools lose durability") {
 // Tool objects damaged by use
 
 // Can't block if shield is broken
-// Can't use broken tool items
 // Can't construct from broken item
 // Can't cast from broken item
 // Can't use broken item as material

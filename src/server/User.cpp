@@ -1570,6 +1570,16 @@ User::ToolSearchResult::ToolSearchResult(Type type) : _type(type) {
   if (type == ITEM) SERVER_ERROR("Bad tool search");
 }
 
+User::ToolSearchResult::operator bool() const {
+  if (_type == NOT_FOUND) return false;
+  switch (_type) {
+    case ITEM:
+      return (!_item->isBroken());
+  }
+
+  return true;
+}
+
 void User::ToolSearchResult::use() const {
   switch (_type) {
     case ITEM:

@@ -254,7 +254,7 @@ class User : public Object {  // TODO: Don't inherit from Object
     enum Type { NOT_FOUND, ITEM, OBJECT, TERRAIN };
     ToolSearchResult(ServerItem::Instance &item) : _type(ITEM), _item(&item) {}
     ToolSearchResult(Type type);
-    operator bool() const { return _type != NOT_FOUND; }
+    operator bool() const;
     void use() const;
 
    private:
