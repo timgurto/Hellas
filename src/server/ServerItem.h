@@ -6,6 +6,7 @@
 #include <map>
 
 #include "../Item.h"
+#include "DamageOnUse.h"
 #include "ItemSet.h"
 
 class ObjectType;
@@ -13,7 +14,7 @@ class ObjectType;
 // Describes an item type
 class ServerItem : public Item {
  public:
-  class Instance {
+  class Instance : public DamageOnUse {
     // Assumption: any item type that can have a meaningful state, cannot stack.
 
    public:
@@ -22,16 +23,13 @@ class ServerItem : public Item {
 
     bool hasItem() const { return _type != nullptr; }
     const ServerItem *type() const { return _type; }
-    const ItemHealth health() const { return _health; }
-    bool isBroken() const { return _health == 0; }
-
-    // Return value: whether item health changed as a result. Whenever true, the
-    // owner should be udpated.
-    bool onUse();
+    Hitpoints health() const { return _health; }
+    bool isBroken() const;
+    void damageFromUse() override;
 
    private:
     const ServerItem *_type{nullptr};
-    ItemHealth _health{0};
+    Hitpoints _health{0};
   };
 
  private:

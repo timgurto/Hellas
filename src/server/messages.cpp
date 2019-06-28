@@ -679,7 +679,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
             // Assumption: gear can only match a single gear slot.
             std::string gearID = "";
             auto gearSlot = size_t{};
-            auto itemHealth = ItemHealth{};
+            auto itemHealth = Hitpoints{};
             if (obj1 == GEAR) {
               gearSlot = slot1;
               if (slotFrom.first.hasItem()) {

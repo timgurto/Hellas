@@ -19,16 +19,16 @@ class ClientItem : public Item {
   class Instance {
    public:
     Instance() = default;
-    Instance(const ClientItem *type, ItemHealth health)
+    Instance(const ClientItem *type, Hitpoints health)
         : _type(type), _health(health) {}
 
     const ClientItem *type() const { return _type; }
-    ItemHealth health() const { return _health; }
+    Hitpoints health() const { return _health; }
     const Tooltip &tooltip() const;  // Getter; creates tooltip on first call.
 
    private:
     const ClientItem *_type{nullptr};
-    ItemHealth _health{0};
+    Hitpoints _health{0};
     mutable Optional<Tooltip> _tooltip;  // Builds on the basic item tooltip
   };
 

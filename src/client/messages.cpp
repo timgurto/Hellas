@@ -452,7 +452,7 @@ void Client::handleMessage(const std::string &msg) {
       case SV_GEAR: {
         std::string username, id;
         size_t slot;
-        ItemHealth itemHealth;
+        Hitpoints itemHealth;
         singleMsg >> username >> del >> slot >> del;
         readString(singleMsg, id, MSG_DELIM);
         singleMsg >> del >> itemHealth >> del;
@@ -492,7 +492,7 @@ void Client::handleMessage(const std::string &msg) {
 
       case SV_INVENTORY: {
         size_t serial, slot, quantity;
-        ItemHealth itemHealth;
+        Hitpoints itemHealth;
         std::string itemID;
         singleMsg >> serial >> del >> slot >> del >> itemID >> del >>
             quantity >> del >> itemHealth >> del;
@@ -1886,7 +1886,7 @@ void Client::handleMessage(const std::string &msg) {
 
 void Client::handle_SV_INVENTORY(size_t serial, size_t slot,
                                  const std::string &itemID, size_t quantity,
-                                 ItemHealth itemHealth) {
+                                 Hitpoints itemHealth) {
   const ClientItem *item = nullptr;
   if (quantity > 0) {
     const auto it = _items.find(itemID);

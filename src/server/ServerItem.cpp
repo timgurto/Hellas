@@ -88,12 +88,6 @@ ServerItem::Instance::Instance(const ServerItem *type) : _type(type) {
   if (type) _health = MAX_HEALTH;
 }
 
-bool ServerItem::Instance::onUse() {
-  if (_health == 0) return false;
+bool ServerItem::Instance::isBroken() const { return _health == 0; }
 
-  const auto DAMAGE_CHANCE = 0.05;
-  if (randDouble() > DAMAGE_CHANCE) return false;
-
-  --_health;
-  return true;
-}
+void ServerItem::Instance::damageFromUse() { --_health; }

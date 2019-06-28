@@ -178,6 +178,7 @@
     <ClCompile Include="src\client\hotbar.cpp" />
     <ClCompile Include="src\server\Durability.cpp" />
     <ClCompile Include="src\testing\test-durability.cpp" />
+    <ClCompile Include="src\server\DamageOnUse.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -313,5 +314,6 @@
     <ClInclude Include="src\client\Unlocks.h" />
     <ClInclude Include="src\server\Exploration.h" />
     <ClInclude Include="src\server\Durability.h" />
+    <ClInclude Include="src\server\DamageOnUse.h" />
   </ItemGroup>
 </Project>
