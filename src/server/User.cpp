@@ -467,21 +467,19 @@ User::ToolSearchResult User::findTool(const std::string &tagName) {
 
   // Check nearby objects
   // Note that checking collision chunks means ignoring non-colliding objects.
-  auto superChunk = Server::_instance->getCollisionSuperChunk(location());
-  for (CollisionChunk *chunk : superChunk)
-    for (const auto &pair : chunk->entities()) {
-      const Entity *pEnt = pair.second;
-      const Object *pObj = dynamic_cast<const Object *>(pEnt);
-      if (pObj == nullptr) continue;
-      if (pObj->isBeingBuilt()) continue;
-      if (!pObj->type()->isTag(tagName)) continue;
-      if (distance(pObj->collisionRect(), collisionRect()) >
-          Server::ACTION_DISTANCE)
-        continue;
-      if (!pObj->permissions().doesUserHaveAccess(_name)) continue;
+  auto nearbyEntities = server.findEntitiesInArea(location());
+  for (auto *pEnt : nearbyEntities) {
+    auto *pObj = dynamic_cast<Object *>(pEnt);
+    if (!pObj) continue;
+    if (pObj->isBeingBuilt()) continue;
+    if (!pObj->type()->isTag(tagName)) continue;
+    if (distance(pObj->collisionRect(), collisionRect()) >
+        Server::ACTION_DISTANCE)
+      continue;
+    if (!pObj->permissions().doesUserHaveAccess(_name)) continue;
 
-      return {ToolSearchResult::OBJECT};
-    }
+    return {*pObj};
+  }
 
   return {ToolSearchResult::NOT_FOUND};
 }
@@ -1567,7 +1565,7 @@ bool User::QuestProgress::operator<(const QuestProgress &rhs) const {
 }
 
 User::ToolSearchResult::ToolSearchResult(Type type) : _type(type) {
-  if (type == ITEM) SERVER_ERROR("Bad tool search");
+  if (type == ITEM || type == OBJECT) SERVER_ERROR("Bad tool search");
 }
 
 User::ToolSearchResult::operator bool() const {
@@ -1584,6 +1582,9 @@ void User::ToolSearchResult::use() const {
   switch (_type) {
     case ITEM:
       _item->onUse();
+      break;
+    case OBJECT:
+      _object->reduceHealth(1);
       break;
   }
 }

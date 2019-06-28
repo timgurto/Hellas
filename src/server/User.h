@@ -253,6 +253,7 @@ class User : public Object {  // TODO: Don't inherit from Object
    public:
     enum Type { NOT_FOUND, ITEM, OBJECT, TERRAIN };
     ToolSearchResult(ServerItem::Instance &item) : _type(ITEM), _item(&item) {}
+    ToolSearchResult(Object &object) : _type(OBJECT), _object(&object) {}
     ToolSearchResult(Type type);
     operator bool() const;
     void use() const;
@@ -260,6 +261,7 @@ class User : public Object {  // TODO: Don't inherit from Object
    private:
     Type _type{NOT_FOUND};
     ServerItem::Instance *_item{nullptr};
+    Object *_object{nullptr};
   };
   bool checkAndDamageTools(const std::set<std::string> &tags);
   bool checkAndDamageTool(const std::string &tag);

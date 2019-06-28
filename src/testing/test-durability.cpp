@@ -282,6 +282,35 @@ TEST_CASE("Construction tools lose durability") {
   }
 }
 
+TEST_CASE("Tool objects lose durability") {
+  GIVEN("a user with a construction tool") {
+    auto data = R"(
+      <objectType id="hole" constructionReq="digging" />
+      <objectType id="earthMover" >
+        <tag name="digging" />
+      </objectType>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    s.addObject("earthMover", {15, 15});
+    user.addConstruction("hole");
+
+    WHEN("many objects are constructed") {
+      const auto &earthMover = s.getFirstObject();
+      auto maxHealth = earthMover.type()->baseStats().maxHealth;
+      for (auto i = 0; i != 200; ++i) {
+        c.sendMessage(CL_CONSTRUCT, makeArgs("hole", 10, 15));
+        REPEAT_FOR_MS(20);
+        if (earthMover.health() < maxHealth) break;
+      }
+
+      THEN("the tool is damaged") { CHECK(earthMover.health() < maxHealth); }
+    }
+  }
+}
+
 // TODO:
 
 // Shield takes damage on block, not hit
@@ -294,8 +323,6 @@ TEST_CASE("Construction tools lose durability") {
 // Can't cast from broken item
 // Can't use broken item as material
 // Merchant objects can't trade with damaged items
-
-// Can't use broken tool objects
 
 // Item health preserved when swapping
 // Health of items in containers is persistent
