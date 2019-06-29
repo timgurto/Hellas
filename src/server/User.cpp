@@ -975,9 +975,7 @@ void User::onAttackedBy(Entity &attacker, Threat threat) {
   cancelAction();
 
   auto armourSlotToUse = Item::getRandomArmorSlot();
-  auto armourWasDamaged = _gear[armourSlotToUse].first.onUse();
-
-  if (armourWasDamaged) sendGearSlot(armourSlotToUse);
+  _gear[armourSlotToUse].first.onUse();
 
   Object::onAttackedBy(attacker, threat);
 }
@@ -1113,8 +1111,7 @@ void User::onAttack() {
   }
 
   if (weapon.hasItem()) {
-    auto weaponTookDamage = weapon.onUse();
-    if (weaponTookDamage) sendGearSlot(Item::WEAPON_SLOT);
+    weapon.onUse();
     if (weapon.isBroken()) updateStats();
   }
 }

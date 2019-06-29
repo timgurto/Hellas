@@ -8,7 +8,7 @@ class DamageOnUse {
 
   // Return value: whether item health changed as a result. Whenever true, the
   // owner should be udpated.
-  bool onUse();
+  void onUse();
 
   virtual void damageFromUse() = 0;
 };
