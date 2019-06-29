@@ -4,6 +4,8 @@
 #include "TestServer.h"
 #include "testing.h"
 
+using ItemReportingInfo = ServerItem::Instance::ReportingInfo;
+
 TEST_CASE("Newly given items have full health") {
   GIVEN("apple items") {
     auto data = R"(
@@ -56,7 +58,8 @@ TEST_CASE("Combat reduces weapon/armour health") {
     const auto &hummingbird = s.getFirstNPC();
 
     WHEN("a player has the weapon equipped") {
-      weaponSlot.first = {&tuningFork};
+      weaponSlot.first = {
+          &tuningFork, ItemReportingInfo::UserGear(&user, Item::WEAPON_SLOT)};
       weaponSlot.second = 1;
       user.updateStats();
 
@@ -73,13 +76,14 @@ TEST_CASE("Combat reduces weapon/armour health") {
     }
 
     WHEN("a player has the weapon and armour equipped") {
-      weaponSlot.first = {&tuningFork};
+      weaponSlot.first = {
+          &tuningFork, ItemReportingInfo::UserGear(&user, Item::WEAPON_SLOT)};
       weaponSlot.second = 1;
 
-      headSlot.first = {&hat};
+      headSlot.first = {&hat, ItemReportingInfo::UserGear(&user, HEAD_SLOT)};
       headSlot.second = 1;
 
-      feetSlot.first = {&shoes};
+      feetSlot.first = {&shoes, ItemReportingInfo::UserGear(&user, FEET_SLOT)};
       feetSlot.second = 1;
 
       AND_WHEN("the enemy attacks for a while") {
@@ -141,7 +145,8 @@ TEST_CASE("Broken items don't work") {
       const auto DEFAULT_DAMAGE = User::OBJECT_TYPE.baseStats().weaponDamage;
 
       auto &weaponSlot = user.gear(Item::WEAPON_SLOT);
-      weaponSlot.first = {&s.getFirstItem()};
+      weaponSlot.first = {&s.getFirstItem(), ItemReportingInfo::UserGear(
+                                                 &user, Item::WEAPON_SLOT)};
       weaponSlot.second = 1;
 
       user.updateStats();

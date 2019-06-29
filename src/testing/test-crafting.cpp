@@ -100,7 +100,9 @@ TEST_CASE("Gear counts towards materials") {
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
     auto &sock = s.findItem("sock");
-    user.gear(5) = std::make_pair(&sock, 1);
+    user.gear(5).first = {
+        &sock, ServerItem::Instance::ReportingInfo::UserGear(&user, 5)};
+    user.gear(5).second = 1;
 
     WHEN("he tries to craft the recipe") {
       REPEAT_FOR_MS(100);

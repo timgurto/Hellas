@@ -50,8 +50,10 @@ User::User(const std::string &name, const MapPoint &loc, const Socket *socket)
   if (!OBJECT_TYPE.collides()) {
     OBJECT_TYPE.collisionRect({-5, -2, 10, 4});
   }
-  for (size_t i = 0; i != INVENTORY_SIZE; ++i)
-    _inventory[i] = std::make_pair<const ServerItem *, size_t>(0, 0);
+  for (size_t i = 0; i != INVENTORY_SIZE; ++i) {
+    _inventory[i].first = {};
+    _inventory[i].second = 0;
+  }
 }
 
 User::User(const Socket &rhs)
@@ -167,7 +169,8 @@ bool User::hasRoomFor(std::set<std::string> itemNames) const {
         return false;
       }
 
-      inventory[i].first = {item};
+      inventory[i].first = {item,
+                            ServerItem::Instance::ReportingInfo::DummyUser()};
       inventory[i].second = 1;
       itemAdded = true;
       break;
@@ -299,7 +302,8 @@ size_t User::giveItem(const ServerItem *item, size_t quantity) {
       }
 
       auto qtyInThisSlot = min(item->stackSize(), remaining);
-      _inventory[i].first = {item};
+      _inventory[i].first = {
+          item, ServerItem::Instance::ReportingInfo::UserInventory(this, i)};
       _inventory[i].second = qtyInThisSlot;
       server.sendInventoryMessage(*this, i, Server::INVENTORY);
       remaining -= qtyInThisSlot;

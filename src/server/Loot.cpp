@@ -21,7 +21,8 @@ void Loot::add(const ServerItem *item, size_t qty) {
   while (remainingQuantity > 0) {
     size_t quantityInThisSlot = min(stackSize, remainingQuantity);
     ServerItem::Slot entry;
-    entry.first = {item};
+    entry.first = {item,
+                   ServerItem::Instance::ReportingInfo::InObjectContainer()};
     entry.second = quantityInThisSlot;
     remainingQuantity -= quantityInThisSlot;
     _container.push_back(entry);

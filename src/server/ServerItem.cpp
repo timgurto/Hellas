@@ -84,10 +84,22 @@ const ServerItem *toServerItem(const Item *item) {
   return dynamic_cast<const ServerItem *>(item);
 }
 
-ServerItem::Instance::Instance(const ServerItem *type) : _type(type) {
+ServerItem::Instance::Instance(const ServerItem *type, ReportingInfo info)
+    : _type(type), _reportingInfo(info) {
   if (type) _health = MAX_HEALTH;
 }
 
 bool ServerItem::Instance::isBroken() const { return _health == 0; }
 
 void ServerItem::Instance::damageFromUse() { --_health; }
+
+ServerItem::Instance::ReportingInfo
+ServerItem::Instance::ReportingInfo::UserGear(const User *owner, size_t slot) {
+  return {owner, Server::SpecialSerial::GEAR, slot};
+}
+
+ServerItem::Instance::ReportingInfo
+ServerItem::Instance::ReportingInfo::UserInventory(const User *owner,
+                                                   size_t slot) {
+  return {owner, Server::SpecialSerial::INVENTORY, slot};
+}

@@ -76,7 +76,8 @@ void Container::addItems(const ServerItem *item, size_t qty) {
     for (size_t i = 0; i != _container.size(); ++i) {
       if (_container[i].first.hasItem()) continue;
       size_t qtyInThisSlot = min(item->stackSize(), qty);
-      _container[i].first = {item};
+      _container[i].first = {
+          item, ServerItem::Instance::ReportingInfo::InObjectContainer()};
       _container[i].second = qtyInThisSlot;
       changedSlots.insert(i);
       qty -= qtyInThisSlot;

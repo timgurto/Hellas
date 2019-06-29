@@ -97,8 +97,9 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
              Color::CHAT_ERROR);
       continue;
     }
-    user.inventory(slot) = std::make_pair<const ServerItem *, size_t>(
-        &*it, static_cast<size_t>(qty));
+    user.inventory(slot).first = {
+        &*it, ServerItem::Instance::ReportingInfo::UserInventory(&user, slot)};
+    user.inventory(slot).second = qty;
   }
 
   elem = xr.findChild("gear");
@@ -116,8 +117,9 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
              Color::CHAT_ERROR);
       continue;
     }
-    user.gear(slot) = std::make_pair<const ServerItem *, size_t>(
-        &*it, static_cast<size_t>(qty));
+    user.gear(slot).first = {
+        &*it, ServerItem::Instance::ReportingInfo::UserGear(&user, slot)};
+    user.gear(slot).second = qty;
   }
 
   if (allowSideEffects) {
@@ -412,7 +414,9 @@ void Server::loadEntitiesFromFile(const std::string &path,
         continue;
       }
       auto &invSlot = obj.container().at(n);
-      invSlot.first = {&*_items.find(s)};
+      invSlot.first = {
+          &*_items.find(s),
+          ServerItem::Instance::ReportingInfo::InObjectContainer()};
       invSlot.second = q;
     }
 

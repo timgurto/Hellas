@@ -111,6 +111,7 @@
     <ClCompile Include="src\server\Class.cpp" />
     <ClCompile Include="src\server\CollisionChunk.cpp" />
     <ClCompile Include="src\server\collisionDetection.cpp" />
+    <ClCompile Include="src\server\DamageOnUse.cpp" />
     <ClCompile Include="src\server\DataLoader.cpp" />
     <ClCompile Include="src\server\Durability.cpp" />
     <ClCompile Include="src\server\Entities.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="src\server\Class.h" />
     <ClInclude Include="src\server\CollisionChunk.h" />
     <ClInclude Include="src\server\combat.h" />
+    <ClInclude Include="src\server\DamageOnUse.h" />
     <ClInclude Include="src\server\DataLoader.h" />
     <ClInclude Include="src\server\Durability.h" />
     <ClInclude Include="src\server\Entities.h" />

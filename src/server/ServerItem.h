@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 
+#include <cassert>
 #include <map>
 
 #include "../Item.h"
@@ -10,6 +11,7 @@
 #include "ItemSet.h"
 
 class ObjectType;
+class User;
 
 // Describes an item type
 class ServerItem : public Item {
@@ -18,8 +20,23 @@ class ServerItem : public Item {
     // Assumption: any item type that can have a meaningful state, cannot stack.
 
    public:
+    struct ReportingInfo {  // Used to report changes
+      ReportingInfo() {}
+      static ReportingInfo InObjectContainer() { return {}; }
+      static ReportingInfo DummyUser() { return {}; }
+      static ReportingInfo UserGear(const User *owner, size_t slot);
+      static ReportingInfo UserInventory(const User *owner, size_t slot);
+
+     private:
+      ReportingInfo(const User *owner, size_t container, size_t slot)
+          : _owner(owner), _container(container), _slot(slot) {}
+      const User *_owner{nullptr};  // If null, no reporting necessary
+      size_t _container{0};         // Should be either INVENTORY or GEAR
+      size_t _slot{0};
+    };
+
     Instance() = default;
-    Instance(const ServerItem *type);
+    Instance(const ServerItem *type, ReportingInfo info);
 
     bool hasItem() const { return _type != nullptr; }
     const ServerItem *type() const { return _type; }
@@ -30,6 +47,7 @@ class ServerItem : public Item {
    private:
     const ServerItem *_type{nullptr};
     Hitpoints _health{0};
+    ReportingInfo _reportingInfo;
   };
 
  private:

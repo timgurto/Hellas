@@ -9,7 +9,9 @@ TEST_CASE("Object container empty check", "[container]") {
   Object obj(&type, {});
   CHECK(obj.container().isEmpty());
   ServerItem item("rock");
-  obj.container().at(1) = std::make_pair(&item, 1);
+  obj.container().at(1).first = {
+      &item, ServerItem::Instance::ReportingInfo::InObjectContainer()};
+  obj.container().at(1).second = 1;
   CHECK_FALSE(obj.container().isEmpty());
 }
 

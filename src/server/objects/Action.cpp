@@ -30,7 +30,9 @@ bool Server::endTutorial(const Object &obj, User &performer,
   const auto costItem = obj.objType().action().cost;
   if (costItem) {
     auto &inventorySlot = performer.inventory(0);
-    inventorySlot.first = {costItem};
+    inventorySlot.first = {
+        costItem,
+        ServerItem::Instance::ReportingInfo::UserInventory(&performer, 0)};
     inventorySlot.second = 1;
   }
 
