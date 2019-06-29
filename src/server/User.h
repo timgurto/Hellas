@@ -251,17 +251,15 @@ class User : public Object {  // TODO: Don't inherit from Object
   int countItems(const ServerItem *item) const;
   class ToolSearchResult {
    public:
-    enum Type { NOT_FOUND, ITEM, OBJECT, TERRAIN };
-    ToolSearchResult(ServerItem::Instance &item) : _type(ITEM), _item(&item) {}
-    ToolSearchResult(Object &object) : _type(OBJECT), _object(&object) {}
+    enum Type { NOT_FOUND, DAMAGE_ON_USE, TERRAIN };
+    ToolSearchResult(DamageOnUse &tool) : _type(DAMAGE_ON_USE), _tool(&tool) {}
     ToolSearchResult(Type type);
     operator bool() const;
     void use() const;
 
    private:
     Type _type{NOT_FOUND};
-    ServerItem::Instance *_item{nullptr};
-    Object *_object{nullptr};
+    DamageOnUse *_tool{nullptr};
   };
   bool checkAndDamageTools(const std::set<std::string> &tags);
   bool checkAndDamageTool(const std::string &tag);

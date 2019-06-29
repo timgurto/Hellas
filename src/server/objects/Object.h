@@ -16,7 +16,7 @@ class User;
 class XmlWriter;
 
 // A server-side representation of an in-game object
-class Object : public Entity, public QuestNode {
+class Object : public Entity, public QuestNode, public DamageOnUse {
   Permissions _permissions;
   ItemSet _contents;  // Remaining contents, which can be gathered
   std::vector<MerchantSlot> _merchantSlots;
@@ -117,6 +117,10 @@ class Object : public Entity, public QuestNode {
   void populateLoot();
 
   friend class Container;  // TODO: Remove once everything is componentized
+
+  // From DamageOnUse
+  bool isBroken() const override { return isDead(); }
+  void damageFromUse() override { reduceHealth(1); };
 
  private:
   Container *_container = nullptr;

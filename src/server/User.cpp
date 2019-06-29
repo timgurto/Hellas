@@ -1565,26 +1565,17 @@ bool User::QuestProgress::operator<(const QuestProgress &rhs) const {
 }
 
 User::ToolSearchResult::ToolSearchResult(Type type) : _type(type) {
-  if (type == ITEM || type == OBJECT) SERVER_ERROR("Bad tool search");
+  if (type == DAMAGE_ON_USE) SERVER_ERROR("Bad tool search");
 }
 
 User::ToolSearchResult::operator bool() const {
   if (_type == NOT_FOUND) return false;
-  switch (_type) {
-    case ITEM:
-      return (!_item->isBroken());
-  }
+  if (_type == TERRAIN) return true;
 
-  return true;
+  return _tool && !_tool->isBroken();
 }
 
 void User::ToolSearchResult::use() const {
-  switch (_type) {
-    case ITEM:
-      _item->onUse();
-      break;
-    case OBJECT:
-      _object->reduceHealth(1);
-      break;
-  }
+  if (!_tool) return;
+  _tool->onUse();
 }
