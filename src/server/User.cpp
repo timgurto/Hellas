@@ -977,7 +977,7 @@ void User::onAttackedBy(Entity &attacker, Threat threat) {
   auto armourSlotToUse = Item::getRandomArmorSlot();
   auto armourWasDamaged = _gear[armourSlotToUse].first.onUse();
 
-  if (armourWasDamaged) sendInventorySlot(armourSlotToUse);
+  if (armourWasDamaged) sendGearSlot(armourSlotToUse);
 
   Object::onAttackedBy(attacker, threat);
 }
@@ -1114,7 +1114,7 @@ void User::onAttack() {
 
   if (weapon.hasItem()) {
     auto weaponTookDamage = weapon.onUse();
-    if (weaponTookDamage) sendInventorySlot(Item::WEAPON_SLOT);
+    if (weaponTookDamage) sendGearSlot(Item::WEAPON_SLOT);
     if (weapon.isBroken()) updateStats();
   }
 }
@@ -1314,6 +1314,15 @@ void User::sendInfoToClient(const User &targetUser) const {
 }
 
 void User::sendInventorySlot(size_t slotIndex) const {
+  const auto &slot = _inventory[slotIndex];
+  const auto &item = slot.first;
+  if (!item.type()) return;
+  sendMessage(SV_INVENTORY,
+              makeArgs(Server::INVENTORY, slotIndex, item.type()->id(),
+                       slot.second, item.health()));
+}
+
+void User::sendGearSlot(size_t slotIndex) const {
   const auto &slot = _gear[slotIndex];
   const auto &item = slot.first;
   if (!item.type()) return;

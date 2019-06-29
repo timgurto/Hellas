@@ -236,7 +236,14 @@ TEST_CASE("Crafting tools lose durability") {
         if (hat.health() < Item::MAX_HEALTH) break;
       }
 
-      THEN("the tool is damaged") { CHECK(hat.health() < Item::MAX_HEALTH); }
+      THEN("the tool is damaged") {
+        CHECK(hat.health() < Item::MAX_HEALTH);
+
+        AND_THEN("the client knows it's damaged") {
+          auto &cItem = c.inventory()[0].first;
+          WAIT_UNTIL(cItem.health() < Item::MAX_HEALTH);
+        }
+      }
     }
 
     WHEN("the tool is broken") {

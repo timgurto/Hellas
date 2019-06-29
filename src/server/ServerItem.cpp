@@ -91,7 +91,10 @@ ServerItem::Instance::Instance(const ServerItem *type, ReportingInfo info)
 
 bool ServerItem::Instance::isBroken() const { return _health == 0; }
 
-void ServerItem::Instance::damageFromUse() { --_health; }
+void ServerItem::Instance::damageFromUse() {
+  --_health;
+  _reportingInfo.report();
+}
 
 ServerItem::Instance::ReportingInfo
 ServerItem::Instance::ReportingInfo::UserGear(const User *owner, size_t slot) {
@@ -102,4 +105,15 @@ ServerItem::Instance::ReportingInfo
 ServerItem::Instance::ReportingInfo::UserInventory(const User *owner,
                                                    size_t slot) {
   return {owner, Server::SpecialSerial::INVENTORY, slot};
+}
+
+void ServerItem::Instance::ReportingInfo::report() {
+  if (!_owner) return;
+
+  if (_container == Server::SpecialSerial::INVENTORY)
+    _owner->sendInventorySlot(_slot);
+  else if (_container == Server::SpecialSerial::GEAR)
+    _owner->sendGearSlot(_slot);
+  else
+    SERVER_ERROR("Trying to report container inventory; unsupported.");
 }

@@ -20,12 +20,15 @@ class ServerItem : public Item {
     // Assumption: any item type that can have a meaningful state, cannot stack.
 
    public:
-    struct ReportingInfo {  // Used to report changes
+    class ReportingInfo {  // Used to report changes
+     public:
       ReportingInfo() {}
       static ReportingInfo InObjectContainer() { return {}; }
       static ReportingInfo DummyUser() { return {}; }
       static ReportingInfo UserGear(const User *owner, size_t slot);
       static ReportingInfo UserInventory(const User *owner, size_t slot);
+
+      void report();
 
      private:
       ReportingInfo(const User *owner, size_t container, size_t slot)
