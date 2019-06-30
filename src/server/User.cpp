@@ -905,7 +905,9 @@ void User::sendGotHitMessageTo(const User &user) const {
 bool User::canBlock() const {
   auto offhandItem = _gear[Item::OFFHAND_SLOT].first;
   if (!offhandItem.hasItem()) return false;
-  return offhandItem.type()->isTag("shield");
+  if (!offhandItem.type()->isTag("shield")) return false;
+  if (offhandItem.isBroken()) return false;
+  return true;
 }
 
 SpellSchool User::school() const {

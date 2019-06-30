@@ -165,6 +165,39 @@ TEST_CASE("Broken items don't work") {
       }
     }
   }
+
+  GIVEN("a shield") {
+    auto data = R"(
+      <item id="shield" gearSlot="7" >
+        <tag name="shield" />
+      </item>
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    WHEN("a player has one equipped") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+
+      auto &offhand = user.gear(Item::OFFHAND_SLOT);
+      offhand.first = {&s.getFirstItem(),
+                       ItemReportingInfo::UserGear(&user, Item::OFFHAND_SLOT)};
+      offhand.second = 1;
+      user.updateStats();
+      CHECK(user.canBlock());
+
+      AND_WHEN("it is broken") {
+        auto &shield = user.gear(Item::OFFHAND_SLOT).first;
+        for (auto i = 0; i != 100000; ++i) {
+          shield.onUse();
+          if (shield.isBroken()) break;
+        }
+        CHECK(shield.isBroken());
+
+        THEN("he can't block") { CHECK_FALSE(user.canBlock()); }
+      }
+    }
+  }
 }
 
 TEST_CASE("Item damage is limited to 1") {
@@ -328,15 +361,16 @@ TEST_CASE("Tool objects lose durability") {
 // Shield takes damage on block, not hit
 // Armour doesn't take damage on block
 // Weapon/armour don't take damage on miss/dodge
-// Tool objects damaged by use
 
 // Can't block if shield is broken
 // Can't construct from broken item
 // Can't cast from broken item
 // Can't use broken item as material
+// Can't pick up damaged object as item
 // Merchant objects can't trade with damaged items
 
 // Item health preserved when swapping
 // Health of items in containers is persistent
+// Health of player inventory/gear is persistent
 
 // Ranged weapons that deplete themselves don't damage the stack
