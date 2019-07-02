@@ -362,7 +362,6 @@ TEST_CASE("Tool objects lose durability") {
 // Armour doesn't take damage on block
 // Weapon/armour don't take damage on miss/dodge
 
-// Can't block if shield is broken
 // Can't construct from broken item
 // Can't cast from broken item
 // Can't use broken item as material

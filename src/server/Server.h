@@ -33,7 +33,7 @@
 #include "objects/Object.h"
 
 #define SERVER_ERROR(msg)                                              \
-  Server::debug() << Color::CHAT_ERROR << msg << Log::endl             \
+  Server::debug() << Color::CHAT_ERROR << (msg) << Log::endl             \
                   << Color::CHAT_ERROR << __FILE__ << ":"s << __LINE__ \
                   << Log::endl
 

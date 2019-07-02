@@ -130,7 +130,7 @@ TEST_CASE(
   CHECK(c.objects().size() == 1);
 }
 
-TEST_CASE("Unwatching NPCs") {
+TEST_CASE("Unwatching NPCs", "[.flaky]") {
   GIVEN("an NPC with a window") {
     auto data = R"(
       <npcType id="questgiver" />

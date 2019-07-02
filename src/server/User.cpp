@@ -824,6 +824,12 @@ void User::onMove() {
   for (const auto &currentlyActiveBuff : buffs()) {
     const auto *buffType = server.findBuff(currentlyActiveBuff.type());
 
+    if (!buffType) {
+      SERVER_ERROR("Trying to remove nonexistent buff '"s +
+                   currentlyActiveBuff.type() + "'"s);
+      continue;
+    }
+
     if (!buffType->grantedByObject()) continue;
 
     if (buffsToAdd.count(buffType) == 0) buffsToRemove.insert(buffType->id());
