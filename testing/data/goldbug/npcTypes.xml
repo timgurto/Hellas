@@ -1,8 +1,0 @@
-<root>
-
-<npcType id="goldbug" name="GoldBug"
-	maxHealth="1" >
-    <loot id="gold" />
-</npcType>
-
-</root>

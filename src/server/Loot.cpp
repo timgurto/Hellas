@@ -8,7 +8,7 @@ bool Loot::empty() const {
   if (_container.size() == 0) return true;
   for (const auto &pair : _container) {
     auto item = pair.first;
-    if (item.hasItem()) continue;
+    if (!item.hasItem()) continue;
     size_t quantity = pair.second;
     if (quantity > 0) return false;
   }

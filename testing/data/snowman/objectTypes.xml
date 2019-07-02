@@ -1,7 +1,7 @@
 <root>
 
 <objectType id="snowman" name="Snowman" >
-    <strength item="snowflake" quantity="1000" />
+    <durability item="snowflake" quantity="1000" />
 </objectType>
 
 </root>
