@@ -129,6 +129,13 @@ TEST_CASE("Combat reduces weapon/armour health") {
   }
 }
 
+#define BREAK_ITEM(ITEM)               \
+  for (auto i = 0; i != 100000; ++i) { \
+    (ITEM).onUse();                    \
+    if ((ITEM).isBroken()) break;      \
+  }                                    \
+  CHECK((ITEM).isBroken());
+
 TEST_CASE("Broken items don't work") {
   GIVEN("a weapon that deals 42 damage") {
     auto data = R"(
@@ -188,11 +195,7 @@ TEST_CASE("Broken items don't work") {
 
       AND_WHEN("it is broken") {
         auto &shield = user.gear(Item::OFFHAND_SLOT).first;
-        for (auto i = 0; i != 100000; ++i) {
-          shield.onUse();
-          if (shield.isBroken()) break;
-        }
-        CHECK(shield.isBroken());
+        BREAK_ITEM(shield);
 
         THEN("he can't block") { CHECK_FALSE(user.canBlock()); }
       }
@@ -214,11 +217,7 @@ TEST_CASE("Broken items don't work") {
 
       AND_WHEN("it is broken") {
         auto &seed = user.inventory(0).first;
-        for (auto i = 0; i != 100000; ++i) {
-          seed.onUse();
-          if (seed.isBroken()) break;
-        }
-        CHECK(seed.isBroken());
+        BREAK_ITEM(seed);
 
         AND_WHEN("he tries to construct a tree from it") {
           c.sendMessage(CL_CONSTRUCT_FROM_ITEM, makeArgs(0, 10, 15));
@@ -395,7 +394,6 @@ TEST_CASE("Tool objects lose durability") {
 // Armour doesn't take damage on block
 // Weapon/armour don't take damage on miss/dodge
 
-// Can't construct from broken item
 // Can't cast from broken item
 // Can't use broken item as material
 // Can't pick up damaged object as item
