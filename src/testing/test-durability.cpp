@@ -129,141 +129,6 @@ TEST_CASE("Combat reduces weapon/armour health") {
   }
 }
 
-#define BREAK_ITEM(ITEM)               \
-  for (auto i = 0; i != 100000; ++i) { \
-    (ITEM).onUse();                    \
-    if ((ITEM).isBroken()) break;      \
-  }                                    \
-  CHECK((ITEM).isBroken());
-
-TEST_CASE("Broken items don't work") {
-  GIVEN("a weapon that deals 42 damage") {
-    auto data = R"(
-      <item id="sword" gearSlot="6" >
-        <weapon damage="42"  speed="1" />
-      </item>
-    )";
-    auto s = TestServer::WithDataString(data);
-
-    WHEN("a player has one equipped") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      const auto DEFAULT_DAMAGE = User::OBJECT_TYPE.baseStats().weaponDamage;
-
-      auto &weaponSlot = user.gear(Item::WEAPON_SLOT);
-      weaponSlot.first = {&s.getFirstItem(), ItemReportingInfo::UserGear(
-                                                 &user, Item::WEAPON_SLOT)};
-      weaponSlot.second = 1;
-
-      user.updateStats();
-      CHECK(user.stats().weaponDamage == 42);
-
-      AND_WHEN("it is broken") {
-        for (auto i = 0; i != 100000; ++i) {
-          user.onAttack();
-          if (weaponSlot.first.isBroken()) break;
-        }
-        CHECK(weaponSlot.first.isBroken());
-
-        THEN("his attack is the baseline User attack") {
-          CHECK(user.stats().weaponDamage == DEFAULT_DAMAGE);
-        }
-      }
-    }
-  }
-
-  GIVEN("a shield") {
-    auto data = R"(
-      <item id="shield" gearSlot="7" >
-        <tag name="shield" />
-      </item>
-    )";
-    auto s = TestServer::WithDataString(data);
-
-    WHEN("a player has one equipped") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-
-      auto &offhand = user.gear(Item::OFFHAND_SLOT);
-      offhand.first = {&s.getFirstItem(),
-                       ItemReportingInfo::UserGear(&user, Item::OFFHAND_SLOT)};
-      offhand.second = 1;
-      user.updateStats();
-      CHECK(user.canBlock());
-
-      AND_WHEN("it is broken") {
-        auto &shield = user.gear(Item::OFFHAND_SLOT).first;
-        BREAK_ITEM(shield);
-
-        THEN("he can't block") { CHECK_FALSE(user.canBlock()); }
-      }
-    }
-  }
-
-  GIVEN("a seed that constructs a tree") {
-    auto data = R"(
-      <item id="seed" constructs="tree" />
-      <objectType id="tree" constructionTime="1" />
-    )";
-    auto s = TestServer::WithDataString(data);
-
-    WHEN("a user has a seed") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      user.giveItem(&s.getFirstItem());
-
-      AND_WHEN("it is broken") {
-        auto &seed = user.inventory(0).first;
-        BREAK_ITEM(seed);
-
-        AND_WHEN("he tries to construct a tree from it") {
-          c.sendMessage(CL_CONSTRUCT_FROM_ITEM, makeArgs(0, 10, 15));
-
-          THEN("there are no objects") {
-            REPEAT_FOR_MS(100);
-            CHECK(s.entities().empty());
-          }
-        }
-      }
-    }
-  }
-
-  GIVEN("a poisoned apple that deals damage to the user") {
-    auto data = R"(
-      <item id="poisonedApple" castsSpellOnUse="poison" />
-      <spell id="poison" >
-        <targets self="1" />
-        <function name="doDirectDamage" i1="20" />
-      </spell>
-    )";
-    auto s = TestServer::WithDataString(data);
-
-    WHEN("a user has one") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      user.giveItem(&s.getFirstItem());
-
-      AND_WHEN("it is broken") {
-        auto &poisonedApple = user.inventory(0).first;
-        BREAK_ITEM(poisonedApple);
-
-        AND_WHEN("he tries to use it") {
-          c.sendMessage(CL_CAST_ITEM, "0");
-
-          THEN("he is still at full health") {
-            REPEAT_FOR_MS(100);
-            CHECK(user.health() == user.stats().maxHealth);
-          }
-        }
-      }
-    }
-  }
-}
-
 TEST_CASE("Item damage is limited to 1") {
   GIVEN("a user with an item") {
     auto data = R"(
@@ -416,6 +281,141 @@ TEST_CASE("Tool objects lose durability") {
       }
 
       THEN("the tool is damaged") { CHECK(earthMover.health() < maxHealth); }
+    }
+  }
+}
+
+#define BREAK_ITEM(ITEM)               \
+  for (auto i = 0; i != 100000; ++i) { \
+    (ITEM).onUse();                    \
+    if ((ITEM).isBroken()) break;      \
+  }                                    \
+  CHECK((ITEM).isBroken());
+
+TEST_CASE("Broken items don't work") {
+  GIVEN("a weapon that deals 42 damage") {
+    auto data = R"(
+      <item id="sword" gearSlot="6" >
+        <weapon damage="42"  speed="1" />
+      </item>
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    WHEN("a player has one equipped") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      const auto DEFAULT_DAMAGE = User::OBJECT_TYPE.baseStats().weaponDamage;
+
+      auto &weaponSlot = user.gear(Item::WEAPON_SLOT);
+      weaponSlot.first = {&s.getFirstItem(), ItemReportingInfo::UserGear(
+                                                 &user, Item::WEAPON_SLOT)};
+      weaponSlot.second = 1;
+
+      user.updateStats();
+      CHECK(user.stats().weaponDamage == 42);
+
+      AND_WHEN("it is broken") {
+        for (auto i = 0; i != 100000; ++i) {
+          user.onAttack();
+          if (weaponSlot.first.isBroken()) break;
+        }
+        CHECK(weaponSlot.first.isBroken());
+
+        THEN("his attack is the baseline User attack") {
+          CHECK(user.stats().weaponDamage == DEFAULT_DAMAGE);
+        }
+      }
+    }
+  }
+
+  GIVEN("a shield") {
+    auto data = R"(
+      <item id="shield" gearSlot="7" >
+        <tag name="shield" />
+      </item>
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    WHEN("a player has one equipped") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+
+      auto &offhand = user.gear(Item::OFFHAND_SLOT);
+      offhand.first = {&s.getFirstItem(),
+                       ItemReportingInfo::UserGear(&user, Item::OFFHAND_SLOT)};
+      offhand.second = 1;
+      user.updateStats();
+      CHECK(user.canBlock());
+
+      AND_WHEN("it is broken") {
+        auto &shield = user.gear(Item::OFFHAND_SLOT).first;
+        BREAK_ITEM(shield);
+
+        THEN("he can't block") { CHECK_FALSE(user.canBlock()); }
+      }
+    }
+  }
+
+  GIVEN("a seed that constructs a tree") {
+    auto data = R"(
+      <item id="seed" constructs="tree" />
+      <objectType id="tree" constructionTime="1" />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    WHEN("a user has a seed") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      user.giveItem(&s.getFirstItem());
+
+      AND_WHEN("it is broken") {
+        auto &seed = user.inventory(0).first;
+        BREAK_ITEM(seed);
+
+        AND_WHEN("he tries to construct a tree from it") {
+          c.sendMessage(CL_CONSTRUCT_FROM_ITEM, makeArgs(0, 10, 15));
+
+          THEN("there are no objects") {
+            REPEAT_FOR_MS(100);
+            CHECK(s.entities().empty());
+          }
+        }
+      }
+    }
+  }
+
+  GIVEN("a poisoned apple that deals damage to the user") {
+    auto data = R"(
+      <item id="poisonedApple" castsSpellOnUse="poison" />
+      <spell id="poison" >
+        <targets self="1" />
+        <function name="doDirectDamage" i1="20" />
+      </spell>
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    WHEN("a user has one") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      user.giveItem(&s.getFirstItem());
+
+      AND_WHEN("it is broken") {
+        auto &poisonedApple = user.inventory(0).first;
+        BREAK_ITEM(poisonedApple);
+
+        AND_WHEN("he tries to use it") {
+          c.sendMessage(CL_CAST_ITEM, "0");
+
+          THEN("he is still at full health") {
+            REPEAT_FOR_MS(100);
+            CHECK(user.health() == user.stats().maxHealth);
+          }
+        }
+      }
     }
   }
 }
