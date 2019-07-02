@@ -288,6 +288,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           sendMessage(client, ERROR_CANNOT_CAST_ITEM);
           break;
         }
+        if (invSlot.first.isBroken()) {
+          sendMessage(client, WARNING_BROKEN_ITEM);
+          break;
+        }
 
         auto spellID = item.spellToCastOnUse();
         auto result =

@@ -230,6 +230,38 @@ TEST_CASE("Broken items don't work") {
       }
     }
   }
+
+  GIVEN("a poisoned apple that deals damage to the user") {
+    auto data = R"(
+      <item id="poisonedApple" castsSpellOnUse="poison" />
+      <spell id="poison" >
+        <targets self="1" />
+        <function name="doDirectDamage" i1="20" />
+      </spell>
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    WHEN("a user has one") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      user.giveItem(&s.getFirstItem());
+
+      AND_WHEN("it is broken") {
+        auto &poisonedApple = user.inventory(0).first;
+        BREAK_ITEM(poisonedApple);
+
+        AND_WHEN("he tries to use it") {
+          c.sendMessage(CL_CAST_ITEM, "0");
+
+          THEN("he is still at full health") {
+            REPEAT_FOR_MS(100);
+            CHECK(user.health() == user.stats().maxHealth);
+          }
+        }
+      }
+    }
+  }
 }
 
 TEST_CASE("Item damage is limited to 1") {
@@ -394,7 +426,6 @@ TEST_CASE("Tool objects lose durability") {
 // Armour doesn't take damage on block
 // Weapon/armour don't take damage on miss/dodge
 
-// Can't cast from broken item
 // Can't use broken item as material
 // Can't pick up damaged object as item
 // Merchant objects can't trade with damaged items
