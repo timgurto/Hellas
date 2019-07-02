@@ -198,6 +198,39 @@ TEST_CASE("Broken items don't work") {
       }
     }
   }
+
+  GIVEN("a seed that constructs a tree") {
+    auto data = R"(
+      <item id="seed" constructs="tree" />
+      <objectType id="tree" constructionTime="1" />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    WHEN("a user has a seed") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      user.giveItem(&s.getFirstItem());
+
+      AND_WHEN("it is broken") {
+        auto &seed = user.inventory(0).first;
+        for (auto i = 0; i != 100000; ++i) {
+          seed.onUse();
+          if (seed.isBroken()) break;
+        }
+        CHECK(seed.isBroken());
+
+        AND_WHEN("he tries to construct a tree from it") {
+          c.sendMessage(CL_CONSTRUCT_FROM_ITEM, makeArgs(0, 10, 15));
+
+          THEN("there are no objects") {
+            REPEAT_FOR_MS(100);
+            CHECK(s.entities().empty());
+          }
+        }
+      }
+    }
+  }
 }
 
 TEST_CASE("Item damage is limited to 1") {

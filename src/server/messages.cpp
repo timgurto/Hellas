@@ -234,6 +234,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           sendMessage(client, ERROR_CANNOT_CONSTRUCT);
           break;
         }
+        if (invSlot.first.isBroken()) {
+          sendMessage(client, WARNING_BROKEN_ITEM);
+          break;
+        }
         const MapPoint location(x, y);
         const ObjectType &objType = *item.constructsObject();
         if (distance(user->collisionRect(),
