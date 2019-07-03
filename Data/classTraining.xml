@@ -21,7 +21,7 @@
     <tag name="classScholar" />
     <material id="smallPot" quantity="4" />
     <material id="water" />
-    <material id="tinOre" />
+    <material id="tin" />
     <material id="boneDust" quantity="5" />
     <material id="crudeClay" />
     <material id="log" quantity="6" />
