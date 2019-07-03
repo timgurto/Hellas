@@ -20,7 +20,7 @@ void Client::initializeMapWindow() {
   _mapImage = {"Images/map.png"};
   _mapWindow = Window::WithRectAndTitle(
       {(SCREEN_X - MAP_IMAGE_W) / 2, (SCREEN_Y - MAP_IMAGE_H) / 2,
-       MAP_IMAGE_W + 1, MAP_IMAGE_H + 1},
+       MAP_IMAGE_W + 1, MAP_IMAGE_H + 2},
       "Map");
   _mapPicture =
       new Picture(ScreenRect{0, 0, MAP_IMAGE_W, MAP_IMAGE_H}, _mapImage);

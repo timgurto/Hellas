@@ -46,7 +46,7 @@ class TextBox : public Element {
   void *_onChangeData{nullptr};
   void onChange();
 
-  static const size_t MAX_TEXT_LENGTH = 100;
+  static const size_t MAX_TEXT_LENGTH = 200;
 
   static const px_t HEIGHT = 14;
   static TextBox *currentFocus;
