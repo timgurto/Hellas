@@ -282,16 +282,14 @@ void Entity::update(ms_t timeElapsed) {
 
 void Entity::updateBuffs(ms_t timeElapsed) {
   auto expiredBuffs = std::set<Buff::ID>{};
-  for (auto i = 0; i != _buffs.size(); ++i) {
-    auto &buff = _buffs[i];
+  for (auto &buff : _buffs) {
     buff.update(timeElapsed);
     if (isDead()) return;
     if (buff.hasExpired()) expiredBuffs.insert(buff.type());
   }
 
   auto expiredDebuffs = std::set<Buff::ID>{};
-  for (auto i = 0; i != _debuffs.size(); ++i) {
-    auto &debuff = _debuffs[i];
+  for (auto &debuff : _debuffs) {
     debuff.update(timeElapsed);
     if (isDead()) return;
     if (debuff.hasExpired()) expiredDebuffs.insert(debuff.type());

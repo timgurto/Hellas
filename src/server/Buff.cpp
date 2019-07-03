@@ -1,4 +1,5 @@
 #include "Buff.h"
+
 #include "Server.h"
 
 void BuffType::stats(const StatsMod &stats) {
