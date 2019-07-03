@@ -135,10 +135,6 @@ void Client::handleInput(double delta) {
               addWindow(_craftingWindow);
               break;
 
-            case SDLK_l:
-              _chatContainer->toggleVisibility();
-              break;
-
             case SDLK_g:
               _gearWindow->toggleVisibility();
               removeWindow(_gearWindow);
@@ -161,6 +157,10 @@ void Client::handleInput(double delta) {
               _classWindow->toggleVisibility();
               removeWindow(_classWindow);
               addWindow(_classWindow);
+              break;
+
+            case SDLK_l:
+              _chatContainer->toggleVisibility();
               break;
 
             case SDLK_m:

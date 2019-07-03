@@ -1,11 +1,10 @@
 #ifndef CONFIRMATION_WINDOW_H
 #define CONFIRMATION_WINDOW_H
 
-#include "Element.h"
-#include "Window.h"
 #include "../../messageCodes.h"
-
-class TextBox;
+#include "Element.h"
+#include "TextBox.h"
+#include "Window.h"
 
 class ConfirmationWindow : public Window {
  public:
@@ -34,7 +33,7 @@ class InfoWindow : public Window {
 class InputWindow : public Window {
  public:
   InputWindow(const std::string &windowText, MessageCode msgCode,
-              const std::string &msgArgs);
+              const std::string &msgArgs, TextBox::ValidInput validInput);
 
  private:
   MessageCode _msgCode;

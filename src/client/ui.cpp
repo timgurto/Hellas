@@ -113,6 +113,11 @@ void Client::initWindows() {
 
   initializeQuestLog();
   addWindow(_questLog);
+
+  _bugReportWindow = new InputWindow(
+      "Please provide feedback to the developers:", CL_REPORT_BUG, {},
+      TextBox::ALL);
+  addWindow(_bugReportWindow);
 }
 
 void Client::initCastBar() {
@@ -282,7 +287,7 @@ void Client::updateUI() {
 }
 
 void Client::initMenuBar() {
-  static const px_t MENU_BUTTON_W = 12, MENU_BUTTON_H = 12, NUM_BUTTONS = 10;
+  static const px_t MENU_BUTTON_W = 12, MENU_BUTTON_H = 12, NUM_BUTTONS = 11;
   Element *menuBar = new Element({_hotbar->rect().x + _hotbar->width(),
                                   SCREEN_Y - MENU_BUTTON_H,
                                   MENU_BUTTON_W * NUM_BUTTONS, MENU_BUTTON_H});
@@ -299,9 +304,11 @@ void Client::initMenuBar() {
   addButtonToMenu(menuBar, 6, _socialWindow, "icon-social.png",
                   "Social information (O)");
   addButtonToMenu(menuBar, 7, _chatContainer, "icon-chat.png",
-                  "Toggle chat log");
+                  "Toggle chat log (L)");
   addButtonToMenu(menuBar, 8, _mapWindow, "icon-map.png", "World map (M)");
   addButtonToMenu(menuBar, 9, _helpWindow, "icon-help.png", "Help (H)");
+  addButtonToMenu(menuBar, 10, _bugReportWindow, "icon-bug.png",
+                  "Report bug or give feedback");
 
   addUI(menuBar);
 }
@@ -309,7 +316,7 @@ void Client::initMenuBar() {
 void Client::addButtonToMenu(Element *menuBar, size_t index, Element *toToggle,
                              const std::string iconFile,
                              const std::string tooltip) {
-  static const px_t MENU_BUTTON_W = 12, MENU_BUTTON_H = 12;
+  const px_t MENU_BUTTON_W = 12, MENU_BUTTON_H = 12;
 
   Button *button =
       new Button({MENU_BUTTON_W * static_cast<px_t>(index), 0, MENU_BUTTON_W,

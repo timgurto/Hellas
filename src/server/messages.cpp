@@ -37,6 +37,17 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
     }
 
     switch (msgCode) {
+      case CL_REPORT_BUG: {
+        iss.get(buffer, BUFFER_SIZE, MSG_END);
+        auto bugText = std::string(buffer);
+        iss >> del;
+        if (del != MSG_END) return;
+
+        handle_CL_REPORT_BUG(user->name(), bugText);
+
+        break;
+      }
+
       case CL_PING: {
         ms_t timeSent;
         iss >> timeSent >> del;
@@ -1353,6 +1364,12 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
                << Log::endl;
     }
   }
+}
+
+void Server::handle_CL_REPORT_BUG(const std::string &name,
+                                  const std::string &bugText) {
+  auto bugFile = std::ofstream{"bugs.log", std::ofstream::app};
+  bugFile << name << ": " << bugText << std::endl;
 }
 
 void Server::handle_CL_LOGIN_EXISTING(const Socket &client,

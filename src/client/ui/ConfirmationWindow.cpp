@@ -1,7 +1,7 @@
 #include "ConfirmationWindow.h"
+
 #include "../Client.h"
 #include "Label.h"
-#include "TextBox.h"
 
 ConfirmationWindow::ConfirmationWindow(const std::string &windowText,
                                        MessageCode msgCode,
@@ -57,7 +57,8 @@ void InfoWindow::deleteWindow(void *thisWindow) {
 }
 
 InputWindow::InputWindow(const std::string &windowText, MessageCode msgCode,
-                         const std::string &msgArgs)
+                         const std::string &msgArgs,
+                         TextBox::ValidInput validInput)
     : _msgCode(msgCode), _msgArgs(msgArgs) {
   const px_t WINDOW_WIDTH = 300, WINDOW_HEIGHT = 48, PADDING = 2,
              BUTTON_WIDTH = 60, BUTTON_HEIGHT = 15;
@@ -89,7 +90,9 @@ InputWindow::InputWindow(const std::string &windowText, MessageCode msgCode,
 
 void InputWindow::sendMessageWithInputAndHideWindow(void *thisInputWindow) {
   auto *window = reinterpret_cast<InputWindow *>(thisInputWindow);
-  auto args = makeArgs(window->_msgArgs, window->_textBox->text());
+  auto args = window->_textBox->text();
+  if (!window->_msgArgs.empty()) args = makeArgs(window->_msgArgs, args);
   Client::_instance->sendMessage(window->_msgCode, args);
   window->hide();
+  window->_textBox->text({});
 }

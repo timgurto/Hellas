@@ -357,6 +357,8 @@ class Client {
   std::set<const ClientSpell *> _knownSpells{};
   std::map<std::string, ms_t> _spellCooldowns{};
 
+  Window *_bugReportWindow{nullptr};
+
   windows_t _windows;
 
   ui_t _ui;

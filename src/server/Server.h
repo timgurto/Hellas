@@ -33,7 +33,7 @@
 #include "objects/Object.h"
 
 #define SERVER_ERROR(msg)                                              \
-  Server::debug() << Color::CHAT_ERROR << (msg) << Log::endl             \
+  Server::debug() << Color::CHAT_ERROR << (msg) << Log::endl           \
                   << Color::CHAT_ERROR << __FILE__ << ":"s << __LINE__ \
                   << Log::endl
 
@@ -286,6 +286,8 @@ class Server {
   ms_t _timeStatsLastPublished;
   void writeUserToFile(const User &user, std::ostream &file) const;
 
+  void handle_CL_REPORT_BUG(const std::string &name,
+                            const std::string &bugText);
   void handle_CL_LOGIN_EXISTING(const Socket &client, const std::string &name,
                                 const std::string &pwHash,
                                 const std::string &clientVersion);

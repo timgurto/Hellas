@@ -68,6 +68,7 @@ Server::Server()
                  "isRanged"
               << std::endl;
   }
+  { auto bugFile = std::ofstream{"bugs.log"}; }
 
   _debug("Server initialized");
 

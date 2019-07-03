@@ -10,6 +10,10 @@ enum MessageCode {
 
   // Client -> server
 
+  // Feedback to the developer
+  // Arguments: bug text
+  CL_REPORT_BUG,
+
   // A ping, to measure latency and reassure the server
   // Arguments: time sent
   CL_PING,
