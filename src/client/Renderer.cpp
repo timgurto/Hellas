@@ -36,7 +36,7 @@ void Renderer::init() {
 
   bool fullScreen = cmdLineArgs.contains("fullscreen");
   _window =
-      SDL_CreateWindow("Client", screenX, screenY, screenW, screenH,
+      SDL_CreateWindow("Hellas (Open Beta)", screenX, screenY, screenW, screenH,
                        SDL_WINDOW_SHOWN | (fullScreen ? SDL_WINDOW_FULLSCREEN
                                                       : SDL_WINDOW_RESIZABLE));
   if (_window == nullptr) return;
