@@ -316,6 +316,41 @@ TEST_CASE("Swapping items preserves damage") {
   }
 }
 
+TEST_CASE("Persistence of users' items") {
+  // Given a server with an item type
+  auto data = R"(
+    <item id="ball"/>
+  )";
+  auto s = TestServer::WithDataString(data);
+  auto itemHealth = Hitpoints{0};
+  auto username = ""s;
+
+  // And a player has one in his inventory
+  {
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    username = user.name();
+    user.giveItem(&s.getFirstItem());
+
+    // When that item is damaged
+    auto &slot0 = user.inventory(0).first;
+    do {
+      slot0.onUse();
+    } while (slot0.health() == Item::MAX_HEALTH);
+    itemHealth = slot0.health();
+
+    // And when he logs off and back on
+  }
+  auto c = TestClient::WithUsernameAndDataString(username, data);
+  s.waitForUsers(1);
+  auto &user = s.getFirstUser();
+
+  // Then the item is still damaged
+  const auto &slot0 = user.inventory(0).first;
+  CHECK(slot0.health() == itemHealth);
+}
+
 #define BREAK_ITEM(ITEM)               \
   for (auto i = 0; i != 100000; ++i) { \
     (ITEM).onUse();                    \

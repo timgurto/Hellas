@@ -40,6 +40,10 @@ class ServerItem : public Item {
 
     Instance() = default;
     Instance(const ServerItem *type, ReportingInfo info);
+    static Instance LoadFromFile(const ServerItem *type, ReportingInfo info,
+                                 Hitpoints health) {
+      return {type, info, health};
+    }
 
     bool hasItem() const { return _type != nullptr; }
     const ServerItem *type() const { return _type; }
@@ -48,6 +52,8 @@ class ServerItem : public Item {
     void damageFromUse() override;
 
    private:
+    Instance(const ServerItem *type, ReportingInfo info, Hitpoints health)
+        : _type(type), _reportingInfo(info), _health(health) {}
     const ServerItem *_type{nullptr};
     Hitpoints _health{0};
     ReportingInfo _reportingInfo;
