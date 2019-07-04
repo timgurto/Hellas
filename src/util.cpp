@@ -135,3 +135,12 @@ std::string timestamp() {
   oss << std::put_time(&tm, "%H:%M:%S") << " ";
   return oss.str();
 }
+
+std::string toPascal(std::string s) {
+  if (s.empty()) return s;
+
+  s[0] = toupper(s[0]);
+  for (auto i = size_t{1}; i < s.size(); ++i) s[i] = tolower(s[i]);
+
+  return s;
+}

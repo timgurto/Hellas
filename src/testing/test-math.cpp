@@ -71,3 +71,13 @@ TEST_CASE("getTileRect() behaves as expected") {
   CHECK(Map::getTileRect(7, 5) == MapRect(224, 160, 32, 32));
   CHECK(Map::getTileRect(7, 6) == MapRect(208, 192, 32, 32));
 }
+
+TEST_CASE("toPascal") {
+  CHECK(toPascal("") == "");
+  CHECK(toPascal("A") == "A");
+  CHECK(toPascal("B") == "B");
+  CHECK(toPascal("a") == "A");
+  CHECK(toPascal("AA") == "Aa");
+  CHECK(toPascal("AB") == "Ab");
+  CHECK(toPascal("AAA") == "Aaa");
+}

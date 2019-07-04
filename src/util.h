@@ -122,4 +122,6 @@ bool isUsernameValid(const std::string name);
 
 std::string timestamp();
 
+std::string toPascal(std::string in);
+
 #endif

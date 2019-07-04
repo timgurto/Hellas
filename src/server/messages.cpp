@@ -1548,7 +1548,8 @@ void Server::handle_CL_GRANT(User &user, size_t serial,
     sendMessage(user.socket(), ERROR_NOT_A_KING);
     return;
   }
-  obj->permissions().setPlayerOwner(username);
+  auto newOwnerName = toPascal(username);
+  obj->permissions().setPlayerOwner(newOwnerName);
 }
 
 void Server::handle_CL_PERFORM_OBJECT_ACTION(User &user, size_t serial,

@@ -59,13 +59,7 @@ void TextBox::click(Element &e, const ScreenPoint &mousePos) {
   currentFocus = newFocus;
 }
 
-void TextBox::forcePascalCase() {
-  if (_text.size() && _text[0] >= 'a' && _text[0] <= 'z')
-    _text[0] = 'A' + (_text[0] - 'a');
-
-  for (size_t i = 1; i <= _text.size(); ++i)
-    if (_text[i] >= 'A' && _text[i] <= 'Z') _text[i] = 'a' + (_text[i] - 'A');
-}
+void TextBox::forcePascalCase() { _text = toPascal(_text); }
 
 void TextBox::setOnChange(OnChangeFunction function, void *data) {
   _onChangeFunction = function;
