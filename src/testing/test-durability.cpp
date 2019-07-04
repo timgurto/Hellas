@@ -285,6 +285,37 @@ TEST_CASE("Tool objects lose durability") {
   }
 }
 
+TEST_CASE("Swapping items preserves damage") {
+  GIVEN("a user with two items") {
+    auto data = R"(
+      <item id="coin"/>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    user.giveItem(&s.getFirstItem(), 2);
+
+    WHEN("one is damaged") {
+      auto &slot0 = user.inventory(0).first;
+      do {
+        slot0.onUse();
+      } while (slot0.health() == Item::MAX_HEALTH);
+      auto itemHealth = slot0.health();
+
+      AND_WHEN("he swaps them") {
+        c.sendMessage(CL_SWAP_ITEMS, makeArgs(0, 0, 0, 1));
+        REPEAT_FOR_MS(100);
+
+        THEN("it is still damaged in its new location") {
+          auto &slot1 = user.inventory(1).first;
+          CHECK(slot1.health() == itemHealth);
+        }
+      }
+    }
+  }
+}
+
 #define BREAK_ITEM(ITEM)               \
   for (auto i = 0; i != 100000; ++i) { \
     (ITEM).onUse();                    \
@@ -427,10 +458,8 @@ TEST_CASE("Broken items don't work") {
 // Weapon/armour don't take damage on miss/dodge
 
 // Can't use broken item as material
-// Can't pick up damaged object as item
 // Merchant objects can't trade with damaged items
 
-// Item health preserved when swapping
 // Health of items in containers is persistent
 // Health of player inventory/gear is persistent
 
