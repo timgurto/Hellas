@@ -25,7 +25,7 @@ add.alpha <- function(col, alpha=1){
                        rgb(x[1], x[2], x[3], alpha=alpha))  
 }
 
-data$duration = data$duration / data$threatCount
+data$duration = data$duration * data$threatCount
 
 plot(
     x=NULL,
