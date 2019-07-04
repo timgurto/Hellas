@@ -1539,6 +1539,10 @@ void Server::handle_CL_CEDE(User &user, size_t serial) {
 void Server::handle_CL_GRANT(User &user, size_t serial,
                              const std::string &username) {
   auto *obj = _entities.find<Object>(serial);
+  if (!obj) {
+    sendMessage(user.socket(), WARNING_DOESNT_EXIST);
+    return;
+  }
   auto playerCity = cities().getPlayerCity(user.name());
   if (!obj->permissions().isOwnedByCity(playerCity)) {
     sendMessage(user.socket(), WARNING_NO_PERMISSION);
