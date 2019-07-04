@@ -75,7 +75,7 @@ InputWindow::InputWindow(const std::string &windowText, MessageCode msgCode,
   y += Element::TEXT_HEIGHT + PADDING;
 
   _textBox =
-      new TextBox({0, y, WINDOW_WIDTH, Element::TEXT_HEIGHT}, TextBox::LETTERS);
+      new TextBox({0, y, WINDOW_WIDTH, Element::TEXT_HEIGHT}, validInput);
   addChild(_textBox);
   y += _textBox->height() + PADDING;
 
