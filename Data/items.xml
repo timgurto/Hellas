@@ -97,7 +97,7 @@
 		</item-->
 
 	<!-- Knives -->
-		<item id="stoneKnife" name="Sharpened Stone" gearSlot="6" >
+		<item id="stoneKnife" name="Stone Knife" gearSlot="6" >
 			<tag name="carving" />
 			<tag name="harvesting" />
 			<offset x="-4" y="-1" />

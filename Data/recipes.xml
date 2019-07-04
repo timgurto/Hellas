@@ -34,6 +34,7 @@
     <recipe id="stoneKnife"
         time="4000" >
         <material id="rock" />
+        <material id="stick" />
         <tool class="grinding1" />
         <unlockedBy gather="rock" />
     </recipe>
