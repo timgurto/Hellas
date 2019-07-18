@@ -111,9 +111,12 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     int slot;
     std::string id;
     int qty;
+    Hitpoints health;
+
     if (!xr.findAttr(slotElem, "slot", slot)) continue;
     if (!xr.findAttr(slotElem, "id", id)) continue;
     if (!xr.findAttr(slotElem, "quantity", qty)) continue;
+    if (!xr.findAttr(slotElem, "health", health)) continue;
 
     std::set<ServerItem>::const_iterator it = _items.find(id);
     if (it == _items.end()) {
@@ -121,8 +124,9 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
              Color::CHAT_ERROR);
       continue;
     }
-    user.gear(slot).first = {
-        &*it, ServerItem::Instance::ReportingInfo::UserGear(&user, slot)};
+    user.gear(slot).first = ServerItem::Instance::LoadFromFile(
+        &*it, ServerItem::Instance::ReportingInfo::UserGear(&user, slot),
+        health);
     user.gear(slot).second = qty;
   }
 
@@ -265,6 +269,7 @@ void Server::writeUserData(const User &user) const {
       auto slotElement = xw.addChild("slot", e);
       xw.setAttr(slotElement, "slot", i);
       xw.setAttr(slotElement, "id", slot.first.type()->id());
+      xw.setAttr(slotElement, "health", slot.first.health());
       xw.setAttr(slotElement, "quantity", slot.second);
     }
   }

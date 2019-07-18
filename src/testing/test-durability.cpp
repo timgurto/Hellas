@@ -319,26 +319,35 @@ TEST_CASE("Swapping items preserves damage") {
 TEST_CASE("Persistence of users' items") {
   // Given a server with an item type
   auto data = R"(
-    <item id="ball"/>
+    <item id="shoe" gearSlot="5" />
   )";
   auto s = TestServer::WithDataString(data);
-  auto itemHealth = Hitpoints{0};
+  auto invHealth = Hitpoints{0}, gearHealth = Hitpoints{0};
   auto username = ""s;
 
-  // And a player has one in his inventory
+  // And a player has one in his inventory and one equipped
   {
     auto c = TestClient::WithDataString(data);
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
     username = user.name();
-    user.giveItem(&s.getFirstItem());
+    user.giveItem(&s.getFirstItem(), 2);
+    c.sendMessage(CL_SWAP_ITEMS, makeArgs(0, 1, 1, 5));
 
-    // When that item is damaged
-    auto &slot0 = user.inventory(0).first;
+    // When the inventory item is damaged
+    auto &invSlot = user.inventory(0).first;
     do {
-      slot0.onUse();
-    } while (slot0.health() == Item::MAX_HEALTH);
-    itemHealth = slot0.health();
+      invSlot.onUse();
+    } while (invSlot.health() == Item::MAX_HEALTH);
+    invHealth = invSlot.health();
+
+    // And when the equipped item is damaged even more)
+    auto &gearSlot = user.gear(5).first;
+    WAIT_UNTIL(gearSlot.hasItem());
+    do {
+      gearSlot.onUse();
+    } while (gearSlot.health() >= invHealth);
+    gearHealth = gearSlot.health();
 
     // And when he logs off and back on
   }
@@ -346,9 +355,9 @@ TEST_CASE("Persistence of users' items") {
   s.waitForUsers(1);
   auto &user = s.getFirstUser();
 
-  // Then the item is still damaged
-  const auto &slot0 = user.inventory(0).first;
-  CHECK(slot0.health() == itemHealth);
+  // Then the items are still damaged to the same degree
+  CHECK(user.inventory(0).first.health() == invHealth);
+  CHECK(user.gear(5).first.health() == gearHealth);
 }
 
 #define BREAK_ITEM(ITEM)               \
@@ -496,6 +505,5 @@ TEST_CASE("Broken items don't work") {
 // Merchant objects can't trade with damaged items
 
 // Health of items in containers is persistent
-// Health of player inventory/gear is persistent
 
 // Ranged weapons that deplete themselves don't damage the stack
