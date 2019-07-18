@@ -316,7 +316,7 @@ TEST_CASE("Swapping items preserves damage") {
   }
 }
 
-TEST_CASE("Persistence of users' items") {
+TEST_CASE("Persistence of item health: users' items") {
   // Given a server with an item type
   auto data = R"(
     <item id="shoe" gearSlot="5" />
@@ -358,6 +358,42 @@ TEST_CASE("Persistence of users' items") {
   // Then the items are still damaged to the same degree
   CHECK(user.inventory(0).first.health() == invHealth);
   CHECK(user.gear(5).first.health() == gearHealth);
+}
+
+TEST_CASE("Persistence of item health: objects' contents") {
+  // Given a server with an item type and a container type
+  auto itemHealth = Hitpoints{0};
+
+  auto data = R"(
+    <item id="toy" />
+    <objectType id="toybox" >
+      <container slots="1" />
+    </objectType>
+  )";
+
+  {
+    auto s = TestServer::WithDataString(data);
+
+    // And a container object containing an item
+    s.addObject("toybox");
+    auto &toybox = s.getFirstObject();
+    auto *toy = &s.getFirstItem();
+    toybox.container().addItems(toy);
+
+    // When the item is damaged
+    auto &containerSlot = toybox.container().at(0).first;
+    do {
+      containerSlot.onUse();
+    } while (containerSlot.health() == Item::MAX_HEALTH);
+    itemHealth = containerSlot.health();
+
+    // And when the server restarts
+  }
+  auto s = TestServer::WithDataStringAndKeepingOldData(data);
+
+  // Then the item is still damaged to the same degree
+  auto &toybox = s.getFirstObject();
+  CHECK(toybox.container().at(0).first.health() == itemHealth);
 }
 
 #define BREAK_ITEM(ITEM)               \
@@ -503,7 +539,5 @@ TEST_CASE("Broken items don't work") {
 
 // Can't use broken item as material
 // Merchant objects can't trade with damaged items
-
-// Health of items in containers is persistent
 
 // Ranged weapons that deplete themselves don't damage the stack

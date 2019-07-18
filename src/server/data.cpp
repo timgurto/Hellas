@@ -412,21 +412,23 @@ void Server::loadEntitiesFromFile(const std::string &path,
     obj.contents(contents);
 
     size_t q;
+    Hitpoints health;
     for (auto inventory : xr.getChildren("inventory", elem)) {
       assert(obj.hasContainer());
       if (!xr.findAttr(inventory, "item", s)) continue;
       if (!xr.findAttr(inventory, "slot", n)) continue;
       q = 1;
       xr.findAttr(inventory, "qty", q);
+      if (!xr.findAttr(inventory, "health", health)) continue;
       if (obj.objType().container().slots() <= n) {
         _debug << Color::CHAT_ERROR
                << "Skipping object with invalid inventory slot." << Log::endl;
         continue;
       }
       auto &invSlot = obj.container().at(n);
-      invSlot.first = {
+      invSlot.first = ServerItem::Instance::LoadFromFile(
           &*_items.find(s),
-          ServerItem::Instance::ReportingInfo::InObjectContainer()};
+          ServerItem::Instance::ReportingInfo::InObjectContainer(), health);
       invSlot.second = q;
     }
 
@@ -458,7 +460,6 @@ void Server::loadEntitiesFromFile(const std::string &path,
       obj.remainingMaterials().set(&*it, n);
     }
 
-    auto health = Hitpoints{};
     if (xr.findAttr(elem, "health", health)) obj.health(health);
 
     auto corpseTime = ms_t{};
@@ -581,6 +582,7 @@ void Object::writeToXML(XmlWriter &xw) const {
       xw.setAttr(invSlotE, "slot", i);
       xw.setAttr(invSlotE, "item", container().at(i).first.type()->id());
       xw.setAttr(invSlotE, "qty", container().at(i).second);
+      xw.setAttr(invSlotE, "health", container().at(i).first.health());
     }
   }
 
