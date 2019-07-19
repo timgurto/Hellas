@@ -711,7 +711,8 @@ void User::update(ms_t timeElapsed) {
 
       // Remove item from user's inventory
       auto &slot = _inventory[_actionSlot];
-      if (slot.first.type()->constructsObject() != _actionObjectType) {
+      if (!slot.first.hasItem() ||
+          slot.first.type()->constructsObject() != _actionObjectType) {
         SERVER_ERROR("Trying to construct object from an invalid item");
         break;
       }
