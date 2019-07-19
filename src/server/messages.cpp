@@ -525,6 +525,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           sendMessage(client, WARNING_STUNNED);
           break;
         }
+        user->cancelAction();
         ServerItem::vect_t *containerFrom = nullptr, *containerTo = nullptr;
         Object *pObj1 = nullptr, *pObj2 = nullptr;
         bool breakMsg = false;

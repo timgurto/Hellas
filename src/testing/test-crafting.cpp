@@ -115,3 +115,46 @@ TEST_CASE("Gear counts towards materials") {
     }
   }
 }
+
+TEST_CASE("Duping exploit") {
+  GIVEN("a user with a container, and a recipe and its material") {
+    auto data = R"(
+      <item id="brick" />
+      <item id="clay" />
+      <recipe id="brick" time="100" >
+        <material id="clay" />
+      </recipe>
+      <objectType id="box">
+        <container slots="4" />
+      </objectType>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+
+    auto &user = s.getFirstUser();
+    user.addRecipe("brick");
+    const auto *clay = &s.findItem("clay");
+    user.giveItem(clay);
+
+    s.addObject("box", {10, 15}, user.name());
+    const auto &box = s.getFirstObject();
+
+    WHEN("a user starts crafting the recipe") {
+      c.sendMessage(CL_CRAFT, "brick");
+
+      AND_WHEN("he puts the material into the container") {
+        c.sendMessage(CL_SWAP_ITEMS,
+                      makeArgs(Server::INVENTORY, 0, box.serial(), 0));
+
+        AND_WHEN("enough time passes for the crafting to finish") {
+          REPEAT_FOR_MS(150);
+
+          THEN("his inventory is still empty") {
+            CHECK_FALSE(user.inventory(0).first.hasItem());
+          }
+        }
+      }
+    }
+  }
+}
