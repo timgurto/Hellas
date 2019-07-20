@@ -1123,7 +1123,9 @@ void User::onAttack() {
   }
 
   // Damage the weapon
-  if (usesAmmo) return;
+  auto weaponIsConsumedByAttack =
+      usesAmmo && weapon.type() == weapon.type()->weaponAmmo();
+  if (weaponIsConsumedByAttack) return;
   weapon.onUse();
   if (weapon.isBroken()) updateStats();
 }

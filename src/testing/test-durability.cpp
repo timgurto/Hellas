@@ -130,9 +130,12 @@ TEST_CASE("Combat reduces weapon/armour health") {
 }
 
 TEST_CASE("Thrown weapons don't take damage from attacking") {
-  GIVEN("a whale, and harpoons that can be thrown") {
+  GIVEN("a whale, and harpoons that can be thrown or shot") {
     auto data = R"(
       <item id="harpoon" gearSlot="6" stackSize="1000000" >
+        <weapon damage="1" speed="0.01" consumes="harpoon" />
+      </item>
+      <item id="harpoonGun" gearSlot="6" stackSize="1000000" >
         <weapon damage="1" speed="0.01" consumes="harpoon" />
       </item>
       <npcType id="whale" level="1" attack="1" attackTime="1000000" maxHealth="1000000000" />
@@ -145,14 +148,16 @@ TEST_CASE("Thrown weapons don't take damage from attacking") {
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
     const auto *harpoon = &s.findItem("harpoon");
+    const auto *harpoonGun = &s.findItem("harpoonGun");
     user.giveItem(harpoon, 1000000);
+    user.giveItem(harpoonGun);
 
     WHEN("the user equips harpoons") {
       c.sendMessage(CL_SWAP_ITEMS, makeArgs(Server::INVENTORY, 0, Server::GEAR,
                                             Item::WEAPON_SLOT));
       WAIT_UNTIL(user.gear(Item::WEAPON_SLOT).first.hasItem());
 
-      AND_WHEN("he attacks the NPC many times") {
+      AND_WHEN("he attacks the whale many times") {
         const auto &equippedWeapon = user.gear(Item::WEAPON_SLOT).first;
         auto whaleSerial = s.getFirstNPC().serial();
         c.sendMessage(CL_TARGET_ENTITY, makeArgs(whaleSerial));
@@ -162,6 +167,25 @@ TEST_CASE("Thrown weapons don't take damage from attacking") {
 
         THEN("his remaining harpoons are at full health") {
           CHECK(equippedWeapon.health() == Item::MAX_HEALTH);
+        }
+      }
+    }
+
+    WHEN("the user equips a harpoon gun") {
+      c.sendMessage(CL_SWAP_ITEMS, makeArgs(Server::INVENTORY, 1, Server::GEAR,
+                                            Item::WEAPON_SLOT));
+      WAIT_UNTIL(user.gear(Item::WEAPON_SLOT).first.hasItem());
+
+      AND_WHEN("he attacks the whale many times") {
+        const auto &equippedWeapon = user.gear(Item::WEAPON_SLOT).first;
+        auto whaleSerial = s.getFirstNPC().serial();
+        c.sendMessage(CL_TARGET_ENTITY, makeArgs(whaleSerial));
+        REPEAT_FOR_MS(5000) {
+          if (equippedWeapon.health() != Item::MAX_HEALTH) break;
+        }
+
+        THEN("his harpoon gun is damaged") {
+          CHECK(equippedWeapon.health() != Item::MAX_HEALTH);
         }
       }
     }
@@ -578,5 +602,3 @@ TEST_CASE("Broken items don't work") {
 
 // Can't use broken item as material
 // Merchant objects can't trade with damaged items
-
-// Ranged weapons that deplete themselves don't damage the stack
