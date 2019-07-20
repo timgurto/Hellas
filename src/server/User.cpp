@@ -1123,6 +1123,7 @@ void User::onAttack() {
   }
 
   // Damage the weapon
+  if (usesAmmo) return;
   weapon.onUse();
   if (weapon.isBroken()) updateStats();
 }

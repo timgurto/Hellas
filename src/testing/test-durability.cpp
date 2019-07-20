@@ -129,6 +129,41 @@ TEST_CASE("Combat reduces weapon/armour health") {
   }
 }
 
+TEST_CASE("Thrown weapons don't take damage from attacking") {
+  GIVEN("an NPC, and a user with a large stack of thrown weapons") {
+    auto data = R"(
+      <item id="toothpick" gearSlot="6" stackSize="1000000" >
+        <weapon damage="1" speed="0.01" consumes="toothpick" />
+      </item>
+      <npcType id="whale" level="1" attack="1" attackTime="1000000" maxHealth="1000000000" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    s.addNPC("whale", {10, 15});
+
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    user.giveItem(&s.getFirstItem(), 1000000);
+    c.sendMessage(CL_SWAP_ITEMS, makeArgs(Server::INVENTORY, 0, Server::GEAR,
+                                          Item::WEAPON_SLOT));
+    WAIT_UNTIL(user.gear(Item::WEAPON_SLOT).first.hasItem());
+
+    WHEN("he attacks the NPC many times") {
+      const auto &slot = user.gear(Item::WEAPON_SLOT).first;
+      auto whaleSerial = s.getFirstNPC().serial();
+      c.sendMessage(CL_TARGET_ENTITY, makeArgs(whaleSerial));
+      REPEAT_FOR_MS(5000) {
+        if (slot.health() != Item::MAX_HEALTH) break;
+      }
+
+      THEN("his weapon stack is still at full health") {
+        CHECK(slot.health() == Item::MAX_HEALTH);
+      }
+    }
+  }
+}
+
 TEST_CASE("Item damage is limited to 1") {
   GIVEN("a user with an item") {
     auto data = R"(
