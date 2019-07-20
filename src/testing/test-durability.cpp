@@ -592,6 +592,44 @@ TEST_CASE("Broken items don't work") {
       }
     }
   }
+
+  GIVEN("a tuffet made out of a rock") {
+    auto data = R"(
+      <item id="rock" />
+      <objectType id="tuffet" >
+        <material id="rock" />
+      </objectType>
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    WHEN("a user has a rock") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      user.giveItem(&s.getFirstItem());
+
+      AND_WHEN("he places a tuffet construction site") {
+        c.sendMessage(CL_CONSTRUCT, makeArgs("tuffet", 10, 15));
+
+        AND_WHEN("his rock is broken") {
+          auto &rock = user.inventory(0).first;
+          BREAK_ITEM(rock);
+
+          AND_WHEN("he tries to use it to build the tuffet") {
+            WAIT_UNTIL(s.entities().size() == 1);
+            const auto &tuffet = s.getFirstObject();
+            c.sendMessage(CL_SWAP_ITEMS,
+                          makeArgs(Server::INVENTORY, 0, tuffet.serial(), 0));
+
+            THEN("the tuffet is not finished") {
+              REPEAT_FOR_MS(100);
+              CHECK(tuffet.isBeingBuilt());
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 // TODO:
@@ -600,5 +638,4 @@ TEST_CASE("Broken items don't work") {
 // Armour doesn't take damage on block
 // Weapon/armour don't take damage on miss/dodge
 
-// Can't use broken item as material
 // Merchant objects can't trade with damaged items

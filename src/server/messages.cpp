@@ -597,6 +597,11 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         }
 
         if (isConstructionMaterial) {
+          if (slotFrom.first.isBroken()) {
+            sendMessage(client, WARNING_BROKEN_ITEM);
+            break;
+          }
+
           const auto *materialType = slotFrom.first.type();
           size_t qtyInSlot = slotFrom.second,
                  qtyNeeded = pObj2->remainingMaterials()[materialType],
