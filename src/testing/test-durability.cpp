@@ -130,10 +130,10 @@ TEST_CASE("Combat reduces weapon/armour health") {
 }
 
 TEST_CASE("Thrown weapons don't take damage from attacking") {
-  GIVEN("an NPC, and a user with a large stack of thrown weapons") {
+  GIVEN("a whale, and harpoons that can be thrown") {
     auto data = R"(
-      <item id="toothpick" gearSlot="6" stackSize="1000000" >
-        <weapon damage="1" speed="0.01" consumes="toothpick" />
+      <item id="harpoon" gearSlot="6" stackSize="1000000" >
+        <weapon damage="1" speed="0.01" consumes="harpoon" />
       </item>
       <npcType id="whale" level="1" attack="1" attackTime="1000000" maxHealth="1000000000" />
     )";
@@ -144,21 +144,25 @@ TEST_CASE("Thrown weapons don't take damage from attacking") {
 
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
-    user.giveItem(&s.getFirstItem(), 1000000);
-    c.sendMessage(CL_SWAP_ITEMS, makeArgs(Server::INVENTORY, 0, Server::GEAR,
-                                          Item::WEAPON_SLOT));
-    WAIT_UNTIL(user.gear(Item::WEAPON_SLOT).first.hasItem());
+    const auto *harpoon = &s.findItem("harpoon");
+    user.giveItem(harpoon, 1000000);
 
-    WHEN("he attacks the NPC many times") {
-      const auto &slot = user.gear(Item::WEAPON_SLOT).first;
-      auto whaleSerial = s.getFirstNPC().serial();
-      c.sendMessage(CL_TARGET_ENTITY, makeArgs(whaleSerial));
-      REPEAT_FOR_MS(5000) {
-        if (slot.health() != Item::MAX_HEALTH) break;
-      }
+    WHEN("the user equips harpoons") {
+      c.sendMessage(CL_SWAP_ITEMS, makeArgs(Server::INVENTORY, 0, Server::GEAR,
+                                            Item::WEAPON_SLOT));
+      WAIT_UNTIL(user.gear(Item::WEAPON_SLOT).first.hasItem());
 
-      THEN("his weapon stack is still at full health") {
-        CHECK(slot.health() == Item::MAX_HEALTH);
+      AND_WHEN("he attacks the NPC many times") {
+        const auto &equippedWeapon = user.gear(Item::WEAPON_SLOT).first;
+        auto whaleSerial = s.getFirstNPC().serial();
+        c.sendMessage(CL_TARGET_ENTITY, makeArgs(whaleSerial));
+        REPEAT_FOR_MS(5000) {
+          if (equippedWeapon.health() != Item::MAX_HEALTH) break;
+        }
+
+        THEN("his remaining harpoons are at full health") {
+          CHECK(equippedWeapon.health() == Item::MAX_HEALTH);
+        }
       }
     }
   }
