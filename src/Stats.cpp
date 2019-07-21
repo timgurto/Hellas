@@ -1,6 +1,7 @@
+#include "Stats.h"
+
 #include <iomanip>
 
-#include "Stats.h"
 #include "util.h"
 
 const Stats &Stats::operator&=(const StatsMod &mod) {
@@ -108,7 +109,7 @@ std::vector<std::string> StatsMod::toStrings() const {
   }
   if (weaponDamage > 0) {
     std::string schoolString =
-        weaponSchool == SpellSchool::PHYSICAL ? ""s : weaponSchool;
+        weaponSchool == SpellSchool::PHYSICAL ? ""s : std::string{weaponSchool};
     auto line = toString(weaponDamage) + " "s + schoolString + " damage"s;
     if (attackTime > 0) {
       auto dps = std::ostringstream{};
