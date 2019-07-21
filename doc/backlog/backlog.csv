@@ -272,7 +272,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 100,Sounds for crafting,5,2,Aesthetics,,,,
 101,Particles for crafting,5,2,Aesthetics,,,,
 105,Vehicles can have different speeds,5,5,Feature,,,TRUE,4 Copper
-106,Mouse-down events are propagating to multiple windows,13,3,Bug,,,,3 Tin wrapup
+106,Mouse-down events are propagating to multiple windows,13,3,Bug,,TRUE,,3 Tin wrapup
 110,Load map in login-screen background,5,13,Usability,,,,
 111,"Use gear-slot names, not numbers, in items.xml",3,5,Code quality,,,,
 117,Direct player trading,8,233,Feature,,,,

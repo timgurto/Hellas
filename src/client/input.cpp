@@ -259,9 +259,12 @@ void Client::handleInput(double delta) {
 
             TextBox::clearFocus();
 
-            // Send onLeftMouseDown to all visible windows
+            // Send onLeftMouseDown to frontmost clicked window
             for (Window *window : _windows)
-              if (window->visible()) window->onLeftMouseDown(_mouse);
+              if (window->visible() && collision(_mouse, window->rect())) {
+                window->onLeftMouseDown(_mouse);
+                break;
+              }
             for (Element *element : _ui)
               if (element->visible() && element->canReceiveMouseEvents() &&
                   collision(_mouse, element->rect()))
@@ -284,12 +287,13 @@ void Client::handleInput(double delta) {
             break;
 
           case SDL_BUTTON_RIGHT:
-            // Send onRightMouseDown to all visible windows
+            // Send onRightMouseDown to frontmost clicked window
             _rightMouseDownWasOnUI = false;
             for (Window *window : _windows)
               if (window->visible() && collision(_mouse, window->rect())) {
                 window->onRightMouseDown(_mouse);
                 _rightMouseDownWasOnUI = true;
+                break;
               }
             for (Element *element : _ui)
               if (element->visible() && element->canReceiveMouseEvents() &&
