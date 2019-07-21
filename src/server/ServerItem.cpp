@@ -65,6 +65,7 @@ bool vectHasSpaceAfterRemovingItems(const ServerItem::vect_t &vect,
 bool operator<=(const ItemSet &itemSet, const ServerItem::vect_t &vect) {
   ItemSet remaining = itemSet;
   for (const auto &slot : vect) {
+    if (slot.first.isBroken()) continue;
     remaining.remove(slot.first.type(), slot.second);
     if (remaining.isEmpty()) return true;
   }

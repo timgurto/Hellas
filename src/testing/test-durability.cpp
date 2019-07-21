@@ -467,6 +467,7 @@ TEST_CASE("Persistence of item health: objects' contents") {
   CHECK((ITEM).isBroken());
 
 TEST_CASE("Broken items don't work") {
+  /*
   GIVEN("a weapon that deals 42 damage") {
     auto data = R"(
       <item id="sword" gearSlot="6" >
@@ -630,12 +631,40 @@ TEST_CASE("Broken items don't work") {
       }
     }
   }
+    */
+  GIVEN("an apple cart with an apple, and a user with a coin") {
+    auto data = R"(
+      <item id="coin" />
+      <item id="apple" />
+      <objectType id="appleCart" merchantSlots="1" bottomlessMerchant="1" >
+        <container slots="1" />
+      </objectType>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    const auto *coin = &s.findItem("coin");
+    const auto *apple = &s.findItem("apple");
+    s.addObject("appleCart", {10, 15}, "someOtherOwner");
+    auto &appleCart = s.getFirstObject();
+    appleCart.merchantSlot(0) = {apple, 1, coin, 1};
+
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    user.giveItem(coin);
+
+    AND_WHEN("his coin is broken") {
+      auto &invSlot = user.inventory(0).first;
+      BREAK_ITEM(invSlot);
+
+      AND_WHEN("he tries to buy an apple") {
+        c.sendMessage(CL_TRADE, makeArgs(appleCart.serial(), 0));
+        REPEAT_FOR_MS(100);
+
+        THEN("he still has the coin") {
+          CHECK(user.inventory(0).first.type() == coin);
+        }
+      }
+    }
+  }
 }
-
-// TODO:
-
-// Shield takes damage on block, not hit
-// Armour doesn't take damage on block
-// Weapon/armour don't take damage on miss/dodge
-
-// Merchant objects can't trade with damaged items
