@@ -1,4 +1,6 @@
 #include "ItemSet.h"
+
+#include "../Item.h"
 #include "../util.h"
 
 ItemSet::ItemSet() : _totalQty(0) {}
@@ -108,22 +110,8 @@ void ItemSet::checkTotalQty() const {
   // assert(_totalQty == total);
 };
 
-bool operator<=(const ItemSet &itemSet, const Item::vect_t &vect) {
-  ItemSet remaining = itemSet;
-  for (size_t i = 0; i != vect.size(); ++i) {
-    const std::pair<const Item *, size_t> &invSlot = vect[i];
-    remaining.remove(invSlot.first, invSlot.second);
-    if (remaining.isEmpty()) return true;
-  }
-  return false;
-}
-
 bool operator<=(const ItemSet &lhs, const ItemSet &rhs) {
   return rhs.contains(lhs);
-}
-
-bool operator>(const ItemSet &itemSet, const Item::vect_t &vect) {
-  return !(itemSet <= vect);
 }
 
 bool operator>(const ItemSet &lhs, const ItemSet &rhs) {

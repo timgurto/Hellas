@@ -12,6 +12,7 @@
 
 class ObjectType;
 class User;
+class ItemSet;
 
 // Describes an item type
 class ServerItem : public Item {
@@ -105,6 +106,8 @@ bool vectHasSpaceAfterRemovingItems(const ServerItem::vect_t &vect,
                                     size_t qtyThatWillBeRemoved);
 
 bool operator<=(const ItemSet &itemSet, const ServerItem::vect_t &vect);
+bool operator<=(const ItemSet &itemSet, const Item::vect_t &vect);
+
 bool operator>(const ItemSet &itemSet, const ServerItem::vect_t &vect);
 bool operator>(const ServerItem::vect_t &vect, const ItemSet &itemSet);
 

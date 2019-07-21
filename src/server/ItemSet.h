@@ -4,7 +4,8 @@
 #include <map>
 #include <set>
 #include <utility>
-#include "../Item.h"
+
+class Item;
 
 // A collection of Items, with duplicates/quantities allowed.
 class ItemSet {
@@ -48,10 +49,7 @@ class ItemSet {
   }
 };
 
-bool operator<=(const ItemSet &itemSet, const Item::vect_t &vect);
 bool operator<=(const ItemSet &lhs, const ItemSet &rhs);
-
-bool operator>(const ItemSet &itemSet, const Item::vect_t &vect);
 bool operator>(const ItemSet &lhs, const ItemSet &rhs);
 
 #endif
