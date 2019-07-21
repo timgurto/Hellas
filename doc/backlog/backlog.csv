@@ -251,7 +251,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 512,'That object doesn't exist' after looting,8,5,Bug,,TRUE,,
 513,Show loot sparkles only to tagger,5,3,Bug,,TRUE,,3 Tin wrapup
 526,Add full map,21,8,Content,,TRUE,TRUE,4 Copper
-30,"Items have durability, affected by combat and use.",34,34,Feature,,,TRUE,3 Tin wrapup
+30,"Items have durability, affected by combat and use.",34,34,Feature,,TRUE,TRUE,3 Tin wrapup
 31,Objects can be repaired with materials,21,34,Feature,29,,TRUE,3 Tin wrapup
 32,Object repair can require tools,5,2,Feature,31,,TRUE,3 Tin wrapup
 33,Items can be repaired with materials,21,55,Feature,30,,TRUE,3 Tin wrapup
@@ -272,7 +272,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 100,Sounds for crafting,5,2,Aesthetics,,,,
 101,Particles for crafting,5,2,Aesthetics,,,,
 105,Vehicles can have different speeds,5,5,Feature,,,TRUE,4 Copper
-106,Mouse-down events are propagating to multiple windows,13,3,Bug,,,,
+106,Mouse-down events are propagating to multiple windows,13,3,Bug,,,,3 Tin wrapup
 110,Load map in login-screen background,5,13,Usability,,,,
 111,"Use gear-slot names, not numbers, in items.xml",3,5,Code quality,,,,
 117,Direct player trading,8,233,Feature,,,,
@@ -288,7 +288,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 194,Ensure fellow citizens can be seen on the map,13,21,Bug,,,,
 223,Limit ware selection to items in container,8,13,Usability,,,,
 224,Don't require 'set' button for trade slots,8,8,Usability,,,,
-225,Find-item search doesn't work for more than 1 character,8,3,Bug,,,,
 226,"Avoid window overlap if possible, for object windows",13,13,Usability,,,,
 234,Make allowed-terrain more intuitive for construction,8,8,Usability,,,,
 236,Prevent construction near respawn altars,3,8,Exploit,,,,
@@ -378,7 +377,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 556,Can't build roads under other objects,5,5,Bug,,,,
 557,Provide list of names when granting objects,13,8,Usability,,,,3 Tin wrapup
 558,Add cursor for vehicles,3,2,Usability,,,,
-559,Reduce volume of distant SFX,3,5,Aesthetics,,,,
+559,Reduce volume of distant SFX,3,8,Aesthetics,,,,
 560,Master volume control,3,5,Usability,,,,
 561,Make gigantes always run back to their spawn point,13,3,Bug,,TRUE,,3 Tin wrapup
 562,Prevent griefing of lowbies; watch towers?,8,13,Exploit,,,,
@@ -388,8 +387,23 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 566,Dropping an item deselects target,5,3,Bug,,,,
 567,Always create static objects on startup; don't save them,5,3,Performance,,TRUE,,
 568,Add missing crafting/gathering sounds,55,34,Aesthetics,100,,,
-569,Restrict price selection to coins,13,8,Usability,239,,,
 570,Add warning if merchant-object inventory is full,5,13,Usability,,,,
 571,Altar of Athena teaches port-to-city spell,8,13,Feature,,,,
 572,Sanitise /war and /cityWar calls,3,8,Usability,,,,
 573,Quests can reward items,34,3,Feature,,,,
+574,Require full text entry for merchant prices,13,13,Usability,,,,
+575,Configurable key mapping,8,34,Usability,,,,
+577,Use virtual keys for movement,8,3,Usability,,,,
+578,Merchant-slot UI sometimes doesn't show up,21,8,Bug,,,,3 Tin wrapup
+579,City objects are forgotten on death,13,3,Bug,,,,
+580,"Damage shield on block, not hit",1,5,Feature,,,,
+581,Don't damage armour on block,1,5,Feature,,,,
+582,Don't damage weapon or armour on miss/dodge,1,5,Feature,,,,
+583,Add cursor for vehicles,5,3,Usability,,,,3 Tin wrapup
+584,Can gather from a fig tree briefly before it changes type and is empty,5,8,Bug,,,,
+585,Make ranged weapons viable at high latency,21,13,Usability,,,,3 Tin wrapup
+586,Construction sites have windows despite no permission,3,2,Bug,,,,
+587,Hide NPCs and neutral objects on map,3,2,Usability,,,,
+588,Allow buffs to be recast while on,3,2,Usability,,,,
+589,Nerf Selfish Request,8,1,Exploit,,,,3 Tin wrapup
+590,"Players can get stuck inside objects, and respawn on restarting client",21,13,Bug,,,,3 Tin wrapup
