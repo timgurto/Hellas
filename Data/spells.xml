@@ -107,7 +107,7 @@ Functions:
 </spell>
 
 <!-- Cultist -->
-<spell id="selfHeal" name="Selfish Request" icon="lightOnMan" cost="10" >
+<spell id="selfHeal" name="Selfish Request" icon="lightOnMan" cost="25" >
     <aesthetics sounds="heal" impactParticles="lightRays" />
     <targets self="1" />
     <function name="heal" i1="15" />

@@ -405,5 +405,5 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 586,Construction sites have windows despite no permission,3,2,Bug,,,,
 587,Hide NPCs and neutral objects on map,3,2,Usability,,,,
 588,Allow buffs to be recast while on,3,2,Usability,,,,
-589,Nerf Selfish Request,8,1,Exploit,,,,3 Tin wrapup
+589,Nerf Selfish Request,8,1,Exploit,,TRUE,,3 Tin wrapup
 590,"Players can get stuck inside objects, and respawn on restarting client",21,13,Bug,,,,3 Tin wrapup
