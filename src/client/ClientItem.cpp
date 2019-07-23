@@ -210,10 +210,11 @@ const Tooltip &ClientItem::Instance::tooltip() const {
     color = Color::DURABILITY_LOW;
   tooltip.setColor(color);
 
-  auto oss = std::ostringstream{};
-  oss << "Durability: "s << _health << "/"s << Item::MAX_HEALTH;
-  tooltip.addGap();
-  tooltip.addLine(oss.str());
+  // Removed while item damage is temporarily disabled
+  // auto oss = std::ostringstream{};
+  // oss << "Durability: "s << _health << "/"s << Item::MAX_HEALTH;
+  // tooltip.addGap();
+  // tooltip.addLine(oss.str());
 
   return tooltip;
 }
