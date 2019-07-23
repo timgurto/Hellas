@@ -87,12 +87,13 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     int slot;
     std::string id;
     int qty;
-    Hitpoints health;
+    // Default value to support transition of old data
+    Hitpoints health = Item::MAX_HEALTH;
 
     if (!xr.findAttr(slotElem, "slot", slot)) continue;
     if (!xr.findAttr(slotElem, "id", id)) continue;
     if (!xr.findAttr(slotElem, "quantity", qty)) continue;
-    if (!xr.findAttr(slotElem, "health", health)) continue;
+    xr.findAttr(slotElem, "health", health);
 
     std::set<ServerItem>::const_iterator it = _items.find(id);
     if (it == _items.end()) {
@@ -111,12 +112,13 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     int slot;
     std::string id;
     int qty;
-    Hitpoints health;
+    // Default value to support transition of old data
+    Hitpoints health = Item::MAX_HEALTH;
 
     if (!xr.findAttr(slotElem, "slot", slot)) continue;
     if (!xr.findAttr(slotElem, "id", id)) continue;
     if (!xr.findAttr(slotElem, "quantity", qty)) continue;
-    if (!xr.findAttr(slotElem, "health", health)) continue;
+    xr.findAttr(slotElem, "health", health);
 
     std::set<ServerItem>::const_iterator it = _items.find(id);
     if (it == _items.end()) {
@@ -412,14 +414,15 @@ void Server::loadEntitiesFromFile(const std::string &path,
     obj.contents(contents);
 
     size_t q;
-    Hitpoints health;
+    // Default value to support transition of old data
+    Hitpoints health = Item::MAX_HEALTH;
     for (auto inventory : xr.getChildren("inventory", elem)) {
       assert(obj.hasContainer());
       if (!xr.findAttr(inventory, "item", s)) continue;
       if (!xr.findAttr(inventory, "slot", n)) continue;
       q = 1;
       xr.findAttr(inventory, "qty", q);
-      if (!xr.findAttr(inventory, "health", health)) continue;
+      xr.findAttr(inventory, "health", health);
       if (obj.objType().container().slots() <= n) {
         _debug << Color::CHAT_ERROR
                << "Skipping object with invalid inventory slot." << Log::endl;
