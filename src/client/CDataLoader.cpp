@@ -543,7 +543,7 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
     }
 
     // Strength
-    auto strength = xr.findChild("strength", elem);
+    auto strength = xr.findChild("durability", elem);
     if (strength) {
       if (xr.findAttr(strength, "item", s) &&
           xr.findAttr(strength, "quantity", n)) {

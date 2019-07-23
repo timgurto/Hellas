@@ -11,7 +11,7 @@
     <grantsBuff id="roadMovement1" radius="0" />
     <material id="smoothRock" quantity="9" />
     <unlockedBy recipe="smoothRock" chance="0.2" />
-    <strength item="smoothRock" quantity="9" />
+    <durability item="smoothRock" quantity="9" />
 </objectType>
 
 </root>
