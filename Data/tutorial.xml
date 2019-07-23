@@ -246,7 +246,7 @@
         xDrawOffset="-11" yDrawOffset="-18" >
         <collisionRect x="-11" y="-5" w="24" h="10" />
     </objectType>
-    <item id="tutOre" name="Othrysian Ore" stackSize="5" strength="3" />
+    <item id="tutOre" name="Othrysian Ore" stackSize="5" durability="3" />
     <item id="tutLightning" name="Handheld Lightning" stackSize="5" gearSlot="6" >
         <weapon damage="12" speed="2.1" range="25" consumes="tutLightning" projectile="lightning" sounds="lightning" />
         <offset x="-8" y="-6" />
