@@ -916,7 +916,15 @@ const Tooltip &ClientObject::tooltip() const {
   }
 
   if (isDead()) return tooltip;
-  if (isBeingConstructed()) return tooltip;
+
+  if (isBeingConstructed()) {
+    if (!userHasAccess()) return tooltip;
+
+    tooltip.addGap();
+    tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
+    tooltip.addLine(std::string("Right-click to add materials"));
+    return tooltip;
+  }
 
   // Stats
   bool stats = false;
