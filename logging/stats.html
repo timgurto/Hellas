@@ -22,8 +22,8 @@
         <td class="heading">Class</td>
         <!--td class="heading">XP</td-->
         <td class="heading">City</td>
-        <td class="heading">Health</td>
-        <td class="heading">Energy</td>
+        <!--td class="heading">Health</td-->
+        <!--td class="heading">Energy</td-->
         <td class="heading">Location</td>
         <td class="heading">Gear</td>
         <td class="heading">Inventory</td>
@@ -83,9 +83,9 @@
             cityText = cityText + " <span class='king'>&#x265B;</span>";
         cells += "<td>" + cityText + "</td>";
         
-        cells += makeBarCell(user.health, user.maxHealth, "#00CC00");
+        //cells += makeBarCell(user.health, user.maxHealth, "#00CC00");
         
-        cells += makeBarCell(user.energy, user.maxEnergy, "#FFCC00");
+        //cells += makeBarCell(user.energy, user.maxEnergy, "#FFCC00");
         
         cells += "<td>" + Math.round(user.x) + ", " + Math.round(user.y) + "</td>";
         
