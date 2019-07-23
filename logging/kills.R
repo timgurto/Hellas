@@ -62,7 +62,7 @@ PLUS_GLYPH = 43
 MINUS_GLYPH = 45
 CIRCLE = 1
 legend(
-    "bottomright",
+    "topleft",
     legend=c(classes, "Higher-level player", "Lower-level player"),
     pch=c(CIRCLE, CIRCLE, CIRCLE, PLUS_GLYPH, MINUS_GLYPH),
     col=c(classColors, "#bbbbbb", "#bbbbbb")
