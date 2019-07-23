@@ -272,7 +272,7 @@
         xDrawOffset="-5" yDrawOffset="-5"
         canGather="1" gatherTime="4000" >
         <yield id="tutOre" />
-        <strength item="tutOre" quantity="1" />
+        <durability item="tutOre" quantity="1" />
     </objectType>
     
 
