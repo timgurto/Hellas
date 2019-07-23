@@ -401,13 +401,16 @@
 </objectType>
 
 <objectType id="loom" name="Loom"
+    xDrawOffset="-17"
+    yDrawOffset="-24"
     constructionTime="0"
     damageParticles="wood" sounds="wood">
+    <collisionRect x="-17" y="-6" w="33" h="11" />
     <material id="stick" quantity="5" />
     <material id="linenThread" quantity="5" />
     <tag name="weaving" />
     <unlockedBy recipe="linenThread" />
-    <durability item="linenThrad" quantity="5" />
+    <durability item="linenThread" quantity="5" />
 </objectType>
 
 <objectType id="stretchingFrame" name="Stretching Frame"
