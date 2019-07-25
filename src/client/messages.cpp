@@ -1678,9 +1678,19 @@ void Client::handleMessage(const std::string &msg) {
       case SV_NO_TALENTS: {
         if (del != MSG_END) break;
 
+        // Unlearn talent spells
+        const auto &myClass = _character.getClass();
+        for (const auto &tree : myClass->trees()) {
+          for (const auto &tier : tree.talents) {
+            const auto &talentsAtThisTier = tier.second;
+            for (const auto &talent : talentsAtThisTier) {
+              if (talent.spell) _knownSpells.erase(talent.spell);
+            }
+          }
+        }
+
         _talentLevels.clear();
         _pointsInTrees.clear();
-        _knownSpells.clear();
         populateClassWindow();
         refreshHotbar();
         break;
