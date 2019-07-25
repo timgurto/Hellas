@@ -1957,7 +1957,7 @@ CombatResult Server::handle_CL_CAST(User &user, const std::string &spellID,
 
   auto outcome = user.castSpell(spell);
 
-  if (outcome != CombatResult::FAIL) user.onSpellcast(spellID, spell);
+  if (outcome != CombatResult::FAIL) user.onSuccessfulSpellcast(spellID, spell);
 
   return outcome;
 }

@@ -390,7 +390,7 @@ CombatResult Entity::castSpell(const Spell &spell) {
     }
   }
 
-  _spellCooldowns[spell.id()] = spell.cooldown();
+  if (effect.isAoE()) outcome = HIT;
 
   return outcome;
 }

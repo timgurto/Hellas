@@ -1130,7 +1130,8 @@ void User::onAttack() {
   if (weapon.isBroken()) updateStats();
 }
 
-void User::onSpellcast(const Spell::ID &id, const Spell &spell) {
+void User::onSuccessfulSpellcast(const Spell::ID &id, const Spell &spell) {
+  _spellCooldowns[spell.id()] = spell.cooldown();
   if (spell.cooldown() != 0)
     sendMessage(SV_SPELL_COOLING_DOWN, makeArgs(id, spell.cooldown()));
 
