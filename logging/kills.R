@@ -14,7 +14,7 @@ data <- read.csv(
 data$duration = 1.0*data$duration/1000
 data$isRanged = data$isRanged != 0
 
-classes = unique(data$killingClass)
+classes = sort(unique(data$killingClass))
 classColors = brewer.pal(length(classes), "Set1")
 
 add.alpha <- function(col, alpha=1){
