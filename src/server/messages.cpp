@@ -1883,6 +1883,24 @@ void Server::handle_CL_TAKE_TALENT(User &user, const Talent::Name &talentName) {
     return;
   }
 
+  if (talent->type() == Talent::SPELL && userClass.hasTalent(talent)) {
+    sendMessage(user.socket(), ERROR_ALREADY_KNOW_SPELL);
+    return;
+  }
+
+  auto &tier = talent->tier();
+
+  if (tier.reqPointsInTree > 0 &&
+      user.getClass().pointsInTree(talent->tree()) < tier.reqPointsInTree) {
+    sendMessage(user.socket(), WARNING_MISSING_REQ_FOR_TALENT);
+    return;
+  }
+
+  if (tier.hasItemCost() && !user.hasItems(tier.costTag, tier.costQuantity)) {
+    sendMessage(user.socket(), WARNING_MISSING_ITEMS_FOR_TALENT);
+    return;
+  }
+
   // Tool check must be the last check, as it damages the tools.
   const auto &requiredTool = talent->tier().requiredTool;
   auto requiresTool = !requiredTool.empty();
@@ -1891,28 +1909,9 @@ void Server::handle_CL_TAKE_TALENT(User &user, const Talent::Name &talentName) {
     return;
   }
 
-  auto &tier = talent->tier();
+  // All checks must be done by this point.
 
-#ifndef _DEBUG
-  if (tier.reqPointsInTree > 0 &&
-      user.getClass().pointsInTree(talent->tree()) < tier.reqPointsInTree) {
-    sendMessage(user.socket(), WARNING_MISSING_REQ_FOR_TALENT);
-    return;
-  }
-
-  if (tier.hasItemCost()) {
-    if (!user.hasItems(tier.costTag, tier.costQuantity)) {
-      sendMessage(user.socket(), WARNING_MISSING_ITEMS_FOR_TALENT);
-      return;
-    }
-    user.removeItems(tier.costTag, tier.costQuantity);
-  }
-#endif
-
-  if (talent->type() == Talent::SPELL && userClass.hasTalent(talent)) {
-    sendMessage(user.socket(), ERROR_ALREADY_KNOW_SPELL);
-    return;
-  }
+  if (tier.hasItemCost()) user.removeItems(tier.costTag, tier.costQuantity);
 
   userClass.takeTalent(talent);
 
