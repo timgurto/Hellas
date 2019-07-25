@@ -1,3 +1,4 @@
+#include <ctime>
 #include <fstream>
 #include <utility>
 
@@ -98,7 +99,8 @@ void Server::publishStats(Server *server) {
 
   oss << "version: \"" << version() << "\",\n";
 
-  oss << "time: " << server->_time << ",\n";
+  oss << "uptime: " << server->_time << ",\n";
+  oss << "time: " << time(nullptr) << ",\n";
 
   oss << "recipes: " << server->_recipes.size() << ",\n";
   oss << "constructions: " << server->_numBuildableObjects << ",\n";

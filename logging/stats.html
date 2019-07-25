@@ -9,8 +9,9 @@
     <h1>Hellas server</h1>
 
     <h2>Stats</h2>
-    <p><span class="heading"> Version:</span> <span id="version" class="data" /></p>
-    <p><span class="heading"> Uptime:</span> <span id="time" class="data" /></p>
+    <p><span class="heading"> Status:</span> <span id="status" /></p>
+    <p><span class="heading"> Version:</span> <span id="version" /></p>
+    <p><span class="heading"> Uptime:</span> <span id="uptime" /></p>
     
     <h2>Users</h2>
     <table id="users" >
@@ -56,7 +57,7 @@
             formattedTime += m + "m ";
         formattedTime += s + "s";
         
-        return  formattedTime;
+        return formattedTime;
     }
     
     function makeUserRow(user){
@@ -142,8 +143,17 @@
         return ret;
     }
 
+    var msSinceUpdate = Date.now() - stats.time*1000
+    if (msSinceUpdate < 10000){
+        $("#status").html("ONLINE");
+        $("#status").addClass("statusOnline");
+    } else {
+        $("#status").html("OFFLINE for " + timeDisplay(msSinceUpdate));
+        $("#status").addClass("statusOffline");
+    }
+    
     $("#version").html(stats.version);
-    $("#time").html(timeDisplay(stats.time));
+    $("#uptime").html(timeDisplay(stats.uptime));
     
     stats.users.sort(function(a, b){
         if (a.online != b.online)

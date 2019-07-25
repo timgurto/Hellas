@@ -8,6 +8,14 @@ body {
     opacity: 0.2;
 }
 
+.statusOnline {
+    color: #00ff00;
+}
+
+.statusOffline {
+    color: #ff0000;
+}
+
 h1, h2 {
     color: #CE9B79;
 }
