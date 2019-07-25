@@ -289,3 +289,44 @@ TEST_CASE("Kills with spells give XP") {
     }
   }
 }
+
+TEST_CASE("Relearning a talent skill after death") {
+  GIVEN("a talent that teaches a spell") {
+    auto data = R"(
+      <class name="Dancer">
+          <tree name="Dancing">
+              <tier>
+                  <requires />
+                  <talent type="spell" id="dance" />
+              </tier>
+          </tree>
+      </class>
+      <spell id="dance" name="Dance" >
+        <targets self="1" />
+        <function name="doDirectDamage" s1="0" />
+      </spell>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    WHEN("a level-2 user takes the talent") {
+      user.levelUp();
+      c.sendMessage(CL_TAKE_TALENT, "Dance");
+      WAIT_UNTIL(user.getClass().knowsSpell("dance"));
+
+      AND_WHEN("he dies") {
+        user.kill();
+
+        AND_WHEN("he tries to take the talent again") {
+          c.sendMessage(CL_TAKE_TALENT, "Dance");
+
+          THEN("he has the talent") {
+            WAIT_UNTIL(user.getClass().knowsSpell("dance"));
+          }
+        }
+      }
+    }
+  }
+}

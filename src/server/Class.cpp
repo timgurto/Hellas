@@ -23,6 +23,12 @@ void Class::unlearnAll() {
 Class::Class(const ClassType &type, const User &owner)
     : _type(&type), _owner(&owner) {}
 
+bool Class::hasTalent(const Talent *talent) const {
+  auto it = _talentRanks.find(talent);
+  if (it == _talentRanks.end()) return false;
+  return _talentRanks.at(talent) > 0;
+}
+
 void Class::takeTalent(const Talent *talent) {
   ++_talentPointsAllocated;
 

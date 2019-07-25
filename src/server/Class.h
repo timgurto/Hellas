@@ -90,9 +90,7 @@ class Class {
   Class(const ClassType &type, const User &owner);
   const ClassType &type() const { return *_type; }
 
-  bool hasTalent(const Talent *talent) const {
-    return _talentRanks.count(talent) == 1;
-  }
+  bool hasTalent(const Talent *talent) const;
   void takeTalent(const Talent *talent);
   bool knowsSpell(const Spell::ID &spell) const;
   void markSpellAsKnown(const Spell::ID &spell);
