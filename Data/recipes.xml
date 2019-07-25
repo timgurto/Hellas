@@ -620,7 +620,9 @@
     id="boneNeedle" time="4000" >
     <material id="bone" />
     <tool class="grinding1" />
-    <unlockedBy item="bone" chance="0.1" />
+    <unlockedBy item="bone" chance="0.02" />
+    <unlockedBy recipe="linenCloth" />
+    <unlockedBy recipe="linenThread" chance="0.1" />
 </recipe>
 
 <!-- Linen -->
@@ -633,7 +635,7 @@
     id="linenCloth" time="4000" >
     <material id="linenThread" quantity="5" />
     <tool class="weaving" />
-    <unlockedBy recipe="linenThread" />
+    <unlockedBy recipe="linenThread" chance="0.05" />
     <unlockedBy construction="loom" />
 </recipe>
 <recipe
