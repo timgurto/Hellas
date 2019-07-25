@@ -69,3 +69,4 @@ doc/web/spells.js
 session.txt
 logging/kills.svg
 durability.csv
+logging/onlinePlayers.csv
