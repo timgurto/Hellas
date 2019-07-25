@@ -990,22 +990,24 @@ void User::onAttackedBy(Entity &attacker, Threat threat) {
 }
 
 void User::onKilled(Entity &victim) {
-  auto levelDiff = victim.getLevelDifference(*this);
+  if (victim.grantsXPOnDeath()) {
+    auto levelDiff = victim.getLevelDifference(*this);
 
-  auto xp = XP{};
-  if (levelDiff < -9)
-    xp = 0;
-  else if (levelDiff > 5)
-    xp = 150;
-  else {
-    auto xpPerLevelDiff = std::unordered_map<int, XP>{
-        {-9, 13}, {-8, 26}, {-7, 38}, {-6, 49}, {-5, 59},
-        {-4, 68}, {-3, 77}, {-2, 85}, {-1, 93}, {0, 100},
-        {1, 107}, {2, 115}, {3, 123}, {4, 132}, {5, 141}};
-    xp = xpPerLevelDiff[levelDiff];
+    auto xp = XP{};
+    if (levelDiff < -9)
+      xp = 0;
+    else if (levelDiff > 5)
+      xp = 150;
+    else {
+      auto xpPerLevelDiff = std::unordered_map<int, XP>{
+          {-9, 13}, {-8, 26}, {-7, 38}, {-6, 49}, {-5, 59},
+          {-4, 68}, {-3, 77}, {-2, 85}, {-1, 93}, {0, 100},
+          {1, 107}, {2, 115}, {3, 123}, {4, 132}, {5, 141}};
+      xp = xpPerLevelDiff[levelDiff];
+    }
+
+    addXP(xp);
   }
-
-  addXP(xp);
 
   auto victimID = victim.type()->id();
   addQuestProgress(Quest::Objective::KILL, victimID);

@@ -54,6 +54,7 @@ class NPC : public Entity, public QuestNode {
   double combatDamage() const override {
     return npcType()->baseStats().physicalDamage;
   }
+  bool grantsXPOnDeath() const override { return true; }
 
   char classTag() const override { return 'n'; }
 
