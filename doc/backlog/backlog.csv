@@ -294,7 +294,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 239,Add coinage,21,3,Content,519,,,6 Bronze
 240,XML-verifying git hook,21,8,Code quality,,TRUE,,
 250,Fireball has interruptible cast time,2,8,Feature,246,,,5 First adventure
-270,Buffs can be dismissed,1,5,Feature,267,,,3 Tin wrapup
+270,Buffs can be dismissed,1,5,Feature,267,TRUE,,3 Tin wrapup
 280,Hotbar can be rearranged,13,34,Usability,279,TRUE,,3 Tin wrapup
 281,Hotbar can include recipes,8,13,Usability,280,TRUE,,3 Tin wrapup
 286,Learning talents can require a tool,2,5,Feature,283,TRUE,TRUE,3 Tin wrapup
@@ -404,6 +404,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 585,Make ranged weapons viable at high latency,21,13,Usability,,,,3 Tin wrapup
 586,Construction sites have windows despite no permission,3,2,Bug,,,,
 587,Hide NPCs and neutral objects on map,3,2,Usability,,,,
-588,Allow buffs to be recast while on,3,2,Usability,,,,
+588,Allow buffs to be recast while on,3,2,Usability,,TRUE,,
 589,Nerf Selfish Request,8,1,Exploit,,TRUE,,3 Tin wrapup
 590,"Players can get stuck inside objects, and respawn on restarting client",21,13,Bug,,,,3 Tin wrapup

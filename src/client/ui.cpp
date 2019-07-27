@@ -174,6 +174,13 @@ Element *Client::assembleBuffEntry(const ClientBuffType &type, bool isDebuff) {
   auto icon = new Picture({ICON_X, 2, 16, 16}, type.icon());
   e->addChild(icon);
 
+  if (!isDebuff) {
+    icon->setRightMouseDownFunction(
+        [&type](Element &e, const ScreenPoint &mousePos) {
+          Client::instance().sendMessage(CL_DISMISS_BUFF, type.id());
+        });
+  }
+
   auto tooltip = Tooltip{};
   tooltip.setColor(Color::TOOLTIP_NAME);
   tooltip.addLine(type.name());
@@ -181,6 +188,12 @@ Element *Client::assembleBuffEntry(const ClientBuffType &type, bool isDebuff) {
     tooltip.addGap();
     tooltip.setColor();
     tooltip.addLine(type.description());
+
+    if (!isDebuff) {
+      tooltip.addGap();
+      tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
+      tooltip.addLine("Right-click to dismiss");
+    }
   }
   icon->setTooltip(tooltip);
 

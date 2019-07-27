@@ -318,6 +318,21 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         break;
       }
 
+      case CL_DISMISS_BUFF: {
+        iss.get(buffer, BUFFER_SIZE, MSG_END);
+        auto buffID = std::string{buffer};
+        iss >> del;
+        if (del != MSG_END) return;
+
+        if (user->isStunned()) {
+          sendMessage(client, WARNING_STUNNED);
+          break;
+        }
+
+        user->removeBuff(buffID);
+        break;
+      }
+
       case CL_CANCEL_ACTION: {
         iss >> del;
         if (del != MSG_END) return;

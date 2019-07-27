@@ -176,6 +176,10 @@ enum MessageCode {
   // Arguments: inventory slot containing the item
   CL_CAST_ITEM,
 
+  // Dismiss a buff
+  // Arguments: buff ID
+  CL_DISMISS_BUFF,
+
   // Start a quest
   // Arguments: quest ID, start-object serial
   CL_ACCEPT_QUEST,
