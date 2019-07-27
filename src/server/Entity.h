@@ -99,6 +99,7 @@ class Entity {
   void resetAttackTimer() { _attackTimer = _stats.attackTime; }
   virtual double combatDamage() const { return 0; }
   virtual bool grantsXPOnDeath() const { return false; }
+  virtual void onSuccessfulSpellcast(const std::string &id, const Spell &spell);
 
   const Buffs &buffs() const { return _buffs; }
   const Buffs &debuffs() const { return _debuffs; }

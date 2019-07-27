@@ -393,6 +393,8 @@ CombatResult Entity::castSpell(const Spell &spell) {
 
   if (effect.isAoE()) outcome = HIT;
 
+  if (outcome != FAIL) onSuccessfulSpellcast(spell.id(), spell);
+
   return outcome;
 }
 
@@ -554,6 +556,10 @@ const Loot &Entity::loot() const {
   }
 
   return *_loot;
+}
+
+void Entity::onSuccessfulSpellcast(const std::string &id, const Spell &spell) {
+  _spellCooldowns[spell.id()] = spell.cooldown();
 }
 
 std::vector<const Buff *> Entity::onHitBuffsAndDebuffs() {
