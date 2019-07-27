@@ -90,7 +90,7 @@ class Buff {
   bool canBeInterrupted() const { return _type->canBeInterrupted(); }
   bool cancelsOnOOE() const { return _type->cancelsOnOOE(); }
 
-  bool operator==(const Buff &rhs) const { return _type == rhs._type; }
+  bool hasSameType(const Buff &rhs) const { return _type == rhs._type; }
 
   void applyStatsTo(Stats &stats) const { stats &= _type->stats(); }
 

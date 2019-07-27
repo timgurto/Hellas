@@ -585,17 +585,26 @@ void Entity::applyBuff(const BuffType &type, Entity &caster) {
   auto newBuff = Buff{type, *this, caster};
 
   // Check for duplicates
-  for (auto &buff : _buffs)
-    if (buff == newBuff) return;
+  auto buffWasReapplied = false;
+  for (auto &buff : _buffs) {
+    if (buff.hasSameType(newBuff)) {
+      buff = newBuff;
+      buffWasReapplied = true;
+      break;
+    }
+  }
 
-  _buffs.push_back(newBuff);
-  updateStats();
+  if (!buffWasReapplied) _buffs.push_back(newBuff);
 
   sendBuffMsg(type.id());
 
-  if (classTag() == 'u' && type.changesAllowedTerrain()) {
-    auto &user = dynamic_cast<User &>(*this);
-    user.onTerrainListChange(type.changesAllowedTerrain()->id());
+  if (!buffWasReapplied) {
+    updateStats();
+
+    if (classTag() == 'u' && type.changesAllowedTerrain()) {
+      auto &user = dynamic_cast<User &>(*this);
+      user.onTerrainListChange(type.changesAllowedTerrain()->id());
+    }
   }
 }
 
@@ -603,26 +612,36 @@ void Entity::applyDebuff(const BuffType &type, Entity &caster) {
   auto newDebuff = Buff{type, *this, caster};
 
   // Check for duplicates
-  for (auto &debuff : _debuffs)
-    if (debuff == newDebuff) return;
+  auto debuffWasReapplied = false;
+  for (auto &debuff : _debuffs) {
+    if (debuff.hasSameType(newDebuff)) {
+      debuff = newDebuff;
+      debuffWasReapplied = true;
+      break;
+    }
+  }
 
-  _debuffs.push_back(newDebuff);
-  updateStats();
+  if (!debuffWasReapplied) _buffs.push_back(newDebuff);
 
   sendDebuffMsg(type.id());
+
+  if (!debuffWasReapplied) {
+    updateStats();
+
+    if (classTag() == 'u' && type.changesAllowedTerrain()) {
+      auto &user = dynamic_cast<User &>(*this);
+      user.onTerrainListChange(type.changesAllowedTerrain()->id());
+    }
+  }
 }
 
 void Entity::loadBuff(const BuffType &type, ms_t timeRemaining) {
   auto newBuff = Buff{type, *this, timeRemaining};
 
-  // Check for duplicates
-  for (auto &buff : _buffs)
-    if (buff == newBuff) return;
-
   _buffs.push_back(newBuff);
-  updateStats();
-
   sendBuffMsg(type.id());
+
+  updateStats();
 
   if (classTag() == 'u' && type.changesAllowedTerrain()) {
     auto &user = dynamic_cast<User &>(*this);
@@ -633,14 +652,15 @@ void Entity::loadBuff(const BuffType &type, ms_t timeRemaining) {
 void Entity::loadDebuff(const BuffType &type, ms_t timeRemaining) {
   auto newDebuff = Buff{type, *this, timeRemaining};
 
-  // Check for duplicates
-  for (auto &debuff : _debuffs)
-    if (debuff == newDebuff) return;
-
   _debuffs.push_back(newDebuff);
+  sendDebuffMsg(type.id());
+
   updateStats();
 
-  sendDebuffMsg(type.id());
+  if (classTag() == 'u' && type.changesAllowedTerrain()) {
+    auto &user = dynamic_cast<User &>(*this);
+    user.onTerrainListChange(type.changesAllowedTerrain()->id());
+  }
 }
 
 void Entity::removeBuff(Buff::ID id) {
