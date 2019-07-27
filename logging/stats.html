@@ -166,11 +166,17 @@
         return a.name - b.name
     });
     
+    var numPlayersOnline = 0;
     for (var i = 0; i < stats.users.length; ++i){
         var classString = "";
-        if (!stats.users[i].online) classString = ' class="offline"';
+        if (stats.users[i].online)
+            ++numPlayersOnline;
+        else
+            classString = ' class="offline"';
         $("#users").append("<tr" + classString + ">" + makeUserRow(stats.users[i]) + "</tr>");
     }
+    
+    document.title = "Hellas: " + numPlayersOnline + " online"
         
 </script>
 <script type="text/javascript">
