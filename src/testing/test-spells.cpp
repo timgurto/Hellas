@@ -330,3 +330,37 @@ TEST_CASE("Relearning a talent skill after death") {
     }
   }
 }
+
+TEST_CASE("Non-damaging spells aggro NPCs") {
+  GIVEN("a debuff spell, and an NPC out of range") {
+    auto data = R"(
+      <spell id="exhaust" range="100" >
+        <targets enemy="1" />
+        <function name="debuff" s1="exhausted" />
+      </spell>
+      <buff id="exhausted" duration="1000" >
+        <stats energy="-1" />
+      </buff>
+      <npcType id="monster" maxHealth="100" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    s.addNPC("monster", {200, 200});
+
+    WHEN("a user knows the spell") {
+      user.getClass().teachSpell("exhaust");
+
+      AND_WHEN("he casts it on the NPC") {
+        const auto &monster = s.getFirstNPC();
+        c.sendMessage(CL_TARGET_ENTITY, makeArgs(monster.serial()));
+        c.sendMessage(CL_CAST, "exhaust");
+        WAIT_UNTIL(monster.debuffs().size() == 1);
+
+        THEN("it is aware of him") { WAIT_UNTIL(monster.isAwareOf(user)); }
+      }
+    }
+  }
+}

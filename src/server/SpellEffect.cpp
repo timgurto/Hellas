@@ -1,4 +1,5 @@
 #include "SpellEffect.h"
+
 #include "Server.h"
 
 void SpellEffect::setFunction(const std::string &functionName) {
@@ -126,6 +127,7 @@ CombatResult SpellEffect::debuff(const SpellEffect &effect, Entity &caster,
       caster.generateHitAgainst(target, DEBUFF, effect._school, effect._range);
 
   target.applyDebuff(*debuffType, caster);
+  target.onAttackedBy(caster, 0);
 
   return HIT;
 }
