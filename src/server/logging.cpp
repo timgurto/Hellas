@@ -138,7 +138,10 @@ void Server::publishStats(Server *server) {
     static auto lastReportingTime = time_t{0};
     auto currentTime = time(nullptr);
     if (currentTime - lastReportingTime >= FREQUENCY) {
-      lastReportingTime += FREQUENCY;
+      if (lastReportingTime == 0)
+        lastReportingTime = currentTime;
+      else
+        lastReportingTime += FREQUENCY;
       std::ofstream{"logging/onlinePlayers.csv", std::ofstream::app}
           << currentTime << "," << server->_usersByName.size() << std::endl;
     }
