@@ -1228,13 +1228,12 @@ void User::updateStats() {
   }
   int oldEnergy = energy();
   auto newEnergy = oldEnergy - energyDecrease;
-  if (newEnergy < 1)  // Implicit rule: changing gear can never kill you, only
-                      // reduce you to 1 health.
-    newEnergy = 1;
+  if (newEnergy < 0)
+    newEnergy = 0;
   else if (newEnergy > static_cast<int>(newStats.maxEnergy))
     newEnergy = newStats.maxEnergy;
   if (energyDecrease != 0) {
-    health(newEnergy);
+    energy(newEnergy);
     onEnergyChange();
   }
 
