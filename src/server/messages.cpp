@@ -1059,6 +1059,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         std::string targetName(buffer);
         iss >> del;
         if (del != MSG_END) return;
+
+        targetName = toPascal(targetName);
         auto thisBelligerent = Belligerent{user->name(), Belligerent::PLAYER};
         Belligerent::Type targetType = msgCode == CL_DECLARE_WAR_ON_PLAYER
                                            ? Belligerent::PLAYER
@@ -1092,6 +1094,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         auto declarer =
             Belligerent{_cities.getPlayerCity(user->name()), Belligerent::CITY};
 
+        targetName = toPascal(targetName);
         Belligerent::Type targetType =
             msgCode == CL_DECLARE_WAR_ON_PLAYER_AS_CITY ? Belligerent::PLAYER
                                                         : Belligerent::CITY;
