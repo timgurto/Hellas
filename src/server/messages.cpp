@@ -1704,12 +1704,13 @@ void Server::handle_CL_SELECT_PLAYER(User &user,
   if (user.action() == User::ATTACK) user.action(User::NO_ACTION);
 }
 
-void Server::handle_CL_RECRUIT(User &user, const std::string &username) {
+void Server::handle_CL_RECRUIT(User &user, std::string username) {
   const auto &cityName = _cities.getPlayerCity(user.name());
   if (cityName.empty()) {
     sendMessage(user.socket(), ERROR_NOT_IN_CITY);
     return;
   }
+  username = toPascal(username);
   if (!_cities.getPlayerCity(username).empty()) {
     sendMessage(user.socket(), ERROR_ALREADY_IN_CITY);
     return;

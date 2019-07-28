@@ -305,7 +305,7 @@ class Server {
   void handle_CL_TARGET_PLAYER(User &user, const std::string &username);
   void handle_CL_SELECT_ENTITY(User &user, size_t serial);
   void handle_CL_SELECT_PLAYER(User &user, const std::string &username);
-  void handle_CL_RECRUIT(User &user, const std::string &username);
+  void handle_CL_RECRUIT(User &user, std::string username);
   void handle_CL_SUE_FOR_PEACE(User &user, MessageCode code,
                                const std::string &name);
   void handle_CL_CANCEL_PEACE_OFFER(User &user, MessageCode code,
