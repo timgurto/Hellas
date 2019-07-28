@@ -667,3 +667,5 @@ TEST_CASE("Broken items don't work") {
     }
   }
 }
+
+TEST_CASE("Repairing items") { CL_REPAIR_ITEM; }

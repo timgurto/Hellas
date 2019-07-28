@@ -176,6 +176,10 @@ enum MessageCode {
   // Arguments: inventory slot containing the item
   CL_CAST_ITEM,
 
+  // Repair a damaged item
+  // Arguments: serial, slot
+  CL_REPAIR_ITEM,
+
   // Dismiss a buff
   // Arguments: buff ID
   CL_DISMISS_BUFF,
