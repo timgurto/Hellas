@@ -668,4 +668,28 @@ TEST_CASE("Broken items don't work") {
   }
 }
 
-TEST_CASE("Repairing items") { CL_REPAIR_ITEM; }
+TEST_CASE("Repairing items") {
+  GIVEN("a user with a vase") {
+    auto data = R"(
+      <item id="vase" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    user.giveItem(&s.getFirstItem());
+
+    WHEN("it's broken") {
+      auto &vase = user.inventory(0).first;
+      BREAK_ITEM(vase);
+
+      AND_WHEN("he sends CL_REPAIR_ITEM") {
+        c.sendMessage(CL_REPAIR_ITEM, makeArgs(Server::INVENTORY, 0));
+
+        THEN("it's no longer broken") { WAIT_UNTIL(!vase.isBroken()); }
+      }
+    }
+  }
+  CL_REPAIR_ITEM;
+}

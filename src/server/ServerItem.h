@@ -51,6 +51,7 @@ class ServerItem : public Item {
     Hitpoints health() const { return _health; }
     bool isBroken() const;
     void damageFromUse() override;
+    void repair();
 
    private:
     Instance(const ServerItem *type, ReportingInfo info, Hitpoints health)

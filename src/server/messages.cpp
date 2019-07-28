@@ -935,6 +935,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         break;
       }
 
+      case CL_REPAIR_ITEM: {
+        handle_CL_REPAIR_ITEM(*user);
+      }
+
       case CL_MOUNT: {
         size_t serial;
         iss >> serial >> del;
@@ -1519,6 +1523,10 @@ void Server::handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum) {
     }
     asObject->tellRelevantUsersAboutInventorySlot(slotNum);
   }
+}
+
+void Server::handle_CL_REPAIR_ITEM(User &user) {
+  user.inventory(0).first.repair();
 }
 
 void Server::handle_CL_LEAVE_CITY(User &user) {
