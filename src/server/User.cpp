@@ -955,6 +955,8 @@ void User::onDeath() {
 
   sendMessage(SV_YOU_DIED);
 
+  removeAllBuffsAndDebuffs();
+
   // Handle respawn etc.
   moveToSpawnPoint();
 
