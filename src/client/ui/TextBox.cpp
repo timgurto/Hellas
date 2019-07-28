@@ -32,14 +32,17 @@ void TextBox::refresh() {
   if (_inputMask.hasValue())
     textToDraw = std::string(_text.size(), _inputMask.value());
   Texture text(Element::font(), textToDraw);
-  text.draw(TEXT_GAP, TEXT_GAP);
+  auto textX = TEXT_GAP;
+  if (text.width() > width() - 2 * TEXT_GAP)
+    textX = width() - text.width() - 2 * TEXT_GAP;
+  text.draw(textX, TEXT_GAP);
 
   // Cursor
   const static px_t CURSOR_GAP = 0, CURSOR_WIDTH = 1;
   if (currentFocus == this) {
     renderer.setDrawColor(Element::FONT_COLOR);
     renderer.fillRect(
-        {TEXT_GAP + text.width() + CURSOR_GAP, 1, CURSOR_WIDTH, height() - 2});
+        {textX + text.width() + CURSOR_GAP, 1, CURSOR_WIDTH, height() - 2});
   }
 }
 
