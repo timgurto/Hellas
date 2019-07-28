@@ -467,7 +467,6 @@ TEST_CASE("Persistence of item health: objects' contents") {
   CHECK((ITEM).isBroken());
 
 TEST_CASE("Broken items don't work") {
-  /*
   GIVEN("a weapon that deals 42 damage") {
     auto data = R"(
       <item id="sword" gearSlot="6" >
@@ -631,7 +630,7 @@ TEST_CASE("Broken items don't work") {
       }
     }
   }
-    */
+
   GIVEN("an apple cart with an apple, and a user with a coin") {
     auto data = R"(
       <item id="coin" />
