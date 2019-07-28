@@ -225,6 +225,7 @@ void Client::handleMessage(const std::string &msg) {
       case WARNING_ITEM_NEEDED:
       case WARNING_BAD_TERRAIN:
       case WARNING_BROKEN_ITEM:
+      case WARNING_NOT_A_CITIZEN:
         errorMessageColor = Color::CHAT_WARNING;  // Yellow above, red below
       case ERROR_INVALID_USER:
       case ERROR_INVALID_ITEM:
@@ -2622,6 +2623,8 @@ void Client::initializeMessageNames() {
   _errorMessages[WARNING_BAD_TERRAIN] =
       "You have been killed by treacherous terrain.";
   _errorMessages[WARNING_BROKEN_ITEM] = "That item is broken.";
+  _errorMessages[WARNING_NOT_A_CITIZEN] =
+      "There is no citizen of your city by that name.";
 }
 
 void Client::performCommand(const std::string &commandString) {

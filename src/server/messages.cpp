@@ -1557,8 +1557,7 @@ void Server::handle_CL_CEDE(User &user, size_t serial) {
   obj->permissions().setCityOwner(city);
 }
 
-void Server::handle_CL_GRANT(User &user, size_t serial,
-                             const std::string &username) {
+void Server::handle_CL_GRANT(User &user, size_t serial, std::string username) {
   auto *obj = _entities.find<Object>(serial);
   if (!obj) {
     sendMessage(user.socket(), WARNING_DOESNT_EXIST);
@@ -1573,8 +1572,12 @@ void Server::handle_CL_GRANT(User &user, size_t serial,
     sendMessage(user.socket(), ERROR_NOT_A_KING);
     return;
   }
-  auto newOwnerName = toPascal(username);
-  obj->permissions().setPlayerOwner(newOwnerName);
+  username = toPascal(username);
+  if (!cities().isPlayerInCity(username, playerCity)) {
+    sendMessage(user.socket(), WARNING_NOT_A_CITIZEN);
+    return;
+  }
+  obj->permissions().setPlayerOwner(username);
 }
 
 void Server::handle_CL_PERFORM_OBJECT_ACTION(User &user, size_t serial,

@@ -637,6 +637,7 @@ enum MessageCode {
   ERROR_ALREADY_IN_CITY, // The user tried to recruit a citizen of another city.
   WARNING_YOU_ARE_ALREADY_IN_CITY, // The user is already in a city and cannot found a new one.
   ERROR_NOT_A_KING, // Only a king can perform that action
+  WARNING_NOT_A_CITIZEN, // The user tried to perform a city action with a non-citizen
 
   // Objects
   WARNING_DOESNT_EXIST, // The user tried to perform an action on an object that doesn't exist
