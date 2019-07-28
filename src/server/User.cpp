@@ -1315,12 +1315,20 @@ void User::sendInfoToClient(const User &targetUser) const {
   }
 
   // Buffs/debuffs
-  for (const auto &buff : buffs())
+  for (const auto &buff : buffs()) {
     server.sendMessage(client, SV_PLAYER_GOT_BUFF,
                        makeArgs(_name, buff.type()));
-  for (const auto &debuff : debuffs())
+    if (isSelf)
+      server.sendMessage(client, SV_REMAINING_BUFF_TIME,
+                         makeArgs(buff.type(), buff.timeRemaining()));
+  }
+  for (const auto &debuff : debuffs()) {
     server.sendMessage(client, SV_PLAYER_GOT_DEBUFF,
                        makeArgs(_name, debuff.type()));
+    if (isSelf)
+      server.sendMessage(client, SV_REMAINING_DEBUFF_TIME,
+                         makeArgs(debuff.type(), debuff.timeRemaining()));
+  }
 
   // Vehicle?
   if (isDriving())
