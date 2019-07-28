@@ -693,14 +693,18 @@ TEST_CASE("Repairing items") {
       }
     }
 
-    WHEN("the second is broken") {
+    WHEN("both are broken") {
+      BREAK_ITEM(vase0);
       BREAK_ITEM(vase1);
       AND_WHEN("he repairs it") {
         c.sendMessage(CL_REPAIR_ITEM, makeArgs(Server::INVENTORY, 1));
 
-        THEN("it's no longer broken") { WAIT_UNTIL(!vase1.isBroken()); }
+        THEN("it's no longer broken") {
+          WAIT_UNTIL(!vase1.isBroken());
+
+          AND_THEN("the first is still broken") { CHECK(vase0.isBroken()); }
+        }
       }
     }
   }
-  CL_REPAIR_ITEM;
 }
