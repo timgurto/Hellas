@@ -1,4 +1,5 @@
 #include "ItemSelector.h"
+
 #include "../Client.h"
 #include "Label.h"
 #include "Line.h"
@@ -113,12 +114,17 @@ void ItemSelector::selectItem(void *data) {
 
 bool ItemSelector::itemMatchesFilter(const ClientItem &item,
                                      const std::string &filter) {
+  auto lowerCaseFilter = toLower(filter);
+
   // Name matches
-  if (item.name().find(filter) != std::string::npos) return true;
+  auto lowerCaseName = toLower(item.name());
+  if (lowerCaseName.find(lowerCaseFilter) != std::string::npos) return true;
 
   // Tag matches
-  for (const std::string &tagName : item.tags())
-    if (tagName.find(filter) != std::string::npos) return true;
+  for (const std::string &tagName : item.tags()) {
+    auto lowerCaseTag = toLower(tagName);
+    if (lowerCaseTag.find(lowerCaseFilter) != std::string::npos) return true;
+  }
 
   return false;
 }

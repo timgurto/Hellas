@@ -124,4 +124,6 @@ std::string timestamp();
 
 std::string toPascal(std::string in);
 
+std::string toLower(std::string in);
+
 #endif

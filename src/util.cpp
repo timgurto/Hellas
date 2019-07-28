@@ -144,3 +144,8 @@ std::string toPascal(std::string s) {
 
   return s;
 }
+
+std::string toLower(std::string in) {
+  for (auto &c : in) c = tolower(c);
+  return in;
+}
