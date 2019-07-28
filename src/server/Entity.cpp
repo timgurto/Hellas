@@ -758,7 +758,7 @@ void Entity::regen(ms_t timeElapsed) {
     else
       health(rawNewHealth);
 
-    if (rawNewHealth != oldHealth) onHealthChange();
+    if (health() != oldHealth) onHealthChange();
 
     if (isDead()) onDeath();
   }
@@ -773,6 +773,6 @@ void Entity::regen(ms_t timeElapsed) {
     else
       energy(rawNewEnergy);
 
-    if (rawNewEnergy != oldEnergy) onEnergyChange();
+    if (energy() != oldEnergy) onEnergyChange();
   }
 }
