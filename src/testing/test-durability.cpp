@@ -669,7 +669,7 @@ TEST_CASE("Broken items don't work") {
 }
 
 TEST_CASE("Repairing items") {
-  GIVEN("a user with a vase") {
+  GIVEN("a user with two vases") {
     auto data = R"(
       <item id="vase" />
     )";
@@ -678,16 +678,27 @@ TEST_CASE("Repairing items") {
 
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
-    user.giveItem(&s.getFirstItem());
+    user.giveItem(&s.getFirstItem(), 2);
 
-    WHEN("it's broken") {
-      auto &vase = user.inventory(0).first;
-      BREAK_ITEM(vase);
+    auto &vase0 = user.inventory(0).first;
+    auto &vase1 = user.inventory(1).first;
 
-      AND_WHEN("he sends CL_REPAIR_ITEM") {
+    WHEN("the first is broken") {
+      BREAK_ITEM(vase0);
+
+      AND_WHEN("he repairs it") {
         c.sendMessage(CL_REPAIR_ITEM, makeArgs(Server::INVENTORY, 0));
 
-        THEN("it's no longer broken") { WAIT_UNTIL(!vase.isBroken()); }
+        THEN("it's no longer broken") { WAIT_UNTIL(!vase0.isBroken()); }
+      }
+    }
+
+    WHEN("the second is broken") {
+      BREAK_ITEM(vase1);
+      AND_WHEN("he repairs it") {
+        c.sendMessage(CL_REPAIR_ITEM, makeArgs(Server::INVENTORY, 1));
+
+        THEN("it's no longer broken") { WAIT_UNTIL(!vase1.isBroken()); }
       }
     }
   }
