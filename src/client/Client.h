@@ -501,6 +501,7 @@ class Client {
   void handleLoginInput(double delta);
   void onMouseMove();
   bool isCtrlPressed() const;
+  bool isAltPressed() const;
 
   void drawLoadingScreen(const std::string &msg, double progress) const;
 

@@ -554,6 +554,13 @@ bool Client::isCtrlPressed() const {
   return false;
 }
 
+bool Client::isAltPressed() const {
+  static const auto *keyboardState = SDL_GetKeyboardState(nullptr);
+  if (keyboardState[SDL_SCANCODE_LALT] == SDL_PRESSED) return true;
+  if (keyboardState[SDL_SCANCODE_RALT] == SDL_PRESSED) return true;
+  return false;
+}
+
 void Client::onMouseMove() {
   _mouseMoved = true;
 

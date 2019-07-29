@@ -167,7 +167,12 @@ size_t ContainerGrid::getSlot(const ScreenPoint &mousePos) const {
 void ContainerGrid::leftMouseDown(Element &e, const ScreenPoint &mousePos) {
   ContainerGrid &grid = dynamic_cast<ContainerGrid &>(e);
   size_t slot = grid.getSlot(mousePos);
-  grid._leftMouseDownSlot = slot;
+
+  const auto &client = Client::instance();
+  if (client.isAltPressed())
+    client.sendMessage(CL_REPAIR_ITEM, makeArgs(grid._serial, slot));
+  else
+    grid._leftMouseDownSlot = slot;
 }
 
 void ContainerGrid::leftMouseUp(Element &e, const ScreenPoint &mousePos) {

@@ -708,3 +708,12 @@ TEST_CASE("Repairing items") {
     }
   }
 }
+
+/* TODO
+UI
+Gear
+Containers
+Require item
+Require tool
+Quantity/repair amount
+*/
