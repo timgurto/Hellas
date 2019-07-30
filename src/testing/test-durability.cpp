@@ -71,6 +71,11 @@ TEST_CASE("Combat reduces weapon/armour health") {
           // to kick in.
           WAIT_UNTIL_TIMEOUT(weaponSlot.first.health() < ServerItem::MAX_HEALTH,
                              10000);
+
+          AND_THEN("the user knows it") {
+            const auto &cWeaponSlot = c.gear().at(Item::WEAPON_SLOT).first;
+            WAIT_UNTIL(cWeaponSlot.health() < ServerItem::MAX_HEALTH);
+          }
         }
       }
     }
@@ -689,7 +694,14 @@ TEST_CASE("Repairing items") {
       AND_WHEN("he repairs it") {
         c.sendMessage(CL_REPAIR_ITEM, makeArgs(Server::INVENTORY, 0));
 
-        THEN("it's no longer broken") { WAIT_UNTIL(!vase0.isBroken()); }
+        THEN("it's no longer broken") {
+          WAIT_UNTIL(!vase0.isBroken());
+
+          AND_THEN("the client knows its current health") {
+            const auto &clientSlot = c.inventory().at(0).first;
+            WAIT_UNTIL(clientSlot.health() == vase0.health());
+          }
+        }
       }
     }
 

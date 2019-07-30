@@ -96,7 +96,10 @@ void ServerItem::Instance::damageFromUse() {
   _reportingInfo.report();
 }
 
-void ServerItem::Instance::repair() { _health = 1; }
+void ServerItem::Instance::repair() {
+  _health = 1;
+  _reportingInfo.report();
+}
 
 ServerItem::Instance::ReportingInfo
 ServerItem::Instance::ReportingInfo::UserGear(const User *owner, size_t slot) {

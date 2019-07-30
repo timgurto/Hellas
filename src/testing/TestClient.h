@@ -55,6 +55,7 @@ class TestClient {
     return _client->_otherUsers;
   }
   ClientItem::vect_t &inventory() { return _client->_inventory; }
+  ClientItem::vect_t &gear() { return _client->_character.gear(); }
   const std::string &name() const { return _client->username(); }
   const List *chatLog() const { return _client->_chatLog; }
   const Element::children_t &mapPins() const {

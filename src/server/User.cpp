@@ -1340,7 +1340,7 @@ void User::sendInfoToClient(const User &targetUser) const {
 void User::sendInventorySlot(size_t slotIndex) const {
   const auto &slot = _inventory[slotIndex];
   const auto &item = slot.first;
-  if (!item.type()) return;
+  if (!item.type()) return;  // Is this right?
   sendMessage(SV_INVENTORY,
               makeArgs(Server::INVENTORY, slotIndex, item.type()->id(),
                        slot.second, item.health()));
