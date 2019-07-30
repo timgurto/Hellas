@@ -302,6 +302,8 @@ void Server::addUser(const Socket &socket, const std::string &name,
   // Announce others to him
   sendOnlineUsersTo(newUser);
 
+  newUser.initialiseInventoryAndGear();
+
   const bool userExisted = readUserData(newUser);
   if (!userExisted) {
     newUser.setClass(_classes[classID]);

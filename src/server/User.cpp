@@ -50,10 +50,6 @@ User::User(const std::string &name, const MapPoint &loc, const Socket *socket)
   if (!OBJECT_TYPE.collides()) {
     OBJECT_TYPE.collisionRect({-5, -2, 10, 4});
   }
-  for (size_t i = 0; i != INVENTORY_SIZE; ++i) {
-    _inventory[i].first = {};
-    _inventory[i].second = 0;
-  }
 }
 
 User::User(const Socket &rhs)
@@ -61,6 +57,19 @@ User::User(const Socket &rhs)
 
 User::User(const MapPoint &loc)
     : Object(loc), _socket(Socket::Empty()), _exploration(0, 0) {}
+
+void User::initialiseInventoryAndGear() {
+  for (size_t i = 0; i != INVENTORY_SIZE; ++i) {
+    _inventory[i].first = {
+        nullptr, ServerItem::Instance::ReportingInfo::UserInventory(this, i)};
+    _inventory[i].second = 0;
+  }
+  for (size_t i = 0; i != GEAR_SLOTS; ++i) {
+    _gear[i].first = {nullptr,
+                      ServerItem::Instance::ReportingInfo::UserGear(this, i)};
+    _gear[i].second = 0;
+  }
+}
 
 void User::findRealWorldLocationStatic(User *user) {
   auto &server = Server::instance();

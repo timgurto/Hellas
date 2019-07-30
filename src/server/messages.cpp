@@ -706,9 +706,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
 
         if (shouldPerformNormalSwap) {
           // Perform the swap
-          auto temp = slotTo;
-          slotTo = slotFrom;
-          slotFrom = temp;
+          ServerItem::Instance::swap(slotFrom, slotTo);
 
           // If gear was changed
           if (obj1 == GEAR || obj2 == GEAR) {

@@ -113,6 +113,9 @@ class User : public Object {  // TODO: Don't inherit from Object
     return _socket.value() < rhs._socket.value();
   }
 
+  // May be run only after User object is in its permanent location.
+  void initialiseInventoryAndGear();
+
   const std::string &name() const { return _name; }
   void pwHash(const std::string &hash) { _pwHash = hash; }
   const std::string &pwHash() const { return _pwHash; }

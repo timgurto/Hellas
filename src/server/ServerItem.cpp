@@ -89,6 +89,19 @@ ServerItem::Instance::Instance(const ServerItem *type, ReportingInfo info)
   if (type) _health = MAX_HEALTH;
 }
 
+void ServerItem::Instance::swap(std::pair<ServerItem::Instance, size_t> &lhs,
+                                std::pair<ServerItem::Instance, size_t> &rhs) {
+  auto temp = lhs;
+  lhs = rhs;
+  rhs = temp;
+
+  // Unswap reporting info, since reporting info describes the location of the
+  // item rather than the item itself.
+  auto tempReportingInfo = lhs.first._reportingInfo;
+  lhs.first._reportingInfo = rhs.first._reportingInfo;
+  rhs.first._reportingInfo = tempReportingInfo;
+}
+
 bool ServerItem::Instance::isBroken() const { return _health == 0; }
 
 void ServerItem::Instance::damageFromUse() {

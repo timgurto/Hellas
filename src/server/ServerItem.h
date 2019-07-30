@@ -46,6 +46,9 @@ class ServerItem : public Item {
       return {type, info, health};
     }
 
+    static void swap(std::pair<ServerItem::Instance, size_t> &lhs,
+                     std::pair<ServerItem::Instance, size_t> &rhs);
+
     bool hasItem() const { return _type != nullptr; }
     const ServerItem *type() const { return _type; }
     Hitpoints health() const { return _health; }
