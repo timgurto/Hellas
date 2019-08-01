@@ -839,12 +839,10 @@ TEST_CASE("Item repair that consumes items") {
     )";
     auto s = TestServer::WithDataString(data);
 
-    auto c = TestClient::WithDataString(data);
-
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-
     WHEN("a user has a heart") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
       user.giveItem(&s.findItem("heart"));
 
       AND_WHEN("it is broken") {
@@ -857,6 +855,16 @@ TEST_CASE("Item repair that consumes items") {
           THEN("it is still broken") {
             REPEAT_FOR_MS(100);
             CHECK(heart.isBroken());
+          }
+        }
+
+        AND_WHEN("he has food") {
+          user.giveItem(&s.findItem("food"));
+
+          AND_WHEN("he tries to repair it") {
+            c.sendMessage(CL_REPAIR_ITEM, makeArgs(Server::INVENTORY, 0));
+
+            THEN("it is no longer broken") { WAIT_UNTIL(!heart.isBroken()); }
           }
         }
       }

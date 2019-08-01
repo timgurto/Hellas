@@ -1570,8 +1570,14 @@ void Server::handle_CL_REPAIR_ITEM(User &user, size_t serial, size_t slot) {
   }
 
   if (repairInfo.hasCost()) {
-    user.sendMessage(WARNING_ITEM_NEEDED);
-    return;
+    auto costItem = findItem(repairInfo.cost);
+    auto cost = ItemSet{};
+    cost.add(costItem);
+
+    if (!user.hasItems(cost)) {
+      user.sendMessage(WARNING_ITEM_NEEDED);
+      return;
+    }
   }
 
   itemToRepair->repair();
