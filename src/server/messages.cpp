@@ -1563,7 +1563,7 @@ void Server::handle_CL_REPAIR_ITEM(User &user, size_t serial, size_t slot) {
     }
   }
 
-  if (!itemToRepair->type()->canBeRepaired()) {
+  if (!itemToRepair->type()->repairInfo().canBeRepaired) {
     user.sendMessage(WARNING_NOT_REPAIRABLE);
     return;
   }

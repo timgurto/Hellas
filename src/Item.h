@@ -13,6 +13,10 @@ class Item {
   static const size_t WEAPON_SLOT = 6, OFFHAND_SLOT = 7;
   static const Hitpoints MAX_HEALTH = 100;
 
+  struct RepairInfo {
+    bool canBeRepaired{false};
+  };
+
   Item(const std::string &id);
   virtual ~Item() {}
 
@@ -33,8 +37,8 @@ class Item {
   void castsSpellOnUse(const std::string &spell) { _castsSpellOnUse = spell; }
   bool castsSpellOnUse() const { return !_castsSpellOnUse.empty(); }
   const std::string &spellToCastOnUse() const { return _castsSpellOnUse; }
-  void makeRepairable() { _canBeRepaired = true; }
-  bool canBeRepaired() const { return _canBeRepaired; }
+  void makeRepairable() { _repairInfo.canBeRepaired = true; }
+  RepairInfo repairInfo() const { return _repairInfo; }
 
   bool operator<(const Item &rhs) const { return _id < rhs._id; }
 
@@ -54,8 +58,7 @@ class Item {
   size_t _gearSlot;
   StatsMod _stats;  // If gear, the impact it has on its wearer's stats.
 
-  // Repairing
-  bool _canBeRepaired{false};
+  RepairInfo _repairInfo;
 
   // If a weapon, how close the holder must be to a target to it.
   px_t _weaponRange = Podes::MELEE_RANGE.toPixels();
