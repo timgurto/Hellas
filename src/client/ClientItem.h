@@ -24,12 +24,14 @@ class ClientItem : public Item {
 
     const ClientItem *type() const { return _type; }
     Hitpoints health() const { return _health; }
-    const Tooltip &tooltip() const;  // Getter; creates tooltip on first call.
+    const Tooltip &tooltip() const;  // Return the appropriate tooltip,
+                                     // generating it first if appropriate.
 
    private:
     const ClientItem *_type{nullptr};
     Hitpoints _health{0};
     mutable Optional<Tooltip> _tooltip;  // Builds on the basic item tooltip
+    void createRegularTooltip() const;
   };
 
  private:

@@ -193,11 +193,15 @@ void ClientItem::addParticles(const std::string &profileName,
 }
 
 const Tooltip &ClientItem::Instance::tooltip() const {
-  if (_tooltip.hasValue()) return _tooltip.value();
+  if (!_tooltip.hasValue()) createRegularTooltip();
 
+  return _tooltip.value();
+}
+
+void ClientItem::Instance::createRegularTooltip() const {
   if (!_type) {
     _tooltip = Tooltip{};
-    return _tooltip.value();
+    return;
   }
 
   _tooltip = _type->tooltip();
@@ -220,6 +224,4 @@ const Tooltip &ClientItem::Instance::tooltip() const {
   //   tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
   //   tooltip.addLine("Alt-click to repair");
   // }
-
-  return tooltip;
 }
