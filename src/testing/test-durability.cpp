@@ -758,6 +758,26 @@ TEST_CASE("Repairing items") {
         }
       }
     }
+
+    GIVEN("an unowned hatstand with a hat") {
+      s.addObject("hatstand", {10, 15}, "someoneElse");
+      auto &hatstand = s.getFirstObject();
+      hatstand.container().addItems(hat);
+
+      WHEN("the hat is broken") {
+        auto &slot = hatstand.container().at(0).first;
+        BREAK_ITEM(slot);
+
+        AND_WHEN("he repairs it") {
+          c.sendMessage(CL_REPAIR_ITEM, makeArgs(hatstand.serial(), 0));
+
+          THEN("it's still broken") {
+            REPEAT_FOR_MS(100);
+            CHECK(slot.isBroken());
+          }
+        }
+      }
+    }
   }
 }
 

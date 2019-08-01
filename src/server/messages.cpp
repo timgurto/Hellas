@@ -1539,6 +1539,12 @@ void Server::handle_CL_REPAIR_ITEM(User &user, size_t serial, size_t slot) {
     default: {
       auto *ent = _entities.find(serial);
       auto *obj = dynamic_cast<Object *>(ent);
+
+      if (!obj->permissions().doesUserHaveAccess(user.name())) {
+        user.sendMessage(WARNING_NO_PERMISSION);
+        return;
+      }
+
       obj->container().at(slot).first.repair();
     }
   }
