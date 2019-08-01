@@ -1536,6 +1536,11 @@ void Server::handle_CL_REPAIR_ITEM(User &user, size_t serial, size_t slot) {
     case Server::GEAR:
       user.gear(slot).first.repair();
       break;
+    default: {
+      auto *ent = _entities.find(serial);
+      auto *obj = dynamic_cast<Object *>(ent);
+      obj->container().at(slot).first.repair();
+    }
   }
 }
 

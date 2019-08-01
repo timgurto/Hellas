@@ -687,7 +687,7 @@ TEST_CASE("Repairing items") {
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
 
-    GIVEN("a user has two hats in his inventory") {
+    GIVEN("he has two hats in his inventory") {
       user.giveItem(hat, 2);
       auto &hat0 = user.inventory(0).first;
       auto &hat1 = user.inventory(1).first;
@@ -724,7 +724,7 @@ TEST_CASE("Repairing items") {
       }
     }
 
-    GIVEN("a user is wearing a hat") {
+    GIVEN("he is wearing a hat") {
       user.giveItem(hat);
       c.sendMessage(CL_SWAP_ITEMS,
                     makeArgs(Server::INVENTORY, 0, Server::GEAR, 0));
@@ -738,6 +738,23 @@ TEST_CASE("Repairing items") {
           c.sendMessage(CL_REPAIR_ITEM, makeArgs(Server::GEAR, 0));
 
           THEN("it is no longer broken") { WAIT_UNTIL(!headSlot.isBroken()); }
+        }
+      }
+    }
+
+    GIVEN("he owns a hatstand with a hat") {
+      s.addObject("hatstand", {10, 15}, user.name());
+      auto &hatstand = s.getFirstObject();
+      hatstand.container().addItems(hat);
+
+      WHEN("the hat is broken") {
+        auto &slot = hatstand.container().at(0).first;
+        BREAK_ITEM(slot);
+
+        AND_WHEN("he repairs it") {
+          c.sendMessage(CL_REPAIR_ITEM, makeArgs(hatstand.serial(), 0));
+
+          THEN("it's no longer broken") { WAIT_UNTIL(!slot.isBroken()); }
         }
       }
     }
