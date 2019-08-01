@@ -1540,6 +1540,11 @@ void Server::handle_CL_REPAIR_ITEM(User &user, size_t serial, size_t slot) {
       auto *ent = _entities.find(serial);
       auto *obj = dynamic_cast<Object *>(ent);
 
+      if (!obj) {
+        user.sendMessage(WARNING_DOESNT_EXIST);
+        return;
+      }
+
       if (!obj->permissions().doesUserHaveAccess(user.name())) {
         user.sendMessage(WARNING_NO_PERMISSION);
         return;

@@ -778,6 +778,15 @@ TEST_CASE("Repairing items") {
         }
       }
     }
+
+    WHEN("he tries to repair an item in a nonexistent container") {
+      c.sendMessage(CL_REPAIR_ITEM, makeArgs(5, 0));
+
+      THEN("the server doesn't crash") {
+        REPEAT_FOR_MS(100);
+        CHECK(true);
+      }
+    }
   }
 }
 
