@@ -722,7 +722,6 @@ TEST_CASE("Repairing items") {
 }
 
 /* TODO
-UI
 Gear
 Containers
 Require item

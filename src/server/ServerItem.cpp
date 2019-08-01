@@ -110,7 +110,7 @@ void ServerItem::Instance::damageFromUse() {
 }
 
 void ServerItem::Instance::repair() {
-  _health = 1;
+  _health = MAX_HEALTH;
   _reportingInfo.report();
 }
 
