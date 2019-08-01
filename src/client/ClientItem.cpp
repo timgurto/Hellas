@@ -215,6 +215,11 @@ const Tooltip &ClientItem::Instance::tooltip() const {
   // oss << "Durability: "s << _health << "/"s << Item::MAX_HEALTH;
   // tooltip.addGap();
   // tooltip.addLine(oss.str());
+  // auto needsRepairing = _health < Item::MAX_HEALTH;
+  // if (_type->repairInfo().canBeRepaired && needsRepairing) {
+  //   tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
+  //   tooltip.addLine("Alt-click to repair");
+  // }
 
   return tooltip;
 }

@@ -678,6 +678,12 @@ void CDataLoader::loadItems(XmlReader &xr) {
       item.addParticles(profileName, offset);
     }
 
+    auto repairElem = xr.findChild("canBeRepaired", elem);
+    if (repairElem) {
+      item.makeRepairable();
+      if (xr.findAttr(repairElem, "cost", s)) item.repairingCosts(s);
+    }
+
     _client._items[id] = item;
   }
 }
