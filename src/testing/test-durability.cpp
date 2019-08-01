@@ -674,47 +674,47 @@ TEST_CASE("Broken items don't work") {
 }
 
 TEST_CASE("Repairing items") {
-  GIVEN("a user with two vases") {
-    auto data = R"(
-      <item id="vase" />
+  auto data = R"(
+      <item id="hat" gearSlot="0" />
     )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
+  auto s = TestServer::WithDataString(data);
+  auto c = TestClient::WithDataString(data);
 
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
+  s.waitForUsers(1);
+  auto &user = s.getFirstUser();
+
+  GIVEN("a user with two hats") {
     user.giveItem(&s.getFirstItem(), 2);
-
-    auto &vase0 = user.inventory(0).first;
-    auto &vase1 = user.inventory(1).first;
+    auto &hat0 = user.inventory(0).first;
+    auto &hat1 = user.inventory(1).first;
 
     WHEN("the first is broken") {
-      BREAK_ITEM(vase0);
+      BREAK_ITEM(hat0);
 
       AND_WHEN("he repairs it") {
         c.sendMessage(CL_REPAIR_ITEM, makeArgs(Server::INVENTORY, 0));
 
         THEN("it's no longer broken") {
-          WAIT_UNTIL(!vase0.isBroken());
+          WAIT_UNTIL(!hat0.isBroken());
 
           AND_THEN("the client knows its current health") {
             const auto &clientSlot = c.inventory().at(0).first;
-            WAIT_UNTIL(clientSlot.health() == vase0.health());
+            WAIT_UNTIL(clientSlot.health() == hat0.health());
           }
         }
       }
     }
 
     WHEN("both are broken") {
-      BREAK_ITEM(vase0);
-      BREAK_ITEM(vase1);
+      BREAK_ITEM(hat0);
+      BREAK_ITEM(hat1);
       AND_WHEN("he repairs it") {
         c.sendMessage(CL_REPAIR_ITEM, makeArgs(Server::INVENTORY, 1));
 
         THEN("it's no longer broken") {
-          WAIT_UNTIL(!vase1.isBroken());
+          WAIT_UNTIL(!hat1.isBroken());
 
-          AND_THEN("the first is still broken") { CHECK(vase0.isBroken()); }
+          AND_THEN("the first is still broken") { CHECK(hat0.isBroken()); }
         }
       }
     }
