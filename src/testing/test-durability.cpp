@@ -747,6 +747,15 @@ TEST_CASE("Repairing items") {
       auto &hatstand = s.getFirstObject();
       hatstand.container().addItems(hat);
 
+      WHEN("he tries to repair an invalid slot") {
+        c.sendMessage(CL_REPAIR_ITEM, makeArgs(hatstand.serial(), 99));
+
+        THEN("the server doesn't crash") {
+          REPEAT_FOR_MS(100);
+          CHECK(true);
+        }
+      }
+
       WHEN("the hat is broken") {
         auto &slot = hatstand.container().at(0).first;
         BREAK_ITEM(slot);
@@ -768,7 +777,7 @@ TEST_CASE("Repairing items") {
         auto &slot = hatstand.container().at(0).first;
         BREAK_ITEM(slot);
 
-        AND_WHEN("he repairs it") {
+        AND_WHEN("he tries to repair it") {
           c.sendMessage(CL_REPAIR_ITEM, makeArgs(hatstand.serial(), 0));
 
           THEN("it's still broken") {
@@ -791,7 +800,6 @@ TEST_CASE("Repairing items") {
 }
 
 /* TODO
-Containers
 Require item
 Require tool
 Quantity/repair amount

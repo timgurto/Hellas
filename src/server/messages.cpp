@@ -1550,6 +1550,12 @@ void Server::handle_CL_REPAIR_ITEM(User &user, size_t serial, size_t slot) {
         return;
       }
 
+      auto numSlots = obj->objType().container().slots();
+      if (slot >= numSlots) {
+        user.sendMessage(ERROR_INVALID_SLOT);
+        return;
+      }
+
       obj->container().at(slot).first.repair();
     }
   }
