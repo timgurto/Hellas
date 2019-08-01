@@ -938,7 +938,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         iss >> serial >> del >> slot >> del;
         if (del != MSG_END) return;
 
-        handle_CL_REPAIR_ITEM(*user, slot);
+        handle_CL_REPAIR_ITEM(*user, serial, slot);
         break;
       }
 
@@ -1528,8 +1528,15 @@ void Server::handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum) {
   }
 }
 
-void Server::handle_CL_REPAIR_ITEM(User &user, size_t slot) {
-  user.inventory(slot).first.repair();
+void Server::handle_CL_REPAIR_ITEM(User &user, size_t serial, size_t slot) {
+  switch (serial) {
+    case Server::INVENTORY:
+      user.inventory(slot).first.repair();
+      break;
+    case Server::GEAR:
+      user.gear(slot).first.repair();
+      break;
+  }
 }
 
 void Server::handle_CL_LEAVE_CITY(User &user) {

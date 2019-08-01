@@ -682,9 +682,10 @@ TEST_CASE("Repairing items") {
 
   s.waitForUsers(1);
   auto &user = s.getFirstUser();
+  const auto *hat = &s.getFirstItem();
 
   GIVEN("a user with two hats") {
-    user.giveItem(&s.getFirstItem(), 2);
+    user.giveItem(hat, 2);
     auto &hat0 = user.inventory(0).first;
     auto &hat1 = user.inventory(1).first;
 
@@ -719,12 +720,30 @@ TEST_CASE("Repairing items") {
       }
     }
   }
+
+  GIVEN("a user wearing a hat") {
+    user.giveItem(hat);
+    c.sendMessage(CL_SWAP_ITEMS,
+                  makeArgs(Server::INVENTORY, 0, Server::GEAR, 0));
+    auto &headSlot = user.gear().at(0).first;
+    WAIT_UNTIL(headSlot.hasItem());
+
+    WHEN("it is broken") {
+      BREAK_ITEM(headSlot);
+
+      AND_WHEN("he repairs it") {
+        c.sendMessage(CL_REPAIR_ITEM, makeArgs(Server::GEAR, 0));
+
+        THEN("it is no longer broken") { WAIT_UNTIL(!headSlot.isBroken()); }
+      }
+    }
+  }
 }
 
 /* TODO
-Gear
 Containers
 Require item
 Require tool
 Quantity/repair amount
+Objects
 */
