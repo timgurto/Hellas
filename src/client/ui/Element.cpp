@@ -245,22 +245,36 @@ bool Element::onScrollDown(const ScreenPoint &mousePos) {
     return false;
 }
 
-void Element::onLeftMouseUp(const ScreenPoint &mousePos) {
-  if (!_visible) return;
-  if (_ignoreMouseEvents) return;
+bool Element::onLeftMouseUp(const ScreenPoint &mousePos) {
+  if (!_visible) return false;
+  if (_ignoreMouseEvents) return false;
   const ScreenPoint relativeLocation = mousePos - position();
-  if (_leftMouseUp != nullptr)
+  auto ret = false;
+  if (_leftMouseUp != nullptr) {
     _leftMouseUp(*_leftMouseUpElement, relativeLocation);
-  for (Element *child : _children) child->onLeftMouseUp(relativeLocation);
+    ret = true;
+  }
+  for (Element *child : _children) {
+    auto mouseEventOnChild = child->onLeftMouseUp(relativeLocation);
+    ret = ret || mouseEventOnChild;
+  }
+  return ret;
 }
 
-void Element::onRightMouseUp(const ScreenPoint &mousePos) {
-  if (!_visible) return;
-  if (_ignoreMouseEvents) return;
+bool Element::onRightMouseUp(const ScreenPoint &mousePos) {
+  if (!_visible) return false;
+  if (_ignoreMouseEvents) return false;
   const ScreenPoint relativeLocation = mousePos - position();
-  if (_rightMouseUp != nullptr)
+  auto ret = false;
+  if (_rightMouseUp != nullptr) {
     _rightMouseUp(*_rightMouseUpElement, relativeLocation);
-  for (Element *child : _children) child->onRightMouseUp(relativeLocation);
+    ret = true;
+  }
+  for (Element *child : _children) {
+    auto mouseEventOnChild = child->onRightMouseUp(relativeLocation);
+    ret = ret || mouseEventOnChild;
+  }
+  return ret;
 }
 
 void Element::onMouseMove(const ScreenPoint &mousePos) {

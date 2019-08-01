@@ -181,8 +181,8 @@ class Element {
   bool onScrollUp(const ScreenPoint &mousePos);
   bool onScrollDown(const ScreenPoint &mousePos);
   // Recurse to all children, calling _mouse*() in all found.
-  void onLeftMouseUp(const ScreenPoint &mousePos);
-  void onRightMouseUp(const ScreenPoint &mousePos);
+  bool onLeftMouseUp(const ScreenPoint &mousePos);
+  bool onRightMouseUp(const ScreenPoint &mousePos);
   void onMouseMove(const ScreenPoint &mousePos);
 
   void draw();          // Draw the existing texture to its designated location.

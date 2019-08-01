@@ -298,8 +298,8 @@ void Client::handleInput(double delta) {
             for (Element *element : _ui)
               if (element->visible() && element->canReceiveMouseEvents() &&
                   collision(_mouse, element->rect())) {
-                element->onRightMouseDown(_mouse);
-                _rightMouseDownWasOnUI = true;
+                auto mouseHitAnElement = element->onRightMouseDown(_mouse);
+                if (mouseHitAnElement) _rightMouseDownWasOnUI = true;
               }
 
             if (!_rightMouseDownWasOnUI)
@@ -330,9 +330,11 @@ void Client::handleInput(double delta) {
               if (!mouseUpOnWindow && element->visible() &&
                   element->canReceiveMouseEvents() &&
                   collision(_mouse, element->rect())) {
-                element->onLeftMouseUp(_mouse);
-                mouseUpOnWindow = true;
-                break;
+                auto mouseHitAnElement = element->onLeftMouseUp(_mouse);
+                if (mouseHitAnElement) {
+                  mouseUpOnWindow = true;
+                  break;
+                }
               }
 
             hideTargetMenu();
@@ -417,9 +419,11 @@ void Client::handleInput(double delta) {
               if (!mouseUpOnWindow && element->visible() &&
                   element->canReceiveMouseEvents() &&
                   collision(_mouse, element->rect())) {
-                element->onRightMouseUp(_mouse);
-                mouseUpOnWindow = true;
-                break;
+                auto mouseHitAnElement = element->onRightMouseUp(_mouse);
+                if (mouseHitAnElement) {
+                  mouseUpOnWindow = true;
+                  break;
+                }
               }
 
             // Use item
