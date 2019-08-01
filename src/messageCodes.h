@@ -678,6 +678,7 @@ enum MessageCode {
   WARNING_STUNNED, // The user can't perform an action because he is stunned
   WARNING_BAD_TERRAIN, // You have died due to being on invalid terrain.
   WARNING_BROKEN_ITEM, // You have tried to perform an action using a broken item.
+  WARNING_NOT_REPAIRABLE, // You tried to repair something that can't be repaired.
 
 
 

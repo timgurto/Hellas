@@ -674,13 +674,15 @@ TEST_CASE("Broken items don't work") {
 }
 
 TEST_CASE("Repairing items") {
-  GIVEN("a user, hat items and hatstand objects") {
+  GIVEN("a user, repairable hats, feathers, and hatstand objects") {
     auto data = R"(
-      <item id="hat" gearSlot="0" />
+      <item id="hat" gearSlot="0"> <canBeRepaired/> </item>
+      <item id="feather" />
       <objectType id="hatstand"> <container slots="1"/> </objectType>
     )";
     auto s = TestServer::WithDataString(data);
-    const auto *hat = &s.getFirstItem();
+    const auto *hat = &s.findItem("hat");
+    const auto *feather = &s.findItem("feather");
 
     auto c = TestClient::WithDataString(data);
 
@@ -794,6 +796,24 @@ TEST_CASE("Repairing items") {
       THEN("the server doesn't crash") {
         REPEAT_FOR_MS(100);
         CHECK(true);
+      }
+    }
+
+    GIVEN("he has a non-repairable feather") {
+      user.giveItem(feather);
+
+      WHEN("it is broken") {
+        auto &slot = user.inventory(0).first;
+        BREAK_ITEM(slot);
+
+        AND_WHEN("he tries to repair it") {
+          c.sendMessage(CL_REPAIR_ITEM, makeArgs(Server::INVENTORY, 0));
+
+          THEN("it is still broken") {
+            REPEAT_FOR_MS(100);
+            CHECK(slot.isBroken());
+          }
+        }
       }
     }
   }

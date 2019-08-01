@@ -1529,14 +1529,16 @@ void Server::handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum) {
 }
 
 void Server::handle_CL_REPAIR_ITEM(User &user, size_t serial, size_t slot) {
+  ServerItem::Instance *itemToRepair = nullptr;
+
   switch (serial) {
     case Server::INVENTORY:
-      user.inventory(slot).first.repair();
+      itemToRepair = &user.inventory(slot).first;
       break;
     case Server::GEAR:
-      user.gear(slot).first.repair();
+      itemToRepair = &user.gear(slot).first;
       break;
-    default: {
+    default: {  // Container object
       auto *ent = _entities.find(serial);
       auto *obj = dynamic_cast<Object *>(ent);
 
@@ -1556,9 +1558,17 @@ void Server::handle_CL_REPAIR_ITEM(User &user, size_t serial, size_t slot) {
         return;
       }
 
-      obj->container().at(slot).first.repair();
+      itemToRepair = &obj->container().at(slot).first;
+      break;
     }
   }
+
+  if (!itemToRepair->type()->canBeRepaired()) {
+    user.sendMessage(WARNING_NOT_REPAIRABLE);
+    return;
+  }
+
+  itemToRepair->repair();
 }
 
 void Server::handle_CL_LEAVE_CITY(User &user) {

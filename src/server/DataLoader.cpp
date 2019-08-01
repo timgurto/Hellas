@@ -607,6 +607,11 @@ void DataLoader::loadItems(XmlReader &xr) {
 
     if (xr.findAttr(elem, "durability", n)) item.durability(n);
 
+    auto repairElem = xr.findChild("canBeRepaired", elem);
+    if (repairElem) {
+      item.makeRepairable();
+    }
+
     item.loaded();
 
     std::pair<std::set<ServerItem>::iterator, bool> ret =
