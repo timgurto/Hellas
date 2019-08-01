@@ -610,6 +610,7 @@ void DataLoader::loadItems(XmlReader &xr) {
     auto repairElem = xr.findChild("canBeRepaired", elem);
     if (repairElem) {
       item.makeRepairable();
+      if (xr.findAttr(repairElem, "cost", s)) item.repairingCosts(s);
     }
 
     item.loaded();

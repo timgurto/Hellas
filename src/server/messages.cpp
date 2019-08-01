@@ -1563,8 +1563,14 @@ void Server::handle_CL_REPAIR_ITEM(User &user, size_t serial, size_t slot) {
     }
   }
 
-  if (!itemToRepair->type()->repairInfo().canBeRepaired) {
+  const auto &repairInfo = itemToRepair->type()->repairInfo();
+  if (!repairInfo.canBeRepaired) {
     user.sendMessage(WARNING_NOT_REPAIRABLE);
+    return;
+  }
+
+  if (repairInfo.hasCost()) {
+    user.sendMessage(WARNING_ITEM_NEEDED);
     return;
   }
 

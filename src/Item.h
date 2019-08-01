@@ -15,6 +15,8 @@ class Item {
 
   struct RepairInfo {
     bool canBeRepaired{false};
+    std::string cost{};
+    bool hasCost() const { return !cost.empty(); }
   };
 
   Item(const std::string &id);
@@ -38,6 +40,7 @@ class Item {
   bool castsSpellOnUse() const { return !_castsSpellOnUse.empty(); }
   const std::string &spellToCastOnUse() const { return _castsSpellOnUse; }
   void makeRepairable() { _repairInfo.canBeRepaired = true; }
+  void repairingCosts(const std::string &costID) { _repairInfo.cost = costID; }
   RepairInfo repairInfo() const { return _repairInfo; }
 
   bool operator<(const Item &rhs) const { return _id < rhs._id; }

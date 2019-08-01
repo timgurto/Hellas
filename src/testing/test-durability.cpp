@@ -829,6 +829,41 @@ TEST_CASE("Non-repairable item") {
   }
 }
 
+TEST_CASE("Item repair that consumes items") {
+  GIVEN("food repairs a broken heart") {
+    auto data = R"(
+      <item id="heart">
+        <canBeRepaired cost="food" />
+      </item>
+      <item id="food" />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    auto c = TestClient::WithDataString(data);
+
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    WHEN("a user has a heart") {
+      user.giveItem(&s.findItem("heart"));
+
+      AND_WHEN("it is broken") {
+        auto &heart = user.inventory(0).first;
+        BREAK_ITEM(heart);
+
+        AND_WHEN("he tries to repair it") {
+          c.sendMessage(CL_REPAIR_ITEM, makeArgs(Server::INVENTORY, 0));
+
+          THEN("it is still broken") {
+            REPEAT_FOR_MS(100);
+            CHECK(heart.isBroken());
+          }
+        }
+      }
+    }
+  }
+}
+
 /* TODO
 Require item
 Require tool
