@@ -706,6 +706,7 @@ class Client {
   const Projectile::Type *findProjectileType(const std::string &id) const;
   ClientObjectType *findObjectType(const std::string &id);
   ClientNPCType *findNPCType(const std::string &id);
+  const ClientItem *findItem(const std::string &id) const;
 
  private:
   friend class ContainerGrid;  // Needs to send CL_SWAP_ITEMS messages, and open

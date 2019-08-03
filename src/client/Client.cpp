@@ -745,6 +745,12 @@ ClientNPCType *Client::findNPCType(const std::string &id) {
   return dynamic_cast<ClientNPCType *>(ot);
 }
 
+const ClientItem *Client::findItem(const std::string &id) const {
+  auto it = _items.find(id);
+  if (it == _items.end()) return nullptr;
+  return &it->second;
+}
+
 bool Client::isAtWarWith(const std::string &username) const {
   // Cities
   if (isAtWarWithCityDirectly(username)) return true;

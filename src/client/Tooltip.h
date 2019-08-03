@@ -47,6 +47,7 @@ class Tooltip {
   void embed(const Tooltip &subTooltip);
   void addItemGrid(const void *itemVector);  // To avoid recursive #includes
   void addMerchantSlots(const std::vector<ClientMerchantSlot> &slots);
+  void addItem(const ClientItem &item);
 
   px_t width() const;
   px_t height() const;

@@ -873,8 +873,8 @@ TEST_CASE("Item repair that consumes items") {
 }
 
 /* TODO
+Consume material on repair
 Require tool
-Extra item tooltip while Alt is down, showing repair costs
 Repair cursor
 Objects
 */

@@ -232,5 +232,32 @@ void ClientItem::Instance::createRegularTooltip() const {
 }
 
 void ClientItem::Instance::createRepairTooltip() const {
+  if (!_type->repairInfo().canBeRepaired) {
+    _repairTooltip = Tooltip::basicTooltip("This item cannot be repaired.");
+    return;
+  }
+
+  auto needsRepairing = _health < Item::MAX_HEALTH;
+  if (!needsRepairing) {
+    _repairTooltip =
+        Tooltip::basicTooltip("This item is already at full health.");
+    return;
+  }
+
   _repairTooltip = Tooltip{};
+  auto &rt = _repairTooltip.value();
+
+  rt.setColor(Color::TOOLTIP_INSTRUCTION);
+  rt.addLine("Alt-click to repair.");
+
+  if (!_type->repairInfo().hasCost()) return;
+
+  rt.addGap();
+  rt.setColor(Color::TOOLTIP_BODY);
+  rt.addLine("Repairing will consume:");
+  const auto *costItem = Client::instance().findItem(_type->repairInfo().cost);
+  if (!costItem) return;
+  rt.addItem(*costItem);
+
+  return;
 }
