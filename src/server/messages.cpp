@@ -1569,8 +1569,8 @@ void Server::handle_CL_REPAIR_ITEM(User &user, size_t serial, size_t slot) {
     return;
   }
 
+  auto costItem = findItem(repairInfo.cost);
   if (repairInfo.hasCost()) {
-    auto costItem = findItem(repairInfo.cost);
     auto cost = ItemSet{};
     cost.add(costItem);
 
@@ -1578,14 +1578,16 @@ void Server::handle_CL_REPAIR_ITEM(User &user, size_t serial, size_t slot) {
       user.sendMessage(WARNING_ITEM_NEEDED);
       return;
     }
-
-    auto itemToRemove = ItemSet{};
-    itemToRemove.add(costItem);
-    user.removeItems(itemToRemove);
   }
 
   if (repairInfo.requiresTool()) {
     if (!user.checkAndDamageTool(repairInfo.tool)) return;
+  }
+
+  if (repairInfo.hasCost()) {
+    auto itemToRemove = ItemSet{};
+    itemToRemove.add(costItem);
+    user.removeItems(itemToRemove);
   }
 
   itemToRepair->repair();

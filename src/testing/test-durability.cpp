@@ -922,6 +922,41 @@ TEST_CASE("Item repair that requires a tool") {
       }
     }
   }
+
+  GIVEN("repairing a watch requires tweezers and costs parts") {
+    auto data = R"(
+      <item id="watch">
+        <canBeRepaired tool="tweezers" cost="parts" />
+      </item>
+      <item id="tweezers">
+        <tag name="tweezers" />
+      </item>
+      <item id="parts" />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    WHEN("a user has a watch and parts, but no tweezers") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      user.giveItem(&s.findItem("watch"));
+      user.giveItem(&s.findItem("parts"));
+
+      AND_WHEN("it is broken") {
+        auto &watch = user.inventory(0).first;
+        BREAK_ITEM(watch);
+
+        AND_WHEN("he tries to repair it") {
+          c.sendMessage(CL_REPAIR_ITEM, makeArgs(Server::INVENTORY, 0));
+
+          THEN("he still has his parts") {
+            REPEAT_FOR_MS(100);
+            CHECK(user.inventory(1).first.hasItem());
+          }
+        }
+      }
+    }
+  }
 }
 
 /* TODO
