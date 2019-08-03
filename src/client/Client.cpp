@@ -86,6 +86,7 @@ Client::Client()
                          Color::MAGENTA),
       _cursorEndsQuest(std::string("Images/Cursors/endsQuest.png"),
                        Color::MAGENTA),
+      _cursorRepair(std::string("Images/Cursors/repair.png"), Color::MAGENTA),
       _currentCursor(&_cursorNormal),
 
       _character({}, {}),

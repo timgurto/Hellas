@@ -618,6 +618,7 @@ Sprite *Client::getEntityAtMouse() {
 
 void Client::checkMouseOver() {
   _currentCursor = &_cursorNormal;
+  if (isAltPressed()) _currentCursor = &_cursorRepair;
 
   // Check whether mouse is over a window
   _mouseOverWindow = false;
@@ -631,8 +632,7 @@ void Client::checkMouseOver() {
   // Check if mouse is over an entity
   const Sprite *const oldMouseOverEntity = _currentMouseOverEntity;
   _currentMouseOverEntity = getEntityAtMouse();
-  if (_currentMouseOverEntity == nullptr) return;
 
-  // Set cursor
-  _currentCursor = &_currentMouseOverEntity->cursor(*this);
+  if (_currentMouseOverEntity)
+    _currentCursor = &_currentMouseOverEntity->cursor(*this);
 }
