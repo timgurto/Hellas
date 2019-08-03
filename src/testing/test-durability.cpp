@@ -864,7 +864,14 @@ TEST_CASE("Item repair that consumes items") {
           AND_WHEN("he tries to repair it") {
             c.sendMessage(CL_REPAIR_ITEM, makeArgs(Server::INVENTORY, 0));
 
-            THEN("it is no longer broken") { WAIT_UNTIL(!heart.isBroken()); }
+            THEN("it is no longer broken") {
+              WAIT_UNTIL(!heart.isBroken());
+
+              AND_THEN("he no longer has food") {
+                const auto &foodSlot = user.inventory(1).first;
+                WAIT_UNTIL(!foodSlot.hasItem());
+              }
+            }
           }
         }
       }
@@ -873,7 +880,6 @@ TEST_CASE("Item repair that consumes items") {
 }
 
 /* TODO
-Consume material on repair
 Require tool
 Repair cursor
 Objects
