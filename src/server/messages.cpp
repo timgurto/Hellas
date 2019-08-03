@@ -1581,7 +1581,10 @@ void Server::handle_CL_REPAIR_ITEM(User &user, size_t serial, size_t slot) {
   }
 
   if (repairInfo.requiresTool()) {
-    if (!user.checkAndDamageTool(repairInfo.tool)) return;
+    if (!user.checkAndDamageTool(repairInfo.tool)) {
+      user.sendMessage(WARNING_ITEM_TAG_NEEDED, repairInfo.tool);
+      return;
+    }
   }
 
   if (repairInfo.hasCost()) {
