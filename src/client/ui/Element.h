@@ -37,7 +37,8 @@ class Element {
 
   static Texture transparentBackground;
 
-  static const Tooltip *_currentTooltip;  // The tooltip currently moused over.
+  // The current moused-over element.  Draw its tooltip.
+  static const Element *_currentTooltipElement;
 
   mutable bool _changed;    // If true, this element should be refreshed before
                             // next being drawn.
@@ -52,8 +53,8 @@ class Element {
 
   std::string _id;  // Optional ID for finding children.
 
-  Tooltip
-      _ownedTooltip{};  // In case the below needs to point to something new.
+  // In case the below needs to point to something new.
+  Tooltip _localCopyOfTooltip{};
   const Tooltip *_tooltip{nullptr};  // Optional tooltip
 
   Uint8 _alpha = SDL_ALPHA_OPAQUE;
@@ -137,7 +138,7 @@ class Element {
   void setTooltip(const char *text) { setTooltip(std::string(text)); }
   void setTooltip(const Tooltip &tooltip);  // Add a complex tooltip.
   void clearTooltip();
-  static const Tooltip *tooltip() { return _currentTooltip; }
+  static const Tooltip *tooltip();
   const Element *parent() const { return _parent; }
   const Texture &texture() const { return _texture; }
   static bool isInitialized() { return initialized; }

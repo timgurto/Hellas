@@ -32,6 +32,8 @@ class ClientItem : public Item {
     Hitpoints _health{0};
     mutable Optional<Tooltip> _tooltip;  // Builds on the basic item tooltip
     void createRegularTooltip() const;
+    mutable Optional<Tooltip> _repairTooltip;
+    void createRepairTooltip() const;
   };
 
  private:
@@ -39,6 +41,7 @@ class ClientItem : public Item {
   Texture _icon;
   Texture _gearImage;
   ScreenPoint _drawLoc;
+
   mutable Optional<Tooltip> _tooltip;
   const SoundProfile *_sounds;
   const Projectile::Type *_projectile{nullptr};

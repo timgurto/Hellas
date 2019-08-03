@@ -23,7 +23,7 @@ Texture Element::transparentBackground;
 
 const ScreenPoint *Element::absMouse = nullptr;
 
-const Tooltip *Element::_currentTooltip = nullptr;
+const Element *Element::_currentTooltipElement = nullptr;
 
 bool Element::initialized = false;
 
@@ -55,7 +55,7 @@ Element::Element(const ScreenRect &rect)
 }
 
 Element::~Element() {
-  if (_currentTooltip == &_ownedTooltip) _currentTooltip = nullptr;
+  if (_currentTooltipElement == this) _currentTooltipElement = nullptr;
   clearChildren();
 }
 
@@ -281,7 +281,7 @@ void Element::onMouseMove(const ScreenPoint &mousePos) {
   if (!_visible) return;
   const ScreenPoint relativeLocation = mousePos - position();
   if (_mouseMove != nullptr) _mouseMove(*_mouseMoveElement, relativeLocation);
-  if (_tooltip && collision(mousePos, rect())) _currentTooltip = _tooltip;
+  if (_tooltip && collision(mousePos, rect())) _currentTooltipElement = this;
   for (Element *child : _children) child->onMouseMove(relativeLocation);
 }
 
@@ -352,19 +352,24 @@ Element *Element::findChild(const std::string id) const {
   return nullptr;
 }
 
-void Element::resetTooltip() { _currentTooltip = nullptr; }
+void Element::resetTooltip() { _currentTooltipElement = nullptr; }
 
 void Element::setTooltip(const std::string &text) {
-  _ownedTooltip = Tooltip::basicTooltip(text);
-  _tooltip = &_ownedTooltip;
+  _localCopyOfTooltip = Tooltip::basicTooltip(text);
+  _tooltip = &_localCopyOfTooltip;
 }
 
 void Element::setTooltip(const Tooltip &tooltip) {
-  _ownedTooltip = tooltip;
-  _tooltip = &_ownedTooltip;
+  _localCopyOfTooltip = tooltip;
+  _tooltip = &_localCopyOfTooltip;
 }
 
 void Element::clearTooltip() { _tooltip = nullptr; }
+
+const Tooltip *Element::tooltip() {
+  if (!_currentTooltipElement) return nullptr;
+  return _currentTooltipElement->_tooltip;
+}
 
 void Element::draw() {
   if (!_visible) return;

@@ -193,8 +193,13 @@ void ClientItem::addParticles(const std::string &profileName,
 }
 
 const Tooltip &ClientItem::Instance::tooltip() const {
-  if (!_tooltip.hasValue()) createRegularTooltip();
+  auto shouldShowRepairTooltip = Client::instance().isAltPressed();
+  if (shouldShowRepairTooltip) {
+    if (!_repairTooltip.hasValue()) createRepairTooltip();
+    return _repairTooltip.value();
+  }
 
+  if (!_tooltip.hasValue()) createRegularTooltip();
   return _tooltip.value();
 }
 
@@ -224,4 +229,8 @@ void ClientItem::Instance::createRegularTooltip() const {
   //   tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
   //   tooltip.addLine("Alt-click to repair");
   // }
+}
+
+void ClientItem::Instance::createRepairTooltip() const {
+  _repairTooltip = Tooltip{};
 }

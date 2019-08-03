@@ -38,6 +38,7 @@ class ContainerGrid : public Element {
   static const ContainerGrid *useGrid;
 
   virtual void refresh() override;
+  void refreshTooltip();
 
   static void leftMouseDown(Element &e, const ScreenPoint &mousePos);
   static void leftMouseUp(Element &e, const ScreenPoint &mousePos);

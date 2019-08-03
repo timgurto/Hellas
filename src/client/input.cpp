@@ -211,8 +211,15 @@ void Client::handleInput(double delta) {
             case SDLK_F1:
               if (!isDebug()) break;
 
-              auto loc = toMapPoint(_mouse) - _offset;
-              sendMessage(DG_TELEPORT, makeArgs(loc.x, loc.y));
+              {
+                auto loc = toMapPoint(_mouse) - _offset;
+                sendMessage(DG_TELEPORT, makeArgs(loc.x, loc.y));
+              }
+              break;
+
+            case SDLK_LALT:
+            case SDLK_RALT:
+              onMouseMove();  // Clear UI tooltip
               break;
           }
         }
@@ -236,6 +243,11 @@ void Client::handleInput(double delta) {
             case SDLK_MINUS:
             case SDLK_EQUALS:
               onHotbarKeyUp(e.key.keysym.sym);
+              break;
+
+            case SDLK_LALT:
+            case SDLK_RALT:
+              onMouseMove();  // Clear UI tooltip
               break;
           }
         }

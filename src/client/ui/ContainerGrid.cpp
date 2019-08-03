@@ -137,7 +137,10 @@ void ContainerGrid::refresh() {
     }
   }
 
-  // Item tooltip
+  refreshTooltip();
+}
+
+void ContainerGrid::refreshTooltip() {
   if (_mouseOverSlot != NO_SLOT) {
     const auto &item = _linked[_mouseOverSlot].first;
     if (!item.type())
@@ -272,6 +275,8 @@ void ContainerGrid::mouseMove(Element &e, const ScreenPoint &mousePos) {
     grid._mouseOverSlot = slot;
     grid.markChanged();
   }
+
+  grid.refreshTooltip();
 }
 
 const ClientItem *ContainerGrid::getDragItem() {
