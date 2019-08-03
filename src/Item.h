@@ -17,6 +17,8 @@ class Item {
     bool canBeRepaired{false};
     std::string cost{};
     bool hasCost() const { return !cost.empty(); }
+    std::string tool{};
+    bool requiresTool() const { return !tool.empty(); }
   };
 
   Item(const std::string &id);
@@ -41,6 +43,7 @@ class Item {
   const std::string &spellToCastOnUse() const { return _castsSpellOnUse; }
   void makeRepairable() { _repairInfo.canBeRepaired = true; }
   void repairingCosts(const std::string &costID) { _repairInfo.cost = costID; }
+  void repairingRequiresTool(const std::string &tag) { _repairInfo.tool = tag; }
   RepairInfo repairInfo() const { return _repairInfo; }
 
   bool operator<(const Item &rhs) const { return _id < rhs._id; }

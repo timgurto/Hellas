@@ -879,8 +879,41 @@ TEST_CASE("Item repair that consumes items") {
   }
 }
 
+TEST_CASE("Item repair that requires a tool") {
+  GIVEN("a soldering iron is needed to repair a circuit") {
+    auto data = R"(
+      <item id="circuit">
+        <canBeRepaired tool="soldering" />
+      </item>
+      <item id="solderingIron">
+        <tag name="soldering" />
+      </item>
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    WHEN("a user has a circuit") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      user.giveItem(&s.findItem("circuit"));
+
+      AND_WHEN("it is broken") {
+        auto &circuit = user.inventory(0).first;
+        BREAK_ITEM(circuit);
+
+        AND_WHEN("he tries to repair it") {
+          c.sendMessage(CL_REPAIR_ITEM, makeArgs(Server::INVENTORY, 0));
+
+          THEN("it is still broken") {
+            REPEAT_FOR_MS(100);
+            CHECK(circuit.isBroken());
+          }
+        }
+      }
+    }
+  }
+}
+
 /* TODO
-Require tool
-Repair cursor
 Objects
 */

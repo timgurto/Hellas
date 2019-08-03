@@ -1584,6 +1584,8 @@ void Server::handle_CL_REPAIR_ITEM(User &user, size_t serial, size_t slot) {
     user.removeItems(itemToRemove);
   }
 
+  if (repairInfo.requiresTool()) return;
+
   itemToRepair->repair();
 }
 
