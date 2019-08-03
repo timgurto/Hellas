@@ -861,7 +861,7 @@ TEST_CASE("Item repair that consumes items") {
         AND_WHEN("he has food") {
           user.giveItem(&s.findItem("food"));
 
-          AND_WHEN("he tries to repair it") {
+          AND_WHEN("he tries to repair the heart") {
             c.sendMessage(CL_REPAIR_ITEM, makeArgs(Server::INVENTORY, 0));
 
             THEN("it is no longer broken") {
@@ -907,6 +907,16 @@ TEST_CASE("Item repair that requires a tool") {
           THEN("it is still broken") {
             REPEAT_FOR_MS(100);
             CHECK(circuit.isBroken());
+          }
+        }
+
+        AND_WHEN("he has a soldering iron") {
+          user.giveItem(&s.findItem("solderingIron"));
+
+          AND_WHEN("he tries to repair the circuit") {
+            c.sendMessage(CL_REPAIR_ITEM, makeArgs(Server::INVENTORY, 0));
+
+            THEN("it is no longer broken") { WAIT_UNTIL(!circuit.isBroken()); }
           }
         }
       }
