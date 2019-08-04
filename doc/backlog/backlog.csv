@@ -257,7 +257,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 33,Items can be repaired with materials,21,55,Feature,30,TRUE,TRUE,3 Tin wrapup
 34,Repairing items can require tools,8,2,Feature,33,TRUE,TRUE,3 Tin wrapup
 57,Heavy items that prevent player movement,13,3,Feature,,,TRUE,4 Copper
-59,Better NPC pathfinding,21,34,Feature,,,,5 First adventure
+59,Better NPC pathfinding,21,34,Feature,,,,3 Tin wrapup
 65,NPCs can combine loot tables,5,8,Feature,,,,5 First adventure
 67,Set bonuses for gear,13,21,Feature,,,,
 68,Class-restricted gear,8,5,Feature,,,,
@@ -343,7 +343,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 518,Copper + gear,55,8,Content,,,,4 Copper
 519,Bronze + gear,55,144,Content,518,,,6 Bronze
 520,Iron + gear,55,89,Content,519,,,
-521,Animal domestication,34,34,Feature,,,TRUE,4 Copper
+521,Animal domestication,34,34,Feature,59,,TRUE,3 Tin wrapup
 522,Wool + gear,34,144,Content,521,,,4 Copper
 523,Silk + gear,34,144,Content,522,,,
 524,Boiled leather + gear,34,144,Content,,,,6 Bronze
@@ -380,7 +380,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 559,Reduce volume of distant SFX,3,8,Aesthetics,,,,
 560,Master volume control,3,5,Usability,,,,3 Tin wrapup
 561,Make gigantes always run back to their spawn point,13,3,Bug,,TRUE,,3 Tin wrapup
-562,Prevent griefing of lowbies; watch towers?,8,13,Exploit,,,,
+562,Attack dogs,8,13,Exploit,521,,,
 563,Add flag objects with text entry to show labels on map,8,21,Feature,,,,
 564,Cull objects and NPCs on death,3,13,Bug,,,,3 Tin wrapup
 565,Reflect vehicle speed in stats window,3,3,Bug,105,,,
