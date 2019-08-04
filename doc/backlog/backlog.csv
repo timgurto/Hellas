@@ -378,7 +378,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 557,Provide list of names when granting objects,13,8,Usability,,,,3 Tin wrapup
 558,Add cursor for vehicles,3,2,Usability,,,,
 559,Reduce volume of distant SFX,3,8,Aesthetics,,,,
-560,Master volume control,3,5,Usability,,,,
+560,Master volume control,3,5,Usability,,,,3 Tin wrapup
 561,Make gigantes always run back to their spawn point,13,3,Bug,,TRUE,,3 Tin wrapup
 562,Prevent griefing of lowbies; watch towers?,8,13,Exploit,,,,
 563,Add flag objects with text entry to show labels on map,8,21,Feature,,,,
@@ -406,4 +406,9 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 587,Hide NPCs and neutral objects on map,3,2,Usability,,,,
 588,Allow buffs to be recast while on,3,2,Usability,,TRUE,,
 589,Nerf Selfish Request,8,1,Exploit,,TRUE,,3 Tin wrapup
-590,"Players can get stuck inside objects, and respawn on restarting client",21,13,Bug,,,,3 Tin wrapup
+590,"Players can get stuck inside objects, and respawn on restarting client",34,13,Bug,,,,3 Tin wrapup
+591,Tell new citizens about city objects,13,5,Bug,,,,3 Tin wrapup
+592,Allow citizens to access other citizens' altars,21,2,Bug,,,,3 Tin wrapup
+593,Friends list,13,21,Feature,,,,
+594,"Show enemy objects as red, not yellow",8,3,Bug,,,,
+595,Prevent declarations of war against nonexistent entities,8,5,Bug,,,,
