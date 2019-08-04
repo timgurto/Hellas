@@ -1021,9 +1021,24 @@ TEST_CASE("Non-repairable objects") {
   }
 }
 
+TEST_CASE("Repairing a nonexistent object") {
+  GIVEN("a user") {
+    auto s = TestServer{};
+    auto c = TestClient{};
+    s.waitForUsers(1);
+
+    WHEN("he tries to repair a nonexistent entity") {
+      c.sendMessage(CL_REPAIR_OBJECT, "50");
+
+      THEN("the server doesn't crash") {
+        REPEAT_FOR_MS(100);
+        CHECK(true);
+      }
+    }
+  }
+}
+
 /* TODO
-Object doesn't exist
-Entity isn't an object
 Enemy object
 Cost
 Tool
