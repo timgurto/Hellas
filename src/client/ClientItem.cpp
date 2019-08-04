@@ -266,6 +266,4 @@ void ClientItem::Instance::createRepairTooltip() const {
     if (!costItem) return;
     rt.addItem(*costItem);
   }
-
-  return;
 }

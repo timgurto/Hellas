@@ -1026,14 +1026,44 @@ void ClientObject::createRegularTooltip() const {
 }
 
 void ClientObject::createRepairTooltip() const {
-  if (_repairTooltip.hasValue()) return;
+  const auto &client = *Client::_instance;
+  const ClientObjectType &ot = *objectType();
+  const auto &repairInfo = ot.repairInfo();
+
+  if (!repairInfo.canBeRepaired) {
+    _repairTooltip = Tooltip::basicTooltip("This object cannot be repaired.");
+    return;
+  }
+
+  auto needsRepairing = health() < Item::MAX_HEALTH;
+  if (!needsRepairing) {
+    _repairTooltip =
+        Tooltip::basicTooltip("This object is already at full health.");
+    return;
+  }
+
   _repairTooltip = Tooltip{};
   auto &rt = _repairTooltip.value();
 
-  const auto &client = *Client::_instance;
-  const ClientObjectType &ot = *objectType();
+  rt.setColor(Color::TOOLTIP_INSTRUCTION);
+  rt.addLine("Alt-click to repair.");
 
-  rt.addLine("Repair!");
+  if (repairInfo.requiresTool()) {
+    rt.addGap();
+    rt.setColor(Color::TOOLTIP_BODY);
+    rt.addLine("Requires tool:");
+    rt.setColor(Color::TOOLTIP_TAG);
+    rt.addLine(Client::instance().tagName(repairInfo.tool));
+  }
+
+  if (repairInfo.hasCost()) {
+    rt.addGap();
+    rt.setColor(Color::TOOLTIP_BODY);
+    rt.addLine("Will consume:");
+    const auto *costItem = Client::instance().findItem(repairInfo.cost);
+    if (!costItem) return;
+    rt.addItem(*costItem);
+  }
 }
 
 const Texture &ClientObject::image() const {
