@@ -1631,6 +1631,10 @@ void Server::handle_CL_REPAIR_OBJECT(User &user, size_t serial) {
     }
   }
 
+  if (repairInfo.requiresTool()) {
+    return;
+  }
+
   obj->repair();
 }
 

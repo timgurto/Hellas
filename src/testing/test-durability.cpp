@@ -1082,7 +1082,43 @@ TEST_CASE("Object repair at a cost") {
   }
 }
 
+TEST_CASE("Object repair requiring a tool") {
+  GIVEN("an object that can be repaired using a tool") {
+    auto data = R"(
+      <item id="wrench">
+        <tag name="wrench" />
+      </item>
+      <item id="metal" durability="10" />
+      <objectType id="machine">
+        <durability item="metal" quantity="10" />
+        <canBeRepaired tool="wrench" />
+      </objectType>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    s.addObject("machine", {10, 15}, user.name());
+    auto &machine = s.getFirstObject();
+
+    WHEN("it is missing 1 health") {
+      machine.reduceHealth(1);
+
+      AND_WHEN("a user tries to repair it") {
+        c.sendMessage(CL_REPAIR_OBJECT, makeArgs(machine.serial()));
+
+        THEN("it is still not at full health") {
+          REPEAT_FOR_MS(100);
+          CHECK(machine.health() < machine.stats().maxHealth);
+        }
+      }
+    }
+  }
+}
+
 /* TODO
+Cost is subtracted
 Tool
 Tooltip
 Give objects straight health values, not item-based health

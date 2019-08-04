@@ -174,6 +174,7 @@ class ObjectType : public EntityType, public QuestNodeType {
   const RepairInfo &repairInfo() const { return _repairInfo; }
   void makeRepairable() { _repairInfo.canBeRepaired = true; }
   void repairingCosts(const std::string &id) { _repairInfo.cost = id; }
+  void repairingRequiresTool(const std::string &tag) { _repairInfo.tool = tag; }
 
  private:
   void checkUniquenessInvariant() const;
