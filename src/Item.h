@@ -13,14 +13,6 @@ class Item {
   static const size_t WEAPON_SLOT = 6, OFFHAND_SLOT = 7;
   static const Hitpoints MAX_HEALTH = 100;
 
-  struct RepairInfo {
-    bool canBeRepaired{false};
-    std::string cost{};
-    bool hasCost() const { return !cost.empty(); }
-    std::string tool{};
-    bool requiresTool() const { return !tool.empty(); }
-  };
-
   Item(const std::string &id);
   virtual ~Item() {}
 

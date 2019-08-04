@@ -991,6 +991,7 @@ TEST_CASE("Object repair") {
 }
 
 /* TODO
+Not repairable
 Object doesn't exist
 Entity isn't an object
 Enemy object

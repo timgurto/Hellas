@@ -122,7 +122,7 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
   bool isBroken() const override { return isDead(); }
   void damageFromUse() override { reduceHealth(1); };
 
-  void repair();
+  void repair() override;
 
  private:
   Container *_container = nullptr;
