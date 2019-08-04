@@ -296,6 +296,7 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
     auto repairElem = xr.findChild("canBeRepaired", elem);
     if (repairElem) {
       ot->makeRepairable();
+      if (xr.findAttr(repairElem, "cost", s)) ot->repairingCosts(s);
     }
 
     // Action

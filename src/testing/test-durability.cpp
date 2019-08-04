@@ -1038,8 +1038,39 @@ TEST_CASE("Repairing a nonexistent object") {
   }
 }
 
+TEST_CASE("Object repair at a cost") {
+  GIVEN("an object that can be repaired for a cost") {
+    auto data = R"(
+      <item id="snow" durability="10" />
+      <objectType id="snowman">
+        <durability item="snow" quantity="10" />
+        <canBeRepaired cost="snow" />
+      </objectType>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    s.addObject("snowman", {10, 15}, user.name());
+    auto &snowman = s.getFirstObject();
+
+    WHEN("it is missing 1 health") {
+      snowman.reduceHealth(1);
+
+      AND_WHEN("a user tries to repair it") {
+        c.sendMessage(CL_REPAIR_OBJECT, makeArgs(snowman.serial()));
+
+        THEN("it is still not at full health") {
+          REPEAT_FOR_MS(100);
+          CHECK(snowman.health() < snowman.stats().maxHealth);
+        }
+      }
+    }
+  }
+}
+
 /* TODO
-Enemy object
 Cost
 Tool
 Tooltip

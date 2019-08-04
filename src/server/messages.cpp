@@ -1620,6 +1620,10 @@ void Server::handle_CL_REPAIR_OBJECT(User &user, size_t serial) {
     return;
   }
 
+  if (repairInfo.hasCost()) {
+    return;
+  }
+
   obj->repair();
 }
 
