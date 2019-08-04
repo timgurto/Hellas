@@ -682,6 +682,7 @@ void CDataLoader::loadItems(XmlReader &xr) {
     if (repairElem) {
       item.makeRepairable();
       if (xr.findAttr(repairElem, "cost", s)) item.repairingCosts(s);
+      if (xr.findAttr(repairElem, "tool", s)) item.repairingRequiresTool(s);
     }
 
     _client._items[id] = item;

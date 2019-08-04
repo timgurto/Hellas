@@ -254,8 +254,8 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 30,"Items have durability, affected by combat and use.",34,34,Feature,,TRUE,TRUE,3 Tin wrapup
 31,Objects can be repaired with materials,21,34,Feature,29,,TRUE,3 Tin wrapup
 32,Object repair can require tools,5,2,Feature,31,,TRUE,3 Tin wrapup
-33,Items can be repaired with materials,21,55,Feature,30,,TRUE,3 Tin wrapup
-34,Repairing items can require tools,8,2,Feature,33,,TRUE,3 Tin wrapup
+33,Items can be repaired with materials,21,55,Feature,30,TRUE,TRUE,3 Tin wrapup
+34,Repairing items can require tools,8,2,Feature,33,TRUE,TRUE,3 Tin wrapup
 57,Heavy items that prevent player movement,13,3,Feature,,,TRUE,4 Copper
 59,Better NPC pathfinding,21,34,Feature,,,,5 First adventure
 65,NPCs can combine loot tables,5,8,Feature,,,,5 First adventure

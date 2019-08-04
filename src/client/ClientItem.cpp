@@ -250,14 +250,23 @@ void ClientItem::Instance::createRepairTooltip() const {
   rt.setColor(Color::TOOLTIP_INSTRUCTION);
   rt.addLine("Alt-click to repair.");
 
-  if (!_type->repairInfo().hasCost()) return;
+  if (_type->repairInfo().requiresTool()) {
+    rt.addGap();
+    rt.setColor(Color::TOOLTIP_BODY);
+    rt.addLine("Requires tool:");
+    rt.setColor(Color::TOOLTIP_TAG);
+    rt.addLine(Client::instance().tagName(_type->repairInfo().tool));
+  }
 
-  rt.addGap();
-  rt.setColor(Color::TOOLTIP_BODY);
-  rt.addLine("Repairing will consume:");
-  const auto *costItem = Client::instance().findItem(_type->repairInfo().cost);
-  if (!costItem) return;
-  rt.addItem(*costItem);
+  if (_type->repairInfo().hasCost()) {
+    rt.addGap();
+    rt.setColor(Color::TOOLTIP_BODY);
+    rt.addLine("Will consume:");
+    const auto *costItem =
+        Client::instance().findItem(_type->repairInfo().cost);
+    if (!costItem) return;
+    rt.addItem(*costItem);
+  }
 
   return;
 }
