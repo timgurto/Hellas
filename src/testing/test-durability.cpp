@@ -1075,6 +1075,10 @@ TEST_CASE("Object repair at a cost") {
 
           THEN("it is  at full health") {
             WAIT_UNTIL(snowman.health() == snowman.stats().maxHealth);
+
+            AND_THEN("he no longer has the item") {
+              WAIT_UNTIL(!user.inventory(0).first.hasItem());
+            }
           }
         }
       }
@@ -1130,7 +1134,6 @@ TEST_CASE("Object repair requiring a tool") {
 }
 
 /* TODO
-Cost is subtracted
 Tooltip
 Give objects straight health values, not item-based health
 Data for all repairable items and objects
