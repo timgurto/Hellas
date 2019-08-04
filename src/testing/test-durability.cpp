@@ -1066,12 +1066,23 @@ TEST_CASE("Object repair at a cost") {
           CHECK(snowman.health() < snowman.stats().maxHealth);
         }
       }
+
+      AND_WHEN("a user has the cost item") {
+        user.giveItem(&s.getFirstItem());
+
+        AND_WHEN("he tries to repair it") {
+          c.sendMessage(CL_REPAIR_OBJECT, makeArgs(snowman.serial()));
+
+          THEN("it is  at full health") {
+            WAIT_UNTIL(snowman.health() == snowman.stats().maxHealth);
+          }
+        }
+      }
     }
   }
 }
 
 /* TODO
-Cost
 Tool
 Tooltip
 Give objects straight health values, not item-based health

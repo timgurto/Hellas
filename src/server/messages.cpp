@@ -1620,8 +1620,15 @@ void Server::handle_CL_REPAIR_OBJECT(User &user, size_t serial) {
     return;
   }
 
+  auto costItem = findItem(repairInfo.cost);
   if (repairInfo.hasCost()) {
-    return;
+    auto cost = ItemSet{};
+    cost.add(costItem);
+
+    if (!user.hasItems(cost)) {
+      user.sendMessage(WARNING_ITEM_NEEDED);
+      return;
+    }
   }
 
   obj->repair();
