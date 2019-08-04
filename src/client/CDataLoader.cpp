@@ -555,6 +555,14 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
             Color::CHAT_ERROR);
     }
 
+    // Repairing
+    auto repairElem = xr.findChild("canBeRepaired", elem);
+    if (repairElem) {
+      cot->makeRepairable();
+      if (xr.findAttr(repairElem, "cost", s)) cot->repairingCosts(s);
+      if (xr.findAttr(repairElem, "tool", s)) cot->repairingRequiresTool(s);
+    }
+
     for (auto particles : xr.getChildren("particles", elem)) {
       auto profileName = ""s;
       if (!xr.findAttr(particles, "profile", profileName)) continue;

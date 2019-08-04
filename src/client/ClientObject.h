@@ -49,6 +49,10 @@ class ClientObject : public Sprite, public ClientCombatant {
 
   TextBox *_actionTextEntry = nullptr;
 
+  void createRegularTooltip() const;
+  mutable Optional<Tooltip> _repairTooltip;
+  void createRepairTooltip() const;
+
  protected:
   Window *_window;  // For containers, etc; opens when the object is nearby and
                     // right-clicked.

@@ -866,7 +866,18 @@ const Texture &ClientObject::cursor(const Client &client) const {
 }
 
 const Tooltip &ClientObject::tooltip() const {
-  if (_tooltip.hasValue()) return _tooltip.value();
+  auto shouldShowRepairTooltip = Client::instance().isAltPressed();
+  if (shouldShowRepairTooltip) {
+    if (!_repairTooltip.hasValue()) createRepairTooltip();
+    return _repairTooltip.value();
+  }
+
+  if (!_tooltip.hasValue()) createRegularTooltip();
+  return _tooltip.value();
+}
+
+void ClientObject::createRegularTooltip() const {
+  if (_tooltip.hasValue()) return;
   _tooltip = Tooltip{};
   auto &tooltip = _tooltip.value();
 
@@ -915,15 +926,15 @@ const Tooltip &ClientObject::tooltip() const {
                                        : owner()));
   }
 
-  if (isDead()) return tooltip;
+  if (isDead()) return;
 
   if (isBeingConstructed()) {
-    if (!userHasAccess()) return tooltip;
+    if (!userHasAccess()) return;
 
     tooltip.addGap();
     tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
     tooltip.addLine(std::string("Right-click to add materials"));
-    return tooltip;
+    return;
   }
 
   // Stats
@@ -1012,8 +1023,17 @@ const Tooltip &ClientObject::tooltip() const {
     tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
     tooltip.addLine(std::string("Right-click to gather"));
   }
+}
 
-  return tooltip;
+void ClientObject::createRepairTooltip() const {
+  if (_repairTooltip.hasValue()) return;
+  _repairTooltip = Tooltip{};
+  auto &rt = _repairTooltip.value();
+
+  const auto &client = *Client::_instance;
+  const ClientObjectType &ot = *objectType();
+
+  rt.addLine("Repair!");
 }
 
 const Texture &ClientObject::image() const {

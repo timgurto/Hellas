@@ -59,6 +59,7 @@ class ClientObjectType : public SpriteType, public ClientCombatantType {
     size_t quantity;
   };
   Durability _durability;
+  RepairInfo _repairInfo;
 
   // To show transformations.  Which image is displayed depends on progress.
   std::vector<ImageSet> _transformImages;
@@ -120,6 +121,10 @@ class ClientObjectType : public SpriteType, public ClientCombatantType {
     _durability.item = item;
     _durability.quantity = quantity;
   }
+  const RepairInfo &repairInfo() const { return _repairInfo; }
+  void makeRepairable() { _repairInfo.canBeRepaired = true; }
+  void repairingCosts(const std::string &id) { _repairInfo.cost = id; }
+  void repairingRequiresTool(const std::string &tag) { _repairInfo.tool = tag; }
   bool isPlayerUnique() const { return _isPlayerUnique; }
   void makePlayerUnique() { _isPlayerUnique = true; }
   void action(ClientObjectAction *pAction) { _action = pAction; }
