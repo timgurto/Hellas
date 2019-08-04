@@ -1113,13 +1113,24 @@ TEST_CASE("Object repair requiring a tool") {
           CHECK(machine.health() < machine.stats().maxHealth);
         }
       }
+
+      AND_WHEN("a user has the tool") {
+        user.giveItem(&s.findItem("wrench"));
+
+        AND_WHEN("he tries to repair it") {
+          c.sendMessage(CL_REPAIR_OBJECT, makeArgs(machine.serial()));
+
+          THEN("it is  at full health") {
+            WAIT_UNTIL(machine.health() == machine.stats().maxHealth);
+          }
+        }
+      }
     }
   }
 }
 
 /* TODO
 Cost is subtracted
-Tool
 Tooltip
 Give objects straight health values, not item-based health
 Data for all repairable items and objects
