@@ -849,6 +849,8 @@ void ClientObject::draw(const Client &client) const {
 }
 
 const Texture &ClientObject::cursor(const Client &client) const {
+  if (client.isAltPressed()) return client.cursorRepair();
+
   if (canBeAttackedByPlayer()) return client.cursorAttack();
 
   const ClientObjectType &ot = *objectType();
