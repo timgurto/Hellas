@@ -959,6 +959,44 @@ TEST_CASE("Item repair that requires a tool") {
   }
 }
 
+TEST_CASE("Object repair") {
+  GIVEN("a repairable object owned by a user") {
+    auto data = R"(
+      <item id="brick" durability="10" />
+      <objectType id="wall">
+        <canBeRepaired />
+        <durability item="brick" quantity="10" />
+      </objectType>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    s.addObject("wall", {10, 15}, user.name());
+    auto &wall = s.getFirstObject();
+
+    WHEN("it is missing 1 health") {
+      wall.reduceHealth(1);
+
+      AND_WHEN("he tries to repair it") {
+        c.sendMessage(CL_REPAIR_OBJECT, makeArgs(wall.serial()));
+
+        THEN("it is back at full health") {
+          WAIT_UNTIL(wall.health() == wall.stats().maxHealth);
+        }
+      }
+    }
+  }
+}
+
 /* TODO
-Objects
+Object doesn't exist
+Entity isn't an object
+Enemy object
+Cost
+Tool
+Tooltip
+Give objects straight health values, not item-based health
+Data for all repairable items and objects
 */

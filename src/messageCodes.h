@@ -180,6 +180,10 @@ enum MessageCode {
   // Arguments: serial, slot
   CL_REPAIR_ITEM,
 
+  // Repair a damaged object
+  // Arguemnts: serial
+  CL_REPAIR_OBJECT,
+
   // Dismiss a buff
   // Arguments: buff ID
   CL_DISMISS_BUFF,

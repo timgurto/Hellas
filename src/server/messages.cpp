@@ -942,6 +942,15 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         break;
       }
 
+      case CL_REPAIR_OBJECT: {
+        size_t serial;
+        iss >> serial >> del;
+        if (del != MSG_END) return;
+
+        handle_CL_REPAIR_OBJECT(*user, serial);
+        break;
+      }
+
       case CL_MOUNT: {
         size_t serial;
         iss >> serial >> del;
@@ -1594,6 +1603,12 @@ void Server::handle_CL_REPAIR_ITEM(User &user, size_t serial, size_t slot) {
   }
 
   itemToRepair->repair();
+}
+
+void Server::handle_CL_REPAIR_OBJECT(User &user, size_t serial) {
+  auto it = _entities.find(serial);
+  auto &obj = dynamic_cast<Object &>(*it);
+  obj.repair();
 }
 
 void Server::handle_CL_LEAVE_CITY(User &user) {

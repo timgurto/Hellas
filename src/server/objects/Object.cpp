@@ -245,6 +245,8 @@ void Object::populateLoot() {
   objLoot.populate();
 }
 
+void Object::repair() { healBy(stats().maxHealth); }
+
 bool Object::isAbleToDeconstruct(const User &user) const {
   if (hasContainer()) return _container->isAbleToDeconstruct(user);
   return true;
