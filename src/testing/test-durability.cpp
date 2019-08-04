@@ -960,7 +960,7 @@ TEST_CASE("Item repair that requires a tool") {
 }
 
 TEST_CASE("Object repair") {
-  GIVEN("a repairable object owned by a user") {
+  GIVEN("a repairable object") {
     auto data = R"(
       <item id="brick" durability="10" />
       <objectType id="wall">
@@ -973,13 +973,13 @@ TEST_CASE("Object repair") {
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
 
-    s.addObject("wall", {10, 15}, user.name());
+    s.addObject("wall", {10, 15});
     auto &wall = s.getFirstObject();
 
     WHEN("it is missing 1 health") {
       wall.reduceHealth(1);
 
-      AND_WHEN("he tries to repair it") {
+      AND_WHEN("a user tries to repair it") {
         c.sendMessage(CL_REPAIR_OBJECT, makeArgs(wall.serial()));
 
         THEN("it is back at full health") {
@@ -990,8 +990,38 @@ TEST_CASE("Object repair") {
   }
 }
 
+TEST_CASE("Non-repairable objects") {
+  GIVEN("a non-repairable object") {
+    auto data = R"(
+      <item id="glass" durability="10" />
+      <objectType id="window">
+        <durability item="glass" quantity="10" />
+      </objectType>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    s.addObject("window", {10, 15}, user.name());
+    auto &window = s.getFirstObject();
+
+    WHEN("it is missing 1 health") {
+      window.reduceHealth(1);
+
+      AND_WHEN("a user tries to repair it") {
+        c.sendMessage(CL_REPAIR_OBJECT, makeArgs(window.serial()));
+
+        THEN("it is still not at full health") {
+          REPEAT_FOR_MS(100);
+          CHECK(window.health() < window.stats().maxHealth);
+        }
+      }
+    }
+  }
+}
+
 /* TODO
-Not repairable
 Object doesn't exist
 Entity isn't an object
 Enemy object

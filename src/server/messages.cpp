@@ -1608,6 +1608,13 @@ void Server::handle_CL_REPAIR_ITEM(User &user, size_t serial, size_t slot) {
 void Server::handle_CL_REPAIR_OBJECT(User &user, size_t serial) {
   auto it = _entities.find(serial);
   auto &obj = dynamic_cast<Object &>(*it);
+
+  const auto &repairInfo = obj.objType().repairInfo();
+  if (!repairInfo.canBeRepaired) {
+    user.sendMessage(WARNING_NOT_REPAIRABLE);
+    return;
+  }
+
   obj.repair();
 }
 

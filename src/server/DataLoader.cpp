@@ -292,6 +292,12 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
                        Color::CHAT_ERROR);
     }
 
+    // Repairing
+    auto repairElem = xr.findChild("canBeRepaired", elem);
+    if (repairElem) {
+      ot->makeRepairable();
+    }
+
     // Action
     auto action = xr.findChild("action", elem);
     if (action != nullptr) {

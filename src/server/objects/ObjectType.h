@@ -17,6 +17,7 @@ class BuffType;
 // properties
 class ObjectType : public EntityType, public QuestNodeType {
   Durability _strength;
+  RepairInfo _repairInfo;
 
   mutable size_t _numInWorld;
 
@@ -170,6 +171,8 @@ class ObjectType : public EntityType, public QuestNodeType {
   double buffRadius() const { return _buffRadius; }
 
   void initStrengthAndMaxHealth() const;
+  const RepairInfo &repairInfo() const { return _repairInfo; }
+  void makeRepairable() { _repairInfo.canBeRepaired = true; }
 
  private:
   void checkUniquenessInvariant() const;
