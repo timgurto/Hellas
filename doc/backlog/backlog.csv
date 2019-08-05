@@ -378,7 +378,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 557,Provide list of names when granting objects,13,8,Usability,,,,3 Tin wrapup
 558,Add cursor for vehicles,3,2,Usability,,,,
 559,Reduce volume of distant SFX,3,8,Aesthetics,,,,
-560,Master volume control,3,5,Usability,,,,3 Tin wrapup
+560,Master volume control,3,5,Usability,,TRUE,,3 Tin wrapup
 561,Make gigantes always run back to their spawn point,13,3,Bug,,TRUE,,3 Tin wrapup
 562,Attack dogs,8,13,Exploit,521,,,
 563,Add flag objects with text entry to show labels on map,8,21,Feature,,,,

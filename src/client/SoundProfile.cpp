@@ -4,6 +4,8 @@
 
 #include "Client.h"
 
+extern Args cmdLineArgs;
+
 SoundsRecord SoundProfile::loopingSounds;
 
 SoundProfile::SoundProfile(const std::string &id) : _id(id), _period(0) {}
@@ -34,6 +36,8 @@ void SoundProfile::startLooping(const SoundType &type,
 
 Channel SoundProfile::checkAndPlaySound(const SoundType &type,
                                         bool loop) const {
+  if (cmdLineArgs.contains("mute")) return NO_CHANNEL;
+
   auto it = _sounds.find(type);
   if (it == _sounds.end()) {
 #ifdef _DEBUG
