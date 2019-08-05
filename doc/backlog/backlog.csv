@@ -394,7 +394,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 574,Require full text entry for merchant prices,13,13,Usability,,,,
 575,Configurable key mapping,8,34,Usability,,,,
 577,Use virtual keys for movement,8,3,Usability,,,,
-578,Merchant-slot UI sometimes doesn't show up,21,8,Bug,,,,3 Tin wrapup
+578,Merchant-slot UI sometimes doesn't show up,21,8,Bug,,TRUE,,3 Tin wrapup
 579,City objects are forgotten on death,13,3,Bug,,,,
 580,"Damage shield on block, not hit",1,5,Feature,,,,
 581,Don't damage armour on block,1,5,Feature,,,,

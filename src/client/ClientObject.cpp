@@ -354,6 +354,7 @@ void ClientObject::addMerchantSetupToWindow() {
 
   for (size_t i = 0; i != objectType()->merchantSlots(); ++i) {
     _merchantSlotElements[i] = new Element();
+    setMerchantSlot(i, ClientMerchantSlot{});
     merchantList->addChild(_merchantSlotElements[i]);
   }
 
