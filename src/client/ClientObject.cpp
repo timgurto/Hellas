@@ -755,8 +755,24 @@ void ClientObject::sendMerchantSlot(size_t serial, size_t slot) {
 }
 
 bool ClientObject::userHasAccess() const {
-  return _owner.empty() || _owner == Client::_instance->username() ||
-         _owner == Client::_instance->character().cityName();
+  // No owner
+  if (_owner.empty()) return true;
+
+  // Player is owner
+  if (_owner == Client::_instance->username()) return true;
+
+  // City is owner
+  auto playerCity = Client::_instance->character().cityName();
+  if (_owner == playerCity) return true;
+
+  // Player-unique: fellow citizen is owner
+  auto ownerCity = Client::instance().getUserCity(_owner);
+  auto isPlayerUnique =
+      dynamic_cast<const ClientObjectType *>(type())->isPlayerUnique();
+  if (isPlayerUnique && !ownerCity.empty() && playerCity == ownerCity)
+    return true;
+
+  return false;
 }
 
 bool ClientObject::canAlwaysSee() const {

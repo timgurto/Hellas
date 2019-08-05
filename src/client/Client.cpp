@@ -773,6 +773,12 @@ bool Client::isAtWarWith(const std::string &username) const {
     return isCityAtWarWithPlayerDirectly(username);
 }
 
+std::string Client::getUserCity(const std::string &name) const {
+  auto it = _userCities.find(name);
+  if (it == _userCities.end()) return {};
+  return it->second;
+}
+
 const ClientSpell *Client::findSpell(const std::string &spellID) const {
   auto it = _spells.find(spellID);
   if (it == _spells.end()) return nullptr;

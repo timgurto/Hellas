@@ -1,6 +1,7 @@
+#include "Permissions.h"
+
 #include <map>
 
-#include "Permissions.h"
 #include "Server.h"
 #include "User.h"
 
@@ -61,24 +62,27 @@ bool Permissions::isOwnedByCity(const City::Name &cityName) const {
 
 const Permissions::Owner &Permissions::owner() const { return _owner; }
 
-bool Permissions::doesUserHaveAccess(const std::string &username) const {
-  switch (_owner.type) {
-    case Owner::NONE:
-      return true;
+bool Permissions::doesUserHaveAccess(const std::string &username,
+                                     bool allowFellowCitizens) const {
+  // Unowned
+  if (_owner.type == Owner::NONE) return true;
 
-    case Owner::PLAYER:
-      return _owner.name == username;
+  // Owned by player
+  if (_owner == Owner{Owner::PLAYER, username}) return true;
 
-    case Owner::CITY: {
-      const Cities &cities = Server::instance()._cities;
-      const std::string &playerCity = cities.getPlayerCity(username);
-      return playerCity == _owner.name;
-    }
+  const Cities &cities = Server::instance()._cities;
+  const std::string &playerCity = cities.getPlayerCity(username);
+  if (playerCity.empty()) return false;
 
-    default:
-      SERVER_ERROR("Checking permission when owner has no type");
-      return false;
-  }
+  // Owned by player's city
+  if (_owner == Owner{Owner::CITY, playerCity}) return true;
+
+  // Fellow citizens (e.g., for altars)
+  if (!allowFellowCitizens) return false;
+  if (_owner.type != Owner::PLAYER) return false;
+  auto ownerCity = cities.getPlayerCity(_owner.name);
+  if (ownerCity.empty()) return false;
+  return playerCity == ownerCity;
 }
 
 void Permissions::alertNearbyUsersToNewOwner() const {

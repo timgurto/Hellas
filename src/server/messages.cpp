@@ -1717,7 +1717,7 @@ void Server::handle_CL_PERFORM_OBJECT_ACTION(User &user, size_t serial,
   }
   auto *obj = _entities.find<Object>(serial);
 
-  if (!obj->permissions().doesUserHaveAccess(user.name())) {
+  if (!obj->permissions().doesUserHaveAccess(user.name(), true)) {
     sendMessage(user.socket(), WARNING_NO_PERMISSION);
     return;
   }

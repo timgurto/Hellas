@@ -408,7 +408,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 589,Nerf Selfish Request,8,1,Exploit,,TRUE,,3 Tin wrapup
 590,"Players can get stuck inside objects, and respawn on restarting client",34,13,Bug,,,,3 Tin wrapup
 591,Tell new citizens about city objects,13,5,Bug,,,,3 Tin wrapup
-592,Allow citizens to access other citizens' altars,21,2,Bug,,,,3 Tin wrapup
+592,Allow citizens to access other citizens' altars,21,2,Bug,,TRUE,,3 Tin wrapup
 593,Friends list,13,21,Feature,,,,
 594,"Show enemy objects as red, not yellow",8,3,Bug,,,,
 595,Prevent declarations of war against nonexistent entities,8,5,Bug,,,,

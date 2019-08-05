@@ -107,6 +107,7 @@ class Client {
   bool isCityAtWarWithCityDirectly(const std::string &cityName) const {
     return _cityWarsAgainstCities.atWarWith(cityName);
   }
+  std::string getUserCity(const std::string &name) const;
 
   const Texture &mapImage() const { return _mapImage; }
   const Texture &shadowImage() const { return _shadowImage; }
