@@ -93,6 +93,8 @@ void ClientCombatant::removeBuffOrDebuff(const ClientBuffType::ID &buff,
 }
 
 void ClientCombatant::playSoundWhenHit() const {
+  // Never true at this point for Avatar.  That case is handled specially, with
+  // SV_A_PLAYER_DIED.
   if (isDead())
     playDeathSound();
   else

@@ -308,7 +308,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 365,Give XP for player kills,13,3,Feature,,,,
 368,Update object windows after joining/leaving a city,21,3,Bug,,,,
 369,Trees sometimes think they're being gathered when they're not.  Endless particles/sound.,55,8,Bug,,,,
-370,Avatar isn't playing death sound,13,5,Bug,,,,
+370,Avatar isn't playing death sound,13,5,Bug,,TRUE,,
 373,Flash crafting/building/class buttons,21,8,Usability,,,,
 374,Flash class button when talents are unspent,21,3,Usability,373,,,
 375,Allow war to be declared on an object,21,5,Usability,,,,

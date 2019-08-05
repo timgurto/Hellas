@@ -1496,6 +1496,14 @@ void Client::handleMessage(const std::string &msg) {
         break;
       }
 
+      case SV_A_PLAYER_DIED:
+        singleMsg >> del;
+        if (del != MSG_END) return;
+
+        _character.playDeathSound();  // Any avatar will do
+
+        break;
+
       case SV_SHOW_MISS_AT:
       case SV_SHOW_DODGE_AT:
       case SV_SHOW_BLOCK_AT:

@@ -957,6 +957,9 @@ void User::onEnergyChange() {
 
 void User::onDeath() {
   Server &server = *Server::_instance;
+
+  server.broadcastToArea(location(), SV_A_PLAYER_DIED, {});
+
   server.forceAllToUntarget(*this);
   setTargetAndAttack(nullptr);
   cancelAction();

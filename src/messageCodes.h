@@ -389,10 +389,11 @@ enum MessageCode {
   SV_RANGED_WEAPON_HIT, // weapon ID, from x, from y, to x, to y
   SV_RANGED_WEAPON_MISS, // weapon ID, from x, from y, to x, to y
 
-  // Entity was hit by something.
+  // Entity was hit by something.  Used for aesthetic effects only.
   // Arguments: username/serial
   SV_PLAYER_WAS_HIT,
   SV_ENTITY_WAS_HIT,
+  SV_A_PLAYER_DIED,
 
   // Something has a noteworthy outcome. Show it.
   // Arguments: x, y
