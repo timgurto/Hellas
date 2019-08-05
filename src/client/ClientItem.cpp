@@ -219,14 +219,17 @@ void ClientItem::Instance::createRegularTooltip() const {
     color = Color::DURABILITY_LOW;
   tooltip.setColor(color);
 
-  auto oss = std::ostringstream{};
-  oss << "Durability: "s << _health << "/"s << Item::MAX_HEALTH;
-  tooltip.addGap();
-  tooltip.addLine(oss.str());
-  auto needsRepairing = _health < Item::MAX_HEALTH;
-  if (_type->repairInfo().canBeRepaired && needsRepairing) {
-    tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
-    tooltip.addLine("Alt-click to repair.");
+  auto isDamaged = _health < Item::MAX_HEALTH;
+  if (isDamaged) {
+    auto oss = std::ostringstream{};
+    oss << "Durability: "s << _health << "/"s << Item::MAX_HEALTH;
+    tooltip.addGap();
+    tooltip.addLine(oss.str());
+    auto needsRepairing = _health < Item::MAX_HEALTH;
+    if (_type->repairInfo().canBeRepaired && needsRepairing) {
+      tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
+      tooltip.addLine("Alt-click to repair.");
+    }
   }
 }
 
