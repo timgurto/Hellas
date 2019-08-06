@@ -1504,6 +1504,33 @@ void Client::handleMessage(const std::string &msg) {
 
         break;
 
+      case SV_YOU_ARE_ATTACKING_ENTITY: {
+        auto serial = size_t{0};
+        singleMsg >> serial >> del;
+        if (del != MSG_END) return;
+
+        auto it = _objects.find(serial);
+        if (it == _objects.end()) break;
+        setTarget(*it->second,
+                  true);  // Note: will tell server what it already knows
+
+        break;
+      }
+
+      case SV_YOU_ARE_ATTACKING_PLAYER: {
+        singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
+        auto username = std::string{buffer};
+        singleMsg >> del;
+        if (del != MSG_END) return;
+
+        auto it = _otherUsers.find(username);
+        if (it == _otherUsers.end()) break;
+        setTarget(*it->second,
+                  true);  // Note: will tell server what it already knows
+
+        break;
+      }
+
       case SV_SHOW_MISS_AT:
       case SV_SHOW_DODGE_AT:
       case SV_SHOW_BLOCK_AT:

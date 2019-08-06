@@ -420,6 +420,10 @@ void User::setTargetAndAttack(Entity *target) {
   _action = ATTACK;
 }
 
+void User::alertReactivelyTargetingUser(const User &targetingUser) const {
+  targetingUser.sendMessage(SV_YOU_ARE_ATTACKING_PLAYER, _name);
+}
+
 bool User::hasItems(const ItemSet &items) const {
   ItemSet remaining = items;
   for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
@@ -999,6 +1003,11 @@ void User::onAttackedBy(Entity &attacker, Threat threat) {
 
   auto armourSlotToUse = Item::getRandomArmorSlot();
   _gear[armourSlotToUse].first.onUse();
+
+  if (!target()) {
+    setTargetAndAttack(&attacker);
+    attacker.alertReactivelyTargetingUser(*this);
+  }
 
   Object::onAttackedBy(attacker, threat);
 }

@@ -539,6 +539,10 @@ void Entity::sendAllLootToTagger() const {
     loot().sendSingleSlotToUser(*tagger(), serial(), i);
 }
 
+void Entity::alertReactivelyTargetingUser(const User &targetingUser) const {
+  targetingUser.sendMessage(SV_YOU_ARE_ATTACKING_ENTITY, makeArgs(serial()));
+}
+
 void Entity::tellRelevantUsersAboutLootSlot(size_t slot) const {
   // Ultimately this might need a call to findUsersInArea().  For now, there's
   // only one tagger and only he should get this information.

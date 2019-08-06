@@ -368,6 +368,11 @@ enum MessageCode {
   // Arguments: username
   SV_KING,
 
+  // The user is now targeting an entity, which he didn't know
+  // Args: serial/username
+  SV_YOU_ARE_ATTACKING_ENTITY,
+  SV_YOU_ARE_ATTACKING_PLAYER,
+
   // An NPC hit a player
   // Arguments: serial, username
   SV_ENTITY_HIT_PLAYER,

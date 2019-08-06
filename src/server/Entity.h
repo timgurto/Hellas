@@ -167,6 +167,7 @@ class Entity {
   bool excludedFromPersistentState() const {
     return _excludedFromPersistentState;
   }
+  virtual void alertReactivelyTargetingUser(const User &targetingUser) const;
 
   void tellRelevantUsersAboutLootSlot(size_t slot) const;
   virtual ServerItem::Slot *getSlotToTakeFromAndSendErrors(size_t slotNum,
