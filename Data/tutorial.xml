@@ -140,7 +140,7 @@
         <collisionRect x="-10" y="-3" w="20" h="8" />
         <tag name="cooking" />
         <material id="tutStick" quantity="5" />
-        <strength item="stick" quantity="5" />
+        <durability item="stick" quantity="5" />
         <transform id="tutExtinguishedFire" time="20000" />
         <particles profile="fire" x="0" y="-6" />
         <particles profile="smoke" x="0" y="-10" />
@@ -152,7 +152,7 @@
         constructionText="requires fuel">
         <collisionRect x="-10" y="-3" w="20" h="8" />
         <material id="tutStick" quantity="2" />
-        <strength item="stick" quantity="5" />
+        <durability item="stick" quantity="5" />
         <transform id="tutFire" time="1" skipConstruction="1" />
     </objectType>
     <item id="tutStick" name="Stick" iconFile="stick" stackSize="10" sounds="stick" />
@@ -162,7 +162,7 @@
         sounds="stick" imageFile="stick"
         allowedTerrain="tutSticks" >
         <yield id="tutStick" />
-        <strength item="stick" quantity="1" />
+        <durability item="stick" quantity="1" />
     </objectType>
     <npcType
         id="tutBoar" name="Boar"
