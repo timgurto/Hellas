@@ -87,12 +87,14 @@ void Client::updateMapWindow(Element &) {
 
   for (const auto &objPair : client._objects) {
     const auto &object = *objPair.second;
-    client.addMapPin(object.location(), object.nameColor(), object.name());
+    if (object.belongsToPlayer() || object.belongsToPlayerCity())
+      client.addMapPin(object.location(), object.nameColor(), object.name());
   }
 
   for (const auto &pair : client._otherUsers) {
     const auto &avatar = *pair.second;
-    client.addMapPin(avatar.location(), avatar.nameColor(), avatar.name());
+    if (avatar.isInPlayersCity())
+      client.addMapPin(avatar.location(), avatar.nameColor(), avatar.name());
   }
 
   client.addOutlinedMapPin(client._character.location(), Color::COMBATANT_SELF);

@@ -403,7 +403,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 584,Can gather from a fig tree briefly before it changes type and is empty,5,8,Bug,,,,
 585,Make ranged weapons viable at high latency,21,13,Usability,,,,3 Tin wrapup
 586,Construction sites have windows despite no permission,3,2,Bug,,,,
-587,Hide NPCs and neutral objects on map,3,2,Usability,,,,
+587,Hide NPCs and neutral objects on map,3,2,Usability,,TRUE,,
 588,Allow buffs to be recast while on,3,2,Usability,,TRUE,,
 589,Nerf Selfish Request,8,1,Exploit,,TRUE,,3 Tin wrapup
 590,"Players can get stuck inside objects, and respawn on restarting client",34,13,Bug,,,,3 Tin wrapup
