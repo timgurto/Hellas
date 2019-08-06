@@ -324,6 +324,42 @@ TEST_CASE("Construction tools lose durability") {
   }
 }
 
+TEST_CASE("Gathering tools lose durability") {
+  GIVEN("a user with a shovel, and a garden with many onions") {
+    auto data = R"(
+      <objectType id="onionPatch" gatherReq="digging">
+        <yield id="onion" initialMean="1000" />
+      </objectType>
+      <item id="shovel">
+        <tag name="digging" />
+      </item>
+      <item id="onion" stackSize="1000"/>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    s.addObject("onionPatch", {10, 15});
+
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    user.giveItem(&s.findItem("shovel"));
+
+    WHEN("many onions are gathered") {
+      const auto &shovel = user.inventory(0).first;
+
+      for (auto i = 0; i != 200; ++i) {
+        c.sendMessage(CL_GATHER, makeArgs(s.getFirstObject().serial()));
+        REPEAT_FOR_MS(20);
+        if (shovel.health() < Item::MAX_HEALTH) break;
+      }
+
+      THEN("the shovel is damaged") {
+        CHECK(shovel.health() < Item::MAX_HEALTH);
+      }
+    }
+  }
+}
+
 TEST_CASE("Tool objects lose durability") {
   GIVEN("a user with a construction tool") {
     auto data = R"(
