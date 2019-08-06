@@ -93,6 +93,7 @@
     <unlockedBy construction="fire" chance="0.1" />
     <durability item="rock" quantity="10" />
     <transform id="extinguishedOven" time="30000" />
+    <canBeRepaired cost="rock" />
 </objectType>
 <objectType id="extinguishedOven" name="Extinguished Oven"
     xDrawOffset="-14" yDrawOffset="-17"
@@ -103,6 +104,7 @@
     <material id="log" />
     <durability item="rock" quantity="10" />
     <transform id="oven" time="1" skipConstruction="1" />
+    <canBeRepaired cost="rock" />
 </objectType>
 <objectType id="kiln" name="Kiln"
     xDrawOffset="-13" yDrawOffset="-26"
@@ -121,6 +123,7 @@
     <durability item="brick" quantity="20" />
     <transform id="extinguishedKiln" time="45000" />
     <particles profile="smoke" x="-1" y="-23" />
+    <canBeRepaired cost="brick" />
 </objectType>
 <objectType id="extinguishedKiln" name="Extinguished Kiln"
     xDrawOffset="-13" yDrawOffset="-26"
@@ -131,6 +134,7 @@
     <material id="charcoal" />
     <durability item="brick" quantity="20" />
     <transform id="kiln" time="1" skipConstruction="1" />
+    <canBeRepaired cost="brick" />
 </objectType>
 
 <objectType id="clay" name="Clay Deposit"
@@ -150,6 +154,7 @@
     <collisionRect x="-7" y="-4" w="14" h="8" />
     <container slots="1" />
     <durability item="crudeClay" quantity="2" />
+    <canBeRepaired cost="crudeClay" />
 </objectType>
 <objectType id="mediumPot" name="Medium Pot"
     xDrawOffset="-19" yDrawOffset="-27"
@@ -158,11 +163,13 @@
     <collisionRect x="-13" y="-4" w="25" h="6" />
     <container slots="4" />
     <durability item="clay" quantity="3" />
+    <canBeRepaired cost="clay" />
 </objectType>
 <!--objectType id="largePot" name="Large Pot"
     deconstructs="largePot" deconstructionTime="1000" >
     <container slots="10" />
     <durability item="clay" quantity="5" />
+    <canBeRepaired cost="clay" />
 </objectType-->
 
 <objectType id="handCart" name="Hand Cart"
@@ -175,6 +182,7 @@
     <unlockedBy recipe="lumber" chance="0.1" />
     <unlockedBy recipe="smallPot" chance="0.05" />
     <durability item="lumber" quantity="8" />
+    <canBeRepaired cost="lumber" />
 </objectType>
 <objectType
     id="tradeMat" name="Trade Mat"
@@ -187,6 +195,7 @@
     <material id="smallPot" quantity="3" />
     <unlockedBy recipe="smallPot" chance="0.1" />
     <durability item="hide" quantity="1" />
+    <canBeRepaired cost="smallPot" />
 </objectType>
 <objectType
     id="tradeStall" name="Trade Stall"
@@ -202,6 +211,7 @@
     <unlockedBy recipe="mediumPot" chance="0.1" />
     <unlockedBy construction="tradeMat" chance="0.3" />
     <durability item="lumber" quantity="12" />
+    <canBeRepaired cost="mediumPot" />
 </objectType>
 
 <objectType
@@ -217,6 +227,7 @@
     <unlockedBy gather="log" chance="0.05" />
     <unlockedBy recipe="rope" />
     <durability item="log" quantity="8" />
+    <canBeRepaired cost="rope" />
 </objectType>
 
 <objectType id="elutriator" name="Elutriator"
@@ -226,6 +237,7 @@
     <tag name="clayRefinement" />
     <collisionRect x="-15" y="-4" w="31" h="8" />
     <durability item="crudeClay" quantity="4" />
+    <canBeRepaired cost="tinTube" />
 </objectType>
 
 <objectType id="palisadeEW" name="Palisade E/W"
@@ -236,6 +248,7 @@
     <unlockedBy gather="log" chance="0.05" />
     <unlockedBy construction="palisadeNS" />
     <durability item="log" quantity="15" />
+    <canBeRepaired cost="log" />
 </objectType>
 <objectType id="palisadeNS" name="Palisade N/S"
     damageParticles="wood" sounds="wood"
@@ -245,6 +258,7 @@
     <unlockedBy gather="log" chance="0.05" />
     <unlockedBy construction="palisadeEW" />
     <durability item="log" quantity="15" />
+    <canBeRepaired cost="log" />
 </objectType>
 
 <objectType id="brickWallEW" name="Brick Wall E/W"
@@ -255,6 +269,7 @@
     <unlockedBy recipe="brick" chance="0.05" />
     <unlockedBy construction="brickWallNS" />
     <durability item="brick" quantity="12" />
+    <canBeRepaired cost="brick" />
 </objectType>
 <objectType id="brickWallNS" name="Brick Wall N/S"
     xDrawOffset="-3" yDrawOffset="-101"
@@ -264,6 +279,7 @@
     <unlockedBy recipe="brick" chance="0.05" />
     <unlockedBy construction="brickWallEW" />
     <durability item="brick" quantity="12" />
+    <canBeRepaired cost="brick" />
 </objectType>
 
 <objectType id="post" name="Post"
@@ -411,6 +427,7 @@
     <tag name="weaving" />
     <unlockedBy recipe="linenThread" />
     <durability item="linenThread" quantity="5" />
+    <canBeRepaired cost="linenThread" />
 </objectType>
 
 <objectType id="stretchingFrame" name="Stretching Frame"
@@ -423,6 +440,7 @@
     <tag name="leatherStretching" />
     <unlockedBy recipe="rope" />
     <durability item="rope" quantity="2" />
+    <canBeRepaired cost="rope" />
 </objectType>
 
 <!--objectType id="lathe" name="Lathe"
@@ -433,6 +451,7 @@
     <tag name="woodTurning" />
     <unlockedBy recipe="tinTube" />
     <durability item="tinTube" quantity="2" chance="0.5" />
+    <canBeRepaired cost="tinTube" />
 </objectType-->
 
 <objectType id="grindstone" name="Grindstone"
@@ -447,6 +466,7 @@
     <tag name="grinding2" />
     <unlockedBy recipe="tinTube" chance="0.5" />
     <durability item="tinTube" quantity="2" />
+    <canBeRepaired cost="tinTube" />
 </objectType>
 
 <!--objectType id="copperAnvil" name="Copper Anvil"
@@ -458,6 +478,7 @@
     <unlockedBy recipe="copperBar" chance="0.1" />
     <unlockedBy recipe="copperHammer" />
     <durability item="copperBar" quantity="20" />
+    <canBeRepaired cost="copperBar" tool="hammering" />
 </objectType-->
 
 <objectType id="tannin" name="Pot of Tannin"
@@ -468,6 +489,7 @@
     <collisionRect x="-7" y="-3" w="16" h="7" />
     <tag name="tanning" />
     <durability item="crudeClay" quantity="2" />
+    <canBeRepaired cost="smallPot" />
 </objectType>
 
 <!-- isFlat: Given the sloping shape, all other objects should be drawn above it. -->
@@ -492,6 +514,7 @@
     constructionTime="0" deconstructs="tinStatue" deconstructionTime="1000" >
     <collisionRect x="-6" y="-2" w="6" h="3f" />
     <durability item="tinBar" quantity="5" />
+    <canBeRepaired cost="tinBar" tool="hammering" />
 </objectType>
 
 <objectType id="respawnAltar" name="Altar to Hermes"
@@ -503,6 +526,7 @@
     <durability item="rock" quantity="8" />
     <action label="Worship" target="setRespawnPoint" tooltip="Set this location as your respawn point upon death" cost="entrails" />
     <unlockedBy recipe="woodenStatue" />
+    <canBeRepaired cost="rock" />
 </objectType>
 <objectType id="cityAltar" name="Altar to Athena"
     xDrawOffset="-18" yDrawOffset="-56"
@@ -515,6 +539,7 @@
     <material id="brick" quantity="8" />
     <unlockedBy recipe="tinStatue" />
     <durability item="brick" quantity="8" />
+    <canBeRepaired cost="brick" />
 </objectType>
 
 </root>

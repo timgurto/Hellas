@@ -1135,5 +1135,4 @@ TEST_CASE("Object repair requiring a tool") {
 
 /* TODO
 Give objects straight health values, not item-based health
-Data for all repairable items and objects
 */

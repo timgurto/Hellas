@@ -12,6 +12,7 @@
     <material id="rock" quantity="2" />
     <durability item="stick" quantity="25" />
     <unlockedBy />
+    <canBeRepaired cost="smallPot" />
 </objectType>
 
 <objectType id="scholarBuilding" name="School"
@@ -26,6 +27,7 @@
     <material id="crudeClay" />
     <material id="log" quantity="6" />
     <durability item="log" quantity="6" />
+    <canBeRepaired cost="smallPot" />
     <unlockedBy />
 </objectType>
 
@@ -47,6 +49,7 @@
     <particles profile="vapour" x="4" y="4" />
     <particles profile="vapour" x="-3" y="6" />
     <particles profile="vapour" x="-10" y="11" />
+    <canBeRepaired cost="boneDust" />
 </objectType>
 
 </root>

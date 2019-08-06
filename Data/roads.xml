@@ -12,6 +12,7 @@
     <material id="smoothRock" quantity="9" />
     <unlockedBy recipe="smoothRock" chance="0.2" />
     <durability item="smoothRock" quantity="9" />
+    <canBeRepaired cost="smoothRock" />
 </objectType>
 
 </root>
