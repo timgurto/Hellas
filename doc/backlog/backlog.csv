@@ -275,7 +275,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 106,Mouse-down events are propagating to multiple windows,13,3,Bug,,TRUE,,3 Tin wrapup
 110,Load map in login-screen background,5,13,Usability,,,,
 111,"Use gear-slot names, not numbers, in items.xml",3,5,Code quality,,,,
-117,Direct player trading,8,233,Feature,,,,
+117,Direct player trading,8,233,Feature,,,TRUE,
 123,Ensure window titles always fit,5,2,Bug,,,,
 124,Right-clicking doesn't cancel dragging,8,2,Bug,,,,
 125,Tools can modify crafting/gathering speed,3,13,Feature,,,,3 Tin wrapup
@@ -305,13 +305,12 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 350,Update window title when object type changes,5,1,Bug,,,,
 351,Allow users to drop items onto construction sites,3,21,Usability,,,,3 Tin wrapup
 364,Current-wars spam on login,3,3,Bug,,,,
-365,Give XP for player kills,13,3,Feature,,,,
 368,Update object windows after joining/leaving a city,21,3,Bug,,,,
 369,Trees sometimes think they're being gathered when they're not.  Endless particles/sound.,55,8,Bug,,,,
 370,Avatar isn't playing death sound,13,5,Bug,,TRUE,,
 373,Flash crafting/building/class buttons,21,8,Usability,,,,
 374,Flash class button when talents are unspent,21,3,Usability,373,,,
-375,Allow war to be declared on an object,21,5,Usability,,,,
+375,Allow war to be declared on an object,21,5,Usability,,,TRUE,
 377,Add context menus to online-users list,13,8,Usability,199,,,
 378,A Granary object that learning talents can draw from,13,8,Feature,377,,,4 Copper
 380,Allow water/air nymphs to float on water,5,2,Feature,,,,
@@ -322,13 +321,13 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 401,Allow granting unfinished objects,21,3,Bug,,TRUE,,
 403,Consume smaller stacks of mats first,13,3,Feature,,,,
 407,Make under-construction objects easier to kill,8,8,Exploit,,,,
-410,"Recruit via an invitation, not insta-join",21,13,Usability,,,,
+410,"Recruit via an invitation, not insta-join",21,13,Usability,,,TRUE,
 436,"New classes for ID and Name, used everywhere",2,5,Code quality,,,,
 438,Show a tooltip when terrain is inaccessible,2,3,Usability,,,,
 442,Fade in from black on first login,21,21,Aesthetics,,,,
 463,An adventure (overworld),233,89,Content,,,TRUE,5 First adventure
 466,Show shadow box in help-topic list in showHelpTopic(),1,5,Bug,,,,
-470,Draw correct corpses for humanoid NPCs and players,21,55,Bug,,,,3 Tin wrapup
+470,Draw correct corpses for humanoid NPCs and players,21,55,Bug,,,TRUE,3 Tin wrapup
 480,SFX for swing,8,3,Usability,,,,
 482,Alert users to aggro,8,5,Usability,,,,
 490,Allow line break on -,2,3,Bug,,,,
@@ -339,11 +338,10 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 507,Clear quest progress if quest is abandoned,2,2,Bug,,,,
 511,Use complete outlines for all text,8,3,Aesthetics,,,,
 515,"Low-res sprites, high-res game",34,34,Aesthetics,,,,
-517,Grouping,89,144,Feature,,,,5 First adventure
+517,Grouping,89,144,Feature,,,TRUE,5 First adventure
 518,Copper + gear,55,8,Content,,,,4 Copper
 519,Bronze + gear,55,144,Content,518,,,6 Bronze
 520,Iron + gear,55,89,Content,519,,,
-521,Animal domestication,34,34,Feature,59,,TRUE,3 Tin wrapup
 522,Wool + gear,34,144,Content,521,,,4 Copper
 523,Silk + gear,34,144,Content,522,,,
 524,Boiled leather + gear,34,144,Content,,,,6 Bronze
@@ -352,9 +350,9 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 528,Subclass buildings,21,34,Content,286,,TRUE,6 Bronze
 529,Parchment,21,13,Feature,522,,,4 Copper
 530,Region-specific talent items,13,5,Content,,,TRUE,4 Copper
-531,Tier-3 talents,144,233,Feature,530,,,4 Copper
-532,Tier-4 talents,144,233,Feature,531,,,6 Bronze
-534,Tier-5 talents,55,89,Feature,535,,,
+531,Tier-3 talents,144,233,Feature,530,,TRUE,4 Copper
+532,Tier-4 talents,144,233,Feature,531,,TRUE,6 Bronze
+534,Tier-5 talents,55,89,Feature,535,,TRUE,
 535,Wonders,21,55,Content,57,,TRUE,
 536,"Fix vehicle movement, mounting, dismounting",21,21,Usability,,,TRUE,3 Tin wrapup
 537,Quests for the adventure,13,21,Content,463,,,5 First adventure
@@ -366,8 +364,8 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 544,Optimise map,8,5,Performance,,,,
 545,Online-users list is unreliable,13,13,Bug,,,,3 Tin wrapup
 546,"Show gather-unlock info on object, not item",21,13,Usability,,,,3 Tin wrapup
-547,Populate 1-20 map with animals,5,8,Content,,TRUE,,3 Tin wrapup
-548,Populate remaining map with NPCs,34,89,Content,526,,,4 Copper
+547,Populate 1-20 map with animals,5,8,Content,,TRUE,TRUE,3 Tin wrapup
+548,Populate remaining map with NPCs,34,89,Content,526,,TRUE,4 Copper
 549,Horses,34,13,Content,521,,TRUE,6 Bronze
 550,Gold,34,13,Content,526,,TRUE,6 Bronze
 551,Acacia wood,34,13,Content,526,,TRUE,6 Bronze
@@ -380,7 +378,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 559,Reduce volume of distant SFX,3,8,Aesthetics,,,,
 560,Master volume control,3,5,Usability,,TRUE,,3 Tin wrapup
 561,Make gigantes always run back to their spawn point,13,3,Bug,,TRUE,,3 Tin wrapup
-562,Attack dogs,8,13,Exploit,521,,,
 563,Add flag objects with text entry to show labels on map,8,21,Feature,,,,
 564,Cull objects and NPCs on death,3,13,Bug,,,,3 Tin wrapup
 565,Reflect vehicle speed in stats window,3,3,Bug,105,,,
@@ -401,14 +398,28 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 582,Don't damage weapon or armour on miss/dodge,1,5,Feature,,,,
 583,Add cursor for vehicles,5,3,Usability,,,,3 Tin wrapup
 584,Can gather from a fig tree briefly before it changes type and is empty,5,8,Bug,,,,
-585,Make ranged weapons viable at high latency,21,13,Usability,,,,3 Tin wrapup
+585,Make ranged weapons viable at high latency,21,13,Usability,,,TRUE,3 Tin wrapup
 586,Construction sites have windows despite no permission,3,2,Bug,,,,
 587,Hide NPCs and neutral objects on map,3,2,Usability,,TRUE,,
 588,Allow buffs to be recast while on,3,2,Usability,,TRUE,,
 589,Nerf Selfish Request,8,1,Exploit,,TRUE,,3 Tin wrapup
 590,"Players can get stuck inside objects, and respawn on restarting client",34,13,Bug,,,,3 Tin wrapup
 591,Tell new citizens about city objects,13,5,Bug,,,,3 Tin wrapup
-592,Allow citizens to access other citizens' altars,21,2,Bug,,TRUE,,3 Tin wrapup
+592,Allow citizens to access other citizens' altars,21,2,Bug,,TRUE,TRUE,3 Tin wrapup
 593,Friends list,13,21,Feature,,,,
 594,"Show enemy objects as red, not yellow",8,3,Bug,,,,
 595,Prevent declarations of war against nonexistent entities,8,5,Bug,,,,
+596,A dog NPC,8,3,Content,,,,3 Tin wrapup
+597,Introduce specific unowned types,5,3,Code quality,,,,3 Tin wrapup
+598,Pets (owned NPCs),3,13,Feature,597,,TRUE,3 Tin wrapup
+599,Pets share owner's friends/enemies,13,13,Feature,598,,TRUE,3 Tin wrapup
+600,Mobs can be domesticated into pets,8,5,Feature,598,,,3 Tin wrapup
+601,Domestication takes a resource,5,8,Feature,600,,,3 Tin wrapup
+602,"Domestication has success chance, based on health %",3,5,Feature,600,,,3 Tin wrapup
+603,Pet breeding,2,21,Feature,597,,,
+604,Pets can be set to aggressive or defensive,2,8,Feature,597,,,
+605,Pets can be ordered to follow or stay,3,8,Feature,609,,,
+606,Pets consume food automatically,3,8,Feature,378,,,
+607,Starved pets become mobs,1,13,Feature,606,,,
+608,Allow pets to ride on some vehicles,5,13,Feature,609,,,
+609,Pets can follow,8,8,Feature,597,,TRUE,3 Tin wrapup
