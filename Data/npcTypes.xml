@@ -1,6 +1,19 @@
 <root>
 
 <npcType
+    id="dog6" name="Dog"
+    level="6" maxHealth="28" attack="6" attackTime="2500"
+    imageFile = "dog" sounds="dog" isNeutral="1"
+    xDrawOffset="-13" yDrawOffset="-24" >
+    <collisionRect x="-11" y="-2" w="21" h="4" />
+    <loot id="meat" chance="0.3" />
+    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
+    <loot id="hide" chance="0.1" />
+    <loot id="fat" chance="0.05" />
+    <loot id="knucklebones" chance="0.02" />
+    <loot id="entrails" chance="0.1" />
+</npcType>
+<npcType
     id="goat5" name="Mild-Mannered Goat"
     level="5" maxHealth="25" attack="6" attackTime="2750"
     imageFile = "goat" sounds="goat" isNeutral="1"
