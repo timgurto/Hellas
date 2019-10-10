@@ -19,6 +19,7 @@ plot(
     y=data$numPlayers,
     xlab="Date",
     ylab="Number of online players",
+    ylim=c(1,max(data$numPlayers)),
     type="p",
     pch=".",
     col=set1[2]
