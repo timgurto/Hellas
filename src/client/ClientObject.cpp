@@ -34,6 +34,7 @@ ClientObject::ClientObject(const ClientObject &rhs)
     : Sprite(rhs),
       ClientCombatant(rhs.objectType()),
       _serial(rhs._serial),
+      _owner({Owner::ALL_HAVE_ACCESS, {}}),
       _container(rhs._container),
       _window(nullptr),
       _confirmCedeWindow(nullptr),
@@ -44,6 +45,7 @@ ClientObject::ClientObject(size_t serialArg, const ClientObjectType *type,
     : Sprite(type, loc),
       ClientCombatant(type),
       _serial(serialArg),
+      _owner({Owner::ALL_HAVE_ACCESS, {}}),
       _window(nullptr),
       _confirmCedeWindow(nullptr),
       _beingGathered(false),
@@ -77,6 +79,14 @@ ClientObject::~ClientObject() {
     Client::_instance->removeWindow(_grantWindow);
     delete _grantWindow;
   }
+}
+
+bool ClientObject::isOwnedByPlayer(const std::string &playerName) const {
+  return _owner.type == Owner::PLAYER && _owner.name == playerName;
+}
+
+bool ClientObject::isOwnedByCity(const std::string &cityName) const {
+  return _owner.type == Owner::CITY && _owner.name == cityName;
 }
 
 void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg) {
@@ -611,14 +621,18 @@ void ClientObject::assembleWindow(Client &client) {
     return;
   }
 
-  bool hasContainer = objType.containerSlots() > 0,
-       isMerchant = objType.merchantSlots() > 0, isVehicle = classTag() == 'v',
-       canCede = (!client.character().cityName().empty()) &&
-                 (_owner == client.username()) && (!objType.isPlayerUnique()),
-       canGrant = (client.character().isKing() &&
-                   _owner == client.character().cityName()),
-       canDemolish = _owner == Client::_instance->username(),
-       hasAQuest = !(startsQuests().empty() && completableQuests().empty());
+  const bool userIsOwner = _owner == Owner{Owner::PLAYER, client.username()},
+             hasContainer = objType.containerSlots() > 0,
+             isMerchant = objType.merchantSlots() > 0,
+             isVehicle = classTag() == 'v',
+             canCede = (!client.character().cityName().empty()) &&
+                       userIsOwner && (!objType.isPlayerUnique()),
+             canGrant =
+                 (client.character().isKing() &&
+                  _owner == Owner{Owner::CITY, client.character().cityName()}),
+             canDemolish = userIsOwner,
+             hasAQuest =
+                 !(startsQuests().empty() && completableQuests().empty());
 
   auto hasNonDemolitionContent = false;
 
@@ -757,28 +771,28 @@ void ClientObject::sendMerchantSlot(size_t serial, size_t slot) {
 
 bool ClientObject::userHasAccess() const {
   // No owner
-  if (_owner.empty()) return true;
+  if (_owner.type == Owner::ALL_HAVE_ACCESS) return true;
 
   // Player is owner
-  if (_owner == Client::_instance->username()) return true;
+  if (isOwnedByPlayer(Client::_instance->username())) return true;
 
   // City is owner
   auto playerCity = Client::_instance->character().cityName();
-  if (_owner == playerCity) return true;
+  if (isOwnedByCity(playerCity)) return true;
 
-  // Player-unique: fellow citizen is owner
-  auto ownerCity = Client::instance().getUserCity(_owner);
+  // Player-unique: fellow citizen is owner.  This is a special case where other
+  // citizens get access.
   auto isPlayerUnique =
       dynamic_cast<const ClientObjectType *>(type())->isPlayerUnique();
-  if (isPlayerUnique && !ownerCity.empty() && playerCity == ownerCity)
-    return true;
-
-  return false;
+  if (!isPlayerUnique || _owner.type != Owner::PLAYER) return false;
+  auto ownerCity = Client::instance().getUserCity(_owner.name);
+  auto isOwnedByFellowCitizen = playerCity == ownerCity;
+  return isOwnedByFellowCitizen;
 }
 
 bool ClientObject::canAlwaysSee() const {
-  return _owner == Client::_instance->username() ||
-         _owner == Client::_instance->character().cityName();
+  return isOwnedByPlayer(Client::_instance->username()) ||
+         isOwnedByCity(Client::_instance->character().cityName());
 }
 
 void ClientObject::update(double delta) {
@@ -937,12 +951,13 @@ void ClientObject::createRegularTooltip() const {
   }
 
   // Owner
-  if (!owner().empty()) {
+  tooltip.setColor(Color::TOOLTIP_BODY);
+  if (isOwnedByPlayer(Client::_instance->username())) {
     tooltip.addGap();
-    tooltip.setColor(Color::TOOLTIP_BODY);
-    tooltip.addLine("Owned by " + (owner() == Client::_instance->username()
-                                       ? "you"
-                                       : owner()));
+    tooltip.addLine("Owned by you");
+  } else if (_owner.type != Owner::ALL_HAVE_ACCESS) {
+    tooltip.addGap();
+    tooltip.addLine("Owned by" + _owner.name);
   }
 
   if (isDead()) return;
@@ -1131,9 +1146,9 @@ void ClientObject::sendSelectMessage() const {
 
 bool ClientObject::canBeAttackedByPlayer() const {
   if (!ClientCombatant::canBeAttackedByPlayer()) return false;
-  if (_owner.empty()) return false;
+  if (_owner.type == Owner::ALL_HAVE_ACCESS) return false;
   const Client &client = *Client::_instance;
-  return client.isAtWarWith(_owner);
+  return client.isAtWarWithObjectOwner(_owner);
 }
 
 void ClientObject::playAttackSound() const {
@@ -1180,13 +1195,13 @@ bool ClientObject::containerIsEmpty() const {
 
 bool ClientObject::belongsToPlayer() const {
   const Avatar &playerCharacter = Client::_instance->character();
-  return owner() == playerCharacter.name();
+  return owner() == Owner{Owner::PLAYER, playerCharacter.name()};
 }
 
 bool ClientObject::belongsToPlayerCity() const {
   const Avatar &playerCharacter = Client::_instance->character();
   if (playerCharacter.cityName().empty()) return false;
-  return owner() == playerCharacter.cityName();
+  return owner() == Owner{Owner::CITY, playerCharacter.cityName()};
 }
 
 std::string ClientObject::additionalTextInName() const {
@@ -1196,3 +1211,12 @@ std::string ClientObject::additionalTextInName() const {
 }
 
 bool ClientObject::isFlat() const { return Sprite::isFlat() || isDead(); }
+
+ClientObject::Owner::Owner(Type typeArg, std::string nameArg)
+    : type(typeArg), name(nameArg) {}
+
+bool ClientObject::Owner::operator==(Owner &rhs) const {
+  if (type != rhs.type) return false;
+  if (type == PLAYER || type == CITY) return name == rhs.name;
+  return true;
+}

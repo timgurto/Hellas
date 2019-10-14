@@ -706,9 +706,9 @@ void Client::handleMessage(const std::string &msg) {
 
       case SV_OWNER: {
         int serial;
-        std::string type, name;
+        std::string typeName, name;
         singleMsg >> serial >> del;
-        readString(singleMsg, type);
+        readString(singleMsg, typeName);
         singleMsg >> del;
         readString(singleMsg, name, MSG_END);
         singleMsg >> del;
@@ -721,7 +721,15 @@ void Client::handleMessage(const std::string &msg) {
           break;
         }
         ClientObject &obj = *it->second;
-        obj.owner(name);
+        auto type = ClientObject::Owner::Type{};
+        if (typeName == "user")
+          type = ClientObject::Owner::PLAYER;
+        else if (typeName == "city")
+          type = ClientObject::Owner::CITY;
+        else
+          type = ClientObject::Owner::ALL_HAVE_ACCESS;
+
+        obj.owner({type, name});
         obj.assembleWindow(*this);
         obj.refreshTooltip();
         break;
@@ -1066,16 +1074,16 @@ void Client::handleMessage(const std::string &msg) {
         } else {
           auto it = _otherUsers.find(user);
           if (it == _otherUsers.end())
-            ;  // showErrorMessage("Received vehicle info for an unknown user",
-               // Color::TODO);
+            ;  // showErrorMessage("Received vehicle info for an unknown
+               // user", Color::TODO);
           else
             userP = it->second;
         }
         userP->driving(true);
         auto pairIt = _objects.find(serial);
         if (pairIt == _objects.end())
-          ;  // showErrorMessage("Received driver info for an unknown vehicle",
-             // Color::TODO);
+          ;  // showErrorMessage("Received driver info for an unknown
+             // vehicle", Color::TODO);
         else {
           ClientVehicle *v = dynamic_cast<ClientVehicle *>(pairIt->second);
           v->driver(userP);
@@ -1097,16 +1105,16 @@ void Client::handleMessage(const std::string &msg) {
         } else {
           auto it = _otherUsers.find(user);
           if (it == _otherUsers.end())
-            ;  // showErrorMessage("Received vehicle info for an unknown user",
-               // Color::TODO);
+            ;  // showErrorMessage("Received vehicle info for an unknown
+               // user", Color::TODO);
           else
             userP = it->second;
         }
         userP->driving(false);
         auto pairIt = _objects.find(serial);
         if (pairIt == _objects.end())
-          ;  // showErrorMessage("Received driver info for an unknown vehicle",
-             // Color::TODO);
+          ;  // showErrorMessage("Received driver info for an unknown
+             // vehicle", Color::TODO);
         else {
           ClientVehicle *v = dynamic_cast<ClientVehicle *>(pairIt->second);
           v->driver(nullptr);

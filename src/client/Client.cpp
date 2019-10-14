@@ -752,25 +752,32 @@ const ClientItem *Client::findItem(const std::string &id) const {
   return &it->second;
 }
 
-bool Client::isAtWarWith(const std::string &username) const {
+bool Client::isAtWarWithObjectOwner(const ClientObject::Owner &owner) const {
   // Cities
-  if (isAtWarWithCityDirectly(username)) return true;
+  if (owner.type == ClientObject::Owner::CITY)
+    return isAtWarWithCityDirectly(owner.name);
+
+  if (owner.type != ClientObject::Owner::PLAYER) return false;
 
   // Players
-  std::string cityName = "";
-  auto it = _userCities.find(username);
-  if (it != _userCities.end()) cityName = it->second;
+  assert(owner.type == ClientObject::Owner::PLAYER);
+  std::string ownerPlayersCity = "";
+  auto it = _userCities.find(owner.name);
+  if (it != _userCities.end()) ownerPlayersCity = it->second;
 
-  if (_character.cityName().empty()) {
-    if (!cityName.empty())
-      return isAtWarWithCityDirectly(cityName);
+  auto ownerIsInACity = !ownerPlayersCity.empty();
+  auto playerIsInACity = !_character.cityName().empty();
+  if (!playerIsInACity) {  // No city: use personal wars
+    if (ownerIsInACity)
+      return isAtWarWithCityDirectly(ownerPlayersCity);
     else
-      return isAtWarWithPlayerDirectly(username);
+      return isAtWarWithPlayerDirectly(owner.name);
+  } else {  // City: use city's wars
+    if (ownerIsInACity)
+      return isCityAtWarWithCityDirectly(ownerPlayersCity);
+    else
+      return isCityAtWarWithPlayerDirectly(owner.name);
   }
-  if (!cityName.empty())
-    return isCityAtWarWithCityDirectly(cityName);
-  else
-    return isCityAtWarWithPlayerDirectly(username);
 }
 
 std::string Client::getUserCity(const std::string &name) const {
@@ -786,7 +793,7 @@ const ClientSpell *Client::findSpell(const std::string &spellID) const {
 }
 
 bool Client::isAtWarWith(const Avatar &user) const {
-  return isAtWarWith(user.name());
+  return isAtWarWithObjectOwner({ClientObject::Owner::PLAYER, user.name()});
 }
 
 void Client::addUser(const std::string &name, const MapPoint &location) {

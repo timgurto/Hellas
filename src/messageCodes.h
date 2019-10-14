@@ -459,7 +459,7 @@ enum MessageCode {
   SV_SPELL_COOLING_DOWN,
 
   // An object has an owner
-  // Arguments: serial, type ("user"|"city"), name
+  // Arguments: serial, type ("user"|"city"|""), name
   SV_OWNER,
 
   // An object is being gathered from

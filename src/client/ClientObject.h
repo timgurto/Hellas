@@ -24,8 +24,17 @@ class CQuest;
 
 // A client-side description of an object
 class ClientObject : public Sprite, public ClientCombatant {
+ public:
+  struct Owner {
+    enum Type { PLAYER, CITY, ALL_HAVE_ACCESS };
+    Type type;
+    std::string name;
+    Owner(Type type, std::string name);
+    bool operator==(Owner &rhs) const;
+  };
+
   size_t _serial;
-  std::string _owner;
+  Owner _owner;
   ClientItem::vect_t _container;
   std::vector<ClientMerchantSlot> _merchantSlots;
   // Used for either the trade screen, or the merchant setup screen.
@@ -78,8 +87,10 @@ class ClientObject : public Sprite, public ClientCombatant {
   const ClientObjectType *objectType() const {
     return dynamic_cast<const ClientObjectType *>(type());
   }
-  const std::string &owner() const { return _owner; }
-  void owner(const std::string &name) { _owner = name; }
+  const Owner &owner() const { return _owner; }
+  void owner(const Owner &rhs) { _owner = rhs; }
+  bool isOwnedByPlayer(const std::string &playerName) const;
+  bool isOwnedByCity(const std::string &cityName) const;
   ClientItem::vect_t &container() { return _container; }
   const ClientItem::vect_t &container() const { return _container; }
   const std::vector<Element *> &merchantSlotElements() const {

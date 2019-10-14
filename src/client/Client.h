@@ -94,7 +94,7 @@ class Client {
   XP xp() const { return _xp; }
 
   bool isAtWarWith(const Avatar &user) const;
-  bool isAtWarWith(const std::string &username) const;
+  bool isAtWarWithObjectOwner(const ClientObject::Owner &owner) const;
   bool isAtWarWithPlayerDirectly(const std::string &username) const {
     return _warsAgainstPlayers.atWarWith(username);
   }
