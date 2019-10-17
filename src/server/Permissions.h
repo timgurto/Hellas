@@ -21,6 +21,7 @@ class Permissions {
     Owner(Type type, const std::string &name);
     const std::string &typeString() const;
     bool operator<(const Owner &rhs) const;
+    bool operator==(const Owner &rhs) const;
     operator bool() const { return type != NONE; }
   };
 

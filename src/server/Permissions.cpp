@@ -19,9 +19,13 @@ const std::string &Permissions::Owner::typeString() const {
   return typeStrings[type];
 }
 
-bool Permissions::Owner::operator<(const Owner &rhs) const {
+bool Permissions::Owner::operator<(const Permissions::Owner &rhs) const {
   if (type != rhs.type) return type < rhs.type;
   return name < rhs.name;
+}
+
+bool Permissions::Owner::operator==(const Permissions::Owner &rhs) const {
+  return type == rhs.type && name == rhs.name;
 }
 
 void Permissions::setPlayerOwner(const std::string &username) {
