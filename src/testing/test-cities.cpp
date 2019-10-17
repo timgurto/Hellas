@@ -209,7 +209,7 @@ TEST_CASE("A player can leave a city", "[city]") {
 
   // Then Alice is not in a city;
   WAIT_UNTIL(!s.cities().isPlayerInCity("Alice", "Athens"));
-  CHECK(s.cities().getPlayerCity("Alice").empty());
+  WAIT_UNTIL(s.cities().getPlayerCity("Alice").empty());
 
   // And the user knows it
   WAIT_UNTIL(c.cityName().empty());

@@ -1,4 +1,5 @@
 #include "City.h"
+
 #include "../XmlReader.h"
 #include "../XmlWriter.h"
 #include "Server.h"
@@ -22,7 +23,7 @@ void City::addPlayerWithoutAlerting(const std::string &username) {
 }
 
 bool City::isPlayerAMember(const std::string &username) const {
-  return _members.find(username) != _members.end();
+  return _members.count(username) == 1;
 }
 
 void Cities::createCity(const City::Name &cityName) {
@@ -57,7 +58,10 @@ void Cities::destroyCity(const City::Name &cityName) {
 void Cities::addPlayerToCity(const User &user, const City::Name &cityName) {
   auto it = _container.find(cityName);
   bool cityExists = it != _container.end();
-  assert(cityExists);
+  if (!cityExists) {
+    SERVER_ERROR("Tried to add player to a non-existent city");
+    return;
+  }
   City &city = it->second;
   city.addAndAlertPlayers(user);
   _usersToCities[user.name()] = cityName;
@@ -66,7 +70,10 @@ void Cities::addPlayerToCity(const User &user, const City::Name &cityName) {
 void Cities::removeUserFromCity(const User &user, const City::Name &cityName) {
   auto it = _container.find(cityName);
   bool cityExists = it != _container.end();
-  assert(cityExists);
+  if (!cityExists) {
+    SERVER_ERROR("Tried to add player to a non-existent city");
+    return;
+  }
   City &city = it->second;
   city.removeAndAlertPlayers(user);
   _usersToCities.erase(user.name());
