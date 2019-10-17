@@ -363,20 +363,20 @@ TEST_CASE("Only objects owned by your city can be granted",
 }
 
 TEST_CASE("New object permissions are propagated to clients", "[ownership]") {
-  // Given a Rock object type;
-  auto s = TestServer::WithData("basic_rock");
-  auto c = TestClient::WithData("basic_rock");
+  GIVEN("an unowned Rock object") {
+    auto s = TestServer::WithData("basic_rock");
+    auto c = TestClient::WithData("basic_rock");
 
-  // And an unowned rock
-  s.addObject("rock");
-  WAIT_UNTIL(c.objects().size() == 1);
+    s.addObject("rock");
+    WAIT_UNTIL(c.objects().size() == 1);
 
-  // When the rock's owner is set to the user
-  auto &rock = s.getFirstObject();
-  rock.permissions().setPlayerOwner(c->username());
+    WHEN("the rock's owner is set to the user") {
+      auto &rock = s.getFirstObject();
+      rock.permissions().setPlayerOwner(c->username());
 
-  // Then he finds out
-  WAIT_UNTIL(c.getFirstObject().belongsToPlayer());
+      THEN("he finds out") { WAIT_UNTIL(c.getFirstObject().belongsToPlayer()); }
+    }
+  }
 }
 
 TEST_CASE("The first player to attack an object tags it") {

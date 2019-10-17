@@ -722,7 +722,7 @@ void Client::handleMessage(const std::string &msg) {
         }
         ClientObject &obj = *it->second;
         auto type = ClientObject::Owner::Type{};
-        if (typeName == "user")
+        if (typeName == "player")
           type = ClientObject::Owner::PLAYER;
         else if (typeName == "city")
           type = ClientObject::Owner::CITY;
