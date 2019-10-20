@@ -67,10 +67,13 @@ CombatResult SpellEffect::doDirectDamageWithModifiedThreat(
       damage -= blockAmount;
   }
 
-  target.reduceHealth(damage);
+  // onAttackedBy() tags the target, and therefore must be called before the
+  // potentially lethal damage is done.
   auto threatScaler = effect._args.d1;
   auto threat = toInt(damage * threatScaler);
   target.onAttackedBy(caster, threat);
+
+  target.reduceHealth(damage);
 
   return outcome;
 }
