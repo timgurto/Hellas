@@ -40,6 +40,8 @@ class NPC : public Entity, public QuestNode {
   Level level() const override { return _level; }
   Message outOfRangeMessage() const override;
 
+  Permissions::Owner owner() const { return {}; }
+
   void updateStats() override;
   void onHealthChange() override;
   void onDeath() override;
