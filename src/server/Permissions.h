@@ -6,7 +6,7 @@
 #include "../messageCodes.h"
 #include "City.h"
 
-class Object;
+class Entity;
 class User;
 
 // Manages an object's access permissions
@@ -25,7 +25,7 @@ class Permissions {
     operator bool() const { return type != NONE; }
   };
 
-  Permissions(const Object &parent) : _parent(parent) {}
+  Permissions(const Entity &parent) : _parent(parent) {}
 
   void setPlayerOwner(const std::string &username);
   void setCityOwner(const City::Name &cityName);
@@ -42,7 +42,7 @@ class Permissions {
 
  private:
   Owner _owner;
-  const Object &_parent;
+  const Entity &_parent;
 };
 
 #endif
