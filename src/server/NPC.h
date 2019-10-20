@@ -43,6 +43,7 @@ class NPC : public Entity, public QuestNode {
   Message outOfRangeMessage() const override;
 
   Permissions::Owner owner() const { return _permissions.owner(); }
+  Permissions &permissions() { return _permissions; }
 
   void updateStats() override;
   void onHealthChange() override;

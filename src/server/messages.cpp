@@ -951,6 +951,14 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         break;
       }
 
+      case CL_TAME_NPC: {
+        size_t serial;
+        iss >> serial >> del;
+
+        handle_CL_TAME_NPC(*user, serial);
+        break;
+      }
+
       case CL_MOUNT: {
         size_t serial;
         iss >> serial >> del;
@@ -1645,6 +1653,12 @@ void Server::handle_CL_REPAIR_OBJECT(User &user, size_t serial) {
   }
 
   obj->repair();
+}
+
+void Server::handle_CL_TAME_NPC(User &user, size_t serial) {
+  auto it = _entities.find(serial);
+  auto *npc = dynamic_cast<NPC *>(&*it);
+  npc->permissions().setPlayerOwner({});
 }
 
 void Server::handle_CL_LEAVE_CITY(User &user) {
