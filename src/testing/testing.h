@@ -1,6 +1,8 @@
 #ifndef TESTING_H
 #define TESTING_H
 
+#undef min
+#undef max
 #include "catch.hpp"
 
 #define REPEAT_FOR_MS(TIME_TO_REPEAT)   \
