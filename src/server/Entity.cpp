@@ -631,7 +631,7 @@ void Entity::applyDebuff(const BuffType &type, Entity &caster) {
     }
   }
 
-  if (!debuffWasReapplied) _buffs.push_back(newDebuff);
+  if (!debuffWasReapplied) _debuffs.push_back(newDebuff);
 
   sendDebuffMsg(type.id());
 

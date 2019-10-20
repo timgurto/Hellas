@@ -38,6 +38,8 @@ TEST_CASE("Buffs disappear on death") {
       dog.applyBuff(flea, dog);
       dog.applyDebuff(flea, dog);
 
+      CHECK(dog.debuffs().size() == 1);
+
       WAIT_UNTIL(c.objects().size() == 1);
       auto &cDog = c.getFirstNPC();
       WAIT_UNTIL(cDog.debuffs().size() == 1);
