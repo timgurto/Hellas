@@ -191,37 +191,37 @@ TEST_CASE("Wars involving cities are persistent", "[persistence][city][war]") {
 
 TEST_CASE("The objects of an offline enemy in an enemy city can be attacked",
           "[city][war][remote]") {
-  // Given a server with rock objects;
-  TestServer s = TestServer::WithData("chair");
+  GIVEN("a Chair object type") {
+    TestServer s = TestServer::WithData("chair");
 
-  // And a city named Athens;
-  s.cities().createCity("Athens");
+    AND_GIVEN("Bob is an offline member of Athens") {
+      s.cities().createCity("Athens");
+      {
+        RemoteClient bob("-username Bob -data testing/data/chair");
+        s.waitForUsers(1);
+        s.cities().addPlayerToCity(s.getFirstUser(), "Athens");
+      }
+      s.waitForUsers(0);
 
-  // And Bob is a member of Athens;
-  {
-    RemoteClient bob("-username Bob -data testing/data/chair");
-    s.waitForUsers(1);
-    s.cities().addPlayerToCity(s.getFirstUser(), "Athens");
+      AND_GIVEN("Bob owns a chair") {
+        s.addObject("chair", {15, 15}, "Bob");
 
-    // And Bob is offline
+        AND_GIVEN("Alice is at war with Athens") {
+          TestClient alice = TestClient::WithUsernameAndData("Alice", "chair");
+          s.wars().declare("Alice", Belligerent("Athens", Belligerent::CITY));
+
+          WHEN("Alice becomes aware of the rock") {
+            WAIT_UNTIL(alice.objects().size() == 1);
+
+            THEN("Alice can attack the rock") {
+              const auto &rock = alice.getFirstObject();
+              WAIT_UNTIL(rock.canBeAttackedByPlayer());
+            }
+          }
+        }
+      }
+    }
   }
-  s.waitForUsers(0);
-
-  // And a rock owned by Bob;
-  s.addObject("chair", {15, 15}, "Bob");
-
-  // And a player, Alice;
-  TestClient alice = TestClient::WithUsernameAndData("Alice", "chair");
-
-  // And Alice is at war with Athens
-  s.wars().declare("Alice", Belligerent("Athens", Belligerent::CITY));
-
-  // When Alice becomes aware of the rock
-  WAIT_UNTIL(alice.objects().size() == 1);
-
-  // Then Alice can attack the rock
-  const auto &rock = alice.getFirstObject();
-  WAIT_UNTIL(rock.canBeAttackedByPlayer());
 }
 
 TEST_CASE("A player is alerted when he sues for peace", "[war][peace]") {
