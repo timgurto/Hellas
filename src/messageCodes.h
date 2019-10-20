@@ -181,8 +181,12 @@ enum MessageCode {
   CL_REPAIR_ITEM,
 
   // Repair a damaged object
-  // Arguemnts: serial
+  // Arguments: serial
   CL_REPAIR_OBJECT,
+
+  // Attempt to turn an NPC into a pet
+  // Arguments: serial
+  CL_TAME_NPC,
 
   // Dismiss a buff
   // Arguments: buff ID

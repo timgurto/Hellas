@@ -179,6 +179,7 @@
     <ClCompile Include="src\server\Durability.cpp" />
     <ClCompile Include="src\testing\test-durability.cpp" />
     <ClCompile Include="src\server\DamageOnUse.cpp" />
+    <ClCompile Include="src\testing\test-pets.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
