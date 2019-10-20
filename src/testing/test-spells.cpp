@@ -97,7 +97,7 @@ TEST_CASE("Spell cooldowns", "[remote]") {
 
     auto cAlice = TestClient::WithUsername("Alice");
     s.waitForUsers(1);
-    auto &alice = *s->getUserByName("Alice");
+    auto &alice = s.getFirstUser();
 
     alice.getClass().teachSpell("hurtSelf");
     alice.getClass().teachSpell("hurtSelf1s");
