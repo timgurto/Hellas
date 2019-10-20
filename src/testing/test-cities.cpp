@@ -185,7 +185,7 @@ TEST_CASE("A player can only cede his own objects", "[.slow][city]") {
   CHECK_FALSE(rock.permissions().isOwnedByCity("Athens"));
 }
 
-TEST_CASE("A player can leave a city", "[city]") {
+TEST_CASE("A player can leave a city", "[city][.flaky]") {
   // Given a user named Alice;
   auto c = TestClient::WithUsername("Alice");
   auto s = TestServer{};
