@@ -23,8 +23,7 @@ TEST_CASE("NPCs untarget dead players") {
       user.kill();
 
       THEN("the fox is not targeting anything") {
-        REPEAT_FOR_MS(100);
-        CHECK(fox.target() == nullptr);
+        WAIT_UNTIL(fox.target() == nullptr);
       }
     }
   }
