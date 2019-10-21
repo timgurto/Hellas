@@ -24,6 +24,18 @@ TEST_CASE("Taming NPCs") {
           WAIT_UNTIL(cat.owner().type == Permissions::Owner::PLAYER);
         }
       }
+
+      WHEN("a user tries to tame it with too many arguments") {
+        c.sendMessage(CL_TAME_NPC, makeArgs(cat.serial(), 42));
+
+        THEN("it has no owner") {
+          REPEAT_FOR_MS(50);
+          CHECK(cat.owner().type == Permissions::Owner::NONE);
+        }
+      }
+    }
+  }
+}
     }
   }
 }

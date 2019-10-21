@@ -955,6 +955,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         size_t serial;
         iss >> serial >> del;
 
+        if (del != MSG_END) return;
+
         handle_CL_TAME_NPC(*user, serial);
         break;
       }
