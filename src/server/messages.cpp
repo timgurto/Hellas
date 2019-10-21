@@ -1666,7 +1666,7 @@ void Server::handle_CL_TAME_NPC(User &user, size_t serial) {
     return;
   }
 
-  npc->permissions().setPlayerOwner({});
+  npc->permissions().setPlayerOwner(user.name());
 }
 
 void Server::handle_CL_LEAVE_CITY(User &user) {

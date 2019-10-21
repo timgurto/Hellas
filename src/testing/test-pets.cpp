@@ -22,6 +22,7 @@ TEST_CASE("Taming NPCs") {
 
         THEN("it belongs to the user") {
           WAIT_UNTIL(cat.owner().type == Permissions::Owner::PLAYER);
+          CHECK(cat.owner().name == c->username());
         }
       }
 
