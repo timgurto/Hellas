@@ -36,6 +36,19 @@ TEST_CASE("Taming NPCs") {
     }
   }
 }
+
+TEST_CASE("Bad arguments to taming command") {
+  GIVEN("a server and client") {
+    auto s = TestServer{};
+    auto c = TestClient{};
+    s.waitForUsers(1);
+
+    WHEN("the client tries to tame a nonexistent NPC") {
+      c.sendMessage(CL_TAME_NPC, makeArgs(42));
+
+      THEN("the client receives a warning") {
+        CHECK(c.waitForMessage(WARNING_DOESNT_EXIST));
+      }
     }
   }
 }

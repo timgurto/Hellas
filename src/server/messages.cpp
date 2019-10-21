@@ -1660,6 +1660,12 @@ void Server::handle_CL_REPAIR_OBJECT(User &user, size_t serial) {
 void Server::handle_CL_TAME_NPC(User &user, size_t serial) {
   auto it = _entities.find(serial);
   auto *npc = dynamic_cast<NPC *>(&*it);
+
+  if (!npc) {
+    user.sendMessage(WARNING_DOESNT_EXIST);
+    return;
+  }
+
   npc->permissions().setPlayerOwner({});
 }
 
