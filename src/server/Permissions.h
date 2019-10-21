@@ -25,7 +25,7 @@ class Permissions {
     operator bool() const { return type != NONE; }
   };
 
-  Permissions(const Entity &parent) : _parent(parent) {}
+  Permissions(Entity &parent) : _parent(parent) {}
 
   void setPlayerOwner(const std::string &username);
   void setCityOwner(const City::Name &cityName);
@@ -42,7 +42,7 @@ class Permissions {
 
  private:
   Owner _owner;
-  const Entity &_parent;
+  Entity &_parent;
 };
 
 #endif

@@ -210,6 +210,7 @@ void NPC::processAI(ms_t timeElapsed) {
   // Become aware of nearby users
   for (User *user :
        Server::_instance->findUsersInArea(location(), AGGRO_RANGE)) {
+    if (owner().type != Permissions::Owner::NONE) break;
     if (distance(collisionRect(), user->collisionRect()) <= AGGRO_RANGE) {
       makeAwareOf(*user);
     }
@@ -414,6 +415,8 @@ ServerItem::Slot *NPC::getSlotToTakeFromAndSendErrors(size_t slotNum,
 
   return &slot;
 }
+
+void NPC::onOwnershipChange() { target(nullptr); }
 
 void NPC::updateStats() {
   const Server &server = *Server::_instance;

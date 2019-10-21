@@ -44,6 +44,7 @@ class NPC : public Entity, public QuestNode {
 
   Permissions::Owner owner() const { return _permissions.owner(); }
   Permissions &permissions() { return _permissions; }
+  virtual void onOwnershipChange() override;
 
   void updateStats() override;
   void onHealthChange() override;

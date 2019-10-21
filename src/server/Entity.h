@@ -154,6 +154,7 @@ class Entity {
   // Inform user that this entity has hit its target with a ranged attack.
   virtual void sendRangedHitMessageTo(const User &userToInform) const {}
   // Any final checks immediately before the attack
+  virtual void onOwnershipChange(){};
   virtual bool canAttack() { return true; }
   // Any reaction to a successful canAttack() check
   virtual void onCanAttack() {}

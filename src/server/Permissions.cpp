@@ -38,6 +38,7 @@ void Permissions::setPlayerOwner(const std::string &username) {
   ownerIndex.add(_owner, _parent.serial());
 
   alertNearbyUsersToNewOwner();
+  _parent.onOwnershipChange();
 }
 
 void Permissions::setCityOwner(const City::Name &cityName) {
@@ -52,6 +53,7 @@ void Permissions::setCityOwner(const City::Name &cityName) {
   ownerIndex.add(_owner, _parent.serial());
 
   alertNearbyUsersToNewOwner();
+  _parent.onOwnershipChange();
 }
 
 bool Permissions::hasOwner() const { return _owner.type != Owner::NONE; }
