@@ -9,20 +9,20 @@ TEST_CASE("Taming NPCs") {
     )";
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
 
     s.addNPC("cat");
     const auto &cat = s.getFirstNPC();
 
     THEN("it has no owner") {
       CHECK(cat.owner().type == Permissions::Owner::NONE);
-    }
 
-    WHEN("a user tries to tame it") {
-      s.waitForUsers(1);
-      c.sendMessage(CL_TAME_NPC, makeArgs(cat.serial()));
+      WHEN("a user tries to tame it") {
+        c.sendMessage(CL_TAME_NPC, makeArgs(cat.serial()));
 
-      THEN("it belongs to the user") {
-        WAIT_UNTIL(cat.owner().type == Permissions::Owner::PLAYER);
+        THEN("it belongs to the user") {
+          WAIT_UNTIL(cat.owner().type == Permissions::Owner::PLAYER);
+        }
       }
     }
   }
