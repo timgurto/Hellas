@@ -37,6 +37,7 @@ class NPC : public Entity, public QuestNode {
   void scaleThreatAgainst(Entity &target, double multiplier) override;
   void makeAwareOf(User &user);
   bool isAwareOf(User &user) const;
+  void forgetAbout(const Entity &entity);
   void makeNearbyNPCsAwareOf(User &user);
   void addThreat(User &attacker, Threat amount);
   Level level() const override { return _level; }
@@ -72,13 +73,13 @@ class NPC : public Entity, public QuestNode {
 
   void update(ms_t timeElapsed);
 
+  // AI
   static const px_t AGGRO_RANGE;
   static const px_t PURSUIT_RANGE;
   static const px_t RETURN_MARGIN;
   void processAI(ms_t timeElapsed);
-  void forgetAbout(const Entity &entity);
-
   void transitionIfNecessary();
+  void onTransition();
 };
 
 #endif

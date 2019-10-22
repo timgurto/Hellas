@@ -14,39 +14,8 @@ void NPC::processAI(ms_t timeElapsed) {
   }
   target(_threatTable.getTarget());
 
-  auto previousState = _state;
-  auto previousLocation = location();
-
   transitionIfNecessary();
-
-  // On transition
-  if ((previousState == CHASE || previousState == ATTACK) && _state == IDLE) {
-    target(nullptr);
-    _threatTable.clear();
-    clearTagger();
-
-    static const auto ATTEMPTS = 20;
-    for (auto i = 0; i != ATTEMPTS; ++i) {
-      if (!spawner()) break;
-
-      auto dest = spawner()->getRandomPoint();
-      if (Server::instance().isLocationValid(dest, *type())) {
-        _targetDestination = dest;
-        teleportTo(_targetDestination);
-        break;
-      }
-    }
-
-    auto maxHealth = type()->baseStats().maxHealth;
-    if (health() < maxHealth) {
-      health(maxHealth);
-      onHealthChange();  // Only broadcasts to the new location, not the old.
-
-      const Server &server = *Server::_instance;
-      for (const User *user : server.findUsersInArea(previousLocation))
-        user->sendMessage(SV_ENTITY_HEALTH, makeArgs(serial(), health()));
-    }
-  }
+  onTransition();
 
   // Act
   switch (_state) {
@@ -161,5 +130,38 @@ void NPC::transitionIfNecessary() {
       }
 
       break;
+  }
+}
+
+void NPC::onTransition() {
+  auto previousState = _state;
+  auto previousLocation = location();
+
+  if ((previousState == CHASE || previousState == ATTACK) && _state == IDLE) {
+    target(nullptr);
+    _threatTable.clear();
+    clearTagger();
+
+    static const auto ATTEMPTS = 20;
+    for (auto i = 0; i != ATTEMPTS; ++i) {
+      if (!spawner()) break;
+
+      auto dest = spawner()->getRandomPoint();
+      if (Server::instance().isLocationValid(dest, *type())) {
+        _targetDestination = dest;
+        teleportTo(_targetDestination);
+        break;
+      }
+    }
+
+    auto maxHealth = type()->baseStats().maxHealth;
+    if (health() < maxHealth) {
+      health(maxHealth);
+      onHealthChange();  // Only broadcasts to the new location, not the old.
+
+      const Server &server = *Server::_instance;
+      for (const User *user : server.findUsersInArea(previousLocation))
+        user->sendMessage(SV_ENTITY_HEALTH, makeArgs(serial(), health()));
+    }
   }
 }
