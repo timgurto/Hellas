@@ -16,28 +16,7 @@ void NPC::processAI(ms_t timeElapsed) {
 
   transitionIfNecessary();
   onTransition();
-
-  // Act
-  switch (_state) {
-    case IDLE:
-      target(nullptr);
-      break;
-
-    case CHASE:
-      // Move towards player
-      updateLocation(target()->location());
-      break;
-
-    case ATTACK:
-      // Cast any spells it knows
-      auto knownSpell = npcType()->knownSpell();
-      if (knownSpell) {
-        if (isSpellCoolingDown(knownSpell->id())) break;
-        ;
-        castSpell(*knownSpell);
-      }
-      break;  // Entity::update() will handle combat
-  }
+  act();
 }
 
 void NPC::transitionIfNecessary() {
@@ -163,5 +142,28 @@ void NPC::onTransition() {
       for (const User *user : server.findUsersInArea(previousLocation))
         user->sendMessage(SV_ENTITY_HEALTH, makeArgs(serial(), health()));
     }
+  }
+}
+
+void NPC::act() {
+  switch (_state) {
+    case IDLE:
+      target(nullptr);
+      break;
+
+    case CHASE:
+      // Move towards player
+      updateLocation(target()->location());
+      break;
+
+    case ATTACK:
+      // Cast any spells it knows
+      auto knownSpell = npcType()->knownSpell();
+      if (knownSpell) {
+        if (isSpellCoolingDown(knownSpell->id())) break;
+        ;
+        castSpell(*knownSpell);
+      }
+      break;  // Entity::update() will handle combat
   }
 }

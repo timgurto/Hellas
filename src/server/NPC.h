@@ -80,6 +80,7 @@ class NPC : public Entity, public QuestNode {
   void processAI(ms_t timeElapsed);
   void transitionIfNecessary();
   void onTransition();
+  void act();
 };
 
 #endif
