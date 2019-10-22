@@ -54,10 +54,10 @@ TEST_CASE("Bad arguments to taming command") {
   }
 }
 
-TEST_CASE("Targeting") {
-  GIVEN("a dog with high health and low damage") {
+TEST_CASE("Pet shares owner's displomacy") {
+  GIVEN("an aggressive dog NPC") {
     auto data = R"(
-      <npcType id="dog" maxHealth="1000" attack="1" />
+      <npcType id="dog" maxHealth="1000" attack="2" speed="1" />
     )";
     auto s = TestServer::WithDataString(data);
     s.addNPC("dog", {10, 15});
@@ -69,9 +69,9 @@ TEST_CASE("Targeting") {
       const auto &user = s.getFirstUser();
       dog.permissions().setPlayerOwner(user.name());
 
-      THEN("it isn't targeting its owner") {
-        REPEAT_FOR_MS(50);
-        CHECK(dog.target() != &user);
+      THEN("the player doesn't lose any health") {
+        auto oldHealth = user.health();
+        REPEAT_FOR_MS(3000) { REQUIRE(user.health() >= oldHealth); }
       }
     }
   }
