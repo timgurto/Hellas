@@ -77,6 +77,7 @@ class NPC : public Entity, public QuestNode {
   static const px_t RETURN_MARGIN;
   void processAI(ms_t timeElapsed);
   void forgetAbout(const Entity &entity);
+
   void transitionIfNecessary();
 };
 

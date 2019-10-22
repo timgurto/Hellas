@@ -180,6 +180,7 @@
     <ClCompile Include="src\testing\test-durability.cpp" />
     <ClCompile Include="src\server\DamageOnUse.cpp" />
     <ClCompile Include="src\testing\test-pets.cpp" />
+    <ClCompile Include="src\server\ai.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
