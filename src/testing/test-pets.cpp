@@ -54,7 +54,7 @@ TEST_CASE("Bad arguments to taming command") {
   }
 }
 
-TEST_CASE("Pet shares owner's displomacy", "[ai]") {
+TEST_CASE("Pet shares owner's diplomacy", "[ai]") {
   GIVEN("an aggressive dog NPC") {
     auto data = R"(
       <npcType id="dog" maxHealth="1000" attack="2" speed="1" />
@@ -72,6 +72,14 @@ TEST_CASE("Pet shares owner's displomacy", "[ai]") {
       THEN("the player doesn't lose any health") {
         REPEAT_FOR_MS(1000) {
           REQUIRE(user.health() == user.stats().maxHealth);
+        }
+      }
+
+      AND_WHEN("the player tries to target it") {
+        c.sendMessage(CL_TARGET_ENTITY, makeArgs(dog.serial()));
+
+        THEN("it doesn't lose any health") {
+          REPEAT_FOR_MS(100) { REQUIRE(dog.health() == dog.stats().maxHealth); }
         }
       }
     }
