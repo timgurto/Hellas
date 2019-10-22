@@ -54,7 +54,7 @@ TEST_CASE("Bad arguments to taming command") {
   }
 }
 
-TEST_CASE("Pet shares owner's displomacy") {
+TEST_CASE("Pet shares owner's displomacy", "[ai]") {
   GIVEN("an aggressive dog NPC") {
     auto data = R"(
       <npcType id="dog" maxHealth="1000" attack="2" speed="1" />
@@ -70,8 +70,9 @@ TEST_CASE("Pet shares owner's displomacy") {
       dog.permissions().setPlayerOwner(user.name());
 
       THEN("the player doesn't lose any health") {
-        auto oldHealth = user.health();
-        REPEAT_FOR_MS(3000) { REQUIRE(user.health() >= oldHealth); }
+        REPEAT_FOR_MS(1000) {
+          REQUIRE(user.health() == user.stats().maxHealth);
+        }
       }
     }
   }
