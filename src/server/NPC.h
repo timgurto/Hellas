@@ -71,8 +71,13 @@ class NPC : public Entity, public QuestNode {
   void writeToXML(XmlWriter &xw) const override;
 
   void update(ms_t timeElapsed);
+
+  static const px_t AGGRO_RANGE;
+  static const px_t PURSUIT_RANGE;
+  static const px_t RETURN_MARGIN;
   void processAI(ms_t timeElapsed);
   void forgetAbout(const Entity &entity);
+  void transitionIfNecessary();
 };
 
 #endif

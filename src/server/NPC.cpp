@@ -3,6 +3,11 @@
 #include "Server.h"
 #include "User.h"
 
+const px_t NPC::AGGRO_RANGE = Podes{10}.toPixels();
+// Assumption: this is farther than any ranged attack/spell can reach:
+const px_t NPC::PURSUIT_RANGE = Podes{35}.toPixels();
+const px_t NPC::RETURN_MARGIN = Podes{5}.toPixels();
+
 NPC::NPC(const NPCType *type, const MapPoint &loc)
     : Entity(type, loc),
       QuestNode(*type, serial()),
@@ -199,12 +204,6 @@ void NPC::sendRangedMissMessageTo(const User &userToInform) const {
 }
 
 void NPC::processAI(ms_t timeElapsed) {
-  const auto
-      AGGRO_RANGE = 70_px,
-      ATTACK_RANGE = attackRange() - Podes{1}.toPixels(),
-      // Assumption: this is farther than any ranged attack/spell can reach.
-      PURSUIT_RANGE = Podes{35}.toPixels(), RETURN_MARGIN = Podes{5}.toPixels();
-
   target(nullptr);
 
   // Become aware of nearby users
@@ -217,13 +216,73 @@ void NPC::processAI(ms_t timeElapsed) {
   }
   target(_threatTable.getTarget());
 
-  auto distToTarget =
-      target() ? distance(collisionRect(), target()->collisionRect()) : 0;
-
   auto previousState = _state;
   auto previousLocation = location();
 
-  // Transition if necessary
+  transitionIfNecessary();
+
+  // On transition
+  if ((previousState == CHASE || previousState == ATTACK) && _state == IDLE) {
+    target(nullptr);
+    _threatTable.clear();
+    clearTagger();
+
+    static const auto ATTEMPTS = 20;
+    for (auto i = 0; i != ATTEMPTS; ++i) {
+      if (!spawner()) break;
+
+      auto dest = spawner()->getRandomPoint();
+      if (Server::instance().isLocationValid(dest, *type())) {
+        _targetDestination = dest;
+        teleportTo(_targetDestination);
+        break;
+      }
+    }
+
+    auto maxHealth = type()->baseStats().maxHealth;
+    if (health() < maxHealth) {
+      health(maxHealth);
+      onHealthChange();  // Only broadcasts to the new location, not the old.
+
+      const Server &server = *Server::_instance;
+      for (const User *user : server.findUsersInArea(previousLocation))
+        user->sendMessage(SV_ENTITY_HEALTH, makeArgs(serial(), health()));
+    }
+  }
+
+  // Act
+  switch (_state) {
+    case IDLE:
+      target(nullptr);
+      break;
+
+    case CHASE:
+      // Move towards player
+      updateLocation(target()->location());
+      break;
+
+    case ATTACK:
+      // Cast any spells it knows
+      auto knownSpell = npcType()->knownSpell();
+      if (knownSpell) {
+        if (isSpellCoolingDown(knownSpell->id())) break;
+        ;
+        castSpell(*knownSpell);
+      }
+      break;  // Entity::update() will handle combat
+  }
+}
+
+void NPC::forgetAbout(const Entity &entity) {
+  _threatTable.forgetAbout(entity);
+}
+
+void NPC::transitionIfNecessary() {
+  const auto ATTACK_RANGE = attackRange() - Podes{1}.toPixels();
+
+  auto distToTarget =
+      target() ? distance(collisionRect(), target()->collisionRect()) : 0;
+
   switch (_state) {
     case IDLE:
       if (combatDamage() == 0 &&
@@ -309,61 +368,6 @@ void NPC::processAI(ms_t timeElapsed) {
 
       break;
   }
-
-  // On transition
-  if ((previousState == CHASE || previousState == ATTACK) && _state == IDLE) {
-    target(nullptr);
-    _threatTable.clear();
-    clearTagger();
-
-    static const auto ATTEMPTS = 20;
-    for (auto i = 0; i != ATTEMPTS; ++i) {
-      if (!spawner()) break;
-
-      auto dest = spawner()->getRandomPoint();
-      if (Server::instance().isLocationValid(dest, *type())) {
-        _targetDestination = dest;
-        teleportTo(_targetDestination);
-        break;
-      }
-    }
-
-    auto maxHealth = type()->baseStats().maxHealth;
-    if (health() < maxHealth) {
-      health(maxHealth);
-      onHealthChange();  // Only broadcasts to the new location, not the old.
-
-      const Server &server = *Server::_instance;
-      for (const User *user : server.findUsersInArea(previousLocation))
-        user->sendMessage(SV_ENTITY_HEALTH, makeArgs(serial(), health()));
-    }
-  }
-
-  // Act
-  switch (_state) {
-    case IDLE:
-      target(nullptr);
-      break;
-
-    case CHASE:
-      // Move towards player
-      updateLocation(target()->location());
-      break;
-
-    case ATTACK:
-      // Cast any spells it knows
-      auto knownSpell = npcType()->knownSpell();
-      if (knownSpell) {
-        if (isSpellCoolingDown(knownSpell->id())) break;
-        ;
-        castSpell(*knownSpell);
-      }
-      break;  // Entity::update() will handle combat
-  }
-}
-
-void NPC::forgetAbout(const Entity &entity) {
-  _threatTable.forgetAbout(entity);
 }
 
 void NPC::sendInfoToClient(const User &targetUser) const {
