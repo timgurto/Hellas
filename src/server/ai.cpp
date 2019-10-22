@@ -14,8 +14,10 @@ void NPC::processAI(ms_t timeElapsed) {
   }
   target(_threatTable.getTarget());
 
+  State previousState = _state;
+
   transitionIfNecessary();
-  onTransition();
+  if (_state != previousState) onTransition(previousState);
   act();
 }
 
@@ -112,8 +114,7 @@ void NPC::transitionIfNecessary() {
   }
 }
 
-void NPC::onTransition() {
-  auto previousState = _state;
+void NPC::onTransition(State previousState) {
   auto previousLocation = location();
 
   if ((previousState == CHASE || previousState == ATTACK) && _state == IDLE) {
