@@ -113,6 +113,29 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
           }
         }
       }
+
+      AND_GIVEN("Bob is in a city") {
+        auto c = TestClient::WithUsernameAndDataString("Bob", data);
+        s.waitForUsers(1);
+        const auto &user = s.getFirstUser();
+        s.cities().createCity("Athens");
+        s.cities().addPlayerToCity(user, "Athens");
+
+        AND_GIVEN("the city is at war with Alice") {
+          s.wars().declare({"Alice", Belligerent::PLAYER},
+                           {"Athens", Belligerent::CITY});
+          CHECK(s.wars().isAtWar({"Alice", Belligerent::PLAYER},
+                                 {"Bob", Belligerent::PLAYER}));
+
+          WHEN("Bob tries to target the dog") {
+            c.sendMessage(CL_TARGET_ENTITY, makeArgs(dog.serial()));
+
+            THEN("it loses health") {
+              WAIT_UNTIL(dog.health() < dog.stats().maxHealth);
+            }
+          }
+        }
+      }
     }
   }
 }
