@@ -43,7 +43,7 @@ TEST_CASE("NPCs chain pull", "[ai]") {
         }
 
         AND_WHEN("the user throws a spear at one") {
-          WAIT_UNTIL(c.objects().size() == 2);
+          WAIT_UNTIL(c.objects().size() >= 2);
           c.sendMessage(CL_TARGET_ENTITY, makeArgs(bear1Serial));
 
           THEN("the two close bears are aware of him") {
