@@ -27,7 +27,7 @@ void NPC::update(ms_t timeElapsed) {
 bool NPC::canBeAttackedBy(const User &user) const {
   if (!npcType()->canBeAttacked()) return false;
 
-  if (_permissions.isOwnedByPlayer(user.name())) return false;
+  if (_permissions.owner().type == Permissions::Owner::PLAYER) return false;
 
   return true;
 }

@@ -79,7 +79,23 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai]") {
         c.sendMessage(CL_TARGET_ENTITY, makeArgs(dog.serial()));
 
         THEN("it doesn't lose any health") {
-          REPEAT_FOR_MS(100) { REQUIRE(dog.health() == dog.stats().maxHealth); }
+          REPEAT_FOR_MS(100);
+          REQUIRE(dog.health() == dog.stats().maxHealth);
+        }
+      }
+    }
+
+    AND_GIVEN("it's owned by an offline player") {
+      dog.permissions().setPlayerOwner("Alice");
+
+      WHEN("a player tries to target it") {
+        auto c = TestClient::WithDataString(data);
+        s.waitForUsers(1);
+        c.sendMessage(CL_TARGET_ENTITY, makeArgs(dog.serial()));
+
+        THEN("it doesn't lose any health") {
+          REPEAT_FOR_MS(100);
+          REQUIRE(dog.health() == dog.stats().maxHealth);
         }
       }
     }
