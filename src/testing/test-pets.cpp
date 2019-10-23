@@ -69,16 +69,16 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
       const auto &user = s.getFirstUser();
       dog.permissions().setPlayerOwner(user.name());
 
-      THEN("the player doesn't lose any health") {
+      THEN("the owner doesn't lose any health") {
         REPEAT_FOR_MS(1000) {
           REQUIRE(user.health() == user.stats().maxHealth);
         }
       }
 
-      AND_WHEN("the player tries to target it") {
+      AND_WHEN("the owner tries to target it") {
         c.sendMessage(CL_TARGET_ENTITY, makeArgs(dog.serial()));
 
-        THEN("it doesn't lose any health") {
+        THEN("the dog doesn't lose any health") {
           REPEAT_FOR_MS(100);
           REQUIRE(dog.health() == dog.stats().maxHealth);
         }
@@ -88,50 +88,49 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
     AND_GIVEN("it's owned by an offline player, Alice") {
       dog.permissions().setPlayerOwner("Alice");
 
-      WHEN("a player tries to target it") {
-        auto c = TestClient::WithDataString(data);
-        s.waitForUsers(1);
-        c.sendMessage(CL_TARGET_ENTITY, makeArgs(dog.serial()));
-
-        THEN("it doesn't lose any health") {
-          REPEAT_FOR_MS(100);
-          REQUIRE(dog.health() == dog.stats().maxHealth);
-        }
-      }
-
-      AND_GIVEN("A player is at war with Alice") {
-        auto c = TestClient::WithDataString(data);
-        s.waitForUsers(1);
-        s.wars().declare({"Alice", Belligerent::PLAYER},
-                         {c->username(), Belligerent::PLAYER});
-
-        WHEN("he tries to target it") {
-          c.sendMessage(CL_TARGET_ENTITY, makeArgs(dog.serial()));
-
-          THEN("it loses health") {
-            WAIT_UNTIL(dog.health() < dog.stats().maxHealth);
-          }
-        }
-      }
-
-      AND_GIVEN("Bob is in a city") {
+      AND_GIVEN("a player named Bob") {
         auto c = TestClient::WithUsernameAndDataString("Bob", data);
         s.waitForUsers(1);
-        const auto &user = s.getFirstUser();
-        s.cities().createCity("Athens");
-        s.cities().addPlayerToCity(user, "Athens");
+        const auto &bob = s.getFirstUser();
 
-        AND_GIVEN("the city is at war with Alice") {
+        WHEN("Bob tries to target Alice's dog") {
+          c.sendMessage(CL_TARGET_ENTITY, makeArgs(dog.serial()));
+
+          THEN("the dog doesn't lose any health") {
+            REPEAT_FOR_MS(100);
+            REQUIRE(dog.health() == dog.stats().maxHealth);
+          }
+        }
+
+        AND_GIVEN("Bob is at war with Alice") {
           s.wars().declare({"Alice", Belligerent::PLAYER},
-                           {"Athens", Belligerent::CITY});
-          CHECK(s.wars().isAtWar({"Alice", Belligerent::PLAYER},
-                                 {"Bob", Belligerent::PLAYER}));
+                           {"Bob", Belligerent::PLAYER});
 
-          WHEN("Bob tries to target the dog") {
+          WHEN("Bob tries to target Alice's dog") {
             c.sendMessage(CL_TARGET_ENTITY, makeArgs(dog.serial()));
 
-            THEN("it loses health") {
+            THEN("the dog loses health") {
               WAIT_UNTIL(dog.health() < dog.stats().maxHealth);
+            }
+          }
+        }
+
+        AND_GIVEN("Bob is in a city") {
+          s.cities().createCity("Athens");
+          s.cities().addPlayerToCity(bob, "Athens");
+
+          AND_GIVEN("the city is at war with Alice") {
+            s.wars().declare({"Alice", Belligerent::PLAYER},
+                             {"Athens", Belligerent::CITY});
+            CHECK(s.wars().isAtWar({"Alice", Belligerent::PLAYER},
+                                   {"Bob", Belligerent::PLAYER}));
+
+            WHEN("Bob tries to target Alice's dog") {
+              c.sendMessage(CL_TARGET_ENTITY, makeArgs(dog.serial()));
+
+              THEN("the dog loses health") {
+                WAIT_UNTIL(dog.health() < dog.stats().maxHealth);
+              }
             }
           }
         }
