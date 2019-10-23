@@ -27,9 +27,11 @@ void NPC::update(ms_t timeElapsed) {
 bool NPC::canBeAttackedBy(const User &user) const {
   if (!npcType()->canBeAttacked()) return false;
 
-  if (_permissions.owner().type == Permissions::Owner::PLAYER) return false;
+  if (_permissions.owner().type != Permissions::Owner::PLAYER) return true;
 
-  return true;
+  const auto &server = Server::instance();
+  return server.wars().isAtWar({_permissions.owner().name, Belligerent::PLAYER},
+                               {user.name(), Belligerent::PLAYER});
 }
 
 CombatResult NPC::generateHitAgainst(const Entity &target, CombatType type,

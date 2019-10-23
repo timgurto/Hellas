@@ -54,7 +54,7 @@ TEST_CASE("Bad arguments to taming command") {
   }
 }
 
-TEST_CASE("Pet shares owner's diplomacy", "[ai]") {
+TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
   GIVEN("an aggressive dog NPC") {
     auto data = R"(
       <npcType id="dog" maxHealth="1000" attack="2" speed="1" />
@@ -85,7 +85,7 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai]") {
       }
     }
 
-    AND_GIVEN("it's owned by an offline player") {
+    AND_GIVEN("it's owned by an offline player, Alice") {
       dog.permissions().setPlayerOwner("Alice");
 
       WHEN("a player tries to target it") {
@@ -96,6 +96,21 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai]") {
         THEN("it doesn't lose any health") {
           REPEAT_FOR_MS(100);
           REQUIRE(dog.health() == dog.stats().maxHealth);
+        }
+      }
+
+      AND_GIVEN("A player is at war with Alice") {
+        auto c = TestClient::WithDataString(data);
+        s.waitForUsers(1);
+        s.wars().declare({"Alice", Belligerent::PLAYER},
+                         {c->username(), Belligerent::PLAYER});
+
+        WHEN("he tries to target it") {
+          c.sendMessage(CL_TARGET_ENTITY, makeArgs(dog.serial()));
+
+          THEN("it loses health") {
+            WAIT_UNTIL(dog.health() < dog.stats().maxHealth);
+          }
         }
       }
     }

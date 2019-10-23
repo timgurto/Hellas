@@ -135,6 +135,7 @@ class Server {
 
   // Getters
   const Cities &cities() const { return _cities; }
+  const Wars &wars() const { return _wars; }
 
   // Action functions
   static bool endTutorial(const Object &obj, User &performer,
