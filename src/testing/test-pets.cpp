@@ -102,15 +102,19 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
           }
         }
 
-        AND_GIVEN("Bob is at war with Alice") {
+        WHEN("Bob is at war with Alice") {
           s.wars().declare({"Alice", Belligerent::PLAYER},
                            {"Bob", Belligerent::PLAYER});
 
-          WHEN("Bob tries to target Alice's dog") {
-            c.sendMessage(CL_TARGET_ENTITY, makeArgs(dog.serial()));
+          THEN("Bob loses health") {
+            WAIT_UNTIL(bob.health() < bob.stats().maxHealth);
 
-            THEN("the dog loses health") {
-              WAIT_UNTIL(dog.health() < dog.stats().maxHealth);
+            AND_WHEN("Bob tries to target Alice's dog") {
+              c.sendMessage(CL_TARGET_ENTITY, makeArgs(dog.serial()));
+
+              THEN("the dog loses health") {
+                WAIT_UNTIL(dog.health() < dog.stats().maxHealth);
+              }
             }
           }
         }

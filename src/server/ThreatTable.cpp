@@ -39,11 +39,14 @@ Entity* ThreatTable::getTarget() {
   auto highestThreat = -1;
   Entity* target = nullptr;
 
-  for (auto pair : _container)
+  for (auto pair : _container) {
+    if (!pair.first->canBeAttackedBy(_owner)) continue;
+
     if (pair.second > highestThreat) {
       highestThreat = pair.second;
       target = pair.first;
     }
+  }
 
   return target;
 }

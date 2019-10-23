@@ -17,6 +17,7 @@
 class Spawner;
 class User;
 class XmlWriter;
+class NPC;
 
 // Abstract class describing location, movement and combat functions of
 // something in the game world
@@ -80,6 +81,7 @@ class Entity {
   void corpseTime(ms_t time) { _corpseTime = time; }
   void setShorterCorpseTimerForFriendlyKill() { _corpseTime = 30000; }
   virtual bool canBeAttackedBy(const User &user) const = 0;
+  virtual bool canBeAttackedBy(const NPC &npc) const { return false; }
   virtual px_t attackRange() const { return MELEE_RANGE; }
   virtual CombatResult generateHitAgainst(const Entity &target, CombatType type,
                                           SpellSchool school,

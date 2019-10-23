@@ -3,11 +3,14 @@
 #include <map>
 
 class Entity;
+class NPC;
 
 using Threat = int;
 
 class ThreatTable {
  public:
+  ThreatTable(const NPC &owner) : _owner(owner) {}
+
   void makeAwareOf(Entity &entity);
   bool isAwareOf(Entity &entity) const;
   void forgetAbout(const Entity &entity);
@@ -21,4 +24,5 @@ class ThreatTable {
  private:
   using Container = std::map<Entity *, Threat>;
   Container _container;
+  const NPC &_owner;
 };

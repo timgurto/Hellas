@@ -12,7 +12,8 @@ NPC::NPC(const NPCType *type, const MapPoint &loc)
       QuestNode(*type, serial()),
       _level(type->level()),
       _state(IDLE),
-      _permissions(*this) {
+      _permissions(*this),
+      _threatTable(*this) {
   _loot.reset(new Loot);
 }
 

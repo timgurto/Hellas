@@ -866,6 +866,11 @@ bool User::canBeAttackedBy(const User &user) const {
   return server._wars.isAtWar({_name}, {user._name});
 }
 
+bool User::canBeAttackedBy(const NPC &npc) const {
+  return Server::instance().wars().isAtWar(
+      {npc.owner().name, Belligerent::PLAYER}, {_name, Belligerent::PLAYER});
+}
+
 px_t User::attackRange() const {
   const auto weapon = _gear[Item::WEAPON_SLOT].first;
   if (!weapon.hasItem()) return Object::attackRange();
