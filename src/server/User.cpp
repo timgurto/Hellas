@@ -867,8 +867,12 @@ bool User::canBeAttackedBy(const User &user) const {
 }
 
 bool User::canBeAttackedBy(const NPC &npc) const {
+  if (npc.owner().type == Permissions::Owner::NONE) return true;
+  auto ownerBelligerentType = npc.owner().type == Permissions::Owner::PLAYER
+                                  ? Belligerent::PLAYER
+                                  : Belligerent::CITY;
   return Server::instance().wars().isAtWar(
-      {npc.owner().name, Belligerent::PLAYER}, {_name, Belligerent::PLAYER});
+      {npc.owner().name, ownerBelligerentType}, {_name, Belligerent::PLAYER});
 }
 
 px_t User::attackRange() const {

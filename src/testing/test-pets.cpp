@@ -140,5 +140,25 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
         }
       }
     }
+
+    AND_GIVEN("it's owned by a city") {
+      s.cities().createCity("Athens");
+      dog.permissions().setCityOwner("Athens");
+
+      AND_GIVEN("a player named Bob") {
+        auto c = TestClient::WithUsernameAndDataString("Bob", data);
+        s.waitForUsers(1);
+        const auto &bob = s.getFirstUser();
+
+        WHEN("Bob is at war with the city") {
+          s.wars().declare({"Athens", Belligerent::CITY},
+                           {"Bob", Belligerent::PLAYER});
+
+          THEN("Bob loses health") {
+            WAIT_UNTIL(bob.health() < bob.stats().maxHealth);
+          }
+        }
+      }
+    }
   }
 }
