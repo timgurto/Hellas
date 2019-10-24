@@ -1013,7 +1013,7 @@ void User::onAttackedBy(Entity &attacker, Threat threat) {
   auto armourSlotToUse = Item::getRandomArmorSlot();
   _gear[armourSlotToUse].first.onUse();
 
-  if (!target()) {
+  if (!target() && attacker.canBeAttackedBy(*this)) {
     setTargetAndAttack(&attacker);
     attacker.alertReactivelyTargetingUser(*this);
   }

@@ -31,14 +31,15 @@ class NPC : public Entity, public QuestNode {
 
   ms_t timeToRemainAsCorpse() const override { return 600000; }  // 10 minutes
   bool canBeAttackedBy(const User &user) const override;
+  bool canBeAttackedBy(const NPC &npc) const override;
   CombatResult generateHitAgainst(const Entity &target, CombatType type,
                                   SpellSchool school,
                                   px_t range) const override;
   void scaleThreatAgainst(Entity &target, double multiplier) override;
-  void makeAwareOf(User &user);
-  bool isAwareOf(User &user) const;
+  void makeAwareOf(Entity &entity);
+  bool isAwareOf(Entity &entity) const;
   void forgetAbout(const Entity &entity);
-  void makeNearbyNPCsAwareOf(User &user);
+  void makeNearbyNPCsAwareOf(Entity &entity);
   void addThreat(User &attacker, Threat amount);
   Level level() const override { return _level; }
   Message outOfRangeMessage() const override;

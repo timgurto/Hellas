@@ -28,12 +28,17 @@ void NPC::update(ms_t timeElapsed) {
 bool NPC::canBeAttackedBy(const User &user) const {
   if (!npcType()->canBeAttacked()) return false;
 
-  if (_permissions.owner().type != Permissions::Owner::PLAYER) return true;
+  if (_permissions.owner().type == Permissions::Owner::NONE) return true;
 
   const auto &server = Server::instance();
-  return server.wars().isAtWar({_permissions.owner().name, Belligerent::PLAYER},
+  auto ownerType = _permissions.owner().type == Permissions::Owner::PLAYER
+                       ? Belligerent::PLAYER
+                       : Belligerent::CITY;
+  return server.wars().isAtWar({_permissions.owner().name, ownerType},
                                {user.name(), Belligerent::PLAYER});
 }
+
+bool NPC::canBeAttackedBy(const NPC &npc) const { return true; }
 
 CombatResult NPC::generateHitAgainst(const Entity &target, CombatType type,
                                      SpellSchool school, px_t range) const {
@@ -84,31 +89,36 @@ void NPC::scaleThreatAgainst(Entity &target, double multiplier) {
   _threatTable.scaleThreat(target, multiplier);
 }
 
-void NPC::makeAwareOf(User &user) {
+void NPC::makeAwareOf(Entity &entity) {
   if (!npcType()->attacksNearby()) return;
 
   // For when an aggressive NPC begins combat
   if (_threatTable.isEmpty()) _timeEngaged = SDL_GetTicks();
 
-  _threatTable.makeAwareOf(user);
-  makeNearbyNPCsAwareOf(user);
-  user.putInCombat();
+  _threatTable.makeAwareOf(entity);
+  makeNearbyNPCsAwareOf(entity);
+
+  auto *user = dynamic_cast<User *>(&entity);
+  if (!user) return;
+  user->putInCombat();
 }
 
-bool NPC::isAwareOf(User &user) const { return _threatTable.isAwareOf(user); }
+bool NPC::isAwareOf(Entity &entity) const {
+  return _threatTable.isAwareOf(entity);
+}
 
-void NPC::makeNearbyNPCsAwareOf(User &user) {
+void NPC::makeNearbyNPCsAwareOf(Entity &entity) {
   const Server &server = *Server::_instance;
 
   // Skip those already aware, otherwise we'd get infinite loops
-  for (auto entity : server._entities) {
-    auto npc = dynamic_cast<NPC *>(entity);
+  for (auto nearbyEntity : server._entities) {
+    auto npc = dynamic_cast<NPC *>(nearbyEntity);
     if (!npc) continue;
-    if (npc->isAwareOf(user)) continue;
+    if (npc->isAwareOf(entity)) continue;
 
     const auto CHAIN_PULL_DISTANCE = Podes{10}.toPixels();
     if (distance(location(), npc->location()) <= CHAIN_PULL_DISTANCE)
-      npc->makeAwareOf(user);
+      npc->makeAwareOf(entity);
   }
 }
 

@@ -5,11 +5,14 @@ void NPC::processAI(ms_t timeElapsed) {
   target(nullptr);
 
   // Become aware of nearby users
-  for (User *user :
-       Server::_instance->findUsersInArea(location(), AGGRO_RANGE)) {
-    if (distance(collisionRect(), user->collisionRect()) <= AGGRO_RANGE) {
-      makeAwareOf(*user);
-    }
+  for (auto *potentialTarget :
+       Server::_instance->findEntitiesInArea(location(), AGGRO_RANGE)) {
+    if (potentialTarget == this) continue;
+    if (distance(collisionRect(), potentialTarget->collisionRect()) >
+        AGGRO_RANGE)
+      continue;
+
+    makeAwareOf(*potentialTarget);
   }
   target(_threatTable.getTarget());
 

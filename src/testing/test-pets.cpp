@@ -139,6 +139,14 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
           }
         }
       }
+
+      AND_GIVEN("another dog") {
+        s.addNPC("dog", {15, 10});
+
+        THEN("Alice's dog loses health") {
+          WAIT_UNTIL(dog.health() < dog.stats().maxHealth);
+        }
+      }
     }
 
     AND_GIVEN("it's owned by a city") {
