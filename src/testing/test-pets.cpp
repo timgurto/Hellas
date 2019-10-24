@@ -140,11 +140,20 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
         }
       }
 
-      AND_GIVEN("another dog") {
-        s.addNPC("dog", {15, 10});
+      AND_GIVEN("an observer player") {
+        auto c = TestClient::WithDataString(data);
+        s.waitForUsers(1);
 
-        THEN("Alice's dog loses health") {
-          WAIT_UNTIL(dog.health() < dog.stats().maxHealth);
+        AND_GIVEN("another dog") {
+          s.addNPC("dog", {15, 10});
+
+          THEN("Alice's dog loses health") {
+            WAIT_UNTIL(dog.health() < dog.stats().maxHealth);
+
+            AND_THEN("the player receives a SV_ENTITY_HIT_ENTITY message") {
+              CHECK(c.waitForMessage(SV_ENTITY_HIT_ENTITY));
+            }
+          }
         }
       }
     }

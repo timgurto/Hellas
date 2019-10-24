@@ -918,6 +918,26 @@ void Client::handleMessage(const std::string &msg) {
         break;
       }
 
+      case SV_ENTITY_HIT_ENTITY: {
+        int attackerSerial, defenderSerial;
+        singleMsg >> attackerSerial >> del >> defenderSerial >> del;
+        singleMsg >> del;
+        if (del != MSG_END) break;
+
+        auto attackerIt = _objects.find(attackerSerial);
+        if (attackerIt == _objects.end()) {
+          // showErrorMessage("Received combat info for an unknown object.",
+          // Color::TODO);
+          break;
+        }
+        const ClientNPC &attacker =
+            *dynamic_cast<const ClientNPC *>(attackerIt->second);
+        attacker.playAttackSound();
+
+        handle_SV_ENTITY_WAS_HIT(defenderSerial);
+        break;
+      }
+
       case SV_PLAYER_HIT_PLAYER: {
         std::string attackerName, defenderName;
         readString(singleMsg, attackerName);

@@ -262,21 +262,22 @@ void Entity::update(ms_t timeElapsed) {
   // client knows whether to play a hit sound or a death sound.
   MessageCode msgCode;
   std::string args;
-  char attackerTag = classTag(), defenderTag = pTarget->classTag();
-  if (attackerTag == 'u' && defenderTag != 'u') {
-    msgCode = SV_PLAYER_HIT_ENTITY;
-    args =
-        makeArgs(dynamic_cast<const User *>(this)->name(), pTarget->serial());
-  } else if (attackerTag != 'u' && defenderTag == 'u') {
-    msgCode = SV_ENTITY_HIT_PLAYER;
-    args = makeArgs(serial(), dynamic_cast<const User *>(pTarget)->name());
-  } else if (attackerTag == 'u' && defenderTag == 'u') {
+  const auto attackerIsAPlayer = classTag() == 'u';
+  const auto defenderIsAPlayer = pTarget->classTag() == 'u';
+  if (attackerIsAPlayer && defenderIsAPlayer) {
     msgCode = SV_PLAYER_HIT_PLAYER;
     args = makeArgs(dynamic_cast<const User *>(this)->name(),
                     dynamic_cast<const User *>(pTarget)->name());
+  } else if (attackerIsAPlayer) {
+    msgCode = SV_PLAYER_HIT_ENTITY;
+    args =
+        makeArgs(dynamic_cast<const User *>(this)->name(), pTarget->serial());
+  } else if (defenderIsAPlayer) {
+    msgCode = SV_ENTITY_HIT_PLAYER;
+    args = makeArgs(serial(), dynamic_cast<const User *>(pTarget)->name());
   } else {
-    SERVER_ERROR("Invalid attacker or defender tag");
-    return;
+    msgCode = SV_ENTITY_HIT_ENTITY;
+    args = makeArgs(serial(), pTarget->serial());
   }
   for (auto user : usersToInform) user->sendMessage(msgCode, args);
 }

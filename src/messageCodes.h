@@ -380,6 +380,10 @@ enum MessageCode {
   // An NPC hit a player
   // Arguments: serial, username
   SV_ENTITY_HIT_PLAYER,
+
+  // An NPC hit an NPC
+  // Arguments: attacker's serial, defender's serial
+  SV_ENTITY_HIT_ENTITY,
     
   // A player hit an NPC
   // Arguments: username, serial
