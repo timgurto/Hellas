@@ -13,6 +13,7 @@ void NPC::processAI(ms_t timeElapsed) {
     for (auto *potentialTarget :
          Server::_instance->findEntitiesInArea(location(), AGGRO_RANGE)) {
       if (potentialTarget == this) continue;
+      if (!potentialTarget->canBeAttackedBy(*this)) continue;
       if (distance(collisionRect(), potentialTarget->collisionRect()) >
           AGGRO_RANGE)
         continue;
