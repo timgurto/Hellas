@@ -140,8 +140,8 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
         }
       }
 
-      AND_GIVEN("an observer player") {
-        auto c = TestClient::WithDataString(data);
+      AND_GIVEN("Alice logs in") {
+        auto c = TestClient::WithUsernameAndDataString("Alice", data);
         s.waitForUsers(1);
 
         AND_GIVEN("another dog") {
@@ -150,7 +150,7 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
           THEN("Alice's dog loses health") {
             WAIT_UNTIL(dog.health() < dog.stats().maxHealth);
 
-            AND_THEN("the player receives a SV_ENTITY_HIT_ENTITY message") {
+            AND_THEN("she receives a SV_ENTITY_HIT_ENTITY message") {
               CHECK(c.waitForMessage(SV_ENTITY_HIT_ENTITY));
             }
           }
@@ -166,8 +166,17 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
         AND_WHEN("some time passes") {
           REPEAT_FOR_MS(100);
 
-          THEN("the first dog hasn't lost any health") {
+          THEN("Alice's dog hasn't lost any health") {
             CHECK(dog.health() == dog.stats().maxHealth);
+          }
+        }
+
+        AND_WHEN("Alice and Bob declare war") {
+          s.wars().declare({"Alice", Belligerent::PLAYER},
+                           {"Bob", Belligerent::PLAYER});
+
+          THEN("Alice's dog loses health") {
+            WAIT_UNTIL(dog.health() < dog.stats().maxHealth);
           }
         }
       }

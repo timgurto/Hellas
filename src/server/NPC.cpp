@@ -43,7 +43,12 @@ bool NPC::canBeAttackedBy(const NPC &npc) const {
   const auto otherIsUnowned = npc.owner().type == Permissions::Owner::NONE;
   if (thisIsUnowned && otherIsUnowned) return false;
   if (thisIsUnowned ^ otherIsUnowned) return true;
-  return false;
+
+  // Both are owned.
+  auto thisOwner = Belligerent{owner().name, Belligerent::PLAYER};
+  auto otherOwner = Belligerent{npc.owner().name, Belligerent::PLAYER};
+  const auto &server = Server::instance();
+  return server.wars().isAtWar(thisOwner, otherOwner);
 }
 
 CombatResult NPC::generateHitAgainst(const Entity &target, CombatType type,
