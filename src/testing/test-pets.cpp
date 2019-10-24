@@ -140,9 +140,11 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
         }
       }
 
-      AND_GIVEN("Alice logs in") {
-        auto c = TestClient::WithUsernameAndDataString("Alice", data);
+      AND_GIVEN("An observer user logs in, far away from the action") {
+        auto c = TestClient::WithDataString(data);
         s.waitForUsers(1);
+        auto &user = s.getFirstUser();
+        user.teleportTo({200, 200});
 
         AND_GIVEN("another dog") {
           s.addNPC("dog", {15, 10});
@@ -150,7 +152,7 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
           THEN("Alice's dog loses health") {
             WAIT_UNTIL(dog.health() < dog.stats().maxHealth);
 
-            AND_THEN("she receives a SV_ENTITY_HIT_ENTITY message") {
+            AND_THEN("the observer receives a SV_ENTITY_HIT_ENTITY message") {
               CHECK(c.waitForMessage(SV_ENTITY_HIT_ENTITY));
             }
           }
