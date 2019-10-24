@@ -156,6 +156,21 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
           }
         }
       }
+
+      AND_GIVEN("another dog owned by offline player, Bob") {
+        s.addNPC("dog", {15, 10});
+        auto *dog2 = dynamic_cast<NPC *>(s.entities().find(dog.serial() + 1));
+        CHECK(dog2 != nullptr);
+        dog2->permissions().setPlayerOwner("Bob");
+
+        AND_WHEN("some time passes") {
+          REPEAT_FOR_MS(100);
+
+          THEN("the first dog hasn't lost any health") {
+            CHECK(dog.health() == dog.stats().maxHealth);
+          }
+        }
+      }
     }
 
     AND_GIVEN("it's owned by a city") {

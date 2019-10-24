@@ -42,7 +42,8 @@ bool NPC::canBeAttackedBy(const NPC &npc) const {
   const auto thisIsUnowned = owner().type == Permissions::Owner::NONE;
   const auto otherIsUnowned = npc.owner().type == Permissions::Owner::NONE;
   if (thisIsUnowned && otherIsUnowned) return false;
-  return true;
+  if (thisIsUnowned ^ otherIsUnowned) return true;
+  return false;
 }
 
 CombatResult NPC::generateHitAgainst(const Entity &target, CombatType type,
