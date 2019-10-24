@@ -423,3 +423,5 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 607,Starved pets become mobs,1,13,Feature,606,,,
 608,Allow pets to ride on some vehicles,5,13,Feature,609,,,
 609,Pets follow their owners,8,8,Feature,597,TRUE,TRUE,3 Tin wrapup
+610,Pets shouldn't count towards their original spawner's limit,2,5,Exploit,,,,
+611,Only NPCs marked as tamable can be tamed,8,3,Feature,,,,3 Tin wrapup
