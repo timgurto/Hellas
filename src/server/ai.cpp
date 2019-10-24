@@ -132,6 +132,8 @@ void NPC::onTransition(State previousState) {
     _threatTable.clear();
     clearTagger();
 
+    if (owner().type != Permissions::Owner::NONE) return;
+
     static const auto ATTEMPTS = 20;
     for (auto i = 0; i != ATTEMPTS; ++i) {
       if (!spawner()) break;
@@ -160,10 +162,19 @@ void NPC::act() {
   switch (_state) {
     case IDLE:
       target(nullptr);
+
+      // Follow owner, if nearby
+      if (owner().type == Permissions::Owner::PLAYER) {
+        const auto *ownerPlayer =
+            Server::instance().getUserByName(owner().name);
+        if (ownerPlayer == nullptr) break;
+        updateLocation(ownerPlayer->location());
+      }
+
       break;
 
     case CHASE:
-      // Move towards player
+      // Move towards target
       updateLocation(target()->location());
       break;
 

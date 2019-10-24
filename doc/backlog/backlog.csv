@@ -422,4 +422,4 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 606,Pets consume food automatically,3,8,Feature,378,,,
 607,Starved pets become mobs,1,13,Feature,606,,,
 608,Allow pets to ride on some vehicles,5,13,Feature,609,,,
-609,Pets can follow,8,8,Feature,597,,TRUE,3 Tin wrapup
+609,Pets follow their owners,8,8,Feature,597,TRUE,TRUE,3 Tin wrapup

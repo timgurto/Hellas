@@ -222,3 +222,33 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
     }
   }
 }
+
+TEST_CASE("Pets follow their owners") {
+  GIVEN("A guinea pig") {
+    auto data = R"(
+      <npcType id="guineaPig" maxHealth="1" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    s.addNPC("guineaPig", {10, 15});
+    auto &guineaPig = s.getFirstNPC();
+
+    AND_GIVEN("It's owned by a player") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      guineaPig.permissions().setPlayerOwner(user.name());
+
+      WHEN("The player moves away") {
+        user.teleportTo({100, 100});
+
+        THEN("The guinea pig moves nearby") {
+          const auto maxDist = 10.0;
+          const auto timeAllowed = ms_t{10000};
+          WAIT_UNTIL_TIMEOUT(
+              distance(guineaPig.location(), user.location()) <= maxDist,
+              timeAllowed);
+        }
+      }
+    }
+  }
+}
