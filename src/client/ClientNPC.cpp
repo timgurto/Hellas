@@ -1,7 +1,8 @@
+#include "ClientNPC.h"
+
 #include <cassert>
 
 #include "Client.h"
-#include "ClientNPC.h"
 
 extern Renderer renderer;
 
@@ -12,12 +13,19 @@ ClientNPC::ClientNPC(size_t serial, const ClientNPCType *type,
 bool ClientNPC::canBeAttackedByPlayer() const {
   if (!ClientCombatant::canBeAttackedByPlayer()) return false;
   if (npcType()->isCivilian()) return false;
+
+  if (_owner.type != Owner::ALL_HAVE_ACCESS) {
+    const auto &client = *Client::_instance;
+    return client.isAtWarWithObjectOwner(_owner);
+  }
   return true;
 }
 
 const Color &ClientNPC::nameColor() const {
   if (npcType()->isCivilian()) return Color::COMBATANT_NEUTRAL;
   if (npcType()->isNeutral()) return Color::COMBATANT_DEFENSIVE;
+  if (belongsToPlayerCity()) return Color::COMBATANT_ALLY;
+  if (belongsToPlayer()) return Color::COMBATANT_SELF;
   return Color::COMBATANT_ENEMY;
 }
 
