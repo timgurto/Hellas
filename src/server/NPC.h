@@ -78,6 +78,8 @@ class NPC : public Entity, public QuestNode {
   static const px_t AGGRO_RANGE;
   static const px_t PURSUIT_RANGE;
   static const px_t RETURN_MARGIN;
+  static const ms_t FREQUENCY_TO_LOOK_FOR_TARGETS;
+  ms_t _timeSinceLookedForTargets;
   void processAI(ms_t timeElapsed);
   void transitionIfNecessary();
   void onTransition(State previousState);

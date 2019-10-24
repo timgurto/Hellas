@@ -4,16 +4,23 @@
 void NPC::processAI(ms_t timeElapsed) {
   target(nullptr);
 
-  // Become aware of nearby users
-  for (auto *potentialTarget :
-       Server::_instance->findEntitiesInArea(location(), AGGRO_RANGE)) {
-    if (potentialTarget == this) continue;
-    if (distance(collisionRect(), potentialTarget->collisionRect()) >
-        AGGRO_RANGE)
-      continue;
+  // Become aware of nearby potential targets
+  _timeSinceLookedForTargets += timeElapsed;
+  if (_timeSinceLookedForTargets >= FREQUENCY_TO_LOOK_FOR_TARGETS) {
+    _timeSinceLookedForTargets =
+        _timeSinceLookedForTargets % FREQUENCY_TO_LOOK_FOR_TARGETS;
 
-    makeAwareOf(*potentialTarget);
+    for (auto *potentialTarget :
+         Server::_instance->findEntitiesInArea(location(), AGGRO_RANGE)) {
+      if (potentialTarget == this) continue;
+      if (distance(collisionRect(), potentialTarget->collisionRect()) >
+          AGGRO_RANGE)
+        continue;
+
+      makeAwareOf(*potentialTarget);
+    }
   }
+
   target(_threatTable.getTarget());
 
   State previousState = _state;
