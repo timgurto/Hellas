@@ -45,8 +45,14 @@ bool NPC::canBeAttackedBy(const NPC &npc) const {
   if (thisIsUnowned ^ otherIsUnowned) return true;
 
   // Both are owned.
-  auto thisOwner = Belligerent{owner().name, Belligerent::PLAYER};
-  auto otherOwner = Belligerent{npc.owner().name, Belligerent::PLAYER};
+  auto thisOwner =
+      Belligerent{owner().name, owner().type == Permissions::Owner::PLAYER
+                                    ? Belligerent::PLAYER
+                                    : Belligerent::CITY};
+  auto otherOwner = Belligerent{npc.owner().name,
+                                npc.owner().type == Permissions::Owner::PLAYER
+                                    ? Belligerent::PLAYER
+                                    : Belligerent::CITY};
   const auto &server = Server::instance();
   return server.wars().isAtWar(thisOwner, otherOwner);
 }

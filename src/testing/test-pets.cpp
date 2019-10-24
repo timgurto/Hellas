@@ -184,7 +184,7 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
       }
     }
 
-    AND_GIVEN("it's owned by a city") {
+    AND_GIVEN("it's owned by the city of Athens") {
       s.cities().createCity("Athens");
       dog.permissions().setCityOwner("Athens");
 
@@ -199,6 +199,23 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
 
           THEN("Bob loses health") {
             WAIT_UNTIL(bob.health() < bob.stats().maxHealth);
+          }
+        }
+      }
+
+      AND_GIVEN("another dog owned by the city of Sparta") {
+        s.addNPC("dog", {15, 10});
+        auto *dog2 = dynamic_cast<NPC *>(s.entities().find(dog.serial() + 1));
+        CHECK(dog2 != nullptr);
+        s.cities().createCity("Sparta");
+        dog2->permissions().setCityOwner("Sparta");
+
+        AND_WHEN("Athens and Sparta declare war") {
+          s.wars().declare({"Athens", Belligerent::CITY},
+                           {"Sparta", Belligerent::CITY});
+
+          THEN("Athens' dog loses health") {
+            WAIT_UNTIL(dog.health() < dog.stats().maxHealth);
           }
         }
       }
