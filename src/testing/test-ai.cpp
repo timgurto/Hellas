@@ -60,6 +60,29 @@ TEST_CASE("NPCs chain pull", "[ai]") {
   }
 }
 
+TEST_CASE("NPCs don't attack each other") {
+  GIVEN("An aggressive wolf NPC type") {
+    auto data = R"(
+      <npcType id="wolf" maxHealth="10000" attack="2" speed="10" />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    AND_GIVEN("Two wolves") {
+      s.addNPC("wolf", {10, 15});
+      s.addNPC("wolf", {15, 10});
+
+      WHEN("Enough time passes for a few hits") {
+        REPEAT_FOR_MS(50);
+
+        THEN("the first hasn't lost any health") {
+          const auto &wolf1 = s.getFirstNPC();
+          CHECK(wolf1.health() == wolf1.stats().maxHealth);
+        }
+      }
+    }
+  }
+}
+
 TEST_CASE("NPCs can get around obstacles") {
   GIVEN("a wall between an NPC and a player") {
     WHEN("the NPC becomes aware of the user") {

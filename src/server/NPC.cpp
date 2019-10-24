@@ -38,7 +38,12 @@ bool NPC::canBeAttackedBy(const User &user) const {
                                {user.name(), Belligerent::PLAYER});
 }
 
-bool NPC::canBeAttackedBy(const NPC &npc) const { return true; }
+bool NPC::canBeAttackedBy(const NPC &npc) const {
+  const auto thisIsUnowned = owner().type == Permissions::Owner::NONE;
+  const auto otherIsUnowned = npc.owner().type == Permissions::Owner::NONE;
+  if (thisIsUnowned && otherIsUnowned) return false;
+  return true;
+}
 
 CombatResult NPC::generateHitAgainst(const Entity &target, CombatType type,
                                      SpellSchool school, px_t range) const {
