@@ -12,7 +12,7 @@ class User;
 
 // Objects that can engage in combat, and that are AI-driven
 class NPC : public Entity, public QuestNode {
-  enum State { IDLE, CHASE, ATTACK };
+  enum State { IDLE, CHASE, ATTACK, FOLLOW };
   State _state;
   Level _level{0};
   ThreatTable _threatTable;
@@ -78,12 +78,14 @@ class NPC : public Entity, public QuestNode {
   static const px_t AGGRO_RANGE;
   static const px_t PURSUIT_RANGE;
   static const px_t RETURN_MARGIN;
+  static const px_t FOLLOW_DISTANCE;
   static const ms_t FREQUENCY_TO_LOOK_FOR_TARGETS;
   ms_t _timeSinceLookedForTargets;
   void processAI(ms_t timeElapsed);
   void transitionIfNecessary();
   void onTransition(State previousState);
   void act();
+  const User *_followTarget{nullptr};
 };
 
 #endif

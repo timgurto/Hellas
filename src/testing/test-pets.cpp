@@ -244,7 +244,7 @@ TEST_CASE("Pets follow their owners") {
         user.teleportTo({100, 100});
 
         THEN("The guinea pig moves nearby") {
-          const auto maxDist = 10.0;
+          const auto maxDist = 30.0;
           const auto timeAllowed = ms_t{10000};
           WAIT_UNTIL_TIMEOUT(
               distance(guineaPig.location(), user.location()) <= maxDist,

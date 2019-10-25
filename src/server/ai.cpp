@@ -39,20 +39,53 @@ void NPC::transitionIfNecessary() {
 
   switch (_state) {
     case IDLE:
-      if (combatDamage() == 0 &&
-          !npcType()->knownSpell())  // NPCs that can't attack won't try.
-        break;
+      // There's a target to attack
+      {
+        auto canAttack = combatDamage() > 0 || npcType()->knownSpell();
+        if (canAttack && target()) {
+          if (distToTarget > ATTACK_RANGE) {
+            _state = CHASE;
+            resetLocationUpdateTimer();
+          } else
+            _state = ATTACK;
+          break;
+        }
+      }
 
-      // React to recent attacker
+      // Follow owner, if nearby
+      {
+        if (owner().type != Permissions::Owner::PLAYER) break;
+        const auto *ownerPlayer =
+            Server::instance().getUserByName(owner().name);
+        if (ownerPlayer == nullptr) break;
+        if (distance(ownerPlayer->collisionRect(), collisionRect()) <=
+            FOLLOW_DISTANCE)
+          break;
+        _state = FOLLOW;
+        _followTarget = ownerPlayer;
+        break;
+      }
+
+      break;
+
+    case FOLLOW:
+      // There's a target to attack
       if (target()) {
         if (distToTarget > ATTACK_RANGE) {
           _state = CHASE;
           resetLocationUpdateTimer();
         } else
           _state = ATTACK;
+        break;
       }
 
-      break;
+      // Owner is close enough
+      if (distance(_followTarget->collisionRect(), collisionRect()) <=
+          FOLLOW_DISTANCE) {
+        _state = IDLE;
+        _followTarget = nullptr;
+        break;
+      }
 
     case CHASE:
       // Target has disappeared
@@ -162,15 +195,10 @@ void NPC::act() {
   switch (_state) {
     case IDLE:
       target(nullptr);
+      break;
 
-      // Follow owner, if nearby
-      if (owner().type == Permissions::Owner::PLAYER) {
-        const auto *ownerPlayer =
-            Server::instance().getUserByName(owner().name);
-        if (ownerPlayer == nullptr) break;
-        updateLocation(ownerPlayer->location());
-      }
-
+    case FOLLOW:
+      updateLocation(_followTarget->location());
       break;
 
     case CHASE:
