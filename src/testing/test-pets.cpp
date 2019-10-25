@@ -3,9 +3,11 @@
 #include "testing.h"
 
 TEST_CASE("Taming NPCs") {
-  GIVEN("a cat") {
+  GIVEN("a tamable cat") {
     auto data = R"(
-      <npcType id="cat" maxHealth="1" />
+      <npcType id="cat" maxHealth="1" >
+        <canBeTamed />
+      </npcType>
     )";
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
@@ -248,6 +250,28 @@ TEST_CASE("Pets follow their owners") {
               distance(guineaPig.location(), user.location()) <= maxDist,
               timeAllowed);
         }
+      }
+    }
+  }
+}
+
+TEST_CASE("Non-tamable NPCs can't be tamed") {
+  GIVEN("A non-tamable tiger NPC") {
+    auto data = R"(
+      <npcType id="tiger" maxHealth="1" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    s.addNPC("tiger", {10, 15});
+    auto &tiger = s.getFirstNPC();
+
+    WHEN("a player tries to tame it") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      c.sendMessage(CL_TAME_NPC, makeArgs(tiger.serial()));
+
+      THEN("it is still unowned") {
+        REPEAT_FOR_MS(100);
+        CHECK(tiger.owner().type == Permissions::Owner::NONE);
       }
     }
   }

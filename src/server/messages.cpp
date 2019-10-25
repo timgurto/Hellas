@@ -1666,6 +1666,8 @@ void Server::handle_CL_TAME_NPC(User &user, size_t serial) {
     return;
   }
 
+  if (!npc->npcType()->canBeTamed()) return;
+
   npc->permissions().setPlayerOwner(user.name());
 }
 
