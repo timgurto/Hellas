@@ -5,6 +5,7 @@
     level="6" maxHealth="28" attack="6" attackTime="2500"
     imageFile = "dog" sounds="dog" isNeutral="1"
     xDrawOffset="-13" yDrawOffset="-24" >
+    <canBeTamed />
     <collisionRect x="-11" y="-2" w="21" h="4" />
     <loot id="meat" chance="0.3" />
     <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
