@@ -58,6 +58,10 @@ bool Server::isLocationValid(const MapRect &rect,
           (pEnt->classTag() == 'u' || pEnt->classTag() == 'n'))
         continue;
 
+      if (thisEntity && thisEntity->classTag() == 'n' &&
+          pEnt->classTag() == 'u')
+        continue;
+
       if ((pEnt->classTag() == 'u') &&
           dynamic_cast<const User *>(pEnt)->isDriving())
         continue;
