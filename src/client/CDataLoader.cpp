@@ -947,6 +947,9 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
     else if (xr.findAttr(elem, "isNeutral", n) && n != 0)
       nt->makeNeutral();
 
+    auto canBeTamed = xr.findChild("canBeTamed", elem);
+    if (canBeTamed) nt->canBeTamed(true);
+
     // Insert
     auto pair = _client._objectTypes.insert(nt);
     if (!pair.second) {

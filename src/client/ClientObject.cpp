@@ -1041,6 +1041,11 @@ void ClientObject::createRegularTooltip() const {
 
   else if (classTag() == 'n') {
     const ClientNPC &npc = dynamic_cast<const ClientNPC &>(*this);
+    if (npc.npcType()->canBeTamed() && npc.isAlive()) {
+      tooltip.addGap();
+      tooltip.setColor(Color::TOOLTIP_BODY);
+      tooltip.addLine("Can be tamed into a pet");
+    }
     if (npc.canBeAttackedByPlayer()) {
       tooltip.addGap();
       tooltip.setColor(Color::TOOLTIP_INSTRUCTION);

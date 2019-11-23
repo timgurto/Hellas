@@ -24,6 +24,8 @@ class ClientNPCType : public ClientObjectType {
   bool isCivilian() const { return _isCivilian; }
   void makeNeutral() { _isNeutral = true; }
   bool isNeutral() const { return _isNeutral; }
+  void canBeTamed(bool b) { _canBeTamed = b; }
+  bool canBeTamed() const { return _canBeTamed; }
 
   virtual char classTag() const override { return 'n'; }
 
@@ -32,6 +34,7 @@ class ClientNPCType : public ClientObjectType {
   ClientItem::vect_t _gear;  // For humanoid NPCs
   bool _isCivilian{false};
   bool _isNeutral{false};
+  bool _canBeTamed{false};
 };
 
 #endif
