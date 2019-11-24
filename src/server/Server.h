@@ -90,6 +90,9 @@ class Server {
   const ServerItem *findItem(const std::string &id) const;
   const BuffType *findBuff(const BuffType::ID &id) const;
   const Spell *findSpell(const Spell::ID &id) const;
+  std::pair<std::set<size_t>::iterator, std::set<size_t>::iterator>
+  findObjectsOwnedBy(const Permissions::Owner &owner) const;
+  const Entity *findEntityBySerial(size_t serial);
 
   // Checks whether an entity is within range of a user.  If not, a relevant
   // error message is sent to the client.

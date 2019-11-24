@@ -10,6 +10,12 @@ ObjectsByOwner::getObjectsWithSpecificOwner(
   return it->second;
 }
 
+std::pair<std::set<size_t>::iterator, std::set<size_t>::iterator>
+ObjectsByOwner::getObjectsOwnedBy(const Permissions::Owner &owner) const {
+  const auto &objects = getObjectsWithSpecificOwner(owner);
+  return std::make_pair(objects.begin(), objects.end());
+}
+
 bool ObjectsByOwner::isObjectOwnedBy(size_t serial,
                                      const Permissions::Owner &owner) const {
   const auto &hisObjects = getObjectsWithSpecificOwner(owner);

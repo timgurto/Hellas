@@ -732,6 +732,15 @@ const Spell *Server::findSpell(const Spell::ID &id) const {
   return it->second;
 }
 
+std::pair<std::set<size_t>::iterator, std::set<size_t>::iterator>
+Server::findObjectsOwnedBy(const Permissions::Owner &owner) const {
+  return _objectsByOwner.getObjectsOwnedBy(owner);
+}
+
+const Entity *Server::findEntityBySerial(size_t serial) {
+  return _entities.find(serial);
+}
+
 const Terrain *Server::terrainType(char index) const {
   auto it = _terrainTypes.find(index);
   if (it == _terrainTypes.end()) return nullptr;

@@ -53,6 +53,7 @@ class Cities {
   bool isPlayerInACity(const std::string &username) const;
   const City::Name &getPlayerCity(const std::string &username) const;
   const City::Members &membersOf(const std::string &cityName) const;
+  void sendCityObjectsToCitizen(const User &citizen) const;
 
   void writeToXMLFile(const std::string &filename) const;
   void readFromXMLFile(const std::string &filename);

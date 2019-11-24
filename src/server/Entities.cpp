@@ -1,4 +1,5 @@
 #include "Entities.h"
+
 #include "User.h"
 #include "Vehicle.h"
 #include "objects/Object.h"

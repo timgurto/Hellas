@@ -130,6 +130,30 @@ TEST_CASE(
   CHECK(c.objects().size() == 1);
 }
 
+TEST_CASE("New citizens find out about city objects") {
+  GIVEN("a city object far away from a player") {
+    auto s = TestServer::WithData("signpost");
+    auto c = TestClient::WithData("signpost");
+
+    s.cities().createCity("Athens");
+    s.addObject("signpost", {1000, 1000}, {Permissions::Owner::CITY, "Athens"});
+
+    THEN("the player doesn't know about the object") {
+      s.waitForUsers(1);
+      REPEAT_FOR_MS(100);
+      CHECK(c.objects().empty());
+
+      AND_WHEN("the player joins the city") {
+        s.cities().addPlayerToCity(s.getFirstUser(), "Athens");
+
+        THEN("he knows about the object") {
+          WAIT_UNTIL(c.objects().size() == 1);
+        }
+      }
+    }
+  }
+}
+
 TEST_CASE("Unwatching NPCs", "[.flaky]") {
   GIVEN("an NPC with a window") {
     auto data = R"(

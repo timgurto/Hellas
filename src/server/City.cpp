@@ -65,6 +65,7 @@ void Cities::addPlayerToCity(const User &user, const City::Name &cityName) {
   City &city = it->second;
   city.addAndAlertPlayers(user);
   _usersToCities[user.name()] = cityName;
+  sendCityObjectsToCitizen(user);
 }
 
 void Cities::removeUserFromCity(const User &user, const City::Name &cityName) {
@@ -148,4 +149,17 @@ const City::Members &Cities::membersOf(const std::string &cityName) const {
     assert(false);
   }
   return it->second.members();
+}
+
+void Cities::sendCityObjectsToCitizen(const User &citizen) const {
+  const auto cityName = getPlayerCity(citizen.name());
+  if (cityName.empty()) return;
+
+  auto iterators = Server::instance().findObjectsOwnedBy(
+      {Permissions::Owner::CITY, cityName});
+  for (auto it = iterators.first; it != iterators.second; ++it) {
+    auto serial = *it;
+    auto *entity = Server::instance().findEntityBySerial(serial);
+    entity->sendInfoToClient(citizen);
+  }
 }

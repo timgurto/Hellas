@@ -21,6 +21,9 @@ class ObjectsByOwner {
     container[owner].remove(serial);
   }
 
+  std::pair<std::set<size_t>::iterator, std::set<size_t>::iterator>
+  getObjectsOwnedBy(const Permissions::Owner &owner) const;
+
  private:
   class ObjectsWithSpecificOwner {
    public:
