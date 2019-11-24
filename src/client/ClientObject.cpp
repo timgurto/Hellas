@@ -891,6 +891,7 @@ const Texture &ClientObject::cursor(const Client &client) const {
     if (startsQuests().size() > 0) return client.cursorStartsQuest();
     if (ot.canGather()) return client.cursorGather();
     if (ot.hasAction()) return client.cursorContainer();
+    if (classTag() == 'v') return client.cursorVehicle();
     if (ot.containerSlots() > 0) return client.cursorContainer();
   }
   if (lootable() || ot.merchantSlots() > 0) return client.cursorContainer();

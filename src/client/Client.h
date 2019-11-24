@@ -134,6 +134,7 @@ class Client {
   const Texture &cursorStartsQuest() const { return _cursorStartsQuest; }
   const Texture &cursorEndsQuest() const { return _cursorEndsQuest; }
   const Texture &cursorRepair() const { return _cursorRepair; }
+  const Texture &cursorVehicle() const { return _cursorVehicle; }
 
   static const px_t ICON_SIZE;
   static const double MOVEMENT_SPEED;
@@ -241,7 +242,7 @@ class Client {
   static const ms_t TIME_BETWEEN_LOCATION_UPDATES;
 
   Texture _cursorNormal, _cursorGather, _cursorContainer, _cursorAttack,
-      _cursorStartsQuest, _cursorEndsQuest, _cursorRepair;
+      _cursorStartsQuest, _cursorEndsQuest, _cursorRepair, _cursorVehicle;
   const Texture *_currentCursor;
 
   bool _isDismounting;  // Whether the user is looking for a dismount location.

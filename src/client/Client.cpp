@@ -77,16 +77,14 @@ std::map<int, std::string> Client::_errorMessages;
 const int Client::MIXING_CHANNELS = 32;
 
 Client::Client()
-    : _cursorNormal(std::string("Images/Cursors/normal.png"), Color::MAGENTA),
-      _cursorGather(std::string("Images/Cursors/gather.png"), Color::MAGENTA),
-      _cursorContainer(std::string("Images/Cursors/container.png"),
-                       Color::MAGENTA),
-      _cursorAttack(std::string("Images/Cursors/attack.png"), Color::MAGENTA),
-      _cursorStartsQuest(std::string("Images/Cursors/startsQuest.png"),
-                         Color::MAGENTA),
-      _cursorEndsQuest(std::string("Images/Cursors/endsQuest.png"),
-                       Color::MAGENTA),
-      _cursorRepair(std::string("Images/Cursors/repair.png"), Color::MAGENTA),
+    : _cursorNormal("Images/Cursors/normal.png"s, Color::MAGENTA),
+      _cursorGather("Images/Cursors/gather.png"s, Color::MAGENTA),
+      _cursorContainer("Images/Cursors/container.png"s, Color::MAGENTA),
+      _cursorAttack("Images/Cursors/attack.png"s, Color::MAGENTA),
+      _cursorStartsQuest("Images/Cursors/startsQuest.png"s, Color::MAGENTA),
+      _cursorEndsQuest("Images/Cursors/endsQuest.png"s, Color::MAGENTA),
+      _cursorRepair("Images/Cursors/repair.png"s, Color::MAGENTA),
+      _cursorVehicle("Images/Cursors/vehicle.png"s, Color::MAGENTA),
       _currentCursor(&_cursorNormal),
 
       _character({}, {}),

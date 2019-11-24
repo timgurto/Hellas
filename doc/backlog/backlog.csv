@@ -396,7 +396,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 580,"Damage shield on block, not hit",1,5,Feature,,,,
 581,Don't damage armour on block,1,5,Feature,,,,
 582,Don't damage weapon or armour on miss/dodge,1,5,Feature,,,,
-583,Add cursor for vehicles,5,3,Usability,,,,3 Tin wrapup
+583,Add cursor for vehicles,5,3,Usability,,TRUE,,3 Tin wrapup
 584,Can gather from a fig tree briefly before it changes type and is empty,5,8,Bug,,,,
 585,Make ranged weapons viable at high latency,21,13,Usability,,,TRUE,3 Tin wrapup
 586,Construction sites have windows despite no permission,3,2,Bug,,,,
