@@ -391,7 +391,7 @@ void User::beginGathering(Object *obj) {
 void User::beginCrafting(const SRecipe &recipe) {
   _action = CRAFT;
   _actionRecipe = &recipe;
-  _actionTime = recipe.time();
+  _actionTime = recipe.time() / 2;
 }
 
 void User::beginConstructing(const ObjectType &obj, const MapPoint &location,
