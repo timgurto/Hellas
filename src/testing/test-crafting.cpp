@@ -55,8 +55,19 @@ TEST_CASE("Tools can have speed modifiers") {
         <tool class="grassPicking" />
       </recipe>
     )";
+    struct GrassPickingTool {
+      std::string id;
+      std::string description;
+      bool canPickGrassAtDoubleSpeed;
+    };
+    auto grassPickingTools = std::vector<GrassPickingTool>{
+        {"tweezers", "a simple tool", false},
+        {"mower", "a double-speed tool", true},
+        {"goat", "a tool with double speed for a different tag", false}};
+
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
+
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
 
@@ -64,52 +75,23 @@ TEST_CASE("Tools can have speed modifiers") {
     auto expectedProduct = ItemSet{};
     expectedProduct.add(&grass);
 
-    AND_GIVEN("a user has a simple tool") {
-      const auto &tweezers = s.findItem("tweezers");
-      user.giveItem(&tweezers);
+    for (const auto &tool : grassPickingTools) {
+      AND_GIVEN("a user has " + tool.description) {
+        const auto &item = s.findItem(tool.id);
+        user.giveItem(&item);
 
-      WHEN("he crafts the recipe") {
-        c.sendMessage(CL_CRAFT, "grass");
+        WHEN("he crafts the recipe") {
+          c.sendMessage(CL_CRAFT, "grass");
 
-        AND_WHEN("150ms elapses") {
-          REPEAT_FOR_MS(150);
+          AND_WHEN("150ms elapses") {
+            REPEAT_FOR_MS(150);
 
-          THEN("the product has not been crafted") {
-            CHECK_FALSE(user.hasItems(expectedProduct));
-          }
-        }
-      }
-    }
-
-    AND_GIVEN("a user has a double-speed tool") {
-      const auto &mower = s.findItem("mower");
-      user.giveItem(&mower);
-
-      WHEN("he crafts the recipe") {
-        c.sendMessage(CL_CRAFT, "grass");
-
-        AND_WHEN("150ms elapses") {
-          REPEAT_FOR_MS(150);
-
-          THEN("the product has been crafted") {
-            CHECK(user.hasItems(expectedProduct));
-          }
-        }
-      }
-    }
-
-    AND_GIVEN("a user has a tool with an additional, double-speed tag") {
-      const auto &mower = s.findItem("goat");
-      user.giveItem(&mower);
-
-      WHEN("he crafts the recipe") {
-        c.sendMessage(CL_CRAFT, "grass");
-
-        AND_WHEN("150ms elapses") {
-          REPEAT_FOR_MS(150);
-
-          THEN("the product has not been crafted") {
-            CHECK_FALSE(user.hasItems(expectedProduct));
+            THEN("the product has "s +
+                 (tool.canPickGrassAtDoubleSpeed ? "" : "not ") +
+                 "been crafted") {
+              CHECK(user.hasItems(expectedProduct) ==
+                    tool.canPickGrassAtDoubleSpeed);
+            }
           }
         }
       }
