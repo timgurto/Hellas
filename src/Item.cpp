@@ -8,14 +8,6 @@ void Item::makeWeapon(Hitpoints damage, double speedInS, SpellSchool school) {
   _stats.weaponSchool = school;
 }
 
-void Item::addTag(const std::string &tagName, double toolSpeed) {
-  _tags[tagName] = toolSpeed;
-}
-
-bool Item::isTag(const std::string &tagName) const {
-  return _tags.find(tagName) != _tags.end();
-}
-
 size_t Item::getRandomArmorSlot() {
   /*
   Randomly return one of:

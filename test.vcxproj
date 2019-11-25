@@ -167,6 +167,7 @@
     <ClCompile Include="src\client\WordWrapper.cpp" />
     <ClCompile Include="src\Color.cpp" />
     <ClCompile Include="src\curlUtil.cpp" />
+    <ClCompile Include="src\HasTags.cpp" />
     <ClCompile Include="src\Item.cpp" />
     <ClCompile Include="src\Log.cpp" />
     <ClCompile Include="src\Map.cpp" />
@@ -345,6 +346,7 @@
     <ClInclude Include="src\client\WordWrapper.h" />
     <ClInclude Include="src\Color.h" />
     <ClInclude Include="src\curlUtil.h" />
+    <ClInclude Include="src\HasTags.h" />
     <ClInclude Include="src\Item.h" />
     <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\Map.h" />
