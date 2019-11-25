@@ -93,7 +93,7 @@ const Tooltip &ClientItem::tooltip() const {
   if (hasTags()) {
     tooltip.addGap();
     tooltip.setColor(Color::TOOLTIP_TAG);
-    for (const std::string &tag : tags()) tooltip.addLine(client.tagName(tag));
+    for (const auto &pair : tags()) tooltip.addLine(client.tagName(pair.first));
   }
 
   // Construction

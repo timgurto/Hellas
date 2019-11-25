@@ -47,6 +47,10 @@ TEST_CASE("Tools can have speed modifiers") {
       <item id="mower">
         <tag name="grassPicking" toolSpeed = "2" />
       </item>
+      <item id="goat">
+        <tag name="grassPicking" />
+        <tag name="bleating" toolSpeed = "2" />
+      </item>
       <recipe id="grass" time="200" >
         <tool class="grassPicking" />
       </recipe>
@@ -77,7 +81,7 @@ TEST_CASE("Tools can have speed modifiers") {
       }
     }
 
-    AND_GIVEN("a user a double-speed tool") {
+    AND_GIVEN("a user has a double-speed tool") {
       const auto &mower = s.findItem("mower");
       user.giveItem(&mower);
 
@@ -89,6 +93,23 @@ TEST_CASE("Tools can have speed modifiers") {
 
           THEN("the product has been crafted") {
             CHECK(user.hasItems(expectedProduct));
+          }
+        }
+      }
+    }
+
+    AND_GIVEN("a user has a tool with an additional, double-speed tag") {
+      const auto &mower = s.findItem("goat");
+      user.giveItem(&mower);
+
+      WHEN("he crafts the recipe") {
+        c.sendMessage(CL_CRAFT, "grass");
+
+        AND_WHEN("150ms elapses") {
+          REPEAT_FOR_MS(150);
+
+          THEN("the product has not been crafted") {
+            CHECK_FALSE(user.hasItems(expectedProduct));
           }
         }
       }

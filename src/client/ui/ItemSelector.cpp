@@ -121,7 +121,8 @@ bool ItemSelector::itemMatchesFilter(const ClientItem &item,
   if (lowerCaseName.find(lowerCaseFilter) != std::string::npos) return true;
 
   // Tag matches
-  for (const std::string &tagName : item.tags()) {
+  for (const auto &pair : item.tags()) {
+    const auto &tagName = pair.first;
     auto lowerCaseTag = toLower(tagName);
     if (lowerCaseTag.find(lowerCaseFilter) != std::string::npos) return true;
   }

@@ -464,13 +464,13 @@ User::ToolSearchResult User::findTool(const std::string &tagName) {
   // Check gear
   for (size_t i = 0; i != User::GEAR_SLOTS; ++i) {
     auto &slot = _gear[i].first;
-    if (slot.hasItem() && slot.type()->isTag(tagName)) return {slot};
+    if (slot.hasItem() && slot.type()->isTag(tagName)) return {slot, tagName};
   }
 
   // Check inventory
   for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
     auto &slot = _inventory[i].first;
-    if (slot.hasItem() && slot.type()->isTag(tagName)) return {slot};
+    if (slot.hasItem() && slot.type()->isTag(tagName)) return {slot, tagName};
   }
 
   // Check nearby terrain
@@ -495,7 +495,7 @@ User::ToolSearchResult User::findTool(const std::string &tagName) {
       continue;
     if (!pObj->permissions().doesUserHaveAccess(_name)) continue;
 
-    return {*pObj};
+    return {*pObj, tagName};
   }
 
   return {ToolSearchResult::NOT_FOUND};
@@ -1634,8 +1634,9 @@ bool User::QuestProgress::operator<(const QuestProgress &rhs) const {
   return ID < rhs.ID;
 }
 
-User::ToolSearchResult::ToolSearchResult(DamageOnUse &tool)
-    : _type(DAMAGE_ON_USE), _tool(&tool), _toolSpeed(tool.toolSpeed()) {}
+User::ToolSearchResult::ToolSearchResult(DamageOnUse &tool,
+                                         const std::string &tag)
+    : _type(DAMAGE_ON_USE), _tool(&tool), _toolSpeed(tool.toolSpeed(tag)) {}
 
 User::ToolSearchResult::ToolSearchResult(Type type) : _type(type) {
   if (type == DAMAGE_ON_USE) SERVER_ERROR("Bad tool search");

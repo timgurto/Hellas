@@ -55,7 +55,7 @@ class ServerItem : public Item {
     bool isBroken() const;
     void damageFromUse() override;
     void repair() override;
-    double toolSpeed() const override { return _type->_toolSpeed; }
+    double toolSpeed(const std::string &tag) const override;
 
    private:
     Instance(const ServerItem *type, ReportingInfo info, Hitpoints health)

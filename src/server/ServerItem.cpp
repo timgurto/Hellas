@@ -114,6 +114,14 @@ void ServerItem::Instance::repair() {
   _reportingInfo.report();
 }
 
+double ServerItem::Instance::toolSpeed(const std::string &tag) const {
+  const auto &tags = _type->tags();
+  auto it = tags.find(tag);
+  if (it == tags.end()) return 1.0;
+
+  return it->second;
+}
+
 ServerItem::Instance::ReportingInfo
 ServerItem::Instance::ReportingInfo::UserGear(const User *owner, size_t slot) {
   return {owner, Server::SpecialSerial::GEAR, slot};

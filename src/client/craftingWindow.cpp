@@ -21,8 +21,10 @@ void Client::initializeCraftingWindow() {
   for (const CRecipe &recipe : _recipes) {
     for (auto matPair : recipe.materials())
       _matFilters[toClientItem(matPair.first)] = false;
-    for (const std::string &tagName : recipe.product()->tags())
+    for (const auto &pair : recipe.product()->tags()) {
+      const auto &tagName = pair.first;
       _tagFilters[tagName] = false;
+    }
   }
   _haveMatsFilter = false;
   _tagOr = _matOr = false;
@@ -278,8 +280,10 @@ void Client::populateFilters() {
   for (const CRecipe &recipe : _recipes)
     if (_knownRecipes.find(recipe.id()) !=
         _knownRecipes.end()) {  // user knows this recipe
-      for (const std::string &tag : recipe.product()->tags())
+      for (const auto &pair : recipe.product()->tags()) {
+        const auto &tag = pair.first;
         knownTags.insert(tag);
+      }
       for (const auto &matPair : recipe.materials())
         knownMats.insert(dynamic_cast<const ClientItem *>(matPair.first));
     }
@@ -416,7 +420,8 @@ bool Client::recipeMatchesFilters(const CRecipe &recipe) const {
     */
     auto tags = recipe.product()->tags();
     if (_tagOr) {
-      for (const std::string &tagName : tags) {
+      for (const auto &pair : tags) {
+        const auto &tagName = pair.first;
         if (_tagFilters.find(tagName)->second) {
           tagFilterMatched = true;
           break;

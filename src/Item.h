@@ -1,7 +1,7 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-#include <set>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -16,8 +16,10 @@ class Item {
   Item(const std::string &id);
   virtual ~Item() {}
 
+  using Tags = std::map<std::string, double>;  // Name -> tool speed
+
   const std::string &id() const { return _id; }
-  const std::set<std::string> &tags() const { return _tags; }
+  const Tags &tags() const { return _tags; }
   void gearSlot(size_t slot) { _gearSlot = slot; }
   size_t gearSlot() const { return _gearSlot; }
   void stats(const StatsMod &stats) { _stats = stats; }
@@ -37,13 +39,12 @@ class Item {
   void repairingCosts(const std::string &costID) { _repairInfo.cost = costID; }
   void repairingRequiresTool(const std::string &tag) { _repairInfo.tool = tag; }
   RepairInfo repairInfo() const { return _repairInfo; }
-  void setToolSpeed(double speed) { _toolSpeed = speed; }
 
   bool operator<(const Item &rhs) const { return _id < rhs._id; }
 
   typedef std::vector<std::pair<const Item *, size_t> > vect_t;
 
-  void addTag(const std::string &tagName);
+  void addTag(const std::string &tagName, double toolSpeed = 1.0);
   bool hasTags() const { return _tags.size() > 0; }
   bool isTag(const std::string &tagName) const;
 
@@ -53,8 +54,7 @@ class Item {
 
  protected:
   std::string _id;  // The no-space, unique name used in data files
-  std::set<std::string> _tags;
-  double _toolSpeed{1.0};
+  Tags _tags;
   size_t _gearSlot;
   StatsMod _stats;  // If gear, the impact it has on its wearer's stats.
 

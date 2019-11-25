@@ -258,7 +258,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   class ToolSearchResult {
    public:
     enum Type { NOT_FOUND, DAMAGE_ON_USE, TERRAIN };
-    ToolSearchResult(DamageOnUse &tool);
+    ToolSearchResult(DamageOnUse &tool, const std::string &tag);
     ToolSearchResult(Type type);
     operator bool() const;
     void use() const;

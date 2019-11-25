@@ -614,10 +614,10 @@ void DataLoader::loadItems(XmlReader &xr) {
     item.gearSlot(n);
 
     for (auto child : xr.getChildren("tag", elem)) {
-      if (xr.findAttr(child, "name", s)) item.addTag(s);
-      auto toolSpeed = 0.0;
-      if (xr.findAttr(child, "toolSpeed", toolSpeed))
-        item.setToolSpeed(toolSpeed);
+      if (!xr.findAttr(child, "name", s)) continue;
+      auto toolSpeed = 1.0;
+      xr.findAttr(child, "toolSpeed", toolSpeed);
+      item.addTag(s, toolSpeed);
     }
 
     if (xr.findAttr(elem, "durability", n)) item.durability(n);
