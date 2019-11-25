@@ -37,9 +37,13 @@ TEST_CASE("Terrain as tool", "[tool]") {
 }
 
 TEST_CASE("Tools can have speed modifiers") {
-  GIVEN("a 200ms recipe that requires a tool, and a double-speed tool") {
+  GIVEN(
+      "a 200ms recipe that requires a tool, and a variety of matching tools") {
     auto data = R"(
       <item id="grass" />
+      <item id="tweezers">
+        <tag name="grassPicking" />
+      </item>
       <item id="mower">
         <tag name="grassPicking" toolSpeed = "2" />
       </item>
@@ -49,24 +53,42 @@ TEST_CASE("Tools can have speed modifiers") {
     )";
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
 
-    AND_GIVEN("a user has the tool") {
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
+    const auto &grass = s.findItem("grass");
+    auto expectedProduct = ItemSet{};
+    expectedProduct.add(&grass);
+
+    AND_GIVEN("a user has a simple tool") {
+      const auto &tweezers = s.findItem("tweezers");
+      user.giveItem(&tweezers);
+
+      WHEN("he crafts the recipe") {
+        c.sendMessage(CL_CRAFT, "grass");
+
+        AND_WHEN("150ms elapses") {
+          REPEAT_FOR_MS(150);
+
+          THEN("the product has not been crafted") {
+            CHECK_FALSE(user.hasItems(expectedProduct));
+          }
+        }
+      }
+    }
+
+    AND_GIVEN("a user a double-speed tool") {
       const auto &mower = s.findItem("mower");
       user.giveItem(&mower);
 
       WHEN("he crafts the recipe") {
         c.sendMessage(CL_CRAFT, "grass");
 
-        AND_WHEN("time elapses between 100 and 200ms") {
+        AND_WHEN("150ms elapses") {
           REPEAT_FOR_MS(150);
 
           THEN("the product has been crafted") {
-            const auto &grass = s.findItem("grass");
-            auto requiredItem = ItemSet{};
-            requiredItem.add(&grass);
-            CHECK(user.hasItems(requiredItem));
+            CHECK(user.hasItems(expectedProduct));
           }
         }
       }

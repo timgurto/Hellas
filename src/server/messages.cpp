@@ -149,12 +149,13 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         }
 
         // Tool check must be the last check, as it damages the tools.
-        auto userHasRequiredTools = user->checkAndDamageTools(it->tools());
+        auto speed = user->checkAndDamageToolsAndGetSpeed(it->tools());
+        auto userHasRequiredTools = speed != 0;
         if (!userHasRequiredTools) {
           sendMessage(client, WARNING_NEED_TOOLS);
           break;
         }
-        user->beginCrafting(*it);
+        user->beginCrafting(*it, speed);
         sendMessage(client, SV_ACTION_STARTED, makeArgs(it->time()));
         break;
       }

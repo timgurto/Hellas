@@ -258,16 +258,19 @@ class User : public Object {  // TODO: Don't inherit from Object
   class ToolSearchResult {
    public:
     enum Type { NOT_FOUND, DAMAGE_ON_USE, TERRAIN };
-    ToolSearchResult(DamageOnUse &tool) : _type(DAMAGE_ON_USE), _tool(&tool) {}
+    ToolSearchResult(DamageOnUse &tool);
     ToolSearchResult(Type type);
     operator bool() const;
     void use() const;
+    double toolSpeed() const { return _toolSpeed; }
 
    private:
     Type _type{NOT_FOUND};
     DamageOnUse *_tool{nullptr};
+    double _toolSpeed{1.0};
   };
-  bool checkAndDamageTools(const std::set<std::string> &tags);
+  // Return value of 0: tool not found.
+  double checkAndDamageToolsAndGetSpeed(const std::set<std::string> &tags);
   bool checkAndDamageTool(const std::string &tag);
 
  private:
@@ -277,7 +280,8 @@ class User : public Object {  // TODO: Don't inherit from Object
   void clearInventory();
   void clearGear();
 
-  void beginCrafting(const SRecipe &item);  // Configure user to craft an item
+  // Configure user to craft an item
+  void beginCrafting(const SRecipe &item, double speed);
 
   // Configure user to construct an item, or an object from no item
   void beginConstructing(const ObjectType &obj, const MapPoint &location,

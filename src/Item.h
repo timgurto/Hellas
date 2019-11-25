@@ -37,6 +37,7 @@ class Item {
   void repairingCosts(const std::string &costID) { _repairInfo.cost = costID; }
   void repairingRequiresTool(const std::string &tag) { _repairInfo.tool = tag; }
   RepairInfo repairInfo() const { return _repairInfo; }
+  void setToolSpeed(double speed) { _toolSpeed = speed; }
 
   bool operator<(const Item &rhs) const { return _id < rhs._id; }
 
@@ -53,6 +54,7 @@ class Item {
  protected:
   std::string _id;  // The no-space, unique name used in data files
   std::set<std::string> _tags;
+  double _toolSpeed{1.0};
   size_t _gearSlot;
   StatsMod _stats;  // If gear, the impact it has on its wearer's stats.
 

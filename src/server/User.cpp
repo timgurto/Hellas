@@ -388,10 +388,10 @@ void User::beginGathering(Object *obj) {
   _actionTime = obj->objType().gatherTime();
 }
 
-void User::beginCrafting(const SRecipe &recipe) {
+void User::beginCrafting(const SRecipe &recipe, double speed) {
   _action = CRAFT;
   _actionRecipe = &recipe;
-  _actionTime = recipe.time() / 2;
+  _actionTime = toInt(recipe.time() / speed);
 }
 
 void User::beginConstructing(const ObjectType &obj, const MapPoint &location,
@@ -501,19 +501,22 @@ User::ToolSearchResult User::findTool(const std::string &tagName) {
   return {ToolSearchResult::NOT_FOUND};
 }
 
-bool User::checkAndDamageTools(const std::set<std::string> &tags) {
+double User::checkAndDamageToolsAndGetSpeed(const std::set<std::string> &tags) {
   auto toolsFound = std::vector<ToolSearchResult>{};
   for (const std::string &tagName : tags) {
     auto result = findTool(tagName);
-    if (!result) return false;
+    if (!result) return 0;
     toolsFound.push_back(result);
   }
+
+  auto speed = 1.0;
+  for (const auto &tool : toolsFound) speed *= tool.toolSpeed();
 
   // At this point, all tools were found and true will be returned.  Only now
   // should all tools be damaged.
   for (const auto &tool : toolsFound) tool.use();
 
-  return true;
+  return speed;
 }
 
 bool User::checkAndDamageTool(const std::string &tag) {
@@ -1630,6 +1633,9 @@ bool User::QuestProgress::operator<(const QuestProgress &rhs) const {
   if (type != rhs.type) return type < rhs.type;
   return ID < rhs.ID;
 }
+
+User::ToolSearchResult::ToolSearchResult(DamageOnUse &tool)
+    : _type(DAMAGE_ON_USE), _tool(&tool), _toolSpeed(tool.toolSpeed()) {}
 
 User::ToolSearchResult::ToolSearchResult(Type type) : _type(type) {
   if (type == DAMAGE_ON_USE) SERVER_ERROR("Bad tool search");

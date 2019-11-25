@@ -13,4 +13,6 @@ class DamageOnUse {
   virtual void damageFromUse() = 0;
 
   virtual void repair() = 0;
+
+  virtual double toolSpeed() const { return 1.0; }
 };
