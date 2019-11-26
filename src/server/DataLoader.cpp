@@ -192,9 +192,7 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
     if (xr.findRectChild("collisionRect", elem, r)) ot->collisionRect(r);
     if (xr.findAttr(elem, "collides", n)) ot->collides(n != 0);
 
-    // Tags
-    for (auto objTag : xr.getChildren("tag", elem))
-      if (xr.findAttr(objTag, "name", s)) ot->addTag(s);
+    ot->loadTagsFromXML(xr, elem);
 
     // Construction site
     bool needsMaterials = false;
@@ -475,10 +473,9 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
     MapRect r;
     if (xr.findRectChild("collisionRect", elem, r)) nt->collisionRect(r);
 
-    std::string s;
-    for (auto objTag : xr.getChildren("class", elem))
-      if (xr.findAttr(objTag, "name", s)) nt->addTag(s);
+    nt->loadTagsFromXML(xr, elem);
 
+    auto s = ""s;
     if (xr.findAttr(elem, "allowedTerrain", s)) nt->allowedTerrain(s);
 
     auto level = Level{1};
@@ -613,12 +610,7 @@ void DataLoader::loadItems(XmlReader &xr) {
     xr.findAttr(elem, "gearSlot", n);
     item.gearSlot(n);
 
-    for (auto child : xr.getChildren("tag", elem)) {
-      if (!xr.findAttr(child, "name", s)) continue;
-      auto toolSpeed = 1.0;
-      xr.findAttr(child, "toolSpeed", toolSpeed);
-      item.addTag(s, toolSpeed);
-    }
+    item.loadTagsFromXML(xr, elem);
 
     if (xr.findAttr(elem, "durability", n)) item.durability(n);
 

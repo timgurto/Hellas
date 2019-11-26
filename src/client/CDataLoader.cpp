@@ -610,8 +610,8 @@ void CDataLoader::loadItems(XmlReader &xr) {
     if (!xr.findAttr(elem, "name", name)) name = id;
     ClientItem item(id, name);
     std::string s;
-    for (auto child : xr.getChildren("tag", elem))
-      if (xr.findAttr(child, "name", s)) item.addTag(s);
+
+    item.loadTagsFromXML(xr, elem);
 
     if (xr.findAttr(elem, "iconFile", s))
       item.icon(s);

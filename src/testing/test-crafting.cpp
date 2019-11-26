@@ -41,6 +41,10 @@ TEST_CASE("Tools can have speed modifiers") {
       "a 200ms recipe that requires a tool, and a variety of matching tools") {
     auto data = R"(
       <item id="grass" />
+      <recipe id="grass" time="200" >
+        <tool class="grassPicking" />
+      </recipe>
+
       <item id="tweezers">
         <tag name="grassPicking" />
       </item>
@@ -51,9 +55,6 @@ TEST_CASE("Tools can have speed modifiers") {
         <tag name="grassPicking" />
         <tag name="bleating" toolSpeed = "2" />
       </item>
-      <recipe id="grass" time="200" >
-        <tool class="grassPicking" />
-      </recipe>
     )";
     struct GrassPickingTool {
       std::string id;
