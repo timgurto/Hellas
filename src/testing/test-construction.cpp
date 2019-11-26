@@ -94,7 +94,7 @@ TEST_CASE("Objects without materials can't be built", "[construction]") {
 }
 
 TEST_CASE("Construction tools", "[construction]") {
-  /*GIVEN("an object that needs a tool to be constructed") {
+  GIVEN("an object that needs a tool to be constructed") {
     auto data = R"(
         <item id="circuitboard" />
         <item id="screwdriver" >
@@ -118,7 +118,7 @@ TEST_CASE("Construction tools", "[construction]") {
         AND_THEN("no object was created") { CHECK(s.entities().size() == 0); }
       }
     }
-  }*/
+  }
 
   GIVEN("a 200ms construction that requires a tool, and a double-speed tool") {
     auto data = R"(
