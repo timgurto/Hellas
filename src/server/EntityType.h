@@ -3,16 +3,15 @@
 
 #include <string>
 
+#include "../HasTags.h"
 #include "../Rect.h"
 #include "../Stats.h"
 #include "../TerrainList.h"
 
-class EntityType {
+class EntityType : public HasTags {
  public:
   EntityType(const std::string id);
   const std::string &id() const { return _id; }
-  bool isTag(const std::string &tagName) const;
-  void addTag(const std::string &tagName);
   virtual char classTag() const = 0;
 
   // Space
@@ -37,7 +36,6 @@ class EntityType {
 
  private:
   std::string _id;
-  std::set<std::string> _tags;
 
   bool operator<(const EntityType &rhs) const { return _id < rhs._id; }
 
