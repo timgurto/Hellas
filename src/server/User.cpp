@@ -478,7 +478,7 @@ User::ToolSearchResult User::findTool(const std::string &tagName) {
   auto nearbyTerrain = server.map().terrainTypesOverlapping(
       collisionRect(), Server::ACTION_DISTANCE);
   for (char terrainType : nearbyTerrain) {
-    if (server.terrainType(terrainType)->tag() == tagName)
+    if (server.terrainType(terrainType)->isTag(tagName))
       return {ToolSearchResult::TERRAIN};
   }
 

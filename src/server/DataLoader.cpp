@@ -119,14 +119,13 @@ void DataLoader::loadTerrain(XmlReader &xr) {
 
   for (auto elem : xr.getChildren("terrain")) {
     char index;
-    std::string id, tag;
     if (!xr.findAttr(elem, "index", index)) continue;
-    Terrain *newTerrain = nullptr;
-    if (xr.findAttr(elem, "tag", tag))
-      newTerrain = Terrain::withTag(tag);
-    else
-      newTerrain = Terrain::empty();
-    _server._terrainTypes[index] = newTerrain;
+
+    auto t = new Terrain;
+
+    t->loadTagsFromXML(xr, elem);
+
+    _server._terrainTypes[index] = t;
   }
 }
 

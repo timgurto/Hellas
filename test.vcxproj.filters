@@ -84,7 +84,6 @@
     <ClCompile Include="src\server\Yield.cpp" />
     <ClCompile Include="src\Socket.cpp" />
     <ClCompile Include="src\Stats.cpp" />
-    <ClCompile Include="src\Terrain.cpp" />
     <ClCompile Include="src\testing\test-cities.cpp" />
     <ClCompile Include="src\testing\test-combat.cpp" />
     <ClCompile Include="src\testing\test-connection.cpp" />

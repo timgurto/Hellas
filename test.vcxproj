@@ -232,7 +232,6 @@
     <ClCompile Include="src\Socket.cpp" />
     <ClCompile Include="src\SpellSchool.cpp" />
     <ClCompile Include="src\Stats.cpp" />
-    <ClCompile Include="src\Terrain.cpp" />
     <ClCompile Include="src\testing\test-ai.cpp" />
     <ClCompile Include="src\testing\test-altars.cpp" />
     <ClCompile Include="src\testing\test-buffs.cpp" />

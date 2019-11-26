@@ -49,8 +49,8 @@ frameTime          *
 <terrain index="R" id="volcanoFertile"  color="384F61" />
 <terrain index="N" id="volcanoRocky"    color="392354" />
 <terrain index="O" id="volcanoMountain" color="52234E" />
-<terrain index="P" id="water"           color="5870C1" frames="32" frameTime="200" tag="waterSource" />
-<terrain index="Q" id="deepWater"       color="45617C" frames="32" frameTime="200" tag="waterSource" />
+<terrain index="P" id="water"           color="5870C1" frames="32" frameTime="200"> <tag name="waterSource"/> </terrain>
+<terrain index="Q" id="deepWater"       color="45617C" frames="32" frameTime="200"> <tag name="waterSource"/> </terrain>
 <terrain index="R" id="sky"             color="3478D8" />
 <terrain index="S" id="clouds"          color="CEC5CF" />
 <terrain index="U" id="clay"            color="B06263" />

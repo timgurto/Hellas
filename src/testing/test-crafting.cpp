@@ -69,19 +69,18 @@ TEST_CASE("Tools can have speed modifiers") {
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
 
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-
     const auto &grass = s.findItem("grass");
     auto expectedProduct = ItemSet{};
     expectedProduct.add(&grass);
 
     for (const auto &tool : grassPickingTools) {
       AND_GIVEN("a user has " + tool.description) {
+        s.waitForUsers(1);
+        auto &user = s.getFirstUser();
         const auto &item = s.findItem(tool.id);
         user.giveItem(&item);
 
-        WHEN("he crafts the recipe") {
+        WHEN("he starts crafting the recipe") {
           c.sendMessage(CL_CRAFT, "grass");
 
           AND_WHEN("150ms elapses") {
