@@ -14,6 +14,8 @@ class HasTags {
   const Tags &tags() const { return _tags; }
   double toolSpeed(const std::string &tag) const;
 
+  std::string toolSpeedDisplayText(const std::string &tag) const;
+
  private:
   Tags _tags;
 

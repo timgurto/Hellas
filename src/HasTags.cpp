@@ -1,6 +1,7 @@
 #include "HasTags.h"
 
 #include "XmlReader.h"
+#include "util.h"
 
 using namespace std::string_literals;
 
@@ -27,4 +28,17 @@ double HasTags::toolSpeed(const std::string& tag) const {
   auto it = _tags.find(tag);
   if (it == _tags.end()) return 1.0;
   return it->second;
+}
+
+std::string HasTags::toolSpeedDisplayText(const std::string& tag) const {
+  auto speed = toolSpeed(tag);
+  if (speed == 1.0) return {};
+
+  auto oss = std::ostringstream{};
+  oss << " (";
+  auto displayVal = toInt((speed - 1.0) * 100);
+  if (displayVal > 0) oss << "+";
+  oss << displayVal << "%";
+  oss << ")";
+  return oss.str();
 }
