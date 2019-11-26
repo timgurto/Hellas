@@ -464,13 +464,15 @@ User::ToolSearchResult User::findTool(const std::string &tagName) {
   // Check gear
   for (size_t i = 0; i != User::GEAR_SLOTS; ++i) {
     auto &slot = _gear[i].first;
-    if (slot.hasItem() && slot.type()->isTag(tagName)) return {slot, tagName};
+    const auto *type = slot.type();
+    if (slot.hasItem() && type->isTag(tagName)) return {slot, *type, tagName};
   }
 
   // Check inventory
   for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
     auto &slot = _inventory[i].first;
-    if (slot.hasItem() && slot.type()->isTag(tagName)) return {slot, tagName};
+    const auto *type = slot.type();
+    if (slot.hasItem() && type->isTag(tagName)) return {slot, *type, tagName};
   }
 
   // Check nearby terrain
@@ -478,8 +480,9 @@ User::ToolSearchResult User::findTool(const std::string &tagName) {
   auto nearbyTerrain = server.map().terrainTypesOverlapping(
       collisionRect(), Server::ACTION_DISTANCE);
   for (char terrainType : nearbyTerrain) {
-    if (server.terrainType(terrainType)->isTag(tagName))
-      return {ToolSearchResult::TERRAIN};
+    const auto *terrain = server.terrainType(terrainType);
+    if (terrain->isTag(tagName))
+      return {ToolSearchResult::TERRAIN, *terrain, tagName};
   }
 
   // Check nearby objects
@@ -489,13 +492,14 @@ User::ToolSearchResult User::findTool(const std::string &tagName) {
     auto *pObj = dynamic_cast<Object *>(pEnt);
     if (!pObj) continue;
     if (pObj->isBeingBuilt()) continue;
-    if (!pObj->type()->isTag(tagName)) continue;
+    const auto *type = pObj->type();
+    if (!type->isTag(tagName)) continue;
     if (distance(pObj->collisionRect(), collisionRect()) >
         Server::ACTION_DISTANCE)
       continue;
     if (!pObj->permissions().doesUserHaveAccess(_name)) continue;
 
-    return {*pObj, tagName};
+    return {*pObj, *type, tagName};
   }
 
   return {ToolSearchResult::NOT_FOUND};
@@ -1634,9 +1638,18 @@ bool User::QuestProgress::operator<(const QuestProgress &rhs) const {
   return ID < rhs.ID;
 }
 
-User::ToolSearchResult::ToolSearchResult(DamageOnUse &tool,
+User::ToolSearchResult::ToolSearchResult(DamageOnUse &toolToDamage,
+                                         const HasTags &toolWithTags,
                                          const std::string &tag)
-    : _type(DAMAGE_ON_USE), _tool(&tool), _toolSpeed(tool.toolSpeed(tag)) {}
+    : _type(DAMAGE_ON_USE),
+      _toolToDamage(&toolToDamage),
+      _toolSpeed(toolWithTags.toolSpeed(tag)) {}
+
+User::ToolSearchResult::ToolSearchResult(Type type, const HasTags &toolWithTags,
+                                         const std::string &tag)
+    : _type(type), _toolSpeed(toolWithTags.toolSpeed(tag)) {
+  if (type == DAMAGE_ON_USE) SERVER_ERROR("Bad tool search");
+}
 
 User::ToolSearchResult::ToolSearchResult(Type type) : _type(type) {
   if (type == DAMAGE_ON_USE) SERVER_ERROR("Bad tool search");
@@ -1646,10 +1659,10 @@ User::ToolSearchResult::operator bool() const {
   if (_type == NOT_FOUND) return false;
   if (_type == TERRAIN) return true;
 
-  return _tool && !_tool->isBroken();
+  return _toolToDamage && !_toolToDamage->isBroken();
 }
 
 void User::ToolSearchResult::use() const {
-  if (!_tool) return;
-  _tool->onUse();
+  if (!_toolToDamage) return;
+  _toolToDamage->onUse();
 }

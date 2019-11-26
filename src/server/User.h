@@ -258,7 +258,12 @@ class User : public Object {  // TODO: Don't inherit from Object
   class ToolSearchResult {
    public:
     enum Type { NOT_FOUND, DAMAGE_ON_USE, TERRAIN };
-    ToolSearchResult(DamageOnUse &tool, const std::string &tag);
+    // For tools that can be damaged
+    ToolSearchResult(DamageOnUse &toolToDamage, const HasTags &toolWithTags,
+                     const std::string &tag);
+    // For tools that can't be damaged, like terrain
+    ToolSearchResult(Type type, const HasTags &toolWithTags,
+                     const std::string &tag);
     ToolSearchResult(Type type);
     operator bool() const;
     void use() const;
@@ -266,7 +271,7 @@ class User : public Object {  // TODO: Don't inherit from Object
 
    private:
     Type _type{NOT_FOUND};
-    DamageOnUse *_tool{nullptr};
+    DamageOnUse *_toolToDamage{nullptr};
     double _toolSpeed{1.0};
   };
   // Return value of 0: tool not found.

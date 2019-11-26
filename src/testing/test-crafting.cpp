@@ -97,6 +97,48 @@ TEST_CASE("Tools can have speed modifiers") {
       }
     }
   }
+
+  GIVEN(
+      "a 200ms recipe requires a tool, and the terrain is a double-speed "
+      "tool") {
+    auto data = R"(
+      <item id="grass" />
+      <recipe id="grass" time="200" >
+        <tool class="grassSource" />
+      </recipe>
+
+      <terrain index="G" id="grass">
+        <tag name="grassSource" toolSpeed = "2" />
+      </terrain>
+      <list id="default" default="1" >
+          <allow id="grass" />
+      </list>
+      <newPlayerSpawn x="10" y="10" range="0" />
+      <size x="1" y="1" />
+      <row y="0" terrain = "G" />
+
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    const auto &grass = s.findItem("grass");
+    auto expectedProduct = ItemSet{};
+    expectedProduct.add(&grass);
+
+    WHEN("a user starts crafting the recipe") {
+      s.waitForUsers(1);
+      c.sendMessage(CL_CRAFT, "grass");
+
+      AND_WHEN("150ms elapses") {
+        REPEAT_FOR_MS(150);
+
+        THEN("the product has been crafted") {
+          auto &user = s.getFirstUser();
+          CHECK(user.hasItems(expectedProduct));
+        }
+      }
+    }
+  }
 }
 
 TEST_CASE("Client sees default recipes") {

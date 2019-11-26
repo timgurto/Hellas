@@ -22,3 +22,9 @@ void HasTags::addTag(const std::string& tagName, double toolSpeed) {
 bool HasTags::isTag(const std::string& tagName) const {
   return _tags.find(tagName) != _tags.end();
 }
+
+double HasTags::toolSpeed(const std::string& tag) const {
+  auto it = _tags.find(tag);
+  if (it == _tags.end()) return 1.0;
+  return it->second;
+}
