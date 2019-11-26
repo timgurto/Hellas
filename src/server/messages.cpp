@@ -266,17 +266,22 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         }
 
         // Tool check must be the last check, as it damages the tools.
-        const std::string constructionReq = objType.constructionReq();
-        if (!(constructionReq.empty() ||
-              user->checkAndDamageToolAndGetSpeed(constructionReq))) {
-          sendMessage(client, WARNING_ITEM_TAG_NEEDED, constructionReq);
-          break;
+        auto requiresTool = !objType.constructionReq().empty();
+        auto toolSpeed = 1.0;
+        if (requiresTool) {
+          toolSpeed =
+              user->checkAndDamageToolAndGetSpeed(objType.constructionReq());
+          if (toolSpeed == 0) {
+            sendMessage(client, WARNING_NEED_TOOLS);
+            break;
+          }
         }
 
         auto ownerIsCity = msgCode == CL_CONSTRUCT_FROM_ITEM_FOR_CITY;
-        user->beginConstructing(objType, location, ownerIsCity, slot);
+        user->beginConstructing(objType, location, ownerIsCity, toolSpeed,
+                                slot);
         sendMessage(client, SV_ACTION_STARTED,
-                    makeArgs(objType.constructionTime()));
+                    makeArgs(objType.constructionTime() / toolSpeed));
         break;
       }
 
@@ -386,14 +391,17 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         }
 
         // Tool check must be the last check, as it damages the tools.
-        const std::string &gatherReq = obj->objType().gatherReq();
-        if (gatherReq != "none" &&
-            !user->checkAndDamageToolAndGetSpeed(gatherReq)) {
-          sendMessage(client, WARNING_ITEM_TAG_NEEDED, gatherReq);
-          break;
+        const auto &gatherReq = obj->objType().gatherReq();
+        auto toolSpeed = 1.0;
+        if (gatherReq != "none") {
+          toolSpeed = user->checkAndDamageToolAndGetSpeed(gatherReq);
+          if (toolSpeed == 0) {
+            sendMessage(client, WARNING_ITEM_TAG_NEEDED, gatherReq);
+            break;
+          }
         }
 
-        user->beginGathering(obj);
+        user->beginGathering(obj, toolSpeed);
         sendMessage(client, SV_ACTION_STARTED,
                     makeArgs(obj->objType().gatherTime()));
         break;

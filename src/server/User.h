@@ -243,10 +243,11 @@ class User : public Object {  // TODO: Don't inherit from Object
   Action action() const { return _action; }
   void action(Action a) { _action = a; }
   const Object *actionObject() const { return _actionObject; }
-  void beginGathering(
-      Object *object);  // Configure user to perform an action on an object
-  void setTargetAndAttack(Entity *target);  // Configure user to prepare to
-                                            // attack an NPC or player
+  void beginGathering(Object *object,
+                      double speedMultiplier);  // Configure user to perform an
+                                                // action on an object
+  void setTargetAndAttack(Entity *target);      // Configure user to prepare to
+                                                // attack an NPC or player
   void alertReactivelyTargetingUser(const User &targetingUser) const override;
 
   // Whether the user has enough materials to craft a recipe

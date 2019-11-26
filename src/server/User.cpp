@@ -377,7 +377,7 @@ void User::finishAction() {
   _action = NO_ACTION;
 }
 
-void User::beginGathering(Object *obj) {
+void User::beginGathering(Object *obj, double speedMultiplier) {
   _action = GATHER;
   _actionObject = obj;
   _actionObject->incrementGatheringUsers();
@@ -385,7 +385,7 @@ void User::beginGathering(Object *obj) {
     SERVER_ERROR("Can't gather from object with no type");
     return;
   }
-  _actionTime = obj->objType().gatherTime();
+  _actionTime = toInt(obj->objType().gatherTime() / speedMultiplier);
 }
 
 void User::beginCrafting(const SRecipe &recipe, double speed) {
