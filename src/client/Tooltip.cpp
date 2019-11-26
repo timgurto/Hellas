@@ -2,6 +2,7 @@
 
 #include <sstream>
 
+#include "../HasTags.h"
 #include "Client.h"
 #include "ClientItem.h"
 #include "Renderer.h"
@@ -152,6 +153,20 @@ void Tooltip::addItem(const ClientItem &item) {
   texture.setBlend();
   renderer.popRenderTarget();
   _content.push_back(texture);
+}
+
+void Tooltip::addTags(const HasTags &thingWithTags) {
+  if (!thingWithTags.hasTags()) return;
+
+  addGap();
+  setColor(Color::TOOLTIP_TAG);
+
+  const auto &client = Client::instance();
+
+  for (const auto &pair : thingWithTags.tags()) {
+    const auto &tag = pair.first;
+    addLine(client.tagName(tag) + thingWithTags.toolSpeedDisplayText(tag));
+  }
 }
 
 px_t Tooltip::width() const {

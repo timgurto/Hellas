@@ -4,6 +4,7 @@
 #include <set>
 #include <string>
 
+#include "../HasTags.h"
 #include "../Point.h"
 #include "../server/ItemSet.h"
 #include "../util.h"
@@ -20,7 +21,9 @@ class ParticleProfile;
 
 // Describes a class of Entities, the "instances" of which share common
 // properties
-class ClientObjectType : public SpriteType, public ClientCombatantType {
+class ClientObjectType : public SpriteType,
+                         public ClientCombatantType,
+                         public HasTags {
   struct ImageSet {
     Texture normal, highlight;
     ImageSet() {}
@@ -45,7 +48,6 @@ class ClientObjectType : public SpriteType, public ClientCombatantType {
   MapRect _collisionRect;
   bool _collides{false};
   const ParticleProfile *_gatherParticles;
-  std::set<std::string> _tags;
   ItemSet _materials;
   mutable Optional<Tooltip> _constructionTooltip;
   ImageSet _constructionImage;  // Shown when the object is under construction.
@@ -107,8 +109,6 @@ class ClientObjectType : public SpriteType, public ClientCombatantType {
   }
   void addMaterial(const ClientItem *item, size_t qty);
   const ItemSet &materials() const { return _materials; }
-  bool hasTags() const { return !_tags.empty(); }
-  const std::set<std::string> &tags() const { return _tags; }
   const Tooltip &constructionTooltip() const;
   bool transforms() const { return _transformTime > 0; }
   void transformTime(ms_t time) { _transformTime = time; }
@@ -148,8 +148,6 @@ class ClientObjectType : public SpriteType, public ClientCombatantType {
 
   virtual char classTag() const override { return 'o'; }
   virtual const Texture &image() const override { return _images.normal; }
-
-  void addTag(const std::string &tagName) { _tags.insert(tagName); }
 
   void calculateAndInitDurability();
 

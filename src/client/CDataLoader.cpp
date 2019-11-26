@@ -468,8 +468,7 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
       if (xr.findAttr(container, "slots", n)) cot->containerSlots(n);
     }
 
-    for (auto objTag : xr.getChildren("tag", elem))
-      if (xr.findAttr(objTag, "name", s)) cot->addTag(s);
+    cot->loadTagsFromXML(xr, elem);
 
     if (xr.findAttr(elem, "merchantSlots", n)) cot->merchantSlots(n);
     if (xr.findAttr(elem, "isFlat", n) && n != 0) cot->isFlat(true);
@@ -488,7 +487,7 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
 
     if (xr.findAttr(elem, "playerUnique", s)) {
       cot->makePlayerUnique();
-      cot->addTag(s + " (1 per player)");
+      cot->addTag(s + " (1 per player)", 1.0);
     }
 
     auto action = xr.findChild("action", elem);
@@ -915,8 +914,7 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
       if (it != _client._projectileTypes.end()) nt->projectile(**it);
     }
 
-    for (auto objTag : xr.getChildren("class", elem))
-      if (xr.findAttr(objTag, "name", s)) nt->addTag(s);
+    nt->loadTagsFromXML(xr, elem);
 
     for (auto particles : xr.getChildren("particles", elem)) {
       auto profileName = ""s;

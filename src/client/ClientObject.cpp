@@ -1024,12 +1024,7 @@ void ClientObject::createRegularTooltip() const {
   }
 
   // Tags
-  if (ot.hasTags()) {
-    tooltip.addGap();
-    tooltip.setColor(Color::TOOLTIP_TAG);
-    for (const std::string &tag : ot.tags())
-      tooltip.addLine(client.tagName(tag));
-  }
+  tooltip.addTags(ot);
 
   // Any actions available?
   if (ot.merchantSlots() > 0 ||

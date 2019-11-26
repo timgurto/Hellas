@@ -90,15 +90,7 @@ const Tooltip &ClientItem::tooltip() const {
   }
 
   // Tags
-  if (hasTags()) {
-    tooltip.addGap();
-    tooltip.setColor(Color::TOOLTIP_TAG);
-
-    for (const auto &pair : tags()) {
-      tooltip.addLine(client.tagName(pair.first) +
-                      toolSpeedDisplayText(pair.first));
-    }
-  }
+  tooltip.addTags(*this);
 
   // Construction
   if (_constructsObject != nullptr) {
@@ -130,11 +122,7 @@ const Tooltip &ClientItem::tooltip() const {
     }
 
     // Tags
-    if (_constructsObject->hasTags()) {
-      tooltip.setColor(Color::TOOLTIP_TAG);
-      for (const std::string &tag : _constructsObject->tags())
-        tooltip.addLine("  " + client.tagName(tag));
-    }
+    tooltip.addTags(*_constructsObject);
   }
 
   // Spell

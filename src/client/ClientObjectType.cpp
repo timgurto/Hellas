@@ -67,11 +67,7 @@ const Tooltip &ClientObjectType::constructionTooltip() const {
   for (const auto &line : descriptionLines) tooltip.addLine(line);
 
   // Tags
-  if (hasTags()) {
-    tooltip.addGap();
-    tooltip.setColor(Color::TOOLTIP_TAG);
-    for (const std::string &tag : tags()) tooltip.addLine(client.tagName(tag));
-  }
+  tooltip.addTags(*this);
 
   tooltip.addGap();
   tooltip.setColor(Color::TOOLTIP_BODY);
