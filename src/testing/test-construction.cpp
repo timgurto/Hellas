@@ -93,14 +93,32 @@ TEST_CASE("Objects without materials can't be built", "[construction]") {
   CHECK(s.entities().size() == 0);
 }
 
-TEST_CASE("Construction tool requirements are enforced", "[construction]") {
-  TestServer s = TestServer::WithData("computer");
-  TestClient c = TestClient::WithData("computer");
-  s.waitForUsers(1);
+TEST_CASE("Construction tools", "[construction]") {
+  GIVEN("an object that needs a tool to be constructed") {
+    auto data = R"(
+        <item id="circuitboard" />
+        <item id="screwdriver" >
+            <tag name="screwdriver" />
+        </item>
+        <objectType
+            id="computer" constructionTime="0" constructionReq="screwdriver" >
+            <material id="circuitboard" quantity="1" />
+        </objectType>
+      )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
 
-  c.sendMessage(CL_CONSTRUCT, makeArgs("computer", 10, 10));
-  CHECK(c.waitForMessage(WARNING_NEED_TOOLS));
-  CHECK(s.entities().size() == 0);
+    WHEN("a user tries to construct it") {
+      s.waitForUsers(1);
+      c.sendMessage(CL_CONSTRUCT, makeArgs("computer", 10, 15));
+
+      THEN("he gets a warning") {
+        CHECK(c.waitForMessage(WARNING_NEED_TOOLS));
+
+        AND_THEN("no object was created") { CHECK(s.entities().size() == 0); }
+      }
+    }
+  }
 }
 
 TEST_CASE("Construction progress is persistent",
