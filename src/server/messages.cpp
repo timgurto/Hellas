@@ -207,17 +207,20 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         }
 
         // Tool check must be the last check, as it damages the tools.
-        bool requiresTool = !objType->constructionReq().empty();
-        if (requiresTool &&
-            !user->checkAndDamageTool(objType->constructionReq())) {
-          sendMessage(client, WARNING_NEED_TOOLS);
-          break;
+        auto requiresTool = !objType->constructionReq().empty();
+        auto toolSpeed = 1.0;
+        if (requiresTool) {
+          toolSpeed =
+              user->checkAndDamageToolAndGetSpeed(objType->constructionReq());
+          if (toolSpeed == 0) {
+            sendMessage(client, WARNING_NEED_TOOLS);
+            break;
+          }
         }
-
         auto ownerIsCity = msgCode == CL_CONSTRUCT_FOR_CITY;
-        user->beginConstructing(*objType, location, ownerIsCity);
+        user->beginConstructing(*objType, location, ownerIsCity, toolSpeed);
         sendMessage(client, SV_ACTION_STARTED,
-                    makeArgs(objType->constructionTime()));
+                    makeArgs(objType->constructionTime() / toolSpeed));
         break;
       }
 
@@ -265,7 +268,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         // Tool check must be the last check, as it damages the tools.
         const std::string constructionReq = objType.constructionReq();
         if (!(constructionReq.empty() ||
-              user->checkAndDamageTool(constructionReq))) {
+              user->checkAndDamageToolAndGetSpeed(constructionReq))) {
           sendMessage(client, WARNING_ITEM_TAG_NEEDED, constructionReq);
           break;
         }
@@ -384,7 +387,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
 
         // Tool check must be the last check, as it damages the tools.
         const std::string &gatherReq = obj->objType().gatherReq();
-        if (gatherReq != "none" && !user->checkAndDamageTool(gatherReq)) {
+        if (gatherReq != "none" &&
+            !user->checkAndDamageToolAndGetSpeed(gatherReq)) {
           sendMessage(client, WARNING_ITEM_TAG_NEEDED, gatherReq);
           break;
         }
@@ -1601,7 +1605,7 @@ void Server::handle_CL_REPAIR_ITEM(User &user, size_t serial, size_t slot) {
   }
 
   if (repairInfo.requiresTool()) {
-    if (!user.checkAndDamageTool(repairInfo.tool)) {
+    if (!user.checkAndDamageToolAndGetSpeed(repairInfo.tool)) {
       user.sendMessage(WARNING_ITEM_TAG_NEEDED, repairInfo.tool);
       return;
     }
@@ -1643,7 +1647,7 @@ void Server::handle_CL_REPAIR_OBJECT(User &user, size_t serial) {
   }
 
   if (repairInfo.requiresTool()) {
-    if (!user.checkAndDamageTool(repairInfo.tool)) {
+    if (!user.checkAndDamageToolAndGetSpeed(repairInfo.tool)) {
       user.sendMessage(WARNING_ITEM_TAG_NEEDED, repairInfo.tool);
       return;
     }
@@ -2077,7 +2081,7 @@ void Server::handle_CL_TAKE_TALENT(User &user, const Talent::Name &talentName) {
   // Tool check must be the last check, as it damages the tools.
   const auto &requiredTool = talent->tier().requiredTool;
   auto requiresTool = !requiredTool.empty();
-  if (requiresTool && !user.checkAndDamageTool(requiredTool)) {
+  if (requiresTool && !user.checkAndDamageToolAndGetSpeed(requiredTool)) {
     sendMessage(user.socket(), WARNING_ITEM_TAG_NEEDED, requiredTool);
     return;
   }

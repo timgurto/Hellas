@@ -395,10 +395,11 @@ void User::beginCrafting(const SRecipe &recipe, double speed) {
 }
 
 void User::beginConstructing(const ObjectType &obj, const MapPoint &location,
-                             bool cityOwned, size_t slot) {
+                             bool cityOwned, double speedMultiplier,
+                             size_t slot) {
   _action = CONSTRUCT;
   _actionObjectType = &obj;
-  _actionTime = obj.constructionTime();
+  _actionTime = toInt(obj.constructionTime() / speedMultiplier);
   _actionSlot = slot;
   _actionLocation = location;
   _actionOwnedByCity = cityOwned;
@@ -523,11 +524,11 @@ double User::checkAndDamageToolsAndGetSpeed(const std::set<std::string> &tags) {
   return speed;
 }
 
-bool User::checkAndDamageTool(const std::string &tag) {
+double User::checkAndDamageToolAndGetSpeed(const std::string &tag) {
   auto tool = findTool(tag);
-  if (!tool) return false;
+  if (!tool) return 0;
   tool.use();
-  return true;
+  return tool.toolSpeed();
 }
 
 void User::clearInventory() {

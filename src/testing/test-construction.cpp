@@ -94,7 +94,7 @@ TEST_CASE("Objects without materials can't be built", "[construction]") {
 }
 
 TEST_CASE("Construction tools", "[construction]") {
-  GIVEN("an object that needs a tool to be constructed") {
+  /*GIVEN("an object that needs a tool to be constructed") {
     auto data = R"(
         <item id="circuitboard" />
         <item id="screwdriver" >
@@ -116,6 +116,37 @@ TEST_CASE("Construction tools", "[construction]") {
         CHECK(c.waitForMessage(WARNING_NEED_TOOLS));
 
         AND_THEN("no object was created") { CHECK(s.entities().size() == 0); }
+      }
+    }
+  }*/
+
+  GIVEN("a 200ms construction that requires a tool, and a double-speed tool") {
+    auto data = R"(
+        <objectType
+          id="fire" constructionTime="200" constructionReq="fireLighting" >
+          <material id="wood" />
+        </objectType>
+        <item id="matches" >
+            <tag name="fireLighting" toolSpeed="2" />
+        </item>
+        <item id="wood" />
+      )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    AND_GIVEN("a user has the tool") {
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      user.giveItem(&s.getFirstItem());
+
+      WHEN("he tries to construct the object") {
+        c.sendMessage(CL_CONSTRUCT, makeArgs("fire", 10, 15));
+
+        AND_WHEN("150ms elapses") {
+          REPEAT_FOR_MS(150);
+
+          THEN("there is an object") { CHECK(s.entities().size() == 1); }
+        }
       }
     }
   }

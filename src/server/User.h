@@ -276,7 +276,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   };
   // Return value of 0: tool not found.
   double checkAndDamageToolsAndGetSpeed(const std::set<std::string> &tags);
-  bool checkAndDamageTool(const std::string &tag);
+  double checkAndDamageToolAndGetSpeed(const std::string &tag);
 
  private:
   ToolSearchResult findTool(const std::string &tagName);
@@ -290,7 +290,8 @@ class User : public Object {  // TODO: Don't inherit from Object
 
   // Configure user to construct an item, or an object from no item
   void beginConstructing(const ObjectType &obj, const MapPoint &location,
-                         bool cityOwned, size_t slot = INVENTORY_SIZE);
+                         bool cityOwned, double speedMultiplier,
+                         size_t slot = INVENTORY_SIZE);
 
   // Configure user to deconstruct an object
   void beginDeconstructing(Object &obj);
