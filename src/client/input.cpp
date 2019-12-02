@@ -1,3 +1,4 @@
+#include "../TerrainList.h"
 #include "Client.h"
 #include "Particle.h"
 #include "Renderer.h"
@@ -641,5 +642,9 @@ void Client::checkMouseOver() {
   }
 
   _terrainUnderCursor = _map.getTerrainAtPoint(toMapPoint(_mouse) - _offset);
-  _terrainTooltip = Tooltip::basicTooltip(std::string{_terrainUnderCursor});
+  auto allowedTerrain = TerrainList::findList(_allowedTerrain);
+  if (!allowedTerrain) allowedTerrain = &TerrainList::defaultList();
+  if (!allowedTerrain->allows(_terrainUnderCursor)) {
+    _terrainTooltip = Tooltip::basicTooltip("Not traversible");
+  }
 }
