@@ -958,7 +958,7 @@ void ClientObject::createRegularTooltip() const {
     tooltip.addLine("Owned by you");
   } else if (_owner.type != Owner::ALL_HAVE_ACCESS) {
     tooltip.addGap();
-    tooltip.addLine("Owned by" + _owner.name);
+    tooltip.addLine("Owned by " + _owner.name);
   }
 
   if (isDead()) return;
