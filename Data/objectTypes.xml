@@ -54,7 +54,7 @@
 <objectType id="fire" name="Cooking Fire"
     xDrawOffset="-10" yDrawOffset="-7" >
     <collisionRect x="-10" y="-3" w="20" h="8" />
-    <tag name="cooking" toolSpeed="0.6" />
+    <tag name="cooking" />
     <material id="stick" quantity="5" />
     <durability item="stick" quantity="5" />
     <transform id="extinguishedFire" time="20000" />
@@ -83,10 +83,10 @@
     xDrawOffset="-14" yDrawOffset="-17"
     sounds="stone" damageParticles="rocks">
     <collisionRect x="-13" y="-9" w="24" h="15" />
-    <tag name="cooking" toolSpeed="0.75" />
-    <tag name="charcoalMaking" toolSpeed="0.75" />
-    <tag name="smelting1" toolSpeed="0.75" />
-    <tag name="pottery1" toolSpeed="0.75" />
+    <tag name="cooking" toolSpeed="1.05" />
+    <tag name="charcoalMaking" />
+    <tag name="smelting1" />
+    <tag name="pottery1" />
     <material id="rock" quantity="10" />
     <material id="log" />
     <unlockedBy gather="rock" chance="0.05" />
@@ -110,12 +110,12 @@
     xDrawOffset="-13" yDrawOffset="-26"
     sounds="brick" damageParticles="brick" >
     <collisionRect x="-12" y="-4" w="27" h="10" />
-    <tag name="cooking" toolSpeed="0.85" />
-    <tag name="smelting1" toolSpeed="0.85" />
-    <tag name="smelting2" toolSpeed="0.85" />
-    <tag name="pottery1" toolSpeed="0.85" />
-    <tag name="pottery2" toolSpeed="0.85" />
-    <tag name="charcoalMaking" toolSpeed="0.85" />
+    <tag name="cooking" toolSpeed="1.15" />
+    <tag name="smelting1" toolSpeed="1.1" />
+    <tag name="smelting2" />
+    <tag name="pottery1" toolSpeed="1.1" />
+    <tag name="pottery2" />
+    <tag name="charcoalMaking" toolSpeed="1.1" />
     <material id="brick" quantity="20" />
     <material id="crudeClay" quantity="12" />
     <material id="charcoal" />
@@ -234,7 +234,7 @@
     xDrawOffset="-15" yDrawOffset="-21"
     deconstructs="elutriator" deconstructionTime="1000"
     sounds="pottery" damageParticles="ceramicShards" >
-    <tag name="clayRefinement" toolSpeed="0.85" />
+    <tag name="clayRefinement" />
     <collisionRect x="-15" y="-4" w="31" h="8" />
     <durability item="crudeClay" quantity="4" />
     <canBeRepaired cost="tinTube" />
@@ -424,7 +424,7 @@
     <collisionRect x="-17" y="-6" w="33" h="11" />
     <material id="stick" quantity="5" />
     <material id="linenThread" quantity="5" />
-    <tag name="weaving" toolSpeed="0.8" />
+    <tag name="weaving" />
     <unlockedBy recipe="linenThread" />
     <durability item="linenThread" quantity="5" />
     <canBeRepaired cost="linenThread" />
@@ -437,7 +437,7 @@
     <collisionRect x="-10" y="-9" w="20" h="17" />
     <material id="stick" quantity="2" />
     <material id="rope" quantity="2" />
-    <tag name="leatherStretching" toolSpeed="0.8" />
+    <tag name="leatherStretching" />
     <unlockedBy recipe="rope" />
     <durability item="rope" quantity="2" />
     <canBeRepaired cost="rope" />
@@ -448,7 +448,7 @@
     <material id="lumber" quantity="4" />
     <material id="rope" quantity="2" />
     <material id="tinTube" quantity="2" />
-    <tag name="woodTurning" toolSpeed="0.85" />
+    <tag name="woodTurning" />
     <unlockedBy recipe="tinTube" />
     <durability item="tinTube" quantity="2" chance="0.5" />
     <canBeRepaired cost="tinTube" />
@@ -462,8 +462,8 @@
     <material id="rope" quantity="2" />
     <material id="tinTube" quantity="1" />
     <material id="rock" quantity="1" />
-    <tag name="grinding1" toolSpeed="0.85" />
-    <tag name="grinding2" toolSpeed="0.85" />
+    <tag name="grinding1" toolSpeed="1.15" />
+    <tag name="grinding2" />
     <unlockedBy recipe="tinTube" chance="0.5" />
     <durability item="tinTube" quantity="2" />
     <canBeRepaired cost="tinTube" />
@@ -487,7 +487,7 @@
     xDrawOffset="-7" yDrawOffset="-14"
     sounds="pottery" damageParticles="ceramicShards" >
     <collisionRect x="-7" y="-3" w="16" h="7" />
-    <tag name="tanning" toolSpeed="0.8" />
+    <tag name="tanning" />
     <durability item="crudeClay" quantity="2" />
     <canBeRepaired cost="smallPot" />
 </objectType>
