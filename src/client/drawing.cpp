@@ -207,7 +207,7 @@ void Client::drawTooltip() const {
   else if (_currentMouseOverEntity != nullptr && !_mouseOverWindow) {
     tooltip = &_currentMouseOverEntity->tooltip();
   } else
-    return;
+    tooltip = &_terrainTooltip;
 
   if (tooltip != nullptr) {
     static const px_t EDGE_GAP = 2;     // Gap from screen edges

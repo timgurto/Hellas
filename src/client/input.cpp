@@ -635,4 +635,10 @@ void Client::checkMouseOver() {
 
   if (_currentMouseOverEntity)
     _currentCursor = &_currentMouseOverEntity->cursor(*this);
+
+  auto terrain = _map.getTerrainAtPoint(toMapPoint(_mouse) - _offset);
+  if (_terrainUnderCursor == terrain) return;
+  _terrainUnderCursor = terrain;
+  _terrainTooltip = {};
+  _terrainTooltip.addLine(std::string{terrain});
 }

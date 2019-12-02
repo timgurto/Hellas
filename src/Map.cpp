@@ -97,6 +97,12 @@ std::set<char> Map::terrainTypesOverlapping(const MapRect &rect,
   return tilesInRect;
 }
 
+char Map::getTerrainAtPoint(const MapPoint &p) const {
+  auto row = getRow(p.y);
+  auto col = getCol(p.x, row);
+  return _grid[col][row];
+}
+
 MapPoint Map::randomPoint() const {
   return {randDouble() * (_w - 0.5) * TILE_W, randDouble() * _h * TILE_H};
 }

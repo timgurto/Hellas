@@ -22,6 +22,7 @@ class Map {
   static MapRect getTileRect(size_t x, size_t y);
   std::set<char> terrainTypesOverlapping(const MapRect& rect,
                                          double extraRadius = 0) const;
+  char getTerrainAtPoint(const MapPoint& p) const;
 
   MapPoint randomPoint() const;
 
