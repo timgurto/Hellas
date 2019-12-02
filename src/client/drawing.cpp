@@ -206,7 +206,7 @@ void Client::drawTooltip() const {
     tooltip = Element::tooltip();
   else if (_currentMouseOverEntity != nullptr && !_mouseOverWindow) {
     tooltip = &_currentMouseOverEntity->tooltip();
-  } else
+  } else if (_terrainTooltip)
     tooltip = &_terrainTooltip;
 
   if (tooltip != nullptr) {

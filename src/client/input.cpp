@@ -620,6 +620,8 @@ void Client::checkMouseOver() {
   _currentCursor = &_cursorNormal;
   if (isAltPressed()) _currentCursor = &_cursorRepair;
 
+  _terrainTooltip = {};
+
   // Check whether mouse is over a window
   _mouseOverWindow = false;
   for (const Window *window : _windows)
@@ -633,12 +635,11 @@ void Client::checkMouseOver() {
   const Sprite *const oldMouseOverEntity = _currentMouseOverEntity;
   _currentMouseOverEntity = getEntityAtMouse();
 
-  if (_currentMouseOverEntity)
+  if (_currentMouseOverEntity) {
     _currentCursor = &_currentMouseOverEntity->cursor(*this);
+    return;
+  }
 
-  auto terrain = _map.getTerrainAtPoint(toMapPoint(_mouse) - _offset);
-  if (_terrainUnderCursor == terrain) return;
-  _terrainUnderCursor = terrain;
-  _terrainTooltip = {};
-  _terrainTooltip.addLine(std::string{terrain});
+  _terrainUnderCursor = _map.getTerrainAtPoint(toMapPoint(_mouse) - _offset);
+  _terrainTooltip = Tooltip::basicTooltip(std::string{_terrainUnderCursor});
 }

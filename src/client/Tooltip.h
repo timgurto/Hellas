@@ -38,6 +38,8 @@ class Tooltip {
  public:
   Tooltip();
 
+  operator bool() const { return !_content.empty(); }
+
   const static px_t NO_WRAP;
 
   void setColor(const Color &color = Color::TOOLTIP_BODY);
