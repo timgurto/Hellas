@@ -1,6 +1,7 @@
 #include <SDL.h>
 
 #include "../Color.h"
+#include "../HasTags.h"
 #include "../NormalVariable.h"
 #include "../Point.h"
 #include "../server/Server.h"
@@ -80,4 +81,10 @@ TEST_CASE("toPascal") {
   CHECK(toPascal("AA") == "Aa");
   CHECK(toPascal("AB") == "Ab");
   CHECK(toPascal("AAA") == "Aaa");
+}
+
+TEST_CASE("Tool-speed display") {
+  HasTags thing;
+  thing.addTag("fast", 1.1);
+  CHECK(thing.toolSpeedDisplayText("fast") == "+10%"s);
 }
