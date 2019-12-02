@@ -462,18 +462,35 @@ bool User::hasItems(const std::string &tag, size_t quantity) const {
 }
 
 User::ToolSearchResult User::findTool(const std::string &tagName) {
+  auto bestSpeed = 0.0;
+  auto bestTool = User::ToolSearchResult{User::ToolSearchResult::NOT_FOUND};
+
   // Check gear
   for (size_t i = 0; i != User::GEAR_SLOTS; ++i) {
     auto &slot = _gear[i].first;
     const auto *type = slot.type();
-    if (slot.hasItem() && type->isTag(tagName)) return {slot, *type, tagName};
+    if (!slot.hasItem()) continue;
+    if (!type->isTag(tagName)) continue;
+
+    auto toolSpeed = type->toolSpeed(tagName);
+    if (toolSpeed > bestSpeed || !bestTool) {
+      bestSpeed = toolSpeed;
+      bestTool = {slot, *type, tagName};
+    }
   }
 
   // Check inventory
   for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
     auto &slot = _inventory[i].first;
     const auto *type = slot.type();
-    if (slot.hasItem() && type->isTag(tagName)) return {slot, *type, tagName};
+    if (!slot.hasItem()) continue;
+    if (!type->isTag(tagName)) continue;
+
+    auto toolSpeed = type->toolSpeed(tagName);
+    if (toolSpeed > bestSpeed || !bestTool) {
+      bestSpeed = toolSpeed;
+      bestTool = {slot, *type, tagName};
+    }
   }
 
   // Check nearby terrain
@@ -482,8 +499,13 @@ User::ToolSearchResult User::findTool(const std::string &tagName) {
       collisionRect(), Server::ACTION_DISTANCE);
   for (char terrainType : nearbyTerrain) {
     const auto *terrain = server.terrainType(terrainType);
-    if (terrain->isTag(tagName))
-      return {ToolSearchResult::TERRAIN, *terrain, tagName};
+    if (!terrain->isTag(tagName)) continue;
+
+    auto toolSpeed = terrain->toolSpeed(tagName);
+    if (toolSpeed > bestSpeed || !bestTool) {
+      bestSpeed = toolSpeed;
+      bestTool = {ToolSearchResult::TERRAIN, *terrain, tagName};
+    }
   }
 
   // Check nearby objects
@@ -500,10 +522,14 @@ User::ToolSearchResult User::findTool(const std::string &tagName) {
       continue;
     if (!pObj->permissions().doesUserHaveAccess(_name)) continue;
 
-    return {*pObj, *type, tagName};
+    auto toolSpeed = type->toolSpeed(tagName);
+    if (toolSpeed > bestSpeed || !bestTool) {
+      bestSpeed = toolSpeed;
+      bestTool = {*pObj, *type, tagName};
+    }
   }
 
-  return {ToolSearchResult::NOT_FOUND};
+  return bestTool;
 }
 
 double User::checkAndDamageToolsAndGetSpeed(const std::set<std::string> &tags) {

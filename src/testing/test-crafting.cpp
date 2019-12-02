@@ -141,6 +141,51 @@ TEST_CASE("Tools can have speed modifiers") {
   }
 }
 
+TEST_CASE("The fastest tool is used") {
+  GIVEN("a 200ms recipe, a 1x tool and a 2x tool") {
+    auto data = R"(
+      <item id="grass" />
+      <recipe id="grass" time="200" >
+        <tool class="grassPicking" />
+      </recipe>
+
+      <item id="tweezers">
+        <tag name="grassPicking" />
+      </item>
+      <item id="mower">
+        <tag name="grassPicking" toolSpeed = "2" />
+      </item>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    const auto &grass = s.findItem("grass");
+    auto expectedProduct = ItemSet{};
+    expectedProduct.add(&grass);
+
+    AND_GIVEN("a user has one of each tool") {
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      user.giveItem(&s.findItem("tweezers"));
+      user.giveItem(&s.findItem("mower"));
+
+      WHEN("he starts crafting the recipe") {
+        c.sendMessage(CL_CRAFT, "grass");
+
+        AND_WHEN("150ms elapses") {
+          REPEAT_FOR_MS(150);
+
+          THEN(
+              "the product has been crafted (meaning the faster tool was "
+              "used)") {
+            CHECK(user.hasItems(expectedProduct));
+          }
+        }
+      }
+    }
+  }
+}
+
 TEST_CASE("Client sees default recipes") {
   TestServer s = TestServer::WithData("box_from_nothing");
   TestClient c = TestClient::WithData("box_from_nothing");
