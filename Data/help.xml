@@ -7,9 +7,9 @@
     <p text="Press [Enter] to open the chat box, and press it again to send the message you type.  This chat message will be broadcast to all players unless it is a special console command, beginning with '/'." />
     <p heading="Console commands"
         text="These can be entered in the chat box, and allow easy access to some functions:" />
-    <p text="/whisper <Recipient> <message>: sends a private message to a player.  /w also works." />
-    <p text="/war <Player name>: declares war on a player." />
-    <p text="/cityWar <City name>: declares war on a city." />
+    <p text="/whisper &lt;Recipient> &lt;message>: sends a private message to a player.  /w also works." />
+    <p text="/war &lt;Player name>: declares war on a player." />
+    <p text="/cityWar &lt;City name>: declares war on a city." />
 </entry>
 
 <entry name="Object placement" >
@@ -32,14 +32,26 @@
 </entry>
 
 <entry name="Tools" >
-    <p text="Some actions in the game require one or more tools.  A tool requirement is in terms of a type, rather than a specific thing.  For example, gathering a Tree requires anything of type 'Axe', rather than specifically requiring a Stone Axe or Copper Axe.  Types will appear in tooltips." />
-    <p text="Tools are not consumed when used--they are passive participants in the action." />
+    <p text="Some actions in the game require one or more tools.  A tool requirement is in terms of a category, rather than a specific thing.  For example, gathering a Tree requires anything in the 'Woodcutting' category, rather than specifically requiring a Stone Axe or Copper Axe.  If something has any categories, they will be listed in its tooltip." />
+    <p text="Tools are not consumed when used, but they may take damage; see 'Damage and repairing'." />
+    <p heading="Tool speed"
+        text="A tool category listed in a tooltip might also include a percentage.  This indicates a bonus to the speed of whatever action requires that tool.  For example, if a tool lists 'Woodcutting +10%', then cutting down trees will be 10% faster.  These bonuses stack for actions requiring multiple tools." />
     <p heading="Item tools"
         text="To use an item as a tool, it must be in your inventory or a gear slot." />
     <p heading="Object tools"
         text="For an object to work as a tool, it must be close to you, and you must have permission to use it.  This will generally mean it's owned by you or your city, or unowned." />
     <p heading="Terrain tools"
         text="Occasionally a map tile can be used as a tool.  In these cases the tile will behave just like an unowned object: the user must be close to it." />
+    <p text="Note that terrain tools do not take any damage when used." />
+</entry>
+
+<entry name="Damage and repairing" >
+    <p  heading="Damage"
+        text="Items or objects may be damaged when they are used.  Attacking may damage your weapons; being attacked may damage your other gear, using tools may damage them, and objects can also be directly attacked by enemies." />
+    <p text="If an item's or object's health is reduced to 0, then it is considered broken and cannot be used." />
+    <p heading="Repairing"
+        text="To repair something, hold [Alt] and click on it.  This works for both items and objects, if you have permission to do so." />
+    <p text="Repairing may require a tool to work, and/or an item that will be consumed.  The item's or object's tooltip will include details about how to repair it." />
 </entry>
 
 <entry name="Ownership" >
