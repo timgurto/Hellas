@@ -179,7 +179,10 @@ px_t Tooltip::height() const {
   return _generated.height();
 }
 
-void Tooltip::addGap() { _content.push_back(Texture()); }
+void Tooltip::addGap() {
+  if (_content.empty()) return;
+  _content.push_back(Texture());
+}
 
 void Tooltip::draw(ScreenPoint p) const {
   generateIfNecessary();

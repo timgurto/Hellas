@@ -131,7 +131,10 @@ void CDataLoader::loadTerrain(XmlReader &xr) {
     int frames = 1, frameTime = 0;
     xr.findAttr(elem, "frames", frames);
     xr.findAttr(elem, "frameTime", frameTime);
-    _client._terrain[index] = ClientTerrain(fileName, frames, frameTime);
+
+    auto &terrain = _client._terrain[index] =
+        ClientTerrain(fileName, frames, frameTime);
+    terrain.loadTagsFromXML(xr, elem);
   }
 }
 

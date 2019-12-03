@@ -576,6 +576,7 @@ class Client {
   std::map<size_t, ClientObject *> _objects;    // For lookup by serial
   char _terrainUnderCursor{-1};
   Tooltip _terrainTooltip;
+  void updateTerrainTooltip();
 
   static const size_t TILES_PER_CHUNK = 10;
   std::vector<std::vector<bool> > _mapExplored;

@@ -278,7 +278,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 117,Direct player trading,8,233,Feature,,,TRUE,
 123,Ensure window titles always fit,5,2,Bug,,,,
 124,Right-clicking doesn't cancel dragging,8,2,Bug,,,,
-125,Tools can modify crafting/gathering speed,3,13,Feature,,,,3 Tin wrapup
+125,Tools can modify crafting/gathering speed,3,13,Feature,,TRUE,,3 Tin wrapup
 136,Users are drawn inside (front+back) of vehicles,5,5,Aesthetics,,,,
 144,Prevent multiple copies of sounds between SoundProfiles,5,3,Performance,,,,
 145,Prevent users from spamming construction sites,5,8,Exploit,,,,

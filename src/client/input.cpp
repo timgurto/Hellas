@@ -641,10 +641,22 @@ void Client::checkMouseOver() {
     return;
   }
 
+  updateTerrainTooltip();
+}
+
+void Client::updateTerrainTooltip() {
   _terrainUnderCursor = _map.getTerrainAtPoint(toMapPoint(_mouse) - _offset);
+
+  auto it = _terrain.find(_terrainUnderCursor);
+  if (it != _terrain.end()) {
+    _terrainTooltip.addTags(it->second);
+  }
+
   auto allowedTerrain = TerrainList::findList(_allowedTerrain);
   if (!allowedTerrain) allowedTerrain = &TerrainList::defaultList();
   if (!allowedTerrain->allows(_terrainUnderCursor)) {
-    _terrainTooltip = Tooltip::basicTooltip("Not traversible");
+    _terrainTooltip.addGap();
+    _terrainTooltip.setColor(Color::TOOLTIP_BODY);
+    _terrainTooltip.addLine("Not traversible");
   }
 }
