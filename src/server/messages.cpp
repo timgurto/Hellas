@@ -469,28 +469,38 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           break;
         }
         user->cancelAction();
-        Object *obj = _entities.find<Object>(serial);
-        if (!isEntityInRange(client, *user, obj)) {
+        auto *ent = _entities.find(serial);
+        if (!isEntityInRange(client, *user, ent)) {
           sendMessage(client, WARNING_TOO_FAR);
           break;
         }
-        if (!obj->type()) {
+        if (!ent->type()) {
           SERVER_ERROR("Can't demolish object with no type");
           break;
         }
-        if (!obj->permissions().isOwnedByPlayer(user->name())) {
+
+        auto userHasPermission = bool{};
+        if (ent->classTag() == 'n') {
+          auto *npc = dynamic_cast<NPC *>(ent);
+          userHasPermission = npc->permissions().isOwnedByPlayer(user->name());
+        } else {
+          const auto *obj = dynamic_cast<Object *>(ent);
+          userHasPermission = obj->permissions().isOwnedByPlayer(user->name());
+        }
+        if (!userHasPermission) {
           sendMessage(client, WARNING_NO_PERMISSION);
           break;
         }
+
         // Check that it isn't an occupied vehicle
-        if (obj->classTag() == 'v' &&
-            !dynamic_cast<const Vehicle *>(obj)->driver().empty()) {
+        if (ent->classTag() == 'v' &&
+            !dynamic_cast<const Vehicle *>(ent)->driver().empty()) {
           sendMessage(client, WARNING_VEHICLE_OCCUPIED);
           break;
         }
 
-        obj->kill();
-        obj->setShorterCorpseTimerForFriendlyKill();
+        ent->kill();
+        ent->setShorterCorpseTimerForFriendlyKill();
         break;
       }
 

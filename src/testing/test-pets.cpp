@@ -276,3 +276,25 @@ TEST_CASE("Non-tamable NPCs can't be tamed") {
     }
   }
 }
+
+TEST_CASE("Pets can be slaughtered") {
+  GIVEN("a player with a pet") {
+    auto data = R"(
+      <npcType id="pig" maxHealth="1" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    s.addNPC("pig", {10, 15});
+    auto &pig = s.getFirstNPC();
+
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    pig.permissions().setPlayerOwner(user.name());
+
+    WHEN("he tries to slaughter it") {
+      c.sendMessage(CL_DEMOLISH, makeArgs(pig.serial()));
+
+      THEN("it dies") { WAIT_UNTIL(pig.isDead()); }
+    }
+  }
+}
