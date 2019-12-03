@@ -1692,6 +1692,9 @@ void Server::handle_CL_TAME_NPC(User &user, size_t serial) {
   if (!npc->npcType()->canBeTamed()) return;
 
   npc->permissions().setPlayerOwner(user.name());
+  if (user.target() == npc) {
+    user.finishAction();
+  }
 }
 
 void Server::handle_CL_LEAVE_CITY(User &user) {

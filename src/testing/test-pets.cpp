@@ -56,6 +56,36 @@ TEST_CASE("Bad arguments to taming command") {
   }
 }
 
+TEST_CASE("Taming an NPC untargets it") {
+  GIVEN("a tamable NPC with plenty of health") {
+    auto data = R"(
+      <npcType id="hippo" maxHealth="10000" >
+        <canBeTamed />
+      </npcType>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+
+    s.addNPC("hippo");
+    const auto &hippo = s.getFirstNPC();
+
+    AND_GIVEN("a user is attacking it") {
+      c.sendMessage(CL_TARGET_ENTITY, makeArgs(hippo.serial()));
+      const auto &user = s.getFirstUser();
+      WAIT_UNTIL(user.action() == User::ATTACK);
+
+      WHEN("he tames it") {
+        c.sendMessage(CL_TAME_NPC, makeArgs(hippo.serial()));
+
+        THEN("he is no longer attacking it") {
+          WAIT_UNTIL(user.action() != User::ATTACK);
+        }
+      }
+    }
+  }
+}
+
 TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
   GIVEN("an aggressive dog NPC") {
     auto data = R"(
