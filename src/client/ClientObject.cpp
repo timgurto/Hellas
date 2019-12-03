@@ -573,9 +573,9 @@ void ClientObject::addDemolishButtonToWindow() {
        newWidth = _window->contentWidth();
   y += BUTTON_GAP;
   Button *demolishButton =
-      new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Demolish",
+      new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, demolishButtonText(),
                  [this]() { confirmAndDemolishObject(this); });
-  demolishButton->setTooltip("Demolish this object, removing it permanently");
+  demolishButton->setTooltip(demolishButtonTooltip());
   _window->addChild(demolishButton);
   y += BUTTON_GAP + BUTTON_HEIGHT;
   x += BUTTON_GAP + BUTTON_WIDTH;
@@ -588,8 +588,9 @@ void ClientObject::confirmAndDemolishObject(void *objectToDemolish) {
   assert(objectToDemolish != nullptr);
   ClientObject &obj = *reinterpret_cast<ClientObject *>(objectToDemolish);
   Client &client = *Client::_instance;
-  std::string confirmationText = "Are you sure you want to demolish this " +
-                                 obj.name() + "? This cannot be undone.";
+  std::string confirmationText = "Are you sure you want to " +
+                                 obj.demolishVerb() + " this " + obj.name() +
+                                 "? This cannot be undone.";
   if (obj._confirmDemolishWindow != nullptr)
     client.removeWindow(obj._confirmDemolishWindow);
   else

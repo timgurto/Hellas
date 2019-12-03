@@ -25,6 +25,16 @@ class ClientNPC : public ClientObject {
   void update(double delta) override;
   void draw(const Client &client) const override;
   bool shouldDrawName() const override;
+
+ protected:
+  // From ClientObject:
+  virtual std::string demolishVerb() const override { return "slaughter"; }
+  virtual std::string demolishButtonText() const override {
+    return "Slaughter";
+  }
+  virtual std::string demolishButtonTooltip() const override {
+    return "Slaughter this pet";
+  }
 };
 
 #endif

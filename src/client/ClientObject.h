@@ -69,6 +69,12 @@ class ClientObject : public Sprite, public ClientCombatant {
   ConfirmationWindow *_confirmDemolishWindow = nullptr;
   InputWindow *_grantWindow = nullptr;
 
+  virtual std::string demolishVerb() const { return "demolish"; }
+  virtual std::string demolishButtonText() const { return "Demolish"; }
+  virtual std::string demolishButtonTooltip() const {
+    return "Demolish this object, removing it permanently";
+  }
+
  public:
   ClientObject(const ClientObject &rhs);
   // Serial only: create dummy object, for set searches
