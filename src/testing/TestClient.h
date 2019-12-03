@@ -68,6 +68,7 @@ class TestClient {
   const std::set<std::string> &allOnlinePlayers() const {
     return _client->_allOnlinePlayers;
   }
+  const std::string &allowedTerrain() const { return _client->_allowedTerrain; }
 
   Window *craftingWindow() const { return _client->_craftingWindow; }
   Window *buildWindow() const { return _client->_buildWindow; }

@@ -180,12 +180,16 @@ TEST_CASE("A buff that changes allowed terrain") {
       auto levitating = s.getFirstBuff();
       user.applyBuff(levitating, user);
 
-      THEN("he can walk to the other end of the map") {
-        REPEAT_FOR_MS(2000) {
-          c.sendMessage(CL_LOCATION, makeArgs(70, 10));
-          SDL_Delay(5);
+      THEN("he knows that the new terrain list is active") {
+        WAIT_UNTIL(c.allowedTerrain() == "all");
+
+        AND_THEN("he can walk to the other end of the map") {
+          REPEAT_FOR_MS(2000) {
+            c.sendMessage(CL_LOCATION, makeArgs(70, 10));
+            SDL_Delay(5);
+          }
+          CHECK(user.location().x == 70.0);
         }
-        CHECK(user.location().x == 70.0);
       }
     }
   }
