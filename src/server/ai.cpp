@@ -4,25 +4,7 @@
 void NPC::processAI(ms_t timeElapsed) {
   target(nullptr);
 
-  // Become aware of nearby potential targets
-  if (npcType()->attacksNearby()) {
-    _timeSinceLookedForTargets += timeElapsed;
-    if (_timeSinceLookedForTargets >= FREQUENCY_TO_LOOK_FOR_TARGETS) {
-      _timeSinceLookedForTargets =
-          _timeSinceLookedForTargets % FREQUENCY_TO_LOOK_FOR_TARGETS;
-
-      for (auto *potentialTarget :
-           Server::_instance->findEntitiesInArea(location(), AGGRO_RANGE)) {
-        if (potentialTarget == this) continue;
-        if (!potentialTarget->canBeAttackedBy(*this)) continue;
-        if (distance(collisionRect(), potentialTarget->collisionRect()) >
-            AGGRO_RANGE)
-          continue;
-
-        makeAwareOf(*potentialTarget);
-      }
-    }
-  }
+  getNewTargetsFromProximity(timeElapsed);
 
   target(_threatTable.getTarget());
 
@@ -31,6 +13,26 @@ void NPC::processAI(ms_t timeElapsed) {
   transitionIfNecessary();
   if (_state != previousState) onTransition(previousState);
   act();
+}
+
+void NPC::getNewTargetsFromProximity(ms_t timeElapsed) {
+  if (!npcType()->attacksNearby()) return;
+
+  _timeSinceLookedForTargets += timeElapsed;
+  if (_timeSinceLookedForTargets < FREQUENCY_TO_LOOK_FOR_TARGETS) return;
+  _timeSinceLookedForTargets =
+      _timeSinceLookedForTargets % FREQUENCY_TO_LOOK_FOR_TARGETS;
+
+  for (auto *potentialTarget :
+       Server::_instance->findEntitiesInArea(location(), AGGRO_RANGE)) {
+    if (potentialTarget == this) continue;
+    if (!potentialTarget->canBeAttackedBy(*this)) continue;
+    if (distance(collisionRect(), potentialTarget->collisionRect()) >
+        AGGRO_RANGE)
+      continue;
+
+    makeAwareOf(*potentialTarget);
+  }
 }
 
 void NPC::transitionIfNecessary() {

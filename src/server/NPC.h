@@ -82,6 +82,7 @@ class NPC : public Entity, public QuestNode {
   static const ms_t FREQUENCY_TO_LOOK_FOR_TARGETS;
   ms_t _timeSinceLookedForTargets;
   void processAI(ms_t timeElapsed);
+  void getNewTargetsFromProximity(ms_t timeElapsed);
   void transitionIfNecessary();
   void onTransition(State previousState);
   void act();
