@@ -55,7 +55,7 @@ class TestServer {
                  const std::string &playerOwnerName = "");
   void addObject(const std::string &typeName, const MapPoint &loc,
                  const Permissions::Owner &owner);
-  void addNPC(const std::string &typeName, const MapPoint &loc = MapPoint{});
+  NPC &addNPC(const std::string &typeName, const MapPoint &loc = MapPoint{});
   void removeEntity(Entity &entity) { _server->removeEntity(entity); }
   void waitForUsers(size_t numUsers) const;
 

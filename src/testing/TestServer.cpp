@@ -121,11 +121,11 @@ void TestServer::addObject(const std::string &typeName, const MapPoint &loc,
   _server->addObject(type, loc, owner);
 }
 
-void TestServer::addNPC(const std::string &typeName, const MapPoint &loc) {
+NPC &TestServer::addNPC(const std::string &typeName, const MapPoint &loc) {
   const ObjectType *const type = _server->findObjectTypeByName(typeName);
   REQUIRE(type->classTag() == 'n');
   const NPCType *const npcType = dynamic_cast<const NPCType *const>(type);
-  _server->addNPC(npcType, loc);
+  return _server->addNPC(npcType, loc);
 }
 
 void TestServer::waitForUsers(size_t numUsers) const {

@@ -110,8 +110,6 @@ void NPC::scaleThreatAgainst(Entity &target, double multiplier) {
 }
 
 void NPC::makeAwareOf(Entity &entity) {
-  if (!npcType()->attacksNearby()) return;
-
   // For when an aggressive NPC begins combat
   if (_threatTable.isEmpty()) _timeEngaged = SDL_GetTicks();
 
@@ -128,6 +126,9 @@ bool NPC::isAwareOf(Entity &entity) const {
 }
 
 void NPC::makeNearbyNPCsAwareOf(Entity &entity) {
+  // Skip chain pulling for neutral NPCs
+  if (!npcType()->attacksNearby()) return;
+
   const Server &server = *Server::_instance;
 
   // Skip those already aware, otherwise we'd get infinite loops
