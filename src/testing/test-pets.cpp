@@ -328,3 +328,29 @@ TEST_CASE("Pets can be slaughtered") {
     }
   }
 }
+
+TEST_CASE("Neutral pets defend their owners") {
+  GIVEN("an NPC attacking a player") {
+    auto data = R"(
+      <npcType id="dog" maxHealth="1000" attack="2" speed="1" isNeutral="1" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    s.addNPC("dog", {10, 5});
+    auto &hostile = s.getFirstNPC();
+    hostile.makeAwareOf(user);
+    WAIT_UNTIL(hostile.target() == &user);
+
+    WHEN("the player is given a neutral pet") {
+      auto &pet = s.addNPC("dog", {10, 15});
+      pet.permissions().setPlayerOwner(c->username());
+
+      THEN("the pet attacks the hostile NPC") {
+        WAIT_UNTIL(pet.target() == &hostile);
+      }
+    }
+  }
+}

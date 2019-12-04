@@ -335,6 +335,8 @@ class User : public Object {  // TODO: Don't inherit from Object
   void moveToSpawnPoint(bool isNewPlayer = false);
   void onTerrainListChange(const std::string &listID);
 
+  std::set<NPC *> findNearbyPets();
+
   // Quests
   void startQuest(const Quest &quest);
   void completeQuest(const Quest::ID &id);

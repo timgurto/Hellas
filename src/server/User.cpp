@@ -1047,10 +1047,14 @@ void User::onAttackedBy(Entity &attacker, Threat threat) {
   auto armourSlotToUse = Item::getRandomArmorSlot();
   _gear[armourSlotToUse].first.onUse();
 
+  // Fight back if no current target
   if (!target() && attacker.canBeAttackedBy(*this)) {
     setTargetAndAttack(&attacker);
     attacker.alertReactivelyTargetingUser(*this);
   }
+
+  // Sick nearby pets on the attacker
+  for (auto *pet : findNearbyPets()) pet->makeAwareOf(attacker);
 
   Object::onAttackedBy(attacker, threat);
 }
@@ -1467,6 +1471,23 @@ void User::onTerrainListChange(const std::string &listID) {
     sendMessage(WARNING_BAD_TERRAIN);
     kill();
   }
+}
+
+std::set<NPC *> User::findNearbyPets() {
+  const auto PET_DEFEND_MASTER_RADIUS = Podes{60}.toPixels();
+  auto ret = std::set<NPC *>{};
+
+  Server &server = Server::instance();
+  for (auto *entity :
+       server.findEntitiesInArea(location(), PET_DEFEND_MASTER_RADIUS)) {
+    if (entity->classTag() != 'n') continue;
+    auto *npc = dynamic_cast<NPC *>(entity);
+    if (!npc->permissions().isOwnedByPlayer(_name)) continue;
+
+    ret.insert(npc);
+  }
+
+  return ret;
 }
 
 void User::startQuest(const Quest &quest) {
