@@ -494,7 +494,7 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
     auto canBeTamed = xr.findChild("canBeTamed", elem);
     if (canBeTamed) {
       nt->canBeTamed(true);
-      if (xr.findAttr(canBeTamed, "consumes", s)) nt->tamingRequiresItem(true);
+      if (xr.findAttr(canBeTamed, "consumes", s)) nt->tamingRequiresItem(s);
     }
 
     if (xr.findAttr(elem, "maxDistanceFromSpawner", n))

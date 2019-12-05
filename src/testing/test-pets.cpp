@@ -311,6 +311,7 @@ TEST_CASE("Taming can require an item") {
   GIVEN("An NPC that can be tamed with an item") {
     auto data = R"(
       <item id="chocolate" />
+      <item id="stinkBug" />
       <npcType id="girl" maxHealth="1" >
         <canBeTamed consumes="chocolate" />
       </npcType>
@@ -333,7 +334,7 @@ TEST_CASE("Taming can require an item") {
       }
 
       AND_GIVEN("he has the item") {
-        const auto *chocolate = &s.getFirstItem();
+        const auto *chocolate = &s.findItem("chocolate");
         user.giveItem(chocolate);
 
         WHEN("he tries to tame the NPC") {
@@ -341,6 +342,20 @@ TEST_CASE("Taming can require an item") {
 
           THEN("it belongs to him") {
             WAIT_UNTIL(girl.owner().type == Permissions::Owner::PLAYER);
+          }
+        }
+      }
+
+      AND_GIVEN("he has the wrong item") {
+        const auto *stinkBug = &s.findItem("stinkBug");
+        user.giveItem(stinkBug);
+
+        WHEN("he tries to tame the NPC") {
+          c.sendMessage(CL_TAME_NPC, makeArgs(girl.serial()));
+
+          THEN("it is still unowned") {
+            REPEAT_FOR_MS(100);
+            CHECK(girl.owner().type == Permissions::Owner::NONE);
           }
         }
       }

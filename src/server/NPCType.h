@@ -28,7 +28,7 @@ class NPCType : public ObjectType {
   px_t _maxDistanceFromSpawner{DEFAULT_MAX_DISTANCE_FROM_SPAWNER};
 
   bool _canBeTamed{false};
-  bool _tamingRequiresItem{false};
+  std::string _tamingRequiresItem;
 
  public:
   static Stats BASE_STATS;
@@ -56,8 +56,8 @@ class NPCType : public ObjectType {
   void maxDistanceFromSpawner(px_t dist) { _maxDistanceFromSpawner = dist; }
   void canBeTamed(bool b) { _canBeTamed = b; }
   bool canBeTamed() const { return _canBeTamed; }
-  void tamingRequiresItem(bool b) { _tamingRequiresItem = b; }
-  bool tamingRequiresItem() const { return _tamingRequiresItem; }
+  void tamingRequiresItem(const std::string &id) { _tamingRequiresItem = id; }
+  const std::string &tamingRequiresItem() const { return _tamingRequiresItem; }
 
   virtual char classTag() const override { return 'n'; }
 
