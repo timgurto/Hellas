@@ -348,6 +348,12 @@ TEST_CASE("Taming can require an item") {
 
           THEN("it belongs to him") {
             WAIT_UNTIL(girl.owner().type == Permissions::Owner::PLAYER);
+
+            AND_THEN("he no longer has the item") {
+              auto consumable = ItemSet{};
+              consumable.add(chocolate);
+              WAIT_UNTIL(!user.hasItems(consumable));
+            }
           }
         }
 

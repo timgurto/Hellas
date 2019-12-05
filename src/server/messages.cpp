@@ -1701,6 +1701,8 @@ void Server::handle_CL_TAME_NPC(User &user, size_t serial) {
       user.sendMessage(WARNING_ITEM_NEEDED);
       return;
     }
+
+    user.clearInventory();
   }
 
   npc->permissions().setPlayerOwner(user.name());
