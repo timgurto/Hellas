@@ -244,8 +244,25 @@ void NPC::forgetAbout(const Entity &entity) {
 }
 
 void NPC::sendInfoToClient(const User &targetUser) const {
+  const Server &server = Server::instance();
+
   targetUser.sendMessage(
       SV_OBJECT, makeArgs(serial(), location().x, location().y, type()->id()));
+
+  // Owner
+  auto *nonConst = const_cast<NPC *>(this);
+  if (nonConst->permissions().hasOwner()) {
+    const auto &owner = nonConst->permissions().owner();
+    targetUser.sendMessage(SV_OWNER,
+                           makeArgs(serial(), owner.typeString(), owner.name));
+
+    // In case the owner is unknown to the client, tell him the owner's city
+    if (owner.type == owner.PLAYER) {
+      std::string ownersCity = server.cities().getPlayerCity(owner.name);
+      if (!ownersCity.empty())
+        targetUser.sendMessage(SV_IN_CITY, makeArgs(owner.name, ownersCity));
+    }
+  }
 
   // Level
   targetUser.sendMessage(SV_NPC_LEVEL, makeArgs(serial(), _level));
