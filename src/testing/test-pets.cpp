@@ -356,18 +356,6 @@ TEST_CASE("Taming can require an item") {
             }
           }
         }
-
-        AND_GIVEN("it's in the second inventory slot") {
-          c.sendMessage(CL_SWAP_ITEMS, makeArgs(0, 0, 0, 1));
-
-          WHEN("he tries to tame the NPC") {
-            c.sendMessage(CL_TAME_NPC, makeArgs(girl.serial()));
-
-            THEN("it belongs to him") {
-              WAIT_UNTIL(girl.owner().type == Permissions::Owner::PLAYER);
-            }
-          }
-        }
       }
 
       AND_GIVEN("he has the wrong item") {
@@ -379,6 +367,18 @@ TEST_CASE("Taming can require an item") {
           THEN("it is still unowned") {
             REPEAT_FOR_MS(100);
             CHECK(girl.owner().type == Permissions::Owner::NONE);
+          }
+        }
+
+        AND_GIVEN("he also has the right item, in the second inventory slot") {
+          user.giveItem(chocolate);
+
+          WHEN("he tries to tame the NPC") {
+            c.sendMessage(CL_TAME_NPC, makeArgs(girl.serial()));
+
+            THEN("it belongs to him") {
+              WAIT_UNTIL(girl.owner().type == Permissions::Owner::PLAYER);
+            }
           }
         }
       }
