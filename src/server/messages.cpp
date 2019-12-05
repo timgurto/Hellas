@@ -1697,7 +1697,10 @@ void Server::handle_CL_TAME_NPC(User &user, size_t serial) {
     const auto *item = findItem(type.tamingRequiresItem());
     auto consumable = ItemSet{};
     consumable.add(item);
-    if (!user.hasItems(consumable)) return;
+    if (!user.hasItems(consumable)) {
+      user.sendMessage(WARNING_ITEM_NEEDED);
+      return;
+    }
   }
 
   npc->permissions().setPlayerOwner(user.name());

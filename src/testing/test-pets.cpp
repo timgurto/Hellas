@@ -331,9 +331,12 @@ TEST_CASE("Taming can require an item") {
       WHEN("he tries to tame it") {
         c.sendMessage(CL_TAME_NPC, makeArgs(girl.serial()));
 
-        THEN("it is still unowned") {
-          REPEAT_FOR_MS(100);
-          CHECK(girl.owner().type == Permissions::Owner::NONE);
+        THEN("he receives a warning") {
+          CHECK(c.waitForMessage(WARNING_ITEM_NEEDED));
+
+          AND_THEN("it is still unowned") {
+            CHECK(girl.owner().type == Permissions::Owner::NONE);
+          }
         }
       }
 
