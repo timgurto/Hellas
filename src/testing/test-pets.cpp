@@ -307,6 +307,34 @@ TEST_CASE("Non-tamable NPCs can't be tamed") {
   }
 }
 
+TEST_CASE("Taming can require an item") {
+  GIVEN("An NPC that can be tamed with an item") {
+    auto data = R"(
+      <item id="chocolate" />
+      <npcType id="girl" maxHealth="1" >
+        <canBeTamed consumes="chocolate" />
+      </npcType>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto &girl = s.addNPC("girl", {10, 15});
+
+    AND_GIVEN("a player") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+
+      WHEN("he tries to tame it") {
+        c.sendMessage(CL_TAME_NPC, makeArgs(girl.serial()));
+
+        THEN("it is still unowned") {
+          REPEAT_FOR_MS(100);
+          CHECK(girl.owner().type == Permissions::Owner::NONE);
+        }
+      }
+    }
+  }
+}
+
 TEST_CASE("Pets can be slaughtered") {
   GIVEN("a player with a pet") {
     auto data = R"(
