@@ -378,6 +378,13 @@ TEST_CASE("Taming can require an item") {
 
             THEN("it belongs to him") {
               WAIT_UNTIL(girl.owner().type == Permissions::Owner::PLAYER);
+
+              AND_THEN("he still has the wrong item") {
+                auto extraStuff = ItemSet{};
+                extraStuff.add(stinkBug);
+                REPEAT_FOR_MS(100);
+                CHECK(user.hasItems(extraStuff));
+              }
             }
           }
         }

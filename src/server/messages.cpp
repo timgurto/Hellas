@@ -1702,7 +1702,7 @@ void Server::handle_CL_TAME_NPC(User &user, size_t serial) {
       return;
     }
 
-    user.clearInventory();
+    user.removeItems(consumable);
   }
 
   npc->permissions().setPlayerOwner(user.name());
