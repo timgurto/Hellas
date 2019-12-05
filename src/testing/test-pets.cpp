@@ -331,6 +331,19 @@ TEST_CASE("Taming can require an item") {
           CHECK(girl.owner().type == Permissions::Owner::NONE);
         }
       }
+
+      AND_GIVEN("he has the item") {
+        const auto *chocolate = &s.getFirstItem();
+        user.giveItem(chocolate);
+
+        WHEN("he tries to tame the NPC") {
+          c.sendMessage(CL_TAME_NPC, makeArgs(girl.serial()));
+
+          THEN("it belongs to him") {
+            WAIT_UNTIL(girl.owner().type == Permissions::Owner::PLAYER);
+          }
+        }
+      }
     }
   }
 }

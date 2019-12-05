@@ -1689,7 +1689,11 @@ void Server::handle_CL_TAME_NPC(User &user, size_t serial) {
     return;
   }
 
-  if (!npc->npcType()->canBeTamed()) return;
+  const auto &type = *npc->npcType();
+
+  if (!type.canBeTamed()) return;
+
+  if (type.tamingRequiresItem() && !user.inventory()[0].first.hasItem()) return;
 
   npc->permissions().setPlayerOwner(user.name());
   if (user.target() == npc) {
