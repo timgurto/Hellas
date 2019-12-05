@@ -181,8 +181,11 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg) {
 }
 
 void ClientObject::onLeftClick(Client &client) {
-  if (client.isCtrlPressed())
-    client.sendMessage(CL_TAME_NPC, makeArgs(serial()));
+  if (client.isCtrlPressed()) {
+    const auto *npc = dynamic_cast<ClientNPC *>(this);
+    if (npc && npc->canBeTamed())
+      client.sendMessage(CL_TAME_NPC, makeArgs(serial()));
+  }
 
   else
     client.setTarget(*this);
@@ -1042,7 +1045,7 @@ void ClientObject::createRegularTooltip() const {
 
   else if (classTag() == 'n') {
     const ClientNPC &npc = dynamic_cast<const ClientNPC &>(*this);
-    if (npc.npcType()->canBeTamed() && npc.isAlive()) {
+    if (npc.canBeTamed()) {
       tooltip.addGap();
       tooltip.setColor(Color::TOOLTIP_BODY);
       tooltip.addLine("Can be tamed into a pet:");

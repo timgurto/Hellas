@@ -40,6 +40,33 @@ TEST_CASE("Taming NPCs") {
   }
 }
 
+TEST_CASE("Owned NPCs can't be tamed") {
+  GIVEN("a tameable NPC") {
+    auto data = R"(
+      <npcType id="cat" maxHealth="1" >
+        <canBeTamed />
+      </npcType>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    auto &cat = s.addNPC("cat");
+
+    AND_GIVEN("it's owned by an offline player, Alice") {
+      cat.permissions().setPlayerOwner("Alice");
+
+      WHEN("another player tries to tame it") {
+        s.waitForUsers(1);
+        c.sendMessage(CL_TAME_NPC, makeArgs(cat.serial()));
+
+        THEN("it's still owned by Alice") {
+          REPEAT_FOR_MS(100);
+          CHECK(cat.permissions().isOwnedByPlayer("Alice"));
+        }
+      }
+    }
+  }
+}
+
 TEST_CASE("Bad arguments to taming command") {
   GIVEN("a server and client") {
     auto s = TestServer{};

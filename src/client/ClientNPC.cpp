@@ -10,6 +10,13 @@ ClientNPC::ClientNPC(size_t serial, const ClientNPCType *type,
                      const MapPoint &loc)
     : ClientObject(serial, type, loc) {}
 
+bool ClientNPC::canBeTamed() const {
+  if (!npcType()->canBeTamed()) return false;
+  if (!isAlive()) return false;
+  if (owner().type != Owner::ALL_HAVE_ACCESS) return false;
+  return true;
+}
+
 bool ClientNPC::canBeAttackedByPlayer() const {
   if (!ClientCombatant::canBeAttackedByPlayer()) return false;
   if (npcType()->isCivilian()) return false;
