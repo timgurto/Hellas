@@ -109,6 +109,16 @@ void ServerItem::Instance::damageFromUse() {
   _reportingInfo.report();
 }
 
+void ServerItem::Instance::damageOnPlayerDeath() {
+  const auto DAMAGE_ON_DEATH = Hitpoints{10};
+  if (DAMAGE_ON_DEATH >= _health)
+    _health = 0;
+  else
+    _health -= DAMAGE_ON_DEATH;
+
+  _reportingInfo.report();
+}
+
 void ServerItem::Instance::repair() {
   _health = MAX_HEALTH;
   _reportingInfo.report();

@@ -1016,6 +1016,11 @@ void User::onDeath() {
 
   removeAllBuffsAndDebuffs();
 
+  for (auto &pair : _gear) {
+    if (!pair.first.hasItem()) continue;
+    pair.first.damageOnPlayerDeath();
+  }
+
   // Handle respawn etc.
   moveToSpawnPoint();
 

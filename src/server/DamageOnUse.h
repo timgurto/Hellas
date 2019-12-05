@@ -11,6 +11,7 @@ class DamageOnUse {
   void onUse();
 
   virtual void damageFromUse() = 0;
+  virtual void damageOnPlayerDeath() {}
 
   virtual void repair() = 0;
 

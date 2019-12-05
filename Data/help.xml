@@ -48,7 +48,8 @@
 <entry name="Damage and repairing" >
     <p  heading="Damage"
         text="Items or objects may be damaged when they are used.  Attacking may damage your weapons; being attacked may damage your other gear, using tools may damage them, and objects can also be directly attacked by enemies." />
-    <p text="If an item's or object's health is reduced to 0, then it is considered broken and cannot be used." />
+    <p text="If you die, all gear you are wearing takes significant damage." />
+    <p text="If an item's or object's health is reduced to 0, then it is considered broken and cannot be used.  Broken gear may still be worn, but will have no effect on your stats." />
     <p heading="Repairing"
         text="To repair something, hold [Alt] and click on it.  This works for both items and objects, if you have permission to do so." />
     <p text="Repairing may require a tool to work, and/or an item that will be consumed.  The item's or object's tooltip will include details about how to repair it." />

@@ -78,6 +78,14 @@ TEST_CASE("Combat reduces weapon/armour health") {
           }
         }
       }
+
+      AND_WHEN("he dies") {
+        user.kill();
+
+        THEN("the weapon's health is reduced") {
+          CHECK(weaponSlot.first.health() < ServerItem::MAX_HEALTH);
+        }
+      }
     }
 
     WHEN("a player has the weapon and armour equipped") {

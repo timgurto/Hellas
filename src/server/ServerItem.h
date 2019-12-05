@@ -54,6 +54,7 @@ class ServerItem : public Item {
     Hitpoints health() const { return _health; }
     bool isBroken() const;
     void damageFromUse() override;
+    void damageOnPlayerDeath() override;
     void repair() override;
     double toolSpeed(const std::string &tag) const override;
 
