@@ -317,6 +317,10 @@ TEST_CASE("Taming can require an item") {
       </npcType>
     )";
     auto s = TestServer::WithDataString(data);
+
+    const auto *chocolate = &s.findItem("chocolate");
+    const auto *stinkBug = &s.findItem("stinkBug");
+
     auto &girl = s.addNPC("girl", {10, 15});
 
     AND_GIVEN("a player") {
@@ -334,7 +338,6 @@ TEST_CASE("Taming can require an item") {
       }
 
       AND_GIVEN("he has the item") {
-        const auto *chocolate = &s.findItem("chocolate");
         user.giveItem(chocolate);
 
         WHEN("he tries to tame the NPC") {
@@ -344,10 +347,21 @@ TEST_CASE("Taming can require an item") {
             WAIT_UNTIL(girl.owner().type == Permissions::Owner::PLAYER);
           }
         }
+
+        AND_GIVEN("it's in the second inventory slot") {
+          c.sendMessage(CL_SWAP_ITEMS, makeArgs(0, 0, 0, 1));
+
+          WHEN("he tries to tame the NPC") {
+            c.sendMessage(CL_TAME_NPC, makeArgs(girl.serial()));
+
+            THEN("it belongs to him") {
+              WAIT_UNTIL(girl.owner().type == Permissions::Owner::PLAYER);
+            }
+          }
+        }
       }
 
       AND_GIVEN("he has the wrong item") {
-        const auto *stinkBug = &s.findItem("stinkBug");
         user.giveItem(stinkBug);
 
         WHEN("he tries to tame the NPC") {
