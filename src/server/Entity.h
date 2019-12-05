@@ -167,6 +167,7 @@ class Entity {
   // const;
   virtual void sendAllLootToTagger() const;
   void excludeFromPersistentState() { _excludedFromPersistentState = true; }
+  void includeInPersistentState() { _excludedFromPersistentState = false; }
   bool excludedFromPersistentState() const {
     return _excludedFromPersistentState;
   }

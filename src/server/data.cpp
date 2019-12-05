@@ -517,6 +517,20 @@ void Server::loadEntitiesFromFile(const std::string &path,
 
     auto corpseTime = ms_t{};
     if (xr.findAttr(elem, "corpseTime", corpseTime)) npc.corpseTime(corpseTime);
+
+    auto ownerElem = xr.findChild("owner", elem);
+    if (ownerElem) {
+      std::string type, name;
+      xr.findAttr(ownerElem, "type", type);
+      xr.findAttr(ownerElem, "name", name);
+      if (type == "player")
+        npc.permissions().setPlayerOwner(name);
+      else if (type == "city")
+        npc.permissions().setCityOwner(name);
+      else
+        _debug << Color::CHAT_ERROR << "Skipping bad NPC owner type \"" << type
+               << "\"." << Log::endl;
+    }
   }
 }
 
@@ -623,6 +637,14 @@ void NPC::writeToXML(XmlWriter &xw) const {
   xw.setAttr(loc, "y", location().y);
 
   xw.setAttr(e, "health", health());
+
+  auto constRef = const_cast<const NPC &>(*this);
+  if (constRef.permissions().hasOwner()) {
+    const auto &owner = constRef.permissions().owner();
+    auto ownerElem = xw.addChild("owner", e);
+    xw.setAttr(ownerElem, "type", owner.typeString());
+    xw.setAttr(ownerElem, "name", owner.name);
+  }
 
   if (isDead() && corpseTime() > 0) xw.setAttr(e, "corpseTime", corpseTime());
 }

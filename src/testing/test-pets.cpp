@@ -497,3 +497,40 @@ TEST_CASE("Neutral pets have the correct UI colours") {
     }
   }
 }
+
+TEST_CASE("Pets from spawn points") {
+  // Given a spawn point with a tameable NPC
+  auto data = R"(
+      <spawnPoint y="10" x="10" type="sheep" quantity="1" radius="100" respawnTime="1" />
+      <npcType id="sheep" maxHealth="1" >
+        <canBeTamed/>
+      </npcType>
+    )";
+  {
+    auto s = TestServer::WithDataString(data);
+
+    // When Alice tames the NPC
+    auto c = TestClient::WithUsernameAndDataString("Alice", data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    auto &sheep = s.getFirstNPC();
+    c.sendMessage(CL_TAME_NPC, makeArgs(sheep.serial()));
+    WAIT_UNTIL(sheep.permissions().isOwnedByPlayer(user.name()));
+    REPEAT_FOR_MS(100);
+
+    // And when the server restarts
+  }
+  {
+    auto s = TestServer::WithDataStringAndKeepingOldData(data);
+
+    // Then Alice still owns an NPC
+    auto aliceOwnsAnNPC = false;
+    REPEAT_FOR_MS(100);
+    for (auto *ent : s.entities()) {
+      auto *npc = dynamic_cast<NPC *>(ent);
+      if (npc->permissions().isOwnedByPlayer("Alice")) aliceOwnsAnNPC = true;
+    }
+    CHECK(aliceOwnsAnNPC);
+  }
+}
