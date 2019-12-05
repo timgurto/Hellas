@@ -1046,6 +1046,10 @@ void ClientObject::createRegularTooltip() const {
       tooltip.addGap();
       tooltip.setColor(Color::TOOLTIP_BODY);
       tooltip.addLine("Can be tamed into a pet:");
+      if (npc.npcType()->itemRequiredForTaming()) {
+        tooltip.addLine("Will consume:");
+        tooltip.addItem(*npc.npcType()->itemRequiredForTaming());
+      }
       tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
       tooltip.addLine(std::string("Ctrl-click to attempt"));
     }

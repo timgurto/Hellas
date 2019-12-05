@@ -949,7 +949,19 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
       nt->makeNeutral();
 
     auto canBeTamed = xr.findChild("canBeTamed", elem);
-    if (canBeTamed) nt->canBeTamed(true);
+    if (canBeTamed) {
+      nt->canBeTamed(true);
+      if (xr.findAttr(canBeTamed, "consumes", s)) {
+        auto it = _client._items.find(s);
+        if (it == _client._items.end()) {
+          _client.showErrorMessage("Skipping invalid taming consumable "s + s,
+                                   Color::CHAT_ERROR);
+          continue;
+        }
+
+        nt->tamingRequiresItem(&it->second);
+      }
+    }
 
     // Insert
     auto pair = _client._objectTypes.insert(nt);

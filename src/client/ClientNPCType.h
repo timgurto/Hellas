@@ -26,6 +26,12 @@ class ClientNPCType : public ClientObjectType {
   bool isNeutral() const { return _isNeutral; }
   void canBeTamed(bool b) { _canBeTamed = b; }
   bool canBeTamed() const { return _canBeTamed; }
+  void tamingRequiresItem(const ClientItem *item) {
+    _itemRequiredForTaming = item;
+  }
+  const ClientItem *itemRequiredForTaming() const {
+    return _itemRequiredForTaming;
+  }
 
   virtual char classTag() const override { return 'n'; }
 
@@ -35,6 +41,7 @@ class ClientNPCType : public ClientObjectType {
   bool _isCivilian{false};
   bool _isNeutral{false};
   bool _canBeTamed{false};
+  const ClientItem *_itemRequiredForTaming;
 };
 
 #endif
