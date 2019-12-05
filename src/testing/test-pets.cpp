@@ -354,3 +354,33 @@ TEST_CASE("Neutral pets defend their owners") {
     }
   }
 }
+
+TEST_CASE("Neutral pets have the correct UI colours") {
+  GIVEN("a neutral NPC") {
+    auto data = R"(
+      <npcType id="dog" maxHealth="1" isNeutral="1" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto &dog = s.addNPC("dog", {10, 15});
+
+    AND_GIVEN("a city and a citizen") {
+      auto c = TestClient::WithDataString(data);
+      s.cities().createCity("Athens");
+
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      s.cities().addPlayerToCity(user, "Athens");
+
+      WAIT_UNTIL(c.objects().size() == 1);
+      const auto &cDog = c.getFirstNPC();
+
+      WHEN("the NPC is owned by the player") {
+        dog.permissions().setPlayerOwner(user.name());
+
+        THEN("he sees it as 'self' coloured") {
+          WAIT_UNTIL(cDog.nameColor() == Color::COMBATANT_SELF);
+        }
+      }
+    }
+  }
+}

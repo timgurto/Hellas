@@ -22,11 +22,13 @@ bool ClientNPC::canBeAttackedByPlayer() const {
 }
 
 const Color &ClientNPC::nameColor() const {
-  if (npcType()->isCivilian()) return Color::COMBATANT_NEUTRAL;
-  if (npcType()->isNeutral()) return Color::COMBATANT_DEFENSIVE;
+  if (canBeAttackedByPlayer()) {
+    return npcType()->isNeutral() ? Color::COMBATANT_DEFENSIVE
+                                  : Color::COMBATANT_ENEMY;
+  }
   if (belongsToPlayerCity()) return Color::COMBATANT_ALLY;
   if (belongsToPlayer()) return Color::COMBATANT_SELF;
-  return Color::COMBATANT_ENEMY;
+  return Color::COMBATANT_NEUTRAL;
 }
 
 void ClientNPC::update(double delta) {
