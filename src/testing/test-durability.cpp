@@ -108,12 +108,6 @@ TEST_CASE("Combat reduces weapon/armour health") {
           WAIT_UNTIL_TIMEOUT(feetSlot.first.health() < ServerItem::MAX_HEALTH,
                              10000);
         }
-
-        THEN("the weapon's health is not reduced") {
-          // Note: this will kill/respawn the player repeatedly.
-          REPEAT_FOR_MS(10000);
-          CHECK(weaponSlot.first.health() == ServerItem::MAX_HEALTH);
-        }
       }
 
       AND_WHEN("the enemy attacks once") {
