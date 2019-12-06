@@ -24,6 +24,8 @@ inline int toInt(double d) {
 
 inline double randDouble() { return (1.0 * rand()) / RAND_MAX; }
 
+bool almostEquals(double a, double b);
+
 template <typename T>
 void pushBackMultiple(std::vector<T> &vec, const T &val, size_t count) {
   for (size_t i = 0; i != count; ++i) vec.push_back(val);

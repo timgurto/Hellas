@@ -1695,19 +1695,19 @@ void Server::handle_CL_TAME_NPC(User &user, size_t serial) {
 
   if (npc->permissions().hasOwner()) return;
 
-  if (npc->health() > npc->stats().maxHealth / 2) return;
-
+  auto consumable = ItemSet{};
   if (!type.tamingRequiresItem().empty()) {
     const auto *item = findItem(type.tamingRequiresItem());
-    auto consumable = ItemSet{};
     consumable.add(item);
     if (!user.hasItems(consumable)) {
       user.sendMessage(WARNING_ITEM_NEEDED);
       return;
     }
-
-    user.removeItems(consumable);
   }
+
+  if (randDouble() > npc->getTameChance()) return;
+
+  user.removeItems(consumable);
   npc->includeInPersistentState();
   if (npc->spawner()) {
     npc->spawner()->scheduleSpawn();

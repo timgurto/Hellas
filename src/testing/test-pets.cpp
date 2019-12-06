@@ -606,4 +606,24 @@ TEST_CASE("Chance to tame based on health") {
       }
     }
   }
+
+  SECTION("NPC::getTameChance()") {
+    auto data = R"(
+      <npcType id="cow" maxHealth="10" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto &cow = s.addNPC("cow");
+
+    auto tameChancePerHealth = std::map<Hitpoints, double>{
+        {1, 0.8}, {2, 0.6}, {3, 0.4}, {4, 0.2}, {5, 0.0},
+        {6, 0.0}, {7, 0.0}, {8, 0.0}, {9, 0.0}, {10, 0.0}};
+    for (auto pair : tameChancePerHealth) {
+      auto health = pair.first;
+      cow.healBy(10);
+      cow.reduceHealth(10 - health);
+
+      auto exepctedChance = pair.second;
+      CHECK(almostEquals(cow.getTameChance(), exepctedChance));
+    }
+  }
 }

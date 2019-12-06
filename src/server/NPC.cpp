@@ -243,6 +243,12 @@ void NPC::forgetAbout(const Entity &entity) {
   _threatTable.forgetAbout(entity);
 }
 
+double NPC::getTameChance() const {
+  auto healthPercent = 1.0 * health() / stats().maxHealth;
+  if (healthPercent > 0.5) return 0;
+  return (0.5 - healthPercent) * 2;
+}
+
 void NPC::sendInfoToClient(const User &targetUser) const {
   const Server &server = Server::instance();
 
