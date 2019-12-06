@@ -576,6 +576,9 @@ enum MessageCode {
   SV_QUEST_COMPLETED,
   SV_QUEST_FAILED, // Sent in addition to SV_QUEST_CAN_BE_STARTED
 
+  // An attempt to tame an NPC failed.
+  SV_TAME_ATTEMPT_FAILED,
+
   // You have ... left to finish a quest
   // Args: questID, ms remaining
   SV_QUEST_TIME_LEFT,

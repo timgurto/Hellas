@@ -1705,7 +1705,10 @@ void Server::handle_CL_TAME_NPC(User &user, size_t serial) {
     }
   }
 
-  if (randDouble() > npc->getTameChance()) return;
+  if (randDouble() > npc->getTameChance()) {
+    user.sendMessage(SV_TAME_ATTEMPT_FAILED);
+    return;
+  }
 
   user.removeItems(consumable);
   npc->includeInPersistentState();

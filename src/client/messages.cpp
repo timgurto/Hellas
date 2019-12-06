@@ -227,6 +227,7 @@ void Client::handleMessage(const std::string &msg) {
       case WARNING_BROKEN_ITEM:
       case WARNING_NOT_A_CITIZEN:
       case WARNING_NOT_REPAIRABLE:
+      case SV_TAME_ATTEMPT_FAILED:
         errorMessageColor = Color::CHAT_WARNING;  // Yellow above, red below
       case ERROR_INVALID_USER:
       case ERROR_INVALID_ITEM:
@@ -2691,6 +2692,7 @@ void Client::initializeMessageNames() {
   _errorMessages[WARNING_NOT_A_CITIZEN] =
       "There is no citizen of your city by that name.";
   _errorMessages[WARNING_NOT_REPAIRABLE] = "That can't be repaired.";
+  _errorMessages[SV_TAME_ATTEMPT_FAILED] = "Attempt to tame failed.";
 }
 
 void Client::performCommand(const std::string &commandString) {

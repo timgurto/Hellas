@@ -599,9 +599,13 @@ TEST_CASE("Chance to tame based on health") {
         s.waitForUsers(1);
         c.sendMessage(CL_TAME_NPC, makeArgs(cat.serial()));
 
-        THEN("it is still unowned") {
-          REPEAT_FOR_MS(100);
-          CHECK_FALSE(cat.permissions().hasOwner());
+        THEN("he receives a message") {
+          CHECK(c.waitForMessage(SV_TAME_ATTEMPT_FAILED));
+
+          AND_THEN("it is still unowned") {
+            REPEAT_FOR_MS(100);
+            CHECK_FALSE(cat.permissions().hasOwner());
+          }
         }
       }
     }
