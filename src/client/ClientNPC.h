@@ -18,6 +18,7 @@ class ClientNPC : public ClientObject {
   char classTag() const override { return 'n'; }
 
   bool canBeTamed() const;
+  double getTameChance() const;
 
   // From ClientCombatant:
   bool canBeAttackedByPlayer() const override;

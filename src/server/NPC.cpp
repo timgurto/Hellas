@@ -244,9 +244,7 @@ void NPC::forgetAbout(const Entity &entity) {
 }
 
 double NPC::getTameChance() const {
-  auto healthPercent = 1.0 * health() / stats().maxHealth;
-  if (healthPercent > 0.5) return 0;
-  return (0.5 - healthPercent) * 2;
+  return getTameChanceBasedOnHealthPercent(1.0 * health() / stats().maxHealth);
 }
 
 void NPC::sendInfoToClient(const User &targetUser) const {

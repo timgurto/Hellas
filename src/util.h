@@ -128,4 +128,6 @@ std::string toPascal(std::string in);
 
 std::string toLower(std::string in);
 
+double getTameChanceBasedOnHealthPercent(double healthPercent);
+
 #endif

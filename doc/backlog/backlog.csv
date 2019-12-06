@@ -414,7 +414,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 599,Pets share owner's friends/enemies,13,13,Feature,598,TRUE,TRUE,3 Tin wrapup
 600,Mobs can be domesticated into pets,8,5,Feature,598,TRUE,,3 Tin wrapup
 601,Domestication takes a resource,5,8,Feature,600,TRUE,,3 Tin wrapup
-602,"Domestication has success chance, based on health %",3,5,Feature,600,,,3 Tin wrapup
+602,"Domestication has success chance, based on health %",3,5,Feature,600,TRUE,,3 Tin wrapup
 603,Pet breeding,2,21,Feature,597,,,
 604,Pets can be set to aggressive or defensive,2,8,Feature,597,,,
 605,Pets can be ordered to follow or stay,3,8,Feature,609,,,

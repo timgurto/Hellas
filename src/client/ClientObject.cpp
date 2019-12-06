@@ -1043,6 +1043,7 @@ void ClientObject::createRegularTooltip() const {
     tooltip.addLine(std::string("Right-click to interact"));
   }
 
+  // NPC-specific stuff
   else if (classTag() == 'n') {
     const ClientNPC &npc = dynamic_cast<const ClientNPC &>(*this);
     if (npc.canBeTamed()) {
@@ -1053,6 +1054,8 @@ void ClientObject::createRegularTooltip() const {
         tooltip.addLine("Will consume:");
         tooltip.addItem(*npc.npcType()->itemRequiredForTaming());
       }
+      auto chance = toString(toInt(npc.getTameChance() * 100));
+      tooltip.addLine(chance + "% chance to succeed");
       tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
       tooltip.addLine(std::string("Ctrl-click to attempt"));
     }

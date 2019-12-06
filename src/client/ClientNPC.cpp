@@ -17,6 +17,10 @@ bool ClientNPC::canBeTamed() const {
   return true;
 }
 
+double ClientNPC::getTameChance() const {
+  return getTameChanceBasedOnHealthPercent(1.0 * health() / maxHealth());
+}
+
 bool ClientNPC::canBeAttackedByPlayer() const {
   if (!ClientCombatant::canBeAttackedByPlayer()) return false;
   if (npcType()->isCivilian()) return false;

@@ -151,3 +151,8 @@ std::string toLower(std::string in) {
   for (auto &c : in) c = tolower(c);
   return in;
 }
+
+double getTameChanceBasedOnHealthPercent(double healthPercent) {
+  if (healthPercent > 0.5) return 0;
+  return (0.5 - healthPercent) * 2;
+}
