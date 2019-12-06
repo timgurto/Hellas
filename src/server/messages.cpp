@@ -1709,6 +1709,9 @@ void Server::handle_CL_TAME_NPC(User &user, size_t serial) {
     user.removeItems(consumable);
   }
   npc->includeInPersistentState();
+  if (npc->spawner()) {
+    npc->spawner()->scheduleSpawn();
+  }
   npc->permissions().setPlayerOwner(user.name());
   if (user.target() == npc) {
     user.finishAction();

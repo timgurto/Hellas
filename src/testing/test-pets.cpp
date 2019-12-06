@@ -519,6 +519,9 @@ TEST_CASE("Pets from spawn points") {
     WAIT_UNTIL(sheep.permissions().isOwnedByPlayer(user.name()));
     REPEAT_FOR_MS(100);
 
+    // Then there are two NPCs (the pet and the respawn)
+    CHECK(s.entities().size() == 2);
+
     // And when the server restarts
   }
   {
