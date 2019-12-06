@@ -1695,7 +1695,7 @@ void Server::handle_CL_TAME_NPC(User &user, size_t serial) {
 
   if (npc->permissions().hasOwner()) return;
 
-  if (npc->health() == npc->stats().maxHealth) return;
+  if (npc->health() > npc->stats().maxHealth / 2) return;
 
   if (!type.tamingRequiresItem().empty()) {
     const auto *item = findItem(type.tamingRequiresItem());

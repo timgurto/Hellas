@@ -86,7 +86,7 @@ TEST_CASE("Bad arguments to taming command") {
 TEST_CASE("Taming an NPC untargets it") {
   GIVEN("a tamable NPC with plenty of health") {
     auto data = R"(
-      <npcType id="hippo" maxHealth="10000" >
+      <npcType id="hippo" maxHealth="100000000" >
         <canBeTamed />
       </npcType>
     )";
@@ -94,8 +94,8 @@ TEST_CASE("Taming an NPC untargets it") {
     auto c = TestClient::WithDataString(data);
     s.waitForUsers(1);
 
-    s.addNPC("hippo");
-    const auto &hippo = s.getFirstNPC();
+    auto &hippo = s.addNPC("hippo");
+    hippo.reduceHealth(99990000);
 
     AND_GIVEN("a user is attacking it") {
       c.sendMessage(CL_TARGET_ENTITY, makeArgs(hippo.serial()));
@@ -574,7 +574,7 @@ TEST_CASE("Respawning tamed NPCs") {
 TEST_CASE("Chance to tame based on health") {
   GIVEN("a tameable NPC") {
     auto data = R"(
-      <npcType id="cat" maxHealth="1" >
+      <npcType id="cat" maxHealth="10000" >
         <canBeTamed />
       </npcType>
     )";
@@ -589,6 +589,20 @@ TEST_CASE("Chance to tame based on health") {
       THEN("it is still unowned") {
         REPEAT_FOR_MS(100);
         CHECK_FALSE(cat.permissions().hasOwner());
+      }
+    }
+
+    WHEN("it has 51% health") {
+      cat.reduceHealth(4999);
+
+      AND_WHEN("a user tries to tame it") {
+        s.waitForUsers(1);
+        c.sendMessage(CL_TAME_NPC, makeArgs(cat.serial()));
+
+        THEN("it is still unowned") {
+          REPEAT_FOR_MS(100);
+          CHECK_FALSE(cat.permissions().hasOwner());
+        }
       }
     }
   }
