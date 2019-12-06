@@ -59,6 +59,8 @@ class TestServer {
   void removeEntity(Entity &entity) { _server->removeEntity(entity); }
   void waitForUsers(size_t numUsers) const;
 
+  void saveData();
+
   Server *operator->() { return _server; }
   void sendMessage(const Socket &socket, MessageCode code,
                    const std::string &args) {

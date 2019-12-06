@@ -537,3 +537,33 @@ TEST_CASE("Pets from spawn points") {
     CHECK(aliceOwnsAnNPC);
   }
 }
+
+TEST_CASE("Respawning tamed NPCs") {
+  GIVEN("a fast spawn point with a tameable NPC") {
+    auto data = R"(
+      <spawnPoint y="10" x="10" type="sheep" quantity="1" radius="100"
+respawnTime="1" /> <npcType id="sheep" maxHealth="1" > <canBeTamed/>
+      </npcType>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithUsernameAndDataString("Alice", data);
+    s.waitForUsers(1);
+    // auto &user = s.getFirstUser();
+
+    WHEN("a user tames it") {
+      auto &sheep = s.getFirstNPC();
+      c.sendMessage(CL_TAME_NPC, makeArgs(sheep.serial()));
+
+      AND_WHEN("server data is saved a couple of times") {
+        s.saveData();
+        REPEAT_FOR_MS(100);
+        s.saveData();
+        REPEAT_FOR_MS(100);
+
+        THEN("there are two NPCs (the pet and the respawn)") {
+          CHECK(s.entities().size() == 2);
+        }
+      }
+    }
+  }
+}

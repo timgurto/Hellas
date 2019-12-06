@@ -1711,6 +1711,7 @@ void Server::handle_CL_TAME_NPC(User &user, size_t serial) {
   npc->includeInPersistentState();
   if (npc->spawner()) {
     npc->spawner()->scheduleSpawn();
+    npc->spawner(nullptr);
   }
   npc->permissions().setPlayerOwner(user.name());
   if (user.target() == npc) {

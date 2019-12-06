@@ -134,6 +134,12 @@ void TestServer::waitForUsers(size_t numUsers) const {
   for (auto &user : _server->_users) WAIT_UNTIL(user.isInitialised());
 }
 
+void TestServer::saveData() {
+  std::thread(Server::saveData, _server->_entities, _server->_wars,
+              _server->_cities)
+      .detach();
+}
+
 User &TestServer::findUser(const std::string &username) {
   auto usersByName = _server->_usersByName;
   auto it = usersByName.find(username);
