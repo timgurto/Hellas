@@ -301,9 +301,9 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 289,"On death, drop region item if in lost talent's cost",2,13,Feature,288,,TRUE,4 Copper
 290,Region items are n-unique,13,8,Feature,285,,TRUE,4 Copper
 291,Region items are soulbound,5,8,Feature,285,,TRUE,4 Copper
-294,Hotbar can include right-clickable items,2,8,Usability,280,,,3 Tin wrapup
+294,Hotbar can include right-clickable items,2,8,Usability,280,,,
 350,Update window title when object type changes,5,1,Bug,,,,
-351,Allow users to drop items onto construction sites,3,21,Usability,,,,3 Tin wrapup
+351,Allow users to drop items onto construction sites,3,21,Usability,,,,
 364,Current-wars spam on login,3,3,Bug,,,,
 368,Update object windows after joining/leaving a city,21,3,Bug,,,,
 369,Trees sometimes think they're being gathered when they're not.  Endless particles/sound.,55,8,Bug,,,,
@@ -373,12 +373,12 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 554,Music,55,610,Aesthetics,,,,
 555,"On city destruction, make city objects attackable and claimable for 1d",13,13,Feature,,,,
 556,Can't build roads under other objects,5,5,Bug,,,,
-557,Provide list of names when granting objects,13,8,Usability,,,,3 Tin wrapup
+557,Provide list of names when granting objects,13,8,Usability,,,,
 559,Reduce volume of distant SFX,3,8,Aesthetics,,,,
 560,Master volume control,3,5,Usability,,TRUE,,3 Tin wrapup
 561,Make gigantes always run back to their spawn point,13,3,Bug,,TRUE,,3 Tin wrapup
 563,Add flag objects with text entry to show labels on map,8,21,Feature,,,,
-564,Cull objects and NPCs on death,3,13,Bug,,,,3 Tin wrapup
+564,Cull objects and NPCs on death,3,13,Bug,,,,
 565,Reflect vehicle speed in stats window,3,3,Bug,105,,,
 566,Dropping an item deselects target,5,3,Bug,,,,
 567,Always create static objects on startup; don't save them,5,3,Performance,,TRUE,,

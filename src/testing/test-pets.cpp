@@ -5,7 +5,7 @@
 TEST_CASE("Taming NPCs") {
   GIVEN("a tamable cat") {
     auto data = R"(
-      <npcType id="cat" maxHealth="1" >
+      <npcType id="cat" maxHealth="10000" >
         <canBeTamed />
       </npcType>
     )";
@@ -13,8 +13,8 @@ TEST_CASE("Taming NPCs") {
     auto c = TestClient::WithDataString(data);
     s.waitForUsers(1);
 
-    s.addNPC("cat");
-    const auto &cat = s.getFirstNPC();
+    auto &cat = s.addNPC("cat");
+    cat.reduceHealth(9999);
 
     THEN("it has no owner") {
       CHECK(cat.owner().type == Permissions::Owner::NONE);
@@ -339,7 +339,7 @@ TEST_CASE("Taming can require an item") {
     auto data = R"(
       <item id="chocolate" />
       <item id="stinkBug" />
-      <npcType id="girl" maxHealth="1" >
+      <npcType id="girl" maxHealth="10000" >
         <canBeTamed consumes="chocolate" />
       </npcType>
     )";
@@ -349,6 +349,7 @@ TEST_CASE("Taming can require an item") {
     const auto *stinkBug = &s.findItem("stinkBug");
 
     auto &girl = s.addNPC("girl", {10, 15});
+    girl.reduceHealth(9999);
 
     AND_GIVEN("a player") {
       auto c = TestClient::WithDataString(data);
@@ -502,7 +503,7 @@ TEST_CASE("Pets from spawn points") {
   // Given a spawn point with a tameable NPC
   auto data = R"(
       <spawnPoint y="10" x="10" type="sheep" quantity="1" radius="100" respawnTime="1" />
-      <npcType id="sheep" maxHealth="1" >
+      <npcType id="sheep" maxHealth="10000" >
         <canBeTamed/>
       </npcType>
     )";
@@ -515,6 +516,7 @@ TEST_CASE("Pets from spawn points") {
     auto &user = s.getFirstUser();
 
     auto &sheep = s.getFirstNPC();
+    sheep.reduceHealth(9999);
     c.sendMessage(CL_TAME_NPC, makeArgs(sheep.serial()));
     WAIT_UNTIL(sheep.permissions().isOwnedByPlayer(user.name()));
     REPEAT_FOR_MS(100);
@@ -541,17 +543,18 @@ TEST_CASE("Pets from spawn points") {
 TEST_CASE("Respawning tamed NPCs") {
   GIVEN("a fast spawn point with a tameable NPC") {
     auto data = R"(
-      <spawnPoint y="10" x="10" type="sheep" quantity="1" radius="100"
-respawnTime="1" /> <npcType id="sheep" maxHealth="1" > <canBeTamed/>
+      <spawnPoint y="10" x="10" type="sheep" quantity="1" radius="100" respawnTime="1" />
+      <npcType id="sheep" maxHealth="10000" >
+        <canBeTamed/>
       </npcType>
     )";
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithUsernameAndDataString("Alice", data);
     s.waitForUsers(1);
-    // auto &user = s.getFirstUser();
 
     WHEN("a user tames it") {
       auto &sheep = s.getFirstNPC();
+      sheep.reduceHealth(9999);
       c.sendMessage(CL_TAME_NPC, makeArgs(sheep.serial()));
 
       AND_WHEN("server data is saved a couple of times") {
@@ -563,6 +566,29 @@ respawnTime="1" /> <npcType id="sheep" maxHealth="1" > <canBeTamed/>
         THEN("there are two NPCs (the pet and the respawn)") {
           CHECK(s.entities().size() == 2);
         }
+      }
+    }
+  }
+}
+
+TEST_CASE("Chance to tame based on health") {
+  GIVEN("a tameable NPC") {
+    auto data = R"(
+      <npcType id="cat" maxHealth="1" >
+        <canBeTamed />
+      </npcType>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    auto &cat = s.addNPC("cat");
+
+    WHEN("a user tries to tame it") {
+      s.waitForUsers(1);
+      c.sendMessage(CL_TAME_NPC, makeArgs(cat.serial()));
+
+      THEN("it is still unowned") {
+        REPEAT_FOR_MS(100);
+        CHECK_FALSE(cat.permissions().hasOwner());
       }
     }
   }
