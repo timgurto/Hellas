@@ -83,7 +83,7 @@ TEST_CASE("NPCs don't attack each other") {
   }
 }
 
-TEST_CASE("NPCs can get around obstacles") {
+TEST_CASE("NPCs can get around obstacles (not yet implemented)", "[.]") {
   GIVEN("a wall between an NPC and a player") {
     auto data = R"(
       <npcType id="wolf" maxHealth="1" attack="1" />

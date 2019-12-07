@@ -2034,7 +2034,7 @@ void Client::handle_SV_INVENTORY(size_t serial, size_t slot,
   if (item != nullptr &&                          // It's an actual item
       (serial == INVENTORY || serial == GEAR) &&  // You are receiving it
       _actionTimer > 0)  // You were crafting or gathering
-    if (item->sounds() != nullptr) item->sounds()->playOnce("drop");
+    item->playSoundOnce("drop");
 }
 
 void Client::handle_SV_MAX_HEALTH(const std::string &username,

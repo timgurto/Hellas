@@ -9,7 +9,7 @@ std::map<int, size_t> ClientItem::gearDrawOrder;
 std::vector<ScreenPoint> ClientItem::gearOffsets(Client::GEAR_SLOTS);
 
 ClientItem::ClientItem(const std::string &id, const std::string &name)
-    : Item(id), _name(name), _constructsObject(nullptr), _sounds(nullptr) {}
+    : Item(id), _name(name), _constructsObject(nullptr) {}
 
 void ClientItem::icon(const std::string &filename) {
   static const std::string prefix = "Images/Items/", suffix = ".png";
@@ -151,11 +151,6 @@ const Tooltip &ClientItem::tooltip() const {
   }
 
   return tooltip;
-}
-
-void ClientItem::sounds(const std::string &id) {
-  const Client &client = *Client::_instance;
-  _sounds = client.findSoundProfile(id);
 }
 
 bool ClientItem::canUse() const {

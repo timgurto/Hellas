@@ -116,18 +116,20 @@ const Tooltip &Avatar::tooltip() const {
 void Avatar::playAttackSound() const {
   static const size_t WEAPON_SLOT = 6;
   const ClientItem *weapon = _gear[WEAPON_SLOT].first.type();
-  const Client &client = *Client::_instance;
-  const SoundProfile *weaponSound =
-      weapon == nullptr ? client.avatarSounds() : weapon->sounds();
-  if (weaponSound != nullptr) weaponSound->playOnce("attack");
+
+  if (weapon)
+    weapon->playSoundOnce("attack");
+  else
+    Client::instance().avatarSounds()->playOnce("attack");
 }
 
 void Avatar::playDefendSound() const {
-  const Client &client = *Client::_instance;
   const ClientItem *armor = getRandomArmor();
-  const SoundProfile *armorSound =
-      armor == nullptr ? client.avatarSounds() : armor->sounds();
-  if (armorSound != nullptr) armorSound->playOnce("defend");
+
+  if (armor)
+    armor->playSoundOnce("defend");
+  else
+    Client::instance().avatarSounds()->playOnce("defend");
 }
 
 void Avatar::playDeathSound() const {

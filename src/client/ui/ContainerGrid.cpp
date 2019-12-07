@@ -202,8 +202,7 @@ void ContainerGrid::leftMouseUp(Element &e, const ScreenPoint &mousePos) {
           CL_SWAP_ITEMS,
           makeArgs(dragGrid->_serial, dragSlot, grid._serial, slot));
       const ClientItem *item = dragGrid->_linked[dragSlot].first.type();
-      if (item != nullptr && item->sounds() != nullptr)
-        item->sounds()->playOnce("drop");
+      if (item != nullptr) item->playSoundOnce("drop");
 
       dragSlot = NO_SLOT;
       dragGrid = nullptr;
@@ -256,12 +255,12 @@ void ContainerGrid::rightMouseUp(Element &e, const ScreenPoint &mousePos) {
           Client::_instance->sendMessage(
               CL_SWAP_ITEMS, makeArgs(Client::INVENTORY, slot, Client::GEAR,
                                       item->gearSlot()));
-          if (item->sounds() != nullptr) item->sounds()->playOnce("drop");
+          item->playSoundOnce("drop");
         }
       } else {  // An object: take item
         Client::_instance->sendMessage(CL_TAKE_ITEM,
                                        makeArgs(grid._serial, slot));
-        if (item->sounds() != nullptr) item->sounds()->playOnce("drop");
+        item->playSoundOnce("drop");
       }
     }
   }

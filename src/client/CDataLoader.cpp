@@ -624,7 +624,7 @@ void CDataLoader::loadItems(XmlReader &xr) {
     else
       item.gearImage(id);
 
-    if (xr.findAttr(elem, "sounds", s)) item.sounds(s);
+    if (xr.findAttr(elem, "sounds", s)) item.setSoundProfile(s);
 
     Hitpoints durability;
     if (xr.findAttr(elem, "durability", durability))

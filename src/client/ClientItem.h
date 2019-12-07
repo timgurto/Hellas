@@ -5,8 +5,8 @@
 
 #include "../Item.h"
 #include "../Optional.h"
+#include "HasSounds.h"
 #include "Projectile.h"
-#include "SoundProfile.h"
 #include "Texture.h"
 #include "Tooltip.h"
 
@@ -14,7 +14,7 @@ class ClientObjectType;
 class SoundProfile;
 
 // The client-side representation of an item type
-class ClientItem : public Item {
+class ClientItem : public Item, public HasSounds {
  public:
   class Instance {
    public:
@@ -43,7 +43,6 @@ class ClientItem : public Item {
   ScreenPoint _drawLoc;
 
   mutable Optional<Tooltip> _tooltip;
-  const SoundProfile *_sounds;
   const Projectile::Type *_projectile{nullptr};
 
   struct Particles {
@@ -68,7 +67,6 @@ class ClientItem : public Item {
   void drawLoc(const ScreenPoint &loc) { _drawLoc = loc; }
   static const std::map<int, size_t> &drawOrder() { return gearDrawOrder; }
   void sounds(const std::string &id);
-  const SoundProfile *sounds() const { return _sounds; }
   void projectile(const Projectile::Type *p) { _projectile = p; }
   const Projectile::Type *projectile() const { return _projectile; }
   bool canUse() const;
