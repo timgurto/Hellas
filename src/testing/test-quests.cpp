@@ -399,7 +399,7 @@ TEST_CASE("Quest UI", "[quests][ui][.flaky]") {
   }
 }
 
-TEST_CASE("Quest UI for NPCs", "[quests][ui]") {
+TEST_CASE("Quest UI for NPCs", "[quests][ui][.flaky]") {
   GIVEN("an NPC that gives a quest") {
     auto data = R"(
       <npcType id="A" maxHealth="1" />
