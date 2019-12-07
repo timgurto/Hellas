@@ -124,8 +124,14 @@ TEST_CASE("NPC types have correct defaults") {
 
 TEST_CASE("NPC tags are loaded in client") {
   GIVEN("An NPC type with a tag") {
+    auto data = R"(
+      <npcType
+        id="woodElf" maxHealth="1">
+        <tag name="elf"/>
+      </npcType>
+    )";
     WHEN("The client is finished loading") {
-      auto c = TestClient::WithData("npc_tag");
+      auto c = TestClient::WithDataString(data);
       THEN("The NPC type has tags") {
         const auto &npc = c.getFirstObjectType();
         WAIT_UNTIL(npc.hasTags());
