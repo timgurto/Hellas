@@ -18,7 +18,6 @@ ClientObjectType::ClientObjectType(const std::string &id)
       _canDeconstruct(false),
       _containerSlots(0),
       _merchantSlots(0),
-      _sounds(nullptr),
       _gatherParticles(nullptr),
       _transformTime(0) {}
 
@@ -135,11 +134,6 @@ ClientObjectType::ImageSet::ImageSet(const std::string &filename) {
   normal = Texture(surface);
   surface.swapColors(Color::SPRITE_OUTLINE, Color::SPRITE_OUTLINE_HIGHLIGHT);
   highlight = Texture(surface);
-}
-
-void ClientObjectType::sounds(const std::string &id) {
-  const Client &client = *Client::_instance;
-  _sounds = client.findSoundProfile(id);
 }
 
 void ClientObjectType::calculateAndInitDurability() {

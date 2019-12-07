@@ -181,6 +181,7 @@
     <ClCompile Include="src\testing\test-pets.cpp" />
     <ClCompile Include="src\server\ai.cpp" />
     <ClCompile Include="src\HasTags.cpp" />
+    <ClCompile Include="src\client\HasSounds.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -318,5 +319,6 @@
     <ClInclude Include="src\server\Durability.h" />
     <ClInclude Include="src\server\DamageOnUse.h" />
     <ClInclude Include="src\HasTags.h" />
+    <ClInclude Include="src\client\HasSounds.h" />
   </ItemGroup>
 </Project>

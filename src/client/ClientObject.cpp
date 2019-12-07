@@ -819,14 +819,10 @@ void ClientObject::update(double delta) {
     if (_gatherSoundTimer > timeElapsed)
       _gatherSoundTimer -= timeElapsed;
     else {
-      const SoundProfile *sounds = objectType()->sounds();
-      if (sounds != nullptr) {
-        // Play sound
-        sounds->playOnce("gather");
+      objectType()->playSoundOnce("gather");
 
-        // Restart timer
-        _gatherSoundTimer += objectType()->sounds()->period() - timeElapsed;
-      }
+      // Restart timer
+      _gatherSoundTimer += objectType()->soundPeriod() - timeElapsed;
     }
   }
 
@@ -1170,18 +1166,15 @@ bool ClientObject::canBeAttackedByPlayer() const {
 }
 
 void ClientObject::playAttackSound() const {
-  auto sounds = objectType()->sounds();
-  if (sounds) sounds->playOnce("attack");
+  objectType()->playSoundOnce("attack");
 }
 
 void ClientObject::playDefendSound() const {
-  auto sounds = objectType()->sounds();
-  if (sounds) sounds->playOnce("defend");
+  objectType()->playSoundOnce("defend");
 }
 
 void ClientObject::playDeathSound() const {
-  auto sounds = objectType()->sounds();
-  if (sounds) sounds->playOnce("death");
+  objectType()->playSoundOnce("death");
 }
 
 const Color &ClientObject::nameColor() const {

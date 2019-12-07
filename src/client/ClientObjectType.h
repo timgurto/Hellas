@@ -12,6 +12,7 @@
 #include "ClientCombatantType.h"
 #include "ClientItem.h"
 #include "ClientObjectAction.h"
+#include "HasSounds.h"
 #include "SpriteType.h"
 #include "Texture.h"
 
@@ -23,7 +24,8 @@ class ParticleProfile;
 // properties
 class ClientObjectType : public SpriteType,
                          public ClientCombatantType,
-                         public HasTags {
+                         public HasTags,
+                         public HasSounds {
   struct ImageSet {
     Texture normal, highlight;
     ImageSet() {}
@@ -52,7 +54,6 @@ class ClientObjectType : public SpriteType,
   mutable Optional<Tooltip> _constructionTooltip;
   ImageSet _constructionImage;  // Shown when the object is under construction.
   Texture _corpseImage, _corpseHighlightImage;
-  const SoundProfile *_sounds;
   bool _isPlayerUnique = false;
 
   struct Durability {
@@ -115,8 +116,6 @@ class ClientObjectType : public SpriteType,
   ms_t transformTime() const { return _transformTime; }
   void addTransformImage(const std::string &filename);
   const ImageSet &constructionImage() const { return _constructionImage; }
-  void sounds(const std::string &id);
-  const SoundProfile *sounds() const { return _sounds; }
   void durability(const ClientItem *item, size_t quantity) {
     _durability.item = item;
     _durability.quantity = quantity;

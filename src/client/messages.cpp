@@ -2197,7 +2197,6 @@ void Client::handle_SV_ENTITY_WAS_HIT(size_t serial) {
     return;
   }
   const ClientObject &victim = *objIt->second;
-  const SoundProfile *sounds = victim.objectType()->sounds();
   victim.playSoundWhenHit();
   victim.createDamageParticles();
 }

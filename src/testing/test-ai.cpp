@@ -85,8 +85,25 @@ TEST_CASE("NPCs don't attack each other") {
 
 TEST_CASE("NPCs can get around obstacles") {
   GIVEN("a wall between an NPC and a player") {
+    auto data = R"(
+      <npcType id="wolf" maxHealth="1" attack="1" />
+      <objectType id="wall">
+        <collisionRect x="-5" y="-5" w="10" h="10" />
+      </objectType>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.addObject("wall", {30, 10});
+    auto &wolf = s.addNPC("wolf", {60, 10});
+
     WHEN("the NPC becomes aware of the user") {
-      THEN("it can reach him") {}
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      wolf.makeAwareOf(user);
+
+      THEN("it can reach him") {
+        WAIT_UNTIL(distance(wolf.collisionRect(), user.collisionRect()) < 1.0);
+      }
     }
   }
 }

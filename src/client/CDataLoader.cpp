@@ -476,7 +476,7 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
     if (xr.findAttr(elem, "merchantSlots", n)) cot->merchantSlots(n);
     if (xr.findAttr(elem, "isFlat", n) && n != 0) cot->isFlat(true);
     if (xr.findAttr(elem, "isDecoration", n) && n != 0) cot->isDecoration(true);
-    if (xr.findAttr(elem, "sounds", s)) cot->sounds(s);
+    if (xr.findAttr(elem, "sounds", s)) cot->setSoundProfile(s);
     if (xr.findAttr(elem, "gatherParticles", s))
       cot->gatherParticles(_client.findParticleProfile(s));
     if (xr.findAttr(elem, "damageParticles", s))
@@ -909,7 +909,7 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
     auto r = MapRect{};
     if (xr.findRectChild("collisionRect", elem, r)) nt->collisionRect(r);
 
-    if (xr.findAttr(elem, "sounds", s)) nt->sounds(s);
+    if (xr.findAttr(elem, "sounds", s)) nt->setSoundProfile(s);
 
     if (xr.findAttr(elem, "projectile", s)) {
       auto dummy = Projectile::Type{s, {}};
