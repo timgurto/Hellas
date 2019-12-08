@@ -34,6 +34,7 @@ class Unlocks {
     bool hasEffect;
     Color color;
     std::string message;
+    double chance;
   };
 
   static EffectInfo getEffectInfo(const Trigger &trigger);

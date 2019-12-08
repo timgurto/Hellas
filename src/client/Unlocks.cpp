@@ -31,7 +31,7 @@ void Unlocks::add(const Trigger &trigger, const Effect &effect, double chance) {
 }
 
 Unlocks::EffectInfo Unlocks::getEffectInfo(const Trigger &trigger) {
-  auto ret = EffectInfo{false, {}, {}};
+  auto ret = EffectInfo{false, {}, {}, 0.0};
 
   auto it = _container.find(trigger);
   if (it == _container.end()) return ret;
@@ -52,11 +52,13 @@ Unlocks::EffectInfo Unlocks::getEffectInfo(const Trigger &trigger) {
 
   if (!ret.hasEffect) return ret;
 
+  ret.chance = highestChance;
+
   auto chanceDescription = "";
-  if (highestChance <= 0.05) {
+  if (ret.chance <= 0.05) {
     chanceDescription = "small";
     ret.color = Color::CHANCE_SMALL;
-  } else if (highestChance <= 0.4) {
+  } else if (ret.chance <= 0.4) {
     chanceDescription = "moderate";
     ret.color = Color::CHANCE_MODERATE;
   } else {
