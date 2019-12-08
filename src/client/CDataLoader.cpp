@@ -574,6 +574,14 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
       cot->addParticles(profileName, offset);
     }
 
+    // Gathering yields
+    for (auto yield : xr.getChildren("yield", elem)) {
+      if (!xr.findAttr(yield, "id", s)) continue;
+      auto chance = 1.0;
+      xr.findAttr(yield, "gatherMean", chance);
+      cot->chanceToGather(s, chance);
+    }
+
     _client._objectTypes.insert(cot);
 
     // Construction locks

@@ -139,15 +139,10 @@ const Tooltip &ClientItem::tooltip() const {
 
   // Unlocks
   auto acquireInfo = Unlocks::getEffectInfo({Unlocks::ACQUIRE, id()});
-  auto gatherInfo = Unlocks::getEffectInfo({Unlocks::GATHER, id()});
-  if (acquireInfo.hasEffect || gatherInfo.hasEffect) tooltip.addGap();
   if (acquireInfo.hasEffect) {
+    tooltip.addGap();
     tooltip.setColor(acquireInfo.color);
     tooltip.addLine(acquireInfo.message);
-  }
-  if (gatherInfo.hasEffect) {
-    tooltip.setColor(gatherInfo.color);
-    tooltip.addLine(gatherInfo.message);
   }
 
   return tooltip;

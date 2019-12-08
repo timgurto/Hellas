@@ -363,7 +363,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 543,Players can trade objects,13,21,Feature,,,,
 544,Optimise map,8,5,Performance,,,,
 545,Online-users list is unreliable,13,13,Bug,,,,3 Tin wrapup
-546,"Show gather-unlock info on object, not item",21,13,Usability,,,,3 Tin wrapup
+546,"Show gather-unlock info on object, not item",21,13,Usability,,TRUE,,3 Tin wrapup
 547,Populate 1-20 map with animals,5,8,Content,,TRUE,TRUE,3 Tin wrapup
 548,Populate remaining map with NPCs,34,89,Content,526,,TRUE,4 Copper
 549,Horses,34,13,Content,521,,TRUE,6 Bronze

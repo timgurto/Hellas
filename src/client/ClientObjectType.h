@@ -26,6 +26,10 @@ class ClientObjectType : public SpriteType,
                          public ClientCombatantType,
                          public HasTags,
                          public HasSounds {
+ public:
+  using GatherChances = std::map<std::string, double>;
+
+ private:
   struct ImageSet {
     Texture normal, highlight;
     ImageSet() {}
@@ -37,9 +41,12 @@ class ClientObjectType : public SpriteType,
   std::string _id;
   std::string _name;
   std::string _imageFile;
+
   bool _canGather;  // Whether this represents objects that can be gathered
   std::string
       _gatherReq;  // An item thus tagged is required to gather this object.
+  GatherChances _gatherChances;
+
   std::string _constructionReq;
   bool
       _canDeconstruct;  // Whether these objects can be deconstructed into items
@@ -108,6 +115,10 @@ class ClientObjectType : public SpriteType,
   void gatherParticles(const ParticleProfile *profile) {
     _gatherParticles = profile;
   }
+  void chanceToGather(const std::string &itemID, double chance) {
+    _gatherChances[itemID] = chance;
+  }
+  const GatherChances &gatherChances() const { return _gatherChances; }
   void addMaterial(const ClientItem *item, size_t qty);
   const ItemSet &materials() const { return _materials; }
   const Tooltip &constructionTooltip() const;

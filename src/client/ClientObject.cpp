@@ -13,6 +13,7 @@
 #include "Particle.h"
 #include "Renderer.h"
 #include "Tooltip.h"
+#include "Unlocks.h"
 #include "ui/Button.h"
 #include "ui/ConfirmationWindow.h"
 #include "ui/ContainerGrid.h"
@@ -998,6 +999,25 @@ void ClientObject::createRegularTooltip() const {
       if (!ot.gatherReq().empty())
         text += " (requires " + client.tagName(ot.gatherReq()) + ")";
       tooltip.addLine(text);
+
+      // Unlocks from gathering
+      auto bestUnlockChance = 0.0;
+      auto bestEffectInfo = Unlocks::EffectInfo{};
+      for (auto &pair : objectType()->gatherChances()) {
+        const auto &itemID = pair.first;
+        auto gatherChance = pair.second;
+        auto unlockInfo = Unlocks::getEffectInfo({Unlocks::GATHER, itemID});
+        auto unlockChance = gatherChance * unlockInfo.chance;
+
+        if (unlockChance > bestUnlockChance) {
+          bestUnlockChance = unlockChance;
+          bestEffectInfo = unlockInfo;
+        }
+      }
+      if (bestEffectInfo.hasEffect) {
+        tooltip.setColor(bestEffectInfo.color);
+        tooltip.addLine(bestEffectInfo.message);
+      }
     }
 
     if (ot.canDeconstruct()) {

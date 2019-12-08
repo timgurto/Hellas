@@ -31,10 +31,10 @@ class Unlocks {
                   double chance = 1.0);
 
   struct EffectInfo {
-    bool hasEffect;
+    bool hasEffect{false};
     Color color;
     std::string message;
-    double chance;
+    double chance{0.0};
   };
 
   static EffectInfo getEffectInfo(const Trigger &trigger);

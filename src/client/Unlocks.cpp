@@ -31,7 +31,7 @@ void Unlocks::add(const Trigger &trigger, const Effect &effect, double chance) {
 }
 
 Unlocks::EffectInfo Unlocks::getEffectInfo(const Trigger &trigger) {
-  auto ret = EffectInfo{false, {}, {}, 0.0};
+  auto ret = EffectInfo{};
 
   auto it = _container.find(trigger);
   if (it == _container.end()) return ret;
@@ -46,7 +46,6 @@ Unlocks::EffectInfo Unlocks::getEffectInfo(const Trigger &trigger) {
     if (!alreadyKnown) {
       ret.hasEffect = true;
       highestChance = max(highestChance, effectPair.second);
-      break;
     }
   }
 
@@ -75,7 +74,7 @@ Unlocks::EffectInfo Unlocks::getEffectInfo(const Trigger &trigger) {
       actionDescription = "Picking up this item";
       break;
     case GATHER:
-      actionDescription = "Gathering this item";
+      actionDescription = "Gathering from this object";
       break;
     case CONSTRUCT:
       actionDescription = "Constructing this object";
