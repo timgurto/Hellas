@@ -2,6 +2,8 @@
 
 #include <mutex>
 
+#include "Message.h"
+
 Log *Socket::debug = nullptr;
 
 int Socket::sockAddrSize = sizeof(sockaddr_in);
@@ -71,14 +73,15 @@ void Socket::listen() {
   ::listen(_raw, 3);
 }
 
-void Socket::sendMessage(const std::string &msg,
-                         const Socket &destSocket) const {
+void Socket::sendMessage(const Message &msg, const Socket &destSocket) const {
   if (!_winsockInitialized) return;
+  auto msgString = msg.compile();
 
   static std::mutex mutex;
   mutex.lock();
 
-  auto result = send(destSocket.getRaw(), msg.c_str(), (int)msg.length(), 0);
+  auto result =
+      send(destSocket.getRaw(), msgString.c_str(), (int)msgString.length(), 0);
   if (result < 0 && debug)
     *debug << Color::CHAT_ERROR << "Failed to send command \"" << msg
            << "\" to socket " << destSocket.getRaw() << Log::endl;
@@ -86,9 +89,7 @@ void Socket::sendMessage(const std::string &msg,
   mutex.unlock();
 }
 
-void Socket::sendMessage(const std::string &msg) const {
-  sendMessage(msg, *this);
-}
+void Socket::sendMessage(const Message &msg) const { sendMessage(msg, *this); }
 
 void Socket::initWinsock() {
   if (WSAStartup(MAKEWORD(2, 2), &_wsa) == 0) _winsockInitialized = true;

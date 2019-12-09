@@ -38,7 +38,8 @@ bool Server::endTutorial(const Object &obj, User &performer,
 
   performer.removeConstruction("tutFire");
   performer.addConstruction("fire");
-  server.sendMessage(performer.socket(), SV_CONSTRUCTIONS, makeArgs(1, "fire"));
+  server.sendMessage(performer.socket(),
+                     {SV_CONSTRUCTIONS, makeArgs(1, "fire")});
 
   server.removeAllObjectsOwnedBy(
       {Permissions::Owner::PLAYER, performer.name()});
@@ -62,7 +63,7 @@ bool Server::createCity(const Object &obj, User &performer,
 
   server.makePlayerAKing(performer);
 
-  server.broadcast(SV_CITY_FOUNDED, makeArgs(performer.name(), textArg));
+  server.broadcast({SV_CITY_FOUNDED, makeArgs(performer.name(), textArg)});
   return true;
 }
 
@@ -79,5 +80,5 @@ void Server::destroyCity(const Object &obj) {
   const auto cityName = instance()._cities.getPlayerCity(owner.name);
   instance()._cities.destroyCity(cityName);
 
-  instance().broadcast(SV_CITY_DESTROYED, cityName);
+  instance().broadcast({SV_CITY_DESTROYED, cityName});
 }

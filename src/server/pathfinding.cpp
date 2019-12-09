@@ -109,8 +109,8 @@ void Entity::updateLocation(const MapPoint &dest) {
 
     // Tell user that he has moved
     if (newDest != dest)
-      userPtr->sendMessage(SV_LOCATION,
-                           makeArgs(userPtr->name(), newDest.x, newDest.y));
+      userPtr->sendMessage(
+          {SV_LOCATION, makeArgs(userPtr->name(), newDest.x, newDest.y)});
 
     // Tell user about any additional objects he can now see
     std::list<const Entity *> nearbyEntities;
@@ -171,13 +171,11 @@ void Entity::updateLocation(const MapPoint &dest) {
                     newDest.y);
   else
     args = makeArgs(serial(), newDest.x, newDest.y);
-  for (const User *userP : server.findUsersInArea(location()))
-    if (userP != this) {
-      if (classTag() == 'u')
-        userP->sendMessage(SV_LOCATION, args);
-      else
-        userP->sendMessage(SV_OBJECT_LOCATION, args);
-    }
+  for (const User *userP : server.findUsersInArea(location())) {
+    if (userP == this) continue;
+    auto code = classTag() == 'u' ? SV_LOCATION : SV_OBJECT_LOCATION;
+    userP->sendMessage({code, args});
+  }
 
   // Tell any users it has moved away from to forget about it, and forget about
   // any such entities.

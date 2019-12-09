@@ -72,7 +72,7 @@ void Connection::connect() {
   } else {
     if (*_client)
       _client->_serverConnectionIndicator->set(Indicator::SUCCEEDED);
-    _client->sendMessage(CL_PING, makeArgs(SDL_GetTicks()));
+    _client->sendMessage({CL_PING, makeArgs(SDL_GetTicks())});
     _state = CONNECTED;
   }
 

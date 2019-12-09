@@ -64,14 +64,14 @@ void Exploration::sendWholeMap(const Socket &socket) const {
 
       args = makeArgs(args, number);
     }
-    Server::instance().sendMessage(socket, SV_MAP_EXPLORATION_DATA, args);
+    Server::instance().sendMessage(socket, {SV_MAP_EXPLORATION_DATA, args});
   }
 }
 
 void Exploration::sendSingleChunk(const Socket &socket,
                                   const Chunk &chunk) const {
-  Server::instance().sendMessage(socket, SV_CHUNK_EXPLORED,
-                                 makeArgs(chunk.x, chunk.y));
+  Server::instance().sendMessage(
+      socket, {SV_CHUNK_EXPLORED, makeArgs(chunk.x, chunk.y)});
 }
 
 Exploration::Chunk Exploration::getChunk(const MapPoint &location) {

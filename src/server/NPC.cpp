@@ -155,7 +155,7 @@ Message NPC::outOfRangeMessage() const {
 void NPC::onHealthChange() {
   const Server &server = *Server::_instance;
   for (const User *user : server.findUsersInArea(location()))
-    user->sendMessage(SV_ENTITY_HEALTH, makeArgs(serial(), health()));
+    user->sendMessage({SV_ENTITY_HEALTH, makeArgs(serial(), health())});
 }
 
 void NPC::onDeath() {
@@ -223,9 +223,9 @@ void NPC::sendRangedHitMessageTo(const User &userToInform) const {
     return;
   }
   userToInform.sendMessage(
-      SV_RANGED_NPC_HIT,
-      makeArgs(type()->id(), location().x, location().y, target()->location().x,
-               target()->location().y));
+      {SV_RANGED_NPC_HIT,
+       makeArgs(type()->id(), location().x, location().y,
+                target()->location().x, target()->location().y)});
 }
 
 void NPC::sendRangedMissMessageTo(const User &userToInform) const {
@@ -234,9 +234,9 @@ void NPC::sendRangedMissMessageTo(const User &userToInform) const {
     return;
   }
   userToInform.sendMessage(
-      SV_RANGED_NPC_MISS,
-      makeArgs(type()->id(), location().x, location().y, target()->location().x,
-               target()->location().y));
+      {SV_RANGED_NPC_MISS,
+       makeArgs(type()->id(), location().x, location().y,
+                target()->location().x, target()->location().y)});
 }
 
 void NPC::forgetAbout(const Entity &entity) {
@@ -250,40 +250,41 @@ double NPC::getTameChance() const {
 void NPC::sendInfoToClient(const User &targetUser) const {
   const Server &server = Server::instance();
 
-  targetUser.sendMessage(
-      SV_OBJECT, makeArgs(serial(), location().x, location().y, type()->id()));
+  targetUser.sendMessage({SV_OBJECT, makeArgs(serial(), location().x,
+                                              location().y, type()->id())});
 
   // Owner
   auto *nonConst = const_cast<NPC *>(this);
   if (nonConst->permissions().hasOwner()) {
     const auto &owner = nonConst->permissions().owner();
-    targetUser.sendMessage(SV_OWNER,
-                           makeArgs(serial(), owner.typeString(), owner.name));
+    targetUser.sendMessage(
+        {SV_OWNER, makeArgs(serial(), owner.typeString(), owner.name)});
 
     // In case the owner is unknown to the client, tell him the owner's city
     if (owner.type == owner.PLAYER) {
       std::string ownersCity = server.cities().getPlayerCity(owner.name);
       if (!ownersCity.empty())
-        targetUser.sendMessage(SV_IN_CITY, makeArgs(owner.name, ownersCity));
+        targetUser.sendMessage({SV_IN_CITY, makeArgs(owner.name, ownersCity)});
     }
   }
 
   // Level
-  targetUser.sendMessage(SV_NPC_LEVEL, makeArgs(serial(), _level));
+  targetUser.sendMessage({SV_NPC_LEVEL, makeArgs(serial(), _level)});
 
   // Hitpoints
   if (health() < stats().maxHealth)
-    targetUser.sendMessage(SV_ENTITY_HEALTH, makeArgs(serial(), health()));
+    targetUser.sendMessage({SV_ENTITY_HEALTH, makeArgs(serial(), health())});
 
   // Loot
   if (!_loot->empty() && tagger() == &targetUser) sendAllLootToTagger();
 
   // Buffs/debuffs
   for (const auto &buff : buffs())
-    targetUser.sendMessage(SV_ENTITY_GOT_BUFF, makeArgs(serial(), buff.type()));
+    targetUser.sendMessage(
+        {SV_ENTITY_GOT_BUFF, makeArgs(serial(), buff.type())});
   for (const auto &debuff : debuffs())
-    targetUser.sendMessage(SV_ENTITY_GOT_DEBUFF,
-                           makeArgs(serial(), debuff.type()));
+    targetUser.sendMessage(
+        {SV_ENTITY_GOT_DEBUFF, makeArgs(serial(), debuff.type())});
 
   // Quests
   QuestNode::sendQuestsToUser(targetUser);
@@ -337,14 +338,14 @@ void NPC::updateStats() {
 
 void NPC::broadcastDamagedMessage(Hitpoints amount) const {
   Server &server = *Server::_instance;
-  server.broadcastToArea(location(), SV_OBJECT_DAMAGED,
-                         makeArgs(serial(), amount));
+  server.broadcastToArea(location(),
+                         {SV_OBJECT_DAMAGED, makeArgs(serial(), amount)});
 }
 
 void NPC::broadcastHealedMessage(Hitpoints amount) const {
   Server &server = *Server::_instance;
-  server.broadcastToArea(location(), SV_OBJECT_HEALED,
-                         makeArgs(serial(), amount));
+  server.broadcastToArea(location(),
+                         {SV_OBJECT_HEALED, makeArgs(serial(), amount)});
 }
 
 int NPC::getLevelDifference(const User &user) const {

@@ -3,6 +3,7 @@
 #include <map>
 #include <string>
 
+#include "../Message.h"
 #include "../Optional.h"
 #include "../Podes.h"
 #include "../SpellSchool.h"
@@ -37,7 +38,7 @@ class ClientSpell {
   const SoundProfile *sounds() const { return _sounds; }
   void impactParticles(const ParticleProfile *p) { _impactParticles = p; }
   const ParticleProfile *impactParticles() const { return _impactParticles; }
-  const std::string &castMessage() const { return _castMessage; }
+  const Message &castMessage() const { return _castMessage; }
   void icon(const Texture &iconTexture);
   const Texture &icon() const { return _icon; }
   const Tooltip &tooltip() const;
@@ -65,7 +66,7 @@ class ClientSpell {
   const Projectile::Type *_projectile = nullptr;
   const SoundProfile *_sounds = nullptr;
   const ParticleProfile *_impactParticles = nullptr;
-  std::string _castMessage{};
+  Message _castMessage{};
   Texture _icon;
   mutable Optional<Tooltip> _tooltip;
   std::string _id = {};

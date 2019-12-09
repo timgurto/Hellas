@@ -149,12 +149,12 @@ void Avatar::onRightClick(Client &client) {
 
 void Avatar::sendTargetMessage() const {
   const Client &client = *Client::_instance;
-  client.sendMessage(CL_TARGET_PLAYER, _name);
+  client.sendMessage({CL_TARGET_PLAYER, _name});
 }
 
 void Avatar::sendSelectMessage() const {
   const Client &client = *Client::_instance;
-  client.sendMessage(CL_SELECT_PLAYER, _name);
+  client.sendMessage({CL_SELECT_PLAYER, _name});
 }
 
 bool Avatar::canBeAttackedByPlayer() const {
@@ -285,33 +285,33 @@ void Avatar::declareWarAgainstPlayer(void *pUsername) {
   const std::string &username =
       *reinterpret_cast<const std::string *>(pUsername);
   Client &client = *Client::_instance;
-  client.sendMessage(CL_DECLARE_WAR_ON_PLAYER, username);
+  client.sendMessage({CL_DECLARE_WAR_ON_PLAYER, username});
 }
 
 void Avatar::declareWarAgainstCity(void *pCityName) {
   const std::string &cityName =
       *reinterpret_cast<const std::string *>(pCityName);
   Client &client = *Client::_instance;
-  client.sendMessage(CL_DECLARE_WAR_ON_CITY, cityName);
+  client.sendMessage({CL_DECLARE_WAR_ON_CITY, cityName});
 }
 
 void Avatar::declareCityWarAgainstPlayer(void *pUsername) {
   const std::string &username =
       *reinterpret_cast<const std::string *>(pUsername);
   Client &client = *Client::_instance;
-  client.sendMessage(CL_DECLARE_WAR_ON_PLAYER_AS_CITY, username);
+  client.sendMessage({CL_DECLARE_WAR_ON_PLAYER_AS_CITY, username});
 }
 
 void Avatar::declareCityWarAgainstCity(void *pCityName) {
   const std::string &cityName =
       *reinterpret_cast<const std::string *>(pCityName);
   Client &client = *Client::_instance;
-  client.sendMessage(CL_DECLARE_WAR_ON_CITY_AS_CITY, cityName);
+  client.sendMessage({CL_DECLARE_WAR_ON_CITY_AS_CITY, cityName});
 }
 
 void Avatar::recruit(void *pUsername) {
   const std::string &username =
       *reinterpret_cast<const std::string *>(pUsername);
   Client &client = *Client::_instance;
-  client.sendMessage(CL_RECRUIT, username);
+  client.sendMessage({CL_RECRUIT, username});
 }

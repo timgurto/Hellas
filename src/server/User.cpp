@@ -104,7 +104,7 @@ int User::secondsPlayed() const {
 }
 
 void User::sendTimePlayed() const {
-  sendMessage(SV_TIME_PLAYED, makeArgs(secondsPlayed()));
+  sendMessage({SV_TIME_PLAYED, makeArgs(secondsPlayed())});
 }
 
 Message User::teleportMessage(const MapPoint &destination) const {
@@ -340,16 +340,16 @@ size_t User::giveItem(const ServerItem *item, size_t quantity) {
       }
 
       auto progress = min(qtyHeld, objective.qty);
-      sendMessage(SV_QUEST_PROGRESS, makeArgs(questID, i, progress));
+      sendMessage({SV_QUEST_PROGRESS, makeArgs(questID, i, progress)});
       if (quest->canBeCompletedByUser(*this))
-        sendMessage(SV_QUEST_CAN_BE_FINISHED, questID);
+        sendMessage({SV_QUEST_CAN_BE_FINISHED, questID});
     }
   }
 
   auto quantityGiven = quantity - remaining;
   if (quantityGiven > 0) {
     ProgressLock::triggerUnlocks(*this, ProgressLock::ITEM, item);
-    sendMessage(SV_RECEIVED_ITEM, makeArgs(item->id(), quantityGiven));
+    sendMessage({SV_RECEIVED_ITEM, makeArgs(item->id(), quantityGiven)});
   }
   return remaining;
 }
@@ -422,7 +422,7 @@ void User::setTargetAndAttack(Entity *target) {
 }
 
 void User::alertReactivelyTargetingUser(const User &targetingUser) const {
-  targetingUser.sendMessage(SV_YOU_ARE_ATTACKING_PLAYER, _name);
+  targetingUser.sendMessage({SV_YOU_ARE_ATTACKING_PLAYER, _name});
 }
 
 bool User::hasItems(const ItemSet &items) const {
@@ -563,8 +563,8 @@ void User::clearInventory() {
     if (_inventory[i].first.hasItem()) {
       _inventory[i].first = {};
       _inventory[i].second = 0;
-      server.sendMessage(socket(), SV_INVENTORY,
-                         makeArgs(Server::INVENTORY, i, "", 0, 0));
+      server.sendMessage(
+          socket(), {SV_INVENTORY, makeArgs(Server::INVENTORY, i, "", 0, 0)});
     }
 }
 
@@ -574,8 +574,8 @@ void User::clearGear() {
     if (_gear[i].first.hasItem()) {
       _gear[i].first = {};
       _gear[i].second = 0;
-      server.sendMessage(socket(), SV_INVENTORY,
-                         makeArgs(Server::GEAR, i, "", 0, 0));
+      server.sendMessage(socket(),
+                         {SV_INVENTORY, makeArgs(Server::GEAR, i, "", 0, 0)});
     }
 }
 
@@ -663,10 +663,10 @@ int User::countItems(const ServerItem *item) const {
   return count;
 }
 
-void User::sendMessage(MessageCode msgCode, const std::string &args) const {
+void User::sendMessage(const Message &msg) const {
   if (!_socket.hasValue()) return;
   const Server &server = Server::instance();
-  server.sendMessage(_socket.value(), msgCode, args);
+  server.sendMessage(_socket.value(), msg);
 }
 
 void User::update(ms_t timeElapsed) {
@@ -681,7 +681,7 @@ void User::update(ms_t timeElapsed) {
     // Time has run out
     if (timeElapsed >= pair.second) {
       questsToAbandon.insert(pair.first);
-      sendMessage(SV_QUEST_FAILED, pair.first);
+      sendMessage({SV_QUEST_FAILED, pair.first});
       continue;
     }
 
@@ -840,7 +840,7 @@ void User::sendHotbarMessage() {
   for (auto &slot : _hotbar) {
     args = makeArgs(args, slot.category, slot.id);
   }
-  sendMessage(SV_HOTBAR, args);
+  sendMessage({SV_HOTBAR, args});
 }
 
 void User::onMove() {
@@ -962,7 +962,7 @@ CombatResult User::generateHitAgainst(const Entity &target, CombatType type,
 }
 
 void User::sendGotHitMessageTo(const User &user) const {
-  Server::_instance->sendMessage(user.socket(), SV_PLAYER_WAS_HIT, _name);
+  Server::_instance->sendMessage(user.socket(), {SV_PLAYER_WAS_HIT, _name});
 }
 
 bool User::canBlock() const {
@@ -989,23 +989,23 @@ double User::combatDamage() const {
 void User::onHealthChange() {
   const Server &server = *Server::_instance;
   for (const User *userToInform : server.findUsersInArea(location()))
-    server.sendMessage(userToInform->socket(), SV_PLAYER_HEALTH,
-                       makeArgs(_name, health()));
+    server.sendMessage(userToInform->socket(),
+                       {SV_PLAYER_HEALTH, makeArgs(_name, health())});
   Object::onHealthChange();
 }
 
 void User::onEnergyChange() {
   const Server &server = *Server::_instance;
   for (const User *userToInform : server.findUsersInArea(location()))
-    server.sendMessage(userToInform->socket(), SV_PLAYER_ENERGY,
-                       makeArgs(_name, energy()));
+    server.sendMessage(userToInform->socket(),
+                       {SV_PLAYER_ENERGY, makeArgs(_name, energy())});
   Object::onEnergyChange();
 }
 
 void User::onDeath() {
   Server &server = *Server::_instance;
 
-  server.broadcastToArea(location(), SV_A_PLAYER_DIED, {});
+  server.broadcastToArea(location(), SV_A_PLAYER_DIED);
 
   server.forceAllToUntarget(*this);
   setTargetAndAttack(nullptr);
@@ -1027,7 +1027,7 @@ void User::onDeath() {
   auto talentLost = _class.value().loseARandomLeafTalent();
   if (!talentLost.empty()) {
     const Server &server = *Server::_instance;
-    sendMessage(SV_LOST_TALENT, talentLost);
+    sendMessage({SV_LOST_TALENT, talentLost});
   }
 
   health(stats().maxHealth);
@@ -1110,9 +1110,9 @@ void User::addQuestProgress(Quest::Objective::Type type,
       progress = min(progress + 1, objective.qty);
 
       // Alert user
-      sendMessage(SV_QUEST_PROGRESS, makeArgs(questID, i, progress));
+      sendMessage({SV_QUEST_PROGRESS, makeArgs(questID, i, progress)});
       if (quest->canBeCompletedByUser(*this))
-        sendMessage(SV_QUEST_CAN_BE_FINISHED, questID);
+        sendMessage({SV_QUEST_CAN_BE_FINISHED, questID});
 
       break;  // Assuming there will be a key match no more than once per
               // quest
@@ -1176,7 +1176,7 @@ bool User::canAttack() {
 
   auto ammoID = weapon->weaponAmmo()->id();
   if (!_shouldSuppressAmmoWarnings) {
-    sendMessage(WARNING_OUT_OF_AMMO, ammoID);
+    sendMessage({WARNING_OUT_OF_AMMO, ammoID});
     _shouldSuppressAmmoWarnings = true;
   }
   return false;
@@ -1211,7 +1211,7 @@ void User::onSuccessfulSpellcast(const std::string &id, const Spell &spell) {
   Entity::onSuccessfulSpellcast(id, spell);
 
   if (spell.cooldown() != 0)
-    sendMessage(SV_SPELL_COOLING_DOWN, makeArgs(id, spell.cooldown()));
+    sendMessage({SV_SPELL_COOLING_DOWN, makeArgs(id, spell.cooldown())});
 
   addQuestProgress(Quest::Objective::CAST_SPELL, id);
 }
@@ -1222,9 +1222,11 @@ void User::sendRangedHitMessageTo(const User &userToInform) const {
   if (!weapon) return;
 
   Server &server = *Server::_instance;
-  server.sendMessage(userToInform.socket(), SV_RANGED_WEAPON_HIT,
-                     makeArgs(weapon->id(), location().x, location().y,
-                              target()->location().x, target()->location().y));
+  server.sendMessage(
+      userToInform.socket(),
+      {SV_RANGED_WEAPON_HIT,
+       makeArgs(weapon->id(), location().x, location().y,
+                target()->location().x, target()->location().y)});
 }
 
 void User::sendRangedMissMessageTo(const User &userToInform) const {
@@ -1233,20 +1235,23 @@ void User::sendRangedMissMessageTo(const User &userToInform) const {
   if (!weapon) return;
 
   Server &server = *Server::_instance;
-  server.sendMessage(userToInform.socket(), SV_RANGED_WEAPON_MISS,
-                     makeArgs(weapon->id(), location().x, location().y,
-                              target()->location().x, target()->location().y));
+  server.sendMessage(
+      userToInform.socket(),
+      {SV_RANGED_WEAPON_MISS,
+       makeArgs(weapon->id(), location().x, location().y,
+                target()->location().x, target()->location().y)});
 }
 
 void User::broadcastDamagedMessage(Hitpoints amount) const {
   Server &server = *Server::_instance;
-  server.broadcastToArea(location(), SV_PLAYER_DAMAGED,
-                         makeArgs(_name, amount));
+  server.broadcastToArea(location(),
+                         {SV_PLAYER_DAMAGED, makeArgs(_name, amount)});
 }
 
 void User::broadcastHealedMessage(Hitpoints amount) const {
   Server &server = *Server::_instance;
-  server.broadcastToArea(location(), SV_PLAYER_HEALED, makeArgs(_name, amount));
+  server.broadcastToArea(location(),
+                         {SV_PLAYER_HEALED, makeArgs(_name, amount)});
 }
 
 void User::updateStats() {
@@ -1280,8 +1285,8 @@ void User::updateStats() {
   int healthDecrease = oldMaxHealth - newStats.maxHealth;
   if (healthDecrease != 0) {
     // Alert nearby users to new max health
-    server.broadcastToArea(location(), SV_MAX_HEALTH,
-                           makeArgs(_name, newStats.maxHealth));
+    server.broadcastToArea(
+        location(), {SV_MAX_HEALTH, makeArgs(_name, newStats.maxHealth)});
   }
   int oldHealth = health();
   auto newHealth = oldHealth - healthDecrease;
@@ -1298,8 +1303,8 @@ void User::updateStats() {
   int energyDecrease = oldMaxEnergy - newStats.maxEnergy;
   if (energyDecrease != 0) {
     // Alert nearby users to new max energy
-    server.broadcastToArea(location(), SV_MAX_ENERGY,
-                           makeArgs(_name, newStats.maxEnergy));
+    server.broadcastToArea(
+        location(), {SV_MAX_ENERGY, makeArgs(_name, newStats.maxEnergy)});
   }
   int oldEnergy = energy();
   auto newEnergy = oldEnergy - energyDecrease;
@@ -1321,7 +1326,7 @@ void User::updateStats() {
       makeArgs(newStats.airResist, newStats.earthResist, newStats.fireResist,
                newStats.waterResist),
       makeArgs(newStats.attackTime, newStats.speed));
-  sendMessage(SV_YOUR_STATS, args);
+  sendMessage({SV_YOUR_STATS, args});
 
   stats(newStats);
 }
@@ -1354,19 +1359,21 @@ void User::sendInfoToClient(const User &targetUser) const {
   bool isSelf = &targetUser == this;
 
   // Location
-  server.sendMessage(client, SV_LOCATION, makeLocationCommand());
+  server.sendMessage(client, {SV_LOCATION, makeLocationCommand()});
 
   // Hitpoints
-  server.sendMessage(client, SV_MAX_HEALTH, makeArgs(_name, stats().maxHealth));
-  server.sendMessage(client, SV_PLAYER_HEALTH, makeArgs(_name, health()));
+  server.sendMessage(client,
+                     {SV_MAX_HEALTH, makeArgs(_name, stats().maxHealth)});
+  server.sendMessage(client, {SV_PLAYER_HEALTH, makeArgs(_name, health())});
 
   // Energy
-  server.sendMessage(client, SV_MAX_ENERGY, makeArgs(_name, stats().maxEnergy));
-  server.sendMessage(client, SV_PLAYER_ENERGY, makeArgs(_name, energy()));
+  server.sendMessage(client,
+                     {SV_MAX_ENERGY, makeArgs(_name, stats().maxEnergy)});
+  server.sendMessage(client, {SV_PLAYER_ENERGY, makeArgs(_name, energy())});
 
   // Class
-  server.sendMessage(client, SV_CLASS,
-                     makeArgs(_name, getClass().type().id(), _level));
+  server.sendMessage(
+      client, {SV_CLASS, makeArgs(_name, getClass().type().id(), _level)});
 
   // XP
   if (isSelf) sendXPMessage();
@@ -1374,68 +1381,67 @@ void User::sendInfoToClient(const User &targetUser) const {
   // City
   const City::Name city = server._cities.getPlayerCity(_name);
   if (!city.empty())
-    server.sendMessage(client, SV_IN_CITY, makeArgs(_name, city));
+    server.sendMessage(client, {SV_IN_CITY, makeArgs(_name, city)});
 
   // King?
   if (server._kings.isPlayerAKing(_name))
-    server.sendMessage(client, SV_KING, _name);
+    server.sendMessage(client, {SV_KING, _name});
 
   // Gear
   for (size_t i = 0; i != User::GEAR_SLOTS; ++i) {
     const ServerItem *item = gear(i).first.type();
     if (item != nullptr)
-      server.sendMessage(
-          client, SV_GEAR,
-          makeArgs(_name, i, item->id(), gear(i).first.health()));
+      server.sendMessage(client, {SV_GEAR, makeArgs(_name, i, item->id(),
+                                                    gear(i).first.health())});
   }
 
   // Buffs/debuffs
   for (const auto &buff : buffs()) {
-    server.sendMessage(client, SV_PLAYER_GOT_BUFF,
-                       makeArgs(_name, buff.type()));
+    server.sendMessage(client,
+                       {SV_PLAYER_GOT_BUFF, makeArgs(_name, buff.type())});
     if (isSelf)
-      server.sendMessage(client, SV_REMAINING_BUFF_TIME,
-                         makeArgs(buff.type(), buff.timeRemaining()));
+      server.sendMessage(client, {SV_REMAINING_BUFF_TIME,
+                                  makeArgs(buff.type(), buff.timeRemaining())});
   }
   for (const auto &debuff : debuffs()) {
-    server.sendMessage(client, SV_PLAYER_GOT_DEBUFF,
-                       makeArgs(_name, debuff.type()));
+    server.sendMessage(client,
+                       {SV_PLAYER_GOT_DEBUFF, makeArgs(_name, debuff.type())});
     if (isSelf)
-      server.sendMessage(client, SV_REMAINING_DEBUFF_TIME,
-                         makeArgs(debuff.type(), debuff.timeRemaining()));
+      server.sendMessage(client,
+                         {SV_REMAINING_DEBUFF_TIME,
+                          makeArgs(debuff.type(), debuff.timeRemaining())});
   }
 
   // Vehicle?
   if (isDriving())
-    server.sendMessage(client, SV_MOUNTED, makeArgs(driving(), _name));
+    server.sendMessage(client, {SV_MOUNTED, makeArgs(driving(), _name)});
 }
 
 void User::sendInventorySlot(size_t slotIndex) const {
   const auto &slot = _inventory[slotIndex];
   const auto &item = slot.first;
   if (!item.type()) return;  // Is this right?
-  sendMessage(SV_INVENTORY,
-              makeArgs(Server::INVENTORY, slotIndex, item.type()->id(),
-                       slot.second, item.health()));
+  sendMessage(
+      {SV_INVENTORY, makeArgs(Server::INVENTORY, slotIndex, item.type()->id(),
+                              slot.second, item.health())});
 }
 
 void User::sendGearSlot(size_t slotIndex) const {
   const auto &slot = _gear[slotIndex];
   const auto &item = slot.first;
   if (!item.type()) return;
-  sendMessage(SV_INVENTORY, makeArgs(Server::GEAR, slotIndex, item.type()->id(),
-                                     slot.second, item.health()));
+  sendMessage(
+      {SV_INVENTORY, makeArgs(Server::GEAR, slotIndex, item.type()->id(),
+                              slot.second, item.health())});
 }
 
 void User::onOutOfRange(const Entity &rhs) const {
   if (rhs.shouldAlwaysBeKnownToUser(*this)) return;
-
-  auto message = rhs.outOfRangeMessage();
-  sendMessage(message.code, message.args);
+  sendMessage(rhs.outOfRangeMessage());
 }
 
 Message User::outOfRangeMessage() const {
-  return Message(SV_USER_OUT_OF_RANGE, name());
+  return {SV_USER_OUT_OF_RANGE, name()};
 }
 
 void User::moveToSpawnPoint(bool isNewPlayer) {
@@ -1460,16 +1466,18 @@ void User::moveToSpawnPoint(bool isNewPlayer) {
 
   if (isNewPlayer) return;
 
-  server.broadcastToArea(oldLoc, SV_LOCATION_INSTANT_USER,
-                         makeArgs(name(), location().x, location().y));
-  server.broadcastToArea(location(), SV_LOCATION_INSTANT_USER,
-                         makeArgs(name(), location().x, location().y));
+  server.broadcastToArea(
+      oldLoc,
+      {SV_LOCATION_INSTANT_USER, makeArgs(name(), location().x, location().y)});
+  server.broadcastToArea(
+      location(),
+      {SV_LOCATION_INSTANT_USER, makeArgs(name(), location().x, location().y)});
 
   server.sendRelevantEntitiesToUser(*this);
 }
 
 void User::onTerrainListChange(const std::string &listID) {
-  sendMessage(SV_NEW_TERRAIN_LIST_APPLICABLE, listID);
+  sendMessage({SV_NEW_TERRAIN_LIST_APPLICABLE, listID});
 
   // Check that current location is valid
   if (!Server::instance().isLocationValid(location(), *this)) {
@@ -1501,14 +1509,14 @@ void User::startQuest(const Quest &quest) {
   // NOTE: the insertion is the important bit here
   _quests[quest.id] = timeRemaining;
 
-  auto message = quest.canBeCompletedByUser(*this) ? SV_QUEST_CAN_BE_FINISHED
-                                                   : SV_QUEST_IN_PROGRESS;
+  auto code = quest.canBeCompletedByUser(*this) ? SV_QUEST_CAN_BE_FINISHED
+                                                : SV_QUEST_IN_PROGRESS;
   auto &server = Server::instance();
   sendMessage(SV_QUEST_ACCEPTED);
-  sendMessage(message, quest.id);
+  sendMessage({code, quest.id});
 
   if (timeRemaining > 0)
-    sendMessage(SV_QUEST_TIME_LEFT, makeArgs(quest.id, timeRemaining));
+    sendMessage({SV_QUEST_TIME_LEFT, makeArgs(quest.id, timeRemaining)});
 
   for (const auto &itemID : quest.startsWithItems) {
     auto item = server.findItem(itemID);
@@ -1539,10 +1547,10 @@ void User::completeQuest(const Quest::ID &id) {
 
   for (const auto &unlockedQuestID : quest->otherQuestsWithThisAsPrerequisite) {
     if (canStartQuest(unlockedQuestID))
-      sendMessage(SV_QUEST_CAN_BE_STARTED, unlockedQuestID);
+      sendMessage({SV_QUEST_CAN_BE_STARTED, unlockedQuestID});
   }
 
-  sendMessage(SV_QUEST_COMPLETED, id);
+  sendMessage({SV_QUEST_COMPLETED, id});
 }
 
 void User::giveQuestReward(const Quest::Reward &reward) {
@@ -1600,7 +1608,7 @@ void User::abandonQuest(Quest::ID id) {
     }
   }
 
-  sendMessage(SV_QUEST_CAN_BE_STARTED, id);
+  sendMessage({SV_QUEST_CAN_BE_STARTED, id});
 }
 
 void User::markQuestAsCompleted(const Quest::ID &id) {
@@ -1610,50 +1618,51 @@ void User::markQuestAsCompleted(const Quest::ID &id) {
 void User::markQuestAsStarted(const Quest::ID &id, ms_t timeRemaining) {
   _quests[id] = timeRemaining;
   if (timeRemaining > 0)
-    sendMessage(SV_QUEST_TIME_LEFT, makeArgs(id, timeRemaining));
+    sendMessage({SV_QUEST_TIME_LEFT, makeArgs(id, timeRemaining)});
 }
 
 void User::loadBuff(const BuffType &type, ms_t timeRemaining) {
   Object::loadBuff(type, timeRemaining);
-  sendMessage(SV_REMAINING_BUFF_TIME, makeArgs(type.id(), timeRemaining));
+  sendMessage({SV_REMAINING_BUFF_TIME, makeArgs(type.id(), timeRemaining)});
 }
 
 void User::loadDebuff(const BuffType &type, ms_t timeRemaining) {
   Object::loadDebuff(type, timeRemaining);
-  sendMessage(SV_REMAINING_DEBUFF_TIME, makeArgs(type.id(), timeRemaining));
+  sendMessage({SV_REMAINING_DEBUFF_TIME, makeArgs(type.id(), timeRemaining)});
 }
 
 void User::sendBuffMsg(const Buff::ID &buff) const {
   const Server &server = Server::instance();
-  server.broadcastToArea(location(), SV_PLAYER_GOT_BUFF, makeArgs(_name, buff));
+  server.broadcastToArea(location(),
+                         {SV_PLAYER_GOT_BUFF, makeArgs(_name, buff)});
 }
 
 void User::sendDebuffMsg(const Buff::ID &buff) const {
   const Server &server = Server::instance();
-  server.broadcastToArea(location(), SV_PLAYER_GOT_DEBUFF,
-                         makeArgs(_name, buff));
+  server.broadcastToArea(location(),
+                         {SV_PLAYER_GOT_DEBUFF, makeArgs(_name, buff)});
 }
 
 void User::sendLostBuffMsg(const Buff::ID &buff) const {
   const Server &server = Server::instance();
-  server.broadcastToArea(location(), SV_PLAYER_LOST_BUFF,
-                         makeArgs(_name, buff));
+  server.broadcastToArea(location(),
+                         {SV_PLAYER_LOST_BUFF, makeArgs(_name, buff)});
 }
 
 void User::sendLostDebuffMsg(const Buff::ID &buff) const {
   const Server &server = Server::instance();
-  server.broadcastToArea(location(), SV_PLAYER_LOST_DEBUFF,
-                         makeArgs(_name, buff));
+  server.broadcastToArea(location(),
+                         {SV_PLAYER_LOST_DEBUFF, makeArgs(_name, buff)});
 }
 
 void User::sendXPMessage() const {
   const Server &server = Server::instance();
-  sendMessage(SV_XP, makeArgs(_xp, XP_PER_LEVEL[_level]));
+  sendMessage({SV_XP, makeArgs(_xp, XP_PER_LEVEL[_level])});
 }
 
 void User::announceLevelUp() const {
   const Server &server = Server::instance();
-  server.broadcastToArea(location(), SV_LEVEL_UP, _name);
+  server.broadcastToArea(location(), {SV_LEVEL_UP, _name});
 }
 
 void User::addXP(XP amount) {
@@ -1661,7 +1670,7 @@ void User::addXP(XP amount) {
   _xp += amount;
 
   Server &server = Server::instance();
-  sendMessage(SV_XP_GAIN, makeArgs(amount));
+  sendMessage({SV_XP_GAIN, amount});
 
   // Level up if appropriate
   const auto maxXpThisLevel = XP_PER_LEVEL[_level];

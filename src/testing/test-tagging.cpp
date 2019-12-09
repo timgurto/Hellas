@@ -36,8 +36,9 @@ TEST_CASE("Only the tagging player gets kill XP", "[slow][remote]") {
         REQUIRE_FALSE(seal.isDead());
 
         AND_WHEN("Bob kills it") {
-          s.sendMessage(bob.socket(), TST_SEND_THIS_BACK,
-                        makeArgs(CL_TARGET_ENTITY, seal.serial()));
+          s.sendMessage(
+              bob.socket(),
+              {TST_SEND_THIS_BACK, makeArgs(CL_TARGET_ENTITY, seal.serial())});
           WAIT_UNTIL_TIMEOUT(seal.isDead(), 10000);
 
           THEN("Bob doesn't get any XP") {

@@ -1,12 +1,13 @@
+#include "ClientSpell.h"
+
 #include <cassert>
 #include <sstream>
 
 #include "Client.h"
-#include "ClientSpell.h"
 #include "Tooltip.h"
 
 ClientSpell::ClientSpell(const std::string &id)
-    : _id(id), _castMessage(Client::compileMessage(CL_CAST, id)) {}
+    : _id(id), _castMessage(CL_CAST, id) {}
 
 void ClientSpell::icon(const Texture &iconTexture) { _icon = iconTexture; }
 

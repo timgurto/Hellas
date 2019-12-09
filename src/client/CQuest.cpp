@@ -126,8 +126,8 @@ void CQuest::acceptQuest(CQuest *quest, size_t startObjectSerial) {
   auto &client = Client::instance();
 
   // Send message
-  client.sendMessage(CL_ACCEPT_QUEST,
-                     makeArgs(quest->_info.id, startObjectSerial));
+  client.sendMessage(
+      {CL_ACCEPT_QUEST, makeArgs(quest->_info.id, startObjectSerial)});
 
   // Close and remove window
   quest->_window->hide();
@@ -145,8 +145,8 @@ void CQuest::completeQuest(CQuest *quest, size_t startObjectSerial) {
   auto &client = Client::instance();
 
   // Send message
-  client.sendMessage(CL_COMPLETE_QUEST,
-                     makeArgs(quest->_info.id, startObjectSerial));
+  client.sendMessage(
+      {CL_COMPLETE_QUEST, makeArgs(quest->_info.id, startObjectSerial)});
 
   // Close and remove window
   quest->_window->hide();

@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <thread>
 
+#include "../Message.h"
 #include "../XmlWriter.h"
 #include "../versionUtil.h"
 #include "Client.h"
@@ -44,7 +45,7 @@ void Client::loginScreenLoop() {
 
   // Send ping
   if (_time - _lastPingSent > PING_FREQUENCY) {
-    sendMessage(CL_PING, makeArgs(_time));
+    sendMessage({CL_PING, _time});
     _lastPingSent = _time;
   }
 
@@ -263,8 +264,8 @@ void Client::createAccount() {
   _instance->_username = username;
   const auto &selectedClass = classList->getSelected();
   auto pwHash = picosha2::hash256_hex_string(newPwBox->text());
-  _instance->sendMessage(CL_LOGIN_NEW,
-                         makeArgs(username, pwHash, selectedClass, version()));
+  _instance->sendMessage(
+      {CL_LOGIN_NEW, makeArgs(username, pwHash, selectedClass, version())});
 
   saveUsernameAndPassword(_instance->_username, pwHash);
 }
@@ -281,14 +282,14 @@ void Client::login() {
   auto shouldCallCreateInsteadOfLogin = !_instance->_autoClassID.empty();
   if (shouldCallCreateInsteadOfLogin) {
     pwHash = picosha2::hash256_hex_string(newPwBox->text());
-    _instance->sendMessage(CL_LOGIN_NEW,
-                           makeArgs(_instance->_username, pwHash,
-                                    _instance->_autoClassID, version()));
+    _instance->sendMessage(
+        {CL_LOGIN_NEW, makeArgs(_instance->_username, pwHash,
+                                _instance->_autoClassID, version())});
   } else {
     pwHash = _instance->_savedPwHash;
     if (pwHash.empty()) pwHash = picosha2::hash256_hex_string(pwBox->text());
-    _instance->sendMessage(CL_LOGIN_EXISTING,
-                           makeArgs(_instance->_username, pwHash, version()));
+    _instance->sendMessage(
+        {CL_LOGIN_EXISTING, makeArgs(_instance->_username, pwHash, version())});
   }
 
   saveUsernameAndPassword(_instance->_username, pwHash);

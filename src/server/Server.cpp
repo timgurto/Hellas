@@ -297,7 +297,7 @@ void Server::addUser(const Socket &socket, const std::string &name,
   newUser.pwHash(pwHash);
 
   // Announce to all
-  broadcast(SV_USER_CONNECTED, name);
+  broadcast({SV_USER_CONNECTED, name});
 
   // Announce others to him
   sendOnlineUsersTo(newUser);
@@ -354,7 +354,7 @@ void Server::addUser(const Socket &socket, const std::string &name,
     for (const std::string &id : newUser.knownRecipes()) {
       args = makeArgs(args, id);
     }
-    newUser.sendMessage(SV_RECIPES, args);
+    newUser.sendMessage({SV_RECIPES, args});
   }
 
   // Send him the constructions he knows
@@ -363,7 +363,7 @@ void Server::addUser(const Socket &socket, const std::string &name,
     for (const std::string &id : newUser.knownConstructions()) {
       args = makeArgs(args, id);
     }
-    newUser.sendMessage(SV_CONSTRUCTIONS, args);
+    newUser.sendMessage({SV_CONSTRUCTIONS, args});
   }
 
   // Send him his talents
@@ -371,12 +371,12 @@ void Server::addUser(const Socket &socket, const std::string &name,
   auto treesToSend = std::set<std::string>{};
   for (auto pair : userClass.talentRanks()) {
     const auto &talent = *pair.first;
-    newUser.sendMessage(SV_TALENT, makeArgs(talent.name(), pair.second));
+    newUser.sendMessage({SV_TALENT, makeArgs(talent.name(), pair.second)});
     treesToSend.insert(talent.tree());
   }
   for (const auto &tree : treesToSend) {
     auto pointsInTree = userClass.pointsInTree(tree);
-    newUser.sendMessage(SV_POINTS_IN_TREE, makeArgs(tree, pointsInTree));
+    newUser.sendMessage({SV_POINTS_IN_TREE, makeArgs(tree, pointsInTree)});
   }
 
   // Send him his quest progress
@@ -384,7 +384,7 @@ void Server::addUser(const Socket &socket, const std::string &name,
     const auto &questID = pair.first;
     const auto *quest = findQuest(questID);
     if (quest->objectives.empty())
-      newUser.sendMessage(SV_QUEST_CAN_BE_FINISHED, questID);
+      newUser.sendMessage({SV_QUEST_CAN_BE_FINISHED, questID});
     else {
       bool progressHasBeenMade = false;
       for (auto i = 0; i != quest->objectives.size(); ++i) {
@@ -392,18 +392,19 @@ void Server::addUser(const Socket &socket, const std::string &name,
         auto progress =
             newUser.questProgress(questID, objective.type, objective.id);
         if (progress == 0) continue;
-        newUser.sendMessage(SV_QUEST_PROGRESS, makeArgs(questID, i, progress));
+        newUser.sendMessage(
+            {SV_QUEST_PROGRESS, makeArgs(questID, i, progress)});
         progressHasBeenMade = true;
       }
 
       if (!progressHasBeenMade)
-        newUser.sendMessage(SV_QUEST_IN_PROGRESS, questID);
+        newUser.sendMessage({SV_QUEST_IN_PROGRESS, questID});
     }
   }
 
   // Send him his known spells
   auto knownSpellsString = userClass.generateKnownSpellsString();
-  newUser.sendMessage(SV_KNOWN_SPELLS, knownSpellsString);
+  newUser.sendMessage({SV_KNOWN_SPELLS, knownSpellsString});
 
   // Send him his hotbar
   newUser.sendHotbarMessage();
@@ -433,7 +434,7 @@ void Server::removeUser(const std::set<User>::iterator &it) {
   const auto &userToDelete = *it;
 
   // Alert all users
-  broadcast(SV_USER_DISCONNECTED, userToDelete.name());
+  broadcast({SV_USER_DISCONNECTED, userToDelete.name()});
 
   forceAllToUntarget(userToDelete);
 
@@ -549,7 +550,7 @@ void Server::removeEntity(Entity &ent, const User *userToExclude) {
   // Alert nearby users of the removal
   size_t serial = ent.serial();
   for (const User *userP : findUsersInArea(ent.location()))
-    userP->sendMessage(SV_REMOVE_OBJECT, makeArgs(serial));
+    userP->sendMessage({SV_REMOVE_OBJECT, serial});
 
   getCollisionChunk(ent.location()).removeEntity(serial);
   _entitiesByX.erase(&ent);
@@ -764,7 +765,7 @@ void Server::deleteUserFiles() {
 
 void Server::makePlayerAKing(const User &user) {
   _kings.add(user.name());
-  this->broadcastToArea(user.location(), SV_KING, user.name());
+  this->broadcastToArea(user.location(), {SV_KING, user.name()});
 }
 
 void Server::killAllObjectsOwnedBy(const Permissions::Owner &owner) {

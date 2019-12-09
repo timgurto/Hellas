@@ -93,7 +93,7 @@ bool Entity::combatTypeCanHaveOutcome(CombatType type, CombatResult outcome,
 }
 
 void Entity::sendGotHitMessageTo(const User &user) const {
-  user.sendMessage(SV_ENTITY_WAS_HIT, makeArgs(serial()));
+  user.sendMessage({SV_ENTITY_WAS_HIT, serial()});
 }
 
 void Entity::initStatsFromType() {
@@ -202,13 +202,13 @@ void Entity::update(ms_t timeElapsed) {
     // These cases return
     case MISS:
       for (auto user : usersToInform) {
-        user->sendMessage(SV_SHOW_MISS_AT, targetLoc);
+        user->sendMessage({SV_SHOW_MISS_AT, targetLoc});
         if (attackRange() > MELEE_RANGE) sendRangedMissMessageTo(*user);
       }
       return;
     case DODGE:
       for (auto user : usersToInform) {
-        user->sendMessage(SV_SHOW_DODGE_AT, targetLoc);
+        user->sendMessage({SV_SHOW_DODGE_AT, targetLoc});
         if (attackRange() > MELEE_RANGE) sendRangedMissMessageTo(*user);
       }
       return;
@@ -216,11 +216,11 @@ void Entity::update(ms_t timeElapsed) {
     // These cases continue on
     case CRIT:
       for (auto user : usersToInform)
-        user->sendMessage(SV_SHOW_CRIT_AT, targetLoc);
+        user->sendMessage({SV_SHOW_CRIT_AT, targetLoc});
       break;
     case BLOCK:
       for (auto user : usersToInform)
-        user->sendMessage(SV_SHOW_BLOCK_AT, targetLoc);
+        user->sendMessage({SV_SHOW_BLOCK_AT, targetLoc});
       break;
   }
 
@@ -279,7 +279,7 @@ void Entity::update(ms_t timeElapsed) {
     msgCode = SV_ENTITY_HIT_ENTITY;
     args = makeArgs(serial(), pTarget->serial());
   }
-  for (auto user : usersToInform) user->sendMessage(msgCode, args);
+  for (auto user : usersToInform) user->sendMessage({msgCode, args});
 }
 
 void Entity::updateBuffs(ms_t timeElapsed) {
@@ -370,23 +370,23 @@ CombatResult Entity::castSpell(const Spell &spell) {
     auto usersToAlert = server.findUsersInArea(dst);
     usersToAlert.insert(usersNearCaster.begin(), usersNearCaster.end());
     for (auto user : usersToAlert) {
-      user->sendMessage(msgCode, args);
+      user->sendMessage({msgCode, args});
       if (spellHit && spell.shouldPlayDefenseSound())
         target->sendGotHitMessageTo(*user);
 
       // Show notable outcomes
       switch (outcome) {
         case MISS:
-          user->sendMessage(SV_SHOW_MISS_AT, makeArgs(dst.x, dst.y));
+          user->sendMessage({SV_SHOW_MISS_AT, makeArgs(dst.x, dst.y)});
           break;
         case DODGE:
-          user->sendMessage(SV_SHOW_DODGE_AT, makeArgs(dst.x, dst.y));
+          user->sendMessage({SV_SHOW_DODGE_AT, makeArgs(dst.x, dst.y)});
           break;
         case BLOCK:
-          user->sendMessage(SV_SHOW_BLOCK_AT, makeArgs(dst.x, dst.y));
+          user->sendMessage({SV_SHOW_BLOCK_AT, makeArgs(dst.x, dst.y)});
           break;
         case CRIT:
-          user->sendMessage(SV_SHOW_CRIT_AT, makeArgs(dst.x, dst.y));
+          user->sendMessage({SV_SHOW_CRIT_AT, makeArgs(dst.x, dst.y)});
           break;
       }
     }
@@ -513,8 +513,8 @@ void Entity::teleportTo(const MapPoint &destination) {
   location(destination);
 
   auto message = teleportMessage(destination);
-  server.broadcastToArea(startingLocation, message.code, message.args);
-  server.broadcastToArea(destination, message.code, message.args);
+  server.broadcastToArea(startingLocation, message);
+  server.broadcastToArea(destination, message);
 
   onTeleport();
 }
@@ -541,7 +541,7 @@ void Entity::sendAllLootToTagger() const {
 }
 
 void Entity::alertReactivelyTargetingUser(const User &targetingUser) const {
-  targetingUser.sendMessage(SV_YOU_ARE_ATTACKING_ENTITY, makeArgs(serial()));
+  targetingUser.sendMessage({SV_YOU_ARE_ATTACKING_ENTITY, serial()});
 }
 
 void Entity::tellRelevantUsersAboutLootSlot(size_t slot) const {
@@ -724,26 +724,26 @@ void Entity::removeAllBuffsAndDebuffs() {
 
 void Entity::sendBuffMsg(const Buff::ID &buff) const {
   const Server &server = Server::instance();
-  server.broadcastToArea(_location, SV_ENTITY_GOT_BUFF,
-                         makeArgs(_serial, buff));
+  server.broadcastToArea(_location,
+                         {SV_ENTITY_GOT_BUFF, makeArgs(_serial, buff)});
 }
 
 void Entity::sendDebuffMsg(const Buff::ID &buff) const {
   const Server &server = Server::instance();
-  server.broadcastToArea(_location, SV_ENTITY_GOT_DEBUFF,
-                         makeArgs(_serial, buff));
+  server.broadcastToArea(_location,
+                         {SV_ENTITY_GOT_DEBUFF, makeArgs(_serial, buff)});
 }
 
 void Entity::sendLostBuffMsg(const Buff::ID &buff) const {
   const Server &server = Server::instance();
-  server.broadcastToArea(_location, SV_ENTITY_LOST_BUFF,
-                         makeArgs(_serial, buff));
+  server.broadcastToArea(_location,
+                         {SV_ENTITY_LOST_BUFF, makeArgs(_serial, buff)});
 }
 
 void Entity::sendLostDebuffMsg(const Buff::ID &buff) const {
   const Server &server = Server::instance();
-  server.broadcastToArea(_location, SV_ENTITY_LOST_DEBUFF,
-                         makeArgs(_serial, buff));
+  server.broadcastToArea(_location,
+                         {SV_ENTITY_LOST_DEBUFF, makeArgs(_serial, buff)});
 }
 
 void Entity::regen(ms_t timeElapsed) {

@@ -1,3 +1,4 @@
+#include "../Message.h"
 #include "Client.h"
 #include "ui/Line.h"
 
@@ -88,6 +89,8 @@ enum BelligerentType { CITY, PLAYER };
 Element *createWarRow(const std::string &name, BelligerentType belligerentType,
                       BelligerentType yourBelligerentType, PeaceState state,
                       bool isActive = true) {
+  auto &client = Client::instance();
+
   const auto ICON_W = 12, NAME_W = 80_px, BUTTON_W = 90_px;
   auto row = new Element;
   auto x = px_t{GAP};
@@ -104,8 +107,7 @@ Element *createWarRow(const std::string &name, BelligerentType belligerentType,
   row->addChild(label);
   x += NAME_W;
 
-  if (yourBelligerentType == CITY && !Client::instance().character().isKing())
-    return row;
+  if (yourBelligerentType == CITY && !client.character().isKing()) return row;
 
   // Peace button
   switch (state) {
@@ -123,10 +125,11 @@ Element *createWarRow(const std::string &name, BelligerentType belligerentType,
           msgCode = CL_SUE_FOR_PEACE_WITH_CITY_AS_CITY;
       }
 
-      row->addChild(new Button({x, 0, BUTTON_W, WAR_ROW_HEIGHT},
-                               "Sue for peace"s, [name, msgCode]() {
-                                 Client::instance().sendMessage(msgCode, name);
-                               }));
+      row->addChild(
+          new Button({x, 0, BUTTON_W, WAR_ROW_HEIGHT}, "Sue for peace"s,
+                     [name, msgCode]() {
+                       Client::instance().sendMessage({msgCode, name});
+                     }));
       break;
     }
     case PEACE_PROPOSED_BY_YOU: {
@@ -143,10 +146,11 @@ Element *createWarRow(const std::string &name, BelligerentType belligerentType,
           msgCode = CL_CANCEL_PEACE_OFFER_TO_CITY_AS_CITY;
       }
 
-      row->addChild(new Button({x, 0, BUTTON_W, WAR_ROW_HEIGHT},
-                               "Revoke peace offer"s, [name, msgCode]() {
-                                 Client::instance().sendMessage(msgCode, name);
-                               }));
+      row->addChild(
+          new Button({x, 0, BUTTON_W, WAR_ROW_HEIGHT}, "Revoke peace offer"s,
+                     [name, msgCode]() {
+                       Client::instance().sendMessage({msgCode, name});
+                     }));
       break;
     }
     case PEACE_PROPOSED_BY_HIM: {
@@ -163,10 +167,11 @@ Element *createWarRow(const std::string &name, BelligerentType belligerentType,
           msgCode = CL_ACCEPT_PEACE_OFFER_WITH_CITY_AS_CITY;
       }
 
-      row->addChild(new Button({x, 0, BUTTON_W, WAR_ROW_HEIGHT},
-                               "Accept peace offer"s, [name, msgCode]() {
-                                 Client::instance().sendMessage(msgCode, name);
-                               }));
+      row->addChild(
+          new Button({x, 0, BUTTON_W, WAR_ROW_HEIGHT}, "Accept peace offer"s,
+                     [name, msgCode]() {
+                       Client::instance().sendMessage({msgCode, name});
+                     }));
       break;
     }
   }

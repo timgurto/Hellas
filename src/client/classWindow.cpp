@@ -1,3 +1,4 @@
+#include "../Message.h"
 #include "Client.h"
 #include "ui/Line.h"
 #include "ui/OutlinedLabel.h"
@@ -131,7 +132,7 @@ void Client::populateClassWindow() {
       for (const auto &talent : talents) {
         auto learnSpellButton = new Button(
             {x, y, 18, 18}, ""s,
-            [this, &talent]() { this->sendRawMessage(talent.learnMessage); });
+            [this, &talent]() { this->sendMessage(talent.learnMessage); });
         learnSpellButton->setTooltip(talent.tooltip());
         if (talent.icon)
           learnSpellButton->addChild(new Picture(1, 1, talent.icon));

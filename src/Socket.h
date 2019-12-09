@@ -10,6 +10,8 @@
 #include "Log.h"
 #include "types.h"
 
+struct Message;
+
 // Wrapper class for Winsock's SOCKET.
 class Socket {
  public:
@@ -54,8 +56,8 @@ class Socket {
   void delayClosing(ms_t lingerTime);  // Delay closing of socket
 
   // No destination socket implies client->server message
-  void sendMessage(const std::string &msg) const;
-  void sendMessage(const std::string &msg, const Socket &destSocket) const;
+  void sendMessage(const Message &msg) const;
+  void sendMessage(const Message &msg, const Socket &destSocket) const;
 };
 
 #endif

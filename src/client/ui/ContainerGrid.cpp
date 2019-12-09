@@ -173,7 +173,7 @@ void ContainerGrid::leftMouseDown(Element &e, const ScreenPoint &mousePos) {
 
   const auto &client = Client::instance();
   if (client.isAltPressed())
-    client.sendMessage(CL_REPAIR_ITEM, makeArgs(grid._serial, slot));
+    client.sendMessage({CL_REPAIR_ITEM, makeArgs(grid._serial, slot)});
   else
     grid._leftMouseDownSlot = slot;
 }
@@ -199,8 +199,8 @@ void ContainerGrid::leftMouseUp(Element &e, const ScreenPoint &mousePos) {
     // Different grid/slot: finish dragging.
     if ((dragGrid != &grid || dragSlot != slot) && dragSlot != NO_SLOT) {
       Client::_instance->sendMessage(
-          CL_SWAP_ITEMS,
-          makeArgs(dragGrid->_serial, dragSlot, grid._serial, slot));
+          {CL_SWAP_ITEMS,
+           makeArgs(dragGrid->_serial, dragSlot, grid._serial, slot)});
       const ClientItem *item = dragGrid->_linked[dragSlot].first.type();
       if (item != nullptr) item->playSoundOnce("drop");
 
@@ -253,13 +253,13 @@ void ContainerGrid::rightMouseUp(Element &e, const ScreenPoint &mousePos) {
           useGrid = &grid;
         } else if (item->gearSlot() < Client::GEAR_SLOTS) {
           Client::_instance->sendMessage(
-              CL_SWAP_ITEMS, makeArgs(Client::INVENTORY, slot, Client::GEAR,
-                                      item->gearSlot()));
+              {CL_SWAP_ITEMS, makeArgs(Client::INVENTORY, slot, Client::GEAR,
+                                       item->gearSlot())});
           item->playSoundOnce("drop");
         }
       } else {  // An object: take item
-        Client::_instance->sendMessage(CL_TAKE_ITEM,
-                                       makeArgs(grid._serial, slot));
+        Client::_instance->sendMessage(
+            {CL_TAKE_ITEM, makeArgs(grid._serial, slot)});
         item->playSoundOnce("drop");
       }
     }

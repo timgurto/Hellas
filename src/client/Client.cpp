@@ -320,7 +320,7 @@ void Client::gameLoop() {
 
   // Send ping
   if (_time - _lastPingSent > PING_FREQUENCY) {
-    sendMessage(CL_PING, makeArgs(_time));
+    sendMessage({CL_PING, makeArgs(_time)});
     _lastPingSent = _time;
   }
 
@@ -339,8 +339,8 @@ void Client::gameLoop() {
   else {
     _timeSinceLocUpdate += _timeElapsed;
     if (_timeSinceLocUpdate > TIME_BETWEEN_LOCATION_UPDATES) {
-      sendMessage(CL_LOCATION,
-                  makeArgs(_character.location().x, _character.location().y));
+      sendMessage({CL_LOCATION,
+                   makeArgs(_character.location().x, _character.location().y)});
       _tooltipNeedsRefresh = true;
       _timeSinceLocUpdate = 0;
       _serverHasOutOfDateLocationInfo = false;
@@ -430,7 +430,7 @@ void Client::gameLoop() {
 
 void Client::startCrafting() {
   if (_instance->_activeRecipe != nullptr) {
-    _instance->sendMessage(CL_CRAFT, _instance->_activeRecipe->id());
+    _instance->sendMessage({CL_CRAFT, _instance->_activeRecipe->id()});
     const ClientItem *product =
         toClientItem(_instance->_activeRecipe->product());
     _instance->prepareAction("Crafting " + product->name());

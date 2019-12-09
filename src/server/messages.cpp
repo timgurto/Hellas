@@ -52,7 +52,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         ms_t timeSent;
         iss >> timeSent >> del;
         if (del != MSG_END) return;
-        sendMessage(client, SV_PING_REPLY, makeArgs(timeSent));
+        sendMessage(client, {SV_PING_REPLY, timeSent});
         break;
       }
 
@@ -108,9 +108,9 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         iss >> x >> del >> y >> del;
         if (del != MSG_END) return;
         if (user->isStunned()) {
-          sendMessage(
-              client, SV_LOCATION,
-              makeArgs(user->name(), user->location().x, user->location().y));
+          sendMessage(client,
+                      {SV_LOCATION, makeArgs(user->name(), user->location().x,
+                                             user->location().y)});
           break;
         }
 
@@ -156,7 +156,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           break;
         }
         user->beginCrafting(*it, speed);
-        sendMessage(client, SV_ACTION_STARTED, makeArgs(it->time()));
+        sendMessage(client, {SV_ACTION_STARTED, it->time()});
         break;
       }
 
@@ -187,8 +187,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         }
         if (objType->isPlayerUnique() &&
             user->hasPlayerUnique(objType->playerUniqueCategory())) {
-          sendMessage(client, WARNING_PLAYER_UNIQUE_OBJECT,
-                      objType->playerUniqueCategory());
+          sendMessage(client, {WARNING_PLAYER_UNIQUE_OBJECT,
+                               objType->playerUniqueCategory()});
           break;
         }
         if (objType->isUnbuildable()) {
@@ -219,8 +219,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         }
         auto ownerIsCity = msgCode == CL_CONSTRUCT_FOR_CITY;
         user->beginConstructing(*objType, location, ownerIsCity, toolSpeed);
-        sendMessage(client, SV_ACTION_STARTED,
-                    makeArgs(objType->constructionTime() / toolSpeed));
+        sendMessage(client, {SV_ACTION_STARTED,
+                             objType->constructionTime() / toolSpeed});
         break;
       }
 
@@ -280,8 +280,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         auto ownerIsCity = msgCode == CL_CONSTRUCT_FROM_ITEM_FOR_CITY;
         user->beginConstructing(objType, location, ownerIsCity, toolSpeed,
                                 slot);
-        sendMessage(client, SV_ACTION_STARTED,
-                    makeArgs(objType.constructionTime() / toolSpeed));
+        sendMessage(client, {SV_ACTION_STARTED,
+                             objType.constructionTime() / toolSpeed});
         break;
       }
 
@@ -396,14 +396,13 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         if (gatherReq != "none") {
           toolSpeed = user->checkAndDamageToolAndGetSpeed(gatherReq);
           if (toolSpeed == 0) {
-            sendMessage(client, WARNING_ITEM_TAG_NEEDED, gatherReq);
+            sendMessage(client, {WARNING_ITEM_TAG_NEEDED, gatherReq});
             break;
           }
         }
 
         user->beginGathering(obj, toolSpeed);
-        sendMessage(client, SV_ACTION_STARTED,
-                    makeArgs(obj->objType().gatherTime()));
+        sendMessage(client, {SV_ACTION_STARTED, obj->objType().gatherTime()});
         break;
       }
 
@@ -455,8 +454,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         }
 
         user->beginDeconstructing(*obj);
-        sendMessage(client, SV_ACTION_STARTED,
-                    makeArgs(obj->deconstruction().timeToDeconstruct()));
+        sendMessage(client, {SV_ACTION_STARTED,
+                             obj->deconstruction().timeToDeconstruct()});
         break;
       }
 
@@ -756,8 +755,9 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
             }
             for (const User *otherUser : findUsersInArea(user->location())) {
               if (otherUser == user) continue;
-              sendMessage(otherUser->socket(), SV_GEAR,
-                          makeArgs(user->name(), gearSlot, gearID, itemHealth));
+              sendMessage(otherUser->socket(),
+                          {SV_GEAR, makeArgs(user->name(), gearSlot, gearID,
+                                             itemHealth)});
             }
           }
         }
@@ -1017,7 +1017,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         user->updateLocation(v->location());
         // Alert nearby users (including the new driver)
         for (const User *u : findUsersInArea(user->location()))
-          sendMessage(u->socket(), SV_MOUNTED, makeArgs(serial, user->name()));
+          sendMessage(u->socket(),
+                      {SV_MOUNTED, makeArgs(serial, user->name())});
 
         user->onTerrainListChange(v->allowedTerrain().id());
 
@@ -1056,8 +1057,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         v->driver("");
         user->driving(0);
         for (const User *u : findUsersInArea(user->location()))
-          sendMessage(u->socket(), SV_UNMOUNTED,
-                      makeArgs(serial, user->name()));
+          sendMessage(u->socket(),
+                      {SV_UNMOUNTED, makeArgs(serial, user->name())});
 
         user->onTerrainListChange(TerrainList::defaultList().id());
 
@@ -1329,7 +1330,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         std::string message(buffer);
         iss >> del;
         if (del != MSG_END) return;
-        broadcast(SV_SAY, makeArgs(user->name(), message));
+        broadcast({SV_SAY, makeArgs(user->name(), message)});
 
         auto fs = std::ofstream{"chat.log", std::ios_base::app};
         fs << user->name() << ": " << message << std::endl;
@@ -1351,8 +1352,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           break;
         }
         const User *target = it->second;
-        sendMessage(target->socket(), SV_WHISPER,
-                    makeArgs(user->name(), message));
+        sendMessage(target->socket(),
+                    {SV_WHISPER, makeArgs(user->name(), message)});
 
         auto fs = std::ofstream{"chat.log", std::ios_base::app};
         fs << user->name() << ">" << username << ": " << message << std::endl;
@@ -1410,7 +1411,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         user->setSpawnPointToPostTutorial();
         user->moveToSpawnPoint();
         user->addConstruction("fire");
-        sendMessage(client, SV_CONSTRUCTIONS, makeArgs(1, "fire"));
+        sendMessage(client, {SV_CONSTRUCTIONS, makeArgs(1, "fire")});
         break;
 
       case DG_SPELLS: {
@@ -1421,7 +1422,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           user->getClass().teachSpell(spell.id());
         }
         auto knownSpellsString = user->getClass().generateKnownSpellsString();
-        user->sendMessage(SV_KNOWN_SPELLS, knownSpellsString);
+        user->sendMessage({SV_KNOWN_SPELLS, knownSpellsString});
         break;
       }
 
@@ -1624,7 +1625,7 @@ void Server::handle_CL_REPAIR_ITEM(User &user, size_t serial, size_t slot) {
 
   if (repairInfo.requiresTool()) {
     if (!user.checkAndDamageToolAndGetSpeed(repairInfo.tool)) {
-      user.sendMessage(WARNING_ITEM_TAG_NEEDED, repairInfo.tool);
+      user.sendMessage({WARNING_ITEM_TAG_NEEDED, repairInfo.tool});
       return;
     }
   }
@@ -1666,7 +1667,7 @@ void Server::handle_CL_REPAIR_OBJECT(User &user, size_t serial) {
 
   if (repairInfo.requiresTool()) {
     if (!user.checkAndDamageToolAndGetSpeed(repairInfo.tool)) {
-      user.sendMessage(WARNING_ITEM_TAG_NEEDED, repairInfo.tool);
+      user.sendMessage({WARNING_ITEM_TAG_NEEDED, repairInfo.tool});
       return;
     }
   }
@@ -1975,15 +1976,15 @@ void Server::handle_CL_SUE_FOR_PEACE(User &user, MessageCode code,
 
   // Alert the proposer
   if (proposer.type == Belligerent::PLAYER)
-    sendMessage(user.socket(), codeForProposer, name);
+    sendMessage(user.socket(), {codeForProposer, name});
   else
-    broadcastToCity(proposer.name, codeForProposer, name);
+    broadcastToCity(proposer.name, {codeForProposer, name});
 
   // Alert the enemy
   if (enemy.type == Belligerent::PLAYER)
-    sendMessageIfOnline(enemy.name, codeForEnemy, proposer.name);
+    sendMessageIfOnline(enemy.name, {codeForEnemy, proposer.name});
   else
-    broadcastToCity(enemy.name, codeForEnemy, proposer.name);
+    broadcastToCity(enemy.name, {codeForEnemy, proposer.name});
 }
 
 void Server::handle_CL_CANCEL_PEACE_OFFER(User &user, MessageCode code,
@@ -2034,15 +2035,15 @@ void Server::handle_CL_CANCEL_PEACE_OFFER(User &user, MessageCode code,
 
   // Alert the proposer
   if (proposer.type == Belligerent::PLAYER)
-    sendMessage(user.socket(), codeForProposer, name);
+    sendMessage(user.socket(), {codeForProposer, name});
   else
-    broadcastToCity(proposer.name, codeForProposer, name);
+    broadcastToCity(proposer.name, {codeForProposer, name});
 
   // Alert the enemy
   if (enemy.type == Belligerent::PLAYER)
-    sendMessageIfOnline(enemy.name, codeForEnemy, proposer.name);
+    sendMessageIfOnline(enemy.name, {codeForEnemy, proposer.name});
   else
-    broadcastToCity(enemy.name, codeForEnemy, proposer.name);
+    broadcastToCity(enemy.name, {codeForEnemy, proposer.name});
 }
 
 void Server::handle_CL_ACCEPT_PEACE_OFFER(User &user, MessageCode code,
@@ -2081,15 +2082,15 @@ void Server::handle_CL_ACCEPT_PEACE_OFFER(User &user, MessageCode code,
 
   // Alert the proposer
   if (proposer.type == Belligerent::PLAYER)
-    sendMessage(user.socket(), codeForProposer, name);
+    sendMessage(user.socket(), {codeForProposer, name});
   else
-    broadcastToCity(proposer.name, codeForProposer, name);
+    broadcastToCity(proposer.name, {codeForProposer, name});
 
   // Alert the enemy
   if (enemy.type == Belligerent::PLAYER)
-    sendMessageIfOnline(enemy.name, codeForEnemy, proposer.name);
+    sendMessageIfOnline(enemy.name, {codeForEnemy, proposer.name});
   else
-    broadcastToCity(enemy.name, codeForEnemy, proposer.name);
+    broadcastToCity(enemy.name, {codeForEnemy, proposer.name});
 }
 
 void Server::handle_CL_TAKE_TALENT(User &user, const Talent::Name &talentName) {
@@ -2128,7 +2129,7 @@ void Server::handle_CL_TAKE_TALENT(User &user, const Talent::Name &talentName) {
   const auto &requiredTool = talent->tier().requiredTool;
   auto requiresTool = !requiredTool.empty();
   if (requiresTool && !user.checkAndDamageToolAndGetSpeed(requiredTool)) {
-    sendMessage(user.socket(), WARNING_ITEM_TAG_NEEDED, requiredTool);
+    sendMessage(user.socket(), {WARNING_ITEM_TAG_NEEDED, requiredTool});
     return;
   }
 
@@ -2140,7 +2141,7 @@ void Server::handle_CL_TAKE_TALENT(User &user, const Talent::Name &talentName) {
 
   switch (talent->type()) {
     case Talent::SPELL:
-      sendMessage(user.socket(), SV_LEARNED_SPELL, talent->spellID());
+      sendMessage(user.socket(), {SV_LEARNED_SPELL, talent->spellID()});
       break;
 
     case Talent::STATS:
@@ -2154,7 +2155,7 @@ void Server::handle_CL_UNLEARN_TALENTS(User &user) {
   userClass.unlearnAll();
 
   auto knownSpellsString = userClass.generateKnownSpellsString();
-  user.sendMessage(SV_KNOWN_SPELLS, knownSpellsString);
+  user.sendMessage({SV_KNOWN_SPELLS, knownSpellsString});
 }
 
 CombatResult Server::handle_CL_CAST(User &user, const std::string &spellID,
@@ -2238,54 +2239,37 @@ void Server::handle_CL_ABANDON_QUEST(User &user, const Quest::ID &quest) {
   user.abandonQuest(quest);
 }
 
-void Server::broadcast(MessageCode msgCode, const std::string &args) {
-  for (const User &user : _users) {
-    sendMessage(user.socket(), msgCode, args);
-  }
+void Server::broadcast(const Message &msg) {
+  for (const User &user : _users) sendMessage(user.socket(), msg);
 }
 
-void Server::broadcastToArea(const MapPoint &location, MessageCode msgCode,
-                             const std::string &args) const {
-  for (const User *user : this->findUsersInArea(location)) {
-    user->sendMessage(msgCode, args);
-  }
+void Server::broadcastToArea(const MapPoint &location,
+                             const Message &msg) const {
+  for (const User *user : this->findUsersInArea(location))
+    user->sendMessage(msg);
 }
 
-void Server::broadcastToCity(const std::string &cityName, MessageCode msgCode,
-                             const std::string &args) const {
+void Server::broadcastToCity(const std::string &cityName,
+                             const Message &msg) const {
   if (!_cities.doesCityExist(cityName)) {
     _debug << Color::CHAT_ERROR << "City " << cityName << " does not exist."
            << Log::endl;
     return;
   }
 
-  for (const auto &citizen : _cities.membersOf(cityName)) {
-    sendMessageIfOnline(citizen, msgCode, args);
-  }
+  for (const auto &citizen : _cities.membersOf(cityName))
+    sendMessageIfOnline(citizen, msg);
 }
 
-void Server::sendMessage(const Socket &dstSocket, MessageCode msgCode,
-                         const std::string &args) const {
-  auto message = compileMessage(msgCode, args);
-  _socket.sendMessage(message, dstSocket);
+void Server::sendMessage(const Socket &dstSocket, const Message &msg) const {
+  _socket.sendMessage(msg, dstSocket);
 }
 
 void Server::sendMessageIfOnline(const std::string username,
-                                 MessageCode msgCode,
-                                 const std::string &args) const {
+                                 const Message &msg) const {
   auto it = _usersByName.find(username);
   if (it == _usersByName.end()) return;
-  sendMessage(it->second->socket(), msgCode, args);
-}
-
-std::string Server::compileMessage(MessageCode msgCode,
-                                   const std::string &args) {
-  std::ostringstream oss;
-  oss << MSG_START << msgCode;
-  if (args != "") oss << MSG_DELIM << args;
-  oss << MSG_END;
-
-  return oss.str();
+  sendMessage(it->second->socket(), msg);
 }
 
 void Server::sendInventoryMessageInner(
@@ -2295,12 +2279,14 @@ void Server::sendInventoryMessageInner(
     sendMessage(user.socket(), ERROR_INVALID_SLOT);
     return;
   }
+
   const auto &containerSlot = itemVect[slot];
   std::string itemID =
       containerSlot.first.hasItem() ? containerSlot.first.type()->id() : "none";
-  sendMessage(user.socket(), SV_INVENTORY,
-              makeArgs(serial, slot, itemID, containerSlot.second,
-                       containerSlot.first.health()));
+  auto msg =
+      Message{SV_INVENTORY, makeArgs(serial, slot, itemID, containerSlot.second,
+                                     containerSlot.first.health())};
+  sendMessage(user.socket(), msg);
 }
 
 void Server::sendInventoryMessage(const User &user, size_t slot,
@@ -2340,12 +2326,14 @@ void Server::sendMerchantSlotMessage(const User &user, const Object &obj,
   }
   const MerchantSlot &mSlot = obj.merchantSlot(slot);
   if (mSlot)
-    sendMessage(user.socket(), SV_MERCHANT_SLOT,
-                makeArgs(obj.serial(), slot, mSlot.wareItem->id(),
-                         mSlot.wareQty, mSlot.priceItem->id(), mSlot.priceQty));
+    sendMessage(
+        user.socket(),
+        {SV_MERCHANT_SLOT,
+         makeArgs(obj.serial(), slot, mSlot.wareItem->id(), mSlot.wareQty,
+                  mSlot.priceItem->id(), mSlot.priceQty)});
   else
-    sendMessage(user.socket(), SV_MERCHANT_SLOT,
-                makeArgs(obj.serial(), slot, "", 0, "", 0));
+    sendMessage(user.socket(),
+                {SV_MERCHANT_SLOT, makeArgs(obj.serial(), slot, "", 0, "", 0)});
 }
 
 void Server::sendConstructionMaterialsMessage(const User &user,
@@ -2355,7 +2343,7 @@ void Server::sendConstructionMaterialsMessage(const User &user,
   for (const auto &pair : obj.remainingMaterials()) {
     args = makeArgs(args, pair.first->id(), pair.second);
   }
-  sendMessage(user.socket(), SV_CONSTRUCTION_MATERIALS, args);
+  sendMessage(user.socket(), {SV_CONSTRUCTION_MATERIALS, args});
 }
 
 void Server::sendNewBuildsMessage(const User &user,
@@ -2363,7 +2351,7 @@ void Server::sendNewBuildsMessage(const User &user,
   if (!ids.empty()) {  // New constructions unlocked!
     std::string args = makeArgs(ids.size());
     for (const std::string &id : ids) args = makeArgs(args, id);
-    sendMessage(user.socket(), SV_NEW_CONSTRUCTIONS, args);
+    sendMessage(user.socket(), {SV_NEW_CONSTRUCTIONS, args});
   }
 }
 
@@ -2372,7 +2360,7 @@ void Server::sendNewRecipesMessage(const User &user,
   if (!ids.empty()) {  // New recipes unlocked!
     std::string args = makeArgs(ids.size());
     for (const std::string &id : ids) args = makeArgs(args, id);
-    sendMessage(user.socket(), SV_NEW_RECIPES, args);
+    sendMessage(user.socket(), {SV_NEW_RECIPES, args});
   }
 }
 
@@ -2391,7 +2379,7 @@ void Server::alertUserToWar(const std::string &username,
   else
     code = otherBelligerent.type == Belligerent::CITY ? SV_AT_WAR_WITH_CITY
                                                       : SV_AT_WAR_WITH_PLAYER;
-  sendMessage(it->second->socket(), code, otherBelligerent.name);
+  sendMessage(it->second->socket(), {code, otherBelligerent.name});
 }
 
 void Server::sendRelevantEntitiesToUser(const User &user) {
@@ -2450,5 +2438,5 @@ void Server::sendOnlineUsersTo(const User &recipient) const {
   if (numNames == 0) return;
 
   args = makeArgs(numNames, args);
-  recipient.sendMessage(SV_USERS_ALREADY_ONLINE, args);
+  recipient.sendMessage({SV_USERS_ALREADY_ONLINE, args});
 }

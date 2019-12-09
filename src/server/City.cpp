@@ -8,14 +8,15 @@ City::City(const Name &name = "") : _name(name) {}
 
 void City::addAndAlertPlayers(const User &user) {
   _members.insert(user.name());
-  user.sendMessage(SV_JOINED_CITY, _name);
-  Server::instance().broadcastToArea(user.location(), SV_IN_CITY,
-                                     makeArgs(user.name(), _name));
+  user.sendMessage({SV_JOINED_CITY, _name});
+  Server::instance().broadcastToArea(
+      user.location(), {SV_IN_CITY, makeArgs(user.name(), _name)});
 }
 
 void City::removeAndAlertPlayers(const User &user) {
   _members.erase(user.name());
-  Server::instance().broadcastToArea(user.location(), SV_NO_CITY, user.name());
+  Server::instance().broadcastToArea(user.location(),
+                                     {SV_NO_CITY, user.name()});
 }
 
 void City::addPlayerWithoutAlerting(const std::string &username) {

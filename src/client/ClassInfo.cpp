@@ -1,5 +1,6 @@
 #include "ClassInfo.h"
 
+#include "../Message.h"
 #include "Client.h"
 #include "Tooltip.h"
 
@@ -78,8 +79,7 @@ const Tooltip &ClientTalent::tooltip() const {
 }
 
 void ClientTalent::generateLearnMessage() {
-  auto &client = Client::instance();
-  learnMessage = Client::compileMessage(CL_TAKE_TALENT, name);
+  learnMessage = {CL_TAKE_TALENT, name};
 }
 
 size_t Tree::numTiers() const {

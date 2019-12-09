@@ -1,5 +1,6 @@
 #include <cassert>
 
+#include "../Message.h"
 #include "Client.h"
 #include "ui/Indicator.h"
 #include "ui/OutlinedLabel.h"
@@ -177,7 +178,7 @@ Element *Client::assembleBuffEntry(const ClientBuffType &type, bool isDebuff) {
   if (!isDebuff) {
     icon->setRightMouseDownFunction(
         [&type](Element &e, const ScreenPoint &mousePos) {
-          Client::instance().sendMessage(CL_DISMISS_BUFF, type.id());
+          Client::instance().sendMessage({CL_DISMISS_BUFF, type.id()});
         });
   }
 

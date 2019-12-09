@@ -62,9 +62,8 @@ class TestServer {
   void saveData();
 
   Server *operator->() { return _server; }
-  void sendMessage(const Socket &socket, MessageCode code,
-                   const std::string &args) {
-    _server->sendMessage(socket, code, args);
+  void sendMessage(const Socket &socket, const Message &msg) {
+    _server->sendMessage(socket, msg);
   }
 
   void nop() { _server->map(); }

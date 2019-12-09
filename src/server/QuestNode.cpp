@@ -1,4 +1,5 @@
 #include "QuestNode.h"
+
 #include "Server.h"
 #include "User.h"
 
@@ -22,7 +23,7 @@ void QuestNodeType::sendQuestsToUser(const User &user) const {
   const auto &server = Server::instance();
 
   for (const auto &id : _questsStartingHere) {
-    if (user.canStartQuest(id)) user.sendMessage(SV_QUEST_CAN_BE_STARTED, id);
+    if (user.canStartQuest(id)) user.sendMessage({SV_QUEST_CAN_BE_STARTED, id});
   }
 
   for (const auto &id : _questsEndingHere) {
@@ -30,6 +31,6 @@ void QuestNodeType::sendQuestsToUser(const User &user) const {
     if (!quest->canBeCompletedByUser(user)) continue;
     if (!user.isOnQuest(id)) continue;
 
-    user.sendMessage(SV_QUEST_CAN_BE_FINISHED, id);
+    user.sendMessage({SV_QUEST_CAN_BE_FINISHED, id});
   }
 }

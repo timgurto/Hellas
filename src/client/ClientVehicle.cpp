@@ -1,4 +1,5 @@
 #include "ClientVehicle.h"
+
 #include "Client.h"
 
 ClientVehicle::ClientVehicle(size_t serial, const ClientVehicleType *type,
@@ -11,7 +12,7 @@ void ClientVehicle::mountOrDismount(void *object) {
 
   // Not currently driving anything: attempt to mount
   if (!client.character().isDriving())
-    client.sendMessage(CL_MOUNT, makeArgs(obj.serial()));
+    client.sendMessage({CL_MOUNT, obj.serial()});
 
   // Currently driving: attempt to dismount
   else

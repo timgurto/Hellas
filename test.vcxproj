@@ -172,6 +172,7 @@
     <ClCompile Include="src\Item.cpp" />
     <ClCompile Include="src\Log.cpp" />
     <ClCompile Include="src\Map.cpp" />
+    <ClCompile Include="src\Message.cpp" />
     <ClCompile Include="src\NormalVariable.cpp" />
     <ClCompile Include="src\Podes.cpp" />
     <ClCompile Include="src\Point.cpp" />

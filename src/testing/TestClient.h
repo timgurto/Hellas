@@ -1,6 +1,7 @@
 #ifndef TEST_CLIENT_H
 #define TEST_CLIENT_H
 
+#include "../Message.h"
 #include "../client/CDataLoader.h"
 #include "../client/CQuest.h"
 #include "../client/Client.h"
@@ -96,7 +97,7 @@ class TestClient {
     _client->performCommand(command);
   }
   void sendMessage(MessageCode code, const std::string &args = "") const {
-    _client->sendMessage(code, args);
+    _client->sendMessage({code, args});
   }
   MessageCode getNextMessage() const;
   bool waitForMessage(MessageCode desiredMsg,

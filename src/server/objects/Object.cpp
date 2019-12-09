@@ -93,7 +93,7 @@ void Object::incrementGatheringUsers(const User *userToSkip) {
   if (_numUsersGathering == 1) {
     for (const User *user : server.findUsersInArea(location()))
       if (user != userToSkip)
-        user->sendMessage(SV_GATHERING_OBJECT, makeArgs(serial()));
+        user->sendMessage({SV_GATHERING_OBJECT, serial()});
   }
 }
 
@@ -103,7 +103,7 @@ void Object::decrementGatheringUsers(const User *userToSkip) {
   if (_numUsersGathering == 0) {
     for (const User *user : server.findUsersInArea(location()))
       if (user != userToSkip)
-        user->sendMessage(SV_NOT_GATHERING_OBJECT, makeArgs(serial()));
+        user->sendMessage({SV_NOT_GATHERING_OBJECT, serial()});
   }
 }
 
@@ -111,7 +111,7 @@ void Object::removeAllGatheringUsers() {
   const Server &server = *Server::_instance;
   _numUsersGathering = 0;
   for (const User *user : server.findUsersInArea(location()))
-    user->sendMessage(SV_NOT_GATHERING_OBJECT, makeArgs(serial()));
+    user->sendMessage({SV_NOT_GATHERING_OBJECT, serial()});
 }
 
 void Object::update(ms_t timeElapsed) {
@@ -148,7 +148,7 @@ void Object::onHealthChange() {
   const Server &server = *Server::_instance;
   if (classTag() != 'u')
     for (const User *user : server.findUsersInArea(location()))
-      user->sendMessage(SV_ENTITY_HEALTH, makeArgs(serial(), health()));
+      user->sendMessage({SV_ENTITY_HEALTH, makeArgs(serial(), health())});
   Entity::onHealthChange();
 }
 
@@ -156,7 +156,7 @@ void Object::onEnergyChange() {
   const Server &server = *Server::_instance;
   if (classTag() != 'u')
     for (const User *user : server.findUsersInArea(location()))
-      user->sendMessage(SV_ENTITY_ENERGY, makeArgs(serial(), energy()));
+      user->sendMessage({SV_ENTITY_ENERGY, makeArgs(serial(), energy())});
   Entity::onEnergyChange();
 }
 
@@ -202,8 +202,8 @@ void Object::setType(const ObjectType *type, bool skipConstruction,
   // Inform owner
   for (const auto &owner : _permissions.ownerAsUsernames())
     server->sendMessageIfOnline(
-        owner, SV_OBJECT,
-        makeArgs(serial(), location().x, location().y, type->id()));
+        owner, {SV_OBJECT,
+                makeArgs(serial(), location().x, location().y, type->id())});
 }
 
 void Object::onDeath() {
@@ -255,26 +255,26 @@ bool Object::isAbleToDeconstruct(const User &user) const {
 void Object::sendInfoToClient(const User &targetUser) const {
   const Server &server = Server::instance();
 
-  targetUser.sendMessage(
-      SV_OBJECT, makeArgs(serial(), location().x, location().y, type()->id()));
+  targetUser.sendMessage({SV_OBJECT, makeArgs(serial(), location().x,
+                                              location().y, type()->id())});
 
   // Owner
   if (permissions().hasOwner()) {
     const auto &owner = permissions().owner();
-    targetUser.sendMessage(SV_OWNER,
-                           makeArgs(serial(), owner.typeString(), owner.name));
+    targetUser.sendMessage(
+        {SV_OWNER, makeArgs(serial(), owner.typeString(), owner.name)});
 
     // In case the owner is unknown to the client, tell him the owner's city
     if (owner.type == owner.PLAYER) {
       std::string ownersCity = server.cities().getPlayerCity(owner.name);
       if (!ownersCity.empty())
-        targetUser.sendMessage(SV_IN_CITY, makeArgs(owner.name, ownersCity));
+        targetUser.sendMessage({SV_IN_CITY, makeArgs(owner.name, ownersCity)});
     }
   }
 
   // Being gathered
   if (numUsersGathering() > 0)
-    targetUser.sendMessage(SV_GATHERING_OBJECT, makeArgs(serial()));
+    targetUser.sendMessage({SV_GATHERING_OBJECT, serial()});
 
   // Construction materials
   if (isBeingBuilt()) {
@@ -283,13 +283,13 @@ void Object::sendInfoToClient(const User &targetUser) const {
 
   // Transform timer
   if (isTransforming()) {
-    targetUser.sendMessage(SV_TRANSFORM_TIME,
-                           makeArgs(serial(), transformTimer()));
+    targetUser.sendMessage(
+        {SV_TRANSFORM_TIME, makeArgs(serial(), transformTimer())});
   }
 
   // Hitpoints
   if (health() < stats().maxHealth)
-    targetUser.sendMessage(SV_ENTITY_HEALTH, makeArgs(serial(), health()));
+    targetUser.sendMessage({SV_ENTITY_HEALTH, makeArgs(serial(), health())});
 
   // Lootable
   if (_loot != nullptr && !_loot->empty()) sendAllLootToTagger();
@@ -305,10 +305,11 @@ void Object::sendInfoToClient(const User &targetUser) const {
 
   // Buffs/debuffs
   for (const auto &buff : buffs())
-    targetUser.sendMessage(SV_ENTITY_GOT_BUFF, makeArgs(serial(), buff.type()));
+    targetUser.sendMessage(
+        {SV_ENTITY_GOT_BUFF, makeArgs(serial(), buff.type())});
   for (const auto &debuff : debuffs())
-    targetUser.sendMessage(SV_ENTITY_GOT_DEBUFF,
-                           makeArgs(serial(), debuff.type()));
+    targetUser.sendMessage(
+        {SV_ENTITY_GOT_DEBUFF, makeArgs(serial(), debuff.type())});
 
   // Quests
   QuestNode::sendQuestsToUser(targetUser);
@@ -396,12 +397,12 @@ bool Object::shouldAlwaysBeKnownToUser(const User &user) const {
 
 void Object::broadcastDamagedMessage(Hitpoints amount) const {
   Server &server = *Server::_instance;
-  server.broadcastToArea(location(), SV_OBJECT_DAMAGED,
-                         makeArgs(serial(), amount));
+  server.broadcastToArea(location(),
+                         {SV_OBJECT_DAMAGED, makeArgs(serial(), amount)});
 }
 
 void Object::broadcastHealedMessage(Hitpoints amount) const {
   Server &server = *Server::_instance;
-  server.broadcastToArea(location(), SV_OBJECT_HEALED,
-                         makeArgs(serial(), amount));
+  server.broadcastToArea(location(),
+                         {SV_OBJECT_HEALED, makeArgs(serial(), amount)});
 }

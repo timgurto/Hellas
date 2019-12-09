@@ -1,5 +1,6 @@
 #include <cassert>
 
+#include "../Message.h"
 #include "../versionUtil.h"
 #include "Client.h"
 #include "ClientCombatant.h"
@@ -1943,7 +1944,7 @@ void Client::handleMessage(const std::string &msg) {
         singleMsg >> del;
         if (del != MSG_END) break;
 
-        sendMessage(msgCode, args);
+        sendMessage({msgCode, args});
         break;
       }
 
@@ -2540,28 +2541,14 @@ void Client::handle_SV_CHUNK_EXPLORED(size_t chunkX, size_t chunkY) {
   updateMapWindow(Element{});
 }
 
-void Client::sendRawMessage(const std::string &msg) const {
+void Client::sendMessage(const Message &msg) const {
   _connection.socket().sendMessage(msg);
 }
 
-void Client::sendMessage(MessageCode msgCode, const std::string &args) const {
-  auto message = compileMessage(msgCode, args);
-  sendRawMessage(message);
-}
-
-std::string Client::compileMessage(MessageCode msgCode,
-                                   const std::string &args) {
-  std::ostringstream oss;
-  oss << MSG_START << msgCode;
-  if (args != "") oss << MSG_DELIM << args;
-  oss << MSG_END;
-  return oss.str();
-}
-
-void Client::sendRawMessageStatic(void *data) {
+void Client::sendMessageStatic(void *data) {
   auto &client = *_instance;
-  auto *message = reinterpret_cast<const std::string *>(data);
-  client.sendRawMessage(*message);
+  auto *message = reinterpret_cast<const Message *>(data);
+  client.sendMessage(*message);
 }
 
 void Client::disconnect() {
@@ -2764,7 +2751,7 @@ void Client::performCommand(const std::string &commandString) {
         argsString = oss.str();
     }
 
-    sendMessage(code, argsString);
+    sendMessage({code, argsString});
     return;
   }
 
@@ -2772,5 +2759,5 @@ void Client::performCommand(const std::string &commandString) {
 }
 
 void Client::sendClearTargetMessage() const {
-  sendMessage(CL_TARGET_ENTITY, makeArgs(0));
+  sendMessage({CL_TARGET_ENTITY, 0});
 }

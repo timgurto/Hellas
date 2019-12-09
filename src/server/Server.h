@@ -104,18 +104,12 @@ class Server {
 
   // Messages
   std::queue<std::pair<Socket, std::string>> _messages;
-  static std::string compileMessage(MessageCode msgCode,
-                                    const std::string &args);
-  void sendMessage(const Socket &dstSocket, MessageCode msgCode,
-                   const std::string &args = "") const;
-  void sendMessageIfOnline(const std::string username, MessageCode msgCode,
-                           const std::string &args = "") const;
-  void broadcast(MessageCode msgCode,
-                 const std::string &args);  // Send a command to all users
-  void broadcastToArea(const MapPoint &location, MessageCode msgCode,
-                       const std::string &args) const;
-  void broadcastToCity(const std::string &cityName, MessageCode msgCode,
-                       const std::string &args) const;
+  void sendMessage(const Socket &dstSocket, const Message &msg) const;
+  void sendMessageIfOnline(const std::string username,
+                           const Message &msg) const;
+  void broadcast(const Message &msg);  // Send a command to all users
+  void broadcastToArea(const MapPoint &location, const Message &msg) const;
+  void broadcastToCity(const std::string &cityName, const Message &msg) const;
   void handleMessage(const Socket &client, const std::string &msg);
   void sendInventoryMessageInner(const User &user, size_t serial, size_t slot,
                                  const ServerItem::vect_t &itemVect) const;

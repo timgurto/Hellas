@@ -42,10 +42,10 @@ void Class::takeTalent(const Talent *talent) {
     ++_talentRanks[talent];
   }
 
-  _owner->sendMessage(SV_TALENT,
-                      makeArgs(talent->name(), _talentRanks[talent]));
-  _owner->sendMessage(SV_POINTS_IN_TREE,
-                      makeArgs(talent->tree(), pointsInTree(talent->tree())));
+  _owner->sendMessage(
+      {SV_TALENT, makeArgs(talent->name(), _talentRanks[talent])});
+  _owner->sendMessage({SV_POINTS_IN_TREE,
+                       makeArgs(talent->tree(), pointsInTree(talent->tree()))});
 }
 
 bool Class::knowsSpell(const Spell::ID &spell) const {
@@ -67,7 +67,7 @@ void Class::markSpellAsKnown(const Spell::ID &spell) {
 
 void Class::teachSpell(const Spell::ID &spell) {
   markSpellAsKnown(spell);
-  _owner->sendMessage(SV_LEARNED_SPELL, spell);
+  _owner->sendMessage({SV_LEARNED_SPELL, spell});
 }
 
 std::string Class::generateKnownSpellsString() const {
@@ -130,13 +130,13 @@ Talent::Name Class::loseARandomLeafTalent() {
   --_talentPointsAllocated;
 
   _owner->sendMessage(
-      SV_TALENT, makeArgs(talentToDrop->name(), _talentRanks[talentToDrop]));
+      {SV_TALENT, makeArgs(talentToDrop->name(), _talentRanks[talentToDrop])});
   _owner->sendMessage(
-      SV_POINTS_IN_TREE,
-      makeArgs(talentToDrop->tree(), pointsInTree(talentToDrop->tree())));
+      {SV_POINTS_IN_TREE,
+       makeArgs(talentToDrop->tree(), pointsInTree(talentToDrop->tree()))});
 
   if (talentToDrop->type() == Talent::SPELL)
-    _owner->sendMessage(SV_UNLEARNED_SPELL, talentToDrop->spellID());
+    _owner->sendMessage({SV_UNLEARNED_SPELL, talentToDrop->spellID()});
 
   return talentToDrop->name();
 }

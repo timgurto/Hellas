@@ -184,8 +184,7 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg) {
 void ClientObject::onLeftClick(Client &client) {
   if (client.isCtrlPressed()) {
     const auto *npc = dynamic_cast<ClientNPC *>(this);
-    if (npc && npc->canBeTamed())
-      client.sendMessage(CL_TAME_NPC, makeArgs(serial()));
+    if (npc && npc->canBeTamed()) client.sendMessage({CL_TAME_NPC, serial()});
   }
 
   else
@@ -213,7 +212,7 @@ void ClientObject::onRightClick(Client &client) {
   // Gatherable
   const ClientObjectType &objType = *objectType();
   if (objType.canGather() && userHasAccess()) {
-    client.sendMessage(CL_GATHER, makeArgs(_serial));
+    client.sendMessage({CL_GATHER, _serial});
     client.prepareAction(std::string("Gathering ") + objType.name());
     return;
   }
@@ -482,7 +481,8 @@ void ClientObject::performAction(void *object) {
   auto textArg = std::string{"_"};
   if (obj._actionTextEntry != nullptr) textArg = obj._actionTextEntry->text();
 
-  client.sendMessage(CL_PERFORM_OBJECT_ACTION, makeArgs(obj.serial(), textArg));
+  client.sendMessage(
+      {CL_PERFORM_OBJECT_ACTION, makeArgs(obj.serial(), textArg)});
 }
 
 void ClientObject::addMerchantTradeToWindow() {
@@ -741,12 +741,12 @@ void ClientObject::hideWindow() {
 void ClientObject::startDeconstructing(void *object) {
   const ClientObject &obj = *static_cast<const ClientObject *>(object);
   Client &client = *Client::_instance;
-  client.sendMessage(CL_DECONSTRUCT, makeArgs(obj.serial()));
+  client.sendMessage({CL_DECONSTRUCT, obj.serial()});
   client.prepareAction(std::string("Dismantling ") + obj.objectType()->name());
 }
 
 void ClientObject::trade(size_t serial, size_t slot) {
-  Client::_instance->sendMessage(CL_TRADE, makeArgs(serial, slot));
+  Client::_instance->sendMessage({CL_TRADE, makeArgs(serial, slot)});
 }
 
 void ClientObject::sendMerchantSlot(size_t serial, size_t slot) {
@@ -767,15 +767,15 @@ void ClientObject::sendMerchantSlot(size_t serial, size_t slot) {
   if (mSlot.wareItem == nullptr || mSlot.priceItem == nullptr) {
     Client::instance().showErrorMessage(
         "You must select an item; clearing slot.", Color::CHAT_WARNING);
-    Client::_instance->sendMessage(CL_CLEAR_MERCHANT_SLOT,
-                                   makeArgs(serial, slot));
+    Client::_instance->sendMessage(
+        {CL_CLEAR_MERCHANT_SLOT, makeArgs(serial, slot)});
     return;
   }
 
   Client::_instance->sendMessage(
-      CL_SET_MERCHANT_SLOT,
-      makeArgs(serial, slot, mSlot.wareItem->id(), mSlot.wareQty,
-               mSlot.priceItem->id(), mSlot.priceQty));
+      {CL_SET_MERCHANT_SLOT,
+       makeArgs(serial, slot, mSlot.wareItem->id(), mSlot.wareQty,
+                mSlot.priceItem->id(), mSlot.priceQty)});
 }
 
 bool ClientObject::userHasAccess() const {
@@ -1170,12 +1170,12 @@ std::set<CQuest *> ClientObject::completableQuests() const {
 
 void ClientObject::sendTargetMessage() const {
   const Client &client = *Client::_instance;
-  client.sendMessage(CL_TARGET_ENTITY, makeArgs(serial()));
+  client.sendMessage({CL_TARGET_ENTITY, serial()});
 }
 
 void ClientObject::sendSelectMessage() const {
   const Client &client = *Client::_instance;
-  client.sendMessage(CL_SELECT_ENTITY, makeArgs(serial()));
+  client.sendMessage({CL_SELECT_ENTITY, serial()});
 }
 
 bool ClientObject::canBeAttackedByPlayer() const {

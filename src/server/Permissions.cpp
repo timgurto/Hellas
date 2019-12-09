@@ -94,8 +94,8 @@ bool Permissions::doesUserHaveAccess(const std::string &username,
 void Permissions::alertNearbyUsersToNewOwner() const {
   auto &server = *Server::_instance;
   server.broadcastToArea(
-      _parent.location(), SV_OWNER,
-      makeArgs(_parent.serial(), _owner.typeString(), _owner.name));
+      _parent.location(),
+      {SV_OWNER, makeArgs(_parent.serial(), _owner.typeString(), _owner.name)});
 }
 
 Permissions::Usernames Permissions::ownerAsUsernames() {

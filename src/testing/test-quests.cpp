@@ -844,7 +844,7 @@ TEST_CASE("Object window is updated with quest changes",
       obj.onRightClick(c.client());
 
       AND_WHEN("he accepts the quest") {
-        c->sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", serial));
+        c->sendMessage({CL_ACCEPT_QUEST, makeArgs("quest1", serial)});
 
         THEN("The object has no window") {
           REPEAT_FOR_MS(100);
@@ -871,10 +871,10 @@ TEST_CASE("Object window is updated with quest changes",
       obj.onRightClick(c.client());
 
       AND_WHEN("he accepts the quest") {
-        c->sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", serial));
+        c->sendMessage({CL_ACCEPT_QUEST, makeArgs("quest1", serial)});
 
         AND_WHEN("he completes the quest") {
-          c->sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", serial));
+          c->sendMessage({CL_COMPLETE_QUEST, makeArgs("quest1", serial)});
 
           THEN("The object has no window") {
             REPEAT_FOR_MS(100);

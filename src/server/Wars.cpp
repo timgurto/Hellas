@@ -1,4 +1,5 @@
 #include "Wars.h"
+
 #include "../XmlReader.h"
 #include "../XmlWriter.h"
 #include "Server.h"
@@ -130,13 +131,13 @@ void Wars::sendWarsInvolvingBelligerentToUser(const User &user,
       }
     }
 
-    user.sendMessage(warMessage, enemy.name);
+    user.sendMessage({warMessage, enemy.name});
 
     if (war.peaceState == War::NO_PEACE_PROPOSED) return;
     if (war.wasPeaceProposedBy(belligerent))
-      user.sendMessage(youProposedMessage, enemy.name);
+      user.sendMessage({youProposedMessage, enemy.name});
     else
-      user.sendMessage(proposedToYouMessage, enemy.name);
+      user.sendMessage({proposedToYouMessage, enemy.name});
   }
 }
 

@@ -5,6 +5,7 @@
 #include <set>
 #include <string>
 
+#include "../Message.h"
 #include "../Stats.h"
 #include "ClientSpell.h"
 #include "Texture.h"
@@ -25,7 +26,7 @@ struct ClientTalent {
 
   Name name{};
   Type type{UNINITIALIZED};
-  std::string learnMessage{};
+  Message learnMessage{};
   Texture icon{};
   mutable Optional<Tooltip> _tooltip;
   const Tooltip &tooltip() const;

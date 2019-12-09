@@ -1,3 +1,4 @@
+#include "../Message.h"
 #include "../TerrainList.h"
 #include "Client.h"
 #include "Particle.h"
@@ -214,7 +215,7 @@ void Client::handleInput(double delta) {
 
               {
                 auto loc = toMapPoint(_mouse) - _offset;
-                sendMessage(DG_TELEPORT, makeArgs(loc.x, loc.y));
+                sendMessage({DG_TELEPORT, makeArgs(loc.x, loc.y)});
               }
               break;
 
@@ -363,8 +364,8 @@ void Client::handleInput(double delta) {
                 auto messageCode = isCtrlPressed()
                                        ? CL_CONSTRUCT_FROM_ITEM_FOR_CITY
                                        : CL_CONSTRUCT_FROM_ITEM;
-                sendMessage(messageCode,
-                            makeArgs(ContainerGrid::useSlot, x, y));
+                sendMessage(
+                    {messageCode, makeArgs(ContainerGrid::useSlot, x, y)});
                 prepareAction(std::string("Constructing ") +
                               _inventory[ContainerGrid::useSlot]
                                   .first.type()
@@ -379,8 +380,8 @@ void Client::handleInput(double delta) {
                    y = toInt(_mouse.y - offset().y);
               auto messageCode =
                   isCtrlPressed() ? CL_CONSTRUCT_FOR_CITY : CL_CONSTRUCT;
-              sendMessage(messageCode,
-                          makeArgs(_selectedConstruction->id(), x, y));
+              sendMessage(
+                  {messageCode, makeArgs(_selectedConstruction->id(), x, y)});
               prepareAction(std::string("Constructing ") +
                             _selectedConstruction->name());
               break;
@@ -389,7 +390,7 @@ void Client::handleInput(double delta) {
             } else if (_isDismounting) {
               px_t x = toInt(_mouse.x - offset().x),
                    y = toInt(_mouse.y - offset().y);
-              sendMessage(CL_DISMOUNT, makeArgs(x, y));
+              sendMessage({CL_DISMOUNT, makeArgs(x, y)});
               //_isDismounting = false;
               break;
             }
@@ -448,7 +449,7 @@ void Client::handleInput(double delta) {
             _constructionFootprint = Texture();
 
             if (useItem && useItem->castsSpellOnUse()) {
-              sendMessage(CL_CAST_ITEM, makeArgs(ContainerGrid::useSlot));
+              sendMessage({CL_CAST_ITEM, ContainerGrid::useSlot});
               ContainerGrid::clearUseItem();
               break;
             }
@@ -546,8 +547,8 @@ void Client::handleInput(double delta) {
       static auto lastDirection = MapPoint{};
       auto thisDirection = normaliseVector(newLocation - _character.location());
       if (thisDirection != lastDirection) {
-        sendMessage(CL_LOCATION,
-                    makeArgs(_character.location().x, _character.location().y));
+        sendMessage({CL_LOCATION, makeArgs(_character.location().x,
+                                           _character.location().y)});
         _timeSinceLocUpdate = 0;
       }
       lastDirection = thisDirection;

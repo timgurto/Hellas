@@ -621,15 +621,12 @@ class Client {
 
   // Message stuff
  public:
-  static std::string compileMessage(MessageCode msgCode,
-                                    const std::string &args = "");
-  void sendMessage(MessageCode msgCode, const std::string &args = "") const;
+  void sendMessage(const Message &msg) const;
 
  private:
   std::queue<std::string> _messages;
   std::string _partialMessage;
-  void sendRawMessage(const std::string &msg = "") const;
-  static void sendRawMessageStatic(void *data);
+  static void sendMessageStatic(void *data);
   void handleMessage(const std::string &msg);
   void performCommand(const std::string &commandString);
   std::vector<MessageCode> _messagesReceived;
@@ -639,8 +636,8 @@ class Client {
   template <MessageCode code>
   static void sendMessageWithString(void *string) {
     auto pArgs = reinterpret_cast<const std::string *>(string);
-    auto message = compileMessage(code, *pArgs);
-    sendRawMessageStatic(&message);
+    auto message = Message{code, *pArgs};
+    sendMessageStatic(&message);
   }
 
  private:

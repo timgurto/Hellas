@@ -190,7 +190,7 @@ void NPC::onTransition(State previousState) {
 
       const Server &server = *Server::_instance;
       for (const User *user : server.findUsersInArea(previousLocation))
-        user->sendMessage(SV_ENTITY_HEALTH, makeArgs(serial(), health()));
+        user->sendMessage({SV_ENTITY_HEALTH, makeArgs(serial(), health())});
     }
   }
 }

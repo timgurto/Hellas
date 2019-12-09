@@ -3,6 +3,7 @@
 #include <cassert>
 #include <utility>
 
+#include "../../Message.h"
 #include "../Client.h"
 #include "Button.h"
 #include "ColorBlock.h"
@@ -62,6 +63,6 @@ void TakeContainer::repopulate() {
 
 void TakeContainer::take(void *data) {
   slot_t &slot = *reinterpret_cast<slot_t *>(data);
-  Client::_instance->sendMessage(CL_TAKE_ITEM,
-                                 makeArgs(slot.first, slot.second));
+  Client::_instance->sendMessage(
+      {CL_TAKE_ITEM, makeArgs(slot.first, slot.second)});
 }

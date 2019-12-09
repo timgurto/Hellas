@@ -1,3 +1,4 @@
+#include "../Message.h"
 #include "Client.h"
 
 static Window *assigner{nullptr};
@@ -28,9 +29,9 @@ static int buttonBeingAssigned{NO_BUTTON_BEING_ASSIGNED};
 static void performAction(int i) {
   auto &client = Client::instance();
   if (actions[i].category == HotbarCategory::HOTBAR_SPELL)
-    client.sendMessage(CL_CAST, actions[i].id);
+    client.sendMessage({CL_CAST, actions[i].id});
   else if (actions[i].category == HotbarCategory::HOTBAR_RECIPE) {
-    client.sendMessage(CL_CRAFT, actions[i].id);
+    client.sendMessage({CL_CRAFT, actions[i].id});
     Client::instance().prepareAction("Crafting"s);
   }
 }
@@ -81,8 +82,8 @@ static void assignButton(HotbarCategory category, const std::string &id) {
 
   actions[buttonBeingAssigned] = {category, id};
 
-  Client::instance().sendMessage(CL_HOTBAR_BUTTON,
-                                 makeArgs(buttonBeingAssigned, category, id));
+  Client::instance().sendMessage(
+      {CL_HOTBAR_BUTTON, makeArgs(buttonBeingAssigned, category, id)});
 
   assigner->hide();
   buttonBeingAssigned = NO_BUTTON_BEING_ASSIGNED;

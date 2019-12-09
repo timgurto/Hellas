@@ -156,8 +156,8 @@ TEST_CASE("Spell cooldowns", "[remote]") {
         bob.getClass().teachSpell("hurtSelf1s");
 
         auto healthBefore = bob.health();
-        s.sendMessage(bob.socket(), TST_SEND_THIS_BACK,
-                      makeArgs(CL_CAST, "hurtSelf1s"));
+        s.sendMessage(bob.socket(),
+                      {TST_SEND_THIS_BACK, makeArgs(CL_CAST, "hurtSelf1s")});
 
         THEN("he has lost health") {
           REPEAT_FOR_MS(100);

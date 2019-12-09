@@ -182,6 +182,7 @@
     <ClCompile Include="src\server\ai.cpp" />
     <ClCompile Include="src\HasTags.cpp" />
     <ClCompile Include="src\client\HasSounds.cpp" />
+    <ClCompile Include="src\Message.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
