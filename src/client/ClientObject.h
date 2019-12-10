@@ -181,14 +181,15 @@ class ClientObject : public Sprite, public ClientCombatant {
 
   void setMerchantSlot(size_t i, ClientMerchantSlot &mSlot);
 
- private:
+ protected:
   static const px_t BUTTON_HEIGHT, BUTTON_WIDTH, GAP, BUTTON_GAP;
+
+ private:
   void addQuestsToWindow();
   void addConstructionToWindow();
   void addMerchantSetupToWindow();
   void addInventoryToWindow();
   void addDeconstructionToWindow();
-  void addVehicleToWindow();
   void addActionToWindow();
   static void performAction(void *object);
   void addMerchantTradeToWindow();
@@ -198,6 +199,9 @@ class ClientObject : public Sprite, public ClientCombatant {
   static void getInputAndGrantObject(void *objectToGrant);
   void addDemolishButtonToWindow();
   static void confirmAndDemolishObject(void *objectToDemolish);
+
+  // Return value: whether anything was added
+  virtual bool addClassSpecificStuffToWindow() { return false; }
 };
 
 #endif

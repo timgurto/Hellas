@@ -32,3 +32,22 @@ void ClientVehicle::draw(const Client &client) const {
     copy.draw(client);
   }
 }
+
+bool ClientVehicle::addClassSpecificStuffToWindow() {
+  if (isBeingConstructed() || !userHasAccess()) return false;
+
+  px_t x = BUTTON_GAP, y = _window->contentHeight(),
+       newWidth = _window->contentWidth();
+  y += BUTTON_GAP;
+  Button *mountButton =
+      new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Enter/exit",
+                 [this]() { ClientVehicle::mountOrDismount(this); });
+  _window->addChild(mountButton);
+  y += BUTTON_GAP + BUTTON_HEIGHT;
+  x += BUTTON_GAP + BUTTON_WIDTH;
+  if (newWidth < x) newWidth = x;
+
+  _window->resize(newWidth, y);
+
+  return true;
+}

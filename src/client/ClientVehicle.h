@@ -19,6 +19,7 @@ class ClientVehicle : public ClientObject {
 
   virtual char classTag() const override { return 'v'; }
   virtual void draw(const Client &client) const override;
+  virtual bool addClassSpecificStuffToWindow() override;
 
   static void ClientVehicle::mountOrDismount(void *object);
 };

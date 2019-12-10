@@ -408,21 +408,6 @@ void ClientObject::addDeconstructionToWindow() {
   _window->resize(newWidth, y);
 }
 
-void ClientObject::addVehicleToWindow() {
-  px_t x = BUTTON_GAP, y = _window->contentHeight(),
-       newWidth = _window->contentWidth();
-  y += BUTTON_GAP;
-  Button *mountButton =
-      new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Enter/exit",
-                 [this]() { ClientVehicle::mountOrDismount(this); });
-  _window->addChild(mountButton);
-  y += BUTTON_GAP + BUTTON_HEIGHT;
-  x += BUTTON_GAP + BUTTON_WIDTH;
-  if (newWidth < x) newWidth = x;
-
-  _window->resize(newWidth, y);
-}
-
 void ClientObject::addActionToWindow() {
   px_t x = BUTTON_GAP, y = _window->contentHeight(),
        newWidth = _window->contentWidth();
@@ -633,7 +618,6 @@ void ClientObject::assembleWindow(Client &client) {
   const bool userIsOwner = _owner == Owner{Owner::PLAYER, client.username()},
              hasContainer = objType.containerSlots() > 0,
              isMerchant = objType.merchantSlots() > 0,
-             isVehicle = classTag() == 'v',
              canCede = (!client.character().cityName().empty()) &&
                        userIsOwner && (!objType.isPlayerUnique()),
              canGrant =
@@ -646,6 +630,9 @@ void ClientObject::assembleWindow(Client &client) {
   auto hasNonDemolitionContent = false;
 
   if (!_window) _window = Window::WithRectAndTitle({}, objType.name());
+
+  auto somethingWasAdded = addClassSpecificStuffToWindow();
+  hasNonDemolitionContent = hasNonDemolitionContent && somethingWasAdded;
 
   if (isBeingConstructed()) {
     hasNonDemolitionContent = true;
@@ -674,10 +661,6 @@ void ClientObject::assembleWindow(Client &client) {
     if (hasContainer) {
       hasNonDemolitionContent = true;
       addInventoryToWindow();
-    }
-    if (isVehicle) {
-      addVehicleToWindow();
-      hasNonDemolitionContent = true;
     }
     if (objType.hasAction()) {
       addActionToWindow();
