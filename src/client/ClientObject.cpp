@@ -645,79 +645,81 @@ void ClientObject::assembleWindow(Client &client) {
 
   auto hasNonDemolitionContent = false;
 
-  if (isAlive() &&
+  auto windowHasContent =
+      isAlive() &&
       (isMerchant ||
        userHasAccess() && (hasContainer || isVehicle || objType.hasAction() ||
                            objType.canDeconstruct() || isBeingConstructed() ||
-                           canCede || canGrant || canDemolish || hasAQuest))) {
-    if (_window == nullptr)
-      _window = Window::WithRectAndTitle({}, objType.name());
+                           canCede || canGrant || canDemolish || hasAQuest));
 
-    if (isBeingConstructed()) {
-      hasNonDemolitionContent = true;
-      if (userHasAccess()) {
-        addConstructionToWindow();
-        if (canCede) addCedeButtonToWindow();
-        if (canGrant) addGrantButtonToWindow();
-        if (canDemolish) addDemolishButtonToWindow();
-      }
-
-    } else if (!userHasAccess()) {
-      if (isMerchant) {
-        hasNonDemolitionContent = true;
-        addMerchantTradeToWindow();
-      }
-
-    } else {
-      if (hasAQuest) {
-        addQuestsToWindow();
-        hasNonDemolitionContent = true;
-      }
-      if (isMerchant) {
-        addMerchantSetupToWindow();
-        hasNonDemolitionContent = true;
-      }
-      if (hasContainer) {
-        hasNonDemolitionContent = true;
-        addInventoryToWindow();
-      }
-      if (isVehicle) {
-        addVehicleToWindow();
-        hasNonDemolitionContent = true;
-      }
-      if (objType.hasAction()) {
-        addActionToWindow();
-        hasNonDemolitionContent = true;
-      }
-      if (objType.canDeconstruct()) {
-        addDeconstructionToWindow();
-        hasNonDemolitionContent = true;
-      }
-      if (canCede) {
-        addCedeButtonToWindow();
-        hasNonDemolitionContent = true;
-      }
-      if (canGrant) {
-        addGrantButtonToWindow();
-        hasNonDemolitionContent = true;
-      }
-      if (canDemolish) addDemolishButtonToWindow();
+  if (!windowHasContent) {
+    if (_window) {
+      _window->hide();
+      client.removeWindow(_window);
+      delete _window;
+      _window = nullptr;
     }
-
-    px_t currentWidth = _window->contentWidth(),
-         currentHeight = _window->contentHeight();
-    _window->resize(currentWidth, currentHeight + BUTTON_GAP);
-
-    if (!hasNonDemolitionContent) _window->hide();
     return;
   }
 
-  if (_window != nullptr) {
-    _window->hide();
-    client.removeWindow(_window);
-    delete _window;
-    _window = nullptr;
+  if (!_window) _window = Window::WithRectAndTitle({}, objType.name());
+
+  if (isBeingConstructed()) {
+    hasNonDemolitionContent = true;
+    if (userHasAccess()) {
+      addConstructionToWindow();
+      if (canCede) addCedeButtonToWindow();
+      if (canGrant) addGrantButtonToWindow();
+      if (canDemolish) addDemolishButtonToWindow();
+    }
+
+  } else if (!userHasAccess()) {
+    if (isMerchant) {
+      hasNonDemolitionContent = true;
+      addMerchantTradeToWindow();
+    }
+
+  } else {
+    if (hasAQuest) {
+      addQuestsToWindow();
+      hasNonDemolitionContent = true;
+    }
+    if (isMerchant) {
+      addMerchantSetupToWindow();
+      hasNonDemolitionContent = true;
+    }
+    if (hasContainer) {
+      hasNonDemolitionContent = true;
+      addInventoryToWindow();
+    }
+    if (isVehicle) {
+      addVehicleToWindow();
+      hasNonDemolitionContent = true;
+    }
+    if (objType.hasAction()) {
+      addActionToWindow();
+      hasNonDemolitionContent = true;
+    }
+    if (objType.canDeconstruct()) {
+      addDeconstructionToWindow();
+      hasNonDemolitionContent = true;
+    }
+    if (canCede) {
+      addCedeButtonToWindow();
+      hasNonDemolitionContent = true;
+    }
+    if (canGrant) {
+      addGrantButtonToWindow();
+      hasNonDemolitionContent = true;
+    }
+    if (canDemolish) addDemolishButtonToWindow();
   }
+
+  px_t currentWidth = _window->contentWidth(),
+       currentHeight = _window->contentHeight();
+  _window->resize(currentWidth, currentHeight + BUTTON_GAP);
+
+  if (!hasNonDemolitionContent) _window->hide();
 }
 
 void ClientObject::onInventoryUpdate() {
