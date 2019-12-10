@@ -609,7 +609,7 @@ void ClientObject::assembleWindow(Client &client) {
 
   static const px_t WINDOW_WIDTH = ContainerGrid(1, 8, _container).width();
 
-  if (_window != nullptr) {
+  if (_window) {
     _window->clearChildren();
     _window->resize(0, 0);
   }
@@ -644,23 +644,6 @@ void ClientObject::assembleWindow(Client &client) {
                  !(startsQuests().empty() && completableQuests().empty());
 
   auto hasNonDemolitionContent = false;
-
-  auto windowHasContent =
-      isAlive() &&
-      (isMerchant ||
-       userHasAccess() && (hasContainer || isVehicle || objType.hasAction() ||
-                           objType.canDeconstruct() || isBeingConstructed() ||
-                           canCede || canGrant || canDemolish || hasAQuest));
-
-  if (!windowHasContent) {
-    if (_window) {
-      _window->hide();
-      client.removeWindow(_window);
-      delete _window;
-      _window = nullptr;
-    }
-    return;
-  }
 
   if (!_window) _window = Window::WithRectAndTitle({}, objType.name());
 
