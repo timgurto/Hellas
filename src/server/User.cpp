@@ -1012,6 +1012,7 @@ void User::onDeath() {
   cancelAction();
   _action = NO_ACTION;
 
+  isWaitingForDeathAcknowledgement = true;
   sendMessage(SV_YOU_DIED);
 
   removeAllBuffsAndDebuffs();

@@ -157,6 +157,9 @@ enum MessageCode {
   CL_ACCEPT_PEACE_OFFER_WITH_PLAYER_AS_CITY,
   CL_ACCEPT_PEACE_OFFER_WITH_CITY_AS_CITY,
 
+  // "I have found out that I'm dead, and future movement requests will be accurate."
+  CL_ACKNOWLEDGE_DEATH,
+
   // "I want to perform object ...'s action with argument ..."
   // Arguments: serial, textArg
   CL_PERFORM_OBJECT_ACTION,

@@ -171,6 +171,8 @@ class User : public Object {  // TODO: Don't inherit from Object
 
   void onMove() override;
 
+  bool isWaitingForDeathAcknowledgement{false};
+
   // Inventory getters/setters
   const ServerItem::Slot &inventory(size_t index) const {
     return _inventory[index];

@@ -412,6 +412,7 @@ void Client::handleMessage(const std::string &msg) {
 
       case SV_YOU_DIED: {
         if (del != MSG_END) break;
+        sendMessage(CL_ACKNOWLEDGE_DEATH);
 
         clearTarget();
         break;

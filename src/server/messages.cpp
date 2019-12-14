@@ -107,6 +107,9 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         double x, y;
         iss >> x >> del >> y >> del;
         if (del != MSG_END) return;
+
+        if (user->isWaitingForDeathAcknowledgement) break;
+
         if (user->isStunned()) {
           sendMessage(client,
                       {SV_LOCATION, makeArgs(user->name(), user->location().x,
@@ -1324,6 +1327,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         user->setHotbarAction(slot, category, id);
         break;
       }
+
+      case CL_ACKNOWLEDGE_DEATH:
+        user->isWaitingForDeathAcknowledgement = false;
+        break;
 
       case CL_SAY: {
         iss.get(buffer, BUFFER_SIZE, MSG_END);
