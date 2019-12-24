@@ -1460,7 +1460,7 @@ void Server::handle_CL_LOGIN_EXISTING(const Socket &client,
 #ifndef _DEBUG
   // Check that version matches
   if (clientVersion != version()) {
-    sendMessage(client, WARNING_WRONG_VERSION, version());
+    sendMessage(client, {WARNING_WRONG_VERSION, version()});
     return;
   }
 #endif
@@ -1508,7 +1508,7 @@ void Server::handle_CL_LOGIN_NEW(const Socket &client, const std::string &name,
 #ifndef _DEBUG
   // Check that version matches
   if (clientVersion != version()) {
-    sendMessage(client, WARNING_WRONG_VERSION, version());
+    sendMessage(client, {WARNING_WRONG_VERSION, version()});
     return;
   }
 #endif
