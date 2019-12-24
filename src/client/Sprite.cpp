@@ -45,13 +45,14 @@ void Sprite::draw(const Client &client) const {
 
   const Texture &imageToDraw =
       client.currentMouseOverEntity() == this ? highlightImage() : image();
+  auto drawRect = this->drawRect() + client.offset();
   if (imageToDraw)
-    imageToDraw.draw(drawRect() + client.offset());
+    imageToDraw.draw(drawRect.x, drawRect.y);
   else {
     renderer.setDrawColor(Color::MISSING_IMAGE);
     auto drawRect =
         toScreenRect(MapRect{_location.x - 5, _location.y - 5, 10, 10});
-    renderer.fillRect(drawRect + client.offset());
+    renderer.fillRect(drawRect);
   }
 }
 

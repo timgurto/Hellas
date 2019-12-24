@@ -155,6 +155,7 @@ class ClientObjectType : public SpriteType,
   void corpseImage(const std::string &filename);
   const Texture &corpseImage() const { return _corpseImage; }
   const Texture &corpseHighlightImage() const { return _corpseHighlightImage; }
+  void initialiseHumanoidCorpse();
 
   virtual char classTag() const override { return 'o'; }
   virtual const Texture &image() const override { return _images.normal; }

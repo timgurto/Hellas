@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include <SDL_ttf.h>
+
 #include <map>
 #include <memory>
 #include <string>
@@ -41,6 +42,8 @@ class Texture {
   // These functions are const, making blendmode and alpha de-facto mutable
   void setBlend(SDL_BlendMode mode = SDL_BLENDMODE_BLEND) const;
   void setAlpha(Uint8 alpha = 0xff) const;
+
+  void rotateClockwise(const ScreenPoint &centre);
 
   void draw(px_t x = 0, px_t y = 0) const;
   void draw(const ScreenPoint &location) const;

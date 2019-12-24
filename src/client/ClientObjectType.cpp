@@ -117,6 +117,13 @@ void ClientObjectType::corpseImage(const std::string &filename) {
   _corpseHighlightImage = Texture(corpseHighlightSurface);
 }
 
+void ClientObjectType::initialiseHumanoidCorpse() {
+  // Assumption: draw rect is initialised
+  auto centre = ScreenPoint{-drawRect().x, -drawRect().y};
+  _corpseImage = image();
+  _corpseImage.rotateClockwise(centre);
+}
+
 void ClientObjectType::addTransformImage(const std::string &filename) {
   _transformImages.push_back(ImageSet("Images/Objects/" + filename + ".png"));
 }

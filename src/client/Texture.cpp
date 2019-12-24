@@ -1,9 +1,10 @@
+#include "Texture.h"
+
 #include <cassert>
 
 #include "../Color.h"
 #include "Renderer.h"
 #include "Surface.h"
-#include "Texture.h"
 
 extern Renderer renderer;
 
@@ -75,6 +76,12 @@ void Texture::setBlend(SDL_BlendMode mode) const {
 
 void Texture::setAlpha(Uint8 alpha) const {
   SDL_SetTextureAlphaMod(_raw.get(), alpha);
+}
+
+void Texture::rotateClockwise(const ScreenPoint &centre) {
+  auto centreSDL = SDL_Point{centre.x, centre.y};
+  SDL_RenderCopyEx(renderer.raw(), _raw.get(), nullptr, nullptr, 90.0,
+                   &centreSDL, SDL_FLIP_NONE);
 }
 
 void Texture::draw(px_t x, px_t y) const { draw({x, y, _w, _h}); }
