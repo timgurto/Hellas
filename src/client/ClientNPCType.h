@@ -21,6 +21,9 @@ class ClientNPCType : public ClientObjectType {
   bool hasGear() const { return !_gear.empty(); }
   void makeHumanoid();
   bool isHumanoid() const { return _isHumanoid; }
+  void drawRect(const ScreenRect &rect) override;
+  void setCustomCorpseDrawRect(const ScreenRect &rect);
+  const ScreenRect &corpseDrawRect() const { return _corpseDrawRect; }
 
   void makeCivilian() { _isCivilian = true; }
   bool isCivilian() const { return _isCivilian; }
@@ -45,6 +48,7 @@ class ClientNPCType : public ClientObjectType {
   bool _isNeutral{false};
   bool _canBeTamed{false};
   const ClientItem *_itemRequiredForTaming;
+  ScreenRect _corpseDrawRect;  // By default, equal to SpriteType::_drawRect.
 };
 
 #endif

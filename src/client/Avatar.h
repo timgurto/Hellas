@@ -18,7 +18,7 @@ class Avatar : public Sprite, public ClientCombatant {
  public:
   static const MapRect COLLISION_RECT;
   static const ScreenRect DRAW_RECT;
-  static const ScreenRect DRAW_RECT_INCLUDING_CORPSE;
+  static const ScreenRect CORPSE_DRAW_RECT;
 
  private:
   std::string _name;

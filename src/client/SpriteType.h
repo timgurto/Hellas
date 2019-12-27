@@ -43,7 +43,7 @@ class SpriteType {
   void setImage(const std::string &filename);
   const Texture &highlightImage() const { return _imageHighlight; }
   const ScreenRect &drawRect() const { return _drawRect; }
-  void drawRect(const ScreenRect &rect);
+  virtual void drawRect(const ScreenRect &rect);
   const Texture &shadow() const;
   bool isFlat() const { return _isFlat; }
   void isFlat(bool b) { _isFlat = b; }

@@ -902,11 +902,12 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
     nt->name(s);
 
     // Draw rect
-    auto drawRect = humanoid ? Avatar::DRAW_RECT_INCLUDING_CORPSE
-                             : ScreenRect{0, 0, nt->width(), nt->height()};
-    bool xSet = xr.findAttr(elem, "xDrawOffset", drawRect.x),
-         ySet = xr.findAttr(elem, "yDrawOffset", drawRect.y);
-    nt->drawRect(drawRect);
+    if (!humanoid) {
+      auto drawRect = ScreenRect{0, 0, nt->width(), nt->height()};
+      bool xSet = xr.findAttr(elem, "xDrawOffset", drawRect.x),
+           ySet = xr.findAttr(elem, "yDrawOffset", drawRect.y);
+      nt->drawRect(drawRect);
+    }
 
     auto customShadowWidth = 0_px;
     if (xr.findAttr(elem, "customShadowWidth", customShadowWidth))
