@@ -23,35 +23,22 @@ TEST_CASE("NPCs chain pull", "[ai]") {
     WAIT_UNTIL(user.gear(6).first.type() == spear);
 
     WHEN("there are two bears close to each other but out of aggro range") {
-      s.addNPC("bear", {100, 5});
-      auto bear1Serial = s.getFirstNPC().serial();
-      s.addNPC("bear", {100, 15});
-      auto bear2Serial = bear1Serial + 1;
+      auto &bear1 = s.addNPC("bear", {100, 5});
+      auto &bear2 = s.addNPC("bear", {100, 15});
 
       AND_WHEN("There's a third bear off in the distance") {
-        s.addNPC("bear", {10, 300});
-        auto bear3Serial = bear2Serial + 1;
-
-        NPC *bear1, *bear2, *bear3;
-        for (auto ent : s.entities()) {
-          if (ent->serial() == bear1Serial)
-            bear1 = dynamic_cast<NPC *>(ent);
-          else if (ent->serial() == bear2Serial)
-            bear2 = dynamic_cast<NPC *>(ent);
-          else if (ent->serial() == bear3Serial)
-            bear3 = dynamic_cast<NPC *>(ent);
-        }
+        auto &bear3 = s.addNPC("bear", {10, 300});
 
         AND_WHEN("the user throws a spear at one") {
           WAIT_UNTIL(c.objects().size() >= 2);
-          c.sendMessage(CL_TARGET_ENTITY, makeArgs(bear1Serial));
+          c.sendMessage(CL_TARGET_ENTITY, makeArgs(bear1.serial()));
 
           THEN("the two close bears are aware of him") {
-            WAIT_UNTIL(bear1->isAwareOf(user));
-            WAIT_UNTIL(bear2->isAwareOf(user));
+            WAIT_UNTIL(bear1.isAwareOf(user));
+            WAIT_UNTIL(bear2.isAwareOf(user));
 
             AND_THEN("the distant bear is not") {
-              CHECK_FALSE(bear3->isAwareOf(user));
+              CHECK_FALSE(bear3.isAwareOf(user));
             }
           }
         }
