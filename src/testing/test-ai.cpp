@@ -6,6 +6,7 @@ TEST_CASE("NPCs chain pull", "[ai]") {
   GIVEN("a user with a spear") {
     auto data = R"(
       <npcType id="bear" />
+      <npcType id="critter"  isNeutral="1" />
       <item id="spear" gearSlot="6">
         <weapon range="25" consumes="spear" damage="1" speed="1" />
       </item>
@@ -22,9 +23,12 @@ TEST_CASE("NPCs chain pull", "[ai]") {
                   makeArgs(Client::INVENTORY, 0, Client::GEAR, 6));
     WAIT_UNTIL(user.gear(6).first.type() == spear);
 
-    WHEN("there are two bears close to each other but out of aggro range") {
+    WHEN(
+        "there are two bears and a neutral critter, close to each other but "
+        "out of aggro range") {
       auto &bear1 = s.addNPC("bear", {100, 5});
       auto &bear2 = s.addNPC("bear", {100, 15});
+      auto &critter = s.addNPC("critter", {100, 25});
 
       AND_WHEN("There's a third bear off in the distance") {
         auto &bear3 = s.addNPC("bear", {10, 300});
@@ -37,8 +41,9 @@ TEST_CASE("NPCs chain pull", "[ai]") {
             WAIT_UNTIL(bear1.isAwareOf(user));
             WAIT_UNTIL(bear2.isAwareOf(user));
 
-            AND_THEN("the distant bear is not") {
+            AND_THEN("the distant bear and critter are not") {
               CHECK_FALSE(bear3.isAwareOf(user));
+              CHECK_FALSE(critter.isAwareOf(user));
             }
           }
         }

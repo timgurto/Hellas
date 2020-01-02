@@ -126,15 +126,16 @@ bool NPC::isAwareOf(Entity &entity) const {
 }
 
 void NPC::makeNearbyNPCsAwareOf(Entity &entity) {
-  // Skip chain pulling for neutral NPCs
-  if (!npcType()->attacksNearby()) return;
-
   const Server &server = *Server::_instance;
 
-  // Skip those already aware, otherwise we'd get infinite loops
   for (auto nearbyEntity : server._entities) {
     auto npc = dynamic_cast<NPC *>(nearbyEntity);
     if (!npc) continue;
+
+    // Skip chain pulling for neutral NPCs
+    if (!npc->npcType()->attacksNearby()) return;
+
+    // Skip those already aware, otherwise we'd get infinite loops
     if (npc->isAwareOf(entity)) continue;
 
     const auto CHAIN_PULL_DISTANCE = Podes{10}.toPixels();
