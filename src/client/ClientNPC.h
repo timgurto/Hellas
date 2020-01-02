@@ -29,7 +29,6 @@ class ClientNPC : public ClientObject {
   const Texture &image() const override;
   void draw(const Client &client) const override;
   bool shouldDrawName() const override;
-  ScreenRect drawRect() const override;
 
  protected:
   // From ClientObject:

@@ -73,10 +73,3 @@ bool ClientNPC::shouldDrawName() const {
   if (isDead()) return false;
   return true;
 }
-
-ScreenRect ClientNPC::drawRect() const {
-  if (isAlive())
-    return Sprite::drawRect();
-  else
-    return npcType()->corpseDrawRect();
-}

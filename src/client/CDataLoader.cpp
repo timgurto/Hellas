@@ -902,7 +902,9 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
     nt->name(s);
 
     // Draw rect
-    if (!humanoid) {
+    if (humanoid)
+      nt->drawRect(Avatar::DRAW_RECT);
+    else {
       auto drawRect = ScreenRect{0, 0, nt->width(), nt->height()};
       bool xSet = xr.findAttr(elem, "xDrawOffset", drawRect.x),
            ySet = xr.findAttr(elem, "yDrawOffset", drawRect.y);

@@ -34,17 +34,5 @@ const ClientItem *ClientNPCType::gear(size_t slot) const {
 void ClientNPCType::makeHumanoid() {
   _isHumanoid = true;
 
-  drawRect(Avatar::DRAW_RECT);
-  setCustomCorpseDrawRect(Avatar::CORPSE_DRAW_RECT);
-
   initialiseHumanoidCorpse();
-}
-
-void ClientNPCType::drawRect(const ScreenRect &rect) {
-  SpriteType::drawRect(rect);
-  _corpseDrawRect = rect;
-}
-
-void ClientNPCType::setCustomCorpseDrawRect(const ScreenRect &rect) {
-  _corpseDrawRect = rect;
 }
