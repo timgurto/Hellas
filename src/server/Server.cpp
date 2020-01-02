@@ -434,7 +434,10 @@ void Server::removeUser(const std::set<User>::iterator &it) {
   const auto &userToDelete = *it;
 
   // Alert all users
-  broadcast({SV_USER_DISCONNECTED, userToDelete.name()});
+  for (const User &user : _users) {
+    if (&user == &userToDelete) continue;
+    sendMessage(user.socket(), {SV_USER_DISCONNECTED, userToDelete.name()});
+  }
 
   forceAllToUntarget(userToDelete);
 
