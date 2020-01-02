@@ -409,7 +409,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 594,"Show enemy objects as red, not yellow",8,3,Bug,,,,
 595,Prevent declarations of war against nonexistent entities,8,5,Bug,,,,
 596,A dog NPC,8,3,Content,,TRUE,,3 Tin wrapup
-597,Introduce specific unowned types,5,3,Code quality,,,,
+597,Make tutorial cyclopes all objects,5,3,Code quality,,,,
 598,Pets (owned NPCs),3,13,Feature,,TRUE,TRUE,3 Tin wrapup
 599,Pets share owner's friends/enemies,13,13,Feature,598,TRUE,TRUE,3 Tin wrapup
 600,Mobs can be domesticated into pets,8,5,Feature,598,TRUE,,3 Tin wrapup
