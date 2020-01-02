@@ -631,8 +631,8 @@ void ClientObject::assembleWindow(Client &client) {
 
   if (!_window) _window = Window::WithRectAndTitle({}, objType.name());
 
-  auto somethingWasAdded = addClassSpecificStuffToWindow();
-  hasNonDemolitionContent = hasNonDemolitionContent && somethingWasAdded;
+  auto windowHasClassContent = addClassSpecificStuffToWindow();
+  hasNonDemolitionContent = hasNonDemolitionContent || windowHasClassContent;
 
   if (isBeingConstructed()) {
     hasNonDemolitionContent = true;
@@ -679,6 +679,13 @@ void ClientObject::assembleWindow(Client &client) {
       hasNonDemolitionContent = true;
     }
     if (canDemolish) addDemolishButtonToWindow();
+  }
+
+  if (!windowHasClassContent && !hasNonDemolitionContent) {
+    client.removeWindow(_window);
+    delete _window;
+    _window = nullptr;
+    return;
   }
 
   px_t currentWidth = _window->contentWidth(),
