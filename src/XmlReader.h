@@ -1,11 +1,11 @@
 #ifndef XML_READER_H
 #define XML_READER_H
 
+#include <tinyxml.h>
+
 #include <set>
 #include <string>
 #include <vector>
-
-#include <tinyxml.h>
 
 #ifndef NO_SDL
 #include "Color.h"
