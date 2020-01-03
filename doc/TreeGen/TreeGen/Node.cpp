@@ -5,6 +5,8 @@
 
 #include <iostream>
 
+using namespace std::string_literals;
+
 const std::string &Node::typePrefix(NodeType type) {
   static std::map<NodeType, std::string> prefixDict;
   if (prefixDict.empty()) {
@@ -77,10 +79,12 @@ void Nodes::generateAllImages() const {
 
 void Node::generateImage() const {
   std::string imagePath = "../../Images/";
+  auto alternatePath = ""s;
   if (type == ITEM) {
     imagePath += "Items/" + image;
   } else if (type == NPC) {
     imagePath += "NPCs/" + image;
+    alternatePath = "../../Images/Humans/" + image + ".png";
   } else {
     imagePath += "objects/" + image;
   }
@@ -90,9 +94,9 @@ void Node::generateImage() const {
   // Generate image
   std::cout << "Loading image " << imagePath << std::endl;
   SDL_Surface *surface = IMG_Load(imagePath.c_str());
-  imageExists = surface != nullptr;
+  if (!surface) surface = IMG_Load(alternatePath.c_str());
 
-  if (!imageExists) return;
+  if (!surface) return;
 
   SDL_SetColorKey(surface, SDL_TRUE, 0xff00ff);  // Make magenta transparent
   SDL_SetSurfaceBlendMode(surface, SDL_BLENDMODE_NONE);
