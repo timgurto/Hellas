@@ -17,6 +17,28 @@
     <sound type="defend" file="grunt4" />
 </soundProfile>
 
+<soundProfile id="humanEnemy" >
+    <sound type="attack" file="punch0" />
+    <sound type="attack" file="punch1" />
+    <sound type="attack" file="punch2" />
+    <sound type="attack" file="punch3" />
+    <sound type="defend" file="manGrunt0" />
+    <sound type="defend" file="manGrunt1" />
+    <sound type="defend" file="manGrunt2" />
+    <sound type="defend" file="manGrunt3" />
+    <sound type="defend" file="manGrunt4" />
+    <sound type="defend" file="manGrunt5" />
+    <sound type="defend" file="manGrunt6" />
+    <sound type="defend" file="manGrunt7" />
+    <sound type="death" file="manDeath0" />
+    <sound type="death" file="manDeath1" />
+    <sound type="death" file="manDeath2" />
+    <sound type="death" file="manDeath3" />
+    <sound type="death" file="manDeath4" />
+    <sound type="death" file="manDeath5" />
+    <sound type="death" file="manDeath6" />
+</soundProfile>
+
 <soundProfile id="brick" >
     <sound type="drop" file="brick" />
 </soundProfile>

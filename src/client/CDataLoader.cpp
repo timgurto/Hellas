@@ -921,7 +921,10 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
     auto r = MapRect{};
     if (xr.findRectChild("collisionRect", elem, r)) nt->collisionRect(r);
 
-    if (xr.findAttr(elem, "sounds", s)) nt->setSoundProfile(s);
+    if (xr.findAttr(elem, "sounds", s))
+      nt->setSoundProfile(s);
+    else if (humanoid)
+      nt->setSoundProfile("humanEnemy");
 
     if (xr.findAttr(elem, "projectile", s)) {
       auto dummy = Projectile::Type{s, {}};

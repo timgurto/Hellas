@@ -570,13 +570,16 @@ int main(int argc, char **argv) {
         }
 
         ID soundProfileID;
-        if (xr.findAttr(elem, "sounds", soundProfileID)) {
+        if (humanoid) soundProfileID = "humanEnemy";
+        xr.findAttr(elem, "sounds", soundProfileID);
+        if (soundProfileID.empty())
+          jw.addArrayAttribute("soundsMissing", requiredSounds);
+        else {
           SoundProfile &soundProfile = soundProfiles[soundProfileID];
           soundProfile.checkType("attack");
           soundProfile.checkType("defend");
           soundProfile.checkType("death");
-        } else
-          jw.addArrayAttribute("soundsMissing", requiredSounds);
+        }
 
         std::set<ID> lootList;
         for (auto loot : xr.getChildren("loot", elem)) {
@@ -760,8 +763,8 @@ int main(int argc, char **argv) {
   }
 
   // Remove loops
-  // First, find set of nodes that start edges but don't finish them (i.e., the
-  // roots of the tree).
+  // First, find set of nodes that start edges but don't finish them (i.e.,
+  // the roots of the tree).
   std::set<std::string> starts, ends;
   for (auto &edge : edges) {
     starts.insert(edge.parent);
