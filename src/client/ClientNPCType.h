@@ -19,8 +19,6 @@ class ClientNPCType : public ClientObjectType {
   const ClientItem *gear(size_t slot) const;
   const ClientItem::vect_t &gear() const { return _gear; }
   bool hasGear() const { return !_gear.empty(); }
-  void makeHumanoid();
-  bool isHumanoid() const { return _isHumanoid; }
 
   void makeCivilian() { _isCivilian = true; }
   bool isCivilian() const { return _isCivilian; }
@@ -39,7 +37,6 @@ class ClientNPCType : public ClientObjectType {
 
  private:
   const Projectile::Type *_projectile = nullptr;
-  bool _isHumanoid{false};   // So that corpses are drawn correctly
   ClientItem::vect_t _gear;  // For humanoid NPCs
   bool _isCivilian{false};
   bool _isNeutral{false};

@@ -30,9 +30,3 @@ const ClientItem *ClientNPCType::gear(size_t slot) const {
   if (_gear.empty()) return nullptr;
   return _gear[slot].first.type();
 }
-
-void ClientNPCType::makeHumanoid() {
-  _isHumanoid = true;
-
-  initialiseHumanoidCorpse();
-}

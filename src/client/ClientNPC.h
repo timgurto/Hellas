@@ -38,8 +38,6 @@ class ClientNPC : public ClientObject {
   virtual std::string demolishButtonTooltip() const override {
     return "Slaughter this pet";
   }
-
-  bool isHumanoid() const { return npcType()->isHumanoid(); }
 };
 
 #endif
