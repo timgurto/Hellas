@@ -535,26 +535,30 @@ int main(int argc, char **argv) {
     JsonWriter jw("npcs");
     for (auto file : filesList) {
       xr.newFile(file);
-      std::set<ID> requiredSounds, missingImages;
-      requiredSounds.insert("attack");
-      requiredSounds.insert("defend");
-      requiredSounds.insert("death");
 
       for (auto elem : xr.getChildren("npcType")) {
+        std::set<ID> requiredSounds, missingImages;
+        requiredSounds.insert("attack");
+        requiredSounds.insert("defend");
+        requiredSounds.insert("death");
+
         jw.nextEntry();
         ID id;
         if (!xr.findAttr(elem, "id", id)) continue;
         jw.addAttribute("id", id);
         Node::Name name = "npc_" + id;
-        jw.addAttribute("image", name);
+        auto imageID = id;
+        xr.findAttr(elem, "imageFile", imageID);
+        jw.addAttribute("image", "npc_" + imageID);
 
-        if (!checkImageExists("NPCs/" + id)) missingImages.insert("normal");
-        if (!checkImageExists("NPCs/" + id + "-corpse"))
+        if (!checkImageExists("NPCs/" + imageID))
+          missingImages.insert("normal");
+        if (!checkImageExists("NPCs/" + imageID + "-corpse"))
           missingImages.insert("corpse");
 
         std::string displayName;
         if (xr.findAttr(elem, "name", displayName)) {
-          nodes.add(Node(NPC, id, displayName));
+          nodes.add(Node(NPC, id, displayName, imageID));
           jw.addAttribute("name", displayName);
         }
 
