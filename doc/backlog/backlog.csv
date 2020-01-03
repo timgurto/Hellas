@@ -20,6 +20,11 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 19,Shrines can set player respawn,21,89,Feature,18,TRUE,TRUE,
 20,Shrine actions require an animal carcass,34,21,Feature,19,TRUE,TRUE,
 29,Objects have health,55,21,Feature,,TRUE,TRUE,
+30,"Items have durability, affected by combat and use.",34,34,Feature,,TRUE,TRUE,3 Tin wrapup
+31,Objects can be repaired with materials,21,34,Feature,29,TRUE,TRUE,3 Tin wrapup
+32,Object repair can require tools,5,2,Feature,31,TRUE,TRUE,3 Tin wrapup
+33,Items can be repaired with materials,21,55,Feature,30,TRUE,TRUE,3 Tin wrapup
+34,Repairing items can require tools,8,2,Feature,33,TRUE,TRUE,3 Tin wrapup
 40,"The first player to damage an NPC tags it, until it dies or disengages.",34,5,Feature,,TRUE,TRUE,2 Work playtest 2019
 52,NPCs can specify a set of items for their image,34,8,Aesthetics,,TRUE,TRUE,
 53,NPCs can specify a custom human template image,21,8,Aesthetics,,TRUE,TRUE,
@@ -35,15 +40,18 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 82,Fix jumpy movement when laggy,5,34,Aesthetics,,TRUE,,
 84,Prevent chat messages being cut off,55,34,Usability,,TRUE,,
 91,Stacks of the same item can be combined,21,13,Usability,,TRUE,,
+94,A road object that affects movement speed,3,13,Feature,,TRUE,,
 95,Object ownership is clearly visible,5,21,Usability,8,TRUE,,
 98,Send nearby users' health values,13,3,Usability,,TRUE,,
 99,Allow specification of minimum yields,8,1,Feature,,TRUE,,
 103,Make spawners' queues persistent,13,5,Bug,,TRUE,,
 104,Vehicles 'log off' with their drivers,8,144,Bug,,TRUE,,
+106,Mouse-down events are propagating to multiple windows,13,3,Bug,,TRUE,,3 Tin wrapup
 108,Add esc menu to release client,34,13,Usability,,TRUE,,
 109,Allow crafting if removing the ingredients will make room,13,3,Bug,,TRUE,,
 118,Allow tool objects to show an in-use image/animation,8,13,Aesthetics,,TRUE,,
 119,"Use doubles, not ints, in Rect class",1,3,Code quality,,TRUE,,
+125,Tools can modify crafting/gathering speed,3,13,Feature,,TRUE,,3 Tin wrapup
 126,Remove 'can ...' tooltips when player has no permissions,21,2,Bug,,TRUE,,
 127,Add fading unlock messages to the top of the screen,8,13,Usability,,TRUE,,
 143,Declaring war on a player in a city declares war on that city,21,3,Feature,55,TRUE,,
@@ -88,6 +96,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 235,"Give ovens a fueled state, and remove fuel from recipes",13,5,Content,,TRUE,,
 237,Make players more clear on map,34,3,Usability,,TRUE,,
 238,Show time remaining until objects transform,5,3,Usability,,TRUE,,
+240,XML-verifying git hook,21,8,Code quality,,TRUE,,
 241,Can't build an altar if I have a zero-health one,34,3,Bug,,TRUE,,
 242,Make object health and respawn timers persistent,21,5,Bug,,TRUE,,
 243,Pots can't be ceded,34,8,Bug,,TRUE,,
@@ -110,6 +119,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 267,Random characters get +health buff,2,2,Feature,265,TRUE,,
 268,Buffs expire,2,5,Feature,267,TRUE,,
 269,Buffs can be cast on target (no longer random),21,5,Feature,267,TRUE,,
+270,Buffs can be dismissed,1,5,Feature,267,TRUE,,3 Tin wrapup
 271,Buffs can be restricted to self,2,5,Feature,269,TRUE,,
 272,A -resistance debuff (can't be dismissed),3,5,Feature,270,TRUE,,
 273,DoT debuff,13,5,Feature,267,TRUE,,
@@ -118,9 +128,12 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 277,HoT buff,2,5,Feature,267,TRUE,,
 278,Spells are class-specific,2,5,Feature,265,TRUE,,
 279,A spell hotbar,13,8,Usability,265,TRUE,,
+280,Hotbar can be rearranged,13,34,Usability,279,TRUE,,3 Tin wrapup
+281,Hotbar can include recipes,8,13,Usability,280,TRUE,,3 Tin wrapup
 283,"Spells must be learned, with commands",3,3,Feature,265,TRUE,,
 284,A window with buttons to learn spells,3,5,Usability,283,TRUE,,
 285,Learning spells can cost items,3,8,Feature,283,TRUE,,
+286,Learning talents can require a tool,2,5,Feature,283,TRUE,TRUE,3 Tin wrapup
 288,"On death, lose a leaf skill",5,13,Feature,295,TRUE,,
 292,Learning spells costs food,3,8,Feature,285,TRUE,,
 293,Food restores energy/health,8,8,Feature,247,TRUE,,
@@ -172,6 +185,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 363,Failed assertion in Avatar.h line 36,55,8,Bug,,TRUE,,2 Work playtest 2019
 366,Cancel food buff on interrupt,34,5,Bug,,TRUE,,
 367,Merchant object checking room for price doesn't consider ware slots,8,3,Bug,,TRUE,,
+370,Avatar isn't playing death sound,13,5,Bug,,TRUE,,
 371,Make server connection an object with a lifetime,55,21,Bug,,TRUE,,
 372,Left-click doesn't always deselect neutral target,13,5,Bug,,TRUE,,2 Work playtest 2019
 381,Use consistent colors for tooltip text,5,2,Usability,,TRUE,,
@@ -184,6 +198,8 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 391,Show buff timers in client,21,8,Usability,,TRUE,,2 Work playtest 2019
 392,Screen events break embedded tooltips,13,5,Bug,,TRUE,,
 395,Add simple object shadows,21,13,Aesthetics,,TRUE,,
+396,Find a sink for small pots,8,8,Content,,TRUE,,3 Tin wrapup
+401,Allow granting unfinished objects,21,3,Bug,,TRUE,,
 404,Log players' cumulative time online,13,5,Feature,,TRUE,,2 Work playtest 2019
 406,Scroll recipe list to top when filters change,5,2,Bug,,TRUE,,3 Tin wrapup
 408,Tutorial,89,89,Feature,,TRUE,,1 Fix tutorial
@@ -204,6 +220,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 433,Quests are persistent,34,3,Bug,,TRUE,,
 434,Quest progress is persistent,34,3,Bug,421,TRUE,,
 437,Quests can be completed only once,34,5,Bug,,TRUE,,
+438,Show a tooltip when terrain is inaccessible,2,3,Usability,,TRUE,,
 440,A quest log,34,55,Usability,,TRUE,,1 Fix tutorial
 441,Show quest progress on screen,21,34,Usability,420,TRUE,,
 443,Editor: draw map,34,21,Tooling,,TRUE,,
@@ -222,6 +239,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 467,"If a quest gives items, make sure player has space",3,3,Bug,,TRUE,,1 Fix tutorial
 468,Destroy quest-exclusive items if quest is abandoned,3,3,Bug,469,TRUE,,2 Work playtest 2019
 469,A quest can be abandoned,8,5,Feature,440,TRUE,,1 Fix tutorial
+470,Draw correct corpses for humanoid NPCs and players,21,55,Bug,,TRUE,TRUE,3 Tin wrapup
 471,"Show important error messages in chat log, to avoid being missed",5,2,Usability,,TRUE,,2 Work playtest 2019
 472,Include descriptive tooltips on active buffs,8,5,Usability,,TRUE,,2 Work playtest 2019
 473,"Selection broken after eating, fixed with right-click",13,5,Bug,,TRUE,,2 Work playtest 2019
@@ -244,18 +262,35 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 496,Draw names/bars in front of everything else,2,2,Usability,,TRUE,,2 Work playtest 2019
 497,Extinguished fire can't be clicked on,21,3,Bug,,TRUE,,
 501,Zoomable map,34,89,Usability,,TRUE,,
+505,Show quest rewards in (de)briefs,8,8,Usability,,TRUE,,
 506,Add missing corpse images for offerings,2,3,Content,,TRUE,,1 Fix tutorial
 508,Destroy all owned objects on tutorial completion,3,3,Exploit,,TRUE,,1 Fix tutorial
 509,Rename Cooking quest,5,2,Content,,TRUE,,1 Fix tutorial
 510,Make giant positioning more reliable,34,13,Bug,,TRUE,,1 Fix tutorial
 512,'That object doesn't exist' after looting,8,5,Bug,,TRUE,,
 513,Show loot sparkles only to tagger,5,3,Bug,,TRUE,,3 Tin wrapup
+525,Class buildings,21,13,Feature,286,TRUE,TRUE,3 Tin wrapup
 526,Add full map,21,8,Content,,TRUE,TRUE,4 Copper
-30,"Items have durability, affected by combat and use.",34,34,Feature,,TRUE,TRUE,3 Tin wrapup
-31,Objects can be repaired with materials,21,34,Feature,29,TRUE,TRUE,3 Tin wrapup
-32,Object repair can require tools,5,2,Feature,31,TRUE,TRUE,3 Tin wrapup
-33,Items can be repaired with materials,21,55,Feature,30,TRUE,TRUE,3 Tin wrapup
-34,Repairing items can require tools,8,2,Feature,33,TRUE,TRUE,3 Tin wrapup
+546,"Show gather-unlock info on object, not item",21,13,Usability,,TRUE,,3 Tin wrapup
+547,Populate 1-20 map with animals,5,8,Content,,TRUE,TRUE,3 Tin wrapup
+560,Master volume control,3,5,Usability,,TRUE,,3 Tin wrapup
+561,Make gigantes always run back to their spawn point,13,3,Bug,,TRUE,,3 Tin wrapup
+567,Always create static objects on startup; don't save them,5,3,Performance,,TRUE,,
+578,Merchant-slot UI sometimes doesn't show up,21,8,Bug,,TRUE,,3 Tin wrapup
+583,Add cursor for vehicles,5,3,Usability,,TRUE,,3 Tin wrapup
+587,Hide NPCs and neutral objects on map,3,2,Usability,,TRUE,,
+588,Allow buffs to be recast while on,3,2,Usability,,TRUE,,
+589,Nerf Selfish Request,8,1,Exploit,,TRUE,,3 Tin wrapup
+591,Tell new citizens about city objects,13,5,Bug,,TRUE,,3 Tin wrapup
+592,Allow citizens to access other citizens' altars,21,2,Bug,,TRUE,TRUE,3 Tin wrapup
+596,A dog NPC,8,3,Content,,TRUE,,3 Tin wrapup
+598,Pets (owned NPCs),3,13,Feature,,TRUE,TRUE,3 Tin wrapup
+599,Pets share owner's friends/enemies,13,13,Feature,598,TRUE,TRUE,3 Tin wrapup
+600,Mobs can be domesticated into pets,8,5,Feature,598,TRUE,,3 Tin wrapup
+601,Domestication takes a resource,5,8,Feature,600,TRUE,,3 Tin wrapup
+602,"Domestication has success chance, based on health %",3,5,Feature,600,TRUE,,3 Tin wrapup
+609,Pets follow their owners,8,8,Feature,597,TRUE,TRUE,3 Tin wrapup
+611,Only NPCs marked as tamable can be tamed,8,3,Feature,,TRUE,,3 Tin wrapup
 57,Heavy items that prevent player movement,13,3,Feature,,,TRUE,4 Copper
 59,Better NPC pathfinding,21,34,Feature,,,,5 First adventure
 65,NPCs can combine loot tables,5,8,Feature,,,,5 First adventure
@@ -268,17 +303,14 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 81,Allow actual dragging from containers,21,34,Usability,,,,
 83,Stack splitting,21,34,Feature,,,,
 85,Fix scroll-bar dragging offset,5,3,Bug,,,,
-94,A road object that affects movement speed,3,13,Feature,,TRUE,,
 100,Sounds for crafting,5,2,Aesthetics,,,,
 101,Particles for crafting,5,2,Aesthetics,,,,
 105,Vehicles can have different speeds,5,5,Feature,,,TRUE,4 Copper
-106,Mouse-down events are propagating to multiple windows,13,3,Bug,,TRUE,,3 Tin wrapup
 110,Load map in login-screen background,5,13,Usability,,,,
 111,"Use gear-slot names, not numbers, in items.xml",3,5,Code quality,,,,
 117,Direct player trading,8,233,Feature,,,TRUE,
 123,Ensure window titles always fit,5,2,Bug,,,,
 124,Right-clicking doesn't cancel dragging,8,2,Bug,,,,
-125,Tools can modify crafting/gathering speed,3,13,Feature,,TRUE,,3 Tin wrapup
 136,Users are drawn inside (front+back) of vehicles,5,5,Aesthetics,,,,
 144,Prevent multiple copies of sounds between SoundProfiles,5,3,Performance,,,,
 145,Prevent users from spamming construction sites,5,8,Exploit,,,,
@@ -292,12 +324,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 234,Make allowed-terrain more intuitive for construction,8,8,Usability,,,,
 236,Prevent construction near respawn altars,3,8,Exploit,,,,
 239,Add coinage,21,3,Content,519,,,6 Bronze
-240,XML-verifying git hook,21,8,Code quality,,TRUE,,
 250,Fireball has interruptible cast time,2,8,Feature,246,,,5 First adventure
-270,Buffs can be dismissed,1,5,Feature,267,TRUE,,3 Tin wrapup
-280,Hotbar can be rearranged,13,34,Usability,279,TRUE,,3 Tin wrapup
-281,Hotbar can include recipes,8,13,Usability,280,TRUE,,3 Tin wrapup
-286,Learning talents can require a tool,2,5,Feature,283,TRUE,TRUE,3 Tin wrapup
 289,"On death, drop region item if in lost talent's cost",2,13,Feature,288,,TRUE,4 Copper
 290,Region items are n-unique,13,8,Feature,285,,TRUE,4 Copper
 291,Region items are soulbound,5,8,Feature,285,,TRUE,4 Copper
@@ -307,7 +334,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 364,Current-wars spam on login,3,3,Bug,,,,
 368,Update object windows after joining/leaving a city,21,3,Bug,,,,
 369,Trees sometimes think they're being gathered when they're not.  Endless particles/sound.,55,8,Bug,,,,
-370,Avatar isn't playing death sound,13,5,Bug,,TRUE,,
 373,Flash crafting/building/class buttons,21,8,Usability,,,,
 374,Flash class button when talents are unspent,21,3,Usability,373,,,
 375,Allow war to be declared on an object,21,5,Usability,,,TRUE,
@@ -315,26 +341,21 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 378,A Granary object that learning talents can draw from,13,8,Feature,377,,,4 Copper
 380,Allow water/air nymphs to float on water,5,2,Feature,,,,
 393,"Play defend/death sounds on projectile hit, not launch",8,5,Usability,,,,
-396,Find a sink for small pots,8,8,Content,,TRUE,,3 Tin wrapup
 398,"If login position blocked: try nearby, then spawn, then default spawn",21,3,Feature,,,,
 399,Client crashes sometimes on pot pickup.  Window/watchers?,55,8,Bug,,,,
-401,Allow granting unfinished objects,21,3,Bug,,TRUE,,
 403,Consume smaller stacks of mats first,13,3,Feature,,,,
 407,Make under-construction objects easier to kill,8,8,Exploit,,,,
 410,"Recruit via an invitation, not insta-join",21,13,Usability,,,TRUE,
 436,"New classes for ID and Name, used everywhere",2,5,Code quality,,,,
-438,Show a tooltip when terrain is inaccessible,2,3,Usability,,TRUE,,
 442,Fade in from black on first login,21,21,Aesthetics,,,,
 463,An adventure (overworld),233,89,Content,,,TRUE,5 First adventure
 466,Show shadow box in help-topic list in showHelpTopic(),1,5,Bug,,,,
-470,Draw correct corpses for humanoid NPCs and players,21,55,Bug,,TRUE,TRUE,3 Tin wrapup
 480,SFX for swing,8,3,Usability,,,,
 482,Alert users to aggro,8,5,Usability,,,,
 490,Allow line break on -,2,3,Bug,,,,
 498,It's too easy to select Atlas,2,3,Usability,,,,
 500,Show taggers in client,5,3,Usability,,,,
 503,Base aggro radius on level difference,8,5,Feature,,,,5 First adventure
-505,Show quest rewards in (de)briefs,8,8,Usability,,TRUE,,
 507,Clear quest progress if quest is abandoned,2,2,Bug,,,,
 511,Use complete outlines for all text,8,3,Aesthetics,,,,
 515,"Low-res sprites, high-res game",34,34,Aesthetics,,,,
@@ -345,7 +366,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 522,Wool + gear,34,144,Content,521,,,4 Copper
 523,Silk + gear,34,144,Content,522,,,
 524,Boiled leather + gear,34,144,Content,,,,6 Bronze
-525,Class buildings,21,13,Feature,286,TRUE,TRUE,3 Tin wrapup
 527,Region locks,34,13,Content,526,,TRUE,4 Copper
 528,Subclass buildings,21,34,Content,286,,TRUE,6 Bronze
 529,Parchment,21,13,Feature,522,,,4 Copper
@@ -363,8 +383,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 543,Players can trade objects,13,21,Feature,,,,
 544,Optimise map,8,5,Performance,,,,
 545,Online-users list is unreliable,13,13,Bug,,,,
-546,"Show gather-unlock info on object, not item",21,13,Usability,,TRUE,,3 Tin wrapup
-547,Populate 1-20 map with animals,5,8,Content,,TRUE,TRUE,3 Tin wrapup
 548,Populate remaining map with NPCs,34,89,Content,526,,TRUE,4 Copper
 549,Horses,34,13,Content,521,,TRUE,6 Bronze
 550,Gold,34,13,Content,526,,TRUE,6 Bronze
@@ -375,13 +393,10 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 556,Can't build roads under other objects,5,5,Bug,,,,
 557,Provide list of names when granting objects,13,8,Usability,,,,
 559,Reduce volume of distant SFX,3,8,Aesthetics,,,,
-560,Master volume control,3,5,Usability,,TRUE,,3 Tin wrapup
-561,Make gigantes always run back to their spawn point,13,3,Bug,,TRUE,,3 Tin wrapup
 563,Add flag objects with text entry to show labels on map,8,21,Feature,,,,
 564,Cull objects and NPCs on death,3,13,Bug,,,,
 565,Reflect vehicle speed in stats window,3,3,Bug,105,,,
 566,Dropping an item deselects target,5,3,Bug,,,,
-567,Always create static objects on startup; don't save them,5,3,Performance,,TRUE,,
 568,Add missing crafting/gathering sounds,55,34,Aesthetics,100,,,
 570,Add warning if merchant-object inventory is full,5,13,Usability,,,,
 571,Altar of Athena teaches port-to-city spell,8,13,Feature,,,,
@@ -390,39 +405,24 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 574,Require full text entry for merchant prices,13,13,Usability,,,,
 575,Configurable key mapping,8,34,Usability,,,,
 577,Use virtual keys for movement,8,3,Usability,,,,
-578,Merchant-slot UI sometimes doesn't show up,21,8,Bug,,TRUE,,3 Tin wrapup
 579,City objects are forgotten on death,13,3,Bug,,,,
 580,"Damage shield on block, not hit",1,5,Feature,,,,
 581,Don't damage armour on block,1,5,Feature,,,,
 582,Don't damage weapon or armour on miss/dodge,1,5,Feature,,,,
-583,Add cursor for vehicles,5,3,Usability,,TRUE,,3 Tin wrapup
 584,Can gather from a fig tree briefly before it changes type and is empty,5,8,Bug,,,,
 585,Make ranged weapons viable at high latency,21,13,Usability,,,TRUE,3 Tin wrapup
 586,Construction sites have windows despite no permission,3,2,Bug,,,,
-587,Hide NPCs and neutral objects on map,3,2,Usability,,TRUE,,
-588,Allow buffs to be recast while on,3,2,Usability,,TRUE,,
-589,Nerf Selfish Request,8,1,Exploit,,TRUE,,3 Tin wrapup
 590,"Players can get stuck inside objects, and respawn on restarting client",34,13,Bug,,,,
-591,Tell new citizens about city objects,13,5,Bug,,TRUE,,3 Tin wrapup
-592,Allow citizens to access other citizens' altars,21,2,Bug,,TRUE,TRUE,3 Tin wrapup
 593,Friends list,13,21,Feature,,,,
 594,"Show enemy objects as red, not yellow",8,3,Bug,,,,
 595,Prevent declarations of war against nonexistent entities,8,5,Bug,,,,
-596,A dog NPC,8,3,Content,,TRUE,,3 Tin wrapup
 597,Make tutorial cyclopes all objects,5,3,Code quality,,,,
-598,Pets (owned NPCs),3,13,Feature,,TRUE,TRUE,3 Tin wrapup
-599,Pets share owner's friends/enemies,13,13,Feature,598,TRUE,TRUE,3 Tin wrapup
-600,Mobs can be domesticated into pets,8,5,Feature,598,TRUE,,3 Tin wrapup
-601,Domestication takes a resource,5,8,Feature,600,TRUE,,3 Tin wrapup
-602,"Domestication has success chance, based on health %",3,5,Feature,600,TRUE,,3 Tin wrapup
 603,Pet breeding,2,21,Feature,597,,,
 604,Pets can be set to aggressive or defensive,2,8,Feature,597,,,
 605,Pets can be ordered to follow or stay,3,8,Feature,609,,,
 606,Pets consume food automatically,3,8,Feature,378,,,
 607,Starved pets become mobs,1,13,Feature,606,,,
 608,Allow pets to ride on some vehicles,5,13,Feature,609,,,
-609,Pets follow their owners,8,8,Feature,597,TRUE,TRUE,3 Tin wrapup
 610,Pets shouldn't count towards their original spawner's limit,2,5,Exploit,,,,
-611,Only NPCs marked as tamable can be tamed,8,3,Feature,,TRUE,,3 Tin wrapup
 612,Remove player XP/levels,13,13,Feature,,,TRUE,
 613,Show gear on humanoid corpses,3,8,Feature,,,,
