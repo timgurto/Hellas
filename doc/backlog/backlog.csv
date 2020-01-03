@@ -257,7 +257,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 33,Items can be repaired with materials,21,55,Feature,30,TRUE,TRUE,3 Tin wrapup
 34,Repairing items can require tools,8,2,Feature,33,TRUE,TRUE,3 Tin wrapup
 57,Heavy items that prevent player movement,13,3,Feature,,,TRUE,4 Copper
-59,Better NPC pathfinding,21,34,Feature,,,,3 Tin wrapup
+59,Better NPC pathfinding,21,34,Feature,,,,5 First adventure
 65,NPCs can combine loot tables,5,8,Feature,,,,5 First adventure
 67,Set bonuses for gear,13,21,Feature,,,,
 68,Class-restricted gear,8,5,Feature,,,,
@@ -327,7 +327,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 442,Fade in from black on first login,21,21,Aesthetics,,,,
 463,An adventure (overworld),233,89,Content,,,TRUE,5 First adventure
 466,Show shadow box in help-topic list in showHelpTopic(),1,5,Bug,,,,
-470,Draw correct corpses for humanoid NPCs and players,21,55,Bug,,,TRUE,3 Tin wrapup
+470,Draw correct corpses for humanoid NPCs and players,21,55,Bug,,TRUE,TRUE,3 Tin wrapup
 480,SFX for swing,8,3,Usability,,,,
 482,Alert users to aggro,8,5,Usability,,,,
 490,Allow line break on -,2,3,Bug,,,,
@@ -362,7 +362,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 542,More altars around the world,21,34,Feature,,,,
 543,Players can trade objects,13,21,Feature,,,,
 544,Optimise map,8,5,Performance,,,,
-545,Online-users list is unreliable,13,13,Bug,,,,3 Tin wrapup
+545,Online-users list is unreliable,13,13,Bug,,,,
 546,"Show gather-unlock info on object, not item",21,13,Usability,,TRUE,,3 Tin wrapup
 547,Populate 1-20 map with animals,5,8,Content,,TRUE,TRUE,3 Tin wrapup
 548,Populate remaining map with NPCs,34,89,Content,526,,TRUE,4 Copper
@@ -402,7 +402,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 587,Hide NPCs and neutral objects on map,3,2,Usability,,TRUE,,
 588,Allow buffs to be recast while on,3,2,Usability,,TRUE,,
 589,Nerf Selfish Request,8,1,Exploit,,TRUE,,3 Tin wrapup
-590,"Players can get stuck inside objects, and respawn on restarting client",34,13,Bug,,,,3 Tin wrapup
+590,"Players can get stuck inside objects, and respawn on restarting client",34,13,Bug,,,,
 591,Tell new citizens about city objects,13,5,Bug,,TRUE,,3 Tin wrapup
 592,Allow citizens to access other citizens' altars,21,2,Bug,,TRUE,TRUE,3 Tin wrapup
 593,Friends list,13,21,Feature,,,,
@@ -424,4 +424,5 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 609,Pets follow their owners,8,8,Feature,597,TRUE,TRUE,3 Tin wrapup
 610,Pets shouldn't count towards their original spawner's limit,2,5,Exploit,,,,
 611,Only NPCs marked as tamable can be tamed,8,3,Feature,,TRUE,,3 Tin wrapup
-612,Remove player XP/levels,13,13,Feature,,,TRUE,3 Tin wrapup
+612,Remove player XP/levels,13,13,Feature,,,TRUE,
+613,Show gear on humanoid corpses,3,8,Feature,,,,
