@@ -712,6 +712,10 @@ enum MessageCode {
   // Arguments: id
   DG_GIVE,
 
+  // "Give me an object, to my right"
+  // Arguments: id
+  DG_GIVE_OBJECT,
+
   // "Unlock everything for me"
   DG_UNLOCK,
 

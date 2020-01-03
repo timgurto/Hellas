@@ -2592,6 +2592,7 @@ void Client::initializeMessageNames() {
   _messageCommands["w"] = CL_WHISPER;
 
   _messageCommands["give"] = DG_GIVE;
+  _messageCommands["giveObject"] = DG_GIVE_OBJECT;
   _messageCommands["unlock"] = DG_UNLOCK;
   _messageCommands["level"] = DG_LEVEL;
   _messageCommands["skip"] = DG_SKIP_TUTORIAL;

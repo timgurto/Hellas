@@ -1385,6 +1385,27 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         break;
       }
 
+      case DG_GIVE_OBJECT: {
+        if (!isDebug()) break;
+        iss.get(buffer, BUFFER_SIZE, MSG_END);
+        std::string id(buffer);
+        iss >> del;
+        if (del != MSG_END) return;
+        auto *ot = findObjectTypeByID(id);
+        if (!ot) {
+          sendMessage(client, ERROR_INVALID_ITEM);
+          break;
+        }
+        auto owner =
+            Permissions::Owner{Permissions::Owner::PLAYER, user->name()};
+        auto &obj = addObject(ot, user->location() + MapPoint{50, 0}, owner);
+        if (obj.isBeingBuilt()) {
+          obj.remainingMaterials().clear();
+          sendConstructionMaterialsMessage(*user, obj);
+        }
+        break;
+      }
+
       case DG_UNLOCK: {
         if (del != MSG_END) return;
         if (!isDebug()) break;
