@@ -50,12 +50,6 @@ void ClientNPC::update(double delta) {
   ClientObject::update(delta);
 }
 
-const Texture &ClientNPC::image() const {
-  if (isAlive()) return objectType()->image();
-  if (health() == 0) return npcType()->corpseImage();
-  if (isHumanoid()) return objectType()->image();
-}
-
 void ClientNPC::draw(const Client &client) const {
   ClientObject::draw(client);
 
