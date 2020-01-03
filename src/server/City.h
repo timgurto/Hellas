@@ -61,6 +61,8 @@ class Cities {
  private:
   std::map<City::Name, City> _container;
   std::map<std::string, City::Name> _usersToCities;
+
+  static City::Members dummyMembersList;
 };
 
 #endif

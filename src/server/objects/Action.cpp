@@ -78,7 +78,8 @@ bool Server::setRespawnPoint(const Object &obj, User &performer,
 void Server::destroyCity(const Object &obj) {
   auto owner = obj.permissions().owner();
   const auto cityName = instance()._cities.getPlayerCity(owner.name);
-  instance()._cities.destroyCity(cityName);
+  if (cityName.empty()) return;
 
+  instance()._cities.destroyCity(cityName);
   instance().broadcast({SV_CITY_DESTROYED, cityName});
 }

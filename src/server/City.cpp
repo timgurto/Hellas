@@ -4,6 +4,8 @@
 #include "../XmlWriter.h"
 #include "Server.h"
 
+City::Members Cities::dummyMembersList{};
+
 City::City(const Name &name = "") : _name(name) {}
 
 void City::addAndAlertPlayers(const User &user) {
@@ -145,9 +147,8 @@ const City::Members &Cities::membersOf(const std::string &cityName) const {
   auto it = _container.find(cityName);
   bool cityExists = it != _container.end();
   if (!cityExists) {
-    Server::debug()("Can't fetch members of a city that doesn't exist",
-                    Color::CHAT_ERROR);
-    assert(false);
+    SERVER_ERROR("Can't fetch members of a city that doesn't exist");
+    return dummyMembersList;
   }
   return it->second.members();
 }
