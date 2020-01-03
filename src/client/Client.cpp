@@ -219,6 +219,8 @@ void Client::initialiseData() {
     auto endNode = findObjectType(quest.info().endsAt);
     if (endNode) endNode->endsQuest(quest);
   }
+
+  Avatar::_spriteType.useCustomShadowWidth(16);
 }
 
 void Client::initializeGearSlotNames() {

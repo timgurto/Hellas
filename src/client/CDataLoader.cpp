@@ -902,20 +902,19 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
     nt->name(s);
 
     // Draw rect
-    if (humanoid)
+    if (humanoid) {
       nt->drawRect(Avatar::DRAW_RECT);
-    else {
+      nt->useCustomShadowWidth(16);
+    } else {
       auto drawRect = ScreenRect{0, 0, nt->width(), nt->height()};
       bool xSet = xr.findAttr(elem, "xDrawOffset", drawRect.x),
            ySet = xr.findAttr(elem, "yDrawOffset", drawRect.y);
       nt->drawRect(drawRect);
     }
 
-    auto customShadowWidth = 0_px;
-    if (xr.findAttr(elem, "customShadowWidth", customShadowWidth))
-      nt->useCustomShadowWidth(customShadowWidth);
-
-    if (humanoid) nt->makeHumanoid();
+    auto customShadowDiameter = 0_px;
+    if (xr.findAttr(elem, "customShadowWidth", customShadowDiameter))
+      nt->useCustomShadowWidth(customShadowDiameter);
 
     // Collision rect
     if (humanoid) nt->collisionRect(Avatar::COLLISION_RECT);
