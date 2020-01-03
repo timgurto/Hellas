@@ -373,7 +373,7 @@ void Server::loadEntitiesFromFile(const std::string &path,
       continue;
     }
 
-    const ObjectType *type = findObjectTypeByName(s);
+    const ObjectType *type = findObjectTypeByID(s);
     if (type == nullptr) {
       _debug << Color::CHAT_ERROR
              << "Skipping importing object with unknown type \"" << s << "\"."
@@ -499,8 +499,7 @@ void Server::loadEntitiesFromFile(const std::string &path,
       continue;
     }
 
-    const NPCType *type =
-        dynamic_cast<const NPCType *>(findObjectTypeByName(s));
+    const NPCType *type = dynamic_cast<const NPCType *>(findObjectTypeByID(s));
     if (type == nullptr) {
       _debug << Color::CHAT_ERROR
              << "Skipping importing NPC with unknown type \"" << s << "\"."

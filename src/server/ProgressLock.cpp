@@ -27,7 +27,7 @@ void ProgressLock::registerStagedLocks() {
         break;
       }
       case CONSTRUCTION:
-        lock._trigger = server.findObjectTypeByName(lock._triggerID);
+        lock._trigger = server.findObjectTypeByID(lock._triggerID);
         break;
       case RECIPE: {
         auto it = server._recipes.find(lock._triggerID);
@@ -50,7 +50,7 @@ void ProgressLock::registerStagedLocks() {
         break;
       }
       case CONSTRUCTION:
-        lock._effect = server.findObjectTypeByName(lock._effectID);
+        lock._effect = server.findObjectTypeByID(lock._effectID);
         break;
       default:;
     }

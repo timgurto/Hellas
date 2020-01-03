@@ -116,13 +116,13 @@ void TestServer::addObject(const std::string &typeName, const MapPoint &loc,
 
 void TestServer::addObject(const std::string &typeName, const MapPoint &loc,
                            const Permissions::Owner &owner) {
-  const ObjectType *const type = _server->findObjectTypeByName(typeName);
+  const ObjectType *const type = _server->findObjectTypeByID(typeName);
   REQUIRE(type != nullptr);
   _server->addObject(type, loc, owner);
 }
 
 NPC &TestServer::addNPC(const std::string &typeName, const MapPoint &loc) {
-  const ObjectType *const type = _server->findObjectTypeByName(typeName);
+  const ObjectType *const type = _server->findObjectTypeByID(typeName);
   REQUIRE(type->classTag() == 'n');
   const NPCType *const npcType = dynamic_cast<const NPCType *const>(type);
   return _server->addNPC(npcType, loc);

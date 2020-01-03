@@ -175,7 +175,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           break;
         }
         user->cancelAction();
-        const ObjectType *objType = findObjectTypeByName(id);
+        const ObjectType *objType = findObjectTypeByID(id);
         if (objType == nullptr) {
           sendMessage(client, ERROR_INVALID_OBJECT);
           break;

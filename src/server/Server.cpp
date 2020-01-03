@@ -641,7 +641,7 @@ bool Server::itemIsTag(const ServerItem *item,
   return item->isTag(tagName);
 }
 
-ObjectType *Server::findObjectTypeByName(const std::string &id) const {
+ObjectType *Server::findObjectTypeByID(const std::string &id) const {
   for (auto *type : _objectTypes)
     if (type->id() == id) return const_cast<ObjectType *>(type);
   return nullptr;

@@ -253,7 +253,7 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
                        Color::CHAT_ERROR);
         continue;
       }
-      const ObjectType *transformObjPtr = _server.findObjectTypeByName(s);
+      const ObjectType *transformObjPtr = _server.findObjectTypeByID(s);
       if (transformObjPtr == nullptr) {
         transformObjPtr = new ObjectType(s);
         _server._objectTypes.insert(transformObjPtr);
@@ -387,12 +387,12 @@ void DataLoader::loadQuests(XmlReader &xr) {
 
     auto startsAt = ""s;
     if (!xr.findAttr(elem, "startsAt", startsAt)) continue;
-    auto startingObject = _server.findObjectTypeByName(startsAt);
+    auto startingObject = _server.findObjectTypeByID(startsAt);
     if (!startingObject) continue;
 
     auto endsAt = ""s;
     if (!xr.findAttr(elem, "endsAt", endsAt)) continue;
-    auto endingObject = _server.findObjectTypeByName(endsAt);
+    auto endingObject = _server.findObjectTypeByID(endsAt);
     if (!endingObject) continue;
 
     xr.findAttr(elem, "timeLimit", q.timeLimit);
@@ -547,7 +547,7 @@ void DataLoader::loadItems(XmlReader &xr) {
     std::string s;
     if (xr.findAttr(elem, "constructs", s)) {
       // Create dummy ObjectType if necessary
-      const ObjectType *ot = _server.findObjectTypeByName(s);
+      const ObjectType *ot = _server.findObjectTypeByID(s);
       if (ot != nullptr)
         item.constructsObject(ot);
       else
@@ -924,7 +924,7 @@ void DataLoader::loadSpawners(XmlReader &xr) {
       continue;
     }
 
-    const ObjectType *type = _server.findObjectTypeByName(id);
+    const ObjectType *type = _server.findObjectTypeByID(id);
     if (type == nullptr) {
       _server._debug << Color::CHAT_ERROR
                      << "Skipping importing spawner for unknown objects \""
