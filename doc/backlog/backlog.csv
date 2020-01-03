@@ -425,4 +425,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 608,Allow pets to ride on some vehicles,5,13,Feature,609,,,
 610,Pets shouldn't count towards their original spawner's limit,2,5,Exploit,,,,
 612,Remove player XP/levels,13,13,Feature,,,TRUE,
-613,Show gear on humanoid corpses,3,8,Feature,,,,
+613,Show gear on humanoid corpses,3,8,Aesthetics,,,,
+614,Base humanoid attack/defend sounds on their gear,3,3,Aesthetics,,,,
+615,Automatically self-cast if current target is invalid,5,2,Usability,,,,

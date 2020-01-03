@@ -247,8 +247,8 @@
         <collisionRect x="-11" y="-5" w="24" h="10" />
     </objectType>
     <item id="tutOre" name="Othrysian Ore" stackSize="5" durability="3" />
-    <item id="tutLightning" name="Handheld Lightning" stackSize="5" gearSlot="6" >
-        <weapon damage="12" speed="2.1" range="25" consumes="tutLightning" projectile="lightning" sounds="lightning" />
+    <item id="tutLightning" name="Handheld Lightning" stackSize="5" gearSlot="6" sounds="lightning" >
+        <weapon damage="12" speed="2.1" range="25" consumes="tutLightning" projectile="lightning" />
         <offset x="-8" y="-6" />
         <particles profile="lightningSparks" x="-7" y="-5" />
         <particles profile="lightningSparks" x="-6" y="-4" />
@@ -270,7 +270,7 @@
     </item>
     <objectType id="tutOre" name="Othrysian Ore"
         xDrawOffset="-5" yDrawOffset="-5"
-        canGather="1" gatherTime="4000" >
+        canGather="1" gatherTime="4000" sounds="rock" >
         <yield id="tutOre" />
         <durability item="tutOre" quantity="1" />
     </objectType>

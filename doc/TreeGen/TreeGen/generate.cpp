@@ -548,6 +548,13 @@ int main(int argc, char **argv) {
         jw.addAttribute("id", id);
         Node::Name name = "npc_" + id;
 
+        auto isCivilian = 0;
+        if (xr.findAttr(elem, "isCivilian", isCivilian) && isCivilian) {
+          requiredSounds.erase("attack");
+          requiredSounds.erase("defend");
+          requiredSounds.erase("death");
+        }
+
         auto imageID = id;
         xr.findAttr(elem, "imageFile", imageID);
         auto humanoid = xr.findChild("humanoid", elem);
@@ -556,11 +563,10 @@ int main(int argc, char **argv) {
           xr.findAttr(humanoid, "base", imageID);
         }
         jw.addAttribute("image", "npc_" + imageID);
-
         auto directory = humanoid ? "Humans/"s : "NPCs/"s;
         if (!checkImageExists(directory + imageID))
           missingImages.insert("normal");
-        if (!checkImageExists(directory + imageID + "-corpse"))
+        if (!isCivilian && !checkImageExists(directory + imageID + "-corpse"))
           missingImages.insert("corpse");
 
         std::string displayName;
