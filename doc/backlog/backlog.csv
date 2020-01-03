@@ -374,7 +374,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 532,Tier-4 talents,144,233,Feature,531,,TRUE,6 Bronze
 534,Tier-5 talents,55,89,Feature,535,,TRUE,
 535,Wonders,21,55,Content,57,,TRUE,
-536,"Fix vehicle movement, mounting, dismounting",21,21,Usability,,,TRUE,3 Tin wrapup
+536,"Fix vehicle movement, mounting, dismounting",21,21,Usability,,,TRUE,
 537,Quests for the adventure,13,21,Content,463,,,5 First adventure
 538,Themed crafting/building/quest/social windows,55,55,Aesthetics,,,,
 540,SFX for war/peace,5,34,Aesthetics,,,,
@@ -410,7 +410,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 581,Don't damage armour on block,1,5,Feature,,,,
 582,Don't damage weapon or armour on miss/dodge,1,5,Feature,,,,
 584,Can gather from a fig tree briefly before it changes type and is empty,5,8,Bug,,,,
-585,Make ranged weapons viable at high latency,21,13,Usability,,,TRUE,3 Tin wrapup
+585,Make ranged weapons viable at high latency,21,13,Usability,,,TRUE,
 586,Construction sites have windows despite no permission,3,2,Bug,,,,
 590,"Players can get stuck inside objects, and respawn on restarting client",34,13,Bug,,,,
 593,Friends list,13,21,Feature,,,,

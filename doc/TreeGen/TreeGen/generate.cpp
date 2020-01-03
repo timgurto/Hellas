@@ -1,5 +1,6 @@
 #include <SDL.h>
 #include <SDL_image.h>
+#include <Windows.h>
 #include <XmlReader.h>
 
 #include <fstream>
@@ -14,6 +15,8 @@
 #include "Recipe.h"
 #include "SoundProfile.h"
 #include "types.h"
+
+using namespace std::string_literals;
 
 struct Path {
   std::string child;
@@ -51,6 +54,23 @@ int main(int argc, char **argv) {
   edgeColors[UNLOCK_ON_CRAFT] = 6;
 
   const std::string dataPath = "../../Data";
+
+  using FilesList = std::set<std::string>;
+  auto filesList = FilesList{};
+  WIN32_FIND_DATA fd;
+  auto path = dataPath + "/";
+  std::replace(path.begin(), path.end(), '/', '\\');
+  std::string filter = path + "*.xml";
+  path.c_str();
+  HANDLE hFind = FindFirstFile(filter.c_str(), &fd);
+  if (hFind != INVALID_HANDLE_VALUE) {
+    do {
+      if (fd.cFileName == std::string{"map.xml"}) continue;
+      auto file = path + fd.cFileName;
+      filesList.insert(file);
+    } while (FindNextFile(hFind, &fd));
+    FindClose(hFind);
+  }
 
   // Load tools
   auto xr = XmlReader::FromFile("archetypalTools.xml");
@@ -107,9 +127,8 @@ int main(int argc, char **argv) {
 
   // Load sound profiles
   std::map<ID, SoundProfile> soundProfiles;
-  if (!xr.newFile(dataPath + "/sounds.xml"))
-    std::cerr << "Failed to load sounds.xml" << std::endl;
-  else {
+  for (auto file : filesList) {
+    xr.newFile(file);
     for (auto elem : xr.getChildren("soundProfile")) {
       ID id;
       if (!xr.findAttr(elem, "id", id)) continue;
@@ -124,9 +143,8 @@ int main(int argc, char **argv) {
 
   // Load terrain
   std::map<ID, size_t> terrain;
-  if (!xr.newFile(dataPath + "/terrain.xml"))
-    std::cerr << "Failed to load terrain.xml" << std::endl;
-  else {
+  for (auto file : filesList) {
+    xr.newFile(file);
     for (auto elem : xr.getChildren("terrain")) {
       ID id;
       if (!xr.findAttr(elem, "id", id)) continue;
@@ -141,9 +159,8 @@ int main(int argc, char **argv) {
   // Load recipes
   std::map<ID, Recipe> recipes;
   std::map<ID, std::set<std::string>> materialFor, toolFor;
-  if (!xr.newFile(dataPath + "/recipes.xml"))
-    std::cerr << "Failed to load recipes.xml" << std::endl;
-  else {
+  for (auto file : filesList) {
+    xr.newFile(file);
     for (auto elem : xr.getChildren("recipe")) {
       ID product;
       if (!xr.findAttr(elem, "id", product)) continue;
@@ -195,376 +212,386 @@ int main(int argc, char **argv) {
   }
 
   // Crafting Tools
-  JsonWriter jw("tools");
-  for (const auto &pair : toolFor) {
-    jw.nextEntry();
-    jw.addAttribute("tag", pair.first);
-    jw.addArrayAttribute("crafting", pair.second);
+  {
+    JsonWriter jw("tools");
+    for (const auto &pair : toolFor) {
+      jw.nextEntry();
+      jw.addAttribute("tag", pair.first);
+      jw.addArrayAttribute("crafting", pair.second);
+    }
   }
 
   // Load items
   std::set<std::string> objectsConstructedFromItems;
-  if (!xr.newFile(dataPath + "/items.xml"))
-    std::cerr << "Failed to load items.xml" << std::endl;
-  else {
+  {
     JsonWriter jw("items");
-    for (auto elem : xr.getChildren("item")) {
-      jw.nextEntry();
-      ID id;
-      if (!xr.findAttr(elem, "id", id)) continue;
-      Node::Name name = "item_" + id;
-      jw.addAttribute("image", name);
-      jw.addAttribute("id", id);
+    for (auto file : filesList) {
+      xr.newFile(file);
+      for (auto elem : xr.getChildren("item")) {
+        jw.nextEntry();
+        ID id;
+        if (!xr.findAttr(elem, "id", id)) continue;
+        Node::Name name = "item_" + id;
+        jw.addAttribute("image", name);
+        jw.addAttribute("id", id);
 
-      auto recipeIt = recipes.find(id);
-      if (recipeIt != recipes.end()) recipeIt->second.writeToJSON(jw);
+        auto recipeIt = recipes.find(id);
+        if (recipeIt != recipes.end()) recipeIt->second.writeToJSON(jw);
 
-      auto usedAsMatIt = materialFor.find(id);
-      if (usedAsMatIt != materialFor.end())
-        jw.addArrayAttribute("usedAsMaterial", usedAsMatIt->second);
+        auto usedAsMatIt = materialFor.find(id);
+        if (usedAsMatIt != materialFor.end())
+          jw.addArrayAttribute("usedAsMaterial", usedAsMatIt->second);
 
-      std::set<ID> requiredSounds;
-      requiredSounds.insert("drop");
-      std::set<ID> missingImages;
+        std::set<ID> requiredSounds;
+        requiredSounds.insert("drop");
+        std::set<ID> missingImages;
 
-      auto iconFile = id;
-      xr.findAttr(elem, "iconFile", iconFile);
-      if (!iconFile.empty() && !checkImageExists("Items/" + iconFile))
-        missingImages.insert("icon");
+        auto iconFile = id;
+        xr.findAttr(elem, "iconFile", iconFile);
+        if (!iconFile.empty() && !checkImageExists("Items/" + iconFile))
+          missingImages.insert("icon");
 
-      std::string s;
-      if (xr.findAttr(elem, "name", s)) {
-        nodes.add(Node(ITEM, id, s));
-        jw.addAttribute("name", s);
-      }
-
-      if (xr.findAttr(elem, "constructs", s)) {
-        edges.insert(Edge(name, "object_" + s, CONSTRUCT_FROM_ITEM));
-        jw.addAttribute("constructs", s);
-        objectsConstructedFromItems.insert(s);
-      }
-
-      std::set<std::string> tags;
-      for (auto tag : xr.getChildren("tag", elem))
-        if (xr.findAttr(tag, "name", s)) {
-          tags.insert(s);
-          tagNames[s] = s;
+        std::string s;
+        if (xr.findAttr(elem, "name", s)) {
+          nodes.add(Node(ITEM, id, s));
+          jw.addAttribute("name", s);
         }
-      jw.addArrayAttribute("tags", tags);
 
-      if (xr.findAttr(elem, "stackSize", s)) jw.addAttribute("stackSize", s);
-      if (xr.findAttr(elem, "gearSlot", s)) {
-        jw.addAttribute("gearSlot", s);
-        bool isWeapon = (s == "6");
-        bool isArmor = (s == "0" || s == "2" || s == "3" || s == "4" ||
-                        s == "5" || s == "7");
-        if (isWeapon)
-          requiredSounds.insert("attack");
-        else if (isArmor)
-          requiredSounds.insert("defend");
-
-        auto gearFile = id;
-        xr.findAttr(elem, "gearFile", gearFile);
-        if (!gearFile.empty() && !checkImageExists("Gear/" + gearFile))
-          missingImages.insert("gear");
-      }
-
-      for (auto stat : xr.getChildren("stats", elem)) {
-        if (xr.findAttr(stat, "health", s)) jw.addAttribute("health", s);
-        if (xr.findAttr(stat, "attack", s)) jw.addAttribute("attack", s);
-        if (xr.findAttr(stat, "speed", s)) jw.addAttribute("speed", s);
-        if (xr.findAttr(stat, "attackTime", s))
-          jw.addAttribute("attackTime", s);
-      }
-
-      ID sounds;
-      if (xr.findAttr(elem, "sounds", sounds)) {
-        if (!sounds.empty()) {
-          SoundProfile &soundProfile = soundProfiles[sounds];
-          for (const std::string &soundType : requiredSounds)
-            soundProfile.checkType(soundType);
+        if (xr.findAttr(elem, "constructs", s)) {
+          edges.insert(Edge(name, "object_" + s, CONSTRUCT_FROM_ITEM));
+          jw.addAttribute("constructs", s);
+          objectsConstructedFromItems.insert(s);
         }
-      } else {
-        jw.addArrayAttribute("soundsMissing", requiredSounds);
-      }
 
-      if (!missingImages.empty())
-        jw.addArrayAttribute("imagesMissing", missingImages);
+        std::set<std::string> tags;
+        for (auto tag : xr.getChildren("tag", elem))
+          if (xr.findAttr(tag, "name", s)) {
+            tags.insert(s);
+            tagNames[s] = s;
+          }
+        jw.addArrayAttribute("tags", tags);
+
+        if (xr.findAttr(elem, "stackSize", s)) jw.addAttribute("stackSize", s);
+        if (xr.findAttr(elem, "gearSlot", s)) {
+          jw.addAttribute("gearSlot", s);
+          bool isWeapon = (s == "6");
+          bool isArmor = (s == "0" || s == "2" || s == "3" || s == "4" ||
+                          s == "5" || s == "7");
+          if (isWeapon)
+            requiredSounds.insert("attack");
+          else if (isArmor)
+            requiredSounds.insert("defend");
+
+          auto gearFile = id;
+          xr.findAttr(elem, "gearFile", gearFile);
+          if (!gearFile.empty() && !checkImageExists("Gear/" + gearFile))
+            missingImages.insert("gear");
+        }
+
+        for (auto stat : xr.getChildren("stats", elem)) {
+          if (xr.findAttr(stat, "health", s)) jw.addAttribute("health", s);
+          if (xr.findAttr(stat, "attack", s)) jw.addAttribute("attack", s);
+          if (xr.findAttr(stat, "speed", s)) jw.addAttribute("speed", s);
+          if (xr.findAttr(stat, "attackTime", s))
+            jw.addAttribute("attackTime", s);
+        }
+
+        ID sounds;
+        if (xr.findAttr(elem, "sounds", sounds)) {
+          if (!sounds.empty()) {
+            SoundProfile &soundProfile = soundProfiles[sounds];
+            for (const std::string &soundType : requiredSounds)
+              soundProfile.checkType(soundType);
+          }
+        } else {
+          jw.addArrayAttribute("soundsMissing", requiredSounds);
+        }
+
+        if (!missingImages.empty())
+          jw.addArrayAttribute("imagesMissing", missingImages);
+      }
     }
   }
 
   // Load objects
-  if (!xr.newFile(dataPath + "/objectTypes.xml"))
-    std::cerr << "Failed to load objectTypes.xml" << std::endl;
-  else {
+  {
     JsonWriter jw("objects");
-    for (auto elem : xr.getChildren("objectType")) {
-      jw.nextEntry();
-      ID id;
-      if (!xr.findAttr(elem, "id", id)) continue;
-      Node::Name name = "object_" + id;
-      jw.addAttribute("id", id);
+    for (auto file : filesList) {
+      xr.newFile(file);
+      for (auto elem : xr.getChildren("objectType")) {
+        jw.nextEntry();
+        ID id;
+        if (!xr.findAttr(elem, "id", id)) continue;
+        Node::Name name = "object_" + id;
+        jw.addAttribute("id", id);
 
-      std::string displayName = id;
-      xr.findAttr(elem, "name", displayName);
-      Node node(OBJECT, id, displayName);
-      jw.addAttribute("name", displayName);
+        std::string displayName = id;
+        xr.findAttr(elem, "name", displayName);
+        Node node(OBJECT, id, displayName);
+        jw.addAttribute("name", displayName);
 
-      ID image = id;
-      if (xr.findAttr(elem, "imageFile", image)) {
-        jw.addAttribute("image", "object_" + image);
-        node.customImage(image);
-      } else
-        jw.addAttribute("image", name);
-
-      nodes.add(node);
-
-      std::set<ID> requiredSounds, missingParticles, missingImages;
-
-      bool canBeOwned = false;
-      if (objectsConstructedFromItems.find(id) !=
-          objectsConstructedFromItems.end())
-        canBeOwned = true;
-
-      if (!checkImageExists("Objects/" + image)) missingImages.insert("normal");
-
-      ID gatherReq;
-      std::string s;
-      if (xr.findAttr(elem, "gatherReq", gatherReq)) {
-        auto it = tools.find(gatherReq);
-        if (it == tools.end()) {
-          std::cerr << "Tool class is missing archetype: " << gatherReq
-                    << std::endl;
-          edges.insert(Edge(gatherReq, name, GATHER_REQ));
+        ID image = id;
+        if (xr.findAttr(elem, "imageFile", image)) {
+          jw.addAttribute("image", "object_" + image);
+          node.customImage(image);
         } else
-          edges.insert(Edge(it->second, name, GATHER_REQ));
-        jw.addAttribute("gatherReq", s);
-        tagNames[s] = s;
-      }
+          jw.addAttribute("image", name);
 
-      if (xr.findAttr(elem, "constructionReq", s)) {
-        canBeOwned = true;
-        auto it = tools.find(s);
-        if (it == tools.end()) {
-          std::cerr << "Tool class is missing archetype: " << s << std::endl;
-          edges.insert(Edge(s, name, CONSTRUCTION_REQ));
-        } else
-          edges.insert(Edge(it->second, name, CONSTRUCTION_REQ));
-        jw.addAttribute("constructionReq", s);
-        tagNames[s] = s;
-      }
+        nodes.add(node);
 
-      std::set<std::string> yields;
-      for (auto yield : xr.getChildren("yield", elem)) {
-        if (!xr.findAttr(yield, "id", s)) continue;
-        edges.insert(Edge(name, "item_" + s, GATHER));
-        yields.insert(s);
-      }
-      if (!yields.empty()) {
-        requiredSounds.insert("gather");
-        if (!xr.findAttr(elem, "gatherParticles", s))
-          missingParticles.insert("gather");
-      }
-      jw.addArrayAttribute("yield", yields);
+        std::set<ID> requiredSounds, missingParticles, missingImages;
 
-      std::set<std::string> materialsForJson;
-      for (auto material : xr.getChildren("material", elem)) {
-        std::string quantity = "1";
-        if (!xr.findAttr(material, "id", s)) continue;
-        xr.findAttr(material, "quantity", quantity);  // Default = 1, above.
-        materialsForJson.insert("{id:\"" + s + "\", quantity:" + quantity +
-                                "}");
-      }
-      jw.addArrayAttribute("materials", materialsForJson, true);
-      if (!materialsForJson.empty()) {
-        if (!checkImageExists("Objects/" + image + "-construction"))
-          missingImages.insert("construction");
-        canBeOwned = true;
-      }
+        bool canBeOwned = false;
+        if (objectsConstructedFromItems.find(id) !=
+            objectsConstructedFromItems.end())
+          canBeOwned = true;
 
-      std::set<std::string> unlocksForJson;
-      for (auto unlockBy : xr.getChildren("unlockedBy", elem)) {
-        double chance = 1.0;
-        xr.findAttr(unlockBy, "chance", chance);
-        if (xr.findAttr(unlockBy, "recipe", s) ||
-            xr.findAttr(unlockBy, "item", s)) {
-          edges.insert(Edge("item_" + s, name, UNLOCK_ON_CRAFT, chance));
-          unlocksForJson.insert("{type:\"craft\", sourceID:\"" + s + "\"}");
-        } else if (xr.findAttr(unlockBy, "construction", s)) {
-          edges.insert(Edge("object_" + s, name, UNLOCK_ON_CONSTRUCT, chance));
-          unlocksForJson.insert("{type:\"construct\", sourceID:\"" + s + "\"}");
-        } else if (xr.findAttr(unlockBy, "gather", s)) {
-          edges.insert(Edge("item_" + s, name, UNLOCK_ON_GATHER, chance));
-          unlocksForJson.insert("{type:\"gather\", sourceID:\"" + s + "\"}");
-        } else if (xr.findAttr(unlockBy, "item", s)) {
-          edges.insert(Edge("item_" + s, name, UNLOCK_ON_ACQUIRE, chance));
-          unlocksForJson.insert("{type:\"acquire\", sourceID:\"" + s + "\"}");
-        }
-      }
-      jw.addArrayAttribute("unlockedBy", unlocksForJson, true);
+        if (!checkImageExists("Objects/" + image))
+          missingImages.insert("normal");
 
-      auto transform = xr.findChild("transform", elem);
-      if (transform && xr.findAttr(transform, "id", s)) {
-        edges.insert(Edge(name, "object_" + s, TRANSFORM));
-        jw.addAttribute("transformID", s);
-        if (xr.findAttr(transform, "time", s))
-          jw.addAttribute("transformTime", s);
-      }
-
-      if (xr.findAttr(elem, "gatherTime", s)) jw.addAttribute("gatherTime", s);
-      if (xr.findAttr(elem, "constructionTime", s))
-        jw.addAttribute("constructionTime", s);
-      if (xr.findAttr(elem, "merchantSlots", s))
-        jw.addAttribute("merchantSlots", s);
-      if (xr.findAttr(elem, "bottomlessMerchant", s) && s != "0")
-        jw.addAttribute("bottomlessMerchant", "true");
-      if (xr.findAttr(elem, "isVehicle", s) && s != "0")
-        jw.addAttribute("isVehicle", "true");
-      if (xr.findAttr(elem, "deconstructs", s))
-        jw.addAttribute("deconstructs", s);
-      if (xr.findAttr(elem, "deconstructionTime", s))
-        jw.addAttribute("deconstructionTime", s);
-
-      std::set<std::string> tags;
-      for (auto tag : xr.getChildren("tag", elem))
-        if (xr.findAttr(tag, "name", s)) {
-          tags.insert(s);
+        ID gatherReq;
+        std::string s;
+        if (xr.findAttr(elem, "gatherReq", gatherReq)) {
+          auto it = tools.find(gatherReq);
+          if (it == tools.end()) {
+            std::cerr << "Tool class is missing archetype: " << gatherReq
+                      << std::endl;
+            edges.insert(Edge(gatherReq, name, GATHER_REQ));
+          } else
+            edges.insert(Edge(it->second, name, GATHER_REQ));
+          jw.addAttribute("gatherReq", s);
           tagNames[s] = s;
         }
-      jw.addArrayAttribute("tags", tags);
 
-      auto container = xr.findChild("container", elem);
-      if (container && xr.findAttr(container, "slots", s))
-        jw.addAttribute("containerSlots", s);
+        if (xr.findAttr(elem, "constructionReq", s)) {
+          canBeOwned = true;
+          auto it = tools.find(s);
+          if (it == tools.end()) {
+            std::cerr << "Tool class is missing archetype: " << s << std::endl;
+            edges.insert(Edge(s, name, CONSTRUCTION_REQ));
+          } else
+            edges.insert(Edge(it->second, name, CONSTRUCTION_REQ));
+          jw.addAttribute("constructionReq", s);
+          tagNames[s] = s;
+        }
 
-      if (canBeOwned) {
-        if (!checkImageExists("Objects/" + image + "-corpse"))
-          missingImages.insert("corpse");
-        if (!xr.findAttr(elem, "damageParticles", s))
-          missingParticles.insert("damage");
+        std::set<std::string> yields;
+        for (auto yield : xr.getChildren("yield", elem)) {
+          if (!xr.findAttr(yield, "id", s)) continue;
+          edges.insert(Edge(name, "item_" + s, GATHER));
+          yields.insert(s);
+        }
+        if (!yields.empty()) {
+          requiredSounds.insert("gather");
+          if (!xr.findAttr(elem, "gatherParticles", s))
+            missingParticles.insert("gather");
+        }
+        jw.addArrayAttribute("yield", yields);
 
-        requiredSounds.insert("defend");
-        requiredSounds.insert("death");
+        std::set<std::string> materialsForJson;
+        for (auto material : xr.getChildren("material", elem)) {
+          std::string quantity = "1";
+          if (!xr.findAttr(material, "id", s)) continue;
+          xr.findAttr(material, "quantity", quantity);  // Default = 1, above.
+          materialsForJson.insert("{id:\"" + s + "\", quantity:" + quantity +
+                                  "}");
+        }
+        jw.addArrayAttribute("materials", materialsForJson, true);
+        if (!materialsForJson.empty()) {
+          if (!checkImageExists("Objects/" + image + "-construction"))
+            missingImages.insert("construction");
+          canBeOwned = true;
+        }
+
+        std::set<std::string> unlocksForJson;
+        for (auto unlockBy : xr.getChildren("unlockedBy", elem)) {
+          double chance = 1.0;
+          xr.findAttr(unlockBy, "chance", chance);
+          if (xr.findAttr(unlockBy, "recipe", s) ||
+              xr.findAttr(unlockBy, "item", s)) {
+            edges.insert(Edge("item_" + s, name, UNLOCK_ON_CRAFT, chance));
+            unlocksForJson.insert("{type:\"craft\", sourceID:\"" + s + "\"}");
+          } else if (xr.findAttr(unlockBy, "construction", s)) {
+            edges.insert(
+                Edge("object_" + s, name, UNLOCK_ON_CONSTRUCT, chance));
+            unlocksForJson.insert("{type:\"construct\", sourceID:\"" + s +
+                                  "\"}");
+          } else if (xr.findAttr(unlockBy, "gather", s)) {
+            edges.insert(Edge("item_" + s, name, UNLOCK_ON_GATHER, chance));
+            unlocksForJson.insert("{type:\"gather\", sourceID:\"" + s + "\"}");
+          } else if (xr.findAttr(unlockBy, "item", s)) {
+            edges.insert(Edge("item_" + s, name, UNLOCK_ON_ACQUIRE, chance));
+            unlocksForJson.insert("{type:\"acquire\", sourceID:\"" + s + "\"}");
+          }
+        }
+        jw.addArrayAttribute("unlockedBy", unlocksForJson, true);
+
+        auto transform = xr.findChild("transform", elem);
+        if (transform && xr.findAttr(transform, "id", s)) {
+          edges.insert(Edge(name, "object_" + s, TRANSFORM));
+          jw.addAttribute("transformID", s);
+          if (xr.findAttr(transform, "time", s))
+            jw.addAttribute("transformTime", s);
+        }
+
+        if (xr.findAttr(elem, "gatherTime", s))
+          jw.addAttribute("gatherTime", s);
+        if (xr.findAttr(elem, "constructionTime", s))
+          jw.addAttribute("constructionTime", s);
+        if (xr.findAttr(elem, "merchantSlots", s))
+          jw.addAttribute("merchantSlots", s);
+        if (xr.findAttr(elem, "bottomlessMerchant", s) && s != "0")
+          jw.addAttribute("bottomlessMerchant", "true");
+        if (xr.findAttr(elem, "isVehicle", s) && s != "0")
+          jw.addAttribute("isVehicle", "true");
+        if (xr.findAttr(elem, "deconstructs", s))
+          jw.addAttribute("deconstructs", s);
+        if (xr.findAttr(elem, "deconstructionTime", s))
+          jw.addAttribute("deconstructionTime", s);
+
+        std::set<std::string> tags;
+        for (auto tag : xr.getChildren("tag", elem))
+          if (xr.findAttr(tag, "name", s)) {
+            tags.insert(s);
+            tagNames[s] = s;
+          }
+        jw.addArrayAttribute("tags", tags);
+
+        auto container = xr.findChild("container", elem);
+        if (container && xr.findAttr(container, "slots", s))
+          jw.addAttribute("containerSlots", s);
+
+        if (canBeOwned) {
+          if (!checkImageExists("Objects/" + image + "-corpse"))
+            missingImages.insert("corpse");
+          if (!xr.findAttr(elem, "damageParticles", s))
+            missingParticles.insert("damage");
+
+          requiredSounds.insert("defend");
+          requiredSounds.insert("death");
+        }
+
+        if (!requiredSounds.empty()) {
+          ID soundProfileID;
+          if (xr.findAttr(elem, "sounds", soundProfileID)) {
+            SoundProfile &soundProfile = soundProfiles[soundProfileID];
+            for (const std::string &soundType : requiredSounds)
+              soundProfile.checkType(soundType);
+          } else
+            jw.addArrayAttribute("soundsMissing", requiredSounds);
+        }
+
+        if (!missingParticles.empty())
+          jw.addArrayAttribute("particlesMissing", missingParticles);
+
+        if (!missingImages.empty())
+          jw.addArrayAttribute("imagesMissing", missingImages);
       }
-
-      if (!requiredSounds.empty()) {
-        ID soundProfileID;
-        if (xr.findAttr(elem, "sounds", soundProfileID)) {
-          SoundProfile &soundProfile = soundProfiles[soundProfileID];
-          for (const std::string &soundType : requiredSounds)
-            soundProfile.checkType(soundType);
-        } else
-          jw.addArrayAttribute("soundsMissing", requiredSounds);
-      }
-
-      if (!missingParticles.empty())
-        jw.addArrayAttribute("particlesMissing", missingParticles);
-
-      if (!missingImages.empty())
-        jw.addArrayAttribute("imagesMissing", missingImages);
     }
   }
 
   // Load spells
-  if (!xr.newFile(dataPath + "/spells.xml"))
-    std::cerr << "Failed to load spells.xml" << std::endl;
-  else {
+  {
     JsonWriter jw("spells");
-    for (auto elem : xr.getChildren("spell")) {
-      jw.nextEntry();
+    for (auto file : filesList) {
+      xr.newFile(file);
+      for (auto elem : xr.getChildren("spell")) {
+        jw.nextEntry();
 
-      std::string displayName;
-      if (xr.findAttr(elem, "name", displayName)) {
-        jw.addAttribute("name", displayName);
-      }
+        std::string displayName;
+        if (xr.findAttr(elem, "name", displayName)) {
+          jw.addAttribute("name", displayName);
+        }
 
-      std::set<ID> requiredSounds, missingParticles;
-      requiredSounds.insert("impact");
+        std::set<ID> requiredSounds, missingParticles;
+        requiredSounds.insert("impact");
 
-      auto aesthetics = xr.findChild("aesthetics", elem);
-      if (!aesthetics) {
-        missingParticles.insert("impact");
-      } else {
-        if (xr.findAttr(aesthetics, "projectile", std::string{}))
-          requiredSounds.insert("launch");
-        if (!xr.findAttr(aesthetics, "impactParticles", std::string{}))
+        auto aesthetics = xr.findChild("aesthetics", elem);
+        if (!aesthetics) {
           missingParticles.insert("impact");
+        } else {
+          if (xr.findAttr(aesthetics, "projectile", std::string{}))
+            requiredSounds.insert("launch");
+          if (!xr.findAttr(aesthetics, "impactParticles", std::string{}))
+            missingParticles.insert("impact");
 
-        ID soundProfileID;
-        if (xr.findAttr(aesthetics, "sounds", soundProfileID)) {
-          SoundProfile &soundProfile = soundProfiles[soundProfileID];
-          for (const std::string &soundType : requiredSounds)
-            soundProfile.checkType(soundType);
-        } else
-          jw.addArrayAttribute("soundsMissing", requiredSounds);
+          ID soundProfileID;
+          if (xr.findAttr(aesthetics, "sounds", soundProfileID)) {
+            SoundProfile &soundProfile = soundProfiles[soundProfileID];
+            for (const std::string &soundType : requiredSounds)
+              soundProfile.checkType(soundType);
+          } else
+            jw.addArrayAttribute("soundsMissing", requiredSounds);
+        }
+
+        if (!missingParticles.empty())
+          jw.addArrayAttribute("particlesMissing", missingParticles);
       }
-
-      if (!missingParticles.empty())
-        jw.addArrayAttribute("particlesMissing", missingParticles);
     }
   }
 
   // Load NPCs
-  if (!xr.newFile(dataPath + "/npcTypes.xml"))
-    std::cerr << "Failed to load npcTypes.xml" << std::endl;
-  else {
-    std::set<ID> requiredSounds, missingImages;
-    requiredSounds.insert("attack");
-    requiredSounds.insert("defend");
-    requiredSounds.insert("death");
-
+  {
     JsonWriter jw("npcs");
-    for (auto elem : xr.getChildren("npcType")) {
-      jw.nextEntry();
-      ID id;
-      if (!xr.findAttr(elem, "id", id)) continue;
-      jw.addAttribute("id", id);
-      Node::Name name = "npc_" + id;
-      jw.addAttribute("image", name);
+    for (auto file : filesList) {
+      xr.newFile(file);
+      std::set<ID> requiredSounds, missingImages;
+      requiredSounds.insert("attack");
+      requiredSounds.insert("defend");
+      requiredSounds.insert("death");
 
-      if (!checkImageExists("NPCs/" + id)) missingImages.insert("normal");
-      if (!checkImageExists("NPCs/" + id + "-corpse"))
-        missingImages.insert("corpse");
+      for (auto elem : xr.getChildren("npcType")) {
+        jw.nextEntry();
+        ID id;
+        if (!xr.findAttr(elem, "id", id)) continue;
+        jw.addAttribute("id", id);
+        Node::Name name = "npc_" + id;
+        jw.addAttribute("image", name);
 
-      std::string displayName;
-      if (xr.findAttr(elem, "name", displayName)) {
-        nodes.add(Node(NPC, id, displayName));
-        jw.addAttribute("name", displayName);
+        if (!checkImageExists("NPCs/" + id)) missingImages.insert("normal");
+        if (!checkImageExists("NPCs/" + id + "-corpse"))
+          missingImages.insert("corpse");
+
+        std::string displayName;
+        if (xr.findAttr(elem, "name", displayName)) {
+          nodes.add(Node(NPC, id, displayName));
+          jw.addAttribute("name", displayName);
+        }
+
+        ID soundProfileID;
+        if (xr.findAttr(elem, "sounds", soundProfileID)) {
+          SoundProfile &soundProfile = soundProfiles[soundProfileID];
+          soundProfile.checkType("attack");
+          soundProfile.checkType("defend");
+          soundProfile.checkType("death");
+        } else
+          jw.addArrayAttribute("soundsMissing", requiredSounds);
+
+        std::set<ID> lootList;
+        for (auto loot : xr.getChildren("loot", elem)) {
+          ID lootItem;
+          if (!xr.findAttr(loot, "id", lootItem)) continue;
+          edges.insert(Edge(name, "item_" + lootItem, LOOT));
+          lootList.insert(lootItem);
+        }
+        if (!lootList.empty()) jw.addArrayAttribute("loot", lootList);
+
+        std::string stat;
+        if (xr.findAttr(elem, "maxHealth", stat))
+          jw.addAttribute("health", stat);
+        if (xr.findAttr(elem, "attack", stat)) jw.addAttribute("attack", stat);
+        if (xr.findAttr(elem, "attackTime", stat))
+          jw.addAttribute("attackTime", stat);
+
+        if (!missingImages.empty())
+          jw.addArrayAttribute("imagesMissing", missingImages);
       }
-
-      ID soundProfileID;
-      if (xr.findAttr(elem, "sounds", soundProfileID)) {
-        SoundProfile &soundProfile = soundProfiles[soundProfileID];
-        soundProfile.checkType("attack");
-        soundProfile.checkType("defend");
-        soundProfile.checkType("death");
-      } else
-        jw.addArrayAttribute("soundsMissing", requiredSounds);
-
-      std::set<ID> lootList;
-      for (auto loot : xr.getChildren("loot", elem)) {
-        ID lootItem;
-        if (!xr.findAttr(loot, "id", lootItem)) continue;
-        edges.insert(Edge(name, "item_" + lootItem, LOOT));
-        lootList.insert(lootItem);
-      }
-      if (!lootList.empty()) jw.addArrayAttribute("loot", lootList);
-
-      std::string stat;
-      if (xr.findAttr(elem, "maxHealth", stat)) jw.addAttribute("health", stat);
-      if (xr.findAttr(elem, "attack", stat)) jw.addAttribute("attack", stat);
-      if (xr.findAttr(elem, "attackTime", stat))
-        jw.addAttribute("attackTime", stat);
-
-      if (!missingImages.empty())
-        jw.addArrayAttribute("imagesMissing", missingImages);
     }
   }
 
   // Load tag names
-  if (!xr.newFile(dataPath + "/tags.xml"))
-    std::cerr << "Failed to load tags.xml" << std::endl;
-  else {
+  for (auto file : filesList) {
+    xr.newFile(file);
     for (auto elem : xr.getChildren("tag")) {
       ID id;
       if (!xr.findAttr(elem, "id", id)) continue;
