@@ -2323,6 +2323,10 @@ void Client::handle_SV_LEARNED_SPELL(const std::string &spellID) {
   if (it == _spells.end()) return;
   _knownSpells.insert(it->second);
 
+  auto icon = it->second->icon();
+  auto text = "You have learned a new spell: " + it->second->name();
+  toast(icon, text);
+
   refreshHotbar();
 }
 

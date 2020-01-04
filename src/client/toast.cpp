@@ -41,8 +41,12 @@ void Client::updateToasts() {
 }
 
 void Client::toast(const std::string &icon, const std::string &text) {
+  toast(_icons[icon], text);
+}
+
+void Client::toast(const Texture &icon, const std::string &text) {
   Toast t;
-  t.icon = _icons[icon];
+  t.icon = icon;
   t.text = text;
   t.timeRemaining = 8000;
 

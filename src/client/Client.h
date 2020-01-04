@@ -412,6 +412,7 @@ class Client {
   void updateToasts();
   void populateToastsList();
   void toast(const std::string &icon, const std::string &message);
+  void toast(const Texture &icon, const std::string &message);
   void initQuestProgress();
   OutlinedLabel *_instructionsLabel{nullptr};
 

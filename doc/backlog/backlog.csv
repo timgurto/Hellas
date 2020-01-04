@@ -399,7 +399,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 566,Dropping an item deselects target,5,3,Bug,,,,
 568,Add missing crafting/gathering sounds,55,34,Aesthetics,100,,,
 570,Add warning if merchant-object inventory is full,5,13,Usability,,,,
-571,Altar of Athena teaches port-to-city spell,8,13,Feature,,,,
+571,Altar of Athena teaches port-to-city spell,8,13,Feature,,TRUE,,
 572,Sanitise /war and /cityWar calls,3,8,Usability,,,,
 573,Quests can reward items,34,3,Feature,,,,
 574,Require full text entry for merchant prices,13,13,Usability,,,,

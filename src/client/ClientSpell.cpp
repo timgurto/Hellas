@@ -146,6 +146,11 @@ std::string ClientSpell::createEffectDescription() const {
         << " podes in a random direction"s;
   }
 
+  else if (effectName == "teleportToCity") {
+    oss << "Instantly teleport to the Altar to Athena in "s
+        << Client::instance().character().cityName();
+  }
+
   if (isBuff) {
     if (buffDuration > 0) {
       auto conjunction = "for"s;

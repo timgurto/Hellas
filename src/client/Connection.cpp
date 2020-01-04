@@ -99,7 +99,7 @@ bool Connection::shouldAttemptReconnection() const {
 void Connection::showError(const std::string &msg) const {
   if (!Client::clientExists()) return;
   Client::instance().showErrorMessage(msg, Color::CHAT_ERROR);
-  _client->toast({}, msg);
+  _client->toast(""s, msg);
 }
 
 std::string Connection::getServerIP() {
