@@ -137,6 +137,8 @@ class Server {
   // Action functions
   static bool endTutorial(const Object &obj, User &performer,
                           const std::string &textArg);
+  static bool createCityOrTeachCityPort(const Object &obj, User &performer,
+                                        const std::string &textArg);
   static bool createCity(const Object &obj, User &performer,
                          const std::string &textArg);
   static bool setRespawnPoint(const Object &obj, User &performer,

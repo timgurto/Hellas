@@ -4,7 +4,7 @@
 
 Action::FunctionMap Action::functionMap = {
     {"endTutorial", Server::endTutorial},
-    {"createCity", Server::createCity},
+    {"createCityOrTeachCityPort", Server::createCityOrTeachCityPort},
     {"setRespawnPoint", Server::setRespawnPoint}};
 
 CallbackAction::FunctionMap CallbackAction::functionMap = {
@@ -47,18 +47,23 @@ bool Server::endTutorial(const Object &obj, User &performer,
   return true;
 }
 
+bool Server::createCityOrTeachCityPort(const Object &obj, User &performer,
+                                       const std::string &textArg) {
+  auto &server = Server::instance();
+  if (server.cities().isPlayerInACity(performer.name())) {
+    performer.getClass().teachSpell("cityPort");
+    return true;
+  } else
+    return createCity(obj, performer, textArg);
+}
+
 bool Server::createCity(const Object &obj, User &performer,
                         const std::string &textArg) {
   auto &server = Server::instance();
 
   if (textArg == "_") return false;
 
-  if (!server._cities.getPlayerCity(performer.name()).empty()) {
-    performer.sendMessage(WARNING_YOU_ARE_ALREADY_IN_CITY);
-    return false;
-  }
-
-  server._cities.createCity(textArg);
+  server._cities.createCity(textArg, obj.location());
   server._cities.addPlayerToCity(performer, textArg);
 
   server.makePlayerAKing(performer);

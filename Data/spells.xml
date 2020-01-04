@@ -9,6 +9,7 @@ Functions:
     debuff (s1 = ID of debuff to apply)
     dispellDebuff (s1 = school)
     randomTeleport (i1 = distance in podes)
+    teleportToCity ()
 -->
 
 <root>
@@ -17,6 +18,11 @@ Functions:
 <spell id="food" name="Eat food" >
     <targets self="1" />
     <function name="buff" s1="food" />
+</spell>
+<spell id="cityPort" name="Return to City" icon="arch" cooldown="2700" > <!-- 45 minutes -->
+    <targets self="1" />
+    <function name="teleportToCity" />
+    <aesthetics sounds="teleport" />
 </spell>
 
 <!-- Class -->

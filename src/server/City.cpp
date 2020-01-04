@@ -36,7 +36,7 @@ void Cities::createCity(const City::Name &cityName, const MapPoint &location) {
                     Color::CHAT_ERROR);
     return;
   }
-  _container[cityName] = City(cityName);
+  _container[cityName] = {cityName, location};
 }
 
 bool Cities::doesCityExist(const City::Name &cityName) const {

@@ -533,7 +533,7 @@
     constructionTime="0" playerUnique="altar"
     sounds="brick" damageParticles="brick" >
     <collisionRect x="-18" y="-8" w="37" h="17" />
-    <action label="Worship" target="createCity" tooltip="Worshipping Athena will found a city.  If you are already a citizen of a city, Athena will instead grant you the power to return immediately to her altar." textInput="City name" cost="entrails" />
+    <action label="Worship" target="createCityOrTeachCityPort" tooltip="Worshipping Athena will found a city.  If you are already a citizen of a city, Athena will instead grant you the power to return immediately to her altar." textInput="City name" cost="entrails" />
     <onDestroy target="destroyCity" />
     <material id="tinStatue" />
     <material id="brick" quantity="8" />

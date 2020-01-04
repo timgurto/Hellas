@@ -15,7 +15,8 @@ SpellEffect::FunctionMap SpellEffect::functionMap = {
     {"debuff", debuff},
     {"scaleThreat", scaleThreat},
     {"dispellDebuff", dispellDebuff},
-    {"randomTeleport", randomTeleport}};
+    {"randomTeleport", randomTeleport},
+    {"teleportToCity", teleportToCity}};
 
 SpellEffect::FlagMap SpellEffect::aggressionMap = {
     {doDirectDamage, true}, {doDirectDamageWithModifiedThreat, true},
@@ -173,6 +174,38 @@ CombatResult SpellEffect::randomTeleport(const SpellEffect &effect,
     auto dY = sin(angle) * radius;
 
     proposedLocation = target.location() + MapPoint{dX, dY};
+    if (server.isLocationValid(proposedLocation, target)) break;
+  }
+
+  if (attempts == 0) return FAIL;
+
+  target.teleportTo(proposedLocation);
+
+  return HIT;
+}
+
+CombatResult SpellEffect::teleportToCity(const SpellEffect &effect,
+                                         Entity &caster, Entity &target) {
+  auto &server = Server::instance();
+  const auto *casterAsUser = dynamic_cast<const User *>(&caster);
+  if (!casterAsUser) return FAIL;
+
+  auto cityName = server.cities().getPlayerCity(casterAsUser->name());
+  if (cityName.empty()) return FAIL;
+
+  auto cityLoc = server.cities().locationOf(cityName);
+
+  auto proposedLocation = MapPoint{};
+  const auto MAX_RADIUS = 150_px;
+
+  auto attempts = 100;
+  while (attempts-- > 0) {
+    auto angle = randDouble() * 2 * PI;
+    auto radius = sqrt(randDouble()) * MAX_RADIUS;
+    auto dX = cos(angle) * radius;
+    auto dY = sin(angle) * radius;
+
+    proposedLocation = cityLoc + MapPoint{dX, dY};
     if (server.isLocationValid(proposedLocation, target)) break;
   }
 
