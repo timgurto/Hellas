@@ -179,7 +179,7 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
         }
 
         AND_GIVEN("Bob is in a city") {
-          s.cities().createCity("Athens");
+          s.cities().createCity("Athens", {});
           s.cities().addPlayerToCity(bob, "Athens");
 
           AND_GIVEN("the city is at war with Alice") {
@@ -244,7 +244,7 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
     }
 
     AND_GIVEN("it's owned by the city of Athens") {
-      s.cities().createCity("Athens");
+      s.cities().createCity("Athens", {});
       dog.permissions().setCityOwner("Athens");
 
       AND_GIVEN("a player named Bob") {
@@ -266,7 +266,7 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
         s.addNPC("dog", {15, 10});
         auto *dog2 = dynamic_cast<NPC *>(s.entities().find(dog.serial() + 1));
         CHECK(dog2 != nullptr);
-        s.cities().createCity("Sparta");
+        s.cities().createCity("Sparta", {});
         dog2->permissions().setCityOwner("Sparta");
 
         AND_WHEN("Athens and Sparta declare war") {
@@ -479,7 +479,7 @@ TEST_CASE("Neutral pets have the correct UI colours") {
 
     AND_GIVEN("a city and a citizen") {
       auto c = TestClient::WithDataString(data);
-      s.cities().createCity("Athens");
+      s.cities().createCity("Athens", {});
 
       s.waitForUsers(1);
       auto &user = s.getFirstUser();

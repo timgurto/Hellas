@@ -100,7 +100,7 @@ TEST_CASE(
   TestServer s = TestServer::WithData("signpost");
 
   // And a city named Athens
-  s.cities().createCity("Athens");
+  s.cities().createCity("Athens", {});
 
   // And a signpost near the user spawn point that belongs to Athens;
   s.addObject("signpost", {10, 15});
@@ -135,7 +135,7 @@ TEST_CASE("New citizens find out about city objects") {
     auto s = TestServer::WithData("signpost");
     auto c = TestClient::WithData("signpost");
 
-    s.cities().createCity("Athens");
+    s.cities().createCity("Athens", {});
     s.addObject("signpost", {1000, 1000}, {Permissions::Owner::CITY, "Athens"});
 
     THEN("the player doesn't know about the object") {

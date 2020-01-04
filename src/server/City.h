@@ -5,6 +5,8 @@
 #include <set>
 #include <string>
 
+#include "../Point.h"
+
 class User;
 
 class Kings {
@@ -24,7 +26,7 @@ class City {
  public:
   typedef std::string Name;
 
-  City(const Name &name);
+  City(const Name &name = {}, const MapPoint &location = {});
 
   typedef std::set<std::string> Members;
   const Members &members() const { return _members; }
@@ -34,14 +36,17 @@ class City {
   void addPlayerWithoutAlerting(const std::string &username);
   bool isPlayerAMember(const std::string &username) const;
 
+  const MapPoint &location() const { return _location; }
+
  private:
   Name _name;
   Members _members;
+  MapPoint _location;  // Normally, the location of the Altar to Athena
 };
 
 class Cities {
  public:
-  void createCity(const City::Name &cityName);
+  void createCity(const City::Name &cityName, const MapPoint &location);
   bool doesCityExist(const City::Name &cityName) const;
 
   void destroyCity(const City::Name &cityName);
@@ -54,6 +59,7 @@ class Cities {
   const City::Name &getPlayerCity(const std::string &username) const;
   const City::Members &membersOf(const std::string &cityName) const;
   void sendCityObjectsToCitizen(const User &citizen) const;
+  MapPoint locationOf(const std::string &cityName) const;
 
   void writeToXMLFile(const std::string &filename) const;
   void readFromXMLFile(const std::string &filename);

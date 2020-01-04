@@ -6,7 +6,8 @@
 
 City::Members Cities::dummyMembersList{};
 
-City::City(const Name &name = "") : _name(name) {}
+City::City(const Name &name, const MapPoint &location)
+    : _name(name), _location(location) {}
 
 void City::addAndAlertPlayers(const User &user) {
   _members.insert(user.name());
@@ -29,7 +30,7 @@ bool City::isPlayerAMember(const std::string &username) const {
   return _members.count(username) == 1;
 }
 
-void Cities::createCity(const City::Name &cityName) {
+void Cities::createCity(const City::Name &cityName, const MapPoint &location) {
   if (doesCityExist(cityName)) {
     Server::debug()("Can't create city: a city with that name already exists",
                     Color::CHAT_ERROR);
@@ -111,10 +112,15 @@ const City::Name &Cities::getPlayerCity(const std::string &username) const {
 void Cities::writeToXMLFile(const std::string &filename) const {
   XmlWriter xw(filename);
   for (const auto &pair : _container) {
+    const City &city = pair.second;
+
     auto e = xw.addChild("city");
     xw.setAttr(e, "name", pair.first);
 
-    const City &city = pair.second;
+    auto locE = xw.addChild("location", e);
+    xw.setAttr(locE, "x", city.location().x);
+    xw.setAttr(locE, "y", city.location().y);
+
     for (const std::string &member : city.members()) {
       auto memberE = xw.addChild("member", e);
       xw.setAttr(memberE, "username", member);
@@ -132,7 +138,14 @@ void Cities::readFromXMLFile(const std::string &filename) {
   for (auto elem : xr.getChildren("city")) {
     City::Name name;
     if (!xr.findAttr(elem, "name", name)) continue;
-    createCity(name);
+
+    auto locationElem = xr.findChild("location", elem);
+    if (!locationElem) continue;
+    auto location = MapPoint{};
+    xr.findAttr(locationElem, "x", location.x);
+    xr.findAttr(locationElem, "y", location.y);
+
+    createCity(name, location);
     City &city = _container[name];
     for (auto memberElem : xr.getChildren("member", elem)) {
       std::string username;
@@ -164,4 +177,14 @@ void Cities::sendCityObjectsToCitizen(const User &citizen) const {
     auto *entity = Server::instance().findEntityBySerial(serial);
     entity->sendInfoToClient(citizen);
   }
+}
+
+MapPoint Cities::locationOf(const std::string &cityName) const {
+  auto it = _container.find(cityName);
+  bool cityExists = it != _container.end();
+  if (!cityExists) {
+    SERVER_ERROR("Can't get location of a city that doesn't exist");
+    return {};
+  }
+  return it->second.location();
 }
