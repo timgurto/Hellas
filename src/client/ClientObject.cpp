@@ -770,7 +770,7 @@ bool ClientObject::userHasAccess() const {
       dynamic_cast<const ClientObjectType *>(type())->isPlayerUnique();
   if (!isPlayerUnique || _owner.type != Owner::PLAYER) return false;
   auto ownerCity = Client::instance().getUserCity(_owner.name);
-  auto isOwnedByFellowCitizen = playerCity == ownerCity;
+  auto isOwnedByFellowCitizen = playerCity == ownerCity && !playerCity.empty();
   return isOwnedByFellowCitizen;
 }
 
