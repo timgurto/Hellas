@@ -130,6 +130,10 @@ class Entity {
   virtual bool canBlock() const { return false; }
   bool isStunned() const { return _stats.stunned; }
   bool isSpellCoolingDown(const std::string &spell) const;
+  const std::map<std::string, ms_t> &spellCooldowns() const {
+    return _spellCooldowns;
+  }
+  void loadSpellCooldown(std::string id, ms_t remaining);
 
   void initStatsFromType();
   void fillHealthAndEnergy();

@@ -96,6 +96,10 @@ void Entity::sendGotHitMessageTo(const User &user) const {
   user.sendMessage({SV_ENTITY_WAS_HIT, serial()});
 }
 
+void Entity::loadSpellCooldown(std::string id, ms_t remaining) {
+  _spellCooldowns[id] = remaining;
+}
+
 void Entity::initStatsFromType() {
   _stats = _type->baseStats();
   _health = _stats.maxHealth;

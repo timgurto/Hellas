@@ -188,6 +188,15 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     if (xr.findAttr(slotElem, "id", id)) user.getClass().markSpellAsKnown(id);
   }
 
+  elem = xr.findChild("spellCooldowns");
+  for (auto slotElem : xr.getChildren("cooldown", elem)) {
+    std::string id;
+    ms_t remaining;
+    if (!xr.findAttr(slotElem, "id", id)) continue;
+    if (!xr.findAttr(slotElem, "remaining", remaining)) continue;
+    user.loadSpellCooldown(id, remaining);
+  }
+
   elem = xr.findChild("quests");
   for (auto questElem : xr.getChildren("completed", elem)) {
     auto questID = ""s;
@@ -312,6 +321,14 @@ void Server::writeUserData(const User &user) const {
   for (auto spellID : user.getClass().otherKnownSpells()) {
     auto spellElem = xw.addChild("spell", e);
     xw.setAttr(spellElem, "id", spellID);
+  }
+
+  e = xw.addChild("spellCooldowns");
+  for (const auto &pair : user.spellCooldowns()) {
+    if (pair.second == 0) continue;
+    auto cooldownElem = xw.addChild("cooldown", e);
+    xw.setAttr(cooldownElem, "id", pair.first);
+    xw.setAttr(cooldownElem, "remaining", pair.second);
   }
 
   e = xw.addChild("quests");

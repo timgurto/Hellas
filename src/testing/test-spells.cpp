@@ -186,6 +186,38 @@ TEST_CASE("Spell cooldowns", "[remote]") {
     }
     User::OBJECT_TYPE.baseStats(oldStats);
   }
+
+  SECTION("Persistence") {
+    // Given Alice knows a spell with a 5s cooldown"
+    auto data = R"(
+      <spell id="nop" cooldown="5" >
+        <targets self=1 />
+        <function name="doDirectDamage" i1="0" />
+      </spell>
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    {
+      auto c = TestClient::WithUsernameAndDataString("Alice", data);
+      s.waitForUsers(1);
+      auto &alice = s.getFirstUser();
+      alice.getClass().teachSpell("nop");
+
+      // When she casts it
+      c.sendMessage(CL_CAST, "nop");
+      WAIT_UNTIL(alice.isSpellCoolingDown("nop"));
+
+      // And when she logs out and back in
+    }
+    {
+      auto c = TestClient::WithUsernameAndDataString("Alice", data);
+      s.waitForUsers(1);
+      auto &alice = s.getFirstUser();
+
+      // Then the spell is still cooling down
+      CHECK(alice.isSpellCoolingDown("nop"));
+    }
+  }
 }
 
 TEST_CASE("NPC spells") {
