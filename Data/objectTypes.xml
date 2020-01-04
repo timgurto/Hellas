@@ -524,7 +524,7 @@
     <material id="woodenStatue" />
     <material id="rock" quantity="8" />
     <durability item="rock" quantity="8" />
-    <action label="Worship" target="setRespawnPoint" tooltip="Set this location as your respawn point upon death" cost="entrails" />
+    <action label="Worship" target="setRespawnPoint" tooltip="Worshipping Hermes entreats him to return you to this location when you die." cost="entrails" />
     <unlockedBy recipe="woodenStatue" />
     <canBeRepaired cost="rock" />
 </objectType>
@@ -533,7 +533,7 @@
     constructionTime="0" playerUnique="altar"
     sounds="brick" damageParticles="brick" >
     <collisionRect x="-18" y="-8" w="37" h="17" />
-    <action label="Worship" target="createCity" tooltip="Found a city" textInput="City name" cost="entrails" />
+    <action label="Worship" target="createCity" tooltip="Worshipping Athena will found a city.  If you are already a citizen of a city, Athena will instead grant you the power to return immediately to her altar." textInput="City name" cost="entrails" />
     <onDestroy target="destroyCity" />
     <material id="tinStatue" />
     <material id="brick" quantity="8" />

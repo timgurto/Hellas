@@ -414,7 +414,35 @@ void ClientObject::addActionToWindow() {
   y += BUTTON_GAP;
   const auto &action = objectType()->action();
 
+  // Description
+  const auto DESCRIPTION_WIDTH = 150_px;
+  auto lines =
+      WordWrapper{Element::font(), DESCRIPTION_WIDTH}.wrap(action.tooltip);
+  for (auto line : lines) {
+    x = BUTTON_GAP;
+    _window->addChild(
+        new Label({x, y, DESCRIPTION_WIDTH, Element::TEXT_HEIGHT}, line));
+    x += DESCRIPTION_WIDTH;
+    y += Element::TEXT_HEIGHT;
+    if (newWidth < x) newWidth = x;
+  }
+
+  if (action.cost) {
+    x = BUTTON_GAP;
+    _window->addChild(new Label({x, y, DESCRIPTION_WIDTH, Element::ITEM_HEIGHT},
+                                "Consumes: ", Element::LEFT_JUSTIFIED,
+                                Element::CENTER_JUSTIFIED));
+    x += 45;
+    _window->addChild(new Picture(x, y, action.cost->icon()));
+    x += Element::ITEM_HEIGHT;
+    _window->addChild(new Label({x, y, DESCRIPTION_WIDTH, Element::ITEM_HEIGHT},
+                                action.cost->name(), Element::LEFT_JUSTIFIED,
+                                Element::CENTER_JUSTIFIED));
+    y += Element::ITEM_HEIGHT;
+  }
+
   // Text input
+  x = BUTTON_GAP;
   if (!action.textInput.empty()) {
     const auto LABEL_WIDTH = px_t{50};
     auto *label = new Label({x, y, LABEL_WIDTH, 13}, action.textInput);
@@ -422,7 +450,7 @@ void ClientObject::addActionToWindow() {
     x += LABEL_WIDTH + BUTTON_GAP;
 
     // Assumptions: single word, with capital initial.
-    _actionTextEntry = new TextBox({x, y, 50, 13}, TextBox::LETTERS);
+    _actionTextEntry = new TextBox({x, y, 100, 13}, TextBox::LETTERS);
     _actionTextEntry->forcePascalCase();
 
     _window->addChild(_actionTextEntry);
@@ -435,21 +463,6 @@ void ClientObject::addActionToWindow() {
   x = BUTTON_GAP;
   Button *button = new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, action.label,
                               [this]() { performAction(this); });
-
-  auto tooltipNeeded = !action.tooltip.empty() || action.cost;
-  if (tooltipNeeded) {
-    Tooltip tooltip;
-    if (!action.tooltip.empty()) tooltip.addLine(action.tooltip);
-
-    if (!action.tooltip.empty() && action.cost) tooltip.addGap();
-
-    if (action.cost) {
-      tooltip.setColor(Color::TOOLTIP_BODY);
-      tooltip.addLine("Consumes "s + action.cost->name());
-    }
-
-    button->setTooltip(tooltip);
-  }
   _window->addChild(button);
   y += BUTTON_GAP + BUTTON_HEIGHT;
   x += BUTTON_GAP + BUTTON_WIDTH;
