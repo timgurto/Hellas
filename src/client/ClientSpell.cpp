@@ -147,8 +147,7 @@ std::string ClientSpell::createEffectDescription() const {
   }
 
   else if (effectName == "teleportToCity") {
-    oss << "Instantly teleport to the Altar to Athena in "s
-        << Client::instance().character().cityName();
+    oss << "Instantly teleport to the Altar to Athena in your city"s;
   }
 
   if (isBuff) {

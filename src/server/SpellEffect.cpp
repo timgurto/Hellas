@@ -191,7 +191,10 @@ CombatResult SpellEffect::teleportToCity(const SpellEffect &effect,
   if (!casterAsUser) return FAIL;
 
   auto cityName = server.cities().getPlayerCity(casterAsUser->name());
-  if (cityName.empty()) return FAIL;
+  if (cityName.empty()) {
+    casterAsUser->sendMessage(ERROR_NOT_IN_CITY);
+    return FAIL;
+  }
 
   auto cityLoc = server.cities().locationOf(cityName);
 
