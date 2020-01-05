@@ -15,8 +15,14 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
   auto xr = XmlReader::FromFile(_userFilesPath + user.name() + ".usr");
   if (!xr) return false;
 
+  auto timeSinceThisDataWasWritten = ms_t{0};
   {
     auto elem = xr.findChild("general");
+
+    auto timeWritten = time_t{0};
+    xr.findAttr(elem, "timeThisWasWritten", timeWritten);
+    timeSinceThisDataWasWritten =
+        static_cast<ms_t>((time(nullptr) - timeWritten) * 1000);
 
     auto secondsPlayed = 0;
     if (xr.findAttr(elem, "secondsPlayed", secondsPlayed))
@@ -194,6 +200,9 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     ms_t remaining;
     if (!xr.findAttr(slotElem, "id", id)) continue;
     if (!xr.findAttr(slotElem, "remaining", remaining)) continue;
+
+    if (timeSinceThisDataWasWritten > remaining) continue;
+    remaining -= timeSinceThisDataWasWritten;
     user.loadSpellCooldown(id, remaining);
   }
 
@@ -245,6 +254,7 @@ void Server::writeUserData(const User &user) const {
 
   auto e = xw.addChild("general");
   xw.setAttr(e, "passwordHash", user.pwHash());
+  xw.setAttr(e, "timeThisWasWritten", time(nullptr));
   xw.setAttr(e, "secondsPlayed", user.secondsPlayed());
   xw.setAttr(e, "realWorldLocation", user.realWorldLocation());
   xw.setAttr(e, "class", user.getClass().type().id());

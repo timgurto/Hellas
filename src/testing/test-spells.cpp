@@ -188,9 +188,9 @@ TEST_CASE("Spell cooldowns", "[remote]") {
   }
 
   SECTION("Persistence") {
-    // Given Alice knows a spell with a 5s cooldown"
+    // Given Alice knows a spell with a 2s cooldown"
     auto data = R"(
-      <spell id="nop" cooldown="5" >
+      <spell id="nop" cooldown="2" >
         <targets self=1 />
         <function name="doDirectDamage" i1="0" />
       </spell>
@@ -216,6 +216,17 @@ TEST_CASE("Spell cooldowns", "[remote]") {
 
       // Then the spell is still cooling down
       CHECK(alice.isSpellCoolingDown("nop"));
+
+      // And when she logs out and back in after 2s
+    }
+    {
+      REPEAT_FOR_MS(2000);
+      auto c = TestClient::WithUsernameAndDataString("Alice", data);
+      s.waitForUsers(1);
+      auto &alice = s.getFirstUser();
+
+      // Then the spell has finished cooling down
+      CHECK_FALSE(alice.isSpellCoolingDown("nop"));
     }
   }
 }
