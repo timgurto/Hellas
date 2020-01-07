@@ -640,15 +640,14 @@ void ClientObject::assembleWindow(Client &client) {
              hasAQuest =
                  !(startsQuests().empty() && completableQuests().empty());
 
-  auto hasNonDemolitionContent = false;
-
   if (!_window) _window = Window::WithRectAndTitle({}, objType.name());
 
   auto windowHasClassContent = addClassSpecificStuffToWindow();
-  hasNonDemolitionContent = hasNonDemolitionContent || windowHasClassContent;
+
+  auto hasNonDemolitionContent = windowHasClassContent || hasContainer ||
+                                 isMerchant || canCede || canGrant || hasAQuest;
 
   if (isBeingConstructed()) {
-    hasNonDemolitionContent = true;
     if (userHasAccess()) {
       addConstructionToWindow();
       if (canCede) addCedeButtonToWindow();
@@ -657,40 +656,16 @@ void ClientObject::assembleWindow(Client &client) {
     }
 
   } else if (!userHasAccess()) {
-    if (isMerchant) {
-      hasNonDemolitionContent = true;
-      addMerchantTradeToWindow();
-    }
+    if (isMerchant) addMerchantTradeToWindow();
 
   } else {
-    if (hasAQuest) {
-      addQuestsToWindow();
-      hasNonDemolitionContent = true;
-    }
-    if (isMerchant) {
-      addMerchantSetupToWindow();
-      hasNonDemolitionContent = true;
-    }
-    if (hasContainer) {
-      hasNonDemolitionContent = true;
-      addInventoryToWindow();
-    }
-    if (objType.hasAction()) {
-      addActionToWindow();
-      hasNonDemolitionContent = true;
-    }
-    if (objType.canDeconstruct()) {
-      addDeconstructionToWindow();
-      hasNonDemolitionContent = true;
-    }
-    if (canCede) {
-      addCedeButtonToWindow();
-      hasNonDemolitionContent = true;
-    }
-    if (canGrant) {
-      addGrantButtonToWindow();
-      hasNonDemolitionContent = true;
-    }
+    if (hasAQuest) addQuestsToWindow();
+    if (isMerchant) addMerchantSetupToWindow();
+    if (hasContainer) addInventoryToWindow();
+    if (objType.hasAction()) addActionToWindow();
+    if (objType.canDeconstruct()) addDeconstructionToWindow();
+    if (canCede) addCedeButtonToWindow();
+    if (canGrant) addGrantButtonToWindow();
     if (canDemolish) addDemolishButtonToWindow();
   }
 

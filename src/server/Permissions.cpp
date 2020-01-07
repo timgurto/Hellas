@@ -113,13 +113,6 @@ bool Permissions::canUserDemolish(const std::string &username) const {
   // Owned by player
   if (_owner == Owner{Owner::PLAYER, username}) return true;
 
-  const Cities &cities = Server::instance()._cities;
-  const std::string &playerCity = cities.getPlayerCity(username);
-  if (playerCity.empty()) return false;
-
-  // Owned by player's city
-  if (_owner == Owner{Owner::CITY, playerCity}) return true;
-
   return false;
 }
 
