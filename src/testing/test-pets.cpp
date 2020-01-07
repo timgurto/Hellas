@@ -17,7 +17,7 @@ TEST_CASE("Taming NPCs") {
     cat.reduceHealth(9999);
 
     THEN("it has no owner") {
-      CHECK(cat.owner().type == Permissions::Owner::NONE);
+      CHECK(cat.owner().type == Permissions::Owner::ALL_HAVE_ACCESS);
 
       WHEN("a user tries to tame it") {
         c.sendMessage(CL_TAME_NPC, makeArgs(cat.serial()));
@@ -33,7 +33,7 @@ TEST_CASE("Taming NPCs") {
 
         THEN("it has no owner") {
           REPEAT_FOR_MS(50);
-          CHECK(cat.owner().type == Permissions::Owner::NONE);
+          CHECK(cat.owner().type == Permissions::Owner::ALL_HAVE_ACCESS);
         }
       }
     }
@@ -328,7 +328,7 @@ TEST_CASE("Non-tamable NPCs can't be tamed") {
 
       THEN("it is still unowned") {
         REPEAT_FOR_MS(100);
-        CHECK(tiger.owner().type == Permissions::Owner::NONE);
+        CHECK(tiger.owner().type == Permissions::Owner::ALL_HAVE_ACCESS);
       }
     }
   }
@@ -363,7 +363,7 @@ TEST_CASE("Taming can require an item") {
           CHECK(c.waitForMessage(WARNING_ITEM_NEEDED));
 
           AND_THEN("it is still unowned") {
-            CHECK(girl.owner().type == Permissions::Owner::NONE);
+            CHECK(girl.owner().type == Permissions::Owner::ALL_HAVE_ACCESS);
           }
         }
       }
@@ -394,7 +394,7 @@ TEST_CASE("Taming can require an item") {
 
           THEN("it is still unowned") {
             REPEAT_FOR_MS(100);
-            CHECK(girl.owner().type == Permissions::Owner::NONE);
+            CHECK(girl.owner().type == Permissions::Owner::ALL_HAVE_ACCESS);
           }
         }
 

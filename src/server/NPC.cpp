@@ -31,7 +31,8 @@ void NPC::update(ms_t timeElapsed) {
 bool NPC::canBeAttackedBy(const User &user) const {
   if (!npcType()->canBeAttacked()) return false;
 
-  if (_permissions.owner().type == Permissions::Owner::NONE) return true;
+  if (_permissions.owner().type == Permissions::Owner::ALL_HAVE_ACCESS)
+    return true;
 
   const auto &server = Server::instance();
   auto ownerType = _permissions.owner().type == Permissions::Owner::PLAYER
@@ -42,8 +43,10 @@ bool NPC::canBeAttackedBy(const User &user) const {
 }
 
 bool NPC::canBeAttackedBy(const NPC &npc) const {
-  const auto thisIsUnowned = owner().type == Permissions::Owner::NONE;
-  const auto otherIsUnowned = npc.owner().type == Permissions::Owner::NONE;
+  const auto thisIsUnowned =
+      owner().type == Permissions::Owner::ALL_HAVE_ACCESS;
+  const auto otherIsUnowned =
+      npc.owner().type == Permissions::Owner::ALL_HAVE_ACCESS;
   if (thisIsUnowned && otherIsUnowned) return false;
   if (thisIsUnowned ^ otherIsUnowned) return true;
 

@@ -655,7 +655,7 @@ Object &Server::addObject(const ObjectType *type, const MapPoint &location,
           : new Object(type, location);
 
   switch (owner.type) {
-    case Permissions::Owner::NONE:
+    case Permissions::Owner::ALL_HAVE_ACCESS:
       break;
     case Permissions::Owner::PLAYER:
       newObj->permissions().setPlayerOwner(owner.name);

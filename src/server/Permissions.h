@@ -13,7 +13,7 @@ class User;
 class Permissions {
  public:
   struct Owner {
-    enum Type { NONE, PLAYER, CITY };
+    enum Type { ALL_HAVE_ACCESS, PLAYER, CITY };
     Owner();
     Type type;
     std::string name;
@@ -22,7 +22,7 @@ class Permissions {
     const std::string &typeString() const;
     bool operator<(const Owner &rhs) const;
     bool operator==(const Owner &rhs) const;
-    operator bool() const { return type != NONE; }
+    operator bool() const { return type != ALL_HAVE_ACCESS; }
   };
 
   Permissions(Entity &parent) : _parent(parent) {}

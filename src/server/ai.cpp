@@ -169,7 +169,7 @@ void NPC::onTransition(State previousState) {
     _threatTable.clear();
     clearTagger();
 
-    if (owner().type != Permissions::Owner::NONE) return;
+    if (owner().type != Permissions::Owner::ALL_HAVE_ACCESS) return;
 
     static const auto ATTEMPTS = 20;
     for (auto i = 0; i != ATTEMPTS; ++i) {

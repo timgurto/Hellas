@@ -5,7 +5,7 @@
 #include "Server.h"
 #include "User.h"
 
-Permissions::Owner::Owner() : type(NONE) {}
+Permissions::Owner::Owner() : type(ALL_HAVE_ACCESS) {}
 
 Permissions::Owner::Owner(Type typeArg, const std::string &nameArg)
     : type(typeArg), name(nameArg) {}
@@ -56,7 +56,9 @@ void Permissions::setCityOwner(const City::Name &cityName) {
   _parent.onOwnershipChange();
 }
 
-bool Permissions::hasOwner() const { return _owner.type != Owner::NONE; }
+bool Permissions::hasOwner() const {
+  return _owner.type != Owner::ALL_HAVE_ACCESS;
+}
 
 bool Permissions::isOwnedByPlayer(const std::string &username) const {
   return _owner.type == Owner::PLAYER && _owner.name == username;
@@ -71,7 +73,7 @@ const Permissions::Owner &Permissions::owner() const { return _owner; }
 bool Permissions::doesUserHaveAccess(const std::string &username,
                                      bool allowFellowCitizens) const {
   // Unowned
-  if (_owner.type == Owner::NONE) return true;
+  if (_owner.type == Owner::ALL_HAVE_ACCESS) return true;
 
   // Owned by player
   if (_owner == Owner{Owner::PLAYER, username}) return true;
@@ -101,7 +103,7 @@ void Permissions::alertNearbyUsersToNewOwner() const {
 Permissions::Usernames Permissions::ownerAsUsernames() {
   const Server &server = Server::instance();
   switch (_owner.type) {
-    case Owner::NONE:
+    case Owner::ALL_HAVE_ACCESS:
       return {};
     case Owner::PLAYER:
       return {_owner.name};
