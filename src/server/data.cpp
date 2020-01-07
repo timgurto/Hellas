@@ -418,6 +418,8 @@ void Server::loadEntitiesFromFile(const std::string &path,
         owner.type = Permissions::Owner::PLAYER;
       else if (type == "city")
         owner.type = Permissions::Owner::CITY;
+      else if (type == "noAccess")
+        owner.type = Permissions::Owner::NO_ACCESS;
       else
         _debug << Color::CHAT_ERROR << "Skipping bad object owner type \""
                << type << "\"." << Log::endl;

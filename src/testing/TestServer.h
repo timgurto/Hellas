@@ -51,10 +51,11 @@ class TestServer {
   const Quest &findQuest(const Quest::ID &questID) const;
   const ServerItem &findItem(const std::string &id) const;
 
-  void addObject(const std::string &typeName, const MapPoint &loc = MapPoint{},
-                 const std::string &playerOwnerName = "");
-  void addObject(const std::string &typeName, const MapPoint &loc,
-                 const Permissions::Owner &owner);
+  Object &addObject(const std::string &typeName,
+                    const MapPoint &loc = MapPoint{},
+                    const std::string &playerOwnerName = "");
+  Object &addObject(const std::string &typeName, const MapPoint &loc,
+                    const Permissions::Owner &owner);
   NPC &addNPC(const std::string &typeName, const MapPoint &loc = MapPoint{});
   void removeEntity(Entity &entity) { _server->removeEntity(entity); }
   void waitForUsers(size_t numUsers) const;

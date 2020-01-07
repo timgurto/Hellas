@@ -104,21 +104,21 @@ void TestServer::stop() {
   WAIT_UNTIL(!_server->_running);
 }
 
-void TestServer::addObject(const std::string &typeName, const MapPoint &loc,
-                           const std::string &playerOwnerName) {
+Object &TestServer::addObject(const std::string &typeName, const MapPoint &loc,
+                              const std::string &playerOwnerName) {
   auto owner = Permissions::Owner{};
   if (!playerOwnerName.empty()) {
     owner.type = Permissions::Owner::PLAYER;
     owner.name = playerOwnerName;
   }
-  addObject(typeName, loc, owner);
+  return addObject(typeName, loc, owner);
 }
 
-void TestServer::addObject(const std::string &typeName, const MapPoint &loc,
-                           const Permissions::Owner &owner) {
+Object &TestServer::addObject(const std::string &typeName, const MapPoint &loc,
+                              const Permissions::Owner &owner) {
   const ObjectType *const type = _server->findObjectTypeByID(typeName);
   REQUIRE(type != nullptr);
-  _server->addObject(type, loc, owner);
+  return _server->addObject(type, loc, owner);
 }
 
 NPC &TestServer::addNPC(const std::string &typeName, const MapPoint &loc) {

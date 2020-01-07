@@ -385,3 +385,19 @@ TEST_CASE("The first player to attack an object tags it") {
   // When the client attacks it
   // Then the client can loot it
 }
+
+TEST_CASE("No-access objects") {
+  GIVEN("an object marked no-access") {
+    auto data = R"(
+      <objectType id="house" />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    auto noPermissions = Permissions::Owner{Permissions::Owner::NO_ACCESS, {}};
+    const auto &house = s.addObject("house", {10, 15}, noPermissions);
+
+    THEN("a user has no access") {
+      CHECK_FALSE(house.permissions().doesUserHaveAccess("noname"));
+    }
+  }
+}

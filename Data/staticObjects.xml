@@ -79,43 +79,43 @@
 <object id="stoneRoad"> <location x="29652" y="43829" /> </object>
 <object id="stoneRoad"> <location x="29492" y="43690" /> </object>
 <object id="stoneRoad"> <location x="29460" y="43690" /> </object>
-<object id="palisadeEW"> <location x="29701" y="43506" /> </object>
-<object id="palisadeEW"> <location x="29701" y="43950" /> </object>
-<object id="palisadeEW"> <location x="29437" y="43505" /> </object>
-<object id="palisadeEW"> <location x="29529" y="43505" /> </object>
-<object id="palisadeNS"> <location x="29742" y="43579" /> </object>
-<object id="palisadeNS"> <location x="29742" y="43652" /> </object>
-<object id="palisadeNS"> <location x="29742" y="43725" /> </object>
-<object id="palisadeNS"> <location x="29742" y="43798" /> </object>
-<object id="palisadeNS"> <location x="29742" y="43871" /> </object>
-<object id="palisadeNS"> <location x="29742" y="43944" /> </object>
-<object id="flaxCrop8"> <location x="29576" y="43954" /> <material id="water" qty="1" /> </object>
-<object id="flaxCrop8"> <location x="29537" y="43954" /> <material id="water" qty="1" /> </object>
-<object id="flaxCrop8"> <location x="29537" y="43995" /> <material id="water" qty="1" /> </object>
-<object id="flaxCrop0"> <location x="29576" y="43995" /> <material id="water" qty="1" /> </object>
-<object id="flaxCrop0"> <location x="29666" y="44013" /> <material id="water" qty="1" /> </object>
-<object id="flaxCrop0"> <location x="29705" y="44012" /> <material id="water" qty="1" /> </object>
-<object id="flaxCrop0"> <location x="29705" y="44053" /> <material id="water" qty="1" /> </object>
-<object id="flaxCrop0"> <location x="29666" y="44054" /> <material id="water" qty="1" /> </object>
-<object id="cityAltar"> <location x="29702" y="43832" /> <material id="water" qty="1" /> </object>
-<object id="loom"> <location x="29455" y="43647" /> </object>
-<object id="loom"> <location x="29504" y="43733" /> </object>
-<object id="loom"> <location x="29415" y="43693"  /> </object>
-<object id="smallPot"> <location x="29400" y="43653" /> </object>
-<object id="smallPot"> <location x="29405" y="43644" /> </object>
-<object id="smallPot"> <location x="29418" y="43660" /> </object>
-<object id="smallPot"> <location x="29542" y="43722" /> </object>
-<object id="smallPot"> <location x="29555" y="43739" /> </object>
-<object id="smallPot"> <location x="29729" y="43576" /> </object>
-<object id="smallPot"> <location x="29721" y="43565" /> </object>
-<object id="tradeMat"> <location x="29655" y="43578" /> </object>
-<object id="tradeMat"> <location x="29683" y="43630" /> </object>
-<object id="tradeMat"> <location x="29567" y="43609" /> </object>
-<object id="figTree8"> <location x="29419" y="43817" /> </object>
-<object id="figTree8"> <location x="29475" y="43863" /> </object>
-<object id="figTree8"> <location x="29485" y="43828" /> </object>
-<object id="handCart"> <location x="29564" y="44036" /> </object>
-<object id="handCart"> <location x="29546" y="44070" /> </object>
+<object id="palisadeEW"> <owner type="noAccess" /> <location x="29701" y="43506" /> </object>
+<object id="palisadeEW"> <owner type="noAccess" /> <location x="29701" y="43950" /> </object>
+<object id="palisadeEW"> <owner type="noAccess" /> <location x="29437" y="43505" /> </object>
+<object id="palisadeEW"> <owner type="noAccess" /> <location x="29529" y="43505" /> </object>
+<object id="palisadeNS"> <owner type="noAccess" /> <location x="29742" y="43579" /> </object>
+<object id="palisadeNS"> <owner type="noAccess" /> <location x="29742" y="43652" /> </object>
+<object id="palisadeNS"> <owner type="noAccess" /> <location x="29742" y="43725" /> </object>
+<object id="palisadeNS"> <owner type="noAccess" /> <location x="29742" y="43798" /> </object>
+<object id="palisadeNS"> <owner type="noAccess" /> <location x="29742" y="43871" /> </object>
+<object id="palisadeNS"> <owner type="noAccess" /> <location x="29742" y="43944" /> </object>
+<object id="flaxCrop8"> <owner type="noAccess" /> <location x="29576" y="43954" /> <material id="water" qty="1" /> </object>
+<object id="flaxCrop8"> <owner type="noAccess" /> <location x="29537" y="43954" /> <material id="water" qty="1" /> </object>
+<object id="flaxCrop8"> <owner type="noAccess" /> <location x="29537" y="43995" /> <material id="water" qty="1" /> </object>
+<object id="flaxCrop0"> <owner type="noAccess" /> <location x="29576" y="43995" /> <material id="water" qty="1" /> </object>
+<object id="flaxCrop0"> <owner type="noAccess" /> <location x="29666" y="44013" /> <material id="water" qty="1" /> </object>
+<object id="flaxCrop0"> <owner type="noAccess" /> <location x="29705" y="44012" /> <material id="water" qty="1" /> </object>
+<object id="flaxCrop0"> <owner type="noAccess" /> <location x="29705" y="44053" /> <material id="water" qty="1" /> </object>
+<object id="flaxCrop0"> <owner type="noAccess" /> <location x="29666" y="44054" /> <material id="water" qty="1" /> </object>
+<object id="cityAltar"> <owner type="noAccess" /> <location x="29702" y="43832" /> <material id="water" qty="1" /> </object>
+<object id="loom"> <owner type="noAccess" /> <location x="29455" y="43647" /> </object>
+<object id="loom"> <owner type="noAccess" /> <location x="29504" y="43733" /> </object>
+<object id="loom"> <owner type="noAccess" /> <location x="29415" y="43693"  /> </object>
+<object id="smallPot"> <owner type="noAccess" /> <location x="29400" y="43653" /> </object>
+<object id="smallPot"> <owner type="noAccess" /> <location x="29405" y="43644" /> </object>
+<object id="smallPot"> <owner type="noAccess" /> <location x="29418" y="43660" /> </object>
+<object id="smallPot"> <owner type="noAccess" /> <location x="29542" y="43722" /> </object>
+<object id="smallPot"> <owner type="noAccess" /> <location x="29555" y="43739" /> </object>
+<object id="smallPot"> <owner type="noAccess" /> <location x="29729" y="43576" /> </object>
+<object id="smallPot"> <owner type="noAccess" /> <location x="29721" y="43565" /> </object>
+<object id="tradeMat"> <owner type="noAccess" /> <location x="29655" y="43578" /> </object>
+<object id="tradeMat"> <owner type="noAccess" /> <location x="29683" y="43630" /> </object>
+<object id="tradeMat"> <owner type="noAccess" /> <location x="29567" y="43609" /> </object>
+<object id="figTree8"> <owner type="noAccess" /> <location x="29419" y="43817" /> </object>
+<object id="figTree8"> <owner type="noAccess" /> <location x="29475" y="43863" /> </object>
+<object id="figTree8"> <owner type="noAccess" /> <location x="29485" y="43828" /> </object>
+<object id="handCart"> <owner type="noAccess" /> <location x="29564" y="44036" /> </object>
+<object id="handCart"> <owner type="noAccess" /> <location x="29546" y="44070" /> </object>
 
 
 </root>

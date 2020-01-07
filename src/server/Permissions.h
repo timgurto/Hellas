@@ -13,7 +13,7 @@ class User;
 class Permissions {
  public:
   struct Owner {
-    enum Type { ALL_HAVE_ACCESS, PLAYER, CITY };
+    enum Type { PLAYER, CITY, ALL_HAVE_ACCESS, NO_ACCESS };
     Owner();
     Type type;
     std::string name;
@@ -27,6 +27,7 @@ class Permissions {
 
   Permissions(Entity &parent) : _parent(parent) {}
 
+  void setNoAccess();
   void setPlayerOwner(const std::string &username);
   void setCityOwner(const City::Name &cityName);
   bool hasOwner() const;

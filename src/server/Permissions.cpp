@@ -28,6 +28,19 @@ bool Permissions::Owner::operator==(const Permissions::Owner &rhs) const {
   return type == rhs.type && name == rhs.name;
 }
 
+void Permissions::setNoAccess() {
+  ObjectsByOwner &ownerIndex = Server::_instance->_objectsByOwner;
+  ownerIndex.remove(_owner, _parent.serial());
+
+  _owner.type = Owner::NO_ACCESS;
+  _owner.name = {};
+
+  ownerIndex.add(_owner, _parent.serial());
+
+  alertNearbyUsersToNewOwner();
+  _parent.onOwnershipChange();
+}
+
 void Permissions::setPlayerOwner(const std::string &username) {
   ObjectsByOwner &ownerIndex = Server::_instance->_objectsByOwner;
   ownerIndex.remove(_owner, _parent.serial());
@@ -74,6 +87,7 @@ bool Permissions::doesUserHaveAccess(const std::string &username,
                                      bool allowFellowCitizens) const {
   // Unowned
   if (_owner.type == Owner::ALL_HAVE_ACCESS) return true;
+  if (_owner.type == Owner::NO_ACCESS) return false;
 
   // Owned by player
   if (_owner == Owner{Owner::PLAYER, username}) return true;
