@@ -1,23 +1,23 @@
 <root>
 <object id="respawnAltar"> <location x="35328" y="22358" /> </object>
 
-<object id="crater"> <location x=3708 y=60440/> </object>
-<object id="crater"> <location x=3904 y=60331/> </object>
-<object id="crater"> <location x=3756 y=60210/> </object>
-<object id="crater"> <location x=3943 y=60010/> </object>
-<object id="crater"> <location x=3593 y=60130/> </object>
-<object id="crater"> <location x=3629 y=59868/> </object>
-<object id="crater"> <location x=3763 y=59717/> </object>
-<object id="crater"> <location x=4075 y=59492/> </object>
-<object id="crater"> <location x=3441 y=59078/> </object>
-<object id="crater"> <location x=3523 y=59396/> </object>
-<object id="crater"> <location x=3895 y=59349/> </object>
-<object id="crater"> <location x=4676 y=58998/> </object>
-<object id="crater"> <location x=393 y=59505/> </object>
-<object id="crater"> <location x=476 y=59711/> </object>
-<object id="crater"> <location x=324 y=59883/> </object>
-<object id="crater"> <location x=349 y=60283/> </object>
-<object id="crater"> <location x=1073 y=60259/> </object>
+<object id="crater"> <location x="3708" y="60440"/> </object>
+<object id="crater"> <location x="3904" y="60331"/> </object>
+<object id="crater"> <location x="3756" y="60210"/> </object>
+<object id="crater"> <location x="3943" y="60010"/> </object>
+<object id="crater"> <location x="3593" y="60130"/> </object>
+<object id="crater"> <location x="3629" y="59868"/> </object>
+<object id="crater"> <location x="3763" y="59717"/> </object>
+<object id="crater"> <location x="4075" y="59492"/> </object>
+<object id="crater"> <location x="3441" y="59078"/> </object>
+<object id="crater"> <location x="3523" y="59396"/> </object>
+<object id="crater"> <location x="3895" y="59349"/> </object>
+<object id="crater"> <location x="4676" y="58998"/> </object>
+<object id="crater"> <location x="393" y="59505"/> </object>
+<object id="crater"> <location x="476" y="59711"/> </object>
+<object id="crater"> <location x="324" y="59883"/> </object>
+<object id="crater"> <location x="349" y="60283"/> </object>
+<object id="crater"> <location x="1073" y="60259"/> </object>
 
 <npc id="prometheus"> <location x="3872" y="60212" /> </npc>
 <npc id="prometheusBound"> <location x="4780" y="58829" /> </npc>
@@ -49,5 +49,73 @@
 <npc id="athleteQG"> <location x="35060" y="22501" /> </npc>
 <npc id="scholarQG"> <location x="35090" y="22532" /> </npc>
 <npc id="zealotQG"> <location x="35040" y="22545" /> </npc>
+
+<!-- City of Calydon -->
+<npc id="kingOineus"> <location x="29620" y="43524" /> </npc>
+<object id="stoneRoad"> <location x="29620" y="43454" /> </object>
+<object id="stoneRoad"> <location x="29620" y="43486" /> </object>
+<object id="stoneRoad"> <location x="29620" y="43518" /> </object>
+<object id="stoneRoad"> <location x="29620" y="43550" /> </object>
+<object id="stoneRoad"> <location x="29620" y="43582" /> </object>
+<object id="stoneRoad"> <location x="29620" y="43614" /> </object>
+<object id="stoneRoad"> <location x="29620" y="43646" /> </object>
+<object id="stoneRoad"> <location x="29620" y="43678" /> </object>
+<object id="stoneRoad"> <location x="29620" y="43710" /> </object>
+<object id="stoneRoad"> <location x="29620" y="43742" /> </object>
+<object id="stoneRoad"> <location x="29620" y="43774" /> </object>
+<object id="stoneRoad"> <location x="29620" y="43806" /> </object>
+<object id="stoneRoad"> <location x="29620" y="43838" /> </object>
+<object id="stoneRoad"> <location x="29620" y="43870" /> </object>
+<object id="stoneRoad"> <location x="29620" y="43902" /> </object>
+<object id="stoneRoad"> <location x="29620" y="43934" /> </object>
+<object id="stoneRoad"> <location x="29620" y="43966" /> </object>
+<object id="stoneRoad"> <location x="29620" y="43998" /> </object>
+<object id="stoneRoad"> <location x="29620" y="44030" /> </object>
+<object id="stoneRoad"> <location x="29620" y="44073" /> </object>
+<object id="stoneRoad"> <location x="29620" y="44145" /> </object>
+<object id="stoneRoad"> <location x="29588" y="43690" /> </object>
+<object id="stoneRoad"> <location x="29556" y="43690" /> </object>
+<object id="stoneRoad"> <location x="29524" y="43690" /> </object>
+<object id="stoneRoad"> <location x="29652" y="43829" /> </object>
+<object id="stoneRoad"> <location x="29492" y="43690" /> </object>
+<object id="stoneRoad"> <location x="29460" y="43690" /> </object>
+<object id="palisadeEW"> <location x="29701" y="43506" /> </object>
+<object id="palisadeEW"> <location x="29701" y="43950" /> </object>
+<object id="palisadeEW"> <location x="29437" y="43505" /> </object>
+<object id="palisadeEW"> <location x="29529" y="43505" /> </object>
+<object id="palisadeNS"> <location x="29742" y="43579" /> </object>
+<object id="palisadeNS"> <location x="29742" y="43652" /> </object>
+<object id="palisadeNS"> <location x="29742" y="43725" /> </object>
+<object id="palisadeNS"> <location x="29742" y="43798" /> </object>
+<object id="palisadeNS"> <location x="29742" y="43871" /> </object>
+<object id="palisadeNS"> <location x="29742" y="43944" /> </object>
+<object id="flaxCrop8"> <location x="29576" y="43954" /> <material id="water" qty="1" /> </object>
+<object id="flaxCrop8"> <location x="29537" y="43954" /> <material id="water" qty="1" /> </object>
+<object id="flaxCrop8"> <location x="29537" y="43995" /> <material id="water" qty="1" /> </object>
+<object id="flaxCrop0"> <location x="29576" y="43995" /> <material id="water" qty="1" /> </object>
+<object id="flaxCrop0"> <location x="29666" y="44013" /> <material id="water" qty="1" /> </object>
+<object id="flaxCrop0"> <location x="29705" y="44012" /> <material id="water" qty="1" /> </object>
+<object id="flaxCrop0"> <location x="29705" y="44053" /> <material id="water" qty="1" /> </object>
+<object id="flaxCrop0"> <location x="29666" y="44054" /> <material id="water" qty="1" /> </object>
+<object id="cityAltar"> <location x="29702" y="43832" /> <material id="water" qty="1" /> </object>
+<object id="loom"> <location x="29455" y="43647" /> </object>
+<object id="loom"> <location x="29504" y="43733" /> </object>
+<object id="loom"> <location x="29415" y="43693"  /> </object>
+<object id="smallPot"> <location x="29400" y="43653" /> </object>
+<object id="smallPot"> <location x="29405" y="43644" /> </object>
+<object id="smallPot"> <location x="29418" y="43660" /> </object>
+<object id="smallPot"> <location x="29542" y="43722" /> </object>
+<object id="smallPot"> <location x="29555" y="43739" /> </object>
+<object id="smallPot"> <location x="29729" y="43576" /> </object>
+<object id="smallPot"> <location x="29721" y="43565" /> </object>
+<object id="tradeMat"> <location x="29655" y="43578" /> </object>
+<object id="tradeMat"> <location x="29683" y="43630" /> </object>
+<object id="tradeMat"> <location x="29567" y="43609" /> </object>
+<object id="figTree8"> <location x="29419" y="43817" /> </object>
+<object id="figTree8"> <location x="29475" y="43863" /> </object>
+<object id="figTree8"> <location x="29485" y="43828" /> </object>
+<object id="handCart"> <location x="29564" y="44036" /> </object>
+<object id="handCart"> <location x="29546" y="44070" /> </object>
+
 
 </root>

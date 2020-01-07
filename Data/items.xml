@@ -286,7 +286,7 @@
 		<item id="linenCloak" name="Linen Cloak" gearSlot="3" sounds="fabric" >
 			<stats eps="1" />
 			<offset x="-4" y="-1" />
-        <canBeRepaired cost="linenCloth" tool="sewing" />
+            <canBeRepaired cost="linenCloth" tool="sewing" />
 		</item>
 
 	<!-- Body -->
@@ -336,7 +336,6 @@
 				<offset x="-6" y="-3" />
                 <canBeRepaired cost="linenCloth" tool="sewing" />
 			</item>
-            <item id="linenChitonOrange" gearSlot="2" ><offset x="-6" y="-3" /></item>
 
 	<!-- Hands -->
 	<item id="leatherGloves" name="Leather Gloves" gearSlot="4" sounds="leather" >

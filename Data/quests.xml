@@ -1,4 +1,15 @@
 <root>
+
+<item id="linenChitonOrange" gearSlot="2" ><offset x="-6" y="-3" /></item>
+
+<item id="flintstones" gearSlot="2" ><offset x="-5" y="-4" /> </item>
+
+<item id="crown" gearSlot="0" ><offset x="-3" y="-5" /> </item>
+<item id="royalChiton" gearSlot="2" ><offset x="-6" y="-3" /> </item>
+<item id="purpleCloak" gearSlot="3" ><offset x="-4" y="-1" /> </item>
+<item id="flaxGear" gearSlot="7" ><offset x="-10" y="-4" /> </item>
+
+
 <quest id="directionsToClay" name="A toy for the children" startsAt="grug" endsAt="grug"
     brief="Grug have only bones and rocks to keep family happy.  Want make toy for Grugling, but need clay.
     Shaman say there lots of clay past rivers, southwest, where land green and water big.
@@ -14,7 +25,32 @@
             <gear id="boneClub" />
         </humanoid>
     </npcType>
-    <item id="flintstones" gearSlot="2" ><offset x="-5" y="-4" /> </item>
+
+<quest id="fromFarmToCalydon" name="Honouring the Harvest" startsAt="flaxCrop0" endsAt="kingOineus"
+    brief=""
+    debrief="" >
+    <objective type="fetch" id="flax" qty="1" />
+</quest>
+    <npcType
+        id="kingOineus" name="King Oineus"
+        level="5" maxHealth="30" isCivilian="1" >
+        <humanoid base="noble">
+            <gear id="crown" />
+            <gear id="royalChiton" />
+            <gear id="purpleCloak" />
+            <gear id="sandals" />
+        </humanoid>
+    </npcType>
+    <npcType
+        id="calydonWeaver" name="Calydon Weaver"
+        level="5" maxHealth="30" isCivilian="1" >
+        <humanoid base="zealot">
+            <gear id="sandals" />
+            <gear id="flaxGear" />
+            <gear id="tinKnife" />
+        </humanoid>
+    </npcType>
+    <spawnPoint y="43695" x="29623" type="calydonWeaver" quantity="8" radius="300" respawnTime="300000" />
     
 <quest id="learnAthleteBuilding1" name="Kron's Kill" startsAt="athleteQG" endsAt="athleteQG" timeLimit="35" exclusiveToClass="Athlete"
     brief="You look fast; you help Kron?
