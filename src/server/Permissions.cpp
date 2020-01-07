@@ -107,6 +107,22 @@ bool Permissions::doesUserHaveAccess(const std::string &username,
   return playerCity == ownerCity;
 }
 
+bool Permissions::canUserDemolish(const std::string &username) const {
+  // Requires ownership; more strict than doesUserHaveAccess().
+
+  // Owned by player
+  if (_owner == Owner{Owner::PLAYER, username}) return true;
+
+  const Cities &cities = Server::instance()._cities;
+  const std::string &playerCity = cities.getPlayerCity(username);
+  if (playerCity.empty()) return false;
+
+  // Owned by player's city
+  if (_owner == Owner{Owner::CITY, playerCity}) return true;
+
+  return false;
+}
+
 void Permissions::alertNearbyUsersToNewOwner() const {
   auto &server = *Server::_instance;
   server.broadcastToArea(

@@ -34,8 +34,11 @@ class Permissions {
   bool isOwnedByPlayer(const std::string &username) const;
   bool isOwnedByCity(const City::Name &cityName) const;
   const Owner &owner() const;
+
   bool doesUserHaveAccess(const std::string &username,
                           bool allowFellowCitizens = false) const;
+  bool canUserDemolish(const std::string &username) const;
+
   void alertNearbyUsersToNewOwner() const;
 
   using Usernames = std::set<std::string>;

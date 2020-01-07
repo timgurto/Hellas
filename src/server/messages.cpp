@@ -484,10 +484,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         auto userHasPermission = bool{};
         if (ent->classTag() == 'n') {
           auto *npc = dynamic_cast<NPC *>(ent);
-          userHasPermission = npc->permissions().isOwnedByPlayer(user->name());
+          userHasPermission = npc->permissions().canUserDemolish(user->name());
         } else {
           const auto *obj = dynamic_cast<Object *>(ent);
-          userHasPermission = obj->permissions().isOwnedByPlayer(user->name());
+          userHasPermission = obj->permissions().canUserDemolish(user->name());
         }
         if (!userHasPermission) {
           sendMessage(client, WARNING_NO_PERMISSION);
