@@ -26,7 +26,7 @@ class CQuest;
 class ClientObject : public Sprite, public ClientCombatant {
  public:
   struct Owner {
-    enum Type { PLAYER, CITY, ALL_HAVE_ACCESS };
+    enum Type { PLAYER, CITY, ALL_HAVE_ACCESS, NO_ACCESS };
     Type type;
     std::string name;
     Owner(Type type, std::string name);

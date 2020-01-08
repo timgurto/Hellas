@@ -15,6 +15,7 @@ const std::string &Permissions::Owner::typeString() const {
   if (typeStrings.empty()) {
     typeStrings[PLAYER] = "player";
     typeStrings[CITY] = "city";
+    typeStrings[NO_ACCESS] = "noAccess";
   }
   return typeStrings[type];
 }

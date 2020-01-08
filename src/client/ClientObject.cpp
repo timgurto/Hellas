@@ -744,6 +744,7 @@ void ClientObject::sendMerchantSlot(size_t serial, size_t slot) {
 bool ClientObject::userHasAccess() const {
   // No owner
   if (_owner.type == Owner::ALL_HAVE_ACCESS) return true;
+  if (_owner.type == Owner::NO_ACCESS) return false;
 
   // Player is owner
   if (isOwnedByPlayer(Client::_instance->username())) return true;

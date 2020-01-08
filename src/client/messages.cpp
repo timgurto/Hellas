@@ -729,6 +729,8 @@ void Client::handleMessage(const std::string &msg) {
           type = ClientObject::Owner::PLAYER;
         else if (typeName == "city")
           type = ClientObject::Owner::CITY;
+        else if (typeName == "noAccess")
+          type = ClientObject::Owner::NO_ACCESS;
         else
           type = ClientObject::Owner::ALL_HAVE_ACCESS;
 
