@@ -128,6 +128,7 @@ Permissions::Usernames Permissions::ownerAsUsernames() {
   const Server &server = Server::instance();
   switch (_owner.type) {
     case Owner::ALL_HAVE_ACCESS:
+    case Owner::NO_ACCESS:
       return {};
     case Owner::PLAYER:
       return {_owner.name};

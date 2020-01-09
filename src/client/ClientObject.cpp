@@ -95,7 +95,10 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg) {
   ClientMerchantSlot &mSlot = _merchantSlots[i];
 
   if (_window == nullptr || isBeingConstructed()) return;
-  assert(_merchantSlotElements[i] != nullptr);
+
+  // Uninitialised element probably means we don't have permission to use the
+  // slot anyway.
+  if (!_merchantSlotElements[i]) return;
 
   // Update slot element
   Element &e = *_merchantSlotElements[i];
@@ -656,7 +659,8 @@ void ClientObject::assembleWindow(Client &client) {
     }
 
   } else if (!userHasAccess()) {
-    if (isMerchant) addMerchantTradeToWindow();
+    if (isMerchant && _owner.type != Owner::NO_ACCESS)
+      addMerchantTradeToWindow();
 
   } else {
     if (hasAQuest) addQuestsToWindow();
