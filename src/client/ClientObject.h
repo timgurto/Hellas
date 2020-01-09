@@ -177,6 +177,7 @@ class ClientObject : public Sprite, public ClientCombatant {
   bool isFlat() const override;
 
   bool userHasAccess() const;
+  bool userHasMerchantAccess() const;
   bool canAlwaysSee() const;
 
   void setMerchantSlot(size_t i, ClientMerchantSlot &mSlot);

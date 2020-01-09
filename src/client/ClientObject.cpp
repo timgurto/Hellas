@@ -632,8 +632,9 @@ void ClientObject::assembleWindow(Client &client) {
   }
 
   const bool userIsOwner = _owner == Owner{Owner::PLAYER, client.username()},
-             hasContainer = objType.containerSlots() > 0,
-             isMerchant = objType.merchantSlots() > 0,
+             hasContainer = objType.containerSlots() > 0 && userHasAccess(),
+             isMerchant =
+                 objType.merchantSlots() > 0 && userHasMerchantAccess(),
              canCede = (!client.character().cityName().empty()) &&
                        userIsOwner && (!objType.isPlayerUnique()),
              canGrant =
@@ -641,14 +642,15 @@ void ClientObject::assembleWindow(Client &client) {
                   _owner == Owner{Owner::CITY, client.character().cityName()}),
              canDemolish = userIsOwner,
              hasAQuest =
-                 !(startsQuests().empty() && completableQuests().empty());
-
-  if (!_window) _window = Window::WithRectAndTitle({}, objType.name());
+                 !(startsQuests().empty() && completableQuests().empty()) &&
+                 userHasAccess();
 
   auto windowHasClassContent = addClassSpecificStuffToWindow();
-
   auto hasNonDemolitionContent = windowHasClassContent || hasContainer ||
                                  isMerchant || canCede || canGrant || hasAQuest;
+  auto hasAnyContent = hasNonDemolitionContent || canDemolish;
+
+  if (!_window) _window = Window::WithRectAndTitle({}, objType.name());
 
   if (isBeingConstructed()) {
     if (userHasAccess()) {
@@ -656,13 +658,10 @@ void ClientObject::assembleWindow(Client &client) {
       if (canCede) addCedeButtonToWindow();
       if (canGrant) addGrantButtonToWindow();
       if (canDemolish) addDemolishButtonToWindow();
+      hasAnyContent = true;
     }
 
-  } else if (!userHasAccess()) {
-    if (isMerchant && _owner.type != Owner::NO_ACCESS)
-      addMerchantTradeToWindow();
-
-  } else {
+  } else if (userHasAccess()) {
     if (hasAQuest) addQuestsToWindow();
     if (isMerchant) addMerchantSetupToWindow();
     if (hasContainer) addInventoryToWindow();
@@ -671,9 +670,13 @@ void ClientObject::assembleWindow(Client &client) {
     if (canCede) addCedeButtonToWindow();
     if (canGrant) addGrantButtonToWindow();
     if (canDemolish) addDemolishButtonToWindow();
+
+  } else if (userHasMerchantAccess()) {
+    if (isMerchant && _owner.type != Owner::NO_ACCESS)
+      addMerchantTradeToWindow();
   }
 
-  if (!windowHasClassContent && !hasNonDemolitionContent) {
+  if (!hasAnyContent) {
     client.removeWindow(_window);
     delete _window;
     _window = nullptr;
@@ -765,6 +768,12 @@ bool ClientObject::userHasAccess() const {
   auto ownerCity = Client::instance().getUserCity(_owner.name);
   auto isOwnedByFellowCitizen = playerCity == ownerCity && !playerCity.empty();
   return isOwnedByFellowCitizen;
+}
+
+bool ClientObject::userHasMerchantAccess() const {
+  if (_owner.type == Owner::NO_ACCESS) return false;
+
+  return true;
 }
 
 bool ClientObject::canAlwaysSee() const {
