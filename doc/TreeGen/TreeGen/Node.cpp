@@ -24,7 +24,7 @@ Node::Node(NodeType type, const ID &id, const DisplayName &displayName,
       name(typePrefix(type) + "_" + id),
       image(imageID.empty() ? id : imageID),
       displayName(displayName),
-      imageExists(false) {}
+      imageExists(true) {}
 
 Node::Node(Name name) : name(name) {}
 
