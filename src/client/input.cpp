@@ -606,6 +606,11 @@ Sprite *Client::getEntityAtMouse() {
       if (entity.type()->isFlat() != flat) continue;
       if (&entity == &_character) continue;  // Can't interact with self
       if (entity.type()->isDecoration()) continue;
+
+      auto *asObject = dynamic_cast<const ClientObject *>(&entity);
+      if (asObject && asObject->owner().type == ClientObject::Owner::NO_ACCESS)
+        continue;
+
       if (!entity.collision(mouseOffset)) continue;  // Crude collision check
       if (!entity.mouseIsOverRealPixel(mouseOffset))
         continue;  // Detailed check
