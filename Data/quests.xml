@@ -26,11 +26,16 @@
         </humanoid>
     </npcType>
 
-<quest id="fromFarmToCalydon" name="Honouring the Harvest" startsAt="flaxCrop0" endsAt="kingOineus"
-    brief=""
-    debrief="" >
+<quest id="calydonianBoarPre" name="Honouring the Harvest" startsAt="flaxCrop0" endsAt="calydonBrazier"
+    brief="You're growing something!  Once you're done you should go thank the gods in Calydon."
+    debrief="You burn the offering of Flax in the brazier, confident that you have satisfied the gods." >
     <objective type="fetch" id="flax" qty="1" />
 </quest>
+    <objectType id="calydonBrazier" name="Harvest Brazier" imageFile="brazier"
+        xDrawOffset="-7" yDrawOffset="-18" >
+        <collisionRect x="-6" y="-3" w="13" h="6" />
+        <particles profile="smoke" x="0" y="-15" />
+    </objectType>
     <npcType
         id="kingOineus" name="King Oineus"
         level="5" maxHealth="30" isCivilian="1" >
@@ -51,7 +56,17 @@
         </humanoid>
     </npcType>
     <spawnPoint y="43695" x="29623" type="calydonWeaver" quantity="8" radius="300" respawnTime="300000" />
-    
+<quest id="calydonianBoar" name="The Calydonian Boar" startsAt="kingOineus" endsAt="kingOineus"
+    brief="Welcome to our humble city!  Like you, we grow and weave flax, but recently we have fallen victim to the gods' wrath.
+    Each harvest we make offerings to the gods, as you have done.  Regrettably, our merriment during the last harvest distracted us, and we neglected to thank Artemis, goddess of the hunt.
+    Since then, the scorned goddess has terrorised our southern farmlands with a monstrous boar.
+    I beg you, traveler: hunt the beast down and kill it.  If you manage this feat we will handsomely reward you!"
+    debrief="You saved our city, and have our thanks!  Please choose a trophy from the beast." >
+    <prerequisite id="calydonianBoarPre" />
+    <objective type="kill" id="calydonianBoar" qty="1" />
+</quest>
+    <objectType id="skeleton" isDecoration="1" xDrawOffset="-20" yDrawOffset="-8" />
+
 <quest id="learnAthleteBuilding1" name="Kron's Kill" startsAt="athleteQG" endsAt="athleteQG" timeLimit="35" exclusiveToClass="Athlete"
     brief="You look fast; you help Kron?
     Kron hunt big goat today for tribe, but too much meat to carry.  Meat rotting; soon no good to eat.  You get rest of meat?

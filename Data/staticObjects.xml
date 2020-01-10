@@ -51,7 +51,7 @@
 <npc id="zealotQG"> <location x="35040" y="22545" /> </npc>
 
 <!-- City of Calydon -->
-<npc id="kingOineus"> <location x="29620" y="43524" /> </npc>
+<npc id="kingOineus"> <location x="29533" y="43524" /> </npc>
 <object id="stoneRoad"> <owner type="noAccess" /> <location x="29620" y="43454" /> </object>
 <object id="stoneRoad"> <owner type="noAccess" /> <location x="29620" y="43486" /> </object>
 <object id="stoneRoad"> <owner type="noAccess" /> <location x="29620" y="43518" /> </object>
@@ -116,6 +116,23 @@
 <object id="figTree8"> <owner type="noAccess" /> <location x="29485" y="43828" /> </object>
 <object id="handCart"> <owner type="noAccess" /> <location x="29564" y="44036" /> </object>
 <object id="handCart"> <owner type="noAccess" /> <location x="29546" y="44070" /> </object>
+<object id="calydonBrazier"> <location x="29458" y="43575" /> </object>
+<object id="flaxCrop8"> <owner type="noAccess" /> <location x="29689" y="44151" /> </object>
+<object id="flaxCrop8"> <owner type="noAccess" /> <location x="29738" y="44249" /> </object>
+<object id="flaxCrop8"> <owner type="noAccess" /> <location x="29633" y="44346" /> </object>
+<object id="flaxCrop8"> <owner type="noAccess" /> <location x="29526" y="44298" /> </object>
+<object id="flaxCrop8"> <owner type="noAccess" /> <location x="29377" y="44469" /> </object>
+<object id="flaxCrop8"> <owner type="noAccess" /> <location x="29508" y="44553" /> </object>
+<object id="skeleton"> <location x="29548" y="44385" /> </object>
+<object id="skeleton"> <location x="29660" y="44280" /> </object>
+<object id="skeleton"> <location x="29556" y="44549" /> </object>
+<object id="skeleton"> <location x="29682" y="44520" /> </object>
+<object id="skeleton"> <location x="29782" y="44484" /> </object>
+<object id="skeleton"> <location x="29794" y="44573" /> </object>
+<object id="skeleton"> <location x="29818" y="44551" /> </object>
+<object id="skeleton"> <location x="29934" y="44558" /> </object>
+<object id="skeleton"> <location x="30024" y="44520" /> </object>
+<object id="skeleton"> <location x="29957" y="44487" /> </object>
 
 
 </root>
