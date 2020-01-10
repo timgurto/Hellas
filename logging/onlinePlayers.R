@@ -8,10 +8,12 @@ par(col="#bbbbbb", col.axis="#bbbbbb", col.lab="#bbbbbb", fg="#bbbbbb", bg="blac
 
 data <- read.csv(
     file="onlinePlayers.csv",
-    header=TRUE,
+    header=FALSE,
     sep=",",
     colClasses=c("integer","integer")
 )
+names(data) <- c("time","numPlayers")
+as.POSIXct(data$time[1], origin="1970-01-01")
 data$time = as.POSIXct(data$time, origin="1970-01-01")
 
 plot(
