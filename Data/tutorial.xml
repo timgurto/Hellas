@@ -91,7 +91,7 @@
     <startsWithItem id="tutFat2" />
 </quest>
     <objectType
-        id="tutBrazier" name="Brazier"
+        id="tutBrazier" name="Brazier" imageFile="brazier"
         xDrawOffset="-7" yDrawOffset="-18" >
         <collisionRect x="-6" y="-3" w="13" h="6" />
         <particles profile="smoke" x="0" y="-15" />
