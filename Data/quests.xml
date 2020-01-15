@@ -66,6 +66,30 @@
     <objective type="kill" id="calydonianBoar" qty="1" />
 </quest>
     <objectType id="skeleton" isDecoration="1" xDrawOffset="-20" yDrawOffset="-8" />
+    <npcType
+        id="calydonianBoar" name="Calydonian Boar"
+        level="15" maxHealth="200" attack="30" attackTime="2970"
+        xDrawOffset="-11" yDrawOffset="-13"
+        imageFile="boar" sounds = "pig" >
+        <collisionRect x="-9" y="-4" w="18" h="7" />
+        <loot id="hide" chance="0.3" />
+        <loot id="meat" chance="0.3" />
+        <loot id="fat" chance="0.05" />
+        <loot id="entrails" chance="0.1" />
+        <loot id="knucklebones" chance="0.02" />
+        <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
+        <loot id="calydonianHorn" chance="0.2" />
+    </npcType>
+    <item id="calydonianHorn" name="Horn of the Calydonian Boar" gearSlot="7"
+        iconFile="hornBlack" gearFile="hornBlack" >
+		<stats eps="4" hps="3" />
+		<offset x="0" y="-3" />
+    </item>
+    <item id="calydonianHide" name="Hide of the Calydonian Boar" gearSlot="3" sounds="leather"
+        iconFile="hideBlack" gearFile="hideBlack" >
+        <stats critResist="2" />
+        <offset x="-4" y="-1" />
+    </item>
 
 <quest id="learnAthleteBuilding1" name="Kron's Kill" startsAt="athleteQG" endsAt="athleteQG" timeLimit="35" exclusiveToClass="Athlete"
     brief="You look fast; you help Kron?
