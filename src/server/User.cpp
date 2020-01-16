@@ -1566,10 +1566,15 @@ void User::giveQuestReward(const Quest::Reward &reward) {
       getClass().teachSpell(reward.id);
       break;
 
-    case Quest::Reward::ITEM:
-      giveItem(server.findItem(reward.id));
-      getClass().teachSpell(reward.id);
+    case Quest::Reward::ITEM: {
+      auto rewardItem = server.findItem(reward.id);
+      if (!rewardItem) {
+        SERVER_ERROR("Quest-reward item doesn't exist: "s + reward.id);
+        break;
+      }
+      giveItem(rewardItem);
       break;
+    }
 
     case Quest::Reward::NONE:
       break;

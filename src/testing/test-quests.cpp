@@ -1649,6 +1649,26 @@ TEST_CASE("Quest reward: item", "[quests]") {
       }
     }
   }
+  GIVEN("a quest that awards a nonexistent item") {
+    auto data = R"(
+      <objectType id="questgiver" />
+      <quest id="givesGold" startsAt="questgiver" endsAt="questgiver">
+        <reward type="item" id="fakeName" />
+      </quest>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    WHEN("a user completes the quest") {
+      const auto &quest = s.getFirstQuest();
+      user.startQuest(quest);
+      user.completeQuest(quest.id);
+
+      THEN("the server doesn't crash") { s.nop(); }
+    }
+  }
 }
 
 TEST_CASE("Client remembers quest progress after death", "[quests]") {
