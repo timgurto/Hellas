@@ -64,6 +64,7 @@
     debrief="You saved our city, and have our thanks!  Please choose a trophy from the beast." >
     <prerequisite id="calydonianBoarPre" />
     <objective type="kill" id="calydonianBoar" qty="1" />
+    <reward type="item" id="calydonianHide" />
 </quest>
     <objectType id="skeleton" isDecoration="1" xDrawOffset="-20" yDrawOffset="-8" />
     <npcType

@@ -1625,6 +1625,32 @@ TEST_CASE("Quest reward: spell", "[quests]") {
   }
 }
 
+TEST_CASE("Quest reward: item", "[quests]") {
+  GIVEN("a quest that awards an item") {
+    auto data = R"(
+      <objectType id="questgiver" />
+      <item id="gold" />
+      <quest id="givesGold" startsAt="questgiver" endsAt="questgiver">
+        <reward type="item" id="gold" />
+      </quest>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    WHEN("a user completes the quest") {
+      const auto &quest = s.getFirstQuest();
+      user.startQuest(quest);
+      user.completeQuest(quest.id);
+
+      THEN("he has an inventory item") {
+        WAIT_UNTIL(user.inventory(0).first.hasItem());
+      }
+    }
+  }
+}
+
 TEST_CASE("Client remembers quest progress after death", "[quests]") {
   GIVEN("a player on a quest, and a quest-starter object") {
     auto data = R"(

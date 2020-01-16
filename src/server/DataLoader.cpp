@@ -429,6 +429,8 @@ void DataLoader::loadQuests(XmlReader &xr) {
         q.reward.type = Quest::Reward::CONSTRUCTION;
       else if (type == "spell")
         q.reward.type = Quest::Reward::SPELL;
+      else if (type == "item")
+        q.reward.type = Quest::Reward::ITEM;
       else
         continue;
 

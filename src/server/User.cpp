@@ -1566,6 +1566,11 @@ void User::giveQuestReward(const Quest::Reward &reward) {
       getClass().teachSpell(reward.id);
       break;
 
+    case Quest::Reward::ITEM:
+      giveItem(server.findItem(reward.id));
+      getClass().teachSpell(reward.id);
+      break;
+
     case Quest::Reward::NONE:
       break;
   }
