@@ -22,7 +22,7 @@ class CQuest {
     };
 
     struct Reward {
-      enum Type { NONE, LEARN_SPELL, LEARN_CONSTRUCTION };
+      enum Type { NONE, LEARN_SPELL, LEARN_CONSTRUCTION, RECEIVE_ITEM };
       Type type{NONE};
       std::string id{};
     };
