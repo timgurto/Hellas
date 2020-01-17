@@ -1530,6 +1530,14 @@ void User::completeQuest(const Quest::ID &id) {
   auto &server = Server::instance();
   const auto quest = server.findQuest(id);
 
+  // Final check before executing: make sure there's room for the reward
+  if (quest->reward.type == Quest::Reward::ITEM) {
+    if (!this->hasRoomFor({quest->reward.id})) {
+      sendMessage(WARNING_INVENTORY_FULL);
+      return;
+    }
+  }
+
   // Remove fetched items
   for (const auto &objective : quest->objectives) {
     if (objective.type == Quest::Objective::FETCH) {

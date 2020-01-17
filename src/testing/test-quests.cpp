@@ -1639,18 +1639,34 @@ TEST_CASE("Quest reward: item", "[quests]") {
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
 
+    const auto &quest = s.getFirstQuest();
+    user.startQuest(quest);
+
     WHEN("a user completes the quest") {
-      const auto &quest = s.getFirstQuest();
-      user.startQuest(quest);
       user.completeQuest(quest.id);
 
       THEN("he has an inventory item") {
         WAIT_UNTIL(user.inventory(0).first.hasItem());
       }
     }
+
+    WHEN("a user's inventory is full") {
+      const auto &filler = s.getFirstItem();
+      user.giveItem(&filler, User::INVENTORY_SIZE);
+
+      AND_WHEN("he tries to complete the quest") {
+        user.completeQuest(quest.id);
+
+        THEN("he is still on a quest") {
+          REPEAT_FOR_MS(100);
+          CHECK(user.numQuests() == 1);
+        }
+      }
+    }
   }
   GIVEN("a quest that awards a nonexistent item") {
     auto data = R"(
+      <item id="filler" />
       <objectType id="questgiver" />
       <quest id="givesGold" startsAt="questgiver" endsAt="questgiver">
         <reward type="item" id="fakeName" />
@@ -1658,12 +1674,12 @@ TEST_CASE("Quest reward: item", "[quests]") {
     )";
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
+    const auto &quest = s.getFirstQuest();
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
+    user.startQuest(quest);
 
     WHEN("a user completes the quest") {
-      const auto &quest = s.getFirstQuest();
-      user.startQuest(quest);
       user.completeQuest(quest.id);
 
       THEN("the server doesn't crash") { s.nop(); }
