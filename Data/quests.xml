@@ -27,7 +27,9 @@
     </npcType>
 
 <quest id="calydonianBoarPre" name="Honouring the Harvest" startsAt="flaxCrop0" endsAt="calydonBrazier"
-    brief="You're growing something!  Once you're done you should go thank the gods in Calydon."
+    brief="You have sown the fields, and contemplate life as a farmer--most of all, the importance of honouring the gods once you have reaped a harvest.
+    The Calydonians, devout textile traders, have a regular ceremony to show appreciation for their crops.  That would be a good place bring some of your produce to burn in offering.
+    The city of Calydon is located in the fertile river region of the south west, near the coast."
     debrief="You burn the offering of Flax in the brazier, confident that you have satisfied the gods." >
     <objective type="fetch" id="flax" qty="1" />
 </quest>
