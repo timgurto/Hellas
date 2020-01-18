@@ -481,6 +481,7 @@ void ClientObject::performAction(void *object) {
 
   auto textArg = std::string{"_"};
   if (obj._actionTextEntry != nullptr) textArg = obj._actionTextEntry->text();
+  if (textArg.empty()) textArg = "_";
 
   client.sendMessage(
       {CL_PERFORM_OBJECT_ACTION, makeArgs(obj.serial(), textArg)});
