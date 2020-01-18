@@ -646,8 +646,9 @@ void ClientObject::assembleWindow(Client &client) {
                  userHasAccess();
 
   auto windowHasClassContent = addClassSpecificStuffToWindow();
-  auto hasNonDemolitionContent = windowHasClassContent || hasContainer ||
-                                 isMerchant || canCede || canGrant || hasAQuest;
+  auto hasNonDemolitionContent =
+      windowHasClassContent || hasContainer || isMerchant || canCede ||
+      canGrant || hasAQuest || objType.hasAction() || objType.canDeconstruct();
   auto hasAnyContent = hasNonDemolitionContent || canDemolish;
 
   if (!_window) _window = Window::WithRectAndTitle({}, objType.name());
