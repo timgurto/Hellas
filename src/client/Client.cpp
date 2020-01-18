@@ -455,7 +455,9 @@ bool Client::playerHasItem(const Item *item, size_t quantity) const {
 
 void Client::removeEntity(Sprite *const toRemove) {
   const Sprite::set_t::iterator it = _entities.find(toRemove);
-  if (it != _entities.end()) _entities.erase(it);
+  if (it == _entities.end()) return;
+
+  _entities.erase(it);
   delete toRemove;
 }
 
