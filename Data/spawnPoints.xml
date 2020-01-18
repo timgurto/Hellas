@@ -324,6 +324,7 @@
     <spawnPoint y="43112" x="48272" type="meleeMan17" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="43360" x="44080" type="clay" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="43368" x="45360" type="meleeMan17" quantity="5" radius="250" respawnTime="300000" />
+    <spawnPoint y="43695" x="29623" type="calydonWeaver" quantity="8" radius="300" respawnTime="300000" />
     <spawnPoint y="43712" x="45600" type="tree" quantity="20" radius="1500" respawnTime="600000" />
     <spawnPoint y="43744" x="42800" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="43912" x="49440" type="meleeMan17" quantity="5" radius="250" respawnTime="300000" />
@@ -337,6 +338,7 @@
     <spawnPoint y="44384" x="47648" type="meleeMan17" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="44496" x="50912" type="tree" quantity="20" radius="1500" respawnTime="600000" />
     <spawnPoint y="44512" x="49040" type="stick" quantity="50" radius="1500" respawnTime="600000" />
+    <spawnPoint y="44584" x="30018" type="calydonianBoar" quantity="1" radius="100" respawnTime="300000" />
     <spawnPoint y="44656" x="49664" type="clay" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="44688" x="51824" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="44752" x="48160" type="tree" quantity="20" radius="1500" respawnTime="600000" />
