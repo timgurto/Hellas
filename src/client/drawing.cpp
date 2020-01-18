@@ -76,6 +76,8 @@ void Client::draw() const {
     base.draw(toScreenPoint(_target.entity()->location()) + offset() +
               BASE_OFFSET);
   }
+
+  auto drawOrder = 0;
   // Flat entities
   for (auto it = top; it != bottom; ++it) {
     if (!(*it)->isFlat()) continue;
@@ -84,6 +86,10 @@ void Client::draw() const {
     if (x < leftX && x > rightX) continue;
 
     (*it)->draw(*this);
+
+    if (isDebug())
+      Texture{defaultFont(), toString(drawOrder++), Color::MAGENTA}.draw(
+          toScreenPoint((*it)->location()) + offset());
   }
   // Non-flat entities
   for (auto it = top; it != bottom; ++it) {
@@ -93,6 +99,10 @@ void Client::draw() const {
     if (x < leftX && x > rightX) continue;
 
     (*it)->draw(*this);
+
+    if (isDebug())
+      Texture{defaultFont(), toString(drawOrder++), Color::MAGENTA}.draw(
+          toScreenPoint((*it)->location()) + offset());
   }
   // All names and health bars, in front of all entities
   for (auto it = top; it != bottom; ++it) {

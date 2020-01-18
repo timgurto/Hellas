@@ -221,6 +221,7 @@ void Client::initialiseData() {
   }
 
   Avatar::_spriteType.useCustomShadowWidth(16);
+  Avatar::_spriteType.useCustomDrawHeight(40);
 }
 
 void Client::initializeGearSlotNames() {
@@ -603,7 +604,7 @@ const ParticleProfile *Client::findParticleProfile(const std::string &id) {
 
 void Client::addParticles(const ParticlesToAdd &details) {
 #ifdef _DEBUG
-  // return;
+  return;
 #endif
 
   for (size_t i = 0; i != details.quantity(); ++i) {

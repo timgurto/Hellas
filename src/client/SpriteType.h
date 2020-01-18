@@ -28,6 +28,8 @@ class SpriteType {
   std::vector<Particles> _particles;
 
   Optional<px_t> _customShadowWidth;
+  Optional<px_t>
+      _customDrawHeight;  // If the image file has blank space at the bottom
 
  public:
   enum Special { DECORATION };
@@ -64,9 +66,12 @@ class SpriteType {
   static void forceAllShadowsToRedraw() {
     timeThatTheLastRedrawWasOrdered = SDL_GetTicks();
   }
-  void useCustomShadowWidth(px_t width);
+  void useCustomShadowWidth(px_t width) { _customShadowWidth = width; }
   bool hasCustomShadowWidth() const { return _customShadowWidth.hasValue(); }
   px_t customShadowWidth() const { return _customShadowWidth.value(); }
+  void useCustomDrawHeight(px_t height) { _customDrawHeight = height; }
+  bool hasCustomDrawHeight() const { return _customDrawHeight.hasValue(); }
+  px_t customDrawHeight() const { return _customDrawHeight.value(); }
 };
 
 #endif

@@ -92,10 +92,11 @@ void Sprite::update(double delta) {
 }
 
 double Sprite::bottomEdge() const {
-  if (_type != nullptr)
-    return _location.y + _type->drawRect().y + _type->height();
-  else
-    return _location.y;
+  if (!_type) return _location.y;
+
+  auto height = _type->hasCustomDrawHeight() ? _type->customDrawHeight()
+                                             : _type->height();
+  return _location.y + _type->drawRect().y + height;
 }
 
 void Sprite::location(const MapPoint &loc) {

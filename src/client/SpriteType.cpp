@@ -47,10 +47,6 @@ void SpriteType::setHighlightImage(const std::string &imageFile) {
   _imageHighlight = Texture(highlightSurface);
 }
 
-void SpriteType::useCustomShadowWidth(px_t width) {
-  _customShadowWidth = width;
-}
-
 void SpriteType::setImage(const std::string &imageFile) {
   _image = Texture(imageFile, Color::MAGENTA);
   _drawRect.w = _image.width();
