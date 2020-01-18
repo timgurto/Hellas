@@ -851,6 +851,7 @@ void ClientObject::drawAppropriateQuestIndicator() const {
   auto questIndicator = Texture{};
 
   if (!userHasAccess()) return;
+  if (isBeingConstructed()) return;
   if (!completableQuests().empty())
     questIndicator = questEndIndicator;
   else if (!startsQuests().empty())
