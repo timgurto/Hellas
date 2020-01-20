@@ -17,6 +17,7 @@ class NormalVariable {
   NormalVariable(const NormalVariable &rhs);
   ~NormalVariable();
   NormalVariable &operator=(const NormalVariable &rhs);
+  bool operator==(const NormalVariable &rhs) const;
 
   double generate() const;
   double operator()() const { return generate(); }

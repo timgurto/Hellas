@@ -261,3 +261,54 @@ TEST_CASE("Non-taggers are not alerted to lootable objects", "[loot]") {
   // Then the client doesn't finds out that it's lootable
   CHECK_FALSE(c.waitForMessage(SV_INVENTORY));
 }
+
+TEST_CASE("Loot-table equality") {
+  auto rock = ServerItem{"rock"};
+  auto stick = ServerItem{"stick"};
+
+  GIVEN("Two loot tables") {
+    auto a = LootTable{}, b = LootTable{};
+    a == b;
+
+    WHEN("One has a rock") {
+      a.addSimpleItem(&rock, 1.0);
+      THEN("they are not equal") {
+        CHECK(a != b);
+
+        AND_WHEN("the other has a rock") {
+          b.addSimpleItem(&rock, 1.0);
+          THEN("they are equal") { CHECK(a == b); }
+        }
+
+        AND_WHEN("the other has a stick") {
+          b.addSimpleItem(&stick, 1.0);
+          THEN("they are not equal") { CHECK(a != b); }
+        }
+      }
+    }
+
+    WHEN("they have the same entries in different orders") {
+      a.addSimpleItem(&rock, 1.0);
+      a.addSimpleItem(&stick, 1.0);
+
+      b.addSimpleItem(&stick, 1.0);
+      b.addSimpleItem(&rock, 1.0);
+
+      THEN("they are equal") { CHECK(a == b); }
+    }
+
+    WHEN("they differ only by loot chance") {
+      a.addSimpleItem(&rock, 1.0);
+      b.addSimpleItem(&rock, 0.5);
+
+      THEN("they are not equal") { CHECK(a != b); }
+    }
+
+    WHEN("they differ only by distribution") {
+      a.addNormalItem(&rock, 1.0);
+      b.addNormalItem(&rock, 0.5);
+
+      THEN("they are not equal") { CHECK(a != b); }
+    }
+  }
+}

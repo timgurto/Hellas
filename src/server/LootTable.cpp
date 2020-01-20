@@ -1,14 +1,35 @@
 #include "LootTable.h"
+
 #include "../util.h"
 #include "Loot.h"
 #include "Server.h"
 #include "User.h"
 
+bool LootTable::operator==(const LootTable &rhs) const {
+  if (_entries.size() != rhs._entries.size()) return false;
+  auto other = rhs._entries;  // copy to modify
+  for (const auto &entry : _entries) {
+    auto entryFound = false;
+    for (auto i = 0; i != other.size(); ++i) {
+      if (other[i] != entry) continue;
+
+      // Remove from vector
+      other[i] = other.back();
+      other.pop_back();
+      entryFound = true;
+      break;
+    }
+
+    if (!entryFound) return false;
+  }
+  return true;
+}
+
 void LootTable::addNormalItem(const ServerItem *item, double mean, double sd) {
   _entries.push_back({});
   LootEntry &le = _entries.back();
   le.item = item;
-  le.normalDist = NormalVariable(mean, sd);
+  le.normalDist = {mean, sd};
 }
 
 void LootTable::addSimpleItem(const ServerItem *item, double chance) {
@@ -58,4 +79,9 @@ void LootTable::instantiate(Loot &loot, const User *killer) const {
     if (quantity == 0) continue;
     loot.add(entry.item, quantity);
   }
+}
+
+bool LootTable::LootEntry::operator==(const LootEntry &rhs) const {
+  return item == rhs.item && simpleChance == rhs.simpleChance &&
+         normalDist == rhs.normalDist;
 }

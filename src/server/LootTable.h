@@ -15,11 +15,17 @@ class LootTable {
     const ServerItem *item;
     NormalVariable normalDist;
     double simpleChance = 0;  // Use this instead, if != 0
+
+    bool operator==(const LootEntry &rhs) const;
+    bool operator!=(const LootEntry &rhs) const { return !((*this) == rhs); }
   };
 
   std::vector<LootEntry> _entries;
 
  public:
+  bool operator==(const LootTable &rhs) const;
+  bool operator!=(const LootTable &rhs) const { return !((*this) == rhs); }
+
   void addNormalItem(const ServerItem *item, double mean, double sd = 0);
   void addSimpleItem(const ServerItem *item, double chance);
 

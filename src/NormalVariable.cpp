@@ -33,6 +33,10 @@ NormalVariable &NormalVariable::operator=(const NormalVariable &rhs) {
   return *this;
 }
 
+bool NormalVariable::operator==(const NormalVariable &rhs) const {
+  return _zeroSD == rhs._zeroSD && _mean == rhs._mean && _sd == rhs._sd;
+}
+
 double NormalVariable::generate() const {
   if (_zeroSD) return _mean;
   return (*_dist)(randomEngine);
