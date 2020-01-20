@@ -54,6 +54,7 @@ void DataLoader::load(bool keepOldData) {
 
     loadFromAllFiles(&DataLoader::loadTerrain);
     loadFromAllFiles(&DataLoader::loadTerrainLists);
+    loadFromAllFiles(&DataLoader::loadLootTables);
     loadFromAllFiles(&DataLoader::loadObjectTypes);
     loadFromAllFiles(&DataLoader::loadNPCTypes);
     loadFromAllFiles(&DataLoader::loadItems);
@@ -70,6 +71,7 @@ void DataLoader::load(bool keepOldData) {
   } else {
     loadTerrain(XmlReader::FromString(_data));
     loadTerrainLists(XmlReader::FromString(_data));
+    loadLootTables(XmlReader::FromString(_data));
     loadObjectTypes(XmlReader::FromString(_data));
     loadNPCTypes(XmlReader::FromString(_data));
     loadItems(XmlReader::FromString(_data));
@@ -458,6 +460,36 @@ void DataLoader::loadQuests(XmlReader &xr) {
   }
 }
 
+void DataLoader::loadLootTables(XmlReader &xr) {
+  if (!xr) return;
+
+  for (auto elem : xr.getChildren("lootTable")) {
+    std::string id;
+    if (!xr.findAttr(elem, "id", id))  // No ID: skip
+      continue;
+
+    auto lt = LootTable{};
+
+    auto itemID = ""s;
+    for (auto loot : xr.getChildren("loot", elem)) {
+      if (!xr.findAttr(loot, "id", itemID)) continue;
+
+      double mean = 1.0, sd = 0;
+      std::set<ServerItem>::const_iterator itemIt =
+          _server._items.insert(ServerItem(itemID)).first;
+      if (xr.findAttr(loot, "chance", mean)) {
+        lt.addSimpleItem(&*itemIt, mean);
+      } else if (xr.findNormVarChild("normal", loot, mean, sd)) {
+        lt.addNormalItem(&*itemIt, mean, sd);
+      } else {
+        lt.addSimpleItem(&*itemIt, 1.0);
+      }
+    }
+
+    _server._standaloneLootTables[id] = lt;
+  }
+}
+
 void DataLoader::loadNPCTypes(XmlReader &xr) {
   if (!xr) return;
 
@@ -529,6 +561,17 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
       } else {
         nt->addSimpleLoot(&*itemIt, 1.0);
       }
+    }
+
+    for (auto loot : xr.getChildren("lootTable", elem)) {
+      if (!xr.findAttr(loot, "id", s)) continue;
+      auto it = _server._standaloneLootTables.find(s);
+      if (it == _server._standaloneLootTables.end()) {
+        _server._debug << Color::CHAT_ERROR << "Standalone loot table " << s
+                       << " doesn't exist; skipping." << Log::endl;
+        continue;
+      }
+      nt->addLootTable(it->second);
     }
 
     _server._objectTypes.insert(nt);

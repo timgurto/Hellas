@@ -1,5 +1,18 @@
 <root>
 
+<lootTable id="animal" >
+    <loot id="meat" chance="0.3" />
+    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
+    <loot id="fat" chance="0.05" />
+    <loot id="knucklebones" chance="0.02" />
+    <loot id="entrails" chance="0.1" />
+</lootTable>
+<lootTable id="snake" >
+    <loot id="meat" chance="0.3" />
+    <loot id="entrails" chance="0.1" />
+    <loot id="fat" chance="0.05" />
+</lootTable>
+
 <npcType
     id="dog6" name="Dog"
     level="6" maxHealth="28" attack="6" attackTime="2500"
@@ -7,12 +20,8 @@
     xDrawOffset="-13" yDrawOffset="-24" >
     <canBeTamed consumes="bone" />
     <collisionRect x="-11" y="-2" w="21" h="4" />
-    <loot id="meat" chance="0.3" />
-    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
+    <lootTable id="animal" />
     <loot id="hide" chance="0.1" />
-    <loot id="fat" chance="0.05" />
-    <loot id="knucklebones" chance="0.02" />
-    <loot id="entrails" chance="0.1" />
 </npcType>
 <npcType
     id="goat5" name="Mild-Mannered Goat"
@@ -20,13 +29,9 @@
     imageFile = "goat" sounds="goat" isNeutral="1"
     xDrawOffset="-17" yDrawOffset="-28" >
     <collisionRect x="-15" y="-4" w="31" h="7" />
-    <loot id="meat" chance="0.3" />
-    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
+    <lootTable id="animal" />
     <loot id="hide" chance="0.1" />
-    <loot id="fat" chance="0.05" />
     <loot id="horn" chance="0.05" />
-    <loot id="knucklebones" chance="0.02" />
-    <loot id="entrails" chance="0.1" />
 </npcType>
 <npcType
     id="goat12" name="Stubborn Goat"
@@ -34,13 +39,9 @@
     imageFile = "goat" sounds="goat"
     xDrawOffset="-17" yDrawOffset="-28" >
     <collisionRect x="-15" y="-4" w="31" h="7" />
-    <loot id="meat" chance="0.3" />
-    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
-    <loot id="hide" chance="0.2" />
-    <loot id="fat" chance="0.05" />
+    <lootTable id="animal" />
+    <loot id="hide" chance="0.1" />
     <loot id="horn" chance="0.05" />
-    <loot id="knucklebones" chance="0.02" />
-    <loot id="entrails" chance="0.1" />
 </npcType>
 <npcType
     id="goat15" name="Ornery Goat"
@@ -48,13 +49,9 @@
     imageFile = "goat" sounds="goat"
     xDrawOffset="-17" yDrawOffset="-28" >
     <collisionRect x="-15" y="-4" w="31" h="7" />
-    <loot id="meat" chance="0.3" />
-    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
-    <loot id="hide" chance="0.2" />
-    <loot id="fat" chance="0.05" />
+    <lootTable id="animal" />
+    <loot id="hide" chance="0.1" />
     <loot id="horn" chance="0.05" />
-    <loot id="knucklebones" chance="0.02" />
-    <loot id="entrails" chance="0.1" />
 </npcType>
 <npcType
     id="goat16" name="Angry Goat"
@@ -62,12 +59,8 @@
     imageFile = "goat" sounds="goat"
     xDrawOffset="-17" yDrawOffset="-28" >
     <collisionRect x="-15" y="-4" w="31" h="7" />
-    <loot id="meat" chance="0.3" />
-    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
-    <loot id="hide" chance="0.2" />
-    <loot id="knucklebones" chance="0.02" />
-    <loot id="entrails" chance="0.1" />
-    <loot id="fat" chance="0.05" />
+    <lootTable id="animal" />
+    <loot id="hide" chance="0.1" />
     <loot id="horn" chance="0.05" />
 </npcType>
 
@@ -78,11 +71,7 @@
     imageFile="tortoise" sounds="tortoise" isNeutral="1" >
     <spell id="tutShield" />
     <collisionRect x="-15" y="-5" w="31" h="10" />
-    <loot id="meat" chance="0.3" />
-    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
-    <loot id="knucklebones" chance="0.02" />
-    <loot id="entrails" chance="0.1" />
-    <loot id="fat" chance="0.05" />
+    <lootTable id="animal" />
 </npcType>
 <npcType
     id="tortoise11" name="Spike-Shell Tortoise"
@@ -91,11 +80,7 @@
     imageFile="tortoise" sounds="tortoise" >
     <spell id="tutShield" />
     <collisionRect x="-15" y="-5" w="31" h="10" />
-    <loot id="meat" chance="0.3" />
-    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
-    <loot id="knucklebones" chance="0.02" />
-    <loot id="entrails" chance="0.1" />
-    <loot id="fat" chance="0.05" />
+    <lootTable id="animal" />
 </npcType>
 <npcType
     id="tortoise19" name="Shear-Shell Tortoise"
@@ -104,11 +89,7 @@
     imageFile="tortoise" sounds="tortoise" >
     <spell id="tutShield" />
     <collisionRect x="-15" y="-5" w="31" h="10" />
-    <loot id="meat" chance="0.3" />
-    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
-    <loot id="knucklebones" chance="0.02" />
-    <loot id="entrails" chance="0.1" />
-    <loot id="fat" chance="0.05" />
+    <lootTable id="animal" />
 </npcType>
 
 <npcType
@@ -118,11 +99,7 @@
     imageFile="lizard" sounds="lizard" >
     <spell id="tutHeal" />
     <collisionRect x="-18" y="-6" w="37" h="12" />
-    <loot id="meat" chance="0.3" />
-    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
-    <loot id="knucklebones" chance="0.02" />
-    <loot id="entrails" chance="0.1" />
-    <loot id="fat" chance="0.05" />
+    <lootTable id="animal" />
 </npcType>
 <npcType
     id="lizard12" name="Coastal Sunbather"
@@ -131,11 +108,7 @@
     imageFile="lizard" sounds="lizard" >
     <spell id="tutHeal" />
     <collisionRect x="-18" y="-6" w="37" h="12" />
-    <loot id="meat" chance="0.3" />
-    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
-    <loot id="knucklebones" chance="0.02" />
-    <loot id="entrails" chance="0.1" />
-    <loot id="fat" chance="0.05" />
+    <lootTable id="animal" />
 </npcType>
 <npcType
     id="lizard15" name="Mountain Sunner"
@@ -144,11 +117,7 @@
     imageFile="lizard" sounds="lizard" >
     <spell id="tutHeal" />
     <collisionRect x="-18" y="-6" w="37" h="12" />
-    <loot id="meat" chance="0.3" />
-    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
-    <loot id="knucklebones" chance="0.02" />
-    <loot id="entrails" chance="0.1" />
-    <loot id="fat" chance="0.05" />
+    <lootTable id="animal" />
 </npcType>
 <npcType
     id="lizard18" name="Rock Lounger"
@@ -157,11 +126,7 @@
     imageFile="lizard" sounds="lizard" >
     <spell id="tutHeal" />
     <collisionRect x="-18" y="-6" w="37" h="12" />
-    <loot id="meat" chance="0.3" />
-    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
-    <loot id="knucklebones" chance="0.02" />
-    <loot id="entrails" chance="0.1" />
-    <loot id="fat" chance="0.05" />
+    <lootTable id="animal" />
 </npcType>
 
 <npcType
@@ -170,9 +135,7 @@
     xDrawOffset="-12" yDrawOffset="-12"
     imageFile="snake" sounds="snake" >
     <collisionRect x="-5" y="-5" w="10" h="10" />
-    <loot id="meat" chance="0.3" />
-    <loot id="entrails" chance="0.1" />
-    <loot id="fat" chance="0.05" />
+    <lootTable id="snake" />
 </npcType>
 <npcType
     id="snake16" name="Undergrowth Lurker" isFlat="1"
@@ -180,9 +143,7 @@
     xDrawOffset="-12" yDrawOffset="-12"
     imageFile="snake" sounds="snake" >
     <collisionRect x="-5" y="-5" w="10" h="10" />
-    <loot id="meat" chance="0.3" />
-    <loot id="entrails" chance="0.1" />
-    <loot id="fat" chance="0.05" />
+    <lootTable id="snake" />
 </npcType>
 
 <npcType
@@ -191,12 +152,8 @@
     xDrawOffset="-11" yDrawOffset="-13"
     imageFile="boar" sounds = "pig" >
     <collisionRect x="-9" y="-4" w="18" h="7" />
+    <lootTable id="animal" />
     <loot id="hide" chance="0.3" />
-    <loot id="meat" chance="0.3" />
-    <loot id="fat" chance="0.05" />
-    <loot id="entrails" chance="0.1" />
-    <loot id="knucklebones" chance="0.02" />
-    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
 </npcType>
 <npcType
     id="boar12" name="Leaftreader Companion"
@@ -204,12 +161,8 @@
     xDrawOffset="-11" yDrawOffset="-13"
     imageFile="boar" sounds = "pig" >
     <collisionRect x="-9" y="-4" w="18" h="7" />
+    <lootTable id="animal" />
     <loot id="hide" chance="0.3" />
-    <loot id="meat" chance="0.3" />
-    <loot id="fat" chance="0.05" />
-    <loot id="entrails" chance="0.1" />
-    <loot id="knucklebones" chance="0.02" />
-    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
 </npcType>
 <npcType
     id="boar18" name="Undergrowth Gorer"
@@ -217,12 +170,8 @@
     xDrawOffset="-11" yDrawOffset="-13"
     imageFile="boar" sounds = "pig" >
     <collisionRect x="-9" y="-4" w="18" h="7" />
+    <lootTable id="animal" />
     <loot id="hide" chance="0.3" />
-    <loot id="meat" chance="0.3" />
-    <loot id="fat" chance="0.05" />
-    <loot id="entrails" chance="0.1" />
-    <loot id="knucklebones" chance="0.02" />
-    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
 </npcType>
 
 <npcType

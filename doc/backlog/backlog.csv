@@ -293,7 +293,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 611,Only NPCs marked as tamable can be tamed,8,3,Feature,,TRUE,,3 Tin wrapup
 57,Heavy items that prevent player movement,13,3,Feature,,,TRUE,4 Copper
 59,Better NPC pathfinding,21,34,Feature,,,,5 First adventure
-65,NPCs can combine loot tables,5,8,Feature,,,,5 First adventure
+65,NPCs can combine loot tables,5,8,Code quality,,TRUE,,5 First adventure
 67,Set bonuses for gear,13,21,Feature,,,,
 68,Class-restricted gear,8,5,Feature,,,,
 72,"Sort _materials and _craftableItems by name, not ID",5,3,Usability,,,,

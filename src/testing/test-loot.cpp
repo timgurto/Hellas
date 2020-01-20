@@ -312,3 +312,31 @@ TEST_CASE("Loot-table equality") {
     }
   }
 }
+
+TEST_CASE("Composite loot tables") {
+  GIVEN(
+      "an NPC that drops X, and one that drops X via a standalone loot table") {
+    auto data = R"(
+      <item id="gold" />
+      <lootTable id="wealthyMob" >
+        <loot id="gold" />
+      </lootTable>
+
+      <npcType id="merchant" >
+        <loot id="gold" />
+      </npcType>
+      <npcType id="trader" >
+        <lootTable id="wealthyMob" />
+      </npcType>
+    )";
+    auto s = TestServer::WithDataString(data);
+    const auto &merchant =
+        dynamic_cast<const NPCType &>(*s->findObjectTypeByID("merchant"));
+    const auto &trader =
+        dynamic_cast<const NPCType &>(*s->findObjectTypeByID("trader"));
+
+    THEN("they have identical loot tables") {
+      CHECK(merchant.lootTable() == trader.lootTable());
+    }
+  }
+}

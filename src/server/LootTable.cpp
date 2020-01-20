@@ -39,6 +39,10 @@ void LootTable::addSimpleItem(const ServerItem *item, double chance) {
   le.simpleChance = chance;
 }
 
+void LootTable::addAllFrom(const LootTable &rhs) {
+  for (const auto &entry : rhs._entries) _entries.push_back(entry);
+}
+
 void LootTable::instantiate(Loot &loot, const User *killer) const {
   if (!loot.empty()) {
     SERVER_ERROR("Loot object provided was not empty");

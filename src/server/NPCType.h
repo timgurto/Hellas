@@ -63,6 +63,7 @@ class NPCType : public ObjectType {
 
   void addSimpleLoot(const ServerItem *item, double chance);
   void addNormalLoot(const ServerItem *item, double mean, double sd);
+  void addLootTable(const LootTable &rhs);
 };
 
 #endif

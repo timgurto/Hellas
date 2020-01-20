@@ -220,6 +220,7 @@ class Server {
   // World data
   std::set<ServerItem> _items;
   std::set<SRecipe> _recipes;
+  std::map<std::string, LootTable> _standaloneLootTables;
   std::set<const ObjectType *> _objectTypes;
   std::vector<Spawner> _spawners;
   std::map<char, Terrain *> _terrainTypes;

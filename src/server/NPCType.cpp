@@ -1,4 +1,5 @@
 #include "NPCType.h"
+
 #include "NPC.h"
 #include "Server.h"
 #include "objects/Container.h"
@@ -37,3 +38,5 @@ void NPCType::addSimpleLoot(const ServerItem *item, double chance) {
 void NPCType::addNormalLoot(const ServerItem *item, double mean, double sd) {
   _lootTable.addNormalItem(item, mean, sd);
 }
+
+void NPCType::addLootTable(const LootTable &rhs) { _lootTable.addAllFrom(rhs); }
