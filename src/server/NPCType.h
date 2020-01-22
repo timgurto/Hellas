@@ -39,6 +39,8 @@ class NPCType : public ObjectType {
   static void init();
   virtual void initialise() const override;
 
+  void applyTemplate(const std::string &templateID);
+
   const LootTable &lootTable() const { return _lootTable; }
   void level(Level l) { _level = l; }
   Level level() const { return _level; }

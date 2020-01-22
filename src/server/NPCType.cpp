@@ -27,6 +27,12 @@ void NPCType::initialise() const {
   }
 }
 
+void NPCType::applyTemplate(const std::string &templateID) {
+  auto nt = Server::instance().findNPCTemplate(templateID);
+  if (!nt) return;
+  collisionRect(*nt);
+}
+
 bool NPCType::canBeAttacked() const { return _aggression != NON_COMBATANT; }
 
 bool NPCType::attacksNearby() const { return _aggression == AGGRESSIVE; }

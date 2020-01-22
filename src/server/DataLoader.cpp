@@ -56,6 +56,7 @@ void DataLoader::load(bool keepOldData) {
     loadFromAllFiles(&DataLoader::loadTerrainLists);
     loadFromAllFiles(&DataLoader::loadLootTables);
     loadFromAllFiles(&DataLoader::loadObjectTypes);
+    loadFromAllFiles(&DataLoader::loadNPCTemplates);
     loadFromAllFiles(&DataLoader::loadNPCTypes);
     loadFromAllFiles(&DataLoader::loadItems);
     loadFromAllFiles(&DataLoader::loadQuests);
@@ -78,6 +79,7 @@ void DataLoader::load(bool keepOldData) {
     loadTerrainLists(data);
     loadLootTables(data);
     loadObjectTypes(data);
+    loadNPCTemplates(data);
     loadNPCTypes(data);
     loadItems(data);
     loadQuests(data);
@@ -485,12 +487,28 @@ void DataLoader::loadLootTables(XmlReader &xr) {
   }
 }
 
+void DataLoader::loadNPCTemplates(XmlReader &xr) {
+  for (auto elem : xr.getChildren("npcTemplate")) {
+    std::string id;
+    if (!xr.findAttr(elem, "id", id))  // No ID: skip
+      continue;
+    auto collisionRect = MapRect{};
+    xr.findRectChild("collisionRect", elem, collisionRect);
+
+    _server._npcTemplates[id] = collisionRect;
+  }
+}
+
 void DataLoader::loadNPCTypes(XmlReader &xr) {
   for (auto elem : xr.getChildren("npcType")) {
     std::string id;
     if (!xr.findAttr(elem, "id", id))  // No ID: skip
       continue;
     NPCType *nt = new NPCType(id);
+
+    auto templateID = ""s;
+    if (xr.findAttr(elem, "template", templateID))
+      nt->applyTemplate(templateID);
 
     auto humanoid = xr.findChild("humanoid", elem);
 

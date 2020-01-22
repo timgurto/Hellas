@@ -6,6 +6,10 @@
 
 class SoundProfile;
 
+struct CNPCTemplate {
+  MapRect collisionRect;
+};
+
 class ClientNPCType : public ClientObjectType {
  public:
   ClientNPCType(const std::string &id, const std::string &imagePath,
@@ -14,6 +18,8 @@ class ClientNPCType : public ClientObjectType {
 
   void projectile(const Projectile::Type &type) { _projectile = &type; }
   const Projectile::Type *projectile() const { return _projectile; }
+
+  void applyTemplate(const CNPCTemplate *nt);
 
   void addGear(const ClientItem &item);
   const ClientItem *gear(size_t slot) const;

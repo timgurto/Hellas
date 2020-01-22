@@ -63,6 +63,7 @@ void CDataLoader::load(bool keepOldData) {
     loadFromAllFiles(&CDataLoader::loadItems);
     loadFromAllFiles(&CDataLoader::loadClasses);
     loadFromAllFiles(&CDataLoader::loadRecipes);
+    loadFromAllFiles(&CDataLoader::loadNPCTemplates);
     loadFromAllFiles(&CDataLoader::loadNPCTypes);
     loadFromAllFiles(&CDataLoader::loadQuests);
 
@@ -82,6 +83,7 @@ void CDataLoader::load(bool keepOldData) {
     loadItems(XmlReader::FromString(_data));
     loadClasses(XmlReader::FromString(_data));
     loadRecipes(XmlReader::FromString(_data));
+    loadNPCTemplates(XmlReader::FromString(_data));
     loadNPCTypes(XmlReader::FromString(_data));
     loadQuests(XmlReader::FromString(_data));
   }
@@ -870,6 +872,21 @@ void CDataLoader::loadRecipes(XmlReader &xr) {
   }
 }
 
+void CDataLoader::loadNPCTemplates(XmlReader &xr) {
+  if (!xr) return;
+
+  for (auto elem : xr.getChildren("npcTemplate")) {
+    std::string id;
+    if (!xr.findAttr(elem, "id", id))  // No ID: skip
+      continue;
+
+    auto nt = CNPCTemplate{};
+    xr.findRectChild("collisionRect", elem, nt.collisionRect);
+
+    _client._npcTemplates[id] = nt;
+  }
+}
+
 void CDataLoader::loadNPCTypes(XmlReader &xr) {
   if (!xr) return;
 
@@ -878,10 +895,15 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
     if (!xr.findAttr(elem, "id", id))  // No ID: skip
       continue;
 
-    auto maxHealth = 1;
-    xr.findAttr(elem, "maxHealth", maxHealth);
+    const CNPCTemplate *npcTemplate = nullptr;
+    auto templateID = ""s;
+    if (xr.findAttr(elem, "template", templateID))
+      npcTemplate = _client.findNPCTemplate(templateID);
 
     auto humanoid = xr.findChild("humanoid", elem);
+
+    auto maxHealth = 1;
+    xr.findAttr(elem, "maxHealth", maxHealth);
 
     auto imagePath = ""s;
     if (humanoid) {
@@ -896,6 +918,7 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
     }
 
     ClientNPCType *nt = new ClientNPCType(id, imagePath, maxHealth);
+    if (npcTemplate) nt->applyTemplate(npcTemplate);
 
     auto s = id;
     xr.findAttr(elem, "name", s);

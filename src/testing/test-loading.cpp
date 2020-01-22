@@ -266,3 +266,20 @@ TEST_CASE("Server loads terrain types") {
     THEN("there's one terrain type") { CHECK(s.terrainTypes().size() == 1); }
   }
 }
+
+TEST_CASE("NPC templates") {
+  GIVEN("an NPC that uses a template") {
+    auto data = R"(
+      <npcTemplate id="bear">
+        <collisionRect x="1" y="2" w="3" h="4" />
+      </npcTemplate>
+      <npcType id="easyBear" template="bear" />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    THEN("it has the correct collision info") {
+      const auto &easyBear = s.getFirstNPCType();
+      CHECK(easyBear.collisionRect() == MapRect{1, 2, 3, 4});
+    }
+  }
+}

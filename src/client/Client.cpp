@@ -755,6 +755,12 @@ const ClientItem *Client::findItem(const std::string &id) const {
   return &it->second;
 }
 
+const CNPCTemplate *Client::findNPCTemplate(const std::string &id) const {
+  auto it = _npcTemplates.find(id);
+  if (it == _npcTemplates.end()) return nullptr;
+  return &it->second;
+}
+
 bool Client::isAtWarWithObjectOwner(const ClientObject::Owner &owner) const {
   // Cities
   if (owner.type == ClientObject::Owner::CITY)

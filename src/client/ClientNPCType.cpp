@@ -17,6 +17,10 @@ ClientNPCType::ClientNPCType(const std::string &id,
   corpseImage(imagePath + "-corpse.png");
 }
 
+void ClientNPCType::applyTemplate(const CNPCTemplate *nt) {
+  collisionRect(nt->collisionRect);
+}
+
 void ClientNPCType::addGear(const ClientItem &item) {
   auto slot = item.gearSlot();
   if (_gear.empty()) {

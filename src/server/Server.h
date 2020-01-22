@@ -93,6 +93,7 @@ class Server {
   std::pair<std::set<size_t>::iterator, std::set<size_t>::iterator>
   findObjectsOwnedBy(const Permissions::Owner &owner) const;
   const Entity *findEntityBySerial(size_t serial);
+  const MapRect *findNPCTemplate(const std::string &templateID) const;
 
   // Checks whether an entity is within range of a user.  If not, a relevant
   // error message is sent to the client.
@@ -221,6 +222,7 @@ class Server {
   std::set<ServerItem> _items;
   std::set<SRecipe> _recipes;
   std::map<std::string, LootTable> _standaloneLootTables;
+  std::map<std::string, MapRect> _npcTemplates;  // Collision rects
   std::set<const ObjectType *> _objectTypes;
   std::vector<Spawner> _spawners;
   std::map<char, Terrain *> _terrainTypes;

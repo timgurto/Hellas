@@ -20,6 +20,7 @@ class DataLoader {
   void loadLootTables(XmlReader &reader);
   void loadObjectTypes(XmlReader &reader);
   void loadQuests(XmlReader &reader);
+  void loadNPCTemplates(XmlReader &reader);
   void loadNPCTypes(XmlReader &reader);
   void loadItems(XmlReader &reader);
   void loadRecipes(XmlReader &reader);

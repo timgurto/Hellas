@@ -26,6 +26,7 @@ class CDataLoader {
   void loadItems(XmlReader &reader);
   void loadClasses(XmlReader &reader);
   void loadRecipes(XmlReader &reader);
+  void loadNPCTemplates(XmlReader &reader);
   void loadNPCTypes(XmlReader &reader);
   void loadQuests(XmlReader &reader);
   void loadMap(XmlReader &reader);

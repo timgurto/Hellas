@@ -657,7 +657,7 @@ Object &Server::addObject(const ObjectType *type, const MapPoint &location,
   switch (owner.type) {
     case Permissions::Owner::ALL_HAVE_ACCESS:
       break;
-    
+
     case Permissions::Owner::NO_ACCESS:
       newObj->permissions().setNoAccess();
       break;
@@ -748,6 +748,12 @@ Server::findObjectsOwnedBy(const Permissions::Owner &owner) const {
 
 const Entity *Server::findEntityBySerial(size_t serial) {
   return _entities.find(serial);
+}
+
+const MapRect *Server::findNPCTemplate(const std::string &templateID) const {
+  auto it = _npcTemplates.find(templateID);
+  if (it == _npcTemplates.end()) return nullptr;
+  return &it->second;
 }
 
 const Terrain *Server::terrainType(char index) const {

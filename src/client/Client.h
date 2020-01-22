@@ -551,6 +551,7 @@ class Client {
   typedef std::set<const ClientObjectType *, ClientObjectType::ptrCompare>
       objectTypes_t;
   objectTypes_t _objectTypes;
+  std::map<std::string, CNPCTemplate> _npcTemplates;
   typedef std::set<const ParticleProfile *, ParticleProfile::ptrCompare>
       particleProfiles_t;
   particleProfiles_t _particleProfiles;
@@ -711,6 +712,7 @@ class Client {
   ClientObjectType *findObjectType(const std::string &id);
   ClientNPCType *findNPCType(const std::string &id);
   const ClientItem *findItem(const std::string &id) const;
+  const CNPCTemplate *findNPCTemplate(const std::string &id) const;
 
  private:
   friend class ContainerGrid;  // Needs to send CL_SWAP_ITEMS messages, and open

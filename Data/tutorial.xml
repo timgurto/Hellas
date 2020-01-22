@@ -59,11 +59,10 @@
     <objective type="fetch" id="tutFat" />
 </quest>
     <npcType
-        id="tutGoat" name="Goat"
+        id="tutGoat" name="Goat" template="goat"
         level="2" maxHealth="19" attack="6" attackTime="2780" isNeutral="1"
         xDrawOffset="-17" yDrawOffset="-28"
         imageFile="goat" sounds = "goat" >
-        <collisionRect x="-15" y="-4" w="31" h="7" />
         <loot id="tutMeat" > <normal mean="0.7" sd="0.5" /> </loot>
         <loot id="tutHide" chance="0.2" />
         <loot id="tutEntrails"> <normal mean="0.7" sd="0.5" /> </loot>
@@ -165,11 +164,10 @@
         <durability item="stick" quantity="1" />
     </objectType>
     <npcType
-        id="tutBoar" name="Boar"
+        id="tutBoar" name="Boar" template="boar"
         level="3" maxHealth="19" attack="7" attackTime="2780"
         xDrawOffset="-11" yDrawOffset="-13"
         imageFile="boar" sounds = "pig" >
-        <collisionRect x="-9" y="-4" w="18" h="7" />
         <loot id="meat" > <normal mean="0.5" sd="0.7" /> </loot>
         <loot id="tutEntrails3" chance="0.05" />
     </npcType>
@@ -286,11 +284,10 @@
 	<objective type="kill" id="tutSnake" qty="5" />
 </quest>
     <npcType
-        id="tutSnake" name="Snake" isFlat="1"
+        id="tutSnake" name="Snake" isFlat="1" template="snake"
         level="4" maxHealth="14" attack="4" attackTime="2050" isRanged="1" school="earth" projectile="poison"
         xDrawOffset="-12" yDrawOffset="-12"
         imageFile="snake" sounds="snake" >
-        <collisionRect x="-5" y="-5" w="10" h="10" />
         <loot id="meat" > <normal mean="0.6" sd="0.5" /> </loot>
         <loot id="tutEntrails3" chance="0.15" />
     </npcType>
@@ -302,12 +299,11 @@
 	<objective type="kill" id="tutTortoise" qty="5" />
 </quest>
     <npcType
-        id="tutTortoise" name="Tortoise"
+        id="tutTortoise" name="Tortoise" template="tortoise"
         level="5" maxHealth="18" attack="6" attackTime="2800"
         xDrawOffset="-18" yDrawOffset="-20"
         imageFile="tortoise" sounds="tortoise" >
         <spell id="tutShield" />
-        <collisionRect x="-15" y="-5" w="31" h="10" />
         <loot id="meat" > <normal mean="0.6" sd="0.5" /> </loot>
         <loot id="tutEntrails3" chance="0.15" />
     </npcType>
@@ -329,12 +325,11 @@
 	<objective type="kill" id="tutLizard" qty="5" />
 </quest>
     <npcType
-        id="tutLizard" name="Lizard"
+        id="tutLizard" name="Lizard" template="lizard"
         level="6" maxHealth="20" attack="6" attackTime="2765"
         xDrawOffset="-20" yDrawOffset="-12"
         imageFile="lizard" sounds="lizard" >
         <spell id="tutHeal" />
-        <collisionRect x="-18" y="-6" w="37" h="12" />
         <loot id="meat" > <normal mean="0.6" sd="0.5" /> </loot>
         <loot id="tutEntrails3" chance="0.15" />
     </npcType>
