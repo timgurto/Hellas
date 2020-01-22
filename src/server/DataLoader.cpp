@@ -69,20 +69,20 @@ void DataLoader::load(bool keepOldData) {
     loadMap(reader);
 
   } else {
-    loadTerrain(XmlReader::FromString(_data));
-    loadTerrainLists(XmlReader::FromString(_data));
-    loadLootTables(XmlReader::FromString(_data));
-    loadObjectTypes(XmlReader::FromString(_data));
-    loadNPCTypes(XmlReader::FromString(_data));
-    loadItems(XmlReader::FromString(_data));
-    loadQuests(XmlReader::FromString(_data));
-    loadRecipes(XmlReader::FromString(_data));
-    loadSpells(XmlReader::FromString(_data));
-    loadBuffs(XmlReader::FromString(_data));
-    loadClasses(XmlReader::FromString(_data));
-    loadSpawners(XmlReader::FromString(_data));
-    loadMap(XmlReader::FromString(_data));
-    loadMap(XmlReader::FromString(_data));
+    auto data = XmlReader::FromString(_data);
+    loadTerrain(data);
+    loadTerrainLists(data);
+    loadLootTables(data);
+    loadObjectTypes(data);
+    loadNPCTypes(data);
+    loadItems(data);
+    loadQuests(data);
+    loadRecipes(data);
+    loadSpells(data);
+    loadBuffs(data);
+    loadClasses(data);
+    loadSpawners(data);
+    loadMap(data);
   }
 
   _server._dataLoaded = true;
