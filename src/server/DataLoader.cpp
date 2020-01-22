@@ -70,6 +70,10 @@ void DataLoader::load(bool keepOldData) {
 
   } else {
     auto data = XmlReader::FromString(_data);
+    if (!data) {
+      _server._dataLoaded = true;
+      return;
+    }
     loadTerrain(data);
     loadTerrainLists(data);
     loadLootTables(data);
@@ -91,6 +95,7 @@ void DataLoader::load(bool keepOldData) {
 void DataLoader::loadFromAllFiles(LoadFunction load) {
   for (const auto &file : _files) {
     auto xr = XmlReader::FromFile(file);
+    if (!xr) return;
     (this->*load)(xr);
   }
 }
@@ -117,8 +122,6 @@ DataLoader::FilesList DataLoader::findDataFiles() const {
 }
 
 void DataLoader::loadTerrain(XmlReader &xr) {
-  if (!xr) return;
-
   for (auto elem : xr.getChildren("terrain")) {
     char index;
     if (!xr.findAttr(elem, "index", index)) continue;
@@ -132,14 +135,10 @@ void DataLoader::loadTerrain(XmlReader &xr) {
 }
 
 void DataLoader::loadTerrainLists(XmlReader &xr) {
-  if (!xr) return;
-
   TerrainList::loadFromXML(xr);
 }
 
 void DataLoader::loadObjectTypes(XmlReader &xr) {
-  if (!xr) return;
-
   for (auto elem : xr.getChildren("objectType")) {
     std::string id;
     if (!xr.findAttr(elem, "id", id)) continue;
@@ -378,8 +377,6 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
 }
 
 void DataLoader::loadQuests(XmlReader &xr) {
-  if (!xr) return;
-
   for (auto elem : xr.getChildren("quest")) {
     auto id = ""s;
     if (!xr.findAttr(elem, "id", id)) continue;
@@ -461,8 +458,6 @@ void DataLoader::loadQuests(XmlReader &xr) {
 }
 
 void DataLoader::loadLootTables(XmlReader &xr) {
-  if (!xr) return;
-
   for (auto elem : xr.getChildren("lootTable")) {
     std::string id;
     if (!xr.findAttr(elem, "id", id))  // No ID: skip
@@ -491,8 +486,6 @@ void DataLoader::loadLootTables(XmlReader &xr) {
 }
 
 void DataLoader::loadNPCTypes(XmlReader &xr) {
-  if (!xr) return;
-
   for (auto elem : xr.getChildren("npcType")) {
     std::string id;
     if (!xr.findAttr(elem, "id", id))  // No ID: skip
@@ -579,8 +572,6 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
 }
 
 void DataLoader::loadItems(XmlReader &xr) {
-  if (!xr) return;
-
   for (auto elem : xr.getChildren("item")) {
     std::string id;
     if (!xr.findAttr(elem, "id", id)) continue;  // ID and name are mandatory.
@@ -680,8 +671,6 @@ void DataLoader::loadItems(XmlReader &xr) {
 }
 
 void DataLoader::loadRecipes(XmlReader &xr) {
-  if (!xr) return;
-
   for (auto elem : xr.getChildren("recipe")) {
     std::string id, name;
     if (!xr.findAttr(elem, "id", id)) continue;  // ID is mandatory.
@@ -753,8 +742,6 @@ void DataLoader::loadRecipes(XmlReader &xr) {
 }
 
 void DataLoader::loadSpells(XmlReader &xr) {
-  if (!xr) return;
-
   for (auto elem : xr.getChildren("spell")) {
     std::string id;
     if (!xr.findAttr(elem, "id", id)) continue;  // ID is mandatory.
@@ -812,8 +799,6 @@ void DataLoader::loadSpells(XmlReader &xr) {
 }
 
 void DataLoader::loadBuffs(XmlReader &xr) {
-  if (!xr) return;
-
   for (auto elem : xr.getChildren("buff")) {
     std::string id;
     if (!xr.findAttr(elem, "id", id)) continue;  // ID is mandatory
@@ -887,8 +872,6 @@ void DataLoader::loadBuffs(XmlReader &xr) {
 }
 
 void DataLoader::loadClasses(XmlReader &xr) {
-  if (!xr) return;
-
   for (auto elem : xr.getChildren("class")) {
     std::string className;
     if (!xr.findAttr(elem, "name", className)) continue;  // ID is mandatory
@@ -952,8 +935,6 @@ void DataLoader::loadClasses(XmlReader &xr) {
 }
 
 void DataLoader::loadSpawners(XmlReader &xr) {
-  if (!xr) return;
-
   for (auto elem : xr.getChildren("spawnPoint")) {
     std::string id;
     if (!xr.findAttr(elem, "type", id)) {
@@ -994,8 +975,6 @@ void DataLoader::loadSpawners(XmlReader &xr) {
 }
 
 void DataLoader::loadMap(XmlReader &xr) {
-  if (!xr) return;
-
   auto elem = xr.findChild("newPlayerSpawn");
   if (!xr.findAttr(elem, "x", User::newPlayerSpawn.x) ||
       !xr.findAttr(elem, "y", User::newPlayerSpawn.y)) {
