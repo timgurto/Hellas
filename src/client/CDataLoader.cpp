@@ -865,6 +865,8 @@ void CDataLoader::loadNPCTemplates(XmlReader &xr) {
     xr.findRectChild("collisionRect", elem, nt.collisionRect);
     xr.findAttr(elem, "imageFile", nt.imageFile);
     xr.findAttr(elem, "sounds", nt.soundProfile);
+    xr.findAttr(elem, "xDrawOffset", nt.xDrawOffset);
+    xr.findAttr(elem, "yDrawOffset", nt.yDrawOffset);
 
     _client._npcTemplates[id] = nt;
   }
@@ -901,7 +903,13 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
     }
 
     ClientNPCType *nt = new ClientNPCType(id, imagePath, maxHealth);
-    if (npcTemplate) nt->applyTemplate(npcTemplate);
+    auto drawRect = ScreenRect{0, 0, nt->width(), nt->height()};
+
+    if (npcTemplate) {
+      nt->applyTemplate(npcTemplate);
+      drawRect.x = npcTemplate->xDrawOffset;
+      drawRect.y = npcTemplate->yDrawOffset;
+    }
 
     auto s = id;
     xr.findAttr(elem, "name", s);
@@ -913,9 +921,8 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
       nt->useCustomShadowWidth(16);
       nt->useCustomDrawHeight(40);
     } else {
-      auto drawRect = ScreenRect{0, 0, nt->width(), nt->height()};
-      bool xSet = xr.findAttr(elem, "xDrawOffset", drawRect.x),
-           ySet = xr.findAttr(elem, "yDrawOffset", drawRect.y);
+      xr.findAttr(elem, "xDrawOffset", drawRect.x);
+      xr.findAttr(elem, "yDrawOffset", drawRect.y);
       nt->drawRect(drawRect);
     }
 

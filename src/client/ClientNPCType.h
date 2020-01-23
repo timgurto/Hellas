@@ -10,6 +10,8 @@ struct CNPCTemplate {
   MapRect collisionRect;
   std::string imageFile;
   std::string soundProfile;
+  px_t xDrawOffset{0};
+  px_t yDrawOffset{0};
 };
 
 class ClientNPCType : public ClientObjectType {
