@@ -71,29 +71,34 @@ void CDataLoader::load(bool keepOldData) {
     auto reader = XmlReader::FromFile(_path + "/map.xml");
     loadMap(reader);
   } else {
-    loadTerrain(XmlReader::FromString(_data));
-    loadTerrainLists(XmlReader::FromString(_data));
-    loadParticles(XmlReader::FromString(_data));
-    loadSounds(XmlReader::FromString(_data));
-    loadProjectiles(XmlReader::FromString(_data));
-    loadSpells(XmlReader::FromString(_data));
-    loadBuffs(XmlReader::FromString(_data));
-    _client._tagNames.readFromXML(XmlReader::FromString(_data));
-    loadObjectTypes(XmlReader::FromString(_data));
-    loadItems(XmlReader::FromString(_data));
-    loadClasses(XmlReader::FromString(_data));
-    loadRecipes(XmlReader::FromString(_data));
-    loadNPCTemplates(XmlReader::FromString(_data));
-    loadNPCTypes(XmlReader::FromString(_data));
-    loadQuests(XmlReader::FromString(_data));
+    auto reader = XmlReader::FromString(_data);
+    if (!reader) {
+      _client._dataLoaded = true;
+      return;
+    }
+    loadTerrain(reader);
+    loadTerrainLists(reader);
+    loadParticles(reader);
+    loadSounds(reader);
+    loadProjectiles(reader);
+    loadSpells(reader);
+    loadBuffs(reader);
+    _client._tagNames.readFromXML(reader);
+    loadObjectTypes(reader);
+    loadItems(reader);
+    loadClasses(reader);
+    loadRecipes(reader);
+    loadNPCTemplates(reader);
+    loadNPCTypes(reader);
+    loadQuests(reader);
   }
-
   _client._dataLoaded = true;
 }
 
 void CDataLoader::loadFromAllFiles(LoadFunction load) {
   for (const auto &file : _files) {
     auto xr = XmlReader::FromFile(file);
+    if (!xr) continue;
     (this->*load)(xr);
   }
 }
@@ -120,8 +125,6 @@ CDataLoader::FilesList CDataLoader::findDataFiles() const {
 }
 
 void CDataLoader::loadTerrain(XmlReader &xr) {
-  if (!xr) return;
-
   for (auto elem : xr.getChildren("terrain")) {
     char index;
     if (!xr.findAttr(elem, "index", index)) continue;
@@ -141,14 +144,10 @@ void CDataLoader::loadTerrain(XmlReader &xr) {
 }
 
 void CDataLoader::loadTerrainLists(XmlReader &xr) {
-  if (!xr) return;
-
   TerrainList::loadFromXML(xr);
 }
 
 void CDataLoader::loadParticles(XmlReader &xr) {
-  if (!xr) return;
-
   for (auto elem : xr.getChildren("particleProfile")) {
     std::string s;
     if (!xr.findAttr(elem, "id", s))  // No ID: skip
@@ -202,8 +201,6 @@ void CDataLoader::loadParticles(XmlReader &xr) {
 }
 
 void CDataLoader::loadSounds(XmlReader &xr) {
-  if (!xr) return;
-
   for (auto elem : xr.getChildren("soundProfile")) {
     std::string id;
     if (!xr.findAttr(elem, "id", id))  // No ID: skip
@@ -229,8 +226,6 @@ void CDataLoader::loadSounds(XmlReader &xr) {
 }
 
 void CDataLoader::loadProjectiles(XmlReader &xr) {
-  if (!xr) return;
-
   for (auto elem : xr.getChildren("projectile")) {
     auto id = ""s;
     if (!xr.findAttr(elem, "id", id)) continue;
@@ -274,8 +269,6 @@ void CDataLoader::loadProjectiles(XmlReader &xr) {
 }
 
 void CDataLoader::loadSpells(XmlReader &xr) {
-  if (!xr) return;
-
   for (auto elem : xr.getChildren("spell")) {
     std::string id;
     if (!xr.findAttr(elem, "id", id)) continue;  // ID is mandatory.
@@ -366,8 +359,6 @@ void CDataLoader::loadSpells(XmlReader &xr) {
 }
 
 void CDataLoader::loadBuffs(XmlReader &xr) {
-  if (!xr) return;
-
   for (auto elem : xr.getChildren("buff")) {
     auto id = ClientBuffType::ID{};
     if (!xr.findAttr(elem, "id", id)) continue;  // ID is mandatory.
@@ -433,8 +424,6 @@ void CDataLoader::loadBuffs(XmlReader &xr) {
 }
 
 void CDataLoader::loadObjectTypes(XmlReader &xr) {
-  if (!xr) return;
-
   for (auto elem : xr.getChildren("objectType")) {
     std::string id;
     if (!xr.findAttr(elem, "id", id)) continue;
@@ -614,8 +603,6 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
 }
 
 void CDataLoader::loadItems(XmlReader &xr) {
-  if (!xr) return;
-
   for (auto elem : xr.getChildren("item")) {
     std::string id, name;
     if (!xr.findAttr(elem, "id", id)) continue;  // ID is mandatory.
@@ -710,8 +697,6 @@ void CDataLoader::loadItems(XmlReader &xr) {
 }
 
 void CDataLoader::loadClasses(XmlReader &xr) {
-  if (!xr) return;
-
   for (auto elem : xr.getChildren("class")) {
     auto className = ClassInfo::Name{};
     if (!xr.findAttr(elem, "name", className)) continue;  // Name is mandatory
@@ -799,8 +784,6 @@ void CDataLoader::loadClasses(XmlReader &xr) {
 }
 
 void CDataLoader::loadRecipes(XmlReader &xr) {
-  if (!xr) return;
-
   for (auto elem : xr.getChildren("recipe")) {
     std::string id;
     if (!xr.findAttr(elem, "id", id)) continue;  // ID is mandatory.
@@ -873,8 +856,6 @@ void CDataLoader::loadRecipes(XmlReader &xr) {
 }
 
 void CDataLoader::loadNPCTemplates(XmlReader &xr) {
-  if (!xr) return;
-
   for (auto elem : xr.getChildren("npcTemplate")) {
     std::string id;
     if (!xr.findAttr(elem, "id", id))  // No ID: skip
@@ -890,8 +871,6 @@ void CDataLoader::loadNPCTemplates(XmlReader &xr) {
 }
 
 void CDataLoader::loadNPCTypes(XmlReader &xr) {
-  if (!xr) return;
-
   for (auto elem : xr.getChildren("npcType")) {
     auto id = ""s;
     if (!xr.findAttr(elem, "id", id))  // No ID: skip
@@ -1027,8 +1006,6 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
 }
 
 void CDataLoader::loadQuests(XmlReader &xr) {
-  if (!xr) return;
-
   for (auto elem : xr.getChildren("quest")) {
     CQuest::Info questInfo;
 
@@ -1103,10 +1080,6 @@ void CDataLoader::loadQuests(XmlReader &xr) {
 }
 
 void CDataLoader::loadMap(XmlReader &xr) {
-  if (!xr) {
-    return;
-  }
-
   _client._map.loadFromXML(xr);
 
   auto chunksX = _client._map.width() / Client::TILES_PER_CHUNK;

@@ -97,7 +97,7 @@ void DataLoader::load(bool keepOldData) {
 void DataLoader::loadFromAllFiles(LoadFunction load) {
   for (const auto &file : _files) {
     auto xr = XmlReader::FromFile(file);
-    if (!xr) return;
+    if (!xr) continue;
     (this->*load)(xr);
   }
 }
