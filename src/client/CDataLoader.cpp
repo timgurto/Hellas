@@ -882,6 +882,7 @@ void CDataLoader::loadNPCTemplates(XmlReader &xr) {
 
     auto nt = CNPCTemplate{};
     xr.findRectChild("collisionRect", elem, nt.collisionRect);
+    xr.findAttr(elem, "imageFile", nt.imageFile);
 
     _client._npcTemplates[id] = nt;
   }
@@ -912,6 +913,8 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
       imagePath = "Images/Humans/"s + baseImage;
     } else {
       auto imageFile = id;
+      if (npcTemplate && !npcTemplate->imageFile.empty())
+        imageFile = npcTemplate->imageFile;
       xr.findAttr(elem, "imageFile",
                   imageFile);  // If no explicit imageFile, will still == id
       imagePath = "Images/NPCs/"s + imageFile;
