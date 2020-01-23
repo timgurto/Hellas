@@ -883,6 +883,7 @@ void CDataLoader::loadNPCTemplates(XmlReader &xr) {
     auto nt = CNPCTemplate{};
     xr.findRectChild("collisionRect", elem, nt.collisionRect);
     xr.findAttr(elem, "imageFile", nt.imageFile);
+    xr.findAttr(elem, "sounds", nt.soundProfile);
 
     _client._npcTemplates[id] = nt;
   }

@@ -286,8 +286,7 @@
     <npcType
         id="tutSnake" name="Snake" isFlat="1" template="snake"
         level="4" maxHealth="14" attack="4" attackTime="2050" isRanged="1" school="earth" projectile="poison"
-        xDrawOffset="-12" yDrawOffset="-12"
-        sounds="snake" >
+        xDrawOffset="-12" yDrawOffset="-12" >
         <loot id="meat" > <normal mean="0.6" sd="0.5" /> </loot>
         <loot id="tutEntrails3" chance="0.15" />
     </npcType>
@@ -301,8 +300,7 @@
     <npcType
         id="tutTortoise" name="Tortoise" template="tortoise"
         level="5" maxHealth="18" attack="6" attackTime="2800"
-        xDrawOffset="-18" yDrawOffset="-20"
-        sounds="tortoise" >
+        xDrawOffset="-18" yDrawOffset="-20" >
         <spell id="tutShield" />
         <loot id="meat" > <normal mean="0.6" sd="0.5" /> </loot>
         <loot id="tutEntrails3" chance="0.15" />
@@ -327,8 +325,7 @@
     <npcType
         id="tutLizard" name="Lizard" template="lizard"
         level="6" maxHealth="20" attack="6" attackTime="2765"
-        xDrawOffset="-20" yDrawOffset="-12"
-        sounds="lizard" >
+        xDrawOffset="-20" yDrawOffset="-12" >
         <spell id="tutHeal" />
         <loot id="meat" > <normal mean="0.6" sd="0.5" /> </loot>
         <loot id="tutEntrails3" chance="0.15" />

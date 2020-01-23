@@ -9,6 +9,7 @@ class SoundProfile;
 struct CNPCTemplate {
   MapRect collisionRect;
   std::string imageFile;
+  std::string soundProfile;
 };
 
 class ClientNPCType : public ClientObjectType {
