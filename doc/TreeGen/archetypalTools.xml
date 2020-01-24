@@ -88,6 +88,15 @@
 <blacklist parent="item_woodArrow" child="item_bow" />
 <blacklist parent="item_stick" child="item_woodArrow" />
 
+<blacklist parent="object_oven" child="object_extinguishedOven" />
+<blacklist parent="object_extinguishedOven" child="object_oven" />
+<blacklist parent="object_fire" child="object_extinguishedFire" />
+<blacklist parent="object_extinguishedFire" child="object_fire" />
+<blacklist parent="object_kiln" child="object_extinguishedKiln" />
+<blacklist parent="object_extinguishedKiln" child="object_kiln" />
+<blacklist parent="object_tutFire" child="object_tutExtinguishedFire" />
+<blacklist parent="object_tutExtinguishedFire" child="object_tutFire" />
+
 <extra parent="item_leatherGloves" child="item_tinBar" />
 <extra parent="item_tinBar"        child="item_tinSaw" />
 <extra parent="item_tinBar"        child="item_tinTube" />
