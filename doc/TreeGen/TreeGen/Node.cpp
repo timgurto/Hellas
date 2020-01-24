@@ -43,22 +43,26 @@ void Nodes::remove(const Node::Name &name) {
   set.erase(it);
 }
 
-void Nodes::outputAsGraphviz(std::ostream &output) const {
-  for (const Node &node : set) node.outputAsGraphviz(output);
+void Nodes::outputAsGraphviz(
+    std::ostream &output, const std::set<std::string> &nodesToInclude) const {
+  for (const Node &node : set) {
+    if (nodesToInclude.count(node.name) == 0) continue;
+    node.outputAsGraphviz(output);
+  }
 }
 
 void Node::outputAsGraphviz(std::ostream &output) const {
-  std::string shape;
+  std::string style;
   std::string url;
   if (type == ITEM) {
     url = "item.html?id=" + id;
-    shape = "none";
+    style = "shape=none";
   } else if (type == NPC) {
     url = "npc.html?id=" + id;
-    shape = "box";
+    style = "shape=box";
   } else {
     url = "object.html?id=" + id;
-    shape = "box";
+    style = "shape=none style=radial fillcolor=\"#357F51:#357F5100\"";
   }
 
   std::string imageFile = typePrefix(type) + "_" + image,
@@ -67,9 +71,8 @@ void Node::outputAsGraphviz(std::ostream &output) const {
               labelPart = std::string() + "<<table border='0' cellborder='0'>" +
                           "<tr><td>" + imagePart + "</td></tr>" + "<tr><td>" +
                           displayName + "</td></tr>" + "</table>>",
-              fullNode = name + " [" + " shape=" + shape + " tooltip=\"" +
-                         name + "\"" + " label=" + labelPart + " URL=\"" + url +
-                         "\"]";
+              fullNode = name + " [" + style + " tooltip=\"" + name + "\"" +
+                         " label=" + labelPart + " URL=\"" + url + "\"]";
   output << fullNode << std::endl;
 }
 

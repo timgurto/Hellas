@@ -50,7 +50,8 @@ class Nodes {
  public:
   void add(const Node &node);
   void remove(const Node::Name &name);
-  void outputAsGraphviz(std::ostream &output) const;
+  void outputAsGraphviz(std::ostream &output,
+                        const std::set<std::string> &nodesToInclude) const;
   void generateAllImages() const;
 };
 

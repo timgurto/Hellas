@@ -609,7 +609,7 @@ int main(int argc, char **argv) {
         for (auto loot : xr.getChildren("loot", elem)) {
           ID lootItem;
           if (!xr.findAttr(loot, "id", lootItem)) continue;
-          edges.insert(Edge(name, "item_" + lootItem, LOOT));
+          // edges.insert(Edge(name, "item_" + lootItem, LOOT));
           lootList.insert(lootItem);
         }
         if (!lootList.empty()) jw.addArrayAttribute("loot", lootList);
@@ -847,8 +847,14 @@ int main(int argc, char **argv) {
        "color=\"#999999\"];"
     << std::endl;
 
+  auto nodesWithConnections = std::set<std::string>{};
+  for (auto &edge : edges) {
+    nodesWithConnections.insert(edge.parent);
+    nodesWithConnections.insert(edge.child);
+  }
+
   // Nodes
-  nodes.outputAsGraphviz(f);
+  nodes.outputAsGraphviz(f, nodesWithConnections);
 
   // Edges
   for (auto &edge : edges) {
