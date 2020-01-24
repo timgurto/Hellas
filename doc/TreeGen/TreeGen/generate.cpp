@@ -37,6 +37,7 @@ int main(int argc, char **argv) {
   std::set<Edge> blacklist, extras;
   std::map<std::string, std::string> collapses;
   std::map<std::string, std::string> tagNames;
+  std::map<std::string, std::string> npcTemplates;  // ID -> imageFile
 
   std::string colorScheme = "rdylgn6";
   std::map<EdgeType, size_t> edgeColors;
@@ -530,6 +531,18 @@ int main(int argc, char **argv) {
     }
   }
 
+  // Load NPC templates
+  for (auto file : filesList) {
+    xr.newFile(file);
+
+    for (auto elem : xr.getChildren("npcTemplate")) {
+      ID id, imageFile;
+      if (!xr.findAttr(elem, "id", id)) continue;
+      if (!xr.findAttr(elem, "imageFile", imageFile)) continue;
+      npcTemplates[id] = imageFile;
+    }
+  }
+
   // Load NPCs
   {
     JsonWriter jw("npcs");
@@ -556,6 +569,11 @@ int main(int argc, char **argv) {
         }
 
         auto imageID = id;
+        auto templateID = ""s;
+        if (xr.findAttr(elem, "template", templateID)) {
+          imageID = npcTemplates[templateID];
+        }
+
         xr.findAttr(elem, "imageFile", imageID);
         auto humanoid = xr.findChild("humanoid", elem);
         if (humanoid) {
