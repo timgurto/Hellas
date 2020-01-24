@@ -59,7 +59,7 @@ void Node::outputAsGraphviz(std::ostream &output) const {
     style = "shape=none";
   } else if (type == NPC) {
     url = "npc.html?id=" + id;
-    style = "shape=box";
+    style = "shape=none style=radial fillcolor=\"#BA6C62:#BA6C6200\"";
   } else {
     url = "object.html?id=" + id;
     style = "shape=none style=radial fillcolor=\"#357F51:#357F5100\"";
