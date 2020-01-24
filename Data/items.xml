@@ -14,13 +14,13 @@
 
 <item id="log"          name="Log"            sounds="wood"      stackSize="5"  durability="8" />
 <item id="tin"          name="Tin Ore"        sounds="rock"      stackSize="10" durability="8" />
-<!--item id="copper"       name="Copper Ore"                        stackSize="10" durability="10" /-->
+<item id="copper"       name="Copper Ore"                        stackSize="10" durability="10" />
 <item id="crudeClay"    name="Crude Clay"     sounds="clay"      stackSize="10" durability="6" />
 <item id="clay"         name="Clay"           sounds="clay"      stackSize="10" durability="10" />
 <item id="tinBar"       name="Tin Bar"        sounds="metalBar"  stackSize="10" durability="25"/>
-<!--item id="copperBar"    name="Copper Bar"     sounds="metalBar"  stackSize="10" durability="20"/-->
-<!--item id="tinRing"      name="Tin Ringlet"                       stackSize="1000" /-->
-<!--item id="copperRing"   name="Copper Ringlet"                    stackSize="1000" /-->
+<item id="copperBar"    name="Copper Bar"     sounds="metalBar"  stackSize="10" durability="20"/>
+<item id="tinRing"      name="Tin Ringlet"                       stackSize="1000" />
+<item id="copperRing"   name="Copper Ringlet"                    stackSize="1000" />
 <item id="charcoal"     name="Charcoal"                          stackSize="10" durability="6"/>
 <item id="flax"         name="Flax"           sounds="weakPlant" stackSize="10" durability="2" />
 <item id="linenThread"  name="Linen Thread"   sounds="fabric"    stackSize="10" durability="5"/>
@@ -28,7 +28,7 @@
 <item id="leather"      name="Leather"        sounds="leather"   stackSize="10" />
 <item id="leatherScale" name="Leather Scale"  sounds="leather"   stackSize="50" />
 <item id="tinScale"     name="Tin Scale"      sounds="metalTool" stackSize="50" />
-<!--item id="copperScale"  name="Copper Scale"   sounds="metalTool" stackSize="50" /-->
+<item id="copperScale"  name="Copper Scale"   sounds="metalTool" stackSize="50" />
 <item id="rope"         name="Rope"                              stackSize="10" durability="4" />
 <item id="brick"        name="Brick"          sounds="brick"     stackSize="10" durability="12" />
 <item id="fat"          name="Animal Fat"     sounds="meat"      stackSize="10" />
@@ -52,13 +52,13 @@
 
 <item id="tinTube"      name="Tin Tube"       sounds="metalTool" durability="8"/>
 <item id="pole1"		name="Crude Pole"     sounds="wood" />
-<!--item id="pole2"		name="Pole" /-->
+<item id="pole2"		name="Pole" />
 <item id="water"        name="Water Vessel"   sounds="ceramic"  returnsOnConstruction="smallPot" />
 
-<!--item id="pickMould"    name="Pickaxe Mould"  sounds="ceramic" >   <tag name="pickMould" />  </item-->
+<item id="pickMould"    name="Pickaxe Mould"  sounds="ceramic" >   <tag name="pickMould" />  </item>
 <item id="knifeMould"   name="Knife Mould"    sounds="ceramic" >   <tag name="knifeMould" /> </item>
 <item id="axeMould"     name="Axe Mould"      sounds="ceramic" >   <tag name="axeMould" />   </item>
-<!--item id="hammerMould"  name="Hammer Mould"   sounds="ceramic" >   <tag name="hammerMould" />   </item-->
+<item id="hammerMould"  name="Hammer Mould"   sounds="ceramic" >   <tag name="hammerMould" />   </item>
 <item id="tubeMould"    name="Tube Mould"     sounds="ceramic" >   <tag name="tubeMould" />  </item>
 <item id="sawMould"     name="Saw Mould"      sounds="ceramic" >   <tag name="sawMould" />   </item>
 <item id="scaleMould"   name="Scale Mould"    sounds="ceramic" >   <tag name="scaleMould" /> </item>
@@ -85,20 +85,20 @@
 			<tag name="carpentry" />
             <canBeRepaired cost="tinBar" tool="smelting1" />
 		</item>
-		<!--item id="copperSaw" name="Copper Saw" sounds="metalTool" >
+		<item id="copperSaw" name="Copper Saw" sounds="metalTool" >
 			<tag name="carpentry" toolSpeed="1.1" />
             <canBeRepaired cost="copperBar" tool="hammering" />
-		</item-->
+		</item>
 
 	<!-- Pickaxes -->
-		<!--item id="tinPick" name="Tin Pickaxe" sounds="metalTool" >
+		<item id="tinPick" name="Tin Pickaxe" sounds="metalTool" >
 			<tag name="mining" />
             <canBeRepaired cost="tinBar" tool="smelting1" />
 		</item>
 		<item id="copperPick" name="Copper Pickaxe" sounds="metalTool" >
 			<tag name="mining" toolSpeed="1.1" />
             <canBeRepaired cost="copperBar" tool="hammering" />
-		</item-->
+		</item>
 
 	<!-- Knives -->
 		<item id="stoneKnife" name="Stone Knife" gearSlot="6" >
@@ -114,13 +114,13 @@
 			<weapon damage="5" speed="1.3" />
             <canBeRepaired cost="tinBar" tool="smelting1" />
 		</item>
-		<!--item id="copperKnife" name="Copper Knife" gearSlot="6" >
+		<item id="copperKnife" name="Copper Knife" gearSlot="6" >
 			<tag name="carving" toolSpeed="1.2" />
 			<tag name="harvesting" toolSpeed="1.2" />
 			<offset x="-6" y="-3" />
 			<weapon damage="5" speed="0.625" />
             <canBeRepaired cost="copperBar" tool="hammering" />
-		</item-->
+		</item>
 
 	<!-- Axes -->
 		<item id="stoneAxe" name="Stone Axe" gearSlot="6" >
@@ -134,19 +134,19 @@
 			<offset x="-5" y="1" />
             <canBeRepaired cost="tinBar" tool="smelting1" />
 		</item>
-		<!--item id="copperAxe" name="Copper Axe" gearSlot="6" sounds="metalTool" >
+		<item id="copperAxe" name="Copper Axe" gearSlot="6" sounds="metalTool" >
 			<tag name="woodcutting" toolSpeed="1.2" />
 			<weapon damage="8" />
             <canBeRepaired cost="copperBar" tool="hammering" />
-		</item-->
+		</item>
 
 	<!-- Hammers -->
-		<!--item id="copperHammer" name="Copper Hammer" gearSlot="6" sounds="metalTool" >
+		<item id="copperHammer" name="Copper Hammer" gearSlot="6" sounds="metalTool" >
 			<tag name="hammering" />
 			<weapon damage="14" speed="1.75" />
 			<offset x="-8" y="-1" />
             <canBeRepaired cost="copperBar" tool="hammering" />
-		</item-->
+		</item>
 
 <!-- Weapons -->
 	<!-- Spears -->
@@ -156,19 +156,19 @@
 			<offset x="-5" y="-21" />
             <canBeRepaired cost="tinBar" tool="smelting1" />
 		</item>
-		<!--item id="copperSpear" name="Spear" gearSlot="6" >
+		<item id="copperSpear" name="Spear" gearSlot="6" >
 			<stats crit="1" />
             <weapon damage="7" />
             <canBeRepaired cost="copperBar" tool="hammering" />
-		</item-->
+		</item>
 
 	<!-- Swords -->
-		<!--item id="copperSword" name="Short Sword" gearSlot="6" >
+		<item id="copperSword" name="Short Sword" gearSlot="6" >
 			<stats hit="1" />
             <weapon damage="7" />
             <offset x="-6" y="-8" />
             <canBeRepaired cost="copperBar" tool="hammering" />
-		</item-->
+		</item>
 
     <!-- Ranged -->
         <item id="rock" name="Rock" stackSize="100" durability="6" gearSlot="6" sounds="rock" >
@@ -272,11 +272,11 @@
 		<offset x="-3" y="-4" />
         <canBeRepaired cost="leather" tool="sewing" />
 	</item>
-	<!--item id="copperHelmet" name="Copper Helmet" gearSlot="0" >
+	<item id="copperHelmet" name="Copper Helmet" gearSlot="0" >
 		<stats armor="3" health="5" />
 		<offset x="-3" y="-5" />
         <canBeRepaired cost="copperBar" tool="hammering" />
-	</item-->
+	</item>
 
 	<!-- Shoulders -->
 		<item id="hide" name="Animal Hide" gearSlot="3" sounds="leather" durability="5" >
@@ -296,20 +296,20 @@
 				<offset x="-6" y="-4" />
                 <canBeRepaired cost="tinScale" />
 			</item>
-			<!--item id="copperLamellar" name="Copper Lamellar" gearSlot="2" sounds="mailArmor" >
+			<item id="copperLamellar" name="Copper Lamellar" gearSlot="2" sounds="mailArmor" >
 				<stats armor="4" health="13" />
                 <canBeRepaired cost="copperScale" />
-			</item-->
+			</item>
 
 		<!-- Hauberk -->
-			<!--item id="tinHauberk" name="Tin Hauberk" gearSlot="2" sounds="mailArmor" >
+			<item id="tinHauberk" name="Tin Hauberk" gearSlot="2" sounds="mailArmor" >
 				<stats armor="3" block="1" />
                 <canBeRepaired cost="tinRing" />
-			</item-->
-			<!--item id="copperHauberk" name="Copper Hauberk" gearSlot="2" sounds="mailArmor" >
+			</item>
+			<item id="copperHauberk" name="Copper Hauberk" gearSlot="2" sounds="mailArmor" >
 				<stats armor="4" block="4" />
                 <canBeRepaired cost="copperRing" />
-			</item-->
+			</item>
 
 		<!-- Cuirass -->
 			<item id="linothorax" name="Linothorax Armor" gearSlot="2" >
@@ -317,11 +317,11 @@
 				<offset x="-5" y="-4" />
                 <canBeRepaired cost="linenCloth" />
 			</item>
-			<!--item id="copperCuirass" name="Copper Cuirass" gearSlot="2" >
+			<item id="copperCuirass" name="Copper Cuirass" gearSlot="2" >
 				<stats armor="4" critResist="1" />
                 <offset x="-3" y="-4" />
         <canBeRepaired cost="copperBar" tool="hammering" />
-			</item-->
+			</item>
 
 		<!-- Leather -->
 			<item id="leatherLamellar" name="Leather Lamellar" gearSlot="2" sounds="leather" >
@@ -351,11 +351,11 @@
         <offset x="-1" y="-5" />
         <canBeRepaired cost="leather" tool="sewing" />
 	</item>
-	<!--item id="copperGreaves" name="Copper Greaves" gearSlot="5" >
+	<item id="copperGreaves" name="Copper Greaves" gearSlot="5" >
 		<stats armor="2" hps="1" />
         <offset x="-2" y="-10" />
         <canBeRepaired cost="copperBar" tool="hammering" />
-	</item-->
+	</item>
 
 	<!-- Left hand -->
 	<item id="leatherShield" name="Leather Shield" gearSlot="7" >
@@ -364,11 +364,11 @@
         <tag name="shield" />
         <canBeRepaired cost="lumber" />
 	</item>
-	<!--item id="copperShield" name="Buckler" gearSlot="7" >
+	<item id="copperShield" name="Buckler" gearSlot="7" >
 		<stats armor="3" block="5" blockValue="5" />
         <tag name="shield" />
         <canBeRepaired cost="copperBar" tool="hammering" />
-	</item-->
+	</item>
 	<item id="knucklebones" name="Knucklebones" gearSlot="7" >
 		<stats energy="9" />
         <offset x="0" y="1" />
