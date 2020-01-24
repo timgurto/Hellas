@@ -308,7 +308,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 105,Vehicles can have different speeds,5,5,Feature,,,TRUE,4 Copper
 110,Load map in login-screen background,5,13,Usability,,,,
 111,"Use gear-slot names, not numbers, in items.xml",3,5,Code quality,,,,
-117,Direct player trading,8,233,Feature,,,TRUE,
+117,Direct player trading,13,233,Feature,,,TRUE,
 123,Ensure window titles always fit,5,2,Bug,,,,
 124,Right-clicking doesn't cancel dragging,8,2,Bug,,,,
 136,Users are drawn inside (front+back) of vehicles,5,5,Aesthetics,,,,
@@ -353,7 +353,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 480,SFX for swing,8,3,Usability,,,,
 482,Alert users to aggro,8,5,Usability,,,,
 490,Allow line break on -,2,3,Bug,,,,
-498,It's too easy to select Atlas,2,3,Usability,,,,
+498,Make Atlas's selection area smaller,2,3,Usability,,,,
 500,Show taggers in client,5,3,Usability,,,,
 503,Base aggro radius on level difference,8,5,Feature,,,,5 First adventure
 507,Clear quest progress if quest is abandoned,2,2,Bug,,,,
@@ -381,7 +381,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 541,Fishing,2,21,Content,,,,4 Copper
 542,More altars around the world,21,34,Feature,,,,
 543,Players can trade objects,13,21,Feature,,,,
-544,Optimise map,8,5,Performance,,,,
+544,Optimise map for load time,8,5,Performance,,,,
 545,Online-users list is unreliable,13,13,Bug,,,,
 548,Populate remaining map with NPCs,34,89,Content,526,,TRUE,4 Copper
 549,Horses,34,13,Content,521,,TRUE,6 Bronze
@@ -412,7 +412,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 584,Can gather from a fig tree briefly before it changes type and is empty,5,8,Bug,,,,
 585,Make ranged weapons viable at high latency,21,13,Usability,,,TRUE,
 586,Construction sites have windows despite no permission,3,2,Bug,,,,
-590,"Players can get stuck inside objects, and respawn on restarting client",34,13,Bug,,,,
+590,"Players can get stuck inside objects, and respawn on restarting client",89,13,Bug,,,,
 593,Friends list,13,21,Feature,,,,
 594,"Show enemy objects as red, not yellow",8,3,Bug,,,,
 595,Prevent declarations of war against nonexistent entities,8,5,Bug,,,,
@@ -428,3 +428,10 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 613,Show gear on humanoid corpses,3,8,Aesthetics,,,,
 614,Base humanoid attack/defend sounds on their gear,3,3,Aesthetics,,,,
 615,Automatically self-cast if current target is invalid,5,2,Usability,,,,
+616,Selection sounds for objects,21,13,Aesthetics,,,,
+617,Construction window persists after demolition,5,2,Bug,,,,
+618,Make quest indicators more obvious,5,2,Usability,,,,
+619,Editor: skip drawing spawn points/circles when outside window,5,3,Performance,,,,
+620,"Magic dust should sound like dust, not a bone",1,2,Aesthetics,,,,
+621,Ceding pets crashes the server,34,3,Bug,,,,
+622,Allow static NPCs/objects to be loaded from any file,8,3,Code quality,,,,
