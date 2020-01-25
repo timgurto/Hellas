@@ -233,7 +233,10 @@ int main(int argc, char **argv) {
         ID id;
         if (!xr.findAttr(elem, "id", id)) continue;
         Node::Name name = "item_" + id;
-        jw.addAttribute("image", name);
+
+        auto iconFile = id;
+        xr.findAttr(elem, "iconFile", iconFile);
+        jw.addAttribute("image", "item_" + iconFile);
         jw.addAttribute("id", id);
 
         auto recipeIt = recipes.find(id);
@@ -247,14 +250,12 @@ int main(int argc, char **argv) {
         requiredSounds.insert("drop");
         std::set<ID> missingImages;
 
-        auto iconFile = id;
-        xr.findAttr(elem, "iconFile", iconFile);
         if (!iconFile.empty() && !checkImageExists("Items/" + iconFile))
           missingImages.insert("icon");
 
         std::string s;
         if (xr.findAttr(elem, "name", s)) {
-          nodes.add(Node(ITEM, id, s));
+          nodes.add(Node(ITEM, id, s, iconFile));
           jw.addAttribute("name", s);
         }
 

@@ -89,12 +89,15 @@
 <blacklist parent="item_stick" child="item_woodArrow" />
 
 <blacklist parent="object_oven" child="object_extinguishedOven" />
+<blacklist parent="item_log" child="object_extinguishedOven" />
 <blacklist parent="object_extinguishedOven" child="object_oven" />
 <blacklist parent="object_fire" child="object_extinguishedFire" />
+<blacklist parent="item_stick" child="object_extinguishedFire" />
 <blacklist parent="object_extinguishedFire" child="object_fire" />
 <blacklist parent="object_kiln" child="object_extinguishedKiln" />
 <blacklist parent="object_extinguishedKiln" child="object_kiln" />
 <blacklist parent="object_tutFire" child="object_tutExtinguishedFire" />
+<blacklist parent="item_stick" child="object_tutExtinguishedFire" />
 <blacklist parent="object_tutExtinguishedFire" child="object_tutFire" />
 
 <extra parent="item_leatherGloves" child="item_tinBar" />
@@ -103,6 +106,21 @@
 <extra parent="item_water"         child="object_flaxCrop8" />
 <extra parent="item_log"           child="item_tannin" />
 <extra parent="item_brick"         child="object_cityAltar" />
+<extra parent="item_hide"          child="object_tradeMat" />
+<extra parent="item_hide"          child="item_leather" />
+<extra parent="item_stick"         child="object_fire" />
+<extra parent="item_log"           child="object_oven" />
+<extra parent="item_water"         child="object_athleteBuilding" />
+<extra parent="item_pole1"         child="object_athleteBuilding" />
+<extra parent="item_rock"          child="object_zealotBuilding" />
+<extra parent="item_water"         child="object_scholarBuilding" />
+<extra parent="item_boneDust"      child="object_scholarBuilding" />
+<extra parent="item_tinOre"        child="object_scholarBuilding" />
+<extra parent="item_tutFat2"       child="object_fattyOffering" />
+<extra parent="item_tutMeat2"      child="object_leanOffering" />
+<extra parent="item_lumber"        child="object_lathe" />
+<extra parent="item_lumber"        child="object_grindstone" />
+<extra parent="item_linenCloth"    child="object_tradeStall" />
 
 <collapse id="object_figTree0" into="object_figTree8" />
 <collapse id="object_figTree1" into="object_figTree8" />
