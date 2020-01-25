@@ -323,7 +323,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 226,"Avoid window overlap if possible, for object windows",13,13,Usability,,,,
 234,Make allowed-terrain more intuitive for construction,8,8,Usability,,,,
 236,Prevent construction near respawn altars,3,8,Exploit,,,,
-239,Add coinage,21,3,Content,519,,,6 Bronze
+239,Add coinage,21,3,Content,519,TRUE,,6 Bronze
 250,Fireball has interruptible cast time,2,8,Feature,246,,,5 First adventure
 289,"On death, drop region item if in lost talent's cost",2,13,Feature,288,,TRUE,4 Copper
 290,Region items are n-unique,13,8,Feature,285,,TRUE,4 Copper

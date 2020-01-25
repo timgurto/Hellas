@@ -100,6 +100,9 @@
 <blacklist parent="item_stick" child="object_tutExtinguishedFire" />
 <blacklist parent="object_tutExtinguishedFire" child="object_tutFire" />
 
+<blacklist parent="item_tinCoin" child="item_tinBar" />
+<blacklist parent="item_copperCoin" child="item_copperBar" />
+
 <extra parent="item_leatherGloves" child="item_tinBar" />
 <extra parent="item_tinBar"        child="item_tinSaw" />
 <extra parent="item_tinBar"        child="item_tinTube" />
