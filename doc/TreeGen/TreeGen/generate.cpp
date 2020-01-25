@@ -115,11 +115,11 @@ int main(int argc, char **argv) {
   for (auto elem : xr.getChildren("extra")) {
     std::string parent, child;
     if (!xr.findAttr(elem, "parent", parent)) {
-      std::cout << "Blacklist item had no parent; ignored" << std::endl;
+      std::cout << "Extra edge had no parent; ignored" << std::endl;
       continue;
     }
     if (!xr.findAttr(elem, "child", child)) {
-      std::cout << "Blacklist item had no child; ignored" << std::endl;
+      std::cout << "Extra edge had no child; ignored" << std::endl;
       continue;
     }
     Edge e(parent, child, DEFAULT);
@@ -420,6 +420,11 @@ int main(int argc, char **argv) {
           xr.findAttr(material, "quantity", quantity);  // Default = 1, above.
           materialsForJson.insert("{id:\"" + s + "\", quantity:" + quantity +
                                   "}");
+          // Add edge for construction material, if there is no existing edge.
+          // Probably useful only for debugging purposes, or to prompt ideas for
+          // <extra> edges.
+          // auto materialEdge = Edge{"item_" + s, name, INGREDIENT};
+          // if (edges.count(materialEdge) == 0) edges.insert(materialEdge);
         }
         jw.addArrayAttribute("materials", materialsForJson, true);
         if (!materialsForJson.empty()) {
@@ -850,6 +855,10 @@ int main(int argc, char **argv) {
 
   auto nodesWithConnections = std::set<std::string>{};
   for (auto &edge : edges) {
+    nodesWithConnections.insert(edge.parent);
+    nodesWithConnections.insert(edge.child);
+  }
+  for (auto &edge : extras) {
     nodesWithConnections.insert(edge.parent);
     nodesWithConnections.insert(edge.child);
   }
