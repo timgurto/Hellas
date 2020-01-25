@@ -390,21 +390,6 @@ int main(int argc, char **argv) {
         }
         jw.addArrayAttribute("yield", yields);
 
-        std::set<std::string> materialsForJson;
-        for (auto material : xr.getChildren("material", elem)) {
-          std::string quantity = "1";
-          if (!xr.findAttr(material, "id", s)) continue;
-          xr.findAttr(material, "quantity", quantity);  // Default = 1, above.
-          materialsForJson.insert("{id:\"" + s + "\", quantity:" + quantity +
-                                  "}");
-        }
-        jw.addArrayAttribute("materials", materialsForJson, true);
-        if (!materialsForJson.empty()) {
-          if (!checkImageExists("Objects/" + image + "-construction"))
-            missingImages.insert("construction");
-          canBeOwned = true;
-        }
-
         std::set<std::string> unlocksForJson;
         for (auto unlockBy : xr.getChildren("unlockedBy", elem)) {
           double chance = 1.0;
@@ -427,6 +412,21 @@ int main(int argc, char **argv) {
           }
         }
         jw.addArrayAttribute("unlockedBy", unlocksForJson, true);
+
+        std::set<std::string> materialsForJson;
+        for (auto material : xr.getChildren("material", elem)) {
+          std::string quantity = "1";
+          if (!xr.findAttr(material, "id", s)) continue;
+          xr.findAttr(material, "quantity", quantity);  // Default = 1, above.
+          materialsForJson.insert("{id:\"" + s + "\", quantity:" + quantity +
+                                  "}");
+        }
+        jw.addArrayAttribute("materials", materialsForJson, true);
+        if (!materialsForJson.empty()) {
+          if (!checkImageExists("Objects/" + image + "-construction"))
+            missingImages.insert("construction");
+          canBeOwned = true;
+        }
 
         auto transform = xr.findChild("transform", elem);
         if (transform && xr.findAttr(transform, "id", s)) {
