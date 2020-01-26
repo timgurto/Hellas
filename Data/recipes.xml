@@ -273,13 +273,20 @@
         <unlockedBy construction="lathe" />
     </recipe>
     <recipe
+        id="woodSpear" time="4000" >
+        <material id="pole1" />
+        <tool class="carving" />
+        <unlockedBy recipe="pole1" />
+    </recipe>
+    <recipe
         id="tinSpear" time="4000" >
         <material id="tinBar" quantity="5" />
         <material id="pole1" />
         <tool class="smelting1" />
         <tool class="spearMould" />
         <unlockedBy recipe="spearMould" />
-        <unlockedBy recipe="pole1" />
+        <unlockedBy recipe="woodSpear" chance="0.2" />
+        <unlockedBy recipe="pole1" chance="0.1" />
     </recipe>
     <recipe
         id="copperSpear" time="4000" quantity="5" >
@@ -287,7 +294,7 @@
         <material id="pole2" />
         <tool class="smelting2" />
         <tool class="spearMould" />
-        <unlockedBy recipe="tinSpear" chance="0.1" />
+        <unlockedBy recipe="tinSpear" chance="0.2" />
         <unlockedBy recipe="pole2" />
     </recipe>
 

@@ -150,6 +150,9 @@
 
 <!-- Weapons -->
 	<!-- Spears -->
+		<item id="woodSpear" name="Sharpened Stick" gearSlot="6" sounds="spear" >
+            <weapon damage="" speed="2.2" />
+		</item>
 		<item id="tinSpear" name="Light Spear" gearSlot="6" sounds="spear" >
 			<stats crit="1" />
             <weapon damage="7" speed="1.9" />
@@ -157,8 +160,8 @@
             <canBeRepaired cost="tinBar" tool="smelting1" />
 		</item>
 		<item id="copperSpear" name="Spear" gearSlot="6" >
-			<stats crit="1" />
-            <weapon damage="7" />
+			<stats crit="2" />
+            <weapon damage="9" speed="1.8" />
             <canBeRepaired cost="copperBar" tool="hammering" />
 		</item>
 
