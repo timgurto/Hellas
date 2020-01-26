@@ -51,7 +51,7 @@
     <npcType
         id="calydonWeaver" name="Calydon Weaver"
         level="5" maxHealth="30" isCivilian="1" >
-        <humanoid base="zealot">
+        <humanoid base="athlete">
             <gear id="sandals" />
             <gear id="flaxGear" />
             <gear id="tinKnife" />

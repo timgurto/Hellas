@@ -17,10 +17,18 @@
 <tag id="cooking" name="Cooking" />
 
 <objectType id="fish" name="School of Fish"
-    canGather="1" gatherTime="3000" gatherReq="fishing"
+    canGather="1" gatherTime="5000" gatherReq="fishing"
     allowedTerrain="shallowWater">
     <yield id="fish" initialMean="4" initialSD="2" initialMin="1" />
 </objectType>
+<item id="fishingNet" name="Fishing Net" >
+    <tag id="fishing" toolSpeed="2" />
+</item>
+<recipe id="fishingNet" >
+    <material id="rope" quantity="8" />
+    <unlockedBy recipe="woodSpear" chance="0.1" />
+    <unlockedBy recipe="rope" chance="0.1" />
+</recipe>
 <item id="fish" name="Fish" stackSize="10" sounds="meat" />
 <item id="cookedFish" name="Cooked Fish" stackSize="10" sounds="meat" castsSpellOnUse="food" >
     <tag name="food" />

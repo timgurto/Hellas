@@ -74,7 +74,7 @@
 
 
 <item id="bone" name="Bone" stackSize="10" sounds="bone" />
-<item id="boneClub" name="Bone Club" gearSlot="6" sounds="bone" > <!-- TODO: allow player to get one -->
+<item id="boneClub" gearSlot="6" sounds="bone" > <!-- TODO: allow player to get one -->
     <weapon damage="3" speed="2.8" />
 	<offset x="-6" y="-15" />
 </item>
