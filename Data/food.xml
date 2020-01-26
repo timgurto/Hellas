@@ -16,4 +16,22 @@
 </recipe>
 <tag id="cooking" name="Cooking" />
 
+<objectType id="fish" name="School of Fish"
+    canGather="1" gatherTime="3000" gatherReq="fishing"
+    allowedTerrain="shallowWater">
+    <yield id="fish" initialMean="4" initialSD="2" initialMin="1" />
+</objectType>
+<item id="fish" name="Fish" stackSize="10" sounds="meat" />
+<item id="cookedFish" name="Cooked Fish" stackSize="10" sounds="meat" castsSpellOnUse="food" >
+    <tag name="food" />
+</item>
+<recipe id="cookedFish"
+    time="8000" >
+    <material id="fish" />
+    <tool class="cooking" />
+    <unlockedBy construction="fire" chance="0.05" />
+    <unlockedBy construction="oven" chance="0.05" />
+    <unlockedBy gather="fish" chance="0.2" />
+</recipe>
+
 </root>
