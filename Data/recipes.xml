@@ -685,6 +685,21 @@
     <unlockedBy recipe="tannin" />
     <unlockedBy construction="stretchingFrame" />
 </recipe>
+<recipe
+    id="sheepLeather" name="Leather (Sheep)" product="leather" time="10000" quantity="2" >
+    <material id="sheepskin" />
+    <tool class="tanning" />
+    <tool class="leatherStretching" />
+    <unlockedBy recipe="leather" chance="0.05" />
+    <unlockedBy construction="stretchingFrame" />
+    <unlockedBy gather="sheepskin" />
+</recipe>
+<recipe
+    id="parchment" time="10000" quantity="2" >
+    <material id="sheepskin" />
+    <tool class="leatherStretching" />
+    <unlockedBy gather="sheepskin" chance="0.2" />
+</recipe>
 
 <recipe
     id="skullCap" time="10000" >

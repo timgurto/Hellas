@@ -123,6 +123,8 @@
 <extra parent="item_lumber"        child="object_lathe" />
 <extra parent="item_lumber"        child="object_grindstone" />
 <extra parent="item_linenCloth"    child="object_tradeStall" />
+<extra parent="npc_sheep"          child="item_sheepskin" />
+<extra parent="item_collar"        child="npc_sheep" />
 
 <collapse id="object_figTree0" into="object_figTree8" />
 <collapse id="object_figTree1" into="object_figTree8" />
@@ -140,5 +142,7 @@
 <collapse id="object_flaxCrop5" into="object_flaxCrop8" />
 <collapse id="object_flaxCrop6" into="object_flaxCrop8" />
 <collapse id="object_flaxCrop7" into="object_flaxCrop8" />
+
+<collapse id="npc_sheepWithWool" into="npc_sheep" />
 
 </root>

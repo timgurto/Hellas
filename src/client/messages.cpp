@@ -1980,7 +1980,7 @@ void Client::handle_SV_INVENTORY(size_t serial, size_t slot,
     item = &it->second;
   }
 
-  ClientItem::vect_t *container;
+  ClientItem::vect_t *container = nullptr;
   ClientObject *object = nullptr;
   switch (serial) {
     case INVENTORY:

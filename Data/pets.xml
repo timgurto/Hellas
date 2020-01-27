@@ -11,4 +11,25 @@
     <loot id="hide" chance="0.1" />
 </npcType>
 
+<npcType id="sheep" name="Sheep"
+    level="17" maxHealth="156" armor="10" isNeutral="1" >
+    <canBeTamed consumes="bone" />
+    <lootTable id="animal" />
+    <loot id="sheepskin" chance="0.1" />
+</npcType>
+<npcType id="sheepWithWool" name="Sheep (Wooly)"
+    level="17" maxHealth="156" armor="10" isNeutral="1" >
+    <lootTable id="animal" />
+    <loot id="sheepskin" chance="0.1" />
+    <loot id="wool" />
+</npcType>
+<item id="collar" name="Collar"
+    sounds="fabric" stackSize="10"/>
+<recipe id="collar" >
+    <material id="linenCloth" />
+    <material id="linenThread" />
+    <tool class="sewing" />
+    <unlockedBy recipe="linenCloth" chance="0.1" />
+</recipe>
+
 </root>

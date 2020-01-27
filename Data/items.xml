@@ -25,6 +25,7 @@
 <item id="flax"         name="Flax"           sounds="weakPlant" stackSize="10" durability="2" />
 <item id="linenThread"  name="Linen Thread"   sounds="fabric"    stackSize="10" durability="5"/>
 <item id="linenCloth"   name="Linen Cloth"    sounds="fabric"    stackSize="10" />
+<item id="sheepskin"    name="Sheepskin"      sounds="leather"   stackSize="10" />
 <item id="leather"      name="Leather"        sounds="leather"   stackSize="10" />
 <item id="leatherScale" name="Leather Scale"  sounds="leather"   stackSize="50" />
 <item id="tinScale"     name="Tin Scale"      sounds="metalTool" stackSize="50" />
@@ -383,6 +384,9 @@
 	<item id="tablet" name="Tablet" gearSlot="7" sounds="ceramic" >
 		<stats energy="46" />
         <offset x="-2" y="-6" />
+	</item>
+	<item id="parchment" name="parchment" gearSlot="7" >
+		<stats energy="66" />
 	</item>
 
     <item id="horn" name="Horn" gearSlot="7" >
