@@ -40,16 +40,6 @@
 </npcTemplate>
 
 <npcType
-    id="dog6" name="Dog"
-    level="6" maxHealth="28" attack="6" attackTime="2500"
-    imageFile = "dog" sounds="dog" isNeutral="1"
-    xDrawOffset="-13" yDrawOffset="-24" >
-    <canBeTamed consumes="bone" />
-    <collisionRect x="-11" y="-2" w="21" h="4" />
-    <lootTable id="animal" />
-    <loot id="hide" chance="0.1" />
-</npcType>
-<npcType
     id="goat5" name="Mild-Mannered Goat" template="goat"
     level="5" maxHealth="25" attack="6" attackTime="2750" isNeutral="1" >
     <lootTable id="animal" />
