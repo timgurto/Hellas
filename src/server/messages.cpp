@@ -361,53 +361,56 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           break;
         }
         user->cancelAction();
-        Object *obj = _entities.find<Object>(serial);
-        if (!isEntityInRange(client, *user, obj)) {
+        auto *ent = _entities.find(serial);
+        if (!isEntityInRange(client, *user, ent)) {
           // isEntityInRange() sends error messages if applicable.
           break;
         }
-        if (!obj->type()) {
+        if (!ent->type()) {
           SERVER_ERROR("Can't gather from object with no type");
           break;
         }
 
-        // Check that the user meets the requirements
-        const auto &exclusiveQuestID = obj->objType().exclusiveToQuest();
-        auto isQuestExclusive = !exclusiveQuestID.empty();
-        if (isQuestExclusive) {
-          auto userIsOnQuest =
-              user->questsInProgress().count(exclusiveQuestID) == 1;
-          if (!userIsOnQuest) break;
-        }
-        if (obj->isBeingBuilt()) {
-          sendMessage(client, ERROR_UNDER_CONSTRUCTION);
-          break;
-        }
-        if (!obj->permissions().doesUserHaveAccess(user->name())) {
-          sendMessage(client, WARNING_NO_PERMISSION);
-          break;
-        }
-        // Check that it has an inventory
-        if (obj->hasContainer() && !obj->container().isEmpty()) {
-          sendMessage(client, WARNING_NOT_EMPTY);
-          break;
-        }
-
-        // Tool check must be the last check, as it damages the tools.
-        const auto &gatherReq = obj->objType().yield().requiredTool();
-        auto toolSpeed = 1.0;
-        auto requiresTool = !gatherReq.empty();
-        if (requiresTool) {
-          toolSpeed = user->checkAndDamageToolAndGetSpeed(gatherReq);
-          if (toolSpeed == 0) {
-            sendMessage(client, {WARNING_ITEM_TAG_NEEDED, gatherReq});
+        auto *asObject = dynamic_cast<Object *>(ent);
+        if (asObject) {
+          // Check that the user meets the requirements
+          const auto &exclusiveQuestID = asObject->objType().exclusiveToQuest();
+          auto isQuestExclusive = !exclusiveQuestID.empty();
+          if (isQuestExclusive) {
+            auto userIsOnQuest =
+                user->questsInProgress().count(exclusiveQuestID) == 1;
+            if (!userIsOnQuest) break;
+          }
+          if (asObject->isBeingBuilt()) {
+            sendMessage(client, ERROR_UNDER_CONSTRUCTION);
             break;
           }
-        }
+          if (!asObject->permissions().doesUserHaveAccess(user->name())) {
+            sendMessage(client, WARNING_NO_PERMISSION);
+            break;
+          }
+          // Check that it has an inventory
+          if (asObject->hasContainer() && !asObject->container().isEmpty()) {
+            sendMessage(client, WARNING_NOT_EMPTY);
+            break;
+          }
 
-        user->beginGathering(obj, toolSpeed);
-        sendMessage(client,
-                    {SV_ACTION_STARTED, obj->objType().yield().gatherTime()});
+          // Tool check must be the last check, as it damages the tools.
+          const auto &gatherReq = ent->type()->yield().requiredTool();
+          auto toolSpeed = 1.0;
+          auto requiresTool = !gatherReq.empty();
+          if (requiresTool) {
+            toolSpeed = user->checkAndDamageToolAndGetSpeed(gatherReq);
+            if (toolSpeed == 0) {
+              sendMessage(client, {WARNING_ITEM_TAG_NEEDED, gatherReq});
+              break;
+            }
+          }
+
+          user->beginGathering(asObject, toolSpeed);
+          sendMessage(client,
+                      {SV_ACTION_STARTED, ent->type()->yield().gatherTime()});
+        }
         break;
       }
 
