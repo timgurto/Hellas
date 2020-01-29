@@ -396,7 +396,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           }
 
           // Tool check must be the last check, as it damages the tools.
-          const auto &gatherReq = ent->type()->yield().requiredTool();
+          const auto &gatherReq = ent->type()->yield.requiredTool();
           auto toolSpeed = 1.0;
           auto requiresTool = !gatherReq.empty();
           if (requiresTool) {
@@ -409,7 +409,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
 
           user->beginGathering(asObject, toolSpeed);
           sendMessage(client,
-                      {SV_ACTION_STARTED, ent->type()->yield().gatherTime()});
+                      {SV_ACTION_STARTED, ent->type()->yield.gatherTime()});
         }
         break;
       }

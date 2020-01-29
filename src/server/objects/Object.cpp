@@ -58,7 +58,7 @@ const ServerItem *Object::chooseGatherItem() const {
   std::map<const Item *, size_t> gathersRemaining;
   for (auto item : _contents) {
     size_t qtyRemaining = item.second;
-    double gatherSize = objType().yield().gatherMean(toServerItem(item.first));
+    double gatherSize = objType().yield.gatherMean(toServerItem(item.first));
     size_t remaining = static_cast<size_t>(ceil(qtyRemaining / gatherSize));
     gathersRemaining[item.first] = remaining;
     totalGathersRemaining += remaining;
@@ -82,7 +82,7 @@ const ServerItem *Object::chooseGatherItem() const {
 }
 
 size_t Object::chooseGatherQuantity(const ServerItem *item) const {
-  size_t randomQty = objType().yield().generateGatherQuantity(item);
+  size_t randomQty = objType().yield.generateGatherQuantity(item);
   size_t qty = min<size_t>(randomQty, _contents[item]);
   return qty;
 }
@@ -171,8 +171,8 @@ void Object::setType(const ObjectType *type, bool skipConstruction,
 
   Entity::type(type);
 
-  if (type->yield()) {
-    type->yield().instantiate(_contents);
+  if (type->yield) {
+    type->yield.instantiate(_contents);
   }
 
   if (!wasCalledFromConstructor) {

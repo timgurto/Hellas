@@ -152,9 +152,9 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
       ot = new ObjectType(id);
 
     std::string s;
-    if (xr.findAttr(elem, "gatherTime", n)) ot->yield().gatherTime(n);
+    if (xr.findAttr(elem, "gatherTime", n)) ot->yield.gatherTime(n);
     if (xr.findAttr(elem, "constructionTime", n)) ot->constructionTime(n);
-    if (xr.findAttr(elem, "gatherReq", s)) ot->yield().requiresTool(s);
+    if (xr.findAttr(elem, "gatherReq", s)) ot->yield.requiresTool(s);
     if (xr.findAttr(elem, "constructionReq", s)) ot->constructionReq(s);
 
     // Deconstruction
@@ -182,8 +182,8 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
       xr.findAttr(yield, "gatherSD", gatherSD);
       std::set<ServerItem>::const_iterator itemIt =
           _server._items.insert(ServerItem(s)).first;
-      ot->yield().addItem(&*itemIt, initMean, initSD, initMin, gatherMean,
-                          gatherSD);
+      ot->yield.addItem(&*itemIt, initMean, initSD, initMin, gatherMean,
+                        gatherSD);
     }
 
     // Merchant
