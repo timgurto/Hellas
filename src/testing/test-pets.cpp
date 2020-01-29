@@ -52,7 +52,7 @@ TEST_CASE("Owned NPCs can't be tamed") {
     auto &cat = s.addNPC("cat");
 
     AND_GIVEN("it's owned by an offline player, Alice") {
-      cat.permissions().setPlayerOwner("Alice");
+      cat.permissions.setPlayerOwner("Alice");
 
       WHEN("another player tries to tame it") {
         s.waitForUsers(1);
@@ -60,7 +60,7 @@ TEST_CASE("Owned NPCs can't be tamed") {
 
         THEN("it's still owned by Alice") {
           REPEAT_FOR_MS(100);
-          CHECK(cat.permissions().isOwnedByPlayer("Alice"));
+          CHECK(cat.permissions.isOwnedByPlayer("Alice"));
         }
       }
     }
@@ -126,7 +126,7 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
       auto c = TestClient::WithDataString(data);
       s.waitForUsers(1);
       const auto &user = s.getFirstUser();
-      dog.permissions().setPlayerOwner(user.name());
+      dog.permissions.setPlayerOwner(user.name());
 
       THEN("the owner doesn't lose any health") {
         REPEAT_FOR_MS(1000) {
@@ -145,7 +145,7 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
     }
 
     AND_GIVEN("it's owned by an offline player, Alice") {
-      dog.permissions().setPlayerOwner("Alice");
+      dog.permissions.setPlayerOwner("Alice");
 
       AND_GIVEN("a player named Bob") {
         auto c = TestClient::WithUsernameAndDataString("Bob", data);
@@ -222,7 +222,7 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
         s.addNPC("dog", {15, 10});
         auto *dog2 = dynamic_cast<NPC *>(s.entities().find(dog.serial() + 1));
         CHECK(dog2 != nullptr);
-        dog2->permissions().setPlayerOwner("Bob");
+        dog2->permissions.setPlayerOwner("Bob");
 
         AND_WHEN("some time passes") {
           REPEAT_FOR_MS(100);
@@ -245,7 +245,7 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
 
     AND_GIVEN("it's owned by the city of Athens") {
       s.cities().createCity("Athens", {});
-      dog.permissions().setCityOwner("Athens");
+      dog.permissions.setCityOwner("Athens");
 
       AND_GIVEN("a player named Bob") {
         auto c = TestClient::WithUsernameAndDataString("Bob", data);
@@ -267,7 +267,7 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
         auto *dog2 = dynamic_cast<NPC *>(s.entities().find(dog.serial() + 1));
         CHECK(dog2 != nullptr);
         s.cities().createCity("Sparta", {});
-        dog2->permissions().setCityOwner("Sparta");
+        dog2->permissions.setCityOwner("Sparta");
 
         AND_WHEN("Athens and Sparta declare war") {
           s.wars().declare({"Athens", Belligerent::CITY},
@@ -295,7 +295,7 @@ TEST_CASE("Pets follow their owners") {
       auto c = TestClient::WithDataString(data);
       s.waitForUsers(1);
       auto &user = s.getFirstUser();
-      guineaPig.permissions().setPlayerOwner(user.name());
+      guineaPig.permissions.setPlayerOwner(user.name());
 
       WHEN("The player moves away") {
         user.teleportTo({100, 100});
@@ -433,7 +433,7 @@ TEST_CASE("Pets can be slaughtered") {
     auto c = TestClient::WithDataString(data);
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
-    pig.permissions().setPlayerOwner(user.name());
+    pig.permissions.setPlayerOwner(user.name());
 
     WHEN("he tries to slaughter it") {
       c.sendMessage(CL_DEMOLISH, makeArgs(pig.serial()));
@@ -460,7 +460,7 @@ TEST_CASE("Neutral pets defend their owners") {
 
     WHEN("the player is given a neutral pet") {
       auto &pet = s.addNPC("dog", {10, 15});
-      pet.permissions().setPlayerOwner(c->username());
+      pet.permissions.setPlayerOwner(c->username());
 
       THEN("the pet attacks the hostile NPC") {
         WAIT_UNTIL(pet.target() == &hostile);
@@ -489,7 +489,7 @@ TEST_CASE("Neutral pets have the correct UI colours") {
       const auto &cDog = c.getFirstNPC();
 
       WHEN("the NPC is owned by the player") {
-        dog.permissions().setPlayerOwner(user.name());
+        dog.permissions.setPlayerOwner(user.name());
 
         THEN("he sees it as 'self' coloured") {
           WAIT_UNTIL(cDog.nameColor() == Color::COMBATANT_SELF);
@@ -518,7 +518,7 @@ TEST_CASE("Pets from spawn points") {
     auto &sheep = s.getFirstNPC();
     sheep.reduceHealth(9999);
     c.sendMessage(CL_TAME_NPC, makeArgs(sheep.serial()));
-    WAIT_UNTIL(sheep.permissions().isOwnedByPlayer(user.name()));
+    WAIT_UNTIL(sheep.permissions.isOwnedByPlayer(user.name()));
     REPEAT_FOR_MS(100);
 
     // Then there are two NPCs (the pet and the respawn)
@@ -534,7 +534,7 @@ TEST_CASE("Pets from spawn points") {
     REPEAT_FOR_MS(100);
     for (auto *ent : s.entities()) {
       auto *npc = dynamic_cast<NPC *>(ent);
-      if (npc->permissions().isOwnedByPlayer("Alice")) aliceOwnsAnNPC = true;
+      if (npc->permissions.isOwnedByPlayer("Alice")) aliceOwnsAnNPC = true;
     }
     CHECK(aliceOwnsAnNPC);
   }
@@ -588,7 +588,7 @@ TEST_CASE("Chance to tame based on health") {
 
       THEN("it is still unowned") {
         REPEAT_FOR_MS(100);
-        CHECK_FALSE(cat.permissions().hasOwner());
+        CHECK_FALSE(cat.permissions.hasOwner());
       }
     }
 
@@ -604,7 +604,7 @@ TEST_CASE("Chance to tame based on health") {
 
           AND_THEN("it is still unowned") {
             REPEAT_FOR_MS(100);
-            CHECK_FALSE(cat.permissions().hasOwner());
+            CHECK_FALSE(cat.permissions.hasOwner());
           }
         }
       }

@@ -19,8 +19,6 @@ class NPC : public Entity, public QuestNode {
   MapPoint _targetDestination{};
   ms_t _timeEngaged{0};  // For logging purposes
 
-  Permissions _permissions;
-
  public:
   NPC(const NPCType *type, const MapPoint &loc);  // Generates a new serial
   virtual ~NPC() {}
@@ -44,8 +42,7 @@ class NPC : public Entity, public QuestNode {
   Level level() const override { return _level; }
   Message outOfRangeMessage() const override;
 
-  Permissions::Owner owner() const { return _permissions.owner(); }
-  Permissions &permissions() { return _permissions; }
+  Permissions::Owner owner() const { return permissions.owner(); }
   virtual void onOwnershipChange() override;
 
   void updateStats() override;

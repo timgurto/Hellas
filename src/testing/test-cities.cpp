@@ -135,10 +135,10 @@ TEST_CASE("A player can cede an object to his city", "[.slow][city]") {
   c.sendMessage(CL_CEDE, makeArgs(rock.serial()));
 
   // Then the object belongs to Athens;
-  WAIT_UNTIL(rock.permissions().isOwnedByCity("Athens"));
+  WAIT_UNTIL(rock.permissions.isOwnedByCity("Athens"));
 
   // And the object doesn't belong to him.
-  CHECK_FALSE(rock.permissions().isOwnedByPlayer(user.name()));
+  CHECK_FALSE(rock.permissions.isOwnedByPlayer(user.name()));
 }
 
 TEST_CASE("A player must be in a city to cede", "[.slow][city]") {
@@ -158,7 +158,7 @@ TEST_CASE("A player must be in a city to cede", "[.slow][city]") {
   REQUIRE(c.waitForMessage(ERROR_NOT_IN_CITY));
 
   // And the object still belongs to the player
-  CHECK(rock.permissions().isOwnedByPlayer(user.name()));
+  CHECK(rock.permissions.isOwnedByPlayer(user.name()));
 }
 
 TEST_CASE("A player can cede only his own objects", "[.slow][city]") {
@@ -182,7 +182,7 @@ TEST_CASE("A player can cede only his own objects", "[.slow][city]") {
   CHECK(c.waitForMessage(WARNING_NO_PERMISSION, 10000));
 
   // And the object does not belong to Athens
-  CHECK_FALSE(rock.permissions().isOwnedByCity("Athens"));
+  CHECK_FALSE(rock.permissions.isOwnedByCity("Athens"));
 }
 
 TEST_CASE("A player can leave a city", "[city][.flaky]") {

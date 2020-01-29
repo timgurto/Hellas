@@ -105,7 +105,7 @@ TEST_CASE(
   // And a signpost near the user spawn point that belongs to Athens;
   s.addObject("signpost", {10, 15});
   Object &signpost = s.getFirstObject();
-  signpost.permissions().setCityOwner("Athens");
+  signpost.permissions.setCityOwner("Athens");
 
   // And Alice is logged in
   TestClient c = TestClient::WithUsernameAndData("Alice", "signpost");

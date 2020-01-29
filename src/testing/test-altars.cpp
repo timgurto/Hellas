@@ -59,7 +59,7 @@ TEST_CASE("A user can't build multiple player-unique objects") {
     c.waitForMessage(ERROR_CANNOT_CEDE);
 
     // And the wife still belongs to him
-    CHECK(wife.permissions().isOwnedByPlayer("Bob"));
+    CHECK(wife.permissions.isOwnedByPlayer("Bob"));
   }
 
   SECTION("If Bob's wife dies he can get a new one") {

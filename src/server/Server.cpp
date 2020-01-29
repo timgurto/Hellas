@@ -659,11 +659,11 @@ Object &Server::addObject(const ObjectType *type, const MapPoint &location,
       break;
 
     case Permissions::Owner::NO_ACCESS:
-      newObj->permissions().setNoAccess();
+      newObj->permissions.setNoAccess();
       break;
 
     case Permissions::Owner::PLAYER:
-      newObj->permissions().setPlayerOwner(owner.name);
+      newObj->permissions.setPlayerOwner(owner.name);
       _objectsByOwner.add(owner, newObj->serial());
       {
         const auto *user = this->getUserByName(owner.name);
@@ -672,7 +672,7 @@ Object &Server::addObject(const ObjectType *type, const MapPoint &location,
 
       break;
     case Permissions::Owner::CITY:
-      newObj->permissions().setCityOwner(owner.name);
+      newObj->permissions.setCityOwner(owner.name);
       break;
   }
 

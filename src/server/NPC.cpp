@@ -14,7 +14,6 @@ NPC::NPC(const NPCType *type, const MapPoint &loc)
       QuestNode(*type, serial()),
       _level(type->level()),
       _state(IDLE),
-      _permissions(*this),
       _threatTable(*this),
       _timeSinceLookedForTargets(rand() % FREQUENCY_TO_LOOK_FOR_TARGETS) {
   _loot.reset(new Loot);
@@ -31,14 +30,14 @@ void NPC::update(ms_t timeElapsed) {
 bool NPC::canBeAttackedBy(const User &user) const {
   if (!npcType()->canBeAttacked()) return false;
 
-  if (_permissions.owner().type == Permissions::Owner::ALL_HAVE_ACCESS)
+  if (permissions.owner().type == Permissions::Owner::ALL_HAVE_ACCESS)
     return true;
 
   const auto &server = Server::instance();
-  auto ownerType = _permissions.owner().type == Permissions::Owner::PLAYER
+  auto ownerType = permissions.owner().type == Permissions::Owner::PLAYER
                        ? Belligerent::PLAYER
                        : Belligerent::CITY;
-  return server.wars().isAtWar({_permissions.owner().name, ownerType},
+  return server.wars().isAtWar({permissions.owner().name, ownerType},
                                {user.name(), Belligerent::PLAYER});
 }
 
@@ -259,8 +258,8 @@ void NPC::sendInfoToClient(const User &targetUser) const {
 
   // Owner
   auto *nonConst = const_cast<NPC *>(this);
-  if (nonConst->permissions().hasOwner()) {
-    const auto &owner = nonConst->permissions().owner();
+  if (nonConst->permissions.hasOwner()) {
+    const auto &owner = nonConst->permissions.owner();
     targetUser.sendMessage(
         {SV_OWNER, makeArgs(serial(), owner.typeString(), owner.name)});
 

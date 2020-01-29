@@ -22,7 +22,8 @@ Entity::Entity(const EntityType *type, const MapPoint &loc)
 
       _attackTimer(0),
       _target(nullptr),
-      _loot(nullptr) {
+      _loot(nullptr),
+      permissions(*this) {
   initStatsFromType();
 }
 
@@ -31,7 +32,8 @@ Entity::Entity(size_t serial)
       _type(nullptr),
       _serial(serial),
       _spawner(nullptr),
-      _loot(nullptr) {}
+      _loot(nullptr),
+      permissions(*this) {}
 
 Entity::Entity(const MapPoint &loc)
     :  // For set/map lookup ONLY
@@ -39,7 +41,8 @@ Entity::Entity(const MapPoint &loc)
       _location(loc),
       _serial(0),
       _spawner(nullptr),
-      _loot(nullptr) {}
+      _loot(nullptr),
+      permissions(*this) {}
 
 Entity::~Entity() {
   if (_spawner != nullptr) _spawner->scheduleSpawn();

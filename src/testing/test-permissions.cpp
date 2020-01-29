@@ -10,7 +10,7 @@ TEST_CASE("Objects have no owner by default", "[ownership]") {
 
   // Then that object has no owner
   Object &rock = s.getFirstObject();
-  CHECK_FALSE(rock.permissions().hasOwner());
+  CHECK_FALSE(rock.permissions.hasOwner());
 }
 
 TEST_CASE("Constructing an object grants ownership", "[ownership]") {
@@ -25,8 +25,8 @@ TEST_CASE("Constructing an object grants ownership", "[ownership]") {
 
   // Then he is the wall's owner
   Object &wall = s.getFirstObject();
-  CHECK(wall.permissions().hasOwner());
-  CHECK(wall.permissions().isOwnedByPlayer(c->username()));
+  CHECK(wall.permissions.hasOwner());
+  CHECK(wall.permissions.isOwnedByPlayer(c->username()));
 }
 
 TEST_CASE("Public-access objects", "[ownership]") {
@@ -75,7 +75,7 @@ TEST_CASE("A non-owner cannot access an owned object", "[ownership]") {
   TestServer s = TestServer::WithData("basic_rock");
   s.addObject("rock", {10, 10});
   Object &rock = s.getFirstObject();
-  rock.permissions().setPlayerOwner("Alice");
+  rock.permissions.setPlayerOwner("Alice");
 
   // When a different user attempts to gather it
   TestClient c = TestClient::WithData("basic_rock");
@@ -98,13 +98,13 @@ TEST_CASE("A city can own an object", "[city][ownership]") {
   Object &rock = s.getFirstObject();
 
   // When its owner is set to Athens
-  rock.permissions().setCityOwner("Athens");
+  rock.permissions.setCityOwner("Athens");
 
   // Then an 'owner()' check matches the city of Athens;
-  CHECK(rock.permissions().isOwnedByCity("Athens"));
+  CHECK(rock.permissions.isOwnedByCity("Athens"));
 
   // And an 'owner()' check doesn't match a player named Athens
-  CHECK_FALSE(rock.permissions().isOwnedByPlayer("Athens"));
+  CHECK_FALSE(rock.permissions.isOwnedByPlayer("Athens"));
 }
 
 TEST_CASE("City ownership is persistent", "[city][ownership][persistence]") {
@@ -114,7 +114,7 @@ TEST_CASE("City ownership is persistent", "[city][ownership][persistence]") {
     s1.cities().createCity("Athens", {});
     s1.addObject("rock", {10, 10});
     Object &rock = s1.getFirstObject();
-    rock.permissions().setCityOwner("Athens");
+    rock.permissions.setCityOwner("Athens");
   }
 
   // When a new server starts up
@@ -122,7 +122,7 @@ TEST_CASE("City ownership is persistent", "[city][ownership][persistence]") {
 
   // Then the rock is still owned by Athens
   Object &rock = s2.getFirstObject();
-  CHECK(rock.permissions().isOwnedByCity("Athens"));
+  CHECK(rock.permissions.isOwnedByCity("Athens"));
 }
 
 TEST_CASE("City members can use city objects", "[city][ownership]") {
@@ -131,7 +131,7 @@ TEST_CASE("City members can use city objects", "[city][ownership]") {
   s.cities().createCity("Athens", {});
   s.addObject("rock", {10, 10});
   Object &rock = s.getFirstObject();
-  rock.permissions().setCityOwner("Athens");
+  rock.permissions.setCityOwner("Athens");
   // And a client, who is a member of Athens
   TestClient c = TestClient::WithData("basic_rock");
   s.waitForUsers(1);
@@ -159,7 +159,7 @@ TEST_CASE("Non-members cannot use city objects", "[city][ownership]") {
   s.cities().createCity("Athens", {});
   s.addObject("rock", {10, 10});
   Object &rock = s.getFirstObject();
-  rock.permissions().setCityOwner("Athens");
+  rock.permissions.setCityOwner("Athens");
   // And a client, not a member of any city
   TestClient c = TestClient::WithData("basic_rock");
   s.waitForUsers(1);
@@ -185,10 +185,10 @@ TEST_CASE("Non-existent cities can't own objects", "[city][ownership]") {
 
   // When the rock's owner is set to a nonexistent city "Athens"
   Object &rock = s.getFirstObject();
-  rock.permissions().setCityOwner("Athens");
+  rock.permissions.setCityOwner("Athens");
 
   // Then the rock has no owner;
-  CHECK_FALSE(rock.permissions().hasOwner());
+  CHECK_FALSE(rock.permissions.hasOwner());
 }
 
 TEST_CASE("New objects are added to owner index", "[ownership]") {
@@ -238,7 +238,7 @@ TEST_CASE("New ownership is reflected in the object-owner index",
 
   // And the rock's ownership is changed to Bob;
   Object &rock = s.getFirstObject();
-  rock.permissions().setPlayerOwner("Bob");
+  rock.permissions.setPlayerOwner("Bob");
 
   // The server's object-owner index has it under Bob's name, not Alice's
   Permissions::Owner ownerAlice(Permissions::Owner::PLAYER, "Alice");
@@ -266,13 +266,13 @@ TEST_CASE("Objects can be granted to citizens",
   // And a rock, owned by Athens
   s.addObject("rock");
   auto &rock = s.getFirstObject();
-  rock.permissions().setCityOwner("Athens");
+  rock.permissions.setCityOwner("Athens");
 
   // When Alice tries to grant the rock to herself
   c.sendMessage(CL_GRANT, makeArgs(rock.serial(), "Alice"));
 
   // Then the rock is owned by Alice
-  WAIT_UNTIL(rock.permissions().isOwnedByPlayer("Alice"));
+  WAIT_UNTIL(rock.permissions.isOwnedByPlayer("Alice"));
 }
 
 TEST_CASE("Non kings can't grant objects", "[king][city][ownership][grant]") {
@@ -291,7 +291,7 @@ TEST_CASE("Non kings can't grant objects", "[king][city][ownership][grant]") {
   // And a rock, owned by Athens
   s.addObject("rock");
   auto &rock = s.getFirstObject();
-  rock.permissions().setCityOwner("Athens");
+  rock.permissions.setCityOwner("Athens");
 
   // When Alice tries to grant the rock to herself
   c.sendMessage(CL_GRANT, makeArgs(rock.serial(), "Alice"));
@@ -300,7 +300,7 @@ TEST_CASE("Non kings can't grant objects", "[king][city][ownership][grant]") {
   c.waitForMessage(ERROR_NOT_A_KING);
 
   // And the rock is still owned by the city
-  CHECK(rock.permissions().isOwnedByCity("Athens"));
+  CHECK(rock.permissions.isOwnedByCity("Athens"));
 }
 
 TEST_CASE("Unowned objects cannot be granted", "[city][ownership][grant]") {
@@ -328,7 +328,7 @@ TEST_CASE("Unowned objects cannot be granted", "[city][ownership][grant]") {
   c.waitForMessage(WARNING_NO_PERMISSION);
 
   // And the rock is still unowned
-  CHECK_FALSE(rock.permissions().hasOwner());
+  CHECK_FALSE(rock.permissions.hasOwner());
 }
 
 TEST_CASE("Only objects owned by your city can be granted",
@@ -350,7 +350,7 @@ TEST_CASE("Only objects owned by your city can be granted",
   // And a rock, owned by Sparta
   s.addObject("rock");
   auto &rock = s.getFirstObject();
-  rock.permissions().setCityOwner("Sparta");
+  rock.permissions.setCityOwner("Sparta");
 
   // When Alice tries to grant the rock to herself
   c.sendMessage(CL_GRANT, makeArgs(rock.serial(), "Alice"));
@@ -359,7 +359,7 @@ TEST_CASE("Only objects owned by your city can be granted",
   c.waitForMessage(WARNING_NO_PERMISSION);
 
   // And the rock is still owned by the city
-  CHECK(rock.permissions().isOwnedByCity("Sparta"));
+  CHECK(rock.permissions.isOwnedByCity("Sparta"));
 }
 
 TEST_CASE("New object permissions are propagated to clients", "[ownership]") {
@@ -372,7 +372,7 @@ TEST_CASE("New object permissions are propagated to clients", "[ownership]") {
 
     WHEN("the rock's owner is set to the user") {
       auto &rock = s.getFirstObject();
-      rock.permissions().setPlayerOwner(c->username());
+      rock.permissions.setPlayerOwner(c->username());
 
       THEN("he finds out") { WAIT_UNTIL(c.getFirstObject().belongsToPlayer()); }
     }
@@ -397,7 +397,7 @@ TEST_CASE("No-access objects") {
     const auto &house = s.addObject("house", {10, 15}, noPermissions);
 
     THEN("a user has no access") {
-      CHECK_FALSE(house.permissions().doesUserHaveAccess("noname"));
+      CHECK_FALSE(house.permissions.doesUserHaveAccess("noname"));
     }
   }
 }

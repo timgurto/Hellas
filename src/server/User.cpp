@@ -520,7 +520,7 @@ User::ToolSearchResult User::findTool(const std::string &tagName) {
     if (distance(pObj->collisionRect(), collisionRect()) >
         Server::ACTION_DISTANCE)
       continue;
-    if (!pObj->permissions().doesUserHaveAccess(_name)) continue;
+    if (!pObj->permissions.doesUserHaveAccess(_name)) continue;
 
     auto toolSpeed = type->toolSpeed(tagName);
     if (toolSpeed > bestSpeed || !bestTool) {
@@ -857,7 +857,7 @@ void User::onMove() {
   for (auto *entity : server.findEntitiesInArea(location())) {
     const Object *pObj = dynamic_cast<const Object *>(entity);
     if (pObj == nullptr) continue;
-    if (!pObj->permissions().doesUserHaveAccess(_name)) continue;
+    if (!pObj->permissions.doesUserHaveAccess(_name)) continue;
     if (pObj->isBeingBuilt()) continue;
     const auto &objType = pObj->objType();
     if (!objType.grantsBuff()) continue;
@@ -1496,7 +1496,7 @@ std::set<NPC *> User::findNearbyPets() {
        server.findEntitiesInArea(location(), PET_DEFEND_MASTER_RADIUS)) {
     if (entity->classTag() != 'n') continue;
     auto *npc = dynamic_cast<NPC *>(entity);
-    if (!npc->permissions().isOwnedByPlayer(_name)) continue;
+    if (!npc->permissions.isOwnedByPlayer(_name)) continue;
 
     ret.insert(npc);
   }

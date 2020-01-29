@@ -552,9 +552,9 @@ void Server::loadEntitiesFromFile(const std::string &path,
       xr.findAttr(ownerElem, "type", type);
       xr.findAttr(ownerElem, "name", name);
       if (type == "player")
-        npc.permissions().setPlayerOwner(name);
+        npc.permissions.setPlayerOwner(name);
       else if (type == "city")
-        npc.permissions().setCityOwner(name);
+        npc.permissions.setCityOwner(name);
       else
         _debug << Color::CHAT_ERROR << "Skipping bad NPC owner type \"" << type
                << "\"." << Log::endl;
@@ -603,8 +603,8 @@ void Object::writeToXML(XmlWriter &xw) const {
     xw.setAttr(contentE, "quantity", content.second);
   }
 
-  if (permissions().hasOwner()) {
-    const auto &owner = permissions().owner();
+  if (permissions.hasOwner()) {
+    const auto &owner = permissions.owner();
     auto ownerElem = xw.addChild("owner", e);
     xw.setAttr(ownerElem, "type", owner.typeString());
     xw.setAttr(ownerElem, "name", owner.name);
@@ -667,8 +667,8 @@ void NPC::writeToXML(XmlWriter &xw) const {
   xw.setAttr(e, "health", health());
 
   auto constRef = const_cast<const NPC &>(*this);
-  if (constRef.permissions().hasOwner()) {
-    const auto &owner = constRef.permissions().owner();
+  if (constRef.permissions.hasOwner()) {
+    const auto &owner = constRef.permissions.owner();
     auto ownerElem = xw.addChild("owner", e);
     xw.setAttr(ownerElem, "type", owner.typeString());
     xw.setAttr(ownerElem, "name", owner.name);

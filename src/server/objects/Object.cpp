@@ -9,8 +9,7 @@ Object::Object(const ObjectType *type, const MapPoint &loc)
       QuestNode(*type, serial()),
       _numUsersGathering(0),
       _transformTimer(0),
-      _disappearTimer(type->disappearsAfter()),
-      _permissions(*this) {
+      _disappearTimer(type->disappearsAfter()) {
   setType(type, false, true);
   objType().incrementCounter();
 
@@ -20,16 +19,15 @@ Object::Object(const ObjectType *type, const MapPoint &loc)
   _loot.reset(new ObjectLoot(*this));
 }
 
-Object::Object(size_t serial)
-    : Entity(serial), QuestNode(QuestNode::Dummy()), _permissions(*this) {}
+Object::Object(size_t serial) : Entity(serial), QuestNode(QuestNode::Dummy()) {}
 
 Object::Object(const MapPoint &loc)
-    : Entity(loc), QuestNode(QuestNode::Dummy()), _permissions(*this) {}
+    : Entity(loc), QuestNode(QuestNode::Dummy()) {}
 
 Object::~Object() {
-  if (permissions().hasOwner()) {
+  if (permissions.hasOwner()) {
     Server &server = *Server::_instance;
-    server._objectsByOwner.remove(permissions().owner(), serial());
+    server._objectsByOwner.remove(permissions.owner(), serial());
   }
 }
 
@@ -200,7 +198,7 @@ void Object::setType(const ObjectType *type, bool skipConstruction,
     for (const User *user : server->findUsersInArea(location()))
       sendInfoToClient(*user);
   // Inform owner
-  for (const auto &owner : _permissions.ownerAsUsernames())
+  for (const auto &owner : permissions.ownerAsUsernames())
     server->sendMessageIfOnline(
         owner, {SV_OBJECT,
                 makeArgs(serial(), location().x, location().y, type->id())});
@@ -218,9 +216,9 @@ void Object::onDeath() {
 
   if (type() != nullptr) objType().decrementCounter();
 
-  if (_permissions.hasOwner() &&
-      _permissions.owner().type == Permissions::Owner::PLAYER) {
-    auto username = _permissions.owner().name;
+  if (permissions.hasOwner() &&
+      permissions.owner().type == Permissions::Owner::PLAYER) {
+    auto username = permissions.owner().name;
     const auto user = server.getUserByName(username);
     if (user != nullptr) user->onDestroyedOwnedObject(objType());
   }
@@ -229,12 +227,12 @@ void Object::onDeath() {
 }
 
 bool Object::canBeAttackedBy(const User &user) const {
-  if (!_permissions.hasOwner()) return false;
+  if (!permissions.hasOwner()) return false;
 
-  auto type = _permissions.owner().type == Permissions::Owner::CITY
+  auto type = permissions.owner().type == Permissions::Owner::CITY
                   ? Belligerent::CITY
                   : Belligerent::PLAYER;
-  auto asBelligerent = Belligerent{_permissions.owner().name, type};
+  auto asBelligerent = Belligerent{permissions.owner().name, type};
 
   const auto &server = Server::instance();
   return server._wars.isAtWar(asBelligerent, {user.name()});
@@ -259,8 +257,8 @@ void Object::sendInfoToClient(const User &targetUser) const {
                                               location().y, type()->id())});
 
   // Owner
-  if (permissions().hasOwner()) {
-    const auto &owner = permissions().owner();
+  if (permissions.hasOwner()) {
+    const auto &owner = permissions.owner();
     targetUser.sendMessage(
         {SV_OWNER, makeArgs(serial(), owner.typeString(), owner.name)});
 
@@ -295,7 +293,7 @@ void Object::sendInfoToClient(const User &targetUser) const {
   if (_loot != nullptr && !_loot->empty()) sendAllLootToTagger();
 
   // Container
-  if (hasContainer() && permissions().doesUserHaveAccess(targetUser.name()))
+  if (hasContainer() && permissions.doesUserHaveAccess(targetUser.name()))
     for (auto i = 0; i != objType().container().slots(); ++i)
       server.sendInventoryMessage(targetUser, i, *this);
 
@@ -318,7 +316,7 @@ void Object::sendInfoToClient(const User &targetUser) const {
 void Object::tellRelevantUsersAboutInventorySlot(size_t slot) const {
   const Server &server = Server::instance();
   for (const auto *user : server.findUsersInArea(location())) {
-    if (!permissions().doesUserHaveAccess(user->name())) continue;
+    if (!permissions.doesUserHaveAccess(user->name())) continue;
 
     server.sendInventoryMessage(*user, slot, *this);
   }
@@ -359,7 +357,7 @@ ServerItem::Slot *Object::getSlotToTakeFromAndSendErrors(size_t slotNum,
     return &slot;
   }
 
-  if (!permissions().doesUserHaveAccess(user.name())) {
+  if (!permissions.doesUserHaveAccess(user.name())) {
     user.sendMessage(WARNING_NO_PERMISSION);
     return nullptr;
   }
@@ -388,10 +386,10 @@ Message Object::outOfRangeMessage() const {
 }
 
 bool Object::shouldAlwaysBeKnownToUser(const User &user) const {
-  if (permissions().isOwnedByPlayer(user.name())) return true;
+  if (permissions.isOwnedByPlayer(user.name())) return true;
   const Server &server = *Server::_instance;
   const auto &city = server.cities().getPlayerCity(user.name());
-  if (!city.empty() && permissions().isOwnedByCity(city)) return true;
+  if (!city.empty() && permissions.isOwnedByCity(city)) return true;
   return false;
 }
 

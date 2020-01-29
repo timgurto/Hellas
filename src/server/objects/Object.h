@@ -6,7 +6,6 @@
 #include "../ItemSet.h"
 #include "../Loot.h"
 #include "../MerchantSlot.h"
-#include "../Permissions.h"
 #include "../QuestNode.h"
 #include "Container.h"
 #include "Deconstruction.h"
@@ -17,7 +16,6 @@ class XmlWriter;
 
 // A server-side representation of an in-game object
 class Object : public Entity, public QuestNode, public DamageOnUse {
-  Permissions _permissions;
   ItemSet _contents;  // Remaining contents, which can be gathered
   std::vector<MerchantSlot> _merchantSlots;
 
@@ -67,8 +65,6 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
   bool isTransforming() const { return _transformTimer > 0; }
   ms_t transformTimer() const { return _transformTimer; }
   void transformTimer(ms_t timeRemaining) { _transformTimer = timeRemaining; }
-  Permissions &permissions() { return _permissions; }
-  const Permissions &permissions() const { return _permissions; }
 
   bool hasContainer() const { return _container != nullptr; }
   Container &container() { return *_container; }

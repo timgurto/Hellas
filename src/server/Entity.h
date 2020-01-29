@@ -11,6 +11,7 @@
 #include "Buff.h"
 #include "EntityType.h"
 #include "Loot.h"
+#include "Permissions.h"
 #include "ServerItem.h"
 #include "ThreatTable.h"
 
@@ -197,6 +198,8 @@ class Entity {
   legal location.
   */
   void updateLocation(const MapPoint &dest);
+
+  Permissions permissions;
 
  protected:
   void type(const EntityType *type) { _type = type; }

@@ -385,32 +385,33 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
             sendMessage(client, ERROR_UNDER_CONSTRUCTION);
             break;
           }
-          if (!asObject->permissions().doesUserHaveAccess(user->name())) {
-            sendMessage(client, WARNING_NO_PERMISSION);
-            break;
-          }
           // Check that it has an inventory
           if (asObject->hasContainer() && !asObject->container().isEmpty()) {
             sendMessage(client, WARNING_NOT_EMPTY);
             break;
           }
-
-          // Tool check must be the last check, as it damages the tools.
-          const auto &gatherReq = ent->type()->yield.requiredTool();
-          auto toolSpeed = 1.0;
-          auto requiresTool = !gatherReq.empty();
-          if (requiresTool) {
-            toolSpeed = user->checkAndDamageToolAndGetSpeed(gatherReq);
-            if (toolSpeed == 0) {
-              sendMessage(client, {WARNING_ITEM_TAG_NEEDED, gatherReq});
-              break;
-            }
-          }
-
-          user->beginGathering(asObject, toolSpeed);
-          sendMessage(client,
-                      {SV_ACTION_STARTED, ent->type()->yield.gatherTime()});
         }
+        if (!ent->permissions.doesUserHaveAccess(user->name())) {
+          sendMessage(client, WARNING_NO_PERMISSION);
+          break;
+        }
+
+        // Tool check must be the last check, as it damages the tools.
+        const auto &gatherReq = ent->type()->yield.requiredTool();
+        auto toolSpeed = 1.0;
+        auto requiresTool = !gatherReq.empty();
+        if (requiresTool) {
+          toolSpeed = user->checkAndDamageToolAndGetSpeed(gatherReq);
+          if (toolSpeed == 0) {
+            sendMessage(client, {WARNING_ITEM_TAG_NEEDED, gatherReq});
+            break;
+          }
+        }
+
+        if (asObject) user->beginGathering(asObject, toolSpeed);
+        sendMessage(client,
+                    {SV_ACTION_STARTED, ent->type()->yield.gatherTime()});
+
         break;
       }
 
@@ -438,7 +439,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           break;
         }
 
-        if (!obj->permissions().doesUserHaveAccess(user->name())) {
+        if (!obj->permissions.doesUserHaveAccess(user->name())) {
           sendMessage(client, WARNING_NO_PERMISSION);
           break;
         }
@@ -489,10 +490,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         auto userHasPermission = bool{};
         if (ent->classTag() == 'n') {
           auto *npc = dynamic_cast<NPC *>(ent);
-          userHasPermission = npc->permissions().canUserDemolish(user->name());
+          userHasPermission = npc->permissions.canUserDemolish(user->name());
         } else {
           const auto *obj = dynamic_cast<Object *>(ent);
-          userHasPermission = obj->permissions().canUserDemolish(user->name());
+          userHasPermission = obj->permissions.canUserDemolish(user->name());
         }
         if (!userHasPermission) {
           sendMessage(client, WARNING_NO_PERMISSION);
@@ -592,7 +593,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
               sendMessage(client, WARNING_TOO_FAR);
               breakMsg = true;
             }
-            if (!pObj1->permissions().doesUserHaveAccess(user->name())) {
+            if (!pObj1->permissions.doesUserHaveAccess(user->name())) {
               sendMessage(client, WARNING_NO_PERMISSION);
               breakMsg = true;
             }
@@ -620,7 +621,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
               sendMessage(client, WARNING_TOO_FAR);
               breakMsg = true;
             }
-            if (!pObj2->permissions().doesUserHaveAccess(user->name())) {
+            if (!pObj2->permissions.doesUserHaveAccess(user->name())) {
               sendMessage(client, WARNING_NO_PERMISSION);
               breakMsg = true;
             }
@@ -662,7 +663,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           // Remove from object requirements
           pObj2->remainingMaterials().remove(materialType, qtyToTake);
           for (const User *otherUser : findUsersInArea(user->location()))
-            if (pObj2->permissions().doesUserHaveAccess(otherUser->name()))
+            if (pObj2->permissions.doesUserHaveAccess(otherUser->name()))
               sendConstructionMaterialsMessage(*otherUser, *pObj2);
 
           // Remove items from user
@@ -676,7 +677,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
             for (const User *otherUser : findUsersInArea(user->location()))
               sendConstructionMaterialsMessage(*otherUser, *pObj2);
             for (const std::string &owner :
-                 pObj2->permissions().ownerAsUsernames()) {
+                 pObj2->permissions.ownerAsUsernames()) {
               auto pUser = getUserByName(owner);
               if (pUser)
                 sendConstructionMaterialsMessage(pUser->socket(), *pObj2);
@@ -903,7 +904,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           sendMessage(client, ERROR_UNDER_CONSTRUCTION);
           break;
         }
-        if (!obj->permissions().doesUserHaveAccess(user->name())) {
+        if (!obj->permissions.doesUserHaveAccess(user->name())) {
           sendMessage(client, WARNING_NO_PERMISSION);
           break;
         }
@@ -944,7 +945,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           sendMessage(client, ERROR_UNDER_CONSTRUCTION);
           break;
         }
-        if (!obj->permissions().doesUserHaveAccess(user->name())) {
+        if (!obj->permissions.doesUserHaveAccess(user->name())) {
           sendMessage(client, WARNING_NO_PERMISSION);
           break;
         }
@@ -1006,7 +1007,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           sendMessage(client, ERROR_UNDER_CONSTRUCTION);
           break;
         }
-        if (!obj->permissions().doesUserHaveAccess(user->name())) {
+        if (!obj->permissions.doesUserHaveAccess(user->name())) {
           sendMessage(client, WARNING_NO_PERMISSION);
           break;
         }
@@ -1623,7 +1624,7 @@ void Server::handle_CL_REPAIR_ITEM(User &user, size_t serial, size_t slot) {
         return;
       }
 
-      if (!obj->permissions().doesUserHaveAccess(user.name())) {
+      if (!obj->permissions.doesUserHaveAccess(user.name())) {
         user.sendMessage(WARNING_NO_PERMISSION);
         return;
       }
@@ -1727,7 +1728,7 @@ void Server::handle_CL_TAME_NPC(User &user, size_t serial) {
 
   if (!type.canBeTamed()) return;
 
-  if (npc->permissions().hasOwner()) return;
+  if (npc->permissions.hasOwner()) return;
 
   auto consumable = ItemSet{};
   if (!type.tamingRequiresItem().empty()) {
@@ -1750,7 +1751,7 @@ void Server::handle_CL_TAME_NPC(User &user, size_t serial) {
     npc->spawner()->scheduleSpawn();
     npc->spawner(nullptr);
   }
-  npc->permissions().setPlayerOwner(user.name());
+  npc->permissions.setPlayerOwner(user.name());
   if (user.target() == npc) {
     user.finishAction();
   }
@@ -1776,7 +1777,7 @@ void Server::handle_CL_CEDE(User &user, size_t serial) {
   }
   auto *obj = _entities.find<Object>(serial);
 
-  if (!obj->permissions().isOwnedByPlayer(user.name())) {
+  if (!obj->permissions.isOwnedByPlayer(user.name())) {
     sendMessage(user.socket(), WARNING_NO_PERMISSION);
     return;
   }
@@ -1792,7 +1793,7 @@ void Server::handle_CL_CEDE(User &user, size_t serial) {
     return;
   }
 
-  obj->permissions().setCityOwner(city);
+  obj->permissions.setCityOwner(city);
 }
 
 void Server::handle_CL_GRANT(User &user, size_t serial, std::string username) {
@@ -1802,7 +1803,7 @@ void Server::handle_CL_GRANT(User &user, size_t serial, std::string username) {
     return;
   }
   auto playerCity = cities().getPlayerCity(user.name());
-  if (!obj->permissions().isOwnedByCity(playerCity)) {
+  if (!obj->permissions.isOwnedByCity(playerCity)) {
     sendMessage(user.socket(), WARNING_NO_PERMISSION);
     return;
   }
@@ -1815,7 +1816,7 @@ void Server::handle_CL_GRANT(User &user, size_t serial, std::string username) {
     sendMessage(user.socket(), WARNING_NOT_A_CITIZEN);
     return;
   }
-  obj->permissions().setPlayerOwner(username);
+  obj->permissions.setPlayerOwner(username);
 }
 
 void Server::handle_CL_PERFORM_OBJECT_ACTION(User &user, size_t serial,
@@ -1826,7 +1827,7 @@ void Server::handle_CL_PERFORM_OBJECT_ACTION(User &user, size_t serial,
   }
   auto *obj = _entities.find<Object>(serial);
 
-  if (!obj->permissions().doesUserHaveAccess(user.name(), true)) {
+  if (!obj->permissions.doesUserHaveAccess(user.name(), true)) {
     sendMessage(user.socket(), WARNING_NO_PERMISSION);
     return;
   }
