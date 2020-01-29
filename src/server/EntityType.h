@@ -7,6 +7,7 @@
 #include "../Rect.h"
 #include "../Stats.h"
 #include "../TerrainList.h"
+#include "Yield.h"
 
 class EntityType : public HasTags {
  public:
@@ -31,6 +32,10 @@ class EntityType : public HasTags {
   void baseStats(const Stats &stats) { _baseStats = stats; }
   const Stats &baseStats() const { return _baseStats; }
 
+  // Other
+  const Yield &yield() const { return _yield; }
+  Yield &yield() { return _yield; }
+
  protected:
   mutable Stats _baseStats{};
 
@@ -44,6 +49,7 @@ class EntityType : public HasTags {
   MapRect _collisionRect;  // Relative to position
 
   const TerrainList *_allowedTerrain;
+  Yield _yield;
 };
 
 #endif

@@ -5,7 +5,6 @@
 #include "../Durability.h"
 #include "../EntityType.h"
 #include "../QuestNode.h"
-#include "../Yield.h"
 #include "Action.h"
 #include "Container.h"
 #include "Deconstruction.h"
@@ -30,8 +29,6 @@ class ObjectType : public EntityType, public QuestNodeType {
   size_t _merchantSlots;
   bool _bottomlessMerchant;  // Bottomless: never runs out, uses no inventory
                              // space.
-
-  Yield _yield;  // If gatherable.
 
   const ObjectType *_transformObject =
       nullptr;  // The object type that this becomes over time, if any.
@@ -108,8 +105,6 @@ class ObjectType : public EntityType, public QuestNodeType {
 
   ms_t constructionTime() const { return _constructionTime; }
   void constructionTime(ms_t t) { _constructionTime = t; }
-  const Yield &yield() const { return _yield; }
-  Yield &yield() { return _yield; }
   void addMaterial(const Item *material, size_t quantity) {
     _materials.add(material, quantity);
   }
