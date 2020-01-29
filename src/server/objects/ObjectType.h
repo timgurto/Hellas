@@ -27,11 +27,6 @@ class ObjectType : public EntityType, public QuestNodeType {
   bool _isUnbuildable;  // Data suggests it can be built, but direct
                         // construction should be blocked.
 
-  // To gather from objects of this type, a user must have an item of the
-  // following class.
-  std::string _gatherReq;
-  ms_t _gatherTime;
-
   size_t _merchantSlots;
   bool _bottomlessMerchant;  // Bottomless: never runs out, uses no inventory
                              // space.
@@ -76,9 +71,6 @@ class ObjectType : public EntityType, public QuestNodeType {
 
   virtual void initialise() const;
 
-  void gatherTime(ms_t t) { _gatherTime = t; }
-  const std::string &gatherReq() const { return _gatherReq; }
-  void gatherReq(const std::string &req) { _gatherReq = req; }
   const std::string &constructionReq() const { return _constructionReq; }
   void constructionReq(const std::string &req) { _constructionReq = req; }
   size_t merchantSlots() const { return _merchantSlots; }
@@ -114,10 +106,10 @@ class ObjectType : public EntityType, public QuestNodeType {
 
   virtual char classTag() const override { return 'o'; }
 
-  ms_t gatherTime() const { return _gatherTime; }
   ms_t constructionTime() const { return _constructionTime; }
   void constructionTime(ms_t t) { _constructionTime = t; }
   const Yield &yield() const { return _yield; }
+  Yield &yield() { return _yield; }
   void addMaterial(const Item *material, size_t quantity) {
     _materials.add(material, quantity);
   }
@@ -141,9 +133,6 @@ class ObjectType : public EntityType, public QuestNodeType {
   std::pair<const ServerItem *, size_t> strengthPair() const {
     return std::make_pair(_strength.item(), _strength.quantity());
   }
-
-  void addYield(const ServerItem *item, double initMean, double initSD,
-                size_t initMin, double gatherMean, double gatherSD);
 
   bool hasContainer() const { return _container != nullptr; }
   ContainerType &container() { return *_container; }

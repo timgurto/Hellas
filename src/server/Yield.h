@@ -2,6 +2,7 @@
 #define YIELD_H
 
 #include <map>
+#include <string>
 
 #include "../NormalVariable.h"
 #include "ItemSet.h"
@@ -34,6 +35,15 @@ class Yield {
   // an entry
   static size_t generateInitialQuantity(const YieldEntry &entry);
   size_t generateGatherQuantity(const ServerItem *item) const;
+
+  void requiresTool(const std::string &tool) { _requiredTool = tool; }
+  const std::string &requiredTool() const { return _requiredTool; }
+  void gatherTime(ms_t t) { _gatherTime = t; }
+  ms_t gatherTime() const { return _gatherTime; }
+
+ private:
+  std::string _requiredTool;
+  ms_t _gatherTime{0};
 };
 
 #endif

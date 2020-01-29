@@ -385,7 +385,7 @@ void User::beginGathering(Object *obj, double speedMultiplier) {
     SERVER_ERROR("Can't gather from object with no type");
     return;
   }
-  _actionTime = toInt(obj->objType().gatherTime() / speedMultiplier);
+  _actionTime = toInt(obj->objType().yield().gatherTime() / speedMultiplier);
 }
 
 void User::beginCrafting(const SRecipe &recipe, double speed) {

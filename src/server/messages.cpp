@@ -394,9 +394,10 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         }
 
         // Tool check must be the last check, as it damages the tools.
-        const auto &gatherReq = obj->objType().gatherReq();
+        const auto &gatherReq = obj->objType().yield().requiredTool();
         auto toolSpeed = 1.0;
-        if (gatherReq != "none") {
+        auto requiresTool = !gatherReq.empty();
+        if (requiresTool) {
           toolSpeed = user->checkAndDamageToolAndGetSpeed(gatherReq);
           if (toolSpeed == 0) {
             sendMessage(client, {WARNING_ITEM_TAG_NEEDED, gatherReq});
@@ -405,7 +406,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         }
 
         user->beginGathering(obj, toolSpeed);
-        sendMessage(client, {SV_ACTION_STARTED, obj->objType().gatherTime()});
+        sendMessage(client,
+                    {SV_ACTION_STARTED, obj->objType().yield().gatherTime()});
         break;
       }
 
