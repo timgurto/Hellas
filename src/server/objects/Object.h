@@ -16,7 +16,7 @@ class XmlWriter;
 
 // A server-side representation of an in-game object
 class Object : public Entity, public QuestNode, public DamageOnUse {
-  ItemSet _contents;  // Remaining contents, which can be gathered
+  ItemSet _gatherContents;  // Remaining contents, which can be gathered
   std::vector<MerchantSlot> _merchantSlots;
 
   ItemSet
@@ -40,8 +40,8 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
     return *dynamic_cast<const ObjectType *>(type());
   }
 
-  const ItemSet &contents() const { return _contents; }
-  void contents(const ItemSet &contents);
+  const ItemSet &gatherContents() const { return _gatherContents; }
+  void gatherContents(const ItemSet &contents);
   const std::vector<MerchantSlot> &merchantSlots() const {
     return _merchantSlots;
   }
@@ -101,7 +101,7 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
   // contents.
   size_t chooseGatherQuantity(const ServerItem *item) const;
   void removeItem(const ServerItem *item,
-                  size_t qty);  // From _contents; gathering
+                  size_t qty);  // From _gatherContents; gathering
 
   void populateLoot();
 

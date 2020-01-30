@@ -431,16 +431,16 @@ void Server::loadEntitiesFromFile(const std::string &path,
     if (shouldBeExcludedFromPersistentState) obj.excludeFromPersistentState();
 
     size_t n;
-    ItemSet contents;
+    ItemSet gatherContents;
     for (auto content : xr.getChildren("gatherable", elem)) {
       if (!xr.findAttr(content, "id", s)) continue;
       n = 1;
       xr.findAttr(content, "quantity", n);
       auto it = _items.find(s);
       if (it == _items.end()) continue;
-      contents.set(&*it, n);
+      gatherContents.set(&*it, n);
     }
-    obj.contents(contents);
+    obj.gatherContents(gatherContents);
 
     size_t q;
     // Default value to support transition of old data
@@ -597,7 +597,7 @@ void Object::writeToXML(XmlWriter &xw) const {
 
   xw.setAttr(e, "id", type()->id());
 
-  for (auto &content : contents()) {
+  for (auto &content : gatherContents()) {
     auto contentE = xw.addChild("gatherable", e);
     xw.setAttr(contentE, "id", content.first->id());
     xw.setAttr(contentE, "quantity", content.second);

@@ -583,7 +583,7 @@ void Server::gatherObject(size_t serial, User &user) {
 
   // Remove object if empty
   obj->removeItem(toGive, qtyToRemove);
-  if (obj->contents().isEmpty()) {
+  if (obj->gatherContents().isEmpty()) {
     if (obj->objType().transformsOnEmpty()) {
       forceAllToUntarget(*obj);
       obj->removeAllGatheringUsers();

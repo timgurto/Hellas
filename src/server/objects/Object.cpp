@@ -30,22 +30,24 @@ Object::~Object() {
   }
 }
 
-void Object::contents(const ItemSet &contents) { _contents = contents; }
+void Object::gatherContents(const ItemSet &contents) {
+  _gatherContents = contents;
+}
 
 void Object::removeItem(const ServerItem *item, size_t qty) {
-  if (_contents[item] < qty) {
+  if (_gatherContents[item] < qty) {
     SERVER_ERROR("Attempting to remove contents when quantity is insufficient");
-    qty = _contents[item];
+    qty = _gatherContents[item];
   }
-  if (_contents.totalQuantity() < qty) {
+  if (_gatherContents.totalQuantity() < qty) {
     SERVER_ERROR(
         "Attempting to remove contents when total quantity is insufficient");
   }
-  _contents.remove(item, qty);
+  _gatherContents.remove(item, qty);
 }
 
 const ServerItem *Object::chooseGatherItem() const {
-  if (_contents.isEmpty()) {
+  if (_gatherContents.isEmpty()) {
     SERVER_ERROR("Can't gather from an empty object");
     return nullptr;
   }
@@ -53,7 +55,7 @@ const ServerItem *Object::chooseGatherItem() const {
   // Count number of average gathers remaining for each item type.
   size_t totalGathersRemaining = 0;
   std::map<const Item *, size_t> gathersRemaining;
-  for (auto item : _contents) {
+  for (auto item : _gatherContents) {
     size_t qtyRemaining = item.second;
     double gatherSize = objType().yield.gatherMean(toServerItem(item.first));
     size_t remaining = static_cast<size_t>(ceil(qtyRemaining / gatherSize));
@@ -80,7 +82,7 @@ const ServerItem *Object::chooseGatherItem() const {
 
 size_t Object::chooseGatherQuantity(const ServerItem *item) const {
   size_t randomQty = objType().yield.generateGatherQuantity(item);
-  size_t qty = min<size_t>(randomQty, _contents[item]);
+  size_t qty = min<size_t>(randomQty, _gatherContents[item]);
   return qty;
 }
 
@@ -99,7 +101,7 @@ void Object::update(ms_t timeElapsed) {
     if (isDead()) break;
     if (_transformTimer == 0) break;
     if (objType().transformObject() == nullptr) break;
-    if (objType().transformsOnEmpty() && !_contents.isEmpty()) break;
+    if (objType().transformsOnEmpty() && !_gatherContents.isEmpty()) break;
 
     if (timeElapsed > _transformTimer)
       _transformTimer = 0;
@@ -142,7 +144,7 @@ void Object::setType(const ObjectType *type, bool skipConstruction,
   Entity::type(type);
 
   if (type->yield) {
-    type->yield.instantiate(_contents);
+    type->yield.instantiate(_gatherContents);
   }
 
   if (!wasCalledFromConstructor) {
