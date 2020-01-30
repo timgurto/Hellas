@@ -788,3 +788,30 @@ void Entity::regen(ms_t timeElapsed) {
     if (energy() != oldEnergy) onEnergyChange();
   }
 }
+
+void Entity::incrementGatheringUsers(const User *userToSkip) {
+  const Server &server = *Server::_instance;
+  ++_numUsersGathering;
+  if (_numUsersGathering == 1) {
+    for (const User *user : server.findUsersInArea(location()))
+      if (user != userToSkip)
+        user->sendMessage({SV_GATHERING_OBJECT, serial()});
+  }
+}
+
+void Entity::decrementGatheringUsers(const User *userToSkip) {
+  const Server &server = *Server::_instance;
+  --_numUsersGathering;
+  if (_numUsersGathering == 0) {
+    for (const User *user : server.findUsersInArea(location()))
+      if (user != userToSkip)
+        user->sendMessage({SV_NOT_GATHERING_OBJECT, serial()});
+  }
+}
+
+void Entity::removeAllGatheringUsers() {
+  const Server &server = *Server::_instance;
+  _numUsersGathering = 0;
+  for (const User *user : server.findUsersInArea(location()))
+    user->sendMessage({SV_NOT_GATHERING_OBJECT, serial()});
+}

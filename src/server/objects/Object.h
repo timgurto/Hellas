@@ -19,8 +19,6 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
   ItemSet _contents;  // Remaining contents, which can be gathered
   std::vector<MerchantSlot> _merchantSlots;
 
-  size_t _numUsersGathering;  // The number of users gathering from this object.
-
   ItemSet
       _remainingMaterials;  // The remaining construction costs, if relevant.
 
@@ -51,16 +49,11 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
     return _merchantSlots[slot];
   }
   MerchantSlot &merchantSlot(size_t slot) { return _merchantSlots[slot]; }
-  void incrementGatheringUsers(const User *userToSkip = nullptr);
-  void decrementGatheringUsers(const User *userToSkip = nullptr);
-  void removeAllGatheringUsers();
-  size_t numUsersGathering() const { return _numUsersGathering; }
   bool isBeingBuilt() const {
     return !_remainingMaterials.isEmpty() && !isDead();
   }
   const ItemSet &remainingMaterials() const { return _remainingMaterials; }
   ItemSet &remainingMaterials() { return _remainingMaterials; }
-  void removeMaterial(const ServerItem *item, size_t qty);
   void clearMaterialsRequired() { _remainingMaterials.clear(); }
   bool isTransforming() const { return _transformTimer > 0; }
   ms_t transformTimer() const { return _transformTimer; }

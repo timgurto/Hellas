@@ -7,7 +7,6 @@
 Object::Object(const ObjectType *type, const MapPoint &loc)
     : Entity(type, loc),
       QuestNode(*type, serial()),
-      _numUsersGathering(0),
       _transformTimer(0),
       _disappearTimer(type->disappearsAfter()) {
   setType(type, false, true);
@@ -83,33 +82,6 @@ size_t Object::chooseGatherQuantity(const ServerItem *item) const {
   size_t randomQty = objType().yield.generateGatherQuantity(item);
   size_t qty = min<size_t>(randomQty, _contents[item]);
   return qty;
-}
-
-void Object::incrementGatheringUsers(const User *userToSkip) {
-  const Server &server = *Server::_instance;
-  ++_numUsersGathering;
-  if (_numUsersGathering == 1) {
-    for (const User *user : server.findUsersInArea(location()))
-      if (user != userToSkip)
-        user->sendMessage({SV_GATHERING_OBJECT, serial()});
-  }
-}
-
-void Object::decrementGatheringUsers(const User *userToSkip) {
-  const Server &server = *Server::_instance;
-  --_numUsersGathering;
-  if (_numUsersGathering == 0) {
-    for (const User *user : server.findUsersInArea(location()))
-      if (user != userToSkip)
-        user->sendMessage({SV_NOT_GATHERING_OBJECT, serial()});
-  }
-}
-
-void Object::removeAllGatheringUsers() {
-  const Server &server = *Server::_instance;
-  _numUsersGathering = 0;
-  for (const User *user : server.findUsersInArea(location()))
-    user->sendMessage({SV_NOT_GATHERING_OBJECT, serial()});
 }
 
 void Object::update(ms_t timeElapsed) {

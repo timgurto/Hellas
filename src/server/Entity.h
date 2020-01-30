@@ -201,6 +201,11 @@ class Entity {
 
   Permissions permissions;
 
+  void incrementGatheringUsers(const User *userToSkip = nullptr);
+  void decrementGatheringUsers(const User *userToSkip = nullptr);
+  void removeAllGatheringUsers();
+  size_t numUsersGathering() const { return _numUsersGathering; }
+
  protected:
   void type(const EntityType *type) { _type = type; }
   std::shared_ptr<Loot> _loot;
@@ -241,6 +246,8 @@ class Entity {
   User *_tagger{nullptr};  // The user who gets credit for killing this.
 
   ms_t _timeSinceRegen = 0;
+
+  size_t _numUsersGathering{0};
 
   friend class Dummy;
 };
