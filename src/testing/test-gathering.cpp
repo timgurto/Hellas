@@ -61,6 +61,6 @@ TEST_CASE("Minimum yields") {
   auto s = TestServer::WithData("min_apples");
   for (auto entity : s.entities()) {
     const Object *obj = dynamic_cast<const Object *>(entity);
-    CHECK_FALSE(obj->contents().isEmpty());
+    CHECK_FALSE(obj->gatherContents().isEmpty());
   }
 }

@@ -16,7 +16,6 @@ class XmlWriter;
 
 // A server-side representation of an in-game object
 class Object : public Entity, public QuestNode, public DamageOnUse {
-  ItemSet _gatherContents;  // Remaining contents, which can be gathered
   std::vector<MerchantSlot> _merchantSlots;
 
   ItemSet
@@ -40,8 +39,6 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
     return *dynamic_cast<const ObjectType *>(type());
   }
 
-  const ItemSet &gatherContents() const { return _gatherContents; }
-  void gatherContents(const ItemSet &contents);
   const std::vector<MerchantSlot> &merchantSlots() const {
     return _merchantSlots;
   }
@@ -94,14 +91,6 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
   bool shouldAlwaysBeKnownToUser(const User &user) const override;
   virtual void broadcastDamagedMessage(Hitpoints amount) const override;
   virtual void broadcastHealedMessage(Hitpoints amount) const override;
-
-  // Randomly choose an item type for the user to gather.
-  const ServerItem *chooseGatherItem() const;
-  // Randomly choose a quantity of the above items, between 1 and the object's
-  // contents.
-  size_t chooseGatherQuantity(const ServerItem *item) const;
-  void removeItem(const ServerItem *item,
-                  size_t qty);  // From _gatherContents; gathering
 
   void populateLoot();
 

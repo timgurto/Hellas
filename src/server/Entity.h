@@ -192,6 +192,17 @@ class Entity {
 
   const Loot &loot() const;
 
+  const ItemSet &gatherContents() const { return _gatherContents; }
+  void gatherContents(const ItemSet &contents);
+  // Randomly choose an item type for the user to gather.
+  const ServerItem *chooseGatherItem() const;
+  // Randomly choose a quantity of the above items, between 1 and the object's
+  // contents.
+  size_t chooseGatherQuantity(const ServerItem *item) const;
+  void removeItem(const ServerItem *item,
+                  size_t qty);  // From _gatherContents; gathering
+  void populateGatherContents();
+
   /*
   Determine whether the proposed new location is legal, considering movement
   speed and time elapsed, and checking for collisions. Set location to the new,
@@ -247,6 +258,7 @@ class Entity {
 
   ms_t _timeSinceRegen = 0;
 
+  ItemSet _gatherContents;
   size_t _numUsersGathering{0};
 
   friend class Dummy;
