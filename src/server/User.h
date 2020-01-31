@@ -45,7 +45,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   Action _action;
   ms_t _actionTime;  // Time remaining on current action.
   // Information used when action completes:
-  Object *_actionObject;                // Gather, deconstruct
+  Entity *_actionObject;                // Gather, deconstruct
   const SRecipe *_actionRecipe;         // Craft
   const ObjectType *_actionObjectType;  // Construct
   size_t _actionSlot;                   // Construct
@@ -244,8 +244,8 @@ class User : public Object {  // TODO: Don't inherit from Object
 
   Action action() const { return _action; }
   void action(Action a) { _action = a; }
-  const Object *actionObject() const { return _actionObject; }
-  void beginGathering(Object *object,
+  const Entity *actionObject() const { return _actionObject; }
+  void beginGathering(Entity *ent,
                       double speedMultiplier);  // Configure user to perform an
                                                 // action on an object
   void setTargetAndAttack(Entity *target);      // Configure user to prepare to

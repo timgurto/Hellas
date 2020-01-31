@@ -377,15 +377,15 @@ void User::finishAction() {
   _action = NO_ACTION;
 }
 
-void User::beginGathering(Object *obj, double speedMultiplier) {
+void User::beginGathering(Entity *ent, double speedMultiplier) {
   _action = GATHER;
-  _actionObject = obj;
+  _actionObject = ent;
   _actionObject->incrementGatheringUsers();
-  if (!obj->type()) {
+  if (!ent->type()) {
     SERVER_ERROR("Can't gather from object with no type");
     return;
   }
-  _actionTime = toInt(obj->objType().yield.gatherTime() / speedMultiplier);
+  _actionTime = toInt(ent->type()->yield.gatherTime() / speedMultiplier);
 }
 
 void User::beginCrafting(const SRecipe &recipe, double speed) {
@@ -774,8 +774,11 @@ void User::update(ms_t timeElapsed) {
     }
 
     case DECONSTRUCT: {
+      auto *obj = dynamic_cast<Object *>(_actionObject);
+      if (!obj) break;
+
       // Check for inventory space
-      const ServerItem *item = _actionObject->deconstruction().becomes();
+      const ServerItem *item = obj->deconstruction().becomes();
       if (!vectHasSpace(_inventory, item)) {
         sendMessage(WARNING_INVENTORY_FULL);
         cancelAction();
@@ -784,7 +787,7 @@ void User::update(ms_t timeElapsed) {
       // Give user his item
       giveItem(item);
       // Remove object
-      server.removeEntity(*_actionObject);
+      server.removeEntity(*obj);
       break;
     }
 

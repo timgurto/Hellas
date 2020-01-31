@@ -385,7 +385,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
             sendMessage(client, ERROR_UNDER_CONSTRUCTION);
             break;
           }
-          // Check that it has an inventory
+          // Check whether it has an inventory
           if (asObject->hasContainer() && !asObject->container().isEmpty()) {
             sendMessage(client, WARNING_NOT_EMPTY);
             break;
@@ -408,7 +408,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           }
         }
 
-        if (asObject) user->beginGathering(asObject, toolSpeed);
+        user->beginGathering(ent, toolSpeed);
         sendMessage(client,
                     {SV_ACTION_STARTED, ent->type()->yield.gatherTime()});
 
