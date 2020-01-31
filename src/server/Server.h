@@ -88,6 +88,7 @@ class Server {
   const BuffType *getBuffByName(const Buff::ID &id) const;
   const Quest *findQuest(const Quest::ID &id) const;
   const ServerItem *findItem(const std::string &id) const;
+  const ServerItem *createAndFindItem(const std::string &id);
   const BuffType *findBuff(const BuffType::ID &id) const;
   const Spell *findSpell(const Spell::ID &id) const;
   std::pair<std::set<size_t>::iterator, std::set<size_t>::iterator>

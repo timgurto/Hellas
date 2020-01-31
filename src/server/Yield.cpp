@@ -32,6 +32,24 @@ size_t Yield::generateGatherQuantity(const ServerItem *item) const {
       1, toInt(d));  // User always gets at least one item when gathering
 }
 
+void Yield::loadFromXML(XmlReader xr, TiXmlElement *elem) {
+  for (auto yield : xr.getChildren("yield", elem)) {
+    auto id = ""s;
+    if (!xr.findAttr(yield, "id", id)) continue;
+
+    double initMean = 1., initSD = 0, gatherMean = 1, gatherSD = 0;
+    size_t initMin = 0;
+    xr.findAttr(yield, "initialMean", initMean);
+    xr.findAttr(yield, "initialSD", initSD);
+    xr.findAttr(yield, "initialMin", initMin);
+    xr.findAttr(yield, "gatherMean", gatherMean);
+    xr.findAttr(yield, "gatherSD", gatherSD);
+
+    auto item = Server::instance().createAndFindItem(id);
+    addItem(item, initMean, initSD, initMin, gatherMean, gatherSD);
+  }
+}
+
 double Yield::gatherMean(const ServerItem *item) const {
   auto it = _entries.find(item);
   if (it == _entries.end()) {

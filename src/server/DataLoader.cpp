@@ -170,21 +170,7 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
     // Quest exclusivity
     if (xr.findAttr(elem, "exclusiveToQuest", s)) ot->exclusiveToQuest(s);
 
-    // Gathering yields
-    for (auto yield : xr.getChildren("yield", elem)) {
-      if (!xr.findAttr(yield, "id", s)) continue;
-      double initMean = 1., initSD = 0, gatherMean = 1, gatherSD = 0;
-      size_t initMin = 0;
-      xr.findAttr(yield, "initialMean", initMean);
-      xr.findAttr(yield, "initialSD", initSD);
-      xr.findAttr(yield, "initialMin", initMin);
-      xr.findAttr(yield, "gatherMean", gatherMean);
-      xr.findAttr(yield, "gatherSD", gatherSD);
-      std::set<ServerItem>::const_iterator itemIt =
-          _server._items.insert(ServerItem(s)).first;
-      ot->yield.addItem(&*itemIt, initMean, initSD, initMin, gatherMean,
-                        gatherSD);
-    }
+    ot->yield.loadFromXML(xr, elem);
 
     // Merchant
     if (xr.findAttr(elem, "merchantSlots", n)) ot->merchantSlots(n);

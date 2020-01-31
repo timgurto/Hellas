@@ -36,6 +36,8 @@ class Yield {
   static size_t generateInitialQuantity(const YieldEntry &entry);
   size_t generateGatherQuantity(const ServerItem *item) const;
 
+  void loadFromXML(XmlReader xr, TiXmlElement *elem);
+
   void requiresTool(const std::string &tool) { _requiredTool = tool; }
   const std::string &requiredTool() const { return _requiredTool; }
   void gatherTime(ms_t t) { _gatherTime = t; }

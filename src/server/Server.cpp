@@ -729,6 +729,11 @@ const ServerItem *Server::findItem(const std::string &id) const {
   return &*it;
 }
 
+const ServerItem *Server::createAndFindItem(const std::string &id) {
+  auto it = _items.insert(ServerItem{id}).first;
+  return &*it;
+}
+
 const BuffType *Server::findBuff(const BuffType::ID &id) const {
   auto it = _buffTypes.find(id);
   if (it == _buffTypes.end()) return nullptr;
