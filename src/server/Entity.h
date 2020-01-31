@@ -213,14 +213,14 @@ class Entity {
 
  private:
   static size_t generateSerial();
-  const EntityType *_type;
+  const EntityType *_type{nullptr};
 
   bool _excludedFromPersistentState{false};
 
-  Spawner *_spawner;  // The Spawner that created this entity, if any.
+  Spawner *_spawner{nullptr};  // The Spawner that created this entity, if any.
 
   // Space
-  size_t _serial;
+  size_t _serial{0};
   MapPoint _location;
   ms_t _lastLocUpdate;  // Time that the location was last updated; used to
                         // determine max distance
@@ -230,8 +230,8 @@ class Entity {
                  // updateStats();
   Hitpoints _health;
   Energy _energy;
-  ms_t _attackTimer;
-  Entity *_target;
+  ms_t _attackTimer{0};
+  Entity *_target{nullptr};
   ms_t _corpseTime;  // How much longer this entity should exist as a corpse.
   void startCorpseTimer();
   Buffs _buffs, _debuffs;

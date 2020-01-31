@@ -15,14 +15,10 @@ Stats Dummy::_stats{};
 Entity::Entity(const EntityType *type, const MapPoint &loc)
     : _type(type),
       _serial(generateSerial()),
-      _spawner(nullptr),
 
       _location(loc),
       _lastLocUpdate(SDL_GetTicks()),
 
-      _attackTimer(0),
-      _target(nullptr),
-      _loot(nullptr),
       permissions(*this),
       gatherable(*this) {
   initStatsFromType();
@@ -30,20 +26,13 @@ Entity::Entity(const EntityType *type, const MapPoint &loc)
 
 Entity::Entity(size_t serial)
     :  // For set/map lookup ONLY
-      _type(nullptr),
       _serial(serial),
-      _spawner(nullptr),
-      _loot(nullptr),
       permissions(*this),
       gatherable(*this) {}
 
 Entity::Entity(const MapPoint &loc)
     :  // For set/map lookup ONLY
-      _type(nullptr),
       _location(loc),
-      _serial(0),
-      _spawner(nullptr),
-      _loot(nullptr),
       permissions(*this),
       gatherable(*this) {}
 
