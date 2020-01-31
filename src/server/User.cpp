@@ -359,7 +359,7 @@ void User::cancelAction() {
 
   switch (_action) {
     case GATHER:
-      _actionObject->decrementGatheringUsers();
+      _actionObject->gatherable.decrementGatheringUsers();
   }
 
   if (_action == ATTACK) {
@@ -380,7 +380,7 @@ void User::finishAction() {
 void User::beginGathering(Entity *ent, double speedMultiplier) {
   _action = GATHER;
   _actionObject = ent;
-  _actionObject->incrementGatheringUsers();
+  _actionObject->gatherable.incrementGatheringUsers();
   if (!ent->type()) {
     SERVER_ERROR("Can't gather from object with no type");
     return;
@@ -719,7 +719,7 @@ void User::update(ms_t timeElapsed) {
       break;  // All handled by Entity::update()
 
     case GATHER:
-      if (!_actionObject->gatherContents().isEmpty())
+      if (!_actionObject->gatherable.gatherContents().isEmpty())
         server.gatherObject(_actionObject->serial(), *this);
       break;
 

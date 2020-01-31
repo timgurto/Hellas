@@ -10,6 +10,7 @@
 #include "../types.h"
 #include "Buff.h"
 #include "EntityType.h"
+#include "Gatherable.h"
 #include "Loot.h"
 #include "Permissions.h"
 #include "ServerItem.h"
@@ -192,17 +193,6 @@ class Entity {
 
   const Loot &loot() const;
 
-  const ItemSet &gatherContents() const { return _gatherContents; }
-  void gatherContents(const ItemSet &contents);
-  // Randomly choose an item type for the user to gather.
-  const ServerItem *chooseGatherItem() const;
-  // Randomly choose a quantity of the above items, between 1 and the object's
-  // contents.
-  size_t chooseGatherQuantity(const ServerItem *item) const;
-  void removeItem(const ServerItem *item,
-                  size_t qty);  // From _gatherContents; gathering
-  void populateGatherContents();
-
   /*
   Determine whether the proposed new location is legal, considering movement
   speed and time elapsed, and checking for collisions. Set location to the new,
@@ -211,11 +201,7 @@ class Entity {
   void updateLocation(const MapPoint &dest);
 
   Permissions permissions;
-
-  void incrementGatheringUsers(const User *userToSkip = nullptr);
-  void decrementGatheringUsers(const User *userToSkip = nullptr);
-  void removeAllGatheringUsers();
-  size_t numUsersGathering() const { return _numUsersGathering; }
+  Gatherable gatherable;
 
  protected:
   void type(const EntityType *type) { _type = type; }
@@ -257,9 +243,6 @@ class Entity {
   User *_tagger{nullptr};  // The user who gets credit for killing this.
 
   ms_t _timeSinceRegen = 0;
-
-  ItemSet _gatherContents;
-  size_t _numUsersGathering{0};
 
   friend class Dummy;
 };

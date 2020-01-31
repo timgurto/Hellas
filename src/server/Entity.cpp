@@ -23,7 +23,8 @@ Entity::Entity(const EntityType *type, const MapPoint &loc)
       _attackTimer(0),
       _target(nullptr),
       _loot(nullptr),
-      permissions(*this) {
+      permissions(*this),
+      gatherable(*this) {
   initStatsFromType();
 }
 
@@ -33,7 +34,8 @@ Entity::Entity(size_t serial)
       _serial(serial),
       _spawner(nullptr),
       _loot(nullptr),
-      permissions(*this) {}
+      permissions(*this),
+      gatherable(*this) {}
 
 Entity::Entity(const MapPoint &loc)
     :  // For set/map lookup ONLY
@@ -42,7 +44,8 @@ Entity::Entity(const MapPoint &loc)
       _serial(0),
       _spawner(nullptr),
       _loot(nullptr),
-      permissions(*this) {}
+      permissions(*this),
+      gatherable(*this) {}
 
 Entity::~Entity() {
   if (_spawner != nullptr) _spawner->scheduleSpawn();
@@ -787,92 +790,4 @@ void Entity::regen(ms_t timeElapsed) {
 
     if (energy() != oldEnergy) onEnergyChange();
   }
-}
-
-void Entity::incrementGatheringUsers(const User *userToSkip) {
-  const Server &server = *Server::_instance;
-  ++_numUsersGathering;
-  if (_numUsersGathering == 1) {
-    for (const User *user : server.findUsersInArea(location()))
-      if (user != userToSkip)
-        user->sendMessage({SV_GATHERING_OBJECT, serial()});
-  }
-}
-
-void Entity::decrementGatheringUsers(const User *userToSkip) {
-  const Server &server = *Server::_instance;
-  --_numUsersGathering;
-  if (_numUsersGathering == 0) {
-    for (const User *user : server.findUsersInArea(location()))
-      if (user != userToSkip)
-        user->sendMessage({SV_NOT_GATHERING_OBJECT, serial()});
-  }
-}
-
-void Entity::removeAllGatheringUsers() {
-  const Server &server = *Server::_instance;
-  _numUsersGathering = 0;
-  for (const User *user : server.findUsersInArea(location()))
-    user->sendMessage({SV_NOT_GATHERING_OBJECT, serial()});
-}
-
-void Entity::gatherContents(const ItemSet &contents) {
-  _gatherContents = contents;
-}
-
-void Entity::removeItem(const ServerItem *item, size_t qty) {
-  if (_gatherContents[item] < qty) {
-    SERVER_ERROR("Attempting to remove contents when quantity is insufficient");
-    qty = _gatherContents[item];
-  }
-  if (_gatherContents.totalQuantity() < qty) {
-    SERVER_ERROR(
-        "Attempting to remove contents when total quantity is insufficient");
-  }
-  _gatherContents.remove(item, qty);
-}
-
-void Entity::populateGatherContents() {
-  if (!_type->yield) return;
-  _type->yield.instantiate(_gatherContents);
-}
-
-const ServerItem *Entity::chooseGatherItem() const {
-  if (_gatherContents.isEmpty()) {
-    SERVER_ERROR("Can't gather from an empty object");
-    return nullptr;
-  }
-
-  // Count number of average gathers remaining for each item type.
-  size_t totalGathersRemaining = 0;
-  std::map<const Item *, size_t> gathersRemaining;
-  for (auto item : _gatherContents) {
-    size_t qtyRemaining = item.second;
-    double gatherSize = _type->yield.gatherMean(toServerItem(item.first));
-    size_t remaining = static_cast<size_t>(ceil(qtyRemaining / gatherSize));
-    gathersRemaining[item.first] = remaining;
-    totalGathersRemaining += remaining;
-  }
-
-  if (totalGathersRemaining == 0) {
-    SERVER_ERROR("Invalid gather count");
-    return nullptr;
-  }
-
-  // Choose random item, weighted by remaining gathers.
-  size_t i = rand() % totalGathersRemaining;
-  for (auto item : gathersRemaining) {
-    if (i <= item.second)
-      return toServerItem(item.first);
-    else
-      i -= item.second;
-  }
-  SERVER_ERROR("No item was found to gather");
-  return nullptr;
-}
-
-size_t Entity::chooseGatherQuantity(const ServerItem *item) const {
-  size_t randomQty = _type->yield.generateGatherQuantity(item);
-  size_t qty = min<size_t>(randomQty, _gatherContents[item]);
-  return qty;
 }

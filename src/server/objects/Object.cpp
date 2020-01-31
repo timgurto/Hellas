@@ -45,7 +45,8 @@ void Object::update(ms_t timeElapsed) {
     if (isDead()) break;
     if (_transformTimer == 0) break;
     if (objType().transformObject() == nullptr) break;
-    if (objType().transformsOnEmpty() && !gatherContents().isEmpty()) break;
+    if (objType().transformsOnEmpty() && !gatherable.gatherContents().isEmpty())
+      break;
 
     if (timeElapsed > _transformTimer)
       _transformTimer = 0;
@@ -87,11 +88,11 @@ void Object::setType(const ObjectType *type, bool skipConstruction,
 
   Entity::type(type);
 
-  populateGatherContents();
+  gatherable.populateGatherContents();
 
   if (!wasCalledFromConstructor) {
     server->forceAllToUntarget(*this);
-    removeAllGatheringUsers();
+    gatherable.removeAllGatheringUsers();
   }
 
   delete _container;
@@ -187,7 +188,7 @@ void Object::sendInfoToClient(const User &targetUser) const {
   }
 
   // Being gathered
-  if (numUsersGathering() > 0)
+  if (gatherable.numUsersGathering() > 0)
     targetUser.sendMessage({SV_GATHERING_OBJECT, serial()});
 
   // Construction materials
