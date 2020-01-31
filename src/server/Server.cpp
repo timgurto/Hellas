@@ -567,9 +567,9 @@ void Server::removeEntity(Entity &ent, const User *userToExclude) {
 
 void Server::gatherObject(size_t serial, User &user) {
   // Give item to user
-  Object *obj = _entities.find<Object>(serial);
-  const ServerItem *const toGive = obj->chooseGatherItem();
-  size_t qtyToRemove = obj->chooseGatherQuantity(toGive);
+  auto *ent = _entities.find(serial);
+  const ServerItem *const toGive = ent->chooseGatherItem();
+  size_t qtyToRemove = ent->chooseGatherQuantity(toGive);
   size_t qtyToGive = qtyToRemove;
   if (user.shouldGatherDoubleThisTime()) qtyToGive *= 2;
   const size_t remaining = user.giveItem(toGive, qtyToGive);
@@ -582,15 +582,16 @@ void Server::gatherObject(size_t serial, User &user) {
     ProgressLock::triggerUnlocks(user, ProgressLock::GATHER, toGive);
 
   // Remove object if empty
-  obj->removeItem(toGive, qtyToRemove);
-  if (obj->gatherContents().isEmpty()) {
-    if (obj->objType().transformsOnEmpty()) {
-      forceAllToUntarget(*obj);
-      obj->removeAllGatheringUsers();
+  ent->removeItem(toGive, qtyToRemove);
+  if (ent->gatherContents().isEmpty()) {
+    auto asObject = dynamic_cast<const Object *>(ent);
+    if (asObject && asObject->objType().transformsOnEmpty()) {
+      forceAllToUntarget(*ent);
+      ent->removeAllGatheringUsers();
     } else
-      removeEntity(*obj, &user);
+      removeEntity(*ent, &user);
   } else
-    obj->decrementGatheringUsers();
+    ent->decrementGatheringUsers();
 
 #ifdef SINGLE_THREAD
   saveData(_objects, _wars, _cities);

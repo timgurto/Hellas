@@ -546,6 +546,8 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
       if (xr.findAttr(elemSpell, "id", spellID)) nt->knowsSpell(spellID);
     }
 
+    nt->yield.loadFromXML(xr, elem);
+
     for (auto loot : xr.getChildren("loot", elem)) {
       if (!xr.findAttr(loot, "id", s)) continue;
 

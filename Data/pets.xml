@@ -22,6 +22,7 @@
     <lootTable id="animal" />
     <loot id="sheepskin" chance="0.1" />
     <loot id="wool" />
+    <yield id="wool" />
 </npcType>
 <item id="collar" name="Collar"
     sounds="fabric" stackSize="10"/>

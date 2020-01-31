@@ -64,3 +64,35 @@ TEST_CASE("Minimum yields") {
     CHECK_FALSE(obj->gatherContents().isEmpty());
   }
 }
+
+TEST_CASE("Gathering from an NPC") {
+  GIVEN("an NPC with a yield") {
+    auto data = R"(
+      <item id="fur" />
+      <npcType id="mouse" maxHealth="1">
+        <yield id="fur" />
+      </npcType>
+    )";
+
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    const auto &mouse = s.addNPC("mouse", {10, 15});
+    WAIT_UNTIL(!mouse.gatherContents().isEmpty());
+
+    s.waitForUsers(1);
+
+    WHEN("a player kills it") {
+      c.sendMessage(CL_TARGET_ENTITY, makeArgs(mouse.serial()));
+      WAIT_UNTIL(mouse.isDead());
+
+      AND_WHEN("he tries to gather from it") {
+        c.sendMessage(CL_GATHER, makeArgs(mouse.serial()));
+
+        THEN("he has an item") {
+          auto &user = s.getFirstUser();
+          WAIT_UNTIL(user.inventory(0).first.hasItem());
+        }
+      }
+    }
+  }
+}
