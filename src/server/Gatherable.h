@@ -1,12 +1,12 @@
 #pragma once
 
+#include "EntityComponent.h"
 #include "ServerItem.h"
 class Entity;
 
-class Gatherable {
+class Gatherable : EntityComponent {
  public:
-  Gatherable(const Entity &owner) : _owner(owner) {}
-
+  Gatherable(Entity &parent) : EntityComponent(parent) {}
   const ItemSet &gatherContents() const { return _gatherContents; }
   void gatherContents(const ItemSet &contents);
   // Randomly choose an item type for the user to gather.
@@ -24,7 +24,6 @@ class Gatherable {
   size_t numUsersGathering() const { return _numUsersGathering; }
 
  private:
-  const Entity &_owner;
   ItemSet _gatherContents;
   size_t _numUsersGathering{0};
 };

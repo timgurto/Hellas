@@ -6,9 +6,9 @@ void Gatherable::incrementGatheringUsers(const User *userToSkip) {
   const auto &server = Server::instance();
   ++_numUsersGathering;
   if (_numUsersGathering == 1) {
-    for (const User *user : server.findUsersInArea(_owner.location()))
+    for (const User *user : server.findUsersInArea(parent().location()))
       if (user != userToSkip)
-        user->sendMessage({SV_GATHERING_OBJECT, _owner.serial()});
+        user->sendMessage({SV_GATHERING_OBJECT, parent().serial()});
   }
 }
 
@@ -16,17 +16,17 @@ void Gatherable::decrementGatheringUsers(const User *userToSkip) {
   const auto &server = Server::instance();
   --_numUsersGathering;
   if (_numUsersGathering == 0) {
-    for (const User *user : server.findUsersInArea(_owner.location()))
+    for (const User *user : server.findUsersInArea(parent().location()))
       if (user != userToSkip)
-        user->sendMessage({SV_NOT_GATHERING_OBJECT, _owner.serial()});
+        user->sendMessage({SV_NOT_GATHERING_OBJECT, parent().serial()});
   }
 }
 
 void Gatherable::removeAllGatheringUsers() {
   const auto &server = Server::instance();
   _numUsersGathering = 0;
-  for (const User *user : server.findUsersInArea(_owner.location()))
-    user->sendMessage({SV_NOT_GATHERING_OBJECT, _owner.serial()});
+  for (const User *user : server.findUsersInArea(parent().location()))
+    user->sendMessage({SV_NOT_GATHERING_OBJECT, parent().serial()});
 }
 
 void Gatherable::gatherContents(const ItemSet &contents) {
@@ -46,8 +46,8 @@ void Gatherable::removeItem(const ServerItem *item, size_t qty) {
 }
 
 void Gatherable::populateGatherContents() {
-  if (!_owner.type()->yield) return;
-  _owner.type()->yield.instantiate(_gatherContents);
+  if (!parent().type()->yield) return;
+  parent().type()->yield.instantiate(_gatherContents);
 }
 
 const ServerItem *Gatherable::chooseGatherItem() const {
@@ -62,7 +62,7 @@ const ServerItem *Gatherable::chooseGatherItem() const {
   for (auto item : _gatherContents) {
     size_t qtyRemaining = item.second;
     double gatherSize =
-        _owner.type()->yield.gatherMean(toServerItem(item.first));
+        parent().type()->yield.gatherMean(toServerItem(item.first));
     size_t remaining = static_cast<size_t>(ceil(qtyRemaining / gatherSize));
     gathersRemaining[item.first] = remaining;
     totalGathersRemaining += remaining;
@@ -86,7 +86,7 @@ const ServerItem *Gatherable::chooseGatherItem() const {
 }
 
 size_t Gatherable::chooseGatherQuantity(const ServerItem *item) const {
-  size_t randomQty = _owner.type()->yield.generateGatherQuantity(item);
+  size_t randomQty = parent().type()->yield.generateGatherQuantity(item);
   size_t qty = min<size_t>(randomQty, _gatherContents[item]);
   return qty;
 }

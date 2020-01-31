@@ -197,6 +197,7 @@
     <ClInclude Include="src\server\Durability.h" />
     <ClInclude Include="src\server\Entities.h" />
     <ClInclude Include="src\server\Entity.h" />
+    <ClInclude Include="src\server\EntityComponent.h" />
     <ClInclude Include="src\server\EntityType.h" />
     <ClInclude Include="src\server\Exploration.h" />
     <ClInclude Include="src\server\Gatherable.h" />

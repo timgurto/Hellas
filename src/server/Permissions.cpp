@@ -31,43 +31,43 @@ bool Permissions::Owner::operator==(const Permissions::Owner &rhs) const {
 
 void Permissions::setNoAccess() {
   ObjectsByOwner &ownerIndex = Server::_instance->_objectsByOwner;
-  ownerIndex.remove(_owner, _parent.serial());
+  ownerIndex.remove(_owner, parent().serial());
 
   _owner.type = Owner::NO_ACCESS;
   _owner.name = {};
 
-  ownerIndex.add(_owner, _parent.serial());
+  ownerIndex.add(_owner, parent().serial());
 
   alertNearbyUsersToNewOwner();
-  _parent.onOwnershipChange();
+  parent().onOwnershipChange();
 }
 
 void Permissions::setPlayerOwner(const std::string &username) {
   ObjectsByOwner &ownerIndex = Server::_instance->_objectsByOwner;
-  ownerIndex.remove(_owner, _parent.serial());
+  ownerIndex.remove(_owner, parent().serial());
 
   _owner.type = Owner::PLAYER;
   _owner.name = username;
 
-  ownerIndex.add(_owner, _parent.serial());
+  ownerIndex.add(_owner, parent().serial());
 
   alertNearbyUsersToNewOwner();
-  _parent.onOwnershipChange();
+  parent().onOwnershipChange();
 }
 
 void Permissions::setCityOwner(const City::Name &cityName) {
   ObjectsByOwner &ownerIndex = Server::_instance->_objectsByOwner;
-  ownerIndex.remove(_owner, _parent.serial());
+  ownerIndex.remove(_owner, parent().serial());
 
   const Cities &cities = Server::instance()._cities;
   if (!cities.doesCityExist(cityName)) return;
   _owner.type = Owner::CITY;
   _owner.name = cityName;
 
-  ownerIndex.add(_owner, _parent.serial());
+  ownerIndex.add(_owner, parent().serial());
 
   alertNearbyUsersToNewOwner();
-  _parent.onOwnershipChange();
+  parent().onOwnershipChange();
 }
 
 bool Permissions::hasOwner() const {
@@ -120,8 +120,9 @@ bool Permissions::canUserDemolish(const std::string &username) const {
 void Permissions::alertNearbyUsersToNewOwner() const {
   auto &server = *Server::_instance;
   server.broadcastToArea(
-      _parent.location(),
-      {SV_OWNER, makeArgs(_parent.serial(), _owner.typeString(), _owner.name)});
+      parent().location(),
+      {SV_OWNER,
+       makeArgs(parent().serial(), _owner.typeString(), _owner.name)});
 }
 
 Permissions::Usernames Permissions::ownerAsUsernames() {

@@ -5,12 +5,13 @@
 
 #include "../messageCodes.h"
 #include "City.h"
+#include "EntityComponent.h"
 
 class Entity;
 class User;
 
 // Manages an object's access permissions
-class Permissions {
+class Permissions : public EntityComponent {
  public:
   struct Owner {
     enum Type { PLAYER, CITY, ALL_HAVE_ACCESS, NO_ACCESS };
@@ -25,7 +26,7 @@ class Permissions {
     operator bool() const { return type != ALL_HAVE_ACCESS; }
   };
 
-  Permissions(Entity &parent) : _parent(parent) {}
+  Permissions(Entity &parent) : EntityComponent(parent) {}
 
   void setNoAccess();
   void setPlayerOwner(const std::string &username);
@@ -46,7 +47,6 @@ class Permissions {
 
  private:
   Owner _owner;
-  Entity &_parent;
 };
 
 #endif
