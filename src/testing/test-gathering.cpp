@@ -61,7 +61,7 @@ TEST_CASE("Minimum yields") {
   auto s = TestServer::WithData("min_apples");
   for (auto entity : s.entities()) {
     const Object *obj = dynamic_cast<const Object *>(entity);
-    CHECK_FALSE(obj->gatherable.gatherContents().isEmpty());
+    CHECK_FALSE(obj->gatherable.contents().isEmpty());
   }
 }
 
@@ -77,7 +77,7 @@ TEST_CASE("Gathering from an NPC") {
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
     const auto &mouse = s.addNPC("mouse", {10, 15});
-    WAIT_UNTIL(!mouse.gatherable.gatherContents().isEmpty());
+    WAIT_UNTIL(!mouse.gatherable.contents().isEmpty());
 
     s.waitForUsers(1);
 

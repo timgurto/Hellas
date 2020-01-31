@@ -45,7 +45,7 @@ void Object::update(ms_t timeElapsed) {
     if (isDead()) break;
     if (_transformTimer == 0) break;
     if (objType().transformObject() == nullptr) break;
-    if (objType().transformsOnEmpty() && !gatherable.gatherContents().isEmpty())
+    if (objType().transformsOnEmpty() && !gatherable.contents().isEmpty())
       break;
 
     if (timeElapsed > _transformTimer)
@@ -88,7 +88,7 @@ void Object::setType(const ObjectType *type, bool skipConstruction,
 
   Entity::type(type);
 
-  gatherable.populateGatherContents();
+  gatherable.populateContents();
 
   if (!wasCalledFromConstructor) {
     server->forceAllToUntarget(*this);

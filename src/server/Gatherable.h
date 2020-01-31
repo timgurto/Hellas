@@ -7,16 +7,16 @@ class Entity;
 class Gatherable : EntityComponent {
  public:
   Gatherable(Entity &parent) : EntityComponent(parent) {}
-  const ItemSet &gatherContents() const { return _gatherContents; }
-  void gatherContents(const ItemSet &contents);
+  const ItemSet &contents() const { return _contents; }
+  void contents(const ItemSet &contents);
+
+  void populateContents();
+
   // Randomly choose an item type for the user to gather.
-  const ServerItem *chooseGatherItem() const;
-  // Randomly choose a quantity of the above items, between 1 and the object's
-  // contents.
-  size_t chooseGatherQuantity(const ServerItem *item) const;
-  void removeItem(const ServerItem *item,
-                  size_t qty);  // From _gatherContents; gathering
-  void populateGatherContents();
+  const ServerItem *chooseRandomItem() const;
+  // Random quantity of the above item, between 1 and the object's contents.
+  size_t chooseRandomQuantity(const ServerItem *item) const;
+  void removeItem(const ServerItem *item, size_t qty);
 
   void incrementGatheringUsers(const User *userToSkip = nullptr);
   void decrementGatheringUsers(const User *userToSkip = nullptr);
@@ -24,6 +24,6 @@ class Gatherable : EntityComponent {
   size_t numUsersGathering() const { return _numUsersGathering; }
 
  private:
-  ItemSet _gatherContents;
+  ItemSet _contents;
   size_t _numUsersGathering{0};
 };

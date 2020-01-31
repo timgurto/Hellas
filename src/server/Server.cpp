@@ -568,8 +568,8 @@ void Server::removeEntity(Entity &ent, const User *userToExclude) {
 void Server::gatherObject(size_t serial, User &user) {
   // Give item to user
   auto *ent = _entities.find(serial);
-  const ServerItem *const toGive = ent->gatherable.chooseGatherItem();
-  size_t qtyToRemove = ent->gatherable.chooseGatherQuantity(toGive);
+  const ServerItem *const toGive = ent->gatherable.chooseRandomItem();
+  size_t qtyToRemove = ent->gatherable.chooseRandomQuantity(toGive);
   size_t qtyToGive = qtyToRemove;
   if (user.shouldGatherDoubleThisTime()) qtyToGive *= 2;
   const size_t remaining = user.giveItem(toGive, qtyToGive);
@@ -583,7 +583,7 @@ void Server::gatherObject(size_t serial, User &user) {
 
   // Remove object if empty
   ent->gatherable.removeItem(toGive, qtyToRemove);
-  if (ent->gatherable.gatherContents().isEmpty()) {
+  if (ent->gatherable.contents().isEmpty()) {
     auto asObject = dynamic_cast<const Object *>(ent);
     if (asObject && asObject->objType().transformsOnEmpty()) {
       forceAllToUntarget(*ent);

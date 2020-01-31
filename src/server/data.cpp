@@ -440,7 +440,7 @@ void Server::loadEntitiesFromFile(const std::string &path,
       if (it == _items.end()) continue;
       gatherContents.set(&*it, n);
     }
-    obj.gatherable.gatherContents(gatherContents);
+    obj.gatherable.contents(gatherContents);
 
     size_t q;
     // Default value to support transition of old data
@@ -597,7 +597,7 @@ void Object::writeToXML(XmlWriter &xw) const {
 
   xw.setAttr(e, "id", type()->id());
 
-  for (auto &content : gatherable.gatherContents()) {
+  for (auto &content : gatherable.contents()) {
     auto contentE = xw.addChild("gatherable", e);
     xw.setAttr(contentE, "id", content.first->id());
     xw.setAttr(contentE, "quantity", content.second);

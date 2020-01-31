@@ -29,29 +29,27 @@ void Gatherable::removeAllGatheringUsers() {
     user->sendMessage({SV_NOT_GATHERING_OBJECT, parent().serial()});
 }
 
-void Gatherable::gatherContents(const ItemSet &contents) {
-  _gatherContents = contents;
-}
+void Gatherable::contents(const ItemSet &contents) { _contents = contents; }
 
 void Gatherable::removeItem(const ServerItem *item, size_t qty) {
-  if (_gatherContents[item] < qty) {
+  if (_contents[item] < qty) {
     SERVER_ERROR("Attempting to remove contents when quantity is insufficient");
-    qty = _gatherContents[item];
+    qty = _contents[item];
   }
-  if (_gatherContents.totalQuantity() < qty) {
+  if (_contents.totalQuantity() < qty) {
     SERVER_ERROR(
         "Attempting to remove contents when total quantity is insufficient");
   }
-  _gatherContents.remove(item, qty);
+  _contents.remove(item, qty);
 }
 
-void Gatherable::populateGatherContents() {
+void Gatherable::populateContents() {
   if (!parent().type()->yield) return;
-  parent().type()->yield.instantiate(_gatherContents);
+  parent().type()->yield.instantiate(_contents);
 }
 
-const ServerItem *Gatherable::chooseGatherItem() const {
-  if (_gatherContents.isEmpty()) {
+const ServerItem *Gatherable::chooseRandomItem() const {
+  if (_contents.isEmpty()) {
     SERVER_ERROR("Can't gather from an empty object");
     return nullptr;
   }
@@ -59,7 +57,7 @@ const ServerItem *Gatherable::chooseGatherItem() const {
   // Count number of average gathers remaining for each item type.
   size_t totalGathersRemaining = 0;
   std::map<const Item *, size_t> gathersRemaining;
-  for (auto item : _gatherContents) {
+  for (auto item : _contents) {
     size_t qtyRemaining = item.second;
     double gatherSize =
         parent().type()->yield.gatherMean(toServerItem(item.first));
@@ -85,8 +83,8 @@ const ServerItem *Gatherable::chooseGatherItem() const {
   return nullptr;
 }
 
-size_t Gatherable::chooseGatherQuantity(const ServerItem *item) const {
+size_t Gatherable::chooseRandomQuantity(const ServerItem *item) const {
   size_t randomQty = parent().type()->yield.generateGatherQuantity(item);
-  size_t qty = min<size_t>(randomQty, _gatherContents[item]);
+  size_t qty = min<size_t>(randomQty, _contents[item]);
   return qty;
 }
