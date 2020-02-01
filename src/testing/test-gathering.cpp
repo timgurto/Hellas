@@ -81,17 +81,12 @@ TEST_CASE("Gathering from an NPC") {
 
     s.waitForUsers(1);
 
-    WHEN("a player kills it") {
-      c.sendMessage(CL_TARGET_ENTITY, makeArgs(mouse.serial()));
-      WAIT_UNTIL(mouse.isDead());
+    AND_WHEN("a player tries to gather from it") {
+      c.sendMessage(CL_GATHER, makeArgs(mouse.serial()));
 
-      AND_WHEN("he tries to gather from it") {
-        c.sendMessage(CL_GATHER, makeArgs(mouse.serial()));
-
-        THEN("he has an item") {
-          auto &user = s.getFirstUser();
-          WAIT_UNTIL(user.inventory(0).first.hasItem());
-        }
+      THEN("he has an item") {
+        auto &user = s.getFirstUser();
+        WAIT_UNTIL(user.inventory(0).first.hasItem());
       }
     }
   }
