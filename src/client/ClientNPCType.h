@@ -51,7 +51,7 @@ class ClientNPCType : public ClientObjectType {
   bool _isCivilian{false};
   bool _isNeutral{false};
   bool _canBeTamed{false};
-  const ClientItem *_itemRequiredForTaming;
+  const ClientItem *_itemRequiredForTaming{nullptr};
   ScreenRect _corpseDrawRect;  // By default, equal to SpriteType::_drawRect.
 };
 
