@@ -719,7 +719,7 @@ void User::update(ms_t timeElapsed) {
       break;  // All handled by Entity::update()
 
     case GATHER:
-      if (!_actionObject->gatherable.contents().isEmpty())
+      if (_actionObject->gatherable.hasItems())
         server.gatherObject(_actionObject->serial(), *this);
       break;
 

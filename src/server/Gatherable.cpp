@@ -29,7 +29,7 @@ void Gatherable::removeAllGatheringUsers() {
     user->sendMessage({SV_NOT_GATHERING_OBJECT, parent().serial()});
 }
 
-void Gatherable::contents(const ItemSet &contents) { _contents = contents; }
+void Gatherable::setContents(const ItemSet &contents) { _contents = contents; }
 
 void Gatherable::removeItem(const ServerItem *item, size_t qty) {
   if (_contents[item] < qty) {

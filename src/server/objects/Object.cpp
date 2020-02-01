@@ -45,8 +45,7 @@ void Object::update(ms_t timeElapsed) {
     if (isDead()) break;
     if (_transformTimer == 0) break;
     if (objType().transformObject() == nullptr) break;
-    if (objType().transformsOnEmpty() && !gatherable.contents().isEmpty())
-      break;
+    if (objType().transformsOnEmpty() && gatherable.hasItems()) break;
 
     if (timeElapsed > _transformTimer)
       _transformTimer = 0;

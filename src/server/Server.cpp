@@ -583,7 +583,7 @@ void Server::gatherObject(size_t serial, User &user) {
 
   // Remove object if empty
   ent->gatherable.removeItem(toGive, qtyToRemove);
-  if (ent->gatherable.contents().isEmpty()) {
+  if (!ent->gatherable.hasItems()) {
     auto asObject = dynamic_cast<const Object *>(ent);
     if (asObject && asObject->objType().transformsOnEmpty()) {
       forceAllToUntarget(*ent);

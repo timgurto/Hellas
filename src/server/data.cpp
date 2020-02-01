@@ -440,7 +440,7 @@ void Server::loadEntitiesFromFile(const std::string &path,
       if (it == _items.end()) continue;
       gatherContents.set(&*it, n);
     }
-    obj.gatherable.contents(gatherContents);
+    obj.gatherable.setContents(gatherContents);
 
     size_t q;
     // Default value to support transition of old data

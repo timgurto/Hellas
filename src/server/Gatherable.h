@@ -7,10 +7,11 @@ class Entity;
 class Gatherable : EntityComponent {
  public:
   Gatherable(Entity &parent) : EntityComponent(parent) {}
-  const ItemSet &contents() const { return _contents; }
-  void contents(const ItemSet &contents);
 
+  const ItemSet &contents() const { return _contents; }
+  void setContents(const ItemSet &contents);
   void populateContents();
+  bool hasItems() const { return !_contents.isEmpty(); }
 
   // Randomly choose an item type for the user to gather.
   const ServerItem *chooseRandomItem() const;
