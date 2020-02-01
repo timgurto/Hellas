@@ -89,5 +89,16 @@ TEST_CASE("Gathering from an NPC") {
         WAIT_UNTIL(user.inventory(0).first.hasItem());
       }
     }
+
+    AND_WHEN("a player right-clicks it") {
+      WAIT_UNTIL(c.objects().size() == 1);
+      auto &cMouse = c.getFirstNPC();
+      cMouse.onRightClick(c.client());
+
+      THEN("he has an item") {
+        auto &user = s.getFirstUser();
+        WAIT_UNTIL(user.inventory(0).first.hasItem());
+      }
+    }
   }
 }

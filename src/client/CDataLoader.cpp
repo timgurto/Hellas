@@ -992,6 +992,8 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
       }
     }
 
+    if (xr.getChildren("yield", elem).size() > 0) nt->canGather(true);
+
     // Insert
     auto pair = _client._objectTypes.insert(nt);
     if (!pair.second) {
