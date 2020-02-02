@@ -499,7 +499,7 @@ void Server::loadEntitiesFromFile(const std::string &path,
 
     auto transformTimer = ms_t{};
     if (xr.findAttr(elem, "transformTime", transformTimer))
-      obj.transformTimer(transformTimer);
+      obj.transformation.transformTimer(transformTimer);
 
     auto vehicle = xr.findChild("vehicle", elem);
     if (vehicle) {
@@ -618,7 +618,8 @@ void Object::writeToXML(XmlWriter &xw) const {
 
   if (isDead() && corpseTime() > 0) xw.setAttr(e, "corpseTime", corpseTime());
 
-  if (transformTimer() > 0) xw.setAttr(e, "transformTime", transformTimer());
+  if (transformation.transformTimer() > 0)
+    xw.setAttr(e, "transformTime", transformation.transformTimer());
 
   if (hasContainer()) {
     for (size_t i = 0; i != objType().container().slots(); ++i) {

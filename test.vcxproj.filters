@@ -184,6 +184,7 @@
     <ClCompile Include="src\client\HasSounds.cpp" />
     <ClCompile Include="src\Message.cpp" />
     <ClCompile Include="src\server\Gatherable.cpp" />
+    <ClCompile Include="src\server\Transformation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -324,5 +325,6 @@
     <ClInclude Include="src\client\HasSounds.h" />
     <ClInclude Include="src\server\Gatherable.h" />
     <ClInclude Include="src\server\EntityComponent.h" />
+    <ClInclude Include="src\server\Transformation.h" />
   </ItemGroup>
 </Project>

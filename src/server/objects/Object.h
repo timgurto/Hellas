@@ -7,6 +7,7 @@
 #include "../Loot.h"
 #include "../MerchantSlot.h"
 #include "../QuestNode.h"
+#include "../Transformation.h"
 #include "Container.h"
 #include "Deconstruction.h"
 #include "ObjectType.h"
@@ -20,8 +21,6 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
 
   ItemSet
       _remainingMaterials;  // The remaining construction costs, if relevant.
-
-  ms_t _transformTimer;  // When this hits zero, it switches types.
 
   ms_t _disappearTimer;  // When this hits zero, it disappears.
 
@@ -52,9 +51,6 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
   const ItemSet &remainingMaterials() const { return _remainingMaterials; }
   ItemSet &remainingMaterials() { return _remainingMaterials; }
   void clearMaterialsRequired() { _remainingMaterials.clear(); }
-  bool isTransforming() const { return _transformTimer > 0; }
-  ms_t transformTimer() const { return _transformTimer; }
-  void transformTimer(ms_t timeRemaining) { _transformTimer = timeRemaining; }
 
   bool hasContainer() const { return _container != nullptr; }
   Container &container() { return *_container; }
@@ -101,6 +97,8 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
   void damageFromUse() override { reduceHealth(1); };
 
   void repair() override;
+
+  Transformation transformation;
 
  private:
   Container *_container = nullptr;

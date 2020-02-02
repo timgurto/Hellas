@@ -5,6 +5,7 @@
 #include "../Durability.h"
 #include "../EntityType.h"
 #include "../QuestNode.h"
+#include "../Transformation.h"
 #include "Action.h"
 #include "Container.h"
 #include "Deconstruction.h"
@@ -29,14 +30,6 @@ class ObjectType : public EntityType, public QuestNodeType {
   size_t _merchantSlots;
   bool _bottomlessMerchant;  // Bottomless: never runs out, uses no inventory
                              // space.
-
-  const ObjectType *_transformObject =
-      nullptr;  // The object type that this becomes over time, if any.
-  ms_t _transformTime = 0;         // How long the transformation takes.
-  bool _transformOnEmpty = false;  // Begin the transformation only once all
-                                   // items have been gathered.
-  bool _skipConstructionOnTransform =
-      false;  // If true, the new object will be fully constructed
 
   ms_t _disappearsAfter{
       0};  // After an object has existed for this long, it disappears.
@@ -109,19 +102,6 @@ class ObjectType : public EntityType, public QuestNodeType {
     _materials.add(material, quantity);
   }
   const ItemSet &materials() const { return _materials; }
-  void transform(ms_t time, const ObjectType *id) {
-    _transformTime = time;
-    _transformObject = id;
-  }
-  ms_t transformTime() const { return _transformTime; }
-  void transformOnEmpty() { _transformOnEmpty = true; }
-  bool transformsOnEmpty() const { return _transformOnEmpty; }
-  const ObjectType *transformObject() const { return _transformObject; }
-  bool transforms() const { return _transformObject != nullptr; }
-  void skipConstructionOnTransform(bool b) { _skipConstructionOnTransform = b; }
-  bool skipConstructionOnTransform() const {
-    return _skipConstructionOnTransform;
-  }
   void disappearsAfter(ms_t time) { _disappearsAfter = time; }
   ms_t disappearsAfter() const { return _disappearsAfter; }
   void setHealthBasedOnItems(const ServerItem *item, size_t quantity);
@@ -159,6 +139,8 @@ class ObjectType : public EntityType, public QuestNodeType {
   void makeRepairable() { _repairInfo.canBeRepaired = true; }
   void repairingCosts(const std::string &id) { _repairInfo.cost = id; }
   void repairingRequiresTool(const std::string &tag) { _repairInfo.tool = tag; }
+
+  TransformationType transformation;
 
  private:
   void checkUniquenessInvariant() const;

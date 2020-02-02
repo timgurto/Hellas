@@ -7,7 +7,7 @@
 Object::Object(const ObjectType *type, const MapPoint &loc)
     : Entity(type, loc),
       QuestNode(*type, serial()),
-      _transformTimer(0),
+      transformation(*this),
       _disappearTimer(type->disappearsAfter()) {
   setType(type, false, true);
   objType().incrementCounter();
@@ -18,10 +18,11 @@ Object::Object(const ObjectType *type, const MapPoint &loc)
   _loot.reset(new ObjectLoot(*this));
 }
 
-Object::Object(size_t serial) : Entity(serial), QuestNode(QuestNode::Dummy()) {}
+Object::Object(size_t serial)
+    : Entity(serial), QuestNode(QuestNode::Dummy()), transformation(*this) {}
 
 Object::Object(const MapPoint &loc)
-    : Entity(loc), QuestNode(QuestNode::Dummy()) {}
+    : Entity(loc), QuestNode(QuestNode::Dummy()), transformation(*this) {}
 
 Object::~Object() {
   if (permissions.hasOwner()) {
@@ -40,22 +41,7 @@ void Object::update(ms_t timeElapsed) {
       _disappearTimer -= timeElapsed;
   }
 
-  // Transform
-  do {
-    if (isDead()) break;
-    if (_transformTimer == 0) break;
-    if (objType().transformObject() == nullptr) break;
-    if (objType().transformsOnEmpty() && gatherable.hasItems()) break;
-
-    if (timeElapsed > _transformTimer)
-      _transformTimer = 0;
-    else
-      _transformTimer -= timeElapsed;
-
-    if (_transformTimer == 0)
-      setType(objType().transformObject(),
-              objType().skipConstructionOnTransform());
-  } while (false);
+  transformation.update(timeElapsed);
 
   Entity::update(timeElapsed);
 }
@@ -105,7 +91,7 @@ void Object::setType(const ObjectType *type, bool skipConstruction,
   if (type->merchantSlots() != 0)
     _merchantSlots = std::vector<MerchantSlot>(type->merchantSlots());
 
-  if (type->transforms()) _transformTimer = type->transformTime();
+  transformation.initialise();
 
   if (!skipConstruction) _remainingMaterials = type->materials();
 
@@ -196,9 +182,10 @@ void Object::sendInfoToClient(const User &targetUser) const {
   }
 
   // Transform timer
-  if (isTransforming()) {
+  if (transformation.isTransforming()) {
     targetUser.sendMessage(
-        {SV_TRANSFORM_TIME, makeArgs(serial(), transformTimer())});
+        {SV_TRANSFORM_TIME,
+         makeArgs(serial(), transformation.transformTimer())});
   }
 
   // Hitpoints
