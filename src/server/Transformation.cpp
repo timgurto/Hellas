@@ -8,10 +8,8 @@ void Transformation::update(ms_t timeElapsed) {
   if (parent().isDead()) return;
   if (_transformTimer == 0) return;
 
-  const auto *parentType = dynamic_cast<const ObjectType *>(parent().type());
-  if (!parentType) return;
-  if (!parentType->transformation.transformObject) return;
-  if (parentType->transformation.transformOnEmpty &&
+  if (!parent().type()->transformation.transformObject) return;
+  if (parent().type()->transformation.transformOnEmpty &&
       parent().gatherable.hasItems())
     return;
 
@@ -21,13 +19,13 @@ void Transformation::update(ms_t timeElapsed) {
     _transformTimer -= timeElapsed;
   if (_transformTimer > 0) return;
 
-  auto &asObj = dynamic_cast<Object &>(parent());
-  asObj.setType(parentType->transformation.transformObject,
-                parentType->transformation.skipConstructionOnTransform);
+  auto *asObj = dynamic_cast<Object *>(&parent());
+  if (!asObj) return;
+  asObj->setType(parent().type()->transformation.transformObject,
+                 parent().type()->transformation.skipConstructionOnTransform);
 }
 
 void Transformation::initialise() {
-  const auto *objType = dynamic_cast<const ObjectType *>(parent().type());
-  if (!objType->transformation.transformObject) return;
-  _transformTimer = objType->transformation.transformTime;
+  if (!parent().type()->transformation.transformObject) return;
+  _transformTimer = parent().type()->transformation.transformTime;
 }
