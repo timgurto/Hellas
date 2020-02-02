@@ -796,6 +796,8 @@ void Server::killAllObjectsOwnedBy(const Permissions::Owner &owner) {
   }
 }
 
+void Server::addObjectType(const ObjectType *p) { _objectTypes.insert(p); }
+
 void Server::initialiseData() {
   // Connect ranged weapons with their ammo
   for (auto &itemConst : _items) {

@@ -4,6 +4,8 @@
 #include "EntityComponent.h"
 
 class ObjectType;
+class XmlReader;
+class TiXmlElement;
 
 class Transformation : public EntityComponent {
  public:
@@ -27,4 +29,6 @@ struct TransformationType {
   ms_t delay{0};
   bool mustBeGathered{false};
   bool becomesFullyConstructed{false};
+
+  void loadFromXML(XmlReader &xr, TiXmlElement *elem);
 };

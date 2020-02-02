@@ -155,6 +155,8 @@ class Server {
   void incrementThreadCount() { ++_threadsOpen; }
   void decrementThreadCount() { --_threadsOpen; }
 
+  void addObjectType(const ObjectType *p);
+
  private:
   static Server *_instance;
   static LogConsole *_debugInstance;
@@ -242,6 +244,7 @@ class Server {
   void removeEntity(Entity &ent, const User *userToExclude = nullptr);
   void gatherObject(size_t serial, User &user);
   void removeAllObjectsOwnedBy(const Permissions::Owner &owner);
+  void addEmptyObjectType(const std::string id);
 
   friend class City;
   friend class DataLoader;

@@ -235,28 +235,7 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
     // Terrain restrictions
     if (xr.findAttr(elem, "allowedTerrain", s)) ot->allowedTerrain(s);
 
-    // Transformation
-    auto transform = xr.findChild("transform", elem);
-    if (transform) {
-      if (!xr.findAttr(transform, "id", s)) {
-        _server._debug("Transformation specified without target id; skipping.",
-                       Color::CHAT_ERROR);
-        continue;
-      }
-      const ObjectType *transformObjPtr = _server.findObjectTypeByID(s);
-      if (transformObjPtr == nullptr) {
-        transformObjPtr = new ObjectType(s);
-        _server._objectTypes.insert(transformObjPtr);
-      }
-      ot->transformation.newType = transformObjPtr;
-      xr.findAttr(transform, "time", ot->transformation.delay);
-
-      if (xr.findAttr(transform, "whenEmpty", n) && n != 0)
-        ot->transformation.mustBeGathered = true;
-
-      if (xr.findAttr(transform, "skipConstruction", n) && n != 0)
-        ot->transformation.becomesFullyConstructed = true;
-    }
+    ot->transformation.loadFromXML(xr, elem);
 
     // Disappearance
     auto disappearTime = 0;

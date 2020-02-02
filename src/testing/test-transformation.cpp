@@ -30,3 +30,22 @@ TEST_CASE("Basic transformation") {
     }
   }
 }
+
+TEST_CASE("NPC transformation") {
+  GIVEN("a caterpillar that turns into a butterfly after 0.1s") {
+    auto data = R"(
+      <npcType id="caterpillar" maxHealth="1" >
+        <transform id="butterfly" time="100" />
+      </npcType>
+      <npcType id="butterfly" maxHealth="1" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto &npc = s.addNPC("caterpillar", {10, 10});
+
+    WHEN("0.2s pass") {
+      REPEAT_FOR_MS(200);
+
+      THEN("it is a butterfly") { CHECK(npc.type()->id() == "butterfly"); }
+    }
+  }
+}
