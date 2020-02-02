@@ -14,22 +14,28 @@
 
 <item id="log"          name="Log"            sounds="wood"      stackSize="5"  durability="8" />
 <item id="tin"          name="Tin Ore"        sounds="rock"      stackSize="10" durability="8" />
+<item id="tinBar"       name="Tin Bar"        sounds="metalBar"  stackSize="10" durability="25"/>
 <item id="copper"       name="Copper Ore"                        stackSize="10" durability="10" />
+<item id="copperBar"    name="Copper Bar"     sounds="metalBar"  stackSize="10" durability="20"/>
 <item id="crudeClay"    name="Crude Clay"     sounds="clay"      stackSize="10" durability="6" />
 <item id="clay"         name="Clay"           sounds="clay"      stackSize="10" durability="10" />
-<item id="tinBar"       name="Tin Bar"        sounds="metalBar"  stackSize="10" durability="25"/>
-<item id="copperBar"    name="Copper Bar"     sounds="metalBar"  stackSize="10" durability="20"/>
 <item id="tinRing"      name="Tin Ringlet"                       stackSize="1000" />
 <item id="copperRing"   name="Copper Ringlet"                    stackSize="1000" />
 <item id="charcoal"     name="Charcoal"                          stackSize="10" durability="6"/>
+
 <item id="flax"         name="Flax"           sounds="weakPlant" stackSize="10" durability="2" />
-<item id="linenThread"  name="Linen Thread"   sounds="fabric"    stackSize="10" durability="5"/>
+<item id="linenThread"  name="Thread"         sounds="fabric"    stackSize="10" durability="5"/>
 <item id="linenCloth"   name="Linen Cloth"    sounds="fabric"    stackSize="10" />
+<item id="wool"         name="Wool"           sounds="fabric"    stackSize="10" />
+<item id="woolCloth"    name="Wool Cloth"     sounds="fabric"    stackSize="10" />
+
 <item id="sheepskin"    name="Sheepskin"      sounds="leather"   stackSize="10" />
 <item id="leather"      name="Leather"        sounds="leather"   stackSize="10" />
+
 <item id="leatherScale" name="Leather Scale"  sounds="leather"   stackSize="50" />
 <item id="tinScale"     name="Tin Scale"      sounds="metalTool" stackSize="50" />
 <item id="copperScale"  name="Copper Scale"   sounds="metalTool" stackSize="50" />
+
 <item id="rope"         name="Rope"                              stackSize="10" durability="4" />
 <item id="brick"        name="Brick"          sounds="brick"     stackSize="10" durability="12" />
 <item id="fat"          name="Animal Fat"     sounds="meat"      stackSize="10" />
@@ -101,7 +107,7 @@
             <canBeRepaired cost="copperBar" tool="hammering" />
 		</item>
 
-	<!-- Knives -->
+	<!-- Knives (fast) -->
 		<item id="stoneKnife" name="Stone Knife" gearSlot="6" >
 			<tag name="carving" />
 			<tag name="harvesting" />
@@ -137,11 +143,11 @@
 		</item>
 		<item id="copperAxe" name="Copper Axe" gearSlot="6" sounds="metalTool" >
 			<tag name="woodcutting" toolSpeed="1.2" />
-			<weapon damage="8" />
+			<weapon damage="17" speed="2.1" />
             <canBeRepaired cost="copperBar" tool="hammering" />
 		</item>
 
-	<!-- Hammers -->
+	<!-- Hammers (slow) -->
 		<item id="copperHammer" name="Copper Hammer" gearSlot="6" sounds="metalTool" >
 			<tag name="hammering" />
 			<weapon damage="14" speed="1.75" />
@@ -150,7 +156,7 @@
 		</item>
 
 <!-- Weapons -->
-	<!-- Spears -->
+	<!-- Spears (crit) -->
 		<item id="woodSpear" name="Sharpened Stick" gearSlot="6" sounds="spear" >
             <weapon damage="" speed="2.2" />
             <tag name="fishing" />
@@ -169,234 +175,291 @@
             <tag name="fishing" />
 		</item>
 
-	<!-- Swords -->
+	<!-- Swords (hit) -->
 		<item id="copperSword" name="Short Sword" gearSlot="6" >
 			<stats hit="1" />
-            <weapon damage="7" />
+            <weapon damage="13" speed="1.8" />
             <offset x="-6" y="-8" />
             <canBeRepaired cost="copperBar" tool="hammering" />
 		</item>
 
     <!-- Ranged -->
-        <item id="rock" name="Rock" stackSize="100" durability="6" gearSlot="6" sounds="rock" >
-            <weapon damage="2" speed="2.1" range="25" consumes="rock" projectile="rock" />
-            <offset x="-3" />
-        </item>
-		<item id="sling" name="Sling" gearSlot="6" >
-            <weapon damage="4" speed="2" range="25" consumes="smoothRock" projectile="smoothRock" />
-			<offset x="-7" y="0" />
-            <canBeRepaired cost="leather" />
-		</item>
-		<item id="bow" name="Bow" gearSlot="6" sounds="bow" >
-            <weapon damage="2" speed="1.9" range="25" consumes="woodArrow" projectile="arrow" />
-            <stats hit="1"/>
-            <offset x="-7" y="-3" />
-            <canBeRepaired cost="lumber" />
-		</item>
-		<item id="tinJavelin" name="Light Javelin" stackSize="100" gearSlot="6" sounds="spear" >
-            <weapon damage="2" speed="1.9" range="25" consumes="tinJavelin" projectile="tinJavelin" />
-            <stats crit="1"/>
-			<offset x="-5" y="-21" />
-            <canBeRepaired cost="tinBar" tool="smelting1" />
-		</item>
+        <!-- Sling -->
+            <item id="rock" name="Rock" stackSize="100" durability="6" gearSlot="6" sounds="rock" >
+                <weapon damage="2" speed="2.1" range="25" consumes="rock" projectile="rock" />
+                <offset x="-3" />
+            </item>
+            <item id="sling" name="Sling" gearSlot="6" >
+                <weapon damage="4" speed="2" range="25" consumes="smoothRock" projectile="smoothRock" />
+                <offset x="-7" y="0" />
+                <canBeRepaired cost="leather" />
+            </item>
+            
+        <!-- Bow (hit) -->
+            <item id="bow" name="Bow" gearSlot="6" sounds="bow" >
+                <weapon damage="2" speed="1.9" range="25" consumes="woodArrow" projectile="arrow" />
+                <stats hit="1"/>
+                <offset x="-7" y="-3" />
+                <canBeRepaired cost="lumber" />
+            </item>
+        <!-- Javelin (crit) -->
+            <item id="tinJavelin" name="Light Javelin" stackSize="100" gearSlot="6" sounds="spear" >
+                <weapon damage="2" speed="1.9" range="25" consumes="tinJavelin" projectile="tinJavelin" />
+                <stats crit="1"/>
+                <offset x="-5" y="-21" />
+                <canBeRepaired cost="tinBar" tool="smelting1" />
+            </item>
+            <item id="copperJavelin" name="Light Javelin" stackSize="100" gearSlot="6" sounds="spear" >
+                <weapon damage="2" speed="1.9" range="25" consumes="copperJavelin" />
+                <stats crit="1"/>
+                <offset x="-5" y="-21" />
+                <canBeRepaired cost="copperBar" tool="smelting2" />
+            </item>
 
-    <!-- Magic -->
-		<item id="airWand" name="Wand of Air" gearSlot="6" >
-            <tag name="wand" />
-            <weapon damage="2" speed="1.8" range="25" school="air" consumes="boneDust" projectile="airball" />
-			<offset x="-5" y="-2" />
-            <particles profile="airSmall" x="-4" y="0" />
-            <canBeRepaired cost="airEssence" />
-		</item>
-		<item id="earthWand" name="Wand of Earth" gearSlot="6" >
-            <tag name="wand" />
-            <weapon damage="4" speed="1.8" range="25" school="earth" consumes="boneDust" projectile="earthball" />
-			<offset x="-5" y="-2" />
-            <particles profile="earthSmall" x="-4" y="0" />
-            <canBeRepaired cost="earthEssence" />
-		</item>
-		<item id="fireWand" name="Wand of Fire" gearSlot="6" >
-            <tag name="wand" />
-            <weapon damage="4" speed="1.8" range="25" school="fire" consumes="boneDust" projectile="fireball" />
-			<offset x="-5" y="-2" />
-            <particles profile="fireSmall" x="-4" y="0" />
-            <canBeRepaired cost="fireEssence" />
-		</item>
-		<item id="waterWand" name="Wand of Water" gearSlot="6" >
-            <tag name="wand" />
-            <weapon damage="2" speed="1.8" range="25" school="water" consumes="boneDust" projectile="waterball" />
-			<offset x="-5" y="-2" />
-            <particles profile="waterSmall" x="-4" y="0" />
-            <canBeRepaired cost="waterEssence" />
-		</item>
-		<item id="airStaff" name="Staff of Air" gearSlot="6" >
-            <weapon damage="7" speed="2.1" range="25" school="air" consumes="airDust" projectile="airball" />
-            <offset x="-5" y="-20" />
-            <particles profile="airSmall" x="-4" y="-19" />
-            <particles profile="airSmall" x="5" y="16" />
-            <canBeRepaired cost="airEssence" />
-		</item>
-		<item id="earthStaff" name="Staff of Earth" gearSlot="6" >
-            <weapon damage="9" speed="2.1" range="25" school="earth" consumes="earthDust" projectile="earthball" />
-            <offset x="-5" y="-20" />
-            <particles profile="earthSmall" x="-4" y="-19" />
-            <particles profile="earthSmall" x="5" y="16" />
-            <canBeRepaired cost="earthEssence" />
-		</item>
-		<item id="fireStaff" name="Staff of Fire" gearSlot="6" >
-            <weapon damage="9" speed="2.1" range="25" school="fire" consumes="fireDust" projectile="fireball" />
-            <offset x="-5" y="-20" />
-            <particles profile="fireSmall" x="-4" y="-19" />
-            <particles profile="fireSmall" x="5" y="16" />
-            <canBeRepaired cost="fireEssence" />
-		</item>
-		<item id="waterStaff" name="Staff of Water" gearSlot="6" >
-            <weapon damage="7" speed="2.1" range="25" school="water" consumes="waterDust" projectile="waterball" />
-            <offset x="-5" y="-20" />
-            <particles profile="waterSmall" x="-4" y="-19" />
-            <particles profile="waterSmall" x="5" y="16" />
-            <canBeRepaired cost="waterEssence" />
-		</item>
+        <!-- Magic -->
+            <item id="airWand" name="Wand of Air" gearSlot="6" >
+                <tag name="wand" />
+                <weapon damage="2" speed="1.8" range="25" school="air" consumes="boneDust" projectile="airball" />
+                <offset x="-5" y="-2" />
+                <particles profile="airSmall" x="-4" y="0" />
+                <canBeRepaired cost="airEssence" />
+            </item>
+            <item id="earthWand" name="Wand of Earth" gearSlot="6" >
+                <tag name="wand" />
+                <weapon damage="4" speed="1.8" range="25" school="earth" consumes="boneDust" projectile="earthball" />
+                <offset x="-5" y="-2" />
+                <particles profile="earthSmall" x="-4" y="0" />
+                <canBeRepaired cost="earthEssence" />
+            </item>
+            <item id="fireWand" name="Wand of Fire" gearSlot="6" >
+                <tag name="wand" />
+                <weapon damage="4" speed="1.8" range="25" school="fire" consumes="boneDust" projectile="fireball" />
+                <offset x="-5" y="-2" />
+                <particles profile="fireSmall" x="-4" y="0" />
+                <canBeRepaired cost="fireEssence" />
+            </item>
+            <item id="waterWand" name="Wand of Water" gearSlot="6" >
+                <tag name="wand" />
+                <weapon damage="2" speed="1.8" range="25" school="water" consumes="boneDust" projectile="waterball" />
+                <offset x="-5" y="-2" />
+                <particles profile="waterSmall" x="-4" y="0" />
+                <canBeRepaired cost="waterEssence" />
+            </item>
+            <item id="airStaff" name="Staff of Air" gearSlot="6" >
+                <weapon damage="7" speed="2.1" range="25" school="air" consumes="airDust" projectile="airball" />
+                <offset x="-5" y="-20" />
+                <particles profile="airSmall" x="-4" y="-19" />
+                <particles profile="airSmall" x="5" y="16" />
+                <canBeRepaired cost="airEssence" />
+            </item>
+            <item id="earthStaff" name="Staff of Earth" gearSlot="6" >
+                <weapon damage="9" speed="2.1" range="25" school="earth" consumes="earthDust" projectile="earthball" />
+                <offset x="-5" y="-20" />
+                <particles profile="earthSmall" x="-4" y="-19" />
+                <particles profile="earthSmall" x="5" y="16" />
+                <canBeRepaired cost="earthEssence" />
+            </item>
+            <item id="fireStaff" name="Staff of Fire" gearSlot="6" >
+                <weapon damage="9" speed="2.1" range="25" school="fire" consumes="fireDust" projectile="fireball" />
+                <offset x="-5" y="-20" />
+                <particles profile="fireSmall" x="-4" y="-19" />
+                <particles profile="fireSmall" x="5" y="16" />
+                <canBeRepaired cost="fireEssence" />
+            </item>
+            <item id="waterStaff" name="Staff of Water" gearSlot="6" >
+                <weapon damage="7" speed="2.1" range="25" school="water" consumes="waterDust" projectile="waterball" />
+                <offset x="-5" y="-20" />
+                <particles profile="waterSmall" x="-4" y="-19" />
+                <particles profile="waterSmall" x="5" y="16" />
+                <canBeRepaired cost="waterEssence" />
+            </item>
 
-    <!-- Ammo -->
-        <!-- Rock -->
-        <item id="smoothRock"   name="Smooth Rock"  stackSize="100"  sounds="rock" durability="12" />
-        <item id="woodArrow"    name="Arrow"        stackSize="100"  sounds="rock" />
-        <!-- Tin Javelin -->
-        <item id="boneDust"     name="Magic Dust"   stackSize="100" />
-        <item id="airDust"      name="Air Dust"     stackSize="100" />
-        <item id="earthDust"    name="Earth Dust"   stackSize="100" />
-        <item id="fireDust"     name="Fire Dust"    stackSize="100" />
-        <item id="waterDust"    name="Water Dust"   stackSize="100" />
+        <!-- Ammo -->
+            <!-- Rock -->
+            <item id="smoothRock"   name="Smooth Rock"  stackSize="100"  sounds="rock" durability="12" />
+            <item id="woodArrow"    name="Arrow"        stackSize="100"  sounds="rock" />
+            <!-- Tin Javelin -->
+            <!-- Copper Javelin -->
+            <item id="boneDust"     name="Magic Dust"   stackSize="100" />
+            <item id="airDust"      name="Air Dust"     stackSize="100" />
+            <item id="earthDust"    name="Earth Dust"   stackSize="100" />
+            <item id="fireDust"     name="Fire Dust"    stackSize="100" />
+            <item id="waterDust"    name="Water Dust"   stackSize="100" />
 
 
 
 
 <!-- Armor -->
-	<!-- Head -->
-	<item id="skullCap" name="Skull Cap" gearSlot="0" sounds="leather" >
-		<stats armor="1" dodge="1" />
-		<offset x="-3" y="-4" />
-        <canBeRepaired cost="leather" tool="sewing" />
-	</item>
-	<item id="copperHelmet" name="Copper Helmet" gearSlot="0" >
-		<stats armor="3" health="5" />
-		<offset x="-3" y="-5" />
-        <canBeRepaired cost="copperBar" tool="hammering" />
-	</item>
-
-	<!-- Shoulders -->
-		<item id="hide" name="Animal Hide" gearSlot="3" sounds="leather" durability="5" >
-			<stats critResist="1" />
-			<offset x="-4" y="-1" />
-		</item>
-		<item id="linenCloak" name="Linen Cloak" gearSlot="3" sounds="fabric" >
-			<stats eps="1" />
-			<offset x="-4" y="-1" />
-            <canBeRepaired cost="linenCloth" tool="sewing" />
-		</item>
-
-	<!-- Body -->
-		<!-- Lamellar -->
-			<item id="tinLamellar" name="Tin Lamellar" gearSlot="2" sounds="mailArmor" >
-				<stats armor="2" health="9" />
-				<offset x="-6" y="-4" />
-                <canBeRepaired cost="tinScale" />
-			</item>
-			<item id="copperLamellar" name="Copper Lamellar" gearSlot="2" sounds="mailArmor" >
-				<stats armor="4" health="13" />
-                <canBeRepaired cost="copperScale" />
-			</item>
-
-		<!-- Hauberk -->
-			<item id="tinHauberk" name="Tin Hauberk" gearSlot="2" sounds="mailArmor" >
-				<stats armor="3" block="1" />
-                <canBeRepaired cost="tinRing" />
-			</item>
-			<item id="copperHauberk" name="Copper Hauberk" gearSlot="2" sounds="mailArmor" >
-				<stats armor="4" block="4" />
-                <canBeRepaired cost="copperRing" />
-			</item>
-
-		<!-- Cuirass -->
-			<item id="linothorax" name="Linothorax Armor" gearSlot="2" >
-				<stats armor="1" critResist="1" />
-				<offset x="-5" y="-4" />
-                <canBeRepaired cost="linenCloth" />
-			</item>
-			<item id="copperCuirass" name="Copper Cuirass" gearSlot="2" >
-				<stats armor="4" critResist="1" />
+    <!-- Head -->
+        <!-- Hood (Energy) -->
+            <item id="woolHood" name="Woolen Hood" gearSlot="0" >
+                <stats armor="3" health="5" />
+                <offset x="-3" y="-5" />
+                <canBeRepaired cost="copperBar" tool="hammering" />
+            </item>
+            
+        <!-- Leather (Dodge) -->
+            <item id="skullCap" name="Skull Cap" gearSlot="0" sounds="leather" >
+                <stats armor="1" dodge="1" />
                 <offset x="-3" y="-4" />
-        <canBeRepaired cost="copperBar" tool="hammering" />
-			</item>
+                <canBeRepaired cost="leather" tool="sewing" />
+            </item>
+        
+        <!-- Helmet (Health) -->
+            <item id="copperHelmet" name="Copper Helmet" gearSlot="0" >
+                <stats armor="3" health="5" />
+                <offset x="-3" y="-5" />
+                <canBeRepaired cost="copperBar" tool="hammering" />
+            </item>
 
-		<!-- Leather -->
-			<item id="leatherLamellar" name="Leather Lamellar" gearSlot="2" sounds="leather" >
-				<stats armor="1" dodge="2" />
-				<offset x="-6" y="-4" />
-                <canBeRepaired cost="leatherScale" />
-			</item>
-
-        <!-- Cloth -->
-			<item id="linenChiton" name="Linen Chiton" gearSlot="2" sounds="fabric" >
-				<stats energy="17" />
-				<offset x="-6" y="-3" />
+    <!-- Shoulders -->
+        <!-- Cloak (EPS) -->
+            <item id="linenCloak" name="Linen Cloak" gearSlot="3" sounds="fabric" >
+                <stats eps="1" />
+                <offset x="-4" y="-1" />
                 <canBeRepaired cost="linenCloth" tool="sewing" />
-			</item>
+            </item>
+            <item id="woolCloak" name="Woolen Cloak" gearSlot="3" sounds="fabric" >
+                <canBeRepaired cost="woolCloth" tool="sewing" />
+            </item>
+            
+        <!-- Leather (crit resistance) -->
+            <item id="hide" name="Animal Hide" gearSlot="3" sounds="leather" durability="5" >
+                <stats critResist="1" />
+                <offset x="-4" y="-1" />
+            </item>
 
-	<!-- Hands -->
-	<item id="leatherGloves" name="Leather Gloves" gearSlot="4" sounds="leather" >
-		<stats crit="1" />
-        <offset x="-2" y="1" />
-		<tag name="gloves" />
-        <canBeRepaired cost="leather" tool="sewing" />
-	</item>
+    <!-- Body -->
+        <!-- Lamellar (health) -->
+            <item id="tinLamellar" name="Tin Lamellar" gearSlot="2" sounds="mailArmor" >
+                <stats armor="2" health="9" />
+                <offset x="-6" y="-4" />
+                <canBeRepaired cost="tinScale" />
+            </item>
+            <item id="copperLamellar" name="Copper Lamellar" gearSlot="2" sounds="mailArmor" >
+                <stats armor="4" health="13" />
+                <canBeRepaired cost="copperScale" />
+            </item>
 
-	<!-- Feet -->
-	<item id="sandals" name="Sandals" gearSlot="5" sounds="leather" >
-		<stats speed="1.01" />
-        <offset x="-1" y="-5" />
-        <canBeRepaired cost="leather" tool="sewing" />
-	</item>
-	<item id="copperGreaves" name="Copper Greaves" gearSlot="5" >
-		<stats armor="2" hps="1" />
-        <offset x="-2" y="-10" />
-        <canBeRepaired cost="copperBar" tool="hammering" />
-	</item>
+        <!-- Hauberk (block %) -->
+            <item id="tinHauberk" name="Tin Hauberk" gearSlot="2" sounds="mailArmor" >
+                <stats armor="3" block="1" />
+                <canBeRepaired cost="tinRing" />
+            </item>
+            <item id="copperHauberk" name="Copper Hauberk" gearSlot="2" sounds="mailArmor" >
+                <stats armor="4" block="4" />
+                <canBeRepaired cost="copperRing" />
+            </item>
 
-	<!-- Left hand -->
-	<item id="leatherShield" name="Leather Shield" gearSlot="7" >
-		<stats armor="2" block="4" blockValue="3" />
-		<offset x="-4" y="-10" />
-        <tag name="shield" />
-        <canBeRepaired cost="lumber" />
-	</item>
-	<item id="copperShield" name="Buckler" gearSlot="7" >
-		<stats armor="3" block="5" blockValue="5" />
-        <tag name="shield" />
-        <canBeRepaired cost="copperBar" tool="hammering" />
-	</item>
-	<item id="knucklebones" name="Knucklebones" gearSlot="7" >
-		<stats energy="9" />
-        <offset x="0" y="1" />
-        <canBeRepaired cost="boneDust" />
-	</item>
-	<item id="tablet" name="Tablet" gearSlot="7" sounds="ceramic" >
-		<stats energy="46" />
-        <offset x="-2" y="-6" />
-	</item>
-	<item id="parchment" name="parchment" gearSlot="7" >
-		<stats energy="66" />
-	</item>
+        <!-- Cuirass (crit resist) -->
+            <item id="linothorax" name="Linothorax Armor" gearSlot="2" >
+                <stats armor="1" critResist="1" />
+                <offset x="-5" y="-4" />
+                <canBeRepaired cost="linenCloth" />
+            </item>
+            <item id="copperCuirass" name="Copper Cuirass" gearSlot="2" >
+                <stats armor="4" critResist="1" />
+                <offset x="-3" y="-4" />
+                <canBeRepaired cost="copperBar" tool="hammering" />
+            </item>
 
-    <item id="horn" name="Horn" gearSlot="7" >
-		<stats eps="1" />
-		<offset x="0" y="-3" />
-    </item>
-    <item id="tambourine" name="Tambourine" gearSlot="7" >
-		<stats hps="2" eps="3" />
-		<offset x="-5" y="-2" />
-        <canBeRepaired cost="tinScale" />
-    </item>
+        <!-- Leather (dodge) -->
+            <item id="leatherLamellar" name="Leather Lamellar" gearSlot="2" sounds="leather" >
+                <stats armor="1" dodge="2" />
+                <offset x="-6" y="-4" />
+                <canBeRepaired cost="leatherScale" />
+            </item>
+
+        <!-- Chiton (energy) -->
+            <item id="linenChiton" name="Linen Chiton" gearSlot="2" sounds="fabric" >
+                <stats energy="17" />
+                <offset x="-6" y="-3" />
+                <canBeRepaired cost="linenCloth" tool="sewing" />
+            </item>
+            <item id="woolChiton" name="Wool Chiton" gearSlot="2" sounds="fabric" >
+                <canBeRepaired cost="woolCloth" tool="sewing" />
+            </item>
+
+        <!-- Exomis (resistances) -->
+            <item id="woolExomis" name="Wool Exomis" gearSlot="2" sounds="fabric" >
+                <canBeRepaired cost="woolCloth" tool="sewing" />
+            </item>
+
+    <!-- Hands -->
+        <!-- Wrappings (magic damage) -->
+            <item id="woolWrappings" name="Wool Wrappings" gearSlot="4" sounds="fabric" >
+                <canBeRepaired cost="woolCloth" tool="sewing" />
+            </item>
+            
+        <!-- Gloves (crit) -->
+            <item id="leatherGloves" name="Leather Gloves" gearSlot="4" sounds="leather" >
+                <stats crit="1" />
+                <offset x="-2" y="1" />
+                <tag name="gloves" />
+                <canBeRepaired cost="leather" tool="sewing" />
+            </item>
+            
+        <!-- Bracers (physical damage) -->
+            <item id="copperBracers" name="Copper Bracers" gearSlot="4" >
+                <canBeRepaired cost="copperBar" tool="hammering" />
+            </item>
+
+    <!-- Feet -->
+        <!-- Shoes (EPS) -->
+            <item id="woolShoes" name="Wool Shoes" gearSlot="5" sounds="fabric" >
+                <canBeRepaired cost="woolCloth" tool="sewing" />
+            </item>
+            
+        <!-- Sandals (speed) -->
+            <item id="sandals" name="Sandals" gearSlot="5" sounds="leather" >
+                <stats speed="1.01" />
+                <offset x="-1" y="-5" />
+                <canBeRepaired cost="leather" tool="sewing" />
+            </item>
+            
+        <!-- Greaves (HPS) -->
+            <item id="copperGreaves" name="Copper Greaves" gearSlot="5" >
+                <stats armor="2" hps="1" />
+                <offset x="-2" y="-10" />
+                <canBeRepaired cost="copperBar" tool="hammering" />
+            </item>
+
+    <!-- Left hand -->
+        <!-- Shield (block %, BV) -->
+            <item id="leatherShield" name="Leather Shield" gearSlot="7" >
+                <stats armor="2" block="4" blockValue="3" />
+                <offset x="-4" y="-10" />
+                <tag name="shield" />
+                <canBeRepaired cost="lumber" />
+            </item>
+            <item id="copperShield" name="Buckler" gearSlot="7" >
+                <tag name="shield" />
+                <canBeRepaired cost="copperBar" tool="hammering" />
+            </item>
+
+        <!-- Knowledge (energy) -->
+            <item id="knucklebones" name="Knucklebones" gearSlot="7" >
+                <stats energy="9" />
+                <offset x="0" y="1" />
+                <canBeRepaired cost="boneDust" />
+            </item>
+            <item id="tablet" name="Tablet" gearSlot="7" sounds="ceramic" >
+                <stats energy="46" />
+                <offset x="-2" y="-6" />
+            </item>
+            <item id="parchment" name="parchment" gearSlot="7" >
+                <stats energy="66" />
+            </item>
+
+        <!-- Musical instrument (HPS, EPS) -->
+            <item id="horn" name="Horn" gearSlot="7" >
+                <stats eps="1" />
+                <offset x="0" y="-3" />
+            </item>
+            <item id="tambourine" name="Tambourine" gearSlot="7" >
+                <stats hps="2" eps="3" />
+                <offset x="-5" y="-2" />
+                <canBeRepaired cost="tinScale" />
+            </item>
 
 </root>

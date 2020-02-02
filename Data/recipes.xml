@@ -343,12 +343,21 @@
         <unlockedBy gather="stick" chance="0.005" />
     </recipe>
     <recipe
-        id="tinJavelin" time="4000" quantity="2">
+        id="tinJavelin" time="4000" quantity="5">
         <material id="tinBar" quantity="1" />
-        <material id="stick" quantity="2" />
+        <material id="stick" quantity="5" />
         <tool class="smelting1" />
         <tool class="spearMould" />
         <unlockedBy recipe="spearMould" />
+    </recipe>
+    <recipe
+        id="copperJavelin" time="4000" quantity="5">
+        <material id="copperBar" quantity="1" />
+        <material id="stick" quantity="5" />
+        <tool class="smelting2" />
+        <tool class="spearMould" />
+        <unlockedBy recipe="tinJavelin" chance="0.1" />
+        <unlockedBy recipe="copperBar" chance="0.02" />
     </recipe>
     
 <!-- Magic weapons -->
@@ -484,9 +493,9 @@
     <tool class="hammering" />
     <tool class="smelting2" />
     <tool class="anvil1" />
-    <unlockedBy recipe="copperBar" chance="0.02" />
     <unlockedBy recipe="copperHammer" chance="0.1" />
-    <unlockedBy construction="copperAnvil" chance="0.1" />
+    <unlockedBy recipe="linothorax" chance="0.3" />
+    <unlockedBy construction="copperAnvil" chance="0.05" />
 </recipe>
 <recipe id="copperGreaves"
     time="4000" >
@@ -509,6 +518,16 @@
     <unlockedBy recipe="copperBar" chance="0.02" />
     <unlockedBy recipe="copperHammer" chance="0.05" />
     <unlockedBy recipe="skullCap" chance="0.05" />
+    <unlockedBy construction="copperAnvil" chance="0.05" />
+</recipe>
+<recipe id="copperBracers"
+    time="4000" >
+    <material id="copperBar" quantity="1" />
+    <tool class="hammering" />
+    <tool class="smelting2" />
+    <tool class="anvil1" />
+    <unlockedBy recipe="copperBar" chance="0.02" />
+    <unlockedBy recipe="copperHammer" chance="0.05" />
     <unlockedBy construction="copperAnvil" chance="0.05" />
 </recipe>
 
@@ -546,8 +565,7 @@
     </recipe>
 
 <!-- Offhand -->
-    <recipe
-        id="leatherShield" time="4000" >
+    <recipe id="leatherShield" time="4000" >
         <material id="leather" quantity="8" />
         <material id="lumber" />
         <unlockedBy recipe="lumber" chance="0.1" />
@@ -578,6 +596,14 @@
         <unlockedBy item="knucklebones" chance="0.1" />
         <unlockedBy recipe="clay" chance="0.1" />
         <unlockedBy construction="kiln" />
+    </recipe>
+    <recipe
+        id="parchment" time="10000" >
+        <material id="sheepskin" />
+        <tool class="leatherStretching" />
+        <unlockedBy item="sheepskin" chance="0.1" />
+        <unlockedBy recipe="tablet" chance="0.1" />
+        <unlockedBy construction="stretchingFrame" chance="0.1" />
     </recipe>
 
 <recipe
@@ -646,6 +672,13 @@
     <unlockedBy construction="loom" />
 </recipe>
 <recipe
+    id="woolCloth" time="4000" >
+    <material id="wool" quantity="5" />
+    <tool class="weaving" />
+    <unlockedBy gather="wool" />
+    <unlockedBy recipe="linenCloth" chance="0.1" />
+</recipe>
+<recipe
     id="linothorax" time="10000" >
     <material id="linenCloth" quantity="6" />
     <material id="linenThread" />
@@ -662,12 +695,55 @@
     <unlockedBy recipe="linenThread" chance="0.05" />
 </recipe>
 <recipe
+    id="woolChiton" time="10000" >
+    <material id="woolCloth" quantity="4" />
+    <material id="linenThread" quantity="2" />
+    <tool class="sewing" />
+    <unlockedBy recipe="woolCloth" chance="0.1" />
+    <unlockedBy recipe="linenChiton" chance="0.3" />
+</recipe>
+<recipe
     id="linenCloak" time="10000" >
     <material id="linenCloth" quantity="4" />
     <material id="linenThread" quantity="1" />
     <tool class="sewing" />
     <unlockedBy recipe="linenCloth" chance="0.1" />
     <unlockedBy recipe="linenThread" chance="0.05" />
+</recipe>
+<recipe
+    id="woolCloak" time="10000" >
+    <material id="woolCloth" quantity="4" />
+    <material id="linenThread" quantity="1" />
+    <tool class="sewing" />
+    <unlockedBy recipe="woolCloth" chance="0.1" />
+    <unlockedBy recipe="linenCloak" chance="0.3" />
+</recipe>
+<recipe
+    id="woolExomis" time="10000" >
+    <material id="woolCloth" quantity="6" />
+    <unlockedBy recipe="woolCloth" chance="0.2" />
+</recipe>
+<recipe
+    id="woolHood" time="10000" >
+    <material id="woolCloth" quantity="2" />
+    <material id="linenThread" quantity="2" />
+    <tool class="sewing" />
+    <unlockedBy recipe="woolCloth" chance="0.1" />
+</recipe>
+<recipe
+    id="woolWrappings" time="10000" >
+    <material id="woolCloth" quantity="2" />
+    <material id="linenThread" quantity="1" />
+    <tool class="sewing" />
+    <unlockedBy recipe="woolCloth" chance="0.1" />
+</recipe>
+<recipe
+    id="woolShoes" time="10000" >
+    <material id="woolCloth" quantity="3" />
+    <material id="linenThread" quantity="4" />
+    <tool class="sewing" />
+    <unlockedBy recipe="woolCloth" chance="0.1" />
+    <unlockedBy recipe="sandals" chance="0.05" />
 </recipe>
 
 
