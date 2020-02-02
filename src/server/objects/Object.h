@@ -7,7 +7,6 @@
 #include "../Loot.h"
 #include "../MerchantSlot.h"
 #include "../QuestNode.h"
-#include "../Transformation.h"
 #include "Container.h"
 #include "Deconstruction.h"
 #include "ObjectType.h"
@@ -97,8 +96,6 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
   void damageFromUse() override { reduceHealth(1); };
 
   void repair() override;
-
-  Transformation transformation;
 
  private:
   Container *_container = nullptr;

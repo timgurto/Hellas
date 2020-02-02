@@ -20,7 +20,8 @@ Entity::Entity(const EntityType *type, const MapPoint &loc)
       _lastLocUpdate(SDL_GetTicks()),
 
       permissions(*this),
-      gatherable(*this) {
+      gatherable(*this),
+      transformation(*this) {
   initStatsFromType();
 }
 
@@ -28,13 +29,15 @@ Entity::Entity(size_t serial)
     :  // For set/map lookup ONLY
       _serial(serial),
       permissions(*this),
-      gatherable(*this) {}
+      gatherable(*this),
+      transformation(*this) {}
 
 Entity::Entity(const MapPoint &loc)
     :  // For set/map lookup ONLY
       _location(loc),
       permissions(*this),
-      gatherable(*this) {}
+      gatherable(*this),
+      transformation(*this) {}
 
 Entity::~Entity() {
   if (_spawner != nullptr) _spawner->scheduleSpawn();

@@ -7,6 +7,7 @@
 #include "../Rect.h"
 #include "../Stats.h"
 #include "../TerrainList.h"
+#include "Transformation.h"
 #include "Yield.h"
 
 class EntityType : public HasTags {
@@ -34,6 +35,7 @@ class EntityType : public HasTags {
 
   // Other
   Yield yield;
+  TransformationType transformation;
 
  protected:
   mutable Stats _baseStats{};

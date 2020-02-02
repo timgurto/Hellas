@@ -140,8 +140,6 @@ class ObjectType : public EntityType, public QuestNodeType {
   void repairingCosts(const std::string &id) { _repairInfo.cost = id; }
   void repairingRequiresTool(const std::string &tag) { _repairInfo.tool = tag; }
 
-  TransformationType transformation;
-
  private:
   void checkUniquenessInvariant() const;
 };

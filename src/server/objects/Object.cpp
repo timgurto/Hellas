@@ -7,7 +7,6 @@
 Object::Object(const ObjectType *type, const MapPoint &loc)
     : Entity(type, loc),
       QuestNode(*type, serial()),
-      transformation(*this),
       _disappearTimer(type->disappearsAfter()) {
   setType(type, false, true);
   objType().incrementCounter();
@@ -18,11 +17,10 @@ Object::Object(const ObjectType *type, const MapPoint &loc)
   _loot.reset(new ObjectLoot(*this));
 }
 
-Object::Object(size_t serial)
-    : Entity(serial), QuestNode(QuestNode::Dummy()), transformation(*this) {}
+Object::Object(size_t serial) : Entity(serial), QuestNode(QuestNode::Dummy()) {}
 
 Object::Object(const MapPoint &loc)
-    : Entity(loc), QuestNode(QuestNode::Dummy()), transformation(*this) {}
+    : Entity(loc), QuestNode(QuestNode::Dummy()) {}
 
 Object::~Object() {
   if (permissions.hasOwner()) {

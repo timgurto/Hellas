@@ -202,6 +202,7 @@ class Entity {
 
   Permissions permissions;
   Gatherable gatherable;
+  Transformation transformation;
 
  protected:
   void type(const EntityType *type) { _type = type; }
