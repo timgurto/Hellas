@@ -248,14 +248,14 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
         transformObjPtr = new ObjectType(s);
         _server._objectTypes.insert(transformObjPtr);
       }
-      ot->transformation.transformObject = transformObjPtr;
-      xr.findAttr(transform, "time", ot->transformation.transformTime);
+      ot->transformation.newType = transformObjPtr;
+      xr.findAttr(transform, "time", ot->transformation.delay);
 
       if (xr.findAttr(transform, "whenEmpty", n) && n != 0)
-        ot->transformation.transformOnEmpty = true;
+        ot->transformation.mustBeGathered = true;
 
       if (xr.findAttr(transform, "skipConstruction", n) && n != 0)
-        ot->transformation.skipConstructionOnTransform = true;
+        ot->transformation.becomesFullyConstructed = true;
     }
 
     // Disappearance
