@@ -556,7 +556,7 @@ int main(int argc, char **argv) {
       xr.newFile(file);
 
       for (auto elem : xr.getChildren("npcType")) {
-        std::set<ID> requiredSounds, missingImages;
+        std::set<ID> requiredSounds, missingImages, missingParticles;
         requiredSounds.insert("attack");
         requiredSounds.insert("defend");
         requiredSounds.insert("death");
@@ -620,6 +620,21 @@ int main(int argc, char **argv) {
         }
         if (!lootList.empty()) jw.addArrayAttribute("loot", lootList);
 
+        std::set<std::string> yields;
+        auto gatherItem = ID{};
+        for (auto yield : xr.getChildren("yield", elem)) {
+          if (!xr.findAttr(yield, "id", gatherItem)) continue;
+          edges.insert(Edge(name, "item_" + gatherItem, GATHER));
+          yields.insert(gatherItem);
+        }
+        if (!yields.empty()) {
+          requiredSounds.insert("gather");
+          auto dummy = ""s;
+          if (!xr.findAttr(elem, "gatherParticles", dummy))
+            missingParticles.insert("gather");
+        }
+        jw.addArrayAttribute("yield", yields);
+
         std::string stat;
         if (xr.findAttr(elem, "maxHealth", stat))
           jw.addAttribute("health", stat);
@@ -629,6 +644,8 @@ int main(int argc, char **argv) {
 
         if (!missingImages.empty())
           jw.addArrayAttribute("imagesMissing", missingImages);
+        if (!missingParticles.empty())
+          jw.addArrayAttribute("particlesMissing", missingParticles);
       }
     }
   }

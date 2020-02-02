@@ -89,6 +89,8 @@
 <blacklist parent="item_woodArrow" child="item_bow" />
 <blacklist parent="item_stick" child="item_woodArrow" />
 
+<blacklist parent="item_sheepskin" child="item_leather" />
+
 <blacklist parent="object_oven" child="object_extinguishedOven" />
 <blacklist parent="item_log" child="object_extinguishedOven" />
 <blacklist parent="object_extinguishedOven" child="object_oven" />
@@ -122,7 +124,6 @@
 <extra parent="item_tutHide2"      child="object_leanOffering" />
 <extra parent="item_lumber"        child="object_lathe" />
 <extra parent="item_lumber"        child="object_grindstone" />
-<extra parent="item_linenCloth"    child="object_tradeStall" />
 <extra parent="npc_sheep"          child="item_sheepskin" />
 <extra parent="item_collar"        child="npc_sheep" />
 
