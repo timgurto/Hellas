@@ -45,7 +45,21 @@ TEST_CASE("NPC transformation") {
     WHEN("0.2s pass") {
       REPEAT_FOR_MS(200);
 
-      THEN("it is a butterfly") { CHECK(npc.type()->id() == "butterfly"); }
+      THEN("it is still a caterpillar") {
+        CHECK(npc.type()->id() == "caterpillar");
+      }
+    }
+
+    WHEN("the caterpillar belongs to a user") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      npc.permissions.setPlayerOwner(c->username());
+
+      AND_WHEN("0.2s pass") {
+        REPEAT_FOR_MS(200);
+
+        THEN("it is a butterfly") { CHECK(npc.type()->id() == "butterfly"); }
+      }
     }
   }
 }

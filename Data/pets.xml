@@ -16,6 +16,7 @@
     <canBeTamed consumes="bone" />
     <lootTable id="animal" />
     <loot id="sheepskin" chance="0.1" />
+    <transform id="sheepWithWool" time="2700000" />
 </npcType>
 <npcType id="sheepWithWool" name="Sheep (Wooly)"
     level="17" maxHealth="156" armor="10" isNeutral="1" >
@@ -23,6 +24,7 @@
     <loot id="sheepskin" chance="0.1" />
     <loot id="wool" />
     <yield id="wool" />
+    <transform id="sheep" whenEmpty="1" />
 </npcType>
 <item id="collar" name="Collar"
     sounds="fabric" stackSize="10"/>

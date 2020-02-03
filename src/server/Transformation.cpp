@@ -9,10 +9,14 @@ void Transformation::update(ms_t timeElapsed) {
   if (parent().isDead()) return;
   if (_timeUntilTransform == 0) return;
 
-  if (!parent().type()->transformation.newType) return;
-  if (parent().type()->transformation.mustBeGathered &&
-      parent().gatherable.hasItems())
-    return;
+  auto transforms = parent().type()->transformation.newType != nullptr;
+  if (!transforms) return;
+
+  auto blockedUntilGathered = parent().type()->transformation.mustBeGathered &&
+                              parent().gatherable.hasItems();
+  if (blockedUntilGathered) return;
+
+  if (parent().classTag() == 'n' && !parent().permissions.hasOwner()) return;
 
   if (timeElapsed > _timeUntilTransform)
     _timeUntilTransform = 0;
