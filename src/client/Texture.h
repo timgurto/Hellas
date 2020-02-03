@@ -58,6 +58,9 @@ class Texture {
   function will have no effect.
   */
   void setRenderTarget() const;
+
+ private:
+  static Texture &placeholder();
 };
 
 #endif

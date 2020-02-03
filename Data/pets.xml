@@ -13,7 +13,7 @@
 
 <npcType id="sheep" name="Sheep"
     level="17" maxHealth="156" armor="10" isNeutral="1" >
-    <canBeTamed consumes="bone" />
+    <canBeTamed consumes="collar" />
     <lootTable id="animal" />
     <loot id="sheepskin" chance="0.1" />
     <transform id="sheepWithWool" time="2700000" />

@@ -25,6 +25,8 @@ Texture::Texture(const std::string &filename, const Color &colorKey) {
 
   _surface = {filename, colorKey};
   createFromSurface();
+
+  if (!*this) *this = placeholder();
 }
 
 Texture::Texture(const Surface &surface) {
@@ -106,4 +108,18 @@ Color Texture::getPixel(px_t x, px_t y) const {
 
 void Texture::setRenderTarget() const {
   if (_validTarget) SDL_SetRenderTarget(renderer._renderer, _raw.get());
+}
+
+Texture &Texture::placeholder() {
+  static auto placeholder = Texture{};
+  if (!placeholder) {
+    placeholder = {30, 30};
+    renderer.pushRenderTarget(placeholder);
+    renderer.setDrawColor(Color::BLUE_HELL);
+    renderer.fill();
+    renderer.setDrawColor(Color::SPRITE_OUTLINE);
+    renderer.drawRect({0, 0, 30, 30});
+    renderer.popRenderTarget();
+  }
+  return placeholder;
 }
