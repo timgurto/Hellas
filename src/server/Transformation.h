@@ -3,7 +3,7 @@
 #include "../types.h"
 #include "EntityComponent.h"
 
-class ObjectType;
+class EntityType;
 class XmlReader;
 class TiXmlElement;
 
@@ -25,10 +25,35 @@ class Transformation : public EntityComponent {
 };
 
 struct TransformationType {
-  const ObjectType *newType{nullptr};
+  const EntityType *newType{nullptr};
   ms_t delay{0};
   bool mustBeGathered{false};
   bool becomesFullyConstructed{false};
 
-  void loadFromXML(XmlReader &xr, TiXmlElement *elem);
+  template <typename T>
+  void loadFromXML(XmlReader &xr, TiXmlElement *elem) {
+    auto e = xr.findChild("transform", elem);
+    if (!e) return;
+
+    auto &server = Server::instance();
+
+    auto id = ""s;
+    if (!xr.findAttr(e, "id", id)) {
+      server._debug("Transformation specified without target id; skipping.",
+                    Color::CHAT_ERROR);
+      return;
+    }
+    const auto *transformObjPtr = server.findObjectTypeByID(id);
+    if (!transformObjPtr) {
+      transformObjPtr = new T(id);
+      server.addObjectType(transformObjPtr);
+    }
+    newType = transformObjPtr;
+    xr.findAttr(e, "time", delay);
+
+    auto n = 0;
+    if (xr.findAttr(e, "whenEmpty", n) && n != 0) mustBeGathered = true;
+    if (xr.findAttr(e, "skipConstruction", n) && n != 0)
+      becomesFullyConstructed = true;
+  }
 };

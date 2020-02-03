@@ -23,6 +23,7 @@ Entity::Entity(const EntityType *type, const MapPoint &loc)
       gatherable(*this),
       transformation(*this) {
   initStatsFromType();
+  onSetType();
 }
 
 Entity::Entity(size_t serial)
@@ -66,6 +67,38 @@ size_t Entity::generateSerial() {
 
 void Entity::markForRemoval() {
   Server::_instance->_entitiesToRemove.push_back(this);
+}
+
+void Entity::changeType(const EntityType *newType,
+                        bool shouldSkipConstruction) {
+  if (!newType) {
+    SERVER_ERROR("Trying to set object type to null");
+    return;
+  }
+
+  auto &server = Server::instance();
+
+  if (classTag() == 'n')
+    _type = dynamic_cast<const NPCType *>(newType);
+  else
+    _type = newType;
+  server.forceAllToUntarget(*this);
+
+  gatherable.removeAllGatheringUsers();
+
+  // Inform nearby users
+  for (const User *user : server.findUsersInArea(location()))
+    sendInfoToClient(*user);
+  // Inform owner
+  for (const auto &owner : permissions.ownerAsUsernames())
+    server.sendMessageIfOnline(
+        owner, {SV_OBJECT,
+                makeArgs(serial(), location().x, location().y, type()->id())});
+}
+
+void Entity::onSetType() {
+  gatherable.populateContents();
+  transformation.initialise();
 }
 
 bool Entity::combatTypeCanHaveOutcome(CombatType type, CombatResult outcome,
@@ -165,6 +198,8 @@ void Entity::update(ms_t timeElapsed) {
     else
       cooldown -= timeElapsed;
   }
+
+  transformation.update(timeElapsed);
 
   // The remainder of this function deals with combat.
   if (_attackTimer > timeElapsed)

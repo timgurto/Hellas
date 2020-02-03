@@ -235,7 +235,7 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
     // Terrain restrictions
     if (xr.findAttr(elem, "allowedTerrain", s)) ot->allowedTerrain(s);
 
-    ot->transformation.loadFromXML(xr, elem);
+    ot->transformation.loadFromXML<ObjectType>(xr, elem);
 
     // Disappearance
     auto disappearTime = 0;
@@ -523,6 +523,7 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
     }
 
     nt->yield.loadFromXML(xr, elem);
+    nt->transformation.loadFromXML<NPCType>(xr, elem);
 
     for (auto loot : xr.getChildren("loot", elem)) {
       if (!xr.findAttr(loot, "id", s)) continue;

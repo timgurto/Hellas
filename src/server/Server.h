@@ -82,8 +82,7 @@ class Server {
                                    double squareRadius = CULL_DISTANCE) const;
   std::set<Entity *> findEntitiesInArea(
       MapPoint loc, double squareRadius = CULL_DISTANCE) const;
-  ObjectType *findObjectTypeByID(
-      const std::string &id) const;  // Linear complexity
+  ObjectType *findObjectTypeByID(const std::string &id) const;  // Linear
   User *getUserByName(const std::string &username);
   const BuffType *getBuffByName(const Buff::ID &id) const;
   const Quest *findQuest(const Quest::ID &id) const;

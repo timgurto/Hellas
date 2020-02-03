@@ -8,7 +8,6 @@ Object::Object(const ObjectType *type, const MapPoint &loc)
     : Entity(type, loc),
       QuestNode(*type, serial()),
       _disappearTimer(type->disappearsAfter()) {
-  setType(type, false, true);
   objType().incrementCounter();
 
   if (type != &User::OBJECT_TYPE) type->initStrengthAndMaxHealth();
@@ -39,8 +38,6 @@ void Object::update(ms_t timeElapsed) {
       _disappearTimer -= timeElapsed;
   }
 
-  transformation.update(timeElapsed);
-
   Entity::update(timeElapsed);
 }
 
@@ -60,23 +57,8 @@ void Object::onEnergyChange() {
   Entity::onEnergyChange();
 }
 
-void Object::setType(const ObjectType *type, bool skipConstruction,
-                     bool wasCalledFromConstructor) {
-  if (!type) {
-    SERVER_ERROR("Trying to set object type to null");
-    return;
-  }
-
-  Server *server = Server::_instance;
-
-  Entity::type(type);
-
-  gatherable.populateContents();
-
-  if (!wasCalledFromConstructor) {
-    server->forceAllToUntarget(*this);
-    gatherable.removeAllGatheringUsers();
-  }
+void Object::onSetType() {
+  Entity::onSetType();
 
   delete _container;
   if (objType().hasContainer()) {
@@ -86,22 +68,10 @@ void Object::setType(const ObjectType *type, bool skipConstruction,
     _deconstruction = {*this, objType().deconstruction()};
   }
 
-  if (type->merchantSlots() != 0)
-    _merchantSlots = std::vector<MerchantSlot>(type->merchantSlots());
+  if (objType().merchantSlots() != 0)
+    _merchantSlots = std::vector<MerchantSlot>(objType().merchantSlots());
 
-  transformation.initialise();
-
-  if (!skipConstruction) _remainingMaterials = type->materials();
-
-  // Inform nearby users
-  if (server != nullptr)
-    for (const User *user : server->findUsersInArea(location()))
-      sendInfoToClient(*user);
-  // Inform owner
-  for (const auto &owner : permissions.ownerAsUsernames())
-    server->sendMessageIfOnline(
-        owner, {SV_OBJECT,
-                makeArgs(serial(), location().x, location().y, type->id())});
+  // if (!skipConstruction) _remainingMaterials = objType().materials();
 }
 
 void Object::onDeath() {

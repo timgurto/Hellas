@@ -74,8 +74,7 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
   void onDeath() override;
   bool canBeAttackedBy(const User &) const override;
 
-  void setType(const ObjectType *type, bool skipConstruction = false,
-               bool wasCalledFromConstructor = false);  // Set/change ObjectType
+  virtual void onSetType() override;
 
   void sendInfoToClient(const User &targetUser) const override;
   void tellRelevantUsersAboutInventorySlot(size_t slot) const;

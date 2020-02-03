@@ -151,6 +151,7 @@
     <ClCompile Include="src\server\Spawner.cpp" />
     <ClCompile Include="src\server\Spell.cpp" />
     <ClCompile Include="src\server\SpellEffect.cpp" />
+    <ClCompile Include="src\server\Transformation.cpp" />
     <ClCompile Include="src\TerrainList.cpp" />
     <ClCompile Include="src\server\ThreatTable.cpp" />
     <ClCompile Include="src\server\User.cpp" />
@@ -225,6 +226,7 @@
     <ClInclude Include="src\server\Spawner.h" />
     <ClInclude Include="src\server\Spell.h" />
     <ClInclude Include="src\server\SpellEffect.h" />
+    <ClInclude Include="src\server\Transformation.h" />
     <ClInclude Include="src\TerrainList.h" />
     <ClInclude Include="src\server\ThreatTable.h" />
     <ClInclude Include="src\server\User.h" />

@@ -57,6 +57,10 @@ class Entity {
 
   virtual void writeToXML(XmlWriter &xw) const {}
 
+  void changeType(const EntityType *newType,
+                  bool shouldSkipConstruction = false);
+  virtual void onSetType();
+
   Spawner *spawner() const { return _spawner; }
   void spawner(Spawner *p) { _spawner = p; }
 
@@ -205,7 +209,7 @@ class Entity {
   Transformation transformation;
 
  protected:
-  void type(const EntityType *type) { _type = type; }
+  // void type(const EntityType *type) { _type = type; }
   std::shared_ptr<Loot> _loot;
   void resetLocationUpdateTimer() {
     _lastLocUpdate = SDL_GetTicks();
