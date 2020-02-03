@@ -14,6 +14,7 @@ Object::Object(const ObjectType *type, const MapPoint &loc)
   initStatsFromType();
 
   _loot.reset(new ObjectLoot(*this));
+  onSetType();
 }
 
 Object::Object(size_t serial) : Entity(serial), QuestNode(QuestNode::Dummy()) {}
@@ -70,8 +71,6 @@ void Object::onSetType() {
 
   if (objType().merchantSlots() != 0)
     _merchantSlots = std::vector<MerchantSlot>(objType().merchantSlots());
-
-  // if (!skipConstruction) _remainingMaterials = objType().materials();
 }
 
 void Object::onDeath() {

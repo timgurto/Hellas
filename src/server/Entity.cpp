@@ -23,7 +23,6 @@ Entity::Entity(const EntityType *type, const MapPoint &loc)
       gatherable(*this),
       transformation(*this) {
   initStatsFromType();
-  onSetType();
 }
 
 Entity::Entity(size_t serial)

@@ -17,6 +17,7 @@ NPC::NPC(const NPCType *type, const MapPoint &loc)
       _threatTable(*this),
       _timeSinceLookedForTargets(rand() % FREQUENCY_TO_LOOK_FOR_TARGETS) {
   _loot.reset(new Loot);
+  onSetType();
 }
 
 void NPC::update(ms_t timeElapsed) {
