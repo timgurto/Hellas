@@ -1,8 +1,0 @@
-<root>
-
-<objectType
-    id="throne" name="Throne" constructionTime="0" isUnique="1" >
-    <material id="gold" quantity="1" />
-</objectType>
-
-</root>

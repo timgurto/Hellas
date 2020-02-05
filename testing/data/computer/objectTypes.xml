@@ -1,8 +1,0 @@
-<root>
-
-<objectType
-    id="computer" name="Computer" constructionTime="0" constructionReq="screwdriver" >
-    <material id="circuitboard" quantity="1" />
-</objectType>
-
-</root>

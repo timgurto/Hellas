@@ -1,8 +1,0 @@
-<root>
-
-<objectType
-    id="fire" constructionTime="0" >
-    <material id="matches" quantity="1" returns="matchbox" />
-</objectType>
-
-</root>
