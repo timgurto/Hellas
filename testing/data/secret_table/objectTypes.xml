@@ -1,9 +1,0 @@
-<root>
-
-<objectType
-    id="table" name="Table" constructionTime="0" >
-    <material id="wood" quantity="5" />
-    <unlockedBy item="wood" />
-</objectType>
-
-</root>
