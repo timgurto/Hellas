@@ -31,6 +31,29 @@ TEST_CASE("Basic transformation") {
   }
 }
 
+TEST_CASE("Transforming to a constructible object") {
+  GIVEN("liquid metal that transforms into a T-1000 requiring sunglasses") {
+    auto data = R"(
+      <objectType id="liquidMetal" >
+        <transform id="t1000" time="100" />
+      </objectType>
+      <objectType
+        id="t1000" constructionTime="0" >
+        <material id="sunglasses" quantity="1" />
+      </objectType>
+      <item id="sunglasses" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto &obj = s.addObject("liquidMetal", {10, 10});
+
+    WHEN("it transforms") {
+      REPEAT_FOR_MS(200);
+
+      THEN("it doesn't have sunglasses") { CHECK(obj.isBeingBuilt()); }
+    }
+  }
+}
+
 TEST_CASE("NPC transformation") {
   GIVEN("a caterpillar that turns into a butterfly after 0.1s") {
     auto data = R"(

@@ -85,6 +85,8 @@ void Entity::changeType(const EntityType *newType,
 
   gatherable.removeAllGatheringUsers();
 
+  onSetType();
+
   // Inform nearby users
   for (const User *user : server.findUsersInArea(location()))
     sendInfoToClient(*user);
