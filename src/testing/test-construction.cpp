@@ -20,7 +20,7 @@ TEST_CASE("Construction materials can be added") {
       user.giveItem(&*s.items().begin());
 
       WHEN("he starts building a wall") {
-        c.sendMessage(CL_CONSTRUCT, makeArgs("wall", 10, 10));
+        c.sendMessage(CL_CONSTRUCT, makeArgs("wall", 10, 15));
         WAIT_UNTIL(s.entities().size() == 1);
 
         AND_WHEN("he gives adds a brick") {
@@ -91,11 +91,11 @@ TEST_CASE("Unique objects are unique") {
     s.waitForUsers(1);
 
     WHEN("a user builds one") {
-      c.sendMessage(CL_CONSTRUCT, makeArgs("throne", 10, 10));
+      c.sendMessage(CL_CONSTRUCT, makeArgs("throne", 10, 15));
       WAIT_UNTIL(s.entities().size() == 1);
 
       AND_WHEN("he tries to build another one") {
-        c.sendMessage(CL_CONSTRUCT, makeArgs("throne", 10, 10));
+        c.sendMessage(CL_CONSTRUCT, makeArgs("throne", 15, 10));
 
         THEN("he gets a warning") {
           bool isConstructionRejected = c.waitForMessage(WARNING_UNIQUE_OBJECT);
@@ -117,7 +117,7 @@ TEST_CASE("Constructing invalid object fails gracefully") {
     s.waitForUsers(1);
 
     WHEN("he tries to build a nonexistent object") {
-      c.sendMessage(CL_CONSTRUCT, makeArgs("notARealObject", 10, 10));
+      c.sendMessage(CL_CONSTRUCT, makeArgs("notARealObject", 10, 15));
 
       THEN("the server survives") {
         REPEAT_FOR_MS(100);
@@ -140,7 +140,7 @@ TEST_CASE("Objects can be unbuildable") {
     s.waitForUsers(1);
 
     WHEN("a user tries to build one") {
-      c.sendMessage(CL_CONSTRUCT, makeArgs("treehouse", 10, 10));
+      c.sendMessage(CL_CONSTRUCT, makeArgs("treehouse", 10, 15));
       REPEAT_FOR_MS(100);
 
       THEN("there are still no objects") { CHECK(s.entities().size() == 0); }
@@ -257,7 +257,7 @@ TEST_CASE("Construction progress is persistent", "[persistence]") {
   )";
   {
     auto s = TestServer::WithDataString(data);
-    s.addObject("wall", {10, 10}, "Alice");
+    s.addObject("wall", {10, 15}, "Alice");
 
     // And Alice has a brick
     auto c = TestClient::WithUsernameAndDataString("Alice", data);
@@ -277,10 +277,9 @@ TEST_CASE("Construction progress is persistent", "[persistence]") {
     // And when the server restarts
   }
   {
-    auto s = TestServer::WithDataString(data);
+    auto s = TestServer::WithDataStringAndKeepingOldData(data);
 
     // Then the wall is still complete
-    REPEAT_FOR_MS(100);
     WAIT_UNTIL(s.entities().size() == 1);
     const auto &wall = s.getFirstObject();
     CHECK(!wall.isBeingBuilt());
@@ -307,7 +306,7 @@ TEST_CASE("A construction material can 'return' an item") {
       WAIT_UNTIL(c.inventory()[0].first.type() != nullptr);
 
       WHEN("the user builds a fire") {
-        c.sendMessage(CL_CONSTRUCT, makeArgs("fire", 10, 10));
+        c.sendMessage(CL_CONSTRUCT, makeArgs("fire", 10, 15));
         WAIT_UNTIL(s.entities().size() == 1);
 
         AND_WHEN("he adds his matches") {
