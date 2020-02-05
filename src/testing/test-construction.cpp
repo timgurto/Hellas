@@ -310,15 +310,17 @@ TEST_CASE("A construction material can 'return' an item") {
       WHEN("the user builds a fire") {
         c.sendMessage(CL_CONSTRUCT, makeArgs("fire", 10, 15));
         WAIT_UNTIL(s.entities().size() == 1);
+        const Object &fire = s.getFirstObject();
+
+        THEN("it is under construction") { CHECK(fire.isBeingBuilt()); }
 
         AND_WHEN("he adds his matches") {
-          const Object &fire = s.getFirstObject();
           c.sendMessage(CL_SWAP_ITEMS,
                         makeArgs(Server::INVENTORY, 0, fire.serial(), 0));
+          REPEAT_FOR_MS(100);
 
           THEN("he has a matchbox") {
             const auto &pItem = user.inventory()[0].first;
-            WAIT_UNTIL(pItem.hasItem());
             CHECK(pItem.type()->id() == "matchbox");
           }
         }
