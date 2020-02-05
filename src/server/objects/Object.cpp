@@ -58,8 +58,8 @@ void Object::onEnergyChange() {
   Entity::onEnergyChange();
 }
 
-void Object::onSetType() {
-  Entity::onSetType();
+void Object::onSetType(bool shouldSkipConstruction) {
+  Entity::onSetType(shouldSkipConstruction);
 
   delete _container;
   if (objType().hasContainer()) {
@@ -73,7 +73,7 @@ void Object::onSetType() {
   if (objType().merchantSlots() != 0)
     _merchantSlots = std::vector<MerchantSlot>(objType().merchantSlots());
 
-  _remainingMaterials = objType().materials();
+  if (!shouldSkipConstruction) _remainingMaterials = objType().materials();
 }
 
 void Object::onDeath() {

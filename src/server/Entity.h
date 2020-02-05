@@ -59,7 +59,7 @@ class Entity {
 
   void changeType(const EntityType *newType,
                   bool shouldSkipConstruction = false);
-  virtual void onSetType();
+  virtual void onSetType(bool shouldSkipConstruction = false);
 
   Spawner *spawner() const { return _spawner; }
   void spawner(Spawner *p) { _spawner = p; }

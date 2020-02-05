@@ -31,14 +31,13 @@ TEST_CASE("Basic transformation") {
   }
 }
 
-TEST_CASE("Transforming to a constructible object") {
+TEST_CASE("Transforming to a constructible object", "[construction]") {
   GIVEN("liquid metal that transforms into a T-1000 requiring sunglasses") {
     auto data = R"(
       <objectType id="liquidMetal" >
         <transform id="t1000" time="100" />
       </objectType>
-      <objectType
-        id="t1000" constructionTime="0" >
+      <objectType id="t1000" constructionTime="0" >
         <material id="sunglasses" quantity="1" />
       </objectType>
       <item id="sunglasses" />
@@ -50,6 +49,27 @@ TEST_CASE("Transforming to a constructible object") {
       REPEAT_FOR_MS(200);
 
       THEN("it doesn't have sunglasses") { CHECK(obj.isBeingBuilt()); }
+    }
+  }
+  GIVEN(
+      "a fire that goes out, turning into a constructed (but normally "
+      "constructible) pile of sticks") {
+    auto data = R"(
+      <objectType id="fire" >
+        <transform id="stickPile" time="100" skipConstruction="1" />
+      </objectType>
+      <objectType id="stickPile" constructionTime="0" >
+        <material id="stick" quantity="10" />
+      </objectType>
+      <item id="stick" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto &obj = s.addObject("fire", {10, 10});
+
+    WHEN("it transforms") {
+      REPEAT_FOR_MS(200);
+
+      THEN("it already has sticks") { CHECK_FALSE(obj.isBeingBuilt()); }
     }
   }
 }

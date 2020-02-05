@@ -85,7 +85,7 @@ void Entity::changeType(const EntityType *newType,
 
   gatherable.removeAllGatheringUsers();
 
-  onSetType();
+  onSetType(shouldSkipConstruction);
 
   // Inform nearby users
   for (const User *user : server.findUsersInArea(location()))
@@ -97,7 +97,7 @@ void Entity::changeType(const EntityType *newType,
                 makeArgs(serial(), location().x, location().y, type()->id())});
 }
 
-void Entity::onSetType() {
+void Entity::onSetType(bool shouldSkipConstruction) {
   gatherable.populateContents();
   transformation.initialise();
 }
