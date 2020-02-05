@@ -65,12 +65,15 @@ void Object::onSetType() {
   if (objType().hasContainer()) {
     _container = objType().container().instantiate(*this);
   }
+
   if (objType().hasDeconstruction()) {
     _deconstruction = {*this, objType().deconstruction()};
   }
 
   if (objType().merchantSlots() != 0)
     _merchantSlots = std::vector<MerchantSlot>(objType().merchantSlots());
+
+  _remainingMaterials = objType().materials();
 }
 
 void Object::onDeath() {

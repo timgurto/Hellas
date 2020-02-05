@@ -22,9 +22,11 @@ TEST_CASE("Construction materials can be added") {
       WHEN("he starts building a wall") {
         c.sendMessage(CL_CONSTRUCT, makeArgs("wall", 10, 15));
         WAIT_UNTIL(s.entities().size() == 1);
+        const Object &wall = s.getFirstObject();
+
+        THEN("it needs materials") { CHECK(wall.isBeingBuilt()); }
 
         AND_WHEN("he gives adds a brick") {
-          const Object &wall = s.getFirstObject();
           c.sendMessage(CL_SWAP_ITEMS,
                         makeArgs(Server::INVENTORY, 0, wall.serial(), 0));
 
