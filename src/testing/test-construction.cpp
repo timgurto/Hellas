@@ -342,15 +342,15 @@ TEST_CASE("Auto-fill") {
 
     auto &trap = s.addObject("trap", {10, 15});
 
-    THEN("clients know that it needs the item") {
+    THEN("a user can see that it needs the item") {
+      s.waitForUsers(1);
       WAIT_UNTIL(c.objects().size() == 1);
+      auto &user = s.getFirstUser();
       const auto &cTrap = c.getFirstObject();
       WAIT_UNTIL(cTrap.isBeingConstructed());
 
-      AND_GIVEN("a user has the item") {
-        s.waitForUsers(1);
-        auto &user = s.getFirstUser();
-        auto &meat = s.getFirstItem();
+      AND_GIVEN("he has the required item") {
+        auto &meat = s.findItem("meat");
         user.giveItem(&meat);
 
         WHEN("he auto-fills") {
@@ -367,13 +367,15 @@ TEST_CASE("Auto-fill") {
         }
       }
 
-      WHEN("he auto-fills") {
-        c.sendMessage(CL_ADD_AUTO_CONSTRUCTION_MATERIALS,
-                      makeArgs(trap.serial()));
+      AND_GIVEN("a user has no item") {
+        WHEN("he auto-fills") {
+          c.sendMessage(CL_ADD_AUTO_CONSTRUCTION_MATERIALS,
+                        makeArgs(trap.serial()));
 
-        THEN("the building is still incomplete") {
-          REPEAT_FOR_MS(100);
-          CHECK(trap.isBeingBuilt());
+          THEN("the building is still incomplete") {
+            REPEAT_FOR_MS(100);
+            CHECK(trap.isBeingBuilt());
+          }
         }
       }
     }
