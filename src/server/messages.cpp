@@ -2287,7 +2287,8 @@ void Server::handle_CL_ADD_AUTO_CONSTRUCTION_MATERIALS(User &user,
   auto obj = _entities.find<Object>(serial);
 
   obj->clearMaterialsRequired();
-  sendConstructionMaterialsMessage(user, *obj);
+  for (const User *nearbyUser : findUsersInArea(obj->location()))
+    sendConstructionMaterialsMessage(*nearbyUser, *obj);
 }
 
 void Server::broadcast(const Message &msg) {
