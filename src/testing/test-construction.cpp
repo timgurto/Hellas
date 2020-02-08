@@ -342,17 +342,29 @@ TEST_CASE("Auto-fill") {
 
     auto &trap = s.addObject("trap", {10, 15});
 
-    AND_GIVEN("a user has the item") {
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      auto &meat = s.getFirstItem();
-      user.giveItem(&meat);
+    THEN("clients know that it needs the item") {
+      WAIT_UNTIL(c.objects().size() == 1);
+      const auto &cTrap = c.getFirstObject();
+      WAIT_UNTIL(cTrap.isBeingConstructed());
 
-      WHEN("he auto-fills") {
-        c.sendMessage(CL_ADD_AUTO_CONSTRUCTION_MATERIALS,
-                      makeArgs(trap.serial()));
+      AND_GIVEN("a user has the item") {
+        s.waitForUsers(1);
+        auto &user = s.getFirstUser();
+        auto &meat = s.getFirstItem();
+        user.giveItem(&meat);
 
-        THEN("the building is complete") { WAIT_UNTIL(!trap.isBeingBuilt()); }
+        WHEN("he auto-fills") {
+          c.sendMessage(CL_ADD_AUTO_CONSTRUCTION_MATERIALS,
+                        makeArgs(trap.serial()));
+
+          THEN("the building is complete") {
+            WAIT_UNTIL(!trap.isBeingBuilt());
+
+            AND_THEN("the player knows") {
+              WAIT_UNTIL(!cTrap.isBeingConstructed());
+            }
+          }
+        }
       }
     }
   }
