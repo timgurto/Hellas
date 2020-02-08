@@ -65,7 +65,7 @@
         time="12000" >
         <material id="crudeClay" quantity="2" />
         <tool class="pottery1" />
-        <unlockedBy gather="crudeClay" />
+        <unlockedBy item="crudeClay" />
     </recipe>
     <recipe id="mediumPot"
         time="12000" >
@@ -144,7 +144,7 @@
         <material id="tin" quantity="3" />
         <tool class="smelting1" />
         <tool class="gloves" />
-        <unlockedBy gather="tin" />
+        <unlockedBy item="tin" />
     </recipe>
     <recipe id="copperBar"
         time="12000" >
