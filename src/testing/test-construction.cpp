@@ -444,4 +444,17 @@ TEST_CASE("Auto-fill") {
       }
     }
   }
+
+  GIVEN("a user") {
+    auto s = TestServer{};
+    auto c = TestClient{};
+    s.waitForUsers(1);
+
+    WHEN("he auto-fills with a bad serial") {
+      const auto BAD_SERIAL = "42";
+      c.sendMessage(CL_ADD_AUTO_CONSTRUCTION_MATERIALS, BAD_SERIAL);
+
+      THEN("the server survives") { s.nop(); }
+    }
+  }
 }
