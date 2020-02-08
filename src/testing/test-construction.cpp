@@ -366,6 +366,16 @@ TEST_CASE("Auto-fill") {
           }
         }
       }
+
+      WHEN("he auto-fills") {
+        c.sendMessage(CL_ADD_AUTO_CONSTRUCTION_MATERIALS,
+                      makeArgs(trap.serial()));
+
+        THEN("the building is still incomplete") {
+          REPEAT_FOR_MS(100);
+          CHECK(trap.isBeingBuilt());
+        }
+      }
     }
   }
 }
