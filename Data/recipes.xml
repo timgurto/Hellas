@@ -134,8 +134,8 @@
         time="12000" >
         <material id="crudeClay" quantity="2" />
         <tool class="pottery1" />
-        <unlockedBy item="bone" chance="0.2" />
         <unlockedBy recipe="copperBar" chance="0.05" />
+        <unlockedBy construction="anvil" chance="0.2" />
     </recipe>
 
 <!-- Metal bars -->
