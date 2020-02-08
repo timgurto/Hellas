@@ -14,8 +14,9 @@
     brief="Grug have only bones and rocks to keep family happy.  Want make toy for Grugling, but need clay.
     Shaman say there lots of clay past rivers, southwest, where land green and water big.
     You bring Grug clay?"
-    debrief="You make Grug happy.  Toy will make Grugling happy." >
+    debrief="Toy will make Grugling happy.  Being father better than fighting; me no need club now.  You take!" >
     <objective type="fetch" id="crudeClay" qty="1" />
+    <reward type="item" id="boneClub" />
 </quest>
     <npcType
         id="grug" name="Grug"
