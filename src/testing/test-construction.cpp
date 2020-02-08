@@ -336,6 +336,7 @@ TEST_CASE("Auto-fill") {
         <material id="meat" />
       </objectType>
       <item id="meat" />
+      <item id="gold" />
     )";
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
@@ -368,6 +369,21 @@ TEST_CASE("Auto-fill") {
       }
 
       AND_GIVEN("a user has no item") {
+        WHEN("he auto-fills") {
+          c.sendMessage(CL_ADD_AUTO_CONSTRUCTION_MATERIALS,
+                        makeArgs(trap.serial()));
+
+          THEN("the building is still incomplete") {
+            REPEAT_FOR_MS(100);
+            CHECK(trap.isBeingBuilt());
+          }
+        }
+      }
+
+      AND_GIVEN("a user has the wrong item") {
+        auto &gold = s.findItem("gold");
+        user.giveItem(&gold);
+
         WHEN("he auto-fills") {
           c.sendMessage(CL_ADD_AUTO_CONSTRUCTION_MATERIALS,
                         makeArgs(trap.serial()));

@@ -2286,7 +2286,8 @@ void Server::handle_CL_ADD_AUTO_CONSTRUCTION_MATERIALS(User &user,
                                                        size_t serial) {
   auto obj = _entities.find<Object>(serial);
 
-  if (!user.inventory(0).first.hasItem()) return;
+  const auto &inventoryItem = user.inventory(0).first;
+  if (!obj->remainingMaterials().contains(inventoryItem.type())) return;
 
   obj->clearMaterialsRequired();
   for (const User *nearbyUser : findUsersInArea(obj->location()))
