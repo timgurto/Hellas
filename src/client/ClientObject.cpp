@@ -646,13 +646,13 @@ void ClientObject::assembleWindow(Client &client) {
                  !(startsQuests().empty() && completableQuests().empty()) &&
                  userHasAccess();
 
+  if (!_window) _window = Window::WithRectAndTitle({}, objType.name());
+
   auto windowHasClassContent = addClassSpecificStuffToWindow();
   auto hasNonDemolitionContent =
       windowHasClassContent || hasContainer || isMerchant || canCede ||
       canGrant || hasAQuest || objType.hasAction() || objType.canDeconstruct();
   auto hasAnyContent = hasNonDemolitionContent || canDemolish;
-
-  if (!_window) _window = Window::WithRectAndTitle({}, objType.name());
 
   if (isBeingConstructed()) {
     if (userHasAccess()) {
