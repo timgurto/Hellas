@@ -332,6 +332,22 @@ void ClientObject::addConstructionToWindow() {
   x += DROPBOX_LABEL_W + GAP;
   dropbox->setPosition(x, y);
   _window->addChild(dropbox);
+  x += dropbox->width() + GAP;
+
+  // 3. Auto-fill button
+  const auto AUTO_BUTTON_W = 50_px, AUTO_BUTTON_H = 15_px;
+  const auto buttonY = y + (dropbox->height() - AUTO_BUTTON_H) / 2;
+  auto autoFillButton =
+      new Button({x, buttonY, AUTO_BUTTON_W, AUTO_BUTTON_H}, "Auto", [this]() {
+        Client::instance().sendMessage(
+            {CL_ADD_AUTO_CONSTRUCTION_MATERIALS, makeArgs(serial())});
+      });
+  autoFillButton->setTooltip(
+      "Add all required materials that you have in your inventory.");
+  _window->addChild(autoFillButton);
+  x += AUTO_BUTTON_W + GAP;
+  if (newWidth < x) newWidth = x;
+
   y += dropbox->height() + GAP;
 
   _window->resize(newWidth, y);
