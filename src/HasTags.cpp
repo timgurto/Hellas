@@ -36,7 +36,7 @@ std::string HasTags::toolSpeedDisplayText(const std::string& tag) const {
 
   auto oss = std::ostringstream{};
   auto displayVal = toInt((speed - 1.0) * 100);
-  if (displayVal > 0) oss << "+";
+  if (displayVal > 0) oss << " +";
   oss << displayVal << "%";
   return oss.str();
 }
