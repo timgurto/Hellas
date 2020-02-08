@@ -223,11 +223,8 @@
     <driver x="0" y="0" />
     <collisionRect x="-7" y="-5" w="15" h="10" />
     <material id="log" quantity="8" />
-    <material id="rope" quantity="2" />
     <unlockedBy gather="log" chance="0.05" />
-    <unlockedBy recipe="rope" />
     <durability item="log" quantity="8" />
-    <canBeRepaired cost="rope" />
 </objectType>
 
 <objectType id="elutriator" name="Elutriator"
