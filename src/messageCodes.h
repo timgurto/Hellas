@@ -79,6 +79,11 @@ enum MessageCode {
   // Arguments: serial1, slot1, serial2, slot2
   CL_SWAP_ITEMS,
 
+  // "I want to add as many materials as possible from my inventory to this
+  // construction site."
+  // Arguments: serial
+  CL_ADD_AUTO_CONSTRUCTION_MATERIALS,
+
   // "I want to take the item in container slot ..."
   // An object serial of 1 denotes the user's gear.
   // Arguments: serial, slot

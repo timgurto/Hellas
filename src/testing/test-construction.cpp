@@ -198,7 +198,7 @@ TEST_CASE("Construction tools") {
         </item>
         <objectType
             id="computer" constructionTime="0" constructionReq="screwdriver" >
-            <material id="circuitboard" quantity="1" />
+            <material id="circuitboard" />
         </objectType>
       )";
     auto s = TestServer::WithDataString(data);
@@ -253,7 +253,7 @@ TEST_CASE("Construction progress is persistent", "[persistence]") {
   auto data = R"(
     <objectType
       id="wall" constructionTime="0" >
-      <material id="brick" quantity="1" />
+      <material id="brick" />
     </objectType>
     <item id="brick" />
   )";
@@ -292,7 +292,7 @@ TEST_CASE("A construction material can 'return' an item") {
   GIVEN("matches are needed to build a fire, and return a matchbox") {
     auto data = R"(
       <objectType id="fire" constructionTime="0" >
-        <material id="matches" quantity="1" returns="matchbox" />
+        <material id="matches" returns="matchbox" />
       </objectType>
       <item id="matches" returnsOnConstruction="matchbox" />
       <item id="matchbox" />
@@ -324,6 +324,35 @@ TEST_CASE("A construction material can 'return' an item") {
             CHECK(pItem.type()->id() == "matchbox");
           }
         }
+      }
+    }
+  }
+}
+
+TEST_CASE("Auto-fill") {
+  GIVEN("a construction site that needs an item") {
+    auto data = R"(
+      <objectType id="trap" constructionTime="0" >
+        <material id="meat" />
+      </objectType>
+      <item id="meat" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    auto &trap = s.addObject("trap", {10, 15});
+
+    AND_GIVEN("a user has the item") {
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      auto &meat = s.getFirstItem();
+      user.giveItem(&meat);
+
+      WHEN("he auto-fills") {
+        c.sendMessage(CL_ADD_AUTO_CONSTRUCTION_MATERIALS,
+                      makeArgs(trap.serial()));
+
+        THEN("the building is complete") { WAIT_UNTIL(!trap.isBeingBuilt()); }
       }
     }
   }
