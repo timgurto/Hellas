@@ -330,7 +330,7 @@ class Server {
   void handle_CL_COMPLETE_QUEST(User &user, const Quest::ID &quest,
                                 size_t giverSerial);
   void handle_CL_ABANDON_QUEST(User &user, const Quest::ID &quest);
-  void handle_CL_ADD_AUTO_CONSTRUCTION_MATERIALS(User &user, size_t serial);
+  void handle_CL_AUTO_CONSTRUCT(User &user, size_t serial);
 };
 
 #endif

@@ -355,8 +355,7 @@ TEST_CASE("Auto-fill") {
         user.giveItem(&meat);
 
         WHEN("he auto-fills") {
-          c.sendMessage(CL_ADD_AUTO_CONSTRUCTION_MATERIALS,
-                        makeArgs(trap.serial()));
+          c.sendMessage(CL_AUTO_CONSTRUCT, makeArgs(trap.serial()));
 
           THEN("the building is complete") {
             WAIT_UNTIL(!trap.isBeingBuilt());
@@ -370,8 +369,7 @@ TEST_CASE("Auto-fill") {
 
       AND_GIVEN("a user has no item") {
         WHEN("he auto-fills") {
-          c.sendMessage(CL_ADD_AUTO_CONSTRUCTION_MATERIALS,
-                        makeArgs(trap.serial()));
+          c.sendMessage(CL_AUTO_CONSTRUCT, makeArgs(trap.serial()));
 
           THEN("the building is still incomplete") {
             REPEAT_FOR_MS(100);
@@ -385,8 +383,7 @@ TEST_CASE("Auto-fill") {
         user.giveItem(&gold);
 
         WHEN("he auto-fills") {
-          c.sendMessage(CL_ADD_AUTO_CONSTRUCTION_MATERIALS,
-                        makeArgs(trap.serial()));
+          c.sendMessage(CL_AUTO_CONSTRUCT, makeArgs(trap.serial()));
 
           THEN("the building is still incomplete") {
             REPEAT_FOR_MS(100);
@@ -421,8 +418,7 @@ TEST_CASE("Auto-fill") {
         user.giveItem(&dirt);
 
         WHEN("he auto-fills") {
-          c.sendMessage(CL_ADD_AUTO_CONSTRUCTION_MATERIALS,
-                        makeArgs(plant.serial()));
+          c.sendMessage(CL_AUTO_CONSTRUCT, makeArgs(plant.serial()));
 
           THEN("the plant is still incomplete") {
             REPEAT_FOR_MS(100);
@@ -435,8 +431,7 @@ TEST_CASE("Auto-fill") {
           user.giveItem(&seed);
 
           WHEN("he auto-fills") {
-            c.sendMessage(CL_ADD_AUTO_CONSTRUCTION_MATERIALS,
-                          makeArgs(plant.serial()));
+            c.sendMessage(CL_AUTO_CONSTRUCT, makeArgs(plant.serial()));
 
             THEN("the plant is complete") { WAIT_UNTIL(!plant.isBeingBuilt()); }
           }
@@ -452,7 +447,7 @@ TEST_CASE("Auto-fill") {
 
     WHEN("he auto-fills with a bad serial") {
       const auto BAD_SERIAL = "42";
-      c.sendMessage(CL_ADD_AUTO_CONSTRUCTION_MATERIALS, BAD_SERIAL);
+      c.sendMessage(CL_AUTO_CONSTRUCT, BAD_SERIAL);
 
       THEN("the server survives") { s.nop(); }
     }

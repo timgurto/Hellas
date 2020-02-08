@@ -339,8 +339,7 @@ void ClientObject::addConstructionToWindow() {
   const auto buttonY = y + (dropbox->height() - AUTO_BUTTON_H) / 2;
   auto autoFillButton =
       new Button({x, buttonY, AUTO_BUTTON_W, AUTO_BUTTON_H}, "Auto", [this]() {
-        Client::instance().sendMessage(
-            {CL_ADD_AUTO_CONSTRUCTION_MATERIALS, makeArgs(serial())});
+        Client::instance().sendMessage({CL_AUTO_CONSTRUCT, makeArgs(serial())});
       });
   autoFillButton->setTooltip(
       "Add all required materials that you have in your inventory.");

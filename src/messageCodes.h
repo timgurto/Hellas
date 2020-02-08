@@ -82,7 +82,7 @@ enum MessageCode {
   // "I want to add as many materials as possible from my inventory to this
   // construction site."
   // Arguments: serial
-  CL_ADD_AUTO_CONSTRUCTION_MATERIALS,
+  CL_AUTO_CONSTRUCT,
 
   // "I want to take the item in container slot ..."
   // An object serial of 1 denotes the user's gear.

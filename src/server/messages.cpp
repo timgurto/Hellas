@@ -787,12 +787,12 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         break;
       }
 
-      case CL_ADD_AUTO_CONSTRUCTION_MATERIALS: {
+      case CL_AUTO_CONSTRUCT: {
         size_t serial;
         iss >> serial >> del;
         if (del != MSG_END) return;
 
-        handle_CL_ADD_AUTO_CONSTRUCTION_MATERIALS(*user, serial);
+        handle_CL_AUTO_CONSTRUCT(*user, serial);
         break;
       }
 
@@ -2282,8 +2282,7 @@ void Server::handle_CL_ABANDON_QUEST(User &user, const Quest::ID &quest) {
   user.abandonQuest(quest);
 }
 
-void Server::handle_CL_ADD_AUTO_CONSTRUCTION_MATERIALS(User &user,
-                                                       size_t serial) {
+void Server::handle_CL_AUTO_CONSTRUCT(User &user, size_t serial) {
   auto *obj = _entities.find<Object>(serial);
   if (!obj) return;
 
