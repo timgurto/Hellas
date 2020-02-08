@@ -429,6 +429,18 @@ TEST_CASE("Auto-fill") {
             CHECK(plant.isBeingBuilt());
           }
         }
+
+        AND_GIVEN("he also has a seed") {
+          auto &seed = s.findItem("seed");
+          user.giveItem(&seed);
+
+          WHEN("he auto-fills") {
+            c.sendMessage(CL_ADD_AUTO_CONSTRUCTION_MATERIALS,
+                          makeArgs(plant.serial()));
+
+            THEN("the plant is complete") { WAIT_UNTIL(!plant.isBeingBuilt()); }
+          }
+        }
       }
     }
   }

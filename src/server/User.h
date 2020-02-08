@@ -255,7 +255,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   // Whether the user has enough materials to craft a recipe
   bool hasItems(const ItemSet &items) const;
   bool hasItems(const std::string &tag, size_t quantity) const;
-  void removeItems(const ItemSet &items);
+  ItemSet removeItems(const ItemSet &items);  // Return: remainder
   void removeItems(const std::string &tag, size_t quantity);
   int countItems(const ServerItem *item) const;
   class ToolSearchResult {

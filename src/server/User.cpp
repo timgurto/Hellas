@@ -597,7 +597,7 @@ static void removeItemsFrom(ItemSet &remaining, ServerItem::vect_t &container,
   }
 }
 
-void User::removeItems(const ItemSet &items) {
+ItemSet User::removeItems(const ItemSet &items) {
   auto remaining = items;
   std::set<size_t> slotsChanged;
 
@@ -609,9 +609,7 @@ void User::removeItems(const ItemSet &items) {
   for (size_t slotNum : slotsChanged)
     Server::instance().sendInventoryMessage(*this, slotNum, Server::GEAR);
 
-  if (!remaining.isEmpty()) {
-    SERVER_ERROR("Failed to remove all necessary items from user");
-  }
+  return remaining;
 }
 
 static void removeItemsFrom(const std::string &tag, size_t &remaining,
