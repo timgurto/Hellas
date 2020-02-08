@@ -330,7 +330,7 @@ TEST_CASE("A construction material can 'return' an item") {
 }
 
 TEST_CASE("Auto-fill") {
-  GIVEN("a construction site that needs an item") {
+  GIVEN("an object requiring an item") {
     auto data = R"(
       <objectType id="trap" constructionTime="0" >
         <material id="meat" />
@@ -391,6 +391,42 @@ TEST_CASE("Auto-fill") {
           THEN("the building is still incomplete") {
             REPEAT_FOR_MS(100);
             CHECK(trap.isBeingBuilt());
+          }
+        }
+      }
+    }
+  }
+
+  GIVEN("a plant requiring dirt and a seed") {
+    auto data = R"(
+      <objectType id="plant" constructionTime="0" >
+        <material id="dirt" />
+        <material id="seed" />
+      </objectType>
+      <item id="dirt" />
+      <item id="seed" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    auto &plant = s.addObject("plant", {10, 15});
+
+    AND_GIVEN("a user") {
+      s.waitForUsers(1);
+      WAIT_UNTIL(c.objects().size() == 1);
+      auto &user = s.getFirstUser();
+
+      AND_GIVEN("he has dirt") {
+        auto &dirt = s.findItem("dirt");
+        user.giveItem(&dirt);
+
+        WHEN("he auto-fills") {
+          c.sendMessage(CL_ADD_AUTO_CONSTRUCTION_MATERIALS,
+                        makeArgs(plant.serial()));
+
+          THEN("the plant is still incomplete") {
+            REPEAT_FOR_MS(100);
+            CHECK(plant.isBeingBuilt());
           }
         }
       }
