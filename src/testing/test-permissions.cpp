@@ -157,28 +157,31 @@ TEST_CASE("City members can use city objects", "[city]") {
 }
 
 TEST_CASE("Non-members cannot use city objects", "[city]") {
-  // Given a rock owned by Athens;
-  TestServer s = TestServer::WithData("basic_rock");
-  s.cities().createCity("Athens", {});
-  s.addObject("rock", {10, 10});
-  Object &rock = s.getFirstObject();
-  rock.permissions.setCityOwner("Athens");
-  // And a client, not a member of any city
-  TestClient c = TestClient::WithData("basic_rock");
-  s.waitForUsers(1);
+  GIVEN("a rock owned by Athens") {
+    TestServer s = TestServer::WithData("basic_rock");
+    TestClient c = TestClient::WithData("basic_rock");
 
-  // When he attempts to gather the rock
-  WAIT_UNTIL(c.objects().size() == 1);
-  size_t serial = c.objects().begin()->first;
-  c.sendMessage(CL_GATHER, makeArgs(serial));
-  REPEAT_FOR_MS(500);
+    s.cities().createCity("Athens", {});
+    s.addObject("rock", {10, 10});
+    Object &rock = s.getFirstObject();
+    rock.permissions.setCityOwner("Athens");
 
-  // Then the rock remains;
-  CHECK_FALSE(s.entities().empty());
+    s.waitForUsers(1);
 
-  // And his inventory remains empty
-  User &user = s.getFirstUser();
-  CHECK_FALSE(user.inventory()[0].first.hasItem());
+    WHEN("a user attempts to gather the rock") {
+      c.sendMessage(CL_GATHER, makeArgs(rock.serial()));
+      REPEAT_FOR_MS(500);
+
+      THEN("the rock remains") {
+        CHECK_FALSE(s.entities().empty());
+
+        AND_THEN("his inventory is empty") {
+          User &user = s.getFirstUser();
+          CHECK_FALSE(user.inventory()[0].first.hasItem());
+        }
+      }
+    }
+  }
 }
 
 TEST_CASE("Non-existent cities can't own objects", "[city]") {
