@@ -363,7 +363,7 @@ TEST_CASE("Quest UI", "[ui][.flaky]") {
 
         auto questButtonE = obj.window()->findChild("quest1");
         auto questButton = dynamic_cast<Button *>(questButtonE);
-        CHECK(questButton != nullptr);
+        REQUIRE(questButton);
 
         questButton->depress();
         questButton->release(true);
@@ -840,6 +840,7 @@ TEST_CASE("Object window is updated with quest changes", "[ui][.flaky]") {
       WAIT_UNTIL(c.objects().size() == 1);
       auto &obj = c.getFirstObject();
       obj.onRightClick(c.client());
+      WAIT_UNTIL(obj.window());
 
       AND_WHEN("he accepts the quest") {
         c->sendMessage({CL_ACCEPT_QUEST, makeArgs("quest1", serial)});

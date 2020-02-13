@@ -20,7 +20,7 @@ TEST_CASE("Constructing an object grants ownership") {
     s.waitForUsers(1);
 
     WHEN("he constructs a wall") {
-      c.sendMessage(CL_CONSTRUCT, makeArgs("wall", 10, 10));
+      c.sendMessage(CL_CONSTRUCT, makeArgs("wall", 10, 15));
       WAIT_UNTIL(s.entities().size() == 1);
 
       THEN("he is the wall's owner") {

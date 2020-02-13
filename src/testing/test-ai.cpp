@@ -94,7 +94,8 @@ TEST_CASE("NPCs can get around obstacles (not yet implemented)", "[.]") {
       wolf.makeAwareOf(user);
 
       THEN("it can reach him") {
-        WAIT_UNTIL(distance(wolf.collisionRect(), user.collisionRect()) < 1.0);
+        // WAIT_UNTIL(distance(wolf.collisionRect(), user.collisionRect())
+        // < 1.0);
       }
     }
   }
