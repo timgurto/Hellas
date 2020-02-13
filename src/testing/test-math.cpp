@@ -86,5 +86,5 @@ TEST_CASE("toPascal") {
 TEST_CASE("Tool-speed display") {
   HasTags thing;
   thing.addTag("fast", 1.1);
-  CHECK(thing.toolSpeedDisplayText("fast") == "+10%"s);
+  CHECK(thing.toolSpeedDisplayText("fast") == " +10%"s);
 }
