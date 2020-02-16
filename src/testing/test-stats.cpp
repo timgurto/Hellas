@@ -66,4 +66,19 @@ TEST_CASE("Follower-limit stat") {
       }
     }
   }
+
+  GIVEN("gear that gives +1 follower count") {
+    auto data = R"(
+      <item id="bait" gearSlot="7" >
+        <stats followerCount="1" />
+      </item>
+    )";
+
+    auto s = TestServer::WithDataString(data);
+
+    THEN("it has that stat") {
+      const auto &bait = s.getFirstItem();
+      CHECK(bait.stats().followerCount == 1);
+    }
+  }
 }
