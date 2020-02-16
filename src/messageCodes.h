@@ -500,7 +500,8 @@ enum MessageCode {
   // Arguments: armor, max health, max energy, hps, eps,
   // hit, crit, critResist, dodge, block, blockValue,
   // magicDamage, physicalDamage, healing,
-  // airResist, earthResist, fireResist, waterResist, attack time, speed
+  // airResist, earthResist, fireResist, waterResist, attack time,
+  // follower limit, speed
   SV_YOUR_STATS,
 
   // The user's XP

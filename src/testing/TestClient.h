@@ -55,6 +55,7 @@ class TestClient {
   const std::map<std::string, Avatar *> &otherUsers() const {
     return _client->_otherUsers;
   }
+  const Stats &stats() const { return _client->_stats; }
   ClientItem::vect_t &inventory() { return _client->_inventory; }
   ClientItem::vect_t &gear() { return _client->_character.gear(); }
   const std::string &name() const { return _client->username(); }

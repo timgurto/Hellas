@@ -1332,7 +1332,7 @@ void User::updateStats() {
       makeArgs(newStats.magicDamage, newStats.physicalDamage, newStats.healing),
       makeArgs(newStats.airResist, newStats.earthResist, newStats.fireResist,
                newStats.waterResist),
-      makeArgs(newStats.attackTime, newStats.speed));
+      makeArgs(newStats.attackTime, newStats.followerLimit, newStats.speed));
   sendMessage({SV_YOUR_STATS, args});
 
   stats(newStats);

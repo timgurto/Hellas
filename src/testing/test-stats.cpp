@@ -40,3 +40,30 @@ TEST_CASE("Client has correct XP on level up") {
     }
   }
 }
+
+TEST_CASE("Follower-limit stat") {
+  GIVEN("a user") {
+    auto s = TestServer{};
+    auto c = TestClient{};
+    s.waitForUsers(1);
+
+    THEN("he knows his follower limit is 1") {
+      WAIT_UNTIL(c.stats().followerLimit == 1);
+
+      AND_WHEN("the baseline is changed to 2") {
+        auto oldStats = User::OBJECT_TYPE.baseStats();
+        auto highFollowerLimitStats = oldStats;
+        highFollowerLimitStats.followerLimit = 2;
+        User::OBJECT_TYPE.baseStats(highFollowerLimitStats);
+        auto &user = s.getFirstUser();
+        user.updateStats();
+
+        THEN("he knows his limit is 2") {
+          WAIT_UNTIL(c.stats().followerLimit == 2);
+        }
+
+        User::OBJECT_TYPE.baseStats(oldStats);
+      }
+    }
+  }
+}
