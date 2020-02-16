@@ -840,7 +840,7 @@ TEST_CASE("Object window is updated with quest changes", "[ui][.flaky]") {
       WAIT_UNTIL(c.objects().size() == 1);
       auto &obj = c.getFirstObject();
       obj.onRightClick(c.client());
-      WAIT_UNTIL(obj.window());
+      WAIT_UNTIL(obj.window() != nullptr);
 
       AND_WHEN("he accepts the quest") {
         c->sendMessage({CL_ACCEPT_QUEST, makeArgs("quest1", serial)});

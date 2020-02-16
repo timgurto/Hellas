@@ -678,7 +678,7 @@
     <material id="wool" quantity="5" />
     <tool class="weaving" />
     <unlockedBy gather="wool" />
-    <unlockedBy recipe="linenCloth" chance="0.05" />
+    <unlockedBy recipe="linenCloth" chance="0.02" />
 </recipe>
 <recipe
     id="linothorax" time="10000" >
