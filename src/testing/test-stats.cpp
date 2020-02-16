@@ -79,6 +79,22 @@ TEST_CASE("Follower-limit stat") {
     THEN("it has that stat") {
       const auto &bait = s.getFirstItem();
       CHECK(bait.stats().followerLimit == 1);
+
+      AND_GIVEN("a user") {
+        auto c = TestClient::WithDataString(data);
+        s.waitForUsers(1);
+        auto &user = s.getFirstUser();
+
+        WHEN("he has the gear equipped") {
+          user.giveItem(&bait);
+          c.sendMessage(CL_SWAP_ITEMS,
+                        makeArgs(Client::INVENTORY, 0, Client::GEAR, 7));
+
+          THEN("his follower count is 2") {
+            WAIT_UNTIL(user.stats().followerLimit == 2);
+          }
+        }
+      }
     }
   }
 }

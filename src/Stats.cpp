@@ -68,6 +68,8 @@ const Stats &Stats::operator&=(const StatsMod &mod) {
   // ASSUMPTION: only one item, presumably the weapon, will have this stat.
   if (mod.attackTime > 0) attackTime = mod.attackTime;
 
+  followerLimit += mod.followerLimit;
+
   if (mod.speed < 0) speed = 0;
   if (mod.speed != 1.0) speed *= mod.speed;
 
