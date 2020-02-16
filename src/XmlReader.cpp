@@ -126,7 +126,7 @@ bool XmlReader::findStatsChild(const std::string &val, TiXmlElement *elem,
   XmlReader::findAttr(child, "earthResist", stats.earthResist);
   XmlReader::findAttr(child, "fireResist", stats.fireResist);
   XmlReader::findAttr(child, "waterResist", stats.waterResist);
-  XmlReader::findAttr(child, "followerCount", stats.followerCount);
+  XmlReader::findAttr(child, "followerLimit", stats.followerLimit);
   XmlReader::findAttr(child, "speed", stats.speed);
   XmlReader::findAttr(child, "gatherBonus", stats.gatherBonus);
 

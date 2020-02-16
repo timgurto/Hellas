@@ -45,7 +45,7 @@ struct StatsMod {
 
   // Additive
   int armor = 0, maxHealth = 0, hps = 0, maxEnergy = 0, eps = 0, blockValue = 0,
-      followerCount = 0;
+      followerLimit = 0;
   BonusDamage magicDamage = 0, physicalDamage = 0, healing = 0;
   Percentage hit = 0, crit = 0, critResist = 0, dodge = 0, block = 0,
              airResist = 0, earthResist = 0, fireResist = 0, waterResist = 0,

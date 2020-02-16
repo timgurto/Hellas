@@ -70,7 +70,7 @@ TEST_CASE("Follower-limit stat") {
   GIVEN("gear that gives +1 follower count") {
     auto data = R"(
       <item id="bait" gearSlot="7" >
-        <stats followerCount="1" />
+        <stats followerLimit="1" />
       </item>
     )";
 
@@ -78,7 +78,7 @@ TEST_CASE("Follower-limit stat") {
 
     THEN("it has that stat") {
       const auto &bait = s.getFirstItem();
-      CHECK(bait.stats().followerCount == 1);
+      CHECK(bait.stats().followerLimit == 1);
     }
   }
 }
