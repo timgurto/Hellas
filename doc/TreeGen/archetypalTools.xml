@@ -117,13 +117,13 @@
 <extra parent="item_water"         child="object_athleteBuilding" />
 <extra parent="item_pole1"         child="object_athleteBuilding" />
 <extra parent="item_rock"          child="object_zealotBuilding" />
+<extra parent="item_knucklebones"  child="object_zealotBuilding" />
 <extra parent="item_water"         child="object_scholarBuilding" />
 <extra parent="item_boneDust"      child="object_scholarBuilding" />
 <extra parent="item_tin"           child="object_scholarBuilding" />
 <extra parent="item_tutFat2"       child="object_fattyOffering" />
 <extra parent="item_tutHide2"      child="object_leanOffering" />
 <extra parent="item_lumber"        child="object_lathe" />
-<extra parent="item_lumber"        child="object_grindstone" />
 <extra parent="npc_sheep"          child="item_sheepskin" />
 <extra parent="item_collar"        child="npc_sheep" />
 

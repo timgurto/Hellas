@@ -209,7 +209,7 @@
                 <offset x="-5" y="-21" />
                 <canBeRepaired cost="tinBar" tool="smelting1" />
             </item>
-            <item id="copperJavelin" name="Light Javelin" stackSize="100" gearSlot="6" sounds="spear" >
+            <item id="copperJavelin" name="Javelin" stackSize="100" gearSlot="6" sounds="spear" >
                 <weapon damage="2" speed="1.9" range="25" consumes="copperJavelin" />
                 <stats crit="1"/>
                 <offset x="-5" y="-21" />

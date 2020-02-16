@@ -462,6 +462,9 @@
     <tag name="grinding1" toolSpeed="1.15" />
     <tag name="grinding2" />
     <unlockedBy recipe="tinTube" chance="0.5" />
+    <unlockedBy recipe="lumber" chance="0.1" />
+    <unlockedBy recipe="stoneAxe" chance="0.02" />
+    <unlockedBy recipe="stoneKnife" chance="0.02" />
     <durability item="tinTube" quantity="2" />
     <canBeRepaired cost="tinTube" />
 </objectType>
