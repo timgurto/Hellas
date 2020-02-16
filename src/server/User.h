@@ -37,6 +37,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   class Followers {
    public:
     void add() { ++_n; }
+    void remove() { --_n; }
     bool hasAny() const { return _n > 0; }
 
    private:

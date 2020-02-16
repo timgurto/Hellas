@@ -660,6 +660,18 @@ TEST_CASE("Follower limits") {
           CHECK_FALSE(wildDog.permissions.hasOwner());
         }
       }
+
+      WHEN("his pet dies") {
+        petDog.kill();
+
+        AND_WHEN("he tries to tame the other") {
+          c.sendMessage(CL_TAME_NPC, makeArgs(wildDog.serial()));
+
+          THEN("it has an owner") {
+            WAIT_UNTIL(wildDog.permissions.hasOwner());
+          }
+        }
+      }
     }
   }
 
