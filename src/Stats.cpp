@@ -153,7 +153,9 @@ std::vector<std::string> StatsMod::toStrings() const {
     v.push_back("+" + toString(waterResist) + "% water resistance");
   if (gatherBonus > 0)
     v.push_back("+" + toString(gatherBonus) + "% chance to gather double");
-  if (speed != 1)
+  if (followerLimit > 0)
+    v.push_back("+" + toString(followerLimit) + " max. following pets");
+  if (speed != 1.0)
     v.push_back("+" + multiplicativeToString(speed) + " run speed");
 
   return v;
