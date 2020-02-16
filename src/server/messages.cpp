@@ -1739,9 +1739,7 @@ void Server::handle_CL_TAME_NPC(User &user, size_t serial) {
 
   if (npc->permissions.hasOwner()) return;
 
-  const auto &ownedObjects = _objectsByOwner.getObjectsWithSpecificOwner(
-      {Permissions::Owner::PLAYER, user.name()});
-  if (ownedObjects.size() > 0) return;
+  if (user.followers.hasAny()) return;
 
   auto consumable = ItemSet{};
   if (!type.tamingRequiresItem().empty()) {
@@ -1765,6 +1763,7 @@ void Server::handle_CL_TAME_NPC(User &user, size_t serial) {
     npc->spawner(nullptr);
   }
   npc->permissions.setPlayerOwner(user.name());
+  user.followers.add();
   if (user.target() == npc) {
     user.finishAction();
   }

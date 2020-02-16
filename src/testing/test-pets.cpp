@@ -662,4 +662,29 @@ TEST_CASE("Follower limits") {
       }
     }
   }
+
+  GIVEN("a user owns an object") {
+    auto data = R"(
+      <objectType id="house" />
+      <npcType id="dog" maxHealth="10000" >
+        <canBeTamed />
+      </npcType>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    s.waitForUsers(1);
+    s.addObject("house", {10, 15}, c->username());
+
+    AND_GIVEN("a tameable NPC with high tame chance") {
+      auto &wildDog = s.addNPC("dog", {15, 10});
+      wildDog.reduceHealth(wildDog.health() - 1);
+
+      WHEN("he tries to tame it") {
+        c.sendMessage(CL_TAME_NPC, makeArgs(wildDog.serial()));
+
+        THEN("it has an owner") { WAIT_UNTIL(wildDog.permissions.hasOwner()); }
+      }
+    }
+  }
 }

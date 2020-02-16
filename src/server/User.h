@@ -34,6 +34,15 @@ class User : public Object {  // TODO: Don't inherit from Object
     NO_ACTION
   };
 
+  class Followers {
+   public:
+    void add() { ++_n; }
+    bool hasAny() const { return _n > 0; }
+
+   private:
+    int _n{0};
+  };
+
  private:
   std::string _name;
   std::string _pwHash;
@@ -280,6 +289,8 @@ class User : public Object {  // TODO: Don't inherit from Object
   // Return value of 0: tool not found.
   double checkAndDamageToolsAndGetSpeed(const std::set<std::string> &tags);
   double checkAndDamageToolAndGetSpeed(const std::string &tag);
+
+  Followers followers;
 
  private:
   ToolSearchResult findTool(const std::string &tagName);
