@@ -118,7 +118,10 @@ void Client::initializeGearWindow() {
   addStat("Block value", _stats.blockValue, {}, {}, y, _gearWindow,
           "How much damage is reduced when an attack is blocked.");
   addGap(y, _gearWindow);
-  addStat("Speed", _displaySpeed, {}, " podes/s", y, _gearWindow);
+  addStat("Follower limit", _stats.followerLimit, {}, {}, y, _gearWindow,
+          "The maximum number of pets that can follow you.");
+  addStat("Speed", _displaySpeed, {}, " podes/s", y, _gearWindow,
+          "Movement speed.");
 
   y += 2;
   _gearWindow->height(y);
