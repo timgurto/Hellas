@@ -38,10 +38,10 @@ class User : public Object {  // TODO: Don't inherit from Object
    public:
     void add() { ++_n; }
     void remove() { --_n; }
-    size_t num() const { return _n; }
+    int num() const { return _n; }
 
    private:
-    size_t _n{0};
+    int _n{0};
   };
 
  private:

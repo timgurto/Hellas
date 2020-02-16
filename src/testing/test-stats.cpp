@@ -97,4 +97,31 @@ TEST_CASE("Follower-limit stat") {
       }
     }
   }
+
+  GIVEN("gear with very negative follower count") {
+    auto data = R"(
+      <item id="megaphone" gearSlot="7" >
+        <stats followerLimit="-1000" />
+      </item>
+    )";
+
+    auto s = TestServer::WithDataString(data);
+
+    AND_GIVEN("a user") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+
+      WHEN("he has the gear equipped") {
+        const auto &megaphone = s.getFirstItem();
+        user.giveItem(&megaphone);
+        c.sendMessage(CL_SWAP_ITEMS,
+                      makeArgs(Client::INVENTORY, 0, Client::GEAR, 7));
+
+        THEN("his follower count is 0") {
+          WAIT_UNTIL(user.stats().followerLimit == 0);
+        }
+      }
+    }
+  }
 }

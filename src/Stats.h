@@ -30,7 +30,7 @@ struct Stats {
 
   bool stunned = false;
 
-  size_t followerLimit = 0;
+  int followerLimit = 0;
 
   const Stats &operator&=(const StatsMod &rhs);
   Stats operator&(const StatsMod &mod) const;
