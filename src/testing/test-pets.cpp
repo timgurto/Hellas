@@ -672,6 +672,25 @@ TEST_CASE("Follower limits") {
           }
         }
       }
+
+      WHEN("the base follower-limit stat is 2") {
+        auto oldStats = User::OBJECT_TYPE.baseStats();
+        auto highFollowerLimitStats = oldStats;
+        highFollowerLimitStats.followerLimit = 2;
+        User::OBJECT_TYPE.baseStats(highFollowerLimitStats);
+        auto &user = s.getFirstUser();
+        user.updateStats();
+
+        AND_WHEN("he tries to tame the other") {
+          c.sendMessage(CL_TAME_NPC, makeArgs(wildDog.serial()));
+
+          THEN("it has an owner") {
+            WAIT_UNTIL(wildDog.permissions.hasOwner());
+          }
+        }
+
+        User::OBJECT_TYPE.baseStats(oldStats);
+      }
     }
   }
 

@@ -1739,7 +1739,7 @@ void Server::handle_CL_TAME_NPC(User &user, size_t serial) {
 
   if (npc->permissions.hasOwner()) return;
 
-  if (user.followers.hasAny()) return;
+  if (!user.hasRoomForMoreFollowers()) return;
 
   auto consumable = ItemSet{};
   if (!type.tamingRequiresItem().empty()) {

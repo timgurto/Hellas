@@ -38,10 +38,10 @@ class User : public Object {  // TODO: Don't inherit from Object
    public:
     void add() { ++_n; }
     void remove() { --_n; }
-    bool hasAny() const { return _n > 0; }
+    size_t num() const { return _n; }
 
    private:
-    int _n{0};
+    size_t _n{0};
   };
 
  private:
@@ -292,6 +292,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   double checkAndDamageToolAndGetSpeed(const std::string &tag);
 
   Followers followers;
+  bool hasRoomForMoreFollowers() const;
 
  private:
   ToolSearchResult findTool(const std::string &tagName);

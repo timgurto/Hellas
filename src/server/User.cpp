@@ -215,6 +215,7 @@ void User::init() {
   baseStats.speed = 80.0;
   baseStats.stunned = false;
   baseStats.gatherBonus = 0;
+  baseStats.followerLimit = 1;
   OBJECT_TYPE.baseStats(baseStats);
 }
 
@@ -555,6 +556,10 @@ double User::checkAndDamageToolAndGetSpeed(const std::string &tag) {
   if (!tool) return 0;
   tool.use();
   return tool.toolSpeed();
+}
+
+bool User::hasRoomForMoreFollowers() const {
+  return followers.num() < stats().followerLimit;
 }
 
 void User::clearInventory() {
