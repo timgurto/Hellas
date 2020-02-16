@@ -631,3 +631,35 @@ TEST_CASE("Chance to tame based on health") {
     }
   }
 }
+
+TEST_CASE("Follower limits") {
+  GIVEN("a user owns an NPC") {
+    auto data = R"(
+      <npcType id="dog" maxHealth="10000" >
+        <canBeTamed />
+      </npcType>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    auto &petDog = s.addNPC("dog", {10, 15});
+    petDog.reduceHealth(petDog.health() - 1);
+    s.waitForUsers(1);
+    c.sendMessage(CL_TAME_NPC, makeArgs(petDog.serial()));
+    WAIT_UNTIL(petDog.permissions.hasOwner());
+
+    AND_GIVEN("another tameable NPC with high tame chance") {
+      auto &wildDog = s.addNPC("dog", {15, 10});
+      wildDog.reduceHealth(wildDog.health() - 1);
+
+      WHEN("he tries to tame it") {
+        c.sendMessage(CL_TAME_NPC, makeArgs(wildDog.serial()));
+
+        THEN("it is still unowned") {
+          REPEAT_FOR_MS(10);
+          CHECK_FALSE(wildDog.permissions.hasOwner());
+        }
+      }
+    }
+  }
+}

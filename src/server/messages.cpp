@@ -1739,6 +1739,10 @@ void Server::handle_CL_TAME_NPC(User &user, size_t serial) {
 
   if (npc->permissions.hasOwner()) return;
 
+  const auto &ownedObjects = _objectsByOwner.getObjectsWithSpecificOwner(
+      {Permissions::Owner::PLAYER, user.name()});
+  if (ownedObjects.size() > 0) return;
+
   auto consumable = ItemSet{};
   if (!type.tamingRequiresItem().empty()) {
     const auto *item = findItem(type.tamingRequiresItem());
