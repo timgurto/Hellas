@@ -125,3 +125,16 @@ TEST_CASE("Follower-limit stat") {
     }
   }
 }
+
+TEST_CASE("Speed stat") {
+  GIVEN("a server and client") {
+    auto s = TestServer{};
+    auto c = TestClient{};
+
+    WHEN("the client receives his stats") {
+      CHECK(c.waitForMessage(SV_YOUR_STATS));
+
+      THEN("his speed is valid") { CHECK(c.stats().speed > 0); }
+    }
+  }
+}

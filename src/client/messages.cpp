@@ -1162,8 +1162,8 @@ void Client::handleMessage(const std::string &msg) {
             _stats.physicalDamage >> del >> _stats.healing >> del >>
             _stats.airResist >> del >> _stats.earthResist >> del >>
             _stats.fireResist >> del >> _stats.waterResist >> del >>
-            _stats.attackTime >> del >> _stats.followerLimit >> _stats.speed >>
-            del;
+            _stats.attackTime >> del >> _stats.followerLimit >> del >>
+            _stats.speed >> del;
         if (del != MSG_END) break;
         _displaySpeed = Podes::displayFromPixels(_stats.speed);
         _character.maxHealth(_stats.maxHealth);
