@@ -12,14 +12,18 @@
 </npcType>
 
 <npcType id="sheep" name="Sheep"
-    level="17" maxHealth="156" armor="10" isNeutral="1" >
+    level="17" maxHealth="156" armor="10" isNeutral="1"
+    xDrawOffset="-23" yDrawOffset="-27" >
+    <collisionRect x="-21" y="-4" w="37" h="7" />
     <canBeTamed consumes="collar" />
     <lootTable id="animal" />
     <loot id="sheepskin" chance="0.1" />
     <transform id="sheepWithWool" time="2700000" />
 </npcType>
 <npcType id="sheepWithWool" name="Sheep (Wooly)"
-    level="17" maxHealth="156" armor="10" isNeutral="1" >
+    level="17" maxHealth="156" armor="10" isNeutral="1"
+    xDrawOffset="-23" yDrawOffset="-27" >
+    <collisionRect x="-21" y="-4" w="37" h="7" />
     <lootTable id="animal" />
     <loot id="sheepskin" chance="0.1" />
     <loot id="wool" />
@@ -28,12 +32,12 @@
 </npcType>
 <item id="collar" name="Collar"
     sounds="fabric" stackSize="10"/>
-<recipe id="collar" >
-    <material id="linenCloth" />
-    <material id="linenThread" />
-    <tool class="sewing" />
-    <unlockedBy recipe="linenCloth" chance="0.1" />
-</recipe>
+    <recipe id="collar" >
+        <material id="linenCloth" />
+        <material id="linenThread" />
+        <tool class="sewing" />
+        <unlockedBy recipe="linenCloth" chance="0.1" />
+    </recipe>
 
 <item id="staff1" name="Walking Stick"
     gearSlot="6">
