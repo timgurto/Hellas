@@ -35,4 +35,27 @@
     <unlockedBy recipe="linenCloth" chance="0.1" />
 </recipe>
 
+<item id="staff1" name="Walking Stick"
+    gearSlot="6">
+    <stats followerLimit="1" />
+    <weapon damage="5" speed="3.1" />
+</item>
+    <recipe id="staff1" >
+        <material id="pole1" />
+        <unlockedBy item="bone" chance="0.01" />
+        <unlockedBy loot="wool" chance="0.05" />
+        <unlockedBy loot="sheepskin" chance="0.02" />
+        <unlockedBy recipe="pole1" chance="0.05" />
+    </recipe>
+<item id="staff2" name="Staff"
+    gearSlot="6">
+    <stats followerLimit="2" />
+    <weapon damage="6" speed="2.8" />
+</item>
+    <recipe id="staff2" >
+        <material id="pole2" />
+        <unlockedBy recipe="pole2" chance="0.05" />
+        <unlockedBy recipe="staff1" chance="0.1" />
+    </recipe>
+
 </root>
