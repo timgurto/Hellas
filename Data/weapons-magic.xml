@@ -1,0 +1,189 @@
+<root>
+
+<item id="airWand" name="Wand of Air" gearSlot="6" >
+    <tag name="wand" />
+    <weapon damage="2" speed="1.8" range="25" school="air" consumes="boneDust" projectile="airball" />
+    <offset x="-5" y="-2" />
+    <particles profile="airSmall" x="-4" y="0" />
+    <canBeRepaired cost="airEssence" />
+</item>
+    <recipe
+        id="airWand" time="10000" >
+        <material id="stick" />
+        <material id="airEssence" quantity="2" />
+        <unlockedBy item="airEssence" chance="0.1" />
+        <unlockedBy recipe="earthWand" chance="0.1" />
+        <unlockedBy recipe="fireWand" chance="0.1" />
+        <unlockedBy recipe="waterWand" chance="0.1" />
+        <unlockedBy recipe="boneDust" chance="0.02" />
+    </recipe>
+<item id="earthWand" name="Wand of Earth" gearSlot="6" >
+    <tag name="wand" />
+    <weapon damage="4" speed="1.8" range="25" school="earth" consumes="boneDust" projectile="earthball" />
+    <offset x="-5" y="-2" />
+    <particles profile="earthSmall" x="-4" y="0" />
+    <canBeRepaired cost="earthEssence" />
+</item>
+    <recipe
+        id="earthWand" time="10000" >
+        <material id="stick" />
+        <material id="earthEssence" quantity="2" />
+        <unlockedBy item="earthEssence" chance="0.1" />
+        <unlockedBy recipe="airWand" chance="0.1" />
+        <unlockedBy recipe="fireWand" chance="0.1" />
+        <unlockedBy recipe="waterWand" chance="0.1" />
+        <unlockedBy recipe="boneDust" chance="0.02" />
+    </recipe>
+<item id="fireWand" name="Wand of Fire" gearSlot="6" >
+    <tag name="wand" />
+    <weapon damage="4" speed="1.8" range="25" school="fire" consumes="boneDust" projectile="fireball" />
+    <offset x="-5" y="-2" />
+    <particles profile="fireSmall" x="-4" y="0" />
+    <canBeRepaired cost="fireEssence" />
+</item>
+    <recipe
+        id="fireWand" time="10000" >
+        <material id="stick" />
+        <material id="fireEssence" quantity="2" />
+        <unlockedBy item="fireEssence" chance="0.1" />
+        <unlockedBy recipe="airWand" chance="0.1" />
+        <unlockedBy recipe="earthWand" chance="0.1" />
+        <unlockedBy recipe="waterWand" chance="0.1" />
+        <unlockedBy recipe="boneDust" chance="0.02" />
+    </recipe>
+<item id="waterWand" name="Wand of Water" gearSlot="6" >
+    <tag name="wand" />
+    <weapon damage="2" speed="1.8" range="25" school="water" consumes="boneDust" projectile="waterball" />
+    <offset x="-5" y="-2" />
+    <particles profile="waterSmall" x="-4" y="0" />
+    <canBeRepaired cost="waterEssence" />
+</item>
+    <recipe
+        id="waterWand" time="10000" >
+        <material id="stick" />
+        <material id="waterEssence" quantity="2" />
+        <unlockedBy item="waterEssence" chance="0.1" />
+        <unlockedBy recipe="airWand" chance="0.1" />
+        <unlockedBy recipe="earthWand" chance="0.1" />
+        <unlockedBy recipe="fireWand" chance="0.1" />
+        <unlockedBy recipe="boneDust" chance="0.02" />
+    </recipe>
+<item id="airStaff" name="Rod of Air" gearSlot="6" >
+    <weapon damage="7" speed="2.1" range="25" school="air" consumes="airDust" projectile="airball" />
+    <offset x="-5" y="-20" />
+    <particles profile="airSmall" x="-4" y="-19" />
+    <particles profile="airSmall" x="5" y="16" />
+    <canBeRepaired cost="airEssence" />
+</item>
+    <recipe
+        id="airStaff" time="10000" >
+        <material id="pole1" />
+        <material id="airEssence" quantity="5" />
+        <tool class="wand" />
+        <unlockedBy recipe="pole1" chance="0.05" />
+        <unlockedBy recipe="airWand" chance="0.1" />
+        <unlockedBy recipe="earthStaff" chance="0.1" />
+        <unlockedBy recipe="fireStaff" chance="0.1" />
+        <unlockedBy recipe="waterStaff" chance="0.1" />
+    </recipe>
+<item id="earthStaff" name="Rod of Earth" gearSlot="6" >
+    <weapon damage="9" speed="2.1" range="25" school="earth" consumes="earthDust" projectile="earthball" />
+    <offset x="-5" y="-20" />
+    <particles profile="earthSmall" x="-4" y="-19" />
+    <particles profile="earthSmall" x="5" y="16" />
+    <canBeRepaired cost="earthEssence" />
+</item>
+    <recipe
+        id="earthStaff" time="10000" >
+        <material id="pole1" />
+        <material id="earthEssence" quantity="5" />
+        <tool class="wand" />
+        <unlockedBy recipe="pole1" chance="0.05" />
+        <unlockedBy recipe="earthWand" chance="0.1" />
+        <unlockedBy recipe="airStaff" chance="0.1" />
+        <unlockedBy recipe="fireStaff" chance="0.1" />
+        <unlockedBy recipe="waterStaff" chance="0.1" />
+    </recipe>
+<item id="fireStaff" name="Rod of Fire" gearSlot="6" >
+    <weapon damage="9" speed="2.1" range="25" school="fire" consumes="fireDust" projectile="fireball" />
+    <offset x="-5" y="-20" />
+    <particles profile="fireSmall" x="-4" y="-19" />
+    <particles profile="fireSmall" x="5" y="16" />
+    <canBeRepaired cost="fireEssence" />
+</item>
+    <recipe
+        id="fireStaff" time="10000" >
+        <material id="pole1" />
+        <material id="fireEssence" quantity="5" />
+        <tool class="wand" />
+        <unlockedBy recipe="pole1" chance="0.05" />
+        <unlockedBy recipe="fireWand" chance="0.1" />
+        <unlockedBy recipe="airStaff" chance="0.1" />
+        <unlockedBy recipe="earthStaff" chance="0.1" />
+        <unlockedBy recipe="waterStaff" chance="0.1" />
+    </recipe>
+<item id="waterStaff" name="Rod of Water" gearSlot="6" >
+    <weapon damage="7" speed="2.1" range="25" school="water" consumes="waterDust" projectile="waterball" />
+    <offset x="-5" y="-20" />
+    <particles profile="waterSmall" x="-4" y="-19" />
+    <particles profile="waterSmall" x="5" y="16" />
+    <canBeRepaired cost="waterEssence" />
+</item>
+    <recipe
+        id="waterStaff" time="10000" >
+        <material id="pole1" />
+        <material id="waterEssence" quantity="5" />
+        <tool class="wand" />
+        <unlockedBy recipe="pole1" chance="0.05" />
+        <unlockedBy recipe="waterWand" chance="0.1" />
+        <unlockedBy recipe="airStaff" chance="0.1" />
+        <unlockedBy recipe="earthStaff" chance="0.1" />
+        <unlockedBy recipe="fireStaff" chance="0.1" />
+    </recipe>
+
+
+<item id="boneDust"     name="Magic Dust"   stackSize="100" />
+<item id="airDust"      name="Air Dust"     stackSize="100" />
+<item id="earthDust"    name="Earth Dust"   stackSize="100" />
+<item id="fireDust"     name="Fire Dust"    stackSize="100" />
+<item id="waterDust"    name="Water Dust"   stackSize="100" />
+<recipe
+    id="boneDust" time="4000" quantity="2" >
+    <material id="bone" />
+    <tool class="grinding1" />
+    <unlockedBy item="bone" chance="0.1" />
+    <unlockedBy recipe="airWand" />
+    <unlockedBy recipe="earthWand" />
+    <unlockedBy recipe="fireWand" />
+    <unlockedBy recipe="waterWand" />
+</recipe>
+<recipe
+    id="airDust" time="4000" quantity="4" >
+    <material id="boneDust" quantity="4" />
+    <material id="airEssence" />
+    <unlockedBy recipe="airStaff" />
+    <unlockedBy recipe="boneDust" chance="0.02" />
+</recipe>
+<recipe
+    id="earthDust" time="4000" quantity="4" >
+    <material id="boneDust" quantity="4" />
+    <material id="earthEssence" />
+    <unlockedBy recipe="earthStaff" />
+    <unlockedBy recipe="boneDust" chance="0.02" />
+</recipe>
+<recipe
+    id="fireDust" time="4000" quantity="4" >
+    <material id="boneDust" quantity="4" />
+    <material id="fireEssence" />
+    <unlockedBy recipe="fireStaff" />
+    <unlockedBy recipe="boneDust" chance="0.02" />
+</recipe>
+<recipe
+    id="waterDust" time="4000" quantity="4" >
+    <material id="boneDust" quantity="4" />
+    <material id="waterEssence" />
+    <unlockedBy recipe="waterStaff" />
+    <unlockedBy recipe="boneDust" chance="0.02" />
+</recipe>
+
+</root>

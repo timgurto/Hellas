@@ -216,75 +216,12 @@
                 <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
 
-        <!-- Magic -->
-            <item id="airWand" name="Wand of Air" gearSlot="6" >
-                <tag name="wand" />
-                <weapon damage="2" speed="1.8" range="25" school="air" consumes="boneDust" projectile="airball" />
-                <offset x="-5" y="-2" />
-                <particles profile="airSmall" x="-4" y="0" />
-                <canBeRepaired cost="airEssence" />
-            </item>
-            <item id="earthWand" name="Wand of Earth" gearSlot="6" >
-                <tag name="wand" />
-                <weapon damage="4" speed="1.8" range="25" school="earth" consumes="boneDust" projectile="earthball" />
-                <offset x="-5" y="-2" />
-                <particles profile="earthSmall" x="-4" y="0" />
-                <canBeRepaired cost="earthEssence" />
-            </item>
-            <item id="fireWand" name="Wand of Fire" gearSlot="6" >
-                <tag name="wand" />
-                <weapon damage="4" speed="1.8" range="25" school="fire" consumes="boneDust" projectile="fireball" />
-                <offset x="-5" y="-2" />
-                <particles profile="fireSmall" x="-4" y="0" />
-                <canBeRepaired cost="fireEssence" />
-            </item>
-            <item id="waterWand" name="Wand of Water" gearSlot="6" >
-                <tag name="wand" />
-                <weapon damage="2" speed="1.8" range="25" school="water" consumes="boneDust" projectile="waterball" />
-                <offset x="-5" y="-2" />
-                <particles profile="waterSmall" x="-4" y="0" />
-                <canBeRepaired cost="waterEssence" />
-            </item>
-            <item id="airStaff" name="Rod of Air" gearSlot="6" >
-                <weapon damage="7" speed="2.1" range="25" school="air" consumes="airDust" projectile="airball" />
-                <offset x="-5" y="-20" />
-                <particles profile="airSmall" x="-4" y="-19" />
-                <particles profile="airSmall" x="5" y="16" />
-                <canBeRepaired cost="airEssence" />
-            </item>
-            <item id="earthStaff" name="Rod of Earth" gearSlot="6" >
-                <weapon damage="9" speed="2.1" range="25" school="earth" consumes="earthDust" projectile="earthball" />
-                <offset x="-5" y="-20" />
-                <particles profile="earthSmall" x="-4" y="-19" />
-                <particles profile="earthSmall" x="5" y="16" />
-                <canBeRepaired cost="earthEssence" />
-            </item>
-            <item id="fireStaff" name="Rod of Fire" gearSlot="6" >
-                <weapon damage="9" speed="2.1" range="25" school="fire" consumes="fireDust" projectile="fireball" />
-                <offset x="-5" y="-20" />
-                <particles profile="fireSmall" x="-4" y="-19" />
-                <particles profile="fireSmall" x="5" y="16" />
-                <canBeRepaired cost="fireEssence" />
-            </item>
-            <item id="waterStaff" name="Rod of Water" gearSlot="6" >
-                <weapon damage="7" speed="2.1" range="25" school="water" consumes="waterDust" projectile="waterball" />
-                <offset x="-5" y="-20" />
-                <particles profile="waterSmall" x="-4" y="-19" />
-                <particles profile="waterSmall" x="5" y="16" />
-                <canBeRepaired cost="waterEssence" />
-            </item>
-
         <!-- Ammo -->
             <!-- Rock -->
             <item id="smoothRock"   name="Smooth Rock"  stackSize="100"  sounds="rock" durability="12" />
             <item id="woodArrow"    name="Arrow"        stackSize="100"  sounds="rock" />
             <!-- Tin Javelin -->
             <!-- Copper Javelin -->
-            <item id="boneDust"     name="Magic Dust"   stackSize="100" />
-            <item id="airDust"      name="Air Dust"     stackSize="100" />
-            <item id="earthDust"    name="Earth Dust"   stackSize="100" />
-            <item id="fireDust"     name="Fire Dust"    stackSize="100" />
-            <item id="waterDust"    name="Water Dust"   stackSize="100" />
 
 
 
