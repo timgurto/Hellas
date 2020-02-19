@@ -166,7 +166,9 @@ function scalarToPercent(scalar){
 }
     
 function sortByName(a, b){
-    var nameCompare = a.name.localeCompare(b.name);
+    var aName = a.hasOwnProperty("name") ? a.name : a.id;
+    var bName = b.hasOwnProperty("name") ? b.name : b.id;
+    var nameCompare = aName.localeCompare(bName);
     if (nameCompare != 0)
         return nameCompare;
     return a.id.localeCompare(b.id);
