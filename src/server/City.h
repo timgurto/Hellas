@@ -56,7 +56,7 @@ class Cities {
   bool isPlayerInCity(const std::string &username,
                       const City::Name &cityName) const;
   bool isPlayerInACity(const std::string &username) const;
-  const City::Name &getPlayerCity(const std::string &username) const;
+  City::Name getPlayerCity(const std::string &username) const;
   const City::Members &membersOf(const std::string &cityName) const;
   void sendCityObjectsToCitizen(const User &citizen) const;
   MapPoint locationOf(const std::string &cityName) const;

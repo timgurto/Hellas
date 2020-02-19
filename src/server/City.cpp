@@ -102,10 +102,9 @@ bool Cities::isPlayerInACity(const std::string &username) const {
   return it != _usersToCities.end();
 }
 
-const City::Name &Cities::getPlayerCity(const std::string &username) const {
+City::Name Cities::getPlayerCity(const std::string &username) const {
   auto it = _usersToCities.find(username);
-  static const std::string BLANK = "";
-  if (it == _usersToCities.end()) return BLANK;
+  if (it == _usersToCities.end()) return {};
   return it->second;
 }
 
