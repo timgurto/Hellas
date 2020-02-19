@@ -37,7 +37,12 @@ int main(int argc, char **argv) {
   std::set<Edge> blacklist, extras;
   std::map<std::string, std::string> collapses;
   std::map<std::string, std::string> tagNames;
-  std::map<std::string, std::string> npcTemplates;  // ID -> imageFile
+
+  struct NpcTemplate {
+    std::string imageFile;
+    std::string soundProfile;
+  };
+  std::map<std::string, NpcTemplate> npcTemplates;
 
   std::string colorScheme = "rdylgn6";
   std::map<EdgeType, size_t> edgeColors;
@@ -545,7 +550,9 @@ int main(int argc, char **argv) {
       ID id, imageFile;
       if (!xr.findAttr(elem, "id", id)) continue;
       if (!xr.findAttr(elem, "imageFile", imageFile)) continue;
-      npcTemplates[id] = imageFile;
+      auto &nt = npcTemplates[id];
+      nt.imageFile = imageFile;
+      xr.findAttr(elem, "sounds", nt.soundProfile);
     }
   }
 
@@ -577,7 +584,7 @@ int main(int argc, char **argv) {
         auto imageID = id;
         auto templateID = ""s;
         if (xr.findAttr(elem, "template", templateID)) {
-          imageID = npcTemplates[templateID];
+          imageID = npcTemplates[templateID].imageFile;
         }
 
         xr.findAttr(elem, "imageFile", imageID);
@@ -600,7 +607,10 @@ int main(int argc, char **argv) {
         }
 
         ID soundProfileID;
-        if (humanoid) soundProfileID = "humanEnemy";
+        if (humanoid)
+          soundProfileID = "humanEnemy";
+        else if (!templateID.empty())
+          soundProfileID = npcTemplates[templateID].soundProfile;
         xr.findAttr(elem, "sounds", soundProfileID);
         if (soundProfileID.empty())
           jw.addArrayAttribute("soundsMissing", requiredSounds);
