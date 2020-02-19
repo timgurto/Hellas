@@ -245,28 +245,28 @@
                 <particles profile="waterSmall" x="-4" y="0" />
                 <canBeRepaired cost="waterEssence" />
             </item>
-            <item id="airStaff" name="Staff of Air" gearSlot="6" >
+            <item id="airStaff" name="Rod of Air" gearSlot="6" >
                 <weapon damage="7" speed="2.1" range="25" school="air" consumes="airDust" projectile="airball" />
                 <offset x="-5" y="-20" />
                 <particles profile="airSmall" x="-4" y="-19" />
                 <particles profile="airSmall" x="5" y="16" />
                 <canBeRepaired cost="airEssence" />
             </item>
-            <item id="earthStaff" name="Staff of Earth" gearSlot="6" >
+            <item id="earthStaff" name="Rod of Earth" gearSlot="6" >
                 <weapon damage="9" speed="2.1" range="25" school="earth" consumes="earthDust" projectile="earthball" />
                 <offset x="-5" y="-20" />
                 <particles profile="earthSmall" x="-4" y="-19" />
                 <particles profile="earthSmall" x="5" y="16" />
                 <canBeRepaired cost="earthEssence" />
             </item>
-            <item id="fireStaff" name="Staff of Fire" gearSlot="6" >
+            <item id="fireStaff" name="Rod of Fire" gearSlot="6" >
                 <weapon damage="9" speed="2.1" range="25" school="fire" consumes="fireDust" projectile="fireball" />
                 <offset x="-5" y="-20" />
                 <particles profile="fireSmall" x="-4" y="-19" />
                 <particles profile="fireSmall" x="5" y="16" />
                 <canBeRepaired cost="fireEssence" />
             </item>
-            <item id="waterStaff" name="Staff of Water" gearSlot="6" >
+            <item id="waterStaff" name="Rod of Water" gearSlot="6" >
                 <weapon damage="7" speed="2.1" range="25" school="water" consumes="waterDust" projectile="waterball" />
                 <offset x="-5" y="-20" />
                 <particles profile="waterSmall" x="-4" y="-19" />
