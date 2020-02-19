@@ -125,8 +125,8 @@
 			<tag name="carving" toolSpeed="1.2" />
 			<tag name="harvesting" toolSpeed="1.2" />
 			<offset x="-6" y="-3" />
-			<weapon damage="5" speed="0.625" />
-            <canBeRepaired cost="copperBar" tool="hammering" />
+			<weapon damage="10" speed="1.2" />
+            <canBeRepaired cost="copperBar" tool="smelting2" />
 		</item>
 
 	<!-- Axes -->
@@ -144,15 +144,15 @@
 		<item id="copperAxe" name="Copper Axe" gearSlot="6" sounds="metalTool" >
 			<tag name="woodcutting" toolSpeed="1.2" />
 			<weapon damage="17" speed="2.1" />
-            <canBeRepaired cost="copperBar" tool="hammering" />
+            <canBeRepaired cost="copperBar" tool="smelting2" />
 		</item>
 
 	<!-- Hammers (slow) -->
 		<item id="copperHammer" name="Copper Hammer" gearSlot="6" sounds="metalTool" >
 			<tag name="hammering" />
-			<weapon damage="14" speed="1.75" />
+			<weapon damage="35" speed="3.7" />
 			<offset x="-8" y="-1" />
-            <canBeRepaired cost="copperBar" tool="hammering" />
+            <canBeRepaired cost="copperBar" tool="smelting2" />
 		</item>
 
 <!-- Weapons -->
@@ -171,7 +171,7 @@
 		<item id="copperSpear" name="Spear" gearSlot="6" >
 			<stats crit="2" />
             <weapon damage="9" speed="1.8" />
-            <canBeRepaired cost="copperBar" tool="hammering" />
+            <canBeRepaired cost="copperBar" tool="smelting2" />
             <tag name="fishing" />
 		</item>
 
@@ -180,7 +180,7 @@
 			<stats hit="1" />
             <weapon damage="13" speed="1.8" />
             <offset x="-6" y="-8" />
-            <canBeRepaired cost="copperBar" tool="hammering" />
+            <canBeRepaired cost="copperBar" tool="smelting2" />
 		</item>
 
     <!-- Ranged -->
@@ -210,8 +210,8 @@
                 <canBeRepaired cost="tinBar" tool="smelting1" />
             </item>
             <item id="copperJavelin" name="Javelin" stackSize="100" gearSlot="6" sounds="spear" >
-                <weapon damage="2" speed="1.9" range="25" consumes="copperJavelin" />
-                <stats crit="1"/>
+                <weapon damage="4" speed="2" range="25" consumes="copperJavelin" />
+                <stats crit="2"/>
                 <offset x="-5" y="-21" />
                 <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
@@ -230,9 +230,9 @@
     <!-- Head -->
         <!-- Hood (Energy) -->
             <item id="woolHood" name="Woolen Hood" gearSlot="0" >
-                <stats armor="3" health="5" />
+                <stats energy="30" />
                 <offset x="-3" y="-5" />
-                <canBeRepaired cost="copperBar" tool="hammering" />
+                <canBeRepaired cost="woolCloth" tool="sewing" />
             </item>
             
         <!-- Leather (Dodge) -->
@@ -244,9 +244,9 @@
         
         <!-- Helmet (Health) -->
             <item id="copperHelmet" name="Copper Helmet" gearSlot="0" >
-                <stats armor="3" health="5" />
+                <stats armor="3" health="15" />
                 <offset x="-3" y="-5" />
-                <canBeRepaired cost="copperBar" tool="hammering" />
+                <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
 
     <!-- Shoulders -->
@@ -257,6 +257,7 @@
                 <canBeRepaired cost="linenCloth" tool="sewing" />
             </item>
             <item id="woolCloak" name="Woolen Cloak" gearSlot="3" sounds="fabric" >
+                <stats armor="1" eps="2" />
                 <canBeRepaired cost="woolCloth" tool="sewing" />
             </item>
             
@@ -274,7 +275,7 @@
                 <canBeRepaired cost="tinScale" />
             </item>
             <item id="copperLamellar" name="Copper Lamellar" gearSlot="2" sounds="mailArmor" >
-                <stats armor="4" health="13" />
+                <stats armor="4" health="20" />
                 <canBeRepaired cost="copperScale" />
             </item>
 
@@ -284,7 +285,7 @@
                 <canBeRepaired cost="tinRing" />
             </item>
             <item id="copperHauberk" name="Copper Hauberk" gearSlot="2" sounds="mailArmor" >
-                <stats armor="4" block="4" />
+                <stats armor="5" block="5" />
                 <canBeRepaired cost="copperRing" />
             </item>
 
@@ -295,9 +296,9 @@
                 <canBeRepaired cost="linenCloth" />
             </item>
             <item id="copperCuirass" name="Copper Cuirass" gearSlot="2" >
-                <stats armor="4" critResist="1" />
+                <stats armor="5" critResist="2" />
                 <offset x="-3" y="-4" />
-                <canBeRepaired cost="copperBar" tool="hammering" />
+                <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
 
         <!-- Leather (dodge) -->
@@ -314,17 +315,20 @@
                 <canBeRepaired cost="linenCloth" tool="sewing" />
             </item>
             <item id="woolChiton" name="Wool Chiton" gearSlot="2" sounds="fabric" >
+                <stats armor="1" energy="35" />
                 <canBeRepaired cost="woolCloth" tool="sewing" />
             </item>
 
         <!-- Exomis (resistances) -->
             <item id="woolExomis" name="Wool Exomis" gearSlot="2" sounds="fabric" >
+                <stats armor="1" airResist="4" earthResist="4" fireResist="4" waterResist="4" />
                 <canBeRepaired cost="woolCloth" tool="sewing" />
             </item>
 
     <!-- Hands -->
         <!-- Wrappings (magic damage) -->
             <item id="woolWrappings" name="Wool Wrappings" gearSlot="4" sounds="fabric" >
+                <stats magicDamage="4" />
                 <canBeRepaired cost="woolCloth" tool="sewing" />
             </item>
             
@@ -338,12 +342,14 @@
             
         <!-- Bracers (physical damage) -->
             <item id="copperBracers" name="Copper Bracers" gearSlot="4" >
-                <canBeRepaired cost="copperBar" tool="hammering" />
+                <stats armor="1" physicalDamage="2" />
+                <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
 
     <!-- Feet -->
         <!-- Shoes (EPS) -->
             <item id="woolShoes" name="Wool Shoes" gearSlot="5" sounds="fabric" >
+                <stats eps="3" />
                 <canBeRepaired cost="woolCloth" tool="sewing" />
             </item>
             
@@ -356,9 +362,9 @@
             
         <!-- Greaves (HPS) -->
             <item id="copperGreaves" name="Copper Greaves" gearSlot="5" >
-                <stats armor="2" hps="1" />
+                <stats armor="2" hps="2" />
                 <offset x="-2" y="-10" />
-                <canBeRepaired cost="copperBar" tool="hammering" />
+                <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
 
     <!-- Left hand -->
@@ -370,8 +376,9 @@
                 <canBeRepaired cost="lumber" />
             </item>
             <item id="copperShield" name="Buckler" gearSlot="7" >
+                <stats armor="4" block="6" blockValue="6" />
                 <tag name="shield" />
-                <canBeRepaired cost="copperBar" tool="hammering" />
+                <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
 
         <!-- Knowledge (energy) -->
