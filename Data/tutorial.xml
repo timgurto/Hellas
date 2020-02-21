@@ -140,7 +140,7 @@
         <tag name="cooking" />
         <material id="tutStick" quantity="5" />
         <durability item="stick" quantity="5" />
-        <transform id="tutExtinguishedFire" time="20000" />
+        <transform id="tutExtinguishedFire" time="60000" />
         <particles profile="fire" x="0" y="-6" />
         <particles profile="smoke" x="0" y="-10" />
         <unlockedBy />

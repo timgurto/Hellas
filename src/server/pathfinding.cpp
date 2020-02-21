@@ -19,15 +19,15 @@ void Entity::updateLocation(const MapPoint &dest) {
     distanceToMove = requestedDistance;
     newDest = dest;
   } else {
-    const double maxLegalDistance =
-        min(Server::MAX_TIME_BETWEEN_LOCATION_UPDATES, timeElapsed) / 1000.0 *
-        stats().speed;
-
-    static const auto TRUST_CLIENTS_WITH_MOVEMENT_SPEED = true;
-    if (!TRUST_CLIENTS_WITH_MOVEMENT_SPEED)
-      distanceToMove = min(maxLegalDistance, requestedDistance);
-    else
+    const auto TRUST_CLIENTS_WITH_MOVEMENT_SPEED = true;
+    if (TRUST_CLIENTS_WITH_MOVEMENT_SPEED)
       distanceToMove = requestedDistance;
+    else {
+      const double maxLegalDistance =
+          min(Server::MAX_TIME_BETWEEN_LOCATION_UPDATES, timeElapsed) / 1000.0 *
+          stats().speed;
+      distanceToMove = min(maxLegalDistance, requestedDistance);
+    }
 
     newDest = interpolate(_location, dest, distanceToMove);
 
