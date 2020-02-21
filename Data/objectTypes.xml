@@ -57,7 +57,7 @@
     <tag name="cooking" />
     <material id="stick" quantity="5" />
     <durability item="stick" quantity="5" />
-    <transform id="extinguishedFire" time="20000" />
+    <transform id="extinguishedFire" time="60000" />
     <particles profile="fire" x="0" y="-6" />
     <particles profile="smoke" x="0" y="-10" />
     <unlockedBy />
@@ -72,7 +72,7 @@
         </objectType>
 <objectType id="extinguishedFire" name="Extinguished Cooking Fire"
     xDrawOffset="-10" yDrawOffset="-7"
-    isUnbuildable="1" disappearAfter="300000"
+    isUnbuildable="1" disappearAfter="3600000"
     constructionText="requires fuel">
     <collisionRect x="-10" y="-3" w="20" h="8" />
     <material id="stick" quantity="3" />
@@ -92,7 +92,7 @@
     <unlockedBy gather="rock" chance="0.05" />
     <unlockedBy construction="fire" chance="0.1" />
     <durability item="rock" quantity="10" />
-    <transform id="extinguishedOven" time="30000" />
+    <transform id="extinguishedOven" time="90000" />
     <canBeRepaired cost="rock" />
 </objectType>
 <objectType id="extinguishedOven" name="Extinguished Oven"
@@ -121,7 +121,7 @@
     <material id="charcoal" />
     <unlockedBy recipe="brick" />
     <durability item="brick" quantity="20" />
-    <transform id="extinguishedKiln" time="45000" />
+    <transform id="extinguishedKiln" time="120000" />
     <particles profile="smoke" x="-1" y="-23" />
     <canBeRepaired cost="brick" />
 </objectType>
