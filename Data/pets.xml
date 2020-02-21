@@ -47,8 +47,8 @@
     <recipe id="staff1" >
         <material id="pole1" />
         <unlockedBy item="bone" chance="0.01" />
-        <unlockedBy loot="wool" chance="0.05" />
-        <unlockedBy loot="sheepskin" chance="0.02" />
+        <unlockedBy gather="wool" chance="0.05" />
+        <unlockedBy item="sheepskin" chance="0.02" />
         <unlockedBy recipe="pole1" chance="0.05" />
     </recipe>
 <item id="staff2" name="Staff"
