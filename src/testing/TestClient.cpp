@@ -235,3 +235,11 @@ void TestClient::simulateClick(const ScreenPoint &position) {
   SDL_PushEvent(&mouseDownEvent);
   SDL_PushEvent(&mouseUpEvent);
 }
+
+void TestClient::simulateKeypress(SDL_Scancode key) {
+  _client->_keyboardState.startFakeKeypress(key);
+}
+
+bool TestClient::isKeyPressed(SDL_Scancode key) const {
+  return _client->_keyboardState.isPressed(key);
+}

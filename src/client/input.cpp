@@ -1,3 +1,5 @@
+#include <SDL_scancode.h>
+
 #include "../Message.h"
 #include "../TerrainList.h"
 #include "Client.h"
@@ -511,16 +513,15 @@ void Client::handleInput(double delta) {
     }
   }
   // Poll keys (whether they are currently pressed; not key events)
-  static const Uint8 *keyboardState = SDL_GetKeyboardState(nullptr);
   if (_loggedIn && !SDL_IsTextInputActive()) {
-    bool up = keyboardState[SDL_SCANCODE_UP] == SDL_PRESSED ||
-              keyboardState[SDL_SCANCODE_W] == SDL_PRESSED,
-         down = keyboardState[SDL_SCANCODE_DOWN] == SDL_PRESSED ||
-                keyboardState[SDL_SCANCODE_S] == SDL_PRESSED,
-         left = keyboardState[SDL_SCANCODE_LEFT] == SDL_PRESSED ||
-                keyboardState[SDL_SCANCODE_A] == SDL_PRESSED,
-         right = keyboardState[SDL_SCANCODE_RIGHT] == SDL_PRESSED ||
-                 keyboardState[SDL_SCANCODE_D] == SDL_PRESSED;
+    bool up = _keyboardState.isPressed(SDL_SCANCODE_UP) ||
+              _keyboardState.isPressed(SDL_SCANCODE_W),
+         down = _keyboardState.isPressed(SDL_SCANCODE_DOWN) ||
+                _keyboardState.isPressed(SDL_SCANCODE_S),
+         left = _keyboardState.isPressed(SDL_SCANCODE_LEFT) ||
+                _keyboardState.isPressed(SDL_SCANCODE_A),
+         right = _keyboardState.isPressed(SDL_SCANCODE_RIGHT) ||
+                 _keyboardState.isPressed(SDL_SCANCODE_D);
     if (up != down || left != right) {
       const double SPEED =
           _character.isDriving() ? VEHICLE_SPEED : _stats.speed;

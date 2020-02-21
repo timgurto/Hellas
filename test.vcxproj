@@ -121,6 +121,7 @@
     <ClCompile Include="src\client\Images.cpp" />
     <ClCompile Include="src\client\input.cpp" />
     <ClCompile Include="src\client\inventoryWindow.cpp" />
+    <ClCompile Include="src\client\KeyboardStateFetcher.cpp" />
     <ClCompile Include="src\client\loginScreen.cpp" />
     <ClCompile Include="src\client\LogSDL.cpp" />
     <ClCompile Include="src\client\mapWindow.cpp" />
@@ -250,6 +251,7 @@
     <ClCompile Include="src\testing\test-durability.cpp" />
     <ClCompile Include="src\testing\test-gathering.cpp" />
     <ClCompile Include="src\testing\test-gear.cpp" />
+    <ClCompile Include="src\testing\test-input.cpp" />
     <ClCompile Include="src\testing\test-loading.cpp" />
     <ClCompile Include="src\testing\test-loot.cpp" />
     <ClCompile Include="src\testing\test-map.cpp" />
@@ -310,6 +312,7 @@
     <ClInclude Include="src\client\HasSounds.h" />
     <ClInclude Include="src\client\HelpEntry.h" />
     <ClInclude Include="src\client\Images.h" />
+    <ClInclude Include="src\client\KeyboardStateFetcher.h" />
     <ClInclude Include="src\client\LogSDL.h" />
     <ClInclude Include="src\client\Particle.h" />
     <ClInclude Include="src\client\ParticleProfile.h" />

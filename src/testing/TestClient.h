@@ -105,6 +105,8 @@ class TestClient {
                       ms_t timeout = DEFAULT_TIMEOUT) const;
   void waitForRedraw();
   void simulateClick(const ScreenPoint &position);
+  void simulateKeypress(SDL_Scancode key);
+  bool isKeyPressed(SDL_Scancode key) const;
 
  private:
   Client *_client;

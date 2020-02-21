@@ -33,6 +33,7 @@
 #include "Connection.h"
 #include "HelpEntry.h"
 #include "Images.h"
+#include "KeyboardStateFetcher.h"
 #include "LogSDL.h"
 #include "ParticleProfile.h"
 #include "Projectile.h"
@@ -616,6 +617,8 @@ class Client {
 
   XP _xp = 40;
   XP _maxXP = 100;
+
+  KeyboardStateFetcher _keyboardState;
 
   static void onSpellHit(const MapPoint &location, const void *spell);
 

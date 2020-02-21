@@ -185,6 +185,8 @@
     <ClCompile Include="src\Message.cpp" />
     <ClCompile Include="src\server\Gatherable.cpp" />
     <ClCompile Include="src\server\Transformation.cpp" />
+    <ClCompile Include="src\client\KeyboardStateFetcher.cpp" />
+    <ClCompile Include="src\testing\test-input.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -326,5 +328,6 @@
     <ClInclude Include="src\server\Gatherable.h" />
     <ClInclude Include="src\server\EntityComponent.h" />
     <ClInclude Include="src\server\Transformation.h" />
+    <ClInclude Include="src\client\KeyboardStateFetcher.h" />
   </ItemGroup>
 </Project>
