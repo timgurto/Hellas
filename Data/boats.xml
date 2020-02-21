@@ -13,5 +13,28 @@
     <durability item="log" quantity="8" />
 </objectType>
 
+<objectType
+    id="canoe" name="Canoe"
+    allowedTerrain="shallowWater"
+    isVehicle="1" >
+    <material id="stick" quantity="40" />
+    <material id="rope" quantity="4" />
+    <unlockedBy recipe="rope" chance="0.05" />
+    <unlockedBy construction="raft" chance="0.1" />
+    <durability item="stick" quantity="40" />
+</objectType>
+
+<objectType
+    id="basicShip" name="Ship"
+    allowedTerrain="shallowWater"
+    isVehicle="1" >
+    <material id="lumber" quantity="25" />
+    <material id="rope" quantity="6" />
+    <material id="linenCloth" quantity="9" />
+    <unlockedBy recipe="lumber" chance="0.05" />
+    <unlockedBy recipe="linenCloth" chance="0.02" />
+    <unlockedBy construction="canoe" chance="0.1" />
+    <durability item="lumber" quantity="25" />
+</objectType>
 
 </root>
