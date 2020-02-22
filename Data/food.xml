@@ -27,6 +27,7 @@
 <recipe id="fishingNet" >
     <material id="rope" quantity="8" />
     <unlockedBy recipe="rope" chance="0.1" />
+    <unlockedBy recipe="woodSpear" chance="0.1" />
     <unlockedBy gather="fish" chance="0.05" />
 </recipe>
 <item id="fish" name="Fish" stackSize="10" sounds="meat" />
