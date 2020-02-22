@@ -120,8 +120,8 @@ void Client::initializeGearWindow() {
   addGap(y, _gearWindow);
   addStat("Follower limit", _stats.followerLimit, {}, {}, y, _gearWindow,
           "The maximum number of pets that can follow you.");
-  addStat("Speed", _displaySpeed, {}, " podes/s", y, _gearWindow,
-          "Movement speed.");
+  addStat("Run speed", _displaySpeed, {}, " podes/s", y, _gearWindow,
+          "How fast you run when not in a vehicle.");
 
   y += 2;
   _gearWindow->height(y);

@@ -185,6 +185,7 @@
     <ClCompile Include="src\Message.cpp" />
     <ClCompile Include="src\server\Gatherable.cpp" />
     <ClCompile Include="src\server\Transformation.cpp" />
+    <ClCompile Include="src\testing\test-vehicles.cpp" />
     <ClCompile Include="src\client\KeyboardStateFetcher.cpp" />
     <ClCompile Include="src\testing\test-input.cpp" />
   </ItemGroup>

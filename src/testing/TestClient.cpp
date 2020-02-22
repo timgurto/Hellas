@@ -243,3 +243,7 @@ void TestClient::simulateKeypress(SDL_Scancode key) {
 bool TestClient::isKeyPressed(SDL_Scancode key) const {
   return _client->_keyboardState.isPressed(key);
 }
+
+void TestClient::sendLocationUpdatesInstantly() {
+  _client->TIME_BETWEEN_LOCATION_UPDATES = 0;
+}

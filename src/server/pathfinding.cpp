@@ -15,7 +15,7 @@ void Entity::updateLocation(const MapPoint &dest) {
   double requestedDistance = distance(_location, dest);
   auto distanceToMove = 0.0;
   MapPoint newDest;
-  if (classTag() == 'u' && userPtr->isDriving()) {
+  if (userPtr && userPtr->isDriving()) {
     distanceToMove = requestedDistance;
     newDest = dest;
   } else {

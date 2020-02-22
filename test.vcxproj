@@ -263,6 +263,7 @@
     <ClCompile Include="src\testing\test-stats.cpp" />
     <ClCompile Include="src\testing\test-tagging.cpp" />
     <ClCompile Include="src\testing\test-transformation.cpp" />
+    <ClCompile Include="src\testing\test-vehicles.cpp" />
     <ClCompile Include="src\testing\TestClient.cpp" />
     <ClCompile Include="src\testing\RemoteClient.cpp" />
     <ClCompile Include="src\testing\TestServer.cpp" />

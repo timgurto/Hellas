@@ -240,7 +240,7 @@ class Client {
   static const ms_t
       PING_FREQUENCY;  // How often to test latency with each client
   // How often to send location updates to server (while moving)
-  static const ms_t TIME_BETWEEN_LOCATION_UPDATES;
+  ms_t TIME_BETWEEN_LOCATION_UPDATES = 250;
 
   Texture _cursorNormal, _cursorGather, _cursorContainer, _cursorAttack,
       _cursorStartsQuest, _cursorEndsQuest, _cursorRepair, _cursorVehicle;

@@ -107,6 +107,7 @@ class TestClient {
   void simulateClick(const ScreenPoint &position);
   void simulateKeypress(SDL_Scancode key);
   bool isKeyPressed(SDL_Scancode key) const;
+  void sendLocationUpdatesInstantly();
 
  private:
   Client *_client;
