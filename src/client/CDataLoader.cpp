@@ -429,7 +429,8 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
     if (!xr.findAttr(elem, "id", id)) continue;
     int n;
     ClientObjectType *cot;
-    if (xr.findAttr(elem, "isVehicle", n) == 1)
+    auto isVehicle = (xr.findAttr(elem, "isVehicle", n) == 1);
+    if (isVehicle)
       cot = new ClientVehicleType(id);
     else
       cot = new ClientObjectType(id);
@@ -484,10 +485,12 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
       cot->addTag(s + " (1 per player)", 1.0);
     }
 
-    auto vehicleSpeed = 0.0;
-    if (xr.findAttr(elem, "vehicleSpeed", vehicleSpeed)) {
-      auto &vt = dynamic_cast<ClientVehicleType &>(*cot);
-      vt.setSpeed(vehicleSpeed);
+    if (isVehicle) {
+      auto vehicleSpeed = 0.0;
+      if (xr.findAttr(elem, "vehicleSpeed", vehicleSpeed)) {
+        auto &vt = dynamic_cast<ClientVehicleType &>(*cot);
+        vt.setSpeed(vehicleSpeed);
+      }
     }
 
     auto action = xr.findChild("action", elem);

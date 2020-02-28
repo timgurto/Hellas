@@ -72,4 +72,13 @@ TEST_CASE("Custom vehicle speeds") {
       }
     }
   }
+
+  GIVEN("a non-vehicle object with a vehicle speed specified") {
+    auto data = R"(
+      <objectType id="mistake" vehicleSpeed="0" />
+    )";
+    auto c = TestClient::WithDataString(data);
+
+    THEN("it doesn't crash the client") {}
+  }
 }
