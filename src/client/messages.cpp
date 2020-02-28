@@ -1104,7 +1104,6 @@ void Client::handleMessage(const std::string &msg) {
           else
             userP = it->second;
         }
-        userP->driving(true);
         auto pairIt = _objects.find(serial);
         if (pairIt == _objects.end())
           ;  // showErrorMessage("Received driver info for an unknown
@@ -1112,6 +1111,7 @@ void Client::handleMessage(const std::string &msg) {
         else {
           ClientVehicle *v = dynamic_cast<ClientVehicle *>(pairIt->second);
           v->driver(userP);
+          userP->driving(*v);
         }
         break;
       }

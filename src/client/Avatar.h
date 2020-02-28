@@ -8,6 +8,7 @@
 #include "ClientCombatant.h"
 #include "ClientCombatantType.h"
 #include "ClientItem.h"
+#include "ClientVehicle.h"
 #include "Sprite.h"
 
 // The client-side representation of a user, including the player
@@ -25,7 +26,7 @@ class Avatar : public Sprite, public ClientCombatant {
   std::string _city;
   ClientItem::vect_t _gear;
   bool _isKing = false;
-  bool _driving;
+  const ClientVehicle *_vehicle{nullptr};
 
  public:
   Avatar(const std::string &name, const MapPoint &location);
@@ -36,8 +37,9 @@ class Avatar : public Sprite, public ClientCombatant {
   const ClassInfo *getClass() const { return _class; }
   const ClientItem::vect_t &gear() const { return _gear; }
   ClientItem::vect_t &gear() { return _gear; }
-  void driving(bool b) { _driving = b; }
-  bool isDriving() const { return _driving; }
+  void driving(const ClientVehicle &v) { _vehicle = &v; }
+  bool isDriving() const { return _vehicle != nullptr; }
+  double vehicleSpeed() const;
   const ClientItem *getRandomArmor() const {
     return _gear[Item::getRandomArmorSlot()].first.type();
   }
@@ -68,6 +70,7 @@ class Avatar : public Sprite, public ClientCombatant {
   virtual const Texture &highlightImage() const override {
     return _class->image();
   }
+  double speed() const override;
 
   // From ClientCombatant
   void sendTargetMessage() const override;

@@ -18,11 +18,10 @@ Avatar::Avatar(const std::string &name, const MapPoint &location)
     : Sprite(&_spriteType, location),
       ClientCombatant(&_combatantType),
       _name(name),
-      _gear(Client::GEAR_SLOTS, std::make_pair(ClientItem::Instance{}, 0)),
-      _driving(false) {}
+      _gear(Client::GEAR_SLOTS, std::make_pair(ClientItem::Instance{}, 0)) {}
 
 void Avatar::draw(const Client &client) const {
-  if (_driving) return;
+  if (isDriving()) return;
 
   if (_class == nullptr) return;
 
@@ -95,6 +94,11 @@ void Avatar::setClass(const ClassInfo::Name &newClass) {
   _class = &(it->second);
 }
 
+double Avatar::vehicleSpeed() const {
+  if (!_vehicle) return 0;
+  return _vehicle->speed();
+}
+
 const Tooltip &Avatar::tooltip() const {
   if (_tooltip.hasValue()) return _tooltip.value();
   _tooltip = Tooltip{};
@@ -145,6 +149,11 @@ void Avatar::onLeftClick(Client &client) {
 void Avatar::onRightClick(Client &client) {
   client.setTarget(*this, true);
   // Note: parent class's onRightClick() not called.
+}
+
+double Avatar::speed() const {
+  if (_vehicle) return _vehicle->speed();
+  return Sprite::speed();
 }
 
 void Avatar::sendTargetMessage() const {

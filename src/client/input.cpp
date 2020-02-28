@@ -524,7 +524,7 @@ void Client::handleInput(double delta) {
                  _keyboardState.isPressed(SDL_SCANCODE_D);
     if (up != down || left != right) {
       const double SPEED =
-          _character.isDriving() ? VEHICLE_SPEED : _stats.speed;
+          _character.isDriving() ? _character.vehicleSpeed() : _stats.speed;
       const double DIAG_SPEED = SPEED / SQRT_2;
       const double dist = delta * SPEED, diagDist = delta * DIAG_SPEED;
 

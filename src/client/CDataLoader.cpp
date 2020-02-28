@@ -484,6 +484,12 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
       cot->addTag(s + " (1 per player)", 1.0);
     }
 
+    auto vehicleSpeed = 0.0;
+    if (xr.findAttr(elem, "vehicleSpeed", vehicleSpeed)) {
+      auto &vt = dynamic_cast<ClientVehicleType &>(*cot);
+      vt.setSpeed(vehicleSpeed);
+    }
+
     auto action = xr.findChild("action", elem);
     if (action != nullptr) {
       auto pAction = new ClientObjectAction;

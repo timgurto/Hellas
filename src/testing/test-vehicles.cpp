@@ -34,4 +34,42 @@ TEST_CASE("Custom vehicle speeds") {
       }
     }
   }
+  GIVEN("a user driving a 200px/s vehicle") {
+    auto data = R"(
+      <terrain index="G" id="grass" />
+      <list id="default" default="1" >
+          <allow id="grass" />
+      </list>
+      <newPlayerSpawn x="10" y="10" range="0" />
+      <size x="40" y="2" />
+      <row    y="0" terrain = "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG" />
+      <row    y="1" terrain = "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG" />
+      <objectType id="racecar" isVehicle="1" vehicleSpeed="200" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    c.sendLocationUpdatesInstantly();
+
+    s.waitForUsers(1);
+    const auto &user = s.getFirstUser();
+    const auto &racecar = s.addObject("racecar", {10, 15}, c->username());
+
+    c.sendMessage(CL_MOUNT, makeArgs(racecar.serial()));
+    WAIT_UNTIL(c->character().isDriving());
+
+    WHEN("he moves in a straight line") {
+      const auto startingLocation = user.location();
+      c.simulateKeypress(SDL_SCANCODE_RIGHT);
+
+      AND_WHEN("one second passes") {
+        REPEAT_FOR_MS(1000);
+
+        THEN("he has moved 200px") {
+          const auto distanceTraveled =
+              distance(user.location(), startingLocation);
+          CHECK_ROUGHLY_EQUAL(distanceTraveled, 200, 0.1);
+        }
+      }
+    }
+  }
 }

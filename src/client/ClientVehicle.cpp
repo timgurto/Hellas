@@ -19,6 +19,8 @@ void ClientVehicle::mountOrDismount(void *object) {
     client.attemptDismount();
 }
 
+double ClientVehicle::speed() const { return vehicleType().speed(); }
+
 void ClientVehicle::draw(const Client &client) const {
   ClientObject::draw(client);
 

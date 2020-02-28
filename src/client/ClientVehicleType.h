@@ -6,9 +6,14 @@
 class ClientVehicleType : public ClientObjectType {
   bool _drawDriver;
   ScreenPoint _driverOffset;  // Where to draw the driver
+  double _speed;
+
  public:
   ClientVehicleType(const std::string &id);
   virtual char classTag() const override { return 'v'; }
+
+  void setSpeed(double s) { _speed = s; }
+  double speed() const { return _speed; }
 
   bool drawDriver() const { return _drawDriver; }
   void drawDriver(bool b) { _drawDriver = b; }

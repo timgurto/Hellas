@@ -52,7 +52,6 @@ const px_t Client::HEADING_HEIGHT = 14;
 const px_t Client::LINE_GAP = 6;
 
 const double Client::MOVEMENT_SPEED = 80;
-const double Client::VEHICLE_SPEED = 80;
 const Hitpoints Client::MAX_PLAYER_HEALTH = 50;
 
 const px_t Client::ACTION_DISTANCE = Podes{4}.toPixels();

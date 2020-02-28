@@ -139,7 +139,6 @@ class Client {
 
   static const px_t ICON_SIZE;
   static const double MOVEMENT_SPEED;
-  static const double VEHICLE_SPEED;
   static const Hitpoints MAX_PLAYER_HEALTH;
 
   enum SpecialSerial {

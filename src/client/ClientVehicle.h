@@ -14,8 +14,14 @@ class ClientVehicle : public ClientObject {
                 const MapPoint &loc = MapPoint{});
   virtual ~ClientVehicle() {}
 
+  const ClientVehicleType &vehicleType() const {
+    auto cvt = dynamic_cast<const ClientVehicleType *>(type());
+    return *cvt;
+  }
+
   const Avatar *driver() const { return _driver; }
   void driver(const Avatar *p) { _driver = p; }
+  virtual double speed() const override;
 
   virtual char classTag() const override { return 'v'; }
   virtual void draw(const Client &client) const override;
