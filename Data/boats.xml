@@ -5,7 +5,7 @@
     xDrawOffset="-16"
     yDrawOffset="-11"
     allowedTerrain="shallowWater"
-    isVehicle="1" >
+    isVehicle="1" vehicleSpeed="50" >
     <driver x="0" y="0" />
     <collisionRect x="-7" y="-5" w="15" h="10" />
     <material id="log" quantity="8" />
@@ -16,7 +16,7 @@
 <objectType
     id="canoe" name="Canoe"
     allowedTerrain="shallowWater"
-    isVehicle="1" >
+    isVehicle="1" vehicleSpeed="100" >
     <material id="stick" quantity="40" />
     <material id="rope" quantity="4" />
     <unlockedBy recipe="rope" chance="0.05" />
@@ -26,8 +26,8 @@
 
 <objectType
     id="basicShip" name="Ship"
-    allowedTerrain="shallowWater"
-    isVehicle="1" >
+    allowedTerrain="normalWater"
+    isVehicle="1" vehicleSpeed="120" >
     <material id="lumber" quantity="25" />
     <material id="rope" quantity="6" />
     <material id="linenCloth" quantity="9" />
