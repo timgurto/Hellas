@@ -798,6 +798,10 @@ const ClientSpell *Client::findSpell(const std::string &spellID) const {
   return it->second;
 }
 
+const std::string &Client::terrainDescription(const std::string &listID) const {
+  return TerrainList::findList(listID)->description();
+}
+
 bool Client::isAtWarWith(const Avatar &user) const {
   return isAtWarWithObjectOwner({ClientObject::Owner::PLAYER, user.name()});
 }

@@ -60,6 +60,8 @@ void TerrainList::loadFromXML(XmlReader &xr) {
     if (!xr.findAttr(elem, "id", id)) continue;
     TerrainList tl;
 
+    if (!xr.findAttr(elem, "description", tl._description)) continue;
+
     for (auto terrain : xr.getChildren("allow", elem)) {
       std::string s;
       if (xr.findAttr(terrain, "id", s) &&

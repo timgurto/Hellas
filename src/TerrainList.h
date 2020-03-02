@@ -21,6 +21,7 @@ class TerrainList {
   bool _isWhitelist;  // true if whitelist; false if blacklist.
   static std::map<std::string, char> terrainCodes;
   std::string _id;
+  std::string _description;
 
  public:
   void allow(char terrain);
@@ -28,6 +29,7 @@ class TerrainList {
   bool allows(char terrain) const;
 
   const std::string &id() const { return _id; }
+  const std::string &description() const { return _description; }
 
   static void addList(const std::string &id, TerrainList &list) {
     _lists[id] = list;

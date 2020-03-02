@@ -93,6 +93,7 @@ class Client {
   const HelpEntries &helpEntries() const { return _helpEntries; }
   const Window &helpWindow() const { return *_helpWindow; }
   XP xp() const { return _xp; }
+  const std::string &terrainDescription(const std::string &listID) const;
 
   bool isAtWarWith(const Avatar &user) const;
   bool isAtWarWithObjectOwner(const ClientObject::Owner &owner) const;

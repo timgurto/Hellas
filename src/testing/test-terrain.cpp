@@ -67,13 +67,13 @@ TEST_CASE("Users limited to default terrain list") {
 TEST_CASE("Client objects' allowed-terrain sets") {
   GIVEN("an object type allowed on non-default terrain") {
     auto data = R"(
-      <objectType id="boat" allowedTerrain="floats" />
+      <objectType id="boat" allowedTerrain="water" />
       <objectType id="frog" allowedTerrain="anything" />
       <terrain index="w" id="water" />
-      <list id="water" >
+      <list id="water" description="Suitable on water" >
           <allow id="water" />
       </list>
-      <list id="anything" >
+      <list id="anything" description="Suitable on any terrain" >
           <allow id="water" />
           <allow id="grass" />
       </list>
@@ -83,8 +83,13 @@ TEST_CASE("Client objects' allowed-terrain sets") {
     const auto &frog = *c->findObjectType("frog");
 
     THEN("the client knows its valid terrain") {
-      CHECK(boat.validTerrain() == "floats");
+      CHECK(boat.validTerrain() == "water");
       CHECK(frog.validTerrain() == "anything");
+
+      AND_THEN("the client knows that terrain's description") {
+        CHECK(c->terrainDescription("water") == "Suitable on water");
+        CHECK(c->terrainDescription("anything") == "Suitable on any terrain");
+      }
     }
   }
 }
