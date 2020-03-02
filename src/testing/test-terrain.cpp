@@ -87,8 +87,9 @@ TEST_CASE("Client objects' allowed-terrain sets") {
       CHECK(frog.validTerrain() == "anything");
 
       AND_THEN("the client knows that terrain's description") {
-        CHECK(c->terrainDescription("water") == "Suitable on water");
-        CHECK(c->terrainDescription("anything") == "Suitable on any terrain");
+        CHECK(TerrainList::description("water") == "Suitable on water");
+        CHECK(TerrainList::description("anything") ==
+              "Suitable on any terrain");
       }
     }
   }

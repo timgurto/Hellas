@@ -30,6 +30,7 @@ class TerrainList {
 
   const std::string &id() const { return _id; }
   const std::string &description() const { return _description; }
+  static const std::string &description(const std::string &id);
 
   static void addList(const std::string &id, TerrainList &list) {
     _lists[id] = list;
