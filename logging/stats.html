@@ -13,7 +13,9 @@
     <p><span class="heading"> Version:</span> <span id="version" /></p>
     <p><span class="heading"> Uptime:</span> <span id="uptime" /></p>
     
-    <h2>Users</h2>
+    <canvas id="gameMap" width="500" height="500"></canvas>
+    
+    <h2>Users <span id="numPlayersOnline"/></h2>
     <table id="users" >
     <tr>
         <td class="heading"></td>
@@ -177,6 +179,65 @@
     }
     
     document.title = "Hellas: " + numPlayersOnline + " online"
+    if (numPlayersOnline > 0)
+        $("#numPlayersOnline").html("(" + numPlayersOnline + ")");
+        
+        
+        
+    // Draw game map
+    var gameMap = document.getElementById("gameMap");
+    var ctx = gameMap.getContext("2d");
+    var img = new Image;
+    var OFFLINE_COLOUR = "#666";
+    var ONLINE_COLOUR = "#FF0";
+    var OUTLINE_COLOUR = "#000";
+    var OUTLINE_SIZE = 3;
+    var POINT_SIZE = 2.5;
+    ctx.fillStyle = "#000";
+    ctx.fillRect(0,0,gameMap.width,gameMap.height);
+    img.src = "../Images/map.png"
+    img.onload = function () {
+        ctx.drawImage(img, 0, 0, gameMap.width, gameMap.height); 
+    
+        var pointSize = 10;
+        
+        
+        for (var i = 0; i < stats.users.length; ++i){
+            var user = stats.users[i];
+            if (user.online) continue;
+            
+            var x = user.x / 96000 * 500;
+            var y = user.y / 96000 * 500;
+            
+            ctx.fillStyle = OUTLINE_COLOUR;
+            ctx.beginPath();
+            ctx.arc(x, y, OUTLINE_SIZE, 0, Math.PI * 2, true);
+            ctx.fill();
+            
+            ctx.fillStyle = user.online ? ONLINE_COLOUR : OFFLINE_COLOUR;
+            ctx.beginPath();
+            ctx.arc(x, y, POINT_SIZE, 0, Math.PI * 2, true);
+            ctx.fill();
+        }
+        for (var i = 0; i < stats.users.length; ++i){
+            var user = stats.users[i];
+            if (!user.online) continue;
+            
+            var x = user.x / 96000 * 500;
+            var y = user.y / 96000 * 500;
+            
+            ctx.fillStyle = OUTLINE_COLOUR;
+            ctx.beginPath();
+            ctx.arc(x, y, OUTLINE_SIZE, 0, Math.PI * 2, true);
+            ctx.fill();
+            
+            ctx.fillStyle = user.online ? ONLINE_COLOUR : OFFLINE_COLOUR;
+            ctx.beginPath();
+            ctx.arc(x, y, POINT_SIZE, 0, Math.PI * 2, true);
+            ctx.fill();
+        }
+
+    }
         
 </script>
 <script type="text/javascript">
