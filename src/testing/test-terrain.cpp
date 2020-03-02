@@ -94,3 +94,16 @@ TEST_CASE("Client objects' allowed-terrain sets") {
     }
   }
 }
+
+TEST_CASE("Terrain list with no description") {
+  GIVEN("a list with no description") {
+    auto data = R"(
+      <list id="noDescription" />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    THEN("the list exists on the server") {
+      CHECK(TerrainList::findList("noDescription") != nullptr);
+    }
+  }
+}
