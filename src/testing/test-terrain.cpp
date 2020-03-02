@@ -70,10 +70,10 @@ TEST_CASE("Client objects' allowed-terrain sets") {
       <objectType id="boat" allowedTerrain="water" />
       <objectType id="frog" allowedTerrain="anything" />
       <terrain index="w" id="water" />
-      <list id="water" description="Suitable on water" >
+      <list id="water" >
           <allow id="water" />
       </list>
-      <list id="anything" description="Suitable on any terrain" >
+      <list id="anything" >
           <allow id="water" />
           <allow id="grass" />
       </list>
@@ -85,24 +85,31 @@ TEST_CASE("Client objects' allowed-terrain sets") {
     THEN("the client knows its valid terrain") {
       CHECK(boat.allowedTerrain() == "water");
       CHECK(frog.allowedTerrain() == "anything");
-
-      AND_THEN("the client knows that terrain's description") {
-        CHECK(TerrainList::description("water") == "Suitable on water");
-        CHECK(TerrainList::description("anything") ==
-              "Suitable on any terrain");
-      }
     }
   }
 }
 
-TEST_CASE("Terrain list with no description") {
+TEST_CASE("Terrain-set descriptions") {
+  GIVEN("terrain lists with descriptions") {
+    auto data = R"(
+      <list id="land" description="Suitable on land." />
+      <list id="water" description="Suitable on water." />
+    )";
+    auto s = TestClient::WithDataString(data);
+
+    THEN("the descriptions are loaded") {
+      CHECK(TerrainList::description("land") == "Suitable on land.");
+      CHECK(TerrainList::description("water") == "Suitable on water.");
+    }
+  }
+
   GIVEN("a list with no description") {
     auto data = R"(
       <list id="noDescription" />
     )";
     auto s = TestServer::WithDataString(data);
 
-    THEN("the list exists on the server") {
+    THEN("it is still loaded") {
       CHECK(TerrainList::findList("noDescription") != nullptr);
     }
   }
