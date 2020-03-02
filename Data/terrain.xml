@@ -139,7 +139,7 @@ Must contain either <forbid> nodes only (for a blacklist) or <allow> nodes only 
     <allow id="volcanoRocky" />
 </list>
 
-<list id="fertile" >
+<list id="fertile" description="Suitable on fertile ground." >
     <allow id="fertile" />
     <allow id="plainsFertile" />
     <allow id="forestFertile" />
@@ -150,16 +150,16 @@ Must contain either <forbid> nodes only (for a blacklist) or <allow> nodes only 
     <allow id="volcanoFertile" />
 </list>
 
-<list id="shallowWater" >
+<list id="shallowWater" description="Suitable in shallow water." >
     <allow id="shallowWater" />
 </list>
 
-<list id="normalWater" >
+<list id="normalWater" description="Suitable in shallow or regular water." >
     <allow id="shallowWater" />
     <allow id="water" />
 </list>
 
-<list id="tutOfferings" >
+<list id="tutOfferings" description="Suitable on the tiles near the brazier." >
     <allow id="ruinsRocky" />
 </list>
 

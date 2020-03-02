@@ -5,6 +5,7 @@
 #include <cassert>
 
 #include "../Color.h"
+#include "../TerrainList.h"
 #include "Client.h"
 #include "SoundProfile.h"
 #include "Surface.h"
@@ -61,6 +62,11 @@ const Tooltip &ClientObjectType::constructionTooltip() const {
   if (merchantSlots() > 0)
     descriptionLines.push_back("Merchant: " + toString(merchantSlots()) +
                                " slots");
+
+  auto terrainDescription = TerrainList::description(_allowedTerrain);
+  if (!terrainDescription.empty()) {
+    descriptionLines.push_back(terrainDescription);
+  }
 
   if (!descriptionLines.empty()) tooltip.addGap();
   for (const auto &line : descriptionLines) tooltip.addLine(line);
