@@ -74,12 +74,16 @@ const Tooltip &ClientObjectType::constructionTooltip() const {
   // Tags
   tooltip.addTags(*this);
 
-  tooltip.addGap();
-  tooltip.setColor(Color::TOOLTIP_BODY);
-  tooltip.addLine("Construction materials:");
-  for (const auto &material : _materials) {
-    const ClientItem &item = *dynamic_cast<const ClientItem *>(material.first);
-    tooltip.addLine(makeArgs(material.second) + "x " + item.name());
+  // Materials
+  if (!_materials.isEmpty()) {
+    tooltip.addGap();
+    tooltip.setColor(Color::TOOLTIP_BODY);
+    tooltip.addLine("Construction materials:");
+    for (const auto &material : _materials) {
+      const ClientItem &item =
+          *dynamic_cast<const ClientItem *>(material.first);
+      tooltip.addLine(makeArgs(material.second) + "x " + item.name());
+    }
   }
 
   if (!_constructionReq.empty()) {

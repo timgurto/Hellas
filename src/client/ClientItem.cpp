@@ -97,32 +97,8 @@ const Tooltip &ClientItem::tooltip() const {
     tooltip.addGap();
     tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
     tooltip.addLine(std::string("Right-click to place ") +
-                    _constructsObject->name());
-    if (!_constructsObject->constructionReq().empty())
-      tooltip.addLine("(Requires " +
-                      client.tagName(_constructsObject->constructionReq()) +
-                      ")");
-
-    // Vehicle?
-    if (_constructsObject->classTag() == 'v') {
-      tooltip.setColor(Color::TOOLTIP_BODY);
-      tooltip.addLine("  Vehicle");
-    }
-
-    if (_constructsObject->containerSlots() > 0) {
-      tooltip.setColor(Color::TOOLTIP_BODY);
-      tooltip.addLine("  Container: " +
-                      toString(_constructsObject->containerSlots()) + " slots");
-    }
-
-    if (_constructsObject->merchantSlots() > 0) {
-      tooltip.setColor(Color::TOOLTIP_BODY);
-      tooltip.addLine("  Merchant: " +
-                      toString(_constructsObject->merchantSlots()) + " slots");
-    }
-
-    // Tags
-    tooltip.addTags(*_constructsObject);
+                    _constructsObject->name() + ":");
+    tooltip.embed(_constructsObject->constructionTooltip());
   }
 
   // Spell
