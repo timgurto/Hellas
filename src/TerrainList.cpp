@@ -1,6 +1,7 @@
 #include "TerrainList.h"
 
 #include "XmlReader.h"
+using namespace std::string_literals;
 
 std::map<std::string, TerrainList> TerrainList::_lists;
 const TerrainList *TerrainList::_default = nullptr;
@@ -24,7 +25,10 @@ bool TerrainList::allows(char terrain) const {
 }
 
 const std::string &TerrainList::description(const std::string &id) {
+  static const auto EMPTY_STRING = ""s;
+
   const auto *list = findList(id);
+  if (!list) return EMPTY_STRING;
   return list->description();
 }
 

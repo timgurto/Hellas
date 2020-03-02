@@ -113,4 +113,14 @@ TEST_CASE("Terrain-set descriptions") {
       CHECK(TerrainList::findList("noDescription") != nullptr);
     }
   }
+
+  GIVEN("a server") {
+    auto s = TestServer{};
+
+    WHEN("the description of a nonexistent list is looked up") {
+      auto description = TerrainList::description("nonexistent");
+
+      THEN("the server doesn't crash") { CHECK(description == description); }
+    }
+  }
 }
