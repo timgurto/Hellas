@@ -59,6 +59,7 @@ class ClientObject : public Sprite, public ClientCombatant {
   TextBox *_actionTextEntry = nullptr;
 
   void createRegularTooltip() const;
+  virtual bool addClassSpecificStuffToTooltip(Tooltip &tooltip) const;
   mutable Optional<Tooltip> _repairTooltip;
   void createRepairTooltip() const;
 

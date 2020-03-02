@@ -27,7 +27,7 @@
 <objectType
     id="basicShip" name="Ship"
     allowedTerrain="normalWater"
-    isVehicle="1" vehicleSpeed="120" >
+    isVehicle="1" vehicleSpeed="100" >
     <material id="lumber" quantity="25" />
     <material id="rope" quantity="6" />
     <material id="linenCloth" quantity="9" />
@@ -36,5 +36,13 @@
     <unlockedBy construction="canoe" chance="0.1" />
     <durability item="lumber" quantity="25" />
 </objectType>
+
+<!--
+                            Normal      Deep
+    Fast transport                      Yacht
+    Medium merchant
+    Slow industrial/heavy   Freighter   Barge
+    Military?               Galley      Trireme
+-->
 
 </root>

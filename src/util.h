@@ -130,4 +130,7 @@ std::string toLower(std::string in);
 
 double getTameChanceBasedOnHealthPercent(double healthPercent);
 
+std::string proportionToPercentageString(double d);
+std::string multiplicativeToString(double d);
+
 #endif

@@ -981,12 +981,11 @@ void ClientObject::createRegularTooltip() const {
   bool stats = false;
   tooltip.setColor(Color::TOOLTIP_BODY);
 
-  if (classTag() == 'v') {
+  if (addClassSpecificStuffToTooltip(tooltip)) {
     if (!stats) {
       stats = true;
       tooltip.addGap();
     }
-    tooltip.addLine("Vehicle");
   }
 
   if (userHasAccess()) {
@@ -1091,6 +1090,10 @@ void ClientObject::createRegularTooltip() const {
     tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
     tooltip.addLine(std::string("Right-click to gather"));
   }
+}
+
+bool ClientObject::addClassSpecificStuffToTooltip(Tooltip &tooltip) const {
+  return false;
 }
 
 void ClientObject::createRepairTooltip() const {

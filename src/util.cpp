@@ -156,3 +156,13 @@ double getTameChanceBasedOnHealthPercent(double healthPercent) {
   if (healthPercent > 0.5) return 0;
   return (0.5 - healthPercent) * 2;
 }
+
+std::string proportionToPercentageString(double d) {
+  d *= 100;
+  return toString(toInt(d)) + "%";
+}
+
+std::string multiplicativeToString(double d) {
+  d -= 1;
+  return proportionToPercentageString(d);
+}

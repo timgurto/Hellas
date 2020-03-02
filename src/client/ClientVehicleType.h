@@ -19,6 +19,9 @@ class ClientVehicleType : public ClientObjectType {
   void drawDriver(bool b) { _drawDriver = b; }
   const ScreenPoint &driverOffset() const { return _driverOffset; }
   void driverOffset(const ScreenPoint &p) { _driverOffset = p; }
+
+  virtual void addClassSpecificStuffToConstructionTooltip(
+      std::vector<std::string> &descriptionLines) const override;
 };
 
 #endif

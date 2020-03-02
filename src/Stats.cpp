@@ -96,12 +96,6 @@ Percentage Stats::resistanceByType(SpellSchool school) const {
   return armor;
 }
 
-std::string multiplicativeToString(double d) {
-  d -= 1;
-  d *= 100;
-  return toString(toInt(d)) + "%";
-}
-
 std::vector<std::string> StatsMod::toStrings() const {
   auto v = std::vector<std::string>{};
   if (attackTime > 0) {

@@ -68,6 +68,8 @@ const Tooltip &ClientObjectType::constructionTooltip() const {
     descriptionLines.push_back(terrainDescription);
   }
 
+  addClassSpecificStuffToConstructionTooltip(descriptionLines);
+
   if (!descriptionLines.empty()) tooltip.addGap();
   for (const auto &line : descriptionLines) tooltip.addLine(line);
 

@@ -18,7 +18,7 @@
 
 <objectType id="fish" name="School of Fish"
     canGather="1" gatherTime="10000" gatherReq="fishing"
-    allowedTerrain="shallowWater">
+    allowedTerrain="normalWater">
     <yield id="fish" initialMean="4" initialSD="2" initialMin="1" />
 </objectType>
 <item id="fishingNet" name="Fishing Net" >
