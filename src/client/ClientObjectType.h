@@ -63,6 +63,8 @@ class ClientObjectType : public SpriteType,
   Texture _corpseImage, _corpseHighlightImage;
   bool _isPlayerUnique = false;
 
+  std::string _validTerrain;
+
   struct Durability {
     Durability() : item(nullptr), quantity(0) {}
     const ClientItem *item;
@@ -150,6 +152,10 @@ class ClientObjectType : public SpriteType,
     _exclusiveToQuest = questID;
   }
   const std::string &exclusiveToQuest() const { return _exclusiveToQuest; }
+  void validTerrain(const std::string &terrainList) {
+    _validTerrain = terrainList;
+  }
+  const std::string &validTerrain() const { return _validTerrain; };
 
   const ImageSet &getProgressImage(ms_t timeRemaining) const;
   void corpseImage(const std::string &filename);

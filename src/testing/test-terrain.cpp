@@ -63,3 +63,27 @@ TEST_CASE("Users limited to default terrain list") {
     }
   }
 }
+
+TEST_CASE("Client objects' allowed-terrain sets") {
+  GIVEN("an object type allowed on non-default terrain") {
+    auto data = R"(
+      <objectType id="boat" allowedTerrain="floats" />
+      <objectType id="dock" allowedTerrain="water" />
+      <terrain index="w" id="water" />
+      <list id="water" >
+          <allow id="water" />
+      </list>
+      <list id="floats" >
+          <allow id="water" />
+      </list>
+    )";
+    auto c = TestClient::WithDataString(data);
+    const auto &boat = *c->findObjectType("boat");
+    const auto &dock = *c->findObjectType("dock");
+
+    THEN("the client knows its valid terrain") {
+      CHECK(boat.validTerrain() == "floats");
+      CHECK(dock.validTerrain() == "water");
+    }
+  }
+}

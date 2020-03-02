@@ -465,6 +465,7 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
 
     cot->loadTagsFromXML(xr, elem);
 
+    if (xr.findAttr(elem, "allowedTerrain", s)) cot->validTerrain(s);
     if (xr.findAttr(elem, "merchantSlots", n)) cot->merchantSlots(n);
     if (xr.findAttr(elem, "isFlat", n) && n != 0) cot->isFlat(true);
     if (xr.findAttr(elem, "isDecoration", n) && n != 0) cot->isDecoration(true);
