@@ -83,8 +83,8 @@ TEST_CASE("Client objects' allowed-terrain sets") {
     const auto &frog = *c->findObjectType("frog");
 
     THEN("the client knows its valid terrain") {
-      CHECK(boat.validTerrain() == "water");
-      CHECK(frog.validTerrain() == "anything");
+      CHECK(boat.allowedTerrain() == "water");
+      CHECK(frog.allowedTerrain() == "anything");
 
       AND_THEN("the client knows that terrain's description") {
         CHECK(TerrainList::description("water") == "Suitable on water");
