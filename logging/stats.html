@@ -7,8 +7,6 @@
 
 <body>
     <h1>Hellas server</h1>
-
-    <h2>Stats</h2>
     <p><span class="heading"> Status:</span> <span id="status" /></p>
     <p><span class="heading"> Version:</span> <span id="version" /></p>
     <p><span class="heading"> Uptime:</span> <span id="uptime" /></p>
@@ -186,19 +184,34 @@
         
         
     // Draw game and world maps
+    function drawPoint(ctx, x, y, colour){
+        var OUTLINE_SIZE = 3;
+        var POINT_SIZE = 2.5;
+        
+        ctx.fillStyle = OUTLINE_COLOUR;
+        ctx.beginPath();
+        ctx.arc(x, y, OUTLINE_SIZE, 0, Math.PI * 2, true);
+        ctx.fill();
+        
+        ctx.fillStyle = colour;
+        ctx.beginPath();
+        ctx.arc(x, y, POINT_SIZE, 0, Math.PI * 2, true);
+        ctx.fill();
+    }
+    
     var gameMap = document.getElementById("gameMap");
     var ctx = gameMap.getContext("2d");
     var img = new Image;
-    var OFFLINE_COLOUR = "#666";
-    var ONLINE_COLOUR = "#FF0";
+    var OFFLINE_COLOUR = "#555";
+    var ONLINE_COLOUR = "#0F0";
     var OUTLINE_COLOUR = "#000";
-    var OUTLINE_SIZE = 3;
-    var POINT_SIZE = 2.5;
     ctx.fillStyle = "#000";
     ctx.fillRect(0,0,gameMap.width,gameMap.height);
     img.src = "../Images/map.png"
     img.onload = function () {
         ctx.drawImage(img, 0, 0, gameMap.width, gameMap.height); 
+        ctx.fillStyle = "rgba(0,0,0,0.8)";
+        ctx.fillRect(0,0,gameMap.width,gameMap.height);
     
         var pointSize = 10;
         
@@ -210,15 +223,7 @@
             var x = user.x / 96000 * 500;
             var y = user.y / 96000 * 500;
             
-            ctx.fillStyle = OUTLINE_COLOUR;
-            ctx.beginPath();
-            ctx.arc(x, y, OUTLINE_SIZE, 0, Math.PI * 2, true);
-            ctx.fill();
-            
-            ctx.fillStyle = user.online ? ONLINE_COLOUR : OFFLINE_COLOUR;
-            ctx.beginPath();
-            ctx.arc(x, y, POINT_SIZE, 0, Math.PI * 2, true);
-            ctx.fill();
+            drawPoint(ctx, x, y, OFFLINE_COLOUR);
         }
         for (var i = 0; i < stats.users.length; ++i){
             var user = stats.users[i];
@@ -227,15 +232,7 @@
             var x = user.x / 96000 * 500;
             var y = user.y / 96000 * 500;
             
-            ctx.fillStyle = OUTLINE_COLOUR;
-            ctx.beginPath();
-            ctx.arc(x, y, OUTLINE_SIZE, 0, Math.PI * 2, true);
-            ctx.fill();
-            
-            ctx.fillStyle = user.online ? ONLINE_COLOUR : OFFLINE_COLOUR;
-            ctx.beginPath();
-            ctx.arc(x, y, POINT_SIZE, 0, Math.PI * 2, true);
-            ctx.fill();
+            drawPoint(ctx, x, y, ONLINE_COLOUR);
         }
     }
         
@@ -246,7 +243,9 @@
     ctx2.fillRect(0,0,worldMap.width,worldMap.height);
     img2.src = "../Images/worldMap.jpg"
     img2.onload = function () {
-        ctx2.drawImage(img2, 0, 0, worldMap.width, worldMap.height); 
+        ctx2.drawImage(img2, 0, 0, worldMap.width, worldMap.height);
+        ctx2.fillStyle = "rgba(0,0,0,0.6)";
+        ctx2.fillRect(0,0,worldMap.width,worldMap.height);
     
         var pointSize = 10;
         
@@ -258,15 +257,7 @@
             var x = 500 + (geo.longitude/180)*500;
             var y = 250 - (geo.latitude/180)*500;
             
-            ctx2.fillStyle = OUTLINE_COLOUR;
-            ctx2.beginPath();
-            ctx2.arc(x, y, OUTLINE_SIZE, 0, Math.PI * 2, true);
-            ctx2.fill();
-            
-            ctx2.fillStyle = user.online ? ONLINE_COLOUR : OFFLINE_COLOUR;
-            ctx2.beginPath();
-            ctx2.arc(x, y, POINT_SIZE, 0, Math.PI * 2, true);
-            ctx2.fill();
+            drawPoint(ctx2, x, y, OFFLINE_COLOUR);
         }
         for (var i = 0; i < stats.users.length; ++i){
             var user = stats.users[i];
@@ -276,22 +267,14 @@
             var x = 500 + (geo.longitude/180)*500;
             var y = 250 - (geo.latitude/180)*500;
             
-            ctx2.fillStyle = OUTLINE_COLOUR;
-            ctx2.beginPath();
-            ctx2.arc(x, y, OUTLINE_SIZE, 0, Math.PI * 2, true);
-            ctx2.fill();
-            
-            ctx2.fillStyle = user.online ? ONLINE_COLOUR : OFFLINE_COLOUR;
-            ctx2.beginPath();
-            ctx2.arc(x, y, POINT_SIZE, 0, Math.PI * 2, true);
-            ctx2.fill();
+            drawPoint(ctx2, x, y, ONLINE_COLOUR);
         }
 
     }
         
 </script>
 <script type="text/javascript">
-  setTimeout(function () { location.reload(true); }, 2500);
+  setTimeout(function () { location.reload(true); }, 10000);
 </script>
 
 </html>
