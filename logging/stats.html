@@ -184,19 +184,34 @@
         
         
     // Draw game and world maps
-    function drawPoint(ctx, x, y, colour){
+    function drawPoint(ctx, position, colour){
         var OUTLINE_SIZE = 3;
         var POINT_SIZE = 2.5;
         
         ctx.fillStyle = OUTLINE_COLOUR;
         ctx.beginPath();
-        ctx.arc(x, y, OUTLINE_SIZE, 0, Math.PI * 2, true);
+        ctx.arc(position.x, position.y, OUTLINE_SIZE, 0, Math.PI * 2, true);
         ctx.fill();
         
         ctx.fillStyle = colour;
         ctx.beginPath();
-        ctx.arc(x, y, POINT_SIZE, 0, Math.PI * 2, true);
+        ctx.arc(position.x, position.y, POINT_SIZE, 0, Math.PI * 2, true);
         ctx.fill();
+    }
+    
+    function getGameMapCoords(user){
+        return {
+            x: user.x / 96000 * 500,
+            y: user.y / 96000 * 500
+        };
+    }
+    
+    function getWorldMapCoords(user){
+        var geo = user.location.data.geo;
+        return {
+            x: 500 + (geo.longitude/180)*500,
+            y: 250 - (geo.latitude/180)*500
+        };
     }
     
     var gameMap = document.getElementById("gameMap");
@@ -213,26 +228,17 @@
         ctx.fillStyle = "rgba(0,0,0,0.8)";
         ctx.fillRect(0,0,gameMap.width,gameMap.height);
     
-        var pointSize = 10;
-        
-        
         for (var i = 0; i < stats.users.length; ++i){
             var user = stats.users[i];
             if (user.online) continue;
             
-            var x = user.x / 96000 * 500;
-            var y = user.y / 96000 * 500;
-            
-            drawPoint(ctx, x, y, OFFLINE_COLOUR);
+            drawPoint(ctx, getGameMapCoords(user), OFFLINE_COLOUR);
         }
         for (var i = 0; i < stats.users.length; ++i){
             var user = stats.users[i];
             if (!user.online) continue;
             
-            var x = user.x / 96000 * 500;
-            var y = user.y / 96000 * 500;
-            
-            drawPoint(ctx, x, y, ONLINE_COLOUR);
+            drawPoint(ctx, getGameMapCoords(user), ONLINE_COLOUR);
         }
     }
         
@@ -247,27 +253,17 @@
         ctx2.fillStyle = "rgba(0,0,0,0.6)";
         ctx2.fillRect(0,0,worldMap.width,worldMap.height);
     
-        var pointSize = 10;
-        
         for (var i = 0; i < stats.users.length; ++i){
             var user = stats.users[i];
             if (user.online) continue;
             
-            var geo = user.location.data.geo;
-            var x = 500 + (geo.longitude/180)*500;
-            var y = 250 - (geo.latitude/180)*500;
-            
-            drawPoint(ctx2, x, y, OFFLINE_COLOUR);
+            drawPoint(ctx2, getWorldMapCoords(user), OFFLINE_COLOUR);
         }
         for (var i = 0; i < stats.users.length; ++i){
             var user = stats.users[i];
             if (!user.online) continue;
             
-            var geo = user.location.data.geo;
-            var x = 500 + (geo.longitude/180)*500;
-            var y = 250 - (geo.latitude/180)*500;
-            
-            drawPoint(ctx2, x, y, ONLINE_COLOUR);
+            drawPoint(ctx2, getWorldMapCoords(user), ONLINE_COLOUR);
         }
 
     }
