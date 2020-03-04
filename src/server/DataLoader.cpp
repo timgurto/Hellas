@@ -467,7 +467,12 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
     std::string id;
     if (!xr.findAttr(elem, "id", id))  // No ID: skip
       continue;
-    NPCType *nt = new NPCType(id);
+
+    NPCType *nt = dynamic_cast<NPCType *>(_server.findObjectTypeByID(id));
+    if (!nt) {
+      nt = new NPCType(id);
+      _server._objectTypes.insert(nt);
+    }
 
     auto templateID = ""s;
     if (xr.findAttr(elem, "template", templateID))
@@ -550,8 +555,6 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
       }
       nt->addLootTable(it->second);
     }
-
-    _server._objectTypes.insert(nt);
   }
 }
 

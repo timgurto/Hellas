@@ -283,3 +283,23 @@ TEST_CASE("NPC templates") {
     }
   }
 }
+
+TEST_CASE("NPC forward declaration") {
+  GIVEN("A forward-declared NPC type with a yield") {
+    auto data = R"(
+      <npcType id="pig" maxHealth="1" >
+        <transform id="pigWithTruffle" time="1" />
+      </npcType>
+      <npcType id="pigWithTruffle" maxHealth="1" >
+        <yield id="truffle" />
+      </npcType>
+      <item id="truffle" />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    THEN("It actually has that yield") {
+      const auto &pigWithTruffleType = *s->findObjectTypeByID("pigWithTruffle");
+      CHECK(pigWithTruffleType.yield);
+    }
+  }
+}

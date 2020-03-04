@@ -9,7 +9,7 @@
 #include "ServerItem.h"
 
 // Provides a way for objects to give players items when gathered.  This is part
-// of an ObjectType.
+// of an EntityType.
 class Yield {
   struct YieldEntry {
     NormalVariable _initDistribution, _gatherDistribution;
