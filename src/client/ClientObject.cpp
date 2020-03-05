@@ -998,6 +998,8 @@ void ClientObject::createRegularTooltip() const {
       if (!ot.gatherReq().empty())
         text += " (requires " + client.tagName(ot.gatherReq()) + ")";
       tooltip.addLine(text);
+      tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
+      tooltip.addLine(std::string("Right-click to gather"));
 
       // Unlocks from gathering
       auto bestUnlockChance = 0.0;
@@ -1083,12 +1085,6 @@ void ClientObject::createRegularTooltip() const {
       tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
       tooltip.addLine("Right-click to loot");
     }
-  }
-
-  else if (userHasAccess() && ot.canGather()) {
-    tooltip.addGap();
-    tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
-    tooltip.addLine(std::string("Right-click to gather"));
   }
 }
 

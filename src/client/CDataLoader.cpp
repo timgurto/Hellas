@@ -575,7 +575,7 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
       cot->addParticles(profileName, offset);
     }
 
-    // Gathering yields
+    // Gathering yields (used to show unlock chances)
     for (auto yield : xr.getChildren("yield", elem)) {
       if (!xr.findAttr(yield, "id", s)) continue;
       auto chance = 1.0;
@@ -1002,7 +1002,15 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
       }
     }
 
+    // Gathering
     if (xr.getChildren("yield", elem).size() > 0) nt->canGather(true);
+    // Gathering yields (used to show unlock chances)
+    for (auto yield : xr.getChildren("yield", elem)) {
+      if (!xr.findAttr(yield, "id", s)) continue;
+      auto chance = 1.0;
+      xr.findAttr(yield, "gatherMean", chance);
+      nt->chanceToGather(s, chance);
+    }
 
     // Insert
     auto pair = _client._objectTypes.insert(nt);
