@@ -71,13 +71,15 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
   }
 
   // Body: reward
-  const auto &reward = quest->_info.reward;
-  auto shouldShowReward = reward.type != Info::Reward::NONE;
-  if (shouldShowReward) {
+  if (!quest->_info.rewards.empty()) {
     body->addGap();
     auto heading = new Label({}, "Reward:");
     heading->setColor(Color::WINDOW_HEADING);
     body->addChild(heading);
+  }
+  for (const auto &reward : quest->_info.rewards) {
+    auto shouldShowReward = reward.type != Info::Reward::NONE;
+    if (!shouldShowReward) continue;
 
     auto rewardDescription = ""s;
     const Tooltip *rewardTooltip{nullptr};

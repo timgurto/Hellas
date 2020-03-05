@@ -33,7 +33,7 @@ class CQuest {
     Prose brief, debrief;
     ID startsAt, endsAt;
     std::vector<Objective> objectives;
-    Reward reward;
+    std::vector<Reward> rewards;
     std::string helpTopicOnAccept, helpTopicOnComplete;
   };
 

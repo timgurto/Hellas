@@ -1083,8 +1083,7 @@ void CDataLoader::loadQuests(XmlReader &xr) {
       questInfo.objectives.push_back(objective);
     }
 
-    auto rewardElem = xr.findChild("reward", elem);
-    if (rewardElem) {
+    for (auto rewardElem : xr.getChildren("reward", elem)) {
       auto typeString = ""s;
       xr.findAttr(rewardElem, "type", typeString);
       auto type = CQuest::Info::Reward::Type{};
@@ -1094,10 +1093,14 @@ void CDataLoader::loadQuests(XmlReader &xr) {
         type = CQuest::Info::Reward::LEARN_CONSTRUCTION;
       else if (typeString == "item")
         type = CQuest::Info::Reward::RECEIVE_ITEM;
-      questInfo.reward.type = type;
 
-      xr.findAttr(rewardElem, "id", questInfo.reward.id);
-      xr.findAttr(rewardElem, "qty", questInfo.reward.itemQuantity);
+      auto reward = CQuest::Info::Reward{};
+      reward.type = type;
+
+      xr.findAttr(rewardElem, "id", reward.id);
+      xr.findAttr(rewardElem, "qty", reward.itemQuantity);
+
+      questInfo.rewards.push_back(reward);
     }
 
     _client._quests[questInfo.id] = {questInfo};
