@@ -719,3 +719,32 @@ TEST_CASE("Follower limits") {
     }
   }
 }
+
+TEST_CASE("Failed taming attempts should consume item") {
+  GIVEN("an NPC that can be tamed with an item, with 0% success chance") {
+    auto data = R"(
+      <item id="chocolate" />
+      <npcType id="girl" maxHealth="1" >
+        <canBeTamed consumes="chocolate" />
+      </npcType>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto &girl = s.addNPC("girl", {10, 15});
+
+    AND_GIVEN("a user has the item") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      const auto &chocolate = s.getFirstItem();
+      user.giveItem(&chocolate);
+
+      WHEN("he tries to tame it") {
+        c.sendMessage(CL_TAME_NPC, makeArgs(girl.serial()));
+
+        THEN("he no longer has the item") {
+          WAIT_UNTIL(!user.inventory(0).first.hasItem());
+        }
+      }
+    }
+  }
+}

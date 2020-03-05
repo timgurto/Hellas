@@ -1751,12 +1751,15 @@ void Server::handle_CL_TAME_NPC(User &user, size_t serial) {
     }
   }
 
+  // All checks pass; attempt goes ahead.
+
+  user.removeItems(consumable);
+
   if (randDouble() > npc->getTameChance()) {
     user.sendMessage(SV_TAME_ATTEMPT_FAILED);
     return;
   }
 
-  user.removeItems(consumable);
   npc->includeInPersistentState();
   if (npc->spawner()) {
     npc->spawner()->scheduleSpawn();
