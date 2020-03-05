@@ -1663,6 +1663,32 @@ TEST_CASE("Quest reward: item") {
       }
     }
   }
+
+  GIVEN("a quest that rewards two items") {
+    auto data = R"(
+      <objectType id="questgiver" />
+      <item id="gold" stackSize="2" />
+      <quest id="givesGold" startsAt="questgiver" endsAt="questgiver">
+        <reward type="item" id="gold" qty="2" />
+      </quest>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    const auto &quest = s.getFirstQuest();
+    user.startQuest(quest);
+
+    WHEN("a user completes the quest") {
+      const auto &quest = s.getFirstQuest();
+      user.startQuest(quest);
+      user.completeQuest(quest.id);
+
+      THEN("he has two of the items") { CHECK(user.inventory(0).second == 2); }
+    }
+  }
+
   GIVEN("a quest that awards a nonexistent item") {
     auto data = R"(
       <item id="filler" />

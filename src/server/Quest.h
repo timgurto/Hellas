@@ -34,6 +34,7 @@ struct Quest {
     enum Type { NONE, CONSTRUCTION, SPELL, ITEM };
     Type type{NONE};
     std::string id;
+    int itemQuantity{1};
   };
   Reward reward;
 

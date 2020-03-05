@@ -1586,7 +1586,7 @@ void User::giveQuestReward(const Quest::Reward &reward) {
         SERVER_ERROR("Quest-reward item doesn't exist: "s + reward.id);
         break;
       }
-      giveItem(rewardItem);
+      giveItem(rewardItem, reward.itemQuantity);
       break;
     }
 
