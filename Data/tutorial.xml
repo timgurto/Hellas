@@ -133,6 +133,7 @@
     <prerequisite id="tutReturnFromZeus" />
     <objective type="fetch" id="tutStick" qty="8" />
     <reward type="construction" id="tutFire" />
+    <reward type="item" id="tutStick" qty="8" />
 </quest>
     <objectType id="tutFire" name="Cooking Fire"
         xDrawOffset="-10" yDrawOffset="-7" imageFile="fire" >

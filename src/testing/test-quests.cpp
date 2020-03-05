@@ -1712,6 +1712,35 @@ TEST_CASE("Quest reward: item") {
   }
 }
 
+TEST_CASE("Multiple quest rewards") {
+  GIVEN("a quest that awards two different items") {
+    auto data = R"(
+      <objectType id="questgiver" />
+      <item id="strawberry" />
+      <item id="grape" />
+      <quest id="giveFruits" startsAt="questgiver" endsAt="questgiver">
+        <reward type="item" id="strawberry" />
+        <reward type="item" id="grape" />
+      </quest>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    WHEN("a user completes the quest") {
+      const auto &quest = s.getFirstQuest();
+      user.startQuest(quest);
+      user.completeQuest(quest.id);
+
+      THEN("he has two items") {
+        WAIT_UNTIL(user.inventory(0).first.hasItem());
+        WAIT_UNTIL(user.inventory(1).first.hasItem());
+      }
+    }
+  }
+}
+
 TEST_CASE("Client remembers quest progress after death") {
   GIVEN("a player on a quest, and a quest-starter object") {
     auto data = R"(

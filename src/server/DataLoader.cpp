@@ -382,21 +382,23 @@ void DataLoader::loadQuests(XmlReader &xr) {
       q.objectives.push_back(objective);
     }
 
-    auto rewardElem = xr.findChild("reward", elem);
-    if (rewardElem) {
+    for (auto rewardElem : xr.getChildren("reward", elem)) {
+      auto reward = Quest::Reward{};
       auto type = ""s;
-      if (!xr.findAttr(rewardElem, "id", q.reward.id)) continue;
-      xr.findAttr(rewardElem, "qty", q.reward.itemQuantity);
+      if (!xr.findAttr(rewardElem, "id", reward.id)) continue;
+      xr.findAttr(rewardElem, "qty", reward.itemQuantity);
 
       if (!xr.findAttr(rewardElem, "type", type)) continue;
       if (type == "construction")
-        q.reward.type = Quest::Reward::CONSTRUCTION;
+        reward.type = Quest::Reward::CONSTRUCTION;
       else if (type == "spell")
-        q.reward.type = Quest::Reward::SPELL;
+        reward.type = Quest::Reward::SPELL;
       else if (type == "item")
-        q.reward.type = Quest::Reward::ITEM;
+        reward.type = Quest::Reward::ITEM;
       else
         continue;
+
+      q.rewards.push_back(reward);
     }
 
     for (auto prereq : xr.getChildren("prerequisite", elem)) {

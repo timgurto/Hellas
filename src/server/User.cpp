@@ -1536,11 +1536,13 @@ void User::completeQuest(const Quest::ID &id) {
   auto &server = Server::instance();
   const auto quest = server.findQuest(id);
 
-  // Final check before executing: make sure there's room for the reward
-  if (quest->reward.type == Quest::Reward::ITEM) {
-    if (!this->hasRoomFor({quest->reward.id})) {
-      sendMessage(WARNING_INVENTORY_FULL);
-      return;
+  // Final check before executing: make sure there's room for the rewards
+  for (const auto &reward : quest->rewards) {
+    if (reward.type == Quest::Reward::ITEM) {
+      if (!this->hasRoomFor({reward.id})) {
+        sendMessage(WARNING_INVENTORY_FULL);
+        return;
+      }
     }
   }
 
@@ -1558,7 +1560,7 @@ void User::completeQuest(const Quest::ID &id) {
 
   // Rewards
   addXP(250);
-  giveQuestReward(quest->reward);
+  for (const auto &reward : quest->rewards) giveQuestReward(reward);
 
   for (const auto &unlockedQuestID : quest->otherQuestsWithThisAsPrerequisite) {
     if (canStartQuest(unlockedQuestID))

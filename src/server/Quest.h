@@ -36,7 +36,7 @@ struct Quest {
     std::string id;
     int itemQuantity{1};
   };
-  Reward reward;
+  std::vector<Reward> rewards;
 
   std::set<std::string> prerequisiteQuests{};
   bool hasPrerequisite() const { return !prerequisiteQuests.empty(); }
