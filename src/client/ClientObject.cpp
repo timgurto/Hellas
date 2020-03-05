@@ -1235,7 +1235,8 @@ bool ClientObject::belongsToPlayerCity() const {
 }
 
 std::string ClientObject::additionalTextInName() const {
-  if (_transformTimer > 0 && !this->isBeingConstructed())
+  // Transform time
+  if (_transformTimer > 0 && userHasAccess() && !isBeingConstructed())
     return "("s + msAsTimeDisplay(_transformTimer) + " remaining)"s;
   return {};
 }
