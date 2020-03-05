@@ -1411,12 +1411,19 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           sendMessage(client, ERROR_INVALID_ITEM);
           break;
         }
-        auto owner =
-            Permissions::Owner{Permissions::Owner::PLAYER, user->name()};
-        auto &obj = addObject(ot, user->location() + MapPoint{50, 0}, owner);
-        if (obj.isBeingBuilt()) {
-          obj.remainingMaterials().clear();
-          sendConstructionMaterialsMessage(*user, obj);
+        if (ot->classTag() == 'n') {
+          auto *nt = dynamic_cast<NPCType *>(ot);
+          if (!nt) break;
+          auto &npc = addNPC(nt, user->location() + MapPoint{50, 0});
+          npc.permissions.setPlayerOwner(user->name());
+        } else {
+          auto owner =
+              Permissions::Owner{Permissions::Owner::PLAYER, user->name()};
+          auto &obj = addObject(ot, user->location() + MapPoint{50, 0}, owner);
+          if (obj.isBeingBuilt()) {
+            obj.remainingMaterials().clear();
+            sendConstructionMaterialsMessage(*user, obj);
+          }
         }
         break;
       }
