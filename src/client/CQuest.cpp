@@ -99,7 +99,10 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
       case Info::Reward::RECEIVE_ITEM: {
         const auto *item = client.findItem(reward.id);
         auto name = item ? item->name() : reward.id;
-        rewardDescription = "Receive item: " + name;
+        rewardDescription = "Receive item: ";
+        if (reward.itemQuantity > 1)
+          rewardDescription += toString(reward.itemQuantity) + "x ";
+        rewardDescription += name;
         if (item) rewardTooltip = &item->tooltip();
         break;
       }

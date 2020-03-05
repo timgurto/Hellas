@@ -25,6 +25,7 @@ class CQuest {
       enum Type { NONE, LEARN_SPELL, LEARN_CONSTRUCTION, RECEIVE_ITEM };
       Type type{NONE};
       std::string id{};
+      int itemQuantity{1};
     };
 
     ID id;

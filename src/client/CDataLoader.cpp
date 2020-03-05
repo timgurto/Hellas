@@ -1094,12 +1094,10 @@ void CDataLoader::loadQuests(XmlReader &xr) {
         type = CQuest::Info::Reward::LEARN_CONSTRUCTION;
       else if (typeString == "item")
         type = CQuest::Info::Reward::RECEIVE_ITEM;
-
-      auto id = ""s;
-      xr.findAttr(rewardElem, "id", id);
-
       questInfo.reward.type = type;
-      questInfo.reward.id = id;
+
+      xr.findAttr(rewardElem, "id", questInfo.reward.id);
+      xr.findAttr(rewardElem, "qty", questInfo.reward.itemQuantity);
     }
 
     _client._quests[questInfo.id] = {questInfo};
