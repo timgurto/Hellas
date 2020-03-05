@@ -6,18 +6,18 @@
 #include "objects/Object.h"
 
 void Transformation::update(ms_t timeElapsed) {
+  // Skip if dead
+  if (!_transforms) return;
   if (parent().isDead()) return;
-  if (_timeUntilTransform == 0) return;
-
-  auto transforms = parent().type()->transformation.newType != nullptr;
-  if (!transforms) return;
 
   auto blockedUntilGathered = parent().type()->transformation.mustBeGathered &&
                               parent().gatherable.hasItems();
   if (blockedUntilGathered) return;
 
+  // Skip if unowned NPC
   if (parent().classTag() == 'n' && !parent().permissions.hasOwner()) return;
 
+  // Check timer
   if (timeElapsed > _timeUntilTransform)
     _timeUntilTransform = 0;
   else
@@ -29,6 +29,8 @@ void Transformation::update(ms_t timeElapsed) {
 }
 
 void Transformation::initialise() {
-  if (!parent().type()->transformation.newType) return;
-  _timeUntilTransform = parent().type()->transformation.delay;
+  const auto &type = parent().type()->transformation;
+  _transforms = type.transforms && type.newType;
+  if (!_transforms) return;
+  _timeUntilTransform = type.delay;
 }

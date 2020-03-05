@@ -7,6 +7,9 @@ class EntityType;
 class XmlReader;
 class TiXmlElement;
 
+// Transformation happens after a delay, which can be 0.  An additional
+// requirement can be that it is gathered until empty.
+
 class Transformation : public EntityComponent {
  public:
   Transformation(Entity &parent) : EntityComponent(parent) {}
@@ -21,6 +24,7 @@ class Transformation : public EntityComponent {
   void initialise();
 
  private:
+  bool _transforms{false};
   ms_t _timeUntilTransform{0};  // When this hits zero, it switches types.
 };
 
@@ -29,11 +33,14 @@ struct TransformationType {
   ms_t delay{0};
   bool mustBeGathered{false};
   bool becomesFullyConstructed{false};
+  bool transforms{false};
 
   template <typename T>
   void loadFromXML(XmlReader &xr, TiXmlElement *elem) {
     auto e = xr.findChild("transform", elem);
     if (!e) return;
+
+    transforms = true;
 
     auto &server = Server::instance();
 

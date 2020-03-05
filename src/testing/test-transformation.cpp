@@ -106,3 +106,26 @@ TEST_CASE("NPC transformation") {
     }
   }
 }
+
+TEST_CASE("Transform on gather") {
+  GIVEN("a tree that transforms into a stump when gathered") {
+    auto data = R"(
+      <objectType id="tree" >
+        <yield id="wood" />
+        <transform id="stump" whenEmpty="1" />
+      </objectType>
+      <objectType id="stump" />
+      <item id="wood" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    const auto &tree = s.addObject("tree", {10, 15});
+
+    WHEN("a user gathers from it") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      c.sendMessage(CL_GATHER, makeArgs(tree.serial()));
+
+      THEN("it becomes a stump") { WAIT_UNTIL(tree.type()->id() == "stump"); }
+    }
+  }
+}
