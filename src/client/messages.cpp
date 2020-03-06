@@ -1143,6 +1143,7 @@ void Client::handleMessage(const std::string &msg) {
         else {
           ClientVehicle *v = dynamic_cast<ClientVehicle *>(pairIt->second);
           v->driver(nullptr);
+          userP->notDriving();
         }
         break;
       }

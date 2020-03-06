@@ -38,6 +38,7 @@ class Avatar : public Sprite, public ClientCombatant {
   const ClientItem::vect_t &gear() const { return _gear; }
   ClientItem::vect_t &gear() { return _gear; }
   void driving(const ClientVehicle &v) { _vehicle = &v; }
+  void notDriving() { _vehicle = nullptr; }
   bool isDriving() const { return _vehicle != nullptr; }
   double vehicleSpeed() const;
   const ClientItem *getRandomArmor() const {

@@ -7,11 +7,13 @@
 extern Renderer renderer;
 
 ClientCombatant::ClientCombatant(const ClientCombatantType *type)
-    : _type(type),
-      _maxHealth(_type->maxHealth()),
-      _health(_maxHealth),
-      _maxEnergy(_type->maxEnergy()),
-      _energy(_maxEnergy) {}
+    : _type(type) {
+  if (!_type) return;
+  _maxHealth = _type->maxHealth();
+  _health = _maxHealth;
+  _maxEnergy = _type->maxEnergy();
+  _energy = _maxEnergy;
+}
 
 void ClientCombatant::update(double delta) { createBuffParticles(delta); }
 

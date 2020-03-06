@@ -51,12 +51,13 @@ ClientObject::ClientObject(size_t serialArg, const ClientObjectType *type,
       _confirmCedeWindow(nullptr),
       _beingGathered(false),
       _dropbox(1),
-      _transformTimer(type->transformTime()),
       _gatherSoundTimer(0),
       _lootable(false),
       _lootContainer(nullptr) {
   if (type == nullptr)  // i.e., a serial-only search dummy
     return;
+
+  _transformTimer = type->transformTime();
 
   const size_t containerSlots = objectType()->containerSlots(),
                merchantSlots = objectType()->merchantSlots();
