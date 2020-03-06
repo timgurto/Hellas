@@ -214,7 +214,7 @@ TEST_CASE("Ceding") {
   }
 }
 
-TEST_CASE("A player can leave a city") {
+TEST_CASE("A player can leave a city", "[.flaky]") {
   // Given a user named Alice;
   auto c = TestClient::WithUsername("Alice");
   auto s = TestServer{};

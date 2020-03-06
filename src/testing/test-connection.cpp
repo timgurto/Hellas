@@ -52,7 +52,8 @@ TEST_CASE("Removed users are removed from co-ord indices") {
   CHECK(s.entitiesByX().empty());
 }
 
-TEST_CASE("Server remains functional with unresponsive client", "[.slow]") {
+TEST_CASE("Server remains functional with unresponsive client",
+          "[.slow][.flaky]") {
   // Given a server and client
   TestServer s;
   {
