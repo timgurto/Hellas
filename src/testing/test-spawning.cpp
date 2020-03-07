@@ -17,10 +17,7 @@ TEST_CASE("Simple spawner") {
     WHEN("the server starts") {
       auto s = TestServer::WithDataString(data);
 
-      THEN("there is an object") {
-        REPEAT_FOR_MS(100);
-        s.getFirstObject();
-      }
+      THEN("there is an object") { s.getFirstObject(); }
     }
   }
 }
@@ -145,7 +142,6 @@ TEST_CASE("Cached terrain for spawning") {
       auto s = TestServer::WithDataString(data);
 
       THEN("a fish has spawned") {
-        REPEAT_FOR_MS(100);
         s.getFirstObject();
 
         AND_WHEN("another is spawned") {
