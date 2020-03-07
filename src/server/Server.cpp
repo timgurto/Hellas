@@ -816,4 +816,6 @@ void Server::initialiseData() {
   }
 
   for (auto &ot : _objectTypes) ot->initialise();
+
+  Spawner::initialise();
 }

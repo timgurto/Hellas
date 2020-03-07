@@ -2,6 +2,7 @@
 #define SPAWNER_H
 
 #include <list>
+#include <map>
 #include <set>
 
 #include "../Point.h"
@@ -10,6 +11,7 @@
 class Server;
 class ObjectType;
 class Entity;
+class TerrainList;
 
 class Spawner {
   MapPoint _location;
@@ -26,6 +28,18 @@ class Spawner {
   std::set<char> _terrainWhitelist;  // Only applies if nonempty
   std::list<ms_t>
       _spawnSchedule;  // The times at which new objects should spawn
+
+  class TerrainCache {
+    using Tiles = std::vector<size_t>;
+    std::map<const TerrainList *, Tiles> _validTiles;
+
+   public:
+    void registerValidTile(const TerrainList &terrainList, size_t x, size_t y);
+    std::pair<size_t, size_t> pickRandomTile(
+        const TerrainList &terrainList) const;
+  };
+  static TerrainCache terrainCache;
+  static void cacheTerrain(std::string listID);
 
  public:
   Spawner(const MapPoint &location = MapPoint{},
@@ -45,6 +59,8 @@ class Spawner {
   // Add a spawn job to the queue.  After _respawnTime, spawn() will be called.
   void scheduleSpawn();
   void update(ms_t currentTime);  // Act on any scheduled spawns that are due.
+
+  static void initialise();
 };
 
 #endif

@@ -162,4 +162,17 @@ TEST_CASE("Cached terrain for spawning") {
       }
     }
   }
+
+  GIVEN("a cached spawner on a small map") {
+    auto data = R"(
+      <objectType id="mushroom" />
+      <spawnPoint useCachedTerrain="1" y="100" x="100" type="mushroom" quantity="1" radius="100" respawnTime="300000" />
+    )";
+
+    WHEN("the server starts") {
+      auto s = TestServer::WithDataString(data);
+
+      THEN("an object has spawned") { s.getFirstObject(); }
+    }
+  }
 }

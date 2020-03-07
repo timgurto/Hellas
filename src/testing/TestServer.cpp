@@ -207,3 +207,8 @@ const ClassType &TestServer::getFirstClass() {
   REQUIRE(!_server->_classes.empty());
   return _server->_classes.begin()->second;
 }
+
+Spawner &TestServer::getFirstSpawner() {
+  REQUIRE(!_server->_spawners.empty());
+  return _server->_spawners.front();
+}

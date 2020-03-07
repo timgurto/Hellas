@@ -2,6 +2,8 @@
 
 #include "Server.h"
 
+Spawner::TerrainCache Spawner::terrainCache;
+
 Spawner::Spawner(const MapPoint &location, const ObjectType *type)
     : _location(location),
       _type(type),
@@ -32,7 +34,8 @@ void Spawner::spawn() {
   for (size_t attempt = 0; attempt != MAX_ATTEMPTS; ++attempt) {
     auto p = MapPoint{};
     if (_shouldUseTerrainCache) {
-      p = Map::randomPointInTile(0, 50);
+      auto tile = terrainCache.pickRandomTile(_type->allowedTerrain());
+      p = Map::randomPointInTile(tile.first, tile.second);
     } else
       p = getRandomPoint();
 
@@ -72,4 +75,36 @@ void Spawner::update(ms_t currentTime) {
     _spawnSchedule.pop_front();
     spawn();
   }
+}
+
+void Spawner::initialise() {
+  cacheTerrain("water");
+  cacheTerrain("default");
+}
+
+void Spawner::cacheTerrain(std::string listID) {
+  auto &server = Server::instance();
+  auto terrainList = TerrainList::findList(listID);
+  if (!terrainList) return;
+  for (auto x = 0; x != server.map().width(); ++x)
+    for (auto y = 0; y != server.map().height(); ++y) {
+      auto terrainAtThisTile = server.map()[x][y];
+      if (terrainList->allows(terrainAtThisTile))
+        terrainCache.registerValidTile(*terrainList, x, y);
+    }
+}
+
+void Spawner::TerrainCache::registerValidTile(const TerrainList &terrainList,
+                                              size_t x, size_t y) {
+  auto &server = Server::instance();
+  auto tile = server.map().to1D(x, y);
+  _validTiles[&terrainList].push_back(tile);
+}
+
+std::pair<size_t, size_t> Spawner::TerrainCache::pickRandomTile(
+    const TerrainList &terrainList) const {
+  auto it = _validTiles.find(&terrainList);
+  auto pair = it->second;
+  auto tile = it->second.front();
+  return Server::instance().map().from1D(tile);
 }
