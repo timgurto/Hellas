@@ -147,6 +147,22 @@ TEST_CASE("Cached terrain for spawning") {
       THEN("a fish has spawned") {
         REPEAT_FOR_MS(100);
         s.getFirstObject();
+
+        AND_WHEN("another is spawned") {
+          auto &spawner = s.getFirstSpawner();
+          spawner.spawn();
+
+          THEN("the two objects have different locations") {
+            auto entities = s->findEntitiesInArea({1600, 1600}, 1600);
+            CHECK(entities.size() == 2);
+            auto it = entities.begin();
+            const auto *fish1 = *it;
+            ++it;
+            const auto *fish2 = *it;
+
+            CHECK(fish1->location() != fish2->location());
+          }
+        }
       }
     }
   }

@@ -32,7 +32,7 @@ void Spawner::spawn() {
   for (size_t attempt = 0; attempt != MAX_ATTEMPTS; ++attempt) {
     auto p = MapPoint{};
     if (_shouldUseTerrainCache) {
-      p = MapPoint{10, 1616};
+      p = Map::randomPointInTile(0, 50);
     } else
       p = getRandomPoint();
 
