@@ -106,3 +106,8 @@ char Map::getTerrainAtPoint(const MapPoint &p) const {
 MapPoint Map::randomPoint() const {
   return {randDouble() * (_w - 0.5) * TILE_W, randDouble() * _h * TILE_H};
 }
+
+MapPoint Map::randomPointInTile(size_t x, size_t y) {
+  auto tile = getTileRect(x, y);
+  return {tile.x + randDouble() * tile.w, tile.y + randDouble() * tile.h};
+}

@@ -124,3 +124,19 @@ TEST_CASE("Terrain-set descriptions") {
     }
   }
 }
+
+TEST_CASE("randomPointInTile()") {
+  SECTION("Simple tiles") {
+    for (auto i = 0; i != 20; ++i) {
+      CHECK(collision(Map::randomPointInTile(0, 0), {-16.0, 0, 32.0, 32.0}));
+      CHECK(collision(Map::randomPointInTile(1, 0), {16.0, 0, 32.0, 32.0}));
+      CHECK(collision(Map::randomPointInTile(2, 0), {48.0, 0, 32.0, 32.0}));
+      CHECK(collision(Map::randomPointInTile(0, 2), {-16.0, 64.0, 32.0, 32.0}));
+      CHECK(collision(Map::randomPointInTile(0, 1), {0, 32.0, 32.0, 32.0}));
+    }
+  }
+
+  SECTION("Results are random") {
+    CHECK(Map::randomPointInTile(0, 0) != Map::randomPointInTile(0, 0));
+  }
+}

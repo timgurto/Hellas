@@ -25,6 +25,7 @@ class Map {
   char getTerrainAtPoint(const MapPoint& p) const;
 
   MapPoint randomPoint() const;
+  static MapPoint randomPointInTile(size_t x, size_t y);
 
  private:
   std::vector<std::vector<char> > _grid;
