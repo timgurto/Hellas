@@ -111,3 +111,9 @@ MapPoint Map::randomPointInTile(size_t x, size_t y) {
   auto tile = getTileRect(x, y);
   return {tile.x + randDouble() * tile.w, tile.y + randDouble() * tile.h};
 }
+
+size_t Map::to1D(size_t x, size_t y) const { return _w * y + x; }
+
+std::pair<size_t, size_t> Map::from1D(size_t i) const {
+  return {i % _w, i / _w};
+}

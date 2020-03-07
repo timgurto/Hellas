@@ -140,3 +140,63 @@ TEST_CASE("randomPointInTile()") {
     CHECK(Map::randomPointInTile(0, 0) != Map::randomPointInTile(0, 0));
   }
 }
+
+TEST_CASE("Transformation between 1D and 2D co-ords") {
+  SECTION("2x2 map") {
+    auto data = R"(
+      <terrain index="." id="grass" />
+      <size x="2" y="2" />
+      <row    y="0" terrain = ".." />
+      <row    y="1" terrain = ".." />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    CHECK(s->map().to1D(0, 0) == 0);
+    CHECK(s->map().to1D(1, 0) == 1);
+    CHECK(s->map().to1D(0, 1) == 2);
+    CHECK(s->map().to1D(1, 1) == 3);
+    CHECK(s->map().from1D(0) == std::make_pair<size_t, size_t>(0, 0));
+    CHECK(s->map().from1D(1) == std::make_pair<size_t, size_t>(1, 0));
+    CHECK(s->map().from1D(2) == std::make_pair<size_t, size_t>(0, 1));
+    CHECK(s->map().from1D(3) == std::make_pair<size_t, size_t>(1, 1));
+  }
+
+  SECTION("3x3 map") {
+    auto data = R"(
+        <terrain index="." id="grass" />
+        <size x="3" y="3" />
+        <row    y="0" terrain = "..." />
+        <row    y="1" terrain = "..." />
+        <row    y="2" terrain = "..." />
+      )";
+    auto s = TestServer::WithDataString(data);
+
+    CHECK(s->map().to1D(0, 0) == 0);
+    CHECK(s->map().to1D(0, 1) == 3);
+    CHECK(s->map().to1D(1, 1) == 4);
+    CHECK(s->map().to1D(0, 2) == 6);
+    CHECK(s->map().to1D(1, 2) == 7);
+    CHECK(s->map().from1D(2) == std::make_pair<size_t, size_t>(2, 0));
+    CHECK(s->map().from1D(3) == std::make_pair<size_t, size_t>(0, 1));
+    CHECK(s->map().from1D(4) == std::make_pair<size_t, size_t>(1, 1));
+    CHECK(s->map().from1D(6) == std::make_pair<size_t, size_t>(0, 2));
+    CHECK(s->map().from1D(7) == std::make_pair<size_t, size_t>(1, 2));
+  }
+
+  SECTION("4x4 map") {
+    auto data = R"(
+        <terrain index="." id="grass" />
+        <size x="4" y="4" />
+        <row    y="0" terrain = "...." />
+        <row    y="1" terrain = "...." />
+        <row    y="2" terrain = "...." />
+        <row    y="3" terrain = "...." />
+      )";
+    auto s = TestServer::WithDataString(data);
+
+    CHECK(s->map().from1D(0) == std::make_pair<size_t, size_t>(0, 0));
+    CHECK(s->map().from1D(6) == std::make_pair<size_t, size_t>(2, 1));
+    CHECK(s->map().from1D(8) == std::make_pair<size_t, size_t>(0, 2));
+    CHECK(s->map().from1D(9) == std::make_pair<size_t, size_t>(1, 2));
+  }
+}

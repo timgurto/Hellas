@@ -27,6 +27,9 @@ class Map {
   MapPoint randomPoint() const;
   static MapPoint randomPointInTile(size_t x, size_t y);
 
+  size_t to1D(size_t x, size_t y) const;
+  std::pair<size_t, size_t> from1D(size_t i) const;
+
  private:
   std::vector<std::vector<char> > _grid;
   size_t _w{0}, _h{0};
