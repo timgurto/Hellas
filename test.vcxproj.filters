@@ -188,6 +188,7 @@
     <ClCompile Include="src\testing\test-vehicles.cpp" />
     <ClCompile Include="src\client\KeyboardStateFetcher.cpp" />
     <ClCompile Include="src\testing\test-input.cpp" />
+    <ClCompile Include="src\testing\test-spawning.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />

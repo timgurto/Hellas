@@ -30,7 +30,11 @@ void Spawner::spawn() {
   Server &server = *Server::_instance;
 
   for (size_t attempt = 0; attempt != MAX_ATTEMPTS; ++attempt) {
-    auto p = getRandomPoint();
+    auto p = MapPoint{};
+    if (_shouldUseTerrainCache) {
+      p = MapPoint{10, 1616};
+    } else
+      p = getRandomPoint();
 
     // Check terrain whitelist
     if (!_terrainWhitelist.empty()) {

@@ -957,6 +957,8 @@ void DataLoader::loadSpawners(XmlReader &xr) {
     for (auto terrain : xr.getChildren("allowedTerrain", elem))
       if (xr.findAttr(terrain, "index", c)) s.allowTerrain(c);
 
+    if (xr.findAttr(elem, "useCachedTerrain", n) && n == 1) s.useTerrainCache();
+
     _server._spawners.push_back(s);
   }
 }

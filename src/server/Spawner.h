@@ -16,6 +16,7 @@ class Spawner {
   double _radius;           // Default: 0
   const ObjectType *_type;  // What it spawns
   size_t _quantity;         // How many to maintain.  Default: 1
+  bool _shouldUseTerrainCache{false};
 
   // Time between an object being removed, and its replacement spawning.
   // Default: 0 In the case of an NPC, this timer starts on death, rather than
@@ -38,6 +39,7 @@ class Spawner {
   size_t quantity() const { return _quantity; }
   void respawnTime(ms_t t) { _respawnTime = t; }
   void allowTerrain(char c) { _terrainWhitelist.insert(c); }
+  void useTerrainCache() { _shouldUseTerrainCache = true; }
 
   void spawn();  // Attempt to add a new object.
   // Add a spawn job to the queue.  After _respawnTime, spawn() will be called.
