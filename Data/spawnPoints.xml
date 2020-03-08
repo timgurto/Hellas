@@ -1,774 +1,295 @@
 <root>
-    <spawnPoint y="4072" x="6068" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="4180" x="5264" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="4236" x="4780" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="4284" x="6396" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="6100" x="7208" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="6836" x="8308" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="7212" x="4536" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="7248" x="4196" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="7664" x="8276" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="7908" x="9768" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="7912" x="4240" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="8004" x="3676" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="8028" x="14720" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="8028" x="23312" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="8136" x="3196" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="8152" x="15272" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="8168" x="13856" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="8192" x="9392" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="8208" x="7272" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="8212" x="11804" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="8234" x="23770" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="8244" x="16396" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="8272" x="15756" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="8356" x="25164" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="8396" x="8048" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="8460" x="25616" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="8520" x="13388" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="8610" x="24430" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="8616" x="15984" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="8652" x="9532" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="8652" x="26084" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="8682" x="22932" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="8720" x="24728" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="8808" x="17836" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="8880" x="16656" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="9026" x="22544" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="9036" x="7692" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="9088" x="13340" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="9088" x="17028" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="9096" x="17492" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="9204" x="8868" type="fish" quantity="10" radius="600" respawnTime="300000" />
-    <spawnPoint y="9212" x="9868" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="9220" x="12004" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="9338" x="26598" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="9364" x="18288" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="9464" x="24420" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="9482" x="26822" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="9506" x="22174" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="9520" x="23408" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="9548" x="17464" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="9596" x="11628" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="9628" x="8788" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="9696" x="14736" type="stick" quantity="60" radius="1500" respawnTime="300000" />
-    <spawnPoint y="9708" x="10492" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="9836" x="9824" type="fish" quantity="10" radius="600" respawnTime="300000" />
     <spawnPoint y="9904" x="15440" type="boar18" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="9944" x="27470" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="9948" x="11156" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="9976" x="17340" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="10000" x="14800" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="10032" x="22190" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="10072" x="23944" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="10084" x="12440" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="10128" x="10852" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="10128" x="18628" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="10212" x="12024" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="10260" x="9380" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="10260" x="27936" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="10400" x="18080" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="10448" x="10224" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="10466" x="23820" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="10518" x="28182" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="10576" x="15904" type="tin" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="10676" x="10836" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="10688" x="11780" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="10706" x="22304" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="10736" x="22736" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="10820" x="17280" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="10822" x="28704" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="10824" x="18976" type="tin" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="10888" x="10568" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="10964" x="11184" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="11016" x="25696" type="tin" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="11104" x="14040" type="boar18" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="11120" x="15240" type="boar18" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="11126" x="29190" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="11156" x="10180" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="11216" x="25872" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="11296" x="17232" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="11320" x="11332" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="11390" x="22206" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="11394" x="23888" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="11418" x="29678" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="11504" x="9844" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="11670" x="23238" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="11688" x="11244" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="11704" x="22832" type="lizard15" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="11836" x="17408" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="11872" x="31116" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="11904" x="18928" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="11934" x="30366" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="11948" x="24232" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="11952" x="28800" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="11964" x="11512" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="11968" x="14712" type="boar18" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="12000" x="22194" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="12048" x="11472" type="stick" quantity="60" radius="1500" respawnTime="300000" />
     <spawnPoint y="12048" x="11984" type="tree" quantity="30" radius="1500" respawnTime="300000" />
-    <spawnPoint y="12060" x="9924" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="12082" x="23528" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="12208" x="20168" type="lizard15" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="12216" x="30032" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="12240" x="11456" type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="12312" x="26168" type="meleeMan16" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="12316" x="11808" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="12320" x="21390" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="12374" x="21192" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="12376" x="24088" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="12408" x="24582" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="12416" x="20888" type="lizard15" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="12512" x="10132" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="12560" x="17556" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="12584" x="28504" type="meleeMan16" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="12598" x="29932" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="12618" x="31602" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="12624" x="20912" type="tin" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="12640" x="21184" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="12656" x="16288" type="rock" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="12752" x="22928" type="lizard15" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="12864" x="12108" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="12880" x="14272" type="stick" quantity="60" radius="1500" respawnTime="300000" />
-    <spawnPoint y="13034" x="24648" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="13048" x="27496" type="meleeMan16" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="13096" x="32538" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="13120" x="21652" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="13174" x="33162" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="13200" x="14528" type="tree" quantity="30" radius="1500" respawnTime="300000" />
-    <spawnPoint y="13212" x="26218" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="13266" x="29754" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="13296" x="13952" type="wildFlax" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="13352" x="23600" type="lizard15" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="13408" x="10560" type="fish" quantity="5" radius="600" respawnTime="300000" />
-    <spawnPoint y="13412" x="17772" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="13456" x="16400" type="tin" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="13512" x="22326" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="13540" x="30028" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="13584" x="33940" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="13650" x="22660" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="13680" x="24746" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="13704" x="20920" type="lizard15" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="13758" x="26132" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="13906" x="30374" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="13924" x="18352" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="13948" x="14904" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="13952" x="13280" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="13968" x="13908" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="13968" x="34302" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="14012" x="14628" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="14096" x="12692" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="14112" x="14464" type="fish" quantity="8" radius="500" respawnTime="300000" />
-    <spawnPoint y="14116" x="14352" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="14140" x="36128" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="14170" x="24222" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="14208" x="24656" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="14232" x="36430" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="14276" x="15328" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="14320" x="27952" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="14340" x="22932" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="14372" x="30440" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="14392" x="27792" type="tin" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="14398" x="23574" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="14430" x="25978" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="14476" x="12156" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="14480" x="21296" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="14568" x="18684" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="14576" x="34476" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="14578" x="36388" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="14756" x="19504" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="14772" x="34580" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="14836" x="29918" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="14864" x="17280" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="15000" x="29492" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="15018" x="26260" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="15140" x="19520" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="15160" x="15908" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="15232" x="21568" type="tin" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="15316" x="34826" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="15344" x="12696" type="earthNymph" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="15376" x="14304" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="15442" x="29134" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="15536" x="12864" type="tree" quantity="30" radius="1500" respawnTime="300000" />
-    <spawnPoint y="15600" x="10448" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="15672" x="19804" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="15744" x="12736" type="stick" quantity="60" radius="1500" respawnTime="300000" />
-    <spawnPoint y="15776" x="28826" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="15820" x="26396" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="15828" x="34962" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="15836" x="16460" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="15888" x="24280" type="tin" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="16132" x="17264" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="16186" x="28964" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="16314" x="26782" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="16384" x="16720" type="tin" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="16484" x="20440" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="16484" x="35034" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="16572" x="28756" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="16744" x="26806" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="16784" x="23568" type="rock" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="16928" x="18672" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="16964" x="35416" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="17004" x="20560" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="17224" x="28808" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="17248" x="19040" type="tin" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="17304" x="23872" type="airNymph" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="17546" x="27008" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="17584" x="13200" type="wildFlax" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="17584" x="15536" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="17632" x="20980" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="17658" x="28902" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="17744" x="13664" type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="17836" x="35624" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="17864" x="11624" type="earthNymph" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="18032" x="15424" type="stick" quantity="60" radius="1500" respawnTime="300000" />
-    <spawnPoint y="18128" x="11136" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="18244" x="21068" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="18244" x="28690" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="18264" x="14264" type="earthNymph" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="18352" x="18400" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="18370" x="27516" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="18428" x="21892" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="18494" x="28074" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="18608" x="12784" type="stick" quantity="60" radius="1500" respawnTime="300000" />
     <spawnPoint y="18608" x="13200" type="tree" quantity="30" radius="1500" respawnTime="300000" />
-    <spawnPoint y="18612" x="18924" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="18640" x="17532" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="18800" x="21524" type="fish" quantity="10" radius="600" respawnTime="300000" />
-    <spawnPoint y="18876" x="21028" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="18908" x="17148" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="18916" x="19388" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="19028" x="22168" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="19040" x="23688" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="19048" x="23312" type="airNymph" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="19144" x="24760" type="airNymph" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="19226" x="36294" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="19312" x="19828" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="19408" x="16632" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="19532" x="24368" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="19568" x="23812" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="19632" x="23292" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="19632" x="25984" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="19664" x="22180" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="19664" x="24028" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="19790" x="36874" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="19796" x="21264" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="19808" x="16172" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="19812" x="20128" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="19816" x="30012" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="19848" x="21620" type="fish" quantity="10" radius="600" respawnTime="300000" />
     <spawnPoint y="19856" x="16672" type="tree" quantity="30" radius="1500" respawnTime="300000" />
-    <spawnPoint y="19992" x="24244" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="20008" x="30264" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="20020" x="24660" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="20028" x="15592" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="20032" x="22880" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="20140" x="23612" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="20200" x="13484" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="20204" x="14808" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="20208" x="15952" type="wildFlax" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="20208" x="16384" type="stick" quantity="60" radius="1500" respawnTime="300000" />
     <spawnPoint y="20240" x="18752" type="tin" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="20268" x="24088" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="20276" x="29968" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="20288" x="11456" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="20372" x="14216" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="20384" x="18608" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="20420" x="12764" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="20428" x="21852" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="20434" x="36998" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="20452" x="20364" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="20492" x="29284" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="20544" x="15840" type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="20560" x="13248" type="wildFlax" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="20584" x="21412" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="20592" x="23676" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="20624" x="38544" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="20628" x="12144" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="20700" x="24544" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="20708" x="16396" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="20728" x="29268" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="20824" x="29824" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="20836" x="34904" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="20904" x="16920" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="20960" x="13480" type="snake16" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="20968" x="37412" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="20992" x="13936" type="tree" quantity="30" radius="1500" respawnTime="300000" />
     <spawnPoint y="21008" x="26624" type="tin" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="21012" x="35324" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="21020" x="24356" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="21036" x="16212" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="21060" x="34528" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="21120" x="16568" type="rangedMan11" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="21144" x="23348" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="21168" x="13600" type="stick" quantity="60" radius="1500" respawnTime="300000" />
-    <spawnPoint y="21204" x="35920" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="21216" x="29608" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="21228" x="17436" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="21280" x="24664" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="21472" x="16120" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="21484" x="36448" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="21536" x="27936" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="21576" x="17808" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="21580" x="34230" type="brownMushroom" quantity="5" radius="300" respawnTime="30000" />
     <spawnPoint y="21580" x="34230" type="redMushroom" quantity="4" radius="300" respawnTime="30000" />
     <spawnPoint y="21580" x="34230" type="whiteMushroom" quantity="3" radius="300" respawnTime="30000" />
     <spawnPoint y="21704" x="14280" type="snake16" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="21716" x="22476" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="21720" x="36400" type="tortoise5" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="21724" x="24452" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="21852" x="21940" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="21856" x="37488" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="21888" x="18896" type="stick" quantity="60" radius="1500" respawnTime="300000" />
-    <spawnPoint y="21888" x="23072" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="21968" x="11968" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="22024" x="24104" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="22072" x="21524" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="22092" x="18112" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="22108" x="33752" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="22124" x="15868" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="22128" x="21072" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="22176" x="35200" type="tree" quantity="20" radius="1500" respawnTime="600000" />
-    <spawnPoint y="22228" x="28472" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="22248" x="14700" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="22292" x="23412" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="22368" x="23104" type="boar10" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="22388" x="20904" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="22412" x="18556" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="22432" x="21536" type="boar10" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="22432" x="35200" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="22468" x="33811" type="kronsKill" quantity="1" radius="60" respawnTime="5000" />
     <spawnPoint y="22488" x="26240" type="boar10" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="22512" x="15060" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="22576" x="33604" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="22608" x="20608" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="22608" x="35248" type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="22672" x="15520" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="22696" x="24984" type="boar10" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="22724" x="23768" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="22728" x="14464" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="22732" x="11888" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="22736" x="20108" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="22740" x="19164" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="22752" x="24800" type="rock" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="22816" x="18600" type="rangedMan11" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="22896" x="16224" type="tree" quantity="30" radius="1500" respawnTime="300000" />
     <spawnPoint y="22912" x="16144" type="stick" quantity="60" radius="1500" respawnTime="300000" />
-    <spawnPoint y="22928" x="19728" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="22992" x="34608" type="dog6" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="23004" x="26336" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="23008" x="13064" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="23008" x="36808" type="tortoise5" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="23024" x="35168" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="23028" x="12372" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="23040" x="16752" type="rangedMan11" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="23044" x="23652" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="23048" x="26668" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="23144" x="13424" type="snake16" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="23168" x="33516" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="23176" x="26096" type="waterNymph" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="23216" x="14168" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="23300" x="26292" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="23360" x="13152" type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="23384" x="22704" type="boar10" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="23412" x="23792" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="23416" x="26628" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="23448" x="33336" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="23500" x="13588" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="23504" x="13056" type="stick" quantity="60" radius="1500" respawnTime="300000" />
     <spawnPoint y="23576" x="35160" type="goat5" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="23580" x="23468" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="23584" x="13488" type="wildFlax" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="23612" x="25592" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="23616" x="13008" type="tree" quantity="30" radius="1500" respawnTime="300000" />
     <spawnPoint y="23648" x="35648" type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="23664" x="37520" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="23672" x="37412" type="athleteQuestTortoise" quantity="1" radius="1300" respawnTime="30000" />
     <spawnPoint y="23680" x="28664" type="tin" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="23728" x="27352" type="boar10" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="23744" x="11424" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="23784" x="25792" type="waterNymph" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="23876" x="26144" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="23912" x="35576" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="23920" x="36224" type="tree" quantity="20" radius="1500" respawnTime="600000" />
     <spawnPoint y="23936" x="20832" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="24040" x="33180" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="24056" x="22892" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="24064" x="18032" type="tin" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="24080" x="29392" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="24092" x="26644" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="24120" x="23208" type="waterNymph" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="24136" x="30608" type="goat12" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="24160" x="34720" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="24176" x="25880" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="24184" x="36720" type="tortoise5" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="24208" x="24996" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="24280" x="26176" type="meleeMan7" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="24344" x="27264" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="24352" x="23400" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="24416" x="34048" type="goat5" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="24460" x="23844" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="24480" x="25676" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="24572" x="32744" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="24608" x="23348" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="24644" x="24856" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="24696" x="27344" type="meleeMan7" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="24720" x="35072" type="goat5" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="24724" x="24288" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="24784" x="16800" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="24808" x="11728" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="24824" x="12200" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="24860" x="32388" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="24968" x="31800" type="goat12" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="24996" x="23236" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="25020" x="25192" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="25076" x="27764" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="25096" x="13232" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="25104" x="26376" type="meleeMan7" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="25176" x="29888" type="goat12" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="25192" x="18144" type="rangedMan13" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="25192" x="32068" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="25204" x="34108" type="dog6" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="25240" x="28196" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="25248" x="18464" type="stick" quantity="60" radius="1500" respawnTime="300000" />
-    <spawnPoint y="25320" x="13936" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="25392" x="18024" type="boar12" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="25412" x="35588" type="dog6" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="25480" x="36640" type="tortoise5" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="25504" x="14688" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="25520" x="32880" type="dog6" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="25544" x="31756" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="25552" x="19232" type="rangedMan13" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="25616" x="33776" type="rock" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="25672" x="15688" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="25740" x="28664" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="25760" x="37856" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="25768" x="19368" type="boar12" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="25888" x="26976" type="stick" quantity="20" radius="1500" respawnTime="600000" />
-    <spawnPoint y="25936" x="31528" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="26032" x="19360" type="rock" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="26224" x="12848" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="26232" x="18120" type="boar12" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="26248" x="15256" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="26280" x="28880" type="meleeMan7" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="26280" x="32432" type="goat5" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="26336" x="13648" type="tree" quantity="20" radius="1500" respawnTime="600000" />
-    <spawnPoint y="26336" x="29184" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="26352" x="31360" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="26384" x="11984" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="26416" x="36848" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="26440" x="18232" type="rangedMan13" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="26472" x="37296" type="tortoise5" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="26560" x="13312" type="clay" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="26592" x="23008" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="26656" x="16752" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="26668" x="31112" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="26676" x="34484" type="dog6" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="26784" x="18384" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="26792" x="33248" type="goat5" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="26976" x="32632" type="goat5" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="26976" x="36308" type="dog6" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="27008" x="35984" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="27040" x="19648" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="27108" x="31216" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="27116" x="29228" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="27128" x="17424" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="27152" x="38472" type="tortoise5" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="27232" x="38108" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="27296" x="39840" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="27360" x="29088" type="meleeMan7" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="27412" x="36964" type="dog6" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="27416" x="20160" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="27436" x="38688" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="27488" x="25600" type="rock" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="27528" x="17464" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="27680" x="20680" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="27680" x="37596" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="27804" x="31212" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="27880" x="33760" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="27880" x="33968" type="goat5" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="27968" x="35088" type="goat5" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="27988" x="29792" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="28044" x="37084" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="28144" x="21208" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="28144" x="32432" type="rock" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="28216" x="14720" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="28256" x="15904" type="rock" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="28288" x="31656" type="lizard6" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="28328" x="36604" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="28344" x="30256" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="28448" x="21744" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="28480" x="30120" type="meleeMan7" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="28568" x="38936" type="goat15" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="28592" x="24168" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="28628" x="36188" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="28688" x="23608" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="28736" x="24848" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="28792" x="26216" type="meleeMan8" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="28808" x="23064" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="28832" x="34384" type="goat5" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="28848" x="36680" type="goat15" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="28928" x="28688" type="rock" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="28936" x="38144" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="28944" x="22320" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="28960" x="19584" type="rock" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="28992" x="32312" type="lizard6" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="29056" x="12576" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="29056" x="38656" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="29068" x="36224" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="29072" x="25432" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="29088" x="29888" type="stick" quantity="20" radius="1500" respawnTime="600000" />
     <spawnPoint y="29104" x="34784" type="tree" quantity="20" radius="1500" respawnTime="600000" />
-    <spawnPoint y="29216" x="21424" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="29312" x="22832" type="boar10" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="29392" x="41280" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="29480" x="25496" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="29648" x="36648" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="29664" x="35200" type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="29696" x="38368" type="goat15" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="29720" x="27504" type="meleeMan8" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="29728" x="35232" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="29744" x="25968" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="29800" x="16760" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="29864" x="21632" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="29864" x="32848" type="lizard6" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="30096" x="23672" type="boar10" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="30128" x="25008" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="30192" x="14128" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="30276" x="28236" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="30304" x="20600" type="airNymph" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="30324" x="35592" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="30380" x="35936" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="30392" x="36360" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="30400" x="36576" type="tree" quantity="20" radius="1500" respawnTime="600000" />
-    <spawnPoint y="30416" x="21528" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="30416" x="26184" type="meleeMan8" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="30528" x="16048" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="30536" x="29980" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="30548" x="28952" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="30560" x="38112" type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="30684" x="29500" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="30688" x="33968" type="meleeMan6" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="30696" x="35200" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="30784" x="43552" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="30848" x="23840" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="30888" x="30496" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="30968" x="35072" type="meleeMan6" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="31056" x="32168" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="31064" x="26392" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="31064" x="28336" type="boar10" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="31152" x="24120" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="31160" x="27008" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="31200" x="39648" type="tree" quantity="20" radius="1500" respawnTime="600000" />
     <spawnPoint y="31208" x="23528" type="boar10" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="31232" x="37536" type="wildFlax" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="31264" x="17728" type="clay" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="31288" x="22216" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="31304" x="35048" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="31312" x="24824" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="31320" x="40256" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="31452" x="34492" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="31480" x="30696" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="31512" x="33360" type="meleeMan6" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="31568" x="25200" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="31600" x="26104" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="31600" x="42080" type="rock" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="31680" x="37400" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="31708" x="33776" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="31760" x="26976" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="31872" x="25608" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="31892" x="33380" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="31912" x="19512" type="airNymph" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="31912" x="22512" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="31932" x="30896" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="31960" x="18680" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="32000" x="16800" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="32008" x="27560" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="32064" x="18160" type="tree" quantity="20" radius="1500" respawnTime="600000" />
     <spawnPoint y="32080" x="25960" type="snake8" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="32104" x="32980" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="32128" x="29392" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="32176" x="24448" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="32176" x="44848" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="32188" x="32576" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="32192" x="32208" type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="32256" x="32224" type="tree" quantity="20" radius="1500" respawnTime="600000" />
-    <spawnPoint y="32296" x="27976" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="32320" x="24752" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="32328" x="25760" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="32384" x="22432" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="32408" x="25000" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="32512" x="26832" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="32688" x="38496" type="rock" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="32736" x="29784" type="boar10" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="32752" x="21792" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="32832" x="23128" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="32904" x="34584" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="32928" x="22856" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="32936" x="28248" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="32984" x="25576" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="33104" x="40240" type="wildFlax" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="33120" x="26680" type="snake8" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="33184" x="23704" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="33232" x="21144" type="airNymph" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="33344" x="41472" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="33352" x="28432" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="33360" x="31760" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="33376" x="26992" type="tin" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="33440" x="43296" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="33632" x="33104" type="wildFlax" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="33648" x="34688" type="tree" quantity="20" radius="1500" respawnTime="600000" />
-    <spawnPoint y="33664" x="25936" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="33696" x="40640" type="tree" quantity="20" radius="1500" respawnTime="600000" />
     <spawnPoint y="33712" x="20384" type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="33728" x="28256" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="33760" x="20544" type="clay" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="33808" x="21496" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="33856" x="36224" type="wildFlax" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="33856" x="39512" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="33888" x="20208" type="tree" quantity="20" radius="1500" respawnTime="600000" />
     <spawnPoint y="33904" x="20456" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="33912" x="19928" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="33952" x="19368" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="33968" x="37424" type="tree" quantity="20" radius="1500" respawnTime="600000" />
     <spawnPoint y="34048" x="36352" type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="34080" x="17920" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="34096" x="21136" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="34192" x="28048" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="34304" x="26240" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="34424" x="26720" type="snake8" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="34432" x="44752" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="34544" x="28648" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="34544" x="37096" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="34616" x="29144" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="34656" x="42432" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="34672" x="24704" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="34696" x="26480" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="34696" x="31840" type="boar10" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="34968" x="29504" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="34988" x="32184" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="35024" x="33312" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="35064" x="31780" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="35168" x="26440" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="35264" x="39160" type="lizard12" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="35284" x="32372" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="35344" x="27680" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="35456" x="30832" type="rock" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="35504" x="39920" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="35512" x="32412" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="35680" x="36032" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="35800" x="29448" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="35808" x="19312" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="35824" x="33552" type="boar10" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="35968" x="41472" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="35992" x="40816" type="lizard12" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="36040" x="26264" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="36048" x="32680" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="36064" x="22048" type="tree" quantity="20" radius="1500" respawnTime="600000" />
-    <spawnPoint y="36208" x="36152" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="36208" x="36272" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="36224" x="22176" type="clay" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="36224" x="42688" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="36244" x="36608" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="36304" x="29496" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="36336" x="28336" type="tin" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="36368" x="38488" type="lizard12" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="36392" x="22488" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="36460" x="36484" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="36472" x="26360" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="36568" x="35072" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="36600" x="37760" type="boar10" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="36656" x="38512" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="36668" x="28868" type="rangedMan11" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="36672" x="34408" type="boar10" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="36760" x="29856" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="36864" x="32900" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="36912" x="27088" type="rangedMan11" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="36960" x="27312" type="tree" quantity="20" radius="1500" respawnTime="600000" />
     <spawnPoint y="36976" x="26640" type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="37104" x="26128" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="37328" x="34096" type="tin" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="37408" x="20608" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="37408" x="25056" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="37436" x="34004" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="37468" x="32488" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="37472" x="29848" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="37632" x="24960" type="tree" quantity="20" radius="1500" respawnTime="600000" />
-    <spawnPoint y="37680" x="26544" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="37712" x="28656" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="37760" x="40608" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="37764" x="36748" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="37788" x="36132" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="37840" x="36784" type="tree" quantity="20" radius="1500" respawnTime="600000" />
     <spawnPoint y="37888" x="24976" type="clay" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="37912" x="35408" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="37920" x="39840" type="tree" quantity="20" radius="1500" respawnTime="600000" />
     <spawnPoint y="37952" x="37792" type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="37952" x="43312" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="37956" x="37564" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="37968" x="29784" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="38008" x="39620" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="38060" x="34832" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="38064" x="28076" type="rangedMan11" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="38096" x="30176" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="38104" x="32424" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="38266" x="25726" type="sheep" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="38304" x="38588" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="38320" x="30552" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="38352" x="22432" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="38504" x="31120" type="waterNymph" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="38528" x="45376" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="38616" x="30720" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="38624" x="32200" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="38736" x="33632" type="rock" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="38784" x="36368" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="38800" x="35576" type="goat16" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="38896" x="31464" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="38924" x="30952" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="38992" x="42176" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="39024" x="27280" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="39160" x="31928" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="39360" x="31064" type="waterNymph" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="39360" x="39184" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="39368" x="29604" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="39408" x="23792" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="39408" x="37256" type="goat16" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="39484" x="30524" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="39488" x="47392" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="39536" x="37280" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="39632" x="38528" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="39696" x="40128" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="39712" x="35072" type="tin" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="39792" x="30048" type="waterNymph" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="39792" x="37776" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="39864" x="28000" type="copper" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="39864" x="39232" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="39888" x="40880" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="39892" x="29700" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="40000" x="26304" type="tree" quantity="20" radius="1500" respawnTime="600000" />
-    <spawnPoint y="40048" x="46216" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="40064" x="29840" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="40160" x="32496" type="tin" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="40160" x="45104" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="40168" x="34656" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="40232" x="44616" type="earthNymph" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="40268" x="30292" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="40376" x="28332" type="sheep" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="40376" x="41576" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="40416" x="30024" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="40504" x="28680" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="40544" x="43352" type="earthNymph" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="40576" x="46456" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="40608" x="26640" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="40640" x="44000" type="clay" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="40656" x="39112" type="goat16" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="40716" x="29996" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="40720" x="46184" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="40732" x="34312" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="40752" x="42192" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="40752" x="42944" type="tree" quantity="20" radius="1500" respawnTime="600000" />
     <spawnPoint y="40760" x="36800" type="goat16" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="40768" x="48960" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="40800" x="47968" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="40816" x="45808" type="tree" quantity="20" radius="1500" respawnTime="600000" />
     <spawnPoint y="40848" x="40576" type="rock" quantity="50" radius="1500" respawnTime="600000" />
@@ -776,141 +297,82 @@
     <spawnPoint y="40864" x="46512" type="clay" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="40880" x="37840" type="tin" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="40880" x="41120" type="goat16" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="40924" x="32272" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="40976" x="50944" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="40980" x="28512" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="41040" x="43920" type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="41048" x="42864" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="41080" x="46232" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="41112" x="45184" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="41120" x="43040" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="41136" x="33700" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="41144" x="29872" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="41312" x="45792" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="41316" x="28848" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="41336" x="45464" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="41376" x="33072" type="meleeMan15" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="41384" x="44456" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="41456" x="48672" type="tree" quantity="20" radius="1500" respawnTime="600000" />
     <spawnPoint y="41488" x="28912" type="tree" quantity="20" radius="1500" respawnTime="600000" />
-    <spawnPoint y="41488" x="32500" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="41520" x="36600" type="fish" quantity="8" radius="500" respawnTime="300000" />
-    <spawnPoint y="41608" x="43808" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="41664" x="33600" type="meleeMan15" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="41680" x="52720" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="41720" x="32964" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="41744" x="29068" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="41744" x="33792" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="41748" x="33328" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="41776" x="25920" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="41840" x="29736" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="41840" x="45352" type="earthNymph" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="41940" x="29164" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="41976" x="33096" type="meleeMan15" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="42048" x="50656" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="42096" x="48992" type="clay" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="42144" x="31536" type="tree" quantity="20" radius="1500" respawnTime="600000" />
     <spawnPoint y="42200" x="40096" type="goat16" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="42212" x="29200" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="42256" x="40288" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="42288" x="31864" type="clay" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="42304" x="37552" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="42320" x="32200" type="fish" quantity="8" radius="500" respawnTime="300000" />
     <spawnPoint y="42320" x="39200" type="tree" quantity="20" radius="1500" respawnTime="600000" />
-    <spawnPoint y="42412" x="31324" type="fish" quantity="8" radius="500" respawnTime="300000" />
     <spawnPoint y="42448" x="29600" type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="42592" x="35264" type="tree" quantity="20" radius="1500" respawnTime="600000" />
-    <spawnPoint y="42620" x="30384" type="fish" quantity="8" radius="500" respawnTime="300000" />
     <spawnPoint y="42640" x="28784" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="42672" x="43520" type="rock" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="42704" x="31584" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="42768" x="45776" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="42772" x="33524" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="42784" x="34704" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="42792" x="49592" type="meleeMan17" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="42800" x="50720" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="42872" x="29260" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="43088" x="39456" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="43104" x="46928" type="rock" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="43112" x="48272" type="meleeMan17" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="43248" x="33088" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="43296" x="26896" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="43360" x="41360" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="43360" x="44080" type="clay" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="43368" x="45360" type="meleeMan17" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="43556" x="30148" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="43652" x="32548" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="43680" x="35600" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="43695" x="29623" type="calydonWeaver" quantity="8" radius="300" respawnTime="300000" />
     <spawnPoint y="43712" x="45600" type="tree" quantity="20" radius="1500" respawnTime="600000" />
     <spawnPoint y="43744" x="42800" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="43824" x="52784" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="43912" x="49440" type="meleeMan17" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="43952" x="37296" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="44080" x="29408" type="clay" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="44080" x="52048" type="clay" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="44100" x="30488" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="44112" x="29056" type="tree" quantity="20" radius="1500" respawnTime="600000" />
     <spawnPoint y="44128" x="46184" type="meleeMan17" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="44208" x="32172" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="44256" x="35024" type="clay" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="44256" x="43072" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="44264" x="29332" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="44272" x="46736" type="clay" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="44320" x="44848" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="44352" x="49344" type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="44384" x="47648" type="meleeMan17" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="44432" x="38720" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="44496" x="50912" type="tree" quantity="20" radius="1500" respawnTime="600000" />
     <spawnPoint y="44512" x="49040" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="44584" x="30018" type="calydonianBoar" quantity="1" radius="100" respawnTime="300000" />
     <spawnPoint y="44656" x="49664" type="clay" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="44688" x="51824" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="44692" x="28812" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="44752" x="48160" type="tree" quantity="20" radius="1500" respawnTime="600000" />
-    <spawnPoint y="44768" x="40928" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="44824" x="31924" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="44896" x="34384" type="tortoise19" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="45024" x="33136" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="45088" x="31008" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="45232" x="30224" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="45376" x="35440" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="45520" x="42976" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="45552" x="46176" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="45680" x="49152" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="46016" x="38256" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="46016" x="52304" type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="46064" x="47088" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="46112" x="35584" type="rock" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="46128" x="43552" type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="46128" x="53792" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="46208" x="44224" type="clay" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="46224" x="44368" type="tree" quantity="20" radius="1500" respawnTime="600000" />
     <spawnPoint y="46448" x="52848" type="tree" quantity="20" radius="1500" respawnTime="600000" />
     <spawnPoint y="46480" x="31296" type="tortoise19" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="46528" x="52480" type="clay" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="46768" x="41072" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="46992" x="50784" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="47024" x="40304" type="rock" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="47024" x="42352" type="rangedMan18" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="47040" x="38816" type="tin" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="47168" x="53296" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="47200" x="43648" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="47200" x="46304" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="47248" x="32768" type="clay" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="47264" x="32144" type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="47280" x="30016" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="47296" x="33776" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="47456" x="31520" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="47504" x="31984" type="tree" quantity="20" radius="1500" respawnTime="600000" />
     <spawnPoint y="47584" x="35664" type="tin" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="47776" x="40336" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="47840" x="39200" type="fireNymph" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="48016" x="52816" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="48240" x="36912" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="48656" x="29280" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="48832" x="44672" type="rangedMan18" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="48912" x="46768" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="48928" x="37440" type="fireNymph" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="49104" x="31376" type="clay" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="49312" x="45664" type="clay" quantity="10" radius="1500" respawnTime="600000" />
@@ -932,72 +394,35 @@
     <spawnPoint y="50256" x="32544" type="tree" quantity="20" radius="1500" respawnTime="600000" />
     <spawnPoint y="50272" x="38000" type="tin" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="50368" x="48064" type="clay" quantity="10" radius="1500" respawnTime="600000" />
-    <spawnPoint y="50544" x="50176" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="50576" x="29856" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="50944" x="46832" type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="50944" x="47456" type="tree" quantity="20" radius="1500" respawnTime="600000" />
-    <spawnPoint y="51072" x="34688" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="51088" x="48288" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="51160" x="33568" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="51184" x="43984" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="51288" x="35440" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="51336" x="32704" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="51344" x="36136" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="51520" x="31312" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="51672" x="37216" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="52032" x="37984" type="rangedMan20" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="52272" x="37720" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="52496" x="32736" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="52496" x="47808" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="52512" x="40288" type="rangedMan20" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="52528" x="41296" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="52768" x="40040" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="52800" x="43008" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="52888" x="38120" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="53072" x="45328" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="53472" x="42192" type="lizard18" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="53600" x="38312" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="53616" x="33936" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="53624" x="40064" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="53792" x="42832" type="tin" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="53856" x="39168" type="rangedMan20" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="53904" x="43344" type="lizard18" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="54048" x="38824" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="54240" x="40280" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="54576" x="43104" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="54616" x="40608" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="54768" x="46624" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="54960" x="34288" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="55296" x="44256" type="lizard18" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint y="55320" x="41328" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="55792" x="44032" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="55984" x="41888" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="56192" x="45232" type="rock" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="56488" x="42432" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="56680" x="43280" type="fish" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint y="56768" x="47760" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="57200" x="34416" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="57288" x="43600" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="57632" x="46128" type="stick" quantity="50" radius="1500" respawnTime="600000" />
-    <spawnPoint y="57864" x="44232" type="fish" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint y="58112" x="46448" type="tree" quantity="20" radius="1500" respawnTime="600000" />
-    <spawnPoint y="58256" x="39632" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="58304" x="38352" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="58382" x="2148" type="tutLizard" quantity="7" radius="250" respawnTime="120000" />
     <spawnPoint y="58400" x="2140" type="tutOre" quantity="3" radius="250" respawnTime="120000" />
     <spawnPoint y="58400" x="3110" type="tutOre" quantity="6" radius="400" respawnTime="120000" />
     <spawnPoint y="58485" x="3139" type="tutSnake" quantity="15" radius="560" respawnTime="120000" />
     <spawnPoint y="58540" x="4364" type="tutTortoise" quantity="4" radius="150" respawnTime="120000" />
     <spawnPoint y="58596" x="4409" type="tutOre" quantity="3" radius="250" respawnTime="120000" />
-    <spawnPoint y="58624" x="47984" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="58640" x="35424" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="58745" x="2000" type="tutOre" quantity="3" radius="200" respawnTime="120000" />
     <spawnPoint y="58777" x="4978" type="gigantis" quantity="1" radius="15" respawnTime="10000" />
     <spawnPoint y="58831" x="1950" type="tutLizard" quantity="8" radius="280" respawnTime="120000" />
     <spawnPoint y="58897" x="5050" type="gigantis" quantity="1" radius="15" respawnTime="10000" />
     <spawnPoint y="58913" x="4423" type="tutTortoise" quantity="9" radius="250" respawnTime="120000" />
     <spawnPoint y="58989" x="4430" type="tutOre" quantity="3" radius="250" respawnTime="120000" />
-    <spawnPoint y="59168" x="43696" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="59296" x="4880" type="tutGoat" quantity="2" radius="120" respawnTime="90000" />
     <spawnPoint y="59356" x="2278" type="tutBoar" quantity="3" radius="120" respawnTime="120000" />
     <spawnPoint y="59372" x="2910" type="tutBoar" quantity="3" radius="120" respawnTime="120000" />
@@ -1009,21 +434,12 @@
     <spawnPoint y="59624" x="638" type="tutBoar" quantity="3" radius="120" respawnTime="120000" />
     <spawnPoint y="59664" x="4762" type="tutGoat" quantity="2" radius="120" respawnTime="90000" />
     <spawnPoint y="59688" x="2062" type="tutBoar" quantity="3" radius="120" respawnTime="120000" />
-    <spawnPoint y="59712" x="40672" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="59760" x="4396" type="tutGoat" quantity="2" radius="120" respawnTime="90000" />
-    <spawnPoint y="59760" x="45504" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="59840" x="47744" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="59860" x="2486" type="dummyTree" quantity="5" radius="200" respawnTime="60000" />
-    <spawnPoint y="59888" x="38432" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="59956" x="3112" type="dummyTree" quantity="40" radius="450" respawnTime="60000" />
     <spawnPoint y="59956" x="3112" type="tutBoar" quantity="12" radius="450" respawnTime="120000" />
     <spawnPoint y="59956" x="3112" type="tutStick" quantity="10" radius="450" respawnTime="0" />
-    <spawnPoint y="60128" x="49008" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="60220" x="4174" type="tutPig" quantity="5" radius="200" respawnTime="30000" />
-    <spawnPoint y="60336" x="37088" type="fish" quantity="15" radius="1000" respawnTime="300000" />
     <spawnPoint y="60376" x="4566" type="tutPig" quantity="20" radius="350" respawnTime="10000" />
-    <spawnPoint y="61296" x="41456" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="61296" x="47568" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="61360" x="43856" type="fish" quantity="15" radius="1000" respawnTime="300000" />
-    <spawnPoint y="63136" x="42640" type="fish" quantity="15" radius="1000" respawnTime="300000" />
 </root>
