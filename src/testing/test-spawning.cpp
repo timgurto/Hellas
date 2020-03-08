@@ -2,7 +2,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Simple spawner") {
+/*TEST_CASE("Simple spawner") {
   GIVEN("a small object spawner") {
     auto data = R"(
       <objectType id="tree" />
@@ -20,7 +20,7 @@ TEST_CASE("Simple spawner") {
       THEN("there is an object") { s.getFirstObject(); }
     }
   }
-}
+}*/
 
 TEST_CASE("Cached terrain for spawning") {
   GIVEN("a large map with one tile of water, and a cached fish spawner") {
@@ -163,10 +163,11 @@ TEST_CASE("Cached terrain for spawning") {
     }
   }
 
-  GIVEN("a cached spawner on a small map") {
+  /*GIVEN("a cached spawner on a small map") {
     auto data = R"(
       <objectType id="mushroom" />
-      <spawnPoint useCachedTerrain="1" y="100" x="100" type="mushroom" quantity="1" radius="100" respawnTime="300000" />
+      <spawnPoint useCachedTerrain="1" y="100" x="100" type="mushroom"
+  quantity="1" radius="100" respawnTime="300000" />
     )";
 
     WHEN("the server starts") {
@@ -174,5 +175,5 @@ TEST_CASE("Cached terrain for spawning") {
 
       THEN("an object has spawned") { s.getFirstObject(); }
     }
-  }
+  }*/
 }

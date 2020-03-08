@@ -2,7 +2,6 @@
 #define SPAWNER_H
 
 #include <list>
-#include <map>
 #include <set>
 
 #include "../Point.h"
@@ -30,16 +29,16 @@ class Spawner {
       _spawnSchedule;  // The times at which new objects should spawn
 
   class TerrainCache {
-    using Tiles = std::vector<size_t>;
-    std::map<const TerrainList *, Tiles> _validTiles;
+    void cacheTiles();
+    std::vector<size_t> _validTiles1D;
+    const Spawner &_owner;
 
    public:
-    void registerValidTile(const TerrainList &terrainList, size_t x, size_t y);
-    std::pair<size_t, size_t> pickRandomTile(
-        const TerrainList &terrainList) const;
+    TerrainCache(const Spawner &owner);
+    void registerValidTile(size_t x, size_t y);
+    std::pair<size_t, size_t> pickRandomTile() const;
   };
-  static TerrainCache terrainCache;
-  static void cacheTerrain(std::string listID);
+  TerrainCache _terrainCache;
 
  public:
   Spawner(const MapPoint &location = MapPoint{},
@@ -59,8 +58,6 @@ class Spawner {
   // Add a spawn job to the queue.  After _respawnTime, spawn() will be called.
   void scheduleSpawn();
   void update(ms_t currentTime);  // Act on any scheduled spawns that are due.
-
-  static void initialise();
 };
 
 #endif

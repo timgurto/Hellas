@@ -54,6 +54,10 @@ void DataLoader::load(bool keepOldData) {
 
     loadFromAllFiles(&DataLoader::loadTerrain);
     loadFromAllFiles(&DataLoader::loadTerrainLists);
+
+    auto reader = XmlReader::FromFile(_path + "/map.xml");
+    loadMap(reader);
+
     loadFromAllFiles(&DataLoader::loadLootTables);
     loadFromAllFiles(&DataLoader::loadObjectTypes);
     loadFromAllFiles(&DataLoader::loadNPCTemplates);
@@ -66,9 +70,6 @@ void DataLoader::load(bool keepOldData) {
     loadFromAllFiles(&DataLoader::loadClasses);
     loadFromAllFiles(&DataLoader::loadSpawners);
 
-    auto reader = XmlReader::FromFile(_path + "/map.xml");
-    loadMap(reader);
-
   } else {
     auto data = XmlReader::FromString(_data);
     if (!data) {
@@ -77,6 +78,7 @@ void DataLoader::load(bool keepOldData) {
     }
     loadTerrain(data);
     loadTerrainLists(data);
+    loadMap(data);
     loadLootTables(data);
     loadObjectTypes(data);
     loadNPCTemplates(data);
@@ -88,7 +90,6 @@ void DataLoader::load(bool keepOldData) {
     loadBuffs(data);
     loadClasses(data);
     loadSpawners(data);
-    loadMap(data);
   }
 
   _server._dataLoaded = true;
