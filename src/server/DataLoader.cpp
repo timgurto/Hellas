@@ -960,6 +960,7 @@ void DataLoader::loadSpawners(XmlReader &xr) {
 
     if (xr.findAttr(elem, "useCachedTerrain", n) && n == 1) s.useTerrainCache();
 
+    s.cacheTerrain();
     _server._spawners.push_back(s);
   }
 }

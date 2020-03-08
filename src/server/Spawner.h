@@ -29,7 +29,6 @@ class Spawner {
       _spawnSchedule;  // The times at which new objects should spawn
 
   class TerrainCache {
-    void cacheTiles();
     std::vector<size_t> _validTiles1D;
     const Spawner &_owner;
 
@@ -37,6 +36,7 @@ class Spawner {
     TerrainCache(const Spawner &owner);
     void registerValidTile(size_t x, size_t y);
     std::pair<size_t, size_t> pickRandomTile() const;
+    void cacheTiles();
   };
   TerrainCache _terrainCache;
 
@@ -53,6 +53,7 @@ class Spawner {
   void respawnTime(ms_t t) { _respawnTime = t; }
   void allowTerrain(char c) { _terrainWhitelist.insert(c); }
   void useTerrainCache() { _shouldUseTerrainCache = true; }
+  void cacheTerrain() { _terrainCache.cacheTiles(); }
 
   void spawn();  // Attempt to add a new object.
   // Add a spawn job to the queue.  After _respawnTime, spawn() will be called.

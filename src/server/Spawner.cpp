@@ -35,6 +35,8 @@ void Spawner::spawn() {
     if (_shouldUseTerrainCache) {
       auto tile = _terrainCache.pickRandomTile();
       p = Map::randomPointInTile(tile.first, tile.second);
+
+      if (distance(p, _location) > _radius) continue;
     } else
       p = getRandomPoint();
 
@@ -84,13 +86,18 @@ void Spawner::TerrainCache::cacheTiles() {
     for (auto y = 0; y != server.map().height(); ++y) {
       // Check terrain is in list
       auto terrainAtThisTile = server.map()[x][y];
-      if (terrainList.allows(terrainAtThisTile)) registerValidTile(x, y);
+      if (!terrainList.allows(terrainAtThisTile)) continue;
+
+      // Check that it's inside the spawn point's radius
+      auto tileRect = server.map().getTileRect(x, y);
+      if (distance(tileRect, MapRect{_owner._location}) > _owner._radius)
+        continue;
+
+      registerValidTile(x, y);
     }
 }
 
-Spawner::TerrainCache::TerrainCache(const Spawner &owner) : _owner(owner) {
-  cacheTiles();
-}
+Spawner::TerrainCache::TerrainCache(const Spawner &owner) : _owner(owner) {}
 
 void Spawner::TerrainCache::registerValidTile(size_t x, size_t y) {
   auto &server = Server::instance();
