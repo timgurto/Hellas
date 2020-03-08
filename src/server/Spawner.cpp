@@ -11,6 +11,10 @@ Spawner::Spawner(const MapPoint &location, const ObjectType *type)
       _respawnTime(0),
       _terrainCache(*this) {}
 
+void Spawner::initialise() {
+  if (_shouldUseTerrainCache) _terrainCache.cacheTiles();
+}
+
 MapPoint Spawner::getRandomPoint() const {
   MapPoint p = _location;
   if (_radius != 0) {

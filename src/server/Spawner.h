@@ -43,6 +43,7 @@ class Spawner {
  public:
   Spawner(const MapPoint &location = MapPoint{},
           const ObjectType *type = nullptr);
+  void initialise();
 
   MapPoint getRandomPoint() const;
   double distanceFromEntity(const Entity &entity) const;
@@ -53,7 +54,6 @@ class Spawner {
   void respawnTime(ms_t t) { _respawnTime = t; }
   void allowTerrain(char c) { _terrainWhitelist.insert(c); }
   void useTerrainCache() { _shouldUseTerrainCache = true; }
-  void cacheTerrain() { _terrainCache.cacheTiles(); }
 
   void spawn();  // Attempt to add a new object.
   // Add a spawn job to the queue.  After _respawnTime, spawn() will be called.
