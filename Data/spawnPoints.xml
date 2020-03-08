@@ -150,6 +150,7 @@
     <spawnPoint y="26592" x="23008" type="rock" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="26676" x="34484" type="dog6" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="26792" x="33248" type="goat5" quantity="5" radius="250" respawnTime="300000" />
+    <spawnPoint y="26800" x="33520" type="fish" quantity="30" radius="6300" respawnTime="300000" useCachedTerrain="1" />
     <spawnPoint y="26976" x="32632" type="goat5" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="26976" x="36308" type="dog6" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="27008" x="35984" type="rock" quantity="50" radius="1500" respawnTime="600000" />
@@ -216,6 +217,7 @@
     <spawnPoint y="32928" x="22856" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="33104" x="40240" type="wildFlax" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="33120" x="26680" type="snake8" quantity="5" radius="250" respawnTime="300000" />
+    <spawnPoint y="33120" x="33744" type="fish" quantity="600" radius="30000" respawnTime="300000" useCachedTerrain="1" />
     <spawnPoint y="33232" x="21144" type="airNymph" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="33360" x="31760" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="33376" x="26992" type="tin" quantity="10" radius="1500" respawnTime="600000" />
