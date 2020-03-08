@@ -30,7 +30,7 @@ double Spawner::distanceFromEntity(const Entity &entity) const {
   return distance(_location, entity.location());
 }
 
-void Spawner::spawn() {
+const Entity *Spawner::spawn() {
   static const size_t MAX_ATTEMPTS = 50;
   Server &server = *Server::_instance;
 
@@ -62,12 +62,13 @@ void Spawner::spawn() {
           &server.addObject(dynamic_cast<const ObjectType *>(_type), p, {});
     entity->spawner(this);
     entity->excludeFromPersistentState();
-    return;
+    return entity;
   }
 
   server._debug << Color::CHAT_ERROR << "Failed to spawn " << _type->id()
                 << Log::endl;
   scheduleSpawn();
+  return nullptr;
 }
 
 void Spawner::scheduleSpawn() {
@@ -114,6 +115,7 @@ std::pair<size_t, size_t> Spawner::TerrainCache::pickRandomTile() const {
     SERVER_ERROR("No valid tiles for cached spawner");
     return {0, 0};
   }
-  auto tile = _validTiles1D.front();
+  auto randomIndex = rand() % _validTiles1D.size();
+  auto tile = _validTiles1D[randomIndex];
   return Server::instance().map().from1D(tile);
 }

@@ -55,7 +55,7 @@ class Spawner {
   void allowTerrain(char c) { _terrainWhitelist.insert(c); }
   void useTerrainCache() { _shouldUseTerrainCache = true; }
 
-  void spawn();  // Attempt to add a new object.
+  const Entity *spawn();  // Attempt to add a new object.
   // Add a spawn job to the queue.  After _respawnTime, spawn() will be called.
   void scheduleSpawn();
   void update(ms_t currentTime);  // Act on any scheduled spawns that are due.

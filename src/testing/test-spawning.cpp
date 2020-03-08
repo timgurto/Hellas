@@ -177,6 +177,33 @@ TEST_CASE("Cached terrain for spawning") {
     }
   }
 
+  SECTION("Distribution over multiple tiles") {
+    // GIVEN a cached spawner on a two-tile map
+    auto data = R"(
+      <objectType id="flower" />
+      <spawnPoint useCachedTerrain="1" y="0" x="0" type="flower" quantity="0" radius="1000" respawnTime="300000" />
+      <size x="1" y="2" />
+      <row y= "0" terrain = "G" />
+      <row y= "1" terrain = "G" />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    // WHEN many objects are spawned
+    auto firstTileOccupied = false;
+    auto secondTileOccupied = false;
+    for (auto i = 0; i != 20; ++i) {
+      const auto &flower = s.getFirstSpawner().spawn();
+
+      // THEN at the second and third tiles get objects
+      auto row = s->map().getRow(flower->location().y);
+      if (row == 0) firstTileOccupied = true;
+      if (row == 1) secondTileOccupied = true;
+      if (firstTileOccupied && secondTileOccupied) break;
+    }
+    CHECK(firstTileOccupied);
+    CHECK(secondTileOccupied);
+  }
+
   GIVEN("a small cached spawner on a large map") {
     auto data = R"(
       <objectType id="needle" />
