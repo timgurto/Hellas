@@ -672,6 +672,15 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           }
 
           auto itemToReturn = materialType->returnsOnConstruction();
+          if (itemToReturn) {
+            auto itemsToRemove = ItemSet{};
+            itemsToRemove.add(materialType, qtyToTake);
+            if (!user->willHaveRoomAfterRemovingItems(itemsToRemove,
+                                                      itemToReturn, 1)) {
+              sendMessage(client, WARNING_INVENTORY_FULL);
+              break;
+            }
+          }
 
           // Remove from object requirements
           pObj2->remainingMaterials().remove(materialType, qtyToTake);
@@ -686,7 +695,8 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
 
           // Check if this action completed construction
           if (!pObj2->isBeingBuilt()) {
-            // Send to all nearby players, since object appearance will change
+            // Send to all nearby players, since object appearance will
+            // change
             for (const User *otherUser : findUsersInArea(user->location()))
               sendConstructionMaterialsMessage(*otherUser, *pObj2);
             for (const std::string &owner :

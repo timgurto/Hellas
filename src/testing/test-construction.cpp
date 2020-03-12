@@ -329,6 +329,43 @@ TEST_CASE("A construction material can 'return' an item") {
   }
 }
 
+TEST_CASE("Stackable items that build and return") {
+  GIVEN("stackable ice cubes build an igloo and return an ice-cube tray") {
+    auto data = R"(
+      <objectType id="igloo" constructionTime="0" >
+        <material id="ice" />
+      </objectType>
+      <item id="ice" stackSize="10" returnsOnConstruction="iceCubeTray" />
+      <item id="iceCubeTray" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+
+    AND_GIVEN("a user has an inventory full of ice") {
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      auto &ice = s.findItem("ice");
+      user.giveItem(&ice, 10 * User::INVENTORY_SIZE);
+
+      WHEN("the user builds an igloo") {
+        c.sendMessage(CL_CONSTRUCT, makeArgs("igloo", 10, 15));
+        WAIT_UNTIL(s.entities().size() == 1);
+        const Object &igloo = s.getFirstObject();
+
+        AND_WHEN("he tries to add ice") {
+          c.sendMessage(CL_SWAP_ITEMS,
+                        makeArgs(Server::INVENTORY, 0, igloo.serial(), 0));
+
+          THEN("the igloo is still unfinished") {
+            REPEAT_FOR_MS(100);
+            CHECK(igloo.isBeingBuilt());
+          }
+        }
+      }
+    }
+  }
+}
+
 TEST_CASE("Auto-fill") {
   GIVEN("an object requiring an item") {
     auto data = R"(

@@ -582,13 +582,6 @@ void DataLoader::loadItems(XmlReader &xr) {
     // Assumption: any item that returns on construction cannot be stacked.
     // Until there's a use case to the contrary, this simplifies the code.
     if (xr.findAttr(elem, "returnsOnConstruction", s)) {
-      if (stackSize > 1) {
-        _server._debug(
-            "Skipping return-on-construct item for stackable material",
-            Color::CHAT_ERROR);
-        continue;
-      }
-
       // Create dummy Item if necessary
       auto dummy = ServerItem{s};
       const auto *itemToReturn = &*_server._items.insert(dummy).first;
