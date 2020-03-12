@@ -61,7 +61,7 @@
     <targets self="1" />
     <function name="buff" s1="water" />
 </spell>
-<item id="water" name="Water Vessel" castsSpellOnUse="water"
+<item id="water" name="Water Vessel" stackSize="5" castsSpellOnUse="water"
     sounds="ceramic"
     returnsOnConstruction="smallPot"
     returnsOnCast="smallPot" />
