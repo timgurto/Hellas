@@ -597,6 +597,17 @@ void DataLoader::loadItems(XmlReader &xr) {
 
     if (xr.findAttr(elem, "castsSpellOnUse", s)) item.castsSpellOnUse(s);
 
+    if (xr.findAttr(elem, "returnsOnCast", s)) {
+      if (stackSize > 1) {
+        SERVER_ERROR("Skipping return-on-cast item for stackable material");
+        continue;
+      }
+      // Create dummy Item if necessary
+      auto dummy = ServerItem{s};
+      const auto *itemToReturn = &*_server._items.insert(dummy).first;
+      item.returnsOnCast(itemToReturn);
+    }
+
     auto stats = StatsMod{};
     if (xr.findStatsChild("stats", elem, stats)) item.stats(stats);
 

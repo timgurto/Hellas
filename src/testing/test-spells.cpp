@@ -407,3 +407,66 @@ TEST_CASE("Non-damaging spells aggro NPCs") {
     }
   }
 }
+
+TEST_CASE("Cast-from-item returning an item") {
+  GIVEN("items that can pour water; the bucket is returned afterwards") {
+    auto data = R"(
+      <spell id="pourWater"  >
+        <targets self="1" />
+        <function name="doDirectDamage" s1="0" />
+      </spell>
+      <item id="bucketOfWater" castsSpellOnUse="pourWater" returnsOnCast="emptyBucket" />
+      <item id="glassOfWater" castsSpellOnUse="pourWater" returnsOnCast="emptyGlass" />
+      <item id="magicWaterBubble" castsSpellOnUse="pourWater" />
+      <item id="emptyBucket" />
+      <item id="emptyGlass" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    const auto &invSlot = user.inventory(0).first;
+
+    AND_GIVEN("a user has a bucket") {
+      auto &bucketOfWater = s.findItem("bucketOfWater");
+      user.giveItem(&bucketOfWater);
+
+      WHEN("he pours out the water") {
+        c.sendMessage(CL_CAST_ITEM, "0");
+
+        THEN("he has an empty bucket") {
+          auto &emptyBucket = s.findItem("emptyBucket");
+          WAIT_UNTIL(invSlot.hasItem() && invSlot.type() == &emptyBucket);
+        }
+      }
+    }
+
+    AND_GIVEN("a user has a magic water bubble") {
+      auto &magicWaterBubble = s.findItem("magicWaterBubble");
+      user.giveItem(&magicWaterBubble);
+
+      WHEN("he pours out the water") {
+        c.sendMessage(CL_CAST_ITEM, "0");
+
+        THEN("his inventory is empty") {
+          REPEAT_FOR_MS(100);
+          CHECK_FALSE(invSlot.hasItem());
+        }
+      }
+    }
+
+    AND_GIVEN("a user has a glass of water") {
+      auto &glassOfWater = s.findItem("glassOfWater");
+      user.giveItem(&glassOfWater);
+
+      WHEN("he pours out the water") {
+        c.sendMessage(CL_CAST_ITEM, "0");
+
+        THEN("he has an empty glass") {
+          auto &emptyGlass = s.findItem("emptyGlass");
+          WAIT_UNTIL(invSlot.hasItem() && invSlot.type() == &emptyGlass);
+        }
+      }
+    }
+  }
+}

@@ -60,7 +60,6 @@
 <item id="tinTube"      name="Tin Tube"       sounds="metalTool" durability="8"/>
 <item id="pole1"		name="Crude Pole"     sounds="wood" />
 <item id="pole2"		name="Pole" />
-<item id="water"        name="Water Vessel"   sounds="ceramic"  returnsOnConstruction="smallPot" />
 
 <item id="pickMould"    name="Pickaxe Mould"  sounds="ceramic" >   <tag name="pickMould" />  </item>
 <item id="knifeMould"   name="Knife Mould"    sounds="ceramic" >   <tag name="knifeMould" /> </item>

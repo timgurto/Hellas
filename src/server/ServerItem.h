@@ -74,6 +74,8 @@ class ServerItem : public Item {
 
   // An item returned to the user after this is used as a construction material
   const ServerItem *_returnsOnConstruction{nullptr};
+  // An item returned to the user after a spell is cast from this
+  const ServerItem *_returnsOnCast{nullptr};
 
   bool _loaded{false};
 
@@ -95,6 +97,8 @@ class ServerItem : public Item {
   void returnsOnConstruction(const ServerItem *item) {
     _returnsOnConstruction = item;
   }
+  const ServerItem *returnsOnCast() const { return _returnsOnCast; }
+  void returnsOnCast(const ServerItem *item) { _returnsOnCast = item; }
   void exclusiveToQuest(const std::string &id) { _exclusiveToQuest = id; }
   bool isQuestExclusive() const { return !_exclusiveToQuest.empty(); }
   const std::string &exclusiveToQuest() const { return _exclusiveToQuest; }

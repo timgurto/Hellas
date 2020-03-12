@@ -15,10 +15,6 @@ Functions:
 <root>
 
 <!-- General -->
-<spell id="food" name="Eat food" >
-    <targets self="1" />
-    <function name="buff" s1="food" />
-</spell>
 <spell id="cityPort" name="Return to City" icon="arch" cooldown="2700" > <!-- 45 minutes -->
     <targets self="1" />
     <function name="teleportToCity" />

@@ -11,10 +11,6 @@
 1 hour: 3600
 -->
 
-<buff id="food" name="Eating" icon="foodFig" duration="10" canBeInterrupted="1"
-    description="Replenishing health and energy.">
-    <stats hps="5" eps="5" />
-</buff>
 <buff id="airDot" name="Socratic questioning" icon="lettersCopper" duration="12" school="air"
     description="Taking damage over time.">
     <function name="doDirectDamage" i1="2" tickTime="1500" />

@@ -324,8 +324,9 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
 
         --invSlot.second;
         if (invSlot.second == 0) invSlot.first = {};
-        ;
         sendInventoryMessage(*user, slot, INVENTORY);
+
+        if (item.returnsOnCast()) user->giveItem(item.returnsOnCast());
 
         break;
       }
