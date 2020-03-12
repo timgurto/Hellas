@@ -806,23 +806,27 @@ void User::update(ms_t timeElapsed) {
   Entity::update(timeElapsed);
 }
 
-bool User::hasRoomToCraft(const SRecipe &recipe) const {
-  size_t slotsFreedByMaterials = 0;
-  ItemSet remainingMaterials = recipe.materials();
+bool User::willHaveRoomAfterRemovingItems(ItemSet toBeRemoved,
+                                          const Item *toBeAdded,
+                                          size_t qtyToBeAdded) const {
   ServerItem::vect_t inventoryCopy = _inventory;
   for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
     auto &invSlot = inventoryCopy[i];
-    if (remainingMaterials.contains(invSlot.first.type())) {
+    if (toBeRemoved.contains(invSlot.first.type())) {
       size_t itemsToRemove =
-          min(invSlot.second, remainingMaterials[invSlot.first.type()]);
-      remainingMaterials.remove(invSlot.first.type(), itemsToRemove);
+          min(invSlot.second, toBeRemoved[invSlot.first.type()]);
+      toBeRemoved.remove(invSlot.first.type(), itemsToRemove);
       inventoryCopy[i].second -= itemsToRemove;
       if (inventoryCopy[i].second == 0) inventoryCopy[i].first = {};
-      if (remainingMaterials.isEmpty()) break;
+      if (toBeRemoved.isEmpty()) break;
     }
   }
-  return vectHasSpace(inventoryCopy, toServerItem(recipe.product()),
-                      recipe.quantity());
+  return vectHasSpace(inventoryCopy, toServerItem(toBeAdded), qtyToBeAdded);
+}
+
+bool User::hasRoomToCraft(const SRecipe &recipe) const {
+  return willHaveRoomAfterRemovingItems(recipe.materials(), recipe.product(),
+                                        recipe.quantity());
 }
 
 bool User::shouldGatherDoubleThisTime() const {

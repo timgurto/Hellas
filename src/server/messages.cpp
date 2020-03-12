@@ -316,6 +316,18 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           break;
         }
 
+        if (item.returnsOnCast()) {
+          auto toBeRemoved = ItemSet{};
+          toBeRemoved.add(&item);
+          const auto *toBeAdded = item.returnsOnCast();
+          auto roomForReturnedItem =
+              user->willHaveRoomAfterRemovingItems(toBeRemoved, toBeAdded, 1);
+          if (!roomForReturnedItem) {
+            sendMessage(client, WARNING_INVENTORY_FULL);
+            break;
+          }
+        }
+
         auto spellID = item.spellToCastOnUse();
         auto result =
             handle_CL_CAST(*user, spellID, /* casting from item*/ true);

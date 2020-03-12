@@ -166,6 +166,9 @@ class User : public Object {  // TODO: Don't inherit from Object
   }
   bool knowsConstruction(const std::string &id) const;
   bool hasRoomToCraft(const SRecipe &recipe) const;
+  bool willHaveRoomAfterRemovingItems(ItemSet toBeRemoved,
+                                      const Item *toBeAdded,
+                                      size_t qtyToBeAdded) const;
   bool shouldGatherDoubleThisTime() const;
   bool hasPlayerUnique(const std::string &category) const {
     return _playerUniqueCategoriesOwned.find(category) !=

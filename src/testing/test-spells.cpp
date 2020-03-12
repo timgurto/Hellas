@@ -470,3 +470,47 @@ TEST_CASE("Cast-from-item returning an item") {
     }
   }
 }
+
+TEST_CASE("Cast a spell from a stackable item") {
+  GIVEN("stackable matches cast self-fireballs and return used matches") {
+    auto data = R"(
+      <spell id="fireball"  >
+        <targets self="1" />
+        <function name="doDirectDamage" i1="10" />
+      </spell>
+      <item id="match" stackSize="10" castsSpellOnUse="fireball" returnsOnCast="usedMatch" />
+      <item id="usedMatch" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    const auto &match = s.findItem("match");
+
+    AND_GIVEN("a user has three matches") {
+      user.giveItem(&match, 3);
+
+      WHEN("he casts the spell") {
+        c.sendMessage(CL_CAST_ITEM, "0");
+
+        THEN("he has two matches") {
+          const auto &invSlot = user.inventory(0);
+          WAIT_UNTIL(invSlot.second == 2);
+        }
+      }
+    }
+
+    AND_GIVEN("a user has no room for used matches") {
+      user.giveItem(&match, 10 * User::INVENTORY_SIZE);
+
+      WHEN("he casts the spell") {
+        c.sendMessage(CL_CAST_ITEM, "0");
+
+        THEN("he is still at full health") {
+          REPEAT_FOR_MS(100);
+          CHECK(user.health() == user.stats().maxHealth);
+        }
+      }
+    }
+  }
+}
