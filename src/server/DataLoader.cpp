@@ -5,10 +5,13 @@
 #include <algorithm>
 #include <set>
 
+#include "../Args.h"
 #include "../XmlReader.h"
 #include "ProgressLock.h"
 #include "Server.h"
 #include "VehicleType.h"
+
+extern Args cmdLineArgs;
 
 DataLoader::DataLoader(Server &server) : _server(server) {}
 
@@ -923,6 +926,8 @@ void DataLoader::loadClasses(XmlReader &xr) {
 }
 
 void DataLoader::loadSpawners(XmlReader &xr) {
+  if (cmdLineArgs.contains("nospawn")) return;
+
   for (auto elem : xr.getChildren("spawnPoint")) {
     std::string id;
     if (!xr.findAttr(elem, "type", id)) {
