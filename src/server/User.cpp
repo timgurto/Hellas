@@ -1345,8 +1345,7 @@ void User::updateStats() {
 bool User::knowsConstruction(const std::string &id) const {
   const Server &server = *Server::_instance;
   const ObjectType *objectType = server.findObjectTypeByID(id);
-  bool objectTypeExists = (objectType != nullptr);
-  if (!objectTypeExists) return false;
+  if (!objectType) return false;
   if (objectType->isKnownByDefault()) return true;
   bool userKnowsConstruction =
       _knownConstructions.find(id) != _knownConstructions.end();
