@@ -34,6 +34,8 @@ class ObjectType : public EntityType, public QuestNodeType {
   ms_t _disappearsAfter{
       0};  // After an object has existed for this long, it disappears.
 
+  bool _destroyIfUsedAsTool{false};
+
   ItemSet _materials;  // The necessary materials, if this needs to be
                        // constructed in-place.
   bool _knownByDefault;
@@ -139,6 +141,8 @@ class ObjectType : public EntityType, public QuestNodeType {
   void makeRepairable() { _repairInfo.canBeRepaired = true; }
   void repairingCosts(const std::string &id) { _repairInfo.cost = id; }
   void repairingRequiresTool(const std::string &tag) { _repairInfo.tool = tag; }
+  void destroyIfUsedAsTool(bool b) { _destroyIfUsedAsTool = b; }
+  bool destroyIfUsedAsTool() const { return _destroyIfUsedAsTool; }
 
  private:
   void checkUniquenessInvariant() const;

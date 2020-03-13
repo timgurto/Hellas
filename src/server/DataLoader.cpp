@@ -259,6 +259,9 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
                        Color::CHAT_ERROR);
     }
 
+    if (xr.findAttr(elem, "destroyIfUsedAsTool", n) && n == 1)
+      ot->destroyIfUsedAsTool(true);
+
     // Repairing
     auto repairElem = xr.findChild("canBeRepaired", elem);
     if (repairElem) {

@@ -10,6 +10,7 @@ class DamageOnUse {
   // owner should be udpated.
   void onUse();
 
+  virtual double chanceToGetDamagedOnUse() const { return 0.1; }
   virtual void damageFromUse() = 0;
   virtual void damageOnPlayerDeath() {}
 

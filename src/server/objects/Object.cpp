@@ -115,6 +115,11 @@ void Object::populateLoot() {
   objLoot.populate();
 }
 
+double Object::chanceToGetDamagedOnUse() const {
+  if (objType().destroyIfUsedAsTool()) return 1.0;
+  return DamageOnUse::chanceToGetDamagedOnUse();
+}
+
 void Object::repair() { healBy(stats().maxHealth); }
 
 bool Object::isAbleToDeconstruct(const User &user) const {
