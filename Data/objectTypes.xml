@@ -31,26 +31,6 @@
     <collisionRect x="-5" y="-4" w="10" h="7" />
 </objectType>
 
-<objectType id="tin" name="Tin deposit"
-    xDrawOffset="-14" yDrawOffset="-11"
-    canGather="1" gatherTime="3000" gatherParticles="rocks"
-    isFlat="1"
-    allowedTerrain="rocks" >
-    <yield id="tin" initialMean="2.5" initialSD="1" initialMin="1" />
-    <yield id="rock" initialMean="2" initialSD="2" />
-    <durability item="tin" quantity="5" />
-</objectType>
-
-<objectType id="copper" name="Copper deposit"
-    xDrawOffset="-14" yDrawOffset="-11"
-    canGather="1" gatherTime="3000" gatherReq="mining"
-    isFlat="1"
-    allowedTerrain="rocks" >
-    <yield id="copper" initialMean="2.5" initialSD="1" initialMin="1" />
-    <yield id="rock" initialMean="2" initialSD="2" />
-    <durability item="copper" quantity="5" />
-</objectType>
-
 <objectType id="fire" name="Cooking Fire"
     xDrawOffset="-10" yDrawOffset="-7" >
     <collisionRect x="-10" y="-3" w="20" h="8" />

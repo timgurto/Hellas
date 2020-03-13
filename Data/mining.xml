@@ -1,0 +1,28 @@
+<root>
+
+<item id="tin"          name="Tin Ore"        sounds="rock"      stackSize="10" durability="8" />
+<item id="tinBar"       name="Tin Bar"        sounds="metalBar"  stackSize="10" durability="25"/>
+<item id="copper"       name="Copper Ore"                        stackSize="10" durability="10" />
+<item id="copperBar"    name="Copper Bar"     sounds="metalBar"  stackSize="10" durability="20"/>
+
+<objectType id="tin" name="Tin deposit"
+    xDrawOffset="-14" yDrawOffset="-11"
+    canGather="1" gatherTime="3000" gatherParticles="rocks"
+    isFlat="1"
+    allowedTerrain="rocks" >
+    <yield id="tin" initialMean="2.5" initialSD="1" initialMin="1" />
+    <yield id="rock" initialMean="2" initialSD="2" />
+    <durability item="tin" quantity="5" />
+</objectType>
+
+<objectType id="copper" name="Copper deposit"
+    xDrawOffset="-14" yDrawOffset="-11"
+    canGather="1" gatherTime="3000" gatherReq="mining"
+    isFlat="1"
+    allowedTerrain="rocks" >
+    <yield id="copper" initialMean="2.5" initialSD="1" initialMin="1" />
+    <yield id="rock" initialMean="2" initialSD="2" />
+    <durability item="copper" quantity="5" />
+</objectType>
+
+</root>

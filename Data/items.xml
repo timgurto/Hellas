@@ -13,10 +13,6 @@
 -->
 
 <item id="log"          name="Log"            sounds="wood"      stackSize="5"  durability="8" />
-<item id="tin"          name="Tin Ore"        sounds="rock"      stackSize="10" durability="8" />
-<item id="tinBar"       name="Tin Bar"        sounds="metalBar"  stackSize="10" durability="25"/>
-<item id="copper"       name="Copper Ore"                        stackSize="10" durability="10" />
-<item id="copperBar"    name="Copper Bar"     sounds="metalBar"  stackSize="10" durability="20"/>
 <item id="crudeClay"    name="Crude Clay"     sounds="clay"      stackSize="10" durability="6" />
 <item id="clay"         name="Clay"           sounds="clay"      stackSize="10" durability="10" />
 <item id="tinRing"      name="Tin Ringlet"                       stackSize="1000" />
