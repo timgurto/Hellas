@@ -138,23 +138,6 @@
         <unlockedBy construction="copperAnvil" chance="0.2" />
     </recipe>
 
-<!-- Metal bars -->
-    <recipe id="tinBar"
-        time="12000" >
-        <material id="tin" quantity="3" />
-        <tool class="smelting1" />
-        <tool class="gloves" />
-        <unlockedBy item="tin" />
-    </recipe>
-    <recipe id="copperBar"
-        time="12000" >
-        <material id="copper" quantity="4" />
-        <tool class="smelting2" />
-        <tool class="gloves" />
-        <unlockedBy recipe="tinPick" />
-        <unlockedBy gather="copper" />
-    </recipe>
-
 <!-- Picks -->
     <recipe id="tinPick"
         time="4000" >

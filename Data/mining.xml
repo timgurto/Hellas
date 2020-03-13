@@ -5,7 +5,22 @@
 <item id="copper"       name="Copper Ore"                        stackSize="10" durability="10" />
 <item id="copperBar"    name="Copper Bar"     sounds="metalBar"  stackSize="10" durability="20"/>
 
-<objectType id="tin" name="Tin deposit"
+<recipe id="tinBar"
+    time="12000" >
+    <material id="tin" quantity="3" />
+    <tool class="smelting1" />
+    <tool class="gloves" />
+    <unlockedBy item="tin" />
+</recipe>
+<recipe id="copperBar"
+    time="12000" >
+    <material id="copper" quantity="4" />
+    <tool class="smelting2" />
+    <tool class="gloves" />
+    <unlockedBy gather="copper" chance="0.2" />
+</recipe>
+
+<objectType id="tin" name="Tin Deposit"
     xDrawOffset="-14" yDrawOffset="-11"
     canGather="1" gatherTime="3000" gatherParticles="rocks"
     isFlat="1"
@@ -15,7 +30,6 @@
     <durability item="tin" quantity="5" />
 </objectType>
 
-<objectType id="copper" name="Copper deposit"
     xDrawOffset="-14" yDrawOffset="-11"
     canGather="1" gatherTime="3000" gatherReq="mining"
     isFlat="1"
@@ -23,6 +37,7 @@
     <yield id="copper" initialMean="2.5" initialSD="1" initialMin="1" />
     <yield id="rock" initialMean="2" initialSD="2" />
     <durability item="copper" quantity="5" />
+<objectType id="copper" name="Copper Deposit"
 </objectType>
 
 </root>
