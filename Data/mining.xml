@@ -30,14 +30,26 @@
     <durability item="tin" quantity="5" />
 </objectType>
 
-    xDrawOffset="-14" yDrawOffset="-11"
-    canGather="1" gatherTime="3000" gatherReq="mining"
-    isFlat="1"
-    allowedTerrain="rocks" >
-    <yield id="copper" initialMean="2.5" initialSD="1" initialMin="1" />
-    <yield id="rock" initialMean="2" initialSD="2" />
-    <durability item="copper" quantity="5" />
 <objectType id="copper" name="Copper Deposit"
+    xDrawOffset="-13" yDrawOffset="-11" isFlat="1"
+    allowedTerrain="rocks"
+    destroyIfUsedAsTool="1" >
+    <tag name="copperDeposit" />
+</objectType>
+
+<objectType id="copperMine" name="Copper Mine"
+    xDrawOffset="-60" yDrawOffset="-74"
+    canGather="1" gatherTime="8000" gatherReq="mining"
+    constructionTime="0" constructionReq="copperDeposit" >
+    <collisionRect x="-59" y="-38" w="119" h="61" />
+    <yield id="copper" initialMean="7" initialSD="2.5" initialMin="1" />
+    <yield id="rock" initialMean="5" initialSD="2" />
+    <material id="brick" quantity="8" />
+    <material id="lumber" quantity="8" />
+    <unlockedBy recipe="tinPick" chance="0.2" />
+    <unlockedBy recipe="brick" chance="0.02" />
+    <unlockedBy recipe="tinBar" chance="0.05" />
+    <unlockedBy gather="tin" chance="0.02" />
 </objectType>
 
 </root>

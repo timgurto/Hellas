@@ -31,6 +31,8 @@
 <tool id="spearMould"   archetype="item_spearMould" />
 <tool id="tubeMould"    archetype="item_tubeMould" />
 
+<tool id="copperDeposit"    archetype="object_copper" />
+
 <blacklist parent="object_tree"     child="item_stick" />
 <blacklist parent="object_copper"   child="item_rock" />
 <blacklist parent="object_tin"      child="item_rock" />
@@ -105,6 +107,9 @@
 
 <blacklist parent="item_tinCoin" child="item_tinBar" />
 <blacklist parent="item_copperCoin" child="item_copperBar" />
+
+<blacklist parent="item_tinBar"         child="object_copperMine" />
+<blacklist parent="object_copperMine"   child="item_rock" />
 
 <extra parent="item_leatherGloves" child="item_tinBar" />
 <extra parent="item_tinBar"        child="item_tinSaw" />

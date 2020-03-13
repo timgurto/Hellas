@@ -1,4 +1,12 @@
 <root>
+    <spawnPoint y="2368" x="30624" type="copper" quantity="1" radius="2000" respawnTime="300000" />
+    <spawnPoint y="2624" x="7760" type="copper" quantity="1" radius="2000" respawnTime="300000" />
+    <spawnPoint y="4496" x="39120" type="copper" quantity="1" radius="2000" respawnTime="300000" />
+    <spawnPoint y="6224" x="45200" type="copper" quantity="1" radius="2000" respawnTime="300000" />
+    <spawnPoint y="6256" x="49568" type="copper" quantity="1" radius="2000" respawnTime="300000" />
+    <spawnPoint y="6608" x="12128" type="copper" quantity="1" radius="2000" respawnTime="300000" />
+    <spawnPoint y="8304" x="40640" type="copper" quantity="1" radius="2000" respawnTime="300000" />
+    <spawnPoint y="8624" x="20912" type="copper" quantity="1" radius="2000" respawnTime="300000" />
     <spawnPoint y="9520" x="23408" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="9696" x="14736" type="stick" quantity="60" radius="1500" respawnTime="300000" />
     <spawnPoint y="9904" x="15440" type="boar18" quantity="5" radius="250" respawnTime="300000" />
@@ -36,6 +44,7 @@
     <spawnPoint y="14320" x="27952" type="rock" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="14392" x="27792" type="tin" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="14480" x="21296" type="rock" quantity="50" radius="1500" respawnTime="600000" />
+    <spawnPoint y="14512" x="88464" type="copper" quantity="1" radius="2000" respawnTime="300000" />
     <spawnPoint y="14864" x="17280" type="rock" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="15232" x="21568" type="tin" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="15344" x="12696" type="earthNymph" quantity="5" radius="250" respawnTime="300000" />
@@ -43,6 +52,7 @@
     <spawnPoint y="15536" x="12864" type="tree" quantity="30" radius="1500" respawnTime="300000" />
     <spawnPoint y="15744" x="12736" type="stick" quantity="60" radius="1500" respawnTime="300000" />
     <spawnPoint y="15888" x="24280" type="tin" quantity="10" radius="1500" respawnTime="600000" />
+    <spawnPoint y="16176" x="33072" type="copper" quantity="1" radius="1800" respawnTime="300000" />
     <spawnPoint y="16384" x="16720" type="tin" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="16784" x="23568" type="rock" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="16928" x="18672" type="rock" quantity="50" radius="1500" respawnTime="600000" />
@@ -53,6 +63,7 @@
     <spawnPoint y="17744" x="13664" type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="17864" x="11624" type="earthNymph" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="18032" x="15424" type="stick" quantity="60" radius="1500" respawnTime="300000" />
+    <spawnPoint y="18032" x="30072" type="copper" quantity="1" radius="1800" respawnTime="300000" />
     <spawnPoint y="18264" x="14264" type="earthNymph" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="18608" x="12784" type="stick" quantity="60" radius="1500" respawnTime="300000" />
     <spawnPoint y="18608" x="13200" type="tree" quantity="30" radius="1500" respawnTime="300000" />
@@ -67,11 +78,14 @@
     <spawnPoint y="20384" x="18608" type="rock" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="20544" x="15840" type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="20560" x="13248" type="wildFlax" quantity="10" radius="1500" respawnTime="600000" />
+    <spawnPoint y="20752" x="19408" type="copper" quantity="1" radius="2000" respawnTime="300000" />
     <spawnPoint y="20960" x="13480" type="snake16" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="20992" x="13936" type="tree" quantity="30" radius="1500" respawnTime="300000" />
     <spawnPoint y="21008" x="26624" type="tin" quantity="10" radius="1500" respawnTime="600000" />
+    <spawnPoint y="21072" x="89376" type="copper" quantity="1" radius="2000" respawnTime="300000" />
     <spawnPoint y="21120" x="16568" type="rangedMan11" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="21168" x="13600" type="stick" quantity="60" radius="1500" respawnTime="300000" />
+    <spawnPoint y="21456" x="94832" type="copper" quantity="1" radius="2000" respawnTime="300000" />
     <spawnPoint y="21536" x="27936" type="rock" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="21580" x="34230" type="brownMushroom" quantity="5" radius="300" respawnTime="30000" />
     <spawnPoint y="21580" x="34230" type="redMushroom" quantity="4" radius="300" respawnTime="30000" />
@@ -79,6 +93,7 @@
     <spawnPoint y="21704" x="14280" type="snake16" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="21720" x="36400" type="tortoise5" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="21888" x="18896" type="stick" quantity="60" radius="1500" respawnTime="300000" />
+    <spawnPoint y="22160" x="31536" type="copper" quantity="1" radius="1800" respawnTime="300000" />
     <spawnPoint y="22176" x="35200" type="tree" quantity="20" radius="1500" respawnTime="600000" />
     <spawnPoint y="22368" x="23104" type="boar10" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="22432" x="21536" type="boar10" quantity="5" radius="250" respawnTime="300000" />
@@ -215,6 +230,7 @@
     <spawnPoint y="32736" x="29784" type="boar10" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="32904" x="34584" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="32928" x="22856" type="stick" quantity="50" radius="1500" respawnTime="600000" />
+    <spawnPoint y="32944" x="84704" type="copper" quantity="1" radius="2000" respawnTime="300000" />
     <spawnPoint y="33104" x="40240" type="wildFlax" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="33120" x="26680" type="snake8" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="33120" x="33744" type="fish" quantity="600" radius="30000" respawnTime="300000" useCachedTerrain="1" />
@@ -278,6 +294,7 @@
     <spawnPoint y="39408" x="37256" type="goat16" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="39536" x="37280" type="rock" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="39712" x="35072" type="tin" quantity="10" radius="1500" respawnTime="600000" />
+    <spawnPoint y="39744" x="93616" type="copper" quantity="1" radius="2000" respawnTime="300000" />
     <spawnPoint y="39792" x="30048" type="waterNymph" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="39864" x="28000" type="copper" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="40000" x="26304" type="tree" quantity="20" radius="1500" respawnTime="600000" />
@@ -301,6 +318,7 @@
     <spawnPoint y="40880" x="41120" type="goat16" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="41040" x="43920" type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="41120" x="43040" type="stick" quantity="50" radius="1500" respawnTime="600000" />
+    <spawnPoint y="41124" x="38864" type="copper" quantity="1" radius="2100" respawnTime="300000" />
     <spawnPoint y="41376" x="33072" type="meleeMan15" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="41456" x="48672" type="tree" quantity="20" radius="1500" respawnTime="600000" />
     <spawnPoint y="41488" x="28912" type="tree" quantity="20" radius="1500" respawnTime="600000" />
@@ -329,6 +347,7 @@
     <spawnPoint y="43112" x="48272" type="meleeMan17" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="43360" x="44080" type="clay" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="43368" x="45360" type="meleeMan17" quantity="5" radius="250" respawnTime="300000" />
+    <spawnPoint y="43568" x="95312" type="copper" quantity="1" radius="2000" respawnTime="300000" />
     <spawnPoint y="43695" x="29623" type="calydonWeaver" quantity="8" radius="300" respawnTime="300000" />
     <spawnPoint y="43712" x="45600" type="tree" quantity="20" radius="1500" respawnTime="600000" />
     <spawnPoint y="43744" x="42800" type="stick" quantity="50" radius="1500" respawnTime="600000" />
@@ -369,6 +388,7 @@
     <spawnPoint y="47248" x="32768" type="clay" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="47264" x="32144" type="wildFigTree" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="47296" x="33776" type="stick" quantity="50" radius="1500" respawnTime="600000" />
+    <spawnPoint y="47320" x="38980" type="copper" quantity="1" radius="1500" respawnTime="300000" />
     <spawnPoint y="47456" x="31520" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="47504" x="31984" type="tree" quantity="20" radius="1500" respawnTime="600000" />
     <spawnPoint y="47584" x="35664" type="tin" quantity="10" radius="1500" respawnTime="600000" />
@@ -407,9 +427,11 @@
     <spawnPoint y="53792" x="42832" type="tin" quantity="10" radius="1500" respawnTime="600000" />
     <spawnPoint y="53856" x="39168" type="rangedMan20" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="53904" x="43344" type="lizard18" quantity="5" radius="250" respawnTime="300000" />
+    <spawnPoint y="54242" x="43108" type="copper" quantity="1" radius="1300" respawnTime="300000" />
     <spawnPoint y="54576" x="43104" type="rock" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="55296" x="44256" type="lizard18" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint y="55792" x="44032" type="stick" quantity="50" radius="1500" respawnTime="600000" />
+    <spawnPoint y="56148" x="40764" type="copper" quantity="1" radius="1800" respawnTime="300000" />
     <spawnPoint y="56192" x="45232" type="rock" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="57632" x="46128" type="stick" quantity="50" radius="1500" respawnTime="600000" />
     <spawnPoint y="58112" x="46448" type="tree" quantity="20" radius="1500" respawnTime="600000" />
@@ -444,4 +466,9 @@
     <spawnPoint y="59956" x="3112" type="tutStick" quantity="10" radius="450" respawnTime="0" />
     <spawnPoint y="60220" x="4174" type="tutPig" quantity="5" radius="200" respawnTime="30000" />
     <spawnPoint y="60376" x="4566" type="tutPig" quantity="20" radius="350" respawnTime="10000" />
+    <spawnPoint y="84880" x="94208" type="copper" quantity="1" radius="2000" respawnTime="300000" />
+    <spawnPoint y="88000" x="92112" type="copper" quantity="1" radius="2000" respawnTime="300000" />
+    <spawnPoint y="92016" x="34768" type="copper" quantity="1" radius="2000" respawnTime="300000" />
+    <spawnPoint y="93744" x="81952" type="copper" quantity="1" radius="2000" respawnTime="300000" />
+    <spawnPoint y="94864" x="94688" type="copper" quantity="1" radius="2000" respawnTime="300000" />
 </root>

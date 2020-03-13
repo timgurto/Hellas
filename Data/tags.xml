@@ -34,6 +34,7 @@
 <tag id="waterSource"   name="Water Source" />
 <tag id="anvil1"        name="Metalworking" />
 <tag id="wand"          name="Wand" />
+<tag id="copperDeposit" name="Mineable Copper" />
 
 <tag id="food" name="Food" />
 
