@@ -28,6 +28,8 @@ class Sprite {
 
   static const std::string EMPTY_NAME;
 
+  static const ScreenPoint HIGHLIGHT_OFFSET;
+
  protected:
   mutable Optional<Tooltip> _tooltip;
 

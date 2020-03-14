@@ -1,12 +1,14 @@
+#include "Surface.h"
+
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+
 #include <cassert>
 #include <string>
 
 #include "../Color.h"
 #include "Renderer.h"
-#include "Surface.h"
 
 extern Renderer renderer;
 
@@ -93,4 +95,26 @@ void Surface::swapColors(Uint32 fromColor, Uint32 toColor) {
   for (size_t x = 0; x != _raw->w; ++x)
     for (size_t y = 0; y != _raw->h; ++y)
       if (getPixel(x, y) == fromColor) setPixel(x, y, toColor);
+}
+
+bool Surface::isPixelVisible(size_t x, size_t y, Uint32 colorKey) const {
+  const auto format = _raw->format;
+  const auto pixel = getPixel(x, y);
+  switch (format->BytesPerPixel) {
+    case 3:
+      return pixel != colorKey;
+    case 4:
+      return (pixel & format->Amask) > 0;
+  }
+  return false;
+}
+
+void Surface::swapAllVisibleColors(Uint32 toColor) {
+  if (_raw == nullptr) return;
+  auto colorKey = Uint32{};
+  SDL_GetColorKey(_raw.get(), &colorKey);
+
+  for (size_t x = 0; x != _raw->w; ++x)
+    for (size_t y = 0; y != _raw->h; ++y)
+      if (isPixelVisible(x, y, colorKey)) setPixel(x, y, toColor);
 }

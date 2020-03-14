@@ -1,6 +1,15 @@
 #ifndef SURFACE_H
 #define SURFACE_H
 
+#include <SDL.h>
+#include <SDL_TTF.h>
+
+#include <memory>
+#include <string>
+
+#include "../Color.h"
+#include "../types.h"
+
 // Wrapper for SDL_Surface.
 class Surface {
   std::shared_ptr<SDL_Surface> _raw;
@@ -19,6 +28,8 @@ class Surface {
   Uint32 getPixel(px_t x, px_t y) const;
   void setPixel(px_t x, px_t y, Uint32 color);
   void swapColors(Uint32 fromColor, Uint32 toColor);
+  void swapAllVisibleColors(Uint32 toColor);
+  bool isPixelVisible(size_t x, size_t y, Uint32 colorKey) const;
 
   const std::string &description() const { return _description; }
 

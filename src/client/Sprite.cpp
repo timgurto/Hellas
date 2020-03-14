@@ -10,6 +10,7 @@
 extern Renderer renderer;
 
 const std::string Sprite::EMPTY_NAME = "";
+const ScreenPoint Sprite::HIGHLIGHT_OFFSET{-1, -1};
 
 Sprite::Sprite(const SpriteType *type, const MapPoint &location)
     : _yChanged(false),
@@ -43,9 +44,11 @@ void Sprite::draw(const Client &client) const {
     shadow.draw(shadowPosition);
   }
 
+  auto shouldDrawHighlightInstead = client.currentMouseOverEntity() == this;
   const Texture &imageToDraw =
-      client.currentMouseOverEntity() == this ? highlightImage() : image();
+      shouldDrawHighlightInstead ? highlightImage() : image();
   auto drawRect = this->drawRect() + client.offset();
+  if (shouldDrawHighlightInstead) drawRect += HIGHLIGHT_OFFSET;
   if (imageToDraw)
     imageToDraw.draw(drawRect.x, drawRect.y);
   else {

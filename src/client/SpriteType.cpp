@@ -42,9 +42,20 @@ void SpriteType::addParticles(const std::string &profileName,
 void SpriteType::setHighlightImage(const std::string &imageFile) {
   Surface highlightSurface(imageFile, Color::MAGENTA);
   if (!highlightSurface) return;
-  highlightSurface.swapColors(Color::SPRITE_OUTLINE,
-                              Color::SPRITE_OUTLINE_HIGHLIGHT);
-  _imageHighlight = Texture(highlightSurface);
+  highlightSurface.swapAllVisibleColors(Color::SPRITE_OUTLINE_HIGHLIGHT);
+  auto recolor = Texture{highlightSurface};
+  recolor.setAlpha(0x9f);
+
+  _imageHighlight = Texture{recolor.width() + 2, recolor.height() + 2};
+  _imageHighlight.setBlend();
+  renderer.pushRenderTarget(_imageHighlight);
+  for (auto x = 0; x <= 2; ++x)
+    for (auto y = 0; y <= 2; ++y) {
+      if (x == 1 && y == 1) continue;
+      recolor.draw(x, y);
+    }
+  _image.draw(1, 1);
+  renderer.popRenderTarget();
 }
 
 void SpriteType::setImage(const std::string &imageFile) {
