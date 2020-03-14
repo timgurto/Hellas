@@ -119,9 +119,20 @@ const ClientObjectType::ImageSet &ClientObjectType::getProgressImage(
 
 void ClientObjectType::corpseImage(const std::string &filename) {
   _corpseImage = Texture(filename, Color::MAGENTA);
+  _corpseImageFileName = filename;
   if (!_corpseImage) return;
 
-  _corpseHighlightImage = createHighlightImageFrom(_corpseImage, filename);
+  _corpseHighlightImage = {};
+}
+
+const Texture &ClientObjectType::corpseHighlightImage() const {
+  if (_timeCorpseHighlightWasCreated < timeLastRedrawWasOrdered()) {
+    _corpseHighlightImage =
+        createHighlightImageFrom(_corpseImage, _corpseImageFileName);
+    _timeCorpseHighlightWasCreated = SDL_GetTicks();
+  }
+
+  return _corpseHighlightImage;
 }
 
 void ClientObjectType::initialiseHumanoidCorpse() {

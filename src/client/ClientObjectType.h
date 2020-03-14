@@ -67,7 +67,10 @@ class ClientObjectType : public SpriteType,
   ItemSet _materials;
   mutable Optional<Tooltip> _constructionTooltip;
   ImageSet _constructionImage;  // Shown when the object is under construction.
-  Texture _corpseImage, _corpseHighlightImage;
+  Texture _corpseImage;
+  mutable Texture _corpseHighlightImage;
+  std::string _corpseImageFileName;
+  mutable ms_t _timeCorpseHighlightWasCreated{0};
   bool _isPlayerUnique = false;
 
   std::string _allowedTerrain;
@@ -169,7 +172,7 @@ class ClientObjectType : public SpriteType,
   const ImageSet &getProgressImage(ms_t timeRemaining) const;
   void corpseImage(const std::string &filename);
   const Texture &corpseImage() const { return _corpseImage; }
-  const Texture &corpseHighlightImage() const { return _corpseHighlightImage; }
+  const Texture &corpseHighlightImage() const;
   void initialiseHumanoidCorpse();
 
   virtual char classTag() const override { return 'o'; }
