@@ -194,7 +194,7 @@ void Tooltip::forceAllToRedraw() {
 }
 
 void Tooltip::generateIfNecessary() const {
-  if (!_generated || _timeGenerated < timeThatTheLastRedrawWasOrdered)
+  if (!_generated || _timeShadowGenerated < timeThatTheLastRedrawWasOrdered)
     generate();
 }
 
@@ -242,7 +242,7 @@ void Tooltip::generate() const {
   _generated.setBlend(SDL_BLENDMODE_BLEND);
   renderer.popRenderTarget();
 
-  _timeGenerated = SDL_GetTicks();
+  _timeShadowGenerated = SDL_GetTicks();
 }
 
 Tooltip Tooltip::basicTooltip(const std::string &text) {

@@ -31,7 +31,7 @@ class Tooltip {
   void generateIfNecessary() const;
   void generate() const;
   static ms_t timeThatTheLastRedrawWasOrdered;
-  mutable ms_t _timeGenerated{};
+  mutable ms_t _timeShadowGenerated{};
 
   static const Tooltip NO_TOOLTIP;
 

@@ -11,7 +11,9 @@
 // Describes a class of Sprites, the "instances" of which share common
 // properties
 class SpriteType {
-  Texture _image, _imageHighlight;
+  Texture _image;
+  mutable Texture _imageHighlight;
+  std::string _imageFile;
   mutable Texture _shadow;
   ScreenRect _drawRect;  // Where to draw the image, relative to its location
   bool _isFlat;  // Whether these objects appear flat, i.e., are drawn behind
@@ -19,7 +21,7 @@ class SpriteType {
   bool _isDecoration;  // Whether this is invisible to mouse events.
 
   static ms_t timeThatTheLastRedrawWasOrdered;
-  mutable ms_t _timeGenerated{0};
+  mutable ms_t _timeShadowGenerated{0}, _timeHighlightGenerated{0};
 
   struct Particles {
     std::string profile;
@@ -43,7 +45,7 @@ class SpriteType {
   virtual ~SpriteType() {}
 
   void setImage(const std::string &filename);
-  const Texture &highlightImage() const { return _imageHighlight; }
+  const Texture &highlightImage() const;
   const ScreenRect &drawRect() const { return _drawRect; }
   void drawRect(const ScreenRect &rect);
   const Texture &shadow() const;
@@ -58,7 +60,7 @@ class SpriteType {
 
   void setAlpha(Uint8 alpha) { _image.setAlpha(alpha); }
 
-  void setHighlightImage(const std::string &imageFile);
+  void setHighlightImage() const;
   virtual const Texture &image() const { return _image; }
 
   virtual char classTag() const { return 'e'; }
