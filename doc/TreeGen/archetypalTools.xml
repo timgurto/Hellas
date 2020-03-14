@@ -106,6 +106,7 @@
 <blacklist parent="object_tutExtinguishedFire" child="object_tutFire" />
 
 <blacklist parent="item_tinCoin" child="item_tinBar" />
+<blacklist parent="item_tinBar" child="item_tinCoin" />
 <blacklist parent="item_copperCoin" child="item_copperBar" />
 
 <blacklist parent="item_tinBar"         child="object_copperMine" />
@@ -113,6 +114,7 @@
 <blacklist parent="object_copperMine"   child="item_rock" />
 
 <extra parent="item_leatherGloves" child="item_tinBar" />
+<extra parent="object_kiln"        child="item_copperBar" />
 <extra parent="item_tinBar"        child="item_tinSaw" />
 <extra parent="item_tinBar"        child="item_tinTube" />
 <extra parent="item_water"         child="object_flaxCrop8" />
