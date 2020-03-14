@@ -215,7 +215,10 @@ void ClientObject::onRightClick(Client &client) {
 
   // Gatherable
   const ClientObjectType &objType = *objectType();
-  if (objType.canGather() && userHasAccess()) {
+
+  const auto canGather =
+      objType.canGather() && userHasAccess() && !isBeingConstructed();
+  if (canGather) {
     client.sendMessage({CL_GATHER, _serial});
     client.prepareAction(std::string("Gathering ") + objType.name());
     return;
