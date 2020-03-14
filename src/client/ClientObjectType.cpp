@@ -121,12 +121,7 @@ void ClientObjectType::corpseImage(const std::string &filename) {
   _corpseImage = Texture(filename, Color::MAGENTA);
   if (!_corpseImage) return;
 
-  // Set corpse highlight image
-  Surface corpseHighlightSurface(filename, Color::MAGENTA);
-  if (!corpseHighlightSurface) return;
-  corpseHighlightSurface.swapColors(Color::SPRITE_OUTLINE,
-                                    Color::SPRITE_OUTLINE_HIGHLIGHT);
-  _corpseHighlightImage = Texture(corpseHighlightSurface);
+  _corpseHighlightImage = createHighlightImageFrom(_corpseImage, filename);
 }
 
 void ClientObjectType::initialiseHumanoidCorpse() {
@@ -149,10 +144,8 @@ void ClientObjectType::addMaterial(const ClientItem *item, size_t qty) {
 }
 
 ClientObjectType::ImageSet::ImageSet(const std::string &filename) {
-  Surface surface(filename, Color::MAGENTA);
-  normal = Texture(surface);
-  surface.swapColors(Color::SPRITE_OUTLINE, Color::SPRITE_OUTLINE_HIGHLIGHT);
-  highlight = Texture(surface);
+  normal = {filename, Color::MAGENTA};
+  highlight = createHighlightImageFrom(normal, filename);
 }
 
 void ClientObjectType::calculateAndInitDurability() {

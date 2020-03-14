@@ -46,7 +46,6 @@ Texture SpriteType::createHighlightImageFrom(
     const Texture &original, const std::string &originalImageFile) {
   auto surface = Surface{originalImageFile, Color::MAGENTA};
   if (!surface) return {};
-
   surface.swapAllVisibleColors(Color::SPRITE_OUTLINE_HIGHLIGHT);
   auto singleRecolor = Texture{surface};
   singleRecolor.setAlpha(0x9f);

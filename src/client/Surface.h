@@ -27,7 +27,6 @@ class Surface {
 
   Uint32 getPixel(px_t x, px_t y) const;
   void setPixel(px_t x, px_t y, Uint32 color);
-  void swapColors(Uint32 fromColor, Uint32 toColor);
   void swapAllVisibleColors(Uint32 toColor);
   bool isPixelVisible(size_t x, size_t y, Uint32 colorKey) const;
 

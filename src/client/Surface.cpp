@@ -90,13 +90,6 @@ void Surface::setPixel(px_t x, px_t y, Uint32 color) {
   }
 }
 
-void Surface::swapColors(Uint32 fromColor, Uint32 toColor) {
-  if (_raw == nullptr) return;
-  for (size_t x = 0; x != _raw->w; ++x)
-    for (size_t y = 0; y != _raw->h; ++y)
-      if (getPixel(x, y) == fromColor) setPixel(x, y, toColor);
-}
-
 bool Surface::isPixelVisible(size_t x, size_t y, Uint32 colorKey) const {
   const auto format = _raw->format;
   const auto pixel = getPixel(x, y);
