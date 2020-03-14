@@ -144,9 +144,19 @@ void ClientObjectType::addMaterial(const ClientItem *item, size_t qty) {
         ImageSet("Images/Objects/" + _imageFile + "-construction.png");
 }
 
-ClientObjectType::ImageSet::ImageSet(const std::string &filename) {
+ClientObjectType::ImageSet::ImageSet(const std::string &filename)
+    : _filename(filename) {
   _normal = {filename, Color::MAGENTA};
-  _highlight = createHighlightImageFrom(_normal, filename);
+}
+
+const Texture &ClientObjectType::ImageSet::highlight() const {
+  if (!_highlight ||
+      _timeHighlightWasCreated < SpriteType::timeLastRedrawWasOrdered()) {
+    _highlight = createHighlightImageFrom(_normal, _filename);
+    _timeHighlightWasCreated = SDL_GetTicks();
+  }
+
+  return _highlight;
 }
 
 void ClientObjectType::calculateAndInitDurability() {

@@ -31,13 +31,16 @@ class ClientObjectType : public SpriteType,
 
  private:
   class ImageSet {
-    Texture _normal, _highlight;
+    Texture _normal;
+    mutable Texture _highlight;
+    std::string _filename;
+    mutable ms_t _timeHighlightWasCreated{0};
 
    public:
     ImageSet() {}
     ImageSet(const std::string &filename);
     const Texture &normal() const { return _normal; }
-    const Texture &highlight() const { return _highlight; }
+    const Texture &highlight() const;
   };
   ImageSet _images;  // baseline images, identical to Sprite::_image and
                      // Sprite::_highlightImage.

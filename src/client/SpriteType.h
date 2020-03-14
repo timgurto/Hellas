@@ -23,6 +23,12 @@ class SpriteType {
   static ms_t timeThatTheLastRedrawWasOrdered;
   mutable ms_t _timeShadowGenerated{0}, _timeHighlightGenerated{0};
 
+ protected:
+  static ms_t timeLastRedrawWasOrdered() {
+    return timeThatTheLastRedrawWasOrdered;
+  }
+
+ private:
   struct Particles {
     std::string profile;
     MapPoint offset;  // From location
