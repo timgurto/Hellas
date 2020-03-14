@@ -137,15 +137,16 @@ void ClientObjectType::addTransformImage(const std::string &filename) {
 
 void ClientObjectType::addMaterial(const ClientItem *item, size_t qty) {
   _materials.set(item, qty);
-  auto isConstructionImageAlreadyInitialized = bool{_constructionImage.normal};
+  auto isConstructionImageAlreadyInitialized =
+      bool{_constructionImage.normal()};
   if (!isConstructionImageAlreadyInitialized)
     _constructionImage =
         ImageSet("Images/Objects/" + _imageFile + "-construction.png");
 }
 
 ClientObjectType::ImageSet::ImageSet(const std::string &filename) {
-  normal = {filename, Color::MAGENTA};
-  highlight = createHighlightImageFrom(normal, filename);
+  _normal = {filename, Color::MAGENTA};
+  _highlight = createHighlightImageFrom(_normal, filename);
 }
 
 void ClientObjectType::calculateAndInitDurability() {

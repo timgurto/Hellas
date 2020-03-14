@@ -1139,17 +1139,18 @@ void ClientObject::createRepairTooltip() const {
 
 const Texture &ClientObject::image() const {
   if (health() == 0) return objectType()->corpseImage();
-  if (isBeingConstructed()) return objectType()->constructionImage().normal;
+  if (isBeingConstructed()) return objectType()->constructionImage().normal();
   if (objectType()->transforms())
-    return objectType()->getProgressImage(_transformTimer).normal;
+    return objectType()->getProgressImage(_transformTimer).normal();
   return Sprite::image();
 }
 
 const Texture &ClientObject::highlightImage() const {
   if (health() == 0) return objectType()->corpseHighlightImage();
-  if (isBeingConstructed()) return objectType()->constructionImage().highlight;
+  if (isBeingConstructed())
+    return objectType()->constructionImage().highlight();
   if (objectType()->transforms())
-    return objectType()->getProgressImage(_transformTimer).highlight;
+    return objectType()->getProgressImage(_transformTimer).highlight();
   return Sprite::highlightImage();
 }
 

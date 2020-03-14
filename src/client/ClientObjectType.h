@@ -30,10 +30,14 @@ class ClientObjectType : public SpriteType,
   using GatherChances = std::map<std::string, double>;
 
  private:
-  struct ImageSet {
-    Texture normal, highlight;
+  class ImageSet {
+    Texture _normal, _highlight;
+
+   public:
     ImageSet() {}
     ImageSet(const std::string &filename);
+    const Texture &normal() const { return _normal; }
+    const Texture &highlight() const { return _highlight; }
   };
   ImageSet _images;  // baseline images, identical to Sprite::_image and
                      // Sprite::_highlightImage.
@@ -166,7 +170,7 @@ class ClientObjectType : public SpriteType,
   void initialiseHumanoidCorpse();
 
   virtual char classTag() const override { return 'o'; }
-  virtual const Texture &image() const override { return _images.normal; }
+  virtual const Texture &image() const override { return _images.normal(); }
 
   void calculateAndInitDurability();
 
