@@ -109,6 +109,7 @@
 <blacklist parent="item_copperCoin" child="item_copperBar" />
 
 <blacklist parent="item_tinBar"         child="object_copperMine" />
+<blacklist parent="item_tin"            child="object_copperMine" />
 <blacklist parent="object_copperMine"   child="item_rock" />
 
 <extra parent="item_leatherGloves" child="item_tinBar" />

@@ -46,7 +46,7 @@
     <yield id="copper" initialMean="7" initialSD="2.5" initialMin="1" />
     <yield id="rock" initialMean="5" initialSD="2" />
     <material id="brick" quantity="8" />
-    <material id="lumber" quantity="8" />
+    <material id="lumber" quantity="9" />
     <unlockedBy recipe="tinPick" chance="0.2" />
     <unlockedBy recipe="brick" chance="0.02" />
     <unlockedBy recipe="tinBar" chance="0.05" />
