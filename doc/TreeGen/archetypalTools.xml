@@ -132,6 +132,8 @@
 <extra parent="item_lumber"        child="object_lathe" />
 <extra parent="npc_sheep"          child="item_sheepskin" />
 <extra parent="item_collar"        child="npc_sheep" />
+<extra parent="item_tinKnife"      child="npc_sheep" />
+<extra parent="item_tinBar"        child="item_tinKnife" />
 
 <collapse id="object_figTree0" into="object_figTree8" />
 <collapse id="object_figTree1" into="object_figTree8" />

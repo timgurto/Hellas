@@ -22,7 +22,7 @@
 </npcType>
 <npcType id="sheepWithWool" name="Sheep (Wooly)"
     level="17" maxHealth="156" armor="10" isNeutral="1"
-    canGather="1" gatherTime="8000"
+    canGather="1" gatherTime="8000" gatherReq="shearing"
     xDrawOffset="-23" yDrawOffset="-27" >
     <collisionRect x="-21" y="-4" w="37" h="7" />
     <lootTable id="animal" />

@@ -112,6 +112,7 @@
 		<item id="tinKnife" name="Tin Knife" gearSlot="6" >
 			<tag name="carving" toolSpeed="1.1" />
 			<tag name="harvesting" toolSpeed="1.1" />
+			<tag name="shearing" />
 			<offset x="-6" y="-3" />
 			<weapon damage="5" speed="1.3" />
             <canBeRepaired cost="tinBar" tool="smelting1" />
@@ -119,6 +120,7 @@
 		<item id="copperKnife" name="Copper Knife" gearSlot="6" >
 			<tag name="carving" toolSpeed="1.2" />
 			<tag name="harvesting" toolSpeed="1.2" />
+			<tag name="shearing" toolSpeed="1.1" />
 			<offset x="-6" y="-3" />
 			<weapon damage="10" speed="1.2" />
             <canBeRepaired cost="copperBar" tool="smelting2" />
