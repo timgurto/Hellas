@@ -254,6 +254,7 @@
             </item>
             <item id="woolCloak" name="Woolen Cloak" gearSlot="3" sounds="fabric" >
                 <stats armor="1" eps="2" />
+                <offset x="-4" y="-1" />
                 <canBeRepaired cost="woolCloth" tool="sewing" />
             </item>
             
@@ -312,6 +313,7 @@
             </item>
             <item id="woolChiton" name="Wool Chiton" gearSlot="2" sounds="fabric" >
                 <stats armor="1" energy="35" />
+                <offset x="-6" y="-3" />
                 <canBeRepaired cost="woolCloth" tool="sewing" />
             </item>
 
