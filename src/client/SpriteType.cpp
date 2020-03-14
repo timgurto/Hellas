@@ -42,23 +42,32 @@ void SpriteType::addParticles(const std::string &profileName,
   _particles.push_back(p);
 }
 
-void SpriteType::setHighlightImage() const {
-  Surface highlightSurface(_imageFile, Color::MAGENTA);
-  if (!highlightSurface) return;
-  highlightSurface.swapAllVisibleColors(Color::SPRITE_OUTLINE_HIGHLIGHT);
-  auto recolor = Texture{highlightSurface};
-  recolor.setAlpha(0x9f);
+Texture SpriteType::createHighlightImageFrom(
+    const Texture &original, const std::string &originalImageFile) {
+  auto surface = Surface{originalImageFile, Color::MAGENTA};
+  if (!surface) return {};
 
-  _imageHighlight = Texture{recolor.width() + 2, recolor.height() + 2};
-  _imageHighlight.setBlend();
-  renderer.pushRenderTarget(_imageHighlight);
+  surface.swapAllVisibleColors(Color::SPRITE_OUTLINE_HIGHLIGHT);
+  auto singleRecolor = Texture{surface};
+  singleRecolor.setAlpha(0x9f);
+
+  auto ret = Texture{original.width() + 2, original.height() + 2};
+  ret.setBlend();
+  renderer.pushRenderTarget(ret);
   for (auto x = 0; x <= 2; ++x)
     for (auto y = 0; y <= 2; ++y) {
       if (x == 1 && y == 1) continue;
-      recolor.draw(x, y);
+      singleRecolor.draw(x, y);
     }
-  _image.draw(1, 1);
+  original.draw(1, 1);
   renderer.popRenderTarget();
+
+  return ret;
+}
+
+void SpriteType::setHighlightImage() const {
+  _imageHighlight = createHighlightImageFrom(_image, _imageFile);
+  _timeHighlightGenerated = SDL_GetTicks();
 }
 
 void SpriteType::setImage(const std::string &imageFile) {
@@ -72,10 +81,7 @@ void SpriteType::setImage(const std::string &imageFile) {
 const Texture &SpriteType::highlightImage() const {
   auto highlightIsUpToDate =
       _timeHighlightGenerated >= timeThatTheLastRedrawWasOrdered;
-  if (!highlightIsUpToDate) {
-    setHighlightImage();
-    _timeHighlightGenerated = SDL_GetTicks();
-  }
+  if (!highlightIsUpToDate) setHighlightImage();
 
   return _imageHighlight;
 }

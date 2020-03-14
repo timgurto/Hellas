@@ -45,6 +45,8 @@ class SpriteType {
   virtual ~SpriteType() {}
 
   void setImage(const std::string &filename);
+  virtual const Texture &image() const { return _image; }
+  void setHighlightImage() const;
   const Texture &highlightImage() const;
   const ScreenRect &drawRect() const { return _drawRect; }
   void drawRect(const ScreenRect &rect);
@@ -60,8 +62,8 @@ class SpriteType {
 
   void setAlpha(Uint8 alpha) { _image.setAlpha(alpha); }
 
-  void setHighlightImage() const;
-  virtual const Texture &image() const { return _image; }
+  static Texture createHighlightImageFrom(const Texture &original,
+                                          const std::string &originalImageFile);
 
   virtual char classTag() const { return 'e'; }
 
