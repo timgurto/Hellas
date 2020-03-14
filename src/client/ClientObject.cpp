@@ -220,7 +220,7 @@ void ClientObject::onRightClick(Client &client) {
       objType.canGather() && userHasAccess() && !isBeingConstructed();
   if (canGather) {
     client.sendMessage({CL_GATHER, _serial});
-    client.prepareAction(std::string("Gathering ") + objType.name());
+    client.prepareAction(std::string("Gathering from ") + objType.name());
     return;
   }
 
