@@ -140,6 +140,28 @@ Must contain either <forbid> nodes only (for a blacklist) or <allow> nodes only 
     <allow id="volcanoRocky" />
 </list>
 
+<list id="rocksAndMountains" description="Suitable on rocky or mountainous terrain." >
+    <allow id="rocky" />
+    <allow id="plainsRocky" />
+    <allow id="forestRocky" />
+    <allow id="richRocky" />
+    <allow id="snowRocky" />
+    <allow id="desertRocky" />
+    <allow id="beachRocky" />
+    <allow id="ruinsRocky" />
+    <allow id="caveRocky" />
+    <allow id="volcanoRocky" />
+    <allow id="mountain" />
+    <allow id="plainsMountain" />
+    <allow id="forestMountain" />
+    <allow id="richMountain" />
+    <allow id="desertMountain" />
+    <allow id="beachMountain" />
+    <allow id="ruinsMountain" />
+    <allow id="caveMountain" />
+    <allow id="volcanoMountain" />
+</list>
+
 <list id="fertile" description="Suitable on fertile ground." >
     <allow id="fertile" />
     <allow id="plainsFertile" />

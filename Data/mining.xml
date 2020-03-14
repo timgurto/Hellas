@@ -40,6 +40,7 @@
 <objectType id="copperMine" name="Copper Mine"
     xDrawOffset="-60" yDrawOffset="-74"
     canGather="1" gatherTime="8000" gatherReq="mining"
+    allowedTerrain="rocksAndMountains"
     constructionTime="0" constructionReq="copperDeposit" >
     <collisionRect x="-59" y="-38" w="119" h="61" />
     <yield id="copper" initialMean="7" initialSD="2.5" initialMin="1" />
