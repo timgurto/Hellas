@@ -71,6 +71,7 @@
     <material id="log" />
     <unlockedBy gather="rock" chance="0.05" />
     <unlockedBy construction="fire" chance="0.1" />
+    <unlockedBy construction="extinguishedOven" chance="0.1" />
     <durability item="rock" quantity="10" />
     <transform id="extinguishedOven" time="90000" />
     <canBeRepaired cost="rock" />
