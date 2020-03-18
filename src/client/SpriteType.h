@@ -50,7 +50,7 @@ class SpriteType {
 
   virtual ~SpriteType() {}
 
-  void setImage(const std::string &filename);
+  virtual void setImage(const std::string &filename);
   virtual const Texture &image() const { return _image; }
   void setHighlightImage() const;
   const Texture &highlightImage() const;

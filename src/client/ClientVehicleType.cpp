@@ -14,3 +14,8 @@ void ClientVehicleType::addClassSpecificStuffToConstructionTooltip(
   auto displaySpeed = proportionToPercentageString(speedAsMultiplier);
   descriptionLines.push_back("Vehicle ("s + displaySpeed + " speed)");
 }
+
+void ClientVehicleType::setImage(const std::string& imageFile) {
+  _front = {imageFile + "-front.png"s, Color::MAGENTA};
+  SpriteType::setImage(imageFile);
+}

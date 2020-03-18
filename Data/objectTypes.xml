@@ -156,6 +156,7 @@
 <objectType id="handCart" name="Hand Cart"
     xDrawOffset="-13" yDrawOffset="-16"
     isVehicle="1" damageParticles="wood" sounds="wood" >
+    <driver x="23" y="14" />
     <container slots="5" />
     <collisionRect x="-13" y="-4" w="25" h="8" />
     <material id="lumber" quantity="8" />

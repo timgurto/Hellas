@@ -7,6 +7,7 @@ class ClientVehicleType : public ClientObjectType {
   bool _drawDriver;
   ScreenPoint _driverOffset;  // Where to draw the driver
   double _speed;
+  Texture _front;
 
  public:
   ClientVehicleType(const std::string &id);
@@ -19,9 +20,11 @@ class ClientVehicleType : public ClientObjectType {
   void drawDriver(bool b) { _drawDriver = b; }
   const ScreenPoint &driverOffset() const { return _driverOffset; }
   void driverOffset(const ScreenPoint &p) { _driverOffset = p; }
+  const Texture &front() const { return _front; }
 
   virtual void addClassSpecificStuffToConstructionTooltip(
       std::vector<std::string> &descriptionLines) const override;
+  virtual void setImage(const std::string &imageFile) override;
 };
 
 #endif

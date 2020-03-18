@@ -24,14 +24,21 @@ double ClientVehicle::speed() const { return vehicleType().speed(); }
 void ClientVehicle::draw(const Client &client) const {
   ClientObject::draw(client);
 
+  if (!driver()) return;
+
   // Draw driver
   const ClientVehicleType &cvt =
       dynamic_cast<const ClientVehicleType &>(*type());
-  if (cvt.drawDriver() && driver() != nullptr) {
+  if (cvt.drawDriver()) {
     Avatar copy = *driver();
     copy.location(location() + toMapPoint(cvt.driverOffset()));
-    copy.driving(false);
+    copy.notDriving();
     copy.draw(client);
+  }
+
+  // Draw bit in front of driver
+  if (cvt.front()) {
+    cvt.front().draw(drawRect() + client.offset());
   }
 }
 
