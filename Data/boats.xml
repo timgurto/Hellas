@@ -2,8 +2,7 @@
 
 <objectType
     id="raft" name="Raft"
-    xDrawOffset="-16"
-    yDrawOffset="-11"
+    xDrawOffset="-16" yDrawOffset="-11"
     allowedTerrain="shallowWater"
     isVehicle="1" vehicleSpeed="50" >
     <driver x="0" y="0" />
@@ -15,8 +14,11 @@
 
 <objectType
     id="canoe" name="Canoe"
+    xDrawOffset="-32" yDrawOffset="-18"
     allowedTerrain="shallowWater"
     isVehicle="1" vehicleSpeed="100" >
+    <driver x="11" y="12" cutOffBottom="27" />
+    <collisionRect x="-24" y="-4" w="47" h="7" />
     <material id="stick" quantity="40" />
     <material id="rope" quantity="4" />
     <unlockedBy recipe="rope" chance="0.05" />
