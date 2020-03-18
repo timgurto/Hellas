@@ -889,6 +889,7 @@ TEST_CASE("Quest progress is persistent") {
   auto data = R"(
     <objectType id="A" />
     <objectType id="B" />
+    <item id="widget" />
     <quest id="startMe" startsAt="A" endsAt="A" />
     <quest id="leaveUnfinished" startsAt="A" endsAt="A">
       <objective type="kill" id="A" qty="10" />
@@ -904,8 +905,11 @@ TEST_CASE("Quest progress is persistent") {
     </quest>
     <quest id="finishMe" startsAt="A" endsAt="A" />
     <quest id="hasPrereq" startsAt="A" endsAt="A">
-        <prerequisite id="finishMe" />
-      </quest>
+      <prerequisite id="finishMe" />
+    </quest>
+    <quest id="fetchIt" startsAt="A" endsAt="A">
+      <objective type="fetch" id="widget" />
+    </quest>
   )";
   {
     auto s = TestServer::WithDataString(data);
@@ -914,26 +918,30 @@ TEST_CASE("Quest progress is persistent") {
     s.waitForUsers(1);
     auto &alice = s.getFirstUser();
 
-    // Given that Alice has started a quest
+    // Given that Alice has started quest A
     alice.startQuest(*s->findQuest("startMe"));
 
-    // And started another, but not met its objective
+    // And started B, but not met its objective
     alice.startQuest(*s->findQuest("leaveUnfinished"));
 
-    // And started another, but not made any progress
+    // And started C, but not made any progress
     alice.startQuest(*s->findQuest("makeNoProgress"));
 
-    // And killed the target of another quest
+    // And killed the target of D
     alice.startQuest(*s->findQuest("killIt"));
     alice.addQuestProgress(Quest::Objective::KILL, "A");
 
-    // And constructed the target of another quest
+    // And constructed the target of E
     alice.startQuest(*s->findQuest("buildIt"));
     alice.addQuestProgress(Quest::Objective::CONSTRUCT, "A");
 
-    // and finished yet another
+    // and finished F
     alice.startQuest(*s->findQuest("finishMe"));
     alice.completeQuest("finishMe");
+
+    // and collected the target of G
+    alice.startQuest(*s->findQuest("fetchIt"));
+    alice.giveItem(&s.getFirstItem());
 
     // When the server restarts
   }
@@ -943,34 +951,38 @@ TEST_CASE("Quest progress is persistent") {
     s.waitForUsers(1);
     const auto &alice = s.getFirstUser();
 
-    // Then she is on the first quest
+    // Then she is on A
     CHECK(alice.isOnQuest("startMe"));
 
-    // And she knows she's on the second
+    // And she knows she's on B
     const auto &leaveUnfinished = c->quests().find("leaveUnfinished")->second;
     WAIT_UNTIL(leaveUnfinished.state == CQuest::IN_PROGRESS);
 
-    // And she knows she's on the third
+    // And she knows she's on C
     const auto &makeNoProgress = c->quests().find("makeNoProgress")->second;
     WAIT_UNTIL(makeNoProgress.state == CQuest::IN_PROGRESS);
 
-    // And has achieved the objective of the fourth quest
+    // And has achieved the objective of D
     auto killIt = s->findQuest("killIt");
     CHECK(killIt->canBeCompletedByUser(alice));
 
-    // And has achieved the objective of the fifth quest
+    // And has achieved the objective of E
     auto buidlIt = s->findQuest("buildIt");
     CHECK(buidlIt->canBeCompletedByUser(alice));
 
-    // And completed the sixth quest
+    // And completed F
     CHECK(alice.hasCompletedQuest("finishMe"));
 
-    // And can see the quest requiring the sixth to have been completed
+    // And can see the quest that has F as a prerequisite
     s.addObject("A", {10, 15});
     WAIT_UNTIL(c.objects().size() == 1);
     const auto &cObj = c.getFirstObject();
     REPEAT_FOR_MS(100);
     CHECK(cObj.startsQuests().size() == 1);
+
+    // And has achieved the objective of G
+    auto fetchIt = s->findQuest("fetchIt");
+    CHECK(fetchIt->canBeCompletedByUser(alice));
   }
 }
 
