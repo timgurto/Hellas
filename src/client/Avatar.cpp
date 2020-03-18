@@ -39,6 +39,13 @@ void Avatar::draw(const Client &client) const {
     }
   }
 
+  if (_pixelsToCutOffBottomWhenDrawn > 0) {
+    auto transparency = Texture{DRAW_RECT.w, _pixelsToCutOffBottomWhenDrawn};
+    transparency.setBlend(SDL_BLENDMODE_NONE);
+    const auto TRANSPARENCY_TOP = DRAW_RECT.h - _pixelsToCutOffBottomWhenDrawn;
+    transparency.draw(0, TRANSPARENCY_TOP);
+  }
+
   renderer.popRenderTarget();
 
   Sprite::draw(client);

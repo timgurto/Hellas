@@ -28,6 +28,7 @@ class Avatar : public Sprite, public ClientCombatant {
   bool _isKing = false;
   const ClientVehicle *_vehicle{nullptr};
   mutable Texture _imageWithGear;
+  px_t _pixelsToCutOffBottomWhenDrawn{0};  // For drawing inside a vehicle
 
  public:
   Avatar(const std::string &name, const MapPoint &location);
@@ -51,6 +52,9 @@ class Avatar : public Sprite, public ClientCombatant {
   void setAsKing() { _isKing = true; }
   bool isKing() const { return _isKing; }
   void levelUp() { level(level() + 1); }
+  void cutOffBottomWhenDrawn(px_t numRows) {
+    _pixelsToCutOffBottomWhenDrawn = numRows;
+  }
 
   // From Sprite
   void draw(const Client &client) const override;

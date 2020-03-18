@@ -530,10 +530,15 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
       if (driver != nullptr) {
         ClientVehicleType &vt = dynamic_cast<ClientVehicleType &>(*cot);
         vt.drawDriver(true);
+
         ScreenPoint offset;
         xr.findAttr(driver, "x", offset.x);
         xr.findAttr(driver, "y", offset.y);
         vt.driverOffset(offset);
+
+        auto bottomCutoff = 0_px;
+        if (xr.findAttr(driver, "cutOffBottom", bottomCutoff))
+          vt.cutOffBottomOfDriver(bottomCutoff);
       }
     }
 

@@ -5,7 +5,8 @@
 
 class ClientVehicleType : public ClientObjectType {
   bool _drawDriver;
-  ScreenPoint _driverOffset;  // Where to draw the driver
+  ScreenPoint _driverOffset;      // Where to draw the driver
+  px_t _cutOffBottomOfDriver{0};  // Don't draw the bottom pixels of the driver
   double _speed;
   Texture _front;
 
@@ -20,6 +21,10 @@ class ClientVehicleType : public ClientObjectType {
   void drawDriver(bool b) { _drawDriver = b; }
   const ScreenPoint &driverOffset() const { return _driverOffset; }
   void driverOffset(const ScreenPoint &p) { _driverOffset = p; }
+  px_t driverCutoff() const { return _cutOffBottomOfDriver; }
+  void cutOffBottomOfDriver(px_t bottomRows) {
+    _cutOffBottomOfDriver = bottomRows;
+  }
   const Texture &front() const { return _front; }
 
   virtual void addClassSpecificStuffToConstructionTooltip(

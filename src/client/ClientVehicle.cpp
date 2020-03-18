@@ -2,6 +2,8 @@
 
 #include "Client.h"
 
+extern Renderer renderer;
+
 ClientVehicle::ClientVehicle(size_t serial, const ClientVehicleType *type,
                              const MapPoint &loc)
     : ClientObject(serial, type, loc), _driver(nullptr) {}
@@ -33,6 +35,7 @@ void ClientVehicle::draw(const Client &client) const {
     Avatar copy = *driver();
     copy.location(location() + toMapPoint(cvt.driverOffset()));
     copy.notDriving();
+    copy.cutOffBottomWhenDrawn(cvt.driverCutoff());
     copy.draw(client);
   }
 
