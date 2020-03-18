@@ -22,16 +22,26 @@ Avatar::Avatar(const std::string &name, const MapPoint &location)
 
 void Avatar::draw(const Client &client) const {
   if (isDriving()) return;
+  if (!_class) return;
 
-  if (_class == nullptr) return;
+  _imageWithGear = {width(), height()};
+  _imageWithGear.setBlend();
+  renderer.pushRenderTarget(_imageWithGear);
 
-  Sprite::draw(client);
+  // Base image
+  _class->image().draw();
 
-  // Draw gear
+  // Gear
   for (const auto &pair : ClientItem::drawOrder()) {
     const ClientItem *item = _gear[pair.second].first.type();
-    if (item != nullptr) item->draw(location());
+    if (item) {
+      item->draw({-DRAW_RECT.x, -DRAW_RECT.y});
+    }
   }
+
+  renderer.popRenderTarget();
+
+  Sprite::draw(client);
 
   drawBuffEffects(location());
 

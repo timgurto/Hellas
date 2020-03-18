@@ -31,13 +31,11 @@ static ScreenPoint toScreenPoint(const MapPoint &rhs) {
   return {toInt(rhs.x), toInt(rhs.y)};
 }
 
-void ClientItem::draw(const MapPoint &loc) const {
+void ClientItem::draw(const ScreenPoint &screenLoc) const {
   if (_gearSlot <= Client::GEAR_SLOTS && _gearImage) {
-    ScreenPoint drawLoc =
-        _drawLoc +                    // The item's offset
-        gearOffsets[_gearSlot] +      // The slot's offset
-        toScreenPoint(loc) +          // The avatar's location
-        Client::_instance->offset();  // The overall map offset
+    ScreenPoint drawLoc = _drawLoc +                // The item's offset
+                          gearOffsets[_gearSlot] +  // The slot's offset
+                          screenLoc;  // The avatar's location on the screen
     _gearImage.draw(drawLoc);
   }
 }

@@ -27,6 +27,7 @@ class Avatar : public Sprite, public ClientCombatant {
   ClientItem::vect_t _gear;
   bool _isKing = false;
   const ClientVehicle *_vehicle{nullptr};
+  mutable Texture _imageWithGear;
 
  public:
   Avatar(const std::string &name, const MapPoint &location);
@@ -64,10 +65,7 @@ class Avatar : public Sprite, public ClientCombatant {
   void name(const std::string &newName) { _name = newName; }
   bool shouldDrawName() const override { return true; }
   const Color &nameColor() const override;
-  virtual const Texture &image() const override {
-    assert(_class);
-    return _class->image();
-  }
+  virtual const Texture &image() const override { return _imageWithGear; }
   virtual const Texture &highlightImage() const override {
     return _class->image();
   }

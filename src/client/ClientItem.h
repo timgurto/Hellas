@@ -90,7 +90,8 @@ class ClientItem : public Item, public HasSounds {
   const Tooltip &tooltip() const;  // Getter; creates tooltip on first call.
   void refreshTooltip() { _tooltip = Optional<Tooltip>{}; }
 
-  void draw(const MapPoint &loc) const;
+  enum DrawOffset { MAP_OFFSET, NO_OFFSET };
+  void draw(const ScreenPoint &screenLoc) const;
 
   static void init();
 };

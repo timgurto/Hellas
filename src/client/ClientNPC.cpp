@@ -56,11 +56,13 @@ void ClientNPC::draw(const Client &client) const {
   ClientObject::draw(client);
 
   auto shouldDrawGear = isAlive() && npcType()->hasGear();
-  if (shouldDrawGear)
+  if (shouldDrawGear) {
+    const auto screenOffset = Client::_instance->offset();
     for (const auto &pair : ClientItem::drawOrder()) {
       const ClientItem *item = npcType()->gear(pair.second);
-      if (item) item->draw(location());
+      if (item) item->draw(toScreenPoint(location()) + screenOffset);
     }
+  }
 
   drawBuffEffects(location());
 }
