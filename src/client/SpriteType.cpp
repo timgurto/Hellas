@@ -74,8 +74,8 @@ void SpriteType::setHighlightImage() const {
 }
 
 void SpriteType::setImage(const std::string &imageFile) {
-  _imageFile = imageFile;
-  _image = Texture(imageFile, Color::MAGENTA);
+  _imageFile = imageFile + ".png";
+  _image = Texture(_imageFile, Color::MAGENTA);
   _drawRect.w = _image.width();
   _drawRect.h = _image.height();
   setHighlightImage();
