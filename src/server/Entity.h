@@ -202,7 +202,10 @@ class Entity {
   speed and time elapsed, and checking for collisions. Set location to the new,
   legal location.
   */
-  void updateLocation(const MapPoint &dest);
+  enum ClientLocationUpdateCase { OnServerCorrection, AlwaysSendUpdate };
+  void updateLocation(const MapPoint &dest,
+                      ClientLocationUpdateCase whenToSendClientHisLocation =
+                          OnServerCorrection);
 
   Permissions permissions;
   Gatherable gatherable;

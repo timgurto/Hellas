@@ -123,7 +123,11 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           auto vehicleSerial = user->driving();
           auto &vehicle = *_entities.find<Vehicle>(vehicleSerial);
           vehicle.updateLocation({x, y});
-          user->updateLocation(vehicle.location());
+          auto locationWasCorrected = vehicle.location() != MapPoint{x, y};
+          auto shouldSendUpdate = locationWasCorrected
+                                      ? Entity::AlwaysSendUpdate
+                                      : Entity::OnServerCorrection;
+          user->updateLocation(vehicle.location(), shouldSendUpdate);
         } else {
           user->updateLocation({x, y});
         }

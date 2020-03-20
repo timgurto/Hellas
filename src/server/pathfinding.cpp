@@ -1,7 +1,9 @@
 #include "Server.h"
 #include "objects/Object.h"
 
-void Entity::updateLocation(const MapPoint &dest) {
+void Entity::updateLocation(
+    const MapPoint &dest,
+    ClientLocationUpdateCase whenToSendClientHisLocation) {
   Server &server = *Server::_instance;
 
   const ms_t newTime = SDL_GetTicks();
@@ -108,7 +110,11 @@ void Entity::updateLocation(const MapPoint &dest) {
     auto hiY = server._entitiesByY.upper_bound(&Dummy::Location(0, bottom));
 
     // Tell user that he has moved
-    if (newDest != dest)
+    const auto serverCorrectionWasApplied = newDest != dest;
+    const auto shouldUpdateUser =
+        (whenToSendClientHisLocation == AlwaysSendUpdate) ||
+        serverCorrectionWasApplied;
+    if (shouldUpdateUser)
       userPtr->sendMessage(
           {SV_LOCATION, makeArgs(userPtr->name(), newDest.x, newDest.y)});
 
