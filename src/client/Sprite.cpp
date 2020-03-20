@@ -26,6 +26,13 @@ ScreenRect Sprite::drawRect() const {
   return drawRect;
 }
 
+void Sprite::newLocationFromServer(const MapPoint &loc) {
+  _locationOnServer = loc;
+  _serverHasOrderedACorrection = true;
+
+  onNewLocationFromServer();
+}
+
 double Sprite::speed() const {
   const auto &client = Client::instance();
   if (this == &client.character()) return client._stats.speed;
@@ -106,6 +113,8 @@ void Sprite::location(const MapPoint &loc) {
   const double oldY = _location.y;
   _location = loc;
   if (_location.y != oldY) _yChanged = true;
+
+  onLocationChange();
 }
 
 bool Sprite::collision(const MapPoint &p) const {

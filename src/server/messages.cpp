@@ -120,13 +120,13 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         if (user->action() != User::ATTACK) user->cancelAction();
         if (user->isDriving()) {
           // Move vehicle and user together
-          size_t vehicleSerial = user->driving();
-          Vehicle &vehicle = *_entities.find<Vehicle>(vehicleSerial);
+          auto vehicleSerial = user->driving();
+          auto &vehicle = *_entities.find<Vehicle>(vehicleSerial);
           vehicle.updateLocation({x, y});
           user->updateLocation(vehicle.location());
-          break;
+        } else {
+          user->updateLocation({x, y});
         }
-        user->updateLocation({x, y});
         break;
       }
 

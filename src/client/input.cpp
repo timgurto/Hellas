@@ -523,10 +523,10 @@ void Client::handleInput(double delta) {
          right = _keyboardState.isPressed(SDL_SCANCODE_RIGHT) ||
                  _keyboardState.isPressed(SDL_SCANCODE_D);
     if (up != down || left != right) {
-      const double SPEED =
+      const auto speed =
           _character.isDriving() ? _character.vehicleSpeed() : _stats.speed;
-      const double DIAG_SPEED = SPEED / SQRT_2;
-      const double dist = delta * SPEED, diagDist = delta * DIAG_SPEED;
+      const auto diagSpeed = speed / SQRT_2;
+      const auto dist = delta * speed, diagDist = delta * diagSpeed;
 
       auto newLocation = _character.location();
 

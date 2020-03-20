@@ -20,6 +20,10 @@ Avatar::Avatar(const std::string &name, const MapPoint &location)
       _name(name),
       _gear(Client::GEAR_SLOTS, std::make_pair(ClientItem::Instance{}, 0)) {}
 
+bool Avatar::isCharacter() const {
+  return this == &Client::instance().character();
+}
+
 void Avatar::draw(const Client &client) const {
   if (isDriving()) return;
   if (!_class) return;
@@ -171,6 +175,16 @@ void Avatar::onRightClick(Client &client) {
 double Avatar::speed() const {
   if (_vehicle) return _vehicle->speed();
   return Sprite::speed();
+}
+
+void Avatar::onNewLocationFromServer() {
+  if (!isCharacter()) return;
+  if (_vehicle) _vehicle->newLocationFromServer(locationOnServer());
+}
+
+void Avatar::onLocationChange() {
+  if (!isCharacter()) return;
+  if (_vehicle) _vehicle->location(location());
 }
 
 void Avatar::sendTargetMessage() const {

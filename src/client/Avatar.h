@@ -26,12 +26,14 @@ class Avatar : public Sprite, public ClientCombatant {
   std::string _city;
   ClientItem::vect_t _gear;
   bool _isKing = false;
-  const ClientVehicle *_vehicle{nullptr};
+  ClientVehicle *_vehicle{nullptr};
   mutable Texture _imageWithGear;
   px_t _pixelsToCutOffBottomWhenDrawn{0};  // For drawing inside a vehicle
 
  public:
   Avatar(const std::string &name, const MapPoint &location);
+
+  bool isCharacter() const;
 
   const MapRect collisionRect() const { return COLLISION_RECT + location(); }
   static const MapRect &collisionRectRaw() { return COLLISION_RECT; }
@@ -39,9 +41,10 @@ class Avatar : public Sprite, public ClientCombatant {
   const ClassInfo *getClass() const { return _class; }
   const ClientItem::vect_t &gear() const { return _gear; }
   ClientItem::vect_t &gear() { return _gear; }
-  void driving(const ClientVehicle &v) { _vehicle = &v; }
+  void driving(ClientVehicle &v) { _vehicle = &v; }
   void notDriving() { _vehicle = nullptr; }
   bool isDriving() const { return _vehicle != nullptr; }
+  bool isDriving(const ClientVehicle &v) const { return _vehicle == &v; }
   double vehicleSpeed() const;
   const ClientItem *getRandomArmor() const {
     return _gear[Item::getRandomArmorSlot()].first.type();
@@ -74,6 +77,8 @@ class Avatar : public Sprite, public ClientCombatant {
     return _class->image();
   }
   double speed() const override;
+  virtual void onNewLocationFromServer() override;
+  virtual void onLocationChange() override;
 
   // From ClientCombatant
   void sendTargetMessage() const override;

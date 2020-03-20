@@ -40,6 +40,7 @@ class Sprite {
   const MapPoint &location() const { return _location; }
   void location(const MapPoint &loc);  // yChanged() should be checked after
                                        // changing location.
+  virtual void onLocationChange() {}
 
   virtual ScreenRect drawRect() const;
   px_t width() const { return _type->width(); }
@@ -60,10 +61,8 @@ class Sprite {
 
   // Movement lerping
   const MapPoint &locationOnServer() const { return _locationOnServer; }
-  void newLocationFromServer(const MapPoint &loc) {
-    _locationOnServer = loc;
-    _serverHasOrderedACorrection = true;
-  }
+  void newLocationFromServer(const MapPoint &loc);
+  virtual void onNewLocationFromServer() {}
   bool serverHasOrderedACorrection() const {
     return _serverHasOrderedACorrection;
   }

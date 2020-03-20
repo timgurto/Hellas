@@ -665,10 +665,11 @@ void Client::handleMessage(const std::string &msg) {
         singleMsg >> serial >> del >> x >> del >> y >> del;
         if (del != MSG_END) break;
         std::map<size_t, ClientObject *>::iterator it = _objects.find(serial);
-        if (it == _objects.end()) {
-          // showErrorMessage("Server removed an object we didn't know about.",
-          // Color::TODO);
-          break;  // We didn't know about this object
+        if (it == _objects.end()) break;  // We didn't know about this object
+        if (_character.isDriving()) {
+          const auto *asVehicle =
+              dynamic_cast<const ClientVehicle *>(it->second);
+          if (asVehicle && _character.isDriving(*asVehicle)) break;
         }
         it->second->newLocationFromServer({x, y});
         // if (msgCode == SV_LOCATION_INSTANT_OBJECT) it->second->location({x,
@@ -1135,7 +1136,7 @@ void Client::handleMessage(const std::string &msg) {
           else
             userP = it->second;
         }
-        userP->driving(false);
+        userP->notDriving();
         auto pairIt = _objects.find(serial);
         if (pairIt == _objects.end())
           ;  // showErrorMessage("Received driver info for an unknown
