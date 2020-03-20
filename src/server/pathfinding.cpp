@@ -1,8 +1,8 @@
 #include "Server.h"
 #include "objects/Object.h"
 
-void Entity::updateLocation(
-    const MapPoint &dest,
+void Entity::moveLegallyTowards(
+    const MapPoint &requestedDest,
     ClientLocationUpdateCase whenToSendClientHisLocation) {
   Server &server = *Server::_instance;
 
@@ -14,12 +14,12 @@ void Entity::updateLocation(
   if (classTag() == 'u') userPtr = dynamic_cast<const User *>(this);
 
   // Max legal distance: straight line
-  double requestedDistance = distance(_location, dest);
+  double requestedDistance = distance(_location, requestedDest);
   auto distanceToMove = 0.0;
   MapPoint newDest;
   if (userPtr && userPtr->isDriving()) {
     distanceToMove = requestedDistance;
-    newDest = dest;
+    newDest = requestedDest;
   } else {
     const auto TRUST_CLIENTS_WITH_MOVEMENT_SPEED = true;
     if (TRUST_CLIENTS_WITH_MOVEMENT_SPEED)
@@ -31,7 +31,7 @@ void Entity::updateLocation(
       distanceToMove = min(maxLegalDistance, requestedDistance);
     }
 
-    newDest = interpolate(_location, dest, distanceToMove);
+    newDest = interpolate(_location, requestedDest, distanceToMove);
 
     MapPoint rawDisplacement(newDest.x - _location.x, newDest.y - _location.y);
     auto displacementX = abs(rawDisplacement.x),
@@ -110,7 +110,7 @@ void Entity::updateLocation(
     auto hiY = server._entitiesByY.upper_bound(&Dummy::Location(0, bottom));
 
     // Tell user that he has moved
-    const auto serverCorrectionWasApplied = newDest != dest;
+    const auto serverCorrectionWasApplied = newDest != requestedDest;
     const auto shouldUpdateUser =
         (whenToSendClientHisLocation == AlwaysSendUpdate) ||
         serverCorrectionWasApplied;

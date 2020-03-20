@@ -64,7 +64,7 @@ TEST_CASE("Belliegerents can fight", "[remote]") {
   // When Alice moves within range of Bob
   User &uAlice = s.findUser("Alice"), &uBob = s.findUser("Bob");
   while (distance(uAlice.location(), uBob.location()) > Server::ACTION_DISTANCE)
-    uAlice.updateLocation(uBob.location());
+    uAlice.moveLegallyTowards(uBob.location());
 
   // And Alice knows that the war has successfully been declared
   WAIT_UNTIL(alice.otherUsers().size() == 1);
@@ -86,7 +86,7 @@ TEST_CASE("Peaceful players can't fight", "[remote]") {
 
   User &uAlice = s.findUser("Alice"), &uBob = s.findUser("Bob");
   while (distance(uAlice.location(), uBob.location()) > Server::ACTION_DISTANCE)
-    uAlice.updateLocation(uBob.location());
+    uAlice.moveLegallyTowards(uBob.location());
 
   alice.sendMessage(CL_TARGET_PLAYER, "Bob");
   REPEAT_FOR_MS(500);

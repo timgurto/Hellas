@@ -122,14 +122,14 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           // Move vehicle and user together
           auto vehicleSerial = user->driving();
           auto &vehicle = *_entities.find<Vehicle>(vehicleSerial);
-          vehicle.updateLocation({x, y});
+          vehicle.moveLegallyTowards({x, y});
           auto locationWasCorrected = vehicle.location() != MapPoint{x, y};
           auto shouldSendUpdate = locationWasCorrected
                                       ? Entity::AlwaysSendUpdate
                                       : Entity::OnServerCorrection;
-          user->updateLocation(vehicle.location(), shouldSendUpdate);
+          user->moveLegallyTowards(vehicle.location(), shouldSendUpdate);
         } else {
-          user->updateLocation({x, y});
+          user->moveLegallyTowards({x, y});
         }
         break;
       }
@@ -1059,7 +1059,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
 
         v->driver(user->name());
         user->driving(v->serial());
-        user->updateLocation(v->location());
+        user->moveLegallyTowards(v->location());
         // Alert nearby users (including the new driver)
         for (const User *u : findUsersInArea(user->location()))
           sendMessage(u->socket(),
@@ -1097,7 +1097,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
 
         // Move him before dismounting him, to avoid unnecessary
         // collision/distance checks
-        user->updateLocation(target);
+        user->moveLegallyTowards(target);
 
         v->driver("");
         user->driving(0);

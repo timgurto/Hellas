@@ -22,7 +22,7 @@ TEST_CASE("Dismantle an object with an inventory", "[.flaky][container]") {
   TestClient c = TestClient::WithData("dismantle");
   s.waitForUsers(1);
   User &user = s.getFirstUser();
-  user.updateLocation({10, 10});
+  user.moveLegallyTowards({10, 10});
   // And a box at (10, 10) that is deconstructible and has an empty inventory
   s.addObject("box", {10, 10});
   WAIT_UNTIL(c.objects().size() == 1);

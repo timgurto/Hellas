@@ -203,9 +203,9 @@ class Entity {
   legal location.
   */
   enum ClientLocationUpdateCase { OnServerCorrection, AlwaysSendUpdate };
-  void updateLocation(const MapPoint &dest,
-                      ClientLocationUpdateCase whenToSendClientHisLocation =
-                          OnServerCorrection);
+  void moveLegallyTowards(const MapPoint &requestedDest,
+                          ClientLocationUpdateCase whenToSendClientHisLocation =
+                              OnServerCorrection);
 
   Permissions permissions;
   Gatherable gatherable;

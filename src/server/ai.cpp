@@ -202,12 +202,12 @@ void NPC::act() {
       break;
 
     case FOLLOW:
-      updateLocation(_followTarget->location());
+      moveLegallyTowards(_followTarget->location());
       break;
 
     case CHASE:
       // Move towards target
-      updateLocation(target()->location());
+      moveLegallyTowards(target()->location());
       break;
 
     case ATTACK:

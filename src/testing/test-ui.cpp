@@ -46,7 +46,7 @@ TEST_CASE("View merchant slots in window", "[.flaky][ui]") {
   // Move user to middle
   s.waitForUsers(1);
   User &user = s.getFirstUser();
-  user.updateLocation({10, 10});
+  user.moveLegallyTowards({10, 10});
   // Add a single vending machine
   s.addObject("vendingMachine", {10, 10});
   WAIT_UNTIL(s.entities().size() == 1);
