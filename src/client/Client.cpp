@@ -817,13 +817,17 @@ int Client::totalTalentPointsAllocated() {
 void Client::applyCollisionChecksToPlayerMovement(MapPoint &pendingDest) const {
   auto loc = _character.location();
 
-  if (_character.isDriving()) return;
+  auto collisionRect = _character.collisionRect();
+
+  if (_character.isDriving()) {
+    collisionRect = _character.vehicle()->collisionRect();
+  }
 
   // First check: rectangle around entire journey
   auto rawDisplacement = MapPoint{pendingDest.x - loc.x, pendingDest.y - loc.y};
   auto displacementX = abs(rawDisplacement.x);
   auto displacementY = abs(rawDisplacement.y);
-  auto journeyRect = _character.collisionRect();
+  auto journeyRect = collisionRect;
   if (rawDisplacement.x < 0) journeyRect.x -= displacementX;
   journeyRect.w += displacementX;
   if (rawDisplacement.y < 0) journeyRect.y -= displacementY;
@@ -832,8 +836,8 @@ void Client::applyCollisionChecksToPlayerMovement(MapPoint &pendingDest) const {
 
   // Try x alone
   auto xOnlyRect = journeyRect;
-  xOnlyRect.y = _character.collisionRect().y;
-  xOnlyRect.h = _character.collisionRect().h;
+  xOnlyRect.y = collisionRect.y;
+  xOnlyRect.h = collisionRect.h;
   if (isLocationValidForPlayer(xOnlyRect)) {
     pendingDest.y = loc.y;
     return;
@@ -841,8 +845,8 @@ void Client::applyCollisionChecksToPlayerMovement(MapPoint &pendingDest) const {
 
   // Try y alone
   auto yOnlyRect = journeyRect;
-  yOnlyRect.x = _character.collisionRect().x;
-  yOnlyRect.w = _character.collisionRect().w;
+  yOnlyRect.x = collisionRect.x;
+  yOnlyRect.w = collisionRect.w;
   if (isLocationValidForPlayer(yOnlyRect)) {
     pendingDest.x = loc.x;
     return;
@@ -866,7 +870,14 @@ bool Client::isLocationValidForPlayer(const MapRect &rect) const {
   if (rect.y + rect.h > Y_LIM) return false;
 
   // Terrain
-  auto applicableTerrainList = TerrainList::findList(_allowedTerrain);
+  auto allowedTerrain = _allowedTerrain;
+  if (_character.isDriving()) {
+    const auto &vehicleType = *_character.vehicle()->objectType();
+    allowedTerrain = vehicleType.allowedTerrain();
+    if (allowedTerrain.empty())
+      allowedTerrain = TerrainList::defaultList().id();
+  }
+  auto applicableTerrainList = TerrainList::findList(allowedTerrain);
   if (!applicableTerrainList)
     applicableTerrainList = &TerrainList::defaultList();
   auto terrainTypesCovered = _map.terrainTypesOverlapping(rect);
@@ -879,6 +890,8 @@ bool Client::isLocationValidForPlayer(const MapRect &rect) const {
     if (!obj) continue;
     if (!obj->collides()) continue;
     if (obj->isDead()) continue;
+
+    if (_character.isDriving() && _character.vehicle() == obj) continue;
 
     // Allow collisions between users and users/NPCs
     if (obj->classTag() == 'u' || obj->classTag() == 'n') continue;

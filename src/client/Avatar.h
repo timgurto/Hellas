@@ -45,6 +45,7 @@ class Avatar : public Sprite, public ClientCombatant {
   void notDriving() { _vehicle = nullptr; }
   bool isDriving() const { return _vehicle != nullptr; }
   bool isDriving(const ClientVehicle &v) const { return _vehicle == &v; }
+  const ClientVehicle *vehicle() const { return _vehicle; }
   double vehicleSpeed() const;
   const ClientItem *getRandomArmor() const {
     return _gear[Item::getRandomArmorSlot()].first.type();
