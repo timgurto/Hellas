@@ -26,7 +26,7 @@
     <durability item="stick" quantity="40" />
 </objectType>
 
-<objectType
+<!--objectType
     id="basicShip" name="Ship"
     allowedTerrain="normalWater"
     isVehicle="1" vehicleSpeed="100" >
@@ -37,13 +37,13 @@
     <unlockedBy recipe="linenCloth" chance="0.02" />
     <unlockedBy construction="canoe" chance="0.1" />
     <durability item="lumber" quantity="25" />
-</objectType>
+</objectType-->
 
 <!--
-                            Normal      Deep
-    Fast transport                      Yacht
-    Medium merchant
-    Slow industrial/heavy   Freighter   Barge
+                            Normal      Deep (with Acacia)
+    Fast (transport)        Canoe       Yacht
+    Capacity (merchant)     Trade Boat  Merchant Ship
+    Heavy (industrial)      Freighter   Freight Barge
     Military?               Galley      Trireme
 -->
 
