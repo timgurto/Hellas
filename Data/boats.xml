@@ -4,7 +4,7 @@
     id="raft" name="Raft"
     xDrawOffset="-16" yDrawOffset="-11"
     allowedTerrain="shallowWater"
-    isVehicle="1" vehicleSpeed="50" >
+    isVehicle="1" vehicleSpeed=".65" >
     <driver x="0" y="0" />
     <collisionRect x="-7" y="-5" w="15" h="10" />
     <material id="log" quantity="8" />
@@ -16,7 +16,7 @@
     id="canoe" name="Canoe"
     xDrawOffset="-32" yDrawOffset="-18"
     allowedTerrain="shallowWater"
-    isVehicle="1" vehicleSpeed="100" >
+    isVehicle="1" vehicleSpeed="1.25" >
     <driver x="11" y="12" cutOffBottom="27" />
     <collisionRect x="-24" y="-4" w="47" h="7" />
     <material id="stick" quantity="40" />
@@ -29,7 +29,7 @@
 <!--objectType
     id="basicShip" name="Ship"
     allowedTerrain="normalWater"
-    isVehicle="1" vehicleSpeed="100" >
+    isVehicle="1" vehicleSpeed="1.25" >
     <material id="lumber" quantity="25" />
     <material id="rope" quantity="6" />
     <material id="linenCloth" quantity="9" />

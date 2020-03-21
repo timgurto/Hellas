@@ -4,10 +4,10 @@
 #include "ClientObjectType.h"
 
 class ClientVehicleType : public ClientObjectType {
-  bool _drawDriver;
+  bool _drawDriver{false};
   ScreenPoint _driverOffset;      // Where to draw the driver
   px_t _cutOffBottomOfDriver{0};  // Don't draw the bottom pixels of the driver
-  double _speed;
+  double _speed{1.0};
   Texture _front;
 
  public:

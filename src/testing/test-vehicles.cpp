@@ -44,7 +44,7 @@ TEST_CASE("Custom vehicle speeds") {
       <size x="40" y="2" />
       <row    y="0" terrain = "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG" />
       <row    y="1" terrain = "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG" />
-      <objectType id="racecar" isVehicle="1" vehicleSpeed="200" />
+      <objectType id="racecar" isVehicle="1" vehicleSpeed="2.5" />
     )";
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);

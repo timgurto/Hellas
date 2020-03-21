@@ -62,8 +62,7 @@ bool ClientVehicle::addClassSpecificStuffToWindow() {
 }
 
 bool ClientVehicle::addClassSpecificStuffToTooltip(Tooltip &tooltip) const {
-  auto speedAsMultiplier = speed() / Client::MOVEMENT_SPEED;
-  auto displaySpeed = proportionToPercentageString(speedAsMultiplier);
+  auto displaySpeed = proportionToPercentageString(speed());
   tooltip.addLine("Vehicle ("s + displaySpeed + " speed)");
 
   return true;

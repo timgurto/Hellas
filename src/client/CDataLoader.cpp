@@ -525,7 +525,7 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
       if (!hasLocks) _client._knownConstructions.insert(id);
     }
 
-    if (cot->classTag() == 'v') {
+    if (isVehicle) {
       auto driver = xr.findChild("driver", elem);
       if (driver != nullptr) {
         ClientVehicleType &vt = dynamic_cast<ClientVehicleType &>(*cot);

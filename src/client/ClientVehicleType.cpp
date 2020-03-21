@@ -3,10 +3,7 @@
 #include "Client.h"
 
 ClientVehicleType::ClientVehicleType(const std::string& id)
-    : ClientObjectType(id),
-      _drawDriver(false),
-      _driverOffset(),
-      _speed(Client::MOVEMENT_SPEED) {}
+    : ClientObjectType(id) {}
 
 void ClientVehicleType::addClassSpecificStuffToConstructionTooltip(
     std::vector<std::string>& descriptionLines) const {
