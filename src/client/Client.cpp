@@ -85,7 +85,6 @@ Client::Client()
       _currentCursor(&_cursorNormal),
 
       _character({}, {}),
-      _isDismounting(false),
 
       _activeRecipe(nullptr),
 

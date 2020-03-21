@@ -1071,8 +1071,6 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
       }
 
       case CL_DISMOUNT: {
-        MapPoint target;
-        iss >> target.x >> del >> target.y >> del;
         if (del != MSG_END) return;
         if (user->isStunned()) {
           sendMessage(client, WARNING_STUNNED);
@@ -1082,22 +1080,30 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
           sendMessage(client, ERROR_NOT_VEHICLE);
           break;
         }
-        auto dstRect = user->type()->collisionRect() + target;
-        if (distance(dstRect, user->collisionRect()) > ACTION_DISTANCE) {
-          sendMessage(client, WARNING_TOO_FAR);
+
+        auto dst = MapPoint{};
+        bool validDestinationFound = false;
+        const auto ATTEMPTS = 50;
+        for (auto i = 0; i != ATTEMPTS; ++i) {
+          dst = getRandomPointInCircle(user->location(), ACTION_DISTANCE);
+          if (isLocationValid(dst, User::OBJECT_TYPE)) {
+            validDestinationFound = true;
+            break;
+          }
+        }
+
+        if (!validDestinationFound) {
+          sendMessage(client, WARNING_NO_VALID_DISMOUNT_LOCATION);
           break;
         }
-        if (!isLocationValid(target, User::OBJECT_TYPE)) {
-          sendMessage(client, WARNING_BLOCKED);
-          break;
-        }
+
         size_t serial = user->driving();
         Object *obj = _entities.find<Object>(serial);
         Vehicle *v = dynamic_cast<Vehicle *>(obj);
 
         // Move him before dismounting him, to avoid unnecessary
         // collision/distance checks
-        user->moveLegallyTowards(target);
+        user->moveLegallyTowards(dst);
 
         v->driver("");
         user->driving(0);

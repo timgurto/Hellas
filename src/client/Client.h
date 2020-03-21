@@ -83,8 +83,6 @@ class Client {
     return _target.combatant();
   }
   const Sprite *targetAsEntity() const { return _target.entity(); }
-  bool isDismounting() const { return _isDismounting; }
-  void attemptDismount() { _isDismounting = true; }
   const SoundProfile *avatarSounds() const { return _avatarSounds; }
   const SoundProfile *generalSounds() const { return _generalSounds; }
   const std::string &tagName(const std::string &id) const {
@@ -244,8 +242,6 @@ class Client {
   Texture _cursorNormal, _cursorGather, _cursorContainer, _cursorAttack,
       _cursorStartsQuest, _cursorEndsQuest, _cursorRepair, _cursorVehicle;
   const Texture *_currentCursor;
-
-  bool _isDismounting;  // Whether the user is looking for a dismount location.
 
   static void initializeGearSlotNames();
 

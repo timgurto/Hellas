@@ -73,6 +73,17 @@ MapPoint extrapolate(const MapPoint &a, const MapPoint &b, double dist) {
   return {a.x + xNorm * dist, a.y + yNorm * dist};
 }
 
+MapPoint getRandomPointInCircle(const MapPoint &centre, double radius) {
+  auto p = centre;
+  if (radius != 0) {
+    radius *= sqrt(randDouble());
+    double angle = randDouble() * 2 * PI;
+    p.x += cos(angle) * radius;
+    p.y -= sin(angle) * radius;
+  }
+  return p;
+}
+
 std::string sAsTimeDisplay(int t) {
   auto remaining = t;
   auto seconds = remaining % 60;

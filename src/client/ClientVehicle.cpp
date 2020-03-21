@@ -12,13 +12,10 @@ void ClientVehicle::mountOrDismount(void *object) {
   const ClientVehicle &obj = *static_cast<const ClientVehicle *>(object);
   Client &client = *Client::_instance;
 
-  // Not currently driving anything: attempt to mount
   if (!client.character().isDriving())
     client.sendMessage({CL_MOUNT, obj.serial()});
-
-  // Currently driving: attempt to dismount
   else
-    client.attemptDismount();
+    client.sendMessage({CL_DISMOUNT});
 }
 
 double ClientVehicle::speed() const { return vehicleType().speed(); }

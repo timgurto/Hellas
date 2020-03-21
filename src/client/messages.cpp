@@ -229,6 +229,7 @@ void Client::handleMessage(const std::string &msg) {
       case WARNING_NOT_A_CITIZEN:
       case WARNING_NOT_REPAIRABLE:
       case SV_TAME_ATTEMPT_FAILED:
+      case WARNING_NO_VALID_DISMOUNT_LOCATION:
         errorMessageColor = Color::CHAT_WARNING;  // Yellow above, red below
       case ERROR_INVALID_USER:
       case ERROR_INVALID_ITEM:
@@ -1127,7 +1128,6 @@ void Client::handleMessage(const std::string &msg) {
         Avatar *userP = nullptr;
         if (user == _username) {
           userP = &_character;
-          _isDismounting = false;
         } else {
           auto it = _otherUsers.find(user);
           if (it == _otherUsers.end())
@@ -2690,6 +2690,8 @@ void Client::initializeMessageNames() {
       "There is no citizen of your city by that name.";
   _errorMessages[WARNING_NOT_REPAIRABLE] = "That can't be repaired.";
   _errorMessages[SV_TAME_ATTEMPT_FAILED] = "Attempt to tame failed.";
+  _errorMessages[WARNING_NO_VALID_DISMOUNT_LOCATION] =
+      "No suitable place to dismount.";
 }
 
 void Client::performCommand(const std::string &commandString) {

@@ -16,14 +16,7 @@ void Spawner::initialise() {
 }
 
 MapPoint Spawner::getRandomPoint() const {
-  MapPoint p = _location;
-  if (_radius != 0) {
-    double radius = sqrt(randDouble()) * _radius;
-    double angle = randDouble() * 2 * PI;
-    p.x += cos(angle) * radius;
-    p.y -= sin(angle) * radius;
-  }
-  return p;
+  return getRandomPointInCircle(_location, _radius);
 }
 
 double Spawner::distanceFromEntity(const Entity &entity) const {

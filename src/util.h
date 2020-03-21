@@ -44,6 +44,8 @@ MapPoint interpolate(const MapPoint &a, const MapPoint &b, double dist);
 // dist must exceed the distance between a and b.
 MapPoint extrapolate(const MapPoint &a, const MapPoint &b, double dist);
 
+MapPoint getRandomPointInCircle(const MapPoint &centre, double radius);
+
 inline int str2int(const std::string str) {
   std::istringstream iss(str);
   int i;

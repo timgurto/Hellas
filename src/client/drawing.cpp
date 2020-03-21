@@ -173,22 +173,6 @@ void Client::draw() const {
       instruction += "  Hold Ctrl to build an object for your city.";
     }
     _instructionsLabel->changeText(instruction);
-
-  } else if (_isDismounting) {
-    const SpriteType &charType = *_character.type();
-    MapPoint footprintRect =
-        Avatar::collisionRectRaw() - _offset + toMapPoint(_mouse);
-    if (distance(playerCollisionRect(), footprintRect) <=
-        Client::ACTION_DISTANCE) {
-      charType.image().setAlpha(0x7f);
-      charType.image().draw(_mouse + charType.drawRect());
-      charType.image().setAlpha();
-    } else {
-      renderer.setDrawColor(Color::FOOTPRINT_BAD);
-      renderer.fillRect(toScreenRect(footprintRect + _offset));
-    }
-    _instructionsLabel->changeText(
-        "Click on the ground nearby to dismount; right-click to cancel.");
   }
 
   // Cull distance

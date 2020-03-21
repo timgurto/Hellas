@@ -387,14 +387,6 @@ void Client::handleInput(double delta) {
               prepareAction(std::string("Constructing ") +
                             _selectedConstruction->name());
               break;
-
-              // Dismount
-            } else if (_isDismounting) {
-              px_t x = toInt(_mouse.x - offset().x),
-                   y = toInt(_mouse.y - offset().y);
-              sendMessage({CL_DISMOUNT, makeArgs(x, y)});
-              //_isDismounting = false;
-              break;
             }
 
             // Dragged item onto map -> drop.
@@ -455,8 +447,6 @@ void Client::handleInput(double delta) {
               ContainerGrid::clearUseItem();
               break;
             }
-
-            if (_isDismounting) _isDismounting = false;
 
             if (mouseUpOnWindow || _rightMouseDownWasOnUI) break;
 

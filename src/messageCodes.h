@@ -102,8 +102,7 @@ enum MessageCode {
   // Arguments: serial
   CL_MOUNT,
 
-  // "I want to dismount my vehicle, to location (..., ...)"
-  // Arguments: x, y
+  // "I want to dismount my vehicle"
   CL_DISMOUNT,
 
   // "I want to give my object ... to my city".
@@ -648,6 +647,7 @@ enum MessageCode {
   ERROR_NOT_VEHICLE, // The user tried to mount a non-vehicle object.
   WARNING_VEHICLE_OCCUPIED, // The user tried to perform an action on an occupied vehicle
   WARNING_NO_VEHICLE, // The user tried to perform an action on an occupied vehicle
+  WARNING_NO_VALID_DISMOUNT_LOCATION, // The user tried to dismount, but there was no place to do so
 
   // Crafting
   WARNING_NEED_MATERIALS, // The user does not have enough materials to craft an item
