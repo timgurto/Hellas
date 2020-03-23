@@ -9,8 +9,8 @@
 // swapping.  e.g., loot.
 class TakeContainer : public Element {
  public:
-  TakeContainer(ClientItem::vect_t &linked, size_t serial,
-                const ScreenRect &rect);
+  static TakeContainer *CopyFrom(ClientItem::vect_t &linked, size_t serial,
+                                 const ScreenRect &rect);
 
   void repopulate();
   size_t size() const { return _list->size(); }
@@ -21,6 +21,9 @@ class TakeContainer : public Element {
   static const size_t LOOT_CAPACITY = 8;
 
  private:
+  TakeContainer(ClientItem::vect_t &linked, size_t serial,
+                const ScreenRect &rect);
+
   ClientItem::vect_t &_linked;
   size_t _serial;  // The serial of the object with this container.
 

@@ -638,7 +638,7 @@ void ClientObject::assembleWindow(Client &client) {
   if (lootable()) {
     static const px_t WIDTH = 100, HEIGHT = 100;
     _lootContainer =
-        new TakeContainer(container(), serial(), {0, 0, WIDTH, HEIGHT});
+        TakeContainer::CopyFrom(container(), serial(), {0, 0, WIDTH, HEIGHT});
     auto winRect = toScreenRect(location());
     winRect.w = WIDTH;
     winRect.h = HEIGHT;

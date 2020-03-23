@@ -24,6 +24,11 @@ TakeContainer::TakeContainer(ClientItem::vect_t &linked, size_t serial,
     _slots[i] = std::make_pair(_serial, i);
 }
 
+TakeContainer *TakeContainer::CopyFrom(ClientItem::vect_t &linked,
+                                       size_t serial, const ScreenRect &rect) {
+  return new TakeContainer(linked, serial, rect);
+}
+
 void TakeContainer::repopulate() {
   px_t oldScroll = _list->scrollPos();
 
