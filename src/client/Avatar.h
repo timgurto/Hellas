@@ -74,7 +74,7 @@ class Avatar : public Sprite, public ClientCombatant {
   bool shouldDrawName() const override { return true; }
   const Color &nameColor() const override;
   virtual const Texture &image() const override { return _imageWithGear; }
-  virtual const Texture &highlightImage() const override {
+  virtual const Texture &getHighlightImage() const override {
     return _class->image();
   }
   double speed() const override;

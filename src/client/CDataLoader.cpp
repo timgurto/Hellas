@@ -439,9 +439,8 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
     xr.findAttr(elem, "imageFile", imageFile);
     cot->imageFile(imageFile);
     cot->setImage(std::string("Images/Objects/") + imageFile);
-    cot->imageSet(std::string("Images/Objects/") + imageFile + ".png");
-    cot->corpseImage(std::string("Images/Objects/") + imageFile +
-                     "-corpse.png");
+    cot->setCorpseImage(std::string("Images/Objects/") + imageFile +
+                        "-corpse.png");
 
     auto customShadowWidth = 0_px;
     if (xr.findAttr(elem, "customShadowWidth", customShadowWidth))

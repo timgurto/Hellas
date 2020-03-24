@@ -492,6 +492,7 @@ void Client::handleInput(double delta) {
             for (Element *element : _ui) element->forceRefresh();
             Tooltip::forceAllToRedraw();
             SpriteType::forceAllShadowsToRedraw();
+            ImageWithHighlight::forceAllToRedraw();
             populateClassWindow();
             redrawFogOfWar();
             break;

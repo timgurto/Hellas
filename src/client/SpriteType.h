@@ -6,22 +6,21 @@
 #include "../Optional.h"
 #include "../Point.h"
 #include "../util.h"
+#include "ImageWithHighlight.h"
 #include "Texture.h"
 
 // Describes a class of Sprites, the "instances" of which share common
 // properties
 class SpriteType {
-  Texture _image;
-  mutable Texture _imageHighlight;
-  std::string _imageFile;
+  ImageWithHighlight _image;
   mutable Texture _shadow;
   ScreenRect _drawRect;  // Where to draw the image, relative to its location
-  bool _isFlat;  // Whether these objects appear flat, i.e., are drawn behind
-                 // all other entities.
-  bool _isDecoration;  // Whether this is invisible to mouse events.
+  bool _isFlat{false};   // Whether these objects appear flat, i.e., are drawn
+                         // behind all other entities.
+  bool _isDecoration{false};  // If true, cannot be interacted with.
 
   static ms_t timeThatTheLastRedrawWasOrdered;
-  mutable ms_t _timeShadowGenerated{0}, _timeHighlightGenerated{0};
+  mutable ms_t _timeShadowGenerated{0};
 
  protected:
   static ms_t timeLastRedrawWasOrdered() {
@@ -40,20 +39,20 @@ class SpriteType {
       _customDrawHeight;  // If the image file has blank space at the bottom
 
  public:
-  enum Special { DECORATION };
-
   static const double SHADOW_RATIO, SHADOW_WIDTH_HEIGHT_RATIO;
 
   SpriteType(const ScreenRect &drawRect = {},
              const std::string &imageFile = "");
-  SpriteType(Special special);
+  static SpriteType DecorationWithNoData();
 
   virtual ~SpriteType() {}
 
   virtual void setImage(const std::string &filename);
-  virtual const Texture &image() const { return _image; }
-  void setHighlightImage() const;
-  const Texture &highlightImage() const;
+  virtual const Texture &image() const { return _image.getNormalImage(); }
+  const Texture &getHighlightImage() const {
+    return _image.getHighlightImage();
+  }
+  const ImageWithHighlight &imageWithHighlight() const { return _image; }
   const ScreenRect &drawRect() const { return _drawRect; }
   void drawRect(const ScreenRect &rect);
   const Texture &shadow() const;
@@ -67,9 +66,6 @@ class SpriteType {
   const std::vector<Particles> &particles() const { return _particles; }
 
   void setAlpha(Uint8 alpha) { _image.setAlpha(alpha); }
-
-  static Texture createHighlightImageFrom(const Texture &original,
-                                          const std::string &originalImageFile);
 
   virtual char classTag() const { return 'e'; }
 

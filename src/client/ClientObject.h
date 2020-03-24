@@ -132,7 +132,7 @@ class ClientObject : public Sprite, public ClientCombatant {
     return objectType()->name();
   }
   virtual const Texture &image() const override;
-  virtual const Texture &highlightImage() const override;
+  virtual const Texture &getHighlightImage() const override;
   const Tooltip &tooltip()
       const override;  // Getter; creates tooltip on first call.
 

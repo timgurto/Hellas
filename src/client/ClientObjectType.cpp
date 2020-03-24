@@ -104,7 +104,7 @@ const Tooltip &ClientObjectType::constructionTooltip() const {
   return tooltip;
 }
 
-const ClientObjectType::ImageSet &ClientObjectType::getProgressImage(
+const ImageWithHighlight &ClientObjectType::getProgressImage(
     ms_t timeRemaining) const {
   double progress = 1 - (1.0 * timeRemaining / _transformTime);
   size_t numFrames = _transformImages.size();
@@ -113,61 +113,27 @@ const ClientObjectType::ImageSet &ClientObjectType::getProgressImage(
   index = max<int>(index, -1);
   index = min<int>(index, _transformImages.size() -
                               1);  // Progress may be 100% due to server delay.
-  if (index == -1) return _images;
+  if (index == -1) return imageWithHighlight();
   return _transformImages[index];
-}
-
-void ClientObjectType::corpseImage(const std::string &filename) {
-  _corpseImage = Texture(filename, Color::MAGENTA);
-  _corpseImageFileName = filename;
-  if (!_corpseImage) return;
-
-  _corpseHighlightImage = {};
-}
-
-const Texture &ClientObjectType::corpseHighlightImage() const {
-  if (_timeCorpseHighlightWasCreated < timeLastRedrawWasOrdered()) {
-    _corpseHighlightImage =
-        createHighlightImageFrom(_corpseImage, _corpseImageFileName);
-    _timeCorpseHighlightWasCreated = SDL_GetTicks();
-  }
-
-  return _corpseHighlightImage;
 }
 
 void ClientObjectType::initialiseHumanoidCorpse() {
   // Assumption: draw rect is initialised
   auto centre = ScreenPoint{-drawRect().x, -drawRect().y};
-  _corpseImage = image();
+  _corpseImage = {_imageFile};
   _corpseImage.rotateClockwise(centre);
 }
 
 void ClientObjectType::addTransformImage(const std::string &filename) {
-  _transformImages.push_back(ImageSet("Images/Objects/" + filename + ".png"));
+  _transformImages.push_back({"Images/Objects/" + filename + ".png"});
 }
 
 void ClientObjectType::addMaterial(const ClientItem *item, size_t qty) {
   _materials.set(item, qty);
   auto isConstructionImageAlreadyInitialized =
-      bool{_constructionImage.normal()};
+      bool{_constructionImage.getNormalImage()};
   if (!isConstructionImageAlreadyInitialized)
-    _constructionImage =
-        ImageSet("Images/Objects/" + _imageFile + "-construction.png");
-}
-
-ClientObjectType::ImageSet::ImageSet(const std::string &filename)
-    : _filename(filename) {
-  _normal = {filename, Color::MAGENTA};
-}
-
-const Texture &ClientObjectType::ImageSet::highlight() const {
-  if (!_highlight ||
-      _timeHighlightWasCreated < SpriteType::timeLastRedrawWasOrdered()) {
-    _highlight = createHighlightImageFrom(_normal, _filename);
-    _timeHighlightWasCreated = SDL_GetTicks();
-  }
-
-  return _highlight;
+    _constructionImage = {"Images/Objects/" + _imageFile + "-construction.png"};
 }
 
 void ClientObjectType::calculateAndInitDurability() {

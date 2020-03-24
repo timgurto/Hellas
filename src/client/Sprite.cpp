@@ -53,7 +53,7 @@ void Sprite::draw(const Client &client) const {
 
   auto shouldDrawHighlightInstead = client.currentMouseOverEntity() == this;
   const Texture &imageToDraw =
-      shouldDrawHighlightInstead ? highlightImage() : image();
+      shouldDrawHighlightInstead ? getHighlightImage() : image();
   auto drawRect = this->drawRect() + client.offset();
   if (shouldDrawHighlightInstead) drawRect += HIGHLIGHT_OFFSET;
   if (imageToDraw)

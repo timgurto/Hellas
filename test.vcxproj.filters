@@ -189,6 +189,7 @@
     <ClCompile Include="src\client\KeyboardStateFetcher.cpp" />
     <ClCompile Include="src\testing\test-input.cpp" />
     <ClCompile Include="src\testing\test-spawning.cpp" />
+    <ClCompile Include="src\client\ImageWithHighlight.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -331,5 +332,6 @@
     <ClInclude Include="src\server\EntityComponent.h" />
     <ClInclude Include="src\server\Transformation.h" />
     <ClInclude Include="src\client\KeyboardStateFetcher.h" />
+    <ClInclude Include="src\client\ImageWithHighlight.h" />
   </ItemGroup>
 </Project>

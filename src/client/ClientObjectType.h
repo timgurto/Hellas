@@ -30,21 +30,6 @@ class ClientObjectType : public SpriteType,
   using GatherChances = std::map<std::string, double>;
 
  private:
-  class ImageSet {
-    Texture _normal;
-    mutable Texture _highlight;
-    std::string _filename;
-    mutable ms_t _timeHighlightWasCreated{0};
-
-   public:
-    ImageSet() {}
-    ImageSet(const std::string &filename);
-    const Texture &normal() const { return _normal; }
-    const Texture &highlight() const;
-  };
-  ImageSet _images;  // baseline images, identical to Sprite::_image and
-                     // Sprite::_highlightImage.
-
   std::string _id;
   std::string _name;
   std::string _imageFile;
@@ -66,11 +51,12 @@ class ClientObjectType : public SpriteType,
   const ParticleProfile *_gatherParticles;
   ItemSet _materials;
   mutable Optional<Tooltip> _constructionTooltip;
-  ImageSet _constructionImage;  // Shown when the object is under construction.
-  Texture _corpseImage;
-  mutable Texture _corpseHighlightImage;
-  std::string _corpseImageFileName;
-  mutable ms_t _timeCorpseHighlightWasCreated{0};
+  ImageWithHighlight _constructionImage;  // Shown when under construction.
+
+ protected:
+  ImageWithHighlight _corpseImage;
+
+ private:
   bool _isPlayerUnique = false;
 
   std::string _allowedTerrain;
@@ -84,7 +70,7 @@ class ClientObjectType : public SpriteType,
   RepairInfo _repairInfo;
 
   // To show transformations.  Which image is displayed depends on progress.
-  std::vector<ImageSet> _transformImages;
+  std::vector<ImageWithHighlight> _transformImages;
   ms_t _transformTime;  // The total length of the transformation.
 
   ClientObjectAction *_action = nullptr;
@@ -101,7 +87,9 @@ class ClientObjectType : public SpriteType,
   void name(const std::string &s) { _name = s; }
   const std::string &imageFile() const { return _imageFile; }
   void imageFile(const std::string &s) { _imageFile = s; }
-  void imageSet(const std::string &fileName) { _images = ImageSet(fileName); }
+  void setCorpseImage(const std::string &filename) {
+    _corpseImage = {filename};
+  }
   bool canGather() const;
   void canGather(bool b) { _canGather = b; }
   const std::string &gatherReq() const { return _gatherReq; }
@@ -140,7 +128,9 @@ class ClientObjectType : public SpriteType,
   void transformTime(ms_t time) { _transformTime = time; }
   ms_t transformTime() const { return _transformTime; }
   void addTransformImage(const std::string &filename);
-  const ImageSet &constructionImage() const { return _constructionImage; }
+  const ImageWithHighlight &constructionImage() const {
+    return _constructionImage;
+  }
   void durability(const ClientItem *item, size_t quantity) {
     _durability.item = item;
     _durability.quantity = quantity;
@@ -169,14 +159,14 @@ class ClientObjectType : public SpriteType,
   }
   const std::string &allowedTerrain() const { return _allowedTerrain; };
 
-  const ImageSet &getProgressImage(ms_t timeRemaining) const;
-  void corpseImage(const std::string &filename);
-  const Texture &corpseImage() const { return _corpseImage; }
-  const Texture &corpseHighlightImage() const;
+  const ImageWithHighlight &getProgressImage(ms_t timeRemaining) const;
+  const Texture &corpseImage() const { return _corpseImage.getNormalImage(); }
+  const Texture &corpseHighlightImage() const {
+    return _corpseImage.getHighlightImage();
+  }
   void initialiseHumanoidCorpse();
 
   virtual char classTag() const override { return 'o'; }
-  virtual const Texture &image() const override { return _images.normal(); }
 
   void calculateAndInitDurability();
 

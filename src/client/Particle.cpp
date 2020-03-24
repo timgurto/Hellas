@@ -1,9 +1,10 @@
 #include "Particle.h"
+
 #include "../util.h"
 #include "Client.h"
 #include "ParticleProfile.h"
 
-const SpriteType Particle::ENTITY_TYPE(SpriteType::DECORATION);
+const SpriteType Particle::ENTITY_TYPE = SpriteType::DecorationWithNoData();
 
 Particle::Particle(const MapPoint &loc, const Texture &image,
                    const ScreenRect &drawRect, const MapPoint &velocity,

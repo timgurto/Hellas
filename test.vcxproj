@@ -119,6 +119,7 @@
     <ClCompile Include="src\client\helpWindow.cpp" />
     <ClCompile Include="src\client\hotbar.cpp" />
     <ClCompile Include="src\client\Images.cpp" />
+    <ClCompile Include="src\client\ImageWithHighlight.cpp" />
     <ClCompile Include="src\client\input.cpp" />
     <ClCompile Include="src\client\inventoryWindow.cpp" />
     <ClCompile Include="src\client\KeyboardStateFetcher.cpp" />
@@ -314,6 +315,7 @@
     <ClInclude Include="src\client\HasSounds.h" />
     <ClInclude Include="src\client\HelpEntry.h" />
     <ClInclude Include="src\client\Images.h" />
+    <ClInclude Include="src\client\ImageWithHighlight.h" />
     <ClInclude Include="src\client\KeyboardStateFetcher.h" />
     <ClInclude Include="src\client\LogSDL.h" />
     <ClInclude Include="src\client\Particle.h" />

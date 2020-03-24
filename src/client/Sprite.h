@@ -50,8 +50,8 @@ class Sprite {
   const SpriteType *type() const { return _type; }
   void type(const SpriteType *et) { _type = et; }
   virtual const Texture &image() const { return _type->image(); }
-  virtual const Texture &highlightImage() const {
-    return _type->highlightImage();
+  virtual const Texture &getHighlightImage() const {
+    return _type->getHighlightImage();
   }
   void markForRemoval() { _toRemove = true; }
   bool markedForRemoval() const { return _toRemove; }
