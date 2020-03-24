@@ -638,7 +638,7 @@ void ClientObject::assembleWindow(Client &client) {
   if (lootable()) {
     static const px_t WIDTH = 100, HEIGHT = 100;
     _lootContainer =
-        TakeContainer::CopyFrom(container(), serial(), {0, 0, WIDTH, HEIGHT});
+        TakeContainer::CopyFrom(_container, serial(), {0, 0, WIDTH, HEIGHT});
     auto winRect = toScreenRect(location());
     winRect.w = WIDTH;
     winRect.h = HEIGHT;
@@ -712,15 +712,15 @@ void ClientObject::assembleWindow(Client &client) {
 }
 
 void ClientObject::onInventoryUpdate() {
-  if (_lootContainer != nullptr) {
+  if (_lootContainer) {
     _lootContainer->repopulate();
     if (_lootContainer->size() == 0) {
+      _lootable = false;
       hideWindow();
     }
-  } else if (_window != nullptr)
-    _window->forceRefresh();
 
-  if (_lootable && containerIsEmpty()) _lootable = false;
+  } else if (_window)
+    _window->forceRefresh();
 
   refreshTooltip();
 }

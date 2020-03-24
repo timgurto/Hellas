@@ -2002,31 +2002,38 @@ void Client::handle_SV_INVENTORY(size_t serial, size_t slot,
       object = it->second;
       container = &object->container();
 
-      auto shouldMarkAsLootable = object->isDead() && !object->lootable();
-      if (shouldMarkAsLootable) {
-        object->lootable(true);
-        object->assembleWindow(*this);
-        object->refreshTooltip();
-        container->clear();  // Make sure it doesn't have too many slots
-      }
-      if (object->lootable() && slot >= container->size()) {
+      // Make sure container is big enough
+      if (slot >= container->size()) {
         auto slotsToAdd = container->size() - slot + 1;
         for (auto i = 0; i != slotsToAdd; ++i)
           container->push_back(std::make_pair(ClientItem::Instance{}, 0));
       }
-  }
-  if (slot >= container->size()) {
-    // showErrorMessage("Received item in invalid inventory slot; ignored.",
-    // Color::TODO);
-    return;
   }
 
   auto &invSlot = (*container)[slot];
   invSlot.first = ClientItem::Instance{item, itemHealth};
   invSlot.second = quantity;
 
+  auto userIsReceivingItem = serial == INVENTORY || serial == GEAR;
+
+  // Loot
+  auto hasItems = false;
+  if (quantity > 0)
+    hasItems = true;
+  else
+    for (const auto &pair : *container)
+      if (pair.second > 0) {
+        hasItems = true;
+        break;
+      }
+  auto isLootable = !userIsReceivingItem && object->isDead() && hasItems;
+  if (isLootable) {
+    object->lootable(isLootable);
+    object->assembleWindow(*this);
+  }
+
   // Update any UI stuff
-  if (_recipeList != nullptr) _recipeList->markChanged();
+  if (_recipeList) _recipeList->markChanged();
   switch (serial) {
     case INVENTORY:
       _inventoryWindow->forceRefresh();
@@ -2038,10 +2045,10 @@ void Client::handle_SV_INVENTORY(size_t serial, size_t slot,
       object->onInventoryUpdate();
   }
 
-  if (item != nullptr &&                          // It's an actual item
-      (serial == INVENTORY || serial == GEAR) &&  // You are receiving it
-      _actionTimer > 0)  // You were crafting or gathering
-    item->playSoundOnce("drop");
+  if (userIsReceivingItem) {
+    auto userWasCraftingOrGathering = _actionTimer > 0;
+    if (userWasCraftingOrGathering && item) item->playSoundOnce("drop");
+  }
 }
 
 void Client::handle_SV_MAX_HEALTH(const std::string &username,

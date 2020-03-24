@@ -120,7 +120,7 @@ class ClientObject : public Sprite, public ClientCombatant {
   bool lootable() const { return _lootable; }
   void lootable(bool b) { _lootable = b; }
   bool containerIsEmpty() const;
-  const TakeContainer *lootContainer() { return _lootContainer; }
+  const TakeContainer *lootContainer() const { return _lootContainer; }
   bool belongsToPlayer() const;
   bool belongsToPlayerCity() const;
   std::string additionalTextInName() const override;

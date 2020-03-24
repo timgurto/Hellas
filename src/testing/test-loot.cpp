@@ -6,25 +6,24 @@
 TEST_CASE("Client gets loot info and can loot", "[loot]") {
   GIVEN("an NPC that always drops 1 gold") {
     auto data = R"(
-      <npcType id="goldbug" name="GoldBug" maxHealth="1" >
+      <npcType id="goldbug" maxHealth="1" >
         <loot id="gold" />
       </npcType>
-      <item id="gold" name="Gold" />
+      <item id="gold" />
     )";
     auto s = TestServer::WithDataString(data);
-
-    s.addNPC("goldbug", {10, 15});
+    auto &goldbug = s.addNPC("goldbug", {10, 15});
 
     WHEN("a user kills it") {
       TestClient c = TestClient::WithDataString(data);
       WAIT_UNTIL(c.objects().size() == 1);
-      NPC &goldbug = s.getFirstNPC();
       c.sendMessage(CL_TARGET_ENTITY, makeArgs(goldbug.serial()));
-      WAIT_UNTIL(goldbug.health() == 0);
+      WAIT_UNTIL(goldbug.isDead());
 
       THEN("the user can see one item in its loot window") {
-        ClientNPC &clientGoldbug = c.getFirstNPC();
-        WAIT_UNTIL(clientGoldbug.container().size() == 1);
+        const auto &cGoldBug = c.getFirstNPC();
+        WAIT_UNTIL(cGoldBug.lootContainer() != nullptr);
+        WAIT_UNTIL(cGoldBug.lootContainer()->size() == 1);
 
         AND_THEN("the server survives a loot request") {
           c.sendMessage(CL_TAKE_ITEM, makeArgs(goldbug.serial(), 0));
@@ -337,6 +336,37 @@ TEST_CASE("Composite loot tables") {
 
     THEN("they have identical loot tables") {
       CHECK(merchant.lootTable() == trader.lootTable());
+    }
+  }
+}
+
+TEST_CASE("Clients know when loot is all gone") {
+  GIVEN("an NPC that drops an item") {
+    auto data = R"(
+      <item id="wart" />
+      <npcType id="frog" >
+        <loot id="wart" />
+      </npcType>
+    )";
+    auto s = TestServer::WithDataString(data);
+    const auto &frog = s.addNPC("frog", {10, 15});
+
+    WHEN("a user kills it") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      c.sendMessage(CL_TARGET_ENTITY, makeArgs(frog.serial()));
+      WAIT_UNTIL(frog.isDead());
+
+      AND_WHEN("he loots it") {
+        c.sendMessage(CL_TAKE_ITEM, makeArgs(frog.serial(), 0));
+        const auto &user = s.getFirstUser();
+        WAIT_UNTIL(user.inventory(0).first.hasItem());
+
+        THEN("he knows it isn't lootable") {
+          const auto &cFrog = c.getFirstNPC();
+          WAIT_UNTIL(!cFrog.lootable());
+        }
+      }
     }
   }
 }
