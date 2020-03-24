@@ -10,16 +10,18 @@ class Particle;
 
 class ParticleProfile {
   std::string _id;
-  double _particlesPerSecond;  // For gathering, crafting, and constant visuals
-                               // like smoke and fire
-  double _gravity;
-  bool _noZDimension;  // Do not use a virtual z dimension.  False by default.
+  double _particlesPerSecond{0};  // For gathering, crafting, and constant
+                                  // visuals like smoke and fire
+  double _gravity{DEFAULT_GRAVITY};
+  bool _noZDimension{false};       // Do not use a virtual z dimension.
   bool _canBeUnderground = false;  // If false, enforce a minimum altitude of 0.
   NormalVariable _particlesPerHit,  // For attacking
       _distance, _altitude, _velocity, _fallSpeed,
-      _lifespan;  // The particle will disappear after this time
+      _lifespan{
+          DEFAULT_LIFESPAN_MEAN,
+          DEFAULT_LIFESPAN_SD};  // The particle will disappear after this time
   MapPoint _direction;
-  Uint8 _alpha;
+  Uint8 _alpha{0xff};
   std::vector<const SpriteType *> _varieties, _pool;
 
  public:

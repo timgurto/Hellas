@@ -1,19 +1,14 @@
+#include "ParticleProfile.h"
+
 #include <cassert>
 
 #include "Particle.h"
-#include "ParticleProfile.h"
 
 const double ParticleProfile::DEFAULT_GRAVITY = 100.0;
 const ms_t ParticleProfile::DEFAULT_LIFESPAN_MEAN = 60000;
 const ms_t ParticleProfile::DEFAULT_LIFESPAN_SD = 10000;
 
-ParticleProfile::ParticleProfile(const std::string &id)
-    : _id(id),
-      _particlesPerSecond(0),
-      _gravity(DEFAULT_GRAVITY),
-      _lifespan(DEFAULT_LIFESPAN_MEAN, DEFAULT_LIFESPAN_SD),
-      _noZDimension(false),
-      _alpha(0xff) {}
+ParticleProfile::ParticleProfile(const std::string &id) : _id(id) {}
 
 ParticleProfile::~ParticleProfile() {
   for (const SpriteType *variety : _varieties) delete variety;
