@@ -14,6 +14,7 @@ const double SpriteType::SHADOW_WIDTH_HEIGHT_RATIO = 1.8;
 
 SpriteType::SpriteType(const ScreenRect &drawRect, const std::string &imageFile)
     : _image(imageFile), _drawRect(drawRect) {
+  if (!_image) return;
   _drawRect.w = _image.width();
   _drawRect.h = _image.height();
 }

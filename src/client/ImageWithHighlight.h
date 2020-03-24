@@ -10,6 +10,9 @@ class ImageWithHighlight {
   ImageWithHighlight(const FilenameWithoutSuffix& imageFile);
   ImageWithHighlight(){};
 
+  operator bool() const { return _image.operator bool(); }
+  bool operator!() const { return !operator bool(); }
+
   const Texture& getNormalImage() const { return _image; }
   const Texture& getHighlightImage() const;
 
