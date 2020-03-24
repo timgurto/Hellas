@@ -33,3 +33,6 @@ struct RepairInfo {
   std::string tool{};
   bool requiresTool() const { return !tool.empty(); }
 };
+
+using Filename = std::string;
+using FilenameWithoutSuffix = std::string;

@@ -7,7 +7,7 @@
 // The highlighted image is generated only on first use.
 class ImageWithHighlight {
  public:
-  ImageWithHighlight(const std::string& imageFile);
+  ImageWithHighlight(const FilenameWithoutSuffix& imageFile);
   ImageWithHighlight(){};
 
   const Texture& getNormalImage() const { return _image; }
@@ -26,7 +26,7 @@ class ImageWithHighlight {
 
   Texture _image;
   mutable Texture _highlightImage;
-  std::string _imageFile;
+  Filename _imageFile;
 
   mutable ms_t _timeHighlightGenerated{0};
   static ms_t timeThatTheLastRedrawWasOrdered;
