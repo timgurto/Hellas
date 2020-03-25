@@ -345,6 +345,7 @@
         <!-- Bracers (physical damage) -->
             <item id="copperBracers" name="Copper Bracers" gearSlot="4" >
                 <stats armor="1" physicalDamage="2" />
+                <offset x="-1" y="-7" />
                 <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
 
@@ -377,8 +378,9 @@
                 <tag name="shield" />
                 <canBeRepaired cost="lumber" />
             </item>
-            <item id="copperShield" name="Buckler" gearSlot="7" >
+            <item id="copperShield" name="Copper Shield" gearSlot="7" >
                 <stats armor="4" block="6" blockValue="6" />
+                <offset x="-6" y="-12" />
                 <tag name="shield" />
                 <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>

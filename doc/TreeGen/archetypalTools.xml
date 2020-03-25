@@ -104,6 +104,7 @@
 <blacklist parent="object_tutFire" child="object_tutExtinguishedFire" />
 <blacklist parent="item_stick" child="object_tutExtinguishedFire" />
 <blacklist parent="object_tutExtinguishedFire" child="object_tutFire" />
+<blacklist parent="item_copperBar" child="item_copperShield" />
 
 <blacklist parent="item_tinCoin" child="item_tinBar" />
 <blacklist parent="item_tinBar" child="item_tinCoin" />
@@ -136,6 +137,7 @@
 <extra parent="item_collar"        child="npc_sheep" />
 <extra parent="item_tinKnife"      child="npc_sheep" />
 <extra parent="item_tinBar"        child="item_tinKnife" />
+<extra parent="object_copperAnvil" child="item_copperShield" />
 
 <collapse id="object_figTree0" into="object_figTree8" />
 <collapse id="object_figTree1" into="object_figTree8" />
