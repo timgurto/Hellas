@@ -125,7 +125,7 @@ void ClientObjectType::initialiseHumanoidCorpse() {
 }
 
 void ClientObjectType::addTransformImage(const std::string &filename) {
-  _transformImages.push_back({"Images/Objects/" + filename + ".png"});
+  _transformImages.push_back({"Images/Objects/" + filename});
 }
 
 void ClientObjectType::addMaterial(const ClientItem *item, size_t qty) {
@@ -133,7 +133,7 @@ void ClientObjectType::addMaterial(const ClientItem *item, size_t qty) {
   auto isConstructionImageAlreadyInitialized =
       bool{_constructionImage.getNormalImage()};
   if (!isConstructionImageAlreadyInitialized)
-    _constructionImage = {"Images/Objects/" + _imageFile + "-construction.png"};
+    _constructionImage = {"Images/Objects/" + _imageFile + "-construction"};
 }
 
 void ClientObjectType::calculateAndInitDurability() {
