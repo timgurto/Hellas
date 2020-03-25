@@ -13,7 +13,8 @@ ImageWithHighlight::ImageWithHighlight(const FilenameWithoutSuffix& imageFile) {
 }
 
 const Texture& ImageWithHighlight::getHighlightImage() const {
-  auto isUpToDate = _timeHighlightGenerated >= timeThatTheLastRedrawWasOrdered;
+  auto isUpToDate = _highlightImage &&
+                    _timeHighlightGenerated >= timeThatTheLastRedrawWasOrdered;
   if (!isUpToDate) redrawHighlightImage();
 
   return _highlightImage;
