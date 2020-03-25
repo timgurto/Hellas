@@ -642,7 +642,7 @@ void ClientObject::assembleWindow(Client &client) {
     auto winRect = toScreenRect(location());
     winRect.w = WIDTH;
     winRect.h = HEIGHT;
-    if (_window == nullptr)
+    if (!_window)
       _window = Window::WithRectAndTitle(winRect, objectType()->name());
     else
       _window->resize(WIDTH, HEIGHT);
@@ -679,7 +679,7 @@ void ClientObject::assembleWindow(Client &client) {
       if (canCede) addCedeButtonToWindow();
       if (canGrant) addGrantButtonToWindow();
       if (canDemolish) addDemolishButtonToWindow();
-      hasAnyContent = true;
+      hasNonDemolitionContent = hasAnyContent = true;
     }
 
   } else if (userHasAccess()) {
