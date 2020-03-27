@@ -43,6 +43,7 @@
 <item id="staff1" name="Walking Stick"
     gearSlot="6">
     <stats followerLimit="1" />
+    <offset x="-6" y="-16" />
     <weapon damage="5" speed="3.1" />
 </item>
     <recipe id="staff1" >
@@ -55,6 +56,7 @@
 <item id="staff2" name="Staff"
     gearSlot="6">
     <stats followerLimit="2" />
+    <offset x="-3" y="-19" />
     <weapon damage="6" speed="2.8" />
 </item>
     <recipe id="staff2" >

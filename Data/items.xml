@@ -231,7 +231,7 @@
         <!-- Hood (Energy) -->
             <item id="woolHood" name="Woolen Hood" gearSlot="0" >
                 <stats energy="30" />
-                <offset x="-3" y="-5" />
+                <offset x="-4" y="-4" />
                 <canBeRepaired cost="woolCloth" tool="sewing" />
             </item>
             
@@ -277,16 +277,19 @@
             </item>
             <item id="copperLamellar" name="Copper Lamellar" gearSlot="2" sounds="mailArmor" >
                 <stats armor="4" health="20" />
+                <offset x="-6" y="-4" />
                 <canBeRepaired cost="copperScale" />
             </item>
 
         <!-- Hauberk (block %) -->
             <item id="tinHauberk" name="Tin Hauberk" gearSlot="2" sounds="mailArmor" >
                 <stats armor="3" block="1" />
+                <offset x="-5" y="-3" />
                 <canBeRepaired cost="tinRing" />
             </item>
             <item id="copperHauberk" name="Copper Hauberk" gearSlot="2" sounds="mailArmor" >
                 <stats armor="5" block="5" />
+                <offset x="-5" y="-3" />
                 <canBeRepaired cost="copperRing" />
             </item>
 
@@ -324,6 +327,7 @@
         <!-- Exomis (resistances) -->
             <item id="woolExomis" name="Wool Exomis" gearSlot="2" sounds="fabric" >
                 <stats armor="1" airResist="4" earthResist="4" fireResist="4" waterResist="4" />
+                <offset x="-5" y="-4" />
                 <canBeRepaired cost="woolCloth" tool="sewing" />
             </item>
 
@@ -331,6 +335,7 @@
         <!-- Wrappings (magic damage) -->
             <item id="woolWrappings" name="Wool Wrappings" gearSlot="4" sounds="fabric" >
                 <stats magicDamage="4" />
+                <offset x="0" y="-8" />
                 <canBeRepaired cost="woolCloth" tool="sewing" />
             </item>
             
@@ -351,10 +356,11 @@
 
     <!-- Feet -->
         <!-- Shoes (EPS) -->
-            <item id="woolShoes" name="Wool Shoes" gearSlot="5" sounds="fabric" >
+            <!--item id="woolShoes" name="Wool Shoes" gearSlot="5" sounds="fabric" >
                 <stats eps="3" />
+                <offset x="-3" y="-1" />
                 <canBeRepaired cost="woolCloth" tool="sewing" />
-            </item>
+            </item-->
             
         <!-- Sandals (speed) -->
             <item id="sandals" name="Sandals" gearSlot="5" sounds="leather" >

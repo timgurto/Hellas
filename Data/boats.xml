@@ -4,7 +4,7 @@
     id="raft" name="Raft"
     xDrawOffset="-16" yDrawOffset="-11"
     allowedTerrain="shallowWater"
-    isVehicle="1" vehicleSpeed=".65" >
+    isVehicle="1" vehicleSpeed="0.65" >
     <driver x="0" y="0" />
     <collisionRect x="-7" y="-5" w="15" h="10" />
     <material id="log" quantity="8" />
