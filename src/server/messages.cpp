@@ -1059,7 +1059,7 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
 
         v->driver(user->name());
         user->driving(v->serial());
-        user->moveLegallyTowards(v->location());
+        user->teleportTo(v->location());
         // Alert nearby users (including the new driver)
         for (const User *u : findUsersInArea(user->location()))
           sendMessage(u->socket(),
