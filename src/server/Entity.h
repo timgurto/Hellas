@@ -74,7 +74,7 @@ class Entity {
   const MapRect collisionRect() const {
     return type()->collisionRect() + _location;
   }
-  bool collides() const { return type()->collides() && _health != 0; }
+  virtual bool collides() const;
   const TerrainList &allowedTerrain() const;
   virtual void onMove() {}
 
@@ -206,7 +206,6 @@ class Entity {
   void moveLegallyTowards(const MapPoint &requestedDest,
                           ClientLocationUpdateCase whenToSendClientHisLocation =
                               OnServerCorrection);
-  virtual bool isEveryLocationValid() const { return false; }
 
   Permissions permissions;
   Gatherable gatherable;

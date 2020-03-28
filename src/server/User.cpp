@@ -905,6 +905,11 @@ const MapRect User::collisionRect() const {
   return OBJECT_TYPE.collisionRect() + location();
 }
 
+bool User::collides() const {
+  if (isDriving()) return false;
+  return Object::collides();
+}
+
 bool User::canBeAttackedBy(const User &user) const {
   const Server &server = *Server::_instance;
   return server._wars.isAtWar({_name}, {user._name});

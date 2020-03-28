@@ -562,6 +562,11 @@ Message Entity::teleportMessage(const MapPoint &destination) const {
           makeArgs(serial(), destination.x, destination.y)};
 }
 
+bool Entity::collides() const {
+  if (isDead()) return false;
+  return (type()->collides());
+}
+
 const TerrainList &Entity::allowedTerrain() const {
   for (const auto &buff : buffs()) {
     auto newTerrainList = buff.changesAllowedTerrain();

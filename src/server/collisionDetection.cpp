@@ -26,7 +26,7 @@ bool Server::isLocationValid(const MapRect &rect,
                              const Entity *thisEntity) {
   // A user in a vehicle is unrestricted; the vehicle's restrictions will
   // dictate his location.
-  if (thisEntity && thisEntity->isEveryLocationValid()) return true;
+  if (thisEntity && !thisEntity->collides()) return true;
 
   const double right = rect.x + rect.w, bottom = rect.y + rect.h;
   // Map edges
@@ -42,7 +42,6 @@ bool Server::isLocationValid(const MapRect &rect,
     if (!allowedTerrain.allows(terrainType)) return false;
 
   // Objects
-  // TODO: Check if this type collides
   MapPoint rectCenter(rect.x + rect.w / 2, rect.y + rect.h / 2);
   auto superChunk = getCollisionSuperChunk(rectCenter);
   for (CollisionChunk *chunk : superChunk)
@@ -58,10 +57,6 @@ bool Server::isLocationValid(const MapRect &rect,
 
       if (thisEntity && thisEntity->classTag() == 'n' &&
           pEnt->classTag() == 'u')
-        continue;
-
-      if ((pEnt->classTag() == 'u') &&
-          dynamic_cast<const User *>(pEnt)->isDriving())
         continue;
 
       if (rect.collides(pEnt->collisionRect())) return false;
