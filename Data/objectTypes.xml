@@ -410,10 +410,12 @@
 </objectType>
 
 <objectType id="lathe" name="Lathe"
+    xDrawOffset="-15" yDrawOffset="-30"
     constructionTime="0" >
-    <material id="lumber" quantity="4" />
+    <collisionRect x="-14" y="-11" w="29" h="18" />
+    <material id="lumber" quantity="10" />
     <material id="rope" quantity="2" />
-    <material id="tinTube" quantity="2" />
+    <material id="tinTube" quantity="3" />
     <tag name="woodTurning" />
     <unlockedBy recipe="tinTube" />
     <durability item="tinTube" quantity="2" chance="0.5" />
