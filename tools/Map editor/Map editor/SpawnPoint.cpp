@@ -25,6 +25,9 @@ void SpawnPoint::load(Container& container, const std::string& filename) {
     xr.findAttr(elem, "respawnTime", sp.respawnTime);
     xr.findAttr(elem, "x", sp.loc.x);
     xr.findAttr(elem, "y", sp.loc.y);
+    auto n = 0;
+    if (xr.findAttr(elem, "useCachedTerrain", n) && n == 1)
+      sp.useCachedTerrain = true;
 
     container.insert(sp);
   }
@@ -41,6 +44,7 @@ void SpawnPoint::save(const Container& container, const std::string& filename) {
     xw.setAttr(e, "quantity", sp.quantity);
     xw.setAttr(e, "radius", sp.radius);
     xw.setAttr(e, "respawnTime", sp.respawnTime);
+    if (sp.useCachedTerrain) xw.setAttr(e, "useCachedTerrain", 1);
   }
   xw.publish();
 }

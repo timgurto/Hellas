@@ -12,6 +12,7 @@ struct SpawnPoint {
   int radius{0};
   int quantity{0};
   ms_t respawnTime{0};
+  bool useCachedTerrain{false};
 
   bool operator<(const SpawnPoint &rhs) const;
 
