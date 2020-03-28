@@ -8,3 +8,5 @@ void drawCircle(ScreenPoint &p, int radius);
 
 using FilesList = std::set<std::string>;
 FilesList findDataFiles(const std::string &path);
+
+std::string toPascal(std::string s);

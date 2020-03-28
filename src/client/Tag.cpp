@@ -1,8 +1,8 @@
+#include "Tag.h"
+
 #include <cassert>
 
 #include "../XmlReader.h"
-#include "Client.h"
-#include "Tag.h"
 
 const std::string &TagNames::operator[](const std::string &id) const {
   auto it = container_.find(id);
@@ -17,8 +17,6 @@ void TagNames::readFromXML(XmlReader &xr) {
   for (auto elem : xr.getChildren("tag")) {
     std::string id, name;
     if (!xr.findAttr(elem, "id", id) || !xr.findAttr(elem, "name", name)) {
-      Client::instance().showErrorMessage(
-          "Skipping tag with insufficient info."s, Color::CHAT_ERROR);
       continue;
     }
     container_[id] = name;
