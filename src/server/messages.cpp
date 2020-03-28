@@ -1101,15 +1101,14 @@ void Server::handleMessage(const Socket &client, const std::string &msg) {
         Object *obj = _entities.find<Object>(serial);
         Vehicle *v = dynamic_cast<Vehicle *>(obj);
 
-        // Move him before dismounting him, to avoid unnecessary
-        // collision/distance checks
-        user->moveLegallyTowards(dst);
-
         v->driver("");
         user->driving(0);
         for (const User *u : findUsersInArea(user->location()))
           sendMessage(u->socket(),
                       {SV_UNMOUNTED, makeArgs(serial, user->name())});
+
+        // Teleport him him, to avoid collision with the vehicle.
+        user->teleportTo(dst);
 
         user->onTerrainListChange(TerrainList::defaultList().id());
 
