@@ -13,6 +13,31 @@
     <loot id="fat" chance="0.05" />
 </lootTable>
 
+
+<!-- Placeholders to guard resources -->
+<npcType
+    id="copperGuardian" name="Servant of Hephaestus"
+	level="25" maxHealth="75" attack="9" attackTime="2000" isRanged="1" school="fire" projectile="fireball"
+    xDrawOffset="-18" yDrawOffset="-40"
+    sounds="nymph" >
+    <collisionRect x="-5" y="-2" w="9" h="4" />
+    <loot id="fireEssence" > <normal mean="0.3" sd="0.5" /> </loot>
+    <particles profile="fire" y="-15" />
+    <particles profile="fireSmall" x="-7" y="-21" />
+    <particles profile="fireSmall" x="7" y="-28" />
+</npcType>
+<npcType
+    id="sheepGuardian" name="Servant of Pan"
+    level="17" maxHealth="48" attack="11" attackTime="2500" >
+    <humanoid base="noble">
+        <gear id="staff2" />
+        <gear id="horn" />
+        <gear id="linenChitonOrange" />
+        <gear id="sandals" />
+    </humanoid>
+</npcType>
+
+
 <npcTemplate id="goat"
     imageFile="goat" sounds="goat"
     xDrawOffset="-17" yDrawOffset="-28" >
