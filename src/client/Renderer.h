@@ -2,6 +2,7 @@
 #define RENDERER_H
 
 #include <SDL.h>
+
 #include <stack>
 
 #include "../Color.h"
@@ -59,6 +60,7 @@ class Renderer {
   void drawRect(const ScreenRect &dstRect);
   void fillRect(const ScreenRect &dstRect);
   void fill();
+  void fillWithTransparency();
 
   Color getPixel(px_t x, px_t y) const;
 

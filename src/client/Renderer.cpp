@@ -119,7 +119,12 @@ void Renderer::fillRect(const ScreenRect &dstRect) {
 
 void Renderer::fill() {
   if (!_renderer) return;
-  SDL_RenderFillRect(_renderer, 0);
+  SDL_RenderFillRect(_renderer, nullptr);
+}
+
+void Renderer::fillWithTransparency() {
+  SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 0x00);
+  SDL_RenderFillRect(_renderer, nullptr);
 }
 
 void Renderer::setRenderTarget() const {

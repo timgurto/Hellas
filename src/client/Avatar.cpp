@@ -29,8 +29,9 @@ void Avatar::draw(const Client &client) const {
   if (!_class) return;
 
   _imageWithGear = {width(), height()};
-  _imageWithGear.setBlend();
   renderer.pushRenderTarget(_imageWithGear);
+  renderer.fillWithTransparency();
+  _imageWithGear.setBlend();
 
   // Base image
   _class->image().draw();
