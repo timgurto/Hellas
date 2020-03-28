@@ -4,9 +4,9 @@
 #include "../../../src/XmlWriter.h"
 
 bool SpawnPoint::operator<(const SpawnPoint& rhs) const {
+  if (id != rhs.id) return id < rhs.id;
   if (loc.y != rhs.loc.y) return loc.y < rhs.loc.y;
   if (loc.x != rhs.loc.x) return loc.x < rhs.loc.x;
-  if (id != rhs.id) return id < rhs.id;
   if (quantity != rhs.quantity) return quantity < rhs.quantity;
   if (radius != rhs.radius) return radius < rhs.radius;
   if (respawnTime != rhs.respawnTime) return respawnTime < rhs.respawnTime;
@@ -38,9 +38,9 @@ void SpawnPoint::save(const Container& container, const std::string& filename) {
 
   for (const auto& sp : container) {
     auto e = xw.addChild("spawnPoint");
+    xw.setAttr(e, "type", sp.id);
     xw.setAttr(e, "y", sp.loc.y);
     xw.setAttr(e, "x", sp.loc.x);
-    xw.setAttr(e, "type", sp.id);
     xw.setAttr(e, "quantity", sp.quantity);
     xw.setAttr(e, "radius", sp.radius);
     xw.setAttr(e, "respawnTime", sp.respawnTime);
