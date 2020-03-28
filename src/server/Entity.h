@@ -206,6 +206,7 @@ class Entity {
   void moveLegallyTowards(const MapPoint &requestedDest,
                           ClientLocationUpdateCase whenToSendClientHisLocation =
                               OnServerCorrection);
+  virtual bool isEveryLocationValid() const { return false; }
 
   Permissions permissions;
   Gatherable gatherable;

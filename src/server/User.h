@@ -254,6 +254,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   Message outOfRangeMessage() const override;
 
   const MapRect collisionRect() const;
+  virtual bool isEveryLocationValid() const override { return isDriving(); }
 
   Action action() const { return _action; }
   void action(Action a) { _action = a; }

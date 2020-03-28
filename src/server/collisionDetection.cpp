@@ -26,9 +26,7 @@ bool Server::isLocationValid(const MapRect &rect,
                              const Entity *thisEntity) {
   // A user in a vehicle is unrestricted; the vehicle's restrictions will
   // dictate his location.
-  if (thisEntity != nullptr && thisEntity->classTag() == 'u' &&
-      dynamic_cast<const User *>(thisEntity)->isDriving())
-    return true;
+  if (thisEntity && thisEntity->isEveryLocationValid()) return true;
 
   const double right = rect.x + rect.w, bottom = rect.y + rect.h;
   // Map edges
