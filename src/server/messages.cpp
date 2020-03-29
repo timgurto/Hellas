@@ -2345,6 +2345,13 @@ void Server::handle_CL_AUTO_CONSTRUCT(User &user, size_t serial) {
 
   for (const User *nearbyUser : findUsersInArea(obj->location()))
     sendConstructionMaterialsMessage(*nearbyUser, *obj);
+
+  if (!obj->isBeingBuilt()) {
+    // Trigger completing user's unlocks
+    if (user.knowsConstruction(obj->type()->id()))
+      ProgressLock::triggerUnlocks(user, ProgressLock::CONSTRUCTION,
+                                   obj->type());
+  }
 }
 
 void Server::broadcast(const Message &msg) {
