@@ -13,7 +13,7 @@ ClientNPCType::ClientNPCType(const std::string &id,
   damageParticles(client.findParticleProfile("blood"));
 
   setImage(imagePath);
-  _corpseImage = {imagePath + "-corpse.png"};
+  _corpseImage = {imagePath + "-corpse"};
 }
 
 void ClientNPCType::applyTemplate(const CNPCTemplate *nt) {
