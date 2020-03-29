@@ -2331,10 +2331,17 @@ void Server::handle_CL_AUTO_CONSTRUCT(User &user, size_t serial) {
   auto *obj = _entities.find<Object>(serial);
   if (!obj) return;
 
-  auto &requiredMaterials = obj->remainingMaterials();
-  auto remainder = user.removeItems(requiredMaterials);
+  // Exclude materials that return items.  Calculating space requirements is too
+  // hard.
+  auto materialsThatDontReturnItems = obj->remainingMaterials();
+  for (const auto &pair : obj->remainingMaterials()) {
+    const auto *material = dynamic_cast<const ServerItem *>(pair.first);
+    if (material->returnsOnConstruction())
+      materialsThatDontReturnItems.remove(pair.first, pair.second);
+  }
 
-  requiredMaterials = remainder;
+  auto remainder = user.removeItems(materialsThatDontReturnItems);
+  obj->remainingMaterials() = remainder;
 
   for (const User *nearbyUser : findUsersInArea(obj->location()))
     sendConstructionMaterialsMessage(*nearbyUser, *obj);

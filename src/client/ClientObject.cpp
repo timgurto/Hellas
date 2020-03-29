@@ -346,7 +346,8 @@ void ClientObject::addConstructionToWindow() {
         Client::instance().sendMessage({CL_AUTO_CONSTRUCT, makeArgs(serial())});
       });
   autoFillButton->setTooltip(
-      "Add all required materials that you have in your inventory.");
+      "Add all required materials that you have in your inventory.  This "
+      "doesn't include materials that return items when used.");
   _window->addChild(autoFillButton);
   x += AUTO_BUTTON_W + GAP;
   if (newWidth < x) newWidth = x;
