@@ -805,10 +805,9 @@ void Client::handleMessage(const std::string &msg) {
         }
 
         // For unlock info in tooltips
-        for (auto &pair : _items) {
-          pair.second.refreshTooltip();
-        }
+        for (auto &pair : _items) pair.second.refreshTooltip();
         if (_detailsPane) refreshRecipeDetailsPane();
+        for (const auto &ot : _objectTypes) ot->refreshConstructionTooltip();
         populateBuildList();
 
         break;
@@ -842,13 +841,12 @@ void Client::handleMessage(const std::string &msg) {
             _debug << n << " new constructions";
           _debug << "!" << Log::endl;
         }
-        populateBuildList();
 
         // For unlock info in tooltips
-        for (auto &pair : _items) {
-          pair.second.refreshTooltip();
-        }
+        for (auto &pair : _items) pair.second.refreshTooltip();
         if (_detailsPane) refreshRecipeDetailsPane();
+        for (const auto &ot : _objectTypes) ot->refreshConstructionTooltip();
+        populateBuildList();
 
         break;
       }

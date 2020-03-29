@@ -122,6 +122,9 @@ class ClientObjectType : public SpriteType,
   void addMaterial(const ClientItem *item, size_t qty);
   const ItemSet &materials() const { return _materials; }
   const Tooltip &constructionTooltip() const;
+  void refreshConstructionTooltip() const {
+    _constructionTooltip = Optional<Tooltip>{};
+  }
   virtual void addClassSpecificStuffToConstructionTooltip(
       std::vector<std::string> &descriptionLines) const {}
   bool transforms() const { return _transformTime > 0; }
