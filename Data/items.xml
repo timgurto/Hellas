@@ -76,7 +76,7 @@
 
 
 <item id="bone" name="Bone" stackSize="10" sounds="bone" />
-<item id="boneClub" gearSlot="6" sounds="bone" >
+<item id="boneClub" name="Bone Club" gearSlot="6" iconFile="bone" sounds="bone" >
     <weapon damage="6" speed="3.2" />
 	<offset x="-6" y="-15" />
 </item>
