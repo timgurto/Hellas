@@ -19,7 +19,7 @@
     id="copperGuardian" name="Servant of Hephaestus"
 	level="25" maxHealth="75" attack="9" attackTime="2000" isRanged="1" school="fire" projectile="fireball" allowedTerrain="rocks"
     xDrawOffset="-18" yDrawOffset="-40"
-    sounds="nymph" >
+    imageFile="fireNymph" sounds="nymph" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
     <loot id="fireEssence" > <normal mean="0.3" sd="0.5" /> </loot>
     <particles profile="fire" y="-15" />
