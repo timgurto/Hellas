@@ -85,7 +85,7 @@
         time="12000" >
         <material id="crudeClay" quantity="2" />
         <tool class="pottery1" />
-        <unlockedBy recipe="tinBar" chance="0.2" />
+        <unlockedBy gather="tin" chance="0.04" />
     </recipe>
     <recipe id="knifeMould"
         time="12000" >
