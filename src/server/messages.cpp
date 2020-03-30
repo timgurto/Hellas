@@ -13,7 +13,6 @@ void Server::handleBufferedMessages(const Socket &client,
   _debug(msg);
   int msgCode;
   char del;
-  static char buffer[BUFFER_SIZE + 1];
   std::istringstream iss(msg);
   User *user = nullptr;
   while (iss.peek() == MSG_START) {
@@ -39,8 +38,8 @@ void Server::handleBufferedMessages(const Socket &client,
 
     switch (msgCode) {
       case CL_REPORT_BUG: {
-        iss.get(buffer, BUFFER_SIZE, MSG_END);
-        auto bugText = std::string(buffer);
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
+        auto bugText = std::string(_stringInputBuffer);
         iss >> del;
         if (del != MSG_END) return;
 
@@ -58,16 +57,16 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_LOGIN_EXISTING: {
-        iss.get(buffer, BUFFER_SIZE, MSG_DELIM);
-        auto name = std::string(buffer);
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_DELIM);
+        auto name = std::string(_stringInputBuffer);
         iss >> del;
 
-        iss.get(buffer, BUFFER_SIZE, MSG_DELIM);
-        auto pwHash = std::string(buffer);
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_DELIM);
+        auto pwHash = std::string(_stringInputBuffer);
         iss >> del;
 
-        iss.get(buffer, BUFFER_SIZE, MSG_END);
-        auto clientVersion = std::string(buffer);
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
+        auto clientVersion = std::string(_stringInputBuffer);
         iss >> del;
         if (del != MSG_END) return;
 
@@ -76,20 +75,20 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_LOGIN_NEW: {
-        iss.get(buffer, BUFFER_SIZE, MSG_DELIM);
-        auto name = std::string(buffer);
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_DELIM);
+        auto name = std::string(_stringInputBuffer);
         iss >> del;
 
-        iss.get(buffer, BUFFER_SIZE, MSG_DELIM);
-        auto pwHash = std::string(buffer);
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_DELIM);
+        auto pwHash = std::string(_stringInputBuffer);
         iss >> del;
 
-        iss.get(buffer, BUFFER_SIZE, MSG_DELIM);
-        auto classID = std::string(buffer);
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_DELIM);
+        auto classID = std::string(_stringInputBuffer);
         iss >> del;
 
-        iss.get(buffer, BUFFER_SIZE, MSG_END);
-        auto clientVersion = std::string(buffer);
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
+        auto clientVersion = std::string(_stringInputBuffer);
         iss >> del;
         if (del != MSG_END) return;
 
@@ -136,8 +135,8 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_CRAFT: {
-        iss.get(buffer, BUFFER_SIZE, MSG_END);
-        std::string id(buffer);
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
+        std::string id(_stringInputBuffer);
         iss >> del;
         if (del != MSG_END) return;
         if (user->isStunned()) {
@@ -171,8 +170,8 @@ void Server::handleBufferedMessages(const Socket &client,
       case CL_CONSTRUCT:
       case CL_CONSTRUCT_FOR_CITY: {
         double x, y;
-        iss.get(buffer, BUFFER_SIZE, MSG_DELIM);
-        std::string id(buffer);
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_DELIM);
+        std::string id(_stringInputBuffer);
         iss >> del >> x >> del >> y >> del;
         if (del != MSG_END) return;
         if (user->isStunned()) {
@@ -349,8 +348,8 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_DISMISS_BUFF: {
-        iss.get(buffer, BUFFER_SIZE, MSG_END);
-        auto buffID = std::string{buffer};
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
+        auto buffID = std::string{_stringInputBuffer};
         iss >> del;
         if (del != MSG_END) return;
 
@@ -928,11 +927,11 @@ void Server::handleBufferedMessages(const Socket &client,
       case CL_SET_MERCHANT_SLOT: {
         size_t serial, slot, wareQty, priceQty;
         iss >> serial >> del >> slot >> del;
-        iss.get(buffer, BUFFER_SIZE, MSG_DELIM);
-        std::string ware(buffer);
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_DELIM);
+        std::string ware(_stringInputBuffer);
         iss >> del >> wareQty >> del;
-        iss.get(buffer, BUFFER_SIZE, MSG_DELIM);
-        std::string price(buffer);
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_DELIM);
+        std::string price(_stringInputBuffer);
         iss >> del >> priceQty >> del;
         if (del != MSG_END) return;
         Object *obj = _entities.find<Object>(serial);
@@ -1126,8 +1125,8 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_TARGET_PLAYER: {
-        iss.get(buffer, BUFFER_SIZE, MSG_END);
-        std::string targetUsername(buffer);
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
+        std::string targetUsername(_stringInputBuffer);
         iss >> del;
         if (del != MSG_END) return;
 
@@ -1145,8 +1144,8 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_SELECT_PLAYER: {
-        iss.get(buffer, BUFFER_SIZE, MSG_END);
-        std::string targetUsername(buffer);
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
+        std::string targetUsername(_stringInputBuffer);
         iss >> del;
         if (del != MSG_END) return;
 
@@ -1156,8 +1155,8 @@ void Server::handleBufferedMessages(const Socket &client,
 
       case CL_DECLARE_WAR_ON_PLAYER:
       case CL_DECLARE_WAR_ON_CITY: {
-        iss.get(buffer, BUFFER_SIZE, MSG_END);
-        std::string targetName(buffer);
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
+        std::string targetName(_stringInputBuffer);
         iss >> del;
         if (del != MSG_END) return;
 
@@ -1179,8 +1178,8 @@ void Server::handleBufferedMessages(const Socket &client,
 
       case CL_DECLARE_WAR_ON_PLAYER_AS_CITY:
       case CL_DECLARE_WAR_ON_CITY_AS_CITY: {
-        iss.get(buffer, BUFFER_SIZE, MSG_END);
-        std::string targetName(buffer);
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
+        std::string targetName(_stringInputBuffer);
         iss >> del;
         if (del != MSG_END) return;
 
@@ -1214,8 +1213,8 @@ void Server::handleBufferedMessages(const Socket &client,
       case CL_SUE_FOR_PEACE_WITH_CITY:
       case CL_SUE_FOR_PEACE_WITH_PLAYER_AS_CITY:
       case CL_SUE_FOR_PEACE_WITH_CITY_AS_CITY: {
-        iss.get(buffer, BUFFER_SIZE, MSG_END);
-        auto name = std::string{buffer};
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
+        auto name = std::string{_stringInputBuffer};
         iss >> del;
         if (del != MSG_END) return;
         handle_CL_SUE_FOR_PEACE(*user, static_cast<MessageCode>(msgCode), name);
@@ -1226,8 +1225,8 @@ void Server::handleBufferedMessages(const Socket &client,
       case CL_CANCEL_PEACE_OFFER_TO_CITY:
       case CL_CANCEL_PEACE_OFFER_TO_PLAYER_AS_CITY:
       case CL_CANCEL_PEACE_OFFER_TO_CITY_AS_CITY: {
-        iss.get(buffer, BUFFER_SIZE, MSG_END);
-        auto name = std::string{buffer};
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
+        auto name = std::string{_stringInputBuffer};
         iss >> del;
         if (del != MSG_END) return;
         handle_CL_CANCEL_PEACE_OFFER(*user, static_cast<MessageCode>(msgCode),
@@ -1239,8 +1238,8 @@ void Server::handleBufferedMessages(const Socket &client,
       case CL_ACCEPT_PEACE_OFFER_WITH_CITY:
       case CL_ACCEPT_PEACE_OFFER_WITH_PLAYER_AS_CITY:
       case CL_ACCEPT_PEACE_OFFER_WITH_CITY_AS_CITY: {
-        iss.get(buffer, BUFFER_SIZE, MSG_END);
-        auto name = std::string{buffer};
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
+        auto name = std::string{_stringInputBuffer};
         iss >> del;
         if (del != MSG_END) return;
         handle_CL_ACCEPT_PEACE_OFFER(*user, static_cast<MessageCode>(msgCode),
@@ -1265,8 +1264,8 @@ void Server::handleBufferedMessages(const Socket &client,
       case CL_GRANT: {
         auto serial = size_t{};
         iss >> serial >> del;
-        iss.get(buffer, BUFFER_SIZE, MSG_END);
-        auto username = std::string{buffer};
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
+        auto username = std::string{_stringInputBuffer};
         iss >> del;
         if (del != MSG_END) return;
         handle_CL_GRANT(*user, serial, username);
@@ -1276,8 +1275,8 @@ void Server::handleBufferedMessages(const Socket &client,
       case CL_PERFORM_OBJECT_ACTION: {
         size_t serial;
         iss >> serial >> del;
-        iss.get(buffer, BUFFER_SIZE, MSG_END);
-        auto textArg = std::string{buffer};
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
+        auto textArg = std::string{_stringInputBuffer};
         iss >> del;
         if (del != MSG_END) return;
         if (user->isStunned()) {
@@ -1290,8 +1289,8 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_RECRUIT: {
-        iss.get(buffer, BUFFER_SIZE, MSG_END);
-        auto username = std::string{buffer};
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
+        auto username = std::string{_stringInputBuffer};
         iss >> del;
         if (del != MSG_END) return;
         handle_CL_RECRUIT(*user, username);
@@ -1299,8 +1298,8 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_TAKE_TALENT: {
-        iss.get(buffer, BUFFER_SIZE, MSG_END);
-        auto talentName = Talent::Name{buffer};
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
+        auto talentName = Talent::Name{_stringInputBuffer};
         iss >> del;
         if (del != MSG_END) return;
         handle_CL_TAKE_TALENT(*user, talentName);
@@ -1314,8 +1313,8 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_CAST: {
-        iss.get(buffer, BUFFER_SIZE, MSG_END);
-        auto spellID = std::string{buffer};
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
+        auto spellID = std::string{_stringInputBuffer};
         iss >> del;
         if (del != MSG_END) return;
         if (user->isStunned()) {
@@ -1327,8 +1326,8 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_ACCEPT_QUEST: {
-        iss.get(buffer, BUFFER_SIZE, MSG_DELIM);
-        auto questID = Quest::ID{buffer};
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_DELIM);
+        auto questID = Quest::ID{_stringInputBuffer};
         iss >> del;
 
         auto startSerial = size_t{};
@@ -1341,8 +1340,8 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_COMPLETE_QUEST: {
-        iss.get(buffer, BUFFER_SIZE, MSG_DELIM);
-        auto questID = Quest::ID{buffer};
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_DELIM);
+        auto questID = Quest::ID{_stringInputBuffer};
         iss >> del;
 
         auto endSerial = size_t{};
@@ -1355,8 +1354,8 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_ABANDON_QUEST: {
-        iss.get(buffer, BUFFER_SIZE, MSG_END);
-        auto questID = Quest::ID{buffer};
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
+        auto questID = Quest::ID{_stringInputBuffer};
         iss >> del;
 
         if (del != MSG_END) return;
@@ -1369,8 +1368,8 @@ void Server::handleBufferedMessages(const Socket &client,
         auto slot = 0, category = 0;
         auto id = ""s;
         iss >> slot >> del >> category >> del;
-        iss.get(buffer, BUFFER_SIZE, MSG_END);
-        id = buffer;
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
+        id = _stringInputBuffer;
         iss >> del;
         user->setHotbarAction(slot, category, id);
         break;
@@ -1381,8 +1380,8 @@ void Server::handleBufferedMessages(const Socket &client,
         break;
 
       case CL_SAY: {
-        iss.get(buffer, BUFFER_SIZE, MSG_END);
-        std::string message(buffer);
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
+        std::string message(_stringInputBuffer);
         iss >> del;
         if (del != MSG_END) return;
         broadcast({SV_SAY, makeArgs(user->name(), message)});
@@ -1394,11 +1393,11 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_WHISPER: {
-        iss.get(buffer, BUFFER_SIZE, MSG_DELIM);
-        std::string username(buffer);
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_DELIM);
+        std::string username(_stringInputBuffer);
         iss >> del;
-        iss.get(buffer, BUFFER_SIZE, MSG_END);
-        std::string message(buffer);
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
+        std::string message(_stringInputBuffer);
         iss >> del;
         if (del != MSG_END) return;
         auto it = _usersByName.find(username);
@@ -1418,8 +1417,8 @@ void Server::handleBufferedMessages(const Socket &client,
 
       case DG_GIVE: {
         if (!isDebug()) break;
-        iss.get(buffer, BUFFER_SIZE, MSG_END);
-        std::string id(buffer);
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
+        std::string id(_stringInputBuffer);
         iss >> del;
         if (del != MSG_END) return;
         const auto it = _items.find(id);
@@ -1435,8 +1434,8 @@ void Server::handleBufferedMessages(const Socket &client,
 
       case DG_GIVE_OBJECT: {
         if (!isDebug()) break;
-        iss.get(buffer, BUFFER_SIZE, MSG_END);
-        std::string id(buffer);
+        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
+        std::string id(_stringInputBuffer);
         iss >> del;
         if (del != MSG_END) return;
         auto *ot = findObjectTypeByID(id);

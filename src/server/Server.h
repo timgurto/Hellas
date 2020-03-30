@@ -105,6 +105,8 @@ class Server {
 
   // Messages
   std::queue<std::pair<Socket, std::string>> _messages;
+  static const size_t BUFFER_SIZE = 1023;
+  char _stringInputBuffer[BUFFER_SIZE + 1];
   void sendMessage(const Socket &dstSocket, const Message &msg) const;
   void sendMessageIfOnline(const std::string username,
                            const Message &msg) const;
@@ -161,7 +163,6 @@ class Server {
   static LogConsole *_debugInstance;
 
   static const int MAX_CLIENTS = 100;
-  static const size_t BUFFER_SIZE = 1023;
 
   ms_t _time, _lastTime;
 
@@ -290,6 +291,7 @@ class Server {
   void generateDurabilityList();
   static const ms_t PUBLISH_STATS_FREQUENCY = 5000;
   ms_t _timeStatsLastPublished;
+
   void writeUserToFile(const User &user, std::ostream &file) const;
 
   void handle_CL_REPORT_BUG(const std::string &name,
