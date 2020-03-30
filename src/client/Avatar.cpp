@@ -28,55 +28,42 @@ void Avatar::draw(const Client &client) const {
   if (isDriving()) return;
   if (!_class) return;
 
-  _imageWithGear = {width(), height()};
-  renderer.pushRenderTarget(_imageWithGear);
-  renderer.fillWithTransparency();
-  _imageWithGear.setBlend();
+  auto imagesToGenerate =
+      std::vector<Texture *>{&_imageWithGear, &_highlightImageWithGear};
+  for (auto *image : imagesToGenerate) {
+    *image = {width(), height()};
 
-  // Base image
-  _class->image().draw();
+    renderer.pushRenderTarget(*image);
+    renderer.fillWithTransparency();
+    image->setBlend();
 
-  // Gear
-  for (const auto &pair : ClientItem::drawOrder()) {
-    const ClientItem *item = _gear[pair.second].first.type();
-    if (item) {
-      item->draw({-DRAW_RECT.x, -DRAW_RECT.y});
+    // Base image
+    auto isHighlightImage = image == &_highlightImageWithGear;
+    if (isHighlightImage)
+      _class->highlightImage().draw();
+    else
+      _class->image().draw();
+
+    // Gear
+    const auto gearOffset =
+        isHighlightImage ? ScreenPoint{1, 1} : ScreenPoint{};
+    for (const auto &pair : ClientItem::drawOrder()) {
+      const ClientItem *item = _gear[pair.second].first.type();
+      if (item) {
+        item->draw(ScreenPoint{-DRAW_RECT.x, -DRAW_RECT.y} + gearOffset);
+      }
     }
-  }
 
-  if (_pixelsToCutOffBottomWhenDrawn > 0) {
-    auto transparency = Texture{DRAW_RECT.w, _pixelsToCutOffBottomWhenDrawn};
-    transparency.setBlend(SDL_BLENDMODE_NONE);
-    const auto TRANSPARENCY_TOP = DRAW_RECT.h - _pixelsToCutOffBottomWhenDrawn;
-    transparency.draw(0, TRANSPARENCY_TOP);
-  }
-
-  renderer.popRenderTarget();
-
-  _highlightImageWithGear = {width(), height()};
-  renderer.pushRenderTarget(_highlightImageWithGear);
-  renderer.fillWithTransparency();
-  _highlightImageWithGear.setBlend();
-
-  // Base image
-  _class->highlightImage().draw();
-
-  // Gear
-  for (const auto &pair : ClientItem::drawOrder()) {
-    const ClientItem *item = _gear[pair.second].first.type();
-    if (item) {
-      item->draw({-DRAW_RECT.x + 1, -DRAW_RECT.y + 1});
+    if (_pixelsToCutOffBottomWhenDrawn > 0) {
+      auto transparency = Texture{DRAW_RECT.w, _pixelsToCutOffBottomWhenDrawn};
+      transparency.setBlend(SDL_BLENDMODE_NONE);
+      const auto TRANSPARENCY_TOP =
+          DRAW_RECT.h - _pixelsToCutOffBottomWhenDrawn;
+      transparency.draw(0, TRANSPARENCY_TOP);
     }
-  }
 
-  if (_pixelsToCutOffBottomWhenDrawn > 0) {
-    auto transparency = Texture{DRAW_RECT.w, _pixelsToCutOffBottomWhenDrawn};
-    transparency.setBlend(SDL_BLENDMODE_NONE);
-    const auto TRANSPARENCY_TOP = DRAW_RECT.h - _pixelsToCutOffBottomWhenDrawn;
-    transparency.draw(0, TRANSPARENCY_TOP);
+    renderer.popRenderTarget();
   }
-
-  renderer.popRenderTarget();
 
   Sprite::draw(client);
 
