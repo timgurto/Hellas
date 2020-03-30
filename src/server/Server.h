@@ -111,7 +111,7 @@ class Server {
   void broadcast(const Message &msg);  // Send a command to all users
   void broadcastToArea(const MapPoint &location, const Message &msg) const;
   void broadcastToCity(const std::string &cityName, const Message &msg) const;
-  void handleMessage(const Socket &client, const std::string &msg);
+  void handleBufferedMessages(const Socket &client, const std::string &msg);
   void sendInventoryMessageInner(const User &user, size_t serial, size_t slot,
                                  const ServerItem::vect_t &itemVect) const;
   void sendInventoryMessage(const User &user, size_t slot,

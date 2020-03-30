@@ -627,7 +627,7 @@ class Client {
   std::queue<std::string> _messages;
   std::string _partialMessage;
   static void sendMessageStatic(void *data);
-  void handleMessage(const std::string &msg);
+  void handleBufferedMessages(const std::string &msg);
   void performCommand(const std::string &commandString);
   std::vector<MessageCode> _messagesReceived;
   std::mutex _messagesReceivedMutex;

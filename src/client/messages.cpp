@@ -30,7 +30,7 @@ std::istream &operator>>(std::istream &lhs, std::string &rhs) {
   return lhs;
 }
 
-void Client::handleMessage(const std::string &msg) {
+void Client::handleBufferedMessages(const std::string &msg) {
   _partialMessage.append(msg);
   std::istringstream iss(_partialMessage);
   _partialMessage = "";

@@ -253,8 +253,8 @@ TEST_CASE("The enemy is alerted when peace is proposed",
   auto rc = RemoteClient{"-username Bob"};
   s.waitForUsers(2);
   auto &bob = s.findUser("Bob");
-  s->handleMessage(bob.socket(),
-                   Message{CL_SUE_FOR_PEACE_WITH_PLAYER, "Alice"}.compile());
+  s->handleBufferedMessages(
+      bob.socket(), Message{CL_SUE_FOR_PEACE_WITH_PLAYER, "Alice"}.compile());
 
   // Then Alice is alerted
   CHECK(c.waitForMessage(SV_PEACE_WAS_PROPOSED_TO_YOU_BY_PLAYER));

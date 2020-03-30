@@ -8,7 +8,8 @@
 #include "Vehicle.h"
 #include "objects/Deconstruction.h"
 
-void Server::handleMessage(const Socket &client, const std::string &msg) {
+void Server::handleBufferedMessages(const Socket &client,
+                                    const std::string &msg) {
   _debug(msg);
   int msgCode;
   char del;

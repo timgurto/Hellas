@@ -60,7 +60,7 @@ void Client::loginScreenLoop() {
 
   // Deal with any messages from the server
   if (!_messages.empty()) {
-    handleMessage(_messages.front());
+    handleBufferedMessages(_messages.front());
     _messages.pop();
   }
 

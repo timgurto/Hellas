@@ -267,7 +267,7 @@ void Server::run() {
 
     // Deal with any messages from the server
     while (!_messages.empty()) {
-      handleMessage(_messages.front().first, _messages.front().second);
+      handleBufferedMessages(_messages.front().first, _messages.front().second);
       _messages.pop();
     }
 
