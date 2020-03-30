@@ -65,14 +65,14 @@ void NPC::transitionIfNecessary() {
         if (distance(ownerPlayer->collisionRect(), collisionRect()) <=
             FOLLOW_DISTANCE)
           break;
-        _state = FOLLOW;
+        _state = PET_FOLLOW_OWNER;
         _followTarget = ownerPlayer;
         break;
       }
 
       break;
 
-    case FOLLOW:
+    case PET_FOLLOW_OWNER:
       // There's a target to attack
       if (target()) {
         if (distToTarget > ATTACK_RANGE) {
@@ -201,7 +201,7 @@ void NPC::act() {
       target(nullptr);
       break;
 
-    case FOLLOW:
+    case PET_FOLLOW_OWNER:
       moveLegallyTowards(_followTarget->location());
       break;
 
