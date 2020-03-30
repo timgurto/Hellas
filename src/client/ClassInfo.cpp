@@ -5,7 +5,7 @@
 #include "Tooltip.h"
 
 ClassInfo::ClassInfo(const Name &name) : _name(name), _trees{} {
-  _image = {"Images/Humans/" + name + ".png", Color::MAGENTA};
+  _image = {"Images/Humans/" + name};
 }
 
 void ClassInfo::addTalentToTree(const ClientTalent &talent,

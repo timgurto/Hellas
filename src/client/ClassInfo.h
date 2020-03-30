@@ -73,14 +73,15 @@ class ClassInfo {
   Tree &findTree(const Tree::Name &name);
 
   const Name &name() const { return _name; }
-  const Texture &image() const { return _image; }
+  const Texture &image() const { return _image.getNormalImage(); }
+  const Texture &highlightImage() const { return _image.getHighlightImage(); }
   const Trees &trees() const { return _trees; }
   const Description &description() const { return _description; }
   void description(const Description &desc) { _description = desc; }
 
  private:
   Name _name{};
-  Texture _image{};
+  ImageWithHighlight _image{};
   Trees _trees{};
   Description _description{};
 };

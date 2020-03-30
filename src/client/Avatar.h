@@ -27,7 +27,7 @@ class Avatar : public Sprite, public ClientCombatant {
   ClientItem::vect_t _gear;
   bool _isKing = false;
   ClientVehicle *_vehicle{nullptr};
-  mutable Texture _imageWithGear;
+  mutable Texture _imageWithGear, _highlightImageWithGear;
   px_t _pixelsToCutOffBottomWhenDrawn{0};  // For drawing inside a vehicle
 
  public:
@@ -75,7 +75,7 @@ class Avatar : public Sprite, public ClientCombatant {
   const Color &nameColor() const override;
   virtual const Texture &image() const override { return _imageWithGear; }
   virtual const Texture &getHighlightImage() const override {
-    return _class->image();
+    return _highlightImageWithGear;
   }
   double speed() const override;
   virtual void onNewLocationFromServer() override;

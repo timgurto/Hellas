@@ -53,6 +53,31 @@ void Avatar::draw(const Client &client) const {
 
   renderer.popRenderTarget();
 
+  _highlightImageWithGear = {width(), height()};
+  renderer.pushRenderTarget(_highlightImageWithGear);
+  renderer.fillWithTransparency();
+  _highlightImageWithGear.setBlend();
+
+  // Base image
+  _class->highlightImage().draw();
+
+  // Gear
+  for (const auto &pair : ClientItem::drawOrder()) {
+    const ClientItem *item = _gear[pair.second].first.type();
+    if (item) {
+      item->draw({-DRAW_RECT.x + 1, -DRAW_RECT.y + 1});
+    }
+  }
+
+  if (_pixelsToCutOffBottomWhenDrawn > 0) {
+    auto transparency = Texture{DRAW_RECT.w, _pixelsToCutOffBottomWhenDrawn};
+    transparency.setBlend(SDL_BLENDMODE_NONE);
+    const auto TRANSPARENCY_TOP = DRAW_RECT.h - _pixelsToCutOffBottomWhenDrawn;
+    transparency.draw(0, TRANSPARENCY_TOP);
+  }
+
+  renderer.popRenderTarget();
+
   Sprite::draw(client);
 
   drawBuffEffects(location());
