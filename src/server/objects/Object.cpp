@@ -17,7 +17,7 @@ Object::Object(const ObjectType *type, const MapPoint &loc)
   onSetType();
 }
 
-Object::Object(size_t serial) : Entity(serial), QuestNode(QuestNode::Dummy()) {}
+Object::Object(Serial serial) : Entity(serial), QuestNode(QuestNode::Dummy()) {}
 
 Object::Object(const MapPoint &loc)
     : Entity(loc), QuestNode(QuestNode::Dummy()) {}

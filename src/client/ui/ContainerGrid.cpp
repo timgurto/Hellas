@@ -26,7 +26,7 @@ Texture ContainerGrid::_damaged;
 Texture ContainerGrid::_broken;
 
 ContainerGrid::ContainerGrid(size_t rows, size_t cols,
-                             ClientItem::vect_t &linked, size_t serial, px_t x,
+                             ClientItem::vect_t &linked, Serial serial, px_t x,
                              px_t y, px_t gap, bool solidBackground)
     : Element(
           {x, y, static_cast<px_t>(cols) * (Client::ICON_SIZE + gap + 2) + gap,
@@ -130,7 +130,7 @@ void ContainerGrid::refresh() {
       _highlight.draw(slotRect.x + 1, slotRect.y + 1);
 
       // Indicate matching gear slot if an item is being dragged
-    } else if (_serial == Client::GEAR && dragGrid != nullptr) {
+    } else if (_serial.isGear() && dragGrid != nullptr) {
       size_t itemSlot = dragGrid->_linked[dragSlot].first.type()->gearSlot();
       (i == itemSlot ? _highlightGood : _highlightBad)
           .draw(slotRect.x + 1, slotRect.y + 1);
@@ -187,10 +187,10 @@ void ContainerGrid::leftMouseUp(Element &e, const ScreenPoint &mousePos) {
 
     // Enforce gear slots
     if (dragGrid != nullptr) {
-      if (dragGrid->_serial == Client::GEAR) {  // From gear slot
+      if (dragGrid->_serial.isGear()) {  // From gear slot
         const ClientItem *item = grid._linked[slot].first.type();
         if (item != nullptr && item->gearSlot() != dragSlot) return;
-      } else if (grid._serial == Client::GEAR) {  // To gear slot
+      } else if (grid._serial.isGear()) {  // To gear slot
         const ClientItem *item = dragGrid->_linked[dragSlot].first.type();
         if (item != nullptr && item->gearSlot() != slot) return;
       }
@@ -247,14 +247,14 @@ void ContainerGrid::rightMouseUp(Element &e, const ScreenPoint &mousePos) {
   } else if (slot != NO_SLOT) {  // Right-clicked a slot
     const ClientItem *item = grid._linked[slot].first.type();
     if (item != nullptr) {  // Slot is not empty
-      if (grid._serial == Client::INVENTORY) {
+      if (grid._serial.isInventory()) {
         if (item->canUse()) {
           useSlot = slot;
           useGrid = &grid;
         } else if (item->gearSlot() < Client::GEAR_SLOTS) {
           Client::_instance->sendMessage(
-              {CL_SWAP_ITEMS, makeArgs(Client::INVENTORY, slot, Client::GEAR,
-                                       item->gearSlot())});
+              {CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), slot,
+                                       Serial::Gear(), item->gearSlot())});
           item->playSoundOnce("drop");
         }
       } else {  // An object: take item

@@ -7,7 +7,7 @@
 
 class ClientNPC : public ClientObject {
  public:
-  ClientNPC(size_t serial, const ClientNPCType *type = nullptr,
+  ClientNPC(Serial serial, const ClientNPCType *type = nullptr,
             const MapPoint &loc = MapPoint{});
   ~ClientNPC() {}
 

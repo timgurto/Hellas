@@ -4,7 +4,7 @@
 
 extern Renderer renderer;
 
-ClientVehicle::ClientVehicle(size_t serial, const ClientVehicleType *type,
+ClientVehicle::ClientVehicle(Serial serial, const ClientVehicleType *type,
                              const MapPoint &loc)
     : ClientObject(serial, type, loc), _driver(nullptr) {}
 

@@ -24,12 +24,11 @@ TEST_CASE("Dismantle an object with an inventory", "[.flaky][container]") {
   User &user = s.getFirstUser();
   user.moveLegallyTowards({10, 10});
   // And a box at (10, 10) that is deconstructible and has an empty inventory
-  s.addObject("box", {10, 10});
+  const auto &box = s.addObject("box", {10, 10});
   WAIT_UNTIL(c.objects().size() == 1);
 
   // When the user tries to deconstruct the box
-  size_t serial = c.objects().begin()->first;
-  c.sendMessage(CL_DECONSTRUCT, makeArgs(serial));
+  c.sendMessage(CL_DECONSTRUCT, makeArgs(box.serial()));
 
   // The deconstruction action successfully begins
   CHECK(c.waitForMessage(SV_ACTION_STARTED));
@@ -40,7 +39,7 @@ TEST_CASE("Place item in object", "[.flaky][container]") {
   TestClient c = TestClient::WithData("dismantle");
 
   // Add a single box
-  s.addObject("box", {10, 10});
+  const auto &box = s.addObject("box", {10, 10});
   WAIT_UNTIL(c.objects().size() == 1);
 
   // Give user a box item
@@ -49,8 +48,7 @@ TEST_CASE("Place item in object", "[.flaky][container]") {
   CHECK(c.waitForMessage(SV_INVENTORY));
 
   // Try to put item in object
-  size_t serial = c.objects().begin()->first;
-  c.sendMessage(CL_SWAP_ITEMS, makeArgs(0, 0, serial, 0));
+  c.sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Gear(), 0, box.serial(), 0));
 
   // Should be the alert that the object's inventory has changed
   CHECK(c.waitForMessage(SV_INVENTORY));

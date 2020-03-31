@@ -20,9 +20,9 @@ class Entities {
   iterator begin() const { return _container.begin(); }
   iterator end() const { return _container.end(); }
 
-  Entity *find(size_t serial);
+  Entity *find(Serial serial);
   template <typename T>
-  T *find(size_t serial) {
+  T *find(Serial serial) {
     Entity *pEnt = find(serial);
     return dynamic_cast<T *>(pEnt);
   }

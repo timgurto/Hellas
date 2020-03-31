@@ -460,7 +460,7 @@ void Client::removeEntity(Sprite *const toRemove) {
 void Client::cullObjects() {
   closeWindowsFromOutOfRangeObjects();
 
-  std::list<std::pair<size_t, Sprite *> > objectsToRemove;
+  std::list<std::pair<Serial, Sprite *> > objectsToRemove;
   for (auto pair : _objects) {
     if (pair.second->canAlwaysSee()) continue;
     if (outsideCullRange(pair.second->location(), CULL_HYSTERESIS_DISTANCE))
@@ -572,7 +572,7 @@ void Client::closeWindowsFromOutOfRangeObjects() {
   }
 }
 
-void Client::dropItemOnConfirmation(size_t serial, size_t slot,
+void Client::dropItemOnConfirmation(Serial serial, size_t slot,
                                     const ClientItem *item) {
   std::string windowText =
       "Are you sure you want to destroy " + item->name() + "?";

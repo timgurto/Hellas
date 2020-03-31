@@ -295,7 +295,7 @@ TEST_CASE("Duping exploit") {
 
       AND_WHEN("he puts the material into the container") {
         c.sendMessage(CL_SWAP_ITEMS,
-                      makeArgs(Server::INVENTORY, 0, box.serial(), 0));
+                      makeArgs(Serial::Inventory(), 0, box.serial(), 0));
 
         AND_WHEN("enough time passes for the crafting to finish") {
           REPEAT_FOR_MS(150);

@@ -54,7 +54,7 @@ TEST_CASE("View merchant slots in window", "[.flaky][ui]") {
 
   auto objects = c.objects();
   auto it = objects.begin();
-  size_t serial = it->first;
+  auto serial = it->first;
   ClientObject *cObj = it->second;
   REQUIRE(cObj != nullptr);
 

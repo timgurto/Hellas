@@ -67,7 +67,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   std::set<std::string> _knownRecipes, _knownConstructions;
   mutable std::set<std::string> _playerUniqueCategoriesOwned;
 
-  size_t _driving;  // The serial of the vehicle this user is currently driving;
+  Serial _driving;  // The vehicle this user is currently driving;
                     // 0 if none.
 
   ServerItem::vect_t _inventory, _gear;
@@ -149,9 +149,9 @@ class User : public Object {  // TODO: Don't inherit from Object
   const Class &getClass() const { return _class.value(); }
   Class &getClass() { return _class.value(); }
   void setClass(const ClassType &type) { _class = {type, *this}; }
-  size_t driving() const { return _driving; }
-  void driving(size_t serial) { _driving = serial; }
-  bool isDriving() const { return _driving != 0; }
+  Serial driving() const { return _driving; }
+  void driving(Serial serial) { _driving = serial; }
+  bool isDriving() const { return _driving.isEntity(); }
   const std::set<std::string> &knownRecipes() const { return _knownRecipes; }
   void addRecipe(const std::string &id) { _knownRecipes.insert(id); }
   bool knowsRecipe(const std::string &id) const;

@@ -134,21 +134,21 @@ double ServerItem::Instance::toolSpeed(const std::string &tag) const {
 
 ServerItem::Instance::ReportingInfo
 ServerItem::Instance::ReportingInfo::UserGear(const User *owner, size_t slot) {
-  return {owner, Server::SpecialSerial::GEAR, slot};
+  return {owner, Serial::Gear(), slot};
 }
 
 ServerItem::Instance::ReportingInfo
 ServerItem::Instance::ReportingInfo::UserInventory(const User *owner,
                                                    size_t slot) {
-  return {owner, Server::SpecialSerial::INVENTORY, slot};
+  return {owner, Serial::Inventory(), slot};
 }
 
 void ServerItem::Instance::ReportingInfo::report() {
   if (!_owner) return;
 
-  if (_container == Server::SpecialSerial::INVENTORY)
+  if (_container.isInventory())
     _owner->sendInventorySlot(_slot);
-  else if (_container == Server::SpecialSerial::GEAR)
+  else if (_container.isGear())
     _owner->sendGearSlot(_slot);
   else
     SERVER_ERROR("Trying to report container inventory; unsupported.");

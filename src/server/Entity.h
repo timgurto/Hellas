@@ -6,6 +6,7 @@
 #include "../Message.h"
 #include "../Point.h"
 #include "../Rect.h"
+#include "../Serial.h"
 #include "../SpellSchool.h"
 #include "../types.h"
 #include "Buff.h"
@@ -26,7 +27,7 @@ class NPC;
 class Entity {
  public:
   Entity(const EntityType *type, const MapPoint &loc);
-  Entity(size_t serial);        // TODO make private
+  Entity(Serial serial);        // TODO make private
   Entity(const MapPoint &loc);  // TODO make private
   virtual ~Entity();
 
@@ -46,8 +47,8 @@ class Entity {
   typedef std::set<const Entity *, Entity::compareXThenSerial> byX_t;
   typedef std::set<const Entity *, Entity::compareYThenSerial> byY_t;
 
-  size_t serial() const { return _serial; }
-  void serial(size_t s) { _serial = s; }
+  Serial serial() const { return _serial; }
+  void serial(Serial s) { _serial = s; }
 
   virtual void update(ms_t timeElapsed);
   // Add this entity to a list, for removal after all objects are updated.
@@ -220,7 +221,6 @@ class Entity {
   static const px_t MELEE_RANGE;
 
  private:
-  static size_t generateSerial();
   const EntityType *_type{nullptr};
 
   bool _excludedFromPersistentState{false};
@@ -228,7 +228,7 @@ class Entity {
   Spawner *_spawner{nullptr};  // The Spawner that created this entity, if any.
 
   // Space
-  size_t _serial{0};
+  Serial _serial;
   MapPoint _location;
   ms_t _lastLocUpdate;  // Time that the location was last updated; used to
                         // determine max distance
@@ -257,13 +257,13 @@ class Entity {
 
 class Dummy : public Entity {
  public:
-  static Dummy Serial(size_t serial) { return Dummy(serial); }
+  static Dummy FromSerial(Serial serial) { return Dummy(serial); }
   static Dummy Location(const MapPoint &loc) { return Dummy(loc); }
   static Dummy Location(double x, double y) { return Dummy({x, y}); }
 
  private:
   friend class Entity;
-  Dummy(size_t serial) : Entity(serial) {}
+  Dummy(Serial serial) : Entity(serial) {}
   Dummy(const MapPoint &loc) : Entity(loc) {}
 
   // Necessary overrides to make this a concrete class

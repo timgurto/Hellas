@@ -5,6 +5,7 @@
 #include <string>
 
 #include "../Point.h"
+#include "../Serial.h"
 #include "ClientCombatant.h"
 #include "ClientItem.h"
 #include "ClientMerchantSlot.h"
@@ -33,7 +34,7 @@ class ClientObject : public Sprite, public ClientCombatant {
     bool operator==(Owner &rhs) const;
   };
 
-  size_t _serial;
+  Serial _serial;
   Owner _owner;
   ClientItem::vect_t _container;
   std::vector<ClientMerchantSlot> _merchantSlots;
@@ -79,7 +80,7 @@ class ClientObject : public Sprite, public ClientCombatant {
  public:
   ClientObject(const ClientObject &rhs);
   // Serial only: create dummy object, for set searches
-  ClientObject(size_t serial, const ClientObjectType *type = nullptr,
+  ClientObject(Serial serial, const ClientObjectType *type = nullptr,
                const MapPoint &loc = MapPoint{});
   virtual ~ClientObject();
 
@@ -90,7 +91,7 @@ class ClientObject : public Sprite, public ClientCombatant {
     return _serial == rhs._serial;
   }
 
-  size_t serial() const { return _serial; }
+  Serial serial() const { return _serial; }
   const ClientObjectType *objectType() const {
     return dynamic_cast<const ClientObjectType *>(type());
   }
@@ -144,8 +145,8 @@ class ClientObject : public Sprite, public ClientCombatant {
   virtual void onLeftClick(Client &client) override;
   virtual void onRightClick(Client &client) override;
   static void startDeconstructing(void *object);
-  static void trade(size_t serial, size_t slot);
-  static void sendMerchantSlot(size_t serial, size_t slot);
+  static void trade(Serial serial, size_t slot);
+  static void sendMerchantSlot(Serial serial, size_t slot);
 
   virtual void onInventoryUpdate();
   void hideWindow();

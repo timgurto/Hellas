@@ -36,12 +36,11 @@ TEST_CASE("Public-access objects") {
   // Given a rock with no owner
   TestServer s = TestServer::WithData("basic_rock");
   TestClient c = TestClient::WithData("basic_rock");
-  s.addObject("rock", {10, 10});
+  const auto &rock = s.addObject("rock", {10, 10});
   WAIT_UNTIL(c.objects().size() == 1);
 
   // When a user attempts to gather it
-  size_t serial = c.objects().begin()->first;
-  c.sendMessage(CL_GATHER, makeArgs(serial));
+  c.sendMessage(CL_GATHER, makeArgs(rock.serial()));
 
   // Then he gathers, receives a rock item, and the rock object disapears
   User &user = s.getFirstUser();
@@ -58,12 +57,11 @@ TEST_CASE("The owner can access an owned object") {
   TestClient c = TestClient::WithData("basic_rock");
   s.waitForUsers(1);
   User &user = s.getFirstUser();
-  s.addObject("rock", {10, 10}, user.name());
+  const auto &rock = s.addObject("rock", {10, 10}, user.name());
   WAIT_UNTIL(c.objects().size() == 1);
 
   // When he attempts to gather it
-  size_t serial = c.objects().begin()->first;
-  c.sendMessage(CL_GATHER, makeArgs(serial));
+  c.sendMessage(CL_GATHER, makeArgs(rock.serial()));
 
   // Then he gathers, receives a rock item, and the object disapears
   WAIT_UNTIL(user.action() == User::Action::GATHER);
@@ -74,23 +72,24 @@ TEST_CASE("The owner can access an owned object") {
 }
 
 TEST_CASE("A non-owner cannot access an owned object") {
-  // Given a rock owned by Alice
-  TestServer s = TestServer::WithData("basic_rock");
-  s.addObject("rock", {10, 10});
-  Object &rock = s.getFirstObject();
-  rock.permissions.setPlayerOwner("Alice");
+  GIVEN("a rock owned by Alice") {
+    TestServer s = TestServer::WithData("basic_rock");
+    auto &rock = s.addObject("rock", {10, 10});
+    rock.permissions.setPlayerOwner("Alice");
 
-  // When a different user attempts to gather it
-  TestClient c = TestClient::WithData("basic_rock");
-  WAIT_UNTIL(c.objects().size() == 1);
-  size_t serial = c.objects().begin()->first;
-  c.sendMessage(CL_GATHER, makeArgs(serial));
-  REPEAT_FOR_MS(500);
+    WHEN("a different user attempts to gather it") {
+      TestClient c = TestClient::WithData("basic_rock");
+      WAIT_UNTIL(c.objects().size() == 1);
+      c.sendMessage(CL_GATHER, makeArgs(rock.serial()));
+      REPEAT_FOR_MS(500);
 
-  // Then the rock remains, and his inventory remains empty
-  CHECK_FALSE(s.entities().empty());
-  User &user = s.getFirstUser();
-  CHECK_FALSE(user.inventory()[0].first.hasItem());
+      THEN("the rock remains, and his inventory remains empty") {
+        CHECK_FALSE(s.entities().empty());
+        User &user = s.getFirstUser();
+        CHECK_FALSE(user.inventory()[0].first.hasItem());
+      }
+    }
+  }
 }
 
 TEST_CASE("A city can own an object", "[city]") {
@@ -143,8 +142,7 @@ TEST_CASE("City members can use city objects", "[city]") {
 
   // When he attempts to gather the rock
   WAIT_UNTIL(c.objects().size() == 1);
-  size_t serial = c.objects().begin()->first;
-  c.sendMessage(CL_GATHER, makeArgs(serial));
+  c.sendMessage(CL_GATHER, makeArgs(rock.serial()));
 
   // Then he gathers;
   WAIT_UNTIL(user.action() == User::Action::GATHER);

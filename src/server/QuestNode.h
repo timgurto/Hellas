@@ -2,6 +2,7 @@
 
 #include <set>
 
+#include "../Serial.h"
 #include "Quest.h"
 
 class User;
@@ -25,7 +26,7 @@ class QuestNodeType {
 
 class QuestNode {
  protected:
-  QuestNode(const QuestNodeType &type, size_t serial)
+  QuestNode(const QuestNodeType &type, Serial serial)
       : _type(&type), _serial(serial) {}
   static QuestNode Dummy() { return {}; }
 
@@ -39,5 +40,5 @@ class QuestNode {
  private:
   QuestNode() {}
   const QuestNodeType *_type{nullptr};
-  size_t _serial{0};
+  Serial _serial;
 };

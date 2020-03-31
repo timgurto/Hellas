@@ -14,7 +14,7 @@ Stats Dummy::_stats{};
 
 Entity::Entity(const EntityType *type, const MapPoint &loc)
     : _type(type),
-      _serial(generateSerial()),
+      _serial(Serial::Generate()),
 
       _location(loc),
       _lastLocUpdate(SDL_GetTicks()),
@@ -25,7 +25,7 @@ Entity::Entity(const EntityType *type, const MapPoint &loc)
   initStatsFromType();
 }
 
-Entity::Entity(size_t serial)
+Entity::Entity(Serial serial)
     :  // For set/map lookup ONLY
       _serial(serial),
       permissions(*this),
@@ -57,11 +57,6 @@ bool Entity::compareYThenSerial::operator()(const Entity *a,
                                             const Entity *b) const {
   if (a->_location.y != b->_location.y) return a->_location.y < b->_location.y;
   return a->_serial < b->_serial;
-}
-
-size_t Entity::generateSerial() {
-  static size_t currentSerial = Server::STARTING_SERIAL;
-  return currentSerial++;
 }
 
 void Entity::markForRemoval() {

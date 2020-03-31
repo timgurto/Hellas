@@ -28,7 +28,7 @@ TEST_CASE("Construction materials can be added") {
 
         AND_WHEN("he gives adds a brick") {
           c.sendMessage(CL_SWAP_ITEMS,
-                        makeArgs(Server::INVENTORY, 0, wall.serial(), 0));
+                        makeArgs(Serial::Inventory(), 0, wall.serial(), 0));
 
           THEN("construction has finished") {
             WAIT_UNTIL(!wall.isBeingBuilt());
@@ -271,7 +271,7 @@ TEST_CASE("Construction progress is persistent", "[persistence]") {
     // When she adds it to the construction site
     const auto &wall = s.getFirstObject();
     c.sendMessage(CL_SWAP_ITEMS,
-                  makeArgs(Server::INVENTORY, 0, wall.serial(), 0));
+                  makeArgs(Serial::Inventory(), 0, wall.serial(), 0));
 
     // And when the construction finishes
     WAIT_UNTIL(!wall.isBeingBuilt());
@@ -316,7 +316,7 @@ TEST_CASE("A construction material can 'return' an item") {
 
         AND_WHEN("he adds his matches") {
           c.sendMessage(CL_SWAP_ITEMS,
-                        makeArgs(Server::INVENTORY, 0, fire.serial(), 0));
+                        makeArgs(Serial::Inventory(), 0, fire.serial(), 0));
           REPEAT_FOR_MS(100);
 
           THEN("he has a matchbox") {
@@ -354,7 +354,7 @@ TEST_CASE("Stackable items that build and return") {
 
         AND_WHEN("he tries to add ice") {
           c.sendMessage(CL_SWAP_ITEMS,
-                        makeArgs(Server::INVENTORY, 0, igloo.serial(), 0));
+                        makeArgs(Serial::Inventory(), 0, igloo.serial(), 0));
 
           THEN("the igloo is still unfinished") {
             REPEAT_FOR_MS(100);

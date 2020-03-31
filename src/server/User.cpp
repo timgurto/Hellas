@@ -40,8 +40,6 @@ User::User(const std::string &name, const MapPoint &loc, const Socket *socket)
 
       _respawnPoint(newPlayerSpawn),
 
-      _driving(0),
-
       _inventory(INVENTORY_SIZE),
       _gear(GEAR_SLOTS),
       _lastContact(SDL_GetTicks()) {
@@ -260,7 +258,7 @@ size_t User::giveItem(const ServerItem *item, size_t quantity) {
     if (spaceAvailable > 0) {
       auto qtyInThisSlot = min(static_cast<size_t>(spaceAvailable), remaining);
       _gear[i].second += qtyInThisSlot;
-      Server::instance().sendInventoryMessage(*this, i, Server::GEAR);
+      Server::instance().sendInventoryMessage(*this, i, Serial::Gear());
       remaining -= qtyInThisSlot;
     }
     if (remaining == 0) break;
@@ -288,7 +286,7 @@ size_t User::giveItem(const ServerItem *item, size_t quantity) {
         auto qtyInThisSlot =
             min(static_cast<size_t>(spaceAvailable), remaining);
         _inventory[i].second += qtyInThisSlot;
-        Server::instance().sendInventoryMessage(*this, i, Server::INVENTORY);
+        Server::instance().sendInventoryMessage(*this, i, Serial::Inventory());
         remaining -= qtyInThisSlot;
       }
       if (remaining == 0) break;
@@ -315,7 +313,7 @@ size_t User::giveItem(const ServerItem *item, size_t quantity) {
       _inventory[i].first = {
           item, ServerItem::Instance::ReportingInfo::UserInventory(this, i)};
       _inventory[i].second = qtyInThisSlot;
-      server.sendInventoryMessage(*this, i, Server::INVENTORY);
+      server.sendInventoryMessage(*this, i, Serial::Inventory());
       remaining -= qtyInThisSlot;
       if (remaining == 0) break;
     }
@@ -569,7 +567,7 @@ void User::clearInventory() {
       _inventory[i].first = {};
       _inventory[i].second = 0;
       server.sendMessage(
-          socket(), {SV_INVENTORY, makeArgs(Server::INVENTORY, i, "", 0, 0)});
+          socket(), {SV_INVENTORY, makeArgs(Serial::Inventory(), i, "", 0, 0)});
     }
 }
 
@@ -580,7 +578,7 @@ void User::clearGear() {
       _gear[i].first = {};
       _gear[i].second = 0;
       server.sendMessage(socket(),
-                         {SV_INVENTORY, makeArgs(Server::GEAR, i, "", 0, 0)});
+                         {SV_INVENTORY, makeArgs(Serial::Gear(), i, "", 0, 0)});
     }
 }
 
@@ -608,11 +606,12 @@ ItemSet User::removeItems(const ItemSet &items) {
 
   removeItemsFrom(remaining, _inventory, slotsChanged);
   for (size_t slotNum : slotsChanged)
-    Server::instance().sendInventoryMessage(*this, slotNum, Server::INVENTORY);
+    Server::instance().sendInventoryMessage(*this, slotNum,
+                                            Serial::Inventory());
 
   removeItemsFrom(remaining, _gear, slotsChanged);
   for (size_t slotNum : slotsChanged)
-    Server::instance().sendInventoryMessage(*this, slotNum, Server::GEAR);
+    Server::instance().sendInventoryMessage(*this, slotNum, Serial::Gear());
 
   return remaining;
 }
@@ -647,11 +646,12 @@ void User::removeItems(const std::string &tag, size_t quantity) {
 
   removeItemsFrom(tag, remaining, _inventory, slotsChanged);
   for (size_t slotNum : slotsChanged)
-    Server::instance().sendInventoryMessage(*this, slotNum, Server::INVENTORY);
+    Server::instance().sendInventoryMessage(*this, slotNum,
+                                            Serial::Inventory());
 
   removeItemsFrom(tag, remaining, _gear, slotsChanged);
   for (size_t slotNum : slotsChanged)
-    Server::instance().sendInventoryMessage(*this, slotNum, Server::GEAR);
+    Server::instance().sendInventoryMessage(*this, slotNum, Serial::Gear());
 }
 
 int User::countItems(const ServerItem *item) const {
@@ -768,7 +768,7 @@ void User::update(ms_t timeElapsed) {
       }
       --slot.second;
       if (slot.second == 0) slot.first = {};
-      server.sendInventoryMessage(*this, _actionSlot, Server::INVENTORY);
+      server.sendInventoryMessage(*this, _actionSlot, Serial::Inventory());
 
       // Trigger any new unlocks
       ProgressLock::triggerUnlocks(*this, ProgressLock::CONSTRUCTION,
@@ -1437,7 +1437,7 @@ void User::sendInventorySlot(size_t slotIndex) const {
   const auto &item = slot.first;
   if (!item.type()) return;  // Is this right?
   sendMessage(
-      {SV_INVENTORY, makeArgs(Server::INVENTORY, slotIndex, item.type()->id(),
+      {SV_INVENTORY, makeArgs(Serial::Inventory(), slotIndex, item.type()->id(),
                               slot.second, item.health())});
 }
 
@@ -1446,7 +1446,7 @@ void User::sendGearSlot(size_t slotIndex) const {
   const auto &item = slot.first;
   if (!item.type()) return;
   sendMessage(
-      {SV_INVENTORY, makeArgs(Server::GEAR, slotIndex, item.type()->id(),
+      {SV_INVENTORY, makeArgs(Serial::Gear(), slotIndex, item.type()->id(),
                               slot.second, item.health())});
 }
 
@@ -1630,7 +1630,7 @@ void User::abandonQuest(Quest::ID id) {
         slotPair.first.type()->exclusiveToQuest() == id) {
       slotPair.first = {};
       slotPair.second = 0;
-      server.sendInventoryMessage(*this, i, Server::INVENTORY);
+      server.sendInventoryMessage(*this, i, Serial::Inventory());
     }
   }
   for (auto i = 0; i != GEAR_SLOTS; ++i) {
@@ -1639,7 +1639,7 @@ void User::abandonQuest(Quest::ID id) {
         slotPair.first.type()->exclusiveToQuest() == id) {
       slotPair.first = {};
       slotPair.second = 0;
-      server.sendInventoryMessage(*this, i, Server::GEAR);
+      server.sendInventoryMessage(*this, i, Serial::Gear());
     }
   }
 

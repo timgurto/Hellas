@@ -3,6 +3,7 @@
 
 #include <set>
 
+#include "../Serial.h"
 #include "Permissions.h"
 
 class Object;
@@ -11,28 +12,28 @@ class ObjectsByOwner {
   class ObjectsWithSpecificOwner;
 
  public:
-  bool isObjectOwnedBy(size_t serial, const Permissions::Owner &owner) const;
+  bool isObjectOwnedBy(Serial serial, const Permissions::Owner &owner) const;
   const ObjectsWithSpecificOwner &getObjectsWithSpecificOwner(
       const Permissions::Owner &owner) const;
-  void add(const Permissions::Owner &owner, size_t serial) {
+  void add(const Permissions::Owner &owner, Serial serial) {
     container[owner].add(serial);
   }
-  void remove(const Permissions::Owner &owner, size_t serial) {
+  void remove(const Permissions::Owner &owner, Serial serial) {
     container[owner].remove(serial);
   }
 
-  std::pair<std::set<size_t>::iterator, std::set<size_t>::iterator>
+  std::pair<std::set<Serial>::iterator, std::set<Serial>::iterator>
   getObjectsOwnedBy(const Permissions::Owner &owner) const;
 
  private:
   class ObjectsWithSpecificOwner {
    public:
     size_t size() const { return container.size(); }
-    void add(size_t serial);
-    void remove(size_t serial);
-    bool isObjectOwned(size_t serial) const;
+    void add(Serial serial);
+    void remove(Serial serial);
+    bool isObjectOwned(Serial serial) const;
 
-    using Container = std::set<size_t>;
+    using Container = std::set<Serial>;
     Container::const_iterator begin() const { return container.begin(); }
     Container::const_iterator end() const { return container.end(); }
 

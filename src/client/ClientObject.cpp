@@ -41,7 +41,7 @@ ClientObject::ClientObject(const ClientObject &rhs)
       _confirmCedeWindow(nullptr),
       _beingGathered(rhs._beingGathered) {}
 
-ClientObject::ClientObject(size_t serialArg, const ClientObjectType *type,
+ClientObject::ClientObject(Serial serialArg, const ClientObjectType *type,
                            const MapPoint &loc)
     : Sprite(type, loc),
       ClientCombatant(type),
@@ -737,11 +737,11 @@ void ClientObject::startDeconstructing(void *object) {
   client.prepareAction(std::string("Dismantling ") + obj.objectType()->name());
 }
 
-void ClientObject::trade(size_t serial, size_t slot) {
+void ClientObject::trade(Serial serial, size_t slot) {
   Client::_instance->sendMessage({CL_TRADE, makeArgs(serial, slot)});
 }
 
-void ClientObject::sendMerchantSlot(size_t serial, size_t slot) {
+void ClientObject::sendMerchantSlot(Serial serial, size_t slot) {
   const auto &objects = Client::_instance->_objects;
   auto it = objects.find(serial);
   if (it == objects.end()) {

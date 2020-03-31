@@ -36,7 +36,7 @@ void Loot::add(const ItemSet &items) {
   }
 }
 
-void Loot::sendSingleSlotToUser(const User &recipient, size_t serial,
+void Loot::sendSingleSlotToUser(const User &recipient, Serial serial,
                                 size_t slot) const {
   const Server &server = Server::instance();
   server.sendInventoryMessageInner(recipient, serial, slot, _container);

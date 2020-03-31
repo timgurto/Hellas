@@ -20,7 +20,7 @@ TEST_CASE("NPCs chain pull", "[ai]") {
     auto spear = &s.getFirstItem();
     user.giveItem(spear);
     c.sendMessage(CL_SWAP_ITEMS,
-                  makeArgs(Client::INVENTORY, 0, Client::GEAR, 6));
+                  makeArgs(Serial::Inventory(), 0, Serial::Gear(), 6));
     WAIT_UNTIL(user.gear(6).first.type() == spear);
 
     WHEN(

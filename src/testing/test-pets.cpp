@@ -119,8 +119,7 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
       <npcType id="dog" maxHealth="1000" attack="2" speed="1" />
     )";
     auto s = TestServer::WithDataString(data);
-    s.addNPC("dog", {10, 15});
-    auto &dog = s.getFirstNPC();
+    auto &dog = s.addNPC("dog", {10, 15});
 
     WHEN("it becomes owned by a player") {
       auto c = TestClient::WithDataString(data);
@@ -219,10 +218,8 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
       }
 
       AND_GIVEN("another dog owned by offline player, Bob") {
-        s.addNPC("dog", {15, 10});
-        auto *dog2 = dynamic_cast<NPC *>(s.entities().find(dog.serial() + 1));
-        CHECK(dog2 != nullptr);
-        dog2->permissions.setPlayerOwner("Bob");
+        auto &dog2 = s.addNPC("dog", {15, 10});
+        dog2.permissions.setPlayerOwner("Bob");
 
         AND_WHEN("some time passes") {
           REPEAT_FOR_MS(100);
@@ -263,11 +260,9 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
       }
 
       AND_GIVEN("another dog owned by the city of Sparta") {
-        s.addNPC("dog", {15, 10});
-        auto *dog2 = dynamic_cast<NPC *>(s.entities().find(dog.serial() + 1));
-        CHECK(dog2 != nullptr);
+        auto &dog2 = s.addNPC("dog", {15, 10});
         s.cities().createCity("Sparta", {});
-        dog2->permissions.setCityOwner("Sparta");
+        dog2.permissions.setCityOwner("Sparta");
 
         AND_WHEN("Athens and Sparta declare war") {
           s.wars().declare({"Athens", Belligerent::CITY},

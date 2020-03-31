@@ -67,13 +67,6 @@ class Server {
 
   bool _isTestServer{false};
 
-  enum SpecialSerial {
-    INVENTORY = 0,
-    GEAR = 1,
-
-    STARTING_SERIAL
-  };
-
   // Const Searches/queries
   char findTile(const MapPoint &p)
       const;  // Find the tile type at the specified location.
@@ -90,9 +83,9 @@ class Server {
   const ServerItem *createAndFindItem(const std::string &id);
   const BuffType *findBuff(const BuffType::ID &id) const;
   const Spell *findSpell(const Spell::ID &id) const;
-  std::pair<std::set<size_t>::iterator, std::set<size_t>::iterator>
+  std::pair<std::set<Serial>::iterator, std::set<Serial>::iterator>
   findObjectsOwnedBy(const Permissions::Owner &owner) const;
-  const Entity *findEntityBySerial(size_t serial);
+  const Entity *findEntityBySerial(Serial serial);
   const MapRect *findNPCTemplate(const std::string &templateID) const;
 
   // Checks whether an entity is within range of a user.  If not, a relevant
@@ -114,11 +107,11 @@ class Server {
   void broadcastToArea(const MapPoint &location, const Message &msg) const;
   void broadcastToCity(const std::string &cityName, const Message &msg) const;
   void handleBufferedMessages(const Socket &client, const std::string &msg);
-  void sendInventoryMessageInner(const User &user, size_t serial, size_t slot,
+  void sendInventoryMessageInner(const User &user, Serial serial, size_t slot,
                                  const ServerItem::vect_t &itemVect) const;
   void sendInventoryMessage(const User &user, size_t slot,
                             const Object &obj) const;
-  void sendInventoryMessage(const User &user, size_t slot, size_t serial) const;
+  void sendInventoryMessage(const User &user, size_t slot, Serial serial) const;
   void sendMerchantSlotMessage(const User &user, const Object &obj,
                                size_t slot) const;
   void sendConstructionMaterialsMessage(const User &user,
@@ -242,7 +235,7 @@ class Server {
   void forceAllToUntarget(const Entity &target,
                           const User *userToExclude = nullptr);
   void removeEntity(Entity &ent, const User *userToExclude = nullptr);
-  void gatherObject(size_t serial, User &user);
+  void gatherObject(Serial serial, User &user);
   void removeAllObjectsOwnedBy(const Permissions::Owner &owner);
   void addEmptyObjectType(const std::string id);
 
@@ -303,18 +296,18 @@ class Server {
                            const std::string &pwHash,
                            const std::string &classID,
                            std::string &clientVersion);
-  void handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum);
-  void handle_CL_REPAIR_ITEM(User &user, size_t serial, size_t slot);
-  void handle_CL_REPAIR_OBJECT(User &user, size_t serial);
-  void handle_CL_TAME_NPC(User &user, size_t serial);
+  void handle_CL_TAKE_ITEM(User &user, Serial serial, size_t slotNum);
+  void handle_CL_REPAIR_ITEM(User &user, Serial serial, size_t slot);
+  void handle_CL_REPAIR_OBJECT(User &user, Serial serial);
+  void handle_CL_TAME_NPC(User &user, Serial serial);
   void handle_CL_LEAVE_CITY(User &user);
-  void handle_CL_CEDE(User &user, size_t serial);
-  void handle_CL_GRANT(User &user, size_t serial, std::string username);
-  void handle_CL_PERFORM_OBJECT_ACTION(User &user, size_t serial,
+  void handle_CL_CEDE(User &user, Serial serial);
+  void handle_CL_GRANT(User &user, Serial serial, std::string username);
+  void handle_CL_PERFORM_OBJECT_ACTION(User &user, Serial serial,
                                        const std::string &textArg);
-  void handle_CL_TARGET_ENTITY(User &user, size_t serial);
+  void handle_CL_TARGET_ENTITY(User &user, Serial serial);
   void handle_CL_TARGET_PLAYER(User &user, const std::string &username);
-  void handle_CL_SELECT_ENTITY(User &user, size_t serial);
+  void handle_CL_SELECT_ENTITY(User &user, Serial serial);
   void handle_CL_SELECT_PLAYER(User &user, const std::string &username);
   void handle_CL_RECRUIT(User &user, std::string username);
   void handle_CL_SUE_FOR_PEACE(User &user, MessageCode code,
@@ -328,11 +321,11 @@ class Server {
   CombatResult handle_CL_CAST(User &user, const std::string &spellID,
                               bool castingFromItem = false);
   void handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &quest,
-                              size_t giverSerial);
+                              Serial giverSerial);
   void handle_CL_COMPLETE_QUEST(User &user, const Quest::ID &quest,
-                                size_t giverSerial);
+                                Serial giverSerial);
   void handle_CL_ABANDON_QUEST(User &user, const Quest::ID &quest);
-  void handle_CL_AUTO_CONSTRUCT(User &user, size_t serial);
+  void handle_CL_AUTO_CONSTRUCT(User &user, Serial serial);
 };
 
 #endif

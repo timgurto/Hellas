@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include "../Serial.h"
 #include "../types.h"
 
 class Window;
@@ -47,11 +48,11 @@ class CQuest {
 
   const Window *window() const { return _window; }
 
-  static void generateWindow(CQuest *quest, size_t startObjectSerial,
+  static void generateWindow(CQuest *quest, Serial startObjectSerial,
                              Transition pendingTransition);
 
-  static void acceptQuest(CQuest *quest, size_t startObjectSerial);
-  static void completeQuest(CQuest *quest, size_t startObjectSerial);
+  static void acceptQuest(CQuest *quest, Serial startObjectSerial);
+  static void completeQuest(CQuest *quest, Serial endObject);
 
   enum State { NONE, CAN_START, IN_PROGRESS, CAN_FINISH };
   State state{NONE};

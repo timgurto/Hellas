@@ -28,7 +28,7 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
          const MapPoint &loc);  // Generates a new serial
 
   // Dummies.  TODO: Remove
-  Object(size_t serial);
+  Object(Serial serial);
   Object(const MapPoint &loc);
 
   virtual ~Object();

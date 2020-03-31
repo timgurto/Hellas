@@ -7,6 +7,7 @@
 #include <map>
 
 #include "../Item.h"
+#include "../Serial.h"
 #include "DamageOnUse.h"
 #include "ItemSet.h"
 
@@ -32,10 +33,10 @@ class ServerItem : public Item {
       void report();
 
      private:
-      ReportingInfo(const User *owner, size_t container, size_t slot)
+      ReportingInfo(const User *owner, Serial container, size_t slot)
           : _owner(owner), _container(container), _slot(slot) {}
       const User *_owner{nullptr};  // If null, no reporting necessary
-      size_t _container{0};         // Should be either INVENTORY or GEAR
+      Serial _container;            // Should be either INVENTORY or GEAR
       size_t _slot{0};
     };
 

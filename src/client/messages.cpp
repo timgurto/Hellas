@@ -498,7 +498,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
       }
 
       case SV_INVENTORY: {
-        size_t serial, slot, quantity;
+        Serial serial;
+        size_t slot, quantity;
         Hitpoints itemHealth;
         std::string itemID;
         singleMsg >> serial >> del >> slot >> del >> itemID >> del >>
@@ -605,7 +606,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
       }
 
       case SV_OBJECT: {
-        int serial;
+        Serial serial;
         double x, y;
         std::string type;
         singleMsg >> serial >> del >> x >> del >> y >> del;
@@ -620,7 +621,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
           break;
         }
 
-        std::map<size_t, ClientObject *>::iterator it = _objects.find(serial);
+        auto it = _objects.find(serial);
         if (it != _objects.end()) {
           // Existing object: update its info.
           ClientObject &obj = *it->second;
@@ -661,11 +662,11 @@ void Client::handleBufferedMessages(const std::string &msg) {
 
       case SV_LOCATION_INSTANT_OBJECT:
       case SV_OBJECT_LOCATION: {
-        int serial;
+        Serial serial;
         double x, y;
         singleMsg >> serial >> del >> x >> del >> y >> del;
         if (del != MSG_END) break;
-        std::map<size_t, ClientObject *>::iterator it = _objects.find(serial);
+        std::map<Serial, ClientObject *>::iterator it = _objects.find(serial);
         if (it == _objects.end()) break;  // We didn't know about this object
         if (_character.isDriving()) {
           const auto *asVehicle =
@@ -680,16 +681,11 @@ void Client::handleBufferedMessages(const std::string &msg) {
 
       case SV_REMOVE_OBJECT:
       case SV_OBJECT_OUT_OF_RANGE: {
-        int serial;
+        Serial serial;
         singleMsg >> serial >> del;
         if (del != MSG_END) break;
-        const std::map<size_t, ClientObject *>::const_iterator it =
-            _objects.find(serial);
-        if (it == _objects.end()) {
-          // showErrorMessage("Server removed an object we didn't know about.",
-          // Color::TODO);
-          break;  // We didn't know about this object
-        }
+        const auto it = _objects.find(serial);
+        if (it == _objects.end()) break;  // We didn't know about this object
         if (it->second == _currentMouseOverEntity)
           _currentMouseOverEntity = nullptr;
         if (it->second == targetAsEntity()) clearTarget();
@@ -699,7 +695,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
       }
 
       case SV_NPC_LEVEL: {
-        auto serial = size_t{};
+        auto serial = Serial{};
         auto level = Level{};
         singleMsg >> serial >> del >> level >> del;
         if (del != MSG_END) break;
@@ -710,7 +706,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
       }
 
       case SV_OWNER: {
-        int serial;
+        Serial serial;
         std::string typeName, name;
         singleMsg >> serial >> del;
         readString(singleMsg, typeName);
@@ -718,8 +714,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         readString(singleMsg, name, MSG_END);
         singleMsg >> del;
         if (del != MSG_END) break;
-        const std::map<size_t, ClientObject *>::iterator it =
-            _objects.find(serial);
+        const auto it = _objects.find(serial);
         if (it == _objects.end()) {
           // showErrorMessage("Received ownership info for an unknown object.",
           // Color::TODO);
@@ -743,11 +738,10 @@ void Client::handleBufferedMessages(const std::string &msg) {
       }
 
       case SV_GATHERING_OBJECT: {
-        int serial;
+        Serial serial;
         singleMsg >> serial >> del;
         if (del != MSG_END) break;
-        const std::map<size_t, ClientObject *>::iterator it =
-            _objects.find(serial);
+        const auto it = _objects.find(serial);
         if (it == _objects.end()) {
           // showErrorMessage("Received info about an unknown object.",
           // Color::TODO);
@@ -758,11 +752,10 @@ void Client::handleBufferedMessages(const std::string &msg) {
       }
 
       case SV_NOT_GATHERING_OBJECT: {
-        int serial;
+        Serial serial;
         singleMsg >> serial >> del;
         if (del != MSG_END) break;
-        const std::map<size_t, ClientObject *>::iterator it =
-            _objects.find(serial);
+        const auto it = _objects.find(serial);
         if (it == _objects.end()) {
           // showErrorMessage("Received info about an unknown object.",
           // Color::TODO);
@@ -852,12 +845,11 @@ void Client::handleBufferedMessages(const std::string &msg) {
       }
 
       case SV_ENTITY_HEALTH: {
-        size_t serial;
+        Serial serial;
         Hitpoints health;
         singleMsg >> serial >> del >> health >> del;
         if (del != MSG_END) break;
-        const std::map<size_t, ClientObject *>::iterator it =
-            _objects.find(serial);
+        const auto it = _objects.find(serial);
         if (it == _objects.end()) {
           // showErrorMessage("Received health info for an unknown object.",
           // Color::TODO);
@@ -880,7 +872,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
 
       case SV_PLAYER_HIT_ENTITY: {
         std::string username;
-        int serial;
+        Serial serial;
         readString(singleMsg, username, MSG_DELIM);
         singleMsg >> del >> serial >> del;
         if (del != MSG_END) break;
@@ -903,7 +895,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
       }
 
       case SV_ENTITY_HIT_PLAYER: {
-        int serial;
+        Serial serial;
         std::string username;
         singleMsg >> serial >> del;
         readString(singleMsg, username, MSG_END);
@@ -924,7 +916,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
       }
 
       case SV_ENTITY_HIT_ENTITY: {
-        int attackerSerial, defenderSerial;
+        Serial attackerSerial, defenderSerial;
         singleMsg >> attackerSerial >> del >> defenderSerial >> del;
         singleMsg >> del;
         if (del != MSG_END) break;
@@ -971,7 +963,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
       }
 
       case SV_CONSTRUCTION_MATERIALS: {
-        int serial, n;
+        Serial serial;
+        int n;
         ItemSet set;
         singleMsg >> serial >> del >> n >> del;
         auto it = _objects.find(serial);
@@ -1046,7 +1039,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
       }
 
       case SV_OBJECT_DAMAGED: {
-        auto serial = 0;
+        auto serial = Serial{};
         auto amount = Hitpoints{};
         singleMsg >> serial >> del >> amount >> del;
         if (del != MSG_END) break;
@@ -1055,7 +1048,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
       }
 
       case SV_OBJECT_HEALED: {
-        auto serial = 0;
+        auto serial = Serial{};
         auto amount = Hitpoints{};
         singleMsg >> serial >> del >> amount >> del;
         if (del != MSG_END) break;
@@ -1087,7 +1080,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
       }
 
       case SV_MOUNTED: {
-        size_t serial;
+        auto serial = Serial{};
         std::string user;
         singleMsg >> serial >> del;
         readString(singleMsg, user, MSG_END);
@@ -1117,7 +1110,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
       }
 
       case SV_UNMOUNTED: {
-        size_t serial;
+        auto serial = Serial{};
         std::string user;
         singleMsg >> serial >> del;
         readString(singleMsg, user, MSG_END);
@@ -1222,7 +1215,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
       }
 
       case SV_MERCHANT_SLOT: {
-        size_t serial, slot, wareQty, priceQty;
+        auto serial = Serial{};
+        size_t slot, wareQty, priceQty;
         std::string ware, price;
         singleMsg >> serial >> del >> slot >> del >> ware >> del >> wareQty >>
             del >> price >> del >> priceQty >> del;
@@ -1264,7 +1258,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
       }
 
       case SV_TRANSFORM_TIME: {
-        size_t serial, remaining;
+        auto serial = Serial{};
+        size_t remaining;
         singleMsg >> serial >> del >> remaining >> del;
         if (del != MSG_END) return;
         auto objIt = _objects.find(serial);
@@ -1521,7 +1516,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
       }
 
       case SV_ENTITY_WAS_HIT: {
-        auto serial = size_t{};
+        auto serial = Serial{};
         singleMsg >> serial >> del;
         if (del != MSG_END) return;
 
@@ -1539,7 +1534,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
 
       case SV_YOU_ARE_ATTACKING_ENTITY: {
-        auto serial = size_t{0};
+        auto serial = Serial{};
         singleMsg >> serial >> del;
         if (del != MSG_END) return;
 
@@ -1580,7 +1575,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
 
       case SV_ENTITY_GOT_BUFF:
       case SV_ENTITY_GOT_DEBUFF: {
-        auto serial = size_t{};
+        auto serial = Serial{};
         singleMsg >> serial >> del;
 
         singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
@@ -1630,7 +1625,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
 
       case SV_ENTITY_LOST_BUFF:
       case SV_ENTITY_LOST_DEBUFF: {
-        auto serial = size_t{};
+        auto serial = Serial{};
         singleMsg >> serial >> del;
 
         singleMsg.get(buffer, BUFFER_SIZE, MSG_END);
@@ -1966,7 +1961,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
   }
 }
 
-void Client::handle_SV_INVENTORY(size_t serial, size_t slot,
+void Client::handle_SV_INVENTORY(Serial serial, size_t slot,
                                  const std::string &itemID, size_t quantity,
                                  Hitpoints itemHealth) {
   const ClientItem *item = nullptr;
@@ -1983,20 +1978,13 @@ void Client::handle_SV_INVENTORY(size_t serial, size_t slot,
 
   ClientItem::vect_t *container = nullptr;
   ClientObject *object = nullptr;
-  switch (serial) {
-    case INVENTORY:
-      container = &_inventory;
-      break;
-    case GEAR:
-      container = &_character.gear();
-      break;
-    default:
-      auto it = _objects.find(serial);
-      if (it == _objects.end()) {
-        // showErrorMessage("Received inventory of nonexistent object;
-        // ignored.", Color::TODO);
-        break;
-      }
+  if (serial.isInventory())
+    container = &_inventory;
+  else if (serial.isGear())
+    container = &_character.gear();
+  else {
+    auto it = _objects.find(serial);
+    if (it != _objects.end()) {
       object = it->second;
       container = &object->container();
 
@@ -2006,13 +1994,14 @@ void Client::handle_SV_INVENTORY(size_t serial, size_t slot,
         for (auto i = 0; i != slotsToAdd; ++i)
           container->push_back(std::make_pair(ClientItem::Instance{}, 0));
       }
+    }
   }
 
   auto &invSlot = (*container)[slot];
   invSlot.first = ClientItem::Instance{item, itemHealth};
   invSlot.second = quantity;
 
-  auto userIsReceivingItem = serial == INVENTORY || serial == GEAR;
+  auto userIsReceivingItem = serial.isInventory() || serial.isGear();
 
   // Loot
   auto hasItems = false;
@@ -2032,16 +2021,12 @@ void Client::handle_SV_INVENTORY(size_t serial, size_t slot,
 
   // Update any UI stuff
   if (_recipeList) _recipeList->markChanged();
-  switch (serial) {
-    case INVENTORY:
-      _inventoryWindow->forceRefresh();
-      break;
-    case GEAR:
-      _gearWindow->forceRefresh();
-      break;
-    default:
-      object->onInventoryUpdate();
-  }
+  if (serial.isInventory())
+    _inventoryWindow->forceRefresh();
+  else if (serial.isGear())
+    _gearWindow->forceRefresh();
+  else
+    object->onInventoryUpdate();
 
   if (userIsReceivingItem) {
     auto userWasCraftingOrGathering = _actionTimer > 0;
@@ -2203,7 +2188,7 @@ void Client::handle_SV_PLAYER_WAS_HIT(const std::string &username) {
   victim->createDamageParticles();
 }
 
-void Client::handle_SV_ENTITY_WAS_HIT(size_t serial) {
+void Client::handle_SV_ENTITY_WAS_HIT(Serial serial) {
   auto objIt = _objects.find(serial);
   if (objIt == _objects.end()) {
     return;
@@ -2230,7 +2215,7 @@ void Client::handle_SV_SHOW_OUTCOME_AT(int msgCode, const MapPoint &loc) {
   }
 }
 
-void Client::handle_SV_ENTITY_GOT_BUFF(int msgCode, size_t serial,
+void Client::handle_SV_ENTITY_GOT_BUFF(int msgCode, Serial serial,
                                        const std::string &buffID) {
   auto objIt = _objects.find(serial);
   if (objIt == _objects.end()) {
@@ -2242,7 +2227,7 @@ void Client::handle_SV_ENTITY_GOT_BUFF(int msgCode, size_t serial,
   if (objIt->second == _target.entity()) refreshTargetBuffs();
 }
 
-void Client::handle_SV_ENTITY_LOST_BUFF(int msgCode, size_t serial,
+void Client::handle_SV_ENTITY_LOST_BUFF(int msgCode, Serial serial,
                                         const std::string &buffID) {
   auto objIt = _objects.find(serial);
   if (objIt == _objects.end()) {
@@ -2375,7 +2360,7 @@ void Client::handle_SV_LEVEL_UP(const std::string &username) {
   }
 }
 
-void Client::handle_SV_NPC_LEVEL(size_t serial, Level level) {
+void Client::handle_SV_NPC_LEVEL(Serial serial, Level level) {
   auto objIt = _objects.find(serial);
   if (objIt == _objects.end()) {
     return;
@@ -2414,7 +2399,7 @@ void Client::handle_SV_PLAYER_HEALED(const std::string &username,
                         Color::FLOATING_HEAL);
 }
 
-void Client::handle_SV_OBJECT_DAMAGED(size_t serial, Hitpoints amount) {
+void Client::handle_SV_OBJECT_DAMAGED(Serial serial, Hitpoints amount) {
   auto it = _objects.find(serial);
   if (it == _objects.end()) return;
 
@@ -2422,7 +2407,7 @@ void Client::handle_SV_OBJECT_DAMAGED(size_t serial, Hitpoints amount) {
                         Color::FLOATING_DAMAGE);
 }
 
-void Client::handle_SV_OBJECT_HEALED(size_t serial, Hitpoints amount) {
+void Client::handle_SV_OBJECT_HEALED(Serial serial, Hitpoints amount) {
   auto it = _objects.find(serial);
   if (it == _objects.end()) return;
 

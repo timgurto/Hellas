@@ -88,7 +88,7 @@ TEST_CASE("Follower-limit stat") {
         WHEN("he has the gear equipped") {
           user.giveItem(&bait);
           c.sendMessage(CL_SWAP_ITEMS,
-                        makeArgs(Client::INVENTORY, 0, Client::GEAR, 7));
+                        makeArgs(Serial::Inventory(), 0, Serial::Gear(), 7));
 
           THEN("his follower count is 2") {
             WAIT_UNTIL(user.stats().followerLimit == 2);
@@ -116,7 +116,7 @@ TEST_CASE("Follower-limit stat") {
         const auto &megaphone = s.getFirstItem();
         user.giveItem(&megaphone);
         c.sendMessage(CL_SWAP_ITEMS,
-                      makeArgs(Client::INVENTORY, 0, Client::GEAR, 7));
+                      makeArgs(Serial::Inventory(), 0, Serial::Gear(), 7));
 
         THEN("his follower count is 0") {
           WAIT_UNTIL(user.stats().followerLimit == 0);

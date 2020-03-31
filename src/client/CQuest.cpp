@@ -11,7 +11,7 @@
 CQuest::CQuest(const Info &info)
     : _info(info), _progress(info.objectives.size(), 0) {}
 
-void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
+void CQuest::generateWindow(CQuest *quest, Serial startObjectSerial,
                             Transition pendingTransition) {
   auto &client = Client::instance();
 
@@ -134,7 +134,7 @@ void CQuest::generateWindow(CQuest *quest, size_t startObjectSerial,
   quest->_window->show();
 }
 
-void CQuest::acceptQuest(CQuest *quest, size_t startObjectSerial) {
+void CQuest::acceptQuest(CQuest *quest, Serial startObjectSerial) {
   auto &client = Client::instance();
 
   // Send message
@@ -153,12 +153,11 @@ void CQuest::acceptQuest(CQuest *quest, size_t startObjectSerial) {
     client.showHelpTopic(quest->_info.helpTopicOnAccept);
 }
 
-void CQuest::completeQuest(CQuest *quest, size_t startObjectSerial) {
+void CQuest::completeQuest(CQuest *quest, Serial endObject) {
   auto &client = Client::instance();
 
   // Send message
-  client.sendMessage(
-      {CL_COMPLETE_QUEST, makeArgs(quest->_info.id, startObjectSerial)});
+  client.sendMessage({CL_COMPLETE_QUEST, makeArgs(quest->_info.id, endObject)});
 
   // Close and remove window
   quest->_window->hide();

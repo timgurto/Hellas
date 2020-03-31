@@ -11,11 +11,8 @@ TEST_CASE("Simple quest") {
     )";
     auto s = TestServer::WithDataString(data);
 
-    s.addObject("A", {10, 15});
-    const auto &a = s.getFirstObject();
-
-    s.addObject("B", {15, 10});
-    auto b = a.serial() + 1;
+    const auto &a = s.addObject("A", {10, 15});
+    const auto &b = s.addObject("B", {15, 10});
 
     WHEN("a  client accepts the quest from A") {
       auto c = TestClient::WithDataString(data);
@@ -26,7 +23,7 @@ TEST_CASE("Simple quest") {
       THEN("he is on a quest") { WAIT_UNTIL(user.numQuests() == 1); }
 
       AND_WHEN("he completes the quest at B") {
-        c.sendMessage(CL_COMPLETE_QUEST, makeArgs("questFromAToB", b));
+        c.sendMessage(CL_COMPLETE_QUEST, makeArgs("questFromAToB", b.serial()));
 
         THEN("he is not on a quest") { WAIT_UNTIL(!user.numQuests() == 0); }
       }
@@ -137,40 +134,40 @@ TEST_CASE("A user must be on a quest to complete it") {
 }
 
 TEST_CASE("Identical source and destination") {
-  // Given two quests that start at A and end at B
-  auto data = R"(
+  GIVEN("two quests that start at A and end at B") {
+    auto data = R"(
     <objectType id="A" />
     <objectType id="B" />
     <quest id="quest1" startsAt="A" endsAt="B" />
     <quest id="quest2" startsAt="A" endsAt="B" />
   )";
-  auto s = TestServer::WithDataString(data);
-  auto c = TestClient::WithDataString(data);
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
 
-  // And an object, A
-  s.addObject("A", {10, 15});
-  const auto &a = s.getFirstObject();
+    const auto &a = s.addObject("A", {10, 15});
+    const auto &b = s.addObject("B", {15, 10});
 
-  // And an object, B
-  s.addObject("B", {15, 10});
-  auto b = a.serial() + 1;
+    WHEN("a client accepts both quests") {
+      s.waitForUsers(1);
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", a.serial()));
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest2", a.serial()));
 
-  // When a client accepts both quests
-  s.waitForUsers(1);
-  c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", a.serial()));
-  c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest2", a.serial()));
+      THEN("he is on two quest") {
+        auto &user = s.getFirstUser();
+        WAIT_UNTIL(user.numQuests() == 2);
 
-  // Then he is on two quest
-  auto &user = s.getFirstUser();
-  WAIT_UNTIL(user.numQuests() == 2);
+        AND_WHEN("he completes the quests at B") {
+          c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", b.serial()));
+          c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest2", b.serial()));
 
-  // And when he completes the quests at B
-  c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", b));
-  c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest2", b));
-
-  // Then he is not on any quests
-  REPEAT_FOR_MS(100);
-  CHECK(user.numQuests() == 0);
+          THEN("he is not on any quests") {
+            REPEAT_FOR_MS(100);
+            CHECK(user.numQuests() == 0);
+          }
+        }
+      }
+    }
+  }
 }
 
 TEST_CASE("Client knows about objects' quests") {
@@ -214,22 +211,18 @@ TEST_CASE("Clients know quests' correct end nodes") {
     )";
     auto s = TestServer::WithDataString(data);
 
-    s.addObject("A", {10, 15});
-    const auto &a = s.getFirstObject();
-    auto aSerial = a.serial();
-
-    s.addObject("B", {15, 10});
-    auto bSerial = aSerial + 1;
+    const auto &a = s.addObject("A", {10, 15});
+    const auto &b = s.addObject("B", {15, 10});
 
     WHEN("a user accepts the quest") {
       auto c = TestClient::WithDataString(data);
       WAIT_UNTIL(c.objects().size() == 2);
-      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", aSerial));
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", a.serial()));
 
       THEN("he knows object B ends it") {
-        auto &b = c.objects()[bSerial];
-        REQUIRE(b != nullptr);
-        WAIT_UNTIL(b->completableQuests().size() == 1);
+        auto &cB = c.objects()[b.serial()];
+        REQUIRE(cB != nullptr);
+        WAIT_UNTIL(cB->completableQuests().size() == 1);
       }
     }
   }
@@ -464,26 +457,23 @@ TEST_CASE("Kill quests") {
     WAIT_UNTIL(s.users().size() == 1);
     auto &u = s.getFirstUser();
 
-    s.addObject("A", {10, 5});
-    auto aSerial = s.getFirstObject().serial();
+    const auto &a = s.addObject("A", {10, 5});
+    const auto &rat = s.addNPC("rat", {10, 15});
 
-    s.addNPC("rat", {10, 15});
-    auto ratSerial = aSerial + 1;
-    auto rat = s.entities().find(ratSerial);
     WAIT_UNTIL(c.objects().size() == 2);
-    const auto a = c.objects()[aSerial];
+    const auto cA = c.objects()[a.serial()];
 
     WHEN("the user is on the quest") {
-      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", aSerial));
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", a.serial()));
       WAIT_UNTIL(u.numQuests() == 1);
 
       THEN("the user can see no completable quests at A") {
         REPEAT_FOR_MS(100);
-        CHECK(a->completableQuests().size() == 0);
+        CHECK(cA->completableQuests().size() == 0);
       }
 
       AND_WHEN("the user tries to complete the quest") {
-        c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
+        c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", a.serial()));
         THEN("he is still on the quest") {
           REPEAT_FOR_MS(100);
           CHECK(u.numQuests() == 1);
@@ -491,15 +481,15 @@ TEST_CASE("Kill quests") {
       }
 
       AND_WHEN("he kills a rat") {
-        c.sendMessage(CL_TARGET_ENTITY, makeArgs(ratSerial));
-        WAIT_UNTIL(rat->isDead());
+        c.sendMessage(CL_TARGET_ENTITY, makeArgs(rat.serial()));
+        WAIT_UNTIL(rat.isDead());
 
         THEN("he can see a completable quest at A") {
-          WAIT_UNTIL(a->completableQuests().size() == 1);
+          WAIT_UNTIL(cA->completableQuests().size() == 1);
         }
 
         AND_WHEN("he tries to complete the quest") {
-          c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
+          c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", a.serial()));
 
           THEN("he is not on the quest") { WAIT_UNTIL(u.numQuests() == 0); }
         }
@@ -512,16 +502,14 @@ TEST_CASE("Kill quests") {
         s.loadDataFromString(extraData);
         c.loadDataFromString(extraData);
 
-        s.addNPC("mouse", {5, 10});
-        auto mouseSerial = ratSerial + 1;
-        auto mouse = s.entities().find(mouseSerial);
+        const auto &mouse = s.addNPC("mouse", {5, 10});
 
         AND_WHEN("the user kills the mouse") {
-          c.sendMessage(CL_TARGET_ENTITY, makeArgs(mouseSerial));
-          WAIT_UNTIL(mouse->isDead());
+          c.sendMessage(CL_TARGET_ENTITY, makeArgs(mouse.serial()));
+          WAIT_UNTIL(mouse.isDead());
 
           AND_WHEN("he tries to complete the quest") {
-            c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
+            c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", a.serial()));
 
             THEN("he is still on the quest") {
               REPEAT_FOR_MS(100);
@@ -533,15 +521,15 @@ TEST_CASE("Kill quests") {
     }
 
     WHEN("the user kills a rat while not on the quest") {
-      c.sendMessage(CL_TARGET_ENTITY, makeArgs(ratSerial));
-      WAIT_UNTIL(rat->isDead());
+      c.sendMessage(CL_TARGET_ENTITY, makeArgs(rat.serial()));
+      WAIT_UNTIL(rat.isDead());
       REPEAT_FOR_MS(100);
 
       AND_WHEN("he starts the quest") {
         u.startQuest(s.getFirstQuest());
 
         AND_WHEN("he tries to complete the quest") {
-          c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
+          c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", a.serial()));
 
           THEN("he is still on the quest") {
             REPEAT_FOR_MS(100);
@@ -565,14 +553,11 @@ TEST_CASE("Kill quests") {
     WAIT_UNTIL(s.users().size() == 1);
     auto &u = s.getFirstUser();
 
-    s.addObject("A", {10, 5});
-    auto aSerial = s.getFirstObject().serial();
+    const auto &a = s.addObject("A", {10, 5});
     WAIT_UNTIL(c.objects().size() == 1);
-    auto &a = c.getFirstObject();
+    auto &cA = c.getFirstObject();
 
-    s.addNPC("mouse", {10, 15});
-    auto mouseSerial = aSerial + 1;
-    auto mouse = s.entities().find(mouseSerial);
+    const auto &mouse = s.addNPC("mouse", {10, 15});
     WAIT_UNTIL(c.objects().size() == 2);
 
     WHEN("the user is on the quest") {
@@ -580,17 +565,17 @@ TEST_CASE("Kill quests") {
 
       AND_WHEN("he right-clicks on the questgiver") {
         REPEAT_FOR_MS(100);
-        a.onRightClick(c.client());
+        cA.onRightClick(c.client());
 
-        THEN("it doesn't have a window") { CHECK(!a.window()); }
+        THEN("it doesn't have a window") { CHECK(!cA.window()); }
       }
 
       AND_WHEN("he kills the mouse") {
-        c.sendMessage(CL_TARGET_ENTITY, makeArgs(mouseSerial));
-        WAIT_UNTIL(mouse->isDead());
+        c.sendMessage(CL_TARGET_ENTITY, makeArgs(mouse.serial()));
+        WAIT_UNTIL(mouse.isDead());
 
         AND_WHEN("he tries to complete the quest") {
-          c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
+          c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", a.serial()));
 
           THEN("he is not on the quest") { WAIT_UNTIL(u.numQuests() == 0); }
         }
@@ -611,28 +596,22 @@ TEST_CASE("Kill quests") {
     WAIT_UNTIL(s.users().size() == 1);
     auto &u = s.getFirstUser();
 
-    s.addObject("A", {10, 5});
-    auto aSerial = s.getFirstObject().serial();
-
-    s.addNPC("rat", {10, 15});
-    s.addNPC("rat", {5, 10});
-    auto rat1Serial = aSerial + 1;
-    auto rat2Serial = rat1Serial + 1;
-    auto rat1 = s.entities().find(rat1Serial);
-    auto rat2 = s.entities().find(rat2Serial);
+    const auto &a = s.addObject("A", {10, 5});
+    const auto &rat1 = s.addNPC("rat", {10, 15});
+    const auto &rat2 = s.addNPC("rat", {5, 10});
     WAIT_UNTIL(c.objects().size() == 3);
-    const auto a = c.objects()[aSerial];
+    const auto &cA = c.objects()[a.serial()];
 
     WHEN("the user accepts the quest") {
-      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", aSerial));
+      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", a.serial()));
       WAIT_UNTIL(u.numQuests() == 1);
 
       AND_WHEN("he kills a rat") {
-        c.sendMessage(CL_TARGET_ENTITY, makeArgs(rat1Serial));
-        WAIT_UNTIL(rat1->isDead());
+        c.sendMessage(CL_TARGET_ENTITY, makeArgs(rat1.serial()));
+        WAIT_UNTIL(rat1.isDead());
 
         AND_WHEN("he tries to complete the quest") {
-          c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
+          c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", a.serial()));
 
           THEN("he is still on the quest") {
             REPEAT_FOR_MS(100);
@@ -641,11 +620,11 @@ TEST_CASE("Kill quests") {
         }
 
         AND_WHEN("he kills another rat") {
-          c.sendMessage(CL_TARGET_ENTITY, makeArgs(rat2Serial));
-          WAIT_UNTIL_TIMEOUT(rat2->isDead(), 10000);
+          c.sendMessage(CL_TARGET_ENTITY, makeArgs(rat2.serial()));
+          WAIT_UNTIL_TIMEOUT(rat2.isDead(), 10000);
 
           AND_WHEN("he tries to complete the quest") {
-            c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
+            c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", a.serial()));
 
             THEN("he is not on the quest") { WAIT_UNTIL(u.numQuests() == 0); }
           }
@@ -1317,18 +1296,17 @@ TEST_CASE("Quest items that drop only while on quest") {
             WAIT_UNTIL(c.inventory()[0].first.type() != nullptr);
 
             AND_WHEN("he kills another dragon") {
-              s.addNPC("dragon", {10, 5});
+              const auto &dragon2 = s.addNPC("dragon", {10, 5});
               WAIT_UNTIL(c.objects().size() == 2);
-              auto dragon2Serial = dragon.serial() + 1;
-              auto it = c.objects().find(dragon2Serial);
-              const auto &dragon2 = *dynamic_cast<ClientNPC *>(it->second);
+              auto it = c.objects().find(dragon2.serial());
+              const auto &cDragon2 = *dynamic_cast<ClientNPC *>(it->second);
 
-              c.sendMessage(CL_TARGET_ENTITY, makeArgs(dragon2Serial));
+              c.sendMessage(CL_TARGET_ENTITY, makeArgs(dragon2.serial()));
               WAIT_UNTIL(dragon2.isDead());
 
               THEN("it has no loot") {
                 REPEAT_FOR_MS(100);
-                CHECK_FALSE(dragon2.lootable());
+                CHECK_FALSE(cDragon2.lootable());
               }
             }
 
@@ -1402,16 +1380,14 @@ TEST_CASE("Construction quests") {
       }
 
       AND_WHEN("he constructs a chair") {
-        s.addObject("chair", {5, 10}, user.name());
+        const auto &chair = s.addObject("chair", {5, 10}, user.name());
         WAIT_UNTIL(c.objects().size() == 2);
-        auto chairSerial = serial + 1;
-        auto chair = s.entities().find<Object>(chairSerial);
 
         auto &wood = s.getFirstItem();
         user.giveItem(&wood);
         c.sendMessage(CL_SWAP_ITEMS,
-                      makeArgs(Server::INVENTORY, 0, chairSerial, 0));
-        WAIT_UNTIL(!chair->isBeingBuilt());
+                      makeArgs(Serial::Inventory(), 0, chair.serial(), 0));
+        WAIT_UNTIL(!chair.isBeingBuilt());
 
         AND_WHEN("he tries to finish the quest") {
           c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", serial));
@@ -1452,16 +1428,14 @@ TEST_CASE("Construction quests") {
       user.startQuest(*s->findQuest("quest1"));
 
       AND_WHEN("he constructs a dryer") {
-        s.addObject("dryer", {5, 10}, user.name());
+        const auto &dryer = s.addObject("dryer", {5, 10}, user.name());
         WAIT_UNTIL(c.objects().size() == 2);
-        auto dryerSerial = serial + 1;
-        auto dryer = s.entities().find<Object>(dryerSerial);
 
         auto &parts = s.getFirstItem();
         user.giveItem(&parts, 2);
         c.sendMessage(CL_SWAP_ITEMS,
-                      makeArgs(Server::INVENTORY, 0, dryerSerial, 0));
-        WAIT_UNTIL(!dryer->isBeingBuilt());
+                      makeArgs(Serial::Inventory(), 0, dryer.serial(), 0));
+        WAIT_UNTIL(!dryer.isBeingBuilt());
 
         AND_WHEN("he tries to finish the quest") {
           c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", serial));

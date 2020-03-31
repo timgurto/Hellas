@@ -13,6 +13,7 @@
 #include "../Map.h"
 #include "../Point.h"
 #include "../Rect.h"
+#include "../Serial.h"
 #include "../Socket.h"
 #include "../messageCodes.h"
 #include "../types.h"
@@ -139,10 +140,6 @@ class Client {
   static const double MOVEMENT_SPEED;
   static const Hitpoints MAX_PLAYER_HEALTH;
 
-  enum SpecialSerial {
-    INVENTORY = 0,
-    GEAR = 1,
-  };
   static const size_t INVENTORY_SIZE;
   static const size_t GEAR_SLOTS;
 
@@ -571,7 +568,7 @@ class Client {
   Map _map;
   ClientItem::vect_t _inventory;
   std::map<std::string, Avatar *> _otherUsers;  // For lookup by name
-  std::map<size_t, ClientObject *> _objects;    // For lookup by serial
+  std::map<Serial, ClientObject *> _objects;    // For lookup by serial
   char _terrainUnderCursor{-1};
   Tooltip _terrainTooltip;
   void updateTerrainTooltip();
@@ -641,7 +638,7 @@ class Client {
   }
 
  private:
-  void handle_SV_INVENTORY(size_t serial, size_t slot,
+  void handle_SV_INVENTORY(Serial serial, size_t slot,
                            const std::string &itemID, size_t quantity,
                            Hitpoints itemHealth);
   void handle_SV_MAX_HEALTH(const std::string &username,
@@ -664,13 +661,13 @@ class Client {
   void handle_SV_RANGED_WEAPON_MISS(const std::string &weaponID,
                                     const MapPoint &src, const MapPoint &dst);
   void handle_SV_PLAYER_WAS_HIT(const std::string &username);
-  void handle_SV_ENTITY_WAS_HIT(size_t serial);
+  void handle_SV_ENTITY_WAS_HIT(Serial serial);
   void handle_SV_SHOW_OUTCOME_AT(int msgCode, const MapPoint &loc);
-  void handle_SV_ENTITY_GOT_BUFF(int msgCode, size_t serial,
+  void handle_SV_ENTITY_GOT_BUFF(int msgCode, Serial serial,
                                  const std::string &buffID);
   void handle_SV_PLAYER_GOT_BUFF(int msgCode, const std::string &username,
                                  const std::string &buffID);
-  void handle_SV_ENTITY_LOST_BUFF(int msgCode, size_t serial,
+  void handle_SV_ENTITY_LOST_BUFF(int msgCode, Serial serial,
                                   const std::string &buffID);
   void handle_SV_PLAYER_LOST_BUFF(int msgCode, const std::string &username,
                                   const std::string &buffID);
@@ -680,11 +677,11 @@ class Client {
   void handle_SV_LEARNED_SPELL(const std::string &spellID);
   void handle_SV_UNLEARNED_SPELL(const std::string &spellID);
   void handle_SV_LEVEL_UP(const std::string &username);
-  void handle_SV_NPC_LEVEL(size_t serial, Level level);
+  void handle_SV_NPC_LEVEL(Serial serial, Level level);
   void handle_SV_PLAYER_DAMAGED(const std::string &username, Hitpoints amount);
   void handle_SV_PLAYER_HEALED(const std::string &username, Hitpoints amount);
-  void handle_SV_OBJECT_DAMAGED(size_t serial, Hitpoints amount);
-  void handle_SV_OBJECT_HEALED(size_t serial, Hitpoints amount);
+  void handle_SV_OBJECT_DAMAGED(Serial serial, Hitpoints amount);
+  void handle_SV_OBJECT_HEALED(Serial serial, Hitpoints amount);
   void handle_SV_QUEST_CAN_BE_STARTED(const std::string &questID);
   void handle_SV_QUEST_CAN_BE_FINISHED(const std::string &questID);
   void handle_SV_QUEST_COMPLETED(const std::string &questID);
@@ -699,7 +696,7 @@ class Client {
 
   ConfirmationWindow *_confirmDropItem;
   // Show a confirmation window, then drop item if confirmed
-  void dropItemOnConfirmation(size_t serial, size_t slot,
+  void dropItemOnConfirmation(Serial serial, size_t slot,
                               const ClientItem *item);
 
   // Searches

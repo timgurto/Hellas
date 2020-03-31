@@ -340,7 +340,7 @@ void Server::handleBufferedMessages(const Socket &client,
 
         --invSlot.second;
         if (invSlot.second == 0) invSlot.first = {};
-        sendInventoryMessage(*user, slot, INVENTORY);
+        sendInventoryMessage(*user, slot, Serial::Inventory());
 
         if (item.returnsOnCast()) user->giveItem(item.returnsOnCast());
 
@@ -370,7 +370,7 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_GATHER: {
-        int serial;
+        auto serial = Serial{};
         iss >> serial >> del;
         if (del != MSG_END) return;
         if (user->isStunned()) {
@@ -433,7 +433,7 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_DECONSTRUCT: {
-        int serial;
+        Serial serial;
         iss >> serial >> del;
         if (del != MSG_END) return;
         if (user->isStunned()) {
@@ -486,7 +486,7 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_DEMOLISH: {
-        int serial;
+        Serial serial;
         iss >> serial >> del;
         if (del != MSG_END) return;
         if (user->isStunned()) {
@@ -530,7 +530,8 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_DROP: {
-        size_t serial, slot;
+        Serial serial;
+        size_t slot;
         iss >> serial >> del >> slot >> del;
         if (del != MSG_END) return;
         if (user->isStunned()) {
@@ -540,25 +541,22 @@ void Server::handleBufferedMessages(const Socket &client,
         ServerItem::vect_t *container;
         Object *pObj = nullptr;
         bool breakMsg = false;
-        switch (serial) {
-          case INVENTORY:
-            container = &user->inventory();
+        if (serial.isInventory())
+          container = &user->inventory();
+        else if (serial.isGear())
+          container = &user->gear();
+        else {
+          pObj = _entities.find<Object>(serial);
+          if (!pObj->hasContainer()) {
+            sendMessage(client, ERROR_NO_INVENTORY);
+            breakMsg = true;
             break;
-          case GEAR:
-            container = &user->gear();
+          }
+          if (!isEntityInRange(client, *user, pObj)) {
+            breakMsg = true;
             break;
-          default:
-            pObj = _entities.find<Object>(serial);
-            if (!pObj->hasContainer()) {
-              sendMessage(client, ERROR_NO_INVENTORY);
-              breakMsg = true;
-              break;
-            }
-            if (!isEntityInRange(client, *user, pObj)) {
-              breakMsg = true;
-              break;
-            }
-            container = &pObj->container().raw();
+          }
+          container = &pObj->container().raw();
         }
         if (breakMsg) break;
 
@@ -572,7 +570,7 @@ void Server::handleBufferedMessages(const Socket &client,
           containerSlot.second = 0;
 
           // Alert relevant users
-          if (serial == INVENTORY || serial == GEAR)
+          if (serial.isInventory() || serial.isGear())
             sendInventoryMessage(*user, slot, serial);
           else
             pObj->tellRelevantUsersAboutInventorySlot(slot);
@@ -581,7 +579,8 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_SWAP_ITEMS: {
-        size_t obj1, slot1, obj2, slot2;
+        Serial obj1, obj2;
+        size_t slot1, slot2;
         iss >> obj1 >> del >> slot1 >> del >> obj2 >> del >> slot2 >> del;
         if (del != MSG_END) return;
         if (user->isStunned()) {
@@ -592,57 +591,52 @@ void Server::handleBufferedMessages(const Socket &client,
         ServerItem::vect_t *containerFrom = nullptr, *containerTo = nullptr;
         Object *pObj1 = nullptr, *pObj2 = nullptr;
         bool breakMsg = false;
-        switch (obj1) {
-          case INVENTORY:
-            containerFrom = &user->inventory();
+        if (obj1.isInventory())
+          containerFrom = &user->inventory();
+        else if (obj1.isGear())
+          containerFrom = &user->gear();
+        else {
+          pObj1 = _entities.find<Object>(obj1);
+          if (!pObj1->hasContainer()) {
+            sendMessage(client, ERROR_NO_INVENTORY);
+            breakMsg = true;
             break;
-          case GEAR:
-            containerFrom = &user->gear();
-            break;
-          default:
-            pObj1 = _entities.find<Object>(obj1);
-            if (!pObj1->hasContainer()) {
-              sendMessage(client, ERROR_NO_INVENTORY);
-              breakMsg = true;
-              break;
-            }
-            if (!isEntityInRange(client, *user, pObj1)) {
-              sendMessage(client, WARNING_TOO_FAR);
-              breakMsg = true;
-            }
-            if (!pObj1->permissions.doesUserHaveAccess(user->name())) {
-              sendMessage(client, WARNING_NO_PERMISSION);
-              breakMsg = true;
-            }
-            containerFrom = &pObj1->container().raw();
+          }
+          if (!isEntityInRange(client, *user, pObj1)) {
+            sendMessage(client, WARNING_TOO_FAR);
+            breakMsg = true;
+          }
+          if (!pObj1->permissions.doesUserHaveAccess(user->name())) {
+            sendMessage(client, WARNING_NO_PERMISSION);
+            breakMsg = true;
+          }
+          containerFrom = &pObj1->container().raw();
         }
         if (breakMsg) break;
         bool isConstructionMaterial = false;
-        switch (obj2) {
-          case INVENTORY:
-            containerTo = &user->inventory();
+
+        if (obj2.isInventory())
+          containerTo = &user->inventory();
+        else if (obj2.isGear())
+          containerTo = &user->gear();
+        else {
+          pObj2 = _entities.find<Object>(obj2);
+          if (pObj2 != nullptr && pObj2->isBeingBuilt() && slot2 == 0)
+            isConstructionMaterial = true;
+          if (!isConstructionMaterial && !pObj2->hasContainer()) {
+            sendMessage(client, ERROR_NO_INVENTORY);
+            breakMsg = true;
             break;
-          case GEAR:
-            containerTo = &user->gear();
-            break;
-          default:
-            pObj2 = _entities.find<Object>(obj2);
-            if (pObj2 != nullptr && pObj2->isBeingBuilt() && slot2 == 0)
-              isConstructionMaterial = true;
-            if (!isConstructionMaterial && !pObj2->hasContainer()) {
-              sendMessage(client, ERROR_NO_INVENTORY);
-              breakMsg = true;
-              break;
-            }
-            if (!isEntityInRange(client, *user, pObj2)) {
-              sendMessage(client, WARNING_TOO_FAR);
-              breakMsg = true;
-            }
-            if (!pObj2->permissions.doesUserHaveAccess(user->name())) {
-              sendMessage(client, WARNING_NO_PERMISSION);
-              breakMsg = true;
-            }
-            containerTo = &pObj2->container().raw();
+          }
+          if (!isEntityInRange(client, *user, pObj2)) {
+            sendMessage(client, WARNING_TOO_FAR);
+            breakMsg = true;
+          }
+          if (!pObj2->permissions.doesUserHaveAccess(user->name())) {
+            sendMessage(client, WARNING_NO_PERMISSION);
+            breakMsg = true;
+          }
+          containerTo = &pObj2->container().raw();
         }
         if (breakMsg) break;
 
@@ -737,9 +731,9 @@ void Server::handleBufferedMessages(const Socket &client,
         }
 
         // Check gear-slot compatibility
-        if (obj1 == GEAR && slotTo.first.hasItem() &&
+        if (obj1.isGear() && slotTo.first.hasItem() &&
                 slotTo.first.type()->gearSlot() != slot1 ||
-            obj2 == GEAR && slotFrom.first.hasItem() &&
+            obj2.isGear() && slotFrom.first.hasItem() &&
                 slotFrom.first.type()->gearSlot() != slot2) {
           sendMessage(client, ERROR_NOT_GEAR);
           break;
@@ -767,7 +761,7 @@ void Server::handleBufferedMessages(const Socket &client,
           ServerItem::Instance::swap(slotFrom, slotTo);
 
           // If gear was changed
-          if (obj1 == GEAR || obj2 == GEAR) {
+          if (obj1.isGear() || obj2.isGear()) {
             // Update this player's stats
             user->updateStats();
 
@@ -776,7 +770,7 @@ void Server::handleBufferedMessages(const Socket &client,
             std::string gearID = "";
             auto gearSlot = size_t{};
             auto itemHealth = Hitpoints{};
-            if (obj1 == GEAR) {
+            if (obj1.isGear()) {
               gearSlot = slot1;
               if (slotFrom.first.hasItem()) {
                 gearID = slotFrom.first.type()->id();
@@ -799,12 +793,12 @@ void Server::handleBufferedMessages(const Socket &client,
         }
 
         // Alert relevant users
-        if (obj1 == INVENTORY || obj1 == GEAR)
+        if (obj1.isInventory() || obj1.isGear())
           sendInventoryMessage(*user, slot1, obj1);
         else
           pObj1->tellRelevantUsersAboutInventorySlot(slot1);
 
-        if (obj2 == INVENTORY || obj2 == GEAR) {
+        if (obj2.isInventory() || obj2.isGear()) {
           sendInventoryMessage(*user, slot2, obj2);
           ProgressLock::triggerUnlocks(*user, ProgressLock::ITEM,
                                        slotTo.first.type());
@@ -815,7 +809,7 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_AUTO_CONSTRUCT: {
-        size_t serial;
+        Serial serial;
         iss >> serial >> del;
         if (del != MSG_END) return;
 
@@ -824,7 +818,8 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_TAKE_ITEM: {
-        size_t serial, slotNum;
+        Serial serial;
+        size_t slotNum;
         iss >> serial >> del >> slotNum >> del;
         if (del != MSG_END) return;
 
@@ -838,7 +833,8 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_TRADE: {
-        size_t serial, slot;
+        Serial serial;
+        size_t slot;
         iss >> serial >> del >> slot >> del;
         if (del != MSG_END) return;
 
@@ -925,7 +921,8 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_SET_MERCHANT_SLOT: {
-        size_t serial, slot, wareQty, priceQty;
+        Serial serial;
+        size_t slot, wareQty, priceQty;
         iss >> serial >> del >> slot >> del;
         iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_DELIM);
         std::string ware(_stringInputBuffer);
@@ -972,7 +969,8 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_CLEAR_MERCHANT_SLOT: {
-        size_t serial, slot;
+        Serial serial;
+        size_t slot;
         iss >> serial >> del >> slot >> del;
         if (del != MSG_END) return;
         Object *obj = _entities.find<Object>(serial);
@@ -1002,7 +1000,8 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_REPAIR_ITEM: {
-        size_t serial, slot;
+        Serial serial;
+        size_t slot;
         iss >> serial >> del >> slot >> del;
         if (del != MSG_END) return;
 
@@ -1011,7 +1010,7 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_REPAIR_OBJECT: {
-        size_t serial;
+        Serial serial;
         iss >> serial >> del;
         if (del != MSG_END) return;
 
@@ -1020,7 +1019,7 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_TAME_NPC: {
-        size_t serial;
+        Serial serial;
         iss >> serial >> del;
 
         if (del != MSG_END) return;
@@ -1030,7 +1029,7 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_MOUNT: {
-        size_t serial;
+        Serial serial;
         iss >> serial >> del;
         if (del != MSG_END) return;
         if (user->isStunned()) {
@@ -1097,12 +1096,12 @@ void Server::handleBufferedMessages(const Socket &client,
           break;
         }
 
-        size_t serial = user->driving();
+        auto serial = user->driving();
         Object *obj = _entities.find<Object>(serial);
         Vehicle *v = dynamic_cast<Vehicle *>(obj);
 
         v->driver("");
-        user->driving(0);
+        user->driving({});
         for (const User *u : findUsersInArea(user->location()))
           sendMessage(u->socket(),
                       {SV_UNMOUNTED, makeArgs(serial, user->name())});
@@ -1116,7 +1115,7 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_TARGET_ENTITY: {
-        size_t serial;
+        Serial serial;
         iss >> serial >> del;
         if (del != MSG_END) return;
 
@@ -1135,7 +1134,7 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_SELECT_ENTITY: {
-        size_t serial;
+        Serial serial;
         iss >> serial >> del;
         if (del != MSG_END) return;
 
@@ -1254,7 +1253,7 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_CEDE: {
-        size_t serial;
+        auto serial = Serial{};
         iss >> serial >> del;
         if (del != MSG_END) return;
         handle_CL_CEDE(*user, serial);
@@ -1262,7 +1261,7 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_GRANT: {
-        auto serial = size_t{};
+        auto serial = Serial{};
         iss >> serial >> del;
         iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
         auto username = std::string{_stringInputBuffer};
@@ -1273,7 +1272,7 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       case CL_PERFORM_OBJECT_ACTION: {
-        size_t serial;
+        auto serial = Serial{};
         iss >> serial >> del;
         iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
         auto textArg = std::string{_stringInputBuffer};
@@ -1330,7 +1329,7 @@ void Server::handleBufferedMessages(const Socket &client,
         auto questID = Quest::ID{_stringInputBuffer};
         iss >> del;
 
-        auto startSerial = size_t{};
+        auto startSerial = Serial{};
         iss >> startSerial >> del;
 
         if (del != MSG_END) return;
@@ -1344,7 +1343,7 @@ void Server::handleBufferedMessages(const Socket &client,
         auto questID = Quest::ID{_stringInputBuffer};
         iss >> del;
 
-        auto endSerial = size_t{};
+        auto endSerial = Serial{};
         iss >> endSerial >> del;
 
         if (del != MSG_END) return;
@@ -1604,15 +1603,15 @@ void Server::handle_CL_LOGIN_NEW(const Socket &client, const std::string &name,
   addUser(client, name, pwHash, classID);
 }
 
-void Server::handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum) {
-  if (serial == INVENTORY) {
+void Server::handle_CL_TAKE_ITEM(User &user, Serial serial, size_t slotNum) {
+  if (serial.isInventory()) {
     sendMessage(user.socket(), ERROR_TAKE_SELF);
     return;
   }
 
   Entity *pEnt = nullptr;
   ServerItem::Slot *pSlot;
-  if (serial == GEAR)
+  if (serial.isGear())
     pSlot = user.getSlotToTakeFromAndSendErrors(slotNum, user);
   else {
     pEnt = _entities.find(serial);
@@ -1635,9 +1634,9 @@ void Server::handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum) {
     slot.second = 0;
   }
 
-  if (serial ==
-      GEAR) {  // Tell user about his empty gear slot, and updated stats
-    sendInventoryMessage(user, slotNum, GEAR);
+  if (serial.isGear()) {  // Tell user about his empty gear slot, and updated
+                          // stats
+    sendInventoryMessage(user, slotNum, serial);
     user.updateStats();
 
   } else if (pEnt->isDead())  // Loot?
@@ -1653,39 +1652,34 @@ void Server::handle_CL_TAKE_ITEM(User &user, size_t serial, size_t slotNum) {
   }
 }
 
-void Server::handle_CL_REPAIR_ITEM(User &user, size_t serial, size_t slot) {
+void Server::handle_CL_REPAIR_ITEM(User &user, Serial serial, size_t slot) {
   ServerItem::Instance *itemToRepair = nullptr;
 
-  switch (serial) {
-    case Server::INVENTORY:
-      itemToRepair = &user.inventory(slot).first;
-      break;
-    case Server::GEAR:
-      itemToRepair = &user.gear(slot).first;
-      break;
-    default: {  // Container object
-      auto *ent = _entities.find(serial);
-      auto *obj = dynamic_cast<Object *>(ent);
+  if (serial.isInventory())
+    itemToRepair = &user.inventory(slot).first;
+  else if (serial.isGear())
+    itemToRepair = &user.gear(slot).first;
+  else {  // Container object
+    auto *ent = _entities.find(serial);
+    auto *obj = dynamic_cast<Object *>(ent);
 
-      if (!obj) {
-        user.sendMessage(WARNING_DOESNT_EXIST);
-        return;
-      }
-
-      if (!obj->permissions.doesUserHaveAccess(user.name())) {
-        user.sendMessage(WARNING_NO_PERMISSION);
-        return;
-      }
-
-      auto numSlots = obj->objType().container().slots();
-      if (slot >= numSlots) {
-        user.sendMessage(ERROR_INVALID_SLOT);
-        return;
-      }
-
-      itemToRepair = &obj->container().at(slot).first;
-      break;
+    if (!obj) {
+      user.sendMessage(WARNING_DOESNT_EXIST);
+      return;
     }
+
+    if (!obj->permissions.doesUserHaveAccess(user.name())) {
+      user.sendMessage(WARNING_NO_PERMISSION);
+      return;
+    }
+
+    auto numSlots = obj->objType().container().slots();
+    if (slot >= numSlots) {
+      user.sendMessage(ERROR_INVALID_SLOT);
+      return;
+    }
+
+    itemToRepair = &obj->container().at(slot).first;
   }
 
   const auto &repairInfo = itemToRepair->type()->repairInfo();
@@ -1721,7 +1715,7 @@ void Server::handle_CL_REPAIR_ITEM(User &user, size_t serial, size_t slot) {
   itemToRepair->repair();
 }
 
-void Server::handle_CL_REPAIR_OBJECT(User &user, size_t serial) {
+void Server::handle_CL_REPAIR_OBJECT(User &user, Serial serial) {
   auto it = _entities.find(serial);
   auto *obj = dynamic_cast<Object *>(&*it);
 
@@ -1763,7 +1757,7 @@ void Server::handle_CL_REPAIR_OBJECT(User &user, size_t serial) {
   obj->repair();
 }
 
-void Server::handle_CL_TAME_NPC(User &user, size_t serial) {
+void Server::handle_CL_TAME_NPC(User &user, Serial serial) {
   auto it = _entities.find(serial);
   auto *npc = dynamic_cast<NPC *>(&*it);
 
@@ -1824,8 +1818,8 @@ void Server::handle_CL_LEAVE_CITY(User &user) {
   _cities.removeUserFromCity(user, city);
 }
 
-void Server::handle_CL_CEDE(User &user, size_t serial) {
-  if (serial == INVENTORY || serial == GEAR) {
+void Server::handle_CL_CEDE(User &user, Serial serial) {
+  if (serial.isInventory() || serial.isGear()) {
     sendMessage(user.socket(), WARNING_DOESNT_EXIST);
     return;
   }
@@ -1850,7 +1844,7 @@ void Server::handle_CL_CEDE(User &user, size_t serial) {
   obj->permissions.setCityOwner(city);
 }
 
-void Server::handle_CL_GRANT(User &user, size_t serial, std::string username) {
+void Server::handle_CL_GRANT(User &user, Serial serial, std::string username) {
   auto *obj = _entities.find<Object>(serial);
   if (!obj) {
     sendMessage(user.socket(), WARNING_DOESNT_EXIST);
@@ -1873,9 +1867,9 @@ void Server::handle_CL_GRANT(User &user, size_t serial, std::string username) {
   obj->permissions.setPlayerOwner(username);
 }
 
-void Server::handle_CL_PERFORM_OBJECT_ACTION(User &user, size_t serial,
+void Server::handle_CL_PERFORM_OBJECT_ACTION(User &user, Serial serial,
                                              const std::string &textArg) {
-  if (serial == INVENTORY || serial == GEAR) {
+  if (serial.isInventory() || serial.isGear()) {
     sendMessage(user.socket(), WARNING_DOESNT_EXIST);
     return;
   }
@@ -1912,8 +1906,8 @@ void Server::handle_CL_PERFORM_OBJECT_ACTION(User &user, size_t serial,
   }
 }
 
-void Server::handle_CL_TARGET_ENTITY(User &user, size_t serial) {
-  if (serial == INVENTORY || serial == GEAR) {
+void Server::handle_CL_TARGET_ENTITY(User &user, Serial serial) {
+  if (serial.isInventory() || serial.isGear()) {
     user.setTargetAndAttack(nullptr);
     return;
   }
@@ -1966,8 +1960,8 @@ void Server::handle_CL_TARGET_PLAYER(User &user,
   user.setTargetAndAttack(targetUser);
 }
 
-void Server::handle_CL_SELECT_ENTITY(User &user, size_t serial) {
-  if (serial == INVENTORY || serial == GEAR) {
+void Server::handle_CL_SELECT_ENTITY(User &user, Serial serial) {
+  if (serial.isInventory() || serial.isGear()) {
     user.setTargetAndAttack(nullptr);
     return;
   }
@@ -2272,7 +2266,7 @@ CombatResult Server::handle_CL_CAST(User &user, const std::string &spellID,
 }
 
 void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &questID,
-                                    size_t startSerial) {
+                                    Serial startSerial) {
   const auto entity = _entities.find(startSerial);
   if (!entity) return;
   auto node = dynamic_cast<const QuestNode *>(entity);
@@ -2302,7 +2296,7 @@ void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &questID,
 }
 
 void Server::handle_CL_COMPLETE_QUEST(User &user, const Quest::ID &quest,
-                                      size_t endSerial) {
+                                      Serial endSerial) {
   if (!user.isOnQuest(quest)) return;
 
   const auto entity = _entities.find(endSerial);
@@ -2327,7 +2321,7 @@ void Server::handle_CL_ABANDON_QUEST(User &user, const Quest::ID &quest) {
   user.abandonQuest(quest);
 }
 
-void Server::handle_CL_AUTO_CONSTRUCT(User &user, size_t serial) {
+void Server::handle_CL_AUTO_CONSTRUCT(User &user, Serial serial) {
   auto *obj = _entities.find<Object>(serial);
   if (!obj) return;
 
@@ -2388,7 +2382,7 @@ void Server::sendMessageIfOnline(const std::string username,
 }
 
 void Server::sendInventoryMessageInner(
-    const User &user, size_t serial, size_t slot,
+    const User &user, Serial serial, size_t slot,
     const ServerItem::vect_t &itemVect) const {
   if (slot >= itemVect.size()) {
     sendMessage(user.socket(), ERROR_INVALID_SLOT);
@@ -2415,20 +2409,17 @@ void Server::sendInventoryMessage(const User &user, size_t slot,
 
 // Special serials only
 void Server::sendInventoryMessage(const User &user, size_t slot,
-                                  size_t serial) const {
+                                  Serial serial) const {
   const ServerItem::vect_t *container = nullptr;
-  switch (serial) {
-    case INVENTORY:
-      container = &user.inventory();
-      break;
-    case GEAR:
-      container = &user.gear();
-      break;
-    default:
-      SERVER_ERROR(
-          "Trying to send inventory message with bad serial.  Using "
-          "inventory.");
-      container = &user.inventory();
+  if (serial.isInventory())
+    container = &user.inventory();
+  else if (serial.isGear())
+    container = &user.gear();
+  else {
+    SERVER_ERROR(
+        "Trying to send inventory message with bad serial.  Using "
+        "inventory.");
+    container = &user.inventory();
   }
   sendInventoryMessageInner(user, serial, slot, *container);
 }

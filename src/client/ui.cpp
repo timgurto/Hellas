@@ -423,7 +423,7 @@ void Client::populateQuestLog() {
     x += NAME_W + GAP;
     entry->addChild(new Button(
         {x, 0, BUTTON_W, entry->height() - GAP}, "Briefing",
-        [&quest]() { CQuest::generateWindow(&quest, 0, CQuest::INFO_ONLY); }));
+        [&quest]() { CQuest::generateWindow(&quest, {}, CQuest::INFO_ONLY); }));
     x += BUTTON_W + GAP;
     auto pQuestID = const_cast<std::string *>(&quest.info().id);
     entry->addChild(new Button(

@@ -340,12 +340,13 @@ void Server::addUser(const Socket &socket, const std::string &name,
   // Send him his inventory
   for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
     if (newUser.inventory(i).first.hasItem())
-      sendInventoryMessage(newUser, i, INVENTORY);
+      sendInventoryMessage(newUser, i, Serial::Inventory());
   }
 
   // Send him his gear
   for (size_t i = 0; i != User::GEAR_SLOTS; ++i) {
-    if (newUser.gear(i).first.hasItem()) sendInventoryMessage(newUser, i, GEAR);
+    if (newUser.gear(i).first.hasItem())
+      sendInventoryMessage(newUser, i, Serial::Gear());
   }
 
   // Send him the recipes he knows
@@ -514,7 +515,7 @@ bool Server::isEntityInRange(const Socket &client, const User &user,
 void Server::forceAllToUntarget(const Entity &target,
                                 const User *userToExclude) {
   // Fix users targeting the entity
-  size_t serial = target.serial();
+  auto serial = target.serial();
   for (const User &constUser : _users) {
     User &user = const_cast<User &>(constUser);
     if (&user == userToExclude) continue;
@@ -551,7 +552,7 @@ void Server::removeEntity(Entity &ent, const User *userToExclude) {
   forceAllToUntarget(ent, userToExclude);
 
   // Alert nearby users of the removal
-  size_t serial = ent.serial();
+  auto serial = ent.serial();
   for (const User *userP : findUsersInArea(ent.location()))
     userP->sendMessage({SV_REMOVE_OBJECT, serial});
 
@@ -565,7 +566,7 @@ void Server::removeEntity(Entity &ent, const User *userToExclude) {
   }
 }
 
-void Server::gatherObject(size_t serial, User &user) {
+void Server::gatherObject(Serial serial, User &user) {
   // Give item to user
   auto *ent = _entities.find(serial);
   const ServerItem *const toGive = ent->gatherable.chooseRandomItem();
@@ -747,12 +748,12 @@ const Spell *Server::findSpell(const Spell::ID &id) const {
   return it->second;
 }
 
-std::pair<std::set<size_t>::iterator, std::set<size_t>::iterator>
+std::pair<std::set<Serial>::iterator, std::set<Serial>::iterator>
 Server::findObjectsOwnedBy(const Permissions::Owner &owner) const {
   return _objectsByOwner.getObjectsOwnedBy(owner);
 }
 
-const Entity *Server::findEntityBySerial(size_t serial) {
+const Entity *Server::findEntityBySerial(Serial serial) {
   return _entities.find(serial);
 }
 

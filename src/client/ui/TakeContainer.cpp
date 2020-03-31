@@ -10,14 +10,14 @@
 #include "Label.h"
 #include "List.h"
 
-TakeContainer::TakeContainer(ClientItem::vect_t &linked, size_t serial,
+TakeContainer::TakeContainer(ClientItem::vect_t &linked, Serial serial,
                              const ScreenRect &rect)
     : _linked(linked),
       _serial(serial),
       _slots(LOOT_CAPACITY),
       Element(rect),
       _list(new List(rect, Element::ITEM_HEIGHT + 2)) {
-  assert(_serial != 0);
+  assert(_serial.isInitialised());
 
   addChild(_list);
   for (size_t i = 0; i != LOOT_CAPACITY; ++i)
@@ -25,7 +25,7 @@ TakeContainer::TakeContainer(ClientItem::vect_t &linked, size_t serial,
 }
 
 TakeContainer *TakeContainer::CopyFrom(ClientItem::vect_t &linked,
-                                       size_t serial, const ScreenRect &rect) {
+                                       Serial serial, const ScreenRect &rect) {
   return new TakeContainer(linked, serial, rect);
 }
 

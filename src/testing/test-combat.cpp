@@ -20,8 +20,7 @@ TEST_CASE("Players can attack immediately") {
   const auto objects = c.objects();
   const ClientObject *objP = objects.begin()->second;
   const ClientNPC &ant = dynamic_cast<const ClientNPC &>(*objP);
-  size_t serial = ant.serial();
-  c.sendMessage(CL_TARGET_ENTITY, makeArgs(serial));
+  c.sendMessage(CL_TARGET_ENTITY, makeArgs(ant.serial()));
 
   // NPC should be damaged very quickly
   WAIT_UNTIL(ant.health() < ant.npcType()->maxHealth());
@@ -51,7 +50,7 @@ TEST_CASE("Peaceful players can't target each other", "[remote]") {
   CHECK_FALSE(uAlice.target() == &uBob);
 }
 
-TEST_CASE("Belliegerents can fight", "[remote]") {
+TEST_CASE("Belligerents can fight", "[remote]") {
   // Given a server, Alice, and Bob
   TestServer s;
   TestClient alice = TestClient::WithUsername("Alice");
@@ -276,21 +275,17 @@ TEST_CASE("Targeting civilians after attacking") {
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
 
-    s.addNPC("sloth", {10, 15});
-    const auto &sloth = s.getFirstNPC();
-    auto slothSerial = sloth.serial();
-    s.addNPC("maiden", {10, 5});
-    auto maidenSerial = slothSerial + 1;
-    auto &maiden = *s.entities().find(maidenSerial);
+    const auto &sloth = s.addNPC("sloth", {10, 15});
+    const auto &maiden = s.addNPC("maiden", {10, 5});
 
     s.waitForUsers(1);
 
     WHEN("he attacks the sloth") {
-      c.sendMessage(CL_TARGET_ENTITY, makeArgs(slothSerial));
+      c.sendMessage(CL_TARGET_ENTITY, makeArgs(sloth.serial()));
       REPEAT_FOR_MS(100);
 
       AND_WHEN("he right-clicks the maiden") {
-        auto cMaiden = c.objects()[maidenSerial];
+        auto cMaiden = c.objects()[maiden.serial()];
         cMaiden->onRightClick(c.client());
 
         THEN("the maiden doesn't take damage") {

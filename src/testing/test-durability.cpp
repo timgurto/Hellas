@@ -160,8 +160,8 @@ TEST_CASE("Thrown weapons don't take damage from attacking") {
     user.giveItem(harpoonGun);
 
     WHEN("the user equips harpoons") {
-      c.sendMessage(CL_SWAP_ITEMS, makeArgs(Server::INVENTORY, 0, Server::GEAR,
-                                            Item::WEAPON_SLOT));
+      c.sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0,
+                                            Serial::Gear(), Item::WEAPON_SLOT));
       WAIT_UNTIL(user.gear(Item::WEAPON_SLOT).first.hasItem());
 
       AND_WHEN("he attacks the whale many times") {
@@ -179,8 +179,8 @@ TEST_CASE("Thrown weapons don't take damage from attacking") {
     }
 
     WHEN("the user equips a harpoon gun") {
-      c.sendMessage(CL_SWAP_ITEMS, makeArgs(Server::INVENTORY, 1, Server::GEAR,
-                                            Item::WEAPON_SLOT));
+      c.sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 1,
+                                            Serial::Gear(), Item::WEAPON_SLOT));
       WAIT_UNTIL(user.gear(Item::WEAPON_SLOT).first.hasItem());
 
       AND_WHEN("he attacks the whale many times") {
@@ -662,7 +662,7 @@ TEST_CASE("Broken items don't work") {
             WAIT_UNTIL(s.entities().size() == 1);
             const auto &tuffet = s.getFirstObject();
             c.sendMessage(CL_SWAP_ITEMS,
-                          makeArgs(Server::INVENTORY, 0, tuffet.serial(), 0));
+                          makeArgs(Serial::Inventory(), 0, tuffet.serial(), 0));
 
             THEN("the tuffet is not finished") {
               REPEAT_FOR_MS(100);
@@ -734,7 +734,7 @@ TEST_CASE("Repairing items") {
         BREAK_ITEM(hat0);
 
         AND_WHEN("he repairs it") {
-          c.sendMessage(CL_REPAIR_ITEM, makeArgs(Server::INVENTORY, 0));
+          c.sendMessage(CL_REPAIR_ITEM, makeArgs(Serial::Inventory(), 0));
 
           THEN("it's no longer broken") {
             WAIT_UNTIL(!hat0.isBroken());
@@ -751,7 +751,7 @@ TEST_CASE("Repairing items") {
         BREAK_ITEM(hat0);
         BREAK_ITEM(hat1);
         AND_WHEN("he repairs it") {
-          c.sendMessage(CL_REPAIR_ITEM, makeArgs(Server::INVENTORY, 1));
+          c.sendMessage(CL_REPAIR_ITEM, makeArgs(Serial::Inventory(), 1));
 
           THEN("it's no longer broken") {
             WAIT_UNTIL(!hat1.isBroken());
@@ -765,7 +765,7 @@ TEST_CASE("Repairing items") {
     GIVEN("he is wearing a hat") {
       user.giveItem(hat);
       c.sendMessage(CL_SWAP_ITEMS,
-                    makeArgs(Server::INVENTORY, 0, Server::GEAR, 0));
+                    makeArgs(Serial::Inventory(), 0, Serial::Gear(), 0));
       auto &headSlot = user.gear().at(0).first;
       WAIT_UNTIL(headSlot.hasItem());
 
@@ -773,7 +773,7 @@ TEST_CASE("Repairing items") {
         BREAK_ITEM(headSlot);
 
         AND_WHEN("he repairs it") {
-          c.sendMessage(CL_REPAIR_ITEM, makeArgs(Server::GEAR, 0));
+          c.sendMessage(CL_REPAIR_ITEM, makeArgs(Serial::Gear(), 0));
 
           THEN("it is no longer broken") { WAIT_UNTIL(!headSlot.isBroken()); }
         }
@@ -856,7 +856,7 @@ TEST_CASE("Non-repairable item") {
       BREAK_ITEM(slot);
 
       AND_WHEN("he tries to repair it") {
-        c.sendMessage(CL_REPAIR_ITEM, makeArgs(Server::INVENTORY, 0));
+        c.sendMessage(CL_REPAIR_ITEM, makeArgs(Serial::Inventory(), 0));
 
         THEN("it is still broken") {
           REPEAT_FOR_MS(100);
@@ -888,7 +888,7 @@ TEST_CASE("Item repair that consumes items") {
         BREAK_ITEM(heart);
 
         AND_WHEN("he tries to repair it") {
-          c.sendMessage(CL_REPAIR_ITEM, makeArgs(Server::INVENTORY, 0));
+          c.sendMessage(CL_REPAIR_ITEM, makeArgs(Serial::Inventory(), 0));
 
           THEN("it is still broken") {
             REPEAT_FOR_MS(100);
@@ -900,7 +900,7 @@ TEST_CASE("Item repair that consumes items") {
           user.giveItem(&s.findItem("food"));
 
           AND_WHEN("he tries to repair the heart") {
-            c.sendMessage(CL_REPAIR_ITEM, makeArgs(Server::INVENTORY, 0));
+            c.sendMessage(CL_REPAIR_ITEM, makeArgs(Serial::Inventory(), 0));
 
             THEN("it is no longer broken") {
               WAIT_UNTIL(!heart.isBroken());
@@ -940,7 +940,7 @@ TEST_CASE("Item repair that requires a tool") {
         BREAK_ITEM(circuit);
 
         AND_WHEN("he tries to repair it") {
-          c.sendMessage(CL_REPAIR_ITEM, makeArgs(Server::INVENTORY, 0));
+          c.sendMessage(CL_REPAIR_ITEM, makeArgs(Serial::Inventory(), 0));
 
           THEN("it is still broken") {
             REPEAT_FOR_MS(100);
@@ -952,7 +952,7 @@ TEST_CASE("Item repair that requires a tool") {
           user.giveItem(&s.findItem("solderingIron"));
 
           AND_WHEN("he tries to repair the circuit") {
-            c.sendMessage(CL_REPAIR_ITEM, makeArgs(Server::INVENTORY, 0));
+            c.sendMessage(CL_REPAIR_ITEM, makeArgs(Serial::Inventory(), 0));
 
             THEN("it is no longer broken") { WAIT_UNTIL(!circuit.isBroken()); }
           }
@@ -985,7 +985,7 @@ TEST_CASE("Item repair that requires a tool") {
         BREAK_ITEM(watch);
 
         AND_WHEN("he tries to repair it") {
-          c.sendMessage(CL_REPAIR_ITEM, makeArgs(Server::INVENTORY, 0));
+          c.sendMessage(CL_REPAIR_ITEM, makeArgs(Serial::Inventory(), 0));
 
           THEN("he still has his parts") {
             REPEAT_FOR_MS(100);
