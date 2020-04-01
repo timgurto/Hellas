@@ -17,7 +17,7 @@
 <!-- Placeholders to guard resources -->
 <npcType
     id="copperGuardian" name="Servant of Hephaestus"
-	level="25" maxHealth="75" attack="9" attackTime="2000" isRanged="1" school="fire" projectile="fireball" allowedTerrain="rocks"
+	level="25" maxHealth="75" attack="9" attackTime="2000" isRanged="1" school="fire" projectile="fireball" allowedTerrain="rocky"
     xDrawOffset="-18" yDrawOffset="-40"
     imageFile="fireNymph" sounds="nymph" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
