@@ -43,14 +43,15 @@
     allowedTerrain="rocksAndMountains"
     constructionTime="0" constructionReq="copperDeposit" >
     <collisionRect x="-59" y="-38" w="119" h="61" />
-    <yield id="copper" initialMean="15" initialSD="3.5" initialMin="1" />
-    <yield id="rock" initialMean="10" initialSD="3" />
-    <material id="brick" quantity="16" />
+    <yield id="copper" initialMean="10" initialSD="2" initialMin="1" />
+    <yield id="rock" initialMean="6" initialSD="2" />
+    <material id="brick" quantity="6" />
     <material id="lumber" quantity="9" />
     <unlockedBy recipe="tinPick" chance="0.2" />
     <unlockedBy recipe="brick" chance="0.02" />
     <unlockedBy recipe="tinBar" chance="0.05" />
     <unlockedBy gather="tin" chance="0.02" />
+    <durability item="brick" quantity="6" />
 </objectType>
 
 </root>

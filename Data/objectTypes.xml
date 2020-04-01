@@ -67,12 +67,12 @@
     <tag name="charcoalMaking" />
     <tag name="smelting1" />
     <tag name="pottery1" />
-    <material id="rock" quantity="10" />
+    <material id="rock" quantity="20" />
     <material id="log" />
     <unlockedBy gather="rock" chance="0.05" />
     <unlockedBy construction="fire" chance="0.1" />
     <unlockedBy construction="extinguishedOven" chance="0.1" />
-    <durability item="rock" quantity="10" />
+    <durability item="rock" quantity="20" />
     <transform id="extinguishedOven" time="90000" />
     <canBeRepaired cost="rock" />
 </objectType>
@@ -83,7 +83,7 @@
     sounds="stone" damageParticles="rocks" >
     <collisionRect x="-13" y="-9" w="24" h="15" />
     <material id="log" />
-    <durability item="rock" quantity="10" />
+    <durability item="rock" quantity="20" />
     <transform id="oven" time="1" skipConstruction="1" />
     <canBeRepaired cost="rock" />
 </objectType>
@@ -388,8 +388,8 @@
     constructionTime="0"
     damageParticles="wood" sounds="wood">
     <collisionRect x="-17" y="-6" w="33" h="11" />
-    <material id="stick" quantity="5" />
-    <material id="linenThread" quantity="5" />
+    <material id="stick" quantity="8" />
+    <material id="linenThread" quantity="10" />
     <tag name="weaving" />
     <unlockedBy recipe="linenThread" />
     <durability item="linenThread" quantity="5" />
@@ -401,7 +401,7 @@
     xDrawOffset="-10" yDrawOffset="-9"
     damageParticles="wood" sounds="wood">
     <collisionRect x="-10" y="-9" w="20" h="17" />
-    <material id="stick" quantity="2" />
+    <material id="stick" quantity="4" />
     <material id="rope" quantity="2" />
     <tag name="leatherStretching" />
     <unlockedBy recipe="rope" />
@@ -426,7 +426,7 @@
     constructionTime="0" 
     xDrawOffset="-11" yDrawOffset="-21">
     <collisionRect x="-11" y="-5" w="22" h="11" />
-    <material id="lumber" quantity="4" />
+    <material id="lumber" quantity="8" />
     <material id="rope" quantity="2" />
     <material id="tinTube" quantity="1" />
     <material id="rock" quantity="1" />
