@@ -39,6 +39,12 @@ size_t ItemSet::operator[](const Item *key) const {
   return it->second;
 }
 
+ItemSet ItemSet::operator-(const ItemSet &rhs) const {
+  auto copy = *this;
+  copy.remove(rhs);
+  return copy;
+}
+
 void ItemSet::set(const Item *item, size_t quantity) {
   size_t oldQty = _set[item];
 
@@ -100,6 +106,10 @@ void ItemSet::remove(const Item *item, size_t qty) {
   if (it->second == 0) _set.erase(it);
   _totalQty -= qtyToRemove;
   checkTotalQty();
+}
+
+void ItemSet::remove(const ItemSet &rhs) {
+  for (const auto &pair : rhs) remove(pair.first, pair.second);
 }
 
 void ItemSet::checkTotalQty() const {

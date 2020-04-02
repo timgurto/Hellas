@@ -26,7 +26,7 @@ class ItemSet {
     _set.clear();
     _totalQty = 0;
   }
-
+  ItemSet operator-(const ItemSet &rhs) const;
   void set(const Item *item, size_t quantity = 1);
   bool contains(const ItemSet &rhs) const;  // Subset
   bool contains(const Item *item, size_t qty = 1) const;
@@ -36,6 +36,7 @@ class ItemSet {
   size_t totalQuantity() const { return _totalQty; }
   void add(const Item *item, size_t qty = 1);
   void remove(const Item *item, size_t qty = 1);
+  void remove(const ItemSet &rhs);
   bool isEmpty() const { return _set.empty(); }
 
   void checkTotalQty() const;

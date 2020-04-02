@@ -2325,17 +2325,39 @@ void Server::handle_CL_AUTO_CONSTRUCT(User &user, Serial serial) {
   auto *obj = _entities.find<Object>(serial);
   if (!obj) return;
 
-  // Exclude materials that return items.  Calculating space requirements is too
-  // hard.
-  auto materialsThatDontReturnItems = obj->remainingMaterials();
+  auto materialsToLookFor = ItemSet{};
   for (const auto &pair : obj->remainingMaterials()) {
     const auto *material = dynamic_cast<const ServerItem *>(pair.first);
-    if (material->returnsOnConstruction())
-      materialsThatDontReturnItems.remove(pair.first, pair.second);
+    auto userWillHaveSpace =
+        !material->returnsOnConstruction() || material->stackSize() == 1;
+
+    if (userWillHaveSpace) {
+      materialsToLookFor.add(pair.first, pair.second);
+      continue;
+    }
+
+    // Take a closer look.  Will the user have space for the returned item?
+    auto materialToBeRemoved = ItemSet{};
+    materialToBeRemoved.add(pair.first, pair.second);
+    auto qtyToBeReturned = min<int>(
+        pair.second, user.countItems(material->returnsOnConstruction()));
+    if (user.willHaveRoomAfterRemovingItems(materialToBeRemoved,
+                                            material->returnsOnConstruction(),
+                                            qtyToBeReturned))
+      materialsToLookFor.add(pair.first, pair.second);
   }
 
-  auto remainder = user.removeItems(materialsThatDontReturnItems);
-  obj->remainingMaterials() = remainder;
+  auto remainder = user.removeItems(materialsToLookFor);
+  auto materialsAdded = materialsToLookFor - remainder;
+  obj->remainingMaterials().remove(materialsAdded);
+
+  // Return items to user
+  for (auto &pair : materialsAdded) {
+    const auto *material = dynamic_cast<const ServerItem *>(pair.first);
+    auto itemToReturn = material->returnsOnConstruction();
+    if (!itemToReturn) continue;
+    user.giveItem(itemToReturn, pair.second);
+  }
 
   for (const User *nearbyUser : findUsersInArea(obj->location()))
     sendConstructionMaterialsMessage(*nearbyUser, *obj);
