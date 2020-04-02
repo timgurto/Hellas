@@ -635,7 +635,7 @@ void Entity::applyBuff(const BuffType &type, Entity &caster) {
 
   // Check whether it doesn't stack with something else
   for (auto &buff : _buffs) {
-    if (buff.isNonStacking()) {
+    if (buff.doesntStackWith(type)) {
       return;
     }
   }

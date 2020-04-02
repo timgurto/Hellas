@@ -822,7 +822,9 @@ void DataLoader::loadBuffs(XmlReader &xr) {
 
     auto nonStacking = xr.findChild("nonStacking", elem);
     if (nonStacking) {
-      newBuff.doesntStack();
+      auto category = ""s;
+      if (xr.findAttr(nonStacking, "category", category))
+        newBuff.doesntStack(category);
     }
 
     do {

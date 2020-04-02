@@ -7,6 +7,11 @@ void BuffType::stats(const StatsMod &stats) {
   _stats = stats;
 }
 
+bool BuffType::doesntStackWith(const BuffType &otherType) const {
+  if (_nonStackingCategory.empty()) return false;
+  return _nonStackingCategory == otherType._nonStackingCategory;
+}
+
 Buff::Buff(const BuffType &type, Entity &owner, Entity &caster)
     : _type(&type),
       _owner(&owner),
@@ -15,6 +20,10 @@ Buff::Buff(const BuffType &type, Entity &owner, Entity &caster)
 
 Buff::Buff(const BuffType &type, Entity &owner, ms_t timeRemaining)
     : _type(&type), _owner(&owner), _timeRemaining(timeRemaining) {}
+
+bool Buff::doesntStackWith(const BuffType &otherType) const {
+  return _type->doesntStackWith(otherType);
+}
 
 void Buff::clearCasterIfEqualTo(const Entity &casterToRemove) const {
   if (_caster == &casterToRemove) _caster = nullptr;

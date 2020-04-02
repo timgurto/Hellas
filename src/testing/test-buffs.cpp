@@ -365,13 +365,18 @@ TEST_CASE("Object-granted buffs") {
 }
 
 TEST_CASE("Buffs that don't stack") {
-  GIVEN("Two buffs that don't stack") {
+  GIVEN(
+      "Two non-stacking paint colours, and a nonStacking emotion "
+      "category") {
     auto data = R"(
       <buff id="paintedRed" >
         <nonStacking category="paint" />
       </buff>
       <buff id="paintedBlue" >
         <nonStacking category="paint" />
+      </buff>
+      <buff id="happy" >
+        <nonStacking category="emotion" />
       </buff>
     )";
     auto s = TestServer::WithDataString(data);
@@ -381,12 +386,20 @@ TEST_CASE("Buffs that don't stack") {
 
     const auto &paintedRed = s.findBuff("paintedRed");
     const auto &paintedBlue = s.findBuff("paintedBlue");
+    const auto &happy = s.findBuff("happy");
 
-    WHEN("both are applied to a user") {
+    WHEN("both paints are applied to a user") {
       user.applyBuff(paintedRed, user);
       user.applyBuff(paintedBlue, user);
 
       THEN("the user has one buff") { CHECK(user.buffs().size() == 1); }
+    }
+
+    WHEN("a paint and an emotion are applied to a user") {
+      user.applyBuff(paintedRed, user);
+      user.applyBuff(happy, user);
+
+      THEN("the user has two buffs") { CHECK(user.buffs().size() == 2); }
     }
   }
 }
