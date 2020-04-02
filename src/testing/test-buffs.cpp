@@ -363,3 +363,30 @@ TEST_CASE("Object-granted buffs") {
     }
   }
 }
+
+TEST_CASE("Buffs that don't stack") {
+  GIVEN("Two buffs that don't stack") {
+    auto data = R"(
+      <buff id="paintedRed" >
+        <nonStacking category="paint" />
+      </buff>
+      <buff id="paintedBlue" >
+        <nonStacking category="paint" />
+      </buff>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    const auto &paintedRed = s.findBuff("paintedRed");
+    const auto &paintedBlue = s.findBuff("paintedBlue");
+
+    WHEN("both are applied to a user") {
+      user.applyBuff(paintedRed, user);
+      user.applyBuff(paintedBlue, user);
+
+      THEN("the user has one buff") { CHECK(user.buffs().size() == 1); }
+    }
+  }
+}

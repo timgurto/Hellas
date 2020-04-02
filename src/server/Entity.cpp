@@ -633,6 +633,13 @@ std::vector<BuffType::ID> Entity::buffsThatCancelOnOOE() const {
 void Entity::applyBuff(const BuffType &type, Entity &caster) {
   auto newBuff = Buff{type, *this, caster};
 
+  // Check whether it doesn't stack with something else
+  for (auto &buff : _buffs) {
+    if (buff.isNonStacking()) {
+      return;
+    }
+  }
+
   // Check for duplicates
   auto buffWasReapplied = false;
   for (auto &buff : _buffs) {

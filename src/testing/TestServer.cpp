@@ -156,6 +156,12 @@ const ServerItem &TestServer::findItem(const std::string &id) const {
   return *_server->findItem(id);
 }
 
+const BuffType &TestServer::findBuff(const std::string &id) const {
+  const auto *buffType = _server->findBuff(id);
+  REQUIRE(buffType);
+  return *buffType;
+}
+
 User &TestServer::getFirstUser() {
   REQUIRE(!_server->_users.empty());
   return const_cast<User &>(*_server->_users.begin());

@@ -51,6 +51,7 @@ class TestServer {
   User &findUser(const std::string &username);
   const Quest &findQuest(const Quest::ID &questID) const;
   const ServerItem &findItem(const std::string &id) const;
+  const BuffType &findBuff(const std::string &id) const;
 
   Object &addObject(const std::string &typeName,
                     const MapPoint &loc = MapPoint{},

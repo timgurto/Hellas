@@ -48,6 +48,8 @@ class BuffType {
   bool shouldGiveToNewPlayers() const { return _givenToNewPlayers; }
   void markAsGrantedByObject() const { _grantedByObject = true; }
   bool grantedByObject() const { return _grantedByObject; }
+  void doesntStack() { _nonStacking = true; }
+  bool isNonStacking() const { return _nonStacking; }
 
   bool hasType() const { return _type != UNKNOWN; }
   bool hasEffectOnHit() const { return _type == SPELL_ON_HIT; }
@@ -70,6 +72,7 @@ class BuffType {
   // source.  This is important because if a user isn't overlapping an object
   // that grants this, it will be removed from him.
   mutable bool _grantedByObject{false};
+  bool _nonStacking{false};
 };
 
 // An instance of a buff type, on a specific target, from a specific caster
@@ -89,6 +92,7 @@ class Buff {
   }
   bool canBeInterrupted() const { return _type->canBeInterrupted(); }
   bool cancelsOnOOE() const { return _type->cancelsOnOOE(); }
+  bool isNonStacking() const { return _type->isNonStacking(); }
 
   bool hasSameType(const Buff &rhs) const { return _type == rhs._type; }
 
