@@ -1488,11 +1488,8 @@ void Server::handleBufferedMessages(const Socket &client,
         if (del != MSG_END) return;
         if (!isDebug()) break;
 
-        user->exploration().unexploreAll(user->socket());
-        user->setSpawnPointToPostTutorial();
-        user->moveToSpawnPoint();
-        user->addConstruction("fire");
-        sendMessage(client, {SV_CONSTRUCTIONS, makeArgs(1, "fire")});
+        handle_DG_SKIP_TUTORIAL(*user);
+
         break;
 
       case DG_SPELLS: {
@@ -2369,6 +2366,24 @@ void Server::handle_CL_AUTO_CONSTRUCT(User &user, Serial serial) {
       ProgressLock::triggerUnlocks(user, ProgressLock::CONSTRUCTION,
                                    obj->type());
   }
+}
+
+void Server::handle_DG_SKIP_TUTORIAL(User &user) {
+  user.exploration().unexploreAll(user.socket());
+  user.setSpawnPointToPostTutorial();
+  user.moveToSpawnPoint();
+
+  auto &userClass = user.getClass();
+  userClass.unlearnAll();
+  auto UTILITY_SPELLS = std::map<std::string, std::string>{
+      {"Athlete", "sprint"}, {"Scholar", "blink"}, {"Zealot", "waterWalking"}};
+  auto spellToTeach = UTILITY_SPELLS[userClass.type().id()];
+  userClass.teachSpell(spellToTeach);
+
+  user.clearInventory();
+  user.clearGear();
+  user.addConstruction("fire");
+  user.sendMessage({SV_CONSTRUCTIONS, makeArgs(1, "fire")});
 }
 
 void Server::broadcast(const Message &msg) {
