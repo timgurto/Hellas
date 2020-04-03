@@ -520,6 +520,7 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
 
     // Gathering
     if (xr.findAttr(elem, "gatherReq", s)) nt->yield.requiresTool(s);
+    if (xr.findAttr(elem, "gatherTime", n)) nt->yield.gatherTime(n);
 
     if (xr.findAttr(elem, "maxDistanceFromSpawner", n))
       nt->maxDistanceFromSpawner(n);

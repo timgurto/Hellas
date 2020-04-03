@@ -125,4 +125,28 @@ TEST_CASE("Gathering from an NPC") {
       }
     }
   }
+
+  GIVEN("an NPC that takes 0.5s to gather") {
+    auto data = R"(
+      <item id="egg" />
+      <npcType id="chicken" maxHealth="1" gatherTime="500">
+        <yield id="egg" />
+      </npcType>
+    )";
+
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    const auto &chicken = s.addNPC("chicken", {10, 15});
+
+    WHEN("a user tries to gather from it") {
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      c.sendMessage(CL_GATHER, makeArgs(chicken.serial()));
+
+      THEN("he doesn't have an item") {
+        REPEAT_FOR_MS(100);
+        CHECK(!user.inventory(0).first.hasItem());
+      }
+    }
+  }
 }
