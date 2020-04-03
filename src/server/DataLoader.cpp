@@ -511,11 +511,15 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
     else if (xr.findAttr(elem, "isNeutral", n) && n != 0)
       nt->makeNeutral();
 
+    // Taming
     auto canBeTamed = xr.findChild("canBeTamed", elem);
     if (canBeTamed) {
       nt->canBeTamed(true);
       if (xr.findAttr(canBeTamed, "consumes", s)) nt->tamingRequiresItem(s);
     }
+
+    // Gathering
+    if (xr.findAttr(elem, "gatherReq", s)) nt->yield.requiresTool(s);
 
     if (xr.findAttr(elem, "maxDistanceFromSpawner", n))
       nt->maxDistanceFromSpawner(n);

@@ -1008,6 +1008,7 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
 
     // Gathering
     if (xr.getChildren("yield", elem).size() > 0) nt->canGather(true);
+    if (xr.findAttr(elem, "gatherReq", s)) nt->gatherReq(s);
     // Gathering yields (used to show unlock chances)
     for (auto yield : xr.getChildren("yield", elem)) {
       if (!xr.findAttr(yield, "id", s)) continue;

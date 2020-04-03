@@ -101,4 +101,28 @@ TEST_CASE("Gathering from an NPC") {
       }
     }
   }
+
+  GIVEN("an NPC that can be gathered with a tool") {
+    auto data = R"(
+      <item id="fur" />
+      <npcType id="mouse" maxHealth="1" gatherReq="tweezers">
+        <yield id="fur" />
+      </npcType>
+    )";
+
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    const auto &mouse = s.addNPC("mouse", {10, 15});
+
+    WHEN("a user tries to gather from it") {
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      c.sendMessage(CL_GATHER, makeArgs(mouse.serial()));
+
+      THEN("he doesn't have an item") {
+        REPEAT_FOR_MS(100);
+        CHECK(!user.inventory(0).first.hasItem());
+      }
+    }
+  }
 }
