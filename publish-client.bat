@@ -24,6 +24,12 @@ rem Assemble zip
 cd client-publish
 "C:\Program Files\7-Zip\7z" a client.zip Hellas\
 
+rem Copy to local play directory
+copy client.zip "F:\Permanent\Hellas production client\"
+pushd "F:\Permanent\Hellas production client"
+7z.exe x client.zip -aoa
+popd
+
 rem Publish zip
 "C:\Program Files (x86)\WinSCP\WinSCP.com" ^
   /log="WinSCP.log" /ini=nul ^
