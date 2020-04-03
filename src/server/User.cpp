@@ -1651,6 +1651,13 @@ void User::abandonQuest(Quest::ID id) {
   sendMessage({SV_QUEST_CAN_BE_STARTED, id});
 }
 
+void User::abandonAllQuests() {
+  auto copy = _quests;
+  for (auto &pair : copy) {
+    abandonQuest(pair.first);
+  }
+}
+
 void User::markQuestAsCompleted(const Quest::ID &id) {
   _questsCompleted.insert(id);
 }

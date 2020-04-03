@@ -21,6 +21,8 @@ bool Server::endTutorial(const Object &obj, User &performer,
 
   performer.getClass().unlearnAll();
 
+  performer.abandonAllQuests();
+
   performer.clearInventory();
   performer.clearGear();
 

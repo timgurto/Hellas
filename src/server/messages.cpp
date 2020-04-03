@@ -2377,6 +2377,8 @@ void Server::handle_DG_SKIP_TUTORIAL(User &user) {
   auto spellToTeach = UTILITY_SPELLS[userClass.type().id()];
   userClass.teachSpell(spellToTeach);
 
+  user.abandonAllQuests();
+
   user.clearInventory();
   user.clearGear();
   user.addConstruction("fire");

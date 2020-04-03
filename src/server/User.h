@@ -366,6 +366,7 @@ class User : public Object {  // TODO: Don't inherit from Object
     return _questsCompleted;
   }
   void abandonQuest(Quest::ID id);
+  void abandonAllQuests();
   const std::map<Quest::ID, ms_t> &questsInProgress() const { return _quests; }
   void markQuestAsCompleted(const Quest::ID &id);
   void markQuestAsStarted(const Quest::ID &id, ms_t timeRemaining);
