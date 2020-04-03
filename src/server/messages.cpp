@@ -2366,6 +2366,8 @@ void Server::handle_CL_AUTO_CONSTRUCT(User &user, Serial serial) {
 }
 
 void Server::handle_DG_SKIP_TUTORIAL(User &user) {
+  if (!user.isInTutorial()) return;
+
   user.exploration().unexploreAll(user.socket());
   user.setSpawnPointToPostTutorial();
   user.moveToSpawnPoint();
