@@ -1823,9 +1823,9 @@ void Server::handle_CL_CEDE(User &user, Serial serial) {
     sendMessage(user.socket(), WARNING_DOESNT_EXIST);
     return;
   }
-  auto *obj = _entities.find<Object>(serial);
+  auto *ent = _entities.find(serial);
 
-  if (!obj->permissions.isOwnedByPlayer(user.name())) {
+  if (!ent->permissions.isOwnedByPlayer(user.name())) {
     sendMessage(user.socket(), WARNING_NO_PERMISSION);
     return;
   }
@@ -1836,12 +1836,13 @@ void Server::handle_CL_CEDE(User &user, Serial serial) {
     return;
   }
 
-  if (obj->objType().isPlayerUnique()) {
+  const auto *obj = dynamic_cast<const Object *>(ent);
+  if (obj && obj->objType().isPlayerUnique()) {
     sendMessage(user.socket(), ERROR_CANNOT_CEDE);
     return;
   }
 
-  obj->permissions.setCityOwner(city);
+  ent->permissions.setCityOwner(city);
 }
 
 void Server::handle_CL_GRANT(User &user, Serial serial, std::string username) {
