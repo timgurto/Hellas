@@ -62,6 +62,8 @@ class User : public Object {  // TODO: Don't inherit from Object
   MapPoint _actionLocation;             // Construct
   bool _actionOwnedByCity;              // Construct
 
+  bool _isInTutorial{true};
+
   Exploration _exploration;
 
   std::set<std::string> _knownRecipes, _knownConstructions;
@@ -92,11 +94,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   bool _isInitialised{false};
 
   XP _xp = 0;
-#ifdef _DEBUG
   Level _level = 1;
-#else
-  Level _level = 1;
-#endif
   void sendXPMessage() const;
   void announceLevelUp() const;
 
@@ -181,6 +179,8 @@ class User : public Object {  // TODO: Don't inherit from Object
   void setHotbarAction(size_t button, int category, const std::string &id);
   void sendHotbarMessage();
   const std::vector<HotbarAction> &hotbar() const { return _hotbar; }
+  void markTutorialAsCompleted() { _isInTutorial = false; }
+  bool isInTutorial() const { return _isInTutorial; }
 
   void onMove() override;
 

@@ -44,6 +44,8 @@ bool Server::endTutorial(const Object &obj, User &performer,
   server.removeAllObjectsOwnedBy(
       {Permissions::Owner::PLAYER, performer.name()});
 
+  performer.markTutorialAsCompleted();
+
   return true;
 }
 

@@ -47,8 +47,12 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     auto xp = XP{0};
     if (xr.findAttr(elem, "xp", xp)) user.xp(xp);
 
+    auto n = 0;
+
+    if (!xr.findAttr(elem, "isInTutorial", n) || n != 1)
+      user.markTutorialAsCompleted();
+
     if (allowSideEffects) {
-      auto n = 0;
       if (xr.findAttr(elem, "isKing", n) && n == 1) makePlayerAKing(user);
 
       if (xr.findAttr(elem, "isDriving", n) && n == 1) {
@@ -259,6 +263,7 @@ void Server::writeUserData(const User &user) const {
   xw.setAttr(e, "realWorldLocation", user.realWorldLocation());
   xw.setAttr(e, "class", user.getClass().type().id());
   if (_kings.isPlayerAKing(user.name())) xw.setAttr(e, "isKing", 1);
+  if (user.isInTutorial()) xw.setAttr(e, "isInTutorial", 1);
   xw.setAttr(e, "level", user.level());
   xw.setAttr(e, "xp", user.xp());
   if (user.isDriving()) xw.setAttr(e, "isDriving", 1);

@@ -34,6 +34,7 @@ void Server::writeUserToFile(const User &user, std::ostream &stream) const {
          << "level: \"" << user.level() << "\","
          << "xp: \"" << user.xp() << "\","
          << "xpNeeded: \"" << user.XP_PER_LEVEL[user.level()] << "\","
+         << "isInTutorial: " << user.isInTutorial() << ","
          << "x: \"" << user.location().x << "\","
          << "y: \"" << user.location().y << "\","
          << "city: \"" << _cities.getPlayerCity(user.name()) << "\","

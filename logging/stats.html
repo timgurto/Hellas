@@ -72,7 +72,8 @@
         }
         cells += '<td>' + flag + "</td>";
         
-        cells += '<td>' + user.name + "</td>";
+        var tutorialString = user.isInTutorial ? " &#128700;" : "";
+        cells += '<td>' + user.name + tutorialString + "</td>";
         
         cells += '<td align="right">' + timeDisplay(user.secondsOnlineOrOffline*1000) + "</td>";
         

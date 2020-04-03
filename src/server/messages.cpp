@@ -2384,6 +2384,10 @@ void Server::handle_DG_SKIP_TUTORIAL(User &user) {
   user.clearGear();
   user.addConstruction("fire");
   user.sendMessage({SV_CONSTRUCTIONS, makeArgs(1, "fire")});
+
+  removeAllObjectsOwnedBy({Permissions::Owner::PLAYER, user.name()});
+
+  user.markTutorialAsCompleted();
 }
 
 void Server::broadcast(const Message &msg) {
