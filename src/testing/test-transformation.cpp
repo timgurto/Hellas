@@ -128,4 +128,29 @@ TEST_CASE("Transform on gather") {
       THEN("it becomes a stump") { WAIT_UNTIL(tree.type()->id() == "stump"); }
     }
   }
+
+  GIVEN("a butterfly that transforms into a caterpillar when gathered") {
+    auto data = R"(
+      <npcType id="butterfly" >
+        <yield id="wings" />
+        <transform id="caterpillar" whenEmpty="1" />
+      </npcType>
+      <npcType id="caterpillar" />
+      <item id="wings" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    const auto &butterfly = s.addNPC("butterfly", {10, 15});
+    CHECK(s.entities().size() == 1);
+
+    WHEN("a user gathers from it") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      c.sendMessage(CL_GATHER, makeArgs(butterfly.serial()));
+
+      THEN("it becomes a caterpillar") {
+        REPEAT_FOR_MS(100);
+        CHECK(s.entities().size() == 1);
+      }
+    }
+  }
 }
