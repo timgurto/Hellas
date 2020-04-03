@@ -407,6 +407,9 @@ class Client {
   void toast(const std::string &icon, const std::string &message);
   void toast(const Texture &icon, const std::string &message);
   void initQuestProgress();
+  Button *_skipTutorialButton{nullptr};
+  ConfirmationWindow *_skipTutorialConfirmation{nullptr};
+  void initSkipTutorialButton();
   OutlinedLabel *_instructionsLabel{nullptr};
 
   // Chat

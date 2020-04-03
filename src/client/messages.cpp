@@ -105,6 +105,15 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
+      case SV_YOU_ARE_IN_THE_TUTORIAL:
+        if (del != MSG_END) break;
+        _skipTutorialButton->show();
+        break;
+      case SV_YOU_HAVE_FINISHED_THE_TUTORIAL:
+        if (del != MSG_END) break;
+        _skipTutorialButton->hide();
+        break;
+
       case SV_USER_CONNECTED: {
         std::string name;
         readString(singleMsg, name, MSG_END);
@@ -2594,7 +2603,7 @@ void Client::initializeMessageNames() {
   _messageCommands["giveObject"] = DG_GIVE_OBJECT;
   _messageCommands["unlock"] = DG_UNLOCK;
   _messageCommands["level"] = DG_LEVEL;
-  _messageCommands["skip"] = DG_SKIP_TUTORIAL;
+  _messageCommands["skip"] = CL_SKIP_TUTORIAL;
   _messageCommands["spells"] = DG_SPELLS;
   _messageCommands["die"] = DG_DIE;
 

@@ -1484,12 +1484,9 @@ void Server::handleBufferedMessages(const Socket &client,
         break;
       }
 
-      case DG_SKIP_TUTORIAL:
+      case CL_SKIP_TUTORIAL:
         if (del != MSG_END) return;
-        if (!isDebug()) break;
-
         handle_DG_SKIP_TUTORIAL(*user);
-
         break;
 
       case DG_SPELLS: {

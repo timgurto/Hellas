@@ -31,6 +31,9 @@ enum MessageCode {
   // "How long have I played?"
   CL_REQUEST_TIME_PLAYED,
 
+  // "I want to skip the rest of the tutorial"
+  CL_SKIP_TUTORIAL,
+
   // "My location has changed, and is now ..."
   // Arguments: x, y
   CL_LOCATION,
@@ -248,6 +251,10 @@ enum MessageCode {
   // A user has disconnected. Broadcast to all players.
   // Arguments: username
   SV_USER_DISCONNECTED,
+
+  // The user is in the tutorial, or has finished it.  So that the client can provide UI.
+  SV_YOU_ARE_IN_THE_TUTORIAL,
+  SV_YOU_HAVE_FINISHED_THE_TUTORIAL,
 
   // A row of map-exploration details.
   // Each segment is a 30+-bit number detailing 30 chunks.
@@ -731,9 +738,6 @@ enum MessageCode {
   // "Teleport me to ..."
   // Arguments: x, y
   DG_TELEPORT,
-
-  // End the tutorial
-  DG_SKIP_TUTORIAL,
 
   // "Teach me all spells"
   DG_SPELLS,

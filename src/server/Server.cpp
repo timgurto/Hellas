@@ -337,6 +337,9 @@ void Server::addUser(const Socket &socket, const std::string &name,
 
   sendRelevantEntitiesToUser(newUser);
 
+  // Tell him if he's in the tutorial
+  if (newUser.isInTutorial()) newUser.sendMessage({SV_YOU_ARE_IN_THE_TUTORIAL});
+
   // Send him his inventory
   for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
     if (newUser.inventory(i).first.hasItem())

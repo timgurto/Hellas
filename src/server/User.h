@@ -179,7 +179,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   void setHotbarAction(size_t button, int category, const std::string &id);
   void sendHotbarMessage();
   const std::vector<HotbarAction> &hotbar() const { return _hotbar; }
-  void markTutorialAsCompleted() { _isInTutorial = false; }
+  void markTutorialAsCompleted();
   bool isInTutorial() const { return _isInTutorial; }
 
   void onMove() override;

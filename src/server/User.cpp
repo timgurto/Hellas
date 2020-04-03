@@ -853,6 +853,11 @@ void User::sendHotbarMessage() {
   sendMessage({SV_HOTBAR, args});
 }
 
+void User::markTutorialAsCompleted() {
+  _isInTutorial = false;
+  sendMessage({SV_YOU_HAVE_FINISHED_THE_TUTORIAL});
+}
+
 void User::onMove() {
   auto &server = Server::instance();
 

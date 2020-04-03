@@ -43,6 +43,7 @@ void Client::initUI() {
   initTargetBuffs();
   initToasts();
   initQuestProgress();
+  initSkipTutorialButton();
 
   const auto ERROR_FROM_BOTTOM = 50;
   _lastErrorMessage = new OutlinedLabel(
@@ -439,6 +440,24 @@ void Client::initQuestProgress() {
       new List{{SCREEN_X - WIDTH, Y, WIDTH, HEIGHT}, Element::TEXT_HEIGHT + 2};
   addUI(_questProgress);
   _questProgress->ignoreMouseEvents();
+}
+
+void Client::initSkipTutorialButton() {
+  const auto W = 100_px, H = 15_px, X = (SCREEN_X - W) / 2,
+             Y = SCREEN_Y - H - 20;
+  _skipTutorialButton = new Button({X, Y, W, H}, "Skip tutorial", [this]() {
+    std::string confirmationText =
+        "Are you sure you want to skip the rest of the tutorial?";
+    if (_skipTutorialConfirmation)
+      removeWindow(_skipTutorialConfirmation);
+    else
+      _skipTutorialConfirmation =
+          new ConfirmationWindow(confirmationText, CL_SKIP_TUTORIAL, {});
+    addWindow(_skipTutorialConfirmation);
+    _skipTutorialConfirmation->show();
+  });
+  addUI(_skipTutorialButton);
+  _skipTutorialButton->hide();
 }
 
 void Client::refreshQuestProgress() {
