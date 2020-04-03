@@ -60,6 +60,8 @@ class ClientItem : public Item, public HasSounds {
  public:
   ClientItem(const std::string &id = "", const std::string &name = "");
 
+  bool operator<(const ClientItem &rhs) const { return _name < rhs._name; }
+
   const std::string &name() const { return _name; }
   const Texture &icon() const { return _icon; }
   void icon(const std::string &filename);

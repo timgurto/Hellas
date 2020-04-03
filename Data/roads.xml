@@ -1,18 +1,40 @@
 <root>
 
 <buff id="roadMovement1" name="Road" icon="outlineFoot"
-    description="Movement speed increased by 20%">
-    <stats speed="1.20" />
+    description="Movement speed increased by 15%">
+    <stats speed="1.15" />
+    <nonStacking category="road" />
+</buff>
+<buff id="roadMovement2" name="Road" icon="outlineFoot"
+    description="Movement speed increased by 25%">
+    <stats speed="1.25" />
+    <nonStacking category="road" />
 </buff>
 
-<objectType id="stoneRoad" name="Stone Road"
+<objectType id="rockRoad" name="Primitive Road"
     xDrawOffset="-16" yDrawOffset="-16" collides="0" isFlat="1">
     <collisionRect x="-16" y="-16" w="32" h="32" />
     <grantsBuff id="roadMovement1" radius="0" />
     <material id="smoothRock" quantity="9" />
     <unlockedBy recipe="smoothRock" chance="0.2" />
+    <unlockedBy gather="rock" chance="0.01" />
     <durability item="smoothRock" quantity="9" />
     <canBeRepaired cost="smoothRock" />
 </objectType>
+<objectType id="brickRoad" name="Brick Road"
+    xDrawOffset="-16" yDrawOffset="-16" collides="0" isFlat="1">
+    <collisionRect x="-16" y="-16" w="32" h="32" />
+    <grantsBuff id="roadMovement2" radius="0" />
+    <material id="brick" quantity="4" />
+    <unlockedBy recipe="brick" chance="0.02" />
+    <unlockedBy construction="rockRoad" chance="0.02" />
+    <durability item="brick" quantity="4" />
+    <canBeRepaired cost="brick" />
+</objectType>
+<!--objectType id="stoneRoad" name="Stone Road"
+    xDrawOffset="-24" yDrawOffset="-24" collides="0" isFlat="1">
+    <collisionRect x="-16" y="-16" w="32" h="32" />
+    <grantsBuff id="roadMovement3" radius="0" />
+</objectType-->
 
 </root>
