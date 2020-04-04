@@ -252,6 +252,9 @@
     <ClInclude Include="third-party\tinyxml\tinystr.h" />
     <ClInclude Include="third-party\tinyxml\tinyxml.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="src\MessageParser.inl" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
