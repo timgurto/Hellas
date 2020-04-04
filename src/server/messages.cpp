@@ -106,12 +106,11 @@ void Server::handleSingleMessage<CL_LOGIN_EXISTING>(
 void Server::handleBufferedMessages(const Socket &client,
                                     const std::string &messages) {
   _debug(messages);
-  int msgCode;
   char del;
   MessageParser parser(messages);
   User *user = nullptr;
   while (parser.hasAnotherMessage()) {
-    parser.iss >> del >> msgCode >> del;
+    auto msgCode = parser.nextMessage();
 
     // Discard message if this client has not yet logged in
     const auto messagesAllowedBeforeLogin =
@@ -132,6 +131,7 @@ void Server::handleBufferedMessages(const Socket &client,
     }
 
     auto &iss = parser.iss;
+    del = parser.getLastDelimiterRead();
 
     switch (msgCode) {
       SEND_MESSAGE_TO_HANDLER(CL_REPORT_BUG)
