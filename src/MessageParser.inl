@@ -52,3 +52,24 @@ bool MessageParser::readArgs(T1 &arg1, T2 &arg2, T3 &arg3) {
 
   return true;
 }
+
+template <typename T1, typename T2, typename T3, typename T4>
+bool MessageParser::readArgs(T1 &arg1, T2 &arg2, T3 &arg3, T4 &arg4) {
+  parseSingleArg(arg1, NotLast);
+  iss >> _delimiter;
+  if (_delimiter != MSG_DELIM) return false;
+
+  parseSingleArg(arg2, NotLast);
+  iss >> _delimiter;
+  if (_delimiter != MSG_DELIM) return false;
+
+  parseSingleArg(arg3, NotLast);
+  iss >> _delimiter;
+  if (_delimiter != MSG_DELIM) return false;
+
+  parseSingleArg(arg4, Last);
+  iss >> _delimiter;
+  if (_delimiter != MSG_END) return false;
+
+  return true;
+}

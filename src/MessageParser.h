@@ -23,6 +23,9 @@ class MessageParser {
   template <typename T1, typename T2, typename T3>
   bool readArgs(T1 &arg1, T2 &arg2, T3 &arg3);
 
+  template <typename T1, typename T2, typename T3, typename T4>
+  bool readArgs(T1 &arg1, T2 &arg2, T3 &arg3, T4 &arg4);
+
   std::istringstream iss;  // TODO: make private
 
  private:

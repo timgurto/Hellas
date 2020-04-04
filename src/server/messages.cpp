@@ -40,7 +40,6 @@ void Server::handleSingleMessage<CL_LOGIN_EXISTING>(const Socket &sender,
   READ_ARGS(username, passwordHash, clientVersion);
 
 #ifndef _DEBUG
-  // Check that version matches
   if (clientVersion != version()) {
     sendMessage(client, {WARNING_WRONG_VERSION, version()});
     return;
@@ -83,6 +82,35 @@ void Server::handleSingleMessage<CL_LOGIN_EXISTING>(const Socket &sender,
   addUser(sender, username, passwordHash);
 }
 
+template <>
+void Server::handleSingleMessage<CL_LOGIN_NEW>(const Socket &sender, User &user,
+                                               MessageParser &parser) {
+  std::string name, pwHash, classID, clientVersion;
+  READ_ARGS(name, pwHash, classID, clientVersion);
+
+#ifndef _DEBUG
+  // Check that version matches
+  if (clientVersion != version()) {
+    sendMessage(client, {WARNING_WRONG_VERSION, version()});
+    return;
+  }
+#endif
+
+  if (!isUsernameValid(name)) {
+    sendMessage(sender, WARNING_INVALID_USERNAME);
+    return;
+  }
+
+  // Check that user doesn't exist
+  auto userFile = _userFilesPath + name + ".usr";
+  if (fileExists(userFile)) {
+    sendMessage(sender, WARNING_NAME_TAKEN);
+    return;
+  }
+
+  addUser(sender, name, pwHash, classID);
+}
+
 #define SEND_MESSAGE_TO_HANDLER(MESSAGE_CODE)                 \
   case MESSAGE_CODE:                                          \
     handleSingleMessage<MESSAGE_CODE>(client, *user, parser); \
@@ -117,28 +145,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_REPORT_BUG)
       SEND_MESSAGE_TO_HANDLER(CL_PING)
       SEND_MESSAGE_TO_HANDLER(CL_LOGIN_EXISTING)
-
-      case CL_LOGIN_NEW: {
-        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_DELIM);
-        auto name = std::string(_stringInputBuffer);
-        iss >> del;
-
-        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_DELIM);
-        auto pwHash = std::string(_stringInputBuffer);
-        iss >> del;
-
-        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_DELIM);
-        auto classID = std::string(_stringInputBuffer);
-        iss >> del;
-
-        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
-        auto clientVersion = std::string(_stringInputBuffer);
-        iss >> del;
-        if (del != MSG_END) return;
-
-        handle_CL_LOGIN_NEW(client, name, pwHash, classID, clientVersion);
-        break;
-      }
+      SEND_MESSAGE_TO_HANDLER(CL_LOGIN_NEW)
 
       case CL_REQUEST_TIME_PLAYED: {
         iss >> del;
@@ -1557,34 +1564,6 @@ void Server::handleBufferedMessages(const Socket &client,
                << Log::endl;
     }
   }
-}
-
-void Server::handle_CL_LOGIN_NEW(const Socket &client, const std::string &name,
-                                 const std::string &pwHash,
-                                 const std::string &classID,
-                                 std::string &clientVersion) {
-#ifndef _DEBUG
-  // Check that version matches
-  if (clientVersion != version()) {
-    sendMessage(client, {WARNING_WRONG_VERSION, version()});
-    return;
-  }
-#endif
-
-  // Check that username is valid
-  if (!isUsernameValid(name)) {
-    sendMessage(client, WARNING_INVALID_USERNAME);
-    return;
-  }
-
-  // Check that user doesn't exist
-  auto userFile = _userFilesPath + name + ".usr";
-  if (fileExists(userFile)) {
-    sendMessage(client, WARNING_NAME_TAKEN);
-    return;
-  }
-
-  addUser(client, name, pwHash, classID);
 }
 
 void Server::handle_CL_TAKE_ITEM(User &user, Serial serial, size_t slotNum) {
