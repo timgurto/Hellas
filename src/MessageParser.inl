@@ -16,43 +16,39 @@ void MessageParser::parseSingleArg(std::string &arg, ArgPosition argPosition) {
 
 template <typename T1>
 bool MessageParser::parseArgs(T1 &arg1) {
-  char del;
-
   parseSingleArg(arg1, Last);
-  iss >> del;
-  if (del != MSG_END) return false;
+  iss >> _delimiter;
+  if (_delimiter != MSG_END) return false;
 
   return true;
 }
 
 template <typename T1, typename T2>
 bool MessageParser::parseArgs(T1 &arg1, T2 &arg2) {
-  char del;
   parseSingleArg(arg1, NotLast);
-  iss >> del;
-  if (del != MSG_DELIM) return false;
+  iss >> _delimiter;
+  if (_delimiter != MSG_DELIM) return false;
 
   parseSingleArg(arg2, Last);
-  iss >> del;
-  if (del != MSG_END) return false;
+  iss >> _delimiter;
+  if (_delimiter != MSG_END) return false;
 
   return true;
 }
 
 template <typename T1, typename T2, typename T3>
 bool MessageParser::parseArgs(T1 &arg1, T2 &arg2, T3 &arg3) {
-  char del;
   parseSingleArg(arg1, NotLast);
-  iss >> del;
-  if (del != MSG_DELIM) return false;
+  iss >> _delimiter;
+  if (_delimiter != MSG_DELIM) return false;
 
   parseSingleArg(arg2, NotLast);
-  iss >> del;
-  if (del != MSG_DELIM) return false;
+  iss >> _delimiter;
+  if (_delimiter != MSG_DELIM) return false;
 
   parseSingleArg(arg3, Last);
-  iss >> del;
-  if (del != MSG_END) return false;
+  iss >> _delimiter;
+  if (_delimiter != MSG_END) return false;
 
   return true;
 }
