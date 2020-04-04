@@ -142,7 +142,6 @@
     <spawnPoint type="goat16" y="40760" x="36800" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="goat16" y="40880" x="41120" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="goat16" y="42200" x="40096" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint type="goat5" y="23576" x="35160" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="goat5" y="24416" x="34048" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="goat5" y="24720" x="35072" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="goat5" y="26280" x="32432" quantity="5" radius="250" respawnTime="300000" />
@@ -191,6 +190,13 @@
     <spawnPoint type="meleeMan8" y="28792" x="26216" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="meleeMan8" y="29720" x="27504" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="meleeMan8" y="30416" x="26184" quantity="5" radius="250" respawnTime="300000" />
+    <spawnPoint type="pig1" y="21096" x="34878" quantity="5" radius="250" respawnTime="10000" />
+    <spawnPoint type="pig1" y="21968" x="34014" quantity="5" radius="250" respawnTime="10000" />
+    <spawnPoint type="pig1" y="22490" x="36318" quantity="5" radius="250" respawnTime="10000" />
+    <spawnPoint type="pig1" y="23122" x="33810" quantity="5" radius="250" respawnTime="10000" />
+    <spawnPoint type="pig1" y="23212" x="35942" quantity="5" radius="250" respawnTime="10000" />
+    <spawnPoint type="pig1" y="23592" x="35230" quantity="5" radius="250" respawnTime="10000" />
+    <spawnPoint type="pig1" y="23878" x="34458" quantity="5" radius="250" respawnTime="10000" />
     <spawnPoint type="rangedMan11" y="21120" x="16568" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="rangedMan11" y="22816" x="18600" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="rangedMan11" y="23040" x="16752" quantity="5" radius="250" respawnTime="300000" />

@@ -38,6 +38,11 @@
 </npcType>
 
 
+<npcTemplate id="pig"
+    imageFile="critter" sounds="pig"
+    xDrawOffset="-11" yDrawOffset="-13" >
+    <collisionRect x="-9" y="-4" w="18" h="7" />
+</npcTemplate>
 <npcTemplate id="goat"
     imageFile="goat" sounds="goat"
     xDrawOffset="-17" yDrawOffset="-28" >
@@ -64,6 +69,9 @@
     <collisionRect x="-9" y="-4" w="18" h="7" />
 </npcTemplate>
 
+<npcType
+    id="pig1" name="Critter" template="pig"
+    level="1" maxHealth="21" attack="4" attackTime="2750" isNeutral="1" />
 <npcType
     id="goat5" name="Mild-Mannered Goat" template="goat"
     level="5" maxHealth="25" attack="6" attackTime="2750" isNeutral="1" >
