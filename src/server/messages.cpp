@@ -111,6 +111,14 @@ void Server::handleSingleMessage<CL_LOGIN_NEW>(const Socket &client, User &user,
   addUser(client, name, pwHash, classID);
 }
 
+template <>
+void Server::handleSingleMessage<CL_REQUEST_TIME_PLAYED>(
+    const Socket &client, User &user, MessageParser &parser) {
+  if (parser.getLastDelimiterRead() != MSG_END) return;
+
+  user.sendTimePlayed();
+}
+
 #define SEND_MESSAGE_TO_HANDLER(MESSAGE_CODE)                 \
   case MESSAGE_CODE:                                          \
     handleSingleMessage<MESSAGE_CODE>(client, *user, parser); \
@@ -146,13 +154,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_PING)
       SEND_MESSAGE_TO_HANDLER(CL_LOGIN_EXISTING)
       SEND_MESSAGE_TO_HANDLER(CL_LOGIN_NEW)
-
-      case CL_REQUEST_TIME_PLAYED: {
-        iss >> del;
-        if (del != MSG_END) return;
-        user->sendTimePlayed();
-        break;
-      }
+      SEND_MESSAGE_TO_HANDLER(CL_REQUEST_TIME_PLAYED)
 
       case CL_LOCATION: {
         double x, y;
