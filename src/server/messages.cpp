@@ -13,7 +13,7 @@
   if (!argsWereWellFormed) return
 
 template <>
-void Server::handleSingleMessage<CL_REPORT_BUG>(const Socket &sender,
+void Server::handleSingleMessage<CL_REPORT_BUG>(const Socket &client,
                                                 User &user,
                                                 MessageParser &parser) {
   std::string bugDescription;
@@ -24,16 +24,16 @@ void Server::handleSingleMessage<CL_REPORT_BUG>(const Socket &sender,
 }
 
 template <>
-void Server::handleSingleMessage<CL_PING>(const Socket &sender, User &user,
+void Server::handleSingleMessage<CL_PING>(const Socket &client, User &user,
                                           MessageParser &parser) {
   ms_t timeSent;
   READ_ARGS(timeSent);
 
-  sendMessage(sender, {SV_PING_REPLY, timeSent});
+  sendMessage(client, {SV_PING_REPLY, timeSent});
 }
 
 template <>
-void Server::handleSingleMessage<CL_LOGIN_EXISTING>(const Socket &sender,
+void Server::handleSingleMessage<CL_LOGIN_EXISTING>(const Socket &client,
                                                     User &user,
                                                     MessageParser &parser) {
   std::string username, passwordHash, clientVersion;
@@ -47,13 +47,13 @@ void Server::handleSingleMessage<CL_LOGIN_EXISTING>(const Socket &sender,
 #endif
 
   if (!isUsernameValid(username)) {
-    sendMessage(sender, WARNING_INVALID_USERNAME);
+    sendMessage(client, WARNING_INVALID_USERNAME);
     return;
   }
 
   auto userIsAlreadyLoggedIn = _usersByName.count(username) == 1;
   if (userIsAlreadyLoggedIn) {
-    sendMessage(sender, WARNING_DUPLICATE_USERNAME);
+    sendMessage(client, WARNING_DUPLICATE_USERNAME);
     return;
   }
 
@@ -65,7 +65,7 @@ void Server::handleSingleMessage<CL_LOGIN_EXISTING>(const Socket &sender,
     return;
 #else
     // Allow quick, auto account creation in debug mode
-    addUser(sender, username, passwordHash, _classes.begin()->first);
+    addUser(client, username, passwordHash, _classes.begin()->first);
     return;
 #endif
   }
@@ -75,15 +75,15 @@ void Server::handleSingleMessage<CL_LOGIN_EXISTING>(const Socket &sender,
   auto savedPwHash = ""s;
   xr.findAttr(elem, "passwordHash", savedPwHash);
   if (savedPwHash != passwordHash) {
-    sendMessage(sender, WARNING_WRONG_PASSWORD);
+    sendMessage(client, WARNING_WRONG_PASSWORD);
     return;
   }
 
-  addUser(sender, username, passwordHash);
+  addUser(client, username, passwordHash);
 }
 
 template <>
-void Server::handleSingleMessage<CL_LOGIN_NEW>(const Socket &sender, User &user,
+void Server::handleSingleMessage<CL_LOGIN_NEW>(const Socket &client, User &user,
                                                MessageParser &parser) {
   std::string name, pwHash, classID, clientVersion;
   READ_ARGS(name, pwHash, classID, clientVersion);
@@ -97,18 +97,18 @@ void Server::handleSingleMessage<CL_LOGIN_NEW>(const Socket &sender, User &user,
 #endif
 
   if (!isUsernameValid(name)) {
-    sendMessage(sender, WARNING_INVALID_USERNAME);
+    sendMessage(client, WARNING_INVALID_USERNAME);
     return;
   }
 
   // Check that user doesn't exist
   auto userFile = _userFilesPath + name + ".usr";
   if (fileExists(userFile)) {
-    sendMessage(sender, WARNING_NAME_TAKEN);
+    sendMessage(client, WARNING_NAME_TAKEN);
     return;
   }
 
-  addUser(sender, name, pwHash, classID);
+  addUser(client, name, pwHash, classID);
 }
 
 #define SEND_MESSAGE_TO_HANDLER(MESSAGE_CODE)                 \
