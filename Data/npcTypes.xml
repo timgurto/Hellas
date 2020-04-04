@@ -13,6 +13,36 @@
     <loot id="fat" chance="0.05" />
 </lootTable>
 
+<lootTable id="human" > <!-- Total 25% -->
+    <loot id="cookedMeat" chance="0.05" />
+    <loot id="cookedFish" chance="0.05" />
+    <loot id="fig" chance="0.05" />
+    <loot id="boneDust" chance="0.05" />
+    <loot id="smallPot" chance="0.02" />
+    <loot id="water" chance="0.02" />
+    <loot id="entrails" chance="0.01" />
+</lootTable>
+<lootTable id="humanStoneAge" > <!-- Total 35% -->
+    <loot id="rock" chance="0.1" />
+    <loot id="stick" chance="0.1" />
+    <loot id="log" chance="0.05" />
+    <loot id="bone" chance="0.05" />
+    <loot id="hide" chance="0.02" />
+    <loot id="knapper" chance="0.01" />
+    <loot id="stoneKnife" chance="0.01" />
+    <loot id="stoneAxe" chance="0.01" />
+</lootTable>
+<lootTable id="humanTinAge" > <!-- Total 35% -->
+    <loot id="tinCoin" chance="0.1" />
+    <loot id="smoothRock" chance="0.05" />
+    <loot id="tinOre" chance="0.05" />
+    <loot id="crudeClay" chance="0.05" />
+    <loot id="hide" chance="0.05" />
+    <loot id="flax" chance="0.02" />
+    <loot id="linenThread" chance="0.02" />
+    <loot id="arrow" chance="0.01" />
+</lootTable>
+
 
 <!-- Placeholders to guard resources -->
 <npcType
@@ -21,7 +51,7 @@
     xDrawOffset="-18" yDrawOffset="-40"
     imageFile="fireNymph" sounds="nymph" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
-    <loot id="fireEssence" > <normal mean="0.3" sd="0.5" /> </loot>
+    <loot id="fireEssence" > <normal mean="0.8" sd="0.5" /> </loot>
     <particles profile="fire" y="-15" />
     <particles profile="fireSmall" x="-7" y="-21" />
     <particles profile="fireSmall" x="7" y="-28" />
@@ -35,6 +65,8 @@
         <gear id="linenChitonOrange" />
         <gear id="sandals" />
     </humanoid>
+    <lootTable id="human" />
+    <lootTable id="humanTinAge" />
 </npcType>
 
 
@@ -230,6 +262,8 @@
     <humanoid base="athlete">
         <gear id="boneClub" />
     </humanoid>
+    <lootTable id="human" />
+    <lootTable id="humanStoneAge" />
 </npcType>
 <npcType
     id="meleeMan7" name="River Axeman"
@@ -238,6 +272,8 @@
         <gear id="stoneAxe" />
         <gear id="flintstones" />
     </humanoid>
+    <lootTable id="human" />
+    <lootTable id="humanStoneAge" />
 </npcType>
 <npcType
     id="meleeMan8" name="Badlands Brute"
@@ -246,6 +282,8 @@
         <gear id="hide" />
         <gear id="rock" />
     </humanoid>
+    <lootTable id="human" />
+    <lootTable id="humanStoneAge" />
 </npcType>
 <npcType
     id="meleeMan13" name="River Ruffian"
@@ -254,6 +292,8 @@
         <gear id="leatherGloves" />
         <gear id="sandals" />
     </humanoid>
+    <lootTable id="human" />
+    <lootTable id="humanTinAge" />
 </npcType>
 <npcType
     id="meleeMan14" name="Leaftreader Trapper"
@@ -264,6 +304,8 @@
         <gear id="leatherLamellar" />
         <gear id="sandals" />
     </humanoid>
+    <lootTable id="human" />
+    <lootTable id="humanTinAge" />
 </npcType>
 <npcType
     id="meleeMan15" name="Crossing Guard"
@@ -272,6 +314,8 @@
         <gear id="tinSpear" />
         <gear id="leatherShield" />
     </humanoid>
+    <lootTable id="human" />
+    <lootTable id="humanTinAge" />
 </npcType>
 <npcType
     id="meleeMan16" name="Mountain Settler"
@@ -281,6 +325,8 @@
         <gear id="tinLamellar" />
         <gear id="tinKnife" />
     </humanoid>
+    <lootTable id="human" />
+    <lootTable id="humanTinAge" />
 </npcType>
 <npcType
     id="meleeMan17" name="Fire-Shrine Neophyte"
@@ -290,6 +336,8 @@
         <gear id="fireWand" />
         <gear id="sandals" />
     </humanoid>
+    <lootTable id="human" />
+    <lootTable id="humanTinAge" />
 </npcType>
 
 <npcType
@@ -299,6 +347,8 @@
         <gear id="bow" />
         <gear id="hide" />
     </humanoid>
+    <lootTable id="human" />
+    <lootTable id="humanStoneAge" />
 </npcType>
 <npcType
     id="rangedMan13" name="Leaftreader Scout"
@@ -309,6 +359,8 @@
         <gear id="sandals" />
         <gear id="horn" />
     </humanoid>
+    <lootTable id="human" />
+    <lootTable id="humanTinAge" />
 </npcType>
 <npcType
     id="rangedMan18" name="Fire-Shrine Cultist"
@@ -319,6 +371,8 @@
         <gear id="linenChiton" />
         <gear id="sandals" />
     </humanoid>
+    <lootTable id="human" />
+    <lootTable id="humanTinAge" />
 </npcType>
 <npcType
     id="rangedMan20" name="Trophy Hunter"
@@ -328,6 +382,8 @@
         <gear id="tinLamellar" />
         <gear id="sandals" />
     </humanoid>
+    <lootTable id="human" />
+    <lootTable id="humanTinAge" />
 </npcType>
 
 </root>
