@@ -24,7 +24,7 @@
     xDrawOffset="-14" yDrawOffset="-11"
     canGather="1" gatherTime="3000" gatherParticles="rocks"
     isFlat="1"
-    allowedTerrain="rocks" >
+    allowedTerrain="rocky" >
     <yield id="tin" initialMean="2.5" initialSD="1" initialMin="1" />
     <yield id="rock" initialMean="2" initialSD="2" />
     <durability item="tin" quantity="5" />
@@ -32,7 +32,7 @@
 
 <objectType id="copper" name="Copper Deposit"
     xDrawOffset="-13" yDrawOffset="-11" isFlat="1"
-    allowedTerrain="rocks"
+    allowedTerrain="rocky"
     destroyIfUsedAsTool="1" >
     <tag name="copperDeposit" />
 </objectType>
