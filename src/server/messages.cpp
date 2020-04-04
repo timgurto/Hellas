@@ -31,27 +31,28 @@ bool parseMessageArgs(std::istringstream &message, T1 &arg1) {
 }
 
 template <>
-void Server::handleSingleMessage<CL_REPORT_BUG>(User &sender,
+void Server::handleSingleMessage<CL_REPORT_BUG>(const Socket &sender,
+                                                User &user,
                                                 std::istringstream &message) {
   std::string bugDescription;
   if (!parseMessageArgs(message, bugDescription)) return;
 
   auto bugFile = std::ofstream{"bugs.log", std::ofstream::app};
-  bugFile << sender.name() << ": " << bugDescription << std::endl;
+  bugFile << user.name() << ": " << bugDescription << std::endl;
 }
 
 template <>
-void Server::handleSingleMessage<CL_PING>(User &sender,
+void Server::handleSingleMessage<CL_PING>(const Socket &sender, User &user,
                                           std::istringstream &message) {
   ms_t timeSent;
   if (!parseMessageArgs(message, timeSent)) return;
 
-  sender.sendMessage({SV_PING_REPLY, timeSent});
+  sendMessage(sender, {SV_PING_REPLY, timeSent});
 }
 
-#define SEND_MESSAGE_TO_HANDLER(MESSAGE_CODE)      \
-  case MESSAGE_CODE:                               \
-    handleSingleMessage<MESSAGE_CODE>(*user, iss); \
+#define SEND_MESSAGE_TO_HANDLER(MESSAGE_CODE)              \
+  case MESSAGE_CODE:                                       \
+    handleSingleMessage<MESSAGE_CODE>(client, *user, iss); \
     break;
 
 void Server::handleBufferedMessages(const Socket &client,
