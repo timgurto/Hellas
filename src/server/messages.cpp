@@ -8,9 +8,32 @@
 #include "Vehicle.h"
 #include "objects/Deconstruction.h"
 
+template <typename T>
+void parseSingleMessageArg(std::istringstream &message, T &arg);
+
+template <>
+void parseSingleMessageArg(std::istringstream &message, std::string &arg) {
+  static const size_t BUFFER_SIZE = 1023;
+  char buffer[BUFFER_SIZE + 1];
+  message.get(buffer, BUFFER_SIZE, MSG_END);
+  arg = {buffer};
+}
+
+template <typename T1>
+bool parseMessageArgs(std::istringstream &message, T1 &arg1) {
+  char del;
+  parseSingleMessageArg(message, arg1);
+  message >> del;
+  if (del != MSG_END) return false;
+  return true;
+}
+
 template <>
 void Server::handleSingleMessage<CL_REPORT_BUG>(User &sender,
                                                 std::istringstream &message) {
+  std::string bugDescription;
+  if (!parseMessageArgs(message, bugDescription)) return;
+
   char del;
   message.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
   auto bugText = std::string(_stringInputBuffer);
@@ -18,7 +41,7 @@ void Server::handleSingleMessage<CL_REPORT_BUG>(User &sender,
   if (del != MSG_END) return;
 
   auto bugFile = std::ofstream{"bugs.log", std::ofstream::app};
-  bugFile << sender.name() << ": " << bugText << std::endl;
+  bugFile << sender.name() << ": " << bugDescription << std::endl;
 }
 
 void Server::handleBufferedMessages(const Socket &client,
