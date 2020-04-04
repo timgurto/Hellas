@@ -110,7 +110,7 @@ void Server::handleBufferedMessages(const Socket &client,
   char del;
   MessageParser parser(messages);
   User *user = nullptr;
-  while (parser.iss.peek() == MSG_START) {
+  while (parser.hasAnotherMessage()) {
     parser.iss >> del >> msgCode >> del;
 
     // Discard message if this client has not yet logged in

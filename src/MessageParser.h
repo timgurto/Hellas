@@ -8,5 +8,7 @@ class MessageParser {
  public:
   MessageParser(const std::string &input) : iss(input) {}
 
+  bool hasAnotherMessage();
+
   std::istringstream iss;
 };

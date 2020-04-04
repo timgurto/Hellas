@@ -191,6 +191,7 @@
     <ClCompile Include="src\testing\test-spawning.cpp" />
     <ClCompile Include="src\client\ImageWithHighlight.cpp" />
     <ClCompile Include="src\Serial.cpp" />
+    <ClCompile Include="src\MessageParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -335,5 +336,6 @@
     <ClInclude Include="src\client\KeyboardStateFetcher.h" />
     <ClInclude Include="src\client\ImageWithHighlight.h" />
     <ClInclude Include="src\Serial.h" />
+    <ClInclude Include="src\MessageParser.h" />
   </ItemGroup>
 </Project>
