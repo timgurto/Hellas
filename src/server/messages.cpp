@@ -34,12 +34,6 @@ void Server::handleSingleMessage<CL_REPORT_BUG>(User &sender,
   std::string bugDescription;
   if (!parseMessageArgs(message, bugDescription)) return;
 
-  char del;
-  message.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
-  auto bugText = std::string(_stringInputBuffer);
-  message >> del;
-  if (del != MSG_END) return;
-
   auto bugFile = std::ofstream{"bugs.log", std::ofstream::app};
   bugFile << sender.name() << ": " << bugDescription << std::endl;
 }
