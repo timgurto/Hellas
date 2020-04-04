@@ -172,6 +172,7 @@ void Server::handleSingleMessage<CL_ORDER_NPC_TO_STAY>(const Socket &client,
   READ_ARGS(serial);
 
   auto *npc = _entities.find<NPC>(serial);
+  if (!npc) return;
   npc->orderToStay();
 }
 

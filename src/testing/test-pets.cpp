@@ -801,14 +801,22 @@ TEST_CASE("Stay/follow") {
       }
     }
   }
+
+  GIVEN("a server and client") {
+    auto s = TestServer{};
+    auto c = TestClient{};
+    s.waitForUsers(1);
+
+    WHEN("the client tries to order a nonexistent NPC to stay") {
+      c.sendMessage(CL_ORDER_NPC_TO_STAY, makeArgs(42));
+
+      THEN("the server survives") { s.nop(); }
+    }
+  }
 }
 
-// Doesn't exist
-// No permission
 // Too far away
 
-// Follow = follows
-// Stay attacks nearby enemies
 // Stay doesn't contribute to follower count
 // Follow fails if follower count reached
 // If followe count is reduced, one randomly stays
