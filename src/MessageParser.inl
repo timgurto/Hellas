@@ -46,11 +46,11 @@ bool MessageParser::parseArgs(T1 &arg1, T2 &arg2, T3 &arg3) {
   iss >> del;
   if (del != MSG_DELIM) return false;
 
-  parseSingleArg(arg3);
+  parseSingleArg(arg2);
   iss >> del;
   if (del != MSG_DELIM) return false;
 
-  parseSingleArg(arg2, true);
+  parseSingleArg(arg3, true);
   iss >> del;
   if (del != MSG_END) return false;
 
