@@ -9,55 +9,12 @@
 #include "Vehicle.h"
 #include "objects/Deconstruction.h"
 
-template <typename T1>
-bool parseMessageArgs(MessageParser &parser, T1 &arg1) {
-  char del;
-
-  parser.parseSingleArg(arg1, true);
-  parser.iss >> del;
-  if (del != MSG_END) return false;
-
-  return true;
-}
-
-template <typename T1, typename T2>
-bool parseMessageArgs(MessageParser &parser, T1 &arg1, T2 &arg2) {
-  char del;
-  parser.parseSingleArg(arg1);
-  parser.iss >> del;
-  if (del != MSG_DELIM) return false;
-
-  parser.parseSingleArg(arg2, true);
-  parser.iss >> del;
-  if (del != MSG_END) return false;
-
-  return true;
-}
-
-template <typename T1, typename T2, typename T3>
-bool parseMessageArgs(MessageParser &parser, T1 &arg1, T2 &arg2, T3 &arg3) {
-  char del;
-  parser.parseSingleArg(arg1);
-  parser.iss >> del;
-  if (del != MSG_DELIM) return false;
-
-  parser.parseSingleArg(arg3);
-  parser.iss >> del;
-  if (del != MSG_DELIM) return false;
-
-  parser.parseSingleArg(arg2, true);
-  parser.iss >> del;
-  if (del != MSG_END) return false;
-
-  return true;
-}
-
 template <>
 void Server::handleSingleMessage<CL_REPORT_BUG>(const Socket &sender,
                                                 User &user,
                                                 MessageParser &parser) {
   std::string bugDescription;
-  if (!parseMessageArgs(parser, bugDescription)) return;
+  if (!parser.parseArgs(bugDescription)) return;
 
   auto bugFile = std::ofstream{"bugs.log", std::ofstream::app};
   bugFile << user.name() << ": " << bugDescription << std::endl;
@@ -67,7 +24,7 @@ template <>
 void Server::handleSingleMessage<CL_PING>(const Socket &sender, User &user,
                                           MessageParser &parser) {
   ms_t timeSent;
-  if (!parseMessageArgs(parser, timeSent)) return;
+  if (!parser.parseArgs(timeSent)) return;
 
   sendMessage(sender, {SV_PING_REPLY, timeSent});
 }
@@ -77,7 +34,7 @@ void Server::handleSingleMessage<CL_LOGIN_EXISTING>(const Socket &sender,
                                                     User &user,
                                                     MessageParser &parser) {
   std::string username, passwordHash, clientVersion;
-  if (!parseMessageArgs(parser, username, passwordHash, clientVersion)) return;
+  if (!parser.parseArgs(username, passwordHash, clientVersion)) return;
 
   handle_CL_LOGIN_EXISTING(sender, username, passwordHash, clientVersion);
 }
