@@ -15,13 +15,13 @@ class MessageParser {
   char getLastDelimiterRead() const { return _delimiter; }  // TODO: remove
 
   template <typename T1>
-  bool parseArgs(T1 &arg1);
+  bool readArgs(T1 &arg1);
 
   template <typename T1, typename T2>
-  bool parseArgs(T1 &arg1, T2 &arg2);
+  bool readArgs(T1 &arg1, T2 &arg2);
 
   template <typename T1, typename T2, typename T3>
-  bool parseArgs(T1 &arg1, T2 &arg2, T3 &arg3);
+  bool readArgs(T1 &arg1, T2 &arg2, T3 &arg3);
 
   std::istringstream iss;  // TODO: make private
 

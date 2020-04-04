@@ -14,7 +14,7 @@ void Server::handleSingleMessage<CL_REPORT_BUG>(const Socket &sender,
                                                 User &user,
                                                 MessageParser &parser) {
   std::string bugDescription;
-  if (!parser.parseArgs(bugDescription)) return;
+  if (!parser.readArgs(bugDescription)) return;
 
   auto bugFile = std::ofstream{"bugs.log", std::ofstream::app};
   bugFile << user.name() << ": " << bugDescription << std::endl;
@@ -24,7 +24,7 @@ template <>
 void Server::handleSingleMessage<CL_PING>(const Socket &sender, User &user,
                                           MessageParser &parser) {
   ms_t timeSent;
-  if (!parser.parseArgs(timeSent)) return;
+  if (!parser.readArgs(timeSent)) return;
 
   sendMessage(sender, {SV_PING_REPLY, timeSent});
 }
@@ -34,7 +34,7 @@ void Server::handleSingleMessage<CL_LOGIN_EXISTING>(const Socket &sender,
                                                     User &user,
                                                     MessageParser &parser) {
   std::string username, passwordHash, clientVersion;
-  if (!parser.parseArgs(username, passwordHash, clientVersion)) return;
+  if (!parser.readArgs(username, passwordHash, clientVersion)) return;
 
   handle_CL_LOGIN_EXISTING(sender, username, passwordHash, clientVersion);
 }

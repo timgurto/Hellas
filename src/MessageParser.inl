@@ -15,7 +15,7 @@ void MessageParser::parseSingleArg(std::string &arg, ArgPosition argPosition) {
 }
 
 template <typename T1>
-bool MessageParser::parseArgs(T1 &arg1) {
+bool MessageParser::readArgs(T1 &arg1) {
   parseSingleArg(arg1, Last);
   iss >> _delimiter;
   if (_delimiter != MSG_END) return false;
@@ -24,7 +24,7 @@ bool MessageParser::parseArgs(T1 &arg1) {
 }
 
 template <typename T1, typename T2>
-bool MessageParser::parseArgs(T1 &arg1, T2 &arg2) {
+bool MessageParser::readArgs(T1 &arg1, T2 &arg2) {
   parseSingleArg(arg1, NotLast);
   iss >> _delimiter;
   if (_delimiter != MSG_DELIM) return false;
@@ -37,7 +37,7 @@ bool MessageParser::parseArgs(T1 &arg1, T2 &arg2) {
 }
 
 template <typename T1, typename T2, typename T3>
-bool MessageParser::parseArgs(T1 &arg1, T2 &arg2, T3 &arg3) {
+bool MessageParser::readArgs(T1 &arg1, T2 &arg2, T3 &arg3) {
   parseSingleArg(arg1, NotLast);
   iss >> _delimiter;
   if (_delimiter != MSG_DELIM) return false;
