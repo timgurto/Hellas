@@ -8,12 +8,16 @@
 #include "Vehicle.h"
 #include "objects/Deconstruction.h"
 
+#define READ_ARGS(...)                                    \
+  auto argsWereWellFormed = parser.readArgs(__VA_ARGS__); \
+  if (!argsWereWellFormed) return
+
 template <>
 void Server::handleSingleMessage<CL_REPORT_BUG>(const Socket &sender,
                                                 User &user,
                                                 MessageParser &parser) {
   std::string bugDescription;
-  if (!parser.readArgs(bugDescription)) return;
+  READ_ARGS(bugDescription);
 
   auto bugFile = std::ofstream{"bugs.log", std::ofstream::app};
   bugFile << user.name() << ": " << bugDescription << std::endl;
@@ -23,7 +27,7 @@ template <>
 void Server::handleSingleMessage<CL_PING>(const Socket &sender, User &user,
                                           MessageParser &parser) {
   ms_t timeSent;
-  if (!parser.readArgs(timeSent)) return;
+  READ_ARGS(timeSent);
 
   sendMessage(sender, {SV_PING_REPLY, timeSent});
 }
@@ -33,7 +37,7 @@ void Server::handleSingleMessage<CL_LOGIN_EXISTING>(const Socket &sender,
                                                     User &user,
                                                     MessageParser &parser) {
   std::string username, passwordHash, clientVersion;
-  if (!parser.readArgs(username, passwordHash, clientVersion)) return;
+  READ_ARGS(username, passwordHash, clientVersion);
 
 #ifndef _DEBUG
   // Check that version matches
