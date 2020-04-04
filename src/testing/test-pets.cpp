@@ -775,3 +775,39 @@ TEST_CASE("Granting pets to the city") {
     }
   }
 }
+
+TEST_CASE("Stay/follow") {
+  CL_ORDER_NPC_TO_FOLLOW;
+
+  GIVEN("a pet") {
+    auto data = R"(
+      <npcType id="dog" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &dog = s.addNPC("dog", {10, 15});
+    dog.permissions.setPlayerOwner(c->username());
+
+    WHEN("its owner sends a Stay order") {
+      c.sendMessage(CL_ORDER_NPC_TO_STAY, makeArgs(dog.serial()));
+      auto originalLocation = dog.location();
+
+      AND_WHEN("its owner walks away") {
+        c.simulateKeypress(SDL_SCANCODE_D);
+        REPEAT_FOR_MS(2000);
+
+        THEN("it doesn't move") { /*CHECK(dog.location() == originalLocation);*/
+        }
+      }
+    }
+  }
+}
+
+// Follow = follows
+// Stay attacks nearby enemies
+// Stay doesn't contribute to follower count
+// Follow fails if follower count reached
+// If followe count is reduced, one randomly stays
+// If no path to follow, switch to stay?  Maybe wait until pathfinding.  For now
+// this could be distance.

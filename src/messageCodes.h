@@ -198,6 +198,11 @@ enum MessageCode {
   // Arguments: serial
   CL_TAME_NPC,
 
+  // Change a pet's order
+  // Arguments: serial
+  CL_ORDER_NPC_TO_STAY,
+  CL_ORDER_NPC_TO_FOLLOW,
+
   // Dismiss a buff
   // Arguments: buff ID
   CL_DISMISS_BUFF,

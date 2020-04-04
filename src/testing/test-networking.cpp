@@ -29,3 +29,11 @@ TEST_CASE("Use socket after cleanup") {
     WAIT_UNTIL(c.connected());  // false in case of a connection error.
   }
 }
+
+TEST_CASE("Bulk messages") {
+  GIVEN("a large number of recipes") {
+    AND_GIVEN("a user unlocks them all") {
+      THEN("the client knows the correct number of recipes") {}
+    }
+  }
+}
