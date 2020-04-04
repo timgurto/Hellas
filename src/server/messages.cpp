@@ -8,6 +8,19 @@
 #include "Vehicle.h"
 #include "objects/Deconstruction.h"
 
+template <>
+void Server::handleSingleMessage<CL_REPORT_BUG>(User &sender,
+                                                std::istringstream &message) {
+  char del;
+  message.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
+  auto bugText = std::string(_stringInputBuffer);
+  message >> del;
+  if (del != MSG_END) return;
+
+  auto bugFile = std::ofstream{"bugs.log", std::ofstream::app};
+  bugFile << sender.name() << ": " << bugText << std::endl;
+}
+
 void Server::handleBufferedMessages(const Socket &client,
                                     const std::string &msg) {
   _debug(msg);
@@ -37,16 +50,9 @@ void Server::handleBufferedMessages(const Socket &client,
     }
 
     switch (msgCode) {
-      case CL_REPORT_BUG: {
-        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
-        auto bugText = std::string(_stringInputBuffer);
-        iss >> del;
-        if (del != MSG_END) return;
-
-        handle_CL_REPORT_BUG(user->name(), bugText);
-
+      case CL_REPORT_BUG:
+        handleSingleMessage<CL_REPORT_BUG>(*user, iss);
         break;
-      }
 
       case CL_PING: {
         ms_t timeSent;
@@ -1513,12 +1519,6 @@ void Server::handleBufferedMessages(const Socket &client,
                << Log::endl;
     }
   }
-}
-
-void Server::handle_CL_REPORT_BUG(const std::string &name,
-                                  const std::string &bugText) {
-  auto bugFile = std::ofstream{"bugs.log", std::ofstream::app};
-  bugFile << name << ": " << bugText << std::endl;
 }
 
 void Server::handle_CL_LOGIN_EXISTING(const Socket &client,

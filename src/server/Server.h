@@ -287,6 +287,9 @@ class Server {
 
   void writeUserToFile(const User &user, std::ostream &file) const;
 
+  template <MessageCode M>
+  void handleSingleMessage(User &sender, std::istringstream &message);
+
   void handle_CL_REPORT_BUG(const std::string &name,
                             const std::string &bugText);
   void handle_CL_LOGIN_EXISTING(const Socket &client, const std::string &name,
