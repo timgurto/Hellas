@@ -9,7 +9,9 @@
 #include "objects/Deconstruction.h"
 
 template <typename T>
-void parseSingleMessageArg(std::istringstream &message, T &arg);
+void parseSingleMessageArg(std::istringstream &message, T &arg) {
+  message >> arg;
+}
 
 template <>
 void parseSingleMessageArg(std::istringstream &message, std::string &arg) {
@@ -37,6 +39,20 @@ void Server::handleSingleMessage<CL_REPORT_BUG>(User &sender,
   auto bugFile = std::ofstream{"bugs.log", std::ofstream::app};
   bugFile << sender.name() << ": " << bugDescription << std::endl;
 }
+
+template <>
+void Server::handleSingleMessage<CL_PING>(User &sender,
+                                          std::istringstream &message) {
+  ms_t timeSent;
+  if (!parseMessageArgs(message, timeSent)) return;
+
+  sender.sendMessage({SV_PING_REPLY, timeSent});
+}
+
+#define SEND_MESSAGE_TO_HANDLER(MESSAGE_CODE)      \
+  case MESSAGE_CODE:                               \
+    handleSingleMessage<MESSAGE_CODE>(*user, iss); \
+    break;
 
 void Server::handleBufferedMessages(const Socket &client,
                                     const std::string &msg) {
@@ -67,17 +83,8 @@ void Server::handleBufferedMessages(const Socket &client,
     }
 
     switch (msgCode) {
-      case CL_REPORT_BUG:
-        handleSingleMessage<CL_REPORT_BUG>(*user, iss);
-        break;
-
-      case CL_PING: {
-        ms_t timeSent;
-        iss >> timeSent >> del;
-        if (del != MSG_END) return;
-        sendMessage(client, {SV_PING_REPLY, timeSent});
-        break;
-      }
+      SEND_MESSAGE_TO_HANDLER(CL_REPORT_BUG)
+      SEND_MESSAGE_TO_HANDLER(CL_PING)
 
       case CL_LOGIN_EXISTING: {
         iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_DELIM);
