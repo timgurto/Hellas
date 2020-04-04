@@ -192,6 +192,7 @@
     <ClCompile Include="src\client\ImageWithHighlight.cpp" />
     <ClCompile Include="src\Serial.cpp" />
     <ClCompile Include="src\MessageParser.cpp" />
+    <ClCompile Include="src\messageCodes.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />

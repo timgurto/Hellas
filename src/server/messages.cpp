@@ -113,14 +113,9 @@ void Server::handleBufferedMessages(const Socket &client,
     auto msgCode = parser.nextMessage();
 
     // Discard message if this client has not yet logged in
-    const auto messagesAllowedBeforeLogin =
-        std::set<int>{CL_PING, CL_LOGIN_EXISTING, CL_LOGIN_NEW};
-    auto thisMessageIsAllowedBeforeLogin =
-        messagesAllowedBeforeLogin.find(msgCode) !=
-        messagesAllowedBeforeLogin.end();
     auto it = _users.find(client);
     auto userHasLoggedIn = it != _users.end();
-    if (!userHasLoggedIn && !thisMessageIsAllowedBeforeLogin) {
+    if (!userHasLoggedIn && !isMessageAllowedBeforeLogin(msgCode)) {
       continue;
     }
 

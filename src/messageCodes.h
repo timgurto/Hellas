@@ -1,5 +1,6 @@
-#ifndef MESSAGE_CODES_H
-#define MESSAGE_CODES_H
+#pragma once
+
+#include <set>
 
 const char MSG_START = '\002',  // STX
     MSG_END = '\003',           // ETX
@@ -764,4 +765,4 @@ enum MessageCode {
   // clang-format on
 };
 
-#endif
+bool isMessageAllowedBeforeLogin(MessageCode message);
