@@ -47,14 +47,13 @@ void Server::handleSingleMessage<CL_LOGIN_EXISTING>(const Socket &sender,
   }
 #endif
 
-  // Check that username is valid
   if (!isUsernameValid(username)) {
     sendMessage(sender, WARNING_INVALID_USERNAME);
     return;
   }
 
-  // Check that user isn't already logged in
-  if (_usersByName.find(username) != _usersByName.end()) {
+  auto userIsAlreadyLoggedIn = _usersByName.count(username) == 1;
+  if (userIsAlreadyLoggedIn) {
     sendMessage(sender, WARNING_DUPLICATE_USERNAME);
     return;
   }
@@ -66,6 +65,7 @@ void Server::handleSingleMessage<CL_LOGIN_EXISTING>(const Socket &sender,
     sendMessage(client, WARNING_USER_DOESNT_EXIST);
     return;
 #else
+    // Allow quick, auto account creation in debug mode
     addUser(sender, username, passwordHash, _classes.begin()->first);
     return;
 #endif
