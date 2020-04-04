@@ -28,11 +28,13 @@ class MessageParser {
  private:
   char _delimiter{0};
 
+  enum ArgPosition { NotLast, Last };
+
   template <typename T>
-  void parseSingleArg(T &arg, bool isLastArg = false);
+  void parseSingleArg(T &arg, ArgPosition argPosition);
 
   template <>
-  void parseSingleArg(std::string &arg, bool isLastArg);
+  void parseSingleArg(std::string &arg, ArgPosition argPosition);
 };
 
 #include "MessageParser.inl"
