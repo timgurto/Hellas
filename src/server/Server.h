@@ -32,6 +32,8 @@
 #include "Wars.h"
 #include "objects/Object.h"
 
+class MessageParser;
+
 #define SERVER_ERROR(msg)                                              \
   Server::debug() << Color::CHAT_ERROR << (msg) << Log::endl           \
                   << Color::CHAT_ERROR << __FILE__ << ":"s << __LINE__ \
@@ -289,7 +291,7 @@ class Server {
 
   template <MessageCode M>
   void handleSingleMessage(const Socket &sender, User &user,
-                           std::istringstream &message);
+                           MessageParser &parser);
 
   void handle_CL_LOGIN_EXISTING(const Socket &client, const std::string &name,
                                 const std::string &pwHash,
