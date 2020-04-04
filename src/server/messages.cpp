@@ -9,27 +9,11 @@
 #include "Vehicle.h"
 #include "objects/Deconstruction.h"
 
-template <typename T>
-void parseSingleMessageArg(MessageParser &parser, T &arg,
-                           bool isLastArg = false) {
-  parser.iss >> arg;
-}
-
-template <>
-void parseSingleMessageArg(MessageParser &parser, std::string &arg,
-                           bool isLastArg) {
-  static const size_t BUFFER_SIZE = 1023;
-  char buffer[BUFFER_SIZE + 1];
-  const auto expectedDelimiter = isLastArg ? MSG_END : MSG_DELIM;
-  parser.iss.get(buffer, BUFFER_SIZE, expectedDelimiter);
-  arg = {buffer};
-}
-
 template <typename T1>
 bool parseMessageArgs(MessageParser &parser, T1 &arg1) {
   char del;
 
-  parseSingleMessageArg(parser, arg1, true);
+  parser.parseSingleArg(arg1, true);
   parser.iss >> del;
   if (del != MSG_END) return false;
 
@@ -39,11 +23,11 @@ bool parseMessageArgs(MessageParser &parser, T1 &arg1) {
 template <typename T1, typename T2>
 bool parseMessageArgs(MessageParser &parser, T1 &arg1, T2 &arg2) {
   char del;
-  parseSingleMessageArg(parser, arg1);
+  parser.parseSingleArg(arg1);
   parser.iss >> del;
   if (del != MSG_DELIM) return false;
 
-  parseSingleMessageArg(parser, arg2, true);
+  parser.parseSingleArg(arg2, true);
   parser.iss >> del;
   if (del != MSG_END) return false;
 
@@ -53,15 +37,15 @@ bool parseMessageArgs(MessageParser &parser, T1 &arg1, T2 &arg2) {
 template <typename T1, typename T2, typename T3>
 bool parseMessageArgs(MessageParser &parser, T1 &arg1, T2 &arg2, T3 &arg3) {
   char del;
-  parseSingleMessageArg(parser, arg1);
+  parser.parseSingleArg(arg1);
   parser.iss >> del;
   if (del != MSG_DELIM) return false;
 
-  parseSingleMessageArg(parser, arg3);
+  parser.parseSingleArg(arg3);
   parser.iss >> del;
   if (del != MSG_DELIM) return false;
 
-  parseSingleMessageArg(parser, arg2, true);
+  parser.parseSingleArg(arg2, true);
   parser.iss >> del;
   if (del != MSG_END) return false;
 
