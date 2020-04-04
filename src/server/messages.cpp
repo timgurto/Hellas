@@ -2406,8 +2406,18 @@ void Server::handle_DG_SKIP_TUTORIAL(User &user) {
 
   user.clearInventory();
   user.clearGear();
+
+  if (!user.knowsConstruction("tutFire"))
+    user.sendMessage({SV_NEW_CONSTRUCTIONS, makeArgs(1, "fire")});
+  else
+    user.sendMessage({SV_CONSTRUCTIONS, makeArgs(1, "fire")});
+  user.removeConstruction("tutFire");
   user.addConstruction("fire");
-  user.sendMessage({SV_CONSTRUCTIONS, makeArgs(1, "fire")});
+
+  if (!user.knowsRecipe("cookedMeat")) {
+    user.addRecipe("cookedMeat");
+    user.sendMessage({SV_NEW_RECIPES, makeArgs(1, "cookedMeat")});
+  }
 
   removeAllObjectsOwnedBy({Permissions::Owner::PLAYER, user.name()});
 
