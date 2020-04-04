@@ -9,24 +9,62 @@
 #include "objects/Deconstruction.h"
 
 template <typename T>
-void parseSingleMessageArg(std::istringstream &message, T &arg) {
+void parseSingleMessageArg(std::istringstream &message, T &arg,
+                           bool isLastArg = false) {
   message >> arg;
 }
 
 template <>
-void parseSingleMessageArg(std::istringstream &message, std::string &arg) {
+void parseSingleMessageArg(std::istringstream &message, std::string &arg,
+                           bool isLastArg) {
   static const size_t BUFFER_SIZE = 1023;
   char buffer[BUFFER_SIZE + 1];
-  message.get(buffer, BUFFER_SIZE, MSG_END);
+  const auto expectedDelimiter = isLastArg ? MSG_END : MSG_DELIM;
+  message.get(buffer, BUFFER_SIZE, expectedDelimiter);
   arg = {buffer};
 }
 
 template <typename T1>
 bool parseMessageArgs(std::istringstream &message, T1 &arg1) {
   char del;
-  parseSingleMessageArg(message, arg1);
+
+  parseSingleMessageArg(message, arg1, true);
   message >> del;
   if (del != MSG_END) return false;
+
+  return true;
+}
+
+template <typename T1, typename T2>
+bool parseMessageArgs(std::istringstream &message, T1 &arg1, T2 &arg2) {
+  char del;
+  parseSingleMessageArg(message, arg1);
+  message >> del;
+  if (del != MSG_DELIM) return false;
+
+  parseSingleMessageArg(message, arg2, true);
+  message >> del;
+  if (del != MSG_END) return false;
+
+  return true;
+}
+
+template <typename T1, typename T2, typename T3>
+bool parseMessageArgs(std::istringstream &message, T1 &arg1, T2 &arg2,
+                      T3 &arg3) {
+  char del;
+  parseSingleMessageArg(message, arg1);
+  message >> del;
+  if (del != MSG_DELIM) return false;
+
+  parseSingleMessageArg(message, arg3);
+  message >> del;
+  if (del != MSG_DELIM) return false;
+
+  parseSingleMessageArg(message, arg2, true);
+  message >> del;
+  if (del != MSG_END) return false;
+
   return true;
 }
 
@@ -48,6 +86,15 @@ void Server::handleSingleMessage<CL_PING>(const Socket &sender, User &user,
   if (!parseMessageArgs(message, timeSent)) return;
 
   sendMessage(sender, {SV_PING_REPLY, timeSent});
+}
+
+template <>
+void Server::handleSingleMessage<CL_LOGIN_EXISTING>(
+    const Socket &sender, User &user, std::istringstream &message) {
+  std::string username, passwordHash, clientVersion;
+  if (!parseMessageArgs(message, username, passwordHash, clientVersion)) return;
+
+  handle_CL_LOGIN_EXISTING(sender, username, passwordHash, clientVersion);
 }
 
 #define SEND_MESSAGE_TO_HANDLER(MESSAGE_CODE)              \
@@ -86,24 +133,7 @@ void Server::handleBufferedMessages(const Socket &client,
     switch (msgCode) {
       SEND_MESSAGE_TO_HANDLER(CL_REPORT_BUG)
       SEND_MESSAGE_TO_HANDLER(CL_PING)
-
-      case CL_LOGIN_EXISTING: {
-        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_DELIM);
-        auto name = std::string(_stringInputBuffer);
-        iss >> del;
-
-        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_DELIM);
-        auto pwHash = std::string(_stringInputBuffer);
-        iss >> del;
-
-        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
-        auto clientVersion = std::string(_stringInputBuffer);
-        iss >> del;
-        if (del != MSG_END) return;
-
-        handle_CL_LOGIN_EXISTING(client, name, pwHash, clientVersion);
-        break;
-      }
+      SEND_MESSAGE_TO_HANDLER(CL_LOGIN_EXISTING)
 
       case CL_LOGIN_NEW: {
         iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_DELIM);
