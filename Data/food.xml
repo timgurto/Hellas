@@ -1,7 +1,7 @@
 <root>
 
 <buff id="food" name="Eating" icon="foodFig" duration="10" canBeInterrupted="1"
-    description="Replenishing health and energy.">
+    description="Replenishing health.">
     <stats hps="5" />
 </buff>
 <spell id="food" name="Eat food" >
