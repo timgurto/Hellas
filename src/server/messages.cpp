@@ -119,6 +119,47 @@ void Server::handleSingleMessage<CL_REQUEST_TIME_PLAYED>(
   user.sendTimePlayed();
 }
 
+template <>
+void Server::handleSingleMessage<CL_SKIP_TUTORIAL>(const Socket &client,
+                                                   User &user,
+                                                   MessageParser &parser) {
+  if (parser.getLastDelimiterRead() != MSG_END) return;
+
+  if (!user.isInTutorial()) return;
+
+  user.exploration().unexploreAll(user.socket());
+  user.setSpawnPointToPostTutorial();
+  user.moveToSpawnPoint();
+
+  auto &userClass = user.getClass();
+  userClass.unlearnAll();
+  auto UTILITY_SPELLS = std::map<std::string, std::string>{
+      {"Athlete", "sprint"}, {"Scholar", "blink"}, {"Zealot", "waterWalking"}};
+  auto spellToTeach = UTILITY_SPELLS[userClass.type().id()];
+  userClass.teachSpell(spellToTeach);
+
+  user.abandonAllQuests();
+
+  user.clearInventory();
+  user.clearGear();
+
+  if (!user.knowsConstruction("tutFire"))
+    user.sendMessage({SV_NEW_CONSTRUCTIONS, makeArgs(1, "fire")});
+  else
+    user.sendMessage({SV_CONSTRUCTIONS, makeArgs(1, "fire")});
+  user.removeConstruction("tutFire");
+  user.addConstruction("fire");
+
+  if (!user.knowsRecipe("cookedMeat")) {
+    user.addRecipe("cookedMeat");
+    user.sendMessage({SV_NEW_RECIPES, makeArgs(1, "cookedMeat")});
+  }
+
+  removeAllObjectsOwnedBy({Permissions::Owner::PLAYER, user.name()});
+
+  user.markTutorialAsCompleted();
+}
+
 #define SEND_MESSAGE_TO_HANDLER(MESSAGE_CODE)                 \
   case MESSAGE_CODE:                                          \
     handleSingleMessage<MESSAGE_CODE>(client, *user, parser); \
@@ -155,6 +196,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_LOGIN_EXISTING)
       SEND_MESSAGE_TO_HANDLER(CL_LOGIN_NEW)
       SEND_MESSAGE_TO_HANDLER(CL_REQUEST_TIME_PLAYED)
+      SEND_MESSAGE_TO_HANDLER(CL_SKIP_TUTORIAL)
 
       case CL_LOCATION: {
         double x, y;
@@ -1537,11 +1579,6 @@ void Server::handleBufferedMessages(const Socket &client,
         break;
       }
 
-      case CL_SKIP_TUTORIAL:
-        if (del != MSG_END) return;
-        handle_DG_SKIP_TUTORIAL(*user);
-        break;
-
       case DG_SPELLS: {
         if (!isDebug()) break;
         if (del != MSG_END) return;
@@ -2334,42 +2371,6 @@ void Server::handle_CL_AUTO_CONSTRUCT(User &user, Serial serial) {
       ProgressLock::triggerUnlocks(user, ProgressLock::CONSTRUCTION,
                                    obj->type());
   }
-}
-
-void Server::handle_DG_SKIP_TUTORIAL(User &user) {
-  if (!user.isInTutorial()) return;
-
-  user.exploration().unexploreAll(user.socket());
-  user.setSpawnPointToPostTutorial();
-  user.moveToSpawnPoint();
-
-  auto &userClass = user.getClass();
-  userClass.unlearnAll();
-  auto UTILITY_SPELLS = std::map<std::string, std::string>{
-      {"Athlete", "sprint"}, {"Scholar", "blink"}, {"Zealot", "waterWalking"}};
-  auto spellToTeach = UTILITY_SPELLS[userClass.type().id()];
-  userClass.teachSpell(spellToTeach);
-
-  user.abandonAllQuests();
-
-  user.clearInventory();
-  user.clearGear();
-
-  if (!user.knowsConstruction("tutFire"))
-    user.sendMessage({SV_NEW_CONSTRUCTIONS, makeArgs(1, "fire")});
-  else
-    user.sendMessage({SV_CONSTRUCTIONS, makeArgs(1, "fire")});
-  user.removeConstruction("tutFire");
-  user.addConstruction("fire");
-
-  if (!user.knowsRecipe("cookedMeat")) {
-    user.addRecipe("cookedMeat");
-    user.sendMessage({SV_NEW_RECIPES, makeArgs(1, "cookedMeat")});
-  }
-
-  removeAllObjectsOwnedBy({Permissions::Owner::PLAYER, user.name()});
-
-  user.markTutorialAsCompleted();
 }
 
 void Server::broadcast(const Message &msg) {
