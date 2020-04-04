@@ -239,7 +239,6 @@ class Server {
   void removeEntity(Entity &ent, const User *userToExclude = nullptr);
   void gatherObject(Serial serial, User &user);
   void removeAllObjectsOwnedBy(const Permissions::Owner &owner);
-  void addEmptyObjectType(const std::string id);
 
   friend class City;
   friend class DataLoader;
@@ -293,9 +292,6 @@ class Server {
   void handleSingleMessage(const Socket &sender, User &user,
                            MessageParser &parser);
 
-  void handle_CL_LOGIN_EXISTING(const Socket &client, const std::string &name,
-                                const std::string &pwHash,
-                                const std::string &clientVersion);
   void handle_CL_LOGIN_NEW(const Socket &client, const std::string &name,
                            const std::string &pwHash,
                            const std::string &classID,

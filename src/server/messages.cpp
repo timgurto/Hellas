@@ -2,7 +2,6 @@
 #include <set>
 
 #include "../MessageParser.h"
-#include "../messageCodes.h"
 #include "../versionUtil.h"
 #include "ProgressLock.h"
 #include "Server.h"
@@ -36,7 +35,48 @@ void Server::handleSingleMessage<CL_LOGIN_EXISTING>(const Socket &sender,
   std::string username, passwordHash, clientVersion;
   if (!parser.readArgs(username, passwordHash, clientVersion)) return;
 
-  handle_CL_LOGIN_EXISTING(sender, username, passwordHash, clientVersion);
+#ifndef _DEBUG
+  // Check that version matches
+  if (clientVersion != version()) {
+    sendMessage(client, {WARNING_WRONG_VERSION, version()});
+    return;
+  }
+#endif
+
+  // Check that username is valid
+  if (!isUsernameValid(username)) {
+    sendMessage(sender, WARNING_INVALID_USERNAME);
+    return;
+  }
+
+  // Check that user isn't already logged in
+  if (_usersByName.find(username) != _usersByName.end()) {
+    sendMessage(sender, WARNING_DUPLICATE_USERNAME);
+    return;
+  }
+
+  // Check that user exists
+  auto userFile = _userFilesPath + username + ".usr";
+  if (!fileExists(userFile)) {
+#ifndef _DEBUG
+    sendMessage(client, WARNING_USER_DOESNT_EXIST);
+    return;
+#else
+    addUser(sender, username, passwordHash, _classes.begin()->first);
+    return;
+#endif
+  }
+
+  auto xr = XmlReader::FromFile(_userFilesPath + username + ".usr");
+  auto elem = xr.findChild("general");
+  auto savedPwHash = ""s;
+  xr.findAttr(elem, "passwordHash", savedPwHash);
+  if (savedPwHash != passwordHash) {
+    sendMessage(sender, WARNING_WRONG_PASSWORD);
+    return;
+  }
+
+  addUser(sender, username, passwordHash);
 }
 
 #define SEND_MESSAGE_TO_HANDLER(MESSAGE_CODE)                 \
@@ -1513,54 +1553,6 @@ void Server::handleBufferedMessages(const Socket &client,
                << Log::endl;
     }
   }
-}
-
-void Server::handle_CL_LOGIN_EXISTING(const Socket &client,
-                                      const std::string &name,
-                                      const std::string &pwHash,
-                                      const std::string &clientVersion) {
-#ifndef _DEBUG
-  // Check that version matches
-  if (clientVersion != version()) {
-    sendMessage(client, {WARNING_WRONG_VERSION, version()});
-    return;
-  }
-#endif
-
-  // Check that username is valid
-  if (!isUsernameValid(name)) {
-    sendMessage(client, WARNING_INVALID_USERNAME);
-    return;
-  }
-
-  // Check that user isn't already logged in
-  if (_usersByName.find(name) != _usersByName.end()) {
-    sendMessage(client, WARNING_DUPLICATE_USERNAME);
-    return;
-  }
-
-  // Check that user exists
-  auto userFile = _userFilesPath + name + ".usr";
-  if (!fileExists(userFile)) {
-#ifndef _DEBUG
-    sendMessage(client, WARNING_USER_DOESNT_EXIST);
-    return;
-#else
-    addUser(client, name, pwHash, _classes.begin()->first);
-    return;
-#endif
-  }
-
-  auto xr = XmlReader::FromFile(_userFilesPath + name + ".usr");
-  auto elem = xr.findChild("general");
-  auto savedPwHash = ""s;
-  xr.findAttr(elem, "passwordHash", savedPwHash);
-  if (savedPwHash != pwHash) {
-    sendMessage(client, WARNING_WRONG_PASSWORD);
-    return;
-  }
-
-  addUser(client, name, pwHash);
 }
 
 void Server::handle_CL_LOGIN_NEW(const Socket &client, const std::string &name,
