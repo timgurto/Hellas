@@ -182,6 +182,7 @@
     <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\Map.h" />
     <ClInclude Include="src\Message.h" />
+    <ClInclude Include="src\MessageParser.h" />
     <ClInclude Include="src\messageCodes.h" />
     <ClInclude Include="src\NormalVariable.h" />
     <ClInclude Include="src\Optional.h" />

@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <set>
 
+#include "../MessageParser.h"
 #include "../messageCodes.h"
 #include "../versionUtil.h"
 #include "ProgressLock.h"
@@ -97,20 +98,20 @@ void Server::handleSingleMessage<CL_LOGIN_EXISTING>(
   handle_CL_LOGIN_EXISTING(sender, username, passwordHash, clientVersion);
 }
 
-#define SEND_MESSAGE_TO_HANDLER(MESSAGE_CODE)              \
-  case MESSAGE_CODE:                                       \
-    handleSingleMessage<MESSAGE_CODE>(client, *user, iss); \
+#define SEND_MESSAGE_TO_HANDLER(MESSAGE_CODE)                     \
+  case MESSAGE_CODE:                                              \
+    handleSingleMessage<MESSAGE_CODE>(client, *user, parser.iss); \
     break;
 
 void Server::handleBufferedMessages(const Socket &client,
-                                    const std::string &msg) {
-  _debug(msg);
+                                    const std::string &messages) {
+  _debug(messages);
   int msgCode;
   char del;
-  std::istringstream iss(msg);
+  MessageParser parser(messages);
   User *user = nullptr;
-  while (iss.peek() == MSG_START) {
-    iss >> del >> msgCode >> del;
+  while (parser.iss.peek() == MSG_START) {
+    parser.iss >> del >> msgCode >> del;
 
     // Discard message if this client has not yet logged in
     const auto messagesAllowedBeforeLogin =
@@ -129,6 +130,8 @@ void Server::handleBufferedMessages(const Socket &client,
       user = &userRef;
       user->contact();
     }
+
+    auto &iss = parser.iss;
 
     switch (msgCode) {
       SEND_MESSAGE_TO_HANDLER(CL_REPORT_BUG)
@@ -1570,7 +1573,7 @@ void Server::handleBufferedMessages(const Socket &client,
       }
 
       default:
-        _debug << Color::CHAT_ERROR << "Unhandled message: " << msg
+        _debug << Color::CHAT_ERROR << "Unhandled message: " << messages
                << Log::endl;
     }
   }
