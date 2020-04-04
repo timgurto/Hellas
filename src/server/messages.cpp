@@ -164,6 +164,17 @@ void Server::handleSingleMessage<CL_SKIP_TUTORIAL>(const Socket &client,
   user.markTutorialAsCompleted();
 }
 
+template <>
+void Server::handleSingleMessage<CL_ORDER_NPC_TO_STAY>(const Socket &client,
+                                                       User &user,
+                                                       MessageParser &parser) {
+  auto serial = Serial{};
+  READ_ARGS(serial);
+
+  auto *npc = _entities.find<NPC>(serial);
+  npc->orderToStay();
+}
+
 #define SEND_MESSAGE_TO_HANDLER(MESSAGE_CODE)                 \
   case MESSAGE_CODE:                                          \
     handleSingleMessage<MESSAGE_CODE>(client, *user, parser); \
@@ -201,6 +212,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_LOGIN_NEW)
       SEND_MESSAGE_TO_HANDLER(CL_REQUEST_TIME_PLAYED)
       SEND_MESSAGE_TO_HANDLER(CL_SKIP_TUTORIAL)
+      SEND_MESSAGE_TO_HANDLER(CL_ORDER_NPC_TO_STAY)
 
       case CL_LOCATION: {
         double x, y;
@@ -1764,8 +1776,7 @@ void Server::handle_CL_REPAIR_OBJECT(User &user, Serial serial) {
 }
 
 void Server::handle_CL_TAME_NPC(User &user, Serial serial) {
-  auto it = _entities.find(serial);
-  auto *npc = dynamic_cast<NPC *>(&*it);
+  auto *npc = _entities.find<NPC>(serial);
 
   if (!npc) {
     user.sendMessage(WARNING_DOESNT_EXIST);

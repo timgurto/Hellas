@@ -58,6 +58,7 @@ void NPC::transitionIfNecessary() {
 
       // Follow owner, if nearby
       {
+        if (_order != FOLLOW) break;
         if (owner().type != Permissions::Owner::PLAYER) break;
         const auto *ownerPlayer =
             Server::instance().getUserByName(owner().name);
@@ -220,4 +221,11 @@ void NPC::act() {
       }
       break;  // Entity::update() will handle combat
   }
+}
+
+void NPC::setStateBasedOnOrder() {
+  if (_order == STAY)
+    _state = IDLE;
+  else
+    _state = PET_FOLLOW_OWNER;
 }

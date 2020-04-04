@@ -12,8 +12,10 @@ class User;
 
 // Objects that can engage in combat, and that are AI-driven
 class NPC : public Entity, public QuestNode {
-  enum State { IDLE, CHASE, ATTACK, PET_FOLLOW_OWNER, PET_STAY };
+  enum State { IDLE, CHASE, ATTACK, PET_FOLLOW_OWNER };
+  enum Order { STAY, FOLLOW };
   State _state;
+  Order _order{FOLLOW};  // Indicates a desire; informs state changes in pets.
   Level _level{0};
   ThreatTable _threatTable;
   MapPoint _targetDestination{};
@@ -79,12 +81,16 @@ class NPC : public Entity, public QuestNode {
   static const px_t FOLLOW_DISTANCE;
   static const ms_t FREQUENCY_TO_LOOK_FOR_TARGETS;
   ms_t _timeSinceLookedForTargets;
+  const User *_followTarget{nullptr};
+  void orderToStay() { _order = STAY; }
+  // AI
+ private:
   void processAI(ms_t timeElapsed);
   void getNewTargetsFromProximity(ms_t timeElapsed);
   void transitionIfNecessary();
   void onTransition(State previousState);
   void act();
-  const User *_followTarget{nullptr};
+  void setStateBasedOnOrder();
 };
 
 #endif

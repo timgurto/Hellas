@@ -797,17 +797,20 @@ TEST_CASE("Stay/follow") {
         c.simulateKeypress(SDL_SCANCODE_D);
         REPEAT_FOR_MS(2000);
 
-        THEN("it doesn't move") { /*CHECK(dog.location() == originalLocation);*/
-        }
+        THEN("it doesn't move") { CHECK(dog.location() == originalLocation); }
       }
     }
   }
 }
+
+// Doesn't exist
+// No permission
+// Too far away
 
 // Follow = follows
 // Stay attacks nearby enemies
 // Stay doesn't contribute to follower count
 // Follow fails if follower count reached
 // If followe count is reduced, one randomly stays
-// If no path to follow, switch to stay?  Maybe wait until pathfinding.  For now
-// this could be distance.
+// If too far away, switch to stay
+// Followers inside vehicle
