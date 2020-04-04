@@ -39,12 +39,9 @@
         <class name="titan"/>
     </npcType>
     <npcType
-        id="tutPig" name="Pig"
+        id="tutPig" name="Pig" template="pig"
         level="1" maxHealth="20" attack="5" attackTime="3020" isNeutral="1"
-        xDrawOffset="-11" yDrawOffset="-13"
-        imageFile="critter" sounds = "pig" >
-        <collisionRect x="-9" y="-4" w="18" h="7" />
-    </npcType>
+        xDrawOffset="-11" yDrawOffset="-13" />
 
 <quest id="tutParts" name="Goat Accumulator" startsAt="prometheus" endsAt="prometheus"
     brief="My kin used to rule the cosmos, but cruelty and jealousy led to a war ... a war that we lost.  Our beloved mountain was all but destroyed.  Now the youngsters on Mt. Olympus rule, while the other Titans, my family, suffer imprisonment in the underworld.
@@ -60,9 +57,7 @@
 </quest>
     <npcType
         id="tutGoat" name="Goat" template="goat"
-        level="2" maxHealth="19" attack="6" attackTime="2780" isNeutral="1"
-        xDrawOffset="-17" yDrawOffset="-28"
-        imageFile="goat" sounds = "goat" >
+        level="2" maxHealth="19" attack="6" attackTime="2780" isNeutral="1" >
         <loot id="tutMeat" > <normal mean="0.7" sd="0.5" /> </loot>
         <loot id="tutHide" chance="0.2" />
         <loot id="tutEntrails"> <normal mean="0.7" sd="0.5" /> </loot>
@@ -166,9 +161,7 @@
     </objectType>
     <npcType
         id="tutBoar" name="Boar" template="boar"
-        level="3" maxHealth="19" attack="7" attackTime="2780"
-        xDrawOffset="-11" yDrawOffset="-13"
-        imageFile="boar" sounds = "pig" >
+        level="3" maxHealth="19" attack="7" attackTime="2780" >
         <loot id="meat" > <normal mean="0.5" sd="0.7" /> </loot>
         <loot id="tutEntrails3" chance="0.05" />
     </npcType>
