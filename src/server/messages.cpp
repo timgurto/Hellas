@@ -8,9 +8,13 @@
 #include "Vehicle.h"
 #include "objects/Deconstruction.h"
 
-#define READ_ARGS(...)                                    \
-  auto argsWereWellFormed = parser.readArgs(__VA_ARGS__); \
-  if (!argsWereWellFormed) return
+#define READ_ARGS(...)                                      \
+  auto messageWasWellFormed = parser.readArgs(__VA_ARGS__); \
+  if (!messageWasWellFormed) return
+
+#define CHECK_NO_ARGS                                                   \
+  auto messageWasWellFormed = parser.getLastDelimiterRead() == MSG_END; \
+  if (!messageWasWellFormed) return
 
 template <>
 void Server::handleSingleMessage<CL_REPORT_BUG>(const Socket &client,
@@ -114,7 +118,7 @@ void Server::handleSingleMessage<CL_LOGIN_NEW>(const Socket &client, User &user,
 template <>
 void Server::handleSingleMessage<CL_REQUEST_TIME_PLAYED>(
     const Socket &client, User &user, MessageParser &parser) {
-  if (parser.getLastDelimiterRead() != MSG_END) return;
+  CHECK_NO_ARGS;
 
   user.sendTimePlayed();
 }
@@ -123,7 +127,7 @@ template <>
 void Server::handleSingleMessage<CL_SKIP_TUTORIAL>(const Socket &client,
                                                    User &user,
                                                    MessageParser &parser) {
-  if (parser.getLastDelimiterRead() != MSG_END) return;
+  CHECK_NO_ARGS;
 
   if (!user.isInTutorial()) return;
 
