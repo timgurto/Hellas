@@ -223,6 +223,7 @@ HANDLE_MSG<CL_ORDER_NPC_TO_FOLLOW>(HANDLE_MSG_ARGS) {
   if (distance(npc->location(), user.location()) > ACTION_DISTANCE) return;
   if (!user.hasRoomForMoreFollowers()) return;
 
+  user.followers.add();
   npc->order(NPC::FOLLOW);
 }
 

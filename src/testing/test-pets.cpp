@@ -896,9 +896,45 @@ TEST_CASE("Ordering a pet to stay makes room for another follower") {
   }
 }
 
+TEST_CASE("Follow orders contribute to follower limit") {
+  GIVEN("a user has two pets ordered to stay") {
+    auto data = R"(
+      <npcType id="dog" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+
+    auto &dog1 = s.addNPC("dog", {15, 10});
+    dog1.permissions.setPlayerOwner(c->username());
+    dog1.order(NPC::STAY);
+    auto &dog2 = s.addNPC("dog", {10, 15});
+    dog2.permissions.setPlayerOwner(c->username());
+    dog2.order(NPC::STAY);
+
+    const auto &user = s.getFirstUser();
+    CHECK(user.followers.num() == 0);
+
+    WHEN("he orders one to follow") {
+      c.sendMessage(CL_ORDER_NPC_TO_FOLLOW, makeArgs(dog1.serial()));
+      REPEAT_FOR_MS(100);
+
+      AND_WHEN("he orders the other to follow") {
+        c.sendMessage(CL_ORDER_NPC_TO_FOLLOW, makeArgs(dog2.serial()));
+
+        THEN("the second is not following") {
+          REPEAT_FOR_MS(100);
+          CHECK(dog2.order() == NPC::STAY);
+        }
+      }
+    }
+  }
+}
+
 // If follow count is reduced, one randomly stays
 // If too far away, switch to stay
 // Followers inside vehicle
 // Can't order someone else's pet
-// If city-owned, then actual player that tames or gives orders has his followe
+// If city-owned, then actual player that tames or gives orders has his follower
 // count affected
+// Give the same order twice; check impact on follower count
