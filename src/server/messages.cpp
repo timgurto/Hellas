@@ -16,13 +16,12 @@
   auto messageWasWellFormed = parser.getLastDelimiterRead() == MSG_END; \
   if (!messageWasWellFormed) return
 
-#define HANDLE_MSG_ARGS const Socket &client, User &user, MessageParser &parser
+#define HANDLE_MESSAGE(CODE)                                           \
+  template <>                                                          \
+  void Server::handleMessage<(CODE)>(const Socket &client, User &user, \
+                                     MessageParser &parser)
 
-#define HANDLE_MSG \
-  template <>      \
-  void Server::handleMessage
-
-HANDLE_MSG<CL_REPORT_BUG>(HANDLE_MSG_ARGS) {
+HANDLE_MESSAGE(CL_REPORT_BUG) {
   std::string bugDescription;
   READ_ARGS(bugDescription);
 
@@ -30,14 +29,14 @@ HANDLE_MSG<CL_REPORT_BUG>(HANDLE_MSG_ARGS) {
   bugFile << user.name() << ": " << bugDescription << std::endl;
 }
 
-HANDLE_MSG<CL_PING>(HANDLE_MSG_ARGS) {
+HANDLE_MESSAGE(CL_PING) {
   ms_t timeSent;
   READ_ARGS(timeSent);
 
   sendMessage(client, {SV_PING_REPLY, timeSent});
 }
 
-HANDLE_MSG<CL_LOGIN_EXISTING>(HANDLE_MSG_ARGS) {
+HANDLE_MESSAGE(CL_LOGIN_EXISTING) {
   std::string username, passwordHash, clientVersion;
   READ_ARGS(username, passwordHash, clientVersion);
 
@@ -84,7 +83,7 @@ HANDLE_MSG<CL_LOGIN_EXISTING>(HANDLE_MSG_ARGS) {
   addUser(client, username, passwordHash);
 }
 
-HANDLE_MSG<CL_LOGIN_NEW>(HANDLE_MSG_ARGS) {
+HANDLE_MESSAGE(CL_LOGIN_NEW) {
   std::string name, pwHash, classID, clientVersion;
   READ_ARGS(name, pwHash, classID, clientVersion);
 
@@ -111,13 +110,13 @@ HANDLE_MSG<CL_LOGIN_NEW>(HANDLE_MSG_ARGS) {
   addUser(client, name, pwHash, classID);
 }
 
-HANDLE_MSG<CL_REQUEST_TIME_PLAYED>(HANDLE_MSG_ARGS) {
+HANDLE_MESSAGE(CL_REQUEST_TIME_PLAYED) {
   CHECK_NO_ARGS;
 
   user.sendTimePlayed();
 }
 
-HANDLE_MSG<CL_SKIP_TUTORIAL>(HANDLE_MSG_ARGS) {
+HANDLE_MESSAGE(CL_SKIP_TUTORIAL) {
   CHECK_NO_ARGS;
 
   if (!user.isInTutorial()) return;
@@ -155,7 +154,7 @@ HANDLE_MSG<CL_SKIP_TUTORIAL>(HANDLE_MSG_ARGS) {
   user.markTutorialAsCompleted();
 }
 
-HANDLE_MSG<CL_TAME_NPC>(HANDLE_MSG_ARGS) {
+HANDLE_MESSAGE(CL_TAME_NPC) {
   auto serial = Serial{};
   READ_ARGS(serial);
 
@@ -202,7 +201,7 @@ HANDLE_MSG<CL_TAME_NPC>(HANDLE_MSG_ARGS) {
     npc->order(NPC::STAY);
 }
 
-HANDLE_MSG<CL_ORDER_NPC_TO_STAY>(HANDLE_MSG_ARGS) {
+HANDLE_MESSAGE(CL_ORDER_NPC_TO_STAY) {
   auto serial = Serial{};
   READ_ARGS(serial);
 
@@ -214,7 +213,7 @@ HANDLE_MSG<CL_ORDER_NPC_TO_STAY>(HANDLE_MSG_ARGS) {
   npc->order(NPC::STAY);
 }
 
-HANDLE_MSG<CL_ORDER_NPC_TO_FOLLOW>(HANDLE_MSG_ARGS) {
+HANDLE_MESSAGE(CL_ORDER_NPC_TO_FOLLOW) {
   auto serial = Serial{};
   READ_ARGS(serial);
 
