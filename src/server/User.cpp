@@ -1352,6 +1352,20 @@ void User::updateStats() {
   stats(newStats);
 }
 
+double User::legalMoveDistance(double requestedDistance,
+                               double timeElapsed) const {
+  const auto TRUST_CLIENTS_WITH_MOVEMENT_SPEED = true;
+  if (TRUST_CLIENTS_WITH_MOVEMENT_SPEED) return requestedDistance;
+
+  // Apply limit based on speed
+  auto maxLegalDistance =
+      min<double>(Server::MAX_TIME_BETWEEN_LOCATION_UPDATES, timeElapsed) /
+      1000.0 * stats().speed;
+  return min(maxLegalDistance, requestedDistance);
+}
+
+bool User::shouldMoveWhereverRequested() const { return isDriving(); }
+
 bool User::knowsConstruction(const std::string &id) const {
   const Server &server = *Server::_instance;
   const ObjectType *objectType = server.findObjectTypeByID(id);

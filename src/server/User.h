@@ -206,6 +206,9 @@ class User : public Object {  // TODO: Don't inherit from Object
   void markAsInitialised() { _isInitialised = true; }
 
   void updateStats() override;
+  double legalMoveDistance(double requestedDistance,
+                           double timeElapsed) const override;
+  bool shouldMoveWhereverRequested() const override;
   ms_t timeToRemainAsCorpse() const override { return 0; }
   bool canBeAttackedBy(const User &user) const override;
   bool canBeAttackedBy(const NPC &npc) const override;

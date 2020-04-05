@@ -10,27 +10,16 @@ void Entity::moveLegallyTowards(
   ms_t timeElapsed = newTime - _lastLocUpdate;
   _lastLocUpdate = newTime;
 
-  const User *userPtr = nullptr;
-  if (classTag() == 'u') userPtr = dynamic_cast<const User *>(this);
-
   // Max legal distance: straight line
   double requestedDistance = distance(_location, requestedDest);
   auto distanceToMove = 0.0;
   MapPoint newDest;
-  if (userPtr && userPtr->isDriving()) {
+
+  if (shouldMoveWhereverRequested()) {
     distanceToMove = requestedDistance;
     newDest = requestedDest;
   } else {
-    const auto TRUST_CLIENTS_WITH_MOVEMENT_SPEED = true;
-    if (TRUST_CLIENTS_WITH_MOVEMENT_SPEED)
-      distanceToMove = requestedDistance;
-    else {
-      const double maxLegalDistance =
-          min(Server::MAX_TIME_BETWEEN_LOCATION_UPDATES, timeElapsed) / 1000.0 *
-          stats().speed;
-      distanceToMove = min(maxLegalDistance, requestedDistance);
-    }
-
+    distanceToMove = legalMoveDistance(requestedDistance, timeElapsed);
     newDest = interpolate(_location, requestedDest, distanceToMove);
 
     MapPoint rawDisplacement(newDest.x - _location.x, newDest.y - _location.y);
@@ -104,6 +93,8 @@ void Entity::moveLegallyTowards(
   }
 
   if (classTag() == 'u') {
+    auto userPtr = dynamic_cast<const User *>(this);
+
     auto loX = server._entitiesByX.lower_bound(&Dummy::Location(left, 0));
     auto hiX = server._entitiesByX.upper_bound(&Dummy::Location(right, 0));
     auto loY = server._entitiesByY.lower_bound(&Dummy::Location(0, top));

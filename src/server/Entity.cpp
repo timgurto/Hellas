@@ -539,6 +539,12 @@ void Entity::location(const MapPoint &newLoc, bool firstInsertion) {
   onMove();
 }
 
+double Entity::legalMoveDistance(double requestedDistance,
+                                 double timeElapsed) const {
+  auto maxLegalDistance = timeElapsed / 1000.0 * stats().speed;
+  return min(maxLegalDistance, requestedDistance);
+}
+
 void Entity::teleportTo(const MapPoint &destination) {
   const auto &server = Server::instance();
   auto startingLocation = location();
