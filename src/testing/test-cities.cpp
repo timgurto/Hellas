@@ -315,3 +315,39 @@ TEST_CASE("Kingship is persistent", "[king]") {
     WAIT_UNTIL(s.kings().isPlayerAKing("Alice"));
   }
 }
+
+TEST_CASE("Citizens know about their city's distant objects", "[flaky]") {
+  GIVEN("a map big enough to exceed the cull distance") {
+    auto data = R"(
+      <terrain index="G" id="grass" />
+      <list id="default" default="1" >
+          <allow id="grass" />
+      </list>
+      <newPlayerSpawn x="10" y="10" range="0" />
+      <size x="40" y="1" />
+      <row    y="0" terrain = "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG" />
+      <objectType id="townHall" />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    AND_GIVEN("a city has a citizen and a distant object") {
+      s.cities().createCity("Athens", {10, 10});
+      s.addObject("townHall", {1200, 10}, {Permissions::Owner::CITY, "Athens"});
+
+      {
+        auto c = TestClient::WithUsernameAndDataString("Alice", data);
+        s.waitForUsers(1);
+        auto &user = s.getFirstUser();
+        s.cities().addPlayerToCity(user, "Athens");
+      }
+
+      WHEN("the citizen logs in") {
+        auto c = TestClient::WithUsernameAndDataString("Alice", data);
+
+        THEN("the client knows about the object") {
+          WAIT_UNTIL(c.objects().size() == 1);
+        }
+      }
+    }
+  }
+}
