@@ -151,6 +151,7 @@ class ClientObject : public Sprite, public ClientCombatant {
   virtual void onInventoryUpdate();
   void hideWindow();
   virtual void assembleWindow(Client &client);
+  virtual bool canBeOwnedByACity() const { return true; }
 
   // Quests
   std::set<CQuest *> startsQuests() const;

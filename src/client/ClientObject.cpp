@@ -656,7 +656,8 @@ void ClientObject::assembleWindow(Client &client) {
              hasContainer = objType.containerSlots() > 0 && userHasAccess(),
              isMerchant =
                  objType.merchantSlots() > 0 && userHasMerchantAccess(),
-             canCede = (!client.character().cityName().empty()) &&
+             canCede = (canBeOwnedByACity() &&
+                        !client.character().cityName().empty()) &&
                        userIsOwner && (!objType.isPlayerUnique()),
              canGrant =
                  (client.character().isKing() &&

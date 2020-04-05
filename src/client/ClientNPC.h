@@ -38,6 +38,7 @@ class ClientNPC : public ClientObject {
   virtual std::string demolishButtonTooltip() const override {
     return "Slaughter this pet";
   }
+  bool canBeOwnedByACity() const override { return false; }
 };
 
 #endif
