@@ -280,11 +280,10 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
 TEST_CASE("Pets follow their owners") {
   GIVEN("A guinea pig") {
     auto data = R"(
-      <npcType id="guineaPig" maxHealth="1" />
+      <npcType id="guineaPig" />
     )";
     auto s = TestServer::WithDataString(data);
-    s.addNPC("guineaPig", {10, 15});
-    auto &guineaPig = s.getFirstNPC();
+    auto &guineaPig = s.addNPC("guineaPig", {10, 15});
 
     AND_GIVEN("It's owned by a player") {
       auto c = TestClient::WithDataString(data);
@@ -296,11 +295,11 @@ TEST_CASE("Pets follow their owners") {
         user.teleportTo({100, 100});
 
         THEN("The guinea pig moves nearby") {
-          const auto maxDist = 30.0;
+          const auto maxDist = NPC::FOLLOW_DISTANCE;
           const auto timeAllowed = ms_t{10000};
-          WAIT_UNTIL_TIMEOUT(
-              distance(guineaPig.location(), user.location()) <= maxDist,
-              timeAllowed);
+          WAIT_UNTIL_TIMEOUT(distance(guineaPig.collisionRect(),
+                                      user.collisionRect()) <= maxDist,
+                             timeAllowed);
         }
       }
     }

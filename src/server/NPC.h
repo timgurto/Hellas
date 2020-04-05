@@ -80,7 +80,6 @@ class NPC : public Entity, public QuestNode {
   // AI
   static const px_t AGGRO_RANGE;
   static const px_t PURSUIT_RANGE;
-  static const px_t RETURN_MARGIN;
   static const px_t FOLLOW_DISTANCE;
   static const ms_t FREQUENCY_TO_LOOK_FOR_TARGETS;
   void order(Order newOrder) { _order = newOrder; }
