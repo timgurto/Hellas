@@ -189,6 +189,10 @@ void ClientObject::onLeftClick(Client &client) {
   if (client.isCtrlPressed()) {
     const auto *npc = dynamic_cast<ClientNPC *>(this);
     if (npc && npc->canBeTamed()) client.sendMessage({CL_TAME_NPC, serial()});
+
+  } else if (client.isAltPressed()) {
+    if (objectType()->repairInfo().canBeRepaired)
+      client.sendMessage({CL_REPAIR_OBJECT, serial()});
   }
 
   else
@@ -1064,6 +1068,12 @@ void ClientObject::createRegularTooltip() const {
     tooltip.addGap();
     tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
     tooltip.addLine(std::string("Right-click to interact"));
+  }
+
+  auto needsRepairing = health() < this->maxHealth();
+  if (ot.repairInfo().canBeRepaired && needsRepairing) {
+    tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
+    tooltip.addLine("Alt-click to repair.");
   }
 
   // NPC-specific stuff
