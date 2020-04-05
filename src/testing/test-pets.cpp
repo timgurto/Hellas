@@ -843,22 +843,6 @@ TEST_CASE("Order pet to stay") {
         }
       }
     }
-
-    AND_GIVEN("the user has a pet far away") {
-      auto &dog = s.addNPC("dog", {300, 300});
-      dog.permissions.setPlayerOwner(c->username());
-
-      WHEN("its owner sends a Stay order") {
-        c.sendMessage(CL_ORDER_NPC_TO_STAY, makeArgs(dog.serial()));
-        REPEAT_FOR_MS(100);
-
-        THEN("it still moves") {
-          auto originalLocation = dog.location();
-          REPEAT_FOR_MS(500);
-          CHECK(dog.location() != originalLocation);
-        }
-      }
-    }
   }
 
   GIVEN("a server and client") {
