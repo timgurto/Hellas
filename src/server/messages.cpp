@@ -16,10 +16,10 @@
   auto messageWasWellFormed = parser.getLastDelimiterRead() == MSG_END; \
   if (!messageWasWellFormed) return
 
+#define HANDLE_MSG_ARGS const Socket &client, User &user, MessageParser &parser
+
 template <>
-void Server::handleSingleMessage<CL_REPORT_BUG>(const Socket &client,
-                                                User &user,
-                                                MessageParser &parser) {
+void Server::handleMessage<CL_REPORT_BUG>(HANDLE_MSG_ARGS) {
   std::string bugDescription;
   READ_ARGS(bugDescription);
 
@@ -28,8 +28,7 @@ void Server::handleSingleMessage<CL_REPORT_BUG>(const Socket &client,
 }
 
 template <>
-void Server::handleSingleMessage<CL_PING>(const Socket &client, User &user,
-                                          MessageParser &parser) {
+void Server::handleMessage<CL_PING>(HANDLE_MSG_ARGS) {
   ms_t timeSent;
   READ_ARGS(timeSent);
 
@@ -37,9 +36,7 @@ void Server::handleSingleMessage<CL_PING>(const Socket &client, User &user,
 }
 
 template <>
-void Server::handleSingleMessage<CL_LOGIN_EXISTING>(const Socket &client,
-                                                    User &user,
-                                                    MessageParser &parser) {
+void Server::handleMessage<CL_LOGIN_EXISTING>(HANDLE_MSG_ARGS) {
   std::string username, passwordHash, clientVersion;
   READ_ARGS(username, passwordHash, clientVersion);
 
@@ -87,8 +84,7 @@ void Server::handleSingleMessage<CL_LOGIN_EXISTING>(const Socket &client,
 }
 
 template <>
-void Server::handleSingleMessage<CL_LOGIN_NEW>(const Socket &client, User &user,
-                                               MessageParser &parser) {
+void Server::handleMessage<CL_LOGIN_NEW>(HANDLE_MSG_ARGS) {
   std::string name, pwHash, classID, clientVersion;
   READ_ARGS(name, pwHash, classID, clientVersion);
 
@@ -116,17 +112,14 @@ void Server::handleSingleMessage<CL_LOGIN_NEW>(const Socket &client, User &user,
 }
 
 template <>
-void Server::handleSingleMessage<CL_REQUEST_TIME_PLAYED>(
-    const Socket &client, User &user, MessageParser &parser) {
+void Server::handleMessage<CL_REQUEST_TIME_PLAYED>(HANDLE_MSG_ARGS) {
   CHECK_NO_ARGS;
 
   user.sendTimePlayed();
 }
 
 template <>
-void Server::handleSingleMessage<CL_SKIP_TUTORIAL>(const Socket &client,
-                                                   User &user,
-                                                   MessageParser &parser) {
+void Server::handleMessage<CL_SKIP_TUTORIAL>(HANDLE_MSG_ARGS) {
   CHECK_NO_ARGS;
 
   if (!user.isInTutorial()) return;
@@ -165,9 +158,7 @@ void Server::handleSingleMessage<CL_SKIP_TUTORIAL>(const Socket &client,
 }
 
 template <>
-void Server::handleSingleMessage<CL_ORDER_NPC_TO_STAY>(const Socket &client,
-                                                       User &user,
-                                                       MessageParser &parser) {
+void Server::handleMessage<CL_ORDER_NPC_TO_STAY>(HANDLE_MSG_ARGS) {
   auto serial = Serial{};
   READ_ARGS(serial);
 
@@ -177,9 +168,9 @@ void Server::handleSingleMessage<CL_ORDER_NPC_TO_STAY>(const Socket &client,
   npc->orderToStay();
 }
 
-#define SEND_MESSAGE_TO_HANDLER(MESSAGE_CODE)                 \
-  case MESSAGE_CODE:                                          \
-    handleSingleMessage<MESSAGE_CODE>(client, *user, parser); \
+#define SEND_MESSAGE_TO_HANDLER(MESSAGE_CODE)           \
+  case MESSAGE_CODE:                                    \
+    handleMessage<MESSAGE_CODE>(client, *user, parser); \
     break;
 
 void Server::handleBufferedMessages(const Socket &client,

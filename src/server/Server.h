@@ -289,8 +289,7 @@ class Server {
   void writeUserToFile(const User &user, std::ostream &file) const;
 
   template <MessageCode M>
-  void handleSingleMessage(const Socket &client, User &user,
-                           MessageParser &parser);
+  void handleMessage(const Socket &client, User &user, MessageParser &parser);
 
   void handle_CL_TAKE_ITEM(User &user, Serial serial, size_t slotNum);
   void handle_CL_REPAIR_ITEM(User &user, Serial serial, size_t slot);
