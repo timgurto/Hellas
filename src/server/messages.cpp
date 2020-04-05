@@ -221,6 +221,8 @@ HANDLE_MSG<CL_ORDER_NPC_TO_FOLLOW>(HANDLE_MSG_ARGS) {
   auto *npc = _entities.find<NPC>(serial);
   if (!npc) return;
   if (distance(npc->location(), user.location()) > ACTION_DISTANCE) return;
+  if (!user.hasRoomForMoreFollowers()) return;
+
   npc->order(NPC::FOLLOW);
 }
 

@@ -650,12 +650,18 @@ TEST_CASE("Follower limits") {
       WHEN("he tries to tame it") {
         c.sendMessage(CL_TAME_NPC, makeArgs(wildDog.serial()));
 
-        THEN("it is owned") {
+        THEN("it is owned but not following") {
           REPEAT_FOR_MS(10);
           CHECK(wildDog.permissions.hasOwner());
+          CHECK(wildDog.order() == NPC::STAY);
 
-          AND_THEN("it isn't following") {
-            CHECK(wildDog.order() == NPC::STAY);
+          AND_WHEN("he orders it to follow") {
+            c.sendMessage(CL_ORDER_NPC_TO_FOLLOW, makeArgs(wildDog.serial()));
+
+            THEN("it is still not following") {
+              REPEAT_FOR_MS(100);
+              CHECK(wildDog.order() == NPC::STAY);
+            }
           }
         }
       }
@@ -890,7 +896,6 @@ TEST_CASE("Ordering a pet to stay makes room for another follower") {
   }
 }
 
-// Follow fails if follower count reached
 // If follow count is reduced, one randomly stays
 // If too far away, switch to stay
 // Followers inside vehicle
