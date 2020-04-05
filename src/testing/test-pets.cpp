@@ -788,7 +788,7 @@ TEST_CASE("Granting pets to the city") {
 }
 
 TEST_CASE("Pet orders") {
-  GIVEN("a user has a pet") {
+  GIVEN("a user and a dog") {
     auto data = R"(
       <npcType id="dog" />
     )";
@@ -796,13 +796,25 @@ TEST_CASE("Pet orders") {
     auto c = TestClient::WithDataString(data);
     s.waitForUsers(1);
     auto &dog = s.addNPC("dog", {10, 15});
-    dog.permissions.setPlayerOwner(c->username());
 
-    c.sendMessage(CL_ORDER_NPC_TO_STAY, makeArgs(dog.serial()));
-    WAIT_UNTIL(dog.order() == NPC::STAY);
+    AND_GIVEN("the dog is the user's pet") {
+      dog.permissions.setPlayerOwner(c->username());
 
-    c.sendMessage(CL_ORDER_NPC_TO_FOLLOW, makeArgs(dog.serial()));
-    WAIT_UNTIL(dog.order() == NPC::FOLLOW);
+      c.sendMessage(CL_ORDER_NPC_TO_STAY, makeArgs(dog.serial()));
+      WAIT_UNTIL(dog.order() == NPC::STAY);
+
+      c.sendMessage(CL_ORDER_NPC_TO_FOLLOW, makeArgs(dog.serial()));
+      WAIT_UNTIL(dog.order() == NPC::FOLLOW);
+    }
+
+    WHEN("he tries to order it to stay") {
+      c.sendMessage(CL_ORDER_NPC_TO_STAY, makeArgs(dog.serial()));
+
+      THEN("it is still set to Follow") {
+        REPEAT_FOR_MS(100);
+        CHECK(dog.order() == NPC::FOLLOW);
+      }
+    }
   }
 }
 
@@ -956,6 +968,6 @@ TEST_CASE("Pets stop following if owner is far away") {
 // If follow count is reduced, one randomly stays
 // Followers inside vehicle
 // Can't order someone else's pet
-// If city-owned, then actual player that tames or gives orders has his follower
-// count affected
+// If city-owned, then actual player that tames or gives orders has his
+// follower count affected
 // Give the same order twice; check impact on follower count
