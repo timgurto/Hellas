@@ -71,3 +71,35 @@ bool ClientNPC::shouldDrawName() const {
   if (isDead()) return false;
   return true;
 }
+
+bool ClientNPC::addClassSpecificStuffToWindow() {
+  if (this->owner().type == Owner::ALL_HAVE_ACCESS) return false;
+  if (!userHasAccess()) return false;
+
+  const auto &client = Client::instance();
+
+  px_t x = BUTTON_GAP, y = _window->contentHeight(),
+       newWidth = _window->contentWidth();
+  y += BUTTON_GAP;
+
+  auto *followButton = new Button(
+      {x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Follow", [this, &client]() {
+        client.sendMessage({CL_ORDER_NPC_TO_FOLLOW, serial()});
+      });
+  _window->addChild(followButton);
+  x += BUTTON_GAP + BUTTON_WIDTH;
+
+  auto *stayButton = new Button(
+      {x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Stay", [this, &client]() {
+        client.sendMessage({CL_ORDER_NPC_TO_STAY, serial()});
+      });
+  _window->addChild(stayButton);
+  x += BUTTON_GAP + BUTTON_WIDTH;
+
+  y += BUTTON_GAP + BUTTON_HEIGHT;
+  if (newWidth < x) newWidth = x;
+
+  _window->resize(newWidth, y);
+
+  return true;
+}

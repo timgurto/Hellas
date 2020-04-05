@@ -39,6 +39,7 @@ class ClientNPC : public ClientObject {
     return "Slaughter this pet";
   }
   bool canBeOwnedByACity() const override { return false; }
+  virtual bool addClassSpecificStuffToWindow() override;
 };
 
 #endif
