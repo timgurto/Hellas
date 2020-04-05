@@ -64,6 +64,7 @@ class Entity {
 
   Spawner *spawner() const { return _spawner; }
   void spawner(Spawner *p) { _spawner = p; }
+  void separateFromSpawner();
 
   // Space
   const MapPoint &location() const { return _location; }

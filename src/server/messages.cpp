@@ -193,15 +193,14 @@ void Server::handleMessage<CL_TAME_NPC>(HANDLE_MSG_ARGS) {
   }
 
   npc->includeInPersistentState();
-  if (npc->spawner()) {
-    npc->spawner()->scheduleSpawn();
-    npc->spawner(nullptr);
-  }
+  npc->separateFromSpawner();
   npc->permissions.setPlayerOwner(user.name());
-  user.followers.add();
+
   if (user.target() == npc) {
     user.finishAction();
   }
+
+  user.followers.add();
 }
 
 template <>

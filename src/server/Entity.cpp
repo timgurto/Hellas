@@ -584,6 +584,13 @@ void Entity::sendAllLootToTagger() const {
     loot().sendSingleSlotToUser(*tagger(), serial(), i);
 }
 
+void Entity::separateFromSpawner() {
+  if (!spawner()) return;
+
+  spawner()->scheduleSpawn();  // To replace this
+  _spawner = nullptr;
+}
+
 void Entity::alertReactivelyTargetingUser(const User &targetingUser) const {
   targetingUser.sendMessage({SV_YOU_ARE_ATTACKING_ENTITY, serial()});
 }
