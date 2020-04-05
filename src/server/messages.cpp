@@ -209,6 +209,8 @@ HANDLE_MSG<CL_ORDER_NPC_TO_STAY>(HANDLE_MSG_ARGS) {
   auto *npc = _entities.find<NPC>(serial);
   if (!npc) return;
   if (distance(npc->location(), user.location()) > ACTION_DISTANCE) return;
+
+  if (npc->order() == NPC::FOLLOW) user.followers.remove();
   npc->order(NPC::STAY);
 }
 

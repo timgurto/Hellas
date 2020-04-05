@@ -857,8 +857,43 @@ TEST_CASE("Order pet to stay") {
   }
 }
 
-// Stay doesn't contribute to follower count
+TEST_CASE("Ordering a pet to stay makes room for another follower") {
+  GIVEN("two tameable NPCs") {
+    auto data = R"(
+      <npcType id="cat" maxHealth="10000" >
+        <canBeTamed />
+      </npcType>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+
+    auto &cat1 = s.addNPC("cat", {15, 10});
+    cat1.reduceHealth(9999);
+    auto &cat2 = s.addNPC("cat", {10, 15});
+    cat2.reduceHealth(9999);
+
+    WHEN("a user tames one and orders it to stay") {
+      c.sendMessage(CL_TAME_NPC, makeArgs(cat1.serial()));
+      c.sendMessage(CL_ORDER_NPC_TO_STAY, makeArgs(cat1.serial()));
+      WAIT_UNTIL(cat1.order() == NPC::STAY);
+
+      AND_WHEN("he tames the other") {
+        c.sendMessage(CL_TAME_NPC, makeArgs(cat2.serial()));
+
+        THEN("the new pet is following him") {
+          REPEAT_FOR_MS(100);
+          CHECK(cat2.order() == NPC::FOLLOW);
+        }
+      }
+    }
+  }
+}
+
 // Follow fails if follower count reached
 // If follow count is reduced, one randomly stays
 // If too far away, switch to stay
 // Followers inside vehicle
+// Can't order someone else's pet
+// If city-owned, then actual player that tames or gives orders has his followe
+// count affected
