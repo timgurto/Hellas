@@ -650,9 +650,13 @@ TEST_CASE("Follower limits") {
       WHEN("he tries to tame it") {
         c.sendMessage(CL_TAME_NPC, makeArgs(wildDog.serial()));
 
-        THEN("it is still unowned") {
+        THEN("it is owned") {
           REPEAT_FOR_MS(10);
-          CHECK_FALSE(wildDog.permissions.hasOwner());
+          CHECK(wildDog.permissions.hasOwner());
+
+          AND_THEN("it isn't following") {
+            CHECK(wildDog.order() == NPC::STAY);
+          }
         }
       }
 

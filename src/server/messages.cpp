@@ -168,7 +168,6 @@ HANDLE_MSG<CL_TAME_NPC>(HANDLE_MSG_ARGS) {
   const auto &type = *npc->npcType();
   if (!type.canBeTamed()) return;
   if (npc->permissions.hasOwner()) return;
-  if (!user.hasRoomForMoreFollowers()) return;
 
   auto consumable = ItemSet{};
   if (!type.tamingRequiresItem().empty()) {
@@ -197,7 +196,10 @@ HANDLE_MSG<CL_TAME_NPC>(HANDLE_MSG_ARGS) {
     user.finishAction();
   }
 
-  user.followers.add();
+  if (user.hasRoomForMoreFollowers())
+    user.followers.add();
+  else
+    npc->order(NPC::STAY);
 }
 
 HANDLE_MSG<CL_ORDER_NPC_TO_STAY>(HANDLE_MSG_ARGS) {
