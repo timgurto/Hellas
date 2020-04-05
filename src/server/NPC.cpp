@@ -297,6 +297,13 @@ void NPC::sendInfoToClient(const User &targetUser) const {
 
   // Quests
   QuestNode::sendQuestsToUser(targetUser);
+
+  // Transform timer
+  if (transformation.isTransforming()) {
+    targetUser.sendMessage(
+        {SV_TRANSFORM_TIME,
+         makeArgs(serial(), transformation.transformTimer())});
+  }
 }
 
 ServerItem::Slot *NPC::getSlotToTakeFromAndSendErrors(size_t slotNum,
