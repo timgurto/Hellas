@@ -779,25 +779,44 @@ TEST_CASE("Granting pets to the city") {
 TEST_CASE("Stay/follow") {
   CL_ORDER_NPC_TO_FOLLOW;
 
-  GIVEN("a pet") {
+  GIVEN("a user and an NPC type") {
     auto data = R"(
       <npcType id="dog" />
     )";
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
     s.waitForUsers(1);
-    auto &dog = s.addNPC("dog", {10, 15});
-    dog.permissions.setPlayerOwner(c->username());
 
-    WHEN("its owner sends a Stay order") {
-      c.sendMessage(CL_ORDER_NPC_TO_STAY, makeArgs(dog.serial()));
-      auto originalLocation = dog.location();
+    AND_GIVEN("the user has a pet") {
+      auto &dog = s.addNPC("dog", {10, 15});
+      dog.permissions.setPlayerOwner(c->username());
 
-      AND_WHEN("its owner walks away") {
-        c.simulateKeypress(SDL_SCANCODE_D);
-        REPEAT_FOR_MS(2000);
+      WHEN("its owner sends a Stay order") {
+        c.sendMessage(CL_ORDER_NPC_TO_STAY, makeArgs(dog.serial()));
+        auto originalLocation = dog.location();
 
-        THEN("it doesn't move") { CHECK(dog.location() == originalLocation); }
+        AND_WHEN("its owner walks away") {
+          c.simulateKeypress(SDL_SCANCODE_D);
+          REPEAT_FOR_MS(2000);
+
+          THEN("it doesn't move") { CHECK(dog.location() == originalLocation); }
+        }
+      }
+    }
+
+    AND_GIVEN("the user has a pet far away") {
+      auto &dog = s.addNPC("dog", {300, 300});
+      dog.permissions.setPlayerOwner(c->username());
+
+      WHEN("its owner sends a Stay order") {
+        c.sendMessage(CL_ORDER_NPC_TO_STAY, makeArgs(dog.serial()));
+        REPEAT_FOR_MS(100);
+
+        THEN("it still moves") {
+          auto originalLocation = dog.location();
+          REPEAT_FOR_MS(500);
+          CHECK(dog.location() != originalLocation);
+        }
       }
     }
   }
@@ -814,8 +833,6 @@ TEST_CASE("Stay/follow") {
     }
   }
 }
-
-// Too far away
 
 // Stay doesn't contribute to follower count
 // Follow fails if follower count reached

@@ -80,11 +80,11 @@ class NPC : public Entity, public QuestNode {
   static const px_t RETURN_MARGIN;
   static const px_t FOLLOW_DISTANCE;
   static const ms_t FREQUENCY_TO_LOOK_FOR_TARGETS;
-  ms_t _timeSinceLookedForTargets;
-  const User *_followTarget{nullptr};
-  void orderToStay() { _order = STAY; }
+  void orderToStay();
   // AI
  private:
+  ms_t _timeSinceLookedForTargets;
+  const User *_followTarget{nullptr};
   void processAI(ms_t timeElapsed);
   void getNewTargetsFromProximity(ms_t timeElapsed);
   void transitionIfNecessary();

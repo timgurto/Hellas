@@ -74,6 +74,11 @@ void NPC::transitionIfNecessary() {
       break;
 
     case PET_FOLLOW_OWNER:
+      if (_order == STAY) {
+        _state = IDLE;
+        break;
+      }
+
       // There's a target to attack
       if (target()) {
         if (distToTarget > ATTACK_RANGE) {
@@ -222,6 +227,8 @@ void NPC::act() {
       break;  // Entity::update() will handle combat
   }
 }
+
+void NPC::orderToStay() { _order = STAY; }
 
 void NPC::setStateBasedOnOrder() {
   if (_order == STAY)

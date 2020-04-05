@@ -173,6 +173,7 @@ void Server::handleSingleMessage<CL_ORDER_NPC_TO_STAY>(const Socket &client,
 
   auto *npc = _entities.find<NPC>(serial);
   if (!npc) return;
+  if (distance(npc->location(), user.location()) > ACTION_DISTANCE) return;
   npc->orderToStay();
 }
 
