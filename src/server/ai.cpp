@@ -73,7 +73,7 @@ void NPC::transitionIfNecessary() {
 
       break;
 
-    case PET_FOLLOW_OWNER:
+    case PET_FOLLOW_OWNER: {
       if (_order == STAY) {
         _state = IDLE;
         break;
@@ -89,13 +89,31 @@ void NPC::transitionIfNecessary() {
         break;
       }
 
+      const auto distanceFromOwner =
+          distance(_followTarget->collisionRect(), collisionRect());
+
       // Owner is close enough
-      if (distance(_followTarget->collisionRect(), collisionRect()) <=
-          FOLLOW_DISTANCE) {
+      if (distanceFromOwner <= FOLLOW_DISTANCE) {
         _state = IDLE;
         _followTarget = nullptr;
         break;
       }
+
+      // Owner is too far away
+      if (distanceFromOwner >= MAX_FOLLOW_RANGE) {
+        _state = IDLE;
+        _order = STAY;
+
+        if (owner().type == Permissions::Owner::PLAYER) {
+          auto *ownerPlayer = Server::instance().getUserByName(owner().name);
+          if (ownerPlayer) ownerPlayer->followers.remove();
+        }
+
+        _followTarget = nullptr;
+        break;
+      }
+      break;
+    }
 
     case CHASE:
       // Target has disappeared

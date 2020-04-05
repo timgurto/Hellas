@@ -930,8 +930,30 @@ TEST_CASE("Follow orders contribute to follower limit") {
   }
 }
 
+TEST_CASE("Pets stop following if owner is far away") {
+  GIVEN("a user with a pet") {
+    auto data = R"(
+      <npcType id="dog" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+
+    auto &dog = s.addNPC("dog", {15, 10});
+    dog.permissions.setPlayerOwner(c->username());
+
+    WHEN("he teleports far away") {
+      auto &user = s.getFirstUser();
+      user.teleportTo({300, 300});
+
+      THEN("the pet is no longer following") {
+        WAIT_UNTIL(dog.order() == NPC::STAY);
+      }
+    }
+  }
+}
+
 // If follow count is reduced, one randomly stays
-// If too far away, switch to stay
 // Followers inside vehicle
 // Can't order someone else's pet
 // If city-owned, then actual player that tames or gives orders has his follower
