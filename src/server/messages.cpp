@@ -165,7 +165,18 @@ void Server::handleMessage<CL_ORDER_NPC_TO_STAY>(HANDLE_MSG_ARGS) {
   auto *npc = _entities.find<NPC>(serial);
   if (!npc) return;
   if (distance(npc->location(), user.location()) > ACTION_DISTANCE) return;
-  npc->orderToStay();
+  npc->order(NPC::STAY);
+}
+
+template <>
+void Server::handleMessage<CL_ORDER_NPC_TO_FOLLOW>(HANDLE_MSG_ARGS) {
+  auto serial = Serial{};
+  READ_ARGS(serial);
+
+  auto *npc = _entities.find<NPC>(serial);
+  if (!npc) return;
+  if (distance(npc->location(), user.location()) > ACTION_DISTANCE) return;
+  npc->order(NPC::FOLLOW);
 }
 
 #define SEND_MESSAGE_TO_HANDLER(MESSAGE_CODE)           \
@@ -206,6 +217,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_REQUEST_TIME_PLAYED)
       SEND_MESSAGE_TO_HANDLER(CL_SKIP_TUTORIAL)
       SEND_MESSAGE_TO_HANDLER(CL_ORDER_NPC_TO_STAY)
+      SEND_MESSAGE_TO_HANDLER(CL_ORDER_NPC_TO_FOLLOW)
 
       case CL_LOCATION: {
         double x, y;

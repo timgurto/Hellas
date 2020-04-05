@@ -228,8 +228,6 @@ void NPC::act() {
   }
 }
 
-void NPC::orderToStay() { _order = STAY; }
-
 void NPC::setStateBasedOnOrder() {
   if (_order == STAY)
     _state = IDLE;

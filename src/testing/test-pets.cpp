@@ -776,9 +776,26 @@ TEST_CASE("Granting pets to the city") {
   }
 }
 
-TEST_CASE("Stay/follow") {
-  CL_ORDER_NPC_TO_FOLLOW;
+TEST_CASE("Pet orders") {
+  GIVEN("a user has a pet") {
+    auto data = R"(
+      <npcType id="dog" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &dog = s.addNPC("dog", {10, 15});
+    dog.permissions.setPlayerOwner(c->username());
 
+    c.sendMessage(CL_ORDER_NPC_TO_STAY, makeArgs(dog.serial()));
+    WAIT_UNTIL(dog.order() == NPC::STAY);
+
+    c.sendMessage(CL_ORDER_NPC_TO_FOLLOW, makeArgs(dog.serial()));
+    WAIT_UNTIL(dog.order() == NPC::FOLLOW);
+  }
+}
+
+TEST_CASE("Order pet to stay") {
   GIVEN("a user and an NPC type") {
     auto data = R"(
       <npcType id="dog" />
