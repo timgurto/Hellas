@@ -158,6 +158,53 @@ void Server::handleMessage<CL_SKIP_TUTORIAL>(HANDLE_MSG_ARGS) {
 }
 
 template <>
+void Server::handleMessage<CL_TAME_NPC>(HANDLE_MSG_ARGS) {
+  auto serial = Serial{};
+  READ_ARGS(serial);
+
+  auto *npc = _entities.find<NPC>(serial);
+  if (!npc) {
+    user.sendMessage(WARNING_DOESNT_EXIST);
+    return;
+  }
+
+  const auto &type = *npc->npcType();
+  if (!type.canBeTamed()) return;
+  if (npc->permissions.hasOwner()) return;
+  if (!user.hasRoomForMoreFollowers()) return;
+
+  auto consumable = ItemSet{};
+  if (!type.tamingRequiresItem().empty()) {
+    const auto *item = findItem(type.tamingRequiresItem());
+    consumable.add(item);
+    if (!user.hasItems(consumable)) {
+      user.sendMessage(WARNING_ITEM_NEEDED);
+      return;
+    }
+  }
+
+  // All checks pass; attempt goes ahead.
+
+  user.removeItems(consumable);
+
+  if (randDouble() > npc->getTameChance()) {
+    user.sendMessage(SV_TAME_ATTEMPT_FAILED);
+    return;
+  }
+
+  npc->includeInPersistentState();
+  if (npc->spawner()) {
+    npc->spawner()->scheduleSpawn();
+    npc->spawner(nullptr);
+  }
+  npc->permissions.setPlayerOwner(user.name());
+  user.followers.add();
+  if (user.target() == npc) {
+    user.finishAction();
+  }
+}
+
+template <>
 void Server::handleMessage<CL_ORDER_NPC_TO_STAY>(HANDLE_MSG_ARGS) {
   auto serial = Serial{};
   READ_ARGS(serial);
@@ -216,6 +263,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_LOGIN_NEW)
       SEND_MESSAGE_TO_HANDLER(CL_REQUEST_TIME_PLAYED)
       SEND_MESSAGE_TO_HANDLER(CL_SKIP_TUTORIAL)
+      SEND_MESSAGE_TO_HANDLER(CL_TAME_NPC)
       SEND_MESSAGE_TO_HANDLER(CL_ORDER_NPC_TO_STAY)
       SEND_MESSAGE_TO_HANDLER(CL_ORDER_NPC_TO_FOLLOW)
 
@@ -1134,16 +1182,6 @@ void Server::handleBufferedMessages(const Socket &client,
         break;
       }
 
-      case CL_TAME_NPC: {
-        Serial serial;
-        iss >> serial >> del;
-
-        if (del != MSG_END) return;
-
-        handle_CL_TAME_NPC(*user, serial);
-        break;
-      }
-
       case CL_MOUNT: {
         Serial serial;
         iss >> serial >> del;
@@ -1778,53 +1816,6 @@ void Server::handle_CL_REPAIR_OBJECT(User &user, Serial serial) {
   }
 
   obj->repair();
-}
-
-void Server::handle_CL_TAME_NPC(User &user, Serial serial) {
-  auto *npc = _entities.find<NPC>(serial);
-
-  if (!npc) {
-    user.sendMessage(WARNING_DOESNT_EXIST);
-    return;
-  }
-
-  const auto &type = *npc->npcType();
-
-  if (!type.canBeTamed()) return;
-
-  if (npc->permissions.hasOwner()) return;
-
-  if (!user.hasRoomForMoreFollowers()) return;
-
-  auto consumable = ItemSet{};
-  if (!type.tamingRequiresItem().empty()) {
-    const auto *item = findItem(type.tamingRequiresItem());
-    consumable.add(item);
-    if (!user.hasItems(consumable)) {
-      user.sendMessage(WARNING_ITEM_NEEDED);
-      return;
-    }
-  }
-
-  // All checks pass; attempt goes ahead.
-
-  user.removeItems(consumable);
-
-  if (randDouble() > npc->getTameChance()) {
-    user.sendMessage(SV_TAME_ATTEMPT_FAILED);
-    return;
-  }
-
-  npc->includeInPersistentState();
-  if (npc->spawner()) {
-    npc->spawner()->scheduleSpawn();
-    npc->spawner(nullptr);
-  }
-  npc->permissions.setPlayerOwner(user.name());
-  user.followers.add();
-  if (user.target() == npc) {
-    user.finishAction();
-  }
 }
 
 void Server::handle_CL_LEAVE_CITY(User &user) {

@@ -294,7 +294,6 @@ class Server {
   void handle_CL_TAKE_ITEM(User &user, Serial serial, size_t slotNum);
   void handle_CL_REPAIR_ITEM(User &user, Serial serial, size_t slot);
   void handle_CL_REPAIR_OBJECT(User &user, Serial serial);
-  void handle_CL_TAME_NPC(User &user, Serial serial);
   void handle_CL_LEAVE_CITY(User &user);
   void handle_CL_CEDE(User &user, Serial serial);
   void handle_CL_GRANT(User &user, Serial serial, std::string username);
