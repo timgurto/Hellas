@@ -182,6 +182,7 @@ class ClientObject : public Sprite, public ClientCombatant {
 
   bool userHasAccess() const;
   bool userHasMerchantAccess() const;
+  bool userHasDemolishAccess() const;
   bool canAlwaysSee() const;
 
   void setMerchantSlot(size_t i, ClientMerchantSlot &mSlot);

@@ -666,7 +666,7 @@ void ClientObject::assembleWindow(Client &client) {
              canGrant =
                  (client.character().isKing() &&
                   _owner == Owner{Owner::CITY, client.character().cityName()}),
-             canDemolish = userIsOwner,
+             canDemolish = userHasDemolishAccess(),
              hasAQuest =
                  !(startsQuests().empty() && completableQuests().empty()) &&
                  userHasAccess();
@@ -801,6 +801,20 @@ bool ClientObject::userHasMerchantAccess() const {
   if (_owner.type == Owner::NO_ACCESS) return false;
 
   return true;
+}
+
+bool ClientObject::userHasDemolishAccess() const {
+  if (_owner.type == Owner::ALL_HAVE_ACCESS) return false;
+  if (_owner.type == Owner::NO_ACCESS) return false;
+
+  // Player is owner
+  if (isOwnedByPlayer(Client::_instance->username())) return true;
+
+  // City is owner
+  auto playerCity = Client::_instance->character().cityName();
+  if (isOwnedByCity(playerCity)) return true;
+
+  return false;
 }
 
 bool ClientObject::canAlwaysSee() const {
