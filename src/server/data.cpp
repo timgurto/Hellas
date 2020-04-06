@@ -564,6 +564,10 @@ void Server::loadEntitiesFromFile(const std::string &path,
         _debug << Color::CHAT_ERROR << "Skipping bad NPC owner type \"" << type
                << "\"." << Log::endl;
     }
+
+    auto orderString = ""s;
+    if (xr.findAttr(elem, "order", orderString))
+      npc.order(orderString == "stay" ? NPC::STAY : NPC::FOLLOW);
   }
 }
 
@@ -679,6 +683,9 @@ void NPC::writeToXML(XmlWriter &xw) const {
     xw.setAttr(ownerElem, "type", owner.typeString());
     xw.setAttr(ownerElem, "name", owner.name);
   }
+
+  auto orderString = _order == FOLLOW ? "follow" : "stay";
+  xw.setAttr(e, "order", orderString);
 
   if (isDead() && corpseTime() > 0) xw.setAttr(e, "corpseTime", corpseTime());
 }

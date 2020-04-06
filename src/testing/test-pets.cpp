@@ -949,6 +949,34 @@ TEST_CASE("Pets stop following if owner is far away") {
   }
 }
 
+TEST_CASE("Persistence of pet orders") {
+  auto data = R"(
+      <npcType id="dog" />
+    )";
+
+  // For each order typr
+  const auto orders = std::set<NPC::Order>{NPC::STAY, NPC::FOLLOW};
+  for (const auto ORDER : orders) {
+    {
+      // Given a pet with the given order
+      auto s = TestServer::WithDataString(data);
+      auto &dog = s.addNPC("dog", {10, 15});
+      dog.permissions.setPlayerOwner("Alice");
+      dog.includeInPersistentState();
+      dog.order(ORDER);
+
+      // When the server restarts
+    }
+    {
+      auto s = TestServer::WithDataStringAndKeepingOldData(data);
+
+      // Then the pet still has the same order
+      auto &dog = s.getFirstNPC();
+      CHECK(dog.order() == ORDER);
+    }
+  }
+}
+
 // If follow count is reduced, one randomly stays
 // Followers inside vehicle
 // Can't order someone else's pet
