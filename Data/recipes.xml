@@ -265,7 +265,7 @@
     </recipe>
     <recipe
         id="tinSpear" time="4000" >
-        <material id="tinBar" quantity="5" />
+        <material id="tinBar" />
         <material id="pole1" />
         <tool class="smelting1" />
         <tool class="spearMould" />
@@ -275,7 +275,7 @@
     </recipe>
     <recipe
         id="copperSpear" time="4000" quantity="5" >
-        <material id="copperBar" quantity="5" />
+        <material id="copperBar" />
         <material id="pole2" />
         <tool class="smelting2" />
         <tool class="spearMould" />
