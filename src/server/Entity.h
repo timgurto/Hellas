@@ -196,9 +196,7 @@ class Entity {
   virtual void onOutOfRange(const Entity &rhs) const {
   }  // This will be called for both entities.
   virtual Message outOfRangeMessage() const { return Message(); };
-  virtual bool shouldAlwaysBeKnownToUser(const User &user) const {
-    return false;
-  }
+  bool shouldAlwaysBeKnownToUser(const User &user) const;
 
   const Loot &loot() const;
 

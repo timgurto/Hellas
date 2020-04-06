@@ -603,6 +603,14 @@ void Entity::tellRelevantUsersAboutLootSlot(size_t slot) const {
   _loot->sendSingleSlotToUser(*tagger(), serial(), slot);
 }
 
+bool Entity::shouldAlwaysBeKnownToUser(const User &user) const {
+  if (permissions.isOwnedByPlayer(user.name())) return true;
+  const Server &server = *Server::_instance;
+  const auto &city = server.cities().getPlayerCity(user.name());
+  if (!city.empty() && permissions.isOwnedByCity(city)) return true;
+  return false;
+}
+
 const Loot &Entity::loot() const {
   static Loot dummy{};
 

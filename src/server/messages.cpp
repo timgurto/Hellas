@@ -2552,17 +2552,22 @@ void Server::sendRelevantEntitiesToUser(const User &user) {
 
     // Player owns directly
     auto userOwnsThisObject = _objectsByOwner.isObjectOwnedBy(
-        pObject->serial(), {Permissions::Owner::PLAYER, user.name()});
+        pEntity->serial(), {Permissions::Owner::PLAYER, user.name()});
     if (userOwnsThisObject) {
       entitiesToDescribe.insert(pEntity);
-      if (!pObject->isDead()) user.onNewOwnedObject(pObject->objType());
+
+      // Object-specific stuff
+      auto *pObject = dynamic_cast<const Object *>(pEntity);
+      if (!pObject && !pEntity->isDead())
+        user.onNewOwnedObject(pObject->objType());
+
       continue;
     }
 
     // City owns
     if (!_cities.isPlayerInACity(user.name())) continue;
     auto cityOwnsThisObject = _objectsByOwner.isObjectOwnedBy(
-        pObject->serial(),
+        pEntity->serial(),
         {Permissions::Owner::CITY, _cities.getPlayerCity(user.name())});
     if (cityOwnsThisObject) entitiesToDescribe.insert(pEntity);
   }

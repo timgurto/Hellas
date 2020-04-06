@@ -82,7 +82,6 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
   ServerItem::Slot *getSlotToTakeFromAndSendErrors(size_t slotNum,
                                                    const User &user) override;
   Message outOfRangeMessage() const override;
-  bool shouldAlwaysBeKnownToUser(const User &user) const override;
   virtual void broadcastDamagedMessage(Hitpoints amount) const override;
   virtual void broadcastHealedMessage(Hitpoints amount) const override;
 
