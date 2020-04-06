@@ -1,9 +1,9 @@
 <root>
 
 <item id="tin"          name="Tin Ore"        sounds="rock"      stackSize="10" durability="8" />
-<item id="tinBar"       name="Tin Bar"        sounds="metalBar"  stackSize="10" durability="25"/>
+<item id="tinBar"       name="Tin Ingot"      sounds="metalBar"  stackSize="10" durability="25"/>
 <item id="copper"       name="Copper Ore"                        stackSize="10" durability="10" />
-<item id="copperBar"    name="Copper Bar"     sounds="metalBar"  stackSize="10" durability="20"/>
+<item id="copperBar"    name="Copper Ingot"   sounds="metalBar"  stackSize="10" durability="20"/>
 
 <recipe id="tinBar"
     time="12000" >
