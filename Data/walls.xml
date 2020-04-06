@@ -20,6 +20,28 @@
     <durability item="log" quantity="15" />
     <canBeRepaired cost="log" />
 </objectType>
+<objectType id="woodGateEW" name="Palisade Gate E/W"
+    damageParticles="wood" sounds="wood"
+    isGate="1"
+    xDrawOffset="-27" yDrawOffset="-35" >
+    <collisionRect x="-14" y="-2" w="30" h="5" />
+    <material id="log" quantity="15" /> <!-- Same price, but smaller.  Otherwise no incentive to build normal walls. -->
+    <unlockedBy construction="palisadeNS" />
+    <unlockedBy construction="palisadeEW" />
+    <durability item="log" quantity="15" />
+    <canBeRepaired cost="log" />
+</objectType>
+<objectType id="woodGateNS" name="Palisade Gate N/S"
+    damageParticles="wood" sounds="wood"
+    isGate="1"
+    xDrawOffset="-7k" yDrawOffset="-60" >
+    <collisionRect x="-2" y="-15" w="6" h="30" />
+    <material id="log" quantity="15" /> <!-- Same price, but smaller.  Otherwise no incentive to build normal walls. -->
+    <unlockedBy construction="palisadeNS" />
+    <unlockedBy construction="palisadeEW" />
+    <durability item="log" quantity="15" />
+    <canBeRepaired cost="log" />
+</objectType>
 
 <objectType id="brickWallEW" name="Brick Wall E/W"
     xDrawOffset="-60" yDrawOffset="-42"
