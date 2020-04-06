@@ -1,0 +1,45 @@
+<root>
+
+<objectType id="palisadeEW" name="Palisade E/W"
+    damageParticles="wood" sounds="wood"
+    xDrawOffset="-46" yDrawOffset="-31" >
+    <collisionRect x="-45" y="-2" w="90" h="5" />
+    <material id="log" quantity="15" />
+    <unlockedBy gather="log" chance="0.05" />
+    <unlockedBy construction="palisadeNS" />
+    <durability item="log" quantity="15" />
+    <canBeRepaired cost="log" />
+</objectType>
+<objectType id="palisadeNS" name="Palisade N/S"
+    damageParticles="wood" sounds="wood"
+    xDrawOffset="-3" yDrawOffset="-89" >
+    <collisionRect x="-3" y="-69" w="8" h="72" />
+    <material id="log" quantity="15" />
+    <unlockedBy gather="log" chance="0.05" />
+    <unlockedBy construction="palisadeEW" />
+    <durability item="log" quantity="15" />
+    <canBeRepaired cost="log" />
+</objectType>
+
+<objectType id="brickWallEW" name="Brick Wall E/W"
+    xDrawOffset="-60" yDrawOffset="-42"
+    sounds="brick" damageParticles="brick" >
+    <collisionRect x="-60" y="-2" w="122" h="6" />
+    <material id="brick" quantity="12" />
+    <unlockedBy recipe="brick" chance="0.05" />
+    <unlockedBy construction="brickWallNS" />
+    <durability item="brick" quantity="12" />
+    <canBeRepaired cost="brick" />
+</objectType>
+<objectType id="brickWallNS" name="Brick Wall N/S"
+    xDrawOffset="-3" yDrawOffset="-101"
+    sounds="brick" damageParticles="brick" >
+    <collisionRect x="-3" y="-60" w="8" h="120" />
+    <material id="brick" quantity="12" />
+    <unlockedBy recipe="brick" chance="0.05" />
+    <unlockedBy construction="brickWallEW" />
+    <durability item="brick" quantity="12" />
+    <canBeRepaired cost="brick" />
+</objectType>
+
+</root>
