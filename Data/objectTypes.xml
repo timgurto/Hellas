@@ -317,7 +317,7 @@
 </objectType>
 <objectType id="figTree8" name="Fig Tree (ripe)" xDrawOffset="-19" yDrawOffset="-37"
     canGather="1" gatherParticles="figLeaves" gatherTime="1000" damageParticles="figLeaves" sounds="figTree" > <collisionRect x="-13" y="-9" w="26" h="18" /> <durability item="log" quantity="1" />
-    <yield id="fig" initialMean="4" initialSD="2" initialMin="1" />
+    <yield id="fig" initialMean="2" initialSD="2" initialMin="1" />
     <yield id="figSeeds" initialMean="0.2" initialSD="0.2" />
     <transform id="figTree5" whenEmpty="1" />
     <durability item="log" quantity="1" />
