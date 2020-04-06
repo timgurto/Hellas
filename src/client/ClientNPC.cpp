@@ -69,6 +69,8 @@ void ClientNPC::draw(const Client &client) const {
 
 bool ClientNPC::shouldDrawName() const {
   if (isDead()) return false;
+  if (this->owner().type == Owner::CITY || this->owner().type == Owner::PLAYER)
+    return ClientObject::shouldDrawName();
   return true;
 }
 
