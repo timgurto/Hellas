@@ -160,3 +160,26 @@ TEST_CASE("Objects that disappear after a time") {
     }
   }
 }
+
+TEST_CASE("Gates") {
+  GIVEN("a gate object owned by Alice") {
+    auto data = R"(
+      <objectType id="gate" isGate="1" >
+        <collisionRect x="-10" y="0" w="20" h="1" />
+      </objectType>
+    )";
+    TestServer s = TestServer::WithDataString(data);
+    s.addObject("gate", {10, 20}, "Alice");
+
+    WHEN("Alice tries to move through it") {
+      auto c = TestClient::WithUsernameAndDataString("Alice", data);
+      s.waitForUsers(1);
+      c.sendMessage(CL_LOCATION, makeArgs(10, 30));
+
+      THEN("she gets past it") {
+        const auto &user = s.getFirstUser();
+        WAIT_UNTIL(user.location().y > 20);
+      }
+    }
+  }
+}
