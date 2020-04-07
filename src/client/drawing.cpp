@@ -105,7 +105,7 @@ void Client::draw() const {
       if (!obj) continue;
       if (!obj->objectType()->collides()) continue;
 
-      drawFootprint(obj->collisionRect(), Color::FOOTPRINT_COLLISION, 0x7f);
+      drawFootprint(obj->collisionRect(), Color::FOOTPRINT_COLLISION, 0xaf);
     }
   }
 
@@ -159,7 +159,7 @@ void Client::draw() const {
       validLocation = false;
     auto footprintColor =
         validLocation ? Color::FOOTPRINT_GOOD : Color::FOOTPRINT_BAD;
-    drawFootprint(footprintRect, footprintColor);
+    drawFootprint(footprintRect, footprintColor, 0xaf);
 
     const ScreenRect &drawRect = ot->drawRect();
     px_t x = toInt(_mouse.x + drawRect.x), y = toInt(_mouse.y + drawRect.y);

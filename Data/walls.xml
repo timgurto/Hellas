@@ -25,10 +25,10 @@
     isGate="1"
     xDrawOffset="-17" yDrawOffset="-45" >
     <collisionRect x="-14" y="-2" w="30" h="5" />
-    <material id="log" quantity="15" /> <!-- Same price, but smaller.  Otherwise no incentive to build normal walls. -->
+    <material id="log" quantity="8" /> <!-- Half price, less than half size.  Otherwise no incentive to build normal walls. -->
     <unlockedBy construction="palisadeNS" />
     <unlockedBy construction="palisadeEW" />
-    <durability item="log" quantity="15" />
+    <durability item="log" quantity="8" />
     <canBeRepaired cost="log" />
 </objectType>
 <objectType id="woodGateNS" name="Palisade Gate N/S"
@@ -36,17 +36,17 @@
     isGate="1"
     xDrawOffset="-3" yDrawOffset="-60" >
     <collisionRect x="-2" y="-15" w="6" h="30" />
-    <material id="log" quantity="15" /> <!-- Same price, but smaller.  Otherwise no incentive to build normal walls. -->
+    <material id="log" quantity="8" /> <!-- Half price, less than half size.  Otherwise no incentive to build normal walls. -->
     <unlockedBy construction="palisadeNS" />
     <unlockedBy construction="palisadeEW" />
-    <durability item="log" quantity="15" />
+    <durability item="log" quantity="8" />
     <canBeRepaired cost="log" />
 </objectType>
 
 <objectType id="brickWallEW" name="Brick Wall E/W"
     xDrawOffset="-60" yDrawOffset="-42"
     sounds="brick" damageParticles="brick" >
-    <collisionRect x="-60" y="-2" w="122" h="6" />
+    <collisionRect x="-60" y="-2" w="120" h="6" />
     <material id="brick" quantity="12" />
     <unlockedBy recipe="brick" chance="0.05" />
     <unlockedBy construction="brickWallNS" />
@@ -56,11 +56,33 @@
 <objectType id="brickWallNS" name="Brick Wall N/S"
     xDrawOffset="-3" yDrawOffset="-101"
     sounds="brick" damageParticles="brick" >
-    <collisionRect x="-3" y="-60" w="8" h="120" />
+    <collisionRect x="-3" y="-60" w="6" h="120" />
     <material id="brick" quantity="12" />
     <unlockedBy recipe="brick" chance="0.05" />
     <unlockedBy construction="brickWallEW" />
     <durability item="brick" quantity="12" />
+    <canBeRepaired cost="brick" />
+</objectType>
+<objectType id="brickGateEW" name="Brick Gate E/W"
+    damageParticles="brick" sounds="brick"
+    isGate="1"
+    xDrawOffset="-21" yDrawOffset="-58" >
+    <collisionRect x="-20" y="-2" w="40" h="6" />
+    <material id="brick" quantity="6" /> <!-- Half price, less than half size.  Otherwise no incentive to build normal walls. -->
+    <unlockedBy construction="brickWallNS" />
+    <unlockedBy construction="brickWallEW" />
+    <durability item="brick" quantity="6" />
+    <canBeRepaired cost="brick" />
+</objectType>
+<objectType id="brickGateNS" name="Brick Gate N/S"
+    damageParticles="brick" sounds="brick"
+    isGate="1"
+    xDrawOffset="-3" yDrawOffset="-48" >
+    <collisionRect x="-3" y="-20" w="6" h="40" />
+    <material id="brick" quantity="6" /> <!-- Half price, less than half size.  Otherwise no incentive to build normal walls. -->
+    <unlockedBy construction="brickWallNS" />
+    <unlockedBy construction="brickWallEW" />
+    <durability item="brick" quantity="6" />
     <canBeRepaired cost="brick" />
 </objectType>
 
