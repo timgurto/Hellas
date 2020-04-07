@@ -95,6 +95,20 @@ void Client::draw() const {
       Texture{defaultFont(), toString(drawOrder++), Color::MAGENTA}.draw(
           toScreenPoint((*it)->location()) + offset());
   }
+
+  // Collision footprints on everything, if trying to build
+  if (_selectedConstruction) {
+    for (auto it = top; it != bottom; ++it) {
+      double x = (*it)->location().x;
+      if (x < leftX && x > rightX) continue;
+      const auto *obj = dynamic_cast<const ClientObject *>(*it);
+      if (!obj) continue;
+      if (!obj->objectType()->collides()) continue;
+
+      drawFootprint(obj->collisionRect(), Color::FOOTPRINT_COLLISION, 0x7f);
+    }
+  }
+
   // All names and health bars, in front of all entities
   for (auto it = top; it != bottom; ++it) {
     double x = (*it)->location().x;

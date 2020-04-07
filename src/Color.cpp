@@ -38,6 +38,7 @@ const Color Color::COMBATANT_NEUTRAL = WHITE * 0.9;
 
 const Color Color::FOOTPRINT_GOOD = GREEN * 0.5 + WHITE * 0.2;
 const Color Color::FOOTPRINT_BAD = RED;
+const Color Color::FOOTPRINT_COLLISION = RED + GREEN * 0.5;
 const Color Color::FOOTPRINT_ACTIVE = WHITE * 0.2;
 
 const Color Color::TOOLTIP_BACKGROUND = {0x18, 0x1d, 0x56};
