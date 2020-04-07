@@ -3,7 +3,7 @@
 <objectType id="palisadeEW" name="Palisade E/W"
     damageParticles="wood" sounds="wood"
     xDrawOffset="-46" yDrawOffset="-31" >
-    <collisionRect x="-45" y="-2" w="90" h="5" />
+    <collisionRect x="-45" y="-3" w="90" h="6" />
     <material id="log" quantity="15" />
     <unlockedBy gather="log" chance="0.05" />
     <unlockedBy construction="palisadeNS" />
@@ -12,8 +12,8 @@
 </objectType>
 <objectType id="palisadeNS" name="Palisade N/S"
     damageParticles="wood" sounds="wood"
-    xDrawOffset="-3" yDrawOffset="-89" >
-    <collisionRect x="-3" y="-69" w="8" h="72" />
+    xDrawOffset="-3" yDrawOffset="-73" >
+    <collisionRect x="-3" y="-45" w="6" h="90" />
     <material id="log" quantity="15" />
     <unlockedBy gather="log" chance="0.05" />
     <unlockedBy construction="palisadeEW" />
@@ -23,7 +23,7 @@
 <objectType id="woodGateEW" name="Palisade Gate E/W"
     damageParticles="wood" sounds="wood"
     isGate="1"
-    xDrawOffset="-27" yDrawOffset="-35" >
+    xDrawOffset="-17" yDrawOffset="-45" >
     <collisionRect x="-14" y="-2" w="30" h="5" />
     <material id="log" quantity="15" /> <!-- Same price, but smaller.  Otherwise no incentive to build normal walls. -->
     <unlockedBy construction="palisadeNS" />
@@ -34,7 +34,7 @@
 <objectType id="woodGateNS" name="Palisade Gate N/S"
     damageParticles="wood" sounds="wood"
     isGate="1"
-    xDrawOffset="-7k" yDrawOffset="-60" >
+    xDrawOffset="-3" yDrawOffset="-60" >
     <collisionRect x="-2" y="-15" w="6" h="30" />
     <material id="log" quantity="15" /> <!-- Same price, but smaller.  Otherwise no incentive to build normal walls. -->
     <unlockedBy construction="palisadeNS" />
