@@ -512,6 +512,8 @@ class Client {
   // A tooltip which, if it exists, describes the UI element currently moused
   // over.
   const Texture *_uiTooltip;
+  void drawFootprint(const MapRect &rect, Color color,
+                     Uint8 alpha = 0xff) const;
   MapPoint _offset;  // An offset for drawing, based on the character's location
                      // on the map.
   ScreenPoint _intOffset;  // An integer version of the offset

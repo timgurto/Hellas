@@ -57,16 +57,7 @@ void Client::draw() const {
     if (!pObj) continue;
     if (!pObj->isBeingConstructed()) continue;
 
-    auto footprint =
-        Texture{toInt(pObj->collisionRect().w), toInt(pObj->collisionRect().h)};
-    renderer.pushRenderTarget(footprint);
-    renderer.fill();
-    renderer.popRenderTarget();
-    footprint.setAlpha(0x7f);
-    footprint.setBlend();
-
-    auto drawPos = _offset + pObj->collisionRect();
-    footprint.draw(toScreenPoint(drawPos));
+    drawFootprint(pObj->collisionRect(), Color::FOOTPRINT_ACTIVE, 0x7f);
   }
   // Base under target combatant
   if (_target.exists()) {
@@ -149,8 +140,7 @@ void Client::draw() const {
     auto footprintRect = ot->collisionRect() + toMapPoint(_mouse) - _offset;
     if (distance(playerCollisionRect(), footprintRect) <=
         Client::ACTION_DISTANCE) {
-      renderer.setDrawColor(Color::FOOTPRINT_GOOD);
-      renderer.fillRect(toScreenRect(footprintRect + _offset));
+      drawFootprint(footprintRect, Color::FOOTPRINT_GOOD);
 
       const ScreenRect &drawRect = ot->drawRect();
       px_t x = toInt(_mouse.x + drawRect.x), y = toInt(_mouse.y + drawRect.y);
@@ -158,8 +148,7 @@ void Client::draw() const {
       _constructionFootprint.draw(x, y);
       _constructionFootprint.setAlpha();
     } else {
-      renderer.setDrawColor(Color::FOOTPRINT_BAD);
-      renderer.fillRect(toScreenRect(footprintRect + _offset));
+      drawFootprint(footprintRect, Color::FOOTPRINT_BAD);
     }
     auto isInCity = !_character.cityName().empty();
     auto instruction =
@@ -224,6 +213,19 @@ void Client::drawTooltip() const {
       x = mouseX - tooltip->width() - CURSOR_GAP;
     tooltip->draw({x, y});
   }
+}
+
+void Client::drawFootprint(const MapRect &rect, Color color,
+                           Uint8 alpha) const {
+  auto footprint = Texture{toInt(rect.w), toInt(rect.h)};
+  renderer.pushRenderTarget(footprint);
+  renderer.setDrawColor(color);
+  renderer.fill();
+  renderer.popRenderTarget();
+  footprint.setAlpha(alpha);
+  footprint.setBlend();
+
+  footprint.draw(toScreenPoint(_offset + rect));
 }
 
 void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const {
