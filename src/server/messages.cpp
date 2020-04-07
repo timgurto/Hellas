@@ -154,6 +154,33 @@ HANDLE_MESSAGE(CL_SKIP_TUTORIAL) {
   user.markTutorialAsCompleted();
 }
 
+HANDLE_MESSAGE(CL_LOCATION) {
+  double x, y;
+  READ_ARGS(x, y);
+
+  if (user.isWaitingForDeathAcknowledgement) return;
+
+  if (user.isStunned()) {
+    sendMessage(client, {SV_LOCATION, makeArgs(user.name(), user.location().x,
+                                               user.location().y)});
+    return;
+  }
+
+  if (user.action() != User::ATTACK) user.cancelAction();
+  if (user.isDriving()) {
+    // Move vehicle and user together
+    auto vehicleSerial = user.driving();
+    auto &vehicle = *_entities.find<Vehicle>(vehicleSerial);
+    vehicle.moveLegallyTowards({x, y});
+    auto locationWasCorrected = vehicle.location() != MapPoint{x, y};
+    auto shouldSendUpdate = locationWasCorrected ? Entity::AlwaysSendUpdate
+                                                 : Entity::OnServerCorrection;
+    user.moveLegallyTowards(vehicle.location(), shouldSendUpdate);
+  } else {
+    user.moveLegallyTowards({x, y});
+  }
+}
+
 HANDLE_MESSAGE(CL_TAME_NPC) {
   auto serial = Serial{};
   READ_ARGS(serial);
@@ -265,40 +292,10 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_LOGIN_NEW)
       SEND_MESSAGE_TO_HANDLER(CL_REQUEST_TIME_PLAYED)
       SEND_MESSAGE_TO_HANDLER(CL_SKIP_TUTORIAL)
+      SEND_MESSAGE_TO_HANDLER(CL_LOCATION)
       SEND_MESSAGE_TO_HANDLER(CL_TAME_NPC)
       SEND_MESSAGE_TO_HANDLER(CL_ORDER_NPC_TO_STAY)
       SEND_MESSAGE_TO_HANDLER(CL_ORDER_NPC_TO_FOLLOW)
-
-      case CL_LOCATION: {
-        double x, y;
-        iss >> x >> del >> y >> del;
-        if (del != MSG_END) return;
-
-        if (user->isWaitingForDeathAcknowledgement) break;
-
-        if (user->isStunned()) {
-          sendMessage(client,
-                      {SV_LOCATION, makeArgs(user->name(), user->location().x,
-                                             user->location().y)});
-          break;
-        }
-
-        if (user->action() != User::ATTACK) user->cancelAction();
-        if (user->isDriving()) {
-          // Move vehicle and user together
-          auto vehicleSerial = user->driving();
-          auto &vehicle = *_entities.find<Vehicle>(vehicleSerial);
-          vehicle.moveLegallyTowards({x, y});
-          auto locationWasCorrected = vehicle.location() != MapPoint{x, y};
-          auto shouldSendUpdate = locationWasCorrected
-                                      ? Entity::AlwaysSendUpdate
-                                      : Entity::OnServerCorrection;
-          user->moveLegallyTowards(vehicle.location(), shouldSendUpdate);
-        } else {
-          user->moveLegallyTowards({x, y});
-        }
-        break;
-      }
 
       case CL_CRAFT: {
         iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
