@@ -138,18 +138,21 @@ void Client::draw() const {
             ? ContainerGrid::getUseItem()->constructsObject()
             : _selectedConstruction;
     auto footprintRect = ot->collisionRect() + toMapPoint(_mouse) - _offset;
-    if (distance(playerCollisionRect(), footprintRect) <=
-        Client::ACTION_DISTANCE) {
-      drawFootprint(footprintRect, Color::FOOTPRINT_GOOD);
+    auto validLocation = true;
 
-      const ScreenRect &drawRect = ot->drawRect();
-      px_t x = toInt(_mouse.x + drawRect.x), y = toInt(_mouse.y + drawRect.y);
-      _constructionFootprint.setAlpha(0x7f);
-      _constructionFootprint.draw(x, y);
-      _constructionFootprint.setAlpha();
-    } else {
-      drawFootprint(footprintRect, Color::FOOTPRINT_BAD);
-    }
+    if (distance(playerCollisionRect(), footprintRect) >
+        Client::ACTION_DISTANCE)
+      validLocation = false;
+    auto footprintColor =
+        validLocation ? Color::FOOTPRINT_GOOD : Color::FOOTPRINT_BAD;
+    drawFootprint(footprintRect, footprintColor);
+
+    const ScreenRect &drawRect = ot->drawRect();
+    px_t x = toInt(_mouse.x + drawRect.x), y = toInt(_mouse.y + drawRect.y);
+    _constructionFootprint.setAlpha(0x7f);
+    _constructionFootprint.draw(x, y);
+    _constructionFootprint.setAlpha();
+
     auto isInCity = !_character.cityName().empty();
     auto instruction =
         "Click to build "s + ot->name() + "; right-click to cancel."s;
