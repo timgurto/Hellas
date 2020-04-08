@@ -679,28 +679,30 @@ void ClientObject::assembleWindow(Client &client) {
       canGrant || hasAQuest || objType.hasAction() || objType.canDeconstruct();
   auto hasAnyContent = hasNonDemolitionContent || canDemolish;
 
-  if (isBeingConstructed()) {
-    if (userHasAccess()) {
-      addConstructionToWindow();
+  if (isAlive()) {
+    if (isBeingConstructed()) {
+      if (userHasAccess()) {
+        addConstructionToWindow();
+        if (canCede) addCedeButtonToWindow();
+        if (canGrant) addGrantButtonToWindow();
+        if (canDemolish) addDemolishButtonToWindow();
+        hasNonDemolitionContent = hasAnyContent = true;
+      }
+
+    } else if (userHasAccess()) {
+      if (hasAQuest) addQuestsToWindow();
+      if (isMerchant) addMerchantSetupToWindow();
+      if (hasContainer) addInventoryToWindow();
+      if (objType.hasAction()) addActionToWindow();
+      if (objType.canDeconstruct()) addDeconstructionToWindow();
       if (canCede) addCedeButtonToWindow();
       if (canGrant) addGrantButtonToWindow();
       if (canDemolish) addDemolishButtonToWindow();
-      hasNonDemolitionContent = hasAnyContent = true;
+
+    } else if (userHasMerchantAccess()) {
+      if (isMerchant && _owner.type != Owner::NO_ACCESS)
+        addMerchantTradeToWindow();
     }
-
-  } else if (userHasAccess()) {
-    if (hasAQuest) addQuestsToWindow();
-    if (isMerchant) addMerchantSetupToWindow();
-    if (hasContainer) addInventoryToWindow();
-    if (objType.hasAction()) addActionToWindow();
-    if (objType.canDeconstruct()) addDeconstructionToWindow();
-    if (canCede) addCedeButtonToWindow();
-    if (canGrant) addGrantButtonToWindow();
-    if (canDemolish) addDemolishButtonToWindow();
-
-  } else if (userHasMerchantAccess()) {
-    if (isMerchant && _owner.type != Owner::NO_ACCESS)
-      addMerchantTradeToWindow();
   }
 
   if (!hasAnyContent) {
