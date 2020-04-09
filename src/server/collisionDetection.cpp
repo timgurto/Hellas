@@ -94,7 +94,7 @@ std::list<CollisionChunk *> Server::getCollisionSuperChunk(const MapPoint &p) {
 //   GATE    ?     ?*
 //   OTHER
 //   (rhs)
-//     *: Not yet handled
+// ?: Depends on permissions
 // Blank: false
 
 bool Entity::areOverlapsAllowedWith(const Entity &rhs) const { return false; }
@@ -111,6 +111,12 @@ bool User::areOverlapsAllowedWith(const Entity &rhs) const {
 
 bool NPC::areOverlapsAllowedWith(const Entity &rhs) const {
   if (rhs.classTag() == 'u') return true;
+
+  if (rhs.classTag() == 'o') {
+    const auto &obj = dynamic_cast<const Object &>(rhs);
+    if (obj.isGate()) return true;
+  }
+
   return false;
 }
 
@@ -120,5 +126,6 @@ bool Object::areOverlapsAllowedWith(const Entity &rhs) const {
     const auto &user = dynamic_cast<const User &>(rhs);
     return permissions.doesUserHaveAccess(user.name());
   }
+  if (rhs.classTag() == 'n') return true;
   return false;
 }

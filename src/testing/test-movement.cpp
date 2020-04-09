@@ -69,7 +69,7 @@ TEST_CASE("User and NPC overlap allowed") {
   }
 }
 
-TEST_CASE("Gates") {
+TEST_CASE("Users walking through gates") {
   GIVEN("a gate object owned by Alice") {
     auto data = R"(
       <objectType id="gate" isGate="1" >
@@ -99,6 +99,30 @@ TEST_CASE("Gates") {
         const auto &bob = s.getFirstUser();
         CHECK(bob.location().y < 20);
       }
+    }
+  }
+}
+
+TEST_CASE("Pets walking through gates") {
+  GIVEN("a gate object and a pet owned by Alice") {
+    auto data = R"(
+      <objectType id="gate" isGate="1" >
+        <collisionRect x="-10" y="0" w="20" h="1" />
+      </objectType>
+      <npcType id="dog" >
+        <collisionRect x="0" y="0" w="1" h="1" />
+      </npcType>
+    )";
+    TestServer s = TestServer::WithDataString(data);
+    auto &pet = s.addNPC("dog", {10, 15});
+    pet.permissions.setPlayerOwner("Alice");
+    s.addObject("gate", {10, 20}, "Alice");
+
+    WHEN("the pet tries to move through it") {
+      REPEAT_FOR_MS(1000);
+      pet.moveLegallyTowards({10, 30});
+
+      THEN("it gets past it") { CHECK(pet.location().y > 20); }
     }
   }
 }
