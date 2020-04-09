@@ -29,7 +29,7 @@
     xDrawOffset="-15" yDrawOffset="-15" collides="0" isFlat="1"
     canGather="1" gatherTime="10000" gatherReq="fishing"
     allowedTerrain="shallowWater">
-    <yield id="fish" initialMean="4" initialSD="2" initialMin="1" />
+    <yield id="fish" initialMean="1" initialSD="2" initialMin="1" />
 </objectType>
 <item id="fishingNet" name="Fishing Net" >
     <tag name="fishing" toolSpeed="2" />
