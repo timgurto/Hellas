@@ -1,24 +1,24 @@
 <root>
-<chatLog width=200 height=100 />
-<defaultFont filename="AdvoCut.ttf" size=10 height=11 offset=2 />
-<gameFont filename="AdvoCut.ttf" size=10 height=11 offset=2 />
-<castBar y=300 w=150 h=12 />
-<server hostDirectory="http://timgurto.com/mmo-server-ip.txt" port="8888"/>
+<chatLog width="200" height="100" />
+<defaultFont filename="AdvoCut.ttf" size="10" height="11" offset="2" />
+<gameFont filename="AdvoCut.ttf" size="10" height="11" offset="2" />
+<castBar y="300" w="150" h="12" />
+<server hostDirectory="http://hellas.timgurto.com/server-ip.txt" port="8888"/>
 
 <loginScreen
-    frontX=133
-    frontY=277
+    frontX="133"
+    frontY="277"
 />
 
 <gearDisplay>
-    <slot num=0 midX=-1 midY=-36 drawOrder=5/> <!-- head       -->
+    <slot num="0" midX="-1" midY="-36" drawOrder="5"/> <!-- head       -->
                                                <!-- jewelry    -->
-    <slot num=2 midX=0  midY=-30 drawOrder=2/> <!-- body       -->
-    <slot num=3 midX=-3 midY=-33 drawOrder=1/> <!-- shoulders  -->
-    <slot num=4 midX=-6 midY=-19 drawOrder=3/> <!-- hands      -->
-    <slot num=5 midX=-4 midY=-2  drawOrder=4/> <!-- feet       -->
-    <slot num=6 midX=-6 midY=-16 drawOrder=6/> <!-- right hand -->
-    <slot num=7 midX=6  midY=-18 drawOrder=7/> <!-- left hand  -->
+    <slot num="2" midX="0"  midY="-30" drawOrder="2"/> <!-- body       -->
+    <slot num="3" midX="-3" midY="-33" drawOrder="1"/> <!-- shoulders  -->
+    <slot num="4" midX="-6" midY="-19" drawOrder="3"/> <!-- hands      -->
+    <slot num="5" midX="-4" midY="-2"  drawOrder="4"/> <!-- feet       -->
+    <slot num="6" midX="-6" midY="-16" drawOrder="6"/> <!-- right hand -->
+    <slot num="7" midX="6"  midY="-18" drawOrder="7"/> <!-- left hand  -->
 </gearDisplay>
 
 </root>
