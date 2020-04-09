@@ -97,12 +97,13 @@ void Client::draw() const {
   }
 
   // Collision footprints on everything, if trying to build
-  if (_selectedConstruction) {
+  if (_constructionFootprint) {
     for (auto it = top; it != bottom; ++it) {
       double x = (*it)->location().x;
       if (x < leftX && x > rightX) continue;
       const auto *obj = dynamic_cast<const ClientObject *>(*it);
       if (!obj) continue;
+      if (obj->isDead()) continue;
       if (!obj->objectType()->collides()) continue;
 
       drawFootprint(obj->collisionRect(), Color::FOOTPRINT_COLLISION, 0xaf);
