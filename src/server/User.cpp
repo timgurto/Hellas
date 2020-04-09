@@ -1023,6 +1023,11 @@ void User::onEnergyChange() {
 }
 
 void User::onDeath() {
+  health(stats().maxHealth);
+  energy(stats().maxEnergy);
+  onHealthChange();
+  onEnergyChange();
+
   Server &server = *Server::_instance;
 
   server.broadcastToArea(location(), SV_A_PLAYER_DIED);
@@ -1050,11 +1055,6 @@ void User::onDeath() {
     const Server &server = *Server::_instance;
     sendMessage({SV_LOST_TALENT, talentLost});
   }
-
-  health(stats().maxHealth);
-  energy(stats().maxEnergy);
-  onHealthChange();
-  onEnergyChange();
 }
 
 void User::onNewOwnedObject(const ObjectType &type) const {
