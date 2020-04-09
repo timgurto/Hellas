@@ -193,6 +193,7 @@
     <ClCompile Include="src\Serial.cpp" />
     <ClCompile Include="src\MessageParser.cpp" />
     <ClCompile Include="src\messageCodes.cpp" />
+    <ClCompile Include="src\testing\test-movement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />

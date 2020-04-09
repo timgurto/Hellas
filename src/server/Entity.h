@@ -210,9 +210,7 @@ class Entity {
                           ClientLocationUpdateCase whenToSendClientHisLocation =
                               OnServerCorrection);
 
-  virtual bool areOverlapsAllowedWith(const Entity &rhs) const { return false; }
-  virtual bool areOverlapsAllowedWith(const NPC &rhs) const { return false; }
-  virtual bool areOverlapsAllowedWith(const User &rhs) const { return false; }
+  virtual bool areOverlapsAllowedWith(const Entity &rhs) const;
 
   Permissions permissions;
   Gatherable gatherable;

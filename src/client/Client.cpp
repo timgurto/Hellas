@@ -895,7 +895,7 @@ bool Client::isLocationValidForPlayer(const MapRect &rect) const {
     // Allow collisions between users and users/NPCs
     if (obj->classTag() == 'u' || obj->classTag() == 'n') continue;
 
-    if (obj->collisionRect().collides(rect)) return false;
+    if (obj->collisionRect().overlaps(rect)) return false;
   }
 
   return true;

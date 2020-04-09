@@ -259,6 +259,7 @@
     <ClCompile Include="src\testing\test-loading.cpp" />
     <ClCompile Include="src\testing\test-loot.cpp" />
     <ClCompile Include="src\testing\test-map.cpp" />
+    <ClCompile Include="src\testing\test-movement.cpp" />
     <ClCompile Include="src\testing\test-permissions.cpp" />
     <ClCompile Include="src\testing\test-pets.cpp" />
     <ClCompile Include="src\testing\test-quests.cpp" />

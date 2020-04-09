@@ -210,8 +210,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   double legalMoveDistance(double requestedDistance,
                            double timeElapsed) const override;
   bool shouldMoveWhereverRequested() const override;
-  bool areOverlapsAllowedWith(const NPC &rhs) const override { return true; }
-  bool areOverlapsAllowedWith(const User &rhs) const override { return true; }
+  bool areOverlapsAllowedWith(const Entity &rhs) const override;
 
   ms_t timeToRemainAsCorpse() const override { return 0; }
   bool canBeAttackedBy(const User &user) const override;

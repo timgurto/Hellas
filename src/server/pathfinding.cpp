@@ -220,3 +220,25 @@ void Entity::moveLegallyTowards(
     }
   }
 }
+
+// For the functions below:
+//          USER  NPC    GATE  OTHER   (this)
+//   USER    T*    T*     ?*
+//   NPC     T*           ?*
+//   GATE    ?*    ?*
+//   OTHER
+//   (rhs)
+//     *: Not yet handled
+// Blank: false
+
+bool Entity::areOverlapsAllowedWith(const Entity &rhs) const { return false; }
+
+bool User::areOverlapsAllowedWith(const Entity &rhs) const {
+  if (rhs.classTag() == 'u' || rhs.classTag() == 'n') return true;
+  return false;
+}
+
+bool NPC::areOverlapsAllowedWith(const Entity &rhs) const {
+  if (rhs.classTag() == 'u') return true;
+  return false;
+}

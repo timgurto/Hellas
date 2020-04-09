@@ -50,16 +50,9 @@ bool Server::isLocationValid(const MapRect &rect,
       if (pEnt == thisEntity) continue;
       if (!pEnt->collides()) continue;
 
-      // Allow collisions between users and users/NPCs
-      if (thisEntity && thisEntity->classTag() == 'u' &&
-          (pEnt->classTag() == 'u' || pEnt->classTag() == 'n'))
-        continue;
+      if (thisEntity && pEnt->areOverlapsAllowedWith(*thisEntity)) continue;
 
-      if (thisEntity && thisEntity->classTag() == 'n' &&
-          pEnt->classTag() == 'u')
-        continue;
-
-      if (rect.collides(pEnt->collisionRect())) return false;
+      if (rect.overlaps(pEnt->collisionRect())) return false;
     }
 
   return true;

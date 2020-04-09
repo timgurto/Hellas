@@ -13,7 +13,7 @@ struct Rect {
 
   Rect(T xx = 0, T yy = 0, T ww = 0, T hh = 0) : x(xx), y(yy), w(ww), h(hh) {}
 
-  bool collides(const Rect &rhs) const {
+  bool overlaps(const Rect &rhs) const {
     return rhs.x <= x + w && x <= rhs.x + rhs.w && rhs.y <= y + h &&
            y <= rhs.y + rhs.h;
   }
