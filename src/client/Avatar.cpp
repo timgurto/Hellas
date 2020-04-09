@@ -10,7 +10,7 @@
 extern Renderer renderer;
 
 const ScreenRect Avatar::DRAW_RECT(-19, -49, 40, 60);
-const MapRect Avatar::COLLISION_RECT(-5, -2, 10, 4);
+const MapRect Avatar::COLLISION_RECT(-6, -3, 12, 6);
 ClientCombatantType Avatar::_combatantType(Client::MAX_PLAYER_HEALTH);
 SpriteType Avatar::_spriteType(DRAW_RECT);
 
