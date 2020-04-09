@@ -86,3 +86,39 @@ std::list<CollisionChunk *> Server::getCollisionSuperChunk(const MapPoint &p) {
       superChunk.push_back(&_collisionGrid[x][y]);
   return superChunk;
 }
+
+// For the functions below:
+//          USER  NPC    GATE  OTHER   (this)
+//   USER    T     T      ?
+//   NPC     T            ?*
+//   GATE    ?     ?*
+//   OTHER
+//   (rhs)
+//     *: Not yet handled
+// Blank: false
+
+bool Entity::areOverlapsAllowedWith(const Entity &rhs) const { return false; }
+
+bool User::areOverlapsAllowedWith(const Entity &rhs) const {
+  if (rhs.classTag() == 'u' || rhs.classTag() == 'n') return true;
+
+  if (rhs.classTag() == 'o') {
+    const auto &obj = dynamic_cast<const Object &>(rhs);
+    if (obj.isGate()) return obj.permissions.doesUserHaveAccess(_name);
+  }
+  return false;
+}
+
+bool NPC::areOverlapsAllowedWith(const Entity &rhs) const {
+  if (rhs.classTag() == 'u') return true;
+  return false;
+}
+
+bool Object::areOverlapsAllowedWith(const Entity &rhs) const {
+  if (!isGate()) return false;
+  if (rhs.classTag() == 'u') {
+    const auto &user = dynamic_cast<const User &>(rhs);
+    return permissions.doesUserHaveAccess(user.name());
+  }
+  return false;
+}
