@@ -61,6 +61,8 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
 
   bool isAbleToDeconstruct(const User &user) const;
 
+  bool isGate() const { return objType().isGate(); }
+
   virtual char classTag() const override { return 'o'; }
 
   ms_t timeToRemainAsCorpse() const override { return 43200000; }  // 12 hours
@@ -81,6 +83,7 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
   void tellRelevantUsersAboutMerchantSlot(size_t slot) const;
   ServerItem::Slot *getSlotToTakeFromAndSendErrors(size_t slotNum,
                                                    const User &user) override;
+  bool areOverlapsAllowedWith(const Entity &rhs) const override;
   Message outOfRangeMessage() const override;
   virtual void broadcastDamagedMessage(Hitpoints amount) const override;
   virtual void broadcastHealedMessage(Hitpoints amount) const override;

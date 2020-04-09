@@ -184,7 +184,7 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
     MapRect r;
     if (xr.findRectChild("collisionRect", elem, r)) ot->collisionRect(r);
     if (xr.findAttr(elem, "collides", n)) ot->collides(n != 0);
-    if (xr.findAttr(elem, "isGate", n)) ot->collides(false);
+    if (xr.findAttr(elem, "isGate", n)) ot->markAsGate();
 
     ot->loadTagsFromXML(xr, elem);
 
@@ -334,18 +334,18 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
       ot->grantsBuff(buff, radius);
     }
 
-    bool foundInPlace = false;
+    bool alreadyExists = false;
     for (auto it = _server._objectTypes.begin();
          it != _server._objectTypes.end(); ++it) {
       if ((*it)->id() == ot->id()) {
         ObjectType &inPlace = *const_cast<ObjectType *>(*it);
         inPlace = *ot;
         delete ot;
-        foundInPlace = true;
+        alreadyExists = true;
         break;
       }
     }
-    if (!foundInPlace) _server._objectTypes.insert(ot);
+    if (!alreadyExists) _server._objectTypes.insert(ot);
   }
 }
 

@@ -101,5 +101,4 @@ TEST_CASE("Gates") {
       }
     }
   }
-  // Collides with owner while being built
 }

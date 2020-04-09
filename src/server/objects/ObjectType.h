@@ -49,6 +49,8 @@ class ObjectType : public EntityType, public QuestNodeType {
       nullptr};  // A buff granted to nearby, permitted users.
   double _buffRadius{0};
 
+  bool _isGate{false};
+
  protected:
   ContainerType *_container;
   DeconstructionType *_deconstruction;
@@ -95,6 +97,8 @@ class ObjectType : public EntityType, public QuestNodeType {
     _exclusiveToQuest = questID;
   }
   const std::string &exclusiveToQuest() const { return _exclusiveToQuest; }
+  void markAsGate() { _isGate = true; }
+  bool isGate() const { return _isGate; }
 
   virtual char classTag() const override { return 'o'; }
 
