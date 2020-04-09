@@ -2,50 +2,6 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Thin objects block movement") {
-  // Given a server and client;
-  auto s = TestServer::WithData("thin_wall");
-  auto c = TestClient::WithData("thin_wall");
-
-  // And a wall just above the user
-  s.addObject("wall", {10, 5});
-
-  // When the user tries to move up, through the wall
-  s.waitForUsers(1);
-  REPEAT_FOR_MS(500) {
-    c.sendMessage(CL_LOCATION, makeArgs(10, 3));
-    SDL_Delay(5);
-  }
-
-  // He fails
-  auto &user = s.getFirstUser();
-  CHECK(user.location().y > 4);
-}
-
-TEST_CASE("Dead objects don't block movement") {
-  // Given a server and client;
-  auto s = TestServer::WithData("thin_wall");
-  auto c = TestClient::WithData("thin_wall");
-
-  // And a wall just above the user;
-  s.addObject("wall", {10, 5});
-
-  // And that wall is dead
-  s.getFirstObject().reduceHealth(1000000);
-
-  // When the user tries to move up, through the wall
-  s.waitForUsers(1);
-  auto &user = s.getFirstUser();
-  REPEAT_FOR_MS(3000) {
-    c.sendMessage(CL_LOCATION, makeArgs(10, 3));
-
-    if (user.location().y < 3.5) break;
-  }
-  // He succeeds
-  CHECK(user.location().y < 3.5);
-  ;
-}
-
 TEST_CASE("Damaged objects can't be deconstructed") {
   GIVEN("a 'brick' object with 1 out of 2 health") {
     auto data = R"(
@@ -71,29 +27,6 @@ TEST_CASE("Damaged objects can't be deconstructed") {
       }
     }
   }
-}
-
-TEST_CASE("Out-of-range objects are forgotten", "[.slow][culling][only]") {
-  // Given a server and client with signpost objects;
-  TestServer s = TestServer::WithData("signpost");
-  TestClient c = TestClient::WithData("signpost");
-
-  // And a signpost near the user spawn
-  s.addObject("signpost", {10, 15});
-
-  // And the client is aware of it
-  s.waitForUsers(1);
-  WAIT_UNTIL(c.objects().size() == 1);
-
-  // When the client moves out of range of the signpost
-  while (c->character().location().x < 1000) {
-    c.sendMessage(CL_LOCATION, makeArgs(1010, 10));
-
-    // Then he is no longer aware of it
-    if (c.objects().size() == 0) break;
-    SDL_Delay(5);
-  }
-  CHECK(c.objects().size() == 0);
 }
 
 TEST_CASE("Objects with no durability have 1 health in client") {
@@ -159,39 +92,4 @@ TEST_CASE("Objects that disappear after a time") {
       }
     }
   }
-}
-
-TEST_CASE("Gates") {
-  GIVEN("a gate object owned by Alice") {
-    auto data = R"(
-      <objectType id="gate" isGate="1" >
-        <collisionRect x="-10" y="0" w="20" h="1" />
-      </objectType>
-    )";
-    TestServer s = TestServer::WithDataString(data);
-    s.addObject("gate", {10, 20}, "Alice");
-
-    WHEN("Alice tries to move through it") {
-      auto c = TestClient::WithUsernameAndDataString("Alice", data);
-      s.waitForUsers(1);
-      c.sendMessage(CL_LOCATION, makeArgs(10, 30));
-
-      THEN("she gets past it") {
-        const auto &alice = s.getFirstUser();
-        WAIT_UNTIL(alice.location().y > 20);
-      }
-    }
-    WHEN("Bob tries to move through it") {
-      auto c = TestClient::WithUsernameAndDataString("Bob", data);
-      s.waitForUsers(1);
-      c.sendMessage(CL_LOCATION, makeArgs(10, 30));
-
-      THEN("he doesn't get past it") {
-        REPEAT_FOR_MS(1000);
-        const auto &bob = s.getFirstUser();
-        CHECK(bob.location().y < 20);
-      }
-    }
-  }
-  // Collides with owner while being built
 }

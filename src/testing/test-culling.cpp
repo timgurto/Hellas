@@ -188,3 +188,26 @@ TEST_CASE("Unwatching NPCs", "[.flaky]") {
     }
   }
 }
+
+TEST_CASE("Out-of-range objects are forgotten", "[.slow][only]") {
+  // Given a server and client with signpost objects;
+  TestServer s = TestServer::WithData("signpost");
+  TestClient c = TestClient::WithData("signpost");
+
+  // And a signpost near the user spawn
+  s.addObject("signpost", {10, 15});
+
+  // And the client is aware of it
+  s.waitForUsers(1);
+  WAIT_UNTIL(c.objects().size() == 1);
+
+  // When the client moves out of range of the signpost
+  while (c->character().location().x < 1000) {
+    c.sendMessage(CL_LOCATION, makeArgs(1010, 10));
+
+    // Then he is no longer aware of it
+    if (c.objects().size() == 0) break;
+    SDL_Delay(5);
+  }
+  CHECK(c.objects().size() == 0);
+}
