@@ -109,10 +109,10 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg) {
 
   static const px_t  // TODO: remove duplicate consts
       NAME_WIDTH = 100,
-      QUANTITY_WIDTH = 20, BUTTON_PADDING = 1,
+      QUANTITY_WIDTH = 30, BUTTON_PADDING = 1,
       TEXT_HEIGHT = Element::TEXT_HEIGHT, ICON_SIZE = Element::ITEM_HEIGHT,
-      BUTTON_LABEL_WIDTH = 45, BUTTON_HEIGHT = ICON_SIZE + 2 * BUTTON_PADDING,
-      BUTTON_TOP = GAP + 2,
+      BUTTON_LABEL_WIDTH = 30 + QUANTITY_WIDTH,
+      BUTTON_HEIGHT = ICON_SIZE + 2 * BUTTON_PADDING, BUTTON_TOP = GAP + 2,
       BUTTON_WIDTH =
           BUTTON_PADDING * 2 + BUTTON_LABEL_WIDTH + ICON_SIZE + NAME_WIDTH,
       ROW_HEIGHT = BUTTON_HEIGHT + 2 * GAP,
@@ -514,7 +514,7 @@ void ClientObject::performAction(void *object) {
 void ClientObject::addMerchantTradeToWindow() {
   px_t y = _window->contentHeight(), newWidth = _window->contentWidth();
 
-  static const px_t NAME_WIDTH = 100, QUANTITY_WIDTH = 20, BUTTON_PADDING = 1,
+  static const px_t NAME_WIDTH = 100, QUANTITY_WIDTH = 30, BUTTON_PADDING = 1,
                     BUTTON_LABEL_WIDTH = 45,
                     BUTTON_HEIGHT = Element::ITEM_HEIGHT + 2 * BUTTON_PADDING,
                     ROW_HEIGHT = BUTTON_HEIGHT + 2 * GAP,

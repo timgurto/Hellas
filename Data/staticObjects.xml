@@ -108,9 +108,18 @@
 <object id="smallPot"> <owner type="noAccess" /> <location x="29555" y="43739" /> </object>
 <object id="smallPot"> <owner type="noAccess" /> <location x="29729" y="43576" /> </object>
 <object id="smallPot"> <owner type="noAccess" /> <location x="29721" y="43565" /> </object>
-<object id="tradeMat"> <owner type="noAccess" /> <location x="29655" y="43578" /> </object>
-<object id="tradeMat"> <owner type="noAccess" /> <location x="29683" y="43630" /> </object>
-<object id="tradeMat"> <owner type="noAccess" /> <location x="29567" y="43609" /> </object>
+<object id="tradeMatBottomless"> <location x="29655" y="43578" />
+    <owner type="player" name="Calydon" />
+    <merchant slot="0" wareItem="fig" priceItem="flaxSeeds" />
+</object>
+<object id="tradeMatBottomless"> <location x="29683" y="43630" />
+    <owner type="player" name="Calydon" />
+    <merchant slot="0" wareItem="flax" priceItem="flaxSeeds" priceQty="5" />
+</object>
+<object id="tradeMatBottomless"> <location x="29567" y="43609" />
+    <owner type="player" name="Calydon" />
+    <merchant slot="0" wareItem="linenCloak" priceItem="tinCoin" priceQty="600" />
+</object>
 <object id="figTree8"> <owner type="noAccess" /> <location x="29419" y="43817" /> </object>
 <object id="figTree8"> <owner type="noAccess" /> <location x="29475" y="43863" /> </object>
 <object id="figTree8"> <owner type="noAccess" /> <location x="29485" y="43828" /> </object>

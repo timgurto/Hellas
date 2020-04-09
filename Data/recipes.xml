@@ -522,7 +522,7 @@
 <recipe
     id="linenThread" time="4000" >
     <material id="flax" quantity="2" />
-    <unlockedBy gather="flax" />
+    <unlockedBy item="flax" />
 </recipe>
 <recipe
     id="linenCloth" time="4000" >
