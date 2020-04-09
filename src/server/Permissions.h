@@ -9,6 +9,7 @@
 
 class Entity;
 class User;
+class NPC;
 
 // Manages an object's access permissions
 class Permissions : public EntityComponent {
@@ -38,6 +39,7 @@ class Permissions : public EntityComponent {
 
   bool doesUserHaveAccess(const std::string &username,
                           bool allowFellowCitizens = false) const;
+  bool doesNPCHaveAccess(const NPC &rhs) const;
   bool canUserDemolish(const std::string &username) const;
 
   void alertNearbyUsersToNewOwner() const;

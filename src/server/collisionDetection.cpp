@@ -114,7 +114,7 @@ bool NPC::areOverlapsAllowedWith(const Entity &rhs) const {
 
   if (rhs.classTag() == 'o') {
     const auto &obj = dynamic_cast<const Object &>(rhs);
-    if (obj.isGate()) return true;
+    if (obj.isGate()) return obj.permissions.doesNPCHaveAccess(*this);
   }
 
   return false;
@@ -126,6 +126,9 @@ bool Object::areOverlapsAllowedWith(const Entity &rhs) const {
     const auto &user = dynamic_cast<const User &>(rhs);
     return permissions.doesUserHaveAccess(user.name());
   }
-  if (rhs.classTag() == 'n') return true;
+  if (rhs.classTag() == 'n') {
+    const auto &npc = dynamic_cast<const NPC &>(rhs);
+    return permissions.doesNPCHaveAccess(npc);
+  }
   return false;
 }

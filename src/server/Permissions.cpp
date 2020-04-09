@@ -108,6 +108,10 @@ bool Permissions::doesUserHaveAccess(const std::string &username,
   return playerCity == ownerCity;
 }
 
+bool Permissions::doesNPCHaveAccess(const NPC &rhs) const {
+  return rhs.permissions.hasOwner();
+}
+
 bool Permissions::canUserDemolish(const std::string &username) const {
   // Excludes all-access; more strict than doesUserHaveAccess().
 
