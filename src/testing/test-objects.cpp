@@ -177,9 +177,21 @@ TEST_CASE("Gates") {
       c.sendMessage(CL_LOCATION, makeArgs(10, 30));
 
       THEN("she gets past it") {
-        const auto &user = s.getFirstUser();
-        WAIT_UNTIL(user.location().y > 20);
+        const auto &alice = s.getFirstUser();
+        WAIT_UNTIL(alice.location().y > 20);
+      }
+    }
+    WHEN("Bob tries to move through it") {
+      auto c = TestClient::WithUsernameAndDataString("Bob", data);
+      s.waitForUsers(1);
+      c.sendMessage(CL_LOCATION, makeArgs(10, 30));
+
+      THEN("he doesn't get past it") {
+        REPEAT_FOR_MS(1000);
+        const auto &bob = s.getFirstUser();
+        CHECK(bob.location().y < 20);
       }
     }
   }
+  // Collides with owner while being built
 }

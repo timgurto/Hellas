@@ -35,6 +35,7 @@ class NPC : public Entity, public QuestNode {
   ms_t timeToRemainAsCorpse() const override { return 600000; }  // 10 minutes
   bool canBeAttackedBy(const User &user) const override;
   bool canBeAttackedBy(const NPC &npc) const override;
+  bool areOverlapsAllowedWith(const User &rhs) const override { return true; }
   CombatResult generateHitAgainst(const Entity &target, CombatType type,
                                   SpellSchool school,
                                   px_t range) const override;
