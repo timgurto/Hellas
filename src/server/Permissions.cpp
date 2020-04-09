@@ -109,7 +109,10 @@ bool Permissions::doesUserHaveAccess(const std::string &username,
 }
 
 bool Permissions::doesNPCHaveAccess(const NPC &rhs) const {
-  return rhs.permissions.hasOwner();
+  if (!rhs.permissions.hasOwner()) return false;
+  // Assume a player, not a city, as pets can't be owned by cities
+  const auto &ownerPlayerName = rhs.permissions.owner().name;
+  return doesUserHaveAccess(ownerPlayerName);
 }
 
 bool Permissions::canUserDemolish(const std::string &username) const {

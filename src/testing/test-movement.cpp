@@ -134,5 +134,16 @@ TEST_CASE("Pets walking through gates") {
         THEN("it gets past it") { CHECK(pet.location().y > 20); }
       }
     }
+
+    AND_GIVEN("the dog is owned by Bob") {
+      pet.permissions.setPlayerOwner("Bob");
+
+      WHEN("it tries to move through it") {
+        REPEAT_FOR_MS(1000);
+        pet.moveLegallyTowards({10, 30});
+
+        THEN("it doesn't get past it") { CHECK(pet.location().y < 20); }
+      }
+    }
   }
 }
