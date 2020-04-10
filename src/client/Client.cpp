@@ -822,6 +822,10 @@ void Client::applyCollisionChecksToPlayerMovement(MapPoint &pendingDest) const {
     collisionRect = _character.vehicle()->collisionRect();
   }
 
+  // If current location is bad, allow all attempts to move.
+  // This should help players to get out of rare bad situations.
+  if (!isLocationValidForPlayer(collisionRect)) return;
+
   // First check: rectangle around entire journey
   auto rawDisplacement = MapPoint{pendingDest.x - loc.x, pendingDest.y - loc.y};
   auto displacementX = abs(rawDisplacement.x);
