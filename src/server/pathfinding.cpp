@@ -33,8 +33,15 @@ void Entity::moveLegallyTowards(
     if (!server.isLocationValid(journeyRect, *this)) {
       newDest = _location;
       if (!server.isLocationValid(newDest, *this)) {
-        SERVER_ERROR("New and previous location are both invalid.  Killing.");
-        kill();
+        SERVER_ERROR(
+            "New and previous location are both invalid.  Teleporting "
+            "randomly.");
+        auto teleportArgs = SpellEffect::Args{};
+        teleportArgs.i1 = 10_px;
+        auto randomTeleport = SpellEffect{};
+        randomTeleport.args(teleportArgs);
+        randomTeleport.setFunction("randomTeleport");
+        randomTeleport.execute(*this, *this);
         return;
       }
       static const double ACCURACY = 0.5;
