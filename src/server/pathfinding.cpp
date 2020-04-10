@@ -36,12 +36,17 @@ void Entity::moveLegallyTowards(
         SERVER_ERROR(
             "New and previous location are both invalid.  Teleporting "
             "randomly.");
-        auto teleportArgs = SpellEffect::Args{};
-        teleportArgs.i1 = 10_px;
-        auto randomTeleport = SpellEffect{};
-        randomTeleport.args(teleportArgs);
-        randomTeleport.setFunction("randomTeleport");
-        randomTeleport.execute(*this, *this);
+        auto distancesToTryTeleporting = std::vector<int>{10, 20, 30, 50, 100};
+        for (auto maxRadius : distancesToTryTeleporting) {
+          auto teleportArgs = SpellEffect::Args{};
+          teleportArgs.i1 = maxRadius;
+          auto randomTeleport = SpellEffect{};
+          randomTeleport.args(teleportArgs);
+          randomTeleport.setFunction("randomTeleport");
+          randomTeleport.execute(*this, *this);
+          return;
+        }
+        SERVER_ERROR("Failed to find valid place to teleport.");
         return;
       }
       static const double ACCURACY = 0.5;
