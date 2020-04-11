@@ -193,7 +193,14 @@
     <unlockedBy recipe="mediumPot" chance="0.1" />
     <unlockedBy construction="tradeMat" chance="0.3" />
     <durability item="lumber" quantity="12" />
-    <canBeRepaired cost="mediumPot" />
+    <canBeRepaired cost="lumber" />
+</objectType>
+<objectType
+    id="merchantBrick" name="Small Shop"
+    merchantSlots="2" >
+    <container slots="10" />
+    <material id="mediumPot" quantity="3" />
+    <unlockedBy />
 </objectType>
 
 <objectType id="elutriator" name="Elutriator"
