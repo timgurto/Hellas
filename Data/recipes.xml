@@ -3,10 +3,9 @@
 <!-- Axes -->
     <recipe id="stoneAxe"
         time="4000" >
-        <material id="rock" />
+        <material id="knapper" />
         <material id="stick" />
-        <tool class="grinding1" />
-        <unlockedBy gather="stick" />
+        <unlockedBy recipe="knapper" />
     </recipe>
     <recipe id="tinAxe"
         time="4000" >
