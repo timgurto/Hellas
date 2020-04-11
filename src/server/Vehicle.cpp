@@ -13,7 +13,10 @@ bool Vehicle::shouldMoveWhereverRequested() const {
 
 void Vehicle::onDeath() {
   auto pDriver = Server::instance().getUserByName(_driver);
-  if (pDriver) pDriver->driving({});
+  if (pDriver) {
+    pDriver->driving({});
+    pDriver->sendMessage({SV_UNMOUNTED, makeArgs(serial(), _driver)});
+  }
 
   _driver.clear();
 

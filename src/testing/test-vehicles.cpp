@@ -96,6 +96,7 @@ TEST_CASE("If a vehicle dies stop driving it") {
     c.sendMessage(CL_MOUNT, makeArgs(horse.serial()));
     const auto &user = s.getFirstUser();
     WAIT_UNTIL(user.isDriving());
+    WAIT_UNTIL(c->character().isDriving());
 
     WHEN("the vehicle dies") {
       horse.kill();
@@ -105,6 +106,8 @@ TEST_CASE("If a vehicle dies stop driving it") {
 
         auto &vehicle = dynamic_cast<Vehicle &>(horse);
         CHECK(vehicle.driver().empty());
+
+        AND_THEN("he knows it") { WAIT_UNTIL(!c->character().isDriving()); }
       }
     }
   }
