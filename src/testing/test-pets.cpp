@@ -755,6 +755,7 @@ TEST_CASE("Failed taming attempts should consume item") {
   }
 }
 
+// Note that this feature is currently disabled.
 TEST_CASE("Granting pets to the city") {
   GIVEN("A tameable NPC") {
     auto data = R"(

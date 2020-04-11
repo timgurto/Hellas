@@ -16,7 +16,9 @@ void NPC::processAI(ms_t timeElapsed) {
 }
 
 void NPC::getNewTargetsFromProximity(ms_t timeElapsed) {
-  if (!npcType()->attacksNearby()) return;
+  auto shouldLookForNewTargetsNearby =
+      npcType()->attacksNearby() || permissions.hasOwner();
+  if (!shouldLookForNewTargetsNearby) return;
 
   _timeSinceLookedForTargets += timeElapsed;
   if (_timeSinceLookedForTargets < FREQUENCY_TO_LOOK_FOR_TARGETS) return;
