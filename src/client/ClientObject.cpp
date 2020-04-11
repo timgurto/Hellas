@@ -409,7 +409,7 @@ void ClientObject::addInventoryToWindow() {
   px_t y = _window->contentHeight(), newWidth = _window->contentWidth();
 
   const size_t slots = objectType()->containerSlots();
-  static const size_t COLS = 8;
+  static const size_t COLS = 5;
   size_t rows = (slots - 1) / COLS + 1;
   ContainerGrid *container =
       new ContainerGrid(rows, COLS, _container, _serial, 0, y);
