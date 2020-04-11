@@ -43,8 +43,8 @@ void Entity::moveLegallyTowards(
           auto randomTeleport = SpellEffect{};
           randomTeleport.args(teleportArgs);
           randomTeleport.setFunction("randomTeleport");
-          randomTeleport.execute(*this, *this);
-          return;
+          auto result = randomTeleport.execute(*this, *this);
+          if (result == CombatResult::HIT) return;
         }
         SERVER_ERROR("Failed to find valid place to teleport.");
         return;
@@ -72,9 +72,18 @@ void Entity::moveLegallyTowards(
   // At this point, the new location has been finalized.  Now new information
   // must be propagated.
   if (!server.isLocationValid(newDest, *this)) {
-    Server::debug()("Entity is in invalid location.  Killing.",
-                    Color::CHAT_ERROR);
-    kill();
+    SERVER_ERROR("Entity is in invalid location.  Teleporting randomly.");
+    auto distancesToTryTeleporting = std::vector<int>{10, 20, 30, 50, 100};
+    for (auto maxRadius : distancesToTryTeleporting) {
+      auto teleportArgs = SpellEffect::Args{};
+      teleportArgs.i1 = maxRadius;
+      auto randomTeleport = SpellEffect{};
+      randomTeleport.args(teleportArgs);
+      randomTeleport.setFunction("randomTeleport");
+      auto result = randomTeleport.execute(*this, *this);
+      if (result == CombatResult::HIT) return;
+    }
+    SERVER_ERROR("Failed to find valid place to teleport.");
     return;
   }
 
