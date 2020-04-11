@@ -35,12 +35,12 @@
 <lootTable id="humanTinAge" > <!-- Total 35% -->
     <loot id="tinCoin" chance="0.1" />
     <loot id="smoothRock" chance="0.05" />
-    <loot id="tinOre" chance="0.05" />
+    <loot id="tin" chance="0.05" />
     <loot id="crudeClay" chance="0.05" />
     <loot id="hide" chance="0.05" />
     <loot id="flax" chance="0.02" />
     <loot id="linenThread" chance="0.02" />
-    <loot id="arrow" chance="0.01" />
+    <loot id="woodArrow" chance="0.01" />
 </lootTable>
 
 
