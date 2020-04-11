@@ -101,6 +101,10 @@ void Texture::draw(const ScreenRect &location,
   renderer.drawTexture(_raw.get(), location, srcRect);
 }
 
+void Texture::dontDrawPlaceholderIfInvalid() {
+  if (_raw == placeholder()._raw) _raw.reset();
+}
+
 Color Texture::getPixel(px_t x, px_t y) const {
   if (!_surface) return 0;
   return _surface.getPixel(x, y);

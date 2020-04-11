@@ -50,6 +50,8 @@ class Texture {
   void draw(const ScreenRect &location) const;
   void draw(const ScreenRect &location, const ScreenRect &srcRect) const;
 
+  void dontDrawPlaceholderIfInvalid();
+
   Color getPixel(px_t x, px_t y) const;
 
   /*

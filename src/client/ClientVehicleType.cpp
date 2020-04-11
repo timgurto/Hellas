@@ -14,5 +14,6 @@ void ClientVehicleType::addClassSpecificStuffToConstructionTooltip(
 
 void ClientVehicleType::setImage(const std::string& imageFile) {
   _front = {imageFile + "-front.png"s, Color::MAGENTA};
+  _front.dontDrawPlaceholderIfInvalid();
   SpriteType::setImage(imageFile);
 }
