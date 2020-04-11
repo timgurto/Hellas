@@ -62,8 +62,6 @@ void Socket::bind(sockaddr_in &socketAddr) {
   if (::bind(_raw, (sockaddr *)&socketAddr, sockAddrSize) == SOCKET_ERROR) {
     *debug << Color::CHAT_ERROR << "Error binding socket: " << WSAGetLastError()
            << Log::endl;
-  } else {
-    *debug << "Socket bound. " << Log::endl;
   }
 }
 

@@ -69,8 +69,6 @@ Server::Server()
               << std::endl;
   }
 
-  _debug("Server initialized");
-
   // Socket details
   sockaddr_in serverAddr;
   serverAddr.sin_family = AF_INET;
@@ -86,11 +84,9 @@ Server::Server()
   serverAddr.sin_port = htons(port);
 
   _socket.bind(serverAddr);
-  _debug << "Server address: " << inet_ntoa(serverAddr.sin_addr) << ":"
-         << ntohs(serverAddr.sin_port) << Log::endl;
+  /*_debug << "Server address: " << inet_ntoa(serverAddr.sin_addr) << ":"
+         << ntohs(serverAddr.sin_port) << Log::endl;*/
   _socket.listen();
-
-  _debug("Ready for connections");
 }
 
 Server::~Server() {
@@ -196,7 +192,7 @@ void Server::run() {
 
   _loop = true;
   _running = true;
-  _debug("Server is running", Color::CHAT_SUCCESS);
+  _debug("Server is ready", Color::CHAT_SUCCESS);
   while (_loop) {
     _time = SDL_GetTicks();
     const ms_t timeElapsed = _time - _lastTime;
