@@ -69,8 +69,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   std::set<std::string> _knownRecipes, _knownConstructions;
   mutable std::set<std::string> _playerUniqueCategoriesOwned;
 
-  Serial _driving;  // The vehicle this user is currently driving;
-                    // 0 if none.
+  Serial _driving;  // The vehicle this user is currently driving, if any.
 
   ServerItem::vect_t _inventory, _gear;
 

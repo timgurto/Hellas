@@ -1,3 +1,4 @@
+#include "../server/Vehicle.h"
 #include "TestClient.h"
 #include "TestServer.h"
 #include "testing.h"
@@ -80,5 +81,31 @@ TEST_CASE("Custom vehicle speeds") {
     auto c = TestClient::WithDataString(data);
 
     THEN("it doesn't crash the client") {}
+  }
+}
+
+TEST_CASE("If a vehicle dies stop driving it") {
+  GIVEN("a player driving a vehicle") {
+    auto data = R"(
+    <objectType id="horse" isVehicle="1" />
+  )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    auto &horse = s.addObject("horse");
+    s.waitForUsers(1);
+    c.sendMessage(CL_MOUNT, makeArgs(horse.serial()));
+    const auto &user = s.getFirstUser();
+    WAIT_UNTIL(user.isDriving());
+
+    WHEN("the vehicle dies") {
+      horse.kill();
+
+      THEN("he is no longer driving") {
+        CHECK(!user.isDriving());
+
+        auto &vehicle = dynamic_cast<Vehicle &>(horse);
+        CHECK(vehicle.driver().empty());
+      }
+    }
   }
 }

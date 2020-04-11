@@ -15,6 +15,7 @@ class Vehicle : public Object {
   const std::string &driver() const { return _driver; }
   void driver(const std::string &username) { _driver = username; }
   bool shouldMoveWhereverRequested() const override;
+  void onDeath() override;
 
   char classTag() const override { return 'v'; }
 };
