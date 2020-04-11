@@ -729,8 +729,10 @@ void DataLoader::loadRecipes(XmlReader &xr) {
         triggerType = ProgressLock::GATHER;
       else if (xr.findAttr(unlockedBy, "recipe", triggerID))
         triggerType = ProgressLock::RECIPE;
-      else
-        assert(false);
+      else {
+        SERVER_ERROR("Skipping unlock trigger with no valid type");
+        continue;
+      }
       ProgressLock(triggerType, triggerID, ProgressLock::RECIPE, id, chance)
           .stage();
       requiresUnlock = true;
