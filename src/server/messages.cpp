@@ -21,6 +21,18 @@
   void Server::handleMessage<(CODE)>(const Socket &client, User &user, \
                                      MessageParser &parser)
 
+#define RETURN_WITH(MSG)      \
+  {                           \
+    sendMessage(client, MSG); \
+    return;                   \
+  }
+// TODO: Remove
+#define BREAK_WITH(MSG)       \
+  {                           \
+    sendMessage(client, MSG); \
+    return;                   \
+  }
+
 HANDLE_MESSAGE(CL_REPORT_BUG) {
   std::string bugDescription;
   READ_ARGS(bugDescription);
@@ -47,23 +59,16 @@ HANDLE_MESSAGE(CL_LOGIN_EXISTING) {
   }
 #endif
 
-  if (!isUsernameValid(username)) {
-    sendMessage(client, WARNING_INVALID_USERNAME);
-    return;
-  }
+  if (!isUsernameValid(username)) RETURN_WITH(WARNING_INVALID_USERNAME)
 
   auto userIsAlreadyLoggedIn = _usersByName.count(username) == 1;
-  if (userIsAlreadyLoggedIn) {
-    sendMessage(client, WARNING_DUPLICATE_USERNAME);
-    return;
-  }
+  if (userIsAlreadyLoggedIn) RETURN_WITH(WARNING_DUPLICATE_USERNAME)
 
   // Check that user exists
   auto userFile = _userFilesPath + username + ".usr";
   if (!fileExists(userFile)) {
 #ifndef _DEBUG
-    sendMessage(client, WARNING_USER_DOESNT_EXIST);
-    return;
+    ABORT_WITH(WARNING_USER_DOESNT_EXIST)
 #else
     // Allow quick, auto account creation in debug mode
     addUser(client, username, passwordHash, _classes.begin()->first);
@@ -89,23 +94,15 @@ HANDLE_MESSAGE(CL_LOGIN_NEW) {
 
 #ifndef _DEBUG
   // Check that version matches
-  if (clientVersion != version()) {
-    sendMessage(client, {WARNING_WRONG_VERSION, version()});
-    return;
-  }
+  if (clientVersion != version())
+    RETURN_WITH({WARNING_WRONG_VERSION, version()})
 #endif
 
-  if (!isUsernameValid(name)) {
-    sendMessage(client, WARNING_INVALID_USERNAME);
-    return;
-  }
+  if (!isUsernameValid(name)) RETURN_WITH(WARNING_INVALID_USERNAME)
 
   // Check that user doesn't exist
   auto userFile = _userFilesPath + name + ".usr";
-  if (fileExists(userFile)) {
-    sendMessage(client, WARNING_NAME_TAKEN);
-    return;
-  }
+  if (fileExists(userFile)) RETURN_WITH(WARNING_NAME_TAKEN)
 
   addUser(client, name, pwHash, classID);
 }
@@ -161,8 +158,8 @@ HANDLE_MESSAGE(CL_LOCATION) {
   if (user.isWaitingForDeathAcknowledgement) return;
 
   if (user.isStunned()) {
-    sendMessage(client, {SV_LOCATION, makeArgs(user.name(), user.location().x,
-                                               user.location().y)});
+    client.sendMessage({SV_LOCATION, makeArgs(user.name(), user.location().x,
+                                              user.location().y)});
     return;
   }
 
@@ -185,10 +182,7 @@ HANDLE_MESSAGE(CL_CAST) {
   auto spellID = ""s;
   READ_ARGS(spellID);
 
-  if (user.isStunned()) {
-    sendMessage(client, WARNING_STUNNED);
-    return;
-  }
+  if (user.isStunned()) RETURN_WITH(WARNING_STUNNED)
   handle_CL_CAST(user, spellID);
 }
 
@@ -196,29 +190,14 @@ HANDLE_MESSAGE(CL_CAST_ITEM) {
   auto slot = size_t{};
   READ_ARGS(slot);
 
-  if (user.isStunned()) {
-    sendMessage(client, WARNING_STUNNED);
-    return;
-  }
+  if (user.isStunned()) RETURN_WITH(WARNING_STUNNED)
   user.cancelAction();
-  if (slot >= User::INVENTORY_SIZE) {
-    sendMessage(client, ERROR_INVALID_SLOT);
-    return;
-  }
+  if (slot >= User::INVENTORY_SIZE) RETURN_WITH(ERROR_INVALID_SLOT)
   auto &invSlot = user.inventory(slot);
-  if (!invSlot.first.hasItem()) {
-    sendMessage(client, ERROR_EMPTY_SLOT);
-    return;
-  }
+  if (!invSlot.first.hasItem()) RETURN_WITH(ERROR_EMPTY_SLOT)
   const ServerItem &item = *invSlot.first.type();
-  if (!item.castsSpellOnUse()) {
-    sendMessage(client, ERROR_CANNOT_CAST_ITEM);
-    return;
-  }
-  if (invSlot.first.isBroken()) {
-    sendMessage(client, WARNING_BROKEN_ITEM);
-    return;
-  }
+  if (!item.castsSpellOnUse()) RETURN_WITH(ERROR_CANNOT_CAST_ITEM)
+  if (invSlot.first.isBroken()) RETURN_WITH(WARNING_BROKEN_ITEM)
 
   if (item.returnsOnCast()) {
     auto toBeRemoved = ItemSet{};
@@ -226,10 +205,7 @@ HANDLE_MESSAGE(CL_CAST_ITEM) {
     const auto *toBeAdded = item.returnsOnCast();
     auto roomForReturnedItem =
         user.hasRoomToRemoveThenAdd(toBeRemoved, toBeAdded, 1);
-    if (!roomForReturnedItem) {
-      sendMessage(client, WARNING_INVENTORY_FULL);
-      return;
-    }
+    if (!roomForReturnedItem) RETURN_WITH(WARNING_INVENTORY_FULL)
   }
 
   auto spellID = item.spellToCastOnUse();
@@ -249,10 +225,7 @@ HANDLE_MESSAGE(CL_TAME_NPC) {
   READ_ARGS(serial);
 
   auto *npc = _entities.find<NPC>(serial);
-  if (!npc) {
-    user.sendMessage(WARNING_DOESNT_EXIST);
-    return;
-  }
+  if (!npc) RETURN_WITH(WARNING_DOESNT_EXIST)
 
   const auto &type = *npc->npcType();
   if (!type.canBeTamed()) return;
@@ -262,10 +235,7 @@ HANDLE_MESSAGE(CL_TAME_NPC) {
   if (!type.tamingRequiresItem().empty()) {
     const auto *item = findItem(type.tamingRequiresItem());
     consumable.add(item);
-    if (!user.hasItems(consumable)) {
-      user.sendMessage(WARNING_ITEM_NEEDED);
-      return;
-    }
+    if (!user.hasItems(consumable)) RETURN_WITH(WARNING_ITEM_NEEDED)
   }
 
   // All checks pass; attempt goes ahead.
@@ -367,29 +337,17 @@ void Server::handleBufferedMessages(const Socket &client,
         std::string id(_stringInputBuffer);
         iss >> del;
         if (del != MSG_END) return;
-        if (user->isStunned()) {
-          sendMessage(client, WARNING_STUNNED);
-          break;
-        }
+        if (user->isStunned()) BREAK_WITH(WARNING_STUNNED)
         user->cancelAction();
         const std::set<SRecipe>::const_iterator it = _recipes.find(id);
-        if (!user->knowsRecipe(id)) {
-          sendMessage(client, ERROR_UNKNOWN_RECIPE);
-          break;
-        }
+        if (!user->knowsRecipe(id)) BREAK_WITH(ERROR_UNKNOWN_RECIPE)
         ItemSet remaining;
-        if (!user->hasItems(it->materials())) {
-          sendMessage(client, WARNING_NEED_MATERIALS);
-          break;
-        }
+        if (!user->hasItems(it->materials())) BREAK_WITH(WARNING_NEED_MATERIALS)
 
         // Tool check must be the last check, as it damages the tools.
         auto speed = user->checkAndDamageToolsAndGetSpeed(it->tools());
         auto userHasRequiredTools = speed != 0;
-        if (!userHasRequiredTools) {
-          sendMessage(client, WARNING_NEED_TOOLS);
-          break;
-        }
+        if (!userHasRequiredTools) BREAK_WITH(WARNING_NEED_TOOLS)
         user->beginCrafting(*it, speed);
         sendMessage(client, {SV_ACTION_STARTED, it->time()});
         break;
@@ -402,44 +360,25 @@ void Server::handleBufferedMessages(const Socket &client,
         std::string id(_stringInputBuffer);
         iss >> del >> x >> del >> y >> del;
         if (del != MSG_END) return;
-        if (user->isStunned()) {
-          sendMessage(client, WARNING_STUNNED);
-          break;
-        }
+        if (user->isStunned()) BREAK_WITH(WARNING_STUNNED)
         user->cancelAction();
         const ObjectType *objType = findObjectTypeByID(id);
-        if (objType == nullptr) {
-          sendMessage(client, ERROR_INVALID_OBJECT);
-          break;
-        }
-        if (!user->knowsConstruction(id)) {
-          sendMessage(client, ERROR_UNKNOWN_CONSTRUCTION);
-          break;
-        }
-        if (objType->isUnique() && objType->numInWorld() == 1) {
-          sendMessage(client, WARNING_UNIQUE_OBJECT);
-          break;
-        }
+        if (objType == nullptr) BREAK_WITH(ERROR_INVALID_OBJECT)
+        if (!user->knowsConstruction(id)) BREAK_WITH(ERROR_UNKNOWN_CONSTRUCTION)
+        if (objType->isUnique() && objType->numInWorld() == 1)
+          BREAK_WITH(WARNING_UNIQUE_OBJECT)
         if (objType->isPlayerUnique() &&
             user->hasPlayerUnique(objType->playerUniqueCategory())) {
           sendMessage(client, {WARNING_PLAYER_UNIQUE_OBJECT,
                                objType->playerUniqueCategory()});
           break;
         }
-        if (objType->isUnbuildable()) {
-          sendMessage(client, ERROR_UNBUILDABLE);
-          break;
-        }
+        if (objType->isUnbuildable()) BREAK_WITH(ERROR_UNBUILDABLE)
         const MapPoint location(x, y);
         if (distance(user->collisionRect(),
-                     objType->collisionRect() + location) > ACTION_DISTANCE) {
-          sendMessage(client, WARNING_TOO_FAR);
-          break;
-        }
-        if (!isLocationValid(location, *objType)) {
-          sendMessage(client, WARNING_BLOCKED);
-          break;
-        }
+                     objType->collisionRect() + location) > ACTION_DISTANCE)
+          BREAK_WITH(WARNING_TOO_FAR)
+        if (!isLocationValid(location, *objType)) BREAK_WITH(WARNING_BLOCKED)
 
         // Tool check must be the last check, as it damages the tools.
         auto requiresTool = !objType->constructionReq().empty();
@@ -447,10 +386,7 @@ void Server::handleBufferedMessages(const Socket &client,
         if (requiresTool) {
           toolSpeed =
               user->checkAndDamageToolAndGetSpeed(objType->constructionReq());
-          if (toolSpeed == 0) {
-            sendMessage(client, WARNING_NEED_TOOLS);
-            break;
-          }
+          if (toolSpeed == 0) BREAK_WITH(WARNING_NEED_TOOLS)
         }
         auto ownerIsCity = msgCode == CL_CONSTRUCT_FOR_CITY;
         user->beginConstructing(*objType, location, ownerIsCity, toolSpeed);
@@ -465,40 +401,21 @@ void Server::handleBufferedMessages(const Socket &client,
         double x, y;
         iss >> slot >> del >> x >> del >> y >> del;
         if (del != MSG_END) return;
-        if (user->isStunned()) {
-          sendMessage(client, WARNING_STUNNED);
-          break;
-        }
+        if (user->isStunned()) BREAK_WITH(WARNING_STUNNED)
         user->cancelAction();
-        if (slot >= User::INVENTORY_SIZE) {
-          sendMessage(client, ERROR_INVALID_SLOT);
-          break;
-        }
+        if (slot >= User::INVENTORY_SIZE) BREAK_WITH(ERROR_INVALID_SLOT)
         const auto &invSlot = user->inventory(slot);
-        if (!invSlot.first.hasItem()) {
-          sendMessage(client, ERROR_EMPTY_SLOT);
-          break;
-        }
+        if (!invSlot.first.hasItem()) BREAK_WITH(ERROR_EMPTY_SLOT)
         const ServerItem &item = *invSlot.first.type();
-        if (item.constructsObject() == nullptr) {
-          sendMessage(client, ERROR_CANNOT_CONSTRUCT);
-          break;
-        }
-        if (invSlot.first.isBroken()) {
-          sendMessage(client, WARNING_BROKEN_ITEM);
-          break;
-        }
+        if (item.constructsObject() == nullptr)
+          BREAK_WITH(ERROR_CANNOT_CONSTRUCT);
+        if (invSlot.first.isBroken()) BREAK_WITH(WARNING_BROKEN_ITEM)
         const MapPoint location(x, y);
         const ObjectType &objType = *item.constructsObject();
         if (distance(user->collisionRect(),
-                     objType.collisionRect() + location) > ACTION_DISTANCE) {
-          sendMessage(client, WARNING_TOO_FAR);
-          break;
-        }
-        if (!isLocationValid(location, objType)) {
-          sendMessage(client, WARNING_BLOCKED);
-          break;
-        }
+                     objType.collisionRect() + location) > ACTION_DISTANCE)
+          BREAK_WITH(WARNING_TOO_FAR)
+        if (!isLocationValid(location, objType)) BREAK_WITH(WARNING_BLOCKED)
 
         // Tool check must be the last check, as it damages the tools.
         auto requiresTool = !objType.constructionReq().empty();
@@ -506,10 +423,7 @@ void Server::handleBufferedMessages(const Socket &client,
         if (requiresTool) {
           toolSpeed =
               user->checkAndDamageToolAndGetSpeed(objType.constructionReq());
-          if (toolSpeed == 0) {
-            sendMessage(client, WARNING_NEED_TOOLS);
-            break;
-          }
+          if (toolSpeed == 0) BREAK_WITH(WARNING_NEED_TOOLS)
         }
 
         auto ownerIsCity = msgCode == CL_CONSTRUCT_FROM_ITEM_FOR_CITY;
@@ -526,10 +440,7 @@ void Server::handleBufferedMessages(const Socket &client,
         iss >> del;
         if (del != MSG_END) return;
 
-        if (user->isStunned()) {
-          sendMessage(client, WARNING_STUNNED);
-          break;
-        }
+        if (user->isStunned()) BREAK_WITH(WARNING_STUNNED)
 
         user->removeBuff(buffID);
         break;
@@ -546,10 +457,7 @@ void Server::handleBufferedMessages(const Socket &client,
         auto serial = Serial{};
         iss >> serial >> del;
         if (del != MSG_END) return;
-        if (user->isStunned()) {
-          sendMessage(client, WARNING_STUNNED);
-          break;
-        }
+        if (user->isStunned()) BREAK_WITH(WARNING_STUNNED)
         user->cancelAction();
         auto *ent = _entities.find(serial);
         if (!isEntityInRange(client, *user, ent)) {
@@ -571,20 +479,13 @@ void Server::handleBufferedMessages(const Socket &client,
                 user->questsInProgress().count(exclusiveQuestID) == 1;
             if (!userIsOnQuest) break;
           }
-          if (asObject->isBeingBuilt()) {
-            sendMessage(client, ERROR_UNDER_CONSTRUCTION);
-            break;
-          }
+          if (asObject->isBeingBuilt()) BREAK_WITH(ERROR_UNDER_CONSTRUCTION)
           // Check whether it has an inventory
-          if (asObject->hasContainer() && !asObject->container().isEmpty()) {
-            sendMessage(client, WARNING_NOT_EMPTY);
-            break;
-          }
+          if (asObject->hasContainer() && !asObject->container().isEmpty())
+            BREAK_WITH(WARNING_NOT_EMPTY)
         }
-        if (!ent->permissions.doesUserHaveAccess(user->name())) {
-          sendMessage(client, WARNING_NO_PERMISSION);
-          break;
-        }
+        if (!ent->permissions.doesUserHaveAccess(user->name()))
+          BREAK_WITH(WARNING_NO_PERMISSION)
 
         // Tool check must be the last check, as it damages the tools.
         const auto &gatherReq = ent->type()->yield.requiredTool();
@@ -615,42 +516,27 @@ void Server::handleBufferedMessages(const Socket &client,
         }
         user->cancelAction();
         Object *obj = _entities.find<Object>(serial);
-        if (!isEntityInRange(client, *user, obj)) {
-          sendMessage(client, WARNING_TOO_FAR);
-          break;
-        }
-        if (obj->isBeingBuilt()) {
-          sendMessage(client, ERROR_UNDER_CONSTRUCTION);
-          break;
-        }
+        if (!isEntityInRange(client, *user, obj)) BREAK_WITH(WARNING_TOO_FAR)
+        if (obj->isBeingBuilt()) BREAK_WITH(ERROR_UNDER_CONSTRUCTION)
 
         if (!obj->type()) {
           SERVER_ERROR("Can't deconstruct object with no type");
           break;
         }
 
-        if (!obj->permissions.doesUserHaveAccess(user->name())) {
-          sendMessage(client, WARNING_NO_PERMISSION);
-          break;
-        }
+        if (!obj->permissions.doesUserHaveAccess(user->name()))
+          BREAK_WITH(WARNING_NO_PERMISSION)
         // Check that the object can be deconstructed
-        if (!obj->hasDeconstruction()) {
-          sendMessage(client, ERROR_CANNOT_DECONSTRUCT);
-          break;
-        }
-        if (obj->health() < obj->stats().maxHealth) {
-          sendMessage(client, ERROR_DAMAGED_OBJECT);
-          break;
-        }
+        if (!obj->hasDeconstruction()) BREAK_WITH(ERROR_CANNOT_DECONSTRUCT)
+        if (obj->health() < obj->stats().maxHealth)
+          BREAK_WITH(ERROR_DAMAGED_OBJECT)
         if (!obj->isAbleToDeconstruct(*user)) {
           break;
         }
         // Check that it isn't an occupied vehicle
         if (obj->classTag() == 'v' &&
-            !dynamic_cast<const Vehicle *>(obj)->driver().empty()) {
-          sendMessage(client, WARNING_VEHICLE_OCCUPIED);
-          break;
-        }
+            !dynamic_cast<const Vehicle *>(obj)->driver().empty())
+          BREAK_WITH(WARNING_VEHICLE_OCCUPIED)
 
         user->beginDeconstructing(*obj);
         sendMessage(client, {SV_ACTION_STARTED,
@@ -662,16 +548,10 @@ void Server::handleBufferedMessages(const Socket &client,
         Serial serial;
         iss >> serial >> del;
         if (del != MSG_END) return;
-        if (user->isStunned()) {
-          sendMessage(client, WARNING_STUNNED);
-          break;
-        }
+        if (user->isStunned()) BREAK_WITH(WARNING_STUNNED)
         user->cancelAction();
         auto *ent = _entities.find(serial);
-        if (!isEntityInRange(client, *user, ent)) {
-          sendMessage(client, WARNING_TOO_FAR);
-          break;
-        }
+        if (!isEntityInRange(client, *user, ent)) BREAK_WITH(WARNING_TOO_FAR)
         if (!ent->type()) {
           SERVER_ERROR("Can't demolish object with no type");
           break;
@@ -685,17 +565,12 @@ void Server::handleBufferedMessages(const Socket &client,
           const auto *obj = dynamic_cast<Object *>(ent);
           userHasPermission = obj->permissions.canUserDemolish(user->name());
         }
-        if (!userHasPermission) {
-          sendMessage(client, WARNING_NO_PERMISSION);
-          break;
-        }
+        if (!userHasPermission) BREAK_WITH(WARNING_NO_PERMISSION)
 
         // Check that it isn't an occupied vehicle
         if (ent->classTag() == 'v' &&
-            !dynamic_cast<const Vehicle *>(ent)->driver().empty()) {
-          sendMessage(client, WARNING_VEHICLE_OCCUPIED);
-          break;
-        }
+            !dynamic_cast<const Vehicle *>(ent)->driver().empty())
+          BREAK_WITH(WARNING_VEHICLE_OCCUPIED)
 
         ent->kill();
         ent->setShorterCorpseTimerForFriendlyKill();
@@ -707,36 +582,21 @@ void Server::handleBufferedMessages(const Socket &client,
         size_t slot;
         iss >> serial >> del >> slot >> del;
         if (del != MSG_END) return;
-        if (user->isStunned()) {
-          sendMessage(client, WARNING_STUNNED);
-          break;
-        }
+        if (user->isStunned()) BREAK_WITH(WARNING_STUNNED)
         ServerItem::vect_t *container;
         Object *pObj = nullptr;
-        bool breakMsg = false;
         if (serial.isInventory())
           container = &user->inventory();
         else if (serial.isGear())
           container = &user->gear();
         else {
           pObj = _entities.find<Object>(serial);
-          if (!pObj->hasContainer()) {
-            sendMessage(client, ERROR_NO_INVENTORY);
-            breakMsg = true;
-            break;
-          }
-          if (!isEntityInRange(client, *user, pObj)) {
-            breakMsg = true;
-            break;
-          }
+          if (!pObj->hasContainer()) BREAK_WITH(ERROR_NO_INVENTORY)
+          if (!isEntityInRange(client, *user, pObj)) break;
           container = &pObj->container().raw();
         }
-        if (breakMsg) break;
 
-        if (slot >= container->size()) {
-          sendMessage(client, ERROR_INVALID_SLOT);
-          break;
-        }
+        if (slot >= container->size()) BREAK_WITH(ERROR_INVALID_SLOT)
         auto &containerSlot = (*container)[slot];
         if (containerSlot.second != 0) {
           containerSlot.first = {};
@@ -756,10 +616,7 @@ void Server::handleBufferedMessages(const Socket &client,
         size_t slot1, slot2;
         iss >> obj1 >> del >> slot1 >> del >> obj2 >> del >> slot2 >> del;
         if (del != MSG_END) return;
-        if (user->isStunned()) {
-          sendMessage(client, WARNING_STUNNED);
-          break;
-        }
+        if (user->isStunned()) BREAK_WITH(WARNING_STUNNED)
         user->cancelAction();
         ServerItem::vect_t *containerFrom = nullptr, *containerTo = nullptr;
         Object *pObj1 = nullptr, *pObj2 = nullptr;
@@ -770,11 +627,7 @@ void Server::handleBufferedMessages(const Socket &client,
           containerFrom = &user->gear();
         else {
           pObj1 = _entities.find<Object>(obj1);
-          if (!pObj1->hasContainer()) {
-            sendMessage(client, ERROR_NO_INVENTORY);
-            breakMsg = true;
-            break;
-          }
+          if (!pObj1->hasContainer()) BREAK_WITH(ERROR_NO_INVENTORY)
           if (!isEntityInRange(client, *user, pObj1)) {
             sendMessage(client, WARNING_TOO_FAR);
             breakMsg = true;
@@ -796,11 +649,8 @@ void Server::handleBufferedMessages(const Socket &client,
           pObj2 = _entities.find<Object>(obj2);
           if (pObj2 != nullptr && pObj2->isBeingBuilt() && slot2 == 0)
             isConstructionMaterial = true;
-          if (!isConstructionMaterial && !pObj2->hasContainer()) {
-            sendMessage(client, ERROR_NO_INVENTORY);
-            breakMsg = true;
-            break;
-          }
+          if (!isConstructionMaterial && !pObj2->hasContainer())
+            BREAK_WITH(ERROR_NO_INVENTORY)
           if (!isEntityInRange(client, *user, pObj2)) {
             sendMessage(client, WARNING_TOO_FAR);
             breakMsg = true;
@@ -815,10 +665,8 @@ void Server::handleBufferedMessages(const Socket &client,
 
         if (slot1 >= containerFrom->size() ||
             !isConstructionMaterial && slot2 >= containerTo->size() ||
-            isConstructionMaterial && slot2 > 0) {
-          sendMessage(client, ERROR_INVALID_SLOT);
-          break;
-        }
+            isConstructionMaterial && slot2 > 0)
+          BREAK_WITH(ERROR_INVALID_SLOT)
 
         auto &slotFrom = (*containerFrom)[slot1];
         if (!slotFrom.first.hasItem()) {
@@ -827,29 +675,21 @@ void Server::handleBufferedMessages(const Socket &client,
         }
 
         if (isConstructionMaterial) {
-          if (slotFrom.first.isBroken()) {
-            sendMessage(client, WARNING_BROKEN_ITEM);
-            break;
-          }
+          if (slotFrom.first.isBroken()) BREAK_WITH(WARNING_BROKEN_ITEM)
 
           const auto *materialType = slotFrom.first.type();
           size_t qtyInSlot = slotFrom.second,
                  qtyNeeded = pObj2->remainingMaterials()[materialType],
                  qtyToTake = min(qtyInSlot, qtyNeeded);
 
-          if (qtyNeeded == 0) {
-            sendMessage(client, WARNING_WRONG_MATERIAL);
-            break;
-          }
+          if (qtyNeeded == 0) BREAK_WITH(WARNING_WRONG_MATERIAL)
 
           auto itemToReturn = materialType->returnsOnConstruction();
           if (itemToReturn) {
             auto itemsToRemove = ItemSet{};
             itemsToRemove.add(materialType, qtyToTake);
-            if (!user->hasRoomToRemoveThenAdd(itemsToRemove, itemToReturn, 1)) {
-              sendMessage(client, WARNING_INVENTORY_FULL);
-              break;
-            }
+            if (!user->hasRoomToRemoveThenAdd(itemsToRemove, itemToReturn, 1))
+              BREAK_WITH(WARNING_INVENTORY_FULL)
           }
 
           // Remove from object requirements
@@ -897,19 +737,15 @@ void Server::handleBufferedMessages(const Socket &client,
         if (pObj1 != nullptr && pObj1->classTag() == 'n' &&
                 slotTo.first.hasItem() ||
             pObj2 != nullptr && pObj2->classTag() == 'n' &&
-                slotFrom.first.hasItem()) {
-          sendMessage(client, ERROR_NPC_SWAP);
-          break;
-        }
+                slotFrom.first.hasItem())
+          BREAK_WITH(ERROR_NPC_SWAP)
 
         // Check gear-slot compatibility
         if (obj1.isGear() && slotTo.first.hasItem() &&
                 slotTo.first.type()->gearSlot() != slot1 ||
             obj2.isGear() && slotFrom.first.hasItem() &&
-                slotFrom.first.type()->gearSlot() != slot2) {
-          sendMessage(client, ERROR_NOT_GEAR);
-          break;
-        }
+                slotFrom.first.type()->gearSlot() != slot2)
+          BREAK_WITH(ERROR_NOT_GEAR)
 
         // Combine stack, if identical types
         auto shouldPerformNormalSwap = true;
@@ -995,10 +831,7 @@ void Server::handleBufferedMessages(const Socket &client,
         iss >> serial >> del >> slotNum >> del;
         if (del != MSG_END) return;
 
-        if (user->isStunned()) {
-          sendMessage(client, WARNING_STUNNED);
-          break;
-        }
+        if (user->isStunned()) BREAK_WITH(WARNING_STUNNED)
 
         handle_CL_TAKE_ITEM(*user, serial, slotNum);
         break;
@@ -1010,68 +843,44 @@ void Server::handleBufferedMessages(const Socket &client,
         iss >> serial >> del >> slot >> del;
         if (del != MSG_END) return;
 
-        if (user->isStunned()) {
-          sendMessage(client, WARNING_STUNNED);
-          break;
-        }
+        if (user->isStunned()) BREAK_WITH(WARNING_STUNNED)
 
         // Check that merchant slot is valid
         Object *obj = _entities.find<Object>(serial);
         if (!isEntityInRange(client, *user, obj)) break;
-        if (obj->isBeingBuilt()) {
-          sendMessage(client, ERROR_UNDER_CONSTRUCTION);
-          break;
-        }
+        if (obj->isBeingBuilt()) BREAK_WITH(ERROR_UNDER_CONSTRUCTION)
         size_t slots = obj->objType().merchantSlots();
-        if (slots == 0) {
-          sendMessage(client, ERROR_NOT_MERCHANT);
-          break;
-        } else if (slot >= slots) {
-          sendMessage(client, ERROR_INVALID_MERCHANT_SLOT);
-          break;
-        }
+        if (slots == 0)
+          BREAK_WITH(ERROR_NOT_MERCHANT)
+        else if (slot >= slots)
+          BREAK_WITH(ERROR_INVALID_MERCHANT_SLOT)
         const MerchantSlot &mSlot = obj->merchantSlot(slot);
-        if (!mSlot) {
-          sendMessage(client, ERROR_INVALID_MERCHANT_SLOT);
-          break;
-        }
+        if (!mSlot) BREAK_WITH(ERROR_INVALID_MERCHANT_SLOT)
 
         // Check that user has price
-        if (mSlot.price() > user->inventory()) {
-          sendMessage(client, WARNING_NO_PRICE);
-          break;
-        }
+        if (mSlot.price() > user->inventory()) BREAK_WITH(WARNING_NO_PRICE)
 
         // Check that user has inventory space
-        if (!obj->hasContainer() && !obj->objType().bottomlessMerchant()) {
-          sendMessage(client, ERROR_NO_INVENTORY);
-          break;
-        }
+        if (!obj->hasContainer() && !obj->objType().bottomlessMerchant())
+          BREAK_WITH(ERROR_NO_INVENTORY)
         auto wareItem = toServerItem(mSlot.wareItem);
         auto priceItem = toServerItem(mSlot.priceItem);
         if (!vectHasSpaceAfterRemovingItems(user->inventory(), wareItem,
                                             mSlot.wareQty, priceItem,
-                                            mSlot.priceQty)) {
-          sendMessage(client, WARNING_INVENTORY_FULL);
-          break;
-        }
+                                            mSlot.priceQty))
+          BREAK_WITH(WARNING_INVENTORY_FULL)
 
         bool bottomless = obj->objType().bottomlessMerchant();
         if (!bottomless) {
           // Check that object has items in stock
-          if (mSlot.ware() > obj->container().raw()) {
-            sendMessage(client, WARNING_NO_WARE);
-            break;
-          }
+          if (mSlot.ware() > obj->container().raw()) BREAK_WITH(WARNING_NO_WARE)
 
           // Check that object has inventory space
           auto priceItem = toServerItem(mSlot.priceItem);
           if (!vectHasSpaceAfterRemovingItems(obj->container().raw(), priceItem,
                                               mSlot.priceQty, wareItem,
-                                              mSlot.wareQty)) {
-            sendMessage(client, WARNING_MERCHANT_INVENTORY_FULL);
-            break;
-          }
+                                              mSlot.wareQty))
+            BREAK_WITH(WARNING_MERCHANT_INVENTORY_FULL)
         }
 
         // Take price from user
@@ -1105,33 +914,16 @@ void Server::handleBufferedMessages(const Socket &client,
         if (del != MSG_END) return;
         Object *obj = _entities.find<Object>(serial);
         if (!isEntityInRange(client, *user, obj)) break;
-        if (obj->isBeingBuilt()) {
-          sendMessage(client, ERROR_UNDER_CONSTRUCTION);
-          break;
-        }
-        if (!obj->permissions.doesUserHaveAccess(user->name())) {
-          sendMessage(client, WARNING_NO_PERMISSION);
-          break;
-        }
+        if (obj->isBeingBuilt()) BREAK_WITH(ERROR_UNDER_CONSTRUCTION)
+        if (!obj->permissions.doesUserHaveAccess(user->name()))
+          BREAK_WITH(WARNING_NO_PERMISSION)
         size_t slots = obj->objType().merchantSlots();
-        if (slots == 0) {
-          sendMessage(client, ERROR_NOT_MERCHANT);
-          break;
-        }
-        if (slot >= slots) {
-          sendMessage(client, ERROR_INVALID_MERCHANT_SLOT);
-          break;
-        }
+        if (slots == 0) BREAK_WITH(ERROR_NOT_MERCHANT)
+        if (slot >= slots) BREAK_WITH(ERROR_INVALID_MERCHANT_SLOT)
         auto wareIt = _items.find(ware);
-        if (wareIt == _items.end()) {
-          sendMessage(client, ERROR_INVALID_ITEM);
-          break;
-        }
+        if (wareIt == _items.end()) BREAK_WITH(ERROR_INVALID_ITEM)
         auto priceIt = _items.find(price);
-        if (priceIt == _items.end()) {
-          sendMessage(client, ERROR_INVALID_ITEM);
-          break;
-        }
+        if (priceIt == _items.end()) BREAK_WITH(ERROR_INVALID_ITEM)
         MerchantSlot &mSlot = obj->merchantSlot(slot);
         mSlot = MerchantSlot(&*wareIt, wareQty, &*priceIt, priceQty);
 
@@ -1147,23 +939,12 @@ void Server::handleBufferedMessages(const Socket &client,
         if (del != MSG_END) return;
         Object *obj = _entities.find<Object>(serial);
         if (!isEntityInRange(client, *user, obj)) break;
-        if (obj->isBeingBuilt()) {
-          sendMessage(client, ERROR_UNDER_CONSTRUCTION);
-          break;
-        }
-        if (!obj->permissions.doesUserHaveAccess(user->name())) {
-          sendMessage(client, WARNING_NO_PERMISSION);
-          break;
-        }
+        if (obj->isBeingBuilt()) BREAK_WITH(ERROR_UNDER_CONSTRUCTION)
+        if (!obj->permissions.doesUserHaveAccess(user->name()))
+          BREAK_WITH(WARNING_NO_PERMISSION)
         size_t slots = obj->objType().merchantSlots();
-        if (slots == 0) {
-          sendMessage(client, ERROR_NOT_MERCHANT);
-          break;
-        }
-        if (slot >= slots) {
-          sendMessage(client, ERROR_INVALID_MERCHANT_SLOT);
-          break;
-        }
+        if (slots == 0) BREAK_WITH(ERROR_NOT_MERCHANT)
+        if (slot >= slots) BREAK_WITH(ERROR_INVALID_MERCHANT_SLOT)
         obj->merchantSlot(slot) = MerchantSlot();
 
         // Alert watchers
@@ -1194,29 +975,16 @@ void Server::handleBufferedMessages(const Socket &client,
         Serial serial;
         iss >> serial >> del;
         if (del != MSG_END) return;
-        if (user->isStunned()) {
-          sendMessage(client, WARNING_STUNNED);
-          break;
-        }
+        if (user->isStunned()) BREAK_WITH(WARNING_STUNNED)
         Object *obj = _entities.find<Object>(serial);
         if (!isEntityInRange(client, *user, obj)) break;
-        if (obj->isBeingBuilt()) {
-          sendMessage(client, ERROR_UNDER_CONSTRUCTION);
-          break;
-        }
-        if (!obj->permissions.doesUserHaveAccess(user->name())) {
-          sendMessage(client, WARNING_NO_PERMISSION);
-          break;
-        }
-        if (obj->classTag() != 'v') {
-          sendMessage(client, ERROR_NOT_VEHICLE);
-          break;
-        }
+        if (obj->isBeingBuilt()) BREAK_WITH(ERROR_UNDER_CONSTRUCTION)
+        if (!obj->permissions.doesUserHaveAccess(user->name()))
+          BREAK_WITH(WARNING_NO_PERMISSION)
+        if (obj->classTag() != 'v') BREAK_WITH(ERROR_NOT_VEHICLE)
         Vehicle *v = dynamic_cast<Vehicle *>(obj);
-        if (!v->driver().empty() && v->driver() != user->name()) {
-          sendMessage(client, WARNING_VEHICLE_OCCUPIED);
-          break;
-        }
+        if (!v->driver().empty() && v->driver() != user->name())
+          BREAK_WITH(WARNING_VEHICLE_OCCUPIED)
 
         v->driver(user->name());
         user->driving(v->serial());
@@ -1233,14 +1001,8 @@ void Server::handleBufferedMessages(const Socket &client,
 
       case CL_DISMOUNT: {
         if (del != MSG_END) return;
-        if (user->isStunned()) {
-          sendMessage(client, WARNING_STUNNED);
-          break;
-        }
-        if (!user->isDriving()) {
-          sendMessage(client, ERROR_NOT_VEHICLE);
-          break;
-        }
+        if (user->isStunned()) BREAK_WITH(WARNING_STUNNED)
+        if (!user->isDriving()) BREAK_WITH(ERROR_NOT_VEHICLE)
 
         auto dst = MapPoint{};
         bool validDestinationFound = false;
@@ -1253,10 +1015,8 @@ void Server::handleBufferedMessages(const Socket &client,
           }
         }
 
-        if (!validDestinationFound) {
-          sendMessage(client, WARNING_NO_VALID_DISMOUNT_LOCATION);
-          break;
-        }
+        if (!validDestinationFound)
+          BREAK_WITH(WARNING_NO_VALID_DISMOUNT_LOCATION)
 
         auto serial = user->driving();
         Object *obj = _entities.find<Object>(serial);
@@ -1328,10 +1088,8 @@ void Server::handleBufferedMessages(const Socket &client,
                                            : Belligerent::CITY;
         auto targetBelligerent = Belligerent{targetName, targetType};
 
-        if (_wars.isAtWarExact(user->name(), targetBelligerent)) {
-          sendMessage(client, ERROR_ALREADY_AT_WAR);
-          break;
-        }
+        if (_wars.isAtWarExact(user->name(), targetBelligerent))
+          BREAK_WITH(ERROR_ALREADY_AT_WAR)
 
         _wars.declare(thisBelligerent, targetBelligerent);
         break;
@@ -1344,14 +1102,9 @@ void Server::handleBufferedMessages(const Socket &client,
         iss >> del;
         if (del != MSG_END) return;
 
-        if (!_cities.isPlayerInACity(user->name())) {
-          sendMessage(client, ERROR_NOT_IN_CITY);
-          break;
-        }
-        if (!_kings.isPlayerAKing(user->name())) {
-          sendMessage(client, ERROR_NOT_A_KING);
-          break;
-        }
+        if (!_cities.isPlayerInACity(user->name()))
+          BREAK_WITH(ERROR_NOT_IN_CITY)
+        if (!_kings.isPlayerAKing(user->name())) BREAK_WITH(ERROR_NOT_A_KING)
         auto declarer =
             Belligerent{_cities.getPlayerCity(user->name()), Belligerent::CITY};
 
@@ -1361,10 +1114,8 @@ void Server::handleBufferedMessages(const Socket &client,
                                                         : Belligerent::CITY;
         auto targetBelligerent = Belligerent{targetName, targetType};
 
-        if (_wars.isAtWarExact(declarer, targetBelligerent)) {
-          sendMessage(client, ERROR_ALREADY_AT_WAR);
-          break;
-        }
+        if (_wars.isAtWarExact(declarer, targetBelligerent))
+          BREAK_WITH(ERROR_ALREADY_AT_WAR)
 
         _wars.declare(declarer, targetBelligerent);
         break;
@@ -1440,10 +1191,7 @@ void Server::handleBufferedMessages(const Socket &client,
         auto textArg = std::string{_stringInputBuffer};
         iss >> del;
         if (del != MSG_END) return;
-        if (user->isStunned()) {
-          sendMessage(client, WARNING_STUNNED);
-          break;
-        }
+        if (user->isStunned()) BREAK_WITH(WARNING_STUNNED)
         handle_CL_PERFORM_OBJECT_ACTION(*user, serial, textArg);
 
         break;
@@ -1549,10 +1297,7 @@ void Server::handleBufferedMessages(const Socket &client,
         iss >> del;
         if (del != MSG_END) return;
         auto it = _usersByName.find(username);
-        if (it == _usersByName.end()) {
-          sendMessage(client, ERROR_INVALID_USER);
-          break;
-        }
+        if (it == _usersByName.end()) BREAK_WITH(ERROR_INVALID_USER)
         const User *target = it->second;
         sendMessage(target->socket(),
                     {SV_WHISPER, makeArgs(user->name(), message)});
@@ -1570,10 +1315,7 @@ void Server::handleBufferedMessages(const Socket &client,
         iss >> del;
         if (del != MSG_END) return;
         const auto it = _items.find(id);
-        if (it == _items.end()) {
-          sendMessage(client, ERROR_INVALID_ITEM);
-          break;
-        }
+        if (it == _items.end()) BREAK_WITH(ERROR_INVALID_ITEM)
         const ServerItem &item = *it;
         ;
         user->giveItem(&item, item.stackSize());
@@ -1587,10 +1329,7 @@ void Server::handleBufferedMessages(const Socket &client,
         iss >> del;
         if (del != MSG_END) return;
         auto *ot = findObjectTypeByID(id);
-        if (!ot) {
-          sendMessage(client, ERROR_INVALID_ITEM);
-          break;
-        }
+        if (!ot) BREAK_WITH(ERROR_INVALID_OBJECT)
         if (ot->classTag() == 'n') {
           auto *nt = dynamic_cast<NPCType *>(ot);
           if (!nt) break;
@@ -1659,11 +1398,15 @@ void Server::handleBufferedMessages(const Socket &client,
   }
 }
 
-void Server::handle_CL_TAKE_ITEM(User &user, Serial serial, size_t slotNum) {
-  if (serial.isInventory()) {
-    sendMessage(user.socket(), ERROR_TAKE_SELF);
-    return;
+// TODO: remove
+#define RETURN_WITH(MSG)   \
+  {                        \
+    user.sendMessage(MSG); \
+    return;                \
   }
+
+void Server::handle_CL_TAKE_ITEM(User &user, Serial serial, size_t slotNum) {
+  if (serial.isInventory()) RETURN_WITH(ERROR_TAKE_SELF)
 
   Entity *pEnt = nullptr;
   ServerItem::Slot *pSlot;
@@ -1671,10 +1414,7 @@ void Server::handle_CL_TAKE_ITEM(User &user, Serial serial, size_t slotNum) {
     pSlot = user.getSlotToTakeFromAndSendErrors(slotNum, user);
   else {
     pEnt = _entities.find(serial);
-    if (!pEnt) {
-      sendMessage(user.socket(), WARNING_DOESNT_EXIST);
-      return;
-    }
+    if (!pEnt) RETURN_WITH(WARNING_DOESNT_EXIST)
     pSlot = pEnt->getSlotToTakeFromAndSendErrors(slotNum, user);
   }
   if (!pSlot) return;
@@ -1719,40 +1459,26 @@ void Server::handle_CL_REPAIR_ITEM(User &user, Serial serial, size_t slot) {
     auto *ent = _entities.find(serial);
     auto *obj = dynamic_cast<Object *>(ent);
 
-    if (!obj) {
-      user.sendMessage(WARNING_DOESNT_EXIST);
-      return;
-    }
+    if (!obj) RETURN_WITH(WARNING_DOESNT_EXIST)
 
-    if (!obj->permissions.doesUserHaveAccess(user.name())) {
-      user.sendMessage(WARNING_NO_PERMISSION);
-      return;
-    }
+    if (!obj->permissions.doesUserHaveAccess(user.name()))
+      RETURN_WITH(WARNING_NO_PERMISSION)
 
     auto numSlots = obj->objType().container().slots();
-    if (slot >= numSlots) {
-      user.sendMessage(ERROR_INVALID_SLOT);
-      return;
-    }
+    if (slot >= numSlots) RETURN_WITH(ERROR_INVALID_SLOT)
 
     itemToRepair = &obj->container().at(slot).first;
   }
 
   const auto &repairInfo = itemToRepair->type()->repairInfo();
-  if (!repairInfo.canBeRepaired) {
-    user.sendMessage(WARNING_NOT_REPAIRABLE);
-    return;
-  }
+  if (!repairInfo.canBeRepaired) RETURN_WITH(WARNING_NOT_REPAIRABLE)
 
   auto costItem = findItem(repairInfo.cost);
   if (repairInfo.hasCost()) {
     auto cost = ItemSet{};
     cost.add(costItem);
 
-    if (!user.hasItems(cost)) {
-      user.sendMessage(WARNING_ITEM_NEEDED);
-      return;
-    }
+    if (!user.hasItems(cost)) RETURN_WITH(WARNING_ITEM_NEEDED)
   }
 
   if (repairInfo.requiresTool()) {
@@ -1775,26 +1501,17 @@ void Server::handle_CL_REPAIR_OBJECT(User &user, Serial serial) {
   auto it = _entities.find(serial);
   auto *obj = dynamic_cast<Object *>(&*it);
 
-  if (!obj) {
-    user.sendMessage(WARNING_DOESNT_EXIST);
-    return;
-  }
+  if (!obj) RETURN_WITH(WARNING_DOESNT_EXIST)
 
   const auto &repairInfo = obj->objType().repairInfo();
-  if (!repairInfo.canBeRepaired) {
-    user.sendMessage(WARNING_NOT_REPAIRABLE);
-    return;
-  }
+  if (!repairInfo.canBeRepaired) RETURN_WITH(WARNING_NOT_REPAIRABLE)
 
   auto costItem = findItem(repairInfo.cost);
   if (repairInfo.hasCost()) {
     auto cost = ItemSet{};
     cost.add(costItem);
 
-    if (!user.hasItems(cost)) {
-      user.sendMessage(WARNING_ITEM_NEEDED);
-      return;
-    }
+    if (!user.hasItems(cost)) RETURN_WITH(WARNING_ITEM_NEEDED)
   }
 
   if (repairInfo.requiresTool()) {
@@ -1815,93 +1532,57 @@ void Server::handle_CL_REPAIR_OBJECT(User &user, Serial serial) {
 
 void Server::handle_CL_LEAVE_CITY(User &user) {
   auto city = _cities.getPlayerCity(user.name());
-  if (city.empty()) {
-    sendMessage(user.socket(), ERROR_NOT_IN_CITY);
-    return;
-  }
-  if (_kings.isPlayerAKing(user.name())) {
-    sendMessage(user.socket(), ERROR_KING_CANNOT_LEAVE_CITY);
-    return;
-  }
+  if (city.empty()) RETURN_WITH(ERROR_NOT_IN_CITY)
+  if (_kings.isPlayerAKing(user.name()))
+    RETURN_WITH(ERROR_KING_CANNOT_LEAVE_CITY)
   _cities.removeUserFromCity(user, city);
 }
 
 void Server::handle_CL_CEDE(User &user, Serial serial) {
-  if (serial.isInventory() || serial.isGear()) {
-    sendMessage(user.socket(), WARNING_DOESNT_EXIST);
-    return;
-  }
+  if (serial.isInventory() || serial.isGear()) RETURN_WITH(WARNING_DOESNT_EXIST)
   auto *ent = _entities.find(serial);
 
-  if (!ent->permissions.isOwnedByPlayer(user.name())) {
-    sendMessage(user.socket(), WARNING_NO_PERMISSION);
-    return;
-  }
+  if (!ent->permissions.isOwnedByPlayer(user.name()))
+    RETURN_WITH(WARNING_NO_PERMISSION)
 
   const City::Name &city = _cities.getPlayerCity(user.name());
-  if (city.empty()) {
-    sendMessage(user.socket(), ERROR_NOT_IN_CITY);
-    return;
-  }
+  if (city.empty()) RETURN_WITH(ERROR_NOT_IN_CITY)
 
   const auto *obj = dynamic_cast<const Object *>(ent);
-  if (obj && obj->objType().isPlayerUnique()) {
-    sendMessage(user.socket(), ERROR_CANNOT_CEDE);
-    return;
-  }
+  if (obj && obj->objType().isPlayerUnique()) RETURN_WITH(ERROR_CANNOT_CEDE)
 
   ent->permissions.setCityOwner(city);
 }
 
 void Server::handle_CL_GRANT(User &user, Serial serial, std::string username) {
   auto *obj = _entities.find<Object>(serial);
-  if (!obj) {
-    sendMessage(user.socket(), WARNING_DOESNT_EXIST);
-    return;
-  }
+  if (!obj) RETURN_WITH(WARNING_DOESNT_EXIST)
   auto playerCity = cities().getPlayerCity(user.name());
-  if (!obj->permissions.isOwnedByCity(playerCity)) {
-    sendMessage(user.socket(), WARNING_NO_PERMISSION);
-    return;
-  }
-  if (!_kings.isPlayerAKing(user.name())) {
-    sendMessage(user.socket(), ERROR_NOT_A_KING);
-    return;
-  }
+  if (!obj->permissions.isOwnedByCity(playerCity))
+    RETURN_WITH(WARNING_NO_PERMISSION)
+  if (!_kings.isPlayerAKing(user.name())) RETURN_WITH(ERROR_NOT_A_KING)
   username = toPascal(username);
-  if (!cities().isPlayerInCity(username, playerCity)) {
-    sendMessage(user.socket(), WARNING_NOT_A_CITIZEN);
-    return;
-  }
+  if (!cities().isPlayerInCity(username, playerCity))
+    RETURN_WITH(WARNING_NOT_A_CITIZEN)
+
   obj->permissions.setPlayerOwner(username);
 }
 
 void Server::handle_CL_PERFORM_OBJECT_ACTION(User &user, Serial serial,
                                              const std::string &textArg) {
-  if (serial.isInventory() || serial.isGear()) {
-    sendMessage(user.socket(), WARNING_DOESNT_EXIST);
-    return;
-  }
+  if (!serial.isEntity()) RETURN_WITH(WARNING_DOESNT_EXIST)
   auto *obj = _entities.find<Object>(serial);
 
-  if (!obj->permissions.doesUserHaveAccess(user.name(), true)) {
-    sendMessage(user.socket(), WARNING_NO_PERMISSION);
-    return;
-  }
+  if (!obj->permissions.doesUserHaveAccess(user.name(), true))
+    RETURN_WITH(WARNING_NO_PERMISSION)
 
   const auto &objType = obj->objType();
-  if (!objType.hasAction()) {
-    sendMessage(user.socket(), ERROR_NO_ACTION);
-    return;
-  }
+  if (!objType.hasAction()) RETURN_WITH(ERROR_NO_ACTION)
 
   if (objType.action().cost) {
     auto cost = ItemSet{};
     cost.add(objType.action().cost);
-    if (!user.hasItems(cost)) {
-      sendMessage(user.socket(), WARNING_ITEM_NEEDED);
-      return;
-    }
+    if (!user.hasItems(cost)) RETURN_WITH(WARNING_ITEM_NEEDED)
   }
 
   auto succeeded = objType.action().function(*obj, user, textArg);
@@ -1924,22 +1605,18 @@ void Server::handle_CL_TARGET_ENTITY(User &user, Serial serial) {
   user.cancelAction();
 
   auto target = _entities.find(serial);
-  if (target == nullptr) {
-    user.setTargetAndAttack(nullptr);
+  if (!target) {
     sendMessage(user.socket(), WARNING_DOESNT_EXIST);
-    return;
   }
 
-  if (target->health() == 0) {
-    user.setTargetAndAttack(nullptr);
+  else if (target->health() == 0) {
+    target = nullptr;
     sendMessage(user.socket(), ERROR_TARGET_DEAD);
-    return;
   }
 
-  if (!target->canBeAttackedBy(user)) {
-    user.setTargetAndAttack(nullptr);
+  else if (!target->canBeAttackedBy(user)) {
+    target = nullptr;
     sendMessage(user.socket(), ERROR_ATTACKED_PEACFUL_PLAYER);
-    return;
   }
 
   user.setTargetAndAttack(target);
@@ -1950,20 +1627,14 @@ void Server::handle_CL_TARGET_PLAYER(User &user,
   user.cancelAction();
 
   auto it = _usersByName.find(targetUsername);
-  if (it == _usersByName.end()) {
-    sendMessage(user.socket(), ERROR_INVALID_USER);
-    return;
-  }
+  if (it == _usersByName.end()) RETURN_WITH(ERROR_INVALID_USER)
   User *targetUser = const_cast<User *>(it->second);
   if (targetUser->health() == 0) {
-    user.setTargetAndAttack(nullptr);
+    targetUser = nullptr;
     sendMessage(user.socket(), ERROR_TARGET_DEAD);
-    return;
-  }
-  if (!_wars.isAtWar(user.name(), targetUsername)) {
-    user.setTargetAndAttack(nullptr);
+  } else if (!_wars.isAtWar(user.name(), targetUsername)) {
+    targetUser = nullptr;
     sendMessage(user.socket(), ERROR_ATTACKED_PEACFUL_PLAYER);
-    return;
   }
 
   user.setTargetAndAttack(targetUser);
@@ -1991,10 +1662,7 @@ void Server::handle_CL_SELECT_PLAYER(User &user,
   user.cancelAction();
 
   auto it = _usersByName.find(targetUsername);
-  if (it == _usersByName.end()) {
-    sendMessage(user.socket(), ERROR_INVALID_USER);
-    return;
-  }
+  if (it == _usersByName.end()) RETURN_WITH(ERROR_INVALID_USER)
   User *targetUser = const_cast<User *>(it->second);
   user.target(targetUser);
   if (user.action() == User::ATTACK) user.action(User::NO_ACTION);
@@ -2002,15 +1670,10 @@ void Server::handle_CL_SELECT_PLAYER(User &user,
 
 void Server::handle_CL_RECRUIT(User &user, std::string username) {
   const auto &cityName = _cities.getPlayerCity(user.name());
-  if (cityName.empty()) {
-    sendMessage(user.socket(), ERROR_NOT_IN_CITY);
-    return;
-  }
+  if (cityName.empty()) RETURN_WITH(ERROR_NOT_IN_CITY)
   username = toPascal(username);
-  if (!_cities.getPlayerCity(username).empty()) {
-    sendMessage(user.socket(), ERROR_ALREADY_IN_CITY);
-    return;
-  }
+  if (!_cities.getPlayerCity(username).empty())
+    RETURN_WITH(ERROR_ALREADY_IN_CITY)
   const auto *pTargetUser = getUserByName(username);
   if (pTargetUser == nullptr) {
     sendMessage(user.socket(), ERROR_INVALID_USER);
@@ -2053,14 +1716,8 @@ void Server::handle_CL_SUE_FOR_PEACE(User &user, MessageCode code,
 
   // If a city is proposing, make sure the player is a king
   if (proposer.type == Belligerent::CITY) {
-    if (!_cities.isPlayerInACity(user.name())) {
-      sendMessage(user.socket(), ERROR_NOT_IN_CITY);
-      return;
-    }
-    if (!_kings.isPlayerAKing(user.name())) {
-      sendMessage(user.socket(), ERROR_NOT_A_KING);
-      return;
-    }
+    if (!_cities.isPlayerInACity(user.name())) RETURN_WITH(ERROR_NOT_IN_CITY)
+    if (!_kings.isPlayerAKing(user.name())) RETURN_WITH(ERROR_NOT_A_KING)
   }
 
   _wars.sueForPeace(proposer, enemy);
@@ -2111,14 +1768,8 @@ void Server::handle_CL_CANCEL_PEACE_OFFER(User &user, MessageCode code,
 
   // If a city is proposing, make sure the player is a king
   if (proposer.type == Belligerent::CITY) {
-    if (!_cities.isPlayerInACity(user.name())) {
-      sendMessage(user.socket(), ERROR_NOT_IN_CITY);
-      return;
-    }
-    if (!_kings.isPlayerAKing(user.name())) {
-      sendMessage(user.socket(), ERROR_NOT_A_KING);
-      return;
-    }
+    if (!_cities.isPlayerInACity(user.name())) RETURN_WITH(ERROR_NOT_IN_CITY)
+    if (!_kings.isPlayerAKing(user.name())) RETURN_WITH(ERROR_NOT_A_KING)
   }
 
   auto canceled = _wars.cancelPeaceOffer(proposer, enemy);
@@ -2188,33 +1839,18 @@ void Server::handle_CL_TAKE_TALENT(User &user, const Talent::Name &talentName) {
   auto &userClass = user.getClass();
   const auto &classType = userClass.type();
   auto talent = classType.findTalent(talentName);
-  if (talent == nullptr) {
-    sendMessage(user.socket(), ERROR_INVALID_TALENT);
-    return;
-  }
-
-  if (!user.getClass().canTakeATalent()) {
-    sendMessage(user.socket(), WARNING_NO_TALENT_POINTS);
-    return;
-  }
-
-  if (talent->type() == Talent::SPELL && userClass.hasTalent(talent)) {
-    sendMessage(user.socket(), ERROR_ALREADY_KNOW_SPELL);
-    return;
-  }
+  if (talent == nullptr) RETURN_WITH(ERROR_INVALID_TALENT)
+  if (!user.getClass().canTakeATalent()) RETURN_WITH(WARNING_NO_TALENT_POINTS)
+  if (talent->type() == Talent::SPELL && userClass.hasTalent(talent))
+    RETURN_WITH(ERROR_ALREADY_KNOW_SPELL)
 
   auto &tier = talent->tier();
 
   if (tier.reqPointsInTree > 0 &&
-      user.getClass().pointsInTree(talent->tree()) < tier.reqPointsInTree) {
-    sendMessage(user.socket(), WARNING_MISSING_REQ_FOR_TALENT);
-    return;
-  }
-
-  if (tier.hasItemCost() && !user.hasItems(tier.costTag, tier.costQuantity)) {
-    sendMessage(user.socket(), WARNING_MISSING_ITEMS_FOR_TALENT);
-    return;
-  }
+      user.getClass().pointsInTree(talent->tree()) < tier.reqPointsInTree)
+    RETURN_WITH(WARNING_MISSING_REQ_FOR_TALENT)
+  if (tier.hasItemCost() && !user.hasItems(tier.costTag, tier.costQuantity))
+    RETURN_WITH(WARNING_MISSING_ITEMS_FOR_TALENT)
 
   // Tool check must be the last check, as it damages the tools.
   const auto &requiredTool = talent->tier().requiredTool;
@@ -2296,10 +1932,8 @@ void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &questID,
       user.getClass().type().id() != quest->exclusiveToClass)
     return;
 
-  if (!user.hasRoomFor(quest->startsWithItems)) {
-    user.sendMessage(WARNING_INVENTORY_FULL);
-    return;
-  }
+  if (!user.hasRoomFor(quest->startsWithItems))
+    RETURN_WITH(WARNING_INVENTORY_FULL)
 
   user.startQuest(*quest);
 }
@@ -2392,8 +2026,7 @@ void Server::broadcastToArea(const MapPoint &location,
 void Server::broadcastToCity(const std::string &cityName,
                              const Message &msg) const {
   if (!_cities.doesCityExist(cityName)) {
-    _debug << Color::CHAT_ERROR << "City " << cityName << " does not exist."
-           << Log::endl;
+    SERVER_ERROR("City "s + cityName + " does not exist.");
     return;
   }
 
@@ -2415,10 +2048,7 @@ void Server::sendMessageIfOnline(const std::string username,
 void Server::sendInventoryMessageInner(
     const User &user, Serial serial, size_t slot,
     const ServerItem::vect_t &itemVect) const {
-  if (slot >= itemVect.size()) {
-    sendMessage(user.socket(), ERROR_INVALID_SLOT);
-    return;
-  }
+  if (slot >= itemVect.size()) RETURN_WITH(ERROR_INVALID_SLOT)
 
   const auto &containerSlot = itemVect[slot];
   std::string itemID =
