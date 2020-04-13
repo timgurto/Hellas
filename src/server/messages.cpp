@@ -181,6 +181,69 @@ HANDLE_MESSAGE(CL_LOCATION) {
   }
 }
 
+HANDLE_MESSAGE(CL_CAST) {
+  auto spellID = ""s;
+  READ_ARGS(spellID);
+
+  if (user.isStunned()) {
+    sendMessage(client, WARNING_STUNNED);
+    return;
+  }
+  handle_CL_CAST(user, spellID);
+}
+
+HANDLE_MESSAGE(CL_CAST_ITEM) {
+  auto slot = size_t{};
+  READ_ARGS(slot);
+
+  if (user.isStunned()) {
+    sendMessage(client, WARNING_STUNNED);
+    return;
+  }
+  user.cancelAction();
+  if (slot >= User::INVENTORY_SIZE) {
+    sendMessage(client, ERROR_INVALID_SLOT);
+    return;
+  }
+  auto &invSlot = user.inventory(slot);
+  if (!invSlot.first.hasItem()) {
+    sendMessage(client, ERROR_EMPTY_SLOT);
+    return;
+  }
+  const ServerItem &item = *invSlot.first.type();
+  if (!item.castsSpellOnUse()) {
+    sendMessage(client, ERROR_CANNOT_CAST_ITEM);
+    return;
+  }
+  if (invSlot.first.isBroken()) {
+    sendMessage(client, WARNING_BROKEN_ITEM);
+    return;
+  }
+
+  if (item.returnsOnCast()) {
+    auto toBeRemoved = ItemSet{};
+    toBeRemoved.add(&item);
+    const auto *toBeAdded = item.returnsOnCast();
+    auto roomForReturnedItem =
+        user.hasRoomToRemoveThenAdd(toBeRemoved, toBeAdded, 1);
+    if (!roomForReturnedItem) {
+      sendMessage(client, WARNING_INVENTORY_FULL);
+      return;
+    }
+  }
+
+  auto spellID = item.spellToCastOnUse();
+  auto result = handle_CL_CAST(user, spellID, /* casting from item*/ true);
+
+  if (result == FAIL) return;
+
+  --invSlot.second;
+  if (invSlot.second == 0) invSlot.first = {};
+  sendInventoryMessage(user, slot, Serial::Inventory());
+
+  if (item.returnsOnCast()) user.giveItem(item.returnsOnCast());
+}
+
 HANDLE_MESSAGE(CL_TAME_NPC) {
   auto serial = Serial{};
   READ_ARGS(serial);
@@ -293,6 +356,8 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_REQUEST_TIME_PLAYED)
       SEND_MESSAGE_TO_HANDLER(CL_SKIP_TUTORIAL)
       SEND_MESSAGE_TO_HANDLER(CL_LOCATION)
+      SEND_MESSAGE_TO_HANDLER(CL_CAST)
+      SEND_MESSAGE_TO_HANDLER(CL_CAST_ITEM)
       SEND_MESSAGE_TO_HANDLER(CL_TAME_NPC)
       SEND_MESSAGE_TO_HANDLER(CL_ORDER_NPC_TO_STAY)
       SEND_MESSAGE_TO_HANDLER(CL_ORDER_NPC_TO_FOLLOW)
@@ -452,61 +517,6 @@ void Server::handleBufferedMessages(const Socket &client,
                                 slot);
         sendMessage(client, {SV_ACTION_STARTED,
                              objType.constructionTime() / toolSpeed});
-        break;
-      }
-
-      case CL_CAST_ITEM: {
-        size_t slot;
-        iss >> slot >> del;
-        if (del != MSG_END) return;
-        if (user->isStunned()) {
-          sendMessage(client, WARNING_STUNNED);
-          break;
-        }
-        user->cancelAction();
-        if (slot >= User::INVENTORY_SIZE) {
-          sendMessage(client, ERROR_INVALID_SLOT);
-          break;
-        }
-        auto &invSlot = user->inventory(slot);
-        if (!invSlot.first.hasItem()) {
-          sendMessage(client, ERROR_EMPTY_SLOT);
-          break;
-        }
-        const ServerItem &item = *invSlot.first.type();
-        if (!item.castsSpellOnUse()) {
-          sendMessage(client, ERROR_CANNOT_CAST_ITEM);
-          break;
-        }
-        if (invSlot.first.isBroken()) {
-          sendMessage(client, WARNING_BROKEN_ITEM);
-          break;
-        }
-
-        if (item.returnsOnCast()) {
-          auto toBeRemoved = ItemSet{};
-          toBeRemoved.add(&item);
-          const auto *toBeAdded = item.returnsOnCast();
-          auto roomForReturnedItem =
-              user->willHaveRoomAfterRemovingItems(toBeRemoved, toBeAdded, 1);
-          if (!roomForReturnedItem) {
-            sendMessage(client, WARNING_INVENTORY_FULL);
-            break;
-          }
-        }
-
-        auto spellID = item.spellToCastOnUse();
-        auto result =
-            handle_CL_CAST(*user, spellID, /* casting from item*/ true);
-
-        if (result == FAIL) break;
-
-        --invSlot.second;
-        if (invSlot.second == 0) invSlot.first = {};
-        sendInventoryMessage(*user, slot, Serial::Inventory());
-
-        if (item.returnsOnCast()) user->giveItem(item.returnsOnCast());
-
         break;
       }
 
@@ -836,8 +846,7 @@ void Server::handleBufferedMessages(const Socket &client,
           if (itemToReturn) {
             auto itemsToRemove = ItemSet{};
             itemsToRemove.add(materialType, qtyToTake);
-            if (!user->willHaveRoomAfterRemovingItems(itemsToRemove,
-                                                      itemToReturn, 1)) {
+            if (!user->hasRoomToRemoveThenAdd(itemsToRemove, itemToReturn, 1)) {
               sendMessage(client, WARNING_INVENTORY_FULL);
               break;
             }
@@ -1461,19 +1470,6 @@ void Server::handleBufferedMessages(const Socket &client,
       case CL_UNLEARN_TALENTS: {
         if (del != MSG_END) return;
         handle_CL_UNLEARN_TALENTS(*user);
-        break;
-      }
-
-      case CL_CAST: {
-        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
-        auto spellID = std::string{_stringInputBuffer};
-        iss >> del;
-        if (del != MSG_END) return;
-        if (user->isStunned()) {
-          sendMessage(client, WARNING_STUNNED);
-          break;
-        }
-        handle_CL_CAST(*user, spellID);
         break;
       }
 
@@ -2354,9 +2350,9 @@ void Server::handle_CL_AUTO_CONSTRUCT(User &user, Serial serial) {
     materialToBeRemoved.add(pair.first, pair.second);
     auto qtyToBeReturned = min<int>(
         pair.second, user.countItems(material->returnsOnConstruction()));
-    if (user.willHaveRoomAfterRemovingItems(materialToBeRemoved,
-                                            material->returnsOnConstruction(),
-                                            qtyToBeReturned))
+    if (user.hasRoomToRemoveThenAdd(materialToBeRemoved,
+                                    material->returnsOnConstruction(),
+                                    qtyToBeReturned))
       materialsToLookFor.add(pair.first, pair.second);
   }
 
