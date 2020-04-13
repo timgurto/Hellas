@@ -446,12 +446,9 @@ void Entity::onEnergyChange() {
 void Entity::onDeath() {
   removeAllBuffsAndDebuffs();
 
-  if (!tagger()) {
-    Server::debug()("Entity died without being tagged; no credit given.",
-                    Color::CHAT_ERROR);
-    return;
-  }
-  tagger()->onKilled(*this);
+  if (tagger()) tagger()->onKilled(*this);
+
+  if (spawner()) spawner()->scheduleSpawn();
 
   if (timeToRemainAsCorpse() == 0)
     markForRemoval();

@@ -1409,6 +1409,7 @@ void Server::handleBufferedMessages(const Socket &client,
 }
 
 // TODO: remove
+#undef RETURN_WITH
 #define RETURN_WITH(MSG)   \
   {                        \
     user.sendMessage(MSG); \

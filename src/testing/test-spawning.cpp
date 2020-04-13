@@ -243,3 +243,21 @@ TEST_CASE("Cached terrain for spawning") {
     }
   }
 }
+
+TEST_CASE("Dead objects respawn") {
+  GIVEN("an object that respawns instantly") {
+    auto data = R"(
+      <objectType id="whackamole" />
+      <spawnPoint y="10" x="10" type="whackamole" quantity="1" radius="10" respawnTime="0" />
+    )";
+
+    auto s = TestServer::WithDataString(data);
+    auto &mole = s.getFirstObject();
+
+    WHEN("it dies") {
+      mole.kill();
+
+      THEN("there is another one") { WAIT_UNTIL(s.entities().size() == 2); }
+    }
+  }
+}

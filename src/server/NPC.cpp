@@ -203,16 +203,6 @@ void NPC::onDeath() {
   npcType()->lootTable().instantiate(*_loot, tagger());
   if (!_loot->empty()) sendAllLootToTagger();
 
-  /*
-  Schedule a respawn, if this NPC came from a spawner.
-  For non-NPCs, this happens in onRemove().  The object's _spawner is cleared
-  afterwards to avoid onRemove() from doing so here.
-  */
-  if (spawner() != nullptr) {
-    spawner()->scheduleSpawn();
-    spawner(nullptr);
-  }
-
   Entity::onDeath();
 }
 
