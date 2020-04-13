@@ -68,7 +68,7 @@ HANDLE_MESSAGE(CL_LOGIN_EXISTING) {
   auto userFile = _userFilesPath + username + ".usr";
   if (!fileExists(userFile)) {
 #ifndef _DEBUG
-    ABORT_WITH(WARNING_USER_DOESNT_EXIST)
+    RETURN_WITH(WARNING_USER_DOESNT_EXIST)
 #else
     // Allow quick, auto account creation in debug mode
     addUser(client, username, passwordHash, _classes.begin()->first);
@@ -94,8 +94,10 @@ HANDLE_MESSAGE(CL_LOGIN_NEW) {
 
 #ifndef _DEBUG
   // Check that version matches
-  if (clientVersion != version())
-    RETURN_WITH({WARNING_WRONG_VERSION, version()})
+  if (clientVersion != version()) {
+    sendMessage(client, {WARNING_WRONG_VERSION, version()});
+    return;
+  }
 #endif
 
   if (!isUsernameValid(name)) RETURN_WITH(WARNING_INVALID_USERNAME)
