@@ -312,8 +312,6 @@ class Server {
                                     const std::string &name);
   void handle_CL_TAKE_TALENT(User &user, const Talent::Name &talent);
   void handle_CL_UNLEARN_TALENTS(User &user);
-  CombatResult handle_CL_CAST(User &user, const std::string &spellID,
-                              bool castingFromItem = false);
   void handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &quest,
                               Serial giverSerial);
   void handle_CL_COMPLETE_QUEST(User &user, const Quest::ID &quest,

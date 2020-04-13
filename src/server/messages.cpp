@@ -183,7 +183,16 @@ HANDLE_MESSAGE(CL_CAST) {
   READ_ARGS(spellID);
 
   if (user.isStunned()) RETURN_WITH(WARNING_STUNNED)
-  handle_CL_CAST(user, spellID);
+
+  if (!user.getClass().knowsSpell(spellID)) RETURN_WITH(ERROR_DONT_KNOW_SPELL)
+  if (user.isSpellCoolingDown(spellID)) return;
+
+  auto *spell = findSpell(spellID);
+  if (!spell) return;
+
+  if (user.energy() < spell->cost()) RETURN_WITH(WARNING_NOT_ENOUGH_ENERGY)
+
+  user.castSpell(*spell);
 }
 
 HANDLE_MESSAGE(CL_CAST_ITEM) {
@@ -191,7 +200,6 @@ HANDLE_MESSAGE(CL_CAST_ITEM) {
   READ_ARGS(slot);
 
   if (user.isStunned()) RETURN_WITH(WARNING_STUNNED)
-  user.cancelAction();
   if (slot >= User::INVENTORY_SIZE) RETURN_WITH(ERROR_INVALID_SLOT)
   auto &invSlot = user.inventory(slot);
   if (!invSlot.first.hasItem()) RETURN_WITH(ERROR_EMPTY_SLOT)
@@ -208,9 +216,11 @@ HANDLE_MESSAGE(CL_CAST_ITEM) {
     if (!roomForReturnedItem) RETURN_WITH(WARNING_INVENTORY_FULL)
   }
 
-  auto spellID = item.spellToCastOnUse();
-  auto result = handle_CL_CAST(user, spellID, /* casting from item*/ true);
+  auto *spell = findSpell(item.spellToCastOnUse());
+  if (!spell) return;
 
+  user.cancelAction();
+  auto result = user.castSpell(*spell);
   if (result == FAIL) return;
 
   --invSlot.second;
@@ -1883,31 +1893,6 @@ void Server::handle_CL_UNLEARN_TALENTS(User &user) {
 
   auto knownSpellsString = userClass.generateKnownSpellsString();
   user.sendMessage({SV_KNOWN_SPELLS, knownSpellsString});
-}
-
-CombatResult Server::handle_CL_CAST(User &user, const std::string &spellID,
-                                    bool castingFromItem) {
-  auto it = _spells.find(spellID);
-  if (it == _spells.end()) return FAIL;
-  const auto &spell = *it->second;
-
-  // Learned-spell check
-  if (!castingFromItem && !user.getClass().knowsSpell(spellID)) {
-    sendMessage(user.socket(), ERROR_DONT_KNOW_SPELL);
-    return FAIL;
-  }
-
-  // Energy check
-  if (user.energy() < spell.cost()) {
-    sendMessage(user.socket(), WARNING_NOT_ENOUGH_ENERGY);
-    return FAIL;
-  }
-
-  if (user.isSpellCoolingDown(spellID)) return FAIL;
-
-  auto outcome = user.castSpell(spell);
-
-  return outcome;
 }
 
 void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &questID,
