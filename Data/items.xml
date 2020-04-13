@@ -148,7 +148,7 @@
 	<!-- Hammers (slow) -->
 		<item id="copperHammer" name="Copper Hammer" gearSlot="6" sounds="metalTool" >
 			<tag name="hammering" />
-			<weapon damage="35" speed="3.7" />
+			<weapon damage="31" speed="3.7" />
 			<offset x="-8" y="-1" />
             <canBeRepaired cost="copperBar" tool="smelting2" />
 		</item>
