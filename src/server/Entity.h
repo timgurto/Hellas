@@ -245,7 +245,7 @@ class Entity {
   Energy _energy;
   ms_t _attackTimer{0};
   Entity *_target{nullptr};
-  ms_t _corpseTime;  // How much longer this entity should exist as a corpse.
+  ms_t _corpseTime{0};  // How much longer this entity should exist as a corpse.
   void startCorpseTimer();
   Buffs _buffs, _debuffs;
 
