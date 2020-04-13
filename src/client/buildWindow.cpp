@@ -2,6 +2,7 @@
 
 #include "Client.h"
 #include "Tooltip.h"
+#include "Unlocks.h"
 #include "ui/CheckBox.h"
 #include "ui/Label.h"
 #include "ui/Line.h"
@@ -35,9 +36,13 @@ void Client::populateBuildList() {
 
     Element *listElement = new Element({});
     _buildList->addChild(listElement);
+
     Label *label = new Label(
         {2, 0, listElement->width(), listElement->height()}, ot->name());
     listElement->addChild(label);
+    auto unlockInfo = Unlocks::getEffectInfo({Unlocks::CONSTRUCT, id});
+    if (unlockInfo.hasEffect) label->setColor(unlockInfo.color);
+
     listElement->setLeftMouseUpFunction(chooseConstruction);
     listElement->id(id);
     listElement->setTooltip(ot->constructionTooltip());

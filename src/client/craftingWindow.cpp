@@ -361,9 +361,14 @@ void Client::populateRecipesList(Element &e) {
     recipeElement->addChild(
         new Picture({1, 1, ICON_SIZE, ICON_SIZE}, product.icon()));
     static const px_t NAME_X = ICON_SIZE + CheckBox::GAP + 1;
-    recipeElement->addChild(new Label(
+
+    auto name = new Label(
         {NAME_X, 0, recipeElement->rect().w - NAME_X, ICON_SIZE + 2},
-        recipe.name(), Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
+        recipe.name(), Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED);
+    recipeElement->addChild(name);
+    auto unlockInfo = Unlocks::getEffectInfo({Unlocks::CRAFT, recipe.id()});
+    if (unlockInfo.hasEffect) name->setColor(unlockInfo.color);
+
     recipeElement->setLeftMouseUpFunction(onClickRecipe);
     recipeElement->id(recipe.id());
   }

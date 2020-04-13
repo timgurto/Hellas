@@ -801,16 +801,16 @@ void Client::handleBufferedMessages(const std::string &msg) {
             _debug << n << " new recipes";
           _debug << "!" << Log::endl;
         }
-        if (_recipeList != nullptr) {
-          _recipeList->markChanged();
-          populateFilters();
-        }
 
-        // For unlock info in tooltips
+        // For unlock info
         for (auto &pair : _items) pair.second.refreshTooltip();
         if (_detailsPane) refreshRecipeDetailsPane();
         for (const auto &ot : _objectTypes) ot->refreshConstructionTooltip();
         populateBuildList();
+        if (_recipeList) {
+          _recipeList->markChanged();
+          populateFilters();
+        }
 
         break;
       }
@@ -844,11 +844,15 @@ void Client::handleBufferedMessages(const std::string &msg) {
           _debug << "!" << Log::endl;
         }
 
-        // For unlock info in tooltips
+        // For unlock info
         for (auto &pair : _items) pair.second.refreshTooltip();
         if (_detailsPane) refreshRecipeDetailsPane();
         for (const auto &ot : _objectTypes) ot->refreshConstructionTooltip();
         populateBuildList();
+        if (_recipeList) {
+          _recipeList->markChanged();
+          populateFilters();
+        }
 
         break;
       }
