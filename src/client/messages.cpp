@@ -790,7 +790,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
           if (msgCode == SV_NEW_RECIPES) {
             auto message =
                 "You have learned how to craft a new recipe: " + it->name();
-            toast("hammer", message);
+            toast("leather", message);
           }
         }
         if (msgCode == SV_NEW_RECIPES) {
@@ -832,7 +832,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
           if (msgCode == SV_NEW_CONSTRUCTIONS) {
             auto message = "You have learned how to construct a new object: " +
                            cot->name();
-            toast("lumber", message);
+            toast("hammer", message);
           }
         }
         if (msgCode == SV_NEW_CONSTRUCTIONS) {
