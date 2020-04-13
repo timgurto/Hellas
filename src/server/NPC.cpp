@@ -63,6 +63,10 @@ bool NPC::canBeAttackedBy(const NPC &npc) const {
   return server.wars().isAtWar(thisOwner, otherOwner);
 }
 
+bool NPC::canAttack(const Entity &other) const {
+  return other.canBeAttackedBy(*this);
+}
+
 CombatResult NPC::generateHitAgainst(const Entity &target, CombatType type,
                                      SpellSchool school, px_t range) const {
   const auto MISS_CHANCE = Percentage{10};

@@ -356,10 +356,14 @@ CombatResult Entity::castSpell(const Spell &spell) {
     for (auto *user : nearbyUsers) targets.insert(user);
   } else {
     auto target = this->target();
-    if (target == nullptr)
+    if (!target)
       target = this;
     else if (spell.canCastOnlyOnSelf())
       target = this;
+
+    else if (canAttack(*_target) && !spell.canTarget(Spell::ENEMY))
+      target = this;
+
     targets.insert(target);
   }
 

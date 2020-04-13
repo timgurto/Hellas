@@ -213,6 +213,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   ms_t timeToRemainAsCorpse() const override { return 0; }
   bool canBeAttackedBy(const User &user) const override;
   bool canBeAttackedBy(const NPC &npc) const override;
+  bool canAttack(const Entity &other) const override;
   px_t attackRange() const override;
   CombatResult generateHitAgainst(const Entity &target, CombatType type,
                                   SpellSchool school,

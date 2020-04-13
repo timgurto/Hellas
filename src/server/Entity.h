@@ -93,6 +93,7 @@ class Entity {
   void setShorterCorpseTimerForFriendlyKill() { _corpseTime = 30000; }
   virtual bool canBeAttackedBy(const User &user) const = 0;
   virtual bool canBeAttackedBy(const NPC &npc) const { return false; }
+  virtual bool canAttack(const Entity &other) const { return false; }
   virtual px_t attackRange() const { return MELEE_RANGE; }
   virtual CombatResult generateHitAgainst(const Entity &target, CombatType type,
                                           SpellSchool school,

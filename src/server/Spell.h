@@ -29,7 +29,8 @@ class Spell {
   const ID &id() const { return _id; }
   void name(const Name &name) { _name = name; }
   const Name &name() const { return _name; }
-  void canTarget(TargetType type) { _validTargets[type] = true; }
+  void setCanTarget(TargetType type) { _validTargets[type] = true; }
+  bool canTarget(TargetType type) const { return _validTargets[type]; }
   void cost(Energy e) { _cost = e; }
   Energy cost() const { return _cost; }
   bool shouldPlayDefenseSound() const { return _effect.isAggressive(); }

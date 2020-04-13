@@ -928,6 +928,10 @@ bool User::canBeAttackedBy(const NPC &npc) const {
       {npc.owner().name, ownerBelligerentType}, {_name, Belligerent::PLAYER});
 }
 
+bool User::canAttack(const Entity &other) const {
+  return other.canBeAttackedBy(*this);
+}
+
 px_t User::attackRange() const {
   const auto weapon = _gear[Item::WEAPON_SLOT].first;
   if (!weapon.hasItem()) return Object::attackRange();

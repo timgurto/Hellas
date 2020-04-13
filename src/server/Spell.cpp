@@ -1,7 +1,8 @@
+#include "Spell.h"
+
 #include <string>
 
 #include "Server.h"
-#include "Spell.h"
 #include "User.h"
 
 CombatResult Spell::performAction(Entity &caster, Entity &target) const {

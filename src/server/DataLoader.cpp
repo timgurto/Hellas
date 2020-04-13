@@ -791,11 +791,11 @@ void DataLoader::loadSpells(XmlReader &xr) {
     if (validTargets) {
       auto val = 0;
       if (xr.findAttr(validTargets, "self", val) && val != 0)
-        newSpell->canTarget(Spell::SELF);
+        newSpell->setCanTarget(Spell::SELF);
       if (xr.findAttr(validTargets, "friendly", val) && val != 0)
-        newSpell->canTarget(Spell::FRIENDLY);
+        newSpell->setCanTarget(Spell::FRIENDLY);
       if (xr.findAttr(validTargets, "enemy", val) && val != 0)
-        newSpell->canTarget(Spell::ENEMY);
+        newSpell->setCanTarget(Spell::ENEMY);
     }
   }
 }

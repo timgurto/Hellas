@@ -514,3 +514,34 @@ TEST_CASE("Cast a spell from a stackable item") {
     }
   }
 }
+
+TEST_CASE("Target self if target is invalid") {
+  GIVEN("a friendly-fire fireball spell and an enemy") {
+    auto data = R"(
+      <spell id="fireball"  >
+        <targets friendly="1" self="1" />
+        <function name="doDirectDamage" i1="10" />
+      </spell>
+      <npcType id="distraction" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    user.getClass().teachSpell("fireball");
+    const auto &distraction = s.addNPC("distraction", {50, 50});
+
+    WHEN("a user targets the object") {
+      c.sendMessage(CL_TARGET_ENTITY, makeArgs(distraction.serial()));
+
+      AND_WHEN("he tries to cast the spell") {
+        c.sendMessage(CL_CAST, "fireball");
+
+        THEN("he himself has lost health") {
+          WAIT_UNTIL(user.health() < user.stats().maxHealth);
+        }
+      }
+    }
+  }
+}
+
