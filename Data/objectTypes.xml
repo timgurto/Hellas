@@ -381,6 +381,7 @@
     <material id="lumber" quantity="10" />
     <material id="rope" quantity="2" />
     <material id="tinTube" quantity="3" />
+    <material id="fat" />
     <tag name="woodTurning" />
     <unlockedBy recipe="tinTube" />
     <durability item="tinTube" quantity="2" chance="0.5" />
@@ -395,6 +396,7 @@
     <material id="rope" quantity="2" />
     <material id="tinTube" quantity="1" />
     <material id="rock" quantity="1" />
+    <material id="fat" />
     <tag name="grinding1" toolSpeed="1.15" />
     <tag name="grinding2" />
     <unlockedBy recipe="tinTube" chance="0.5" />
