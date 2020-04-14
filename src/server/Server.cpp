@@ -493,6 +493,25 @@ std::set<Entity *> Server::findEntitiesInArea(MapPoint loc,
   return entities;
 }
 
+Server::ContainerInfo Server::getContainer(User &user, Serial serial) {
+  if (serial.isInventory())
+    return {&user.inventory()};
+
+  else if (serial.isGear())
+    return {&user.gear()};
+
+  auto ret = ContainerInfo{};
+  ret.object = _entities.find<Object>(serial);
+
+  if (!ret.object->hasContainer()) return ERROR_NO_INVENTORY;
+  if (!isEntityInRange(user.socket(), user, ret.object)) return WARNING_TOO_FAR;
+  if (!ret.object->permissions.doesUserHaveAccess(user.name()))
+    return WARNING_NO_PERMISSION;
+
+  ret.container = &ret.object->container().raw();
+  return ret;
+}
+
 bool Server::isEntityInRange(const Socket &client, const User &user,
                              const Entity *ent,
                              bool suppressErrorMessages) const {

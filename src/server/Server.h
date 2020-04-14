@@ -90,6 +90,17 @@ class Server {
   const Entity *findEntityBySerial(Serial serial);
   const MapRect *findNPCTemplate(const std::string &templateID) const;
 
+  struct ContainerInfo {
+    ServerItem::vect_t *container{nullptr};
+    Object *object{nullptr};
+    MessageCode warning{NO_CODE};
+    ContainerInfo(ServerItem::vect_t *pContainer = nullptr)
+        : container(pContainer) {}
+    ContainerInfo(MessageCode code) : warning(code) {}
+    bool hasWarning() const { return warning != NO_CODE; }
+  };
+  ContainerInfo getContainer(User &user, Serial serial);
+
   // Checks whether an entity is within range of a user.  If not, a relevant
   // error message is sent to the client.
   bool isEntityInRange(const Socket &client, const User &user,
