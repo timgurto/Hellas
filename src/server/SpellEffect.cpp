@@ -81,6 +81,8 @@ CombatResult SpellEffect::doDirectDamageWithModifiedThreat(
 
 CombatResult SpellEffect::heal(const SpellEffect &effect, Entity &caster,
                                Entity &target) {
+  if (!target.canBeHealedBySpell()) return FAIL;
+
   auto outcome =
       caster.generateHitAgainst(target, HEAL, effect._school, effect._range);
 

@@ -40,6 +40,7 @@ class NPC : public Entity, public QuestNode {
   CombatResult generateHitAgainst(const Entity &target, CombatType type,
                                   SpellSchool school,
                                   px_t range) const override;
+  bool canBeHealedBySpell() const override { return true; }
   void scaleThreatAgainst(Entity &target, double multiplier) override;
   void makeAwareOf(Entity &entity);
   bool isAwareOf(Entity &entity) const;

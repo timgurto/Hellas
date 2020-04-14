@@ -100,6 +100,7 @@ class Entity {
                                           px_t range) const {
     return FAIL;
   }
+  virtual bool canBeHealedBySpell() const { return false; }
   static bool combatTypeCanHaveOutcome(CombatType type, CombatResult outcome,
                                        SpellSchool school, px_t range);
   virtual void sendGotHitMessageTo(const User &user) const;

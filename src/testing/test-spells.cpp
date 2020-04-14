@@ -545,3 +545,40 @@ TEST_CASE("Target self if target is invalid") {
   }
 }
 
+TEST_CASE("Objects can't be healed") {
+  GIVEN("an object, and a heal-all spell") {
+    auto data = R"(
+      <spell id="megaHeal" range="100" >
+        <targets friendly="1" self="1" enemy="1" />
+        <function name="heal" i1="99999" />
+      </spell>
+      <item id="sprocket" durability="10" />
+      <objectType id="machine">
+        <durability item="sprocket" quantity="10"/>
+      </objectType>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto &machine = s.addObject("machine", {10, 15});
+
+    AND_GIVEN("a user knows the spell") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      user.getClass().teachSpell("megaHeal");
+
+      AND_GIVEN("the object is damaged") {
+        machine.reduceHealth(1);
+
+        WHEN("the user tries to heal the object") {
+          c.sendMessage(CL_SELECT_ENTITY, makeArgs(machine.serial()));
+          c.sendMessage(CL_CAST, "megaHeal");
+
+          THEN("it is not at full health") {
+            REPEAT_FOR_MS(100);
+            CHECK(machine.health() < machine.stats().maxHealth);
+          }
+        }
+      }
+    }
+  }
+}

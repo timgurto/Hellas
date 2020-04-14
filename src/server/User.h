@@ -218,6 +218,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   CombatResult generateHitAgainst(const Entity &target, CombatType type,
                                   SpellSchool school,
                                   px_t range) const override;
+  bool canBeHealedBySpell() const override { return true; }
   void sendGotHitMessageTo(const User &user) const override;
   bool canBlock() const override;
   bool isAttackingTarget() const override { return _action == ATTACK; }
