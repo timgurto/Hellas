@@ -292,6 +292,8 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
 
   } while (false);
 
+  return;
+
   if (shouldPerformNormalSwap) {
     // Perform the swap
     ServerItem::Instance::swap(slotFrom, slotTo);

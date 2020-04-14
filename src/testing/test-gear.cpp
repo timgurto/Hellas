@@ -34,3 +34,30 @@ TEST_CASE("Damage is updated when a weapon depletes") {
     }
   }
 }
+
+TEST_CASE("Level requirements") {
+  GIVEN("gear that requires level 2") {
+    auto data = R"(
+      <item id="fancyHat" lvlReq="2" gearSlot="0" />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    AND_GIVEN("a level-1 user with the item") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      const auto &fancyHat = s.getFirstItem();
+      user.giveItem(&fancyHat);
+
+      WHEN("he tries to equip it") {
+        c.sendMessage(CL_SWAP_ITEMS,
+                      makeArgs(Serial::Inventory(), 0, Serial::Gear(), 0));
+
+        THEN("he is not wearing it") {
+          REPEAT_FOR_MS(100);
+          CHECK(!user.gear(0).first.hasItem());
+        }
+      }
+    }
+  }
+}
