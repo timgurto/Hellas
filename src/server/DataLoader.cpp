@@ -648,6 +648,8 @@ void DataLoader::loadItems(XmlReader &xr) {
     xr.findAttr(elem, "gearSlot", n);
     item.gearSlot(n);
 
+    if (xr.findAttr(elem, "lvlReq", n)) item.lvlReq(n);
+
     item.loadTagsFromXML(xr, elem);
 
     if (xr.findAttr(elem, "durability", n)) item.durability(n);

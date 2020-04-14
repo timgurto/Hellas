@@ -199,15 +199,16 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
     RETURN_WITH(ERROR_INVALID_SLOT)
 
   auto &slotFrom = (*from.container)[slot1];
-  if (!slotFrom.first.hasItem()) {
+  auto &fromItem = slotFrom.first;
+  if (!fromItem.hasItem()) {
     SERVER_ERROR("Attempting to move nonexistent item");
     return;
   }
 
   if (isConstructionMaterial) {
-    if (slotFrom.first.isBroken()) RETURN_WITH(WARNING_BROKEN_ITEM)
+    if (fromItem.isBroken()) RETURN_WITH(WARNING_BROKEN_ITEM)
 
-    const auto *materialType = slotFrom.first.type();
+    const auto *materialType = fromItem.type();
     size_t qtyInSlot = slotFrom.second,
            qtyNeeded = to.object->remainingMaterials()[materialType],
            qtyToTake = min(qtyInSlot, qtyNeeded);
@@ -230,7 +231,7 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
 
     // Remove items from user
     slotFrom.second -= qtyToTake;
-    if (slotFrom.second == 0) slotFrom.first = {};
+    if (slotFrom.second == 0) fromItem = {};
     sendInventoryMessage(user, slot1, obj1);
 
     // Check if this action completed construction
@@ -263,36 +264,37 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
   }
 
   auto &slotTo = (*to.container)[slot2];
+  auto &toItem = slotTo.first;
 
-  if (from.object && from.object->classTag() == 'n' && slotTo.first.hasItem() ||
-      to.object && to.object->classTag() == 'n' && slotFrom.first.hasItem())
+  if (from.object && from.object->classTag() == 'n' && toItem.hasItem() ||
+      to.object && to.object->classTag() == 'n' && fromItem.hasItem())
     RETURN_WITH(ERROR_NPC_SWAP)
 
   // Check gear-slot compatibility
-  if (obj1.isGear() && slotTo.first.hasItem() &&
-          slotTo.first.type()->gearSlot() != slot1 ||
-      obj2.isGear() && slotFrom.first.hasItem() &&
-          slotFrom.first.type()->gearSlot() != slot2)
+  if (obj1.isGear() && toItem.hasItem() && toItem.type()->gearSlot() != slot1 ||
+      obj2.isGear() && fromItem.hasItem() &&
+          fromItem.type()->gearSlot() != slot2)
     RETURN_WITH(ERROR_NOT_GEAR)
+
+  // Check gear level requirement
+  if (fromItem.type()->hasLvlReq()) return;
 
   // Combine stack, if identical types
   auto shouldPerformNormalSwap = true;
   do {
-    if (!(slotFrom.first.hasItem() && slotTo.first.hasItem())) break;
-    auto identicalItems = slotFrom.first.type() == slotTo.first.type();
+    if (!(fromItem.hasItem() && toItem.hasItem())) break;
+    auto identicalItems = fromItem.type() == toItem.type();
     if (!identicalItems) break;
-    auto roomInDest = slotTo.first.type()->stackSize() - slotTo.second;
+    auto roomInDest = toItem.type()->stackSize() - slotTo.second;
     if (roomInDest == 0) break;
 
     auto qtyToMove = min(roomInDest, slotFrom.second);
     slotFrom.second -= qtyToMove;
     slotTo.second += qtyToMove;
-    if (slotFrom.second == 0) slotFrom.first = {};
+    if (slotFrom.second == 0) fromItem = {};
     shouldPerformNormalSwap = false;
 
   } while (false);
-
-  return;
 
   if (shouldPerformNormalSwap) {
     // Perform the swap
@@ -310,15 +312,15 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
       auto itemHealth = Hitpoints{};
       if (obj1.isGear()) {
         gearSlot = slot1;
-        if (slotFrom.first.hasItem()) {
-          gearID = slotFrom.first.type()->id();
-          itemHealth = slotFrom.first.health();
+        if (fromItem.hasItem()) {
+          gearID = fromItem.type()->id();
+          itemHealth = fromItem.health();
         }
       } else {
         gearSlot = slot2;
-        if (slotTo.first.hasItem()) {
-          gearID = slotTo.first.type()->id();
-          itemHealth = slotTo.first.health();
+        if (toItem.hasItem()) {
+          gearID = toItem.type()->id();
+          itemHealth = toItem.health();
         }
       }
       for (const User *otherUser : findUsersInArea(user.location())) {
@@ -338,7 +340,7 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
 
   if (obj2.isInventory() || obj2.isGear()) {
     sendInventoryMessage(user, slot2, obj2);
-    ProgressLock::triggerUnlocks(user, ProgressLock::ITEM, slotTo.first.type());
+    ProgressLock::triggerUnlocks(user, ProgressLock::ITEM, toItem.type());
   } else
     to.object->tellRelevantUsersAboutInventorySlot(slot2);
 }

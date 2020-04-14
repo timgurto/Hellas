@@ -2,6 +2,29 @@
 #include "TestServer.h"
 #include "testing.h"
 
+TEST_CASE("Simple gear equip") {
+  GIVEN("a user with gear in his inventory") {
+    auto data = R"(
+      <item id="hat" gearSlot="0" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    const auto &hat = s.getFirstItem();
+    user.giveItem(&hat);
+
+    WHEN("he tries to equip it") {
+      c.sendMessage(CL_SWAP_ITEMS,
+                    makeArgs(Serial::Inventory(), 0, Serial::Gear(), 0));
+
+      THEN("he has an item in that gear slot") {
+        WAIT_UNTIL(user.gear(0).first.hasItem());
+      }
+    }
+  }
+}
+
 TEST_CASE("Damage is updated when a weapon depletes") {
   GIVEN("a consumable weapon that deals 100 damage") {
     auto data = R"(

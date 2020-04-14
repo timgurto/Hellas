@@ -36,6 +36,8 @@ class Item : public HasTags {
   void repairingCosts(const std::string &costID) { _repairInfo.cost = costID; }
   void repairingRequiresTool(const std::string &tag) { _repairInfo.tool = tag; }
   RepairInfo repairInfo() const { return _repairInfo; }
+  void lvlReq(Level req) { _lvlReq = req; }
+  bool hasLvlReq() const { return _lvlReq > 0; }
 
   bool operator<(const Item &rhs) const { return _id < rhs._id; }
 
@@ -48,6 +50,7 @@ class Item : public HasTags {
  protected:
   std::string _id;  // The no-space, unique name used in data files
   size_t _gearSlot;
+  Level _lvlReq{0};
   StatsMod _stats;  // If gear, the impact it has on its wearer's stats.
 
   RepairInfo _repairInfo;
