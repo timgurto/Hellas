@@ -348,14 +348,23 @@ void Client::populateRecipesList(Element &e) {
   ChoiceList &recipesList = dynamic_cast<ChoiceList &>(e);
   recipesList.clearChildren();
 
+  auto CompareName = [](const CRecipe *lhs, const CRecipe *rhs) {
+    if (lhs->name() != rhs->name()) return lhs->name() < rhs->name();
+    return lhs->id() < rhs->id();
+  };
+  auto knownRecipesSortedByName =
+      std::set<const CRecipe *, decltype(CompareName)>{CompareName};
   const std::set<std::string> knownRecipes = Client::_instance->_knownRecipes;
   for (const CRecipe &recipe : _instance->_recipes) {
-    if (knownRecipes.find(recipe.id()) ==
-        knownRecipes.end())  // User doesn't know it yet
-      continue;
-    if (!_instance->recipeMatchesFilters(recipe))  // Excluded by filters
-      continue;
-    const ClientItem &product = *toClientItem(recipe.product());
+    auto recipeIsKnown = knownRecipes.find(recipe.id()) != knownRecipes.end();
+    if (!recipeIsKnown) continue;
+    if (!_instance->recipeMatchesFilters(recipe)) continue;
+
+    knownRecipesSortedByName.insert(&recipe);
+  }
+
+  for (const auto *recipe : knownRecipesSortedByName) {
+    const ClientItem &product = *toClientItem(recipe->product());
     Element *const recipeElement = new Element({});
     recipesList.addChild(recipeElement);
     recipeElement->addChild(
@@ -364,13 +373,13 @@ void Client::populateRecipesList(Element &e) {
 
     auto name = new Label(
         {NAME_X, 0, recipeElement->rect().w - NAME_X, ICON_SIZE + 2},
-        recipe.name(), Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED);
+        recipe->name(), Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED);
     recipeElement->addChild(name);
-    auto unlockInfo = Unlocks::getEffectInfo({Unlocks::CRAFT, recipe.id()});
+    auto unlockInfo = Unlocks::getEffectInfo({Unlocks::CRAFT, recipe->id()});
     if (unlockInfo.hasEffect) name->setColor(unlockInfo.color);
 
     recipeElement->setLeftMouseUpFunction(onClickRecipe);
-    recipeElement->id(recipe.id());
+    recipeElement->id(recipe->id());
   }
   const std::string oldSelectedRecipe = recipesList.getSelected();
   recipesList.verifyBoxes();
