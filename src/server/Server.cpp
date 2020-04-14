@@ -503,12 +503,12 @@ Server::ContainerInfo Server::getContainer(User &user, Serial serial) {
   auto ret = ContainerInfo{};
   ret.object = _entities.find<Object>(serial);
 
-  if (!ret.object->hasContainer()) return ERROR_NO_INVENTORY;
   if (!isEntityInRange(user.socket(), user, ret.object)) return WARNING_TOO_FAR;
   if (!ret.object->permissions.doesUserHaveAccess(user.name()))
     return WARNING_NO_PERMISSION;
 
-  ret.container = &ret.object->container().raw();
+  if (ret.object->hasContainer())
+    ret.container = &ret.object->container().raw();
   return ret;
 }
 

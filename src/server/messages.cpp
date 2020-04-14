@@ -187,11 +187,15 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
   auto to = getContainer(user, obj2);
   if (to.hasWarning()) RETURN_WITH(from.warning)
 
-  bool isConstructionMaterial = false;
+  if (!from.container) RETURN_WITH(ERROR_NO_INVENTORY);
 
-  if (slot1 >= from.container->size() ||
-      !isConstructionMaterial && slot2 >= to.container->size() ||
-      isConstructionMaterial && slot2 > 0)
+  bool isConstructionMaterial = false;
+  if (to.object && to.object->isBeingBuilt() && slot2 == 0)
+    isConstructionMaterial = true;
+  if (!isConstructionMaterial && !to.container) RETURN_WITH(ERROR_NO_INVENTORY)
+
+  auto maxValidToSlot = isConstructionMaterial ? 0 : (to.container->size() - 1);
+  if (slot1 >= from.container->size() || slot2 > maxValidToSlot)
     RETURN_WITH(ERROR_INVALID_SLOT)
 
   auto &slotFrom = (*from.container)[slot1];
