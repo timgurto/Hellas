@@ -119,6 +119,7 @@
     <ClCompile Include="src\client\Connection.cpp" />
     <ClCompile Include="src\client\CQuest.cpp" />
     <ClCompile Include="src\client\craftingWindow.cpp" />
+    <ClCompile Include="src\client\CRecipe.cpp" />
     <ClCompile Include="src\client\drawing.cpp" />
     <ClCompile Include="src\client\HasSounds.cpp" />
     <ClCompile Include="src\client\HelpEntry.cpp" />

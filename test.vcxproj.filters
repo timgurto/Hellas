@@ -194,6 +194,7 @@
     <ClCompile Include="src\MessageParser.cpp" />
     <ClCompile Include="src\messageCodes.cpp" />
     <ClCompile Include="src\testing\test-movement.cpp" />
+    <ClCompile Include="src\client\CRecipe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
