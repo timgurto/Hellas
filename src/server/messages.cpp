@@ -26,12 +26,6 @@
     sendMessage(client, MSG); \
     return;                   \
   }
-// TODO: Remove
-#define BREAK_WITH(MSG)       \
-  {                           \
-    sendMessage(client, MSG); \
-    return;                   \
-  }
 
 HANDLE_MESSAGE(CL_REPORT_BUG) {
   std::string bugDescription;
@@ -180,6 +174,204 @@ HANDLE_MESSAGE(CL_LOCATION) {
   }
 }
 
+HANDLE_MESSAGE(CL_SWAP_ITEMS) {
+  Serial obj1, obj2;
+  size_t slot1, slot2;
+  READ_ARGS(obj1, slot1, obj2, slot2);
+
+  if (user.isStunned()) RETURN_WITH(WARNING_STUNNED)
+  user.cancelAction();
+
+  ServerItem::vect_t *containerFrom = nullptr, *containerTo = nullptr;
+  Object *pObj1 = nullptr, *pObj2 = nullptr;
+  bool breakMsg = false;
+  if (obj1.isInventory())
+    containerFrom = &user.inventory();
+  else if (obj1.isGear())
+    containerFrom = &user.gear();
+  else {
+    pObj1 = _entities.find<Object>(obj1);
+    if (!pObj1->hasContainer()) RETURN_WITH(ERROR_NO_INVENTORY)
+    if (!isEntityInRange(client, user, pObj1)) {
+      sendMessage(client, WARNING_TOO_FAR);
+      breakMsg = true;
+    }
+    if (!pObj1->permissions.doesUserHaveAccess(user.name())) {
+      sendMessage(client, WARNING_NO_PERMISSION);
+      breakMsg = true;
+    }
+    containerFrom = &pObj1->container().raw();
+  }
+  if (breakMsg) return;
+  bool isConstructionMaterial = false;
+
+  if (obj2.isInventory())
+    containerTo = &user.inventory();
+  else if (obj2.isGear())
+    containerTo = &user.gear();
+  else {
+    pObj2 = _entities.find<Object>(obj2);
+    if (pObj2 != nullptr && pObj2->isBeingBuilt() && slot2 == 0)
+      isConstructionMaterial = true;
+    if (!isConstructionMaterial && !pObj2->hasContainer())
+      RETURN_WITH(ERROR_NO_INVENTORY)
+    if (!isEntityInRange(client, user, pObj2)) {
+      sendMessage(client, WARNING_TOO_FAR);
+      breakMsg = true;
+    }
+    if (!pObj2->permissions.doesUserHaveAccess(user.name())) {
+      sendMessage(client, WARNING_NO_PERMISSION);
+      breakMsg = true;
+    }
+    containerTo = &pObj2->container().raw();
+  }
+  if (breakMsg) return;
+
+  if (slot1 >= containerFrom->size() ||
+      !isConstructionMaterial && slot2 >= containerTo->size() ||
+      isConstructionMaterial && slot2 > 0)
+    RETURN_WITH(ERROR_INVALID_SLOT)
+
+  auto &slotFrom = (*containerFrom)[slot1];
+  if (!slotFrom.first.hasItem()) {
+    SERVER_ERROR("Attempting to move nonexistent item");
+    return;
+  }
+
+  if (isConstructionMaterial) {
+    if (slotFrom.first.isBroken()) RETURN_WITH(WARNING_BROKEN_ITEM)
+
+    const auto *materialType = slotFrom.first.type();
+    size_t qtyInSlot = slotFrom.second,
+           qtyNeeded = pObj2->remainingMaterials()[materialType],
+           qtyToTake = min(qtyInSlot, qtyNeeded);
+
+    if (qtyNeeded == 0) RETURN_WITH(WARNING_WRONG_MATERIAL)
+
+    auto itemToReturn = materialType->returnsOnConstruction();
+    if (itemToReturn) {
+      auto itemsToRemove = ItemSet{};
+      itemsToRemove.add(materialType, qtyToTake);
+      if (!user.hasRoomToRemoveThenAdd(itemsToRemove, itemToReturn, 1))
+        RETURN_WITH(WARNING_INVENTORY_FULL)
+    }
+
+    // Remove from object requirements
+    pObj2->remainingMaterials().remove(materialType, qtyToTake);
+    for (const User *otherUser : findUsersInArea(user.location()))
+      if (pObj2->permissions.doesUserHaveAccess(otherUser->name()))
+        sendConstructionMaterialsMessage(*otherUser, *pObj2);
+
+    // Remove items from user
+    slotFrom.second -= qtyToTake;
+    if (slotFrom.second == 0) slotFrom.first = {};
+    sendInventoryMessage(user, slot1, obj1);
+
+    // Check if this action completed construction
+    if (!pObj2->isBeingBuilt()) {
+      // Send to all nearby players, since object appearance will
+      // change
+      for (const User *otherUser : findUsersInArea(user.location()))
+        sendConstructionMaterialsMessage(*otherUser, *pObj2);
+      for (const std::string &owner : pObj2->permissions.ownerAsUsernames()) {
+        auto pUser = getUserByName(owner);
+        if (pUser) sendConstructionMaterialsMessage(pUser->socket(), *pObj2);
+      }
+
+      // Trigger completing user's unlocks
+      if (user.knowsConstruction(pObj2->type()->id()))
+        ProgressLock::triggerUnlocks(user, ProgressLock::CONSTRUCTION,
+                                     pObj2->type());
+
+      // Update quest progress for completing user
+      user.addQuestProgress(Quest::Objective::CONSTRUCT, pObj2->type()->id());
+    }
+
+    // Return an item to the user, if required.
+    if (itemToReturn != nullptr) user.giveItem(itemToReturn);
+
+    return;
+  }
+
+  auto &slotTo = (*containerTo)[slot2];
+
+  if (pObj1 != nullptr && pObj1->classTag() == 'n' && slotTo.first.hasItem() ||
+      pObj2 != nullptr && pObj2->classTag() == 'n' && slotFrom.first.hasItem())
+    RETURN_WITH(ERROR_NPC_SWAP)
+
+  // Check gear-slot compatibility
+  if (obj1.isGear() && slotTo.first.hasItem() &&
+          slotTo.first.type()->gearSlot() != slot1 ||
+      obj2.isGear() && slotFrom.first.hasItem() &&
+          slotFrom.first.type()->gearSlot() != slot2)
+    RETURN_WITH(ERROR_NOT_GEAR)
+
+  // Combine stack, if identical types
+  auto shouldPerformNormalSwap = true;
+  do {
+    if (!(slotFrom.first.hasItem() && slotTo.first.hasItem())) break;
+    auto identicalItems = slotFrom.first.type() == slotTo.first.type();
+    if (!identicalItems) break;
+    auto roomInDest = slotTo.first.type()->stackSize() - slotTo.second;
+    if (roomInDest == 0) break;
+
+    auto qtyToMove = min(roomInDest, slotFrom.second);
+    slotFrom.second -= qtyToMove;
+    slotTo.second += qtyToMove;
+    if (slotFrom.second == 0) slotFrom.first = {};
+    shouldPerformNormalSwap = false;
+
+  } while (false);
+
+  if (shouldPerformNormalSwap) {
+    // Perform the swap
+    ServerItem::Instance::swap(slotFrom, slotTo);
+
+    // If gear was changed
+    if (obj1.isGear() || obj2.isGear()) {
+      // Update this player's stats
+      user.updateStats();
+
+      // Alert nearby users of the new equipment
+      // Assumption: gear can only match a single gear slot.
+      std::string gearID = "";
+      auto gearSlot = size_t{};
+      auto itemHealth = Hitpoints{};
+      if (obj1.isGear()) {
+        gearSlot = slot1;
+        if (slotFrom.first.hasItem()) {
+          gearID = slotFrom.first.type()->id();
+          itemHealth = slotFrom.first.health();
+        }
+      } else {
+        gearSlot = slot2;
+        if (slotTo.first.hasItem()) {
+          gearID = slotTo.first.type()->id();
+          itemHealth = slotTo.first.health();
+        }
+      }
+      for (const User *otherUser : findUsersInArea(user.location())) {
+        if (otherUser == &user) continue;
+        sendMessage(
+            otherUser->socket(),
+            {SV_GEAR, makeArgs(user.name(), gearSlot, gearID, itemHealth)});
+      }
+    }
+  }
+
+  // Alert relevant users
+  if (obj1.isInventory() || obj1.isGear())
+    sendInventoryMessage(user, slot1, obj1);
+  else
+    pObj1->tellRelevantUsersAboutInventorySlot(slot1);
+
+  if (obj2.isInventory() || obj2.isGear()) {
+    sendInventoryMessage(user, slot2, obj2);
+    ProgressLock::triggerUnlocks(user, ProgressLock::ITEM, slotTo.first.type());
+  } else
+    pObj2->tellRelevantUsersAboutInventorySlot(slot2);
+}
+
 HANDLE_MESSAGE(CL_CAST) {
   auto spellID = ""s;
   READ_ARGS(spellID);
@@ -304,6 +496,12 @@ HANDLE_MESSAGE(CL_ORDER_NPC_TO_FOLLOW) {
   case MESSAGE_CODE:                                    \
     handleMessage<MESSAGE_CODE>(client, *user, parser); \
     break;
+// TODO: Remove
+#define BREAK_WITH(MSG)       \
+  {                           \
+    sendMessage(client, MSG); \
+    return;                   \
+  }
 
 void Server::handleBufferedMessages(const Socket &client,
                                     const std::string &messages) {
@@ -338,6 +536,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_REQUEST_TIME_PLAYED)
       SEND_MESSAGE_TO_HANDLER(CL_SKIP_TUTORIAL)
       SEND_MESSAGE_TO_HANDLER(CL_LOCATION)
+      SEND_MESSAGE_TO_HANDLER(CL_SWAP_ITEMS)
       SEND_MESSAGE_TO_HANDLER(CL_CAST)
       SEND_MESSAGE_TO_HANDLER(CL_CAST_ITEM)
       SEND_MESSAGE_TO_HANDLER(CL_TAME_NPC)
@@ -620,211 +819,6 @@ void Server::handleBufferedMessages(const Socket &client,
           else
             pObj->tellRelevantUsersAboutInventorySlot(slot);
         }
-        break;
-      }
-
-      case CL_SWAP_ITEMS: {
-        Serial obj1, obj2;
-        size_t slot1, slot2;
-        iss >> obj1 >> del >> slot1 >> del >> obj2 >> del >> slot2 >> del;
-        if (del != MSG_END) return;
-        if (user->isStunned()) BREAK_WITH(WARNING_STUNNED)
-        user->cancelAction();
-        ServerItem::vect_t *containerFrom = nullptr, *containerTo = nullptr;
-        Object *pObj1 = nullptr, *pObj2 = nullptr;
-        bool breakMsg = false;
-        if (obj1.isInventory())
-          containerFrom = &user->inventory();
-        else if (obj1.isGear())
-          containerFrom = &user->gear();
-        else {
-          pObj1 = _entities.find<Object>(obj1);
-          if (!pObj1->hasContainer()) BREAK_WITH(ERROR_NO_INVENTORY)
-          if (!isEntityInRange(client, *user, pObj1)) {
-            sendMessage(client, WARNING_TOO_FAR);
-            breakMsg = true;
-          }
-          if (!pObj1->permissions.doesUserHaveAccess(user->name())) {
-            sendMessage(client, WARNING_NO_PERMISSION);
-            breakMsg = true;
-          }
-          containerFrom = &pObj1->container().raw();
-        }
-        if (breakMsg) break;
-        bool isConstructionMaterial = false;
-
-        if (obj2.isInventory())
-          containerTo = &user->inventory();
-        else if (obj2.isGear())
-          containerTo = &user->gear();
-        else {
-          pObj2 = _entities.find<Object>(obj2);
-          if (pObj2 != nullptr && pObj2->isBeingBuilt() && slot2 == 0)
-            isConstructionMaterial = true;
-          if (!isConstructionMaterial && !pObj2->hasContainer())
-            BREAK_WITH(ERROR_NO_INVENTORY)
-          if (!isEntityInRange(client, *user, pObj2)) {
-            sendMessage(client, WARNING_TOO_FAR);
-            breakMsg = true;
-          }
-          if (!pObj2->permissions.doesUserHaveAccess(user->name())) {
-            sendMessage(client, WARNING_NO_PERMISSION);
-            breakMsg = true;
-          }
-          containerTo = &pObj2->container().raw();
-        }
-        if (breakMsg) break;
-
-        if (slot1 >= containerFrom->size() ||
-            !isConstructionMaterial && slot2 >= containerTo->size() ||
-            isConstructionMaterial && slot2 > 0)
-          BREAK_WITH(ERROR_INVALID_SLOT)
-
-        auto &slotFrom = (*containerFrom)[slot1];
-        if (!slotFrom.first.hasItem()) {
-          SERVER_ERROR("Attempting to move nonexistent item");
-          break;
-        }
-
-        if (isConstructionMaterial) {
-          if (slotFrom.first.isBroken()) BREAK_WITH(WARNING_BROKEN_ITEM)
-
-          const auto *materialType = slotFrom.first.type();
-          size_t qtyInSlot = slotFrom.second,
-                 qtyNeeded = pObj2->remainingMaterials()[materialType],
-                 qtyToTake = min(qtyInSlot, qtyNeeded);
-
-          if (qtyNeeded == 0) BREAK_WITH(WARNING_WRONG_MATERIAL)
-
-          auto itemToReturn = materialType->returnsOnConstruction();
-          if (itemToReturn) {
-            auto itemsToRemove = ItemSet{};
-            itemsToRemove.add(materialType, qtyToTake);
-            if (!user->hasRoomToRemoveThenAdd(itemsToRemove, itemToReturn, 1))
-              BREAK_WITH(WARNING_INVENTORY_FULL)
-          }
-
-          // Remove from object requirements
-          pObj2->remainingMaterials().remove(materialType, qtyToTake);
-          for (const User *otherUser : findUsersInArea(user->location()))
-            if (pObj2->permissions.doesUserHaveAccess(otherUser->name()))
-              sendConstructionMaterialsMessage(*otherUser, *pObj2);
-
-          // Remove items from user
-          slotFrom.second -= qtyToTake;
-          if (slotFrom.second == 0) slotFrom.first = {};
-          sendInventoryMessage(*user, slot1, obj1);
-
-          // Check if this action completed construction
-          if (!pObj2->isBeingBuilt()) {
-            // Send to all nearby players, since object appearance will
-            // change
-            for (const User *otherUser : findUsersInArea(user->location()))
-              sendConstructionMaterialsMessage(*otherUser, *pObj2);
-            for (const std::string &owner :
-                 pObj2->permissions.ownerAsUsernames()) {
-              auto pUser = getUserByName(owner);
-              if (pUser)
-                sendConstructionMaterialsMessage(pUser->socket(), *pObj2);
-            }
-
-            // Trigger completing user's unlocks
-            if (user->knowsConstruction(pObj2->type()->id()))
-              ProgressLock::triggerUnlocks(*user, ProgressLock::CONSTRUCTION,
-                                           pObj2->type());
-
-            // Update quest progress for completing user
-            user->addQuestProgress(Quest::Objective::CONSTRUCT,
-                                   pObj2->type()->id());
-          }
-
-          // Return an item to the user, if required.
-          if (itemToReturn != nullptr) user->giveItem(itemToReturn);
-
-          break;
-        }
-
-        auto &slotTo = (*containerTo)[slot2];
-
-        if (pObj1 != nullptr && pObj1->classTag() == 'n' &&
-                slotTo.first.hasItem() ||
-            pObj2 != nullptr && pObj2->classTag() == 'n' &&
-                slotFrom.first.hasItem())
-          BREAK_WITH(ERROR_NPC_SWAP)
-
-        // Check gear-slot compatibility
-        if (obj1.isGear() && slotTo.first.hasItem() &&
-                slotTo.first.type()->gearSlot() != slot1 ||
-            obj2.isGear() && slotFrom.first.hasItem() &&
-                slotFrom.first.type()->gearSlot() != slot2)
-          BREAK_WITH(ERROR_NOT_GEAR)
-
-        // Combine stack, if identical types
-        auto shouldPerformNormalSwap = true;
-        do {
-          if (!(slotFrom.first.hasItem() && slotTo.first.hasItem())) break;
-          auto identicalItems = slotFrom.first.type() == slotTo.first.type();
-          if (!identicalItems) break;
-          auto roomInDest = slotTo.first.type()->stackSize() - slotTo.second;
-          if (roomInDest == 0) break;
-
-          auto qtyToMove = min(roomInDest, slotFrom.second);
-          slotFrom.second -= qtyToMove;
-          slotTo.second += qtyToMove;
-          if (slotFrom.second == 0) slotFrom.first = {};
-          shouldPerformNormalSwap = false;
-
-        } while (false);
-
-        if (shouldPerformNormalSwap) {
-          // Perform the swap
-          ServerItem::Instance::swap(slotFrom, slotTo);
-
-          // If gear was changed
-          if (obj1.isGear() || obj2.isGear()) {
-            // Update this player's stats
-            user->updateStats();
-
-            // Alert nearby users of the new equipment
-            // Assumption: gear can only match a single gear slot.
-            std::string gearID = "";
-            auto gearSlot = size_t{};
-            auto itemHealth = Hitpoints{};
-            if (obj1.isGear()) {
-              gearSlot = slot1;
-              if (slotFrom.first.hasItem()) {
-                gearID = slotFrom.first.type()->id();
-                itemHealth = slotFrom.first.health();
-              }
-            } else {
-              gearSlot = slot2;
-              if (slotTo.first.hasItem()) {
-                gearID = slotTo.first.type()->id();
-                itemHealth = slotTo.first.health();
-              }
-            }
-            for (const User *otherUser : findUsersInArea(user->location())) {
-              if (otherUser == user) continue;
-              sendMessage(otherUser->socket(),
-                          {SV_GEAR, makeArgs(user->name(), gearSlot, gearID,
-                                             itemHealth)});
-            }
-          }
-        }
-
-        // Alert relevant users
-        if (obj1.isInventory() || obj1.isGear())
-          sendInventoryMessage(*user, slot1, obj1);
-        else
-          pObj1->tellRelevantUsersAboutInventorySlot(slot1);
-
-        if (obj2.isInventory() || obj2.isGear()) {
-          sendInventoryMessage(*user, slot2, obj2);
-          ProgressLock::triggerUnlocks(*user, ProgressLock::ITEM,
-                                       slotTo.first.type());
-        } else
-          pObj2->tellRelevantUsersAboutInventorySlot(slot2);
-
         break;
       }
 
