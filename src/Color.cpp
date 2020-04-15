@@ -48,6 +48,7 @@ const Color Color::TOOLTIP_BODY{0xa7, 0xa7, 0xa7};
 const Color Color::TOOLTIP_TAG = GREEN * .7 + WHITE * .3;
 const Color Color::TOOLTIP_INSTRUCTION = YELLOW * .8 + RED * .2;
 const Color Color::TOOLTIP_FLAVOUR = WHITE * .5;
+const Color Color::TOOLTIP_BAD = RED;
 
 const Color Color::ITEM_NAME = WHITE;
 

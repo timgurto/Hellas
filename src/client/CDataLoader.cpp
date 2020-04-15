@@ -683,6 +683,9 @@ void CDataLoader::loadItems(XmlReader &xr) {
     xr.findAttr(elem, "gearSlot", gearSlot);
     item.gearSlot(gearSlot);
 
+    auto lvlReq = Level{};
+    if (xr.findAttr(elem, "lvlReq", lvlReq)) item.lvlReq(lvlReq);
+
     if (xr.findAttr(elem, "constructs", s)) {
       // Create dummy ObjectType if necessary
       auto pair = _client._objectTypes.insert(new ClientObjectType(s));

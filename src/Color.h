@@ -53,6 +53,7 @@ class Color {
   static const Color TOOLTIP_TAG;
   static const Color TOOLTIP_INSTRUCTION;
   static const Color TOOLTIP_FLAVOUR;
+  static const Color TOOLTIP_BAD;
 
   static const Color ITEM_NAME;
 

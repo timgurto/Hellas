@@ -135,5 +135,3 @@ TEST_CASE("Level requirements") {
     }
   }
 }
-
-// Tool usage?

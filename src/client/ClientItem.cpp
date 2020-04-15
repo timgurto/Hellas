@@ -75,6 +75,13 @@ const Tooltip &ClientItem::tooltip() const {
     tooltip.setColor(Color::TOOLTIP_BODY);
     tooltip.addLine("Gear: "s + Client::GEAR_SLOT_NAMES[_gearSlot]);
 
+    if (hasLvlReq()) {
+      if (client.character().level() < lvlReq())
+        tooltip.setColor(Color::TOOLTIP_BAD);
+      tooltip.addLine("Requires level "s + toString(lvlReq()));
+    }
+
+    tooltip.setColor(Color::TOOLTIP_BODY);
     tooltip.addLines(_stats.toStrings());
 
     if (weaponRange() > Podes::MELEE_RANGE.toPixels())
