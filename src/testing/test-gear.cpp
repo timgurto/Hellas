@@ -81,6 +81,20 @@ TEST_CASE("Level requirements") {
           CHECK(!user.gear(0).first.hasItem());
         }
       }
+
+      WHEN("he tries to move it to inventory slot 1") {
+        c.sendMessage(CL_SWAP_ITEMS,
+                      makeArgs(Serial::Inventory(), 0, Serial::Inventory(), 1));
+
+        THEN("inventory slot 1 has an item") {
+          WAIT_UNTIL(user.inventory(1).first.hasItem());
+        }
+      }
     }
   }
 }
+
+// Swap within a container (not equipping)
+// User is high enough
+// Tool usage?
+// Higher than 2

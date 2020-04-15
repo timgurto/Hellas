@@ -271,13 +271,15 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
     RETURN_WITH(ERROR_NPC_SWAP)
 
   // Check gear-slot compatibility
-  if (obj1.isGear() && toItem.hasItem() && toItem.type()->gearSlot() != slot1 ||
-      obj2.isGear() && fromItem.hasItem() &&
-          fromItem.type()->gearSlot() != slot2)
+  if (obj1.isGear() && toItem.hasItem() && toItem.type()->gearSlot() != slot1)
+    RETURN_WITH(ERROR_NOT_GEAR)
+  if (obj2.isGear() && fromItem.hasItem() &&
+      fromItem.type()->gearSlot() != slot2)
     RETURN_WITH(ERROR_NOT_GEAR)
 
   // Check gear level requirement
-  if (fromItem.type()->hasLvlReq()) return;
+  auto equippingGear = obj2.isGear();
+  if (equippingGear && fromItem.type()->hasLvlReq()) return;
 
   // Combine stack, if identical types
   auto shouldPerformNormalSwap = true;
