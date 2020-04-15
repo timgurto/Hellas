@@ -1297,8 +1297,8 @@ void User::updateStats() {
   for (size_t i = 0; i != GEAR_SLOTS; ++i) {
     const auto &item = _gear[i].first;
     if (!item.hasItem()) continue;
-
     if (item.isBroken()) continue;
+    if (!canEquip(*item.type())) continue;
 
     newStats &= item.type()->stats();
   }

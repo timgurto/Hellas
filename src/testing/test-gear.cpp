@@ -135,3 +135,30 @@ TEST_CASE("Level requirements") {
     }
   }
 }
+
+TEST_CASE("Level requirements enforced on already-equipped gear") {
+  GIVEN("a level-2 hat that gives 1000 health") {
+    auto data = R"(
+      <item id="hat" lvlReq="2" gearSlot="0" >
+        <stats health="1000" />
+      </item>
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    AND_GIVEN("a level-1 user wearing one") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      const auto &hat = s.findItem("hat");
+
+      user.gear(0).first = {
+          &hat, ServerItem::Instance::ReportingInfo::UserGear(&user, 0)};
+      user.gear(0).second = 1;
+      user.updateStats();
+
+      THEN("his health is less than 1000") {
+        CHECK(user.stats().maxHealth < 1000);
+      }
+    }
+  }
+}
