@@ -59,17 +59,18 @@ TEST_CASE("Damage is updated when a weapon depletes") {
 }
 
 TEST_CASE("Level requirements") {
-  GIVEN("gear that requires level 2") {
+  GIVEN("a fancy hat that requires level 2, and a plain hat with no req") {
     auto data = R"(
+      <item id="plainHat" gearSlot="0" />
       <item id="fancyHat" lvlReq="2" gearSlot="0" />
     )";
     auto s = TestServer::WithDataString(data);
 
-    AND_GIVEN("a level-1 user with the item") {
+    AND_GIVEN("a level-1 user with a fancy hat") {
       auto c = TestClient::WithDataString(data);
       s.waitForUsers(1);
       auto &user = s.getFirstUser();
-      const auto &fancyHat = s.getFirstItem();
+      const auto &fancyHat = s.findItem("fancyHat");
       user.giveItem(&fancyHat);
 
       WHEN("he tries to equip it") {
@@ -88,6 +89,23 @@ TEST_CASE("Level requirements") {
 
         THEN("inventory slot 1 has an item") {
           WAIT_UNTIL(user.inventory(1).first.hasItem());
+        }
+      }
+
+      AND_GIVEN("he is already wearing a plain hat") {
+        const auto &plainHat = s.findItem("plainHat");
+        user.gear(0).first = {
+            &plainHat, ServerItem::Instance::ReportingInfo::UserGear(&user, 0)};
+        user.gear(0).second = 1;
+
+        WHEN("he tries to swap it for the fancy hat") {
+          c.sendMessage(CL_SWAP_ITEMS,
+                        makeArgs(Serial::Gear(), 0, Serial::Inventory(), 0));
+
+          THEN("he is still wearing the plain hat") {
+            REPEAT_FOR_MS(100);
+            CHECK(user.gear(0).first.type()->id() == "plainHat");
+          }
         }
       }
     }

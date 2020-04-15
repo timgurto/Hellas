@@ -278,8 +278,8 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
     RETURN_WITH(ERROR_NOT_GEAR)
 
   // Check gear level requirement
-  auto equippingGear = obj2.isGear();
-  if (equippingGear && fromItem.type()->hasLvlReq()) return;
+  if (obj2.isGear() && fromItem.type()->hasLvlReq()) return;
+  if (obj1.isGear() && toItem.type()->hasLvlReq()) return;
 
   // Combine stack, if identical types
   auto shouldPerformNormalSwap = true;
