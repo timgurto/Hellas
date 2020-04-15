@@ -17,7 +17,7 @@
         <unlockedBy recipe="waterWand" chance="0.1" />
         <unlockedBy recipe="boneDust" chance="0.02" />
     </recipe>
-<item id="earthWand" name="Wand of Earth" gearSlot="6" >
+<item id="earthWand" name="Wand of Earth" gearSlot="6" lvlReq="6" >
     <tag name="wand" />
     <weapon damage="4" speed="1.8" range="25" school="earth" consumes="boneDust" projectile="earthball" />
     <offset x="-5" y="-2" />
@@ -34,7 +34,7 @@
         <unlockedBy recipe="waterWand" chance="0.1" />
         <unlockedBy recipe="boneDust" chance="0.02" />
     </recipe>
-<item id="fireWand" name="Wand of Fire" gearSlot="6" >
+<item id="fireWand" name="Wand of Fire" gearSlot="6" lvlReq="6" >
     <tag name="wand" />
     <weapon damage="4" speed="1.8" range="25" school="fire" consumes="boneDust" projectile="fireball" />
     <offset x="-5" y="-2" />
@@ -68,7 +68,7 @@
         <unlockedBy recipe="fireWand" chance="0.1" />
         <unlockedBy recipe="boneDust" chance="0.02" />
     </recipe>
-<item id="airStaff" name="Rod of Air" gearSlot="6" >
+<item id="airStaff" name="Rod of Air" gearSlot="6" lvlReq="11" >
     <weapon damage="7" speed="2.1" range="25" school="air" consumes="airDust" projectile="airball" />
     <offset x="-5" y="-20" />
     <particles profile="airSmall" x="-4" y="-19" />
@@ -86,7 +86,7 @@
         <unlockedBy recipe="fireStaff" chance="0.1" />
         <unlockedBy recipe="waterStaff" chance="0.1" />
     </recipe>
-<item id="earthStaff" name="Rod of Earth" gearSlot="6" >
+<item id="earthStaff" name="Rod of Earth" gearSlot="6" lvlReq="16" >
     <weapon damage="9" speed="2.1" range="25" school="earth" consumes="earthDust" projectile="earthball" />
     <offset x="-5" y="-20" />
     <particles profile="earthSmall" x="-4" y="-19" />
@@ -104,7 +104,7 @@
         <unlockedBy recipe="fireStaff" chance="0.1" />
         <unlockedBy recipe="waterStaff" chance="0.1" />
     </recipe>
-<item id="fireStaff" name="Rod of Fire" gearSlot="6" >
+<item id="fireStaff" name="Rod of Fire" gearSlot="6" lvlReq="16" >
     <weapon damage="9" speed="2.1" range="25" school="fire" consumes="fireDust" projectile="fireball" />
     <offset x="-5" y="-20" />
     <particles profile="fireSmall" x="-4" y="-19" />
@@ -122,7 +122,7 @@
         <unlockedBy recipe="earthStaff" chance="0.1" />
         <unlockedBy recipe="waterStaff" chance="0.1" />
     </recipe>
-<item id="waterStaff" name="Rod of Water" gearSlot="6" >
+<item id="waterStaff" name="Rod of Water" gearSlot="6" lvlReq="11" >
     <weapon damage="7" speed="2.1" range="25" school="water" consumes="waterDust" projectile="waterball" />
     <offset x="-5" y="-20" />
     <particles profile="waterSmall" x="-4" y="-19" />

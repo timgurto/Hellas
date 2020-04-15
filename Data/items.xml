@@ -76,7 +76,7 @@
 
 
 <item id="bone" name="Bone" stackSize="10" sounds="bone" />
-<item id="boneClub" name="Bone Club" gearSlot="6" iconFile="bone" sounds="bone" >
+<item id="boneClub" name="Bone Club" gearSlot="6" iconFile="bone" sounds="bone" lvlReq="2" >
     <weapon damage="6" speed="3.2" />
 	<offset x="-6" y="-15" />
 </item>
@@ -109,7 +109,7 @@
 			<offset x="-4" y="-1" />
 			<weapon damage="2" speed="1.4" />
 		</item>
-		<item id="tinKnife" name="Tin Knife" gearSlot="6" >
+		<item id="tinKnife" name="Tin Knife" gearSlot="6" lvlReq="10" >
 			<tag name="carving" toolSpeed="1.1" />
 			<tag name="harvesting" toolSpeed="1.1" />
 			<tag name="shearing" />
@@ -117,7 +117,7 @@
 			<weapon damage="5" speed="1.3" />
             <canBeRepaired cost="tinBar" tool="smelting1" />
 		</item>
-		<item id="copperKnife" name="Copper Knife" gearSlot="6" >
+		<item id="copperKnife" name="Copper Knife" gearSlot="6" lvlReq="25" >
 			<tag name="carving" toolSpeed="1.2" />
 			<tag name="harvesting" toolSpeed="1.2" />
 			<tag name="shearing" toolSpeed="1.1" />
@@ -132,13 +132,13 @@
 			<weapon damage="2" speed="2.1" />
 			<offset x="-5" y="1" />
 		</item>
-		<item id="tinAxe" name="Tin Axe" gearSlot="6" >
+		<item id="tinAxe" name="Tin Axe" gearSlot="6" lvlReq="10" >
 			<tag name="woodcutting" toolSpeed="1.1" />
 			<weapon damage="8" speed="2.1" />
 			<offset x="-5" y="1" />
             <canBeRepaired cost="tinBar" tool="smelting1" />
 		</item>
-		<item id="copperAxe" name="Copper Axe" gearSlot="6" sounds="metalTool" >
+		<item id="copperAxe" name="Copper Axe" gearSlot="6" sounds="metalTool" lvlReq="24" >
 			<tag name="woodcutting" toolSpeed="1.2" />
 			<weapon damage="17" speed="2.1" />
 			<offset x="-5" y="1" />
@@ -146,7 +146,7 @@
 		</item>
 
 	<!-- Hammers (slow) -->
-		<item id="copperHammer" name="Copper Hammer" gearSlot="6" sounds="metalTool" >
+		<item id="copperHammer" name="Copper Hammer" gearSlot="6" sounds="metalTool" lvlReq="25" >
 			<tag name="hammering" />
 			<weapon damage="31" speed="3.7" />
 			<offset x="-8" y="-1" />
@@ -160,14 +160,14 @@
 			<offset x="-6" y="-20" />
             <tag name="fishing" />
 		</item>
-		<item id="tinSpear" name="Light Spear" gearSlot="6" sounds="spear" >
+		<item id="tinSpear" name="Light Spear" gearSlot="6" sounds="spear" lvlReq="14" >
 			<stats crit="1" />
             <weapon damage="7" speed="1.9" />
 			<offset x="-5" y="-21" />
             <canBeRepaired cost="tinBar" tool="smelting1" />
             <tag name="fishing" toolSpeed="1.1" />
 		</item>
-		<item id="copperSpear" name="Spear" gearSlot="6" >
+		<item id="copperSpear" name="Spear" gearSlot="6" lvlReq="24" >
 			<stats crit="2" />
             <weapon damage="9" speed="1.8" />
 			<offset x="-5" y="-21" />
@@ -176,7 +176,7 @@
 		</item>
 
 	<!-- Swords (hit) -->
-		<item id="copperSword" name="Short Sword" gearSlot="6" >
+		<item id="copperSword" name="Short Sword" gearSlot="6" lvlReq="30" >
 			<stats hit="1" />
             <weapon damage="13" speed="1.8" />
             <offset x="-6" y="-8" />
@@ -186,30 +186,30 @@
     <!-- Ranged -->
         <!-- Sling -->
             <item id="rock" name="Rock" stackSize="100" durability="6" gearSlot="6" sounds="rock" >
-                <weapon damage="2" speed="2.1" range="25" consumes="rock" projectile="rock" />
+                <weapon damage="2" speed="2.1" range="25" consumes="rock" projectile="rock" lvlReq="2" />
                 <offset x="-3" />
             </item>
-            <item id="sling" name="Sling" gearSlot="6" >
+            <item id="sling" name="Sling" gearSlot="6" lvlReq="9" >
                 <weapon damage="4" speed="2" range="25" consumes="smoothRock" projectile="smoothRock" />
                 <offset x="-7" y="0" />
                 <canBeRepaired cost="leather" />
             </item>
             
         <!-- Bow (hit) -->
-            <item id="bow" name="Bow" gearSlot="6" sounds="bow" >
+            <item id="bow" name="Bow" gearSlot="6" sounds="bow" lvlReq="12" >
                 <weapon damage="2" speed="1.9" range="25" consumes="woodArrow" projectile="arrow" />
                 <stats hit="1"/>
                 <offset x="-7" y="-3" />
                 <canBeRepaired cost="lumber" />
             </item>
         <!-- Javelin (crit) -->
-            <item id="tinJavelin" name="Light Javelin" stackSize="100" gearSlot="6" sounds="spear" >
+            <item id="tinJavelin" name="Light Javelin" stackSize="100" gearSlot="6" sounds="spear" lvlReq="12" >
                 <weapon damage="2" speed="1.9" range="25" consumes="tinJavelin" projectile="tinJavelin" />
                 <stats crit="1"/>
                 <offset x="-5" y="-21" />
                 <canBeRepaired cost="tinBar" tool="smelting1" />
             </item>
-            <item id="copperJavelin" name="Javelin" stackSize="100" gearSlot="6" sounds="spear" >
+            <item id="copperJavelin" name="Javelin" stackSize="100" gearSlot="6" sounds="spear" lvlReq="26" >
                 <weapon damage="4" speed="2" range="25" consumes="copperJavelin" />
                 <stats crit="2"/>
                 <offset x="-5" y="-21" />
@@ -229,21 +229,21 @@
 <!-- Armor -->
     <!-- Head -->
         <!-- Hood (Energy) -->
-            <item id="woolHood" name="Woolen Hood" gearSlot="0" >
+            <item id="woolHood" name="Woolen Hood" gearSlot="0" lvlReq="20" >
                 <stats energy="30" />
                 <offset x="-4" y="-4" />
                 <canBeRepaired cost="woolCloth" tool="sewing" />
             </item>
             
         <!-- Leather (Dodge) -->
-            <item id="skullCap" name="Skull Cap" gearSlot="0" sounds="leather" >
+            <item id="skullCap" name="Skull Cap" gearSlot="0" sounds="leather" lvlReq="12" >
                 <stats armor="1" dodge="1" />
                 <offset x="-3" y="-4" />
                 <canBeRepaired cost="leather" tool="sewing" />
             </item>
         
         <!-- Helmet (Health) -->
-            <item id="copperHelmet" name="Copper Helmet" gearSlot="0" >
+            <item id="copperHelmet" name="Copper Helmet" gearSlot="0" lvlReq="30" >
                 <stats armor="3" health="15" />
                 <offset x="-3" y="-5" />
                 <canBeRepaired cost="copperBar" tool="smelting2" />
@@ -251,12 +251,12 @@
 
     <!-- Shoulders -->
         <!-- Cloak (EPS) -->
-            <item id="linenCloak" name="Linen Cloak" gearSlot="3" sounds="fabric" >
+            <item id="linenCloak" name="Linen Cloak" gearSlot="3" sounds="fabric" lvlReq="5" >
                 <stats eps="1" />
                 <offset x="-4" y="-1" />
                 <canBeRepaired cost="linenCloth" tool="sewing" />
             </item>
-            <item id="woolCloak" name="Woolen Cloak" gearSlot="3" sounds="fabric" >
+            <item id="woolCloak" name="Woolen Cloak" gearSlot="3" sounds="fabric" lvlReq="26" >
                 <stats armor="1" eps="2" />
                 <offset x="-4" y="-1" />
                 <canBeRepaired cost="woolCloth" tool="sewing" />
@@ -270,62 +270,62 @@
 
     <!-- Body -->
         <!-- Lamellar (health) -->
-            <item id="tinLamellar" name="Tin Lamellar" gearSlot="2" sounds="mailArmor" >
+            <item id="tinLamellar" name="Tin Lamellar" gearSlot="2" sounds="mailArmor" lvlReq="12" >
                 <stats armor="2" health="9" />
                 <offset x="-6" y="-4" />
                 <canBeRepaired cost="tinScale" />
             </item>
-            <item id="copperLamellar" name="Copper Lamellar" gearSlot="2" sounds="mailArmor" >
+            <item id="copperLamellar" name="Copper Lamellar" gearSlot="2" sounds="mailArmor" lvlReq="27" >
                 <stats armor="4" health="20" />
                 <offset x="-6" y="-4" />
                 <canBeRepaired cost="copperScale" />
             </item>
 
         <!-- Hauberk (block %) -->
-            <item id="tinHauberk" name="Tin Hauberk" gearSlot="2" sounds="mailArmor" >
+            <item id="tinHauberk" name="Tin Hauberk" gearSlot="2" sounds="mailArmor" lvlReq="14" >
                 <stats armor="3" block="1" />
                 <offset x="-5" y="-3" />
                 <canBeRepaired cost="tinRing" />
             </item>
-            <item id="copperHauberk" name="Copper Hauberk" gearSlot="2" sounds="mailArmor" >
+            <item id="copperHauberk" name="Copper Hauberk" gearSlot="2" sounds="mailArmor" lvlReq="29" >
                 <stats armor="5" block="5" />
                 <offset x="-5" y="-3" />
                 <canBeRepaired cost="copperRing" />
             </item>
 
         <!-- Cuirass (crit resist) -->
-            <item id="linothorax" name="Linothorax Armor" gearSlot="2" >
+            <item id="linothorax" name="Linothorax Armor" gearSlot="2" lvlReq="7" >
                 <stats armor="1" critResist="1" />
                 <offset x="-5" y="-4" />
                 <canBeRepaired cost="linenCloth" />
             </item>
-            <item id="copperCuirass" name="Copper Cuirass" gearSlot="2" >
+            <item id="copperCuirass" name="Copper Cuirass" gearSlot="2" lvlReq="31" >
                 <stats armor="5" critResist="2" />
                 <offset x="-3" y="-4" />
                 <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
 
         <!-- Leather (dodge) -->
-            <item id="leatherLamellar" name="Leather Lamellar" gearSlot="2" sounds="leather" >
+            <item id="leatherLamellar" name="Leather Lamellar" gearSlot="2" sounds="leather" lvlReq="11" >
                 <stats armor="1" dodge="2" />
                 <offset x="-6" y="-4" />
                 <canBeRepaired cost="leatherScale" />
             </item>
 
         <!-- Chiton (energy) -->
-            <item id="linenChiton" name="Linen Chiton" gearSlot="2" sounds="fabric" >
+            <item id="linenChiton" name="Linen Chiton" gearSlot="2" sounds="fabric" lvlReq="5" >
                 <stats energy="17" />
                 <offset x="-6" y="-3" />
                 <canBeRepaired cost="linenCloth" tool="sewing" />
             </item>
-            <item id="woolChiton" name="Wool Chiton" gearSlot="2" sounds="fabric" >
+            <item id="woolChiton" name="Wool Chiton" gearSlot="2" sounds="fabric" lvlReq="20" >
                 <stats armor="1" energy="35" />
                 <offset x="-6" y="-3" />
                 <canBeRepaired cost="woolCloth" tool="sewing" />
             </item>
 
         <!-- Exomis (resistances) -->
-            <item id="woolExomis" name="Wool Exomis" gearSlot="2" sounds="fabric" >
+            <item id="woolExomis" name="Wool Exomis" gearSlot="2" sounds="fabric" lvlReq="22" >
                 <stats armor="1" airResist="4" earthResist="4" fireResist="4" waterResist="4" />
                 <offset x="-5" y="-4" />
                 <canBeRepaired cost="woolCloth" tool="sewing" />
@@ -333,14 +333,14 @@
 
     <!-- Hands -->
         <!-- Wrappings (magic damage) -->
-            <item id="woolWrappings" name="Wool Wrappings" gearSlot="4" sounds="fabric" >
+            <item id="woolWrappings" name="Wool Wrappings" gearSlot="4" sounds="fabric" lvlReq="25" >
                 <stats magicDamage="4" />
                 <offset x="0" y="-8" />
                 <canBeRepaired cost="woolCloth" tool="sewing" />
             </item>
             
         <!-- Gloves (crit) -->
-            <item id="leatherGloves" name="Leather Gloves" gearSlot="4" sounds="leather" >
+            <item id="leatherGloves" name="Leather Gloves" gearSlot="4" sounds="leather" lvlReq="17" >
                 <stats crit="1" />
                 <offset x="-2" y="1" />
                 <tag name="gloves" />
@@ -348,7 +348,7 @@
             </item>
             
         <!-- Bracers (physical damage) -->
-            <item id="copperBracers" name="Copper Bracers" gearSlot="4" >
+            <item id="copperBracers" name="Copper Bracers" gearSlot="4" lvlReq="28" >
                 <stats armor="1" physicalDamage="2" />
                 <offset x="-1" y="-7" />
                 <canBeRepaired cost="copperBar" tool="smelting2" />
@@ -356,21 +356,21 @@
 
     <!-- Feet -->
         <!-- Shoes (EPS) -->
-            <!--item id="woolShoes" name="Wool Shoes" gearSlot="5" sounds="fabric" >
+            <!--item id="woolShoes" name="Wool Shoes" gearSlot="5" sounds="fabric" lvlReq="19" >
                 <stats eps="3" />
                 <offset x="-3" y="-1" />
                 <canBeRepaired cost="woolCloth" tool="sewing" />
             </item-->
             
         <!-- Sandals (speed) -->
-            <item id="sandals" name="Sandals" gearSlot="5" sounds="leather" >
+            <item id="sandals" name="Sandals" gearSlot="5" sounds="leather" lvlReq="12" >
                 <stats speed="1.01" />
                 <offset x="-1" y="-5" />
                 <canBeRepaired cost="leather" tool="sewing" />
             </item>
             
         <!-- Greaves (HPS) -->
-            <item id="copperGreaves" name="Copper Greaves" gearSlot="5" >
+            <item id="copperGreaves" name="Copper Greaves" gearSlot="5" lvlReq="30" >
                 <stats armor="2" hps="2" />
                 <offset x="-2" y="-10" />
                 <canBeRepaired cost="copperBar" tool="smelting2" />
@@ -378,13 +378,13 @@
 
     <!-- Left hand -->
         <!-- Shield (block %, BV) -->
-            <item id="leatherShield" name="Leather Shield" gearSlot="7" >
+            <item id="leatherShield" name="Leather Shield" gearSlot="7" lvlReq="15" >
                 <stats armor="2" block="4" blockValue="3" />
                 <offset x="-4" y="-10" />
                 <tag name="shield" />
                 <canBeRepaired cost="lumber" />
             </item>
-            <item id="copperShield" name="Copper Shield" gearSlot="7" >
+            <item id="copperShield" name="Copper Shield" gearSlot="7" lvlReq="30" >
                 <stats armor="4" block="6" blockValue="6" />
                 <offset x="-6" y="-12" />
                 <tag name="shield" />
@@ -397,11 +397,11 @@
                 <offset x="0" y="1" />
                 <canBeRepaired cost="boneDust" />
             </item>
-            <item id="tablet" name="Tablet" gearSlot="7" sounds="ceramic" >
+            <item id="tablet" name="Tablet" gearSlot="7" sounds="ceramic" lvlReq="15" >
                 <stats energy="46" />
                 <offset x="-2" y="-6" />
             </item>
-            <item id="parchment" name="parchment" gearSlot="7" >
+            <item id="parchment" name="parchment" gearSlot="7" lvlReq="22" >
                 <stats energy="66" />
             </item>
 
@@ -410,7 +410,7 @@
                 <stats eps="1" />
                 <offset x="0" y="-3" />
             </item>
-            <item id="tambourine" name="Tambourine" gearSlot="7" >
+            <item id="tambourine" name="Tambourine" gearSlot="7" lvlReq="10" >
                 <stats hps="2" eps="3" />
                 <offset x="-5" y="-2" />
                 <canBeRepaired cost="tinScale" />

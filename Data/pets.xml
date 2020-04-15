@@ -41,7 +41,7 @@
     </recipe>
 
 <item id="staff1" name="Walking Stick"
-    gearSlot="6">
+    gearSlot="6" lvlReq="10">
     <stats followerLimit="1" />
     <offset x="-6" y="-16" />
     <weapon damage="5" speed="3.1" />
@@ -54,7 +54,7 @@
         <unlockedBy recipe="pole1" chance="0.05" />
     </recipe>
 <item id="staff2" name="Staff"
-    gearSlot="6">
+    gearSlot="6" lvlReq="20">
     <stats followerLimit="2" />
     <offset x="-3" y="-19" />
     <weapon damage="6" speed="2.8" />
