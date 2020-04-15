@@ -162,7 +162,8 @@ const Tooltip &ClientItem::Instance::tooltip() const {
     return _repairTooltip.value();
   }
 
-  if (!_tooltip.hasValue()) createRegularTooltip();
+  if (!_tooltip.hasValue() || _tooltip.value().isDueForARefresh())
+    createRegularTooltip();
   return _tooltip.value();
 }
 

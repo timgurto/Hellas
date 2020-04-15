@@ -451,6 +451,10 @@ void Client::handleBufferedMessages(const std::string &msg) {
           _character.level(level);
           populateClassWindow();
 
+          // Redraw tooltips, in case gear level requirements are no longer red
+          for (auto &pair : _items) pair.second.refreshTooltip();
+          Tooltip::forceAllToRedraw();
+
         } else {
           auto it = _otherUsers.find(username);
           if (it == _otherUsers.end()) {
@@ -2370,6 +2374,10 @@ void Client::handle_SV_LEVEL_UP(const std::string &username) {
         "You have reached level "s + toString(avatar->level()) + "!"s;
     toast("light", message);
     _debug(message);
+
+    // Redraw tooltips, in case gear level requirements are no longer red
+    for (auto &pair : _items) pair.second.refreshTooltip();
+    Tooltip::forceAllToRedraw();
   }
 }
 

@@ -31,7 +31,7 @@ class Tooltip {
   void generateIfNecessary() const;
   void generate() const;
   static ms_t timeThatTheLastRedrawWasOrdered;
-  mutable ms_t _timeShadowGenerated{};
+  mutable ms_t _timeGenerated{};
 
   static const Tooltip NO_TOOLTIP;
 
@@ -62,6 +62,7 @@ class Tooltip {
 
   // const Texture &get();
   static void forceAllToRedraw();
+  bool isDueForARefresh() const;
 
   // Create a basic tooltip containing a single string.
   static Tooltip basicTooltip(const std::string &text);
