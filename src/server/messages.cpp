@@ -279,7 +279,7 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
 
   // Check gear requirements
   if (obj2.isGear() && !user.canEquip(*fromItem.type())) return;
-  if (obj1.isGear() && toItem.type()->hasLvlReq()) return;
+  if (obj1.isGear() && !user.canEquip(*toItem.type())) return;
 
   // Combine stack, if identical types
   auto shouldPerformNormalSwap = true;

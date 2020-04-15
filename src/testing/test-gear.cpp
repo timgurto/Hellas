@@ -118,6 +118,19 @@ TEST_CASE("Level requirements") {
             CHECK(user.gear(0).first.type()->id() == "plainHat");
           }
         }
+
+        AND_GIVEN("he is level 2") {
+          user.levelUp();
+
+          WHEN("he tries to swap it for the fancy hat") {
+            c.sendMessage(CL_SWAP_ITEMS,
+                          makeArgs(Serial::Gear(), 0, Serial::Inventory(), 0));
+
+            THEN("he is wearing the fancy hat") {
+              WAIT_UNTIL(user.gear(0).first.type()->id() == "fancyHat");
+            }
+          }
+        }
       }
     }
   }
