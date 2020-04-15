@@ -1002,6 +1002,10 @@ SpellSchool User::school() const {
   return weapon.type()->stats().weaponSchool;
 }
 
+bool User::canEquip(const ServerItem &item) const {
+  return _level >= item.lvlReq();
+}
+
 double User::combatDamage() const {
   if (stats().weaponSchool == SpellSchool::PHYSICAL)
     return stats().weaponDamage + stats().physicalDamage;

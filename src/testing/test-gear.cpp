@@ -83,6 +83,17 @@ TEST_CASE("Level requirements") {
         }
       }
 
+      AND_GIVEN("he's level 2") {
+        user.levelUp();
+
+        WHEN("he tries to equip it") {
+          c.sendMessage(CL_SWAP_ITEMS,
+                        makeArgs(Serial::Inventory(), 0, Serial::Gear(), 0));
+
+          THEN("he is wearing it") { WAIT_UNTIL(user.gear(0).first.hasItem()); }
+        }
+      }
+
       WHEN("he tries to move it to inventory slot 1") {
         c.sendMessage(CL_SWAP_ITEMS,
                       makeArgs(Serial::Inventory(), 0, Serial::Inventory(), 1));
@@ -112,7 +123,4 @@ TEST_CASE("Level requirements") {
   }
 }
 
-// Swap within a container (not equipping)
-// User is high enough
 // Tool usage?
-// Higher than 2

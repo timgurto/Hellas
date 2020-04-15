@@ -37,6 +37,7 @@ class Item : public HasTags {
   void repairingRequiresTool(const std::string &tag) { _repairInfo.tool = tag; }
   RepairInfo repairInfo() const { return _repairInfo; }
   void lvlReq(Level req) { _lvlReq = req; }
+  Level lvlReq() const { return _lvlReq; }
   bool hasLvlReq() const { return _lvlReq > 0; }
 
   bool operator<(const Item &rhs) const { return _id < rhs._id; }

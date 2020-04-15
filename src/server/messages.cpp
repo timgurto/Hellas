@@ -277,8 +277,8 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
       fromItem.type()->gearSlot() != slot2)
     RETURN_WITH(ERROR_NOT_GEAR)
 
-  // Check gear level requirement
-  if (obj2.isGear() && fromItem.type()->hasLvlReq()) return;
+  // Check gear requirements
+  if (obj2.isGear() && !user.canEquip(*fromItem.type())) return;
   if (obj1.isGear() && toItem.type()->hasLvlReq()) return;
 
   // Combine stack, if identical types
