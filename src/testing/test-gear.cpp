@@ -20,6 +20,13 @@ TEST_CASE("Simple gear equip") {
 
       THEN("he has an item in that gear slot") {
         WAIT_UNTIL(user.gear(0).first.hasItem());
+
+        AND_WHEN("he takes it off") {
+          c.sendMessage(CL_SWAP_ITEMS,
+                        makeArgs(Serial::Gear(), 0, Serial::Inventory(), 0));
+
+          THEN("the server survives") { s.nop(); }
+        }
       }
     }
   }
