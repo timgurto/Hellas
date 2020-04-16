@@ -185,8 +185,8 @@
 
     <!-- Ranged -->
         <!-- Sling -->
-            <item id="rock" name="Rock" stackSize="100" durability="6" gearSlot="6" sounds="rock" >
-                <weapon damage="2" speed="2.1" range="25" consumes="rock" projectile="rock" lvlReq="2" />
+            <item id="rock" name="Rock" stackSize="100" durability="6" gearSlot="6" sounds="rock" lvlReq="2" >
+                <weapon damage="2" speed="2.1" range="25" consumes="rock" projectile="rock" />
                 <offset x="-3" />
             </item>
             <item id="sling" name="Sling" gearSlot="6" lvlReq="9" >

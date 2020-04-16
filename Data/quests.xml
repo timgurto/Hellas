@@ -88,7 +88,7 @@
         <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
         <loot id="calydonianHorn" chance="0.2" />
     </npcType>
-    <item id="calydonianHorn" name="Horn of the Calydonian Boar" gearSlot="7"
+    <item id="calydonianHorn" name="Horn of the Calydonian Boar" gearSlot="7" lvlReq="10"
         iconFile="hornBlack" gearFile="hornBlack" >
 		<stats eps="4" hps="3" />
 		<offset x="0" y="-3" />
