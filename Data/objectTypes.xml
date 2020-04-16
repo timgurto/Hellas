@@ -119,8 +119,8 @@
 </objectType>
 
 <objectType id="clay" name="Clay Deposit"
-    xDrawOffset="-12" yDrawOffset="-12"
-    canGather="1" gatherTime="1000" gatherParticles="dirtFromGround"
+    xDrawOffset="-13" yDrawOffset="-11"
+    canGather="1" gatherTime="2000" gatherParticles="dirtFromGround"
     isFlat="1"
     allowedTerrain="fertile" sounds="clay" >
     <collisionRect x="-12" y="-2" w="25" h="24" />
