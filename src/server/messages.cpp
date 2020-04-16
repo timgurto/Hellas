@@ -1967,6 +1967,9 @@ void Server::handle_CL_AUTO_CONSTRUCT(User &user, Serial serial) {
     if (user.knowsConstruction(obj->type()->id()))
       ProgressLock::triggerUnlocks(user, ProgressLock::CONSTRUCTION,
                                    obj->type());
+
+    // Update quest progress for completing user
+    user.addQuestProgress(Quest::Objective::CONSTRUCT, obj->type()->id());
   }
 }
 
