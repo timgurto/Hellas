@@ -12,7 +12,7 @@
 
 <quest id="directionsToClay" name="A toy for the children" startsAt="grug" endsAt="grug"
     brief="Grug have only bones and rocks to keep family happy.  Want make toy for Grugling, but need clay.
-    Shaman say there lots of clay past rivers, southwest, where land green and water big.
+    Shaman say there lots of clay past rivers, southwest, where land green and water big.  Grug also see red patches in riverbed.
     You bring Grug clay?"
     debrief="Toy will make Grugling happy.  Being father better than fighting; me no need club now.  You take!" >
     <objective type="fetch" id="crudeClay" qty="1" />

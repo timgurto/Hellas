@@ -127,6 +127,14 @@
     <yield id="crudeClay" initialMean="4" initialSD="1" initialMin="1" />
     <durability item="crudeClay" quantity="3" />
 </objectType>
+<objectType id="underwaterClay" name="Clay Deposit"
+    xDrawOffset="-13" yDrawOffset="-11"
+    canGather="1" gatherTime="2000"
+    isFlat="1"
+    allowedTerrain="shallowWater" sounds="clay" >
+    <yield id="crudeClay" initialMean="4" initialSD="1" initialMin="1" />
+    <durability item="crudeClay" quantity="3" />
+</objectType>
 
 <objectType id="smallPot" name="Small Pot"
     xDrawOffset="-8" yDrawOffset="-16"

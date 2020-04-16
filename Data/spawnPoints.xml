@@ -534,6 +534,8 @@
     <spawnPoint type="tutStick" y="59956" x="3112" quantity="10" radius="450" respawnTime="0" />
     <spawnPoint type="tutTortoise" y="58540" x="4364" quantity="4" radius="150" respawnTime="120000" />
     <spawnPoint type="tutTortoise" y="58913" x="4423" quantity="9" radius="250" respawnTime="120000" />
+    <spawnPoint type="underwaterClay" y="26800" x="33520" quantity="10" radius="6300" respawnTime="300000" useCachedTerrain="1" />
+    <spawnPoint type="underwaterClay" y="33120" x="33744" quantity="200" radius="30000" respawnTime="300000" useCachedTerrain="1" />
     <spawnPoint type="waterNymph" y="23176" x="26096" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="waterNymph" y="23784" x="25792" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="waterNymph" y="24120" x="23208" quantity="5" radius="250" respawnTime="300000" />
