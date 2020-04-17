@@ -8,6 +8,7 @@
 #include "testing.h"
 
 class CQuest;
+class CCities;
 
 // A wrapper of the client, with full access, used for testing.
 class TestClient {
@@ -71,6 +72,7 @@ class TestClient {
     return _client->_allOnlinePlayers;
   }
   const std::string &allowedTerrain() const { return _client->_allowedTerrain; }
+  const CCities &cities() const { return _client->_cities; }
 
   Window *craftingWindow() const { return _client->_craftingWindow; }
   Window *buildWindow() const { return _client->_buildWindow; }

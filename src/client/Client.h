@@ -18,6 +18,7 @@
 #include "../messageCodes.h"
 #include "../types.h"
 #include "Avatar.h"
+#include "CCities.h"
 #include "CQuest.h"
 #include "CRecipe.h"
 #include "ClientBuff.h"
@@ -602,6 +603,8 @@ class Client {
   void applyCollisionChecksToPlayerMovement(MapPoint &pendingDestination) const;
   bool isLocationValidForPlayer(const MapPoint &location) const;
   bool isLocationValidForPlayer(const MapRect &rect) const;
+
+  CCities _cities;
 
   // Your wars, and your city's wars
   YourWars _warsAgainstPlayers;

@@ -420,6 +420,9 @@ void Server::addUser(const Socket &socket, const std::string &name,
     }
   }
 
+  // Send him the cities
+  if (_cities.doesCityExist("Athens")) newUser.sendMessage(SV_CITY_DETAILS);
+
   // Add user to location-indexed trees
   getCollisionChunk(newUser.location()).addEntity(&newUser);
   _usersByX.insert(&newUser);

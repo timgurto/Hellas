@@ -351,3 +351,26 @@ TEST_CASE("Citizens know about their city's distant objects", "[flaky]") {
     }
   }
 }
+
+TEST_CASE("New users know about cities") {
+  auto s = TestServer{};
+
+  GIVEN("a city") {
+    s.cities().createCity("Athens", {10, 10});
+
+    WHEN("a user logs in") {
+      auto c = TestClient{};
+
+      THEN("he knows about it") { WAIT_UNTIL(c.cities().count() == 1); }
+    }
+  }
+
+  WHEN("a user logs in") {
+    auto c = TestClient{};
+
+    THEN("he knows there are no cities") {
+      REPEAT_FOR_MS(100);
+      CHECK(c.cities().count() == 0);
+    }
+  }
+}

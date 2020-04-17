@@ -373,6 +373,10 @@ enum MessageCode {
   // Arguments: quantity, id1, id2, ...
   SV_NEW_CONSTRUCTIONS,
 
+  // There's a city called ... at ...
+  // Arguments: name, x, y
+  SV_CITY_DETAILS,
+
   // The user has just joined a city
   // Arguments: cityName
   SV_JOINED_CITY,

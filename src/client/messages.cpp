@@ -559,6 +559,10 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
+      case SV_CITY_DETAILS:
+        _cities.add();
+        break;
+
       case SV_NO_CITY: {
         std::string username;
         readString(singleMsg, username, MSG_END);
