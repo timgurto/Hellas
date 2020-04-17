@@ -77,5 +77,6 @@ using MapRect = Rect<double>;
 using ScreenRect = Rect<px_t>;
 
 ScreenRect toScreenRect(const MapRect &rhs);
+MapRect toMapRect(const ScreenRect &rhs);
 
 #endif

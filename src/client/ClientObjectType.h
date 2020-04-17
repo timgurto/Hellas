@@ -6,6 +6,7 @@
 
 #include "../HasTags.h"
 #include "../Point.h"
+#include "../TerrainList.h"
 #include "../server/ItemSet.h"
 #include "../util.h"
 #include "CQuest.h"
@@ -160,7 +161,10 @@ class ClientObjectType : public SpriteType,
   void allowedTerrain(const std::string &terrainList) {
     _allowedTerrain = terrainList;
   }
-  const std::string &allowedTerrain() const { return _allowedTerrain; };
+  const std::string &allowedTerrain() const {
+    if (_allowedTerrain.empty()) return TerrainList::defaultList().id();
+    return _allowedTerrain;
+  };
 
   const ImageWithHighlight &getProgressImage(ms_t timeRemaining) const;
   const Texture &corpseImage() const { return _corpseImage.getNormalImage(); }

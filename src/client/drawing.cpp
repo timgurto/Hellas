@@ -1,5 +1,6 @@
 #include <cassert>
 
+#include "../TerrainList.h"
 #include "Client.h"
 #include "ClientNPC.h"
 #include "Renderer.h"
@@ -20,6 +21,12 @@ void Client::draw() const {
   // Background
   renderer.setDrawColor(Color::BLACK);
   renderer.clear();
+
+  // Used below by terrain and entities
+  _constructionFootprintType = _selectedConstruction;
+  if (!_constructionFootprintType && ContainerGrid::getUseItem())
+    _constructionFootprintType =
+        ContainerGrid::getUseItem()->constructsObject();
 
   // Terrain
   size_t xMin = static_cast<size_t>(max<double>(0, -offset().x / Map::TILE_W)),
@@ -147,12 +154,9 @@ void Client::draw() const {
 
   // Construction footprint
   _instructionsLabel->changeText({});
-  if (_constructionFootprint) {
-    const ClientObjectType *ot =
-        _selectedConstruction == nullptr
-            ? ContainerGrid::getUseItem()->constructsObject()
-            : _selectedConstruction;
-    auto footprintRect = ot->collisionRect() + toMapPoint(_mouse) - _offset;
+  if (_constructionFootprint && _constructionFootprintType) {
+    auto footprintRect = _constructionFootprintType->collisionRect() +
+                         toMapPoint(_mouse) - _offset;
     auto validLocation = true;
 
     if (distance(playerCollisionRect(), footprintRect) >
@@ -162,15 +166,15 @@ void Client::draw() const {
         validLocation ? Color::FOOTPRINT_GOOD : Color::FOOTPRINT_BAD;
     drawFootprint(footprintRect, footprintColor, 0xaf);
 
-    const ScreenRect &drawRect = ot->drawRect();
+    const ScreenRect &drawRect = _constructionFootprintType->drawRect();
     px_t x = toInt(_mouse.x + drawRect.x), y = toInt(_mouse.y + drawRect.y);
     _constructionFootprint.setAlpha(0x7f);
     _constructionFootprint.draw(x, y);
     _constructionFootprint.setAlpha();
 
     auto isInCity = !_character.cityName().empty();
-    auto instruction =
-        "Click to build "s + ot->name() + "; right-click to cancel."s;
+    auto instruction = "Click to build "s + _constructionFootprintType->name() +
+                       "; right-click to cancel."s;
     if (isCtrlPressed()) {
       if (isInCity)
         instruction += "  It will be owned by your city."s;
@@ -292,16 +296,18 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const {
       BOTTOM_RIGHT(w / 2, h / 2, w / 2, h / 2), LEFT_HALF(0, 0, w / 2, h),
       RIGHT_HALF(w / 2, 0, w / 2, h), FULL(0, 0, w, h);
 
+  auto drawRect = ScreenRect{};
+  if (yOdd && x == 0)
+    drawRect = drawLoc + RIGHT_HALF;
+  else if (!yOdd && x == _map.width() - 1)
+    drawRect = drawLoc + LEFT_HALF;
+  else
+    drawRect = drawLoc + FULL;
+
   // Black background
   // Assuming all tile images are set to SDL_BLENDMODE_ADD and quarter alpha
   renderer.setDrawColor(Color::BLACK);
-  if (yOdd && x == 0) {
-    renderer.fillRect(drawLoc + RIGHT_HALF);
-  } else if (!yOdd && x == _map.width() - 1) {
-    renderer.fillRect(drawLoc + LEFT_HALF);
-  } else {
-    renderer.fillRect(drawLoc + FULL);
-  }
+  renderer.fillRect(drawRect);
 
   // Half-alpha base tile
   _terrain.at(tileID).setHalfAlpha();
@@ -337,6 +343,16 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const {
       renderer.setDrawColor(Color::TODO);
       renderer.drawRect(drawLoc + FULL);
   }*/
+
+  // Colour tiles that can't accommodate the selected construction
+  if (_constructionFootprintType) {
+    auto allowedTerrain =
+        TerrainList::findList(_constructionFootprintType->allowedTerrain());
+    if (!allowedTerrain) return;
+    if (allowedTerrain->allows(tileID)) return;
+    drawFootprint(toMapRect(drawRect) - _offset, Color::FOOTPRINT_COLLISION,
+                  0xaf);
+  }
 }
 
 void Client::drawLoadingScreen(const std::string &msg, double progress) const {
