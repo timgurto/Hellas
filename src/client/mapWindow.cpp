@@ -31,8 +31,14 @@ void Client::initializeMapWindow() {
 
   _mapPinOutlines = new Element({0, 0, MAP_IMAGE_W, MAP_IMAGE_H});
   _mapPins = new Element({0, 0, MAP_IMAGE_W, MAP_IMAGE_H});
+  _mapIcons = new Element({0, 0, MAP_IMAGE_W, MAP_IMAGE_H});
   _mapWindow->addChild(_mapPinOutlines);
   _mapWindow->addChild(_mapPins);
+  _mapWindow->addChild(_mapIcons);
+
+  _mapCityFriendly = {"Images/UI/map-city-friendly.png", Color::MAGENTA};
+  _mapCityNeutral = {"Images/UI/map-city-neutral.png", Color::MAGENTA};
+  _mapCityEnemy = {"Images/UI/map-city-enemy.png", Color::MAGENTA};
 
   // Zoom buttons
   static const auto ZOOM_BUTTON_SIZE = 11;
@@ -84,6 +90,7 @@ void Client::updateMapWindow(Element &) {
 
   client._mapPins->clearChildren();
   client._mapPinOutlines->clearChildren();
+  client._mapIcons->clearChildren();
 
   for (const auto &objPair : client._objects) {
     const auto &object = *objPair.second;
@@ -95,6 +102,18 @@ void Client::updateMapWindow(Element &) {
     const auto &avatar = *pair.second;
     if (avatar.isInPlayersCity())
       client.addMapPin(avatar.location(), avatar.nameColor(), avatar.name());
+  }
+
+  for (const auto &pair : client._cities) {
+    auto cityIcon = &client._mapCityNeutral;
+    auto isInCity = !client.character().cityName().empty();
+    if (client.character().cityName() == pair.first)
+      cityIcon = &client._mapCityFriendly;
+    else if (isInCity && client.isCityAtWarWithCityDirectly(pair.first))
+      cityIcon = &client._mapCityEnemy;
+    else if (!isInCity && client.isAtWarWithCityDirectly(pair.first))
+      cityIcon = &client._mapCityEnemy;
+    client.addIconToMap(pair.second, cityIcon);
   }
 
   client.addOutlinedMapPin(client._character.location(), Color::COMBATANT_SELF);
@@ -135,6 +154,16 @@ void Client::addOutlinedMapPin(const MapPoint &worldPosition,
       new ColorBlock(OUTLINE_RECT_H + mapPosition, Color::UI_OUTLINE));
   _mapPinOutlines->addChild(
       new ColorBlock(OUTLINE_RECT_V + mapPosition, Color::UI_OUTLINE));
+}
+
+void Client::addIconToMap(const MapPoint &worldPosition, const Texture *icon) {
+  if (!icon) return;
+
+  auto mapPosition = convertToMapPosition(worldPosition);
+  mapPosition.x -= icon->width() / 2;
+  mapPosition.y -= icon->height() / 2;
+
+  _mapIcons->addChild(new Picture(mapPosition.x, mapPosition.y, *icon));
 }
 
 ScreenRect Client::convertToMapPosition(const MapPoint &worldPosition) const {

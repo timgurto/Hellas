@@ -307,7 +307,7 @@ class Client {
   Texture _mapImage;
   Texture _shadowImage;
   Picture *_mapPicture{nullptr};
-  Element *_mapPins, *_mapPinOutlines;
+  Element *_mapPins{nullptr}, *_mapPinOutlines{nullptr}, *_mapIcons{nullptr};
   static const px_t MAP_IMAGE_W = 300, MAP_IMAGE_H = 300;
   void initializeMapWindow();
   static void updateMapWindow(Element &);
@@ -315,6 +315,7 @@ class Client {
                          const std::string &tooltip = {});
   void Client::addOutlinedMapPin(const MapPoint &worldPosition,
                                  const Color &color);
+  void Client::addIconToMap(const MapPoint &worldPosition, const Texture *icon);
   ScreenRect Client::convertToMapPosition(const MapPoint &worldPosition) const;
   int _zoom{3};
   static const int MIN_ZOOM{0};
@@ -325,6 +326,7 @@ class Client {
   static void onMapScrollDown(Element &);
   Button *_zoomMapInButton{nullptr};
   Button *_zoomMapOutButton{nullptr};
+  Texture _mapCityFriendly, _mapCityNeutral, _mapCityEnemy;
 
   // Social window
   Window *_socialWindow{nullptr};
