@@ -448,10 +448,11 @@ HANDLE_MESSAGE(CL_ORDER_NPC_TO_STAY) {
 
   auto *npc = _entities.find<NPC>(serial);
   if (!npc) return;
+  if (npc->order() == NPC::STAY) return;
   if (distance(npc->location(), user.location()) > ACTION_DISTANCE) return;
   if (!npc->permissions.isOwnedByPlayer(user.name())) return;
 
-  if (npc->order() == NPC::FOLLOW) user.followers.remove();
+  user.followers.remove();
   npc->order(NPC::STAY);
 }
 
@@ -461,6 +462,7 @@ HANDLE_MESSAGE(CL_ORDER_NPC_TO_FOLLOW) {
 
   auto *npc = _entities.find<NPC>(serial);
   if (!npc) return;
+  if (npc->order() == NPC::FOLLOW) return;
   if (distance(npc->location(), user.location()) > ACTION_DISTANCE) return;
   if (!user.hasRoomForMoreFollowers()) return;
   if (!npc->permissions.isOwnedByPlayer(user.name())) return;

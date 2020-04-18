@@ -978,9 +978,48 @@ TEST_CASE("Persistence of pet orders") {
   }
 }
 
+TEST_CASE("Followers can count only once") {
+  GIVEN("A user with two pets on Stay") {
+    auto data = R"(
+      <npcType id="dog" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+
+    auto &dog1 = s.addNPC("dog", {15, 10});
+    auto &dog2 = s.addNPC("dog", {10, 15});
+    dog1.permissions.setPlayerOwner(c->username());
+    dog2.permissions.setPlayerOwner(c->username());
+    dog1.order(NPC::STAY);
+    dog2.order(NPC::STAY);
+
+    AND_GIVEN("he can have 2 followers") {
+      auto oldStats = User::OBJECT_TYPE.baseStats();
+      auto newStats = oldStats;
+      newStats.followerLimit = 2;
+      User::OBJECT_TYPE.baseStats(newStats);
+      auto &user = s.getFirstUser();
+      user.updateStats();
+
+      WHEN("he orders the first pet to follow, twice") {
+        c.sendMessage(CL_ORDER_NPC_TO_FOLLOW, makeArgs(dog1.serial()));
+        c.sendMessage(CL_ORDER_NPC_TO_FOLLOW, makeArgs(dog1.serial()));
+
+        AND_WHEN("he orders the second pet to follow") {
+          c.sendMessage(CL_ORDER_NPC_TO_FOLLOW, makeArgs(dog2.serial()));
+
+          THEN("the second pet is following") {
+            WAIT_UNTIL(dog2.order() == NPC::FOLLOW);
+          }
+        }
+      }
+    }
+  }
+}
+
 // If follow count is reduced, one randomly stays
 // Followers inside vehicle
 // Can't order someone else's pet
 // If city-owned, then actual player that tames or gives orders has his
 // follower count affected
-// Give the same order twice; check impact on follower count
