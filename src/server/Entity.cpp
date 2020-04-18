@@ -40,7 +40,7 @@ Entity::Entity(const MapPoint &loc)
       transformation(*this) {}
 
 Entity::~Entity() {
-  if (_spawner != nullptr) _spawner->scheduleSpawn();
+  if (_spawner) _spawner->scheduleSpawn();
 }
 
 bool Entity::compareSerial::operator()(const Entity *a, const Entity *b) const {
@@ -448,7 +448,10 @@ void Entity::onDeath() {
 
   if (tagger()) tagger()->onKilled(*this);
 
-  if (spawner()) spawner()->scheduleSpawn();
+  if (_spawner) {
+    _spawner->scheduleSpawn();
+    _spawner = nullptr;
+  }
 
   if (timeToRemainAsCorpse() == 0)
     markForRemoval();
@@ -586,9 +589,8 @@ void Entity::sendAllLootToTagger() const {
 }
 
 void Entity::separateFromSpawner() {
-  if (!spawner()) return;
-
-  spawner()->scheduleSpawn();  // To replace this
+  if (!_spawner) return;
+  _spawner->scheduleSpawn();  // To replace this
   _spawner = nullptr;
 }
 
