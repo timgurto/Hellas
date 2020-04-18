@@ -4,7 +4,9 @@
 // inform the user about them.
 class CCities {
  public:
-  struct City {};
+  struct City {
+    std::string name;
+  };
 
   using Container = std::vector<City>;
 

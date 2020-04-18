@@ -384,6 +384,16 @@ TEST_CASE("New users know about cities") {
 
       THEN("he knows there are two cities") {
         WAIT_UNTIL(c.cities().count() == 2);
+
+        AND_THEN("he knows their names") {
+          auto athensFound = false, persiaFound = false;
+          for (const auto &city : c.cities()) {
+            if (city.name == "Athens") athensFound = true;
+            if (city.name == "Persia") persiaFound = true;
+          }
+          CHECK(athensFound);
+          CHECK(persiaFound);
+        }
       }
     }
   }
