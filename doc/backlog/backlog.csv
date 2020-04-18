@@ -305,13 +305,13 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 85,Fix scroll-bar dragging offset,5,3,Bug,,,,
 100,Sounds for crafting,5,2,Aesthetics,,,,
 101,Particles for crafting,5,2,Aesthetics,,,,
-105,Vehicles can have different speeds,5,5,Feature,,,TRUE,4 Copper
+105,Vehicles can have different speeds,5,5,Feature,,TRUE,TRUE,4 Copper
 110,Load map in login-screen background,5,13,Usability,,,,
 111,"Use gear-slot names, not numbers, in items.xml",3,5,Code quality,,,,
 117,Direct player trading,13,233,Feature,,,TRUE,
 123,Ensure window titles always fit,5,2,Bug,,,,
 124,Right-clicking doesn't cancel dragging,8,2,Bug,,,,
-136,Users are drawn inside (front+back) of vehicles,5,5,Aesthetics,,,,
+136,Users are drawn inside (front+back) of vehicles,5,5,Aesthetics,,TRUE,,
 144,Prevent multiple copies of sounds between SoundProfiles,5,3,Performance,,,,
 145,Prevent users from spamming construction sites,5,8,Exploit,,,,
 172,Select target via keyboard,3,8,Usability,,,,
@@ -320,8 +320,8 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 194,Ensure fellow citizens can be seen on the map,13,21,Bug,,,,
 223,Limit ware selection to items in container,8,13,Usability,,,,
 224,Don't require 'set' button for trade slots,8,8,Usability,,,,
-226,"Avoid window overlap if possible, for object windows",13,13,Usability,,,,
-234,Make allowed-terrain more intuitive for construction,8,8,Usability,,,,
+226,"Avoid window overlap if possible, when opening object windows",13,13,Usability,,,,
+234,Make allowed-terrain more intuitive for construction,8,8,Usability,,TRUE,,
 236,Prevent construction near respawn altars,3,8,Exploit,,,,
 239,Add coinage,21,3,Content,519,TRUE,,6 Bronze
 250,Fireball has interruptible cast time,2,8,Feature,246,,,5 First adventure
@@ -330,10 +330,9 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 291,Region items are soulbound,5,8,Feature,285,,TRUE,4 Copper
 294,Hotbar can include right-clickable items,2,8,Usability,280,,,
 350,Update window title when object type changes,5,1,Bug,,,,
-351,Allow users to drop items onto construction sites,3,21,Usability,,,,
+351,Make it easier to add construction materials,3,21,Usability,,TRUE,,
 364,Current-wars spam on login,3,3,Bug,,,,
 368,Update object windows after joining/leaving a city,21,3,Bug,,,,
-369,Trees sometimes think they're being gathered when they're not.  Endless particles/sound.,55,8,Bug,,,,
 373,Flash crafting/building/class buttons,21,8,Usability,,,,
 374,Flash class button when talents are unspent,21,3,Usability,373,,,
 375,Allow war to be declared on an object,21,5,Usability,,,TRUE,
@@ -360,28 +359,27 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 511,Use complete outlines for all text,8,3,Aesthetics,,,,
 515,"Low-res sprites, high-res game",34,34,Aesthetics,,,,
 517,Grouping,89,144,Feature,,,TRUE,5 First adventure
-518,Copper + gear,55,8,Content,,,,4 Copper
+518,Copper + gear,55,8,Content,,TRUE,,4 Copper
 519,Bronze + gear,55,144,Content,518,,,6 Bronze
 520,Iron + gear,55,89,Content,519,,,
-522,Wool + gear,34,144,Content,521,,,4 Copper
+522,Wool + gear,34,144,Content,521,TRUE,,4 Copper
 523,Silk + gear,34,144,Content,522,,,
 524,Boiled leather + gear,34,144,Content,,,,6 Bronze
 527,Region locks,34,13,Content,526,,TRUE,4 Copper
 528,Subclass buildings,21,34,Content,286,,TRUE,6 Bronze
-529,Parchment,21,13,Feature,522,,,4 Copper
+529,Parchment,21,13,Feature,522,TRUE,,4 Copper
 530,Region-specific talent items,13,5,Content,,,TRUE,4 Copper
 531,Tier-3 talents,144,233,Feature,530,,TRUE,4 Copper
 532,Tier-4 talents,144,233,Feature,531,,TRUE,6 Bronze
 534,Tier-5 talents,55,89,Feature,535,,TRUE,
 535,Wonders,21,55,Content,57,,TRUE,
-536,"Fix vehicle movement, mounting, dismounting",21,21,Usability,,,TRUE,
+536,"Fix vehicle movement, mounting, dismounting",21,21,Usability,,TRUE,TRUE,
 537,Quests for the adventure,13,21,Content,463,,,5 First adventure
 538,Themed crafting/building/quest/social windows,55,55,Aesthetics,,,,
 540,SFX for war/peace,5,34,Aesthetics,,,,
-541,Fishing,2,21,Content,,,,4 Copper
+541,Fishing,2,21,Content,,TRUE,,4 Copper
 542,More altars around the world,21,34,Feature,,,,
 543,Players can trade objects,13,21,Feature,,,,
-544,Optimise map for load time,8,5,Performance,,,,
 545,Online-users list is unreliable,13,13,Bug,,,,
 548,Populate remaining map with NPCs,34,89,Content,526,,TRUE,4 Copper
 549,Horses,34,13,Content,521,,TRUE,6 Bronze
@@ -394,9 +392,8 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 557,Provide list of names when granting objects,13,8,Usability,,,,
 559,Reduce volume of distant SFX,3,8,Aesthetics,,,,
 563,Add flag objects with text entry to show labels on map,8,21,Feature,,,,
-564,Cull objects and NPCs on death,3,13,Bug,,,,
-565,Reflect vehicle speed in stats window,3,3,Bug,105,,,
-566,Dropping an item deselects target,5,3,Bug,,,,
+565,Reflect vehicle speed in stats window,3,3,Bug,105,TRUE,,
+566,Dropping an item deselects target,8,3,Bug,,,,
 568,Add missing crafting/gathering sounds,55,34,Aesthetics,100,,,
 570,Add warning if merchant-object inventory is full,5,13,Usability,,,,
 571,Altar of Athena teaches port-to-city spell,8,13,Feature,,TRUE,,
@@ -405,33 +402,32 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 574,Require full text entry for merchant prices,13,13,Usability,,,,
 575,Configurable key mapping,8,34,Usability,,,,
 577,Use virtual keys for movement,8,3,Usability,,,,
-579,City objects are forgotten on death,13,3,Bug,,,,
+579,City objects are forgotten on death,13,3,Bug,,TRUE,,
 580,"Damage shield on block, not hit",1,5,Feature,,,,
 581,Don't damage armour on block,1,5,Feature,,,,
 582,Don't damage weapon or armour on miss/dodge,1,5,Feature,,,,
-584,Can gather from a fig tree briefly before it changes type and is empty,5,8,Bug,,,,
+584,Can gather from a fig tree briefly before it changes type and is empty,5,8,Bug,,TRUE,,
 585,Make ranged weapons viable at high latency,21,13,Usability,,,TRUE,
 586,Construction sites have windows despite no permission,3,2,Bug,,,,
-590,"Players can get stuck inside objects, and respawn on restarting client",89,13,Bug,,,,
+590,"Players can get stuck inside objects, and respawn on restarting client",89,13,Bug,,TRUE,,
 593,Friends list,13,21,Feature,,,,
 594,"Show enemy objects as red, not yellow",8,3,Bug,,,,
 595,Prevent declarations of war against nonexistent entities,8,5,Bug,,,,
 597,Make tutorial cyclopes all objects,5,3,Code quality,,,,
 603,Pet breeding,2,21,Feature,597,,,
 604,Pets can be set to aggressive or defensive,2,8,Feature,597,,,
-605,Pets can be ordered to follow or stay,3,8,Feature,609,,,
+605,Pets can be ordered to follow or stay,3,8,Feature,609,TRUE,,
 606,Pets consume food automatically,3,8,Feature,378,,,
 607,Starved pets become mobs,1,13,Feature,606,,,
 608,Allow pets to ride on some vehicles,5,13,Feature,609,,,
-610,Pets shouldn't count towards their original spawner's limit,2,5,Exploit,,,,
-612,Remove player XP/levels,13,13,Feature,,,TRUE,
+610,Pets shouldn't count towards their original spawner's limit,2,5,Exploit,,TRUE,,
 613,Show gear on humanoid corpses,3,8,Aesthetics,,,,
 614,Base humanoid attack/defend sounds on their gear,3,3,Aesthetics,,,,
-615,Automatically self-cast if current target is invalid,5,2,Usability,,,,
+615,Automatically self-cast if current target is invalid,5,2,Usability,,TRUE,,
 616,Selection sounds for objects,21,13,Aesthetics,,,,
-617,Construction window persists after demolition,5,2,Bug,,,,
+617,Construction window persists after demolition,5,2,Bug,,TRUE,,
 618,Make quest indicators more obvious,5,2,Usability,,,,
 619,Editor: skip drawing spawn points/circles when outside window,5,3,Performance,,,,
 620,"Magic dust should sound like dust, not a bone",1,2,Aesthetics,,,,
-621,Ceding pets crashes the server,34,3,Bug,,,,
+621,Ceding pets crashes the server,34,3,Bug,,TRUE,,
 622,Allow static NPCs/objects to be loaded from any file,8,3,Code quality,,,,
