@@ -1023,6 +1023,9 @@ TEST_CASE("Pets can be fed") {
     auto data = R"(
       <npcType id="dog" maxHealth="10" />
       <item id="steak"> <tag name="food"/> </item>
+      <buff id="food" duration="10" canBeInterrupted="1">
+          <stats hps="5" />
+      </buff>
     )";
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
@@ -1031,7 +1034,7 @@ TEST_CASE("Pets can be fed") {
     auto &dog = s.addNPC("dog", {15, 10});
     dog.permissions.setPlayerOwner(c->username());
 
-    AND_GIVEN("its health is below full") {
+    AND_GIVEN("its health is down 1") {
       dog.reduceHealth(1);
 
       WHEN("he tries to feed it") {

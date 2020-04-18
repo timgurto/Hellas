@@ -447,7 +447,9 @@ HANDLE_MESSAGE(CL_FEED_PET) {
   READ_ARGS(serial);
 
   auto *npc = _entities.find<NPC>(serial);
-  npc->healBy(1);
+  const auto it = _buffTypes.find("food");
+  if (it == _buffTypes.end()) return;
+  npc->applyBuff(it->second, user);
 }
 
 HANDLE_MESSAGE(CL_ORDER_NPC_TO_STAY) {

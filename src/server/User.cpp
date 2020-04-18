@@ -673,8 +673,6 @@ void User::sendMessage(const Message &msg) const {
 }
 
 void User::update(ms_t timeElapsed) {
-  regen(timeElapsed);
-
   // Quests
   auto questsToAbandon = std::set<std::string>{};
   for (auto &pair : _quests) {

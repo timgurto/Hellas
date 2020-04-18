@@ -184,6 +184,7 @@ void Entity::update(ms_t timeElapsed) {
     return;
   }
 
+  regen(timeElapsed);
   updateBuffs(timeElapsed);
 
   // Spell cooldowns
