@@ -602,7 +602,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         if (founder == _username)
           message = "By the grace of Athena, you have founded the city of "s +
                     city + "."s;
-        toast("column"s, message);
+        toast("arch"s, message);
         _debug(message);
         break;
       }

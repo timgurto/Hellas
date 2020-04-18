@@ -37,6 +37,9 @@ void Cities::createCity(const City::Name &cityName, const MapPoint &location) {
     return;
   }
   _container[cityName] = {cityName, location};
+
+  Server::instance().broadcast(
+      {SV_CITY_DETAILS, makeArgs(cityName, location.x, location.y)});
 }
 
 bool Cities::doesCityExist(const City::Name &cityName) const {

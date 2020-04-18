@@ -411,8 +411,14 @@ TEST_CASE("New users know about cities") {
       REPEAT_FOR_MS(100);
       CHECK(c.cities().count() == 0);
     }
-  }
-}
 
-// Tell online users about new cities
-// Tell online users when a city falls?
+    WHEN("a city is created") {
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      s.cities().createCity("Athens", {});
+
+      THEN("he knows there's one city") { WAIT_UNTIL(c.cities().count() == 1); }
+    }
+  }
+  // Tell online users when a city falls?
+}
