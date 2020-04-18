@@ -406,11 +406,11 @@ void Server::addUser(const Socket &socket, const std::string &name,
   auto knownSpellsString = userClass.generateKnownSpellsString();
   newUser.sendMessage({SV_KNOWN_SPELLS, knownSpellsString});
 
-  // Send him his hotbar
+  // Other info
   newUser.sendHotbarMessage();
-
-  // Send him his map exploration
   if (userExisted) newUser.exploration().sendWholeMap(socket);
+  _cities.sendInfoAboutCitiesTo(newUser);
+  newUser.sendSpawnPoint();
 
   // Give him starting buffs if he's a new user
   if (!userExisted) {
@@ -419,9 +419,6 @@ void Server::addUser(const Socket &socket, const std::string &name,
       if (buff.shouldGiveToNewPlayers()) newUser.applyBuff(buff, newUser);
     }
   }
-
-  // Send him the cities
-  _cities.sendInfoAboutCitiesTo(newUser);
 
   // Add user to location-indexed trees
   getCollisionChunk(newUser.location()).addEntity(&newUser);

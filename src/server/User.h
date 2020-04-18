@@ -256,6 +256,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   void sendInfoToClient(const User &targetUser) const override;
   void sendInventorySlot(size_t slot) const;
   void sendGearSlot(size_t slot) const;
+  void sendSpawnPoint() const;
 
   void onOutOfRange(const Entity &rhs) const override;
   Message outOfRangeMessage() const override;

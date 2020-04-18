@@ -290,8 +290,9 @@ enum MessageCode {
   // Arguments: listID
   SV_NEW_TERRAIN_LIST_APPLICABLE,
 
-  // The user's spawn point has changed
-  SV_SET_SPAWN,
+  // Your spawn point is ...
+  // Arguments: x, y
+  SV_YOUR_SPAWN_POINT,
 
   // User ... is at location ..., and moved there instantly. (Used for respawning)
   // Arguments: username, x, y

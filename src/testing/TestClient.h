@@ -73,6 +73,7 @@ class TestClient {
   }
   const std::string &allowedTerrain() const { return _client->_allowedTerrain; }
   const CCities &cities() const { return _client->_cities; }
+  const MapPoint &respawnPoint() const { return _client->_respawnPoint; }
 
   Window *craftingWindow() const { return _client->_craftingWindow; }
   Window *buildWindow() const { return _client->_buildWindow; }

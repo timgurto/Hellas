@@ -28,3 +28,16 @@ TEST_CASE("NPCs untarget dead players") {
     }
   }
 }
+
+TEST_CASE("Players know their respawn points") {
+  GIVEN("a user") {
+    auto s = TestServer{};
+    auto c = TestClient{};
+
+    THEN("he knows his respawn point") {
+      s.waitForUsers(1);
+      const auto &user = s.getFirstUser();
+      WAIT_UNTIL(c.respawnPoint() == user.respawnPoint());
+    }
+  }
+}

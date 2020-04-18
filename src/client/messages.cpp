@@ -428,13 +428,13 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
-      case SV_SET_SPAWN: {
+      case SV_YOUR_SPAWN_POINT: {
+        singleMsg >> _respawnPoint.x >> del >> _respawnPoint.y >> del;
         if (del != MSG_END) break;
 
         auto message =
             "By the grace of Hermes, you will return to this point should you "
-            "ever "
-            "fall in battle."s;
+            "ever fall in battle."s;
         toast("light"s, message);
         _debug(message);
         break;

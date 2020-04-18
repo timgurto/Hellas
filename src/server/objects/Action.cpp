@@ -80,7 +80,7 @@ bool Server::setRespawnPoint(const Object &obj, User &performer,
                              const std::string &textArg) {
   performer.respawnPoint(obj.location());
 
-  performer.sendMessage(SV_SET_SPAWN);
+  performer.sendMessage({SV_YOUR_SPAWN_POINT});
   return true;
 }
 
