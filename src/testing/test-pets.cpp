@@ -1030,6 +1030,9 @@ TEST_CASE("Pets can be fed") {
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
     s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    const auto &steak = s.getFirstItem();
+    user.giveItem(&steak);
 
     auto &dog = s.addNPC("dog", {15, 10});
     dog.permissions.setPlayerOwner(c->username());
@@ -1037,11 +1040,15 @@ TEST_CASE("Pets can be fed") {
     AND_GIVEN("its health is down 1") {
       dog.reduceHealth(1);
 
-      WHEN("he tries to feed it") {
+      WHEN("he tries to feed it") {  // Normal success case
         c.sendMessage(CL_FEED_PET, makeArgs(dog.serial()));
 
         THEN("it gets to full health") {
           WAIT_UNTIL(dog.health() == dog.stats().maxHealth);
+
+          AND_THEN("he no longer has the food") {
+            CHECK(!user.inventory(0).first.hasItem());
+          }
         }
       }
 
@@ -1056,6 +1063,14 @@ TEST_CASE("Pets can be fed") {
             CHECK(dog.health() < dog.stats().maxHealth);
           }
         }
+      }
+    }
+    WHEN("he tries to feed it") {  // Pet is at full health
+      c.sendMessage(CL_FEED_PET, makeArgs(dog.serial()));
+
+      THEN("he still has his food") {
+        REPEAT_FOR_MS(100);
+        CHECK(user.inventory(0).first.hasItem());
       }
     }
   }
@@ -1074,11 +1089,6 @@ TEST_CASE("Bad args to CL_FEED_PET") {
     }
   }
 }
-
-// Full health
-// Out of range
-// Permissions
-// No food
 
 // If follow count is reduced, one randomly stays
 // Followers inside vehicle

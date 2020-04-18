@@ -454,6 +454,8 @@ HANDLE_MESSAGE(CL_FEED_PET) {
     RETURN_WITH(WARNING_NO_PERMISSION)
   if (distance(npc->location(), user.location()) > ACTION_DISTANCE)
     RETURN_WITH(WARNING_TOO_FAR)
+  if (npc->health() == npc->stats().maxHealth)
+    RETURN_WITH(WARNING_PET_AT_FULL_HEALTH)
   if (!user.hasItems("food", 1)) RETURN_WITH(WARNING_ITEM_NEEDED)
 
   npc->applyBuff(it->second, user);

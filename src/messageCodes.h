@@ -720,6 +720,7 @@ enum MessageCode {
   WARNING_PET_IS_ALREADY_FOLLOWING,
   WARNING_PET_IS_ALREADY_STAYING,
   WARNING_NO_ROOM_FOR_MORE_FOLLOWERS,
+  WARNING_PET_AT_FULL_HEALTH, // The user tried to heal it but it's already at full health.
 
   // Misc
   WARNING_TOO_FAR, // The user is too far away to perform an action
