@@ -387,14 +387,14 @@ TEST_CASE("New users know about cities") {
 
         AND_THEN("he knows their names") {
           auto athensFound = false, persiaFound = false;
-          for (const auto &city : c.cities()) {
-            if (city.name == "Athens") {
+          for (const auto &pair : c.cities()) {
+            if (pair.first == "Athens") {
               athensFound = true;
-              CHECK(city.location == MapPoint{10, 20});
+              CHECK(pair.second == MapPoint{10, 20});
             }
-            if (city.name == "Persia") {
+            if (pair.first == "Persia") {
               persiaFound = true;
-              CHECK(city.location == MapPoint{30, 40});
+              CHECK(pair.second == MapPoint{30, 40});
             }
           }
           CHECK(athensFound);
@@ -417,8 +417,17 @@ TEST_CASE("New users know about cities") {
       auto &user = s.getFirstUser();
       s.cities().createCity("Athens", {});
 
-      THEN("he knows there's one city") { WAIT_UNTIL(c.cities().count() == 1); }
+      THEN("he knows there's one city") {
+        WAIT_UNTIL(c.cities().count() == 1);
+
+        AND_WHEN("it is destroyed") {
+          s.cities().destroyCity("Athens");
+
+          THEN("he knows there are no cities") {
+            WAIT_UNTIL(c.cities().count() == 0);
+          }
+        }
+      }
     }
   }
-  // Tell online users when a city falls?
 }

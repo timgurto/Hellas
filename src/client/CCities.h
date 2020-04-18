@@ -4,14 +4,12 @@
 // inform the user about them.
 class CCities {
  public:
-  struct City {
-    std::string name;
-    MapPoint location;
-  };
+  using Container = std::map<std::string, MapPoint>;
 
-  using Container = std::vector<City>;
-
-  void add(const City& city) { _container.push_back(city); }
+  void add(const std::string& cityName, const MapPoint& location) {
+    _container[cityName] = location;
+  }
+  void remove(const std::string& cityName) { _container.erase(cityName); }
   size_t count() const { return _container.size(); }
 
   Container::const_iterator begin() const { return _container.begin(); }

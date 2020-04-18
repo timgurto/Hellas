@@ -565,7 +565,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         readString(singleMsg, cityName, MSG_DELIM);
         singleMsg >> del >> location.x >> del >> location.y >> del;
         if (del != MSG_END) break;
-        _cities.add({cityName, location});
+        _cities.add(cityName, location);
         break;
       }
 
@@ -616,6 +616,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
         auto message = "The city of "s + city + " has been destroyed."s;
         toast("fireball"s, message);
         _debug(message);
+
+        _cities.remove(city);
         break;
       }
 

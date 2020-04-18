@@ -60,6 +60,7 @@ void Cities::destroyCity(const City::Name &cityName) {
   }
 
   // Remove city
+  Server::instance().broadcast({SV_CITY_DESTROYED, cityName});
 }
 
 void Cities::addPlayerToCity(const User &user, const City::Name &cityName) {

@@ -90,5 +90,4 @@ void Server::destroyCity(const Object &obj) {
   if (cityName.empty()) return;
 
   instance()._cities.destroyCity(cityName);
-  instance().broadcast({SV_CITY_DESTROYED, cityName});
 }
