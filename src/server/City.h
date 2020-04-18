@@ -61,6 +61,8 @@ class Cities {
   void sendCityObjectsToCitizen(const User &citizen) const;
   MapPoint locationOf(const std::string &cityName) const;
 
+  void sendInfoAboutCitiesTo(const User &recipient) const;
+
   void writeToXMLFile(const std::string &filename) const;
   void readFromXMLFile(const std::string &filename);
 

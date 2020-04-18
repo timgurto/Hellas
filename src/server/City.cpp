@@ -187,3 +187,7 @@ MapPoint Cities::locationOf(const std::string &cityName) const {
   }
   return it->second.location();
 }
+
+void Cities::sendInfoAboutCitiesTo(const User &recipient) const {
+  for (const auto &city : _container) recipient.sendMessage({SV_CITY_DETAILS});
+}

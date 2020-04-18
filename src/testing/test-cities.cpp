@@ -355,13 +355,36 @@ TEST_CASE("Citizens know about their city's distant objects", "[flaky]") {
 TEST_CASE("New users know about cities") {
   auto s = TestServer{};
 
-  GIVEN("a city") {
+  GIVEN("a city called Athens") {
     s.cities().createCity("Athens", {10, 10});
 
     WHEN("a user logs in") {
       auto c = TestClient{};
 
       THEN("he knows about it") { WAIT_UNTIL(c.cities().count() == 1); }
+    }
+  }
+
+  GIVEN("a city called Persia") {
+    s.cities().createCity("Persia", {10, 10});
+
+    WHEN("a user logs in") {
+      auto c = TestClient{};
+
+      THEN("he knows about it") { WAIT_UNTIL(c.cities().count() == 1); }
+    }
+  }
+
+  GIVEN("two cities") {
+    s.cities().createCity("Athens", {10, 10});
+    s.cities().createCity("Persia", {10, 10});
+
+    WHEN("a user logs in") {
+      auto c = TestClient{};
+
+      THEN("he knows there are two cities") {
+        WAIT_UNTIL(c.cities().count() == 2);
+      }
     }
   }
 
