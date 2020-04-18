@@ -239,6 +239,9 @@ void Client::handleBufferedMessages(const std::string &msg) {
       case WARNING_NOT_REPAIRABLE:
       case SV_TAME_ATTEMPT_FAILED:
       case WARNING_NO_VALID_DISMOUNT_LOCATION:
+      case WARNING_PET_IS_ALREADY_FOLLOWING:
+      case WARNING_PET_IS_ALREADY_STAYING:
+      case WARNING_NO_ROOM_FOR_MORE_FOLLOWERS:
         errorMessageColor = Color::CHAT_WARNING;  // Yellow above, red below
       case ERROR_INVALID_USER:
       case ERROR_INVALID_ITEM:
@@ -440,7 +443,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         }
 
         auto message =
-            "By the grace of Hermes, you will return to this point should you "
+            "By the grace of Hermes, you shall return to this point should you "
             "ever fall in battle."s;
         toast("light"s, message);
         _debug(message);
@@ -2722,6 +2725,12 @@ void Client::initializeMessageNames() {
   _errorMessages[SV_TAME_ATTEMPT_FAILED] = "Attempt to tame failed.";
   _errorMessages[WARNING_NO_VALID_DISMOUNT_LOCATION] =
       "No suitable place to dismount.";
+  _errorMessages[WARNING_PET_IS_ALREADY_FOLLOWING] =
+      "That pet is already following you.";
+  _errorMessages[WARNING_PET_IS_ALREADY_STAYING] =
+      "That pet is already staying.";
+  _errorMessages[WARNING_NO_ROOM_FOR_MORE_FOLLOWERS] =
+      "You cannot have any more pets following you.";
 }
 
 void Client::performCommand(const std::string &commandString) {

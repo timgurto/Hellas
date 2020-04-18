@@ -712,6 +712,11 @@ enum MessageCode {
   ERROR_ATTACKED_PEACFUL_PLAYER, // The user tried to attack a player without being at war with him
   ERROR_ALREADY_AT_WAR, // The user tried to declare war on somebody with whom they are already at war.
 
+  // Pets
+  WARNING_PET_IS_ALREADY_FOLLOWING,
+  WARNING_PET_IS_ALREADY_STAYING,
+  WARNING_NO_ROOM_FOR_MORE_FOLLOWERS,
+
   // Misc
   WARNING_TOO_FAR, // The user is too far away to perform an action
   WARNING_NO_PERMISSION, // The user does not have permission to perform an action
