@@ -10,7 +10,7 @@ class CCities {
 
   using Container = std::vector<City>;
 
-  void add() { _container.push_back({}); }
+  void add(const std::string &cityName) { _container.push_back({cityName}); }
   size_t count() const { return _container.size(); }
 
   Container::const_iterator begin() const { return _container.begin(); }
