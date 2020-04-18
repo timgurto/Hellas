@@ -450,6 +450,10 @@ HANDLE_MESSAGE(CL_FEED_PET) {
   if (!npc) RETURN_WITH(WARNING_DOESNT_EXIST)
   const auto it = _buffTypes.find("food");
   if (it == _buffTypes.end()) return;
+  if (!npc->permissions.isOwnedByPlayer(user.name()))
+    RETURN_WITH(WARNING_NO_PERMISSION)
+  if (distance(npc->location(), user.location()) > ACTION_DISTANCE)
+    RETURN_WITH(WARNING_TOO_FAR)
   if (!user.hasItems("food", 1)) RETURN_WITH(WARNING_ITEM_NEEDED)
 
   npc->applyBuff(it->second, user);
@@ -462,11 +466,11 @@ HANDLE_MESSAGE(CL_ORDER_NPC_TO_STAY) {
 
   auto *npc = _entities.find<NPC>(serial);
   if (!npc) RETURN_WITH(WARNING_DOESNT_EXIST)
-  if (npc->order() == NPC::STAY) RETURN_WITH(WARNING_PET_IS_ALREADY_STAYING)
-  if (distance(npc->location(), user.location()) > ACTION_DISTANCE)
-    RETURN_WITH(WARNING_TOO_FAR)
   if (!npc->permissions.isOwnedByPlayer(user.name()))
     RETURN_WITH(WARNING_NO_PERMISSION)
+  if (distance(npc->location(), user.location()) > ACTION_DISTANCE)
+    RETURN_WITH(WARNING_TOO_FAR)
+  if (npc->order() == NPC::STAY) RETURN_WITH(WARNING_PET_IS_ALREADY_STAYING)
 
   user.followers.remove();
   npc->order(NPC::STAY);
@@ -478,13 +482,13 @@ HANDLE_MESSAGE(CL_ORDER_NPC_TO_FOLLOW) {
 
   auto *npc = _entities.find<NPC>(serial);
   if (!npc) RETURN_WITH(WARNING_DOESNT_EXIST)
-  if (npc->order() == NPC::FOLLOW) RETURN_WITH(WARNING_PET_IS_ALREADY_FOLLOWING)
-  if (distance(npc->location(), user.location()) > ACTION_DISTANCE)
-    RETURN_WITH(WARNING_TOO_FAR)
-  if (!user.hasRoomForMoreFollowers())
-    RETURN_WITH(WARNING_NO_ROOM_FOR_MORE_FOLLOWERS)
   if (!npc->permissions.isOwnedByPlayer(user.name()))
     RETURN_WITH(WARNING_NO_PERMISSION)
+  if (distance(npc->location(), user.location()) > ACTION_DISTANCE)
+    RETURN_WITH(WARNING_TOO_FAR)
+  if (npc->order() == NPC::FOLLOW) RETURN_WITH(WARNING_PET_IS_ALREADY_FOLLOWING)
+  if (!user.hasRoomForMoreFollowers())
+    RETURN_WITH(WARNING_NO_ROOM_FOR_MORE_FOLLOWERS)
 
   user.followers.add();
   npc->order(NPC::FOLLOW);
