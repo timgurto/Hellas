@@ -450,7 +450,10 @@ HANDLE_MESSAGE(CL_FEED_PET) {
   if (!npc) RETURN_WITH(WARNING_DOESNT_EXIST)
   const auto it = _buffTypes.find("food");
   if (it == _buffTypes.end()) return;
+  if (!user.hasItems("food", 1)) RETURN_WITH(WARNING_ITEM_NEEDED)
+
   npc->applyBuff(it->second, user);
+  user.removeItems("food", 1);
 }
 
 HANDLE_MESSAGE(CL_ORDER_NPC_TO_STAY) {

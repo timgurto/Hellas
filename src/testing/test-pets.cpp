@@ -1044,6 +1044,19 @@ TEST_CASE("Pets can be fed") {
           WAIT_UNTIL(dog.health() == dog.stats().maxHealth);
         }
       }
+
+      WHEN("he has no food") {
+        user.removeItems("food", 1);
+
+        WHEN("he tries to feed it") {
+          c.sendMessage(CL_FEED_PET, makeArgs(dog.serial()));
+
+          THEN("it doesn't get healed") {
+            REPEAT_FOR_MS(1500);
+            CHECK(dog.health() < dog.stats().maxHealth);
+          }
+        }
+      }
     }
   }
 }
