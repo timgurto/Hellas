@@ -330,6 +330,7 @@ class Client {
   Texture _mapCityFriendly, _mapCityNeutral, _mapCityEnemy;
   Texture _respawnPointIcon;
   MapPoint _respawnPoint;
+  bool _spawnPointHasBeenInitialised{false};
 
   // Social window
   Window *_socialWindow{nullptr};

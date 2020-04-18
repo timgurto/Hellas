@@ -432,6 +432,13 @@ void Client::handleBufferedMessages(const std::string &msg) {
         singleMsg >> _respawnPoint.x >> del >> _respawnPoint.y >> del;
         if (del != MSG_END) break;
 
+        // The first time this message is sent will be on login, and requires no
+        // announcement.
+        if (!_spawnPointHasBeenInitialised) {
+          _spawnPointHasBeenInitialised = true;
+          break;
+        }
+
         auto message =
             "By the grace of Hermes, you will return to this point should you "
             "ever fall in battle."s;
