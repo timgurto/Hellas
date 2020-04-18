@@ -1018,6 +1018,38 @@ TEST_CASE("Followers can count only once") {
   }
 }
 
+TEST_CASE("Pets can be fed") {
+  GIVEN("a user with a pet and some food") {
+    auto data = R"(
+      <npcType id="dog" maxHealth="10" />
+      <item id="steak"> <tag name="food"/> </item>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+
+    auto &dog = s.addNPC("dog", {15, 10});
+    dog.permissions.setPlayerOwner(c->username());
+
+    AND_GIVEN("its health is below full") {
+      dog.reduceHealth(1);
+
+      WHEN("he tries to feed it") {
+        c.sendMessage(CL_FEED_PET, makeArgs(dog.serial()));
+
+        THEN("it gets to full health") {
+          WAIT_UNTIL(dog.health() == dog.stats().maxHealth);
+        }
+      }
+    }
+  }
+}
+
+// Full health
+// Out of range
+// Permissions
+// No food
+
 // If follow count is reduced, one randomly stays
 // Followers inside vehicle
 // Can't order someone else's pet

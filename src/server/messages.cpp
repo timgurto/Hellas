@@ -442,6 +442,14 @@ HANDLE_MESSAGE(CL_TAME_NPC) {
     npc->order(NPC::STAY);
 }
 
+HANDLE_MESSAGE(CL_FEED_PET) {
+  auto serial = Serial{};
+  READ_ARGS(serial);
+
+  auto *npc = _entities.find<NPC>(serial);
+  npc->healBy(1);
+}
+
 HANDLE_MESSAGE(CL_ORDER_NPC_TO_STAY) {
   auto serial = Serial{};
   READ_ARGS(serial);
@@ -524,6 +532,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_CAST)
       SEND_MESSAGE_TO_HANDLER(CL_CAST_ITEM)
       SEND_MESSAGE_TO_HANDLER(CL_TAME_NPC)
+      SEND_MESSAGE_TO_HANDLER(CL_FEED_PET)
       SEND_MESSAGE_TO_HANDLER(CL_ORDER_NPC_TO_STAY)
       SEND_MESSAGE_TO_HANDLER(CL_ORDER_NPC_TO_FOLLOW)
 

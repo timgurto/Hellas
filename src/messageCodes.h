@@ -199,6 +199,10 @@ enum MessageCode {
   // Arguments: serial
   CL_TAME_NPC,
 
+  // I want to feed my pet to heal it
+  // Arguments: serial
+  CL_FEED_PET,
+
   // Change a pet's order
   // Arguments: serial
   CL_ORDER_NPC_TO_STAY,

@@ -88,6 +88,7 @@ bool ClientNPC::addClassSpecificStuffToWindow() {
       {x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Follow", [this, &client]() {
         client.sendMessage({CL_ORDER_NPC_TO_FOLLOW, serial()});
       });
+  followButton->setTooltip("Order this pet to follow you.");
   _window->addChild(followButton);
   x += BUTTON_GAP + BUTTON_WIDTH;
 
@@ -95,11 +96,21 @@ bool ClientNPC::addClassSpecificStuffToWindow() {
       {x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Stay", [this, &client]() {
         client.sendMessage({CL_ORDER_NPC_TO_STAY, serial()});
       });
+  stayButton->setTooltip("Order this pet to stay.");
   _window->addChild(stayButton);
   x += BUTTON_GAP + BUTTON_WIDTH;
-
   y += BUTTON_GAP + BUTTON_HEIGHT;
   if (newWidth < x) newWidth = x;
+
+  x = BUTTON_GAP;
+  auto *feedButton = new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Feed",
+                                [this, &client]() {
+                                  client.sendMessage({CL_FEED_PET, serial()});
+                                });
+  feedButton->setTooltip(
+      "Feed this pet to heal it.  This will consume food from your inventory.");
+  _window->addChild(feedButton);
+  y += BUTTON_GAP + BUTTON_HEIGHT;
 
   _window->resize(newWidth, y);
 
