@@ -561,10 +561,11 @@ void Client::handleBufferedMessages(const std::string &msg) {
 
       case SV_CITY_DETAILS: {
         std::string cityName;
-        readString(singleMsg, cityName, MSG_END);
-        singleMsg >> del;
+        auto location = MapPoint{};
+        readString(singleMsg, cityName, MSG_DELIM);
+        singleMsg >> del >> location.x >> del >> location.y >> del;
         if (del != MSG_END) break;
-        _cities.add(cityName);
+        _cities.add({cityName, location});
         break;
       }
 

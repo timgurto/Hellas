@@ -376,8 +376,8 @@ TEST_CASE("New users know about cities") {
   }
 
   GIVEN("two cities") {
-    s.cities().createCity("Athens", {10, 10});
-    s.cities().createCity("Persia", {10, 10});
+    s.cities().createCity("Athens", {10, 20});
+    s.cities().createCity("Persia", {30, 40});
 
     WHEN("a user logs in") {
       auto c = TestClient{};
@@ -388,8 +388,14 @@ TEST_CASE("New users know about cities") {
         AND_THEN("he knows their names") {
           auto athensFound = false, persiaFound = false;
           for (const auto &city : c.cities()) {
-            if (city.name == "Athens") athensFound = true;
-            if (city.name == "Persia") persiaFound = true;
+            if (city.name == "Athens") {
+              athensFound = true;
+              CHECK(city.location == MapPoint{10, 20});
+            }
+            if (city.name == "Persia") {
+              persiaFound = true;
+              CHECK(city.location == MapPoint{30, 40});
+            }
           }
           CHECK(athensFound);
           CHECK(persiaFound);
@@ -407,3 +413,6 @@ TEST_CASE("New users know about cities") {
     }
   }
 }
+
+// Tell online users about new cities
+// Tell online users when a city falls?
