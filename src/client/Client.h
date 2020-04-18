@@ -328,6 +328,7 @@ class Client {
   Button *_zoomMapInButton{nullptr};
   Button *_zoomMapOutButton{nullptr};
   Texture _mapCityFriendly, _mapCityNeutral, _mapCityEnemy;
+  Texture _respawnPointIcon;
   MapPoint _respawnPoint;
 
   // Social window

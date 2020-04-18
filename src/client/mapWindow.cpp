@@ -39,6 +39,7 @@ void Client::initializeMapWindow() {
   _mapCityFriendly = {"Images/UI/map-city-friendly.png", Color::MAGENTA};
   _mapCityNeutral = {"Images/UI/map-city-neutral.png", Color::MAGENTA};
   _mapCityEnemy = {"Images/UI/map-city-enemy.png", Color::MAGENTA};
+  _respawnPointIcon = {"Images/UI/map-respawn.png", Color::MAGENTA};
 
   // Zoom buttons
   static const auto ZOOM_BUTTON_SIZE = 11;
@@ -104,6 +105,10 @@ void Client::updateMapWindow(Element &) {
       client.addMapPin(avatar.location(), avatar.nameColor(), avatar.name());
   }
 
+  client.addIconToMap(client._respawnPoint, &client._respawnPointIcon,
+                      "On death, you will return here");
+
+  // Cities
   for (const auto &pair : client._cities) {
     auto tooltipText = "City of "s + pair.first;
     auto cityIcon = &client._mapCityNeutral;
