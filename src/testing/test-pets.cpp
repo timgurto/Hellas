@@ -1048,6 +1048,20 @@ TEST_CASE("Pets can be fed") {
   }
 }
 
+TEST_CASE("Bad args to CL_FEED_PET") {
+  GIVEN("a user") {
+    auto s = TestServer{};
+    auto c = TestClient{};
+    s.waitForUsers(1);
+
+    WHEN("he tries to feed a nonexistent pet") {
+      c.sendMessage(CL_FEED_PET, "50");
+
+      THEN("the server survives") { REPEAT_FOR_MS(100); }
+    }
+  }
+}
+
 // Full health
 // Out of range
 // Permissions

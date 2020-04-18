@@ -447,6 +447,7 @@ HANDLE_MESSAGE(CL_FEED_PET) {
   READ_ARGS(serial);
 
   auto *npc = _entities.find<NPC>(serial);
+  if (!npc) RETURN_WITH(WARNING_DOESNT_EXIST)
   const auto it = _buffTypes.find("food");
   if (it == _buffTypes.end()) return;
   npc->applyBuff(it->second, user);
