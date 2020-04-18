@@ -315,7 +315,8 @@ class Client {
                          const std::string &tooltip = {});
   void Client::addOutlinedMapPin(const MapPoint &worldPosition,
                                  const Color &color);
-  void Client::addIconToMap(const MapPoint &worldPosition, const Texture *icon);
+  void Client::addIconToMap(const MapPoint &worldPosition, const Texture *icon,
+                            const std::string &tooltip = {});
   ScreenRect Client::convertToMapPosition(const MapPoint &worldPosition) const;
   int _zoom{3};
   static const int MIN_ZOOM{0};

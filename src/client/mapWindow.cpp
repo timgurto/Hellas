@@ -105,15 +105,19 @@ void Client::updateMapWindow(Element &) {
   }
 
   for (const auto &pair : client._cities) {
+    auto tooltipText = "City of "s + pair.first;
     auto cityIcon = &client._mapCityNeutral;
+
     auto isInCity = !client.character().cityName().empty();
-    if (client.character().cityName() == pair.first)
+    if (client.character().cityName() == pair.first) {
       cityIcon = &client._mapCityFriendly;
-    else if (isInCity && client.isCityAtWarWithCityDirectly(pair.first))
+      tooltipText = "Your city, "s + pair.first;
+    } else if (isInCity && client.isCityAtWarWithCityDirectly(pair.first)) {
       cityIcon = &client._mapCityEnemy;
-    else if (!isInCity && client.isAtWarWithCityDirectly(pair.first))
+    } else if (!isInCity && client.isAtWarWithCityDirectly(pair.first)) {
       cityIcon = &client._mapCityEnemy;
-    client.addIconToMap(pair.second, cityIcon);
+    }
+    client.addIconToMap(pair.second, cityIcon, tooltipText);
   }
 
   client.addOutlinedMapPin(client._character.location(), Color::COMBATANT_SELF);
@@ -156,14 +160,17 @@ void Client::addOutlinedMapPin(const MapPoint &worldPosition,
       new ColorBlock(OUTLINE_RECT_V + mapPosition, Color::UI_OUTLINE));
 }
 
-void Client::addIconToMap(const MapPoint &worldPosition, const Texture *icon) {
+void Client::addIconToMap(const MapPoint &worldPosition, const Texture *icon,
+                          const std::string &tooltip) {
   if (!icon) return;
 
   auto mapPosition = convertToMapPosition(worldPosition);
   mapPosition.x -= icon->width() / 2;
   mapPosition.y -= icon->height() / 2;
 
-  _mapIcons->addChild(new Picture(mapPosition.x, mapPosition.y, *icon));
+  auto picture = new Picture(mapPosition.x, mapPosition.y, *icon);
+  if (!tooltip.empty()) picture->setTooltip(tooltip);
+  _mapIcons->addChild(picture);
 }
 
 ScreenRect Client::convertToMapPosition(const MapPoint &worldPosition) const {
