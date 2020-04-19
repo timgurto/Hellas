@@ -671,6 +671,7 @@
     <material id="smallPot" />
     <tool class="waterSource" />
     <unlockedBy recipe="smallPot" />
+    <unlockedBy construction="flaxCrop0" />
 </recipe>
 <recipe
     id="emptyWaterVessel" name="Empty water vessel" product="smallPot" time="4000" >
