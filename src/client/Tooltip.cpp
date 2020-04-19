@@ -135,6 +135,10 @@ void Tooltip::addMerchantSlots(const std::vector<ClientMerchantSlot> &slots) {
 
     y += Client::ICON_SIZE + GAP;
   }
+
+  texture.setBlend();
+  renderer.popRenderTarget();
+  _content.push_back(texture);
 }
 
 void Tooltip::addItem(const ClientItem &item) {
