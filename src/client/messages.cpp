@@ -432,22 +432,18 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
-      case SV_YOUR_SPAWN_POINT: {
+      case SV_YOUR_SPAWN_POINT:
+      case SV_YOU_CHANGED_YOUR_SPAWN_POINT: {
         singleMsg >> _respawnPoint.x >> del >> _respawnPoint.y >> del;
         if (del != MSG_END) break;
 
-        // The first time this message is sent will be on login, and requires no
-        // announcement.
-        if (!_spawnPointHasBeenInitialised) {
-          _spawnPointHasBeenInitialised = true;
-          break;
+        if (msgCode == SV_YOU_CHANGED_YOUR_SPAWN_POINT) {
+          auto message =
+              "By the grace of Hermes, you shall return to this point should "
+              "you ever fall in battle."s;
+          toast("light"s, message);
+          _debug(message);
         }
-
-        auto message =
-            "By the grace of Hermes, you shall return to this point should you "
-            "ever fall in battle."s;
-        toast("light"s, message);
-        _debug(message);
         break;
       }
 

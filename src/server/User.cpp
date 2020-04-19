@@ -1474,9 +1474,10 @@ void User::sendGearSlot(size_t slotIndex) const {
                               slot.second, item.health())});
 }
 
-void User::sendSpawnPoint() const {
-  sendMessage(
-      {SV_YOUR_SPAWN_POINT, makeArgs(_respawnPoint.x, _respawnPoint.y)});
+void User::sendSpawnPoint(bool hasChanged) const {
+  auto code =
+      hasChanged ? SV_YOU_CHANGED_YOUR_SPAWN_POINT : SV_YOUR_SPAWN_POINT;
+  sendMessage({code, makeArgs(_respawnPoint.x, _respawnPoint.y)});
 }
 
 void User::onOutOfRange(const Entity &rhs) const {

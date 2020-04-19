@@ -297,6 +297,7 @@ enum MessageCode {
   // Your spawn point is ...
   // Arguments: x, y
   SV_YOUR_SPAWN_POINT,
+  SV_YOU_CHANGED_YOUR_SPAWN_POINT,
 
   // User ... is at location ..., and moved there instantly. (Used for respawning)
   // Arguments: username, x, y
