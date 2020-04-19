@@ -814,15 +814,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
             auto message =
                 "You have learned how to craft a new recipe: " + it->name();
             toast("leather", message);
+            _debug(message);
           }
-        }
-        if (msgCode == SV_NEW_RECIPES) {
-          _debug << "You have discovered ";
-          if (n == 1)
-            _debug << "a new recipe";
-          else
-            _debug << n << " new recipes";
-          _debug << "!" << Log::endl;
         }
 
         // For unlock info
@@ -856,15 +849,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
             auto message = "You have learned how to construct a new object: " +
                            cot->name();
             toast("hammer", message);
+            _debug(message);
           }
-        }
-        if (msgCode == SV_NEW_CONSTRUCTIONS) {
-          _debug << "You have discovered ";
-          if (n == 1)
-            _debug << "a new construction";
-          else
-            _debug << n << " new constructions";
-          _debug << "!" << Log::endl;
         }
 
         // For unlock info
