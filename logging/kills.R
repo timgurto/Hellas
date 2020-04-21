@@ -50,7 +50,27 @@ for (i in 1:length(data$npcID)){
     combatTimesSum[index] = combatTimesSum[index] + data$duration[i]
     combatCount[index] = combatCount[index] + 1
 }
+
+colours = colorRamp(c("green", "red"))
+minFightTime = NA
+maxFightTime = NA
     
+for (playerLvl in 1:MAX_PLAYER_LVL){
+for (mobLvl in 1:MAX_MOB_LVL){
+    index = (playerLvl-1) * MAX_MOB_LVL + mobLvl
+    fightTime = combatTimesSum[index] / combatCount[index]
+    
+    if (is.na(minFightTime))
+        minFightTime = fightTime
+    else if (!is.na(fightTime) && fightTime < minFightTime)
+        minFightTime = fightTime
+        
+    if (is.na(maxFightTime))
+        maxFightTime = fightTime
+    else if (!is.na(fightTime) && fightTime > maxFightTime)
+        maxFightTime = fightTime
+}}
+
 for (playerLvl in 1:MAX_PLAYER_LVL){
 for (mobLvl in 1:MAX_MOB_LVL){
     index = (playerLvl-1) * MAX_MOB_LVL + mobLvl
@@ -58,14 +78,17 @@ for (mobLvl in 1:MAX_MOB_LVL){
     if (combatCount[index] == 0) {next} # Don't draw anything if no data
     
     fightTime = combatTimesSum[index] / combatCount[index]
+    fightTimeNorm = (fightTime - minFightTime) / (maxFightTime - minFightTime)
+    colour = colours(fightTimeNorm)
+    colour = rgb(colour[1][1], colour[2][1], colour[3][1], maxColorValue=255)
     text(
         x=playerLvl,
         y=mobLvl,
-        labels=fightTime
+        labels=fightTime,
+        col=colour
     )
     
-}
-}
+}}
 
 
 
