@@ -1,7 +1,7 @@
 library("RColorBrewer")
 #options(warn=2)
 
-svg("kills.svg", width=16, height=9)
+svg("kills.svg", width=16, height=16)
 
 par(col="#bbbbbb", col.axis="#bbbbbb", col.lab="#bbbbbb", fg="#bbbbbb", bg="black")
 
@@ -29,15 +29,6 @@ VECTOR_SIZE = MAX_PLAYER_LVL * MAX_MOB_LVL
 combatTimesSum = vector("numeric", VECTOR_SIZE)
 combatCount = vector("numeric", VECTOR_SIZE)
 
-
-plot(
-    x=NULL,
-    xlim=c(0.5, max(data$killerLevel)+0.5),
-    ylim=c(0.5, max(data$npcLevel)+0.5),
-    xlab="Player level",
-    ylab="Mob level"
-)
-
 # Organise data into "2D" arrays
 for (i in 1:length(data$npcID)){
     if (data$threatCount[i] != 1) {next}
@@ -51,10 +42,20 @@ for (i in 1:length(data$npcID)){
     combatCount[index] = combatCount[index] + 1
 }
 
-colours = colorRamp(c("green", "red"))
+AXIS_MAX = max(MAX_PLAYER_LVL, MAX_MOB_LVL)
+plot(
+    x=NULL,
+    xlim=c(0.5, AXIS_MAX+0.5),
+    ylim=c(0.5, AXIS_MAX+0.5),
+    xlab="Player level",
+    ylab="Mob level"
+)
+
+coloursFromPalette = brewer.pal(11, "Spectral")
+colours = colorRamp(coloursFromPalette)
+
 minFightTime = NA
-maxFightTime = NA
-    
+maxFightTime = NA    
 for (playerLvl in 1:MAX_PLAYER_LVL){
 for (mobLvl in 1:MAX_MOB_LVL){
     index = (playerLvl-1) * MAX_MOB_LVL + mobLvl
@@ -78,14 +79,34 @@ for (mobLvl in 1:MAX_MOB_LVL){
     if (combatCount[index] == 0) {next} # Don't draw anything if no data
     
     fightTime = combatTimesSum[index] / combatCount[index]
+    
     fightTimeNorm = (fightTime - minFightTime) / (maxFightTime - minFightTime)
+    fightTimeNorm = 1 - fightTimeNorm
     colour = colours(fightTimeNorm)
-    colour = rgb(colour[1][1], colour[2][1], colour[3][1], maxColorValue=255)
+    r = colour[1][1]
+    g = colour[2][1]
+    b = colour[3][1]
+    colour = rgb(r, g, b, maxColorValue=255)
+    
+    brightness = (r+g+b)/3
+    if (brightness > 127)
+        textColor = "black"
+    else
+        textColor = "white"
+    
+    polygon(
+        x=c(playerLvl-0.5, playerLvl+0.5, playerLvl+0.5, playerLvl-0.5),
+        y=c(mobLvl+0.5, mobLvl+0.5, mobLvl-0.5, mobLvl-0.5),
+        col=colour,
+        border="black",
+        lwd=5
+    )
+    label = paste(round(fightTime, 1), "s", sep="")
     text(
         x=playerLvl,
         y=mobLvl,
-        labels=fightTime,
-        col=colour
+        labels=label,
+        col=textColor
     )
     
 }}
