@@ -30,7 +30,7 @@
 </quest>
     <npcType
         id="prometheus" name="Prometheus"
-        level="20" maxHealth="82" isCivilian="1" >
+        level="20" maxHealth="149" isCivilian="1" >
         <humanoid>
             <gear id="linenChitonOrange" />
             <gear id="sandals" />
@@ -40,7 +40,7 @@
     </npcType>
     <npcType
         id="tutPig" name="Pig" template="pig"
-        level="1" maxHealth="20" attack="5" attackTime="3020" isNeutral="1"
+        level="1" maxHealth="18" attack="5" attackTime="3020" isNeutral="1"
         xDrawOffset="-11" yDrawOffset="-13" />
 
 <quest id="tutParts" name="Goat Accumulator" startsAt="prometheus" endsAt="prometheus"
@@ -57,7 +57,7 @@
 </quest>
     <npcType
         id="tutGoat" name="Goat" template="goat"
-        level="2" maxHealth="19" attack="6" attackTime="2780" isNeutral="1" >
+        level="2" maxHealth="20" attack="7" attackTime="3780" isNeutral="1" >
         <loot id="tutMeat" > <normal mean="0.7" sd="0.5" /> </loot>
         <loot id="tutHide" chance="0.2" />
         <loot id="tutEntrails"> <normal mean="0.7" sd="0.5" /> </loot>
@@ -161,7 +161,7 @@
     </objectType>
     <npcType
         id="tutBoar" name="Boar" template="boar"
-        level="3" maxHealth="19" attack="7" attackTime="2780" >
+        level="3" maxHealth="21" attack="6" attackTime="2800" >
         <loot id="meat" > <normal mean="0.5" sd="0.7" /> </loot>
         <loot id="tutEntrails3" chance="0.05" />
     </npcType>
@@ -279,7 +279,7 @@
 </quest>
     <npcType
         id="tutSnake" name="Snake" isFlat="1" template="snake"
-        level="4" maxHealth="14" attack="4" attackTime="2050" isRanged="1" school="earth" projectile="poison" >
+        level="4" maxHealth="23" attack="5" attackTime="3000" isRanged="1" school="earth" projectile="poison" >
         <loot id="meat" > <normal mean="0.6" sd="0.5" /> </loot>
         <loot id="tutEntrails3" chance="0.15" />
     </npcType>
@@ -292,7 +292,7 @@
 </quest>
     <npcType
         id="tutTortoise" name="Tortoise" template="tortoise"
-        level="5" maxHealth="18" attack="6" attackTime="2800" >
+        level="5" maxHealth="26" attack="4" attackTime="2800" >
         <spell id="tutShield" />
         <loot id="meat" > <normal mean="0.6" sd="0.5" /> </loot>
         <loot id="tutEntrails3" chance="0.15" />
@@ -316,7 +316,7 @@
 </quest>
     <npcType
         id="tutLizard" name="Lizard" template="lizard"
-        level="6" maxHealth="20" attack="6" attackTime="2765" >
+        level="6" maxHealth="23" attack="7" attackTime="2765" >
         <spell id="tutHeal" />
         <loot id="meat" > <normal mean="0.6" sd="0.5" /> </loot>
         <loot id="tutEntrails3" chance="0.15" />
@@ -324,7 +324,7 @@
     <spell id="tutHeal" cooldown="10" school="water">
     <aesthetics sounds="heal" impactParticles="lightRays" />
         <targets self="1" />
-    <function name="heal" i1="5" />
+    <function name="heal" i1="7" />
     </spell>
 
     
@@ -340,7 +340,7 @@
 </quest>
     <npcType
         id="prometheusBound" name="Prometheus"
-        level="20" maxHealth="82" isCivilian="1" allowedTerrain="mountains"
+        level="20" maxHealth="149" isCivilian="1" allowedTerrain="mountains"
         xDrawOffset="-20" yDrawOffset="-12" >
         <class name="titan"/>
         <particles profile="wound" x="3" y="0" />
@@ -372,7 +372,7 @@
 </quest>
     <npcType
         id="gigantis" name="Gigantis"
-        level="20" maxHealth="530" attack="12" attackTime="1500"
+        level="20" maxHealth="500" attack="40" attackTime="2895"
         maxDistanceFromSpawner = "150" >
         <humanoid base="gigantis">
             <gear id="copperCuirass" />
