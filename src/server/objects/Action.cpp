@@ -43,6 +43,8 @@ bool Server::endTutorial(const Object &obj, User &performer,
   server.sendMessage(performer.socket(),
                      {SV_CONSTRUCTIONS, makeArgs(1, "fire")});
 
+  performer.updateStats();
+
   server.removeAllObjectsOwnedBy(
       {Permissions::Owner::PLAYER, performer.name()});
 

@@ -142,6 +142,8 @@ HANDLE_MESSAGE(CL_SKIP_TUTORIAL) {
     user.sendMessage({SV_NEW_RECIPES, makeArgs(1, "cookedMeat")});
   }
 
+  user.updateStats();
+
   removeAllObjectsOwnedBy({Permissions::Owner::PLAYER, user.name()});
 
   user.markTutorialAsCompleted();
