@@ -62,13 +62,6 @@ Server::Server()
     _userFilesPath = cmdLineArgs.getString("user-files-path") + "/";
   if (cmdLineArgs.contains("new")) deleteUserFiles();
 
-  {
-    auto killsFile = std::ofstream{"kills.log"};
-    killsFile << "npcID,killingClass,threatCount,npcLevel,killerLevel,duration,"
-                 "isRanged"
-              << std::endl;
-  }
-
   // Socket details
   sockaddr_in serverAddr;
   serverAddr.sin_family = AF_INET;

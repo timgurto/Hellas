@@ -188,10 +188,10 @@ void NPC::onDeath() {
 
     auto of = std::ofstream{"kills.log", std::ios_base::app};
     of << type()->id()                  // NPC ID
-       << "," << killerClass            // Killer's class
-       << "," << _threatTable.size()    // Entities in threat table
        << "," << level()                // NPC level
+       << "," << killerClass            // Killer's class
        << "," << killerLevel            // Killer's level
+       << "," << _threatTable.size()    // Entities in threat table
        << "," << timeToKill             // Time between engagement and death
        << "," << npcType()->isRanged()  // Whether NPC is ranged
        << std::endl;
