@@ -253,6 +253,7 @@
     <!-- Shoulders -->
         <!-- Cloak (EPS) -->
             <item id="linenCloak" name="Linen Cloak" gearSlot="3" sounds="fabric" lvlReq="6" >
+                <stats armor="1" />
                 <offset x="-4" y="-1" />
                 <canBeRepaired cost="linenCloth" tool="sewing" />
             </item>
