@@ -514,6 +514,7 @@ TEST_CASE("Broken items don't work") {
     auto data = R"(
       <item id="sword" gearSlot="6" >
         <weapon damage="42"  speed="1" />
+        <canBeRepaired/>
       </item>
     )";
     auto s = TestServer::WithDataString(data);
@@ -541,6 +542,15 @@ TEST_CASE("Broken items don't work") {
 
         THEN("his attack is the baseline User attack") {
           CHECK(user.stats().weaponDamage == DEFAULT_DAMAGE);
+
+          AND_WHEN("he repairs it") {
+            c.sendMessage(CL_REPAIR_ITEM,
+                          makeArgs(Serial::Gear(), Item::WEAPON_SLOT));
+
+            THEN("his attack is higher than the baseline again") {
+              WAIT_UNTIL(user.stats().weaponDamage > DEFAULT_DAMAGE);
+            }
+          }
         }
       }
     }

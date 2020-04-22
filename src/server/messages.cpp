@@ -452,7 +452,11 @@ HANDLE_MESSAGE(CL_REPAIR_ITEM) {
     user.removeItems(itemToRemove);
   }
 
+  auto wasBroken = itemToRepair->isBroken();
+
   itemToRepair->repair();
+
+  if (wasBroken) user.updateStats();
 }
 
 HANDLE_MESSAGE(CL_TAME_NPC) {
