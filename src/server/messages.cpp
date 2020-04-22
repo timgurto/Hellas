@@ -403,6 +403,58 @@ HANDLE_MESSAGE(CL_CAST_ITEM) {
   if (item.returnsOnCast()) user.giveItem(item.returnsOnCast());
 }
 
+HANDLE_MESSAGE(CL_REPAIR_ITEM) {
+  auto serial = Serial{};
+  auto slot = size_t{};
+  READ_ARGS(serial, slot);
+
+  ServerItem::Instance *itemToRepair = nullptr;
+  if (serial.isInventory())
+    itemToRepair = &user.inventory(slot).first;
+  else if (serial.isGear())
+    itemToRepair = &user.gear(slot).first;
+  else {  // Container object
+    auto *ent = _entities.find(serial);
+    auto *obj = dynamic_cast<Object *>(ent);
+
+    if (!obj) RETURN_WITH(WARNING_DOESNT_EXIST)
+
+    if (!obj->permissions.doesUserHaveAccess(user.name()))
+      RETURN_WITH(WARNING_NO_PERMISSION)
+
+    auto numSlots = obj->objType().container().slots();
+    if (slot >= numSlots) RETURN_WITH(ERROR_INVALID_SLOT)
+
+    itemToRepair = &obj->container().at(slot).first;
+  }
+
+  const auto &repairInfo = itemToRepair->type()->repairInfo();
+  if (!repairInfo.canBeRepaired) RETURN_WITH(WARNING_NOT_REPAIRABLE)
+
+  auto costItem = findItem(repairInfo.cost);
+  if (repairInfo.hasCost()) {
+    auto cost = ItemSet{};
+    cost.add(costItem);
+
+    if (!user.hasItems(cost)) RETURN_WITH(WARNING_ITEM_NEEDED)
+  }
+
+  if (repairInfo.requiresTool()) {
+    if (!user.checkAndDamageToolAndGetSpeed(repairInfo.tool)) {
+      user.sendMessage({WARNING_ITEM_TAG_NEEDED, repairInfo.tool});
+      return;
+    }
+  }
+
+  if (repairInfo.hasCost()) {
+    auto itemToRemove = ItemSet{};
+    itemToRemove.add(costItem);
+    user.removeItems(itemToRemove);
+  }
+
+  itemToRepair->repair();
+}
+
 HANDLE_MESSAGE(CL_TAME_NPC) {
   auto serial = Serial{};
   READ_ARGS(serial);
@@ -545,6 +597,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_SWAP_ITEMS)
       SEND_MESSAGE_TO_HANDLER(CL_CAST)
       SEND_MESSAGE_TO_HANDLER(CL_CAST_ITEM)
+      SEND_MESSAGE_TO_HANDLER(CL_REPAIR_ITEM)
       SEND_MESSAGE_TO_HANDLER(CL_TAME_NPC)
       SEND_MESSAGE_TO_HANDLER(CL_FEED_PET)
       SEND_MESSAGE_TO_HANDLER(CL_ORDER_NPC_TO_STAY)
@@ -962,16 +1015,6 @@ void Server::handleBufferedMessages(const Socket &client,
 
         // Alert watchers
         obj->tellRelevantUsersAboutMerchantSlot(slot);
-        break;
-      }
-
-      case CL_REPAIR_ITEM: {
-        Serial serial;
-        size_t slot;
-        iss >> serial >> del >> slot >> del;
-        if (del != MSG_END) return;
-
-        handle_CL_REPAIR_ITEM(*user, serial, slot);
         break;
       }
 
@@ -1460,55 +1503,6 @@ void Server::handle_CL_TAKE_ITEM(User &user, Serial serial, size_t slotNum) {
     }
     asObject->tellRelevantUsersAboutInventorySlot(slotNum);
   }
-}
-
-void Server::handle_CL_REPAIR_ITEM(User &user, Serial serial, size_t slot) {
-  ServerItem::Instance *itemToRepair = nullptr;
-
-  if (serial.isInventory())
-    itemToRepair = &user.inventory(slot).first;
-  else if (serial.isGear())
-    itemToRepair = &user.gear(slot).first;
-  else {  // Container object
-    auto *ent = _entities.find(serial);
-    auto *obj = dynamic_cast<Object *>(ent);
-
-    if (!obj) RETURN_WITH(WARNING_DOESNT_EXIST)
-
-    if (!obj->permissions.doesUserHaveAccess(user.name()))
-      RETURN_WITH(WARNING_NO_PERMISSION)
-
-    auto numSlots = obj->objType().container().slots();
-    if (slot >= numSlots) RETURN_WITH(ERROR_INVALID_SLOT)
-
-    itemToRepair = &obj->container().at(slot).first;
-  }
-
-  const auto &repairInfo = itemToRepair->type()->repairInfo();
-  if (!repairInfo.canBeRepaired) RETURN_WITH(WARNING_NOT_REPAIRABLE)
-
-  auto costItem = findItem(repairInfo.cost);
-  if (repairInfo.hasCost()) {
-    auto cost = ItemSet{};
-    cost.add(costItem);
-
-    if (!user.hasItems(cost)) RETURN_WITH(WARNING_ITEM_NEEDED)
-  }
-
-  if (repairInfo.requiresTool()) {
-    if (!user.checkAndDamageToolAndGetSpeed(repairInfo.tool)) {
-      user.sendMessage({WARNING_ITEM_TAG_NEEDED, repairInfo.tool});
-      return;
-    }
-  }
-
-  if (repairInfo.hasCost()) {
-    auto itemToRemove = ItemSet{};
-    itemToRemove.add(costItem);
-    user.removeItems(itemToRemove);
-  }
-
-  itemToRepair->repair();
 }
 
 void Server::handle_CL_REPAIR_OBJECT(User &user, Serial serial) {
