@@ -1,7 +1,7 @@
 library("RColorBrewer")
 #options(warn=2)
 
-svg("kills.svg", width=20, height=7)
+svg("kills.svg", width=20, height=8)
 
 par(
     mfrow=c(1,3),
@@ -10,7 +10,9 @@ par(
     col.lab="#bbbbbb",
     col.main="#bbbbbb",
     fg="#bbbbbb",
-    bg="black"
+    bg="black",
+    mar=c(12.1,4.1,4.1,2.1),
+    xpd="NA"
 )
 
 data <- read.csv(
@@ -128,15 +130,18 @@ getTextColour <- function(normalised){
 
 for (class in c("Athlete", "Scholar", "Zealot"))
 {
+    mainTitle = ""
+    if (class == "Scholar") mainTitle = "Average fight durations"
+    
     plot(
         x=NULL,
         xlim=c(0.5, AXIS_MAX+0.5),
         ylim=c(0.5, AXIS_MAX+0.5),
-        xlab="Player level",
+        xlab=paste(class, "level"),
         ylab="Mob level",
         asp=1,
         bty="n",
-        main=class
+        main=mainTitle
     )
 
     for (playerLvl in 1:MAX_PLAYER_LVL){
@@ -176,22 +181,35 @@ for (class in c("Athlete", "Scholar", "Zealot"))
     }}
     
     if (class == "Scholar"){
-        legendNums = vector("character", paletteSize)
-        legendCols = vector("character", paletteSize)
-        for (i in 1:paletteSize){
-            proportion = (i-1) / (paletteSize-1)
-            number = proportion * (maxFightTime - minFightTime) + minFightTime
-            rounded = round(number)
-            legendNums[i] = paste(rounded, "s", sep="")
-            legendCols[i] = getColour(proportion)
+        legendL = -AXIS_MAX
+        legendR = AXIS_MAX*2
+        legendT = -0.225 * AXIS_MAX
+        legendB = -0.275 * AXIS_MAX
+        numBars = 1000
+        barW = (legendR - legendL) / (numBars)
+        for (i in 1:numBars){
+            proportion = (i-1) / (numBars-1)
+            col = getColour(1-proportion)
+            left = legendL + (i-1) * barW
+            right = left + barW
+            polygon(
+                x=c(left, right, right, left),
+                y=c(legendT, legendT, legendB, legendB),
+                col=col,
+                border=col
+            )
         }
-        
-        legend(
-            "topleft",
-            legend=legendNums,
-            fill=legendCols,
-            bty="n"
-        )
+        shortestTime = ceiling(minFightTime)
+        longestTime = floor(maxFightTime)
+        for (i in shortestTime:longestTime){
+            proportion = (i - minFightTime) / (maxFightTime - minFightTime)
+            text(
+                x = legendL + proportion * (legendR - legendL),
+                y = (legendT + legendB) / 2,
+                labels=paste(i, "s", sep=""),
+                col = "black"
+            )
+        }
     }
 }
 
