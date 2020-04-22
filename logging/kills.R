@@ -10,7 +10,8 @@ par(
     col.lab="#bbbbbb",
     col.main="#bbbbbb",
     fg="#bbbbbb",
-    bg="black")
+    bg="black"
+)
 
 data <- read.csv(
     file="../kills.log",
@@ -63,7 +64,8 @@ for (i in 1:length(data$npcID)){
 AXIS_MAX = max(MAX_PLAYER_LVL, MAX_MOB_LVL)
 
 palette = "Spectral" #"RdYlGn"
-coloursFromPalette = brewer.pal(11, palette)
+paletteSize = 11
+coloursFromPalette = brewer.pal(paletteSize, palette)
 colours = colorRamp(coloursFromPalette)
 
 # Calculate min and max fight times, so that colours can be placed on a spectrum
@@ -104,6 +106,26 @@ for (mobLvl in 1:MAX_MOB_LVL){
         maxFightTime = fightTime
 }}
 
+getColour <- function(normalised){
+    colour = colours(normalised)
+    r = colour[1][1]
+    g = colour[2][1]
+    b = colour[3][1]
+    return (rgb(r, g, b, maxColorValue=255))
+}
+getTextColour <- function(normalised){
+    colour = colours(fightTimeNorm)
+    r = colour[1][1]
+    g = colour[2][1]
+    b = colour[3][1]
+    
+    brightness = (r+g+b)/3
+    if (brightness > 127)
+        return ("black")
+    else
+        return ("white")
+}
+
 for (class in c("Athlete", "Scholar", "Zealot"))
 {
     plot(
@@ -134,17 +156,7 @@ for (class in c("Athlete", "Scholar", "Zealot"))
         
         fightTimeNorm = (fightTime - minFightTime) / (maxFightTime - minFightTime)
         fightTimeNorm = 1 - fightTimeNorm
-        colour = colours(fightTimeNorm)
-        r = colour[1][1]
-        g = colour[2][1]
-        b = colour[3][1]
-        colour = rgb(r, g, b, maxColorValue=255)
-        
-        brightness = (r+g+b)/3
-        if (brightness > 127)
-            textColor = "black"
-        else
-            textColor = "white"
+        colour = getColour(fightTimeNorm)
         
         polygon(
             x=c(playerLvl-0.5, playerLvl+0.5, playerLvl+0.5, playerLvl-0.5),
@@ -158,10 +170,29 @@ for (class in c("Athlete", "Scholar", "Zealot"))
             x=playerLvl,
             y=mobLvl,
             labels=label,
-            col=textColor
+            col=getTextColour(fightTimeNorm)
         )
         
     }}
+    
+    if (class == "Scholar"){
+        legendNums = vector("character", paletteSize)
+        legendCols = vector("character", paletteSize)
+        for (i in 1:paletteSize){
+            proportion = (i-1) / (paletteSize-1)
+            number = proportion * (maxFightTime - minFightTime) + minFightTime
+            rounded = round(number)
+            legendNums[i] = paste(rounded, "s", sep="")
+            legendCols[i] = getColour(proportion)
+        }
+        
+        legend(
+            "topleft",
+            legend=legendNums,
+            fill=legendCols,
+            bty="n"
+        )
+    }
 }
 
 
