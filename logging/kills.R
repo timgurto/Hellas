@@ -150,18 +150,28 @@ for (class in c("Athlete", "Scholar", "Zealot"))
         
         if (class == "Athlete"){
             if (ath_combatCount[index] == 0) {next} # Don't draw anything if no data
-            fightTime = ath_combatTimesSum[index] / ath_combatCount[index]
+            qty = ath_combatCount[index]
+            fightTime = ath_combatTimesSum[index] / qty
         } else if (class == "Scholar"){
             if (sch_combatCount[index] == 0) {next} # Don't draw anything if no data
-            fightTime = sch_combatTimesSum[index] / sch_combatCount[index]
+            qty = sch_combatCount[index]
+            fightTime = sch_combatTimesSum[index] / qty
         } else if (class == "Zealot"){
             if (zea_combatCount[index] == 0) {next} # Don't draw anything if no data
-            fightTime = zea_combatTimesSum[index] / zea_combatCount[index]
+            qty = zea_combatCount[index]
+            fightTime = zea_combatTimesSum[index] / qty
         }
         
         fightTimeNorm = (fightTime - minFightTime) / (maxFightTime - minFightTime)
         fightTimeNorm = 1 - fightTimeNorm
         colour = getColour(fightTimeNorm)
+        
+        enoughData = 10
+        if (qty < enoughData){
+            alpha = qty / enoughData * 255
+            rgbVec = col2rgb(colour)
+            colour = rgb(rgbVec[1], rgbVec[2], rgbVec[3], alpha, maxColorValue=255)
+        }
         
         polygon(
             x=c(playerLvl-0.5, playerLvl+0.5, playerLvl+0.5, playerLvl-0.5),
