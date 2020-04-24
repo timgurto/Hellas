@@ -66,6 +66,18 @@
     sounds="ceramic"
     returnsOnConstruction="smallPot"
     returnsOnCast="smallPot" />
+<recipe
+    id="water" time="4000" >
+    <material id="smallPot" />
+    <tool class="waterSource" />
+    <unlockedBy item="smallPot" />
+    <unlockedBy construction="flaxCrop0" />
+</recipe>
+<recipe
+    id="emptyWaterVessel" name="Empty water vessel" product="smallPot" time="4000" >
+    <material id="water" />
+    <unlockedBy recipe="water" />
+</recipe>
 
 <objectType id="rockWell" name="Primitive Well"
     sounds="stone" damageParticles="rocks">
