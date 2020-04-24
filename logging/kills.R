@@ -166,7 +166,7 @@ for (class in c("Athlete", "Scholar", "Zealot"))
         fightTimeNorm = 1 - fightTimeNorm
         colour = getColour(fightTimeNorm)
         
-        enoughData = 10
+        enoughData = 5
         if (qty < enoughData){
             alpha = qty / enoughData * 255
             rgbVec = col2rgb(colour)
