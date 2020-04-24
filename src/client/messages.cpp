@@ -549,6 +549,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
         logMessage += item->second.name();
         _debug(logMessage);
 
+        item->second.playSoundOnce("drop");
+
         break;
       }
 
@@ -2049,11 +2051,6 @@ void Client::handle_SV_INVENTORY(Serial serial, size_t slot,
     _gearWindow->forceRefresh();
   else
     object->onInventoryUpdate();
-
-  if (userIsReceivingItem) {
-    auto userWasCraftingOrGathering = _actionTimer > 0;
-    if (userWasCraftingOrGathering && item) item->playSoundOnce("drop");
-  }
 }
 
 void Client::handle_SV_MAX_HEALTH(const std::string &username,
