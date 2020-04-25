@@ -1764,7 +1764,6 @@ void User::levelUp() {
   ++_level;
   fillHealthAndEnergy();
   announceLevelUp();
-  _secondsPlayedWhenLevelHit[_level] = secondsPlayed();
 }
 
 bool User::QuestProgress::operator<(const QuestProgress &rhs) const {
