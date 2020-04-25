@@ -44,7 +44,7 @@
     gearSlot="6" lvlReq="13">
     <stats followerLimit="1" />
     <offset x="-6" y="-16" />
-    <weapon damage="5" speed="3.1" />
+    <weapon damage="8" speed="3.1" />
 </item>
     <recipe id="staff1" time="10000">
         <material id="pole1" />
@@ -57,7 +57,7 @@
     gearSlot="6" lvlReq="24">
     <stats followerLimit="2" />
     <offset x="-3" y="-19" />
-    <weapon damage="6" speed="2.8" />
+    <weapon damage="10" speed="3.1" />
 </item>
     <recipe id="staff2" time="10000" >
         <material id="pole2" />

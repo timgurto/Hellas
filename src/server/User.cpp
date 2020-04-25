@@ -209,7 +209,7 @@ void User::init() {
   baseStats.fireResist = 0;
   baseStats.waterResist = 0;
   baseStats.weaponDamage = 2;
-  baseStats.attackTime = 3000;
+  baseStats.attackTime = 2000;
   baseStats.speed = 80.0;
   baseStats.stunned = false;
   baseStats.gatherBonus = 0;
@@ -1764,6 +1764,7 @@ void User::levelUp() {
   ++_level;
   fillHealthAndEnergy();
   announceLevelUp();
+  _secondsPlayedWhenLevelHit[_level] = secondsPlayed();
 }
 
 bool User::QuestProgress::operator<(const QuestProgress &rhs) const {

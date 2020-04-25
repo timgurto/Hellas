@@ -181,12 +181,12 @@ for (class in c("Athlete", "Scholar", "Zealot"))
         )
         label = round(fightTime, 0)
         
-        text(
-            x=playerLvl,
-            y=mobLvl,
-            labels=label,
-            col=getTextColour(fightTimeNorm)
-        )
+        #text(
+        #    x=playerLvl,
+        #    y=mobLvl,
+        #    labels=label,
+        #    col=getTextColour(fightTimeNorm)
+        #)
         
     }}
     
