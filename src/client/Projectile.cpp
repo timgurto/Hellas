@@ -46,7 +46,7 @@ void Projectile::update(double delta) {
 void Projectile::Type::tail(const std::string &imageFile,
                             const ScreenRect &drawRect, int length,
                             int separation, const std::string &particles) {
-  _tailType = {drawRect, "Images/Projectiles/"s + imageFile + ".png"s};
+  _tailType = {drawRect, "Images/Projectiles/"s + imageFile};
   _tailLength = length;
   _tailSeparation = separation;
   _tailParticles = particles;
