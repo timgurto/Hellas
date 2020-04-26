@@ -32,11 +32,16 @@ std::string readFromURL(const std::string &url) {
 void downloadFile(const std::string &srcURL, const std::string &dstFilename) {
   auto curl = curl_easy_init();
   if (!curl) {
+    return;
+  }
+
+  FILE *outFile;
+  auto err = fopen_s(&outFile, dstFilename.c_str(), "wb");
+  if (err) {
     curl_global_cleanup();
     return;
   }
 
-  auto outFile = fopen(dstFilename.c_str(), "wb");
   curl_easy_setopt(curl, CURLOPT_URL, srcURL.c_str());
   curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, fwrite);
   curl_easy_setopt(curl, CURLOPT_WRITEDATA, outFile);
