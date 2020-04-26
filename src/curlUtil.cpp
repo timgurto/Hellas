@@ -2,7 +2,8 @@
 
 #include <curl.h>
 
-size_t writeMemoryCallback(void *ptr, size_t size, size_t nmemb, void *data) {
+static size_t writeMemoryCallback(void *ptr, size_t size, size_t nmemb,
+                                  void *data) {
   size_t realSize = size * nmemb;
   std::string *output = reinterpret_cast<std::string *>(data);
   const char *cp = reinterpret_cast<const char *>(ptr);
@@ -15,16 +16,35 @@ std::string readFromURL(const std::string &url) {
   CURL *curl = curl_easy_init();
   if (curl == nullptr) {
     curl_global_cleanup();
-    return "";
+    return {};
   }
   std::string output;
   curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
   curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeMemoryCallback);
   curl_easy_setopt(curl, CURLOPT_WRITEDATA, reinterpret_cast<void *>(&output));
-  CURLcode res = curl_easy_perform(curl);
+  curl_easy_perform(curl);
+
   curl_easy_cleanup(curl);
   curl_global_cleanup();
   return output;
+}
+
+void downloadFile(const std::string &srcURL, const std::string &dstFilename) {
+  auto curl = curl_easy_init();
+  if (!curl) {
+    curl_global_cleanup();
+    return;
+  }
+
+  auto outFile = fopen(dstFilename.c_str(), "wb");
+  curl_easy_setopt(curl, CURLOPT_URL, srcURL.c_str());
+  curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, fwrite);
+  curl_easy_setopt(curl, CURLOPT_WRITEDATA, outFile);
+  curl_easy_perform(curl);
+  fclose(outFile);
+
+  curl_easy_cleanup(curl);
+  curl_global_cleanup();
 }
 
 std::string getLocationFromIP(const std::string &ip) {

@@ -1,3 +1,5 @@
+#include <cstdio>
+
 #include "../Socket.h"
 #include "../curlUtil.h"
 #include "TestClient.h"
@@ -20,14 +22,35 @@ TEST_CASE("Read test URL", "[.slow]") {
 }
 
 TEST_CASE("Use socket after cleanup") {
-  bool ret = true;
-  // Run twice: Winsock will be cleaned up after the first iteration.
-  for (size_t i = 0; i != 2; ++i) {
+  {
     TestServer s;
     TestClient c;
 
-    WAIT_UNTIL(c.connected());  // false in case of a connection error.
+    WAIT_UNTIL(c.connected());
+
+    // Winsock should be cleaned up here.
   }
+  {
+    TestServer s;
+    TestClient c;
+
+    WAIT_UNTIL(c.connected());
+  }
+}
+
+TEST_CASE("Download file") {
+  downloadFile("timgurto.com/test.txt", "test.txt");
+
+  {
+    auto f = std::ifstream("test.txt");
+    REQUIRE(f.good());
+
+    auto word = std::string{};
+    f >> word;
+    CHECK(word == "This");
+  }
+
+  remove("test.txt");
 }
 
 TEST_CASE("Bulk messages") {
