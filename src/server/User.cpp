@@ -1764,6 +1764,13 @@ void User::levelUp() {
   ++_level;
   fillHealthAndEnergy();
   announceLevelUp();
+
+  auto of = std::ofstream{"levels.log", std::ios_base::app};
+  of << _name                              // Player name
+     << "," << _class.value().type().id()  // Player class
+     << "," << _level                      // Level reached
+     << "," << secondsPlayed()             // Time played (s)
+     << std::endl;
 }
 
 bool User::QuestProgress::operator<(const QuestProgress &rhs) const {
