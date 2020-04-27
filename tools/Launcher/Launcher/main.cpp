@@ -95,10 +95,29 @@ void runGame(int argc, char** argv) {
 }
 
 int main(int argc, char** argv) {
-  std::cout << "Downloading latest client . . ." << std::endl;
-  downloadFile("http://hellas.timgurto.com/client.zip", "client.zip");
+  auto localVersion = std::string{};
+  {
+    auto versionFile = std::fstream{"version.txt"};
+    if (!versionFile) {
+      std::cout << "No local client found" << std::endl;
+    } else {
+      versionFile >> localVersion;
+      std::cout << "Local client version: " << localVersion << std::endl;
+    }
+  }
+  auto remoteVersion = readFromURL("http://hellas.timgurto.com/version.txt");
+  remoteVersion.pop_back();
+  std::cout << "Latest client version: " << remoteVersion << std::endl;
 
-  extract("client.zip");
+  if (remoteVersion == localVersion) {
+    std::cout << "Client is already up-to-date." << std::endl;
+  } else {
+    std::cout << "Downloading newer client . . ." << std::endl;
+    downloadFile("http://hellas.timgurto.com/client.zip", "client.zip");
+    downloadFile("http://hellas.timgurto.com/version.txt", "version.txt");
+
+    extract("client.zip");
+  }
 
   runGame(argc, argv);
 }
