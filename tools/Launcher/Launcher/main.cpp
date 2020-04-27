@@ -86,7 +86,7 @@ void extract(const std::string& zipFile) {
 
 void runGame(int argc, char** argv) {
   auto command = std::ostringstream{};
-  command << "cd \"Hellas Client\" && client.exe";
+  command << "cd \"Hellas Client\" && start client.exe";
   for (auto i = 1; i < argc; ++i) {
     command << " " << argv[i];
   }
