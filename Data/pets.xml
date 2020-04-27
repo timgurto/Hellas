@@ -21,7 +21,7 @@
     <transform id="sheepWithWool" time="2700000" />
 </npcType>
 <npcType id="sheepWithWool" name="Sheep (Wooly)"
-    level="17" maxHealth="156" armor="10" isNeutral="1"
+    level="17" maxHealth="70" attack="12" attackTime="2900" armor="3" isNeutral="1"
     canGather="1" gatherTime="8000" gatherReq="shearing"
     xDrawOffset="-23" yDrawOffset="-27" >
     <collisionRect x="-21" y="-4" w="37" h="7" />
