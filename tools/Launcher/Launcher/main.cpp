@@ -84,11 +84,21 @@ void extract(const std::string& zipFile) {
   zip_close(archive);
 }
 
-int main() {
+void runGame(int argc, char** argv) {
+  auto command = std::ostringstream{};
+  command << "cd \"Hellas Client\" && client.exe";
+  for (auto i = 1; i < argc; ++i) {
+    command << " " << argv[i];
+  }
+
+  system(command.str().c_str());
+}
+
+int main(int argc, char** argv) {
   std::cout << "Downloading latest client . . ." << std::endl;
   downloadFile("http://hellas.timgurto.com/client.zip", "client.zip");
 
   extract("client.zip");
 
-  system("cd \"Hellas Client\" && client.exe");
+  runGame(argc, argv);
 }
