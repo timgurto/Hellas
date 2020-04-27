@@ -250,7 +250,14 @@ void Client::initCreateWindow() {
 
 static void saveUsernameAndPassword(const std::string &username,
                                     const std::string &pwHash) {
-  auto xw = XmlWriter{"session.txt"};
+  char *appDataPath = nullptr;
+  _dupenv_s(&appDataPath, nullptr, "LOCALAPPDATA");
+  if (!appDataPath) return;
+  CreateDirectory((std::string{appDataPath} + "\\Hellas").c_str(), NULL);
+  auto sessionFile = std::string{appDataPath} + "\\Hellas\\session.txt"s;
+  free(appDataPath);
+
+  auto xw = XmlWriter{sessionFile};
   auto user = xw.addChild("user");
   xw.setAttr(user, "name", username);
   xw.setAttr(user, "passwordHash", pwHash);

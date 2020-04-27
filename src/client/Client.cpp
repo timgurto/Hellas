@@ -704,8 +704,14 @@ void Client::initializeUsername() {
   }
   _username = "";
 
-  // Attempt to use last-used name
-  auto xr = XmlReader::FromFile("session.txt");
+  // Attempt to use last-used name  char *appDataPath = nullptr;
+  char *appDataPath = nullptr;
+  _dupenv_s(&appDataPath, nullptr, "LOCALAPPDATA");
+  if (!appDataPath) return;
+  auto sessionFile = std::string{appDataPath} + "\\Hellas\\session.txt"s;
+  free(appDataPath);
+
+  auto xr = XmlReader::FromFile(sessionFile);
   if (!xr) return;
   auto user = xr.findChild("user");
   if (!user) return;
