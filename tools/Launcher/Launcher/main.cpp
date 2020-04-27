@@ -89,4 +89,6 @@ int main() {
   downloadFile("http://hellas.timgurto.com/client.zip", "client.zip");
 
   extract("client.zip");
+
+  system("cd \"Hellas Client\" && client.exe");
 }
