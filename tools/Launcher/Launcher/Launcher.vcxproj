@@ -73,8 +73,8 @@
     <LibraryPath>$(SolutionDir)..\..\third-party\libzip-0.10.1-1\lib;$(SolutionDir)..\..\third-party\libcurl\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)..\..\third-party\libcurl\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)..\..\third-party\libcurl\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)..\..\third-party\libzip-0.10.1-1\lib\libzip\include;$(SolutionDir)..\..\third-party\libzip-0.10.1-1\include;$(SolutionDir)..\..\third-party\libcurl\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\..\third-party\libzip-0.10.1-1\lib;$(SolutionDir)..\..\third-party\libcurl\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -104,7 +104,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>libcurl.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libcurl.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;libzip.a;libzip.dll.a;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
