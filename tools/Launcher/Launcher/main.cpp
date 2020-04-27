@@ -59,11 +59,11 @@ void extract(const std::string& zipFile) {
     // int fileDesc = open(stat.name, O_RDWR | O_TRUNC | O_CREAT)
     std::ofstream output(stat.name, std::ofstream::out | std::ofstream::trunc |
                                         std::ofstream::binary);
-    long long sum = 0;
+    auto sum = zip_uint64_t{0};
     static const int BUF_SIZE = 1000000;
     char buffer[BUF_SIZE];
     while (sum != stat.size) {
-      size_t len = zip_fread(file, buffer, BUF_SIZE);
+      auto len = zip_fread(file, buffer, BUF_SIZE);
       if (len < 0) {
         std::cout << std::endl
                   << "Failed to inflate file " << std::string(stat.name)
