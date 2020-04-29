@@ -1,17 +1,17 @@
 library("RColorBrewer")
 #options(warn=2)
 
-svg("kills.svg", width=20, height=8)
+svg("kills.svg", width=16, height=10)
 
 par(
-    mfrow=c(1,3),
+    mfrow=c(2,3),
     col="#bbbbbb",
     col.axis="#bbbbbb",
     col.lab="#bbbbbb",
     col.main="#bbbbbb",
     fg="#bbbbbb",
     bg="black",
-    mar=c(12.1,4.1,4.1,2.1),
+    #mar=c(12.1,4.1,4.1,2.1),
     xpd="NA"
 )
 
@@ -191,8 +191,8 @@ for (class in c("Athlete", "Scholar", "Zealot"))
     }}
     
     if (class == "Scholar"){
-        legendL = -AXIS_MAX
-        legendR = AXIS_MAX*2
+        legendL = AXIS_MAX*(-1.5)
+        legendR = AXIS_MAX*(2.5)
         legendT = -0.225 * AXIS_MAX
         legendB = -0.275 * AXIS_MAX
         numBars = 1000
@@ -223,5 +223,65 @@ for (class in c("Athlete", "Scholar", "Zealot"))
     }
 }
 
+
+data <- read.csv(
+    file="../levels.log",
+    header=TRUE,
+    sep=",",
+    colClasses=c("character","character","integer","integer")
+)
+
+data = data[order(data$name),]
+data$hoursPlayed = data$secondsPlayed/3600
+
+plot(
+    x=NULL,
+    bty="n",
+
+    xlab="Hours played",
+    xlim=c(0, max(data$hoursPlayed)),
+    
+    ylab="Level reached",
+    ylim=c(1, max(data$level))
+)
+
+set1 = brewer.pal(3, "Set1")
+
+lastLevelSeen = 1
+timeAtLastLevel = 0
+for (i in 1:length(data$name)){
+    if (data$level[i] == 2){
+        lastLevelSeen = 1
+        timeAtLastLevel = 0
+        next
+    }
+    
+    class = data$class[i]
+    if (class == "Athlete") col = set1[2]
+    else if (class == "Scholar") col = set1[1]
+    else if (class == "Zealot") col = set1[3]
+    else col = "white"
+    
+    thisLevel = data$level[i]
+    thisTime = data$hoursPlayed[i]
+    
+    segments(
+        x0 = timeAtLastLevel,
+        x1 = thisTime,
+        y0 = lastLevelSeen,
+        y1 = thisLevel,
+        
+        col=col
+    )
+    
+    lastLevelSeen = thisLevel
+    timeAtLastLevel = thisTime
+}
+
+legend(
+    "bottomright",
+    legend=c("Athlete", "Scholar", "Zealot"),
+    fill=c(set1[2], set1[1], set1[3])
+)
 
 dev.off()
