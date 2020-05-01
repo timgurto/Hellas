@@ -69,9 +69,14 @@ class ClassType {
                    const Tier &tier);
   const Talent *findTalent(const Talent::Name &name) const;
 
+  void setFreeSpell(const Spell::ID &id) { _freeSpell = id; }
+  bool hasFreeSpell() const { return !_freeSpell.empty(); }
+  const Spell::ID &freeSpell() const { return _freeSpell; }
+
  private:
   ID _id;
   std::set<Talent> _talents;
+  Spell::ID _freeSpell;
 };
 
 using ClassTypes = std::map<ClassType::ID, ClassType>;
@@ -96,6 +101,7 @@ class Class {
   void markSpellAsKnown(const Spell::ID &spell);
   void teachSpell(
       const Spell::ID &spell);  // Teach spell outside of talent system
+  void teachFreeSpellIfAny();
   const std::set<Spell::ID> &otherKnownSpells() const {
     return _otherKnownSpells;
   }

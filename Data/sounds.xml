@@ -126,6 +126,13 @@
     <sound type="drop" file="lightning1" />
 </soundProfile>
 
+<soundProfile id="meleeSkill" >
+    <sound type="attack" file="punch0" />
+    <sound type="attack" file="punch1" />
+    <sound type="attack" file="punch2" />
+    <sound type="attack" file="punch3" />
+</soundProfile>
+
 <soundProfile id="sprint" >
     <sound type="launch" file="sprint" />
 </soundProfile>

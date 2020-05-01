@@ -98,3 +98,35 @@ TEST_CASE("A talent tier can require a tool") {
     }
   }
 }
+
+TEST_CASE("Free spells") {
+  GIVEN("a spell, but no free spells on classes") {
+    auto data = R"(
+      <spell id="tackle" ><targets enemy=1 /></spell>
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    WHEN("a new user connects") {
+      auto c = TestClient::WithDataString(data);
+
+      THEN("he doesn't know Tackle") {
+        REPEAT_FOR_MS(100);
+        CHECK_FALSE(c.knowsSpell("tackle"));
+      }
+    }
+  }
+
+  GIVEN("a Bulbasaur class gets Tackle for free") {
+    auto data = R"(
+      <spell id="tackle" ><targets enemy=1 /></spell>
+      <class name="Bulbasaur" freeSpell="tackle" />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    WHEN("a new Bulbasaur connects") {
+      auto c = TestClient::WithDataString(data);
+
+      THEN("he knows Tackle") { WAIT_UNTIL(c.knowsSpell("tackle")); }
+    }
+  }
+}

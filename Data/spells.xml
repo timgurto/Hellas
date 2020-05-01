@@ -49,6 +49,11 @@ Functions:
 </spell>
 
 <!-- Skirmisher -->
+<spell id="extraHit" name="Punch" icon="fist" cost="10" cooldown="3"
+    sounds="meleeSkill" impactParticles="blood" >
+    <targets enemy="1" />
+    <function buff="doDirectDamage" i1="2" />
+</spell>
 <spell id="bleed" name="Lacerate" icon="dripRed" cost="10" range="4" >
     <targets enemy="1" />
     <function name="debuff" s1="bleed" />
@@ -77,15 +82,14 @@ Functions:
 <spell id="fireball" name="Fireball" icon="fireball" cost="15" range="30" school="fire" >
     <aesthetics projectile="fireball" sounds="fireball" />
     <targets enemy="1" />
-    <function name="doDirectDamage" i1="5" />
+    <function name="doDirectDamage" i1="3" />
+</spell>
+<spell id="burn" name="Burn" icon="fire" cost="20" range="30" school="fire" >
+    <targets enemy="1" />
+    <function name="debuff" s1="burn" />
 </spell>
 
 <!-- Naturalist -->
-<spell id="poison" name="Poison Stab" icon="dripGreen" cost="20" range="30" school="earth" >
-    <aesthetics impactParticles="poison" />
-    <targets enemy="1" />
-    <function name="debuff" s1="poison" />
-</spell>
 <spell id="dispellEarthDebuff" name="Leeches" icon="leech" cost="10" range="30" school="earth" >
     <targets friendly="1" self="1" />
     <function name="dispellDebuff" s1="earth" />
@@ -109,7 +113,7 @@ Functions:
 </spell>
 
 <!-- Cultist -->
-<spell id="selfHeal" name="Selfish Request" icon="lightOnMan" cost="25" >
+<spell id="selfHeal" name="Selfish Request" icon="lightOnMan" cost="10" cooldown="30" >
     <aesthetics sounds="heal" impactParticles="lightRays" />
     <targets self="1" />
     <function name="heal" i1="15" />

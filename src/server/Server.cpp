@@ -294,7 +294,8 @@ void Server::addUser(const Socket &socket, const std::string &name,
   newUser.initialiseInventoryAndGear();
 
   const bool userExisted = readUserData(newUser);
-  if (!userExisted) {
+  const auto isNewUser = !userExisted;
+  if (isNewUser) {
     newUser.setClass(_classes[classID]);
     newUser.moveToSpawnPoint(true);
     _debug << "New";
@@ -388,6 +389,8 @@ void Server::addUser(const Socket &socket, const std::string &name,
     }
   }
 
+  if (isNewUser) newUser.getClass().teachFreeSpellIfAny();
+
   // Send him his known spells
   auto knownSpellsString = userClass.generateKnownSpellsString();
   newUser.sendMessage({SV_KNOWN_SPELLS, knownSpellsString});
@@ -399,7 +402,7 @@ void Server::addUser(const Socket &socket, const std::string &name,
   newUser.sendSpawnPoint();
 
   // Give him starting buffs if he's a new user
-  if (!userExisted) {
+  if (isNewUser) {
     for (auto &pair : _buffTypes) {
       const auto &buff = pair.second;
       if (buff.shouldGiveToNewPlayers()) newUser.applyBuff(buff, newUser);

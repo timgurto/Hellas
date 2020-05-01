@@ -888,6 +888,10 @@ void DataLoader::loadClasses(XmlReader &xr) {
     if (!xr.findAttr(elem, "name", className)) continue;  // ID is mandatory
     auto newClass = ClassType{className};
 
+    auto freeSpell = Spell::ID{};
+    if (xr.findAttr(elem, "freeSpell", freeSpell))
+      newClass.setFreeSpell(freeSpell);
+
     for (auto tree : xr.getChildren("tree", elem)) {
       auto treeName = ""s;
       if (!xr.findAttr(tree, "name", treeName)) continue;

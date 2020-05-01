@@ -70,6 +70,10 @@ void Class::teachSpell(const Spell::ID &spell) {
   _owner->sendMessage({SV_LEARNED_SPELL, spell});
 }
 
+void Class::teachFreeSpellIfAny() {
+  if (type().hasFreeSpell()) teachSpell(type().freeSpell());
+}
+
 std::string Class::generateKnownSpellsString() const {
   auto string = ""s;
   auto spellsKnown = 0;
