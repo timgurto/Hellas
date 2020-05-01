@@ -327,7 +327,7 @@
 
         <!-- Exomis (resistances) -->
             <item id="woolExomis" name="Wool Exomis" gearSlot="2" sounds="fabric" lvlReq="21" >
-                <stats armor="1" airResist="5" earthResist="4" fireResist="4" waterResist="4" />
+                <stats armor="1" airResist="5" earthResist="5" fireResist="5" waterResist="5" />
                 <offset x="-5" y="-4" />
                 <canBeRepaired cost="woolCloth" tool="sewing" />
             </item>
