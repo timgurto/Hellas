@@ -52,7 +52,7 @@ Functions:
 <spell id="extraHit" name="Punch" icon="fist" cost="10" cooldown="3"
     sounds="meleeSkill" impactParticles="blood" >
     <targets enemy="1" />
-    <function buff="doDirectDamage" i1="2" />
+    <function name="doDirectDamage" i1="2" />
 </spell>
 <spell id="bleed" name="Lacerate" icon="dripRed" cost="10" range="4" >
     <targets enemy="1" />
