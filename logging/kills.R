@@ -1,10 +1,9 @@
 library("RColorBrewer")
 #options(warn=2)
 
-svg("kills.svg", width=16, height=10)
+svg("kills.svg", width=16, height=9.25)
 
 par(
-    mfrow=c(2,3),
     col="#bbbbbb",
     col.axis="#bbbbbb",
     col.lab="#bbbbbb",
@@ -14,6 +13,8 @@ par(
     #mar=c(12.1,4.1,4.1,2.1),
     xpd="NA"
 )
+
+layout(matrix(c(1,2,3,4,4,4),2,3,byrow=TRUE))
 
 data <- read.csv(
     file="../kills.log",
