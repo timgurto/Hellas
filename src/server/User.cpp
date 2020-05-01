@@ -1480,6 +1480,27 @@ void User::sendSpawnPoint(bool hasChanged) const {
   sendMessage({code, makeArgs(_respawnPoint.x, _respawnPoint.y)});
 }
 
+void User::sendKnownRecipes() const {
+  if (_knownRecipes.empty()) return;
+
+  const auto MAX_BATCH_SIZE = 10;
+  auto batch = std::set<std::string>{};
+  for (const auto &recipeID : _knownRecipes) {
+    batch.insert(recipeID);
+
+    if (batch.size() == MAX_BATCH_SIZE) {
+      sendKnownRecipesBatch(batch);
+      batch.clear();
+    }
+  }
+  if (!batch.empty()) sendKnownRecipesBatch(batch);
+}
+void User::sendKnownRecipesBatch(const std::set<std::string> &batch) const {
+  auto args = makeArgs(batch.size());
+  for (auto id : batch) args = makeArgs(args, id);
+  sendMessage({SV_RECIPES, args});
+}
+
 void User::onOutOfRange(const Entity &rhs) const {
   if (rhs.shouldAlwaysBeKnownToUser(*this)) return;
   sendMessage(rhs.outOfRangeMessage());

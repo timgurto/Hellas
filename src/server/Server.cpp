@@ -341,14 +341,7 @@ void Server::addUser(const Socket &socket, const std::string &name,
       sendInventoryMessage(newUser, i, Serial::Gear());
   }
 
-  // Send him the recipes he knows
-  if (newUser.knownRecipes().size() > 0) {
-    std::string args = makeArgs(newUser.knownRecipes().size());
-    for (const std::string &id : newUser.knownRecipes()) {
-      args = makeArgs(args, id);
-    }
-    newUser.sendMessage({SV_RECIPES, args});
-  }
+  newUser.sendKnownRecipes();
 
   // Send him the constructions he knows
   if (newUser.knownConstructions().size() > 0) {

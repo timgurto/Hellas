@@ -53,6 +53,9 @@ class TestClient {
   const ChoiceList &uiBuildList() const { return *_client->_buildList; }
   bool knowsSpell(const std::string &id) const;
   Target target() { return _client->_target; }
+  const std::set<std::string> &knownRecipes() const {
+    return _client->_knownRecipes;
+  }
   const std::map<std::string, Avatar *> &otherUsers() const {
     return _client->_otherUsers;
   }

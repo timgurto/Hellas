@@ -2,6 +2,7 @@
 
 #include "../Socket.h"
 #include "../curlUtil.h"
+#include "../server/ProgressLock.h"
 #include "TestClient.h"
 #include "TestServer.h"
 #include "testing.h"
@@ -54,9 +55,32 @@ TEST_CASE("Download file") {
 }
 
 TEST_CASE("Bulk messages") {
-  GIVEN("a large number of recipes") {
-    AND_GIVEN("a user unlocks them all") {
-      THEN("the client knows the correct number of recipes") {}
+  const auto NUM_RECIPES = 100;
+
+  GIVEN(NUM_RECIPES << " recipes") {
+    auto data = std::ostringstream{};
+    data << "<item id=\"A\" />";
+
+    for (auto i = 0; i != NUM_RECIPES; ++i) {
+      data << "<recipe id=\"longishRecipeID" << i << "\" product=\"A\" >";
+      data << "<unlockedBy gather=\"A\"/></recipe>";
+    }
+
+    auto s = TestServer::WithDataString(data.str());
+
+    AND_GIVEN("Alice unlocks them all, then logs in") {
+      {
+        auto c = TestClient::WithUsernameAndDataString("Alice", data.str());
+        s.waitForUsers(1);
+        auto &user = s.getFirstUser();
+        ProgressLock::unlockAll(user);
+      }
+      auto c = TestClient::WithUsernameAndDataString("Alice", data.str());
+
+      THEN("the client knows " << NUM_RECIPES << " recipes") {
+        REPEAT_FOR_MS(100);
+        WAIT_UNTIL(c.knownRecipes().size() == NUM_RECIPES);
+      }
     }
   }
 }

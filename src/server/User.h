@@ -257,6 +257,8 @@ class User : public Object {  // TODO: Don't inherit from Object
   void sendInventorySlot(size_t slot) const;
   void sendGearSlot(size_t slot) const;
   void sendSpawnPoint(bool hasChanged = false) const;
+  void sendKnownRecipes() const;
+  void sendKnownRecipesBatch(const std::set<std::string> &batch) const;
 
   void onOutOfRange(const Entity &rhs) const override;
   Message outOfRangeMessage() const override;
