@@ -554,6 +554,13 @@ HANDLE_MESSAGE(CL_ORDER_NPC_TO_FOLLOW) {
   npc->order(NPC::FOLLOW);
 }
 
+HANDLE_MESSAGE(DG_UNLOCK) {
+  CHECK_NO_ARGS;
+
+  if (!isDebug()) return;
+  ProgressLock::unlockAll(user);
+}
+
 #define SEND_MESSAGE_TO_HANDLER(MESSAGE_CODE)           \
   case MESSAGE_CODE:                                    \
     handleMessage<MESSAGE_CODE>(client, *user, parser); \
@@ -606,6 +613,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_FEED_PET)
       SEND_MESSAGE_TO_HANDLER(CL_ORDER_NPC_TO_STAY)
       SEND_MESSAGE_TO_HANDLER(CL_ORDER_NPC_TO_FOLLOW)
+      SEND_MESSAGE_TO_HANDLER(DG_UNLOCK)
 
       case CL_CRAFT: {
         iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
@@ -1404,13 +1412,6 @@ void Server::handleBufferedMessages(const Socket &client,
             sendConstructionMaterialsMessage(*user, obj);
           }
         }
-        break;
-      }
-
-      case DG_UNLOCK: {
-        if (del != MSG_END) return;
-        if (!isDebug()) break;
-        ProgressLock::unlockAll(*user);
         break;
       }
 
