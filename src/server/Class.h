@@ -101,7 +101,7 @@ class Class {
   void markSpellAsKnown(const Spell::ID &spell);
   void teachSpell(
       const Spell::ID &spell);  // Teach spell outside of talent system
-  void teachFreeSpellIfAny();
+   Spell::ID teachFreeSpellIfAny();
   const std::set<Spell::ID> &otherKnownSpells() const {
     return _otherKnownSpells;
   }

@@ -389,7 +389,12 @@ void Server::addUser(const Socket &socket, const std::string &name,
     }
   }
 
-  if (isNewUser) newUser.getClass().teachFreeSpellIfAny();
+  // Teach free spell if a new user
+  if (isNewUser) {
+    auto spellTaught = newUser.getClass().teachFreeSpellIfAny();
+    if (!spellTaught.empty())
+      newUser.setHotbarAction(1, HOTBAR_SPELL, spellTaught);
+  }
 
   // Send him his known spells
   auto knownSpellsString = userClass.generateKnownSpellsString();

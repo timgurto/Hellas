@@ -108,10 +108,16 @@ TEST_CASE("Free spells") {
 
     WHEN("a new user connects") {
       auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
 
       THEN("he doesn't know Tackle") {
         REPEAT_FOR_MS(100);
         CHECK_FALSE(c.knowsSpell("tackle"));
+
+        AND_THEN("his hotbar is empty") {
+          const auto &user = s.getFirstUser();
+          CHECK(user.hotbar().empty());
+        }
       }
     }
   }
@@ -126,7 +132,17 @@ TEST_CASE("Free spells") {
     WHEN("a new Bulbasaur connects") {
       auto c = TestClient::WithDataString(data);
 
-      THEN("he knows Tackle") { WAIT_UNTIL(c.knowsSpell("tackle")); }
+      THEN("he knows Tackle") {
+        WAIT_UNTIL(c.knowsSpell("tackle"));
+        s.waitForUsers(1);
+
+        AND_THEN("he has Tackle on his hotbar") {
+          const auto &user = s.getFirstUser();
+          WAIT_UNTIL(user.hotbar().size() >= 2);
+          WAIT_UNTIL(user.hotbar()[1].category == HOTBAR_SPELL);
+          WAIT_UNTIL(user.hotbar()[1].id == "tackle");
+        }
+      }
     }
   }
 }
