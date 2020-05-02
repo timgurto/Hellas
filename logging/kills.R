@@ -13,6 +13,7 @@ par(
     #mar=c(12.1,4.1,4.1,2.1),
     xpd="NA"
 )
+options(scipen=5)
 
 layout(matrix(c(1,2,3,4,4,4),2,3,byrow=TRUE))
 
@@ -240,13 +241,31 @@ plot(
     bty="n",
 
     xlab="Hours played",
-    xlim=c(0, max(data$hoursPlayed)),
+    xlim=c(min(data$hoursPlayed), max(data$hoursPlayed)),
+    log="x",
+    xaxt = "n",
     
     ylab="Level reached",
     ylim=c(1, max(data$level))
 )
+axis(
+    side=1,
+    at=c(
+        0.0333, 0.05, 0.0833,
+        0.167, 0.333, 0.5,
+        1, 2, 3, 5, 8, 12,
+        24, 48, 72, 96
+    ),
+    lab=c(
+        "2m", "3m", "5m",
+        "10m", "20m", "30m",
+        "1h", "2h", "3h", "5h", "8h", "12h",
+        "1d", "2d", "3d", "5d"
+    )
+)
 
 set1 = brewer.pal(3, "Set1")
+data
 
 lastLevelSeen = 1
 timeAtLastLevel = 0
@@ -254,7 +273,6 @@ for (i in 1:length(data$name)){
     if (data$level[i] == 2){
         lastLevelSeen = 1
         timeAtLastLevel = 0
-        next
     }
     
     class = data$class[i]
