@@ -71,6 +71,11 @@ void Client::initHotbar() {
 
     _hotbar->addChild(button);
     _hotbarButtons[i] = button;
+
+    _hotbarCooldownLabels[i] =
+        new OutlinedLabel{button->rect(), "", Element::CENTER_JUSTIFIED,
+                          Element::CENTER_JUSTIFIED};
+    _hotbar->addChild(_hotbarCooldownLabels[i]);
   }
 
   addUI(_hotbar);
@@ -126,7 +131,12 @@ void Client::refreshHotbar() {
       auto cooldownIt = _spellCooldowns.find(actions[i].id);
       auto spellIsCoolingDown =
           cooldownIt != _spellCooldowns.end() && cooldownIt->second > 0;
-      if (spellIsCoolingDown) _hotbarButtons[i]->disable();
+      if (spellIsCoolingDown) {
+        _hotbarButtons[i]->disable();
+        _hotbarCooldownLabels[i]->changeText(
+            msAsShortTimeDisplay(cooldownIt->second));
+      } else
+        _hotbarCooldownLabels[i]->changeText({});
 
       auto spellIsKnown = _knownSpells.count(&spell) == 1;
       if (!spellIsKnown) _hotbarButtons[i]->disable();

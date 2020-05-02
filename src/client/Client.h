@@ -368,6 +368,8 @@ class Client {
   Element *_castBar;
   Element *_hotbar{nullptr};
   std::vector<Button *> _hotbarButtons = {NUM_HOTBAR_BUTTONS, nullptr};
+  std::vector<OutlinedLabel *> _hotbarCooldownLabels = {NUM_HOTBAR_BUTTONS,
+                                                        nullptr};
   std::map<ClientBuffType::ID, ms_t> _buffTimeRemaining{},
       _debuffTimeRemaining{};  // Used for the UI only.
   List *_buffsDisplay{nullptr};
