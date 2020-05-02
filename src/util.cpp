@@ -106,7 +106,7 @@ std::string sAsTimeDisplay(int t) {
   return "0s"s;
 }
 
-std::string msAsTimeDisplay(ms_t t) { return sAsTimeDisplay(t / 1000); }
+std::string msAsTimeDisplay(ms_t t) { return sAsTimeDisplay(t + 999 / 1000); }
 
 std::string sAsShortTimeDisplay(int t) {
   if (t <= 60) {

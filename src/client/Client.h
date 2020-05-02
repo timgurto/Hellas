@@ -394,6 +394,7 @@ class Client {
  public:
   void refreshHotbar();
   void refreshQuestProgress();
+  void refreshHotbarCooldowns();
 
  private:
   void initAssignerWindow();

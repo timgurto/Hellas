@@ -393,18 +393,24 @@ void Client::gameLoop() {
     terrainPair.second.advanceTime(_timeElapsed);
 
   // Update spell cooldowns
+  auto aSpellHasCooledDown{false}, aCooldownHasTicked{false};
   for (auto &pair : _spellCooldowns) {
     if (pair.second == 0)
       continue;
 
     else if (pair.second < _timeElapsed) {
       pair.second = 0;
-      refreshHotbar();
-      continue;
+      aSpellHasCooledDown = true;
 
-    } else
+    } else {
       pair.second -= _timeElapsed;
+      aCooldownHasTicked = true;
+    }
   }
+  if (aSpellHasCooledDown)
+    refreshHotbar();
+  else if (aCooldownHasTicked)
+    refreshHotbarCooldowns();
 
   // Update buff times
   for (auto &pair : _buffTimeRemaining)

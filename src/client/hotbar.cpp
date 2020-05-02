@@ -128,16 +128,6 @@ void Client::refreshHotbar() {
 
       _hotbarButtons[i]->setTooltip(spell.tooltip());
 
-      auto cooldownIt = _spellCooldowns.find(actions[i].id);
-      auto spellIsCoolingDown =
-          cooldownIt != _spellCooldowns.end() && cooldownIt->second > 0;
-      if (spellIsCoolingDown) {
-        _hotbarButtons[i]->disable();
-        _hotbarCooldownLabels[i]->changeText(
-            msAsShortTimeDisplay(cooldownIt->second));
-      } else
-        _hotbarCooldownLabels[i]->changeText({});
-
       auto spellIsKnown = _knownSpells.count(&spell) == 1;
       if (!spellIsKnown) _hotbarButtons[i]->disable();
 
@@ -159,6 +149,26 @@ void Client::refreshHotbar() {
 
       auto recipeIsKnown = _knownRecipes.count(recipe.id()) == 1;
       if (!recipeIsKnown) _hotbarButtons[i]->disable();
+    }
+  }
+  refreshHotbarCooldowns();
+}
+
+void Client::refreshHotbarCooldowns() {
+  for (auto i = 0; i != NUM_HOTBAR_BUTTONS; ++i) {
+    auto isSpell = actions[i].category == HotbarCategory::HOTBAR_SPELL;
+    if (!isSpell) continue;
+
+    auto cooldownIt = _spellCooldowns.find(actions[i].id);
+    auto spellIsCoolingDown =
+        cooldownIt != _spellCooldowns.end() && cooldownIt->second > 0;
+    if (spellIsCoolingDown) {
+      _hotbarButtons[i]->disable();
+      _hotbarCooldownLabels[i]->changeText(
+          msAsShortTimeDisplay(cooldownIt->second));
+    } else {
+      _hotbarButtons[i]->enable();
+      _hotbarCooldownLabels[i]->changeText({});
     }
   }
 }
