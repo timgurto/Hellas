@@ -2,7 +2,7 @@
 
 <npcType
     id="dog6" name="Dog"
-    level="6" maxHealth="28" attack="8" attackTime="2900"
+    level="6" maxHealth="34" attack="9" attackTime="2900"
     imageFile = "dog" sounds="dog" isNeutral="1"
     xDrawOffset="-13" yDrawOffset="-24" >
     <canBeTamed consumes="bone" />
@@ -12,7 +12,7 @@
 </npcType>
 
 <npcType id="sheep" name="Sheep"
-    level="17" maxHealth="70" attack="12" attackTime="2900" armor="3" isNeutral="1"
+    level="17" maxHealth="63" attack="24" attackTime="2900" armor="3" isNeutral="1"
     xDrawOffset="-23" yDrawOffset="-27" >
     <collisionRect x="-21" y="-4" w="37" h="7" />
     <canBeTamed consumes="collar" />
