@@ -948,6 +948,9 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
     if (xr.findAttr(elem, "customShadowWidth", customShadowDiameter))
       nt->useCustomShadowWidth(customShadowDiameter);
 
+    auto n = 0;
+    if (xr.findAttr(elem, "isFlat", n) && n != 0) nt->isFlat(true);
+
     // Collision rect
     if (humanoid) nt->collisionRect(Avatar::COLLISION_RECT);
     auto r = MapRect{};
@@ -989,7 +992,6 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
       nt->addGear(it->second);
     }
 
-    auto n = 0;
     if (xr.findAttr(elem, "isCivilian", n) && n != 0)
       nt->makeCivilian();
     else if (xr.findAttr(elem, "isNeutral", n) && n != 0)
