@@ -188,7 +188,7 @@
 <quest id="tutCyclops" name="Eye on the Prize" startsAt="atlas" endsAt="tutCyclopsQuestgiver"
     brief="Thank you, I feel much better.  Bearing the heavens for all eternity is hungry work.  Would you mind holding this for a moment while I wipe my mouth?
     Hah, I'm joking; relax!
-    Advice?  Actually, there is something that might prove useful to you.  Down the path to the south are the cyclops craftsmen that made weapons for Zeus during the war.  Go speak to them, and see if they have any surplus weapons now that the war is over.  Sure, they sided with the enemy, but the blood of the Titans flows through their veins and they might be willing to bargain."
+    Advice?  Actually, there is something that might prove useful to you.  Down the path to the south are the craftsmen that made weapons for Zeus during the war.  Go speak to them, and see if they have any surplus weapons now that the war is over.  Sure, they sided with the enemy, but the blood of the Titans flows through their veins and they might be willing to bargain."
     debrief="Good day.  You're a small one!
     Surplus weapons?  Hmm, I don't know ... the war is over, I suppose.  Plus, we're short on materials for our work, so maybe we can help each other.  My brother Brontes here will give you what you want in exchange for the metal ore that can be found on this mountain.">
     <prerequisite id="tutCooking" />
