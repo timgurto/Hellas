@@ -214,7 +214,7 @@ void Client::initialiseData() {
   }
 
   Avatar::_spriteType.useCustomShadowWidth(16);
-  Avatar::_spriteType.useCustomDrawHeight(40);
+  Avatar::_spriteType.useCustomDrawHeight(50);
 }
 
 void Client::initializeGearSlotNames() {
