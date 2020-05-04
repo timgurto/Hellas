@@ -479,7 +479,6 @@ class Client {
   Used here to decide when to alert server of new targets.
   */
   Texture _basePassive, _baseAggressive;
-  bool _rightMouseDownWasOnUI;
 
   bool _loop;
   bool _running;  // True while run() is being executed.
@@ -498,11 +497,9 @@ class Client {
   bool _mouseOverWindow;  // Whether the mouse is over any visible window.
 
   bool _leftMouseDown;  // Whether the left mouse button is pressed
-  Sprite *_leftMouseDownEntity;
   friend void ClientObject::onLeftClick(Client &client);
 
   bool _rightMouseDown;
-  Sprite *_rightMouseDownEntity;
   friend void ClientObject::onRightClick(Client &client);
   friend void ClientObject::startDeconstructing(void *object);
 

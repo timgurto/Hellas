@@ -299,30 +299,33 @@ void Client::handleInput(double delta) {
               }
             }
 
-            _leftMouseDownEntity = getEntityAtMouse();
+            if (_currentMouseOverEntity)
+              _currentMouseOverEntity->onLeftClick(*this);
+            else
+              clearTarget();
+            refreshTargetBuffs();
+
             break;
 
           case SDL_BUTTON_RIGHT:
             // Send onRightMouseDown to frontmost clicked window
-            _rightMouseDownWasOnUI = false;
             for (Window *window : _windows)
               if (window->visible() && collision(_mouse, window->rect())) {
                 window->onRightMouseDown(_mouse);
-                _rightMouseDownWasOnUI = true;
                 break;
               }
             for (Element *element : _ui)
               if (element->visible() && element->canReceiveMouseEvents() &&
                   collision(_mouse, element->rect())) {
                 auto mouseHitAnElement = element->onRightMouseDown(_mouse);
-                if (mouseHitAnElement) _rightMouseDownWasOnUI = true;
               }
 
-            if (!_rightMouseDownWasOnUI)
-              _rightMouseDownEntity = getEntityAtMouse();
+            // Mouse down and up on same entity: onRightClick
+            if (_currentMouseOverEntity)
+              _currentMouseOverEntity->onRightClick(*this);
             else
-              _rightMouseDownEntity = nullptr;
-            break;
+              clearTarget();
+            refreshTargetBuffs();
         }
         break;
 
@@ -394,15 +397,6 @@ void Client::handleInput(double delta) {
               ContainerGrid::dropItem();
             }
 
-            // Mouse down and up on same entity: onLeftClick
-            if (_leftMouseDownEntity != nullptr &&
-                _currentMouseOverEntity == _leftMouseDownEntity)
-              _currentMouseOverEntity->onLeftClick(*this);
-            else
-              clearTarget();
-            _leftMouseDownEntity = nullptr;
-            refreshTargetBuffs();
-
             break;
           }
 
@@ -447,16 +441,6 @@ void Client::handleInput(double delta) {
               ContainerGrid::clearUseItem();
               break;
             }
-
-            if (mouseUpOnWindow || _rightMouseDownWasOnUI) break;
-
-            // Mouse down and up on same entity: onRightClick
-            if (_rightMouseDownEntity != nullptr &&
-                _currentMouseOverEntity == _rightMouseDownEntity)
-              _currentMouseOverEntity->onRightClick(*this);
-            else
-              clearTarget();
-            _rightMouseDownEntity = nullptr;
 
             break;
         }

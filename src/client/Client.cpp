@@ -107,10 +107,7 @@ Client::Client()
       _mouseMoved(false),
       _mouseOverWindow(false),
       _leftMouseDown(false),
-      _leftMouseDownEntity(nullptr),
       _rightMouseDown(false),
-      _rightMouseDownEntity(nullptr),
-      _rightMouseDownWasOnUI(false),
 
       _basePassive(std::string("Images/targetPassive.png"), Color::MAGENTA),
       _baseAggressive(std::string("Images/targetAggressive.png"),
