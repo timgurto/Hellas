@@ -130,6 +130,14 @@ getTextColour <- function(normalised){
         return ("white")
 }
 
+set1 = brewer.pal(3, "Set1")
+getClassColour <- function(class){
+    if (class == "Athlete") return (set1[2])
+    if (class == "Scholar") return (set1[1])
+    if (class == "Zealot") return (set1[3])
+    return ("white")
+}
+
 for (class in c("Athlete", "Scholar", "Zealot"))
 {
     mainTitle = ""
@@ -139,11 +147,19 @@ for (class in c("Athlete", "Scholar", "Zealot"))
         x=NULL,
         xlim=c(0.5, AXIS_MAX+0.5),
         ylim=c(0.5, AXIS_MAX+0.5),
-        xlab=paste(class, "level"),
+        #xlab=paste(class, "level"),
+        xlab="",
         ylab="Mob level",
         asp=1,
         bty="n",
         main=mainTitle
+    )
+    mtext( # x-axis label
+        paste(class, "level"),
+        side=1,
+        col=getClassColour(class),
+        line=3,
+        cex=0.7
     )
 
     for (playerLvl in 1:MAX_PLAYER_LVL){
@@ -240,13 +256,13 @@ plot(
     x=NULL,
     bty="n",
 
-    xlab="Hours played",
+    xlab="Time played",
     xlim=c(min(data$hoursPlayed), max(data$hoursPlayed)),
     log="x",
     xaxt = "n",
     
     ylab="Level reached",
-    ylim=c(1, max(data$level))
+    ylim=c(2, max(data$level))
 )
 axis(
     side=1,
@@ -264,9 +280,6 @@ axis(
     )
 )
 
-set1 = brewer.pal(3, "Set1")
-data
-
 lastLevelSeen = 1
 timeAtLastLevel = 0
 for (i in 1:length(data$name)){
@@ -274,12 +287,8 @@ for (i in 1:length(data$name)){
         lastLevelSeen = 1
         timeAtLastLevel = 0
     }
-    
-    class = data$class[i]
-    if (class == "Athlete") col = set1[2]
-    else if (class == "Scholar") col = set1[1]
-    else if (class == "Zealot") col = set1[3]
-    else col = "white"
+
+    col = getClassColour(data$class[i])
     
     thisLevel = data$level[i]
     thisTime = data$hoursPlayed[i]
