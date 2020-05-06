@@ -145,4 +145,43 @@ TEST_CASE("Free spells") {
       }
     }
   }
+
+  SECTION("Retroactive free spells for returning players") {
+    // GIVEN a server where Charmanders get no free spell
+    {
+      auto data = R"(
+        <class name="Charmander" />
+      )";
+      auto s = TestServer::WithDataString(data);
+
+      // AND GIVEN a pre-existing Charmander on that server
+      auto c = TestClient::WithUsernameAndDataString("Alice", data);
+      s.waitForUsers(1);
+
+      // AND GIVEN a server where Charmanders get Scratch for free
+    }
+    {
+      auto data = R"(
+        <spell id="scratch" ><targets enemy=1 /></spell>
+        <class name="Charmander" freeSpell="scratch" />
+      )";
+      auto s = TestServer::WithDataStringAndKeepingOldData(data);
+
+      // WHEN the pre-existing Charmander logs in
+      {
+        auto c = TestClient::WithUsernameAndDataString("Alice", data);
+
+        // THEN it knows Scratch
+        WAIT_UNTIL(c.knowsSpell("scratch"));
+
+        // And when that same Charmander logs in again
+      }
+      {
+        auto c = TestClient::WithUsernameAndDataString("Alice", data);
+
+        // THEN it doesn't get a new-spell notification
+        CHECK_FALSE(c.waitForMessage(SV_LEARNED_SPELL));
+      }
+    }
+  }
 }

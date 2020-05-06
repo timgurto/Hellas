@@ -73,6 +73,8 @@ void Class::teachSpell(const Spell::ID &spell) {
 Spell::ID Class::teachFreeSpellIfAny() {
   if (!type().hasFreeSpell()) return {};
   auto freeSpell = type().freeSpell();
+  if (knowsSpell(freeSpell)) return {};
+
   teachSpell(freeSpell);
   return freeSpell;
 }
