@@ -176,6 +176,26 @@ HANDLE_MESSAGE(CL_LOCATION) {
   }
 }
 
+HANDLE_MESSAGE(CL_CRAFT) {
+  auto recipeID = ""s;
+  READ_ARGS(recipeID);
+
+  if (user.isStunned()) RETURN_WITH(WARNING_STUNNED)
+  user.cancelAction();
+  const std::set<SRecipe>::const_iterator it = _recipes.find(recipeID);
+  if (!user.knowsRecipe(recipeID)) RETURN_WITH(ERROR_UNKNOWN_RECIPE)
+  ItemSet remaining;
+  if (!user.hasItems(it->materials())) RETURN_WITH(WARNING_NEED_MATERIALS)
+
+  // Tool check must be the last check, as it damages the tools.
+  auto speed = user.checkAndDamageToolsAndGetSpeed(it->tools());
+  auto userHasRequiredTools = speed != 0;
+  if (!userHasRequiredTools) RETURN_WITH(WARNING_NEED_TOOLS)
+
+  user.beginCrafting(*it, speed);
+  sendMessage(client, {SV_ACTION_STARTED, it->time()});
+}
+
 HANDLE_MESSAGE(CL_SWAP_ITEMS) {
   Serial obj1, obj2;
   size_t slot1, slot2;
@@ -605,6 +625,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_REQUEST_TIME_PLAYED)
       SEND_MESSAGE_TO_HANDLER(CL_SKIP_TUTORIAL)
       SEND_MESSAGE_TO_HANDLER(CL_LOCATION)
+      SEND_MESSAGE_TO_HANDLER(CL_CRAFT)
       SEND_MESSAGE_TO_HANDLER(CL_SWAP_ITEMS)
       SEND_MESSAGE_TO_HANDLER(CL_CAST)
       SEND_MESSAGE_TO_HANDLER(CL_CAST_ITEM)
@@ -614,27 +635,6 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_ORDER_NPC_TO_STAY)
       SEND_MESSAGE_TO_HANDLER(CL_ORDER_NPC_TO_FOLLOW)
       SEND_MESSAGE_TO_HANDLER(DG_UNLOCK)
-
-      case CL_CRAFT: {
-        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
-        std::string id(_stringInputBuffer);
-        iss >> del;
-        if (del != MSG_END) return;
-        if (user->isStunned()) BREAK_WITH(WARNING_STUNNED)
-        user->cancelAction();
-        const std::set<SRecipe>::const_iterator it = _recipes.find(id);
-        if (!user->knowsRecipe(id)) BREAK_WITH(ERROR_UNKNOWN_RECIPE)
-        ItemSet remaining;
-        if (!user->hasItems(it->materials())) BREAK_WITH(WARNING_NEED_MATERIALS)
-
-        // Tool check must be the last check, as it damages the tools.
-        auto speed = user->checkAndDamageToolsAndGetSpeed(it->tools());
-        auto userHasRequiredTools = speed != 0;
-        if (!userHasRequiredTools) BREAK_WITH(WARNING_NEED_TOOLS)
-        user->beginCrafting(*it, speed);
-        sendMessage(client, {SV_ACTION_STARTED, it->time()});
-        break;
-      }
 
       case CL_CONSTRUCT:
       case CL_CONSTRUCT_FOR_CITY: {
