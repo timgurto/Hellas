@@ -41,12 +41,9 @@ ContainerGrid::ContainerGrid(size_t rows, size_t cols,
       _gap(gap),
       _solidBackground(solidBackground) {
   if (!_highlight) {
-    _highlight =
-        Texture(std::string("Images/Items/highlight.png"), Color::MAGENTA);
-    _highlightGood =
-        Texture(std::string("Images/Items/highlightGood.png"), Color::MAGENTA);
-    _highlightBad =
-        Texture(std::string("Images/Items/highlightBad.png"), Color::MAGENTA);
+    _highlight = {"Images/Items/highlight.png"s, Color::MAGENTA};
+    _highlightGood = {"Images/Items/highlightGood.png"s, Color::MAGENTA};
+    _highlightBad = {"Images/Items/highlightBad.png"s, Color::MAGENTA};
 
     _damaged = {Client::ICON_SIZE, Client::ICON_SIZE};
     renderer.pushRenderTarget(_damaged);
