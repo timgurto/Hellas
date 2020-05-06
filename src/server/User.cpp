@@ -22,6 +22,12 @@ const std::vector<XP> User::XP_PER_LEVEL{
     14500, 14800, 15000, 15200, 15400, 15600, 15800, 16000, 16100, 16300,
     16500, 16700, 16900, 17000, 17200, 17400, 17500, 17700, 17800, 18000};
 
+#define RETURN_WITH(MSG) \
+  {                      \
+    sendMessage(MSG);    \
+    return;              \
+  }
+
 User::User(const std::string &name, const MapPoint &loc, const Socket *socket)
     : Object(&OBJECT_TYPE, loc),
 
@@ -422,6 +428,43 @@ void User::setTargetAndAttack(Entity *target) {
 
 void User::alertReactivelyTargetingUser(const User &targetingUser) const {
   targetingUser.sendMessage({SV_YOU_ARE_ATTACKING_PLAYER, _name});
+}
+
+void User::tryToConstruct(const std::string &id, const MapPoint &location,
+                          Permissions::Owner::Type owner) {
+  auto &server = Server::instance();
+
+  if (isStunned()) RETURN_WITH(WARNING_STUNNED)
+  cancelAction();
+  auto *objType = server.findObjectTypeByID(id);
+  if (!objType) RETURN_WITH(ERROR_INVALID_OBJECT)
+
+  if (!knowsConstruction(id)) RETURN_WITH(ERROR_UNKNOWN_CONSTRUCTION)
+  if (objType->isUnique() && objType->numInWorld() == 1)
+    RETURN_WITH(WARNING_UNIQUE_OBJECT)
+  if (objType->isPlayerUnique() &&
+      hasPlayerUnique(objType->playerUniqueCategory())) {
+    sendMessage(
+        {WARNING_PLAYER_UNIQUE_OBJECT, objType->playerUniqueCategory()});
+    return;
+  }
+  if (objType->isUnbuildable()) RETURN_WITH(ERROR_UNBUILDABLE)
+
+  if (distance(collisionRect(), objType->collisionRect() + location) >
+      Server::ACTION_DISTANCE)
+    RETURN_WITH(WARNING_TOO_FAR)
+  if (!server.isLocationValid(location, *objType)) RETURN_WITH(WARNING_BLOCKED)
+
+  // Tool check must be the last check, as it damages the tools.
+  auto requiresTool = !objType->constructionReq().empty();
+  auto toolSpeed = 1.0;
+  if (requiresTool) {
+    toolSpeed = checkAndDamageToolAndGetSpeed(objType->constructionReq());
+    if (toolSpeed == 0) RETURN_WITH(WARNING_NEED_TOOLS)
+  }
+  auto ownerIsCity = owner == Permissions::Owner::CITY;
+  beginConstructing(*objType, location, ownerIsCity, toolSpeed);
+  sendMessage({SV_ACTION_STARTED, objType->constructionTime() / toolSpeed});
 }
 
 bool User::hasItems(const ItemSet &items) const {

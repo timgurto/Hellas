@@ -196,6 +196,22 @@ HANDLE_MESSAGE(CL_CRAFT) {
   sendMessage(client, {SV_ACTION_STARTED, it->time()});
 }
 
+HANDLE_MESSAGE(CL_CONSTRUCT) {
+  auto id = ""s;
+  auto x = double{}, y = double{};
+  READ_ARGS(id, x, y);
+
+  user.tryToConstruct(id, {x, y}, Permissions::Owner::PLAYER);
+}
+
+HANDLE_MESSAGE(CL_CONSTRUCT_FOR_CITY) {
+  auto id = ""s;
+  auto x = double{}, y = double{};
+  READ_ARGS(id, x, y);
+
+  user.tryToConstruct(id, {x, y}, Permissions::Owner::CITY);
+}
+
 HANDLE_MESSAGE(CL_SWAP_ITEMS) {
   Serial obj1, obj2;
   size_t slot1, slot2;
@@ -626,6 +642,8 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_SKIP_TUTORIAL)
       SEND_MESSAGE_TO_HANDLER(CL_LOCATION)
       SEND_MESSAGE_TO_HANDLER(CL_CRAFT)
+      SEND_MESSAGE_TO_HANDLER(CL_CONSTRUCT)
+      SEND_MESSAGE_TO_HANDLER(CL_CONSTRUCT_FOR_CITY)
       SEND_MESSAGE_TO_HANDLER(CL_SWAP_ITEMS)
       SEND_MESSAGE_TO_HANDLER(CL_CAST)
       SEND_MESSAGE_TO_HANDLER(CL_CAST_ITEM)
@@ -635,48 +653,6 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_ORDER_NPC_TO_STAY)
       SEND_MESSAGE_TO_HANDLER(CL_ORDER_NPC_TO_FOLLOW)
       SEND_MESSAGE_TO_HANDLER(DG_UNLOCK)
-
-      case CL_CONSTRUCT:
-      case CL_CONSTRUCT_FOR_CITY: {
-        double x, y;
-        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_DELIM);
-        std::string id(_stringInputBuffer);
-        iss >> del >> x >> del >> y >> del;
-        if (del != MSG_END) return;
-        if (user->isStunned()) BREAK_WITH(WARNING_STUNNED)
-        user->cancelAction();
-        const ObjectType *objType = findObjectTypeByID(id);
-        if (objType == nullptr) BREAK_WITH(ERROR_INVALID_OBJECT)
-        if (!user->knowsConstruction(id)) BREAK_WITH(ERROR_UNKNOWN_CONSTRUCTION)
-        if (objType->isUnique() && objType->numInWorld() == 1)
-          BREAK_WITH(WARNING_UNIQUE_OBJECT)
-        if (objType->isPlayerUnique() &&
-            user->hasPlayerUnique(objType->playerUniqueCategory())) {
-          sendMessage(client, {WARNING_PLAYER_UNIQUE_OBJECT,
-                               objType->playerUniqueCategory()});
-          break;
-        }
-        if (objType->isUnbuildable()) BREAK_WITH(ERROR_UNBUILDABLE)
-        const MapPoint location(x, y);
-        if (distance(user->collisionRect(),
-                     objType->collisionRect() + location) > ACTION_DISTANCE)
-          BREAK_WITH(WARNING_TOO_FAR)
-        if (!isLocationValid(location, *objType)) BREAK_WITH(WARNING_BLOCKED)
-
-        // Tool check must be the last check, as it damages the tools.
-        auto requiresTool = !objType->constructionReq().empty();
-        auto toolSpeed = 1.0;
-        if (requiresTool) {
-          toolSpeed =
-              user->checkAndDamageToolAndGetSpeed(objType->constructionReq());
-          if (toolSpeed == 0) BREAK_WITH(WARNING_NEED_TOOLS)
-        }
-        auto ownerIsCity = msgCode == CL_CONSTRUCT_FOR_CITY;
-        user->beginConstructing(*objType, location, ownerIsCity, toolSpeed);
-        sendMessage(client, {SV_ACTION_STARTED,
-                             objType->constructionTime() / toolSpeed});
-        break;
-      }
 
       case CL_CONSTRUCT_FROM_ITEM:
       case CL_CONSTRUCT_FROM_ITEM_FOR_CITY: {
