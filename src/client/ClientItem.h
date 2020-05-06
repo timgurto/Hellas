@@ -45,6 +45,9 @@ class ClientItem : public Item, public HasSounds {
   mutable Optional<Tooltip> _tooltip;
   const Projectile::Type *_projectile{nullptr};
 
+  enum Quality { NORMAL = 1, ENHANCED = 2 };
+  Quality _quality{NORMAL};
+
   struct Particles {
     std::string profile;
     MapPoint offset;  // Relative to gear offset for that slot.
@@ -72,6 +75,8 @@ class ClientItem : public Item, public HasSounds {
   void projectile(const Projectile::Type *p) { _projectile = p; }
   const Projectile::Type *projectile() const { return _projectile; }
   bool canUse() const;
+  void quality(int q) { _quality = static_cast<Quality>(q); }
+  Color nameColor() const;
 
   static const ScreenPoint &gearOffset(size_t slot) {
     return gearOffsets[slot];

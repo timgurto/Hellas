@@ -41,7 +41,7 @@ const Color Color::FOOTPRINT_BAD = RED;
 const Color Color::FOOTPRINT_COLLISION = RED + GREEN * 0.5;
 const Color Color::FOOTPRINT_ACTIVE = WHITE * 0.2;
 
-const Color Color::TOOLTIP_BACKGROUND = {0x18, 0x1d, 0x56};
+const Color Color::TOOLTIP_BACKGROUND = WINDOW_BACKGROUND;
 const Color Color::TOOLTIP_BORDER{0xa7, 0xa7, 0xa7};
 const Color Color::TOOLTIP_NAME = WHITE;
 const Color Color::TOOLTIP_BODY{0xa7, 0xa7, 0xa7};
@@ -50,7 +50,8 @@ const Color Color::TOOLTIP_INSTRUCTION = YELLOW * .8 + RED * .2;
 const Color Color::TOOLTIP_FLAVOUR = WHITE * .5;
 const Color Color::TOOLTIP_BAD = RED;
 
-const Color Color::ITEM_NAME = WHITE;
+const Color Color::ITEM_NAME_NORMAL = WHITE;
+const Color Color::ITEM_NAME_ENHANCED = WHITE * .5 + BLUE * .5;
 
 const Color Color::STAT_HEALTH = GREEN * .8;
 const Color Color::STAT_ENERGY = RED + GREEN * .8;

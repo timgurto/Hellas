@@ -89,12 +89,12 @@
         <loot id="calydonianHorn" chance="0.2" />
     </npcType>
     <item id="calydonianHorn" name="Horn of the Calydonian Boar" gearSlot="7" lvlReq="15"
-        iconFile="hornBlack" gearFile="hornBlack" >
+        iconFile="hornBlack" gearFile="hornBlack" quality="2" >
 		<stats eps="2" hps="1" />
 		<offset x="0" y="-3" />
     </item>
     <item id="calydonianHide" name="Hide of the Calydonian Boar" gearSlot="3" sounds="leather"
-        iconFile="hideBlack" gearFile="hideBlack" lvlReq="12" >
+        iconFile="hideBlack" gearFile="hideBlack" lvlReq="12" quality="2" >
         <stats critResist="2" />
         <offset x="-4" y="-1" />
     </item>

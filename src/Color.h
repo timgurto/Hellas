@@ -55,7 +55,8 @@ class Color {
   static const Color TOOLTIP_FLAVOUR;
   static const Color TOOLTIP_BAD;
 
-  static const Color ITEM_NAME;
+  static const Color ITEM_NAME_NORMAL;
+  static const Color ITEM_NAME_ENHANCED;
 
   static const Color STAT_HEALTH;
   static const Color STAT_ENERGY;

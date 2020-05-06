@@ -66,7 +66,7 @@ const Tooltip &ClientItem::tooltip() const {
   _tooltip = Tooltip{};
   auto &tooltip = _tooltip.value();
 
-  tooltip.setColor(Color::TOOLTIP_NAME);
+  tooltip.setColor(nameColor());
   tooltip.addLine(_name);
 
   // Gear slot/stats
@@ -131,6 +131,16 @@ const Tooltip &ClientItem::tooltip() const {
 
 bool ClientItem::canUse() const {
   return _constructsObject != nullptr || castsSpellOnUse();
+}
+
+Color ClientItem::nameColor() const {
+  switch (_quality) {
+    case ENHANCED:
+      return Color::ITEM_NAME_ENHANCED;
+    case NORMAL:
+    default:
+      return Color::ITEM_NAME_NORMAL;
+  }
 }
 
 void ClientItem::fetchAmmoItem() const {

@@ -542,7 +542,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         if (item == _items.end()) break;
 
         addFloatingCombatText("+"s + toString(qty) + " "s + item->second.name(),
-                              _character.location(), Color::ITEM_NAME);
+                              _character.location(), Color::ITEM_NAME_NORMAL);
 
         auto logMessage = "Received "s;
         if (qty > 1) logMessage += toString(qty) + "x "s;
