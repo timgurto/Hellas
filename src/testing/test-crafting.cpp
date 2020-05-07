@@ -308,3 +308,46 @@ TEST_CASE("Duping exploit") {
     }
   }
 }
+
+TEST_CASE("Extra items returned from crafting") {
+  GIVEN("a nuclear reaction that takes U235 and returns U238") {
+    auto data = R"(
+      <item id="u235" />
+      <item id="u238" />
+      <item id="electricity" />
+      <recipe id="electricity" >
+        <material id="u235" />
+        <byproduct id="u238" />
+      </recipe>
+    )";
+    auto s = TestServer::WithDataString(data);
+    const auto &u235 = s.findItem("u235");
+    const auto &u238 = s.findItem("u238");
+    const auto &electricity = s.findItem("electricity");
+
+    AND_GIVEN("a user has U235") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      user.addRecipe("electricity");
+      user.giveItem(&u235);
+
+      WHEN("he makes electricity") {
+        c.sendMessage(CL_CRAFT, "electricity");
+
+        THEN("the user has electricity and U238") {
+          auto expectedInInventory = ItemSet{};
+          expectedInInventory.add(&u238);
+          expectedInInventory.add(&electricity);
+
+          WAIT_UNTIL(user.hasItems(expectedInInventory));
+        }
+      }
+    }
+  }
+}
+
+// Different byproduct
+// Qty
+// No crafting if no bag space for byproducts
+// Bad ID

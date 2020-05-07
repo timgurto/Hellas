@@ -689,6 +689,13 @@ void DataLoader::loadRecipes(XmlReader &xr) {
     }
     recipe.product(&*it);
 
+    auto byproduct = xr.findChild("byproduct", elem);
+    if (byproduct) {
+      auto it = _server._items.find("u238"s);
+
+      recipe.byproduct(&*it);
+    }
+
     int n;
     if (xr.findAttr(elem, "quantity", n)) recipe.quantity(n);
     if (xr.findAttr(elem, "time", n)) recipe.time(n);

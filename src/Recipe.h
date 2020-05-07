@@ -13,6 +13,7 @@ class Recipe {
   ItemSet _materials;
   std::set<std::string> _tools;  // Tools required for crafting
   const Item *_product{nullptr};
+  const Item *_byproduct{nullptr};
   size_t _quantity{1};  // Quantity produced
 
  public:
@@ -25,6 +26,8 @@ class Recipe {
   const std::set<std::string> &tools() const { return _tools; }
   const Item *product() const { return _product; }
   void product(const Item *item) { _product = item; }
+  const Item *byproduct() const { return _byproduct; }
+  void byproduct(const Item *item) { _byproduct = item; }
   size_t quantity() const { return _quantity; }
   void quantity(size_t n) { _quantity = n; }
 

@@ -774,12 +774,15 @@ void User::update(ms_t timeElapsed) {
         Entity::update(timeElapsed);
         return;
       }
-      // Remove materials from user's inventory
+
       removeItems(_actionRecipe->materials());
-      // Give user his newly crafted items
-      const ServerItem *product = toServerItem(_actionRecipe->product());
+
+      const auto *product = toServerItem(_actionRecipe->product());
       giveItem(product, _actionRecipe->quantity());
-      // Trigger any new unlocks
+
+      const auto *byproduct = toServerItem(_actionRecipe->byproduct());
+      giveItem(byproduct);
+
       ProgressLock::triggerUnlocks(*this, ProgressLock::RECIPE, _actionRecipe);
       break;
     }
