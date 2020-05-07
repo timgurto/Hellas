@@ -310,14 +310,14 @@ TEST_CASE("Duping exploit") {
 }
 
 TEST_CASE("Extra items returned from crafting") {
-  GIVEN("a nuclear reaction that takes U235 and returns U238") {
+  GIVEN("a nuclear reaction that takes U235 and returns 2 U238") {
     auto data = R"(
       <item id="u235" />
       <item id="u238" />
       <item id="electricity" />
       <recipe id="electricity" >
         <material id="u235" />
-        <byproduct id="u238" />
+        <byproduct id="u238" quantity="2" />
       </recipe>
     )";
     auto s = TestServer::WithDataString(data);
@@ -337,7 +337,7 @@ TEST_CASE("Extra items returned from crafting") {
 
         THEN("the user has electricity and U238") {
           auto expectedInInventory = ItemSet{};
-          expectedInInventory.add(&u238);
+          expectedInInventory.add(&u238, 2);
           expectedInInventory.add(&electricity);
 
           WAIT_UNTIL(user.hasItems(expectedInInventory));
@@ -377,5 +377,4 @@ TEST_CASE("Extra items returned from crafting") {
   }
 }
 
-// Qty
 // No crafting if no bag space for byproducts

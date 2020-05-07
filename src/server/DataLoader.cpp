@@ -699,7 +699,11 @@ void DataLoader::loadRecipes(XmlReader &xr) {
                        << Log::endl;
         continue;
       }
-      recipe.byproduct(&*it);
+
+      auto qty = size_t{1};
+      xr.findAttr(byproduct, "quantity", qty);
+
+      recipe.byproduct(&*it, qty);
     }
 
     int n;
