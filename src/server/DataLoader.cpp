@@ -691,8 +691,14 @@ void DataLoader::loadRecipes(XmlReader &xr) {
 
     auto byproduct = xr.findChild("byproduct", elem);
     if (byproduct) {
-      auto it = _server._items.find("u238"s);
-
+      xr.findAttr(byproduct, "id", id);
+      auto it = _server._items.find(id);
+      if (it == _server._items.end()) {
+        _server._debug << Color::CHAT_ERROR
+                       << "Skipping recipe with invalid byproduct " << id
+                       << Log::endl;
+        continue;
+      }
       recipe.byproduct(&*it);
     }
 

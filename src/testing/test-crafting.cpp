@@ -345,9 +345,37 @@ TEST_CASE("Extra items returned from crafting") {
       }
     }
   }
+
+  GIVEN("making money also provides happiness") {
+    auto data = R"(
+      <item id="money" />
+      <item id="happiness" />
+      <recipe id="money" >
+        <byproduct id="happiness" />
+      </recipe>
+    )";
+    auto s = TestServer::WithDataString(data);
+    const auto &happiness = s.findItem("happiness");
+
+    AND_GIVEN("a user knows how to make money") {
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      user.addRecipe("money");
+
+      WHEN("he does so") {
+        c.sendMessage(CL_CRAFT, "money");
+
+        THEN("he has happiness") {
+          auto expectedInInventory = ItemSet{};
+          expectedInInventory.add(&happiness);
+
+          WAIT_UNTIL(user.hasItems(expectedInInventory));
+        }
+      }
+    }
+  }
 }
 
-// Different byproduct
 // Qty
 // No crafting if no bag space for byproducts
-// Bad ID
