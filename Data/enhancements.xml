@@ -209,10 +209,10 @@
     <material id="silverWire" quantity="5" />
     <unlockedBy recipe="copperSpear" chance="0.04" />
 </recipe>
-<recipe id="copperSwordSilverSilver" time="10000" >
-    <material id="copperSwordSilver" />
+<recipe id="copperSwordSilver" time="10000" >
+    <material id="copperSword" />
     <material id="silverWire" quantity="5" />
-    <unlockedBy recipe="copperSwordSilver" chance="0.04" />
+    <unlockedBy recipe="copperSword" chance="0.04" />
 </recipe>
 <recipe id="slingSilver" time="10000" >
     <material id="sling" />
