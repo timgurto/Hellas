@@ -104,3 +104,21 @@ TEST_CASE("Merchant can use same slot for ware and price") {
     }
   }
 }
+
+TEST_CASE("Bad inventory message to client") {
+  GIVEN("a server and client, and an item type") {
+    auto data = R"(
+        <item id="gold" />
+      )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+
+    WHEN("the server sends SV_INVENTORY with a bad serial") {
+      const auto &user = s.getFirstUser();
+      user.sendMessage({SV_INVENTORY, makeArgs("50", "0", "gold", "1", "1")});
+
+      THEN("the client survives") { REPEAT_FOR_MS(100); }
+    }
+  }
+}

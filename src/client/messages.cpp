@@ -2008,16 +2008,19 @@ void Client::handle_SV_INVENTORY(Serial serial, size_t slot,
     container = &_character.gear();
   else {
     auto it = _objects.find(serial);
-    if (it != _objects.end()) {
-      object = it->second;
-      container = &object->container();
+    if (it == _objects.end()) {
+      // Received inventory information for an unknown object.  Exiting.
+      return;
+    }
 
-      // Make sure container is big enough
-      if (slot >= container->size()) {
-        auto slotsToAdd = container->size() - slot + 1;
-        for (auto i = 0; i != slotsToAdd; ++i)
-          container->push_back(std::make_pair(ClientItem::Instance{}, 0));
-      }
+    object = it->second;
+    container = &object->container();
+
+    // Make sure container is big enough
+    if (slot >= container->size()) {
+      auto slotsToAdd = container->size() - slot + 1;
+      for (auto i = 0; i != slotsToAdd; ++i)
+        container->push_back(std::make_pair(ClientItem::Instance{}, 0));
     }
   }
 
