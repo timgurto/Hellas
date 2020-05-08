@@ -40,8 +40,8 @@
     <unlockedBy recipe="silverStrip" />
 </recipe>
 
-<item id="silverLaquer" name="Silver Laquer" stackSize="5" quality="2" />
-<recipe id="silverLaquer" time="5000" >
+<item id="silverLacquer" name="Silver Lacquer" stackSize="5" quality="2" />
+<recipe id="silverLacquer" time="5000" >
     <material id="silverPowder" />
     <material id="water" />
     <unlockedBy recipe="silverPowder" />
