@@ -273,7 +273,7 @@
         <unlockedBy recipe="pole1" chance="0.1" />
     </recipe>
     <recipe
-        id="copperSpear" time="4000" quantity="5" >
+        id="copperSpear" time="4000" >
         <material id="copperBar" />
         <material id="pole2" />
         <tool class="smelting2" />

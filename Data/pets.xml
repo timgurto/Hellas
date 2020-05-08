@@ -52,7 +52,8 @@
         <unlockedBy gather="wool" chance="0.05" />
         <unlockedBy item="sheepskin" chance="0.02" />
         <unlockedBy recipe="pole1" chance="0.05" />
-    </recipe>
+    </recipe>    
+    
 <item id="staff2" name="Staff"
     gearSlot="6" lvlReq="24">
     <stats followerLimit="2" />

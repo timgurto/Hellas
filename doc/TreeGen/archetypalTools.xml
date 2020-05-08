@@ -115,6 +115,7 @@
 <blacklist parent="item_tin"            child="object_copperMine" />
 <blacklist parent="object_copperMine"   child="item_rock" />
 <blacklist parent="object_silverMine"   child="item_rock" />
+<blacklist parent="item_tinPick"        child="object_silverMine" />
 
 <extra parent="item_leatherGloves" child="item_tinBar" />
 <extra parent="object_kiln"        child="item_copperBar" />
