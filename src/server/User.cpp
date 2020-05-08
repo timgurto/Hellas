@@ -780,8 +780,10 @@ void User::update(ms_t timeElapsed) {
       const auto *product = toServerItem(_actionRecipe->product());
       giveItem(product, _actionRecipe->quantity());
 
-      const auto *byproduct = toServerItem(_actionRecipe->byproduct());
-      giveItem(byproduct, _actionRecipe->byproductQty());
+      if (_actionRecipe->byproduct()) {
+        const auto *byproduct = toServerItem(_actionRecipe->byproduct());
+        giveItem(byproduct, _actionRecipe->byproductQty());
+      }
 
       ProgressLock::triggerUnlocks(*this, ProgressLock::RECIPE, _actionRecipe);
       break;
