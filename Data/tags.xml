@@ -24,18 +24,20 @@
 <tag id="pottery1"          name="Basic Clayfiring" />
 <tag id="pottery2"          name="Advanced Clayfiring" />
 <tag id="charcoalMaking"    name="Charcoal Making" />
-<tag id="smelting1"         name="Tin Smelting" />
-<tag id="smelting2"         name="Copper Smelting" />
+<tag id="smelting1"         name="Basic Smelting" />
+<tag id="smelting2"         name="Advanced Smelting" />
 <tag id="tanning"           name="Tanning" />
 <tag id="woodTurning"       name="Wood Turning" />
 <tag id="woodcutting"       name="Woodcutting" />
 <tag id="weaving"           name="Weaving" />
 <tag id="shearing"          name="Sheep Shearing" />
+<tag id="wireDrawing"       name="Wire Drawing" />
 
 <tag id="waterSource"   name="Water Source" />
 <tag id="anvil1"        name="Metalworking" />
 <tag id="wand"          name="Wand" />
 <tag id="copperDeposit" name="Mineable Copper" />
+<tag id="silverDeposit" name="Mineable Silver" />
 
 <tag id="food" name="Food" />
 

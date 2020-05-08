@@ -4,6 +4,8 @@
 <item id="tinBar"       name="Tin Ingot"      sounds="metalBar"  stackSize="10" durability="25"/>
 <item id="copper"       name="Copper Ore"                        stackSize="10" durability="10" />
 <item id="copperBar"    name="Copper Ingot"   sounds="metalBar"  stackSize="10" durability="20"/>
+<item id="silver"       name="Silver Ore"                        stackSize="10" durability="10" />
+<item id="silverBar"    name="Silver Ingot"   sounds="metalBar"  stackSize="10" durability="20"/>
 
 <recipe id="tinBar"
     time="12000" >
@@ -18,6 +20,13 @@
     <tool class="smelting2" />
     <tool class="gloves" />
     <unlockedBy gather="copper" chance="0.2" />
+</recipe>
+<recipe id="silverBar"
+    time="12000" >
+    <material id="silver" quantity="4" />
+    <tool class="smelting2" />
+    <tool class="gloves" />
+    <unlockedBy gather="silver" />
 </recipe>
 
 <objectType id="tin" name="Tin Deposit"
@@ -36,7 +45,6 @@
     destroyIfUsedAsTool="1" >
     <tag name="copperDeposit" />
 </objectType>
-
 <objectType id="copperMine" name="Copper Mine"
     xDrawOffset="-60" yDrawOffset="-74"
     canGather="1" gatherTime="8000" gatherReq="mining"
@@ -51,6 +59,29 @@
     <unlockedBy recipe="brick" chance="0.02" />
     <unlockedBy recipe="tinBar" chance="0.05" />
     <unlockedBy gather="tin" chance="0.02" />
+    <durability item="brick" quantity="6" />
+</objectType>
+
+<objectType id="silver" name="Silver Deposit"
+    xDrawOffset="-13" yDrawOffset="-11" isFlat="1"
+    allowedTerrain="rocky"
+    destroyIfUsedAsTool="1" >
+    <tag name="silverDeposit" />
+</objectType>
+<objectType id="silverMine" name="Silver Mine"
+    xDrawOffset="-60" yDrawOffset="-74"
+    canGather="1" gatherTime="8000" gatherReq="mining"
+    allowedTerrain="rocksAndMountains"
+    constructionTime="0" constructionReq="silverDeposit" >
+    <collisionRect x="-59" y="-38" w="119" h="61" />
+    <yield id="silver" initialMean="10" initialSD="2" initialMin="1" />
+    <yield id="rock" initialMean="6" initialSD="2" />
+    <material id="brick" quantity="6" />
+    <material id="lumber" quantity="9" />
+    <unlockedBy recipe="tinPick" chance="0.1" />
+    <unlockedBy recipe="brick" chance="0.01" />
+    <unlockedBy recipe="copperBar" chance="0.1" />
+    <unlockedBy gather="copper" chance="0.05" />
     <durability item="brick" quantity="6" />
 </objectType>
 

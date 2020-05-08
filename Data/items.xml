@@ -53,7 +53,7 @@
 <item id="figSeeds"     name="Fig Seeds"      sounds="seeds"     constructs="figTree0"       stackSize="10"/>
 <item id="flaxSeeds"    name="Flax Seeds"     sounds="seeds"     constructs="flaxCrop0"      stackSize="10"/>
 
-<item id="tinTube"      name="Metal Tube"     sounds="metalTool" durability="8"/>
+<item id="tinTube"      name="Metal Tube"     sounds="metalTool" durability="8"> <tag name="wireDrawing" /> </item>
 <item id="pole1"		name="Crude Pole"     sounds="wood" />
 <item id="pole2"		name="Pole" />
 

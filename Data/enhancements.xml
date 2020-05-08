@@ -1,0 +1,50 @@
+<root>
+
+<!-- Intermediates -->
+<item id="silverStrip" name="Silver Strip" stackSize="20" quality="2" />
+<recipe id="silverStrip" time="15000" quantity="15" >
+    <material id="silverBar" />
+    <tool class="hammering" />
+    <tool class="anvil1" />
+    <tool class="smelting2" />
+    <unlockedBy recipe="silverBar" />
+</recipe>
+
+<item id="silverPowder" name="Silver Powder" stackSize="20" quality="2" />
+<recipe id="silverPowder" time="15000" quantity="15" >
+    <material id="silverBar" />
+    <tool class="grinding2" />
+    <unlockedBy recipe="silverBar" />
+</recipe>
+
+<!-- Materials -->
+<item id="silverThread" name="Silver Thread" stackSize="20" quality="2" />
+<recipe id="silverThread" time="5000" >
+    <material id="silverStrip" />
+    <material id="linenThread" />
+    <unlockedBy recipe="silverStrip" />
+</recipe>
+
+<item id="silverLeaf" name="Silver Leaf" stackSize="20" quality="2" />
+<recipe id="silverLeaf" time="5000" >
+    <material id="silverStrip" />
+    <tool class="hammering" />
+    <tool class="anvil1" />
+    <unlockedBy recipe="silverStrip" />
+</recipe>
+
+<item id="silverWire" name="Silver Wire" stackSize="20" quality="2" />
+<recipe id="silverWire" time="5000" quantity="15" >
+    <material id="silverStrip" />
+    <tool class="wireDrawing" />
+    <unlockedBy recipe="silverStrip" />
+</recipe>
+
+<item id="silverLaquer" name="Silver Laquer" stackSize="5" quality="2" />
+<recipe id="silverLaquer" time="5000" >
+    <material id="silverPowder" />
+    <material id="water" />
+    <unlockedBy recipe="silverPowder" />
+</recipe>
+
+</root>
