@@ -1,6 +1,7 @@
 <root>
 <item id="tinCoin" name="Tin Coin" stackSize="1000" />
 <item id="copperCoin" name="Copper Coin" stackSize="1000" />
+<item id="silverCoin" name="Silver Coin" stackSize="1000" />
 
 <recipe id="tinCoin" time="1000" quantity="100">
     <material id="tinBar" />
