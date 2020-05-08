@@ -850,8 +850,8 @@ void User::update(ms_t timeElapsed) {
   Entity::update(timeElapsed);
 }
 
-bool User::hasRoomToRemoveThenAdd(ItemSet toBeRemoved, const Item *toBeAdded,
-                                  size_t qtyToBeAdded) const {
+bool User::hasRoomToRemoveThenAdd(ItemSet toBeRemoved,
+                                  ItemSet toBeAdded) const {
   ServerItem::vect_t inventoryCopy = _inventory;
   for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
     auto &invSlot = inventoryCopy[i];
@@ -864,12 +864,14 @@ bool User::hasRoomToRemoveThenAdd(ItemSet toBeRemoved, const Item *toBeAdded,
       if (toBeRemoved.isEmpty()) break;
     }
   }
-  return vectHasSpace(inventoryCopy, toServerItem(toBeAdded), qtyToBeAdded);
+  return vectHasSpace(inventoryCopy, toBeAdded);
 }
 
 bool User::hasRoomToCraft(const SRecipe &recipe) const {
-  return hasRoomToRemoveThenAdd(recipe.materials(), recipe.product(),
-                                recipe.quantity());
+  auto productsAndByproducts = ItemSet{};
+  productsAndByproducts.add(recipe.product(), recipe.quantity());
+  productsAndByproducts.add(recipe.byproduct(), recipe.byproductQty());
+  return hasRoomToRemoveThenAdd(recipe.materials(), productsAndByproducts);
 }
 
 bool User::shouldGatherDoubleThisTime() const {

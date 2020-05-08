@@ -257,7 +257,9 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
     if (itemToReturn) {
       auto itemsToRemove = ItemSet{};
       itemsToRemove.add(materialType, qtyToTake);
-      if (!user.hasRoomToRemoveThenAdd(itemsToRemove, itemToReturn, 1))
+      auto itemsToAdd = ItemSet{};
+      itemsToAdd.add(itemToReturn, 1);
+      if (!user.hasRoomToRemoveThenAdd(itemsToRemove, itemsToAdd))
         RETURN_WITH(WARNING_INVENTORY_FULL)
     }
 
@@ -419,9 +421,10 @@ HANDLE_MESSAGE(CL_CAST_ITEM) {
   if (item.returnsOnCast()) {
     auto toBeRemoved = ItemSet{};
     toBeRemoved.add(&item);
-    const auto *toBeAdded = item.returnsOnCast();
+    auto toBeAdded = ItemSet{};
+    toBeAdded.add(item.returnsOnCast(), 1);
     auto roomForReturnedItem =
-        user.hasRoomToRemoveThenAdd(toBeRemoved, toBeAdded, 1);
+        user.hasRoomToRemoveThenAdd(toBeRemoved, toBeAdded);
     if (!roomForReturnedItem) RETURN_WITH(WARNING_INVENTORY_FULL)
   }
 
@@ -1948,9 +1951,9 @@ void Server::handle_CL_AUTO_CONSTRUCT(User &user, Serial serial) {
     materialToBeRemoved.add(pair.first, pair.second);
     auto qtyToBeReturned = min<int>(
         pair.second, user.countItems(material->returnsOnConstruction()));
-    if (user.hasRoomToRemoveThenAdd(materialToBeRemoved,
-                                    material->returnsOnConstruction(),
-                                    qtyToBeReturned))
+    auto toBeReturned = ItemSet{};
+    toBeReturned.add(material->returnsOnConstruction(), qtyToBeReturned);
+    if (user.hasRoomToRemoveThenAdd(materialToBeRemoved, toBeReturned))
       materialsToLookFor.add(pair.first, pair.second);
   }
 

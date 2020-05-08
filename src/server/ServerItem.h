@@ -111,6 +111,7 @@ class ServerItem : public Item {
 
 bool vectHasSpace(const ServerItem::vect_t &vect, const ServerItem *item,
                   size_t qty = 1);
+bool vectHasSpace(ServerItem::vect_t vect, ItemSet items);
 bool vectHasSpaceAfterRemovingItems(const ServerItem::vect_t &vect,
                                     const ServerItem *item, size_t qty,
                                     const ServerItem *itemThatWillBeRemoved,

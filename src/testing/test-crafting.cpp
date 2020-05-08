@@ -325,22 +325,41 @@ TEST_CASE("Extra items returned from crafting") {
     const auto &u238 = s.findItem("u238");
     const auto &electricity = s.findItem("electricity");
 
-    AND_GIVEN("a user has U235") {
+    AND_GIVEN("he knows the recipe") {
       auto c = TestClient::WithDataString(data);
       s.waitForUsers(1);
       auto &user = s.getFirstUser();
       user.addRecipe("electricity");
-      user.giveItem(&u235);
 
-      WHEN("he makes electricity") {
-        c.sendMessage(CL_CRAFT, "electricity");
+      AND_GIVEN("he has U235") {
+        user.giveItem(&u235);
 
-        THEN("the user has electricity and U238") {
-          auto expectedInInventory = ItemSet{};
-          expectedInInventory.add(&u238, 2);
-          expectedInInventory.add(&electricity);
+        WHEN("he makes electricity") {
+          c.sendMessage(CL_CRAFT, "electricity");
 
-          WAIT_UNTIL(user.hasItems(expectedInInventory));
+          THEN("the user has electricity and U238") {
+            auto expectedInInventory = ItemSet{};
+            expectedInInventory.add(&u238, 2);
+            expectedInInventory.add(&electricity);
+
+            WAIT_UNTIL(user.hasItems(expectedInInventory));
+          }
+        }
+      }
+
+      AND_GIVEN("his inventory is full of U235 with one slot left") {
+        user.giveItem(&u235, User::INVENTORY_SIZE - 1);
+
+        WHEN("he tries to make electricity") {
+          c.sendMessage(CL_CRAFT, "electricity");
+
+          THEN("the user has no electricity") {
+            auto product = ItemSet{};
+            product.add(&electricity);
+
+            REPEAT_FOR_MS(100);
+            CHECK_FALSE(user.hasItems(product));
+          }
         }
       }
     }
@@ -376,5 +395,3 @@ TEST_CASE("Extra items returned from crafting") {
     }
   }
 }
-
-// No crafting if no bag space for byproducts

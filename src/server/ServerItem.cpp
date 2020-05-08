@@ -37,6 +37,51 @@ bool vectHasSpace(const ServerItem::vect_t &vect, const ServerItem *item,
   return false;
 }
 
+bool vectHasSpace(ServerItem::vect_t vect, ItemSet items) {
+  for (auto pair : items) {
+    auto itemToAdd = dynamic_cast<const ServerItem *>(pair.first);
+    auto &qtyToAdd = pair.second;
+
+    // Try to top up slots already containing that item
+    for (auto &slot : vect) {
+      const auto itemInSlot = slot.first.type();
+      auto &qtyInSlot = slot.second;
+
+      if (itemInSlot != itemToAdd) continue;
+
+      auto roomInSlot = itemToAdd->stackSize() - qtyInSlot;
+      if (qtyToAdd <= roomInSlot) {
+        qtyInSlot += qtyToAdd;
+        qtyToAdd = 0;
+        break;  // All of the item fits into this slot
+      }
+      qtyToAdd -= roomInSlot;
+    }
+    if (qtyToAdd == 0) continue;
+
+    // Try to add to empty slots
+    for (auto &slot : vect) {
+      if (slot.first.hasItem()) continue;
+
+      if (qtyToAdd <= itemToAdd->stackSize()) {
+        slot.first = ServerItem::Instance{
+            itemToAdd, ServerItem::Instance::ReportingInfo::DummyUser()};
+        slot.second = qtyToAdd;
+        qtyToAdd = 0;
+        break;  // All of this item fits into this empty slot
+      }
+      slot.first = ServerItem::Instance{
+          itemToAdd, ServerItem::Instance::ReportingInfo::DummyUser()};
+      slot.second = itemToAdd->stackSize();
+      qtyToAdd -= itemToAdd->stackSize();
+    }
+
+    if (qtyToAdd > 0) return false;
+  }
+
+  return true;
+}
+
 bool vectHasSpaceAfterRemovingItems(const ServerItem::vect_t &vect,
                                     const ServerItem *item, size_t qty,
                                     const ServerItem *itemThatWillBeRemoved,
