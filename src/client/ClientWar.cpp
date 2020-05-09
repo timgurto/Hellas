@@ -1,5 +1,3 @@
-#include <cassert>
-
 #include "ClientWar.h"
 
 void YourWars::add(const std::string &name) {
@@ -13,24 +11,24 @@ bool YourWars::atWarWith(const std::string &name) const {
 
 void YourWars::proposePeaceWith(const std::string &name) {
   auto it = _container.find(name);
-  assert(it != _container.end());
+  if (it == _container.end()) return;
   it->second = PEACE_PROPOSED_BY_YOU;
 }
 
 void YourWars::peaceWasProposedBy(const std::string &name) {
   auto it = _container.find(name);
-  assert(it != _container.end());
+  if (it == _container.end()) return;
   it->second = PEACE_PROPOSED_BY_HIM;
 }
 
 void YourWars::cancelPeaceOffer(const std::string &name) {
   auto it = _container.find(name);
-  assert(it != _container.end());
+  if (it == _container.end()) return;
   it->second = NO_PEACE_PROPOSED;
 }
 
 void YourWars::remove(const std::string &name) {
   auto it = _container.find(name);
-  assert(it != _container.end());
+  if (it == _container.end()) return;
   _container.erase(it);
 }
