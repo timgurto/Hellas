@@ -18,7 +18,7 @@
         <unlockedBy recipe="boneDust" chance="0.02" />
     </recipe>
     <item id="airWandSilver" name="Inlaid Wand of Air" gearSlot="6" lvlReq="2" 
-        iconFile="airWand" quality="2">
+        iconFile="airWand" gearFile="airWand" quality="2">
         <tag name="wand" toolSpeed="1.05" />
         <stats energy="1" />
         <weapon damage="5" speed="2.5" range="25" school="air" consumes="boneDust" projectile="airball" />
@@ -45,7 +45,7 @@
         <unlockedBy recipe="boneDust" chance="0.02" />
     </recipe>
     <item id="earthWandSilver" name="Inlaid Wand of Earth" gearSlot="6" lvlReq="6"
-        iconFile="earthWand" quality="2">
+        iconFile="earthWand" gearFile="earthWand" quality="2">
         <tag name="wand" toolSpeed="1.05" />
         <weapon damage="5" speed="2.6" range="25" school="earth" consumes="boneDust" projectile="earthball" />
         <stats energy="1" />
@@ -72,7 +72,7 @@
         <unlockedBy recipe="boneDust" chance="0.02" />
     </recipe>
     <item id="fireWandSilver" name="Inlaid Wand of Fire" gearSlot="6" lvlReq="6"
-        iconFile="fireWand">
+        iconFile="fireWand" gearFile="fireWand">
         <tag name="wand" toolSpeed="1.05" />
         <stats energy="1" />
         <weapon damage="6" speed="2.6" range="25" school="fire" consumes="boneDust" projectile="fireball" />
@@ -99,7 +99,7 @@
         <unlockedBy recipe="boneDust" chance="0.02" />
     </recipe>
     <item id="waterWandSilver" name="Inlaid Wand of Water" gearSlot="6" lvlReq="2"
-        iconFile="waterWand" quality="2">
+        iconFile="waterWand" gearFile="waterWand" quality="2">
         <tag name="wand" toolSpeed="1.05" />
         <stats energy="1" />
         <weapon damage="5" speed="2.5" range="25" school="water" consumes="boneDust" projectile="waterball" />
@@ -128,7 +128,7 @@
         <unlockedBy recipe="waterStaff" chance="0.1" />
     </recipe>
     <item id="airStaffSilver" name="Inlaid Rod of Air" gearSlot="6" lvlReq="11"
-        iconFile="airStaff" quality="2">
+        iconFile="airStaff" gearFile="airStaff" quality="2">
         <tag name="wand" toolSpeed="1.15" />
         <stats energy="2" />
         <weapon damage="6" speed="2.5" range="25" school="air" consumes="airDust" projectile="airball" />
@@ -158,7 +158,7 @@
         <unlockedBy recipe="waterStaff" chance="0.1" />
     </recipe>
     <item id="earthStaffSilver" name="Inlaid Rod of Earth" gearSlot="6" lvlReq="16"
-        iconFile="earthStaff" quality="2">
+        iconFile="earthStaff" gearFile="earthStaff" quality="2">
         <stats energy="1" />
         <tag name="wand" toolSpeed="1.15" />
         <weapon damage="7" speed="2.4" range="25" school="earth" consumes="earthDust" projectile="earthball" />
@@ -188,7 +188,7 @@
         <unlockedBy recipe="waterStaff" chance="0.1" />
     </recipe>
     <item id="fireStaffSilver" name="Inlaid Rod of Fire" gearSlot="6" lvlReq="16"
-        iconFile="fireStaff" quality="2">
+        iconFile="fireStaff" gearFile="fireStaff" quality="2">
         <stats energy="1" />
         <tag name="wand" toolSpeed="1.15" />
         <weapon damage="7" speed="2.4" range="25" school="fire" consumes="fireDust" projectile="fireball" />
@@ -218,7 +218,7 @@
         <unlockedBy recipe="fireStaff" chance="0.1" />
     </recipe>
     <item id="waterStaffSilver" name="Inlaid Rod of Water" gearSlot="6" lvlReq="11"
-        iconFile="waterStaff" quality="2">
+        iconFile="waterStaff" gearFile="waterStaff" quality="2">
         <tag name="wand" toolSpeed="1.15" />
         <stats energy="2" />
         <weapon damage="6" speed="2.5" range="25" school="water" consumes="waterDust" projectile="waterball" />
