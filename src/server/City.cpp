@@ -6,8 +6,8 @@
 
 City::Members Cities::dummyMembersList{};
 
-City::City(const Name &name, const MapPoint &location)
-    : _name(name), _location(location) {}
+City::City(const Name &name, const MapPoint &location, const std::string &king)
+    : _name(name), _location(location), _king(king) {}
 
 void City::addAndAlertPlayers(const User &user) {
   _members.insert(user.name());
@@ -30,13 +30,14 @@ bool City::isPlayerAMember(const std::string &username) const {
   return _members.count(username) == 1;
 }
 
-void Cities::createCity(const City::Name &cityName, const MapPoint &location) {
+void Cities::createCity(const City::Name &cityName, const MapPoint &location,
+                        std::string founder) {
   if (doesCityExist(cityName)) {
     Server::debug()("Can't create city: a city with that name already exists",
                     Color::CHAT_ERROR);
     return;
   }
-  _container[cityName] = {cityName, location};
+  _container[cityName] = {cityName, location, founder};
 
   Server::instance().broadcast(
       {SV_CITY_DETAILS, makeArgs(cityName, location.x, location.y)});
@@ -49,8 +50,7 @@ bool Cities::doesCityExist(const City::Name &cityName) const {
 void Cities::destroyCity(const City::Name &cityName) {
   // Give all city objects to the king
   auto city = Permissions::Owner{Permissions::Owner::CITY, cityName};
-  auto arbitraryCitizen = *membersOf(cityName).begin();
-  auto king = Permissions::Owner{Permissions::Owner::PLAYER, arbitraryCitizen};
+  auto king = Permissions::Owner{Permissions::Owner::PLAYER, kingOf(cityName)};
   Server::instance().MoveAllObjectsFromOwnerToOwner(city, king);
 
   // Remove all citizens
@@ -150,7 +150,7 @@ void Cities::readFromXMLFile(const std::string &filename) {
     xr.findAttr(locationElem, "x", location.x);
     xr.findAttr(locationElem, "y", location.y);
 
-    createCity(name, location);
+    createCity(name, location, {});
     City &city = _container[name];
     for (auto memberElem : xr.getChildren("member", elem)) {
       std::string username;
@@ -192,6 +192,16 @@ MapPoint Cities::locationOf(const std::string &cityName) const {
     return {};
   }
   return it->second.location();
+}
+
+std::string Cities::kingOf(const std::string &cityName) const {
+  auto it = _container.find(cityName);
+  bool cityExists = it != _container.end();
+  if (!cityExists) {
+    SERVER_ERROR("Can't get king of a city that doesn't exist");
+    return {};
+  }
+  return it->second.king();
 }
 
 void Cities::sendInfoAboutCitiesTo(const User &recipient) const {

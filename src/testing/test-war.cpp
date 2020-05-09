@@ -91,7 +91,7 @@ TEST_CASE("A player can be at war with a city", "[war][city]") {
   TestServer s;
 
   // And a city named Athens;
-  s.cities().createCity("Athens", {});
+  s.cities().createCity("Athens", {}, {});
 
   // And a user named Alice
   TestClient c = TestClient::WithUsername("Alice");
@@ -110,7 +110,7 @@ TEST_CASE("A player at war with a city is at war with its members",
   TestServer s;
 
   // And a city named Athens;
-  s.cities().createCity("Athens", {});
+  s.cities().createCity("Athens", {}, {});
 
   // And a user, Alice, who is a member of Athens;
   RemoteClient alice("-username Alice");
@@ -157,7 +157,7 @@ TEST_CASE("Players can declare war on cities", "[war][city]") {
   TestClient alice = TestClient::WithUsername("Alice");
 
   // And a city named Athens;
-  s.cities().createCity("Athens", {});
+  s.cities().createCity("Athens", {}, {});
 
   // When Alice declares war on Athens
   s.waitForUsers(1);
@@ -174,7 +174,7 @@ TEST_CASE("Wars involving cities are persistent", "[persistence][city][war]") {
   {
     // Given a city named Athens;
     TestServer server1;
-    server1.cities().createCity("Athens", {});
+    server1.cities().createCity("Athens", {}, {});
 
     // And Alice and Athens are at war;
     server1.wars().declare(b1, b2);
@@ -195,7 +195,7 @@ TEST_CASE("The objects of an offline enemy in an enemy city can be attacked",
     TestServer s = TestServer::WithData("chair");
 
     AND_GIVEN("Bob is an offline member of Athens") {
-      s.cities().createCity("Athens", {});
+      s.cities().createCity("Athens", {}, {});
       {
         RemoteClient bob("-username Bob -data testing/data/chair");
         s.waitForUsers(1);

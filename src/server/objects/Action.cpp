@@ -69,7 +69,7 @@ bool Server::createCity(const Object &obj, User &performer,
 
   if (textArg == "_") return false;
 
-  server._cities.createCity(textArg, obj.location());
+  server._cities.createCity(textArg, obj.location(), performer.name());
   server._cities.addPlayerToCity(performer, textArg);
 
   server.makePlayerAKing(performer);

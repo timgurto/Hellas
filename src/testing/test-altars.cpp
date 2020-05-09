@@ -41,7 +41,7 @@ TEST_CASE("A user can't build multiple player-unique objects") {
 
   SECTION("Bob can't give his wife to the city", "[city]") {
     // And there is a city of Athens
-    s.cities().createCity("Athens", {});
+    s.cities().createCity("Athens", {}, {});
 
     // When Bob logs in,
     auto c = TestClient::WithUsernameAndData("Bob", "wives");

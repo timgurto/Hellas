@@ -12,7 +12,7 @@ TEST_CASE("City creation") {
     }
 
     WHEN("a city is created") {
-      s.cities().createCity("Athens", {});
+      s.cities().createCity("Athens", {}, {});
 
       THEN("it exists") { CHECK(s.cities().doesCityExist("Athens")); }
     }
@@ -27,7 +27,7 @@ TEST_CASE("Add a player to a city") {
     User &alice = s.getFirstUser();
 
     AND_GIVEN("a city called Athens") {
-      s.cities().createCity("Athens", {});
+      s.cities().createCity("Athens", {}, {});
 
       THEN("Alice is not in Athens") {
         CHECK_FALSE(s.cities().isPlayerInCity("Alice", "Athens"));
@@ -56,11 +56,11 @@ TEST_CASE("Cities can't be overwritten") {
     }
 
     AND_GIVEN("she is a citizen of Athens") {
-      s.cities().createCity("Athens", {});
+      s.cities().createCity("Athens", {}, {});
       s.cities().addPlayerToCity(alice, "Athens");
 
       WHEN("another city called Athens is created") {
-        s.cities().createCity("Athens", {});
+        s.cities().createCity("Athens", {}, {});
 
         THEN("Alice is still in Athens") {
           CHECK(s.cities().isPlayerInCity("Alice", "Athens"));
@@ -78,7 +78,7 @@ TEST_CASE("Client is alerted to city membership") {
     User &alice = s.getFirstUser();
 
     AND_GIVEN("a city named Athens") {
-      s.cities().createCity("Athens", {});
+      s.cities().createCity("Athens", {}, {});
 
       WHEN("Alice joins Athens") {
         s.cities().addPlayerToCity(alice, "Athens");
@@ -104,7 +104,7 @@ TEST_CASE("Cities are persistent", "[persistence]") {
     server1.waitForUsers(1);
     User &alice = server1.getFirstUser();
 
-    server1.cities().createCity("Athens", {});
+    server1.cities().createCity("Athens", {}, {});
     server1.cities().addPlayerToCity(alice, "Athens");
 
     // When the server restarts
@@ -118,7 +118,7 @@ TEST_CASE("Cities are persistent", "[persistence]") {
 
 TEST_CASE("Clients are told if in a city on login") {
   TestServer server;
-  server.cities().createCity("Athens", {});
+  server.cities().createCity("Athens", {}, {});
   {
     TestClient client1 = TestClient::WithUsername("Alice");
     server.waitForUsers(1);
@@ -133,7 +133,7 @@ TEST_CASE("Clients are told if in a city on login") {
 TEST_CASE("Clients know nearby players' cities", "[remote]") {
   GIVEN("Alice is in Athens") {
     TestServer s;
-    s.cities().createCity("Athens", {});
+    s.cities().createCity("Athens", {}, {});
     RemoteClient rc("-username Alice");
     s.waitForUsers(1);
     User &serverAlice = s.getFirstUser();
@@ -193,7 +193,7 @@ TEST_CASE("Ceding") {
       }
 
       AND_GIVEN("he is in Athens") {
-        s.cities().createCity("Athens", {});
+        s.cities().createCity("Athens", {}, {});
         s.cities().addPlayerToCity(user, "Athens");
 
         WHEN("he tries to cede it") {
@@ -222,7 +222,7 @@ TEST_CASE("A player can leave a city", "[.flaky]") {
   auto &user = s.getFirstUser();
 
   // Who is a member of Athens;
-  s.cities().createCity("Athens", {});
+  s.cities().createCity("Athens", {}, {});
   s.cities().addPlayerToCity(user, "Athens");
   WAIT_UNTIL(s.cities().isPlayerInCity("Alice", "Athens"));
 
@@ -269,7 +269,7 @@ TEST_CASE("A king can't leave his city", "[king]") {
     auto &user = s.getFirstUser();
 
     AND_GIVEN("she is a member of Athens") {
-      s.cities().createCity("Athens", {});
+      s.cities().createCity("Athens", {}, {});
       s.cities().addPlayerToCity(user, "Athens");
       WAIT_UNTIL(s.cities().isPlayerInCity("Alice", "Athens"));
 
@@ -331,7 +331,7 @@ TEST_CASE("Citizens know about their city's distant objects", "[flaky]") {
     auto s = TestServer::WithDataString(data);
 
     AND_GIVEN("a city has a citizen and a distant object") {
-      s.cities().createCity("Athens", {10, 10});
+      s.cities().createCity("Athens", {10, 10}, {});
       s.addObject("townHall", {1200, 10}, {Permissions::Owner::CITY, "Athens"});
 
       {
@@ -356,7 +356,7 @@ TEST_CASE("New users know about cities") {
   auto s = TestServer{};
 
   GIVEN("a city called Athens") {
-    s.cities().createCity("Athens", {10, 10});
+    s.cities().createCity("Athens", {10, 10}, {});
 
     WHEN("a user logs in") {
       auto c = TestClient{};
@@ -366,7 +366,7 @@ TEST_CASE("New users know about cities") {
   }
 
   GIVEN("a city called Persia") {
-    s.cities().createCity("Persia", {10, 10});
+    s.cities().createCity("Persia", {10, 10}, {});
 
     WHEN("a user logs in") {
       auto c = TestClient{};
@@ -376,8 +376,8 @@ TEST_CASE("New users know about cities") {
   }
 
   GIVEN("two cities") {
-    s.cities().createCity("Athens", {10, 20});
-    s.cities().createCity("Persia", {30, 40});
+    s.cities().createCity("Athens", {10, 20}, {});
+    s.cities().createCity("Persia", {30, 40}, {});
 
     WHEN("a user logs in") {
       auto c = TestClient{};
@@ -415,7 +415,7 @@ TEST_CASE("New users know about cities") {
     WHEN("a city is created") {
       s.waitForUsers(1);
       auto &user = s.getFirstUser();
-      s.cities().createCity("Athens", {});
+      s.cities().createCity("Athens", {}, {});
 
       THEN("he knows there's one city") {
         WAIT_UNTIL(c.cities().count() == 1);
@@ -441,11 +441,24 @@ TEST_CASE("City objects go to king on city destruction") {
 
     auto &house = s.addObject("house", {10, 15});
 
-    AND_GIVEN("a user is king of Athens") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      s->createCity(house, user, "Athens");
+    AND_GIVEN(
+        "Bob is king of Athens, and Alice and Charlie are also citizens") {
+      {
+        auto c = TestClient::WithUsernameAndDataString("Bob", data);
+        s.waitForUsers(1);
+        s->createCity(house, s.findUser("Bob"), "Athens");
+      }
+      {
+        auto c = TestClient::WithUsernameAndDataString("Alice", data);
+        REPEAT_FOR_MS(100);
+        s.cities().addPlayerToCity(s.findUser("Alice"), "Athens");
+      }
+      {
+        auto c = TestClient::WithUsernameAndDataString("Charlie", data);
+        REPEAT_FOR_MS(100);
+        s.cities().addPlayerToCity(s.findUser("Charlie"), "Athens");
+      }
+      s.waitForUsers(0);
 
       AND_GIVEN("the house belongs to Athens") {
         house.permissions.setCityOwner("Athens");
@@ -453,8 +466,8 @@ TEST_CASE("City objects go to king on city destruction") {
         WHEN("the city is destroyed") {
           s.cities().destroyCity("Athens");
 
-          THEN("the house belongs to the former king") {
-            WAIT_UNTIL(house.permissions.isOwnedByPlayer(user.name()));
+          THEN("the house belongs to Bob") {
+            WAIT_UNTIL(house.permissions.isOwnedByPlayer("Bob"));
           }
         }
       }

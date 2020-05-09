@@ -95,7 +95,7 @@ TEST_CASE("A non-owner cannot access an owned object") {
 TEST_CASE("A city can own an object", "[city]") {
   // Given a rock, and a city named Athens
   TestServer s = TestServer::WithData("basic_rock");
-  s.cities().createCity("Athens", {});
+  s.cities().createCity("Athens", {}, {});
   s.addObject("rock", {10, 10});
   Object &rock = s.getFirstObject();
 
@@ -113,7 +113,7 @@ TEST_CASE("City ownership is persistent", "[city][persistence]") {
   // Given a rock owned by Athens
   {
     TestServer s1 = TestServer::WithData("basic_rock");
-    s1.cities().createCity("Athens", {});
+    s1.cities().createCity("Athens", {}, {});
     s1.addObject("rock", {10, 10});
     Object &rock = s1.getFirstObject();
     rock.permissions.setCityOwner("Athens");
@@ -130,7 +130,7 @@ TEST_CASE("City ownership is persistent", "[city][persistence]") {
 TEST_CASE("City members can use city objects", "[city]") {
   // Given a rock owned by Athens;
   TestServer s = TestServer::WithData("basic_rock");
-  s.cities().createCity("Athens", {});
+  s.cities().createCity("Athens", {}, {});
   s.addObject("rock", {10, 10});
   Object &rock = s.getFirstObject();
   rock.permissions.setCityOwner("Athens");
@@ -159,7 +159,7 @@ TEST_CASE("Non-members cannot use city objects", "[city]") {
     TestServer s = TestServer::WithData("basic_rock");
     TestClient c = TestClient::WithData("basic_rock");
 
-    s.cities().createCity("Athens", {});
+    s.cities().createCity("Athens", {}, {});
     s.addObject("rock", {10, 10});
     Object &rock = s.getFirstObject();
     rock.permissions.setCityOwner("Athens");
@@ -255,7 +255,7 @@ TEST_CASE("Objects can be granted to citizens", "[king][city][grant]") {
   auto s = TestServer::WithData("basic_rock");
 
   // And a city, Athens;
-  s.cities().createCity("Athens", {});
+  s.cities().createCity("Athens", {}, {});
 
   // And its king, Alice;
   auto c = TestClient::WithUsernameAndData("Alice", "basic_rock");
@@ -281,7 +281,7 @@ TEST_CASE("Non kings can't grant objects", "[king][city][grant]") {
   auto s = TestServer::WithData("basic_rock");
 
   // And a city, Athens;
-  s.cities().createCity("Athens", {});
+  s.cities().createCity("Athens", {}, {});
 
   // And its citizen, Alice;
   auto c = TestClient::WithUsernameAndData("Alice", "basic_rock");
@@ -309,7 +309,7 @@ TEST_CASE("Unowned objects cannot be granted", "[city][grant]") {
   auto s = TestServer::WithData("basic_rock");
 
   // And a city, Athens;
-  s.cities().createCity("Athens", {});
+  s.cities().createCity("Athens", {}, {});
 
   // And its king, Alice;
   auto c = TestClient::WithUsernameAndData("Alice", "basic_rock");
@@ -338,8 +338,8 @@ TEST_CASE("Only objects owned by your city can be granted",
   auto s = TestServer::WithData("basic_rock");
 
   // And two cities, Athens and Sparts;
-  s.cities().createCity("Athens", {});
-  s.cities().createCity("Sparta", {});
+  s.cities().createCity("Athens", {}, {});
+  s.cities().createCity("Sparta", {}, {});
 
   // And Alice, Athens' king;
   auto c = TestClient::WithUsernameAndData("Alice", "basic_rock");

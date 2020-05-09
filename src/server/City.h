@@ -26,7 +26,8 @@ class City {
  public:
   typedef std::string Name;
 
-  City(const Name &name = {}, const MapPoint &location = {});
+  City(const Name &name = {}, const MapPoint &location = {},
+       const std::string &king = {});
 
   typedef std::set<std::string> Members;
   const Members &members() const { return _members; }
@@ -37,16 +38,19 @@ class City {
   bool isPlayerAMember(const std::string &username) const;
 
   const MapPoint &location() const { return _location; }
+  const std::string &king() const { return _king; }
 
  private:
   Name _name;
   Members _members;
   MapPoint _location;  // Normally, the location of the Altar to Athena
+  std::string _king;
 };
 
 class Cities {
  public:
-  void createCity(const City::Name &cityName, const MapPoint &location);
+  void createCity(const City::Name &cityName, const MapPoint &location,
+                  std::string founder);
   bool doesCityExist(const City::Name &cityName) const;
 
   void destroyCity(const City::Name &cityName);
@@ -60,6 +64,7 @@ class Cities {
   const City::Members &membersOf(const std::string &cityName) const;
   void sendCityObjectsToCitizen(const User &citizen) const;
   MapPoint locationOf(const std::string &cityName) const;
+  std::string kingOf(const std::string &cityName) const;
 
   void sendInfoAboutCitiesTo(const User &recipient) const;
 
