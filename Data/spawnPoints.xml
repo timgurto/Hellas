@@ -341,6 +341,7 @@
     <spawnPoint type="sheepGuardian" y="50184" x="43816" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="sheepGuardian" y="51256" x="42600" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="sheepGuardian" y="51304" x="47128" quantity="5" radius="250" respawnTime="300000" />
+    <spawnPoint type="silver" y="35296" x="34720" quantity="20" radius="30000" respawnTime="1" useCachedTerrain="1" />
     <spawnPoint type="snake16" y="20960" x="13480" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="snake16" y="21704" x="14280" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="snake16" y="23144" x="13424" quantity="5" radius="250" respawnTime="300000" />
