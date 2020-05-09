@@ -157,7 +157,8 @@ class Server {
 
   void makePlayerAKing(const User &user);
 
-  void killAllObjectsOwnedBy(const Permissions::Owner &owner);
+  void MoveAllObjectsFromOwnerToOwner(const Permissions::Owner &oldOwner,
+                                      const Permissions::Owner &newOwner);
 
   void incrementThreadCount() { ++_threadsOpen; }
   void decrementThreadCount() { --_threadsOpen; }

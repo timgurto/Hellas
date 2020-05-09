@@ -431,3 +431,33 @@ TEST_CASE("New users know about cities") {
     }
   }
 }
+
+TEST_CASE("City objects go to king on city destruction") {
+  GIVEN("a house") {
+    auto data = R"(
+      <objectType id="house" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithUsernameAndDataString("Alice", data);
+
+    auto &house = s.addObject("house", {10, 15});
+
+    AND_GIVEN("Alice is king of Athens") {
+      s.waitForUsers(1);
+      auto &alice = s.getFirstUser();
+      s->createCity(house, alice, "Athens");
+
+      AND_GIVEN("the house belongs to Athens") {
+        house.permissions.setCityOwner("Athens");
+
+        WHEN("the city is destroyed") {
+          s.cities().destroyCity("Athens");
+
+          THEN("the house belongs to Alice") {
+            WAIT_UNTIL(house.permissions.isOwnedByPlayer("Alice"));
+          }
+        }
+      }
+    }
+  }
+}

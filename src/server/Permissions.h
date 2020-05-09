@@ -30,6 +30,7 @@ class Permissions : public EntityComponent {
   Permissions(Entity &parent) : EntityComponent(parent) {}
 
   void setNoAccess();
+  void setOwner(const Owner &newOwner);
   void setPlayerOwner(const std::string &username);
   void setCityOwner(const City::Name &cityName);
   bool hasOwner() const;

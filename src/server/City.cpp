@@ -47,9 +47,10 @@ bool Cities::doesCityExist(const City::Name &cityName) const {
 }
 
 void Cities::destroyCity(const City::Name &cityName) {
-  // Kill all city objects
-  auto city = Permissions::Owner(Permissions::Owner::CITY, cityName);
-  Server::instance().killAllObjectsOwnedBy(city);
+  // Give all city objects to the king
+  auto city = Permissions::Owner{Permissions::Owner::CITY, cityName};
+  auto king = Permissions::Owner{Permissions::Owner::PLAYER, "Alice"};
+  Server::instance().MoveAllObjectsFromOwnerToOwner(city, king);
 
   // Remove all citizens
   auto citizenNames = membersOf(cityName);

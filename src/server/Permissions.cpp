@@ -42,12 +42,11 @@ void Permissions::setNoAccess() {
   parent().onOwnershipChange();
 }
 
-void Permissions::setPlayerOwner(const std::string &username) {
+void Permissions::setOwner(const Owner &newOwner) {
   ObjectsByOwner &ownerIndex = Server::_instance->_objectsByOwner;
   ownerIndex.remove(_owner, parent().serial());
 
-  _owner.type = Owner::PLAYER;
-  _owner.name = username;
+  _owner = newOwner;
 
   ownerIndex.add(_owner, parent().serial());
 
@@ -55,19 +54,12 @@ void Permissions::setPlayerOwner(const std::string &username) {
   parent().onOwnershipChange();
 }
 
+void Permissions::setPlayerOwner(const std::string &username) {
+  setOwner({Owner::PLAYER, username});
+}
+
 void Permissions::setCityOwner(const City::Name &cityName) {
-  ObjectsByOwner &ownerIndex = Server::_instance->_objectsByOwner;
-  ownerIndex.remove(_owner, parent().serial());
-
-  const Cities &cities = Server::instance()._cities;
-  if (!cities.doesCityExist(cityName)) return;
-  _owner.type = Owner::CITY;
-  _owner.name = cityName;
-
-  ownerIndex.add(_owner, parent().serial());
-
-  alertNearbyUsersToNewOwner();
-  parent().onOwnershipChange();
+  setOwner({Owner::CITY, cityName});
 }
 
 bool Permissions::hasOwner() const {

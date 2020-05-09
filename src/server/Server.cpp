@@ -798,11 +798,12 @@ void Server::makePlayerAKing(const User &user) {
   this->broadcastToArea(user.location(), {SV_KING, user.name()});
 }
 
-void Server::killAllObjectsOwnedBy(const Permissions::Owner &owner) {
-  const auto &serials = _objectsByOwner.getObjectsWithSpecificOwner(owner);
+void Server::MoveAllObjectsFromOwnerToOwner(
+    const Permissions::Owner &oldOwner, const Permissions::Owner &newOwner) {
+  const auto serials = _objectsByOwner.getObjectsWithSpecificOwner(oldOwner);
   for (auto serial : serials) {
     auto *object = _entities.find<Object>(serial);
-    object->reduceHealth(object->health());
+    object->permissions.setOwner(newOwner);
   }
 }
 
