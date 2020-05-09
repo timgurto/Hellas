@@ -438,14 +438,14 @@ TEST_CASE("City objects go to king on city destruction") {
       <objectType id="house" />
     )";
     auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithUsernameAndDataString("Alice", data);
 
     auto &house = s.addObject("house", {10, 15});
 
-    AND_GIVEN("Alice is king of Athens") {
+    AND_GIVEN("a user is king of Athens") {
+      auto c = TestClient::WithDataString(data);
       s.waitForUsers(1);
-      auto &alice = s.getFirstUser();
-      s->createCity(house, alice, "Athens");
+      auto &user = s.getFirstUser();
+      s->createCity(house, user, "Athens");
 
       AND_GIVEN("the house belongs to Athens") {
         house.permissions.setCityOwner("Athens");
@@ -453,8 +453,8 @@ TEST_CASE("City objects go to king on city destruction") {
         WHEN("the city is destroyed") {
           s.cities().destroyCity("Athens");
 
-          THEN("the house belongs to Alice") {
-            WAIT_UNTIL(house.permissions.isOwnedByPlayer("Alice"));
+          THEN("the house belongs to the former king") {
+            WAIT_UNTIL(house.permissions.isOwnedByPlayer(user.name()));
           }
         }
       }
