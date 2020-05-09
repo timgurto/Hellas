@@ -126,6 +126,8 @@ void Cities::writeToXMLFile(const std::string &filename) const {
     xw.setAttr(locE, "x", city.location().x);
     xw.setAttr(locE, "y", city.location().y);
 
+    xw.setAttr(e, "king", city.king());
+
     for (const std::string &member : city.members()) {
       auto memberE = xw.addChild("member", e);
       xw.setAttr(memberE, "username", member);
@@ -150,7 +152,10 @@ void Cities::readFromXMLFile(const std::string &filename) {
     xr.findAttr(locationElem, "x", location.x);
     xr.findAttr(locationElem, "y", location.y);
 
-    createCity(name, location, {});
+    auto king = ""s;
+    xr.findAttr(elem, "king", king);
+
+    createCity(name, location, king);
     City &city = _container[name];
     for (auto memberElem : xr.getChildren("member", elem)) {
       std::string username;

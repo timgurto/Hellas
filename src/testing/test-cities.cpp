@@ -474,3 +474,17 @@ TEST_CASE("City objects go to king on city destruction") {
     }
   }
 }
+
+TEST_CASE("Cities persistently know about their kings") {
+  // GIVEN Alice is the king of Athens
+  {
+    auto s = TestServer{};
+    s.cities().createCity("Athens", {}, "Alice");
+
+    // WHEN the server restarts
+  }
+  auto s = TestServer::KeepingOldData();
+
+  // THEN the server knows that Alice is the king of Athens
+  CHECK(s.cities().kingOf("Athens") == "Alice");
+}
