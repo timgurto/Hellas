@@ -162,7 +162,7 @@
 		</item>
             <item id="stoneAxeSilver" name="Inlaid Stone Axe" gearSlot="6"
                     iconFile="stoneAxe" gearFile="stoneAxe" quality="2" >
-                <tag name="woodcutting" toolspeed="1.05" />
+                <tag name="woodcutting" toolSpeed="1.05" />
                 <stats health="2" />
                 <weapon damage="7" speed="3.2" />
                 <canBeRepaired cost="knapper" />
@@ -175,7 +175,7 @@
         </item>
             <item id="tinAxeSilver" name="Inlaid Tin Axe" gearSlot="6" lvlReq="10"
                     iconFile="tinAxe" gearFile="tinAxe" quality="2" >
-                <tag name="woodcutting" toolspeed="1.15" />
+                <tag name="woodcutting" toolSpeed="1.15" />
                 <stats health="1" />
                 <weapon damage="11" speed="2.6" />
                 <offset x="-5" y="1" />
@@ -189,7 +189,7 @@
 		</item>
             <item id="copperAxeSilver" name="Inlaid Copper Axe" gearSlot="6" sounds="metalTool" lvlReq="24"
                 quality="2" iconFile="copperAxe" gearFile="copperAxe">
-                <tag name="woodcutting" toolspeed="1.25" />
+                <tag name="woodcutting" toolSpeed="1.25" />
                 <stats health="2" />
                 <weapon damage="20" speed="2.3" />
             </item>
@@ -203,7 +203,7 @@
 		</item>
             <item id="copperHammerSilver" name="Inlaid Copper Hammer" gearSlot="6"
                 iconFile="copperHammer" gearFile="copperHammer" quality="2" >
-                <tag name="hammering" toolspeed="1.05" />
+                <tag name="hammering" toolSpeed="1.05" />
                 <stats health="1" />
                 <weapon damage="25" speed="3.5" />
             </item>
