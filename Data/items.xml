@@ -403,7 +403,7 @@
                 <canBeRepaired cost="tinScale" />
             </item>
                 <item id="tinLamellarSilver" name="Silvered Tin Lamellar" gearSlot="2" sounds="mailArmor" lvlReq="12"
-                    iconFile="tinLamellar" quality="1">
+                    iconFile="tinLamellar" quality="2">
                     <stats armor="2" health="23" />
                     <offset x="-6" y="-4" />
                     <canBeRepaired cost="tinScale" />
@@ -414,7 +414,7 @@
                 <canBeRepaired cost="copperScale" />
             </item>
                 <item id="copperLamellarSilver" name="Silvered Copper Lamellar" gearSlot="2" sounds="mailArmor" lvlReq="27"
-                    iconFile="copperLamellar" quality="1">
+                    iconFile="copperLamellar" quality="2">
                     <stats armor="4" health="39" />
                     <offset x="-6" y="-4" />
                     <canBeRepaired cost="copperScale" />
