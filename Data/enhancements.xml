@@ -56,6 +56,7 @@
 <recipe id="skullCapSilver" time="10000" >
     <material id="skullCap" />
     <material id="silverLacquer" quantity="3" />
+    <byproduct id="smallPot" quantity="3" />
     <unlockedBy recipe="skullCap" chance="0.04" />
 </recipe>
 <recipe id="copperHelmetSilver" time="10000" >
@@ -106,6 +107,7 @@
 <recipe id="leatherLamellarSilver" time="10000" >
     <material id="leatherLamellar" />
     <material id="silverLacquer" quantity="3" />
+    <byproduct id="smallPot" quantity="3" />
     <unlockedBy recipe="leatherLamellar" chance="0.04" />
 </recipe>
 <recipe id="linenChitonSilver" time="10000" >
@@ -126,6 +128,7 @@
 <recipe id="leatherGlovesSilver" time="10000" >
     <material id="leatherGloves" />
     <material id="silverLacquer" quantity="3" />
+    <byproduct id="smallPot" quantity="3" />
     <unlockedBy recipe="leatherGloves" chance="0.04" />
 </recipe>
 <recipe id="woolWrappingsSilver" time="10000" >
@@ -141,6 +144,7 @@
 <recipe id="sandalsSilver" time="10000" >
     <material id="sandals" />
     <material id="silverLacquer" quantity="3" />
+    <byproduct id="smallPot" quantity="3" />
     <unlockedBy recipe="sandals" chance="0.04" />
 </recipe>
 <recipe id="copperGreavesSilver" time="10000" >
