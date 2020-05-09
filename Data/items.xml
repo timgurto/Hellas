@@ -202,7 +202,7 @@
             <canBeRepaired cost="copperBar" tool="smelting2" />
 		</item>
             <item id="copperHammerSilver" name="Inlaid Copper Hammer" gearSlot="6"
-                iconFile="copperHammer"quality="2" >
+                iconFile="copperHammer" quality="2" >
                 <tag name="hammering" toolspeed="1.05" />
                 <stats health="1" />
                 <weapon damage="25" speed="3.5" />
@@ -602,7 +602,7 @@
                 <tag name="shield" />
                 <canBeRepaired cost="lumber" />
             </item>
-                <item id="leatherShieldSilver" name="Inlaid Leather Shield" gearSlot="7" lvlReq="15"
+                <item id="leatherShieldSilver" name="Lacquered Leather Shield" gearSlot="7" lvlReq="15"
                     iconFile="leatherShield" quality="2" >
                     <stats armor="2" block="8" blockValue="4" />
                     <offset x="-4" y="-10" />
