@@ -20,7 +20,7 @@
     <item id="airWandSilver" name="Inlaid Wand of Air" gearSlot="6" lvlReq="2" 
         iconFile="airWand" quality="2">
         <tag name="wand" toolSpeed="1.05" />
-        <stats energy="1" >
+        <stats energy="1" />
         <weapon damage="5" speed="2.5" range="25" school="air" consumes="boneDust" projectile="airball" />
         <offset x="-5" y="-2" />
         <particles profile="airSmall" x="-4" y="0" />
@@ -48,7 +48,7 @@
         iconFile="earthWand" quality="2">
         <tag name="wand" toolSpeed="1.05" />
         <weapon damage="5" speed="2.6" range="25" school="earth" consumes="boneDust" projectile="earthball" />
-        <stats energy="1" >
+        <stats energy="1" />
         <offset x="-5" y="-2" />
         <particles profile="earthSmall" x="-4" y="0" />
         <canBeRepaired cost="earthEssence" />
@@ -74,7 +74,7 @@
     <item id="fireWandSilver" name="Inlaid Wand of Fire" gearSlot="6" lvlReq="6"
         iconFile="fireWand">
         <tag name="wand" toolSpeed="1.05" />
-        <stats energy="1" >
+        <stats energy="1" />
         <weapon damage="6" speed="2.6" range="25" school="fire" consumes="boneDust" projectile="fireball" />
         <offset x="-5" y="-2" />
         <particles profile="fireSmall" x="-4" y="0" />
@@ -101,7 +101,7 @@
     <item id="waterWandSilver" name="Inlaid Wand of Water" gearSlot="6" lvlReq="2"
         iconFile="waterWand" quality="2">
         <tag name="wand" toolSpeed="1.05" />
-        <stats energy="1" >
+        <stats energy="1" />
         <weapon damage="5" speed="2.5" range="25" school="water" consumes="boneDust" projectile="waterball" />
         <offset x="-5" y="-2" />
         <particles profile="waterSmall" x="-4" y="0" />
@@ -130,7 +130,7 @@
     <item id="airStaffSilver" name="Inlaid Rod of Air" gearSlot="6" lvlReq="11"
         iconFile="airStaff" quality="2">
         <tag name="wand" toolSpeed="1.15" />
-        <stats energy="2" >
+        <stats energy="2" />
         <weapon damage="6" speed="2.5" range="25" school="air" consumes="airDust" projectile="airball" />
         <offset x="-5" y="-20" />
         <particles profile="airSmall" x="-4" y="-19" />
@@ -159,7 +159,7 @@
     </recipe>
     <item id="earthStaffSilver" name="Inlaid Rod of Earth" gearSlot="6" lvlReq="16"
         iconFile="earthStaff" quality="2">
-        <stats energy="1" >
+        <stats energy="1" />
         <tag name="wand" toolSpeed="1.15" />
         <weapon damage="7" speed="2.4" range="25" school="earth" consumes="earthDust" projectile="earthball" />
         <offset x="-5" y="-20" />
@@ -189,7 +189,7 @@
     </recipe>
     <item id="fireStaffSilver" name="Inlaid Rod of Fire" gearSlot="6" lvlReq="16"
         iconFile="fireStaff" quality="2">
-        <stats energy="1" >
+        <stats energy="1" />
         <tag name="wand" toolSpeed="1.15" />
         <weapon damage="7" speed="2.4" range="25" school="fire" consumes="fireDust" projectile="fireball" />
         <offset x="-5" y="-20" />
@@ -199,7 +199,7 @@
     </item>
     
 <item id="waterStaff" name="Rod of Water" gearSlot="6" lvlReq="11" >
-    <tag name="wand" toolSpeed="1.1" />
+    <tag name="wand" toolSpeed="1.15" />
     <weapon damage="6" speed="2.5" range="25" school="water" consumes="waterDust" projectile="waterball" />
     <offset x="-5" y="-20" />
     <particles profile="waterSmall" x="-4" y="-19" />
@@ -220,7 +220,7 @@
     <item id="waterStaffSilver" name="Inlaid Rod of Water" gearSlot="6" lvlReq="11"
         iconFile="waterStaff" quality="2">
         <tag name="wand" toolSpeed="1.15" />
-        <stats energy="2" >
+        <stats energy="2" />
         <weapon damage="6" speed="2.5" range="25" school="water" consumes="waterDust" projectile="waterball" />
         <offset x="-5" y="-20" />
         <particles profile="waterSmall" x="-4" y="-19" />
