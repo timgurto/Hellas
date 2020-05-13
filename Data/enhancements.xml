@@ -1,8 +1,8 @@
 <root>
 
 <!-- Intermediates -->
-<item id="silverStrip" name="Silver Strip" stackSize="20" quality="2" />
-<recipe id="silverStrip" time="15000" quantity="15" >
+<item id="silverStrip" name="Silver Strip" stackSize="10" quality="2" />
+<recipe id="silverStrip" time="15000" quantity="2" >
     <material id="silverBar" />
     <tool class="hammering" />
     <tool class="anvil1" />
@@ -10,22 +10,22 @@
     <unlockedBy recipe="silverBar" />
 </recipe>
 
-<item id="silverPowder" name="Silver Powder" stackSize="20" quality="2" />
-<recipe id="silverPowder" time="15000" quantity="15" >
+<item id="silverPowder" name="Silver Powder" stackSize="10" quality="2" />
+<recipe id="silverPowder" time="15000" quantity="2" >
     <material id="silverBar" />
     <tool class="grinding2" />
     <unlockedBy recipe="silverBar" />
 </recipe>
 
 <!-- Materials -->
-<item id="silverThread" name="Silver Thread" stackSize="20" quality="2" />
+<item id="silverThread" name="Silver Thread" stackSize="10" quality="2" />
 <recipe id="silverThread" time="5000" >
     <material id="silverStrip" />
     <material id="linenThread" />
     <unlockedBy recipe="silverStrip" />
 </recipe>
 
-<item id="silverLeaf" name="Silver Leaf" stackSize="20" quality="2" />
+<item id="silverLeaf" name="Silver Leaf" stackSize="10" quality="2" />
 <recipe id="silverLeaf" time="5000" >
     <material id="silverStrip" />
     <tool class="hammering" />
@@ -33,8 +33,8 @@
     <unlockedBy recipe="silverStrip" />
 </recipe>
 
-<item id="silverWire" name="Silver Wire" stackSize="20" quality="2" />
-<recipe id="silverWire" time="5000" quantity="15" >
+<item id="silverWire" name="Silver Wire" stackSize="10" quality="2" />
+<recipe id="silverWire" time="5000" >
     <material id="silverStrip" />
     <tool class="wireDrawing" />
     <unlockedBy recipe="silverStrip" />

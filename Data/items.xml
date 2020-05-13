@@ -633,7 +633,7 @@
                 <stats energy="46" />
                 <offset x="-2" y="-6" />
             </item>
-            <item id="parchment" name="parchment" gearSlot="7" lvlReq="22" >
+            <item id="parchment" name="Parchment" gearSlot="7" lvlReq="22" >
                 <stats energy="66" />
             </item>
 
