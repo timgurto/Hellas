@@ -193,7 +193,6 @@ HANDLE_MESSAGE(CL_CRAFT) {
   if (!userHasRequiredTools) RETURN_WITH(WARNING_NEED_TOOLS)
 
   user.beginCrafting(*it, speed);
-  sendMessage(client, {SV_ACTION_STARTED, it->time()});
 }
 
 HANDLE_MESSAGE(CL_CONSTRUCT) {
@@ -762,8 +761,6 @@ void Server::handleBufferedMessages(const Socket &client,
         }
 
         user->beginGathering(ent, toolSpeed);
-        sendMessage(client,
-                    {SV_ACTION_STARTED, ent->type()->yield.gatherTime()});
 
         break;
       }

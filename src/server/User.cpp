@@ -391,12 +391,16 @@ void User::beginGathering(Entity *ent, double speedMultiplier) {
     return;
   }
   _actionTime = toInt(ent->type()->yield.gatherTime() / speedMultiplier);
+
+  sendMessage({SV_ACTION_STARTED, _actionTime});
 }
 
 void User::beginCrafting(const SRecipe &recipe, double speed) {
   _action = CRAFT;
   _actionRecipe = &recipe;
   _actionTime = toInt(recipe.time() / speed);
+
+  sendMessage({SV_ACTION_STARTED, _actionTime});
 }
 
 void User::beginConstructing(const ObjectType &obj, const MapPoint &location,
@@ -408,6 +412,8 @@ void User::beginConstructing(const ObjectType &obj, const MapPoint &location,
   _actionSlot = slot;
   _actionLocation = location;
   _actionOwnedByCity = cityOwned;
+
+  sendMessage({SV_ACTION_STARTED, _actionTime});
 }
 
 void User::beginDeconstructing(Object &obj) {
@@ -464,7 +470,6 @@ void User::tryToConstruct(const std::string &id, const MapPoint &location,
   }
   auto ownerIsCity = owner == Permissions::Owner::CITY;
   beginConstructing(*objType, location, ownerIsCity, toolSpeed);
-  sendMessage({SV_ACTION_STARTED, objType->constructionTime() / toolSpeed});
 }
 
 bool User::hasItems(const ItemSet &items) const {
