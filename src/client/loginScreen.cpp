@@ -393,9 +393,11 @@ void Client::initLoginScreen() {
 
     auto y = 250_px, BUTTON_X = SCREEN_X - BUTTON_W - GAP;
 
-    auto createButton =
-        new Button({BUTTON_X, y, BUTTON_W, BUTTON_HEIGHT}, "Create new account",
-                   [this]() { showWindowInFront(_createWindow); });
+    auto createButton = new Button({BUTTON_X, y, BUTTON_W, BUTTON_HEIGHT},
+                                   "Create new account", [this]() {
+                                     showWindowInFront(_createWindow);
+                                     TextBox::focus(newNameBox);
+                                   });
     _loginUI.push_back(createButton);
     updateCreateButton(nullptr);
   }
@@ -432,6 +434,18 @@ void Client::handleLoginInput(double delta) {
 
           case SDLK_BACKSPACE:
             TextBox::backspace();
+            break;
+
+          case SDLK_TAB:
+            if (TextBox::focus() == nameBox)
+              TextBox::focus(pwBox);
+            else if (TextBox::focus() == pwBox)
+              TextBox::focus(nameBox);
+
+            else if (TextBox::focus() == newNameBox)
+              TextBox::focus(newPwBox);
+            else if (TextBox::focus() == newPwBox)
+              TextBox::focus(newNameBox);
             break;
 
           case SDLK_RETURN:

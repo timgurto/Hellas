@@ -51,6 +51,14 @@ void TextBox::clearFocus() {
   currentFocus = nullptr;
 }
 
+void TextBox::focus(TextBox *textBox) {
+  auto oldFocus = currentFocus;
+  currentFocus = textBox;
+
+  if (oldFocus) oldFocus->markChanged();
+  if (currentFocus) currentFocus->markChanged();
+}
+
 void TextBox::click(Element &e, const ScreenPoint &mousePos) {
   TextBox *newFocus = dynamic_cast<TextBox *>(&e);
   if (newFocus == currentFocus) return;

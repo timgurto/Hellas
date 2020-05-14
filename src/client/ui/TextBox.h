@@ -20,7 +20,7 @@ class TextBox : public Element {
 
   static void clearFocus();
   static const TextBox *focus() { return currentFocus; }
-  static void focus(TextBox *textBox) { currentFocus = textBox; }
+  static void focus(TextBox *textBox);
 
   using OnChangeFunction = void (*)(void *);
   void setOnChange(OnChangeFunction function, void *data = nullptr);
