@@ -843,6 +843,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         for (auto &pair : _items) pair.second.refreshTooltip();
         if (_detailsPane) refreshRecipeDetailsPane();
         for (const auto &ot : _objectTypes) ot->refreshConstructionTooltip();
+        for (const auto &ent : _entities) ent->refreshTooltip();
         populateBuildList();
         if (_recipeList) {
           _recipeList->markChanged();
@@ -878,6 +879,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         for (auto &pair : _items) pair.second.refreshTooltip();
         if (_detailsPane) refreshRecipeDetailsPane();
         for (const auto &ot : _objectTypes) ot->refreshConstructionTooltip();
+        for (const auto &ent : _entities) ent->refreshTooltip();
         populateBuildList();
         if (_recipeList) {
           _recipeList->markChanged();
