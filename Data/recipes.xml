@@ -228,6 +228,7 @@
         id="tinLamellar" time="4000" >
         <material id="tinScale" quantity="35" />
         <material id="leather" quantity="2" />
+        <material id="linenThread" />
         <unlockedBy recipe="tinScale" />
         <unlockedBy recipe="leatherLamellar" chance="0.2" />
     </recipe>
@@ -235,6 +236,7 @@
         id="copperLamellar" time="4000" >
         <material id="copperScale" quantity="35" />
         <material id="leather" quantity="2" />
+        <material id="linenThread" />
         <unlockedBy recipe="copperScale" />
         <unlockedBy recipe="tinLamellar" chance="0.2" />
     </recipe>
