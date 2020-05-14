@@ -71,6 +71,7 @@ class Color {
   static const Color FLOATING_HEAL;
   static const Color FLOATING_MISS;
   static const Color FLOATING_CRIT;
+  static const Color FLOATING_INFO;
 
   static const Color BUFF;
   static const Color DEBUFF;

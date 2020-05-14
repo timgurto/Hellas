@@ -1,6 +1,27 @@
 #include "NPC.h"
 #include "Server.h"
 
+void NPC::order(Order newOrder) {
+  _order = newOrder;
+
+  // Send order confirmation to owner
+  auto owner = permissions.getPlayerOwner();
+  if (!owner) return;
+  auto serialArg = makeArgs(serial());
+  switch (_order) {
+    case NPC::STAY:
+      owner->sendMessage({SV_PET_IS_NOW_STAYING, serialArg});
+      break;
+
+    case NPC::FOLLOW:
+      owner->sendMessage({SV_PET_IS_NOW_FOLLOWING, serialArg});
+      break;
+
+    default:
+      break;
+  }
+}
+
 void NPC::processAI(ms_t timeElapsed) {
   target(nullptr);
 

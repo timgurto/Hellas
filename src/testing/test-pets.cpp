@@ -1093,5 +1093,3 @@ TEST_CASE("Bad args to CL_FEED_PET") {
 // If follow count is reduced, one randomly stays
 // Followers inside vehicle
 // Can't order someone else's pet
-// If city-owned, then actual player that tames or gives orders has his
-// follower count affected

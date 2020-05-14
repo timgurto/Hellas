@@ -729,6 +729,24 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
+      case SV_PET_IS_NOW_FOLLOWING:
+      case SV_PET_IS_NOW_STAYING: {
+        auto serial = Serial{};
+        singleMsg >> serial >> del;
+        if (del != MSG_END) break;
+
+        const auto it = _objects.find(serial);
+        if (it == _objects.end()) break;  // We didn't know about this object
+        auto petLocation = it->second->location();
+
+        auto text =
+            msgCode == SV_PET_IS_NOW_FOLLOWING ? "Following"s : "Staying"s;
+
+        addFloatingCombatText(text, petLocation, Color::FLOATING_CORE);
+
+        break;
+      }
+
       case SV_NPC_LEVEL: {
         auto serial = Serial{};
         auto level = Level{};

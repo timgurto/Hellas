@@ -610,6 +610,11 @@ enum MessageCode {
   // An attempt to tame an NPC failed.
   SV_TAME_ATTEMPT_FAILED,
 
+  // A pet order succeeded
+  // Arguments: serial
+  SV_PET_IS_NOW_FOLLOWING,
+  SV_PET_IS_NOW_STAYING,
+
   // You have ... left to finish a quest
   // Args: questID, ms remaining
   SV_QUEST_TIME_LEFT,

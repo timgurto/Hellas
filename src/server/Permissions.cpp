@@ -76,6 +76,13 @@ bool Permissions::isOwnedByCity(const City::Name &cityName) const {
 
 const Permissions::Owner &Permissions::owner() const { return _owner; }
 
+const User *Permissions::getPlayerOwner() const {
+  if (_owner.type != Owner::PLAYER) return nullptr;
+
+  auto &server = Server::instance();
+  return server.getUserByName(_owner.name);
+}
+
 bool Permissions::doesUserHaveAccess(const std::string &username,
                                      bool allowFellowCitizens) const {
   // Unowned

@@ -66,6 +66,7 @@ const Color Color::FLOATING_DAMAGE = YELLOW;
 const Color Color::FLOATING_HEAL = STAT_HEALTH;
 const Color Color::FLOATING_MISS = BLUE + GREEN * .5;
 const Color Color::FLOATING_CRIT = RED + YELLOW * .5;
+const Color Color::FLOATING_INFO = YELLOW;
 
 const Color Color::BUFF = WHITE;
 const Color Color::DEBUFF = RED * 0.9 + WHITE * 0.1;
