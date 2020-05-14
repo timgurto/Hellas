@@ -146,3 +146,25 @@ TEST_CASE("Windows close on disconnect") {
   WAIT_UNTIL(!c.buildWindow()->visible());
   WAIT_UNTIL(!c.craftingWindow()->visible());
 }
+
+TEST_CASE("Accurate health/energy on login") {
+  auto s = TestServer{};
+
+  // GIVEN Alice has half health
+  {
+    auto c = TestClient::WithUsername("Alice");
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    user.reduceHealth(10);
+    user.reduceEnergy(10);
+
+    // WHEN she logs in
+  }
+  {
+    auto c = TestClient::WithUsername("Alice");
+
+    // THEN she knows she isn't on full health
+    WAIT_UNTIL(c->character().health() < c->character().maxHealth());
+    WAIT_UNTIL(c->character().energy() < c->character().maxEnergy());
+  }
+}

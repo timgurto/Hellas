@@ -52,6 +52,9 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     if (!xr.findAttr(elem, "isInTutorial", n) || n != 1)
       user.markTutorialAsCompleted();
 
+    if (xr.findAttr(elem, "health", n)) user.health(n);
+    if (xr.findAttr(elem, "energy", n)) user.energy(n);
+
     if (allowSideEffects) {
       if (xr.findAttr(elem, "isKing", n) && n == 1) makePlayerAKing(user);
 
@@ -267,6 +270,11 @@ void Server::writeUserData(const User &user) const {
   xw.setAttr(e, "level", user.level());
   xw.setAttr(e, "xp", user.xp());
   if (user.isDriving()) xw.setAttr(e, "isDriving", 1);
+
+  if (user.health() < user.stats().maxHealth)
+    xw.setAttr(e, "health", user.health());
+  if (user.energy() < user.stats().maxEnergy)
+    xw.setAttr(e, "energy", user.energy());
 
   e = xw.addChild("location");
   xw.setAttr(e, "x", user.location().x);
