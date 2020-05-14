@@ -270,13 +270,13 @@ axis(
         0.0333, 0.05, 0.0833,
         0.167, 0.333, 0.5,
         1, 2, 3, 5, 8, 12,
-        24, 48, 72, 96
+        24, 48, 72, 120#, 192
     ),
     lab=c(
         "2m", "3m", "5m",
         "10m", "20m", "30m",
         "1h", "2h", "3h", "5h", "8h", "12h",
-        "1d", "2d", "3d", "5d"
+        "1d", "2d", "3d", "5d"#, "8d"
     )
 )
 
@@ -292,6 +292,12 @@ for (i in 1:length(data$name)){
     
     thisLevel = data$level[i]
     thisTime = data$hoursPlayed[i]
+    
+    if (thisLevel - lastLevelSeen != 1){
+        lastLevelSeen = thisLevel
+        timeAtLastLevel = thisTime
+        next
+    }
     
     segments(
         x0 = timeAtLastLevel,
