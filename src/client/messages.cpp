@@ -120,6 +120,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         singleMsg >> del;
         if (del != MSG_END) break;
 
+        _debug << name << " has joined the world." << Log::endl;
         _allOnlinePlayers.insert(name);
         populateOnlinePlayersList();
         break;
@@ -163,7 +164,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
           _otherUsers.erase(it);
         }
         if (msgCode == SV_USER_DISCONNECTED) {
-          _debug << name << " disconnected." << Log::endl;
+          _debug << name << " has left the world." << Log::endl;
           _allOnlinePlayers.erase(name);
           populateOnlinePlayersList();
         }
