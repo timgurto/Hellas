@@ -74,8 +74,8 @@
     allowedTerrain="rocksAndMountains"
     constructionTime="0" constructionReq="silverDeposit" >
     <collisionRect x="-59" y="-38" w="119" h="61" />
-    <yield id="silver" initialMean="10" initialSD="2" initialMin="1" />
-    <yield id="rock" initialMean="6" initialSD="2" />
+    <yield id="silver" initialMean="4" initialSD="2" initialMin="1" />
+    <yield id="rock" initialMean="4" initialSD="2" />
     <material id="brick" quantity="6" />
     <material id="lumber" quantity="9" />
     <unlockedBy recipe="tinPick" chance="0.1" />
