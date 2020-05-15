@@ -50,6 +50,7 @@ void NPC::getNewTargetsFromProximity(ms_t timeElapsed) {
        Server::_instance->findEntitiesInArea(location(), AGGRO_RANGE)) {
     if (potentialTarget == this) continue;
     if (!potentialTarget->canBeAttackedBy(*this)) continue;
+    if (potentialTarget->shouldBeIgnoredByAIProximityAggro()) continue;
     if (distance(collisionRect(), potentialTarget->collisionRect()) >
         AGGRO_RANGE)
       continue;

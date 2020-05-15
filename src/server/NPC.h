@@ -33,6 +33,7 @@ class NPC : public Entity, public QuestNode {
   }
 
   ms_t timeToRemainAsCorpse() const override { return 600000; }  // 10 minutes
+  bool shouldBeIgnoredByAIProximityAggro() const override;
   bool canBeAttackedBy(const User &user) const override;
   bool canBeAttackedBy(const NPC &npc) const override;
   bool canAttack(const Entity &other) const override;

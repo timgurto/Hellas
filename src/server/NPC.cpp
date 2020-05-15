@@ -28,6 +28,11 @@ void NPC::update(ms_t timeElapsed) {
   Entity::update(timeElapsed);
 }
 
+bool NPC::shouldBeIgnoredByAIProximityAggro() const {
+  if (npcType()->_aggression == NPCType::Aggression::AGGRESSIVE) return false;
+  return true;
+}
+
 bool NPC::canBeAttackedBy(const User &user) const {
   if (!npcType()->canBeAttacked()) return false;
 

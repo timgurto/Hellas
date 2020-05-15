@@ -91,6 +91,7 @@ class Entity {
   ms_t corpseTime() const { return _corpseTime; }
   void corpseTime(ms_t time) { _corpseTime = time; }
   void setShorterCorpseTimerForFriendlyKill() { _corpseTime = 30000; }
+  virtual bool shouldBeIgnoredByAIProximityAggro() const { return false; }
   virtual bool canBeAttackedBy(const User &user) const = 0;
   virtual bool canBeAttackedBy(const NPC &npc) const { return false; }
   virtual bool canAttack(const Entity &other) const { return false; }
