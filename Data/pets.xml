@@ -18,7 +18,7 @@
     <canBeTamed consumes="collar" />
     <lootTable id="animal" />
     <loot id="sheepskin" chance="0.1" />
-    <transform id="sheepWithWool" time="2700000" />
+    <transform id="sheepWithWool" time="36000000" /> <!-- 10h -->
 </npcType>
 <npcType id="sheepWithWool" name="Sheep (Wooly)"
     level="17" maxHealth="70" attack="12" attackTime="2900" armor="3" isNeutral="1"
