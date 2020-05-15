@@ -1124,6 +1124,7 @@ void User::accountForOwnedEntities() const {
     auto serial = *it;
     auto *ent = server.findEntityBySerial(serial);
     if (!ent) continue;
+    if (ent->isDead()) continue;
     ent->accountForOwnershipByUser(*this);
   }
 }
