@@ -239,6 +239,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   void onHealthChange() override;
   void onEnergyChange() override;
   void onDeath() override;
+  void accountForOwnedEntities() const;
   void registerObjectIfPlayerUnique(const ObjectType &type) const;
   void deregisterDestroyedObjectIfPlayerUnique(const ObjectType &type) const;
   void onAttackedBy(Entity &attacker, Threat threat) override;

@@ -29,6 +29,10 @@ Object::~Object() {
   }
 }
 
+void Object::accountForOwnershipByUser(const User &owner) const {
+  owner.registerObjectIfPlayerUnique(objType());
+}
+
 void Object::update(ms_t timeElapsed) {
   if (isBeingBuilt()) return;
 

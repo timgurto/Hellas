@@ -1117,6 +1117,17 @@ void User::onDeath() {
   }
 }
 
+void User::accountForOwnedEntities() const {
+  auto &server = Server::instance();
+  auto its = server.findObjectsOwnedBy({Permissions::Owner::PLAYER, _name});
+  for (auto it = its.first; it != its.second; ++it) {
+    auto serial = *it;
+    auto *ent = server.findEntityBySerial(serial);
+    if (!ent) continue;
+    ent->accountForOwnershipByUser(*this);
+  }
+}
+
 void User::registerObjectIfPlayerUnique(const ObjectType &type) const {
   if (type.isPlayerUnique())
     this->_playerUniqueCategoriesOwned.insert(type.playerUniqueCategory());

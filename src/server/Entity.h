@@ -62,6 +62,8 @@ class Entity {
                   bool shouldSkipConstruction = false);
   virtual void onSetType(bool shouldSkipConstruction = false);
 
+  virtual void accountForOwnershipByUser(const User &owner) const {}
+
   Spawner *spawner() const { return _spawner; }
   void spawner(Spawner *p) { _spawner = p; }
   void separateFromSpawner();

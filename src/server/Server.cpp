@@ -326,6 +326,7 @@ void Server::addUser(const Socket &socket, const std::string &name,
   }
 
   sendRelevantEntitiesToUser(newUser);
+  newUser.accountForOwnedEntities();
 
   // Tell him if he's in the tutorial
   if (newUser.isInTutorial()) newUser.sendMessage({SV_YOU_ARE_IN_THE_TUTORIAL});
