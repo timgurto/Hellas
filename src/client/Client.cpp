@@ -232,6 +232,7 @@ void Client::initializeGearSlotNames() {
 Client::~Client() {
   SDL_ShowCursor(SDL_ENABLE);
   ContainerGrid::cleanup();
+  TextBox::clearFocus();
   Element::cleanup();
   if (_defaultFont != nullptr) TTF_CloseFont(_defaultFont);
   for (const Sprite *entityConst : _entities) {
