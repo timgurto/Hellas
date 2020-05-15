@@ -3,87 +3,124 @@
 #include "testing.h"
 
 TEST_CASE("A user can't build multiple player-unique objects") {
-  // Given "blonde" and "readhead" object types,
-  // And each is marked with the "wife" player-unique category,
-  auto s = TestServer::WithData("wives");
+  GIVEN("blonde and readhead objects with the \"wife\" player-unique tag") {
+    auto data = R"(
+      <item id="engagementRing" />
+      <objectType id="blonde"
+        constructionTime="1"
+        playerUnique="wife" >
+          <material id="engagementRing" />
+      </objectType>
+      <objectType id="redhead"
+        constructionTime="1"
+        playerUnique="wife" >
+          <material id="engagementRing" />
+      </objectType>
+    )";
+    auto s = TestServer::WithDataString(data);
 
-  // And Bob has a blonde wife
-  s.addObject("blonde", {}, "Bob");
+    AND_GIVEN("Bob has a blonde wife") {
+      s.addObject("blonde", {}, "Bob");
 
-  SECTION("Bob can't have a second wife") {
-    // When Bob logs in,
-    auto c = TestClient::WithUsernameAndData("Bob", "wives");
-    s.waitForUsers(1);
+      SECTION("Bob can't have two wives") {
+        WHEN("Bob logs in") {
+          auto c = TestClient::WithUsernameAndData("Bob", "wives");
+          s.waitForUsers(1);
 
-    // And tries to get a readhead wife
-    c.sendMessage(CL_CONSTRUCT, makeArgs("redhead", 10, 15));
+          AND_WHEN("he tries to get a readhead wife") {
+            c.sendMessage(CL_CONSTRUCT, makeArgs("redhead", 10, 15));
 
-    // Then Bob receives an error message,
-    c.waitForMessage(WARNING_UNIQUE_OBJECT);
+            THEN("he receives an error message") {
+              c.waitForMessage(WARNING_UNIQUE_OBJECT);
 
-    // And there is still only one in the world
-    CHECK(s.entities().size() == 1);
-  }
+              AND_THEN("there is still only one object in the world") {
+                CHECK(s.entities().size() == 1);
+              }
+            }
+          }
+        }
+      }
 
-  SECTION("Charlie can have a wife too") {
-    // When Charlie logs in,
-    auto c = TestClient::WithUsernameAndData("Charlie", "wives");
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
+      SECTION("A different player can also have a wife") {
+        WHEN("Charlie logs in") {
+          auto c = TestClient::WithUsernameAndData("Charlie", "wives");
+          s.waitForUsers(1);
+          auto &user = s.getFirstUser();
 
-    // And tries to get a readhead wife
-    c.sendMessage(CL_CONSTRUCT, makeArgs("redhead", 15, 15));
-    REPEAT_FOR_MS(100);
+          AND_WHEN("he tries to get a readhead wife") {
+            c.sendMessage(CL_CONSTRUCT, makeArgs("redhead", 15, 15));
+            REPEAT_FOR_MS(100);
 
-    // Then there are now two (one each)
-    CHECK(s.entities().size() == 2);
-  }
+            THEN("there are two objects (one each)") {
+              CHECK(s.entities().size() == 2);
+            }
+          }
+        }
+      }
 
-  SECTION("Bob can't give his wife to the city", "[city]") {
-    // And there is a city of Athens
-    s.cities().createCity("Athens", {}, {});
+      SECTION("Bob can't give his wife to the city", "[city]") {
+        AND_GIVEN("Bob is logged in") {
+          auto c = TestClient::WithUsernameAndData("Bob", "wives");
+          s.waitForUsers(1);
 
-    // When Bob logs in,
-    auto c = TestClient::WithUsernameAndData("Bob", "wives");
-    s.waitForUsers(1);
+          AND_GIVEN("Bob is a citizen of Athens") {
+            s.cities().createCity("Athens", {}, {});
+            auto &bob = s.getFirstUser();
+            s.cities().addPlayerToCity(bob, "Athens");
 
-    // And joins Athens,
-    auto &bob = s.getFirstUser();
-    s.cities().addPlayerToCity(bob, "Athens");
+            WHEN("he tries to give his wife to Athens") {
+              auto &wife = s.getFirstObject();
+              c.sendMessage(CL_CEDE, makeArgs(wife.serial()));
 
-    // And tries to give his wife to Athens
-    auto &wife = s.getFirstObject();
-    c.sendMessage(CL_CEDE, makeArgs(wife.serial()));
+              THEN("hereceives an error message") {
+                c.waitForMessage(ERROR_CANNOT_CEDE);
 
-    // Then Bob receives an error message,
-    c.waitForMessage(ERROR_CANNOT_CEDE);
+                AND_THEN("the wife still belongs to him") {
+                  CHECK(wife.permissions.isOwnedByPlayer("Bob"));
+                }
+              }
+            }
+          }
+        }
+      }
 
-    // And the wife still belongs to him
-    CHECK(wife.permissions.isOwnedByPlayer("Bob"));
-  }
+      SECTION("Dead wives can be replaced") {
+        AND_GIVEN("Bob's wife is dead") {
+          auto &firstWife = s.getFirstObject();
+          firstWife.reduceHealth(firstWife.health());
 
-  SECTION("If Bob's wife dies he can get a new one") {
-    // Given Bob's wife is dead
-    auto &firstWife = s.getFirstObject();
-    firstWife.reduceHealth(firstWife.health());
+          WHEN("he logs in") {
+            auto c = TestClient::WithUsernameAndData("Bob", "wives");
+            s.waitForUsers(1);
 
-    // When Bob logs in,
-    auto c = TestClient::WithUsernameAndData("Bob", "wives");
-    s.waitForUsers(1);
+            AND_WHEN("he tries to get a readhead wife") {
+              c.sendMessage(CL_CONSTRUCT, makeArgs("redhead", 10, 15));
 
-    // And tries to get a readhead wife
-    c.sendMessage(CL_CONSTRUCT, makeArgs("redhead", 10, 15));
-
-    // Then there are two wives
-    WAIT_UNTIL(s.entities().size() == 2);
+              THEN("there are two wives") {
+                WAIT_UNTIL(s.entities().size() == 2);
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
 
 TEST_CASE("Clients can discern player-uniqueness") {
-  auto c = TestClient::WithData("wives");
-  const auto &blonde = c.getFirstObjectType();
-  CHECK(blonde.isPlayerUnique());
-  CHECK(blonde.hasTags());
+  GIVEN("a player-unique house object") {
+    auto data = R"(
+      <objectType id="house" playerUnique="house" />
+    )";
+    auto c = TestClient::WithDataString(data);
+    const auto &house = c.getFirstObjectType();
+
+    THEN("clients know it's player-unique") {
+      CHECK(house.isPlayerUnique());
+
+      AND_THEN("it has client tags") { CHECK(house.hasTags()); }
+    }
+  }
 }
 
 TEST_CASE("End-of-tutorial altar") {
