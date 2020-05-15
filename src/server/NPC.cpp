@@ -217,6 +217,8 @@ void NPC::onAttackedBy(Entity &attacker, Threat threat) {
     addThreat(dynamic_cast<User &>(attacker), threat);
   }
 
+  makeAwareOf(attacker);
+
   Entity::onAttackedBy(attacker, threat);
 }
 

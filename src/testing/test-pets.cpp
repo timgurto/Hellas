@@ -483,6 +483,27 @@ TEST_CASE("Pets don't attack neutral NPCs") {
   }
 }
 
+TEST_CASE("NPCs defend themselves against NPC attackers") {
+  GIVEN("two neutral NPCs") {
+    auto data = R"(
+      <npcType id="dog" maxHealth="1000" attack="2" speed="1" isNeutral="1" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto &rex = s.addNPC("dog", {10, 15});
+    auto &fido = s.addNPC("dog", {10, 10});
+
+    AND_GIVEN("one is a pet") {
+      rex.permissions.setPlayerOwner("Alice");
+
+      WHEN("the pet attacks the NPC") {
+        rex.makeAwareOf(fido);
+
+        THEN("it becomes aware of the pet") { WAIT_UNTIL(fido.isAwareOf(rex)); }
+      }
+    }
+  }
+}
+
 TEST_CASE("Neutral pets have the correct UI colours") {
   GIVEN("a neutral NPC") {
     auto data = R"(
