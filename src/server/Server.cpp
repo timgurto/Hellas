@@ -678,7 +678,7 @@ Object &Server::addObject(const ObjectType *type, const MapPoint &location,
       _objectsByOwner.add(owner, newObj->serial());
       {
         const auto *user = this->getUserByName(owner.name);
-        if (user != nullptr) user->onNewOwnedObject(*type);
+        if (user != nullptr) user->registerObjectIfPlayerUnique(*type);
       }
 
       break;

@@ -2149,7 +2149,7 @@ void Server::sendRelevantEntitiesToUser(const User &user) {
       // Object-specific stuff
       auto *pObject = dynamic_cast<const Object *>(pEntity);
       if (!pObject && !pEntity->isDead())
-        user.onNewOwnedObject(pObject->objType());
+        user.registerObjectIfPlayerUnique(pObject->objType());
 
       continue;
     }

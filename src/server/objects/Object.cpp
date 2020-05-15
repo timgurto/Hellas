@@ -92,7 +92,8 @@ void Object::onDeath() {
       permissions.owner().type == Permissions::Owner::PLAYER) {
     auto username = permissions.owner().name;
     const auto user = server.getUserByName(username);
-    if (user != nullptr) user->onDestroyedOwnedObject(objType());
+    if (user != nullptr)
+      user->deregisterDestroyedObjectIfPlayerUnique(objType());
   }
 
   Entity::onDeath();

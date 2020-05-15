@@ -1117,12 +1117,13 @@ void User::onDeath() {
   }
 }
 
-void User::onNewOwnedObject(const ObjectType &type) const {
+void User::registerObjectIfPlayerUnique(const ObjectType &type) const {
   if (type.isPlayerUnique())
     this->_playerUniqueCategoriesOwned.insert(type.playerUniqueCategory());
 }
 
-void User::onDestroyedOwnedObject(const ObjectType &type) const {
+void User::deregisterDestroyedObjectIfPlayerUnique(
+    const ObjectType &type) const {
   if (!type.isPlayerUnique()) return;
   this->_playerUniqueCategoriesOwned.erase(type.playerUniqueCategory());
 }
