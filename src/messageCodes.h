@@ -355,6 +355,14 @@ enum MessageCode {
   // The user has completed an action
   SV_ACTION_FINISHED,
 
+  // A player has started crafting a recipe.
+  // Arguments: username, recipeID
+  SV_PLAYER_STARTED_CRAFTING,
+
+  // A player has stopped/finished crafting a recipe.
+  // Arguments: username
+  SV_PLAYER_STOPPED_CRAFTING,
+
   // A user's class and level
   // Arguments: username, classID, level
   SV_CLASS,

@@ -116,6 +116,16 @@ void Avatar::update(double delta) {
   auto &client = Client::instance();
   client.drawGearParticles(_gear, location(), delta);
 
+  ms_t timeElapsed = toInt(1000 * delta);
+  if (_currentlyCrafting) {
+    if (_craftingSoundTimer > timeElapsed)
+      _craftingSoundTimer -= timeElapsed;
+    else {
+      _currentlyCrafting->playSoundOnce("crafting");
+      _craftingSoundTimer += _currentlyCrafting->soundPeriod() - timeElapsed;
+    }
+  }
+
   Sprite::update(delta);
   ClientCombatant::update(delta);
 }

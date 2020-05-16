@@ -365,6 +365,12 @@ void User::cancelAction() {
   switch (_action) {
     case GATHER:
       _actionObject->gatherable.decrementGatheringUsers();
+      break;
+
+    case CRAFT:
+      Server::instance().broadcastToArea(location(),
+                                         {SV_PLAYER_STOPPED_CRAFTING, _name});
+      break;
   }
 
   if (_action == ATTACK) {
@@ -378,6 +384,10 @@ void User::cancelAction() {
 
 void User::finishAction() {
   if (_action == NO_ACTION) return;
+
+  if (_action == CRAFT)
+    Server::instance().broadcastToArea(location(),
+                                       {SV_PLAYER_STOPPED_CRAFTING, _name});
 
   _action = NO_ACTION;
 }
@@ -401,6 +411,8 @@ void User::beginCrafting(const SRecipe &recipe, double speed) {
   _actionTime = toInt(recipe.time() / speed);
 
   sendMessage({SV_ACTION_STARTED, _actionTime});
+  Server::instance().broadcastToArea(
+      location(), {SV_PLAYER_STARTED_CRAFTING, makeArgs(_name, recipe.id())});
 }
 
 void User::beginConstructing(const ObjectType &obj, const MapPoint &location,

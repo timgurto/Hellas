@@ -71,7 +71,6 @@ class ClientItem : public Item, public HasSounds {
   void gearImage(const std::string &filename);
   void drawLoc(const ScreenPoint &loc) { _drawLoc = loc; }
   static const std::map<int, size_t> &drawOrder() { return gearDrawOrder; }
-  void sounds(const std::string &id);
   void projectile(const Projectile::Type *p) { _projectile = p; }
   const Projectile::Type *projectile() const { return _projectile; }
   bool canUse() const;

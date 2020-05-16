@@ -383,6 +383,48 @@ void Client::handleBufferedMessages(const std::string &msg) {
         startAction(0);  // Effectively, hide the cast bar.
         break;
 
+      case SV_PLAYER_STARTED_CRAFTING: {
+        std::string name, recipeID;
+        readString(singleMsg, name, MSG_DELIM);
+        singleMsg >> del;
+        readString(singleMsg, recipeID, MSG_END);
+        singleMsg >> del;
+        if (del != MSG_END) break;
+
+        auto *player = (Avatar *)(nullptr);
+        if (name == _username)
+          player = &_character;
+        else {
+          auto it = _otherUsers.find(name);
+          if (it == _otherUsers.end()) break;
+          player = it->second;
+        }
+
+        auto it = _recipes.find(recipeID);
+        if (it == _recipes.end()) break;
+        const auto &recipe = *it;
+
+        player->startCrafting(recipe);
+      } break;
+
+      case SV_PLAYER_STOPPED_CRAFTING: {
+        std::string name, recipeID;
+        readString(singleMsg, name, MSG_END);
+        singleMsg >> del;
+        if (del != MSG_END) break;
+
+        auto *player = (Avatar *)(nullptr);
+        if (name == _username)
+          player = &_character;
+        else {
+          auto it = _otherUsers.find(name);
+          if (it == _otherUsers.end()) break;
+          player = it->second;
+        }
+
+        player->stopCrafting();
+      } break;
+
       case SV_LOCATION:  // Also the de-facto new-user announcement
       case SV_LOCATION_INSTANT_USER: {
         std::string name;

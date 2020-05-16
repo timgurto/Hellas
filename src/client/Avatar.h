@@ -11,6 +11,8 @@
 #include "ClientVehicle.h"
 #include "Sprite.h"
 
+class CRecipe;
+
 // The client-side representation of a user, including the player
 class Avatar : public Sprite, public ClientCombatant {
   static ClientCombatantType _combatantType;
@@ -29,6 +31,9 @@ class Avatar : public Sprite, public ClientCombatant {
   ClientVehicle *_vehicle{nullptr};
   mutable Texture _imageWithGear, _highlightImageWithGear;
   px_t _pixelsToCutOffBottomWhenDrawn{0};  // For drawing inside a vehicle
+
+  const CRecipe *_currentlyCrafting{nullptr};
+  ms_t _craftingSoundTimer{0};
 
  public:
   Avatar(const std::string &name, const MapPoint &location);
@@ -59,6 +64,8 @@ class Avatar : public Sprite, public ClientCombatant {
   void cutOffBottomWhenDrawn(px_t numRows) {
     _pixelsToCutOffBottomWhenDrawn = numRows;
   }
+  void startCrafting(const CRecipe &recipe) { _currentlyCrafting = &recipe; }
+  void stopCrafting() { _currentlyCrafting = nullptr; }
 
   // From Sprite
   void draw(const Client &client) const override;

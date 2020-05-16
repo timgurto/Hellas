@@ -1,8 +1,9 @@
 #pragma once
 
 #include "../Recipe.h"
+#include "HasSounds.h"
 
-class CRecipe : public Recipe {
+class CRecipe : public Recipe, public HasSounds {
  public:
   CRecipe(const std::string &id) : Recipe(id) {}
 
