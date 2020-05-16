@@ -573,6 +573,10 @@ void Server::loadEntitiesFromFile(const std::string &path,
                << "\"." << Log::endl;
     }
 
+    auto transformTimer = ms_t{};
+    if (xr.findAttr(elem, "transformTime", transformTimer))
+      npc.transformation.transformTimer(transformTimer);
+
     auto orderString = ""s;
     if (xr.findAttr(elem, "order", orderString))
       npc.order(orderString == "stay" ? NPC::STAY : NPC::FOLLOW);
@@ -691,6 +695,9 @@ void NPC::writeToXML(XmlWriter &xw) const {
     xw.setAttr(ownerElem, "type", owner.typeString());
     xw.setAttr(ownerElem, "name", owner.name);
   }
+
+  if (transformation.transformTimer() > 0)
+    xw.setAttr(e, "transformTime", transformation.transformTimer());
 
   auto orderString = _order == FOLLOW ? "follow" : "stay";
   xw.setAttr(e, "order", orderString);

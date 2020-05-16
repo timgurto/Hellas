@@ -31,6 +31,33 @@ TEST_CASE("Basic transformation") {
   }
 }
 
+TEST_CASE("NPC transformation persists") {
+  // Given a Bulbasaur that turns into an Ivysaur after 2s
+  auto data = R"(
+      <npcType id="bulbasaur">
+        <transform id="ivysaur" time="2000" />
+      </npcType>
+      <npcType id="ivysaur" />
+    )";
+  {
+    auto s = TestServer::WithDataString(data);
+    auto &bulbasaur = s.addNPC("bulbasaur", {10, 10});
+    bulbasaur.permissions.setPlayerOwner("Alice");
+
+    // When 1s elapses
+    REPEAT_FOR_MS(1000);
+
+    // And when the server restarts
+  }
+  {
+    auto s = TestServer::WithDataStringAndKeepingOldData(data);
+
+    // Then the sapling has <=1s to go
+    auto &bulbasaur = s.getFirstNPC();
+    CHECK(bulbasaur.transformation.transformTimer() <= 1000);
+  }
+}
+
 TEST_CASE("Transforming to a constructible object", "[construction]") {
   GIVEN("liquid metal that transforms into a T-1000 requiring sunglasses") {
     auto data = R"(
