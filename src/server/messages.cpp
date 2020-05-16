@@ -116,6 +116,7 @@ HANDLE_MESSAGE(CL_SKIP_TUTORIAL) {
 
   user.exploration().unexploreAll(user.socket());
   user.setSpawnPointToPostTutorial();
+  user.sendSpawnPoint(false);
   user.moveToSpawnPoint();
 
   auto &userClass = user.getClass();

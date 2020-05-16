@@ -17,6 +17,7 @@ bool Server::endTutorial(const Object &obj, User &performer,
   performer.exploration().unexploreAll(performer.socket());
 
   performer.setSpawnPointToPostTutorial();
+  performer.sendSpawnPoint(false);
   performer.moveToSpawnPoint();
 
   performer.getClass().unlearnAll();
