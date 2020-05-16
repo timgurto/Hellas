@@ -53,6 +53,10 @@
     <sound type="attack" file="boneThud5" />
 </soundProfile>
 
+<soundProfile id="stick" >
+    <sound type="drop" file="stick" />
+</soundProfile>
+
 <soundProfile id="rock" >
     <sound type="impact" file="boneThud0" />
     <sound type="impact" file="boneThud1" />
@@ -60,6 +64,11 @@
     <sound type="impact" file="boneThud3" />
     <sound type="impact" file="boneThud4" />
     <sound type="impact" file="boneThud5" />
+    <sound type="drop" file="rock" />
+</soundProfile>
+
+<soundProfile id="ore" >
+    <sound type="drop" file="rockLong" />
 </soundProfile>
 
 <soundProfile id="ceramic" >
@@ -83,24 +92,33 @@
     <sound type="drop" file="metalTool" />
 </soundProfile>
 
-<soundProfile id="pig" >
-    <sound type="attack" file="bite0" />
-    <sound type="attack" file="bite1" />
-    <sound type="attack" file="bite2" />
-    <sound type="attack" file="bite3" />
-    <sound type="attack" file="bite4" />
-    <sound type="defend" file="pig0" />
-    <sound type="defend" file="pig1" />
-    <sound type="defend" file="pig2" />
-    <sound type="defend" file="pig3" />
-    <sound type="defend" file="pig4" />
-    <sound type="defend" file="pig5" />
-    <sound type="death" file="pigDeath0" />
-    <sound type="death" file="pigDeath1" />
-    <sound type="death" file="pigDeath2" />
+<soundProfile id="knapping" period="1000" >
+    <sound type="crafting" file="knap0" />
+    <sound type="crafting" file="knap1" />
+    <sound type="crafting" file="knap2" />
+    <sound type="crafting" file="knap3" />
 </soundProfile>
 
-<soundProfile id="tree" period="1000" >
+<soundProfile id="anvil" period="1700" >
+    <sound type="crafting" file="anvil0" />
+    <sound type="crafting" file="anvil1" />
+    <sound type="crafting" file="anvil2" />
+    <sound type="crafting" file="anvil3" />
+    <sound type="crafting" file="anvilDouble0" />
+    <sound type="crafting" file="anvilTriple0" />
+    <sound type="crafting" file="anvilTriple1" />
+</soundProfile>
+
+<soundProfile id="dirt" period="1000" >
+    <sound type="gather" file="dig0" />
+    <sound type="gather" file="dig1" />
+    <sound type="gather" file="dig2" />
+    <sound type="gather" file="dig3" />
+    <sound type="gather" file="dig4" />
+    <sound type="gather" file="dig5" />
+</soundProfile>
+
+<soundProfile id="tree" period="1200" >
     <sound type="gather" file="chop0" />
     <sound type="gather" file="chop1" />
     <sound type="gather" file="chop2" />
@@ -179,6 +197,23 @@
     <sound type="death" file="womanDeath0" />
     <sound type="death" file="womanDeath1" />
     <sound type="death" file="womanDeath2" />
+</soundProfile>
+
+<soundProfile id="pig" >
+    <sound type="attack" file="bite0" />
+    <sound type="attack" file="bite1" />
+    <sound type="attack" file="bite2" />
+    <sound type="attack" file="bite3" />
+    <sound type="attack" file="bite4" />
+    <sound type="defend" file="pig0" />
+    <sound type="defend" file="pig1" />
+    <sound type="defend" file="pig2" />
+    <sound type="defend" file="pig3" />
+    <sound type="defend" file="pig4" />
+    <sound type="defend" file="pig5" />
+    <sound type="death" file="pigDeath0" />
+    <sound type="death" file="pigDeath1" />
+    <sound type="death" file="pigDeath2" />
 </soundProfile>
 
 <soundProfile id="goat" >

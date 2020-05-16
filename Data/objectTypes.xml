@@ -121,8 +121,8 @@
 <objectType id="clay" name="Clay Deposit"
     xDrawOffset="-13" yDrawOffset="-11"
     canGather="1" gatherTime="2000" gatherParticles="dirtFromGround"
-    isFlat="1"
-    allowedTerrain="fertile" sounds="clay" >
+    isFlat="1" sounds="dirt"
+    allowedTerrain="fertile" >
     <collisionRect x="-12" y="-2" w="25" h="24" />
     <yield id="crudeClay" initialMean="4" initialSD="1" initialMin="1" />
     <durability item="crudeClay" quantity="3" />
@@ -130,8 +130,8 @@
 <objectType id="underwaterClay" name="Clay Deposit"
     xDrawOffset="-13" yDrawOffset="-11"
     canGather="1" gatherTime="2000"
-    isFlat="1"
-    allowedTerrain="shallowWater" sounds="clay" >
+    isFlat="1" sounds="dirt"
+    allowedTerrain="shallowWater" >
     <yield id="crudeClay" initialMean="4" initialSD="1" initialMin="1" />
     <durability item="crudeClay" quantity="3" />
 </objectType>

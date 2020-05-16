@@ -31,7 +31,7 @@
 
 <!-- Knives -->
     <recipe id="stoneKnife"
-        time="4000" >
+        sounds="knapping" time="4000" >
         <material id="rock" />
         <material id="stick" />
         <tool class="grinding1" />
@@ -286,7 +286,7 @@
 
 <!-- Swords -->
     <recipe
-        id="copperSword" time="4000" >
+        id="copperSword" sounds="anvil" time="4000" >
         <material id="copperBar" quantity="5" />
         <material id="leather" />
         <tool class="hammering" />
@@ -307,7 +307,7 @@
         <unlockedBy recipe="smoothRock" />
     </recipe>
     <recipe
-        id="smoothRock" time="2500" >
+        id="smoothRock" sounds="knapping" time="2500" >
         <material id="rock" />
         <tool class="grinding1" />
         <unlockedBy recipe="sling" />
@@ -348,7 +348,7 @@
 
 
 <recipe id="copperCuirass"
-    time="4000" >
+    sounds="anvil" time="4000" >
     <material id="copperBar" quantity="6" />
     <material id="leather" quantity="2" />
     <tool class="hammering" />
@@ -359,7 +359,7 @@
     <unlockedBy construction="copperAnvil" chance="0.05" />
 </recipe>
 <recipe id="copperGreaves"
-    time="4000" >
+    sounds="anvil" time="4000" >
     <material id="copperBar" quantity="3" />
     <material id="leather" />
     <tool class="hammering" />
@@ -371,7 +371,7 @@
     <unlockedBy construction="copperAnvil" chance="0.1" />
 </recipe>
 <recipe id="copperHelmet"
-    time="4000" >
+    sounds="anvil" time="4000" >
     <material id="copperBar" quantity="4" />
     <tool class="hammering" />
     <tool class="smelting2" />
@@ -382,7 +382,7 @@
     <unlockedBy construction="copperAnvil" chance="0.05" />
 </recipe>
 <recipe id="copperBracers"
-    time="4000" >
+    sounds="anvil" time="4000" >
     <material id="copperBar" quantity="1" />
     <tool class="hammering" />
     <tool class="smelting2" />
@@ -394,7 +394,7 @@
 
 <!-- Rings/mail -->
     <recipe id="tinRing"
-        time="10000" quantity="40" >
+        sounds="anvil" time="10000" quantity="40" >
         <material id="tinBar" />
         <tool class="hammering" />
         <tool class="smelting1" />
@@ -404,7 +404,7 @@
         <unlockedBy construction="copperAnvil" chance="0.1" />
     </recipe>
     <recipe id="copperRing"
-        time="10000" quantity="40" >
+        sounds="anvil" time="10000" quantity="40" >
         <material id="copperBar" />
         <tool class="hammering" />
         <tool class="smelting2" />
@@ -433,7 +433,7 @@
         <unlockedBy recipe="leather" chance="0.1" />
     </recipe>
     <recipe id="copperShield"
-        time="4000" >
+        sounds="anvil" time="4000" >
         <material id="copperBar" quantity="8" />
         <tool class="hammering" />
         <tool class="smelting1" />
@@ -468,7 +468,7 @@
     </recipe>
 
 <recipe
-    id="knapper" time="6000" >
+    id="knapper" sounds="knapping" time="6000" >
     <material id="rock" quantity="2" />
     <unlockedBy item="rock" />
 </recipe>

@@ -103,14 +103,14 @@
 		</item>
 
 	<!-- Knives (fast) -->
-		<item id="stoneKnife" name="Stone Knife" gearSlot="6" >
+		<item id="stoneKnife" name="Stone Knife" gearSlot="6" sounds="rock" >
 			<tag name="carving" />
 			<tag name="harvesting" />
 			<offset x="-4" y="-1" />
 			<weapon damage="3" speed="1.6" />
 		</item>
             <item id="stoneKnifeSilver" name="Inlaid Stone Knife" gearSlot="6"
-                iconFile="stoneKnife" gearFile="stoneKnife" quality="2">
+                iconFile="stoneKnife" gearFile="stoneKnife" sounds="rock" quality="2">
                 <tag name="carving" toolSpeed="1.05" />
                 <tag name="harvesting" toolSpeed="1.05" />
                 <offset x="-4" y="-1" />
