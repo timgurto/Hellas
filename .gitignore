@@ -51,6 +51,7 @@ doc/web/tree.svg
 doc/web/tree.map
 doc/web/npcs.js
 doc/web/tools.js
+doc/web/recipesWithStuffMissing.js
 doc/web/soundProfiles.js
 doc/web/terrains.js
 *.db

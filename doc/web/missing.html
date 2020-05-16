@@ -16,7 +16,7 @@
         <div class="container col-xs-12 col-md-10">
             <div class="col-xs-12">
                 <h1>Missing Data</h1>
-                <p>&#9820; Object&emsp;&#9822; NPC&emsp;&#9752; Item&emsp;&#9876; Gear&emsp;&#9889; Spell</p>
+                <p>&#9820; Object&emsp;&#9822; NPC&emsp;&#9752; Item&emsp;&#9876; Gear&emsp;&#9879; Recipe&emsp;&#9889; Spell</p>
             </div>
             <div class="col-xs-12 col-md-4" id="images">       <h2>Images</h2><ul/></div>
             <div class="col-xs-12 col-md-4" id="soundProfiles"><h2>Sound Profiles</h2><ul/></div>
@@ -31,6 +31,7 @@
     <script type="text/javascript" src="npcs.js"></script>
     <script type="text/javascript" src="soundProfiles.js"></script>
     <script type="text/javascript" src="terrains.js"></script>
+    <script type="text/javascript" src="recipesWithStuffMissing.js"></script>
     <script type="text/javascript" src="spells.js"></script>
     <script type="text/javascript" src="util.js"></script>
     <script type="text/javascript">
@@ -106,6 +107,11 @@
                     appendParticles(textOnlyItemLink(item), item);
                 if ("imagesMissing" in item)
                     appendImages(textOnlyItemLink(item), item);
+            }
+            
+            for (recipe of recipesWithStuffMissing){
+                if ("soundsMissing" in recipe)
+                    appendSoundProfile(textOnlyRecipeLink(recipe), recipe);
             }
                     
             for (spell of spells){

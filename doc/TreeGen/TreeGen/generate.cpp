@@ -165,11 +165,13 @@ int main(int argc, char **argv) {
   // Load recipes
   std::map<ID, Recipe> recipes;
   std::map<ID, std::set<std::string>> materialFor, toolFor;
+  JsonWriter jw("recipesWithStuffMissing");
   for (auto file : filesList) {
     xr.newFile(file);
     for (auto elem : xr.getChildren("recipe")) {
-      ID product;
-      if (!xr.findAttr(elem, "id", product)) continue;
+      ID recipeID;
+      if (!xr.findAttr(elem, "id", recipeID)) continue;
+      ID product = recipeID;
       xr.findAttr(elem, "product", product);
       std::string label = "item_" + product;
 
@@ -211,6 +213,18 @@ int main(int argc, char **argv) {
           edges.insert(Edge("item_" + id, label, UNLOCK_ON_GATHER, chance));
         else if (xr.findAttr(unlockBy, "item", id))
           edges.insert(Edge("item_" + id, label, UNLOCK_ON_ACQUIRE, chance));
+      }
+
+      ID sounds;
+      if (xr.findAttr(elem, "sounds", sounds)) {
+        if (!sounds.empty()) {
+          SoundProfile &soundProfile = soundProfiles[sounds];
+          soundProfile.checkType("crafting");
+        }
+      } else {
+        jw.nextEntry();
+        jw.addAttribute("id", recipeID);
+        jw.addArrayAttribute("soundsMissing", {"crafting"});
       }
 
       recipes[product] = r;

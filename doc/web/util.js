@@ -129,7 +129,13 @@ function itemLink(item){
     return linkHTML;
 }
 
-function textOnlySpellLink(item){
+function textOnlyRecipeLink(recipe){
+    var linkHTML =
+        "	&#9879; " + recipe.id
+    return linkHTML;
+}
+
+function textOnlySpellLink(spell){
     var linkHTML =
         "	&#9889; " + spell.name
     return linkHTML;
