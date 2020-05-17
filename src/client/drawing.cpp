@@ -27,6 +27,11 @@ void Client::draw() const {
   if (!_constructionFootprintType && ContainerGrid::getUseItem())
     _constructionFootprintType =
         ContainerGrid::getUseItem()->constructsObject();
+  if (_constructionFootprintType)
+    _constructionFootprintAllowedTerrain =
+        TerrainList::findList(_constructionFootprintType->allowedTerrain());
+  else
+    _constructionFootprintAllowedTerrain = nullptr;
 
   // Terrain
   size_t xMin = static_cast<size_t>(max<double>(0, -offset().x / Map::TILE_W)),
@@ -345,14 +350,10 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const {
   }*/
 
   // Colour tiles that can't accommodate the selected construction
-  if (_constructionFootprintType) {
-    auto allowedTerrain =
-        TerrainList::findList(_constructionFootprintType->allowedTerrain());
-    if (!allowedTerrain) return;
-    if (allowedTerrain->allows(tileID)) return;
+  if (_constructionFootprintAllowedTerrain &&
+      !_constructionFootprintAllowedTerrain->allows(tileID))
     drawFootprint(toMapRect(drawRect) - _offset, Color::FOOTPRINT_COLLISION,
                   0xaf);
-  }
 }
 
 void Client::drawLoadingScreen(const std::string &msg, double progress) const {

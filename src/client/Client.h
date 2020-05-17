@@ -519,6 +519,7 @@ class Client {
   // over.
   const Texture *_uiTooltip;
   mutable const ClientObjectType *_constructionFootprintType{nullptr};
+  mutable const TerrainList *_constructionFootprintAllowedTerrain{nullptr};
   void drawFootprint(const MapRect &rect, Color color,
                      Uint8 alpha = 0xff) const;
   MapPoint _offset;  // An offset for drawing, based on the character's location
