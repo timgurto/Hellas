@@ -299,6 +299,8 @@ void Client::run() {
     else
       loginScreenLoop();
 
+    SDL_Delay(1);
+
     while (_freeze)
       ;
   }
@@ -428,7 +430,6 @@ void Client::gameLoop() {
   _connection.getNewMessages();
   // Draw
   draw();
-  SDL_Delay(5);
 }
 
 void Client::startCrafting() {

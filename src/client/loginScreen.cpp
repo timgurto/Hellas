@@ -71,8 +71,6 @@ void Client::loginScreenLoop() {
   updateToasts();
 
   drawLoginScreen();
-
-  SDL_Delay(5);
 }
 
 void Client::updateLoginParticles(double delta) {
