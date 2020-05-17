@@ -39,11 +39,14 @@ void Renderer::init() {
       SDL_CreateWindow("Hellas (Open Beta)", screenX, screenY, screenW, screenH,
                        SDL_WINDOW_SHOWN | (fullScreen ? SDL_WINDOW_FULLSCREEN
                                                       : SDL_WINDOW_RESIZABLE));
-  if (_window == nullptr) return;
+  if (!_window) return;
 
-  _renderer = SDL_CreateRenderer(
-      _window, -1, SDL_RENDERER_ACCELERATED /*| SDL_RENDERER_PRESENTVSYNC*/);
-  if (_renderer == nullptr) return;
+  int rendererFlags = SDL_RENDERER_ACCELERATED;
+  if (!fullScreen || cmdLineArgs.contains("vsync"))
+    rendererFlags |= SDL_RENDERER_PRESENTVSYNC;
+
+  _renderer = SDL_CreateRenderer(_window, -1, rendererFlags);
+  if (!_renderer) return;
 
   SDL_GetRendererOutputSize(_renderer, &_w, &_h);
 
@@ -58,7 +61,7 @@ Renderer::~Renderer() {
     _renderer = nullptr;
     SDL_DestroyRenderer(temp);
   }
-  if (_window != nullptr) {
+  if (!_window) {
     SDL_DestroyWindow(_window);
     _window = nullptr;
   }
