@@ -42,7 +42,7 @@ void Renderer::init() {
   if (_window == nullptr) return;
 
   _renderer = SDL_CreateRenderer(
-      _window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+      _window, -1, SDL_RENDERER_ACCELERATED /*| SDL_RENDERER_PRESENTVSYNC*/);
   if (_renderer == nullptr) return;
 
   SDL_GetRendererOutputSize(_renderer, &_w, &_h);
