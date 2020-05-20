@@ -97,6 +97,7 @@ std::set<Exploration::Chunk> Exploration::explore(const Chunk &chunk) {
       if (isChunkExplored) continue;
 
       isChunkExplored = true;
+      ++_numChunksExplored;
       newlyExploredChunks.insert(Chunk{x, y});
     }
 
@@ -107,6 +108,7 @@ void Exploration::unexploreAll(const Socket &socket) {
   auto chunksX = _map.size();
   auto chunksY = chunksX == 0 ? 0 : _map.front().size();
   _map = {chunksX, std::vector<bool>(chunksY, false)};
+  _numChunksExplored = 0;
 
   Server::instance().sendMessage(socket, SV_UNEXPLORE_MAP);
 }

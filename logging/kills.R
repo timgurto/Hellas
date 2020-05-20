@@ -242,22 +242,64 @@ for (class in c("Athlete", "Scholar", "Zealot"))
 }
 
 
+
+colConstructions = "#333333"
+colRecipes="#666666"
+colExploration="#9BAE77"
+
 data <- read.csv(
     file="../levels.log",
     header=TRUE,
     sep=",",
     colClasses=c("character","character","integer","integer")
 )
-
 data = data[order(data$name),]
 data$hoursPlayed = data$secondsPlayed/3600
+
+dataRecipes = read.csv(
+    file="../recipes.log",
+    header=TRUE,
+    sep=",",
+    colClasses=c("character","integer","integer")
+)
+dataRecipes = dataRecipes[order(dataRecipes$name),]
+dataRecipes$hoursPlayed = dataRecipes$secondsPlayed/3600
+minRecipes = min(dataRecipes$recipesKnown)
+maxRecipes = max(dataRecipes$recipesKnown)
+
+dataConstructions = read.csv(
+    file="../constructions.log",
+    header=TRUE,
+    sep=",",
+    colClasses=c("character","integer","integer")
+)
+dataConstructions = dataConstructions[order(dataConstructions$name),]
+dataConstructions$hoursPlayed = dataConstructions$secondsPlayed/3600
+minConstructions = min(dataConstructions$constructionsKnown)
+maxConstructions = max(dataConstructions$constructionsKnown)
+
+dataExploration = read.csv(
+    file="../exploration.log",
+    header=TRUE,
+    sep=",",
+    colClasses=c("character","integer","integer")
+)
+dataExploration = dataExploration[order(dataExploration$name),]
+dataExploration$secondsPlayed = replace(dataExploration$secondsPlayed, dataExploration$secondsPlayed==0, 1)
+dataExploration$hoursPlayed = dataExploration$secondsPlayed/3600
+minExplorations = min(dataExploration$chunksExplored)
+maxExplorations = max(dataExploration$chunksExplored)
+
+minTime = min(min(data$hoursPlayed, min(dataRecipes$hoursPlayed), min(dataConstructions$hoursPlayed), min(dataExploration$hoursPlayed)))
+maxTime = max(max(data$hoursPlayed, max(dataRecipes$hoursPlayed), max(dataConstructions$hoursPlayed), max(dataExploration$hoursPlayed)))
+minTime
 
 plot(
     x=NULL,
     bty="n",
 
     xlab="Time played",
-    xlim=c(min(data$hoursPlayed), max(data$hoursPlayed)),
+    xlim=c(minTime, maxTime),
     log="xy",
     xaxt = "n",
     
@@ -266,13 +308,13 @@ plot(
 )
 axis(
     side=1,
-    at=c(
+    at=c(0.000333, 0.00333,
         0.0333, 0.05, 0.0833,
         0.167, 0.333, 0.5,
         1, 2, 3, 5, 8, 12,
         24, 48, 72, 120#, 192
     ),
-    lab=c(
+    lab=c("1.2s", "12s",
         "2m", "3m", "5m",
         "10m", "20m", "30m",
         "1h", "2h", "3h", "5h", "8h", "12h",
@@ -312,10 +354,118 @@ for (i in 1:length(data$name)){
     timeAtLastLevel = thisTime
 }
 
+lastRecipeSeen = 0
+timeAtLastRecipe = 0
+for (i in 1:length(dataRecipes$name)){
+    if (dataRecipes$recipesKnown[i] == 1){
+        lastRecipeSeen = 0
+        timeAtLastRecipe = 0
+    }
+    
+    thisRecipe = dataRecipes$recipesKnown[i]
+    thisTime = dataRecipes$hoursPlayed[i]
+    
+    if ( lastRecipeSeen == 0){
+        lastRecipeSeen = thisRecipe
+        timeAtLastRecipe = thisTime
+        next
+    }
+    
+    segments(
+        x0 = timeAtLastRecipe,
+        x1 = thisTime,
+        y0 = ((lastRecipeSeen-1)/(maxRecipes-1)) * (max(data$level)-2)+2,
+        y1 = ((thisRecipe-1)/(maxRecipes-1)) * (max(data$level)-2)+2,
+        
+        col=colRecipes
+    )
+    
+    lastRecipeSeen = thisRecipe
+    timeAtLastRecipe = thisTime
+}
+
+lastConstructionSeen = 0
+timeAtLastConstruction = 0
+for (i in 1:length(dataConstructions$name)){
+    if (dataConstructions$constructionsKnown[i] == 1){
+        lastConstructionSeen = 0
+        timeAtLastConstruction = 0
+    }
+    
+    thisConstruction = dataConstructions$constructionsKnown[i]
+    thisTime = dataConstructions$hoursPlayed[i]
+    
+    if (lastConstructionSeen == 0){
+        lastConstructionSeen = thisConstruction
+        timeAtLastConstruction = thisTime
+        next
+    }
+    
+    segments(
+        x0 = timeAtLastConstruction,
+        x1 = thisTime,
+        y0 = ((lastConstructionSeen-1)/(maxConstructions-1)) * (max(data$level)-2)+2,
+        y1 = ((thisConstruction-1)/(maxConstructions-1)) * (max(data$level)-2)+2,
+        
+        col=colConstructions
+    )
+    
+    lastConstructionSeen = thisConstruction
+    timeAtLastConstruction = thisTime
+}
+
+lastChunkSeen = 0
+timeAtLastChunk = 0
+for (i in 1:length(dataExploration$name)){
+    if (dataExploration$chunksExplored[i] == 9){
+        lastChunkSeen = 0
+        timeAtLastChunk = 0
+    }
+    
+    thisChunk = dataExploration$chunksExplored[i]
+    thisTime = dataExploration$hoursPlayed[i]
+    
+    if (lastChunkSeen == 0){
+        lastChunkSeen = thisChunk
+        timeAtLastChunk = thisTime
+        next
+    }
+    
+    if (thisTime == 0){
+        next
+    }
+    
+    segments(
+        x0 = timeAtLastChunk,
+        x1 = thisTime,
+        y0 = ((lastChunkSeen-minExplorations)/(maxExplorations-minExplorations)) * (max(data$level)-2)+2,
+        y1 = ((thisChunk-minExplorations)/(maxExplorations-minExplorations)) * (max(data$level)-2)+2,
+        
+        col=colExploration
+    )
+    
+    lastChunkSeen = thisChunk
+    timeAtLastChunk = thisTime
+}
+
 legend(
     "bottomright",
-    legend=c("Athlete", "Scholar", "Zealot"),
-    fill=c(set1[2], set1[1], set1[3])
+    legend=c(
+        "Athlete level",
+        "Scholar level",
+        "Zealot level",
+        "Recipes",
+        "Constructions",
+        "Exploration"
+    ),
+    fill=c(
+        set1[2],
+        set1[1],
+        set1[3],
+        colRecipes,
+        colConstructions,
+        colExploration
+    )
 )
 
 dev.off()
