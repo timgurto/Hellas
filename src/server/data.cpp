@@ -172,13 +172,13 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
   elem = xr.findChild("knownRecipes");
   for (auto slotElem : xr.getChildren("recipe", elem)) {
     std::string id;
-    if (xr.findAttr(slotElem, "id", id)) user.addRecipe(id);
+    if (xr.findAttr(slotElem, "id", id)) user.addRecipe(id, false);
   }
 
   elem = xr.findChild("knownConstructions");
   for (auto slotElem : xr.getChildren("construction", elem)) {
     std::string id;
-    if (xr.findAttr(slotElem, "id", id)) user.addConstruction(id);
+    if (xr.findAttr(slotElem, "id", id)) user.addConstruction(id, false);
   }
 
   elem = xr.findChild("talents");

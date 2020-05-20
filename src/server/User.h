@@ -150,14 +150,12 @@ class User : public Object {  // TODO: Don't inherit from Object
   void driving(Serial serial) { _driving = serial; }
   bool isDriving() const { return _driving.isEntity(); }
   const std::set<std::string> &knownRecipes() const { return _knownRecipes; }
-  void addRecipe(const std::string &id) { _knownRecipes.insert(id); }
+  void addRecipe(const std::string &id, bool newlyLearned = true);
   bool knowsRecipe(const std::string &id) const;
   const std::set<std::string> &knownConstructions() const {
     return _knownConstructions;
   }
-  void addConstruction(const std::string &id) {
-    _knownConstructions.insert(id);
-  }
+  void addConstruction(const std::string &id, bool newlyLearned = true);
   void removeConstruction(const std::string &id) {
     _knownConstructions.erase(id);
   }

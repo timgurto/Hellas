@@ -930,6 +930,13 @@ void User::onMove() {
   auto newlyExploredChunks = exploration.explore(chunk);
   for (const auto &chunk : newlyExploredChunks)
     exploration.sendSingleChunk(socket(), chunk);
+  if (!newlyExploredChunks.empty()) {
+    auto of = std::ofstream{"exploration.log", std::ios_base::app};
+    of << _name                                   // Player name
+       << "," << exploration.numChunksExplored()  // Chunks explored
+       << "," << secondsPlayed()                  // Time played (s)
+       << std::endl;
+  }
 
   // Get buffs from objects
   auto buffsToAdd = std::map<const BuffType *, Entity *>{};
@@ -1461,6 +1468,17 @@ bool User::knowsConstruction(const std::string &id) const {
   return userKnowsConstruction;
 }
 
+void User::addRecipe(const std::string &id, bool newlyLearned) {
+  _knownRecipes.insert(id);
+
+  if (!newlyLearned) return;
+  auto of = std::ofstream{"recipes.log", std::ios_base::app};
+  of << _name                        // Player name
+     << "," << _knownRecipes.size()  // Recipes known
+     << "," << secondsPlayed()       // Time played (s)
+     << std::endl;
+}
+
 bool User::knowsRecipe(const std::string &id) const {
   const Server &server = *Server::_instance;
   auto it = server._recipes.find(id);
@@ -1469,6 +1487,17 @@ bool User::knowsRecipe(const std::string &id) const {
   if (it->isKnownByDefault()) return true;
   bool userKnowsRecipe = _knownRecipes.find(id) != _knownRecipes.end();
   return userKnowsRecipe;
+}
+
+void User::addConstruction(const std::string &id, bool newlyLearned) {
+  _knownConstructions.insert(id);
+
+  if (!newlyLearned) return;
+  auto of = std::ofstream{"constructions.log", std::ios_base::app};
+  of << _name                              // Player name
+     << "," << _knownConstructions.size()  // Constructions known
+     << "," << secondsPlayed()             // Time played (s)
+     << std::endl;
 }
 
 void User::sendInfoToClient(const User &targetUser) const {
