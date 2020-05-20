@@ -46,8 +46,8 @@ void Server::writeUserToFile(const User &user, std::ostream &stream) const {
          << "knownRecipes: " << user.knownRecipes().size() << ","
          << "completedQuests: " << user.questsCompleted().size() << ","
          << "knownConstructions: " << user.knownConstructions().size() << ","
-         << "chunksExplored: " << user.exploration().numChunksExplored() << ","
-         << "chunksTotal: " << user.exploration().numChunks() << ","
+         << "chunksExplored: " << user.exploration.numChunksExplored() << ","
+         << "chunksTotal: " << user.exploration.numChunks() << ","
          << "location: " << user.realWorldLocation() << ",";
 
   stream << "inventory: [";

@@ -249,7 +249,7 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     user.setHotbarAction(slot, category, id);
   }
 
-  user.exploration().readFrom(xr);
+  user.exploration.readFrom(xr);
 
   return true;
 }
@@ -385,7 +385,7 @@ void Server::writeUserData(const User &user) const {
     xw.setAttr(actionElem, "id", action.id);
   }
 
-  user.exploration().writeTo(xw);
+  user.exploration.writeTo(xw);
 
   xw.publish();
   --_threadsOpen;

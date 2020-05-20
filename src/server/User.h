@@ -64,8 +64,6 @@ class User : public Object {  // TODO: Don't inherit from Object
 
   bool _isInTutorial{true};
 
-  Exploration _exploration;
-
   std::set<std::string> _knownRecipes, _knownConstructions;
   mutable std::set<std::string> _playerUniqueCategoriesOwned;
 
@@ -123,6 +121,8 @@ class User : public Object {  // TODO: Don't inherit from Object
   // May be run only after User object is in its permanent location.
   void initialiseInventoryAndGear();
 
+  Exploration exploration;
+
   const std::string &name() const { return _name; }
   void pwHash(const std::string &hash) { _pwHash = hash; }
   const std::string &pwHash() const { return _pwHash; }
@@ -171,8 +171,6 @@ class User : public Object {  // TODO: Don't inherit from Object
   }
   const MapPoint &respawnPoint() const { return _respawnPoint; }
   void respawnPoint(const MapPoint &loc) { _respawnPoint = loc; }
-  const Exploration &exploration() const { return _exploration; }
-  Exploration &exploration() { return _exploration; }
   void setHotbarAction(size_t button, int category, const std::string &id);
   void sendHotbarMessage();
   const std::vector<HotbarAction> &hotbar() const { return _hotbar; }

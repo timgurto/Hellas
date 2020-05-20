@@ -401,7 +401,7 @@ void Server::addUser(const Socket &socket, const std::string &name,
 
   // Other info
   newUser.sendHotbarMessage();
-  if (userExisted) newUser.exploration().sendWholeMap(socket);
+  if (userExisted) newUser.exploration.sendWholeMap(socket);
   _cities.sendInfoAboutCitiesTo(newUser);
   newUser.sendSpawnPoint();
 

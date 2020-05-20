@@ -41,8 +41,8 @@ User::User(const std::string &name, const MapPoint &loc, const Socket *socket)
       _actionSlot(INVENTORY_SIZE),
       _actionLocation(0, 0),
 
-      _exploration(Server::instance().map().width(),
-                   Server::instance().map().height()),
+      exploration(Server::instance().map().width(),
+                  Server::instance().map().height()),
 
       _respawnPoint(newPlayerSpawn),
 
@@ -57,10 +57,10 @@ User::User(const std::string &name, const MapPoint &loc, const Socket *socket)
 }
 
 User::User(const Socket &rhs)
-    : Object(MapPoint{}), _socket(rhs), _exploration(0, 0) {}
+    : Object(MapPoint{}), _socket(rhs), exploration(0, 0) {}
 
 User::User(const MapPoint &loc)
-    : Object(loc), _socket(Socket::Empty()), _exploration(0, 0) {}
+    : Object(loc), _socket(Socket::Empty()), exploration(0, 0) {}
 
 void User::initialiseInventoryAndGear() {
   for (size_t i = 0; i != INVENTORY_SIZE; ++i) {
@@ -926,10 +926,10 @@ void User::onMove() {
   auto &server = Server::instance();
 
   // Explore map
-  auto chunk = _exploration.getChunk(location());
-  auto newlyExploredChunks = _exploration.explore(chunk);
+  auto chunk = exploration.getChunk(location());
+  auto newlyExploredChunks = exploration.explore(chunk);
   for (const auto &chunk : newlyExploredChunks)
-    _exploration.sendSingleChunk(socket(), chunk);
+    exploration.sendSingleChunk(socket(), chunk);
 
   // Get buffs from objects
   auto buffsToAdd = std::map<const BuffType *, Entity *>{};

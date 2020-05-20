@@ -114,7 +114,7 @@ HANDLE_MESSAGE(CL_SKIP_TUTORIAL) {
 
   if (!user.isInTutorial()) return;
 
-  user.exploration().unexploreAll(user.socket());
+  user.exploration.unexploreAll(user.socket());
   user.setSpawnPointToPostTutorial();
   user.sendSpawnPoint(false);
   user.moveToSpawnPoint();
