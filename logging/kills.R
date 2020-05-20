@@ -258,7 +258,7 @@ plot(
 
     xlab="Time played",
     xlim=c(min(data$hoursPlayed), max(data$hoursPlayed)),
-    log="x",
+    log="xy",
     xaxt = "n",
     
     ylab="Level reached",
