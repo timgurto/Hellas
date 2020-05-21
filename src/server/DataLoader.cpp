@@ -534,6 +534,8 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
     xr.findAttr(elem, "armor", baseStats.armor);
     nt->baseStats(baseStats);
 
+    if (xr.findAttr(elem, "elite", n) && n != 0) nt->isElite = true;
+
     auto elemSpell = xr.findChild("spell", elem);
     if (elemSpell) {
       auto spellID = ""s;

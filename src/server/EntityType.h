@@ -28,6 +28,7 @@ class EntityType : public HasTags {
   void allowedTerrain(const std::string &id) {
     _allowedTerrain = TerrainList::findList(id);
   }
+  bool isElite{false};
 
   // Combat
   void baseStats(const Stats &stats) { _baseStats = stats; }

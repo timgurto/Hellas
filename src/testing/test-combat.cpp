@@ -296,3 +296,41 @@ TEST_CASE("Targeting civilians after attacking") {
     }
   }
 }
+
+TEST_CASE("XP from kills") {
+  GIVEN("normal and elite NPC types") {
+    auto data = R"(
+      <npcType id="queenBee" maxHealth="1" elite="1" />
+      <npcType id="workerBee" maxHealth="1" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+
+    AND_GIVEN("a normal NPC") {
+      const auto &npc = s.addNPC("workerBee", {10, 15});
+
+      WHEN("a player kills it") {
+        c.sendMessage(CL_TARGET_ENTITY, makeArgs(npc.serial()));
+
+        THEN("that player has 100 XP") {
+          const auto &user = s.getFirstUser();
+          WAIT_UNTIL(user.xp() == 100);
+        }
+      }
+    }
+
+    AND_GIVEN("an elite NPC") {
+      const auto &elite = s.addNPC("queenBee", {10, 15});
+
+      WHEN("a player kills it") {
+        c.sendMessage(CL_TARGET_ENTITY, makeArgs(elite.serial()));
+
+        THEN("that player has 400 XP") {
+          const auto &user = s.getFirstUser();
+          WAIT_UNTIL(user.xp() == 400);
+        }
+      }
+    }
+  }
+}
