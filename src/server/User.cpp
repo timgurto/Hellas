@@ -1194,7 +1194,7 @@ void User::onKilled(Entity &victim) {
       xp = xpPerLevelDiff[levelDiff];
     }
 
-    if (victim.type()->isElite) xp *= 4;
+    if (victim.type()->isElite()) xp *= 4;
 
     addXP(xp);
   }

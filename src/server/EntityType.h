@@ -28,7 +28,8 @@ class EntityType : public HasTags {
   void allowedTerrain(const std::string &id) {
     _allowedTerrain = TerrainList::findList(id);
   }
-  bool isElite{false};
+  bool isElite() const { return _isElite; }
+  void makeElite() { _isElite = true; }
 
   // Combat
   void baseStats(const Stats &stats) { _baseStats = stats; }
@@ -51,6 +52,7 @@ class EntityType : public HasTags {
   MapRect _collisionRect;  // Relative to position
 
   const TerrainList *_allowedTerrain;
+  bool _isElite{false};
 };
 
 #endif
