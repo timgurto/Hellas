@@ -3,6 +3,7 @@
 
 #include "../MessageParser.h"
 #include "../versionUtil.h"
+#include "DroppedItem.h"
 #include "ProgressLock.h"
 #include "Server.h"
 #include "Vehicle.h"
@@ -244,6 +245,8 @@ HANDLE_MESSAGE(CL_DROP) {
     else
       pObj->tellRelevantUsersAboutInventorySlot(slot);
   }
+
+  this->addEntity(new DroppedItem);
 }
 
 HANDLE_MESSAGE(CL_SWAP_ITEMS) {

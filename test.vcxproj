@@ -196,6 +196,7 @@
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)$(ProjectName)\data-server</ObjectFileName>
     </ClCompile>
     <ClCompile Include="src\server\DataLoader.cpp" />
+    <ClCompile Include="src\server\DroppedItem.cpp" />
     <ClCompile Include="src\server\Durability.cpp" />
     <ClCompile Include="src\server\Entities.cpp" />
     <ClCompile Include="src\server\Entity.cpp" />
@@ -253,6 +254,7 @@
     <ClCompile Include="src\testing\test-containers.cpp" />
     <ClCompile Include="src\testing\test-culling.cpp" />
     <ClCompile Include="src\testing\test-death.cpp" />
+    <ClCompile Include="src\testing\test-dropped-items.cpp" />
     <ClCompile Include="src\testing\test-durability.cpp" />
     <ClCompile Include="src\testing\test-gathering.cpp" />
     <ClCompile Include="src\testing\test-gear.cpp" />
@@ -383,6 +385,7 @@
     <ClInclude Include="src\server\combat.h" />
     <ClInclude Include="src\server\DamageOnUse.h" />
     <ClInclude Include="src\server\DataLoader.h" />
+    <ClInclude Include="src\server\DroppedItem.h" />
     <ClInclude Include="src\server\Durability.h" />
     <ClInclude Include="src\server\Entities.h" />
     <ClInclude Include="src\server\Entity.h" />

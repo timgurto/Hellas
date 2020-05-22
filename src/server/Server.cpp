@@ -704,11 +704,11 @@ Entity &Server::addEntity(Entity *newEntity) {
   for (const User *userP : findUsersInArea(loc))
     newEntity->sendInfoToClient(*userP);
 
-  // Add object to relevant chunk
+  // Add entity to relevant chunk
   if (newEntity->type()->collides())
     getCollisionChunk(loc).addEntity(newEntity);
 
-  // Add object to x/y index sets
+  // Add entity to x/y index sets
   _entitiesByX.insert(newEntity);
   _entitiesByY.insert(newEntity);
 

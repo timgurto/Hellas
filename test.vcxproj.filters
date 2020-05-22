@@ -195,6 +195,8 @@
     <ClCompile Include="src\messageCodes.cpp" />
     <ClCompile Include="src\testing\test-movement.cpp" />
     <ClCompile Include="src\client\CRecipe.cpp" />
+    <ClCompile Include="src\testing\test-dropped-items.cpp" />
+    <ClCompile Include="src\server\DroppedItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -340,5 +342,6 @@
     <ClInclude Include="src\client\ImageWithHighlight.h" />
     <ClInclude Include="src\Serial.h" />
     <ClInclude Include="src\MessageParser.h" />
+    <ClInclude Include="src\server\DroppedItem.h" />
   </ItemGroup>
 </Project>
