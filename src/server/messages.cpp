@@ -212,6 +212,40 @@ HANDLE_MESSAGE(CL_CONSTRUCT_FOR_CITY) {
   user.tryToConstruct(id, {x, y}, Permissions::Owner::CITY);
 }
 
+HANDLE_MESSAGE(CL_DROP) {
+  Serial serial;
+  size_t slot;
+  READ_ARGS(serial, slot);
+
+  if (user.isStunned()) RETURN_WITH(WARNING_STUNNED)
+  ServerItem::vect_t *container;
+  Object *pObj = nullptr;
+  if (serial.isInventory())
+    container = &user.inventory();
+  else if (serial.isGear())
+    container = &user.gear();
+  else {
+    pObj = _entities.find<Object>(serial);
+    if (!pObj->hasContainer()) RETURN_WITH(ERROR_NO_INVENTORY)
+    if (!isEntityInRange(client, user, pObj)) return;
+    container = &pObj->container().raw();
+  }
+
+  if (slot >= container->size()) RETURN_WITH(ERROR_INVALID_SLOT)
+
+  auto &containerSlot = (*container)[slot];
+  if (containerSlot.second != 0) {
+    containerSlot.first = {};
+    containerSlot.second = 0;
+
+    // Alert relevant users
+    if (serial.isInventory() || serial.isGear())
+      sendInventoryMessage(user, slot, serial);
+    else
+      pObj->tellRelevantUsersAboutInventorySlot(slot);
+  }
+}
+
 HANDLE_MESSAGE(CL_SWAP_ITEMS) {
   Serial obj1, obj2;
   size_t slot1, slot2;
@@ -647,6 +681,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_CRAFT)
       SEND_MESSAGE_TO_HANDLER(CL_CONSTRUCT)
       SEND_MESSAGE_TO_HANDLER(CL_CONSTRUCT_FOR_CITY)
+      SEND_MESSAGE_TO_HANDLER(CL_DROP)
       SEND_MESSAGE_TO_HANDLER(CL_SWAP_ITEMS)
       SEND_MESSAGE_TO_HANDLER(CL_CAST)
       SEND_MESSAGE_TO_HANDLER(CL_CAST_ITEM)
@@ -834,40 +869,6 @@ void Server::handleBufferedMessages(const Socket &client,
 
         ent->kill();
         ent->setShorterCorpseTimerForFriendlyKill();
-        break;
-      }
-
-      case CL_DROP: {
-        Serial serial;
-        size_t slot;
-        iss >> serial >> del >> slot >> del;
-        if (del != MSG_END) return;
-        if (user->isStunned()) BREAK_WITH(WARNING_STUNNED)
-        ServerItem::vect_t *container;
-        Object *pObj = nullptr;
-        if (serial.isInventory())
-          container = &user->inventory();
-        else if (serial.isGear())
-          container = &user->gear();
-        else {
-          pObj = _entities.find<Object>(serial);
-          if (!pObj->hasContainer()) BREAK_WITH(ERROR_NO_INVENTORY)
-          if (!isEntityInRange(client, *user, pObj)) break;
-          container = &pObj->container().raw();
-        }
-
-        if (slot >= container->size()) BREAK_WITH(ERROR_INVALID_SLOT)
-        auto &containerSlot = (*container)[slot];
-        if (containerSlot.second != 0) {
-          containerSlot.first = {};
-          containerSlot.second = 0;
-
-          // Alert relevant users
-          if (serial.isInventory() || serial.isGear())
-            sendInventoryMessage(*user, slot, serial);
-          else
-            pObj->tellRelevantUsersAboutInventorySlot(slot);
-        }
         break;
       }
 
