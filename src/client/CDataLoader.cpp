@@ -1028,6 +1028,10 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
       nt->chanceToGather(s, chance);
     }
 
+    if (xr.findAttr(elem, "elite", n) && n != 0) {
+      nt->makeElite();
+    }
+
     // Insert
     auto pair = _client._objectTypes.insert(nt);
     if (!pair.second) {

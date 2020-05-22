@@ -978,7 +978,9 @@ void ClientObject::createRegularTooltip() const {
   if (classTag() == 'n') {
     tooltip.addGap();
     tooltip.setColor(Color::TOOLTIP_BODY);
-    tooltip.addLine("Level "s + toString(level()));
+    auto levelString = "Level "s + toString(level());
+    if (isElite()) levelString += " Elite"s;
+    tooltip.addLine(levelString);
   }
 
   // Owner

@@ -17,11 +17,14 @@ class ClientCombatantType {
   void damageParticles(const ParticleProfile *profile) {
     _damageParticles = profile;
   }
+  void makeElite() { _isElite = true; }
+  bool isElite() const { return _isElite; }
 
  private:
   Hitpoints _maxHealth = 0;
   Energy _maxEnergy = 0;
   const ParticleProfile *_damageParticles = nullptr;
+  bool _isElite{false};
 };
 
 #endif
