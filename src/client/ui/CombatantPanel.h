@@ -8,6 +8,7 @@
 #include "ProgressBar.h"
 
 class ColorBlock;
+class Picture;
 class ShadowBox;
 
 // A panel displaying a combatant's health bar, name, etc.
@@ -18,14 +19,19 @@ class CombatantPanel : public Element {
                  const Energy &energy, const Energy &maxEnergy,
                  const Level &level);
 
+  static const Texture &wreath();
+
   void showEnergyBar();
   void hideEnergyBar();
   void addXPBar(const XP &xp, const XP &maxXP);
+  void showEliteMarker();
+  void hideEliteMarker();
 
   static const px_t STANDARD_WIDTH = 110, TARGET_WIDTH = 160, HEIGHT = 40,
                     BAR_HEIGHT = 7, GAP = 2, SPACE_FOR_LEVEL = 20;
 
   virtual void height(px_t h) override;
+  void setElite(bool isElite);
 
  private:
   ProgressBar<Hitpoints> *_healthBar;
@@ -34,6 +40,9 @@ class CombatantPanel : public Element {
 
   ColorBlock *_background;
   ShadowBox *_outline;
+
+  Picture *_eliteMarker{nullptr};
+  static Texture _wreath;
 
   const px_t ELEMENT_WIDTH;
 };

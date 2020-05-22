@@ -1,7 +1,11 @@
 #include "CombatantPanel.h"
+
 #include "ColorBlock.h"
 #include "LinkedLabel.h"
+#include "Picture.h"
 #include "ShadowBox.h"
+
+Texture CombatantPanel::_wreath;
 
 CombatantPanel::CombatantPanel(px_t panelX, px_t panelY, px_t width,
                                const std::string &name, const Hitpoints &health,
@@ -16,8 +20,18 @@ CombatantPanel::CombatantPanel(px_t panelX, px_t panelY, px_t width,
 
   auto y = GAP;
 
+  _eliteMarker =
+      new Picture{GAP * 2 + (SPACE_FOR_LEVEL - wreath().width()) / 2,
+                  y + (Element::TEXT_HEIGHT - wreath().height()) / 2, wreath()};
+  addChild(_eliteMarker);
+  _eliteMarker->hide();
+
   addChild(new LinkedLabel<Level>{
-      {GAP * 2, y, SPACE_FOR_LEVEL, Element::TEXT_HEIGHT}, level});
+      {GAP * 2, y, SPACE_FOR_LEVEL, Element::TEXT_HEIGHT},
+      level,
+      {},
+      {},
+      Element::CENTER_JUSTIFIED});
 
   addChild(new LinkedLabel<std::string>(
       {GAP, y, ELEMENT_WIDTH, Element::TEXT_HEIGHT}, name, {}, {},
@@ -63,8 +77,29 @@ void CombatantPanel::addXPBar(const XP &xp, const XP &maxXP) {
   addChild(_xpBar);
 }
 
+void CombatantPanel::showEliteMarker() {
+  if (!_eliteMarker->visible()) _eliteMarker->show();
+}
+
+void CombatantPanel::hideEliteMarker() {
+  if (_eliteMarker->visible()) _eliteMarker->hide();
+}
+
+const Texture &CombatantPanel::wreath() {
+  auto needsInit = !_wreath;
+  if (needsInit) _wreath = {"Images/UI/wreath.png", Color::MAGENTA};
+  return _wreath;
+}
+
 void CombatantPanel::height(px_t h) {
   Element::height(h);
   _background->height(h);
   _outline->height(h);
+}
+
+void CombatantPanel::setElite(bool isElite) {
+  if (isElite)
+    _eliteMarker->show();
+  else
+    _eliteMarker->hide();
 }

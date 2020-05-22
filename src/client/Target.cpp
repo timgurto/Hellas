@@ -1,7 +1,8 @@
+#include "Target.h"
+
 #include <cassert>
 
 #include "Client.h"
-#include "Target.h"
 
 Target::Target()
     : _entity(nullptr),
@@ -30,17 +31,7 @@ void Target::setAndAlertServer(const Sprite &asEntity,
   _combatant = &asCombatant;
   _aggressive = nowAggressive;
 
-  _name = _entity->name();
-  _health = _combatant->health();
-  _maxHealth = _combatant->maxHealth();
-  _energy = _combatant->energy();
-  _maxEnergy = _combatant->maxEnergy();
-  _level = _combatant->level();
-
-  if (_maxEnergy == 0)
-    _panel->hideEnergyBar();
-  else
-    _panel->showEnergyBar();
+  onTypeChange();
 
   _panel->show();
 }
@@ -100,9 +91,17 @@ void Target::onTypeChange() {
   _maxHealth = _combatant->maxHealth();
   _energy = _combatant->energy();
   _maxEnergy = _combatant->maxEnergy();
+  _level = _combatant->level();
+
+  _panel->setElite(_combatant->isElite());
 
   if (_maxEnergy == 0)
     _panel->hideEnergyBar();
   else
     _panel->showEnergyBar();
+
+  if (_combatant->isElite())
+    _panel->showEliteMarker();
+  else
+    _panel->hideEliteMarker();
 }
