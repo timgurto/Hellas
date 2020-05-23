@@ -98,12 +98,13 @@ TEST_CASE("Dropped items land near the dropping player") {
     auto c = TestClient::WithDataString(data);
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
+    auto *apple = &s.getFirstItem();
 
     AND_GIVEN("a user is at a random location") {
       user.teleportTo(s->map().randomPoint());
 
       AND_GIVEN("he has an item") {
-        user.giveItem(&s.getFirstItem());
+        user.giveItem(apple);
 
         WHEN("he drops it") {
           c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
@@ -123,6 +124,30 @@ TEST_CASE("Dropped items land near the dropping player") {
               CHECK(clientEntity.location() == di.location());
             }
           }
+        }
+      }
+    }
+
+    AND_GIVEN("a user has two items") {
+      user.giveItem(apple, 2);
+
+      WHEN("he drops them both") {
+        c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+        c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 1));
+        WAIT_UNTIL(s.entities().size() == 2);
+
+        THEN("the two entities have different locations") {
+          auto first = true;
+          MapPoint loc1, loc2;
+          for (auto *e : s.entities()) {
+            if (first)
+              loc1 = e->location();
+            else
+              loc2 = e->location();
+            first = false;
+          }
+
+          CHECK(loc1 != loc2);
         }
       }
     }

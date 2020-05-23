@@ -84,6 +84,12 @@ bool collision(const Point<T> &point, const Rect<T> &rect) {
          point.y < rect.y + rect.h;
 }
 
+template <typename T>
+std::ostream &operator<<(std::ostream &lhs, const Point<T> &rhs) {
+  lhs << "(" << rhs.x << "," << rhs.y << ")";
+  return lhs;
+}
+
 using MapPoint = Point<double>;
 using ScreenPoint = Point<px_t>;
 

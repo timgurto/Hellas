@@ -240,7 +240,9 @@ HANDLE_MESSAGE(CL_DROP) {
   if (qty == 0) return;
 
   const auto &item = *containerSlot.first.type();
-  this->addEntity(new DroppedItem(item, user.location()));
+  auto dropLocation =
+      getRandomPointInCircle(user.location(), Server::ACTION_DISTANCE);
+  this->addEntity(new DroppedItem(item, dropLocation));
 
   containerSlot.first = {};
   containerSlot.second = 0;
