@@ -2,6 +2,7 @@
 
 #include "../Message.h"
 #include "../versionUtil.h"
+#include "CDroppedItem.h"
 #include "Client.h"
 #include "ClientCombatant.h"
 #include "ClientNPC.h"
@@ -736,9 +737,15 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
-      case SV_DROPPED_ITEM:
-        addUser("Dummy", {});
+      case SV_DROPPED_ITEM: {
+        std::string itemID;
+        readString(singleMsg, itemID, MSG_END);
+        singleMsg >> del;
+
+        const auto *itemType = findItem(itemID);
+        _entities.insert(new CDroppedItem(*itemType));
         break;
+      }
 
       case SV_LOCATION_INSTANT_OBJECT:
       case SV_OBJECT_LOCATION: {

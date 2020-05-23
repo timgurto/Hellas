@@ -197,6 +197,7 @@
     <ClCompile Include="src\client\CRecipe.cpp" />
     <ClCompile Include="src\testing\test-dropped-items.cpp" />
     <ClCompile Include="src\server\DroppedItem.cpp" />
+    <ClCompile Include="src\client\CDroppedItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -343,5 +344,6 @@
     <ClInclude Include="src\Serial.h" />
     <ClInclude Include="src\MessageParser.h" />
     <ClInclude Include="src\server\DroppedItem.h" />
+    <ClInclude Include="src\client\CDroppedItem.h" />
   </ItemGroup>
 </Project>

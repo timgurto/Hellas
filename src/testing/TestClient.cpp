@@ -222,6 +222,18 @@ const CQuest &TestClient::getFirstQuest() {
   return it->second;
 }
 
+const CDroppedItem &TestClient::getFirstDroppedItem() {
+  const CDroppedItem *asDroppedItem = {nullptr};
+
+  for (const auto *sprite : _client->_entities) {
+    asDroppedItem = dynamic_cast<const CDroppedItem *>(sprite);
+    if (asDroppedItem) return *asDroppedItem;
+  }
+
+  assert(false);
+  return *asDroppedItem;  // To circumvent warning
+}
+
 void TestClient::simulateClick(const ScreenPoint &position) {
   const auto oldPosition = _client->_mouse;
   _client->_mouse = position;

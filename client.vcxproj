@@ -100,6 +100,7 @@
     <ClCompile Include="src\client\Avatar.cpp" />
     <ClCompile Include="src\client\buildWindow.cpp" />
     <ClCompile Include="src\client\CDataLoader.cpp" />
+    <ClCompile Include="src\client\CDroppedItem.cpp" />
     <ClCompile Include="src\client\ClassInfo.cpp" />
     <ClCompile Include="src\client\classWindow.cpp" />
     <ClCompile Include="src\client\Client.cpp" />
@@ -207,6 +208,7 @@
     <ClInclude Include="src\client\Avatar.h" />
     <ClInclude Include="src\client\CCities.h" />
     <ClInclude Include="src\client\CDataLoader.h" />
+    <ClInclude Include="src\client\CDroppedItem.h" />
     <ClInclude Include="src\client\ClassInfo.h" />
     <ClInclude Include="src\client\Client.h" />
     <ClInclude Include="src\client\ClientBuff.h" />

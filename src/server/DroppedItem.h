@@ -12,7 +12,7 @@ class DroppedItem : public Entity {
     char classTag() const override { return 'i'; }
   };
 
-  DroppedItem() : Entity(&commonType, MapPoint({})) {}
+  DroppedItem(const ServerItem &itemType);
 
   char classTag() const override { return 'i'; }
   void sendInfoToClient(const User &targetUser) const override;
@@ -21,4 +21,6 @@ class DroppedItem : public Entity {
 
  private:
   static Type commonType;
+
+  const ServerItem &_itemType{nullptr};
 };

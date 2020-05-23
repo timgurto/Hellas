@@ -235,18 +235,21 @@ HANDLE_MESSAGE(CL_DROP) {
   if (slot >= container->size()) RETURN_WITH(ERROR_INVALID_SLOT)
 
   auto &containerSlot = (*container)[slot];
-  if (containerSlot.second != 0) {
-    containerSlot.first = {};
-    containerSlot.second = 0;
 
-    // Alert relevant users
-    if (serial.isInventory() || serial.isGear())
-      sendInventoryMessage(user, slot, serial);
-    else
-      pObj->tellRelevantUsersAboutInventorySlot(slot);
-  }
+  auto qty = containerSlot.second;
+  if (qty == 0) return;
 
-  this->addEntity(new DroppedItem);
+  const auto &item = *containerSlot.first.type();
+  this->addEntity(new DroppedItem(item));
+
+  containerSlot.first = {};
+  containerSlot.second = 0;
+
+  // Alert relevant users
+  if (serial.isInventory() || serial.isGear())
+    sendInventoryMessage(user, slot, serial);
+  else
+    pObj->tellRelevantUsersAboutInventorySlot(slot);
 }
 
 HANDLE_MESSAGE(CL_SWAP_ITEMS) {

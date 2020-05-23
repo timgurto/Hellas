@@ -3,6 +3,7 @@
 
 #include "../Message.h"
 #include "../client/CDataLoader.h"
+#include "../client/CDroppedItem.h"
 #include "../client/CQuest.h"
 #include "../client/Client.h"
 #include "testing.h"
@@ -98,6 +99,7 @@ class TestClient {
   ClientObject &getFirstObject();
   const ClientObjectType &getFirstObjectType();
   const CQuest &getFirstQuest();
+  const CDroppedItem &getFirstDroppedItem();
 
   Client *operator->() { return _client; }
   Client &client() { return *_client; }
