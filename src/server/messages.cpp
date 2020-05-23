@@ -254,8 +254,9 @@ HANDLE_MESSAGE(CL_DROP) {
       break;
     }
 
-    auto failedToFindLocation = attempt == MAX_ATTEMPTS - 1;
-    if (failedToFindLocation) return;
+    if (attempt == MAX_ATTEMPTS - 1) {
+      RETURN_WITH(WARNING_NOWHERE_TO_DROP_ITEM);
+    }
   }
 
   containerSlot.first = {};

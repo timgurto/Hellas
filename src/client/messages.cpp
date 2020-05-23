@@ -245,6 +245,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
       case WARNING_PET_IS_ALREADY_STAYING:
       case WARNING_NO_ROOM_FOR_MORE_FOLLOWERS:
       case WARNING_PET_AT_FULL_HEALTH:
+      case WARNING_NOWHERE_TO_DROP_ITEM:
         errorMessageColor = Color::CHAT_WARNING;  // Yellow above, red below
       case ERROR_INVALID_USER:
       case ERROR_INVALID_ITEM:
@@ -2792,6 +2793,8 @@ void Client::initializeMessageNames() {
       "You cannot have any more pets following you.";
   _errorMessages[WARNING_PET_AT_FULL_HEALTH] =
       "That pet is already at full health.";
+  _errorMessages[WARNING_NOWHERE_TO_DROP_ITEM] =
+      "There is no room to drop items.";
 }
 
 void Client::performCommand(const std::string &commandString) {

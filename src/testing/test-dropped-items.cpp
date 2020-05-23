@@ -209,11 +209,10 @@ TEST_CASE("If nowhere to drop an item, keep it in inventory") {
       user.giveItem(&s.getFirstItem());
       c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
 
-      AND_WHEN("it fails") {
-        REPEAT_FOR_MS(100);
-        REQUIRE(s.entities().size() == 1);  // the wall, and no dropped item
+      THEN("the user receives a warning") {
+        CHECK(c.waitForMessage(WARNING_NOWHERE_TO_DROP_ITEM));
 
-        THEN("he still has it in his inventory") {
+        AND_THEN("he still has it in his inventory") {
           CHECK(user.inventory(0).first.hasItem());
         }
       }
