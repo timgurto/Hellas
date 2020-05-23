@@ -240,9 +240,20 @@ HANDLE_MESSAGE(CL_DROP) {
   if (qty == 0) return;
 
   const auto &item = *containerSlot.first.type();
-  auto dropLocation =
-      getRandomPointInCircle(user.location(), Server::ACTION_DISTANCE);
-  this->addEntity(new DroppedItem(item, dropLocation));
+  auto dropLocation = MapPoint{};
+  const auto SPACE_REQUIRED = 16.0;
+  const auto MAX_ATTEMPTS = 50;
+  for (auto attempt = 0; attempt != MAX_ATTEMPTS; ++attempt) {
+    dropLocation =
+        getRandomPointInCircle(user.location(), Server::ACTION_DISTANCE);
+    auto dropRect = MapRect{-SPACE_REQUIRED / 2, -SPACE_REQUIRED / 2,
+                            SPACE_REQUIRED, SPACE_REQUIRED} +
+                    dropLocation;
+    if (isLocationValid(dropRect, TerrainList::defaultList())) {
+      this->addEntity(new DroppedItem(item, dropLocation));
+      break;
+    }
+  }
 
   containerSlot.first = {};
   containerSlot.second = 0;
