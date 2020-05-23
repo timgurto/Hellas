@@ -431,7 +431,6 @@ void Client::handleBufferedMessages(const std::string &msg) {
         double x, y;
         singleMsg >> name >> del >> x >> del >> y >> del;
         if (del != MSG_END) break;
-        Avatar *newUser = nullptr;
         const MapPoint p(x, y);
         auto isSelf = name == _username;
         if (isSelf) {
@@ -736,6 +735,10 @@ void Client::handleBufferedMessages(const std::string &msg) {
         _mapWindow->markChanged();
         break;
       }
+
+      case SV_DROPPED_ITEM:
+        addUser("Dummy", {});
+        break;
 
       case SV_LOCATION_INSTANT_OBJECT:
       case SV_OBJECT_LOCATION: {

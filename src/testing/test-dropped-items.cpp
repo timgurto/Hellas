@@ -18,7 +18,13 @@ TEST_CASE("Dropping an item creates an object") {
       WHEN("he drops it") {
         c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
 
-        THEN("there's an entity") { WAIT_UNTIL(s.entities().size() == 1); }
+        THEN("there's an entity") {
+          WAIT_UNTIL(s.entities().size() == 1);
+
+          AND_THEN("the client has an extra entity") {
+            WAIT_UNTIL(c.entities().size() == 2);  // item + player
+          }
+        }
       }
     }
   }

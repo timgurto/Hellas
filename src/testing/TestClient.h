@@ -39,6 +39,7 @@ class TestClient {
   static void stopClientIfRunning();
 
   std::map<Serial, ClientObject *> &objects() { return _client->_objects; }
+  Sprite::set_t &entities() { return _client->_entities; }
   Client::objectTypes_t &objectTypes() { return _client->_objectTypes; }
   const CQuests &quests() const { return _client->_quests; }
   const std::map<std::string, ClientItem> &items() const {
