@@ -709,11 +709,6 @@ class Client {
 
   void sendClearTargetMessage() const;
 
-  ConfirmationWindow *_confirmDropItem;
-  // Show a confirmation window, then drop item if confirmed
-  void dropItemOnConfirmation(Serial serial, size_t slot,
-                              const ClientItem *item);
-
   // Searches
  public:
   const ParticleProfile *findParticleProfile(const std::string &id);

@@ -130,8 +130,6 @@ Client::Client()
 
       _currentMouseOverEntity(nullptr),
 
-      _confirmDropItem(nullptr),
-
       _drawingFinished(false),
 
       _channelsPlaying(0),
@@ -575,21 +573,6 @@ void Client::closeWindowsFromOutOfRangeObjects() {
       if (questWindow) const_cast<Window *>(questWindow)->hide();
     }
   }
-}
-
-void Client::dropItemOnConfirmation(Serial serial, size_t slot,
-                                    const ClientItem *item) {
-  std::string windowText =
-      "Are you sure you want to destroy " + item->name() + "?";
-  std::string msgArgs = makeArgs(serial, slot);
-
-  if (_confirmDropItem != nullptr) {
-    removeWindow(_confirmDropItem);
-    delete _confirmDropItem;
-  }
-  _confirmDropItem = new ConfirmationWindow(windowText, CL_DROP, msgArgs);
-  addWindow(_confirmDropItem);
-  _confirmDropItem->show();
 }
 
 bool Client::outsideCullRange(const MapPoint &loc, px_t hysteresis) const {

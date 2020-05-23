@@ -292,8 +292,8 @@ const ClientItem *ContainerGrid::getUseItem() {
 void ContainerGrid::dropItem() {
   if (dragSlot != NO_SLOT && dragGrid != nullptr) {
     const ClientItem *item = dragGrid->_linked[dragSlot].first.type();
-    Client::_instance->dropItemOnConfirmation(dragGrid->_serial, dragSlot,
-                                              item);
+    Client::_instance->sendMessage(
+        {CL_DROP, makeArgs(dragGrid->_serial, dragSlot)});
     dragSlot = NO_SLOT;
     dragGrid->markChanged();
     dragGrid = nullptr;
