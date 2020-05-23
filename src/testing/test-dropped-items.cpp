@@ -88,3 +88,36 @@ TEST_CASE("Dropped items have correct serials in client") {
     }
   }
 }
+
+TEST_CASE("Dropped items land near the dropping player") {
+  GIVEN("an item type") {
+    auto data = R"(
+      <item id="apple" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    AND_GIVEN("a user is at a random location") {
+      user.teleportTo(s->map().randomPoint());
+
+      AND_GIVEN("he has an item") {
+        user.giveItem(&s.getFirstItem());
+
+        WHEN("he drops it") {
+          c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+
+          THEN("it is within action range of him") {
+            WAIT_UNTIL(s.entities().size() == 1);
+            const auto &di = s.getFirstDroppedItem();
+
+            auto distanceFromDropper =
+                distance(di.collisionRect(), user.collisionRect());
+            CHECK(distanceFromDropper < Server::ACTION_DISTANCE);
+          }
+        }
+      }
+    }
+  }
+}

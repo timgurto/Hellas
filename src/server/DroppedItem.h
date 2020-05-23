@@ -8,11 +8,11 @@ class DroppedItem : public Entity {
  public:
   class Type : public EntityType {
    public:
-    Type() ;
+    Type();
     char classTag() const override { return 'i'; }
   };
 
-  DroppedItem(const ServerItem &itemType);
+  DroppedItem(const ServerItem &itemType, const MapPoint &location);
   ~DroppedItem() {}
 
   char classTag() const override { return 'i'; }
