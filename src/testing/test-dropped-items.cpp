@@ -190,4 +190,33 @@ TEST_CASE("Dropped items don't overlap objects") {
   }
 }
 
-// No room: item is still in inventory
+TEST_CASE("If nowhere to drop an item, keep it in inventory") {
+  GIVEN("an item type, and a colliding wall all around a user") {
+    auto data = R"(
+      <item id="apple" />
+      <objectType id="wall">
+        <collisionRect x="-50" y="-50" w="100" h="100" />
+      </objectType>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    const auto &wall = s.addObject("wall", {40, 40});
+
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    WHEN("the user tries drops the item") {
+      user.giveItem(&s.getFirstItem());
+      c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+
+      AND_WHEN("it fails") {
+        REPEAT_FOR_MS(100);
+        REQUIRE(s.entities().size() == 1);  // the wall, and no dropped item
+
+        THEN("he still has it in his inventory") {
+          CHECK(user.inventory(0).first.hasItem());
+        }
+      }
+    }
+  }
+}

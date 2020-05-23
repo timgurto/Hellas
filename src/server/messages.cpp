@@ -253,6 +253,9 @@ HANDLE_MESSAGE(CL_DROP) {
       this->addEntity(new DroppedItem(item, dropLocation));
       break;
     }
+
+    auto failedToFindLocation = attempt == MAX_ATTEMPTS - 1;
+    if (failedToFindLocation) return;
   }
 
   containerSlot.first = {};
