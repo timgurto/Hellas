@@ -3,6 +3,8 @@
 
 #include "../server/Server.h"
 
+class DroppedItem;
+
 // A wrapper of the server, with full access, used for testing.
 class TestServer {
   enum NotRunning { NOT_RUNNING };
@@ -41,6 +43,7 @@ class TestServer {
   User &getFirstUser();
   Object &getFirstObject();
   NPC &getFirstNPC();
+  const DroppedItem &getFirstDroppedItem();
   NPCType &getFirstNPCType();
   ServerItem &getFirstItem();
   const Quest &getFirstQuest();

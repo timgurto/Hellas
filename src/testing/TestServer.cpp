@@ -4,6 +4,7 @@
 #include <thread>
 
 #include "../Args.h"
+#include "../server/DroppedItem.h"
 #include "testing.h"
 
 extern Args cmdLineArgs;
@@ -183,6 +184,15 @@ NPC &TestServer::getFirstNPC() {
   auto pNpc = dynamic_cast<NPC *>(pEntity);
   REQUIRE(pNpc);
   return *pNpc;
+}
+
+const DroppedItem &TestServer::getFirstDroppedItem() {
+  REQUIRE(!_server->_entities.empty());
+  auto it = _server->_entities.begin();
+  auto pEntity = *it;
+  auto pDroppedItem = dynamic_cast<DroppedItem *>(pEntity);
+  REQUIRE(pDroppedItem);
+  return *pDroppedItem;
 }
 
 NPCType &TestServer::getFirstNPCType() {

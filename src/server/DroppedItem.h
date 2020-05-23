@@ -8,11 +8,12 @@ class DroppedItem : public Entity {
  public:
   class Type : public EntityType {
    public:
-    Type() : EntityType("droppedItem") {}
+    Type() ;
     char classTag() const override { return 'i'; }
   };
 
   DroppedItem(const ServerItem &itemType);
+  ~DroppedItem() {}
 
   char classTag() const override { return 'i'; }
   void sendInfoToClient(const User &targetUser) const override;

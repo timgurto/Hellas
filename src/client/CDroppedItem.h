@@ -9,7 +9,7 @@ class CDroppedItem : public ClientObject {
     Type();
   };
 
-  CDroppedItem(const ClientItem &itemType);
+  CDroppedItem(Serial serial, const ClientItem &itemType);
   virtual const std::string &name() const override;
 
  private:

@@ -1,3 +1,4 @@
+#include "../server/DroppedItem.h"
 #include "TestClient.h"
 #include "TestServer.h"
 #include "testing.h"
@@ -50,6 +51,38 @@ TEST_CASE("Name is correct on client") {
             const auto &di = c.getFirstDroppedItem();
             CHECK(di.name() == name);
           }
+        }
+      }
+    }
+  }
+}
+
+TEST_CASE("Dropped items have correct serials in client") {
+  GIVEN("an item type") {
+    auto data = R"(
+      <item id="apple" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    AND_GIVEN("a user has an item") {
+      user.giveItem(&s.getFirstItem());
+
+      WHEN("he drops it") {
+        c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+
+        THEN("the client entity has the correct serial number") {
+          WAIT_UNTIL(s.entities().size() == 1);
+          const auto &serverEntity = s.getFirstDroppedItem();
+
+          WAIT_UNTIL(c.entities().size() == 2);  // item + player
+          const auto &clientEntity = c.getFirstDroppedItem();
+
+          INFO("Client serial = "s + toString(clientEntity.serial()));
+          INFO("Server serial = "s + toString(serverEntity.serial()));
+          CHECK(clientEntity.serial() == serverEntity.serial());
         }
       }
     }

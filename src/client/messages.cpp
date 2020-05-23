@@ -738,12 +738,14 @@ void Client::handleBufferedMessages(const std::string &msg) {
       }
 
       case SV_DROPPED_ITEM: {
+        Serial serial;
+        singleMsg >> serial >> del;
         std::string itemID;
         readString(singleMsg, itemID, MSG_END);
         singleMsg >> del;
 
         const auto *itemType = findItem(itemID);
-        _entities.insert(new CDroppedItem(*itemType));
+        _entities.insert(new CDroppedItem(serial, *itemType));
         break;
       }
 
