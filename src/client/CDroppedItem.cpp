@@ -3,6 +3,8 @@
 #include "Client.h"
 
 CDroppedItem::Type CDroppedItem::commonType;
+const double CDroppedItem::DROP_HEIGHT = 60.0;
+const double CDroppedItem::DROP_ACCELERATION = 20.0;
 
 CDroppedItem::Type::Type() : ClientObjectType("droppedItem") {
   drawRect(ScreenRect{-Client::ICON_SIZE / 2, -Client::ICON_SIZE / 2,
@@ -15,9 +17,7 @@ CDroppedItem::CDroppedItem(Serial serial, const MapPoint& location,
     : ClientObject(serial, &commonType, location),
       _itemType(itemType),
       _quantity(quantity) {
-  if (isNew) {
-    _itemType.playSoundOnce("drop");
-  }
+  if (isNew) _altitude = DROP_HEIGHT;
 }
 
 const std::string& CDroppedItem::name() const {
@@ -42,4 +42,30 @@ void CDroppedItem::onLeftClick(Client& client) {
 
 void CDroppedItem::onRightClick(Client& client) {
   Client::instance().sendMessage({CL_PICK_UP_DROPPED_ITEM, serial()});
+}
+
+void CDroppedItem::update(double delta) {
+  if (_altitude > 0) {
+    _fallSpeed += delta * DROP_ACCELERATION;
+    _altitude -= _fallSpeed;
+    if (_altitude <= 0) {
+      _altitude = 0;
+      _itemType.playSoundOnce("drop");
+    }
+  }
+
+  Sprite::update(delta);
+}
+
+void CDroppedItem::draw(const Client& client) const {
+  if (_altitude == 0) {
+    Sprite::draw(client);
+    return;
+  }
+
+  if (!image()) return;
+
+  auto drawRect = this->drawRect() + client.offset();
+  drawRect.y -= toInt(_altitude);
+  image().draw(drawRect.x, drawRect.y);
 }
