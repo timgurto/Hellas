@@ -65,6 +65,8 @@ void CDroppedItem::draw(const Client& client) const {
 
   if (!image()) return;
 
+  drawShadow(client);
+
   auto drawRect = this->drawRect() + client.offset();
   drawRect.y -= toInt(_altitude);
   image().draw(drawRect.x, drawRect.y);

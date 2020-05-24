@@ -40,16 +40,7 @@ double Sprite::speed() const {
 }
 
 void Sprite::draw(const Client &client) const {
-  if (shouldDrawShadow()) {
-    const auto &shadow = type()->shadow();
-    auto shadowX = type()->hasCustomShadowWidth()
-                       ? -type()->customShadowWidth() / 2
-                       : toInt(type()->drawRect().x * SpriteType::SHADOW_RATIO);
-    auto shadowY = -toInt(shadow.height() / 2.0);
-    auto shadowPosition = toScreenPoint(_location) +
-                          ScreenPoint{shadowX, shadowY} + client.offset();
-    shadow.draw(shadowPosition);
-  }
+  if (shouldDrawShadow()) drawShadow(client);
 
   auto shouldDrawHighlightInstead = client.currentMouseOverEntity() == this;
   const Texture &imageToDraw =
@@ -64,6 +55,17 @@ void Sprite::draw(const Client &client) const {
         toScreenRect(MapRect{_location.x - 5, _location.y - 5, 10, 10});
     renderer.fillRect(drawRect);
   }
+}
+
+void Sprite::drawShadow(const Client &client) const {
+  const auto &shadow = type()->shadow();
+  auto shadowX = type()->hasCustomShadowWidth()
+                     ? -type()->customShadowWidth() / 2
+                     : toInt(type()->drawRect().x * SpriteType::SHADOW_RATIO);
+  auto shadowY = -toInt(shadow.height() / 2.0);
+  auto shadowPosition = toScreenPoint(_location) +
+                        ScreenPoint{shadowX, shadowY} + client.offset();
+  shadow.draw(shadowPosition);
 }
 
 void Sprite::drawName() const {

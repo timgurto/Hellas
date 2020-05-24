@@ -73,6 +73,7 @@ class Sprite {
 
   virtual void draw(
       const Client &client) const;  // Includes name, but not health bar.
+  void drawShadow(const Client &client) const;
   virtual void drawName() const;
   virtual void update(double delta);
   virtual void onLeftClick(Client &client) {}
