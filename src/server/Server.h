@@ -87,7 +87,7 @@ class Server {
   const Spell *findSpell(const Spell::ID &id) const;
   std::pair<std::set<Serial>::iterator, std::set<Serial>::iterator>
   findObjectsOwnedBy(const Permissions::Owner &owner) const;
-  const Entity *findEntityBySerial(Serial serial);
+  Entity *findEntityBySerial(Serial serial);
   const MapRect *findNPCTemplate(const std::string &templateID) const;
 
   struct ContainerInfo {

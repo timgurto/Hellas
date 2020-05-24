@@ -244,11 +244,37 @@ TEST_CASE("Picking items back up") {
           THEN("he has the item again") {
             WAIT_UNTIL(user.inventory(0).first.hasItem());
 
-            AND_THEN("the entity is gone") { CHECK(s.entities().empty()); }
+            AND_THEN("the entity is gone") { WAIT_UNTIL(s.entities().empty()); }
           }
         }
       }
     }
 
+    SECTION("Only the specified entity is removed") {
+      AND_GIVEN("a user has dropped two of them") {
+        user.giveItem(&s.getFirstItem(), 2);
+        c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+        c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 1));
+
+        WHEN("he picks one back up") {
+          WAIT_UNTIL(c.entities().size() == 3);
+          auto &di = c.getFirstDroppedItem();
+          auto serial = di.serial();
+          c.sendMessage(CL_PICK_UP_DROPPED_ITEM, makeArgs(serial));
+
+          THEN("he has the item again") {
+            WAIT_UNTIL(user.inventory(0).first.hasItem());
+
+            AND_THEN("there is still one entity left") {
+              WAIT_UNTIL(s.entities().size() == 1);
+
+              AND_THEN("the one he picked up is gone") {
+                CHECK(s->findEntityBySerial(serial) == nullptr);
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }

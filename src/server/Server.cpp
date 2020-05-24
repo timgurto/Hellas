@@ -763,7 +763,7 @@ Server::findObjectsOwnedBy(const Permissions::Owner &owner) const {
   return _objectsByOwner.getObjectsOwnedBy(owner);
 }
 
-const Entity *Server::findEntityBySerial(Serial serial) {
+Entity *Server::findEntityBySerial(Serial serial) {
   return _entities.find(serial);
 }
 

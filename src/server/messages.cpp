@@ -273,7 +273,8 @@ HANDLE_MESSAGE(CL_PICK_UP_DROPPED_ITEM) {
   Serial serial;
   READ_ARGS(serial);
 
-  _entities.clear();
+  auto entity = findEntityBySerial(serial);
+  entity->markForRemoval();
   user.giveItem(findItem("apple"));
 }
 
