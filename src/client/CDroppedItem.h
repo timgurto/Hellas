@@ -19,6 +19,7 @@ class CDroppedItem : public ClientObject {
   virtual void onRightClick(Client &client) override;
   virtual void update(double delta) override;
   virtual void draw(const Client &client) const override;
+  virtual bool isFlat() const override;
 
  private:
   static Type commonType;

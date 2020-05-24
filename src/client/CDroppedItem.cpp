@@ -71,3 +71,8 @@ void CDroppedItem::draw(const Client& client) const {
   drawRect.y -= toInt(_altitude);
   image().draw(drawRect.x, drawRect.y);
 }
+
+bool CDroppedItem::isFlat() const {
+  if (_altitude > 0) return false;
+  return true;
+}
