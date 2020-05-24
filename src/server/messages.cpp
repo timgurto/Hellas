@@ -269,6 +269,14 @@ HANDLE_MESSAGE(CL_DROP) {
     pObj->tellRelevantUsersAboutInventorySlot(slot);
 }
 
+HANDLE_MESSAGE(CL_PICK_UP_DROPPED_ITEM) {
+  Serial serial;
+  READ_ARGS(serial);
+
+  _entities.clear();
+  user.giveItem(findItem("apple"));
+}
+
 HANDLE_MESSAGE(CL_SWAP_ITEMS) {
   Serial obj1, obj2;
   size_t slot1, slot2;
@@ -705,6 +713,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_CONSTRUCT)
       SEND_MESSAGE_TO_HANDLER(CL_CONSTRUCT_FOR_CITY)
       SEND_MESSAGE_TO_HANDLER(CL_DROP)
+      SEND_MESSAGE_TO_HANDLER(CL_PICK_UP_DROPPED_ITEM)
       SEND_MESSAGE_TO_HANDLER(CL_SWAP_ITEMS)
       SEND_MESSAGE_TO_HANDLER(CL_CAST)
       SEND_MESSAGE_TO_HANDLER(CL_CAST_ITEM)

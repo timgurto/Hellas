@@ -77,6 +77,9 @@ enum MessageCode {
   // Arguments: serial, slot
   CL_DROP,
 
+  // Arguments: serial
+  CL_PICK_UP_DROPPED_ITEM,
+
   // "I want to swap the items in container slots ... and ...". 
   // An object serial of 0 denotes the user's inventory.
   // An object serial of 1 denotes the user's gear.

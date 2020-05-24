@@ -219,3 +219,36 @@ TEST_CASE("If nowhere to drop an item, keep it in inventory") {
     }
   }
 }
+
+TEST_CASE("Picking items back up") {
+  GIVEN("an item type") {
+    auto data = R"(
+      <item id="apple" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    SECTION("Item added and entity removed") {
+      AND_GIVEN("a user has dropped one") {
+        user.giveItem(&s.getFirstItem());
+        c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+        WAIT_UNTIL(!user.inventory(0).first.hasItem());
+
+        WHEN("he picks it back up") {
+          WAIT_UNTIL(c.entities().size() == 2);
+          auto &di = c.getFirstDroppedItem();
+          c.sendMessage(CL_PICK_UP_DROPPED_ITEM, makeArgs(di.serial()));
+
+          THEN("he has the item again") {
+            WAIT_UNTIL(user.inventory(0).first.hasItem());
+
+            AND_THEN("the entity is gone") { CHECK(s.entities().empty()); }
+          }
+        }
+      }
+    }
+
+  }
+}

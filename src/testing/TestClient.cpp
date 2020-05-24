@@ -222,11 +222,11 @@ const CQuest &TestClient::getFirstQuest() {
   return it->second;
 }
 
-const CDroppedItem &TestClient::getFirstDroppedItem() {
-  const CDroppedItem *asDroppedItem = {nullptr};
+CDroppedItem &TestClient::getFirstDroppedItem() {
+  CDroppedItem *asDroppedItem = {nullptr};
 
-  for (const auto *sprite : _client->_entities) {
-    asDroppedItem = dynamic_cast<const CDroppedItem *>(sprite);
+  for (auto *sprite : _client->_entities) {
+    asDroppedItem = dynamic_cast<CDroppedItem *>(sprite);
     if (asDroppedItem) return *asDroppedItem;
   }
 

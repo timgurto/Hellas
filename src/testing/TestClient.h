@@ -99,7 +99,7 @@ class TestClient {
   ClientObject &getFirstObject();
   const ClientObjectType &getFirstObjectType();
   const CQuest &getFirstQuest();
-  const CDroppedItem &getFirstDroppedItem();
+  CDroppedItem &getFirstDroppedItem();
 
   Client *operator->() { return _client; }
   Client &client() { return *_client; }
