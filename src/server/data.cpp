@@ -6,6 +6,7 @@
 #include "../XmlReader.h"
 #include "../XmlWriter.h"
 #include "DataLoader.h"
+#include "DroppedItem.h"
 #include "Server.h"
 #include "Vehicle.h"
 
@@ -581,6 +582,26 @@ void Server::loadEntitiesFromFile(const std::string &path,
     if (xr.findAttr(elem, "order", orderString))
       npc.order(orderString == "stay" ? NPC::STAY : NPC::FOLLOW);
   }
+
+  for (auto elem : xr.getChildren("item")) {
+    std::string typeID;
+    xr.findAttr(elem, "type", typeID);
+    const auto *itemType = findItem(typeID);
+    if (!itemType) {
+      _debug("Skipping importing item with invalid type "s + typeID,
+             Color::CHAT_ERROR);
+      continue;
+    }
+
+    size_t quantity = 1;
+    xr.findAttr(elem, "qty", quantity);
+
+    auto loc = MapPoint{};
+    xr.findAttr(elem, "x", loc.x);
+    xr.findAttr(elem, "y", loc.y);
+
+    addEntity(new DroppedItem(*itemType, quantity, loc));
+  }
 }
 
 void Server::loadWorldState(const std::string &path, bool shouldKeepOldData) {
@@ -703,6 +724,15 @@ void NPC::writeToXML(XmlWriter &xw) const {
   xw.setAttr(e, "order", orderString);
 
   if (isDead() && corpseTime() > 0) xw.setAttr(e, "corpseTime", corpseTime());
+}
+
+void DroppedItem::writeToXML(XmlWriter &xw) const {
+  auto e = xw.addChild("item");
+
+  xw.setAttr(e, "type", _itemType.id());
+  if (_quantity > 1) xw.setAttr(e, "qty", _quantity);
+  xw.setAttr(e, "x", location().x);
+  xw.setAttr(e, "y", location().y);
 }
 
 void Server::saveData(const Entities &entities, const Wars &wars,

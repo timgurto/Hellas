@@ -22,6 +22,8 @@ class DroppedItem : public Entity {
   bool canBeAttackedBy(const User &) const override { return false; }
   void getPickedUpBy(User &user);
 
+  void writeToXML(XmlWriter &xw) const override;
+
  private:
   static Type commonType;
 

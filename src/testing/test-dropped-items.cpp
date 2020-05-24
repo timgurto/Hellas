@@ -455,3 +455,23 @@ TEST_CASE("Bad dropped-item calls") {
     }
   }
 }
+
+TEST_CASE("Dropped items are persistent") {
+  // Given a dropped stack of 5 coins
+  auto data = R"(
+    <item id="coin" stackSize="10" />
+  )";
+  {
+    auto s = TestServer::WithDataString(data);
+    const auto &coin = s.getFirstItem();
+    s->addEntity(new DroppedItem(coin, 5, {20, 20}));
+
+    // When the server restarts
+  }
+  {
+    auto s = TestServer::WithDataStringAndKeepingOldData(data);
+
+    // Then it's still there
+    WAIT_UNTIL(s.entities().size() == 1);
+  }
+}
