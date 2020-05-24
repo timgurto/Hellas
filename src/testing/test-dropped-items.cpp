@@ -278,3 +278,17 @@ TEST_CASE("Picking items back up") {
     }
   }
 }
+
+TEST_CASE("Bad dropped-item calls") {
+  GIVEN("a server and client with no entities") {
+    auto s = TestServer{};
+    auto c = TestClient{};
+    s.waitForUsers(1);
+
+    WHEN("the client tries to pick up a nonexistent dropped item") {
+      c.sendMessage(CL_PICK_UP_DROPPED_ITEM, "42"s);
+
+      THEN("the server survives") {}
+    }
+  }
+}
