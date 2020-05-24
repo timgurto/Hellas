@@ -279,6 +279,29 @@ TEST_CASE("Picking items back up") {
         }
       }
     }
+
+    SECTION("Too far away to pick up") {
+      AND_GIVEN("a user has dropped one") {
+        user.giveItem(&s.getFirstItem());
+        c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+        WAIT_UNTIL(!user.inventory(0).first.hasItem());
+
+        AND_GIVEN("it's very far away") {
+          user.teleportTo({200, 200});
+
+          WHEN("he tries to pick it back up") {
+            WAIT_UNTIL(c.entities().size() == 2);
+            auto &di = c.getFirstDroppedItem();
+            c.sendMessage(CL_PICK_UP_DROPPED_ITEM, makeArgs(di.serial()));
+
+            THEN("he has no item") {
+              REPEAT_FOR_MS(100);
+              CHECK(!user.inventory(0).first.hasItem());
+            }
+          }
+        }
+      }
+    }
   }
 
   SECTION("A different item type") {
