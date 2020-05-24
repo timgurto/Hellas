@@ -363,7 +363,7 @@ TEST_CASE("Picking items back up") {
   }
 }
 
-TEST_CASE("Dropped item stacks") {
+TEST_CASE("Dropped-item stacks") {
   GIVEN("coins stack to 10") {
     auto data = R"(
         <item id="coin" stackSize="10" />

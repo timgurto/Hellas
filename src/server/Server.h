@@ -164,6 +164,7 @@ class Server {
   void decrementThreadCount() { --_threadsOpen; }
 
   void addObjectType(const ObjectType *p);
+  Entity &addEntity(Entity *newEntity);
 
  private:
   static Server *_instance;
@@ -267,7 +268,6 @@ class Server {
   NPC &addNPC(const NPCType *type, const MapPoint &location);
   Object &addObject(const ObjectType *type, const MapPoint &location,
                     const Permissions::Owner &owner);
-  Entity &addEntity(Entity *newEntity);
 
   // Collision detection
   static const px_t COLLISION_CHUNK_SIZE;

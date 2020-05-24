@@ -1,5 +1,6 @@
 #include "DroppedItem.h"
 
+#include "Server.h"
 #include "User.h"
 
 DroppedItem::Type DroppedItem::commonType;
@@ -20,8 +21,10 @@ void DroppedItem::sendInfoToClient(const User &targetUser) const {
 
 void DroppedItem::getPickedUpBy(User &user) {
   auto remainder = user.giveItem(&_itemType, _quantity);
-  if (remainder == 0)
-    markForRemoval();
-  else
-    _quantity = remainder;
+
+  if (remainder > 0)
+    Server::instance().addEntity(
+        new DroppedItem(_itemType, remainder, location()));
+
+  markForRemoval();
 }
