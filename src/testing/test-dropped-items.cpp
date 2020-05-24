@@ -244,7 +244,10 @@ TEST_CASE("Picking items back up") {
           THEN("he has the item again") {
             WAIT_UNTIL(user.inventory(0).first.hasItem());
 
-            AND_THEN("the entity is gone") { WAIT_UNTIL(s.entities().empty()); }
+            AND_THEN("the entity is gone") {
+              WAIT_UNTIL(s.entities().empty());
+              WAIT_UNTIL(c.entities().size() == 1);
+            }
           }
         }
       }
