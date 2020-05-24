@@ -30,6 +30,8 @@ class CDroppedItem : public ClientObject {
   double _altitude{0};
   double _fallSpeed{0};
 
+  bool isFalling() const;
+
   static const double DROP_HEIGHT;
   static const double DROP_ACCELERATION;  // px/s/s
 };

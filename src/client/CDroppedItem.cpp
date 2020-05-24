@@ -45,7 +45,7 @@ void CDroppedItem::onRightClick(Client& client) {
 }
 
 void CDroppedItem::update(double delta) {
-  if (_altitude > 0) {
+  if (isFalling()) {
     _fallSpeed += delta * DROP_ACCELERATION;
     _altitude -= _fallSpeed;
     if (_altitude <= 0) {
@@ -58,7 +58,7 @@ void CDroppedItem::update(double delta) {
 }
 
 void CDroppedItem::draw(const Client& client) const {
-  if (_altitude == 0) {
+  if (!isFalling()) {
     Sprite::draw(client);
     return;
   }
@@ -73,6 +73,8 @@ void CDroppedItem::draw(const Client& client) const {
 }
 
 bool CDroppedItem::isFlat() const {
-  if (_altitude > 0) return false;
+  if (isFalling()) return false;
   return true;
 }
+
+bool CDroppedItem::isFalling() const { return _altitude > 0; }
