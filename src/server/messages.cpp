@@ -252,7 +252,7 @@ HANDLE_MESSAGE(CL_DROP) {
                             SPACE_REQUIRED, SPACE_REQUIRED} +
                     dropLocation;
     if (isLocationValid(dropRect, TerrainList::defaultList())) {
-      this->addEntity(new DroppedItem(item, quantity, dropLocation));
+      addEntity(new DroppedItem(item, quantity, dropLocation));
       break;
     }
 
@@ -278,11 +278,10 @@ HANDLE_MESSAGE(CL_PICK_UP_DROPPED_ITEM) {
   if (!entity) RETURN_WITH(WARNING_DOESNT_EXIST);
   if (distance(entity->collisionRect(), user.collisionRect()) > ACTION_DISTANCE)
     RETURN_WITH(WARNING_TOO_FAR);
-
   auto asDroppedItem = dynamic_cast<DroppedItem *>(entity);
-  if (asDroppedItem) asDroppedItem->giveItemTo(user);
+  if (!asDroppedItem) return;
 
-  entity->markForRemoval();
+  asDroppedItem->getPickedUpBy(user);
 }
 
 HANDLE_MESSAGE(CL_SWAP_ITEMS) {

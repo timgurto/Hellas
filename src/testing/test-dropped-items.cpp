@@ -229,10 +229,11 @@ TEST_CASE("Picking items back up") {
     auto c = TestClient::WithDataString(data);
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
+    const auto *apple = &s.getFirstItem();
 
     SECTION("Item added and entity removed") {
       AND_GIVEN("a user has dropped one") {
-        user.giveItem(&s.getFirstItem());
+        user.giveItem(apple);
         c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
         WAIT_UNTIL(!user.inventory(0).first.hasItem());
 
@@ -255,7 +256,7 @@ TEST_CASE("Picking items back up") {
 
     SECTION("Only the specified entity is removed") {
       AND_GIVEN("a user has dropped two of them") {
-        user.giveItem(&s.getFirstItem(), 2);
+        user.giveItem(apple, 2);
         c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
         c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 1));
 
@@ -282,7 +283,7 @@ TEST_CASE("Picking items back up") {
 
     SECTION("Too far away to pick up") {
       AND_GIVEN("a user has dropped one") {
-        user.giveItem(&s.getFirstItem());
+        user.giveItem(apple);
         c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
         WAIT_UNTIL(!user.inventory(0).first.hasItem());
 
@@ -297,6 +298,29 @@ TEST_CASE("Picking items back up") {
             THEN("he has no item") {
               REPEAT_FOR_MS(100);
               CHECK(!user.inventory(0).first.hasItem());
+            }
+          }
+        }
+      }
+    }
+
+    SECTION("Inventory is full") {
+      AND_GIVEN("a user has dropped one") {
+        user.giveItem(apple);
+        c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+        WAIT_UNTIL(!user.inventory(0).first.hasItem());
+        WAIT_UNTIL(s.entities().size() == 1);
+
+        AND_GIVEN("he has a full inventory") {
+          user.giveItem(apple, User::INVENTORY_SIZE);
+
+          WHEN("he tries to pick up the one he dropped") {
+            auto &di = s.getFirstDroppedItem();
+            c.sendMessage(CL_PICK_UP_DROPPED_ITEM, makeArgs(di.serial()));
+
+            THEN("the entity still exists on the server") {
+              REPEAT_FOR_MS(100);
+              CHECK(s.entities().size() == 1);
             }
           }
         }

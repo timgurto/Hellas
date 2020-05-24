@@ -18,6 +18,10 @@ void DroppedItem::sendInfoToClient(const User &targetUser) const {
                                  _itemType.id(), _quantity)});
 }
 
-void DroppedItem::giveItemTo(User &user) {
-  user.giveItem(&_itemType, _quantity);
+void DroppedItem::getPickedUpBy(User &user) {
+  auto remainder = user.giveItem(&_itemType, _quantity);
+  if (remainder == 0)
+    markForRemoval();
+  else
+    _quantity = remainder;
 }
