@@ -14,6 +14,7 @@ class CDroppedItem : public ClientObject {
   virtual const std::string &name() const override;
   virtual const Texture &image() const override;
   virtual const Texture &getHighlightImage() const override;
+  virtual const Tooltip &tooltip() const override;
 
  private:
   static Type commonType;

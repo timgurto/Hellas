@@ -20,3 +20,7 @@ const Texture& CDroppedItem::image() const { return _itemType.icon(); }
 const Texture& CDroppedItem::getHighlightImage() const {
   return _itemType.iconHighlighted();
 }
+
+const Tooltip& CDroppedItem::tooltip() const {
+  return Sprite::tooltip();  // No tooltip
+}
