@@ -10,10 +10,15 @@ CDroppedItem::Type::Type() : ClientObjectType("droppedItem") {
 }
 
 CDroppedItem::CDroppedItem(Serial serial, const MapPoint& location,
-                           const ClientItem& itemType, size_t quantity)
+                           const ClientItem& itemType, size_t quantity,
+                           bool isNew)
     : ClientObject(serial, &commonType, location),
       _itemType(itemType),
-      _quantity(quantity) {}
+      _quantity(quantity) {
+  if (isNew) {
+    _itemType.playSoundOnce("drop");
+  }
+}
 
 const std::string& CDroppedItem::name() const {
   _name = _itemType.name();

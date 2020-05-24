@@ -750,11 +750,10 @@ void Client::handleBufferedMessages(const std::string &msg) {
         if (del != MSG_END) break;
 
         const auto *itemType = findItem(itemID);
-        auto *droppedItem = new CDroppedItem(serial, location, *itemType, qty);
+        auto *droppedItem =
+            new CDroppedItem(serial, location, *itemType, qty, isNew);
         _entities.insert(droppedItem);
         _objects[serial] = droppedItem;
-
-        if (isNew) itemType->playSoundOnce("drop");
         break;
       }
 
