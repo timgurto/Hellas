@@ -349,6 +349,32 @@ TEST_CASE("Dropped item stacks") {
   }
 }
 
+TEST_CASE("Dropped-item names reflect stack size") {
+  GIVEN("coins stack to 10") {
+    auto data = R"(
+        <item id="coin" name="Coin" stackSize="10" />
+      )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+    const auto *coin = &s.getFirstItem();
+
+    for (auto numCoins : std::vector<size_t>{5, 10}) {
+      WHEN("a player drops a stack of " << numCoins << " coins") {
+        user.giveItem(coin, numCoins);
+        c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+
+        THEN("its name in the client is \"Coin x" << numCoins << "\"") {
+          WAIT_UNTIL(c.entities().size() == 2);
+          const auto &clientCoins = c.getFirstDroppedItem();
+          CHECK(clientCoins.name() == "Coin x"s + toString(numCoins));
+        }
+      }
+    }
+  }
+}
+
 TEST_CASE("Bad dropped-item calls") {
   GIVEN("a server and client with no entities") {
     auto s = TestServer{};

@@ -10,10 +10,16 @@ CDroppedItem::Type::Type() : ClientObjectType("droppedItem") {
 }
 
 CDroppedItem::CDroppedItem(Serial serial, const MapPoint& location,
-                           const ClientItem& itemType)
-    : ClientObject(serial, &commonType, location), _itemType(itemType) {}
+                           const ClientItem& itemType, size_t quantity)
+    : ClientObject(serial, &commonType, location),
+      _itemType(itemType),
+      _quantity(quantity) {}
 
-const std::string& CDroppedItem::name() const { return _itemType.name(); }
+const std::string& CDroppedItem::name() const {
+  _name = _itemType.name();
+  if (_quantity > 1) _name += " x"s + toString(_quantity);
+  return _name;
+}
 
 const Texture& CDroppedItem::image() const { return _itemType.icon(); }
 

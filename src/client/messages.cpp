@@ -743,11 +743,13 @@ void Client::handleBufferedMessages(const std::string &msg) {
         MapPoint location;
         singleMsg >> serial >> del >> location.x >> del >> location.y >> del;
         std::string itemID;
-        readString(singleMsg, itemID, MSG_END);
-        singleMsg >> del;
+        readString(singleMsg, itemID, MSG_DELIM);
+        size_t qty;
+        singleMsg >> del >> qty >> del;
+        if (del != MSG_END) break;
 
         const auto *itemType = findItem(itemID);
-        auto *droppedItem = new CDroppedItem(serial, location, *itemType);
+        auto *droppedItem = new CDroppedItem(serial, location, *itemType, qty);
         _entities.insert(droppedItem);
         _objects[serial] = droppedItem;
         break;

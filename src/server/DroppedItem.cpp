@@ -14,8 +14,8 @@ DroppedItem::DroppedItem(const ServerItem &itemType, size_t quantity,
 
 void DroppedItem::sendInfoToClient(const User &targetUser) const {
   targetUser.sendMessage(
-      {SV_DROPPED_ITEM,
-       makeArgs(serial(), location().x, location().y, _itemType.id())});
+      {SV_DROPPED_ITEM, makeArgs(serial(), location().x, location().y,
+                                 _itemType.id(), _quantity)});
 }
 
 void DroppedItem::giveItemTo(User &user) {

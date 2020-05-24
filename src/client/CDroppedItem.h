@@ -10,7 +10,7 @@ class CDroppedItem : public ClientObject {
   };
 
   CDroppedItem(Serial serial, const MapPoint &location,
-               const ClientItem &itemType);
+               const ClientItem &itemType, size_t quantity);
   virtual const std::string &name() const override;
   virtual const Texture &image() const override;
   virtual const Texture &getHighlightImage() const override;
@@ -22,4 +22,6 @@ class CDroppedItem : public ClientObject {
   static Type commonType;
 
   const ClientItem &_itemType;
+  size_t _quantity;
+  mutable std::string _name;
 };
