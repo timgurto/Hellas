@@ -316,6 +316,39 @@ TEST_CASE("Picking items back up") {
   }
 }
 
+TEST_CASE("Dropped item stacks") {
+  GIVEN("coins stack to 10") {
+    auto data = R"(
+        <item id="coin" stackSize="10" />
+      )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    for (auto numCoins : std::vector<size_t>{1, 10}) {
+      AND_GIVEN("a player has a stack of " << numCoins) {
+        user.giveItem(&s.getFirstItem(), numCoins);
+
+        WHEN("he drops it") {
+          c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+
+          AND_WHEN("he picks it up again") {
+            WAIT_UNTIL(s.entities().size() == 1);
+            auto serial = s.getFirstDroppedItem().serial();
+            c.sendMessage(CL_PICK_UP_DROPPED_ITEM, makeArgs(serial));
+
+            THEN("he has a stack of " << numCoins) {
+              WAIT_UNTIL(user.inventory(0).first.hasItem());
+              CHECK(user.inventory(0).second == numCoins);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 TEST_CASE("Bad dropped-item calls") {
   GIVEN("a server and client with no entities") {
     auto s = TestServer{};

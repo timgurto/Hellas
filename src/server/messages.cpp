@@ -240,6 +240,8 @@ HANDLE_MESSAGE(CL_DROP) {
   if (qty == 0) return;
 
   const auto &item = *containerSlot.first.type();
+  const auto quantity = containerSlot.second;
+
   auto dropLocation = MapPoint{};
   const auto SPACE_REQUIRED = 16.0;
   const auto MAX_ATTEMPTS = 50;
@@ -250,7 +252,7 @@ HANDLE_MESSAGE(CL_DROP) {
                             SPACE_REQUIRED, SPACE_REQUIRED} +
                     dropLocation;
     if (isLocationValid(dropRect, TerrainList::defaultList())) {
-      this->addEntity(new DroppedItem(item, dropLocation));
+      this->addEntity(new DroppedItem(item, quantity, dropLocation));
       break;
     }
 

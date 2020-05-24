@@ -12,7 +12,8 @@ class DroppedItem : public Entity {
     char classTag() const override { return 'i'; }
   };
 
-  DroppedItem(const ServerItem &itemType, const MapPoint &location);
+  DroppedItem(const ServerItem &itemType, size_t quantity,
+              const MapPoint &location);
   ~DroppedItem() {}
 
   char classTag() const override { return 'i'; }
@@ -25,4 +26,5 @@ class DroppedItem : public Entity {
   static Type commonType;
 
   const ServerItem &_itemType{nullptr};
+  size_t _quantity;
 };
