@@ -15,6 +15,8 @@ class CDroppedItem : public ClientObject {
   virtual const Texture &image() const override;
   virtual const Texture &getHighlightImage() const override;
   virtual const Tooltip &tooltip() const override;
+  virtual void onLeftClick(Client &client) override;
+  virtual void onRightClick(Client &client) override;
 
  private:
   static Type commonType;

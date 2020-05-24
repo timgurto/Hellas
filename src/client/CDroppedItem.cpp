@@ -24,3 +24,11 @@ const Texture& CDroppedItem::getHighlightImage() const {
 const Tooltip& CDroppedItem::tooltip() const {
   return Sprite::tooltip();  // No tooltip
 }
+
+void CDroppedItem::onLeftClick(Client& client) {
+  Client::instance().sendMessage({CL_PICK_UP_DROPPED_ITEM, serial()});
+}
+
+void CDroppedItem::onRightClick(Client& client) {
+  Client::instance().sendMessage({CL_PICK_UP_DROPPED_ITEM, serial()});
+}
