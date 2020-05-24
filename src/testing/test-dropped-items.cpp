@@ -399,15 +399,35 @@ TEST_CASE("Dropped-item names reflect stack size") {
 }
 
 TEST_CASE("Bad dropped-item calls") {
-  GIVEN("a server and client with no entities") {
-    auto s = TestServer{};
-    auto c = TestClient{};
-    s.waitForUsers(1);
+  SECTION("Bad serial") {
+    GIVEN("No entities") {
+      auto s = TestServer{};
+      auto c = TestClient{};
+      s.waitForUsers(1);
 
-    WHEN("the client tries to pick up a nonexistent dropped item") {
-      c.sendMessage(CL_PICK_UP_DROPPED_ITEM, "42"s);
+      WHEN("the client calls CL_PICK_UP_DROPPED_ITEM") {
+        c.sendMessage(CL_PICK_UP_DROPPED_ITEM, "42"s);
 
-      THEN("the server survives") {}
+        THEN("the server survives") {}
+      }
+    }
+  }
+
+  SECTION("Wrong object type") {
+    GIVEN("a box object") {
+      auto data = R"(
+        <objectType id="box" />
+      )";
+      auto s = TestServer::WithDataString(data);
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      const auto &box = s.addObject("box", {10, 15});
+
+      WHEN("a user tries to pick up the box as if it were a dropped item") {
+        c.sendMessage(CL_PICK_UP_DROPPED_ITEM, makeArgs(box.serial()));
+
+        THEN("the server survives") {}
+      }
     }
   }
 }
