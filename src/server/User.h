@@ -249,7 +249,8 @@ class User : public Object {  // TODO: Don't inherit from Object
   void broadcastDamagedMessage(Hitpoints amount) const override;
   void broadcastHealedMessage(Hitpoints amount) const override;
 
-  void sendInfoToClient(const User &targetUser) const override;
+  void sendInfoToClient(const User &targetUser,
+                        bool isNew = false) const override;
   void sendInventorySlot(size_t slot) const;
   void sendGearSlot(size_t slot) const;
   void sendSpawnPoint(bool hasChanged = false) const;

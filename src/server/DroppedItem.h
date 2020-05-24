@@ -17,7 +17,8 @@ class DroppedItem : public Entity {
   ~DroppedItem() {}
 
   char classTag() const override { return 'i'; }
-  void sendInfoToClient(const User &targetUser) const override;
+  void sendInfoToClient(const User &targetUser,
+                        bool isNew = false) const override;
   ms_t timeToRemainAsCorpse() const override { return 0; }
   bool canBeAttackedBy(const User &) const override { return false; }
   void getPickedUpBy(User &user);

@@ -73,7 +73,8 @@ class NPC : public Entity, public QuestNode {
 
   char classTag() const override { return 'n'; }
 
-  void sendInfoToClient(const User &targetUser) const override;
+  void sendInfoToClient(const User &targetUser,
+                        bool isNew = false) const override;
   ServerItem::Slot *getSlotToTakeFromAndSendErrors(size_t slotNum,
                                                    const User &user) override;
 

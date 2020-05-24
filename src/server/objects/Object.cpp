@@ -132,7 +132,7 @@ bool Object::isAbleToDeconstruct(const User &user) const {
   return true;
 }
 
-void Object::sendInfoToClient(const User &targetUser) const {
+void Object::sendInfoToClient(const User &targetUser, bool isNew) const {
   const Server &server = Server::instance();
 
   targetUser.sendMessage({SV_OBJECT, makeArgs(serial(), location().x,

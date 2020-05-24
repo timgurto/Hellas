@@ -54,7 +54,8 @@ class Entity {
   // Add this entity to a list, for removal after all objects are updated.
   void markForRemoval();
 
-  virtual void sendInfoToClient(const User &targetUser) const = 0;
+  virtual void sendInfoToClient(const User &targetUser,
+                                bool isNew = false) const = 0;
 
   virtual void writeToXML(XmlWriter &xw) const {}
 
@@ -277,7 +278,8 @@ class Dummy : public Entity {
 
   // Necessary overrides to make this a concrete class
   char classTag() const override { return 'd'; }
-  void sendInfoToClient(const User &targetUser) const override {}
+  void sendInfoToClient(const User &targetUser,
+                        bool isNew = false) const override {}
   ms_t timeToRemainAsCorpse() const override { return 0; }
   bool canBeAttackedBy(const User &) const override { return false; }
   static Stats _stats;

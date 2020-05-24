@@ -13,10 +13,11 @@ DroppedItem::DroppedItem(const ServerItem &itemType, size_t quantity,
                          const MapPoint &location)
     : Entity(&commonType, location), _quantity(quantity), _itemType(itemType) {}
 
-void DroppedItem::sendInfoToClient(const User &targetUser) const {
+void DroppedItem::sendInfoToClient(const User &targetUser, bool isNew) const {
+  auto isNewArg = isNew ? "1"s : "0"s;
   targetUser.sendMessage(
       {SV_DROPPED_ITEM, makeArgs(serial(), location().x, location().y,
-                                 _itemType.id(), _quantity)});
+                                 _itemType.id(), _quantity, isNewArg)});
 }
 
 void DroppedItem::getPickedUpBy(User &user) {

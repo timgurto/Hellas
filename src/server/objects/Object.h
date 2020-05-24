@@ -80,7 +80,8 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
 
   virtual void onSetType(bool shouldSkipConstruction = false) override;
 
-  void sendInfoToClient(const User &targetUser) const override;
+  void sendInfoToClient(const User &targetUser,
+                        bool isNew = false) const override;
   void tellRelevantUsersAboutInventorySlot(size_t slot) const;
   void tellRelevantUsersAboutMerchantSlot(size_t slot) const;
   ServerItem::Slot *getSlotToTakeFromAndSendErrors(size_t slotNum,

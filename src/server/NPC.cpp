@@ -257,7 +257,7 @@ double NPC::getTameChance() const {
   return getTameChanceBasedOnHealthPercent(1.0 * health() / stats().maxHealth);
 }
 
-void NPC::sendInfoToClient(const User &targetUser) const {
+void NPC::sendInfoToClient(const User &targetUser, bool isNew) const {
   const Server &server = Server::instance();
 
   targetUser.sendMessage({SV_OBJECT, makeArgs(serial(), location().x,

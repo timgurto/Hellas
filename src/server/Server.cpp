@@ -701,8 +701,9 @@ Entity &Server::addEntity(Entity *newEntity) {
   const MapPoint &loc = newEntity->location();
 
   // Alert nearby users
+  auto isNew = _running;  // i.e., not loading
   for (const User *userP : findUsersInArea(loc))
-    newEntity->sendInfoToClient(*userP);
+    newEntity->sendInfoToClient(*userP, isNew);
 
   // Add entity to relevant chunk
   if (newEntity->type()->collides())

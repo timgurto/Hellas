@@ -324,7 +324,7 @@ enum MessageCode {
   SV_OBJECT,
 
   // The details of a dropped item
-  // Arguments: serial, x, y, type, quantity
+  // Arguments: serial, x, y, type, quantity, isNew (0/1)
   SV_DROPPED_ITEM,
 
   // An object has been removed

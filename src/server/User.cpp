@@ -1502,7 +1502,7 @@ void User::addConstruction(const std::string &id, bool newlyLearned) {
      << std::endl;
 }
 
-void User::sendInfoToClient(const User &targetUser) const {
+void User::sendInfoToClient(const User &targetUser, bool isNew) const {
   const Server &server = Server::instance();
   const Socket &client = targetUser.socket();
 
