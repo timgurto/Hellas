@@ -19,6 +19,7 @@ class DroppedItem : public Entity {
   void sendInfoToClient(const User &targetUser) const override;
   ms_t timeToRemainAsCorpse() const override { return 0; }
   bool canBeAttackedBy(const User &) const override { return false; }
+  void giveItemTo(User &user);
 
  private:
   static Type commonType;

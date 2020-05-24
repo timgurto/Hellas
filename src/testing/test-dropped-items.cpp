@@ -277,6 +277,40 @@ TEST_CASE("Picking items back up") {
       }
     }
   }
+
+  SECTION("A different item type") {
+    GIVEN("bananas, oranges and plums") {
+      auto data = R"(
+        <item id="banana" />
+        <item id="orange" />
+        <item id="plum" />
+      )";
+      auto s = TestServer::WithDataString(data);
+      auto c = TestClient::WithDataString(data);
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+
+      AND_GIVEN("a user has dropped an orange") {
+        user.giveItem(&s.findItem("orange"));
+        c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+        WAIT_UNTIL(!user.inventory(0).first.hasItem());
+
+        WHEN("he picks it back up") {
+          WAIT_UNTIL(c.entities().size() == 2);
+          auto &di = c.getFirstDroppedItem();
+          c.sendMessage(CL_PICK_UP_DROPPED_ITEM, makeArgs(di.serial()));
+
+          THEN("he has an item") {
+            WAIT_UNTIL(user.inventory(0).first.hasItem());
+
+            AND_THEN("it is an orange") {
+              CHECK(user.inventory(0).first.type()->id() == "orange");
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 TEST_CASE("Bad dropped-item calls") {

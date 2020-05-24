@@ -275,8 +275,9 @@ HANDLE_MESSAGE(CL_PICK_UP_DROPPED_ITEM) {
 
   auto entity = findEntityBySerial(serial);
   if (!entity) RETURN_WITH(WARNING_DOESNT_EXIST);
+  auto asDroppedItem = dynamic_cast<DroppedItem *>(entity);
+  asDroppedItem->giveItemTo(user);
   entity->markForRemoval();
-  user.giveItem(findItem("apple"));
 }
 
 HANDLE_MESSAGE(CL_SWAP_ITEMS) {

@@ -16,3 +16,5 @@ void DroppedItem::sendInfoToClient(const User &targetUser) const {
       {SV_DROPPED_ITEM,
        makeArgs(serial(), location().x, location().y, _itemType.id())});
 }
+
+void DroppedItem::giveItemTo(User &user) { user.giveItem(&_itemType); }
