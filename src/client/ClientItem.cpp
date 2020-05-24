@@ -12,10 +12,10 @@ ClientItem::ClientItem(const std::string &id, const std::string &name)
     : Item(id), _name(name), _constructsObject(nullptr) {}
 
 void ClientItem::icon(const std::string &filename) {
-  static const std::string prefix = "Images/Items/", suffix = ".png";
-  _icon = {prefix + filename + suffix};
+  static const std::string prefix = "Images/Items/";
+  _icon = {prefix + filename};
 
-  if (!_icon) _icon = {prefix + "none" + suffix};
+  if (!_icon) _icon = {prefix + "none"};
 }
 
 void ClientItem::gearImage(const std::string &filename) {

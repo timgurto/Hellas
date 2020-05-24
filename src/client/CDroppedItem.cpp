@@ -16,3 +16,7 @@ CDroppedItem::CDroppedItem(Serial serial, const MapPoint& location,
 const std::string& CDroppedItem::name() const { return _itemType.name(); }
 
 const Texture& CDroppedItem::image() const { return _itemType.icon(); }
+
+const Texture& CDroppedItem::getHighlightImage() const {
+  return _itemType.iconHighlighted();
+}

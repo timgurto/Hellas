@@ -38,7 +38,7 @@ class ClientItem : public Item, public HasSounds {
 
  private:
   std::string _name;
-  Texture _icon;
+  ImageWithHighlight _icon;
   Texture _gearImage;
   ScreenPoint _drawLoc;
 
@@ -66,7 +66,8 @@ class ClientItem : public Item, public HasSounds {
   bool operator<(const ClientItem &rhs) const { return _name < rhs._name; }
 
   const std::string &name() const { return _name; }
-  const Texture &icon() const { return _icon; }
+  const Texture &icon() const { return _icon.getNormalImage(); }
+  const Texture &iconHighlighted() const { return _icon.getHighlightImage(); }
   void icon(const std::string &filename);
   void gearImage(const std::string &filename);
   void drawLoc(const ScreenPoint &loc) { _drawLoc = loc; }
