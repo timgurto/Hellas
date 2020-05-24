@@ -22,9 +22,14 @@ void DroppedItem::sendInfoToClient(const User &targetUser) const {
 void DroppedItem::getPickedUpBy(User &user) {
   auto remainder = user.giveItem(&_itemType, _quantity);
 
-  if (remainder > 0)
+  if (remainder == _quantity) {
+    return;
+  }
+
+  if (remainder > 0) {
     Server::instance().addEntity(
         new DroppedItem(_itemType, remainder, location()));
+  }
 
   markForRemoval();
 }
