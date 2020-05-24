@@ -23,10 +23,12 @@ void DroppedItem::getPickedUpBy(User &user) {
   auto remainder = user.giveItem(&_itemType, _quantity);
 
   if (remainder == _quantity) {
+    user.sendMessage({WARNING_INVENTORY_FULL});
     return;
   }
 
   if (remainder > 0) {
+    user.sendMessage({WARNING_INVENTORY_FULL});
     Server::instance().addEntity(
         new DroppedItem(_itemType, remainder, location()));
   }
