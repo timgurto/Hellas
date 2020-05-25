@@ -82,6 +82,8 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
       xr.findAttr(elem, "y", respawnPoint.y))
     user.respawnPoint(respawnPoint);
 
+  user.exploration.readFrom(xr);
+
   if (allowSideEffects) {
     bool s = false;
     if (isLocationValid(location, user))
@@ -249,8 +251,6 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     if (!xr.findAttr(button, "id", id)) continue;
     user.setHotbarAction(slot, category, id);
   }
-
-  user.exploration.readFrom(xr);
 
   return true;
 }
