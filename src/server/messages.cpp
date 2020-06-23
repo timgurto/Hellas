@@ -219,22 +219,13 @@ HANDLE_MESSAGE(CL_DROP) {
   READ_ARGS(serial, slot);
 
   if (user.isStunned()) RETURN_WITH(WARNING_STUNNED)
-  ServerItem::vect_t *container;
-  Object *pObj = nullptr;
-  if (serial.isInventory())
-    container = &user.inventory();
-  else if (serial.isGear())
-    container = &user.gear();
-  else {
-    pObj = _entities.find<Object>(serial);
-    if (!pObj->hasContainer()) RETURN_WITH(ERROR_NO_INVENTORY)
-    if (!isEntityInRange(client, user, pObj)) return;
-    container = &pObj->container().raw();
-  }
 
-  if (slot >= container->size()) RETURN_WITH(ERROR_INVALID_SLOT)
+  auto info = getContainer(user, serial);
+  if (info.hasWarning()) RETURN_WITH(info.warning);
 
-  auto &containerSlot = (*container)[slot];
+  if (slot >= info.container->size()) RETURN_WITH(ERROR_INVALID_SLOT)
+
+  auto &containerSlot = (*info.container)[slot];
 
   auto qty = containerSlot.second;
   if (qty == 0) return;
@@ -268,7 +259,7 @@ HANDLE_MESSAGE(CL_DROP) {
   if (serial.isInventory() || serial.isGear())
     sendInventoryMessage(user, slot, serial);
   else
-    pObj->tellRelevantUsersAboutInventorySlot(slot);
+    info.object->tellRelevantUsersAboutInventorySlot(slot);
 }
 
 HANDLE_MESSAGE(CL_PICK_UP_DROPPED_ITEM) {
