@@ -198,6 +198,7 @@
     <ClCompile Include="src\testing\test-dropped-items.cpp" />
     <ClCompile Include="src\server\DroppedItem.cpp" />
     <ClCompile Include="src\client\CDroppedItem.cpp" />
+    <ClCompile Include="src\testing\test-grouping.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />

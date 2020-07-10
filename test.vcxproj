@@ -259,6 +259,7 @@
     <ClCompile Include="src\testing\test-durability.cpp" />
     <ClCompile Include="src\testing\test-gathering.cpp" />
     <ClCompile Include="src\testing\test-gear.cpp" />
+    <ClCompile Include="src\testing\test-grouping.cpp" />
     <ClCompile Include="src\testing\test-input.cpp" />
     <ClCompile Include="src\testing\test-loading.cpp" />
     <ClCompile Include="src\testing\test-loot.cpp" />
