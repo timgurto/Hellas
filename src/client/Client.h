@@ -58,7 +58,7 @@ class Client {
   ~Client();
 
   static Client &instance() {
-    assert(_instance != nullptr);
+    assert(_instance);
     return *_instance;
   }
   static bool clientExists() { return _instance != nullptr; }

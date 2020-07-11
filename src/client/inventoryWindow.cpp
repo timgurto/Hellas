@@ -10,7 +10,7 @@
 void Client::initializeInventoryWindow() {
   static const px_t COLS = 5, ROWS = (Client::INVENTORY_SIZE - 1) / COLS + 1;
   ContainerGrid *inventory =
-      new ContainerGrid(ROWS, COLS, _inventory, Serial::Inventory());
+      new ContainerGrid(*this, ROWS, COLS, _inventory, Serial::Inventory());
   const px_t HEIGHT = inventory->height() + 1, WIDTH = inventory->width(),
              LEFT = SCREEN_X - WIDTH - 1, TOP = SCREEN_Y - HEIGHT - 28;
 
@@ -64,8 +64,9 @@ void Client::initializeGearWindow() {
 
   _gearWindow->rect(0, 37, w + STATS_WIDTH + 2 * STAT_X_GAP, h);
   _gearWindow->setTitle("Gear and Stats");
-  ContainerGrid *gearContainer = new ContainerGrid(
-      rows, cols, _character.gear(), Serial::Gear(), gridX, gridY, gap, false);
+  ContainerGrid *gearContainer =
+      new ContainerGrid(*this, rows, cols, _character.gear(), Serial::Gear(),
+                        gridX, gridY, gap, false);
   _gearWindow->addChild(new Picture(gridX, 0, _gearWindowBackground));
   _gearWindow->addChild(gearContainer);
 

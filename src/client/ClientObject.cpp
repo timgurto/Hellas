@@ -298,7 +298,7 @@ void ClientObject::addQuestsToWindow() {
   _window->resize(newWidth, y);
 }
 
-void ClientObject::addConstructionToWindow() {
+void ClientObject::addConstructionToWindow(const Client &client) {
   px_t x = 0, y = _window->contentHeight(), newWidth = _window->contentWidth();
   static const px_t LABEL_W = 140;
 
@@ -333,7 +333,8 @@ void ClientObject::addConstructionToWindow() {
 
   // 2. Dropbox
   static const px_t DROPBOX_LABEL_W = 70;
-  ContainerGrid *dropbox = new ContainerGrid(1, 1, _dropbox, _serial, x, y);
+  ContainerGrid *dropbox =
+      new ContainerGrid(client, 1, 1, _dropbox, _serial, x, y);
   _window->addChild(new Label({x, y, DROPBOX_LABEL_W, dropbox->height()},
                               "Add materials:", Element::RIGHT_JUSTIFIED,
                               Element::CENTER_JUSTIFIED));
@@ -404,14 +405,14 @@ void ClientObject::addMerchantSetupToWindow() {
   _window->resize(newWidth, y);
 }
 
-void ClientObject::addInventoryToWindow() {
+void ClientObject::addInventoryToWindow(const Client &client) {
   px_t y = _window->contentHeight(), newWidth = _window->contentWidth();
 
   const size_t slots = objectType()->containerSlots();
   static const size_t COLS = 5;
   size_t rows = (slots - 1) / COLS + 1;
   ContainerGrid *container =
-      new ContainerGrid(rows, COLS, _container, _serial, 0, y);
+      new ContainerGrid(client, rows, COLS, _container, _serial, 0, y);
   _window->addChild(container);
   y += container->height();
   if (newWidth < container->width()) newWidth = container->width();
@@ -632,7 +633,8 @@ void ClientObject::confirmAndDemolishObject(void *objectToDemolish) {
 void ClientObject::assembleWindow(Client &client) {
   const ClientObjectType &objType = *objectType();
 
-  static const px_t WINDOW_WIDTH = ContainerGrid(1, 8, _container).width();
+  static const px_t WINDOW_WIDTH =
+      ContainerGrid(client, 1, 8, _container).width();
 
   if (_window) {
     _window->clearChildren();
@@ -681,7 +683,7 @@ void ClientObject::assembleWindow(Client &client) {
   if (isAlive()) {
     if (isBeingConstructed()) {
       if (userHasAccess()) {
-        addConstructionToWindow();
+        addConstructionToWindow(client);
         if (canCede) addCedeButtonToWindow();
         if (canGrant) addGrantButtonToWindow();
         if (canDemolish) addDemolishButtonToWindow();
@@ -691,7 +693,7 @@ void ClientObject::assembleWindow(Client &client) {
     } else if (userHasAccess()) {
       if (hasAQuest) addQuestsToWindow();
       if (isMerchant) addMerchantSetupToWindow();
-      if (hasContainer) addInventoryToWindow();
+      if (hasContainer) addInventoryToWindow(client);
       if (objType.hasAction()) addActionToWindow();
       if (objType.canDeconstruct()) addDeconstructionToWindow();
       if (canCede) addCedeButtonToWindow();

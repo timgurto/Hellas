@@ -192,9 +192,9 @@ class ClientObject : public Sprite, public ClientCombatant {
 
  private:
   void addQuestsToWindow();
-  void addConstructionToWindow();
+  void addConstructionToWindow(const Client &client);
   void addMerchantSetupToWindow();
-  void addInventoryToWindow();
+  void addInventoryToWindow(const Client &client);
   void addDeconstructionToWindow();
   void addActionToWindow();
   static void performAction(void *object);

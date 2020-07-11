@@ -25,19 +25,17 @@ Texture ContainerGrid::_highlightBad;
 Texture ContainerGrid::_damaged;
 Texture ContainerGrid::_broken;
 
-ContainerGrid::ContainerGrid(size_t rows, size_t cols,
+ContainerGrid::ContainerGrid(const Client &client, size_t rows, size_t cols,
                              ClientItem::vect_t &linked, Serial serial, px_t x,
                              px_t y, px_t gap, bool solidBackground)
     : Element(
           {x, y, static_cast<px_t>(cols) * (Client::ICON_SIZE + gap + 2) + gap,
            static_cast<px_t>(rows) * (Client::ICON_SIZE + gap + 2) + gap + 1}),
+      _client(client),
       _rows(rows),
       _cols(cols),
       _linked(linked),
       _serial(serial),
-      _mouseOverSlot(NO_SLOT),
-      _leftMouseDownSlot(NO_SLOT),
-      _rightMouseDownSlot(NO_SLOT),
       _gap(gap),
       _solidBackground(solidBackground) {
   if (!_highlight) {
@@ -168,9 +166,8 @@ void ContainerGrid::leftMouseDown(Element &e, const ScreenPoint &mousePos) {
   ContainerGrid &grid = dynamic_cast<ContainerGrid &>(e);
   size_t slot = grid.getSlot(mousePos);
 
-  const auto &client = Client::instance();
-  if (client.isAltPressed())
-    client.sendMessage({CL_REPAIR_ITEM, makeArgs(grid._serial, slot)});
+  if (grid._client.isAltPressed())
+    grid._client.sendMessage({CL_REPAIR_ITEM, makeArgs(grid._serial, slot)});
   else
     grid._leftMouseDownSlot = slot;
 }
