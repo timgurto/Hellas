@@ -38,8 +38,6 @@ class Avatar : public Sprite, public ClientCombatant {
  public:
   Avatar(const std::string &name, const MapPoint &location);
 
-  bool isCharacter() const;
-
   const MapRect collisionRect() const { return COLLISION_RECT + location(); }
   static const MapRect &collisionRectRaw() { return COLLISION_RECT; }
   void setClass(const ClassInfo::Name &newClass);

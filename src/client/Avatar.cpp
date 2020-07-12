@@ -20,14 +20,8 @@ Avatar::Avatar(const std::string &name, const MapPoint &location)
       _name(name),
       _gear(Client::GEAR_SLOTS, std::make_pair(ClientItem::Instance{}, 0)) {}
 
-bool Avatar::isCharacter() const {
-  if (!_client) return false;
-  return this == &_client->character();
-}
-
 void Avatar::draw(const Client &client) const {
   if (isDriving()) return;
-  if (!_class) return;
 
   auto imagesToGenerate =
       std::vector<Texture *>{&_imageWithGear, &_highlightImageWithGear};
@@ -78,28 +72,27 @@ void Avatar::draw(const Client &client) const {
 }
 
 void Avatar::drawName() const {
-  const auto &client = Client::instance();
-  if (this == &client.character()) return;
+  if (isCharacter()) return;
 
-  const Texture nameLabel(client.defaultFont(), _name, nameColor());
-  const Texture nameOutline(client.defaultFont(), _name, Color::UI_OUTLINE);
+  const Texture nameLabel(_client->defaultFont(), _name, nameColor());
+  const Texture nameOutline(_client->defaultFont(), _name, Color::UI_OUTLINE);
   Texture cityOutline, cityLabel;
 
-  ScreenPoint namePosition = toScreenPoint(location()) + client.offset();
+  ScreenPoint namePosition = toScreenPoint(location()) + _client->offset();
   namePosition.y -= 60;
   namePosition.x -= nameLabel.width() / 2;
 
   ScreenPoint cityPosition;
   bool shouldDrawCityName =
-      (!_city.empty()) /*&& (_name != client.username())*/;
+      (!_city.empty()) /*&& (_name != _client->username())*/;
   if (shouldDrawCityName) {
     auto cityText = std::string{};
     if (_isKing) cityText = "King ";
     cityText += "of " + _city;
-    cityOutline = Texture(client.defaultFont(), cityText, Color::UI_OUTLINE);
-    cityLabel = Texture(client.defaultFont(), cityText, nameColor());
+    cityOutline = Texture(_client->defaultFont(), cityText, Color::UI_OUTLINE);
+    cityLabel = Texture(_client->defaultFont(), cityText, nameColor());
     cityPosition.x =
-        toInt(location().x + client.offset().x - cityLabel.width() / 2.0);
+        toInt(location().x + _client->offset().x - cityLabel.width() / 2.0);
     cityPosition.y = namePosition.y;
     namePosition.y -= 11;
   }
@@ -114,8 +107,7 @@ void Avatar::drawName() const {
 }
 
 void Avatar::update(double delta) {
-  auto &client = Client::instance();
-  client.drawGearParticles(_gear, location(), delta);
+  _client->drawGearParticles(_gear, location(), delta);
 
   ms_t timeElapsed = toInt(1000 * delta);
   if (_currentlyCrafting) {
@@ -132,10 +124,8 @@ void Avatar::update(double delta) {
 }
 
 void Avatar::setClass(const ClassInfo::Name &newClass) {
-  const auto &client = Client::instance();
-
-  const auto it = client._classes.find(newClass);
-  if (it == client._classes.end()) return;
+  const auto it = _client->_classes.find(newClass);
+  if (it == _client->_classes.end()) return;
   _class = &(it->second);
 }
 
@@ -169,7 +159,7 @@ void Avatar::playAttackSound() const {
   if (weapon)
     weapon->playSoundOnce("attack");
   else
-    Client::instance().avatarSounds()->playOnce("attack");
+    _client->avatarSounds()->playOnce("attack");
 }
 
 void Avatar::playDefendSound() const {
@@ -178,7 +168,7 @@ void Avatar::playDefendSound() const {
   if (armor)
     armor->playSoundOnce("defend");
   else
-    Client::instance().avatarSounds()->playOnce("defend");
+    _client->avatarSounds()->playOnce("defend");
 }
 
 void Avatar::playDeathSound() const {

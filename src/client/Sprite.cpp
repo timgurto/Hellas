@@ -19,7 +19,7 @@ Sprite::Sprite(const SpriteType *type, const MapPoint &location)
       _locationOnServer(location),
       _toRemove(false) {}
 
-void Sprite::onAddToClient(const Client &client) { _client = &client; }
+void Sprite::onAddToClient(Client &client) { _client = &client; }
 
 ScreenRect Sprite::drawRect() const {
   assert(_type != nullptr);
@@ -27,6 +27,8 @@ ScreenRect Sprite::drawRect() const {
   auto drawRect = typeDrawRect + toScreenPoint(_location);
   return drawRect;
 }
+
+bool Sprite::isCharacter() const { return this == &_client->character(); }
 
 void Sprite::newLocationFromServer(const MapPoint &loc) {
   _locationOnServer = loc;
@@ -36,8 +38,7 @@ void Sprite::newLocationFromServer(const MapPoint &loc) {
 }
 
 double Sprite::speed() const {
-  const auto &client = Client::instance();
-  if (this == &client.character()) return client._stats.speed;
+  if (isCharacter()) return _client->_stats.speed;
   return Client::MOVEMENT_SPEED;
 }
 
@@ -71,15 +72,13 @@ void Sprite::drawShadow(const Client &client) const {
 }
 
 void Sprite::drawName() const {
-  const auto &client = Client::instance();
-
   auto text = name();
   if (!additionalTextInName().empty()) text += " "s + additionalTextInName();
 
-  const auto nameLabel = Texture{client.defaultFont(), text, nameColor()};
+  const auto nameLabel = Texture{_client->defaultFont(), text, nameColor()};
   const auto nameOutline =
-      Texture{client.defaultFont(), text, Color::UI_OUTLINE};
-  auto namePosition = toScreenPoint(location()) + client.offset();
+      Texture{_client->defaultFont(), text, Color::UI_OUTLINE};
+  auto namePosition = toScreenPoint(location()) + _client->offset();
   namePosition.y -= height();
   namePosition.y -= 16;
   namePosition.x -= nameLabel.width() / 2;
@@ -90,8 +89,6 @@ void Sprite::drawName() const {
 }
 
 void Sprite::update(double delta) {
-  auto &client = Client::instance();
-
   driftTowardsServerLocation(delta);
 
   if (!shouldAddParticles()) return;
@@ -100,8 +97,8 @@ void Sprite::update(double delta) {
     auto particleX = _location.x + p.offset.x;
     auto particleY = bottomEdge();
     auto altitude = -p.offset.y + (bottomEdge() - _location.y);
-    client.addParticlesWithCustomAltitude(altitude, p.profile,
-                                          {particleX, particleY}, delta);
+    _client->addParticlesWithCustomAltitude(altitude, p.profile,
+                                            {particleX, particleY}, delta);
   }
 }
 
@@ -149,9 +146,7 @@ const Tooltip &Sprite::tooltip() const {
 void Sprite::driftTowardsServerLocation(double delta) {
   if (!_serverHasOrderedACorrection) return;
 
-  auto isThePlayer = this == &Client::instance().character();
-  auto speedMultiplier = isThePlayer ? 1.5 : 1.1;
-
+  auto speedMultiplier = isCharacter() ? 1.5 : 1.1;
   const double correctionAmount = delta * speed() * speedMultiplier;
   auto newLocation =
       interpolate(location(), _locationOnServer, correctionAmount);

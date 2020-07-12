@@ -32,13 +32,13 @@ class Sprite {
 
  protected:
   mutable Optional<Tooltip> _tooltip;
-  const Client *_client{nullptr};
+  Client *_client{nullptr};
 
  public:
   Sprite(const SpriteType *type, const MapPoint &location);
   virtual ~Sprite() {}
 
-  void onAddToClient(const Client &client);
+  void onAddToClient(Client &client);
 
   const MapPoint &location() const { return _location; }
   void location(const MapPoint &loc);  // yChanged() should be checked after
@@ -61,6 +61,7 @@ class Sprite {
   virtual bool isFlat() const { return _type->isFlat(); }
   virtual std::string additionalTextInName() const { return {}; }
   virtual bool shouldAddParticles() const { return true; }
+  bool isCharacter() const;
 
   // Movement lerping
   const MapPoint &locationOnServer() const { return _locationOnServer; }
