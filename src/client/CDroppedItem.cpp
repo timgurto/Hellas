@@ -36,12 +36,12 @@ const Tooltip& CDroppedItem::tooltip() const {
   return Sprite::tooltip();  // No tooltip
 }
 
-void CDroppedItem::onLeftClick(Client& client) {
-  Client::instance().sendMessage({CL_PICK_UP_DROPPED_ITEM, serial()});
+void CDroppedItem::onLeftClick() {
+  _client->sendMessage({CL_PICK_UP_DROPPED_ITEM, serial()});
 }
 
-void CDroppedItem::onRightClick(Client& client) {
-  Client::instance().sendMessage({CL_PICK_UP_DROPPED_ITEM, serial()});
+void CDroppedItem::onRightClick() {
+  _client->sendMessage({CL_PICK_UP_DROPPED_ITEM, serial()});
 }
 
 void CDroppedItem::update(double delta) {
@@ -57,17 +57,17 @@ void CDroppedItem::update(double delta) {
   Sprite::update(delta);
 }
 
-void CDroppedItem::draw(const Client& client) const {
+void CDroppedItem::draw() const {
   if (!isFalling()) {
-    Sprite::draw(client);
+    Sprite::draw();
     return;
   }
 
   if (!image()) return;
 
-  drawShadow(client);
+  drawShadow();
 
-  auto drawRect = this->drawRect() + client.offset();
+  auto drawRect = this->drawRect() + _client->offset();
   drawRect.y -= toInt(_altitude);
   image().draw(drawRect.x, drawRect.y);
 }

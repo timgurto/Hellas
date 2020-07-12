@@ -139,9 +139,9 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg) {
     x += QUANTITY_WIDTH + GAP;
     e.addChild(new ItemSelector(mSlot.priceItem, x, BUTTON_TOP));
     x += ICON_SIZE + 2 + NAME_WIDTH + 2 * GAP + 2;
-    e.addChild(
-        new Button({x, SET_BUTTON_TOP, SET_BUTTON_WIDTH, SET_BUTTON_HEIGHT},
-                   "Set", [this, i]() { sendMerchantSlot(serial(), i); }));
+    e.addChild(new Button(
+        {x, SET_BUTTON_TOP, SET_BUTTON_WIDTH, SET_BUTTON_HEIGHT}, "Set",
+        [this, i]() { sendMerchantSlot(_client, serial(), i); }));
 
   } else {  // Trade view
     if (!mSlot) {
@@ -185,35 +185,36 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg) {
   refreshTooltip();
 }
 
-void ClientObject::onLeftClick(Client &client) {
-  if (client.isCtrlPressed()) {
+void ClientObject::onLeftClick() {
+  if (_client->isCtrlPressed()) {
     const auto *npc = dynamic_cast<ClientNPC *>(this);
-    if (npc && npc->canBeTamed()) client.sendMessage({CL_TAME_NPC, serial()});
+    if (npc && npc->canBeTamed()) _client->sendMessage({CL_TAME_NPC, serial()});
 
-  } else if (client.isAltPressed()) {
+  } else if (_client->isAltPressed()) {
     if (objectType()->repairInfo().canBeRepaired)
-      client.sendMessage({CL_REPAIR_OBJECT, serial()});
+      _client->sendMessage({CL_REPAIR_OBJECT, serial()});
   }
 
   else
-    client.setTarget(*this);
+    _client->setTarget(*this);
 
   // Note: parent class's onLeftClick() not called.
 }
 
-void ClientObject::onRightClick(Client &client) {
-  client.setTarget(*this, canBeAttackedByPlayer());
+void ClientObject::onRightClick() {
+  _client->setTarget(*this, canBeAttackedByPlayer());
 
   // Make sure object is in range
   auto relevantRange = Client::ACTION_DISTANCE;
   if (canBeAttackedByPlayer()) {
     const auto *weapon =
-        Client::instance().character().gear()[Item::WEAPON_SLOT].first.type();
+        _client->character().gear()[Item::WEAPON_SLOT].first.type();
     if (weapon) relevantRange = weapon->weaponRange();
   }
-  if (distance(client.playerCollisionRect(), collisionRect()) > relevantRange) {
-    client.showErrorMessage("That object is too far away.",
-                            Color::CHAT_WARNING);
+  if (distance(_client->playerCollisionRect(), collisionRect()) >
+      relevantRange) {
+    _client->showErrorMessage("That object is too far away.",
+                              Color::CHAT_WARNING);
     return;
   }
 
@@ -223,31 +224,31 @@ void ClientObject::onRightClick(Client &client) {
   const auto canGather =
       objType.canGather() && userHasAccess() && !isBeingConstructed();
   if (canGather) {
-    client.sendMessage({CL_GATHER, _serial});
-    client.prepareAction(std::string("Gathering from ") + objType.name());
+    _client->sendMessage({CL_GATHER, _serial});
+    _client->prepareAction(std::string("Gathering from ") + objType.name());
     return;
   }
 
   // Bring existing window to front
   if (_window != nullptr) {
-    client.removeWindow(_window);
-    client.addWindow(_window);
+    _client->removeWindow(_window);
+    _client->addWindow(_window);
   }
 
   // Create window, if necessary
   else {
-    assembleWindow(client);
-    if (_window) client.addWindow(_window);
+    assembleWindow(*_client);
+    if (_window) _client->addWindow(_window);
   }
 
   if (_window != nullptr) {
     // Determine placement: below object, but keep entirely on screen.
-    px_t x =
-        toInt(location().x - _window->Element::width() / 2 + client.offset().x);
+    px_t x = toInt(location().x - _window->Element::width() / 2 +
+                   _client->offset().x);
     x = max(0, min(x, Client::SCREEN_X - _window->Element::width()));
     static const px_t WINDOW_GAP_FROM_OBJECT = 20;
     px_t y =
-        toInt(location().y + WINDOW_GAP_FROM_OBJECT / 2 + client.offset().y);
+        toInt(location().y + WINDOW_GAP_FROM_OBJECT / 2 + _client->offset().y);
     y = max(0, min(y, Client::SCREEN_Y - _window->Element::height()));
     _window->setPosition(x, y);
 
@@ -740,17 +741,18 @@ void ClientObject::hideWindow() {
 
 void ClientObject::startDeconstructing(void *object) {
   const ClientObject &obj = *static_cast<const ClientObject *>(object);
-  Client &client = *Client::_instance;
-  client.sendMessage({CL_DECONSTRUCT, obj.serial()});
-  client.prepareAction(std::string("Dismantling ") + obj.objectType()->name());
+  obj._client->sendMessage({CL_DECONSTRUCT, obj.serial()});
+  obj._client->prepareAction(std::string("Dismantling ") +
+                             obj.objectType()->name());
 }
 
 void ClientObject::trade(Serial serial, size_t slot) {
   Client::_instance->sendMessage({CL_TRADE, makeArgs(serial, slot)});
 }
 
-void ClientObject::sendMerchantSlot(Serial serial, size_t slot) {
-  const auto &objects = Client::_instance->_objects;
+void ClientObject::sendMerchantSlot(const Client *client, Serial serial,
+                                    size_t slot) {
+  const auto &objects = client->_objects;
   auto it = objects.find(serial);
   if (it == objects.end()) {
     Client::instance().showErrorMessage(
@@ -765,14 +767,13 @@ void ClientObject::sendMerchantSlot(Serial serial, size_t slot) {
   mSlot.priceQty = obj._priceQtyBoxes[slot]->textAsNum();
 
   if (mSlot.wareItem == nullptr || mSlot.priceItem == nullptr) {
-    Client::instance().showErrorMessage(
-        "You must select an item; clearing slot.", Color::CHAT_WARNING);
-    Client::_instance->sendMessage(
-        {CL_CLEAR_MERCHANT_SLOT, makeArgs(serial, slot)});
+    client->showErrorMessage("You must select an item; clearing slot.",
+                             Color::CHAT_WARNING);
+    client->sendMessage({CL_CLEAR_MERCHANT_SLOT, makeArgs(serial, slot)});
     return;
   }
 
-  Client::_instance->sendMessage(
+  client->sendMessage(
       {CL_SET_MERCHANT_SLOT,
        makeArgs(serial, slot, mSlot.wareItem->id(), mSlot.wareQty,
                 mSlot.priceItem->id(), mSlot.priceQty)});
@@ -882,8 +883,8 @@ void ClientObject::update(double delta) {
   Sprite::update(delta);
 }
 
-void ClientObject::draw(const Client &client) const {
-  Sprite::draw(client);
+void ClientObject::draw() const {
+  Sprite::draw();
   drawAppropriateQuestIndicator();
 }
 
@@ -911,24 +912,24 @@ void ClientObject::drawAppropriateQuestIndicator() const {
   questIndicator.draw(indicatorLocation);
 }
 
-const Texture &ClientObject::cursor(const Client &client) const {
-  if (client.isAltPressed()) return client.cursorRepair();
+const Texture &ClientObject::cursor() const {
+  if (_client->isAltPressed()) return _client->cursorRepair();
 
-  if (canBeAttackedByPlayer()) return client.cursorAttack();
+  if (canBeAttackedByPlayer()) return _client->cursorAttack();
 
   const ClientObjectType &ot = *objectType();
   if (userHasAccess()) {
-    if (isBeingConstructed()) return client.cursorContainer();
-    if (completableQuests().size() > 0) return client.cursorEndsQuest();
-    if (startsQuests().size() > 0) return client.cursorStartsQuest();
-    if (ot.canGather()) return client.cursorGather();
-    if (ot.hasAction()) return client.cursorContainer();
-    if (classTag() == 'v') return client.cursorVehicle();
-    if (ot.containerSlots() > 0) return client.cursorContainer();
+    if (isBeingConstructed()) return _client->cursorContainer();
+    if (completableQuests().size() > 0) return _client->cursorEndsQuest();
+    if (startsQuests().size() > 0) return _client->cursorStartsQuest();
+    if (ot.canGather()) return _client->cursorGather();
+    if (ot.hasAction()) return _client->cursorContainer();
+    if (classTag() == 'v') return _client->cursorVehicle();
+    if (ot.containerSlots() > 0) return _client->cursorContainer();
   }
-  if (lootable() || ot.merchantSlots() > 0) return client.cursorContainer();
+  if (lootable() || ot.merchantSlots() > 0) return _client->cursorContainer();
 
-  return client.cursorNormal();
+  return _client->cursorNormal();
 }
 
 const Tooltip &ClientObject::tooltip() const {

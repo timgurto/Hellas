@@ -42,13 +42,13 @@ double Sprite::speed() const {
   return Client::MOVEMENT_SPEED;
 }
 
-void Sprite::draw(const Client &client) const {
-  if (shouldDrawShadow()) drawShadow(client);
+void Sprite::draw() const {
+  if (shouldDrawShadow()) drawShadow();
 
-  auto shouldDrawHighlightInstead = client.currentMouseOverEntity() == this;
+  auto shouldDrawHighlightInstead = _client->currentMouseOverEntity() == this;
   const Texture &imageToDraw =
       shouldDrawHighlightInstead ? getHighlightImage() : image();
-  auto drawRect = this->drawRect() + client.offset();
+  auto drawRect = this->drawRect() + _client->offset();
   if (shouldDrawHighlightInstead) drawRect += HIGHLIGHT_OFFSET;
   if (imageToDraw)
     imageToDraw.draw(drawRect.x, drawRect.y);
@@ -60,14 +60,14 @@ void Sprite::draw(const Client &client) const {
   }
 }
 
-void Sprite::drawShadow(const Client &client) const {
+void Sprite::drawShadow() const {
   const auto &shadow = type()->shadow();
   auto shadowX = type()->hasCustomShadowWidth()
                      ? -type()->customShadowWidth() / 2
                      : toInt(type()->drawRect().x * SpriteType::SHADOW_RATIO);
   auto shadowY = -toInt(shadow.height() / 2.0);
   auto shadowPosition = toScreenPoint(_location) +
-                        ScreenPoint{shadowX, shadowY} + client.offset();
+                        ScreenPoint{shadowX, shadowY} + _client->offset();
   shadow.draw(shadowPosition);
 }
 
@@ -134,9 +134,7 @@ bool Sprite::mouseIsOverRealPixel(const MapPoint &p) const {
   return true;
 }
 
-const Texture &Sprite::cursor(const Client &client) const {
-  return client.cursorNormal();
-}
+const Texture &Sprite::cursor() const { return _client->cursorNormal(); }
 
 const Tooltip &Sprite::tooltip() const {
   if (_tooltip.hasValue()) return _tooltip.value();

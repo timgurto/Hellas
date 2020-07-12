@@ -109,7 +109,7 @@ TEST_CASE("Chance for strength-items as loot from object",
 
   SECTION("The loot window works") {
     // When he right-clicks on the chest
-    clientSnowman.onRightClick(c.client());
+    clientSnowman.onRightClick();
 
     // And the loot window appears
     WAIT_UNTIL(clientSnowman.lootContainer() != nullptr);
@@ -168,7 +168,7 @@ TEST_CASE("Looting from a container", "[loot][container][only][.flaky]") {
 
     SECTION("The loot window works") {
       // When he right-clicks on the chest
-      clientChest.onRightClick(c.client());
+      clientChest.onRightClick();
 
       // Then it shows the loot window;
       WAIT_UNTIL(clientChest.lootContainer() != nullptr);

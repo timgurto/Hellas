@@ -300,7 +300,7 @@ void Client::handleInput(double delta) {
             }
 
             if (_currentMouseOverEntity)
-              _currentMouseOverEntity->onLeftClick(*this);
+              _currentMouseOverEntity->onLeftClick();
             else
               clearTarget();
             refreshTargetBuffs();
@@ -322,7 +322,7 @@ void Client::handleInput(double delta) {
 
             // Mouse down and up on same entity: onRightClick
             if (_currentMouseOverEntity)
-              _currentMouseOverEntity->onRightClick(*this);
+              _currentMouseOverEntity->onRightClick();
             else
               clearTarget();
             refreshTargetBuffs();
@@ -620,7 +620,7 @@ void Client::checkMouseOver() {
   _currentMouseOverEntity = getEntityAtMouse();
 
   if (_currentMouseOverEntity) {
-    _currentCursor = &_currentMouseOverEntity->cursor(*this);
+    _currentCursor = &_currentMouseOverEntity->cursor();
     return;
   }
 

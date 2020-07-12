@@ -20,7 +20,7 @@ Avatar::Avatar(const std::string &name, const MapPoint &location)
       _name(name),
       _gear(Client::GEAR_SLOTS, std::make_pair(ClientItem::Instance{}, 0)) {}
 
-void Avatar::draw(const Client &client) const {
+void Avatar::draw() const {
   if (isDriving()) return;
 
   auto imagesToGenerate =
@@ -60,14 +60,14 @@ void Avatar::draw(const Client &client) const {
     renderer.popRenderTarget();
   }
 
-  Sprite::draw(client);
+  Sprite::draw();
 
   drawBuffEffects(location());
 
   if (isDebug()) {
     renderer.setDrawColor(Color::CYAN);
     renderer.drawRect(toScreenRect(COLLISION_RECT + location()) +
-                      client.offset());
+                      _client->offset());
   }
 }
 
@@ -176,13 +176,13 @@ void Avatar::playDeathSound() const {
   client.avatarSounds()->playOnce("death");
 }
 
-void Avatar::onLeftClick(Client &client) {
-  client.setTarget(*this);
+void Avatar::onLeftClick() {
+  _client->setTarget(*this);
   // Note: parent class's onLeftClick() not called.
 }
 
-void Avatar::onRightClick(Client &client) {
-  client.setTarget(*this, true);
+void Avatar::onRightClick() {
+  _client->setTarget(*this, true);
   // Note: parent class's onRightClick() not called.
 }
 
@@ -217,9 +217,9 @@ bool Avatar::canBeAttackedByPlayer() const {
   return client.isAtWarWith(*this);
 }
 
-const Texture &Avatar::cursor(const Client &client) const {
-  if (canBeAttackedByPlayer()) return client.cursorAttack();
-  return client.cursorNormal();
+const Texture &Avatar::cursor() const {
+  if (canBeAttackedByPlayer()) return _client->cursorAttack();
+  return _client->cursorNormal();
 }
 
 bool Avatar::isInPlayersCity() const {

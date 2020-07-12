@@ -172,7 +172,7 @@ TEST_CASE("Unwatching NPCs", "[.flaky]") {
         auto &clientNPC = c.getFirstNPC();
 
         AND_WHEN("he opens the window") {
-          clientNPC.onRightClick(c.client());
+          clientNPC.onRightClick();
           CHECK(clientNPC.window());
 
           AND_WHEN("he moves away from the NPC") {

@@ -20,8 +20,8 @@ void ClientVehicle::mountOrDismount(void *object) {
 
 double ClientVehicle::speed() const { return vehicleType().speed(); }
 
-void ClientVehicle::draw(const Client &client) const {
-  ClientObject::draw(client);
+void ClientVehicle::draw() const {
+  ClientObject::draw();
 
   if (!driver()) return;
 
@@ -33,12 +33,12 @@ void ClientVehicle::draw(const Client &client) const {
     copy.location(location() + toMapPoint(cvt.driverOffset()));
     copy.notDriving();
     copy.cutOffBottomWhenDrawn(cvt.driverCutoff());
-    copy.draw(client);
+    copy.draw();
   }
 
   // Draw bit in front of driver
   if (cvt.front()) {
-    cvt.front().draw(drawRect() + client.offset());
+    cvt.front().draw(drawRect() + _client->offset());
   }
 }
 

@@ -88,7 +88,7 @@ void Client::draw() const {
     double x = (*it)->location().x;
     if (x < leftX && x > rightX) continue;
 
-    (*it)->draw(*this);
+    (*it)->draw();
 
     if (isDebug())
       Texture{defaultFont(), toString(drawOrder++), Color::MAGENTA}.draw(
@@ -101,7 +101,7 @@ void Client::draw() const {
     double x = (*it)->location().x;
     if (x < leftX && x > rightX) continue;
 
-    (*it)->draw(*this);
+    (*it)->draw();
 
     if (isDebug())
       Texture{defaultFont(), toString(drawOrder++), Color::MAGENTA}.draw(

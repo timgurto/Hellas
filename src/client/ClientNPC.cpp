@@ -52,8 +52,8 @@ void ClientNPC::update(double delta) {
   ClientObject::update(delta);
 }
 
-void ClientNPC::draw(const Client &client) const {
-  ClientObject::draw(client);
+void ClientNPC::draw() const {
+  ClientObject::draw();
 
   auto shouldDrawGear = isAlive() && npcType()->hasGear();
   if (shouldDrawGear) {

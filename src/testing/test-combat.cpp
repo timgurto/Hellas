@@ -151,7 +151,7 @@ TEST_CASE("Players can target distant entities") {
   // When the client attempts to target the wolf
   WAIT_UNTIL(c.objects().size() == 1);
   ClientNPC &clientWolf = c.getFirstNPC();
-  clientWolf.onRightClick(c.client());
+  clientWolf.onRightClick();
 
   // Then his target is set to the wolf
   WAIT_UNTIL(user.target() == &wolf);
@@ -286,7 +286,7 @@ TEST_CASE("Targeting civilians after attacking") {
 
       AND_WHEN("he right-clicks the maiden") {
         auto cMaiden = c.objects()[maiden.serial()];
-        cMaiden->onRightClick(c.client());
+        cMaiden->onRightClick();
 
         THEN("the maiden doesn't take damage") {
           REPEAT_FOR_MS(3000);

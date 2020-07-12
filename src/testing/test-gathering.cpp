@@ -93,7 +93,7 @@ TEST_CASE("Gathering from an NPC") {
     AND_WHEN("a player right-clicks it") {
       WAIT_UNTIL(c.objects().size() == 1);
       auto &cMouse = c.getFirstNPC();
-      cMouse.onRightClick(c.client());
+      cMouse.onRightClick();
 
       THEN("he has an item") {
         auto &user = s.getFirstUser();

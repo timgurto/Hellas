@@ -497,10 +497,10 @@ class Client {
   bool _mouseOverWindow;  // Whether the mouse is over any visible window.
 
   bool _leftMouseDown;  // Whether the left mouse button is pressed
-  friend void ClientObject::onLeftClick(Client &client);
+  friend void ClientObject::onLeftClick();
 
   bool _rightMouseDown;
-  friend void ClientObject::onRightClick(Client &client);
+  friend void ClientObject::onRightClick();
   friend void ClientObject::startDeconstructing(void *object);
 
   void handleInput(double delta);

@@ -66,15 +66,15 @@ class Avatar : public Sprite, public ClientCombatant {
   void stopCrafting() { _currentlyCrafting = nullptr; }
 
   // From Sprite
-  void draw(const Client &client) const override;
+  void draw() const override;
   void drawName() const override;
   void update(double delta) override;
   const Tooltip &tooltip()
       const override;  // Getter; creates tooltip on first call.
-  void onLeftClick(Client &client) override;
-  void onRightClick(Client &client) override;
+  void onLeftClick() override;
+  void onRightClick() override;
   const std::string &name() const override { return _name; }
-  const Texture &cursor(const Client &client) const override;
+  const Texture &cursor() const override;
   void name(const std::string &newName) { _name = newName; }
   bool shouldDrawName() const override { return true; }
   const Color &nameColor() const override;

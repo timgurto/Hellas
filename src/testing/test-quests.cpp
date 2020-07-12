@@ -351,7 +351,7 @@ TEST_CASE("Quest UI", "[ui][.flaky]") {
       THEN("the quest has a window") { CHECK(quest.window() == nullptr); }
 
       AND_WHEN("the quest button is clicked") {
-        obj.onRightClick(c.client());
+        obj.onRightClick();
         WAIT_UNTIL(obj.window() != nullptr);
 
         auto questButtonE = obj.window()->findChild("quest1");
@@ -408,7 +408,7 @@ TEST_CASE("Quest UI for NPCs", "[ui][.flaky]") {
       auto &npc = c.getFirstNPC();
 
       AND_WHEN("The client right-clicks on the NPC") {
-        npc.onRightClick(c.client());
+        npc.onRightClick();
 
         THEN("The object window is visible") {
           WAIT_UNTIL(npc.window() != nullptr);
@@ -565,7 +565,7 @@ TEST_CASE("Kill quests") {
 
       AND_WHEN("he right-clicks on the questgiver") {
         REPEAT_FOR_MS(100);
-        cA.onRightClick(c.client());
+        cA.onRightClick();
 
         THEN("it doesn't have a window") { CHECK(!cA.window()); }
       }
@@ -674,7 +674,7 @@ TEST_CASE("Quest chains") {
       AND_WHEN("he right-clicks on the object") {
         auto &obj = c.getFirstObject();
         REPEAT_FOR_MS(100);
-        obj.onRightClick(c.client());
+        obj.onRightClick();
 
         THEN("it has a window") { CHECK(obj.window()); }
       }
@@ -785,7 +785,7 @@ TEST_CASE("Object window stays open for chained quests", "[ui][.flaky]") {
       user.startQuest(*s->findQuest("quest1"));
 
       AND_WHEN("he opens the questgiver's window") {
-        questgiver.onRightClick(c.client());
+        questgiver.onRightClick();
         WAIT_UNTIL(questgiver.window() != nullptr);
 
         AND_WHEN("he completes the quest") {
@@ -818,7 +818,7 @@ TEST_CASE("Object window is updated with quest changes", "[ui][.flaky]") {
       auto c = TestClient::WithDataString(data);
       WAIT_UNTIL(c.objects().size() == 1);
       auto &obj = c.getFirstObject();
-      obj.onRightClick(c.client());
+      obj.onRightClick();
       WAIT_UNTIL(obj.window() != nullptr);
 
       AND_WHEN("he accepts the quest") {
@@ -846,7 +846,7 @@ TEST_CASE("Object window is updated with quest changes", "[ui][.flaky]") {
       auto c = TestClient::WithDataString(data);
       WAIT_UNTIL(c.objects().size() == 1);
       auto &obj = c.getFirstObject();
-      obj.onRightClick(c.client());
+      obj.onRightClick();
 
       AND_WHEN("he accepts the quest") {
         c->sendMessage({CL_ACCEPT_QUEST, makeArgs("quest1", serial)});

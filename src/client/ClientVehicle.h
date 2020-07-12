@@ -24,7 +24,7 @@ class ClientVehicle : public ClientObject {
   virtual double speed() const override;
 
   virtual char classTag() const override { return 'v'; }
-  virtual void draw(const Client &client) const override;
+  virtual void draw() const override;
   virtual bool addClassSpecificStuffToWindow() override;
   virtual bool addClassSpecificStuffToTooltip(Tooltip &tooltip) const override;
 

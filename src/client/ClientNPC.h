@@ -26,7 +26,7 @@ class ClientNPC : public ClientObject {
 
   // From Sprite:
   void update(double delta) override;
-  void draw(const Client &client) const override;
+  void draw() const override;
   bool shouldDrawName() const override;
 
  protected:

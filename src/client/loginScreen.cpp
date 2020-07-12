@@ -108,7 +108,7 @@ void Client::drawLoginScreen() const {
   _loginBack.draw();
 
   // Particles
-  for (auto particle : _loginParticles) particle->draw(*this);
+  for (auto particle : _loginParticles) particle->draw();
 
   // Braziers
   _loginFront.draw(_config.loginFrontOffset);

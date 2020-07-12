@@ -59,7 +59,7 @@ TEST_CASE("View merchant slots in window", "[.flaky][ui]") {
   REQUIRE(cObj != nullptr);
 
   // When the client opens the object's window
-  cObj->onRightClick(c.client());
+  cObj->onRightClick();
   WAIT_UNTIL(cObj->window() != nullptr);
   // Wait until the merchant interface is drawn
   typedef const Element *ep_t;
@@ -237,7 +237,7 @@ TEST_CASE("Object windows close if they change to allow only demolition") {
       auto &cObject = c.getFirstObject();
       // Wait, to avoid concurrent calls to ClientObject::assembleWindow()
       REPEAT_FOR_MS(100);
-      cObject.onRightClick(c.client());
+      cObject.onRightClick();
       REQUIRE(cObject.window());
       CHECK(cObject.window()->visible());
 
@@ -264,7 +264,7 @@ TEST_CASE("Object windows close if they change to allow only demolition") {
       auto &cObject = c.getFirstObject();
       // Wait, to avoid concurrent calls to ClientObject::assembleWindow()
       REPEAT_FOR_MS(100);
-      cObject.onRightClick(c.client());
+      cObject.onRightClick();
 
       THEN("it is visible") {
         REQUIRE(cObject.window());

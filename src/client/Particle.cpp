@@ -38,7 +38,7 @@ void Particle::update(double delta) {
     _lifespan -= timeElapsed;
 }
 
-void Particle::draw(const Client &client) const {
+void Particle::draw() const {
   // Draw only the top if partially underground
   auto drawRect = this->drawRect();
   auto srcRect = ScreenRect{0, 0, drawRect.w, drawRect.h};
@@ -48,7 +48,7 @@ void Particle::draw(const Client &client) const {
     drawRect.h -= cutoff;
   }
 
-  _image.draw(drawRect + client.offset(), srcRect);
+  _image.draw(drawRect + _client->offset(), srcRect);
 }
 
 void Particle::setImageManually(const Texture &image) {

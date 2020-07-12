@@ -75,14 +75,13 @@ class Sprite {
 
   virtual char classTag() const { return 'e'; }
 
-  virtual void draw(
-      const Client &client) const;  // Includes name, but not health bar.
-  void drawShadow(const Client &client) const;
+  virtual void draw() const;  // Includes name, but not health bar.
+  void drawShadow() const;
   virtual void drawName() const;
   virtual void update(double delta);
-  virtual void onLeftClick(Client &client) {}
-  virtual void onRightClick(Client &client) {}
-  virtual const Texture &cursor(const Client &client) const;
+  virtual void onLeftClick() {}
+  virtual void onRightClick() {}
+  virtual const Texture &cursor() const;
   virtual const Tooltip &tooltip() const;
   virtual bool shouldDrawName() const { return false; }
   virtual bool shouldDrawShadow() const { return true; }

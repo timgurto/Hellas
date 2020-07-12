@@ -142,11 +142,12 @@ class ClientObject : public Sprite, public ClientCombatant {
   }
   bool collides() const { return objectType()->collides(); }
 
-  virtual void onLeftClick(Client &client) override;
-  virtual void onRightClick(Client &client) override;
+  virtual void onLeftClick() override;
+  virtual void onRightClick() override;
   static void startDeconstructing(void *object);
   static void trade(Serial serial, size_t slot);
-  static void sendMerchantSlot(Serial serial, size_t slot);
+  static void sendMerchantSlot(const Client *client, Serial serial,
+                               size_t slot);
 
   virtual void onInventoryUpdate();
   void hideWindow();
@@ -169,9 +170,9 @@ class ClientObject : public Sprite, public ClientCombatant {
   void playDeathSound() const override;
 
   // From Sprite
-  void draw(const Client &client) const override;
+  void draw() const override;
   void drawAppropriateQuestIndicator() const;
-  const Texture &cursor(const Client &client) const override;
+  const Texture &cursor() const override;
   virtual const Color &nameColor() const override;
   virtual bool shouldDrawName() const override;
   virtual bool shouldDrawShadow() const override;
