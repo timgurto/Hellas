@@ -86,11 +86,10 @@ void Client::refreshCitySection() {
 
 enum BelligerentType { CITY, PLAYER };
 
-Element *createWarRow(const std::string &name, BelligerentType belligerentType,
+Element *createWarRow(const Client &client, const std::string &name,
+                      BelligerentType belligerentType,
                       BelligerentType yourBelligerentType, PeaceState state,
                       bool isActive = true) {
-  auto &client = Client::instance();
-
   const auto ICON_W = 12, NAME_W = 80_px, BUTTON_W = 90_px;
   auto row = new Element;
   auto x = px_t{GAP};
@@ -125,11 +124,10 @@ Element *createWarRow(const std::string &name, BelligerentType belligerentType,
           msgCode = CL_SUE_FOR_PEACE_WITH_CITY_AS_CITY;
       }
 
-      row->addChild(
-          new Button({x, 0, BUTTON_W, WAR_ROW_HEIGHT}, "Sue for peace"s,
-                     [name, msgCode]() {
-                       Client::instance().sendMessage({msgCode, name});
-                     }));
+      row->addChild(new Button({x, 0, BUTTON_W, WAR_ROW_HEIGHT},
+                               "Sue for peace"s, [name, msgCode, &client]() {
+                                 client.sendMessage({msgCode, name});
+                               }));
       break;
     }
     case PEACE_PROPOSED_BY_YOU: {
@@ -146,11 +144,11 @@ Element *createWarRow(const std::string &name, BelligerentType belligerentType,
           msgCode = CL_CANCEL_PEACE_OFFER_TO_CITY_AS_CITY;
       }
 
-      row->addChild(
-          new Button({x, 0, BUTTON_W, WAR_ROW_HEIGHT}, "Revoke peace offer"s,
-                     [name, msgCode]() {
-                       Client::instance().sendMessage({msgCode, name});
-                     }));
+      row->addChild(new Button({x, 0, BUTTON_W, WAR_ROW_HEIGHT},
+                               "Revoke peace offer"s,
+                               [name, msgCode, &client]() {
+                                 client.sendMessage({msgCode, name});
+                               }));
       break;
     }
     case PEACE_PROPOSED_BY_HIM: {
@@ -167,11 +165,11 @@ Element *createWarRow(const std::string &name, BelligerentType belligerentType,
           msgCode = CL_ACCEPT_PEACE_OFFER_WITH_CITY_AS_CITY;
       }
 
-      row->addChild(
-          new Button({x, 0, BUTTON_W, WAR_ROW_HEIGHT}, "Accept peace offer"s,
-                     [name, msgCode]() {
-                       Client::instance().sendMessage({msgCode, name});
-                     }));
+      row->addChild(new Button({x, 0, BUTTON_W, WAR_ROW_HEIGHT},
+                               "Accept peace offer"s,
+                               [name, msgCode, &client]() {
+                                 client.sendMessage({msgCode, name});
+                               }));
       break;
     }
   }
@@ -185,17 +183,19 @@ void Client::populateWarsList() {
   auto isInCity = !this->_character.cityName().empty();
   if (isInCity) {
     for (const auto &pair : _cityWarsAgainstCities)
-      _warsList->addChild(createWarRow(pair.first, CITY, CITY, pair.second));
+      _warsList->addChild(
+          createWarRow(*this, pair.first, CITY, CITY, pair.second));
     for (const auto &pair : _cityWarsAgainstPlayers)
-      _warsList->addChild(createWarRow(pair.first, PLAYER, CITY, pair.second));
+      _warsList->addChild(
+          createWarRow(*this, pair.first, PLAYER, CITY, pair.second));
   }
 
   for (const auto &pair : _warsAgainstCities)
     _warsList->addChild(
-        createWarRow(pair.first, CITY, PLAYER, pair.second, !isInCity));
+        createWarRow(*this, pair.first, CITY, PLAYER, pair.second, !isInCity));
   for (const auto &pair : _warsAgainstPlayers)
-    _warsList->addChild(
-        createWarRow(pair.first, PLAYER, PLAYER, pair.second, !isInCity));
+    _warsList->addChild(createWarRow(*this, pair.first, PLAYER, PLAYER,
+                                     pair.second, !isInCity));
 }
 
 void Client::populateOnlinePlayersList() {

@@ -161,14 +161,15 @@ void Client::refreshBuffsDisplay() {
   _buffsDisplay->clearChildren();
 
   for (auto buff : _character.buffs())
-    _buffsDisplay->addChild(assembleBuffEntry(*buff));
+    _buffsDisplay->addChild(assembleBuffEntry(*this, *buff));
   for (auto buff : _character.debuffs())
-    _buffsDisplay->addChild(assembleBuffEntry(*buff, true));
+    _buffsDisplay->addChild(assembleBuffEntry(*this, *buff, true));
 }
 
-Element *Client::assembleBuffEntry(const ClientBuffType &type, bool isDebuff) {
+Element *Client::assembleBuffEntry(Client &client, const ClientBuffType &type,
+                                   bool isDebuff) {
   auto e = new Element();
-  const auto ICON_X = instance()._buffsDisplay->width() - ICON_SIZE - 10;
+  const auto ICON_X = client._buffsDisplay->width() - ICON_SIZE - 10;
 
   auto outlineColor = isDebuff ? Color::DEBUFF : Color::BUFF;
   e->addChild(new ColorBlock({ICON_X - 1, 1, 18, 18}, outlineColor));
@@ -178,8 +179,8 @@ Element *Client::assembleBuffEntry(const ClientBuffType &type, bool isDebuff) {
 
   if (!isDebuff) {
     icon->setRightMouseDownFunction(
-        [&type](Element &e, const ScreenPoint &mousePos) {
-          Client::instance().sendMessage({CL_DISMISS_BUFF, type.id()});
+        [&type, &client](Element &e, const ScreenPoint &mousePos) {
+          client.sendMessage({CL_DISMISS_BUFF, type.id()});
         });
   }
 
@@ -203,10 +204,10 @@ Element *Client::assembleBuffEntry(const ClientBuffType &type, bool isDebuff) {
   auto hasNoDuration = type.duration() == 0;
   if (hasNoDuration) return e;
 
-  auto &timeRemainingMap = isDebuff ? instance()._debuffTimeRemaining
-                                    : instance()._buffTimeRemaining;
+  auto &timeRemainingMap =
+      isDebuff ? client._debuffTimeRemaining : client._buffTimeRemaining;
   auto timeRemainingRect =
-      ScreenRect{0, 0, ICON_X - 3, instance()._buffsDisplay->childHeight()};
+      ScreenRect{0, 0, ICON_X - 3, client._buffsDisplay->childHeight()};
   const auto &msRemaining = timeRemainingMap[type.id()];
   for (auto x = -1; x <= 1; ++x)
     for (auto y = -1; y <= 1; ++y) {

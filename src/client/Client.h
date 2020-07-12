@@ -403,7 +403,7 @@ class Client {
   void onHotbarKeyUp(SDL_Keycode key);
   void initBuffsDisplay();
   void refreshBuffsDisplay();
-  static Element *assembleBuffEntry(const ClientBuffType &type,
+  static Element *assembleBuffEntry(Client &client, const ClientBuffType &type,
                                     bool isDebuff = false);
   void initTargetBuffs();
   void refreshTargetBuffs();
