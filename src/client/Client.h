@@ -593,7 +593,7 @@ class Client {
   void redrawFogOfWar();
 
   Sprite::set_t _entities;
-  void addEntity(Sprite *entity) { _entities.insert(entity); }
+  void addEntity(Sprite *entity);
   void removeEntity(
       Sprite *const toRemove);  // Remove from _entities, and delete pointer
   void cullObjects();

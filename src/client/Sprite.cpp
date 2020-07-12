@@ -19,6 +19,8 @@ Sprite::Sprite(const SpriteType *type, const MapPoint &location)
       _locationOnServer(location),
       _toRemove(false) {}
 
+void Sprite::onAddToClient(const Client &client) { _client = &client; }
+
 ScreenRect Sprite::drawRect() const {
   assert(_type != nullptr);
   auto typeDrawRect = _type->drawRect();

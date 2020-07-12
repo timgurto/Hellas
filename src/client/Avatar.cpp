@@ -21,7 +21,8 @@ Avatar::Avatar(const std::string &name, const MapPoint &location)
       _gear(Client::GEAR_SLOTS, std::make_pair(ClientItem::Instance{}, 0)) {}
 
 bool Avatar::isCharacter() const {
-  return this == &Client::instance().character();
+  if (!_client) return false;
+  return this == &_client->character();
 }
 
 void Avatar::draw(const Client &client) const {

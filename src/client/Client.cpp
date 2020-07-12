@@ -452,6 +452,11 @@ bool Client::playerHasItem(const Item *item, size_t quantity) const {
   return false;
 }
 
+void Client::addEntity(Sprite *sprite) {
+  _entities.insert(sprite);
+  sprite->onAddToClient(*this);
+}
+
 void Client::removeEntity(Sprite *const toRemove) {
   const Sprite::set_t::iterator it = _entities.find(toRemove);
   if (it == _entities.end()) return;
