@@ -145,7 +145,7 @@ class ClientObject : public Sprite, public ClientCombatant {
   virtual void onLeftClick() override;
   virtual void onRightClick() override;
   static void startDeconstructing(void *object);
-  static void trade(Serial serial, size_t slot);
+  static void trade(const Client &client, Serial serial, size_t slot);
   static void sendMerchantSlot(const Client *client, Serial serial,
                                size_t slot);
 

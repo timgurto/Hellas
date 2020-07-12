@@ -167,7 +167,7 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg) {
 
     // Buy button
     Button *button = new Button({x, GAP, BUTTON_WIDTH, BUTTON_HEIGHT}, "",
-                                [this, i]() { trade(serial(), i); });
+                                [this, i]() { trade(*_client, serial(), i); });
     e.addChild(button);
     x = BUTTON_PADDING;
     button->addChild(
@@ -257,7 +257,6 @@ void ClientObject::onRightClick() {
 }
 
 void ClientObject::addQuestsToWindow() {
-  const Client &client = Client::instance();
   px_t y = _window->contentHeight(), newWidth = _window->contentWidth();
 
   const auto BUTTON_HEIGHT = 15, BUTTON_WIDTH = 150, MARGIN = 2;
@@ -349,7 +348,7 @@ void ClientObject::addConstructionToWindow(const Client &client) {
   const auto buttonY = y + (dropbox->height() - AUTO_BUTTON_H) / 2;
   auto autoFillButton =
       new Button({x, buttonY, AUTO_BUTTON_W, AUTO_BUTTON_H}, "Auto", [this]() {
-        Client::instance().sendMessage({CL_AUTO_CONSTRUCT, makeArgs(serial())});
+        _client->sendMessage({CL_AUTO_CONSTRUCT, makeArgs(serial())});
       });
   autoFillButton->setTooltip(
       "Add as many materials as possible from your inventory.");
@@ -746,8 +745,8 @@ void ClientObject::startDeconstructing(void *object) {
                              obj.objectType()->name());
 }
 
-void ClientObject::trade(Serial serial, size_t slot) {
-  Client::_instance->sendMessage({CL_TRADE, makeArgs(serial, slot)});
+void ClientObject::trade(const Client &client, Serial serial, size_t slot) {
+  client.sendMessage({CL_TRADE, makeArgs(serial, slot)});
 }
 
 void ClientObject::sendMerchantSlot(const Client *client, Serial serial,
@@ -755,8 +754,8 @@ void ClientObject::sendMerchantSlot(const Client *client, Serial serial,
   const auto &objects = client->_objects;
   auto it = objects.find(serial);
   if (it == objects.end()) {
-    Client::instance().showErrorMessage(
-        "Attempting to configure nonexistent object", Color::CHAT_ERROR);
+    client->showErrorMessage("Attempting to configure nonexistent object",
+                             Color::CHAT_ERROR);
     return;
   }
   ClientObject &obj = *it->second;
@@ -785,10 +784,10 @@ bool ClientObject::userHasAccess() const {
   if (_owner.type == Owner::NO_ACCESS) return false;
 
   // Player is owner
-  if (isOwnedByPlayer(Client::_instance->username())) return true;
+  if (isOwnedByPlayer(_client->username())) return true;
 
   // City is owner
-  auto playerCity = Client::_instance->character().cityName();
+  auto playerCity = _client->character().cityName();
   if (isOwnedByCity(playerCity)) return true;
 
   // Player-unique: fellow citizen is owner.  This is a special case where other
@@ -796,7 +795,7 @@ bool ClientObject::userHasAccess() const {
   auto isPlayerUnique =
       dynamic_cast<const ClientObjectType *>(type())->isPlayerUnique();
   if (!isPlayerUnique || _owner.type != Owner::PLAYER) return false;
-  auto ownerCity = Client::instance().getUserCity(_owner.name);
+  auto ownerCity = _client->getUserCity(_owner.name);
   auto isOwnedByFellowCitizen = playerCity == ownerCity && !playerCity.empty();
   return isOwnedByFellowCitizen;
 }
@@ -812,18 +811,18 @@ bool ClientObject::userHasDemolishAccess() const {
   if (_owner.type == Owner::NO_ACCESS) return false;
 
   // Player is owner
-  if (isOwnedByPlayer(Client::_instance->username())) return true;
+  if (isOwnedByPlayer(_client->username())) return true;
 
   // City is owner
-  auto playerCity = Client::_instance->character().cityName();
+  auto playerCity = _client->character().cityName();
   if (isOwnedByCity(playerCity)) return true;
 
   return false;
 }
 
 bool ClientObject::canAlwaysSee() const {
-  return isOwnedByPlayer(Client::_instance->username()) ||
-         isOwnedByCity(Client::_instance->character().cityName());
+  return isOwnedByPlayer(_client->username()) ||
+         isOwnedByCity(_client->character().cityName());
 }
 
 void ClientObject::update(double delta) {
@@ -907,8 +906,8 @@ void ClientObject::drawAppropriateQuestIndicator() const {
   auto questIndicatorOffset = ScreenRect{
       -questIndicator.width() / 2, -questIndicator.height() - 17 - height(),
       questIndicator.width(), questIndicator.height()};
-  auto indicatorLocation = toScreenRect(location()) +
-                           Client::instance().offset() + questIndicatorOffset;
+  auto indicatorLocation =
+      toScreenRect(location()) + _client->offset() + questIndicatorOffset;
   questIndicator.draw(indicatorLocation);
 }
 
@@ -933,7 +932,7 @@ const Texture &ClientObject::cursor() const {
 }
 
 const Tooltip &ClientObject::tooltip() const {
-  auto shouldShowRepairTooltip = Client::instance().isAltPressed();
+  auto shouldShowRepairTooltip = _client->isAltPressed();
   if (shouldShowRepairTooltip) {
     if (!_repairTooltip.hasValue()) createRepairTooltip();
     return _repairTooltip.value();
@@ -947,8 +946,6 @@ void ClientObject::createRegularTooltip() const {
   if (_tooltip.hasValue()) return;
   _tooltip = Tooltip{};
   auto &tooltip = _tooltip.value();
-
-  const auto &client = *Client::_instance;
 
   const ClientObjectType &ot = *objectType();
 
@@ -988,7 +985,7 @@ void ClientObject::createRegularTooltip() const {
 
   // Owner
   tooltip.setColor(Color::TOOLTIP_BODY);
-  if (isOwnedByPlayer(Client::_instance->username())) {
+  if (isOwnedByPlayer(_client->username())) {
     tooltip.addGap();
     tooltip.addLine("Owned by you");
   } else if (_owner.type != Owner::ALL_HAVE_ACCESS) {
@@ -1026,7 +1023,7 @@ void ClientObject::createRegularTooltip() const {
       }
       std::string text = "Gatherable";
       if (!ot.gatherReq().empty())
-        text += " (requires " + client.tagName(ot.gatherReq()) + ")";
+        text += " (requires " + _client->tagName(ot.gatherReq()) + ")";
       tooltip.addLine(text);
       tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
       tooltip.addLine(std::string("Right-click to gather"));
@@ -1129,7 +1126,6 @@ bool ClientObject::addClassSpecificStuffToTooltip(Tooltip &tooltip) const {
 }
 
 void ClientObject::createRepairTooltip() const {
-  const auto &client = *Client::_instance;
   const ClientObjectType &ot = *objectType();
   const auto &repairInfo = ot.repairInfo();
 
@@ -1156,14 +1152,14 @@ void ClientObject::createRepairTooltip() const {
     rt.setColor(Color::TOOLTIP_BODY);
     rt.addLine("Requires tool:");
     rt.setColor(Color::TOOLTIP_TAG);
-    rt.addLine(Client::instance().tagName(repairInfo.tool));
+    rt.addLine(_client->tagName(repairInfo.tool));
   }
 
   if (repairInfo.hasCost()) {
     rt.addGap();
     rt.setColor(Color::TOOLTIP_BODY);
     rt.addLine("Will consume:");
-    const auto *costItem = Client::instance().findItem(repairInfo.cost);
+    const auto *costItem = _client->findItem(repairInfo.cost);
     if (!costItem) return;
     rt.addItem(*costItem);
   }
@@ -1206,20 +1202,17 @@ std::set<CQuest *> ClientObject::completableQuests() const {
 }
 
 void ClientObject::sendTargetMessage() const {
-  const Client &client = *Client::_instance;
-  client.sendMessage({CL_TARGET_ENTITY, serial()});
+  _client->sendMessage({CL_TARGET_ENTITY, serial()});
 }
 
 void ClientObject::sendSelectMessage() const {
-  const Client &client = *Client::_instance;
-  client.sendMessage({CL_SELECT_ENTITY, serial()});
+  _client->sendMessage({CL_SELECT_ENTITY, serial()});
 }
 
 bool ClientObject::canBeAttackedByPlayer() const {
   if (!ClientCombatant::canBeAttackedByPlayer()) return false;
   if (_owner.type == Owner::ALL_HAVE_ACCESS) return false;
-  const Client &client = *Client::_instance;
-  return client.isAtWarWithObjectOwner(_owner);
+  return _client->isAtWarWithObjectOwner(_owner);
 }
 
 void ClientObject::playAttackSound() const {
@@ -1245,8 +1238,7 @@ const Color &ClientObject::nameColor() const {
 }
 
 bool ClientObject::shouldDrawName() const {
-  const auto &client = Client::instance();
-  if (client.currentMouseOverEntity() == this) return true;
+  if (_client->currentMouseOverEntity() == this) return true;
   return false;
 }
 
@@ -1262,12 +1254,12 @@ bool ClientObject::containerIsEmpty() const {
 }
 
 bool ClientObject::belongsToPlayer() const {
-  const Avatar &playerCharacter = Client::_instance->character();
+  const Avatar &playerCharacter = _client->character();
   return owner() == Owner{Owner::PLAYER, playerCharacter.name()};
 }
 
 bool ClientObject::belongsToPlayerCity() const {
-  const Avatar &playerCharacter = Client::_instance->character();
+  const Avatar &playerCharacter = _client->character();
   if (playerCharacter.cityName().empty()) return false;
   return owner() == Owner{Owner::CITY, playerCharacter.cityName()};
 }
