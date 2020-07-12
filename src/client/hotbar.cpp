@@ -26,13 +26,12 @@ static const auto HOTBAR_KEYS = std::map<SDL_Keycode, size_t>{
 static const int NO_BUTTON_BEING_ASSIGNED{-1};
 static int buttonBeingAssigned{NO_BUTTON_BEING_ASSIGNED};
 
-static void performAction(int i) {
-  auto &client = Client::instance();
+static void performAction(Client &client, int i) {
   if (actions[i].category == HotbarCategory::HOTBAR_SPELL)
     client.sendMessage({CL_CAST, actions[i].id});
   else if (actions[i].category == HotbarCategory::HOTBAR_RECIPE) {
     client.sendMessage({CL_CRAFT, actions[i].id});
-    Client::instance().prepareAction("Crafting"s);
+    client.prepareAction("Crafting"s);
   }
 }
 
@@ -44,8 +43,8 @@ void Client::initHotbar() {
                        SCREEN_Y - _hotbar->height());
 
   for (auto i = 0; i != NUM_HOTBAR_BUTTONS; ++i) {
-    auto button =
-        new Button({i * 18, 0, 18, 18}, {}, [i]() { performAction(i); });
+    auto button = new Button({i * 18, 0, 18, 18}, {},
+                             [i, this]() { performAction(*this, i); });
 
     // Icons
     auto picture = new Picture({1, 1, ICON_SIZE, ICON_SIZE}, {});
@@ -60,10 +59,10 @@ void Client::initHotbar() {
 
     // RMB: Assign
     button->setRightMouseUpFunction(
-        [i](Element &e, const ScreenPoint &mousePos) {
+        [i, this](Element &e, const ScreenPoint &mousePos) {
           if (!collision(mousePos, {0, 0, e.rect().w, e.rect().h})) return;
 
-          Client::instance().populateAssignerWindow();
+          populateAssignerWindow();
           assigner->show();
           buttonBeingAssigned = i;
         },
@@ -82,17 +81,18 @@ void Client::initHotbar() {
   initAssignerWindow();
 }
 
-static void assignButton(HotbarCategory category, const std::string &id) {
+static void assignButton(Client &client, HotbarCategory category,
+                         const std::string &id) {
   if (buttonBeingAssigned == NO_BUTTON_BEING_ASSIGNED) return;
 
   actions[buttonBeingAssigned] = {category, id};
 
-  Client::instance().sendMessage(
+  client.sendMessage(
       {CL_HOTBAR_BUTTON, makeArgs(buttonBeingAssigned, category, id)});
 
   assigner->hide();
   buttonBeingAssigned = NO_BUTTON_BEING_ASSIGNED;
-  Client::instance().refreshHotbar();
+  client.refreshHotbar();
 }
 
 void Client::setHotbar(
@@ -100,7 +100,7 @@ void Client::setHotbar(
   for (auto i = 0; i != buttons.size(); ++i) {
     auto category = HotbarCategory(buttons[i].first);
     buttonBeingAssigned = i;
-    assignButton(category, buttons[i].second);
+    assignButton(*this, category, buttons[i].second);
   }
 }
 
@@ -228,7 +228,7 @@ void Client::populateAssignerWindow() {
   spellList->clearChildren();
   for (const auto *spell : _knownSpells) {
     auto button = new Button({}, {}, [this, spell]() {
-      assignButton(HotbarCategory::HOTBAR_SPELL, spell->id());
+      assignButton(*this, HotbarCategory::HOTBAR_SPELL, spell->id());
     });
     button->addChild(new Picture(1, 1, spell->icon()));
     button->addChild(new Label({ICON_SIZE + 3, 0, 200, ICON_SIZE},
@@ -245,7 +245,7 @@ void Client::populateAssignerWindow() {
     if (!recipeIsKnown) continue;
 
     auto button = new Button({}, {}, [this, &recipe]() {
-      assignButton(HotbarCategory::HOTBAR_RECIPE, recipe.id());
+      assignButton(*this, HotbarCategory::HOTBAR_RECIPE, recipe.id());
     });
     const auto *product = dynamic_cast<const ClientItem *>(recipe.product());
     button->addChild(new Picture(1, 1, product->icon()));
