@@ -437,7 +437,7 @@
                 <offset x="-5" y="-3" />
                 <canBeRepaired cost="copperRing" />
             </item>
-                <item id="copperHauberkSilver" name="Copper Hauberk" gearSlot="2" sounds="mailArmor" lvlReq="29"
+                <item id="copperHauberkSilver" name="Silvered Copper Hauberk" gearSlot="2" sounds="mailArmor" lvlReq="29"
                     iconFile="copperHauberk" gearFile="copperHauberk" quality="2">
                     <stats armor="5" block="12" />
                     <offset x="-5" y="-3" />
