@@ -8,11 +8,17 @@ static ScreenPoint mapDisplacement{};
 static Picture *fogOfWar{nullptr};
 
 void Client::onMapScrollUp(Element &e) {
-  instance().zoomMapIn();
+  auto *window = dynamic_cast<Window *>(&e);
+  if (!window || !window->client()) return;
+
+  window->client()->zoomMapIn();
   updateMapWindow(e);
 }
 void Client::onMapScrollDown(Element &e) {
-  instance().zoomMapOut();
+  auto *window = dynamic_cast<Window *>(&e);
+  if (!window || !window->client()) return;
+
+  window->client()->zoomMapOut();
   updateMapWindow(e);
 }
 
@@ -58,8 +64,11 @@ void Client::initializeMapWindow() {
   _mapWindow->setPreRefreshFunction(updateMapWindow);
 }
 
-void Client::updateMapWindow(Element &) {
-  Client &client = *Client::_instance;
+void Client::updateMapWindow(Element &e) {
+  const auto *window = dynamic_cast<const Window *>(&e);
+  if (!window || !window->client()) return;
+  auto &client = *window->client();
+
   zoomMultiplier = 1 << client._zoom;
 
   // Unit: point from far top/left to far bottom/right [0,1]

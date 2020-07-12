@@ -51,6 +51,8 @@ class Window : public Element {
   bool isInitialized() const {
     return _initFunction == nullptr || _isInitialized;
   }
+  void onAddToClientWindowList(Client &client);
+  Client *client() const { return _client; }
 
  protected:
   Window();
@@ -61,6 +63,8 @@ class Window : public Element {
   void addHeading();
   void addBorder();
   void addContent();
+
+  Client *_client{nullptr};
 
   std::string _title;
   bool _dragging;  // Whether this window is currently being dragged by the

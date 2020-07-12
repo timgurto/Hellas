@@ -1,6 +1,8 @@
-#include <cassert>
+#include "Window.h"
 
 #include <SDL_ttf.h>
+
+#include <cassert>
 
 #include "../Client.h"
 #include "Button.h"
@@ -9,12 +11,13 @@
 #include "Label.h"
 #include "Line.h"
 #include "ShadowBox.h"
-#include "Window.h"
 
 px_t Window::HEADING_HEIGHT = 0;
 px_t Window::CLOSE_BUTTON_SIZE = 0;
 
 extern Renderer renderer;
+
+void Window::onAddToClientWindowList(Client &client) { _client = &client; }
 
 Window::Window()
     : _title(""),

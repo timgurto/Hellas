@@ -529,6 +529,7 @@ void Client::addWindow(Window *window) {
   assert(window != nullptr);
   assert(!window->title().empty());
   _windows.push_front(window);
+  window->onAddToClientWindowList(*this);
 }
 
 void Client::removeWindow(Window *window) { _windows.remove(window); }
