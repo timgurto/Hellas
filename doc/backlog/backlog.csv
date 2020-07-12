@@ -445,3 +445,5 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 638,Make NPC and User not subclasses of Object,13,21,Code quality,,,,
 639,Allow using the window of gatherable objects/NPCs,5,5,Usability,,,,
 640,Serpent Scales + gear (tier-3 leather),34,144,Content,,,,6 Bronze
+641,Drop item onto container to insert it,,,Usability,,,,
+642,Drop item onto construction site,,,Usability,,,,

@@ -61,7 +61,7 @@ class Projectile : public Sprite {
     void tail(const std::string &imageFile, const ScreenRect &drawRect,
               int length, int separation, const std::string &particles);
 
-    void instantiate(const MapPoint &start, const MapPoint &end,
+    void instantiate(Client &client, const MapPoint &start, const MapPoint &end,
                      bool willMiss = false) const;
     friend class Projectile;
   };

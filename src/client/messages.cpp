@@ -2216,7 +2216,7 @@ void Client::handle_SV_SPELL_HIT(const std::string &spellID,
   if (spell.sounds()) spell.sounds()->playOnce("launch");
 
   if (spell.projectile())
-    spell.projectile()->instantiate(src, dst);
+    spell.projectile()->instantiate(*this, src, dst);
   else
     onSpellHit(dst, &spell);
 }
@@ -2231,7 +2231,7 @@ void Client::handle_SV_SPELL_MISS(const std::string &spellID,
 
   if (spell.projectile()) {
     auto pointPastDest = extrapolate(src, dst, 2000);
-    spell.projectile()->instantiate(src, pointPastDest, true);
+    spell.projectile()->instantiate(*this, src, pointPastDest, true);
   }
 }
 
@@ -2240,7 +2240,8 @@ void Client::handle_SV_RANGED_NPC_HIT(const std::string &npcID,
                                       const MapPoint &dst) {
   auto npcType = findNPCType(npcID);
   if (!npcType) return;
-  if (npcType->projectile()) npcType->projectile()->instantiate(src, dst);
+  if (npcType->projectile())
+    npcType->projectile()->instantiate(*this, src, dst);
 }
 
 void Client::handle_SV_RANGED_NPC_MISS(const std::string &npcID,
@@ -2251,7 +2252,7 @@ void Client::handle_SV_RANGED_NPC_MISS(const std::string &npcID,
 
   if (npcType->projectile()) {
     auto pointPastDest = extrapolate(src, dst, 2000);
-    npcType->projectile()->instantiate(src, pointPastDest, true);
+    npcType->projectile()->instantiate(*this, src, pointPastDest, true);
   }
 }
 
@@ -2263,7 +2264,7 @@ void Client::handle_SV_RANGED_WEAPON_HIT(const std::string &weaponID,
   const auto &item = it->second;
 
   if (item.projectile()) {
-    item.projectile()->instantiate(src, dst);
+    item.projectile()->instantiate(*this, src, dst);
   }
 }
 
@@ -2276,7 +2277,7 @@ void Client::handle_SV_RANGED_WEAPON_MISS(const std::string &weaponID,
 
   if (item.projectile()) {
     auto pointPastDest = extrapolate(src, dst, 2000);
-    item.projectile()->instantiate(src, pointPastDest, true);
+    item.projectile()->instantiate(*this, src, pointPastDest, true);
   }
 }
 

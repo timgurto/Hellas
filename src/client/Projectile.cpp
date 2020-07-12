@@ -4,8 +4,6 @@
 #include "SoundProfile.h"
 
 void Projectile::update(double delta) {
-  auto &client = Client::instance();
-
   auto distanceToMove = speed() * delta;
   auto distanceFromTarget = distance(location(), _end);
   auto reachedTarget = distanceToMove >= distanceFromTarget;
@@ -14,7 +12,7 @@ void Projectile::update(double delta) {
     auto shouldShowImpact = !_willMiss;
     if (shouldShowImpact) {
       if (!particlesAtEnd().empty())
-        client.addParticles(particlesAtEnd(), _end);
+        _client->addParticles(particlesAtEnd(), _end);
 
       auto sounds = projectileType().sounds();
       if (sounds) sounds->playOnce("impact"s);
@@ -38,7 +36,7 @@ void Projectile::update(double delta) {
 
     // Add particles
     if (tailParticles != ""s) {
-      client.addParticles(tailParticles, segment->location());
+      _client->addParticles(tailParticles, segment->location());
     }
   }
 }
@@ -56,9 +54,8 @@ void Projectile::Type::sounds(const std::string &profile) {
   _sounds = Client::instance().findSoundProfile(profile);
 }
 
-void Projectile::Type::instantiate(const MapPoint &start, const MapPoint &end,
-                                   bool willMiss) const {
-  auto &client = Client::instance();
+void Projectile::Type::instantiate(Client &client, const MapPoint &start,
+                                   const MapPoint &end, bool willMiss) const {
   auto projectile = new Projectile(*this, start, end);
   if (willMiss) projectile->willMiss();
   client.addEntity(projectile);
