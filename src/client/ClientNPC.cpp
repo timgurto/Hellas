@@ -43,11 +43,9 @@ const Color &ClientNPC::nameColor() const {
 }
 
 void ClientNPC::update(double delta) {
-  auto &client = Client::instance();
-
   auto shouldDrawGear = isAlive() && npcType()->hasGear();
   if (shouldDrawGear)
-    client.drawGearParticles(npcType()->gear(), location(), delta);
+    _client->drawGearParticles(npcType()->gear(), location(), delta);
 
   ClientObject::update(delta);
 }
@@ -78,23 +76,21 @@ bool ClientNPC::addClassSpecificStuffToWindow() {
   if (this->owner().type == Owner::ALL_HAVE_ACCESS) return false;
   if (!userHasAccess()) return false;
 
-  const auto &client = Client::instance();
-
   px_t x = BUTTON_GAP, y = _window->contentHeight(),
        newWidth = _window->contentWidth();
   y += BUTTON_GAP;
 
-  auto *followButton = new Button(
-      {x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Follow", [this, &client]() {
-        client.sendMessage({CL_ORDER_NPC_TO_FOLLOW, serial()});
+  auto *followButton =
+      new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Follow", [this]() {
+        _client->sendMessage({CL_ORDER_NPC_TO_FOLLOW, serial()});
       });
   followButton->setTooltip("Order this pet to follow you.");
   _window->addChild(followButton);
   x += BUTTON_GAP + BUTTON_WIDTH;
 
-  auto *stayButton = new Button(
-      {x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Stay", [this, &client]() {
-        client.sendMessage({CL_ORDER_NPC_TO_STAY, serial()});
+  auto *stayButton =
+      new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Stay", [this]() {
+        _client->sendMessage({CL_ORDER_NPC_TO_STAY, serial()});
       });
   stayButton->setTooltip("Order this pet to stay.");
   _window->addChild(stayButton);
@@ -103,10 +99,10 @@ bool ClientNPC::addClassSpecificStuffToWindow() {
   if (newWidth < x) newWidth = x;
 
   x = BUTTON_GAP;
-  auto *feedButton = new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Feed",
-                                [this, &client]() {
-                                  client.sendMessage({CL_FEED_PET, serial()});
-                                });
+  auto *feedButton =
+      new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Feed", [this]() {
+        _client->sendMessage({CL_FEED_PET, serial()});
+      });
   feedButton->setTooltip(
       "Feed this pet to heal it.  This will consume food from your inventory.");
   _window->addChild(feedButton);
