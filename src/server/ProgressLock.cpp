@@ -107,18 +107,25 @@ void ProgressLock::triggerUnlocks(User &user, Type triggerType,
 
     std::string id;
     switch (lock._effectType) {
-      case RECIPE:
-        id = reinterpret_cast<const SRecipe *>(lock._effect)->id();
+      case RECIPE: {
+        const auto *recipe = reinterpret_cast<const SRecipe *>(lock._effect);
+        if (!recipe) break;
+        id = recipe->id();
         if (user.knowsRecipe(id)) continue;
         newRecipes.insert(id);
         user.addRecipe(id);
         break;
-      case CONSTRUCTION:
-        id = reinterpret_cast<const ObjectType *>(lock._effect)->id();
+      }
+      case CONSTRUCTION: {
+        const auto *objType =
+            reinterpret_cast<const ObjectType *>(lock._effect);
+        if (!objType) break;
+        id = objType->id();
         if (user.knowsConstruction(id)) continue;
         newBuilds.insert(id);
         user.addConstruction(id);
         break;
+      }
       default:;
     }
   }
