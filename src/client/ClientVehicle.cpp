@@ -4,9 +4,9 @@
 
 extern Renderer renderer;
 
-ClientVehicle::ClientVehicle(Serial serial, const ClientVehicleType *type,
-                             const MapPoint &loc)
-    : ClientObject(serial, type, loc), _driver(nullptr) {}
+ClientVehicle::ClientVehicle(Client &client, Serial serial,
+                             const ClientVehicleType *type, const MapPoint &loc)
+    : ClientObject(serial, type, loc, client), _driver(nullptr) {}
 
 void ClientVehicle::mountOrDismount(void *object) {
   const ClientVehicle &obj = *static_cast<const ClientVehicle *>(object);

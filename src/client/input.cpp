@@ -572,8 +572,8 @@ Sprite *Client::getEntityAtMouse() {
   const MapPoint mouseOffset = toMapPoint(_mouse) - _offset;
   Sprite::set_t::iterator mouseOverIt = _entities.end();
   static const px_t LOOKUP_MARGIN = 320;
-  Sprite topEntity(nullptr, {0, mouseOffset.y - LOOKUP_MARGIN}),
-      bottomEntity(nullptr, {0, mouseOffset.y + LOOKUP_MARGIN});
+  Sprite topEntity(nullptr, {0, mouseOffset.y - LOOKUP_MARGIN}, *this),
+      bottomEntity(nullptr, {0, mouseOffset.y + LOOKUP_MARGIN}, *this);
   auto lowerBound = _entities.lower_bound(&topEntity),
        upperBound = _entities.upper_bound(&bottomEntity);
 

@@ -717,18 +717,18 @@ void Client::handleBufferedMessages(const std::string &msg) {
             case 'n': {
               const ClientNPCType *npcType =
                   static_cast<const ClientNPCType *>(cot);
-              obj = new ClientNPC(serial, npcType, {x, y});
+              obj = new ClientNPC(*this, serial, npcType, {x, y});
               break;
             }
             case 'v': {
               const ClientVehicleType *vehicleType =
                   static_cast<const ClientVehicleType *>(cot);
-              obj = new ClientVehicle(serial, vehicleType, {x, y});
+              obj = new ClientVehicle(*this, serial, vehicleType, {x, y});
               break;
             }
             case 'o':
             default:
-              obj = new ClientObject(serial, cot, {x, y});
+              obj = new ClientObject(serial, cot, {x, y}, *this);
           }
           _entities.insert(obj);
           _objects[serial] = obj;
@@ -750,8 +750,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
         if (del != MSG_END) break;
 
         const auto *itemType = findItem(itemID);
-        auto *droppedItem =
-            new CDroppedItem(serial, location, *itemType, qty, isNew != 0);
+        auto *droppedItem = new CDroppedItem(serial, location, *itemType, qty,
+                                             isNew != 0, *this);
         _entities.insert(droppedItem);
         _objects[serial] = droppedItem;
         break;

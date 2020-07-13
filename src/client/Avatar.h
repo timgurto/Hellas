@@ -36,7 +36,7 @@ class Avatar : public Sprite, public ClientCombatant {
   ms_t _craftingSoundTimer{0};
 
  public:
-  Avatar(const std::string &name, const MapPoint &location);
+  Avatar(const std::string &name, const MapPoint &location, Client &client);
 
   const MapRect collisionRect() const { return COLLISION_RECT + location(); }
   static const MapRect &collisionRectRaw() { return COLLISION_RECT; }

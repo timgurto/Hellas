@@ -42,8 +42,8 @@ ClientObject::ClientObject(const ClientObject &rhs)
       _beingGathered(rhs._beingGathered) {}
 
 ClientObject::ClientObject(Serial serialArg, const ClientObjectType *type,
-                           const MapPoint &loc)
-    : Sprite(type, loc),
+                           const MapPoint &loc, Client &client)
+    : Sprite(type, loc, client),
       ClientCombatant(type),
       _serial(serialArg),
       _owner({Owner::ALL_HAVE_ACCESS, {}}),
@@ -54,9 +54,6 @@ ClientObject::ClientObject(Serial serialArg, const ClientObjectType *type,
       _gatherSoundTimer(0),
       _lootable(false),
       _lootContainer(nullptr) {
-  if (type == nullptr)  // i.e., a serial-only search dummy
-    return;
-
   _transformTimer = type->transformTime();
 
   const size_t containerSlots = objectType()->containerSlots(),
@@ -67,6 +64,12 @@ ClientObject::ClientObject(Serial serialArg, const ClientObjectType *type,
   _wareQtyBoxes = std::vector<TextBox *>(merchantSlots, nullptr);
   _priceQtyBoxes = std::vector<TextBox *>(merchantSlots, nullptr);
 }
+
+ClientObject::ClientObject(Serial serialArg)
+    : Sprite(nullptr, MapPoint{}, *(Client *)(nullptr)),
+      ClientCombatant(nullptr),
+      _serial(serialArg),
+      _owner({Owner::ALL_HAVE_ACCESS, {}}) {}
 
 ClientObject::~ClientObject() {
   if (_window != nullptr) {

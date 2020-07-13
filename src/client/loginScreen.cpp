@@ -93,9 +93,9 @@ void Client::updateLoginParticles(double delta) {
     if (profile == nullptr) continue;
     size_t qty = profile->numParticlesContinuous(delta);
     for (size_t i = 0; i != qty; ++i) {
-      Particle *p = profile->instantiate(LEFT_BRAZIER);
-      _loginParticles.push_back(profile->instantiate(LEFT_BRAZIER));
-      _loginParticles.push_back(profile->instantiate(RIGHT_BRAZIER));
+      Particle *p = profile->instantiate(LEFT_BRAZIER, *this);
+      _loginParticles.push_back(profile->instantiate(LEFT_BRAZIER, *this));
+      _loginParticles.push_back(profile->instantiate(RIGHT_BRAZIER, *this));
     }
   }
 }

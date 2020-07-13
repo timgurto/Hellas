@@ -6,9 +6,9 @@
 
 extern Renderer renderer;
 
-ClientNPC::ClientNPC(Serial serial, const ClientNPCType *type,
+ClientNPC::ClientNPC(Client &client, Serial serial, const ClientNPCType *type,
                      const MapPoint &loc)
-    : ClientObject(serial, type, loc) {}
+    : ClientObject(serial, type, loc, client) {}
 
 bool ClientNPC::canBeTamed() const {
   if (!npcType()->canBeTamed()) return false;

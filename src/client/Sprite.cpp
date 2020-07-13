@@ -12,14 +12,17 @@ extern Renderer renderer;
 const std::string Sprite::EMPTY_NAME = "";
 const ScreenPoint Sprite::HIGHLIGHT_OFFSET{-1, -1};
 
-Sprite::Sprite(const SpriteType *type, const MapPoint &location)
-    : _yChanged(false),
+Sprite::Sprite(const SpriteType *type, const MapPoint &location, Client &client)
+    : _client(&client),
+      _yChanged(false),
       _type(type),
       _location(location),
       _locationOnServer(location),
       _toRemove(false) {}
 
-void Sprite::onAddToClient(Client &client) { _client = &client; }
+Sprite Sprite::YCoordOnly(double y) {
+  return {nullptr, {0, y}, *(Client *)(nullptr)};
+}
 
 ScreenRect Sprite::drawRect() const {
   assert(_type != nullptr);

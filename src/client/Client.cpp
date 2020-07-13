@@ -84,7 +84,7 @@ Client::Client()
       _cursorVehicle("Images/Cursors/vehicle.png"s, Color::MAGENTA),
       _currentCursor(&_cursorNormal),
 
-      _character({}, {}),
+      _character({}, {}, *this),
 
       _activeRecipe(nullptr),
 
@@ -452,10 +452,7 @@ bool Client::playerHasItem(const Item *item, size_t quantity) const {
   return false;
 }
 
-void Client::addEntity(Sprite *sprite) {
-  _entities.insert(sprite);
-  sprite->onAddToClient(*this);
-}
+void Client::addEntity(Sprite *sprite) { _entities.insert(sprite); }
 
 void Client::removeEntity(Sprite *const toRemove) {
   const Sprite::set_t::iterator it = _entities.find(toRemove);
@@ -600,7 +597,7 @@ void Client::addParticles(const ParticlesToAdd &details) {
 #endif
 
   for (size_t i = 0; i != details.quantity(); ++i) {
-    auto *particle = details.profile().instantiate(details.location());
+    auto *particle = details.profile().instantiate(details.location(), *this);
 
     if (details.customAltitude() != 0)
       particle->addToAltitude(details.customAltitude());
@@ -667,7 +664,7 @@ void Client::addFloatingCombatText(const std::string &text,
                                    const MapPoint &location, Color color) {
   auto floatingTextProfile = findParticleProfile("floatingText");
   if (!floatingTextProfile) return;
-  auto floatingText = floatingTextProfile->instantiate(location);
+  auto floatingText = floatingTextProfile->instantiate(location, *this);
 
   auto outline = Texture{_defaultFont, text, color};
   auto front = Texture{_defaultFont, text, Color::FLOATING_CORE};
@@ -802,7 +799,7 @@ bool Client::isAtWarWith(const Avatar &user) const {
 }
 
 void Client::addUser(const std::string &name, const MapPoint &location) {
-  auto pUser = new Avatar(name, location);
+  auto pUser = new Avatar(name, location, *this);
   _otherUsers[name] = pUser;
   _entities.insert(pUser);
 }

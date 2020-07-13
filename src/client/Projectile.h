@@ -18,8 +18,9 @@ class Projectile : public Sprite {
   virtual void update(double delta) override;
 
  private:
-  Projectile(const Type &type, const MapPoint &start, const MapPoint &end)
-      : Sprite(&type, start), _end(end) {}
+  Projectile(const Type &type, const MapPoint &start, const MapPoint &end,
+             Client &client)
+      : Sprite(&type, start, client), _end(end) {}
 
   const Type &projectileType() const {
     return *dynamic_cast<const Type *>(this->type());

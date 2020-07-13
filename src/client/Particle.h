@@ -32,7 +32,7 @@ class Particle : public Sprite {
   Particle(const MapPoint &loc, const Texture &image,
            const ScreenRect &drawRect, const MapPoint &velocity,
            double startingAltitude, double startingFallSpeed, double gravity,
-           ms_t lifespan, const ParticleProfile &profile);
+           ms_t lifespan, const ParticleProfile &profile, Client &client);
 
   virtual ScreenRect drawRect() const override;
   virtual const Texture &image() const override { return _image; }

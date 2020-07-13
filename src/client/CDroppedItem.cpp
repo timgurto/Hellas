@@ -13,8 +13,8 @@ CDroppedItem::Type::Type() : ClientObjectType("droppedItem") {
 
 CDroppedItem::CDroppedItem(Serial serial, const MapPoint& location,
                            const ClientItem& itemType, size_t quantity,
-                           bool isNew)
-    : ClientObject(serial, &commonType, location),
+                           bool isNew, Client& client)
+    : ClientObject(serial, &commonType, location, client),
       _itemType(itemType),
       _quantity(quantity) {
   if (isNew) _altitude = DROP_HEIGHT;

@@ -6,6 +6,7 @@
 #include "../NormalVariable.h"
 #include "SpriteType.h"
 
+class Client;
 class Particle;
 
 class ParticleProfile {
@@ -79,7 +80,7 @@ class ParticleProfile {
   Create a new particle and return its pointer.  The caller takes responsibility
   for freeing it.
   */
-  Particle *instantiate(const MapPoint &location) const;
+  Particle *instantiate(const MapPoint &location, Client &client) const;
 
   /*
   Conceptually, returns delta * _particlesPerSecond.  However, since we want a

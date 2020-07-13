@@ -10,7 +10,8 @@ class CDroppedItem : public ClientObject {
   };
 
   CDroppedItem(Serial serial, const MapPoint &location,
-               const ClientItem &itemType, size_t quantity, bool isNew);
+               const ClientItem &itemType, size_t quantity, bool isNew,
+               Client &client);
   virtual const std::string &name() const override;
   virtual const Texture &image() const override;
   virtual const Texture &getHighlightImage() const override;

@@ -59,9 +59,8 @@ void Client::draw() const {
                leftX = -offset().x - DRAW_MARGIN_SIDES,
                rightX = -offset().x + SCREEN_X + DRAW_MARGIN_SIDES;
   // Cull by y
-  Sprite topEntity(nullptr, {0, topY}), bottomEntity(nullptr, {0, bottomY});
-  auto top = _entities.lower_bound(&topEntity);
-  auto bottom = _entities.upper_bound(&bottomEntity);
+  auto top = _entities.lower_bound(&Sprite::YCoordOnly(topY));
+  auto bottom = _entities.upper_bound(&Sprite::YCoordOnly(bottomY));
   // Construction sites
   renderer.setDrawColor(Color::FOOTPRINT_ACTIVE);
   for (auto it = top; it != bottom; ++it) {

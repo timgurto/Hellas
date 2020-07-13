@@ -35,10 +35,9 @@ class Sprite {
   Client *_client{nullptr};
 
  public:
-  Sprite(const SpriteType *type, const MapPoint &location);
+  Sprite(const SpriteType *type, const MapPoint &location, Client &client);
+  static Sprite YCoordOnly(double y);
   virtual ~Sprite() {}
-
-  void onAddToClient(Client &client);
 
   const MapPoint &location() const { return _location; }
   void location(const MapPoint &loc);  // yChanged() should be checked after

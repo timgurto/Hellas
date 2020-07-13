@@ -35,7 +35,8 @@ void ParticleProfile::addVariety(const std::string &imageFile, size_t count) {
   for (size_t i = 0; i != count; ++i) _pool.push_back(particleType);
 }
 
-Particle *ParticleProfile::instantiate(const MapPoint &location) const {
+Particle *ParticleProfile::instantiate(const MapPoint &location,
+                                       Client &client) const {
   // Choose random variety
   assert(!_pool.empty());
   size_t index = rand() % _pool.size();
@@ -63,7 +64,7 @@ Particle *ParticleProfile::instantiate(const MapPoint &location) const {
   return new Particle(startingLoc, variety.image(), variety.drawRect(),
                       startingVelocity, _altitude.generate(),
                       _fallSpeed.generate(), _gravity,
-                      max(0, toInt(_lifespan.generate())), *this);
+                      max(0, toInt(_lifespan.generate())), *this, client);
 }
 
 size_t ParticleProfile::numParticlesContinuous(double delta) const {

@@ -56,7 +56,7 @@ void Projectile::Type::sounds(const std::string &profile) {
 
 void Projectile::Type::instantiate(Client &client, const MapPoint &start,
                                    const MapPoint &end, bool willMiss) const {
-  auto projectile = new Projectile(*this, start, end);
+  auto projectile = new Projectile(*this, start, end, client);
   if (willMiss) projectile->willMiss();
   client.addEntity(projectile);
 
@@ -65,7 +65,7 @@ void Projectile::Type::instantiate(Client &client, const MapPoint &start,
   for (auto i = 0; i != _tailLength; ++i) {
     dist += _tailSeparation;
     auto position = extrapolate(end, start, dist);
-    auto tailSegment = new Sprite(&_tailType, position);
+    auto tailSegment = new Sprite(&_tailType, position, client);
     client.addEntity(tailSegment);
     projectile->_tail.push_back(tailSegment);
   }

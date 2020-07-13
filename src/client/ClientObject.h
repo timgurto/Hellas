@@ -78,10 +78,11 @@ class ClientObject : public Sprite, public ClientCombatant {
   }
 
  public:
+  ClientObject(Serial serial, const ClientObjectType *type, const MapPoint &loc,
+               Client &client);
   ClientObject(const ClientObject &rhs);
   // Serial only: create dummy object, for set searches
-  ClientObject(Serial serial, const ClientObjectType *type = nullptr,
-               const MapPoint &loc = MapPoint{});
+  ClientObject(Serial serial);
   virtual ~ClientObject();
 
   bool operator<(const ClientObject &rhs) const {
