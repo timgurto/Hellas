@@ -32,7 +32,7 @@ class Sprite {
 
  protected:
   mutable Optional<Tooltip> _tooltip;
-  Client *_client{nullptr};
+  Client &_client;
 
  public:
   Sprite(const SpriteType *type, const MapPoint &location, Client &client);

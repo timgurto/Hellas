@@ -48,7 +48,7 @@ void Particle::draw() const {
     drawRect.h -= cutoff;
   }
 
-  _image.draw(drawRect + _client->offset(), srcRect);
+  _image.draw(drawRect + _client.offset(), srcRect);
 }
 
 void Particle::setImageManually(const Texture &image) {

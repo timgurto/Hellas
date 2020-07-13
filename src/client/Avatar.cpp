@@ -68,18 +68,18 @@ void Avatar::draw() const {
   if (isDebug()) {
     renderer.setDrawColor(Color::CYAN);
     renderer.drawRect(toScreenRect(COLLISION_RECT + location()) +
-                      _client->offset());
+                      _client.offset());
   }
 }
 
 void Avatar::drawName() const {
   if (isCharacter()) return;
 
-  const Texture nameLabel(_client->defaultFont(), _name, nameColor());
-  const Texture nameOutline(_client->defaultFont(), _name, Color::UI_OUTLINE);
+  const Texture nameLabel(_client.defaultFont(), _name, nameColor());
+  const Texture nameOutline(_client.defaultFont(), _name, Color::UI_OUTLINE);
   Texture cityOutline, cityLabel;
 
-  ScreenPoint namePosition = toScreenPoint(location()) + _client->offset();
+  ScreenPoint namePosition = toScreenPoint(location()) + _client.offset();
   namePosition.y -= 60;
   namePosition.x -= nameLabel.width() / 2;
 
@@ -90,10 +90,10 @@ void Avatar::drawName() const {
     auto cityText = std::string{};
     if (_isKing) cityText = "King ";
     cityText += "of " + _city;
-    cityOutline = Texture(_client->defaultFont(), cityText, Color::UI_OUTLINE);
-    cityLabel = Texture(_client->defaultFont(), cityText, nameColor());
+    cityOutline = Texture(_client.defaultFont(), cityText, Color::UI_OUTLINE);
+    cityLabel = Texture(_client.defaultFont(), cityText, nameColor());
     cityPosition.x =
-        toInt(location().x + _client->offset().x - cityLabel.width() / 2.0);
+        toInt(location().x + _client.offset().x - cityLabel.width() / 2.0);
     cityPosition.y = namePosition.y;
     namePosition.y -= 11;
   }
@@ -108,7 +108,7 @@ void Avatar::drawName() const {
 }
 
 void Avatar::update(double delta) {
-  _client->drawGearParticles(_gear, location(), delta);
+  _client.drawGearParticles(_gear, location(), delta);
 
   ms_t timeElapsed = toInt(1000 * delta);
   if (_currentlyCrafting) {
@@ -125,8 +125,8 @@ void Avatar::update(double delta) {
 }
 
 void Avatar::setClass(const ClassInfo::Name &newClass) {
-  const auto it = _client->_classes.find(newClass);
-  if (it == _client->_classes.end()) return;
+  const auto it = _client._classes.find(newClass);
+  if (it == _client._classes.end()) return;
   _class = &(it->second);
 }
 
@@ -160,7 +160,7 @@ void Avatar::playAttackSound() const {
   if (weapon)
     weapon->playSoundOnce("attack");
   else
-    _client->avatarSounds()->playOnce("attack");
+    _client.avatarSounds()->playOnce("attack");
 }
 
 void Avatar::playDefendSound() const {
@@ -169,7 +169,7 @@ void Avatar::playDefendSound() const {
   if (armor)
     armor->playSoundOnce("defend");
   else
-    _client->avatarSounds()->playOnce("defend");
+    _client.avatarSounds()->playOnce("defend");
 }
 
 void Avatar::playDeathSound() const {
@@ -178,12 +178,12 @@ void Avatar::playDeathSound() const {
 }
 
 void Avatar::onLeftClick() {
-  _client->setTarget(*this);
+  _client.setTarget(*this);
   // Note: parent class's onLeftClick() not called.
 }
 
 void Avatar::onRightClick() {
-  _client->setTarget(*this, true);
+  _client.setTarget(*this, true);
   // Note: parent class's onRightClick() not called.
 }
 
@@ -219,8 +219,8 @@ bool Avatar::canBeAttackedByPlayer() const {
 }
 
 const Texture &Avatar::cursor() const {
-  if (canBeAttackedByPlayer()) return _client->cursorAttack();
-  return _client->cursorNormal();
+  if (canBeAttackedByPlayer()) return _client.cursorAttack();
+  return _client.cursorNormal();
 }
 
 bool Avatar::isInPlayersCity() const {

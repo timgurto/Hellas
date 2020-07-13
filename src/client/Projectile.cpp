@@ -12,7 +12,7 @@ void Projectile::update(double delta) {
     auto shouldShowImpact = !_willMiss;
     if (shouldShowImpact) {
       if (!particlesAtEnd().empty())
-        _client->addParticles(particlesAtEnd(), _end);
+        _client.addParticles(particlesAtEnd(), _end);
 
       auto sounds = projectileType().sounds();
       if (sounds) sounds->playOnce("impact"s);
@@ -36,7 +36,7 @@ void Projectile::update(double delta) {
 
     // Add particles
     if (tailParticles != ""s) {
-      _client->addParticles(tailParticles, segment->location());
+      _client.addParticles(tailParticles, segment->location());
     }
   }
 }

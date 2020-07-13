@@ -37,11 +37,11 @@ const Tooltip& CDroppedItem::tooltip() const {
 }
 
 void CDroppedItem::onLeftClick() {
-  _client->sendMessage({CL_PICK_UP_DROPPED_ITEM, serial()});
+  _client.sendMessage({CL_PICK_UP_DROPPED_ITEM, serial()});
 }
 
 void CDroppedItem::onRightClick() {
-  _client->sendMessage({CL_PICK_UP_DROPPED_ITEM, serial()});
+  _client.sendMessage({CL_PICK_UP_DROPPED_ITEM, serial()});
 }
 
 void CDroppedItem::update(double delta) {
@@ -67,7 +67,7 @@ void CDroppedItem::draw() const {
 
   drawShadow();
 
-  auto drawRect = this->drawRect() + _client->offset();
+  auto drawRect = this->drawRect() + _client.offset();
   drawRect.y -= toInt(_altitude);
   image().draw(drawRect.x, drawRect.y);
 }

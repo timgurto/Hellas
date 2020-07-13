@@ -38,7 +38,7 @@ void ClientVehicle::draw() const {
 
   // Draw bit in front of driver
   if (cvt.front()) {
-    cvt.front().draw(drawRect() + _client->offset());
+    cvt.front().draw(drawRect() + _client.offset());
   }
 }
 

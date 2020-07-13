@@ -45,7 +45,7 @@ const Color &ClientNPC::nameColor() const {
 void ClientNPC::update(double delta) {
   auto shouldDrawGear = isAlive() && npcType()->hasGear();
   if (shouldDrawGear)
-    _client->drawGearParticles(npcType()->gear(), location(), delta);
+    _client.drawGearParticles(npcType()->gear(), location(), delta);
 
   ClientObject::update(delta);
 }
@@ -82,7 +82,7 @@ bool ClientNPC::addClassSpecificStuffToWindow() {
 
   auto *followButton =
       new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Follow", [this]() {
-        _client->sendMessage({CL_ORDER_NPC_TO_FOLLOW, serial()});
+        _client.sendMessage({CL_ORDER_NPC_TO_FOLLOW, serial()});
       });
   followButton->setTooltip("Order this pet to follow you.");
   _window->addChild(followButton);
@@ -90,7 +90,7 @@ bool ClientNPC::addClassSpecificStuffToWindow() {
 
   auto *stayButton =
       new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Stay", [this]() {
-        _client->sendMessage({CL_ORDER_NPC_TO_STAY, serial()});
+        _client.sendMessage({CL_ORDER_NPC_TO_STAY, serial()});
       });
   stayButton->setTooltip("Order this pet to stay.");
   _window->addChild(stayButton);
@@ -101,7 +101,7 @@ bool ClientNPC::addClassSpecificStuffToWindow() {
   x = BUTTON_GAP;
   auto *feedButton =
       new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Feed", [this]() {
-        _client->sendMessage({CL_FEED_PET, serial()});
+        _client.sendMessage({CL_FEED_PET, serial()});
       });
   feedButton->setTooltip(
       "Feed this pet to heal it.  This will consume food from your inventory.");

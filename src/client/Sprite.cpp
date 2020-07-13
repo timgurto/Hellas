@@ -13,7 +13,7 @@ const std::string Sprite::EMPTY_NAME = "";
 const ScreenPoint Sprite::HIGHLIGHT_OFFSET{-1, -1};
 
 Sprite::Sprite(const SpriteType *type, const MapPoint &location, Client &client)
-    : _client(&client),
+    : _client(client),
       _yChanged(false),
       _type(type),
       _location(location),
@@ -31,7 +31,7 @@ ScreenRect Sprite::drawRect() const {
   return drawRect;
 }
 
-bool Sprite::isCharacter() const { return this == &_client->character(); }
+bool Sprite::isCharacter() const { return this == &_client.character(); }
 
 void Sprite::newLocationFromServer(const MapPoint &loc) {
   _locationOnServer = loc;
@@ -41,17 +41,17 @@ void Sprite::newLocationFromServer(const MapPoint &loc) {
 }
 
 double Sprite::speed() const {
-  if (isCharacter()) return _client->_stats.speed;
+  if (isCharacter()) return _client._stats.speed;
   return Client::MOVEMENT_SPEED;
 }
 
 void Sprite::draw() const {
   if (shouldDrawShadow()) drawShadow();
 
-  auto shouldDrawHighlightInstead = _client->currentMouseOverEntity() == this;
+  auto shouldDrawHighlightInstead = _client.currentMouseOverEntity() == this;
   const Texture &imageToDraw =
       shouldDrawHighlightInstead ? getHighlightImage() : image();
-  auto drawRect = this->drawRect() + _client->offset();
+  auto drawRect = this->drawRect() + _client.offset();
   if (shouldDrawHighlightInstead) drawRect += HIGHLIGHT_OFFSET;
   if (imageToDraw)
     imageToDraw.draw(drawRect.x, drawRect.y);
@@ -70,7 +70,7 @@ void Sprite::drawShadow() const {
                      : toInt(type()->drawRect().x * SpriteType::SHADOW_RATIO);
   auto shadowY = -toInt(shadow.height() / 2.0);
   auto shadowPosition = toScreenPoint(_location) +
-                        ScreenPoint{shadowX, shadowY} + _client->offset();
+                        ScreenPoint{shadowX, shadowY} + _client.offset();
   shadow.draw(shadowPosition);
 }
 
@@ -78,10 +78,10 @@ void Sprite::drawName() const {
   auto text = name();
   if (!additionalTextInName().empty()) text += " "s + additionalTextInName();
 
-  const auto nameLabel = Texture{_client->defaultFont(), text, nameColor()};
+  const auto nameLabel = Texture{_client.defaultFont(), text, nameColor()};
   const auto nameOutline =
-      Texture{_client->defaultFont(), text, Color::UI_OUTLINE};
-  auto namePosition = toScreenPoint(location()) + _client->offset();
+      Texture{_client.defaultFont(), text, Color::UI_OUTLINE};
+  auto namePosition = toScreenPoint(location()) + _client.offset();
   namePosition.y -= height();
   namePosition.y -= 16;
   namePosition.x -= nameLabel.width() / 2;
@@ -100,8 +100,8 @@ void Sprite::update(double delta) {
     auto particleX = _location.x + p.offset.x;
     auto particleY = bottomEdge();
     auto altitude = -p.offset.y + (bottomEdge() - _location.y);
-    _client->addParticlesWithCustomAltitude(altitude, p.profile,
-                                            {particleX, particleY}, delta);
+    _client.addParticlesWithCustomAltitude(altitude, p.profile,
+                                           {particleX, particleY}, delta);
   }
 }
 
@@ -137,7 +137,7 @@ bool Sprite::mouseIsOverRealPixel(const MapPoint &p) const {
   return true;
 }
 
-const Texture &Sprite::cursor() const { return _client->cursorNormal(); }
+const Texture &Sprite::cursor() const { return _client.cursorNormal(); }
 
 const Tooltip &Sprite::tooltip() const {
   if (_tooltip.hasValue()) return _tooltip.value();
