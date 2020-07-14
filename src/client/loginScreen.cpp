@@ -168,7 +168,7 @@ void Client::updateCreateButton(void *) {
     createButton->enable();
 }
 
-void Client::updateClassDescription() {
+void Client::updateClassDescription(const Client &client) {
   updateCreateButton(nullptr);
 
   classDescription->clearChildren();
@@ -226,7 +226,7 @@ void Client::initCreateWindow() {
     const auto CLASS_LIST_HEIGHT = 50_px;
     classList =
         new ChoiceList({MID_PANE, y, L_PANE_W - MID_PANE, CLASS_LIST_HEIGHT},
-                       Element::TEXT_HEIGHT);
+                       Element::TEXT_HEIGHT, *this);
     inputPane->addChild(classList);
     for (const auto &pair : _classes) {
       auto label = new Label({}, " "s + pair.second.name());

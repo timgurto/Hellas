@@ -9,7 +9,7 @@ extern Renderer renderer;
 
 void loadHelpEntries(HelpEntries &entries);
 
-void showTopic();
+void showTopic(const Client &client);
 
 void Client::initializeHelpWindow() {
   loadHelpEntries(_helpEntries);
@@ -25,7 +25,7 @@ void Client::initializeHelpWindow() {
   auto *topicList =
       new ChoiceList({TOPIC_BORDER, TOPIC_BORDER, TOPIC_W - TOPIC_BORDER * 2,
                       WIN_HEIGHT - TOPIC_BORDER * 2},
-                     Element::TEXT_HEIGHT + TOPIC_GAP);
+                     Element::TEXT_HEIGHT + TOPIC_GAP, *this);
   for (auto &entry : _helpEntries) {
     auto topic = new Element;
     topic->id(entry.name());
@@ -61,14 +61,14 @@ void Client::showHelpTopic(const std::string &topic) {
   _helpWindow->show();
 }
 
-void showTopic() {
-  auto &helpWindow = Client::instance().helpWindow();
+void showTopic(const Client &client) {
+  auto &helpWindow = client.helpWindow();
   auto *helpText = dynamic_cast<List *>(helpWindow.findChild("helpText"));
   auto *topicList =
       dynamic_cast<ChoiceList *>(helpWindow.findChild("topicList"));
   if (helpText == nullptr || topicList == nullptr) assert(false);
   const auto &selectedTopic = topicList->getSelected();
-  const auto &helpEntries = Client::instance().helpEntries();
+  const auto &helpEntries = client.helpEntries();
   if (selectedTopic.empty())
     helpText->clearChildren();
   else

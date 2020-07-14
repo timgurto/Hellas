@@ -6,6 +6,8 @@
 #include "List.h"
 #include "ShadowBox.h"
 
+class Client;
+
 // A list of elements with IDs; up to one item can be chosen at a time.
 class ChoiceList : public List {
   // Note that these three IDs may be invalidated by clearChildren().  Check
@@ -15,6 +17,7 @@ class ChoiceList : public List {
   std::string _mouseDownID;
   ShadowBox *_selectedBox, *_mouseOverBox, *_mouseDownBox;
   Element *_boxLayer;  // shape/position is a copy of List::_content
+  const Client &_client;
 
   const std::string &getIdFromMouse(double mouseY, int *index = nullptr) const;
   bool contentCollision(const ScreenPoint &p) const;
@@ -24,7 +27,7 @@ class ChoiceList : public List {
   static void markMouseOver(Element &e, const ScreenPoint &mousePos);
 
  public:
-  ChoiceList(const ScreenRect &rect, px_t childHeight);
+  ChoiceList(const ScreenRect &rect, px_t childHeight, const Client &client);
 
   virtual void refresh() override;
 
@@ -34,7 +37,8 @@ class ChoiceList : public List {
 
   void verifyBoxes();  // Call after changing the list's contents.
 
-  void (*onSelect)() = nullptr;
+  using onSelect_t = void (*)(const Client &client);
+  onSelect_t onSelect{nullptr};
 };
 
 #endif

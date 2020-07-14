@@ -173,7 +173,7 @@ void Client::refreshHotbarCooldowns() {
   }
 }
 
-static void onCategoryChange() {
+static void onCategoryChange(const Client &client) {
   spellList->hide();
   recipeList->hide();
 
@@ -198,8 +198,8 @@ void Client::initAssignerWindow() {
   assigner->rect({x, y, LIST_WIDTH, WIN_HEIGHT});
 
   // Category list
-  categoryList =
-      new ChoiceList({0, 0, CATEGORY_WIDTH, WIN_HEIGHT}, Element::TEXT_HEIGHT);
+  categoryList = new ChoiceList({0, 0, CATEGORY_WIDTH, WIN_HEIGHT},
+                                Element::TEXT_HEIGHT, *this);
   assigner->addChild(categoryList);
   categoryList->onSelect = onCategoryChange;
   auto catLabel = new Label({}, " Spell");

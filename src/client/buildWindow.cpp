@@ -22,8 +22,8 @@ void Client::initializeBuildWindow() {
   px_t y = Element::TEXT_HEIGHT + GAP;
   _buildWindow->addChild(new Line(0, y, BUTTON_WIDTH));
   y += GAP;
-  _buildList =
-      new ChoiceList({0, y, BUTTON_WIDTH, WIN_HEIGHT - y}, BUTTON_HEIGHT);
+  _buildList = new ChoiceList({0, y, BUTTON_WIDTH, WIN_HEIGHT - y},
+                              BUTTON_HEIGHT, *this);
   _buildWindow->addChild(_buildList);
 }
 

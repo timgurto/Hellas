@@ -456,7 +456,7 @@ class Client {
   void initCreateWindow();
   static void createAccount();
   static void updateCreateButton(void *);
-  static void updateClassDescription();
+  static void updateClassDescription(const Client &client);
   std::string _autoClassID =
       {};  // For automated account creation, i.e., in tests
   std::string _savedPwHash;
