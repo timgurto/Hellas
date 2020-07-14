@@ -23,6 +23,7 @@ Avatar::Avatar(const std::string &name, const MapPoint &location,
 
 void Avatar::draw() const {
   if (isDriving()) return;
+  if (!_class) return;
 
   auto imagesToGenerate =
       std::vector<Texture *>{&_imageWithGear, &_highlightImageWithGear};
