@@ -135,6 +135,11 @@ void ProgressLock::triggerUnlocks(User &user, Type triggerType,
   server.sendNewRecipesMessage(user, newRecipes);
 }
 
+void ProgressLock::cleanup() {
+  locksByType.clear();
+  stagedLocks.clear();
+}
+
 // Order doesnt' really matter, as long as it's a proper ordering.
 bool ProgressLock::operator<(const ProgressLock &rhs) const {
   if (_triggerType != rhs._triggerType) return _triggerType < rhs._triggerType;

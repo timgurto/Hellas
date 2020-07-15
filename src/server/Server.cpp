@@ -86,6 +86,7 @@ Server::~Server() {
   saveData(_entities, _wars, _cities);
   for (auto pair : _terrainTypes) delete pair.second;
   for (const auto &spellPair : _spells) delete spellPair.second;
+  ProgressLock::cleanup();
 
   _instance = nullptr;
 

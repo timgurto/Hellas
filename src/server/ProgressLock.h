@@ -41,6 +41,8 @@ class ProgressLock {
   static void unlockAll(User &user);
   void stage() const { stagedLocks.insert(*this); }
 
+  static void cleanup();
+
   bool ProgressLock::operator<(const ProgressLock &rhs) const;
 };
 #endif
