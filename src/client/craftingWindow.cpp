@@ -149,6 +149,7 @@ void Client::initializeCraftingWindow() {
       _recipeList);
   // Repopulate recipe list before every refresh
   _recipeList->setPreRefreshFunction(populateRecipesList, _recipeList);
+  _recipeList->setClient(*this);
 
   // Selected Recipe Details
   _detailsPane =
@@ -325,7 +326,7 @@ void Client::onClickRecipe(Element &e, const ScreenPoint &mousePos) {
   // any mouse down and mouse up.  This effectively disabled the buttons in the
   // pane.
   if (!collision(mousePos, {0, 0, e.rect().w, e.rect().h})) return;
-  instance().refreshRecipeDetailsPane();
+  e.client()->refreshRecipeDetailsPane();
 }
 
 void Client::populateRecipesList(Element &e) {
@@ -380,6 +381,7 @@ void Client::populateRecipesList(Element &e) {
     if (unlockInfo.hasEffect) name->setColor(unlockInfo.color);
 
     recipeElement->setLeftMouseUpFunction(onClickRecipe);
+    recipeElement->setClient(*e.client());
     recipeElement->id(recipe->id());
   }
   const std::string oldSelectedRecipe = recipesList.getSelected();
