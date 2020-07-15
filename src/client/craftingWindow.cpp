@@ -57,10 +57,11 @@ void Client::initializeCraftingWindow() {
   filterPane->addChild(new Label({0, 0, FILTERS_PANE_W, HEADING_HEIGHT},
                                  "Filters", Element::CENTER_JUSTIFIED));
   px_t y = HEADING_HEIGHT;
-  CheckBox *pCB = new CheckBox({0, y, FILTERS_PANE_W, Element::TEXT_HEIGHT},
-                               _haveMatsFilter, "Have all materials");
+  CheckBox *pCB =
+      new CheckBox(*this, {0, y, FILTERS_PANE_W, Element::TEXT_HEIGHT},
+                   _haveMatsFilter, "Have all materials");
   pCB->setTooltip("Only show recipes for which you have the materials");
-  pCB->onChange([]() { instance().scrollRecipeListToTop(); });
+  pCB->onChange([](Client &client) { client.scrollRecipeListToTop(); });
   filterPane->addChild(pCB);
   y += Element::TEXT_HEIGHT;
   filterPane->addChild(new Line(0, y + LINE_GAP / 2, FILTERS_PANE_W));
@@ -83,19 +84,19 @@ void Client::initializeCraftingWindow() {
   filterPane->addChild(_tagList);
   y += TAG_LIST_HEIGHT;
 
-  pCB = new CheckBox({0, y, FILTERS_PANE_W / 4, Element::TEXT_HEIGHT}, _tagOr,
-                     "Any");
+  pCB = new CheckBox(*this, {0, y, FILTERS_PANE_W / 4, Element::TEXT_HEIGHT},
+                     _tagOr, "Any");
   pCB->setTooltip(
       "Only show recipes whose product has at least one of the selected tags.");
-  pCB->onChange([]() { instance().scrollRecipeListToTop(); });
+  pCB->onChange([](Client &client) { client.scrollRecipeListToTop(); });
   filterPane->addChild(pCB);
 
   pCB = new CheckBox(
-      {FILTERS_PANE_W / 2, y, FILTERS_PANE_W / 4, Element::TEXT_HEIGHT}, _tagOr,
-      "All", true);
+      *this, {FILTERS_PANE_W / 2, y, FILTERS_PANE_W / 4, Element::TEXT_HEIGHT},
+      _tagOr, "All", true);
   pCB->setTooltip(
       "Only show recipes whose product has all of the selected tags.");
-  pCB->onChange([]() { instance().scrollRecipeListToTop(); });
+  pCB->onChange([](Client &client) { client.scrollRecipeListToTop(); });
   filterPane->addChild(pCB);
 
   y += Element::TEXT_HEIGHT;
@@ -110,19 +111,19 @@ void Client::initializeCraftingWindow() {
       new List({0, y, FILTERS_PANE_W, MATERIALS_LIST_HEIGHT}, ICON_SIZE);
   filterPane->addChild(_materialsList);
   y += MATERIALS_LIST_HEIGHT;
-  pCB = new CheckBox({0, y, FILTERS_PANE_W / 4, Element::TEXT_HEIGHT}, _matOr,
-                     "Any");
+  pCB = new CheckBox(*this, {0, y, FILTERS_PANE_W / 4, Element::TEXT_HEIGHT},
+                     _matOr, "Any");
   pCB->setTooltip(
       "Only show recipes that require at least one of the selected materials.");
-  pCB->onChange([]() { instance().scrollRecipeListToTop(); });
+  pCB->onChange([](Client &client) { client.scrollRecipeListToTop(); });
   filterPane->addChild(pCB);
 
   pCB = new CheckBox(
-      {FILTERS_PANE_W / 2, y, FILTERS_PANE_W / 4, Element::TEXT_HEIGHT}, _matOr,
-      "All", true);
+      *this, {FILTERS_PANE_W / 2, y, FILTERS_PANE_W / 4, Element::TEXT_HEIGHT},
+      _matOr, "All", true);
   pCB->setTooltip(
       "Only show recipes that require all of the selected materials.");
-  pCB->onChange([]() { instance().scrollRecipeListToTop(); });
+  pCB->onChange([](Client &client) { client.scrollRecipeListToTop(); });
   filterPane->addChild(pCB);
 
   populateFilters();
@@ -294,9 +295,9 @@ void Client::populateFilters() {
     if (knownTags.find(pair.first) ==
         knownTags.end())  // User doesn't know about this tag yet.
       continue;
-    auto cb = new CheckBox({0, 0, FILTERS_PANE_W, Element::TEXT_HEIGHT},
+    auto cb = new CheckBox(*this, {0, 0, FILTERS_PANE_W, Element::TEXT_HEIGHT},
                            pair.second, client.tagName(pair.first));
-    cb->onChange([]() { instance().scrollRecipeListToTop(); });
+    cb->onChange([](Client &client) { client.scrollRecipeListToTop(); });
     _tagList->addChild(cb);
   }
 
@@ -304,7 +305,7 @@ void Client::populateFilters() {
   _materialsList->clearChildren();
   for (auto &pair : _matFilters) {
     if (knownMats.find(pair.first) == knownMats.end()) continue;
-    CheckBox *const mat = new CheckBox({}, pair.second);
+    CheckBox *const mat = new CheckBox(*this, {}, pair.second);
     static const px_t ICON_X = CheckBox::BOX_SIZE + CheckBox::GAP,
                       LABEL_X = ICON_X + ICON_SIZE + CheckBox::GAP,
                       LABEL_W = FILTERS_PANE_W - LABEL_X;
@@ -313,7 +314,7 @@ void Client::populateFilters() {
     mat->addChild(new Label({LABEL_X, 0, LABEL_W, ICON_SIZE},
                             pair.first->name(), Element::LEFT_JUSTIFIED,
                             Element::CENTER_JUSTIFIED));
-    mat->onChange([]() { instance().scrollRecipeListToTop(); });
+    mat->onChange([](Client &client) { client.scrollRecipeListToTop(); });
     _materialsList->addChild(mat);
   }
 }

@@ -9,9 +9,10 @@ const px_t CheckBox::BOX_SIZE = 8;
 const px_t CheckBox::GAP = 3;
 const px_t CheckBox::Y_OFFSET = 1;
 
-CheckBox::CheckBox(const ScreenRect &rect, bool &linkedBool,
+CheckBox::CheckBox(Client &client, const ScreenRect &rect, bool &linkedBool,
                    const std::string &caption, bool inverse)
     : Element(rect),
+      _client(client),
       _linkedBool(linkedBool),
       _inverse(inverse),
       _mouseButtonDown(false),
@@ -31,7 +32,7 @@ void CheckBox::toggleBool() {
 
 void CheckBox::depress() {
   _depressed = true;
-  if (_onChangeFunction) _onChangeFunction();
+  if (_onChangeFunction) _onChangeFunction(_client);
   markChanged();
 }
 
@@ -39,7 +40,7 @@ void CheckBox::release(bool click) {
   if (click) toggleBool();
   markChanged();
   _depressed = false;
-  if (_onChangeFunction) _onChangeFunction();
+  if (_onChangeFunction) _onChangeFunction(_client);
 }
 
 void CheckBox::mouseDown(Element &e, const ScreenPoint &mousePos) {
