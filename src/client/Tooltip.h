@@ -12,6 +12,7 @@
 #include "Texture.h"
 #include "WordWrapper.h"
 
+class Client;
 class ClientItem;
 struct ClientMerchantSlot;
 class HasTags;
@@ -51,7 +52,7 @@ class Tooltip {
   void addItemGrid(const void *itemVector);  // To avoid recursive #includes
   void addMerchantSlots(const std::vector<ClientMerchantSlot> &slots);
   void addItem(const ClientItem &item);
-  void addTags(const HasTags &thingWithTags);
+  void addTags(const HasTags &thingWithTags, const Client &client);
 
   px_t width() const;
   px_t height() const;

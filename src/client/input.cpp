@@ -632,7 +632,7 @@ void Client::updateTerrainTooltip() {
 
   auto it = _terrain.find(_terrainUnderCursor);
   if (it != _terrain.end()) {
-    _terrainTooltip.addTags(it->second);
+    _terrainTooltip.addTags(it->second, *this);
   }
 
   auto allowedTerrain = TerrainList::findList(_allowedTerrain);

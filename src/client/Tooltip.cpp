@@ -159,13 +159,11 @@ void Tooltip::addItem(const ClientItem &item) {
   _content.push_back(texture);
 }
 
-void Tooltip::addTags(const HasTags &thingWithTags) {
+void Tooltip::addTags(const HasTags &thingWithTags, const Client &client) {
   if (!thingWithTags.hasTags()) return;
 
   addGap();
   setColor(Color::TOOLTIP_TAG);
-
-  const auto &client = Client::instance();
 
   for (const auto &pair : thingWithTags.tags()) {
     const auto &tag = pair.first;

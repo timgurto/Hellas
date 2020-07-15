@@ -74,7 +74,7 @@ const Tooltip &ClientObjectType::constructionTooltip() const {
   for (const auto &line : descriptionLines) tooltip.addLine(line);
 
   // Tags
-  tooltip.addTags(*this);
+  tooltip.addTags(*this, client);
 
   // Materials
   if (!_materials.isEmpty()) {

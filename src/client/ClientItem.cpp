@@ -95,7 +95,7 @@ const Tooltip &ClientItem::tooltip() const {
   }
 
   // Tags
-  tooltip.addTags(*this);
+  tooltip.addTags(*this, client);
 
   // Construction
   if (_constructsObject != nullptr) {

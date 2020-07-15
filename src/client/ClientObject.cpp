@@ -1080,7 +1080,7 @@ void ClientObject::createRegularTooltip() const {
   }
 
   // Tags
-  tooltip.addTags(ot);
+  tooltip.addTags(ot, _client);
 
   // Any actions available?
   if (ot.merchantSlots() > 0 ||
