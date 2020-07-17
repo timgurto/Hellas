@@ -11,13 +11,11 @@ extern Renderer renderer;
 
 const ScreenRect Avatar::DRAW_RECT(-19, -49, 40, 60);
 const MapRect Avatar::COLLISION_RECT(-5, -2, 10, 4);
-ClientCombatantType Avatar::_combatantType(Client::MAX_PLAYER_HEALTH);
-SpriteType Avatar::_spriteType(DRAW_RECT);
 
 Avatar::Avatar(const std::string &name, const MapPoint &location,
                Client &client)
-    : Sprite(&_spriteType, location, client),
-      ClientCombatant(&_combatantType),
+    : Sprite(&client.avatarSpriteType, location, client),
+      ClientCombatant(&client.avatarCombatantType),
       _name(name),
       _gear(Client::GEAR_SLOTS, std::make_pair(ClientItem::Instance{}, 0)) {}
 

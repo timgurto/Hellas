@@ -113,6 +113,9 @@ class Client {
   const Texture &mapImage() const { return _mapImage; }
   const Texture &shadowImage() const { return _shadowImage; }
 
+  SpriteType avatarSpriteType;
+  ClientCombatantType avatarCombatantType;
+
   const ClientBuffTypes &buffTypes() const { return _buffTypes; }
   const CQuests &quests() const { return _quests; }
 

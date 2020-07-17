@@ -83,6 +83,8 @@ Client::Client()
       _cursorRepair("Images/Cursors/repair.png"s, Color::MAGENTA),
       _cursorVehicle("Images/Cursors/vehicle.png"s, Color::MAGENTA),
       _currentCursor(&_cursorNormal),
+      avatarSpriteType(Avatar::DRAW_RECT),
+      avatarCombatantType(MAX_PLAYER_HEALTH),
 
       _character({}, {}, *this),
 
@@ -184,7 +186,7 @@ Client::Client()
 
 void Client::initialiseData() {
   // Tell Avatars to use blood particles
-  Avatar::_combatantType.damageParticles(findParticleProfile("blood"));
+  avatarCombatantType.damageParticles(findParticleProfile("blood"));
 
   // Match up ranged weapons with their ammo items
   for (auto &pair : _items) {
@@ -211,8 +213,8 @@ void Client::initialiseData() {
     if (endNode) endNode->endsQuest(quest);
   }
 
-  Avatar::_spriteType.useCustomShadowWidth(16);
-  Avatar::_spriteType.useCustomDrawHeight(50);
+  avatarSpriteType.useCustomShadowWidth(16);
+  avatarSpriteType.useCustomDrawHeight(50);
 }
 
 void Client::initializeGearSlotNames() {

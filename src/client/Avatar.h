@@ -15,9 +15,6 @@ class CRecipe;
 
 // The client-side representation of a user, including the player
 class Avatar : public Sprite, public ClientCombatant {
-  static ClientCombatantType _combatantType;
-  static SpriteType _spriteType;
-
  public:
   static const MapRect COLLISION_RECT;
   static const ScreenRect DRAW_RECT;
