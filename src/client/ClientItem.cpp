@@ -8,8 +8,11 @@
 std::map<int, size_t> ClientItem::gearDrawOrder;
 std::vector<ScreenPoint> ClientItem::gearOffsets(Client::GEAR_SLOTS);
 
-ClientItem::ClientItem(const std::string &id, const std::string &name)
-    : Item(id), _name(name), _constructsObject(nullptr) {}
+ClientItem::ClientItem() : Item({}) {}
+
+ClientItem::ClientItem(const Client &client, const std::string &id,
+                       const std::string &name)
+    : _client(&client), Item(id), _name(name), _constructsObject(nullptr) {}
 
 void ClientItem::icon(const std::string &filename) {
   static const std::string prefix = "Images/Items/";
@@ -61,8 +64,6 @@ void ClientItem::init() {
 const Tooltip &ClientItem::tooltip() const {
   if (_tooltip.hasValue()) return _tooltip.value();
 
-  const auto &client = *Client::_instance;
-
   _tooltip = Tooltip{};
   auto &tooltip = _tooltip.value();
 
@@ -76,7 +77,7 @@ const Tooltip &ClientItem::tooltip() const {
     tooltip.addLine("Gear: "s + Client::GEAR_SLOT_NAMES[_gearSlot]);
 
     if (hasLvlReq()) {
-      if (client.character().level() < lvlReq())
+      if (_client->character().level() < lvlReq())
         tooltip.setColor(Color::TOOLTIP_BAD);
       tooltip.addLine("Requires level "s + toString(lvlReq()));
     }
@@ -95,7 +96,7 @@ const Tooltip &ClientItem::tooltip() const {
   }
 
   // Tags
-  tooltip.addTags(*this, client);
+  tooltip.addTags(*this, *_client);
 
   // Construction
   if (_constructsObject != nullptr) {
@@ -108,10 +109,10 @@ const Tooltip &ClientItem::tooltip() const {
 
   // Spell
   if (castsSpellOnUse()) {
-    auto it = client._spells.find(spellToCastOnUse());
-    if (it == client._spells.end()) {
-      client.showErrorMessage("Can't find spell: "s + spellToCastOnUse(),
-                              Color::CHAT_ERROR);
+    auto it = _client->_spells.find(spellToCastOnUse());
+    if (it == _client->_spells.end()) {
+      _client->showErrorMessage("Can't find spell: "s + spellToCastOnUse(),
+                                Color::CHAT_ERROR);
     } else {
       tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
       tooltip.addLine("Right-click: "s + it->second->createEffectDescription());
@@ -146,10 +147,9 @@ Color ClientItem::nameColor() const {
 void ClientItem::fetchAmmoItem() const {
   if (_weaponAmmoID.empty()) return;
 
-  const Client &client = *Client::_instance;
-  auto it = client._items.find(_weaponAmmoID);
-  if (it == client._items.end()) {
-    client.showErrorMessage(
+  auto it = _client->_items.find(_weaponAmmoID);
+  if (it == _client->_items.end()) {
+    _client->showErrorMessage(
         "Unknown item "s + _weaponAmmoID + " specified as ammo"s,
         Color::CHAT_ERROR);
     return;
@@ -166,7 +166,7 @@ void ClientItem::addParticles(const std::string &profileName,
 }
 
 const Tooltip &ClientItem::Instance::tooltip() const {
-  auto shouldShowRepairTooltip = Client::instance().isAltPressed();
+  auto shouldShowRepairTooltip = _type->_client->isAltPressed();
   if (shouldShowRepairTooltip) {
     if (!_repairTooltip.hasValue()) createRepairTooltip();
     return _repairTooltip.value();
@@ -231,15 +231,14 @@ void ClientItem::Instance::createRepairTooltip() const {
     rt.setColor(Color::TOOLTIP_BODY);
     rt.addLine("Requires tool:");
     rt.setColor(Color::TOOLTIP_TAG);
-    rt.addLine(Client::instance().tagName(_type->repairInfo().tool));
+    rt.addLine(_type->_client->tagName(_type->repairInfo().tool));
   }
 
   if (_type->repairInfo().hasCost()) {
     rt.addGap();
     rt.setColor(Color::TOOLTIP_BODY);
     rt.addLine("Will consume:");
-    const auto *costItem =
-        Client::instance().findItem(_type->repairInfo().cost);
+    const auto *costItem = _type->_client->findItem(_type->repairInfo().cost);
     if (!costItem) return;
     rt.addItem(*costItem);
   }

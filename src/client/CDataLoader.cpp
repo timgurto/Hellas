@@ -622,7 +622,7 @@ void CDataLoader::loadItems(XmlReader &xr) {
     std::string id, name;
     if (!xr.findAttr(elem, "id", id)) continue;  // ID is mandatory.
     if (!xr.findAttr(elem, "name", name)) name = id;
-    ClientItem item(id, name);
+    ClientItem item(_client, id, name);
     std::string s;
 
     item.loadTagsFromXML(xr, elem);

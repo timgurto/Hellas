@@ -42,6 +42,10 @@ class ClientItem : public Item, public HasSounds {
   Texture _gearImage;
   ScreenPoint _drawLoc;
 
+  // Should never be null.  Pointer rather than a reference so
+  // that the type can be copied.
+  const Client *_client{nullptr};
+
   mutable Optional<Tooltip> _tooltip;
   const Projectile::Type *_projectile{nullptr};
 
@@ -61,7 +65,9 @@ class ClientItem : public Item, public HasSounds {
   static std::vector<ScreenPoint> gearOffsets;
 
  public:
-  ClientItem(const std::string &id = "", const std::string &name = "");
+  ClientItem();  // Needed for containers
+  ClientItem(const Client &client, const std::string &id,
+             const std::string &name);
 
   bool operator<(const ClientItem &rhs) const { return _name < rhs._name; }
 
