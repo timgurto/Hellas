@@ -191,9 +191,9 @@ void CDataLoader::loadParticles(XmlReader &xr) {
       xr.findAttr(variety, "count", count);
       auto drawRect = ScreenRect{};
       if (xr.findRectChild("drawRect", variety, drawRect))
-        profile->addVariety(s, count, drawRect);
+        profile->addVariety(s, count, drawRect, _client);
       else
-        profile->addVariety(s, count);
+        profile->addVariety(s, count, _client);
     }
 
     _client._particleProfiles.insert(profile);
@@ -233,7 +233,7 @@ void CDataLoader::loadProjectiles(XmlReader &xr) {
     auto drawRect = ScreenRect{};
     if (!xr.findRectChild("drawRect", elem, drawRect)) continue;
 
-    Projectile::Type *projectile = new Projectile::Type(id, drawRect);
+    Projectile::Type *projectile = new Projectile::Type(id, drawRect, &_client);
 
     xr.findAttr(elem, "speed", projectile->speed);
     xr.findAttr(elem, "particlesAtEnd", projectile->particlesAtEnd);
@@ -318,7 +318,7 @@ void CDataLoader::loadSpells(XmlReader &xr) {
     if (aesthetics) {
       auto profileName = ""s;
       if (xr.findAttr(aesthetics, "projectile", profileName)) {
-        auto dummy = Projectile::Type{profileName, {}};
+        auto dummy = Projectile::Type{profileName, {}, &_client};
         auto it = _client._projectileTypes.find(&dummy);
         if (it != _client._projectileTypes.end()) newSpell->projectile(*it);
       }
@@ -967,7 +967,7 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
       nt->setSoundProfile("humanEnemy");
 
     if (xr.findAttr(elem, "projectile", s)) {
-      auto dummy = Projectile::Type{s, {}};
+      auto dummy = Projectile::Type{s, {}, &_client};
       auto it = _client._projectileTypes.find(&dummy);
       if (it != _client._projectileTypes.end()) nt->projectile(**it);
     }

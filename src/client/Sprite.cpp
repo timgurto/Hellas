@@ -5,6 +5,7 @@
 #include "../util.h"
 #include "Client.h"
 #include "Renderer.h"
+#include "SpriteType.h"
 #include "Tooltip.h"
 
 extern Renderer renderer;

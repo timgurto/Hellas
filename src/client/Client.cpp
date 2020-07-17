@@ -83,7 +83,7 @@ Client::Client()
       _cursorRepair("Images/Cursors/repair.png"s, Color::MAGENTA),
       _cursorVehicle("Images/Cursors/vehicle.png"s, Color::MAGENTA),
       _currentCursor(&_cursorNormal),
-      avatarSpriteType(Avatar::DRAW_RECT),
+      avatarSpriteType(this, Avatar::DRAW_RECT),
       avatarCombatantType(MAX_PLAYER_HEALTH),
 
       _character({}, {}, *this),
@@ -726,7 +726,7 @@ const SoundProfile *Client::findSoundProfile(const std::string &id) const {
 
 const Projectile::Type *Client::findProjectileType(
     const std::string &id) const {
-  auto dummy = Projectile::Type{id, {}};
+  auto dummy = Projectile::Type{id, {}, this};
   auto it = _projectileTypes.find(&dummy);
   if (it != _projectileTypes.end()) return *it;
   return nullptr;

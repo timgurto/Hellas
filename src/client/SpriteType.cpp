@@ -12,8 +12,9 @@ ms_t SpriteType::timeThatTheLastRedrawWasOrdered{0};
 const double SpriteType::SHADOW_RATIO = 0.8;
 const double SpriteType::SHADOW_WIDTH_HEIGHT_RATIO = 1.8;
 
-SpriteType::SpriteType(const ScreenRect &drawRect, const std::string &imageFile)
-    : _image(imageFile), _drawRect(drawRect) {
+SpriteType::SpriteType(const Client *client, const ScreenRect &drawRect,
+                       const std::string &imageFile)
+    : _client(client), _image(imageFile), _drawRect(drawRect) {
   if (!_image) return;
   _drawRect.w = _image.width();
   _drawRect.h = _image.height();
@@ -53,7 +54,7 @@ const Texture &SpriteType::shadow() const {
   _shadow.setBlend();
   _shadow.setAlpha(0x4f);
   renderer.pushRenderTarget(_shadow);
-  Client::instance().shadowImage().draw({0, 0, shadowWidth, shadowHeight});
+  _client->shadowImage().draw({0, 0, shadowWidth, shadowHeight});
   renderer.popRenderTarget();
 
   _timeShadowGenerated = SDL_GetTicks();

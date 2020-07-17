@@ -11,6 +11,7 @@
 #include "Tooltip.h"
 
 class Client;
+class SpriteType;
 
 // Handles the graphical and UI side of in-game objects  Abstract class
 class Sprite {

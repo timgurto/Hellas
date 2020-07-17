@@ -15,17 +15,19 @@ ParticleProfile::~ParticleProfile() {
 }
 
 void ParticleProfile::addVariety(const std::string &imageFile, size_t count,
-                                 const ScreenRect &drawRect) {
+                                 const ScreenRect &drawRect,
+                                 const Client &client) {
   SpriteType *particleType =
-      new SpriteType(drawRect, "Images/Particles/" + imageFile);
+      new SpriteType(&client, drawRect, "Images/Particles/" + imageFile);
   if (_alpha != 0xff) particleType->setAlpha(0x7f);
   _varieties.push_back(particleType);  // _varieties owns the pointers.
   for (size_t i = 0; i != count; ++i) _pool.push_back(particleType);
 }
 
-void ParticleProfile::addVariety(const std::string &imageFile, size_t count) {
+void ParticleProfile::addVariety(const std::string &imageFile, size_t count,
+                                 const Client &client) {
   SpriteType *particleType =
-      new SpriteType({}, "Images/Particles/" + imageFile);
+      new SpriteType(&client, {}, "Images/Particles/" + imageFile);
   auto editedRect = particleType->drawRect();
   editedRect.x = -particleType->width() / 2;
   editedRect.y = -particleType->height() / 2;

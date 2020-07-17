@@ -9,6 +9,8 @@
 #include "ImageWithHighlight.h"
 #include "Texture.h"
 
+class Client;
+
 // Describes a class of Sprites, the "instances" of which share common
 // properties
 class SpriteType {
@@ -27,6 +29,8 @@ class SpriteType {
     return timeThatTheLastRedrawWasOrdered;
   }
 
+  const Client *_client{nullptr};
+
  private:
   struct Particles {
     std::string profile;
@@ -41,7 +45,7 @@ class SpriteType {
  public:
   static const double SHADOW_RATIO, SHADOW_WIDTH_HEIGHT_RATIO;
 
-  SpriteType(const ScreenRect &drawRect = {},
+  SpriteType(const Client *client = nullptr, const ScreenRect &drawRect = {},
              const std::string &imageFile = "");
   static SpriteType DecorationWithNoData();
 
