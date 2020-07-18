@@ -50,6 +50,12 @@ void Projectile::Type::tail(const std::string &imageFile,
   _tailParticles = particles;
 }
 
+Projectile::Type::Type(const std::string &id, const ScreenRect &drawRect,
+                       const Client *client)
+    : SpriteType(client, drawRect, "Images/Projectiles/"s + id),
+      _tailType(nullptr),
+      id(id) {}
+
 void Projectile::Type::sounds(const std::string &profile) {
   _sounds = Client::instance().findSoundProfile(profile);
 }

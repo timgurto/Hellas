@@ -6,7 +6,7 @@ class CDroppedItem : public ClientObject {
  public:
   class Type : public ClientObjectType {
    public:
-    Type();
+    Type(const Client &client);
   };
 
   CDroppedItem(Serial serial, const MapPoint &location,
@@ -23,8 +23,6 @@ class CDroppedItem : public ClientObject {
   virtual bool isFlat() const override;
 
  private:
-  static Type commonType;
-
   const ClientItem &_itemType;
   size_t _quantity;
   mutable std::string _name;

@@ -11,7 +11,7 @@ class ClientVehicleType : public ClientObjectType {
   Texture _front;
 
  public:
-  ClientVehicleType(const std::string &id);
+  ClientVehicleType(const std::string &id, const Client &client);
   virtual char classTag() const override { return 'v'; }
 
   void setSpeed(double s) { _speed = s; }

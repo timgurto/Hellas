@@ -83,8 +83,10 @@ Client::Client()
       _cursorRepair("Images/Cursors/repair.png"s, Color::MAGENTA),
       _cursorVehicle("Images/Cursors/vehicle.png"s, Color::MAGENTA),
       _currentCursor(&_cursorNormal),
+
       avatarSpriteType(this, Avatar::DRAW_RECT),
       avatarCombatantType(MAX_PLAYER_HEALTH),
+      droppedItemType(*this),
 
       _character({}, {}, *this),
 
@@ -586,7 +588,8 @@ bool Client::outsideCullRange(const MapPoint &loc, px_t hysteresis) const {
          abs(loc.y - _character.location().y) > testCullDist;
 }
 
-const ParticleProfile *Client::findParticleProfile(const std::string &id) {
+const ParticleProfile *Client::findParticleProfile(
+    const std::string &id) const {
   ParticleProfile dummy(id);
   auto it = _particleProfiles.find(&dummy);
   if (it == _particleProfiles.end()) return nullptr;
@@ -733,7 +736,7 @@ const Projectile::Type *Client::findProjectileType(
 }
 
 ClientObjectType *Client::findObjectType(const std::string &id) {
-  auto dummy = ClientObjectType{id};
+  auto dummy = ClientObjectType{id, *this};
   auto it = _objectTypes.find(&dummy);
   if (it == _objectTypes.end()) return nullptr;
   return const_cast<ClientObjectType *>(*it);

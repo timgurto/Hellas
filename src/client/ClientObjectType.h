@@ -81,7 +81,7 @@ class ClientObjectType : public SpriteType,
   std::string _exclusiveToQuest{};
 
  public:
-  ClientObjectType(const std::string &id);
+  ClientObjectType(const std::string &id, const Client &client);
 
   const std::string &id() const { return _id; }
   const std::string &name() const { return _name; }

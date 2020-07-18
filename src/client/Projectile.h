@@ -38,8 +38,7 @@ class Projectile : public Sprite {
  public:
   struct Type : public SpriteType {
     Type(const std::string &id, const ScreenRect &drawRect,
-         const Client *client)
-        : SpriteType(client, drawRect, "Images/Projectiles/"s + id), id(id) {}
+         const Client *client);
     static Type Dummy(const std::string &id) { return Type{id, {}, nullptr}; }
 
     struct ptrCompare {

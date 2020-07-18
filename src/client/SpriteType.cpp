@@ -21,7 +21,7 @@ SpriteType::SpriteType(const Client *client, const ScreenRect &drawRect,
 }
 
 SpriteType SpriteType::DecorationWithNoData() {
-  auto ret = SpriteType{};
+  auto ret = SpriteType{nullptr};
   ret._isDecoration = true;
   return ret;
 }

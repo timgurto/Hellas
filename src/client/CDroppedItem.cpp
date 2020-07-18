@@ -2,11 +2,11 @@
 
 #include "Client.h"
 
-CDroppedItem::Type CDroppedItem::commonType;
 const double CDroppedItem::DROP_HEIGHT = 60.0;
 const double CDroppedItem::DROP_ACCELERATION = 20.0;
 
-CDroppedItem::Type::Type() : ClientObjectType("droppedItem") {
+CDroppedItem::Type::Type(const Client& client)
+    : ClientObjectType("droppedItem", client) {
   drawRect(ScreenRect{-Client::ICON_SIZE / 2, -Client::ICON_SIZE / 2,
                       Client::ICON_SIZE, Client::ICON_SIZE});
 }
@@ -14,7 +14,7 @@ CDroppedItem::Type::Type() : ClientObjectType("droppedItem") {
 CDroppedItem::CDroppedItem(Serial serial, const MapPoint& location,
                            const ClientItem& itemType, size_t quantity,
                            bool isNew, Client& client)
-    : ClientObject(serial, &commonType, location, client),
+    : ClientObject(serial, &client.droppedItemType, location, client),
       _itemType(itemType),
       _quantity(quantity) {
   if (isNew) _altitude = DROP_HEIGHT;

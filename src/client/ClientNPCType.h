@@ -17,7 +17,7 @@ struct CNPCTemplate {
 class ClientNPCType : public ClientObjectType {
  public:
   ClientNPCType(const std::string &id, const std::string &imagePath,
-                Hitpoints maxHealth);
+                Hitpoints maxHealth, const Client &client);
   virtual ~ClientNPCType() override {}
 
   void projectile(const Projectile::Type &type) { _projectile = &type; }

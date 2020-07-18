@@ -19,6 +19,7 @@
 #include "../types.h"
 #include "Avatar.h"
 #include "CCities.h"
+#include "CDroppedItem.h"
 #include "CQuest.h"
 #include "CRecipe.h"
 #include "ClientBuff.h"
@@ -113,8 +114,10 @@ class Client {
   const Texture &mapImage() const { return _mapImage; }
   const Texture &shadowImage() const { return _shadowImage; }
 
+  // Special types
   SpriteType avatarSpriteType;
   ClientCombatantType avatarCombatantType;
+  CDroppedItem::Type droppedItemType;
 
   const ClientBuffTypes &buffTypes() const { return _buffTypes; }
   const CQuests &quests() const { return _quests; }
@@ -714,7 +717,7 @@ class Client {
 
   // Searches
  public:
-  const ParticleProfile *findParticleProfile(const std::string &id);
+  const ParticleProfile *findParticleProfile(const std::string &id) const;
   const SoundProfile *findSoundProfile(const std::string &id) const;
   const Projectile::Type *findProjectileType(const std::string &id) const;
   ClientObjectType *findObjectType(const std::string &id);

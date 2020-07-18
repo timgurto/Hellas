@@ -431,9 +431,9 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
     ClientObjectType *cot;
     auto isVehicle = (xr.findAttr(elem, "isVehicle", n) == 1);
     if (isVehicle)
-      cot = new ClientVehicleType(id);
+      cot = new ClientVehicleType(id, _client);
     else
-      cot = new ClientObjectType(id);
+      cot = new ClientObjectType(id, _client);
 
     auto imageFile = id;
     xr.findAttr(elem, "imageFile", imageFile);
@@ -691,7 +691,7 @@ void CDataLoader::loadItems(XmlReader &xr) {
 
     if (xr.findAttr(elem, "constructs", s)) {
       // Create dummy ObjectType if necessary
-      auto pair = _client._objectTypes.insert(new ClientObjectType(s));
+      auto pair = _client._objectTypes.insert(new ClientObjectType(s, _client));
       item.constructsObject(*pair.first);
     }
 
@@ -925,7 +925,7 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
       imagePath = "Images/NPCs/"s + imageFile;
     }
 
-    ClientNPCType *nt = new ClientNPCType(id, imagePath, maxHealth);
+    ClientNPCType *nt = new ClientNPCType(id, imagePath, maxHealth, _client);
     auto drawRect = ScreenRect{0, 0, nt->width(), nt->height()};
 
     if (npcTemplate) {

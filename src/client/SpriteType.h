@@ -45,7 +45,7 @@ class SpriteType {
  public:
   static const double SHADOW_RATIO, SHADOW_WIDTH_HEIGHT_RATIO;
 
-  SpriteType(const Client *client = nullptr, const ScreenRect &drawRect = {},
+  SpriteType(const Client *client, const ScreenRect &drawRect = {},
              const std::string &imageFile = "");
   static SpriteType DecorationWithNoData();
 

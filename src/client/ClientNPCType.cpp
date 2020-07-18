@@ -6,10 +6,9 @@
 
 ClientNPCType::ClientNPCType(const std::string &id,
                              const std::string &imagePath,
-                             Hitpoints maxHealthArg)
-    : ClientObjectType(id) {
+                             Hitpoints maxHealthArg, const Client &client)
+    : ClientObjectType(id, client) {
   maxHealth(maxHealthArg);
-  Client &client = *Client::_instance;
   damageParticles(client.findParticleProfile("blood"));
 
   setImage(imagePath);
