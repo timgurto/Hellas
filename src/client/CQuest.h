@@ -8,6 +8,7 @@
 #include "../types.h"
 
 class Window;
+class Client;
 
 class CQuest {
  public:
@@ -40,7 +41,7 @@ class CQuest {
 
   enum Transition { ACCEPT, COMPLETE, INFO_ONLY };
 
-  CQuest(const Info &info = {});
+  CQuest(Client &client, const Info &info = {});
 
   bool operator<(const CQuest &rhs) { return _info.id < rhs._info.id; }
 
@@ -74,6 +75,8 @@ class CQuest {
 
   ms_t _timeRemaining{0};  // If >0, display.
   std::string _lastTimeDisplay{};
+
+  Client *_client;
 };
 
 using CQuests = std::map<CQuest::Info::ID, CQuest>;

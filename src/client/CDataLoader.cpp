@@ -468,7 +468,7 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
     if (xr.findAttr(elem, "merchantSlots", n)) cot->merchantSlots(n);
     if (xr.findAttr(elem, "isFlat", n) && n != 0) cot->isFlat(true);
     if (xr.findAttr(elem, "isDecoration", n) && n != 0) cot->isDecoration(true);
-    if (xr.findAttr(elem, "sounds", s)) cot->setSoundProfile(s);
+    if (xr.findAttr(elem, "sounds", s)) cot->setSoundProfile(s, _client);
     if (xr.findAttr(elem, "gatherParticles", s))
       cot->gatherParticles(_client.findParticleProfile(s));
     if (xr.findAttr(elem, "damageParticles", s))
@@ -636,7 +636,7 @@ void CDataLoader::loadItems(XmlReader &xr) {
     else
       item.gearImage(id);
 
-    if (xr.findAttr(elem, "sounds", s)) item.setSoundProfile(s);
+    if (xr.findAttr(elem, "sounds", s)) item.setSoundProfile(s, _client);
 
     Hitpoints durability;
     if (xr.findAttr(elem, "durability", durability))
@@ -825,7 +825,7 @@ void CDataLoader::loadRecipes(XmlReader &xr) {
     xr.findAttr(elem, "name", name);
     recipe.name(name);
 
-    if (xr.findAttr(elem, "sounds", s)) recipe.setSoundProfile(s);
+    if (xr.findAttr(elem, "sounds", s)) recipe.setSoundProfile(s, _client);
 
     size_t n;
     if (xr.findAttr(elem, "quantity", n)) recipe.quantity(n);
@@ -962,9 +962,9 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
     if (xr.findRectChild("collisionRect", elem, r)) nt->collisionRect(r);
 
     if (xr.findAttr(elem, "sounds", s))
-      nt->setSoundProfile(s);
+      nt->setSoundProfile(s, _client);
     else if (humanoid)
-      nt->setSoundProfile("humanEnemy");
+      nt->setSoundProfile("humanEnemy", _client);
 
     if (xr.findAttr(elem, "projectile", s)) {
       auto dummy = Projectile::Type{s, {}, &_client};
@@ -1071,7 +1071,6 @@ void CDataLoader::loadQuests(XmlReader &xr) {
     xr.findAttr(elem, "helpTopicOnComplete", questInfo.helpTopicOnComplete);
 
     for (auto objectiveElem : xr.getChildren("objective", elem)) {
-      auto &client = Client::instance();
       auto objective = CQuest::Info::Objective{};
 
       auto id = ""s;
@@ -1081,19 +1080,19 @@ void CDataLoader::loadQuests(XmlReader &xr) {
       xr.findAttr(objectiveElem, "type", type);
 
       if (type == "kill") {
-        auto npcType = client.findNPCType(id);
+        auto npcType = _client.findNPCType(id);
         objective.text = "Kill "s + (npcType ? npcType->name() : "???"s);
 
       } else if (type == "construct") {
-        auto objType = client.findObjectType(id);
+        auto objType = _client.findObjectType(id);
         objective.text = "Construct "s + (objType ? objType->name() : "???"s);
 
       } else if (type == "fetch") {
-        auto &it = client._items.find(id);
+        auto &it = _client._items.find(id);
         objective.text = it->second.name();
 
       } else if (type == "cast") {
-        auto &it = client._spells.find(id);
+        auto &it = _client._spells.find(id);
         objective.text = it->second->name();
       }
 
@@ -1123,7 +1122,8 @@ void CDataLoader::loadQuests(XmlReader &xr) {
       questInfo.rewards.push_back(reward);
     }
 
-    _client._quests[questInfo.id] = {questInfo};
+    _client._quests.insert(
+        std::make_pair(questInfo.id, CQuest{_client, questInfo}));
   }
 }
 

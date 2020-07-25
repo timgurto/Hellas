@@ -2,9 +2,11 @@
 
 #include "SoundProfile.h"
 
+class Client;
+
 class HasSounds {
  public:
-  void setSoundProfile(const std::string &profileID);
+  void setSoundProfile(const std::string &profileID, const Client &client);
 
   void playSoundOnce(const SoundType &type) const;
   ms_t soundPeriod() const;

@@ -8,17 +8,15 @@
 #include "ui/Line.h"
 #include "ui/Window.h"
 
-CQuest::CQuest(const Info &info)
-    : _info(info), _progress(info.objectives.size(), 0) {}
+CQuest::CQuest(Client &client, const Info &info)
+    : _client(&client), _info(info), _progress(info.objectives.size(), 0) {}
 
 void CQuest::generateWindow(CQuest *quest, Serial startObjectSerial,
                             Transition pendingTransition) {
-  auto &client = Client::instance();
-
   const auto WIN_W = 200_px, WIN_H = 200_px;
 
   if (quest->_window) {
-    client.removeWindow(quest->_window);
+    quest->_client->removeWindow(quest->_window);
     delete quest->_window;
   }
 
@@ -85,21 +83,21 @@ void CQuest::generateWindow(CQuest *quest, Serial startObjectSerial,
     const Tooltip *rewardTooltip{nullptr};
     switch (reward.type) {
       case Info::Reward::LEARN_SPELL: {
-        const auto *spell = client.findSpell(reward.id);
+        const auto *spell = quest->_client->findSpell(reward.id);
         auto name = spell ? spell->name() : reward.id;
         rewardDescription = "Learn spell: " + name;
         if (spell) rewardTooltip = &spell->tooltip();
         break;
       }
       case Info::Reward::LEARN_CONSTRUCTION: {
-        const auto *type = client.findObjectType(reward.id);
+        const auto *type = quest->_client->findObjectType(reward.id);
         auto name = type ? type->name() : reward.id;
         rewardDescription = "Learn construction: " + name;
         if (type) rewardTooltip = &type->constructionTooltip();
         break;
       }
       case Info::Reward::RECEIVE_ITEM: {
-        const auto *item = client.findItem(reward.id);
+        const auto *item = quest->_client->findItem(reward.id);
         auto name = item ? item->name() : reward.id;
         rewardDescription = "Receive item: ";
         if (reward.itemQuantity > 1)
@@ -130,15 +128,13 @@ void CQuest::generateWindow(CQuest *quest, Serial startObjectSerial,
     quest->_window->addChild(transitionButton);
   }
 
-  client.addWindow(quest->_window);
+  quest->_client->addWindow(quest->_window);
   quest->_window->show();
 }
 
 void CQuest::acceptQuest(CQuest *quest, Serial startObjectSerial) {
-  auto &client = Client::instance();
-
   // Send message
-  client.sendMessage(
+  quest->_client->sendMessage(
       {CL_ACCEPT_QUEST, makeArgs(quest->_info.id, startObjectSerial)});
 
   // Close and remove window
@@ -150,14 +146,13 @@ void CQuest::acceptQuest(CQuest *quest, Serial startObjectSerial) {
 
   // Show specified help topic
   if (!quest->_info.helpTopicOnAccept.empty())
-    client.showHelpTopic(quest->_info.helpTopicOnAccept);
+    quest->_client->showHelpTopic(quest->_info.helpTopicOnAccept);
 }
 
 void CQuest::completeQuest(CQuest *quest, Serial endObject) {
-  auto &client = Client::instance();
-
   // Send message
-  client.sendMessage({CL_COMPLETE_QUEST, makeArgs(quest->_info.id, endObject)});
+  quest->_client->sendMessage(
+      {CL_COMPLETE_QUEST, makeArgs(quest->_info.id, endObject)});
 
   // Close and remove window
   quest->_window->hide();
@@ -168,7 +163,7 @@ void CQuest::completeQuest(CQuest *quest, Serial endObject) {
 
   // Show specified help topic
   if (!quest->_info.helpTopicOnComplete.empty())
-    client.showHelpTopic(quest->_info.helpTopicOnComplete);
+    quest->_client->showHelpTopic(quest->_info.helpTopicOnComplete);
 }
 
 void CQuest::setProgress(size_t objective, int progress) {
@@ -195,7 +190,6 @@ void CQuest::update(ms_t timeElapsed) {
 
     auto oldTimeDisplay = _lastTimeDisplay;
     _lastTimeDisplay = msAsShortTimeDisplay(_timeRemaining);
-    if (_lastTimeDisplay != oldTimeDisplay)
-      Client::instance().refreshQuestProgress();
+    if (_lastTimeDisplay != oldTimeDisplay) _client->refreshQuestProgress();
   }
 }

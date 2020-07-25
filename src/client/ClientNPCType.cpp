@@ -17,7 +17,7 @@ ClientNPCType::ClientNPCType(const std::string &id,
 
 void ClientNPCType::applyTemplate(const CNPCTemplate *nt) {
   collisionRect(nt->collisionRect);
-  setSoundProfile(nt->soundProfile);
+  setSoundProfile(nt->soundProfile, *_client);
 }
 
 void ClientNPCType::addGear(const ClientItem &item) {
