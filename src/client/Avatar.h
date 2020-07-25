@@ -91,12 +91,12 @@ class Avatar : public Sprite, public ClientCombatant {
   const MapPoint &combatantLocation() const override { return location(); }
   const Color &healthBarColor() const override { return nameColor(); }
 
-  void addMenuButtons(List &menu) const override;
-  static void declareWarAgainstPlayer(void *pUsername);
-  static void declareWarAgainstCity(void *pCityName);
-  static void declareCityWarAgainstPlayer(void *pUsername);
-  static void declareCityWarAgainstCity(void *pCityName);
-  static void recruit(void *pUsername);
+  void addMenuButtons(List &menu) override;
+  void declareWarAgainstPlayer(void *pUsername);
+  void declareWarAgainstCity(void *pCityName);
+  void declareCityWarAgainstPlayer(void *pUsername);
+  void declareCityWarAgainstCity(void *pCityName);
+  void recruit(void *pUsername);
 
   void playAttackSound() const override;
   void playDefendSound() const override;

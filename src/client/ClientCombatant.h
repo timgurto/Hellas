@@ -42,7 +42,7 @@ class ClientCombatant {
   void drawBuffEffects(const MapPoint &location,
                        const ScreenPoint &clientOffset) const;
 
-  virtual void addMenuButtons(List &menu) const {}
+  virtual void addMenuButtons(List &menu) {}
 
   void createDamageParticles() const;
   void createBuffParticles(double delta) const;

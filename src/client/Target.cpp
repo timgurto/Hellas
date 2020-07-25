@@ -12,10 +12,10 @@ Target::Target()
       _menu(nullptr) {}
 
 void Target::setAndAlertServer(const Sprite &asEntity,
-                               const ClientCombatant &asCombatant,
+                               ClientCombatant &asCombatant,
                                bool nowAggressive) {
   const Client &client = *Client::_instance;
-  const ClientCombatant &targetCombatant = asCombatant;
+  ClientCombatant &targetCombatant = asCombatant;
   const Sprite &targetEntity = asEntity;
 
   if (!targetCombatant.canBeAttackedByPlayer()) nowAggressive = false;
@@ -57,7 +57,7 @@ void Target::clear() {
   _menu->hide();
 }
 
-void Target::initializePanel() {
+void Target::initializePanel(const Client &client) {
   static const px_t X = CombatantPanel::STANDARD_WIDTH +
                         2 * CombatantPanel::GAP,
                     Y = CombatantPanel::GAP;
@@ -65,6 +65,7 @@ void Target::initializePanel() {
                               _health, _maxHealth, _energy, _maxEnergy, _level);
   _panel->hide();
   _panel->setRightMouseDownFunction(openMenu, _menu);
+  _panel->setClient(client);
 }
 
 void Target::initializeMenu() {
@@ -80,7 +81,7 @@ void Target::openMenu(Element &e, const ScreenPoint &mousePos) {
   menu.clearChildren();
 
   Client &client = *Client::_instance;
-  client.targetAsCombatant()->addMenuButtons(menu);
+  menu.client()->targetAsCombatant()->addMenuButtons(menu);
 
   if (!menu.empty()) menu.show();
 }

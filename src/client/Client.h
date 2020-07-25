@@ -78,9 +78,7 @@ class Client {
     return _currentMouseOverEntity;
   }
   MapRect playerCollisionRect() const { return _character.collisionRect(); }
-  const ClientCombatant *targetAsCombatant() const {
-    return _target.combatant();
-  }
+  ClientCombatant *targetAsCombatant() const { return _target.combatant(); }
   const Sprite *targetAsEntity() const { return _target.entity(); }
   const SoundProfile *avatarSounds() const { return _avatarSounds; }
   const SoundProfile *generalSounds() const { return _generalSounds; }
@@ -121,7 +119,7 @@ class Client {
   const ClientSpell *findSpell(const std::string &spellID) const;
 
   template <typename T>
-  void setTarget(const T &newTarget, bool aggressive = false) {
+  void setTarget(T &newTarget, bool aggressive = false) {
     _target.setAndAlertServer(newTarget, aggressive);
   }
   void clearTarget() {

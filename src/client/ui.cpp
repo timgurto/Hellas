@@ -395,7 +395,7 @@ void Client::initPlayerPanels() {
   right-click menu won't work.
   */
   _target.initializeMenu();
-  _target.initializePanel();
+  _target.initializePanel(*this);
   addUI(_target.panel());
   addUI(_target.menu());
 }
