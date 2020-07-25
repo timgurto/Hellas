@@ -62,7 +62,7 @@ void ClientNPC::draw() const {
     }
   }
 
-  drawBuffEffects(location());
+  drawBuffEffects(location(), _client.offset());
 }
 
 bool ClientNPC::shouldDrawName() const {

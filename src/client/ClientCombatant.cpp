@@ -103,11 +103,11 @@ void ClientCombatant::playSoundWhenHit() const {
     playDefendSound();
 }
 
-void ClientCombatant::drawBuffEffects(const MapPoint &location) const {
+void ClientCombatant::drawBuffEffects(const MapPoint &location,
+                                      const ScreenPoint &clientOffset) const {
   for (auto *buffType : buffs()) {
     if (!buffType->hasEffect()) continue;
-    buffType->effectImage().draw(toScreenPoint(location) +
-                                 Client::instance().offset() +
+    buffType->effectImage().draw(toScreenPoint(location) + clientOffset +
                                  buffType->effectOffset());
   }
 }

@@ -62,7 +62,7 @@ void Avatar::draw() const {
 
   Sprite::draw();
 
-  drawBuffEffects(location());
+  drawBuffEffects(location(), _client.offset());
 
   if (isDebug()) {
     renderer.setDrawColor(Color::CYAN);
