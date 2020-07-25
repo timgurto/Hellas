@@ -58,10 +58,6 @@ class Client {
   Client();
   ~Client();
 
-  static Client &instance() {
-    assert(_instance);
-    return *_instance;
-  }
   static bool clientExists() { return _instance != nullptr; }
   operator bool() { return clientExists(); }
 
