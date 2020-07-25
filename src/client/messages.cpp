@@ -2211,7 +2211,7 @@ void Client::handle_SV_SPELL_HIT(const std::string &spellID,
                                  const MapPoint &src, const MapPoint &dst) {
   auto it = _spells.find(spellID);
   if (it == _spells.end()) return;
-  const auto &spell = *it->second;
+  auto &spell = *it->second;
 
   if (spell.sounds()) spell.sounds()->playOnce("launch");
 

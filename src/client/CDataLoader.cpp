@@ -272,7 +272,7 @@ void CDataLoader::loadSpells(XmlReader &xr) {
   for (auto elem : xr.getChildren("spell")) {
     std::string id;
     if (!xr.findAttr(elem, "id", id)) continue;  // ID is mandatory.
-    auto newSpell = new ClientSpell(id);
+    auto newSpell = new ClientSpell(id, _client);
     _client._spells[id] = newSpell;
 
     auto icon = ""s;

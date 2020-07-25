@@ -633,7 +633,7 @@ class Client {
 
   KeyboardStateFetcher _keyboardState;
 
-  static void onSpellHit(const MapPoint &location, const void *spell);
+  static void onSpellHit(const MapPoint &location, void *spell);
 
   mutable LogSDL _debug;
 

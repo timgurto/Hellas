@@ -920,10 +920,10 @@ void Client::infoWindow(const std::string &text) {
   window->show();
 }
 
-void Client::onSpellHit(const MapPoint &location, const void *data) {
-  auto &spell = *reinterpret_cast<const ClientSpell *>(data);
+void Client::onSpellHit(const MapPoint &location, void *data) {
+  auto &spell = *reinterpret_cast<ClientSpell *>(data);
   if (spell.impactParticles())
-    instance().addParticles(spell.impactParticles(), location);
+    spell.client().addParticles(spell.impactParticles(), location);
 
   if (spell.sounds()) spell.sounds()->playOnce("impact"s);
 }

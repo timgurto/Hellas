@@ -29,7 +29,7 @@ class ClientSpell {
     std::string s1{};
   };
 
-  ClientSpell(const std::string &id);
+  ClientSpell(const std::string &id, Client &client);
 
   const std::string &id() const { return _id; }
   void projectile(const Projectile::Type *p) { _projectile = p; }
@@ -59,6 +59,7 @@ class ClientSpell {
   void customDescription(const std::string &description) {
     _customDescription = description;
   }
+  Client &client() { return _client; }
 
   std::string createEffectDescription() const;
 
@@ -81,6 +82,8 @@ class ClientSpell {
   Args _effectArgs = {};
   TargetType _targetType = NUM_TARGET_TYPES;
   int _cooldown{0};  // in seconds
+
+  Client &_client;
 };
 
 using ClientSpells = std::map<std::string, ClientSpell *>;

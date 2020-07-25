@@ -6,15 +6,13 @@
 #include "Client.h"
 #include "Tooltip.h"
 
-ClientSpell::ClientSpell(const std::string &id)
-    : _id(id), _castMessage(CL_CAST, id) {}
+ClientSpell::ClientSpell(const std::string &id, Client &client)
+    : _id(id), _client(client), _castMessage(CL_CAST, id) {}
 
 void ClientSpell::icon(const Texture &iconTexture) { _icon = iconTexture; }
 
 const Tooltip &ClientSpell::tooltip() const {
   if (_tooltip.hasValue()) return _tooltip.value();
-
-  const auto &client = Client::instance();
 
   _tooltip = Tooltip{};
   auto &tooltip = _tooltip.value();
@@ -58,8 +56,8 @@ std::string ClientSpell::createEffectDescription() const {
   auto isBuff = _effectName == "buff" || _effectName == "debuff";
   if (isBuff) {
     auto buffName = effectArgs.s1;
-    auto it = Client::instance().buffTypes().find(buffName);
-    assert(it != Client::instance().buffTypes().end());
+    auto it = _client.buffTypes().find(buffName);
+    assert(it != _client.buffTypes().end());
     buff = &it->second;
 
     buffDuration = buff->duration();
