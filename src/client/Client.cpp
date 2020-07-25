@@ -546,6 +546,11 @@ void Client::showWindowInFront(Window *window) {
   window->show();
 }
 
+void Client::showWindowInFront(void *window) {
+  auto asWindow = reinterpret_cast<Window *>(window);
+  asWindow->client()->showWindowInFront(asWindow);
+}
+
 void Client::addUI(Element *element) { _ui.push_back(element); }
 
 void Client::addChatMessage(const std::string &msg, const Color &color) {

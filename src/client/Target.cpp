@@ -14,7 +14,6 @@ Target::Target()
 void Target::setAndAlertServer(const Sprite &asEntity,
                                ClientCombatant &asCombatant,
                                bool nowAggressive) {
-  const Client &client = *Client::_instance;
   ClientCombatant &targetCombatant = asCombatant;
   const Sprite &targetEntity = asEntity;
 

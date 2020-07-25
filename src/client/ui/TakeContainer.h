@@ -11,19 +11,19 @@
 class TakeContainer : public Element {
  public:
   static TakeContainer *CopyFrom(ClientItem::vect_t &linked, Serial serial,
-                                 const ScreenRect &rect);
+                                 const ScreenRect &rect, const Client &client);
 
   void repopulate();
   size_t size() const { return _list->size(); }
 
   // Send a CL_TAKE message.  data: a pair containing the serial and slot.
-  static void take(void *data);
+  void take(void *data);
 
   static const size_t LOOT_CAPACITY = 8;
 
  private:
   TakeContainer(ClientItem::vect_t &linked, Serial serial,
-                const ScreenRect &rect);
+                const ScreenRect &rect, const Client &client);
 
   ClientItem::vect_t &_linked;
   Serial _serial;  // The serial of the object with this container.

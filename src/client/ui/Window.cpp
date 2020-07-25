@@ -173,6 +173,6 @@ void Window::checkInitialized(Element &thisWindow) {
   Window &window = dynamic_cast<Window &>(thisWindow);
   if (window._isInitialized) return;
   assert(window._initFunction != nullptr);
-  window._initFunction(*Client::_instance);
+  window._initFunction(*window.client());
   window._isInitialized = true;
 }

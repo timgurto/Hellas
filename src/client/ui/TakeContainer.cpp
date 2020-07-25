@@ -11,13 +11,14 @@
 #include "List.h"
 
 TakeContainer::TakeContainer(ClientItem::vect_t &linked, Serial serial,
-                             const ScreenRect &rect)
+                             const ScreenRect &rect, const Client &client)
     : _linked(linked),
       _serial(serial),
       _slots(LOOT_CAPACITY),
       Element(rect),
       _list(new List(rect, Element::ITEM_HEIGHT + 2)) {
   assert(_serial.isInitialised());
+  setClient(client);
 
   addChild(_list);
   for (size_t i = 0; i != LOOT_CAPACITY; ++i)
@@ -25,8 +26,9 @@ TakeContainer::TakeContainer(ClientItem::vect_t &linked, Serial serial,
 }
 
 TakeContainer *TakeContainer::CopyFrom(ClientItem::vect_t &linked,
-                                       Serial serial, const ScreenRect &rect) {
-  return new TakeContainer(linked, serial, rect);
+                                       Serial serial, const ScreenRect &rect,
+                                       const Client &client) {
+  return new TakeContainer(linked, serial, rect, client);
 }
 
 void TakeContainer::repopulate() {
@@ -55,7 +57,7 @@ void TakeContainer::repopulate() {
 
     auto pSlot = &_slots[i];
     auto *button = new Button({0, 0, row->width(), row->height()}, {},
-                              [pSlot]() { take(pSlot); });
+                              [this, pSlot]() { take(pSlot); });
     row->addChild(button);
     button->addChild(new Picture(1, 1, itemType->icon()));
     px_t labX = Client::ICON_SIZE + 2;
@@ -74,6 +76,5 @@ void TakeContainer::repopulate() {
 
 void TakeContainer::take(void *data) {
   slot_t &slot = *reinterpret_cast<slot_t *>(data);
-  Client::_instance->sendMessage(
-      {CL_TAKE_ITEM, makeArgs(slot.first, slot.second)});
+  _client->sendMessage({CL_TAKE_ITEM, makeArgs(slot.first, slot.second)});
 }

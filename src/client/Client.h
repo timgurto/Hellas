@@ -155,9 +155,7 @@ class Client {
   void addWindow(Window *window);
   void removeWindow(Window *window);  // Linear time
   void showWindowInFront(Window *window);
-  static void showWindowInFront(void *window) {
-    _instance->showWindowInFront(reinterpret_cast<Window *>(window));
-  }
+  static void showWindowInFront(void *window);
   bool isWindowRegistered(const Window *toFind);
 
   static const px_t SCREEN_X, SCREEN_Y;
