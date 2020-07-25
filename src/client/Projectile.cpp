@@ -57,7 +57,7 @@ Projectile::Type::Type(const std::string &id, const ScreenRect &drawRect,
       id(id) {}
 
 void Projectile::Type::sounds(const std::string &profile) {
-  _sounds = Client::instance().findSoundProfile(profile);
+  _sounds = _client->findSoundProfile(profile);
 }
 
 void Projectile::Type::instantiate(Client &client, const MapPoint &start,

@@ -25,7 +25,7 @@ ClientObjectType::ClientObjectType(const std::string &id, const Client &client)
 bool ClientObjectType::canGather() const {
   if (!_canGather) return false;
   if (_exclusiveToQuest.empty()) return true;
-  auto it = Client::instance().quests().find(_exclusiveToQuest);
+  auto it = _client->quests().find(_exclusiveToQuest);
   auto canGatherForQuest = it->second.state == CQuest::IN_PROGRESS;
   return canGatherForQuest;
 }
