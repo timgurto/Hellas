@@ -133,7 +133,7 @@ void Client::populateClassWindow() {
         auto learnSpellButton = new Button(
             {x, y, 18, 18}, ""s,
             [this, &talent]() { this->sendMessage(talent.learnMessage); });
-        learnSpellButton->setTooltip(talent.tooltip());
+        learnSpellButton->setTooltip(talent.tooltip(*this));
         if (talent.icon)
           learnSpellButton->addChild(new Picture(1, 1, talent.icon));
 

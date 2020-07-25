@@ -31,7 +31,7 @@ Tree &ClassInfo::findTree(const Tree::Name &name) {
   return _trees.front();
 }
 
-const Tooltip &ClientTalent::tooltip() const {
+const Tooltip &ClientTalent::tooltip(const Client &client) const {
   _tooltip = Tooltip{};
   auto &tooltip = _tooltip.value();
 
@@ -41,7 +41,7 @@ const Tooltip &ClientTalent::tooltip() const {
 
   tooltip.setColor(Color::TOOLTIP_BODY);
   if (hasCost()) {
-    auto tagName = Client::instance().tagName(costTag);
+    auto tagName = client.tagName(costTag);
     tooltip.addLine("Costs "s + toString(costQuantity) + " "s + tagName +
                     " to learn"s);
   }
@@ -49,8 +49,7 @@ const Tooltip &ClientTalent::tooltip() const {
     tooltip.addLine("Requires "s + toString(reqPointsInTree) + " points in "s +
                     tree);
   if (!reqTool.empty())
-    tooltip.addLine("Requires "s + Client::instance().tagName(reqTool) +
-                    " building"s);
+    tooltip.addLine("Requires "s + client.tagName(reqTool) + " building"s);
   if (hasCost() || reqPointsInTree > 0 || !reqTool.empty()) tooltip.addGap();
 
   if (!flavourText.empty()) {

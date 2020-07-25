@@ -29,7 +29,7 @@ struct ClientTalent {
   Message learnMessage{};
   Texture icon{};
   mutable Optional<Tooltip> _tooltip;
-  const Tooltip &tooltip() const;
+  const Tooltip &tooltip(const Client &client) const;
 
   void generateLearnMessage();
 
