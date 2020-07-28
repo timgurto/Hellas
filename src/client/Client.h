@@ -58,9 +58,6 @@ class Client {
   Client();
   ~Client();
 
-  static bool clientExists() { return _instance != nullptr; }
-  operator bool() { return clientExists(); }
-
   void run();
   void gameLoop();
   void loginScreenLoop();  // Alternative game loop to run()

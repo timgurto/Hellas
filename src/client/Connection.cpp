@@ -63,23 +63,27 @@ void Connection::connect() {
     const auto ALREADY_CONNECTED = 10056;
     if (winsockError == ALREADY_CONNECTED) {
       _state = CONNECTED;
-      if (*_client)
-        _client->_serverConnectionIndicator->set(Indicator::SUCCEEDED);
+#ifndef TESTING
+      _client->_serverConnectionIndicator->set(Indicator::SUCCEEDED);
+#endif
     } else {
       _state = CONNECTION_ERROR;
-      if (*_client) _client->_serverConnectionIndicator->set(Indicator::FAILED);
+#ifndef TESTING
+      _client->_serverConnectionIndicator->set(Indicator::FAILED);
+#endif
     }
   } else {
-    if (*_client)
-      _client->_serverConnectionIndicator->set(Indicator::SUCCEEDED);
+#ifndef TESTING
+    _client->_serverConnectionIndicator->set(Indicator::SUCCEEDED);
+#endif
     _client->sendMessage({CL_PING, makeArgs(SDL_GetTicks())});
     _state = CONNECTED;
   }
 
-  if (*_client) {
-    _client->updateCreateButton(nullptr);
-    _client->updateLoginButton(nullptr);
-  }
+#ifndef TESTING
+  _client->updateCreateButton(nullptr);
+  _client->updateLoginButton(nullptr);
+#endif
 
   _aThreadIsConnecting = false;
 }
@@ -97,7 +101,9 @@ bool Connection::shouldAttemptReconnection() const {
 }
 
 void Connection::showError(const std::string &msg) const {
-  if (!Client::clientExists()) return;
+#ifdef TESTING
+  return;
+#endif
   _client->showErrorMessage(msg, Color::CHAT_ERROR);
   _client->toast(""s, msg);
 }
