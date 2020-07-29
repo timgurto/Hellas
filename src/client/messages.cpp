@@ -303,8 +303,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
         singleMsg >> del;
         if (del != MSG_END) break;
 
-        auto it = _items.find(ammoID);
-        if (it == _items.end()) {
+        auto it = gameData.items.find(ammoID);
+        if (it == gameData.items.end()) {
           showErrorMessage("Received warning about invalid item: "s + ammoID,
                            Color::CHAT_ERROR);
           break;
@@ -503,7 +503,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
           populateClassWindow();
 
           // Redraw tooltips, in case gear level requirements are no longer red
-          for (auto &pair : _items) pair.second.refreshTooltip();
+          for (auto &pair : gameData.items) pair.second.refreshTooltip();
           Tooltip::forceAllToRedraw();
 
         } else {
@@ -545,8 +545,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
           break;
         }
 
-        const auto it = _items.find(id);
-        if (it == _items.end()) {
+        const auto it = gameData.items.find(id);
+        if (it == gameData.items.end()) {
           showErrorMessage("Unknown gear received ("s + id + ").  Ignoring.",
                            Color::CHAT_ERROR);
           break;
@@ -582,8 +582,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
 
         if (del != MSG_END) return;
 
-        auto item = _items.find(id);
-        if (item == _items.end()) break;
+        auto item = gameData.items.find(id);
+        if (item == gameData.items.end()) break;
 
         addFloatingCombatText("+"s + toString(qty) + " "s + item->second.name(),
                               _character.location(), Color::ITEM_NAME_NORMAL);
@@ -902,7 +902,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         }
 
         // For unlock info
-        for (auto &pair : _items) pair.second.refreshTooltip();
+        for (auto &pair : gameData.items) pair.second.refreshTooltip();
         if (_detailsPane) refreshRecipeDetailsPane();
         for (const auto &ot : _objectTypes) ot->refreshConstructionTooltip();
         for (const auto &ent : _entities) ent->refreshTooltip();
@@ -938,7 +938,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         }
 
         // For unlock info
-        for (auto &pair : _items) pair.second.refreshTooltip();
+        for (auto &pair : gameData.items) pair.second.refreshTooltip();
         if (_detailsPane) refreshRecipeDetailsPane();
         for (const auto &ot : _objectTypes) ot->refreshConstructionTooltip();
         for (const auto &ent : _entities) ent->refreshTooltip();
@@ -1084,8 +1084,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
         for (size_t i = 0; i != n; ++i) {
           std::string id;
           readString(singleMsg, id);
-          const auto it = _items.find(id);
-          if (it == _items.end()) {
+          const auto it = gameData.items.find(id);
+          if (it == gameData.items.end()) {
             showErrorMessage("Received invalid construction-material info.",
                              Color::CHAT_ERROR);
             break;
@@ -1345,15 +1345,15 @@ void Client::handleBufferedMessages(const std::string &msg) {
           obj.setMerchantSlot(slot, ClientMerchantSlot());
           break;
         }
-        auto wareIt = _items.find(ware);
-        if (wareIt == _items.end()) {
+        auto wareIt = gameData.items.find(ware);
+        if (wareIt == gameData.items.end()) {
           showErrorMessage("Received merchant slot describing invalid item",
                            Color::CHAT_ERROR);
           break;
         }
         const ClientItem *wareItem = &wareIt->second;
-        auto priceIt = _items.find(price);
-        if (priceIt == _items.end()) {
+        auto priceIt = gameData.items.find(price);
+        if (priceIt == gameData.items.end()) {
           showErrorMessage("Received merchant slot describing invalid item",
                            Color::CHAT_ERROR);
           break;
@@ -2073,8 +2073,8 @@ void Client::handle_SV_INVENTORY(Serial serial, size_t slot,
                                  Hitpoints itemHealth) {
   const ClientItem *item = nullptr;
   if (quantity > 0) {
-    const auto it = _items.find(itemID);
-    if (it == _items.end()) {
+    const auto it = gameData.items.find(itemID);
+    if (it == gameData.items.end()) {
       showErrorMessage(
           "Unknown inventory item \""s + itemID + "\"announced; ignored."s,
           Color::CHAT_ERROR);
@@ -2259,8 +2259,8 @@ void Client::handle_SV_RANGED_NPC_MISS(const std::string &npcID,
 void Client::handle_SV_RANGED_WEAPON_HIT(const std::string &weaponID,
                                          const MapPoint &src,
                                          const MapPoint &dst) {
-  auto it = _items.find(weaponID);
-  if (it == _items.end()) return;
+  auto it = gameData.items.find(weaponID);
+  if (it == gameData.items.end()) return;
   const auto &item = it->second;
 
   if (item.projectile()) {
@@ -2271,8 +2271,8 @@ void Client::handle_SV_RANGED_WEAPON_HIT(const std::string &weaponID,
 void Client::handle_SV_RANGED_WEAPON_MISS(const std::string &weaponID,
                                           const MapPoint &src,
                                           const MapPoint &dst) {
-  auto it = _items.find(weaponID);
-  if (it == _items.end()) return;
+  auto it = gameData.items.find(weaponID);
+  if (it == gameData.items.end()) return;
   const auto &item = it->second;
 
   if (item.projectile()) {
@@ -2465,7 +2465,7 @@ void Client::handle_SV_LEVEL_UP(const std::string &username) {
     _debug(message);
 
     // Redraw tooltips, in case gear level requirements are no longer red
-    for (auto &pair : _items) pair.second.refreshTooltip();
+    for (auto &pair : gameData.items) pair.second.refreshTooltip();
     Tooltip::forceAllToRedraw();
   }
 }

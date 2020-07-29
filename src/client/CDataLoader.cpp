@@ -35,7 +35,7 @@ void CDataLoader::load(bool keepOldData) {
     _client._soundProfiles.clear();
     _client._projectileTypes.clear();
     _client._objects.clear();
-    _client._items.clear();
+    Client::gameData.items.clear();
     _client._classes.clear();
     _client._recipes.clear();
   }
@@ -504,7 +504,7 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
 
       auto costID = ""s;
       if (xr.findAttr(action, "cost", costID)) {
-        pAction->cost = &_client._items[costID];
+        pAction->cost = &Client::gameData.items[costID];
       }
 
       cot->action(pAction);
@@ -513,7 +513,7 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
     bool canConstruct = false;
     for (auto objMat : xr.getChildren("material", elem)) {
       if (!xr.findAttr(objMat, "id", s)) continue;
-      ClientItem &item = _client._items[s];
+      ClientItem &item = Client::gameData.items[s];
       n = 1;
       xr.findAttr(objMat, "quantity", n);
       cot->addMaterial(&item, n);
@@ -555,7 +555,7 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
     if (strength) {
       if (xr.findAttr(strength, "item", s) &&
           xr.findAttr(strength, "quantity", n)) {
-        ClientItem &item = _client._items[s];
+        ClientItem &item = Client::gameData.items[s];
         cot->durability(&item, n);
       } else
         _client.showErrorMessage(
@@ -713,7 +713,7 @@ void CDataLoader::loadItems(XmlReader &xr) {
       if (xr.findAttr(repairElem, "tool", s)) item.repairingRequiresTool(s);
     }
 
-    _client._items[id] = item;
+    Client::gameData.items[id] = item;
   }
 }
 
@@ -812,8 +812,8 @@ void CDataLoader::loadRecipes(XmlReader &xr) {
 
     std::string s = id;
     xr.findAttr(elem, "product", s);
-    auto it = _client._items.find(s);
-    if (it == _client._items.end()) {
+    auto it = Client::gameData.items.find(s);
+    if (it == Client::gameData.items.end()) {
       _client.showErrorMessage("Skipping recipe with invalid product "s + s,
                                Color::CHAT_ERROR);
       continue;
@@ -834,8 +834,8 @@ void CDataLoader::loadRecipes(XmlReader &xr) {
       int matQty = 1;
       xr.findAttr(child, "quantity", matQty);
       if (xr.findAttr(child, "id", s)) {
-        auto it = _client._items.find(s);
-        if (it == _client._items.end()) {
+        auto it = Client::gameData.items.find(s);
+        if (it == Client::gameData.items.end()) {
           _client.showErrorMessage("Skipping invalid recipe material "s + s,
                                    Color::CHAT_ERROR);
           continue;
@@ -987,8 +987,8 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
       auto id = ""s;
       if (!xr.findAttr(gearElem, "id", id)) continue;
 
-      auto it = _client._items.find(id);
-      if (it == _client._items.end()) {
+      auto it = Client::gameData.items.find(id);
+      if (it == Client::gameData.items.end()) {
         _client.showErrorMessage("Skipping invalid NPC gear "s + id,
                                  Color::CHAT_ERROR);
         continue;
@@ -1006,8 +1006,8 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
     if (canBeTamed) {
       nt->canBeTamed(true);
       if (xr.findAttr(canBeTamed, "consumes", s)) {
-        auto it = _client._items.find(s);
-        if (it == _client._items.end()) {
+        auto it = Client::gameData.items.find(s);
+        if (it == Client::gameData.items.end()) {
           _client.showErrorMessage("Skipping invalid taming consumable "s + s,
                                    Color::CHAT_ERROR);
           continue;
@@ -1038,7 +1038,7 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
       // A ClientObjectType is being pointed to by items; they need to point to
       // this instead.
       const ClientObjectType *dummy = *pair.first;
-      for (const auto &pair : _client._items) {
+      for (const auto &pair : Client::gameData.items) {
         const ClientItem &item = pair.second;
         if (item.constructsObject() == dummy) {
           ClientItem &nonConstItem = const_cast<ClientItem &>(item);
@@ -1088,7 +1088,7 @@ void CDataLoader::loadQuests(XmlReader &xr) {
         objective.text = "Construct "s + (objType ? objType->name() : "???"s);
 
       } else if (type == "fetch") {
-        auto &it = _client._items.find(id);
+        auto &it = Client::gameData.items.find(id);
         objective.text = it->second.name();
 
       } else if (type == "cast") {

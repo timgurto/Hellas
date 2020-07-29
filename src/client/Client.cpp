@@ -40,6 +40,8 @@ Client *Client::_instance = nullptr;
 
 LogSDL *Client::_debugInstance = nullptr;
 
+Client::GameData Client::gameData;
+
 const px_t Client::SCREEN_X = 640;
 const px_t Client::SCREEN_Y = 360;
 
@@ -191,7 +193,7 @@ void Client::initialiseData() {
   avatarCombatantType.damageParticles(findParticleProfile("blood"));
 
   // Match up ranged weapons with their ammo items
-  for (auto &pair : _items) {
+  for (auto &pair : gameData.items) {
     auto &item = const_cast<ClientItem &>(pair.second);
     item.fetchAmmoItem();
   }
@@ -753,8 +755,8 @@ ClientNPCType *Client::findNPCType(const std::string &id) {
 }
 
 const ClientItem *Client::findItem(const std::string &id) const {
-  auto it = _items.find(id);
-  if (it == _items.end()) return nullptr;
+  auto it = gameData.items.find(id);
+  if (it == gameData.items.end()) return nullptr;
   return &it->second;
 }
 

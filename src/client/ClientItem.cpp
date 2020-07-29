@@ -147,8 +147,8 @@ Color ClientItem::nameColor() const {
 void ClientItem::fetchAmmoItem() const {
   if (_weaponAmmoID.empty()) return;
 
-  auto it = _client->_items.find(_weaponAmmoID);
-  if (it == _client->_items.end()) {
+  auto it = Client::gameData.items.find(_weaponAmmoID);
+  if (it == Client::gameData.items.end()) {
     _client->showErrorMessage(
         "Unknown item "s + _weaponAmmoID + " specified as ammo"s,
         Color::CHAT_ERROR);

@@ -544,10 +544,13 @@ class Client {
   bool _tooltipNeedsRefresh;
 
   // Game data
+  struct GameData {
+    std::map<std::string, ClientItem> items;
+  };
+  static GameData gameData;
   bool _dataLoaded;       // If false when run() is called, load default data.
   void initialiseData();  // Any massaging necessary after everything is loaded.
   std::map<char, ClientTerrain> _terrain;
-  std::map<std::string, ClientItem> _items;
   std::set<CRecipe> _recipes;
   typedef std::set<const ClientObjectType *, ClientObjectType::ptrCompare>
       objectTypes_t;

@@ -76,8 +76,8 @@ void ItemSelector::applyFilter() {
   _itemList->clearChildren();
   const std::string &filterText = _filterText->text();
 
-  const auto &items = Client::_instance->_items;
-  for (const auto &pair : Client::_instance->_items) {
+  const auto &items = Client::gameData.items;
+  for (const auto &pair : Client::gameData.items) {
     const ClientItem &item = pair.second;
     if (filterText == "" || itemMatchesFilter(item, filterText)) {
       // Add item to list

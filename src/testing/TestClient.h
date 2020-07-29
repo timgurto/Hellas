@@ -44,7 +44,7 @@ class TestClient {
   Client::objectTypes_t &objectTypes() { return _client->_objectTypes; }
   const CQuests &quests() const { return _client->_quests; }
   const std::map<std::string, ClientItem> &items() const {
-    return _client->_items;
+    return _client->gameData.items;
   }
   const List &recipeList() const { return *_client->_recipeList; }
   void showCraftingWindow();
