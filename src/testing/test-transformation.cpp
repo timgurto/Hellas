@@ -44,8 +44,8 @@ TEST_CASE("NPC transformation persists") {
     auto &bulbasaur = s.addNPC("bulbasaur", {10, 10});
     bulbasaur.permissions.setPlayerOwner("Alice");
 
-    // When 1s elapses
-    REPEAT_FOR_MS(1000);
+    // When 1.5s elapses
+    REPEAT_FOR_MS(1500);
 
     // And when the server restarts
   }
