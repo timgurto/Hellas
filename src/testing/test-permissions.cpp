@@ -183,16 +183,19 @@ TEST_CASE("Non-members cannot use city objects", "[city]") {
 }
 
 TEST_CASE("Non-existent cities can't own objects", "[city]") {
-  // Given a rock, and a server with no cities
-  TestServer s = TestServer::WithData("basic_rock");
-  s.addObject("rock", {10, 10});
+  GIVEN("a rock, and no cities") {
+    TestServer s = TestServer::WithData("basic_rock");
+    s.addObject("rock", {10, 10});
 
-  // When the rock's owner is set to a nonexistent city "Athens"
-  Object &rock = s.getFirstObject();
-  rock.permissions.setCityOwner("Athens");
+    WHEN("the rock's owner is set to nonexistent city \"Athens\"") {
+      Object &rock = s.getFirstObject();
+      rock.permissions.setCityOwner("Athens");
 
-  // Then the rock has no owner;
-  CHECK_FALSE(rock.permissions.hasOwner());
+      THEN("the rock has no owner") {
+        CHECK_FALSE(rock.permissions.hasOwner());
+      }
+    }
+  }
 }
 
 TEST_CASE("New objects are added to owner index") {
