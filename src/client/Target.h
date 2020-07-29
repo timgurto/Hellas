@@ -36,7 +36,7 @@ class Target {
   void updateHealth(Hitpoints newHealth) { _health = newHealth; }
   void updateEnergy(Energy newEnergy) { _energy = newEnergy; }
 
-  void initializePanel(const Client &client);
+  void initializePanel(Client &client);
   CombatantPanel *panel() { return _panel; }
   void initializeMenu();
   List *menu() { return _menu; }

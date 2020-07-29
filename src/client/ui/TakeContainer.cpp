@@ -11,7 +11,7 @@
 #include "List.h"
 
 TakeContainer::TakeContainer(ClientItem::vect_t &linked, Serial serial,
-                             const ScreenRect &rect, const Client &client)
+                             const ScreenRect &rect, Client &client)
     : _linked(linked),
       _serial(serial),
       _slots(LOOT_CAPACITY),
@@ -27,7 +27,7 @@ TakeContainer::TakeContainer(ClientItem::vect_t &linked, Serial serial,
 
 TakeContainer *TakeContainer::CopyFrom(ClientItem::vect_t &linked,
                                        Serial serial, const ScreenRect &rect,
-                                       const Client &client) {
+                                       Client &client) {
   return new TakeContainer(linked, serial, rect, client);
 }
 

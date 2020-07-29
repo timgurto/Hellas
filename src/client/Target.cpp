@@ -56,7 +56,7 @@ void Target::clear() {
   _menu->hide();
 }
 
-void Target::initializePanel(const Client &client) {
+void Target::initializePanel(Client &client) {
   static const px_t X = CombatantPanel::STANDARD_WIDTH +
                         2 * CombatantPanel::GAP,
                     Y = CombatantPanel::GAP;

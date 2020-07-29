@@ -11,7 +11,7 @@
 class TakeContainer : public Element {
  public:
   static TakeContainer *CopyFrom(ClientItem::vect_t &linked, Serial serial,
-                                 const ScreenRect &rect, const Client &client);
+                                 const ScreenRect &rect, Client &client);
 
   void repopulate();
   size_t size() const { return _list->size(); }
@@ -23,7 +23,7 @@ class TakeContainer : public Element {
 
  private:
   TakeContainer(ClientItem::vect_t &linked, Serial serial,
-                const ScreenRect &rect, const Client &client);
+                const ScreenRect &rect, Client &client);
 
   ClientItem::vect_t &_linked;
   Serial _serial;  // The serial of the object with this container.

@@ -71,7 +71,7 @@ class Element {
   Texture _texture;  // A memoized image of the element, redrawn only when
                      // necessary.
 
-  const Client *_client{nullptr};
+  Client *_client{nullptr};
 
   virtual void
   checkIfChanged();  // Allows elements to update their changed status.
@@ -120,7 +120,7 @@ class Element {
 
   static void initialize();
 
-  const Client *client() const { return _client; }
+  Client *client() const { return _client; }
 
   static const ScreenPoint *absMouse;  // Absolute mouse co-ordinates
   static px_t textOffset;
@@ -152,7 +152,7 @@ class Element {
   void setAlpha(Uint8 alpha);
   void ignoreMouseEvents() { _ignoreMouseEvents = true; }
   bool canReceiveMouseEvents() const { return !_ignoreMouseEvents; }
-  void setClient(const Client &c) { _client = &c; }
+  void setClient(Client &c) { _client = &c; }
 
   void show();
   void hide();
