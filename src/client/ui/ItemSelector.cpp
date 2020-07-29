@@ -27,18 +27,20 @@ Window *ItemSelector::_findItemWindow = nullptr;
 TextBox *ItemSelector::_filterText = nullptr;
 List *ItemSelector::_itemList = nullptr;
 
-ItemSelector::ItemSelector(const ClientItem *&item, px_t x, px_t y)
+ItemSelector::ItemSelector(Client &client, const ClientItem *&item, px_t x,
+                           px_t y)
     : Button({x, y, WIDTH, Element::ITEM_HEIGHT + 2}),
       _item(item),
       _lastItem(item),
       _icon(new Picture({1, 1, ITEM_HEIGHT, ITEM_HEIGHT}, Texture())),
       _name(new Label({ITEM_HEIGHT + 1 + GAP, 1, WIDTH, ITEM_HEIGHT}, "",
                       Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED)) {
+  setClient(client);
   addChild(_icon);
   addChild(_name);
 
   auto ppItem = &_item;
-  clickFun([ppItem]() { openFindItemWindow(ppItem); });
+  clickFun([this, ppItem]() { openFindItemWindow(ppItem); });
 
   if (_findItemWindow == nullptr) {
     _findItemWindow = Window::WithRectAndTitle(
@@ -61,14 +63,14 @@ ItemSelector::ItemSelector(const ClientItem *&item, px_t x, px_t y)
     _findItemWindow->addChild(_itemList);
 
     applyFilter();  // Populate list for the first time.
-    Client::_instance->addWindow(_findItemWindow);
+    _client->addWindow(_findItemWindow);
   }
 }
 
 void ItemSelector::openFindItemWindow(void *data) {
   _findItemWindow->show();
-  Client::_instance->removeWindow(_findItemWindow);
-  Client::_instance->addWindow(_findItemWindow);
+  _client->removeWindow(_findItemWindow);
+  _client->addWindow(_findItemWindow);
   _itemBeingSelected = static_cast<ClientItem **>(data);
 }
 

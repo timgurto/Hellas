@@ -26,7 +26,7 @@ class ItemSelector : public Button {
   Label *_name;
 
  public:
-  ItemSelector(const ClientItem *&item, px_t x = 0, px_t y = 0);
+  ItemSelector(Client &client, const ClientItem *&item, px_t x = 0, px_t y = 0);
 
   const ClientItem *item() const { return _item; }
   void item(const ClientItem *item) { _item = item; }
@@ -40,7 +40,7 @@ class ItemSelector : public Button {
   static TextBox *_filterText;
   static List *_itemList;
 
-  static void openFindItemWindow(
+  void openFindItemWindow(
       void *data);  // The find-item window, when a selector is clicked.
   static void applyFilter();
   static void selectItem(void *data);
