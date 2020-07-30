@@ -81,7 +81,7 @@ class Client {
   const SoundProfile *avatarSounds() const { return _avatarSounds; }
   const SoundProfile *generalSounds() const { return _generalSounds; }
   const std::string &tagName(const std::string &id) const {
-    return _tagNames[id];
+    return gameData.tagNames[id];
   }
   const HelpEntries &helpEntries() const { return _helpEntries; }
   const Window &helpWindow() const { return *_helpWindow; }
@@ -548,7 +548,6 @@ class Client {
   static CGameData gameData;
   bool _dataLoaded;       // If false when run() is called, load default data.
   void initialiseData();  // Any massaging necessary after everything is loaded.
-  TagNames _tagNames;
   ClientSpells _spells;
   ClientBuffTypes _buffTypes;
   ClassInfo::Container _classes;

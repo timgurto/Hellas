@@ -56,7 +56,7 @@ void CDataLoader::load(bool keepOldData) {
 
     for (const auto &file : _files) {
       auto xr = XmlReader::FromFile(file);
-      _client._tagNames.readFromXML(xr);
+      Client::gameData.tagNames.readFromXML(xr);
     }
 
     loadFromAllFiles(&CDataLoader::loadObjectTypes);
@@ -83,7 +83,7 @@ void CDataLoader::load(bool keepOldData) {
     loadProjectiles(reader);
     loadSpells(reader);
     loadBuffs(reader);
-    _client._tagNames.readFromXML(reader);
+    Client::gameData.tagNames.readFromXML(reader);
     loadObjectTypes(reader);
     loadItems(reader);
     loadClasses(reader);

@@ -9,12 +9,14 @@
 #include "ClientNPC.h"
 #include "ClientTerrain.h"
 #include "ParticleProfile.h"
+#include "Tag.h"
 
 struct CGameData {
   std::map<std::string, ClientItem> items;
   std::map<char, ClientTerrain> terrain;
   std::set<CRecipe> recipes;
   std::map<std::string, CNPCTemplate> npcTemplates;
+  TagNames tagNames;
 
   using ObjectTypes =
       std::set<const ClientObjectType *, ClientObjectType::ptrCompare>;
