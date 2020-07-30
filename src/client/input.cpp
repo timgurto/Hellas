@@ -630,8 +630,8 @@ void Client::checkMouseOver() {
 void Client::updateTerrainTooltip() {
   _terrainUnderCursor = _map.getTerrainAtPoint(toMapPoint(_mouse) - _offset);
 
-  auto it = _terrain.find(_terrainUnderCursor);
-  if (it != _terrain.end()) {
+  auto it = gameData.terrain.find(_terrainUnderCursor);
+  if (it != gameData.terrain.end()) {
     _terrainTooltip.addTags(it->second, *this);
   }
 

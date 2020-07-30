@@ -30,7 +30,7 @@ CDataLoader CDataLoader::FromString(Client &client, const XML &data) {
 
 void CDataLoader::load(bool keepOldData) {
   if (!keepOldData) {
-    _client._terrain.clear();
+    _client.gameData.terrain.clear();
     _client._particleProfiles.clear();
     _client._soundProfiles.clear();
     _client._projectileTypes.clear();
@@ -137,7 +137,7 @@ void CDataLoader::loadTerrain(XmlReader &xr) {
     xr.findAttr(elem, "frames", frames);
     xr.findAttr(elem, "frameTime", frameTime);
 
-    auto &terrain = _client._terrain[index] =
+    auto &terrain = _client.gameData.terrain[index] =
         ClientTerrain(fileName, frames, frameTime);
     terrain.loadTagsFromXML(xr, elem);
   }

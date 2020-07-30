@@ -393,7 +393,7 @@ void Client::gameLoop() {
   _numEntities = _entities.size();
 
   // Update terrain animation
-  for (auto &terrainPair : _terrain)
+  for (auto &terrainPair : gameData.terrain)
     terrainPair.second.advanceTime(_timeElapsed);
 
   // Update spell cooldowns

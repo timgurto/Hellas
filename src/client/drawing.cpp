@@ -256,7 +256,7 @@ void Client::drawFootprint(const MapRect &rect, Color color,
 
 void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const {
   if (isDebug()) {
-    _terrain.at(_map[x][y]).draw(xLoc, yLoc);
+    gameData.terrain.at(_map[x][y]).draw(xLoc, yLoc);
     return;
   }
 
@@ -314,36 +314,37 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const {
   renderer.fillRect(drawRect);
 
   // Half-alpha base tile
-  _terrain.at(tileID).setHalfAlpha();
+  const auto &thisTilesTerrain = gameData.terrain.at(tileID);
+  thisTilesTerrain.setHalfAlpha();
   if (yOdd && x == 0) {
-    _terrain.at(tileID).draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-    _terrain.at(tileID).draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+    thisTilesTerrain.draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+    thisTilesTerrain.draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
   } else if (!yOdd && x == _map.width() - 1) {
-    _terrain.at(tileID).draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-    _terrain.at(tileID).draw(drawLoc + TOP_LEFT, TOP_LEFT);
+    thisTilesTerrain.draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+    thisTilesTerrain.draw(drawLoc + TOP_LEFT, TOP_LEFT);
   } else {
-    _terrain.at(tileID).draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-    _terrain.at(tileID).draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
-    _terrain.at(tileID).draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-    _terrain.at(tileID).draw(drawLoc + TOP_LEFT, TOP_LEFT);
+    thisTilesTerrain.draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+    thisTilesTerrain.draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+    thisTilesTerrain.draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+    thisTilesTerrain.draw(drawLoc + TOP_LEFT, TOP_LEFT);
   }
-  _terrain.at(tileID).setQuarterAlpha();
+  thisTilesTerrain.setQuarterAlpha();
 
   // Quarter-alpha L, R, E, F, G, H tiles
   if (!yOdd || x != 0) {
-    _terrain.at(L).draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-    _terrain.at(L).draw(drawLoc + TOP_LEFT, TOP_LEFT);
-    _terrain.at(G).draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-    _terrain.at(H).draw(drawLoc + TOP_LEFT, TOP_LEFT);
+    gameData.terrain.at(L).draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+    gameData.terrain.at(L).draw(drawLoc + TOP_LEFT, TOP_LEFT);
+    gameData.terrain.at(G).draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+    gameData.terrain.at(H).draw(drawLoc + TOP_LEFT, TOP_LEFT);
   }
   if (yOdd || x != _map.width() - 1) {
-    _terrain.at(R).draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-    _terrain.at(R).draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
-    _terrain.at(E).draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-    _terrain.at(F).draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+    gameData.terrain.at(R).draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+    gameData.terrain.at(R).draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+    gameData.terrain.at(E).draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+    gameData.terrain.at(F).draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
   }
 
-  /*if (!_terrain[tileID].isTraversable()) {
+  /*if (!gameData.terrain[tileID].isTraversable()) {
       renderer.setDrawColor(Color::TODO);
       renderer.drawRect(drawLoc + FULL);
   }*/
