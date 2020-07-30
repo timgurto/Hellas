@@ -273,7 +273,7 @@ void CDataLoader::loadSpells(XmlReader &xr) {
     std::string id;
     if (!xr.findAttr(elem, "id", id)) continue;  // ID is mandatory.
     auto newSpell = new ClientSpell(id, _client);
-    _client._spells[id] = newSpell;
+    Client::gameData.spells[id] = newSpell;
 
     auto icon = ""s;
     if (xr.findAttr(elem, "icon", icon)) newSpell->icon(_client._icons[icon]);
@@ -772,8 +772,8 @@ void CDataLoader::loadClasses(XmlReader &xr) {
 
             auto spellID = ""s;
             if (!xr.findAttr(talent, "id", spellID)) continue;
-            auto it = _client._spells.find(spellID);
-            if (it == _client._spells.end()) continue;
+            auto it = Client::gameData.spells.find(spellID);
+            if (it == Client::gameData.spells.end()) continue;
             t.spell = it->second;
 
             t.icon = t.spell->icon();
@@ -1094,7 +1094,7 @@ void CDataLoader::loadQuests(XmlReader &xr) {
         objective.text = it->second.name();
 
       } else if (type == "cast") {
-        auto &it = _client._spells.find(id);
+        auto &it = Client::gameData.spells.find(id);
         objective.text = it->second->name();
       }
 

@@ -245,10 +245,6 @@ Client::~Client() {
     delete entity;
   }
 
-  for (auto profile : gameData.particleProfiles) delete profile;
-  for (auto projectileType : gameData.projectileTypes) delete projectileType;
-  for (const auto &spellPair : _spells) delete spellPair.second;
-
   // Some entities will destroy their own windows, and remove them from this
   // list.
   for (Window *window : _windows) delete window;
@@ -800,8 +796,8 @@ std::string Client::getUserCity(const std::string &name) const {
 }
 
 const ClientSpell *Client::findSpell(const std::string &spellID) const {
-  auto it = _spells.find(spellID);
-  if (it == _spells.end()) return nullptr;
+  auto it = gameData.spells.find(spellID);
+  if (it == gameData.spells.end()) return nullptr;
   return it->second;
 }
 

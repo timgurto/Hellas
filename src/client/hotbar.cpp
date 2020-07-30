@@ -114,15 +114,15 @@ void Client::refreshHotbar() {
     }
 
     if (actions[i].category == HotbarCategory::HOTBAR_SPELL) {
-      auto spellIt = _spells.find(actions[i].id);
-      if (spellIt == _spells.end()) {
+      auto spellIt = gameData.spells.find(actions[i].id);
+      if (spellIt == gameData.spells.end()) {
         debug()("Hotbar refers to invalid spell, " + actions[i].id,
                 Color::CHAT_ERROR);
         continue;
       }
 
       _hotbarButtons[i]->enable();
-      const auto &spell = *_spells.find(actions[i].id)->second;
+      const auto &spell = *gameData.spells.find(actions[i].id)->second;
 
       icons[i]->changeTexture(spell.icon());
 

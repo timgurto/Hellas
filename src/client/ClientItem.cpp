@@ -109,8 +109,8 @@ const Tooltip &ClientItem::tooltip() const {
 
   // Spell
   if (castsSpellOnUse()) {
-    auto it = _client->_spells.find(spellToCastOnUse());
-    if (it == _client->_spells.end()) {
+    auto it = _client->gameData.spells.find(spellToCastOnUse());
+    if (it == _client->gameData.spells.end()) {
       _client->showErrorMessage("Can't find spell: "s + spellToCastOnUse(),
                                 Color::CHAT_ERROR);
     } else {

@@ -2211,8 +2211,8 @@ void Client::handle_SV_KING(const std::string username) {
 
 void Client::handle_SV_SPELL_HIT(const std::string &spellID,
                                  const MapPoint &src, const MapPoint &dst) {
-  auto it = _spells.find(spellID);
-  if (it == _spells.end()) return;
+  auto it = gameData.spells.find(spellID);
+  if (it == gameData.spells.end()) return;
   auto &spell = *it->second;
 
   if (spell.sounds()) spell.sounds()->playOnce("launch");
@@ -2225,8 +2225,8 @@ void Client::handle_SV_SPELL_HIT(const std::string &spellID,
 
 void Client::handle_SV_SPELL_MISS(const std::string &spellID,
                                   const MapPoint &src, const MapPoint &dst) {
-  auto it = _spells.find(spellID);
-  if (it == _spells.end()) return;
+  auto it = gameData.spells.find(spellID);
+  if (it == gameData.spells.end()) return;
   const auto &spell = *it->second;
 
   if (spell.sounds()) spell.sounds()->playOnce("launch");
@@ -2413,8 +2413,8 @@ void Client::handle_SV_KNOWN_SPELLS(
   _knownSpells.clear();
 
   for (const auto &id : knownSpellIDs) {
-    auto it = _spells.find(id);
-    if (it == _spells.end()) continue;
+    auto it = gameData.spells.find(id);
+    if (it == gameData.spells.end()) continue;
     _knownSpells.insert(it->second);
   }
 
@@ -2422,8 +2422,8 @@ void Client::handle_SV_KNOWN_SPELLS(
 }
 
 void Client::handle_SV_LEARNED_SPELL(const std::string &spellID) {
-  auto it = _spells.find(spellID);
-  if (it == _spells.end()) return;
+  auto it = gameData.spells.find(spellID);
+  if (it == gameData.spells.end()) return;
   _knownSpells.insert(it->second);
 
   auto icon = it->second->icon();
@@ -2434,8 +2434,8 @@ void Client::handle_SV_LEARNED_SPELL(const std::string &spellID) {
 }
 
 void Client::handle_SV_UNLEARNED_SPELL(const std::string &spellID) {
-  auto it = _spells.find(spellID);
-  if (it == _spells.end()) return;
+  auto it = gameData.spells.find(spellID);
+  if (it == gameData.spells.end()) return;
   _knownSpells.erase(it->second);
 
   refreshHotbar();

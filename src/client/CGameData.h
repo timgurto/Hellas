@@ -7,6 +7,7 @@
 #include "CRecipe.h"
 #include "ClientItem.h"
 #include "ClientNPC.h"
+#include "ClientSpell.h"
 #include "ClientTerrain.h"
 #include "ParticleProfile.h"
 #include "Tag.h"
@@ -17,6 +18,7 @@ struct CGameData {
   std::set<CRecipe> recipes;
   std::map<std::string, CNPCTemplate> npcTemplates;
   TagNames tagNames;
+  ClientSpells spells;
 
   using ObjectTypes =
       std::set<const ClientObjectType *, ClientObjectType::ptrCompare>;

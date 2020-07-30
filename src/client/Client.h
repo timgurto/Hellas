@@ -548,7 +548,6 @@ class Client {
   static CGameData gameData;
   bool _dataLoaded;       // If false when run() is called, load default data.
   void initialiseData();  // Any massaging necessary after everything is loaded.
-  ClientSpells _spells;
   ClientBuffTypes _buffTypes;
   ClassInfo::Container _classes;
   CQuests _quests;
