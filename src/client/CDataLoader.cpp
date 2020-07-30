@@ -30,9 +30,9 @@ CDataLoader CDataLoader::FromString(Client &client, const XML &data) {
 
 void CDataLoader::load(bool keepOldData) {
   if (!keepOldData) {
-    _client.gameData.terrain.clear();
+    Client::gameData.terrain.clear();
     Client::gameData.particleProfiles.clear();
-    _client._soundProfiles.clear();
+    Client::gameData.soundProfiles.clear();
     Client::gameData.projectileTypes.clear();
     _client._objects.clear();
     Client::gameData.items.clear();
@@ -205,7 +205,7 @@ void CDataLoader::loadSounds(XmlReader &xr) {
     std::string id;
     if (!xr.findAttr(elem, "id", id))  // No ID: skip
       continue;
-    auto resultPair = _client._soundProfiles.insert(SoundProfile(id));
+    auto resultPair = Client::gameData.soundProfiles.insert(SoundProfile(id));
     SoundProfile &sp = const_cast<SoundProfile &>(*resultPair.first);
     if (id == "avatar")
       _client._avatarSounds = &sp;

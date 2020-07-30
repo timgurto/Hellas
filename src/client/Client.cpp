@@ -724,8 +724,8 @@ void Client::setRandomUsername() {
 }
 
 const SoundProfile *Client::findSoundProfile(const std::string &id) const {
-  auto it = _soundProfiles.find(SoundProfile(id));
-  if (it == _soundProfiles.end()) return nullptr;
+  auto it = gameData.soundProfiles.find(SoundProfile(id));
+  if (it == gameData.soundProfiles.end()) return nullptr;
   return &*it;
 }
 

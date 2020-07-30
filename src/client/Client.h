@@ -549,8 +549,6 @@ class Client {
   bool _dataLoaded;       // If false when run() is called, load default data.
   void initialiseData();  // Any massaging necessary after everything is loaded.
 
-  typedef std::set<SoundProfile> soundProfiles_t;
-  soundProfiles_t _soundProfiles;
   const SoundProfile *_avatarSounds{nullptr};
   const SoundProfile *_generalSounds{nullptr};
 

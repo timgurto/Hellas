@@ -20,6 +20,7 @@ struct CGameData {
   std::map<char, ClientTerrain> terrain;
   std::set<CRecipe> recipes;
   std::map<std::string, CNPCTemplate> npcTemplates;
+  std::set<SoundProfile> soundProfiles;
   TagNames tagNames;
   ClientSpells spells;
   ClientBuffTypes buffTypes;
