@@ -40,7 +40,7 @@ Client *Client::_instance = nullptr;
 
 LogSDL *Client::_debugInstance = nullptr;
 
-Client::GameData Client::gameData;
+CGameData Client::gameData;
 
 const px_t Client::SCREEN_X = 640;
 const px_t Client::SCREEN_Y = 360;

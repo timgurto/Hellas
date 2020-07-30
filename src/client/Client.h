@@ -20,6 +20,7 @@
 #include "Avatar.h"
 #include "CCities.h"
 #include "CDroppedItem.h"
+#include "CGameData.h"
 #include "CQuest.h"
 #include "CRecipe.h"
 #include "ClientBuff.h"
@@ -544,18 +545,7 @@ class Client {
   bool _tooltipNeedsRefresh;
 
   // Game data
-  static struct GameData {
-    std::map<std::string, ClientItem> items;
-    std::map<char, ClientTerrain> terrain;
-    std::set<CRecipe> recipes;
-    using ObjectTypes =
-        std::set<const ClientObjectType *, ClientObjectType::ptrCompare>;
-    ObjectTypes objectTypes;
-    std::map<std::string, CNPCTemplate> npcTemplates;
-    typedef std::set<const ParticleProfile *, ParticleProfile::ptrCompare>
-        ParticleProfiles;
-    ParticleProfiles particleProfiles;
-  } gameData;
+  static CGameData gameData;
   bool _dataLoaded;       // If false when run() is called, load default data.
   void initialiseData();  // Any massaging necessary after everything is loaded.
   typedef std::set<const Projectile::Type *, Projectile::Type::ptrCompare>
