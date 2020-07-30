@@ -111,7 +111,6 @@ class Client {
   ClientCombatantType avatarCombatantType;
   CDroppedItem::Type droppedItemType;
 
-  const ClientBuffTypes &buffTypes() const { return _buffTypes; }
   const CQuests &quests() const { return _quests; }
 
   const ClientSpell *findSpell(const std::string &spellID) const;
@@ -544,11 +543,13 @@ class Client {
   // Location has changed (local or official), and tooltip may have changed.
   bool _tooltipNeedsRefresh;
 
+ public:
   // Game data
   static CGameData gameData;
+
+ private:
   bool _dataLoaded;       // If false when run() is called, load default data.
   void initialiseData();  // Any massaging necessary after everything is loaded.
-  ClientBuffTypes _buffTypes;
   ClassInfo::Container _classes;
   CQuests _quests;
 

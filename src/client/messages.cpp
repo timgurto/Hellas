@@ -2362,8 +2362,8 @@ void Client::handle_SV_PLAYER_GOT_BUFF(int msgCode, const std::string &username,
   avatar->addBuffOrDebuff(buffID, isBuff);
 
   if (avatar == &_character) {
-    auto it = buffTypes().find(buffID);
-    auto buffExists = it != buffTypes().end();
+    auto it = gameData.buffTypes.find(buffID);
+    auto buffExists = it != gameData.buffTypes.end();
     if (buffExists) {
       ms_t duration = it->second.duration() * 1000;
 

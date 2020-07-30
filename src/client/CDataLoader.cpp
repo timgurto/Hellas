@@ -420,7 +420,7 @@ void CDataLoader::loadBuffs(XmlReader &xr) {
     auto itemHasStats = xr.findStatsChild("stats", elem, stats);
     if (itemHasStats) newBuff.stats(stats);
 
-    _client._buffTypes[id] = newBuff;
+    Client::gameData.buffTypes[id] = newBuff;
   }
 }
 

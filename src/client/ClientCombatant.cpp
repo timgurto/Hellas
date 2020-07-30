@@ -71,8 +71,8 @@ void ClientCombatant::createBuffParticles(double delta) const {
 void ClientCombatant::addBuffOrDebuff(const ClientBuffType::ID &buff,
                                       bool isBuff) {
   Client &client = *Client::_instance;
-  auto it = client.buffTypes().find(buff);
-  if (it == client.buffTypes().end()) return;
+  auto it = Client::gameData.buffTypes.find(buff);
+  if (it == Client::gameData.buffTypes.end()) return;
 
   const auto &buffType = it->second;
 
@@ -85,8 +85,8 @@ void ClientCombatant::addBuffOrDebuff(const ClientBuffType::ID &buff,
 void ClientCombatant::removeBuffOrDebuff(const ClientBuffType::ID &buff,
                                          bool isBuff) {
   Client &client = *Client::_instance;
-  auto it = client.buffTypes().find(buff);
-  if (it == client.buffTypes().end()) return;
+  auto it = Client::gameData.buffTypes.find(buff);
+  if (it == Client::gameData.buffTypes.end()) return;
 
   if (isBuff)
     _buffs.erase(&it->second);
