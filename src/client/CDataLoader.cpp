@@ -31,7 +31,7 @@ CDataLoader CDataLoader::FromString(Client &client, const XML &data) {
 void CDataLoader::load(bool keepOldData) {
   if (!keepOldData) {
     _client.gameData.terrain.clear();
-    _client._particleProfiles.clear();
+    Client::gameData.particleProfiles.clear();
     _client._soundProfiles.clear();
     _client._projectileTypes.clear();
     _client._objects.clear();
@@ -196,7 +196,7 @@ void CDataLoader::loadParticles(XmlReader &xr) {
         profile->addVariety(s, count, _client);
     }
 
-    _client._particleProfiles.insert(profile);
+    Client::gameData.particleProfiles.insert(profile);
   }
 }
 

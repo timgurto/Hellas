@@ -245,7 +245,7 @@ Client::~Client() {
     delete entity;
   }
 
-  for (auto profile : _particleProfiles) delete profile;
+  for (auto profile : gameData.particleProfiles) delete profile;
   for (auto projectileType : _projectileTypes) delete projectileType;
   for (const auto &spellPair : _spells) delete spellPair.second;
 
@@ -597,8 +597,8 @@ bool Client::outsideCullRange(const MapPoint &loc, px_t hysteresis) const {
 const ParticleProfile *Client::findParticleProfile(
     const std::string &id) const {
   ParticleProfile dummy(id);
-  auto it = _particleProfiles.find(&dummy);
-  if (it == _particleProfiles.end()) return nullptr;
+  auto it = gameData.particleProfiles.find(&dummy);
+  if (it == gameData.particleProfiles.end()) return nullptr;
   return *it;
 }
 
