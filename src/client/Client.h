@@ -548,12 +548,12 @@ class Client {
     std::map<std::string, ClientItem> items;
     std::map<char, ClientTerrain> terrain;
     std::set<CRecipe> recipes;
+    using ObjectTypes =
+        std::set<const ClientObjectType *, ClientObjectType::ptrCompare>;
+    ObjectTypes objectTypes;
   } gameData;
   bool _dataLoaded;       // If false when run() is called, load default data.
   void initialiseData();  // Any massaging necessary after everything is loaded.
-  typedef std::set<const ClientObjectType *, ClientObjectType::ptrCompare>
-      objectTypes_t;
-  objectTypes_t _objectTypes;
   std::map<std::string, CNPCTemplate> _npcTemplates;
   typedef std::set<const ParticleProfile *, ParticleProfile::ptrCompare>
       particleProfiles_t;

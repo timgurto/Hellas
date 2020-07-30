@@ -199,7 +199,7 @@ void Client::initialiseData() {
   }
 
   // Initialize object-type strengths
-  for (auto *objectType : _objectTypes) {
+  for (auto *objectType : gameData.objectTypes) {
     auto nonConstType = const_cast<ClientObjectType *>(objectType);
     nonConstType->calculateAndInitDurability();
   }
@@ -245,7 +245,6 @@ Client::~Client() {
     delete entity;
   }
 
-  for (auto type : _objectTypes) delete type;
   for (auto profile : _particleProfiles) delete profile;
   for (auto projectileType : _projectileTypes) delete projectileType;
   for (const auto &spellPair : _spells) delete spellPair.second;
@@ -744,8 +743,8 @@ const Projectile::Type *Client::findProjectileType(
 
 ClientObjectType *Client::findObjectType(const std::string &id) {
   auto dummy = ClientObjectType{id, *this};
-  auto it = _objectTypes.find(&dummy);
-  if (it == _objectTypes.end()) return nullptr;
+  auto it = gameData.objectTypes.find(&dummy);
+  if (it == gameData.objectTypes.end()) return nullptr;
   return const_cast<ClientObjectType *>(*it);
 }
 

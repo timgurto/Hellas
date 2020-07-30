@@ -588,7 +588,7 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
       cot->chanceToGather(s, chance);
     }
 
-    _client._objectTypes.insert(cot);
+    Client::gameData.objectTypes.insert(cot);
 
     // Construction locks
     for (auto unlockedBy : xr.getChildren("unlockedBy", elem)) {
@@ -691,7 +691,8 @@ void CDataLoader::loadItems(XmlReader &xr) {
 
     if (xr.findAttr(elem, "constructs", s)) {
       // Create dummy ObjectType if necessary
-      auto pair = _client._objectTypes.insert(new ClientObjectType(s, _client));
+      auto pair =
+          Client::gameData.objectTypes.insert(new ClientObjectType(s, _client));
       item.constructsObject(*pair.first);
     }
 
@@ -1033,7 +1034,7 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
     }
 
     // Insert
-    auto pair = _client._objectTypes.insert(nt);
+    auto pair = Client::gameData.objectTypes.insert(nt);
     if (!pair.second) {
       // A ClientObjectType is being pointed to by items; they need to point to
       // this instead.
@@ -1045,9 +1046,9 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
           nonConstItem.constructsObject(nt);
         }
       }
-      _client._objectTypes.erase(dummy);
+      Client::gameData.objectTypes.erase(dummy);
       delete dummy;
-      _client._objectTypes.insert(nt);
+      Client::gameData.objectTypes.insert(nt);
     }
   }
 }

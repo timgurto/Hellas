@@ -209,7 +209,7 @@ ClientObject &TestClient::getFirstObject() {
 }
 
 const ClientObjectType &TestClient::getFirstObjectType() {
-  auto types = _client->_objectTypes;
+  auto types = Client::gameData.objectTypes;
   assert(!types.empty());
   auto it = types.begin();
   return **it;

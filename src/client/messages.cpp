@@ -904,7 +904,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
         // For unlock info
         for (auto &pair : gameData.items) pair.second.refreshTooltip();
         if (_detailsPane) refreshRecipeDetailsPane();
-        for (const auto &ot : _objectTypes) ot->refreshConstructionTooltip();
+        for (const auto &ot : gameData.objectTypes)
+          ot->refreshConstructionTooltip();
         for (const auto &ent : _entities) ent->refreshTooltip();
         populateBuildList();
         if (_recipeList) {
@@ -940,7 +941,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
         // For unlock info
         for (auto &pair : gameData.items) pair.second.refreshTooltip();
         if (_detailsPane) refreshRecipeDetailsPane();
-        for (const auto &ot : _objectTypes) ot->refreshConstructionTooltip();
+        for (const auto &ot : gameData.objectTypes)
+          ot->refreshConstructionTooltip();
         for (const auto &ent : _entities) ent->refreshTooltip();
         populateBuildList();
         if (_recipeList) {
