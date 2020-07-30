@@ -36,7 +36,7 @@ void CDataLoader::load(bool keepOldData) {
     Client::gameData.projectileTypes.clear();
     _client._objects.clear();
     Client::gameData.items.clear();
-    _client._classes.clear();
+    Client::gameData.classes.clear();
     Client::gameData.recipes.clear();
   }
 
@@ -802,7 +802,7 @@ void CDataLoader::loadClasses(XmlReader &xr) {
       }
     }
 
-    _client._classes[className] = std::move(newClass);
+    Client::gameData.classes[className] = std::move(newClass);
   }
 }
 

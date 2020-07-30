@@ -175,7 +175,7 @@ void Client::updateClassDescription(const Client &client) {
   auto classID = classList->getSelected();
   if (classID.empty()) return;
 
-  const auto &description = _instance->_classes[classID].description();
+  const auto &description = Client::gameData.classes[classID].description();
   static auto wrapper =
       WordWrapper{_instance->defaultFont(), classDescription->contentWidth()};
   auto lines = wrapper.wrap(description);
@@ -228,7 +228,7 @@ void Client::initCreateWindow() {
         new ChoiceList({MID_PANE, y, L_PANE_W - MID_PANE, CLASS_LIST_HEIGHT},
                        Element::TEXT_HEIGHT, *this);
     inputPane->addChild(classList);
-    for (const auto &pair : _classes) {
+    for (const auto &pair : gameData.classes) {
       auto label = new Label({}, " "s + pair.second.name());
       label->id(pair.first);
       classList->addChild(label);

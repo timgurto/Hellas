@@ -550,7 +550,6 @@ class Client {
  private:
   bool _dataLoaded;       // If false when run() is called, load default data.
   void initialiseData();  // Any massaging necessary after everything is loaded.
-  ClassInfo::Container _classes;
   CQuests _quests;
 
   typedef std::set<SoundProfile> soundProfiles_t;

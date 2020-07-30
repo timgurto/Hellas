@@ -5,6 +5,7 @@
 #include <string>
 
 #include "CRecipe.h"
+#include "ClassInfo.h"
 #include "ClientBuff.h"
 #include "ClientItem.h"
 #include "ClientNPC.h"
@@ -21,6 +22,7 @@ struct CGameData {
   TagNames tagNames;
   ClientSpells spells;
   ClientBuffTypes buffTypes;
+  ClassInfo::Container classes;
 
   using ObjectTypes =
       std::set<const ClientObjectType *, ClientObjectType::ptrCompare>;
