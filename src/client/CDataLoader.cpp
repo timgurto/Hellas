@@ -892,7 +892,7 @@ void CDataLoader::loadNPCTemplates(XmlReader &xr) {
     xr.findAttr(elem, "xDrawOffset", nt.xDrawOffset);
     xr.findAttr(elem, "yDrawOffset", nt.yDrawOffset);
 
-    _client._npcTemplates[id] = nt;
+    Client::gameData.npcTemplates[id] = nt;
   }
 }
 

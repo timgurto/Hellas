@@ -760,8 +760,8 @@ const ClientItem *Client::findItem(const std::string &id) const {
 }
 
 const CNPCTemplate *Client::findNPCTemplate(const std::string &id) const {
-  auto it = _npcTemplates.find(id);
-  if (it == _npcTemplates.end()) return nullptr;
+  auto it = gameData.npcTemplates.find(id);
+  if (it == gameData.npcTemplates.end()) return nullptr;
   return &it->second;
 }
 

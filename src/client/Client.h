@@ -551,10 +551,10 @@ class Client {
     using ObjectTypes =
         std::set<const ClientObjectType *, ClientObjectType::ptrCompare>;
     ObjectTypes objectTypes;
+    std::map<std::string, CNPCTemplate> npcTemplates;
   } gameData;
   bool _dataLoaded;       // If false when run() is called, load default data.
   void initialiseData();  // Any massaging necessary after everything is loaded.
-  std::map<std::string, CNPCTemplate> _npcTemplates;
   typedef std::set<const ParticleProfile *, ParticleProfile::ptrCompare>
       particleProfiles_t;
   particleProfiles_t _particleProfiles;
