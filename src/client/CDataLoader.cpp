@@ -37,7 +37,7 @@ void CDataLoader::load(bool keepOldData) {
     _client._objects.clear();
     Client::gameData.items.clear();
     _client._classes.clear();
-    _client._recipes.clear();
+    Client::gameData.recipes.clear();
   }
 
   _client.drawLoadingScreen("Loading data", 0.6);
@@ -854,7 +854,7 @@ void CDataLoader::loadRecipes(XmlReader &xr) {
     if (xr.getChildren("unlockedBy", elem).empty())
       _client._knownRecipes.insert(id);
 
-    _client._recipes.insert(recipe);
+    Client::gameData.recipes.insert(recipe);
 
     // Crafting locks
     for (auto unlockedBy : xr.getChildren("unlockedBy", elem)) {

@@ -132,8 +132,8 @@ void Client::refreshHotbar() {
       if (!spellIsKnown) _hotbarButtons[i]->disable();
 
     } else if (actions[i].category == HotbarCategory::HOTBAR_RECIPE) {
-      auto it = _recipes.find(actions[i].id);
-      if (it == _recipes.end()) {
+      auto it = gameData.recipes.find(actions[i].id);
+      if (it == gameData.recipes.end()) {
         debug()("Hotbar refers to invalid recipe, " + actions[i].id,
                 Color::CHAT_ERROR);
         continue;
@@ -240,7 +240,7 @@ void Client::populateAssignerWindow() {
   }
 
   recipeList->clearChildren();
-  for (const auto &recipe : _recipes) {
+  for (const auto &recipe : gameData.recipes) {
     auto recipeIsKnown = _knownRecipes.count(recipe.id()) == 1;
     if (!recipeIsKnown) continue;
 

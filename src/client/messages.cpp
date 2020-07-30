@@ -402,8 +402,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
           player = it->second;
         }
 
-        auto it = _recipes.find(recipeID);
-        if (it == _recipes.end()) break;
+        auto it = gameData.recipes.find(recipeID);
+        if (it == gameData.recipes.end()) break;
         const auto &recipe = *it;
 
         player->startCrafting(recipe);
@@ -890,8 +890,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
           singleMsg >> del;
           _knownRecipes.insert(recipe);
 
-          auto it = _recipes.find(recipe);
-          if (it == _recipes.end()) continue;
+          auto it = gameData.recipes.find(recipe);
+          if (it == gameData.recipes.end()) continue;
 
           if (msgCode == SV_NEW_RECIPES) {
             auto message =

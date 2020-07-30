@@ -547,10 +547,10 @@ class Client {
   static struct GameData {
     std::map<std::string, ClientItem> items;
     std::map<char, ClientTerrain> terrain;
+    std::set<CRecipe> recipes;
   } gameData;
   bool _dataLoaded;       // If false when run() is called, load default data.
   void initialiseData();  // Any massaging necessary after everything is loaded.
-  std::set<CRecipe> _recipes;
   typedef std::set<const ClientObjectType *, ClientObjectType::ptrCompare>
       objectTypes_t;
   objectTypes_t _objectTypes;

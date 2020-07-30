@@ -18,7 +18,7 @@ void Client::initializeCraftingWindow(Client &client) {
 
 void Client::initializeCraftingWindow() {
   // For crafting filters
-  for (const CRecipe &recipe : _recipes) {
+  for (const CRecipe &recipe : gameData.recipes) {
     for (auto matPair : recipe.materials())
       _matFilters[toClientItem(matPair.first)] = false;
     for (const auto &pair : recipe.product()->tags()) {
@@ -185,8 +185,8 @@ void Client::refreshRecipeDetailsPane() {
                            "Craft", startCrafting));
 
   const std::set<CRecipe>::const_iterator it =
-      _instance->_recipes.find(selectedID);
-  if (it == _instance->_recipes.end()) {
+      Client::gameData.recipes.find(selectedID);
+  if (it == Client::gameData.recipes.end()) {
     return;
   }
   const CRecipe &recipe = *it;
@@ -279,7 +279,7 @@ void Client::populateFilters() {
   // Restrict shown filters to known recipes
   std::set<std::string> knownTags;
   std::set<const ClientItem *> knownMats;
-  for (const CRecipe &recipe : _recipes)
+  for (const CRecipe &recipe : gameData.recipes)
     if (_knownRecipes.find(recipe.id()) !=
         _knownRecipes.end()) {  // user knows this recipe
       for (const auto &pair : recipe.product()->tags()) {
@@ -357,7 +357,7 @@ void Client::populateRecipesList(Element &e) {
   auto knownRecipesSortedByName =
       std::set<const CRecipe *, decltype(CompareName)>{CompareName};
   const std::set<std::string> knownRecipes = Client::_instance->_knownRecipes;
-  for (const CRecipe &recipe : _instance->_recipes) {
+  for (const CRecipe &recipe : _instance->gameData.recipes) {
     auto recipeIsKnown = knownRecipes.find(recipe.id()) != knownRecipes.end();
     if (!recipeIsKnown) continue;
     if (!_instance->recipeMatchesFilters(recipe)) continue;
