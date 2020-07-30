@@ -207,7 +207,7 @@ void Client::initialiseData() {
   populateBuildList();
 
   // Tell quest nodes about their quests
-  for (auto &questPair : _quests) {
+  for (auto &questPair : gameData.quests) {
     auto &quest = questPair.second;
 
     auto startNode = findObjectType(quest.info().startsAt);
@@ -418,7 +418,7 @@ void Client::gameLoop() {
     pair.second = _timeElapsed > pair.second ? 0 : pair.second - _timeElapsed;
 
   // Update quest time limits
-  for (auto &pair : _quests) {
+  for (auto &pair : gameData.quests) {
     pair.second.update(_timeElapsed);
   }
 

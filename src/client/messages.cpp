@@ -1974,8 +1974,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
 
         if (del != MSG_END) return;
 
-        auto it = _quests.find(questID);
-        if (it == _quests.end()) break;
+        auto it = gameData.quests.find(questID);
+        if (it == gameData.quests.end()) break;
         it->second.setTimeRemaining(timeRemaining);
         refreshQuestProgress();
 
@@ -2528,8 +2528,8 @@ void Client::handle_SV_OBJECT_HEALED(Serial serial, Hitpoints amount) {
 }
 
 void Client::handle_SV_QUEST_CAN_BE_STARTED(const std::string &questID) {
-  auto it = _quests.find(questID);
-  if (it == _quests.end()) return;
+  auto it = gameData.quests.find(questID);
+  if (it == gameData.quests.end()) return;
 
   it->second.state = CQuest::CAN_START;
 
@@ -2547,8 +2547,8 @@ void Client::handle_SV_QUEST_CAN_BE_STARTED(const std::string &questID) {
 }
 
 void Client::handle_SV_QUEST_IN_PROGRESS(const std::string &questID) {
-  auto it = _quests.find(questID);
-  if (it == _quests.end()) return;
+  auto it = gameData.quests.find(questID);
+  if (it == gameData.quests.end()) return;
 
   it->second.state = CQuest::IN_PROGRESS;
 
@@ -2566,8 +2566,8 @@ void Client::handle_SV_QUEST_IN_PROGRESS(const std::string &questID) {
 }
 
 void Client::handle_SV_QUEST_CAN_BE_FINISHED(const std::string &questID) {
-  auto it = _quests.find(questID);
-  if (it == _quests.end()) return;
+  auto it = gameData.quests.find(questID);
+  if (it == gameData.quests.end()) return;
 
   it->second.state = CQuest::CAN_FINISH;
 
@@ -2585,8 +2585,8 @@ void Client::handle_SV_QUEST_CAN_BE_FINISHED(const std::string &questID) {
 }
 
 void Client::handle_SV_QUEST_COMPLETED(const std::string &questID) {
-  auto it = _quests.find(questID);
-  if (it == _quests.end()) return;
+  auto it = gameData.quests.find(questID);
+  if (it == gameData.quests.end()) return;
 
   it->second.state = CQuest::NONE;
 
@@ -2609,8 +2609,8 @@ void Client::handle_SV_QUEST_ACCEPTED() { generalSounds()->playOnce("quest"); }
 
 void Client::handle_SV_QUEST_PROGRESS(const std::string &questID,
                                       size_t objectiveIndex, int progress) {
-  auto it = _quests.find(questID);
-  if (it == _quests.end()) return;
+  auto it = gameData.quests.find(questID);
+  if (it == gameData.quests.end()) return;
 
   it->second.state = CQuest::IN_PROGRESS;
 

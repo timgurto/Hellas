@@ -1124,7 +1124,7 @@ void CDataLoader::loadQuests(XmlReader &xr) {
       questInfo.rewards.push_back(reward);
     }
 
-    _client._quests.insert(
+    Client::gameData.quests.insert(
         std::make_pair(questInfo.id, CQuest{_client, questInfo}));
   }
 }

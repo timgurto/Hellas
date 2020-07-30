@@ -934,11 +934,13 @@ TEST_CASE("Quest progress is persistent") {
     CHECK(alice.isOnQuest("startMe"));
 
     // And she knows she's on B
-    const auto &leaveUnfinished = c->quests().find("leaveUnfinished")->second;
+    const auto &leaveUnfinished =
+        c->gameData.quests.find("leaveUnfinished")->second;
     WAIT_UNTIL(leaveUnfinished.state == CQuest::IN_PROGRESS);
 
     // And she knows she's on C
-    const auto &makeNoProgress = c->quests().find("makeNoProgress")->second;
+    const auto &makeNoProgress =
+        c->gameData.quests.find("makeNoProgress")->second;
     WAIT_UNTIL(makeNoProgress.state == CQuest::IN_PROGRESS);
 
     // And has achieved the objective of D
@@ -1006,13 +1008,14 @@ TEST_CASE("Clients get the correct state on login") {
           WAIT_UNTIL(obj.startsQuests().size() == 0);
 
           AND_THEN("she knows that she's killed 1/2 targets for 'partial'") {
-            const auto &partialQuest = c->quests().find("partial")->second;
+            const auto &partialQuest =
+                c->gameData.quests.find("partial")->second;
             WAIT_UNTIL(partialQuest.getProgress(0) == 1);
           }
 
           AND_THEN("she knows that she is on 'completable'") {
             const auto &questInProgress =
-                c->quests().find("completable")->second;
+                c->gameData.quests.find("completable")->second;
             WAIT_UNTIL(questInProgress.state == CQuest::CAN_FINISH);
           }
         }
@@ -1364,7 +1367,7 @@ TEST_CASE("Construction quests") {
 
       THEN("the client knows it isn't completable") {
         REPEAT_FOR_MS(100);
-        const auto &quest1 = c->quests().find("quest1")->second;
+        const auto &quest1 = c->gameData.quests.find("quest1")->second;
         CHECK(quest1.state == CQuest::IN_PROGRESS);
         const auto &cQuestgiver = c.getFirstObject();
         CHECK(cQuestgiver.completableQuests().empty());

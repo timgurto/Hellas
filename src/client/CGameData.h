@@ -4,6 +4,7 @@
 #include <set>
 #include <string>
 
+#include "CQuest.h"
 #include "CRecipe.h"
 #include "ClassInfo.h"
 #include "ClientBuff.h"
@@ -23,6 +24,7 @@ struct CGameData {
   ClientSpells spells;
   ClientBuffTypes buffTypes;
   ClassInfo::Container classes;
+  CQuests quests;
 
   using ObjectTypes =
       std::set<const ClientObjectType *, ClientObjectType::ptrCompare>;

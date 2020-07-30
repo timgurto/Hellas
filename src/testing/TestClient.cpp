@@ -216,7 +216,7 @@ const ClientObjectType &TestClient::getFirstObjectType() {
 }
 
 const CQuest &TestClient::getFirstQuest() {
-  auto &quests = _client->_quests;
+  auto &quests = Client::gameData.quests;
   assert(!quests.empty());
   auto it = quests.begin();
   return it->second;

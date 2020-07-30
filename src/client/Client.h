@@ -111,8 +111,6 @@ class Client {
   ClientCombatantType avatarCombatantType;
   CDroppedItem::Type droppedItemType;
 
-  const CQuests &quests() const { return _quests; }
-
   const ClientSpell *findSpell(const std::string &spellID) const;
 
   template <typename T>
@@ -550,7 +548,6 @@ class Client {
  private:
   bool _dataLoaded;       // If false when run() is called, load default data.
   void initialiseData();  // Any massaging necessary after everything is loaded.
-  CQuests _quests;
 
   typedef std::set<SoundProfile> soundProfiles_t;
   soundProfiles_t _soundProfiles;

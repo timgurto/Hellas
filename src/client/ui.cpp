@@ -411,7 +411,7 @@ void Client::populateQuestLog() {
   auto BUTTON_W = (_questList->contentWidth() - NAME_W - 4 * GAP) / 2;
   _questList->clearChildren();
 
-  for (auto &pair : _quests) {
+  for (auto &pair : gameData.quests) {
     auto &quest = pair.second;
     if (!quest.userIsOnQuest()) continue;
 
@@ -465,7 +465,7 @@ void Client::refreshQuestProgress() {
   _questProgress->clearChildren();
 
   auto isEmpty = true;
-  for (const auto &pair : _quests) {
+  for (const auto &pair : gameData.quests) {
     const auto &quest = pair.second;
     if (!quest.userIsOnQuest()) continue;
 
