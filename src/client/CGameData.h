@@ -23,4 +23,8 @@ struct CGameData {
   using ParticleProfiles =
       std::set<const ParticleProfile *, ParticleProfile::ptrCompare>;
   ParticleProfiles particleProfiles;
+
+  using ProjectileTypes =
+      std::set<const Projectile::Type *, Projectile::Type::ptrCompare>;
+  ProjectileTypes projectileTypes;
 };

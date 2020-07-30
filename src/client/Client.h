@@ -548,9 +548,6 @@ class Client {
   static CGameData gameData;
   bool _dataLoaded;       // If false when run() is called, load default data.
   void initialiseData();  // Any massaging necessary after everything is loaded.
-  typedef std::set<const Projectile::Type *, Projectile::Type::ptrCompare>
-      projectileTypes_t;
-  projectileTypes_t _projectileTypes;
   TagNames _tagNames;
   ClientSpells _spells;
   ClientBuffTypes _buffTypes;

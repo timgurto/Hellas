@@ -246,7 +246,7 @@ Client::~Client() {
   }
 
   for (auto profile : gameData.particleProfiles) delete profile;
-  for (auto projectileType : _projectileTypes) delete projectileType;
+  for (auto projectileType : gameData.projectileTypes) delete projectileType;
   for (const auto &spellPair : _spells) delete spellPair.second;
 
   // Some entities will destroy their own windows, and remove them from this
@@ -736,8 +736,8 @@ const SoundProfile *Client::findSoundProfile(const std::string &id) const {
 const Projectile::Type *Client::findProjectileType(
     const std::string &id) const {
   auto dummy = Projectile::Type{id, {}, this};
-  auto it = _projectileTypes.find(&dummy);
-  if (it != _projectileTypes.end()) return *it;
+  auto it = gameData.projectileTypes.find(&dummy);
+  if (it != gameData.projectileTypes.end()) return *it;
   return nullptr;
 }
 

@@ -33,7 +33,7 @@ void CDataLoader::load(bool keepOldData) {
     _client.gameData.terrain.clear();
     Client::gameData.particleProfiles.clear();
     _client._soundProfiles.clear();
-    _client._projectileTypes.clear();
+    Client::gameData.projectileTypes.clear();
     _client._objects.clear();
     Client::gameData.items.clear();
     _client._classes.clear();
@@ -264,7 +264,7 @@ void CDataLoader::loadProjectiles(XmlReader &xr) {
     auto sounds = ""s;
     if (xr.findAttr(elem, "sounds", sounds)) projectile->sounds(sounds);
 
-    _client._projectileTypes.insert(projectile);
+    Client::gameData.projectileTypes.insert(projectile);
   }
 }
 
@@ -319,8 +319,9 @@ void CDataLoader::loadSpells(XmlReader &xr) {
       auto profileName = ""s;
       if (xr.findAttr(aesthetics, "projectile", profileName)) {
         auto dummy = Projectile::Type{profileName, {}, &_client};
-        auto it = _client._projectileTypes.find(&dummy);
-        if (it != _client._projectileTypes.end()) newSpell->projectile(*it);
+        auto it = Client::gameData.projectileTypes.find(&dummy);
+        if (it != Client::gameData.projectileTypes.end())
+          newSpell->projectile(*it);
       }
       if (xr.findAttr(aesthetics, "sounds", profileName)) {
         auto profile = _client.findSoundProfile(profileName);
@@ -969,8 +970,8 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
 
     if (xr.findAttr(elem, "projectile", s)) {
       auto dummy = Projectile::Type{s, {}, &_client};
-      auto it = _client._projectileTypes.find(&dummy);
-      if (it != _client._projectileTypes.end()) nt->projectile(**it);
+      auto it = Client::gameData.projectileTypes.find(&dummy);
+      if (it != Client::gameData.projectileTypes.end()) nt->projectile(**it);
     }
 
     nt->loadTagsFromXML(xr, elem);
