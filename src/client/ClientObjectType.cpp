@@ -13,7 +13,7 @@
 #include "Unlocks.h"
 
 ClientObjectType::ClientObjectType(const std::string &id, const Client &client)
-    : SpriteType(&client, {}, {}),
+    : SpriteType({}, {}),
       _id(id),
       _canGather(false),
       _canDeconstruct(false),

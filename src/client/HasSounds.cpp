@@ -2,9 +2,8 @@
 
 #include "Client.h"
 
-void HasSounds::setSoundProfile(const std::string &profileID,
-                                const Client &client) {
-  _profile = client.findSoundProfile(profileID);
+void HasSounds::setSoundProfile(const std::string &profileID) {
+  _profile = Client::findSoundProfile(profileID);
 }
 
 void HasSounds::playSoundOnce(const SoundType &type) const {

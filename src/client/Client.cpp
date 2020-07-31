@@ -87,7 +87,7 @@ Client::Client()
       _cursorVehicle("Images/Cursors/vehicle.png"s, Color::MAGENTA),
       _currentCursor(&_cursorNormal),
 
-      avatarSpriteType(this, Avatar::DRAW_RECT),
+      avatarSpriteType(Avatar::DRAW_RECT),
       avatarCombatantType(MAX_PLAYER_HEALTH),
       droppedItemType(*this),
 
@@ -724,7 +724,7 @@ void Client::setRandomUsername() {
   for (int i = 0; i != 2; ++i) _username.push_back('a' + rand() % 26);
 }
 
-const SoundProfile *Client::findSoundProfile(const std::string &id) const {
+const SoundProfile *Client::findSoundProfile(const std::string &id) {
   auto it = gameData.soundProfiles.find(SoundProfile(id));
   if (it == gameData.soundProfiles.end()) return nullptr;
   return &*it;

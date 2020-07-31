@@ -469,7 +469,7 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
     if (xr.findAttr(elem, "merchantSlots", n)) cot->merchantSlots(n);
     if (xr.findAttr(elem, "isFlat", n) && n != 0) cot->isFlat(true);
     if (xr.findAttr(elem, "isDecoration", n) && n != 0) cot->isDecoration(true);
-    if (xr.findAttr(elem, "sounds", s)) cot->setSoundProfile(s, _client);
+    if (xr.findAttr(elem, "sounds", s)) cot->setSoundProfile(s);
     if (xr.findAttr(elem, "gatherParticles", s))
       cot->gatherParticles(_client.findParticleProfile(s));
     if (xr.findAttr(elem, "damageParticles", s))
@@ -637,7 +637,7 @@ void CDataLoader::loadItems(XmlReader &xr) {
     else
       item.gearImage(id);
 
-    if (xr.findAttr(elem, "sounds", s)) item.setSoundProfile(s, _client);
+    if (xr.findAttr(elem, "sounds", s)) item.setSoundProfile(s);
 
     Hitpoints durability;
     if (xr.findAttr(elem, "durability", durability))
@@ -827,7 +827,7 @@ void CDataLoader::loadRecipes(XmlReader &xr) {
     xr.findAttr(elem, "name", name);
     recipe.name(name);
 
-    if (xr.findAttr(elem, "sounds", s)) recipe.setSoundProfile(s, _client);
+    if (xr.findAttr(elem, "sounds", s)) recipe.setSoundProfile(s);
 
     size_t n;
     if (xr.findAttr(elem, "quantity", n)) recipe.quantity(n);
@@ -964,9 +964,9 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
     if (xr.findRectChild("collisionRect", elem, r)) nt->collisionRect(r);
 
     if (xr.findAttr(elem, "sounds", s))
-      nt->setSoundProfile(s, _client);
+      nt->setSoundProfile(s);
     else if (humanoid)
-      nt->setSoundProfile("humanEnemy", _client);
+      nt->setSoundProfile("humanEnemy");
 
     if (xr.findAttr(elem, "projectile", s)) {
       auto dummy = Projectile::Type{s, {}, &_client};

@@ -6,7 +6,7 @@ class Client;
 
 class HasSounds {
  public:
-  void setSoundProfile(const std::string &profileID, const Client &client);
+  void setSoundProfile(const std::string &profileID);
 
   void playSoundOnce(const SoundType &type) const;
   ms_t soundPeriod() const;

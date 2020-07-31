@@ -29,8 +29,6 @@ class SpriteType {
     return timeThatTheLastRedrawWasOrdered;
   }
 
-  const Client *_client{nullptr};
-
  private:
   struct Particles {
     std::string profile;
@@ -45,7 +43,7 @@ class SpriteType {
  public:
   static const double SHADOW_RATIO, SHADOW_WIDTH_HEIGHT_RATIO;
 
-  SpriteType(const Client *client, const ScreenRect &drawRect = {},
+  SpriteType(const ScreenRect &drawRect = {},
              const std::string &imageFile = "");
   static SpriteType DecorationWithNoData();
 

@@ -44,7 +44,7 @@ void Projectile::update(double delta) {
 void Projectile::Type::tail(const std::string &imageFile,
                             const ScreenRect &drawRect, int length,
                             int separation, const std::string &particles) {
-  _tailType = {_client, drawRect, "Images/Projectiles/"s + imageFile};
+  _tailType = {drawRect, "Images/Projectiles/"s + imageFile};
   _tailLength = length;
   _tailSeparation = separation;
   _tailParticles = particles;
@@ -52,12 +52,10 @@ void Projectile::Type::tail(const std::string &imageFile,
 
 Projectile::Type::Type(const std::string &id, const ScreenRect &drawRect,
                        const Client *client)
-    : SpriteType(client, drawRect, "Images/Projectiles/"s + id),
-      _tailType(nullptr),
-      id(id) {}
+    : SpriteType(drawRect, "Images/Projectiles/"s + id), id(id) {}
 
 void Projectile::Type::sounds(const std::string &profile) {
-  _sounds = _client->findSoundProfile(profile);
+  _sounds = Client::findSoundProfile(profile);
 }
 
 void Projectile::Type::instantiate(Client &client, const MapPoint &start,
