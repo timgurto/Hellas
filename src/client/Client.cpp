@@ -41,6 +41,7 @@ Client *Client::_instance = nullptr;
 LogSDL *Client::_debugInstance = nullptr;
 
 CGameData Client::gameData;
+Client::CommonImages Client::images;
 
 const px_t Client::SCREEN_X = 640;
 const px_t Client::SCREEN_Y = 360;
@@ -153,7 +154,7 @@ Client::Client()
   _config.loadFromFile("client-config.xml");
   _connection.initialize(_config.serverHostDirectory);
 
-  _shadowImage = {"Images/shadow.png"};
+  images.initialise();
 
   initUI();
   _wordWrapper = WordWrapper{_defaultFont, _chatLog->contentWidth()};
@@ -929,3 +930,5 @@ void Client::onSpellHit(const MapPoint &location, void *data) {
 
   if (spell.sounds()) spell.sounds()->playOnce("impact"s);
 }
+
+void Client::CommonImages::initialise() { shadow = {"Images/shadow.png"}; }

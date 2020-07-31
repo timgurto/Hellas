@@ -104,7 +104,6 @@ class Client {
   std::string getUserCity(const std::string &name) const;
 
   const Texture &mapImage() const { return _mapImage; }
-  const Texture &shadowImage() const { return _shadowImage; }
 
   // Special types
   SpriteType avatarSpriteType;
@@ -298,7 +297,6 @@ class Client {
 
   Window *_mapWindow = nullptr;
   Texture _mapImage;
-  Texture _shadowImage;
   Picture *_mapPicture{nullptr};
   Element *_mapPins{nullptr}, *_mapPinOutlines{nullptr}, *_mapIcons{nullptr};
   static const px_t MAP_IMAGE_W = 300, MAP_IMAGE_H = 300;
@@ -544,6 +542,12 @@ class Client {
  public:
   // Game data
   static CGameData gameData;
+
+  static struct CommonImages {
+    void initialise();
+
+    Texture shadow;
+  } images;
 
  private:
   bool _dataLoaded;       // If false when run() is called, load default data.

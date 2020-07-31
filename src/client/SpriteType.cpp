@@ -54,7 +54,7 @@ const Texture &SpriteType::shadow() const {
   _shadow.setBlend();
   _shadow.setAlpha(0x4f);
   renderer.pushRenderTarget(_shadow);
-  _client->shadowImage().draw({0, 0, shadowWidth, shadowHeight});
+  Client::images.shadow.draw({0, 0, shadowWidth, shadowHeight});
   renderer.popRenderTarget();
 
   _timeShadowGenerated = SDL_GetTicks();
