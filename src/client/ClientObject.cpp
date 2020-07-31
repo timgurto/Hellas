@@ -302,7 +302,7 @@ void ClientObject::addQuestsToWindow() {
   _window->resize(newWidth, y);
 }
 
-void ClientObject::addConstructionToWindow(const Client &client) {
+void ClientObject::addConstructionToWindow(Client &client) {
   px_t x = 0, y = _window->contentHeight(), newWidth = _window->contentWidth();
   static const px_t LABEL_W = 140;
 
@@ -409,7 +409,7 @@ void ClientObject::addMerchantSetupToWindow() {
   _window->resize(newWidth, y);
 }
 
-void ClientObject::addInventoryToWindow(const Client &client) {
+void ClientObject::addInventoryToWindow(Client &client) {
   px_t y = _window->contentHeight(), newWidth = _window->contentWidth();
 
   const size_t slots = objectType()->containerSlots();

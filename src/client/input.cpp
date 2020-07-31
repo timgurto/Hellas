@@ -394,7 +394,7 @@ void Client::handleInput(double delta) {
 
             // Dragged item onto map -> drop.
             if (!mouseUpOnWindow && ContainerGrid::getDragItem() != nullptr) {
-              ContainerGrid::dropItem();
+              ContainerGrid::dropItem(*this);
             }
 
             break;

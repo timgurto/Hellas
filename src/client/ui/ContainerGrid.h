@@ -15,7 +15,6 @@ class ContainerGrid : public Element {
   Serial _serial;         // The serial of the owning object.
   px_t _gap;              // Spacing between grid squares.
   bool _solidBackground;  // Whether to draw a dark square behind each slot.
-  const Client &_client;
 
   size_t _mouseOverSlot{NO_SLOT},   // The slot that the mouse is currently over
       _leftMouseDownSlot{NO_SLOT},  // The slot that the left mouse button went
@@ -50,7 +49,7 @@ class ContainerGrid : public Element {
   size_t getSlot(const ScreenPoint &mousePos) const;
 
  public:
-  ContainerGrid(const Client &client, size_t rows, size_t cols,
+  ContainerGrid(Client &client, size_t rows, size_t cols,
                 ClientItem::vect_t &linked, Serial serial = Serial::Inventory(),
                 px_t x = 0, px_t y = 0, px_t gap = DEFAULT_GAP,
                 bool solidBackground = true);
@@ -58,7 +57,8 @@ class ContainerGrid : public Element {
 
   static const ClientItem *getDragItem();
   static const ClientItem *getUseItem();
-  static void dropItem();  // Drop the item currently being dragged.
+  static void dropItem(
+      Client &client);  // Drop the item currently being dragged.
 
   static void clearUseItem();
 
