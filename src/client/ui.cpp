@@ -117,7 +117,7 @@ void Client::initWindows() {
   addWindow(_questLog);
 
   _bugReportWindow = new InputWindow(
-      "Please provide feedback to the developers:", CL_REPORT_BUG, {},
+      *this, "Please provide feedback to the developers:", CL_REPORT_BUG, {},
       TextBox::ALL);
   addWindow(_bugReportWindow);
 }
@@ -453,7 +453,7 @@ void Client::initSkipTutorialButton() {
       removeWindow(_skipTutorialConfirmation);
     else
       _skipTutorialConfirmation =
-          new ConfirmationWindow(confirmationText, CL_SKIP_TUTORIAL, {});
+          new ConfirmationWindow(*this, confirmationText, CL_SKIP_TUTORIAL, {});
     addWindow(_skipTutorialConfirmation);
     _skipTutorialConfirmation->show();
   });

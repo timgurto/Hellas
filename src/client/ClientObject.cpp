@@ -559,15 +559,14 @@ void ClientObject::addCedeButtonToWindow() {
 void ClientObject::confirmAndCedeObject(void *objectToCede) {
   assert(objectToCede != nullptr);
   ClientObject &obj = *reinterpret_cast<ClientObject *>(objectToCede);
-  Client &client = *Client::_instance;
   std::string confirmationText =
       "Are you sure you want to cede this " + obj.name() + " to your city?";
   if (obj._confirmCedeWindow != nullptr)
-    client.removeWindow(obj._confirmCedeWindow);
+    _client.removeWindow(obj._confirmCedeWindow);
   else
-    obj._confirmCedeWindow = new ConfirmationWindow(confirmationText, CL_CEDE,
-                                                    makeArgs(obj.serial()));
-  client.addWindow(obj._confirmCedeWindow);
+    obj._confirmCedeWindow = new ConfirmationWindow(
+        _client, confirmationText, CL_CEDE, makeArgs(obj.serial()));
+  _client.addWindow(obj._confirmCedeWindow);
   obj._confirmCedeWindow->show();
 }
 
@@ -591,14 +590,14 @@ void ClientObject::addGrantButtonToWindow() {
 void ClientObject::getInputAndGrantObject(void *objectToGrant) {
   assert(objectToGrant != nullptr);
   ClientObject &obj = *reinterpret_cast<ClientObject *>(objectToGrant);
-  Client &client = *Client::_instance;
   auto windowText = "Please enter the name of the new owner:"s;
   if (obj._grantWindow != nullptr)
-    client.removeWindow(obj._grantWindow);
+    _client.removeWindow(obj._grantWindow);
   else
-    obj._grantWindow = new InputWindow(
-        windowText, CL_GRANT, makeArgs(obj.serial()), TextBox::LETTERS);
-  client.addWindow(obj._grantWindow);
+    obj._grantWindow =
+        new InputWindow(_client, windowText, CL_GRANT, makeArgs(obj.serial()),
+                        TextBox::LETTERS);
+  _client.addWindow(obj._grantWindow);
   obj._grantWindow->show();
 }
 
@@ -621,16 +620,15 @@ void ClientObject::addDemolishButtonToWindow() {
 void ClientObject::confirmAndDemolishObject(void *objectToDemolish) {
   assert(objectToDemolish != nullptr);
   ClientObject &obj = *reinterpret_cast<ClientObject *>(objectToDemolish);
-  Client &client = *Client::_instance;
   std::string confirmationText = "Are you sure you want to " +
                                  obj.demolishVerb() + " this " + obj.name() +
                                  "? This cannot be undone.";
   if (obj._confirmDemolishWindow != nullptr)
-    client.removeWindow(obj._confirmDemolishWindow);
+    _client.removeWindow(obj._confirmDemolishWindow);
   else
     obj._confirmDemolishWindow = new ConfirmationWindow(
-        confirmationText, CL_DEMOLISH, makeArgs(obj.serial()));
-  client.addWindow(obj._confirmDemolishWindow);
+        _client, confirmationText, CL_DEMOLISH, makeArgs(obj.serial()));
+  _client.addWindow(obj._confirmDemolishWindow);
   obj._confirmDemolishWindow->show();
 }
 

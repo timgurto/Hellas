@@ -202,11 +202,11 @@ class ClientObject : public Sprite, public ClientCombatant {
   static void performAction(void *object);
   void addMerchantTradeToWindow();
   void addCedeButtonToWindow();
-  static void confirmAndCedeObject(void *objectToCede);
+  void confirmAndCedeObject(void *objectToCede);
   void addGrantButtonToWindow();
-  static void getInputAndGrantObject(void *objectToGrant);
+  void getInputAndGrantObject(void *objectToGrant);
   void addDemolishButtonToWindow();
-  static void confirmAndDemolishObject(void *objectToDemolish);
+  void confirmAndDemolishObject(void *objectToDemolish);
 
   // Return value: whether anything was added
   virtual bool addClassSpecificStuffToWindow() { return false; }

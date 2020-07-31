@@ -920,7 +920,7 @@ bool Client::isWindowRegistered(const Window *toFind) {
 }
 
 void Client::infoWindow(const std::string &text) {
-  auto window = new InfoWindow(text);
+  auto window = new InfoWindow(*this, text);
   addWindow(window);
   window->show();
 }

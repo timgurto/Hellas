@@ -6,10 +6,15 @@
 #include "TextBox.h"
 #include "Window.h"
 
-class ConfirmationWindow : public Window {
+class DialogWindow : public Window {
  public:
-  ConfirmationWindow(const std::string &windowText, MessageCode msgCode,
-                     const std::string &msgArgs);
+  DialogWindow(Client &client) { setClient(client); }
+};
+
+class ConfirmationWindow : public DialogWindow {
+ public:
+  ConfirmationWindow(Client &client, const std::string &windowText,
+                     MessageCode msgCode, const std::string &msgArgs);
 
  private:
   MessageCode _msgCode;
@@ -20,9 +25,9 @@ class ConfirmationWindow : public Window {
   static void sendMessageAndHideWindow(void *thisConfWindow);
 };
 
-class InfoWindow : public Window {
+class InfoWindow : public DialogWindow {
  public:
-  InfoWindow(const std::string &windowText);
+  InfoWindow(Client &client, const std::string &windowText);
 
  private:
   static const px_t WINDOW_WIDTH = 300, WINDOW_HEIGHT = 32;
@@ -30,10 +35,11 @@ class InfoWindow : public Window {
   static void deleteWindow(void *thisWindow);
 };
 
-class InputWindow : public Window {
+class InputWindow : public DialogWindow {
  public:
-  InputWindow(const std::string &windowText, MessageCode msgCode,
-              const std::string &msgArgs, TextBox::ValidInput validInput);
+  InputWindow(Client &client, const std::string &windowText,
+              MessageCode msgCode, const std::string &msgArgs,
+              TextBox::ValidInput validInput);
 
  private:
   MessageCode _msgCode;

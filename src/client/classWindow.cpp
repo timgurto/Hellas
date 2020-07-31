@@ -42,21 +42,20 @@ void Client::initializeClassWindow() {
   const auto RESET_BUTTON_W = 60_px;
   _classWindow->addChild(new Button(
       {WIN_W - MARGIN - RESET_BUTTON_W, RESET_Y, RESET_BUTTON_W, RESET_H},
-      "Unlearn all"s, confirmAndUnlearnTalents));
+      "Unlearn all"s, [this]() { confirmAndUnlearnTalents(); }));
 }
 
 void Client::confirmAndUnlearnTalents() {
-  Client &client = *Client::_instance;
-
   std::string confirmationText =
       "Are you sure you want to unlearn all of your talents?";
 
   static ConfirmationWindow *_window = nullptr;
   if (_window != nullptr)
-    client.removeWindow(_window);
+    removeWindow(_window);
   else
-    _window = new ConfirmationWindow(confirmationText, CL_UNLEARN_TALENTS, {});
-  client.addWindow(_window);
+    _window =
+        new ConfirmationWindow(*this, confirmationText, CL_UNLEARN_TALENTS, {});
+  addWindow(_window);
   _window->show();
 }
 

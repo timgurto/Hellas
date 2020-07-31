@@ -345,7 +345,7 @@ class Client {
   Label *_xpLabel{nullptr};
   Label *_pointsAllocatedLabel{nullptr};
   void initializeClassWindow();
-  static void confirmAndUnlearnTalents();
+  void confirmAndUnlearnTalents();
   void populateClassWindow();
   std::set<const ClientSpell *> _knownSpells{};
   std::map<std::string, ms_t> _spellCooldowns{};
