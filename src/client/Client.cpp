@@ -257,6 +257,8 @@ Client::~Client() {
   for (Element *loginElement : _loginUI) uniqueUIElements.insert(loginElement);
   for (Element *element : uniqueUIElements) delete element;
 
+  gameData = {};
+
   Mix_Quit();
 
   _instance = nullptr;
