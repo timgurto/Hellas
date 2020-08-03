@@ -440,7 +440,7 @@ class Client {
   std::list<Particle *> _loginParticles;
   void updateLoginParticles(double delta);
   static void login();
-  static void connectToServerStatic();
+  static void connectToServerStatic(Client *client);
   Indicator *_serverConnectionIndicator{nullptr};
   static void updateLoginButton(void *);
   Window *_createWindow{nullptr};

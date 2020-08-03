@@ -38,7 +38,7 @@ void Client::loginScreenLoop() {
   if (_connection.shouldAttemptReconnection()) {
     _connection = {*this};
 
-    std::thread{connectToServerStatic}.detach();
+    std::thread{connectToServerStatic, this}.detach();
   }
 
   if (_shouldAutoLogIn && _connection.state() == Connection::CONNECTED) login();
@@ -130,9 +130,8 @@ void Client::drawLoginScreen() const {
   renderer.present();
 }
 
-void Client::connectToServerStatic() {
-  auto &client = *_instance;
-  client._connection.connect();
+void Client::connectToServerStatic(Client *client) {
+  client->_connection.connect();
 }
 
 void Client::updateLoginButton(void *) {
