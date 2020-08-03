@@ -8,14 +8,11 @@ ClientVehicle::ClientVehicle(Client &client, Serial serial,
                              const ClientVehicleType *type, const MapPoint &loc)
     : ClientObject(serial, type, loc, client), _driver(nullptr) {}
 
-void ClientVehicle::mountOrDismount(void *object) {
-  const ClientVehicle &obj = *static_cast<const ClientVehicle *>(object);
-  Client &client = *Client::_instance;
-
-  if (!client.character().isDriving())
-    client.sendMessage({CL_MOUNT, obj.serial()});
+void ClientVehicle::mountOrDismount() {
+  if (!_client.character().isDriving())
+    _client.sendMessage({CL_MOUNT, serial()});
   else
-    client.sendMessage({CL_DISMOUNT});
+    _client.sendMessage({CL_DISMOUNT});
 }
 
 double ClientVehicle::speed() const { return vehicleType().speed(); }
@@ -50,7 +47,7 @@ bool ClientVehicle::addClassSpecificStuffToWindow() {
   y += BUTTON_GAP;
   Button *mountButton =
       new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Enter/exit",
-                 [this]() { ClientVehicle::mountOrDismount(this); });
+                 [this]() { mountOrDismount(); });
   _window->addChild(mountButton);
   y += BUTTON_GAP + BUTTON_HEIGHT;
   x += BUTTON_GAP + BUTTON_WIDTH;

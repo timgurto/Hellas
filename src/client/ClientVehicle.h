@@ -29,7 +29,7 @@ class ClientVehicle : public ClientObject {
   virtual bool addClassSpecificStuffToWindow() override;
   virtual bool addClassSpecificStuffToTooltip(Tooltip &tooltip) const override;
 
-  static void ClientVehicle::mountOrDismount(void *object);
+  void ClientVehicle::mountOrDismount();
 };
 
 #endif
