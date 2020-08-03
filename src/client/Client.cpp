@@ -930,7 +930,7 @@ void Client::onSpellHit(const MapPoint &location, void *data) {
   if (spell.impactParticles())
     spell.client().addParticles(spell.impactParticles(), location);
 
-  if (spell.sounds()) spell.sounds()->playOnce("impact"s);
+  if (spell.sounds()) spell.sounds()->playOnce(spell.client(), "impact"s);
 }
 
 void Client::CommonImages::initialise() { shadow = {"Images/shadow.png"}; }

@@ -10,6 +10,7 @@
 class SoundVariants;
 class SoundsRecord;
 struct Mix_Chunk;
+class Client;
 
 typedef std::string SoundType;
 typedef int Channel;
@@ -23,7 +24,8 @@ class SoundProfile {
 
   static SoundsRecord loopingSounds;
 
-  Channel checkAndPlaySound(const SoundType &type, bool loop) const;
+  Channel checkAndPlaySound(const Client &client, const SoundType &type,
+                            bool loop) const;
 
  public:
   SoundProfile(const std::string &id);
@@ -34,8 +36,9 @@ class SoundProfile {
   bool operator<(const SoundProfile &rhs) const;
 
   void add(const SoundType &type, std::string &filename);
-  void playOnce(const SoundType &type) const;
-  void startLooping(const SoundType &type, const void *source) const;
+  void playOnce(const Client &client, const SoundType &type) const;
+  void startLooping(const Client &client, const SoundType &type,
+                    const void *source) const;
   void stopLooping(const SoundType &type, const void *source) const;
 };
 

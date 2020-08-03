@@ -50,7 +50,7 @@ void CDroppedItem::update(double delta) {
     _altitude -= _fallSpeed;
     if (_altitude <= 0) {
       _altitude = 0;
-      _itemType.playSoundOnce("drop");
+      _itemType.playSoundOnce(_client, "drop");
     }
   }
 

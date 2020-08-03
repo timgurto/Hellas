@@ -114,7 +114,7 @@ void Avatar::update(double delta) {
     if (_craftingSoundTimer > timeElapsed)
       _craftingSoundTimer -= timeElapsed;
     else {
-      _currentlyCrafting->playSoundOnce("crafting");
+      _currentlyCrafting->playSoundOnce(_client, "crafting");
       _craftingSoundTimer += _currentlyCrafting->soundPeriod() - timeElapsed;
     }
   }
@@ -157,22 +157,22 @@ void Avatar::playAttackSound() const {
   const ClientItem *weapon = _gear[WEAPON_SLOT].first.type();
 
   if (weapon)
-    weapon->playSoundOnce("attack");
+    weapon->playSoundOnce(_client, "attack");
   else
-    _client.avatarSounds()->playOnce("attack");
+    _client.avatarSounds()->playOnce(_client, "attack");
 }
 
 void Avatar::playDefendSound() const {
   const ClientItem *armor = getRandomArmor();
 
   if (armor)
-    armor->playSoundOnce("defend");
+    armor->playSoundOnce(_client, "defend");
   else
-    _client.avatarSounds()->playOnce("defend");
+    _client.avatarSounds()->playOnce(_client, "defend");
 }
 
 void Avatar::playDeathSound() const {
-  _client.avatarSounds()->playOnce("death");
+  _client.avatarSounds()->playOnce(_client, "death");
 }
 
 void Avatar::onLeftClick() {

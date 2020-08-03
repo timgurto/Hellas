@@ -593,7 +593,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         logMessage += item->second.name();
         _debug(logMessage);
 
-        item->second.playSoundOnce("drop");
+        item->second.playSoundOnce(*this, "drop");
 
         break;
       }
@@ -2215,7 +2215,7 @@ void Client::handle_SV_SPELL_HIT(const std::string &spellID,
   if (it == gameData.spells.end()) return;
   auto &spell = *it->second;
 
-  if (spell.sounds()) spell.sounds()->playOnce("launch");
+  if (spell.sounds()) spell.sounds()->playOnce(*this, "launch");
 
   if (spell.projectile())
     spell.projectile()->instantiate(*this, src, dst);
@@ -2229,7 +2229,7 @@ void Client::handle_SV_SPELL_MISS(const std::string &spellID,
   if (it == gameData.spells.end()) return;
   const auto &spell = *it->second;
 
-  if (spell.sounds()) spell.sounds()->playOnce("launch");
+  if (spell.sounds()) spell.sounds()->playOnce(*this, "launch");
 
   if (spell.projectile()) {
     auto pointPastDest = extrapolate(src, dst, 2000);
@@ -2459,7 +2459,7 @@ void Client::handle_SV_LEVEL_UP(const std::string &username) {
   if (username == _username) {
     populateClassWindow();
 
-    generalSounds()->playOnce("levelUp");
+    generalSounds()->playOnce(*this, "levelUp");
 
     auto message =
         "You have reached level "s + toString(avatar->level()) + "!"s;
@@ -2599,13 +2599,15 @@ void Client::handle_SV_QUEST_COMPLETED(const std::string &questID) {
     if (objType == startNode || objType == endNode) obj.assembleWindow(*this);
   }
 
-  generalSounds()->playOnce("quest");
+  generalSounds()->playOnce(*this, "quest");
 
   populateQuestLog();
   refreshQuestProgress();
 }
 
-void Client::handle_SV_QUEST_ACCEPTED() { generalSounds()->playOnce("quest"); }
+void Client::handle_SV_QUEST_ACCEPTED() {
+  generalSounds()->playOnce(*this, "quest");
+}
 
 void Client::handle_SV_QUEST_PROGRESS(const std::string &questID,
                                       size_t objectiveIndex, int progress) {

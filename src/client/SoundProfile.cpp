@@ -19,37 +19,38 @@ void SoundProfile::add(const SoundType &type, std::string &filename) {
   _sounds[type].add(sound);
 }
 
-void SoundProfile::playOnce(const SoundType &type) const {
+void SoundProfile::playOnce(const Client &client, const SoundType &type) const {
   if (!this) {
-    Client::_instance->showErrorMessage("Sound profile does not exist."s,
-                                        Color::CHAT_ERROR);
+    client.showErrorMessage("Sound profile does not exist."s,
+                            Color::CHAT_ERROR);
     return;
   }
-  checkAndPlaySound(type, false);
+  checkAndPlaySound(client, type, false);
 }
 
-void SoundProfile::startLooping(const SoundType &type,
+void SoundProfile::startLooping(const Client &client, const SoundType &type,
                                 const void *source) const {
-  Channel channel = checkAndPlaySound(type, true);
+  Channel channel = checkAndPlaySound(client, type, true);
   loopingSounds.set(type, source, channel);
 }
 
-Channel SoundProfile::checkAndPlaySound(const SoundType &type,
+Channel SoundProfile::checkAndPlaySound(const Client &client,
+                                        const SoundType &type,
                                         bool loop) const {
   if (cmdLineArgs.contains("mute")) return NO_CHANNEL;
 
   auto it = _sounds.find(type);
   if (it == _sounds.end()) {
 #ifdef _DEBUG
-    Client::_instance->showErrorMessage(
-        "\""s + _id + ":" + type + "\" sound not found."s, Color::CHAT_ERROR);
+    client.showErrorMessage("\""s + _id + ":" + type + "\" sound not found."s,
+                            Color::CHAT_ERROR);
 #endif
     return NO_CHANNEL;
   }
   SoundVariants variants = it->second;
   Mix_Chunk *sound = variants.choose();
   if (sound == nullptr) {
-    Client::_instance->showErrorMessage(
+    client.showErrorMessage(
         "\""s + _id + ":" + type + "\" sound variant not found."s,
         Color::CHAT_ERROR);
     return NO_CHANNEL;

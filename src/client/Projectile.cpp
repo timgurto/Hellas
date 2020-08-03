@@ -15,7 +15,7 @@ void Projectile::update(double delta) {
         _client.addParticles(particlesAtEnd(), _end);
 
       auto sounds = projectileType().sounds();
-      if (sounds) sounds->playOnce("impact"s);
+      if (sounds) sounds->playOnce(_client, "impact"s);
     }
 
     markForRemoval();
@@ -74,5 +74,5 @@ void Projectile::Type::instantiate(Client &client, const MapPoint &start,
     projectile->_tail.push_back(tailSegment);
   }
 
-  if (_sounds) _sounds->playOnce("launch"s);
+  if (_sounds) _sounds->playOnce(client, "launch"s);
 }
