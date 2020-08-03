@@ -6,16 +6,16 @@ static const std::string EMPTY_STR = "";
 
 extern Renderer renderer;
 
-ChoiceList::ChoiceList(const ScreenRect &rect, px_t childHeight,
-                       const Client &client)
+ChoiceList::ChoiceList(const ScreenRect &rect, px_t childHeight, Client &client)
     : List(rect, childHeight),
-      _client(client),
       _selectedBox(
           new ShadowBox({0, 0, rect.w - List::ARROW_W, childHeight}, true)),
       _mouseOverBox(new ShadowBox({0, 0, rect.w - List::ARROW_W, childHeight})),
       _mouseDownBox(
           new ShadowBox({0, 0, rect.w - List::ARROW_W, childHeight}, true)),
       _boxLayer(new Element(_content->rect())) {
+  setClient(client);
+
   setLeftMouseDownFunction(markMouseDown);
   setLeftMouseUpFunction(toggle);
   setMouseMoveFunction(markMouseOver);
@@ -69,7 +69,7 @@ void ChoiceList::toggle(Element &e, const ScreenPoint &mousePos) {
   ChoiceList &list = dynamic_cast<ChoiceList &>(e);
   List::mouseUp(e, mousePos);
   if (list._mouseDownID == EMPTY_STR) {
-    if (list.onSelect != nullptr) list.onSelect(list._client);
+    if (list.onSelect != nullptr) list.onSelect(*list.client());
     return;
   }
   if (!list.contentCollision(mousePos)) {
@@ -106,7 +106,7 @@ void ChoiceList::toggle(Element &e, const ScreenPoint &mousePos) {
   list._mouseDownBox->hide();
   list.markChanged();
 
-  if (list.onSelect != nullptr) list.onSelect(list._client);
+  if (list.onSelect != nullptr) list.onSelect(*list.client());
 }
 
 void ChoiceList::markMouseOver(Element &e, const ScreenPoint &mousePos) {
@@ -144,7 +144,7 @@ void ChoiceList::markMouseOver(Element &e, const ScreenPoint &mousePos) {
 void ChoiceList::manuallySelect(const std::string &id) {
   _selectedID = id;
   _selectedBox->hide();
-  onSelect(_client);
+  onSelect(*client());
 }
 
 void ChoiceList::verifyBoxes() {

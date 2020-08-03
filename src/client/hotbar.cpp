@@ -173,7 +173,7 @@ void Client::refreshHotbarCooldowns() {
   }
 }
 
-static void onCategoryChange(const Client &client) {
+static void onCategoryChange(Client &client) {
   spellList->hide();
   recipeList->hide();
 

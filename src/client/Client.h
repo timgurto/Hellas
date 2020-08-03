@@ -446,8 +446,8 @@ class Client {
   Window *_createWindow{nullptr};
   void initCreateWindow();
   static void createAccount();
-  static void updateCreateButton(void *);
-  static void updateClassDescription(const Client &client);
+  static void updateCreateButton(void *pClient);
+  static void updateClassDescription(Client &client);
   std::string _autoClassID =
       {};  // For automated account creation, i.e., in tests
   std::string _savedPwHash;

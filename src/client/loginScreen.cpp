@@ -149,12 +149,14 @@ void Client::updateLoginButton() {
     loginButton->enable();
 }
 
-void Client::updateCreateButton(void *) {
+void Client::updateCreateButton(void *pClient) {
   createButton->clearTooltip();
   createButton->disable();
   newNameBox->forcePascalCase();
 
-  if (Client::_instance->_connection.state() != Connection::CONNECTED)
+  const Client &client = *reinterpret_cast<const Client *>(pClient);
+
+  if (client._connection.state() != Connection::CONNECTED)
     ;  // createButton->setTooltip("Not connected to server");
 
   else if (!isUsernameValid(newNameBox->text()))
@@ -167,8 +169,8 @@ void Client::updateCreateButton(void *) {
     createButton->enable();
 }
 
-void Client::updateClassDescription(const Client &client) {
-  updateCreateButton(nullptr);
+void Client::updateClassDescription(Client &client) {
+  updateCreateButton(&client);
 
   classDescription->clearChildren();
   auto classID = classList->getSelected();
@@ -207,7 +209,7 @@ void Client::initCreateWindow() {
     inputPane->addChild(new Label({0, y, 100, Element::TEXT_HEIGHT}, "Name:"s));
     newNameBox =
         new TextBox({MID_PANE, y, L_PANE_W - MID_PANE, 0}, TextBox::LETTERS);
-    newNameBox->setOnChange(updateCreateButton);
+    newNameBox->setOnChange(updateCreateButton, this);
     inputPane->addChild(newNameBox);
     infoPane->addChild(new Label({0, y, R_PANE_W, Element::TEXT_HEIGHT},
                                  "(Names must contain 3-20 characters)"s));
@@ -400,7 +402,7 @@ void Client::initLoginScreen() {
                                      TextBox::focus(newNameBox);
                                    });
     _loginUI.push_back(createButton);
-    updateCreateButton(nullptr);
+    updateCreateButton(this);
   }
 
   // Images

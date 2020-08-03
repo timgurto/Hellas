@@ -17,7 +17,6 @@ class ChoiceList : public List {
   std::string _mouseDownID;
   ShadowBox *_selectedBox, *_mouseOverBox, *_mouseDownBox;
   Element *_boxLayer;  // shape/position is a copy of List::_content
-  const Client &_client;
 
   const std::string &getIdFromMouse(double mouseY, int *index = nullptr) const;
   bool contentCollision(const ScreenPoint &p) const;
@@ -27,7 +26,7 @@ class ChoiceList : public List {
   static void markMouseOver(Element &e, const ScreenPoint &mousePos);
 
  public:
-  ChoiceList(const ScreenRect &rect, px_t childHeight, const Client &client);
+  ChoiceList(const ScreenRect &rect, px_t childHeight, Client &client);
 
   virtual void refresh() override;
 
@@ -37,7 +36,7 @@ class ChoiceList : public List {
 
   void verifyBoxes();  // Call after changing the list's contents.
 
-  using onSelect_t = void (*)(const Client &client);
+  using onSelect_t = void (*)(Client &client);
   onSelect_t onSelect{nullptr};
 };
 

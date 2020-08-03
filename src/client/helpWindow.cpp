@@ -9,7 +9,7 @@ extern Renderer renderer;
 
 void loadHelpEntries(HelpEntries &entries);
 
-void showTopic(const Client &client);
+void showTopic(Client &client);
 
 void Client::initializeHelpWindow() {
   loadHelpEntries(_helpEntries);
@@ -61,7 +61,7 @@ void Client::showHelpTopic(const std::string &topic) {
   _helpWindow->show();
 }
 
-void showTopic(const Client &client) {
+void showTopic(Client &client) {
   auto &helpWindow = client.helpWindow();
   auto *helpText = dynamic_cast<List *>(helpWindow.findChild("helpText"));
   auto *topicList =
