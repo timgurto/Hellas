@@ -442,7 +442,7 @@ class Client {
   static void login();
   static void connectToServerStatic(Client *client);
   Indicator *_serverConnectionIndicator{nullptr};
-  static void updateLoginButton(void *);
+  void updateLoginButton();
   Window *_createWindow{nullptr};
   void initCreateWindow();
   static void createAccount();

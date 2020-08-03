@@ -82,7 +82,7 @@ void Connection::connect() {
 
 #ifndef TESTING
   _client->updateCreateButton(nullptr);
-  _client->updateLoginButton(nullptr);
+  _client->updateLoginButton();
 #endif
 
   _aThreadIsConnecting = false;

@@ -134,12 +134,12 @@ void Client::connectToServerStatic(Client *client) {
   client->_connection.connect();
 }
 
-void Client::updateLoginButton(void *) {
+void Client::updateLoginButton() {
   loginButton->clearTooltip();
   loginButton->disable();
   nameBox->forcePascalCase();
 
-  if (Client::_instance->_connection.state() != Connection::CONNECTED)
+  if (_connection.state() != Connection::CONNECTED)
     ;  // loginButton->setTooltip("Not connected to server");
 
   else if (!isUsernameValid(nameBox->text()))
@@ -317,10 +317,11 @@ void Client::initLoginScreen() {
                         TextBox::LETTERS);
   nameBox->text(_username);
   TextBox::focus(nameBox);
-  nameBox->setOnChange([](void *) {
-    updateLoginButton(nullptr);
+  nameBox->setOnChange([](void *pClient) {
+    auto &client = *reinterpret_cast<Client *>(pClient);
+    client.updateLoginButton();
     pwBox->text("");
-    _instance->_savedPwHash.clear();
+    client._savedPwHash.clear();
   });
   _loginUI.push_back(nameBox);
   Y += nameBox->height() + GAP;
@@ -332,8 +333,11 @@ void Client::initLoginScreen() {
 
   pwBox = new TextBox({BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT});
   pwBox->maskContents();
-  if (!_instance->_savedPwHash.empty()) pwBox->text("SAVED PW");
-  pwBox->setOnChange([](void *) { _instance->_savedPwHash.clear(); });
+  if (!_savedPwHash.empty()) pwBox->text("SAVED PW");
+  pwBox->setOnChange([](void *pClient) {
+    auto &client = *reinterpret_cast<Client *>(pClient);
+    client._savedPwHash.clear();
+  });
   if (nameBox->hasText()) TextBox::focus(pwBox);
   _loginUI.push_back(pwBox);
   Y += nameBox->height() + GAP;
@@ -345,7 +349,7 @@ void Client::initLoginScreen() {
   loginButton =
       new Button({BUTTON_X, Y, BUTTON_W, BUTTON_HEIGHT}, "Login", login);
   _loginUI.push_back(loginButton);
-  updateLoginButton(nullptr);
+  updateLoginButton();
 
   // Left-hand content
   {
