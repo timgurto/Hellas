@@ -249,7 +249,7 @@ void Client::refreshRecipeDetailsPane() {
     static const px_t TOOL_MARGIN = 5;
     Label *entry = new Label(
         {TOOL_MARGIN, 0, paneRect.w - TOOL_MARGIN, Element::TEXT_HEIGHT},
-        tagName(tool));
+        gameData.tagName(tool));
     toolsList->addChild(entry);
   }
 
@@ -293,7 +293,7 @@ void Client::populateFilters() {
         knownTags.end())  // User doesn't know about this tag yet.
       continue;
     auto cb = new CheckBox(*this, {0, 0, FILTERS_PANE_W, Element::TEXT_HEIGHT},
-                           pair.second, tagName(pair.first));
+                           pair.second, gameData.tagName(pair.first));
     cb->onChange([](Client &client) { client.scrollRecipeListToTop(); });
     _tagList->addChild(cb);
   }

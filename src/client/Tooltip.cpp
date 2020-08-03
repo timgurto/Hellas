@@ -159,7 +159,7 @@ void Tooltip::addItem(const ClientItem &item) {
   _content.push_back(texture);
 }
 
-void Tooltip::addTags(const HasTags &thingWithTags, const Client &client) {
+void Tooltip::addTags(const HasTags &thingWithTags) {
   if (!thingWithTags.hasTags()) return;
 
   addGap();
@@ -167,7 +167,8 @@ void Tooltip::addTags(const HasTags &thingWithTags, const Client &client) {
 
   for (const auto &pair : thingWithTags.tags()) {
     const auto &tag = pair.first;
-    addLine(client.tagName(tag) + thingWithTags.toolSpeedDisplayText(tag));
+    addLine(Client::gameData.tagName(tag) +
+            thingWithTags.toolSpeedDisplayText(tag));
   }
 }
 

@@ -41,7 +41,7 @@ const Tooltip &ClientTalent::tooltip(const Client &client) const {
 
   tooltip.setColor(Color::TOOLTIP_BODY);
   if (hasCost()) {
-    auto tagName = client.tagName(costTag);
+    auto tagName = Client::gameData.tagName(costTag);
     tooltip.addLine("Costs "s + toString(costQuantity) + " "s + tagName +
                     " to learn"s);
   }
@@ -49,7 +49,8 @@ const Tooltip &ClientTalent::tooltip(const Client &client) const {
     tooltip.addLine("Requires "s + toString(reqPointsInTree) + " points in "s +
                     tree);
   if (!reqTool.empty())
-    tooltip.addLine("Requires "s + client.tagName(reqTool) + " building"s);
+    tooltip.addLine("Requires "s + Client::gameData.tagName(reqTool) +
+                    " building"s);
   if (hasCost() || reqPointsInTree > 0 || !reqTool.empty()) tooltip.addGap();
 
   if (!flavourText.empty()) {

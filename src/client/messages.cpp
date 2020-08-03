@@ -286,7 +286,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         readString(singleMsg, reqItemTag, MSG_END);
         singleMsg >> del;
         if (del != MSG_END) break;
-        reqItemTag = tagName(reqItemTag);
+        reqItemTag = gameData.tagName(reqItemTag);
         std::string msg = "You need a";
         const char first = reqItemTag.front();
         auto vowels = std::string{"AaEeIiOoUu"};

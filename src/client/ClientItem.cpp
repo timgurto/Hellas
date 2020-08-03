@@ -96,7 +96,7 @@ const Tooltip &ClientItem::tooltip() const {
   }
 
   // Tags
-  tooltip.addTags(*this, *_client);
+  tooltip.addTags(*this);
 
   // Construction
   if (_constructsObject != nullptr) {
@@ -231,7 +231,7 @@ void ClientItem::Instance::createRepairTooltip() const {
     rt.setColor(Color::TOOLTIP_BODY);
     rt.addLine("Requires tool:");
     rt.setColor(Color::TOOLTIP_TAG);
-    rt.addLine(_type->_client->tagName(_type->repairInfo().tool));
+    rt.addLine(Client::gameData.tagName(_type->repairInfo().tool));
   }
 
   if (_type->repairInfo().hasCost()) {

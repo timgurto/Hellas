@@ -38,4 +38,8 @@ struct CGameData {
   using ProjectileTypes =
       std::set<const Projectile::Type *, Projectile::Type::ptrCompare>;
   ProjectileTypes projectileTypes;
+
+  const std::string &tagName(const std::string &id) const {
+    return tagNames[id];
+  }
 };

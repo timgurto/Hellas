@@ -1025,7 +1025,7 @@ void ClientObject::createRegularTooltip() const {
       }
       std::string text = "Gatherable";
       if (!ot.gatherReq().empty())
-        text += " (requires " + _client.tagName(ot.gatherReq()) + ")";
+        text += " (requires " + Client::gameData.tagName(ot.gatherReq()) + ")";
       tooltip.addLine(text);
       tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
       tooltip.addLine(std::string("Right-click to gather"));
@@ -1078,7 +1078,7 @@ void ClientObject::createRegularTooltip() const {
   }
 
   // Tags
-  tooltip.addTags(ot, _client);
+  tooltip.addTags(ot);
 
   // Any actions available?
   if (ot.merchantSlots() > 0 ||
@@ -1154,7 +1154,7 @@ void ClientObject::createRepairTooltip() const {
     rt.setColor(Color::TOOLTIP_BODY);
     rt.addLine("Requires tool:");
     rt.setColor(Color::TOOLTIP_TAG);
-    rt.addLine(_client.tagName(repairInfo.tool));
+    rt.addLine(Client::gameData.tagName(repairInfo.tool));
   }
 
   if (repairInfo.hasCost()) {

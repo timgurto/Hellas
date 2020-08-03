@@ -80,9 +80,7 @@ class Client {
   const Sprite *targetAsEntity() const { return _target.entity(); }
   const SoundProfile *avatarSounds() const { return _avatarSounds; }
   const SoundProfile *generalSounds() const { return _generalSounds; }
-  const std::string &tagName(const std::string &id) const {
-    return gameData.tagNames[id];
-  }
+
   const HelpEntries &helpEntries() const { return _helpEntries; }
   const Window &helpWindow() const { return *_helpWindow; }
   XP xp() const { return _xp; }

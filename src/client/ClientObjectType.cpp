@@ -33,8 +33,6 @@ bool ClientObjectType::canGather() const {
 const Tooltip &ClientObjectType::constructionTooltip() const {
   if (_constructionTooltip.hasValue()) return _constructionTooltip.value();
 
-  const auto &client = *Client::_instance;
-
   _constructionTooltip = Tooltip{};
   auto &tooltip = _constructionTooltip.value();
   tooltip.setColor(Color::TOOLTIP_NAME);
@@ -49,7 +47,7 @@ const Tooltip &ClientObjectType::constructionTooltip() const {
   if (canGather()) {
     std::string text = "Gatherable";
     if (!gatherReq().empty())
-      text += " (requires " + client.tagName(gatherReq()) + ")";
+      text += " (requires " + Client::gameData.tagName(gatherReq()) + ")";
     descriptionLines.push_back(text);
   }
 
@@ -74,7 +72,7 @@ const Tooltip &ClientObjectType::constructionTooltip() const {
   for (const auto &line : descriptionLines) tooltip.addLine(line);
 
   // Tags
-  tooltip.addTags(*this, client);
+  tooltip.addTags(*this);
 
   // Materials
   if (!_materials.isEmpty()) {
@@ -90,7 +88,8 @@ const Tooltip &ClientObjectType::constructionTooltip() const {
 
   if (!_constructionReq.empty()) {
     tooltip.addGap();
-    tooltip.addLine("Requires tool: " + client.tagName(_constructionReq));
+    tooltip.addLine("Requires tool: " +
+                    Client::gameData.tagName(_constructionReq));
   }
 
   // Unlocks
