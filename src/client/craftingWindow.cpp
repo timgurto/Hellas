@@ -159,9 +159,7 @@ void Client::initializeCraftingWindow() {
 }
 
 void Client::refreshRecipeDetailsPane() {
-  auto &client = *_instance;
-
-  Element &pane = *client._detailsPane;
+  Element &pane = *_detailsPane;
   pane.clearChildren();
   const ScreenRect &paneRect = pane.rect();
 
@@ -170,12 +168,12 @@ void Client::refreshRecipeDetailsPane() {
                     BUTTON_GAP = 3, BUTTON_Y = paneRect.h - BUTTON_HEIGHT;
   pane.addChild(new Button(
       {paneRect.w - BUTTON_WIDTH, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT},
-      "Close", [&client]() { Window::hideWindow(client._craftingWindow); }));
+      "Close", [this]() { Window::hideWindow(_craftingWindow); }));
 
   // If no recipe selected
-  const std::string &selectedID = client._recipeList->getSelected();
+  const std::string &selectedID = _recipeList->getSelected();
   if (selectedID == "") {
-    client._activeRecipe = nullptr;
+    _activeRecipe = nullptr;
     return;
   }
 
@@ -190,7 +188,7 @@ void Client::refreshRecipeDetailsPane() {
     return;
   }
   const CRecipe &recipe = *it;
-  _instance->_activeRecipe = &recipe;
+  _activeRecipe = &recipe;
   const ClientItem &product = *toClientItem(recipe.product());
 
   // Title
@@ -251,7 +249,7 @@ void Client::refreshRecipeDetailsPane() {
     static const px_t TOOL_MARGIN = 5;
     Label *entry = new Label(
         {TOOL_MARGIN, 0, paneRect.w - TOOL_MARGIN, Element::TEXT_HEIGHT},
-        client.tagName(tool));
+        tagName(tool));
     toolsList->addChild(entry);
   }
 
@@ -272,8 +270,6 @@ void Client::refreshRecipeDetailsPane() {
 }
 
 void Client::populateFilters() {
-  const auto &client = *Client::_instance;
-
   const px_t FILTERS_PANE_W = _materialsList->parent()->width();
 
   // Restrict shown filters to known recipes
@@ -297,7 +293,7 @@ void Client::populateFilters() {
         knownTags.end())  // User doesn't know about this tag yet.
       continue;
     auto cb = new CheckBox(*this, {0, 0, FILTERS_PANE_W, Element::TEXT_HEIGHT},
-                           pair.second, client.tagName(pair.first));
+                           pair.second, tagName(pair.first));
     cb->onChange([](Client &client) { client.scrollRecipeListToTop(); });
     _tagList->addChild(cb);
   }
@@ -330,24 +326,25 @@ void Client::onClickRecipe(Element &e, const ScreenPoint &mousePos) {
 }
 
 void Client::populateRecipesList(Element &e) {
+  auto &recipesList = dynamic_cast<ChoiceList &>(e);
+  auto &client = *recipesList.client();
+
   // Check which filters are applied
-  _instance->_matFilterSelected = false;
-  for (const std::pair<const ClientItem *, bool> &filter :
-       _instance->_matFilters) {
+  client._matFilterSelected = false;
+  for (const std::pair<const ClientItem *, bool> &filter : client._matFilters) {
     if (filter.second) {
-      _instance->_matFilterSelected = true;
+      client._matFilterSelected = true;
       break;
     }
   }
-  _instance->_tagFilterSelected = false;
-  for (const std::pair<std::string, bool> &filter : _instance->_tagFilters) {
+  client._tagFilterSelected = false;
+  for (const std::pair<std::string, bool> &filter : client._tagFilters) {
     if (filter.second) {
-      _instance->_tagFilterSelected = true;
+      client._tagFilterSelected = true;
       break;
     }
   }
 
-  ChoiceList &recipesList = dynamic_cast<ChoiceList &>(e);
   recipesList.clearChildren();
 
   auto CompareName = [](const CRecipe *lhs, const CRecipe *rhs) {
@@ -356,11 +353,11 @@ void Client::populateRecipesList(Element &e) {
   };
   auto knownRecipesSortedByName =
       std::set<const CRecipe *, decltype(CompareName)>{CompareName};
-  const std::set<std::string> knownRecipes = Client::_instance->_knownRecipes;
-  for (const CRecipe &recipe : _instance->gameData.recipes) {
+  const std::set<std::string> knownRecipes = client._knownRecipes;
+  for (const CRecipe &recipe : client.gameData.recipes) {
     auto recipeIsKnown = knownRecipes.find(recipe.id()) != knownRecipes.end();
     if (!recipeIsKnown) continue;
-    if (!_instance->recipeMatchesFilters(recipe)) continue;
+    if (!client.recipeMatchesFilters(recipe)) continue;
 
     knownRecipesSortedByName.insert(&recipe);
   }
@@ -387,7 +384,7 @@ void Client::populateRecipesList(Element &e) {
   const std::string oldSelectedRecipe = recipesList.getSelected();
   recipesList.verifyBoxes();
   if (recipesList.getSelected() != oldSelectedRecipe)
-    refreshRecipeDetailsPane();
+    client.refreshRecipeDetailsPane();
 }
 
 void Client::scrollRecipeListToTop() { _recipeList->scrollToTop(); }
