@@ -43,7 +43,8 @@ void Client::populateBuildList() {
     auto unlockInfo = Unlocks::getEffectInfo({Unlocks::CONSTRUCT, id});
     if (unlockInfo.hasEffect) label->setColor(unlockInfo.color);
 
-    listElement->setLeftMouseUpFunction(chooseConstruction);
+    listElement->setLeftMouseUpFunction(chooseConstruction, listElement);
+    listElement->setClient(*this);
     listElement->id(id);
     listElement->setTooltip(ot->constructionTooltip());
   }
@@ -52,7 +53,7 @@ void Client::populateBuildList() {
 }
 
 void Client::chooseConstruction(Element &e, const ScreenPoint &mousePos) {
-  Client &client = *Client::_instance;
+  auto &client = *e.client();
   const std::string selectedID = client._buildList->getSelected();
   if (selectedID.empty()) {
     client._selectedConstruction = nullptr;

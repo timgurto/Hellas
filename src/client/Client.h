@@ -117,7 +117,7 @@ class Client {
     _target.setAndAlertServer(newTarget, aggressive);
   }
   void clearTarget() {
-    _target.clear();
+    _target.clear(*this);
     refreshTargetBuffs();
   }
   void hideTargetMenu() { _target.hideMenu(); }

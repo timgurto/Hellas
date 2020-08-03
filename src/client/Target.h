@@ -18,7 +18,7 @@ class Target {
     setAndAlertServer(newTarget, newTarget, nowAggressive);
   }
 
-  void clear();
+  void clear(const Client &client);
 
   const Sprite *entity() const { return _entity; }
   ClientCombatant *combatant() const { return _combatant; }

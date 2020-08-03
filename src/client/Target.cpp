@@ -42,9 +42,7 @@ bool Target::targetIsDifferentFromServer(const Sprite &newTarget,
   return !sameTargetAsBefore || aggressionLevelChanged;
 }
 
-void Target::clear() {
-  const Client &client = *Client::_instance;
-
+void Target::clear(const Client &client) {
   bool serverHasTarget = _entity != nullptr;
   if (serverHasTarget) client.sendClearTargetMessage();
 
@@ -79,7 +77,6 @@ void Target::openMenu(Element &e, const ScreenPoint &mousePos) {
 
   menu.clearChildren();
 
-  Client &client = *Client::_instance;
   menu.client()->targetAsCombatant()->addMenuButtons(menu);
 
   if (!menu.empty()) menu.show();
