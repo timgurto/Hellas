@@ -34,7 +34,7 @@ const px_t ClientObject::BUTTON_GAP = 1;
 
 ClientObject::ClientObject(const ClientObject &rhs)
     : Sprite(rhs),
-      ClientCombatant(rhs.objectType()),
+      ClientCombatant(rhs),
       _serial(rhs._serial),
       _owner({Owner::ALL_HAVE_ACCESS, {}}),
       _container(rhs._container),
@@ -45,7 +45,7 @@ ClientObject::ClientObject(const ClientObject &rhs)
 ClientObject::ClientObject(Serial serialArg, const ClientObjectType *type,
                            const MapPoint &loc, Client &client)
     : Sprite(type, loc, client),
-      ClientCombatant(type),
+      ClientCombatant(client, type),
       _serial(serialArg),
       _owner({Owner::ALL_HAVE_ACCESS, {}}),
       _window(nullptr),
@@ -68,7 +68,7 @@ ClientObject::ClientObject(Serial serialArg, const ClientObjectType *type,
 
 ClientObject::ClientObject(Serial serialArg)
     : Sprite(nullptr, MapPoint{}, *(Client *)(nullptr)),
-      ClientCombatant(nullptr),
+      ClientCombatant(*(Client *)(nullptr), nullptr),
       _serial(serialArg),
       _owner({Owner::ALL_HAVE_ACCESS, {}}) {}
 

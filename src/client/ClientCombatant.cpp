@@ -6,8 +6,9 @@
 
 extern Renderer renderer;
 
-ClientCombatant::ClientCombatant(const ClientCombatantType *type)
-    : _type(type) {
+ClientCombatant::ClientCombatant(Client &client,
+                                 const ClientCombatantType *type)
+    : _cClient(client), _type(type) {
   if (!_type) return;
   _maxHealth = _type->maxHealth();
   _health = _maxHealth;
@@ -25,7 +26,7 @@ void ClientCombatant::drawHealthBarIfAppropriate(const MapPoint &objectLocation,
                     BAR_GAP =
                         4;  // Gap between the bar and the top of the sprite
   px_t barLength = toInt(1.0 * BAR_TOTAL_LENGTH * health() / maxHealth());
-  const ScreenPoint &offset = Client::_instance->offset();
+  const ScreenPoint &offset = _cClient.offset();
   px_t x = toInt(objectLocation.x - BAR_TOTAL_LENGTH / 2 + offset.x),
        y = toInt(objectLocation.y - objHeight - BAR_GAP - BAR_HEIGHT +
                  offset.y);
@@ -45,32 +46,28 @@ bool ClientCombatant::shouldDrawHealthBar() const {
   if (isDamaged) return true;
   if (canBeAttackedByPlayer()) return true;
 
-  const Client &client = *Client::_instance;
-  bool selected = client.targetAsCombatant() == this;
-  bool mousedOver = client.currentMouseOverEntity() == entityPointer();
+  bool selected = _cClient.targetAsCombatant() == this;
+  bool mousedOver = _cClient.currentMouseOverEntity() == entityPointer();
   if (selected || mousedOver) return true;
 
   return false;
 }
 
 void ClientCombatant::createDamageParticles() const {
-  Client &client = *Client::_instance;
-  client.addParticles(_type->damageParticles(), combatantLocation());
+  _cClient.addParticles(_type->damageParticles(), combatantLocation());
 }
 
 void ClientCombatant::createBuffParticles(double delta) const {
-  Client &client = *Client::_instance;
   for (auto *buff : _buffs)
     if (!buff->particles().empty())
-      client.addParticles(buff->particles(), combatantLocation(), delta);
+      _cClient.addParticles(buff->particles(), combatantLocation(), delta);
   for (auto *debuff : _debuffs)
     if (!debuff->particles().empty())
-      client.addParticles(debuff->particles(), combatantLocation(), delta);
+      _cClient.addParticles(debuff->particles(), combatantLocation(), delta);
 }
 
 void ClientCombatant::addBuffOrDebuff(const ClientBuffType::ID &buff,
                                       bool isBuff) {
-  Client &client = *Client::_instance;
   auto it = Client::gameData.buffTypes.find(buff);
   if (it == Client::gameData.buffTypes.end()) return;
 
@@ -84,7 +81,6 @@ void ClientCombatant::addBuffOrDebuff(const ClientBuffType::ID &buff,
 
 void ClientCombatant::removeBuffOrDebuff(const ClientBuffType::ID &buff,
                                          bool isBuff) {
-  Client &client = *Client::_instance;
   auto it = Client::gameData.buffTypes.find(buff);
   if (it == Client::gameData.buffTypes.end()) return;
 

@@ -12,7 +12,8 @@ class List;
 
 class ClientCombatant {
  public:
-  ClientCombatant::ClientCombatant(const ClientCombatantType *type);
+  ClientCombatant::ClientCombatant(Client &client,
+                                   const ClientCombatantType *type);
 
   void update(double delta);  // Non-virtual.
 
@@ -61,6 +62,8 @@ class ClientCombatant {
   virtual void playDeathSound() const = 0;
 
  private:
+  Client &_cClient;
+
   const ClientCombatantType *_type;
   Hitpoints _maxHealth, _health;
   Energy _maxEnergy, _energy;
