@@ -428,10 +428,10 @@ void Client::populateQuestLog() {
         [&quest]() { CQuest::generateWindow(&quest, {}, CQuest::INFO_ONLY); }));
     x += BUTTON_W + GAP;
     auto pQuestID = const_cast<std::string *>(&quest.info().id);
-    entry->addChild(new Button(
-        {x, 0, BUTTON_W, entry->height() - GAP}, "Abandon", [this, pQuestID]() {
-          sendMessageWithString<CL_ABANDON_QUEST>(pQuestID);
-        }));
+    entry->addChild(new Button({x, 0, BUTTON_W, entry->height() - GAP},
+                               "Abandon", [this, pQuestID]() {
+                                 sendMessage({CL_ABANDON_QUEST, pQuestID});
+                               }));
   }
 }
 

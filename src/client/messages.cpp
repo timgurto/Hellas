@@ -80,7 +80,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
 
         // Hide/clean up from login screen
         SDL_StopTextInput();
-        _instance->_createWindow->hide();
+        _createWindow->hide();
 
         _character.name(_username);
 
@@ -2655,12 +2655,6 @@ void Client::handle_SV_CHUNK_EXPLORED(size_t chunkX, size_t chunkY) {
 
 void Client::sendMessage(const Message &msg) const {
   _connection.socket().sendMessage(msg);
-}
-
-void Client::sendMessageStatic(void *data) {
-  auto &client = *_instance;
-  auto *message = reinterpret_cast<const Message *>(data);
-  client.sendMessage(*message);
 }
 
 void Client::disconnect() {

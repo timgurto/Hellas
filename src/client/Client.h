@@ -619,19 +619,10 @@ class Client {
  private:
   std::queue<std::string> _messages;
   std::string _partialMessage;
-  static void sendMessageStatic(void *data);
   void handleBufferedMessages(const std::string &msg);
   void performCommand(const std::string &commandString);
   std::vector<MessageCode> _messagesReceived;
   std::mutex _messagesReceivedMutex;
-
- public:
-  template <MessageCode code>
-  static void sendMessageWithString(void *string) {
-    auto pArgs = reinterpret_cast<const std::string *>(string);
-    auto message = Message{code, *pArgs};
-    sendMessageStatic(&message);
-  }
 
  private:
   void handle_SV_INVENTORY(Serial serial, size_t slot,
