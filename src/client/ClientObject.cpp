@@ -74,15 +74,15 @@ ClientObject::ClientObject(Serial serialArg)
 
 ClientObject::~ClientObject() {
   if (_window != nullptr) {
-    Client::_instance->removeWindow(_window);
+    _client.removeWindow(_window);
     delete _window;
   }
   if (_confirmCedeWindow != nullptr) {
-    Client::_instance->removeWindow(_confirmCedeWindow);
+    _client.removeWindow(_confirmCedeWindow);
     delete _confirmCedeWindow;
   }
   if (_grantWindow != nullptr) {
-    Client::_instance->removeWindow(_grantWindow);
+    _client.removeWindow(_grantWindow);
     delete _grantWindow;
   }
 }
@@ -493,7 +493,7 @@ void ClientObject::addActionToWindow() {
   // Button
   x = BUTTON_GAP;
   Button *button = new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, action.label,
-                              [this]() { performAction(this); });
+                              [this]() { performAction(); });
   _window->addChild(button);
   y += BUTTON_GAP + BUTTON_HEIGHT;
   x += BUTTON_GAP + BUTTON_WIDTH;
@@ -502,17 +502,12 @@ void ClientObject::addActionToWindow() {
   _window->resize(newWidth, y);
 }
 
-void ClientObject::performAction(void *object) {
-  assert(object != nullptr);
-  ClientObject &obj = *reinterpret_cast<ClientObject *>(object);
-  Client &client = *Client::_instance;
-
+void ClientObject::performAction() {
   auto textArg = std::string{"_"};
-  if (obj._actionTextEntry != nullptr) textArg = obj._actionTextEntry->text();
+  if (_actionTextEntry != nullptr) textArg = _actionTextEntry->text();
   if (textArg.empty()) textArg = "_";
 
-  client.sendMessage(
-      {CL_PERFORM_OBJECT_ACTION, makeArgs(obj.serial(), textArg)});
+  _client.sendMessage({CL_PERFORM_OBJECT_ACTION, makeArgs(serial(), textArg)});
 }
 
 void ClientObject::addMerchantTradeToWindow() {
@@ -834,12 +829,11 @@ void ClientObject::update(double delta) {
     return;
   }
 
-  Client &client = *Client::_instance;
   ms_t timeElapsed = toInt(1000 * delta);
 
   // If being gathered, add particles and play sounds.
   if (beingGathered()) {
-    client.addParticles(objectType()->gatherParticles(), location(), delta);
+    _client.addParticles(objectType()->gatherParticles(), location(), delta);
     if (_gatherSoundTimer > timeElapsed)
       _gatherSoundTimer -= timeElapsed;
     else {
@@ -866,20 +860,19 @@ void ClientObject::update(double delta) {
         MapPoint{randDouble() * collisionRect().w + collisionRect().x,
                  randDouble() * collisionRect().h + collisionRect().y};
 
-    const auto *smokeProfile = client.findParticleProfile("smoke");
+    const auto *smokeProfile = _client.findParticleProfile("smoke");
     if (smokeProfile) {
       const auto PARTICLES_PER_PIXEL = 0.005;
       auto area = collisionRect().w * collisionRect().h;
       auto numParticles = smokeProfile->numParticlesContinuous(
           delta * area * PARTICLES_PER_PIXEL);
 
-      client.addParticles(smokeProfile, particleLocation, numParticles);
+      _client.addParticles(smokeProfile, particleLocation, numParticles);
     }
   }
 
   // Loot sparkles
-  if (lootable())
-    Client::_instance->addParticles("lootSparkles", location(), delta);
+  if (lootable()) _client.addParticles("lootSparkles", location(), delta);
 
   Sprite::update(delta);
 }

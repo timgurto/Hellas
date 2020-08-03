@@ -199,7 +199,7 @@ class ClientObject : public Sprite, public ClientCombatant {
   void addInventoryToWindow(Client &client);
   void addDeconstructionToWindow();
   void addActionToWindow();
-  static void performAction(void *object);
+  void performAction();
   void addMerchantTradeToWindow();
   void addCedeButtonToWindow();
   void confirmAndCedeObject(void *objectToCede);

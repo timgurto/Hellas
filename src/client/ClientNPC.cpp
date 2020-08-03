@@ -26,8 +26,7 @@ bool ClientNPC::canBeAttackedByPlayer() const {
   if (npcType()->isCivilian()) return false;
 
   if (_owner.type != Owner::ALL_HAVE_ACCESS) {
-    const auto &client = *Client::_instance;
-    return client.isAtWarWithObjectOwner(_owner);
+    return _client.isAtWarWithObjectOwner(_owner);
   }
   return true;
 }
@@ -55,7 +54,7 @@ void ClientNPC::draw() const {
 
   auto shouldDrawGear = isAlive() && npcType()->hasGear();
   if (shouldDrawGear) {
-    const auto screenOffset = Client::_instance->offset();
+    const auto screenOffset = _client.offset();
     for (const auto &pair : ClientItem::drawOrder()) {
       const ClientItem *item = npcType()->gear(pair.second);
       if (item) item->draw(toScreenPoint(location()) + screenOffset);
