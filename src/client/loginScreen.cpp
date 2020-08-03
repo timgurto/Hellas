@@ -178,7 +178,7 @@ void Client::updateClassDescription(Client &client) {
 
   const auto &description = Client::gameData.classes[classID].description();
   static auto wrapper =
-      WordWrapper{_instance->defaultFont(), classDescription->contentWidth()};
+      WordWrapper{client.defaultFont(), classDescription->contentWidth()};
   auto lines = wrapper.wrap(description);
 
   for (const auto &line : lines)
@@ -243,7 +243,7 @@ void Client::initCreateWindow() {
   const auto BUTTON_X = (WIN_H - BUTTON_WIDTH) / 2,
              BUTTON_Y = WIN_H - BUTTON_HEIGHT - MARGIN;
   createButton = new Button({BUTTON_X, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT},
-                            "Create account"s, createAccount);
+                            "Create account"s, [this]() { createAccount(); });
   _createWindow->addChild(createButton);
 }
 
@@ -267,38 +267,36 @@ void Client::createAccount() {
   auto username = newNameBox->text();
   newNameBox->text(username);
 
-  _instance->_username = username;
+  _username = username;
   const auto &selectedClass = classList->getSelected();
   auto pwHash = picosha2::hash256_hex_string(newPwBox->text());
-  _instance->sendMessage(
+  sendMessage(
       {CL_LOGIN_NEW, makeArgs(username, pwHash, selectedClass, version())});
 
-  saveUsernameAndPassword(_instance->_username, pwHash);
+  saveUsernameAndPassword(_username, pwHash);
 }
 
 void Client::login() {
-  _instance->_shouldAutoLogIn = false;
+  _shouldAutoLogIn = false;
 
   auto enteredName = nameBox->text();
   if (!enteredName.empty()) {
-    _instance->_username = enteredName;
+    _username = enteredName;
   }
 
   auto pwHash = ""s;
-  auto shouldCallCreateInsteadOfLogin = !_instance->_autoClassID.empty();
+  auto shouldCallCreateInsteadOfLogin = !_autoClassID.empty();
   if (shouldCallCreateInsteadOfLogin) {
     pwHash = picosha2::hash256_hex_string(newPwBox->text());
-    _instance->sendMessage(
-        {CL_LOGIN_NEW, makeArgs(_instance->_username, pwHash,
-                                _instance->_autoClassID, version())});
+    sendMessage(
+        {CL_LOGIN_NEW, makeArgs(_username, pwHash, _autoClassID, version())});
   } else {
-    pwHash = _instance->_savedPwHash;
+    pwHash = _savedPwHash;
     if (pwHash.empty()) pwHash = picosha2::hash256_hex_string(pwBox->text());
-    _instance->sendMessage(
-        {CL_LOGIN_EXISTING, makeArgs(_instance->_username, pwHash, version())});
+    sendMessage({CL_LOGIN_EXISTING, makeArgs(_username, pwHash, version())});
   }
 
-  saveUsernameAndPassword(_instance->_username, pwHash);
+  saveUsernameAndPassword(_username, pwHash);
 }
 
 void Client::initLoginScreen() {
@@ -348,8 +346,8 @@ void Client::initLoginScreen() {
 
   Y += Element::TEXT_HEIGHT + GAP;
 
-  loginButton =
-      new Button({BUTTON_X, Y, BUTTON_W, BUTTON_HEIGHT}, "Login", login);
+  loginButton = new Button({BUTTON_X, Y, BUTTON_W, BUTTON_HEIGHT}, "Login",
+                           [this]() { login(); });
   _loginUI.push_back(loginButton);
   updateLoginButton();
 

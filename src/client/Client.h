@@ -193,15 +193,15 @@ class Client {
   void addParticles(const ParticleProfile *profile,
                     const MapPoint &location);  // Single hit
   void addParticles(const ParticleProfile *profile, const MapPoint &location,
-                    double delta);  // /s
+                    double delta);  // per second
   void addParticles(const std::string &profileName,
                     const MapPoint &location);  // Single hit
   void addParticles(const std::string &profileName, const MapPoint &location,
-                    double delta);  // /s
+                    double delta);  // per second
   void addParticlesWithCustomAltitude(double altitude,
                                       const std::string &profileName,
                                       const MapPoint &location,
-                                      double delta);  // /s
+                                      double delta);  // per second
   void addFloatingCombatText(const std::string &text, const MapPoint &location,
                              Color color);
 
@@ -439,13 +439,13 @@ class Client {
   void drawLoginScreen() const;
   std::list<Particle *> _loginParticles;
   void updateLoginParticles(double delta);
-  static void login();
+  void login();
   static void connectToServerStatic(Client *client);
   Indicator *_serverConnectionIndicator{nullptr};
   void updateLoginButton();
   Window *_createWindow{nullptr};
   void initCreateWindow();
-  static void createAccount();
+  void createAccount();
   static void updateCreateButton(void *pClient);
   static void updateClassDescription(Client &client);
   std::string _autoClassID =
