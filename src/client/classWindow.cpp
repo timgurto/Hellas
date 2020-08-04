@@ -46,17 +46,16 @@ void Client::initializeClassWindow() {
 }
 
 void Client::confirmAndUnlearnTalents() {
-  std::string confirmationText =
+  const std::string confirmationText =
       "Are you sure you want to unlearn all of your talents?";
 
-  static ConfirmationWindow *_window = nullptr;
-  if (_window != nullptr)
-    removeWindow(_window);
+  if (_unlearnTalentsConfirmationWindow)
+    removeWindow(_unlearnTalentsConfirmationWindow);
   else
-    _window =
+    _unlearnTalentsConfirmationWindow =
         new ConfirmationWindow(*this, confirmationText, CL_UNLEARN_TALENTS, {});
-  addWindow(_window);
-  _window->show();
+  addWindow(_unlearnTalentsConfirmationWindow);
+  _unlearnTalentsConfirmationWindow->show();
 }
 
 void Client::populateClassWindow() {

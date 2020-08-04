@@ -380,6 +380,8 @@ class Client {
   void initHotbar();
   void setHotbar(const std::vector<std::pair<int, std::string> > &buttons);
 
+  ConfirmationWindow *_unlearnTalentsConfirmationWindow{nullptr};
+
  public:
   void refreshHotbar();
   void refreshQuestProgress();
