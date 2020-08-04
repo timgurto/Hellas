@@ -38,8 +38,6 @@ extern Args cmdLineArgs;
 
 Client *Client::_instance = nullptr;
 
-LogSDL *Client::_debugInstance = nullptr;
-
 CGameData Client::gameData;
 Client::CommonImages Client::images;
 
@@ -143,13 +141,12 @@ Client::Client()
 
       _numEntities(0),
 
-      _debug("client.log") {
+      debugLog("client.log") {
   _defaultFont = TTF_OpenFont("AdvoCut.ttf", 10);
   drawLoadingScreen("Reading configuration file", 0.1);
 
   isClient = true;
   _instance = this;
-  _debugInstance = &_debug;
 
   _config.loadFromFile("client-config.xml");
   _connection.initialize(_config.serverHostDirectory);

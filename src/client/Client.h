@@ -138,8 +138,6 @@ class Client {
 
   static const px_t ACTION_DISTANCE;
 
-  static LogSDL &debug() { return *_debugInstance; }
-
   typedef std::list<Window *> windows_t;
   typedef std::list<Element *>
       ui_t;  // For the UI, that sits below all windows.
@@ -203,9 +201,10 @@ class Client {
   void addFloatingCombatText(const std::string &text, const MapPoint &location,
                              Color color);
 
+  LogSDL debugLog;
+
  private:
   static Client *_instance;
-  static LogSDL *_debugInstance;
 
   Connection _connection;
   void disconnect();
