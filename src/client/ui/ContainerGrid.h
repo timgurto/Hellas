@@ -2,9 +2,10 @@
 #define CONTAINER_GRID_H
 
 #include "../../Serial.h"
-#include "../Client.h"
 #include "../ClientItem.h"
 #include "Element.h"
+
+class Client;
 
 // A grid that allows access to a collection of items
 class ContainerGrid : public Element {
@@ -29,14 +30,6 @@ class ContainerGrid : public Element {
       _highlightBad;
   static Texture _damaged, _broken;  // Drawn over icons to indicate durability
 
-  static size_t dragSlot;  // The slot currently being dragged from.
-  static const ContainerGrid
-      *dragGrid;  // The container currently being dragged from.
-
-  static size_t useSlot;  // The slot whose item is currently being "used"
-                          // (after right-clicking)
-  static const ContainerGrid *useGrid;
-
   virtual void refresh() override;
   void refreshTooltip();
 
@@ -55,14 +48,29 @@ class ContainerGrid : public Element {
                 bool solidBackground = true);
   static void cleanup();
 
-  static const ClientItem *getDragItem();
-  static const ClientItem *getUseItem();
   static void dropItem(
       Client &client);  // Drop the item currently being dragged.
 
-  static void clearUseItem();
-
   friend Client;
+
+  class GridInUse {
+   public:
+    GridInUse(const ContainerGrid &grid, size_t slot);
+    GridInUse(){};
+    bool validGrid() const;
+    bool validSlot() const;
+    size_t slot() const;
+    bool slotMatches(size_t slot) const;
+    bool matches(const ContainerGrid &grid, size_t slot) const;
+    const ClientItem *item() const;
+    const Serial object() const;
+    void clear();
+    void markGridAsChanged();
+
+   private:
+    size_t _slot{ContainerGrid::NO_SLOT};
+    const ContainerGrid *_grid{nullptr};
+  };
 };
 
 #endif

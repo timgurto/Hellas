@@ -24,9 +24,8 @@ void Client::draw() const {
 
   // Used below by terrain and entities
   _constructionFootprintType = _selectedConstruction;
-  if (!_constructionFootprintType && ContainerGrid::getUseItem())
-    _constructionFootprintType =
-        ContainerGrid::getUseItem()->constructsObject();
+  if (!_constructionFootprintType && containerGridInUse.item())
+    _constructionFootprintType = containerGridInUse.item()->constructsObject();
   if (_constructionFootprintType)
     _constructionFootprintAllowedTerrain =
         TerrainList::findList(_constructionFootprintType->allowedTerrain());
@@ -152,9 +151,8 @@ void Client::draw() const {
   // Dragged item
   static const ScreenPoint MOUSE_ICON_OFFSET(-Client::ICON_SIZE / 2,
                                              -Client::ICON_SIZE / 2);
-  const ClientItem *draggedItem = ContainerGrid::getDragItem();
-  if (draggedItem != nullptr)
-    draggedItem->icon().draw(_mouse + MOUSE_ICON_OFFSET);
+  const auto *draggedItem = containerGridBeingDraggedFrom.item();
+  if (draggedItem) draggedItem->icon().draw(_mouse + MOUSE_ICON_OFFSET);
 
   // Construction footprint
   _instructionsLabel->changeText({});

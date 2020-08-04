@@ -47,6 +47,7 @@
 #include "Target.h"
 #include "WordWrapper.h"
 #include "ui/ChoiceList.h"
+#include "ui/ContainerGrid.h"
 #include "ui/Indicator.h"
 #include "ui/ItemSelector.h"
 #include "ui/OutlinedLabel.h"
@@ -202,6 +203,8 @@ class Client {
                              Color color);
 
   LogSDL debugLog;
+
+  ContainerGrid::GridInUse containerGridInUse, containerGridBeingDraggedFrom;
 
  private:
   static Client *_instance;

@@ -361,7 +361,7 @@ void Client::handleInput(double delta) {
             if (mouseUpOnWindow) break;
 
             // Use item
-            auto useItem = ContainerGrid::getUseItem();
+            auto useItem = containerGridInUse.item();
             if (useItem) {
               px_t x = toInt(_mouse.x - offset().x),
                    y = toInt(_mouse.y - offset().y);
@@ -370,9 +370,9 @@ void Client::handleInput(double delta) {
                                        ? CL_CONSTRUCT_FROM_ITEM_FOR_CITY
                                        : CL_CONSTRUCT_FROM_ITEM;
                 sendMessage(
-                    {messageCode, makeArgs(ContainerGrid::useSlot, x, y)});
+                    {messageCode, makeArgs(containerGridInUse.slot(), x, y)});
                 prepareAction(std::string("Constructing ") +
-                              _inventory[ContainerGrid::useSlot]
+                              _inventory[containerGridInUse.slot()]
                                   .first.type()
                                   ->constructsObject()
                                   ->name());
@@ -393,7 +393,8 @@ void Client::handleInput(double delta) {
             }
 
             // Dragged item onto map -> drop.
-            if (!mouseUpOnWindow && ContainerGrid::getDragItem() != nullptr) {
+            if (!mouseUpOnWindow &&
+                containerGridBeingDraggedFrom.item() != nullptr) {
               ContainerGrid::dropItem(*this);
             }
 
@@ -402,8 +403,7 @@ void Client::handleInput(double delta) {
 
           case SDL_BUTTON_RIGHT:
             _rightMouseDown = false;
-            ContainerGrid::useGrid = nullptr;
-            ContainerGrid::useSlot = ContainerGrid::NO_SLOT;
+            containerGridInUse.clear();
             _selectedConstruction = nullptr;
             _constructionFootprint = Texture();
             _buildList->clearSelection();
@@ -429,7 +429,7 @@ void Client::handleInput(double delta) {
               }
 
             // Use item
-            const ClientItem *useItem = ContainerGrid::getUseItem();
+            const auto *useItem = containerGridInUse.item();
             if (useItem && useItem->constructsObject()) {
               _constructionFootprint = useItem->constructsObject()->image();
               break;
@@ -437,8 +437,8 @@ void Client::handleInput(double delta) {
             _constructionFootprint = Texture();
 
             if (useItem && useItem->castsSpellOnUse()) {
-              sendMessage({CL_CAST_ITEM, ContainerGrid::useSlot});
-              ContainerGrid::clearUseItem();
+              sendMessage({CL_CAST_ITEM, containerGridInUse.slot()});
+              containerGridInUse.clear();
               break;
             }
 

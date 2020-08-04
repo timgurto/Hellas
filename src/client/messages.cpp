@@ -373,8 +373,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
           _buildList->clearSelection();
           _constructionFootprint = Texture();
           _selectedConstruction = nullptr;
-        } else if (ContainerGrid::getUseItem() != nullptr) {
-          ContainerGrid::clearUseItem();
+        } else if (containerGridInUse.item()) {
+          containerGridInUse.clear();
           _constructionFootprint = Texture();
         }
 

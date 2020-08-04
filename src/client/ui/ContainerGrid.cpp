@@ -13,12 +13,6 @@ const px_t ContainerGrid::DEFAULT_GAP = 0;
 // TODO: find better alternative.
 const size_t ContainerGrid::NO_SLOT = 999;
 
-size_t ContainerGrid::dragSlot = NO_SLOT;
-const ContainerGrid *ContainerGrid::dragGrid = nullptr;
-
-size_t ContainerGrid::useSlot = NO_SLOT;
-const ContainerGrid *ContainerGrid::useGrid = nullptr;
-
 Texture ContainerGrid::_highlight;
 Texture ContainerGrid::_highlightGood;
 Texture ContainerGrid::_highlightBad;
@@ -97,7 +91,8 @@ void ContainerGrid::refresh() {
       renderer.fillRect(slotRect + SLOT_BACKGROUND_OFFSET);
     }
     // Don't draw an item being moved by the mouse.
-    if (dragSlot != i || dragGrid != this) {
+    const auto &draggingFrom = client()->containerGridBeingDraggedFrom;
+    if (!draggingFrom.matches(*this, i)) {
       const auto &slot = _linked[i];
       if (slot.first.type() != nullptr) {
         slot.first.type()->icon().draw(slotRect.x + 1, slotRect.y + 1);
@@ -126,8 +121,8 @@ void ContainerGrid::refresh() {
       _highlight.draw(slotRect.x + 1, slotRect.y + 1);
 
       // Indicate matching gear slot if an item is being dragged
-    } else if (_serial.isGear() && dragGrid != nullptr) {
-      size_t itemSlot = dragGrid->_linked[dragSlot].first.type()->gearSlot();
+    } else if (_serial.isGear() && draggingFrom.validGrid()) {
+      auto itemSlot = draggingFrom.item()->gearSlot();
       (i == itemSlot ? _highlightGood : _highlightBad)
           .draw(slotRect.x + 1, slotRect.y + 1);
     }
@@ -176,48 +171,46 @@ void ContainerGrid::leftMouseDown(Element &e, const ScreenPoint &mousePos) {
 void ContainerGrid::leftMouseUp(Element &e, const ScreenPoint &mousePos) {
   ContainerGrid &grid = dynamic_cast<ContainerGrid &>(e);
   size_t slot = grid.getSlot(mousePos);
-  if (slot != NO_SLOT) {  // Clicked a valid slot
-    size_t mouseDownSlot = grid._leftMouseDownSlot;
-    grid._leftMouseDownSlot = NO_SLOT;
+  if (slot == NO_SLOT) return;  // Clicked an invalid slot
 
-    // Enforce gear slots
-    if (dragGrid != nullptr) {
-      if (dragGrid->_serial.isGear()) {  // From gear slot
-        const ClientItem *item = grid._linked[slot].first.type();
-        if (item != nullptr && item->gearSlot() != dragSlot) return;
-      } else if (grid._serial.isGear()) {  // To gear slot
-        const ClientItem *item = dragGrid->_linked[dragSlot].first.type();
-        if (item != nullptr && item->gearSlot() != slot) return;
-      }
+  size_t mouseDownSlot = grid._leftMouseDownSlot;
+  grid._leftMouseDownSlot = NO_SLOT;
+
+  // Enforce gear slots
+  auto &draggingFrom = grid.client()->containerGridBeingDraggedFrom;
+  if (draggingFrom.validGrid()) {
+    if (draggingFrom.object().isGear()) {  // From gear slot
+      const auto *item = grid._linked[slot].first.type();
+      if (item && !draggingFrom.slotMatches(item->gearSlot())) return;
+    } else if (grid._serial.isGear()) {  // To gear slot
+      const auto *item = draggingFrom.item();
+      if (item && item->gearSlot() != slot) return;
     }
+  }
 
-    // Different grid/slot: finish dragging.
-    if ((dragGrid != &grid || dragSlot != slot) && dragSlot != NO_SLOT) {
-      grid._client->sendMessage(
-          {CL_SWAP_ITEMS,
-           makeArgs(dragGrid->_serial, dragSlot, grid._serial, slot)});
-      const ClientItem *item = dragGrid->_linked[dragSlot].first.type();
-      if (item) item->playSoundOnce(*grid.client(), "drop");
+  // Different grid/slot: finish dragging.
+  if (!draggingFrom.matches(grid, slot) && draggingFrom.validSlot()) {
+    grid._client->sendMessage(
+        {CL_SWAP_ITEMS, makeArgs(draggingFrom.object(), draggingFrom.slot(),
+                                 grid._serial, slot)});
+    const auto *item = draggingFrom.item();
+    if (item) item->playSoundOnce(*grid.client(), "drop");
 
-      dragSlot = NO_SLOT;
-      dragGrid = nullptr;
-      grid._client->onChangeDragItem();
+    draggingFrom.clear();
+    grid._client->onChangeDragItem();
 
-      // Dragging to same grid/slot; do nothing.
-    } else if (slot == dragSlot && &grid == dragGrid) {
-      dragSlot = NO_SLOT;
-      dragGrid = nullptr;
-      grid._client->onChangeDragItem();
-      grid.markChanged();
+    // Dragging to same grid/slot; do nothing.
+  } else if (draggingFrom.matches(grid, slot)) {
+    draggingFrom.clear();
+    grid._client->onChangeDragItem();
+    grid.markChanged();
 
-      // Same grid and slot that mouse went down on and slot isn't empty: start
-      // dragging.
-    } else if (mouseDownSlot == slot && grid._linked[slot].first.type()) {
-      dragSlot = slot;
-      dragGrid = &grid;
-      grid._client->onChangeDragItem();
-      grid.markChanged();
-    }
+    // Same grid and slot that mouse went down on and slot isn't empty: start
+    // dragging.
+  } else if (mouseDownSlot == slot && grid._linked[slot].first.type()) {
+    draggingFrom = {grid, slot};
+    grid._client->onChangeDragItem();
+    grid.markChanged();
   }
 }
 
@@ -230,22 +223,21 @@ void ContainerGrid::rightMouseDown(Element &e, const ScreenPoint &mousePos) {
 void ContainerGrid::rightMouseUp(Element &e, const ScreenPoint &mousePos) {
   ContainerGrid &grid = dynamic_cast<ContainerGrid &>(e);
   size_t slot = grid.getSlot(mousePos);
-  if (dragSlot != NO_SLOT) {  // Cancel dragging
-    dragSlot = NO_SLOT;
-    dragGrid = nullptr;
+  auto &draggingFrom = grid.client()->containerGridBeingDraggedFrom;
+  auto &usingFrom = grid.client()->containerGridInUse;
+  if (!draggingFrom.validSlot()) {  // Cancel dragging
+    draggingFrom.clear();
     grid._client->onChangeDragItem();
     grid.markChanged();
   }
-  if (useSlot != NO_SLOT) {  // Right-clicked instead of used: cancel use
-    useSlot = NO_SLOT;
-    useGrid = nullptr;
+  if (!usingFrom.validSlot()) {  // Right-clicked instead of used: cancel use
+    usingFrom.clear();
   } else if (slot != NO_SLOT) {  // Right-clicked a slot
     const ClientItem *item = grid._linked[slot].first.type();
     if (item != nullptr) {  // Slot is not empty
       if (grid._serial.isInventory()) {
         if (item->canUse()) {
-          useSlot = slot;
-          useGrid = &grid;
+          usingFrom = {grid, slot};
         } else if (item->gearSlot() < Client::GEAR_SLOTS) {
           grid._client->sendMessage(
               {CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), slot,
@@ -272,32 +264,45 @@ void ContainerGrid::mouseMove(Element &e, const ScreenPoint &mousePos) {
   grid.refreshTooltip();
 }
 
-const ClientItem *ContainerGrid::getDragItem() {
-  if (dragSlot == NO_SLOT || !dragGrid)
-    return nullptr;
-  else
-    return dragGrid->_linked[dragSlot].first.type();
-}
-
-const ClientItem *ContainerGrid::getUseItem() {
-  if (useSlot == NO_SLOT || !useGrid)
-    return nullptr;
-  else
-    return useGrid->_linked[useSlot].first.type();
-}
-
 void ContainerGrid::dropItem(Client &client) {
-  if (dragSlot != NO_SLOT && dragGrid != nullptr) {
-    const ClientItem *item = dragGrid->_linked[dragSlot].first.type();
-    client.sendMessage({CL_DROP, makeArgs(dragGrid->_serial, dragSlot)});
-    dragSlot = NO_SLOT;
-    dragGrid->markChanged();
-    dragGrid = nullptr;
-    client.onChangeDragItem();
-  }
+  auto &draggingFrom = client.containerGridBeingDraggedFrom;
+  if (!draggingFrom.validGrid() || !draggingFrom.validSlot()) return;
+
+  client.sendMessage(
+      {CL_DROP, makeArgs(draggingFrom.object(), draggingFrom.slot())});
+  draggingFrom.markGridAsChanged();
+  draggingFrom.clear();
+  client.onChangeDragItem();
 }
 
-void ContainerGrid::clearUseItem() {
-  useSlot = NO_SLOT;
-  useGrid = nullptr;
+ContainerGrid::GridInUse::GridInUse(const ContainerGrid &grid, size_t slot)
+    : _grid(&grid), _slot(slot) {}
+
+bool ContainerGrid::GridInUse::validGrid() const { return _grid != nullptr; }
+
+bool ContainerGrid::GridInUse::validSlot() const { return _slot != NO_SLOT; }
+
+size_t ContainerGrid::GridInUse::slot() const { return _slot; }
+
+bool ContainerGrid::GridInUse::slotMatches(size_t slot) const {
+  return _slot == slot;
 }
+
+bool ContainerGrid::GridInUse::matches(const ContainerGrid &grid,
+                                       size_t slot) const {
+  return _grid == &grid && _slot == slot;
+}
+
+const ClientItem *ContainerGrid::GridInUse::item() const {
+  if (!validGrid() || !validSlot()) return nullptr;
+  return _grid->_linked[_slot].first.type();
+}
+
+const Serial ContainerGrid::GridInUse::object() const { return _grid->_serial; }
+
+void ContainerGrid::GridInUse::clear() {
+  _slot = NO_SLOT;
+  _grid = nullptr;
+}
+
+void ContainerGrid::GridInUse::markGridAsChanged() { _grid->markChanged(); }
