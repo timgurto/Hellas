@@ -123,15 +123,6 @@ class Client {
   }
   void hideTargetMenu() { _target.hideMenu(); }
 
-  const Texture &cursorNormal() const { return _cursorNormal; }
-  const Texture &cursorGather() const { return _cursorGather; }
-  const Texture &cursorContainer() const { return _cursorContainer; }
-  const Texture &cursorAttack() const { return _cursorAttack; }
-  const Texture &cursorStartsQuest() const { return _cursorStartsQuest; }
-  const Texture &cursorEndsQuest() const { return _cursorEndsQuest; }
-  const Texture &cursorRepair() const { return _cursorRepair; }
-  const Texture &cursorVehicle() const { return _cursorVehicle; }
-
   static const px_t ICON_SIZE;
   static const double MOVEMENT_SPEED;
   static const Hitpoints MAX_PLAYER_HEALTH;
@@ -231,8 +222,6 @@ class Client {
   // How often to send location updates to server (while moving)
   ms_t TIME_BETWEEN_LOCATION_UPDATES = 250;
 
-  Texture _cursorNormal, _cursorGather, _cursorContainer, _cursorAttack,
-      _cursorStartsQuest, _cursorEndsQuest, _cursorRepair, _cursorVehicle;
   const Texture *_currentCursor;
 
   static void initializeGearSlotNames();
@@ -558,6 +547,8 @@ class Client {
     void initialise();
 
     Texture shadow;
+    Texture cursorNormal, cursorGather, cursorContainer, cursorAttack,
+        cursorStartsQuest, cursorEndsQuest, cursorRepair, cursorVehicle;
   } images;
 
  private:

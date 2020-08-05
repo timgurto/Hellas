@@ -214,8 +214,8 @@ bool Avatar::canBeAttackedByPlayer() const {
 }
 
 const Texture &Avatar::cursor() const {
-  if (canBeAttackedByPlayer()) return _client.cursorAttack();
-  return _client.cursorNormal();
+  if (canBeAttackedByPlayer()) return Client::images.cursorAttack;
+  return Client::images.cursorNormal;
 }
 
 bool Avatar::isInPlayersCity() const {

@@ -138,7 +138,7 @@ bool Sprite::mouseIsOverRealPixel(const MapPoint &p) const {
   return true;
 }
 
-const Texture &Sprite::cursor() const { return _client.cursorNormal(); }
+const Texture &Sprite::cursor() const { return Client::images.cursorNormal; }
 
 const Tooltip &Sprite::tooltip() const {
   if (_tooltip.hasValue()) return _tooltip.value();

@@ -601,8 +601,8 @@ Sprite *Client::getEntityAtMouse() {
 }
 
 void Client::checkMouseOver() {
-  _currentCursor = &_cursorNormal;
-  if (isAltPressed()) _currentCursor = &_cursorRepair;
+  _currentCursor = &Client::images.cursorNormal;
+  if (isAltPressed()) _currentCursor = &Client::images.cursorRepair;
 
   _terrainTooltip = {};
 

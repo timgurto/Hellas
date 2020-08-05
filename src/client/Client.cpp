@@ -76,15 +76,7 @@ std::map<int, std::string> Client::_errorMessages;
 const int Client::MIXING_CHANNELS = 32;
 
 Client::Client()
-    : _cursorNormal("Images/Cursors/normal.png"s, Color::MAGENTA),
-      _cursorGather("Images/Cursors/gather.png"s, Color::MAGENTA),
-      _cursorContainer("Images/Cursors/container.png"s, Color::MAGENTA),
-      _cursorAttack("Images/Cursors/attack.png"s, Color::MAGENTA),
-      _cursorStartsQuest("Images/Cursors/startsQuest.png"s, Color::MAGENTA),
-      _cursorEndsQuest("Images/Cursors/endsQuest.png"s, Color::MAGENTA),
-      _cursorRepair("Images/Cursors/repair.png"s, Color::MAGENTA),
-      _cursorVehicle("Images/Cursors/vehicle.png"s, Color::MAGENTA),
-      _currentCursor(&_cursorNormal),
+    : _currentCursor(&images.cursorNormal),
 
       avatarSpriteType(Avatar::DRAW_RECT),
       avatarCombatantType(MAX_PLAYER_HEALTH),
@@ -899,4 +891,15 @@ void Client::onSpellHit(const MapPoint &location, void *data) {
   if (spell.sounds()) spell.sounds()->playOnce(spell.client(), "impact"s);
 }
 
-void Client::CommonImages::initialise() { shadow = {"Images/shadow.png"}; }
+void Client::CommonImages::initialise() {
+  shadow = {"Images/shadow.png"};
+
+  cursorNormal = {"Images/Cursors/normal.png"s, Color::MAGENTA};
+  cursorGather = {"Images/Cursors/gather.png"s, Color::MAGENTA};
+  cursorContainer = {"Images/Cursors/container.png"s, Color::MAGENTA};
+  cursorAttack = {"Images/Cursors/attack.png"s, Color::MAGENTA};
+  cursorStartsQuest = {"Images/Cursors/startsQuest.png"s, Color::MAGENTA};
+  cursorEndsQuest = {"Images/Cursors/endsQuest.png"s, Color::MAGENTA};
+  cursorRepair = {"Images/Cursors/repair.png"s, Color::MAGENTA};
+  cursorVehicle = {"Images/Cursors/vehicle.png"s, Color::MAGENTA};
+}

@@ -907,23 +907,24 @@ void ClientObject::drawAppropriateQuestIndicator() const {
 }
 
 const Texture &ClientObject::cursor() const {
-  if (_client.isAltPressed()) return _client.cursorRepair();
+  if (_client.isAltPressed()) return Client::images.cursorRepair;
 
-  if (canBeAttackedByPlayer()) return _client.cursorAttack();
+  if (canBeAttackedByPlayer()) return Client::images.cursorAttack;
 
   const ClientObjectType &ot = *objectType();
   if (userHasAccess()) {
-    if (isBeingConstructed()) return _client.cursorContainer();
-    if (completableQuests().size() > 0) return _client.cursorEndsQuest();
-    if (startsQuests().size() > 0) return _client.cursorStartsQuest();
-    if (ot.canGather()) return _client.cursorGather();
-    if (ot.hasAction()) return _client.cursorContainer();
-    if (classTag() == 'v') return _client.cursorVehicle();
-    if (ot.containerSlots() > 0) return _client.cursorContainer();
+    if (isBeingConstructed()) return Client::images.cursorContainer;
+    if (completableQuests().size() > 0) return Client::images.cursorEndsQuest;
+    if (startsQuests().size() > 0) return Client::images.cursorStartsQuest;
+    if (ot.canGather()) return Client::images.cursorGather;
+    if (ot.hasAction()) return Client::images.cursorContainer;
+    if (classTag() == 'v') return Client::images.cursorVehicle;
+    if (ot.containerSlots() > 0) return Client::images.cursorContainer;
   }
-  if (lootable() || ot.merchantSlots() > 0) return _client.cursorContainer();
+  if (lootable() || ot.merchantSlots() > 0)
+    return Client::images.cursorContainer;
 
-  return _client.cursorNormal();
+  return Client::images.cursorNormal;
 }
 
 const Tooltip &ClientObject::tooltip() const {
