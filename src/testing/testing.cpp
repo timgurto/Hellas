@@ -2,6 +2,7 @@
 #include <SDL.h>
 
 #include "../Args.h"
+#include "../client/Client.h"
 #include "../client/Renderer.h"
 #include "catch.hpp"
 
@@ -27,6 +28,8 @@ int main(int argc, char* argv[]) {
   renderer.init();
 
   auto result = Catch::Session().run(argc, argv);
+
+  Client::cleanUpStatics();
 
   return (result < 0xff ? result : 0xff);
 }

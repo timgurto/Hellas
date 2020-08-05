@@ -1,4 +1,5 @@
 #include <SDL.h>
+
 #include <cassert>
 #include <cstdlib>
 #include <ctime>
@@ -24,6 +25,8 @@ int main(int argc, char* argv[]) {
 
   Client client;
   client.run();
+
+  Client::cleanUpStatics();
 
   return 0;
 }

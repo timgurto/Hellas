@@ -423,5 +423,3 @@ void Element::setAlpha(Uint8 alpha) {
   _alpha = alpha;
   markChanged();
 }
-
-void Element::cleanup() { transparentBackground = Texture(); }

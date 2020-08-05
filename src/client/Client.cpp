@@ -40,6 +40,7 @@ Client *Client::_instance = nullptr;
 
 CGameData Client::gameData;
 Client::CommonImages Client::images;
+TTF_Font *Client::_defaultFont = nullptr;
 
 const px_t Client::SCREEN_X = 640;
 const px_t Client::SCREEN_Y = 360;
@@ -106,8 +107,6 @@ Client::Client()
       _freeze(false),
       _dataLoaded(false),
 
-      _defaultFont(nullptr),
-
       _mouse(0, 0),
       _mouseMoved(false),
       _mouseOverWindow(false),
@@ -142,7 +141,7 @@ Client::Client()
       _numEntities(0),
 
       debugLog("client.log") {
-  _defaultFont = TTF_OpenFont("AdvoCut.ttf", 10);
+  initStatics();
   drawLoadingScreen("Reading configuration file", 0.1);
 
   isClient = true;
@@ -151,14 +150,8 @@ Client::Client()
   _config.loadFromFile("client-config.xml");
   _connection.initialize(_config.serverHostDirectory);
 
-  images.initialise();
-
   initUI();
   _wordWrapper = WordWrapper{_defaultFont, _chatLog->contentWidth()};
-
-  initializeMessageNames();
-
-  SDL_ShowCursor(SDL_DISABLE);
 
 #ifdef _DEBUG
   _debug(toString(cmdLineArgs));
@@ -231,12 +224,18 @@ void Client::initializeGearSlotNames() {
   GEAR_SLOT_NAMES.push_back("Offhand");
 }
 
+void Client::initStatics() {
+  static auto alreadyInitialised = false;
+  if (alreadyInitialised) return;
+  alreadyInitialised = true;
+
+  _defaultFont = TTF_OpenFont("AdvoCut.ttf", 10);
+  images.initialise();
+  initializeMessageNames();
+  SDL_ShowCursor(SDL_DISABLE);
+}
+
 Client::~Client() {
-  SDL_ShowCursor(SDL_ENABLE);
-  ContainerGrid::cleanup();
-  TextBox::clearFocus();
-  Element::cleanup();
-  if (_defaultFont != nullptr) TTF_CloseFont(_defaultFont);
   for (const Sprite *entityConst : _entities) {
     Sprite *entity = const_cast<Sprite *>(entityConst);
     if (entity == &_character) continue;
@@ -254,13 +253,18 @@ Client::~Client() {
   for (Element *loginElement : _loginUI) uniqueUIElements.insert(loginElement);
   for (Element *element : uniqueUIElements) delete element;
 
-  gameData = {};
-
-  Mix_Quit();
-
   _instance = nullptr;
 
   Socket::debug = nullptr;
+}
+
+void Client::cleanUpStatics() {
+  SDL_ShowCursor(SDL_ENABLE);
+  ContainerGrid::cleanup();
+  TextBox::clearFocus();
+  if (_defaultFont) TTF_CloseFont(_defaultFont);
+  gameData = {};
+  Mix_Quit();
 }
 
 void Client::run() {

@@ -59,6 +59,8 @@ class Client {
  public:
   Client();
   ~Client();
+  static void initStatics();
+  static void cleanUpStatics();
 
   void run();
   void gameLoop();
@@ -479,7 +481,7 @@ class Client {
   bool _shouldAutoLogIn{false};  // Used for tests
   static void exitGame(void *client);
 
-  TTF_Font *_defaultFont;
+  static TTF_Font *_defaultFont;
 
   // Mouse stuff
   ScreenPoint _mouse;  // Mouse position
