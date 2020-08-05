@@ -92,26 +92,9 @@ Client::Client()
 
       _character({}, {}, *this),
 
-      _activeRecipe(nullptr),
-
-      _selectedConstruction(nullptr),
-      _multiBuild(false),
-
-      _actionTimer(0),
-      _actionLength(0),
-
       _connection(*this),
 
-      _loop(true),
-      _running(false),
-      _freeze(false),
       _dataLoaded(false),
-
-      _mouse(0, 0),
-      _mouseMoved(false),
-      _mouseOverWindow(false),
-      _leftMouseDown(false),
-      _rightMouseDown(false),
 
       _basePassive(std::string("Images/targetPassive.png"), Color::MAGENTA),
       _baseAggressive(std::string("Images/targetAggressive.png"),
@@ -119,26 +102,8 @@ Client::Client()
       _inventory(INVENTORY_SIZE, std::make_pair(ClientItem::Instance{}, 0)),
 
       _time(SDL_GetTicks()),
-      _timeElapsed(0),
       _lastPingReply(_time),
       _lastPingSent(_time),
-      _latency(0),
-      _fps(0),
-
-      _loggedIn(false),
-      _loaded(false),
-
-      _timeSinceLocUpdate(0),
-
-      _tooltipNeedsRefresh(false),
-
-      _currentMouseOverEntity(nullptr),
-
-      _drawingFinished(false),
-
-      _channelsPlaying(0),
-
-      _numEntities(0),
 
       debugLog("client.log") {
   initStatics();

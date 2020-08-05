@@ -243,11 +243,14 @@ class Client {
   static void initializeCraftingWindow(Client &client);
   void initializeCraftingWindow();
   bool _haveMatsFilter, _haveToolsFilter, _tagOr, _matOr;
-  static const px_t HEADING_HEIGHT;  // The height of windows' section headings
-  static const px_t LINE_GAP;    // The total height occupied by a line and its
-                                 // surrounding spacing
-  const CRecipe *_activeRecipe;  // The recipe currently selected, if any
-  static void startCrafting();   // Called when the "Craft" button is clicked.
+  // The height of windows' section headings
+  static const px_t HEADING_HEIGHT;
+  // The total height occupied by a line and its surrounding spacing
+  static const px_t LINE_GAP;
+  // The recipe currently selected, if any
+  const CRecipe *_activeRecipe{nullptr};
+  // Called when the "Craft" button is clicked.
+  static void startCrafting();
   // Populated at load time, after _items
   std::map<std::string, bool> _tagFilters;
   std::map<const ClientItem *, bool> _matFilters;
@@ -279,8 +282,8 @@ class Client {
   void initializeBuildWindow();
   ChoiceList *_buildList = nullptr;
   static void chooseConstruction(Element &e, const ScreenPoint &mousePos);
-  const ClientObjectType *_selectedConstruction;
-  bool _multiBuild;
+  const ClientObjectType *_selectedConstruction{nullptr};
+  bool _multiBuild{false};
 
   Window *_inventoryWindow = nullptr;
   void initializeInventoryWindow();
@@ -457,9 +460,9 @@ class Client {
   std::string _savedPwHash;
 
   // These are superficial, and relate only to the cast bar.
-  ms_t _actionTimer;   // How long the character has been performing the current
-                       // action.
-  ms_t _actionLength;  // How long the current action should take.
+  ms_t _actionTimer{0};        // How long the character has been performing the
+                               // current action.
+  ms_t _actionLength{0};       // How long the current action should take.
   std::string _actionMessage;  // A description of the current action.
  public:
   void prepareAction(const std::string &msg);  // Set up the action, awaiting
@@ -475,26 +478,29 @@ class Client {
   */
   Texture _basePassive, _baseAggressive;
 
-  bool _loop;
-  bool _running;  // True while run() is being executed.
-  bool _freeze;   // For testing purposes only; should otherwise remain false.
+  bool _loop{true};
+  // True while run() is being executed.
+  bool _running{false};
+  // For testing purposes only; should otherwise remain false.
+  bool _freeze{false};
   bool _shouldAutoLogIn{false};  // Used for tests
   static void exitGame(void *client);
 
   static TTF_Font *_defaultFont;
 
   // Mouse stuff
-  ScreenPoint _mouse;  // Mouse position
-  bool _mouseMoved;
+  ScreenPoint _mouse{0, 0};  // Mouse position
+  bool _mouseMoved{false};
   Sprite *getEntityAtMouse();
   void
   checkMouseOver();  // Set state based on window/entity/etc. being moused over.
-  bool _mouseOverWindow;  // Whether the mouse is over any visible window.
+  bool _mouseOverWindow{
+      false};  // Whether the mouse is over any visible window.
 
-  bool _leftMouseDown;  // Whether the left mouse button is pressed
+  bool _leftMouseDown{false};  // Whether the left mouse button is pressed
   friend void ClientObject::onLeftClick();
 
-  bool _rightMouseDown;
+  bool _rightMouseDown{false};
   friend void ClientObject::onRightClick();
   friend void ClientObject::startDeconstructing(void *object);
 
@@ -507,7 +513,7 @@ class Client {
   void drawLoadingScreen(const std::string &msg, double progress) const;
 
   void draw() const;
-  mutable bool _drawingFinished;  // Set to true after every redraw.
+  mutable bool _drawingFinished{false};  // Set to true after every redraw.
   void drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const;
   void drawTooltip() const;
   // A tooltip which, if it exists, describes the UI element currently moused
@@ -525,23 +531,24 @@ class Client {
   void drawGearParticles(const ClientItem::vect_t &gear,
                          const MapPoint &location, double delta);
 
-  int _channelsPlaying;  // The number of sound channels currently playing
-                         // sounds; updated on tick
+  int _channelsPlaying{0};  // The number of sound channels currently playing
+                            // sounds; updated on tick
 
   ms_t _time;
-  ms_t _timeElapsed;    // Time between last two ticks
-  ms_t _lastPingReply;  // The last time a ping reply was received from the
-                        // server
-  ms_t _lastPingSent;   // The last time a ping was sent to the server
-  ms_t _latency;
-  unsigned _fps;
+  ms_t _timeElapsed{0};  // Time between last two ticks
+  ms_t _lastPingReply;   // The last time a ping reply was received from the
+                         // server
+  ms_t _lastPingSent;    // The last time a ping was sent to the server
+  ms_t _latency{0};
+  unsigned _fps{0};
 
-  bool _loggedIn;
-  bool _loaded;  // Whether the client has sufficient information to begin
+  bool _loggedIn{false};
+  // Whether the client has sufficient information to begin
+  bool _loaded{false};
 
-  ms_t _timeSinceLocUpdate;  // Time since a CL_LOCATION was sent
+  ms_t _timeSinceLocUpdate{0};  // Time since a CL_LOCATION was sent
   // Location has changed (local or official), and tooltip may have changed.
-  bool _tooltipNeedsRefresh;
+  bool _tooltipNeedsRefresh{false};
 
  public:
   // Game data
@@ -583,8 +590,8 @@ class Client {
       Sprite *const toRemove);  // Remove from _entities, and delete pointer
   void cullObjects();
 
-  Sprite *_currentMouseOverEntity;
-  size_t _numEntities;  // Updated every tick
+  Sprite *_currentMouseOverEntity{nullptr};
+  size_t _numEntities{0};  // Updated every tick
   void addUser(const std::string &name, const MapPoint &location);
 
   std::unordered_map<ClientTalent::Name, int> _talentLevels;
