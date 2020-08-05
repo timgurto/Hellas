@@ -193,8 +193,8 @@ void Client::initCreateWindow() {
              WIN_X = (SCREEN_X - WIN_W) / 2, WIN_Y = (SCREEN_Y - WIN_H) / 2,
              GAP = 2;
 
-  _createWindow =
-      Window::WithRectAndTitle({WIN_X, WIN_Y, WIN_W, WIN_H}, "Create Account"s);
+  _createWindow = Window::WithRectAndTitle(*this, {WIN_X, WIN_Y, WIN_W, WIN_H},
+                                           "Create Account"s);
   addWindow(_createWindow);
 
   auto infoPane =

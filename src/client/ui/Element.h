@@ -122,7 +122,6 @@ class Element {
 
   Client *client() const { return _client; }
 
-  static const ScreenPoint *absMouse;  // Absolute mouse co-ordinates
   static px_t textOffset;
 
   bool visible() const { return _visible; }

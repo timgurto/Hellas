@@ -83,6 +83,7 @@ Client::Client()
       droppedItemType(*this),
 
       _character({}, {}, *this),
+      _target(*this),
 
       _connection(*this),
 

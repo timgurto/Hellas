@@ -4,8 +4,9 @@
 
 #include "Client.h"
 
-Target::Target()
-    : _entity(nullptr),
+Target::Target(const Client &client)
+    : _client(client),
+      _entity(nullptr),
       _combatant(nullptr),
       _aggressive(false),
       _panel(nullptr),
@@ -61,19 +62,23 @@ void Target::initializePanel(Client &client) {
   _panel = new CombatantPanel(X, Y, CombatantPanel::TARGET_WIDTH, _name,
                               _health, _maxHealth, _energy, _maxEnergy, _level);
   _panel->hide();
-  _panel->setRightMouseDownFunction(openMenu, _menu);
+  _panel->setRightMouseDownFunction(
+      [this](Element &e, const ScreenPoint &mousePos) {
+        openMenu(e, mousePos);
+      },
+      _menu);
   _panel->setClient(client);
 }
 
 void Target::initializeMenu() {
   static const px_t WIDTH = 120, ITEM_HEIGHT = 20;
-  _menu = new List({_menu->absMouse->x, _menu->absMouse->y, WIDTH, 50});
+  _menu = new List({_client.mouse().x, _client.mouse().y, WIDTH, 50});
   _menu->hide();
 }
 
 void Target::openMenu(Element &e, const ScreenPoint &mousePos) {
   List &menu = dynamic_cast<List &>(e);
-  menu.setPosition(toInt(menu.absMouse->x), toInt(menu.absMouse->y));
+  menu.setPosition(toInt(_client.mouse().x), toInt(_client.mouse().y));
 
   menu.clearChildren();
 

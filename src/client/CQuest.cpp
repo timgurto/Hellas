@@ -20,8 +20,8 @@ void CQuest::generateWindow(CQuest *quest, Serial startObjectSerial,
     delete quest->_window;
   }
 
-  quest->_window =
-      Window::WithRectAndTitle({0, 0, WIN_W, WIN_H}, quest->_info.name);
+  quest->_window = Window::WithRectAndTitle(
+      *quest->_client, {0, 0, WIN_W, WIN_H}, quest->_info.name);
   quest->_window->center();
 
   const auto BOTTOM = quest->_window->contentHeight();

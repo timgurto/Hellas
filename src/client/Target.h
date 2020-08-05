@@ -9,9 +9,11 @@
 #include "ui/CombatantPanel.h"
 #include "ui/List.h"
 
+class Client;
+
 class Target {
  public:
-  Target();
+  Target(const Client &client);
 
   template <typename T>
   void setAndAlertServer(T &newTarget, bool nowAggressive) {
@@ -41,12 +43,14 @@ class Target {
   void initializeMenu();
   List *menu() { return _menu; }
 
-  static void openMenu(Element &e, const ScreenPoint &mousePos);
+  void openMenu(Element &e, const ScreenPoint &mousePos);
   void hideMenu() { _menu->hide(); }
 
   void onTypeChange();
 
  private:
+  const Client &_client;
+
   /*
   Both pointers should contain the same value.  Having both is necessary because
   reinterpret_cast doesn't appear to work.

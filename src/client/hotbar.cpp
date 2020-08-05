@@ -189,8 +189,8 @@ void Client::initAssignerWindow() {
   static const auto LIST_WIDTH = 150_px, WIN_HEIGHT = 250_px,
                     CATEGORY_WIDTH = 50_px,
                     WIN_WIDTH = LIST_WIDTH + CATEGORY_WIDTH;
-  assigner =
-      Window::WithRectAndTitle({0, 0, WIN_WIDTH, WIN_HEIGHT}, "Assign action"s);
+  assigner = Window::WithRectAndTitle(*this, {0, 0, WIN_WIDTH, WIN_HEIGHT},
+                                      "Assign action"s);
 
   // Center window above hotbar
   auto x = (SCREEN_X - assigner->rect().w) / 2;

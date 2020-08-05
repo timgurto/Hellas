@@ -10,7 +10,8 @@ static const auto GAP = 2_px, WIN_WIDTH = 200_px, BUTTON_WIDTH = 100_px,
 static Texture cityIcon, playerIcon;
 
 void Client::initializeSocialWindow() {
-  _socialWindow = Window::WithRectAndTitle({400, 100, WIN_WIDTH, 0}, "Social"s);
+  _socialWindow =
+      Window::WithRectAndTitle(*this, {400, 100, WIN_WIDTH, 0}, "Social"s);
   cityIcon = {"Images/ui/city.png"s};
   playerIcon = {"Images/ui/player.png"s};
 

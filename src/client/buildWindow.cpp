@@ -13,8 +13,8 @@ void Client::initializeBuildWindow() {
   static const px_t BUTTON_WIDTH = 100, BUTTON_HEIGHT = Element::TEXT_HEIGHT,
                     WIN_HEIGHT = toInt(10.5 * BUTTON_HEIGHT);
 
-  _buildWindow = Window::WithRectAndTitle({80, 30, BUTTON_WIDTH, WIN_HEIGHT},
-                                          "Construction");
+  _buildWindow = Window::WithRectAndTitle(
+      *this, {80, 30, BUTTON_WIDTH, WIN_HEIGHT}, "Construction");
   static const px_t GAP = 2;
   _buildWindow->addChild(
       new CheckBox(*this, {0, GAP, BUTTON_WIDTH, Element::TEXT_HEIGHT},

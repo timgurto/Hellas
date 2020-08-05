@@ -22,9 +22,9 @@ class Window : public Element {
 
   typedef void (*InitFunction)(Client &);
 
-  static Window *InitializeLater(InitFunction function,
+  static Window *InitializeLater(Client &client, InitFunction function,
                                  const std::string &title);
-  static Window *WithRectAndTitle(const ScreenRect &rect,
+  static Window *WithRectAndTitle(Client &client, const ScreenRect &rect,
                                   const std::string &title);
 
   static void hideWindow(void *window);
@@ -52,7 +52,6 @@ class Window : public Element {
     return _initFunction == nullptr || _isInitialized;
   }
   void onAddToClientWindowList(Client &client);
-  Client *client() const { return _client; }
 
  protected:
   Window();
@@ -63,8 +62,6 @@ class Window : public Element {
   void addHeading();
   void addBorder();
   void addContent();
-
-  Client *_client{nullptr};
 
   std::string _title;
   bool _dragging;  // Whether this window is currently being dragged by the

@@ -26,7 +26,6 @@ void Client::initUI() {
   Element::font(_defaultFont);
   Element::textOffset = _config.fontOffset;
   Element::TEXT_HEIGHT = _config.textHeight;
-  Element::absMouse = &_mouse;
 
   Element::initialize();
   ClientItem::init();
@@ -87,15 +86,15 @@ void Client::initWindows() {
   initializeBuildWindow();
   addWindow(_buildWindow);
 
-  _craftingWindow = Window::InitializeLater(initializeCraftingWindow,
+  _craftingWindow = Window::InitializeLater(*this, initializeCraftingWindow,
                                             "Crafting (uninitialised)");
   addWindow(_craftingWindow);
 
   initializeInventoryWindow();
   addWindow(_inventoryWindow);
 
-  _gearWindow =
-      Window::InitializeLater(initializeGearWindow, "Gear (uninitialised)");
+  _gearWindow = Window::InitializeLater(*this, initializeGearWindow,
+                                        "Gear (uninitialised)");
   addWindow(_gearWindow);
 
   initializeSocialWindow();
@@ -277,8 +276,8 @@ void Client::initializeEscapeWindow() {
   const auto BUTTON_WIDTH = 80, BUTTON_HEIGHT = 20, GAP = 3,
              WIN_WIDTH = BUTTON_WIDTH + 2 * GAP, NUM_BUTTONS = 2,
              WIN_HEIGHT = NUM_BUTTONS * BUTTON_HEIGHT + (NUM_BUTTONS + 1) * GAP;
-  _escapeWindow =
-      Window::WithRectAndTitle({0, 0, WIN_WIDTH, WIN_HEIGHT}, "System Menu"s);
+  _escapeWindow = Window::WithRectAndTitle(*this, {0, 0, WIN_WIDTH, WIN_HEIGHT},
+                                           "System Menu"s);
   _escapeWindow->center();
   auto y = GAP;
   auto x = GAP;
@@ -401,7 +400,7 @@ void Client::initPlayerPanels() {
 }
 
 void Client::initializeQuestLog() {
-  _questLog = Window::WithRectAndTitle({50, 50, 250, 100}, "Quests");
+  _questLog = Window::WithRectAndTitle(*this, {50, 50, 250, 100}, "Quests");
   _questList = new List({0, 0, 250, 100}, 15);
   _questLog->addChild(_questList);
 }

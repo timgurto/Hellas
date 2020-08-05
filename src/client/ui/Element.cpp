@@ -21,8 +21,6 @@ px_t Element::ITEM_HEIGHT = 0;
 
 Texture Element::transparentBackground;
 
-const ScreenPoint *Element::absMouse = nullptr;
-
 const Element *Element::_currentTooltipElement = nullptr;
 
 bool Element::initialized = false;

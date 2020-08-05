@@ -646,7 +646,8 @@ void ClientObject::assembleWindow(Client &client) {
     winRect.w = WIDTH;
     winRect.h = HEIGHT;
     if (!_window)
-      _window = Window::WithRectAndTitle(winRect, objectType()->name());
+      _window =
+          Window::WithRectAndTitle(_client, winRect, objectType()->name());
     else
       _window->resize(WIDTH, HEIGHT);
     _window->addChild(_lootContainer);
@@ -669,7 +670,7 @@ void ClientObject::assembleWindow(Client &client) {
                  !(startsQuests().empty() && completableQuests().empty()) &&
                  userHasAccess();
 
-  if (!_window) _window = Window::WithRectAndTitle({}, objType.name());
+  if (!_window) _window = Window::WithRectAndTitle(_client, {}, objType.name());
 
   auto windowHasClassContent = addClassSpecificStuffToWindow();
   auto hasNonDemolitionContent =

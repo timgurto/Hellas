@@ -136,6 +136,8 @@ class Client {
   typedef std::list<Element *>
       ui_t;  // For the UI, that sits below all windows.
 
+  const ScreenPoint &mouse() const { return _mouse; }
+
   void addWindow(Window *window);
   void removeWindow(Window *window);  // Linear time
   void showWindowInFront(Window *window);

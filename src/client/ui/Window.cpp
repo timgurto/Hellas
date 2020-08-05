@@ -31,9 +31,10 @@ Window::Window()
   setPreRefreshFunction(checkInitialized);
 }
 
-Window *Window::WithRectAndTitle(const ScreenRect &rect,
+Window *Window::WithRectAndTitle(Client &client, const ScreenRect &rect,
                                  const std::string &title) {
   auto window = new Window;
+  window->setClient(client);
 
   window->resize(rect.w, rect.h);
   window->setPosition(rect.x, rect.y);
@@ -42,11 +43,12 @@ Window *Window::WithRectAndTitle(const ScreenRect &rect,
   return window;
 }
 
-Window *Window::InitializeLater(InitFunction function,
+Window *Window::InitializeLater(Client &client, InitFunction function,
                                 const std::string &title) {
   auto window = new Window;
-  window->setTitle(title);
+  window->setClient(client);
 
+  window->setTitle(title);
   window->_initFunction = function;
   window->_isInitialized = false;
 
@@ -98,7 +100,7 @@ void Window::addContent() {
 
 void Window::startDragging(Element &e, const ScreenPoint &mousePos) {
   Window &window = dynamic_cast<Window &>(e);
-  window._dragOffset = *absMouse - ScreenPoint{window.rect()};
+  window._dragOffset = window.client()->mouse() - ScreenPoint{window.rect()};
   window._dragging = true;
 }
 
@@ -110,8 +112,9 @@ void Window::stopDragging(Element &e, const ScreenPoint &mousePos) {
 void Window::drag(Element &e, const ScreenPoint &mousePos) {
   Window &window = dynamic_cast<Window &>(e);
   if (window._dragging)
-    window.setPosition(toInt(absMouse->x - window._dragOffset.x),
-                       toInt(absMouse->y - window._dragOffset.y));
+    window.setPosition(
+        toInt(window.client()->mouse().x - window._dragOffset.x),
+        toInt(window.client()->mouse().y - window._dragOffset.y));
 }
 
 void Window::hideWindow(void *window) {
