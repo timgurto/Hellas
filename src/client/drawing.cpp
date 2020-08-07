@@ -366,9 +366,9 @@ void Client::drawLoadingScreen(const std::string &msg, double progress) const {
   Texture mainText(_defaultFont, "LOADING", FOREGROUND);
   Texture message(_defaultFont, msg + " . . .", FOREGROUND);
 
-  static const px_t Y_MAIN = 160, Y_MSG = 180, Y_BAR = 195, BAR_LENGTH = 80,
-                    BAR_HEIGHT = 5, X_BAR = (SCREEN_X - BAR_LENGTH) / 2;
-  static px_t X_MAIN = (SCREEN_X - mainText.width()) / 2;
+  const px_t Y_MAIN = 160, Y_MSG = 180, Y_BAR = 195, BAR_LENGTH = 80,
+             BAR_HEIGHT = 5, X_BAR = (SCREEN_X - BAR_LENGTH) / 2;
+  const px_t X_MAIN = (SCREEN_X - mainText.width()) / 2;
 
   mainText.draw(X_MAIN, Y_MAIN);
   message.draw((SCREEN_X - message.width()) / 2, Y_MSG);
