@@ -173,13 +173,13 @@ bool TestClient::knowsSpell(const std::string &id) const {
 
 Avatar &TestClient::getFirstOtherUser() {
   auto otherUsers = _client->_otherUsers;
-  assert(!otherUsers.empty());
+  REQUIRE(!otherUsers.empty());
   return const_cast<Avatar &>(*otherUsers.begin()->second);
 }
 
 ClientNPC &TestClient::getFirstNPC() {
   auto objects = _client->_objects;
-  assert(!objects.empty());
+  REQUIRE(!objects.empty());
   auto it = objects.begin();
   ClientObject *obj = it->second;
   return *dynamic_cast<ClientNPC *>(obj);
@@ -187,21 +187,21 @@ ClientNPC &TestClient::getFirstNPC() {
 
 ClientObject &TestClient::getFirstObject() {
   auto objects = _client->_objects;
-  assert(!objects.empty());
+  REQUIRE(!objects.empty());
   auto it = objects.begin();
   return *it->second;
 }
 
 const ClientObjectType &TestClient::getFirstObjectType() {
   auto types = _client->gameData.objectTypes;
-  assert(!types.empty());
+  REQUIRE(!types.empty());
   auto it = types.begin();
   return **it;
 }
 
 const CQuest &TestClient::getFirstQuest() {
   auto &quests = _client->gameData.quests;
-  assert(!quests.empty());
+  REQUIRE(!quests.empty());
   auto it = quests.begin();
   return it->second;
 }
@@ -214,7 +214,7 @@ CDroppedItem &TestClient::getFirstDroppedItem() {
     if (asDroppedItem) return *asDroppedItem;
   }
 
-  assert(false);
+  FAIL("There are no dropped items.");
   return *asDroppedItem;  // To circumvent warning
 }
 
