@@ -65,8 +65,6 @@ std::vector<std::string> Client::GEAR_SLOT_NAMES;
 Color Client::SAY_COLOR;
 Color Client::WHISPER_COLOR;
 
-bool Client::isClient = false;
-
 std::map<std::string, int> Client::_messageCommands;
 std::map<int, std::string> Client::_errorMessages;
 
@@ -97,8 +95,6 @@ Client::Client()
       _debug(*this, "client.log") {
   initStatics();
   drawLoadingScreen("Reading configuration file", 0.1);
-
-  isClient = true;
 
   _config.loadFromFile("client-config.xml");
   _connection.initialize(_config.serverHostDirectory);

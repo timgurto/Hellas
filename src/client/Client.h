@@ -66,8 +66,6 @@ class Client {
   void gameLoop();
   void loginScreenLoop();  // Alternative game loop to run()
 
-  static bool isClient;
-
   TTF_Font *defaultFont() const;
 
   void showErrorMessage(const std::string &message, Color color) const;
