@@ -13,12 +13,6 @@ const px_t ContainerGrid::DEFAULT_GAP = 0;
 // TODO: find better alternative.
 const size_t ContainerGrid::NO_SLOT = 999;
 
-Texture ContainerGrid::_highlight;
-Texture ContainerGrid::_highlightGood;
-Texture ContainerGrid::_highlightBad;
-Texture ContainerGrid::_damaged;
-Texture ContainerGrid::_broken;
-
 ContainerGrid::ContainerGrid(Client &client, size_t rows, size_t cols,
                              ClientItem::vect_t &linked, Serial serial, px_t x,
                              px_t y, px_t gap, bool solidBackground)
@@ -33,28 +27,6 @@ ContainerGrid::ContainerGrid(Client &client, size_t rows, size_t cols,
       _solidBackground(solidBackground) {
   setClient(client);
 
-  if (!_highlight) {
-    _highlight = {"Images/Items/highlight.png"s, Color::MAGENTA};
-    _highlightGood = {"Images/Items/highlightGood.png"s, Color::MAGENTA};
-    _highlightBad = {"Images/Items/highlightBad.png"s, Color::MAGENTA};
-
-    _damaged = {Client::ICON_SIZE, Client::ICON_SIZE};
-    renderer.pushRenderTarget(_damaged);
-    renderer.setDrawColor(Color::DURABILITY_LOW);
-    renderer.fill();
-    renderer.popRenderTarget();
-    _damaged.setAlpha(0x7f);
-    _damaged.setBlend();
-
-    _broken = {Client::ICON_SIZE, Client::ICON_SIZE};
-    renderer.pushRenderTarget(_broken);
-    renderer.setDrawColor(Color::DURABILITY_BROKEN);
-    renderer.fill();
-    renderer.popRenderTarget();
-    _broken.setAlpha(0x7f);
-    _broken.setBlend();
-  }
-
   for (size_t i = 0; i != _linked.size(); ++i) {
     const px_t x = i % cols, y = i / cols;
     const auto slotRect =
@@ -68,14 +40,6 @@ ContainerGrid::ContainerGrid(Client &client, size_t rows, size_t cols,
   setRightMouseDownFunction(rightMouseDown);
   setRightMouseUpFunction(rightMouseUp);
   setMouseMoveFunction(mouseMove);
-}
-
-void ContainerGrid::cleanup() {
-  _highlight = {};
-  _highlightGood = {};
-  _highlightBad = {};
-  _damaged = {};
-  _broken = {};
 }
 
 void ContainerGrid::refresh() {
@@ -98,9 +62,9 @@ void ContainerGrid::refresh() {
         slot.first.type()->icon().draw(slotRect.x + 1, slotRect.y + 1);
 
         if (slot.first.health() == 0)
-          _broken.draw(slotRect.x + 1, slotRect.y + 1);
+          Client::images.itemBroken.draw(slotRect.x + 1, slotRect.y + 1);
         else if (slot.first.health() <= 20)
-          _damaged.draw(slotRect.x + 1, slotRect.y + 1);
+          Client::images.itemDamaged.draw(slotRect.x + 1, slotRect.y + 1);
 
         if (slot.second > 1) {
           Texture label(font(), makeArgs(slot.second), FONT_COLOR),
@@ -118,12 +82,14 @@ void ContainerGrid::refresh() {
 
     // Highlight moused-over slot
     if (_mouseOverSlot == i) {
-      _highlight.draw(slotRect.x + 1, slotRect.y + 1);
+      Client::images.itemHighlightMouseOver.draw(slotRect.x + 1,
+                                                 slotRect.y + 1);
 
       // Indicate matching gear slot if an item is being dragged
     } else if (_serial.isGear() && draggingFrom.validGrid()) {
       auto itemSlot = draggingFrom.item()->gearSlot();
-      (i == itemSlot ? _highlightGood : _highlightBad)
+      (i == itemSlot ? Client::images.itemHighlightMatch
+                     : Client::images.itemHighlightNoMatch)
           .draw(slotRect.x + 1, slotRect.y + 1);
     }
   }

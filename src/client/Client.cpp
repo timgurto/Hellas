@@ -209,7 +209,6 @@ Client::~Client() {
 
 void Client::cleanUpStatics() {
   SDL_ShowCursor(SDL_ENABLE);
-  ContainerGrid::cleanup();
   if (_defaultFont) TTF_CloseFont(_defaultFont);
   Mix_Quit();
 }
@@ -891,4 +890,29 @@ void Client::CommonImages::initialise() {
   cursorEndsQuest = {"Images/Cursors/endsQuest.png"s, Color::MAGENTA};
   cursorRepair = {"Images/Cursors/repair.png"s, Color::MAGENTA};
   cursorVehicle = {"Images/Cursors/vehicle.png"s, Color::MAGENTA};
+
+  startQuestIcon = {"Images/UI/startQuest.png", Color::MAGENTA};
+  endQuestIcon = {"Images/UI/endQuest.png", Color::MAGENTA};
+
+  eliteWreath = {"Images/UI/wreath.png", Color::MAGENTA};
+
+  itemHighlightMouseOver = {"Images/Items/highlight.png"s, Color::MAGENTA};
+  itemHighlightMatch = {"Images/Items/highlightGood.png"s, Color::MAGENTA};
+  itemHighlightNoMatch = {"Images/Items/highlightBad.png"s, Color::MAGENTA};
+
+  itemDamaged = itemDamaged = {Client::ICON_SIZE, Client::ICON_SIZE};
+  renderer.pushRenderTarget(itemDamaged);
+  renderer.setDrawColor(Color::DURABILITY_LOW);
+  renderer.fill();
+  renderer.popRenderTarget();
+  itemDamaged.setAlpha(0x7f);
+  itemDamaged.setBlend();
+
+  itemBroken = {Client::ICON_SIZE, Client::ICON_SIZE};
+  renderer.pushRenderTarget(itemBroken);
+  renderer.setDrawColor(Color::DURABILITY_BROKEN);
+  renderer.fill();
+  renderer.popRenderTarget();
+  itemBroken.setAlpha(0x7f);
+  itemBroken.setBlend();
 }

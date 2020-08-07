@@ -19,8 +19,6 @@ class CombatantPanel : public Element {
                  const Energy &energy, const Energy &maxEnergy,
                  const Level &level);
 
-  static const Texture &wreath();
-
   void showEnergyBar();
   void hideEnergyBar();
   void addXPBar(const XP &xp, const XP &maxXP);
@@ -42,7 +40,6 @@ class CombatantPanel : public Element {
   ShadowBox *_outline;
 
   Picture *_eliteMarker{nullptr};
-  static Texture _wreath;
 
   const px_t ELEMENT_WIDTH;
 };

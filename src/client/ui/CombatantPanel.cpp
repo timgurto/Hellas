@@ -1,11 +1,10 @@
 #include "CombatantPanel.h"
 
+#include "../Client.h"
 #include "ColorBlock.h"
 #include "LinkedLabel.h"
 #include "Picture.h"
 #include "ShadowBox.h"
-
-Texture CombatantPanel::_wreath;
 
 CombatantPanel::CombatantPanel(px_t panelX, px_t panelY, px_t width,
                                const std::string &name, const Hitpoints &health,
@@ -20,9 +19,10 @@ CombatantPanel::CombatantPanel(px_t panelX, px_t panelY, px_t width,
 
   auto y = GAP;
 
+  const auto &wreath = Client::images.eliteWreath;
   _eliteMarker =
-      new Picture{GAP * 2 + (SPACE_FOR_LEVEL - wreath().width()) / 2,
-                  y + (Element::TEXT_HEIGHT - wreath().height()) / 2, wreath()};
+      new Picture{GAP * 2 + (SPACE_FOR_LEVEL - wreath.width()) / 2,
+                  y + (Element::TEXT_HEIGHT - wreath.height()) / 2, wreath};
   addChild(_eliteMarker);
   _eliteMarker->hide();
 
@@ -83,12 +83,6 @@ void CombatantPanel::showEliteMarker() {
 
 void CombatantPanel::hideEliteMarker() {
   if (_eliteMarker->visible()) _eliteMarker->hide();
-}
-
-const Texture &CombatantPanel::wreath() {
-  auto needsInit = !_wreath;
-  if (needsInit) _wreath = {"Images/UI/wreath.png", Color::MAGENTA};
-  return _wreath;
 }
 
 void CombatantPanel::height(px_t h) {

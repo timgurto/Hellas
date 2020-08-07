@@ -264,11 +264,7 @@ void ClientObject::addQuestsToWindow() {
   px_t y = _window->contentHeight(), newWidth = _window->contentWidth();
 
   const auto BUTTON_HEIGHT = 15, BUTTON_WIDTH = 150, MARGIN = 2;
-
-  static auto startQuestIcon =
-      Texture{"Images/UI/startQuest.png", Color::MAGENTA};
-  static auto endQuestIcon = Texture{"Images/UI/endQuest.png", Color::MAGENTA};
-  const auto BUTTON_X = startQuestIcon.width();
+  const auto BUTTON_X = Client::images.startQuestIcon.width();
 
   auto questsToDisplay = std::map<CQuest *, bool>{};  // true=start, false=end
   for (auto quest : startsQuests()) questsToDisplay[quest] = true;
@@ -279,7 +275,8 @@ void ClientObject::addQuestsToWindow() {
     auto startsThisQuest = pair.second;
     y += MARGIN;
 
-    auto &icon = startsThisQuest ? startQuestIcon : endQuestIcon;
+    auto &icon = startsThisQuest ? Client::images.startQuestIcon
+                                 : Client::images.endQuestIcon;
     _window->addChild(
         new Picture(0, y + (BUTTON_HEIGHT - icon.height()) / 2, icon));
 

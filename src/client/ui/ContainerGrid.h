@@ -25,11 +25,6 @@ class ContainerGrid : public Element {
 
   static const size_t NO_SLOT;
 
-  static Texture _highlight,  // Emphasizes any slot the mouse is over.
-      _highlightGood,         // Used to indicate matching gear slots.
-      _highlightBad;
-  static Texture _damaged, _broken;  // Drawn over icons to indicate durability
-
   virtual void refresh() override;
   void refreshTooltip();
 
@@ -46,7 +41,6 @@ class ContainerGrid : public Element {
                 ClientItem::vect_t &linked, Serial serial = Serial::Inventory(),
                 px_t x = 0, px_t y = 0, px_t gap = DEFAULT_GAP,
                 bool solidBackground = true);
-  static void cleanup();
 
   static void dropItem(
       Client &client);  // Drop the item currently being dragged.

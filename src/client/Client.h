@@ -552,6 +552,11 @@ class Client {
     Texture shadow;
     Texture cursorNormal, cursorGather, cursorContainer, cursorAttack,
         cursorStartsQuest, cursorEndsQuest, cursorRepair, cursorVehicle;
+    Texture startQuestIcon, endQuestIcon;
+    Texture eliteWreath;
+
+    Texture itemHighlightMouseOver, itemHighlightMatch, itemHighlightNoMatch;
+    Texture itemDamaged, itemBroken;
   } images;
 
  private:
