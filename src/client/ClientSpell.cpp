@@ -56,8 +56,8 @@ std::string ClientSpell::createEffectDescription() const {
   auto isBuff = _effectName == "buff" || _effectName == "debuff";
   if (isBuff) {
     auto buffName = effectArgs.s1;
-    auto it = Client::gameData.buffTypes.find(buffName);
-    assert(it != Client::gameData.buffTypes.end());
+    auto it = _client.gameData.buffTypes.find(buffName);
+    assert(it != _client.gameData.buffTypes.end());
     buff = &it->second;
 
     buffDuration = buff->duration();

@@ -6,12 +6,11 @@ class CDroppedItem : public ClientObject {
  public:
   class Type : public ClientObjectType {
    public:
-    Type(const Client &client);
+    Type();
   };
 
-  CDroppedItem(Serial serial, const MapPoint &location,
-               const ClientItem &itemType, size_t quantity, bool isNew,
-               Client &client);
+  CDroppedItem(Client &client, Serial serial, const MapPoint &location,
+               const ClientItem &itemType, size_t quantity, bool isNew);
   virtual const std::string &name() const override;
   virtual const Texture &image() const override;
   virtual const Texture &getHighlightImage() const override;

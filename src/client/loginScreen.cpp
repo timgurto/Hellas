@@ -176,7 +176,7 @@ void Client::updateClassDescription(Client &client) {
   auto classID = classList->getSelected();
   if (classID.empty()) return;
 
-  const auto &description = Client::gameData.classes[classID].description();
+  const auto &description = client.gameData.classes[classID].description();
   static auto wrapper =
       WordWrapper{client.defaultFont(), classDescription->contentWidth()};
   auto lines = wrapper.wrap(description);

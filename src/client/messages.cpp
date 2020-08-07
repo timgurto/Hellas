@@ -750,8 +750,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
         if (del != MSG_END) break;
 
         const auto *itemType = findItem(itemID);
-        auto *droppedItem = new CDroppedItem(serial, location, *itemType, qty,
-                                             isNew != 0, *this);
+        auto *droppedItem = new CDroppedItem(*this, serial, location, *itemType,
+                                             qty, isNew != 0);
         _entities.insert(droppedItem);
         _objects[serial] = droppedItem;
         break;

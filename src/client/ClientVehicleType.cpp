@@ -2,9 +2,8 @@
 
 #include "Client.h"
 
-ClientVehicleType::ClientVehicleType(const std::string& id,
-                                     const Client& client)
-    : ClientObjectType(id, client) {}
+ClientVehicleType::ClientVehicleType(const std::string& id)
+    : ClientObjectType(id) {}
 
 void ClientVehicleType::addClassSpecificStuffToConstructionTooltip(
     std::vector<std::string>& descriptionLines) const {

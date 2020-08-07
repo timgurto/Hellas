@@ -46,7 +46,7 @@ void Client::populateBuildList() {
     listElement->setLeftMouseUpFunction(chooseConstruction, listElement);
     listElement->setClient(*this);
     listElement->id(id);
-    listElement->setTooltip(ot->constructionTooltip());
+    listElement->setTooltip(ot->constructionTooltip(*this));
   }
   _buildList->verifyBoxes();
   _buildList->markChanged();

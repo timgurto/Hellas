@@ -40,8 +40,10 @@ class TestClient {
 
   std::map<Serial, ClientObject *> &objects() { return _client->_objects; }
   Sprite::set_t &entities() { return _client->_entities; }
-  CGameData::ObjectTypes &objectTypes() { return Client::gameData.objectTypes; }
-  const CQuests &quests() const { return Client::gameData.quests; }
+  CGameData::ObjectTypes &objectTypes() {
+    return _client->gameData.objectTypes;
+  }
+  const CQuests &quests() const { return _client->gameData.quests; }
   const std::map<std::string, ClientItem> &items() const {
     return _client->gameData.items;
   }

@@ -546,7 +546,7 @@ class Client {
 
  public:
   // Game data
-  static CGameData gameData;
+  CGameData gameData;
 
   static struct CommonImages {
     void initialise();
@@ -691,7 +691,7 @@ class Client {
   // Searches
  public:
   const ParticleProfile *findParticleProfile(const std::string &id) const;
-  static const SoundProfile *findSoundProfile(const std::string &id);
+  const SoundProfile *findSoundProfile(const std::string &id) const;
   const Projectile::Type *findProjectileType(const std::string &id) const;
   ClientObjectType *findObjectType(const std::string &id);
   ClientNPCType *findNPCType(const std::string &id);

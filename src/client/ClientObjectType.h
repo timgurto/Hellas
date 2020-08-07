@@ -81,7 +81,7 @@ class ClientObjectType : public SpriteType,
   std::string _exclusiveToQuest{};
 
  public:
-  ClientObjectType(const std::string &id, const Client &client);
+  ClientObjectType(const std::string &id);
 
   const std::string &id() const { return _id; }
   const std::string &name() const { return _name; }
@@ -91,7 +91,7 @@ class ClientObjectType : public SpriteType,
   void setCorpseImage(const std::string &filename) {
     _corpseImage = {filename};
   }
-  bool canGather() const;
+  bool canGather(const CQuests &quests) const;
   void canGather(bool b) { _canGather = b; }
   const std::string &gatherReq() const { return _gatherReq; }
   void gatherReq(const std::string &req) { _gatherReq = req; }
@@ -122,7 +122,7 @@ class ClientObjectType : public SpriteType,
   const GatherChances &gatherChances() const { return _gatherChances; }
   void addMaterial(const ClientItem *item, size_t qty);
   const ItemSet &materials() const { return _materials; }
-  const Tooltip &constructionTooltip() const;
+  const Tooltip &constructionTooltip(const Client &client) const;
   void refreshConstructionTooltip() const {
     _constructionTooltip = Optional<Tooltip>{};
   }

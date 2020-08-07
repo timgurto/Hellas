@@ -56,7 +56,7 @@ ItemSelector::ItemSelector(Client &client, const ClientItem *&item, px_t x,
     _findItemWindow->addChild(
         new Button({SEARCH_TEXT_WIDTH + 2 * GAP, y, SEARCH_BUTTON_WIDTH,
                     SEARCH_BUTTON_HEIGHT},
-                   "Search", applyFilter));
+                   "Search", [this]() { applyFilter(); }));
     y += SEARCH_BUTTON_HEIGHT + GAP;
     _findItemWindow->addChild(new Line(0, y, WINDOW_WIDTH));
     y += 2 + GAP;
@@ -80,8 +80,8 @@ void ItemSelector::applyFilter() {
   _itemList->clearChildren();
   const std::string &filterText = _filterText->text();
 
-  const auto &items = Client::gameData.items;
-  for (const auto &pair : Client::gameData.items) {
+  const auto &items = _client->gameData.items;
+  for (const auto &pair : _client->gameData.items) {
     const ClientItem &item = pair.second;
     if (filterText == "" || itemMatchesFilter(item, filterText)) {
       // Add item to list

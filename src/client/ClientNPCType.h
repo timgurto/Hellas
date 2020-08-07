@@ -23,7 +23,7 @@ class ClientNPCType : public ClientObjectType {
   void projectile(const Projectile::Type &type) { _projectile = &type; }
   const Projectile::Type *projectile() const { return _projectile; }
 
-  void applyTemplate(const CNPCTemplate *nt);
+  void applyTemplate(const CNPCTemplate *nt, const Client &client);
 
   void addGear(const ClientItem &item);
   const ClientItem *gear(size_t slot) const;

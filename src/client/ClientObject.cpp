@@ -225,8 +225,8 @@ void ClientObject::onRightClick() {
   // Gatherable
   const ClientObjectType &objType = *objectType();
 
-  const auto canGather =
-      objType.canGather() && userHasAccess() && !isBeingConstructed();
+  const auto canGather = objType.canGather(_client.gameData.quests) &&
+                         userHasAccess() && !isBeingConstructed();
   if (canGather) {
     _client.sendMessage({CL_GATHER, _serial});
     _client.prepareAction(std::string("Gathering from ") + objType.name());
@@ -917,7 +917,8 @@ const Texture &ClientObject::cursor() const {
     if (isBeingConstructed()) return Client::images.cursorContainer;
     if (completableQuests().size() > 0) return Client::images.cursorEndsQuest;
     if (startsQuests().size() > 0) return Client::images.cursorStartsQuest;
-    if (ot.canGather()) return Client::images.cursorGather;
+    if (ot.canGather(_client.gameData.quests))
+      return Client::images.cursorGather;
     if (ot.hasAction()) return Client::images.cursorContainer;
     if (classTag() == 'v') return Client::images.cursorVehicle;
     if (ot.containerSlots() > 0) return Client::images.cursorContainer;
@@ -1013,14 +1014,14 @@ void ClientObject::createRegularTooltip() const {
   }
 
   if (userHasAccess()) {
-    if (ot.canGather()) {
+    if (ot.canGather(_client.gameData.quests)) {
       if (!stats) {
         stats = true;
         tooltip.addGap();
       }
       std::string text = "Gatherable";
       if (!ot.gatherReq().empty())
-        text += " (requires " + Client::gameData.tagName(ot.gatherReq()) + ")";
+        text += " (requires " + _client.gameData.tagName(ot.gatherReq()) + ")";
       tooltip.addLine(text);
       tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
       tooltip.addLine(std::string("Right-click to gather"));
@@ -1073,7 +1074,7 @@ void ClientObject::createRegularTooltip() const {
   }
 
   // Tags
-  tooltip.addTags(ot);
+  tooltip.addTags(ot, _client.gameData.tagNames);
 
   // Any actions available?
   if (ot.merchantSlots() > 0 ||
@@ -1149,7 +1150,7 @@ void ClientObject::createRepairTooltip() const {
     rt.setColor(Color::TOOLTIP_BODY);
     rt.addLine("Requires tool:");
     rt.setColor(Color::TOOLTIP_TAG);
-    rt.addLine(Client::gameData.tagName(repairInfo.tool));
+    rt.addLine(_client.gameData.tagName(repairInfo.tool));
   }
 
   if (repairInfo.hasCost()) {

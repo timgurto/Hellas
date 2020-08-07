@@ -30,14 +30,14 @@ CDataLoader CDataLoader::FromString(Client &client, const XML &data) {
 
 void CDataLoader::load(bool keepOldData) {
   if (!keepOldData) {
-    Client::gameData.terrain.clear();
-    Client::gameData.particleProfiles.clear();
-    Client::gameData.soundProfiles.clear();
-    Client::gameData.projectileTypes.clear();
+    _client.gameData.terrain.clear();
+    _client.gameData.particleProfiles.clear();
+    _client.gameData.soundProfiles.clear();
+    _client.gameData.projectileTypes.clear();
     _client._objects.clear();
-    Client::gameData.items.clear();
-    Client::gameData.classes.clear();
-    Client::gameData.recipes.clear();
+    _client.gameData.items.clear();
+    _client.gameData.classes.clear();
+    _client.gameData.recipes.clear();
   }
 
   _client.drawLoadingScreen("Loading data", 0.6);
@@ -56,7 +56,7 @@ void CDataLoader::load(bool keepOldData) {
 
     for (const auto &file : _files) {
       auto xr = XmlReader::FromFile(file);
-      Client::gameData.tagNames.readFromXML(xr);
+      _client.gameData.tagNames.readFromXML(xr);
     }
 
     loadFromAllFiles(&CDataLoader::loadObjectTypes);
@@ -83,7 +83,7 @@ void CDataLoader::load(bool keepOldData) {
     loadProjectiles(reader);
     loadSpells(reader);
     loadBuffs(reader);
-    Client::gameData.tagNames.readFromXML(reader);
+    _client.gameData.tagNames.readFromXML(reader);
     loadObjectTypes(reader);
     loadItems(reader);
     loadClasses(reader);
@@ -196,7 +196,7 @@ void CDataLoader::loadParticles(XmlReader &xr) {
         profile->addVariety(s, count, _client);
     }
 
-    Client::gameData.particleProfiles.insert(profile);
+    _client.gameData.particleProfiles.insert(profile);
   }
 }
 
@@ -205,7 +205,7 @@ void CDataLoader::loadSounds(XmlReader &xr) {
     std::string id;
     if (!xr.findAttr(elem, "id", id))  // No ID: skip
       continue;
-    auto resultPair = Client::gameData.soundProfiles.insert(SoundProfile(id));
+    auto resultPair = _client.gameData.soundProfiles.insert(SoundProfile(id));
     SoundProfile &sp = const_cast<SoundProfile &>(*resultPair.first);
     if (id == "avatar")
       _client._avatarSounds = &sp;
@@ -264,7 +264,7 @@ void CDataLoader::loadProjectiles(XmlReader &xr) {
     auto sounds = ""s;
     if (xr.findAttr(elem, "sounds", sounds)) projectile->sounds(sounds);
 
-    Client::gameData.projectileTypes.insert(projectile);
+    _client.gameData.projectileTypes.insert(projectile);
   }
 }
 
@@ -273,7 +273,7 @@ void CDataLoader::loadSpells(XmlReader &xr) {
     std::string id;
     if (!xr.findAttr(elem, "id", id)) continue;  // ID is mandatory.
     auto newSpell = new ClientSpell(id, _client);
-    Client::gameData.spells[id] = newSpell;
+    _client.gameData.spells[id] = newSpell;
 
     auto icon = ""s;
     if (xr.findAttr(elem, "icon", icon)) newSpell->icon(_client._icons[icon]);
@@ -319,8 +319,8 @@ void CDataLoader::loadSpells(XmlReader &xr) {
       auto profileName = ""s;
       if (xr.findAttr(aesthetics, "projectile", profileName)) {
         auto dummy = Projectile::Type{profileName, {}, &_client};
-        auto it = Client::gameData.projectileTypes.find(&dummy);
-        if (it != Client::gameData.projectileTypes.end())
+        auto it = _client.gameData.projectileTypes.find(&dummy);
+        if (it != _client.gameData.projectileTypes.end())
           newSpell->projectile(*it);
       }
       if (xr.findAttr(aesthetics, "sounds", profileName)) {
@@ -420,7 +420,7 @@ void CDataLoader::loadBuffs(XmlReader &xr) {
     auto itemHasStats = xr.findStatsChild("stats", elem, stats);
     if (itemHasStats) newBuff.stats(stats);
 
-    Client::gameData.buffTypes[id] = newBuff;
+    _client.gameData.buffTypes[id] = newBuff;
   }
 }
 
@@ -432,9 +432,9 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
     ClientObjectType *cot;
     auto isVehicle = (xr.findAttr(elem, "isVehicle", n) == 1);
     if (isVehicle)
-      cot = new ClientVehicleType(id, _client);
+      cot = new ClientVehicleType(id);
     else
-      cot = new ClientObjectType(id, _client);
+      cot = new ClientObjectType(id);
 
     auto imageFile = id;
     xr.findAttr(elem, "imageFile", imageFile);
@@ -469,7 +469,7 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
     if (xr.findAttr(elem, "merchantSlots", n)) cot->merchantSlots(n);
     if (xr.findAttr(elem, "isFlat", n) && n != 0) cot->isFlat(true);
     if (xr.findAttr(elem, "isDecoration", n) && n != 0) cot->isDecoration(true);
-    if (xr.findAttr(elem, "sounds", s)) cot->setSoundProfile(s);
+    if (xr.findAttr(elem, "sounds", s)) cot->setSoundProfile(_client, s);
     if (xr.findAttr(elem, "gatherParticles", s))
       cot->gatherParticles(_client.findParticleProfile(s));
     if (xr.findAttr(elem, "damageParticles", s))
@@ -505,7 +505,7 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
 
       auto costID = ""s;
       if (xr.findAttr(action, "cost", costID)) {
-        pAction->cost = &Client::gameData.items[costID];
+        pAction->cost = &_client.gameData.items[costID];
       }
 
       cot->action(pAction);
@@ -514,7 +514,7 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
     bool canConstruct = false;
     for (auto objMat : xr.getChildren("material", elem)) {
       if (!xr.findAttr(objMat, "id", s)) continue;
-      ClientItem &item = Client::gameData.items[s];
+      ClientItem &item = _client.gameData.items[s];
       n = 1;
       xr.findAttr(objMat, "quantity", n);
       cot->addMaterial(&item, n);
@@ -556,7 +556,7 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
     if (strength) {
       if (xr.findAttr(strength, "item", s) &&
           xr.findAttr(strength, "quantity", n)) {
-        ClientItem &item = Client::gameData.items[s];
+        ClientItem &item = _client.gameData.items[s];
         cot->durability(&item, n);
       } else
         _client.showErrorMessage(
@@ -589,7 +589,7 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
       cot->chanceToGather(s, chance);
     }
 
-    Client::gameData.objectTypes.insert(cot);
+    _client.gameData.objectTypes.insert(cot);
 
     // Construction locks
     for (auto unlockedBy : xr.getChildren("unlockedBy", elem)) {
@@ -637,7 +637,7 @@ void CDataLoader::loadItems(XmlReader &xr) {
     else
       item.gearImage(id);
 
-    if (xr.findAttr(elem, "sounds", s)) item.setSoundProfile(s);
+    if (xr.findAttr(elem, "sounds", s)) item.setSoundProfile(_client, s);
 
     Hitpoints durability;
     if (xr.findAttr(elem, "durability", durability))
@@ -692,8 +692,7 @@ void CDataLoader::loadItems(XmlReader &xr) {
 
     if (xr.findAttr(elem, "constructs", s)) {
       // Create dummy ObjectType if necessary
-      auto pair =
-          Client::gameData.objectTypes.insert(new ClientObjectType(s, _client));
+      auto pair = _client.gameData.objectTypes.insert(new ClientObjectType(s));
       item.constructsObject(*pair.first);
     }
 
@@ -715,7 +714,7 @@ void CDataLoader::loadItems(XmlReader &xr) {
       if (xr.findAttr(repairElem, "tool", s)) item.repairingRequiresTool(s);
     }
 
-    Client::gameData.items[id] = item;
+    _client.gameData.items[id] = item;
   }
 }
 
@@ -772,8 +771,8 @@ void CDataLoader::loadClasses(XmlReader &xr) {
 
             auto spellID = ""s;
             if (!xr.findAttr(talent, "id", spellID)) continue;
-            auto it = Client::gameData.spells.find(spellID);
-            if (it == Client::gameData.spells.end()) continue;
+            auto it = _client.gameData.spells.find(spellID);
+            if (it == _client.gameData.spells.end()) continue;
             t.spell = it->second;
 
             t.icon = t.spell->icon();
@@ -802,7 +801,7 @@ void CDataLoader::loadClasses(XmlReader &xr) {
       }
     }
 
-    Client::gameData.classes[className] = std::move(newClass);
+    _client.gameData.classes[className] = std::move(newClass);
   }
 }
 
@@ -814,8 +813,8 @@ void CDataLoader::loadRecipes(XmlReader &xr) {
 
     std::string s = id;
     xr.findAttr(elem, "product", s);
-    auto it = Client::gameData.items.find(s);
-    if (it == Client::gameData.items.end()) {
+    auto it = _client.gameData.items.find(s);
+    if (it == _client.gameData.items.end()) {
       _client.showErrorMessage("Skipping recipe with invalid product "s + s,
                                Color::CHAT_ERROR);
       continue;
@@ -827,7 +826,7 @@ void CDataLoader::loadRecipes(XmlReader &xr) {
     xr.findAttr(elem, "name", name);
     recipe.name(name);
 
-    if (xr.findAttr(elem, "sounds", s)) recipe.setSoundProfile(s);
+    if (xr.findAttr(elem, "sounds", s)) recipe.setSoundProfile(_client, s);
 
     size_t n;
     if (xr.findAttr(elem, "quantity", n)) recipe.quantity(n);
@@ -836,8 +835,8 @@ void CDataLoader::loadRecipes(XmlReader &xr) {
       int matQty = 1;
       xr.findAttr(child, "quantity", matQty);
       if (xr.findAttr(child, "id", s)) {
-        auto it = Client::gameData.items.find(s);
-        if (it == Client::gameData.items.end()) {
+        auto it = _client.gameData.items.find(s);
+        if (it == _client.gameData.items.end()) {
           _client.showErrorMessage("Skipping invalid recipe material "s + s,
                                    Color::CHAT_ERROR);
           continue;
@@ -856,7 +855,7 @@ void CDataLoader::loadRecipes(XmlReader &xr) {
     if (xr.getChildren("unlockedBy", elem).empty())
       _client._knownRecipes.insert(id);
 
-    Client::gameData.recipes.insert(recipe);
+    _client.gameData.recipes.insert(recipe);
 
     // Crafting locks
     for (auto unlockedBy : xr.getChildren("unlockedBy", elem)) {
@@ -893,7 +892,7 @@ void CDataLoader::loadNPCTemplates(XmlReader &xr) {
     xr.findAttr(elem, "xDrawOffset", nt.xDrawOffset);
     xr.findAttr(elem, "yDrawOffset", nt.yDrawOffset);
 
-    Client::gameData.npcTemplates[id] = nt;
+    _client.gameData.npcTemplates[id] = nt;
   }
 }
 
@@ -931,7 +930,7 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
     auto drawRect = ScreenRect{0, 0, nt->width(), nt->height()};
 
     if (npcTemplate) {
-      nt->applyTemplate(npcTemplate);
+      nt->applyTemplate(npcTemplate, _client);
       drawRect.x = npcTemplate->xDrawOffset;
       drawRect.y = npcTemplate->yDrawOffset;
     }
@@ -964,14 +963,14 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
     if (xr.findRectChild("collisionRect", elem, r)) nt->collisionRect(r);
 
     if (xr.findAttr(elem, "sounds", s))
-      nt->setSoundProfile(s);
+      nt->setSoundProfile(_client, s);
     else if (humanoid)
-      nt->setSoundProfile("humanEnemy");
+      nt->setSoundProfile(_client, "humanEnemy");
 
     if (xr.findAttr(elem, "projectile", s)) {
       auto dummy = Projectile::Type{s, {}, &_client};
-      auto it = Client::gameData.projectileTypes.find(&dummy);
-      if (it != Client::gameData.projectileTypes.end()) nt->projectile(**it);
+      auto it = _client.gameData.projectileTypes.find(&dummy);
+      if (it != _client.gameData.projectileTypes.end()) nt->projectile(**it);
     }
 
     nt->loadTagsFromXML(xr, elem);
@@ -989,8 +988,8 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
       auto id = ""s;
       if (!xr.findAttr(gearElem, "id", id)) continue;
 
-      auto it = Client::gameData.items.find(id);
-      if (it == Client::gameData.items.end()) {
+      auto it = _client.gameData.items.find(id);
+      if (it == _client.gameData.items.end()) {
         _client.showErrorMessage("Skipping invalid NPC gear "s + id,
                                  Color::CHAT_ERROR);
         continue;
@@ -1008,8 +1007,8 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
     if (canBeTamed) {
       nt->canBeTamed(true);
       if (xr.findAttr(canBeTamed, "consumes", s)) {
-        auto it = Client::gameData.items.find(s);
-        if (it == Client::gameData.items.end()) {
+        auto it = _client.gameData.items.find(s);
+        if (it == _client.gameData.items.end()) {
           _client.showErrorMessage("Skipping invalid taming consumable "s + s,
                                    Color::CHAT_ERROR);
           continue;
@@ -1035,21 +1034,21 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
     }
 
     // Insert
-    auto pair = Client::gameData.objectTypes.insert(nt);
+    auto pair = _client.gameData.objectTypes.insert(nt);
     if (!pair.second) {
       // A ClientObjectType is being pointed to by items; they need to point to
       // this instead.
       const ClientObjectType *dummy = *pair.first;
-      for (const auto &pair : Client::gameData.items) {
+      for (const auto &pair : _client.gameData.items) {
         const ClientItem &item = pair.second;
         if (item.constructsObject() == dummy) {
           ClientItem &nonConstItem = const_cast<ClientItem &>(item);
           nonConstItem.constructsObject(nt);
         }
       }
-      Client::gameData.objectTypes.erase(dummy);
+      _client.gameData.objectTypes.erase(dummy);
       delete dummy;
-      Client::gameData.objectTypes.insert(nt);
+      _client.gameData.objectTypes.insert(nt);
     }
   }
 }
@@ -1090,11 +1089,11 @@ void CDataLoader::loadQuests(XmlReader &xr) {
         objective.text = "Construct "s + (objType ? objType->name() : "???"s);
 
       } else if (type == "fetch") {
-        auto &it = Client::gameData.items.find(id);
+        auto &it = _client.gameData.items.find(id);
         objective.text = it->second.name();
 
       } else if (type == "cast") {
-        auto &it = Client::gameData.spells.find(id);
+        auto &it = _client.gameData.spells.find(id);
         objective.text = it->second->name();
       }
 
@@ -1124,7 +1123,7 @@ void CDataLoader::loadQuests(XmlReader &xr) {
       questInfo.rewards.push_back(reward);
     }
 
-    Client::gameData.quests.insert(
+    _client.gameData.quests.insert(
         std::make_pair(questInfo.id, CQuest{_client, questInfo}));
   }
 }
@@ -1132,8 +1131,8 @@ void CDataLoader::loadQuests(XmlReader &xr) {
 void CDataLoader::loadMap(XmlReader &xr) {
   _client._map.loadFromXML(xr);
 
-  auto chunksX = _client._map.width() / Client::TILES_PER_CHUNK;
-  auto chunksY = _client._map.height() / Client::TILES_PER_CHUNK;
+  auto chunksX = _client._map.width() / _client.TILES_PER_CHUNK;
+  auto chunksY = _client._map.height() / _client.TILES_PER_CHUNK;
   _client._mapExplored = {chunksX, std::vector<bool>(chunksY, false)};
   _client._fogOfWar = {static_cast<px_t>(chunksX), static_cast<px_t>(chunksY)};
   _client._fogOfWar.setBlend();

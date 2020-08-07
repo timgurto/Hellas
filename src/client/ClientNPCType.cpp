@@ -7,7 +7,7 @@
 ClientNPCType::ClientNPCType(const std::string &id,
                              const std::string &imagePath,
                              Hitpoints maxHealthArg, const Client &client)
-    : ClientObjectType(id, client) {
+    : ClientObjectType(id) {
   maxHealth(maxHealthArg);
   damageParticles(client.findParticleProfile("blood"));
 
@@ -15,9 +15,10 @@ ClientNPCType::ClientNPCType(const std::string &id,
   _corpseImage = {imagePath + "-corpse"};
 }
 
-void ClientNPCType::applyTemplate(const CNPCTemplate *nt) {
+void ClientNPCType::applyTemplate(const CNPCTemplate *nt,
+                                  const Client &client) {
   collisionRect(nt->collisionRect);
-  setSoundProfile(nt->soundProfile);
+  setSoundProfile(client, nt->soundProfile);
 }
 
 void ClientNPCType::addGear(const ClientItem &item) {

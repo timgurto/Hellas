@@ -6,6 +6,7 @@
 #include "Client.h"
 #include "ClientItem.h"
 #include "Renderer.h"
+#include "Tag.h"
 
 extern Renderer renderer;
 
@@ -159,7 +160,7 @@ void Tooltip::addItem(const ClientItem &item) {
   _content.push_back(texture);
 }
 
-void Tooltip::addTags(const HasTags &thingWithTags) {
+void Tooltip::addTags(const HasTags &thingWithTags, const TagNames &tagNames) {
   if (!thingWithTags.hasTags()) return;
 
   addGap();
@@ -167,8 +168,7 @@ void Tooltip::addTags(const HasTags &thingWithTags) {
 
   for (const auto &pair : thingWithTags.tags()) {
     const auto &tag = pair.first;
-    addLine(Client::gameData.tagName(tag) +
-            thingWithTags.toolSpeedDisplayText(tag));
+    addLine(tagNames[tag] + thingWithTags.toolSpeedDisplayText(tag));
   }
 }
 

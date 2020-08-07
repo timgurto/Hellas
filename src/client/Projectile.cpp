@@ -52,10 +52,12 @@ void Projectile::Type::tail(const std::string &imageFile,
 
 Projectile::Type::Type(const std::string &id, const ScreenRect &drawRect,
                        const Client *client)
-    : SpriteType(drawRect, "Images/Projectiles/"s + id), id(id) {}
+    : _client(*client),
+      SpriteType(drawRect, "Images/Projectiles/"s + id),
+      id(id) {}
 
 void Projectile::Type::sounds(const std::string &profile) {
-  _sounds = Client::findSoundProfile(profile);
+  _sounds = _client.findSoundProfile(profile);
 }
 
 void Projectile::Type::instantiate(Client &client, const MapPoint &start,

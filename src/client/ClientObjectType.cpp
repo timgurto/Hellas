@@ -12,7 +12,7 @@
 #include "Tooltip.h"
 #include "Unlocks.h"
 
-ClientObjectType::ClientObjectType(const std::string &id, const Client &client)
+ClientObjectType::ClientObjectType(const std::string &id)
     : SpriteType({}, {}),
       _id(id),
       _canGather(false),
@@ -22,15 +22,16 @@ ClientObjectType::ClientObjectType(const std::string &id, const Client &client)
       _gatherParticles(nullptr),
       _transformTime(0) {}
 
-bool ClientObjectType::canGather() const {
+bool ClientObjectType::canGather(const CQuests &quests) const {
   if (!_canGather) return false;
   if (_exclusiveToQuest.empty()) return true;
-  auto it = Client::gameData.quests.find(_exclusiveToQuest);
+  auto it = quests.find(_exclusiveToQuest);
   auto canGatherForQuest = it->second.state == CQuest::IN_PROGRESS;
   return canGatherForQuest;
 }
 
-const Tooltip &ClientObjectType::constructionTooltip() const {
+const Tooltip &ClientObjectType::constructionTooltip(
+    const Client &client) const {
   if (_constructionTooltip.hasValue()) return _constructionTooltip.value();
 
   _constructionTooltip = Tooltip{};
@@ -44,10 +45,10 @@ const Tooltip &ClientObjectType::constructionTooltip() const {
 
   if (isDebug()) descriptionLines.push_back("ID: "s + id());
 
-  if (canGather()) {
+  if (canGather(client.gameData.quests)) {
     std::string text = "Gatherable";
     if (!gatherReq().empty())
-      text += " (requires " + Client::gameData.tagName(gatherReq()) + ")";
+      text += " (requires " + client.gameData.tagName(gatherReq()) + ")";
     descriptionLines.push_back(text);
   }
 
@@ -72,7 +73,7 @@ const Tooltip &ClientObjectType::constructionTooltip() const {
   for (const auto &line : descriptionLines) tooltip.addLine(line);
 
   // Tags
-  tooltip.addTags(*this);
+  tooltip.addTags(*this, client.gameData.tagNames);
 
   // Materials
   if (!_materials.isEmpty()) {
@@ -89,7 +90,7 @@ const Tooltip &ClientObjectType::constructionTooltip() const {
   if (!_constructionReq.empty()) {
     tooltip.addGap();
     tooltip.addLine("Requires tool: " +
-                    Client::gameData.tagName(_constructionReq));
+                    client.gameData.tagName(_constructionReq));
   }
 
   // Unlocks

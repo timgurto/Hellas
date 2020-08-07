@@ -93,7 +93,7 @@ void CQuest::generateWindow(CQuest *quest, Serial startObjectSerial,
         const auto *type = quest->_client->findObjectType(reward.id);
         auto name = type ? type->name() : reward.id;
         rewardDescription = "Learn construction: " + name;
-        if (type) rewardTooltip = &type->constructionTooltip();
+        if (type) rewardTooltip = &type->constructionTooltip(*quest->_client);
         break;
       }
       case Info::Reward::RECEIVE_ITEM: {

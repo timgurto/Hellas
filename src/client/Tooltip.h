@@ -16,6 +16,7 @@ class Client;
 class ClientItem;
 struct ClientMerchantSlot;
 class HasTags;
+class TagNames;
 
 class Tooltip {
   Color _color{Color::TOOLTIP_BODY};
@@ -52,7 +53,7 @@ class Tooltip {
   void addItemGrid(const void *itemVector);  // To avoid recursive #includes
   void addMerchantSlots(const std::vector<ClientMerchantSlot> &slots);
   void addItem(const ClientItem &item);
-  void addTags(const HasTags &thingWithTags);
+  void addTags(const HasTags &thingWithTags, const TagNames &tagNames);
 
   px_t width() const;
   px_t height() const;

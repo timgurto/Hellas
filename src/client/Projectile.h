@@ -65,5 +65,7 @@ class Projectile : public Sprite {
     void instantiate(Client &client, const MapPoint &start, const MapPoint &end,
                      bool willMiss = false) const;
     friend class Projectile;
+
+    const Client &_client;
   };
 };

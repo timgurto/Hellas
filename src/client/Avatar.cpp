@@ -124,8 +124,8 @@ void Avatar::update(double delta) {
 }
 
 void Avatar::setClass(const ClassInfo::Name &newClass) {
-  const auto it = Client::gameData.classes.find(newClass);
-  if (it == Client::gameData.classes.end()) return;
+  const auto it = _client.gameData.classes.find(newClass);
+  if (it == _client.gameData.classes.end()) return;
   _class = &(it->second);
 }
 

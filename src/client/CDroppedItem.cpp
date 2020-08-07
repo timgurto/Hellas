@@ -5,15 +5,14 @@
 const double CDroppedItem::DROP_HEIGHT = 60.0;
 const double CDroppedItem::DROP_ACCELERATION = 20.0;
 
-CDroppedItem::Type::Type(const Client& client)
-    : ClientObjectType("droppedItem", client) {
+CDroppedItem::Type::Type() : ClientObjectType("droppedItem") {
   drawRect(ScreenRect{-Client::ICON_SIZE / 2, -Client::ICON_SIZE / 2,
                       Client::ICON_SIZE, Client::ICON_SIZE});
 }
 
-CDroppedItem::CDroppedItem(Serial serial, const MapPoint& location,
-                           const ClientItem& itemType, size_t quantity,
-                           bool isNew, Client& client)
+CDroppedItem::CDroppedItem(Client& client, Serial serial,
+                           const MapPoint& location, const ClientItem& itemType,
+                           size_t quantity, bool isNew)
     : ClientObject(serial, &client.droppedItemType, location, client),
       _itemType(itemType),
       _quantity(quantity) {

@@ -96,7 +96,7 @@ const Tooltip &ClientItem::tooltip() const {
   }
 
   // Tags
-  tooltip.addTags(*this);
+  tooltip.addTags(*this, _client->gameData.tagNames);
 
   // Construction
   if (_constructsObject != nullptr) {
@@ -104,7 +104,7 @@ const Tooltip &ClientItem::tooltip() const {
     tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
     tooltip.addLine(std::string("Right-click to place ") +
                     _constructsObject->name() + ":");
-    tooltip.embed(_constructsObject->constructionTooltip());
+    tooltip.embed(_constructsObject->constructionTooltip(*_client));
   }
 
   // Spell
@@ -147,8 +147,8 @@ Color ClientItem::nameColor() const {
 void ClientItem::fetchAmmoItem() const {
   if (_weaponAmmoID.empty()) return;
 
-  auto it = Client::gameData.items.find(_weaponAmmoID);
-  if (it == Client::gameData.items.end()) {
+  auto it = _client->gameData.items.find(_weaponAmmoID);
+  if (it == _client->gameData.items.end()) {
     _client->showErrorMessage(
         "Unknown item "s + _weaponAmmoID + " specified as ammo"s,
         Color::CHAT_ERROR);
@@ -231,7 +231,7 @@ void ClientItem::Instance::createRepairTooltip() const {
     rt.setColor(Color::TOOLTIP_BODY);
     rt.addLine("Requires tool:");
     rt.setColor(Color::TOOLTIP_TAG);
-    rt.addLine(Client::gameData.tagName(_type->repairInfo().tool));
+    rt.addLine(_type->_client->gameData.tagName(_type->repairInfo().tool));
   }
 
   if (_type->repairInfo().hasCost()) {

@@ -42,7 +42,7 @@ class ItemSelector : public Button {
 
   void openFindItemWindow(
       void *data);  // The find-item window, when a selector is clicked.
-  static void applyFilter();
+  void applyFilter();
   static void selectItem(void *data);
 
   static bool itemMatchesFilter(const ClientItem &item,

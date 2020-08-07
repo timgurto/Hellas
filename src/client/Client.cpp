@@ -36,7 +36,6 @@
 
 extern Args cmdLineArgs;
 
-CGameData Client::gameData;
 Client::CommonImages Client::images;
 TTF_Font *Client::_defaultFont = nullptr;
 
@@ -78,7 +77,6 @@ Client::Client()
 
       avatarSpriteType(Avatar::DRAW_RECT),
       avatarCombatantType(MAX_PLAYER_HEALTH),
-      droppedItemType(*this),
 
       _character({}, {}, *this),
       _target(*this),
@@ -209,13 +207,14 @@ Client::~Client() {
   for (Element *element : uniqueUIElements) delete element;
 
   Socket::debug = nullptr;
+
+  gameData = {};
 }
 
 void Client::cleanUpStatics() {
   SDL_ShowCursor(SDL_ENABLE);
   ContainerGrid::cleanup();
   if (_defaultFont) TTF_CloseFont(_defaultFont);
-  gameData = {};
   Mix_Quit();
 }
 
@@ -678,7 +677,7 @@ void Client::setRandomUsername() {
   for (int i = 0; i != 2; ++i) _username.push_back('a' + rand() % 26);
 }
 
-const SoundProfile *Client::findSoundProfile(const std::string &id) {
+const SoundProfile *Client::findSoundProfile(const std::string &id) const {
   auto it = gameData.soundProfiles.find(SoundProfile(id));
   if (it == gameData.soundProfiles.end()) return nullptr;
   return &*it;
@@ -693,7 +692,7 @@ const Projectile::Type *Client::findProjectileType(
 }
 
 ClientObjectType *Client::findObjectType(const std::string &id) {
-  auto dummy = ClientObjectType{id, *this};
+  auto dummy = ClientObjectType{id};
   auto it = gameData.objectTypes.find(&dummy);
   if (it == gameData.objectTypes.end()) return nullptr;
   return const_cast<ClientObjectType *>(*it);
