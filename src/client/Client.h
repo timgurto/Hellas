@@ -202,8 +202,6 @@ class Client {
   ContainerGrid::GridInUse containerGridInUse, containerGridBeingDraggedFrom;
 
  private:
-  static Client *_instance;
-
   Connection _connection;
   void disconnect();
 

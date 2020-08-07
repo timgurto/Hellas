@@ -36,8 +36,6 @@
 
 extern Args cmdLineArgs;
 
-Client *Client::_instance = nullptr;
-
 CGameData Client::gameData;
 Client::CommonImages Client::images;
 TTF_Font *Client::_defaultFont = nullptr;
@@ -103,7 +101,6 @@ Client::Client()
   drawLoadingScreen("Reading configuration file", 0.1);
 
   isClient = true;
-  _instance = this;
 
   _config.loadFromFile("client-config.xml");
   _connection.initialize(_config.serverHostDirectory);
@@ -210,8 +207,6 @@ Client::~Client() {
   for (Element *mainUIElement : _ui) uniqueUIElements.insert(mainUIElement);
   for (Element *loginElement : _loginUI) uniqueUIElements.insert(loginElement);
   for (Element *element : uniqueUIElements) delete element;
-
-  _instance = nullptr;
 
   Socket::debug = nullptr;
 }
