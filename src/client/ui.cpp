@@ -76,8 +76,6 @@ void Client::initChatLog() {
   _chatContainer->addChild(_chatTextBox);
 
   addUI(_chatContainer);
-  SAY_COLOR = Color::CHAT_SAY;
-  WHISPER_COLOR = Color::CHAT_WHISPER;
 }
 
 void Client::initWindows() {

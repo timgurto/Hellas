@@ -62,9 +62,6 @@ const size_t Client::INVENTORY_SIZE = 10;
 const size_t Client::GEAR_SLOTS = 8;
 std::vector<std::string> Client::GEAR_SLOT_NAMES;
 
-Color Client::SAY_COLOR;
-Color Client::WHISPER_COLOR;
-
 std::map<std::string, int> Client::_messageCommands;
 std::map<int, std::string> Client::_errorMessages;
 

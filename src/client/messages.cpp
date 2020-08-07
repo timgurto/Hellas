@@ -2028,7 +2028,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         if (del != MSG_END ||
             username == _username)  // We already know we said this.
           break;
-        addChatMessage("[" + username + "] " + message, SAY_COLOR);
+        addChatMessage("[" + username + "] " + message, Color::CHAT_SAY);
         break;
       }
 
@@ -2038,7 +2038,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
         readString(singleMsg, message, MSG_END);
         singleMsg >> del;
         if (del != MSG_END) break;
-        addChatMessage("[From " + username + "] " + message, WHISPER_COLOR);
+        addChatMessage("[From " + username + "] " + message,
+                       Color::CHAT_WHISPER);
         _lastWhisperer = username;
         break;
       }
@@ -2836,7 +2837,7 @@ void Client::performCommand(const std::string &commandString) {
       case CL_SAY:
         iss.get(buffer, BUFFER_SIZE);
         argsString = buffer;
-        addChatMessage("[" + _username + "] " + argsString, SAY_COLOR);
+        addChatMessage("[" + _username + "] " + argsString, Color::CHAT_SAY);
         break;
 
       case CL_WHISPER: {
@@ -2846,7 +2847,7 @@ void Client::performCommand(const std::string &commandString) {
         std::string username(buffer);
         iss.get(buffer, BUFFER_SIZE);
         argsString = username + MSG_DELIM + buffer;
-        addChatMessage("[To " + username + "] " + buffer, WHISPER_COLOR);
+        addChatMessage("[To " + username + "] " + buffer, Color::CHAT_WHISPER);
         break;
       }
 
