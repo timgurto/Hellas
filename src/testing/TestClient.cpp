@@ -31,21 +31,18 @@ TestClient::TestClient(const StringMap &strings) : _client(new Client) {
 }
 
 TestClient TestClient::WithUsername(const std::string &username) {
-  stopClientIfRunning();
   auto strings = StringMap{};
   strings[USERNAME] = username;
   return TestClient(strings);
 }
 
 TestClient TestClient::WithData(const std::string &dataPath) {
-  stopClientIfRunning();
   auto strings = StringMap{};
   strings[DATA_PATH] = dataPath;
   return TestClient(strings);
 }
 
 TestClient TestClient::WithDataString(const std::string &data) {
-  stopClientIfRunning();
   auto strings = StringMap{};
   strings[DATA_STRING] = data;
   return TestClient(strings);
@@ -53,7 +50,6 @@ TestClient TestClient::WithDataString(const std::string &data) {
 
 TestClient TestClient::WithUsernameAndData(const std::string &username,
                                            const std::string &dataPath) {
-  stopClientIfRunning();
   auto strings = StringMap{};
   strings[USERNAME] = username;
   strings[DATA_PATH] = dataPath;
@@ -62,7 +58,6 @@ TestClient TestClient::WithUsernameAndData(const std::string &username,
 
 TestClient TestClient::WithUsernameAndDataString(const std::string &username,
                                                  const std::string &data) {
-  stopClientIfRunning();
   auto strings = StringMap{};
   strings[USERNAME] = username;
   strings[DATA_STRING] = data;
@@ -71,7 +66,6 @@ TestClient TestClient::WithUsernameAndDataString(const std::string &username,
 
 TestClient TestClient::WithClassAndDataString(const std::string &classID,
                                               const std::string &data) {
-  stopClientIfRunning();
   auto strings = StringMap{};
   strings[CLASS] = classID;
   strings[DATA_STRING] = data;
@@ -113,16 +107,6 @@ void TestClient::stop() {
 }
 
 void TestClient::freeze() { _client->_freeze = true; }
-
-void TestClient::stopClientIfRunning() {
-  auto client = Client::_instance;
-  if (client && client->_running) {
-    client->_loop = false;
-    client->_freeze = false;
-    WAIT_UNTIL(!client->_running);
-    WAIT_UNTIL(client->_connection.state() != Connection::TRYING_TO_CONNECT);
-  }
-}
 
 void TestClient::waitForRedraw() {
   _client->_drawingFinished = false;

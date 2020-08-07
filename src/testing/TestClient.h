@@ -37,7 +37,6 @@ class TestClient {
   }
   bool loggedIn() const { return _client->_loggedIn; }
   void freeze();
-  static void stopClientIfRunning();
 
   std::map<Serial, ClientObject *> &objects() { return _client->_objects; }
   Sprite::set_t &entities() { return _client->_entities; }
