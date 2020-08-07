@@ -103,8 +103,8 @@ void Client::initWindows() {
   initializeMapWindow();
   addWindow(_mapWindow);
 
-  initializeHelpWindow();
-  addWindow(_helpWindow);
+  _helpWindow.initialise(*this);
+  addWindow(_helpWindow.window);
 
   initializeClassWindow();
   addWindow(_classWindow);
@@ -322,7 +322,7 @@ void Client::initMenuBar() {
   addButtonToMenu(menuBar, 7, _chatContainer, "icon-chat.png",
                   "Toggle chat log (L)");
   addButtonToMenu(menuBar, 8, _mapWindow, "icon-map.png", "World map (M)");
-  addButtonToMenu(menuBar, 9, _helpWindow, "icon-help.png", "Help (H)");
+  addButtonToMenu(menuBar, 9, _helpWindow.window, "icon-help.png", "Help (H)");
   addButtonToMenu(menuBar, 10, _bugReportWindow, "icon-bug.png",
                   "Report bug or give feedback");
 

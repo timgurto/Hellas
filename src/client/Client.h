@@ -84,8 +84,8 @@ class Client {
   const SoundProfile *avatarSounds() const { return _avatarSounds; }
   const SoundProfile *generalSounds() const { return _generalSounds; }
 
-  const HelpEntries &helpEntries() const { return _helpEntries; }
-  const Window &helpWindow() const { return *_helpWindow; }
+  const HelpEntries &helpEntries() const { return _helpWindow.entries; }
+  const Window &helpWindow() const { return *_helpWindow.window; }
   XP xp() const { return _xp; }
 
   bool isAtWarWith(const Avatar &user) const;
@@ -156,7 +156,9 @@ class Client {
 
   void infoWindow(const std::string &text);
 
-  void showHelpTopic(const std::string &topic);
+  void showHelpTopic(const std::string &topic) {
+    _helpWindow.showHelpTopic(topic);
+  }
 
   class ParticlesToAdd {
     const ParticleProfile &_profile{nullptr};
@@ -331,9 +333,13 @@ class Client {
   void populateOnlinePlayersList();
   std::set<std::string> _allOnlinePlayers{};
 
-  Window *_helpWindow{nullptr};
-  void initializeHelpWindow();
-  HelpEntries _helpEntries;
+  struct HelpWindow {
+    void initialise(Client &client);
+    void loadEntries();
+    void showHelpTopic(const std::string &topic);
+    Window *window{nullptr};
+    HelpEntries entries;
+  } _helpWindow;
 
   Window *_classWindow{nullptr};
   Element *_talentTrees{nullptr};

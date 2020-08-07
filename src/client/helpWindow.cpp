@@ -7,26 +7,24 @@
 
 extern Renderer renderer;
 
-void loadHelpEntries(HelpEntries &entries);
-
 void showTopic(Client &client);
 
-void Client::initializeHelpWindow() {
-  loadHelpEntries(_helpEntries);
+void Client::HelpWindow::initialise(Client &client) {
+  loadEntries();
 
   const px_t WIN_WIDTH = 400, WIN_HEIGHT = 250, WIN_X = (640 - WIN_WIDTH) / 2,
              WIN_Y = (360 - WIN_HEIGHT) / 2;
 
-  _helpWindow = Window::WithRectAndTitle(
-      *this, {WIN_X, WIN_Y, WIN_WIDTH, WIN_HEIGHT}, "Help");
+  window = Window::WithRectAndTitle(
+      client, {WIN_X, WIN_Y, WIN_WIDTH, WIN_HEIGHT}, "Help");
 
   // Topic list
   const px_t TOPIC_W = 100, TOPIC_BORDER = 2, TOPIC_GAP = 2;
   auto *topicList =
       new ChoiceList({TOPIC_BORDER, TOPIC_BORDER, TOPIC_W - TOPIC_BORDER * 2,
                       WIN_HEIGHT - TOPIC_BORDER * 2},
-                     Element::TEXT_HEIGHT + TOPIC_GAP, *this);
-  for (auto &entry : _helpEntries) {
+                     Element::TEXT_HEIGHT + TOPIC_GAP, client);
+  for (auto &entry : entries) {
     auto topic = new Element;
     topic->id(entry.name());
     topicList->addChild(topic);
@@ -39,11 +37,11 @@ void Client::initializeHelpWindow() {
   topicList->id("topicList");
   topicList->onSelect = showTopic;
   // topicList->setLeftMouseDownFunction(showTopic, _helpWindow);
-  _helpWindow->addChild(topicList);
+  window->addChild(topicList);
 
   // Divider
   const px_t LINE_X = TOPIC_W + TOPIC_BORDER * 2;
-  _helpWindow->addChild(new Line(LINE_X, 0, WIN_HEIGHT, Element::VERTICAL));
+  window->addChild(new Line(LINE_X, 0, WIN_HEIGHT, Element::VERTICAL));
 
   // Help text
   const px_t TEXT_GAP = 1, TEXT_X = LINE_X + 2 + TEXT_GAP, TEXT_Y = TEXT_GAP,
@@ -51,14 +49,13 @@ void Client::initializeHelpWindow() {
              TEXT_H = WIN_HEIGHT - TEXT_GAP * 2;
   auto *helpText = new List({TEXT_X, TEXT_Y, TEXT_W, TEXT_H});
   helpText->id("helpText");
-  _helpWindow->addChild(helpText);
+  window->addChild(helpText);
 }
 
-void Client::showHelpTopic(const std::string &topic) {
-  auto topicList =
-      dynamic_cast<ChoiceList *>(_helpWindow->findChild("topicList"));
+void Client::HelpWindow::showHelpTopic(const std::string &topic) {
+  auto topicList = dynamic_cast<ChoiceList *>(window->findChild("topicList"));
   topicList->manuallySelect(topic);
-  _helpWindow->show();
+  window->show();
 }
 
 void showTopic(Client &client) {
@@ -75,7 +72,7 @@ void showTopic(Client &client) {
     helpEntries.draw(selectedTopic, helpText);
 }
 
-void loadHelpEntries(HelpEntries &entries) {
+void Client::HelpWindow::loadEntries() {
   entries.clear();
 
   auto xr = XmlReader::FromFile("Data/help.xml");
