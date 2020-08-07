@@ -1,13 +1,15 @@
 #include "LogSDL.h"
+
 #include "Client.h"
 #include "ui/Label.h"
 #include "ui/List.h"
 
-LogSDL::LogSDL(const std::string &logFileName) : Log(logFileName) {}
+LogSDL::LogSDL(Client &client, const std::string &logFileName)
+    : _client(client), Log(logFileName) {}
 
 void LogSDL::operator()(const std::string &message, const Color &color) {
   writeLineToFile(message);
-  Client::_instance->addChatMessage(message, color);
+  _client.addChatMessage(message, color);
 }
 
 LogSDL &LogSDL::operator<<(const std::string &val) {

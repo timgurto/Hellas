@@ -116,8 +116,8 @@ void Client::refreshHotbar() {
     if (actions[i].category == HotbarCategory::HOTBAR_SPELL) {
       auto spellIt = gameData.spells.find(actions[i].id);
       if (spellIt == gameData.spells.end()) {
-        debugLog("Hotbar refers to invalid spell, " + actions[i].id,
-                 Color::CHAT_ERROR);
+        _debug("Hotbar refers to invalid spell, " + actions[i].id,
+               Color::CHAT_ERROR);
         continue;
       }
 
@@ -134,8 +134,8 @@ void Client::refreshHotbar() {
     } else if (actions[i].category == HotbarCategory::HOTBAR_RECIPE) {
       auto it = gameData.recipes.find(actions[i].id);
       if (it == gameData.recipes.end()) {
-        debugLog("Hotbar refers to invalid recipe, " + actions[i].id,
-                 Color::CHAT_ERROR);
+        _debug("Hotbar refers to invalid recipe, " + actions[i].id,
+               Color::CHAT_ERROR);
         continue;
       }
 

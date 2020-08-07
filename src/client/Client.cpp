@@ -98,7 +98,7 @@ Client::Client()
       _lastPingReply(_time),
       _lastPingSent(_time),
 
-      debugLog("client.log") {
+      _debug(*this, "client.log") {
   initStatics();
   drawLoadingScreen("Reading configuration file", 0.1);
 

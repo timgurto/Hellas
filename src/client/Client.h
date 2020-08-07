@@ -199,8 +199,6 @@ class Client {
   void addFloatingCombatText(const std::string &text, const MapPoint &location,
                              Color color);
 
-  LogSDL debugLog;
-
   ContainerGrid::GridInUse containerGridInUse, containerGridBeingDraggedFrom;
 
  private:

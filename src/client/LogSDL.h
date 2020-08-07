@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include <SDL_ttf.h>
+
 #include <list>
 #include <sstream>
 #include <string>
@@ -10,10 +11,12 @@
 #include "../Log.h"
 #include "Texture.h"
 
+class Client;
+
 // A message log that uses SDL to display colored text on the screen.
 class LogSDL : public Log {
  public:
-  LogSDL(const std::string &logFileName = "");
+  LogSDL(Client &client, const std::string &logFileName = "");
   void operator()(const std::string &message,
                   const Color &color = Color::CHAT_DEFAULT) override;
 
@@ -32,6 +35,8 @@ class LogSDL : public Log {
   std::ostringstream _oss;
   Color _compilationColor =
       Color::CHAT_DEFAULT;  // for use while compiling a message
+
+  Client &_client;
 };
 
 #endif
