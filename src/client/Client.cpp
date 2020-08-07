@@ -394,11 +394,10 @@ void Client::gameLoop() {
 }
 
 void Client::startCrafting() {
-  if (_instance->_activeRecipe != nullptr) {
-    _instance->sendMessage({CL_CRAFT, _instance->_activeRecipe->id()});
-    const ClientItem *product =
-        toClientItem(_instance->_activeRecipe->product());
-    _instance->prepareAction("Crafting " + product->name());
+  if (_activeRecipe != nullptr) {
+    sendMessage({CL_CRAFT, _activeRecipe->id()});
+    const ClientItem *product = toClientItem(_activeRecipe->product());
+    prepareAction("Crafting " + product->name());
   }
 }
 

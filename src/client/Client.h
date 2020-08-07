@@ -241,7 +241,7 @@ class Client {
   // The recipe currently selected, if any
   const CRecipe *_activeRecipe{nullptr};
   // Called when the "Craft" button is clicked.
-  static void startCrafting();
+  void startCrafting();
   // Populated at load time, after _items
   std::map<std::string, bool> _tagFilters;
   std::map<const ClientItem *, bool> _matFilters;

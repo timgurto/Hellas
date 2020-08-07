@@ -180,7 +180,7 @@ void Client::refreshRecipeDetailsPane() {
   // Crafting Button
   pane.addChild(new Button({paneRect.w - 2 * BUTTON_WIDTH - BUTTON_GAP,
                             BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT},
-                           "Craft", startCrafting));
+                           "Craft", [this]() { startCrafting(); }));
 
   const std::set<CRecipe>::const_iterator it =
       Client::gameData.recipes.find(selectedID);
