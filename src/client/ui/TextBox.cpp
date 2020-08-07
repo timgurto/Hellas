@@ -2,16 +2,16 @@
 
 #include <cassert>
 
+#include "../Client.h"
 #include "../Renderer.h"
 #include "ShadowBox.h"
 
 extern Renderer renderer;
 
-TextBox *TextBox::currentFocus = nullptr;
-
-TextBox::TextBox(const ScreenRect &rect, ValidInput validInput)
+TextBox::TextBox(Client &client, const ScreenRect &rect, ValidInput validInput)
     : Element({rect.x, rect.y, rect.w, max(HEIGHT, rect.h)}),
       _validInput(validInput) {
+  setClient(client);
   addChild(new ShadowBox({0, 0, rect.w, max(HEIGHT, rect.h)}, true));
   setLeftMouseDownFunction(&click);
 }
@@ -39,33 +39,21 @@ void TextBox::refresh() {
 
   // Cursor
   const static px_t CURSOR_GAP = 0, CURSOR_WIDTH = 1;
-  if (currentFocus == this) {
+  if (_client->textBoxInFocus == this) {
     renderer.setDrawColor(Element::FONT_COLOR);
     renderer.fillRect(
         {textX + text.width() + CURSOR_GAP, 1, CURSOR_WIDTH, height() - 2});
   }
 }
 
-void TextBox::clearFocus() {
-  if (currentFocus != nullptr) currentFocus->markChanged();
-  currentFocus = nullptr;
-}
-
-void TextBox::focus(TextBox *textBox) {
-  auto oldFocus = currentFocus;
-  currentFocus = textBox;
-
-  if (oldFocus) oldFocus->markChanged();
-  if (currentFocus) currentFocus->markChanged();
-}
-
 void TextBox::click(Element &e, const ScreenPoint &mousePos) {
   TextBox *newFocus = dynamic_cast<TextBox *>(&e);
+  auto &currentFocus = newFocus->_client->textBoxInFocus;
   if (newFocus == currentFocus) return;
 
   // Mark changed, to (un)draw cursor
   e.markChanged();
-  if (currentFocus != nullptr) currentFocus->markChanged();
+  if (currentFocus) currentFocus->markChanged();
 
   currentFocus = newFocus;
 }
@@ -77,18 +65,18 @@ void TextBox::setOnChange(OnChangeFunction function, void *data) {
   _onChangeData = data;
 }
 
-void TextBox::addText(const char *newText) {
-  assert(currentFocus);
+void TextBox::addText(Client &client, const char *newText) {
+  assert(client.textBoxInFocus);
   assert(newText[1] == '\0');
 
   const auto &newChar = newText[0];
-  if (!currentFocus->isInputValid(newChar)) return;
+  if (!client.textBoxInFocus->isInputValid(newChar)) return;
 
-  std::string &text = currentFocus->_text;
+  std::string &text = client.textBoxInFocus->_text;
   if (text.size() < MAX_TEXT_LENGTH) {
     text.append(newText);
-    currentFocus->onChange();
-    currentFocus->markChanged();
+    client.textBoxInFocus->onChange();
+    client.textBoxInFocus->markChanged();
   }
 }
 
@@ -109,14 +97,14 @@ void TextBox::onChange() {
   if (_onChangeFunction) _onChangeFunction(_onChangeData);
 }
 
-void TextBox::backspace() {
-  assert(currentFocus);
+void TextBox::backspace(Client &client) {
+  assert(client.textBoxInFocus);
 
-  std::string &text = currentFocus->_text;
+  std::string &text = client.textBoxInFocus->_text;
   if (text.size() > 0) {
     text.erase(text.size() - 1);
-    currentFocus->onChange();
-    currentFocus->markChanged();
+    client.textBoxInFocus->onChange();
+    client.textBoxInFocus->markChanged();
   }
 }
 
@@ -125,4 +113,14 @@ size_t TextBox::textAsNum() const {
   int n;
   iss >> n;
   return n;
+}
+
+TextBox::Focus &TextBox::Focus::operator=(TextBox *rhs) {
+  auto oldFocus = _focus;
+  _focus = rhs;
+
+  if (oldFocus) oldFocus->markChanged();
+  if (_focus) _focus->markChanged();
+
+  return *this;
 }

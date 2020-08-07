@@ -77,8 +77,8 @@ InputWindow::InputWindow(Client &client, const std::string &windowText,
                      Element::CENTER_JUSTIFIED));
   y += Element::TEXT_HEIGHT + PADDING;
 
-  _textBox =
-      new TextBox({0, y, WINDOW_WIDTH, Element::TEXT_HEIGHT}, validInput);
+  _textBox = new TextBox(client, {0, y, WINDOW_WIDTH, Element::TEXT_HEIGHT},
+                         validInput);
   addChild(_textBox);
   y += _textBox->height() + PADDING;
 

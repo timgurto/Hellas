@@ -127,15 +127,15 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg) {
 
   if (userHasAccess()) {  // Setup view
     px_t x = GAP;
-    TextBox *textBox = new TextBox({x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT},
-                                   TextBox::NUMERALS);
+    TextBox *textBox = new TextBox(
+        _client, {x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT}, TextBox::NUMERALS);
     _wareQtyBoxes[i] = textBox;
     textBox->text(toString(mSlot.wareQty));
     e.addChild(textBox);
     x += QUANTITY_WIDTH + GAP;
     e.addChild(new ItemSelector(_client, mSlot.wareItem, x, BUTTON_TOP));
     x += ICON_SIZE + 2 + NAME_WIDTH + 3 * GAP + 2;
-    textBox = new TextBox({x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT},
+    textBox = new TextBox(_client, {x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT},
                           TextBox::NUMERALS);
     _priceQtyBoxes[i] = textBox;
     textBox->text(toString(mSlot.priceQty));
@@ -481,7 +481,7 @@ void ClientObject::addActionToWindow() {
     x += LABEL_WIDTH + BUTTON_GAP;
 
     // Assumptions: single word, with capital initial.
-    _actionTextEntry = new TextBox({x, y, 100, 13}, TextBox::LETTERS);
+    _actionTextEntry = new TextBox(_client, {x, y, 100, 13}, TextBox::LETTERS);
     _actionTextEntry->forcePascalCase();
 
     _window->addChild(_actionTextEntry);

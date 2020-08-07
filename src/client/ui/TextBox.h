@@ -11,22 +11,29 @@ class TextBox : public Element {
  public:
   enum ValidInput { ALL, NUMERALS, LETTERS };
 
-  TextBox(const ScreenRect &rect, ValidInput validInput = ALL);
+  TextBox(Client &client, const ScreenRect &rect, ValidInput validInput = ALL);
 
   const std::string &text() const { return _text; }
   void text(const std::string &text);
   bool hasText() const { return !_text.empty(); }
   size_t textAsNum() const;
 
-  static void clearFocus();
-  static const TextBox *focus() { return currentFocus; }
-  static void focus(TextBox *textBox);
+  class Focus {
+   public:
+    Focus &operator=(TextBox *rhs);
+    operator TextBox *() { return _focus; }
+    TextBox *operator->() { return _focus; }
+    operator bool() const { return _focus != nullptr; }
+
+   private:
+    TextBox *_focus{nullptr};
+  };
 
   using OnChangeFunction = void (*)(void *);
   void setOnChange(OnChangeFunction function, void *data = nullptr);
 
-  static void addText(const char *newText);
-  static void backspace();
+  static void addText(Client &client, const char *newText);
+  static void backspace(Client &client);
 
   virtual void refresh();
 
@@ -49,7 +56,6 @@ class TextBox : public Element {
   static const size_t MAX_TEXT_LENGTH{200};
 
   static const px_t HEIGHT{14};
-  static TextBox *currentFocus;
 };
 
 #endif

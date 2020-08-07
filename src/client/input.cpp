@@ -21,7 +21,7 @@ void Client::handleInput(double delta) {
         break;
 
       case SDL_TEXTINPUT:
-        TextBox::addText(e.text.text);
+        TextBox::addText(*this, e.text.text);
         break;
 
       case SDL_KEYDOWN:
@@ -30,21 +30,21 @@ void Client::handleInput(double delta) {
 
           switch (e.key.keysym.sym) {
             case SDLK_ESCAPE:
-              if (TextBox::focus() == _chatTextBox) {
+              if (textBoxInFocus == _chatTextBox) {
                 _chatTextBox->text("");
                 _chatTextBox->hide();
               }
-              TextBox::clearFocus();
+              textBoxInFocus = nullptr;
               SDL_StopTextInput();
               break;
 
             case SDLK_BACKSPACE:
-              TextBox::backspace();
+              TextBox::backspace(*this);
               break;
 
             case SDLK_RETURN:
             case SDLK_KP_ENTER:
-              if (TextBox::focus() == _chatTextBox) {
+              if (textBoxInFocus == _chatTextBox) {
                 SDL_StopTextInput();
                 const std::string &text = _chatTextBox->text();
                 if (text != "") {
@@ -57,7 +57,7 @@ void Client::handleInput(double delta) {
                 }
                 _chatTextBox->text("");
                 _chatTextBox->hide();
-                TextBox::clearFocus();
+                textBoxInFocus = nullptr;
               }
               break;
           }
@@ -98,7 +98,7 @@ void Client::handleInput(double delta) {
               if (!_chatTextBox->visible()) {
                 SDL_StartTextInput();
                 _chatTextBox->show();
-                TextBox::focus(_chatTextBox);
+                textBoxInFocus = _chatTextBox;
                 _chatTextBox->text("/");
               }
               break;
@@ -117,13 +117,13 @@ void Client::handleInput(double delta) {
                   }
                   _chatTextBox->text("");
                   _chatTextBox->hide();
-                  TextBox::clearFocus();
+                  textBoxInFocus = nullptr;
                 }
                 break;
               } else {
                 SDL_StartTextInput();
                 _chatTextBox->show();
-                TextBox::focus(_chatTextBox);
+                textBoxInFocus = _chatTextBox;
               }
               break;
 
@@ -189,8 +189,7 @@ void Client::handleInput(double delta) {
               if (!_lastWhisperer.empty()) {
                 if (!SDL_IsTextInputActive()) SDL_StartTextInput();
                 _chatTextBox->show();
-                TextBox::focus(_chatTextBox);
-                TextBox::focus(_chatTextBox);
+                textBoxInFocus = _chatTextBox;
                 _chatTextBox->text(std::string("/whisper ") + _lastWhisperer +
                                    " ");
               }
@@ -273,7 +272,7 @@ void Client::handleInput(double delta) {
           case SDL_BUTTON_LEFT:
             _leftMouseDown = true;
 
-            TextBox::clearFocus();
+            textBoxInFocus = nullptr;
 
             // Send onLeftMouseDown to frontmost clicked window
             for (Window *window : _windows)
@@ -286,9 +285,9 @@ void Client::handleInput(double delta) {
                   collision(_mouse, element->rect()))
                 element->onLeftMouseDown(_mouse);
 
-            if (SDL_IsTextInputActive() && !TextBox::focus())
+            if (SDL_IsTextInputActive() && !textBoxInFocus)
               SDL_StopTextInput();
-            else if (!SDL_IsTextInputActive() && TextBox::focus())
+            else if (!SDL_IsTextInputActive() && textBoxInFocus)
               SDL_StartTextInput();
 
             // Bring top clicked window to front

@@ -214,7 +214,6 @@ Client::~Client() {
 void Client::cleanUpStatics() {
   SDL_ShowCursor(SDL_ENABLE);
   ContainerGrid::cleanup();
-  TextBox::clearFocus();
   if (_defaultFont) TTF_CloseFont(_defaultFont);
   gameData = {};
   Mix_Quit();

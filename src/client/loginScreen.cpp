@@ -207,8 +207,8 @@ void Client::initCreateWindow() {
     auto y = 0_px;
 
     inputPane->addChild(new Label({0, y, 100, Element::TEXT_HEIGHT}, "Name:"s));
-    newNameBox =
-        new TextBox({MID_PANE, y, L_PANE_W - MID_PANE, 0}, TextBox::LETTERS);
+    newNameBox = new TextBox(*this, {MID_PANE, y, L_PANE_W - MID_PANE, 0},
+                             TextBox::LETTERS);
     newNameBox->setOnChange(updateCreateButton, this);
     inputPane->addChild(newNameBox);
     infoPane->addChild(new Label({0, y, R_PANE_W, Element::TEXT_HEIGHT},
@@ -217,7 +217,7 @@ void Client::initCreateWindow() {
 
     inputPane->addChild(
         new Label({0, y, 100, Element::TEXT_HEIGHT}, "Password:"s));
-    newPwBox = new TextBox({MID_PANE, y, L_PANE_W - MID_PANE, 0});
+    newPwBox = new TextBox(*this, {MID_PANE, y, L_PANE_W - MID_PANE, 0});
     newPwBox->maskContents();
     inputPane->addChild(newPwBox);
     y += newPwBox->height() + GAP;
@@ -313,10 +313,10 @@ void Client::initLoginScreen() {
                         "Name:", Element::CENTER_JUSTIFIED));
   Y += Element::TEXT_HEIGHT + 1;
 
-  nameBox = new TextBox({BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT},
+  nameBox = new TextBox(*this, {BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT},
                         TextBox::LETTERS);
   nameBox->text(_username);
-  TextBox::focus(nameBox);
+  textBoxInFocus = nameBox;
   nameBox->setOnChange([](void *pClient) {
     auto &client = *reinterpret_cast<Client *>(pClient);
     client.updateLoginButton();
@@ -331,14 +331,14 @@ void Client::initLoginScreen() {
                         "Password:", Element::CENTER_JUSTIFIED));
   Y += Element::TEXT_HEIGHT + 1;
 
-  pwBox = new TextBox({BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT});
+  pwBox = new TextBox(*this, {BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT});
   pwBox->maskContents();
   if (!_savedPwHash.empty()) pwBox->text("SAVED PW");
   pwBox->setOnChange([](void *pClient) {
     auto &client = *reinterpret_cast<Client *>(pClient);
     client._savedPwHash.clear();
   });
-  if (nameBox->hasText()) TextBox::focus(pwBox);
+  if (nameBox->hasText()) textBoxInFocus = pwBox;
   _loginUI.push_back(pwBox);
   Y += nameBox->height() + GAP;
 
@@ -397,7 +397,7 @@ void Client::initLoginScreen() {
     auto createButton = new Button({BUTTON_X, y, BUTTON_W, BUTTON_HEIGHT},
                                    "Create new account", [this]() {
                                      showWindowInFront(_createWindow);
-                                     TextBox::focus(newNameBox);
+                                     textBoxInFocus = newNameBox;
                                    });
     _loginUI.push_back(createButton);
     updateCreateButton(this);
@@ -424,7 +424,7 @@ void Client::handleLoginInput(double delta) {
         break;
 
       case SDL_TEXTINPUT:
-        TextBox::addText(e.text.text);
+        TextBox::addText(*this, e.text.text);
         break;
 
       case SDL_KEYDOWN:
@@ -434,19 +434,19 @@ void Client::handleLoginInput(double delta) {
             break;
 
           case SDLK_BACKSPACE:
-            TextBox::backspace();
+            TextBox::backspace(*this);
             break;
 
           case SDLK_TAB:
-            if (TextBox::focus() == nameBox)
-              TextBox::focus(pwBox);
-            else if (TextBox::focus() == pwBox)
-              TextBox::focus(nameBox);
+            if (textBoxInFocus == nameBox)
+              textBoxInFocus = pwBox;
+            else if (textBoxInFocus == pwBox)
+              textBoxInFocus = nameBox;
 
-            else if (TextBox::focus() == newNameBox)
-              TextBox::focus(newPwBox);
-            else if (TextBox::focus() == newPwBox)
-              TextBox::focus(newNameBox);
+            else if (textBoxInFocus == newNameBox)
+              textBoxInFocus = newPwBox;
+            else if (textBoxInFocus == newPwBox)
+              textBoxInFocus = newNameBox;
             break;
 
           case SDLK_RETURN:

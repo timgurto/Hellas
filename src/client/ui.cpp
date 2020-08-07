@@ -62,7 +62,7 @@ void Client::initChatLog() {
   drawLoadingScreen("Initializing chat log", 0.4);
   _chatContainer =
       new Element({0, SCREEN_Y - _config.chatH, _config.chatW, _config.chatH});
-  _chatTextBox = new TextBox({0, _config.chatH, _config.chatW});
+  _chatTextBox = new TextBox(*this, {0, _config.chatH, _config.chatW});
   _chatLog =
       new List({0, 0, _config.chatW, _config.chatH - _chatTextBox->height()});
   _chatTextBox->setPosition(0, _chatLog->height());

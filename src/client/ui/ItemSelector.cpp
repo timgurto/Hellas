@@ -49,8 +49,9 @@ ItemSelector::ItemSelector(Client &client, const ClientItem *&item, px_t x,
          (Client::SCREEN_Y - WINDOW_HEIGHT) / 2, WINDOW_WIDTH, WINDOW_HEIGHT},
         "Find Item");
     px_t y = GAP;
-    _filterText = new TextBox({GAP, y, SEARCH_TEXT_WIDTH, SEARCH_BUTTON_HEIGHT},
-                              TextBox::LETTERS);
+    _filterText =
+        new TextBox(client, {GAP, y, SEARCH_TEXT_WIDTH, SEARCH_BUTTON_HEIGHT},
+                    TextBox::LETTERS);
     _findItemWindow->addChild(_filterText);
     _findItemWindow->addChild(
         new Button({SEARCH_TEXT_WIDTH + 2 * GAP, y, SEARCH_BUTTON_WIDTH,

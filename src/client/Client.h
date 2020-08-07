@@ -200,6 +200,7 @@ class Client {
                              Color color);
 
   ContainerGrid::GridInUse containerGridInUse, containerGridBeingDraggedFrom;
+  TextBox::Focus textBoxInFocus;
 
  private:
   Connection _connection;
