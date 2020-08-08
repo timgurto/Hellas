@@ -18,7 +18,7 @@ TEST_CASE("Players can attack immediately") {
       c.sendMessage(CL_TARGET_ENTITY, makeArgs(ant.serial()));
 
       THEN("the NPC should be damaged very quickly") {
-        WAIT_UNTIL_TIMEOUT(100, ant.health() < ant.stats().maxHealth);
+        WAIT_UNTIL_TIMEOUT(ant.health() < ant.stats().maxHealth, 100);
       }
     }
   }
