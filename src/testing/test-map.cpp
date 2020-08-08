@@ -1,4 +1,3 @@
-#include "RemoteClient.h"
 #include "TestClient.h"
 #include "TestServer.h"
 
@@ -72,25 +71,24 @@ TEST_CASE("A player shows up on his own map", "[.flaky][map][color]") {
 TEST_CASE("Other players show up on the map", "[map][remote]") {
   // Given a server and two clients
   TestServer s;
-  TestClient c;
-  RemoteClient rc;
+  TestClient c1, c2;
 
   // When both clients log in;
   s.waitForUsers(2);
 
   // And the first client opens his map
-  c.mapWindow()->show();
+  c1.mapWindow()->show();
 
   // Then there are two pins visible
-  WAIT_UNTIL(c.mapPins().size() == 2);
+  WAIT_UNTIL(c1.mapPins().size() == 2);
 }
 
 TEST_CASE("When a player declares war, his map pin changes color",
           "[map][remote][war][color][.flaky]") {
   // Given a server with two clients;
   TestServer s;
-  TestClient c;
-  RemoteClient c2("-username Duteros");
+  auto c = TestClient{};
+  auto c2 = TestClient::WithUsername("Duteros");
 
   // And the first has his map open;
   s.waitForUsers(2);

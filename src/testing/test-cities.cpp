@@ -1,4 +1,3 @@
-#include "RemoteClient.h"
 #include "TestClient.h"
 #include "TestServer.h"
 #include "testing.h"
@@ -134,17 +133,17 @@ TEST_CASE("Clients know nearby players' cities", "[remote]") {
   GIVEN("Alice is in Athens") {
     TestServer s;
     s.cities().createCity("Athens", {}, {});
-    RemoteClient rc("-username Alice");
+    auto cAlice = TestClient::WithUsername("Alice");
     s.waitForUsers(1);
     User &serverAlice = s.getFirstUser();
     s.cities().addPlayerToCity(serverAlice, "Athens");
 
-    WHEN("another client connects") {
-      TestClient c;
-      WAIT_UNTIL(c.otherUsers().size() == 1);
+    WHEN("Bob") {
+      auto cBob = TestClient::WithUsername("Bob");
+      WAIT_UNTIL(cBob.otherUsers().size() == 1);
 
       THEN("he knows that Alice is in Athens") {
-        const Avatar &clientAlice = c.getFirstOtherUser();
+        const Avatar &clientAlice = cBob.getFirstOtherUser();
         WAIT_UNTIL(clientAlice.cityName() == "Athens");
       }
     }

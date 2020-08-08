@@ -95,7 +95,6 @@
     <ClCompile Include="src\testing\test-sound.cpp" />
     <ClCompile Include="src\testing\test-transformation.cpp" />
     <ClCompile Include="src\testing\TestClient.cpp" />
-    <ClCompile Include="src\testing\RemoteClient.cpp" />
     <ClCompile Include="src\testing\TestServer.cpp" />
     <ClCompile Include="src\testing\test-graphics.cpp" />
     <ClCompile Include="src\testing\test-math.cpp" />
@@ -278,7 +277,6 @@
     <ClInclude Include="src\Stats.h" />
     <ClInclude Include="src\Terrain.h" />
     <ClInclude Include="src\testing\TestClient.h" />
-    <ClInclude Include="src\testing\RemoteClient.h" />
     <ClInclude Include="src\testing\TestServer.h" />
     <ClInclude Include="src\types.h" />
     <ClInclude Include="src\util.h" />

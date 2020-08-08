@@ -1,4 +1,3 @@
-#include "RemoteClient.h"
 #include "TestClient.h"
 #include "TestServer.h"
 #include "testing.h"
@@ -150,7 +149,7 @@ TEST_CASE("Spell cooldowns", "[remote]") {
       }
 
       AND_WHEN("Bob tries casting it") {
-        auto cBob = RemoteClient{"-username Bob"};
+        auto cBob = TestClient::WithUsername("Bob");
         s.waitForUsers(2);
         auto &bob = *s->getUserByName("Bob");
         bob.getClass().teachSpell("hurtSelf1s");

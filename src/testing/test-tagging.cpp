@@ -1,4 +1,3 @@
-#include "RemoteClient.h"
 #include "TestClient.h"
 #include "TestServer.h"
 #include "testing.h"
@@ -19,7 +18,7 @@ TEST_CASE("Only the tagging player gets kill XP", "[slow][remote]") {
       REPEAT_FOR_MS(50);
     } while (alice.location() != MapPoint{30, 30});
 
-    auto cBob = RemoteClient{"-username Bob"};
+    auto cBob = TestClient::WithUsername("Bob");
     s.waitForUsers(2);
     auto &bob = *s->getUserByName("Bob");
 

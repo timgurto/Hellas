@@ -200,8 +200,6 @@ Client::~Client() {
   for (Element *element : uniqueUIElements) delete element;
 
   Socket::debug = nullptr;
-
-  gameData = {};
 }
 
 void Client::cleanUpStatics() {

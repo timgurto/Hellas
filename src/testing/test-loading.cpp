@@ -1,6 +1,5 @@
 #include "../XmlReader.h"
 #include "../client/ClientNPCType.h"
-#include "RemoteClient.h"
 #include "TestClient.h"
 #include "TestServer.h"
 #include "testing.h"
@@ -31,8 +30,10 @@ TEST_CASE("Get spawn point from map file") {
 
 TEST_CASE("Get spawn range from map file", "[remote]") {
   TestServer s = TestServer::WithData("spawn_point_37ish");
+  auto c1 = TestClient::WithData("spawn_point_37ish"),
+       c2 = TestClient::WithData("spawn_point_37ish"),
+       c3 = TestClient::WithData("spawn_point_37ish");
 
-  RemoteClient c1("-username Aaa"), c2("-username Bbb"), c3("-username Ccc");
   s.waitForUsers(3);
 
   for (const User &user : s.users()) {

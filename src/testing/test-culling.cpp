@@ -1,4 +1,3 @@
-#include "RemoteClient.h"
 #include "TestClient.h"
 #include "TestServer.h"
 #include "testing.h"
@@ -38,32 +37,32 @@ TEST_CASE("On login, players are not told about others' distant objects",
 TEST_CASE("When one user approaches another, he finds out about him",
           "[.slow][culling][remote]") {
   // Given a server with a large map;
-  TestServer s = TestServer::WithData("signpost");
+  auto s = TestServer::WithData("signpost");
 
-  // And a client at (10, 10);
-  TestClient c = TestClient::WithData("signpost");
+  // And Alice is at (10, 10);
+  auto alice = TestClient::WithUsernameAndData("Alice", "signpost");
   s.waitForUsers(1);
 
-  // And a client at (1000, 10);
+  // And Bob is at (1000, 10);
   User::newPlayerSpawn = {1000, 10};  // TODO pop this state after test
   User::spawnRadius = 0;
-  RemoteClient rc("-data testing/data/signpost");
+  auto bob = TestClient::WithUsernameAndData("Bob", "signpost");
   s.waitForUsers(2);
   REPEAT_FOR_MS(500);
-  CHECK(c.otherUsers().size() == 0);
+  CHECK(alice.otherUsers().size() == 0);
 
-  // When the first moves within range of the second
+  // When Alice moves within range of Bob
   auto startTime = SDL_GetTicks();
-  while (c->character().location().x < 900) {
+  while (alice->character().location().x < 900) {
     if (SDL_GetTicks() - startTime > 100000) break;
 
-    c.sendMessage(CL_LOCATION, makeArgs(1000, 10));
+    alice.sendMessage(CL_LOCATION, makeArgs(1000, 10));
 
-    // Then he becomes aware of him
-    if (c.otherUsers().size() == 1) break;
+    // Then Alice becomes aware of Bob
+    if (alice.otherUsers().size() == 1) break;
     SDL_Delay(5);
   }
-  CHECK(c.otherUsers().size() == 1);
+  CHECK(alice.otherUsers().size() == 1);
 }
 
 TEST_CASE("When a player moves away from his object, he is still aware of it",

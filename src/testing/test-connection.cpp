@@ -1,28 +1,15 @@
-#include "RemoteClient.h"
 #include "TestClient.h"
 #include "TestServer.h"
 #include "testing.h"
 
 TEST_CASE("Start and stop server") { TestServer server; }
 
-TEST_CASE("Run a client in a separate process", "[remote]") {
+TEST_CASE("Concurrent clients", "[remote]") {
   // Given a server
   TestServer s;
 
-  // When a RemoteClient is created
-  RemoteClient alice("-username Alice");
-
-  // Then it successfully logs into the server
-  s.waitForUsers(1);
-}
-
-TEST_CASE("Concurrent local and remote clients", "[remote]") {
-  // Given a server
-  TestServer s;
-
-  // When a TestClient and RemoteClient are both created
-  TestClient c;
-  RemoteClient alice("-username Alice");
+  // When two TestClients are created
+  TestClient c1, c2;
 
   // Then both successfully log into the server
   s.waitForUsers(2);
@@ -110,17 +97,17 @@ TEST_CASE("The client handles a server appearing") {
   s.waitForUsers(1);
 }
 
-TEST_CASE("Online-players list includes existing players") {
+TEST_CASE("Online-players list includes existing players", "[remote]") {
   GIVEN("a server and client") {
     auto s = TestServer{};
-    auto r = RemoteClient{};
+    auto c1 = TestClient{};
     s.waitForUsers(1);
 
     WHEN("another client connects") {
-      auto c = TestClient{};
+      auto c2 = TestClient{};
 
       THEN("it knows there are two players online") {
-        WAIT_UNTIL(c.allOnlinePlayers().size() == 2);
+        WAIT_UNTIL(c2.allOnlinePlayers().size() == 2);
       }
     }
   }

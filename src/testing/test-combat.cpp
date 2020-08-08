@@ -1,5 +1,4 @@
 #include "../client/ClientNPC.h"
-#include "RemoteClient.h"
 #include "TestClient.h"
 #include "TestServer.h"
 #include "testing.h"
@@ -26,71 +25,68 @@ TEST_CASE("Players can attack immediately") {
   WAIT_UNTIL(ant.health() < ant.npcType()->maxHealth());
 }
 
-TEST_CASE("Belligerents can target each other", "[remote]") {
-  TestServer s;
-  TestClient alice = TestClient::WithUsername("Alice");
-  RemoteClient bob("-username Bob");
-  s.waitForUsers(2);
-  User &uAlice = s.findUser("Alice"), &uBob = s.findUser("Bob");
+TEST_CASE("Only belligerents can target each other", "[remote]") {
+  GIVEN("Alice and Bob are at peace") {
+    auto s = TestServer{};
+    auto alice = TestClient::WithUsername("Alice");
+    auto bob = TestClient::WithUsername("Bob");
+    s.waitForUsers(2);
+    User &uAlice = s.findUser("Alice"), &uBob = s.findUser("Bob");
 
-  alice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "Bob");
-  alice.sendMessage(CL_TARGET_PLAYER, "Bob");
-  WAIT_UNTIL(uAlice.target() == &uBob);
+    WHEN("Alice tries to target Bob") {
+      alice.sendMessage(CL_TARGET_PLAYER, "Bob");
+
+      THEN("She is not targeting him") {
+        REPEAT_FOR_MS(100);
+        CHECK_FALSE(uAlice.target() == &uBob);
+      }
+    }
+
+    WHEN("Alice declares war on Bob") {
+      alice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "Bob");
+
+      AND_WHEN("Alice tries to target Bob") {
+        alice.sendMessage(CL_TARGET_PLAYER, "Bob");
+
+        THEN("Alice is targeting Bob") { WAIT_UNTIL(uAlice.target() == &uBob); }
+      }
+    }
+  }
 }
 
-TEST_CASE("Peaceful players can't target each other", "[remote]") {
-  TestServer s;
-  TestClient alice = TestClient::WithUsername("Alice");
-  RemoteClient bob("-username Bob");
-  s.waitForUsers(2);
-  User &uAlice = s.findUser("Alice"), &uBob = s.findUser("Bob");
+TEST_CASE("Only belligerents can fight", "[remote]") {
+  GIVEN("Alice and Bob are within melee range") {
+    auto s = TestServer{};
+    auto alice = TestClient::WithUsername("Alice");
+    auto bob = TestClient::WithUsername("Bob");
+    s.waitForUsers(2);
 
-  alice.sendMessage(CL_TARGET_PLAYER, "Bob");
-  REPEAT_FOR_MS(500);
-  CHECK_FALSE(uAlice.target() == &uBob);
-}
+    User &uAlice = s.findUser("Alice"), &uBob = s.findUser("Bob");
+    while (distance(uAlice.location(), uBob.location()) >
+           Server::ACTION_DISTANCE)
+      uAlice.moveLegallyTowards(uBob.location());
 
-TEST_CASE("Belligerents can fight", "[remote]") {
-  // Given a server, Alice, and Bob
-  TestServer s;
-  TestClient alice = TestClient::WithUsername("Alice");
-  RemoteClient rcBob("-username Bob");
-  s.waitForUsers(2);
+    WHEN("Alice tries to target Bob") {
+      alice.sendMessage(CL_TARGET_PLAYER, "Bob");
 
-  // And Alice is at war with Bob
-  alice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "Bob");
+      THEN("Bob doesn't lose health") {
+        REPEAT_FOR_MS(500);
+        CHECK(uBob.health() == uBob.stats().maxHealth);
+      }
+    }
 
-  // When Alice moves within range of Bob
-  User &uAlice = s.findUser("Alice"), &uBob = s.findUser("Bob");
-  while (distance(uAlice.location(), uBob.location()) > Server::ACTION_DISTANCE)
-    uAlice.moveLegallyTowards(uBob.location());
+    WHEN("Alice declares war on Bob") {
+      alice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "Bob");
 
-  // And Alice knows that the war has successfully been declared
-  WAIT_UNTIL(alice.otherUsers().size() == 1);
-  const auto &bob = alice.getFirstOtherUser();
-  WAIT_UNTIL(alice->isAtWarWith(bob));
+      AND_WHEN("Alice targets Bob") {
+        alice.sendMessage(CL_TARGET_PLAYER, "Bob");
 
-  // And Alice targets Bob
-  alice.sendMessage(CL_TARGET_PLAYER, "Bob");
-
-  // Then Bob loses health
-  WAIT_UNTIL(uBob.health() < uBob.stats().maxHealth);
-}
-
-TEST_CASE("Peaceful players can't fight", "[remote]") {
-  TestServer s;
-  TestClient alice = TestClient::WithUsername("Alice");
-  RemoteClient bob("-username Bob");
-  s.waitForUsers(2);
-
-  User &uAlice = s.findUser("Alice"), &uBob = s.findUser("Bob");
-  while (distance(uAlice.location(), uBob.location()) > Server::ACTION_DISTANCE)
-    uAlice.moveLegallyTowards(uBob.location());
-
-  alice.sendMessage(CL_TARGET_PLAYER, "Bob");
-  REPEAT_FOR_MS(500);
-
-  CHECK(uBob.health() == uBob.stats().maxHealth);
+        THEN("Bob loses health") {
+          WAIT_UNTIL(uBob.health() < uBob.stats().maxHealth);
+        }
+      }
+    }
+  }
 }
 
 TEST_CASE("Attack rate is respected", "[.flaky]") {
@@ -160,8 +156,8 @@ TEST_CASE("Players can target distant entities") {
 TEST_CASE("Clients receive nearby users' health values", "[remote]") {
   // Given a server and two clients, Alice and Bob;
   TestServer s;
-  TestClient clientAlice = TestClient::WithUsername("Alice");
-  RemoteClient clientBob = RemoteClient("-username Bob");
+  auto clientAlice = TestClient::WithUsername("Alice");
+  auto clientBob = TestClient::WithUsername("Bob");
 
   // And Alice and Bob are at war
   s.wars().declare("Alice", "Bob");

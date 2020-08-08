@@ -1,4 +1,3 @@
-#include "RemoteClient.h"
 #include "TestClient.h"
 #include "TestServer.h"
 #include "testing.h"
@@ -39,12 +38,10 @@ TEST_CASE("Wars are persistent", "[war][persistence]") {
 }
 
 TEST_CASE("Clients are alerted of new wars", "[war][remote]") {
-  // Given Alice is logged in
+  // Given Alice and Bob are logged in
   TestServer s;
-  TestClient alice = TestClient::WithUsername("Alice");
-
-  // And Bob is logged in
-  RemoteClient rcBob("-username Bob");
+  auto alice = TestClient::WithUsername("Alice");
+  auto bob = TestClient::WithUsername("Bob");
   s.waitForUsers(2);
 
   // When Alice declares war on Bob
@@ -52,8 +49,8 @@ TEST_CASE("Clients are alerted of new wars", "[war][remote]") {
 
   // Then Alice is alerted to the new war
   WAIT_UNTIL(alice.otherUsers().size() == 1);
-  auto bob = alice.getFirstOtherUser();
-  WAIT_UNTIL(alice->isAtWarWith(bob));
+  auto &uBob = alice.getFirstOtherUser();
+  WAIT_UNTIL(alice->isAtWarWith(uBob));
 }
 
 TEST_CASE("Clients are told of existing wars on login", "[war][remote]") {
@@ -62,14 +59,14 @@ TEST_CASE("Clients are told of existing wars on login", "[war][remote]") {
   s.wars().declare("Alice", "Bob");
 
   // When Alice and Bob log in
-  TestClient alice = TestClient::WithUsername("Alice");
-  RemoteClient rcBob("-username Bob");
+  auto alice = TestClient::WithUsername("Alice");
+  auto bob = TestClient::WithUsername("Bob");
   s.waitForUsers(2);
 
   // Then she is told about the war
   WAIT_UNTIL(alice.otherUsers().size() == 1);
-  auto bob = alice.getFirstOtherUser();
-  WAIT_UNTIL(alice->isAtWarWith(bob));
+  auto &uBob = alice.getFirstOtherUser();
+  WAIT_UNTIL(alice->isAtWarWith(uBob));
 }
 
 TEST_CASE("Wars cannot be redeclared", "[war]") {
@@ -113,7 +110,7 @@ TEST_CASE("A player at war with a city is at war with its members",
   s.cities().createCity("Athens", {}, {});
 
   // And a user, Alice, who is a member of Athens;
-  RemoteClient alice("-username Alice");
+  auto alice = TestClient::WithUsername("Alice");
   s.waitForUsers(1);
   s.cities().addPlayerToCity(s.getFirstUser(), "Athens");
 
@@ -197,7 +194,7 @@ TEST_CASE("The objects of an offline enemy in an enemy city can be attacked",
     AND_GIVEN("Bob is an offline member of Athens") {
       s.cities().createCity("Athens", {}, {});
       {
-        RemoteClient bob("-username Bob -data testing/data/chair");
+        auto bob = TestClient::WithUsernameAndData("Bob", "chair");
         s.waitForUsers(1);
         s.cities().addPlayerToCity(s.getFirstUser(), "Athens");
       }
@@ -250,7 +247,7 @@ TEST_CASE("The enemy is alerted when peace is proposed",
   auto c = TestClient::WithUsername("Alice");
 
   // When Bob logs in and sues for peace
-  auto rc = RemoteClient{"-username Bob"};
+  auto c2 = TestClient::WithUsername("Bob");
   s.waitForUsers(2);
   auto &bob = s.findUser("Bob");
   s->handleBufferedMessages(
