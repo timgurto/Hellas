@@ -8,6 +8,7 @@
 
 #include "../Socket.h"
 #include "../messageCodes.h"
+#include "../threadNaming.h"
 #include "../util.h"
 #include "../versionUtil.h"
 #include "ItemSet.h"
@@ -226,7 +227,10 @@ void Server::run() {
         writeUserData(user);
       }
 
-      std::thread(saveData, _entities, _wars, _cities).detach();
+      std::thread([this]() {
+        setThreadName("Saving data on regular timer");
+        saveData(_entities, _wars, _cities);
+      }).detach();
 
       _lastSave = _time;
     }
@@ -234,7 +238,10 @@ void Server::run() {
     // Publish stats
     if (!_isTestServer)
       if (_time - _timeStatsLastPublished >= PUBLISH_STATS_FREQUENCY) {
-        std::thread(publishStats, this).detach();
+        std::thread([this]() {
+          setThreadName("Publishing server stats");
+          publishStats();
+        }).detach();
 
         _timeStatsLastPublished = _time;
       }
@@ -608,7 +615,10 @@ void Server::gatherObject(Serial serial, User &user) {
 #ifdef SINGLE_THREAD
   saveData(_objects, _wars, _cities);
 #else
-  std::thread(saveData, _entities, _wars, _cities).detach();
+  std::thread([this]() {
+    setThreadName("Saving data after gather");
+    saveData(_entities, _wars, _cities);
+  }).detach();
 #endif
 }
 

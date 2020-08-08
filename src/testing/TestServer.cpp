@@ -5,6 +5,7 @@
 
 #include "../Args.h"
 #include "../server/DroppedItem.h"
+#include "../threadNaming.h"
 #include "testing.h"
 
 extern Args cmdLineArgs;
@@ -95,9 +96,11 @@ TestServer &TestServer::operator=(TestServer &rhs) {
 }
 
 void TestServer::run() {
-  auto &server = *_server;
-  std::thread([&server]() { server.run(); }).detach();
-  WAIT_UNTIL(server._running);
+  std::thread([this]() {
+    setThreadName("Server");
+    _server->run();
+  }).detach();
+  WAIT_UNTIL(_server->_running);
 }
 
 void TestServer::stop() {

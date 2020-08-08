@@ -165,6 +165,7 @@
     <ClCompile Include="src\Socket.cpp" />
     <ClCompile Include="src\SpellSchool.cpp" />
     <ClCompile Include="src\Stats.cpp" />
+    <ClCompile Include="src\threadNaming.cpp" />
     <ClCompile Include="src\types.cpp" />
     <ClCompile Include="src\util.cpp" />
     <ClCompile Include="src\versionUtil.cpp" />
@@ -245,6 +246,7 @@
     <ClInclude Include="src\SpellSchool.h" />
     <ClInclude Include="src\Stats.h" />
     <ClInclude Include="src\Terrain.h" />
+    <ClInclude Include="src\threadNaming.h" />
     <ClInclude Include="src\types.h" />
     <ClInclude Include="src\util.h" />
     <ClInclude Include="src\version.h" />

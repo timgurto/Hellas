@@ -88,11 +88,11 @@ static std::map<std::string, int> getUsersFromFiles() {
   return users;
 }
 
-void Server::publishStats(Server *server) {
+void Server::publishStats() {
   static auto publishingStats = false;
   if (publishingStats) return;
   publishingStats = true;
-  ++server->_threadsOpen;
+  ++_threadsOpen;
 
   std::ostringstream oss;
 
@@ -100,31 +100,31 @@ void Server::publishStats(Server *server) {
 
   oss << "version: \"" << version() << "\",\n";
 
-  oss << "uptime: " << server->_time << ",\n";
+  oss << "uptime: " << _time << ",\n";
   oss << "time: " << time(nullptr) << ",\n";
 
-  oss << "recipes: " << server->_recipes.size() << ",\n";
-  oss << "constructions: " << server->_numBuildableObjects << ",\n";
-  oss << "quests: " << server->_quests.size() << ",\n";
+  oss << "recipes: " << _recipes.size() << ",\n";
+  oss << "constructions: " << _numBuildableObjects << ",\n";
+  oss << "quests: " << _quests.size() << ",\n";
 
   oss << "users: [";
 
   // Online users
-  for (const auto userEntry : server->_usersByName)
-    server->writeUserToFile(*userEntry.second, oss);
+  for (const auto userEntry : _usersByName)
+    writeUserToFile(*userEntry.second, oss);
 
   // Ofline users
   auto offlineUsers = getUsersFromFiles();
   for (const auto &offlineUser : offlineUsers) {
-    auto userIsOnline = server->_usersByName.find(offlineUser.first) !=
-                        server->_usersByName.end();
+    auto userIsOnline =
+        _usersByName.find(offlineUser.first) != _usersByName.end();
     if (userIsOnline) continue;
 
     auto user = User{offlineUser.first, {}, nullptr};
-    server->readUserData(user, false);
+    readUserData(user, false);
     user.secondsOffline = offlineUser.second;
 
-    server->writeUserToFile(user, oss);
+    writeUserToFile(user, oss);
   }
 
   oss << "\n],\n";
@@ -144,11 +144,11 @@ void Server::publishStats(Server *server) {
       else
         lastReportingTime += FREQUENCY;
       std::ofstream{"logging/onlinePlayers.csv", std::ofstream::app}
-          << currentTime << "," << server->_usersByName.size() << std::endl;
+          << currentTime << "," << _usersByName.size() << std::endl;
     }
   }
 
-  --server->_threadsOpen;
+  --_threadsOpen;
   publishingStats = false;
 }
 

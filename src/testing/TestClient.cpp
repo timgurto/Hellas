@@ -3,6 +3,8 @@
 #include <cassert>
 #include <thread>
 
+#include "../threadNaming.h"
+
 TestClient::TestClient() : _client(new Client) {
   CDataLoader::FromPath(*_client, "testing/data/minimal").load();
   _client->setRandomUsername();
@@ -95,8 +97,10 @@ void TestClient::loadDataFromString(const std::string &data) {
 }
 
 void TestClient::run() {
-  Client &client = *_client;
-  std::thread([&client]() { client.run(); }).detach();
+  std::thread([this]() {
+    setThreadName("Client ("s + _client->username() + ")");
+    _client->run();
+  }).detach();
 }
 
 void TestClient::stop() {

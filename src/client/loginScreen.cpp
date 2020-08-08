@@ -5,6 +5,7 @@
 
 #include "../Message.h"
 #include "../XmlWriter.h"
+#include "../threadNaming.h"
 #include "../versionUtil.h"
 #include "Client.h"
 #include "Particle.h"
@@ -38,7 +39,10 @@ void Client::loginScreenLoop() {
   if (_connection.shouldAttemptReconnection()) {
     _connection = {*this};
 
-    std::thread{connectToServerStatic, this}.detach();
+    std::thread{[this]() {
+      setThreadName("Connecting to server");
+      _connection.connect();
+    }}.detach();
   }
 
   if (_shouldAutoLogIn && _connection.state() == Connection::CONNECTED) login();
@@ -128,10 +132,6 @@ void Client::drawLoginScreen() const {
   _currentCursor->draw(_mouse);
 
   renderer.present();
-}
-
-void Client::connectToServerStatic(Client *client) {
-  client->_connection.connect();
 }
 
 void Client::updateLoginButton() {

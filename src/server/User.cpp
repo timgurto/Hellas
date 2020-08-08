@@ -3,6 +3,7 @@
 #include <thread>
 
 #include "../curlUtil.h"
+#include "../threadNaming.h"
 #include "ProgressLock.h"
 #include "Server.h"
 
@@ -75,22 +76,24 @@ void User::initialiseInventoryAndGear() {
   }
 }
 
-void User::findRealWorldLocationStatic(User *user) {
+void User::findRealWorldLocationStatic() {
   auto &server = Server::instance();
   server.incrementThreadCount();
 
-  auto username = user->name();
-  auto result = getLocationFromIP(user->socket().ip());
+  auto result = getLocationFromIP(socket().ip());
 
   if (!Server::hasInstance()) return;
-  auto pUser = server.getUserByName(username);
+  auto pUser = server.getUserByName(name());
   if (pUser) pUser->_realWorldLocation = result;
 
   server.decrementThreadCount();
 }
 
 void User::findRealWorldLocation() {
-  std::thread(findRealWorldLocationStatic, this).detach();
+  std::thread([this]() {
+    setThreadName("Finding user location");
+    findRealWorldLocationStatic();
+  }).detach();
 }
 
 const std::string &User::realWorldLocation() const {

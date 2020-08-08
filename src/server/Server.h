@@ -293,7 +293,7 @@ class Server {
   static const ms_t SAVE_FREQUENCY = 30000;
   ms_t _lastSave;
 
-  static void publishStats(Server *server);
+  void publishStats();
   void generateDurabilityList();
   static const ms_t PUBLISH_STATS_FREQUENCY = 5000;
   ms_t _timeStatsLastPublished;
