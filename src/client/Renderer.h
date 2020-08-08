@@ -26,6 +26,10 @@ class Renderer {
   friend void Texture::setRenderTarget()
       const;  // Needs access to raw SDL_Renderer
 
+#ifdef TESTING
+  SDL_mutex *mutex{nullptr};
+#endif
+
  public:
   Renderer();
   ~Renderer();
