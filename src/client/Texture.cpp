@@ -47,8 +47,9 @@ void Texture::createFromSurface() {
   if (!_surface) return;
 
   _raw = std::shared_ptr<SDL_Texture>{_surface.toTexture(), SDL_DestroyTexture};
-
+  LOCK_RENDERER_MUTEX
   auto isValid = SDL_QueryTexture(_raw.get(), nullptr, nullptr, &_w, &_h) == 0;
+  UNLOCK_RENDERER_MUTEX
   if (!isValid) _raw = {};
 }
 
@@ -73,17 +74,23 @@ Texture &Texture::operator=(const Texture &rhs) {
 }
 
 void Texture::setBlend(SDL_BlendMode mode) const {
+  LOCK_RENDERER_MUTEX
   SDL_SetTextureBlendMode(_raw.get(), mode);
+  UNLOCK_RENDERER_MUTEX
 }
 
 void Texture::setAlpha(Uint8 alpha) const {
+  LOCK_RENDERER_MUTEX
   SDL_SetTextureAlphaMod(_raw.get(), alpha);
+  UNLOCK_RENDERER_MUTEX
 }
 
 void Texture::rotateClockwise(const ScreenPoint &centre) {
   auto centreSDL = SDL_Point{centre.x, centre.y};
+  LOCK_RENDERER_MUTEX
   SDL_RenderCopyEx(renderer.raw(), _raw.get(), nullptr, nullptr, 90.0,
                    &centreSDL, SDL_FLIP_NONE);
+  UNLOCK_RENDERER_MUTEX
 }
 
 void Texture::draw(px_t x, px_t y) const { draw({x, y, _w, _h}); }
@@ -111,7 +118,9 @@ Color Texture::getPixel(px_t x, px_t y) const {
 }
 
 void Texture::setRenderTarget() const {
+  LOCK_RENDERER_MUTEX
   if (_validTarget) SDL_SetRenderTarget(renderer._renderer, _raw.get());
+  UNLOCK_RENDERER_MUTEX
 }
 
 Texture &Texture::placeholder() {

@@ -26,13 +26,13 @@ class Renderer {
   friend void Texture::setRenderTarget()
       const;  // Needs access to raw SDL_Renderer
 
-#ifdef TESTING
-  SDL_mutex *mutex{nullptr};
-#endif
-
  public:
   Renderer();
   ~Renderer();
+
+#ifdef TESTING
+  SDL_mutex *mutex{nullptr};
+#endif
 
   /*
   Some construction takes place here, to be called manually, as a Renderer may
@@ -73,5 +73,13 @@ class Renderer {
   void pushRenderTarget(Texture &target);
   void popRenderTarget();
 };
+
+#ifdef TESTING
+#define LOCK_RENDERER_MUTEX SDL_LockMutex(renderer.mutex);
+#define UNLOCK_RENDERER_MUTEX SDL_UnlockMutex(renderer.mutex);
+#else
+#define LOCK_RENDERER_MUTEX
+#define UNLOCK_RENDERER_MUTEX
+#endif
 
 #endif

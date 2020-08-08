@@ -17,8 +17,10 @@ Surface::Surface(const std::string &filename, const Color &colorKey)
                                         SDL_FreeSurface}) {
   if (!_raw) return;
 
+  LOCK_RENDERER_MUTEX
   if (&colorKey != &Color::NO_KEY)
     SDL_SetColorKey(_raw.get(), SDL_TRUE, colorKey);
+  UNLOCK_RENDERER_MUTEX
 
   if (isDebug()) _description = filename;
 }
