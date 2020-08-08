@@ -4,25 +4,24 @@
 #include "testing.h"
 
 TEST_CASE("Players can attack immediately") {
-  TestServer s = TestServer::WithData("ant");
-  TestClient c = TestClient::WithData("ant");
+  GIVEN("an NPC near a player") {
+    auto data = R"(
+      <npcType id="ant" maxHealth="1" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
 
-  // Move user to middle
-  s.waitForUsers(1);
-  User &user = s.getFirstUser();
+    s.addNPC("ant", {10, 10});
 
-  // Add NPC
-  s.addNPC("ant", {10, 10});
-  WAIT_UNTIL(c.objects().size() == 1);
+    WHEN("the player attacks it") {
+      const auto &ant = s.getFirstNPC();
+      c.sendMessage(CL_TARGET_ENTITY, makeArgs(ant.serial()));
 
-  // Start attacking
-  const auto objects = c.objects();
-  const ClientObject *objP = objects.begin()->second;
-  const ClientNPC &ant = dynamic_cast<const ClientNPC &>(*objP);
-  c.sendMessage(CL_TARGET_ENTITY, makeArgs(ant.serial()));
-
-  // NPC should be damaged very quickly
-  WAIT_UNTIL(ant.health() < ant.npcType()->maxHealth());
+      THEN("the NPC should be damaged very quickly") {
+        WAIT_UNTIL_TIMEOUT(100, ant.health() < ant.stats().maxHealth);
+      }
+    }
+  }
 }
 
 TEST_CASE("Only belligerents can target each other", "[remote]") {

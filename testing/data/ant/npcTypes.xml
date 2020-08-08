@@ -1,9 +1,0 @@
-<root>
-
-<npcType
-    id="ant"
-    name="Ant"
-    maxHealth="1">
-</npcType>
-
-</root>

@@ -112,15 +112,21 @@ TEST_CASE("Help text is valid XML") {
 }
 
 TEST_CASE("NPC types have correct defaults") {
-  // GIVEN an Ant NPC type with no level specified
-  TestServer s = TestServer::WithData("ant");
+  GIVEN("an NPC type with unspecified level") {
+    auto data = R"(
+      <npcType id="bacterium" />
+    )";
+    auto s = TestServer::WithDataString(data);
 
-  // THEN it has level 1
-  auto &ant = s.getFirstNPCType();
-  CHECK(ant.level() == 1);
+    THEN("it is level 1") {
+      auto &bacterium = s.getFirstNPCType();
+      CHECK(bacterium.level() == 1);
 
-  // AND it has 1 max health
-  CHECK(ant.baseStats().maxHealth == 1);
+      AND_THEN("it has 1 max health") {
+        CHECK(bacterium.baseStats().maxHealth == 1);
+      }
+    }
+  }
 }
 
 TEST_CASE("NPC tags are loaded in client") {

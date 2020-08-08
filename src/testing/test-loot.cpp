@@ -58,23 +58,27 @@ TEST_CASE("Objects have health", "[strength]") {
 }
 
 TEST_CASE("Clients discern NPCs with no loot", "[loot]") {
-  // Given a server and client;
-  // And an ant NPC type with 1 health and no loot table
-  TestServer s = TestServer::WithData("ant");
-  TestClient c = TestClient::WithData("ant");
+  GIVEN("an ant with 1 health and no loot table") {
+    auto data = R"(
+      <npcType id="ant" maxHealth="1" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
 
-  // And an ant NPC exists
-  s.addNPC("ant");
-  WAIT_UNTIL(c.objects().size() == 1);
+    s.addNPC("ant");
+    WAIT_UNTIL(c.objects().size() == 1);
 
-  // When the ant dies
-  NPC &serverAnt = s.getFirstNPC();
-  serverAnt.reduceHealth(1);
+    WHEN("the ant dies") {
+      NPC &serverAnt = s.getFirstNPC();
+      serverAnt.reduceHealth(1);
 
-  // The user doesn't believe he can loot it
-  ClientNPC &clientAnt = c.getFirstNPC();
-  REPEAT_FOR_MS(200);
-  CHECK_FALSE(clientAnt.lootable());
+      THEN("the user doesn't believe he can loot it") {
+        ClientNPC &clientAnt = c.getFirstNPC();
+        REPEAT_FOR_MS(200);
+        CHECK_FALSE(clientAnt.lootable());
+      }
+    }
+  }
 }
 
 TEST_CASE("Chance for strength-items as loot from object",
