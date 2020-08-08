@@ -42,16 +42,16 @@ class Element {
   // The current moused-over element.  Draw its tooltip.
   static const Element *_currentTooltipElement;
 
-  mutable bool _changed;    // If true, this element should be refreshed before
-                            // next being drawn.
-  bool _dimensionsChanged;  // If true, destroy and recreate texture before next
-                            // draw.
+  mutable bool _changed{true};     // If true, this element should be refreshed
+                                   // before next being drawn.
+  bool _dimensionsChanged{false};  // If true, destroy and recreate texture
+                                   // before next draw.
 
-  bool _visible;
+  bool _visible{true};
 
   ScreenRect _rect;  // Location and dimensions within window
 
-  Element *_parent;  // nullptr if no parent.
+  Element *_parent{nullptr};  // nullptr if no parent.
 
   std::string _id;  // Optional ID for finding children.
 
@@ -59,7 +59,7 @@ class Element {
   Tooltip _localCopyOfTooltip{};
   const Tooltip *_tooltip{nullptr};  // Optional tooltip
 
-  Uint8 _alpha = SDL_ALPHA_OPAQUE;
+  Uint8 _alpha{SDL_ALPHA_OPAQUE};
 
   bool _ignoreMouseEvents{false};
 
@@ -87,24 +87,25 @@ class Element {
   typedef void (*scrollDownFunction_t)(Element &e);
   typedef void (*preRefreshFunction_t)(Element &e);
 
-  mouseDownFunction_t _leftMouseDown;
-  Element *_leftMouseDownElement;
-  mouseUpFunction_t _leftMouseUp;
-  Element *_leftMouseUpElement;
-  mouseDownFunction_t _rightMouseDown;
-  Element *_rightMouseDownElement;
-  mouseUpFunction_t _rightMouseUp;
-  Element *_rightMouseUpElement;
-  mouseMoveFunction_t _mouseMove;
-  Element *_mouseMoveElement;
+  mouseDownFunction_t _leftMouseDown{nullptr};
+  Element *_leftMouseDownElement{nullptr};
+  mouseUpFunction_t _leftMouseUp{nullptr};
+  Element *_leftMouseUpElement{nullptr};
+  mouseDownFunction_t _rightMouseDown{nullptr};
+  Element *_rightMouseDownElement{nullptr};
+  mouseUpFunction_t _rightMouseUp{nullptr};
+  Element *_rightMouseUpElement{nullptr};
 
-  scrollUpFunction_t _scrollUp;
-  Element *_scrollUpElement;
-  scrollUpFunction_t _scrollDown;
-  Element *_scrollDownElement;
+  mouseMoveFunction_t _mouseMove{nullptr};
+  Element *_mouseMoveElement{nullptr};
 
-  preRefreshFunction_t _preRefresh;
-  Element *_preRefreshElement;
+  scrollUpFunction_t _scrollUp{nullptr};
+  Element *_scrollUpElement{nullptr};
+  scrollUpFunction_t _scrollDown{nullptr};
+  Element *_scrollDownElement{nullptr};
+
+  preRefreshFunction_t _preRefresh{nullptr};
+  Element *_preRefreshElement{nullptr};
 
   /*
   Perform any extra redrawing.  The renderer can be used directly.

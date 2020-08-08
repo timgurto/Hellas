@@ -25,30 +25,9 @@ const Element *Element::_currentTooltipElement = nullptr;
 
 bool Element::initialized = false;
 
-Element::Element(const ScreenRect &rect)
-    : _changed(true),
-      _dimensionsChanged(false),
-      _visible(true),
-      _rect(rect),
-      _parent(nullptr),
-      _texture(rect.w, rect.h),
-      _leftMouseDown(nullptr),
-      _leftMouseDownElement(nullptr),
-      _leftMouseUp(nullptr),
-      _leftMouseUpElement(nullptr),
-      _rightMouseDown(nullptr),
-      _rightMouseDownElement(nullptr),
-      _rightMouseUp(nullptr),
-      _rightMouseUpElement(nullptr),
-      _mouseMove(nullptr),
-      _mouseMoveElement(nullptr),
-      _scrollUp(nullptr),
-      _scrollUpElement(nullptr),
-      _scrollDown(nullptr),
-      _scrollDownElement(nullptr),
-      _preRefresh(nullptr),
-      _preRefreshElement(nullptr) {
+Element::Element(const ScreenRect &rect) : _rect(rect) {
   assert(initialized);
+  _texture = {rect.w, rect.h};
   _texture.setBlend(SDL_BLENDMODE_BLEND);
 }
 
