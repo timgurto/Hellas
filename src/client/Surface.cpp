@@ -12,22 +12,28 @@
 
 extern Renderer renderer;
 
-Surface::Surface(const std::string &filename, const Color &colorKey)
-    : _raw(std::shared_ptr<SDL_Surface>{IMG_Load(filename.c_str()),
-                                        SDL_FreeSurface}) {
+Surface::Surface(const std::string &filename, const Color &colorKey) {
+  LOCK_RENDERER_MUTEX
+  auto *rawPointer = IMG_Load(filename.c_str());
+  UNLOCK_RENDERER_MUTEX
+  _raw = {rawPointer, SDL_FreeSurface};
   if (!_raw) return;
 
-  LOCK_RENDERER_MUTEX
-  if (&colorKey != &Color::NO_KEY)
+  if (&colorKey != &Color::NO_KEY) {
+    LOCK_RENDERER_MUTEX
     SDL_SetColorKey(_raw.get(), SDL_TRUE, colorKey);
-  UNLOCK_RENDERER_MUTEX
+    UNLOCK_RENDERER_MUTEX
+  }
 
   if (isDebug()) _description = filename;
 }
 
-Surface::Surface(TTF_Font *font, const std::string &text, const Color &color)
-    : _raw(std::shared_ptr<SDL_Surface>{
-          TTF_RenderText_Blended(font, text.c_str(), color), SDL_FreeSurface}) {
+Surface::Surface(TTF_Font *font, const std::string &text, const Color &color) {
+  LOCK_RENDERER_MUTEX
+  auto *rawPointer = TTF_RenderText_Blended(font, text.c_str(), color);
+  UNLOCK_RENDERER_MUTEX
+  _raw = {rawPointer, SDL_FreeSurface};
+
   if (isDebug()) _description = "Text: " + text;
 }
 
