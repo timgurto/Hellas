@@ -911,4 +911,7 @@ void Client::CommonImages::initialise() {
 
   cityIcon = {"Images/ui/city.png"s};
   playerIcon = {"Images/ui/player.png"s};
+
+  loginBackgroundBack = {"Images/loginBack.png"s};
+  loginBackgroundFront = {"Images/loginFront.png"s, Color::MAGENTA};
 }

@@ -430,7 +430,6 @@ class Client {
   std::string _allowedTerrain{};  // TerrainList ID.  Empty: default.
 
   // Login screen
-  Texture _loginFront, _loginBack;
   ui_t _loginUI;
   void initLoginScreen();
   void drawLoginScreen() const;
@@ -568,6 +567,8 @@ class Client {
     Texture itemDamaged, itemBroken;
 
     Texture cityIcon, playerIcon;
+
+    Texture loginBackgroundBack, loginBackgroundFront;
   } images;
 
  private:

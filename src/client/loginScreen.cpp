@@ -94,13 +94,13 @@ void Client::drawLoginScreen() const {
   renderer.clear();
 
   // Background
-  _loginBack.draw();
+  images.loginBackgroundBack.draw();
 
   // Particles
   for (auto particle : _loginParticles) particle->draw();
 
   // Braziers
-  _loginFront.draw(_config.loginFrontOffset);
+  images.loginBackgroundFront.draw(_config.loginFrontOffset);
 
   // UI
   for (Element *element : _loginUI) element->draw();
@@ -395,10 +395,6 @@ void Client::initLoginScreen() {
     _loginUI.push_back(createButton);
     updateCreateButton(this);
   }
-
-  // Images
-  _loginFront = Texture(std::string("Images/loginFront.png"), Color::MAGENTA);
-  _loginBack = Texture(std::string("Images/loginBack.png"));
 
   loginScreenElements.loginErrorLabel = new OutlinedLabel({0, 0, 200, 15}, {});
   _loginUI.push_back(loginScreenElements.loginErrorLabel);
