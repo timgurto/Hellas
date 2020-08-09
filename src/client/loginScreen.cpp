@@ -17,21 +17,6 @@
 extern Renderer renderer;
 extern Args cmdLineArgs;
 
-static TextBox *nameBox{nullptr};
-static TextBox *newNameBox{nullptr};
-static TextBox *pwBox{nullptr};
-static TextBox *newPwBox{nullptr};
-static Button *loginButton{nullptr};
-static Button *createButton{nullptr};
-static ChoiceList *classList{nullptr};
-static List *classDescription{nullptr};
-static OutlinedLabel *loginErrorLabel{nullptr};
-
-static void showError(const std::string &message, const Color &color) {
-  loginErrorLabel->changeText(message);
-  loginErrorLabel->setColor(color);
-}
-
 void Client::loginScreenLoop() {
   const double delta =
       _timeElapsed / 1000.0;  // Fraction of a second that has elapsed
@@ -135,54 +120,55 @@ void Client::drawLoginScreen() const {
 }
 
 void Client::updateLoginButton() {
-  loginButton->clearTooltip();
-  loginButton->disable();
-  nameBox->forcePascalCase();
+  loginScreenElements.loginButton->clearTooltip();
+  loginScreenElements.loginButton->disable();
+  loginScreenElements.nameBox->forcePascalCase();
 
   if (_connection.state() != Connection::CONNECTED)
     ;  // loginButton->setTooltip("Not connected to server");
 
-  else if (!isUsernameValid(nameBox->text()))
+  else if (!isUsernameValid(loginScreenElements.nameBox->text()))
     ;  // loginButton->setTooltip("Please enter a valid username");
 
   else
-    loginButton->enable();
+    loginScreenElements.loginButton->enable();
 }
 
 void Client::updateCreateButton(void *pClient) {
-  createButton->clearTooltip();
-  createButton->disable();
-  newNameBox->forcePascalCase();
-
   const Client &client = *reinterpret_cast<const Client *>(pClient);
+
+  client.loginScreenElements.createButton->clearTooltip();
+  client.loginScreenElements.createButton->disable();
+  client.loginScreenElements.newNameBox->forcePascalCase();
 
   if (client._connection.state() != Connection::CONNECTED)
     ;  // createButton->setTooltip("Not connected to server");
 
-  else if (!isUsernameValid(newNameBox->text()))
+  else if (!isUsernameValid(client.loginScreenElements.newNameBox->text()))
     ;  // createButton->setTooltip("Please enter a valid username");
 
-  else if (classList->getSelected().empty())
+  else if (client.loginScreenElements.classList->getSelected().empty())
     ;  // createButton->setTooltip("Please choose a class");
 
   else
-    createButton->enable();
+    client.loginScreenElements.createButton->enable();
 }
 
 void Client::updateClassDescription(Client &client) {
   updateCreateButton(&client);
 
-  classDescription->clearChildren();
-  auto classID = classList->getSelected();
+  client.loginScreenElements.classDescription->clearChildren();
+  auto classID = client.loginScreenElements.classList->getSelected();
   if (classID.empty()) return;
 
   const auto &description = client.gameData.classes[classID].description();
   static auto wrapper =
-      WordWrapper{client.defaultFont(), classDescription->contentWidth()};
+      WordWrapper{client.defaultFont(),
+                  client.loginScreenElements.classDescription->contentWidth()};
   auto lines = wrapper.wrap(description);
 
   for (const auto &line : lines)
-    classDescription->addChild(new Label({}, line));
+    client.loginScreenElements.classDescription->addChild(new Label({}, line));
 }
 
 void Client::initCreateWindow() {
@@ -207,44 +193,47 @@ void Client::initCreateWindow() {
     auto y = 0_px;
 
     inputPane->addChild(new Label({0, y, 100, Element::TEXT_HEIGHT}, "Name:"s));
-    newNameBox = new TextBox(*this, {MID_PANE, y, L_PANE_W - MID_PANE, 0},
-                             TextBox::LETTERS);
-    newNameBox->setOnChange(updateCreateButton, this);
-    inputPane->addChild(newNameBox);
+    loginScreenElements.newNameBox = new TextBox(
+        *this, {MID_PANE, y, L_PANE_W - MID_PANE, 0}, TextBox::LETTERS);
+    loginScreenElements.newNameBox->setOnChange(updateCreateButton, this);
+    inputPane->addChild(loginScreenElements.newNameBox);
     infoPane->addChild(new Label({0, y, R_PANE_W, Element::TEXT_HEIGHT},
                                  "(Names must contain 3-20 characters)"s));
-    y += newNameBox->height() + GAP;
+    y += loginScreenElements.newNameBox->height() + GAP;
 
     inputPane->addChild(
         new Label({0, y, 100, Element::TEXT_HEIGHT}, "Password:"s));
-    newPwBox = new TextBox(*this, {MID_PANE, y, L_PANE_W - MID_PANE, 0});
-    newPwBox->maskContents();
-    inputPane->addChild(newPwBox);
-    y += newPwBox->height() + GAP;
+    loginScreenElements.newPwBox =
+        new TextBox(*this, {MID_PANE, y, L_PANE_W - MID_PANE, 0});
+    loginScreenElements.newPwBox->maskContents();
+    inputPane->addChild(loginScreenElements.newPwBox);
+    y += loginScreenElements.newPwBox->height() + GAP;
 
     inputPane->addChild(
         new Label({0, y, 100, Element::TEXT_HEIGHT}, "Class:"s));
     const auto CLASS_LIST_HEIGHT = 50_px;
-    classList =
+    loginScreenElements.classList =
         new ChoiceList({MID_PANE, y, L_PANE_W - MID_PANE, CLASS_LIST_HEIGHT},
                        Element::TEXT_HEIGHT, *this);
-    inputPane->addChild(classList);
+    inputPane->addChild(loginScreenElements.classList);
     for (const auto &pair : gameData.classes) {
       auto label = new Label({}, " "s + pair.second.name());
       label->id(pair.first);
-      classList->addChild(label);
+      loginScreenElements.classList->addChild(label);
     }
 
-    classList->onSelect = updateClassDescription;
-    classDescription = new List({0, y, R_PANE_W, PANE_H - y});
-    infoPane->addChild(classDescription);
+    loginScreenElements.classList->onSelect = updateClassDescription;
+    loginScreenElements.classDescription =
+        new List({0, y, R_PANE_W, PANE_H - y});
+    infoPane->addChild(loginScreenElements.classDescription);
   }
 
   const auto BUTTON_X = (WIN_H - BUTTON_WIDTH) / 2,
              BUTTON_Y = WIN_H - BUTTON_HEIGHT - MARGIN;
-  createButton = new Button({BUTTON_X, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT},
-                            "Create account"s, [this]() { createAccount(); });
-  _createWindow->addChild(createButton);
+  loginScreenElements.createButton =
+      new Button({BUTTON_X, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT},
+                 "Create account"s, [this]() { createAccount(); });
+  _createWindow->addChild(loginScreenElements.createButton);
 }
 
 static void saveUsernameAndPassword(const std::string &username,
@@ -264,12 +253,13 @@ static void saveUsernameAndPassword(const std::string &username,
 }
 
 void Client::createAccount() {
-  auto username = newNameBox->text();
-  newNameBox->text(username);
+  auto username = loginScreenElements.newNameBox->text();
+  loginScreenElements.newNameBox->text(username);
 
   _username = username;
-  const auto &selectedClass = classList->getSelected();
-  auto pwHash = picosha2::hash256_hex_string(newPwBox->text());
+  const auto &selectedClass = loginScreenElements.classList->getSelected();
+  auto pwHash =
+      picosha2::hash256_hex_string(loginScreenElements.newPwBox->text());
   sendMessage(
       {CL_LOGIN_NEW, makeArgs(username, pwHash, selectedClass, version())});
 
@@ -279,7 +269,7 @@ void Client::createAccount() {
 void Client::login() {
   _shouldAutoLogIn = false;
 
-  auto enteredName = nameBox->text();
+  auto enteredName = loginScreenElements.nameBox->text();
   if (!enteredName.empty()) {
     _username = enteredName;
   }
@@ -287,12 +277,13 @@ void Client::login() {
   auto pwHash = ""s;
   auto shouldCallCreateInsteadOfLogin = !_autoClassID.empty();
   if (shouldCallCreateInsteadOfLogin) {
-    pwHash = picosha2::hash256_hex_string(newPwBox->text());
+    pwHash = picosha2::hash256_hex_string(loginScreenElements.newPwBox->text());
     sendMessage(
         {CL_LOGIN_NEW, makeArgs(_username, pwHash, _autoClassID, version())});
   } else {
     pwHash = _savedPwHash;
-    if (pwHash.empty()) pwHash = picosha2::hash256_hex_string(pwBox->text());
+    if (pwHash.empty())
+      pwHash = picosha2::hash256_hex_string(loginScreenElements.pwBox->text());
     sendMessage({CL_LOGIN_EXISTING, makeArgs(_username, pwHash, version())});
   }
 
@@ -313,42 +304,44 @@ void Client::initLoginScreen() {
                         "Name:", Element::CENTER_JUSTIFIED));
   Y += Element::TEXT_HEIGHT + 1;
 
-  nameBox = new TextBox(*this, {BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT},
-                        TextBox::LETTERS);
-  nameBox->text(_username);
-  textBoxInFocus = nameBox;
-  nameBox->setOnChange([](void *pClient) {
+  loginScreenElements.nameBox = new TextBox(
+      *this, {BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT}, TextBox::LETTERS);
+  loginScreenElements.nameBox->text(_username);
+  textBoxInFocus = loginScreenElements.nameBox;
+  loginScreenElements.nameBox->setOnChange([](void *pClient) {
     auto &client = *reinterpret_cast<Client *>(pClient);
     client.updateLoginButton();
-    pwBox->text("");
+    client.loginScreenElements.pwBox->text("");
     client._savedPwHash.clear();
   });
-  _loginUI.push_back(nameBox);
-  Y += nameBox->height() + GAP;
+  _loginUI.push_back(loginScreenElements.nameBox);
+  Y += loginScreenElements.nameBox->height() + GAP;
 
   _loginUI.push_back(
       new OutlinedLabel({BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT + 5},
                         "Password:", Element::CENTER_JUSTIFIED));
   Y += Element::TEXT_HEIGHT + 1;
 
-  pwBox = new TextBox(*this, {BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT});
-  pwBox->maskContents();
-  if (!_savedPwHash.empty()) pwBox->text("SAVED PW");
-  pwBox->setOnChange([](void *pClient) {
+  loginScreenElements.pwBox =
+      new TextBox(*this, {BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT});
+  loginScreenElements.pwBox->maskContents();
+  if (!_savedPwHash.empty()) loginScreenElements.pwBox->text("SAVED PW");
+  loginScreenElements.pwBox->setOnChange([](void *pClient) {
     auto &client = *reinterpret_cast<Client *>(pClient);
     client._savedPwHash.clear();
   });
-  if (nameBox->hasText()) textBoxInFocus = pwBox;
-  _loginUI.push_back(pwBox);
-  Y += nameBox->height() + GAP;
+  if (loginScreenElements.nameBox->hasText())
+    textBoxInFocus = loginScreenElements.pwBox;
+  _loginUI.push_back(loginScreenElements.pwBox);
+  Y += loginScreenElements.nameBox->height() + GAP;
 
   SDL_StartTextInput();
 
   Y += Element::TEXT_HEIGHT + GAP;
 
-  loginButton = new Button({BUTTON_X, Y, BUTTON_W, BUTTON_HEIGHT}, "Login",
-                           [this]() { login(); });
-  _loginUI.push_back(loginButton);
+  loginScreenElements.loginButton = new Button(
+      {BUTTON_X, Y, BUTTON_W, BUTTON_HEIGHT}, "Login", [this]() { login(); });
+  _loginUI.push_back(loginScreenElements.loginButton);
   updateLoginButton();
 
   // Left-hand content
@@ -394,11 +387,11 @@ void Client::initLoginScreen() {
 
     auto y = 250_px, BUTTON_X = SCREEN_X - BUTTON_W - GAP;
 
-    auto createButton = new Button({BUTTON_X, y, BUTTON_W, BUTTON_HEIGHT},
-                                   "Create new account", [this]() {
-                                     showWindowInFront(_createWindow);
-                                     textBoxInFocus = newNameBox;
-                                   });
+    auto createButton = new Button(
+        {BUTTON_X, y, BUTTON_W, BUTTON_HEIGHT}, "Create new account", [this]() {
+          showWindowInFront(_createWindow);
+          textBoxInFocus = loginScreenElements.newNameBox;
+        });
     _loginUI.push_back(createButton);
     updateCreateButton(this);
   }
@@ -407,8 +400,8 @@ void Client::initLoginScreen() {
   _loginFront = Texture(std::string("Images/loginFront.png"), Color::MAGENTA);
   _loginBack = Texture(std::string("Images/loginBack.png"));
 
-  loginErrorLabel = new OutlinedLabel({0, 0, 200, 15}, {});
-  _loginUI.push_back(loginErrorLabel);
+  loginScreenElements.loginErrorLabel = new OutlinedLabel({0, 0, 200, 15}, {});
+  _loginUI.push_back(loginScreenElements.loginErrorLabel);
 
   _loginUI.push_back(_toasts);
 }
@@ -438,15 +431,15 @@ void Client::handleLoginInput(double delta) {
             break;
 
           case SDLK_TAB:
-            if (textBoxInFocus == nameBox)
-              textBoxInFocus = pwBox;
-            else if (textBoxInFocus == pwBox)
-              textBoxInFocus = nameBox;
+            if (textBoxInFocus == loginScreenElements.nameBox)
+              textBoxInFocus = loginScreenElements.pwBox;
+            else if (textBoxInFocus == loginScreenElements.pwBox)
+              textBoxInFocus = loginScreenElements.nameBox;
 
-            else if (textBoxInFocus == newNameBox)
-              textBoxInFocus = newPwBox;
-            else if (textBoxInFocus == newPwBox)
-              textBoxInFocus = newNameBox;
+            else if (textBoxInFocus == loginScreenElements.newNameBox)
+              textBoxInFocus = loginScreenElements.newPwBox;
+            else if (textBoxInFocus == loginScreenElements.newPwBox)
+              textBoxInFocus = loginScreenElements.newNameBox;
             break;
 
           case SDLK_RETURN:

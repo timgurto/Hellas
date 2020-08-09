@@ -4,11 +4,10 @@
 
 TEST_CASE("Start and stop server") { TestServer server; }
 
-TEST_CASE("Concurrent clients", "[remote]") {
+TEST_CASE("Concurrent clients") {
   GIVEN("two clients") {
     auto s = TestServer{};
     auto c1 = TestClient{};
-    s.waitForUsers(1);
     auto c2 = TestClient{};
 
     THEN("both successfully log into the server") { s.waitForUsers(2); }

@@ -449,6 +449,17 @@ class Client {
   std::string _autoClassID =
       {};  // For automated account creation, i.e., in tests
   std::string _savedPwHash;
+  struct LoginScreenElements {
+    TextBox *nameBox{nullptr};
+    TextBox *newNameBox{nullptr};
+    TextBox *pwBox{nullptr};
+    TextBox *newPwBox{nullptr};
+    Button *loginButton{nullptr};
+    Button *createButton{nullptr};
+    ChoiceList *classList{nullptr};
+    List *classDescription{nullptr};
+    OutlinedLabel *loginErrorLabel{nullptr};
+  } loginScreenElements;
 
   // These are superficial, and relate only to the cast bar.
   ms_t _actionTimer{0};        // How long the character has been performing the
