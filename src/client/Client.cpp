@@ -192,8 +192,6 @@ Client::~Client() {
   // list.
   for (Window *window : _windows) delete window;
 
-  cleanupSocialWindow();
-
   auto uniqueUIElements = std::set<Element *>{};
   for (Element *mainUIElement : _ui) uniqueUIElements.insert(mainUIElement);
   for (Element *loginElement : _loginUI) uniqueUIElements.insert(loginElement);
@@ -910,4 +908,7 @@ void Client::CommonImages::initialise() {
   renderer.popRenderTarget();
   itemBroken.setAlpha(0x7f);
   itemBroken.setBlend();
+
+  cityIcon = {"Images/ui/city.png"s};
+  playerIcon = {"Images/ui/player.png"s};
 }

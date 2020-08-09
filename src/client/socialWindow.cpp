@@ -7,13 +7,9 @@ extern Renderer renderer;
 static const auto GAP = 2_px, WIN_WIDTH = 200_px, BUTTON_WIDTH = 100_px,
                   BUTTON_HEIGHT = 15_px, WAR_ROW_HEIGHT = 15_px;
 
-static Texture cityIcon, playerIcon;
-
 void Client::initializeSocialWindow() {
   _socialWindow =
       Window::WithRectAndTitle(*this, {400, 100, WIN_WIDTH, 0}, "Social"s);
-  cityIcon = {"Images/ui/city.png"s};
-  playerIcon = {"Images/ui/player.png"s};
 
   auto y = GAP;
 
@@ -56,11 +52,6 @@ void Client::initializeSocialWindow() {
   populateWarsList();
 }
 
-void Client::cleanupSocialWindow() {
-  cityIcon = {};
-  playerIcon = {};
-}
-
 void Client::refreshCitySection() {
   _citySection->clearChildren();
   auto y = 0_px;
@@ -95,7 +86,8 @@ Element *createWarRow(const Client &client, const std::string &name,
   auto row = new Element;
   auto x = px_t{GAP};
 
-  const auto &icon = belligerentType == CITY ? cityIcon : playerIcon;
+  const auto &icon = belligerentType == CITY ? client.images.cityIcon
+                                             : client.images.playerIcon;
   row->addChild(new Picture{{x, 1, icon.width(), icon.height()}, icon});
   x += ICON_W;
 
