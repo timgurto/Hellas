@@ -13,25 +13,25 @@
 extern Renderer renderer;
 
 Surface::Surface(const std::string &filename, const Color &colorKey) {
-  LOCK_RENDERER_MUTEX
+  renderer.lock();
   auto *rawPointer = IMG_Load(filename.c_str());
-  UNLOCK_RENDERER_MUTEX
+  renderer.unlock();
   _raw = {rawPointer, SDL_FreeSurface};
   if (!_raw) return;
 
   if (&colorKey != &Color::NO_KEY) {
-    LOCK_RENDERER_MUTEX
+    renderer.lock();
     SDL_SetColorKey(_raw.get(), SDL_TRUE, colorKey);
-    UNLOCK_RENDERER_MUTEX
+    renderer.unlock();
   }
 
   if (isDebug()) _description = filename;
 }
 
 Surface::Surface(TTF_Font *font, const std::string &text, const Color &color) {
-  LOCK_RENDERER_MUTEX
+  renderer.lock();
   auto *rawPointer = TTF_RenderText_Blended(font, text.c_str(), color);
-  UNLOCK_RENDERER_MUTEX
+  renderer.unlock();
   _raw = {rawPointer, SDL_FreeSurface};
 
   if (isDebug()) _description = "Text: " + text;

@@ -23,10 +23,6 @@ Renderer::Renderer() : _renderer(nullptr), _window(nullptr), _valid(false) {
     ret = IMG_Init(IMG_INIT_PNG);
   }
   ++_count;
-
-#ifdef TESTING
-  mutex = SDL_CreateMutex();
-#endif
 }
 
 void Renderer::init() {
@@ -61,10 +57,6 @@ void Renderer::init() {
 }
 
 Renderer::~Renderer() {
-#ifdef TESTING
-  SDL_DestroyMutex(mutex);
-#endif
-
   if (_renderer) {
     auto temp = _renderer;
     _renderer = nullptr;
@@ -82,116 +74,120 @@ Renderer::~Renderer() {
   }
 }
 
+void Renderer::lock() const { _sdlMutex.lock(); }
+
+void Renderer::unlock() const { _sdlMutex.unlock(); }
+
 SDL_Texture *Renderer::createTextureFromSurface(SDL_Surface *surface) const {
   if (!_renderer) return nullptr;
-  LOCK_RENDERER_MUTEX
+  lock();
   auto texture = SDL_CreateTextureFromSurface(_renderer, surface);
-  UNLOCK_RENDERER_MUTEX
+  unlock();
   return texture;
 }
 
 SDL_Texture *Renderer::createTargetableTexture(px_t width, px_t height) const {
   if (!_renderer) return nullptr;
-  LOCK_RENDERER_MUTEX
+  lock();
   auto texture = SDL_CreateTexture(_renderer, SDL_PIXELFORMAT_RGBA8888,
                                    SDL_TEXTUREACCESS_TARGET, width, height);
-  UNLOCK_RENDERER_MUTEX
+  unlock();
   return texture;
 }
 
 void Renderer::drawTexture(SDL_Texture *srcTex, const ScreenRect &dstRect) {
   if (!_renderer) return;
-  LOCK_RENDERER_MUTEX
+  lock();
   SDL_RenderCopy(_renderer, srcTex, 0, &rectToSDL(dstRect));
-  UNLOCK_RENDERER_MUTEX
+  unlock();
 }
 
 void Renderer::drawTexture(SDL_Texture *srcTex, const ScreenRect &dstRect,
                            const ScreenRect &srcRect) {
   if (!_renderer) return;
-  LOCK_RENDERER_MUTEX
+  lock();
   SDL_RenderCopy(_renderer, srcTex, &rectToSDL(srcRect), &rectToSDL(dstRect));
-  UNLOCK_RENDERER_MUTEX
+  unlock();
 }
 
 void Renderer::setDrawColor(const Color &color) {
   if (!_renderer) return;
-  LOCK_RENDERER_MUTEX
+  lock();
   SDL_SetRenderDrawColor(_renderer, color.r(), color.g(), color.b(), 0xff);
-  UNLOCK_RENDERER_MUTEX
+  unlock();
 }
 
 void Renderer::clear() {
   if (!_renderer) return;
-  LOCK_RENDERER_MUTEX
+  lock();
   SDL_RenderClear(_renderer);
-  UNLOCK_RENDERER_MUTEX
+  unlock();
 }
 
 void Renderer::present() {
   if (!_renderer) return;
-  LOCK_RENDERER_MUTEX
+  lock();
   SDL_RenderPresent(_renderer);
-  UNLOCK_RENDERER_MUTEX
+  unlock();
 }
 
 void Renderer::drawRect(const ScreenRect &dstRect) {
   if (!_renderer) return;
-  LOCK_RENDERER_MUTEX
+  lock();
   SDL_RenderDrawRect(_renderer, &rectToSDL(dstRect));
-  UNLOCK_RENDERER_MUTEX
+  unlock();
 }
 
 void Renderer::fillRect(const ScreenRect &dstRect) {
   if (!_renderer) return;
-  LOCK_RENDERER_MUTEX
+  lock();
   SDL_RenderFillRect(_renderer, &rectToSDL(dstRect));
-  UNLOCK_RENDERER_MUTEX
+  unlock();
 }
 
 void Renderer::fill() {
   if (!_renderer) return;
-  LOCK_RENDERER_MUTEX
+  lock();
   SDL_RenderFillRect(_renderer, nullptr);
-  UNLOCK_RENDERER_MUTEX
+  unlock();
 }
 
 void Renderer::fillWithTransparency() {
-  LOCK_RENDERER_MUTEX
+  lock();
   SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 0x00);
   SDL_RenderFillRect(_renderer, nullptr);
-  UNLOCK_RENDERER_MUTEX
+  unlock();
 }
 
 void Renderer::setRenderTarget() const {
   if (!_renderer) return;
-  LOCK_RENDERER_MUTEX
+  lock();
   SDL_SetRenderTarget(_renderer, 0);
-  UNLOCK_RENDERER_MUTEX
+  unlock();
 }
 
 void Renderer::updateSize() {
   if (!_renderer) return;
-  LOCK_RENDERER_MUTEX
+  lock();
   SDL_GetRendererOutputSize(_renderer, &_w, &_h);
-  UNLOCK_RENDERER_MUTEX
+  unlock();
 }
 
 void Renderer::pushRenderTarget(Texture &target) {
   if (!_renderer) return;
-  LOCK_RENDERER_MUTEX
+  lock();
   SDL_Texture *currentTarget = SDL_GetRenderTarget(_renderer);
   _renderTargetsStack.push(currentTarget);
   SDL_SetRenderTarget(_renderer, target.raw());
-  UNLOCK_RENDERER_MUTEX
+  unlock();
 }
 
 void Renderer::popRenderTarget() {
   if (!_renderer) return;
-  LOCK_RENDERER_MUTEX
+  lock();
   SDL_SetRenderTarget(_renderer, _renderTargetsStack.top());
   _renderTargetsStack.pop();
-  UNLOCK_RENDERER_MUTEX
+  unlock();
 }
 
 SDL_Rect Renderer::rectToSDL(const ScreenRect &rect) {
@@ -202,7 +198,7 @@ SDL_Rect Renderer::rectToSDL(const ScreenRect &rect) {
 Color Renderer::getPixel(px_t x, px_t y) const {
   if (!_renderer) return {};
   px_t logicalW, logicalH;
-  LOCK_RENDERER_MUTEX
+  lock();
   SDL_RenderGetLogicalSize(_renderer, &logicalW, &logicalH);
 
   double scaleW = 1.0 * _w / logicalW, scaleH = 1.0 * _h / logicalH;
@@ -222,7 +218,7 @@ Color Renderer::getPixel(px_t x, px_t y) const {
 #endif
 
   SDL_RenderReadPixels(_renderer, &rect, pixelFormat, &pixel, pitch);
-  UNLOCK_RENDERER_MUTEX
+  unlock();
 
   return pixel;
 }

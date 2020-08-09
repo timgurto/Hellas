@@ -5,14 +5,14 @@
 TEST_CASE("Start and stop server") { TestServer server; }
 
 TEST_CASE("Concurrent clients", "[remote]") {
-  // Given a server
-  TestServer s;
+  GIVEN("two clients") {
+    auto s = TestServer{};
+    auto c1 = TestClient{};
+    s.waitForUsers(1);
+    auto c2 = TestClient{};
 
-  // When two TestClients are created
-  TestClient c1, c2;
-
-  // Then both successfully log into the server
-  s.waitForUsers(2);
+    THEN("both successfully log into the server") { s.waitForUsers(2); }
+  }
 }
 
 TEST_CASE("Run TestClient with custom username") {
