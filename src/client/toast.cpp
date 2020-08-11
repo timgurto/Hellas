@@ -5,6 +5,7 @@ void Client::initToasts() {
 
   auto x = (SCREEN_X - TOAST_W) / 2;
   _toasts = new List({x, 0, TOAST_W, SCREEN_Y}, TOAST_H);
+  _toasts->id("Toasts");
   addUI(_toasts);
 
   populateToastsList();

@@ -48,6 +48,7 @@ void Client::initUI() {
   _lastErrorMessage = new OutlinedLabel(
       {0, SCREEN_Y - ERROR_FROM_BOTTOM, SCREEN_X, Element::TEXT_HEIGHT + 4}, {},
       Element::CENTER_JUSTIFIED);
+  _lastErrorMessage->id("Error/warning message");
   addUI(_lastErrorMessage);
 
   const auto INSTRUCTIONS_Y = 100;
@@ -55,6 +56,7 @@ void Client::initUI() {
       new OutlinedLabel({0, INSTRUCTIONS_Y, SCREEN_X, Element::TEXT_HEIGHT + 2},
                         {}, Element::CENTER_JUSTIFIED);
   _instructionsLabel->setColor(Color::UI_TEXT);
+  _instructionsLabel->id("Centre-screen Instructions");
   addUI(_instructionsLabel);
 }
 
@@ -75,6 +77,7 @@ void Client::initChatLog() {
   _chatContainer->addChild(_chatLog);
   _chatContainer->addChild(_chatTextBox);
 
+  _chatContainer->id("Chat log");
   addUI(_chatContainer);
 }
 
@@ -142,6 +145,7 @@ void Client::initCastBar() {
   _castBar->addChild(label);
 
   _castBar->hide();
+  _castBar->id("Cast bar");
   addUI(_castBar);
 }
 
@@ -149,6 +153,7 @@ void Client::initBuffsDisplay() {
   const px_t WIDTH = 60, HEIGHT = 300, ROW_HEIGHT = 20;
   _buffsDisplay = new List({SCREEN_X - WIDTH, 0, WIDTH, HEIGHT}, ROW_HEIGHT);
 
+  _buffsDisplay->id("Player's buffs");
   addUI(_buffsDisplay);
 
   refreshBuffsDisplay();
@@ -231,6 +236,7 @@ void Client::initTargetBuffs() {
              Y = targetPanelRect.y + targetPanelRect.h + GAP, W = 400, H = 16;
   _targetBuffs = new Element({X, Y, W, H});
 
+  _targetBuffs->id("Target's buffs");
   addUI(_targetBuffs);
 
   refreshTargetBuffs();
@@ -324,6 +330,7 @@ void Client::initMenuBar() {
   addButtonToMenu(menuBar, 10, _bugReportWindow, "icon-bug.png",
                   "Report bug or give feedback");
 
+  menuBar->id("Menu bar");
   addUI(menuBar);
 }
 
@@ -376,6 +383,7 @@ void Client::initPerformanceDisplay() {
   hardwareStats->addChild(lat);
   hardwareStats->addChild(numEntities);
   hardwareStats->addChild(channels);
+  hardwareStats->id("Performance stats");
   addUI(hardwareStats);
 }
 
@@ -386,6 +394,7 @@ void Client::initPlayerPanels() {
       _character.health(), _character.maxHealth(), _character.energy(),
       _character.maxEnergy(), _character.level());
   playerPanel->addXPBar(_xp, _maxXP);
+  playerPanel->id("Player panel");
   addUI(playerPanel);
   /*
   initializeMenu() must be called before initializePanel(), otherwise the
@@ -393,7 +402,9 @@ void Client::initPlayerPanels() {
   */
   _target.initializeMenu();
   _target.initializePanel(*this);
+  _target.panel()->id("Target-panel context menu");
   addUI(_target.panel());
+  _target.menu()->id("Target panel");
   addUI(_target.menu());
 }
 
@@ -436,6 +447,7 @@ void Client::initQuestProgress() {
   const auto WIDTH = 150_px, Y = 100_px, HEIGHT = 200_px;
   _questProgress =
       new List{{SCREEN_X - WIDTH, Y, WIDTH, HEIGHT}, Element::TEXT_HEIGHT + 2};
+  _questProgress->id("Quest tracker");
   addUI(_questProgress);
   _questProgress->ignoreMouseEvents();
 }
@@ -454,6 +466,7 @@ void Client::initSkipTutorialButton() {
     addWindow(_skipTutorialConfirmation);
     _skipTutorialConfirmation->show();
   });
+  _skipTutorialButton->id("Skip-tutorial button");
   addUI(_skipTutorialButton);
   _skipTutorialButton->hide();
 }

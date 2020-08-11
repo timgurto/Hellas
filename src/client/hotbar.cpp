@@ -73,6 +73,7 @@ void Client::initHotbar() {
     _hotbar->addChild(_hotbarCooldownLabels[i]);
   }
 
+  _hotbar->id("Hotbar");
   addUI(_hotbar);
   initAssignerWindow();
 }
