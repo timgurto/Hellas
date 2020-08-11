@@ -3,10 +3,6 @@
 #include "ui/Picture.h"
 #include "ui/Window.h"
 
-static int zoomMultiplier{0};
-static ScreenPoint mapDisplacement{};
-static Picture *fogOfWar{nullptr};
-
 void Client::onMapScrollUp(Element &e) {
   auto *window = dynamic_cast<Window *>(&e);
   if (!window || !window->client()) return;
@@ -33,8 +29,8 @@ void Client::initializeMapWindow() {
       new Picture(ScreenRect{0, 0, MAP_IMAGE_W, MAP_IMAGE_H}, _mapImage);
   _mapWindow->addChild(_mapPicture);
 
-  fogOfWar = new Picture(0, 0, _fogOfWar);
-  _mapWindow->addChild(fogOfWar);
+  mapWindow.fogOfWar = new Picture(0, 0, _fogOfWar);
+  _mapWindow->addChild(mapWindow.fogOfWar);
 
   _mapPinOutlines = new Element({0, 0, MAP_IMAGE_W, MAP_IMAGE_H});
   _mapPins = new Element({0, 0, MAP_IMAGE_W, MAP_IMAGE_H});
@@ -70,34 +66,36 @@ void Client::updateMapWindow(Element &e) {
   if (!window || !window->client()) return;
   auto &client = *window->client();
 
-  zoomMultiplier = 1 << client._zoom;
+  client.mapWindow.zoomMultiplier = 1 << client._zoom;
 
   // Unit: point from far top/left to far bottom/right [0,1]
   auto charPosX =
       client._character.location().x / (client._map.width() * Map::TILE_W);
   auto charPosY =
       client._character.location().y / (client._map.height() * Map::TILE_H);
-  auto mapDisplacementX = 0.5 - charPosX * zoomMultiplier;
-  auto mapDisplacementY = 0.5 - charPosY * zoomMultiplier;
+  auto mapDisplacementX = 0.5 - charPosX * client.mapWindow.zoomMultiplier;
+  auto mapDisplacementY = 0.5 - charPosY * client.mapWindow.zoomMultiplier;
 
-  mapDisplacement = {toInt(mapDisplacementX * MAP_IMAGE_W),
-                     toInt(mapDisplacementY * MAP_IMAGE_H)};
+  client.mapWindow.displacement = {toInt(mapDisplacementX * MAP_IMAGE_W),
+                                   toInt(mapDisplacementY * MAP_IMAGE_H)};
 
   // Make sure map always fills the screen
-  auto xLim = -MAP_IMAGE_W * zoomMultiplier + MAP_IMAGE_W;
-  auto yLim = -MAP_IMAGE_H * zoomMultiplier + MAP_IMAGE_H;
-  mapDisplacement.x = max(xLim, min(mapDisplacement.x, 0));
-  mapDisplacement.y = max(yLim, min(mapDisplacement.y, 0));
+  auto xLim = -MAP_IMAGE_W * client.mapWindow.zoomMultiplier + MAP_IMAGE_W;
+  auto yLim = -MAP_IMAGE_H * client.mapWindow.zoomMultiplier + MAP_IMAGE_H;
+  client.mapWindow.displacement.x =
+      max(xLim, min(client.mapWindow.displacement.x, 0));
+  client.mapWindow.displacement.y =
+      max(yLim, min(client.mapWindow.displacement.y, 0));
 
   auto picRect = ScreenRect{};
-  picRect.x = mapDisplacement.x;
-  picRect.y = mapDisplacement.y;
+  picRect.x = client.mapWindow.displacement.x;
+  picRect.y = client.mapWindow.displacement.y;
   picRect.w = MAP_IMAGE_W * (1 << client._zoom);
   picRect.h = MAP_IMAGE_H * (1 << client._zoom);
   client._mapPicture->rect(picRect);
 
-  *fogOfWar = {0, 0, client._fogOfWar};
-  fogOfWar->rect(picRect);
+  *client.mapWindow.fogOfWar = {0, 0, client._fogOfWar};
+  client.mapWindow.fogOfWar->rect(picRect);
 
   client._mapPins->clearChildren();
   client._mapPinOutlines->clearChildren();
@@ -192,10 +190,10 @@ ScreenRect Client::convertToMapPosition(const MapPoint &worldPosition) const {
   const double MAP_FACTOR_X = 1.0 * _map.width() * Map::TILE_W / MAP_IMAGE_W,
                MAP_FACTOR_Y = 1.0 * _map.height() * Map::TILE_H / MAP_IMAGE_H;
 
-  px_t x = toInt(worldPosition.x / MAP_FACTOR_X * zoomMultiplier),
-       y = toInt(worldPosition.y / MAP_FACTOR_Y * zoomMultiplier);
+  px_t x = toInt(worldPosition.x / MAP_FACTOR_X * mapWindow.zoomMultiplier),
+       y = toInt(worldPosition.y / MAP_FACTOR_Y * mapWindow.zoomMultiplier);
 
-  return mapDisplacement + ScreenRect{x, y, 0, 0};
+  return mapWindow.displacement + ScreenRect{x, y, 0, 0};
 }
 
 void Client::zoomMapIn() { _zoom = min(_zoom + 1, MAX_ZOOM); }
