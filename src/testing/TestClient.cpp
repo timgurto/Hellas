@@ -5,45 +5,31 @@
 
 #include "../threadNaming.h"
 
-TestClient::TestClient() {
-  std::thread([this]() {
-    _client = new Client;
-    _client->setRandomUsername();
-    setThreadName("Client ("s + _client->username() + ")");
-    _client->_shouldAutoLogIn = true;
-    _client->run();
-  }).detach();
-
-  WAIT_UNTIL(_client);
-  WAIT_UNTIL(_client->_connection.state() != Connection::INITIALIZING);
+TestClient::TestClient() : _client(new Client) {
+  CDataLoader::FromPath(*_client, "testing/data/minimal").load();
+  _client->setRandomUsername();
+  _client->_shouldAutoLogIn = true;
+  run();
 }
 
-TestClient::TestClient(const StringMap &strings) {
-  std::thread([this, &strings]() {
-    _client = new Client;
+TestClient::TestClient(const StringMap &strings) : _client(new Client) {
+  CDataLoader::FromPath(*_client, "testing/data/minimal").load();
 
-    CDataLoader::FromPath(*_client, "testing/data/minimal").load();
+  if (strings.count(USERNAME) == 1)
+    _client->_username = strings.at(USERNAME);
+  else
+    _client->setRandomUsername();
 
-    if (strings.count(USERNAME) == 1)
-      _client->_username = strings.at(USERNAME);
-    else
-      _client->setRandomUsername();
-    setThreadName("Client ("s + _client->username() + ")");
+  if (strings.count(DATA_PATH) == 1)
+    CDataLoader::FromPath(*_client, "testing/data/" + strings.at(DATA_PATH))
+        .load(true);
+  if (strings.count(DATA_STRING) == 1)
+    CDataLoader::FromString(*_client, strings.at(DATA_STRING)).load(true);
 
-    if (strings.count(DATA_PATH) == 1)
-      CDataLoader::FromPath(*_client, "testing/data/" + strings.at(DATA_PATH))
-          .load(true);
-    if (strings.count(DATA_STRING) == 1)
-      CDataLoader::FromString(*_client, strings.at(DATA_STRING)).load(true);
+  if (strings.count(CLASS) == 1) _client->_autoClassID = strings.at(CLASS);
 
-    if (strings.count(CLASS) == 1) _client->_autoClassID = strings.at(CLASS);
-
-    _client->_shouldAutoLogIn = true;
-    _client->run();
-  }).detach();
-
-  WAIT_UNTIL(_client);
-  WAIT_UNTIL(_client->_connection.state() != Connection::INITIALIZING);
+  _client->_shouldAutoLogIn = true;
+  run();
 }
 
 TestClient TestClient::WithUsername(const std::string &username) {
@@ -89,10 +75,9 @@ TestClient TestClient::WithClassAndDataString(const std::string &classID,
 }
 
 TestClient::~TestClient() {
-  if (_client) {
-    stop();
-    delete _client;
-  }
+  if (_client == nullptr) return;
+  stop();
+  delete _client;
 }
 
 TestClient::TestClient(TestClient &rhs) : _client(rhs._client) {
@@ -111,7 +96,12 @@ void TestClient::loadDataFromString(const std::string &data) {
   CDataLoader::FromString(*_client, data).load(true);
 }
 
-void TestClient::run() {}
+void TestClient::run() {
+  std::thread([this]() {
+    setThreadName("Client ("s + _client->username() + ")");
+    _client->run();
+  }).detach();
+}
 
 void TestClient::stop() {
   _client->_loop = false;

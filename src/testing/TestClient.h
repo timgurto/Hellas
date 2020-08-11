@@ -120,7 +120,7 @@ class TestClient {
   void sendLocationUpdatesInstantly();
 
  private:
-  Client *_client{nullptr};
+  Client *_client;
 
   enum StringType { USERNAME, CLASS, DATA_PATH, DATA_STRING };
   using StringMap = std::map<StringType, std::string>;
