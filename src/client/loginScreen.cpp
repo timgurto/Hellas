@@ -404,7 +404,7 @@ void Client::initLoginScreen() {
 
 void Client::handleLoginInput(double delta) {
   auto mouseEventWasOnWindow = false;
-  static SDL_Event e;
+  SDL_Event e;
   while (SDL_PollEvent(&e) != 0) {
     std::ostringstream oss;
     switch (e.type) {
