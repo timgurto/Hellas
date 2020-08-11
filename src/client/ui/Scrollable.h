@@ -17,9 +17,6 @@ class Scrollable : public Element {
   px_t _cursorOffset{0};  // y-offset of the mouse on the cursor.
 
   Element *_scrollBar;
-  static Texture  // Arrow images
-      whiteUp,
-      whiteDown, greyUp, greyDown;
   Picture *_whiteUp{nullptr}, *_whiteDown{nullptr}, *_greyUp{nullptr},
       *_greyDown{nullptr};
   Element *_cursor{

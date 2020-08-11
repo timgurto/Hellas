@@ -572,6 +572,9 @@ class Client {
     Texture loginBackgroundBack, loginBackgroundFront;
 
     Texture basePassive, baseAggressive;
+
+    Texture scrollArrowWhiteUp, scrollArrowWhiteDown, scrollArrowGreyUp,
+        scrollArrowGreyDown;
   } images;
 
  private:

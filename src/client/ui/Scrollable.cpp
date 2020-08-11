@@ -1,5 +1,6 @@
 #include "Scrollable.h"
 
+#include "../Client.h"
 #include "../Renderer.h"
 #include "ColorBlock.h"
 #include "Label.h"
@@ -14,9 +15,6 @@ const px_t Scrollable::ARROW_H = 5;
 const px_t Scrollable::CURSOR_HEIGHT = 8;
 const px_t Scrollable::SCROLL_AMOUNT = 10;
 
-Texture Scrollable::whiteUp{}, Scrollable::whiteDown{}, Scrollable::greyUp{},
-    Scrollable::greyDown{};
-
 Scrollable::Scrollable(const ScreenRect &rect)
     : Element(rect),
       _scrollBar(new Element({rect.w - ARROW_W, 0, ARROW_W, rect.h})),
@@ -29,16 +27,14 @@ Scrollable::Scrollable(const ScreenRect &rect)
   _scrollBar->addChild(
       new Line(ARROW_W / 2 - 1, ARROW_H, rect.h - 2 * ARROW_H, VERTICAL));
 
-  if (!whiteUp) {
-    whiteUp = {"Images/arrowUp.png", Color::MAGENTA};
-    greyUp = {"Images/arrowUpGrey.png", Color::MAGENTA};
-    whiteDown = {"Images/arrowDown.png", Color::MAGENTA};
-    greyDown = {"Images/arrowDownGrey.png", Color::MAGENTA};
-  }
-  _whiteUp = new Picture({0, 0, ARROW_W, ARROW_H}, whiteUp);
-  _greyUp = new Picture({0, 0, ARROW_W, ARROW_H}, greyUp);
-  _whiteDown = new Picture({0, rect.h - ARROW_H, ARROW_W, ARROW_H}, whiteDown);
-  _greyDown = new Picture({0, rect.h - ARROW_H, ARROW_W, ARROW_H}, greyDown);
+  _whiteUp =
+      new Picture({0, 0, ARROW_W, ARROW_H}, Client::images.scrollArrowWhiteUp);
+  _greyUp =
+      new Picture({0, 0, ARROW_W, ARROW_H}, Client::images.scrollArrowGreyUp);
+  _whiteDown = new Picture({0, rect.h - ARROW_H, ARROW_W, ARROW_H},
+                           Client::images.scrollArrowWhiteDown);
+  _greyDown = new Picture({0, rect.h - ARROW_H, ARROW_W, ARROW_H},
+                          Client::images.scrollArrowGreyDown);
 
   _whiteUp->hide();
   _greyDown->hide();

@@ -916,4 +916,9 @@ void Client::CommonImages::initialise() {
 
   basePassive = {"Images/targetPassive.png"s, Color::MAGENTA};
   baseAggressive = {"Images/targetAggressive.png"s, Color::MAGENTA};
+
+  scrollArrowWhiteUp = {"Images/arrowUp.png", Color::MAGENTA};
+  scrollArrowWhiteDown = {"Images/arrowDown.png", Color::MAGENTA};
+  scrollArrowGreyUp = {"Images/arrowUpGrey.png", Color::MAGENTA};
+  scrollArrowGreyDown = {"Images/arrowDownGrey.png", Color::MAGENTA};
 }
