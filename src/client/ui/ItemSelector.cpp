@@ -23,9 +23,6 @@ const px_t ItemSelector::LIST_HEIGHT =
     WINDOW_HEIGHT - SEARCH_BUTTON_HEIGHT - 4 * GAP - 2;
 
 ClientItem **ItemSelector::_itemBeingSelected = nullptr;
-Window *ItemSelector::_findItemWindow = nullptr;
-TextBox *ItemSelector::_filterText = nullptr;
-List *ItemSelector::_itemList = nullptr;
 
 ItemSelector::ItemSelector(Client &client, const ClientItem *&item, px_t x,
                            px_t y)
@@ -90,7 +87,7 @@ void ItemSelector::applyFilter() {
       auto pItem = const_cast<ClientItem *>(&item);
       Button *itemButton =
           new Button({0, 0, LIST_WIDTH - List::ARROW_W, ITEM_HEIGHT + 2}, "",
-                     [pItem]() { selectItem(pItem); });
+                     [this, pItem]() { selectItem(pItem); });
       container->addChild(itemButton);
       itemButton->addChild(
           new Picture({1, 1, ITEM_HEIGHT, ITEM_HEIGHT}, item.icon()));
@@ -105,7 +102,7 @@ void ItemSelector::applyFilter() {
   _itemList->addChild(container);
   Button *itemButton =
       new Button({0, 0, LIST_WIDTH - List::ARROW_W, ITEM_HEIGHT + 2}, "",
-                 []() { selectItem(nullptr); });
+                 [this]() { selectItem(nullptr); });
   container->addChild(itemButton);
   itemButton->addChild(new Label(
       {ITEM_HEIGHT + GAP, LABEL_TOP, LABEL_WIDTH, TEXT_HEIGHT}, "[None]"));

@@ -36,14 +36,14 @@ class ItemSelector : public Button {
 
   static ClientItem **_itemBeingSelected;
 
-  static Window *_findItemWindow;
-  static TextBox *_filterText;
-  static List *_itemList;
+  Window *_findItemWindow{nullptr};
+  TextBox *_filterText{nullptr};
+  List *_itemList{nullptr};
 
   void openFindItemWindow(
       void *data);  // The find-item window, when a selector is clicked.
   void applyFilter();
-  static void selectItem(void *data);
+  void selectItem(void *data);
 
   static bool itemMatchesFilter(const ClientItem &item,
                                 const std::string &filter);
