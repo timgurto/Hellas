@@ -7,6 +7,7 @@ extern Renderer renderer;
 ms_t ImageWithHighlight::timeThatTheLastRedrawWasOrdered{0};
 
 ImageWithHighlight::ImageWithHighlight(const FilenameWithoutSuffix& imageFile) {
+  if (imageFile.empty()) return;
   _imageFile = imageFile + ".png";
   if (!renderer) return;
   _image = Texture(_imageFile, Color::MAGENTA);

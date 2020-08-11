@@ -72,7 +72,7 @@ void Client::draw() const {
   // Base under target combatant
   if (_target.exists()) {
     const Texture &base =
-        _target.isAggressive() ? _baseAggressive : _basePassive;
+        _target.isAggressive() ? images.baseAggressive : images.basePassive;
     static const ScreenPoint BASE_OFFSET(-15, -10);
     base.draw(toScreenPoint(_target.entity()->location()) + offset() +
               BASE_OFFSET);

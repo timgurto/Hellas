@@ -80,9 +80,6 @@ Client::Client()
 
       _dataLoaded(false),
 
-      _basePassive(std::string("Images/targetPassive.png"), Color::MAGENTA),
-      _baseAggressive(std::string("Images/targetAggressive.png"),
-                      Color::MAGENTA),
       _inventory(INVENTORY_SIZE, std::make_pair(ClientItem::Instance{}, 0)),
 
       _time(SDL_GetTicks()),
@@ -914,4 +911,7 @@ void Client::CommonImages::initialise() {
 
   loginBackgroundBack = {"Images/loginBack.png"s};
   loginBackgroundFront = {"Images/loginFront.png"s, Color::MAGENTA};
+
+  basePassive = {"Images/targetPassive.png"s, Color::MAGENTA};
+  baseAggressive = {"Images/targetAggressive.png"s, Color::MAGENTA};
 }

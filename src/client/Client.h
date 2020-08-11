@@ -472,11 +472,6 @@ class Client {
       ms_t actionLength);  // Start the action timer.  If zero, stop the timer.
 
   Target _target;
-  /*
-  Whether the player is targeting aggressively, i.e., will attack when in range.
-  Used here to decide when to alert server of new targets.
-  */
-  Texture _basePassive, _baseAggressive;
 
   bool _loop{true};
   // True while run() is being executed.
@@ -569,6 +564,8 @@ class Client {
     Texture cityIcon, playerIcon;
 
     Texture loginBackgroundBack, loginBackgroundFront;
+
+    Texture basePassive, baseAggressive;
   } images;
 
  private:
