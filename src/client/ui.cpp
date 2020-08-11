@@ -20,9 +20,13 @@ void Client::showErrorMessage(const std::string &message, Color color) const {
 }
 
 void Client::initUI() {
-  if (_defaultFont != nullptr) TTF_CloseFont(_defaultFont);
-  _defaultFont = TTF_OpenFont(_config.fontFile.c_str(), _config.fontSize);
-  assert(_defaultFont != nullptr);
+  auto properFontHasBeenInitialisedFromConfig = Element::font() != nullptr;
+  if (!properFontHasBeenInitialisedFromConfig && _defaultFont)
+    TTF_CloseFont(_defaultFont);
+  if (!properFontHasBeenInitialisedFromConfig) {
+    _defaultFont = TTF_OpenFont(_config.fontFile.c_str(), _config.fontSize);
+  }
+  assert(_defaultFont);
   Element::font(_defaultFont);
   Element::textOffset = _config.fontOffset;
   Element::TEXT_HEIGHT = _config.textHeight;
