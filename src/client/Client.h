@@ -381,6 +381,12 @@ class Client {
   ConfirmationWindow *_unlearnTalentsConfirmationWindow{nullptr};
 
  public:
+  struct Hotbar {
+    Window *assigner{nullptr};
+    List *spellList{nullptr}, *recipeList{nullptr};
+    ChoiceList *categoryList{nullptr};
+  } hotbar;
+
   void refreshHotbar();
   void refreshQuestProgress();
   void refreshHotbarCooldowns();

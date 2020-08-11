@@ -1,10 +1,6 @@
 #include "../Message.h"
 #include "Client.h"
 
-static Window *assigner{nullptr};
-static List *spellList{nullptr}, *recipeList{nullptr};
-static ChoiceList *categoryList{nullptr};
-
 struct HotbarAction {
   HotbarAction() {}
   HotbarAction(HotbarCategory c, std::string s) : category(c), id(s) {}
@@ -63,7 +59,7 @@ void Client::initHotbar() {
           if (!collision(mousePos, {0, 0, e.rect().w, e.rect().h})) return;
 
           populateAssignerWindow();
-          assigner->show();
+          hotbar.assigner->show();
           buttonBeingAssigned = i;
         },
         nullptr);
@@ -90,7 +86,7 @@ static void assignButton(Client &client, HotbarCategory category,
   client.sendMessage(
       {CL_HOTBAR_BUTTON, makeArgs(buttonBeingAssigned, category, id)});
 
-  assigner->hide();
+  client.hotbar.assigner->hide();
   buttonBeingAssigned = NO_BUTTON_BEING_ASSIGNED;
   client.refreshHotbar();
 }
@@ -174,58 +170,58 @@ void Client::refreshHotbarCooldowns() {
 }
 
 static void onCategoryChange(Client &client) {
-  spellList->hide();
-  recipeList->hide();
+  client.hotbar.spellList->hide();
+  client.hotbar.recipeList->hide();
 
-  auto category = categoryList->getSelected();
+  auto category = client.hotbar.categoryList->getSelected();
 
   if (category == "spell")
-    spellList->show();
+    client.hotbar.spellList->show();
   else if (category == "recipe")
-    recipeList->show();
+    client.hotbar.recipeList->show();
 }
 
 void Client::initAssignerWindow() {
   static const auto LIST_WIDTH = 150_px, WIN_HEIGHT = 250_px,
                     CATEGORY_WIDTH = 50_px,
                     WIN_WIDTH = LIST_WIDTH + CATEGORY_WIDTH;
-  assigner = Window::WithRectAndTitle(*this, {0, 0, WIN_WIDTH, WIN_HEIGHT},
-                                      "Assign action"s);
+  hotbar.assigner = Window::WithRectAndTitle(
+      *this, {0, 0, WIN_WIDTH, WIN_HEIGHT}, "Assign action"s);
 
   // Center window above hotbar
-  auto x = (SCREEN_X - assigner->rect().w) / 2;
-  auto y = _hotbar->rect().y - assigner->rect().h;
-  assigner->rect({x, y, LIST_WIDTH, WIN_HEIGHT});
+  auto x = (SCREEN_X - hotbar.assigner->rect().w) / 2;
+  auto y = _hotbar->rect().y - hotbar.assigner->rect().h;
+  hotbar.assigner->rect({x, y, LIST_WIDTH, WIN_HEIGHT});
 
   // Category list
-  categoryList = new ChoiceList({0, 0, CATEGORY_WIDTH, WIN_HEIGHT},
-                                Element::TEXT_HEIGHT, *this);
-  assigner->addChild(categoryList);
-  categoryList->onSelect = onCategoryChange;
+  hotbar.categoryList = new ChoiceList({0, 0, CATEGORY_WIDTH, WIN_HEIGHT},
+                                       Element::TEXT_HEIGHT, *this);
+  hotbar.assigner->addChild(hotbar.categoryList);
+  hotbar.categoryList->onSelect = onCategoryChange;
   auto catLabel = new Label({}, " Spell");
   catLabel->id("spell");
-  categoryList->addChild(catLabel);
+  hotbar.categoryList->addChild(catLabel);
   catLabel = new Label({}, " Crafting");
   catLabel->id("recipe");
-  categoryList->addChild(catLabel);
+  hotbar.categoryList->addChild(catLabel);
 
   // Spell list
-  spellList = new List({CATEGORY_WIDTH, 0, LIST_WIDTH, WIN_HEIGHT},
-                       Client::ICON_SIZE + 2);
-  assigner->addChild(spellList);
-  spellList->hide();
+  hotbar.spellList = new List({CATEGORY_WIDTH, 0, LIST_WIDTH, WIN_HEIGHT},
+                              Client::ICON_SIZE + 2);
+  hotbar.assigner->addChild(hotbar.spellList);
+  hotbar.spellList->hide();
 
   // Recipe list
-  recipeList = new List({CATEGORY_WIDTH, 0, LIST_WIDTH, WIN_HEIGHT},
-                        Client::ICON_SIZE + 2);
-  assigner->addChild(recipeList);
-  recipeList->hide();
+  hotbar.recipeList = new List({CATEGORY_WIDTH, 0, LIST_WIDTH, WIN_HEIGHT},
+                               Client::ICON_SIZE + 2);
+  hotbar.assigner->addChild(hotbar.recipeList);
+  hotbar.recipeList->hide();
 
-  addWindow(assigner);
+  addWindow(hotbar.assigner);
 }
 
 void Client::populateAssignerWindow() {
-  spellList->clearChildren();
+  hotbar.spellList->clearChildren();
   for (const auto *spell : _knownSpells) {
     auto button = new Button({}, {}, [this, spell]() {
       assignButton(*this, HotbarCategory::HOTBAR_SPELL, spell->id());
@@ -236,10 +232,10 @@ void Client::populateAssignerWindow() {
                                Element::CENTER_JUSTIFIED));
     button->id(spell->id());
     button->setTooltip(spell->tooltip());
-    spellList->addChild(button);
+    hotbar.spellList->addChild(button);
   }
 
-  recipeList->clearChildren();
+  hotbar.recipeList->clearChildren();
   for (const auto &recipe : gameData.recipes) {
     auto recipeIsKnown = _knownRecipes.count(recipe.id()) == 1;
     if (!recipeIsKnown) continue;
@@ -253,7 +249,7 @@ void Client::populateAssignerWindow() {
                                recipe.name(), Element::LEFT_JUSTIFIED,
                                Element::CENTER_JUSTIFIED));
     button->id(recipe.id());
-    recipeList->addChild(button);
+    hotbar.recipeList->addChild(button);
   }
 }
 
