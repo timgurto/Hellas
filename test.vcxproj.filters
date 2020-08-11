@@ -347,4 +347,7 @@
     <ClInclude Include="src\client\CDroppedItem.h" />
     <ClInclude Include="src\threadNaming.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="NatvisFile.natvis" />
+  </ItemGroup>
 </Project>

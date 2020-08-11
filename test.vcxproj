@@ -444,6 +444,11 @@
     <ClInclude Include="third-party\tinyxml\tinystr.h" />
     <ClInclude Include="third-party\tinyxml\tinyxml.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="NatvisFile.natvis">
+      <SubType>Designer</SubType>
+    </Natvis>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
