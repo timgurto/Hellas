@@ -1,8 +1,10 @@
+#include "WordWrapper.h"
+
 #include <SDL_ttf.h>
+
 #include <sstream>
 
 #include "Texture.h"
-#include "WordWrapper.h"
 
 WordWrapper::WordWrapper(TTF_Font *font, px_t width) : _width(width) {
   for (char c = '\0'; c != 0x7f; ++c) {
@@ -42,8 +44,6 @@ WordWrapper::Lines WordWrapper::wrap(const std::string &unwrapped) const {
   auto lines = Lines{};
 
   std::istringstream iss(unwrapped);
-  static const size_t BUFFER_SIZE = 50;  // Maximum word length
-  static char buffer[BUFFER_SIZE];
 
   bool indentNextWord = false;
 
