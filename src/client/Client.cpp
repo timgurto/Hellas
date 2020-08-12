@@ -112,8 +112,8 @@ Client::Client()
 
   _entities.insert(&_character);
 
-  Unlocks::linkToKnownRecipes(_knownRecipes);
-  Unlocks::linkToKnownConstructions(_knownConstructions);
+  gameData.unlocks.linkToKnownRecipes(_knownRecipes);
+  gameData.unlocks.linkToKnownConstructions(_knownConstructions);
 
   initializeUsername();
 

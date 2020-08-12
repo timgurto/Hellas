@@ -254,7 +254,8 @@ void Client::refreshRecipeDetailsPane() {
   }
 
   // Unlocks
-  auto unlockInfo = Unlocks::getEffectInfo({Unlocks::CRAFT, recipe.id()});
+  auto unlockInfo =
+      gameData.unlocks.getEffectInfo({Unlocks::CRAFT, recipe.id()});
   if (unlockInfo.hasEffect) {
     auto wordWrapper = WordWrapper{Element::font(), paneRect.w};
     auto lines = wordWrapper.wrap(unlockInfo.message);
@@ -374,7 +375,8 @@ void Client::populateRecipesList(Element &e) {
         {NAME_X, 0, recipeElement->rect().w - NAME_X, ICON_SIZE + 2},
         recipe->name(), Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED);
     recipeElement->addChild(name);
-    auto unlockInfo = Unlocks::getEffectInfo({Unlocks::CRAFT, recipe->id()});
+    auto unlockInfo =
+        client.gameData.unlocks.getEffectInfo({Unlocks::CRAFT, recipe->id()});
     if (unlockInfo.hasEffect) name->setColor(unlockInfo.color);
 
     recipeElement->setLeftMouseUpFunction(onClickRecipe);

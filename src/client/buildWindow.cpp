@@ -40,7 +40,7 @@ void Client::populateBuildList() {
     Label *label = new Label(
         {2, 0, listElement->width(), listElement->height()}, ot->name());
     listElement->addChild(label);
-    auto unlockInfo = Unlocks::getEffectInfo({Unlocks::CONSTRUCT, id});
+    auto unlockInfo = gameData.unlocks.getEffectInfo({Unlocks::CONSTRUCT, id});
     if (unlockInfo.hasEffect) label->setColor(unlockInfo.color);
 
     listElement->setLeftMouseUpFunction(chooseConstruction, listElement);

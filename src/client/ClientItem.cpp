@@ -120,7 +120,8 @@ const Tooltip &ClientItem::tooltip() const {
   }
 
   // Unlocks
-  auto acquireInfo = Unlocks::getEffectInfo({Unlocks::ACQUIRE, id()});
+  auto acquireInfo =
+      _client->gameData.unlocks.getEffectInfo({Unlocks::ACQUIRE, id()});
   if (acquireInfo.hasEffect) {
     tooltip.addGap();
     tooltip.setColor(acquireInfo.color);

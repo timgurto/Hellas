@@ -4,10 +4,6 @@
 
 using namespace std::string_literals;
 
-Unlocks::Container Unlocks::_container;
-const Unlocks::KnownEffects *Unlocks::_knownRecipes{nullptr};
-const Unlocks::KnownEffects *Unlocks::_knownConstructions{nullptr};
-
 bool operator<(const Unlocks::Trigger &lhs, const Unlocks::Trigger &rhs) {
   if (lhs.type != rhs.type) return lhs.type < rhs.type;
   return lhs.id < rhs.id;
@@ -30,7 +26,7 @@ void Unlocks::add(const Trigger &trigger, const Effect &effect, double chance) {
   _container[trigger][effect] = chance;
 }
 
-Unlocks::EffectInfo Unlocks::getEffectInfo(const Trigger &trigger) {
+Unlocks::EffectInfo Unlocks::getEffectInfo(const Trigger &trigger) const {
   auto ret = EffectInfo{};
 
   auto it = _container.find(trigger);

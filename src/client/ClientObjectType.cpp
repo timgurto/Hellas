@@ -94,7 +94,8 @@ const Tooltip &ClientObjectType::constructionTooltip(
   }
 
   // Unlocks
-  auto unlockInfo = Unlocks::getEffectInfo({Unlocks::CONSTRUCT, id()});
+  auto unlockInfo =
+      client.gameData.unlocks.getEffectInfo({Unlocks::CONSTRUCT, id()});
   if (unlockInfo.hasEffect) {
     tooltip.addGap();
     tooltip.setColor(unlockInfo.color);

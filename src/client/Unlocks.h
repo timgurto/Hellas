@@ -11,8 +11,8 @@
 class Unlocks {
  public:
   using KnownEffects = std::set<std::string>;
-  static void linkToKnownRecipes(const KnownEffects &knownRecipes);
-  static void linkToKnownConstructions(const KnownEffects &knownConstructions);
+  void linkToKnownRecipes(const KnownEffects &knownRecipes);
+  void linkToKnownConstructions(const KnownEffects &knownConstructions);
 
   enum TriggerType { CRAFT, ACQUIRE, CONSTRUCT, GATHER };
   enum EffectType { RECIPE, CONSTRUCTION };
@@ -27,8 +27,7 @@ class Unlocks {
     std::string id;
   };
 
-  static void add(const Trigger &trigger, const Effect &effect,
-                  double chance = 1.0);
+  void add(const Trigger &trigger, const Effect &effect, double chance = 1.0);
 
   struct EffectInfo {
     bool hasEffect{false};
@@ -37,13 +36,13 @@ class Unlocks {
     double chance{0.0};
   };
 
-  static EffectInfo getEffectInfo(const Trigger &trigger);
+  EffectInfo getEffectInfo(const Trigger &trigger) const;
 
   using Container = std::map<Trigger, std::map<Effect, double> >;
 
  private:
-  static Container _container;
-  static const KnownEffects *_knownRecipes, *_knownConstructions;
+  Container _container;
+  const KnownEffects *_knownRecipes, *_knownConstructions;
 };
 
 bool operator<(const Unlocks::Trigger &lhs, const Unlocks::Trigger &rhs);

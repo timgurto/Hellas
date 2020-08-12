@@ -608,8 +608,8 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
         triggerType = Unlocks::CRAFT;
       else
         continue;  // Not a real lock, but blocks being known by default
-      Unlocks::add({triggerType, triggerID}, {Unlocks::CONSTRUCTION, id},
-                   chance);
+      _client.gameData.unlocks.add({triggerType, triggerID},
+                                   {Unlocks::CONSTRUCTION, id}, chance);
     }
 
     auto questID = ""s;
@@ -874,7 +874,8 @@ void CDataLoader::loadRecipes(XmlReader &xr) {
         triggerType = Unlocks::CRAFT;
       else
         continue;  // Not a real lock, but blocks being known by default
-      Unlocks::add({triggerType, triggerID}, {Unlocks::RECIPE, id}, chance);
+      _client.gameData.unlocks.add({triggerType, triggerID},
+                                   {Unlocks::RECIPE, id}, chance);
     }
   }
 }

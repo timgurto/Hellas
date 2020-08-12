@@ -14,6 +14,7 @@
 #include "ClientTerrain.h"
 #include "ParticleProfile.h"
 #include "Tag.h"
+#include "Unlocks.h"
 
 struct CGameData {
   std::map<std::string, ClientItem> items;
@@ -26,6 +27,7 @@ struct CGameData {
   ClientBuffTypes buffTypes;
   ClassInfo::Container classes;
   CQuests quests;
+  Unlocks unlocks;
 
   using ObjectTypes =
       std::set<const ClientObjectType *, ClientObjectType::ptrCompare>;
