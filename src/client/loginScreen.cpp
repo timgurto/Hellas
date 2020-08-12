@@ -162,7 +162,7 @@ void Client::updateClassDescription(Client &client) {
   if (classID.empty()) return;
 
   const auto &description = client.gameData.classes[classID].description();
-  static auto wrapper =
+  auto wrapper =
       WordWrapper{client.defaultFont(),
                   client.loginScreenElements.classDescription->contentWidth()};
   auto lines = wrapper.wrap(description);
