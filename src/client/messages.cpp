@@ -1,4 +1,5 @@
 #include <cassert>
+#include <mutex>
 
 #include "../Message.h"
 #include "../versionUtil.h"
@@ -21,8 +22,12 @@ static void readString(std::istream &iss, std::string &str,
   } else {
     static const size_t BUFFER_SIZE = 1023;
     static char buffer[BUFFER_SIZE + 1];
+    std::mutex bufferMutex;
+
+    bufferMutex.lock();
     iss.get(buffer, BUFFER_SIZE, delim);
     str = buffer;
+    bufferMutex.unlock();
   }
 }
 
@@ -39,9 +44,12 @@ void Client::handleBufferedMessages(const std::string &msg) {
   char del;
   const auto BUFFER_SIZE = 1023;
   static char buffer[BUFFER_SIZE + 1];
+  std::mutex bufferMutex;
 
   // Read while there are new messages
   while (!iss.eof()) {
+    std::lock_guard<std::mutex> bufferLock(bufferMutex);
+
     // Discard malformed data
     if (iss.peek() != MSG_START) {
       iss.get(buffer, BUFFER_SIZE, MSG_START);
