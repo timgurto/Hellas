@@ -9,32 +9,37 @@
 
 #include "../Color.h"
 #include "Renderer.h"
+#include "WorkerThread.h"
 
 extern Renderer renderer;
+extern WorkerThread SDLWorker;
+
+void Surface::freeSurfaceInSDLThread(SDL_Surface *surface) {
+  SDLWorker.enqueue([&]() { SDL_FreeSurface(surface); });
+}
 
 Surface::Surface(const std::string &filename, const Color &colorKey) {
-  renderer.lock();
-  auto *rawPointer = IMG_Load(filename.c_str());
-  renderer.unlock();
-  _raw = {rawPointer, SDL_FreeSurface};
-  if (!_raw) return;
+  SDLWorker.enqueue([&]() {
+    auto *rawPointer = IMG_Load(filename.c_str());
+    _raw = {rawPointer, freeSurfaceInSDLThread};
+    if (!_raw) return;
 
-  if (&colorKey != &Color::NO_KEY) {
-    renderer.lock();
-    SDL_SetColorKey(_raw.get(), SDL_TRUE, colorKey);
-    renderer.unlock();
-  }
+    if (&colorKey != &Color::NO_KEY)
+      SDL_SetColorKey(_raw.get(), SDL_TRUE, colorKey);
+  });
 
   if (isDebug()) _description = filename;
+  SDLWorker.waitUntilDone();
 }
 
 Surface::Surface(TTF_Font *font, const std::string &text, const Color &color) {
-  renderer.lock();
-  auto *rawPointer = TTF_RenderText_Blended(font, text.c_str(), color);
-  renderer.unlock();
-  _raw = {rawPointer, SDL_FreeSurface};
+  SDLWorker.enqueue([&]() {
+    auto *rawPointer = TTF_RenderText_Blended(font, text.c_str(), color);
+    _raw = {rawPointer, freeSurfaceInSDLThread};
+  });
 
   if (isDebug()) _description = "Text: " + text;
+  SDLWorker.waitUntilDone();
 }
 
 SDL_Texture *Surface::toTexture() const {

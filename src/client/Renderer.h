@@ -27,14 +27,9 @@ class Renderer {
   friend void Texture::setRenderTarget()
       const;  // Needs access to raw SDL_Renderer
 
-  mutable std::mutex _sdlMutex;
-
  public:
   Renderer();
   ~Renderer();
-
-  void lock() const;
-  void unlock() const;
 
   /*
   Some construction takes place here, to be called manually, as a Renderer may

@@ -16,6 +16,8 @@ class Surface {
 
   std::string _description;  // For easier debugging of leaks.
 
+  static void freeSurfaceInSDLThread(SDL_Surface *surface);
+
  public:
   Surface() {}
   Surface(const std::string &filename, const Color &colorKey = Color::NO_KEY);

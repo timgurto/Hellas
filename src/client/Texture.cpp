@@ -5,8 +5,14 @@
 #include "../Color.h"
 #include "Renderer.h"
 #include "Surface.h"
+#include "WorkerThread.h"
 
 extern Renderer renderer;
+extern WorkerThread SDLWorker;
+
+void Texture::freeSurfaceInSDLThread(SDL_Texture *texture) {
+  SDLWorker.enqueue([&]() { SDL_DestroyTexture(texture); });
+}
 
 Texture::Texture() {}
 
@@ -14,7 +20,8 @@ Texture::Texture(px_t width, px_t height)
     : _w(width), _h(height), _validTarget(true) {
   assert(renderer);
 
-  _raw = {renderer.createTargetableTexture(width, height), SDL_DestroyTexture};
+  _raw = {renderer.createTargetableTexture(width, height),
+          freeSurfaceInSDLThread};
   if (_raw) _validTarget = false;
 }
 
@@ -45,10 +52,14 @@ Texture::Texture(TTF_Font *font, const std::string &text, const Color &color) {
 void Texture::createFromSurface() {
   if (!_surface) return;
 
-  _raw = {_surface.toTexture(), SDL_DestroyTexture};
-  renderer.lock();
-  auto isValid = SDL_QueryTexture(_raw.get(), nullptr, nullptr, &_w, &_h) == 0;
-  renderer.unlock();
+  _raw = {_surface.toTexture(), freeSurfaceInSDLThread};
+
+  bool isValid;
+  SDLWorker.enqueue([&]() {
+    isValid = SDL_QueryTexture(_raw.get(), nullptr, nullptr, &_w, &_h) == 0;
+  });
+  SDLWorker.waitUntilDone();
+
   if (!isValid) _raw = {};
 }
 
@@ -73,23 +84,20 @@ Texture &Texture::operator=(const Texture &rhs) {
 }
 
 void Texture::setBlend(SDL_BlendMode mode) const {
-  renderer.lock();
-  SDL_SetTextureBlendMode(_raw.get(), mode);
-  renderer.unlock();
+  SDLWorker.enqueue([&]() { SDL_SetTextureBlendMode(_raw.get(), mode); });
 }
 
 void Texture::setAlpha(Uint8 alpha) const {
-  renderer.lock();
-  SDL_SetTextureAlphaMod(_raw.get(), alpha);
-  renderer.unlock();
+  SDLWorker.enqueue([&]() { SDL_SetTextureAlphaMod(_raw.get(), alpha); });
 }
 
 void Texture::rotateClockwise(const ScreenPoint &centre) {
   auto centreSDL = SDL_Point{centre.x, centre.y};
-  renderer.lock();
-  SDL_RenderCopyEx(renderer.raw(), _raw.get(), nullptr, nullptr, 90.0,
-                   &centreSDL, SDL_FLIP_NONE);
-  renderer.unlock();
+
+  SDLWorker.enqueue([&]() {
+    SDL_RenderCopyEx(renderer.raw(), _raw.get(), nullptr, nullptr, 90.0,
+                     &centreSDL, SDL_FLIP_NONE);
+  });
 }
 
 void Texture::draw(px_t x, px_t y) const { draw({x, y, _w, _h}); }
@@ -117,9 +125,10 @@ Color Texture::getPixel(px_t x, px_t y) const {
 }
 
 void Texture::setRenderTarget() const {
-  renderer.lock();
-  if (_validTarget) SDL_SetRenderTarget(renderer._renderer, _raw.get());
-  renderer.unlock();
+  if (!_validTarget) return;
+
+  SDLWorker.enqueue(
+      [&]() { SDL_SetRenderTarget(renderer._renderer, _raw.get()); });
 }
 
 Texture &Texture::placeholder() {

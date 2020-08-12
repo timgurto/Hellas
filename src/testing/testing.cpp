@@ -4,13 +4,15 @@
 #include "../Args.h"
 #include "../client/Client.h"
 #include "../client/Renderer.h"
+#include "../client/WorkerThread.h"
 #include "catch.hpp"
 
 extern "C" {
 FILE __iob_func[3] = {*stdin, *stdout, *stderr};
 }
 
-Args cmdLineArgs;
+Args cmdLineArgs;                      // MUST be defined before renderer
+WorkerThread SDLWorker{"SDL worker"};  // MUST be defined before renderer
 Renderer renderer;
 
 int main(int argc, char* argv[]) {

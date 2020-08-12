@@ -199,6 +199,7 @@
     <ClCompile Include="src\client\CDroppedItem.cpp" />
     <ClCompile Include="src\testing\test-grouping.cpp" />
     <ClCompile Include="src\threadNaming.cpp" />
+    <ClCompile Include="src\client\WorkerThread.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -346,6 +347,7 @@
     <ClInclude Include="src\server\DroppedItem.h" />
     <ClInclude Include="src\client\CDroppedItem.h" />
     <ClInclude Include="src\threadNaming.h" />
+    <ClInclude Include="src\client\WorkerThread.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />

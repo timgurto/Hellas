@@ -29,6 +29,8 @@ class Texture {
           const Color &color = Color::WINDOW_FONT);
   void createFromSurface();  // Uses _surface
 
+  static void freeSurfaceInSDLThread(SDL_Texture *texture);
+
   Texture(const Texture &rhs);
   Texture &operator=(const Texture &rhs);
 

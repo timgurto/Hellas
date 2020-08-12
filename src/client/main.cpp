@@ -9,13 +9,15 @@
 #include "Client.h"
 #include "Renderer.h"
 #include "Texture.h"
+#include "WorkerThread.h"
 
 extern "C" {
 FILE __iob_func[3] = {*stdin, *stdout, *stderr};
 }
 
-Args cmdLineArgs;   // MUST be defined before renderer
-Renderer renderer;  // MUST be defined after cmdLineArgs
+Args cmdLineArgs;                      // MUST be defined before renderer
+WorkerThread SDLWorker{"SDL worker"};  // MUST be defined before renderer
+Renderer renderer;
 
 int main(int argc, char* argv[]) {
   cmdLineArgs.init(argc, argv);

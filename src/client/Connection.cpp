@@ -79,7 +79,7 @@ void Connection::connect() {
   }
 
 #ifndef TESTING
-  _client->updateCreateButton(nullptr);
+  _client->updateCreateButton(_client);
   _client->updateLoginButton();
 #endif
 
