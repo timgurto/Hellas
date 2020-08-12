@@ -10,7 +10,7 @@ extern Renderer renderer;
 
 class Images {
  public:
-  Images(const std::string &directory);
+  void initialise(const std::string &directory);
 
   const Texture &operator[](const std::string key);
 
@@ -20,4 +20,5 @@ class Images {
   std::string _directory;
 
   static Texture defaultTexture;
+  static void createDefaultTexture();
 };

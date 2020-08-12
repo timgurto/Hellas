@@ -923,4 +923,6 @@ void Client::CommonImages::initialise() {
   scrollArrowWhiteDown = {"Images/arrowDown.png", Color::MAGENTA};
   scrollArrowGreyUp = {"Images/arrowUpGrey.png", Color::MAGENTA};
   scrollArrowGreyDown = {"Images/arrowDownGrey.png", Color::MAGENTA};
+
+  icons.initialise("Images/Icons");
 }

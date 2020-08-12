@@ -42,7 +42,7 @@ void Client::updateToasts() {
 }
 
 void Client::toast(const std::string &icon, const std::string &text) {
-  toast(_icons[icon], text);
+  toast(images.icons[icon], text);
 }
 
 void Client::toast(const Texture &icon, const std::string &text) {

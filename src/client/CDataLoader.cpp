@@ -276,7 +276,8 @@ void CDataLoader::loadSpells(XmlReader &xr) {
     _client.gameData.spells[id] = newSpell;
 
     auto icon = ""s;
-    if (xr.findAttr(elem, "icon", icon)) newSpell->icon(_client._icons[icon]);
+    if (xr.findAttr(elem, "icon", icon))
+      newSpell->icon(_client.images.icons[icon]);
 
     auto name = ""s;
     if (xr.findAttr(elem, "name", name)) newSpell->name(name);
@@ -786,7 +787,7 @@ void CDataLoader::loadClasses(XmlReader &xr) {
 
             auto icon = ""s;
             if (xr.findAttr(talent, "icon", icon))
-              t.icon = _client._icons[icon];
+              t.icon = _client.images.icons[icon];
 
             auto stats = StatsMod{};
             if (!xr.findStatsChild("stats", talent, stats)) continue;

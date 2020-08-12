@@ -2,17 +2,10 @@
 
 Texture Images::defaultTexture;
 
-Images::Images(const std::string &directory) : _directory(directory) {
-  // Initialize default texture
-  if (defaultTexture) return;
-  defaultTexture = {16, 16};
+void Images::initialise(const std::string &directory) {
+  _directory = directory;
 
-  defaultTexture.setRenderTarget();
-
-  renderer.setDrawColor(Color::MAGENTA);
-  renderer.fill();
-
-  renderer.setRenderTarget();
+  if (!defaultTexture) createDefaultTexture();
 }
 
 const Texture &Images::operator[](const std::string key) {
@@ -21,7 +14,7 @@ const Texture &Images::operator[](const std::string key) {
   // Image exists: return it
   if (it != _container.end()) return it->second;
 
-  // Doesn't exist: load it
+  // Image doesn't exist: load it
   auto tex = Texture{_directory + "/" + key + ".png"};
   if (tex) {
     _container[key] = tex;
@@ -30,4 +23,15 @@ const Texture &Images::operator[](const std::string key) {
 
   // File doesn't exist: return default
   return defaultTexture;
+}
+
+void Images::createDefaultTexture() {
+  defaultTexture = {16, 16};
+
+  renderer.pushRenderTarget(defaultTexture);
+
+  renderer.setDrawColor(Color::MAGENTA);
+  renderer.fill();
+
+  renderer.popRenderTarget();
 }

@@ -582,6 +582,8 @@ class Client {
 
     Texture scrollArrowWhiteUp, scrollArrowWhiteDown, scrollArrowGreyUp,
         scrollArrowGreyDown;
+
+    Images icons;
   } images;
 
  private:
@@ -590,8 +592,6 @@ class Client {
 
   const SoundProfile *_avatarSounds{nullptr};
   const SoundProfile *_generalSounds{nullptr};
-
-  Images _icons{"Images/Icons"};
 
   // Information about the state of the world
   Map _map;
