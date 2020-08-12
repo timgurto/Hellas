@@ -19,6 +19,7 @@ void Surface::freeSurfaceInSDLThread(SDL_Surface *surface) {
 }
 
 Surface::Surface(const std::string &filename, const Color &colorKey) {
+  SDLWorker.requireThisCallToBeInWorkerThread();
   auto *rawPointer = IMG_Load(filename.c_str());
   _raw = {rawPointer, freeSurfaceInSDLThread};
   if (!_raw) return;
@@ -30,6 +31,7 @@ Surface::Surface(const std::string &filename, const Color &colorKey) {
 }
 
 Surface::Surface(TTF_Font *font, const std::string &text, const Color &color) {
+  SDLWorker.requireThisCallToBeInWorkerThread();
   auto *rawPointer = TTF_RenderText_Blended(font, text.c_str(), color);
   _raw = {rawPointer, freeSurfaceInSDLThread};
 

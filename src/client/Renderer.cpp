@@ -32,6 +32,7 @@ Renderer::Renderer() : _renderer(nullptr), _window(nullptr), _valid(false) {
 }
 
 void Renderer::init() {
+  SDLWorker.requireThisCallToBeInWorkerThread();
   const px_t screenX = cmdLineArgs.contains("left") ? cmdLineArgs.getInt("left")
                                                     : SDL_WINDOWPOS_UNDEFINED;
   const px_t screenY = cmdLineArgs.contains("top") ? cmdLineArgs.getInt("top")
@@ -83,12 +84,14 @@ Renderer::~Renderer() {
 }
 
 SDL_Texture *Renderer::createTextureFromSurface(SDL_Surface *surface) const {
+  SDLWorker.requireThisCallToBeInWorkerThread();
   if (!_renderer) return nullptr;
 
   return SDL_CreateTextureFromSurface(_renderer, surface);
 }
 
 SDL_Texture *Renderer::createTargetableTexture(px_t width, px_t height) const {
+  SDLWorker.requireThisCallToBeInWorkerThread();
   if (!_renderer) return nullptr;
 
   return SDL_CreateTexture(_renderer, SDL_PIXELFORMAT_RGBA8888,
@@ -96,6 +99,7 @@ SDL_Texture *Renderer::createTargetableTexture(px_t width, px_t height) const {
 }
 
 void Renderer::drawTexture(SDL_Texture *srcTex, const ScreenRect &dstRect) {
+  SDLWorker.requireThisCallToBeInWorkerThread();
   if (!_renderer) return;
 
   SDL_RenderCopy(_renderer, srcTex, 0, &rectToSDL(dstRect));
@@ -103,48 +107,56 @@ void Renderer::drawTexture(SDL_Texture *srcTex, const ScreenRect &dstRect) {
 
 void Renderer::drawTexture(SDL_Texture *srcTex, const ScreenRect &dstRect,
                            const ScreenRect &srcRect) {
+  SDLWorker.requireThisCallToBeInWorkerThread();
   if (!_renderer) return;
 
   SDL_RenderCopy(_renderer, srcTex, &rectToSDL(srcRect), &rectToSDL(dstRect));
 }
 
 void Renderer::setDrawColor(const Color &color) {
+  SDLWorker.requireThisCallToBeInWorkerThread();
   if (!_renderer) return;
 
   SDL_SetRenderDrawColor(_renderer, color.r(), color.g(), color.b(), 0xff);
 }
 
 void Renderer::clear() {
+  SDLWorker.requireThisCallToBeInWorkerThread();
   if (!_renderer) return;
 
   SDL_RenderClear(_renderer);
 }
 
 void Renderer::present() {
+  SDLWorker.requireThisCallToBeInWorkerThread();
   if (!_renderer) return;
 
   SDL_RenderPresent(_renderer);
 }
 
 void Renderer::drawRect(const ScreenRect &dstRect) {
+  SDLWorker.requireThisCallToBeInWorkerThread();
   if (!_renderer) return;
 
   SDL_RenderDrawRect(_renderer, &rectToSDL(dstRect));
 }
 
 void Renderer::fillRect(const ScreenRect &dstRect) {
+  SDLWorker.requireThisCallToBeInWorkerThread();
   if (!_renderer) return;
 
   SDL_RenderFillRect(_renderer, &rectToSDL(dstRect));
 }
 
 void Renderer::fill() {
+  SDLWorker.requireThisCallToBeInWorkerThread();
   if (!_renderer) return;
 
   SDL_RenderFillRect(_renderer, nullptr);
 }
 
 void Renderer::fillWithTransparency() {
+  SDLWorker.requireThisCallToBeInWorkerThread();
   if (!_renderer) return;
 
   SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 0x00);
@@ -152,18 +164,21 @@ void Renderer::fillWithTransparency() {
 }
 
 void Renderer::setRenderTarget() const {
+  SDLWorker.requireThisCallToBeInWorkerThread();
   if (!_renderer) return;
 
   SDL_SetRenderTarget(_renderer, 0);
 }
 
 void Renderer::updateSize() {
+  SDLWorker.requireThisCallToBeInWorkerThread();
   if (!_renderer) return;
 
   SDL_GetRendererOutputSize(_renderer, &_w, &_h);
 }
 
 void Renderer::pushRenderTarget(Texture &target) {
+  SDLWorker.requireThisCallToBeInWorkerThread();
   if (!_renderer) return;
 
   SDL_Texture *currentTarget = SDL_GetRenderTarget(_renderer);
@@ -172,6 +187,7 @@ void Renderer::pushRenderTarget(Texture &target) {
 }
 
 void Renderer::popRenderTarget() {
+  SDLWorker.requireThisCallToBeInWorkerThread();
   if (!_renderer) return;
 
   SDL_SetRenderTarget(_renderer, _renderTargetsStack.top());
@@ -184,6 +200,7 @@ SDL_Rect Renderer::rectToSDL(const ScreenRect &rect) {
 }
 
 Color Renderer::getPixel(px_t x, px_t y) const {
+  SDLWorker.requireThisCallToBeInWorkerThread();
   if (!_renderer) return {};
   px_t logicalW, logicalH;
 
