@@ -6,8 +6,6 @@
 
 extern Args cmdLineArgs;
 
-Connection::URL Connection::serverIPDirectory{};
-
 Connection::Connection(Client &client) : _client(&client) {}
 
 void Connection::initialize(const URL &serverIPDirectory) {

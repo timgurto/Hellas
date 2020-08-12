@@ -22,7 +22,7 @@ class Connection {
   using URL = std::string;
 
   Connection(Client &client);
-  static void initialize(const URL &serverIPDirectory);
+  void initialize(const URL &serverIPDirectory);
   ~Connection();
 
   void getNewMessages();
@@ -44,9 +44,9 @@ class Connection {
 
   bool _aThreadIsConnecting{false};
 
-  static std::string getServerIP();
+  std::string getServerIP();
   static u_short getServerPort();
-  static URL serverIPDirectory;
+  URL serverIPDirectory;
 
   static const ms_t TIME_BETWEEN_CONNECTION_ATTEMPTS{3000};
   static const u_short DEBUG_PORT{8888};
