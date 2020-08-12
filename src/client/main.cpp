@@ -21,7 +21,7 @@ Renderer renderer;
 
 int main(int argc, char* argv[]) {
   cmdLineArgs.init(argc, argv);
-  renderer.init();
+  SDLWorker.enqueue([]() { renderer.init(); });
 
   srand(static_cast<unsigned>(time(0)));
 
