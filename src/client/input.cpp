@@ -520,14 +520,13 @@ void Client::handleInput(double delta) {
 
       // New location is now finalised.
 
-      static auto lastDirection = MapPoint{};
       auto thisDirection = normaliseVector(newLocation - _character.location());
-      if (thisDirection != lastDirection) {
+      if (thisDirection != _lastDirection) {
         sendMessage({CL_LOCATION, makeArgs(_character.location().x,
                                            _character.location().y)});
         _timeSinceLocUpdate = 0;
       }
-      lastDirection = thisDirection;
+      _lastDirection = thisDirection;
 
       _character.location(newLocation);
       _serverHasOutOfDateLocationInfo = true;

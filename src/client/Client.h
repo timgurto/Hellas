@@ -552,6 +552,7 @@ class Client {
   // Whether the client has sufficient information to begin
   bool _loaded{false};
 
+  MapPoint _lastDirection{};
   ms_t _timeSinceLocUpdate{0};  // Time since a CL_LOCATION was sent
   // Location has changed (local or official), and tooltip may have changed.
   bool _tooltipNeedsRefresh{false};
