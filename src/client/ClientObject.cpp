@@ -881,27 +881,23 @@ void ClientObject::draw() const {
 }
 
 void ClientObject::drawAppropriateQuestIndicator() const {
-  static const auto questStartIndicator =
-      Texture{"Images/questStart.png", Color::MAGENTA};
-  static const auto questEndIndicator =
-      Texture{"Images/questEnd.png", Color::MAGENTA};
-  auto questIndicator = Texture{};
+  auto *questIndicator = (const Texture *)nullptr;
 
   if (!userHasAccess()) return;
   if (isBeingConstructed()) return;
   if (!completableQuests().empty())
-    questIndicator = questEndIndicator;
+    questIndicator = &Client::images.endQuestIndicator;
   else if (!startsQuests().empty())
-    questIndicator = questStartIndicator;
+    questIndicator = &Client::images.startQuestIndicator;
   else
     return;
 
   auto questIndicatorOffset = ScreenRect{
-      -questIndicator.width() / 2, -questIndicator.height() - 17 - height(),
-      questIndicator.width(), questIndicator.height()};
+      -questIndicator->width() / 2, -questIndicator->height() - 17 - height(),
+      questIndicator->width(), questIndicator->height()};
   auto indicatorLocation =
       toScreenRect(location()) + _client.offset() + questIndicatorOffset;
-  questIndicator.draw(indicatorLocation);
+  questIndicator->draw(indicatorLocation);
 }
 
 const Texture &ClientObject::cursor() const {

@@ -885,6 +885,8 @@ void Client::CommonImages::initialise() {
 
   startQuestIcon = {"Images/UI/startQuest.png", Color::MAGENTA};
   endQuestIcon = {"Images/UI/endQuest.png", Color::MAGENTA};
+  startQuestIndicator = {"Images/questStart.png", Color::MAGENTA};
+  endQuestIndicator = {"Images/questEnd.png", Color::MAGENTA};
 
   eliteWreath = {"Images/UI/wreath.png", Color::MAGENTA};
 

@@ -567,6 +567,7 @@ class Client {
     Texture cursorNormal, cursorGather, cursorContainer, cursorAttack,
         cursorStartsQuest, cursorEndsQuest, cursorRepair, cursorVehicle;
     Texture startQuestIcon, endQuestIcon;
+    Texture startQuestIndicator, endQuestIndicator;
     Texture eliteWreath;
 
     Texture itemHighlightMouseOver, itemHighlightMatch, itemHighlightNoMatch;
