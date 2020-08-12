@@ -1,14 +1,14 @@
-#include "Images.h"
+#include "MemoisedImageDirectory.h"
 
-Texture Images::defaultTexture;
+Texture MemoisedImageDirectory::defaultTexture;
 
-void Images::initialise(const std::string &directory) {
+void MemoisedImageDirectory::initialise(const std::string &directory) {
   _directory = directory;
 
   if (!defaultTexture) createDefaultTexture();
 }
 
-const Texture &Images::operator[](const std::string key) {
+const Texture &MemoisedImageDirectory::operator[](const std::string key) {
   auto it = _container.find(key);
 
   // Image exists: return it
@@ -25,7 +25,7 @@ const Texture &Images::operator[](const std::string key) {
   return defaultTexture;
 }
 
-void Images::createDefaultTexture() {
+void MemoisedImageDirectory::createDefaultTexture() {
   defaultTexture = {16, 16};
 
   renderer.pushRenderTarget(defaultTexture);

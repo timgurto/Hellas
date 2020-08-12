@@ -8,7 +8,7 @@
 
 extern Renderer renderer;
 
-class Images {
+class MemoisedImageDirectory {
  public:
   void initialise(const std::string &directory);
 

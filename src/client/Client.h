@@ -36,9 +36,9 @@
 #include "ClientWar.h"
 #include "Connection.h"
 #include "HelpEntry.h"
-#include "Images.h"
 #include "KeyboardStateFetcher.h"
 #include "LogSDL.h"
+#include "MemoisedImageDirectory.h"
 #include "ParticleProfile.h"
 #include "Projectile.h"
 #include "SoundProfile.h"
@@ -583,7 +583,7 @@ class Client {
     Texture scrollArrowWhiteUp, scrollArrowWhiteDown, scrollArrowGreyUp,
         scrollArrowGreyDown;
 
-    Images icons;
+    MemoisedImageDirectory icons;
   } images;
 
  private:

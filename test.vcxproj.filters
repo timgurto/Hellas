@@ -142,7 +142,6 @@
     <ClCompile Include="src\server\ThreatTable.cpp" />
     <ClCompile Include="src\client\Tooltip.cpp" />
     <ClCompile Include="src\client\ClientWar.cpp" />
-    <ClCompile Include="src\client\Images.cpp" />
     <ClCompile Include="src\client\toast.cpp" />
     <ClCompile Include="src\client\WordWrapper.cpp" />
     <ClCompile Include="src\client\ui\Indicator.cpp" />
@@ -200,6 +199,7 @@
     <ClCompile Include="src\testing\test-grouping.cpp" />
     <ClCompile Include="src\threadNaming.cpp" />
     <ClCompile Include="src\client\WorkerThread.cpp" />
+    <ClCompile Include="src\client\MemoisedImageDirectory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -315,7 +315,6 @@
     <ClInclude Include="src\Message.h" />
     <ClInclude Include="src\client\ClientWar.h" />
     <ClInclude Include="src\client\HelpEntry.h" />
-    <ClInclude Include="src\client\Images.h" />
     <ClInclude Include="src\client\WordWrapper.h" />
     <ClInclude Include="src\client\ui\Indicator.h" />
     <ClInclude Include="src\client\Connection.h" />
@@ -348,6 +347,7 @@
     <ClInclude Include="src\client\CDroppedItem.h" />
     <ClInclude Include="src\threadNaming.h" />
     <ClInclude Include="src\client\WorkerThread.h" />
+    <ClInclude Include="src\client\MemoisedImageDirectory.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />
