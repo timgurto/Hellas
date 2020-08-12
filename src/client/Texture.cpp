@@ -55,10 +55,7 @@ void Texture::createFromSurface() {
   _raw = {_surface.toTexture(), freeSurfaceInSDLThread};
 
   bool isValid;
-  SDLWorker.enqueue([&]() {
-    isValid = SDL_QueryTexture(_raw.get(), nullptr, nullptr, &_w, &_h) == 0;
-  });
-  SDLWorker.waitUntilDone();
+  isValid = SDL_QueryTexture(_raw.get(), nullptr, nullptr, &_w, &_h) == 0;
 
   if (!isValid) _raw = {};
 }
@@ -84,20 +81,18 @@ Texture &Texture::operator=(const Texture &rhs) {
 }
 
 void Texture::setBlend(SDL_BlendMode mode) const {
-  SDLWorker.enqueue([&]() { SDL_SetTextureBlendMode(_raw.get(), mode); });
+  SDL_SetTextureBlendMode(_raw.get(), mode);
 }
 
 void Texture::setAlpha(Uint8 alpha) const {
-  SDLWorker.enqueue([&]() { SDL_SetTextureAlphaMod(_raw.get(), alpha); });
+  SDL_SetTextureAlphaMod(_raw.get(), alpha);
 }
 
 void Texture::rotateClockwise(const ScreenPoint &centre) {
   auto centreSDL = SDL_Point{centre.x, centre.y};
 
-  SDLWorker.enqueue([&]() {
-    SDL_RenderCopyEx(renderer.raw(), _raw.get(), nullptr, nullptr, 90.0,
-                     &centreSDL, SDL_FLIP_NONE);
-  });
+  SDL_RenderCopyEx(renderer.raw(), _raw.get(), nullptr, nullptr, 90.0,
+                   &centreSDL, SDL_FLIP_NONE);
 }
 
 void Texture::draw(px_t x, px_t y) const { draw({x, y, _w, _h}); }
@@ -127,8 +122,7 @@ Color Texture::getPixel(px_t x, px_t y) const {
 void Texture::setRenderTarget() const {
   if (!_validTarget) return;
 
-  SDLWorker.enqueue(
-      [&]() { SDL_SetRenderTarget(renderer._renderer, _raw.get()); });
+  SDL_SetRenderTarget(renderer._renderer, _raw.get());
 }
 
 Texture &Texture::placeholder() {

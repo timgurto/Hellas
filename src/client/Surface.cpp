@@ -19,27 +19,21 @@ void Surface::freeSurfaceInSDLThread(SDL_Surface *surface) {
 }
 
 Surface::Surface(const std::string &filename, const Color &colorKey) {
-  SDLWorker.enqueue([&]() {
-    auto *rawPointer = IMG_Load(filename.c_str());
-    _raw = {rawPointer, freeSurfaceInSDLThread};
-    if (!_raw) return;
+  auto *rawPointer = IMG_Load(filename.c_str());
+  _raw = {rawPointer, freeSurfaceInSDLThread};
+  if (!_raw) return;
 
-    if (&colorKey != &Color::NO_KEY)
-      SDL_SetColorKey(_raw.get(), SDL_TRUE, colorKey);
-  });
+  if (&colorKey != &Color::NO_KEY)
+    SDL_SetColorKey(_raw.get(), SDL_TRUE, colorKey);
 
   if (isDebug()) _description = filename;
-  SDLWorker.waitUntilDone();
 }
 
 Surface::Surface(TTF_Font *font, const std::string &text, const Color &color) {
-  SDLWorker.enqueue([&]() {
-    auto *rawPointer = TTF_RenderText_Blended(font, text.c_str(), color);
-    _raw = {rawPointer, freeSurfaceInSDLThread};
-  });
+  auto *rawPointer = TTF_RenderText_Blended(font, text.c_str(), color);
+  _raw = {rawPointer, freeSurfaceInSDLThread};
 
   if (isDebug()) _description = "Text: " + text;
-  SDLWorker.waitUntilDone();
 }
 
 SDL_Texture *Surface::toTexture() const {

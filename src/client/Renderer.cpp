@@ -43,29 +43,21 @@ void Renderer::init() {
 
   bool fullScreen = cmdLineArgs.contains("fullscreen");
 
-  SDLWorker.enqueue([&]() {
-    _window = SDL_CreateWindow(
-        "Hellas (Open Beta)", screenX, screenY, screenW, screenH,
-        SDL_WINDOW_SHOWN |
-            (fullScreen ? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_RESIZABLE));
-  });
-  SDLWorker.waitUntilDone();
+  _window =
+      SDL_CreateWindow("Hellas (Open Beta)", screenX, screenY, screenW, screenH,
+                       SDL_WINDOW_SHOWN | (fullScreen ? SDL_WINDOW_FULLSCREEN
+                                                      : SDL_WINDOW_RESIZABLE));
   if (!_window) return;
 
   int rendererFlags = SDL_RENDERER_ACCELERATED;
   if (!fullScreen || cmdLineArgs.contains("vsync"))
     rendererFlags |= SDL_RENDERER_PRESENTVSYNC;
 
-  SDLWorker.enqueue(
-      [&]() { _renderer = SDL_CreateRenderer(_window, -1, rendererFlags); });
-  SDLWorker.waitUntilDone();
+  _renderer = SDL_CreateRenderer(_window, -1, rendererFlags);
   if (!_renderer) return;
 
-  SDLWorker.enqueue([&]() {
-    SDL_GetRendererOutputSize(_renderer, &_w, &_h);
-    SDL_RenderSetLogicalSize(_renderer, 640, 360);
-  });
-  SDLWorker.waitUntilDone();
+  SDL_GetRendererOutputSize(_renderer, &_w, &_h);
+  SDL_RenderSetLogicalSize(_renderer, 640, 360);
 
   _valid = true;
 }
@@ -93,119 +85,97 @@ Renderer::~Renderer() {
 SDL_Texture *Renderer::createTextureFromSurface(SDL_Surface *surface) const {
   if (!_renderer) return nullptr;
 
-  SDL_Texture *texture;
-  SDLWorker.enqueue(
-      [&]() { texture = SDL_CreateTextureFromSurface(_renderer, surface); });
-  SDLWorker.waitUntilDone();
-  return texture;
+  return SDL_CreateTextureFromSurface(_renderer, surface);
 }
 
 SDL_Texture *Renderer::createTargetableTexture(px_t width, px_t height) const {
   if (!_renderer) return nullptr;
 
-  SDL_Texture *texture;
-  SDLWorker.enqueue([&]() {
-    texture = SDL_CreateTexture(_renderer, SDL_PIXELFORMAT_RGBA8888,
-                                SDL_TEXTUREACCESS_TARGET, width, height);
-  });
-  SDLWorker.waitUntilDone();
-  return texture;
+  return SDL_CreateTexture(_renderer, SDL_PIXELFORMAT_RGBA8888,
+                           SDL_TEXTUREACCESS_TARGET, width, height);
 }
 
 void Renderer::drawTexture(SDL_Texture *srcTex, const ScreenRect &dstRect) {
   if (!_renderer) return;
 
-  SDLWorker.enqueue(
-      [&]() { SDL_RenderCopy(_renderer, srcTex, 0, &rectToSDL(dstRect)); });
+  SDL_RenderCopy(_renderer, srcTex, 0, &rectToSDL(dstRect));
 }
 
 void Renderer::drawTexture(SDL_Texture *srcTex, const ScreenRect &dstRect,
                            const ScreenRect &srcRect) {
   if (!_renderer) return;
 
-  SDLWorker.enqueue([&]() {
-    SDL_RenderCopy(_renderer, srcTex, &rectToSDL(srcRect), &rectToSDL(dstRect));
-  });
+  SDL_RenderCopy(_renderer, srcTex, &rectToSDL(srcRect), &rectToSDL(dstRect));
 }
 
 void Renderer::setDrawColor(const Color &color) {
   if (!_renderer) return;
 
-  SDLWorker.enqueue([&]() {
-    SDL_SetRenderDrawColor(_renderer, color.r(), color.g(), color.b(), 0xff);
-  });
+  SDL_SetRenderDrawColor(_renderer, color.r(), color.g(), color.b(), 0xff);
 }
 
 void Renderer::clear() {
   if (!_renderer) return;
 
-  SDLWorker.enqueue([&]() { SDL_RenderClear(_renderer); });
+  SDL_RenderClear(_renderer);
 }
 
 void Renderer::present() {
   if (!_renderer) return;
 
-  SDLWorker.enqueue([&]() { SDL_RenderPresent(_renderer); });
+  SDL_RenderPresent(_renderer);
 }
 
 void Renderer::drawRect(const ScreenRect &dstRect) {
   if (!_renderer) return;
 
-  SDLWorker.enqueue(
-      [&]() { SDL_RenderDrawRect(_renderer, &rectToSDL(dstRect)); });
+  SDL_RenderDrawRect(_renderer, &rectToSDL(dstRect));
 }
 
 void Renderer::fillRect(const ScreenRect &dstRect) {
   if (!_renderer) return;
 
-  SDLWorker.enqueue(
-      [&]() { SDL_RenderFillRect(_renderer, &rectToSDL(dstRect)); });
+  SDL_RenderFillRect(_renderer, &rectToSDL(dstRect));
 }
 
 void Renderer::fill() {
   if (!_renderer) return;
 
-  SDLWorker.enqueue([&]() { SDL_RenderFillRect(_renderer, nullptr); });
+  SDL_RenderFillRect(_renderer, nullptr);
 }
 
 void Renderer::fillWithTransparency() {
   if (!_renderer) return;
 
-  SDLWorker.enqueue([&]() {
-    SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 0x00);
-    SDL_RenderFillRect(_renderer, nullptr);
-  });
+  SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 0x00);
+  SDL_RenderFillRect(_renderer, nullptr);
 }
 
 void Renderer::setRenderTarget() const {
   if (!_renderer) return;
 
-  SDLWorker.enqueue([&]() { SDL_SetRenderTarget(_renderer, 0); });
+  SDL_SetRenderTarget(_renderer, 0);
 }
 
 void Renderer::updateSize() {
   if (!_renderer) return;
 
-  SDLWorker.enqueue([&]() { SDL_GetRendererOutputSize(_renderer, &_w, &_h); });
+  SDL_GetRendererOutputSize(_renderer, &_w, &_h);
 }
 
 void Renderer::pushRenderTarget(Texture &target) {
   if (!_renderer) return;
 
-  SDLWorker.enqueue([&]() {
-    SDL_Texture *currentTarget = SDL_GetRenderTarget(_renderer);
-    _renderTargetsStack.push(currentTarget);
-    SDL_SetRenderTarget(_renderer, target.raw());
-  });
+  SDL_Texture *currentTarget = SDL_GetRenderTarget(_renderer);
+  _renderTargetsStack.push(currentTarget);
+  SDL_SetRenderTarget(_renderer, target.raw());
 }
 
 void Renderer::popRenderTarget() {
   if (!_renderer) return;
 
-  SDLWorker.enqueue([&]() {
-    SDL_SetRenderTarget(_renderer, _renderTargetsStack.top());
-    _renderTargetsStack.pop();
-  });
+  SDL_SetRenderTarget(_renderer, _renderTargetsStack.top());
+  _renderTargetsStack.pop();
 }
 
 SDL_Rect Renderer::rectToSDL(const ScreenRect &rect) {
@@ -219,26 +189,23 @@ Color Renderer::getPixel(px_t x, px_t y) const {
 
   Uint32 pixel;
 
-  SDLWorker.enqueue([&]() {
-    SDL_RenderGetLogicalSize(_renderer, &logicalW, &logicalH);
+  SDL_RenderGetLogicalSize(_renderer, &logicalW, &logicalH);
 
-    double scaleW = 1.0 * _w / logicalW, scaleH = 1.0 * _h / logicalH;
-    x = toInt(x * scaleW);
-    y = toInt(y * scaleH);
+  double scaleW = 1.0 * _w / logicalW, scaleH = 1.0 * _h / logicalH;
+  x = toInt(x * scaleW);
+  y = toInt(y * scaleH);
 
-    SDL_Surface *windowSurface = SDL_GetWindowSurface(_window);
+  SDL_Surface *windowSurface = SDL_GetWindowSurface(_window);
 
-    const SDL_Rect rect = {x, y, 1, 1};
-    auto pitch = 4;
+  const SDL_Rect rect = {x, y, 1, 1};
+  auto pitch = 4;
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    const auto pixelFormat = SDL_PIXELFORMAT_ARGB8888;
+  const auto pixelFormat = SDL_PIXELFORMAT_ARGB8888;
 #else
-    const auto pixelFormat = SDL_PIXELFORMAT_ABGR8888;
+  const auto pixelFormat = SDL_PIXELFORMAT_ABGR8888;
 #endif
 
-    SDL_RenderReadPixels(_renderer, &rect, pixelFormat, &pixel, pitch);
-  });
-  SDLWorker.waitUntilDone();
+  SDL_RenderReadPixels(_renderer, &rect, pixelFormat, &pixel, pitch);
 
   return pixel;
 }
