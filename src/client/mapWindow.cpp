@@ -19,14 +19,13 @@ void Client::onMapScrollDown(Element &e) {
 }
 
 void Client::initializeMapWindow() {
-  _mapImage = {"Images/map.png"};
   _mapWindow = Window::WithRectAndTitle(
       *this,
       {(SCREEN_X - MAP_IMAGE_W) / 2, (SCREEN_Y - MAP_IMAGE_H) / 2,
        MAP_IMAGE_W + 1, MAP_IMAGE_H + 2},
       "Map");
   _mapPicture =
-      new Picture(ScreenRect{0, 0, MAP_IMAGE_W, MAP_IMAGE_H}, _mapImage);
+      new Picture(ScreenRect{0, 0, MAP_IMAGE_W, MAP_IMAGE_H}, images.map);
   _mapWindow->addChild(_mapPicture);
 
   mapWindow.fogOfWar = new Picture(0, 0, _fogOfWar);
@@ -38,11 +37,6 @@ void Client::initializeMapWindow() {
   _mapWindow->addChild(_mapPinOutlines);
   _mapWindow->addChild(_mapPins);
   _mapWindow->addChild(_mapIcons);
-
-  _mapCityFriendly = {"Images/UI/map-city-friendly.png", Color::MAGENTA};
-  _mapCityNeutral = {"Images/UI/map-city-neutral.png", Color::MAGENTA};
-  _mapCityEnemy = {"Images/UI/map-city-enemy.png", Color::MAGENTA};
-  _respawnPointIcon = {"Images/UI/map-respawn.png", Color::MAGENTA};
 
   // Zoom buttons
   static const auto ZOOM_BUTTON_SIZE = 11;
@@ -113,22 +107,22 @@ void Client::updateMapWindow(Element &e) {
       client.addMapPin(avatar.location(), avatar.nameColor(), avatar.name());
   }
 
-  client.addIconToMap(client._respawnPoint, &client._respawnPointIcon,
+  client.addIconToMap(client._respawnPoint, &images.mapRespawn,
                       "On death, you will return here");
 
   // Cities
   for (const auto &pair : client._cities) {
     auto tooltipText = "City of "s + pair.first;
-    auto cityIcon = &client._mapCityNeutral;
+    auto cityIcon = &images.mapCityNeutral;
 
     auto isInCity = !client.character().cityName().empty();
     if (client.character().cityName() == pair.first) {
-      cityIcon = &client._mapCityFriendly;
+      cityIcon = &images.mapCityFriendly;
       tooltipText = "Your city, "s + pair.first;
     } else if (isInCity && client.isCityAtWarWithCityDirectly(pair.first)) {
-      cityIcon = &client._mapCityEnemy;
+      cityIcon = &images.mapCityEnemy;
     } else if (!isInCity && client.isAtWarWithCityDirectly(pair.first)) {
-      cityIcon = &client._mapCityEnemy;
+      cityIcon = &images.mapCityEnemy;
     }
     client.addIconToMap(pair.second, cityIcon, tooltipText);
   }

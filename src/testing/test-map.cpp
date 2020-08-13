@@ -41,10 +41,10 @@ TEST_CASE("A player shows up on his own map", "[.flaky][map][color]") {
   CHECK(pin->color() == Color::COMBATANT_SELF);
 
   // And that pin is 1x1 and in the center of the map;
-  const px_t midMapX = toInt(c->mapImage().width() / 2.0),
-             midMapY = toInt(c->mapImage().height() / 2.0);
-  const MapPoint mapMidpoint(c->mapImage().width() / 2,
-                             c->mapImage().height() / 2);
+  const auto &mapImage = Client::images.map;
+  const px_t midMapX = toInt(mapImage.width() / 2.0),
+             midMapY = toInt(mapImage.height() / 2.0);
+  const MapPoint mapMidpoint(mapImage.width() / 2, mapImage.height() / 2);
   WAIT_UNTIL(pin->rect() == ScreenRect(midMapX, midMapY, 1, 1));
 
   // And the map has one pin outline;

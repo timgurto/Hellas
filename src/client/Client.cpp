@@ -929,4 +929,10 @@ void Client::CommonImages::initialise() {
   scrollArrowGreyDown = {"Images/arrowDownGrey.png", Color::MAGENTA};
 
   icons.initialise("Images/Icons");
+
+  map = {"Images/map.png"};
+  mapCityFriendly = {"Images/UI/map-city-friendly.png"};
+  mapCityNeutral = {"Images/UI/map-city-neutral.png"};
+  mapCityEnemy = {"Images/UI/map-city-enemy.png"};
+  mapRespawn = {"Images/UI/map-respawn.png"};
 }

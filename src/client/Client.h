@@ -102,8 +102,6 @@ class Client {
   }
   std::string getUserCity(const std::string &name) const;
 
-  const Texture &mapImage() const { return _mapImage; }
-
   // Special types
   SpriteType avatarSpriteType;
   ClientCombatantType avatarCombatantType;
@@ -289,7 +287,6 @@ class Client {
   void populateQuestLog();
 
   Window *_mapWindow = nullptr;
-  Texture _mapImage;
   Picture *_mapPicture{nullptr};
   Element *_mapPins{nullptr}, *_mapPinOutlines{nullptr}, *_mapIcons{nullptr};
   static const px_t MAP_IMAGE_W = 300, MAP_IMAGE_H = 300;
@@ -311,8 +308,6 @@ class Client {
   static void onMapScrollDown(Element &);
   Button *_zoomMapInButton{nullptr};
   Button *_zoomMapOutButton{nullptr};
-  Texture _mapCityFriendly, _mapCityNeutral, _mapCityEnemy;
-  Texture _respawnPointIcon;
   MapPoint _respawnPoint;
   struct MapWindow {
     int zoomMultiplier{0};
@@ -585,6 +580,10 @@ class Client {
         scrollArrowGreyDown;
 
     MemoisedImageDirectory icons;
+
+    Texture map;
+    Texture mapCityFriendly, mapCityNeutral, mapCityEnemy;
+    Texture mapRespawn;
   } images;
 
  private:
