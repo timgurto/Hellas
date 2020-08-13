@@ -25,7 +25,7 @@ WorkerThread& WorkerThread::waitUntilDone() {
   return *this;
 }
 
-void WorkerThread::requireThisCallToBeInWorkerThread() {
+void WorkerThread::assertIsExecutingThis() {
   auto thisThreadID = std::this_thread::get_id();
   assert(thisThreadID == _workerThreadID);
 }

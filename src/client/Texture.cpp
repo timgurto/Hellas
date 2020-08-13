@@ -50,7 +50,7 @@ Texture::Texture(TTF_Font *font, const std::string &text, const Color &color) {
 }
 
 void Texture::createFromSurface() {
-  SDLThread.requireThisCallToBeInWorkerThread();
+  SDLThread.assertIsExecutingThis();
   if (!_surface) return;
 
   _raw = {_surface.toTexture(), freeSurfaceInSDLThread};
@@ -82,17 +82,17 @@ Texture &Texture::operator=(const Texture &rhs) {
 }
 
 void Texture::setBlend(SDL_BlendMode mode) const {
-  SDLThread.requireThisCallToBeInWorkerThread();
+  SDLThread.assertIsExecutingThis();
   SDL_SetTextureBlendMode(_raw.get(), mode);
 }
 
 void Texture::setAlpha(Uint8 alpha) const {
-  SDLThread.requireThisCallToBeInWorkerThread();
+  SDLThread.assertIsExecutingThis();
   SDL_SetTextureAlphaMod(_raw.get(), alpha);
 }
 
 void Texture::rotateClockwise(const ScreenPoint &centre) {
-  SDLThread.requireThisCallToBeInWorkerThread();
+  SDLThread.assertIsExecutingThis();
   auto centreSDL = SDL_Point{centre.x, centre.y};
 
   SDL_RenderCopyEx(renderer.raw(), _raw.get(), nullptr, nullptr, 90.0,
@@ -124,7 +124,7 @@ Color Texture::getPixel(px_t x, px_t y) const {
 }
 
 void Texture::setRenderTarget() const {
-  SDLThread.requireThisCallToBeInWorkerThread();
+  SDLThread.assertIsExecutingThis();
   if (!_validTarget) return;
 
   SDL_SetRenderTarget(renderer._renderer, _raw.get());

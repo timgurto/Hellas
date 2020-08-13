@@ -14,7 +14,7 @@ class WorkerThread {
   WorkerThread(const std::string &threadName);
   WorkerThread &enqueue(Task task);
   WorkerThread &waitUntilDone();
-  void requireThisCallToBeInWorkerThread();
+  void assertIsExecutingThis();
 
  private:
   void run();
