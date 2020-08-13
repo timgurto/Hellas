@@ -1,7 +1,5 @@
 #include "ClientObjectType.h"
 
-#include <SDL.h>
-
 #include <cassert>
 
 #include "../Color.h"

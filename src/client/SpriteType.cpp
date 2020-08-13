@@ -1,8 +1,5 @@
 #include "SpriteType.h"
 
-#include <SDL.h>
-#include <SDL_image.h>
-
 #include "../Color.h"
 #include "Client.h"
 #include "Surface.h"

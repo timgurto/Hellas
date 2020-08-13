@@ -12,12 +12,9 @@ class WorkerThread {
   using Task = std::function<void()>;
 
   WorkerThread(const std::string &threadName);
-  WorkerThread &enqueue(Task task);
-  WorkerThread &waitUntilDone();
-  void assertIsExecutingThis();
+  void callBlocking(Task task);
 
  private:
   void run();
-  std::queue<Task> _tasks;
-  std::thread::id _workerThreadID;
+  Task _pendingTask = nullptr;
 };

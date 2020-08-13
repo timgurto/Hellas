@@ -1,5 +1,3 @@
-#include <SDL.h>
-
 #include <cassert>
 #include <cstdlib>
 #include <ctime>

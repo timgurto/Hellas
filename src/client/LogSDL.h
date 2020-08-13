@@ -1,9 +1,6 @@
 #ifndef LOG_SDL_H
 #define LOG_SDL_H
 
-#include <SDL.h>
-#include <SDL_ttf.h>
-
 #include <list>
 #include <sstream>
 #include <string>

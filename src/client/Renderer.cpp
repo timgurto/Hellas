@@ -18,7 +18,7 @@ size_t Renderer::_count = 0;
 Renderer::Renderer() : _renderer(nullptr), _window(nullptr), _valid(false) {
   if (_count == 0) {
     // First renderer constructed; initialize SDL
-    SDLThread.enqueue([&]() {
+    SDLThread.callBlocking([&]() {
       auto ret = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
       if (ret < 0) return;
 
@@ -32,7 +32,6 @@ Renderer::Renderer() : _renderer(nullptr), _window(nullptr), _valid(false) {
 }
 
 void Renderer::init() {
-  SDLThread.assertIsExecutingThis();
   const px_t screenX = cmdLineArgs.contains("left") ? cmdLineArgs.getInt("left")
                                                     : SDL_WINDOWPOS_UNDEFINED;
   const px_t screenY = cmdLineArgs.contains("top") ? cmdLineArgs.getInt("top")
@@ -64,7 +63,7 @@ void Renderer::init() {
 }
 
 Renderer::~Renderer() {
-  SDLThread.enqueue([&]() {
+  SDLThread.callBlocking([&]() {
     if (_renderer) {
       auto temp = _renderer;
       _renderer = nullptr;
@@ -84,14 +83,12 @@ Renderer::~Renderer() {
 }
 
 SDL_Texture *Renderer::createTextureFromSurface(SDL_Surface *surface) const {
-  SDLThread.assertIsExecutingThis();
   if (!_renderer) return nullptr;
 
   return SDL_CreateTextureFromSurface(_renderer, surface);
 }
 
 SDL_Texture *Renderer::createTargetableTexture(px_t width, px_t height) const {
-  SDLThread.assertIsExecutingThis();
   if (!_renderer) return nullptr;
 
   return SDL_CreateTexture(_renderer, SDL_PIXELFORMAT_RGBA8888,
@@ -99,7 +96,6 @@ SDL_Texture *Renderer::createTargetableTexture(px_t width, px_t height) const {
 }
 
 void Renderer::drawTexture(SDL_Texture *srcTex, const ScreenRect &dstRect) {
-  SDLThread.assertIsExecutingThis();
   if (!_renderer) return;
 
   SDL_RenderCopy(_renderer, srcTex, 0, &rectToSDL(dstRect));
@@ -107,56 +103,48 @@ void Renderer::drawTexture(SDL_Texture *srcTex, const ScreenRect &dstRect) {
 
 void Renderer::drawTexture(SDL_Texture *srcTex, const ScreenRect &dstRect,
                            const ScreenRect &srcRect) {
-  SDLThread.assertIsExecutingThis();
   if (!_renderer) return;
 
   SDL_RenderCopy(_renderer, srcTex, &rectToSDL(srcRect), &rectToSDL(dstRect));
 }
 
 void Renderer::setDrawColor(const Color &color) {
-  SDLThread.assertIsExecutingThis();
   if (!_renderer) return;
 
   SDL_SetRenderDrawColor(_renderer, color.r(), color.g(), color.b(), 0xff);
 }
 
 void Renderer::clear() {
-  SDLThread.assertIsExecutingThis();
   if (!_renderer) return;
 
   SDL_RenderClear(_renderer);
 }
 
 void Renderer::present() {
-  SDLThread.assertIsExecutingThis();
   if (!_renderer) return;
 
   SDL_RenderPresent(_renderer);
 }
 
 void Renderer::drawRect(const ScreenRect &dstRect) {
-  SDLThread.assertIsExecutingThis();
   if (!_renderer) return;
 
   SDL_RenderDrawRect(_renderer, &rectToSDL(dstRect));
 }
 
 void Renderer::fillRect(const ScreenRect &dstRect) {
-  SDLThread.assertIsExecutingThis();
   if (!_renderer) return;
 
   SDL_RenderFillRect(_renderer, &rectToSDL(dstRect));
 }
 
 void Renderer::fill() {
-  SDLThread.assertIsExecutingThis();
   if (!_renderer) return;
 
   SDL_RenderFillRect(_renderer, nullptr);
 }
 
 void Renderer::fillWithTransparency() {
-  SDLThread.assertIsExecutingThis();
   if (!_renderer) return;
 
   SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 0x00);
@@ -164,21 +152,18 @@ void Renderer::fillWithTransparency() {
 }
 
 void Renderer::setRenderTarget() const {
-  SDLThread.assertIsExecutingThis();
   if (!_renderer) return;
 
   SDL_SetRenderTarget(_renderer, 0);
 }
 
 void Renderer::updateSize() {
-  SDLThread.assertIsExecutingThis();
   if (!_renderer) return;
 
   SDL_GetRendererOutputSize(_renderer, &_w, &_h);
 }
 
 void Renderer::pushRenderTarget(Texture &target) {
-  SDLThread.assertIsExecutingThis();
   if (!_renderer) return;
 
   SDL_Texture *currentTarget = SDL_GetRenderTarget(_renderer);
@@ -187,7 +172,6 @@ void Renderer::pushRenderTarget(Texture &target) {
 }
 
 void Renderer::popRenderTarget() {
-  SDLThread.assertIsExecutingThis();
   if (!_renderer) return;
 
   SDL_SetRenderTarget(_renderer, _renderTargetsStack.top());
@@ -200,7 +184,6 @@ SDL_Rect Renderer::rectToSDL(const ScreenRect &rect) {
 }
 
 Color Renderer::getPixel(px_t x, px_t y) const {
-  SDLThread.assertIsExecutingThis();
   if (!_renderer) return {};
   px_t logicalW, logicalH;
 
