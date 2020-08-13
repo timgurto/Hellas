@@ -30,10 +30,9 @@ bool Element::initialized = false;
 Element::Element(const ScreenRect &rect) : _rect(rect) {
   assert(initialized);
   SDLThread.enqueue([this]() {
-             _texture = {_rect.w, _rect.h};
-           })
-      .waitUntilDone()
-      .enqueue([this]() { _texture.setBlend(SDL_BLENDMODE_BLEND); });
+    _texture = {_rect.w, _rect.h};
+    _texture.setBlend(SDL_BLENDMODE_BLEND);
+  });
 }
 
 Element::~Element() {
