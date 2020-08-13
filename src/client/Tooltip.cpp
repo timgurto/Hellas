@@ -7,8 +7,10 @@
 #include "ClientItem.h"
 #include "Renderer.h"
 #include "Tag.h"
+#include "WorkerThread.h"
 
 extern Renderer renderer;
+extern WorkerThread SDLWorker;
 
 const px_t Tooltip::PADDING =
     4;  // Margins, and the height of gaps between lines.
@@ -20,7 +22,10 @@ ms_t Tooltip::timeThatTheLastRedrawWasOrdered{};
 const Tooltip Tooltip::NO_TOOLTIP{};
 
 Tooltip::Tooltip() {
-  if (font == nullptr) font = TTF_OpenFont("AdvoCut.ttf", 10);
+  if (!font) {
+    SDLWorker.enqueue([]() { font = TTF_OpenFont("AdvoCut.ttf", 10); });
+    SDLWorker.waitUntilDone();
+  }
 }
 
 void Tooltip::setColor(const Color &color) { _color = color; }

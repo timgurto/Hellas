@@ -2,9 +2,12 @@
 
 #include "../Message.h"
 #include "Client.h"
+#include "WorkerThread.h"
 #include "ui/Indicator.h"
 #include "ui/OutlinedLabel.h"
 #include "ui/TextBox.h"
+
+extern WorkerThread SDLWorker;
 
 void Client::showErrorMessage(const std::string &message, Color color) const {
   if (!_lastErrorMessage) return;
@@ -24,7 +27,10 @@ void Client::initUI() {
   if (!properFontHasBeenInitialisedFromConfig && _defaultFont)
     TTF_CloseFont(_defaultFont);
   if (!properFontHasBeenInitialisedFromConfig) {
-    _defaultFont = TTF_OpenFont(_config.fontFile.c_str(), _config.fontSize);
+    SDLWorker.enqueue([this]() {
+      _defaultFont = TTF_OpenFont(_config.fontFile.c_str(), _config.fontSize);
+    });
+    SDLWorker.waitUntilDone();
   }
   assert(_defaultFont);
   Element::font(_defaultFont);

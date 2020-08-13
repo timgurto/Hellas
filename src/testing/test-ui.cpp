@@ -1,9 +1,12 @@
 #include "../client/ClientNPCType.h"
+#include "../client/WorkerThread.h"
 #include "../client/ui/Label.h"
 #include "../client/ui/List.h"
 #include "TestClient.h"
 #include "TestServer.h"
 #include "testing.h"
+
+extern WorkerThread SDLWorker;
 
 TEST_CASE("Size of empty list", "[ui]") {
   // When a new List element is created
@@ -202,7 +205,9 @@ TEST_CASE("A player's objects are the appropriate color",
 
 TEST_CASE("Word wrapper", "[ui]") {
   GIVEN("a word wrapper") {
-    auto font = TTF_OpenFont("AdvoCut.ttf", 10);
+    TTF_Font *font;
+    SDLWorker.enqueue([&font]() { font = TTF_OpenFont("AdvoCut.ttf", 10); });
+    SDLWorker.waitUntilDone();
     auto ww = WordWrapper(font, 200);
 
     WHEN("it's given two lines of input with two words each") {
@@ -216,6 +221,7 @@ TEST_CASE("Word wrapper", "[ui]") {
         CHECK(output[0] == "line 1");
       }
     }
+    SDLWorker.enqueue([font]() { TTF_CloseFont(font); });
   }
 }
 

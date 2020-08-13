@@ -172,10 +172,12 @@ void Client::initStatics() {
   if (alreadyInitialised) return;
   alreadyInitialised = true;
 
-  _defaultFont = TTF_OpenFont("AdvoCut.ttf", 10);
+  SDLWorker.enqueue([]() { _defaultFont = TTF_OpenFont("AdvoCut.ttf", 10); });
   SDLWorker.enqueue([]() { images.initialise(); });
+  SDLWorker.enqueue([]() { SDL_ShowCursor(SDL_DISABLE); });
   initializeMessageNames();
-  SDL_ShowCursor(SDL_DISABLE);
+
+  SDLWorker.waitUntilDone();
 }
 
 Client::~Client() {
