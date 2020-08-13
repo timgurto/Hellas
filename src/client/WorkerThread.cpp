@@ -16,6 +16,9 @@ WorkerThread::WorkerThread(const std::string& threadName) {
 void WorkerThread::callBlocking(Task task) {
   assert(!_pendingTask);
   _pendingTask = task;
+
+  while (_pendingTask)
+    ;
 }
 
 void WorkerThread::run() {
