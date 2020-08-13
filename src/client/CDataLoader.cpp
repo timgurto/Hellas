@@ -13,6 +13,9 @@
 #include "ParticleProfile.h"
 #include "SoundProfile.h"
 #include "Unlocks.h"
+#include "WorkerThread.h"
+
+extern WorkerThread SDLThread;
 
 CDataLoader::CDataLoader(Client &client) : _client(client) {}
 
@@ -137,8 +140,12 @@ void CDataLoader::loadTerrain(XmlReader &xr) {
     xr.findAttr(elem, "frames", frames);
     xr.findAttr(elem, "frameTime", frameTime);
 
-    auto &terrain = _client.gameData.terrain[index] =
-        ClientTerrain(fileName, frames, frameTime);
+    auto &terrain = _client.gameData.terrain[index];
+    SDLThread
+        .enqueue([&terrain, &fileName, frames, frameTime]() {
+          terrain = ClientTerrain(fileName, frames, frameTime);
+        })
+        .waitUntilDone();
     terrain.loadTagsFromXML(xr, elem);
   }
 }

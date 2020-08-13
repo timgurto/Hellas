@@ -1,6 +1,8 @@
 #ifndef CLIENT_TERRAIN_H
 #define CLIENT_TERRAIN_H
 
+#include <vector>
+
 #include "../Rect.h"
 #include "../Terrain.h"
 #include "../types.h"
