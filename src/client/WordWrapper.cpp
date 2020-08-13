@@ -10,13 +10,14 @@
 extern WorkerThread SDLWorker;
 
 WordWrapper::WordWrapper(TTF_Font *font, px_t width) : _width(width) {
-  SDLWorker.enqueue([this, font]() {
-    for (char c = '\0'; c != 0x7f; ++c) {
-      auto glyph = Texture{font, std::string{c}};
-      _glyphWidths.push_back(glyph.width());
-    }
-  });
-  SDLWorker.waitUntilDone();
+  SDLWorker
+      .enqueue([this, font]() {
+        for (char c = '\0'; c != 0x7f; ++c) {
+          auto glyph = Texture{font, std::string{c}};
+          _glyphWidths.push_back(glyph.width());
+        }
+      })
+      .waitUntilDone();
   _glyphWidths['\n'] = 0;
 }
 

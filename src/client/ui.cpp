@@ -27,10 +27,12 @@ void Client::initUI() {
   if (!properFontHasBeenInitialisedFromConfig && _defaultFont)
     TTF_CloseFont(_defaultFont);
   if (!properFontHasBeenInitialisedFromConfig) {
-    SDLWorker.enqueue([this]() {
-      _defaultFont = TTF_OpenFont(_config.fontFile.c_str(), _config.fontSize);
-    });
-    SDLWorker.waitUntilDone();
+    SDLWorker
+        .enqueue([this]() {
+          _defaultFont =
+              TTF_OpenFont(_config.fontFile.c_str(), _config.fontSize);
+        })
+        .waitUntilDone();
   }
   assert(_defaultFont);
   Element::font(_defaultFont);
@@ -354,10 +356,11 @@ void Client::addButtonToMenu(Element *menuBar, size_t index, Element *toToggle,
                   MENU_BUTTON_H},
                  "", [toToggle]() { Element::toggleVisibilityOf(toToggle); });
   auto icon = Texture{};
-  SDLWorker.enqueue([&icon, iconFile]() {
-    icon = {"Images/UI/" + iconFile, Color::MAGENTA};
-  });
-  SDLWorker.waitUntilDone();
+  SDLWorker
+      .enqueue([&icon, iconFile]() {
+        icon = {"Images/UI/" + iconFile, Color::MAGENTA};
+      })
+      .waitUntilDone();
   button->addChild(new Picture(2, 2, icon));
   button->setTooltip(tooltip);
   menuBar->addChild(button);

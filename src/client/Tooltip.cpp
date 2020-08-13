@@ -23,8 +23,8 @@ const Tooltip Tooltip::NO_TOOLTIP{};
 
 Tooltip::Tooltip() {
   if (!font) {
-    SDLWorker.enqueue([]() { font = TTF_OpenFont("AdvoCut.ttf", 10); });
-    SDLWorker.waitUntilDone();
+    SDLWorker.enqueue([]() { font = TTF_OpenFont("AdvoCut.ttf", 10); })
+        .waitUntilDone();
   }
 }
 

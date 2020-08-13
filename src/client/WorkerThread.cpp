@@ -14,11 +14,15 @@ WorkerThread::WorkerThread(const std::string& threadName) {
   }).detach();
 }
 
-void WorkerThread::enqueue(WorkerThread::Task newTask) { _tasks.push(newTask); }
+WorkerThread& WorkerThread::enqueue(WorkerThread::Task newTask) {
+  _tasks.push(newTask);
+  return *this;
+}
 
-void WorkerThread::waitUntilDone() {
-  while (!_tasks.empty()) {
-  }
+WorkerThread& WorkerThread::waitUntilDone() {
+  while (!_tasks.empty())
+    ;
+  return *this;
 }
 
 void WorkerThread::requireThisCallToBeInWorkerThread() {

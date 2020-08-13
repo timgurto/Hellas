@@ -206,8 +206,8 @@ TEST_CASE("A player's objects are the appropriate color",
 TEST_CASE("Word wrapper", "[ui]") {
   GIVEN("a word wrapper") {
     TTF_Font *font;
-    SDLWorker.enqueue([&font]() { font = TTF_OpenFont("AdvoCut.ttf", 10); });
-    SDLWorker.waitUntilDone();
+    SDLWorker.enqueue([&font]() { font = TTF_OpenFont("AdvoCut.ttf", 10); })
+        .waitUntilDone();
     auto ww = WordWrapper(font, 200);
 
     WHEN("it's given two lines of input with two words each") {
