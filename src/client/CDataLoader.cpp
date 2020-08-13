@@ -40,7 +40,7 @@ void CDataLoader::load(bool keepOldData) {
     _client.gameData.recipes.clear();
   }
 
-  _client.drawLoadingScreen("Loading data", 0.6);
+  _client.drawLoadingScreen("Loading data");
 
   auto usingPath = !_path.empty();
   if (usingPath) {
@@ -67,7 +67,7 @@ void CDataLoader::load(bool keepOldData) {
     loadFromAllFiles(&CDataLoader::loadNPCTypes);
     loadFromAllFiles(&CDataLoader::loadQuests);
 
-    _client.drawLoadingScreen("Loading map", 0.65);
+    _client.drawLoadingScreen("Loading map");
     auto reader = XmlReader::FromFile(_path + "/map.xml");
     loadMap(reader);
   } else {

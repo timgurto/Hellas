@@ -516,7 +516,8 @@ class Client {
   bool isCtrlPressed() const;
   bool isAltPressed() const;
 
-  void drawLoadingScreen(const std::string &msg, double progress) const;
+  void drawLoadingScreen(const std::string &msg) const;
+  mutable int _loadingScreenProgress{0};
 
   void draw() const;
   mutable bool _drawingFinished{false};  // Set to true after every redraw.

@@ -65,7 +65,7 @@ void Client::initUI() {
 }
 
 void Client::initChatLog() {
-  drawLoadingScreen("Initializing chat log", 0.4);
+  drawLoadingScreen("Initializing chat log");
   _chatContainer =
       new Element({0, SCREEN_Y - _config.chatH, _config.chatW, _config.chatH});
   _chatTextBox = new TextBox(*this, {0, _config.chatH, _config.chatW});
@@ -86,7 +86,7 @@ void Client::initChatLog() {
 }
 
 void Client::initWindows() {
-  drawLoadingScreen("Initializing UI", 0.8);
+  drawLoadingScreen("Initializing UI");
 
   initializeBuildWindow();
   addWindow(_buildWindow);

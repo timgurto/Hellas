@@ -356,12 +356,15 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const {
                   0xaf);
 }
 
-void Client::drawLoadingScreen(const std::string &msg, double progress) const {
+void Client::drawLoadingScreen(const std::string &msg) const {
   if (cmdLineArgs.contains("hideLoadingScreen")) return;
 
   static const Color BACKGROUND = Color::WINDOW_BACKGROUND,
                      FOREGROUND = Color::WINDOW_FONT;
 
+  ++_loadingScreenProgress;
+  static const auto MAX_PROGRESS = 9;
+  auto progress = 1.0 * _loadingScreenProgress / MAX_PROGRESS;
 
   SDLWorker.enqueue([&]() {
     renderer.setDrawColor(BACKGROUND);

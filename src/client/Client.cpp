@@ -26,6 +26,7 @@
 #include "SpriteType.h"
 #include "Tooltip.h"
 #include "Unlocks.h"
+#include "WorkerThread.h"
 #include "ui/Button.h"
 #include "ui/CombatantPanel.h"
 #include "ui/ConfirmationWindow.h"
@@ -35,6 +36,7 @@
 #include "ui/ProgressBar.h"
 
 extern Args cmdLineArgs;
+extern WorkerThread SDLWorker;
 
 Client::CommonImages Client::images;
 TTF_Font *Client::_defaultFont = nullptr;
@@ -88,7 +90,7 @@ Client::Client()
 
       _debug(*this, "client.log") {
   initStatics();
-  drawLoadingScreen("Reading configuration file", 0.1);
+  drawLoadingScreen("Reading configuration file");
 
   _config.loadFromFile("client-config.xml");
   _connection.initialize(_config.serverHostDirectory);
@@ -103,7 +105,7 @@ Client::Client()
 
   if (cmdLineArgs.contains("auto-login")) _shouldAutoLogIn = true;
 
-  drawLoadingScreen("Initializing audio", 0.5);
+  drawLoadingScreen("Initializing audio");
   int ret = (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 1, 512) < 0);
   if (ret < 0) {
     showErrorMessage("SDL_mixer failed to initialize.", Color::CHAT_ERROR);
@@ -118,8 +120,6 @@ Client::Client()
   initializeUsername();
 
   SDL_StopTextInput();
-
-  drawLoadingScreen("", 1);
 }
 
 void Client::initialiseData() {
@@ -173,7 +173,7 @@ void Client::initStatics() {
   alreadyInitialised = true;
 
   _defaultFont = TTF_OpenFont("AdvoCut.ttf", 10);
-  images.initialise();
+  SDLWorker.enqueue([]() { images.initialise(); });
   initializeMessageNames();
   SDL_ShowCursor(SDL_DISABLE);
 }
@@ -206,7 +206,7 @@ void Client::cleanUpStatics() {
 void Client::run() {
   _running = true;
   if (!_dataLoaded) {
-    drawLoadingScreen("Loading data", 0.6);
+    drawLoadingScreen("Loading data");
     bool shouldLoadDefaultData = true;
     if (cmdLineArgs.contains("load-test-data-first")) {
       CDataLoader::FromPath(*this, "testing/data/minimal").load();
@@ -220,9 +220,11 @@ void Client::run() {
   }
   initialiseData();
 
-  drawLoadingScreen("Initializing login screen", 0.9);
+  drawLoadingScreen("Initializing login screen");
   initLoginScreen();
   _connection.state(Connection::TRYING_TO_CONNECT);
+
+  drawLoadingScreen("");
 
   ms_t timeAtLastTick = SDL_GetTicks();
   while (_loop) {
