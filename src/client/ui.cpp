@@ -353,8 +353,12 @@ void Client::addButtonToMenu(Element *menuBar, size_t index, Element *toToggle,
       new Button({MENU_BUTTON_W * static_cast<px_t>(index), 0, MENU_BUTTON_W,
                   MENU_BUTTON_H},
                  "", [toToggle]() { Element::toggleVisibilityOf(toToggle); });
-  button->addChild(
-      new Picture(2, 2, {"Images/UI/" + iconFile, Color::MAGENTA}));
+  auto icon = Texture{};
+  SDLWorker.enqueue([&icon, iconFile]() {
+    icon = {"Images/UI/" + iconFile, Color::MAGENTA};
+  });
+  SDLWorker.waitUntilDone();
+  button->addChild(new Picture(2, 2, icon));
   button->setTooltip(tooltip);
   menuBar->addChild(button);
 }
