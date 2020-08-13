@@ -30,7 +30,6 @@ void Client::HelpWindow::initialise(Client &client) {
     topicList->addChild(topic);
     auto *topicLabel = new Label({1, 1, 0, Element::TEXT_HEIGHT}, entry.name());
     topicLabel->matchW();
-    topicLabel->refresh();
     topic->addChild(topicLabel);
   }
   topicList->verifyBoxes();
