@@ -26,7 +26,6 @@
 #include "SpriteType.h"
 #include "Tooltip.h"
 #include "Unlocks.h"
-#include "WorkerThread.h"
 #include "ui/Button.h"
 #include "ui/CombatantPanel.h"
 #include "ui/ConfirmationWindow.h"
@@ -36,7 +35,6 @@
 #include "ui/ProgressBar.h"
 
 extern Args cmdLineArgs;
-extern WorkerThread SDLThread;
 
 Client::CommonImages Client::images;
 TTF_Font *Client::_defaultFont = nullptr;
@@ -119,7 +117,7 @@ Client::Client()
 
   initializeUsername();
 
-  SDLThread.enqueue(SDL_StopTextInput);
+  SDL_StopTextInput();
 }
 
 void Client::initialiseData() {
@@ -172,12 +170,10 @@ void Client::initStatics() {
   if (alreadyInitialised) return;
   alreadyInitialised = true;
 
-  SDLThread.enqueue([]() { _defaultFont = TTF_OpenFont("AdvoCut.ttf", 10); });
-  SDLThread.enqueue([]() { images.initialise(); });
-  SDLThread.enqueue([]() { SDL_ShowCursor(SDL_DISABLE); });
+  _defaultFont = TTF_OpenFont("AdvoCut.ttf", 10);
+  images.initialise();
+  SDL_ShowCursor(SDL_DISABLE);
   initializeMessageNames();
-
-  SDLThread.waitUntilDone();
 }
 
 Client::~Client() {

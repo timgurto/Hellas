@@ -5,19 +5,12 @@
 #include <sstream>
 
 #include "Texture.h"
-#include "WorkerThread.h"
-
-extern WorkerThread SDLThread;
 
 WordWrapper::WordWrapper(TTF_Font *font, px_t width) : _width(width) {
-  SDLThread
-      .enqueue([this, font]() {
-        for (char c = '\0'; c != 0x7f; ++c) {
-          auto glyph = Texture{font, std::string{c}};
-          _glyphWidths.push_back(glyph.width());
-        }
-      })
-      .waitUntilDone();
+  for (char c = '\0'; c != 0x7f; ++c) {
+    auto glyph = Texture{font, std::string{c}};
+    _glyphWidths.push_back(glyph.width());
+  }
   _glyphWidths['\n'] = 0;
 }
 

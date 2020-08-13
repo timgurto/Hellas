@@ -29,10 +29,8 @@ bool Element::initialized = false;
 
 Element::Element(const ScreenRect &rect) : _rect(rect) {
   assert(initialized);
-  SDLThread.enqueue([this]() {
-    _texture = {_rect.w, _rect.h};
-    _texture.setBlend(SDL_BLENDMODE_BLEND);
-  });
+  _texture = {_rect.w, _rect.h};
+  _texture.setBlend(SDL_BLENDMODE_BLEND);
 }
 
 Element::~Element() {
@@ -365,11 +363,11 @@ void Element::draw() {
     if (_preRefresh != nullptr) _preRefresh(*_preRefreshElement);
     if (!_texture) return;
 
-    SDLThread.enqueue([this]() { renderer.pushRenderTarget(_texture); });
+    renderer.pushRenderTarget(_texture);
     makeBackgroundTransparent();
-    SDLThread.enqueue([this]() { refresh(); });
+    refresh();
     drawChildren();
-    SDLThread.enqueue([]() { renderer.popRenderTarget(); });
+    renderer.popRenderTarget();
     if (_alpha != SDL_ALPHA_OPAQUE) _texture.setAlpha(_alpha);
     _changed = false;
   }
@@ -384,12 +382,10 @@ void Element::forceRefresh() {
 }
 
 void Element::makeBackgroundTransparent() {
-  if (!transparentBackground) SDLThread.enqueue(createTransparentBackground);
+  if (!transparentBackground) createTransparentBackground();
 
-  SDLThread.enqueue([this]() {
-    auto dstRect = ScreenRect(0, 0, _rect.w, _rect.h);
-    transparentBackground.draw(dstRect);
-  });
+  auto dstRect = ScreenRect(0, 0, _rect.w, _rect.h);
+  transparentBackground.draw(dstRect);
 }
 
 void Element::createTransparentBackground() {

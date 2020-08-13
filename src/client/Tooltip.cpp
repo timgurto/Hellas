@@ -7,10 +7,8 @@
 #include "ClientItem.h"
 #include "Renderer.h"
 #include "Tag.h"
-#include "WorkerThread.h"
 
 extern Renderer renderer;
-extern WorkerThread SDLThread;
 
 const px_t Tooltip::PADDING =
     4;  // Margins, and the height of gaps between lines.
@@ -22,10 +20,7 @@ ms_t Tooltip::timeThatTheLastRedrawWasOrdered{};
 const Tooltip Tooltip::NO_TOOLTIP{};
 
 Tooltip::Tooltip() {
-  if (!font) {
-    SDLThread.enqueue([]() { font = TTF_OpenFont("AdvoCut.ttf", 10); })
-        .waitUntilDone();
-  }
+  if (!font) font = TTF_OpenFont("AdvoCut.ttf", 10);
 }
 
 void Tooltip::setColor(const Color &color) { _color = color; }
@@ -41,12 +36,8 @@ void Tooltip::addLine(const std::string &line) {
         std::make_unique<WordWrapper>(WordWrapper(font, DEFAULT_MAX_WIDTH));
   }
   auto wrappedLines = wordWrapper->wrap(line);
-  SDLThread
-      .enqueue([this, &wrappedLines]() {
-        for (const auto &wrappedLine : wrappedLines)
-          _content.push_back({font, wrappedLine, _color});
-      })
-      .waitUntilDone();
+  for (const auto &wrappedLine : wrappedLines)
+    _content.push_back({font, wrappedLine, _color});
 }
 
 void Tooltip::addLines(const Lines &lines) {

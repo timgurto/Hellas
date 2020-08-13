@@ -2,12 +2,9 @@
 
 #include "../Message.h"
 #include "Client.h"
-#include "WorkerThread.h"
 #include "ui/Indicator.h"
 #include "ui/OutlinedLabel.h"
 #include "ui/TextBox.h"
-
-extern WorkerThread SDLThread;
 
 void Client::showErrorMessage(const std::string &message, Color color) const {
   if (!_lastErrorMessage) return;
@@ -26,14 +23,9 @@ void Client::initUI() {
   auto properFontHasBeenInitialisedFromConfig = Element::font() != nullptr;
   if (!properFontHasBeenInitialisedFromConfig && _defaultFont)
     TTF_CloseFont(_defaultFont);
-  if (!properFontHasBeenInitialisedFromConfig) {
-    SDLThread
-        .enqueue([this]() {
-          _defaultFont =
-              TTF_OpenFont(_config.fontFile.c_str(), _config.fontSize);
-        })
-        .waitUntilDone();
-  }
+  if (!properFontHasBeenInitialisedFromConfig)
+    _defaultFont = TTF_OpenFont(_config.fontFile.c_str(), _config.fontSize);
+
   assert(_defaultFont);
   Element::font(_defaultFont);
   Element::textOffset = _config.fontOffset;
@@ -355,13 +347,8 @@ void Client::addButtonToMenu(Element *menuBar, size_t index, Element *toToggle,
       new Button({MENU_BUTTON_W * static_cast<px_t>(index), 0, MENU_BUTTON_W,
                   MENU_BUTTON_H},
                  "", [toToggle]() { Element::toggleVisibilityOf(toToggle); });
-  auto icon = Texture{};
-  SDLThread
-      .enqueue([&icon, iconFile]() {
-        icon = {"Images/UI/" + iconFile, Color::MAGENTA};
-      })
-      .waitUntilDone();
-  button->addChild(new Picture(2, 2, icon));
+  button->addChild(
+      new Picture(2, 2, {"Images/UI/" + iconFile, Color::MAGENTA}));
   button->setTooltip(tooltip);
   menuBar->addChild(button);
 }

@@ -205,9 +205,7 @@ TEST_CASE("A player's objects are the appropriate color",
 
 TEST_CASE("Word wrapper", "[ui]") {
   GIVEN("a word wrapper") {
-    TTF_Font *font;
-    SDLThread.enqueue([&font]() { font = TTF_OpenFont("AdvoCut.ttf", 10); })
-        .waitUntilDone();
+    TTF_Font *font = TTF_OpenFont("AdvoCut.ttf", 10);
     auto ww = WordWrapper(font, 200);
 
     WHEN("it's given two lines of input with two words each") {
@@ -221,7 +219,7 @@ TEST_CASE("Word wrapper", "[ui]") {
         CHECK(output[0] == "line 1");
       }
     }
-    SDLThread.enqueue([font]() { TTF_CloseFont(font); });
+    TTF_CloseFont(font);
   }
 }
 
