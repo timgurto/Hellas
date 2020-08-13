@@ -120,6 +120,7 @@ class Element {
   virtual ~Element();
 
   static void initialize();
+  static void createTransparentBackground();
 
   Client *client() const { return _client; }
 

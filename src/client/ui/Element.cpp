@@ -383,14 +383,19 @@ void Element::forceRefresh() {
 }
 
 void Element::makeBackgroundTransparent() {
-  if (!transparentBackground) {
-    transparentBackground =
-        Texture(4, 4);  // Texture(renderer.width(), renderer.height());
-    transparentBackground.setAlpha(0);
-    transparentBackground.setBlend(SDL_BLENDMODE_NONE);
-  }
-  auto dstRect = ScreenRect(0, 0, _rect.w, _rect.h);
-  transparentBackground.draw(dstRect);
+  if (!transparentBackground) SDLWorker.enqueue(createTransparentBackground);
+
+  SDLWorker.enqueue([this]() {
+    auto dstRect = ScreenRect(0, 0, _rect.w, _rect.h);
+    transparentBackground.draw(dstRect);
+  });
+}
+
+void Element::createTransparentBackground() {
+  transparentBackground =
+      Texture(4, 4);  // Texture(renderer.width(), renderer.height());
+  transparentBackground.setAlpha(0);
+  transparentBackground.setBlend(SDL_BLENDMODE_NONE);
 }
 
 void Element::toggleVisibilityOf(void *element) {
