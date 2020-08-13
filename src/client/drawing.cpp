@@ -4,10 +4,12 @@
 #include "Client.h"
 #include "ClientNPC.h"
 #include "Renderer.h"
+#include "WorkerThread.h"
 #include "ui/ContainerGrid.h"
 
 extern Args cmdLineArgs;
 extern Renderer renderer;
+extern WorkerThread SDLWorker;
 
 void Client::draw() const {
   if (!_loggedIn || !_loaded) {
@@ -360,21 +362,24 @@ void Client::drawLoadingScreen(const std::string &msg, double progress) const {
   static const Color BACKGROUND = Color::WINDOW_BACKGROUND,
                      FOREGROUND = Color::WINDOW_FONT;
 
-  renderer.setDrawColor(BACKGROUND);
-  renderer.clear();
 
-  Texture mainText(_defaultFont, "LOADING", FOREGROUND);
-  Texture message(_defaultFont, msg + " . . .", FOREGROUND);
+  SDLWorker.enqueue([&]() {
+    renderer.setDrawColor(BACKGROUND);
+    renderer.clear();
 
-  const px_t Y_MAIN = 160, Y_MSG = 180, Y_BAR = 195, BAR_LENGTH = 80,
-             BAR_HEIGHT = 5, X_BAR = (SCREEN_X - BAR_LENGTH) / 2;
-  const px_t X_MAIN = (SCREEN_X - mainText.width()) / 2;
+    Texture mainText(_defaultFont, "LOADING", FOREGROUND);
+    Texture message(_defaultFont, msg + " . . .", FOREGROUND);
 
-  mainText.draw(X_MAIN, Y_MAIN);
-  message.draw((SCREEN_X - message.width()) / 2, Y_MSG);
-  renderer.setDrawColor(FOREGROUND);
-  renderer.drawRect({X_BAR, Y_BAR, BAR_LENGTH, BAR_HEIGHT});
-  renderer.fillRect({X_BAR, Y_BAR, toInt(BAR_LENGTH * progress), BAR_HEIGHT});
+    const px_t Y_MAIN = 160, Y_MSG = 180, Y_BAR = 195, BAR_LENGTH = 80,
+               BAR_HEIGHT = 5, X_BAR = (SCREEN_X - BAR_LENGTH) / 2;
+    const px_t X_MAIN = (SCREEN_X - mainText.width()) / 2;
 
-  renderer.present();
+    mainText.draw(X_MAIN, Y_MAIN);
+    message.draw((SCREEN_X - message.width()) / 2, Y_MSG);
+    renderer.setDrawColor(FOREGROUND);
+    renderer.drawRect({X_BAR, Y_BAR, BAR_LENGTH, BAR_HEIGHT});
+    renderer.fillRect({X_BAR, Y_BAR, toInt(BAR_LENGTH * progress), BAR_HEIGHT});
+
+    renderer.present();
+  });
 }
