@@ -15,7 +15,7 @@ extern Renderer renderer;
 extern WorkerThread SDLWorker;
 
 void Surface::freeSurfaceInSDLThread(SDL_Surface *surface) {
-  SDLWorker.enqueue([&]() { SDL_FreeSurface(surface); });
+  SDLWorker.enqueue([surface]() { SDL_FreeSurface(surface); });
 }
 
 Surface::Surface(const std::string &filename, const Color &colorKey) {

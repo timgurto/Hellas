@@ -11,7 +11,7 @@ extern Renderer renderer;
 extern WorkerThread SDLWorker;
 
 void Texture::freeSurfaceInSDLThread(SDL_Texture *texture) {
-  SDLWorker.enqueue([&]() { SDL_DestroyTexture(texture); });
+  SDLWorker.enqueue([texture]() { SDL_DestroyTexture(texture); });
 }
 
 Texture::Texture() {}
