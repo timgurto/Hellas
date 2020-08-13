@@ -41,8 +41,12 @@ void Tooltip::addLine(const std::string &line) {
         std::make_unique<WordWrapper>(WordWrapper(font, DEFAULT_MAX_WIDTH));
   }
   auto wrappedLines = wordWrapper->wrap(line);
-  for (const auto &wrappedLine : wrappedLines)
-    _content.push_back({font, wrappedLine, _color});
+  SDLThread
+      .enqueue([this, &wrappedLines]() {
+        for (const auto &wrappedLine : wrappedLines)
+          _content.push_back({font, wrappedLine, _color});
+      })
+      .waitUntilDone();
 }
 
 void Tooltip::addLines(const Lines &lines) {
