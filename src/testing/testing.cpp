@@ -11,8 +11,13 @@ extern "C" {
 FILE __iob_func[3] = {*stdin, *stdout, *stderr};
 }
 
-Args cmdLineArgs;                      // MUST be defined before renderer
+Args cmdLineArgs;  // MUST be defined before renderer
+
+// Because the test project spins out clients into separate threads, there is
+// additional infrastructure to ensure all SDL calls happen within the one
+// thread.
 WorkerThread SDLThread{"SDL worker"};  // MUST be defined before renderer
+
 Renderer renderer;
 
 int main(int argc, char* argv[]) {

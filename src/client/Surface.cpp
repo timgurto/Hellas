@@ -14,24 +14,34 @@
 extern Renderer renderer;
 extern WorkerThread SDLThread;
 
+#define SDL_THREAD_BEGIN(...) SDLThread.callBlocking([__VA_ARGS__](){
+#define SDL_THREAD_END \
+  });
+
 void Surface::freeSurfaceInSDLThread(SDL_Surface *surface) {
-  SDLThread.callBlocking([surface]() { SDL_FreeSurface(surface); });
+  SDL_THREAD_BEGIN(surface)
+  SDL_FreeSurface(surface);
+  SDL_THREAD_END
 }
 
 Surface::Surface(const std::string &filename, const Color &colorKey) {
+  SDL_THREAD_BEGIN(this, &filename, colorKey)
   auto *rawPointer = IMG_Load(filename.c_str());
   _raw = {rawPointer, freeSurfaceInSDLThread};
   if (!_raw) return;
 
   if (&colorKey != &Color::NO_KEY)
     SDL_SetColorKey(_raw.get(), SDL_TRUE, colorKey);
+  SDL_THREAD_END
 
   if (isDebug()) _description = filename;
 }
 
 Surface::Surface(TTF_Font *font, const std::string &text, const Color &color) {
+  SDL_THREAD_BEGIN(this, &text, color, font)
   auto *rawPointer = TTF_RenderText_Blended(font, text.c_str(), color);
   _raw = {rawPointer, freeSurfaceInSDLThread};
+  SDL_THREAD_END
 
   if (isDebug()) _description = "Text: " + text;
 }

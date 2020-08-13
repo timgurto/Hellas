@@ -10,8 +10,14 @@
 extern Renderer renderer;
 extern WorkerThread SDLThread;
 
+#define SDL_THREAD_BEGIN(...) SDLThread.callBlocking([__VA_ARGS__](){
+#define SDL_THREAD_END \
+  });
+
 void Texture::freeSurfaceInSDLThread(SDL_Texture *texture) {
-  SDLThread.callBlocking([texture]() { SDL_DestroyTexture(texture); });
+  SDL_THREAD_BEGIN(texture)
+  SDL_DestroyTexture(texture);
+  SDL_THREAD_END
 }
 
 Texture::Texture() {}
@@ -54,10 +60,11 @@ void Texture::createFromSurface() {
 
   _raw = {_surface.toTexture(), freeSurfaceInSDLThread};
 
+  SDL_THREAD_BEGIN(this)
   bool isValid;
   isValid = SDL_QueryTexture(_raw.get(), nullptr, nullptr, &_w, &_h) == 0;
-
   if (!isValid) _raw = {};
+  SDL_THREAD_END
 }
 
 Texture::Texture(const Texture &rhs)
@@ -81,18 +88,23 @@ Texture &Texture::operator=(const Texture &rhs) {
 }
 
 void Texture::setBlend(SDL_BlendMode mode) const {
+  SDL_THREAD_BEGIN(this, mode)
   SDL_SetTextureBlendMode(_raw.get(), mode);
+  SDL_THREAD_END
 }
 
 void Texture::setAlpha(Uint8 alpha) const {
+  SDL_THREAD_BEGIN(this, alpha)
   SDL_SetTextureAlphaMod(_raw.get(), alpha);
+  SDL_THREAD_END
 }
 
 void Texture::rotateClockwise(const ScreenPoint &centre) {
+  SDL_THREAD_BEGIN(this, &centre)
   auto centreSDL = SDL_Point{centre.x, centre.y};
-
   SDL_RenderCopyEx(renderer.raw(), _raw.get(), nullptr, nullptr, 90.0,
                    &centreSDL, SDL_FLIP_NONE);
+  SDL_THREAD_END
 }
 
 void Texture::draw(px_t x, px_t y) const { draw({x, y, _w, _h}); }
@@ -122,7 +134,9 @@ Color Texture::getPixel(px_t x, px_t y) const {
 void Texture::setRenderTarget() const {
   if (!_validTarget) return;
 
+  SDL_THREAD_BEGIN(this)
   SDL_SetRenderTarget(renderer._renderer, _raw.get());
+  SDL_THREAD_END
 }
 
 Texture &Texture::placeholder() {

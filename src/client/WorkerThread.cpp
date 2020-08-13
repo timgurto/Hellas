@@ -25,6 +25,6 @@ void WorkerThread::run() {
       _pendingTask = nullptr;
     }
 
-    SDL_Delay(1);
+    // SDL_Delay(1);
   }
 }
