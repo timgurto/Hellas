@@ -22,6 +22,7 @@
 #include "ClientNPC.h"
 #include "LogSDL.h"
 #include "Particle.h"
+#include "SDLWrappers.h"
 #include "SpriteType.h"
 #include "Tooltip.h"
 #include "Unlocks.h"
@@ -116,7 +117,7 @@ Client::Client()
 
   initializeUsername();
 
-  SDL_StopTextInput();
+  SDLWrappers::StopTextInput();
 }
 
 void Client::initialiseData() {
