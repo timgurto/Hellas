@@ -9,7 +9,7 @@
 
 extern Args cmdLineArgs;
 extern Renderer renderer;
-extern WorkerThread SDLWorker;
+extern WorkerThread SDLThread;
 
 void Client::draw() const {
   if (!_loggedIn || !_loaded) {
@@ -366,7 +366,7 @@ void Client::drawLoadingScreen(const std::string &msg) const {
   static const auto MAX_PROGRESS = 9;
   auto progress = 1.0 * _loadingScreenProgress / MAX_PROGRESS;
 
-  SDLWorker.enqueue([&]() {
+  SDLThread.enqueue([&]() {
     renderer.setDrawColor(BACKGROUND);
     renderer.clear();
 

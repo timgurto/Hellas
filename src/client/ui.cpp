@@ -7,7 +7,7 @@
 #include "ui/OutlinedLabel.h"
 #include "ui/TextBox.h"
 
-extern WorkerThread SDLWorker;
+extern WorkerThread SDLThread;
 
 void Client::showErrorMessage(const std::string &message, Color color) const {
   if (!_lastErrorMessage) return;
@@ -27,7 +27,7 @@ void Client::initUI() {
   if (!properFontHasBeenInitialisedFromConfig && _defaultFont)
     TTF_CloseFont(_defaultFont);
   if (!properFontHasBeenInitialisedFromConfig) {
-    SDLWorker
+    SDLThread
         .enqueue([this]() {
           _defaultFont =
               TTF_OpenFont(_config.fontFile.c_str(), _config.fontSize);
@@ -356,7 +356,7 @@ void Client::addButtonToMenu(Element *menuBar, size_t index, Element *toToggle,
                   MENU_BUTTON_H},
                  "", [toToggle]() { Element::toggleVisibilityOf(toToggle); });
   auto icon = Texture{};
-  SDLWorker
+  SDLThread
       .enqueue([&icon, iconFile]() {
         icon = {"Images/UI/" + iconFile, Color::MAGENTA};
       })

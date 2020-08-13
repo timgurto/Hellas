@@ -10,7 +10,7 @@
 #include "WorkerThread.h"
 
 extern Renderer renderer;
-extern WorkerThread SDLWorker;
+extern WorkerThread SDLThread;
 
 const px_t Tooltip::PADDING =
     4;  // Margins, and the height of gaps between lines.
@@ -23,7 +23,7 @@ const Tooltip Tooltip::NO_TOOLTIP{};
 
 Tooltip::Tooltip() {
   if (!font) {
-    SDLWorker.enqueue([]() { font = TTF_OpenFont("AdvoCut.ttf", 10); })
+    SDLThread.enqueue([]() { font = TTF_OpenFont("AdvoCut.ttf", 10); })
         .waitUntilDone();
   }
 }

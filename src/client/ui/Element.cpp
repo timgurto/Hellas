@@ -9,7 +9,7 @@
 #include "Window.h"
 
 extern Renderer renderer;
-extern WorkerThread SDLWorker;
+extern WorkerThread SDLThread;
 
 Color Element::BACKGROUND_COLOR;
 Color Element::SHADOW_LIGHT;
@@ -29,7 +29,7 @@ bool Element::initialized = false;
 
 Element::Element(const ScreenRect &rect) : _rect(rect) {
   assert(initialized);
-  SDLWorker.enqueue([this]() {
+  SDLThread.enqueue([this]() {
              _texture = {_rect.w, _rect.h};
            })
       .waitUntilDone()
@@ -366,11 +366,11 @@ void Element::draw() {
     if (_preRefresh != nullptr) _preRefresh(*_preRefreshElement);
     if (!_texture) return;
 
-    SDLWorker.enqueue([this]() { renderer.pushRenderTarget(_texture); });
+    SDLThread.enqueue([this]() { renderer.pushRenderTarget(_texture); });
     makeBackgroundTransparent();
-    SDLWorker.enqueue([this]() { refresh(); });
+    SDLThread.enqueue([this]() { refresh(); });
     drawChildren();
-    SDLWorker.enqueue([]() { renderer.popRenderTarget(); });
+    SDLThread.enqueue([]() { renderer.popRenderTarget(); });
     if (_alpha != SDL_ALPHA_OPAQUE) _texture.setAlpha(_alpha);
     _changed = false;
   }
@@ -385,9 +385,9 @@ void Element::forceRefresh() {
 }
 
 void Element::makeBackgroundTransparent() {
-  if (!transparentBackground) SDLWorker.enqueue(createTransparentBackground);
+  if (!transparentBackground) SDLThread.enqueue(createTransparentBackground);
 
-  SDLWorker.enqueue([this]() {
+  SDLThread.enqueue([this]() {
     auto dstRect = ScreenRect(0, 0, _rect.w, _rect.h);
     transparentBackground.draw(dstRect);
   });

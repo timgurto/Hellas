@@ -8,10 +8,10 @@
 #include "WorkerThread.h"
 
 extern Renderer renderer;
-extern WorkerThread SDLWorker;
+extern WorkerThread SDLThread;
 
 void Texture::freeSurfaceInSDLThread(SDL_Texture *texture) {
-  SDLWorker.enqueue([texture]() { SDL_DestroyTexture(texture); });
+  SDLThread.enqueue([texture]() { SDL_DestroyTexture(texture); });
 }
 
 Texture::Texture() {}
@@ -50,7 +50,7 @@ Texture::Texture(TTF_Font *font, const std::string &text, const Color &color) {
 }
 
 void Texture::createFromSurface() {
-  SDLWorker.requireThisCallToBeInWorkerThread();
+  SDLThread.requireThisCallToBeInWorkerThread();
   if (!_surface) return;
 
   _raw = {_surface.toTexture(), freeSurfaceInSDLThread};
@@ -82,17 +82,17 @@ Texture &Texture::operator=(const Texture &rhs) {
 }
 
 void Texture::setBlend(SDL_BlendMode mode) const {
-  SDLWorker.requireThisCallToBeInWorkerThread();
+  SDLThread.requireThisCallToBeInWorkerThread();
   SDL_SetTextureBlendMode(_raw.get(), mode);
 }
 
 void Texture::setAlpha(Uint8 alpha) const {
-  SDLWorker.requireThisCallToBeInWorkerThread();
+  SDLThread.requireThisCallToBeInWorkerThread();
   SDL_SetTextureAlphaMod(_raw.get(), alpha);
 }
 
 void Texture::rotateClockwise(const ScreenPoint &centre) {
-  SDLWorker.requireThisCallToBeInWorkerThread();
+  SDLThread.requireThisCallToBeInWorkerThread();
   auto centreSDL = SDL_Point{centre.x, centre.y};
 
   SDL_RenderCopyEx(renderer.raw(), _raw.get(), nullptr, nullptr, 90.0,
@@ -124,7 +124,7 @@ Color Texture::getPixel(px_t x, px_t y) const {
 }
 
 void Texture::setRenderTarget() const {
-  SDLWorker.requireThisCallToBeInWorkerThread();
+  SDLThread.requireThisCallToBeInWorkerThread();
   if (!_validTarget) return;
 
   SDL_SetRenderTarget(renderer._renderer, _raw.get());

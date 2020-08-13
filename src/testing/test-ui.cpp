@@ -6,7 +6,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-extern WorkerThread SDLWorker;
+extern WorkerThread SDLThread;
 
 TEST_CASE("Size of empty list", "[ui]") {
   // When a new List element is created
@@ -206,7 +206,7 @@ TEST_CASE("A player's objects are the appropriate color",
 TEST_CASE("Word wrapper", "[ui]") {
   GIVEN("a word wrapper") {
     TTF_Font *font;
-    SDLWorker.enqueue([&font]() { font = TTF_OpenFont("AdvoCut.ttf", 10); })
+    SDLThread.enqueue([&font]() { font = TTF_OpenFont("AdvoCut.ttf", 10); })
         .waitUntilDone();
     auto ww = WordWrapper(font, 200);
 
@@ -221,7 +221,7 @@ TEST_CASE("Word wrapper", "[ui]") {
         CHECK(output[0] == "line 1");
       }
     }
-    SDLWorker.enqueue([font]() { TTF_CloseFont(font); });
+    SDLThread.enqueue([font]() { TTF_CloseFont(font); });
   }
 }
 

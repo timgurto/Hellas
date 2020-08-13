@@ -36,7 +36,7 @@
 #include "ui/ProgressBar.h"
 
 extern Args cmdLineArgs;
-extern WorkerThread SDLWorker;
+extern WorkerThread SDLThread;
 
 Client::CommonImages Client::images;
 TTF_Font *Client::_defaultFont = nullptr;
@@ -172,12 +172,12 @@ void Client::initStatics() {
   if (alreadyInitialised) return;
   alreadyInitialised = true;
 
-  SDLWorker.enqueue([]() { _defaultFont = TTF_OpenFont("AdvoCut.ttf", 10); });
-  SDLWorker.enqueue([]() { images.initialise(); });
-  SDLWorker.enqueue([]() { SDL_ShowCursor(SDL_DISABLE); });
+  SDLThread.enqueue([]() { _defaultFont = TTF_OpenFont("AdvoCut.ttf", 10); });
+  SDLThread.enqueue([]() { images.initialise(); });
+  SDLThread.enqueue([]() { SDL_ShowCursor(SDL_DISABLE); });
   initializeMessageNames();
 
-  SDLWorker.waitUntilDone();
+  SDLThread.waitUntilDone();
 }
 
 Client::~Client() {

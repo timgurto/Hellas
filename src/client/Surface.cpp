@@ -12,14 +12,14 @@
 #include "WorkerThread.h"
 
 extern Renderer renderer;
-extern WorkerThread SDLWorker;
+extern WorkerThread SDLThread;
 
 void Surface::freeSurfaceInSDLThread(SDL_Surface *surface) {
-  SDLWorker.enqueue([surface]() { SDL_FreeSurface(surface); });
+  SDLThread.enqueue([surface]() { SDL_FreeSurface(surface); });
 }
 
 Surface::Surface(const std::string &filename, const Color &colorKey) {
-  SDLWorker.requireThisCallToBeInWorkerThread();
+  SDLThread.requireThisCallToBeInWorkerThread();
   auto *rawPointer = IMG_Load(filename.c_str());
   _raw = {rawPointer, freeSurfaceInSDLThread};
   if (!_raw) return;
@@ -31,7 +31,7 @@ Surface::Surface(const std::string &filename, const Color &colorKey) {
 }
 
 Surface::Surface(TTF_Font *font, const std::string &text, const Color &color) {
-  SDLWorker.requireThisCallToBeInWorkerThread();
+  SDLThread.requireThisCallToBeInWorkerThread();
   auto *rawPointer = TTF_RenderText_Blended(font, text.c_str(), color);
   _raw = {rawPointer, freeSurfaceInSDLThread};
 

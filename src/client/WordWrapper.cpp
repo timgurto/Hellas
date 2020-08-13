@@ -7,10 +7,10 @@
 #include "Texture.h"
 #include "WorkerThread.h"
 
-extern WorkerThread SDLWorker;
+extern WorkerThread SDLThread;
 
 WordWrapper::WordWrapper(TTF_Font *font, px_t width) : _width(width) {
-  SDLWorker
+  SDLThread
       .enqueue([this, font]() {
         for (char c = '\0'; c != 0x7f; ++c) {
           auto glyph = Texture{font, std::string{c}};
