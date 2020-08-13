@@ -119,7 +119,7 @@ Client::Client()
 
   initializeUsername();
 
-  SDL_StopTextInput();
+  SDLThread.enqueue(SDL_StopTextInput);
 }
 
 void Client::initialiseData() {
