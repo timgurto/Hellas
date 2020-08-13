@@ -5,9 +5,11 @@
 #include "../../util.h"
 #include "../Client.h"
 #include "../Tooltip.h"
+#include "../WorkerThread.h"
 #include "Window.h"
 
 extern Renderer renderer;
+extern WorkerThread SDLWorker;
 
 Color Element::BACKGROUND_COLOR;
 Color Element::SHADOW_LIGHT;
@@ -27,8 +29,9 @@ bool Element::initialized = false;
 
 Element::Element(const ScreenRect &rect) : _rect(rect) {
   assert(initialized);
-  _texture = {rect.w, rect.h};
-  _texture.setBlend(SDL_BLENDMODE_BLEND);
+  SDLWorker.enqueue([this]() { _texture = {_rect.w, _rect.h}; });
+  SDLWorker.waitUntilDone();
+  SDLWorker.enqueue([this]() { _texture.setBlend(SDL_BLENDMODE_BLEND); });
 }
 
 Element::~Element() {
