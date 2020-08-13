@@ -364,11 +364,11 @@ void Element::draw() {
     if (_preRefresh != nullptr) _preRefresh(*_preRefreshElement);
     if (!_texture) return;
 
-    renderer.pushRenderTarget(_texture);
+    SDLWorker.enqueue([this]() { renderer.pushRenderTarget(_texture); });
     makeBackgroundTransparent();
-    refresh();
+    SDLWorker.enqueue([this]() { refresh(); });
     drawChildren();
-    renderer.popRenderTarget();
+    SDLWorker.enqueue([]() { renderer.popRenderTarget(); });
     if (_alpha != SDL_ALPHA_OPAQUE) _texture.setAlpha(_alpha);
     _changed = false;
   }
