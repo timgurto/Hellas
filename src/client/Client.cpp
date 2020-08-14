@@ -293,6 +293,8 @@ void Client::gameLoop() {
     _messages.pop();
   }
 
+  showQueuedErrorMessages();
+
   handleInput(delta);
 
   // Update entities

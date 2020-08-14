@@ -102,7 +102,7 @@ void Connection::showError(const std::string &msg) const {
 #ifdef TESTING
   return;
 #endif
-  _client->showErrorMessage(msg, Color::CHAT_ERROR);
+  _client->_queuedErrorMessagesFromOtherThreads.push_back(msg);
   _client->toast(""s, msg);
 }
 

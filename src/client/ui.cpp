@@ -19,6 +19,12 @@ void Client::showErrorMessage(const std::string &message, Color color) const {
   _debug(message, color);
 }
 
+void Client::showQueuedErrorMessages() {
+  for (const auto &msg : _queuedErrorMessagesFromOtherThreads)
+    showErrorMessage(msg, Color::CHAT_ERROR);
+  _queuedErrorMessagesFromOtherThreads.clear();
+}
+
 void Client::initUI() {
   auto properFontHasBeenInitialisedFromConfig = Element::font() != nullptr;
   if (!properFontHasBeenInitialisedFromConfig && _defaultFont)

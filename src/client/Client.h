@@ -69,6 +69,8 @@ class Client {
   TTF_Font *defaultFont() const;
 
   void showErrorMessage(const std::string &message, Color color) const;
+  std::vector<std::string> _queuedErrorMessagesFromOtherThreads;
+  void showQueuedErrorMessages();
 
   const Avatar &character() const { return _character; }
   const ScreenPoint &offset() const { return _intOffset; }
