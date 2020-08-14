@@ -13,8 +13,7 @@ extern "C" {
 FILE __iob_func[3] = {*stdin, *stdout, *stderr};
 }
 
-Args cmdLineArgs;                      // MUST be defined before renderer
-WorkerThread SDLThread{"SDL worker"};  // MUST be defined before renderer
+Args cmdLineArgs;  // MUST be defined before renderer
 Renderer renderer;
 
 int main(int argc, char* argv[]) {

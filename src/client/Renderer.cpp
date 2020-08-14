@@ -11,26 +11,31 @@
 
 extern Args cmdLineArgs;
 extern Renderer renderer;
-extern WorkerThread SDLThread;
 
 size_t Renderer::_count = 0;
 
+#ifdef TESTING
+extern WorkerThread SDLThread;
 #define SDL_THREAD_BEGIN(...) SDLThread.callBlocking([__VA_ARGS__](){
 #define SDL_THREAD_END \
   });
+#else
+#define SDL_THREAD_BEGIN(...)
+#define SDL_THREAD_END
+#endif
 
 Renderer::Renderer() : _renderer(nullptr), _window(nullptr), _valid(false) {
   if (_count == 0) {
     // First renderer constructed; initialize SDL
-    SDLThread.callBlocking([&]() {
-      auto ret = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
-      if (ret < 0) return;
+    SDL_THREAD_BEGIN()
+    auto ret = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
+    if (ret < 0) return;
 
-      ret = TTF_Init();
-      if (ret < 0) assert(false);
+    ret = TTF_Init();
+    if (ret < 0) assert(false);
 
-      ret = IMG_Init(IMG_INIT_PNG);
-    });
+    ret = IMG_Init(IMG_INIT_PNG);
+    SDL_THREAD_END
   }
   ++_count;
 }

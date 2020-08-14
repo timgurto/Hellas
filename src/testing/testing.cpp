@@ -16,6 +16,8 @@ Args cmdLineArgs;  // MUST be defined before renderer
 // Because the test project spins out clients into separate threads, there is
 // additional infrastructure to ensure all SDL calls happen within the one
 // thread.
+// The normal Client project does not have these protections (for performance
+// reasons), and thus assumes that all SDL calls occur in the main thread.
 WorkerThread SDLThread{"SDL worker"};  // MUST be defined before renderer
 
 Renderer renderer;

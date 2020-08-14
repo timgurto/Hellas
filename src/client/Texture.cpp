@@ -8,11 +8,16 @@
 #include "WorkerThread.h"
 
 extern Renderer renderer;
-extern WorkerThread SDLThread;
 
+#ifdef TESTING
+extern WorkerThread SDLThread;
 #define SDL_THREAD_BEGIN(...) SDLThread.callBlocking([__VA_ARGS__](){
 #define SDL_THREAD_END \
   });
+#else
+#define SDL_THREAD_BEGIN(...)
+#define SDL_THREAD_END
+#endif
 
 void Texture::freeSurfaceInSDLThread(SDL_Texture *texture) {
   SDL_THREAD_BEGIN(texture)
