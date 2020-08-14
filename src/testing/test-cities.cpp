@@ -129,7 +129,7 @@ TEST_CASE("Clients are told if in a city on login") {
   WAIT_UNTIL(client2->character().cityName() == "Athens");
 }
 
-TEST_CASE("Clients know nearby players' cities", "[remote]") {
+TEST_CASE("Clients know nearby players' cities") {
   GIVEN("Alice is in Athens") {
     TestServer s;
     s.cities().createCity("Athens", {}, {});

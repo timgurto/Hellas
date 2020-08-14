@@ -2,7 +2,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("nearbyTerrainTypes without radius", "[terrain]") {
+TEST_CASE("nearbyTerrainTypes without radius") {
   TestServer s = TestServer::WithData("terrain_medley");
   auto set = s->map().terrainTypesOverlapping({0, 0, 40, 40});
   CHECK(set.count('a') == 1);
@@ -11,7 +11,7 @@ TEST_CASE("nearbyTerrainTypes without radius", "[terrain]") {
   CHECK(set.count('.') == 0);
 }
 
-TEST_CASE("nearbyTerrainTypes with radius", "[terrain]") {
+TEST_CASE("nearbyTerrainTypes with radius") {
   TestServer s = TestServer::WithData("terrain_medley");
   auto set = s->map().terrainTypesOverlapping({0, 0, 40, 40}, 200);
   CHECK(set.count('a') == 1);
@@ -20,7 +20,7 @@ TEST_CASE("nearbyTerrainTypes with radius", "[terrain]") {
   CHECK(set.count('.') == 0);
 }
 
-TEST_CASE("Large map is read accurately", "[.slow][terrain]") {
+TEST_CASE("Large map is read accurately", "[.slow]") {
   TestServer s = TestServer::WithData("signpost");
   REQUIRE(s->map().width() == 315);
   REQUIRE(s->map().height() == 315);

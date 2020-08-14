@@ -2,7 +2,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Object container empty check", "[container]") {
+TEST_CASE("Object container empty check") {
   TestServer s;
   ObjectType type("box");
   type.addContainer(ContainerType::WithSlots(5));
@@ -15,7 +15,7 @@ TEST_CASE("Object container empty check", "[container]") {
   CHECK_FALSE(obj.container().isEmpty());
 }
 
-TEST_CASE("Dismantle an object with an inventory", "[.flaky][container]") {
+TEST_CASE("Dismantle an object with an inventory", "[.flaky]") {
   // Given a running server;
   TestServer s = TestServer::WithData("dismantle");
   // And a user at (10, 10);
@@ -34,7 +34,7 @@ TEST_CASE("Dismantle an object with an inventory", "[.flaky][container]") {
   CHECK(c.waitForMessage(SV_ACTION_STARTED));
 }
 
-TEST_CASE("Place item in object", "[.flaky][container]") {
+TEST_CASE("Place item in object", "[.flaky]") {
   TestServer s = TestServer::WithData("dismantle");
   TestClient c = TestClient::WithData("dismantle");
 
@@ -54,7 +54,7 @@ TEST_CASE("Place item in object", "[.flaky][container]") {
   CHECK(c.waitForMessage(SV_INVENTORY));
 }
 
-TEST_CASE("Client-side containers don't spontaneously clear", "[container]") {
+TEST_CASE("Client-side containers don't spontaneously clear") {
   // Given a server and client, and a "box" container object,
   auto s = TestServer::WithData("dismantle");
   auto c = TestClient::WithData("dismantle");

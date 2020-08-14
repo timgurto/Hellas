@@ -96,7 +96,7 @@ TEST_CASE("The client handles a server appearing") {
   s.waitForUsers(1);
 }
 
-TEST_CASE("Online-players list includes existing players", "[remote]") {
+TEST_CASE("Online-players list includes existing players") {
   GIVEN("a server and client") {
     auto s = TestServer{};
     auto c1 = TestClient{};

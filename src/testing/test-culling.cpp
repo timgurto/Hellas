@@ -3,7 +3,7 @@
 #include "testing.h"
 
 TEST_CASE("On login, players are told about their distant objects",
-          "[.flaky][culling]") {
+          "[.flaky]") {
   // Given an object at (10000,10000) owned by Alice
   TestServer s = TestServer::WithData("signpost");
   s.addObject("signpost", {10000, 10000}, "Alice");
@@ -19,7 +19,7 @@ TEST_CASE("On login, players are told about their distant objects",
 }
 
 TEST_CASE("On login, players are not told about others' distant objects",
-          "[.flaky][culling]") {
+          "[.flaky]") {
   // Given an object at (10000,10000) owned by Alice
   TestServer s = TestServer::WithData("signpost");
   s.addObject("signpost", {10000, 10000}, "Bob");
@@ -35,7 +35,7 @@ TEST_CASE("On login, players are not told about others' distant objects",
 }
 
 TEST_CASE("When one user approaches another, he finds out about him",
-          "[.slow][culling][remote]") {
+          "[.slow]") {
   // Given a server with a large map;
   auto s = TestServer::WithData("signpost");
 
@@ -66,7 +66,7 @@ TEST_CASE("When one user approaches another, he finds out about him",
 }
 
 TEST_CASE("When a player moves away from his object, he is still aware of it",
-          "[.slow][culling]") {
+          "[.slow]") {
   // Given a server with signpost objects;
   TestServer s = TestServer::WithData("signpost");
 
@@ -94,7 +94,7 @@ TEST_CASE("When a player moves away from his object, he is still aware of it",
 
 TEST_CASE(
     "When a player moves away from his city's object, he is still aware of it",
-    "[.slow][culling]") {
+    "[.slow]") {
   // Given a server with signpost objects;
   TestServer s = TestServer::WithData("signpost");
 

@@ -3,7 +3,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Client gets loot info and can loot", "[loot]") {
+TEST_CASE("Client gets loot info and can loot") {
   GIVEN("an NPC that always drops 1 gold") {
     auto data = R"(
       <npcType id="goldbug" maxHealth="1" >
@@ -57,7 +57,7 @@ TEST_CASE("Objects have health", "[strength]") {
   }
 }
 
-TEST_CASE("Clients discern NPCs with no loot", "[loot]") {
+TEST_CASE("Clients discern NPCs with no loot") {
   GIVEN("an ant with 1 health and no loot table") {
     auto data = R"(
       <npcType id="ant" maxHealth="1" />
@@ -82,7 +82,7 @@ TEST_CASE("Clients discern NPCs with no loot", "[loot]") {
 }
 
 TEST_CASE("Chance for strength-items as loot from object",
-          "[loot][strength][.flaky]") {
+          "[strength][.flaky]") {
   // Given a running server and client;
   // And a snowflake item with 1 health;
   // And a snowman object type made of 1000 snowflakes;
@@ -129,7 +129,7 @@ TEST_CASE("Chance for strength-items as loot from object",
   }
 }
 
-TEST_CASE("Looting from a container", "[loot][container][only][.flaky]") {
+TEST_CASE("Looting from a container", "[container][only][.flaky]") {
   // Given a running server and client;
   // And a chest object type with 10 container slots;
   // And a gold item that stacks to 100;
@@ -225,7 +225,7 @@ TEST_CASE("Looting from a container", "[loot][container][only][.flaky]") {
 }
 
 // Note: currently expected to fail, since it doesn't take tagging into account.
-TEST_CASE("New users are alerted to lootable objects", "[loot][.flaky]") {
+TEST_CASE("New users are alerted to lootable objects", "[.flaky]") {
   // Given a running server;
   // And a snowflake item with 1 health;
   // And a snowman object type made of 1000 snowflakes;
@@ -246,7 +246,7 @@ TEST_CASE("New users are alerted to lootable objects", "[loot][.flaky]") {
   CHECK(c.waitForMessage(SV_INVENTORY));
 }
 
-TEST_CASE("Non-taggers are not alerted to lootable objects", "[loot]") {
+TEST_CASE("Non-taggers are not alerted to lootable objects") {
   // Given a running server;
   // And a snowflake item with 1 health;
   // And a snowman object type made of 1000 snowflakes;

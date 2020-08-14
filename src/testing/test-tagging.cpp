@@ -2,7 +2,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Only the tagging player gets kill XP", "[slow][remote]") {
+TEST_CASE("Only the tagging player gets kill XP", "[slow]") {
   GIVEN("Alice and Bob are next to a seal") {
     auto data = R"(
       <newPlayerSpawn x="10" y="10" range="0" />

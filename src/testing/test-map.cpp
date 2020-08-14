@@ -1,7 +1,7 @@
 #include "TestClient.h"
 #include "TestServer.h"
 
-TEST_CASE("Objects show up on the map when a client logs in", "[map]") {
+TEST_CASE("Objects show up on the map when a client logs in") {
   // Given a server and client with rock objects;
   TestServer s = TestServer::WithData("basic_rock");
   TestClient c = TestClient::WithData("basic_rock");
@@ -19,7 +19,7 @@ TEST_CASE("Objects show up on the map when a client logs in", "[map]") {
   WAIT_UNTIL(c.mapPins().size() == 2);
 }
 
-TEST_CASE("A player shows up on his own map", "[.flaky][map][color]") {
+TEST_CASE("A player shows up on his own map", "[.flaky][color]") {
   // Given a server and client, and a 101x101 map on which players spawn at the
   // center;
   TestServer s = TestServer::WithData("big_map");
@@ -68,7 +68,7 @@ TEST_CASE("A player shows up on his own map", "[.flaky][map][color]") {
   CHECK(renderer.getPixel(xInScreen - 1, yInScreen) == Color::UI_OUTLINE);
 }
 
-TEST_CASE("Other players show up on the map", "[map][remote]") {
+TEST_CASE("Other players show up on the map") {
   // Given a server and two clients
   TestServer s;
   TestClient c1, c2;
@@ -84,7 +84,7 @@ TEST_CASE("Other players show up on the map", "[map][remote]") {
 }
 
 TEST_CASE("When a player declares war, his map pin changes color",
-          "[map][remote][war][color][.flaky]") {
+          "[war][color][.flaky]") {
   // Given a server with two clients;
   TestServer s;
   auto c = TestClient{};

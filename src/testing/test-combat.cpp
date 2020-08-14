@@ -24,7 +24,7 @@ TEST_CASE("Players can attack immediately") {
   }
 }
 
-TEST_CASE("Only belligerents can target each other", "[remote]") {
+TEST_CASE("Only belligerents can target each other") {
   GIVEN("Alice and Bob are at peace") {
     auto s = TestServer{};
     auto alice = TestClient::WithUsername("Alice");
@@ -53,7 +53,7 @@ TEST_CASE("Only belligerents can target each other", "[remote]") {
   }
 }
 
-TEST_CASE("Only belligerents can fight", "[remote]") {
+TEST_CASE("Only belligerents can fight") {
   GIVEN("Alice and Bob are within melee range") {
     auto s = TestServer{};
     auto alice = TestClient::WithUsername("Alice");
@@ -152,7 +152,7 @@ TEST_CASE("Players can target distant entities") {
   WAIT_UNTIL(user.target() == &wolf);
 }
 
-TEST_CASE("Clients receive nearby users' health values", "[remote]") {
+TEST_CASE("Clients receive nearby users' health values") {
   // Given a server and two clients, Alice and Bob;
   TestServer s;
   auto clientAlice = TestClient::WithUsername("Alice");

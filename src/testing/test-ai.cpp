@@ -2,7 +2,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("NPCs chain pull", "[ai]") {
+TEST_CASE("NPCs chain pull") {
   GIVEN("a user with a spear") {
     auto data = R"(
       <npcType id="bear" />

@@ -65,7 +65,7 @@ TEST_CASE("Non-talent spells are persistent") {
   }
 }
 
-TEST_CASE("Spell cooldowns", "[remote]") {
+TEST_CASE("Spell cooldowns") {
   GIVEN(
       "Alice and Bob know a range of self-damaging spells, and extremely high "
       "hit chance") {

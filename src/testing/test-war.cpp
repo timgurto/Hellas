@@ -2,7 +2,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Basic declaration of war", "[war]") {
+TEST_CASE("Basic declaration of war") {
   // Given Alice is logged in
   TestServer s;
   TestClient alice = TestClient::WithUsername("Alice");
@@ -15,7 +15,7 @@ TEST_CASE("Basic declaration of war", "[war]") {
   WAIT_UNTIL(s.wars().isAtWar("Alice", "Bob"));
 }
 
-TEST_CASE("No erroneous wars", "[war]") {
+TEST_CASE("No erroneous wars") {
   // When a clean server is started
   TestServer s;
 
@@ -23,7 +23,7 @@ TEST_CASE("No erroneous wars", "[war]") {
   CHECK_FALSE(s.wars().isAtWar("Alice", "Bob"));
 }
 
-TEST_CASE("Wars are persistent", "[war][persistence]") {
+TEST_CASE("Wars are persistent", "[persistence]") {
   // Given Alice and Bob are at war, and there is no server running
   {
     TestServer server1;
@@ -37,7 +37,7 @@ TEST_CASE("Wars are persistent", "[war][persistence]") {
   CHECK(server2.wars().isAtWar("Alice", "Bob"));
 }
 
-TEST_CASE("Clients are alerted of new wars", "[war][remote]") {
+TEST_CASE("Clients are alerted of new wars") {
   // Given Alice and Bob are logged in
   TestServer s;
   auto alice = TestClient::WithUsername("Alice");
@@ -53,7 +53,7 @@ TEST_CASE("Clients are alerted of new wars", "[war][remote]") {
   WAIT_UNTIL(alice->isAtWarWith(uBob));
 }
 
-TEST_CASE("Clients are told of existing wars on login", "[war][remote]") {
+TEST_CASE("Clients are told of existing wars on login") {
   // Given Alice and Bob are at war
   TestServer s;
   s.wars().declare("Alice", "Bob");
@@ -69,7 +69,7 @@ TEST_CASE("Clients are told of existing wars on login", "[war][remote]") {
   WAIT_UNTIL(alice->isAtWarWith(uBob));
 }
 
-TEST_CASE("Wars cannot be redeclared", "[war]") {
+TEST_CASE("Wars cannot be redeclared") {
   // Given Alice and Bob are at war, and Alice is logged in
   TestServer s;
   TestClient alice = TestClient::WithUsername("Alice");
@@ -83,7 +83,7 @@ TEST_CASE("Wars cannot be redeclared", "[war]") {
   CHECK(alice.waitForMessage(ERROR_ALREADY_AT_WAR));
 }
 
-TEST_CASE("A player can be at war with a city", "[war][city]") {
+TEST_CASE("A player can be at war with a city", "[city]") {
   // Given a running server;
   TestServer s;
 
@@ -101,8 +101,7 @@ TEST_CASE("A player can be at war with a city", "[war][city]") {
   CHECK(s.wars().isAtWar("Alice", "Athens"));
 }
 
-TEST_CASE("A player at war with a city is at war with its members",
-          "[war][city][remote]") {
+TEST_CASE("A player at war with a city is at war with its members", "[city]") {
   // Given a running server;
   TestServer s;
 
@@ -146,7 +145,7 @@ TEST_CASE("A player at war with a city is at war with its members",
   }
 }
 
-TEST_CASE("Players can declare war on cities", "[war][city]") {
+TEST_CASE("Players can declare war on cities", "[city]") {
   // Given a running server;
   TestServer s;
 
@@ -187,7 +186,7 @@ TEST_CASE("Wars involving cities are persistent", "[persistence][city][war]") {
 }
 
 TEST_CASE("The objects of an offline enemy in an enemy city can be attacked",
-          "[city][war][remote]") {
+          "[city]") {
   GIVEN("a Chair object type") {
     TestServer s = TestServer::WithData("chair");
 
@@ -221,7 +220,7 @@ TEST_CASE("The objects of an offline enemy in an enemy city can be attacked",
   }
 }
 
-TEST_CASE("A player is alerted when he sues for peace", "[war][peace]") {
+TEST_CASE("A player is alerted when he sues for peace") {
   // Given Alice and Bob are at war
   auto s = TestServer{};
   s.wars().declare({"Alice", Belligerent::PLAYER},
@@ -236,8 +235,7 @@ TEST_CASE("A player is alerted when he sues for peace", "[war][peace]") {
   CHECK(c.waitForMessage(SV_YOU_PROPOSED_PEACE_TO_PLAYER));
 }
 
-TEST_CASE("The enemy is alerted when peace is proposed",
-          "[war][peace][remote]") {
+TEST_CASE("The enemy is alerted when peace is proposed") {
   // Given Alice and Bob are at war
   auto s = TestServer{};
   s.wars().declare({"Alice", Belligerent::PLAYER},
@@ -257,7 +255,7 @@ TEST_CASE("The enemy is alerted when peace is proposed",
   CHECK(c.waitForMessage(SV_PEACE_WAS_PROPOSED_TO_YOU_BY_PLAYER));
 }
 
-TEST_CASE("Users are alerted to peace proposals on login", "[war][peace]") {
+TEST_CASE("Users are alerted to peace proposals on login") {
   // Given Alice and Bob are at war
   auto s = TestServer{};
   s.wars().declare({"Alice", Belligerent::PLAYER},

@@ -8,7 +8,7 @@
 
 extern WorkerThread SDLThread;
 
-TEST_CASE("Size of empty list", "[ui]") {
+TEST_CASE("Size of empty list") {
   // When a new List element is created
   Element::initialize();
   List l({0, 0, 100, 100});
@@ -17,7 +17,7 @@ TEST_CASE("Size of empty list", "[ui]") {
   CHECK(l.size() == 0);
 }
 
-TEST_CASE("Size of nonempty list", "[ui]") {
+TEST_CASE("Size of nonempty list") {
   // Given an empty List element
   Element::initialize();
   List l({0, 0, 100, 100});
@@ -29,7 +29,7 @@ TEST_CASE("Size of nonempty list", "[ui]") {
   CHECK(l.size() == 1);
 }
 
-TEST_CASE("List is resized on new child", "[ui]") {
+TEST_CASE("List is resized on new child") {
   GIVEN("an empty List") {
     Element::initialize();
     auto l = List{{0, 0, 100, 100}};
@@ -42,7 +42,7 @@ TEST_CASE("List is resized on new child", "[ui]") {
   }
 }
 
-TEST_CASE("View merchant slots in window", "[.flaky][ui]") {
+TEST_CASE("View merchant slots in window", "[.flaky]") {
   // Given a logged-in client and an object with merchant slots
   TestServer s = TestServer::WithData("merchant");
   TestClient c = TestClient::WithData("merchant");
@@ -77,7 +77,7 @@ TEST_CASE("View merchant slots in window", "[.flaky][ui]") {
   c.waitForRedraw();
 }
 
-TEST_CASE("New client can build default constructions", "[ui]") {
+TEST_CASE("New client can build default constructions") {
   // Given a buildable brick wall object type with no pre-requisites
   TestServer s = TestServer::WithData("brick_wall");
 
@@ -89,7 +89,7 @@ TEST_CASE("New client can build default constructions", "[ui]") {
   CHECK_FALSE(c.uiBuildList().empty());
 }
 
-TEST_CASE("New client has target UI hidden", "[ui]") {
+TEST_CASE("New client has target UI hidden") {
   // When a client logs in
   TestServer s;
   TestClient c;
@@ -99,7 +99,7 @@ TEST_CASE("New client has target UI hidden", "[ui]") {
   CHECK_FALSE(c.target().panel()->visible());
 }
 
-TEST_CASE("Chat messages are added to chat log", "[ui]") {
+TEST_CASE("Chat messages are added to chat log") {
   // Given a logged-in client
   TestServer s;
   TestClient c;
@@ -112,7 +112,7 @@ TEST_CASE("Chat messages are added to chat log", "[ui]") {
   WAIT_UNTIL(c.chatLog()->size() > 0);
 }
 
-TEST_CASE("Windows start uninitialized", "[ui]") {
+TEST_CASE("Windows start uninitialized") {
   // Given a server and client
   TestServer s;
   TestClient c;
@@ -124,7 +124,7 @@ TEST_CASE("Windows start uninitialized", "[ui]") {
   CHECK_FALSE(c.craftingWindow()->isInitialized());
 }
 
-TEST_CASE("Windows are initialized when used", "[ui]") {
+TEST_CASE("Windows are initialized when used") {
   // Given a server and client
   TestServer s;
   TestClient c;
@@ -137,7 +137,7 @@ TEST_CASE("Windows are initialized when used", "[ui]") {
   WAIT_UNTIL(c.craftingWindow()->isInitialized());
 }
 
-TEST_CASE("A visible window is fully-formed", "[ui]") {
+TEST_CASE("A visible window is fully-formed") {
   // Given a server and client;
   TestServer s;
   TestClient c;
@@ -153,20 +153,20 @@ TEST_CASE("A visible window is fully-formed", "[ui]") {
   WAIT_UNTIL(c.buildWindow()->getHeading()->texture());
 }
 
-TEST_CASE("Element gets initialized with Client", "[.flaky][ui]") {
+TEST_CASE("Element gets initialized with Client", "[.flaky]") {
   CHECK_FALSE(Element::isInitialized());  // Depends on test order.
   Client c;
   WAIT_UNTIL(Element::isInitialized());
 }
 
-TEST_CASE("Gear window can be viewed", "[gear][ui]") {
+TEST_CASE("Gear window can be viewed", "[gear]") {
   TestServer s;
   TestClient c;
   c.gearWindow()->show();
   WAIT_UNTIL(c.gearWindow()->texture());
 }
 
-TEST_CASE("New clients survive recipe unlocks", "[ui]") {
+TEST_CASE("New clients survive recipe unlocks") {
   // Given a client and server
   TestServer s = TestServer::WithData("secret_bread");
   TestClient c = TestClient::WithData("secret_bread");
@@ -180,7 +180,7 @@ TEST_CASE("New clients survive recipe unlocks", "[ui]") {
 }
 
 TEST_CASE("Gear-slot names are initialized once",
-          "[.slow][tooltip][gear][inventory][ui]") {
+          "[.slow][tooltip][gear][inventory]") {
   {
     TestClient c;
     WAIT_UNTIL(!Client::GEAR_SLOT_NAMES.empty());
@@ -192,7 +192,7 @@ TEST_CASE("Gear-slot names are initialized once",
 }
 
 TEST_CASE("A player's objects are the appropriate color",
-          "[color][ownership][ui]") {
+          "[color][ownership]") {
   TestServer s = TestServer::WithData("basic_rock");
   TestClient c = TestClient::WithUsernameAndData("Alice", "basic_rock");
 
@@ -203,7 +203,7 @@ TEST_CASE("A player's objects are the appropriate color",
   WAIT_UNTIL(rock.nameColor() == Color::COMBATANT_SELF);
 }
 
-TEST_CASE("Word wrapper", "[ui]") {
+TEST_CASE("Word wrapper") {
   GIVEN("a word wrapper") {
     TTF_Font *font = TTF_OpenFont("AdvoCut.ttf", 10);
     auto ww = WordWrapper(font, 200);
