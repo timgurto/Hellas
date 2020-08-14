@@ -11,14 +11,6 @@ void Client::initToasts() {
   populateToastsList();
 }
 
-struct Toast {
-  ms_t timeRemaining;
-  Texture icon;
-  std::string text;
-};
-
-std::list<Toast> toastInfo;
-
 void Client::updateToasts() {
   // Update all toasts' timers.  If a timer runs out, remove it and repopulate
   // List.

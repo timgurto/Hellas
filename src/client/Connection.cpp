@@ -103,7 +103,7 @@ void Connection::showError(const std::string &msg) const {
   return;
 #endif
   _client->_queuedErrorMessagesFromOtherThreads.push_back(msg);
-  _client->toast(""s, msg);
+  _client->_queuedToastsFromOtherThreads.push_back(msg);
 }
 
 std::string Connection::getServerIP() {

@@ -72,6 +72,14 @@ class Client {
   std::vector<std::string> _queuedErrorMessagesFromOtherThreads;
   void showQueuedErrorMessages();
 
+  struct Toast {
+    ms_t timeRemaining;
+    Texture icon;
+    std::string text;
+  };
+  std::list<Toast> toastInfo;
+  std::vector<std::string> _queuedToastsFromOtherThreads;
+
   const Avatar &character() const { return _character; }
   const ScreenPoint &offset() const { return _intOffset; }
   const std::string &username() const { return _username; }

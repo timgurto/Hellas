@@ -14,7 +14,9 @@ WorkerThread::WorkerThread(const std::string& threadName) {
 }
 
 void WorkerThread::callBlocking(Task task) {
-  assert(!_pendingTask);
+  auto nobodyElseIsUsingThisThread = !_pendingTask;
+  assert(nobodyElseIsUsingThisThread);
+
   _pendingTask = task;
 
   while (_pendingTask)
