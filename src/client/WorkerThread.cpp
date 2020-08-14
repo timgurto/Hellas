@@ -14,44 +14,24 @@ WorkerThread::WorkerThread(const std::string threadName) {
 }
 
 void WorkerThread::callBlocking(Task task) {
-  auto scheduledTask = ScheduledTask{};
-  scheduledTask.serial = generateSerial();
-  scheduledTask.task = task;
+  _mutex.lock();
 
-  _queueMutex.lock();
-  _pendingTasks.push(scheduledTask);
-  _queueMutex.unlock();
+  assert(!_pendingTask);
+  _pendingTask = task;
 
-  while (!isTaskFinished(scheduledTask.serial))
+  while (_pendingTask)
     ;
+
+  _mutex.unlock();
 }
 
 void WorkerThread::run() {
   while (true) {
-    if (_pendingTasks.empty()) {
-      SDL_Delay(1);
+    if (!_pendingTask) {
       continue;
     }
 
-    _pendingTasks.front().task();
-    _queueMutex.lock();
-    _pendingTasks.pop();
-    _queueMutex.unlock();
+    _pendingTask();
+    _pendingTask = {};
   }
-}
-
-int WorkerThread::generateSerial() { return ++_nextSerial; }
-
-bool WorkerThread::isTaskFinished(int serial) const {
-  _queueMutex.lock();
-
-  if (_pendingTasks.empty()) {
-    _queueMutex.unlock();
-    return true;
-  }
-
-  auto taskCurrentlyRunning = _pendingTasks.front().serial;
-  _queueMutex.unlock();
-
-  return serial < taskCurrentlyRunning;
 }
