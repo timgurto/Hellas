@@ -16,7 +16,7 @@ class WorkerThread {
     Task task;
   };
 
-  WorkerThread(const std::string &threadName);
+  WorkerThread(const std::string threadName);
   void callBlocking(Task task);
 
  private:

@@ -6,8 +6,8 @@
 
 #include "../threadNaming.h"
 
-WorkerThread::WorkerThread(const std::string& threadName) {
-  std::thread([&]() {
+WorkerThread::WorkerThread(const std::string threadName) {
+  std::thread([this, threadName]() {
     setThreadName(threadName);
     run();
   }).detach();
