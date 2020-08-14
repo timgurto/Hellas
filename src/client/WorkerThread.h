@@ -1,6 +1,7 @@
 #pragma once
 
 #include <functional>
+#include <mutex>
 #include <queue>
 #include <thread>
 
@@ -10,11 +11,21 @@
 class WorkerThread {
  public:
   using Task = std::function<void()>;
+  struct ScheduledTask {
+    int serial;
+    Task task;
+  };
 
   WorkerThread(const std::string &threadName);
   void callBlocking(Task task);
 
  private:
   void run();
-  Task _pendingTask = nullptr;
+  std::queue<ScheduledTask> _pendingTasks;
+  mutable std::mutex _queueMutex;
+
+  int _nextSerial{0};
+  int generateSerial();
+
+  bool isTaskFinished(int serial) const;
 };
