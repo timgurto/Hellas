@@ -11,6 +11,7 @@
 #include "../threadNaming.h"
 #include "../util.h"
 #include "../versionUtil.h"
+#include "Groups.h"
 #include "ItemSet.h"
 #include "NPC.h"
 #include "NPCType.h"
@@ -46,7 +47,8 @@ Server::Server()
       _userFilesPath("Users/"),
       _lastSave(_time),
       _timeStatsLastPublished(_time),
-      _dataLoaded(false) {
+      _dataLoaded(false),
+      groups(new Groups) {
   _instance = this;
   _debugInstance = &_debug;
   if (cmdLineArgs.contains("quiet")) _debug.quiet();
@@ -88,6 +90,8 @@ Server::~Server() {
   for (auto pair : _terrainTypes) delete pair.second;
   for (const auto &spellPair : _spells) delete spellPair.second;
   ProgressLock::cleanup();
+
+  delete groups;
 
   _instance = nullptr;
 

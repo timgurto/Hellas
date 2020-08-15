@@ -448,6 +448,8 @@ void Entity::onDeath() {
   removeAllBuffsAndDebuffs();
 
   if (tagger()) tagger()->onKilled(*this);
+  auto *bob = Server::instance().getUserByName("Bob");
+  bob->onKilled(*this);
 
   if (_spawner) {
     _spawner->scheduleSpawn();

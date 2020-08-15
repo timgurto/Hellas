@@ -292,6 +292,7 @@
     <ClInclude Include="src\Rect.h" />
     <ClInclude Include="src\Serial.h" />
     <ClInclude Include="src\server\Buff.h" />
+    <ClInclude Include="src\server\Groups.h" />
     <ClInclude Include="src\server\ItemSet.h" />
     <ClInclude Include="src\server\Recipe.h" />
     <ClInclude Include="src\Socket.h" />

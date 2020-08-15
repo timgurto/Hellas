@@ -32,6 +32,8 @@
 #include "Wars.h"
 #include "objects/Object.h"
 
+class Groups;
+
 class MessageParser;
 
 #define SERVER_ERROR(msg)                                              \
@@ -216,6 +218,10 @@ class Server {
   Cities _cities;
   Kings _kings;
 
+ public:
+  Groups *groups;
+
+ private:
   void loadWorldState(
       const std::string &path = "Data",
       bool shouldKeepOldData = false);  // Attempt to load data from files.

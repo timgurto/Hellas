@@ -1,9 +1,33 @@
+#include "../server/Groups.h"
+#include "TestClient.h"
+#include "TestServer.h"
 #include "testing.h"
 
 TEST_CASE("Shared XP") {
-  GIVEN("Two users are in a group") {
-    WHEN("One kills an NPC") {
-      THEN("Both get XP") {}
+  GIVEN("Alice and Bob, and a critter") {
+    auto data = R"(
+      <npcType id="critter" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto cAlice = TestClient::WithUsernameAndDataString("Alice", data);
+    auto cBob = TestClient::WithUsernameAndDataString("Bob", data);
+    s.waitForUsers(2);
+
+    auto &uAlice = s.findUser("Alice");
+    auto &uBob = s.findUser("Bob");
+
+    auto &critter = s.addNPC("critter", {10, 10});
+
+    AND_GIVEN("Alice and Bob are in a group") {
+      s->groups->createGroup(uAlice);
+      s->groups->addToGroup(uBob, uAlice);
+
+      WHEN("Alice kills the critter") {
+        uAlice.setTargetAndAttack(&critter);
+        WAIT_UNTIL(critter.isDead());
+
+        THEN("Bob gets XP") { WAIT_UNTIL(uBob.xp() > 0); }
+      }
     }
   }
 }
