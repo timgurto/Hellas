@@ -94,6 +94,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   Level _level = 1;
   void sendXPMessage() const;
   void announceLevelUp() const;
+  static XP appropriateXPForKill(Level user, Level victim, bool isElite);
 
   std::map<Quest::ID, ms_t> _quests;  // second: time remaining of time limit
   struct QuestProgress {

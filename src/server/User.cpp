@@ -1182,23 +1182,8 @@ void User::onAttackedBy(Entity &attacker, Threat threat) {
 
 void User::onKilled(Entity &victim) {
   if (victim.grantsXPOnDeath()) {
-    auto levelDiff = victim.getLevelDifference(*this);
-
-    auto xp = XP{};
-    if (levelDiff < -9)
-      xp = 0;
-    else if (levelDiff > 5)
-      xp = 150;
-    else {
-      auto xpPerLevelDiff = std::unordered_map<int, XP>{
-          {-9, 13}, {-8, 26}, {-7, 38}, {-6, 49}, {-5, 59},
-          {-4, 68}, {-3, 77}, {-2, 85}, {-1, 93}, {0, 100},
-          {1, 107}, {2, 115}, {3, 123}, {4, 132}, {5, 141}};
-      xp = xpPerLevelDiff[levelDiff];
-    }
-
-    if (victim.type()->isElite()) xp *= 4;
-
+    auto xp =
+        appropriateXPForKill(level(), victim.level(), victim.type()->isElite());
     addXP(xp);
   }
 
@@ -1870,6 +1855,25 @@ void User::sendXPMessage() const {
 void User::announceLevelUp() const {
   const Server &server = Server::instance();
   server.broadcastToArea(location(), {SV_LEVEL_UP, _name});
+}
+
+XP User::appropriateXPForKill(Level user, Level victim, bool isElite) {
+  auto raw = XP{};
+  auto levelDiff = victim - user;
+  if (levelDiff < -9)
+    raw = 0;
+  else if (levelDiff > 5)
+    raw = 150;
+  else {
+    static auto xpPerLevelDiff = std::unordered_map<int, XP>{
+        {-9, 13}, {-8, 26}, {-7, 38}, {-6, 49}, {-5, 59},
+        {-4, 68}, {-3, 77}, {-2, 85}, {-1, 93}, {0, 100},
+        {1, 107}, {2, 115}, {3, 123}, {4, 132}, {5, 141}};
+    raw = xpPerLevelDiff[levelDiff];
+  }
+
+  if (isElite) return raw * 4;
+  return raw;
 }
 
 void User::addXP(XP amount) {
