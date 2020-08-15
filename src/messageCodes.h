@@ -227,6 +227,13 @@ enum MessageCode {
   // Arguments: questID
   CL_ABANDON_QUEST,
 
+  // I want to invite ... to join my group
+  // Arguments: username
+  CL_INVITE_TO_GROUP,
+
+  // I accept the most recent group invitation.
+  CL_ACCEPT_GROUP_INVITATION,
+
   // I have configured hotbar button #... to do ...
   // Arguments: index, category, ID.
   CL_HOTBAR_BUTTON,

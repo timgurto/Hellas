@@ -82,7 +82,42 @@ TEST_CASE("Shared XP") {
   }
 }
 
-// Shared XP
+TEST_CASE("Inviting and accepting") {
+  GIVEN("Alice and Bob") {
+    auto s = TestServer{};
+    auto cAlice = TestClient::WithUsername("Alice");
+    auto cBob = TestClient::WithUsername("Bob");
+    s.waitForUsers(2);
+    const auto &alice = s.findUser("Alice");
+
+    THEN("Alice is not in a group") {
+      CHECK_FALSE(s->groups->isUserInAGroup(alice));
+    }
+
+    WHEN("Bob sends an accept-invitation message") {
+      cBob.sendMessage(CL_ACCEPT_GROUP_INVITATION);
+      REPEAT_FOR_MS(100);
+
+      THEN("Alice is not in a group") {
+        CHECK_FALSE(s->groups->isUserInAGroup(alice));
+      }
+    }
+
+    AND_WHEN("Alice invites Bob to join a group") {
+      cAlice.sendMessage(CL_INVITE_TO_GROUP, "Bob");
+
+      AND_WHEN("Bob accepts") {
+        REPEAT_FOR_MS(100);
+        cBob.sendMessage(CL_ACCEPT_GROUP_INVITATION);
+
+        THEN("Alice is in a group") {
+          WAIT_UNTIL(s->groups->isUserInAGroup(alice));
+        }
+      }
+    }
+  }
+}
+
 // Shared XP only if nearby
 // Round-robin loot
 // If loot is left, then anyone [in group] can pick it up

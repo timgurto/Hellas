@@ -34,3 +34,5 @@ int Groups::getGroupSize(const User& u) const {
   }
   return 1;
 }
+
+bool Groups::isUserInAGroup(const User& u) const { return _aUserIsInAGroup; }

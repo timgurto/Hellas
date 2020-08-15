@@ -14,6 +14,10 @@ class Groups {
 
   Group getMembersOfPlayersGroup(User& aMember) const;
   int getGroupSize(const User& u) const;
+  bool isUserInAGroup(const User& u) const;
+
+  bool _invitationSent{false};
+  bool _aUserIsInAGroup{false};
 
  private:
   std::vector<Group> _groups;

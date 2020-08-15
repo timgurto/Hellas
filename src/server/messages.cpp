@@ -4,6 +4,7 @@
 #include "../MessageParser.h"
 #include "../versionUtil.h"
 #include "DroppedItem.h"
+#include "Groups.h"
 #include "ProgressLock.h"
 #include "Server.h"
 #include "Vehicle.h"
@@ -656,6 +657,17 @@ HANDLE_MESSAGE(CL_ORDER_NPC_TO_FOLLOW) {
   npc->order(NPC::FOLLOW);
 }
 
+HANDLE_MESSAGE(CL_INVITE_TO_GROUP) {
+  auto invitee = ""s;
+  READ_ARGS(invitee);
+
+  groups->_invitationSent = true;
+}
+
+HANDLE_MESSAGE(CL_ACCEPT_GROUP_INVITATION) {
+  if (groups->_invitationSent) groups->_aUserIsInAGroup = true;
+}
+
 HANDLE_MESSAGE(DG_UNLOCK) {
   CHECK_NO_ARGS;
 
@@ -720,6 +732,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_FEED_PET)
       SEND_MESSAGE_TO_HANDLER(CL_ORDER_NPC_TO_STAY)
       SEND_MESSAGE_TO_HANDLER(CL_ORDER_NPC_TO_FOLLOW)
+      SEND_MESSAGE_TO_HANDLER(CL_ACCEPT_GROUP_INVITATION)
       SEND_MESSAGE_TO_HANDLER(DG_UNLOCK)
 
       case CL_CONSTRUCT_FROM_ITEM:
