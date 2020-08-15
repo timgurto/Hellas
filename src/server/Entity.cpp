@@ -3,6 +3,7 @@
 #include <algorithm>
 
 #include "../util.h"
+#include "Groups.h"
 #include "Server.h"
 #include "Spawner.h"
 #include "Spell.h"
@@ -448,8 +449,9 @@ void Entity::onDeath() {
   removeAllBuffsAndDebuffs();
 
   if (tagger()) tagger()->onKilled(*this);
-  auto *bob = Server::instance().getUserByName("Bob");
-  bob->onKilled(*this);
+
+  auto &groups = *Server::instance().groups;
+  for (auto *member : groups.members()) member->onKilled(*this);
 
   if (_spawner) {
     _spawner->scheduleSpawn();

@@ -4,7 +4,7 @@
 #include "testing.h"
 
 TEST_CASE("Shared XP") {
-  GIVEN("Alice and Bob, and a critter") {
+  GIVEN("Alice, Bob, and a critter") {
     auto data = R"(
       <npcType id="critter" />
     )";
@@ -18,15 +18,37 @@ TEST_CASE("Shared XP") {
 
     auto &critter = s.addNPC("critter", {10, 10});
 
+    /*AND_GIVEN("Alice kills the critter") {
+      uAlice.setTargetAndAttack(&critter);
+
+      THEN("Bob gets no XP") {
+        REPEAT_FOR_MS(100);
+        CHECK(uBob.xp() == 0);
+      }
+    }*/
+
     AND_GIVEN("Alice and Bob are in a group") {
       s->groups->createGroup(uAlice);
       s->groups->addToGroup(uBob, uAlice);
 
       WHEN("Alice kills the critter") {
         uAlice.setTargetAndAttack(&critter);
-        WAIT_UNTIL(critter.isDead());
 
         THEN("Bob gets XP") { WAIT_UNTIL(uBob.xp() > 0); }
+      }
+
+      AND_GIVEN("Charlie is also in the group") {
+        auto cCharlie = TestClient::WithUsernameAndDataString("Charlie", data);
+        s.waitForUsers(3);
+        auto &uCharlie = s.findUser("Charlie");
+
+        s->groups->addToGroup(uCharlie, uAlice);
+
+        WHEN("Alice kills the critter") {
+          uAlice.setTargetAndAttack(&critter);
+
+          THEN("Charlie gets XP") { WAIT_UNTIL(uCharlie.xp() > 0); }
+        }
       }
     }
   }
