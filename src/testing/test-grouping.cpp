@@ -54,6 +54,20 @@ TEST_CASE("Shared XP") {
         }
       }
     }
+
+    SECTION("XP is divided") {
+      const auto normalXP = uAlice.appropriateXPForKill(critter);
+
+      WHEN("Alice and Bob are in a group") {
+        s->groups->createGroup(uAlice);
+        s->groups->addToGroup(uBob, uAlice);
+
+        THEN("Alice would receive half of her normal XP") {
+          const auto xpInGroupOf2 = uAlice.appropriateXPForKill(critter);
+          CHECK(xpInGroupOf2 == normalXP / 2);
+        }
+      }
+    }
   }
 }
 

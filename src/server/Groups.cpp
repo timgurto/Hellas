@@ -26,3 +26,11 @@ Groups::Group Groups::getMembersOfPlayersGroup(User& player) const {
   soloResult.insert(&player);
   return soloResult;
 }
+
+bool Groups::isInAGroup(const User& u) const {
+  for (const auto& group : _groups) {
+    auto* constUser = const_cast<User*>(&u);
+    if (group.find(constUser) != group.end()) return true;
+  }
+  return false;
+}
