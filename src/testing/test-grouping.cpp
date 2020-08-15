@@ -4,28 +4,21 @@
 #include "testing.h"
 
 TEST_CASE("Shared XP") {
-  GIVEN("Alice, Bob, and a critter") {
+  GIVEN("Alice, Bob, Charlie, and a critter") {
     auto data = R"(
       <npcType id="critter" />
     )";
     auto s = TestServer::WithDataString(data);
     auto cAlice = TestClient::WithUsernameAndDataString("Alice", data);
     auto cBob = TestClient::WithUsernameAndDataString("Bob", data);
-    s.waitForUsers(2);
+    auto cCharlie = TestClient::WithUsernameAndDataString("Charlie", data);
+    s.waitForUsers(3);
 
     auto &uAlice = s.findUser("Alice");
     auto &uBob = s.findUser("Bob");
+    auto &uCharlie = s.findUser("Charlie");
 
     auto &critter = s.addNPC("critter", {10, 10});
-
-    /*AND_GIVEN("Alice kills the critter") {
-      uAlice.setTargetAndAttack(&critter);
-
-      THEN("Bob gets no XP") {
-        REPEAT_FOR_MS(100);
-        CHECK(uBob.xp() == 0);
-      }
-    }*/
 
     AND_GIVEN("Alice and Bob are in a group") {
       s->groups->createGroup(uAlice);
@@ -38,16 +31,26 @@ TEST_CASE("Shared XP") {
       }
 
       AND_GIVEN("Charlie is also in the group") {
-        auto cCharlie = TestClient::WithUsernameAndDataString("Charlie", data);
-        s.waitForUsers(3);
-        auto &uCharlie = s.findUser("Charlie");
-
         s->groups->addToGroup(uCharlie, uAlice);
 
         WHEN("Alice kills the critter") {
           uAlice.setTargetAndAttack(&critter);
 
           THEN("Charlie gets XP") { WAIT_UNTIL(uCharlie.xp() > 0); }
+        }
+      }
+    }
+
+    AND_GIVEN("Bob and Charlie are in a group") {
+      s->groups->createGroup(uBob);
+      s->groups->addToGroup(uCharlie, uBob);
+
+      WHEN("Alice kills the critter") {
+        uAlice.setTargetAndAttack(&critter);
+
+        THEN("Bob gets no XP") {
+          REPEAT_FOR_MS(100);
+          CHECK(uBob.xp() == 0);
         }
       }
     }

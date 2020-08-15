@@ -1,17 +1,19 @@
 #pragma once
 
-#include "User.h"
+#include <set>
+#include <vector>
+
+class User;
 
 class Groups {
  public:
-  void createGroup(User& founder) { _members.insert(&founder); }
-  void addToGroup(User& newMember, const User& leader) {
-    _members.insert(&newMember);
-  }
+  using Group = std::set<User*>;
 
-  std::set<User*>& members() { return _members; }
-  bool aGroupExists() const { return _members.size() > 0; }
+  void createGroup(User& founder);
+  void addToGroup(User& newMember, User& leader);
+
+  Group getMembersOfPlayersGroup(User& aMember) const;
 
  private:
-  std::set<User*> _members;
+  std::vector<Group> _groups;
 };

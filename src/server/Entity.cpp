@@ -448,10 +448,12 @@ void Entity::onEnergyChange() {
 void Entity::onDeath() {
   removeAllBuffsAndDebuffs();
 
-  if (tagger()) tagger()->onKilled(*this);
-
-  auto &groups = *Server::instance().groups;
-  for (auto *member : groups.members()) member->onKilled(*this);
+  auto directTagger = tagger();
+  if (directTagger) {
+    auto &groups = *Server::instance().groups;
+    auto taggers = groups.getMembersOfPlayersGroup(*directTagger);
+    for (auto *tagger : taggers) tagger->onKilled(*this);
+  }
 
   if (_spawner) {
     _spawner->scheduleSpawn();

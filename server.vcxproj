@@ -127,6 +127,7 @@
     <ClCompile Include="src\server\EntityType.cpp" />
     <ClCompile Include="src\server\Exploration.cpp" />
     <ClCompile Include="src\server\Gatherable.cpp" />
+    <ClCompile Include="src\server\Groups.cpp" />
     <ClCompile Include="src\server\ItemSet.cpp" />
     <ClCompile Include="src\server\LogConsole.cpp" />
     <ClCompile Include="src\server\logging.cpp" />
@@ -210,6 +211,7 @@
     <ClInclude Include="src\server\EntityType.h" />
     <ClInclude Include="src\server\Exploration.h" />
     <ClInclude Include="src\server\Gatherable.h" />
+    <ClInclude Include="src\server\Groups.h" />
     <ClInclude Include="src\server\ItemSet.h" />
     <ClInclude Include="src\server\LogConsole.h" />
     <ClInclude Include="src\server\Loot.h" />
