@@ -1866,9 +1866,9 @@ XP User::appropriateXPForKill(const Entity &victim, bool isElite) const {
     xp = 150;
   else {
     static auto xpPerLevelDiff = std::unordered_map<int, XP>{
-        {-9, 13}, {-8, 26}, {-7, 38}, {-6, 49}, {-5, 59},
-        {-4, 68}, {-3, 77}, {-2, 85}, {-1, 93}, {0, 100},
-        {1, 107}, {2, 115}, {3, 123}, {4, 132}, {5, 141}};
+        {-9, 14}, {-8, 27}, {-7, 40}, {-6, 52}, {-5, 62},
+        {-4, 72}, {-3, 80}, {-2, 88}, {-1, 95}, {0, 100},
+        {1, 105}, {2, 112}, {3, 120}, {4, 129}, {5, 139}};
     xp = xpPerLevelDiff[levelDiff];
   }
 
