@@ -27,10 +27,10 @@ Groups::Group Groups::getMembersOfPlayersGroup(User& player) const {
   return soloResult;
 }
 
-bool Groups::isInAGroup(const User& u) const {
+int Groups::getGroupSize(const User& u) const {
   for (const auto& group : _groups) {
     auto* constUser = const_cast<User*>(&u);
-    if (group.find(constUser) != group.end()) return true;
+    if (group.find(constUser) != group.end()) return group.size();
   }
-  return false;
+  return 1;
 }

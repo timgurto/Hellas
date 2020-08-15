@@ -13,7 +13,7 @@ class Groups {
   void addToGroup(User& newMember, User& leader);
 
   Group getMembersOfPlayersGroup(User& aMember) const;
-  bool isInAGroup(const User& u) const;
+  int getGroupSize(const User& u) const;
 
  private:
   std::vector<Group> _groups;

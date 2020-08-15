@@ -56,15 +56,26 @@ TEST_CASE("Shared XP") {
     }
 
     SECTION("XP is divided") {
-      const auto normalXP = uAlice.appropriateXPForKill(critter);
+      const int normalXP = uAlice.appropriateXPForKill(critter);
 
-      WHEN("Alice and Bob are in a group") {
+      WHEN("Alice is in a group of two") {
         s->groups->createGroup(uAlice);
         s->groups->addToGroup(uBob, uAlice);
 
         THEN("Alice would receive half of her normal XP") {
-          const auto xpInGroupOf2 = uAlice.appropriateXPForKill(critter);
+          const int xpInGroupOf2 = uAlice.appropriateXPForKill(critter);
           CHECK(xpInGroupOf2 == normalXP / 2);
+        }
+      }
+
+      WHEN("Alice is in a group of three") {
+        s->groups->createGroup(uAlice);
+        s->groups->addToGroup(uBob, uAlice);
+        s->groups->addToGroup(uCharlie, uAlice);
+
+        THEN("Alice would receive a third of her normal XP") {
+          const int xpInGroupOf3 = uAlice.appropriateXPForKill(critter);
+          CHECK_ROUGHLY_EQUAL(xpInGroupOf3, normalXP / 3, 0.1);
         }
       }
     }

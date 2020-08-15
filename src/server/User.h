@@ -353,7 +353,7 @@ class User : public Object {  // TODO: Don't inherit from Object
     return level() - user.level();
   }
   XP appropriateXPForKill(const Entity &victim, bool isElite = false) const;
-  bool isInAGroup() const;
+  int getGroupSize() const;
 
   void sendMessage(const Message &msg) const;
 

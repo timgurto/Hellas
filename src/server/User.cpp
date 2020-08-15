@@ -1872,14 +1872,15 @@ XP User::appropriateXPForKill(const Entity &victim, bool isElite) const {
     xp = xpPerLevelDiff[levelDiff];
   }
 
-  if (isInAGroup()) xp /= 2;
-
   if (isElite) xp *= 4;
+
+  xp = toInt(1.0 * xp / getGroupSize());
+
   return xp;
 }
 
-bool User::isInAGroup() const {
-  return Server::instance().groups->isInAGroup(*this);
+int User::getGroupSize() const {
+  return Server::instance().groups->getGroupSize(*this);
 }
 
 void User::addXP(XP amount) {
