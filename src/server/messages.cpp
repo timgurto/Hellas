@@ -669,7 +669,10 @@ HANDLE_MESSAGE(CL_INVITE_TO_GROUP) {
 }
 
 HANDLE_MESSAGE(CL_ACCEPT_GROUP_INVITATION) {
-  if (groups->inviter) groups->createGroup(*groups->inviter);
+  if (groups->inviter) {
+    groups->createGroup(*groups->inviter);
+    groups->addToGroup(user, *groups->inviter);
+  }
 }
 
 HANDLE_MESSAGE(DG_UNLOCK) {

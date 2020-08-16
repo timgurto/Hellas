@@ -117,12 +117,15 @@ TEST_CASE_METHOD(ThreeClients, "Inviting and accepting") {
       REPEAT_FOR_MS(100);
       cBob.sendMessage(CL_ACCEPT_GROUP_INVITATION);
 
-      THEN("Alice is in a group") {
-        WAIT_UNTIL(server->groups->isUserInAGroup(*alice));
+      THEN("Alice and Bob, but not Charlie, are in groups") {
+        REPEAT_FOR_MS(100);
+        CHECK(server->groups->isUserInAGroup(*alice));
+        CHECK(server->groups->isUserInAGroup(*bob));
+        CHECK_FALSE(server->groups->isUserInAGroup(*charlie));
 
-        AND_THEN("Charlie is not") {
-          REPEAT_FOR_MS(100);
-          CHECK_FALSE(server->groups->isUserInAGroup(*charlie));
+        AND_THEN("Alice and Bob are in the same group") {
+          auto group = server->groups->getMembersOfPlayersGroup(*alice);
+          CHECK(group.find(bob) != group.end());
         }
       }
     }
