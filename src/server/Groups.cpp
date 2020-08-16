@@ -10,10 +10,10 @@ void Groups::createGroup(User& founder) {
   _mutex.unlock();
 }
 
-void Groups::addToGroup(User& newMember, User& leader) {
+void Groups::addToGroup(User& newMember, User& inviter) {
   _mutex.lock();
   for (auto& group : _groups) {
-    if (group.find(&leader) != group.end()) {
+    if (group.find(&inviter) != group.end()) {
       group.insert(&newMember);
       _mutex.unlock();
       return;

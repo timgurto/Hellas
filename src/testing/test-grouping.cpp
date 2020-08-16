@@ -129,6 +129,20 @@ TEST_CASE_METHOD(ThreeClients, "Inviting and accepting") {
         }
       }
     }
+
+    AND_WHEN("Charlie invites Alice to join a group") {
+      cCharlie.sendMessage(CL_INVITE_TO_GROUP, "Alice");
+
+      AND_WHEN("Bob accepts Alice's invitation") {
+        REPEAT_FOR_MS(100);
+        cBob.sendMessage(CL_ACCEPT_GROUP_INVITATION);
+
+        THEN("Charlie is not in a group") {
+          REPEAT_FOR_MS(100);
+          CHECK_FALSE(server->groups->isUserInAGroup(*charlie));
+        }
+      }
+    }
   }
 }
 

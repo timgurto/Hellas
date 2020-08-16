@@ -661,17 +661,17 @@ HANDLE_MESSAGE(CL_INVITE_TO_GROUP) {
   auto inviteeName = ""s;
   READ_ARGS(inviteeName);
 
-  const auto *invitee = getUserByName(inviteeName);
+  auto *invitee = getUserByName(inviteeName);
   if (!invitee) RETURN_WITH(ERROR_USER_NOT_FOUND);
   invitee->sendMessage({SV_INVITED_TO_GROUP});
 
-  groups->inviter = &user;
+  groups->_inviterOf[invitee] = &user;
 }
 
 HANDLE_MESSAGE(CL_ACCEPT_GROUP_INVITATION) {
-  if (groups->inviter) {
-    groups->createGroup(*groups->inviter);
-    groups->addToGroup(user, *groups->inviter);
+  if (groups->_inviterOf.count(&user) == 1) {
+    groups->createGroup(*groups->_inviterOf[&user]);
+    groups->addToGroup(user, *groups->_inviterOf[&user]);
   }
 }
 
