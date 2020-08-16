@@ -75,6 +75,6 @@ bool Groups::userHasAnInvitation(User& u) const {
 
 void Groups::acceptInvitation(User& newMember) {
   auto& inviter = *_inviterOf[&newMember];
-  createGroup(inviter);
+  if (!isUserInAGroup(inviter)) createGroup(inviter);
   addToGroup(newMember, inviter);
 }

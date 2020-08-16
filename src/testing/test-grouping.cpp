@@ -153,6 +153,21 @@ TEST_CASE_METHOD(FourClients, "No duplicate groups") {
     server->groups->createGroup(*alice);
     server->groups->addToGroup(*bob, *alice);
 
+    WHEN("Alice invites Charlie and he accepts") {
+      cAlice.sendMessage(CL_INVITE_TO_GROUP, "Charlie");
+      REPEAT_FOR_MS(100);
+      cCharlie.sendMessage(CL_ACCEPT_GROUP_INVITATION);
+
+      THEN("There is one group") {
+        REPEAT_FOR_MS(100);
+        CHECK(server->groups->numGroups() == 1);
+
+        AND_THEN("Charlie is in a group") {
+          CHECK(server->groups->isUserInAGroup(*charlie));
+        }
+      }
+    }
+
     AND_GIVEN("Charlie and Dan are in a group") {
       server->groups->createGroup(*charlie);
       server->groups->addToGroup(*dan, *charlie);
