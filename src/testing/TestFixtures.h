@@ -15,21 +15,29 @@ class ServerAndClient {
   User *user;
 };
 
-class ThreeClients {
+class TwoClients {
  public:
-  ThreeClients()
+  TwoClients()
       : cAlice(TestClient::WithUsername("Alice")),
-        cBob(TestClient::WithUsername("Bob")),
-        cCharlie(TestClient::WithUsername("Charlie")) {
-    server.waitForUsers(3);
+        cBob(TestClient::WithUsername("Bob")) {
+    server.waitForUsers(2);
     alice = &server.findUser("Alice");
     bob = &server.findUser("Bob");
-    charlie = &server.findUser("Charlie");
   }
 
   TestServer server;
-  TestClient cAlice, cBob, cCharlie;
-  User *alice, *bob, *charlie;
+  TestClient cAlice, cBob;
+  User *alice, *bob;
+};
+
+class ThreeClients : public TwoClients {
+ public:
+  ThreeClients() : cCharlie(TestClient::WithUsername("Charlie")) {
+    server.waitForUsers(3);
+    charlie = &server.findUser("Charlie");
+  }
+  TestClient cCharlie;
+  User *charlie;
 };
 
 class FourClients : public ThreeClients {

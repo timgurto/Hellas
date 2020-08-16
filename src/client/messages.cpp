@@ -2042,7 +2042,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         }
 
         _groupInvitationWindow = new ConfirmationWindow(
-            *this, inviter + "has invited you to join a group."s,
+            *this, inviter + " has invited you to join a group."s,
             CL_ACCEPT_GROUP_INVITATION, {});
         addWindow(_groupInvitationWindow);
         _groupInvitationWindow->show();

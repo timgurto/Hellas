@@ -660,6 +660,7 @@ HANDLE_MESSAGE(CL_ORDER_NPC_TO_FOLLOW) {
 HANDLE_MESSAGE(CL_INVITE_TO_GROUP) {
   auto inviteeName = ""s;
   READ_ARGS(inviteeName);
+  inviteeName = toPascal(inviteeName);
 
   if (inviteeName == user.name()) return;
   auto *invitee = getUserByName(inviteeName);

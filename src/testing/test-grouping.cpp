@@ -150,6 +150,15 @@ TEST_CASE_METHOD(ThreeClients, "Inviting and accepting") {
   }
 }
 
+TEST_CASE_METHOD(TwoClients, "Invitations are case-insensitive") {
+  WHEN("Alice tries inviting \"bOb\" to a group") {
+    cAlice.sendMessage(CL_INVITE_TO_GROUP, "bOb");
+    THEN("Bob receives the invitation") {
+      CHECK(cBob.waitForMessage(SV_INVITED_TO_GROUP));
+    }
+  }
+}
+
 TEST_CASE_METHOD(FourClients, "No duplicate groups") {
   THEN("There are no groups") { CHECK(server->groups->numGroups() == 0); }
 
@@ -225,8 +234,7 @@ TEST_CASE_METHOD(ThreeClients, "Grouped players can't be invited") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClient,
-                 "Players can't invite themselves to a group") {
+TEST_CASE_METHOD(ServerAndClient, "Group self-invites have no effect") {
   WHEN("the user invites himself to a group") {
     client.sendMessage(CL_INVITE_TO_GROUP, user->name());
 
@@ -236,11 +244,16 @@ TEST_CASE_METHOD(ServerAndClient,
   }
 }
 
+// Invite via context menu
+// All loot available to all group members
+// /roll
+// UI
+// Ability to leave a group
+
 // Wait too long before accepting invitation
 // Shared XP only if nearby
 // Round-robin loot
 // If loot is left, then anyone [in group] can pick it up
-// /roll
 // Show group members on map
 // Leader can kick/invite
 // Group chat
