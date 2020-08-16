@@ -112,6 +112,8 @@ class Client {
   }
   std::string getUserCity(const std::string &name) const;
 
+  ConfirmationWindow *_groupInvitationWindow{nullptr};
+
   // Special types
   SpriteType avatarSpriteType;
   ClientCombatantType avatarCombatantType;

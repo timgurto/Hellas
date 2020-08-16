@@ -2030,6 +2030,19 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
+      case SV_INVITED_TO_GROUP: {
+        if (_groupInvitationWindow) {
+          removeWindow(_groupInvitationWindow);
+          delete _groupInvitationWindow;
+        }
+        _groupInvitationWindow = new ConfirmationWindow(
+            *this, "You have been invited to join a group.",
+            CL_ACCEPT_GROUP_INVITATION, {});
+        addWindow(_groupInvitationWindow);
+        _groupInvitationWindow->show();
+        break;
+      }
+
       case SV_SAY: {
         std::string username, message;
         singleMsg >> username >> del;
@@ -2716,6 +2729,7 @@ void Client::initializeMessageNames() {
   _messageCommands["skip"] = CL_SKIP_TUTORIAL;
   _messageCommands["spells"] = DG_SPELLS;
   _messageCommands["die"] = DG_DIE;
+  _messageCommands["invite"] = CL_INVITE_TO_GROUP;
 
   _errorMessages[WARNING_TOO_FAR] =
       "You are too far away to perform that action.";
