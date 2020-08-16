@@ -438,6 +438,7 @@
     <ClInclude Include="src\Stats.h" />
     <ClInclude Include="src\Terrain.h" />
     <ClInclude Include="src\testing\TestClient.h" />
+    <ClInclude Include="src\testing\TestFixtures.h" />
     <ClInclude Include="src\testing\testing.h" />
     <ClInclude Include="src\testing\TestServer.h" />
     <ClInclude Include="src\threadNaming.h" />

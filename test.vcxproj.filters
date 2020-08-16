@@ -352,6 +352,7 @@
     <ClInclude Include="src\client\MemoisedImageDirectory.h" />
     <ClInclude Include="src\client\SDLwrappers.h" />
     <ClInclude Include="src\server\Groups.h" />
+    <ClInclude Include="src\testing\TestFixtures.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />
