@@ -97,8 +97,21 @@ TEST_CASE_METHOD(TwoUsersNamedAliceAndBob, "Inviting and accepting") {
     }
   }
 
+  WHEN("Alice invites a nonexistent user to join a group") {
+    cAlice.sendMessage(CL_INVITE_TO_GROUP, "Zeus");
+    THEN("the server doesn't crash") {}
+  }
+
   AND_WHEN("Alice invites Bob to join a group") {
     cAlice.sendMessage(CL_INVITE_TO_GROUP, "Bob");
+
+    THEN("Bob receive an invitation") {
+      CHECK(cBob.waitForMessage(SV_INVITED_TO_GROUP));
+    }
+
+    THEN("Alice does not receive an invitation") {
+      CHECK_FALSE(cAlice.waitForMessage(SV_INVITED_TO_GROUP));
+    }
 
     AND_WHEN("Bob accepts") {
       REPEAT_FOR_MS(100);

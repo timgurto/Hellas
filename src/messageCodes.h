@@ -648,6 +648,10 @@ enum MessageCode {
   // Arguments: questID, objective index, progress
   SV_QUEST_PROGRESS,
 
+  // ... invited you to his group
+  // Arguments: inviter's username
+  SV_INVITED_TO_GROUP,
+
   // Your hotbar has .. slots, which are as follows: ..., ..., ...
   // Arguments: numSlots, (category, ID), (category, ID), ...
   SV_HOTBAR,
@@ -766,6 +770,7 @@ enum MessageCode {
   WARNING_BAD_TERRAIN, // You have died due to being on invalid terrain.
   WARNING_BROKEN_ITEM, // You have tried to perform an action using a broken item.
   WARNING_NOT_REPAIRABLE, // You tried to repair something that can't be repaired.
+  ERROR_USER_NOT_FOUND, // You tried to perform an action with a nonexistent user.
 
 
 

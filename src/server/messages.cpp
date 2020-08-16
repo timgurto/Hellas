@@ -658,8 +658,12 @@ HANDLE_MESSAGE(CL_ORDER_NPC_TO_FOLLOW) {
 }
 
 HANDLE_MESSAGE(CL_INVITE_TO_GROUP) {
-  auto invitee = ""s;
-  READ_ARGS(invitee);
+  auto inviteeName = ""s;
+  READ_ARGS(inviteeName);
+
+  const auto *invitee = getUserByName(inviteeName);
+  if (!invitee) RETURN_WITH(ERROR_USER_NOT_FOUND);
+  invitee->sendMessage({SV_INVITED_TO_GROUP});
 
   groups->_invitationSent = true;
 }
