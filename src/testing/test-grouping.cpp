@@ -146,6 +146,22 @@ TEST_CASE_METHOD(ThreeClients, "Inviting and accepting") {
   }
 }
 
+TEST_CASE_METHOD(FourClients, "No duplicate groups") {
+  THEN("There are no groups") { CHECK(server->groups->numGroups() == 0); }
+
+  GIVEN("Alice and Bob are in a group") {
+    server->groups->createGroup(*alice);
+    server->groups->addToGroup(*bob, *alice);
+
+    AND_GIVEN("Charlie and Dan are in a group") {
+      server->groups->createGroup(*charlie);
+      server->groups->addToGroup(*dan, *charlie);
+
+      THEN("There are two groups") { CHECK(server->groups->numGroups() == 2); }
+    }
+  }
+}
+
 // Wait too long before accepting invitation
 
 // Shared XP only if nearby

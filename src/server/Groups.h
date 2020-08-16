@@ -11,6 +11,8 @@ class Groups {
  public:
   using Group = std::set<User*>;
 
+  int numGroups() const;
+
   void createGroup(User& founder);
   void addToGroup(User& newMember, User& inviter);
 

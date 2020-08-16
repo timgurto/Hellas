@@ -2,6 +2,8 @@
 
 #include <cassert>
 
+int Groups::numGroups() const { return _groups.size(); }
+
 void Groups::createGroup(User& founder) {
   auto newGroup = Group{};
   newGroup.insert(&founder);

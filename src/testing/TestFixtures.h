@@ -19,3 +19,13 @@ class ThreeClients {
   TestClient cAlice, cBob, cCharlie;
   User *alice, *bob, *charlie;
 };
+
+class FourClients : public ThreeClients {
+ public:
+  FourClients() : cDan(TestClient::WithUsername("Dan")) {
+    server.waitForUsers(4);
+    dan = &server.findUser("Dan");
+  }
+  TestClient cDan;
+  User *dan;
+};
