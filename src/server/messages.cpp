@@ -664,8 +664,11 @@ HANDLE_MESSAGE(CL_INVITE_TO_GROUP) {
   auto *invitee = getUserByName(inviteeName);
   if (!invitee) RETURN_WITH(ERROR_USER_NOT_FOUND);
 
+  if (groups->isUserInAGroup(*invitee))
+    RETURN_WITH(WARNING_USER_ALREADY_IN_A_GROUP);
+
   groups->registerInvitation(user, *invitee);
-  invitee->sendMessage({SV_INVITED_TO_GROUP});
+  invitee->sendMessage(SV_INVITED_TO_GROUP);
 }
 
 HANDLE_MESSAGE(CL_ACCEPT_GROUP_INVITATION) {

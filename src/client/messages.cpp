@@ -254,6 +254,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
       case WARNING_NO_ROOM_FOR_MORE_FOLLOWERS:
       case WARNING_PET_AT_FULL_HEALTH:
       case WARNING_NOWHERE_TO_DROP_ITEM:
+      case WARNING_USER_ALREADY_IN_A_GROUP:
         errorMessageColor = Color::CHAT_WARNING;  // Yellow above, red below
       case ERROR_INVALID_USER:
       case ERROR_INVALID_ITEM:
@@ -284,6 +285,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
       case ERROR_INVALID_TALENT:
       case ERROR_ALREADY_KNOW_SPELL:
       case ERROR_DONT_KNOW_SPELL:
+      case ERROR_USER_NOT_FOUND:
         if (del != MSG_END) break;
         showErrorMessage(_errorMessages[msgCode], errorMessageColor);
         startAction(0);
@@ -2809,6 +2811,9 @@ void Client::initializeMessageNames() {
       "That pet is already at full health.";
   _errorMessages[WARNING_NOWHERE_TO_DROP_ITEM] =
       "There is no room to drop items.";
+  _errorMessages[ERROR_USER_NOT_FOUND] = "Cannot find that player.";
+  _errorMessages[WARNING_USER_ALREADY_IN_A_GROUP] =
+      "That player is already in a group.";
 }
 
 void Client::performCommand(const std::string &commandString) {

@@ -771,6 +771,7 @@ enum MessageCode {
   WARNING_BROKEN_ITEM, // You have tried to perform an action using a broken item.
   WARNING_NOT_REPAIRABLE, // You tried to repair something that can't be repaired.
   ERROR_USER_NOT_FOUND, // You tried to perform an action with a nonexistent user.
+  WARNING_USER_ALREADY_IN_A_GROUP, // You tried to invite an already-grouped person to your group.
 
 
 

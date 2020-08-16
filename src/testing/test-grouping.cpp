@@ -113,6 +113,10 @@ TEST_CASE_METHOD(ThreeClients, "Inviting and accepting") {
       CHECK_FALSE(cAlice.waitForMessage(SV_INVITED_TO_GROUP));
     }
 
+    THEN("Alice does not receive a warning about Bob being in a group") {
+      CHECK_FALSE(cAlice.waitForMessage(WARNING_USER_ALREADY_IN_A_GROUP));
+    }
+
     AND_WHEN("Bob accepts") {
       REPEAT_FOR_MS(100);
       cBob.sendMessage(CL_ACCEPT_GROUP_INVITATION);
@@ -177,7 +181,7 @@ TEST_CASE_METHOD(FourClients, "No duplicate groups") {
   }
 }
 
-TEST_CASE_METHOD(ThreeClients, "Already-grouped players can't join groups") {
+TEST_CASE_METHOD(ThreeClients, "Grouped players can't accept invitations") {
   WHEN("Alice invites Bob to a group") {
     cAlice.sendMessage(CL_INVITE_TO_GROUP, "Bob");
 
@@ -202,8 +206,26 @@ TEST_CASE_METHOD(ThreeClients, "Already-grouped players can't join groups") {
   }
 }
 
-// Wait too long before accepting invitation
+TEST_CASE_METHOD(ThreeClients, "Grouped players can't be invited") {
+  GIVEN("Alice and Bob are in a group") {
+    server->groups->createGroup(*alice);
+    server->groups->addToGroup(*bob, *alice);
 
+    WHEN("Charlie invites Alice to a group") {
+      cCharlie.sendMessage(CL_INVITE_TO_GROUP, "Alice");
+
+      THEN("Charlie receives a warning") {
+        CHECK(cCharlie.waitForMessage(WARNING_USER_ALREADY_IN_A_GROUP));
+      }
+
+      THEN("Alice does not receive the invitation") {
+        CHECK_FALSE(cAlice.waitForMessage(SV_INVITED_TO_GROUP));
+      }
+    }
+  }
+}
+
+// Wait too long before accepting invitation
 // Shared XP only if nearby
 // Round-robin loot
 // If loot is left, then anyone [in group] can pick it up
