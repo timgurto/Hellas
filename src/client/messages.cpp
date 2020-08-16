@@ -2031,12 +2031,18 @@ void Client::handleBufferedMessages(const std::string &msg) {
       }
 
       case SV_INVITED_TO_GROUP: {
+        auto inviter = ""s;
+        readString(singleMsg, inviter, MSG_END);
+        singleMsg >> del;
+        if (del != MSG_END) break;
+
         if (_groupInvitationWindow) {
           removeWindow(_groupInvitationWindow);
           delete _groupInvitationWindow;
         }
+
         _groupInvitationWindow = new ConfirmationWindow(
-            *this, "You have been invited to join a group.",
+            *this, inviter + "has invited you to join a group."s,
             CL_ACCEPT_GROUP_INVITATION, {});
         addWindow(_groupInvitationWindow);
         _groupInvitationWindow->show();

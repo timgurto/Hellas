@@ -668,7 +668,7 @@ HANDLE_MESSAGE(CL_INVITE_TO_GROUP) {
     RETURN_WITH(WARNING_USER_ALREADY_IN_A_GROUP);
 
   groups->registerInvitation(user, *invitee);
-  invitee->sendMessage(SV_INVITED_TO_GROUP);
+  invitee->sendMessage({SV_INVITED_TO_GROUP, user.name()});
 }
 
 HANDLE_MESSAGE(CL_ACCEPT_GROUP_INVITATION) {
