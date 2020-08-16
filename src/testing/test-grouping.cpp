@@ -124,7 +124,7 @@ TEST_CASE_METHOD(ThreeClients, "Inviting and accepting") {
         CHECK_FALSE(server->groups->isUserInAGroup(*charlie));
 
         AND_THEN("Alice and Bob are in the same group") {
-          auto group = server->groups->getMembersOfPlayersGroup(*alice);
+          auto group = server->groups->getUsersGroup(*alice);
           CHECK(group.find(bob) != group.end());
         }
       }

@@ -25,7 +25,7 @@ void Groups::addToGroup(User& newMember, User& inviter) {
   assert(false);
 }
 
-Groups::Group Groups::getMembersOfPlayersGroup(User& player) const {
+Groups::Group Groups::getUsersGroup(User& player) const {
   _mutex.lock();
   for (const auto& group : _groups)
     if (group.find(&player) != group.end()) {
