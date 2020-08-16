@@ -663,16 +663,13 @@ HANDLE_MESSAGE(CL_INVITE_TO_GROUP) {
 
   auto *invitee = getUserByName(inviteeName);
   if (!invitee) RETURN_WITH(ERROR_USER_NOT_FOUND);
-  invitee->sendMessage({SV_INVITED_TO_GROUP});
 
-  groups->_inviterOf[invitee] = &user;
+  groups->registerInvitation(user, *invitee);
+  invitee->sendMessage({SV_INVITED_TO_GROUP});
 }
 
 HANDLE_MESSAGE(CL_ACCEPT_GROUP_INVITATION) {
-  if (groups->_inviterOf.count(&user) == 1) {
-    groups->createGroup(*groups->_inviterOf[&user]);
-    groups->addToGroup(user, *groups->_inviterOf[&user]);
-  }
+  if (groups->userHasAnInvitation(user)) groups->acceptInvitation(user);
 }
 
 HANDLE_MESSAGE(DG_UNLOCK) {

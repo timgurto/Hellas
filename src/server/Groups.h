@@ -18,9 +18,12 @@ class Groups {
   int getGroupSize(const User& u) const;
   bool isUserInAGroup(const User& u) const;
 
-  std::map<User*, User*> _inviterOf;
+  void registerInvitation(User& existingMember, User& newMember);
+  bool userHasAnInvitation(User& u) const;
+  void acceptInvitation(User& newMember);
 
  private:
   std::vector<Group> _groups;
+  std::map<User*, User*> _inviterOf;
   mutable std::mutex _mutex;
 };

@@ -62,3 +62,17 @@ bool Groups::isUserInAGroup(const User& u) const {
   _mutex.unlock();
   return false;
 }
+
+void Groups::registerInvitation(User& existingMember, User& newMember) {
+  _inviterOf[&newMember] = &existingMember;
+}
+
+bool Groups::userHasAnInvitation(User& u) const {
+  return _inviterOf.count(&u) > 0;
+}
+
+void Groups::acceptInvitation(User& newMember) {
+  auto& inviter = *_inviterOf[&newMember];
+  createGroup(inviter);
+  addToGroup(newMember, inviter);
+}
