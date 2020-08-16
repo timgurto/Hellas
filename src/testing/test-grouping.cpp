@@ -225,6 +225,17 @@ TEST_CASE_METHOD(ThreeClients, "Grouped players can't be invited") {
   }
 }
 
+TEST_CASE_METHOD(ServerAndClient,
+                 "Players can't invite themselves to a group") {
+  WHEN("the user invites himself to a group") {
+    client.sendMessage(CL_INVITE_TO_GROUP, user->name());
+
+    THEN("he receives no invitation") {
+      CHECK_FALSE(client.waitForMessage(SV_INVITED_TO_GROUP));
+    }
+  }
+}
+
 // Wait too long before accepting invitation
 // Shared XP only if nearby
 // Round-robin loot

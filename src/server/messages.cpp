@@ -661,9 +661,9 @@ HANDLE_MESSAGE(CL_INVITE_TO_GROUP) {
   auto inviteeName = ""s;
   READ_ARGS(inviteeName);
 
+  if (inviteeName == user.name()) return;
   auto *invitee = getUserByName(inviteeName);
   if (!invitee) RETURN_WITH(ERROR_USER_NOT_FOUND);
-
   if (groups->isUserInAGroup(*invitee))
     RETURN_WITH(WARNING_USER_ALREADY_IN_A_GROUP);
 

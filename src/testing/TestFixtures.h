@@ -3,6 +3,18 @@
 #include "TestClient.h"
 #include "TestServer.h"
 
+class ServerAndClient {
+ public:
+  ServerAndClient() {
+    server.waitForUsers(1);
+    user = &server.getFirstUser();
+  }
+
+  TestServer server;
+  TestClient client;
+  User *user;
+};
+
 class ThreeClients {
  public:
   ThreeClients()
