@@ -83,7 +83,7 @@ TEST_CASE("Shared XP") {
   }
 }
 
-TEST_CASE_METHOD(TwoUsersNamedAliceAndBob, "Inviting and accepting") {
+TEST_CASE_METHOD(ThreeClients, "Inviting and accepting") {
   THEN("Alice is not in a group") {
     CHECK_FALSE(server->groups->isUserInAGroup(*alice));
   }
@@ -119,10 +119,17 @@ TEST_CASE_METHOD(TwoUsersNamedAliceAndBob, "Inviting and accepting") {
 
       THEN("Alice is in a group") {
         WAIT_UNTIL(server->groups->isUserInAGroup(*alice));
+
+        AND_THEN("Charlie is not") {
+          REPEAT_FOR_MS(100);
+          CHECK_FALSE(server->groups->isUserInAGroup(*charlie));
+        }
       }
     }
   }
 }
+
+// Wait too long before accepting invitation
 
 // Shared XP only if nearby
 // Round-robin loot

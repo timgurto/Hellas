@@ -665,11 +665,11 @@ HANDLE_MESSAGE(CL_INVITE_TO_GROUP) {
   if (!invitee) RETURN_WITH(ERROR_USER_NOT_FOUND);
   invitee->sendMessage({SV_INVITED_TO_GROUP});
 
-  groups->_invitationSent = true;
+  groups->inviter = &user;
 }
 
 HANDLE_MESSAGE(CL_ACCEPT_GROUP_INVITATION) {
-  if (groups->_invitationSent) groups->_aUserIsInAGroup = true;
+  if (groups->inviter) groups->createGroup(*groups->inviter);
 }
 
 HANDLE_MESSAGE(DG_UNLOCK) {

@@ -3,20 +3,19 @@
 #include "TestClient.h"
 #include "TestServer.h"
 
-class TwoUsersNamedAliceAndBob {
+class ThreeClients {
  public:
-  TwoUsersNamedAliceAndBob()
+  ThreeClients()
       : cAlice(TestClient::WithUsername("Alice")),
-        cBob(TestClient::WithUsername("Bob")) {
-    server.waitForUsers(2);
+        cBob(TestClient::WithUsername("Bob")),
+        cCharlie(TestClient::WithUsername("Charlie")) {
+    server.waitForUsers(3);
     alice = &server.findUser("Alice");
     bob = &server.findUser("Bob");
+    charlie = &server.findUser("Charlie");
   }
 
   TestServer server;
-  TestClient cAlice;
-  TestClient cBob;
-
-  User* alice;
-  User* bob;
+  TestClient cAlice, cBob, cCharlie;
+  User *alice, *bob, *charlie;
 };

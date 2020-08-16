@@ -1,5 +1,6 @@
 #pragma once
 
+#include <mutex>
 #include <set>
 #include <vector>
 
@@ -16,9 +17,9 @@ class Groups {
   int getGroupSize(const User& u) const;
   bool isUserInAGroup(const User& u) const;
 
-  bool _invitationSent{false};
-  bool _aUserIsInAGroup{false};
+  User* inviter{nullptr};
 
  private:
   std::vector<Group> _groups;
+  mutable std::mutex _mutex;
 };
