@@ -177,6 +177,31 @@ TEST_CASE_METHOD(FourClients, "No duplicate groups") {
   }
 }
 
+TEST_CASE_METHOD(ThreeClients, "Already-grouped players can't join groups") {
+  WHEN("Alice invites Bob to a group") {
+    cAlice.sendMessage(CL_INVITE_TO_GROUP, "Bob");
+
+    AND_WHEN("Charlie invites Alice to a group") {
+      cCharlie.sendMessage(CL_INVITE_TO_GROUP, "Alice");
+
+      AND_WHEN("Bob accept's Alice's invitation") {
+        REPEAT_FOR_MS(100);
+        cBob.sendMessage(CL_ACCEPT_GROUP_INVITATION);
+
+        AND_WHEN("Alice tries to accept Charlie's invitation") {
+          REPEAT_FOR_MS(100);
+          cAlice.sendMessage(CL_ACCEPT_GROUP_INVITATION);
+
+          THEN("Charlie is not in a group") {
+            REPEAT_FOR_MS(100);
+            CHECK_FALSE(server->groups->isUserInAGroup(*charlie));
+          }
+        }
+      }
+    }
+  }
+}
+
 // Wait too long before accepting invitation
 
 // Shared XP only if nearby

@@ -669,6 +669,7 @@ HANDLE_MESSAGE(CL_INVITE_TO_GROUP) {
 }
 
 HANDLE_MESSAGE(CL_ACCEPT_GROUP_INVITATION) {
+  if (groups->isUserInAGroup(user)) return;
   if (groups->userHasAnInvitation(user)) groups->acceptInvitation(user);
 }
 
