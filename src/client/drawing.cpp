@@ -141,7 +141,9 @@ void Client::draw() const {
   }
 
   // Non-window UI
-  for (Element *element : _ui) element->draw();
+  for (std::list<Element *>::const_reverse_iterator it = _ui.rbegin();
+       it != _ui.rend(); ++it)
+    (*it)->draw();
 
   // Windows
   for (windows_t::const_reverse_iterator it = _windows.rbegin();

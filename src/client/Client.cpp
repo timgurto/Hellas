@@ -491,7 +491,7 @@ void Client::showWindowInFront(void *window) {
   asWindow->client()->showWindowInFront(asWindow);
 }
 
-void Client::addUI(Element *element) { _ui.push_back(element); }
+void Client::addUI(Element *element) { _ui.push_front(element); }
 
 void Client::addChatMessage(const std::string &msg, const Color &color) {
   auto wrappedLines = _wordWrapper.wrap(msg);
