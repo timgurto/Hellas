@@ -269,35 +269,39 @@ void Client::handleInput(double delta) {
 
       case SDL_MOUSEBUTTONDOWN:
         switch (e.button.button) {
-          case SDL_BUTTON_LEFT:
+          case SDL_BUTTON_LEFT: {
             _leftMouseDown = true;
-
             textBoxInFocus = nullptr;
 
-            // Send onLeftMouseDown to frontmost clicked window
+            auto leftMouseDownWasCaptured = false;
+
+            // 1. Window
             for (Window *window : _windows)
               if (window->visible() && collision(_mouse, window->rect())) {
+                showWindowInFront(window);
                 window->onLeftMouseDown(_mouse);
+                leftMouseDownWasCaptured = true;
                 break;
               }
+            if (leftMouseDownWasCaptured) break;
+
+            // 2. UI element
             for (Element *element : _ui)
               if (element->visible() && element->canReceiveMouseEvents() &&
-                  collision(_mouse, element->rect()))
+                  collision(_mouse, element->rect())) {
                 element->onLeftMouseDown(_mouse);
+                leftMouseDownWasCaptured = true;
+                break;
+              }
 
             if (SDL_IsTextInputActive() && !textBoxInFocus)
               SDL_StopTextInput();
             else if (!SDL_IsTextInputActive() && textBoxInFocus)
               SDL_StartTextInput();
 
-            // Bring top clicked window to front
-            for (auto *window : _windows) {
-              if (window->visible() && collision(_mouse, window->rect())) {
-                showWindowInFront(window);
-                break;
-              }
-            }
+            if (leftMouseDownWasCaptured) break;
 
+            // 3. Entity
             if (_currentMouseOverEntity)
               _currentMouseOverEntity->onLeftClick();
             else
@@ -305,26 +309,37 @@ void Client::handleInput(double delta) {
             refreshTargetBuffs();
 
             break;
+          }
 
-          case SDL_BUTTON_RIGHT:
-            // Send onRightMouseDown to frontmost clicked window
+          case SDL_BUTTON_RIGHT: {
+            auto rightMouseDownWasCaptured = false;
+
+            // 1. Window
             for (Window *window : _windows)
               if (window->visible() && collision(_mouse, window->rect())) {
                 window->onRightMouseDown(_mouse);
+                rightMouseDownWasCaptured = true;
                 break;
               }
+            if (rightMouseDownWasCaptured) break;
+
+            // 2. UI element
             for (Element *element : _ui)
               if (element->visible() && element->canReceiveMouseEvents() &&
                   collision(_mouse, element->rect())) {
-                auto mouseHitAnElement = element->onRightMouseDown(_mouse);
+                element->onRightMouseDown(_mouse);
+                rightMouseDownWasCaptured = true;
+                break;
               }
+            if (rightMouseDownWasCaptured) break;
 
-            // Mouse down and up on same entity: onRightClick
+            // 3. Entity
             if (_currentMouseOverEntity)
               _currentMouseOverEntity->onRightClick();
             else
               clearTarget();
             refreshTargetBuffs();
+          }
         }
         break;
 
