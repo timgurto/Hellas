@@ -239,16 +239,15 @@ const Color &Avatar::nameColor() const {
 void Avatar::addMenuButtons(List &menu) {
   std::string tooltipText;
 
-  void *pUsername = const_cast<std::string *>(&_name);
-
-  auto *inviteButton = new Button(
-      0, "InviteToGroup", [this, pUsername]() { inviteToGroup(pUsername); });
+  auto *inviteButton = new Button(0, "Invite to group", [this]() {
+    _client.sendMessage({CL_INVITE_TO_GROUP, _name});
+  });
   tooltipText = "Invite "s + _name + " into your group."s;
   inviteButton->setTooltip(tooltipText);
   menu.addChild(inviteButton);
 
-  auto *playerWarButton = new Button(0, "Declare war", [this, pUsername]() {
-    declareWarAgainstPlayer(pUsername);
+  auto *playerWarButton = new Button(0, "Declare war", [this]() {
+    _client.sendMessage({CL_DECLARE_WAR_ON_PLAYER, _name});
   });
   if (_client.isAtWarWithPlayerDirectly(_name)) {
     playerWarButton->disable();
@@ -267,10 +266,9 @@ void Avatar::addMenuButtons(List &menu) {
   playerWarButton->setTooltip(tooltipText);
   menu.addChild(playerWarButton);
 
-  void *pCityName = const_cast<std::string *>(&_city);
-  auto *cityWarButton =
-      new Button(0, "Declare war against city",
-                 [this, pCityName]() { declareWarAgainstCity(pCityName); });
+  auto *cityWarButton = new Button(0, "Declare war against city", [this]() {
+    _client.sendMessage({CL_DECLARE_WAR_ON_CITY, _city});
+  });
   if (_city.empty()) {
     cityWarButton->disable();
     tooltipText = _name + " is not a member of a city.";
@@ -288,9 +286,9 @@ void Avatar::addMenuButtons(List &menu) {
   menu.addChild(cityWarButton);
 
   if (_client.character().isKing()) {
-    auto *playerWarButton = new Button(
-        0, "Declare city war",
-        [this, pUsername]() { declareCityWarAgainstPlayer(pUsername); });
+    auto *playerWarButton = new Button(0, "Declare city war", [this]() {
+      _client.sendMessage({CL_DECLARE_WAR_ON_PLAYER_AS_CITY, _name});
+    });
     if (_client.isCityAtWarWithPlayerDirectly(_name)) {
       playerWarButton->disable();
       tooltipText = "Your city is already at war with " + _name + ".";
@@ -305,9 +303,10 @@ void Avatar::addMenuButtons(List &menu) {
     playerWarButton->setTooltip(tooltipText);
     menu.addChild(playerWarButton);
 
-    auto *cityWarButton = new Button(
-        0, "Declare city war against city",
-        [this, pCityName]() { declareCityWarAgainstCity(pCityName); });
+    auto *cityWarButton =
+        new Button(0, "Declare city war against city", [this]() {
+          _client.sendMessage({CL_DECLARE_WAR_ON_CITY_AS_CITY, _city});
+        });
     if (_city.empty()) {
       cityWarButton->disable();
       tooltipText = _name + " is not a member of a city.";
@@ -322,8 +321,9 @@ void Avatar::addMenuButtons(List &menu) {
     menu.addChild(cityWarButton);
   }
 
-  auto *recruitButton =
-      new Button(0, "Recruit", [this, pUsername]() { recruit(pUsername); });
+  auto *recruitButton = new Button(0, "Recruit to city", [this]() {
+    _client.sendMessage({CL_RECRUIT, _name});
+  });
   if (!_city.empty()) {
     recruitButton->disable();
     tooltipText = _name + " is already in a city.";
@@ -336,40 +336,4 @@ void Avatar::addMenuButtons(List &menu) {
   }
   recruitButton->setTooltip(tooltipText);
   menu.addChild(recruitButton);
-}
-
-void Avatar::inviteToGroup(void *pUsername) {
-  const std::string &username =
-      *reinterpret_cast<const std::string *>(pUsername);
-  _client.sendMessage({CL_INVITE_TO_GROUP, username});
-}
-
-void Avatar::declareWarAgainstPlayer(void *pUsername) {
-  const std::string &username =
-      *reinterpret_cast<const std::string *>(pUsername);
-  _client.sendMessage({CL_DECLARE_WAR_ON_PLAYER, username});
-}
-
-void Avatar::declareWarAgainstCity(void *pCityName) {
-  const std::string &cityName =
-      *reinterpret_cast<const std::string *>(pCityName);
-  _client.sendMessage({CL_DECLARE_WAR_ON_CITY, cityName});
-}
-
-void Avatar::declareCityWarAgainstPlayer(void *pUsername) {
-  const std::string &username =
-      *reinterpret_cast<const std::string *>(pUsername);
-  _client.sendMessage({CL_DECLARE_WAR_ON_PLAYER_AS_CITY, username});
-}
-
-void Avatar::declareCityWarAgainstCity(void *pCityName) {
-  const std::string &cityName =
-      *reinterpret_cast<const std::string *>(pCityName);
-  _client.sendMessage({CL_DECLARE_WAR_ON_CITY_AS_CITY, cityName});
-}
-
-void Avatar::recruit(void *pUsername) {
-  const std::string &username =
-      *reinterpret_cast<const std::string *>(pUsername);
-  _client.sendMessage({CL_RECRUIT, username});
 }

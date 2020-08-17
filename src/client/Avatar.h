@@ -92,12 +92,6 @@ class Avatar : public Sprite, public ClientCombatant {
   const Color &healthBarColor() const override { return nameColor(); }
 
   void addMenuButtons(List &menu) override;
-  void inviteToGroup(void *pUsername);
-  void declareWarAgainstPlayer(void *pUsername);
-  void declareWarAgainstCity(void *pCityName);
-  void declareCityWarAgainstPlayer(void *pUsername);
-  void declareCityWarAgainstCity(void *pCityName);
-  void recruit(void *pUsername);
 
   void playAttackSound() const override;
   void playDefendSound() const override;
