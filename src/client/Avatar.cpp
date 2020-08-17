@@ -240,6 +240,13 @@ void Avatar::addMenuButtons(List &menu) {
   std::string tooltipText;
 
   void *pUsername = const_cast<std::string *>(&_name);
+
+  auto *inviteButton = new Button(
+      0, "InviteToGroup", [this, pUsername]() { inviteToGroup(pUsername); });
+  tooltipText = "Invite "s + _name + " into your group."s;
+  inviteButton->setTooltip(tooltipText);
+  menu.addChild(inviteButton);
+
   auto *playerWarButton = new Button(0, "Declare war", [this, pUsername]() {
     declareWarAgainstPlayer(pUsername);
   });
@@ -329,6 +336,12 @@ void Avatar::addMenuButtons(List &menu) {
   }
   recruitButton->setTooltip(tooltipText);
   menu.addChild(recruitButton);
+}
+
+void Avatar::inviteToGroup(void *pUsername) {
+  const std::string &username =
+      *reinterpret_cast<const std::string *>(pUsername);
+  _client.sendMessage({CL_INVITE_TO_GROUP, username});
 }
 
 void Avatar::declareWarAgainstPlayer(void *pUsername) {

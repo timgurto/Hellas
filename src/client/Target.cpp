@@ -68,6 +68,7 @@ void Target::initializePanel(Client &client) {
       },
       _menu);
   _panel->setClient(client);
+  _menu->setClient(client);
 }
 
 void Target::initializeMenu() {

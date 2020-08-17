@@ -249,15 +249,13 @@ TEST_CASE_METHOD(ServerAndClient, "Group self-invites have no effect") {
 // /roll
 // UI
 // Ability to leave a group
+// Disappears when down to one member
 
 // Wait too long before accepting invitation
 // Shared XP only if nearby
 // Round-robin loot
 // If loot is left, then anyone [in group] can pick it up
 // Show group members on map
-// Leader can kick/invite
+// Only the leader can kick/invite
 // Group chat
 // City chat
-// Invite if target is not in a group
-// If in a group, only leader can invite
-// Disappears when down to one member
