@@ -24,7 +24,7 @@ TEST_CASE("Shared XP") {
 
     AND_GIVEN("Alice and Bob are in a group") {
       s->groups->createGroup(uAlice);
-      s->groups->addToGroup(uBob, uAlice);
+      s->groups->inviteToGroup(uBob, uAlice);
 
       WHEN("Alice kills the critter") {
         uAlice.setTargetAndAttack(&critter);
@@ -33,7 +33,7 @@ TEST_CASE("Shared XP") {
       }
 
       AND_GIVEN("Charlie is also in the group") {
-        s->groups->addToGroup(uCharlie, uAlice);
+        s->groups->inviteToGroup(uCharlie, uAlice);
 
         WHEN("Alice kills the critter") {
           uAlice.setTargetAndAttack(&critter);
@@ -45,7 +45,7 @@ TEST_CASE("Shared XP") {
 
     AND_GIVEN("Bob and Charlie are in a group") {
       s->groups->createGroup(uBob);
-      s->groups->addToGroup(uCharlie, uBob);
+      s->groups->inviteToGroup(uCharlie, uBob);
 
       WHEN("Alice kills the critter") {
         uAlice.setTargetAndAttack(&critter);
@@ -62,7 +62,7 @@ TEST_CASE("Shared XP") {
 
       WHEN("Alice is in a group of two") {
         s->groups->createGroup(uAlice);
-        s->groups->addToGroup(uBob, uAlice);
+        s->groups->inviteToGroup(uBob, uAlice);
 
         THEN("Alice would receive half of her normal XP") {
           const int xpInGroupOf2 = uAlice.appropriateXPForKill(critter);
@@ -72,8 +72,8 @@ TEST_CASE("Shared XP") {
 
       WHEN("Alice is in a group of three") {
         s->groups->createGroup(uAlice);
-        s->groups->addToGroup(uBob, uAlice);
-        s->groups->addToGroup(uCharlie, uAlice);
+        s->groups->inviteToGroup(uBob, uAlice);
+        s->groups->inviteToGroup(uCharlie, uAlice);
 
         THEN("Alice would receive a third of her normal XP") {
           const int xpInGroupOf3 = uAlice.appropriateXPForKill(critter);
@@ -165,7 +165,7 @@ TEST_CASE_METHOD(FourClients, "No duplicate groups") {
 
   GIVEN("Alice and Bob are in a group") {
     server->groups->createGroup(*alice);
-    server->groups->addToGroup(*bob, *alice);
+    server->groups->inviteToGroup(*bob, *alice);
 
     WHEN("Alice invites Charlie and he accepts") {
       cAlice.sendMessage(CL_INVITE_TO_GROUP, "Charlie");
@@ -184,7 +184,7 @@ TEST_CASE_METHOD(FourClients, "No duplicate groups") {
 
     AND_GIVEN("Charlie and Dan are in a group") {
       server->groups->createGroup(*charlie);
-      server->groups->addToGroup(*dan, *charlie);
+      server->groups->inviteToGroup(*dan, *charlie);
 
       THEN("There are two groups") { CHECK(server->groups->numGroups() == 2); }
     }
@@ -219,7 +219,7 @@ TEST_CASE_METHOD(ThreeClients, "Grouped players can't accept invitations") {
 TEST_CASE_METHOD(ThreeClients, "Grouped players can't be invited") {
   GIVEN("Alice and Bob are in a group") {
     server->groups->createGroup(*alice);
-    server->groups->addToGroup(*bob, *alice);
+    server->groups->inviteToGroup(*bob, *alice);
 
     WHEN("Charlie invites Alice to a group") {
       cCharlie.sendMessage(CL_INVITE_TO_GROUP, "Alice");
@@ -252,7 +252,7 @@ TEST_CASE_METHOD(ThreeClients, "Clients know their teammates") {
 
   WHEN("Alice and Bob are in a group") {
     server->groups->createGroup(*alice);
-    server->groups->addToGroup(*bob, *alice);
+    server->groups->inviteToGroup(*bob, *alice);
 
     THEN("Alice knows she has one groupmate, Bob") {
       WAIT_UNTIL(cAlice->groupUI->otherMembers.size() == 1);
@@ -264,6 +264,7 @@ TEST_CASE_METHOD(ThreeClients, "Clients know their teammates") {
 
         AND_WHEN("Alice adds Charlie to the group") {
           server->groups->addToGroup(*charlie, *alice);
+          server->groups->inviteToGroup(*charlie, *alice);
 
           THEN("Bob knows that Charlie is in his group") {
             WAIT_UNTIL(cBob->groupUI->otherMembers.count("Charlie") == 1);

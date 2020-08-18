@@ -19,7 +19,6 @@ void Groups::createGroup(User& founder) {
   _mutex.unlock();
 }
 
-void Groups::addToGroup(User& newMember, User& inviter) {
   _mutex.lock();
   for (auto* group : _groups) {
     if (group->find(&inviter) != group->end()) {
@@ -32,6 +31,7 @@ void Groups::addToGroup(User& newMember, User& inviter) {
   }
   _mutex.unlock();
   assert(false);
+void Groups::inviteToGroup(User& newMember, User& inviter) {
 }
 
 Groups::Group Groups::getUsersGroup(User& player) const {
@@ -83,7 +83,7 @@ bool Groups::userHasAnInvitation(User& u) const {
 void Groups::acceptInvitation(User& newMember) {
   auto& inviter = *_inviterOf[&newMember];
   if (!isUserInAGroup(inviter)) createGroup(inviter);
-  addToGroup(newMember, inviter);
+  inviteToGroup(newMember, inviter);
 }
 
 void Groups::sendGroupMakeupToAllMembers(const Group& g) {

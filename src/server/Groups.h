@@ -16,7 +16,7 @@ class Groups {
   int numGroups() const;
 
   void createGroup(User& founder);
-  void addToGroup(User& newMember, User& inviter);
+  void inviteToGroup(User& newMember, User& inviter);
 
   Group getUsersGroup(User& aMember) const;
   int getGroupSize(const User& u) const;
