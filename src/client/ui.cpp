@@ -53,9 +53,12 @@ void Client::initUI() {
   initTargetBuffs();
   initToasts();
   initQuestProgress();
-  initSkipTutorialButton();
 
   groupUI = new GroupUI;
+  groupUI->initialise();
+  addUI(groupUI->container);
+
+  initSkipTutorialButton();
 
   const auto ERROR_FROM_BOTTOM = 50;
   _lastErrorMessage = new OutlinedLabel(

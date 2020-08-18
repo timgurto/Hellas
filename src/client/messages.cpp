@@ -2060,10 +2060,12 @@ void Client::handleBufferedMessages(const std::string &msg) {
 
           auto memberName = ""s;
           readString(singleMsg, memberName, expectedDelimiter);
-          groupUI->otherMembers.insert(memberName);
+          groupUI->addMember(memberName);
           singleMsg >> del;
         }
         if (del != MSG_END) break;
+
+        groupUI->refresh();
 
         break;
       }

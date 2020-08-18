@@ -202,6 +202,7 @@
     <ClCompile Include="src\client\MemoisedImageDirectory.cpp" />
     <ClCompile Include="src\client\SDLwrappers.cpp" />
     <ClCompile Include="src\server\Groups.cpp" />
+    <ClCompile Include="src\client\UIGroup.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -353,6 +354,7 @@
     <ClInclude Include="src\client\SDLwrappers.h" />
     <ClInclude Include="src\server\Groups.h" />
     <ClInclude Include="src\testing\TestFixtures.h" />
+    <ClInclude Include="src\client\UIGroup.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />

@@ -248,17 +248,17 @@ TEST_CASE_METHOD(ThreeClients, "Clients know their teammates") {
 
     THEN("Alice knows she has one groupmate, Bob") {
       WAIT_UNTIL(cAlice->groupUI->otherMembers.size() == 1);
-      CHECK(cAlice->groupUI->otherMembers.count("Bob") == 1);
+      CHECK(cAlice->groupUI->otherMembers.count("Bob"s) == 1);
 
       AND_THEN("Bob knows that he has one groupmate, Alice") {
         WAIT_UNTIL(cBob->groupUI->otherMembers.size() == 1);
-        CHECK(cBob->groupUI->otherMembers.count("Alice") == 1);
+        CHECK(cBob->groupUI->otherMembers.count("Alice"s) == 1);
 
         AND_WHEN("Alice adds Charlie to the group") {
           server->groups->inviteToGroup(*charlie, *alice);
 
           THEN("Bob knows that Charlie is in his group") {
-            WAIT_UNTIL(cBob->groupUI->otherMembers.count("Charlie") == 1);
+            WAIT_UNTIL(cBob->groupUI->otherMembers.count("Charlie"s) == 1);
           }
         }
       }
