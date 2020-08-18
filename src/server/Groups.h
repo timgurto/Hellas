@@ -9,6 +9,8 @@ class User;
 
 class Groups {
  public:
+  ~Groups();
+
   using Group = std::set<User*>;
 
   int numGroups() const;
@@ -28,7 +30,7 @@ class Groups {
   static void sendGroupMakeupTo(const Group& g, const User& recipient);
 
  private:
-  std::vector<Group> _groups;
+  std::vector<Group*> _groups;
   std::map<User*, User*> _inviterOf;
   mutable std::mutex _mutex;
 };

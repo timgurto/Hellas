@@ -4,11 +4,15 @@
 
 #include "User.h"
 
+Groups::~Groups() {
+  for (auto* group : _groups) delete group;
+}
+
 int Groups::numGroups() const { return _groups.size(); }
 
 void Groups::createGroup(User& founder) {
-  auto newGroup = Group{};
-  newGroup.insert(&founder);
+  auto newGroup = new Group;
+  newGroup->insert(&founder);
   _mutex.lock();
   _groups.push_back(newGroup);
   _mutex.unlock();
@@ -16,10 +20,10 @@ void Groups::createGroup(User& founder) {
 
 void Groups::addToGroup(User& newMember, User& inviter) {
   _mutex.lock();
-  for (auto& group : _groups) {
-    if (group.find(&inviter) != group.end()) {
-      group.insert(&newMember);
-      sendGroupMakeupToAllMembers(group);
+  for (auto* group : _groups) {
+    if (group->find(&inviter) != group->end()) {
+      group->insert(&newMember);
+      sendGroupMakeupToAllMembers(*group);
       _mutex.unlock();
       return;
     }
@@ -30,10 +34,10 @@ void Groups::addToGroup(User& newMember, User& inviter) {
 
 Groups::Group Groups::getUsersGroup(User& player) const {
   _mutex.lock();
-  for (const auto& group : _groups)
-    if (group.find(&player) != group.end()) {
+  for (const auto* group : _groups)
+    if (group->find(&player) != group->end()) {
       _mutex.unlock();
-      return group;
+      return *group;
     }
   _mutex.unlock();
 
@@ -44,11 +48,11 @@ Groups::Group Groups::getUsersGroup(User& player) const {
 
 int Groups::getGroupSize(const User& u) const {
   _mutex.lock();
-  for (const auto& group : _groups) {
+  for (const auto* group : _groups) {
     auto* nonConstUser = const_cast<User*>(&u);
-    if (group.find(nonConstUser) != group.end()) {
+    if (group->find(nonConstUser) != group->end()) {
       _mutex.unlock();
-      return group.size();
+      return group->size();
     }
   }
   _mutex.unlock();
@@ -57,9 +61,9 @@ int Groups::getGroupSize(const User& u) const {
 
 bool Groups::isUserInAGroup(const User& u) const {
   _mutex.lock();
-  for (const auto& group : _groups) {
+  for (const auto* group : _groups) {
     auto* nonConstUser = const_cast<User*>(&u);
-    if (group.find(nonConstUser) != group.end()) {
+    if (group->find(nonConstUser) != group->end()) {
       _mutex.unlock();
       return true;
     }
