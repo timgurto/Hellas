@@ -13,6 +13,7 @@ int Groups::numGroups() const { return _groups.size(); }
 void Groups::createGroup(User& founder) {
   auto newGroup = new Group;
   newGroup->insert(&founder);
+  _groupsByUser[&founder] = newGroup;
   _mutex.lock();
   _groups.push_back(newGroup);
   _mutex.unlock();
@@ -23,6 +24,7 @@ void Groups::addToGroup(User& newMember, User& inviter) {
   for (auto* group : _groups) {
     if (group->find(&inviter) != group->end()) {
       group->insert(&newMember);
+      _groupsByUser[&newMember] = group;
       sendGroupMakeupToAllMembers(*group);
       _mutex.unlock();
       return;
@@ -34,15 +36,13 @@ void Groups::addToGroup(User& newMember, User& inviter) {
 
 Groups::Group Groups::getUsersGroup(User& player) const {
   _mutex.lock();
-  for (const auto* group : _groups)
-    if (group->find(&player) != group->end()) {
-      _mutex.unlock();
-      return *group;
-    }
+  auto it = _groupsByUser.find(&player);
   _mutex.unlock();
+  auto userIsInAGroup = it != _groupsByUser.end();
 
-  auto soloResult = Group{};
-  soloResult.insert(&player);
+  if (userIsInAGroup) return *it->second;
+
+  auto soloResult = Group{&player};
   return soloResult;
 }
 

@@ -32,5 +32,6 @@ class Groups {
  private:
   std::vector<Group*> _groups;
   std::map<User*, User*> _inviterOf;
+  std::map<const User*, Group*> _groupsByUser;
   mutable std::mutex _mutex;
 };
