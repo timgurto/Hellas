@@ -142,8 +142,17 @@ void Client::draw() const {
 
   // Non-window UI
   for (std::list<Element *>::const_reverse_iterator it = _ui.rbegin();
-       it != _ui.rend(); ++it)
-    (*it)->draw();
+       it != _ui.rend(); ++it) {
+    auto &e = **it;
+
+    auto willCaptureMouseEvents = e.visible() && !e.isIgnoringMouseEvents();
+    if (isDebug() && willCaptureMouseEvents) {
+      renderer.setDrawColor(Color::BLUE);
+      renderer.fillRect(e.rect());
+    }
+
+    e.draw();
+  }
 
   // Windows
   for (windows_t::const_reverse_iterator it = _windows.rbegin();

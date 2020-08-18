@@ -59,7 +59,7 @@ class Element {
 
   Uint8 _alpha{SDL_ALPHA_OPAQUE};
 
-  bool _ignoreMouseEvents{false};
+  bool _ignoreMouseEvents{false};  // Affects only top-level UI elements.
 
   static bool initialized;
 
@@ -150,6 +150,7 @@ class Element {
   static bool isInitialized() { return initialized; }
   void setAlpha(Uint8 alpha);
   void ignoreMouseEvents() { _ignoreMouseEvents = true; }
+  bool isIgnoringMouseEvents() const { return _ignoreMouseEvents; }
   bool canReceiveMouseEvents() const { return !_ignoreMouseEvents; }
   void setClient(Client &c) { _client = &c; }
 

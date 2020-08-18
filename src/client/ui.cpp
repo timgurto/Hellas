@@ -65,6 +65,7 @@ void Client::initUI() {
       {0, SCREEN_Y - ERROR_FROM_BOTTOM, SCREEN_X, Element::TEXT_HEIGHT + 4}, {},
       Element::CENTER_JUSTIFIED);
   _lastErrorMessage->id("Error/warning message");
+  _lastErrorMessage->ignoreMouseEvents();
   addUI(_lastErrorMessage);
 
   const auto INSTRUCTIONS_Y = 100;
@@ -73,6 +74,7 @@ void Client::initUI() {
                         {}, Element::CENTER_JUSTIFIED);
   _instructionsLabel->setColor(Color::UI_TEXT);
   _instructionsLabel->id("Centre-screen Instructions");
+  _instructionsLabel->ignoreMouseEvents();
   addUI(_instructionsLabel);
 }
 
@@ -182,6 +184,8 @@ void Client::refreshBuffsDisplay() {
     _buffsDisplay->addChild(assembleBuffEntry(*this, *buff));
   for (auto buff : _character.debuffs())
     _buffsDisplay->addChild(assembleBuffEntry(*this, *buff, true));
+
+  _buffsDisplay->resizeToContent();
 }
 
 Element *Client::assembleBuffEntry(Client &client, const ClientBuffType &type,
@@ -261,7 +265,10 @@ void Client::initTargetBuffs() {
 void Client::refreshTargetBuffs() {
   _targetBuffs->clearChildren();
 
-  if (!_target.exists()) return;
+  if (!_target.exists()) {
+    _targetBuffs->width(0);
+    return;
+  }
 
   auto rect = _targetBuffs->rect();
   rect.y = _target.panel()->rect().y + _target.panel()->rect().h + 1;
@@ -290,6 +297,8 @@ void Client::refreshTargetBuffs() {
     _targetBuffs->addChild(icon);
     x += 17;
   }
+  auto newWidth = x;
+  _targetBuffs->width(newWidth);
 }
 
 void Client::initializeEscapeWindow() {
@@ -370,9 +379,7 @@ void Client::addButtonToMenu(Element *menuBar, size_t index, Element *toToggle,
 }
 
 void Client::initPerformanceDisplay() {
-#ifndef _DEBUG
-  return;
-#endif
+#ifdef _DEBUG
   static const px_t HARDWARE_STATS_W = 100, HARDWARE_STATS_H = 44,
                     HARDWARE_STATS_LABEL_HEIGHT = 11;
   static const ScreenRect HARDWARE_STATS_RECT(
@@ -404,7 +411,9 @@ void Client::initPerformanceDisplay() {
   hardwareStats->addChild(numEntities);
   hardwareStats->addChild(channels);
   hardwareStats->id("Performance stats");
+  hardwareStats->ignoreMouseEvents();
   addUI(hardwareStats);
+#endif
 }
 
 void Client::initPlayerPanels() {
@@ -530,4 +539,8 @@ void Client::refreshQuestProgress() {
       questName->setColor(Color::UI_DISABLED);
     }
   }
+
+  _questProgress->resizeToContent();
+  auto midScreenHeight = (Client::SCREEN_Y - _questProgress->height()) / 2;
+  _questProgress->setPosition(0, midScreenHeight);
 }

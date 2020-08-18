@@ -6,12 +6,10 @@
 #include "ui/ProgressBar.h"
 
 void GroupUI::initialise() {
-  const auto SPACE_FOR_MEMBERS = 4;
   const auto GAP = 2_px, MEMBER_W = 100_px, MEMBER_H = 30_px,
              CONTAINER_W = MEMBER_W + 2 * GAP,
-             CONTAINER_H = MEMBER_H * SPACE_FOR_MEMBERS,
-             CONTAINER_Y = (Client::SCREEN_Y - CONTAINER_H) / 2;
-  container = new List({0, CONTAINER_Y, CONTAINER_W, CONTAINER_H}, MEMBER_H);
+             CONTAINER_Y = (Client::SCREEN_Y) / 2;
+  container = new List({0, CONTAINER_Y, CONTAINER_W, 0}, MEMBER_H);
 }
 
 void GroupUI::refresh() {
@@ -37,6 +35,10 @@ void GroupUI::refresh() {
                                              Color::STAT_ENERGY);
     memberEntry->addChild(energyBar);
   }
+
+  container->resizeToContent();
+  auto midScreenHeight = (Client::SCREEN_Y - container->height()) / 2;
+  container->setPosition(0, midScreenHeight);
 }
 
 void GroupUI::addMember(const std::string name) { otherMembers.insert({name}); }
