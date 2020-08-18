@@ -15,7 +15,6 @@ class Groups {
 
   int numGroups() const;
 
-  void createGroup(User& founder);
   void inviteToGroup(User& newMember, User& inviter);
 
   Group getUsersGroup(User& aMember) const;
@@ -30,6 +29,7 @@ class Groups {
   static void sendGroupMakeupTo(const Group& g, const User& recipient);
 
  private:
+  void createGroup(User& founder);
   std::vector<Group*> _groups;
   std::map<User*, User*> _inviterOf;
   std::map<const User*, Group*> _groupsByUser;

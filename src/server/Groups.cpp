@@ -19,25 +19,17 @@ void Groups::createGroup(User& founder) {
   _mutex.unlock();
 }
 
-  _mutex.lock();
-  for (auto* group : _groups) {
-    if (group->find(&inviter) != group->end()) {
-      group->insert(&newMember);
-      _groupsByUser[&newMember] = group;
-      sendGroupMakeupToAllMembers(*group);
-      _mutex.unlock();
-      return;
-    }
-  }
-  _mutex.unlock();
-  assert(false);
 void Groups::inviteToGroup(User& newMember, User& inviter) {
+  if (!isUserInAGroup(inviter)) createGroup(inviter);
+
+  auto* group = _groupsByUser[&inviter];
+  group->insert(&newMember);
+  _groupsByUser[&newMember] = group;
+  sendGroupMakeupToAllMembers(*group);
 }
 
 Groups::Group Groups::getUsersGroup(User& player) const {
-  _mutex.lock();
   auto it = _groupsByUser.find(&player);
-  _mutex.unlock();
   auto userIsInAGroup = it != _groupsByUser.end();
 
   if (userIsInAGroup) return *it->second;
@@ -60,16 +52,7 @@ int Groups::getGroupSize(const User& u) const {
 }
 
 bool Groups::isUserInAGroup(const User& u) const {
-  _mutex.lock();
-  for (const auto* group : _groups) {
-    auto* nonConstUser = const_cast<User*>(&u);
-    if (group->find(nonConstUser) != group->end()) {
-      _mutex.unlock();
-      return true;
-    }
-  }
-  _mutex.unlock();
-  return false;
+  return _groupsByUser.count(&u) == 1;
 }
 
 void Groups::registerInvitation(User& existingMember, User& newMember) {
@@ -82,7 +65,6 @@ bool Groups::userHasAnInvitation(User& u) const {
 
 void Groups::acceptInvitation(User& newMember) {
   auto& inviter = *_inviterOf[&newMember];
-  if (!isUserInAGroup(inviter)) createGroup(inviter);
   inviteToGroup(newMember, inviter);
 }
 
