@@ -25,6 +25,7 @@
 #include "SDLWrappers.h"
 #include "SpriteType.h"
 #include "Tooltip.h"
+#include "UIGroup.h"
 #include "Unlocks.h"
 #include "ui/Button.h"
 #include "ui/CombatantPanel.h"
@@ -191,6 +192,8 @@ Client::~Client() {
   for (Element *mainUIElement : _ui) uniqueUIElements.insert(mainUIElement);
   for (Element *loginElement : _loginUI) uniqueUIElements.insert(loginElement);
   for (Element *element : uniqueUIElements) delete element;
+
+  delete groupUI;
 
   Socket::debug = nullptr;
 }

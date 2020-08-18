@@ -2,6 +2,7 @@
 
 #include "../Message.h"
 #include "Client.h"
+#include "UIGroup.h"
 #include "ui/Indicator.h"
 #include "ui/OutlinedLabel.h"
 #include "ui/TextBox.h"
@@ -53,6 +54,8 @@ void Client::initUI() {
   initToasts();
   initQuestProgress();
   initSkipTutorialButton();
+
+  groupUI = new GroupUI;
 
   const auto ERROR_FROM_BOTTOM = 50;
   _lastErrorMessage = new OutlinedLabel(

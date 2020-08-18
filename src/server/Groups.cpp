@@ -2,6 +2,8 @@
 
 #include <cassert>
 
+#include "User.h"
+
 int Groups::numGroups() const { return _groups.size(); }
 
 void Groups::createGroup(User& founder) {
@@ -17,6 +19,8 @@ void Groups::addToGroup(User& newMember, User& inviter) {
   for (auto& group : _groups) {
     if (group.find(&inviter) != group.end()) {
       group.insert(&newMember);
+      inviter.sendMessage({SV_GROUPMATES, newMember.name()});
+      newMember.sendMessage({SV_GROUPMATES, inviter.name()});
       _mutex.unlock();
       return;
     }

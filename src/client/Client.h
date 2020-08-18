@@ -53,6 +53,7 @@
 #include "ui/OutlinedLabel.h"
 #include "ui/Window.h"
 
+struct GroupUI;
 class TextBox;
 
 class Client {
@@ -377,6 +378,7 @@ class Client {
   mutable ms_t _errorMessageTimer{0};
   Window *_escapeWindow{nullptr};
   List *_questProgress{nullptr};
+
   void initUI();
   void initChatLog();
   void initWindows();
@@ -398,10 +400,11 @@ class Client {
     List *spellList{nullptr}, *recipeList{nullptr};
     ChoiceList *categoryList{nullptr};
   } hotbar;
-
   void refreshHotbar();
   void refreshQuestProgress();
   void refreshHotbarCooldowns();
+
+  GroupUI *groupUI{nullptr};
 
  private:
   void initAssignerWindow();

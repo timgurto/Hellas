@@ -10,6 +10,7 @@
 #include "ClientObject.h"
 #include "ClientVehicle.h"
 #include "Particle.h"
+#include "UIGroup.h"
 #include "ui/ConfirmationWindow.h"
 #include "ui/ContainerGrid.h"
 
@@ -2046,6 +2047,16 @@ void Client::handleBufferedMessages(const std::string &msg) {
             CL_ACCEPT_GROUP_INVITATION, {});
         addWindow(_groupInvitationWindow);
         _groupInvitationWindow->show();
+        break;
+      }
+
+      case SV_GROUPMATES: {
+        auto otherMember = ""s;
+        readString(singleMsg, otherMember, MSG_END);
+        singleMsg >> del;
+        if (del != MSG_END) break;
+
+        groupUI->otherMembers.push_back(otherMember);
         break;
       }
 

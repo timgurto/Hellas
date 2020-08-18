@@ -254,6 +254,7 @@
     <ClInclude Include="src\client\Target.h" />
     <ClInclude Include="src\client\Texture.h" />
     <ClInclude Include="src\client\Tooltip.h" />
+    <ClInclude Include="src\client\UIGroup.h" />
     <ClInclude Include="src\client\ui\Button.h" />
     <ClInclude Include="src\client\ui\CheckBox.h" />
     <ClInclude Include="src\client\ui\ChoiceList.h" />

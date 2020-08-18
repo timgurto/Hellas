@@ -1,3 +1,4 @@
+#include "../client/UIGroup.h"
 #include "../server/Groups.h"
 #include "TestClient.h"
 #include "TestFixtures.h"
@@ -244,7 +245,27 @@ TEST_CASE_METHOD(ServerAndClient, "Group self-invites have no effect") {
   }
 }
 
-// Invite via context menu
+TEST_CASE_METHOD(TwoClients, "Group UI") {
+  THEN("Alice knows she has no other groupmates") {
+    CHECK(cAlice->groupUI->otherMembers.empty());
+  }
+
+  WHEN("Alice and Bob are in a group") {
+    server->groups->createGroup(*alice);
+    server->groups->addToGroup(*bob, *alice);
+
+    THEN("Alice knows she has one groupmate, Bob") {
+      WAIT_UNTIL(cAlice->groupUI->otherMembers.size() == 1);
+      CHECK(cAlice->groupUI->otherMembers.front() == "Bob");
+
+      AND_THEN("Bob knows that he has one groupmate, Alice") {
+        WAIT_UNTIL(cBob->groupUI->otherMembers.size() == 1);
+        CHECK(cBob->groupUI->otherMembers.front() == "Alice");
+      }
+    }
+  }
+}
+
 // All loot available to all group members
 // /roll
 // UI
