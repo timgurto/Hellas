@@ -10,19 +10,28 @@ Groups::~Groups() {
 
 int Groups::numGroups() const { return _groups.size(); }
 
-void Groups::createGroup(User& founder) {
+Groups::Group* Groups::getGroupAndMakeIfNeeded(User& inviter) {
+  auto it = _groupsByUser.find(&inviter);
+  auto inviterIsInAGroup = it != _groupsByUser.end();
+
+  if (inviterIsInAGroup)
+    return it->second;
+  else {
+    return createGroup(inviter);
+  }
+}
+
+Groups::Group* Groups::createGroup(User& founder) {
   auto newGroup = new Group;
   newGroup->insert(&founder);
   _groupsByUser[&founder] = newGroup;
-  _mutex.lock();
   _groups.push_back(newGroup);
-  _mutex.unlock();
+  return newGroup;
 }
 
 void Groups::inviteToGroup(User& newMember, User& inviter) {
-  if (!isUserInAGroup(inviter)) createGroup(inviter);
+  auto* group = getGroupAndMakeIfNeeded(inviter);
 
-  auto* group = _groupsByUser[&inviter];
   group->insert(&newMember);
   _groupsByUser[&newMember] = group;
   sendGroupMakeupToAllMembers(*group);
@@ -39,16 +48,13 @@ Groups::Group Groups::getUsersGroup(User& player) const {
 }
 
 int Groups::getGroupSize(const User& u) const {
-  _mutex.lock();
-  for (const auto* group : _groups) {
-    auto* nonConstUser = const_cast<User*>(&u);
-    if (group->find(nonConstUser) != group->end()) {
-      _mutex.unlock();
-      return group->size();
-    }
-  }
-  _mutex.unlock();
-  return 1;
+  auto it = _groupsByUser.find(&u);
+  auto userIsInAGroup = it != _groupsByUser.end();
+
+  if (userIsInAGroup)
+    return it->second->size();
+  else
+    return 1;
 }
 
 bool Groups::isUserInAGroup(const User& u) const {

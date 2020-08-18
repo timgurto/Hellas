@@ -1,7 +1,6 @@
 #pragma once
 
 #include <map>
-#include <mutex>
 #include <set>
 #include <vector>
 
@@ -29,9 +28,9 @@ class Groups {
   static void sendGroupMakeupTo(const Group& g, const User& recipient);
 
  private:
-  void createGroup(User& founder);
+  Group* getGroupAndMakeIfNeeded(User& inviter);
+  Group* createGroup(User& founder);
   std::vector<Group*> _groups;
   std::map<User*, User*> _inviterOf;
   std::map<const User*, Group*> _groupsByUser;
-  mutable std::mutex _mutex;
 };
