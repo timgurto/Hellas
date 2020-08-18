@@ -1,8 +1,8 @@
 #pragma once
 
+#include <set>
 #include <string>
-#include <vector>
 
 struct GroupUI {
-  std::vector<std::string> otherMembers;
+  std::set<std::string> otherMembers;
 };

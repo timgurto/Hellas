@@ -19,8 +19,7 @@ void Groups::addToGroup(User& newMember, User& inviter) {
   for (auto& group : _groups) {
     if (group.find(&inviter) != group.end()) {
       group.insert(&newMember);
-      inviter.sendMessage({SV_GROUPMATES, newMember.name()});
-      newMember.sendMessage({SV_GROUPMATES, inviter.name()});
+      sendGroupMakeupToAllMembers(group);
       _mutex.unlock();
       return;
     }
@@ -81,4 +80,21 @@ void Groups::acceptInvitation(User& newMember) {
   auto& inviter = *_inviterOf[&newMember];
   if (!isUserInAGroup(inviter)) createGroup(inviter);
   addToGroup(newMember, inviter);
+}
+
+void Groups::sendGroupMakeupToAllMembers(const Group& g) {
+  for (const auto* member : g) {
+    sendGroupMakeupTo(g, *member);
+  }
+}
+
+void Groups::sendGroupMakeupTo(const Group& g, const User& recipient) {
+  auto args = makeArgs(g.size() - 1);
+
+  for (const auto* member : g) {
+    if (member == &recipient) continue;
+    args = makeArgs(args, member->name());
+  }
+
+  recipient.sendMessage({SV_GROUPMATES, args});
 }

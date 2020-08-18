@@ -2051,12 +2051,20 @@ void Client::handleBufferedMessages(const std::string &msg) {
       }
 
       case SV_GROUPMATES: {
-        auto otherMember = ""s;
-        readString(singleMsg, otherMember, MSG_END);
-        singleMsg >> del;
+        auto numOtherMembers = 0;
+        singleMsg >> numOtherMembers >> del;
+
+        for (auto i = 0; i != numOtherMembers; ++i) {
+          auto expectedDelimiter =
+              (i == numOtherMembers - 1) ? MSG_END : MSG_DELIM;
+
+          auto memberName = ""s;
+          readString(singleMsg, memberName, expectedDelimiter);
+          groupUI->otherMembers.insert(memberName);
+          singleMsg >> del;
+        }
         if (del != MSG_END) break;
 
-        groupUI->otherMembers.push_back(otherMember);
         break;
       }
 

@@ -24,6 +24,9 @@ class Groups {
   bool userHasAnInvitation(User& u) const;
   void acceptInvitation(User& newMember);
 
+  static void sendGroupMakeupToAllMembers(const Group& g);
+  static void sendGroupMakeupTo(const Group& g, const User& recipient);
+
  private:
   std::vector<Group> _groups;
   std::map<User*, User*> _inviterOf;

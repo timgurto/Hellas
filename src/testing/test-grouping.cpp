@@ -245,7 +245,7 @@ TEST_CASE_METHOD(ServerAndClient, "Group self-invites have no effect") {
   }
 }
 
-TEST_CASE_METHOD(TwoClients, "Group UI") {
+TEST_CASE_METHOD(ThreeClients, "Clients know their teammates") {
   THEN("Alice knows she has no other groupmates") {
     CHECK(cAlice->groupUI->otherMembers.empty());
   }
@@ -256,11 +256,19 @@ TEST_CASE_METHOD(TwoClients, "Group UI") {
 
     THEN("Alice knows she has one groupmate, Bob") {
       WAIT_UNTIL(cAlice->groupUI->otherMembers.size() == 1);
-      CHECK(cAlice->groupUI->otherMembers.front() == "Bob");
+      CHECK(cAlice->groupUI->otherMembers.count("Bob") == 1);
 
       AND_THEN("Bob knows that he has one groupmate, Alice") {
         WAIT_UNTIL(cBob->groupUI->otherMembers.size() == 1);
-        CHECK(cBob->groupUI->otherMembers.front() == "Alice");
+        CHECK(cBob->groupUI->otherMembers.count("Alice") == 1);
+
+        AND_WHEN("Alice adds Charlie to the group") {
+          server->groups->addToGroup(*charlie, *alice);
+
+          THEN("Bob knows that Charlie is in his group") {
+            WAIT_UNTIL(cBob->groupUI->otherMembers.count("Charlie") == 1);
+          }
+        }
       }
     }
   }
