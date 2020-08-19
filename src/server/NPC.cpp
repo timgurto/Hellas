@@ -186,9 +186,9 @@ void NPC::onDeath() {
 
     auto killerClass = ""s;
     auto killerLevel = 0;
-    if (tagger() != nullptr) {
-      killerClass = tagger()->getClass().type().id();
-      killerLevel = tagger()->level();
+    if (tagger.asUser()) {
+      killerClass = tagger.asUser()->getClass().type().id();
+      killerLevel = tagger.asUser()->level();
     }
 
     auto of = std::ofstream{"kills.log", std::ios_base::app};
@@ -205,7 +205,7 @@ void NPC::onDeath() {
     SERVER_ERROR("NPC killed without having been engaged by a user");
   }
 
-  npcType()->lootTable().instantiate(*_loot, tagger());
+  npcType()->lootTable().instantiate(*_loot, tagger.asUser());
   if (!_loot->empty()) sendAllLootToTagger();
 
   Entity::onDeath();
@@ -286,7 +286,7 @@ void NPC::sendInfoToClient(const User &targetUser, bool isNew) const {
     targetUser.sendMessage({SV_ENTITY_HEALTH, makeArgs(serial(), health())});
 
   // Loot
-  if (!_loot->empty() && tagger() == &targetUser) sendAllLootToTagger();
+  if (!_loot->empty() && tagger == targetUser) sendAllLootToTagger();
 
   // Buffs/debuffs
   for (const auto &buff : buffs())

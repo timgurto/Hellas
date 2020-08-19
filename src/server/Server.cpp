@@ -567,6 +567,9 @@ void Server::forceAllToUntarget(const Entity &target,
     NPC &npc = dynamic_cast<NPC &>(entity);
     npc.forgetAbout(target);
     if (npc.target() && npc.target() == &target) npc.target(nullptr);
+
+    // Fix entities tagged by the entity
+    if (entity.tagger == target) entity.tagger.onDisconnect();
   }
 }
 

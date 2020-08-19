@@ -448,11 +448,10 @@ void Entity::onEnergyChange() {
 void Entity::onDeath() {
   removeAllBuffsAndDebuffs();
 
-  auto directTagger = tagger();
-  if (directTagger) {
+  if (tagger.asUser()) {
     auto &groups = *Server::instance().groups;
-    auto taggers = groups.getUsersGroup(*directTagger);
-    for (auto *tagger : taggers) tagger->onKilled(*this);
+    auto taggersGroup = groups.getUsersGroup(*tagger.asUser());
+    for (auto *groupMember : taggersGroup) groupMember->onKilled(*this);
   }
 
   if (_spawner) {
@@ -470,7 +469,7 @@ void Entity::onAttackedBy(Entity &attacker, Threat threat) {
   // Tag target
   if (attacker.classTag() == 'u') {
     auto &attackerAsUser = dynamic_cast<User &>(attacker);
-    if (!tagger()) tagger(attackerAsUser);
+    if (!tagger) tagger = attackerAsUser;
   }
 
   // Proc on-hit buffs
@@ -590,9 +589,9 @@ const TerrainList &Entity::allowedTerrain() const {
 }
 
 void Entity::sendAllLootToTagger() const {
-  if (!tagger()) return;
+  if (!tagger.asUser()) return;
   for (auto i = 0; i != loot().size(); ++i)
-    loot().sendSingleSlotToUser(*tagger(), serial(), i);
+    loot().sendSingleSlotToUser(*tagger.asUser(), serial(), i);
 }
 
 void Entity::separateFromSpawner() {
@@ -608,9 +607,9 @@ void Entity::alertReactivelyTargetingUser(const User &targetingUser) const {
 void Entity::tellRelevantUsersAboutLootSlot(size_t slot) const {
   // Ultimately this might need a call to findUsersInArea().  For now, there's
   // only one tagger and only he should get this information.
-  if (!tagger()) return;
+  if (!tagger.asUser()) return;
 
-  _loot->sendSingleSlotToUser(*tagger(), serial(), slot);
+  _loot->sendSingleSlotToUser(*tagger.asUser(), serial(), slot);
 }
 
 bool Entity::shouldAlwaysBeKnownToUser(const User &user) const {

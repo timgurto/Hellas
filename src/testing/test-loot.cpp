@@ -205,32 +205,35 @@ TEST_CASE("Looting from a container", "[container][only]") {
   }
 }
 
-// Note: currently expected to fail, since it doesn't take tagging into account.
-TEST_CASE("New users are alerted to lootable objects", "[.flaky]") {
-  // Given a running server;
-  // And a snowflake item with 1 health;
-  // And a snowman object type made of 1000 snowflakes;
+TEST_CASE("New users are alerted to lootable objects") {
+  // Given an NPC that drops loot
   auto data = R"(
-    <item id="snowflake" stackSize="1000" durabilty="1" />
-    <objectType id="snowman">
-      <durability item="snowflake" quantity="1000" />
-    </objectType>
-  )";
-  TestServer s = TestServer::WithDataString(data);
+      <npcType id="goldbug" maxHealth="1" >
+        <loot id="gold" />
+      </npcType>
+      <item id="gold" />
+    )";
+  auto s = TestServer::WithDataString(data);
+  auto &goldbug = s.addNPC("goldbug", {10, 15});
 
-  // And a snowman exists;
-  s.addObject("snowman", {10, 15});
+  // When Alice kills it
+  {
+    auto c = TestClient::WithUsernameAndDataString("Alice", data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
 
-  // And the snowman is dead
-  Object &snowman = s.getFirstObject();
-  snowman.reduceHealth(9999);
+    goldbug.onAttackedBy(user, 1);
+    goldbug.reduceHealth(1);
 
-  // When a client logs in
-  TestClient c = TestClient::WithDataString(data);
-  s.waitForUsers(1);
+    // And when Alice logs out and back in
+  }
+  {
+    auto c = TestClient::WithUsernameAndDataString("Alice", data);
+    s.waitForUsers(1);
 
-  // Then the client finds out that it's lootable
-  CHECK(c.waitForMessage(SV_INVENTORY));
+    // Then she knows it's lootable
+    CHECK(c.waitForMessage(SV_INVENTORY));
+  }
 }
 
 TEST_CASE("Non-taggers are not alerted to lootable objects") {

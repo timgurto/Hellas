@@ -173,7 +173,7 @@ void NPC::transitionIfNecessary() {
       // Target has run out of range: give up
       if (distToTarget > PURSUIT_RANGE) {
         _state = IDLE;
-        clearTagger();
+        tagger.clear();
         break;
       }
 
@@ -215,7 +215,7 @@ void NPC::onTransition(State previousState) {
   if ((previousState == CHASE || previousState == ATTACK) && _state == IDLE) {
     target(nullptr);
     _threatTable.clear();
-    clearTagger();
+    tagger.clear();
 
     if (owner().type != Permissions::Owner::ALL_HAVE_ACCESS) return;
 

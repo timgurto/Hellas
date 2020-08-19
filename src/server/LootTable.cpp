@@ -48,25 +48,27 @@ void LootTable::instantiate(Loot &loot, const User *killer) const {
     SERVER_ERROR("Loot object provided was not empty");
   }
   for (const LootEntry &entry : _entries) {
-    // Enforce quest exclusivity
-    if (entry.item->isQuestExclusive()) {
-      if (!killer) continue;
-      if (!killer->isOnQuest(entry.item->exclusiveToQuest())) return;
-    }
-
-    // Limit quantity based on killer's quest progress
     const auto NO_LIMIT = -1;
     auto qtyLimit = NO_LIMIT;
-    if (entry.item->isQuestExclusive()) {
-      const auto &server = Server::instance();
-      auto quest = server.findQuest(entry.item->exclusiveToQuest());
-      for (const auto &objective : quest->objectives) {
-        if (objective.type != Quest::Objective::FETCH) continue;
-        if (objective.id != entry.item->id()) continue;
-        auto numNeededForQuest = objective.qty;
-        auto numHeld = killer->countItems(entry.item);
-        qtyLimit = numNeededForQuest - numHeld;
-        break;
+
+    if (killer) {
+      // Enforce quest exclusivity
+      if (entry.item->isQuestExclusive()) {
+        if (!killer->isOnQuest(entry.item->exclusiveToQuest())) return;
+      }
+
+      // Limit quantity based on killer's quest progress
+      if (entry.item->isQuestExclusive()) {
+        const auto &server = Server::instance();
+        auto quest = server.findQuest(entry.item->exclusiveToQuest());
+        for (const auto &objective : quest->objectives) {
+          if (objective.type != Quest::Objective::FETCH) continue;
+          if (objective.id != entry.item->id()) continue;
+          auto numNeededForQuest = objective.qty;
+          auto numHeld = killer->countItems(entry.item);
+          qtyLimit = numNeededForQuest - numHeld;
+          break;
+        }
       }
     }
 

@@ -15,12 +15,13 @@
 #include "Loot.h"
 #include "Permissions.h"
 #include "ServerItem.h"
+#include "Tagger.h"
 #include "ThreatTable.h"
 
 class Spawner;
-class User;
 class XmlWriter;
 class NPC;
+class User;
 
 // Abstract class describing location, movement and combat functions of
 // something in the game world
@@ -169,9 +170,6 @@ class Entity {
       Entity &attacker,
       Threat threat);  // If the entity needs to react to an attack.
   virtual void onKilled(Entity &victim) {}  // Upon this entity killing another
-  User *tagger() const { return _tagger; }
-  void tagger(User &attacker) { _tagger = &attacker; }
-  void clearTagger() { _tagger = nullptr; }
   // Inform user that this entity has missed its target with a ranged attack.
   virtual void sendRangedMissMessageTo(const User &userToInform) const {}
   // Inform user that this entity has hit its target with a ranged attack.
@@ -221,6 +219,7 @@ class Entity {
   Permissions permissions;
   Gatherable gatherable;
   Transformation transformation;
+  Tagger tagger;  // The user who gets credit for killing this.
 
  protected:
   // void type(const EntityType *type) { _type = type; }
@@ -258,8 +257,6 @@ class Entity {
   std::map<std::string, ms_t> _spellCooldowns;  // >0 = cooling down
 
  private:
-  User *_tagger{nullptr};  // The user who gets credit for killing this.
-
   ms_t _timeSinceRegen = 0;
 
   friend class Dummy;
