@@ -268,7 +268,7 @@ TEST_CASE_METHOD(ThreeClients, "Clients know their teammates") {
 
 // All loot available to all group members
 // /roll
-// UI
+// "invite" context-menu item disabled when target is in a group
 // Ability to leave a group
 // Disappears when down to one member
 

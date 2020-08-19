@@ -83,11 +83,17 @@ TEST_CASE("Clients discern NPCs with no loot") {
 
 TEST_CASE("Chance for strength-items as loot from object",
           "[strength][.flaky]") {
+  auto data = R"(
+    <item id="snowflake" stackSize="1000" durabilty="1" />
+    <objectType id="snowman">
+      <durability item="snowflake" quantity="1000" />
+    </objectType>
+  )";
   // Given a running server and client;
   // And a snowflake item with 1 health;
   // And a snowman object type made of 1000 snowflakes;
-  TestServer s = TestServer::WithData("snowman");
-  TestClient c = TestClient::WithData("snowman");
+  TestServer s = TestServer::WithDataString(data);
+  TestClient c = TestClient::WithDataString(data);
   s.waitForUsers(1);
 
   // And a snowman exists
@@ -229,7 +235,13 @@ TEST_CASE("New users are alerted to lootable objects", "[.flaky]") {
   // Given a running server;
   // And a snowflake item with 1 health;
   // And a snowman object type made of 1000 snowflakes;
-  TestServer s = TestServer::WithData("snowman");
+  auto data = R"(
+    <item id="snowflake" stackSize="1000" durabilty="1" />
+    <objectType id="snowman">
+      <durability item="snowflake" quantity="1000" />
+    </objectType>
+  )";
+  TestServer s = TestServer::WithDataString(data);
 
   // And a snowman exists;
   s.addObject("snowman", {10, 15});
@@ -239,7 +251,7 @@ TEST_CASE("New users are alerted to lootable objects", "[.flaky]") {
   snowman.reduceHealth(9999);
 
   // When a client logs in
-  TestClient c = TestClient::WithData("snowman");
+  TestClient c = TestClient::WithDataString(data);
   s.waitForUsers(1);
 
   // Then the client finds out that it's lootable
@@ -250,8 +262,14 @@ TEST_CASE("Non-taggers are not alerted to lootable objects") {
   // Given a running server;
   // And a snowflake item with 1 health;
   // And a snowman object type made of 1000 snowflakes;
-  TestServer s = TestServer::WithData("snowman");
-  TestClient c = TestClient::WithData("snowman");
+  auto data = R"(
+    <item id="snowflake" stackSize="1000" durabilty="1" />
+    <objectType id="snowman">
+      <durability item="snowflake" quantity="1000" />
+    </objectType>
+  )";
+  TestServer s = TestServer::WithDataString(data);
+  TestClient c = TestClient::WithDataString(data);
   s.waitForUsers(1);
 
   // And a snowman exists;
