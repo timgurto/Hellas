@@ -93,11 +93,12 @@ TEST_CASE("Chance for strength-items as loot from object",
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
     s.waitForUsers(1);
+    auto &user = s.getFirstUser();
 
-    s.addObject("snowman", {10, 15});
+    auto &snowman = s.addObject("snowman", {10, 15});
 
-    WHEN("the snowman is destroyed") {
-      Object &snowman = s.getFirstObject();
+    WHEN("a user kills the snowman") {
+      snowman.onAttackedBy(user, 1);
       snowman.reduceHealth(9999);
 
       THEN("the client finds out that it's lootable") {
