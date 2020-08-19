@@ -19,7 +19,7 @@ class TakeContainer : public Element {
   // Send a CL_TAKE message.  data: a pair containing the serial and slot.
   void take(void *data);
 
-  static const size_t LOOT_CAPACITY = 8;
+  static const size_t LOOT_CAPACITY = 10;  // TODO find a better solution
 
  private:
   TakeContainer(ClientItem::vect_t &linked, Serial serial,

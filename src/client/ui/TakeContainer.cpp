@@ -47,7 +47,7 @@ void TakeContainer::repopulate() {
   _list->clearChildren();
   if (!thereIsAnyLoot) return;
 
-  for (int i = 0; i <= lastNonEmptySlot; ++i) {
+  for (int i = 0; i <= lastNonEmptySlot && i < LOOT_CAPACITY; ++i) {
     auto *row = new Element;
     _list->addChild(row);
 

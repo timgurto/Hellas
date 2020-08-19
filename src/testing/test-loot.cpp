@@ -81,8 +81,7 @@ TEST_CASE("Clients discern NPCs with no loot") {
   }
 }
 
-TEST_CASE("Chance for strength-items as loot from object",
-          "[strength][.flaky]") {
+TEST_CASE("Chance for strength-items as loot from object", "[strength]") {
   GIVEN("a snowman made of 1000 1-health snowflake items") {
     auto data = R"(
       <item id="snowflake" stackSize="1000" durabilty="1" />
@@ -121,98 +120,88 @@ TEST_CASE("Chance for strength-items as loot from object",
   }
 }
 
-TEST_CASE("Looting from a container", "[container][only][.flaky]") {
-  // Given a running server and client;
-  // And a chest object type with 10 container slots;
-  // And a gold item that stacks to 100;
-  TestServer s = TestServer::WithData("chest_of_gold");
-  TestClient c = TestClient::WithData("chest_of_gold");
-  s.waitForUsers(1);
+TEST_CASE("Looting from a container", "[container][only]") {
+  GIVEN("a chest that can store 1000 gold") {
+    auto data = R"(
+      <item id="gold" name="Gold" stackSize="100" />
+      <objectType id="chest" name="Chest" >
+        <container slots="10" />
+      </objectType>
+    )";
+    TestServer s = TestServer::WithDataString(data);
+    TestClient c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
 
-  // And a chest exists;
-  s.addObject("chest", {10, 15});
+    const auto &gold = s.getFirstItem();
+    auto &chest = s.addObject("chest", {10, 15});
 
-  auto &chest = s.getFirstObject();
-  const auto &gold = s.getFirstItem();
+    AND_GIVEN("the chest is full of gold") {
+      chest.container().addItems(&gold, 1000);
 
-  SECTION("Some container contents can be looted") {
-    // And the chest is full of gold;
-    chest.container().addItems(&gold, 1000);
+      WHEN("the user destroys the chest") {
+        chest.onAttackedBy(user, 1);
+        chest.reduceHealth(9999);
+        REQUIRE_FALSE(chest.loot().empty());
+        REQUIRE(c.waitForMessage(SV_INVENTORY));
 
-    // And the chest is destroyed
-    chest.reduceHealth(9999);
-    REQUIRE_FALSE(chest.loot().empty());
-    REQUIRE(c.waitForMessage(SV_INVENTORY));
+        auto &clientChest = c.getFirstObject();
+        WAIT_UNTIL(clientChest.lootable());
 
-    auto &clientChest = c.getFirstObject();
-    WAIT_UNTIL(clientChest.lootable());
+        AND_WHEN("he loots it") {
+          for (size_t i = 0; i != 10; ++i)
+            c.sendMessage(CL_TAKE_ITEM, makeArgs(chest.serial(), i));
 
-    SECTION("Users can receive loot") {
-      // When he loots every slot
-      for (size_t i = 0; i != 10; ++i)
-        c.sendMessage(CL_TAKE_ITEM, makeArgs(chest.serial(), i));
+          THEN("he gets some gold") {
+            WAIT_UNTIL(c.inventory()[0].first.type() != nullptr);
 
-      // Then he gets some gold;
-      WAIT_UNTIL(c.inventory()[0].first.type() != nullptr);
-
-      // And he doesn't get all 1000
-      WAIT_UNTIL(chest.container().isEmpty());
-      ItemSet thousandGold;
-      thousandGold.add(&gold, 1000);
-      CHECK_FALSE(s.getFirstUser().hasItems(thousandGold));
+            AND_THEN("he doesn't get all of it") {
+              WAIT_UNTIL(chest.container().isEmpty());
+              ItemSet oneThousandGold;
+              oneThousandGold.add(&gold, 1000);
+              CHECK_FALSE(s.getFirstUser().hasItems(oneThousandGold));
+            }
+          }
+        }
+      }
     }
 
-    SECTION("The loot window works") {
-      // When he right-clicks on the chest
-      clientChest.onRightClick();
+    WHEN("the user destroys the chest") {
+      chest.onAttackedBy(user, 1);
+      chest.reduceHealth(9999);
 
-      // Then it shows the loot window;
-      WAIT_UNTIL(clientChest.lootContainer() != nullptr);
-
-      // And the window has volume;
-      CHECK(clientChest.window()->contentWidth() > 0);
-
-      // And at least one item is listed;
-      WAIT_UNTIL(clientChest.lootContainer()->size() > 0);
-
-      // And the user can loot using this window
-      ScreenPoint buttonPos =
-          clientChest.window()->rect() + ScreenRect{0, Window::HEADING_HEIGHT} +
-          clientChest.lootContainer()->rect() + ScreenRect{5, 5};
-      c.simulateClick(buttonPos);
-
-      WAIT_UNTIL(c.inventory()[0].first.type() != nullptr);
+      THEN("there's no loot available") {
+        REPEAT_FOR_MS(200);
+        c.sendMessage(CL_TAKE_ITEM, makeArgs(chest.serial(), 0));
+        REPEAT_FOR_MS(200);
+        CHECK(c.inventory()[0].first.type() == nullptr);
+      }
     }
-  }
 
-  SECTION("An empty container yields no loot") {
-    // When the chest is destroyed
-    chest.reduceHealth(9999);
+    SECTION("An owned container can be looted from") {
+      AND_GIVEN("the chest has another owner") {
+        chest.permissions.setPlayerOwner("Alice");
 
-    // Then he can't loot it
-    REPEAT_FOR_MS(200);
-    c.sendMessage(CL_TAKE_ITEM, makeArgs(chest.serial(), 0));
-    REPEAT_FOR_MS(200);
-    CHECK(c.inventory()[0].first.type() == nullptr);
-  }
+        AND_GIVEN("it contains gold") {
+          chest.container().addItems(&gold, 100);
 
-  SECTION("An owned container can be looted from") {
-    // And the chest has an owner
-    chest.permissions.setPlayerOwner("Alice");
+          WHEN("the user destroys the chest") {
+            chest.onAttackedBy(user, 1);
+            chest.reduceHealth(9999);
+            REQUIRE_FALSE(chest.loot().empty());
 
-    // And the chest contains gold;
-    chest.container().addItems(&gold, 100);
+            AND_WHEN("he loots it") {
+              c.waitForMessage(SV_INVENTORY);
+              c.sendMessage(CL_TAKE_ITEM, makeArgs(chest.serial(), 0));
 
-    // And the chest is destroyed
-    chest.reduceHealth(9999);
-    REQUIRE_FALSE(chest.loot().empty());
-
-    // When he loots it
-    c.waitForMessage(SV_INVENTORY);
-    c.sendMessage(CL_TAKE_ITEM, makeArgs(chest.serial(), 0));
-
-    // Then he gets some gold
-    WAIT_UNTIL(c.inventory()[0].first.type() != nullptr);
+              THEN("he gets some gold") {
+                WAIT_UNTIL(c.inventory()[0].first.type() != nullptr);
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
 
