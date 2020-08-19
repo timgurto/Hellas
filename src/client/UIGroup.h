@@ -14,6 +14,7 @@ struct GroupUI {
 
   struct Member {
     std::string name;
+    std::string level{"?"};
     Hitpoints health{1}, maxHealth{1};
     Energy energy{1}, maxEnergy{1};
 

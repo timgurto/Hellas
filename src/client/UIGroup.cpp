@@ -14,25 +14,31 @@ void GroupUI::initialise() {
 
 void GroupUI::refresh() {
   container->clearChildren();
-  const auto GAP = 2_px, NAME_Y = GAP, NAME_H = Element::TEXT_HEIGHT,
-             BAR_H = 6_px, HEALTH_BAR_Y = NAME_Y + NAME_H + GAP,
-             ENERGY_BAR_Y = HEALTH_BAR_Y + BAR_H,
-             BAR_W = container->contentWidth() - 2 * GAP;
+  const auto GAP = 2_px, NAME_H = Element::TEXT_HEIGHT, LEVEL_W = 15,
+             BAR_H = 6_px, BAR_W = container->contentWidth() - 2 * GAP;
 
   for (auto member : otherMembers) {
     auto memberEntry = new ColorBlock({});
     container->addChild(memberEntry);
 
-    memberEntry->addChild(
-        new Label({GAP, NAME_Y, memberEntry->width(), NAME_H}, member.name));
-    auto healthBar = new ProgressBar<Hitpoints>(
-        {GAP, HEALTH_BAR_Y, BAR_W, BAR_H}, member.health, member.maxHealth,
-        Color::STAT_HEALTH);
-    memberEntry->addChild(healthBar);
+    auto y = GAP;
 
-    auto energyBar = new ProgressBar<Energy>({GAP, ENERGY_BAR_Y, BAR_W, BAR_H},
-                                             member.energy, member.maxEnergy,
-                                             Color::STAT_ENERGY);
+    auto x = GAP;
+    memberEntry->addChild(new Label({x, y, LEVEL_W, NAME_H}, member.level));
+    x += LEVEL_W;
+    memberEntry->addChild(
+        new Label({x, y, memberEntry->width(), NAME_H}, member.name));
+    y += NAME_H + GAP;
+
+    auto healthBar =
+        new ProgressBar<Hitpoints>({GAP, y, BAR_W, BAR_H}, member.health,
+                                   member.maxHealth, Color::STAT_HEALTH);
+    memberEntry->addChild(healthBar);
+    y += BAR_H;
+
+    auto energyBar =
+        new ProgressBar<Energy>({GAP, y, BAR_W, BAR_H}, member.energy,
+                                member.maxEnergy, Color::STAT_ENERGY);
     memberEntry->addChild(energyBar);
   }
 
