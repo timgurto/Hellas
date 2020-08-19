@@ -108,37 +108,12 @@ TEST_CASE("Chance for strength-items as loot from object",
 
         WAIT_UNTIL(clientSnowman.lootable());
 
-        SECTION("Looting via direct messages") {
-          AND_WHEN("he tries to take the item") {
-            WAIT_UNTIL(clientSnowman.container().size() > 0);
-            c.sendMessage(CL_TAKE_ITEM, makeArgs(snowman.serial(), 0));
+        AND_WHEN("he tries to take the item") {
+          WAIT_UNTIL(clientSnowman.container().size() > 0);
+          c.sendMessage(CL_TAKE_ITEM, makeArgs(snowman.serial(), 0));
 
-            THEN("he recieves it") {
-              WAIT_UNTIL(c.inventory()[0].first.type() != nullptr);
-            }
-          }
-        }
-
-        SECTION("Looting via the UI") {
-          AND_WHEN("he right-clicks on the snowman") {
-            clientSnowman.onRightClick();
-
-            AND_WHEN("the loot window appears") {
-              WAIT_UNTIL(clientSnowman.lootContainer() != nullptr);
-              WAIT_UNTIL(clientSnowman.lootContainer()->size() > 0);
-
-              AND_WHEN("he clicks on the item") {
-                ScreenPoint buttonPos = clientSnowman.window()->rect() +
-                                        ScreenRect{0, Window::HEADING_HEIGHT} +
-                                        clientSnowman.lootContainer()->rect() +
-                                        ScreenRect{5, 5};
-                c.simulateClick(buttonPos);
-
-                THEN("he receives it") {
-                  WAIT_UNTIL(c.inventory()[0].first.type() != nullptr);
-                }
-              }
-            }
+          THEN("he recieves it") {
+            WAIT_UNTIL(c.inventory()[0].first.type() != nullptr);
           }
         }
       }
