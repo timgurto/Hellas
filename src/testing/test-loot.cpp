@@ -83,55 +83,65 @@ TEST_CASE("Clients discern NPCs with no loot") {
 
 TEST_CASE("Chance for strength-items as loot from object",
           "[strength][.flaky]") {
-  auto data = R"(
-    <item id="snowflake" stackSize="1000" durabilty="1" />
-    <objectType id="snowman">
-      <durability item="snowflake" quantity="1000" />
-    </objectType>
-  )";
-  // Given a running server and client;
-  // And a snowflake item with 1 health;
-  // And a snowman object type made of 1000 snowflakes;
-  TestServer s = TestServer::WithDataString(data);
-  TestClient c = TestClient::WithDataString(data);
-  s.waitForUsers(1);
+  GIVEN("a snowman made of 1000 1-health snowflake items") {
+    auto data = R"(
+      <item id="snowflake" stackSize="1000" durabilty="1" />
+      <objectType id="snowman">
+        <durability item="snowflake" quantity="1000" />
+      </objectType>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
 
-  // And a snowman exists
-  s.addObject("snowman", {10, 15});
+    s.addObject("snowman", {10, 15});
 
-  // When the snowman is destroyed
-  Object &snowman = s.getFirstObject();
-  snowman.reduceHealth(9999);
+    WHEN("the snowman is destroyed") {
+      Object &snowman = s.getFirstObject();
+      snowman.reduceHealth(9999);
 
-  // Then the client finds out that it's lootable
-  WAIT_UNTIL(c.objects().size() == 1);
-  ClientObject &clientSnowman = c.getFirstObject();
-  c.waitForMessage(SV_INVENTORY);
+      THEN("the client finds out that it's lootable") {
+        WAIT_UNTIL(c.objects().size() == 1);
+        ClientObject &clientSnowman = c.getFirstObject();
+        c.waitForMessage(SV_INVENTORY);
 
-  WAIT_UNTIL(clientSnowman.lootable());
+        WAIT_UNTIL(clientSnowman.lootable());
 
-  SECTION("Looting works") {
-    WAIT_UNTIL(clientSnowman.container().size() > 0);
+        SECTION("Looting via direct messages") {
+          AND_WHEN("he tries to take the item") {
+            WAIT_UNTIL(clientSnowman.container().size() > 0);
+            c.sendMessage(CL_TAKE_ITEM, makeArgs(snowman.serial(), 0));
 
-    c.sendMessage(CL_TAKE_ITEM, makeArgs(snowman.serial(), 0));
-    WAIT_UNTIL(c.inventory()[0].first.type() != nullptr);
-  }
+            THEN("he recieves it") {
+              WAIT_UNTIL(c.inventory()[0].first.type() != nullptr);
+            }
+          }
+        }
 
-  SECTION("The loot window works") {
-    // When he right-clicks on the chest
-    clientSnowman.onRightClick();
+        SECTION("Looting via the UI") {
+          AND_WHEN("he right-clicks on the snowman") {
+            clientSnowman.onRightClick();
 
-    // And the loot window appears
-    WAIT_UNTIL(clientSnowman.lootContainer() != nullptr);
-    WAIT_UNTIL(clientSnowman.lootContainer()->size() > 0);
+            AND_WHEN("the loot window appears") {
+              WAIT_UNTIL(clientSnowman.lootContainer() != nullptr);
+              WAIT_UNTIL(clientSnowman.lootContainer()->size() > 0);
 
-    // Then the user can loot using this window
-    ScreenPoint buttonPos =
-        clientSnowman.window()->rect() + ScreenRect{0, Window::HEADING_HEIGHT} +
-        clientSnowman.lootContainer()->rect() + ScreenRect{5, 5};
-    c.simulateClick(buttonPos);
+              AND_WHEN("he clicks on the item") {
+                ScreenPoint buttonPos = clientSnowman.window()->rect() +
+                                        ScreenRect{0, Window::HEADING_HEIGHT} +
+                                        clientSnowman.lootContainer()->rect() +
+                                        ScreenRect{5, 5};
+                c.simulateClick(buttonPos);
 
-    WAIT_UNTIL(c.inventory()[0].first.type() != nullptr);
+                THEN("he receives it") {
+                  WAIT_UNTIL(c.inventory()[0].first.type() != nullptr);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
 
