@@ -247,6 +247,15 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       THEN("the user isn't told that it's lootable") {
         CHECK_FALSE(client->waitForMessage(SV_INVENTORY));
       }
+
+      WHEN("the user tries to loot it") {
+        client->sendMessage(CL_TAKE_ITEM, makeArgs(goldbug.serial(), 0));
+
+        THEN("his inventory is still empty") {
+          REPEAT_FOR_MS(100);
+          CHECK_FALSE(user->inventory(0).first.hasItem());
+        }
+      }
     }
   }
 }

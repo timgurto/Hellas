@@ -1514,6 +1514,9 @@ void Server::handle_CL_TAKE_ITEM(User &user, Serial serial, size_t slotNum) {
   if (!pSlot) return;
   ServerItem::Slot &slot = *pSlot;
 
+  auto userHasPermissionToLoot = pEnt->tagger.username() == user.name();
+  if (!userHasPermissionToLoot) return;
+
   // Attempt to give item to user
   size_t remainder = user.giveItem(slot.first.type(), slot.second);
   if (remainder > 0) {
