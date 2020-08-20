@@ -9,7 +9,7 @@ void ObjectLoot::populate() {
   addStrengthItemsToLoot();
   addContainerItemsToLoot();
 
-  if (!empty()) _parent.sendAllLootToTagger();
+  if (!empty()) _parent.sendAllLootToTaggers();
 }
 
 void ObjectLoot::addStrengthItemsToLoot() {

@@ -184,7 +184,7 @@ class Entity {
   virtual void broadcastHealedMessage(Hitpoints amount) const {}
   virtual int getLevelDifference(const User &user) const { return 0; }
   // const;
-  virtual void sendAllLootToTagger() const;
+  virtual void sendAllLootToTaggers() const;
   void excludeFromPersistentState() { _excludedFromPersistentState = true; }
   void includeInPersistentState() { _excludedFromPersistentState = false; }
   bool excludedFromPersistentState() const {

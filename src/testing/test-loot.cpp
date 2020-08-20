@@ -231,8 +231,7 @@ TEST_CASE("New users are alerted to lootable objects") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData,
-                 "Non-taggers are not alerted to lootable objects") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Non-taggers can't loot") {
   GIVEN("an NPC that drops loot") {
     useData(R"(
       <npcType id="goldbug" maxHealth="1" >
@@ -401,6 +400,10 @@ TEST_CASE("Grouped players can loot each other's kills") {
           THEN("Bob has an item") {
             WAIT_UNTIL(bob.inventory(0).first.hasItem());
           }
+        }
+
+        THEN("Bob is told that it's lootable") {
+          CHECK(cBob.waitForMessage(SV_INVENTORY));
         }
       }
     }

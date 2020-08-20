@@ -63,7 +63,7 @@ bool Groups::isUserInAGroup(Username u) const {
 }
 
 bool Groups::areUsersInSameGroup(Username lhs, Username rhs) const {
-  auto& lhsGroup = getUsersGroup(lhs);
+  auto lhsGroup = getUsersGroup(lhs);
   return lhsGroup.count(rhs) == 1;
 }
 

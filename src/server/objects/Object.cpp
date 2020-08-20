@@ -173,7 +173,7 @@ void Object::sendInfoToClient(const User &targetUser, bool isNew) const {
     targetUser.sendMessage({SV_ENTITY_HEALTH, makeArgs(serial(), health())});
 
   // Lootable
-  if (_loot != nullptr && !_loot->empty()) sendAllLootToTagger();
+  if (_loot != nullptr && !_loot->empty()) sendAllLootToTaggers();
 
   // Container
   if (hasContainer() && permissions.doesUserHaveAccess(targetUser.name()))

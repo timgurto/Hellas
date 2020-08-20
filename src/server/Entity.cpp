@@ -588,10 +588,17 @@ const TerrainList &Entity::allowedTerrain() const {
   return _type->allowedTerrain();
 }
 
-void Entity::sendAllLootToTagger() const {
-  if (!tagger.asUser()) return;
-  for (auto i = 0; i != loot().size(); ++i)
-    loot().sendSingleSlotToUser(*tagger.asUser(), serial(), i);
+void Entity::sendAllLootToTaggers() const {
+  auto &server = Server::instance();
+
+  if (!tagger) return;
+  auto taggersGroup = server.groups->getUsersGroup(tagger.username());
+  for (auto memberName : taggersGroup) {
+    auto asUser = server.getUserByName(memberName);
+    if (!asUser) continue;
+    for (auto i = 0; i != loot().size(); ++i)
+      loot().sendSingleSlotToUser(*asUser, serial(), i);
+  }
 }
 
 void Entity::separateFromSpawner() {

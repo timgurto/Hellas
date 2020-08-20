@@ -206,7 +206,7 @@ void NPC::onDeath() {
   }
 
   npcType()->lootTable().instantiate(*_loot, tagger.asUser());
-  if (!_loot->empty()) sendAllLootToTagger();
+  if (!_loot->empty()) sendAllLootToTaggers();
 
   Entity::onDeath();
 }
@@ -286,7 +286,7 @@ void NPC::sendInfoToClient(const User &targetUser, bool isNew) const {
     targetUser.sendMessage({SV_ENTITY_HEALTH, makeArgs(serial(), health())});
 
   // Loot
-  if (!_loot->empty() && tagger == targetUser) sendAllLootToTagger();
+  if (!_loot->empty() && tagger == targetUser) sendAllLootToTaggers();
 
   // Buffs/debuffs
   for (const auto &buff : buffs())
