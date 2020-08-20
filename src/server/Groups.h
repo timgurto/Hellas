@@ -21,6 +21,7 @@ class Groups {
   Group getUsersGroup(Username aMember) const;
   int getGroupSize(Username u) const;
   bool isUserInAGroup(Username u) const;
+  bool areUsersInSameGroup(Username lhs, Username rhs) const;
 
   void registerInvitation(Username existingMember, Username newMember);
   bool userHasAnInvitation(Username u) const;

@@ -62,6 +62,11 @@ bool Groups::isUserInAGroup(Username u) const {
   return _groupsByUser.count(u) == 1;
 }
 
+bool Groups::areUsersInSameGroup(Username lhs, Username rhs) const {
+  auto& lhsGroup = getUsersGroup(lhs);
+  return lhsGroup.count(rhs) == 1;
+}
+
 void Groups::registerInvitation(Username existingMember, Username newMember) {
   _inviterOf[newMember] = existingMember;
 }

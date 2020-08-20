@@ -1,4 +1,5 @@
 #include "../client/ui/TakeContainer.h"
+#include "../server/Groups.h"
 #include "TestClient.h"
 #include "TestFixtures.h"
 #include "TestServer.h"
@@ -364,6 +365,42 @@ TEST_CASE_METHOD(ServerAndClientWithData,
           WAIT_UNTIL(user.inventory(0).first.hasItem());
 
           THEN("he knows it isn't lootable") { WAIT_UNTIL(!cFrog.lootable()); }
+        }
+      }
+    }
+  }
+}
+
+TEST_CASE("Grouped players can loot each other's kills") {
+  GIVEN("a mouse that always drops a tail") {
+    auto data = R"(
+      <item id="tail" />
+      <npcType id="mouse" >
+        <loot id="tail" />
+      </npcType>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto &mouse = s.addNPC("mouse", {30, 30});
+
+    AND_GIVEN("Alice and Bob are in a group") {
+      auto cAlice = TestClient::WithUsernameAndDataString("Alice", data);
+      auto cBob = TestClient::WithUsernameAndDataString("Bob", data);
+      s.waitForUsers(2);
+      auto &alice = s.findUser("Alice");
+      auto &bob = s.findUser("Bob");
+
+      s->groups->inviteToGroup("Bob", "Alice");
+
+      WHEN("Alice kills the mouse") {
+        mouse.onAttackedBy(alice, 1);
+        mouse.kill();
+
+        AND_WHEN("Bob tries to loot it") {
+          cBob.sendMessage(CL_TAKE_ITEM, makeArgs(mouse.serial(), 0));
+
+          THEN("Bob has an item") {
+            WAIT_UNTIL(bob.inventory(0).first.hasItem());
+          }
         }
       }
     }
