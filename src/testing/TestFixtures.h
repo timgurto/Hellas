@@ -15,6 +15,26 @@ class ServerAndClient {
   User *user;
 };
 
+class ServerAndClientWithData {
+ public:
+  ~ServerAndClientWithData() {
+    delete client;
+    delete server;
+  }
+
+  void useData(const char *dataString) {
+    server = new TestServer(TestServer::WithDataString(dataString));
+    client = new TestClient(TestClient::WithDataString(dataString));
+
+    server->waitForUsers(1);
+    user = &server->getFirstUser();
+  }
+
+  TestServer *server{nullptr};
+  TestClient *client{nullptr};
+  User *user{nullptr};
+};
+
 class TwoClients {
  public:
   TwoClients()

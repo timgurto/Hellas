@@ -1,35 +1,36 @@
 #include "../client/ui/TakeContainer.h"
 #include "TestClient.h"
+#include "TestFixtures.h"
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Client gets loot info and can loot") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Client gets loot info and can loot") {
   GIVEN("an NPC that always drops 1 gold") {
-    auto data = R"(
+    useData(R"(
       <npcType id="goldbug" maxHealth="1" >
         <loot id="gold" />
       </npcType>
       <item id="gold" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto &goldbug = s.addNPC("goldbug", {10, 15});
+    )");
+
+    auto &goldbug = server->addNPC("goldbug", {10, 15});
 
     WHEN("a user kills it") {
-      TestClient c = TestClient::WithDataString(data);
-      WAIT_UNTIL(c.objects().size() == 1);
-      c.sendMessage(CL_TARGET_ENTITY, makeArgs(goldbug.serial()));
+      WAIT_UNTIL(client->objects().size() == 1);
+      client->sendMessage(CL_TARGET_ENTITY, makeArgs(goldbug.serial()));
       WAIT_UNTIL(goldbug.isDead());
 
       THEN("the user can see one item in its loot window") {
-        const auto &cGoldBug = c.getFirstNPC();
+        const auto &cGoldBug = client->getFirstNPC();
         WAIT_UNTIL(cGoldBug.lootContainer() != nullptr);
         WAIT_UNTIL(cGoldBug.lootContainer()->size() == 1);
 
         AND_THEN("the server survives a loot request") {
-          c.sendMessage(CL_TAKE_ITEM, makeArgs(goldbug.serial(), 0));
+          client->sendMessage(CL_TAKE_ITEM, makeArgs(goldbug.serial(), 0));
 
           AND_THEN("the client receives the item") {
-            WAIT_UNTIL(c.inventory()[0].first.type() != nullptr);
+            WAIT_UNTIL(client->inventory()[0].first.type() != nullptr);
           }
         }
       }
@@ -57,25 +58,21 @@ TEST_CASE("Objects have health", "[strength]") {
   }
 }
 
-TEST_CASE("Clients discern NPCs with no loot") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Clients discern NPCs with no loot") {
   GIVEN("an ant with 1 health and no loot table") {
-    auto data = R"(
+    useData(R"(
       <npcType id="ant" maxHealth="1" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
+    )");
 
-    auto &serverAnt = s.addNPC("ant");
-    WAIT_UNTIL(c.objects().size() == 1);
+    auto &serverAnt = server->addNPC("ant");
+    WAIT_UNTIL(client->objects().size() == 1);
 
     WHEN("a user kills the ant") {
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      serverAnt.onAttackedBy(user, 1);
-      serverAnt.reduceHealth(1);
+      serverAnt.onAttackedBy(*user, 1);
+      serverAnt.kill();
 
       THEN("he doesn't believe he can loot it") {
-        ClientNPC &clientAnt = c.getFirstNPC();
+        ClientNPC &clientAnt = client->getFirstNPC();
         REPEAT_FOR_MS(200);
         CHECK_FALSE(clientAnt.lootable());
       }
@@ -83,38 +80,36 @@ TEST_CASE("Clients discern NPCs with no loot") {
   }
 }
 
-TEST_CASE("Chance for strength-items as loot from object", "[strength]") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Chance for strength-items as loot from object",
+                 "[strength]") {
   GIVEN("a snowman made of 1000 1-health snowflake items") {
-    auto data = R"(
+    useData(R"(
       <item id="snowflake" stackSize="1000" durabilty="1" />
       <objectType id="snowman">
         <durability item="snowflake" quantity="1000" />
       </objectType>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
+    )");
 
-    auto &snowman = s.addObject("snowman", {10, 15});
+    auto &snowman = server->addObject("snowman", {10, 15});
 
     WHEN("a user kills the snowman") {
-      snowman.onAttackedBy(user, 1);
-      snowman.reduceHealth(9999);
+      snowman.onAttackedBy(*user, 1);
+      snowman.kill();
 
       THEN("the client finds out that it's lootable") {
-        WAIT_UNTIL(c.objects().size() == 1);
-        ClientObject &clientSnowman = c.getFirstObject();
-        c.waitForMessage(SV_INVENTORY);
+        WAIT_UNTIL(client->objects().size() == 1);
+        ClientObject &clientSnowman = client->getFirstObject();
+        client->waitForMessage(SV_INVENTORY);
 
         WAIT_UNTIL(clientSnowman.lootable());
 
         AND_WHEN("he tries to take the item") {
           WAIT_UNTIL(clientSnowman.container().size() > 0);
-          c.sendMessage(CL_TAKE_ITEM, makeArgs(snowman.serial(), 0));
+          client->sendMessage(CL_TAKE_ITEM, makeArgs(snowman.serial(), 0));
 
           THEN("he recieves it") {
-            WAIT_UNTIL(c.inventory()[0].first.type() != nullptr);
+            WAIT_UNTIL(client->inventory()[0].first.type() != nullptr);
           }
         }
       }
@@ -122,46 +117,43 @@ TEST_CASE("Chance for strength-items as loot from object", "[strength]") {
   }
 }
 
-TEST_CASE("Looting from a container", "[container][only]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Looting from a container",
+                 "[container][only]") {
   GIVEN("a chest that can store 1000 gold") {
-    auto data = R"(
+    useData(R"(
       <item id="gold" name="Gold" stackSize="100" />
       <objectType id="chest" name="Chest" >
         <container slots="10" />
       </objectType>
-    )";
-    TestServer s = TestServer::WithDataString(data);
-    TestClient c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
+    )");
 
-    const auto &gold = s.getFirstItem();
-    auto &chest = s.addObject("chest", {10, 15});
+    const auto &gold = server->getFirstItem();
+    auto &chest = server->addObject("chest", {10, 15});
 
     AND_GIVEN("the chest is full of gold") {
       chest.container().addItems(&gold, 1000);
 
       WHEN("the user destroys the chest") {
-        chest.onAttackedBy(user, 1);
-        chest.reduceHealth(9999);
+        chest.onAttackedBy(*user, 1);
+        chest.kill();
         REQUIRE_FALSE(chest.loot().empty());
-        REQUIRE(c.waitForMessage(SV_INVENTORY));
+        REQUIRE(client->waitForMessage(SV_INVENTORY));
 
-        auto &clientChest = c.getFirstObject();
+        auto &clientChest = client->getFirstObject();
         WAIT_UNTIL(clientChest.lootable());
 
         AND_WHEN("he loots it") {
           for (size_t i = 0; i != 10; ++i)
-            c.sendMessage(CL_TAKE_ITEM, makeArgs(chest.serial(), i));
+            client->sendMessage(CL_TAKE_ITEM, makeArgs(chest.serial(), i));
 
           THEN("he gets some gold") {
-            WAIT_UNTIL(c.inventory()[0].first.type() != nullptr);
+            WAIT_UNTIL(client->inventory()[0].first.type() != nullptr);
 
             AND_THEN("he doesn't get all of it") {
               WAIT_UNTIL(chest.container().isEmpty());
               ItemSet oneThousandGold;
               oneThousandGold.add(&gold, 1000);
-              CHECK_FALSE(s.getFirstUser().hasItems(oneThousandGold));
+              CHECK_FALSE(server->getFirstUser().hasItems(oneThousandGold));
             }
           }
         }
@@ -169,14 +161,14 @@ TEST_CASE("Looting from a container", "[container][only]") {
     }
 
     WHEN("the user destroys the chest") {
-      chest.onAttackedBy(user, 1);
-      chest.reduceHealth(9999);
+      chest.onAttackedBy(*user, 1);
+      chest.kill();
 
       THEN("there's no loot available") {
         REPEAT_FOR_MS(200);
-        c.sendMessage(CL_TAKE_ITEM, makeArgs(chest.serial(), 0));
+        client->sendMessage(CL_TAKE_ITEM, makeArgs(chest.serial(), 0));
         REPEAT_FOR_MS(200);
-        CHECK(c.inventory()[0].first.type() == nullptr);
+        CHECK(client->inventory()[0].first.type() == nullptr);
       }
     }
 
@@ -188,16 +180,16 @@ TEST_CASE("Looting from a container", "[container][only]") {
           chest.container().addItems(&gold, 100);
 
           WHEN("the user destroys the chest") {
-            chest.onAttackedBy(user, 1);
+            chest.onAttackedBy(*user, 1);
             chest.reduceHealth(9999);
             REQUIRE_FALSE(chest.loot().empty());
 
             AND_WHEN("he loots it") {
-              c.waitForMessage(SV_INVENTORY);
-              c.sendMessage(CL_TAKE_ITEM, makeArgs(chest.serial(), 0));
+              client->waitForMessage(SV_INVENTORY);
+              client->sendMessage(CL_TAKE_ITEM, makeArgs(chest.serial(), 0));
 
               THEN("he gets some gold") {
-                WAIT_UNTIL(c.inventory()[0].first.type() != nullptr);
+                WAIT_UNTIL(client->inventory()[0].first.type() != nullptr);
               }
             }
           }
@@ -225,7 +217,7 @@ TEST_CASE("New users are alerted to lootable objects") {
     auto &user = s.getFirstUser();
 
     goldbug.onAttackedBy(user, 1);
-    goldbug.reduceHealth(1);
+    goldbug.kill();
 
     // And when Alice logs out and back in
   }
@@ -238,29 +230,25 @@ TEST_CASE("New users are alerted to lootable objects") {
   }
 }
 
-TEST_CASE("Non-taggers are not alerted to lootable objects") {
-  // Given a running server;
-  // And a snowflake item with 1 health;
-  // And a snowman object type made of 1000 snowflakes;
-  auto data = R"(
-    <item id="snowflake" stackSize="1000" durabilty="1" />
-    <objectType id="snowman">
-      <durability item="snowflake" quantity="1000" />
-    </objectType>
-  )";
-  TestServer s = TestServer::WithDataString(data);
-  TestClient c = TestClient::WithDataString(data);
-  s.waitForUsers(1);
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Non-taggers are not alerted to lootable objects") {
+  GIVEN("an NPC that drops loot") {
+    useData(R"(
+      <npcType id="goldbug" maxHealth="1" >
+        <loot id="gold" />
+      </npcType>
+      <item id="gold" />
+    )");
+    auto &goldbug = server->addNPC("goldbug", {10, 15});
 
-  // And a snowman exists;
-  s.addObject("snowman", {10, 15});
+    WHEN("it dies without being tagged") {
+      goldbug.kill();
 
-  // And the snowman dies without the user killing it
-  Object &snowman = s.getFirstObject();
-  snowman.reduceHealth(9999);
-
-  // Then the client doesn't finds out that it's lootable
-  CHECK_FALSE(c.waitForMessage(SV_INVENTORY));
+      THEN("the user isn't told that it's lootable") {
+        CHECK_FALSE(client->waitForMessage(SV_INVENTORY));
+      }
+    }
+  }
 }
 
 TEST_CASE("Loot-table equality") {
@@ -315,8 +303,7 @@ TEST_CASE("Loot-table equality") {
 }
 
 TEST_CASE("Composite loot tables") {
-  GIVEN(
-      "an NPC that drops X, and one that drops X via a standalone loot table") {
+  GIVEN("two NPCs drop gold: one directly and one with a <lootTable>") {
     auto data = R"(
       <item id="gold" />
       <lootTable id="wealthyMob" >
@@ -342,31 +329,32 @@ TEST_CASE("Composite loot tables") {
   }
 }
 
-TEST_CASE("Clients know when loot is all gone") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Clients know when loot is all gone") {
   GIVEN("an NPC that drops an item") {
-    auto data = R"(
+    useData(R"(
       <item id="wart" />
       <npcType id="frog" >
         <loot id="wart" />
       </npcType>
-    )";
-    auto s = TestServer::WithDataString(data);
-    const auto &frog = s.addNPC("frog", {10, 15});
+    )");
+    auto &frog = server->addNPC("frog", {10, 15});
 
     WHEN("a user kills it") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      c.sendMessage(CL_TARGET_ENTITY, makeArgs(frog.serial()));
-      WAIT_UNTIL(frog.isDead());
+      frog.onAttackedBy(*user, 1);
+      frog.kill();
 
-      AND_WHEN("he loots it") {
-        c.sendMessage(CL_TAKE_ITEM, makeArgs(frog.serial(), 0));
-        const auto &user = s.getFirstUser();
-        WAIT_UNTIL(user.inventory(0).first.hasItem());
+      THEN("he knows it's lootable") {
+        WAIT_UNTIL(client->objects().size() == 1);
+        const auto &cFrog = client->getFirstNPC();
+        WAIT_UNTIL(cFrog.lootable());
 
-        THEN("he knows it isn't lootable") {
-          const auto &cFrog = c.getFirstNPC();
-          WAIT_UNTIL(!cFrog.lootable());
+        AND_WHEN("he loots it") {
+          client->sendMessage(CL_TAKE_ITEM, makeArgs(frog.serial(), 0));
+          const auto &user = server->getFirstUser();
+          WAIT_UNTIL(user.inventory(0).first.hasItem());
+
+          THEN("he knows it isn't lootable") { WAIT_UNTIL(!cFrog.lootable()); }
         }
       }
     }
