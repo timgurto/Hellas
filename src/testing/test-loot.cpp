@@ -57,7 +57,7 @@ TEST_CASE("Objects have health", "[strength]") {
   }
 }
 
-TEST_CASE("Clients discern NPCs with no loot", "[flaky]") {
+TEST_CASE("Clients discern NPCs with no loot") {
   GIVEN("an ant with 1 health and no loot table") {
     auto data = R"(
       <npcType id="ant" maxHealth="1" />

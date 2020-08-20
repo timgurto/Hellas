@@ -144,6 +144,7 @@ void Entity::fillHealthAndEnergy() {
 void Entity::reduceHealth(int damage) {
   if (damage == 0) return;
   if (damage >= static_cast<int>(_health)) {
+    startCorpseTimer();
     _health = 0;
     onHealthChange();
     onDeath();
@@ -462,11 +463,6 @@ void Entity::onDeath() {
     _spawner->scheduleSpawn();
     _spawner = nullptr;
   }
-
-  if (timeToRemainAsCorpse() == 0)
-    markForRemoval();
-  else
-    startCorpseTimer();
 }
 
 void Entity::onAttackedBy(Entity &attacker, Threat threat) {
