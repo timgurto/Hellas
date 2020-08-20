@@ -23,7 +23,7 @@ TEST_CASE("Shared XP") {
     auto &critter = s.addNPC("critter", {10, 10});
 
     AND_GIVEN("Alice and Bob are in a group") {
-      s->groups->inviteToGroup(uBob, uAlice);
+      s->groups->inviteToGroup("Bob", "Alice");
 
       WHEN("Alice kills the critter") {
         uAlice.setTargetAndAttack(&critter);
@@ -32,7 +32,7 @@ TEST_CASE("Shared XP") {
       }
 
       AND_GIVEN("Charlie is also in the group") {
-        s->groups->inviteToGroup(uCharlie, uAlice);
+        s->groups->inviteToGroup("Charlie", "Alice");
 
         WHEN("Alice kills the critter") {
           uAlice.setTargetAndAttack(&critter);
@@ -43,7 +43,7 @@ TEST_CASE("Shared XP") {
     }
 
     AND_GIVEN("Bob and Charlie are in a group") {
-      s->groups->inviteToGroup(uCharlie, uBob);
+      s->groups->inviteToGroup("Charlie", "Bob");
 
       WHEN("Alice kills the critter") {
         uAlice.setTargetAndAttack(&critter);
@@ -59,7 +59,7 @@ TEST_CASE("Shared XP") {
       const int normalXP = uAlice.appropriateXPForKill(critter);
 
       WHEN("Alice is in a group of two") {
-        s->groups->inviteToGroup(uBob, uAlice);
+        s->groups->inviteToGroup("Bob", "Alice");
 
         THEN("Alice would receive half of her normal XP") {
           const int xpInGroupOf2 = uAlice.appropriateXPForKill(critter);
@@ -68,8 +68,8 @@ TEST_CASE("Shared XP") {
       }
 
       WHEN("Alice is in a group of three") {
-        s->groups->inviteToGroup(uBob, uAlice);
-        s->groups->inviteToGroup(uCharlie, uAlice);
+        s->groups->inviteToGroup("Bob", "Alice");
+        s->groups->inviteToGroup("Charlie", "Alice");
 
         THEN("Alice would receive a third of her normal XP") {
           const int xpInGroupOf3 = uAlice.appropriateXPForKill(critter);
@@ -82,7 +82,7 @@ TEST_CASE("Shared XP") {
 
 TEST_CASE_METHOD(ThreeClients, "Inviting and accepting") {
   THEN("Alice is not in a group") {
-    CHECK_FALSE(server->groups->isUserInAGroup(*alice));
+    CHECK_FALSE(server->groups->isUserInAGroup("Alice"));
   }
 
   WHEN("Bob sends an accept-invitation message") {
@@ -90,7 +90,7 @@ TEST_CASE_METHOD(ThreeClients, "Inviting and accepting") {
     REPEAT_FOR_MS(100);
 
     THEN("Alice is not in a group") {
-      CHECK_FALSE(server->groups->isUserInAGroup(*alice));
+      CHECK_FALSE(server->groups->isUserInAGroup("Alice"));
     }
   }
 
@@ -120,13 +120,13 @@ TEST_CASE_METHOD(ThreeClients, "Inviting and accepting") {
 
       THEN("Alice and Bob, but not Charlie, are in groups") {
         REPEAT_FOR_MS(100);
-        CHECK(server->groups->isUserInAGroup(*alice));
-        CHECK(server->groups->isUserInAGroup(*bob));
-        CHECK_FALSE(server->groups->isUserInAGroup(*charlie));
+        CHECK(server->groups->isUserInAGroup("Alice"));
+        CHECK(server->groups->isUserInAGroup("Bob"));
+        CHECK_FALSE(server->groups->isUserInAGroup("Charlie"));
 
         AND_THEN("Alice and Bob are in the same group") {
-          auto group = server->groups->getUsersGroup(*alice);
-          CHECK(group.find(bob) != group.end());
+          auto group = server->groups->getUsersGroup("Alice");
+          CHECK(group.count("Bob") == 1);
         }
       }
     }
@@ -140,7 +140,7 @@ TEST_CASE_METHOD(ThreeClients, "Inviting and accepting") {
 
         THEN("Charlie is not in a group") {
           REPEAT_FOR_MS(100);
-          CHECK_FALSE(server->groups->isUserInAGroup(*charlie));
+          CHECK_FALSE(server->groups->isUserInAGroup("Charlie"));
         }
       }
     }
@@ -160,7 +160,7 @@ TEST_CASE_METHOD(FourClients, "No duplicate groups") {
   THEN("There are no groups") { CHECK(server->groups->numGroups() == 0); }
 
   GIVEN("Alice and Bob are in a group") {
-    server->groups->inviteToGroup(*bob, *alice);
+    server->groups->inviteToGroup("Bob", "Alice");
 
     WHEN("Alice invites Charlie and he accepts") {
       cAlice.sendMessage(CL_INVITE_TO_GROUP, "Charlie");
@@ -172,13 +172,13 @@ TEST_CASE_METHOD(FourClients, "No duplicate groups") {
         CHECK(server->groups->numGroups() == 1);
 
         AND_THEN("Charlie is in a group") {
-          CHECK(server->groups->isUserInAGroup(*charlie));
+          CHECK(server->groups->isUserInAGroup("Charlie"));
         }
       }
     }
 
     AND_GIVEN("Charlie and Dan are in a group") {
-      server->groups->inviteToGroup(*dan, *charlie);
+      server->groups->inviteToGroup("Dan", "Charlie");
 
       THEN("There are two groups") { CHECK(server->groups->numGroups() == 2); }
     }
@@ -202,7 +202,7 @@ TEST_CASE_METHOD(ThreeClients, "Grouped players can't accept invitations") {
 
           THEN("Charlie is not in a group") {
             REPEAT_FOR_MS(100);
-            CHECK_FALSE(server->groups->isUserInAGroup(*charlie));
+            CHECK_FALSE(server->groups->isUserInAGroup("Charlie"));
           }
         }
       }
@@ -212,7 +212,7 @@ TEST_CASE_METHOD(ThreeClients, "Grouped players can't accept invitations") {
 
 TEST_CASE_METHOD(ThreeClients, "Grouped players can't be invited") {
   GIVEN("Alice and Bob are in a group") {
-    server->groups->inviteToGroup(*bob, *alice);
+    server->groups->inviteToGroup("Bob", "Alice");
 
     WHEN("Charlie invites Alice to a group") {
       cCharlie.sendMessage(CL_INVITE_TO_GROUP, "Alice");
@@ -244,7 +244,7 @@ TEST_CASE_METHOD(ThreeClients, "Clients know their teammates") {
   }
 
   WHEN("Alice and Bob are in a group") {
-    server->groups->inviteToGroup(*bob, *alice);
+    server->groups->inviteToGroup("Bob", "Alice");
 
     THEN("Alice knows she has one groupmate, Bob") {
       WAIT_UNTIL(cAlice->groupUI->otherMembers.size() == 1);
@@ -255,7 +255,7 @@ TEST_CASE_METHOD(ThreeClients, "Clients know their teammates") {
         CHECK(cBob->groupUI->otherMembers.count("Alice"s) == 1);
 
         AND_WHEN("Alice adds Charlie to the group") {
-          server->groups->inviteToGroup(*charlie, *alice);
+          server->groups->inviteToGroup("Charlie", "Alice");
 
           THEN("Bob knows that Charlie is in his group") {
             WAIT_UNTIL(cBob->groupUI->otherMembers.count("Charlie"s) == 1);
@@ -263,6 +263,29 @@ TEST_CASE_METHOD(ThreeClients, "Clients know their teammates") {
         }
       }
     }
+  }
+}
+
+TEST_CASE("A disconnected user remains in his group") {
+  auto s = TestServer{};
+  auto cBob = TestClient::WithUsername("Bob");
+
+  // Given Alice is in a group
+  {
+    auto cAlice = TestClient::WithUsername("Alice");
+    s.waitForUsers(2);
+
+    s->groups->inviteToGroup("Alice", "Bob");
+
+    // When Alice logs out and back in
+  }
+  s.waitForUsers(1);
+  {
+    auto cAlice = TestClient::WithUsername("Alice");
+    s.waitForUsers(2);
+
+    // Then Alice is still in a group
+    CHECK(s->groups->isUserInAGroup("Alice"));
   }
 }
 

@@ -57,7 +57,7 @@ TEST_CASE("Objects have health", "[strength]") {
   }
 }
 
-TEST_CASE("Clients discern NPCs with no loot") {
+TEST_CASE("Clients discern NPCs with no loot", "[flaky]") {
   GIVEN("an ant with 1 health and no loot table") {
     auto data = R"(
       <npcType id="ant" maxHealth="1" />
@@ -65,11 +65,10 @@ TEST_CASE("Clients discern NPCs with no loot") {
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
 
-    s.addNPC("ant");
+    auto &serverAnt = s.addNPC("ant");
     WAIT_UNTIL(c.objects().size() == 1);
 
     WHEN("the ant dies") {
-      NPC &serverAnt = s.getFirstNPC();
       serverAnt.reduceHealth(1);
 
       THEN("the user doesn't believe he can loot it") {

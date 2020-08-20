@@ -446,12 +446,16 @@ void Entity::onEnergyChange() {
 }
 
 void Entity::onDeath() {
+  auto &server = Server::instance();
   removeAllBuffsAndDebuffs();
 
   if (tagger.asUser()) {
-    auto &groups = *Server::instance().groups;
-    auto taggersGroup = groups.getUsersGroup(*tagger.asUser());
-    for (auto *groupMember : taggersGroup) groupMember->onKilled(*this);
+    auto taggersGroup = server.groups->getUsersGroup(tagger.username());
+    for (auto groupMember : taggersGroup) {
+      auto asUser = server.getUserByName(groupMember);
+      if (!asUser) continue;
+      asUser->onKilled(*this);
+    }
   }
 
   if (_spawner) {

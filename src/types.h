@@ -36,3 +36,4 @@ struct RepairInfo {
 
 using Filename = std::string;
 using FilenameWithoutSuffix = std::string;
+using Username = std::string;

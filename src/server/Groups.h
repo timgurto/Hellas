@@ -4,33 +4,35 @@
 #include <set>
 #include <vector>
 
+#include "../types.h"
+
 class User;
 
 class Groups {
  public:
   ~Groups();
 
-  using Group = std::set<User*>;
+  using Group = std::set<Username>;
 
   int numGroups() const;
 
-  void inviteToGroup(User& newMember, User& inviter);
+  void inviteToGroup(Username newMember, Username inviter);
 
-  Group getUsersGroup(User& aMember) const;
-  int getGroupSize(const User& u) const;
-  bool isUserInAGroup(const User& u) const;
+  Group getUsersGroup(Username aMember) const;
+  int getGroupSize(Username u) const;
+  bool isUserInAGroup(Username u) const;
 
-  void registerInvitation(User& existingMember, User& newMember);
-  bool userHasAnInvitation(User& u) const;
-  void acceptInvitation(User& newMember);
+  void registerInvitation(Username existingMember, Username newMember);
+  bool userHasAnInvitation(Username u) const;
+  void acceptInvitation(Username newMember);
 
   static void sendGroupMakeupToAllMembers(const Group& g);
   static void sendGroupMakeupTo(const Group& g, const User& recipient);
 
  private:
-  Group* getGroupAndMakeIfNeeded(User& inviter);
-  Group* createGroup(User& founder);
+  Group* getGroupAndMakeIfNeeded(Username inviter);
+  Group* createGroup(Username founder);
   std::vector<Group*> _groups;
-  std::map<User*, User*> _inviterOf;
-  std::map<const User*, Group*> _groupsByUser;
+  std::map<Username, Username> _inviterOf;
+  std::map<Username, Group*> _groupsByUser;
 };

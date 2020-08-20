@@ -2,6 +2,7 @@
 
 #include <cassert>
 
+#include "Server.h"
 #include "User.h"
 
 Groups::~Groups() {
@@ -10,8 +11,8 @@ Groups::~Groups() {
 
 int Groups::numGroups() const { return _groups.size(); }
 
-Groups::Group* Groups::getGroupAndMakeIfNeeded(User& inviter) {
-  auto it = _groupsByUser.find(&inviter);
+Groups::Group* Groups::getGroupAndMakeIfNeeded(Username inviter) {
+  auto it = _groupsByUser.find(inviter);
   auto inviterIsInAGroup = it != _groupsByUser.end();
 
   if (inviterIsInAGroup)
@@ -21,34 +22,34 @@ Groups::Group* Groups::getGroupAndMakeIfNeeded(User& inviter) {
   }
 }
 
-Groups::Group* Groups::createGroup(User& founder) {
+Groups::Group* Groups::createGroup(Username founder) {
   auto newGroup = new Group;
-  newGroup->insert(&founder);
-  _groupsByUser[&founder] = newGroup;
+  newGroup->insert(founder);
+  _groupsByUser[founder] = newGroup;
   _groups.push_back(newGroup);
   return newGroup;
 }
 
-void Groups::inviteToGroup(User& newMember, User& inviter) {
+void Groups::inviteToGroup(Username newMember, Username inviter) {
   auto* group = getGroupAndMakeIfNeeded(inviter);
 
-  group->insert(&newMember);
-  _groupsByUser[&newMember] = group;
+  group->insert(newMember);
+  _groupsByUser[newMember] = group;
   sendGroupMakeupToAllMembers(*group);
 }
 
-Groups::Group Groups::getUsersGroup(User& player) const {
-  auto it = _groupsByUser.find(&player);
+Groups::Group Groups::getUsersGroup(Username player) const {
+  auto it = _groupsByUser.find(player);
   auto userIsInAGroup = it != _groupsByUser.end();
 
   if (userIsInAGroup) return *it->second;
 
-  auto soloResult = Group{&player};
+  auto soloResult = Group{player};
   return soloResult;
 }
 
-int Groups::getGroupSize(const User& u) const {
-  auto it = _groupsByUser.find(&u);
+int Groups::getGroupSize(Username u) const {
+  auto it = _groupsByUser.find(u);
   auto userIsInAGroup = it != _groupsByUser.end();
 
   if (userIsInAGroup)
@@ -57,35 +58,36 @@ int Groups::getGroupSize(const User& u) const {
     return 1;
 }
 
-bool Groups::isUserInAGroup(const User& u) const {
-  return _groupsByUser.count(&u) == 1;
+bool Groups::isUserInAGroup(Username u) const {
+  return _groupsByUser.count(u) == 1;
 }
 
-void Groups::registerInvitation(User& existingMember, User& newMember) {
-  _inviterOf[&newMember] = &existingMember;
+void Groups::registerInvitation(Username existingMember, Username newMember) {
+  _inviterOf[newMember] = existingMember;
 }
 
-bool Groups::userHasAnInvitation(User& u) const {
-  return _inviterOf.count(&u) > 0;
+bool Groups::userHasAnInvitation(Username u) const {
+  return _inviterOf.count(u) == 1;
 }
 
-void Groups::acceptInvitation(User& newMember) {
-  auto& inviter = *_inviterOf[&newMember];
+void Groups::acceptInvitation(Username newMember) {
+  auto inviter = _inviterOf[newMember];
   inviteToGroup(newMember, inviter);
 }
 
 void Groups::sendGroupMakeupToAllMembers(const Group& g) {
-  for (const auto* member : g) {
-    sendGroupMakeupTo(g, *member);
+  for (auto memberName : g) {
+    auto* asUser = Server::instance().getUserByName(memberName);
+    if (asUser) sendGroupMakeupTo(g, *asUser);
   }
 }
 
 void Groups::sendGroupMakeupTo(const Group& g, const User& recipient) {
   auto args = makeArgs(g.size() - 1);
 
-  for (const auto* member : g) {
-    if (member == &recipient) continue;
-    args = makeArgs(args, member->name());
+  for (auto memberName : g) {
+    if (memberName == recipient.name()) continue;
+    args = makeArgs(args, memberName);
   }
 
   recipient.sendMessage({SV_GROUPMATES, args});

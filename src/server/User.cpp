@@ -1880,7 +1880,7 @@ XP User::appropriateXPForKill(const Entity &victim, bool isElite) const {
 }
 
 int User::getGroupSize() const {
-  return Server::instance().groups->getGroupSize(*this);
+  return Server::instance().groups->getGroupSize(name());
 }
 
 void User::addXP(XP amount) {

@@ -665,16 +665,17 @@ HANDLE_MESSAGE(CL_INVITE_TO_GROUP) {
   if (inviteeName == user.name()) return;
   auto *invitee = getUserByName(inviteeName);
   if (!invitee) RETURN_WITH(ERROR_USER_NOT_FOUND);
-  if (groups->isUserInAGroup(*invitee))
+  if (groups->isUserInAGroup(inviteeName))
     RETURN_WITH(WARNING_USER_ALREADY_IN_A_GROUP);
 
-  groups->registerInvitation(user, *invitee);
+  groups->registerInvitation(user.name(), inviteeName);
   invitee->sendMessage({SV_INVITED_TO_GROUP, user.name()});
 }
 
 HANDLE_MESSAGE(CL_ACCEPT_GROUP_INVITATION) {
-  if (groups->isUserInAGroup(user)) return;
-  if (groups->userHasAnInvitation(user)) groups->acceptInvitation(user);
+  if (groups->isUserInAGroup(user.name())) return;
+  if (groups->userHasAnInvitation(user.name()))
+    groups->acceptInvitation(user.name());
 }
 
 HANDLE_MESSAGE(DG_UNLOCK) {
