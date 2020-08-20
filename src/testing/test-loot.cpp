@@ -68,10 +68,13 @@ TEST_CASE("Clients discern NPCs with no loot") {
     auto &serverAnt = s.addNPC("ant");
     WAIT_UNTIL(c.objects().size() == 1);
 
-    WHEN("the ant dies") {
+    WHEN("a user kills the ant") {
+      s.waitForUsers(1);
+      auto &user = s.getFirstUser();
+      serverAnt.onAttackedBy(user, 1);
       serverAnt.reduceHealth(1);
 
-      THEN("the user doesn't believe he can loot it") {
+      THEN("he doesn't believe he can loot it") {
         ClientNPC &clientAnt = c.getFirstNPC();
         REPEAT_FOR_MS(200);
         CHECK_FALSE(clientAnt.lootable());
