@@ -9,8 +9,8 @@ class List;
 class Client;
 
 struct GroupUI {
-  void initialise();
-  void refresh(Client& client);
+  GroupUI(Client& client);
+  void refresh();
   void addMember(const std::string name);
 
   struct Member {
@@ -26,4 +26,6 @@ struct GroupUI {
   std::set<Member> otherMembers;
 
   List* container{nullptr};
+
+  Client& _client;
 };

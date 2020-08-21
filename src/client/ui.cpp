@@ -54,8 +54,7 @@ void Client::initUI() {
   initToasts();
   initQuestProgress();
 
-  groupUI = new GroupUI;
-  groupUI->initialise();
+  groupUI = new GroupUI(*this);
   addUI(groupUI->container);
 
   initSkipTutorialButton();

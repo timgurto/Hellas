@@ -5,14 +5,14 @@
 #include "ui/List.h"
 #include "ui/ProgressBar.h"
 
-void GroupUI::initialise() {
+GroupUI::GroupUI(Client &client) : _client(client) {
   const auto GAP = 2_px, MEMBER_W = 100_px, MEMBER_H = 30_px,
              CONTAINER_W = MEMBER_W + 2 * GAP,
              CONTAINER_Y = (Client::SCREEN_Y) / 2;
   container = new List({0, CONTAINER_Y, CONTAINER_W, 0}, MEMBER_H);
 }
 
-void GroupUI::refresh(Client &client) {
+void GroupUI::refresh() {
   container->clearChildren();
   const auto GAP = 2_px, NAME_H = Element::TEXT_HEIGHT, LEVEL_W = 15,
              BAR_H = 6_px, BAR_W = container->contentWidth() - 2 * GAP;
@@ -43,9 +43,9 @@ void GroupUI::refresh(Client &client) {
 
     auto targetName = member.name;
     memberEntry->setLeftMouseDownFunction(
-        [targetName, &client](Element &, const ScreenPoint &) {
-          auto *avatar = client.findUser(targetName);
-          if (avatar) client.setTarget(*avatar);
+        [targetName, this](Element &, const ScreenPoint &) {
+          auto *avatar = _client.findUser(targetName);
+          if (avatar) _client.setTarget(*avatar);
         });
   }
 
@@ -54,4 +54,11 @@ void GroupUI::refresh(Client &client) {
   container->setPosition(0, midScreenHeight);
 }
 
-void GroupUI::addMember(const std::string name) { otherMembers.insert({name}); }
+void GroupUI::addMember(const std::string name) {
+  auto m = Member{name};
+  auto *user = _client.findUser(name);
+  if (user) {
+    m.level = toString(user->level());
+  }
+  otherMembers.insert(m);
+}

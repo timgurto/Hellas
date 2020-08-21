@@ -289,11 +289,39 @@ TEST_CASE("A disconnected user remains in his group") {
   }
 }
 
+TEST_CASE_METHOD(TwoClients, "Group UI") {
+  WHEN("Alice and Bob join a group") {
+    server->groups->inviteToGroup("Alice", "Bob");
+
+    THEN("In Alice's group UI, Bob's level is 1") {
+      auto *groupUI = cAlice->groupUI;
+      WAIT_UNTIL(groupUI->otherMembers.size() == 1);
+      WAIT_UNTIL(groupUI->otherMembers.begin()->level == "1"s);
+    }
+  }
+
+  GIVEN("Bob is level 2") {
+    bob->levelUp();
+
+    WHEN("Alice and Bob join a group") {
+      server->groups->inviteToGroup("Alice", "Bob");
+
+      THEN("In Alice's group UI, Bob's level is 2") {
+        auto *groupUI = cAlice->groupUI;
+        WAIT_UNTIL(groupUI->otherMembers.size() == 1);
+        WAIT_UNTIL(groupUI->otherMembers.begin()->level == "2"s);
+      }
+    }
+  }
+}
+
 // "invite" context-menu item disabled when target is in a group
 // Ability to leave a group
 // Disappears when down to one member
 // Update UI on level up
 // Grey-out offline members
+// UI level, health, energy
+// Log in: get groupmates
 
 // Wait too long before accepting invitation
 // Shared XP only if nearby
