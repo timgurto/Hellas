@@ -678,7 +678,9 @@ HANDLE_MESSAGE(CL_ACCEPT_GROUP_INVITATION) {
     groups->acceptInvitation(user.name());
 }
 
-HANDLE_MESSAGE(CL_ROLL) { user.sendMessage({SV_ROLL_RESULT}); }
+HANDLE_MESSAGE(CL_ROLL) {
+  user.sendMessage({SV_ROLL_RESULT, makeArgs(user.name(), 5)});
+}
 
 HANDLE_MESSAGE(DG_UNLOCK) {
   CHECK_NO_ARGS;

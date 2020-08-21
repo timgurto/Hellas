@@ -2070,6 +2070,18 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
+      case SV_ROLL_RESULT: {
+        auto username = ""s;
+        auto result = 0;
+        singleMsg >> username >> del >> result >> del;
+        if (del != MSG_END) break;
+
+        auto name = username == _username ? "You" : username;
+        addChatMessage(name + " rolled " + toString(result),
+                       Color::CHAT_DEFAULT);
+        break;
+      }
+
       case SV_SAY: {
         std::string username, message;
         singleMsg >> username >> del;
