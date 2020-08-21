@@ -1120,6 +1120,9 @@ void Client::handleBufferedMessages(const std::string &msg) {
         readString(singleMsg, username, MSG_DELIM);
         singleMsg >> del >> newHealth >> del;
         if (del != MSG_END) break;
+
+        groupUI->onPlayerHealthChange(username, newHealth);
+
         Avatar *target = nullptr;
         if (username == _username)
           target = &_character;

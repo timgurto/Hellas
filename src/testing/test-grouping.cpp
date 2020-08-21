@@ -304,8 +304,19 @@ TEST_CASE_METHOD(TwoClients, "Group UI") {
 
       AND_WHEN("Bob levels up") {
         bob->levelUp();
-        THEN("his apparent level is up-to-date") {
+
+        THEN("his apparent level is accurate") {
           WAIT_UNTIL(alicesBobPanel.level == "2"s);
+        }
+      }
+
+      AND_WHEN("Bob loses health and energy") {
+        bob->reduceHealth(10);
+        bob->reduceEnergy(10);
+
+        THEN("his apparent health and energy are accurate") {
+          WAIT_UNTIL(alicesBobPanel.health == bob->health());
+          WAIT_UNTIL(alicesBobPanel.energy == bob->energy());
         }
       }
     }

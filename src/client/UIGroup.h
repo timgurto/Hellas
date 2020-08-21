@@ -13,7 +13,8 @@ struct GroupUI {
   void refresh();
   void addMember(const std::string name);
 
-  void onPlayerLevelChange(Username name, int newLevel);
+  void onPlayerLevelChange(Username name, Level newLevel);
+  void onPlayerHealthChange(Username name, Hitpoints newHealth);
 
   struct Member {
     std::string name;
