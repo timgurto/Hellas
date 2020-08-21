@@ -5,6 +5,7 @@
 #include "../NormalVariable.h"
 #include "../Point.h"
 #include "../server/Server.h"
+#include "TestFixtures.h"
 #include "catch.hpp"
 #include "testing.h"
 
@@ -87,4 +88,14 @@ TEST_CASE("Tool-speed display") {
   HasTags thing;
   thing.addTag("fast", 1.1);
   CHECK(thing.toolSpeedDisplayText("fast") == " +10%"s);
+}
+
+TEST_CASE_METHOD(TwoClients, "Roll command") {
+  WHEN("Alice rolls") {
+    cAlice.sendMessage(CL_ROLL);
+
+    THEN("She receives a result") {
+      CHECK(cAlice.waitForMessage(SV_ROLL_RESULT));
+    }
+  }
 }

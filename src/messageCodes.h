@@ -238,6 +238,9 @@ enum MessageCode {
   // Arguments: index, category, ID.
   CL_HOTBAR_BUTTON,
 
+  // Roll a number between 1 and 100, and share results with the player's party
+  CL_ROLL,
+
   // "I want to say ... to everybody". 
   // Arguments: message
   CL_SAY,
@@ -659,6 +662,10 @@ enum MessageCode {
   // Your hotbar has .. slots, which are as follows: ..., ..., ...
   // Arguments: numSlots, (category, ID), (category, ID), ...
   SV_HOTBAR,
+
+  // User ... rolled a ...
+  // Arguments: username, result
+  SV_ROLL_RESULT,
 
   // "User ... has said ...".
   // Arguments: username, message

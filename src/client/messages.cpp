@@ -2743,6 +2743,7 @@ void Client::initializeMessageNames() {
   _messageCommands["cquit"] = CL_LEAVE_CITY;
   _messageCommands["recruit"] = CL_RECRUIT;
   _messageCommands["cast"] = CL_CAST;
+  _messageCommands["roll"] = CL_ROLL;
 
   _messageCommands["say"] = CL_SAY;
   _messageCommands["s"] = CL_SAY;
