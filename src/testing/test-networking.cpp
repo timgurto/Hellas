@@ -7,6 +7,17 @@
 #include "TestServer.h"
 #include "testing.h"
 
+TEST_CASE("Clients can find the server on this computer") {
+  auto clientConfig = ClientConfig{};
+  clientConfig.loadFromFile("client-config.xml");
+  auto urlContainingServerIP = clientConfig.serverHostDirectory;
+  auto prescribedServerIP = readFromURL(urlContainingServerIP);
+
+  auto thisComputer = readFromURL("ident.me");
+
+  CHECK(prescribedServerIP == thisComputer);
+}
+
 TEST_CASE("Read invalid URL", "[.slow]") {
   CHECK(readFromURL("fake.fake.fake").empty());
 }

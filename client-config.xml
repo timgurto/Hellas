@@ -3,7 +3,7 @@
 <defaultFont filename="AdvoCut.ttf" size="10" height="11" offset="2" />
 <gameFont filename="AdvoCut.ttf" size="10" height="11" offset="2" />
 <castBar y="300" w="150" h="12" />
-<server hostDirectory="http://hellas.timgurto.com/server-ip.txt" port="8888"/>
+<server hostDirectory="https://playhellas.com/server-ip.txt" port="8888"/>
 
 <loginScreen
     frontX="133"
