@@ -394,6 +394,16 @@ void Client::initLoginScreen() {
         });
     _loginUI.push_back(createButton);
     updateCreateButton(this);
+
+    auto discordButton =
+        new Button({GAP, y, BUTTON_W, BUTTON_HEIGHT}, {},
+                   []() { system("explorer \"https://discord.gg/zHfEW77\""); });
+    discordButton->setTooltip("discord.gg/zHfEW77"s);
+    discordButton->addChild(new Picture({2, 2, images.logoDiscord}));
+    discordButton->addChild(
+        new Label({26, 0, BUTTON_W, BUTTON_HEIGHT}, "Join our Discord"s,
+                  Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
+    _loginUI.push_back(discordButton);
   }
 
   loginScreenElements.loginErrorLabel = new OutlinedLabel({0, 0, 200, 15}, {});

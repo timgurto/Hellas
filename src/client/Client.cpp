@@ -942,4 +942,6 @@ void Client::CommonImages::initialise() {
   mapCityNeutral = {"Images/UI/map-city-neutral.png", Color::MAGENTA};
   mapCityEnemy = {"Images/UI/map-city-enemy.png", Color::MAGENTA};
   mapRespawn = {"Images/UI/map-respawn.png", Color::MAGENTA};
+
+  logoDiscord = {"Images/logo-discord.png", Color::MAGENTA};
 }

@@ -599,6 +599,8 @@ class Client {
     Texture map;
     Texture mapCityFriendly, mapCityNeutral, mapCityEnemy;
     Texture mapRespawn;
+
+    Texture logoDiscord;
   } images;
 
  private:
