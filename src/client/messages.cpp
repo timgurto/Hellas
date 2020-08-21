@@ -2065,7 +2065,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         }
         if (del != MSG_END) break;
 
-        groupUI->refresh();
+        groupUI->refresh(*this);
 
         break;
       }

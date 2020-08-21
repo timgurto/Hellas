@@ -707,6 +707,12 @@ const CNPCTemplate *Client::findNPCTemplate(const std::string &id) const {
   return &it->second;
 }
 
+Avatar *Client::findUser(const std::string &username) {
+  auto it = _otherUsers.find(username);
+  if (it == _otherUsers.end()) return nullptr;
+  return it->second;
+}
+
 bool Client::isAtWarWithObjectOwner(const ClientObject::Owner &owner) const {
   // Cities
   if (owner.type == ClientObject::Owner::CITY)

@@ -289,15 +289,16 @@ TEST_CASE("A disconnected user remains in his group") {
   }
 }
 
-// All loot available to all group members
-// /roll
 // "invite" context-menu item disabled when target is in a group
 // Ability to leave a group
 // Disappears when down to one member
+// Update UI on level up
+// Grey-out offline members
 
 // Wait too long before accepting invitation
 // Shared XP only if nearby
 // Round-robin loot
+// Master looter
 // If loot is left, then anyone [in group] can pick it up
 // Show group members on map
 // Only the leader can kick/invite

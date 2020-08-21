@@ -740,6 +740,7 @@ class Client {
   ClientNPCType *findNPCType(const std::string &id);
   const ClientItem *findItem(const std::string &id) const;
   const CNPCTemplate *findNPCTemplate(const std::string &id) const;
+  Avatar *findUser(const std::string &username);
 
  private:
   friend class ContainerGrid;  // Needs to send CL_SWAP_ITEMS messages, and open

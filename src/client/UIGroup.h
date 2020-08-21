@@ -6,10 +6,11 @@
 #include "../types.h"
 
 class List;
+class Client;
 
 struct GroupUI {
   void initialise();
-  void refresh();
+  void refresh(Client& client);
   void addMember(const std::string name);
 
   struct Member {

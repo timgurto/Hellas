@@ -12,12 +12,12 @@ void GroupUI::initialise() {
   container = new List({0, CONTAINER_Y, CONTAINER_W, 0}, MEMBER_H);
 }
 
-void GroupUI::refresh() {
+void GroupUI::refresh(Client &client) {
   container->clearChildren();
   const auto GAP = 2_px, NAME_H = Element::TEXT_HEIGHT, LEVEL_W = 15,
              BAR_H = 6_px, BAR_W = container->contentWidth() - 2 * GAP;
 
-  for (auto member : otherMembers) {
+  for (auto &member : otherMembers) {
     auto memberEntry = new ColorBlock({});
     container->addChild(memberEntry);
 
@@ -40,6 +40,13 @@ void GroupUI::refresh() {
         new ProgressBar<Energy>({GAP, y, BAR_W, BAR_H}, member.energy,
                                 member.maxEnergy, Color::STAT_ENERGY);
     memberEntry->addChild(energyBar);
+
+    auto targetName = member.name;
+    memberEntry->setLeftMouseDownFunction(
+        [targetName, &client](Element &, const ScreenPoint &) {
+          auto *avatar = client.findUser(targetName);
+          if (avatar) client.setTarget(*avatar);
+        });
   }
 
   container->resizeToContent();
