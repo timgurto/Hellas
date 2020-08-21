@@ -66,3 +66,10 @@ void GroupUI::addMember(const std::string name) {
   }
   otherMembers.insert(m);
 }
+
+void GroupUI::onPlayerLevelChange(Username name, int newLevel) {
+  auto it = otherMembers.find({name});
+  if (it == otherMembers.end()) return;
+  auto &member = const_cast<Member &>(*it);
+  member.level = toString(newLevel);
+}

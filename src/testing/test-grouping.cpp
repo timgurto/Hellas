@@ -301,6 +301,13 @@ TEST_CASE_METHOD(TwoClients, "Group UI") {
       WAIT_UNTIL(alicesBobPanel.maxHealth == bob->stats().maxHealth);
       WAIT_UNTIL(alicesBobPanel.energy == bob->energy());
       WAIT_UNTIL(alicesBobPanel.maxEnergy == bob->stats().maxEnergy);
+
+      AND_WHEN("Bob levels up") {
+        bob->levelUp();
+        THEN("his apparent level is up-to-date") {
+          WAIT_UNTIL(alicesBobPanel.level == "2"s);
+        }
+      }
     }
   }
 
