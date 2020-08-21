@@ -293,10 +293,14 @@ TEST_CASE_METHOD(TwoClients, "Group UI") {
   WHEN("Alice and Bob join a group") {
     server->groups->inviteToGroup("Alice", "Bob");
 
-    THEN("In Alice's group UI, Bob's level is 1") {
-      auto *groupUI = cAlice->groupUI;
-      WAIT_UNTIL(groupUI->otherMembers.size() == 1);
-      WAIT_UNTIL(groupUI->otherMembers.begin()->level == "1"s);
+    THEN("In Alice's group UI, Bob's details are correct") {
+      WAIT_UNTIL(cAlice->groupUI->otherMembers.size() == 1);
+      const auto &alicesBobPanel = *cAlice->groupUI->otherMembers.begin();
+      WAIT_UNTIL(alicesBobPanel.level == "1"s);
+      WAIT_UNTIL(alicesBobPanel.health == bob->health());
+      WAIT_UNTIL(alicesBobPanel.maxHealth == bob->stats().maxHealth);
+      WAIT_UNTIL(alicesBobPanel.energy == bob->energy());
+      WAIT_UNTIL(alicesBobPanel.maxEnergy == bob->stats().maxEnergy);
     }
   }
 
@@ -307,9 +311,9 @@ TEST_CASE_METHOD(TwoClients, "Group UI") {
       server->groups->inviteToGroup("Alice", "Bob");
 
       THEN("In Alice's group UI, Bob's level is 2") {
-        auto *groupUI = cAlice->groupUI;
-        WAIT_UNTIL(groupUI->otherMembers.size() == 1);
-        WAIT_UNTIL(groupUI->otherMembers.begin()->level == "2"s);
+        WAIT_UNTIL(cAlice->groupUI->otherMembers.size() == 1);
+        const auto &alicesBobPanel = *cAlice->groupUI->otherMembers.begin();
+        WAIT_UNTIL(alicesBobPanel.level == "2"s);
       }
     }
   }

@@ -59,6 +59,10 @@ void GroupUI::addMember(const std::string name) {
   auto *user = _client.findUser(name);
   if (user) {
     m.level = toString(user->level());
+    m.health = user->health();
+    m.maxHealth = user->maxHealth();
+    m.energy = user->energy();
+    m.maxEnergy = user->maxEnergy();
   }
   otherMembers.insert(m);
 }
