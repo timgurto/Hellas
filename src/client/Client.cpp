@@ -932,8 +932,8 @@ void Client::CommonImages::initialise() {
   icons.initialise("Images/Icons");
 
   map = {"Images/map.png"};
-  mapCityFriendly = {"Images/UI/map-city-friendly.png"};
-  mapCityNeutral = {"Images/UI/map-city-neutral.png"};
-  mapCityEnemy = {"Images/UI/map-city-enemy.png"};
-  mapRespawn = {"Images/UI/map-respawn.png"};
+  mapCityFriendly = {"Images/UI/map-city-friendly.png", Color::MAGENTA};
+  mapCityNeutral = {"Images/UI/map-city-neutral.png", Color::MAGENTA};
+  mapCityEnemy = {"Images/UI/map-city-enemy.png", Color::MAGENTA};
+  mapRespawn = {"Images/UI/map-respawn.png", Color::MAGENTA};
 }
