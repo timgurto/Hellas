@@ -679,7 +679,7 @@ HANDLE_MESSAGE(CL_ACCEPT_GROUP_INVITATION) {
 }
 
 HANDLE_MESSAGE(CL_ROLL) {
-  user.sendMessage({SV_ROLL_RESULT, makeArgs(user.name(), 5)});
+  user.sendMessage({SV_ROLL_RESULT, makeArgs(user.name(), roll())});
 }
 
 HANDLE_MESSAGE(DG_UNLOCK) {

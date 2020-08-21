@@ -177,3 +177,5 @@ std::string multiplicativeToString(double d) {
   d -= 1;
   return proportionToPercentageString(d);
 }
+
+int roll() { return rand() % 100 + 1; }

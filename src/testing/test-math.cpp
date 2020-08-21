@@ -98,4 +98,17 @@ TEST_CASE_METHOD(TwoClients, "Roll command") {
       CHECK(cAlice.waitForMessage(SV_ROLL_RESULT));
     }
   }
+
+  auto hit1 = false, hit100 = false;
+  for (auto i = 0; i < 10000; ++i) {
+    auto result = roll();
+    CHECK(result >= 1);
+    CHECK(result <= 100);
+    if (result == 1)
+      hit1 = true;
+    else if (result == 100)
+      hit100 = true;
+  }
+  CHECK(hit1);
+  CHECK(hit100);
 }
