@@ -679,7 +679,9 @@ HANDLE_MESSAGE(CL_ACCEPT_GROUP_INVITATION) {
 }
 
 HANDLE_MESSAGE(CL_ROLL) {
-  user.sendMessage({SV_ROLL_RESULT, makeArgs(user.name(), roll())});
+  auto result = roll();
+  broadcastToGroup(user.name(),
+                   {SV_ROLL_RESULT, makeArgs(user.name(), result)});
 }
 
 HANDLE_MESSAGE(DG_UNLOCK) {
@@ -2064,6 +2066,14 @@ void Server::broadcastToCity(const std::string &cityName,
 
   for (const auto &citizen : _cities.membersOf(cityName))
     sendMessageIfOnline(citizen, msg);
+}
+
+void Server::broadcastToGroup(Username aMember, const Message &msg) {
+  auto group = groups->getUsersGroup(aMember);
+  for (auto memberName : group) {
+    auto *asUser = getUserByName(memberName);
+    asUser->sendMessage(msg);
+  }
 }
 
 void Server::sendMessage(const Socket &dstSocket, const Message &msg) const {

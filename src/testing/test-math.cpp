@@ -4,6 +4,7 @@
 #include "../HasTags.h"
 #include "../NormalVariable.h"
 #include "../Point.h"
+#include "../server/Groups.h"
 #include "../server/Server.h"
 #include "TestFixtures.h"
 #include "catch.hpp"
@@ -94,8 +95,24 @@ TEST_CASE_METHOD(TwoClients, "Roll command") {
   WHEN("Alice rolls") {
     cAlice.sendMessage(CL_ROLL);
 
-    THEN("She receives a result") {
+    THEN("She receives the result") {
       CHECK(cAlice.waitForMessage(SV_ROLL_RESULT));
+    }
+
+    THEN("Bob does not receive the result") {
+      CHECK_FALSE(cBob.waitForMessage(SV_ROLL_RESULT));
+    }
+  }
+
+  GIVEN("Alice and Bob are in a group") {
+    server->groups->inviteToGroup("Alice", "Bob");
+
+    WHEN("Alice rolls") {
+      cAlice.sendMessage(CL_ROLL);
+
+      THEN("Bob receives the result") {
+        CHECK(cBob.waitForMessage(SV_ROLL_RESULT));
+      }
     }
   }
 
