@@ -68,15 +68,20 @@ void GroupUI::addMember(const std::string name) {
 }
 
 void GroupUI::onPlayerLevelChange(Username name, Level newLevel) {
-  auto it = otherMembers.find({name});
-  if (it == otherMembers.end()) return;
-  auto &member = const_cast<Member &>(*it);
-  member.level = toString(newLevel);
+  auto *member = findMember(name);
+  if (member) member->level = toString(newLevel);
 }
 
 void GroupUI::onPlayerHealthChange(Username name, Hitpoints newHealth) {
+  auto *member = findMember(name);
+  if (member) member->health = newHealth;
+}
+
+GroupUI::Member *GroupUI::findMember(Username name) {
   auto it = otherMembers.find({name});
-  if (it == otherMembers.end()) return;
-  auto &member = const_cast<Member &>(*it);
-  member.health = newHealth;
+  if (it == otherMembers.end()) return nullptr;
+
+  // const_cast is fine as long as .name never changes, since it's used to sort
+  // the set.
+  return const_cast<Member *>(&*it);
 }

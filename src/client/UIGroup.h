@@ -26,6 +26,8 @@ struct GroupUI {
     bool operator<(const Member& rhs) const { return name < rhs.name; }
   };
 
+  Member* findMember(Username name);
+
   std::set<Member> otherMembers;
 
   List* container{nullptr};
