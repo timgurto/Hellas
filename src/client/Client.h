@@ -478,6 +478,7 @@ class Client {
     ChoiceList *classList{nullptr};
     List *classDescription{nullptr};
     OutlinedLabel *loginErrorLabel{nullptr};
+    Window *donateWindow{nullptr};
   } loginScreenElements;
 
   // These are superficial, and relate only to the cast bar.
@@ -600,7 +601,7 @@ class Client {
     Texture mapCityFriendly, mapCityNeutral, mapCityEnemy;
     Texture mapRespawn;
 
-    Texture logoDiscord;
+    Texture logoDiscord, logoBTC, btcQR;
   } images;
 
  private:

@@ -946,4 +946,6 @@ void Client::CommonImages::initialise() {
   mapRespawn = {"Images/UI/map-respawn.png", Color::MAGENTA};
 
   logoDiscord = {"Images/logo-discord.png", Color::MAGENTA};
+  logoBTC = {"Images/logo-bitcoin.png", Color::MAGENTA};
+  btcQR = {"Images/btc-qr.png", Color::MAGENTA};
 }

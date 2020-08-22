@@ -405,9 +405,53 @@ void Client::initLoginScreen() {
     discordButton->setTooltip("discord.gg/zHfEW77"s);
     discordButton->addChild(new Picture({2, 2, images.logoDiscord}));
     discordButton->addChild(
-        new Label({26, 0, BUTTON_W, BUTTON_HEIGHT}, "Join our Discord"s,
-                  Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
+        new Label({26, 0, BUTTON_W - 26, BUTTON_HEIGHT}, "Join community"s,
+                  Element::CENTER_JUSTIFIED, Element::CENTER_JUSTIFIED));
     _loginUI.push_back(discordButton);
+    y += BUTTON_HEIGHT + 2;
+
+    auto donateButton =
+        new Button({GAP, y, BUTTON_W, BUTTON_HEIGHT}, {}, [this]() {
+          auto *&window = loginScreenElements.donateWindow;
+          if (!window) {
+            const auto PADDING = 5_px, WIN_W = 225_px,
+                       QR_X = (WIN_W - images.btcQR.width()) / 2;
+            window = Window::WithRectAndTitle(*this, {0, 0, WIN_W, 0},
+                                              "Donate to the developer");
+            addWindow(window);
+            auto y = PADDING;
+
+            window->addChild(
+                new Label({0, y, WIN_W, Element::TEXT_HEIGHT},
+                          "Any donations are very welcome, and will",
+                          Element::CENTER_JUSTIFIED));
+            y += Element::TEXT_HEIGHT;
+            window->addChild(
+                new Label({0, y, WIN_W, Element::TEXT_HEIGHT},
+                          "contribute to the game's development and upkeep.",
+                          Element::CENTER_JUSTIFIED));
+            y += Element::TEXT_HEIGHT;
+            y += PADDING;
+
+            window->addChild(new Picture({QR_X, y, images.btcQR}));
+            y += images.btcQR.height() + PADDING;
+
+            window->addChild(
+                new Label({0, y, WIN_W, Element::TEXT_HEIGHT},
+                          "Bitcoin: 15M23kfQ9NCTBzh1aY6vhr6XdphUibqxsC",
+                          Element::CENTER_JUSTIFIED));
+            y += Element::TEXT_HEIGHT + PADDING;
+
+            window->resize(WIN_W, y);
+            window->center();
+          }
+          showWindowInFront(window);
+        });
+    donateButton->addChild(new Picture({2, 2, images.logoBTC}));
+    donateButton->addChild(new Label({26, 0, BUTTON_W - 26, BUTTON_HEIGHT},
+                                     "Donate"s, Element::CENTER_JUSTIFIED,
+                                     Element::CENTER_JUSTIFIED));
+    _loginUI.push_back(donateButton);
   }
 
   loginScreenElements.loginErrorLabel = new OutlinedLabel({0, 0, 200, 15}, {});
