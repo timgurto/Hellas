@@ -1,5 +1,9 @@
 #pragma once
 
+#ifdef TESTING
+#include <mutex>
+#endif
+
 #include <map>
 #include <set>
 #include <vector>
@@ -35,5 +39,8 @@ class Groups {
   Group* createGroup(Username founder);
   std::map<Username, Username> _inviterOf;
   std::map<Username, Group*> _groupsByUser;
+#ifdef TESTING
+  mutable std::mutex _groupsByUserMutex;
+#endif
   int _numGroups{0};
 };

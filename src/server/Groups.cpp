@@ -5,9 +5,19 @@
 #include "Server.h"
 #include "User.h"
 
+#ifdef TESTING
+#define LOCK_GROUPS_BY_USER _groupsByUserMutex.lock();
+#define UNLOCK_GROUPS_BY_USER _groupsByUserMutex.unlock();
+#else
+#define LOCK_GROUPS_BY_USER
+#define UNLOCK_GROUPS_BY_USER
+#endif
+
 Groups::Group* Groups::getGroupAndMakeIfNeeded(Username inviter) {
+  LOCK_GROUPS_BY_USER
   auto it = _groupsByUser.find(inviter);
   auto inviterIsInAGroup = it != _groupsByUser.end();
+  UNLOCK_GROUPS_BY_USER
 
   if (inviterIsInAGroup)
     return it->second;
@@ -19,7 +29,9 @@ Groups::Group* Groups::getGroupAndMakeIfNeeded(Username inviter) {
 Groups::Group* Groups::createGroup(Username founder) {
   auto newGroup = new Group;
   newGroup->insert(founder);
+  LOCK_GROUPS_BY_USER
   _groupsByUser[founder] = newGroup;
+  UNLOCK_GROUPS_BY_USER
   ++_numGroups;
   return newGroup;
 }
@@ -28,13 +40,17 @@ void Groups::addToGroup(Username newMember, Username inviter) {
   auto* group = getGroupAndMakeIfNeeded(inviter);
 
   group->insert(newMember);
+  LOCK_GROUPS_BY_USER
   _groupsByUser[newMember] = group;
+  UNLOCK_GROUPS_BY_USER
   sendGroupMakeupToAllMembers(*group);
 }
 
 Groups::Group Groups::getUsersGroup(Username player) const {
+  LOCK_GROUPS_BY_USER
   auto it = _groupsByUser.find(player);
   auto userIsInAGroup = it != _groupsByUser.end();
+  UNLOCK_GROUPS_BY_USER
 
   if (userIsInAGroup) return *it->second;
 
@@ -43,8 +59,10 @@ Groups::Group Groups::getUsersGroup(Username player) const {
 }
 
 int Groups::getGroupSize(Username u) const {
+  LOCK_GROUPS_BY_USER
   auto it = _groupsByUser.find(u);
   auto userIsInAGroup = it != _groupsByUser.end();
+  UNLOCK_GROUPS_BY_USER
 
   if (userIsInAGroup)
     return it->second->size();
@@ -53,7 +71,10 @@ int Groups::getGroupSize(Username u) const {
 }
 
 bool Groups::isUserInAGroup(Username u) const {
-  return _groupsByUser.count(u) == 1;
+  LOCK_GROUPS_BY_USER
+  auto ret = _groupsByUser.count(u) == 1;
+  UNLOCK_GROUPS_BY_USER
+  return ret;
 }
 
 bool Groups::areUsersInSameGroup(Username lhs, Username rhs) const {
@@ -78,13 +99,19 @@ void Groups::removeUserFromHisGroup(Username quitter) {
   auto formerGroup = getUsersGroup(quitter);
   formerGroup.erase(quitter);
   for (auto remainingMember : formerGroup) {
+    LOCK_GROUPS_BY_USER
     auto it = _groupsByUser.find(remainingMember);
-    if (it == _groupsByUser.end()) continue;
+    auto quitterNotInGroup = it == _groupsByUser.end();
+    UNLOCK_GROUPS_BY_USER
+    if (quitterNotInGroup) continue;
     auto& membersPersonalGroupView = *it->second;
     membersPersonalGroupView.erase(quitter);
   }
 
+  LOCK_GROUPS_BY_USER
   _groupsByUser.erase(quitter);
+  UNLOCK_GROUPS_BY_USER
+  // sendGroupMakeupToAllMembers(formerGroup);
 }
 
 void Groups::sendGroupMakeupToAllMembers(const Group& g) {
