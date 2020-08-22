@@ -15,7 +15,9 @@ struct GroupUI {
 
   void onPlayerLevelChange(Username name, Level newLevel);
   void onPlayerHealthChange(Username name, Hitpoints newHealth);
-  void onPlayerEnergyChange(Username name, Hitpoints newEnergy);
+  void onPlayerEnergyChange(Username name, Energy newEnergy);
+  void onPlayerMaxHealthChange(Username name, Hitpoints newMaxHealth);
+  void onPlayerMaxEnergyChange(Username name, Energy newMaxEnergy);
 
   struct Member {
     std::string name;

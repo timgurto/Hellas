@@ -319,6 +319,16 @@ TEST_CASE_METHOD(TwoClients, "Group UI") {
           WAIT_UNTIL(alicesBobPanel.energy == bob->energy());
         }
       }
+
+      AND_WHEN("Bob has 200 max health and energy") {
+        alice->sendMessage({SV_MAX_HEALTH, makeArgs("Bob", 200)});
+        alice->sendMessage({SV_MAX_ENERGY, makeArgs("Bob", 200)});
+
+        THEN("his apparent max health and energy are 200") {
+          WAIT_UNTIL(alicesBobPanel.maxHealth == 200);
+          WAIT_UNTIL(alicesBobPanel.maxEnergy == 200);
+        }
+      }
     }
   }
 

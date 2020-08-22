@@ -2216,6 +2216,9 @@ void Client::handle_SV_MAX_HEALTH(const std::string &username,
     _character.maxHealth(newMaxHealth);
     return;
   }
+
+  groupUI->onPlayerMaxHealthChange(username, newMaxHealth);
+
   auto it = _otherUsers.find(username);
   if (it == _otherUsers.end()) {
     return;
@@ -2229,6 +2232,9 @@ void Client::handle_SV_MAX_ENERGY(const std::string &username,
     _character.maxEnergy(newMaxEnergy);
     return;
   }
+
+  groupUI->onPlayerMaxEnergyChange(username, newMaxEnergy);
+
   auto it = _otherUsers.find(username);
   if (it == _otherUsers.end()) {
     return;

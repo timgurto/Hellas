@@ -77,9 +77,19 @@ void GroupUI::onPlayerHealthChange(Username name, Hitpoints newHealth) {
   if (member) member->health = newHealth;
 }
 
-void GroupUI::onPlayerEnergyChange(Username name, Hitpoints newEnergy) {
+void GroupUI::onPlayerEnergyChange(Username name, Energy newEnergy) {
   auto *member = findMember(name);
   if (member) member->energy = newEnergy;
+}
+
+void GroupUI::onPlayerMaxHealthChange(Username name, Hitpoints newMaxHealth) {
+  auto *member = findMember(name);
+  if (member) member->maxHealth = newMaxHealth;
+}
+
+void GroupUI::onPlayerMaxEnergyChange(Username name, Energy newMaxEnergy) {
+  auto *member = findMember(name);
+  if (member) member->maxEnergy = newMaxEnergy;
 }
 
 GroupUI::Member *GroupUI::findMember(Username name) {
