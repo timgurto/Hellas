@@ -352,8 +352,8 @@ TEST_CASE_METHOD(TwoClients, "Group UI") {
 
 TEST_CASE_METHOD(ThreeClients, "Leaving a group") {
   GIVEN("Alice, Bob and Charlie are in a group") {
-    server->groups->addToGroup("Alice", "Bob");
-    server->groups->addToGroup("Alice", "Charlie");
+    server->groups->addToGroup("Bob", "Alice");
+    server->groups->addToGroup("Charlie", "Alice");
 
     WHEN("Charlie sends a leave-group message") {
       cCharlie.sendMessage(CL_LEAVE_GROUP);
@@ -363,6 +363,10 @@ TEST_CASE_METHOD(ThreeClients, "Leaving a group") {
 
         AND_THEN("Alice still is") {
           CHECK(server->groups->isUserInAGroup("Alice"));
+
+          AND_THEN("Alice's group has two members") {
+            CHECK(server->groups->getGroupSize("Alice") == 2);
+          }
         }
       }
     }

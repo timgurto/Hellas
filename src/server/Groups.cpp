@@ -81,6 +81,15 @@ void Groups::acceptInvitation(Username newMember) {
 }
 
 void Groups::removeUserFromHisGroup(Username quitter) {
+  auto formerGroup = getUsersGroup(quitter);
+  formerGroup.erase(quitter);
+  for (auto remainingMember : formerGroup) {
+    auto it = _groupsByUser.find(remainingMember);
+    if (it == _groupsByUser.end()) continue;
+    auto& membersPersonalGroupView = *it->second;
+    membersPersonalGroupView.erase(quitter);
+  }
+
   _groupsByUser.erase(quitter);
 }
 
