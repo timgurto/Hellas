@@ -360,6 +360,18 @@ TEST_CASE_METHOD(ThreeClients, "Leaving a group") {
 
       THEN("he is not in a group") {
         WAIT_UNTIL(!server->groups->isUserInAGroup("Charlie"));
+
+        AND_THEN("Alice still is") {
+          CHECK(server->groups->isUserInAGroup("Alice"));
+        }
+      }
+    }
+
+    WHEN("Bob sends a leave-group message") {
+      cBob.sendMessage(CL_LEAVE_GROUP);
+
+      THEN("Bob is not in a group") {
+        WAIT_UNTIL(!server->groups->isUserInAGroup("Bob"));
       }
     }
   }

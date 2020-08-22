@@ -80,6 +80,10 @@ void Groups::acceptInvitation(Username newMember) {
   addToGroup(newMember, inviter);
 }
 
+void Groups::removeUserFromHisGroup(Username quitter) {
+  _groupsByUser.erase(quitter);
+}
+
 void Groups::sendGroupMakeupToAllMembers(const Group& g) {
   for (auto memberName : g) {
     auto* asUser = Server::instance().getUserByName(memberName);

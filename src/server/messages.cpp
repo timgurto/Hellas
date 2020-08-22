@@ -678,7 +678,7 @@ HANDLE_MESSAGE(CL_ACCEPT_GROUP_INVITATION) {
     groups->acceptInvitation(user.name());
 }
 
-HANDLE_MESSAGE(CL_LEAVE_GROUP) { groups->removeUserFromHisGroup(); }
+HANDLE_MESSAGE(CL_LEAVE_GROUP) { groups->removeUserFromHisGroup(user.name()); }
 
 HANDLE_MESSAGE(CL_ROLL) {
   auto result = roll();
