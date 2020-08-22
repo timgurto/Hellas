@@ -308,12 +308,14 @@ void Client::initLoginScreen() {
       *this, {BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT}, TextBox::LETTERS);
   loginScreenElements.nameBox->text(_username);
   textBoxInFocus = loginScreenElements.nameBox;
-  loginScreenElements.nameBox->setOnChange([](void *pClient) {
-    auto &client = *reinterpret_cast<Client *>(pClient);
-    client.updateLoginButton();
-    client.loginScreenElements.pwBox->text("");
-    client._savedPwHash.clear();
-  });
+  loginScreenElements.nameBox->setOnChange(
+      [](void *pClient) {
+        auto &client = *reinterpret_cast<Client *>(pClient);
+        client.updateLoginButton();
+        client.loginScreenElements.pwBox->text("");
+        client._savedPwHash.clear();
+      },
+      this);
   _loginUI.push_back(loginScreenElements.nameBox);
   Y += loginScreenElements.nameBox->height() + GAP;
 
@@ -326,10 +328,12 @@ void Client::initLoginScreen() {
       new TextBox(*this, {BUTTON_X, Y, BUTTON_W, Element::TEXT_HEIGHT});
   loginScreenElements.pwBox->maskContents();
   if (!_savedPwHash.empty()) loginScreenElements.pwBox->text("SAVED PW");
-  loginScreenElements.pwBox->setOnChange([](void *pClient) {
-    auto &client = *reinterpret_cast<Client *>(pClient);
-    client._savedPwHash.clear();
-  });
+  loginScreenElements.pwBox->setOnChange(
+      [](void *pClient) {
+        auto &client = *reinterpret_cast<Client *>(pClient);
+        client._savedPwHash.clear();
+      },
+      this);
   if (loginScreenElements.nameBox->hasText())
     textBoxInFocus = loginScreenElements.pwBox;
   _loginUI.push_back(loginScreenElements.pwBox);
