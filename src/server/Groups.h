@@ -10,11 +10,9 @@ class User;
 
 class Groups {
  public:
-  ~Groups();
-
   using Group = std::set<Username>;
 
-  int numGroups() const;
+  int numGroups() const { return _numGroups; }
 
   void addToGroup(Username newMember, Username inviter);
 
@@ -35,7 +33,7 @@ class Groups {
  private:
   Group* getGroupAndMakeIfNeeded(Username inviter);
   Group* createGroup(Username founder);
-  std::vector<Group*> _groups;
   std::map<Username, Username> _inviterOf;
   std::map<Username, Group*> _groupsByUser;
+  int _numGroups{0};
 };

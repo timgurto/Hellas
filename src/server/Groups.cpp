@@ -5,12 +5,6 @@
 #include "Server.h"
 #include "User.h"
 
-Groups::~Groups() {
-  for (auto* group : _groups) delete group;
-}
-
-int Groups::numGroups() const { return _groups.size(); }
-
 Groups::Group* Groups::getGroupAndMakeIfNeeded(Username inviter) {
   auto it = _groupsByUser.find(inviter);
   auto inviterIsInAGroup = it != _groupsByUser.end();
@@ -26,7 +20,7 @@ Groups::Group* Groups::createGroup(Username founder) {
   auto newGroup = new Group;
   newGroup->insert(founder);
   _groupsByUser[founder] = newGroup;
-  _groups.push_back(newGroup);
+  ++_numGroups;
   return newGroup;
 }
 
