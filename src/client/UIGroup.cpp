@@ -77,6 +77,11 @@ void GroupUI::onPlayerHealthChange(Username name, Hitpoints newHealth) {
   if (member) member->health = newHealth;
 }
 
+void GroupUI::onPlayerEnergyChange(Username name, Hitpoints newEnergy) {
+  auto *member = findMember(name);
+  if (member) member->energy = newEnergy;
+}
+
 GroupUI::Member *GroupUI::findMember(Username name) {
   auto it = otherMembers.find({name});
   if (it == otherMembers.end()) return nullptr;

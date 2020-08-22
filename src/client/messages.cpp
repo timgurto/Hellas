@@ -1185,6 +1185,9 @@ void Client::handleBufferedMessages(const std::string &msg) {
         readString(singleMsg, username, MSG_DELIM);
         singleMsg >> del >> newEnergy >> del;
         if (del != MSG_END) break;
+
+        groupUI->onPlayerEnergyChange(username, newEnergy);
+
         Avatar *target = nullptr;
         if (username == _username)
           target = &_character;
