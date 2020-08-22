@@ -388,7 +388,7 @@ TEST_CASE("Grouped players can loot each other's kills") {
       auto &alice = s.findUser("Alice");
       auto &bob = s.findUser("Bob");
 
-      s->groups->inviteToGroup("Bob", "Alice");
+      s->groups->addToGroup("Bob", "Alice");
 
       WHEN("Alice kills the mouse") {
         mouse.onAttackedBy(alice, 1);

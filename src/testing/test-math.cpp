@@ -105,7 +105,7 @@ TEST_CASE_METHOD(TwoClients, "Roll command") {
   }
 
   GIVEN("Alice and Bob are in a group") {
-    server->groups->inviteToGroup("Alice", "Bob");
+    server->groups->addToGroup("Alice", "Bob");
 
     WHEN("Alice rolls") {
       cAlice.sendMessage(CL_ROLL);

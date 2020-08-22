@@ -23,7 +23,7 @@ TEST_CASE("Shared XP") {
     auto &critter = s.addNPC("critter", {10, 10});
 
     AND_GIVEN("Alice and Bob are in a group") {
-      s->groups->inviteToGroup("Bob", "Alice");
+      s->groups->addToGroup("Bob", "Alice");
 
       WHEN("Alice kills the critter") {
         uAlice.setTargetAndAttack(&critter);
@@ -32,7 +32,7 @@ TEST_CASE("Shared XP") {
       }
 
       AND_GIVEN("Charlie is also in the group") {
-        s->groups->inviteToGroup("Charlie", "Alice");
+        s->groups->addToGroup("Charlie", "Alice");
 
         WHEN("Alice kills the critter") {
           uAlice.setTargetAndAttack(&critter);
@@ -43,7 +43,7 @@ TEST_CASE("Shared XP") {
     }
 
     AND_GIVEN("Bob and Charlie are in a group") {
-      s->groups->inviteToGroup("Charlie", "Bob");
+      s->groups->addToGroup("Charlie", "Bob");
 
       WHEN("Alice kills the critter") {
         uAlice.setTargetAndAttack(&critter);
@@ -59,7 +59,7 @@ TEST_CASE("Shared XP") {
       const int normalXP = uAlice.appropriateXPForKill(critter);
 
       WHEN("Alice is in a group of two") {
-        s->groups->inviteToGroup("Bob", "Alice");
+        s->groups->addToGroup("Bob", "Alice");
 
         THEN("Alice would receive half of her normal XP") {
           const int xpInGroupOf2 = uAlice.appropriateXPForKill(critter);
@@ -68,8 +68,8 @@ TEST_CASE("Shared XP") {
       }
 
       WHEN("Alice is in a group of three") {
-        s->groups->inviteToGroup("Bob", "Alice");
-        s->groups->inviteToGroup("Charlie", "Alice");
+        s->groups->addToGroup("Bob", "Alice");
+        s->groups->addToGroup("Charlie", "Alice");
 
         THEN("Alice would receive a third of her normal XP") {
           const int xpInGroupOf3 = uAlice.appropriateXPForKill(critter);
@@ -160,7 +160,7 @@ TEST_CASE_METHOD(FourClients, "No duplicate groups") {
   THEN("There are no groups") { CHECK(server->groups->numGroups() == 0); }
 
   GIVEN("Alice and Bob are in a group") {
-    server->groups->inviteToGroup("Bob", "Alice");
+    server->groups->addToGroup("Bob", "Alice");
 
     WHEN("Alice invites Charlie and he accepts") {
       cAlice.sendMessage(CL_INVITE_TO_GROUP, "Charlie");
@@ -178,7 +178,7 @@ TEST_CASE_METHOD(FourClients, "No duplicate groups") {
     }
 
     AND_GIVEN("Charlie and Dan are in a group") {
-      server->groups->inviteToGroup("Dan", "Charlie");
+      server->groups->addToGroup("Dan", "Charlie");
 
       THEN("There are two groups") { CHECK(server->groups->numGroups() == 2); }
     }
@@ -212,7 +212,7 @@ TEST_CASE_METHOD(ThreeClients, "Grouped players can't accept invitations") {
 
 TEST_CASE_METHOD(ThreeClients, "Grouped players can't be invited") {
   GIVEN("Alice and Bob are in a group") {
-    server->groups->inviteToGroup("Bob", "Alice");
+    server->groups->addToGroup("Bob", "Alice");
 
     WHEN("Charlie invites Alice to a group") {
       cCharlie.sendMessage(CL_INVITE_TO_GROUP, "Alice");
@@ -244,7 +244,7 @@ TEST_CASE_METHOD(ThreeClients, "Clients know their teammates") {
   }
 
   WHEN("Alice and Bob are in a group") {
-    server->groups->inviteToGroup("Bob", "Alice");
+    server->groups->addToGroup("Bob", "Alice");
 
     THEN("Alice knows she has one groupmate, Bob") {
       WAIT_UNTIL(cAlice->groupUI->otherMembers.size() == 1);
@@ -255,7 +255,7 @@ TEST_CASE_METHOD(ThreeClients, "Clients know their teammates") {
         CHECK(cBob->groupUI->otherMembers.count("Alice"s) == 1);
 
         AND_WHEN("Alice adds Charlie to the group") {
-          server->groups->inviteToGroup("Charlie", "Alice");
+          server->groups->addToGroup("Charlie", "Alice");
 
           THEN("Bob knows that Charlie is in his group") {
             WAIT_UNTIL(cBob->groupUI->otherMembers.count("Charlie"s) == 1);
@@ -275,7 +275,7 @@ TEST_CASE("A disconnected user remains in his group") {
     auto cAlice = TestClient::WithUsername("Alice");
     s.waitForUsers(2);
 
-    s->groups->inviteToGroup("Alice", "Bob");
+    s->groups->addToGroup("Alice", "Bob");
 
     // When Alice logs out and back in
   }
@@ -294,7 +294,7 @@ TEST_CASE("A disconnected user remains in his group") {
 
 TEST_CASE_METHOD(TwoClients, "Group UI") {
   WHEN("Alice and Bob join a group") {
-    server->groups->inviteToGroup("Alice", "Bob");
+    server->groups->addToGroup("Alice", "Bob");
 
     THEN("In Alice's group UI, Bob's details are correct") {
       WAIT_UNTIL(cAlice->groupUI->otherMembers.size() == 1);
@@ -339,7 +339,7 @@ TEST_CASE_METHOD(TwoClients, "Group UI") {
     bob->levelUp();
 
     WHEN("Alice and Bob join a group") {
-      server->groups->inviteToGroup("Alice", "Bob");
+      server->groups->addToGroup("Alice", "Bob");
 
       THEN("In Alice's group UI, Bob's level is 2") {
         WAIT_UNTIL(cAlice->groupUI->otherMembers.size() == 1);

@@ -30,7 +30,7 @@ Groups::Group* Groups::createGroup(Username founder) {
   return newGroup;
 }
 
-void Groups::inviteToGroup(Username newMember, Username inviter) {
+void Groups::addToGroup(Username newMember, Username inviter) {
   auto* group = getGroupAndMakeIfNeeded(inviter);
 
   group->insert(newMember);
@@ -77,7 +77,7 @@ bool Groups::userHasAnInvitation(Username u) const {
 
 void Groups::acceptInvitation(Username newMember) {
   auto inviter = _inviterOf[newMember];
-  inviteToGroup(newMember, inviter);
+  addToGroup(newMember, inviter);
 }
 
 void Groups::sendGroupMakeupToAllMembers(const Group& g) {
