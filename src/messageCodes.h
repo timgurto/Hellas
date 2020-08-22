@@ -234,6 +234,9 @@ enum MessageCode {
   // I accept the most recent group invitation.
   CL_ACCEPT_GROUP_INVITATION,
 
+  // I want to leave my current group
+  CL_LEAVE_GROUP,
+
   // I have configured hotbar button #... to do ...
   // Arguments: index, category, ID.
   CL_HOTBAR_BUTTON,

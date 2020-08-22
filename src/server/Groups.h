@@ -27,6 +27,8 @@ class Groups {
   bool userHasAnInvitation(Username u) const;
   void acceptInvitation(Username newMember);
 
+  void removeUserFromHisGroup() { _groupsByUser.clear(); }
+
   static void sendGroupMakeupToAllMembers(const Group& g);
   static void sendGroupMakeupTo(const Group& g, const User& recipient);
 

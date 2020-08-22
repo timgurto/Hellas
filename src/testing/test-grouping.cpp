@@ -350,6 +350,21 @@ TEST_CASE_METHOD(TwoClients, "Group UI") {
   }
 }
 
+TEST_CASE_METHOD(ThreeClients, "Leaving a group") {
+  GIVEN("Alice, Bob and Charlie are in a group") {
+    server->groups->addToGroup("Alice", "Bob");
+    server->groups->addToGroup("Alice", "Charlie");
+
+    WHEN("Charlie sends a leave-group message") {
+      cCharlie.sendMessage(CL_LEAVE_GROUP);
+
+      THEN("he is not in a group") {
+        WAIT_UNTIL(!server->groups->isUserInAGroup("Charlie"));
+      }
+    }
+  }
+}
+
 // "invite" context-menu item disabled when target is in a group
 // Ability to leave a group
 // Disappears when down to one member

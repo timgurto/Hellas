@@ -678,6 +678,8 @@ HANDLE_MESSAGE(CL_ACCEPT_GROUP_INVITATION) {
     groups->acceptInvitation(user.name());
 }
 
+HANDLE_MESSAGE(CL_LEAVE_GROUP) { groups->removeUserFromHisGroup(); }
+
 HANDLE_MESSAGE(CL_ROLL) {
   auto result = roll();
   broadcastToGroup(user.name(),
@@ -750,6 +752,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_ORDER_NPC_TO_FOLLOW)
       SEND_MESSAGE_TO_HANDLER(CL_INVITE_TO_GROUP)
       SEND_MESSAGE_TO_HANDLER(CL_ACCEPT_GROUP_INVITATION)
+      SEND_MESSAGE_TO_HANDLER(CL_LEAVE_GROUP)
       SEND_MESSAGE_TO_HANDLER(CL_ROLL)
       SEND_MESSAGE_TO_HANDLER(DG_UNLOCK)
 
