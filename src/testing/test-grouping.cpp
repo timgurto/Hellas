@@ -353,8 +353,6 @@ TEST_CASE_METHOD(TwoClients, "Group UI") {
 // "invite" context-menu item disabled when target is in a group
 // Ability to leave a group
 // Disappears when down to one member
-// Grey-out offline members
-// Log in: get groupmates
 
 // Wait too long before accepting invitation
 // Shared XP only if nearby

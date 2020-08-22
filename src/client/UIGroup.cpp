@@ -47,6 +47,9 @@ void GroupUI::refresh() {
           auto *avatar = _client.findUser(targetName);
           if (avatar) _client.setTarget(*avatar);
         });
+
+    auto playerIsOnline = _client.findUser(targetName) != nullptr;
+    if (!playerIsOnline) memberEntry->setAlpha(0x7f);
   }
 
   container->resizeToContent();

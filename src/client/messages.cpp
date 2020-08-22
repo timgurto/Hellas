@@ -177,6 +177,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
           _debug << name << " has left the world." << Log::endl;
           _allOnlinePlayers.erase(name);
           populateOnlinePlayersList();
+          groupUI->refresh();
         }
         break;
       }

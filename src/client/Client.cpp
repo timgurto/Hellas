@@ -761,6 +761,8 @@ void Client::addUser(const std::string &name, const MapPoint &location) {
   auto pUser = new Avatar(name, location, *this);
   _otherUsers[name] = pUser;
   _entities.insert(pUser);
+
+  groupUI->refresh();
 }
 
 int Client::totalTalentPointsAllocated() {
