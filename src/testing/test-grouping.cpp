@@ -286,6 +286,9 @@ TEST_CASE("A disconnected user remains in his group") {
 
     // Then Alice is still in a group
     CHECK(s->groups->isUserInAGroup("Alice"));
+
+    // And she knows she has a groupmate
+    WAIT_UNTIL(cAlice->groupUI->otherMembers.size() == 1);
   }
 }
 
@@ -350,9 +353,7 @@ TEST_CASE_METHOD(TwoClients, "Group UI") {
 // "invite" context-menu item disabled when target is in a group
 // Ability to leave a group
 // Disappears when down to one member
-// Update UI on level up
 // Grey-out offline members
-// UI level, health, energy
 // Log in: get groupmates
 
 // Wait too long before accepting invitation
