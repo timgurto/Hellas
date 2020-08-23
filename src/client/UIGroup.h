@@ -10,6 +10,7 @@ class Client;
 
 struct GroupUI {
   GroupUI(Client& client);
+  void clear();
   void refresh();
   void addMember(const std::string name);
 

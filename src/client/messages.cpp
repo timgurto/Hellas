@@ -2058,6 +2058,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
       }
 
       case SV_GROUPMATES: {
+        groupUI->clear();
+
         auto numOtherMembers = 0;
         singleMsg >> numOtherMembers >> del;
 
@@ -2070,8 +2072,6 @@ void Client::handleBufferedMessages(const std::string &msg) {
           groupUI->addMember(memberName);
           singleMsg >> del;
         }
-        if (del != MSG_END) break;
-
         groupUI->refresh();
 
         break;

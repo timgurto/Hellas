@@ -107,17 +107,17 @@ void Groups::removeUserFromHisGroup(Username quitter) {
     auto& membersPersonalGroupView = *it->second;
     membersPersonalGroupView.erase(quitter);
   }
+  sendGroupMakeupToAllMembers(formerGroup);
 
   LOCK_GROUPS_BY_USER
   _groupsByUser.erase(quitter);
   UNLOCK_GROUPS_BY_USER
-  // sendGroupMakeupToAllMembers(formerGroup);
 }
 
 void Groups::sendGroupMakeupToAllMembers(const Group& g) {
   for (auto memberName : g) {
-    auto* asUser = Server::instance().getUserByName(memberName);
-    if (asUser) sendGroupMakeupTo(g, *asUser);
+    auto* onlineUser = Server::instance().getUserByName(memberName);
+    if (onlineUser) sendGroupMakeupTo(g, *onlineUser);
   }
 }
 

@@ -354,6 +354,7 @@ TEST_CASE_METHOD(ThreeClients, "Leaving a group") {
   GIVEN("Alice, Bob and Charlie are in a group") {
     server->groups->addToGroup("Bob", "Alice");
     server->groups->addToGroup("Charlie", "Alice");
+    WAIT_UNTIL(cAlice->groupUI->otherMembers.size() == 2);
 
     WHEN("Charlie sends a leave-group message") {
       cCharlie.sendMessage(CL_LEAVE_GROUP);
@@ -366,6 +367,10 @@ TEST_CASE_METHOD(ThreeClients, "Leaving a group") {
 
           AND_THEN("Alice's group has two members") {
             CHECK(server->groups->getGroupSize("Alice") == 2);
+
+            AND_THEN("her UI shows one other member") {
+              WAIT_UNTIL(cAlice->groupUI->otherMembers.size() == 1);
+            }
           }
         }
       }
@@ -384,6 +389,7 @@ TEST_CASE_METHOD(ThreeClients, "Leaving a group") {
 // "invite" context-menu item disabled when target is in a group
 // Ability to leave a group
 // Disappears when down to one member
+// If a mamber leaves, the UI for other members still has level/health/energy
 
 // Wait too long before accepting invitation
 // Shared XP only if nearby

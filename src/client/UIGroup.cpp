@@ -12,6 +12,8 @@ GroupUI::GroupUI(Client &client) : _client(client) {
   container = new List({0, CONTAINER_Y, CONTAINER_W, 0}, MEMBER_H);
 }
 
+void GroupUI::clear() { otherMembers.clear(); }
+
 void GroupUI::refresh() {
   container->clearChildren();
   const auto GAP = 2_px, NAME_H = Element::TEXT_HEIGHT, LEVEL_W = 15,
