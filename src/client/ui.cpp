@@ -542,5 +542,6 @@ void Client::refreshQuestProgress() {
 
   _questProgress->resizeToContent();
   auto midScreenHeight = (Client::SCREEN_Y - _questProgress->height()) / 2;
-  _questProgress->setPosition(0, midScreenHeight);
+  _questProgress->setPosition(Client::SCREEN_X - _questProgress->width(),
+                              midScreenHeight);
 }
