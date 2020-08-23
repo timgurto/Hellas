@@ -2058,7 +2058,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
       }
 
       case SV_GROUPMATES: {
-        groupUI->clear();
+        auto members = std::set<Username>{};
 
         auto numOtherMembers = 0;
         singleMsg >> numOtherMembers >> del;
@@ -2069,10 +2069,10 @@ void Client::handleBufferedMessages(const std::string &msg) {
 
           auto memberName = ""s;
           readString(singleMsg, memberName, expectedDelimiter);
-          groupUI->addMember(memberName);
+          members.insert(memberName);
           singleMsg >> del;
         }
-        groupUI->refresh();
+        groupUI->onMembershipChange(members);
 
         break;
       }

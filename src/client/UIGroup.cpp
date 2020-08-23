@@ -72,6 +72,23 @@ void GroupUI::addMember(const std::string name) {
   otherMembers.insert(m);
 }
 
+void GroupUI::onMembershipChange(const std::set<Username> &upToDateMemberList) {
+  // In old list but not new: remove
+  auto membersToRemove = std::set<Username>{};
+  for (const auto &member : otherMembers)
+    if (upToDateMemberList.count(member.name) == 0)
+      membersToRemove.insert(member.name);
+  for (auto exMember : membersToRemove) otherMembers.erase({exMember});
+
+  // In new list but not old: add
+  auto membersToAdd = std::set<Username>{};
+  for (auto nowAMember : upToDateMemberList)
+    if (otherMembers.count({nowAMember}) == 0) membersToAdd.insert(nowAMember);
+  for (auto newMember : membersToAdd) addMember(newMember);
+
+  refresh();
+}
+
 void GroupUI::onPlayerLevelChange(Username name, Level newLevel) {
   auto *member = findMember(name);
   if (member) member->level = toString(newLevel);
@@ -101,7 +118,7 @@ GroupUI::Member *GroupUI::findMember(Username name) {
   auto it = otherMembers.find({name});
   if (it == otherMembers.end()) return nullptr;
 
-  // const_cast is fine as long as .name never changes, since it's used to sort
-  // the set.
+  // const_cast is fine as long as .name never changes, since it's used to
+  // sort the set.
   return const_cast<Member *>(&*it);
 }

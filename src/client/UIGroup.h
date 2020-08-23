@@ -12,6 +12,8 @@ struct GroupUI {
   GroupUI(Client& client);
   void clear();
   void refresh();
+
+  void onMembershipChange(const std::set<Username>& upToDateMemberList);
   void addMember(const std::string name);
 
   void onPlayerLevelChange(Username name, Level newLevel);
@@ -30,9 +32,9 @@ struct GroupUI {
     bool operator<(const Member& rhs) const { return name < rhs.name; }
   };
 
-  Member* findMember(Username name);
-
   std::set<Member> otherMembers;
+
+  Member* findMember(Username name);
 
   List* container{nullptr};
 

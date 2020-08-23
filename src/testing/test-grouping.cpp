@@ -388,12 +388,35 @@ TEST_CASE_METHOD(ThreeClients, "Leaving a group") {
       }
     }
   }
+
+  SECTION("Existing group members in UI retian their stats") {
+    // Given Alice, Bob and Dan are in a group
+    auto dansHealth = Hitpoints{};
+    {
+      auto cDan = TestClient::WithUsername("Dan");
+      server->groups->addToGroup("Bob", "Alice");
+      server->groups->addToGroup("Dan", "Alice");
+
+      // When Dan logs off
+      server.waitForUsers(4);
+      auto &dan = server.findUser("Dan");
+      dansHealth = dan.health();
+    }
+    WAIT_UNTIL(cAlice.otherUsers().size() == 2);  // Bob, Charlie
+
+    // And when Bob leaves the group
+    cBob->sendMessage(CL_LEAVE_GROUP);
+
+    // Then Alice's view of Dan still has its stats
+    REPEAT_FOR_MS(100);
+    const auto &alicesViewOfDan = *cAlice->groupUI->otherMembers.find({"Dan"});
+    CHECK(alicesViewOfDan.health == dansHealth);
+  }
 }
 
 // "invite" context-menu item disabled when target is in a group
 // Ability to leave a group
 // Disappears when down to one member
-// If a member leaves, the UI for other members still has level/health/energy
 
 // Wait too long before accepting invitation
 // Shared XP only if nearby
