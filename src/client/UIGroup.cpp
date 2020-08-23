@@ -61,8 +61,13 @@ void GroupUI::refresh() {
   auto midScreenHeight = (Client::SCREEN_Y - container->height()) / 2;
   container->setPosition(0, midScreenHeight);
 
-  leaveGroupButton->setPosition(0,
-                                container->rect().y + container->height() + 2);
+  if (otherMembers.empty())
+    leaveGroupButton->hide();
+  else {
+    leaveGroupButton->show();
+    leaveGroupButton->setPosition(
+        0, container->rect().y + container->height() + 2);
+  }
 }
 
 void GroupUI::addMember(const std::string name) {
