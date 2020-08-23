@@ -486,7 +486,7 @@ void Client::initSkipTutorialButton() {
              Y = SCREEN_Y - H - 20;
   _skipTutorialButton = new Button({X, Y, W, H}, "Skip tutorial", [this]() {
     std::string confirmationText =
-        "Are you sure you want to skip the rest of the tutorial?";
+        "Are you sure you want to skip the rest of the tutorial?"s;
     if (_skipTutorialConfirmation)
       removeWindow(_skipTutorialConfirmation);
     else

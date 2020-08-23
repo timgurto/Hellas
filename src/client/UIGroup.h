@@ -7,6 +7,7 @@
 
 class List;
 class Client;
+class ConfirmationWindow;
 #include "ui/Button.h"
 
 struct GroupUI {
@@ -40,6 +41,7 @@ struct GroupUI {
   List* container{nullptr};
 
   Button* leaveGroupButton{nullptr};
+  ConfirmationWindow* leaveGroupConfirmationWindow{nullptr};
 
   Client& _client;
 };

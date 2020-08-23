@@ -2,6 +2,7 @@
 
 #include "Client.h"
 #include "ui/ColorBlock.h"
+#include "ui/ConfirmationWindow.h"
 #include "ui/List.h"
 #include "ui/ProgressBar.h"
 
@@ -10,9 +11,15 @@ GroupUI::GroupUI(Client &client) : _client(client) {
              CONTAINER_W = MEMBER_W + 2 * GAP,
              CONTAINER_Y = (Client::SCREEN_Y) / 2;
   container = new List({0, CONTAINER_Y, CONTAINER_W, 0}, MEMBER_H);
-  leaveGroupButton =
-      new Button({0, 0, 70_px, 16_px}, "Leave group"s,
-                 [&client]() { client.sendMessage({CL_LEAVE_GROUP}); });
+
+  leaveGroupButton = new Button({0, 0, 70_px, 16_px}, "Leave group"s, [this]() {
+    leaveGroupConfirmationWindow->show();
+  });
+  leaveGroupConfirmationWindow = new ConfirmationWindow(
+      client, "Are you sure you want to leave your group?"s, CL_LEAVE_GROUP,
+      {});
+  client.addWindow(leaveGroupConfirmationWindow);
+  leaveGroupConfirmationWindow->hide();
 }
 
 void GroupUI::clear() { otherMembers.clear(); }
