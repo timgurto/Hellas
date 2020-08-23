@@ -109,8 +109,10 @@ void Groups::removeUserFromHisGroup(Username quitter) {
   }
   sendGroupMakeupToAllMembers(formerGroup);
 
-  LOCK_GROUPS_BY_USER
-  _groupsByUser.erase(quitter);
+  auto* quitterUser = Server::instance().getUserByName(quitter);
+  if (quitterUser) quitterUser->sendMessage({SV_GROUPMATES, "0"});
+
+  LOCK_GROUPS_BY_USER _groupsByUser.erase(quitter);
   UNLOCK_GROUPS_BY_USER
 }
 

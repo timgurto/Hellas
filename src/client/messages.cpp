@@ -2767,6 +2767,7 @@ void Client::initializeMessageNames() {
   _messageCommands["cityWar"] = CL_DECLARE_WAR_ON_CITY;
   _messageCommands["cede"] = CL_CEDE;
   _messageCommands["cquit"] = CL_LEAVE_CITY;
+  _messageCommands["leave"] = CL_LEAVE_GROUP;
   _messageCommands["recruit"] = CL_RECRUIT;
   _messageCommands["cast"] = CL_CAST;
   _messageCommands["roll"] = CL_ROLL;

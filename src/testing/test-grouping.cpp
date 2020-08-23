@@ -381,6 +381,10 @@ TEST_CASE_METHOD(ThreeClients, "Leaving a group") {
 
       THEN("Bob is not in a group") {
         WAIT_UNTIL(!server->groups->isUserInAGroup("Bob"));
+
+        AND_THEN("Bob's group UI is empty") {
+          WAIT_UNTIL(cBob->groupUI->otherMembers.empty());
+        }
       }
     }
   }
@@ -389,7 +393,7 @@ TEST_CASE_METHOD(ThreeClients, "Leaving a group") {
 // "invite" context-menu item disabled when target is in a group
 // Ability to leave a group
 // Disappears when down to one member
-// If a mamber leaves, the UI for other members still has level/health/energy
+// If a member leaves, the UI for other members still has level/health/energy
 
 // Wait too long before accepting invitation
 // Shared XP only if nearby
