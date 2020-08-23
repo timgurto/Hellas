@@ -10,6 +10,9 @@ GroupUI::GroupUI(Client &client) : _client(client) {
              CONTAINER_W = MEMBER_W + 2 * GAP,
              CONTAINER_Y = (Client::SCREEN_Y) / 2;
   container = new List({0, CONTAINER_Y, CONTAINER_W, 0}, MEMBER_H);
+  leaveGroupButton =
+      new Button({0, 0, 70_px, 16_px}, "Leave group"s,
+                 [&client]() { client.sendMessage({CL_LEAVE_GROUP}); });
 }
 
 void GroupUI::clear() { otherMembers.clear(); }
@@ -57,6 +60,9 @@ void GroupUI::refresh() {
   container->resizeToContent();
   auto midScreenHeight = (Client::SCREEN_Y - container->height()) / 2;
   container->setPosition(0, midScreenHeight);
+
+  leaveGroupButton->setPosition(0,
+                                container->rect().y + container->height() + 2);
 }
 
 void GroupUI::addMember(const std::string name) {

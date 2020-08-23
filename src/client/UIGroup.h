@@ -7,6 +7,7 @@
 
 class List;
 class Client;
+#include "ui/Button.h"
 
 struct GroupUI {
   GroupUI(Client& client);
@@ -37,6 +38,8 @@ struct GroupUI {
   Member* findMember(Username name);
 
   List* container{nullptr};
+
+  Button* leaveGroupButton{nullptr};
 
   Client& _client;
 };

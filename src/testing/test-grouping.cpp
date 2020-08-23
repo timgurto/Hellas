@@ -428,9 +428,6 @@ TEST_CASE_METHOD(TwoClients, "Groups disappear when down to last member") {
   }
 }
 
-// "invite" context-menu item disabled when target is in a group
-
-// Wait too long before accepting invitation
 // Shared XP only if nearby
 // Round-robin loot
 // Master looter

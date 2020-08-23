@@ -56,6 +56,7 @@ void Client::initUI() {
 
   groupUI = new GroupUI(*this);
   addUI(groupUI->container);
+  addUI(groupUI->leaveGroupButton);
 
   initSkipTutorialButton();
 
