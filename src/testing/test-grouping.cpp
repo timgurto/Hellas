@@ -414,9 +414,21 @@ TEST_CASE_METHOD(ThreeClients, "Leaving a group") {
   }
 }
 
+TEST_CASE_METHOD(TwoClients, "Groups disappear when down to last member") {
+  GIVEN("Alice and Bob are in a group") {
+    server->groups->addToGroup("Bob", "Alice");
+
+    WHEN("Alice leaves the group") {
+      cAlice.sendMessage(CL_LEAVE_GROUP);
+
+      THEN("Bob is not in a group") {
+        WAIT_UNTIL(!server->groups->isUserInAGroup("Bob"));
+      }
+    }
+  }
+}
+
 // "invite" context-menu item disabled when target is in a group
-// Ability to leave a group
-// Disappears when down to one member
 
 // Wait too long before accepting invitation
 // Shared XP only if nearby
