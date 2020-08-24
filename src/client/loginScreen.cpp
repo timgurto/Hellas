@@ -364,14 +364,8 @@ void Client::initLoginScreen() {
     y += LABEL_GAP;
 
     // Server IP
-    std::string serverIP;
-    if (cmdLineArgs.contains("server-ip"))
-      serverIP = cmdLineArgs.getString("server-ip");
-    else {
-      serverIP = _defaultServerAddress;
-    }
     label = new OutlinedLabel({LEFT_MARGIN, y, 200, Element::TEXT_HEIGHT + 5},
-                              "Server: " + serverIP);
+                              "Server: " + _connection.serverIP);
     _loginUI.push_back(label);
     y += LABEL_GAP;
 

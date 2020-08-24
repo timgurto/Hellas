@@ -92,7 +92,7 @@ Client::Client()
   drawLoadingScreen("Reading configuration file");
 
   _config.loadFromFile("client-config.xml");
-  _connection.initialize(_config.serverHostDirectory);
+  _connection.initialize();
 
   initUI();
   _wordWrapper = WordWrapper{_defaultFont, _chatLog->contentWidth()};

@@ -22,7 +22,7 @@ class Connection {
   using URL = std::string;
 
   Connection(Client &client);
-  void initialize(const URL &serverIPDirectory);
+  void initialize();
   ~Connection();
 
   void getNewMessages();
@@ -32,6 +32,7 @@ class Connection {
   void state(State s) { _state = s; }               // TODO: remove
   State state() const { return _state; }            // TODO: remove
   bool shouldAttemptReconnection() const;
+  std::string serverIP;
 
   void showError(const std::string &msg) const;
 
@@ -44,9 +45,7 @@ class Connection {
 
   bool _aThreadIsConnecting{false};
 
-  std::string getServerIP();
   static u_short getServerPort();
-  URL serverIPDirectory;
 
   static const ms_t TIME_BETWEEN_CONNECTION_ATTEMPTS{3000};
   static const u_short DEBUG_PORT{8888};

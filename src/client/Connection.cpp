@@ -8,8 +8,11 @@ extern Args cmdLineArgs;
 
 Connection::Connection(Client &client) : _client(&client) {}
 
-void Connection::initialize(const URL &serverIPDirectory) {
-  Connection::serverIPDirectory = serverIPDirectory;
+void Connection::initialize() {
+  if (cmdLineArgs.contains("server-ip"))
+    serverIP = cmdLineArgs.getString("server-ip");
+  else
+    serverIP = readFromURL(_client->_config.serverHostDirectory);  // Slow
 }
 
 Connection::~Connection() {
@@ -51,7 +54,7 @@ void Connection::connect() {
   // Server details
   auto serverAddr = sockaddr_in{};
   serverAddr.sin_family = AF_INET;
-  serverAddr.sin_addr.s_addr = inet_addr(getServerIP().c_str());
+  serverAddr.sin_addr.s_addr = inet_addr(serverIP.c_str());
   serverAddr.sin_port = htons(getServerPort());
 
   if (::connect(_socket.getRaw(), (sockaddr *)&serverAddr,
@@ -104,15 +107,6 @@ void Connection::showError(const std::string &msg) const {
 #endif
   _client->_queuedErrorMessagesFromOtherThreads.push_back(msg);
   _client->_queuedToastsFromOtherThreads.push_back(msg);
-}
-
-std::string Connection::getServerIP() {
-  if (cmdLineArgs.contains("server-ip")) {
-    auto ipFromCommandLine = cmdLineArgs.getString("server-ip");
-    return ipFromCommandLine;
-  }
-  auto ipFromWeb = readFromURL(serverIPDirectory);
-  return ipFromWeb;
 }
 
 u_short Connection::getServerPort() {
