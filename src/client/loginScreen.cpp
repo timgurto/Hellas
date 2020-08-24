@@ -53,6 +53,8 @@ void Client::loginScreenLoop() {
     _messages.pop();
   }
 
+  showQueuedErrorMessages();
+
   handleLoginInput(delta);
 
   updateLoginParticles(delta);

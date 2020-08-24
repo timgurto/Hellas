@@ -328,9 +328,6 @@ void Client::updateUI() {
   } else
     _errorMessageTimer -= _timeElapsed;
 
-  for (const auto &msg : _queuedToastsFromOtherThreads) toast(Texture{}, msg);
-  _queuedToastsFromOtherThreads.clear();
-
   updateToasts();
 }
 
