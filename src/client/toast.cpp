@@ -12,7 +12,8 @@ void Client::initToasts() {
 }
 
 void Client::updateToasts() {
-  for (const auto &msg : _queuedToastsFromOtherThreads) toast(Texture{}, msg);
+  for (const auto &msg : _queuedToastsFromOtherThreads) toast({msg}, msg);
+
   _queuedToastsFromOtherThreads.clear();
 
   // Update all toasts' timers.  If a timer runs out, remove it and repopulate
