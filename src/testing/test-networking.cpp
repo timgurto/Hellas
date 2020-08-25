@@ -7,15 +7,40 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Clients can find the server on this computer") {
-  auto clientConfig = ClientConfig{};
-  clientConfig.loadFromFile("client-config.xml");
-  auto urlContainingServerIP = clientConfig.serverHostDirectory;
-  auto prescribedServerIP = readFromURL(urlContainingServerIP);
+extern Args cmdLineArgs;
 
-  auto thisComputer = readFromURL("ident.me");
+TEST_CASE("Clients can find the server", "[slow]") {
+  SECTION("Server IP points to this computer") {
+    auto clientConfig = ClientConfig{};
+    clientConfig.loadFromFile("client-config.xml");
+    auto urlContainingServerIP = clientConfig.serverHostDirectory;
+    auto prescribedServerIP = readFromURL(urlContainingServerIP);
 
-  CHECK(prescribedServerIP == thisComputer);
+    auto thisComputer = readFromURL("ident.me");
+
+    CHECK(prescribedServerIP == thisComputer);
+  }
+
+  SECTION("Server IP is valid when used") {
+    GIVEN("a server") {
+      auto s = TestServer{};
+
+      AND_GIVEN("no server IP is specified on the command line") {
+        auto oldArgs = cmdLineArgs;
+        cmdLineArgs.remove("server-ip");
+
+        WHEN("a client is created") {
+          auto c = TestClient{};
+
+          THEN("it connects to the server") {
+            WAIT_UNTIL_TIMEOUT(s.users().size() == 1, 10000);
+          }
+        }
+
+        cmdLineArgs = oldArgs;
+      }
+    }
+  }
 }
 
 TEST_CASE("Read invalid URL", "[.slow]") {

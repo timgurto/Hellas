@@ -23,6 +23,7 @@ void Client::loginScreenLoop() {
 
   if (_connection.shouldAttemptReconnection()) {
     _connection = {*this};
+    _connection.initialize();
 
     std::thread{[this]() {
       setThreadName("Connecting to server");
