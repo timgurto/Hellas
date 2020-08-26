@@ -59,10 +59,11 @@ void Socket::addRef() {
 void Socket::bind(sockaddr_in &socketAddr) {
   if (!valid()) return;
 
-  if (::bind(_raw, (sockaddr *)&socketAddr, sockAddrSize) == SOCKET_ERROR) {
+  _isBound =
+      ::bind(_raw, (sockaddr *)&socketAddr, sockAddrSize) != SOCKET_ERROR;
+  if (!_isBound)
     *debug << Color::CHAT_ERROR << "Error binding socket: " << WSAGetLastError()
            << Log::endl;
-  }
 }
 
 void Socket::listen() {

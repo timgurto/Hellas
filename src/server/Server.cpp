@@ -80,6 +80,7 @@ Server::Server()
   serverAddr.sin_port = htons(port);
 
   _socket.bind(serverAddr);
+  if (!_socket.isBound()) return;
   /*_debug << "Server address: " << inet_ntoa(serverAddr.sin_addr) << ":"
          << ntohs(serverAddr.sin_port) << Log::endl;*/
   _socket.listen();
@@ -181,6 +182,8 @@ void Server::checkSockets() {
 }
 
 void Server::run() {
+  if (!_socket.isBound()) return;
+
   if (!_dataLoaded) DataLoader::FromPath(*this).load();
   initialiseData();
   if (isDebug()) Server::instance().generateDurabilityList();

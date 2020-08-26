@@ -26,6 +26,7 @@ class Socket {
   ms_t _lingerTime;
   static std::map<SOCKET, int>
       _refCounts;  // Reference counters for each raw SOCKET
+  bool _isBound{false};
 
   static void initWinsock();
   void addRef();                              // Increment reference counter
@@ -47,6 +48,7 @@ class Socket {
 
   void bind(sockaddr_in &socketAddr);
   void listen();
+  bool isBound() const { return _isBound; }
 
   // Whether this socket is safe to use
   bool valid() const { return _raw != INVALID_SOCKET; }
