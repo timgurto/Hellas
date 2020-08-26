@@ -315,7 +315,7 @@ TEST_CASE("Kingship is persistent", "[king]") {
   }
 }
 
-TEST_CASE("Citizens know about their city's distant objects", "[flaky]") {
+TEST_CASE("Citizens know about their city's distant objects") {
   GIVEN("a map big enough to exceed the cull distance") {
     auto data = R"(
       <terrain index="G" id="grass" />

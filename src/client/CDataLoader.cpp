@@ -78,6 +78,7 @@ void CDataLoader::load(bool keepOldData) {
     }
     loadTerrain(reader);
     loadTerrainLists(reader);
+    loadMap(reader);
     loadParticles(reader);
     loadSounds(reader);
     loadProjectiles(reader);

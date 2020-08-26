@@ -103,6 +103,22 @@ TEST_CASE("Clients load map properly") {
       }
     }
   }
+
+  GIVEN("a custom-sized map in a data string") {
+    auto c = TestClient::WithDataString(R"(
+      <terrain index="G" id="grass" />
+      <list id="default" default="1" >
+          <allow id="grass" />
+      </list>
+      <newPlayerSpawn x="10" y="10" range="0" />
+      <size x="40" y="1" />
+      <row    y="0" terrain = "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG" />
+    )");
+
+    THEN("the client's map has the correct dimensions") {
+      CHECK(c.map().width() == 40);
+    }
+  }
 }
 
 TEST_CASE("Help text is valid XML") {
