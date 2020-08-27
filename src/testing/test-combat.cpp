@@ -71,23 +71,34 @@ TEST_CASE_METHOD(TwoClients, "Only belligerents can fight") {
   }
 }
 
-TEST_CASE("Attack rate is respected", "[.flaky]") {
-  // Given a server, with a wolf NPC which hits for 1 damage every 100ms;
-  TestServer s = TestServer::WithData("wolf");
-  s.addNPC("wolf", {10, 20});
+TEST_CASE_METHOD(ServerAndClientWithData, "Attack rate is respected",
+                 "[.flaky]") {
+  GIVEN("a wolf that hits for 1 every 100ms") {
+    useData(R"(
+      <npcType id="wolf" maxHealth="4000" attack="1" attackTime="100" />
+    )");
+    server->addNPC("wolf", {10, 10});
 
-  // And a nearby user
-  TestClient c;
-  s.waitForUsers(1);
-  const User &user = s.getFirstUser();
-  Hitpoints before = user.health();
+    AND_GIVEN("a user for whom every incoming attack is a hit") {
+      auto oldStats = User::OBJECT_TYPE.baseStats();
+      auto newStats = oldStats;
+      newStats.critResist = 100;
+      newStats.dodge = 0;
+      newStats.hps = 0;
+      User::OBJECT_TYPE.baseStats(newStats);
+      user->updateStats();
 
-  // When 1050ms elapse
-  REPEAT_FOR_MS(1050);
+      WHEN("1050ms elapse") {
+        REPEAT_FOR_MS(1050);
 
-  // Then the user has taken exactly 10 damage
-  Hitpoints after = user.health();
-  CHECK(after == before - 10);
+        THEN("the user has taken exactly 10 damage") {
+          CHECK(user->health() == user->stats().maxHealth - 10);
+        }
+      }
+
+      User::OBJECT_TYPE.baseStats(oldStats);
+    }
+  }
 }
 
 TEST_CASE("Belligerents can attack each other's objects") {
