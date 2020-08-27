@@ -21,64 +21,50 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Players can attack immediately") {
   }
 }
 
-TEST_CASE("Only belligerents can target each other") {
-  GIVEN("Alice and Bob are at peace") {
-    auto s = TestServer{};
-    auto alice = TestClient::WithUsername("Alice");
-    auto bob = TestClient::WithUsername("Bob");
-    s.waitForUsers(2);
-    User &uAlice = s.findUser("Alice"), &uBob = s.findUser("Bob");
+TEST_CASE_METHOD(TwoClients, "Only belligerents can target each other") {
+  WHEN("Alice tries to target Bob") {
+    cAlice.sendMessage(CL_TARGET_PLAYER, "Bob");
 
-    WHEN("Alice tries to target Bob") {
-      alice.sendMessage(CL_TARGET_PLAYER, "Bob");
-
-      THEN("She is not targeting him") {
-        REPEAT_FOR_MS(100);
-        CHECK_FALSE(uAlice.target() == &uBob);
-      }
+    THEN("She is not targeting him") {
+      REPEAT_FOR_MS(100);
+      CHECK_FALSE(alice->target() == bob);
     }
+  }
 
-    WHEN("Alice declares war on Bob") {
-      alice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "Bob");
+  GIVEN("Alice and Bob are at war") {
+    cAlice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "Bob");
 
-      AND_WHEN("Alice tries to target Bob") {
-        alice.sendMessage(CL_TARGET_PLAYER, "Bob");
+    AND_WHEN("Alice tries to target Bob") {
+      cAlice.sendMessage(CL_TARGET_PLAYER, "Bob");
 
-        THEN("Alice is targeting Bob") { WAIT_UNTIL(uAlice.target() == &uBob); }
-      }
+      THEN("Alice is targeting Bob") { WAIT_UNTIL(alice->target() == bob); }
     }
   }
 }
 
-TEST_CASE("Only belligerents can fight") {
+TEST_CASE_METHOD(TwoClients, "Only belligerents can fight") {
   GIVEN("Alice and Bob are within melee range") {
-    auto s = TestServer{};
-    auto alice = TestClient::WithUsername("Alice");
-    auto bob = TestClient::WithUsername("Bob");
-    s.waitForUsers(2);
-
-    User &uAlice = s.findUser("Alice"), &uBob = s.findUser("Bob");
-    while (distance(uAlice.location(), uBob.location()) >
+    while (distance(alice->location(), bob->location()) >
            Server::ACTION_DISTANCE)
-      uAlice.moveLegallyTowards(uBob.location());
+      alice->moveLegallyTowards(bob->location());
 
     WHEN("Alice tries to target Bob") {
-      alice.sendMessage(CL_TARGET_PLAYER, "Bob");
+      cAlice.sendMessage(CL_TARGET_PLAYER, "Bob");
 
       THEN("Bob doesn't lose health") {
         REPEAT_FOR_MS(500);
-        CHECK(uBob.health() == uBob.stats().maxHealth);
+        CHECK(bob->health() == bob->stats().maxHealth);
       }
     }
 
     WHEN("Alice declares war on Bob") {
-      alice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "Bob");
+      cAlice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "Bob");
 
       AND_WHEN("Alice targets Bob") {
-        alice.sendMessage(CL_TARGET_PLAYER, "Bob");
+        cAlice.sendMessage(CL_TARGET_PLAYER, "Bob");
 
         THEN("Bob loses health") {
-          WAIT_UNTIL(uBob.health() < uBob.stats().maxHealth);
+          WAIT_UNTIL(bob->health() < bob->stats().maxHealth);
         }
       }
     }
@@ -149,46 +135,37 @@ TEST_CASE("Players can target distant entities") {
   WAIT_UNTIL(user.target() == &wolf);
 }
 
-TEST_CASE("Clients receive nearby users' health values") {
-  // Given a server and two clients, Alice and Bob;
-  TestServer s;
-  auto clientAlice = TestClient::WithUsername("Alice");
-  auto clientBob = TestClient::WithUsername("Bob");
+TEST_CASE_METHOD(TwoClients, "Clients receive nearby users' health values") {
+  GIVEN("Alice and Bob are at war") {
+    server.wars().declare("Alice", "Bob");
 
-  // And Alice and Bob are at war
-  s.wars().declare("Alice", "Bob");
+    AND_GIVEN("Alice is close to Bob") {
+      while (distance(alice->collisionRect(), bob->collisionRect()) >=
+             Server::ACTION_DISTANCE) {
+        cAlice.sendMessage(CL_LOCATION,
+                           makeArgs(bob->location().x, bob->location().y));
+        SDL_Delay(5);
+      }
 
-  // When Alice is close to Bob;
-  s.waitForUsers(2);
-  const User &alice = s.findUser("Alice"), &bob = s.findUser("Bob");
-  while (distance(alice.collisionRect(), bob.collisionRect()) >=
-         Server::ACTION_DISTANCE) {
-    clientAlice.sendMessage(CL_LOCATION,
-                            makeArgs(bob.location().x, bob.location().y));
-    SDL_Delay(5);
+      WHEN("Alice attacks Bob") {
+        cAlice.sendMessage(CL_TARGET_PLAYER, "Bob");
+
+        THEN("Alice sees that Bob is damaged") {
+          WAIT_UNTIL(cAlice.otherUsers().size() == 1);
+          const Avatar &localBob = cAlice.getFirstOtherUser();
+          WAIT_UNTIL(localBob.health() < localBob.maxHealth());
+        }
+      }
+    }
   }
-
-  // And she attacks him
-  clientAlice.sendMessage(CL_TARGET_PLAYER, "Bob");
-
-  // Then Alice sees that Bob is damaged
-  WAIT_UNTIL(clientAlice.otherUsers().size() == 1);
-  const Avatar &localBob = clientAlice.getFirstOtherUser();
-  WAIT_UNTIL(localBob.health() < localBob.maxHealth());
 }
 
-TEST_CASE("A player dying doesn't crash the server") {
-  // Given a server and client;
-  TestServer s;
-  TestClient c;
-  s.waitForUsers(1);
+TEST_CASE_METHOD(ServerAndClient, "A player dying doesn't crash the server") {
+  WHEN("a user dies") {
+    user->reduceHealth(999999);
 
-  // When the user dies
-  User &user = s.getFirstUser();
-  user.reduceHealth(999999);
-
-  // The server survives
-  s.nop();
+    THEN("the server doesn't crash") { server.nop(); }
+  }
 }
 
 TEST_CASE("Civilian NPCs") {
@@ -211,74 +188,58 @@ TEST_CASE("Civilian NPCs") {
   }
 }
 
-TEST_CASE("In-combat flag") {
+TEST_CASE_METHOD(ServerAndClientWithData, "In-combat flag") {
   GIVEN("a user and a fox out of aggro range") {
-    auto data = R"(
+    useData(R"(
       <npcType id="fox" attack="1" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
+    )");
 
-    s.addNPC("fox", {100, 0});
+    auto &fox = server->addNPC("fox", {100, 0});
 
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    auto &fox = s.getFirstNPC();
-
-    THEN("The user is not in combat") { CHECK_FALSE(user.isInCombat()); }
+    THEN("The user is not in combat") { CHECK_FALSE(user->isInCombat()); }
 
     WHEN("the fox becomes aware of the user") {
-      fox.makeAwareOf(user);
-      WAIT_UNTIL(fox.target() == &user);
-      THEN("the user is in combat") { WAIT_UNTIL(user.isInCombat()); }
+      fox.makeAwareOf(*user);
+      WAIT_UNTIL(fox.target() == user);
+      THEN("the user is in combat") { WAIT_UNTIL(user->isInCombat()); }
     }
   }
 }
 
-TEST_CASE("Neutral NPCs") {
-  GIVEN("a \"neutral\" NPC with attack") {
-    auto data = R"(
+TEST_CASE_METHOD(ServerAndClientWithData, "Neutral NPCs") {
+  GIVEN("a \"neutral\" NPC with attack, close to a user") {
+    useData(R"(
       <npcType id="snake" attack="1" isNeutral="1" />
-    )";
-    auto s = TestServer::WithDataString(data);
+    )");
 
-    s.addNPC("snake", {15, 10});
+    server->addNPC("snake", {15, 10});
 
-    WHEN("a user gets close") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      auto healthBefore = user.health();
-
-      THEN("he doesn't get attacked") {
-        REPEAT_FOR_MS(100) REQUIRE(user.health() == healthBefore);
-      }
+    THEN("the user doesn't get attacked") {
+      REPEAT_FOR_MS(100);
+      CHECK(user->health() == user->stats().maxHealth);
     }
   }
 }
 
-TEST_CASE("Targeting civilians after attacking") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Targeting civilians after attacking") {
   GIVEN("A user between an attackable sloth and a civilian maiden") {
-    auto data = R"(
+    useData(R"(
       <newPlayerSpawn x="10" y="10" range="0" />
       <npcType id="sloth" maxHealth="1000" />
       <npcType id="maiden" maxHealth="1000" isCivilian="1" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
+    )");
 
-    const auto &sloth = s.addNPC("sloth", {10, 15});
-    const auto &maiden = s.addNPC("maiden", {10, 5});
-
-    s.waitForUsers(1);
+    const auto &sloth = server->addNPC("sloth", {10, 15});
+    const auto &maiden = server->addNPC("maiden", {10, 5});
 
     WHEN("he attacks the sloth") {
-      c.sendMessage(CL_TARGET_ENTITY, makeArgs(sloth.serial()));
+      client->sendMessage(CL_TARGET_ENTITY, makeArgs(sloth.serial()));
       REPEAT_FOR_MS(100);
 
       AND_WHEN("he right-clicks the maiden") {
-        auto cMaiden = c.objects()[maiden.serial()];
-        cMaiden->onRightClick();
+        auto &cMaiden = *client->objects()[maiden.serial()];
+        cMaiden.onRightClick();
 
         THEN("the maiden doesn't take damage") {
           REPEAT_FOR_MS(3000);
@@ -289,39 +250,30 @@ TEST_CASE("Targeting civilians after attacking") {
   }
 }
 
-TEST_CASE("XP from kills") {
+TEST_CASE_METHOD(ServerAndClientWithData, "XP from kills") {
   GIVEN("normal and elite NPC types") {
-    auto data = R"(
+    useData(R"(
       <npcType id="queenBee" maxHealth="1" elite="1" />
       <npcType id="workerBee" maxHealth="1" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
+    )");
 
     AND_GIVEN("a normal NPC") {
-      const auto &npc = s.addNPC("workerBee", {10, 15});
+      const auto &npc = server->addNPC("workerBee", {10, 15});
 
       WHEN("a player kills it") {
-        c.sendMessage(CL_TARGET_ENTITY, makeArgs(npc.serial()));
+        client->sendMessage(CL_TARGET_ENTITY, makeArgs(npc.serial()));
 
-        THEN("that player has 100 XP") {
-          const auto &user = s.getFirstUser();
-          WAIT_UNTIL(user.xp() == 100);
-        }
+        THEN("that player has 100 XP") { WAIT_UNTIL(user->xp() == 100); }
       }
     }
 
     AND_GIVEN("an elite NPC") {
-      const auto &elite = s.addNPC("queenBee", {10, 15});
+      const auto &elite = server->addNPC("queenBee", {10, 15});
 
       WHEN("a player kills it") {
-        c.sendMessage(CL_TARGET_ENTITY, makeArgs(elite.serial()));
+        client->sendMessage(CL_TARGET_ENTITY, makeArgs(elite.serial()));
 
-        THEN("that player has 400 XP") {
-          const auto &user = s.getFirstUser();
-          WAIT_UNTIL(user.xp() == 400);
-        }
+        THEN("that player has 400 XP") { WAIT_UNTIL(user->xp() == 400); }
       }
     }
   }
