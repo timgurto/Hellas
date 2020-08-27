@@ -15,6 +15,7 @@ GroupUI::GroupUI(Client &client) : _client(client) {
   leaveGroupButton = new Button({0, 0, 70_px, 16_px}, "Leave group"s, [this]() {
     leaveGroupConfirmationWindow->show();
   });
+  leaveGroupButton->hide();
   leaveGroupConfirmationWindow = new ConfirmationWindow(
       client, "Are you sure you want to leave your group?"s, CL_LEAVE_GROUP,
       {});
