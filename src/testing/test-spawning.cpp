@@ -244,7 +244,7 @@ TEST_CASE("Cached terrain for spawning") {
   }
 }
 
-TEST_CASE("Dead objects respawn", "[flaky]") {
+TEST_CASE("Dead objects respawn") {
   GIVEN("an object that respawns instantly") {
     auto data = R"(
       <objectType id="whackamole" />

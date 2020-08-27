@@ -1,21 +1,18 @@
 #include "../client/ClientNPC.h"
 #include "TestClient.h"
+#include "TestFixtures.h"
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Players can attack immediately") {
-  GIVEN("an NPC near a player") {
-    auto data = R"(
+TEST_CASE_METHOD(ServerAndClientWithData, "Players can attack immediately") {
+  GIVEN("a targetable NPC") {
+    useData(R"(
       <npcType id="ant" maxHealth="1" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-
-    s.addNPC("ant", {10, 10});
+    )");
+    auto &ant = server->addNPC("ant", {10, 10});
 
     WHEN("the player attacks it") {
-      const auto &ant = s.getFirstNPC();
-      c.sendMessage(CL_TARGET_ENTITY, makeArgs(ant.serial()));
+      client->sendMessage(CL_TARGET_ENTITY, makeArgs(ant.serial()));
 
       THEN("the NPC should be damaged very quickly") {
         WAIT_UNTIL_TIMEOUT(ant.health() < ant.stats().maxHealth, 100);
