@@ -2,7 +2,6 @@
 
 #include <cassert>
 
-#include "../Client.h"
 #include "../Renderer.h"
 #include "ShadowBox.h"
 
@@ -40,7 +39,7 @@ void TextBox::refresh() {
 
   // Cursor
   const static px_t CURSOR_GAP = 0, CURSOR_WIDTH = 1;
-  if (_client->textBoxInFocus == this) {
+  if (_manager.textBoxInFocus == this) {
     renderer.setDrawColor(Element::FONT_COLOR);
     renderer.fillRect(
         {textX + text.width() + CURSOR_GAP, 1, CURSOR_WIDTH, height() - 2});
@@ -49,7 +48,7 @@ void TextBox::refresh() {
 
 void TextBox::click(Element &e, const ScreenPoint &mousePos) {
   TextBox *newFocus = dynamic_cast<TextBox *>(&e);
-  auto &currentFocus = newFocus->_client->textBoxInFocus;
+  auto &currentFocus = newFocus->_manager.textBoxInFocus;
   if (newFocus == currentFocus) return;
 
   // Mark changed, to (un)draw cursor
