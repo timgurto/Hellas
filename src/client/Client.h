@@ -56,7 +56,7 @@
 struct GroupUI;
 class TextBox;
 
-class Client {
+class Client : public TextEntryManager {
  public:
   Client();
   ~Client();

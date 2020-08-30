@@ -71,6 +71,8 @@ TextBox *spawnTimeBox{nullptr};
 
 Window *activeTool{nullptr};
 
+TextEntryManager textEntryManager;
+
 #undef main
 int main(int argc, char *argv[]) {
   cmdLineArgs.add("width", "2950");
@@ -126,7 +128,7 @@ void handleInput(unsigned timeElapsed) {
         break;
 
       case SDL_TEXTINPUT:
-        TextBox::addText(e.text.text);
+        TextBox::addText(textEntryManager, e.text.text);
         break;
 
       case SDL_WINDOWEVENT: {
@@ -172,12 +174,12 @@ void handleInput(unsigned timeElapsed) {
 
           switch (e.key.keysym.sym) {
             case SDLK_ESCAPE:
-              TextBox::clearFocus();
+              textEntryManager.textBoxInFocus = nullptr;
               SDL_StopTextInput();
               break;
 
             case SDLK_BACKSPACE:
-              TextBox::backspace();
+              TextBox::backspace(textEntryManager);
               break;
           }
 
@@ -225,7 +227,7 @@ void handleInput(unsigned timeElapsed) {
       case SDL_MOUSEBUTTONDOWN:
         switch (e.button.button) {
           case SDL_BUTTON_LEFT: {
-            TextBox::clearFocus();
+            textEntryManager.textBoxInFocus = nullptr;
 
             for (auto window : windows)
               if (window->visible()) window->onLeftMouseDown(mouse);
@@ -242,9 +244,10 @@ void handleInput(unsigned timeElapsed) {
               }
             }
 
-            if (SDL_IsTextInputActive() && !TextBox::focus())
+            if (SDL_IsTextInputActive() && !textEntryManager.textBoxInFocus)
               SDL_StopTextInput();
-            else if (!SDL_IsTextInputActive() && TextBox::focus())
+            else if (!SDL_IsTextInputActive() &&
+                     textEntryManager.textBoxInFocus)
               SDL_StartTextInput();
 
             if (windowWasClicked) break;
@@ -612,7 +615,8 @@ void initUI() {
     spawnWindow->addChild(new Label(
         {0, RADIUS_Y, spawnWindow->contentWidth(), Element::TEXT_HEIGHT},
         "Radius"));
-    spawnRadiusBox = new TextBox({TEXT_BOX_X, RADIUS_Y, TEXT_BOX_W, TEXT_ROW_H},
+    spawnRadiusBox = new TextBox(textEntryManager,
+                                 {TEXT_BOX_X, RADIUS_Y, TEXT_BOX_W, TEXT_ROW_H},
                                  TextBox::NUMERALS);
     spawnRadiusBox->text("250");
     spawnWindow->addChild(spawnRadiusBox);
@@ -622,7 +626,8 @@ void initUI() {
         {0, QUANTITY_Y, spawnWindow->contentWidth(), Element::TEXT_HEIGHT},
         "Quantity"));
     spawnQuantityBox = new TextBox(
-        {TEXT_BOX_X, QUANTITY_Y, TEXT_BOX_W, TEXT_ROW_H}, TextBox::NUMERALS);
+        textEntryManager, {TEXT_BOX_X, QUANTITY_Y, TEXT_BOX_W, TEXT_ROW_H},
+        TextBox::NUMERALS);
     spawnQuantityBox->text("5");
     spawnWindow->addChild(spawnQuantityBox);
   }
@@ -630,9 +635,9 @@ void initUI() {
     spawnWindow->addChild(new Label(
         {0, RESPAWN_TIME_Y, spawnWindow->contentWidth(), Element::TEXT_HEIGHT},
         "Respawn (s)"));
-    spawnTimeBox =
-        new TextBox({TEXT_BOX_X, RESPAWN_TIME_Y, TEXT_BOX_W, TEXT_ROW_H},
-                    TextBox::NUMERALS);
+    spawnTimeBox = new TextBox(
+        textEntryManager, {TEXT_BOX_X, RESPAWN_TIME_Y, TEXT_BOX_W, TEXT_ROW_H},
+        TextBox::NUMERALS);
     spawnTimeBox->text("300");
     spawnWindow->addChild(spawnTimeBox);
   }

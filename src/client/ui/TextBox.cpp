@@ -8,10 +8,11 @@
 
 extern Renderer renderer;
 
-TextBox::TextBox(Client &client, const ScreenRect &rect, ValidInput validInput)
+TextBox::TextBox(TextEntryManager &manager, const ScreenRect &rect,
+                 ValidInput validInput)
     : Element({rect.x, rect.y, rect.w, max(HEIGHT, rect.h)}),
+      _manager(manager),
       _validInput(validInput) {
-  setClient(client);
   addChild(new ShadowBox({0, 0, rect.w, max(HEIGHT, rect.h)}, true));
   setLeftMouseDownFunction(&click);
 }
@@ -65,18 +66,18 @@ void TextBox::setOnChange(OnChangeFunction function, void *data) {
   _onChangeData = data;
 }
 
-void TextBox::addText(Client &client, const char *newText) {
-  assert(client.textBoxInFocus);
+void TextBox::addText(TextEntryManager &manager, const char *newText) {
+  assert(manager.textBoxInFocus);
   assert(newText[1] == '\0');
 
   const auto &newChar = newText[0];
-  if (!client.textBoxInFocus->isInputValid(newChar)) return;
+  if (!manager.textBoxInFocus->isInputValid(newChar)) return;
 
-  std::string &text = client.textBoxInFocus->_text;
+  std::string &text = manager.textBoxInFocus->_text;
   if (text.size() < MAX_TEXT_LENGTH) {
     text.append(newText);
-    client.textBoxInFocus->onChange();
-    client.textBoxInFocus->markChanged();
+    manager.textBoxInFocus->onChange();
+    manager.textBoxInFocus->markChanged();
   }
 }
 
@@ -97,14 +98,14 @@ void TextBox::onChange() {
   if (_onChangeFunction) _onChangeFunction(_onChangeData);
 }
 
-void TextBox::backspace(Client &client) {
-  assert(client.textBoxInFocus);
+void TextBox::backspace(TextEntryManager &manager) {
+  assert(manager.textBoxInFocus);
 
-  std::string &text = client.textBoxInFocus->_text;
+  std::string &text = manager.textBoxInFocus->_text;
   if (text.size() > 0) {
     text.erase(text.size() - 1);
-    client.textBoxInFocus->onChange();
-    client.textBoxInFocus->markChanged();
+    manager.textBoxInFocus->onChange();
+    manager.textBoxInFocus->markChanged();
   }
 }
 
