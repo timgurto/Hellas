@@ -73,6 +73,8 @@ Window *activeTool{nullptr};
 
 TextEntryManager textEntryManager;
 
+Client *noClient{nullptr};
+
 #undef main
 int main(int argc, char *argv[]) {
   cmdLineArgs.add("width", "2950");
@@ -92,7 +94,6 @@ int main(int argc, char *argv[]) {
   Element::font(TTF_OpenFont("trebucbd.ttf", 15));
   Element::textOffset = 2;
   Element::TEXT_HEIGHT = 20;
-  Element::absMouse = &mouse;
   Element::initialize();
 
   initUI();
@@ -431,7 +432,8 @@ void drawRectOnMap(const MapPoint &mapLoc, Color color,
 
 void initUI() {
   // Save/load window
-  saveLoadWindow = Window::WithRectAndTitle({0, 200, 300, 100}, "Save/Load");
+  saveLoadWindow =
+      Window::WithRectAndTitle(*noClient, {0, 200, 300, 100}, "Save/Load");
   windows.push_front(saveLoadWindow);
 
   const auto GAP = 2_px,
@@ -473,23 +475,27 @@ void initUI() {
       }));
 
   // Options window
-  optionsWindow = Window::WithRectAndTitle({0, 175, 200, 100}, "Options");
+  optionsWindow =
+      Window::WithRectAndTitle(*noClient, {0, 175, 200, 100}, "Options");
   windows.push_front(optionsWindow);
   auto optionsList = new List(
       {0, 0, optionsWindow->contentWidth(), optionsWindow->contentHeight()});
   optionsWindow->addChild(optionsList);
   const auto cbRect =
       ScreenRect{0, 0, optionsList->width(), optionsList->childHeight()};
-  optionsList->addChild(new CheckBox(cbRect, shouldDrawSpawnPointCircles,
+  optionsList->addChild(new CheckBox(*noClient, cbRect,
+                                     shouldDrawSpawnPointCircles,
                                      "Draw spawn-point circles"));
+  optionsList->addChild(new CheckBox(*noClient, cbRect, shouldScaleStaticImages,
+                                     "Scale static objects"));
   optionsList->addChild(
-      new CheckBox(cbRect, shouldScaleStaticImages, "Scale static objects"));
+      new CheckBox(*noClient, cbRect, shouldDrawObjects, "Draw objects"));
   optionsList->addChild(
-      new CheckBox(cbRect, shouldDrawObjects, "Draw objects"));
-  optionsList->addChild(new CheckBox(cbRect, shouldDrawNPCs, "Draw NPCs"));
+      new CheckBox(*noClient, cbRect, shouldDrawNPCs, "Draw NPCs"));
 
   // Context window
-  contextWindow = Window::WithRectAndTitle({0, 0, 200, 0}, "Context");
+  contextWindow =
+      Window::WithRectAndTitle(*noClient, {0, 0, 200, 0}, "Context");
   windows.push_front(contextWindow);
   y = GAP;
 
@@ -559,7 +565,8 @@ void initUI() {
   contextWindow->height(y);
 
   // Terrain window
-  terrainWindow = Window::WithRectAndTitle({300, 0, 200, 400}, "Terrain");
+  terrainWindow =
+      Window::WithRectAndTitle(*noClient, {300, 0, 200, 400}, "Terrain");
   terrainWindow->setMouseMoveFunction(
       [](Element &e, const ScreenPoint &r) {
         if (collision(r, {0, 0, e.width(), e.height()}))
@@ -568,8 +575,8 @@ void initUI() {
       nullptr);
   windows.push_front(terrainWindow);
   terrainList = new ChoiceList(
-      {0, 0, terrainWindow->contentWidth(), terrainWindow->contentHeight()},
-      34);
+      {0, 0, terrainWindow->contentWidth(), terrainWindow->contentHeight()}, 34,
+      *noClient);
   terrainWindow->addChild(terrainList);
   for (auto pair : terrain) {
     auto &t = pair.second;
@@ -584,7 +591,8 @@ void initUI() {
 
   // Spawn window
   static const auto TEXT_ROW_H = 20;
-  spawnWindow = Window::WithRectAndTitle({300, 450, 300, 600}, "Spawn Points");
+  spawnWindow =
+      Window::WithRectAndTitle(*noClient, {300, 450, 300, 600}, "Spawn Points");
   spawnWindow->setMouseMoveFunction(
       [](Element &e, const ScreenPoint &r) {
         if (collision(r, {0, 0, e.width(), e.height()}))
@@ -595,7 +603,7 @@ void initUI() {
   spawnList =
       new ChoiceList({0, 0, spawnWindow->contentWidth(),
                       spawnWindow->contentHeight() - 3 * TEXT_ROW_H - 5},
-                     20);
+                     20, *noClient);
   spawnWindow->addChild(spawnList);
   // Populate
   for (auto type : entityTypes) {
