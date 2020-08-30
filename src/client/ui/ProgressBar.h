@@ -44,8 +44,6 @@ class ProgressBar : public Element {
 
 // Implementations
 
-extern Renderer renderer;
-
 template <typename T>
 ProgressBar<T>::ProgressBar(const ScreenRect &rect, const T &numerator,
                             const T &denominator, const Color &barColor,

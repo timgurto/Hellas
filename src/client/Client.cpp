@@ -36,6 +36,7 @@
 #include "ui/ProgressBar.h"
 
 extern Args cmdLineArgs;
+extern Renderer renderer;
 
 Client::CommonImages Client::images;
 TTF_Font *Client::_defaultFont = nullptr;

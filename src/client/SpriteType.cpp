@@ -4,6 +4,8 @@
 #include "Client.h"
 #include "Surface.h"
 
+extern Renderer renderer;
+
 ms_t SpriteType::timeThatTheLastRedrawWasOrdered{0};
 
 const double SpriteType::SHADOW_RATIO = 0.8;

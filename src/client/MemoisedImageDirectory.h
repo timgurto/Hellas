@@ -6,8 +6,6 @@
 #include "Renderer.h"
 #include "Texture.h"
 
-extern Renderer renderer;
-
 class MemoisedImageDirectory {
  public:
   void initialise(const std::string &directory);

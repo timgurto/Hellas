@@ -3,6 +3,8 @@
 #include "ui/Picture.h"
 #include "ui/Window.h"
 
+extern Renderer renderer;
+
 void Client::onMapScrollUp(Element &e) {
   auto *window = dynamic_cast<Window *>(&e);
   if (!window || !window->client()) return;

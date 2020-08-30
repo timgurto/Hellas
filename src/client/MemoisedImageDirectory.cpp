@@ -1,5 +1,7 @@
 #include "MemoisedImageDirectory.h"
 
+extern Renderer renderer;
+
 Texture MemoisedImageDirectory::defaultTexture;
 
 void MemoisedImageDirectory::initialise(const std::string &directory) {
