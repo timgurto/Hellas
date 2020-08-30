@@ -565,7 +565,7 @@ void initUI() {
 
   // Terrain window
   terrainWindow =
-      Window::WithRectAndTitle({300, 0, 200, 400}, "Terrain", mouse);
+      Window::WithRectAndTitle({300, 0, 200, 1700}, "Terrain", mouse);
   terrainWindow->setMouseMoveFunction(
       [](Element &e, const ScreenPoint &r) {
         if (collision(r, {0, 0, e.width(), e.height()}))
