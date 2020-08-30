@@ -1,6 +1,8 @@
 #include "TestClient.h"
 #include "TestServer.h"
 
+extern Renderer renderer;
+
 TEST_CASE("Objects show up on the map when a client logs in") {
   // Given a server and client with rock objects;
   TestServer s = TestServer::WithData("basic_rock");
