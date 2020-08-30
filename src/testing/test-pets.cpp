@@ -1,4 +1,5 @@
 #include "TestClient.h"
+#include "TestFixtures.h"
 #include "TestServer.h"
 #include "testing.h"
 
@@ -797,32 +798,29 @@ TEST_CASE("Failed taming attempts should consume item") {
 }
 
 // Note that this feature is currently disabled.
-TEST_CASE("Granting pets to the city") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Ceding pets to the city") {
   GIVEN("A tameable NPC") {
-    auto data = R"(
+    useData(R"(
       <npcType id="dog" maxHealth="10000" >
         <canBeTamed />
       </npcType>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    auto &dog = s.addNPC("dog", {10, 15});
+    )");
+
+    auto &dog = server->addNPC("dog", {10, 15});
     dog.reduceHealth(dog.health() - 1);
 
-    AND_GIVEN("a player in a city") {
-      s.cities().createCity("Athens", {0, 0}, {});
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      s.cities().addPlayerToCity(user, "Athens");
+    AND_GIVEN("the player is in a city") {
+      server->cities().createCity("Athens", {0, 0}, {});
+      server->cities().addPlayerToCity(*user, "Athens");
 
-      WHEN("the player tames the NPC") {
-        c.sendMessage(CL_TAME_NPC, makeArgs(dog.serial()));
+      WHEN("he tames the NPC") {
+        client->sendMessage(CL_TAME_NPC, makeArgs(dog.serial()));
         WAIT_UNTIL(dog.permissions.hasOwner());
 
         AND_WHEN("he tries to cede it to his city") {
-          c.sendMessage(CL_CEDE, makeArgs(dog.serial()));
+          client->sendMessage(CL_CEDE, makeArgs(dog.serial()));
 
-          THEN("the server survives") { s.nop(); }
+          THEN("the server survives") { server->nop(); }
         }
       }
     }
