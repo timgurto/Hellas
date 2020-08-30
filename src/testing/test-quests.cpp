@@ -1898,7 +1898,6 @@ TEST_CASE("A class-specific quests with a prerequisite") {
       auto s = TestServer::WithDataString(data);
       auto c = TestClient::WithClassAndDataString("frog", data);
       s.addObject("questgiver", {10, 15});
-      auto questgiver = s.getFirstObject().serial();
       s.waitForUsers(1);
       auto &user = s.getFirstUser();
       CHECK(user.getClass().type().id() != "police");
