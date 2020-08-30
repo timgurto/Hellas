@@ -24,7 +24,7 @@ auto cmdLineArgs = Args{};   // MUST be defined before renderer
 auto renderer = Renderer{};  // MUST be defined after cmdLineArgs
 
 auto loop = true;
-auto map = Map{};
+auto map = EMap{};
 auto zoomLevel = 1;
 std::pair<int, int> offset = {0, 0};
 auto mouse = ScreenPoint{};

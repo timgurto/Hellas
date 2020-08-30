@@ -6,11 +6,11 @@
 
 #include "../../../src/client/Texture.h"
 
-class Map {
+class EMap {
  public:
-  Map() {}
-  Map(const std::string &filename, MapPoint &playerSpawn, int &playerSpawnRange,
-      MapPoint &postTutorialPlayerSpawn);
+  EMap() {}
+  EMap(const std::string &filename, MapPoint &playerSpawn,
+       int &playerSpawnRange, MapPoint &postTutorialPlayerSpawn);
 
   void save(const std::string &filename, MapPoint playerSpawn,
             int playerSpawnRange, const MapPoint &postTutorialPlayerSpawn);

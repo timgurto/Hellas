@@ -1,10 +1,9 @@
 #include "../../../src/client/Renderer.h"
-
 #include "Map.h"
 #include "main.h"
 
 extern std::pair<int, int> offset;
-extern Map map;
+extern EMap map;
 extern Renderer renderer;
 extern int zoomLevel;
 

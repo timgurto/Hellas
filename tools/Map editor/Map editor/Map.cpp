@@ -1,4 +1,7 @@
+#include "Map.h"
+
 #include <SDL_image.h>
+
 #include <map>
 #include <queue>
 
@@ -6,8 +9,6 @@
 #include "../../../src/XmlWriter.h"
 #include "../../../src/client/Renderer.h"
 #include "../../../src/client/ui/ChoiceList.h"
-
-#include "Map.h"
 #include "Terrain.h"
 #include "main.h"
 
@@ -15,8 +16,8 @@ extern Renderer renderer;
 extern TerrainType::Container terrain;
 extern ChoiceList *terrainList;
 
-Map::Map(const std::string &filename, MapPoint &playerSpawn,
-         int &playerSpawnRange, MapPoint &postTutorialPlayerSpawn) {
+EMap::EMap(const std::string &filename, MapPoint &playerSpawn,
+           int &playerSpawnRange, MapPoint &postTutorialPlayerSpawn) {
   auto xr = XmlReader::FromFile(filename);
   if (!xr) return;
 
@@ -51,8 +52,8 @@ Map::Map(const std::string &filename, MapPoint &playerSpawn,
   generateTexture();
 }
 
-void Map::save(const std::string &filename, MapPoint playerSpawn,
-               int playerSpawnRange, const MapPoint &postTutorialPlayerSpawn) {
+void EMap::save(const std::string &filename, MapPoint playerSpawn,
+                int playerSpawnRange, const MapPoint &postTutorialPlayerSpawn) {
   auto xw = XmlWriter{filename};
 
   auto e = xw.addChild("size");
@@ -83,7 +84,7 @@ void Map::save(const std::string &filename, MapPoint playerSpawn,
   saveMapImage();
 }
 
-void Map::saveMapImage() {
+void EMap::saveMapImage() {
   auto surface =
       SDL_CreateRGBSurface(0, _textureWidth, _textureHeight, 32, 0, 0, 0, 0);
 
@@ -105,7 +106,7 @@ void Map::saveMapImage() {
   SDL_FreeSurface(surface);
 }
 
-void Map::generateTexture() {
+void EMap::generateTexture() {
   _textureWidth = _dimX * TILE_SIZE - TILE_SIZE / 2;
   _textureHeight = _dimY * TILE_SIZE - TILE_SIZE / 2;
   _wholeMap = {_textureWidth, _textureHeight};
@@ -125,7 +126,7 @@ void Map::generateTexture() {
   renderer.popRenderTarget();
 }
 
-void Map::drawTile(int x, int y) {
+void EMap::drawTile(int x, int y) {
   auto terrainHere = _tiles[x][y];
   renderer.setDrawColor(terrain[terrainHere].color);
 
@@ -134,7 +135,7 @@ void Map::drawTile(int x, int y) {
   renderer.fillRect(rect);
 }
 
-void Map::draw(std::pair<int, int> offset) {
+void EMap::draw(std::pair<int, int> offset) {
   auto src = ScreenRect{offset.first, offset.second, zoomed(renderer.width()),
                         zoomed(renderer.height())};
   auto dst = ScreenRect{0, 0, renderer.width(), renderer.height()};
@@ -149,7 +150,7 @@ void Map::draw(std::pair<int, int> offset) {
   }
 }
 
-bool Map::isOutOfBounds(int x, int y) const {
+bool EMap::isOutOfBounds(int x, int y) const {
   if (x < 0) return true;
   if (y < 0) return true;
   if (x >= _dimX) return true;
@@ -157,7 +158,7 @@ bool Map::isOutOfBounds(int x, int y) const {
   return false;
 }
 
-void Map::set(int x, int y) {
+void EMap::set(int x, int y) {
   if (x < 0 || y < 0) return;
 
   auto terrainType = terrainList->getSelected();
@@ -177,7 +178,7 @@ struct Tile {
   int y;
 };
 
-void Map::fill(int x, int y) {
+void EMap::fill(int x, int y) {
   renderer.pushRenderTarget(_wholeMap);
   auto terrainType = terrainList->getSelected();
   if (terrainType.empty()) return;
@@ -228,7 +229,7 @@ void Map::fill(int x, int y) {
   renderer.popRenderTarget();
 }
 
-char Map::at(int x, int y) {
+char EMap::at(int x, int y) {
   if (x < 0 || x >= _dimX) return 'a';
   if (y < 0 || y >= _dimY) return 'a';
   return _tiles[x][y];
