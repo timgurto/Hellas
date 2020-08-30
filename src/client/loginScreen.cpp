@@ -182,8 +182,8 @@ void Client::initCreateWindow() {
              WIN_X = (SCREEN_X - WIN_W) / 2, WIN_Y = (SCREEN_Y - WIN_H) / 2,
              GAP = 2;
 
-  _createWindow = Window::WithRectAndTitle(*this, {WIN_X, WIN_Y, WIN_W, WIN_H},
-                                           "Create Account"s);
+  _createWindow = Window::WithRectAndTitle({WIN_X, WIN_Y, WIN_W, WIN_H},
+                                           "Create Account"s, mouse());
   addWindow(_createWindow);
 
   auto infoPane =
@@ -413,8 +413,8 @@ void Client::initLoginScreen() {
           if (!window) {
             const auto PADDING = 5_px, WIN_W = 225_px,
                        QR_X = (WIN_W - images.btcQR.width()) / 2;
-            window = Window::WithRectAndTitle(*this, {0, 0, WIN_W, 0},
-                                              "Donate to the developer");
+            window = Window::WithRectAndTitle(
+                {0, 0, WIN_W, 0}, "Donate to the developer", mouse());
             addWindow(window);
             auto y = PADDING;
 

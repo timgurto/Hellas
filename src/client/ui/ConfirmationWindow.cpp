@@ -99,3 +99,7 @@ void InputWindow::sendMessageWithInputAndHideWindow(void *thisInputWindow) {
   window->hide();
   window->_textBox->text({});
 }
+
+DialogWindow::DialogWindow(Client &client) : Window(client.mouse()) {
+  setClient(client);
+}

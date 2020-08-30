@@ -22,10 +22,10 @@ void Client::onMapScrollDown(Element &e) {
 
 void Client::initializeMapWindow() {
   _mapWindow = Window::WithRectAndTitle(
-      *this,
+
       {(SCREEN_X - MAP_IMAGE_W) / 2, (SCREEN_Y - MAP_IMAGE_H) / 2,
        MAP_IMAGE_W + 1, MAP_IMAGE_H + 2},
-      "Map");
+      "Map", mouse());
   _mapPicture =
       new Picture(ScreenRect{0, 0, MAP_IMAGE_W, MAP_IMAGE_H}, images.map);
   _mapWindow->addChild(_mapPicture);

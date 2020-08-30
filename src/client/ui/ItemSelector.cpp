@@ -41,10 +41,10 @@ ItemSelector::ItemSelector(Client &client, const ClientItem *&item, px_t x,
 
   if (_findItemWindow == nullptr) {
     _findItemWindow = Window::WithRectAndTitle(
-        client,
+
         {(Client::SCREEN_X - WINDOW_WIDTH) / 2,
          (Client::SCREEN_Y - WINDOW_HEIGHT) / 2, WINDOW_WIDTH, WINDOW_HEIGHT},
-        "Find Item");
+        "Find Item", client.mouse());
     px_t y = GAP;
     _filterText =
         new TextBox(client, {GAP, y, SEARCH_TEXT_WIDTH, SEARCH_BUTTON_HEIGHT},

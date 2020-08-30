@@ -8,7 +8,7 @@
 
 class DialogWindow : public Window {
  public:
-  DialogWindow(Client &client) { setClient(client); }
+  DialogWindow(Client &client);
 };
 
 class ConfirmationWindow : public DialogWindow {

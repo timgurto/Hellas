@@ -19,11 +19,12 @@ extern Renderer renderer;
 
 void Window::onAddToClientWindowList(Client &client) { _client = &client; }
 
-Window::Window()
+Window::Window(const ScreenPoint &mousePos)
     : _title(""),
       _dragging(false),
       _initFunction(nullptr),
-      _isInitialized(true) {
+      _isInitialized(true),
+      _mousePos(mousePos) {
   hide();
   setLeftMouseUpFunction(&stopDragging);
   setMouseMoveFunction(&drag);
@@ -31,10 +32,10 @@ Window::Window()
   setPreRefreshFunction(checkInitialized);
 }
 
-Window *Window::WithRectAndTitle(Client &client, const ScreenRect &rect,
-                                 const std::string &title) {
-  auto window = new Window;
-  window->setClient(client);
+Window *Window::WithRectAndTitle(const ScreenRect &rect,
+                                 const std::string &title,
+                                 const ScreenPoint &mousePos) {
+  auto window = new Window(mousePos);
 
   window->resize(rect.w, rect.h);
   window->setPosition(rect.x, rect.y);
@@ -45,7 +46,7 @@ Window *Window::WithRectAndTitle(Client &client, const ScreenRect &rect,
 
 Window *Window::InitializeLater(Client &client, InitFunction function,
                                 const std::string &title) {
-  auto window = new Window;
+  auto window = new Window(client.mouse());
   window->setClient(client);
 
   window->setTitle(title);

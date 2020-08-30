@@ -8,7 +8,7 @@ void Client::initializeClassWindow() {
   const px_t SECTION_GAP = 6, MARGIN = 2, WIN_W = 216, WIN_H = 135, XP_H = 27,
              RESET_H = 15, TREES_Y = XP_H + SECTION_GAP;
   _classWindow =
-      Window::WithRectAndTitle(*this, {80, 20, WIN_W, WIN_H}, "Class"s);
+      Window::WithRectAndTitle({80, 20, WIN_W, WIN_H}, "Class"s, mouse());
   const px_t TREES_H =
       _classWindow->contentHeight() - TREES_Y - RESET_H - MARGIN - SECTION_GAP;
   _talentTrees = new Element({0, TREES_Y, WIN_W, TREES_H});

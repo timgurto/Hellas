@@ -433,7 +433,7 @@ void drawRectOnMap(const MapPoint &mapLoc, Color color,
 void initUI() {
   // Save/load window
   saveLoadWindow =
-      Window::WithRectAndTitle(*noClient, {0, 200, 300, 100}, "Save/Load");
+      Window::WithRectAndTitle({0, 200, 300, 100}, "Save/Load", mouse);
   windows.push_front(saveLoadWindow);
 
   const auto GAP = 2_px,
@@ -476,7 +476,7 @@ void initUI() {
 
   // Options window
   optionsWindow =
-      Window::WithRectAndTitle(*noClient, {0, 175, 200, 100}, "Options");
+      Window::WithRectAndTitle({0, 175, 200, 100}, "Options", mouse);
   windows.push_front(optionsWindow);
   auto optionsList = new List(
       {0, 0, optionsWindow->contentWidth(), optionsWindow->contentHeight()});
@@ -494,8 +494,7 @@ void initUI() {
       new CheckBox(*noClient, cbRect, shouldDrawNPCs, "Draw NPCs"));
 
   // Context window
-  contextWindow =
-      Window::WithRectAndTitle(*noClient, {0, 0, 200, 0}, "Context");
+  contextWindow = Window::WithRectAndTitle({0, 0, 200, 0}, "Context", mouse);
   windows.push_front(contextWindow);
   y = GAP;
 
@@ -566,7 +565,7 @@ void initUI() {
 
   // Terrain window
   terrainWindow =
-      Window::WithRectAndTitle(*noClient, {300, 0, 200, 400}, "Terrain");
+      Window::WithRectAndTitle({300, 0, 200, 400}, "Terrain", mouse);
   terrainWindow->setMouseMoveFunction(
       [](Element &e, const ScreenPoint &r) {
         if (collision(r, {0, 0, e.width(), e.height()}))
@@ -592,7 +591,7 @@ void initUI() {
   // Spawn window
   static const auto TEXT_ROW_H = 20;
   spawnWindow =
-      Window::WithRectAndTitle(*noClient, {300, 450, 300, 600}, "Spawn Points");
+      Window::WithRectAndTitle({300, 450, 300, 600}, "Spawn Points", mouse);
   spawnWindow->setMouseMoveFunction(
       [](Element &e, const ScreenPoint &r) {
         if (collision(r, {0, 0, e.width(), e.height()}))

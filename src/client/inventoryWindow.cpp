@@ -14,8 +14,8 @@ void Client::initializeInventoryWindow() {
   const px_t HEIGHT = inventory->height() + 1, WIDTH = inventory->width(),
              LEFT = SCREEN_X - WIDTH - 1, TOP = SCREEN_Y - HEIGHT - 28;
 
-  _inventoryWindow =
-      Window::WithRectAndTitle(*this, {LEFT, TOP, WIDTH, HEIGHT}, "Inventory");
+  _inventoryWindow = Window::WithRectAndTitle({LEFT, TOP, WIDTH, HEIGHT},
+                                              "Inventory", mouse());
   inventory->id("inventory");
   _inventoryWindow->addChild(inventory);
 }

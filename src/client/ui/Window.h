@@ -22,8 +22,9 @@ class Window : public Element {
 
   static Window *InitializeLater(Client &client, InitFunction function,
                                  const std::string &title);
-  static Window *WithRectAndTitle(Client &client, const ScreenRect &rect,
-                                  const std::string &title);
+  static Window *WithRectAndTitle(const ScreenRect &rect,
+                                  const std::string &title,
+                                  const ScreenPoint &mouseCursor);
 
   static void hideWindow(void *window);
   const std::string &title() const { return _title; }
@@ -52,7 +53,7 @@ class Window : public Element {
   void onAddToClientWindowList(Client &client);
 
  protected:
-  Window();
+  Window(const ScreenPoint &mousePos);
 
  private:
   void addStructuralElements();
@@ -71,6 +72,7 @@ class Window : public Element {
   Label *_heading;
   Line *_headingLine;
   Button *_closeButton;
+  const ScreenPoint &_mousePos;
 
   InitFunction _initFunction;  // Called before first draw
   bool _isInitialized;

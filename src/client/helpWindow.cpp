@@ -15,8 +15,8 @@ void Client::HelpWindow::initialise(Client &client) {
   const px_t WIN_WIDTH = 400, WIN_HEIGHT = 250, WIN_X = (640 - WIN_WIDTH) / 2,
              WIN_Y = (360 - WIN_HEIGHT) / 2;
 
-  window = Window::WithRectAndTitle(
-      client, {WIN_X, WIN_Y, WIN_WIDTH, WIN_HEIGHT}, "Help");
+  window = Window::WithRectAndTitle({WIN_X, WIN_Y, WIN_WIDTH, WIN_HEIGHT},
+                                    "Help", client.mouse());
 
   // Topic list
   const px_t TOPIC_W = 100, TOPIC_BORDER = 2, TOPIC_GAP = 2;
