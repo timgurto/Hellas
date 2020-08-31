@@ -102,7 +102,7 @@ int main(int argc, char** argv) {
       std::cout << "No local client found" << std::endl;
     } else {
       versionFile >> localVersion;
-      std::cout << "Local client version: " << localVersion << std::endl;
+      std::cout << " Local client version: " << localVersion << std::endl;
     }
   }
   auto remoteVersion = readFromURL("http://hellas.timgurto.com/version.txt");
