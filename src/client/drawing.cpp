@@ -303,8 +303,30 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const {
     }
   }
 
-  static const px_t w = Map::TILE_W, h = Map::TILE_H;
-  static const ScreenRect TOP_LEFT(0, 0, w / 2, h / 2),
+  // Handle hard-edged terrain
+  const auto *terrainThis = &gameData.terrain.at(tileID);
+  if (terrainThis->hasHardEdge()) {
+    terrainThis->setFullAlpha();
+    terrainThis->draw(xLoc, yLoc);
+    terrainThis->setQuarterAlpha();
+    return;
+  }
+  // This tile has soft edges, but for hard-edged neighbours, don't blend.
+  const auto *terrainL = &gameData.terrain.at(L),
+             *terrainR = &gameData.terrain.at(R),
+             *terrainE = &gameData.terrain.at(E),
+             *terrainF = &gameData.terrain.at(F),
+             *terrainG = &gameData.terrain.at(G),
+             *terrainH = &gameData.terrain.at(H);
+  if (terrainL->hasHardEdge()) terrainL = terrainThis;
+  if (terrainR->hasHardEdge()) terrainR = terrainThis;
+  if (terrainE->hasHardEdge()) terrainE = terrainThis;
+  if (terrainF->hasHardEdge()) terrainF = terrainThis;
+  if (terrainG->hasHardEdge()) terrainG = terrainThis;
+  if (terrainH->hasHardEdge()) terrainH = terrainThis;
+
+  const px_t w = Map::TILE_W, h = Map::TILE_H;
+  const ScreenRect TOP_LEFT(0, 0, w / 2, h / 2),
       TOP_RIGHT(w / 2, 0, w / 2, h / 2), BOTTOM_LEFT(0, h / 2, w / 2, h / 2),
       BOTTOM_RIGHT(w / 2, h / 2, w / 2, h / 2), LEFT_HALF(0, 0, w / 2, h),
       RIGHT_HALF(w / 2, 0, w / 2, h), FULL(0, 0, w, h);
@@ -323,34 +345,33 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const {
   renderer.fillRect(drawRect);
 
   // Half-alpha base tile
-  const auto &thisTilesTerrain = gameData.terrain.at(tileID);
-  thisTilesTerrain.setHalfAlpha();
+  terrainThis->setHalfAlpha();
   if (yOdd && x == 0) {
-    thisTilesTerrain.draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-    thisTilesTerrain.draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+    terrainThis->draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+    terrainThis->draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
   } else if (!yOdd && x == _map.width() - 1) {
-    thisTilesTerrain.draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-    thisTilesTerrain.draw(drawLoc + TOP_LEFT, TOP_LEFT);
+    terrainThis->draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+    terrainThis->draw(drawLoc + TOP_LEFT, TOP_LEFT);
   } else {
-    thisTilesTerrain.draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-    thisTilesTerrain.draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
-    thisTilesTerrain.draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-    thisTilesTerrain.draw(drawLoc + TOP_LEFT, TOP_LEFT);
+    terrainThis->draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+    terrainThis->draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+    terrainThis->draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+    terrainThis->draw(drawLoc + TOP_LEFT, TOP_LEFT);
   }
-  thisTilesTerrain.setQuarterAlpha();
+  terrainThis->setQuarterAlpha();
 
   // Quarter-alpha L, R, E, F, G, H tiles
   if (!yOdd || x != 0) {
-    gameData.terrain.at(L).draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-    gameData.terrain.at(L).draw(drawLoc + TOP_LEFT, TOP_LEFT);
-    gameData.terrain.at(G).draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-    gameData.terrain.at(H).draw(drawLoc + TOP_LEFT, TOP_LEFT);
+    terrainL->draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+    terrainL->draw(drawLoc + TOP_LEFT, TOP_LEFT);
+    terrainG->draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
+    terrainH->draw(drawLoc + TOP_LEFT, TOP_LEFT);
   }
   if (yOdd || x != _map.width() - 1) {
-    gameData.terrain.at(R).draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-    gameData.terrain.at(R).draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
-    gameData.terrain.at(E).draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-    gameData.terrain.at(F).draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+    terrainR->draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+    terrainR->draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+    terrainE->draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
+    terrainF->draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
   }
 
   /*if (!gameData.terrain[tileID].isTraversable()) {

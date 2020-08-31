@@ -1,9 +1,10 @@
+#include "ClientTerrain.h"
+
 #include <cassert>
 #include <sstream>
 
 #include "../util.h"
 #include "Client.h"
-#include "ClientTerrain.h"
 
 ClientTerrain::ClientTerrain(const std::string &imageFile, size_t frames,
                              ms_t frameTime)
@@ -37,6 +38,8 @@ void ClientTerrain::draw(const ScreenRect &loc,
 }
 
 void ClientTerrain::draw(px_t x, px_t y) const { _images[_frame].draw(x, y); }
+
+void ClientTerrain::setFullAlpha() const { _images[_frame].setAlpha(0xff); }
 
 void ClientTerrain::setHalfAlpha() const { _images[_frame].setAlpha(0x7f); }
 

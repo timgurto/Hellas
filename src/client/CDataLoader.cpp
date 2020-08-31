@@ -140,7 +140,10 @@ void CDataLoader::loadTerrain(XmlReader &xr) {
 
     auto &terrain = _client.gameData.terrain[index] =
         ClientTerrain(fileName, frames, frameTime);
-    ;
+
+    auto n = 0;
+    if (xr.findAttr(elem, "hardEdge", n) && n) terrain.setHardEdge();
+
     terrain.loadTagsFromXML(xr, elem);
   }
 }

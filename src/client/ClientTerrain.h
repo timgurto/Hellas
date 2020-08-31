@@ -15,15 +15,21 @@ class ClientTerrain : public Terrain {
   ms_t _frameTime;
   ms_t _frameTimer;
 
+  bool _hasHardEdge{false};
+
  public:
   ClientTerrain(const std::string &imageFile = "", size_t frames = 1,
                 ms_t frameTime = 0);
 
+  void setHardEdge() { _hasHardEdge = true; }
+  bool hasHardEdge() const { return _hasHardEdge; }
+
   void draw(const ScreenRect &loc, const ScreenRect &srcRect) const;
   void draw(px_t x, px_t y) const;
 
-  void setQuarterAlpha() const;
+  void setFullAlpha() const;
   void setHalfAlpha() const;
+  void setQuarterAlpha() const;
 
   void advanceTime(ms_t timeElapsed);
 };
