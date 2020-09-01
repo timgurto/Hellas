@@ -339,6 +339,15 @@ void render() {
   drawCircleOnMap(playerSpawn, Color::WHITE, playerSpawnRange);
   drawTextOnMap(playerSpawn, Color::WHITE, "New-player spawn");
 
+  // Draw footprint of selected object to place
+  if (activeTool == spawnWindow) {
+    const auto &selectedTypeID = spawnList->getSelected();
+    if (!selectedTypeID.empty()) {
+      auto &entityType = entityTypes[selectedTypeID];
+      drawRectOnMap(rounded(mapPos), Color::YELLOW, entityType.collisionRect);
+    }
+  }
+
   if (shouldDrawSpawnPointCircles)
     for (const auto &sp : spawnPoints) {
       auto &entityType = entityTypes[sp.id];
