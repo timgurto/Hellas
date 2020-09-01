@@ -66,7 +66,7 @@ void TextBox::setOnChange(OnChangeFunction function, void *data) {
 }
 
 void TextBox::addText(TextEntryManager &manager, const char *newText) {
-  assert(manager.textBoxInFocus);
+  if (!manager.textBoxInFocus) return;
   assert(newText[1] == '\0');
 
   const auto &newChar = newText[0];
