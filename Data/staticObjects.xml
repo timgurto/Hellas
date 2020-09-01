@@ -154,4 +154,23 @@
     <collisionRect x="-16" y="-80" w="32" h="160" />
 </objectType>
 
+    <object id="wallBlack1"> <location y="70128" x="16304" /> </object>
+    <object id="wallBlack3"> <location y="70032" x="15088" /> </object>
+    <object id="wallBlack3"> <location y="70032" x="15824" /> </object>
+    <object id="wallBlack3"> <location y="70352" x="16304" /> </object>
+    <object id="wallBlack3"> <location y="70384" x="16032" /> </object>
+    <object id="wallBlack5"> <location y="69872" x="15088" /> </object>
+    <object id="wallBlack5"> <location y="69872" x="15536" /> </object>
+    <object id="wallBlack5"> <location y="70160" x="16032" /> </object>
+    <object id="wallBlack5"> <location y="70192" x="15536" /> </object>
+    <object id="wallBlack5"> <location y="70192" x="15824" /> </object>
+    <object id="wallBlack5"> <location y="70384" x="15536" /> </object>
+    <object id="wallBlack5"> <location y="70384" x="15824" /> </object>
+    <object id="wallBlack1"> <location y="69936" x="15824" /> </object>
+    <object id="wallBlack1"> <location y="70352" x="14976" /> </object>
+    <object id="wallBlack1"> <location y="70384" x="14976" /> </object>
+    <object id="wallBlack1"> <location y="70544" x="14976" /> </object>
+    <object id="wallBlack5"> <location y="70448" x="14736" /> </object>
+    <object id="wallBlack5"> <location y="70640" x="14736" /> </object>
+
 </root>
