@@ -278,7 +278,7 @@ void handleInput(unsigned timeElapsed) {
                 sp.quantity = quantity;
                 sp.radius = radius;
                 sp.respawnTime = respawnTime;
-                sp.loc = mapPos;
+                sp.loc = rounded(mapPos);
 
                 spawnPoints.insert(sp);
               }
@@ -648,4 +648,8 @@ void initUI() {
     spawnTimeBox->text("300");
     spawnWindow->addChild(spawnTimeBox);
   }
+}
+
+MapPoint rounded(const MapPoint &rhs) {
+  return {static_cast<double>(toInt(rhs.x)), static_cast<double>(toInt(rhs.y))};
 }

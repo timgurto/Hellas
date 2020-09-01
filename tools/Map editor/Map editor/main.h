@@ -34,3 +34,5 @@ void drawRectOnMap(const MapPoint &mapLoc, Color color,
                    const ScreenRect &drawRect);
 
 void initUI();
+
+MapPoint rounded(const MapPoint &rhs);
