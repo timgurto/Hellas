@@ -1,8 +1,10 @@
-#include "../../../src/XmlReader.h"
-
 #include "EntityType.h"
 
-void EntityType::load(Container& container, const std::string& filename) {
+#include "../../../src/XmlReader.h"
+
+void EntityType::load(Container& container,
+                      const NPCTemplate::Container& npcTemplates,
+                      const std::string& filename) {
   auto xr = XmlReader::FromFile(filename);
 
   for (auto elem : xr.getChildren("objectType")) {
@@ -42,15 +44,49 @@ void EntityType::load(Container& container, const std::string& filename) {
       et.drawRect.y = -39;
     }
 
+    auto templateID = std::string{};
+    xr.findAttr(elem, "template", templateID);
+    if (!templateID.empty()) {
+      auto nt = npcTemplates.find(templateID)->second;
+      et.drawRect = nt.drawRect;
+      et.collisionRect = nt.collisionRect;
+      et.image = nt.image;
+    }
+
     xr.findAttr(elem, "imageFile", imageFile);
-    et.image = {"../../Images/NPCs/" + imageFile + ".png", Color::MAGENTA};
-    et.drawRect.w = et.image.width();
-    et.drawRect.h = et.image.height();
+    if (!imageFile.empty()) {
+      et.image = {"../../Images/NPCs/" + imageFile + ".png", Color::MAGENTA};
+      et.drawRect.w = et.image.width();
+      et.drawRect.h = et.image.height();
+    }
 
     xr.findRectChild("collisionRect", elem, et.collisionRect);
 
     xr.findAttr(elem, "xDrawOffset", et.drawRect.x);
     xr.findAttr(elem, "yDrawOffset", et.drawRect.y);
     container[id] = et;
+  }
+}
+
+void NPCTemplate::load(Container& container, const std::string& filename) {
+  auto xr = XmlReader::FromFile(filename);
+  for (auto elem : xr.getChildren("npcTemplate")) {
+    auto nt = NPCTemplate{};
+
+    auto id = std::string{};
+    xr.findAttr(elem, "id", id);
+
+    auto imageFile = id;
+
+    xr.findAttr(elem, "imageFile", imageFile);
+    nt.image = {"../../Images/NPCs/" + imageFile + ".png", Color::MAGENTA};
+    nt.drawRect.w = nt.image.width();
+    nt.drawRect.h = nt.image.height();
+
+    xr.findRectChild("collisionRect", elem, nt.collisionRect);
+
+    xr.findAttr(elem, "xDrawOffset", nt.drawRect.x);
+    xr.findAttr(elem, "yDrawOffset", nt.drawRect.y);
+    container[id] = nt;
   }
 }

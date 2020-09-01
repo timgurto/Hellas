@@ -37,6 +37,7 @@ auto terrain = TerrainType::Container{};
 auto staticObjects = StaticObject::Container{};
 auto spawnPoints = SpawnPoint::Container{};
 auto entityTypes = EntityType::Container{};
+auto npcTemplates = NPCTemplate::Container{};
 
 Label *contextPixelLabel{nullptr};
 Label *contextTileLabel{nullptr};
@@ -88,7 +89,8 @@ int main(int argc, char *argv[]) {
     TerrainType::load(terrain, file);
     StaticObject::load(staticObjects, file);
     SpawnPoint::load(spawnPoints, file);
-    EntityType::load(entityTypes, file);
+    NPCTemplate::load(npcTemplates, file);
+    EntityType::load(entityTypes, npcTemplates, file);
   }
 
   Element::font(TTF_OpenFont("trebucbd.ttf", 15));
