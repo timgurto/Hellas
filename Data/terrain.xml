@@ -55,8 +55,8 @@ frameTime          *
 <terrain index="R" id="sky"             color="3478D8" />
 <terrain index="S" id="clouds"          color="CEC5CF" />
 <terrain index="U" id="clay"            color="B06263" />
-<terrain index="v" id="tiles"           color="9C6167" hardEdge="1" />
-<terrain index="w" id="wood"            color="AC6699" hardEdge="1" />
+<terrain index="v" id="tiles"           color="9C6167" />
+<terrain index="w" id="wood"            color="AC6699" />
 <terrain index="B" id="null"            color="000000" hardEdge="1" />
 <terrain index="W" id="brickWall"       color="D09E7B" hardEdge="1" />
 
