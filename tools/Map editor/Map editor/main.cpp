@@ -54,6 +54,7 @@ auto shouldDrawSpawnPointCircles = false;
 auto shouldScaleStaticImages = false;
 auto shouldDrawNPCs = true;
 auto shouldDrawObjects = true;
+auto shouldSnapToTerrain = true;
 
 auto mouseLeftIsDown = false;
 auto terrainToDraw = 'a';
@@ -280,7 +281,8 @@ void handleInput(unsigned timeElapsed) {
                 sp.quantity = quantity;
                 sp.radius = radius;
                 sp.respawnTime = respawnTime;
-                sp.loc = rounded(mapPos);
+                sp.loc = mapPos;
+                if (shouldSnapToTerrain) sp.loc = snapToTerrain(sp.loc);
 
                 spawnPoints.insert(sp);
               }
@@ -346,7 +348,9 @@ void render() {
     const auto &selectedTypeID = spawnList->getSelected();
     if (!selectedTypeID.empty()) {
       auto &entityType = entityTypes[selectedTypeID];
-      drawRectOnMap(rounded(mapPos), Color::YELLOW, entityType.collisionRect);
+      auto loc = mapPos;
+      if (shouldSnapToTerrain) loc = snapToTerrain(loc);
+      drawRectOnMap(loc, Color::YELLOW, entityType.collisionRect);
     }
   }
 
@@ -503,6 +507,8 @@ void initUI() {
       new CheckBox(*noClient, cbRect, shouldDrawObjects, "Draw objects"));
   optionsList->addChild(
       new CheckBox(*noClient, cbRect, shouldDrawNPCs, "Draw NPCs"));
+  optionsList->addChild(new CheckBox(*noClient, cbRect, shouldSnapToTerrain,
+                                     "Snap objects to terrain"));
 
   // Context window
   contextWindow = Window::WithRectAndTitle({0, 0, 200, 0}, "Context", mouse);
@@ -661,6 +667,10 @@ void initUI() {
   }
 }
 
-MapPoint rounded(const MapPoint &rhs) {
-  return {static_cast<double>(toInt(rhs.x)), static_cast<double>(toInt(rhs.y))};
+MapPoint snapToTerrain(const MapPoint &rhs) {
+  auto x = toInt(rhs.x);
+  auto y = toInt(rhs.y);
+  x = x + 8 - (x + 8) % 16;
+  y = y + 8 - (y + 8) % 16;
+  return {static_cast<double>(x), static_cast<double>(y)};
 }

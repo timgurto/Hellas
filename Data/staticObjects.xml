@@ -144,4 +144,14 @@
 <object id="skeleton"> <location x="29957" y="44487" /> </object>
 
 
+<objectType id="wallBlack1" isDecoration="1" xDrawOffset="-16" yDrawOffset="-16">
+    <collisionRect x="-16" y="-16" w="32" h="32" />
+</objectType>
+<objectType id="wallBlack3" isDecoration="1" xDrawOffset="-16" yDrawOffset="-48">
+    <collisionRect x="-16" y="-48" w="32" h="96" />
+</objectType>
+<objectType id="wallBlack5" isDecoration="1" xDrawOffset="-16" yDrawOffset="-80">
+    <collisionRect x="-16" y="-80" w="32" h="160" />
+</objectType>
+
 </root>

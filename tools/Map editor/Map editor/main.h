@@ -35,4 +35,4 @@ void drawRectOnMap(const MapPoint &mapLoc, Color color,
 
 void initUI();
 
-MapPoint rounded(const MapPoint &rhs);
+MapPoint snapToTerrain(const MapPoint &rhs);
