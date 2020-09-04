@@ -172,29 +172,11 @@
 <object id="wallBlack1"> <location y="70544" x="14976" /> </object>
 <object id="wallBlack5"> <location y="70448" x="14736" /> </object>
 <object id="wallBlack5"> <location y="70640" x="14736" /> </object>
-<object id="wallBlack1"> <location y="70704" x="17840" /> </object>
-<object id="wallBlack1"> <location y="70736" x="17472" /> </object>
-<object id="wallBlack1"> <location y="71088" x="16912" /> </object>
-<object id="wallBlack1"> <location y="71280" x="16400" /> </object>
-<object id="wallBlack1"> <location y="71280" x="16912" /> </object>
-<object id="wallBlack3"> <location y="70864" x="17168" /> </object>
-<object id="wallBlack3"> <location y="71120" x="16656" /> </object>
-<object id="wallBlack5"> <location y="69712" x="17632" /> </object>
-<object id="wallBlack5"> <location y="69712" x="17888" /> </object>
-<object id="wallBlack5"> <location y="69904" x="17632" /> </object>
-<object id="wallBlack5"> <location y="69904" x="17888" /> </object>
-<object id="wallBlack5"> <location y="70096" x="17632" /> </object>
-<object id="wallBlack5"> <location y="70096" x="17888" /> </object>
-<object id="wallBlack5"> <location y="70288" x="17632" /> </object>
-<object id="wallBlack5"> <location y="70288" x="17888" /> </object>
-<object id="wallBlack5"> <location y="70832" x="17840" /> </object>
-<object id="wallBlack5"> <location y="71152" x="16400" /> </object>
-<object id="wallBlack5"> <location y="71152" x="17168" /> </object>
-<object id="waterNymph"> <location y="23176" x="26096" /> </object>
-<object id="waterNymph"> <location y="23784" x="25792" /> </object>
-<object id="waterNymph"> <location y="24120" x="23208" /> </object>
-<object id="waterNymph"> <location y="38504" x="31120" /> </object>
-<object id="waterNymph"> <location y="39360" x="31064" /> </object>
-<object id="waterNymph"> <location y="39792" x="30048" /> </object>
+
+<objectType id="phoenicianShipTop" isDecoration="1" isFlat="1" xDrawOffset="-640" yDrawOffset="-65" />
+<objectType id="phoenicianShipBottom" isDecoration="1" xDrawOffset="-640" yDrawOffset="-193" />
+
+<object id="phoenicianShipBottom"> <location y="71360" x="16896" /> </object>
+<object id="phoenicianShipTop"> <location y="71042" x="16896" /> </object>
 
 </root>
