@@ -19,3 +19,9 @@ void SDLWrappers::StopTextInput() {
   SDL_StopTextInput();
   SDL_THREAD_END
 }
+
+void SDLWrappers::StartTextInput() {
+  SDL_THREAD_BEGIN()
+  SDL_StartTextInput();
+  SDL_THREAD_END
+}

@@ -35,7 +35,6 @@ void Client::handleInput(double delta) {
                 _chatTextBox->hide();
               }
               textBoxInFocus = nullptr;
-              SDL_StopTextInput();
               break;
 
             case SDLK_BACKSPACE:
@@ -45,7 +44,6 @@ void Client::handleInput(double delta) {
             case SDLK_RETURN:
             case SDLK_KP_ENTER:
               if (textBoxInFocus == _chatTextBox) {
-                SDL_StopTextInput();
                 const std::string &text = _chatTextBox->text();
                 if (text != "") {
                   if (text.at(0) == '/') {
@@ -96,7 +94,6 @@ void Client::handleInput(double delta) {
 
             case SDLK_SLASH:
               if (!_chatTextBox->visible()) {
-                SDL_StartTextInput();
                 _chatTextBox->show();
                 textBoxInFocus = _chatTextBox;
                 _chatTextBox->text("/");
@@ -121,7 +118,6 @@ void Client::handleInput(double delta) {
                 }
                 break;
               } else {
-                SDL_StartTextInput();
                 _chatTextBox->show();
                 textBoxInFocus = _chatTextBox;
               }
@@ -187,7 +183,6 @@ void Client::handleInput(double delta) {
 
             case SDLK_r:
               if (!_lastWhisperer.empty()) {
-                if (!SDL_IsTextInputActive()) SDL_StartTextInput();
                 _chatTextBox->show();
                 textBoxInFocus = _chatTextBox;
                 _chatTextBox->text(std::string("/whisper ") + _lastWhisperer +
@@ -293,11 +288,6 @@ void Client::handleInput(double delta) {
                 leftMouseDownWasCaptured = true;
                 break;
               }
-
-            if (SDL_IsTextInputActive() && !textBoxInFocus)
-              SDL_StopTextInput();
-            else if (!SDL_IsTextInputActive() && textBoxInFocus)
-              SDL_StartTextInput();
 
             if (leftMouseDownWasCaptured) break;
 

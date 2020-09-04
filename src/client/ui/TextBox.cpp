@@ -3,6 +3,7 @@
 #include <cassert>
 
 #include "../Renderer.h"
+#include "../SDLwrappers.h"
 #include "ShadowBox.h"
 
 extern Renderer renderer;
@@ -50,10 +51,6 @@ void TextBox::click(Element &e, const ScreenPoint &mousePos) {
   TextBox *newFocus = dynamic_cast<TextBox *>(&e);
   auto &currentFocus = newFocus->_manager.textBoxInFocus;
   if (newFocus == currentFocus) return;
-
-  // Mark changed, to (un)draw cursor
-  e.markChanged();
-  if (currentFocus) currentFocus->markChanged();
 
   currentFocus = newFocus;
 }
@@ -121,6 +118,11 @@ TextBox::Focus &TextBox::Focus::operator=(TextBox *rhs) {
 
   if (oldFocus) oldFocus->markChanged();
   if (_focus) _focus->markChanged();
+
+  if (_focus && !SDL_IsTextInputActive())
+    SDLWrappers::StartTextInput();
+  else if (!_focus && SDL_IsTextInputActive())
+    SDLWrappers::StopTextInput();
 
   return *this;
 }

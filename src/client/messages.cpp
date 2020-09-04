@@ -88,7 +88,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         if (del != MSG_END) break;
 
         // Hide/clean up from login screen
-        SDL_StopTextInput();
+        textBoxInFocus = nullptr;
         _createWindow->hide();
 
         _character.name(_username);

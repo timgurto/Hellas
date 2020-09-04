@@ -342,8 +342,6 @@ void Client::initLoginScreen() {
   _loginUI.push_back(loginScreenElements.pwBox);
   Y += loginScreenElements.nameBox->height() + GAP;
 
-  SDL_StartTextInput();
-
   Y += Element::TEXT_HEIGHT + GAP;
 
   loginScreenElements.loginButton = new Button(
