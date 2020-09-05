@@ -175,8 +175,21 @@
 
 <objectType id="phoenicianShipTop" isDecoration="1" isFlat="1" xDrawOffset="-640" yDrawOffset="-65" />
 <objectType id="phoenicianShipBottom" isDecoration="1" xDrawOffset="-640" yDrawOffset="-193" />
+<objectType id="phoenicianShipMast" isDecoration="1" xDrawOffset="-11" yDrawOffset="-644" >
+    <collisionRect x="-11" y="-11" w="22" h="22" />
+</objectType>
 
 <object id="phoenicianShipBottom"> <location y="71360" x="16896" /> </object>
 <object id="phoenicianShipTop"> <location y="71042" x="16896" /> </object>
+<object id="phoenicianShipMast"> <location y="71186" x="16896" /> </object>
+
+<object id="phoenicianShipBottom"> <location y="70912" x="17600" /> </object>
+<object id="phoenicianShipTop"> <location y="70594" x="17600" /> </object>
+<object id="phoenicianShipMast"> <location y="70738" x="17600" /> </object>
+
+<object id="phoenicianShipBottom"> <location y="71360" x="18300" /> </object>
+<object id="phoenicianShipTop"> <location y="71042" x="18300" /> </object>
+<object id="phoenicianShipMast"> <location y="71186" x="18300" /> </object>
 
 </root>
+
