@@ -614,6 +614,7 @@ void Server::loadWorldState(bool shouldKeepOldData) {
 
     // Entities
     loadEntitiesFromFile(_dataPath + "/data.xml", true);
+    loadEntitiesFromFile(_dataPath + "/staticObjects.xml", true);
     if (loadExistingData) loadEntitiesFromFile("World/entities.world", false);
 
     if (!loadExistingData) break;

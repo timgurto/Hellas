@@ -330,11 +330,11 @@ TEST_CASE("NPC forward declaration") {
 
 TEST_CASE_METHOD(ServerAndClientWithDataFiles,
                  "Static objects can be listed in any file") {
-  GIVEN("a tree defined in a file other than staticObjects.xml") {
+  GIVEN("a tree defined in each of data.xml and staticObjects.xml") {
     useData("static_tree");
 
-    THEN("an object exists on the server") {
-      WAIT_UNTIL(server->entities().size() == 1);
+    THEN("two object exists on the server") {
+      WAIT_UNTIL(server->entities().size() == 2);
     }
   }
 }
