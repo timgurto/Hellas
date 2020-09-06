@@ -1,6 +1,7 @@
 #include "../XmlReader.h"
 #include "../client/ClientNPCType.h"
 #include "TestClient.h"
+#include "TestFixtures.h"
 #include "TestServer.h"
 #include "testing.h"
 
@@ -323,6 +324,17 @@ TEST_CASE("NPC forward declaration") {
     THEN("It actually has that yield") {
       const auto &pigWithTruffleType = *s->findObjectTypeByID("pigWithTruffle");
       CHECK(pigWithTruffleType.yield);
+    }
+  }
+}
+
+TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+                 "Static objects can be listed in any file") {
+  GIVEN("a tree defined in a file other than staticObjects.xml") {
+    useData("static_tree");
+
+    THEN("an object exists on the server") {
+      WAIT_UNTIL(server->entities().size() == 1);
     }
   }
 }

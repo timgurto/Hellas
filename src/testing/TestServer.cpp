@@ -27,15 +27,17 @@ TestServer::TestServer(const std::string &string, StringType type) {
   _server = new Server;
   _server->_isTestServer = true;
   DataLoader::FromPath(*_server, "testing/data/minimal").load();
-  if (type == DATA_PATH)
+  if (type == DATA_PATH) {
     DataLoader::FromPath(*_server, "testing/data/" + string).load(true);
-  else if (type == DATA_STRING)
+    _server->setDataPath("testing/data/" + string);
+  } else if (type == DATA_STRING)
     DataLoader::FromString(*_server, string);
   run();
 }
 
 void TestServer::loadData(const std::string path) {
   DataLoader::FromPath(*_server, "testing/data/" + path).load(true);
+  _server->setDataPath("testing/data/" + path);
 }
 
 void TestServer::loadDataFromString(const std::string data) {

@@ -222,9 +222,11 @@ class Server {
  public:
   Groups *groups;
 
+  void setDataPath(const std::string &path) { _dataPath = path; }
+
  private:
+  std::string _dataPath{"Data"s};
   void loadWorldState(
-      const std::string &path = "Data",
       bool shouldKeepOldData = false);  // Attempt to load data from files.
   void loadEntitiesFromFile(const std::string &path,
                             bool shouldBeExcludedFromPersistentState);

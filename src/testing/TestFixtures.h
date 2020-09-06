@@ -35,6 +35,26 @@ class ServerAndClientWithData {
   User *user{nullptr};
 };
 
+class ServerAndClientWithDataFiles {
+ public:
+  ~ServerAndClientWithDataFiles() {
+    delete client;
+    delete server;
+  }
+
+  void useData(const std::string &dataPath) {
+    server = new TestServer(TestServer::WithData(dataPath));
+    client = new TestClient(TestClient::WithData(dataPath));
+
+    server->waitForUsers(1);
+    user = &server->getFirstUser();
+  }
+
+  TestServer *server{nullptr};
+  TestClient *client{nullptr};
+  User *user{nullptr};
+};
+
 class TwoClients {
  public:
   TwoClients()

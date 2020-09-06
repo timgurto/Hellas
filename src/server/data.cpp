@@ -602,7 +602,7 @@ void Server::loadEntitiesFromFile(const std::string &path,
   }
 }
 
-void Server::loadWorldState(const std::string &path, bool shouldKeepOldData) {
+void Server::loadWorldState(bool shouldKeepOldData) {
   auto xr = XmlReader::FromFile("");
 
   std::ifstream fs;
@@ -613,7 +613,7 @@ void Server::loadWorldState(const std::string &path, bool shouldKeepOldData) {
     if (loadExistingData) _cities.readFromXMLFile("World/cities.world");
 
     // Entities
-    loadEntitiesFromFile(path + "/staticObjects.xml", true);
+    loadEntitiesFromFile(_dataPath + "/data.xml", true);
     if (loadExistingData) loadEntitiesFromFile("World/entities.world", false);
 
     if (!loadExistingData) break;
