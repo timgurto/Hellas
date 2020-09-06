@@ -19,6 +19,23 @@
     xDrawOffset="-20" yDrawOffset="-14" >
     <particles profile="smoke" x="0" y="0" />
 </objectType>
+    <object id="crater" x="3708" y="60440" />
+    <object id="crater" x="3904" y="60331" />
+    <object id="crater" x="3756" y="60210" />
+    <object id="crater" x="3943" y="60010" />
+    <object id="crater" x="3593" y="60130" />
+    <object id="crater" x="3629" y="59868" />
+    <object id="crater" x="3763" y="59717" />
+    <object id="crater" x="4075" y="59492" />
+    <object id="crater" x="3441" y="59078" />
+    <object id="crater" x="3523" y="59396" />
+    <object id="crater" x="3895" y="59349" />
+    <object id="crater" x="4676" y="58998" />
+    <object id="crater" x="393" y="59505" />
+    <object id="crater" x="476" y="59711" />
+    <object id="crater" x="324" y="59883" />
+    <object id="crater" x="349" y="60283" />
+    <object id="crater" x="1073" y="60259" />
 
 
 <quest id="tutCombat" name="A New Creation" startsAt="prometheus" endsAt="prometheus"
@@ -38,6 +55,7 @@
         </humanoid>
         <class name="titan"/>
     </npcType>
+    <npc id="prometheus" x="3872" y="60212" />
     <npcType
         id="tutPig" name="Pig" template="pig"
         level="1" maxHealth="22" attack="6" attackTime="3020" isNeutral="1"
@@ -101,6 +119,7 @@
         <collisionRect x="-9" y="-4" w="18" h="9" />
         <material id="tutHide2" />
     </objectType>
+    <object id="tutBrazier" x="3886" y="58420" />
     <objectType
         id="fattyOffering" name="Fatty Sacrifice"
         allowedTerrain="tutOfferings" constructionTime="6000" isUnbuildable="true" disappearAfter="300000"
@@ -184,6 +203,7 @@
         <collisionRect x="-15" y="-3" w="23" h="6" />
         <class name="titan"/>
     </npcType>
+    <npc id="atlas" x="15" y="59604" />
     
 <quest id="tutCyclops" name="Eye on the Prize" startsAt="atlas" endsAt="tutCyclopsQuestgiver"
     brief="Thank you, I feel much better.  Bearing the heavens for all eternity is hungry work.  Would you mind holding this for a moment while I wipe my mouth?
@@ -238,6 +258,17 @@
         xDrawOffset="-11" yDrawOffset="-18" >
         <collisionRect x="-11" y="-5" w="24" h="10" />
     </objectType>
+    <object id="tutCyclopsQuestgiver" x="760" y="60510" />
+    <object id="tutCyclopsMerchant" x="845" y="60447" >
+        <owner type="player" name="Othrys" />
+        <merchant slot="0" wareItem="tutLightning" priceItem="tutOre" />
+    </object>
+    <object id="tutCyclopsSmithy" x="816" y="60554" >
+        <owner type="player" name="Othrys" />
+    </object>
+    <object id="tutAnvil" x="816" y="60564" >
+        <owner type="player" name="Othrys" />
+    </object>
     <item id="tutOre" name="Othrysian Ore" stackSize="5" durability="3" />
     <item id="tutLightning" name="Handheld Lightning" stackSize="5" gearSlot="6" sounds="lightning" >
         <weapon damage="12" speed="2.1" range="25" consumes="tutLightning" projectile="lightning" />
@@ -345,6 +376,7 @@
         <class name="titan"/>
         <particles profile="wound" x="3" y="0" />
     </npcType>
+    <npc id="prometheusBound" x="4780" y="58829" />
     
     
 <quest id="tutUtilityAthlete" name="Sprint Zero" startsAt="prometheusBound" endsAt="prometheusBound" exclusiveToClass="Athlete"
@@ -388,5 +420,6 @@
         <collisionRect x="-19" y="-10" w="38" h="20" />
         <action label="Worship" target="endTutorial" tooltip="Leave Mt. Othrys permanently and enter the mortal realm.  You will lose all items, gear, and talents." cost="tutEntrails3" />
     </objectType>
+    <object id="tutorialAltar" x="5058" y="58376" />
 
 </root>
