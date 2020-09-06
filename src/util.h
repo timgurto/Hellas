@@ -137,4 +137,6 @@ std::string multiplicativeToString(double d);
 
 int roll();
 
+std::set<std::string> getXMLFiles(std::string path, std::string toExclude);
+
 #endif

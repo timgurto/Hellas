@@ -1,5 +1,8 @@
 #include "util.h"
 
+#include <windows.h>
+
+#include <algorithm>
 #include <cmath>
 #include <ctime>
 #include <fstream>
@@ -179,3 +182,24 @@ std::string multiplicativeToString(double d) {
 }
 
 int roll() { return rand() % 100 + 1; }
+
+std::set<std::string> getXMLFiles(std::string path, std::string toExclude) {
+  auto list = std::set<std::string>{};
+
+  WIN32_FIND_DATA fd;
+  path += "/"s;
+  std::replace(path.begin(), path.end(), '/', '\\');
+  std::string filter = path + "*.xml";
+  path.c_str();
+  HANDLE hFind = FindFirstFile(filter.c_str(), &fd);
+  if (hFind != INVALID_HANDLE_VALUE) {
+    do {
+      if (fd.cFileName == toExclude) continue;
+      auto file = path + fd.cFileName;
+      list.insert(file);
+    } while (FindNextFile(hFind, &fd));
+    FindClose(hFind);
+  }
+
+  return list;
+}

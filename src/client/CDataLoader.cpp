@@ -44,7 +44,7 @@ void CDataLoader::load(bool keepOldData) {
 
   auto usingPath = !_path.empty();
   if (usingPath) {
-    _files = findDataFiles();
+    _files = getXMLFiles(_path, "map.xml"s);
 
     loadFromAllFiles(&CDataLoader::loadTerrain);
     loadFromAllFiles(&CDataLoader::loadTerrainLists);
@@ -102,27 +102,6 @@ void CDataLoader::loadFromAllFiles(LoadFunction load) {
     if (!xr) continue;
     (this->*load)(xr);
   }
-}
-
-CDataLoader::FilesList CDataLoader::findDataFiles() const {
-  auto list = FilesList{};
-
-  WIN32_FIND_DATA fd;
-  auto path = std::string{_path.begin(), _path.end()} + "/";
-  std::replace(path.begin(), path.end(), '/', '\\');
-  std::string filter = path + "*.xml";
-  path.c_str();
-  HANDLE hFind = FindFirstFile(filter.c_str(), &fd);
-  if (hFind != INVALID_HANDLE_VALUE) {
-    do {
-      if (fd.cFileName == "map.xml"s) continue;
-      auto file = path + fd.cFileName;
-      list.insert(file);
-    } while (FindNextFile(hFind, &fd));
-    FindClose(hFind);
-  }
-
-  return list;
 }
 
 void CDataLoader::loadTerrain(XmlReader &xr) {

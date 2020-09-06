@@ -613,8 +613,8 @@ void Server::loadWorldState(bool shouldKeepOldData) {
     if (loadExistingData) _cities.readFromXMLFile("World/cities.world");
 
     // Entities
-    loadEntitiesFromFile(_dataPath + "/data.xml", true);
-    loadEntitiesFromFile(_dataPath + "/staticObjects.xml", true);
+    auto dataFiles = getXMLFiles(_dataPath, "map.xml");
+    for (auto file : dataFiles) loadEntitiesFromFile(file, true);
     if (loadExistingData) loadEntitiesFromFile("World/entities.world", false);
 
     if (!loadExistingData) break;
