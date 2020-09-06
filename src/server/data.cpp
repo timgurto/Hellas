@@ -407,8 +407,7 @@ void Server::loadEntitiesFromFile(const std::string &path,
     }
 
     MapPoint p;
-    auto loc = xr.findChild("location", elem);
-    if (!xr.findAttr(loc, "x", p.x) || !xr.findAttr(loc, "y", p.y)) {
+    if (!xr.findAttr(elem, "x", p.x) || !xr.findAttr(elem, "y", p.y)) {
       _debug("Skipping importing object with invalid/no location",
              Color::CHAT_ERROR);
       continue;
@@ -535,8 +534,7 @@ void Server::loadEntitiesFromFile(const std::string &path,
     }
 
     MapPoint p;
-    auto loc = xr.findChild("location", elem);
-    if (!xr.findAttr(loc, "x", p.x) || !xr.findAttr(loc, "y", p.y)) {
+    if (!xr.findAttr(elem, "x", p.x) || !xr.findAttr(elem, "y", p.y)) {
       _debug("Skipping importing object with invalid/no location",
              Color::CHAT_ERROR);
       continue;
