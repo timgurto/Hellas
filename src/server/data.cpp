@@ -581,7 +581,7 @@ void Server::loadEntitiesFromFile(const std::string &path,
       npc.order(orderString == "stay" ? NPC::STAY : NPC::FOLLOW);
   }
 
-  for (auto elem : xr.getChildren("item")) {
+  for (auto elem : xr.getChildren("droppedItem")) {
     std::string typeID;
     xr.findAttr(elem, "type", typeID);
     const auto *itemType = findItem(typeID);
@@ -725,7 +725,7 @@ void NPC::writeToXML(XmlWriter &xw) const {
 }
 
 void DroppedItem::writeToXML(XmlWriter &xw) const {
-  auto e = xw.addChild("item");
+  auto e = xw.addChild("droppedItem");
 
   xw.setAttr(e, "type", _itemType.id());
   if (_quantity > 1) xw.setAttr(e, "qty", _quantity);
