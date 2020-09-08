@@ -22,7 +22,7 @@ class TestServer {
   TestServer(TestServer &rhs);
   TestServer &operator=(TestServer &rhs);
 
-  void loadData(const std::string path);
+  void loadDataFromFiles(const std::string path);
   void loadDataFromString(const std::string data);
 
   std::set<const ObjectType *> &objectTypes() { return _server->_objectTypes; }
