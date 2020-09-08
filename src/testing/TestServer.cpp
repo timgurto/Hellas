@@ -37,12 +37,13 @@ TestServer::TestServer(const std::string &string, StringType type) {
 
 void TestServer::loadDataFromFiles(const std::string path) {
   DataLoader::FromPath(*_server, "testing/data/" + path).load(true);
-  _server->setDataPath("testing/data/" + path);
+  _server->setDataSource(
+      {Server::DataSource::FILES_PATH, "testing/data/" + path});
 }
 
 void TestServer::loadDataFromString(const std::string data) {
   DataLoader::FromString(*_server, data).load(true);
-  _server->setDataString(data);
+  _server->setDataSource({Server::DataSource::DATA_STRING, data});
 }
 
 TestServer TestServer::KeepingOldData() {

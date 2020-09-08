@@ -650,11 +650,10 @@ void Server::loadWorldState(bool shouldKeepOldData) {
     if (loadExistingData) _cities.readFromXMLFile("World/cities.world");
 
     // Entities
-    auto usingDataString = !_dataString.empty();
-    if (usingDataString)
-      loadEntitiesFromString(_dataString, true);
+    if (_dataSource.type == DataSource::DATA_STRING)
+      loadEntitiesFromString(_dataSource.string, true);
     else {
-      auto dataFiles = getXMLFiles(_dataPath, "map.xml");
+      auto dataFiles = getXMLFiles(_dataSource.string, "map.xml");
       for (auto file : dataFiles) loadEntitiesFromFile(file, true);
     }
     if (loadExistingData) loadEntitiesFromFile("World/entities.world", false);

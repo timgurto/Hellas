@@ -222,12 +222,14 @@ class Server {
  public:
   Groups *groups;
 
-  void setDataPath(const std::string &path) { _dataPath = path; }
-  void setDataString(const std::string &data) { _dataString = data; }
+  struct DataSource {
+    enum Type { FILES_PATH, DATA_STRING } type;
+    std::string string;
+  };
+  void setDataSource(const DataSource &dataSource) { _dataSource = dataSource; }
 
  private:
-  std::string _dataPath{"Data"s};
-  std::string _dataString;
+  DataSource _dataSource{DataSource::FILES_PATH, "Data"};
   void loadWorldState(
       bool shouldKeepOldData = false);  // Attempt to load data from files.
   void loadEntitiesFromFile(const std::string &path,
