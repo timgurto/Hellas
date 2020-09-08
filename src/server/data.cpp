@@ -602,6 +602,43 @@ void Server::loadEntitiesFromFile(const std::string &path,
   }
 }
 
+void Server::loadEntitiesFromString(const std::string &data,
+                                    bool shouldBeExcludedFromPersistentState) {
+  // If static, mark them as such.  They will be excluded from being saved to
+  // file.
+
+  auto xr = XmlReader::FromString(data);
+
+  for (auto elem : xr.getChildren("object")) {
+    std::string s;
+    if (!xr.findAttr(elem, "id", s)) {
+      _debug("Skipping importing object with no type.", Color::CHAT_ERROR);
+      continue;
+    }
+
+    MapPoint p;
+    if (!xr.findAttr(elem, "x", p.x) || !xr.findAttr(elem, "y", p.y)) {
+      _debug("Skipping importing object with invalid/no location",
+             Color::CHAT_ERROR);
+      continue;
+    }
+
+    const ObjectType *type = findObjectTypeByID(s);
+    if (type == nullptr) {
+      _debug << Color::CHAT_ERROR
+             << "Skipping importing object with unknown type \"" << s << "\"."
+             << Log::endl;
+      continue;
+    }
+
+    auto owner = Permissions::Owner{};
+
+    Object &obj = addObject(type, p, owner);
+
+    if (shouldBeExcludedFromPersistentState) obj.excludeFromPersistentState();
+  }
+}
+
 void Server::loadWorldState(bool shouldKeepOldData) {
   auto xr = XmlReader::FromFile("");
 
@@ -613,8 +650,13 @@ void Server::loadWorldState(bool shouldKeepOldData) {
     if (loadExistingData) _cities.readFromXMLFile("World/cities.world");
 
     // Entities
-    auto dataFiles = getXMLFiles(_dataPath, "map.xml");
-    for (auto file : dataFiles) loadEntitiesFromFile(file, true);
+    auto usingDataString = !_dataString.empty();
+    if (usingDataString)
+      loadEntitiesFromString(_dataString, true);
+    else {
+      auto dataFiles = getXMLFiles(_dataPath, "map.xml");
+      for (auto file : dataFiles) loadEntitiesFromFile(file, true);
+    }
     if (loadExistingData) loadEntitiesFromFile("World/entities.world", false);
 
     if (!loadExistingData) break;

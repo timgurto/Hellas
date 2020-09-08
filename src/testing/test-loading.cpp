@@ -338,3 +338,15 @@ TEST_CASE_METHOD(ServerAndClientWithDataFiles,
     }
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Static objects in data string") {
+  GIVEN("a static-defined tree") {
+    useData(R"(
+      <objectType id="tree" />
+      <object id="tree" x="20" y="20" />
+    )");
+    THEN("the server knows it's there") {
+      WAIT_UNTIL(server->entities().size() == 1);
+    }
+  }
+}

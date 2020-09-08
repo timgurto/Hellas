@@ -223,13 +223,17 @@ class Server {
   Groups *groups;
 
   void setDataPath(const std::string &path) { _dataPath = path; }
+  void setDataString(const std::string &data) { _dataString = data; }
 
  private:
   std::string _dataPath{"Data"s};
+  std::string _dataString;
   void loadWorldState(
       bool shouldKeepOldData = false);  // Attempt to load data from files.
   void loadEntitiesFromFile(const std::string &path,
                             bool shouldBeExcludedFromPersistentState);
+  void loadEntitiesFromString(const std::string &data,
+                              bool shouldBeExcludedFromPersistentState);
   void initialiseData();
   bool _dataLoaded;  // If false when run() is called, load default data.
   static void saveData(const Entities &entities, const Wars &wars,

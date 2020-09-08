@@ -30,8 +30,10 @@ TestServer::TestServer(const std::string &string, StringType type) {
   if (type == DATA_PATH) {
     DataLoader::FromPath(*_server, "testing/data/" + string).load(true);
     _server->setDataPath("testing/data/" + string);
-  } else if (type == DATA_STRING)
+  } else if (type == DATA_STRING) {
     DataLoader::FromString(*_server, string);
+    _server->setDataString(string);
+  }
   run();
 }
 
@@ -42,6 +44,7 @@ void TestServer::loadData(const std::string path) {
 
 void TestServer::loadDataFromString(const std::string data) {
   DataLoader::FromString(*_server, data).load(true);
+  _server->setDataString(data);
 }
 
 TestServer TestServer::KeepingOldData() {
@@ -75,6 +78,7 @@ TestServer TestServer::WithData(const std::string &dataPath) {
 TestServer TestServer::WithDataString(const std::string &data) {
   auto s = TestServer{NOT_RUNNING};
   DataLoader::FromString(*s._server, data).load(true);
+  s._server->setDataString(data);
   s.run();
   return s;
 }
