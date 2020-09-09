@@ -611,7 +611,7 @@ void Server::loadEntities(XmlReader &xr,
   }
 }
 
-void Server::loadWorldState(bool shouldKeepOldData) {
+void Server::loadWorldState() {
   // Detect/load state
   do {
     bool loadExistingData = !cmdLineArgs.contains("new");

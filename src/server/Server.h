@@ -230,8 +230,7 @@ class Server {
 
  private:
   DataSource _dataSource{DataSource::FILES_PATH, "Data"};
-  void loadWorldState(
-      bool shouldKeepOldData = false);  // Attempt to load data from files.
+  void loadWorldState();  // Attempt to load data from files.
   void loadEntitiesFromFile(const std::string &path,
                             bool shouldBeExcludedFromPersistentState);
   void loadEntitiesFromString(const std::string &data,
