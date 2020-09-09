@@ -648,6 +648,9 @@ void Object::writeToXML(XmlWriter &xw) const {
 
   xw.setAttr(e, "id", type()->id());
 
+  xw.setAttr(e, "x", location().x);
+  xw.setAttr(e, "y", location().y);
+
   for (auto &content : gatherable.contents()) {
     auto contentE = xw.addChild("gatherable", e);
     xw.setAttr(contentE, "id", content.first->id());
@@ -660,10 +663,6 @@ void Object::writeToXML(XmlWriter &xw) const {
     xw.setAttr(ownerElem, "type", owner.typeString());
     xw.setAttr(ownerElem, "name", owner.name);
   }
-
-  auto loc = xw.addChild("location", e);
-  xw.setAttr(loc, "x", location().x);
-  xw.setAttr(loc, "y", location().y);
 
   if (health() < stats().maxHealth) xw.setAttr(e, "health", health());
 
@@ -712,9 +711,8 @@ void NPC::writeToXML(XmlWriter &xw) const {
 
   xw.setAttr(e, "id", type()->id());
 
-  auto loc = xw.addChild("location", e);
-  xw.setAttr(loc, "x", location().x);
-  xw.setAttr(loc, "y", location().y);
+  xw.setAttr(e, "x", location().x);
+  xw.setAttr(e, "y", location().y);
 
   xw.setAttr(e, "health", health());
 
