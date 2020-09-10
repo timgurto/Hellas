@@ -2254,7 +2254,7 @@ void Server::sendOnlineUsersTo(const User &recipient) const {
   auto numNames = 0;
   auto args = ""s;
   for (auto &user : _users) {
-    if (user.name() == recipient.name()) break;
+    if (user.name() == recipient.name()) continue;
 
     args = makeArgs(args, user.name());
     ++numNames;
