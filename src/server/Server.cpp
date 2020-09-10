@@ -718,6 +718,14 @@ Object &Server::addObject(const ObjectType *type, const MapPoint &location,
   return dynamic_cast<Object &>(addEntity(newObj));
 }
 
+Object &Server::addPermanentObject(const ObjectType *type,
+                                   const MapPoint &location) {
+  Object *newObj = new Object(type, location);
+  newObj->setAsPermanent();
+
+  return dynamic_cast<Object &>(addEntity(newObj));
+}
+
 NPC &Server::addNPC(const NPCType *type, const MapPoint &location) {
   NPC *newNPC = new NPC(type, location);
   return dynamic_cast<NPC &>(addEntity(newNPC));
@@ -728,9 +736,11 @@ Entity &Server::addEntity(Entity *newEntity) {
   const MapPoint &loc = newEntity->location();
 
   // Alert nearby users
-  auto isNew = _running;  // i.e., not loading
-  for (const User *userP : findUsersInArea(loc))
-    newEntity->sendInfoToClient(*userP, isNew);
+  if (newEntity->shouldBePropagatedToClients()) {
+    auto isNew = _running;  // i.e., not loading
+    for (const User *userP : findUsersInArea(loc))
+      newEntity->sendInfoToClient(*userP, isNew);
+  }
 
   // Add entity to relevant chunk
   if (newEntity->type()->collides())

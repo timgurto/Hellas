@@ -428,8 +428,7 @@ void Server::loadEntities(XmlReader &xr,
       continue;
     }
 
-    auto owner = Permissions::Owner{};
-    Object &obj = addObject(type, p, owner);
+    Object &obj = addPermanentObject(type, p);
   }
 
   for (auto elem : xr.getChildren("object")) {

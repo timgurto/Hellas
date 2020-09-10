@@ -438,7 +438,18 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Permanent objects") {
       CHECK(cObject.type() == &client->getFirstObjectType());
     }
   }
+
+  GIVEN("a permanent object close to a user") {
+    useData(R"(
+      <objectType id="rock" />
+      <permanentObject id="rock" x="5" y="5" />
+    )");
+    THEN("the client doesn't have any objects") {
+      REPEAT_FOR_MS(100);
+      CHECK(client->objects().empty());
+    }
+  }
 }
 
-// Make sure it doesn't propagate from server to client
 // Load a permanentObject from a file
+// Collision on client

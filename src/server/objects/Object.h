@@ -65,6 +65,8 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
 
   bool isGate() const { return objType().isGate(); }
 
+  void setAsPermanent() { _isPermanent = true; }
+
   virtual char classTag() const override { return 'o'; }
 
   ms_t timeToRemainAsCorpse() const override { return 43200000; }  // 12 hours
@@ -91,6 +93,10 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
   virtual void broadcastDamagedMessage(Hitpoints amount) const override;
   virtual void broadcastHealedMessage(Hitpoints amount) const override;
 
+  virtual bool shouldBePropagatedToClients() const override {
+    return !_isPermanent;
+  }
+
   void populateLoot();
 
   friend class Container;  // TODO: Remove once everything is componentized
@@ -105,6 +111,10 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
  private:
   Container *_container = nullptr;
   Deconstruction _deconstruction{};
+
+  // If true, should never be propagated to clients as they will create it
+  // themselves.
+  bool _isPermanent{false};
 };
 
 #endif

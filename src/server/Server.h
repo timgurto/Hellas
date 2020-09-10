@@ -283,6 +283,7 @@ class Server {
   NPC &addNPC(const NPCType *type, const MapPoint &location);
   Object &addObject(const ObjectType *type, const MapPoint &location,
                     const Permissions::Owner &owner);
+  Object &addPermanentObject(const ObjectType *type, const MapPoint &location);
 
   // Collision detection
   static const px_t COLLISION_CHUNK_SIZE;

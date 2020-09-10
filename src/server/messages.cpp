@@ -2242,11 +2242,11 @@ void Server::sendRelevantEntitiesToUser(const User &user) {
 
   // Send
   for (const Entity *entity : entitiesToDescribe) {
-    if (entity->type() == nullptr) {
+    if (!entity->type()) {
       _debug("Null-type object skipped", Color::CHAT_ERROR);
       continue;
     }
-    entity->sendInfoToClient(user);
+    if (entity->shouldBePropagatedToClients()) entity->sendInfoToClient(user);
   }
 }
 

@@ -70,6 +70,8 @@ class Entity {
   void spawner(Spawner *p) { _spawner = p; }
   void separateFromSpawner();
 
+  virtual bool shouldBePropagatedToClients() const { return true; }
+
   // Space
   const MapPoint &location() const { return _location; }
   void location(const MapPoint &loc, bool firstInsertion = false);
