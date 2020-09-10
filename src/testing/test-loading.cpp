@@ -350,3 +350,116 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Static objects in data string") {
     }
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Permanent objects") {
+  GIVEN("a permanent object, and a a user far away from it") {
+    useData(R"(
+      <newPlayerSpawn x="9000" y="10" />
+      <size x="315" y="1" />
+      <row y="0" terrain = "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG" />
+      <objectType id="tree" />
+      <permanentObject id="tree" x="10" y="10" />
+    )");
+
+    THEN("the server has one object") {
+      WAIT_UNTIL(server->entities().size() == 1);
+
+      AND_THEN("the user knowns about it") {
+        WAIT_UNTIL_TIMEOUT(client->entities().size() == 2,
+                           15000);  // User + object
+
+        // Get object sprite
+        const Sprite *cObject = nullptr;
+        for (const auto *sprite : client->entities()) {
+          const auto *asAvatar = dynamic_cast<const Avatar *>(sprite);
+          if (asAvatar) continue;
+          cObject = sprite;
+        }
+
+        CHECK(cObject->location() == MapPoint{10, 10});
+      }
+    }
+  }
+
+  GIVEN("a permanent object at (5,5)") {
+    useData(R"(
+      <objectType id="tree" />
+      <permanentObject id="tree" x="5" y="5" />
+    )");
+
+    THEN("the client knows its location") {
+      // Get object sprite
+      const Sprite *cObject = nullptr;
+      for (const auto *sprite : client->entities()) {
+        const auto *asAvatar = dynamic_cast<const Avatar *>(sprite);
+        if (asAvatar) continue;
+        cObject = sprite;
+      }
+
+      CHECK(cObject->location() == MapPoint{5, 5});
+    }
+  }
+
+  GIVEN("a permanent object with missing location") {
+    useData(R"(
+      <objectType id="tree" />
+      <permanentObject id="tree" />
+    )");
+
+    THEN("the client doesn't load it") {
+      CHECK(client->entities().size() == 1);
+    }
+  }
+
+  GIVEN("a permanent object with missing y co-ord") {
+    useData(R"(
+      <objectType id="tree" />
+      <permanentObject id="tree" x="6" />
+    )");
+
+    THEN("the client doesn't load it") {
+      CHECK(client->entities().size() == 1);
+    }
+  }
+
+  GIVEN("a permanent object with missing type") {
+    useData(R"(
+      <permanentObject x="1" y="2" />
+    )");
+
+    THEN("the client doesn't load it") {
+      CHECK(client->entities().size() == 1);
+    }
+  }
+
+  GIVEN("a permanent object with an invalid type") {
+    useData(R"(
+      <permanentObject id="spook" x="1" y="2" />
+    )");
+
+    THEN("the client doesn't load it") {
+      CHECK(client->entities().size() == 1);
+    }
+  }
+
+  GIVEN("a different type of permanent object") {
+    useData(R"(
+      <objectType id="rock" />
+      <permanentObject id="rock" x="10" y="10" />
+    )");
+
+    THEN("it is a rock type") {
+      // Get object sprite
+      const Sprite *cObject = nullptr;
+      for (const auto *sprite : client->entities()) {
+        const auto *asAvatar = dynamic_cast<const Avatar *>(sprite);
+        if (asAvatar) continue;
+        cObject = sprite;
+      }
+      CHECK(cObject->type() == &client->getFirstObjectType());
+    }
+  }
+}
+
+// Make sure it doesn't propagate from server to client
+// Load a permanentObject from a file

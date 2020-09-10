@@ -86,6 +86,7 @@ void CDataLoader::load(bool keepOldData) {
     loadBuffs(reader);
     _client.gameData.tagNames.readFromXML(reader);
     loadObjectTypes(reader);
+    loadPermanentObjects(reader);
     loadItems(reader);
     loadClasses(reader);
     loadRecipes(reader);
@@ -600,6 +601,21 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
     auto questID = ""s;
     if (xr.findAttr(elem, "exclusiveToQuest", questID))
       cot->exclusiveToQuest(questID);
+  }
+}
+
+void CDataLoader::loadPermanentObjects(XmlReader &xr) {
+  for (auto elem : xr.getChildren("permanentObject")) {
+    auto id = ""s;
+    if (!xr.findAttr(elem, "id", id)) continue;
+    const auto *type = _client.findObjectType(id);
+    if (!type) continue;
+
+    auto loc = MapPoint{};
+    if (!xr.findAttr(elem, "x", loc.x)) continue;
+    if (!xr.findAttr(elem, "y", loc.y)) continue;
+
+    _client._entities.insert(new Sprite{type, loc, _client});
   }
 }
 

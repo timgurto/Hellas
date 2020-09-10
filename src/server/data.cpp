@@ -406,6 +406,32 @@ void Server::loadEntitiesFromString(const std::string &data,
 
 void Server::loadEntities(XmlReader &xr,
                           bool shouldBeExcludedFromPersistentState) {
+  for (auto elem : xr.getChildren("permanentObject")) {
+    std::string s;
+    if (!xr.findAttr(elem, "id", s)) {
+      _debug("Skipping importing object with no type.", Color::CHAT_ERROR);
+      continue;
+    }
+
+    MapPoint p;
+    if (!xr.findAttr(elem, "x", p.x) || !xr.findAttr(elem, "y", p.y)) {
+      _debug("Skipping importing object with invalid/no location",
+             Color::CHAT_ERROR);
+      continue;
+    }
+
+    const ObjectType *type = findObjectTypeByID(s);
+    if (type == nullptr) {
+      _debug << Color::CHAT_ERROR
+             << "Skipping importing object with unknown type \"" << s << "\"."
+             << Log::endl;
+      continue;
+    }
+
+    auto owner = Permissions::Owner{};
+    Object &obj = addObject(type, p, owner);
+  }
+
   for (auto elem : xr.getChildren("object")) {
     std::string s;
     if (!xr.findAttr(elem, "id", s)) {
