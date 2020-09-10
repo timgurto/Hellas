@@ -112,6 +112,14 @@ void TestClient::stop() {
 
 void TestClient::freeze() { _client->_freeze = true; }
 
+const Sprite &TestClient::getFirstNonAvatarSprite() const {
+  for (const auto *sprite : _client->_entities) {
+    const auto *asAvatar = dynamic_cast<const Avatar *>(sprite);
+    if (!asAvatar) return *sprite;
+  }
+  return *(Sprite *)(nullptr);
+}
+
 void TestClient::waitForRedraw() {
   _client->_drawingFinished = false;
   WAIT_UNTIL(_client->_drawingFinished);

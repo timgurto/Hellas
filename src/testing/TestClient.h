@@ -43,6 +43,7 @@ class TestClient {
     return _client->_entities;
     ;
   }
+  const Sprite &getFirstNonAvatarSprite() const;
   CGameData::ObjectTypes &objectTypes() {
     return _client->gameData.objectTypes;
   }

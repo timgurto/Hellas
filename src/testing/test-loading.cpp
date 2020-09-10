@@ -367,16 +367,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Permanent objects") {
       AND_THEN("the user knowns about it") {
         WAIT_UNTIL_TIMEOUT(client->entities().size() == 2,
                            15000);  // User + object
-
-        // Get object sprite
-        const Sprite *cObject = nullptr;
-        for (const auto *sprite : client->entities()) {
-          const auto *asAvatar = dynamic_cast<const Avatar *>(sprite);
-          if (asAvatar) continue;
-          cObject = sprite;
-        }
-
-        CHECK(cObject->location() == MapPoint{10, 10});
+        const auto &cObject = client->getFirstNonAvatarSprite();
+        CHECK(cObject.location() == MapPoint{10, 10});
       }
     }
   }
@@ -388,15 +380,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Permanent objects") {
     )");
 
     THEN("the client knows its location") {
-      // Get object sprite
-      const Sprite *cObject = nullptr;
-      for (const auto *sprite : client->entities()) {
-        const auto *asAvatar = dynamic_cast<const Avatar *>(sprite);
-        if (asAvatar) continue;
-        cObject = sprite;
-      }
-
-      CHECK(cObject->location() == MapPoint{5, 5});
+      const auto &cObject = client->getFirstNonAvatarSprite();
+      CHECK(cObject.location() == MapPoint{5, 5});
     }
   }
 
@@ -449,14 +434,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Permanent objects") {
     )");
 
     THEN("it is a rock type") {
-      // Get object sprite
-      const Sprite *cObject = nullptr;
-      for (const auto *sprite : client->entities()) {
-        const auto *asAvatar = dynamic_cast<const Avatar *>(sprite);
-        if (asAvatar) continue;
-        cObject = sprite;
-      }
-      CHECK(cObject->type() == &client->getFirstObjectType());
+      const auto &cObject = client->getFirstNonAvatarSprite();
+      CHECK(cObject.type() == &client->getFirstObjectType());
     }
   }
 }
