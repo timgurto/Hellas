@@ -10,24 +10,24 @@
     <collisionRect x="-16" y="-80" w="32" h="160" />
 </objectType>
 
-<object id="wallBlack1" y="70128" x="16304" />
-<object id="wallBlack3" y="70032" x="15088" />
-<object id="wallBlack3" y="70032" x="15824" />
-<object id="wallBlack3" y="70352" x="16304" />
-<object id="wallBlack3" y="70384" x="16032" />
-<object id="wallBlack5" y="69872" x="15088" />
-<object id="wallBlack5" y="69872" x="15536" />
-<object id="wallBlack5" y="70160" x="16032" />
-<object id="wallBlack5" y="70192" x="15536" />
-<object id="wallBlack5" y="70192" x="15824" />
-<object id="wallBlack5" y="70384" x="15536" />
-<object id="wallBlack5" y="70384" x="15824" />
-<object id="wallBlack1" y="69936" x="15824" />
-<object id="wallBlack1" y="70352" x="14976" />
-<object id="wallBlack1" y="70384" x="14976" />
-<object id="wallBlack1" y="70544" x="14976" />
-<object id="wallBlack5" y="70448" x="14736" />
-<object id="wallBlack5" y="70640" x="14736" />
+<permanentObject id="wallBlack1" y="70128" x="16304" />
+<permanentObject id="wallBlack3" y="70032" x="15088" />
+<permanentObject id="wallBlack3" y="70032" x="15824" />
+<permanentObject id="wallBlack3" y="70352" x="16304" />
+<permanentObject id="wallBlack3" y="70384" x="16032" />
+<permanentObject id="wallBlack5" y="69872" x="15088" />
+<permanentObject id="wallBlack5" y="69872" x="15536" />
+<permanentObject id="wallBlack5" y="70160" x="16032" />
+<permanentObject id="wallBlack5" y="70192" x="15536" />
+<permanentObject id="wallBlack5" y="70192" x="15824" />
+<permanentObject id="wallBlack5" y="70384" x="15536" />
+<permanentObject id="wallBlack5" y="70384" x="15824" />
+<permanentObject id="wallBlack1" y="69936" x="15824" />
+<permanentObject id="wallBlack1" y="70352" x="14976" />
+<permanentObject id="wallBlack1" y="70384" x="14976" />
+<permanentObject id="wallBlack1" y="70544" x="14976" />
+<permanentObject id="wallBlack5" y="70448" x="14736" />
+<permanentObject id="wallBlack5" y="70640" x="14736" />
 
 <objectType id="phoenicianShipTop" isDecoration="1" isFlat="1" xDrawOffset="-640" yDrawOffset="-65" />
 <objectType id="phoenicianShipBottom" isDecoration="1" xDrawOffset="-640" yDrawOffset="-193" />
@@ -35,16 +35,16 @@
     <collisionRect x="-11" y="-11" w="22" h="22" />
 </objectType>
 
-<object id="phoenicianShipBottom" y="71360" x="16896" />
-<object id="phoenicianShipTop"    y="71042" x="16896" />
-<object id="phoenicianShipMast"   y="71186" x="16896" />
+<permanentObject id="phoenicianShipBottom" y="71360" x="16896" />
+<permanentObject id="phoenicianShipTop"    y="71042" x="16896" />
+<permanentObject id="phoenicianShipMast"   y="71186" x="16896" />
 
-<object id="phoenicianShipBottom" y="70912" x="17600" />
-<object id="phoenicianShipTop"    y="70594" x="17600" />
-<object id="phoenicianShipMast"   y="70738" x="17600" />
+<permanentObject id="phoenicianShipBottom" y="70912" x="17600" />
+<permanentObject id="phoenicianShipTop"    y="70594" x="17600" />
+<permanentObject id="phoenicianShipMast"   y="70738" x="17600" />
 
-<object id="phoenicianShipBottom" y="71360" x="18300" />
-<object id="phoenicianShipTop"    y="71042" x="18300" />
-<object id="phoenicianShipMast"   y="71186" x="18300" />
+<permanentObject id="phoenicianShipBottom" y="71360" x="18300" />
+<permanentObject id="phoenicianShipTop"    y="71042" x="18300" />
+<permanentObject id="phoenicianShipMast"   y="71186" x="18300" />
 
 </root>
