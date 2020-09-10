@@ -51,15 +51,17 @@ void Client::draw() const {
   }
 
   // Entities, sorted from back to front
-  static const px_t DRAW_MARGIN_ABOVE = 160, DRAW_MARGIN_BELOW = 160,
-                    DRAW_MARGIN_SIDES = 160;
+  static const px_t DRAW_MARGIN_ABOVE = 400, DRAW_MARGIN_BELOW = 400,
+                    DRAW_MARGIN_SIDES = 400;
   const double topY = -offset().y - DRAW_MARGIN_BELOW,
                bottomY = -offset().y + SCREEN_Y + DRAW_MARGIN_ABOVE,
                leftX = -offset().x - DRAW_MARGIN_SIDES,
                rightX = -offset().x + SCREEN_X + DRAW_MARGIN_SIDES;
   // Cull by y
-  auto top = _entities.lower_bound(&Sprite::YCoordOnly(topY));
-  auto bottom = _entities.upper_bound(&Sprite::YCoordOnly(bottomY));
+  // auto top = _entities.lower_bound(&Sprite::YCoordOnly(topY));
+  // auto bottom = _entities.upper_bound(&Sprite::YCoordOnly(bottomY));
+  auto top = _entities.begin();
+  auto bottom = _entities.end();
   // Construction sites
   renderer.setDrawColor(Color::FOOTPRINT_ACTIVE);
   for (auto it = top; it != bottom; ++it) {
