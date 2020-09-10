@@ -249,6 +249,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       REPEAT_FOR_MS(100);
 
       AND_WHEN("he right-clicks the maiden") {
+        WAIT_UNTIL(client->objects().size() == 2);
         auto &cMaiden = *client->objects()[maiden.serial()];
         cMaiden.onRightClick();
 

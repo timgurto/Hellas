@@ -260,24 +260,24 @@ TEST_CASE("Client knows when quests can be completed") {
 }
 
 TEST_CASE("Client knows when objects have no quests") {
-  // Given an object type B, with no quests
-  auto data = R"(
-    <objectType id="B" />
-  )";
-  auto s = TestServer::WithDataString(data);
+  GIVEN("an object B, with no quests") {
+    auto data = R"(
+      <objectType id="B" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    s.addObject("B", {10, 15});
 
-  // And an object, B
-  s.addObject("B", {10, 15});
+    WHEN("a client logs in") {
+      auto c = TestClient::WithDataString(data);
 
-  // When a client logs in
-  auto c = TestClient::WithDataString(data);
-  s.waitForUsers(1);
-
-  // Then he knows that the object has no quests
-  WAIT_UNTIL(c.objects().size() == 1);
-  const auto &b = c.getFirstObject();
-  REPEAT_FOR_MS(100);
-  CHECK(b.startsQuests().empty());
+      THEN("he knows that the object has no quests") {
+        WAIT_UNTIL(c.objects().size() == 1);
+        const auto &b = c.getFirstObject();
+        REPEAT_FOR_MS(100);
+        CHECK(b.startsQuests().empty());
+      }
+    }
+  }
 }
 
 TEST_CASE("A user can't pick up a quest he's already on") {
