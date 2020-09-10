@@ -132,7 +132,7 @@
             <cost tag="food" quantity="2" />
             <requires pointsInTree="5" tool="classZealot" />
             <talent type="spell" id="threatDropPoet" flavourText="It's hard to stay angry while laughing." />
-            <talent type="spell" id="poetStun" flavourText="Overcome your enemies with grief and regret." />
+            <talent type="spell" id="poetStun" flavourText="Overwhelm your enemies with grief and regret." />
             <talent type="stats" name="Practice Taking Criticism" icon="helmet" flavourText="Keeping your head in the face of critics is essential to surviving the stage."> <stats dodge="1" /> </talent>
         </tier>
     </tree>
