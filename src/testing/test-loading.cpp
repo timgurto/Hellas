@@ -451,5 +451,13 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Permanent objects") {
   }
 }
 
-// Load a permanentObject from a file
-// Collision on client
+TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+                 "Clients load permanent objects from files") {
+  GIVEN("a permanent object") {
+    useData("a_permanent_object");
+
+    THEN("the client knows about it") {
+      WAIT_UNTIL(client->entities().size() == 2);
+    }
+  }
+}

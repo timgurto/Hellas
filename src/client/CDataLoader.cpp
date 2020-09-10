@@ -60,6 +60,7 @@ void CDataLoader::load(bool keepOldData) {
     }
 
     loadFromAllFiles(&CDataLoader::loadObjectTypes);
+    loadFromAllFiles(&CDataLoader::loadPermanentObjects);
     loadFromAllFiles(&CDataLoader::loadItems);
     loadFromAllFiles(&CDataLoader::loadClasses);
     loadFromAllFiles(&CDataLoader::loadRecipes);

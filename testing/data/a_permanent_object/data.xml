@@ -1,0 +1,4 @@
+<root>
+    <objectType id="rock" />
+    <permanentObject id="rock" x="5" y="5" />
+</root>
