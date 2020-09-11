@@ -19,23 +19,23 @@
     xDrawOffset="-20" yDrawOffset="-14" >
     <particles profile="smoke" x="0" y="0" />
 </objectType>
-    <object id="crater" x="3708" y="60440" />
-    <object id="crater" x="3904" y="60331" />
-    <object id="crater" x="3756" y="60210" />
-    <object id="crater" x="3943" y="60010" />
-    <object id="crater" x="3593" y="60130" />
-    <object id="crater" x="3629" y="59868" />
-    <object id="crater" x="3763" y="59717" />
-    <object id="crater" x="4075" y="59492" />
-    <object id="crater" x="3441" y="59078" />
-    <object id="crater" x="3523" y="59396" />
-    <object id="crater" x="3895" y="59349" />
-    <object id="crater" x="4676" y="58998" />
-    <object id="crater" x="393" y="59505" />
-    <object id="crater" x="476" y="59711" />
-    <object id="crater" x="324" y="59883" />
-    <object id="crater" x="349" y="60283" />
-    <object id="crater" x="1073" y="60259" />
+    <permanentObject id="crater" x="3708" y="60440" />
+    <permanentObject id="crater" x="3904" y="60331" />
+    <permanentObject id="crater" x="3756" y="60210" />
+    <permanentObject id="crater" x="3943" y="60010" />
+    <permanentObject id="crater" x="3593" y="60130" />
+    <permanentObject id="crater" x="3629" y="59868" />
+    <permanentObject id="crater" x="3763" y="59717" />
+    <permanentObject id="crater" x="4075" y="59492" />
+    <permanentObject id="crater" x="3441" y="59078" />
+    <permanentObject id="crater" x="3523" y="59396" />
+    <permanentObject id="crater" x="3895" y="59349" />
+    <permanentObject id="crater" x="4676" y="58998" />
+    <permanentObject id="crater" x="393" y="59505" />
+    <permanentObject id="crater" x="476" y="59711" />
+    <permanentObject id="crater" x="324" y="59883" />
+    <permanentObject id="crater" x="349" y="60283" />
+    <permanentObject id="crater" x="1073" y="60259" />
 
 
 <quest id="tutCombat" name="A New Creation" startsAt="prometheus" endsAt="prometheus"

@@ -67,62 +67,62 @@
     </objectType>
     <spawnPoint y="43695" x="29623" type="calydonWeaver" quantity="8" radius="300" respawnTime="300000" />
     <npc id="kingOineus" x="29533" y="43524" />
-    <object id="rockRoad" x="29620" y="43454"> <owner type="noAccess" /> </object>
-    <object id="rockRoad" x="29620" y="43486"> <owner type="noAccess" /> </object>
-    <object id="rockRoad" x="29620" y="43518"> <owner type="noAccess" /> </object>
-    <object id="rockRoad" x="29620" y="43550"> <owner type="noAccess" /> </object>
-    <object id="rockRoad" x="29620" y="43582"> <owner type="noAccess" /> </object>
-    <object id="rockRoad" x="29620" y="43614"> <owner type="noAccess" /> </object>
-    <object id="rockRoad" x="29620" y="43646"> <owner type="noAccess" /> </object>
-    <object id="rockRoad" x="29620" y="43678"> <owner type="noAccess" /> </object>
-    <object id="rockRoad" x="29620" y="43710"> <owner type="noAccess" /> </object>
-    <object id="rockRoad" x="29620" y="43742"> <owner type="noAccess" /> </object>
-    <object id="rockRoad" x="29620" y="43774"> <owner type="noAccess" /> </object>
-    <object id="rockRoad" x="29620" y="43806"> <owner type="noAccess" /> </object>
-    <object id="rockRoad" x="29620" y="43838"> <owner type="noAccess" /> </object>
-    <object id="rockRoad" x="29620" y="43870"> <owner type="noAccess" /> </object>
-    <object id="rockRoad" x="29620" y="43902"> <owner type="noAccess" /> </object>
-    <object id="rockRoad" x="29620" y="43934"> <owner type="noAccess" /> </object>
-    <object id="rockRoad" x="29620" y="43966"> <owner type="noAccess" /> </object>
-    <object id="rockRoad" x="29620" y="43998"> <owner type="noAccess" /> </object>
-    <object id="rockRoad" x="29620" y="44030"> <owner type="noAccess" /> </object>
-    <object id="rockRoad" x="29620" y="44073"> <owner type="noAccess" /> </object>
-    <object id="rockRoad" x="29620" y="44145"> <owner type="noAccess" /> </object>
-    <object id="rockRoad" x="29588" y="43690"> <owner type="noAccess" /> </object>
-    <object id="rockRoad" x="29556" y="43690"> <owner type="noAccess" /> </object>
-    <object id="rockRoad" x="29524" y="43690"> <owner type="noAccess" /> </object>
-    <object id="rockRoad" x="29652" y="43829"> <owner type="noAccess" /> </object>
-    <object id="rockRoad" x="29492" y="43690"> <owner type="noAccess" /> </object>
-    <object id="rockRoad" x="29460" y="43690"> <owner type="noAccess" /> </object>
-    <object id="palisadeEW" x="29701" y="43506"> <owner type="noAccess" /> </object>
-    <object id="palisadeEW" x="29701" y="43950"> <owner type="noAccess" /> </object>
-    <object id="palisadeEW" x="29437" y="43505"> <owner type="noAccess" /> </object>
-    <object id="palisadeEW" x="29529" y="43505"> <owner type="noAccess" /> </object>
-    <object id="palisadeNS" x="29742" y="43579"> <owner type="noAccess" /> </object>
-    <object id="palisadeNS" x="29742" y="43652"> <owner type="noAccess" /> </object>
-    <object id="palisadeNS" x="29742" y="43725"> <owner type="noAccess" /> </object>
-    <object id="palisadeNS" x="29742" y="43798"> <owner type="noAccess" /> </object>
-    <object id="palisadeNS" x="29742" y="43871"> <owner type="noAccess" /> </object>
-    <object id="palisadeNS" x="29742" y="43944"> <owner type="noAccess" /> </object>
-    <object id="flaxCrop8" x="29576" y="43954"> <owner type="noAccess" /> </object>
-    <object id="flaxCrop8" x="29537" y="43954"> <owner type="noAccess" /> </object>
-    <object id="flaxCrop8" x="29537" y="43995"> <owner type="noAccess" /> </object>
-    <object id="flaxCrop0" x="29576" y="43995"> <owner type="noAccess" /> <material id="water" qty="1" /> </object>
-    <object id="flaxCrop0" x="29666" y="44013"> <owner type="noAccess" /> <material id="water" qty="1" /> </object>
-    <object id="flaxCrop0" x="29705" y="44012"> <owner type="noAccess" /> <material id="water" qty="1" /> </object>
-    <object id="flaxCrop0" x="29705" y="44053"> <owner type="noAccess" /> <material id="water" qty="1" /> </object>
-    <object id="flaxCrop0" x="29666" y="44054"> <owner type="noAccess" /> <material id="water" qty="1" /> </object>
-    <object id="cityAltar" x="29702" y="43832"> <owner type="noAccess" /> </object>
-    <object id="loom" x="29455" y="43647"> <owner type="noAccess" /> </object>
-    <object id="loom" x="29504" y="43733"> <owner type="noAccess" /> </object>
-    <object id="loom" x="29415" y="43693"> <owner type="noAccess" /> </object>
-    <object id="smallPot" x="29400" y="43653"> <owner type="noAccess" /> </object>
-    <object id="smallPot" x="29405" y="43644"> <owner type="noAccess" /> </object>
-    <object id="smallPot" x="29418" y="43660"> <owner type="noAccess" /> </object>
-    <object id="smallPot" x="29542" y="43722"> <owner type="noAccess" /> </object>
-    <object id="smallPot" x="29555" y="43739"> <owner type="noAccess" /> </object>
-    <object id="smallPot" x="29729" y="43576"> <owner type="noAccess" /> </object>
-    <object id="smallPot" x="29721" y="43565"> <owner type="noAccess" /> </object>
+    <permanentObject id="rockRoad" x="29620" y="43454"> <owner type="noAccess" /> </object>
+    <permanentObject id="rockRoad" x="29620" y="43486"> <owner type="noAccess" /> </object>
+    <permanentObject id="rockRoad" x="29620" y="43518"> <owner type="noAccess" /> </object>
+    <permanentObject id="rockRoad" x="29620" y="43550"> <owner type="noAccess" /> </object>
+    <permanentObject id="rockRoad" x="29620" y="43582"> <owner type="noAccess" /> </object>
+    <permanentObject id="rockRoad" x="29620" y="43614"> <owner type="noAccess" /> </object>
+    <permanentObject id="rockRoad" x="29620" y="43646"> <owner type="noAccess" /> </object>
+    <permanentObject id="rockRoad" x="29620" y="43678"> <owner type="noAccess" /> </object>
+    <permanentObject id="rockRoad" x="29620" y="43710"> <owner type="noAccess" /> </object>
+    <permanentObject id="rockRoad" x="29620" y="43742"> <owner type="noAccess" /> </object>
+    <permanentObject id="rockRoad" x="29620" y="43774"> <owner type="noAccess" /> </object>
+    <permanentObject id="rockRoad" x="29620" y="43806"> <owner type="noAccess" /> </object>
+    <permanentObject id="rockRoad" x="29620" y="43838"> <owner type="noAccess" /> </object>
+    <permanentObject id="rockRoad" x="29620" y="43870"> <owner type="noAccess" /> </object>
+    <permanentObject id="rockRoad" x="29620" y="43902"> <owner type="noAccess" /> </object>
+    <permanentObject id="rockRoad" x="29620" y="43934"> <owner type="noAccess" /> </object>
+    <permanentObject id="rockRoad" x="29620" y="43966"> <owner type="noAccess" /> </object>
+    <permanentObject id="rockRoad" x="29620" y="43998"> <owner type="noAccess" /> </object>
+    <permanentObject id="rockRoad" x="29620" y="44030"> <owner type="noAccess" /> </object>
+    <permanentObject id="rockRoad" x="29620" y="44073"> <owner type="noAccess" /> </object>
+    <permanentObject id="rockRoad" x="29620" y="44145"> <owner type="noAccess" /> </object>
+    <permanentObject id="rockRoad" x="29588" y="43690"> <owner type="noAccess" /> </object>
+    <permanentObject id="rockRoad" x="29556" y="43690"> <owner type="noAccess" /> </object>
+    <permanentObject id="rockRoad" x="29524" y="43690"> <owner type="noAccess" /> </object>
+    <permanentObject id="rockRoad" x="29652" y="43829"> <owner type="noAccess" /> </object>
+    <permanentObject id="rockRoad" x="29492" y="43690"> <owner type="noAccess" /> </object>
+    <permanentObject id="rockRoad" x="29460" y="43690"> <owner type="noAccess" /> </object>
+    <permanentObject id="palisadeEW" x="29701" y="43506"> <owner type="noAccess" /> </object>
+    <permanentObject id="palisadeEW" x="29701" y="43950"> <owner type="noAccess" /> </object>
+    <permanentObject id="palisadeEW" x="29437" y="43505"> <owner type="noAccess" /> </object>
+    <permanentObject id="palisadeEW" x="29529" y="43505"> <owner type="noAccess" /> </object>
+    <permanentObject id="palisadeNS" x="29742" y="43579"> <owner type="noAccess" /> </object>
+    <permanentObject id="palisadeNS" x="29742" y="43652"> <owner type="noAccess" /> </object>
+    <permanentObject id="palisadeNS" x="29742" y="43725"> <owner type="noAccess" /> </object>
+    <permanentObject id="palisadeNS" x="29742" y="43798"> <owner type="noAccess" /> </object>
+    <permanentObject id="palisadeNS" x="29742" y="43871"> <owner type="noAccess" /> </object>
+    <permanentObject id="palisadeNS" x="29742" y="43944"> <owner type="noAccess" /> </object>
+    <permanentObject id="flaxCrop8" x="29576" y="43954"> <owner type="noAccess" /> </object>
+    <permanentObject id="flaxCrop8" x="29537" y="43954"> <owner type="noAccess" /> </object>
+    <permanentObject id="flaxCrop8" x="29537" y="43995"> <owner type="noAccess" /> </object>
+    <permanentObject id="flaxCrop0" x="29576" y="43995"> <owner type="noAccess" /> <material id="water" qty="1" /> </object>
+    <permanentObject id="flaxCrop0" x="29666" y="44013"> <owner type="noAccess" /> <material id="water" qty="1" /> </object>
+    <permanentObject id="flaxCrop0" x="29705" y="44012"> <owner type="noAccess" /> <material id="water" qty="1" /> </object>
+    <permanentObject id="flaxCrop0" x="29705" y="44053"> <owner type="noAccess" /> <material id="water" qty="1" /> </object>
+    <permanentObject id="flaxCrop0" x="29666" y="44054"> <owner type="noAccess" /> <material id="water" qty="1" /> </object>
+    <permanentObject id="cityAltar" x="29702" y="43832"> <owner type="noAccess" /> </object>
+    <permanentObject id="loom" x="29455" y="43647"> <owner type="noAccess" /> </object>
+    <permanentObject id="loom" x="29504" y="43733"> <owner type="noAccess" /> </object>
+    <permanentObject id="loom" x="29415" y="43693"> <owner type="noAccess" /> </object>
+    <permanentObject id="smallPot" x="29400" y="43653"> <owner type="noAccess" /> </object>
+    <permanentObject id="smallPot" x="29405" y="43644"> <owner type="noAccess" /> </object>
+    <permanentObject id="smallPot" x="29418" y="43660"> <owner type="noAccess" /> </object>
+    <permanentObject id="smallPot" x="29542" y="43722"> <owner type="noAccess" /> </object>
+    <permanentObject id="smallPot" x="29555" y="43739"> <owner type="noAccess" /> </object>
+    <permanentObject id="smallPot" x="29729" y="43576"> <owner type="noAccess" /> </object>
+    <permanentObject id="smallPot" x="29721" y="43565"> <owner type="noAccess" /> </object>
     <object id="tradeMatBottomless" x="29655" y="43578" >
         <owner type="player" name="Calydon" />
         <merchant slot="0" wareItem="fig" priceItem="flaxSeeds" />
@@ -135,28 +135,28 @@
         <owner type="player" name="Calydon" />
         <merchant slot="0" wareItem="linenCloak" priceItem="tinCoin" priceQty="600" />
     </object>
-    <object id="figTree8" x="29419" y="43817"> <owner type="noAccess" /> </object>
-    <object id="figTree8" x="29475" y="43863"> <owner type="noAccess" /> </object>
-    <object id="figTree8" x="29485" y="43828"> <owner type="noAccess" /> </object>
-    <object id="handCart" x="29564" y="44036"> <owner type="noAccess" /> </object>
-    <object id="handCart" x="29546" y="44070"> <owner type="noAccess" /> </object>
-    <object id="calydonBrazier" x="29458" y="43575" />
-    <object id="flaxCrop8" x="29689" y="44151"> <owner type="noAccess" /> </object>
-    <object id="flaxCrop8" x="29738" y="44249"> <owner type="noAccess" /> </object>
-    <object id="flaxCrop8" x="29633" y="44346"> <owner type="noAccess" /> </object>
-    <object id="flaxCrop8" x="29526" y="44298"> <owner type="noAccess" /> </object>
-    <object id="flaxCrop8" x="29377" y="44469"> <owner type="noAccess" /> </object>
-    <object id="flaxCrop8" x="29508" y="44553"> <owner type="noAccess" /> </object>
-    <object id="skeleton" x="29548" y="44385" />
-    <object id="skeleton" x="29660" y="44280" />
-    <object id="skeleton" x="29556" y="44549" />
-    <object id="skeleton" x="29682" y="44520" />
-    <object id="skeleton" x="29782" y="44484" />
-    <object id="skeleton" x="29794" y="44573" />
-    <object id="skeleton" x="29818" y="44551" />
-    <object id="skeleton" x="29934" y="44558" />
-    <object id="skeleton" x="30024" y="44520" />
-    <object id="skeleton" x="29957" y="44487" />
+    <permanentObject id="figTree8" x="29419" y="43817"> <owner type="noAccess" /> </object>
+    <permanentObject id="figTree8" x="29475" y="43863"> <owner type="noAccess" /> </object>
+    <permanentObject id="figTree8" x="29485" y="43828"> <owner type="noAccess" /> </object>
+    <permanentObject id="handCart" x="29564" y="44036"> <owner type="noAccess" /> </object>
+    <permanentObject id="handCart" x="29546" y="44070"> <owner type="noAccess" /> </object>
+    <permanentObject id="calydonBrazier" x="29458" y="43575" />
+    <permanentObject id="flaxCrop8" x="29689" y="44151"> <owner type="noAccess" /> </object>
+    <permanentObject id="flaxCrop8" x="29738" y="44249"> <owner type="noAccess" /> </object>
+    <permanentObject id="flaxCrop8" x="29633" y="44346"> <owner type="noAccess" /> </object>
+    <permanentObject id="flaxCrop8" x="29526" y="44298"> <owner type="noAccess" /> </object>
+    <permanentObject id="flaxCrop8" x="29377" y="44469"> <owner type="noAccess" /> </object>
+    <permanentObject id="flaxCrop8" x="29508" y="44553"> <owner type="noAccess" /> </object>
+    <permanentObject id="skeleton" x="29548" y="44385" />
+    <permanentObject id="skeleton" x="29660" y="44280" />
+    <permanentObject id="skeleton" x="29556" y="44549" />
+    <permanentObject id="skeleton" x="29682" y="44520" />
+    <permanentObject id="skeleton" x="29782" y="44484" />
+    <permanentObject id="skeleton" x="29794" y="44573" />
+    <permanentObject id="skeleton" x="29818" y="44551" />
+    <permanentObject id="skeleton" x="29934" y="44558" />
+    <permanentObject id="skeleton" x="30024" y="44520" />
+    <permanentObject id="skeleton" x="29957" y="44487" />
 <quest id="calydonianBoar" name="The Calydonian Boar" startsAt="kingOineus" endsAt="kingOineus"
     brief="Welcome to our humble city!  Like you, we grow and weave flax, but recently we have fallen victim to the gods' wrath.
     Each harvest we make offerings to the gods, as you have done.  Regrettably, our merriment during the last harvest distracted us, and we neglected to thank Artemis, goddess of the hunt.
@@ -316,7 +316,7 @@
 <quest id="learnZealotBuilding" name="Divination" startsAt="zealotQG" endsAt="zealotQG" exclusiveToClass="Zealot"
     brief="Zaar the shaman of tribe, but not heard gods' wishes for many days.
     Watching birds, reading entrails, nothing works.  Last resort is throwing knucklebones from animal paws; they land in special ways.
-    You bring knucklebones?  Lots of work, but hearing gods very important!"
+    You bring knucklebones?  Hard to get, but hearing gods very important!"
     debrief="Zaar throw the bones and get answer!
     Gods teach Zaar to get visions from them.  You work hard helping Zaar, show devotion to gods, so Zaar teach you.
     Find deep chasm, breathe vapours.  Then gods speak to you.  Hear gods, be better shaman.  Share chasm with others.  Serve gods." >
