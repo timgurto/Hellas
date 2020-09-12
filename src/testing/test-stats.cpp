@@ -183,17 +183,43 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Armour stat") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClient, "Hit chance") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Hit chance") {
   // Assumption: base miss chance of 10%
 
+  GIVEN("NPCs have 500 (5%) hit chance") {
+    auto oldStats = NPCType::BASE_STATS;
+    NPCType::BASE_STATS.hit = 500;
+    useData(R"(
+      <npcType id="dog" attack="1" />
+    )");
+    NPCType::BASE_STATS = oldStats;
+
+    AND_GIVEN("an NPC") {
+      const auto &npc = server->addNPC("dog", {15, 15});
+
+      WHEN("100000 hits are generated for it") {
+        auto numMisses = 0;
+        for (auto i = 0; i != 100000; ++i) {
+          auto result = npc.generateHitAgainst(npc, DAMAGE, {}, 0);
+          if (result == MISS) ++numMisses;
+        }
+
+        THEN("around 5% of them are misses") {
+          CHECK_ROUGHLY_EQUAL(numMisses, 5000, 0.1)
+        }
+      }
+    }
+  }
+
   GIVEN("users have 500 (5%) hit chance") {
+    useData("");
     auto oldStats = User::OBJECT_TYPE.baseStats();
     auto with500Hit = oldStats;
     with500Hit.hit = 500;
     User::OBJECT_TYPE.baseStats(with500Hit);
     user->updateStats();
 
-    WHEN("100000 hits are generated") {
+    WHEN("100000 hits are generated for a user") {
       auto numMisses = 0;
       for (auto i = 0; i != 100000; ++i) {
         auto result = user->generateHitAgainst(*user, DAMAGE, {}, 0);
