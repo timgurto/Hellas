@@ -96,19 +96,17 @@ void Client::initializeGearWindow() {
   addStat("Healing power", _stats.healing, "+", {}, y, _gearWindow,
           "Additional amount added to healing spells.");
   addGap(y, _gearWindow);
-  addStat("Armor", _stats.armor, {}, "%", y, _gearWindow,
-          "A flat reduction applied to all incoming physical damage.");
-  addStat("Air resistance", _stats.airResist, {}, "%", y, _gearWindow,
-          "A flat reduction applied to all incoming air damage.",
-          Color::STAT_AIR);
-  addStat("Earth resistance", _stats.earthResist, {}, "%", y, _gearWindow,
-          "A flat reduction applied to all incoming earth damage.",
+  addStat("Armour class", _stats.armor, {}, {}, y, _gearWindow,
+          "Each point reduces incoming physical damage by 0.1%.");
+  addStat("Air resistance", _stats.airResist, {}, {}, y, _gearWindow,
+          "Each point reduces incoming air damage by 0.1%.", Color::STAT_AIR);
+  addStat("Earth resistance", _stats.earthResist, {}, {}, y, _gearWindow,
+          "Each point reduces incoming earth damage by 0.1%.",
           Color::STAT_EARTH);
-  addStat("Fire resistance", _stats.fireResist, {}, "%", y, _gearWindow,
-          "A flat reduction applied to all incoming fire damage.",
-          Color::STAT_FIRE);
-  addStat("Water resistance", _stats.waterResist, {}, "%", y, _gearWindow,
-          "A flat reduction applied to all incoming water damage.",
+  addStat("Fire resistance", _stats.fireResist, {}, {}, y, _gearWindow,
+          "Each point reduces incoming fire damage by 0.1%.", Color::STAT_FIRE);
+  addStat("Water resistance", _stats.waterResist, {}, {}, y, _gearWindow,
+          "Each point reduces incoming water damage by 0.1%.",
           Color::STAT_WATER);
   addStat("Crit avoidance", _stats.critResist, {}, "%", y, _gearWindow,
           "Lowers the chance for incoming attacks to be critical hits.");

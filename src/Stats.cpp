@@ -116,7 +116,7 @@ std::vector<std::string> StatsMod::toStrings() const {
     }
     v.push_back(line);
   }
-  if (armor > 0) v.push_back("+" + toString(armor) + "% armor");
+  if (armor > 0) v.push_back("+" + toString(armor) + " armour");
   if (maxHealth > 0) v.push_back("+" + toString(maxHealth) + " max health");
   if (maxEnergy > 0) v.push_back("+" + toString(maxEnergy) + " max energy");
   if (hps > 0) v.push_back("+" + toString(hps) + " health per second");
@@ -137,14 +137,13 @@ std::vector<std::string> StatsMod::toStrings() const {
     v.push_back("+" + toString(physicalDamage) + " physical damage");
   if (healing > 0)
     v.push_back("+" + toString(healing) + " healing-spell amount");
-  if (airResist > 0)
-    v.push_back("+" + toString(airResist) + "% air resistance");
+  if (airResist > 0) v.push_back("+" + toString(airResist) + " air resistance");
   if (earthResist > 0)
-    v.push_back("+" + toString(earthResist) + "% earth resistance");
+    v.push_back("+" + toString(earthResist) + " earth resistance");
   if (fireResist > 0)
-    v.push_back("+" + toString(fireResist) + "% fire resistance");
+    v.push_back("+" + toString(fireResist) + " fire resistance");
   if (waterResist > 0)
-    v.push_back("+" + toString(waterResist) + "% water resistance");
+    v.push_back("+" + toString(waterResist) + " water resistance");
   if (gatherBonus > 0)
     v.push_back("+" + toString(gatherBonus) + "% chance to gather double");
   if (followerLimit > 0)
