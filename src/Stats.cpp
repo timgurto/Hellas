@@ -85,7 +85,7 @@ Stats Stats::operator&(const StatsMod &mod) const {
   return stats;
 }
 
-Percentage Stats::resistanceByType(SpellSchool school) const {
+ArmourClass Stats::resistanceByType(SpellSchool school) const {
   if (school == SpellSchool::PHYSICAL) return armor;
   if (school == SpellSchool::AIR) return airResist;
   if (school == SpellSchool::EARTH) return earthResist;

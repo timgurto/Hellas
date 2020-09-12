@@ -16,8 +16,9 @@ struct Stats {
 
   Regen hps = 0, eps = 0;
 
-  Percentage armor = 0, hit = 0, crit = 0, critResist = 0, dodge = 0, block = 0,
-             airResist = 0, earthResist = 0, fireResist = 0, waterResist = 0,
+  ArmourClass armor = 0, airResist = 0, earthResist = 0, fireResist = 0,
+              waterResist = 0;
+  Percentage hit = 0, crit = 0, critResist = 0, dodge = 0, block = 0,
              gatherBonus = 0;
 
   Hitpoints weaponDamage = 0;
@@ -35,7 +36,7 @@ struct Stats {
   const Stats &operator&=(const StatsMod &rhs);
   Stats operator&(const StatsMod &mod) const;
 
-  Percentage resistanceByType(SpellSchool school) const;
+  ArmourClass resistanceByType(SpellSchool school) const;
 };
 
 // Describes modifiers for player stats, e.g. for gear.
@@ -44,14 +45,15 @@ struct StatsMod {
   std::string buffDescription() const;  // e.g. "Grant 1 health to ", "Stun "
 
   // Additive
-  int armor = 0, maxHealth = 0, hps = 0, maxEnergy = 0, eps = 0, blockValue = 0,
+  int maxHealth = 0, hps = 0, maxEnergy = 0, eps = 0, blockValue = 0,
       followerLimit = 0;
   BonusDamage magicDamage = 0, physicalDamage = 0, healing = 0;
+  ArmourClass armor = 0, airResist = 0, earthResist = 0, fireResist = 0,
+              waterResist = 0;
   Percentage hit = 0, crit = 0, critResist = 0, dodge = 0, block = 0,
-             airResist = 0, earthResist = 0, fireResist = 0, waterResist = 0,
              gatherBonus = 0;
 
-  // Replacement.
+  // Replacement
   ms_t attackTime = 0;
   Hitpoints weaponDamage = 0;
   SpellSchool weaponSchool = SpellSchool::PHYSICAL;
