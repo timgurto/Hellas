@@ -235,6 +235,30 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Hit chance") {
   }
 }
 
+TEST_CASE_METHOD(ServerAndClient, "Crit chance") {
+  GIVEN("users have 5000 (50%) hit chance") {
+    auto oldStats = User::OBJECT_TYPE.baseStats();
+    auto with5000Crit = oldStats;
+    with5000Crit.crit = 5000;
+    User::OBJECT_TYPE.baseStats(with5000Crit);
+    user->updateStats();
+
+    WHEN("10000 hits are generated for a user") {
+      auto numCrits = 0;
+      for (auto i = 0; i != 10000; ++i) {
+        auto result = user->generateHitAgainst(*user, DAMAGE, {}, 0);
+        if (result == CRIT) ++numCrits;
+      }
+
+      THEN("around 50% of them are crits") {
+        CHECK_ROUGHLY_EQUAL(numCrits, 5000, 0.1)
+      }
+    }
+
+    User::OBJECT_TYPE.baseStats(oldStats);
+  }
+}
+
 // Crit
 // Crit resist
 // Dodge
