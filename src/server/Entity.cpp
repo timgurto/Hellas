@@ -148,15 +148,14 @@ bool Entity::combatTypeCanHaveOutcome(CombatType type, CombatResult outcome,
   Heal        X       X       X
   Debuff              X       X       X
   */
-  if (type == DAMAGE && (outcome == DODGE || outcome == BLOCK)) return false;
-  if (type == HEAL && outcome == MISS || outcome == DODGE || outcome == BLOCK)
-    return false;
-  if (type == DEBUFF && outcome != MISS && outcome != HIT) return false;
-  if (outcome == DODGE && range > Podes::MELEE_RANGE) return false;
-  if (outcome == BLOCK && school.isMagic()) return false;
-  if (type == THREAT_MOD && (outcome == BLOCK || outcome == DODGE))
-    return false;
+  if (outcome == HIT) return true;
+  if (outcome == CRIT) return type != DEBUFF;
+  if (outcome == MISS) return type != HEAL;
+  const auto isRanged = range > Podes::MELEE_RANGE;
 
+  // Remaining: dodge and block
+  if (type != DAMAGE || school.isMagic()) return false;
+  if (outcome == DODGE && isRanged) return false;
   return true;
 }
 
