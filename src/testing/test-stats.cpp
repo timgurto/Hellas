@@ -308,5 +308,42 @@ TEST_CASE_METHOD(ServerAndClient, "Dodge chance") {
   }
 }
 
-// Block
+TEST_CASE_METHOD(ServerAndClientWithData, "Block chance") {
+  useData(R"(
+    <item id="shield" gearSlot="7">
+      <tag name="shield" />
+    </item>
+    )");
+
+  GIVEN("users have 50% block chance") {
+    auto oldStats = User::OBJECT_TYPE.baseStats();
+    auto with5000Block = oldStats;
+    with5000Block.block = 5000;
+    User::OBJECT_TYPE.baseStats(with5000Block);
+
+    AND_GIVEN("the user has a shield") {
+      auto &shield = server->getFirstItem();
+      user->giveItem(&shield);
+      client->sendMessage(
+          CL_SWAP_ITEMS,
+          makeArgs(Serial::Inventory(), 0, Serial::Gear(), Item::OFFHAND_SLOT));
+      WAIT_UNTIL(user->gear(Item::OFFHAND_SLOT).first.hasItem());
+
+      WHEN("10000 hits are generated against him") {
+        auto numBlocks = 0;
+        for (auto i = 0; i != 10000; ++i) {
+          auto result = user->generateHitAgainst(*user, DAMAGE, {}, 0);
+          if (result == BLOCK) ++numBlocks;
+        }
+
+        THEN("around 50% of them are blocks") {
+          CHECK_ROUGHLY_EQUAL(numBlocks, 5000, 0.1)
+        }
+      }
+    }
+
+    User::OBJECT_TYPE.baseStats(oldStats);
+  }
+}
+
 // Gather bonus

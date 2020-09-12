@@ -120,7 +120,7 @@ CombatResult Entity::generateHitAgainst(const Entity &target, CombatType type,
     roll -= dodgeChance;
   }
   // Block
-  auto blockChance = target.stats().block + modifierFromLevelDiff;
+  auto blockChance = target.stats().block / 100 + modifierFromLevelDiff;
   blockChance = max(0, blockChance);
   if (target.canBlock() &&
       combatTypeCanHaveOutcome(type, BLOCK, school, range)) {
