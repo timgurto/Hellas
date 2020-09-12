@@ -128,8 +128,8 @@ CombatResult Entity::generateHitAgainst(const Entity &target, CombatType type,
     roll -= blockChance;
   }
   // Crit
-  auto critChance =
-      stats().crit / 100 - target.stats().critResist - modifierFromLevelDiff;
+  auto critChance = stats().crit / 100 - target.stats().critResist / 100 -
+                    modifierFromLevelDiff;
   critChance = max(0, critChance);
   if (critChance > 0 && combatTypeCanHaveOutcome(type, CRIT, school, range)) {
     if (roll < critChance) return CRIT;

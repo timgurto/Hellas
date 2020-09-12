@@ -186,7 +186,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Armour stat") {
 TEST_CASE_METHOD(ServerAndClientWithData, "Hit chance") {
   // Assumption: base miss chance of 10%
 
-  GIVEN("NPCs have 500 (5%) hit chance") {
+  GIVEN("NPCs have 5% hit chance") {
     auto oldStats = NPCType::BASE_STATS;
     NPCType::BASE_STATS.hit = 500;
     useData(R"(
@@ -211,7 +211,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Hit chance") {
     }
   }
 
-  GIVEN("users have 500 (5%) hit chance") {
+  GIVEN("users have 5% hit chance") {
     useData("");
     auto oldStats = User::OBJECT_TYPE.baseStats();
     auto with500Hit = oldStats;
@@ -236,7 +236,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Hit chance") {
 }
 
 TEST_CASE_METHOD(ServerAndClient, "Crit chance") {
-  GIVEN("users have 5000 (50%) hit chance") {
+  GIVEN("users have 50% crit chance") {
     auto oldStats = User::OBJECT_TYPE.baseStats();
     auto with5000Crit = oldStats;
     with5000Crit.crit = 5000;
@@ -259,7 +259,31 @@ TEST_CASE_METHOD(ServerAndClient, "Crit chance") {
   }
 }
 
-// Crit
+TEST_CASE_METHOD(ServerAndClient, "Crit resistance") {
+  GIVEN("users have 50% crit chance and 25% crit resistance") {
+    auto oldStats = User::OBJECT_TYPE.baseStats();
+    auto with2500CritResist = oldStats;
+    with2500CritResist.crit = 5000;
+    with2500CritResist.critResist = 2500;
+    User::OBJECT_TYPE.baseStats(with2500CritResist);
+    user->updateStats();
+
+    WHEN("10000 hits are generated for a user") {
+      auto numCrits = 0;
+      for (auto i = 0; i != 10000; ++i) {
+        auto result = user->generateHitAgainst(*user, DAMAGE, {}, 0);
+        if (result == CRIT) ++numCrits;
+      }
+
+      THEN("around 25% of them are crits") {
+        CHECK_ROUGHLY_EQUAL(numCrits, 2500, 0.1)
+      }
+    }
+
+    User::OBJECT_TYPE.baseStats(oldStats);
+  }
+}
+
 // Crit resist
 // Dodge
 // Block
