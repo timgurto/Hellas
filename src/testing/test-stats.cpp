@@ -1,4 +1,5 @@
 #include "TestClient.h"
+#include "TestFixtures.h"
 #include "TestServer.h"
 #include "testing.h"
 
@@ -135,6 +136,49 @@ TEST_CASE("Speed stat") {
       CHECK(c.waitForMessage(SV_YOUR_STATS));
 
       THEN("his speed is valid") { CHECK(c.stats().speed > 0); }
+    }
+  }
+}
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Armour stat") {
+  GIVEN("an NPC type that deals 50 damage") {
+    useData(R"(
+      <npcType id="fox" attack="50" />
+      <npcType id="magicFox"> <spell id="physical50"/> </npcType>
+
+      <spell id="physical50" school="physical" range="30" cooldown="1">
+        <targets enemy="1" />
+        <function name="doDirectDamage" i1="50" />
+      </spell>
+    )");
+
+    AND_GIVEN("players have 500 armour [50% reduction]") {
+      auto oldStats = User::OBJECT_TYPE.baseStats();
+      auto with500AC = oldStats;
+      with500AC.armor = 500;
+      User::OBJECT_TYPE.baseStats(with500AC);
+      user->updateStats();
+      auto healthBefore = user->health();
+
+      WHEN("an NPC hits the player for 50 physical") {
+        server->addNPC("fox", {15, 15});
+        WAIT_UNTIL(user->health() < healthBefore);
+
+        THEN("the player loses around 25 health") {
+          CHECK_ROUGHLY_EQUAL(1. * user->health(), 1. * healthBefore - 25, .1);
+        }
+      }
+
+      WHEN("an NPC hits the player with a 50-physical spell") {
+        server->addNPC("magicFox", {15, 15});
+        WAIT_UNTIL(user->health() < healthBefore);
+
+        THEN("the player loses around 25 health") {
+          CHECK_ROUGHLY_EQUAL(1. * user->health(), 1. * healthBefore - 25, .1);
+        }
+      }
+
+      User::OBJECT_TYPE.baseStats(oldStats);
     }
   }
 }

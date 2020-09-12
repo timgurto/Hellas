@@ -271,7 +271,7 @@ void Entity::update(ms_t timeElapsed) {
   auto rawDamage = combatDamage();
   if (outcome == CRIT) rawDamage *= 2;
 
-  auto resistance = pTarget->_stats.resistanceByType(school());
+  auto resistance = pTarget->_stats.resistanceByType(school()) / 10;
   auto resistanceMultiplier = (100 - resistance) / 100.0;
   rawDamage *= resistanceMultiplier;
 
