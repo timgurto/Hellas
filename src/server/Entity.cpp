@@ -113,7 +113,7 @@ CombatResult Entity::generateHitAgainst(const Entity &target, CombatType type,
     roll -= missChance;
   }
   // Dodge
-  auto dodgeChance = target.stats().dodge + modifierFromLevelDiff;
+  auto dodgeChance = target.stats().dodge / 100 + modifierFromLevelDiff;
   dodgeChance = max(0, dodgeChance);
   if (combatTypeCanHaveOutcome(type, DODGE, school, range)) {
     if (roll < dodgeChance) return DODGE;

@@ -284,7 +284,29 @@ TEST_CASE_METHOD(ServerAndClient, "Crit resistance") {
   }
 }
 
-// Crit resist
-// Dodge
+TEST_CASE_METHOD(ServerAndClient, "Dodge chance") {
+  GIVEN("users have 50% dodge chance") {
+    auto oldStats = User::OBJECT_TYPE.baseStats();
+    auto with5000Dodge = oldStats;
+    with5000Dodge.dodge = 5000;
+    User::OBJECT_TYPE.baseStats(with5000Dodge);
+    user->updateStats();
+
+    WHEN("10000 hits are generated against a user") {
+      auto numDodges = 0;
+      for (auto i = 0; i != 10000; ++i) {
+        auto result = user->generateHitAgainst(*user, DAMAGE, {}, 0);
+        if (result == DODGE) ++numDodges;
+      }
+
+      THEN("around 50% of them are dodges") {
+        CHECK_ROUGHLY_EQUAL(numDodges, 5000, 0.1)
+      }
+    }
+
+    User::OBJECT_TYPE.baseStats(oldStats);
+  }
+}
+
 // Block
 // Gather bonus
