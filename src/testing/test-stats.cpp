@@ -182,3 +182,35 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Armour stat") {
     }
   }
 }
+
+TEST_CASE_METHOD(ServerAndClient, "Hit chance") {
+  // Assumption: base miss chance of 10%
+
+  GIVEN("users have 500 (5%) hit chance") {
+    auto oldStats = User::OBJECT_TYPE.baseStats();
+    auto with500Hit = oldStats;
+    with500Hit.hit = 500;
+    User::OBJECT_TYPE.baseStats(with500Hit);
+    user->updateStats();
+
+    WHEN("100000 hits are generated") {
+      auto numMisses = 0;
+      for (auto i = 0; i != 100000; ++i) {
+        auto result = user->generateHitAgainst(*user, DAMAGE, {}, 0);
+        if (result == MISS) ++numMisses;
+      }
+
+      THEN("around 5% of them are misses") {
+        CHECK_ROUGHLY_EQUAL(numMisses, 5000, 0.1)
+      }
+    }
+
+    User::OBJECT_TYPE.baseStats(oldStats);
+  }
+}
+
+// Crit
+// Crit resist
+// Dodge
+// Block
+// Gather bonus
