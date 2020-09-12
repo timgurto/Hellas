@@ -1014,53 +1014,6 @@ px_t User::attackRange() const {
   return weapon.type()->weaponRange();
 }
 
-CombatResult User::generateHitAgainst(const Entity &target, CombatType type,
-                                      SpellSchool school, px_t range) const {
-  const auto BASE_MISS_CHANCE = Percentage{10};
-
-  auto levelDiff = target.level() - level();
-  auto modifierFromLevelDiff = levelDiff * 3;
-
-  auto roll = rand() % 100;
-
-  // Miss
-  auto missChance =
-      BASE_MISS_CHANCE - stats().hit / 100 + modifierFromLevelDiff;
-  missChance = max(0, missChance);
-  if (combatTypeCanHaveOutcome(type, MISS, school, range)) {
-    if (roll < missChance) return MISS;
-    roll -= missChance;
-  }
-
-  // Dodge
-  auto dodgeChance = target.stats().dodge + modifierFromLevelDiff;
-  dodgeChance = max(0, dodgeChance);
-  if (combatTypeCanHaveOutcome(type, DODGE, school, range)) {
-    if (roll < dodgeChance) return DODGE;
-    roll -= dodgeChance;
-  }
-
-  // Block
-  auto blockChance = target.stats().block + modifierFromLevelDiff;
-  blockChance = max(0, blockChance);
-  if (target.canBlock() &&
-      combatTypeCanHaveOutcome(type, BLOCK, school, range)) {
-    if (roll < blockChance) return BLOCK;
-    roll -= blockChance;
-  }
-
-  // Crit
-  auto critChance =
-      stats().crit - target.stats().critResist - modifierFromLevelDiff;
-  critChance = max(0, critChance);
-  if (critChance > 0 && combatTypeCanHaveOutcome(type, CRIT, school, range)) {
-    if (roll < critChance) return CRIT;
-    roll -= critChance;
-  }
-
-  return HIT;
-}
-
 void User::sendGotHitMessageTo(const User &user) const {
   Server::_instance->sendMessage(user.socket(), {SV_PLAYER_WAS_HIT, _name});
 }

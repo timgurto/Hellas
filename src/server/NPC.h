@@ -38,9 +38,6 @@ class NPC : public Entity, public QuestNode {
   bool canBeAttackedBy(const NPC &npc) const override;
   bool canAttack(const Entity &other) const override;
   bool areOverlapsAllowedWith(const Entity &rhs) const;
-  CombatResult generateHitAgainst(const Entity &target, CombatType type,
-                                  SpellSchool school,
-                                  px_t range) const override;
   bool canBeHealedBySpell() const override { return true; }
   void scaleThreatAgainst(Entity &target, double multiplier) override;
   void makeAwareOf(Entity &entity);

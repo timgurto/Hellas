@@ -102,11 +102,8 @@ class Entity {
   virtual bool canBeAttackedBy(const NPC &npc) const { return false; }
   virtual bool canAttack(const Entity &other) const { return false; }
   virtual px_t attackRange() const { return MELEE_RANGE; }
-  virtual CombatResult generateHitAgainst(const Entity &target, CombatType type,
-                                          SpellSchool school,
-                                          px_t range) const {
-    return FAIL;
-  }
+  CombatResult generateHitAgainst(const Entity &target, CombatType type,
+                                  SpellSchool school, px_t range) const;
   virtual bool canBeHealedBySpell() const { return false; }
   static bool combatTypeCanHaveOutcome(CombatType type, CombatResult outcome,
                                        SpellSchool school, px_t range);
