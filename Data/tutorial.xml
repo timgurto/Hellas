@@ -353,9 +353,9 @@
         <loot id="tutEntrails3" chance="0.15" />
     </npcType>
     <spell id="tutHeal" cooldown="10" school="water">
-    <aesthetics sounds="heal" impactParticles="lightRays" />
+        <aesthetics sounds="heal" impactParticles="lightRays" />
         <targets self="1" />
-    <function name="heal" i1="7" />
+        <function name="heal" i1="7" />
     </spell>
 
     
