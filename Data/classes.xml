@@ -7,13 +7,13 @@
         <tier>
             <cost tag="food" quantity="1" />
             <talent type="stats" name="Train Reflexes" icon="outlineFoot" flavourText="Improved agility and reaction time help you to avoid being hit."><stats dodge="1" /> </talent>
-            <talent type="stats" name="Train Willpower" icon="outlineHead" flavourText="Build willpower through discomfort and deprivation, strengthening your mental defenses."> <stats airResist="1" earthResist="1" fireResist="1" waterResist="1" /> </talent>
+            <talent type="stats" name="Train Willpower" icon="outlineHead" flavourText="Build willpower through discomfort and deprivation, strengthening your mental defenses."> <stats airResist="10" earthResist="10" fireResist="10" waterResist="10" /> </talent>
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
             <requires pointsInTree="5" tool="classAthlete" />
             <talent type="spell" id="shieldBlock" flavourText="Raise your shield for a few seconds, greatly increasing your chance to block attacks." />
-            <talent type="stats" name="Train Endurance" icon="outlineRun" flavourText="Grueling physical training makes you stronger and tougher."> <stats armor="1" /> </talent>
+            <talent type="stats" name="Train Endurance" icon="outlineRun" flavourText="Grueling physical training makes you stronger and tougher."> <stats armor="10" /> </talent>
             <talent type="spell" id="threatHit" flavourText="An attack that enrages your enemy, making him more likely to attack you." />
         </tier>
     </tree>
@@ -34,7 +34,7 @@
         <tier>
             <cost tag="food" quantity="1" />
             <talent type="stats" name="Grammar" icon="lettersStone" flavourText="Memorize new facts, rules and relationships, giving you a larger pool of knowledge from which to draw."> <stats energy="10" /> </talent>
-            <talent type="stats" name="Arche" icon="waterFire" flavourText="Water is the source of all matter, motion and change, and understanding this gives you new ways to quench fire."> <stats fireResist="2" /> </talent>
+            <talent type="stats" name="Arche" icon="waterFire" flavourText="Water is the source of all matter, motion and change, and understanding this gives you new ways to quench fire."> <stats fireResist="20" /> </talent>
             <talent type="stats" name="Epicureanism" icon="foodGrapes" flavourText="Overcoming the fear of death helps you to embrace life."> <stats health="10" /> </talent>
         </tier>
         <tier>
@@ -65,7 +65,7 @@
     <tree name="Naturalist" >
         <tier>
             <cost tag="food" quantity="1" />
-            <talent type="stats" name="Study Poisons" icon="skullGreen" flavourText="Delving into the art of poisons may help you to avoid or resist them."> <stats earthResist="2" /> </talent>
+            <talent type="stats" name="Study Poisons" icon="skullGreen" flavourText="Delving into the art of poisons may help you to avoid or resist them."> <stats earthResist="20" /> </talent>
             <talent type="stats" name="Study Medicine" icon="rodOfAsclepius" flavourText="With more understanding of medicine comes a greater ability to mend the body."> <stats healing="3" /> </talent>
         </tier>
         <tier>
@@ -80,7 +80,7 @@
         <tier>
             <cost tag="food" quantity="1" />
             <talent type="stats" name="Study Illusion" icon="eyes" flavourText="Avoid being hit, through mastery of deception and shadow."> <stats dodge="1" /> </talent>
-            <talent type="stats" name="Transmute Skin" icon="stoneSkin" flavourText="Alter your skin, making it thicker and more resilient."> <stats armor="1" /> </talent>
+            <talent type="stats" name="Transmute Skin" icon="stoneSkin" flavourText="Alter your skin, making it thicker and more resilient."> <stats armor="10" /> </talent>
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
@@ -99,7 +99,7 @@
         <tier>
             <cost tag="food" quantity="1" />
             <talent type="stats" name="Reverence" icon="worship" flavourText="Sincere veneration makes the gods more generous when answering your prayers."> <stats healing="3" /> </talent>
-            <talent type="stats" name="Piety" icon="torch" flavourText="The very air around you is cleansed by your purity and innocence."> <stats airResist="2" /> </talent>
+            <talent type="stats" name="Piety" icon="torch" flavourText="The very air around you is cleansed by your purity and innocence."> <stats airResist="20" /> </talent>
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
@@ -112,14 +112,14 @@
     <tree name="Cultist" >
         <tier>
             <cost tag="food" quantity="1" />
-            <talent type="stats" name="Devotion to Dionysus" icon="symbolDionysus" flavourText="The god of wine will gladly protect you from water."> <stats waterResist="2" /> </talent>
+            <talent type="stats" name="Devotion to Dionysus" icon="symbolDionysus" flavourText="The god of wine will gladly protect you from water."> <stats waterResist="20" /> </talent>
             <talent type="stats" name="Devotion to Hermes Trismegistus" icon="symbolHermesTrismegistus" flavourText="Seek enlightenment from the divine master of writing and magic."> <stats energy="10" /> </talent>
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
             <requires pointsInTree="5" tool="classZealot" />
             <talent type="spell" id="damageShield" flavourText="Invoke the protection of a noble spirit, to smite all who harm you." />
-            <talent type="stats" name="Devotion to Mithra" icon="symbolMithra" flavourText="The lord of light dazzles your enemies and fades their efforts."> <stats airResist="1" earthResist="1" fireResist="1" waterResist="1" /> </talent>
+            <talent type="stats" name="Devotion to Mithra" icon="symbolMithra" flavourText="The lord of light dazzles your enemies and fades their efforts."> <stats airResist="10" earthResist="10" fireResist="10" waterResist="10" /> </talent>
         </tier>
     </tree>
     <tree name="Poet" >

@@ -340,20 +340,20 @@
             
         <!-- Leather (Dodge) -->
             <item id="skullCap" name="Skull Cap" gearSlot="0" sounds="leather" lvlReq="9" >
-                <stats armor="1" dodge="1" />
+                <stats armor="10" dodge="1" />
                 <offset x="-3" y="-4" />
                 <canBeRepaired cost="leather" tool="sewing" />
             </item>
                 <item id="skullCapSilver" name="Lacquered Skull Cap" gearSlot="0" sounds="leather" lvlReq="9"
                     iconFile="skullCap" gearFile="skullCap" quality="2">
-                    <stats armor="1" dodge="2" />
+                    <stats armor="10" dodge="2" />
                     <offset x="-3" y="-4" />
                     <canBeRepaired cost="leather" tool="sewing" />
                 </item>
         
         <!-- Helmet (Health) -->
             <item id="copperHelmet" name="Copper Helmet" gearSlot="0" lvlReq="30" >
-                <stats armor="3" health="21" />
+                <stats armor="30" health="21" />
                 <offset x="-3" y="-5" />
                 <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
@@ -367,24 +367,24 @@
     <!-- Shoulders -->
         <!-- Cloak (EPS) -->
             <item id="linenCloak" name="Linen Cloak" gearSlot="3" sounds="fabric" lvlReq="6" >
-                <stats armor="1" />
+                <stats armor="10" />
                 <offset x="-4" y="-1" />
                 <canBeRepaired cost="linenCloth" tool="sewing" />
             </item>
                 <item id="linenCloakSilver" name="Embroidered Linen Cloak" gearSlot="3" sounds="fabric" lvlReq="6"
                     iconFile="linenCloak" gearFile="linenCloak" quality="2">
-                    <stats armor="1" energy="3" />
+                    <stats armor="10" energy="3" />
                     <offset x="-4" y="-1" />
                     <canBeRepaired cost="linenCloth" tool="sewing" />
                 </item>
             <item id="woolCloak" name="Woolen Cloak" gearSlot="3" sounds="fabric" lvlReq="30" >
-                <stats armor="1" eps="1" />
+                <stats armor="10" eps="1" />
                 <offset x="-4" y="-1" />
                 <canBeRepaired cost="woolCloth" tool="sewing" />
             </item>
                 <item id="woolCloakSilver" name="Embroidered Woolen Cloak" gearSlot="3" sounds="fabric" lvlReq="30"
                     iconFile="woolCloak" gearFile="woolCloak" quality="2">
-                    <stats armor="1" eps="1" energy="5"  />
+                    <stats armor="10" eps="1" energy="5"  />
                     <offset x="-4" y="-1" />
                     <canBeRepaired cost="woolCloth" tool="sewing" />
                 </item>
@@ -398,85 +398,85 @@
     <!-- Body -->
         <!-- Lamellar (health) -->
             <item id="tinLamellar" name="Tin Lamellar" gearSlot="2" sounds="mailArmor" lvlReq="12" >
-                <stats armor="2" health="13" />
+                <stats armor="20" health="13" />
                 <offset x="-6" y="-4" />
                 <canBeRepaired cost="tinScale" />
             </item>
                 <item id="tinLamellarSilver" name="Silvered Tin Lamellar" gearSlot="2" sounds="mailArmor" lvlReq="12"
                     iconFile="tinLamellar" gearFile="tinLamellar" quality="2">
-                    <stats armor="2" health="23" />
+                    <stats armor="20" health="23" />
                     <offset x="-6" y="-4" />
                     <canBeRepaired cost="tinScale" />
                 </item>
             <item id="copperLamellar" name="Copper Lamellar" gearSlot="2" sounds="mailArmor" lvlReq="27" >
-                <stats armor="4" health="28" />
+                <stats armor="40" health="28" />
                 <offset x="-6" y="-4" />
                 <canBeRepaired cost="copperScale" />
             </item>
                 <item id="copperLamellarSilver" name="Silvered Copper Lamellar" gearSlot="2" sounds="mailArmor" lvlReq="27"
                     iconFile="copperLamellar" gearFile="copperLamellar" quality="2">
-                    <stats armor="4" health="39" />
+                    <stats armor="40" health="39" />
                     <offset x="-6" y="-4" />
                     <canBeRepaired cost="copperScale" />
                 </item>
 
         <!-- Hauberk (block %) -->
             <item id="tinHauberk" name="Tin Hauberk" gearSlot="2" sounds="mailArmor" lvlReq="14" >
-                <stats armor="3" block="3" />
+                <stats armor="30" block="3" />
                 <offset x="-5" y="-3" />
                 <canBeRepaired cost="tinRing" />
             </item>
                 <item id="tinHauberkSilver" name="Silvered Tin Hauberk" gearSlot="2" sounds="mailArmor" lvlReq="14"
                     iconFile="tinHauberk" gearFile="tinHauberk" quality="2">
-                    <stats armor="3" block="6" health="1" />
+                    <stats armor="30" block="6" health="1" />
                     <offset x="-5" y="-3" />
                     <canBeRepaired cost="tinRing" />
                 </item>
             <item id="copperHauberk" name="Copper Hauberk" gearSlot="2" sounds="mailArmor" lvlReq="29" >
-                <stats armor="5" block="8" />
+                <stats armor="50" block="8" />
                 <offset x="-5" y="-3" />
                 <canBeRepaired cost="copperRing" />
             </item>
                 <item id="copperHauberkSilver" name="Silvered Copper Hauberk" gearSlot="2" sounds="mailArmor" lvlReq="29"
                     iconFile="copperHauberk" gearFile="copperHauberk" quality="2">
-                    <stats armor="5" block="12" />
+                    <stats armor="50" block="12" />
                     <offset x="-5" y="-3" />
                     <canBeRepaired cost="copperRing" />
                 </item>
 
         <!-- Cuirass (crit resist) -->
-            <item id="linothorax" name="Linothorax Armor" gearSlot="2" lvlReq="9" >
-                <stats armor="2" critResist="1" />
+            <item id="linothorax" name="Linothorax Armour" gearSlot="2" lvlReq="9" >
+                <stats armor="20" critResist="1" />
                 <offset x="-5" y="-4" />
                 <canBeRepaired cost="linenCloth" />
             </item>
-                <item id="linothoraxSilver" name="Silvered Linothorax Armor" gearSlot="2" lvlReq="9"
+                <item id="linothoraxSilver" name="Silvered Linothorax Armour" gearSlot="2" lvlReq="9"
                     iconFile="linothorax" gearFile="linothorax" quality="2">
-                    <stats armor="2" critResist="2" health="1" />
+                    <stats armor="20" critResist="2" health="1" />
                     <offset x="-5" y="-4" />
                     <canBeRepaired cost="linenCloth" />
                 </item>
             <item id="copperCuirass" name="Copper Cuirass" gearSlot="2" lvlReq="32" >
-                <stats armor="5" critResist="4" />
+                <stats armor="50" critResist="4" />
                 <offset x="-3" y="-4" />
                 <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
                 <item id="copperCuirassSilver" name="Silvered Copper Cuirass" gearSlot="2" lvlReq="32"
                     iconFile="copperCuirass" gearFile="copperCuirass" quality="2" >
-                    <stats armor="5" critResist="5" health="3" />
+                    <stats armor="50" critResist="5" health="3" />
                     <offset x="-3" y="-4" />
                     <canBeRepaired cost="copperBar" tool="smelting2" />
                 </item>
 
         <!-- Leather (dodge) -->
             <item id="leatherLamellar" name="Leather Lamellar" gearSlot="2" sounds="leather" lvlReq="13" >
-                <stats armor="2" dodge="2" />
+                <stats armor="20" dodge="2" />
                 <offset x="-6" y="-4" />
                 <canBeRepaired cost="leatherScale" />
             </item>
                 <item id="leatherLamellarSilver" name="Lacquered Leather Lamellar" gearSlot="2" sounds="leather" lvlReq="13"
                     iconFile="leatherLamellar" gearFile="leatherLamellar" quality="2">
-                    <stats armor="2" dodge="3" health="1" />
+                    <stats armor="20" dodge="3" health="1" />
                     <offset x="-6" y="-4" />
                     <canBeRepaired cost="leatherScale" />
                 </item>
@@ -494,26 +494,26 @@
                     <canBeRepaired cost="linenCloth" tool="sewing" />
                 </item>
             <item id="woolChiton" name="Wool Chiton" gearSlot="2" sounds="fabric" lvlReq="20" >
-                <stats armor="1" energy="37" />
+                <stats armor="10" energy="37" />
                 <offset x="-6" y="-3" />
                 <canBeRepaired cost="woolCloth" tool="sewing" />
             </item>
                 <item id="woolChitonSilver" name="Embroidered Wool Chiton" gearSlot="2" sounds="fabric" lvlReq="20"
                     iconFile="woolChiton" gearFile="woolChiton" quality="2">
-                    <stats armor="1" energy="47" />
+                    <stats armor="10" energy="47" />
                     <offset x="-6" y="-3" />
                     <canBeRepaired cost="woolCloth" tool="sewing" />
                 </item>
 
         <!-- Exomis (resistances) -->
             <item id="woolExomis" name="Wool Exomis" gearSlot="2" sounds="fabric" lvlReq="21" >
-                <stats armor="1" airResist="5" earthResist="5" fireResist="5" waterResist="5" />
+                <stats armor="10" airResist="50" earthResist="50" fireResist="50" waterResist="50" />
                 <offset x="-5" y="-4" />
                 <canBeRepaired cost="woolCloth" tool="sewing" />
             </item>
                 <item id="woolExomisSilver" name="Embroidered Wool Exomis" gearSlot="2" sounds="fabric" lvlReq="21"
                     iconFile="woolExomis" gearFile="woolExomis" quality="2">
-                    <stats armor="1" airResist="6" earthResist="6" fireResist="6" waterResist="6" energy="2" />
+                    <stats armor="10" airResist="60" earthResist="60" fireResist="60" waterResist="60" energy="2" />
                     <offset x="-5" y="-4" />
                     <canBeRepaired cost="woolCloth" tool="sewing" />
                 </item>
@@ -549,13 +549,13 @@
             
         <!-- Bracers (physical damage) -->
             <item id="copperBracers" name="Copper Bracers" gearSlot="4" lvlReq="29" >
-                <stats armor="1" physicalDamage="2" />
+                <stats armor="10" physicalDamage="2" />
                 <offset x="-1" y="-7" />
                 <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
                 <item id="copperBracersSilver" name="Silvered Copper Bracers" gearSlot="4" lvlReq="29"
                     iconFile="copperBracers" gearFile="copperBracers" quality="2">
-                    <stats armor="1" physicalDamage="2" health="3" />
+                    <stats armor="10" physicalDamage="2" health="3" />
                     <offset x="-1" y="-7" />
                     <canBeRepaired cost="copperBar" tool="smelting2" />
                 </item>
@@ -583,13 +583,13 @@
             
         <!-- Greaves (HPS) -->
             <item id="copperGreaves" name="Copper Greaves" gearSlot="5" lvlReq="32" >
-                <stats armor="2" hps="1" />
+                <stats armor="20" hps="1" />
                 <offset x="-2" y="-10" />
                 <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
                 <item id="copperGreavesSilver" name="Silvered Copper Greaves" gearSlot="5" lvlReq="32"
                     iconFile="copperGreaves" gearFile="copperGreaves" quality="2">
-                    <stats armor="2" hps="1" health="5" />
+                    <stats armor="20" hps="1" health="5" />
                     <offset x="-2" y="-10" />
                     <canBeRepaired cost="copperBar" tool="smelting2" />
                 </item>
@@ -597,27 +597,27 @@
     <!-- Left hand -->
         <!-- Shield (block %, BV) -->
             <item id="leatherShield" name="Leather Shield" gearSlot="7" lvlReq="15" >
-                <stats armor="2" block="5" blockValue="3" />
+                <stats armor="20" block="5" blockValue="3" />
                 <offset x="-4" y="-10" />
                 <tag name="shield" />
                 <canBeRepaired cost="lumber" />
             </item>
                 <item id="leatherShieldSilver" name="Lacquered Leather Shield" gearSlot="7" lvlReq="15"
                     iconFile="leatherShield" gearFile="leatherShield" quality="2" >
-                    <stats armor="2" block="8" blockValue="4" />
+                    <stats armor="20" block="8" blockValue="4" />
                     <offset x="-4" y="-10" />
                     <tag name="shield" />
                     <canBeRepaired cost="lumber" />
                 </item>
             <item id="copperShield" name="Buckler" gearSlot="7" lvlReq="30" >
-                <stats armor="4" block="9" blockValue="6" />
+                <stats armor="40" block="9" blockValue="6" />
                 <offset x="-6" y="-12" />
                 <tag name="shield" />
                 <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
                 <item id="copperShieldSilver" name="Inlaid Buckler" gearSlot="7" lvlReq="30"
                     iconFile="copperShield" gearFile="copperShield" quality="2">
-                    <stats armor="4" block="12" blockValue="7" />
+                    <stats armor="40" block="12" blockValue="7" />
                     <offset x="-6" y="-12" />
                     <tag name="shield" />
                     <canBeRepaired cost="copperBar" tool="smelting2" />
