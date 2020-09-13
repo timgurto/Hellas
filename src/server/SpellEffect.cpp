@@ -42,7 +42,7 @@ CombatResult SpellEffect::doDirectDamage(const SpellEffect &effect,
 
 CombatResult SpellEffect::doDirectDamageWithModifiedThreat(
     const SpellEffect &effect, Entity &caster, Entity &target) {
-  auto outcome =
+  const auto outcome =
       caster.generateHitAgainst(target, DAMAGE, effect._school, effect._range);
   if (outcome == MISS || outcome == DODGE) return outcome;
 
@@ -51,14 +51,10 @@ CombatResult SpellEffect::doDirectDamageWithModifiedThreat(
 
   if (outcome == CRIT) rawDamage *= 2;
 
-  auto levelDiff = target.level() - caster.level();
+  const auto levelDiff = target.level() - caster.level();
 
-  auto resistance =
-      target.stats().resistanceByType(effect._school).asPercentage() +
-      levelDiff;
-  resistance = max(0, min(100, resistance));
-  auto resistanceMultiplier = (100 - resistance) / 100.0;
-  rawDamage *= resistanceMultiplier;
+  const auto resistance = target.stats().resistanceByType(effect._school);
+  rawDamage = resistance.applyTo(rawDamage);
 
   auto damage = chooseRandomSpellMagnitude(rawDamage);
 

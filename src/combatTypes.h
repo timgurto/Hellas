@@ -32,7 +32,7 @@ std::istream& operator>>(std::istream& lhs, AliasOfShort& rhs);
 class ArmourClass : public AliasOfShort {
  public:
   ArmourClass(short v) : AliasOfShort(v) {}
-  Percentage asPercentage() const;
+  double applyTo(double damage) const;
 };
 
 // 100 points = 1.00%

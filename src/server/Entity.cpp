@@ -313,9 +313,8 @@ void Entity::update(ms_t timeElapsed) {
   auto rawDamage = combatDamage();
   if (outcome == CRIT) rawDamage *= 2;
 
-  auto resistance = pTarget->_stats.resistanceByType(school()).asPercentage();
-  auto resistanceMultiplier = (100 - resistance) / 100.0;
-  rawDamage *= resistanceMultiplier;
+  auto resistance = pTarget->_stats.resistanceByType(school());
+  rawDamage = resistance.applyTo(rawDamage);
 
   auto damage = SpellEffect::chooseRandomSpellMagnitude(rawDamage);
 
