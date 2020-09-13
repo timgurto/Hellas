@@ -10,24 +10,28 @@ using ArmourClass = short;  // 10 AC = 1%
 using BonusDamage = int;
 using Regen = int;
 
-class BasisPoints {
+class AliasOfShort {
  public:
-  BasisPoints(short v) : _raw(v) {}
+  AliasOfShort(short v) : _raw(v) {}
 
-  bool operator==(const BasisPoints& rhs) const;
-  bool operator!=(const BasisPoints& rhs) const;
-  void operator+=(const BasisPoints& rhs);
+  bool operator==(const AliasOfShort& rhs) const;
+  bool operator!=(const AliasOfShort& rhs) const;
+  void operator+=(const AliasOfShort& rhs);
   operator bool() const;
 
-  Percentage asPercentage() const;
-  std::string asPercentageString() const;
-
- private:
+ protected:
   short _raw;
 
-  friend std::ostream& operator<<(std::ostream& lhs, const BasisPoints& rhs);
-  friend std::istream& operator>>(std::istream& lhs, BasisPoints& rhs);
+  friend std::ostream& operator<<(std::ostream& lhs, const AliasOfShort& rhs);
+  friend std::istream& operator>>(std::istream& lhs, AliasOfShort& rhs);
 };
 
-std::ostream& operator<<(std::ostream& lhs, const BasisPoints& rhs);
-std::istream& operator>>(std::istream& lhs, BasisPoints& rhs);
+std::ostream& operator<<(std::ostream& lhs, const AliasOfShort& rhs);
+std::istream& operator>>(std::istream& lhs, AliasOfShort& rhs);
+
+class BasisPoints : public AliasOfShort {
+ public:
+  BasisPoints(short v) : AliasOfShort(v) {}
+  Percentage asPercentage() const;
+  std::string asPercentageString() const;
+};
