@@ -5,9 +5,6 @@
 #include "util.h"
 
 const Stats &Stats::operator&=(const StatsMod &mod) {
-  armor += mod.armor;
-  if (armor < 0) armor = 0;
-
   if (mod.maxHealth < 0 && -mod.maxHealth > static_cast<int>(maxHealth))
     maxHealth = 0;
   else
@@ -42,17 +39,11 @@ const Stats &Stats::operator&=(const StatsMod &mod) {
   physicalDamage += mod.physicalDamage;
   healing += mod.healing;
 
+  armor += mod.armor;
   airResist += mod.airResist;
-  if (airResist < 0) airResist = 0;
-
   earthResist += mod.earthResist;
-  if (earthResist < 0) earthResist = 0;
-
   fireResist += mod.fireResist;
-  if (fireResist < 0) fireResist = 0;
-
   waterResist += mod.waterResist;
-  if (waterResist < 0) waterResist = 0;
 
   gatherBonus += mod.gatherBonus;
   if (gatherBonus < 0) gatherBonus = 0;
@@ -111,7 +102,7 @@ std::vector<std::string> StatsMod::toStrings() const {
     }
     v.push_back(line);
   }
-  if (armor > 0) v.push_back("+" + toString(armor) + " armour");
+  if (armor) v.push_back("+" + toString(armor) + " armour");
   if (maxHealth > 0) v.push_back("+" + toString(maxHealth) + " max health");
   if (maxEnergy > 0) v.push_back("+" + toString(maxEnergy) + " max energy");
   if (hps > 0) v.push_back("+" + toString(hps) + " health per second");
@@ -132,12 +123,11 @@ std::vector<std::string> StatsMod::toStrings() const {
     v.push_back("+" + toString(physicalDamage) + " physical damage");
   if (healing > 0)
     v.push_back("+" + toString(healing) + " healing-spell amount");
-  if (airResist > 0) v.push_back("+" + toString(airResist) + " air resistance");
-  if (earthResist > 0)
+  if (airResist) v.push_back("+" + toString(airResist) + " air resistance");
+  if (earthResist)
     v.push_back("+" + toString(earthResist) + " earth resistance");
-  if (fireResist > 0)
-    v.push_back("+" + toString(fireResist) + " fire resistance");
-  if (waterResist > 0)
+  if (fireResist) v.push_back("+" + toString(fireResist) + " fire resistance");
+  if (waterResist)
     v.push_back("+" + toString(waterResist) + " water resistance");
   if (gatherBonus > 0)
     v.push_back("+" + toString(gatherBonus) + "% chance to gather double");

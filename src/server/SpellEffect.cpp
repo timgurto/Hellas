@@ -54,7 +54,8 @@ CombatResult SpellEffect::doDirectDamageWithModifiedThreat(
   auto levelDiff = target.level() - caster.level();
 
   auto resistance =
-      target.stats().resistanceByType(effect._school) / 10 + levelDiff;
+      target.stats().resistanceByType(effect._school).asPercentage() +
+      levelDiff;
   resistance = max(0, min(100, resistance));
   auto resistanceMultiplier = (100 - resistance) / 100.0;
   rawDamage *= resistanceMultiplier;

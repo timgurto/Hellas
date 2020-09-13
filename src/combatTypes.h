@@ -6,7 +6,6 @@
 using Hitpoints = unsigned;
 using Energy = unsigned;
 using Percentage = short;
-using ArmourClass = short;  // 10 AC = 1%
 using BonusDamage = int;
 using Regen = int;
 
@@ -29,6 +28,14 @@ class AliasOfShort {
 std::ostream& operator<<(std::ostream& lhs, const AliasOfShort& rhs);
 std::istream& operator>>(std::istream& lhs, AliasOfShort& rhs);
 
+// 10 AC = 1%
+class ArmourClass : public AliasOfShort {
+ public:
+  ArmourClass(short v) : AliasOfShort(v) {}
+  Percentage asPercentage() const;
+};
+
+// 100 points = 1.00%
 class BasisPoints : public AliasOfShort {
  public:
   BasisPoints(short v) : AliasOfShort(v) {}
