@@ -188,6 +188,59 @@ TEST_CASE("Armour is clamped to 0-1000") {
   CHECK(ArmourClass{2000}.applyTo(100.0) == 0);
 }
 
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Resistances are affected by level differences") {
+  GIVEN("a lvl-21 NPC type with high health, and a 1000-damage spell") {
+    useData(R"(
+      <npcType id="rockGiant" level="21" maxHealth="1000000" />
+
+      <spell id="bomb" school="fire" range="30" cooldown="1">
+        <targets enemy="1" />
+        <function name="doDirectDamage" i1="1000" />
+      </spell>
+    )");
+    const auto &rockGiant = server->addNPC("rockGiant", {100, 100});
+
+    AND_GIVEN("players have 200% hit and 0% crit") {
+      auto oldStats = User::OBJECT_TYPE.baseStats();
+      auto highHitLowCrit = oldStats;
+      highHitLowCrit.hit = 20000;
+      highHitLowCrit.crit = 0;
+      User::OBJECT_TYPE.baseStats(highHitLowCrit);
+      user->updateStats();
+
+      AND_GIVEN("the player knows the spell") {
+        user->getClass().teachSpell("bomb");
+
+        WHEN("he casts it at the NPC") {
+          client->sendMessage(CL_TARGET_ENTITY, makeArgs(rockGiant.serial()));
+          client->sendMessage(CL_CAST, "bomb");
+
+          THEN("the damage is reduced by ~60%") {
+            const auto oldHealth = rockGiant.health();
+            WAIT_UNTIL(rockGiant.health() < oldHealth);
+            const auto healthLost = 1.0 * oldHealth - rockGiant.health();
+
+            const auto lvlDiff = rockGiant.level() - user->level();
+            const auto reductionFromLvlDiff = 1.0 - (0.01 * lvlDiff * 3);
+            const auto expectedDamage = 1000.0 * reductionFromLvlDiff;
+
+            CHECK_ROUGHLY_EQUAL(expectedDamage, healthLost, 0.2);
+          }
+        }
+      }
+
+      User::OBJECT_TYPE.baseStats(oldStats);
+    }
+  }
+
+  CHECK(ArmourClass{100}.modifyByLevelDiff(2, 1) == ArmourClass{70});
+  CHECK(ArmourClass{500}.modifyByLevelDiff(2, 1) == ArmourClass{470});
+  CHECK(ArmourClass{500}.modifyByLevelDiff(3, 2) == ArmourClass{470});
+  CHECK(ArmourClass{500}.modifyByLevelDiff(3, 1) == ArmourClass{440});
+  CHECK(ArmourClass{500}.modifyByLevelDiff(4, 1) == ArmourClass{410});
+}
+
 TEST_CASE_METHOD(ServerAndClientWithData, "Hit chance") {
   // Assumption: base miss chance of 10%
 

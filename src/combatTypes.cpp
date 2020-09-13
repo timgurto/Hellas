@@ -29,6 +29,11 @@ double ArmourClass::applyTo(double damage) const {
   return multiplier * damage;
 }
 
+ArmourClass ArmourClass::modifyByLevelDiff(Level attacker, Level target) const {
+  auto diff = attacker - target;
+  return _raw - diff * 30;
+}
+
 Percentage BasisPoints::asPercentage() const {
   if (_raw < 0) return 0;
   return _raw / 100;

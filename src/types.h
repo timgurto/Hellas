@@ -9,8 +9,6 @@ px_t operator"" _px(unsigned long long x);
 
 // Time, in milliseconds
 typedef Uint32 ms_t;
-
-using Level = short;
 using XP = unsigned;
 
 // Additions to this enum must be backwards-compatible, so as not to invalidate

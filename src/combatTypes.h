@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 
+using Level = short;
+
 using Hitpoints = unsigned;
 using Energy = unsigned;
 using Percentage = short;
@@ -33,6 +35,7 @@ class ArmourClass : public AliasOfShort {
  public:
   ArmourClass(short v) : AliasOfShort(v) {}
   double applyTo(double damage) const;
+  ArmourClass modifyByLevelDiff(Level attacker, Level target) const;
 };
 
 // 100 points = 1.00%

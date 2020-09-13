@@ -51,9 +51,8 @@ CombatResult SpellEffect::doDirectDamageWithModifiedThreat(
 
   if (outcome == CRIT) rawDamage *= 2;
 
-  const auto levelDiff = target.level() - caster.level();
-
-  const auto resistance = target.stats().resistanceByType(effect._school);
+  auto resistance = target.stats().resistanceByType(effect._school);
+  resistance = resistance.modifyByLevelDiff(caster.level(), target.level());
   rawDamage = resistance.applyTo(rawDamage);
 
   auto damage = chooseRandomSpellMagnitude(rawDamage);
