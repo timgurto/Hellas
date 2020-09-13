@@ -140,7 +140,7 @@ TEST_CASE("Speed stat") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Armour stat") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Damage reduction from armour") {
   GIVEN("an NPC type that deals 50 damage") {
     useData(R"(
       <npcType id="fox" attack="50" />
@@ -181,6 +181,11 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Armour stat") {
       User::OBJECT_TYPE.baseStats(oldStats);
     }
   }
+}
+
+TEST_CASE("Armour is clamped to 0-1000") {
+  CHECK(ArmourClass{-100}.applyTo(100.0) == 100.0);
+  CHECK(ArmourClass{2000}.applyTo(100.0) == 0);
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Hit chance") {

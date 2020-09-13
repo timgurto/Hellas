@@ -23,6 +23,8 @@ std::istream& operator>>(std::istream& lhs, AliasOfShort& rhs) {
 }
 
 double ArmourClass::applyTo(double damage) const {
+  if (_raw <= 0) return damage;
+  if (_raw >= 1000) return 0;
   auto multiplier = (1000 - _raw) / 1000.0;
   return multiplier * damage;
 }
