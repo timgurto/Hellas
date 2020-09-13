@@ -97,6 +97,7 @@
   <ItemGroup>
     <ClCompile Include="src\Args.cpp" />
     <ClCompile Include="src\Color.cpp" />
+    <ClCompile Include="src\combatTypes.cpp" />
     <ClCompile Include="src\curlUtil.cpp" />
     <ClCompile Include="src\HasTags.cpp" />
     <ClCompile Include="src\Item.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="src\Args.h" />
     <ClInclude Include="src\client\CQuest.h" />
     <ClInclude Include="src\Color.h" />
+    <ClInclude Include="src\combatTypes.h" />
     <ClInclude Include="src\curlUtil.h" />
     <ClInclude Include="src\HasTags.h" />
     <ClInclude Include="src\Item.h" />

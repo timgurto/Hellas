@@ -1,7 +1,7 @@
 #ifndef CLIENT_COMBATANT_TYPE_H
 #define CLIENT_COMBATANT_TYPE_H
 
-#include "../types.h"
+#include "../combatTypes.h"
 
 class ParticleProfile;
 

@@ -8,6 +8,7 @@
 
 #include "Point.h"
 #include "Rect.h"
+#include "combatTypes.h"
 #include "messageCodes.h"
 
 const double PI = 3.1415926535897;

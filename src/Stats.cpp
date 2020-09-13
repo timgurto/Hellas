@@ -23,19 +23,14 @@ const Stats &Stats::operator&=(const StatsMod &mod) {
   eps += mod.eps;
 
   hit += mod.hit;
-  if (hit < 0) hit = 0;
 
   crit += mod.crit;
-  if (crit < 0) crit = 0;
 
   critResist += mod.critResist;
-  if (critResist < 0) critResist = 0;
 
   dodge += mod.dodge;
-  if (dodge < 0) dodge = 0;
 
   block += mod.block;
-  if (block < 0) block = 0;
 
   if (mod.blockValue < 0 && -mod.blockValue > static_cast<int>(blockValue))
     blockValue = 0;
@@ -124,12 +119,12 @@ std::vector<std::string> StatsMod::toStrings() const {
     v.push_back("+" + toString(eps) + " energy per second");
   else if (eps < 0)
     v.push_back("-" + toString(-eps) + " energy per second");
-  if (hit > 0) v.push_back("+" + toString(hit) + "% hit");
-  if (crit > 0) v.push_back("+" + toString(crit) + "% crit");
-  if (critResist > 0)
+  if (hit) v.push_back("+" + toString(hit) + "% hit");
+  if (crit) v.push_back("+" + toString(crit) + "% crit");
+  if (critResist)
     v.push_back("-" + toString(critResist) + "% chance to be crit");
-  if (dodge > 0) v.push_back("+" + toString(dodge) + "% dodge");
-  if (block > 0) v.push_back("+" + toString(block) + "% block");
+  if (dodge) v.push_back("+" + toString(dodge) + "% dodge");
+  if (block) v.push_back("+" + toString(block) + "% block");
   if (blockValue > 0) v.push_back("+" + toString(blockValue) + " block value");
   if (magicDamage > 0)
     v.push_back("+" + toString(magicDamage) + " magic damage");

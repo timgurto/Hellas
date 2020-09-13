@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "SpellSchool.h"
+#include "combatTypes.h"
 #include "types.h"
 
 struct StatsMod;
@@ -18,7 +19,8 @@ struct Stats {
 
   ArmourClass armor{0}, airResist{0}, earthResist{0}, fireResist{0},
       waterResist{0};
-  Percentage hit{0}, crit{0}, critResist{0}, dodge{0}, block{0}, gatherBonus{0};
+  BasisPoints hit{0}, crit{0}, critResist{0}, dodge{0}, block{0};
+  Percentage gatherBonus{0};
 
   Hitpoints weaponDamage{0};
   BonusDamage magicDamage{0}, physicalDamage{0}, healing{0};
@@ -49,7 +51,8 @@ struct StatsMod {
   BonusDamage magicDamage{0}, physicalDamage{0}, healing{0};
   ArmourClass armor{0}, airResist{0}, earthResist{0}, fireResist{0},
       waterResist{0};
-  Percentage hit{0}, crit{0}, critResist{0}, dodge{0}, block{0}, gatherBonus{0};
+  BasisPoints hit{0}, crit{0}, critResist{0}, dodge{0}, block{0};
+  Percentage gatherBonus{0};
 
   // Replacement
   ms_t attackTime{0};

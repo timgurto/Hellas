@@ -4,6 +4,7 @@
 
 #include "../Podes.h"
 #include "../SpellSchool.h"
+#include "../combatTypes.h"
 #include "combat.h"
 
 class Entity;

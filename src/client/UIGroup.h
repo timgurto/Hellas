@@ -3,6 +3,7 @@
 #include <set>
 #include <string>
 
+#include "../combatTypes.h"
 #include "../types.h"
 
 class List;
