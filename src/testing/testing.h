@@ -18,9 +18,9 @@
 #define DEFAULT_TIMEOUT (3000)
 #define WAIT_UNTIL(x) WAIT_UNTIL_TIMEOUT((x), (DEFAULT_TIMEOUT))
 
-#define CHECK_ROUGHLY_EQUAL(A, B, EPSILON_PERCENTAGE) \
+#define CHECK_ROUGHLY_EQUAL(A, B, EPSILON_PROPORTION) \
   {                                                   \
-    auto epsilon = (EPSILON_PERCENTAGE) * (B);        \
+    auto epsilon = (EPSILON_PROPORTION) * (B);        \
     INFO(#A " = " << (A));                            \
     INFO(#B " = " << (B));                            \
     INFO("Allowable difference = " << epsilon);       \

@@ -346,4 +346,34 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Block chance") {
   }
 }
 
-// Gather bonus
+TEST_CASE_METHOD(ServerAndClientWithData, "Gather-bonus stat") {
+  GIVEN("an object with a large yield, one at a time") {
+    useData(R"(
+      <item id="tissue" stackSize="10000000" />
+      <objectType id="tissueBox">
+        <yield id="tissue" initialMean="1000000" />
+      </objectType>
+    )");
+    const auto &tissueBox = server->addObject("tissueBox", {15, 15});
+
+    AND_GIVEN("users have a 50% gather bonus") {
+      auto oldStats = User::OBJECT_TYPE.baseStats();
+      auto with50GatherBonus = oldStats;
+      with50GatherBonus.gatherBonus = 50;
+      User::OBJECT_TYPE.baseStats(with50GatherBonus);
+      user->updateStats();
+
+      WHEN("the user gathers from it 1000 times") {
+        for (auto i = 0; i != 1000; ++i)
+          server->gatherObject(tissueBox.serial(), *user);
+
+        THEN("he has around 1500 items") {
+          auto numTissuesGathered = int(user->inventory(0).second);
+          CHECK_ROUGHLY_EQUAL(numTissuesGathered, 1500, 0.1);
+        }
+      }
+
+      User::OBJECT_TYPE.baseStats(oldStats);
+    }
+  }
+}

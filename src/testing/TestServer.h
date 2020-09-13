@@ -63,6 +63,9 @@ class TestServer {
                     const Permissions::Owner &owner);
   NPC &addNPC(const std::string &typeName, const MapPoint &loc = MapPoint{});
   void removeEntity(Entity &entity) { _server->removeEntity(entity); }
+  void gatherObject(Serial serial, User &user) {
+    _server->gatherObject(serial, user);
+  }
   void waitForUsers(size_t numUsers) const;
 
   void saveData();
