@@ -199,38 +199,71 @@ TEST_CASE_METHOD(ServerAndClientWithData,
         <function name="doDirectDamage" i1="1000" />
       </spell>
     )");
-    const auto &rockGiant = server->addNPC("rockGiant", {100, 100});
 
-    AND_GIVEN("players have 200% hit and 0% crit") {
-      auto oldStats = User::OBJECT_TYPE.baseStats();
-      auto highHitLowCrit = oldStats;
-      highHitLowCrit.hit = 20000;
-      highHitLowCrit.crit = 0;
-      User::OBJECT_TYPE.baseStats(highHitLowCrit);
-      user->updateStats();
+    const auto lvlDiff = 20;
+    const auto reductionFromLvlDiff = 1.0 - (0.01 * lvlDiff * 3);
+    const auto expectedDamage = 1000.0 * reductionFromLvlDiff;
 
-      AND_GIVEN("the player knows the spell") {
-        user->getClass().teachSpell("bomb");
+    SECTION("Spell damage") {
+      AND_GIVEN("an NPC out of combat range of the user") {
+        const auto &rockGiant = server->addNPC("rockGiant", {100, 100});
 
-        WHEN("he casts it at the NPC") {
-          client->sendMessage(CL_TARGET_ENTITY, makeArgs(rockGiant.serial()));
-          client->sendMessage(CL_CAST, "bomb");
+        AND_GIVEN("players have 200% hit and 0% crit") {
+          auto oldStats = User::OBJECT_TYPE.baseStats();
+          auto highHitLowCrit = oldStats;
+          highHitLowCrit.hit = 20000;
+          highHitLowCrit.crit = 0;
+          User::OBJECT_TYPE.baseStats(highHitLowCrit);
+          user->updateStats();
 
-          THEN("the damage is reduced by ~60%") {
-            const auto oldHealth = rockGiant.health();
-            WAIT_UNTIL(rockGiant.health() < oldHealth);
-            const auto healthLost = 1.0 * oldHealth - rockGiant.health();
+          AND_GIVEN("the player knows the spell") {
+            user->getClass().teachSpell("bomb");
 
-            const auto lvlDiff = rockGiant.level() - user->level();
-            const auto reductionFromLvlDiff = 1.0 - (0.01 * lvlDiff * 3);
-            const auto expectedDamage = 1000.0 * reductionFromLvlDiff;
+            WHEN("he casts it at the NPC") {
+              client->sendMessage(CL_TARGET_ENTITY,
+                                  makeArgs(rockGiant.serial()));
+              client->sendMessage(CL_CAST, "bomb");
+              const auto oldHealth = rockGiant.health();
+              WAIT_UNTIL(rockGiant.health() < oldHealth);
 
-            CHECK_ROUGHLY_EQUAL(expectedDamage, healthLost, 0.2);
+              THEN("the damage is reduced by ~60%") {
+                const auto healthLost = 1.0 * oldHealth - rockGiant.health();
+                CHECK_ROUGHLY_EQUAL(expectedDamage, healthLost, 0.2);
+              }
+            }
           }
+          User::OBJECT_TYPE.baseStats(oldStats);
         }
       }
+    }
 
-      User::OBJECT_TYPE.baseStats(oldStats);
+    SECTION("Combat damage") {
+      AND_GIVEN("players always hit for 1000 damage") {
+        auto oldStats = User::OBJECT_TYPE.baseStats();
+        auto hitFor1000 = oldStats;
+        hitFor1000.hit = 20000;
+        hitFor1000.crit = 0;
+        hitFor1000.weaponDamage = 1000;
+        User::OBJECT_TYPE.baseStats(hitFor1000);
+        user->updateStats();
+
+        AND_GIVEN("an NPC close to the user") {
+          const auto &rockGiant = server->addNPC("rockGiant", {15, 15});
+          const auto oldHealth = rockGiant.health();
+
+          WHEN("the user hits the NPC") {
+            client->sendMessage(CL_TARGET_ENTITY, makeArgs(rockGiant.serial()));
+            WAIT_UNTIL_TIMEOUT(rockGiant.health() < oldHealth, 5000);
+
+            THEN("the damage is reduced by 60%") {
+              const auto healthLost = 1.0 * oldHealth - rockGiant.health();
+              CHECK_ROUGHLY_EQUAL(expectedDamage, healthLost, 0.2);
+            }
+          }
+        }
+
+        User::OBJECT_TYPE.baseStats(oldStats);
+      }
     }
   }
 

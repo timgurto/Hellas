@@ -268,11 +268,11 @@ void Entity::update(ms_t timeElapsed) {
 
   resetAttackTimer();
 
-  const Server &server = Server::instance();
   MapPoint locus = midpoint(location(), pTarget->location());
 
   auto outcome = generateHitAgainst(*pTarget, DAMAGE, school(), attackRange());
 
+  const Server &server = Server::instance();
   auto usersToInform = server.findUsersInArea(locus);
   auto targetLoc = makeArgs(pTarget->location().x, pTarget->location().y);
 
@@ -314,6 +314,7 @@ void Entity::update(ms_t timeElapsed) {
   if (outcome == CRIT) rawDamage *= 2;
 
   auto resistance = pTarget->_stats.resistanceByType(school());
+  resistance = resistance.modifyByLevelDiff(level(), pTarget->level());
   rawDamage = resistance.applyTo(rawDamage);
 
   auto damage = SpellEffect::chooseRandomSpellMagnitude(rawDamage);
