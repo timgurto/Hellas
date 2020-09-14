@@ -142,6 +142,10 @@ TEST_CASE("Speed stat") {
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Damage reduction from armour") {
   GIVEN("an NPC type that deals 50 damage") {
+    auto oldNPCStats = NPCType::BASE_STATS;
+    NPCType::BASE_STATS.crit = 0;
+    NPCType::BASE_STATS.hit = 20000;
+
     useData(R"(
       <npcType id="fox" attack="50" />
       <npcType id="magicFox"> <spell id="physical50"/> </npcType>
@@ -151,6 +155,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Damage reduction from armour") {
         <function name="doDirectDamage" i1="50" />
       </spell>
     )");
+
+    NPCType::BASE_STATS = oldNPCStats;
 
     AND_GIVEN("players have 500 armour [50% reduction]") {
       auto oldStats = User::OBJECT_TYPE.baseStats();
