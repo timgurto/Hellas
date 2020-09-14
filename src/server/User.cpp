@@ -206,10 +206,10 @@ void User::init() {
   baseStats.hps = 1;
   baseStats.eps = 1;
   baseStats.hit = 0;
-  baseStats.crit = 5;
+  baseStats.crit = 500;
   baseStats.critResist = 0;
-  baseStats.dodge = 5;
-  baseStats.block = 5;
+  baseStats.dodge = 500;
+  baseStats.block = 500;
   baseStats.blockValue = 0;
   baseStats.magicDamage = 0;
   baseStats.physicalDamage = 0;

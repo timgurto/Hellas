@@ -10,8 +10,8 @@ NPCType::NPCType(const std::string &id) : ObjectType(id) {}
 
 void NPCType::init() {
   BASE_STATS.maxHealth = 1;
-  BASE_STATS.crit = 5;
-  BASE_STATS.dodge = 5;
+  BASE_STATS.crit = 500;
+  BASE_STATS.dodge = 500;
   BASE_STATS.speed = 70.0;
 }
 
