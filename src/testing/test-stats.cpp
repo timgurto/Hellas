@@ -228,7 +228,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 
               THEN("the damage is reduced by ~60%") {
                 const auto healthLost = 1.0 * oldHealth - rockGiant.health();
-                CHECK_ROUGHLY_EQUAL(expectedDamage, healthLost, 0.2);
+                CHECK_ROUGHLY_EQUAL(expectedDamage, healthLost, 0.3);
               }
             }
           }
@@ -257,7 +257,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 
             THEN("the damage is reduced by 60%") {
               const auto healthLost = 1.0 * oldHealth - rockGiant.health();
-              CHECK_ROUGHLY_EQUAL(expectedDamage, healthLost, 0.2);
+              CHECK_ROUGHLY_EQUAL(expectedDamage, healthLost, 0.3);
             }
           }
         }
