@@ -84,10 +84,10 @@ void Client::initializeGearWindow() {
   addStat("Energy regen", _stats.eps, {}, "/s", y, _gearWindow, {},
           Color::STAT_ENERGY);
   addGap(y, _gearWindow);
-  addStat("Hit chance", _stats.hit, {}, "%", y, _gearWindow,
+  addStat("Hit chance", _stats.hit.display(), {}, {}, y, _gearWindow,
           "Extra chance to hit.  You have a baseline 10% chance to miss "
           "enemies at the same level as you.");
-  addStat("Crit chance", _stats.crit, {}, "%", y, _gearWindow,
+  addStat("Crit chance", _stats.crit.display(), {}, {}, y, _gearWindow,
           "Chance that an attack will do double damage.");
   addStat("Physical damage", _stats.physicalDamage, "+", {}, y, _gearWindow,
           "Additional damage added to physical attacks and spells.");
@@ -108,11 +108,11 @@ void Client::initializeGearWindow() {
   addStat("Water resistance", _stats.waterResist, {}, {}, y, _gearWindow,
           "Each point reduces incoming water damage by 0.1%.",
           Color::STAT_WATER);
-  addStat("Crit avoidance", _stats.critResist, {}, "%", y, _gearWindow,
+  addStat("Crit avoidance", _stats.critResist.display(), {}, {}, y, _gearWindow,
           "Lowers the chance for incoming attacks to be critical hits.");
-  addStat("Dodge chance", _stats.dodge, {}, "%", y, _gearWindow,
+  addStat("Dodge chance", _stats.dodge.display(), {}, {}, y, _gearWindow,
           "Chance to outright avoid hand-to-hand physical attacks.");
-  addStat("Block chance", _stats.block, {}, "%", y, _gearWindow,
+  addStat("Block chance", _stats.block.display(), {}, {}, y, _gearWindow,
           "Chance to reduce the damage of physical attacks by a flat amount.");
   addStat("Block value", _stats.blockValue, {}, {}, y, _gearWindow,
           "How much damage is reduced when an attack is blocked.");

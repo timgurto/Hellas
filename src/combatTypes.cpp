@@ -1,5 +1,7 @@
 #include "combatTypes.h"
 
+#include <iomanip>
+
 #include "util.h"
 
 bool AliasOfShort::operator==(const AliasOfShort& rhs) const {
@@ -19,7 +21,9 @@ std::ostream& operator<<(std::ostream& lhs, const AliasOfShort& rhs) {
 }
 
 std::istream& operator>>(std::istream& lhs, AliasOfShort& rhs) {
-  return lhs >> rhs._raw;
+  lhs >> rhs._raw;
+  rhs.onChanged();
+  return lhs;
 }
 
 double ArmourClass::applyTo(double damage) const {
@@ -39,6 +43,23 @@ double BasisPoints::asChance() const {
   return _raw * 1.0 / 10000;
 }
 
-std::string BasisPoints::asPercentageString() const {
-  return toString(_raw / 100) + "%";
+const std::string& BasisPoints::display() const { return _memoisedDisplay; }
+
+std::string BasisPoints::displayShort() const {
+  auto oss = std::ostringstream{};
+  oss << _raw / 100;
+  auto fraction = _raw % 100;
+  if (fraction > 0) oss << '.' << _raw % 100;
+  oss << '%';
+  return oss.str();
+}
+
+void BasisPoints::onChanged() {
+  auto oss = std::ostringstream{};
+  oss << _raw / 100;
+  oss << '.';
+  oss << std::setw(2) << std::setfill('0') << _raw % 100;
+  oss << '%';
+
+  _memoisedDisplay = oss.str();
 }

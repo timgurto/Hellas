@@ -110,12 +110,12 @@ std::vector<std::string> StatsMod::toStrings() const {
     v.push_back("+" + toString(eps) + " energy per second");
   else if (eps < 0)
     v.push_back("-" + toString(-eps) + " energy per second");
-  if (hit) v.push_back("+" + toString(hit) + "% hit");
-  if (crit) v.push_back("+" + toString(crit) + "% crit");
+  if (hit) v.push_back("+" + hit.displayShort() + " hit chance");
+  if (crit) v.push_back("+" + crit.displayShort() + " crit chance");
   if (critResist)
-    v.push_back("-" + toString(critResist) + "% chance to be crit");
-  if (dodge) v.push_back("+" + toString(dodge) + "% dodge");
-  if (block) v.push_back("+" + toString(block) + "% block");
+    v.push_back("-" + critResist.displayShort() + " chance to be crit");
+  if (dodge) v.push_back("+" + dodge.displayShort() + " dodge chance");
+  if (block) v.push_back("+" + block.displayShort() + " block chance");
   if (blockValue > 0) v.push_back("+" + toString(blockValue) + " block value");
   if (magicDamage > 0)
     v.push_back("+" + toString(magicDamage) + " magic damage");

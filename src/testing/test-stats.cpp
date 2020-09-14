@@ -474,3 +474,13 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Gather-bonus stat") {
     }
   }
 }
+
+TEST_CASE("Basis-point display") {
+  CHECK(BasisPoints{0}.display() == "0.00%"s);
+  CHECK(BasisPoints{1}.display() == "0.01%"s);
+  CHECK(BasisPoints{50}.display() == "0.50%"s);
+  CHECK(BasisPoints{100}.display() == "1.00%"s);
+  CHECK(BasisPoints{100}.displayShort() == "1%"s);
+  CHECK(BasisPoints{200}.display() == "2.00%"s);
+  CHECK(BasisPoints{200}.displayShort() == "2%"s);
+}

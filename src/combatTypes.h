@@ -21,6 +21,8 @@ class AliasOfShort {
   operator bool() const;
 
  protected:
+  virtual void onChanged() {}
+
   short _raw;
 
   friend std::ostream& operator<<(std::ostream& lhs, const AliasOfShort& rhs);
@@ -41,7 +43,12 @@ class ArmourClass : public AliasOfShort {
 // 100 points = 1.00%
 class BasisPoints : public AliasOfShort {
  public:
-  BasisPoints(short v) : AliasOfShort(v) {}
+  BasisPoints(short v) : AliasOfShort(v) { onChanged(); }
   double asChance() const;
-  std::string asPercentageString() const;
+  const std::string& display() const;
+  std::string displayShort() const;
+
+ private:
+  virtual void onChanged() override;
+  std::string _memoisedDisplay;
 };
