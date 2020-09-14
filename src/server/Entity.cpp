@@ -100,40 +100,34 @@ void Entity::onSetType(bool shouldSkipConstruction) {
 
 CombatResult Entity::generateHitAgainst(const Entity &target, CombatType type,
                                         SpellSchool school, px_t range) const {
-  const auto BASE_MISS_CHANCE = Percentage{10};
   auto levelDiff = target.level() - level();
-  auto modifierFromLevelDiff = levelDiff * 3;
-  auto roll = rand() % 100;
+  auto modifierFromLevelDiff = levelDiff * .03;
+  auto roll = randDouble();
   // Miss
+  const auto BASE_MISS_CHANCE = 0.1;
   auto missChance =
-      BASE_MISS_CHANCE - stats().hit.asPercentage() + modifierFromLevelDiff;
-  missChance = max(0, missChance);
+      BASE_MISS_CHANCE - stats().hit.asChance() + modifierFromLevelDiff;
   if (combatTypeCanHaveOutcome(type, MISS, school, range)) {
     if (roll < missChance) return MISS;
     roll -= missChance;
   }
   // Dodge
-  auto dodgeChance =
-      target.stats().dodge.asPercentage() + modifierFromLevelDiff;
-  dodgeChance = max(0, dodgeChance);
+  auto dodgeChance = target.stats().dodge.asChance() + modifierFromLevelDiff;
   if (combatTypeCanHaveOutcome(type, DODGE, school, range)) {
     if (roll < dodgeChance) return DODGE;
     roll -= dodgeChance;
   }
   // Block
-  auto blockChance =
-      target.stats().block.asPercentage() + modifierFromLevelDiff;
-  blockChance = max(0, blockChance);
+  auto blockChance = target.stats().block.asChance() + modifierFromLevelDiff;
   if (target.canBlock() &&
       combatTypeCanHaveOutcome(type, BLOCK, school, range)) {
     if (roll < blockChance) return BLOCK;
     roll -= blockChance;
   }
   // Crit
-  auto critChance = stats().crit.asPercentage() -
-                    target.stats().critResist.asPercentage() -
+  auto critChance = stats().crit.asChance() -
+                    target.stats().critResist.asChance() -
                     modifierFromLevelDiff;
-  critChance = max(0, critChance);
   if (critChance > 0 && combatTypeCanHaveOutcome(type, CRIT, school, range)) {
     if (roll < critChance) return CRIT;
     roll -= critChance;

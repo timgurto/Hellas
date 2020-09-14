@@ -42,6 +42,6 @@ class ArmourClass : public AliasOfShort {
 class BasisPoints : public AliasOfShort {
  public:
   BasisPoints(short v) : AliasOfShort(v) {}
-  Percentage asPercentage() const;
+  double asChance() const;
   std::string asPercentageString() const;
 };

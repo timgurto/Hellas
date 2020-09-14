@@ -34,11 +34,11 @@ ArmourClass ArmourClass::modifyByLevelDiff(Level attacker, Level target) const {
   return _raw - diff * 30;
 }
 
-Percentage BasisPoints::asPercentage() const {
+double BasisPoints::asChance() const {
   if (_raw < 0) return 0;
-  return _raw / 100;
+  return _raw * 1.0 / 10000;
 }
 
 std::string BasisPoints::asPercentageString() const {
-  return toString(asPercentage()) + "%";
+  return toString(_raw / 100) + "%";
 }
