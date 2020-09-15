@@ -76,6 +76,14 @@ bool XmlReader::findAttr(TiXmlElement *elem, const char *attr,
   return false;
 }
 
+bool XmlReader::findAttr(TiXmlElement *elem, const char *attr,
+                         BasisPoints &val) {
+  auto rawNumber = short{};
+  if (!findAttr(elem, attr, rawNumber)) return false;
+  val = rawNumber * 100;
+  return true;
+}
+
 #ifndef NO_SDL
 bool XmlReader::findAttr(TiXmlElement *elem, const char *attr, Color &val) {
   if (elem == nullptr) return false;
@@ -113,11 +121,13 @@ bool XmlReader::findStatsChild(const std::string &val, TiXmlElement *elem,
   XmlReader::findAttr(child, "energy", stats.maxEnergy);
   XmlReader::findAttr(child, "hps", stats.hps);
   XmlReader::findAttr(child, "eps", stats.eps);
+
   XmlReader::findAttr(child, "hit", stats.hit);
   XmlReader::findAttr(child, "crit", stats.crit);
   XmlReader::findAttr(child, "critResist", stats.critResist);
   XmlReader::findAttr(child, "dodge", stats.dodge);
   XmlReader::findAttr(child, "block", stats.block);
+
   XmlReader::findAttr(child, "blockValue", stats.blockValue);
   XmlReader::findAttr(child, "magicDamage", stats.magicDamage);
   XmlReader::findAttr(child, "physicalDamage", stats.physicalDamage);

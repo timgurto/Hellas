@@ -484,3 +484,23 @@ TEST_CASE("Basis-point display") {
   CHECK(BasisPoints{200}.display() == "2.00%"s);
   CHECK(BasisPoints{200}.displayShort() == "2%"s);
 }
+
+TEST_CASE("Basis-point stats are read as percentages") {
+  GIVEN("an item specified to grant \"1 crit\" and \"2 dodge\"") {
+    auto data = R"(
+      <item id="critSword" >
+        <stats crit="1" dodge="2" />
+      </item>
+    )";
+
+    WHEN("a server starts") {
+      auto s = TestServer::WithDataString(data);
+
+      THEN("the item has 100 crit and 200 dodge") {
+        auto &critSword = s.getFirstItem();
+        CHECK(critSword.stats().crit == BasisPoints{100});
+        CHECK(critSword.stats().dodge == BasisPoints{200});
+      }
+    }
+  }
+}

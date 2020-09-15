@@ -10,6 +10,7 @@
 #ifndef NO_SDL
 #include "Color.h"
 #include "Rect.h"
+#include "combatTypes.h"
 class NormalVariable;
 ;
 #endif  // NO_SDL
@@ -59,6 +60,7 @@ class XmlReader {
     return true;
   }
   static bool findAttr(TiXmlElement *elem, const char *attr, std::string &val);
+  static bool findAttr(TiXmlElement *elem, const char *attr, BasisPoints &val);
 #ifndef NO_SDL
   static bool findAttr(TiXmlElement *elem, const char *attr,
                        Color &val);  // Hex string -> Color
