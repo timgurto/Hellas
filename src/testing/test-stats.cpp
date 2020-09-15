@@ -127,16 +127,9 @@ TEST_CASE("Follower-limit stat") {
   }
 }
 
-TEST_CASE("Speed stat") {
-  GIVEN("a server and client") {
-    auto s = TestServer{};
-    auto c = TestClient{};
-
-    WHEN("the client receives his stats") {
-      CHECK(c.waitForMessage(SV_YOUR_STATS));
-
-      THEN("his speed is valid") { CHECK(c.stats().speed > 0); }
-    }
+TEST_CASE_METHOD(ServerAndClient, "Speed stat") {
+  THEN("the client receives a valid speed") {
+    WAIT_UNTIL(client.stats().speed > 0);
   }
 }
 
