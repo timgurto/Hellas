@@ -525,7 +525,7 @@ TEST_CASE_METHOD(ServerAndClient, "Health regen") {
     TempUserStats stats;
     stats.hps(100);
     user->updateStats();
-    CHECK(user->stats().hps == 100);
+    CHECK(user->stats().hps == Regen{100});
 
     AND_GIVEN("a user is missing 10 health") {
       user->reduceHealth(10);
@@ -544,7 +544,7 @@ TEST_CASE_METHOD(ServerAndClient, "Health regen") {
     TempUserStats stats;
     stats.hps(200);
     user->updateStats();
-    CHECK(user->stats().hps == 200);
+    CHECK(user->stats().hps == Regen{200});
 
     AND_GIVEN("a user is missing 10 health") {
       user->reduceHealth(10);

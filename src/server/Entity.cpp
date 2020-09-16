@@ -871,9 +871,9 @@ void Entity::regen(ms_t timeElapsed) {
 
   _timeSinceRegen -= 1000;
 
-  if (stats().hps != 0) {
+  if (stats().hps.hasValue()) {
     auto oldHealth = health();
-    int rawNewHealth = health() + stats().hps / 100;
+    int rawNewHealth = health() + stats().hps.perSecond();
     if (rawNewHealth < 0)
       health(0);
     else if (0 + rawNewHealth > static_cast<int>(stats().maxHealth) + 0)
@@ -886,9 +886,9 @@ void Entity::regen(ms_t timeElapsed) {
     if (isDead()) onDeath();
   }
 
-  if (stats().eps != 0) {
+  if (stats().eps.hasValue()) {
     auto oldEnergy = energy();
-    int rawNewEnergy = energy() + stats().eps;
+    int rawNewEnergy = energy() + stats().eps.perSecond();
     if (rawNewEnergy < 0)
       energy(0);
     else if (rawNewEnergy > static_cast<int>(stats().maxEnergy))

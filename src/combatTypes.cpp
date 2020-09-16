@@ -63,3 +63,7 @@ void BasisPoints::onChanged() {
 
   _memoisedDisplay = oss.str();
 }
+
+Hitpoints Regen::perSecond() const { return _raw / 100; }
+
+bool Regen::hasValue() const { return _raw != 0; }

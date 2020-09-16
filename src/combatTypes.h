@@ -9,7 +9,6 @@ using Hitpoints = unsigned;
 using Energy = unsigned;
 using Percentage = short;
 using BonusDamage = int;
-using Regen = int;
 
 class AliasOfShort {
  public:
@@ -51,4 +50,12 @@ class BasisPoints : public AliasOfShort {
  private:
   virtual void onChanged() override;
   std::string _memoisedDisplay;
+};
+
+// 100 points = 1/s
+class Regen : public AliasOfShort {
+ public:
+  Regen(short v) : AliasOfShort(v) {}
+  Hitpoints perSecond() const;
+  bool hasValue() const;
 };
