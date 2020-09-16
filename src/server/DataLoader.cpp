@@ -528,7 +528,7 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
 
     Stats baseStats = NPCType::BASE_STATS;
     xr.findAttr(elem, "maxHealth", baseStats.maxHealth);
-    xr.findAttr(elem, "attack", baseStats.physicalDamage);
+    xr.findAttr(elem, "attack", baseStats.weaponDamage);
     xr.findAttr(elem, "attackTime", baseStats.attackTime);
     xr.findAttr(elem, "speed", baseStats.speed);
     xr.findAttr(elem, "armor", baseStats.armor);
