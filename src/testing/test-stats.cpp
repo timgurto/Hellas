@@ -521,14 +521,14 @@ class TempUserStats {
 };
 
 TEST_CASE_METHOD(ServerAndClient, "Health regen") {
-  GIVEN("users regenerate 1 health per second") {
-    TempUserStats stats;
-    stats.hps(100);
-    user->updateStats();
+  GIVEN("a user is missing 10 health") {
+    user->reduceHealth(10);
+    auto oldHealth = user->health();
 
-    AND_GIVEN("a user is missing 10 health") {
-      user->reduceHealth(10);
-      auto oldHealth = user->health();
+    AND_GIVEN("users regenerate 1 health per second") {
+      TempUserStats stats;
+      stats.hps(100);
+      user->updateStats();
 
       WHEN("a little over 1s passes") {
         REPEAT_FOR_MS(1010);
@@ -538,16 +538,11 @@ TEST_CASE_METHOD(ServerAndClient, "Health regen") {
         }
       }
     }
-  }
-  GIVEN("users regenerate 2 health per second") {
-    TempUserStats stats;
-    stats.hps(200);
-    user->updateStats();
-    CHECK(user->stats().hps == Regen{200});
-
-    AND_GIVEN("a user is missing 10 health") {
-      user->reduceHealth(10);
-      auto oldHealth = user->health();
+    AND_GIVEN("users regenerate 2 health per second") {
+      TempUserStats stats;
+      stats.hps(200);
+      user->updateStats();
+      CHECK(user->stats().hps == Regen{200});
 
       WHEN("a little over 1s passes") {
         REPEAT_FOR_MS(1010);
@@ -557,16 +552,11 @@ TEST_CASE_METHOD(ServerAndClient, "Health regen") {
         }
       }
     }
-  }
 
-  GIVEN("users regenerate 0.5 health per second") {
-    TempUserStats stats;
-    stats.hps(50);
-    user->updateStats();
-
-    AND_GIVEN("a user is missing 10 health") {
-      user->reduceHealth(10);
-      auto oldHealth = user->health();
+    AND_GIVEN("users regenerate 0.5 health per second") {
+      TempUserStats stats;
+      stats.hps(50);
+      user->updateStats();
 
       WHEN("a little over 2s passes") {
         REPEAT_FOR_MS(2010);
