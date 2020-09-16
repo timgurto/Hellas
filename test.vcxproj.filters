@@ -205,6 +205,7 @@
     <ClCompile Include="src\client\UIGroup.cpp" />
     <ClCompile Include="src\server\Tagger.cpp" />
     <ClCompile Include="src\combatTypes.cpp" />
+    <ClCompile Include="src\testing\TemporaryUserStats.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -359,6 +360,7 @@
     <ClInclude Include="src\client\UIGroup.h" />
     <ClInclude Include="src\server\Tagger.h" />
     <ClInclude Include="src\combatTypes.h" />
+    <ClInclude Include="src\testing\TemporaryUserStats.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />

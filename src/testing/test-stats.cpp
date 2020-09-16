@@ -1,3 +1,4 @@
+#include "TemporaryUserStats.h"
 #include "TestClient.h"
 #include "TestFixtures.h"
 #include "TestServer.h"
@@ -498,36 +499,13 @@ TEST_CASE("Basis-point stats are read as percentages") {
   }
 }
 
-class TempUserStats {
- public:
-  TempUserStats() {
-    _old = User::OBJECT_TYPE.baseStats();
-    _new = _old;
-  }
-  ~TempUserStats() { User::OBJECT_TYPE.baseStats(_old); }
-  TempUserStats &hps(Regen v) {
-    _new.hps = v;
-    apply();
-    return *this;
-  }
-
- private:
-  void apply() {
-    User::OBJECT_TYPE.baseStats(_new);
-    auto x = 0;
-  }
-  Stats _new;
-  Stats _old;
-};
-
 TEST_CASE_METHOD(ServerAndClient, "Health regen") {
   GIVEN("a user is missing 10 health") {
     user->reduceHealth(10);
     auto oldHealth = user->health();
 
     AND_GIVEN("users regenerate 1 health per second") {
-      TempUserStats stats;
-      stats.hps(100);
+      APPLY_TEMPORARY_USER_STATS.hps(100);
       user->updateStats();
 
       WHEN("a little over 1s passes") {
@@ -539,8 +517,7 @@ TEST_CASE_METHOD(ServerAndClient, "Health regen") {
       }
     }
     AND_GIVEN("users regenerate 2 health per second") {
-      TempUserStats stats;
-      stats.hps(200);
+      APPLY_TEMPORARY_USER_STATS.hps(200);
       user->updateStats();
       CHECK(user->stats().hps == Regen{200});
 
@@ -554,8 +531,7 @@ TEST_CASE_METHOD(ServerAndClient, "Health regen") {
     }
 
     AND_GIVEN("users regenerate 0.5 health per second") {
-      TempUserStats stats;
-      stats.hps(50);
+      APPLY_TEMPORARY_USER_STATS.hps(50);
       user->updateStats();
 
       WHEN("a little over 2s passes") {

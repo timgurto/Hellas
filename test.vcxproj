@@ -250,6 +250,7 @@
     <ClCompile Include="src\Socket.cpp" />
     <ClCompile Include="src\SpellSchool.cpp" />
     <ClCompile Include="src\Stats.cpp" />
+    <ClCompile Include="src\testing\TemporaryUserStats.cpp" />
     <ClCompile Include="src\testing\test-ai.cpp" />
     <ClCompile Include="src\testing\test-altars.cpp" />
     <ClCompile Include="src\testing\test-buffs.cpp" />
@@ -443,6 +444,7 @@
     <ClInclude Include="src\SpellSchool.h" />
     <ClInclude Include="src\Stats.h" />
     <ClInclude Include="src\Terrain.h" />
+    <ClInclude Include="src\testing\TemporaryUserStats.h" />
     <ClInclude Include="src\testing\TestClient.h" />
     <ClInclude Include="src\testing\TestFixtures.h" />
     <ClInclude Include="src\testing\testing.h" />
