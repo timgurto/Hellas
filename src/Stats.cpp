@@ -117,12 +117,10 @@ std::vector<std::string> StatsMod::toStrings() const {
   if (dodge) v.push_back("+" + dodge.displayShort() + " dodge chance");
   if (block) v.push_back("+" + block.displayShort() + " block chance");
   if (blockValue > 0) v.push_back("+" + toString(blockValue) + " block value");
-  if (magicDamage > 0)
-    v.push_back("+" + toString(magicDamage) + " magic damage");
-  if (physicalDamage > 0)
+  if (magicDamage) v.push_back("+" + toString(magicDamage) + " magic damage");
+  if (physicalDamage)
     v.push_back("+" + toString(physicalDamage) + " physical damage");
-  if (healing > 0)
-    v.push_back("+" + toString(healing) + " healing-spell amount");
+  if (healing) v.push_back("+" + toString(healing) + " healing-spell amount");
   if (airResist) v.push_back("+" + toString(airResist) + " air resistance");
   if (earthResist)
     v.push_back("+" + toString(earthResist) + " earth resistance");

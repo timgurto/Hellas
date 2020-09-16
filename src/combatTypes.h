@@ -8,7 +8,6 @@ using Level = short;
 using Hitpoints = unsigned;
 using Energy = unsigned;
 using Percentage = short;
-using BonusDamage = int;
 
 class AliasOfShort {
  public:
