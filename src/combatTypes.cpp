@@ -64,6 +64,11 @@ void BasisPoints::onChanged() {
   _memoisedDisplay = oss.str();
 }
 
-Hitpoints Regen::perSecond() const { return _raw / 100; }
+Hitpoints Regen::getNextWholeAmount() const {
+  auto withRemainder = _raw + _remainder;
+  auto whole = withRemainder / 100;
+  _remainder = withRemainder - whole;
+  return whole;
+}
 
 bool Regen::hasValue() const { return _raw != 0; }

@@ -56,6 +56,9 @@ class BasisPoints : public AliasOfShort {
 class Regen : public AliasOfShort {
  public:
   Regen(short v) : AliasOfShort(v) {}
-  Hitpoints perSecond() const;
+  Hitpoints getNextWholeAmount() const;
   bool hasValue() const;
+
+ private:
+  mutable short _remainder{0};
 };

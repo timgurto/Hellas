@@ -525,14 +525,13 @@ TEST_CASE_METHOD(ServerAndClient, "Health regen") {
     TempUserStats stats;
     stats.hps(100);
     user->updateStats();
-    CHECK(user->stats().hps == Regen{100});
 
     AND_GIVEN("a user is missing 10 health") {
       user->reduceHealth(10);
       auto oldHealth = user->health();
 
       WHEN("a little over 1s passes") {
-        REPEAT_FOR_MS(1100);
+        REPEAT_FOR_MS(1010);
 
         THEN("his health has increased by 1") {
           CHECK(user->health() == oldHealth + 1);
@@ -551,10 +550,29 @@ TEST_CASE_METHOD(ServerAndClient, "Health regen") {
       auto oldHealth = user->health();
 
       WHEN("a little over 1s passes") {
-        REPEAT_FOR_MS(1100);
+        REPEAT_FOR_MS(1010);
 
         THEN("his health has increased by 2") {
           CHECK(user->health() == oldHealth + 2);
+        }
+      }
+    }
+  }
+
+  GIVEN("users regenerate 0.5 health per second") {
+    TempUserStats stats;
+    stats.hps(50);
+    user->updateStats();
+
+    AND_GIVEN("a user is missing 10 health") {
+      user->reduceHealth(10);
+      auto oldHealth = user->health();
+
+      WHEN("a little over 2s passes") {
+        REPEAT_FOR_MS(2010);
+
+        THEN("his health has increased by 1") {
+          CHECK(user->health() == oldHealth + 1);
         }
       }
     }
