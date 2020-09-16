@@ -53,18 +53,13 @@ TEST_CASE("Follower-limit stat") {
       WAIT_UNTIL(c.stats().followerLimit == 1);
 
       AND_WHEN("the baseline is changed to 2") {
-        auto oldStats = User::OBJECT_TYPE.baseStats();
-        auto highFollowerLimitStats = oldStats;
-        highFollowerLimitStats.followerLimit = 2;
-        User::OBJECT_TYPE.baseStats(highFollowerLimitStats);
+        CHANGE_BASE_USER_STATS.followerLimit(2);
         auto &user = s.getFirstUser();
         user.updateStats();
 
         THEN("he knows his limit is 2") {
           WAIT_UNTIL(c.stats().followerLimit == 2);
         }
-
-        User::OBJECT_TYPE.baseStats(oldStats);
       }
     }
   }
@@ -153,10 +148,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Damage reduction from armour") {
     NPCType::BASE_STATS = oldNPCStats;
 
     AND_GIVEN("players have 500 armour [50% reduction]") {
-      auto oldStats = User::OBJECT_TYPE.baseStats();
-      auto with500AC = oldStats;
-      with500AC.armor = 500;
-      User::OBJECT_TYPE.baseStats(with500AC);
+      CHANGE_BASE_USER_STATS.armour(500);
       user->updateStats();
       auto healthBefore = user->health();
 
@@ -177,8 +169,6 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Damage reduction from armour") {
           CHECK_ROUGHLY_EQUAL(1. * user->health(), 1. * healthBefore - 25, .1);
         }
       }
-
-      User::OBJECT_TYPE.baseStats(oldStats);
     }
   }
 }
@@ -209,11 +199,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
         const auto &rockGiant = server->addNPC("rockGiant", {100, 100});
 
         AND_GIVEN("players have 200% hit and 0% crit") {
-          auto oldStats = User::OBJECT_TYPE.baseStats();
-          auto highHitLowCrit = oldStats;
-          highHitLowCrit.hit = 20000;
-          highHitLowCrit.crit = 0;
-          User::OBJECT_TYPE.baseStats(highHitLowCrit);
+          CHANGE_BASE_USER_STATS.hit(20000).crit(0);
           user->updateStats();
 
           AND_GIVEN("the player knows the spell") {
@@ -232,19 +218,13 @@ TEST_CASE_METHOD(ServerAndClientWithData,
               }
             }
           }
-          User::OBJECT_TYPE.baseStats(oldStats);
         }
       }
     }
 
     SECTION("Combat damage") {
       AND_GIVEN("players always hit for 1000 damage") {
-        auto oldStats = User::OBJECT_TYPE.baseStats();
-        auto hitFor1000 = oldStats;
-        hitFor1000.hit = 20000;
-        hitFor1000.crit = 0;
-        hitFor1000.weaponDamage = 1000;
-        User::OBJECT_TYPE.baseStats(hitFor1000);
+        CHANGE_BASE_USER_STATS.hit(20000).crit(0).weaponDamage(1000);
         user->updateStats();
 
         AND_GIVEN("an NPC close to the user") {
@@ -261,8 +241,6 @@ TEST_CASE_METHOD(ServerAndClientWithData,
             }
           }
         }
-
-        User::OBJECT_TYPE.baseStats(oldStats);
       }
     }
   }
@@ -304,10 +282,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Hit chance") {
 
   GIVEN("users have 5% hit chance") {
     useData("");
-    auto oldStats = User::OBJECT_TYPE.baseStats();
-    auto with500Hit = oldStats;
-    with500Hit.hit = 500;
-    User::OBJECT_TYPE.baseStats(with500Hit);
+    CHANGE_BASE_USER_STATS.hit(500);
     user->updateStats();
 
     WHEN("100000 hits are generated for a user") {
@@ -321,17 +296,12 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Hit chance") {
         CHECK_ROUGHLY_EQUAL(numMisses, 5000, 0.1)
       }
     }
-
-    User::OBJECT_TYPE.baseStats(oldStats);
   }
 }
 
 TEST_CASE_METHOD(ServerAndClient, "Crit chance") {
   GIVEN("users have 50% crit chance") {
-    auto oldStats = User::OBJECT_TYPE.baseStats();
-    auto with5000Crit = oldStats;
-    with5000Crit.crit = 5000;
-    User::OBJECT_TYPE.baseStats(with5000Crit);
+    CHANGE_BASE_USER_STATS.crit(5000);
     user->updateStats();
 
     WHEN("10000 hits are generated for a user") {
@@ -345,18 +315,12 @@ TEST_CASE_METHOD(ServerAndClient, "Crit chance") {
         CHECK_ROUGHLY_EQUAL(numCrits, 5000, 0.1)
       }
     }
-
-    User::OBJECT_TYPE.baseStats(oldStats);
   }
 }
 
 TEST_CASE_METHOD(ServerAndClient, "Crit resistance") {
   GIVEN("users have 50% crit chance and 25% crit resistance") {
-    auto oldStats = User::OBJECT_TYPE.baseStats();
-    auto with2500CritResist = oldStats;
-    with2500CritResist.crit = 5000;
-    with2500CritResist.critResist = 2500;
-    User::OBJECT_TYPE.baseStats(with2500CritResist);
+    CHANGE_BASE_USER_STATS.crit(5000).critResist(2500);
     user->updateStats();
 
     WHEN("10000 hits are generated for a user") {
@@ -370,17 +334,12 @@ TEST_CASE_METHOD(ServerAndClient, "Crit resistance") {
         CHECK_ROUGHLY_EQUAL(numCrits, 2500, 0.1)
       }
     }
-
-    User::OBJECT_TYPE.baseStats(oldStats);
   }
 }
 
 TEST_CASE_METHOD(ServerAndClient, "Dodge chance") {
   GIVEN("users have 50% dodge chance") {
-    auto oldStats = User::OBJECT_TYPE.baseStats();
-    auto with5000Dodge = oldStats;
-    with5000Dodge.dodge = 5000;
-    User::OBJECT_TYPE.baseStats(with5000Dodge);
+    CHANGE_BASE_USER_STATS.dodge(5000);
     user->updateStats();
 
     WHEN("10000 hits are generated against a user") {
@@ -394,8 +353,6 @@ TEST_CASE_METHOD(ServerAndClient, "Dodge chance") {
         CHECK_ROUGHLY_EQUAL(numDodges, 5000, 0.1)
       }
     }
-
-    User::OBJECT_TYPE.baseStats(oldStats);
   }
 }
 
@@ -407,10 +364,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Block chance") {
     )");
 
   GIVEN("users have 50% block chance") {
-    auto oldStats = User::OBJECT_TYPE.baseStats();
-    auto with5000Block = oldStats;
-    with5000Block.block = 5000;
-    User::OBJECT_TYPE.baseStats(with5000Block);
+    CHANGE_BASE_USER_STATS.block(5000);
 
     AND_GIVEN("the user has a shield") {
       auto &shield = server->getFirstItem();
@@ -432,8 +386,6 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Block chance") {
         }
       }
     }
-
-    User::OBJECT_TYPE.baseStats(oldStats);
   }
 }
 
@@ -448,10 +400,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Gather-bonus stat") {
     const auto &tissueBox = server->addObject("tissueBox", {15, 15});
 
     AND_GIVEN("users have a 50% gather bonus") {
-      auto oldStats = User::OBJECT_TYPE.baseStats();
-      auto with50GatherBonus = oldStats;
-      with50GatherBonus.gatherBonus = 50;
-      User::OBJECT_TYPE.baseStats(with50GatherBonus);
+      CHANGE_BASE_USER_STATS.gatherBonus(50);
       user->updateStats();
 
       WHEN("the user gathers from it 1000 times") {
@@ -463,8 +412,6 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Gather-bonus stat") {
           CHECK_ROUGHLY_EQUAL(numTissuesGathered, 1500, 0.1);
         }
       }
-
-      User::OBJECT_TYPE.baseStats(oldStats);
     }
   }
 }
@@ -505,7 +452,7 @@ TEST_CASE_METHOD(ServerAndClient, "Health regen") {
     auto oldHealth = user->health();
 
     AND_GIVEN("users regenerate 1 health per second") {
-      APPLY_TEMPORARY_USER_STATS.hps(100);
+      CHANGE_BASE_USER_STATS.hps(100);
       user->updateStats();
 
       WHEN("a little over 1s passes") {
@@ -517,7 +464,7 @@ TEST_CASE_METHOD(ServerAndClient, "Health regen") {
       }
     }
     AND_GIVEN("users regenerate 2 health per second") {
-      APPLY_TEMPORARY_USER_STATS.hps(200);
+      CHANGE_BASE_USER_STATS.hps(200);
       user->updateStats();
       CHECK(user->stats().hps == Regen{200});
 
@@ -531,7 +478,7 @@ TEST_CASE_METHOD(ServerAndClient, "Health regen") {
     }
 
     AND_GIVEN("users regenerate 0.5 health per second") {
-      APPLY_TEMPORARY_USER_STATS.hps(50);
+      CHANGE_BASE_USER_STATS.hps(50);
       user->updateStats();
 
       WHEN("a little over 2s passes") {

@@ -9,7 +9,17 @@ class TemporaryUserStats {
  public:
   TemporaryUserStats();
   ~TemporaryUserStats();
+
   TemporaryUserStats &hps(Regen v);
+  TemporaryUserStats &hit(BasisPoints v);
+  TemporaryUserStats &crit(BasisPoints v);
+  TemporaryUserStats &critResist(BasisPoints v);
+  TemporaryUserStats &dodge(BasisPoints v);
+  TemporaryUserStats &block(BasisPoints v);
+  TemporaryUserStats &armour(ArmourClass v);
+  TemporaryUserStats &weaponDamage(Hitpoints v);
+  TemporaryUserStats &gatherBonus(Percentage v);
+  TemporaryUserStats &followerLimit(int v);
 
  private:
   void apply();
@@ -19,6 +29,6 @@ class TemporaryUserStats {
   Stats _old;
 };
 
-#define APPLY_TEMPORARY_USER_STATS       \
+#define CHANGE_BASE_USER_STATS           \
   TemporaryUserStats temporaryUserStats; \
   temporaryUserStats
