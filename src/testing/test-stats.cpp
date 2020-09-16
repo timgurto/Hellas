@@ -497,3 +497,66 @@ TEST_CASE("Basis-point stats are read as percentages") {
     }
   }
 }
+
+class TempUserStats {
+ public:
+  TempUserStats() {
+    _old = User::OBJECT_TYPE.baseStats();
+    _new = _old;
+  }
+  ~TempUserStats() { User::OBJECT_TYPE.baseStats(_old); }
+  TempUserStats &hps(Regen v) {
+    _new.hps = v;
+    apply();
+    return *this;
+  }
+
+ private:
+  void apply() {
+    User::OBJECT_TYPE.baseStats(_new);
+    auto x = 0;
+  }
+  Stats _new;
+  Stats _old;
+};
+
+TEST_CASE_METHOD(ServerAndClient, "Health regen") {
+  GIVEN("users regenerate 1 health per second") {
+    TempUserStats stats;
+    stats.hps(100);
+    user->updateStats();
+    CHECK(user->stats().hps == 100);
+
+    AND_GIVEN("a user is missing 10 health") {
+      user->reduceHealth(10);
+      auto oldHealth = user->health();
+
+      WHEN("a little over 1s passes") {
+        REPEAT_FOR_MS(1100);
+
+        THEN("his health has increased by 1") {
+          CHECK(user->health() == oldHealth + 1);
+        }
+      }
+    }
+  }
+  GIVEN("users regenerate 2 health per second") {
+    TempUserStats stats;
+    stats.hps(200);
+    user->updateStats();
+    CHECK(user->stats().hps == 200);
+
+    AND_GIVEN("a user is missing 10 health") {
+      user->reduceHealth(10);
+      auto oldHealth = user->health();
+
+      WHEN("a little over 1s passes") {
+        REPEAT_FOR_MS(1100);
+
+        THEN("his health has increased by 2") {
+          CHECK(user->health() == oldHealth + 2);
+        }
+      }
+    }
+  }
+}

@@ -873,7 +873,7 @@ void Entity::regen(ms_t timeElapsed) {
 
   if (stats().hps != 0) {
     auto oldHealth = health();
-    int rawNewHealth = health() + stats().hps;
+    int rawNewHealth = health() + stats().hps / 100;
     if (rawNewHealth < 0)
       health(0);
     else if (0 + rawNewHealth > static_cast<int>(stats().maxHealth) + 0)
