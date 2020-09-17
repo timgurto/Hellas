@@ -55,6 +55,12 @@ TemporaryUserStats& TemporaryUserStats::weaponDamage(Hitpoints v) {
   return *this;
 }
 
+TemporaryUserStats& TemporaryUserStats::magicDamage(BasisPoints v) {
+  _new.magicDamage = v;
+  apply();
+  return *this;
+}
+
 TemporaryUserStats& TemporaryUserStats::gatherBonus(Percentage v) {
   _new.gatherBonus = v;
   apply();

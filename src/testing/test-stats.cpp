@@ -558,3 +558,30 @@ TEST_CASE("Bonus-damage stat") {
     NPCType::BASE_STATS = oldStats;
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Bonus damage on spells") {
+  GIVEN("the user knows a fireball spell that deals 10 fire damage") {
+    useData(R"(
+      <spell id="fireball" school="fire" >
+        <targets self="1" />
+        <function name="doDirectDamage" i1="10" />
+      </spell>
+    )");
+    user->getClass().teachSpell("fireball");
+
+    AND_GIVEN("he has +100% magic damage") {
+      CHANGE_BASE_USER_STATS.magicDamage(10000);
+      user->updateStats();
+
+      WHEN("he damages himself with it") {
+        client->sendMessage(CL_CAST, "fireball");
+        WAIT_UNTIL(user->health() < user->stats().maxHealth);
+
+        THEN("he has taken around 20 damage") {
+          auto healthLost = user->stats().maxHealth - user->health();
+          CHECK_ROUGHLY_EQUAL(healthLost, 20.0, 0.25);
+        }
+      }
+    }
+  }
+}
