@@ -326,6 +326,5 @@ int NPC::getLevelDifference(const User &user) const {
 
 double NPC::combatDamage() const {
   const auto &stats = npcType()->baseStats();
-  const auto bonusMultiplier = stats.physicalDamage ? 2 : 1;
-  return bonusMultiplier * stats.weaponDamage;
+  return stats.physicalDamage.addTo(stats.weaponDamage);
 }

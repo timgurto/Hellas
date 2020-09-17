@@ -43,6 +43,11 @@ double BasisPoints::asChance() const {
   return _raw * 1.0 / 10000;
 }
 
+Hitpoints BasisPoints::addTo(Hitpoints base) const {
+  auto multiplier = 1.0 + _raw * 0.0001;
+  return multiplier * base;
+}
+
 const std::string& BasisPoints::display() const { return _memoisedDisplay; }
 
 std::string BasisPoints::displayShort() const {

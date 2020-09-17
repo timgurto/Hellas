@@ -493,24 +493,34 @@ TEST_CASE_METHOD(ServerAndClient, "Health regen") {
 }
 
 TEST_CASE("Bonus-damage stat") {
-  GIVEN("NPCs have +100% bonus damage") {
-    auto oldStats = NPCType::BASE_STATS;
-    NPCType::BASE_STATS.physicalDamage = 10000;
+  struct TestValues {
+    BasisPoints bonusPhysicalDamage;
+    double expectedDamage;
+  };
+  auto tests = std::vector<TestValues>{{10000, 200.0}, {20000, 300.0}};
 
-    AND_GIVEN("elephants have 100 base attack and high health") {
-      auto s = TestServer::WithDataString(R"(
+  for (auto testValues : tests) {
+    GIVEN("NPCs have +" + testValues.bonusPhysicalDamage.display() +
+          " bonus physical damage") {
+      auto oldStats = NPCType::BASE_STATS;
+      NPCType::BASE_STATS.physicalDamage = testValues.bonusPhysicalDamage;
+
+      AND_GIVEN("elephants have 100 base attack and high health") {
+        auto s = TestServer::WithDataString(R"(
         <npcType id="elephant" attack="100" maxHealth="100000" />
       )");
 
-      AND_GIVEN("an elephant") {
-        auto &jumbo = s.addNPC("elephant", {10, 10});
+        AND_GIVEN("an elephant") {
+          auto &jumbo = s.addNPC("elephant", {10, 10});
 
-        THEN("the elephant does ~200 damage") {
-          CHECK(jumbo.combatDamage() == 200.0);
+          THEN("the elephant does ~" + toString(testValues.expectedDamage) +
+               " damage") {
+            CHECK(jumbo.combatDamage() == testValues.expectedDamage);
+          }
         }
       }
-    }
 
-    NPCType::BASE_STATS = oldStats;
+      NPCType::BASE_STATS = oldStats;
+    }
   }
 }
