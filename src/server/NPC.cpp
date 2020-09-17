@@ -323,3 +323,9 @@ void NPC::broadcastHealedMessage(Hitpoints amount) const {
 int NPC::getLevelDifference(const User &user) const {
   return level() - user.level();
 }
+
+double NPC::combatDamage() const {
+  const auto &stats = npcType()->baseStats();
+  const auto bonusMultiplier = stats.physicalDamage ? 2 : 1;
+  return bonusMultiplier * stats.weaponDamage;
+}

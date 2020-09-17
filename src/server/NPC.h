@@ -62,9 +62,7 @@ class NPC : public Entity, public QuestNode {
   virtual void broadcastHealedMessage(Hitpoints amount) const override;
   SpellSchool school() const override { return npcType()->school(); }
   int getLevelDifference(const User &user) const override;
-  double combatDamage() const override {
-    return npcType()->baseStats().weaponDamage;
-  }
+  double combatDamage() const override;
   bool grantsXPOnDeath() const override { return true; }
   double getTameChance() const;
 

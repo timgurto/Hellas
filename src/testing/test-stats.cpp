@@ -491,3 +491,26 @@ TEST_CASE_METHOD(ServerAndClient, "Health regen") {
     }
   }
 }
+
+TEST_CASE("Bonus-damage stat") {
+  GIVEN("NPCs have +100% bonus damage") {
+    auto oldStats = NPCType::BASE_STATS;
+    NPCType::BASE_STATS.physicalDamage = 10000;
+
+    AND_GIVEN("elephants have 100 base attack and high health") {
+      auto s = TestServer::WithDataString(R"(
+        <npcType id="elephant" attack="100" maxHealth="100000" />
+      )");
+
+      AND_GIVEN("an elephant") {
+        auto &jumbo = s.addNPC("elephant", {10, 10});
+
+        THEN("the elephant does ~200 damage") {
+          CHECK(jumbo.combatDamage() == 200.0);
+        }
+      }
+    }
+
+    NPCType::BASE_STATS = oldStats;
+  }
+}
