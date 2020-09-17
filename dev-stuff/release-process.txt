@@ -1,0 +1,21 @@
+Clicking through another user is hard.  Not pixel-perfect.
+
+
+
+Release process:
+1. Make sure everything's committed
+------- If tagging a release version -------
+1. Open command line
+2. "git tag" to see current tags
+3. "git tag 0.13.6"
+4. "git push origin 0.13.6"
+5. Run generateVersionHeader.sh
+-------
+6. Build Release in Visual Studio
+8. Watch the server-recovery process.  Wait until its 10s timer has just started.
+9. Kill the currently running production server
+10. Run "Publish new version/Publish and start production server"
+10. Run "Publish new version/publish-client-and-copy-local.bat"
+Play Production as a quick smoke test
+11. Check reported server version in login screen.
+

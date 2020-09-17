@@ -1,0 +1,94 @@
+Inachos is king of Argos.  Daughter Io was priestess of Hera.
+King's consort is Melia, Oceanid nymph.
+She's missing.
+Priest? tells story of Hera chasing her away with a stinging insect.
+
+
+Eventually track her down: Phoenician traders took her away to Egypt.
+
+
+Myth:
+Zeus lusted after Io
+Zeut turned her into a cow to protect her.
+Hera sent Argus to guard her from Zeus. (Chained to an olive tree at the Argive Heraion (temple))
+Zeus sent Hermes to kill Argus.
+Hera sent a giant stinging fly to torment Io (still a cow) and chase her away.
+She ends up in Egypt and marries the king.
+
+
+Herodotus:
+Io was buying stuff from Phoenician traders
+They kidnapped her and took her to Egypt.
+This ended up causing the Trojan War.
+
+Maybe Phoenicians in the temple/market can make up the story?
+
+
+Eventually the player should be unsure of which story is true.
+Priests of Hera/Phoenicians could tell the myth.  Backed  up by existence of monsters (Argus, gadfly)
+Who tells the Herodotus version?  King maybe.  Priests of Zeus?  Loyal Argives?
+
+
+Path A: Myth
+  Gadfly, Argus, Hera, Zeus.  
+  Kill Argus; cow runs away?
+  Hermes appears and gives a flute that will put Argus to sleep
+
+Path B: History
+  Markets, beach, Phoenecian ships.  King/consort send you to find their daughter.
+  Maybe this path is first?  Then after killing the captain, you find out somehow that it was really Hera/Zeus.
+  
+  Argive commoners are convinced it was the Phoenecians; don't believe you when you say otherwise.  Maybe even the king.  "I'm sure it was them.  you must have dreamed the conversation with X".  This will lead to revenge by the Greeks.
+  
+  Pre-quest: kill Argus (+dog).  Don't learn anything about the white cow he's looking after.  Only learn later.
+  
+  So... kill Phoenecians, then find out the truth.  They took a few women, but not Io.
+  Learn that Hera sent the gadfly to torment and chase her, after Argus was killed.
+  
+  
+  1. Argus (why?)
+        There's a monster.  Might be related.  Shouldn't be here, in any case.
+        What other mobs in this level though?
+            Priest(esse)s of Hera?
+            
+  2. Phoenecians
+  3. Gadfly?
+  
+  
+  1. Phoenecians
+  2. Myth
+        Argus; shouldn't be here.
+        
+        
+Maybe whole dungeon could be Phoenecians.
+1. Market/temple (Argus in temple)
+2. Beach/camp/ships
+3. Gadfly
+  
+  
+  
+  
+  
+  
+  
+  
+Mechanics:
+A dungeon gate.  Will ultimately move you into the dungeon instance.  For now,
+ - Teleport you to a designated location
+ - Provide the name of the dungeon (and suggested levels)
+ - Always visible, if that part of the map has been explored.
+Think about how everything in the dungeon can be reset over time.  The way mobs respawn after... 1h?
+Patrols
+Pathfinding
+Chests
+
+
+
+Loot ideas:
+ Recipes
+ Ranged consumable weapons
+ Consumables
+ Greys
+ Decorations
+ Thematic BoE greens
+ Themed consumables: wine from tavern, special food from chef
