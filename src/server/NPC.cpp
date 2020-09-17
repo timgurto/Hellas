@@ -326,5 +326,8 @@ int NPC::getLevelDifference(const User &user) const {
 
 double NPC::combatDamage() const {
   const auto &stats = npcType()->baseStats();
-  return stats.physicalDamage.addTo(stats.weaponDamage);
+  const auto bonusMultiplier = npcType()->school() == SpellSchool::PHYSICAL
+                                   ? stats.physicalDamage
+                                   : stats.magicDamage;
+  return bonusMultiplier.addTo(stats.weaponDamage);
 }

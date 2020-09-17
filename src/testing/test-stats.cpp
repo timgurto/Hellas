@@ -506,22 +506,55 @@ TEST_CASE("Bonus-damage stat") {
       auto oldStats = NPCType::BASE_STATS;
       NPCType::BASE_STATS.physicalDamage = testValues.bonusPhysicalDamage;
 
-      AND_GIVEN("elephants have 100 base attack and high health") {
+      AND_GIVEN("elephants have 100 base attack") {
         auto s = TestServer::WithDataString(R"(
-        <npcType id="elephant" attack="100" maxHealth="100000" />
-      )");
+          <npcType id="elephant" attack="100" />
+        )");
 
         AND_GIVEN("an elephant") {
-          auto &jumbo = s.addNPC("elephant", {10, 10});
+          auto &elephant = s.addNPC("elephant", {10, 10});
 
           THEN("the elephant does ~" + toString(testValues.expectedDamage) +
                " damage") {
-            CHECK(jumbo.combatDamage() == testValues.expectedDamage);
+            CHECK(elephant.combatDamage() == testValues.expectedDamage);
           }
         }
       }
 
       NPCType::BASE_STATS = oldStats;
     }
+  }
+
+  GIVEN("NPCs have +100% bonus magic damage") {
+    auto oldStats = NPCType::BASE_STATS;
+    NPCType::BASE_STATS.magicDamage = 10000;
+
+    AND_GIVEN("a whale with 100 base water attack") {
+      auto s = TestServer::WithDataString(R"(
+        <npcType id="whale" attack="100" school="water" />
+      )");
+      auto &whale = s.addNPC("whale", {10, 10});
+
+      THEN("it does ~200 damage") { CHECK(whale.combatDamage() == 200.0); }
+    }
+
+    NPCType::BASE_STATS = oldStats;
+  }
+
+  GIVEN("NPCs have +100% magic and +200% physical damage") {
+    auto oldStats = NPCType::BASE_STATS;
+    NPCType::BASE_STATS.magicDamage = 10000;
+    NPCType::BASE_STATS.physicalDamage = 20000;
+
+    AND_GIVEN("a whale with 100 base water attack") {
+      auto s = TestServer::WithDataString(R"(
+        <npcType id="whale" attack="100" school="water" />
+      )");
+      auto &whale = s.addNPC("whale", {10, 10});
+
+      THEN("it does ~200 damage") { CHECK(whale.combatDamage() == 200.0); }
+    }
+
+    NPCType::BASE_STATS = oldStats;
   }
 }
