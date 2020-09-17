@@ -43,7 +43,7 @@ class BasisPoints : public AliasOfShort {
  public:
   BasisPoints(short v) : AliasOfShort(v) { onChanged(); }
   double asChance() const;
-  Hitpoints addTo(Hitpoints base) const;
+  double addTo(Hitpoints base) const;
   const std::string& display() const;
   std::string displayShort() const;
 

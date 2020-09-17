@@ -497,7 +497,8 @@ TEST_CASE("Bonus-damage stat") {
     BasisPoints bonusPhysicalDamage;
     double expectedDamage;
   };
-  auto tests = std::vector<TestValues>{{10000, 200.0}, {20000, 300.0}};
+  auto tests =
+      std::vector<TestValues>{{10000, 200.0}, {20000, 300.0}, {10, 100.1}};
 
   for (auto testValues : tests) {
     GIVEN("NPCs have +" + testValues.bonusPhysicalDamage.display() +
