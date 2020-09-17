@@ -570,11 +570,36 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Bonus damage on spells") {
     user->getClass().teachSpell("fireball");
 
     AND_GIVEN("he has +100% magic damage") {
-      CHANGE_BASE_USER_STATS.magicDamage(10000);
+      CHANGE_BASE_USER_STATS.magicDamage(10000).crit(0).hit(500);
       user->updateStats();
 
       WHEN("he damages himself with it") {
         client->sendMessage(CL_CAST, "fireball");
+        WAIT_UNTIL(user->health() < user->stats().maxHealth);
+
+        THEN("he has taken around 20 damage") {
+          auto healthLost = user->stats().maxHealth - user->health();
+          CHECK_ROUGHLY_EQUAL(healthLost, 20.0, 0.25);
+        }
+      }
+    }
+  }
+
+  GIVEN("the user knows a shoot spell that deals 10 physical damage") {
+    useData(R"(
+      <spell id="shoot" school="physical" >
+        <targets self="1" />
+        <function name="doDirectDamage" i1="10" />
+      </spell>
+    )");
+    user->getClass().teachSpell("shoot");
+
+    AND_GIVEN("he has +100% physical damage") {
+      CHANGE_BASE_USER_STATS.physicalDamage(10000).crit(0).hit(500);
+      user->updateStats();
+
+      WHEN("he damages himself with it") {
+        client->sendMessage(CL_CAST, "shoot");
         WAIT_UNTIL(user->health() < user->stats().maxHealth);
 
         THEN("he has taken around 20 damage") {

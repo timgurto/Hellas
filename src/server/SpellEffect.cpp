@@ -47,7 +47,10 @@ CombatResult SpellEffect::doDirectDamageWithModifiedThreat(
   if (outcome == MISS || outcome == DODGE) return outcome;
 
   auto rawDamage = static_cast<double>(effect._args.i1);
-  rawDamage = caster.stats().magicDamage.addTo(rawDamage);
+  if (effect.school() == SpellSchool::PHYSICAL)
+    rawDamage = caster.stats().physicalDamage.addTo(rawDamage);
+  else
+    rawDamage = caster.stats().magicDamage.addTo(rawDamage);
 
   if (outcome == CRIT) rawDamage *= 2;
 

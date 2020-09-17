@@ -55,6 +55,12 @@ TemporaryUserStats& TemporaryUserStats::weaponDamage(Hitpoints v) {
   return *this;
 }
 
+TemporaryUserStats& TemporaryUserStats::physicalDamage(BasisPoints v) {
+  _new.physicalDamage = v;
+  apply();
+  return *this;
+}
+
 TemporaryUserStats& TemporaryUserStats::magicDamage(BasisPoints v) {
   _new.magicDamage = v;
   apply();
