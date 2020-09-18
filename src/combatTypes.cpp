@@ -43,7 +43,7 @@ double BasisPoints::asChance() const {
   return _raw * 1.0 / 10000;
 }
 
-double BasisPoints::addTo(Hitpoints base) const {
+double BasisPoints::addTo(double base) const {
   auto multiplier = 1.0 + _raw * 0.0001;
   return multiplier * base;
 }
