@@ -61,7 +61,7 @@ CombatResult SpellEffect::doDirectDamageWithModifiedThreat(
   auto damage = chooseRandomSpellMagnitude(rawDamage);
 
   if (outcome == BLOCK) {
-    auto blockAmount = target.stats().blockValue;
+    auto blockAmount = target.stats().blockValue.effectiveValue();
     if (blockAmount >= damage)
       damage = 0;
     else

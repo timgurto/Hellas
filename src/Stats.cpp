@@ -29,10 +29,7 @@ const Stats &Stats::operator&=(const StatsMod &mod) {
 
   block += mod.block;
 
-  if (mod.blockValue < 0 && -mod.blockValue > static_cast<int>(blockValue))
-    blockValue = 0;
-  else
-    blockValue += mod.blockValue;
+  blockValue += mod.blockValue;
 
   // Can be negative.
   magicDamage += mod.magicDamage;
@@ -116,7 +113,8 @@ std::vector<std::string> StatsMod::toStrings() const {
     v.push_back("-" + critResist.displayShort() + " chance to be crit");
   if (dodge) v.push_back("+" + dodge.displayShort() + " dodge chance");
   if (block) v.push_back("+" + block.displayShort() + " block chance");
-  if (blockValue > 0) v.push_back("+" + toString(blockValue) + " block value");
+  if (blockValue)
+    v.push_back("+" + toString(blockValue.effectiveValue()) + " block value");
   if (magicDamage) v.push_back("+" + toString(magicDamage) + " magic damage");
   if (physicalDamage)
     v.push_back("+" + toString(physicalDamage) + " physical damage");

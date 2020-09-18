@@ -77,3 +77,19 @@ Hitpoints Regen::getNextWholeAmount() const {
 }
 
 bool Regen::hasValue() const { return _raw != 0; }
+
+Hitpoints Hundredths::effectiveValue() const {
+  if (_raw <= 0) return 0;
+  return _raw / 100;
+}
+
+const std::string& Hundredths::display() const { return _memoisedDisplay; }
+
+void Hundredths::onChanged() {
+  auto oss = std::ostringstream{};
+  oss << _raw / 100;
+  oss << '.';
+  oss << std::setw(2) << std::setfill('0') << _raw % 100;
+
+  _memoisedDisplay = oss.str();
+}

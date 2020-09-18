@@ -314,10 +314,11 @@ void Entity::update(ms_t timeElapsed) {
   auto damage = SpellEffect::chooseRandomSpellMagnitude(rawDamage);
 
   if (outcome == BLOCK) {
-    if (pTarget->_stats.blockValue / 100 >= damage)
+    const auto blockValue = pTarget->_stats.blockValue.effectiveValue();
+    if (blockValue >= damage)
       damage = 0;
     else
-      damage -= pTarget->_stats.blockValue / 100;
+      damage -= blockValue;
   }
 
   // This is called after damage is determined, as it may result in the weapon

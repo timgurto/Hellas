@@ -11,7 +11,7 @@ struct StatsMod;
 
 // Describes base-level player stats.
 struct Stats {
-  Hitpoints maxHealth{0}, blockValue{0};
+  Hitpoints maxHealth{0};
 
   Energy maxEnergy{0};
 
@@ -25,6 +25,8 @@ struct Stats {
   Hitpoints weaponDamage{0};
   BasisPoints magicDamage{0}, physicalDamage{0}, healing{0};
   SpellSchool weaponSchool{SpellSchool::PHYSICAL};
+
+  Hundredths blockValue{0};
 
   ms_t attackTime{0};
 
@@ -46,8 +48,8 @@ struct StatsMod {
   std::string buffDescription() const;  // e.g. "Grant 1 health to ", "Stun "
 
   // Additive
-  int maxHealth{0}, hps{0}, maxEnergy{0}, eps{0}, blockValue{0},
-      followerLimit{0};
+  int maxHealth{0}, hps{0}, maxEnergy{0}, eps{0}, followerLimit{0};
+  Hundredths blockValue{0};
   BasisPoints magicDamage{0}, physicalDamage{0}, healing{0};
   ArmourClass armor{0}, airResist{0}, earthResist{0}, fireResist{0},
       waterResist{0};

@@ -62,3 +62,14 @@ class Regen : public AliasOfShort {
  private:
   mutable short _remainder{0};
 };
+
+class Hundredths : public AliasOfShort {
+ public:
+  Hundredths(short v) : AliasOfShort(v) { onChanged(); }
+  Hitpoints effectiveValue() const;
+  const std::string& display() const;
+
+ private:
+  virtual void onChanged() override;
+  std::string _memoisedDisplay;
+};

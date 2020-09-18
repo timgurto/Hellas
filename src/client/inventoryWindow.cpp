@@ -114,7 +114,7 @@ void Client::initializeGearWindow() {
           "Chance to outright avoid hand-to-hand physical attacks.");
   addStat("Block chance", _stats.block.display(), {}, {}, y, _gearWindow,
           "Chance to reduce the damage of physical attacks by a flat amount.");
-  addStat("Block value", _stats.blockValue, {}, {}, y, _gearWindow,
+  addStat("Block value", _stats.blockValue.display(), {}, {}, y, _gearWindow,
           "How much damage is reduced when an attack is blocked.");
   addGap(y, _gearWindow);
   addStat("Follower limit", _stats.followerLimit, {}, {}, y, _gearWindow,
