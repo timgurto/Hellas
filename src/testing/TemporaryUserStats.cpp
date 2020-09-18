@@ -50,6 +50,13 @@ TemporaryUserStats& TemporaryUserStats::block(BasisPoints v) {
   return *this;
 }
 
+TemporaryUserStats & TemporaryUserStats::blockValue(Hitpoints v)
+{
+  _new.blockValue = v;
+  apply();
+  return *this;
+}
+
 TemporaryUserStats& TemporaryUserStats::armour(ArmourClass v) {
   _new.armor = v;
   apply();

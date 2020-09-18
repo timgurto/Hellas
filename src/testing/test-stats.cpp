@@ -157,7 +157,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Damage reduction from armour") {
         WAIT_UNTIL(user->health() < healthBefore);
 
         THEN("the player loses around 25 health") {
-          CHECK_ROUGHLY_EQUAL(1. * user->health(), 1. * healthBefore - 25, .1);
+          CHECK_ROUGHLY_EQUAL(1. * user->health(), 1. * healthBefore - 25, .25);
         }
       }
 
@@ -655,6 +655,43 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Bonus-healing stat") {
           THEN("he has recovered around 20 damage") {
             auto healthGained = user->health() - healthBefore;
             CHECK_ROUGHLY_EQUAL(healthGained, 20.0, 0.25);
+          }
+        }
+      }
+    }
+  }
+}
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Block-value stat") {
+  GIVEN("an NPC that deals 10 damage") {
+    useData(R"(
+      <npcType id="soldier" attack="10" />
+
+      <item id="shield" gearSlot="7">
+        <tag name="shield" />
+      </item>
+    )");
+    auto &soldier = server->addNPC("soldier", {10, 15});
+
+    GIVEN("users have 100% block chance and 5 block value") {
+      CHANGE_BASE_USER_STATS.block(10000).blockValue(500);
+      user->updateStats();
+
+      AND_GIVEN("the user has a shield") {
+        auto &shield = server->getFirstItem();
+        user->giveItem(&shield);
+        client->sendMessage(CL_SWAP_ITEMS,
+                            makeArgs(Serial::Inventory(), 0, Serial::Gear(),
+                                     Item::OFFHAND_SLOT));
+        WAIT_UNTIL(user->gear(Item::OFFHAND_SLOT).first.hasItem());
+
+        WHEN("the NPC hits him") {
+          auto healthBefore = user->health();
+          WAIT_UNTIL(user->health() < healthBefore);
+
+          THEN("he takes around 5 damage") {
+            auto damageTaken = healthBefore - user->health();
+            CHECK_ROUGHLY_EQUAL(damageTaken, 5.0, 0.2);
           }
         }
       }

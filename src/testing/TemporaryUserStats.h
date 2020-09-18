@@ -17,6 +17,7 @@ class TemporaryUserStats {
   TemporaryUserStats &critResist(BasisPoints v);
   TemporaryUserStats &dodge(BasisPoints v);
   TemporaryUserStats &block(BasisPoints v);
+  TemporaryUserStats &blockValue(Hitpoints v);
   TemporaryUserStats &armour(ArmourClass v);
   TemporaryUserStats &weaponDamage(Hitpoints v);
   TemporaryUserStats &weaponSchool(SpellSchool v);
