@@ -166,7 +166,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Damage reduction from armour") {
         WAIT_UNTIL(user->health() < healthBefore);
 
         THEN("the player loses around 25 health") {
-          CHECK_ROUGHLY_EQUAL(1. * user->health(), 1. * healthBefore - 25, .1);
+          CHECK_ROUGHLY_EQUAL(1. * user->health(), 1. * healthBefore - 25, .25);
         }
       }
     }
