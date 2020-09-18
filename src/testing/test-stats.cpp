@@ -559,6 +559,25 @@ TEST_CASE("Bonus-damage stat") {
   }
 }
 
+TEST_CASE_METHOD(ServerAndClient,
+                 "User combat damage is modified by bonus damage") {
+  GIVEN("users deal 100 physical attack and +100% physical damage") {
+    CHANGE_BASE_USER_STATS.weaponDamage(100).physicalDamage(10000);
+    user->updateStats();
+
+    THEN("the user has 200 attack") { CHECK(user->combatDamage() == 200.0); }
+  }
+
+  GIVEN("users deal 100 fire attack and +100% magic damage") {
+    CHANGE_BASE_USER_STATS.weaponDamage(100)
+        .weaponSchool(SpellSchool::FIRE)
+        .magicDamage(10000);
+    user->updateStats();
+
+    THEN("the user has 200 attack") { CHECK(user->combatDamage() == 200.0); }
+  }
+}
+
 TEST_CASE_METHOD(ServerAndClientWithData, "Bonus damage on spells") {
   GIVEN("the user knows a fireball spell that deals 10 fire damage") {
     useData(R"(

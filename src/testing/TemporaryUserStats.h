@@ -18,6 +18,7 @@ class TemporaryUserStats {
   TemporaryUserStats &block(BasisPoints v);
   TemporaryUserStats &armour(ArmourClass v);
   TemporaryUserStats &weaponDamage(Hitpoints v);
+  TemporaryUserStats &weaponSchool(SpellSchool v);
   TemporaryUserStats &physicalDamage(BasisPoints v);
   TemporaryUserStats &magicDamage(BasisPoints v);
   TemporaryUserStats &gatherBonus(Percentage v);

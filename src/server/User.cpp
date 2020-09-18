@@ -1038,9 +1038,10 @@ bool User::canEquip(const ServerItem &item) const {
 
 double User::combatDamage() const {
   if (stats().weaponSchool == SpellSchool::PHYSICAL)
-    return stats().weaponDamage + stats().physicalDamage;
+    return stats().physicalDamage.addTo(stats().weaponDamage);
   else
-    return stats().weaponDamage + stats().magicDamage;
+
+    return stats().magicDamage.addTo(stats().weaponDamage);
 }
 
 void User::onHealthChange() {

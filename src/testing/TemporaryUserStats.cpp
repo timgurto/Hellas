@@ -55,6 +55,12 @@ TemporaryUserStats& TemporaryUserStats::weaponDamage(Hitpoints v) {
   return *this;
 }
 
+TemporaryUserStats& TemporaryUserStats::weaponSchool(SpellSchool v) {
+  _new.weaponSchool = v;
+  apply();
+  return *this;
+}
+
 TemporaryUserStats& TemporaryUserStats::physicalDamage(BasisPoints v) {
   _new.physicalDamage = v;
   apply();
