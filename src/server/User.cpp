@@ -1040,7 +1040,6 @@ double User::combatDamage() const {
   if (stats().weaponSchool == SpellSchool::PHYSICAL)
     return stats().physicalDamage.addTo(stats().weaponDamage);
   else
-
     return stats().magicDamage.addTo(stats().weaponDamage);
 }
 

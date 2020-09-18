@@ -629,3 +629,35 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Bonus damage on spells") {
     }
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Bonus-healing stat") {
+  GIVEN("the user knows a spell that heals 10 damage") {
+    useData(R"(
+      <spell id="heal" >
+        <targets self="1" />
+        <function name="heal" i1="10" />
+      </spell>
+    )");
+    user->getClass().teachSpell("heal");
+
+    AND_GIVEN("he has +100% healing and high max health") {
+      CHANGE_BASE_USER_STATS.healing(10000).maxHealth(1000).hps(0);
+      user->updateStats();
+
+      AND_GIVEN("he's missing lots of health") {
+        user->reduceHealth(500);
+
+        WHEN("he heals himself") {
+          const auto healthBefore = user->health();
+          client->sendMessage(CL_CAST, "heal");
+          WAIT_UNTIL(user->health() > healthBefore);
+
+          THEN("he has recovered around 20 damage") {
+            auto healthGained = user->health() - healthBefore;
+            CHECK_ROUGHLY_EQUAL(healthGained, 20.0, 0.25);
+          }
+        }
+      }
+    }
+  }
+}

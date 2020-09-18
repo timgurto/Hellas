@@ -10,6 +10,7 @@ class TemporaryUserStats {
   TemporaryUserStats();
   ~TemporaryUserStats();
 
+  TemporaryUserStats &maxHealth(Hitpoints v);
   TemporaryUserStats &hps(Regen v);
   TemporaryUserStats &hit(BasisPoints v);
   TemporaryUserStats &crit(BasisPoints v);
@@ -21,6 +22,7 @@ class TemporaryUserStats {
   TemporaryUserStats &weaponSchool(SpellSchool v);
   TemporaryUserStats &physicalDamage(BasisPoints v);
   TemporaryUserStats &magicDamage(BasisPoints v);
+  TemporaryUserStats &healing(BasisPoints v);
   TemporaryUserStats &gatherBonus(Percentage v);
   TemporaryUserStats &followerLimit(int v);
 

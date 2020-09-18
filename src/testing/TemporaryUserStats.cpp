@@ -7,6 +7,13 @@ TemporaryUserStats::TemporaryUserStats() {
 
 TemporaryUserStats::~TemporaryUserStats() { restoreOriginalSettings(); }
 
+TemporaryUserStats & TemporaryUserStats::maxHealth(Hitpoints v)
+{
+  _new.maxHealth = v;
+  apply();
+  return *this;
+}
+
 TemporaryUserStats& TemporaryUserStats::hps(Regen v) {
   _new.hps = v;
   apply();
@@ -69,6 +76,13 @@ TemporaryUserStats& TemporaryUserStats::physicalDamage(BasisPoints v) {
 
 TemporaryUserStats& TemporaryUserStats::magicDamage(BasisPoints v) {
   _new.magicDamage = v;
+  apply();
+  return *this;
+}
+
+TemporaryUserStats & TemporaryUserStats::healing(BasisPoints v)
+{
+  _new.healing = v;
   apply();
   return *this;
 }

@@ -87,7 +87,7 @@ CombatResult SpellEffect::heal(const SpellEffect &effect, Entity &caster,
       caster.generateHitAgainst(target, HEAL, effect._school, effect._range);
 
   auto rawAmountToHeal = static_cast<double>(effect._args.i1);
-  rawAmountToHeal += caster.stats().healing;
+  rawAmountToHeal = caster.stats().healing.addTo(rawAmountToHeal);
 
   if (outcome == CRIT) rawAmountToHeal *= 2;
 
