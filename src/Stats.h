@@ -1,6 +1,7 @@
 #ifndef STATS_H
 #define STATS_H
 
+#include <map>
 #include <vector>
 
 #include "SpellSchool.h"
@@ -42,6 +43,8 @@ struct Stats {
 
   ArmourClass resistanceByType(SpellSchool school) const;
   BasisPoints bonusUnlockChance{0};
+
+  static std::map<std::string, StatsMod> composites;
 };
 
 // Describes modifiers for player stats, e.g. for gear.

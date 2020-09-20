@@ -150,9 +150,8 @@ void DataLoader::loadCompositeStats(XmlReader &xr) {
   for (auto elem : xr.getChildren("compositeStat")) {
     auto id = ""s;
     xr.findAttr(elem, "id", id);
-    if (id == "stamina") xr.findStatsChild("stats", elem, stamina);
-    if (id == "magic") xr.findStatsChild("stats", elem, magic);
-    if (id == "toughness") xr.findStatsChild("stats", elem, toughness);
+    auto &stats = Stats::composites[id];
+    xr.findStatsChild("stats", elem, stats);
   }
 }
 
