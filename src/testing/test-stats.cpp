@@ -788,4 +788,33 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Composite stats") {
       }
     }
   }
+
+  GIVEN("a \"toughness\" stat that gives 1 armor, and some toughness buffs") {
+    useData(R"(
+      <compositeStat id="toughness">
+        <stats armor="1" />
+      </compositeStat>
+
+      <buff id="toughness1">
+        <stats toughness="1" />
+      </buff>
+      <buff id="toughness2">
+        <stats toughness="2" />
+      </buff>
+    )");
+    const auto &toughness1 = server->findBuff("toughness1");
+    const auto &toughness2 = server->findBuff("toughness2");
+
+    WHEN("a user has a 1-toughness buff") {
+      user->applyBuff(toughness1, *user);
+
+      THEN("he has 1 armour") { CHECK(user->stats().armor == BasisPoints{1}); }
+    }
+
+    WHEN("a user has a 2-toughness buff") {
+      user->applyBuff(toughness2, *user);
+
+      THEN("he has 2 armour") { CHECK(user->stats().armor == BasisPoints{2}); }
+    }
+  }
 }

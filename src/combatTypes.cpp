@@ -14,6 +14,8 @@ bool AliasOfShort::operator!=(const AliasOfShort& rhs) const {
 
 void AliasOfShort::operator+=(const AliasOfShort& rhs) { _raw += rhs._raw; }
 
+void AliasOfShort::operator*=(int scalar) { _raw *= scalar; }
+
 AliasOfShort::operator bool() const { return _raw > 0; }
 
 std::ostream& operator<<(std::ostream& lhs, const AliasOfShort& rhs) {

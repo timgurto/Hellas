@@ -12,7 +12,7 @@
 #include "VehicleType.h"
 
 extern Args cmdLineArgs;
-extern StatsMod stamina, magic;
+extern StatsMod stamina, magic, toughness;
 
 DataLoader::DataLoader(Server &server) : _server(server) {}
 
@@ -152,6 +152,7 @@ void DataLoader::loadCompositeStats(XmlReader &xr) {
     xr.findAttr(elem, "id", id);
     if (id == "stamina") xr.findStatsChild("stats", elem, stamina);
     if (id == "magic") xr.findStatsChild("stats", elem, magic);
+    if (id == "toughness") xr.findStatsChild("stats", elem, toughness);
   }
 }
 

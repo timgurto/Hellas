@@ -16,6 +16,7 @@ class AliasOfShort {
   bool operator==(const AliasOfShort& rhs) const;
   bool operator!=(const AliasOfShort& rhs) const;
   void operator+=(const AliasOfShort& rhs);
+  void operator*=(int scalar);
   operator bool() const;
 
  protected:

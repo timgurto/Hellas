@@ -4,7 +4,7 @@
 
 #include "util.h"
 
-StatsMod stamina, magic;
+StatsMod stamina, magic, toughness;
 
 const Stats &Stats::operator&=(StatsMod mod) {
   modify(mod);
@@ -20,6 +20,7 @@ Stats Stats::operator&(const StatsMod &mod) const {
 void Stats::modify(const StatsMod &mod) {
   if (mod.stamina != 0) modify(stamina);
   if (mod.magic != 0) modify(magic);
+  if (mod.toughness != 0) modify(toughness * mod.toughness);
 
   if (mod.maxHealth < 0 && -mod.maxHealth > static_cast<int>(maxHealth))
     maxHealth = 0;
@@ -156,4 +157,10 @@ std::string StatsMod::buffDescription() const {
   }
   ret += " to "s;
   return ret;
+}
+
+StatsMod StatsMod::operator*(int scalar) const {
+  auto stats = *this;
+  stats.armor *= scalar;
+  return stats;
 }

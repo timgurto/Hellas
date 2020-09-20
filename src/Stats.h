@@ -70,7 +70,9 @@ struct StatsMod {
   bool stuns{false};
 
   // Composite stats
-  int stamina{0}, magic{0};
+  int stamina{0}, magic{0}, toughness{0};
+
+  StatsMod operator*(int scalar) const;
 };
 
 #endif
