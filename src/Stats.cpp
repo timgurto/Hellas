@@ -4,7 +4,9 @@
 
 #include "util.h"
 
-const Stats &Stats::operator&=(const StatsMod &mod) {
+const Stats &Stats::operator&=(StatsMod mod) {
+  mod.maxHealth += mod.stamina;
+
   if (mod.maxHealth < 0 && -mod.maxHealth > static_cast<int>(maxHealth))
     maxHealth = 0;
   else

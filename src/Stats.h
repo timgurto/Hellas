@@ -36,7 +36,7 @@ struct Stats {
 
   int followerLimit{0};
 
-  const Stats &operator&=(const StatsMod &rhs);
+  const Stats &operator&=(StatsMod rhs);
   Stats operator&(const StatsMod &mod) const;
 
   ArmourClass resistanceByType(SpellSchool school) const;
@@ -67,6 +67,9 @@ struct StatsMod {
 
   // Flag
   bool stuns{false};
+
+  // Composite stats
+  int stamina{0};
 };
 
 #endif

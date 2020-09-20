@@ -709,17 +709,34 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Composite stats") {
       <item id="staminaRing" gearSlot="2">
         <stats stamina="1" />
       </item>
+
+      <item id="healthAndStamRing" gearSlot="2">
+        <stats stamina="1" health="1" />
+      </item>
     )");
-    const auto *staminaRing = &server->getFirstItem();
     const auto oldMaxHealth = user->stats().maxHealth;
 
-    WHEN("a user equips the item") {
+    WHEN("a user equips an item that grants stamina") {
+      const auto *staminaRing = &server->findItem("staminaRing");
       user->giveItem(staminaRing);
       client->sendMessage(CL_SWAP_ITEMS,
                           makeArgs(Serial::Inventory(), 0, Serial::Gear(), 2));
 
       THEN("he has more max health") {
         WAIT_UNTIL(user->stats().maxHealth > oldMaxHealth);
+      }
+    }
+
+    WHEN("a user equips an item with +1 stamina and +1 health") {
+      const auto *healthAndStamRing = &server->findItem("healthAndStamRing");
+      user->giveItem(healthAndStamRing);
+      client->sendMessage(CL_SWAP_ITEMS,
+                          makeArgs(Serial::Inventory(), 0, Serial::Gear(), 2));
+
+      THEN("he has the same max health") {
+        INFO("Max health: " << user->stats().maxHealth);
+        INFO("  Expected: " << oldMaxHealth + 2);
+        WAIT_UNTIL(user->stats().maxHealth == oldMaxHealth + 2);
       }
     }
   }
