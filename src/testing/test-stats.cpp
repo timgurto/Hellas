@@ -698,3 +698,29 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Block-value stat") {
     }
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Composite stats") {
+  GIVEN("an item with a new stat, \"stamina\", that grants max health") {
+    useData(R"(
+      <compositeStat id="stamina">
+        <stats health="1" />
+      </compositeStat>
+
+      <item id="staminaRing" gearSlot="2">
+        <stats stamina="1" />
+      </item>
+    )");
+    const auto *staminaRing = &server->getFirstItem();
+    const auto oldMaxHealth = user->stats().maxHealth;
+
+    WHEN("a user equips the item") {
+      user->giveItem(staminaRing);
+      client->sendMessage(CL_SWAP_ITEMS,
+                          makeArgs(Serial::Inventory(), 0, Serial::Gear(), 2));
+
+      THEN("he has more max health") {
+        WAIT_UNTIL(user->stats().maxHealth > oldMaxHealth);
+      }
+    }
+  }
+}
