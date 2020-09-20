@@ -40,6 +40,7 @@ struct Stats {
   Stats operator&(const StatsMod &mod) const;
 
   ArmourClass resistanceByType(SpellSchool school) const;
+  BasisPoints bonusUnlockChance{0};
 };
 
 // Describes modifiers for player stats, e.g. for gear.

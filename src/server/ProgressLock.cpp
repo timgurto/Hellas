@@ -102,7 +102,9 @@ void ProgressLock::triggerUnlocks(User &user, Type triggerType,
   for (auto it = toUnlock.first; it != toUnlock.second; ++it) {
     const ProgressLock &lock = it->second;
 
-    bool shouldUnlock = randDouble() <= lock._chance;
+    auto roll = randDouble();
+    auto unlockChance = user.stats().bonusUnlockChance.addTo(lock._chance);
+    bool shouldUnlock = roll <= unlockChance;
     if (!shouldUnlock) continue;
 
     std::string id;

@@ -26,6 +26,7 @@ class TemporaryUserStats {
   TemporaryUserStats &healing(BasisPoints v);
   TemporaryUserStats &gatherBonus(Percentage v);
   TemporaryUserStats &followerLimit(int v);
+  TemporaryUserStats &bonusUnlockChance(BasisPoints v);
 
  private:
   void apply();

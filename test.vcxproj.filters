@@ -206,6 +206,7 @@
     <ClCompile Include="src\server\Tagger.cpp" />
     <ClCompile Include="src\combatTypes.cpp" />
     <ClCompile Include="src\testing\TemporaryUserStats.cpp" />
+    <ClCompile Include="src\testing\test-locks.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />

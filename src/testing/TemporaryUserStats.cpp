@@ -7,8 +7,7 @@ TemporaryUserStats::TemporaryUserStats() {
 
 TemporaryUserStats::~TemporaryUserStats() { restoreOriginalSettings(); }
 
-TemporaryUserStats & TemporaryUserStats::maxHealth(Hitpoints v)
-{
+TemporaryUserStats& TemporaryUserStats::maxHealth(Hitpoints v) {
   _new.maxHealth = v;
   apply();
   return *this;
@@ -50,8 +49,7 @@ TemporaryUserStats& TemporaryUserStats::block(BasisPoints v) {
   return *this;
 }
 
-TemporaryUserStats & TemporaryUserStats::blockValue(Hitpoints v)
-{
+TemporaryUserStats& TemporaryUserStats::blockValue(Hitpoints v) {
   _new.blockValue = v;
   apply();
   return *this;
@@ -87,8 +85,7 @@ TemporaryUserStats& TemporaryUserStats::magicDamage(BasisPoints v) {
   return *this;
 }
 
-TemporaryUserStats & TemporaryUserStats::healing(BasisPoints v)
-{
+TemporaryUserStats& TemporaryUserStats::healing(BasisPoints v) {
   _new.healing = v;
   apply();
   return *this;
@@ -102,6 +99,12 @@ TemporaryUserStats& TemporaryUserStats::gatherBonus(Percentage v) {
 
 TemporaryUserStats& TemporaryUserStats::followerLimit(int v) {
   _new.followerLimit = v;
+  apply();
+  return *this;
+}
+
+TemporaryUserStats& TemporaryUserStats::bonusUnlockChance(BasisPoints v) {
+  _new.bonusUnlockChance = v;
   apply();
   return *this;
 }

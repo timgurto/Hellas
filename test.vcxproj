@@ -269,6 +269,7 @@
     <ClCompile Include="src\testing\test-grouping.cpp" />
     <ClCompile Include="src\testing\test-input.cpp" />
     <ClCompile Include="src\testing\test-loading.cpp" />
+    <ClCompile Include="src\testing\test-locks.cpp" />
     <ClCompile Include="src\testing\test-loot.cpp" />
     <ClCompile Include="src\testing\test-map.cpp" />
     <ClCompile Include="src\testing\test-movement.cpp" />
