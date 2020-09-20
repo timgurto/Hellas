@@ -44,7 +44,7 @@ struct Stats {
   ArmourClass resistanceByType(SpellSchool school) const;
   BasisPoints bonusUnlockChance{0};
 
-  static std::map<std::string, StatsMod> composites;
+  static std::map<std::string, StatsMod> compositeDefinitions;
 };
 
 // Describes modifiers for player stats, e.g. for gear.

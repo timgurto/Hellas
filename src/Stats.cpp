@@ -4,7 +4,7 @@
 
 #include "util.h"
 
-std::map<std::string, StatsMod> Stats::composites;
+std::map<std::string, StatsMod> Stats::compositeDefinitions;
 
 const Stats &Stats::operator&=(StatsMod mod) {
   modify(mod);
@@ -18,9 +18,10 @@ Stats Stats::operator&(const StatsMod &mod) const {
 }
 
 void Stats::modify(const StatsMod &mod) {
-  if (mod.stamina != 0) modify(composites["stamina"]);
-  if (mod.magic != 0) modify(composites["magic"]);
-  if (mod.toughness != 0) modify(composites["toughness"] * mod.toughness);
+  if (mod.stamina != 0) modify(compositeDefinitions["stamina"]);
+  if (mod.magic != 0) modify(compositeDefinitions["magic"]);
+  if (mod.toughness != 0)
+    modify(compositeDefinitions["toughness"] * mod.toughness);
 
   if (mod.maxHealth < 0 && -mod.maxHealth > static_cast<int>(maxHealth))
     maxHealth = 0;

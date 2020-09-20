@@ -150,7 +150,7 @@ void DataLoader::loadCompositeStats(XmlReader &xr) {
   for (auto elem : xr.getChildren("compositeStat")) {
     auto id = ""s;
     xr.findAttr(elem, "id", id);
-    auto &stats = Stats::composites[id];
+    auto &stats = Stats::compositeDefinitions[id];
     xr.findStatsChild("stats", elem, stats);
   }
 }
