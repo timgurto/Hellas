@@ -38,6 +38,7 @@ struct Stats {
 
   const Stats &operator&=(StatsMod rhs);
   Stats operator&(const StatsMod &mod) const;
+  void modify(const StatsMod &mod);
 
   ArmourClass resistanceByType(SpellSchool school) const;
   BasisPoints bonusUnlockChance{0};

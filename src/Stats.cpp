@@ -4,9 +4,22 @@
 
 #include "util.h"
 
+StatsMod stamina, magic;
+
 const Stats &Stats::operator&=(StatsMod mod) {
-  mod.maxHealth += mod.stamina;
-  mod.maxEnergy += mod.magic;
+  modify(mod);
+  return *this;
+}
+
+Stats Stats::operator&(const StatsMod &mod) const {
+  Stats stats = *this;
+  stats.modify(mod);
+  return stats;
+}
+
+void Stats::modify(const StatsMod &mod) {
+  if (mod.stamina != 0) modify(stamina);
+  if (mod.magic != 0) modify(magic);
 
   if (mod.maxHealth < 0 && -mod.maxHealth > static_cast<int>(maxHealth))
     maxHealth = 0;
@@ -61,14 +74,6 @@ const Stats &Stats::operator&=(StatsMod mod) {
   if (mod.speed != 1.0) speed *= mod.speed;
 
   stunned = stunned || mod.stuns;
-
-  return *this;
-}
-
-Stats Stats::operator&(const StatsMod &mod) const {
-  Stats stats = *this;
-  stats &= mod;
-  return stats;
 }
 
 ArmourClass Stats::resistanceByType(SpellSchool school) const {

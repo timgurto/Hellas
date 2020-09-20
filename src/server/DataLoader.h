@@ -17,6 +17,7 @@ class DataLoader {
 
   void loadTerrain(XmlReader &reader);
   void loadTerrainLists(XmlReader &reader);
+  void loadCompositeStats(XmlReader &reader);
   void loadLootTables(XmlReader &reader);
   void loadObjectTypes(XmlReader &reader);
   void loadQuests(XmlReader &reader);

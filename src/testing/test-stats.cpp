@@ -764,4 +764,28 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Composite stats") {
       }
     }
   }
+
+  GIVEN(
+      "a new stat, \"magic\", that grants magic damage; and a buff that grants "
+      "both magic and magic damage") {
+    useData(R"(
+      <compositeStat id="magic">
+        <stats magicDamage="1" />
+      </compositeStat>
+
+      <buff id="magic">
+        <stats magic="1" magicDamage="1" />
+      </buff>
+    )");
+    const auto &magicBuff = server->getFirstBuff();
+    const auto oldMaxEnergy = user->stats().maxEnergy;
+
+    WHEN("a user has the buff") {
+      user->applyBuff(magicBuff, *user);
+
+      THEN("he has two magic damage") {
+        CHECK(user->stats().magicDamage == BasisPoints{200});
+      }
+    }
+  }
 }

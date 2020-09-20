@@ -12,6 +12,7 @@
 #include "VehicleType.h"
 
 extern Args cmdLineArgs;
+extern StatsMod stamina, magic;
 
 DataLoader::DataLoader(Server &server) : _server(server) {}
 
@@ -82,6 +83,7 @@ void DataLoader::load(bool keepOldData) {
     loadTerrain(data);
     loadTerrainLists(data);
     loadMap(data);
+    loadCompositeStats(data);
     loadLootTables(data);
     loadObjectTypes(data);
     loadNPCTemplates(data);
@@ -142,6 +144,15 @@ void DataLoader::loadTerrain(XmlReader &xr) {
 
 void DataLoader::loadTerrainLists(XmlReader &xr) {
   TerrainList::loadFromXML(xr);
+}
+
+void DataLoader::loadCompositeStats(XmlReader &xr) {
+  for (auto elem : xr.getChildren("compositeStat")) {
+    auto id = ""s;
+    xr.findAttr(elem, "id", id);
+    if (id == "stamina") xr.findStatsChild("stats", elem, stamina);
+    if (id == "magic") xr.findStatsChild("stats", elem, magic);
+  }
 }
 
 void DataLoader::loadObjectTypes(XmlReader &xr) {
