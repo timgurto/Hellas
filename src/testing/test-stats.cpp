@@ -733,10 +733,34 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Composite stats") {
       client->sendMessage(CL_SWAP_ITEMS,
                           makeArgs(Serial::Inventory(), 0, Serial::Gear(), 2));
 
-      THEN("he has the same max health") {
+      THEN("he has two more max health") {
         INFO("Max health: " << user->stats().maxHealth);
         INFO("  Expected: " << oldMaxHealth + 2);
         WAIT_UNTIL(user->stats().maxHealth == oldMaxHealth + 2);
+      }
+    }
+  }
+
+  GIVEN(
+      "a new stat, \"magic\", that grants max energy; and a buff that grants "
+      "both magic and energy") {
+    useData(R"(
+      <compositeStat id="magic">
+        <stats energy="1" />
+      </compositeStat>
+
+      <buff id="magic">
+        <stats magic="1" energy="1" />
+      </buff>
+    )");
+    const auto &magicBuff = server->getFirstBuff();
+    const auto oldMaxEnergy = user->stats().maxEnergy;
+
+    WHEN("a user has the buff") {
+      user->applyBuff(magicBuff, *user);
+
+      THEN("he has two more max energy") {
+        CHECK(user->stats().maxEnergy == oldMaxEnergy + 2);
       }
     }
   }

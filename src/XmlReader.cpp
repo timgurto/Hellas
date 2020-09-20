@@ -144,6 +144,7 @@ bool XmlReader::findStatsChild(const std::string &val, TiXmlElement *elem,
   stats.stuns = XmlReader::findAttr(child, "stuns", n) && n != 0;
 
   XmlReader::findAttr(child, "stamina", stats.stamina);
+  XmlReader::findAttr(child, "magic", stats.magic);
 
   return true;
 }

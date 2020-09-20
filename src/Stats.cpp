@@ -6,6 +6,7 @@
 
 const Stats &Stats::operator&=(StatsMod mod) {
   mod.maxHealth += mod.stamina;
+  mod.maxEnergy += mod.magic;
 
   if (mod.maxHealth < 0 && -mod.maxHealth > static_cast<int>(maxHealth))
     maxHealth = 0;
