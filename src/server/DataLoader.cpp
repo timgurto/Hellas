@@ -34,6 +34,7 @@ void DataLoader::load(bool keepOldData) {
   if (!keepOldData) {
     _server._entities.clear();
     TerrainList::clearLists();
+    Stats::compositeDefinitions.clear();
     _server._items.clear();
     _server._objectTypes.clear();
     _server._recipes.clear();
@@ -62,6 +63,7 @@ void DataLoader::load(bool keepOldData) {
     auto reader = XmlReader::FromFile(_path + "/map.xml");
     loadMap(reader);
 
+    loadFromAllFiles(&DataLoader::loadCompositeStats);
     loadFromAllFiles(&DataLoader::loadLootTables);
     loadFromAllFiles(&DataLoader::loadObjectTypes);
     loadFromAllFiles(&DataLoader::loadNPCTemplates);

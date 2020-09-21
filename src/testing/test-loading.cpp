@@ -461,3 +461,15 @@ TEST_CASE_METHOD(ServerAndClientWithDataFiles,
     }
   }
 }
+
+TEST_CASE("Composite stats from file") {
+  GIVEN("a file defining a composite stat") {
+    WHEN("a server starts") {
+      auto s = TestServer::WithData("a_composite_stat");
+
+      THEN("there's a composite stat") {
+        CHECK(Stats::compositeDefinitions.size() == 1);
+      }
+    }
+  }
+}
