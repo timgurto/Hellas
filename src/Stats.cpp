@@ -163,6 +163,28 @@ std::string StatsMod::buffDescription() const {
 
 StatsMod StatsMod::operator*(int scalar) const {
   auto stats = *this;
+
+  stats.maxHealth *= scalar;
+  stats.hps *= scalar;
+  stats.maxEnergy *= scalar;
+  stats.eps *= scalar;
+  stats.followerLimit *= scalar;
+  stats.blockValue *= scalar;
+  stats.magicDamage *= scalar;
+  stats.physicalDamage *= scalar;
+  stats.healing *= scalar;
   stats.armor *= scalar;
+  stats.airResist *= scalar;
+  stats.earthResist *= scalar;
+  stats.fireResist *= scalar;
+  stats.waterResist *= scalar;
+  stats.hit *= scalar;
+  stats.crit *= scalar;
+  stats.critResist *= scalar;
+  stats.dodge *= scalar;
+  stats.block *= scalar;
+  stats.gatherBonus *= scalar;
+  stats.speed *= scalar;
+
   return stats;
 }

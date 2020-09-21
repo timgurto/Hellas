@@ -818,3 +818,139 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Composite stats") {
     }
   }
 }
+
+TEST_CASE("StatsMod * scalar") {
+  GIVEN("A StatsMod object with values of 1") {
+    auto stats = StatsMod{};
+    stats.maxHealth = 1;
+    stats.hps = 1;
+    stats.maxEnergy = 1;
+    stats.eps = 1;
+    stats.followerLimit = 1;
+    stats.blockValue = 1;
+    stats.magicDamage = 1;
+    stats.physicalDamage = 1;
+    stats.healing = 1;
+    stats.armor = 1;
+    stats.airResist = 1;
+    stats.earthResist = 1;
+    stats.fireResist = 1;
+    stats.waterResist = 1;
+    stats.hit = 1;
+    stats.crit = 1;
+    stats.critResist = 1;
+    stats.dodge = 1;
+    stats.block = 1;
+    stats.gatherBonus = 1;
+    stats.speed = 1.0;
+
+    WHEN("it's multiplied by 2") {
+      stats = stats * 2;
+
+      THEN("its values are 2") {
+        CHECK(stats.maxHealth == 2);
+        CHECK(stats.hps == 2);
+        CHECK(stats.maxEnergy == 2);
+        CHECK(stats.eps == 2);
+        CHECK(stats.followerLimit == 2);
+        CHECK(stats.blockValue == Hundredths{2});
+        CHECK(stats.magicDamage == BasisPoints{2});
+        CHECK(stats.physicalDamage == BasisPoints{2});
+        CHECK(stats.healing == BasisPoints{2});
+        CHECK(stats.armor == ArmourClass{2});
+        CHECK(stats.airResist == ArmourClass{2});
+        CHECK(stats.earthResist == ArmourClass{2});
+        CHECK(stats.fireResist == ArmourClass{2});
+        CHECK(stats.waterResist == ArmourClass{2});
+        CHECK(stats.hit == BasisPoints{2});
+        CHECK(stats.crit == BasisPoints{2});
+        CHECK(stats.critResist == BasisPoints{2});
+        CHECK(stats.dodge == BasisPoints{2});
+        CHECK(stats.block == BasisPoints{2});
+        CHECK(stats.gatherBonus == 2);
+        CHECK(stats.speed == 2.0);
+      }
+    }
+
+    WHEN("it's multiplied by 3") {
+      stats = stats * 3;
+
+      THEN("its values are 3") {
+        CHECK(stats.maxHealth == 3);
+        CHECK(stats.hps == 3);
+        CHECK(stats.maxEnergy == 3);
+        CHECK(stats.eps == 3);
+        CHECK(stats.followerLimit == 3);
+        CHECK(stats.blockValue == Hundredths{3});
+        CHECK(stats.magicDamage == BasisPoints{3});
+        CHECK(stats.physicalDamage == BasisPoints{3});
+        CHECK(stats.healing == BasisPoints{3});
+        CHECK(stats.armor == ArmourClass{3});
+        CHECK(stats.airResist == ArmourClass{3});
+        CHECK(stats.earthResist == ArmourClass{3});
+        CHECK(stats.fireResist == ArmourClass{3});
+        CHECK(stats.waterResist == ArmourClass{3});
+        CHECK(stats.hit == BasisPoints{3});
+        CHECK(stats.crit == BasisPoints{3});
+        CHECK(stats.critResist == BasisPoints{3});
+        CHECK(stats.dodge == BasisPoints{3});
+        CHECK(stats.block == BasisPoints{3});
+        CHECK(stats.gatherBonus == 3);
+        CHECK(stats.speed == 3.0);
+      }
+    }
+  }
+
+  GIVEN("A StatsMod object with values of 2") {
+    auto stats = StatsMod{};
+    stats.maxHealth = 2;
+    stats.hps = 2;
+    stats.maxEnergy = 2;
+    stats.eps = 2;
+    stats.followerLimit = 2;
+    stats.blockValue = 2;
+    stats.magicDamage = 2;
+    stats.physicalDamage = 2;
+    stats.healing = 2;
+    stats.armor = 2;
+    stats.airResist = 2;
+    stats.earthResist = 2;
+    stats.fireResist = 2;
+    stats.waterResist = 2;
+    stats.hit = 2;
+    stats.crit = 2;
+    stats.critResist = 2;
+    stats.dodge = 2;
+    stats.block = 2;
+    stats.gatherBonus = 2;
+    stats.speed = 2.0;
+
+    WHEN("it's multiplied by 2") {
+      stats = stats * 2;
+
+      THEN("its values are 4") {
+        CHECK(stats.maxHealth == 4);
+        CHECK(stats.hps == 4);
+        CHECK(stats.maxEnergy == 4);
+        CHECK(stats.eps == 4);
+        CHECK(stats.followerLimit == 4);
+        CHECK(stats.blockValue == Hundredths{4});
+        CHECK(stats.magicDamage == BasisPoints{4});
+        CHECK(stats.physicalDamage == BasisPoints{4});
+        CHECK(stats.healing == BasisPoints{4});
+        CHECK(stats.armor == ArmourClass{4});
+        CHECK(stats.airResist == ArmourClass{4});
+        CHECK(stats.earthResist == ArmourClass{4});
+        CHECK(stats.fireResist == ArmourClass{4});
+        CHECK(stats.waterResist == ArmourClass{4});
+        CHECK(stats.hit == BasisPoints{4});
+        CHECK(stats.crit == BasisPoints{4});
+        CHECK(stats.critResist == BasisPoints{4});
+        CHECK(stats.dodge == BasisPoints{4});
+        CHECK(stats.block == BasisPoints{4});
+        CHECK(stats.gatherBonus == 4);
+        CHECK(stats.speed == 4.0);
+      }
+    }
+  }
+}
