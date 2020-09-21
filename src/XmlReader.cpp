@@ -139,6 +139,7 @@ bool XmlReader::findStatsChild(const std::string &val, TiXmlElement *elem,
   XmlReader::findAttr(child, "followerLimit", stats.followerLimit);
   XmlReader::findAttr(child, "speed", stats.speed);
   XmlReader::findAttr(child, "gatherBonus", stats.gatherBonus);
+  XmlReader::findAttr(child, "unlockBonus", stats.unlockBonus);
 
   auto n = 0;
   stats.stuns = XmlReader::findAttr(child, "stuns", n) && n != 0;

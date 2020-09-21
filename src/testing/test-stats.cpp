@@ -968,3 +968,26 @@ TEST_CASE("Unlock bonus is part of StatsMod") {
   stats.modify(statsMod);
   CHECK(stats.unlockBonus == BasisPoints{1});
 }
+
+TEST_CASE("Loading stats from XML") {
+  GIVEN("an item has stats specified") {
+    auto data = R"(
+      <item id="ring" gearSlot="2">
+        <stats
+          unlockBonus="1"
+        />
+      </item>
+    )";
+
+    WHEN("a server starts") {
+      auto s = TestServer::WithDataString(data);
+
+      THEN("the item has those stats") {
+        const auto &ring = s.getFirstItem();
+        const auto &stats = ring.stats();
+
+        CHECK(stats.unlockBonus == BasisPoints{100});
+      }
+    }
+  }
+}
