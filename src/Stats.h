@@ -73,7 +73,7 @@ struct StatsMod {
   bool stuns{false};
 
   // Composite stats
-  int stamina{0}, magic{0}, toughness{0};
+  std::map<std::string, int> composites;
 
   StatsMod operator*(int scalar) const;
 };

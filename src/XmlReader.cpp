@@ -143,9 +143,17 @@ bool XmlReader::findStatsChild(const std::string &val, TiXmlElement *elem,
   auto n = 0;
   stats.stuns = XmlReader::findAttr(child, "stuns", n) && n != 0;
 
-  XmlReader::findAttr(child, "stamina", stats.stamina);
-  XmlReader::findAttr(child, "magic", stats.magic);
-  XmlReader::findAttr(child, "toughness", stats.toughness);
+  for (const auto &compositeStat : Stats::compositeDefinitions) {
+    const auto &statName = compositeStat.first;
+
+    // Do this via an int variable, instead of directly into the map, to avoid
+    // populating it with 0s.  Composite stats are StatsMods, and therefore if
+    // every StatsMod has an entry for each composite stat, then
+    // Stats::modify(StatsMod) will result in an infinite loop.
+    auto amount = 0;
+    if (XmlReader::findAttr(child, statName.c_str(), amount))
+      stats.composites[statName] = amount;
+  }
 
   return true;
 }

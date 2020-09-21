@@ -18,10 +18,11 @@ Stats Stats::operator&(const StatsMod &mod) const {
 }
 
 void Stats::modify(const StatsMod &mod) {
-  if (mod.stamina != 0) modify(compositeDefinitions["stamina"]);
-  if (mod.magic != 0) modify(compositeDefinitions["magic"]);
-  if (mod.toughness != 0)
-    modify(compositeDefinitions["toughness"] * mod.toughness);
+  for (const auto &compositeStat : mod.composites) {
+    auto statName = compositeStat.first;
+    auto amount = compositeStat.second;
+    modify(compositeDefinitions[statName] * amount);
+  }
 
   if (mod.maxHealth < 0 && -mod.maxHealth > static_cast<int>(maxHealth))
     maxHealth = 0;
