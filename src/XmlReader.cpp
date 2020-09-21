@@ -80,7 +80,7 @@ bool XmlReader::findAttr(TiXmlElement *elem, const char *attr,
                          BasisPoints &val) {
   auto rawNumber = short{};
   if (!findAttr(elem, attr, rawNumber)) return false;
-  val = rawNumber * 100;
+  val = {rawNumber};
   return true;
 }
 

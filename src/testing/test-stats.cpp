@@ -426,7 +426,7 @@ TEST_CASE("Basis-point display") {
   CHECK(BasisPoints{200}.displayShort() == "2%"s);
 }
 
-TEST_CASE("Basis-point stats are read as percentages") {
+TEST_CASE("Basis-point stats are read as hundredths of percentages") {
   GIVEN("an item specified to grant \"1 crit\" and \"2 dodge\"") {
     auto data = R"(
       <item id="critSword" >
@@ -437,10 +437,10 @@ TEST_CASE("Basis-point stats are read as percentages") {
     WHEN("a server starts") {
       auto s = TestServer::WithDataString(data);
 
-      THEN("the item has 100 crit and 200 dodge") {
+      THEN("the item has 1 crit and 2 dodge") {
         auto &critSword = s.getFirstItem();
-        CHECK(critSword.stats().crit == BasisPoints{100});
-        CHECK(critSword.stats().dodge == BasisPoints{200});
+        CHECK(critSword.stats().crit == BasisPoints{1});
+        CHECK(critSword.stats().dodge == BasisPoints{2});
       }
     }
   }
@@ -770,11 +770,11 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Composite stats") {
       "both magic and magic damage") {
     useData(R"(
       <compositeStat id="magic">
-        <stats magicDamage="1" />
+        <stats magicDamage="100" />
       </compositeStat>
 
       <buff id="magic">
-        <stats magic="1" magicDamage="1" />
+        <stats magic="1" magicDamage="100" />
       </buff>
     )");
     const auto &magicBuff = server->getFirstBuff();
@@ -974,7 +974,7 @@ TEST_CASE("Loading stats from XML") {
     auto data = R"(
       <item id="ring" gearSlot="2">
         <stats
-          unlockBonus="1"
+          unlockBonus="100"
         />
       </item>
     )";
