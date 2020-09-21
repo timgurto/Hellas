@@ -39,13 +39,9 @@ void Stats::modify(const StatsMod &mod) {
   eps += mod.eps;
 
   hit += mod.hit;
-
   crit += mod.crit;
-
   critResist += mod.critResist;
-
   dodge += mod.dodge;
-
   block += mod.block;
 
   blockValue += mod.blockValue;
@@ -63,6 +59,8 @@ void Stats::modify(const StatsMod &mod) {
 
   gatherBonus += mod.gatherBonus;
   if (gatherBonus < 0) gatherBonus = 0;
+
+  unlockBonus += mod.unlockBonus;
 
   // ASSUMPTION: only one item, presumably the weapon, will have this stat.
   if (mod.weaponDamage > 0) weaponDamage = mod.weaponDamage;
@@ -184,6 +182,7 @@ StatsMod StatsMod::operator*(int scalar) const {
   stats.dodge *= scalar;
   stats.block *= scalar;
   stats.gatherBonus *= scalar;
+  stats.unlockBonus *= scalar;
   stats.speed *= scalar;
 
   return stats;

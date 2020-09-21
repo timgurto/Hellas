@@ -42,7 +42,7 @@ struct Stats {
   void modify(const StatsMod &mod);
 
   ArmourClass resistanceByType(SpellSchool school) const;
-  BasisPoints bonusUnlockChance{0};
+  BasisPoints unlockBonus{0};
 
   static std::map<std::string, StatsMod> compositeDefinitions;
 };
@@ -60,6 +60,7 @@ struct StatsMod {
       waterResist{0};
   BasisPoints hit{0}, crit{0}, critResist{0}, dodge{0}, block{0};
   Percentage gatherBonus{0};
+  BasisPoints unlockBonus{0};
 
   // Replacement
   ms_t attackTime{0};

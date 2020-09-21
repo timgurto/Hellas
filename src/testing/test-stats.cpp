@@ -842,6 +842,7 @@ TEST_CASE("StatsMod * scalar") {
     stats.dodge = 1;
     stats.block = 1;
     stats.gatherBonus = 1;
+    stats.unlockBonus = 1;
     stats.speed = 1.0;
 
     WHEN("it's multiplied by 2") {
@@ -868,6 +869,7 @@ TEST_CASE("StatsMod * scalar") {
         CHECK(stats.dodge == BasisPoints{2});
         CHECK(stats.block == BasisPoints{2});
         CHECK(stats.gatherBonus == 2);
+        CHECK(stats.unlockBonus == BasisPoints{2});
         CHECK(stats.speed == 2.0);
       }
     }
@@ -896,6 +898,7 @@ TEST_CASE("StatsMod * scalar") {
         CHECK(stats.dodge == BasisPoints{3});
         CHECK(stats.block == BasisPoints{3});
         CHECK(stats.gatherBonus == 3);
+        CHECK(stats.unlockBonus == BasisPoints{3});
         CHECK(stats.speed == 3.0);
       }
     }
@@ -923,6 +926,7 @@ TEST_CASE("StatsMod * scalar") {
     stats.dodge = 2;
     stats.block = 2;
     stats.gatherBonus = 2;
+    stats.unlockBonus = 2;
     stats.speed = 2.0;
 
     WHEN("it's multiplied by 2") {
@@ -949,8 +953,18 @@ TEST_CASE("StatsMod * scalar") {
         CHECK(stats.dodge == BasisPoints{4});
         CHECK(stats.block == BasisPoints{4});
         CHECK(stats.gatherBonus == 4);
+        CHECK(stats.unlockBonus == BasisPoints{4});
         CHECK(stats.speed == 4.0);
       }
     }
   }
+}
+
+TEST_CASE("Unlock bonus is part of StatsMod") {
+  auto stats = Stats{};
+  auto statsMod = StatsMod{};
+  statsMod.unlockBonus = 1;
+
+  stats.modify(statsMod);
+  CHECK(stats.unlockBonus == BasisPoints{1});
 }

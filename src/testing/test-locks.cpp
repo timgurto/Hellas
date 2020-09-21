@@ -14,7 +14,7 @@ TEST_CASE("Unlock-chance-bonus stat", "[slow]") {
     auto server = TestServer::WithDataString(data);
 
     AND_GIVEN("users have a bonus chance of +100%") {
-      CHANGE_BASE_USER_STATS.bonusUnlockChance(10000);
+      CHANGE_BASE_USER_STATS.unlockBonus(10000);
 
       for (auto i = 0; i != 40; ++i) {
         // Give the user a fish
@@ -30,7 +30,7 @@ TEST_CASE("Unlock-chance-bonus stat", "[slow]") {
     }
 
     AND_GIVEN("users have a bonus chance of +50%") {
-      CHANGE_BASE_USER_STATS.bonusUnlockChance(5000);
+      CHANGE_BASE_USER_STATS.unlockBonus(5000);
 
       THEN("75% of unlock attempts succeed") {
         auto numSuccessfulUnlocks = 0;

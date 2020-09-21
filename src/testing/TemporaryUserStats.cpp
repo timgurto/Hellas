@@ -103,8 +103,8 @@ TemporaryUserStats& TemporaryUserStats::followerLimit(int v) {
   return *this;
 }
 
-TemporaryUserStats& TemporaryUserStats::bonusUnlockChance(BasisPoints v) {
-  _new.bonusUnlockChance = v;
+TemporaryUserStats& TemporaryUserStats::unlockBonus(BasisPoints v) {
+  _new.unlockBonus = v;
   apply();
   return *this;
 }

@@ -103,7 +103,7 @@ void ProgressLock::triggerUnlocks(User &user, Type triggerType,
     const ProgressLock &lock = it->second;
 
     auto roll = randDouble();
-    auto unlockChance = user.stats().bonusUnlockChance.addTo(lock._chance);
+    auto unlockChance = user.stats().unlockBonus.addTo(lock._chance);
     bool shouldUnlock = roll <= unlockChance;
     if (!shouldUnlock) continue;
 
