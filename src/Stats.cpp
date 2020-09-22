@@ -22,6 +22,12 @@ void Stats::modify(const StatsMod &mod) {
     auto statName = compositeStat.first;
     auto amount = compositeStat.second;
     modify(compositeDefinitions[statName] * amount);
+
+    auto it = composites.find(statName);
+    if (it == composites.end())
+      composites[statName] = amount;
+    else
+      it->second += amount;
   }
 
   if (mod.maxHealth < 0 && -mod.maxHealth > static_cast<int>(maxHealth))
@@ -86,6 +92,11 @@ ArmourClass Stats::resistanceByType(SpellSchool school) const {
 
   // Can't report, as this could be the server or the client.
   return armor;
+}
+
+int Stats::getComposite(std::string statName) const {
+  auto it = composites.find(statName);
+  return it->second;
 }
 
 std::vector<std::string> StatsMod::toStrings() const {

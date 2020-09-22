@@ -28,6 +28,8 @@ class TemporaryUserStats {
   TemporaryUserStats &followerLimit(int v);
   TemporaryUserStats &unlockBonus(BasisPoints v);
 
+  TemporaryUserStats &composite(std::string statName, int v);
+
  private:
   void apply();
   void storeCurrentSettings();

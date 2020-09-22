@@ -109,6 +109,12 @@ TemporaryUserStats& TemporaryUserStats::unlockBonus(BasisPoints v) {
   return *this;
 }
 
+TemporaryUserStats& TemporaryUserStats::composite(std::string statName, int v) {
+  _new.composites[statName] = v;
+  apply();
+  return *this;
+}
+
 void TemporaryUserStats::apply() { User::OBJECT_TYPE.baseStats(_new); }
 
 void TemporaryUserStats::storeCurrentSettings() {

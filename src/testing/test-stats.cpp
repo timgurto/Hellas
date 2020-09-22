@@ -991,3 +991,33 @@ TEST_CASE("Loading stats from XML") {
     }
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Composite stats in Stats") {
+  GIVEN("a buff that gives a composite stat") {
+    useData(R"(
+      <compositeStat id="awesomeness" />
+
+      <buff id="awesome1">
+        <stats awesomeness="1" />
+      </buff>
+    )");
+    const auto &awesome1 = server->findBuff("awesome1");
+
+    WHEN("a user has a 1-awesomeness buff") {
+      user->applyBuff(awesome1, *user);
+
+      THEN("the user has 1 awesomeness") {
+        CHECK(user->stats().getComposite("awesomeness"s) == 1);
+      }
+
+      AND_WHEN("users have a baseline of 1 awesomeness") {
+        CHANGE_BASE_USER_STATS.composite("awesomeness", 1);
+        user->updateStats();
+
+        THEN("the user has 2 awesomeness") {
+          CHECK(user->stats().getComposite("awesomeness"s) == 2);
+        }
+      }
+    }
+  }
+}
