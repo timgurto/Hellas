@@ -478,4 +478,16 @@ TEST_CASE("Composite stats from file") {
       CHECK(Stats::compositeDefinitions.empty());
     }
   }
+
+  GIVEN("a server with no data") {
+    auto s = TestServer{};
+
+    WHEN("a client starts with a composite stat in a data file") {
+      auto c = TestClient::WithData("a_composite_stat");
+
+      THEN("there's a composite stat") {
+        CHECK(Stats::compositeDefinitions.size() == 1);
+      }
+    }
+  }
 }

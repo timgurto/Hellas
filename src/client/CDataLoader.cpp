@@ -49,6 +49,7 @@ void CDataLoader::load(bool keepOldData) {
 
     loadFromAllFiles(&CDataLoader::loadTerrain);
     loadFromAllFiles(&CDataLoader::loadTerrainLists);
+    loadFromAllFiles(&CDataLoader::loadCompositeStats);
     loadFromAllFiles(&CDataLoader::loadParticles);
     loadFromAllFiles(&CDataLoader::loadSounds);
     loadFromAllFiles(&CDataLoader::loadProjectiles);
