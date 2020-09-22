@@ -80,6 +80,7 @@ void CDataLoader::load(bool keepOldData) {
     loadTerrain(reader);
     loadTerrainLists(reader);
     loadMap(reader);
+    loadCompositeStats(reader);
     loadParticles(reader);
     loadSounds(reader);
     loadProjectiles(reader);
@@ -131,6 +132,14 @@ void CDataLoader::loadTerrain(XmlReader &xr) {
 
 void CDataLoader::loadTerrainLists(XmlReader &xr) {
   TerrainList::loadFromXML(xr);
+}
+
+void CDataLoader::loadCompositeStats(XmlReader &xr) {
+  for (auto elem : xr.getChildren("compositeStat")) {
+    auto id = ""s;
+    xr.findAttr(elem, "id", id);
+    auto &stats = Stats::compositeDefinitions[id];
+  }
 }
 
 void CDataLoader::loadParticles(XmlReader &xr) {

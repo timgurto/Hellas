@@ -96,6 +96,7 @@ ArmourClass Stats::resistanceByType(SpellSchool school) const {
 
 int Stats::getComposite(std::string statName) const {
   auto it = composites.find(statName);
+  if (it == composites.end()) return 0;
   return it->second;
 }
 

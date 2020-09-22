@@ -1020,4 +1020,50 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Composite stats in Stats") {
       }
     }
   }
+
+  SECTION("Bad stat name") {
+    auto stats = Stats{};
+    CHECK(stats.getComposite("notReal") == 0);
+  }
+}
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Stat propagation to clients") {
+  GIVEN("a \"power\" stat") {
+    useData(R"(
+      <compositeStat id="power" />
+    )");
+
+    WHEN("users are given 1 power") {
+      CHANGE_BASE_USER_STATS.composite("power", 1);
+      user->updateStats();
+
+      THEN("the user knows he has 1 power") {
+        WAIT_UNTIL(client->stats().getComposite("power") == 1);
+      }
+    }
+
+    WHEN("users are given 2 power") {
+      CHANGE_BASE_USER_STATS.composite("power", 2);
+      user->updateStats();
+
+      THEN("the user knows he has 2 power") {
+        WAIT_UNTIL(client->stats().getComposite("power") == 2);
+      }
+    }
+  }
+
+  GIVEN("a \"toughness\" stat") {
+    useData(R"(
+      <compositeStat id="toughness" />
+    )");
+
+    WHEN("users are given 1 toughness") {
+      CHANGE_BASE_USER_STATS.composite("toughness", 1);
+      user->updateStats();
+
+      THEN("the user knows he has 1 toughness") {
+        WAIT_UNTIL(client->stats().getComposite("toughness") == 1);
+      }
+    }
+  }
 }

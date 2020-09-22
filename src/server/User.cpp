@@ -1383,6 +1383,13 @@ void User::updateStats() {
       makeArgs(newStats.airResist, newStats.earthResist, newStats.fireResist,
                newStats.waterResist),
       makeArgs(newStats.attackTime, newStats.followerLimit, newStats.speed));
+
+  for (const auto &stat : Stats::compositeDefinitions) {
+    auto statName = stat.first;
+    auto statValue = newStats.getComposite(statName);
+    args = makeArgs(args, statValue);
+  }
+
   sendMessage({SV_YOUR_STATS, args});
 
   stats(newStats);

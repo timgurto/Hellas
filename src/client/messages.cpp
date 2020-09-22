@@ -1284,6 +1284,12 @@ void Client::handleBufferedMessages(const std::string &msg) {
             _stats.fireResist >> del >> _stats.waterResist >> del >>
             _stats.attackTime >> del >> _stats.followerLimit >> del >>
             _stats.speed >> del;
+
+        for (const auto &stat : Stats::compositeDefinitions) {
+          auto statName = stat.first;
+          singleMsg >> _stats.composites[statName] >> del;
+        }
+
         if (del != MSG_END) break;
         _displaySpeed = Podes::displayFromPixels(_stats.speed);
         _character.maxHealth(_stats.maxHealth);
