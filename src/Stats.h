@@ -45,7 +45,7 @@ struct Stats {
   BasisPoints unlockBonus{0};
 
   std::map<std::string, int> composites;
-  int getComposite(std::string statName) const;
+  const int &getComposite(std::string statName) const;
 
   static std::map<std::string, StatsMod> compositeDefinitions;
 };

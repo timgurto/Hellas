@@ -75,6 +75,13 @@ void Client::initializeGearWindow() {
 
   // Stats
   auto y = labelRect.y;
+  for (const auto &compositeStat : Stats::compositeDefinitions) {
+    auto statName = compositeStat.first;
+    const auto &valueRef = _stats.getComposite(statName);
+    addStat(statName, valueRef, {}, {}, y, _gearWindow, {});
+  }
+  addGap(y, _gearWindow);
+
   addStat("Max health", _stats.maxHealth, {}, {}, y, _gearWindow, {},
           Color::STAT_HEALTH);
   addStat("Health regen", _stats.hps, {}, "/s", y, _gearWindow, {},
