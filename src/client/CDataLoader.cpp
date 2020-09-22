@@ -31,6 +31,7 @@ CDataLoader CDataLoader::FromString(Client &client, const XML &data) {
 void CDataLoader::load(bool keepOldData) {
   if (!keepOldData) {
     _client.gameData.terrain.clear();
+    Stats::compositeDefinitions.clear();
     _client.gameData.particleProfiles.clear();
     _client.gameData.soundProfiles.clear();
     _client.gameData.projectileTypes.clear();
