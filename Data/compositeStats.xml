@@ -1,0 +1,43 @@
+<root>
+
+<compositeStat id="might">
+    <stats blockValue="9" />
+    <stats hit="5" />
+    <stats physicalDamage="37" />
+</compositeStat>
+
+<compositeStat id="intellect">
+    <stats hit="5" />
+    <stats magicDamage="30" />
+    <stats healing="56" />
+</compositeStat>
+
+<compositeStat id="cunning">
+    <stats energy="1" />
+    <stats crit="19" />
+    <stats unlockBonus="19" />
+</compositeStat>
+
+<compositeStat id="swiftness">
+    <stats dodge="20" />
+    <stats block="18" />
+    <stats speed="6" />
+</compositeStat>
+
+<compositeStat id="endurance">
+    <stats critResist="1" />
+    <stats armour="1" />
+    <stats health="1" />
+    <stats airResist="1" />
+    <stats earthResist="1" />
+    <stats fireResist="1" />
+    <stats waterResist="1" />
+    <!--stats inventoryBonus="5" /-->
+</compositeStat>
+
+<compositeStat id="courage">
+    <stats hps="7" />
+    <stats eps="10" />
+</compositeStat>
+
+</root>
