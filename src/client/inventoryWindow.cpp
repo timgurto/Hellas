@@ -82,15 +82,6 @@ void Client::initializeGearWindow() {
   }
   addGap(y, _gearWindow);
 
-  addStat("Max health", _stats.maxHealth, {}, {}, y, _gearWindow, {},
-          Color::STAT_HEALTH);
-  addStat("Health regen", _stats.hps, {}, "/s", y, _gearWindow, {},
-          Color::STAT_HEALTH);
-  addStat("Max energy", _stats.maxEnergy, {}, {}, y, _gearWindow, {},
-          Color::STAT_ENERGY);
-  addStat("Energy regen", _stats.eps, {}, "/s", y, _gearWindow, {},
-          Color::STAT_ENERGY);
-  addGap(y, _gearWindow);
   addStat("Hit chance", _stats.hit.display(), {}, {}, y, _gearWindow,
           "Extra chance to hit.  You have a baseline 10% chance to miss "
           "enemies at the same level as you.");
