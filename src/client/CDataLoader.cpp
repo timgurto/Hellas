@@ -141,8 +141,8 @@ void CDataLoader::loadCompositeStats(XmlReader &xr) {
     auto id = ""s;
     xr.findAttr(elem, "id", id);
     _client.gameData.compositeStatsDisplayOrder.push_back(id);
-    auto &stats = Stats::compositeDefinitions[id];
-    xr.findStatsChild("stats", elem, stats);
+    auto &compositeStat = Stats::compositeDefinitions[id];
+    xr.findStatsChild("stats", elem, compositeStat.stats);
   }
 }
 

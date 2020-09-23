@@ -4,7 +4,7 @@
 
 #include "util.h"
 
-std::map<std::string, StatsMod> Stats::compositeDefinitions;
+std::map<std::string, CompositeStat> Stats::compositeDefinitions;
 
 const Stats &Stats::operator&=(StatsMod mod) {
   modify(mod);
@@ -21,7 +21,7 @@ void Stats::modify(const StatsMod &mod) {
   for (const auto &compositeStat : mod.composites) {
     auto statName = compositeStat.first;
     auto amount = compositeStat.second;
-    modify(compositeDefinitions[statName] * amount);
+    modify(compositeDefinitions[statName].stats * amount);
 
     auto it = composites.find(statName);
     if (it == composites.end())
