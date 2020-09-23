@@ -75,10 +75,9 @@ void Client::initializeGearWindow() {
 
   // Stats
   auto y = labelRect.y;
-  for (const auto &compositeStat : Stats::compositeDefinitions) {
-    auto statName = compositeStat.first;
-    const auto &valueRef = _stats.getComposite(statName);
-    addStat(statName, valueRef, {}, {}, y, _gearWindow, {});
+  for (const auto &statID : gameData.compositeStatsDisplayOrder) {
+    const auto &valueRef = _stats.getComposite(statID);
+    addStat(statID, valueRef, {}, {}, y, _gearWindow, {});
   }
   addGap(y, _gearWindow);
 

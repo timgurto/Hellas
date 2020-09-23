@@ -44,4 +44,6 @@ struct CGameData {
   const std::string &tagName(const std::string &id) const {
     return tagNames[id];
   }
+
+  std::vector<std::string> compositeStatsDisplayOrder;
 };
