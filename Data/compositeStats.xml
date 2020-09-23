@@ -1,6 +1,6 @@
 <root>
 
-<compositeStat id="might">
+<compositeStat id="might" name="Might">
     <stats
         blockValue="9"
         hit="5"
@@ -8,7 +8,7 @@
     />
 </compositeStat>
 
-<compositeStat id="intellect">
+<compositeStat id="intellect" name="Intellect">
     <stats
         hit="5"
         magicDamage="30"
@@ -16,7 +16,7 @@
     />
 </compositeStat>
 
-<compositeStat id="cunning">
+<compositeStat id="cunning" name="Cunning">
     <stats
         energy="1"
         crit="19"
@@ -24,7 +24,7 @@
     />
 </compositeStat>
 
-<compositeStat id="swiftness">
+<compositeStat id="swiftness" name="Swiftness">
     <stats
         dodge="20"
         block="18"
@@ -32,7 +32,7 @@
     />
 </compositeStat>
 
-<compositeStat id="endurance">
+<compositeStat id="endurance" name="Endurance">
     <stats
         critResist="1"
         armour="1"
@@ -45,7 +45,7 @@
     <!--stats inventoryBonus="5" /-->
 </compositeStat>
 
-<compositeStat id="courage">
+<compositeStat id="courage" name="Courage">
     <stats
         hps="7"
         eps="10"

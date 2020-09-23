@@ -1067,3 +1067,28 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Stat propagation to clients") {
     }
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Composite stats have display names") {
+  GIVEN("composite stats with display names") {
+    useData(R"(
+      <compositeStat id="con" name="Constitution" />
+      <compositeStat id="wis" name="Wisdom" />
+    )");
+
+    THEN("the client knows the display name") {
+      CHECK(Stats::compositeDefinitions["con"].name == "Constitution");
+      CHECK(Stats::compositeDefinitions["wis"].name == "Wisdom");
+    }
+  }
+
+  GIVEN("a composite stat with no display names") {
+    useData(R"(
+      <compositeStat id="dex" />
+    )");
+
+    THEN("the client uses its ID as a display name") {
+      CHECK(Stats::compositeDefinitions["dex"].name == "dex");
+    }
+  }
+}

@@ -41,6 +41,7 @@ struct StatsMod {
 };
 
 struct CompositeStat {
+  std::string name;
   StatsMod stats;
 };
 
