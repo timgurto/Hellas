@@ -144,6 +144,7 @@ void CDataLoader::loadCompositeStats(XmlReader &xr) {
     auto &compositeStat = Stats::compositeDefinitions[id];
     xr.findStatsChild("stats", elem, compositeStat.stats);
     if (!xr.findAttr(elem, "name", compositeStat.name)) compositeStat.name = id;
+    xr.findAttr(elem, "description", compositeStat.description);
   }
 }
 

@@ -1,6 +1,7 @@
 <root>
 
-<compositeStat id="might" name="Might">
+<compositeStat id="might" name="Might"
+    description="How physically powerful you are.  Might primarily increases physical damage you do.  It also improves hit chance and block value.">
     <stats
         blockValue="9"
         hit="5"
@@ -8,7 +9,8 @@
     />
 </compositeStat>
 
-<compositeStat id="intellect" name="Intellect">
+<compositeStat id="intellect" name="Intellect"
+    description="Your comprehension of magic.  Intellect increases magic damage and healing that you do, as well as hit chance.">
     <stats
         hit="5"
         magicDamage="30"
@@ -16,7 +18,8 @@
     />
 </compositeStat>
 
-<compositeStat id="cunning" name="Cunning">
+<compositeStat id="cunning" name="Cunning"
+    description="Your ability to outwit your enemies and rivals.  Cunning boosts your crit chance and energy pool.  It also increases your chance to unlock new constructions and recipes.">
     <stats
         energy="1"
         crit="19"
@@ -24,7 +27,8 @@
     />
 </compositeStat>
 
-<compositeStat id="swiftness" name="Swiftness">
+<compositeStat id="swiftness" name="Swiftness"
+    description="Your speed and dexterity.  Swiftness improves your chance to dodge or block attacks, and increases your run speed.">
     <stats
         dodge="20"
         block="18"
@@ -32,9 +36,10 @@
     />
 </compositeStat>
 
-<compositeStat id="endurance" name="Endurance">
+<compositeStat id="endurance" name="Endurance"
+    description="Your ability to withstand damage.  Endurance provides armour, magic resistances, extra health, and reduces enemies' crit chance.">
     <stats
-        critResist="1"
+        critResist="9"
         armour="1"
         health="1"
         airResist="1"
@@ -45,7 +50,8 @@
     <!--stats inventoryBonus="5" /-->
 </compositeStat>
 
-<compositeStat id="courage" name="Courage">
+<compositeStat id="courage" name="Courage"
+    description="How eagerly you overcome fear and carry on the fight.  Courage replenishes your health and energy over time.">
     <stats
         hps="7"
         eps="10"
