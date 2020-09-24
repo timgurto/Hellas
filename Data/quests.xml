@@ -180,14 +180,14 @@
         <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
         <loot id="calydonianHorn" chance="0.2" />
     </npcType>
-    <item id="calydonianHorn" name="Horn of the Calydonian Boar" gearSlot="7" lvlReq="15"
+    <item id="calydonianHorn" name="Horn of the Calydonian Boar" gearSlot="7" lvlReq="10"
         iconFile="hornBlack" gearFile="hornBlack" quality="2" >
-		<stats eps="2" hps="1" />
+		<stats courage="14" />
 		<offset x="0" y="-3" />
     </item>
     <item id="calydonianHide" name="Hide of the Calydonian Boar" gearSlot="3" sounds="leather"
-        iconFile="hideBlack" gearFile="hideBlack" lvlReq="12" quality="2" >
-        <stats critResist="2" />
+        iconFile="hideBlack" gearFile="hideBlack" lvlReq="10" quality="2" >
+        <stats armor="6" endurance="3" />
         <offset x="-4" y="-1" />
     </item>
 
