@@ -88,12 +88,13 @@ void Client::initializeGearWindow() {
           "enemies at the same level as you.");
   addStat("Crit chance", _stats.crit.display(), {}, {}, y, _gearWindow,
           "Chance that an attack will do double damage.");
-  addStat("Physical damage", _stats.physicalDamage, "+", {}, y, _gearWindow,
-          "Additional damage added to physical attacks and spells.");
-  addStat("Magic damage", _stats.magicDamage, "+", {}, y, _gearWindow,
-          "Additional damage added to magical attacks and spells");
-  addStat("Healing power", _stats.healing, "+", {}, y, _gearWindow,
-          "Additional amount added to healing spells.");
+  addStat("Physical damage", _stats.physicalDamage.display(), "+", {}, y,
+          _gearWindow,
+          "Increases the damage done by your physical attacks and spells.");
+  addStat("Magic damage", _stats.magicDamage.display(), "+", {}, y, _gearWindow,
+          "Increases the damage done by your magical attacks and spells");
+  addStat("Healing power", _stats.healing.display(), "+", {}, y, _gearWindow,
+          "Increases the amount healed by your abilities.");
   addGap(y, _gearWindow);
   addStat("Armour class", _stats.armor, {}, {}, y, _gearWindow,
           "Each point reduces incoming physical damage by 0.1%.");
