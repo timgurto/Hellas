@@ -53,7 +53,7 @@
         <tier>
             <cost tag="food" quantity="1" />
             <talent type="stats" name="Study Widely" icon="scrollBlue"  flavourText="Consult a broad range of texts, to expand the general knowledge of magic on which you can draw."> <stats energy="7" /> </talent>
-            <talent type="stats" name="Study Deeply" icon="scrollRed" flavourText="Delve into magic you already know, making your spells more effective."> <stats intellect="1" /> </talent>
+            <talent type="stats" name="Study Deeply" icon="scrollRed" flavourText="Delve into magic you already know, making your spells more effective."> <stats intellect="2" /> </talent>
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
