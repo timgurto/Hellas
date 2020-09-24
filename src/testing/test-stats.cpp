@@ -870,7 +870,8 @@ TEST_CASE("StatsMod * scalar") {
         CHECK(stats.block == BasisPoints{2});
         CHECK(stats.gatherBonus == 2);
         CHECK(stats.unlockBonus == BasisPoints{2});
-        CHECK(stats.speed == 2.0);
+
+        CHECK(stats.speed == 1.0);
       }
     }
 
@@ -899,7 +900,8 @@ TEST_CASE("StatsMod * scalar") {
         CHECK(stats.block == BasisPoints{3});
         CHECK(stats.gatherBonus == 3);
         CHECK(stats.unlockBonus == BasisPoints{3});
-        CHECK(stats.speed == 3.0);
+
+        CHECK(stats.speed == 1.0);
       }
     }
   }
@@ -954,6 +956,7 @@ TEST_CASE("StatsMod * scalar") {
         CHECK(stats.block == BasisPoints{4});
         CHECK(stats.gatherBonus == 4);
         CHECK(stats.unlockBonus == BasisPoints{4});
+
         CHECK(stats.speed == 4.0);
       }
     }

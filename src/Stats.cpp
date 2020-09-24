@@ -206,7 +206,12 @@ StatsMod StatsMod::operator*(int scalar) const {
   stats.block *= scalar;
   stats.gatherBonus *= scalar;
   stats.unlockBonus *= scalar;
-  stats.speed *= scalar;
+
+  double newSpeed = 1.0;
+  for (auto i = 0; i < scalar; ++i) {
+    newSpeed *= stats.speed;
+  }
+  stats.speed = newSpeed;
 
   return stats;
 }
