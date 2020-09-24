@@ -722,6 +722,7 @@ Object &Server::addPermanentObject(const ObjectType *type,
                                    const MapPoint &location) {
   Object *newObj = new Object(type, location);
   newObj->setAsPermanent();
+  newObj->excludeFromPersistentState();
 
   return dynamic_cast<Object &>(addEntity(newObj));
 }
