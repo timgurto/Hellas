@@ -7,7 +7,7 @@
         <tier>
             <cost tag="food" quantity="1" />
             <talent type="stats" name="Train Reflexes" icon="outlineFoot" flavourText="Improved agility and reaction time help you to avoid being hit."><stats swiftness="2" /> </talent>
-            <talent type="stats" name="Train Willpower" icon="outlineHead" flavourText="Build willpower through discomfort and deprivation, strengthening your mental defenses."> <stats airResist="17" earthResist="10" fireResist="10" waterResist="10" /> </talent>
+            <talent type="stats" name="Train Willpower" icon="outlineHead" flavourText="Build willpower through discomfort and deprivation, strengthening your mental defenses."> <stats airResist="8" earthResist="8" fireResist="8" waterResist="8" /> </talent>
         </tier>
         <tier>
             <cost tag="food" quantity="2" />
