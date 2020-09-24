@@ -440,9 +440,14 @@ void Server::loadEntities(XmlReader &xr,
 
     MapPoint p;
     if (!xr.findAttr(elem, "x", p.x) || !xr.findAttr(elem, "y", p.y)) {
-      _debug("Skipping importing object with invalid/no location",
-             Color::CHAT_ERROR);
-      continue;
+      // Try old location format
+      auto location = xr.findChild("location", elem);
+      if (!location || !xr.findAttr(location, "x", p.x) ||
+          !xr.findAttr(location, "y", p.y)) {
+        _debug("Skipping importing object with invalid/no location",
+               Color::CHAT_ERROR);
+        continue;
+      }
     }
 
     const ObjectType *type = findObjectTypeByID(s);
@@ -569,9 +574,14 @@ void Server::loadEntities(XmlReader &xr,
 
     MapPoint p;
     if (!xr.findAttr(elem, "x", p.x) || !xr.findAttr(elem, "y", p.y)) {
-      _debug("Skipping importing object with invalid/no location",
-             Color::CHAT_ERROR);
-      continue;
+      // Try old location format
+      auto location = xr.findChild("location", elem);
+      if (!location || !xr.findAttr(location, "x", p.x) ||
+          !xr.findAttr(location, "y", p.y)) {
+        _debug("Skipping importing object with invalid/no location",
+               Color::CHAT_ERROR);
+        continue;
+      }
     }
 
     const NPCType *type = dynamic_cast<const NPCType *>(findObjectTypeByID(s));
@@ -628,11 +638,19 @@ void Server::loadEntities(XmlReader &xr,
     size_t quantity = 1;
     xr.findAttr(elem, "qty", quantity);
 
-    auto loc = MapPoint{};
-    xr.findAttr(elem, "x", loc.x);
-    xr.findAttr(elem, "y", loc.y);
+    auto p = MapPoint{};
+    if (!xr.findAttr(elem, "x", p.x) || !xr.findAttr(elem, "y", p.y)) {
+      // Try old location format
+      auto location = xr.findChild("location", elem);
+      if (!location || !xr.findAttr(location, "x", p.x) ||
+          !xr.findAttr(location, "y", p.y)) {
+        _debug("Skipping importing dropped item with invalid/no location",
+               Color::CHAT_ERROR);
+        continue;
+      }
+    }
 
-    addEntity(new DroppedItem(*itemType, quantity, loc));
+    addEntity(new DroppedItem(*itemType, quantity, p));
   }
 }
 
