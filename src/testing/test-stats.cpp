@@ -1092,3 +1092,77 @@ TEST_CASE_METHOD(ServerAndClientWithData,
     }
   }
 }
+
+TEST_CASE("Composite stats' conversion to strings") {
+  GIVEN("int (Intellect) and con (Constitution) stats") {
+    auto intellect = CompositeStat{};
+    intellect.name = "Intellect";
+    Stats::compositeDefinitions["int"] = intellect;
+
+    auto constitution = CompositeStat{};
+    constitution.name = "Constitution";
+    Stats::compositeDefinitions["con"] = constitution;
+
+    GIVEN("an empty StatsMod") {
+      auto stats = StatsMod{};
+
+      THEN("toStrings() is empty") { CHECK(stats.toStrings().empty()); }
+
+      WHEN("it gives 1 int") {
+        stats.composites["int"] = 1;
+
+        THEN("toStrings() shows Intellect") {
+          auto strings = stats.toStrings();
+          REQUIRE(strings.size() == 1);
+          CHECK(strings.front() == "+1 Intellect");
+        }
+      }
+
+      WHEN("it gives 1 con") {
+        stats.composites["con"] = 1;
+
+        THEN("toStrings() shows Constitution") {
+          auto strings = stats.toStrings();
+          CHECK(strings.front() == "+1 Constitution");
+        }
+      }
+
+      WHEN("it gives 2 con") {
+        stats.composites["con"] = 2;
+
+        THEN("toStrings() shows the correct amount of Constitution") {
+          auto strings = stats.toStrings();
+          CHECK(strings.front() == "+2 Constitution");
+        }
+      }
+
+      WHEN("it gives -1 con") {
+        stats.composites["con"] = -1;
+
+        THEN("toStrings() shows the correct amount of Constitution") {
+          auto strings = stats.toStrings();
+          CHECK(strings.front() == "-1 Constitution");
+        }
+      }
+
+      WHEN("it gives 1 con and 1 int") {
+        stats.composites["con"] = 1;
+        stats.composites["int"] = 1;
+
+        THEN("toStrings() contains a string for each stat") {
+          auto strings = stats.toStrings();
+          REQUIRE(strings.size() == 2);
+          auto intFound = false, conFound = false;
+          for (auto string : strings) {
+            if (string == "+1 Intellect")
+              intFound = true;
+            else if (string == "+1 Constitution")
+              conFound = true;
+          }
+          CHECK(intFound);
+          CHECK(conFound);
+        }
+      }
+    }
+  }
+}

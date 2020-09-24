@@ -104,6 +104,15 @@ const int &Stats::getComposite(std::string statName) const {
 
 std::vector<std::string> StatsMod::toStrings() const {
   auto v = std::vector<std::string>{};
+
+  for (auto pair : composites) {
+    auto statID = pair.first;
+    auto statName = Stats::compositeDefinitions[statID].name;
+    auto amount = toString(pair.second);
+    if (pair.second > 0) amount = "+"s + amount;
+    v.push_back(amount + " "s + statName);
+  }
+
   if (attackTime > 0) {
     auto inSeconds = attackTime / 1000.0;
     auto formatted = std::ostringstream{};
