@@ -51,7 +51,10 @@ const Color Color::TOOLTIP_FLAVOUR = WHITE * .5;
 const Color Color::TOOLTIP_BAD = RED;
 
 const Color Color::ITEM_NAME_NORMAL = WHITE;
-const Color Color::ITEM_NAME_ENHANCED = WHITE * .5 + BLUE * .5;
+const Color Color::ITEM_NAME_ENHANCED = GREEN * .9 + YELLOW * .1;
+const Color Color::ITEM_NAME_ENHANCED2 = BLUE * .4 + CYAN * .4;
+const Color Color::ITEM_NAME_ENHANCED3 = MAGENTA * .4 + BLUE * .3 + WHITE * .2;
+const Color Color::ITEM_NAME_ENHANCED4 = RED * .5 + YELLOW * .5;
 
 const Color Color::STAT_HEALTH = GREEN * .8;
 const Color Color::STAT_ENERGY = RED + GREEN * .8;

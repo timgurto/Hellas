@@ -57,6 +57,9 @@ class Color {
 
   static const Color ITEM_NAME_NORMAL;
   static const Color ITEM_NAME_ENHANCED;
+  static const Color ITEM_NAME_ENHANCED2;
+  static const Color ITEM_NAME_ENHANCED3;
+  static const Color ITEM_NAME_ENHANCED4;
 
   static const Color STAT_HEALTH;
   static const Color STAT_ENERGY;
