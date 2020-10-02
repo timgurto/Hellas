@@ -196,7 +196,7 @@ void ContainerGrid::rightMouseUp(Element &e, const ScreenPoint &mousePos) {
     grid._client->onChangeDragItem();
     grid.markChanged();
   }
-  if (!usingFrom.validSlot()) {  // Right-clicked instead of used: cancel use
+  if (usingFrom.validSlot()) {  // Right-clicked instead of used: cancel use
     usingFrom.clear();
   } else if (slot != NO_SLOT) {  // Right-clicked a slot
     const ClientItem *item = grid._linked[slot].first.type();
