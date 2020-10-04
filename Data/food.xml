@@ -2,7 +2,7 @@
 
 <buff id="food" name="Eating" icon="foodFig" duration="10" canBeInterrupted="1"
     description="Replenishing health.">
-    <stats hps="5" />
+    <stats hps="500" />
 </buff>
 <spell id="food" name="Eat food" >
     <targets self="1" />
@@ -56,7 +56,7 @@
 
 <buff id="water" name="Drinking" icon="waterRipples" duration="10" canBeInterrupted="1"
     description="Replenishing energy.">
-    <stats eps="5" />
+    <stats eps="500" />
 </buff>
 <spell id="water" name="Drink water" >
     <targets self="1" />
