@@ -413,21 +413,21 @@ void Client::handleInput(double delta) {
             _buildList->clearSelection();
 
             // Propagate event to windows
-            bool mouseUpOnWindow = false;
+            auto eventWasCaptured = false;
             for (Window *window : _windows)
               if (window->visible() && collision(_mouse, window->rect())) {
                 window->onRightMouseUp(_mouse);
-                mouseUpOnWindow = true;
+                eventWasCaptured = true;
                 break;
               }
             // Propagate event to UI elements
             for (Element *element : _ui)
-              if (!mouseUpOnWindow && element->visible() &&
+              if (!eventWasCaptured && element->visible() &&
                   element->canReceiveMouseEvents() &&
                   collision(_mouse, element->rect())) {
                 auto mouseHitAnElement = element->onRightMouseUp(_mouse);
                 if (mouseHitAnElement) {
-                  mouseUpOnWindow = true;
+                  eventWasCaptured = true;
                   break;
                 }
               }
@@ -451,23 +451,26 @@ void Client::handleInput(double delta) {
 
         break;
 
-      case SDL_MOUSEWHEEL:
-        if (e.wheel.y < 0) {
-          for (Window *window : _windows)
-            if (collision(_mouse, window->rect())) window->onScrollDown(_mouse);
-          for (Element *element : _ui)
-            if (element->visible() && element->canReceiveMouseEvents() &&
-                collision(_mouse, element->rect()))
-              element->onScrollDown(_mouse);
-        } else if (e.wheel.y > 0) {
-          for (Window *window : _windows)
-            if (collision(_mouse, window->rect())) window->onScrollUp(_mouse);
-          for (Element *element : _ui)
-            if (element->visible() && element->canReceiveMouseEvents() &&
-                collision(_mouse, element->rect()))
-              element->onScrollUp(_mouse);
-        }
-        break;
+      case SDL_MOUSEWHEEL: {
+        const auto scrollingDown = e.wheel.y < 0;
+        auto eventWasCaptured = false;
+        for (Window *window : _windows)
+          if (window->visible() && collision(_mouse, window->rect())) {
+            scrollingDown ? window->onScrollDown(_mouse)
+                          : window->onScrollUp(_mouse);
+            eventWasCaptured = true;
+            break;
+          }
+        for (Element *element : _ui)
+          if (!eventWasCaptured && element->visible() &&
+              element->canReceiveMouseEvents() &&
+              collision(_mouse, element->rect())) {
+            scrollingDown ? element->onScrollDown(_mouse)
+                          : element->onScrollUp(_mouse);
+            eventWasCaptured = true;
+            break;
+          }
+      } break;
 
       case SDL_WINDOWEVENT:
         switch (e.window.event) {
@@ -563,12 +566,23 @@ void Client::onMouseMove() {
   _mouseMoved = true;
 
   Element::resetTooltip();
+
+  auto mouseUpOnWindow = false;
   for (Window *window : _windows)
-    if (window->visible()) window->onMouseMove(_mouse);
+    if (window->visible() && collision(_mouse, window->rect())) {
+      window->onMouseMove(_mouse);
+      mouseUpOnWindow = true;
+      break;
+    }
+
+  if (mouseUpOnWindow) return;
 
   for (Element *element : _ui)
-    if (element->visible() && element->canReceiveMouseEvents())
+    if (element->visible() && element->canReceiveMouseEvents() &&
+        collision(_mouse, element->rect())) {
       element->onMouseMove(_mouse);
+      break;
+    }
 }
 
 Sprite *Client::getEntityAtMouse() {
