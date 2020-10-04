@@ -3,7 +3,7 @@
 #include "Server.h"
 #include "User.h"
 
-DroppedItem::Type DroppedItem::commonType;
+DroppedItem::Type DroppedItem::TYPE;
 
 DroppedItem::Type::Type() : EntityType("droppedItem") {
   _baseStats.maxHealth = 1;
@@ -11,9 +11,9 @@ DroppedItem::Type::Type() : EntityType("droppedItem") {
 
 DroppedItem::DroppedItem(const ServerItem &itemType, size_t quantity,
                          const MapPoint &location)
-    : Entity(&commonType, location), _quantity(quantity), _itemType(itemType) {
+    : Entity(&TYPE, location), _quantity(quantity), _itemType(itemType) {
   // Once-off init
-  if (!commonType.collides()) commonType.collisionRect({-8, -8, 16, 16});
+  if (!TYPE.collides()) TYPE.collisionRect({-8, -8, 16, 16});
 }
 
 void DroppedItem::sendInfoToClient(const User &targetUser, bool isNew) const {

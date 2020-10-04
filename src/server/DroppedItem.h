@@ -26,9 +26,9 @@ class DroppedItem : public Entity {
 
   void writeToXML(XmlWriter &xw) const override;
 
- private:
-  static Type commonType;
+  static Type TYPE;
 
+ private:
   const ServerItem &_itemType{nullptr};
   size_t _quantity;
 };

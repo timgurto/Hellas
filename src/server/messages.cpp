@@ -235,15 +235,11 @@ HANDLE_MESSAGE(CL_DROP) {
   const auto quantity = containerSlot.second;
 
   auto dropLocation = MapPoint{};
-  const auto SPACE_REQUIRED = 16.0;
   const auto MAX_ATTEMPTS = 50;
   for (auto attempt = 0; attempt != MAX_ATTEMPTS; ++attempt) {
     dropLocation =
         getRandomPointInCircle(user.location(), Server::ACTION_DISTANCE);
-    auto dropRect = MapRect{-SPACE_REQUIRED / 2, -SPACE_REQUIRED / 2,
-                            SPACE_REQUIRED, SPACE_REQUIRED} +
-                    dropLocation;
-    if (isLocationValid(dropRect, TerrainList::defaultList())) {
+    if (isLocationValid(dropLocation, DroppedItem::TYPE)) {
       addEntity(new DroppedItem(item, quantity, dropLocation));
       break;
     }
