@@ -1,5 +1,6 @@
 #include "../server/DroppedItem.h"
 #include "TestClient.h"
+#include "TestFixtures.h"
 #include "TestServer.h"
 #include "testing.h"
 
@@ -154,34 +155,30 @@ TEST_CASE("Dropped items land near the dropping player") {
   }
 }
 
-TEST_CASE("Dropped items don't overlap objects") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Dropped items don't overlap objects") {
   GIVEN("an item type, and a colliding wall near a user") {
-    auto data = R"(
+    useData(R"(
       <item id="apple" />
       <objectType id="wall">
         <collisionRect x="-10" y="-10" w="20" h="20" />
       </objectType>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    const auto &wall = s.addObject("wall", {0, 30});
-
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
+    )");
+    const auto &wall = server->addObject("wall", {0, 30});
 
     WHEN("the user drops 100 items") {
-      auto *apple = &s.getFirstItem();
+      auto *apple = &server->getFirstItem();
       for (auto i = 0; i != 100; ++i) {
         INFO("Dropping item #" << i + 1);
-        user.giveItem(apple);
-        c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+        user->giveItem(apple);
+        client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
         REPEAT_FOR_MS(100) {
-          if (!user.inventory(0).first.hasItem()) break;
+          if (!user->inventory(0).first.hasItem()) break;
         }
       }
 
       THEN("none of them overlap the wall") {
-        for (auto *e : s.entities()) {
+        for (auto *e : server->entities()) {
           if (e == &wall) continue;
           REQUIRE_FALSE(wall.collisionRect().overlaps(e->collisionRect()));
         }
