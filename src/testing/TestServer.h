@@ -43,7 +43,7 @@ class TestServer {
   User &getFirstUser();
   Object &getFirstObject();
   NPC &getFirstNPC();
-  const DroppedItem &getFirstDroppedItem();
+  DroppedItem &getFirstDroppedItem();
   NPCType &getFirstNPCType();
   ServerItem &getFirstItem();
   const Quest &getFirstQuest();

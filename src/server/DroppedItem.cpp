@@ -11,7 +11,10 @@ DroppedItem::Type::Type() : EntityType("droppedItem") {
 
 DroppedItem::DroppedItem(const ServerItem &itemType, size_t quantity,
                          const MapPoint &location)
-    : Entity(&commonType, location), _quantity(quantity), _itemType(itemType) {}
+    : Entity(&commonType, location), _quantity(quantity), _itemType(itemType) {
+  // Once-off init
+  if (!commonType.collides()) commonType.collisionRect({-8, -8, 16, 16});
+}
 
 void DroppedItem::sendInfoToClient(const User &targetUser, bool isNew) const {
   auto isNewArg = isNew ? "1"s : "0"s;

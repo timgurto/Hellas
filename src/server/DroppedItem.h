@@ -21,6 +21,7 @@ class DroppedItem : public Entity {
                         bool isNew = false) const override;
   ms_t timeToRemainAsCorpse() const override { return 0; }
   bool canBeAttackedBy(const User &) const override { return false; }
+  bool areOverlapsAllowedWith(const Entity &rhs) const override;
   void getPickedUpBy(User &user);
 
   void writeToXML(XmlWriter &xw) const override;

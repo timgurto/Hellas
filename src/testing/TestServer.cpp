@@ -193,7 +193,7 @@ NPC &TestServer::getFirstNPC() {
   return *pNpc;
 }
 
-const DroppedItem &TestServer::getFirstDroppedItem() {
+DroppedItem &TestServer::getFirstDroppedItem() {
   REQUIRE(!_server->_entities.empty());
   auto it = _server->_entities.begin();
   auto pEntity = *it;

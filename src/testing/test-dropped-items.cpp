@@ -185,6 +185,41 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       }
     }
   }
+
+  GIVEN("the user knows how to build a wall") {
+    useData(R"(
+      <item id="brick" />
+      <objectType id="wall" constructionTime="0" >
+        <material id="brick" quantity="1" />
+        <collisionRect x="-10" y="-10" w="20" h="20" />
+      </objectType>
+    )");
+
+    WHEN("he drops a brick") {
+      auto &brick = server->getFirstItem();
+      user->giveItem(&brick);
+      client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+      WAIT_UNTIL(server->entities().size() == 1);
+      auto &droppedBrick = server->getFirstDroppedItem();
+
+      AND_WHEN("the brick is at {25,25}") {
+        droppedBrick.teleportTo({25, 25});
+
+        AND_WHEN("he tries to build a wall at {25,25}") {
+          client->sendMessage(CL_CONSTRUCT, makeArgs("wall", 25, 25));
+
+          THEN("there's no wall") {
+            REPEAT_FOR_MS(100);
+            CHECK(server->entities().size() == 1);
+          }
+        }
+      }
+
+      THEN("he can overlap it") {
+        CHECK(droppedBrick.areOverlapsAllowedWith(*user));
+      };
+    }
+  }
 }
 
 TEST_CASE("If nowhere to drop an item, keep it in inventory") {

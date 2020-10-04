@@ -53,6 +53,7 @@ User::User(const std::string &name, const MapPoint &loc, const Socket *socket)
       _lastContact(SDL_GetTicks()) {
   if (socket) _socket = *socket;
 
+  // Once-off init
   if (!OBJECT_TYPE.collides()) {
     OBJECT_TYPE.collisionRect({-5, -2, 10, 4});
   }

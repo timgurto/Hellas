@@ -2,6 +2,7 @@
 #include <utility>
 
 #include "CollisionChunk.h"
+#include "DroppedItem.h"
 #include "Entity.h"
 #include "Server.h"
 
@@ -88,10 +89,11 @@ std::list<CollisionChunk *> Server::getCollisionSuperChunk(const MapPoint &p) {
 }
 
 // For the functions below:
-//          USER  NPC    GATE  OTHER   (this)
-//   USER    T     T      ?
-//   NPC     T            ?*
-//   GATE    ?     ?*
+//          USER  NPC    GATE  ITEM OTHER   (this)
+//   USER    T     T      ?     T
+//   NPC     T            ?*    T
+//   GATE    ?     ?*           T
+//   ITEM    T     T      T     T
 //   OTHER
 //   (rhs)
 // ?: Depends on permissions
@@ -131,4 +133,9 @@ bool Object::areOverlapsAllowedWith(const Entity &rhs) const {
     return permissions.doesNPCHaveAccess(npc);
   }
   return false;
+}
+
+bool DroppedItem::areOverlapsAllowedWith(const Entity &rhs) const {
+  if (rhs.classTag() == 'o') return false;
+  return true;
 }
