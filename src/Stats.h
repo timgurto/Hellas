@@ -14,7 +14,8 @@ struct StatsMod {
   std::string buffDescription() const;  // e.g. "Grant 1 health to ", "Stun "
 
   // Additive
-  int maxHealth{0}, hps{0}, maxEnergy{0}, eps{0}, followerLimit{0};
+  int maxHealth{0}, maxEnergy{0}, followerLimit{0};
+  Regen hps{0}, eps{0};
   Hundredths blockValue{0};
   BasisPoints magicDamage{0}, physicalDamage{0}, healing{0};
   ArmourClass armor{0}, airResist{0}, earthResist{0}, fireResist{0},

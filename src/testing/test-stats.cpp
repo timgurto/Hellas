@@ -492,6 +492,24 @@ TEST_CASE_METHOD(ServerAndClient, "Health regen") {
   }
 }
 
+TEST_CASE("Regen display") {
+  StatsMod stats;
+  CHECK(stats.toStrings().empty());
+
+  stats.hps = 100;
+  CHECK(stats.toStrings()[0] == "+1 health per second");
+
+  stats.hps = 200;
+  CHECK(stats.toStrings()[0] == "+2 health per second");
+
+  stats.hps = -100;
+  CHECK(stats.toStrings()[0] == "-1 health per second");
+
+  stats.hps = 0;
+  stats.eps = 100;
+  CHECK(stats.toStrings()[0] == "+1 energy per second");
+}
+
 TEST_CASE("Bonus-damage stat") {
   struct TestValues {
     BasisPoints bonusPhysicalDamage;
@@ -823,8 +841,8 @@ TEST_CASE("StatsMod * scalar") {
   GIVEN("A StatsMod object with values of 1") {
     auto stats = StatsMod{};
     stats.maxHealth = 1;
-    stats.hps = 1;
     stats.maxEnergy = 1;
+    stats.hps = 1;
     stats.eps = 1;
     stats.followerLimit = 1;
     stats.blockValue = 1;
@@ -850,9 +868,9 @@ TEST_CASE("StatsMod * scalar") {
 
       THEN("its values are 2") {
         CHECK(stats.maxHealth == 2);
-        CHECK(stats.hps == 2);
         CHECK(stats.maxEnergy == 2);
-        CHECK(stats.eps == 2);
+        CHECK(stats.hps == Regen{2});
+        CHECK(stats.eps == Regen{2});
         CHECK(stats.followerLimit == 2);
         CHECK(stats.blockValue == Hundredths{2});
         CHECK(stats.magicDamage == BasisPoints{2});
@@ -880,9 +898,9 @@ TEST_CASE("StatsMod * scalar") {
 
       THEN("its values are 3") {
         CHECK(stats.maxHealth == 3);
-        CHECK(stats.hps == 3);
         CHECK(stats.maxEnergy == 3);
-        CHECK(stats.eps == 3);
+        CHECK(stats.hps == Regen{3});
+        CHECK(stats.eps == Regen{3});
         CHECK(stats.followerLimit == 3);
         CHECK(stats.blockValue == Hundredths{3});
         CHECK(stats.magicDamage == BasisPoints{3});
@@ -936,9 +954,9 @@ TEST_CASE("StatsMod * scalar") {
 
       THEN("its values are 4") {
         CHECK(stats.maxHealth == 4);
-        CHECK(stats.hps == 4);
         CHECK(stats.maxEnergy == 4);
-        CHECK(stats.eps == 4);
+        CHECK(stats.hps == Regen{4});
+        CHECK(stats.eps == Regen{4});
         CHECK(stats.followerLimit == 4);
         CHECK(stats.blockValue == Hundredths{4});
         CHECK(stats.magicDamage == BasisPoints{4});

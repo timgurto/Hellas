@@ -59,6 +59,7 @@ class Regen : public AliasOfShort {
   Regen(short v) : AliasOfShort(v) {}
   Hitpoints getNextWholeAmount() const;
   bool hasValue() const;
+  std::string displayShort() const;
 
  private:
   mutable short _remainder{0};

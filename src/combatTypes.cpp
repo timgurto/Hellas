@@ -16,7 +16,7 @@ void AliasOfShort::operator+=(const AliasOfShort& rhs) { _raw += rhs._raw; }
 
 void AliasOfShort::operator*=(int scalar) { _raw *= scalar; }
 
-AliasOfShort::operator bool() const { return _raw > 0; }
+AliasOfShort::operator bool() const { return _raw != 0; }
 
 std::ostream& operator<<(std::ostream& lhs, const AliasOfShort& rhs) {
   return lhs << rhs._raw;
@@ -79,6 +79,13 @@ Hitpoints Regen::getNextWholeAmount() const {
 }
 
 bool Regen::hasValue() const { return _raw != 0; }
+
+std::string Regen::displayShort() const {
+  auto oss = std::ostringstream{};
+  if (_raw > 0) oss << '+';
+  oss << _raw / 100;
+  return oss.str();
+}
 
 Hitpoints Hundredths::effectiveValue() const {
   if (_raw <= 0) return 0;
