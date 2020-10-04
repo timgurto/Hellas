@@ -490,6 +490,12 @@ TEST_CASE_METHOD(ServerAndClient, "Health regen") {
       }
     }
   }
+
+  SECTION("Remainder doesn't snowball") {
+    Regen r{200};
+    CHECK(r.getNextWholeAmount() == 2);
+    CHECK(r.getNextWholeAmount() == 2);
+  }
 }
 
 TEST_CASE("Regen display") {

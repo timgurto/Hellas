@@ -74,7 +74,7 @@ void BasisPoints::onChanged() {
 Hitpoints Regen::getNextWholeAmount() const {
   auto withRemainder = _raw + _remainder;
   auto whole = withRemainder / 100;
-  _remainder = withRemainder - whole;
+  _remainder = withRemainder - whole * 100;
   return whole;
 }
 
