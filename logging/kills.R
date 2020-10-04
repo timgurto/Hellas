@@ -230,6 +230,7 @@ for (class in c("Athlete", "Scholar", "Zealot"))
         shortestTime = ceiling(minFightTime)
         longestTime = floor(maxFightTime)
         for (i in shortestTime:longestTime){
+            if (i %% 5 != 0) next;
             proportion = (i - minFightTime) / (maxFightTime - minFightTime)
             text(
                 x = legendL + proportion * (legendR - legendL),
