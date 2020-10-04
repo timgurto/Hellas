@@ -33,7 +33,7 @@
 </buff>
 <buff id="sprint" name="Sprinting" icon="outlineRun" cancelsOnOOE="1"
     description="Speed increased; energy reduced each second.">
-    <stats eps="-20" speed="2" />
+    <stats eps="-2000" speed="2" />
 </buff>
 <buff id="stun" name="Stunned" icon="shout" duration="6">
     <stats stuns="1" />
@@ -45,7 +45,7 @@
 <buff id="waterWalking" name="Water Walking" icon="waterRipples" canBeInterrupted="1" school="air"  cancelsOnOOE="1"
     description="Can walk on both land and water; energy reduced each second.  Cancels if you are attacked.">
     <changeAllowedTerrain terrainList="notMountains" />
-    <stats eps="-20" />
+    <stats eps="-2000" />
 </buff>
 
 </root>
