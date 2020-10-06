@@ -4,12 +4,11 @@
 #include "Client.h"
 #include "ClientNPC.h"
 #include "Renderer.h"
+#include "drawing.h"
 #include "ui/ContainerGrid.h"
 
 extern Args cmdLineArgs;
 extern Renderer renderer;
-
-using Sprites = std::set<Sprite *, Sprite::ComparePointers>;
 
 void Client::draw() const {
   if (!_loggedIn || !_loaded) {
@@ -62,11 +61,11 @@ void Client::draw() const {
   // Cull by y
   auto top = _entities.lower_bound(&Sprite::YCoordOnly(topY));
   auto bottom = _entities.upper_bound(&Sprite::YCoordOnly(bottomY));
-  auto visibleEntities = Sprites{top, bottom};
+  auto visibleSprites = SpritesToDraw::Copy(top, bottom);
 
   // Construction sites
   renderer.setDrawColor(Color::FOOTPRINT_ACTIVE);
-  for (const auto *entity : visibleEntities) {
+  for (const auto *entity : visibleSprites._container) {
     auto pObj = dynamic_cast<const ClientObject *>(entity);
     if (!pObj) continue;
     if (!pObj->isBeingConstructed()) continue;
@@ -85,7 +84,7 @@ void Client::draw() const {
 
   auto drawOrder = 0;
   // Flat entities
-  for (const auto *entity : visibleEntities) {
+  for (const auto *entity : visibleSprites._container) {
     if (!entity->isFlat()) continue;
 
     double x = entity->location().x;
@@ -98,7 +97,7 @@ void Client::draw() const {
           toScreenPoint(entity->location()) + offset());
   }
   // Non-flat entities
-  for (const auto *entity : visibleEntities) {
+  for (const auto *entity : visibleSprites._container) {
     if (entity->isFlat()) continue;
 
     double x = entity->location().x;
@@ -113,7 +112,7 @@ void Client::draw() const {
 
   // Collision footprints on everything, if trying to build
   if (_constructionFootprint) {
-    for (const auto *entity : visibleEntities) {
+    for (const auto *entity : visibleSprites._container) {
       double x = entity->location().x;
       if (x < leftX && x > rightX) continue;
       const auto *obj = dynamic_cast<const ClientObject *>(entity);
@@ -126,7 +125,7 @@ void Client::draw() const {
   }
 
   // All names and health bars, in front of all entities
-  for (const auto *entity : visibleEntities) {
+  for (const auto *entity : visibleSprites._container) {
     double x = entity->location().x;
     if (x < leftX && x > rightX) continue;
 
@@ -420,4 +419,9 @@ void Client::drawLoadingScreen(const std::string &msg) const {
   renderer.fillRect({X_BAR, Y_BAR, toInt(BAR_LENGTH * progress), BAR_HEIGHT});
 
   renderer.present();
+}
+
+SpritesToDraw::SpritesToDraw(Sprites::const_iterator begin,
+                             Sprites::const_iterator end) {
+  _container = {begin, end};
 }

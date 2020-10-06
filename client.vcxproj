@@ -235,6 +235,7 @@
     <ClInclude Include="src\client\Connection.h" />
     <ClInclude Include="src\client\CQuest.h" />
     <ClInclude Include="src\client\CRecipe.h" />
+    <ClInclude Include="src\client\drawing.h" />
     <ClInclude Include="src\client\HasSounds.h" />
     <ClInclude Include="src\client\HelpEntry.h" />
     <ClInclude Include="src\client\MemoisedImageDirectory.h" />
