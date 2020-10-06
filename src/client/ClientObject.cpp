@@ -189,6 +189,11 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg) {
   refreshTooltip();
 }
 
+bool ClientObject::obstructsConstruction() const {
+  if (isDead()) return false;
+  return collides();
+}
+
 void ClientObject::onLeftClick() {
   if (_client.isCtrlPressed()) {
     const auto *npc = dynamic_cast<ClientNPC *>(this);

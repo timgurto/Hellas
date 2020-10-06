@@ -20,6 +20,7 @@ class CDroppedItem : public ClientObject {
   virtual void update(double delta) override;
   virtual void draw() const override;
   virtual bool isFlat() const override;
+  virtual bool obstructsConstruction() const override { return true; }
 
  private:
   const ClientItem &_itemType;

@@ -8,6 +8,8 @@ const double CDroppedItem::DROP_ACCELERATION = 20.0;
 CDroppedItem::Type::Type() : ClientObjectType("droppedItem") {
   drawRect(ScreenRect{-Client::ICON_SIZE / 2, -Client::ICON_SIZE / 2,
                       Client::ICON_SIZE, Client::ICON_SIZE});
+  auto iconSize = static_cast<double>(Client::ICON_SIZE);
+  collisionRect({-iconSize / 2, -iconSize / 2, iconSize, iconSize});
 }
 
 CDroppedItem::CDroppedItem(Client& client, Serial serial,

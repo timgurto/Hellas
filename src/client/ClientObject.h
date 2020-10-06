@@ -142,6 +142,7 @@ class ClientObject : public Sprite, public ClientCombatant {
     return objectType()->collisionRect() + location();
   }
   bool collides() const { return objectType()->collides(); }
+  virtual bool obstructsConstruction() const;
 
   virtual void onLeftClick() override;
   virtual void onRightClick() override;

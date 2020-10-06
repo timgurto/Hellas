@@ -427,8 +427,7 @@ void SpritesToDraw::drawCollisionScene() {
   for (const auto *sprite : _container) {
     const auto *obj = dynamic_cast<const ClientObject *>(sprite);
     if (!obj) continue;
-    if (obj->isDead()) continue;
-    if (!obj->objectType()->collides()) continue;
+    if (!obj->obstructsConstruction()) continue;
 
     const auto alpha = 0xaf;
     _client.drawFootprint(obj->collisionRect(), Color::FOOTPRINT_COLLISION,
