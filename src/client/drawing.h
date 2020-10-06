@@ -18,6 +18,7 @@ class SpritesToDraw {
   void drawNonFlatSprites();
   void drawDrawOrder();
   void drawCollisionScene();
+  void drawNamesAndHealthbars();
 
   Sprites _container;
 

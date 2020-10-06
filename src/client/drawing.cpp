@@ -83,18 +83,7 @@ void Client::draw() const {
 
   if (_constructionFootprint) visibleSprites.drawCollisionScene();
 
-  // All names and health bars, in front of all entities
-  for (const auto *entity : visibleSprites._container) {
-    double x = entity->location().x;
-    if (x < leftX && x > rightX) continue;
-
-    if (entity->shouldDrawName()) entity->drawName();
-
-    const auto *asCombatant = dynamic_cast<const ClientCombatant *>(entity);
-    if (!asCombatant) continue;
-    asCombatant->drawHealthBarIfAppropriate(entity->location(),
-                                            entity->height());
-  }
+  visibleSprites.drawNamesAndHealthbars();
 
   // Character's server location
   if (isDebug()) {
@@ -446,4 +435,15 @@ void SpritesToDraw::drawCollisionScene() {
                           alpha);
   }
   // TODO: include dropped items, which will obstruct construction.
+}
+
+void SpritesToDraw::drawNamesAndHealthbars() {
+  for (const auto *sprite : _container) {
+    if (sprite->shouldDrawName()) sprite->drawName();
+
+    const auto *asCombatant = dynamic_cast<const ClientCombatant *>(sprite);
+    if (!asCombatant) continue;
+    asCombatant->drawHealthBarIfAppropriate(sprite->location(),
+                                            sprite->height());
+  }
 }
