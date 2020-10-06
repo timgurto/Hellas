@@ -30,9 +30,9 @@
 <permanentObject id="wallBlack5" y="70640" x="14736" />
 
 <objectType id="phoenicianShipTop"
-    isDecoration="1" customCullDistance="1000" isFlat="1" xDrawOffset="-640" yDrawOffset="-65" />
+    isDecoration="1" customCullDistance="1000" customShadowWidth="0" xDrawOffset="-640" yDrawOffset="-65" />
 <objectType id="phoenicianShipBottom"
-    isDecoration="1" customCullDistance="1000" xDrawOffset="-640" yDrawOffset="-193" />
+    isDecoration="1" customCullDistance="1000" customShadowWidth="0" xDrawOffset="-640" yDrawOffset="-193" />
 <objectType id="phoenicianShipMast"
     isDecoration="1" customCullDistance="1000" xDrawOffset="-11" yDrawOffset="-644" >
     <collisionRect x="-11" y="-11" w="22" h="22" />
