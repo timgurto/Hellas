@@ -60,15 +60,19 @@ void Client::draw() const {
   // Cull by y
   auto top = _entities.lower_bound(&Sprite::YCoordOnly(topY));
   auto bottom = _entities.upper_bound(&Sprite::YCoordOnly(bottomY));
+  auto visibleEntities =
+      std::set<Sprite *, Sprite::ComparePointers>{top, bottom};
+
   // Construction sites
   renderer.setDrawColor(Color::FOOTPRINT_ACTIVE);
-  for (auto it = top; it != bottom; ++it) {
-    auto pObj = dynamic_cast<ClientObject *>(*it);
+  for (const auto *entity : visibleEntities) {
+    auto pObj = dynamic_cast<const ClientObject *>(entity);
     if (!pObj) continue;
     if (!pObj->isBeingConstructed()) continue;
 
     drawFootprint(pObj->collisionRect(), Color::FOOTPRINT_ACTIVE, 0x7f);
   }
+
   // Base under target combatant
   if (_target.exists()) {
     const Texture &base =
@@ -80,38 +84,38 @@ void Client::draw() const {
 
   auto drawOrder = 0;
   // Flat entities
-  for (auto it = top; it != bottom; ++it) {
-    if (!(*it)->isFlat()) continue;
+  for (const auto *entity : visibleEntities) {
+    if (!entity->isFlat()) continue;
 
-    double x = (*it)->location().x;
+    double x = entity->location().x;
     if (x < leftX && x > rightX) continue;
 
-    (*it)->draw();
+    entity->draw();
 
     if (isDebug())
       Texture{defaultFont(), toString(drawOrder++), Color::MAGENTA}.draw(
-          toScreenPoint((*it)->location()) + offset());
+          toScreenPoint(entity->location()) + offset());
   }
   // Non-flat entities
-  for (auto it = top; it != bottom; ++it) {
-    if ((*it)->isFlat()) continue;
+  for (const auto *entity : visibleEntities) {
+    if (entity->isFlat()) continue;
 
-    double x = (*it)->location().x;
+    double x = entity->location().x;
     if (x < leftX && x > rightX) continue;
 
-    (*it)->draw();
+    entity->draw();
 
     if (isDebug())
       Texture{defaultFont(), toString(drawOrder++), Color::MAGENTA}.draw(
-          toScreenPoint((*it)->location()) + offset());
+          toScreenPoint(entity->location()) + offset());
   }
 
   // Collision footprints on everything, if trying to build
   if (_constructionFootprint) {
-    for (auto it = top; it != bottom; ++it) {
-      double x = (*it)->location().x;
+    for (const auto *entity : visibleEntities) {
+      double x = entity->location().x;
       if (x < leftX && x > rightX) continue;
-      const auto *obj = dynamic_cast<const ClientObject *>(*it);
+      const auto *obj = dynamic_cast<const ClientObject *>(entity);
       if (!obj) continue;
       if (obj->isDead()) continue;
       if (!obj->objectType()->collides()) continue;
@@ -121,15 +125,16 @@ void Client::draw() const {
   }
 
   // All names and health bars, in front of all entities
-  for (auto it = top; it != bottom; ++it) {
-    double x = (*it)->location().x;
+  for (const auto *entity : visibleEntities) {
+    double x = entity->location().x;
     if (x < leftX && x > rightX) continue;
 
-    if ((*it)->shouldDrawName()) (*it)->drawName();
+    if (entity->shouldDrawName()) entity->drawName();
 
-    const auto *asCombatant = dynamic_cast<const ClientCombatant *>(*it);
+    const auto *asCombatant = dynamic_cast<const ClientCombatant *>(entity);
     if (!asCombatant) continue;
-    asCombatant->drawHealthBarIfAppropriate((*it)->location(), (*it)->height());
+    asCombatant->drawHealthBarIfAppropriate(entity->location(),
+                                            entity->height());
   }
 
   // Character's server location
@@ -140,7 +145,8 @@ void Client::draw() const {
     renderer.drawRect({serverLoc.x - 1, serverLoc.y - 1, 3, 3});
   }
 
-  // Non-window UI
+  // Non-window UI, back-to-front (normal order is front-to-back for input
+  // capturing)
   for (std::list<Element *>::const_reverse_iterator it = _ui.rbegin();
        it != _ui.rend(); ++it) {
     auto &e = **it;
