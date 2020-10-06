@@ -78,21 +78,10 @@ void Client::draw() const {
 
   visibleSprites.drawFlatSprites();
   visibleSprites.drawNonFlatSprites();
+
   if (isDebug()) visibleSprites.drawDrawOrder();
 
-  // Collision footprints on everything, if trying to build
-  if (_constructionFootprint) {
-    for (const auto *entity : visibleSprites._container) {
-      double x = entity->location().x;
-      if (x < leftX && x > rightX) continue;
-      const auto *obj = dynamic_cast<const ClientObject *>(entity);
-      if (!obj) continue;
-      if (obj->isDead()) continue;
-      if (!obj->objectType()->collides()) continue;
-
-      drawFootprint(obj->collisionRect(), Color::FOOTPRINT_COLLISION, 0xaf);
-    }
-  }
+  if (_constructionFootprint) visibleSprites.drawCollisionScene();
 
   // All names and health bars, in front of all entities
   for (const auto *entity : visibleSprites._container) {
@@ -443,4 +432,18 @@ void SpritesToDraw::drawDrawOrder() {
         Texture{_client.defaultFont(), toString(drawOrder), Color::MAGENTA};
     number.draw(toScreenPoint(sprite->location()) + _client.offset());
   }
+}
+
+void SpritesToDraw::drawCollisionScene() {
+  for (const auto *sprite : _container) {
+    const auto *obj = dynamic_cast<const ClientObject *>(sprite);
+    if (!obj) continue;
+    if (obj->isDead()) continue;
+    if (!obj->objectType()->collides()) continue;
+
+    const auto alpha = 0xaf;
+    _client.drawFootprint(obj->collisionRect(), Color::FOOTPRINT_COLLISION,
+                          alpha);
+  }
+  // TODO: include dropped items, which will obstruct construction.
 }
