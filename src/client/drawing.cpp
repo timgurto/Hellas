@@ -9,6 +9,8 @@
 extern Args cmdLineArgs;
 extern Renderer renderer;
 
+using Sprites = std::set<Sprite *, Sprite::ComparePointers>;
+
 void Client::draw() const {
   if (!_loggedIn || !_loaded) {
     renderer.setDrawColor(Color::BLACK);
@@ -50,7 +52,7 @@ void Client::draw() const {
     }
   }
 
-  // Entities, sorted from back to front
+  // Sprites, sorted from back to front
   static const px_t DRAW_MARGIN_ABOVE = 400, DRAW_MARGIN_BELOW = 400,
                     DRAW_MARGIN_SIDES = 400;
   const double topY = -offset().y - DRAW_MARGIN_BELOW,
@@ -60,8 +62,7 @@ void Client::draw() const {
   // Cull by y
   auto top = _entities.lower_bound(&Sprite::YCoordOnly(topY));
   auto bottom = _entities.upper_bound(&Sprite::YCoordOnly(bottomY));
-  auto visibleEntities =
-      std::set<Sprite *, Sprite::ComparePointers>{top, bottom};
+  auto visibleEntities = Sprites{top, bottom};
 
   // Construction sites
   renderer.setDrawColor(Color::FOOTPRINT_ACTIVE);
