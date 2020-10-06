@@ -63,8 +63,8 @@ void Client::draw() const {
   auto bottom = _entities.upper_bound(&Sprite::YCoordOnly(bottomY));
   auto visibleSprites = SpritesToDraw{*this};
   visibleSprites.copy(top, bottom);
+  visibleSprites.cullHorizontally(leftX, rightX);
 
-  // Construction sites
   visibleSprites.drawConstructionSiteFootprints();
 
   // Base under target combatant
@@ -76,33 +76,8 @@ void Client::draw() const {
               BASE_OFFSET);
   }
 
-  auto drawOrder = 0;
-  // Flat entities
-  for (const auto *entity : visibleSprites._container) {
-    if (!entity->isFlat()) continue;
-
-    double x = entity->location().x;
-    if (x < leftX && x > rightX) continue;
-
-    entity->draw();
-
-    if (isDebug())
-      Texture{defaultFont(), toString(drawOrder++), Color::MAGENTA}.draw(
-          toScreenPoint(entity->location()) + offset());
-  }
-  // Non-flat entities
-  for (const auto *entity : visibleSprites._container) {
-    if (entity->isFlat()) continue;
-
-    double x = entity->location().x;
-    if (x < leftX && x > rightX) continue;
-
-    entity->draw();
-
-    if (isDebug())
-      Texture{defaultFont(), toString(drawOrder++), Color::MAGENTA}.draw(
-          toScreenPoint(entity->location()) + offset());
-  }
+  visibleSprites.drawFlatSprites();
+  visibleSprites.drawNonFlatSprites();
 
   // Collision footprints on everything, if trying to build
   if (_constructionFootprint) {
@@ -420,6 +395,16 @@ void SpritesToDraw::copy(Sprites::const_iterator begin,
   _container = {begin, end};
 }
 
+void SpritesToDraw::cullHorizontally(double leftLimit, double rightLimit) {
+  for (auto it = _container.begin(); it != _container.end();) {
+    auto x = (*it)->location().x;
+    if (x < leftLimit || x > rightLimit)
+      it = _container.erase(it);
+    else
+      ++it;
+  }
+}
+
 void SpritesToDraw::drawConstructionSiteFootprints() {
   renderer.setDrawColor(Color::FOOTPRINT_ACTIVE);
 
@@ -429,5 +414,33 @@ void SpritesToDraw::drawConstructionSiteFootprints() {
     if (!pObj->isBeingConstructed()) continue;
 
     _client.drawFootprint(pObj->collisionRect(), Color::FOOTPRINT_ACTIVE, 0x7f);
+  }
+}
+
+void SpritesToDraw::drawFlatSprites() {
+  auto drawOrder = 0;
+
+  for (const auto *sprite : _container) {
+    if (!sprite->isFlat()) continue;
+
+    sprite->draw();
+
+    if (isDebug())
+      Texture{_client.defaultFont(), toString(drawOrder++), Color::MAGENTA}
+          .draw(toScreenPoint(sprite->location()) + _client.offset());
+  }
+}
+
+void SpritesToDraw::drawNonFlatSprites() {
+  auto drawOrder = 0;
+
+  for (const auto *sprite : _container) {
+    if (sprite->isFlat()) continue;
+
+    sprite->draw();
+
+    if (isDebug())
+      Texture{_client.defaultFont(), toString(drawOrder++), Color::MAGENTA}
+          .draw(toScreenPoint(sprite->location()) + _client.offset());
   }
 }
