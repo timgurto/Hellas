@@ -449,6 +449,10 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
     if (xr.findAttr(elem, "customShadowWidth", customShadowWidth))
       cot->useCustomShadowWidth(customShadowWidth);
 
+    auto customCullDist = 0.0;
+    if (xr.findAttr(elem, "customCullDistance", customCullDist))
+      cot->useCustomCullDistance(customCullDist);
+
     auto name = id;
     xr.findAttr(elem, "name", name);
     cot->name(name);
@@ -631,7 +635,11 @@ void CDataLoader::loadPermanentObjects(XmlReader &xr) {
     if (!xr.findAttr(elem, "x", loc.x)) continue;
     if (!xr.findAttr(elem, "y", loc.y)) continue;
 
-    _client._entities.insert(new Sprite{type, loc, _client});
+    auto obj = new Sprite{type, loc, _client};
+    _client._entities.insert(obj);
+
+    if (type->hasCustomCullDistance())
+      _client._spritesWithCustomCullDistances.insert(obj);
   }
 }
 

@@ -10,6 +10,7 @@ class SpritesToDraw {
   // Set construction
   void add(Sprite::set_t::const_iterator begin,
            Sprite::set_t::const_iterator end);
+  void cullAndAdd(const Sprite::set_t &unculledSprites);
   void cullHorizontally(double leftLimit, double rightLimit);
 
   void drawConstructionSiteFootprints();

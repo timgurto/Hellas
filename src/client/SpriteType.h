@@ -39,6 +39,7 @@ class SpriteType {
   Optional<px_t> _customShadowWidth;
   Optional<px_t>
       _customDrawHeight;  // If the image file has blank space at the bottom
+  Optional<double> _customCullDistance;
 
  public:
   static const double SHADOW_RATIO, SHADOW_WIDTH_HEIGHT_RATIO;
@@ -80,6 +81,9 @@ class SpriteType {
   void useCustomDrawHeight(px_t height) { _customDrawHeight = height; }
   bool hasCustomDrawHeight() const { return _customDrawHeight.hasValue(); }
   px_t customDrawHeight() const { return _customDrawHeight.value(); }
+  void useCustomCullDistance(double dist) { _customCullDistance = dist; }
+  bool hasCustomCullDistance() const { return _customCullDistance.hasValue(); }
+  double customCullDistance() const { return _customCullDistance.value(); }
 };
 
 #endif

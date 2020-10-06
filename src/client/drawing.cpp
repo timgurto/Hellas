@@ -64,6 +64,7 @@ void Client::draw() const {
   auto visibleSprites = SpritesToDraw{*this};
   visibleSprites.add(top, bottom);
   visibleSprites.cullHorizontally(leftX, rightX);
+  visibleSprites.cullAndAdd(_spritesWithCustomCullDistances);
 
   visibleSprites.drawConstructionSiteFootprints();
 
@@ -372,6 +373,19 @@ void Client::drawLoadingScreen(const std::string &msg) const {
 void SpritesToDraw::add(Sprite::set_t::const_iterator begin,
                         Sprite::set_t::const_iterator end) {
   _container.insert(begin, end);
+}
+
+void SpritesToDraw::cullAndAdd(const Sprite::set_t &unculledSprites) {
+  for (auto *sprite : unculledSprites) {
+    auto spriteLoc = sprite->location();
+    auto playerLoc = _client.character().location();
+    auto cullDistance = sprite->type()->customCullDistance();
+
+    if (abs(spriteLoc.x - playerLoc.x) > cullDistance) continue;
+    if (abs(spriteLoc.y - playerLoc.y) > cullDistance) continue;
+
+    _container.insert(sprite);
+  }
 }
 
 void SpritesToDraw::cullHorizontally(double leftLimit, double rightLimit) {

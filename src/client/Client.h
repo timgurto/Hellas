@@ -663,6 +663,9 @@ class Client : public TextEntryManager {
   XP _xp = 40;
   XP _maxXP = 100;
 
+  // Note: for now, this is used only for permanentObjects.
+  Sprite::set_t _spritesWithCustomCullDistances;
+
   KeyboardStateFetcher _keyboardState;
 
   static void onSpellHit(const MapPoint &location, void *spell);
