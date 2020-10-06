@@ -78,6 +78,7 @@ void Client::draw() const {
 
   visibleSprites.drawFlatSprites();
   visibleSprites.drawNonFlatSprites();
+  if (isDebug()) visibleSprites.drawDrawOrder();
 
   // Collision footprints on everything, if trying to build
   if (_constructionFootprint) {
@@ -418,29 +419,28 @@ void SpritesToDraw::drawConstructionSiteFootprints() {
 }
 
 void SpritesToDraw::drawFlatSprites() {
-  auto drawOrder = 0;
-
   for (const auto *sprite : _container) {
     if (!sprite->isFlat()) continue;
 
     sprite->draw();
-
-    if (isDebug())
-      Texture{_client.defaultFont(), toString(drawOrder++), Color::MAGENTA}
-          .draw(toScreenPoint(sprite->location()) + _client.offset());
   }
 }
 
 void SpritesToDraw::drawNonFlatSprites() {
-  auto drawOrder = 0;
-
   for (const auto *sprite : _container) {
     if (sprite->isFlat()) continue;
 
     sprite->draw();
+  }
+}
 
-    if (isDebug())
-      Texture{_client.defaultFont(), toString(drawOrder++), Color::MAGENTA}
-          .draw(toScreenPoint(sprite->location()) + _client.offset());
+void SpritesToDraw::drawDrawOrder() {
+  auto drawOrder = 0;
+
+  for (const auto *sprite : _container) {
+    ++drawOrder;
+    auto number =
+        Texture{_client.defaultFont(), toString(drawOrder), Color::MAGENTA};
+    number.draw(toScreenPoint(sprite->location()) + _client.offset());
   }
 }

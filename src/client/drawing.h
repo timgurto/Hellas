@@ -16,6 +16,7 @@ class SpritesToDraw {
   void drawConstructionSiteFootprints();
   void drawFlatSprites();
   void drawNonFlatSprites();
+  void drawDrawOrder();
 
   Sprites _container;
 
