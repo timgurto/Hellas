@@ -7,12 +7,11 @@ using Sprites = std::set<Sprite *, Sprite::ComparePointers>;
 
 class SpritesToDraw {
  public:
-  static SpritesToDraw Copy(Sprites::const_iterator begin,
-                            Sprites::const_iterator end) {
-    return {begin, end};
-  }
+  SpritesToDraw(const Client &client) : _client(client) {}
+  void copy(Sprites::const_iterator begin, Sprites::const_iterator end);
+
   Sprites _container;
 
  private:
-  SpritesToDraw(Sprites::const_iterator begin, Sprites::const_iterator end);
+  const Client &_client;
 };

@@ -61,7 +61,8 @@ void Client::draw() const {
   // Cull by y
   auto top = _entities.lower_bound(&Sprite::YCoordOnly(topY));
   auto bottom = _entities.upper_bound(&Sprite::YCoordOnly(bottomY));
-  auto visibleSprites = SpritesToDraw::Copy(top, bottom);
+  auto visibleSprites = SpritesToDraw{*this};
+  visibleSprites.copy(top, bottom);
 
   // Construction sites
   renderer.setDrawColor(Color::FOOTPRINT_ACTIVE);
@@ -421,7 +422,7 @@ void Client::drawLoadingScreen(const std::string &msg) const {
   renderer.present();
 }
 
-SpritesToDraw::SpritesToDraw(Sprites::const_iterator begin,
-                             Sprites::const_iterator end) {
+void SpritesToDraw::copy(Sprites::const_iterator begin,
+                         Sprites::const_iterator end) {
   _container = {begin, end};
 }
