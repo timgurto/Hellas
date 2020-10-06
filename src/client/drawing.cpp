@@ -62,7 +62,7 @@ void Client::draw() const {
   auto top = _entities.lower_bound(&Sprite::YCoordOnly(topY));
   auto bottom = _entities.upper_bound(&Sprite::YCoordOnly(bottomY));
   auto visibleSprites = SpritesToDraw{*this};
-  visibleSprites.copy(top, bottom);
+  visibleSprites.add(top, bottom);
   visibleSprites.cullHorizontally(leftX, rightX);
 
   visibleSprites.drawConstructionSiteFootprints();
@@ -369,9 +369,9 @@ void Client::drawLoadingScreen(const std::string &msg) const {
   renderer.present();
 }
 
-void SpritesToDraw::copy(Sprites::const_iterator begin,
-                         Sprites::const_iterator end) {
-  _container = {begin, end};
+void SpritesToDraw::add(Sprite::set_t::const_iterator begin,
+                        Sprite::set_t::const_iterator end) {
+  _container.insert(begin, end);
 }
 
 void SpritesToDraw::cullHorizontally(double leftLimit, double rightLimit) {
@@ -433,7 +433,6 @@ void SpritesToDraw::drawCollisionScene() {
     _client.drawFootprint(obj->collisionRect(), Color::FOOTPRINT_COLLISION,
                           alpha);
   }
-  // TODO: include dropped items, which will obstruct construction.
 }
 
 void SpritesToDraw::drawNamesAndHealthbars() {

@@ -3,14 +3,13 @@
 #include <set>
 #include "Sprite.h"
 
-using Sprites = std::set<Sprite *, Sprite::ComparePointers>;
-
 class SpritesToDraw {
  public:
   SpritesToDraw(const Client &client) : _client(client) {}
 
   // Set construction
-  void copy(Sprites::const_iterator begin, Sprites::const_iterator end);
+  void add(Sprite::set_t::const_iterator begin,
+           Sprite::set_t::const_iterator end);
   void cullHorizontally(double leftLimit, double rightLimit);
 
   void drawConstructionSiteFootprints();
@@ -20,8 +19,7 @@ class SpritesToDraw {
   void drawCollisionScene();
   void drawNamesAndHealthbars();
 
-  Sprites _container;
-
  private:
   const Client &_client;
+  Sprite::set_t _container;
 };

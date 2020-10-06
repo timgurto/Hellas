@@ -46,6 +46,7 @@
 #include "Tag.h"
 #include "Target.h"
 #include "WordWrapper.h"
+#include "drawing.h"
 #include "ui/ChoiceList.h"
 #include "ui/ContainerGrid.h"
 #include "ui/Indicator.h"
