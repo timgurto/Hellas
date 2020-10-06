@@ -65,14 +65,7 @@ void Client::draw() const {
   visibleSprites.copy(top, bottom);
 
   // Construction sites
-  renderer.setDrawColor(Color::FOOTPRINT_ACTIVE);
-  for (const auto *entity : visibleSprites._container) {
-    auto pObj = dynamic_cast<const ClientObject *>(entity);
-    if (!pObj) continue;
-    if (!pObj->isBeingConstructed()) continue;
-
-    drawFootprint(pObj->collisionRect(), Color::FOOTPRINT_ACTIVE, 0x7f);
-  }
+  visibleSprites.drawConstructionSiteFootprints();
 
   // Base under target combatant
   if (_target.exists()) {
@@ -425,4 +418,16 @@ void Client::drawLoadingScreen(const std::string &msg) const {
 void SpritesToDraw::copy(Sprites::const_iterator begin,
                          Sprites::const_iterator end) {
   _container = {begin, end};
+}
+
+void SpritesToDraw::drawConstructionSiteFootprints() {
+  renderer.setDrawColor(Color::FOOTPRINT_ACTIVE);
+
+  for (const auto *sprite : _container) {
+    auto pObj = dynamic_cast<const ClientObject *>(sprite);
+    if (!pObj) continue;
+    if (!pObj->isBeingConstructed()) continue;
+
+    _client.drawFootprint(pObj->collisionRect(), Color::FOOTPRINT_ACTIVE, 0x7f);
+  }
 }

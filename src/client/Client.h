@@ -538,8 +538,12 @@ class Client : public TextEntryManager {
   const Texture *_uiTooltip;
   mutable const ClientObjectType *_constructionFootprintType{nullptr};
   mutable const TerrainList *_constructionFootprintAllowedTerrain{nullptr};
+
+ public:
   void drawFootprint(const MapRect &rect, Color color,
                      Uint8 alpha = 0xff) const;
+
+ private:
   MapPoint _offset;  // An offset for drawing, based on the character's location
                      // on the map.
   ScreenPoint _intOffset;  // An integer version of the offset

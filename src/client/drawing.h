@@ -10,6 +10,8 @@ class SpritesToDraw {
   SpritesToDraw(const Client &client) : _client(client) {}
   void copy(Sprites::const_iterator begin, Sprites::const_iterator end);
 
+  void drawConstructionSiteFootprints();
+
   Sprites _container;
 
  private:
