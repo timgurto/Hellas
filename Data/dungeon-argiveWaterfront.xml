@@ -36,13 +36,13 @@
 <objectType id="phoenicianShip"
     xDrawOffset="-619" yDrawOffset="-207" isDecoration="1" customCullDistance="1000" customShadowWidth="0" isFlat="1" />
 <objectType id="phoenicianGangplank"
-    xDrawOffset="-50" yDrawOffset="-80" isDecoration="1" customCullDistance="2000"  isFlat="1" />
+    xDrawOffset="-50" yDrawOffset="-144" isDecoration="1" customCullDistance="2000"  isFlat="1" />
 
 <permanentObject id="phoenicianShip"     y="71184" x="16896" />
 <permanentObject id="phoenicianShipMast" y="71184" x="16896" />
 
-<permanentObject id="phoenicianShip"     y="70708" x="17600" />
-<permanentObject id="phoenicianShipMast" y="70708" x="17600" />
+<permanentObject id="phoenicianShip"     y="70672" x="17600" />
+<permanentObject id="phoenicianShipMast" y="70672" x="17600" />
 
 <permanentObject id="phoenicianShip"     y="71184" x="18304" />
 <permanentObject id="phoenicianShipMast" y="71184" x="18304" />
