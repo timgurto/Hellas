@@ -123,6 +123,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Args.cpp" />
     <ClCompile Include="..\..\..\src\client\Renderer.cpp" />
+    <ClCompile Include="..\..\..\src\client\SDLwrappers.cpp" />
     <ClCompile Include="..\..\..\src\client\Surface.cpp" />
     <ClCompile Include="..\..\..\src\client\Tag.cpp" />
     <ClCompile Include="..\..\..\src\client\Texture.cpp" />
@@ -143,6 +144,7 @@
     <ClCompile Include="..\..\..\src\client\ui\Window.cpp" />
     <ClCompile Include="..\..\..\src\client\WordWrapper.cpp" />
     <ClCompile Include="..\..\..\src\Color.cpp" />
+    <ClCompile Include="..\..\..\src\combatTypes.cpp" />
     <ClCompile Include="..\..\..\src\HasTags.cpp" />
     <ClCompile Include="..\..\..\src\Point.cpp" />
     <ClCompile Include="..\..\..\src\types.cpp" />
@@ -165,6 +167,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\src\Args.h" />
     <ClInclude Include="..\..\..\src\client\Renderer.h" />
+    <ClInclude Include="..\..\..\src\client\SDLwrappers.h" />
     <ClInclude Include="..\..\..\src\client\Surface.h" />
     <ClInclude Include="..\..\..\src\client\Tag.h" />
     <ClInclude Include="..\..\..\src\client\Texture.h" />
@@ -185,8 +188,10 @@
     <ClInclude Include="..\..\..\src\client\ui\Window.h" />
     <ClInclude Include="..\..\..\src\client\WordWrapper.h" />
     <ClInclude Include="..\..\..\src\Color.h" />
+    <ClInclude Include="..\..\..\src\combatTypes.h" />
     <ClInclude Include="..\..\..\src\HasTags.h" />
     <ClInclude Include="..\..\..\src\Point.h" />
+    <ClInclude Include="..\..\..\src\Stats.h" />
     <ClInclude Include="..\..\..\src\XmlReader.h" />
     <ClInclude Include="..\..\..\src\XmlWriter.h" />
     <ClInclude Include="..\..\..\third-party\tinyxml\tinystr.h" />

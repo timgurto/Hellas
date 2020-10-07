@@ -23,6 +23,9 @@
 auto cmdLineArgs = Args{};   // MUST be defined before renderer
 auto renderer = Renderer{};  // MUST be defined after cmdLineArgs
 
+// Circumvent link errors
+std::map<std::string, CompositeStat> Stats::compositeDefinitions;
+
 auto loop = true;
 auto map = EMap{};
 auto zoomLevel = 1;
