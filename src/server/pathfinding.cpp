@@ -155,6 +155,7 @@ void Entity::moveLegallyTowards(
         nearbyEntities.push_back(&entity);
     }
     for (const Entity *entP : nearbyEntities) {
+      if (!entP->shouldBePropagatedToClients()) continue;
       entP->sendInfoToClient(*userPtr);
     }
   }
