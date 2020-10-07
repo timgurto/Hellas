@@ -29,25 +29,26 @@
 <permanentObject id="wallBlack5" y="70448" x="14736" />
 <permanentObject id="wallBlack5" y="70640" x="14736" />
 
-<objectType id="phoenicianShipDeck"
-    xDrawOffset="-640" yDrawOffset="-207" isDecoration="1" customCullDistance="1000" customShadowWidth="0" isFlat="1" />
 <objectType id="phoenicianShipMast"
     xDrawOffset="-11" yDrawOffset="-644"  isDecoration="1" customCullDistance="1000">
     <collisionRect x="-11" y="-11" w="22" h="22" />
 </objectType>
-<objectType id="phoenicianShipBottom"
-    xDrawOffset="-640" yDrawOffset="-18" isDecoration="1" customCullDistance="1000" customShadowWidth="0" />
+<objectType id="phoenicianShip"
+    xDrawOffset="-619" yDrawOffset="-207" isDecoration="1" customCullDistance="1000" customShadowWidth="0" isFlat="1" />
+<objectType id="phoenicianGangplank"
+    xDrawOffset="-50" yDrawOffset="-80" isDecoration="1" customCullDistance="2000"  isFlat="1" />
 
-<permanentObject id="phoenicianShipDeck"   y="71184" x="16896" />
-<permanentObject id="phoenicianShipBottom" y="71184" x="16896" />
-<permanentObject id="phoenicianShipMast"   y="71184" x="16896" />
+<permanentObject id="phoenicianShip"     y="71184" x="16896" />
+<permanentObject id="phoenicianShipMast" y="71184" x="16896" />
 
-<permanentObject id="phoenicianShipDeck"   y="70738" x="17600" />
-<permanentObject id="phoenicianShipBottom" y="70738" x="17600" />
-<permanentObject id="phoenicianShipMast"   y="70738" x="17600" />
+<permanentObject id="phoenicianShip"     y="70708" x="17600" />
+<permanentObject id="phoenicianShipMast" y="70708" x="17600" />
 
-<permanentObject id="phoenicianShipDeck"   y="71186" x="18300" />
-<permanentObject id="phoenicianShipBottom" y="71186" x="18300" />
-<permanentObject id="phoenicianShipMast"   y="71186" x="18300" />
+<permanentObject id="phoenicianShip"     y="71184" x="18304" />
+<permanentObject id="phoenicianShipMast" y="71184" x="18304" />
+
+<permanentObject id="phoenicianGangplank"  y="70912" x="16544" />
+<permanentObject id="phoenicianGangplank"  y="70912" x="17248" />
+<permanentObject id="phoenicianGangplank"  y="70912" x="17948" />
 
 </root>
