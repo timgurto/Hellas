@@ -12,6 +12,15 @@ void StaticObject::load(Container& container, const std::string& filename) {
     xr.findAttr(elem, "x", so.loc.x);
     xr.findAttr(elem, "y", so.loc.y);
 
+    container.push_back(so);
+  }
+
+  for (auto elem : xr.getChildren("permanentObject")) {
+    auto so = StaticObject{};
+
+    xr.findAttr(elem, "id", so.id);
+    xr.findAttr(elem, "x", so.loc.x);
+    xr.findAttr(elem, "y", so.loc.y);
 
     container.push_back(so);
   }
