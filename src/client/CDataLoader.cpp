@@ -631,11 +631,14 @@ void CDataLoader::loadPermanentObjects(XmlReader &xr) {
     const auto *type = _client.findObjectType(id);
     if (!type) continue;
 
+    auto *nonConstType = const_cast<ClientObjectType *>(type);
+    nonConstType->calculateAndInitDurability();
+
     auto loc = MapPoint{};
     if (!xr.findAttr(elem, "x", loc.x)) continue;
     if (!xr.findAttr(elem, "y", loc.y)) continue;
 
-    auto obj = new Sprite{type, loc, _client};
+    auto obj = new ClientObject{{}, type, loc, _client};
     _client._entities.insert(obj);
 
     if (type->hasCustomCullDistance())
