@@ -9,10 +9,9 @@ void StaticObject::load(Container& container, const std::string& filename) {
     auto so = StaticObject{};
 
     xr.findAttr(elem, "id", so.id);
+    xr.findAttr(elem, "x", so.loc.x);
+    xr.findAttr(elem, "y", so.loc.y);
 
-    auto location = xr.findChild("location", elem);
-    xr.findAttr(location, "x", so.loc.x);
-    xr.findAttr(location, "y", so.loc.y);
 
     container.push_back(so);
   }
