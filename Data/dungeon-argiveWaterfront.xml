@@ -9,6 +9,15 @@
 <objectType id="wallBlack5" isDecoration="1" xDrawOffset="-16" yDrawOffset="-80">
     <collisionRect x="-16" y="-80" w="32" h="160" />
 </objectType>
+<objectType id="wallClear1" isDecoration="1" customShadowWidth="0" xDrawOffset="-16" yDrawOffset="-16">
+    <collisionRect x="-16" y="-16" w="32" h="32" />
+</objectType>
+<objectType id="wallClear3" isDecoration="1" customShadowWidth="0" xDrawOffset="-16" yDrawOffset="-48">
+    <collisionRect x="-16" y="-48" w="32" h="96" />
+</objectType>
+<objectType id="wallClear5" isDecoration="1" customShadowWidth="0" xDrawOffset="-16" yDrawOffset="-80">
+    <collisionRect x="-16" y="-80" w="32" h="160" />
+</objectType>
 
 <permanentObject id="wallBlack1" y="70128" x="16304" />
 <permanentObject id="wallBlack3" y="70032" x="15088" />
@@ -48,7 +57,23 @@
 <permanentObject id="phoenicianShipMast" y="71184" x="18304" />
 
 <permanentObject id="phoenicianGangplank"  y="70912" x="16544" />
+<permanentObject id="wallClear3" y="70864" x="16480" />
+<permanentObject id="wallClear5" y="70960" x="16480" />
+<permanentObject id="wallClear3" y="70864" x="16608" />
+<permanentObject id="wallClear5" y="70960" x="16608" />
+
 <permanentObject id="phoenicianGangplank"  y="70912" x="17248" />
-<permanentObject id="phoenicianGangplank"  y="70912" x="17948" />
+<permanentObject id="wallClear3" y="70864" x="17184" />
+<permanentObject id="wallClear5" y="70960" x="17184" />
+<permanentObject id="wallClear3" y="70864" x="17312" />
+<permanentObject id="wallClear5" y="70960" x="17312" />
+
+<permanentObject id="phoenicianGangplank"  y="70912" x="17952" />
+<permanentObject id="wallClear3" y="70864" x="17888" />
+<permanentObject id="wallClear5" y="70976" x="17888" />
+<permanentObject id="wallClear3" y="70864" x="18016" />
+<permanentObject id="wallClear5" y="70976" x="18016" />
+
+
 
 </root>
