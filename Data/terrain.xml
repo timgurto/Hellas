@@ -61,6 +61,7 @@ frameTime          *
 <terrain index="Y" id="woodWall"        color="9A4A61" hardEdge="1" />
 <terrain index="B" id="null"            color="000000" hardEdge="1" />
 <terrain index="W" id="brickWall"       color="D09E7B" hardEdge="1" />
+<terrain index="Z" id="walkableWater"   color="495FC2" imageFile="water" frames="32" frameTime="200" />
 
 <!--
 Default list applies to player avatars, and to all objects unless otherwise specified.
