@@ -282,10 +282,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "XP from kills") {
     AND_GIVEN("an elite NPC") {
       const auto &elite = server->addNPC("queenBee", {10, 15});
 
-      WHEN("a player kills it") {
-        client->sendMessage(CL_TARGET_ENTITY, makeArgs(elite.serial()));
-
-        THEN("that player has 400 XP") { WAIT_UNTIL(user->xp() == 400); }
+      THEN("it's worth 500XP") {
+        CHECK(user->appropriateXPForKill(elite) == 500);
       }
     }
   }

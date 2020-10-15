@@ -404,7 +404,7 @@
 </quest>
     <npcType
         id="gigantis" name="Gigantis"
-        level="20" maxHealth="600" attack="41" attackTime="2895"
+        level="20" maxHealth="690" attack="77" attackTime="2895"
         maxDistanceFromSpawner = "150" >
         <humanoid base="gigantis">
             <gear id="copperCuirass" />

@@ -170,7 +170,7 @@
     <objectType id="skeleton" isDecoration="1" xDrawOffset="-20" yDrawOffset="-8" />
     <npcType
         id="calydonianBoar" name="Calydonian Boar" template="boar"
-        level="15" maxHealth="277" attack="84" attackTime="2995" elite="1"
+        level="15" maxHealth="462" attack="53" attackTime="2995" elite="1"
         xDrawOffset="-11" yDrawOffset="-13" >
         <loot id="hide" chance="0.3" />
         <loot id="meat" chance="0.3" />
