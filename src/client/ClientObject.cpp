@@ -976,7 +976,10 @@ void ClientObject::createRegularTooltip() const {
     tooltip.addGap();
     tooltip.setColor(Color::TOOLTIP_BODY);
     auto levelString = "Level "s + toString(level());
-    if (isElite()) levelString += " Elite"s;
+    if (rank() == ClientCombatantType::ELITE)
+      levelString += " Elite"s;
+    else if (rank() == ClientCombatantType::BOSS)
+      levelString += " Boss"s;
     tooltip.addLine(levelString);
   }
 

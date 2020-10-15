@@ -1058,9 +1058,10 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
       nt->chanceToGather(s, chance);
     }
 
-    if (xr.findAttr(elem, "elite", n) && n != 0) {
+    if (xr.findAttr(elem, "elite", n) && n != 0)
       nt->makeElite();
-    }
+    else if (xr.findAttr(elem, "boss", n) && n != 0)
+      nt->makeBoss();
 
     // Insert
     auto pair = _client.gameData.objectTypes.insert(nt);

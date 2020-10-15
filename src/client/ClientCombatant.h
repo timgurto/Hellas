@@ -31,7 +31,7 @@ class ClientCombatant {
                                   px_t objHeight) const;
   const Level &level() const { return _level; }
   void level(Level l) { _level = l; }
-  bool isElite() const { return _type->isElite(); }
+  ClientCombatantType::Rank rank() const { return _type->rank(); }
 
   virtual void sendTargetMessage() const = 0;
   virtual void sendSelectMessage() const = 0;

@@ -22,14 +22,12 @@ class CombatantPanel : public Element {
   void showEnergyBar();
   void hideEnergyBar();
   void addXPBar(const XP &xp, const XP &maxXP);
-  void showEliteMarker();
-  void hideEliteMarker();
 
   static const px_t STANDARD_WIDTH = 110, TARGET_WIDTH = 160, HEIGHT = 40,
                     BAR_HEIGHT = 7, GAP = 2, SPACE_FOR_LEVEL = 20;
 
   virtual void height(px_t h) override;
-  void setElite(bool isElite);
+  void setRank(ClientCombatantType::Rank rank);
 
  private:
   ProgressBar<Hitpoints> *_healthBar;
@@ -39,7 +37,7 @@ class CombatantPanel : public Element {
   ColorBlock *_background;
   ShadowBox *_outline;
 
-  Picture *_eliteMarker{nullptr};
+  Picture *_eliteMarker{nullptr}, *_bossMarker{nullptr};
 
   const px_t ELEMENT_WIDTH;
 };

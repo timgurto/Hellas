@@ -26,6 +26,10 @@ CombatantPanel::CombatantPanel(px_t panelX, px_t panelY, px_t width,
   addChild(_eliteMarker);
   _eliteMarker->hide();
 
+  _bossMarker = new Picture{_eliteMarker->rect(), Client::images.bossWreath};
+  addChild(_bossMarker);
+  _bossMarker->hide();
+
   addChild(new LinkedLabel<Level>{
       {GAP * 2, y, SPACE_FOR_LEVEL, Element::TEXT_HEIGHT},
       level,
@@ -77,23 +81,21 @@ void CombatantPanel::addXPBar(const XP &xp, const XP &maxXP) {
   addChild(_xpBar);
 }
 
-void CombatantPanel::showEliteMarker() {
-  if (!_eliteMarker->visible()) _eliteMarker->show();
-}
-
-void CombatantPanel::hideEliteMarker() {
-  if (_eliteMarker->visible()) _eliteMarker->hide();
-}
-
 void CombatantPanel::height(px_t h) {
   Element::height(h);
   _background->height(h);
   _outline->height(h);
 }
 
-void CombatantPanel::setElite(bool isElite) {
-  if (isElite)
+void CombatantPanel::setRank(ClientCombatantType::Rank rank) {
+  if (rank == ClientCombatantType::ELITE) {
     _eliteMarker->show();
-  else
+    _bossMarker->hide();
+  } else if (rank == ClientCombatantType::BOSS) {
     _eliteMarker->hide();
+    _bossMarker->show();
+  } else {
+    _eliteMarker->hide();
+    _bossMarker->hide();
+  }
 }

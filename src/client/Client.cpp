@@ -902,7 +902,8 @@ void Client::CommonImages::initialise() {
   startQuestIndicator = {"Images/questStart.png", Color::MAGENTA};
   endQuestIndicator = {"Images/questEnd.png", Color::MAGENTA};
 
-  eliteWreath = {"Images/UI/wreath.png", Color::MAGENTA};
+  eliteWreath = {"Images/UI/wreathElite.png", Color::MAGENTA};
+  bossWreath = {"Images/UI/wreathBoss.png", Color::MAGENTA};
 
   itemHighlightMouseOver = {"Images/Items/highlight.png"s, Color::MAGENTA};
   itemHighlightMatch = {"Images/Items/highlightGood.png"s, Color::MAGENTA};

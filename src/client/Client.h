@@ -585,7 +585,7 @@ class Client : public TextEntryManager {
         cursorStartsQuest, cursorEndsQuest, cursorRepair, cursorVehicle;
     Texture startQuestIcon, endQuestIcon;
     Texture startQuestIndicator, endQuestIndicator;
-    Texture eliteWreath;
+    Texture eliteWreath, bossWreath;
 
     Texture itemHighlightMouseOver, itemHighlightMatch, itemHighlightNoMatch;
     Texture itemDamaged, itemBroken;

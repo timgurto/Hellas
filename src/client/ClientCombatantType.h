@@ -17,14 +17,17 @@ class ClientCombatantType {
   void damageParticles(const ParticleProfile *profile) {
     _damageParticles = profile;
   }
-  void makeElite() { _isElite = true; }
-  bool isElite() const { return _isElite; }
+
+  enum Rank { NORMAL, ELITE, BOSS };
+  void makeElite() { _rank = ELITE; }
+  void makeBoss() { _rank = BOSS; }
+  Rank rank() const { return _rank; }
 
  private:
   Hitpoints _maxHealth = 0;
   Energy _maxEnergy = 0;
   const ParticleProfile *_damageParticles = nullptr;
-  bool _isElite{false};
+  Rank _rank{NORMAL};
 };
 
 #endif

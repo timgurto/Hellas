@@ -96,15 +96,10 @@ void Target::onTypeChange() {
   _maxEnergy = _combatant->maxEnergy();
   _level = _combatant->level();
 
-  _panel->setElite(_combatant->isElite());
+  _panel->setRank(_combatant->rank());
 
   if (_maxEnergy == 0)
     _panel->hideEnergyBar();
   else
     _panel->showEnergyBar();
-
-  if (_combatant->isElite())
-    _panel->showEliteMarker();
-  else
-    _panel->hideEliteMarker();
 }
