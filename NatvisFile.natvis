@@ -3,4 +3,10 @@
   <Type Name="EntityType">
     <DisplayString>{{id={_id}}}</DisplayString>    
   </Type>
+  <Type Name="User">
+    <DisplayString>{{name={_name}}}</DisplayString>    
+  </Type>
+  <Type Name="Entity">
+    <DisplayString>{{type={_type}}}</DisplayString>    
+  </Type>
 </AutoVisualizer>
