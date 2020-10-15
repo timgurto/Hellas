@@ -265,7 +265,8 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 TEST_CASE_METHOD(ServerAndClientWithData, "XP from kills") {
   GIVEN("normal and elite NPC types") {
     useData(R"(
-      <npcType id="queenBee" maxHealth="1" elite="1" />
+      <npcType id="queenBee" maxHealth="1" boss="1" />
+      <npcType id="soldierBee" maxHealth="1" elite="1" />
       <npcType id="workerBee" maxHealth="1" />
     )");
 
@@ -280,10 +281,18 @@ TEST_CASE_METHOD(ServerAndClientWithData, "XP from kills") {
     }
 
     AND_GIVEN("an elite NPC") {
-      const auto &elite = server->addNPC("queenBee", {10, 15});
+      const auto &soldier = server->addNPC("soldierBee", {10, 15});
 
       THEN("it's worth 500XP") {
-        CHECK(user->appropriateXPForKill(elite) == 500);
+        CHECK(user->appropriateXPForKill(soldier) == 500);
+      }
+    }
+
+    AND_GIVEN("a boss NPC") {
+      const auto &queen = server->addNPC("queenBee", {10, 15});
+
+      THEN("it's worth 1000XP") {
+        CHECK(user->appropriateXPForKill(queen) == 1000);
       }
     }
   }

@@ -29,7 +29,7 @@ class EntityType : public HasTags {
     _allowedTerrain = TerrainList::findList(id);
   }
 
-  enum Rank { NORMAL, ELITE };
+  enum Rank { NORMAL, ELITE, BOSS };
   Rank rank() const { return _rank; }
   void rank(Rank r) { _rank = r; }
 

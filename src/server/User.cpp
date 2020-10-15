@@ -1835,7 +1835,10 @@ XP User::appropriateXPForKill(const Entity &victim) const {
   }
 
   auto rank = victim.type()->rank();
-  if (rank == EntityType::ELITE) xp *= 5;
+  if (rank == EntityType::ELITE)
+    xp *= 5;
+  else if (rank == EntityType::BOSS)
+    xp *= 10;
 
   xp = toInt(1.0 * xp / getGroupSize());
 
