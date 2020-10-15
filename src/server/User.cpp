@@ -1138,7 +1138,7 @@ void User::onAttackedBy(Entity &attacker, Threat threat) {
 
 void User::onKilled(Entity &victim) {
   if (victim.grantsXPOnDeath()) {
-    auto xp = appropriateXPForKill(victim, victim.type()->isElite());
+    auto xp = appropriateXPForKill(victim);
     addXP(xp);
   }
 
@@ -1819,7 +1819,7 @@ void User::announceLevelUp() const {
   server.broadcastToArea(location(), {SV_LEVEL_UP, _name});
 }
 
-XP User::appropriateXPForKill(const Entity &victim, bool isElite) const {
+XP User::appropriateXPForKill(const Entity &victim) const {
   auto xp = XP{};
   auto levelDiff = victim.level() - level();
   if (levelDiff < -9)
@@ -1834,7 +1834,8 @@ XP User::appropriateXPForKill(const Entity &victim, bool isElite) const {
     xp = xpPerLevelDiff[levelDiff];
   }
 
-  if (isElite) xp *= 4;
+  auto rank = victim.type()->rank();
+  if (rank == EntityType::ELITE) xp *= 4;
 
   xp = toInt(1.0 * xp / getGroupSize());
 

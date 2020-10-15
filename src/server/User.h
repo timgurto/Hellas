@@ -349,7 +349,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   int getLevelDifference(const User &user) const override {
     return level() - user.level();
   }
-  XP appropriateXPForKill(const Entity &victim, bool isElite = false) const;
+  XP appropriateXPForKill(const Entity &victim) const;
   int getGroupSize() const;
 
   void sendMessage(const Message &msg) const;
