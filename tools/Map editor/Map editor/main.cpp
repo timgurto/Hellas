@@ -89,13 +89,12 @@ int main(int argc, char *argv[]) {
   SDL_RenderSetLogicalSize(renderer.raw(), renderer.width(), renderer.height());
 
   dataFiles = findDataFiles("../../Data");
-  for (const auto &file : dataFiles) {
-    TerrainType::load(terrain, file);
-    StaticObject::load(staticObjects, file);
-    SpawnPoint::load(spawnPoints, file);
-    NPCTemplate::load(npcTemplates, file);
+  for (const auto &file : dataFiles) TerrainType::load(terrain, file);
+  for (const auto &file : dataFiles) StaticObject::load(staticObjects, file);
+  for (const auto &file : dataFiles) SpawnPoint::load(spawnPoints, file);
+  for (const auto &file : dataFiles) NPCTemplate::load(npcTemplates, file);
+  for (const auto &file : dataFiles)
     EntityType::load(entityTypes, npcTemplates, file);
-  }
 
   Element::font(TTF_OpenFont("trebucbd.ttf", 15));
   Element::textOffset = 2;
