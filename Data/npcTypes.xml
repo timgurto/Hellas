@@ -100,6 +100,11 @@
     xDrawOffset="-11" yDrawOffset="-13" >
     <collisionRect x="-9" y="-4" w="18" h="7" />
 </npcTemplate>
+<npcTemplate id="dog"
+    imageFile="dog" sounds="dog"
+    xDrawOffset="-13" yDrawOffset="-24" >
+    <collisionRect x="-11" y="-2" w="21" h="4" />
+</npcTemplate>
 
 <npcType
     id="pig1" name="Critter" template="pig"

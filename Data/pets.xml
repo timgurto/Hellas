@@ -10,6 +10,13 @@
     <lootTable id="animal" />
     <loot id="hide" chance="0.1" />
 </npcType>
+<npcType
+    id="dog6" name="Dog" template="dog"
+    level="6" maxHealth="34" attack="9" attackTime="2900" isNeutral="1">
+    <canBeTamed consumes="bone" />
+    <lootTable id="animal" />
+    <loot id="hide" chance="0.1" />
+</npcType>
 
 <npcType id="sheep" name="Sheep"
     level="17" maxHealth="63" attack="24" attackTime="2900" armor="3" isNeutral="1"
