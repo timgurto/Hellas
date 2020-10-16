@@ -29,10 +29,10 @@
 </buff>
 <buff id="shieldBlock" name="Shield raised" icon="shield" duration="8"
     description="Block chance increased.">
-    <stats block="100" />
+    <stats block="10000" />
 </buff>
 <buff id="sprint" name="Sprinting" icon="outlineRun" cancelsOnOOE="1"
-    description="Speed increased; energy reduced each second.">
+    description="Speed increased, draining energy.">
     <stats eps="-2000" speed="2" />
 </buff>
 <buff id="stun" name="Stunned" icon="shout" duration="6">
@@ -43,7 +43,7 @@
     <function onHit="1" name="doDirectDamage" i1="2" />
 </buff>
 <buff id="waterWalking" name="Water Walking" icon="waterRipples" canBeInterrupted="1" school="air"  cancelsOnOOE="1"
-    description="Can walk on both land and water; energy reduced each second.  Cancels if you are attacked.">
+    description="Can walk on both land and water, draining energy.  Cancels if you are attacked.">
     <changeAllowedTerrain terrainList="notMountains" />
     <stats eps="-2000" />
 </buff>

@@ -333,7 +333,7 @@
         <function name="buff" s1="tutShield" />
     </spell>
     <buff id="tutShield" name="Hardened Shell" icon="shield" duration="5"
-        description="Increased armour and resistances.">
+        description="All damage taken is halved.">
         <effect image="shield" xOffset="-20" yOffset="-40" />
         <stats armor="500" airResist="500" earthResist="500" fireResist="500" waterResist="500" />
     </buff>

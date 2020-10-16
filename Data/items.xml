@@ -609,27 +609,27 @@
     <!-- Left hand -->
         <!-- Shield (block %, BV) -->
             <item id="leatherShield" name="Leather Shield" gearSlot="7" lvlReq="15" >
-                <stats armor="17" endurance="4" blockValue="4" />
+                <stats armor="17" endurance="4" blockValue="400" />
                 <offset x="-4" y="-10" />
                 <tag name="shield" />
                 <canBeRepaired cost="lumber" />
             </item>
                 <item id="leatherShieldSilver" name="Lacquered Leather Shield" gearSlot="7" lvlReq="15"
                     iconFile="leatherShield" gearFile="leatherShield" quality="2" >
-                    <stats armor="23" endurance="5" blockValue="5" />
+                    <stats armor="23" endurance="5" blockValue="500" />
                     <offset x="-4" y="-10" />
                     <tag name="shield" />
                     <canBeRepaired cost="lumber" />
                 </item>
             <item id="copperShield" name="Buckler" gearSlot="7" lvlReq="30" >
-                <stats armor="47" endurance="3" block="200" blockValue="7" />
+                <stats armor="47" endurance="3" block="200" blockValue="700" />
                 <offset x="-6" y="-12" />
                 <tag name="shield" />
                 <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
                 <item id="copperShieldSilver" name="Inlaid Buckler" gearSlot="7" lvlReq="30"
                     iconFile="copperShield" gearFile="copperShield" quality="2">
-                    <stats armor="56" endurance="3" block="300" blockValue="8" />
+                    <stats armor="56" endurance="3" block="300" blockValue="800" />
                     <offset x="-6" y="-12" />
                     <tag name="shield" />
                     <canBeRepaired cost="copperBar" tool="smelting2" />
