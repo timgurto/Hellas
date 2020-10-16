@@ -76,4 +76,152 @@
 
 
 
+<npcType id="dAW_tortoise" name="Argive Tortoise" template="tortoise"
+    level="20" maxHealth="120" attack="15" attackTime="3500" >
+    <spell id="dAW_tortoiseShield" />
+</npcType>
+    <spell id="dAW_tortoiseShield" cooldown="10" school="water">
+        <targets self="1" />
+        <function name="buff" s1="dAW_tortoiseShield" />
+    </spell>
+        <buff id="dAW_tortoiseShield" name="Hardened Shell" icon="shield" duration="5"
+            description="All damage taken is halved.">
+            <effect image="shield" xOffset="-20" yOffset="-40" />
+            <stats armor="500" airResist="500" earthResist="500" fireResist="500" waterResist="500" />
+        </buff>
+
+<npcType id="dAW_gangPickpocket" name="Vindictive Pickpocket"
+    level="21" elite="1" maxHealth="625" attack="40" attackTime="1800" >
+    <spell id="dAW_disarm" />
+    <humanoid base="zealot">
+        <item id="" />
+    </humanoid>
+</npcType>
+    <spell id="dAW_disarm" cooldown="10" school="physical">
+        <targets enemy="1" />
+        <function name="buff" s1="dAW_disarm" />
+    </spell>
+        <buff id="dAW_disarm" name="Disarmed" icon="sword" duration="5" description="Might reduced">
+            <stats might="-100" />
+        </buff>
+
+<npcType id="dAW_gangBrawler" name="Vindictive Brawler"
+    level="21" elite="1" maxHealth="749" attack="83" attackTime="2900" >
+    <humanoid base="athlete">
+        <item id="" />
+    </humanoid>
+</npcType>
+
+<npcType id="dAW_gangStrongman" name="Heimon, Vindictive Champion"
+    level="22" boss="1" maxHealth="1365" attack="150" attackTime="4000" >
+    <spell id="dAW_stun" />
+    <humanoid base="default">
+        <item id="" />
+    </humanoid>
+</npcType>
+    <spell id="dAW_stun" cooldown="10" school="physical">
+        <targets enemy="1" />
+        <function name="debuff" s1="dAW_stun" />
+    </spell>
+        <buff id="dAW_stun" name="Knocked out" description="Stunned" icon="fist" duration="3">
+            <stats stuns="1" />
+        </buff>
+
+<npcType id="dAW_gangDogfighter" name="Vindictive Dogfighter"
+    level="22" elite="1" maxHealth="546" attack="52" attackTime="2500" >
+    <spell id="dAW_silence" />
+    <humanoid base="scholar">
+        <item id="" />
+    </humanoid>
+</npcType>
+    <spell id="dAW_silence" cooldown="10" school="air" radius="15">
+        <targets enemy="1" />
+        <function name="debuff" s1="dAW_silence" />
+    </spell>
+        <buff id="dAW_silence" name="Deafened" description="Intellect reduced" icon="shout" duration="5">
+            <stats intellect="-100" />
+        </buff>
+    
+<npcType id="dAW_dog" name="Argive Fighting Dog" template="dog"
+    level="22" maxHealth="72" attack="5" attackTime="2900" >
+    <spell id="dAW_dogBleed" />
+</npcType>
+    <spell id="dAW_dogBleed" cooldown="10" school="physical">
+        <targets enemy="1" />
+        <function name="debuff" s1="dAW_dogBleed" />
+    </spell>
+        <buff id="dAW_dogBleed" name="Bleeding" icon="dripRed" duration="10"
+        description="Taking damage over time.">
+            <function name="doDirectDamage" i1="15" tickTime="1000" />
+        </buff>
+
+<npcType id="dAW_gangVandal" name="Vindictive Vandal"
+    level="22" elite="1" maxHealth="812" attack="55" attackTime="2500"
+    isRanged="1" projectile="rock" >
+    <humanoid base="athlete">
+        <item id="" />
+    </humanoid>
+</npcType>
+
+<npcType id="dAW_gangLeader" name="Oulixes the Vindictive"
+    level="23" boss="1" maxHealth="1862" attack="128" attackTime="2500" >
+    <humanoid base="default">
+        <item id="" />
+    </humanoid>
+</npcType>
+
+<npcType id="dAW_phnSoldier" name="Phoenician Soldier"
+    level="22" elite="1" maxHealth="679" attack="75" attackTime="2900" >
+    <spell id="dAW_intimidate" />
+    <humanoid base="athlete">
+        <item id="" />
+    </humanoid>
+</npcType>
+    <spell id="dAW_intimidate" cooldown="10" school="air" radius="30">
+        <targets enemy="1" />
+        <function name="debuff" s1="dAW_intimidate" />
+    </spell>
+        <buff id="dAW_intimidate" name="Intimidated" icon="shout" duration="10"  description="Cunning reduced">
+            <stats cunning="-25" />
+        </buff>
+    
+<npcType id="dAW_phnDeckhand" name="Phoenician Deckhand"
+    level="23" elite="1" maxHealth="876" attack="71" attackTime="2100" >
+    <humanoid base="athlete">
+        <item id="" />
+    </humanoid>
+</npcType>
+    
+<npcType id="dAW_phnCook" name="Phoenician Cook"
+    level="23" elite="1" maxHealth="878" attack="60" attackTime="2500"
+    isRanged="1" projectile="rock" school="fire" >
+    <humanoid base="scholar">
+        <item id="" />
+    </humanoid>
+</npcType>
+    <projectile id="food" speed="200" particlesAtEnd="dirtExplosion" sounds="water" >
+        <drawRect x="-7" y="-28" w="16" h="36" />
+    </projectile>
+    
+<npcType id="dAW_phnChef" name="Chef Therapon"
+    level="24" boss="1" maxHealth="1342" attack="105" attackTime="2900" school="fire" >
+    <spell id="dAW_chefBleed" />
+    <spell id="dAW_chefAoE" />
+    <humanoid base="default">
+        <item id="" />
+    </humanoid>
+</npcType>
+    <spell id="dAW_chefBleed" cooldown="5" school="physical">
+        <targets enemy="1" />
+        <function name="debuff" s1="dAW_chefBleed" />
+    </spell>
+        <buff id="dAW_chefBleed" name="Bleeding" icon="dripRed" duration="5"
+        description="Taking damage over time.">
+            <function name="doDirectDamage" i1="80" tickTime="1000" />
+        </buff>
+    <spell id="dAW_chefAoE" cooldown="7" school="fire" radius="30">
+        <targets enemy="1" />
+        <function name="doDirectDamage" i1="100" />
+    </spell>
+
 </root>

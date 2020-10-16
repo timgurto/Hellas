@@ -92,3 +92,99 @@ Loot ideas:
  Decorations
  Thematic BoE greens
  Themed consumables: wine from tavern, special food from chef
+ 
+ 
+1. Port
+    1. Merchant shop
+        0. Tortoises
+        1. Store
+            Gang Pickpocket
+                Knife
+                Coins
+            Friendly trader
+        2. Outside; loading area; carts
+            Tortoises
+    2. Tavern
+        1. Drinking
+            Friendly drinker
+            Gang brawler, pickpocket
+        2. Wine storage
+            Gang brawler
+        3. Gambling out back
+            Friendly gambler
+            Gang dogfighter
+            Gang dog
+    3. Warehouse
+        1. Warehouse
+            Gang ruffian
+                Cargo decoration
+            *Gang leader*
+            Learn that Phoenicians took the women
+2. Boardwalk
+    1. Wharf staff (friendly?)
+    2. Fishing (detour)
+    3. Guards 
+3. Ships
+    2. Mess ship
+        1. Gangplank/deck
+            Deckhands
+        2. Dining room
+            Deckhands
+        3. Kitchen
+            Cooks
+                oysters
+            *Chef*
+                Cleaver
+                Hat?
+    3. Pleasure barge
+        0. Gangplank
+            Deckhands
+        1. 
+            Skirt chasers
+                Oysters
+                Wine
+            Deckhands
+        2. Lounge/bedroom
+            Skirt chasers
+            *Lotharios*
+            Gatherable cushions
+                Soiled cushion (grey; DE into raw wool)
+                Cushion decoration (BOP)
+        3. Hidden back room
+            Women hiding from the attackers (you)
+            Reveal that Io was taken to Egypt)
+    1. Flagship
+        0. Gangplank
+            Sailors
+        1. Maintenance? Library?
+            Sailors
+            Phoenician Shipwright
+                ship plans
+                hammer
+                materials?
+        2. Navigation room; map room
+            Sailors
+            *Navigator nymph <The fleet's navigator>
+        3. Admiral's quarters
+            *Admiral X <The fleet's commander>
+            
+20 Gang pickpocket
+21 Gang brawler
+21 Gang vandal (throws rocks)
+22 Gang dogfighter
+20NE Fighting dog
+
+22 Phoenician Bodyguard
+22 Phoenician Pyromancer (fire ranged)
+23 Phoenician Deckhand
+24 Phoenician Sailor
+23 Phoenecian Cook
+25 Phoenecian Skirt Chaser
+
+23 Gang leader
+24 Phoenician Chef
+24 Phoenician Shipwright
+25 Merchant Captain Ahumm
+26 Admiral Lotharios
+
+Woman
