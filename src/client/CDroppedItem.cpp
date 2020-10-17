@@ -78,4 +78,6 @@ bool CDroppedItem::isFlat() const {
   return true;
 }
 
+Color CDroppedItem::nameColor() const { return _itemType.nameColor(); }
+
 bool CDroppedItem::isFalling() const { return _altitude > 0; }
