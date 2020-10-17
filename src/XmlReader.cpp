@@ -117,6 +117,7 @@ bool XmlReader::findStatsChild(const std::string &val, TiXmlElement *elem,
 
   stats = StatsMod{};
   XmlReader::findAttr(child, "armor", stats.armor);
+  XmlReader::findAttr(child, "armour", stats.armor);
   XmlReader::findAttr(child, "health", stats.maxHealth);
   XmlReader::findAttr(child, "energy", stats.maxEnergy);
   XmlReader::findAttr(child, "hps", stats.hps);
