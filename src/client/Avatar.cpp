@@ -228,7 +228,7 @@ bool Avatar::isInPlayersCity() const {
   return false;
 }
 
-const Color &Avatar::nameColor() const {
+Color Avatar::nameColor() const {
   if (this == &_client.character()) return Color::COMBATANT_SELF;
 
   if (canBeAttackedByPlayer()) return Color::COMBATANT_ENEMY;

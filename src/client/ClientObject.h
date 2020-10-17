@@ -175,7 +175,7 @@ class ClientObject : public Sprite, public ClientCombatant {
   void draw() const override;
   void drawAppropriateQuestIndicator() const;
   const Texture &cursor() const override;
-  virtual const Color &nameColor() const override;
+  virtual Color nameColor() const override;
   virtual bool shouldDrawName() const override;
   virtual bool shouldDrawShadow() const override;
   bool shouldAddParticles() const override {

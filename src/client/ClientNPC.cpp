@@ -31,7 +31,7 @@ bool ClientNPC::canBeAttackedByPlayer() const {
   return true;
 }
 
-const Color &ClientNPC::nameColor() const {
+Color ClientNPC::nameColor() const {
   if (canBeAttackedByPlayer()) {
     return npcType()->isNeutral() ? Color::COMBATANT_DEFENSIVE
                                   : Color::COMBATANT_ENEMY;

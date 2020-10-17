@@ -74,7 +74,7 @@ class Avatar : public Sprite, public ClientCombatant {
   const Texture &cursor() const override;
   void name(const std::string &newName) { _name = newName; }
   bool shouldDrawName() const override { return true; }
-  const Color &nameColor() const override;
+  Color nameColor() const override;
   virtual const Texture &image() const override { return _imageWithGear; }
   virtual const Texture &getHighlightImage() const override {
     return _highlightImageWithGear;
