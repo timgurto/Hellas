@@ -16,7 +16,8 @@ SpellEffect::FunctionMap SpellEffect::functionMap = {
     {"scaleThreat", scaleThreat},
     {"dispellDebuff", dispellDebuff},
     {"randomTeleport", randomTeleport},
-    {"teleportToCity", teleportToCity}};
+    {"teleportToCity", teleportToCity},
+    {"spawnNPC", spawnNPC}};
 
 SpellEffect::FlagMap SpellEffect::aggressionMap = {
     {doDirectDamage, true}, {doDirectDamageWithModifiedThreat, true},
@@ -217,6 +218,35 @@ CombatResult SpellEffect::teleportToCity(const SpellEffect &effect,
   if (attempts == 0) return FAIL;
 
   target.teleportTo(proposedLocation);
+
+  return HIT;
+}
+
+CombatResult SpellEffect::spawnNPC(const SpellEffect &effect, Entity &caster,
+                                   Entity &target) {
+  auto &server = Server::instance();
+
+  const auto *objType = server.findObjectTypeByID(effect._args.s1);
+  const auto *npcType = dynamic_cast<const NPCType *>(objType);
+  if (!npcType) return FAIL;
+
+  auto proposedLocation = MapPoint{};
+  const auto MAX_RADIUS = 150_px;
+
+  auto attempts = 100;
+  while (attempts-- > 0) {
+    auto angle = randDouble() * 2 * PI;
+    auto radius = sqrt(randDouble()) * MAX_RADIUS;
+    auto dX = cos(angle) * radius;
+    auto dY = sin(angle) * radius;
+
+    proposedLocation = caster.location() + MapPoint{dX, dY};
+    if (server.isLocationValid(proposedLocation, *npcType)) break;
+  }
+
+  if (attempts == 0) return FAIL;
+
+  server.addNPC(npcType, proposedLocation);
 
   return HIT;
 }

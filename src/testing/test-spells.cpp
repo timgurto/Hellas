@@ -1,4 +1,5 @@
 #include "TestClient.h"
+#include "TestFixtures.h"
 #include "TestServer.h"
 #include "testing.h"
 
@@ -577,6 +578,28 @@ TEST_CASE("Objects can't be healed") {
             CHECK(machine.health() < machine.stats().maxHealth);
           }
         }
+      }
+    }
+  }
+}
+
+TEST_CASE_METHOD(ServerAndClientWithData, "A spell that summons an NPC") {
+  GIVEN("a spell that summons an NPC") {
+    useData(R"(
+      <npcType id="skeleton" />
+      <spell id="raiseSkeleton" >
+        <targets self="1" />
+        <function name="spawnNPC" s1="skeleton" />
+      </spell>
+    )");
+
+    AND_GIVEN("the user knows the spell") {
+      user->getClass().teachSpell("raiseSkeleton");
+
+      WHEN("he casts it") {
+        client->sendMessage(CL_CAST, "raiseSkeleton");
+
+        THEN("there is an NPC") { WAIT_UNTIL(server->entities().size() == 1); }
       }
     }
   }
