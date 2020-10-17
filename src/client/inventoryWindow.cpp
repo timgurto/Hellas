@@ -113,7 +113,8 @@ void Client::initializeGearWindow() {
   addStat("Dodge chance", _stats.dodge.display(), {}, {}, y, _gearWindow,
           "Chance to outright avoid hand-to-hand physical attacks.");
   addStat("Block chance", _stats.block.display(), {}, {}, y, _gearWindow,
-          "Chance to reduce the damage of physical attacks by a flat amount.");
+          "Chance to reduce the damage of physical attacks by a flat amount "
+          "(if a shield is equipped).");
   addStat("Block value", _stats.blockValue.display(), {}, {}, y, _gearWindow,
           "How much damage is reduced when an attack is blocked.");
   addGap(y, _gearWindow);
