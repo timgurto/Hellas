@@ -224,4 +224,67 @@
         <function name="doDirectDamage" i1="100" />
     </spell>
 
+<npcType id="dAW_phnLover" name="Phoenician Skirt Chaser"
+    level="24" elite="1" maxHealth="1014" attack="67" attackTime="2500" >
+    <humanoid base="zealot">
+        <item id="" />
+    </humanoid>
+</npcType>
+
+<npcType id="dAW_phnLoverBoss" name="Lotharios"
+    level="25" boss="1" maxHealth="1728" attack="69" attackTime="2400" >
+    <spell id="dAW_summonConsort" />
+    <humanoid base="default">
+        <item id="" />
+    </humanoid>
+</npcType>
+    <spell id="dAW_summonConsort" cooldown="10" school="physical">
+        <targets enemy="1" />
+        <function name="spawnNPC" s1="dAW_phnConsort" />
+    </spell>
+<npcType id="dAW_phnConsort" name="Loyal Consort"
+    level="23" maxHealth="154" attack="20" attackTime="2400" disappearAfter="120000" >
+    <humanoid base="zealot">
+        <item id="" />
+    </humanoid>
+</npcType>
+
+<npcType id="dAW_phnSailor" name="Phoenician Sailor"
+    level="24" elite="1" maxHealth="1014" attack="75" attackTime="2800" >
+    <humanoid base="athlete">
+        <item id="" />
+    </humanoid>
+</npcType>
+
+<npcType id="dAW_phnShipwright" name="Phoenician Shipwright"
+    level="24" boss="1" maxHealth="2147" attack="125" attackTime="3500" >
+    <humanoid base="default">
+        <item id="" />
+    </humanoid>
+</npcType>
+
+<npcType id="dAW_phnNavigator" name="Oceanid Navigator"
+    level="25" elite="1" maxHealth="1096" attack="48" attackTime="2300"
+    isRanged="1" projectile="waterball" school="water" imageFile="waterNymph" sounds="nymph"
+    xDrawOffset="-18" yDrawOffset="-40" >
+    <collisionRect x="-5" y="-2" w="9" h="4" />
+    <particles profile="waterPooling" y="-15" />
+    <particles profile="waterSparkles" y="-18" />
+    <particles profile="water" y="-15" />
+    <particles profile="waterSmall" x="-7" y="-21" />
+    <particles profile="waterSmall" x="7" y="-28" />
+</npcType>
+
+<npcType id="dAW_phnAdmiral" name="Akbar, Commander of the Fleet"
+    level="26" boss="1" maxHealth="2105" attack="88" attackTime="2500" >
+    <spell id="dAW_admiralAoE" />
+    <humanoid base="noble">
+        <item id="" />
+    </humanoid>
+</npcType>
+    <spell id="dAW_admiralAoE" cooldown="5" school="water" radius="30">
+        <targets enemy="1" />
+        <function name="doDirectDamage" i1="150" />
+    </spell>
+
 </root>
