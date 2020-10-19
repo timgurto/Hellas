@@ -21,7 +21,7 @@
         <tier>
             <cost tag="food" quantity="1" />
             <talent type="stats" name="Train Weapons" icon="outlineSword" flavourText="Learn how to best use different weapons, and get the most out of them."> <stats crit="100" /> </talent>
-            <talent type="stats" name="Train Strength" icon="outlineArm" flavourText="Increasing muscle mass and power puts more force behind your attacks"> <stats might="2" /> </talent>
+            <talent type="stats" name="Train Strength" icon="outlineArm" flavourText="Increasing muscle mass and power puts more force behind your attacks."> <stats might="2" /> </talent>
         </tier>
         <tier>
             <cost tag="food" quantity="2" />

@@ -170,7 +170,7 @@
     <objectType id="skeleton" isDecoration="1" xDrawOffset="-20" yDrawOffset="-8" />
     <npcType
         id="calydonianBoar" name="Calydonian Boar" template="boar"
-        level="15" maxHealth="462" attack="53" attackTime="2995" elite="1"
+        level="15" maxHealth="493" attack="39" attackTime="2995" elite="1"
         xDrawOffset="-11" yDrawOffset="-13" >
         <loot id="hide" chance="0.3" />
         <loot id="meat" chance="0.3" />
@@ -229,7 +229,7 @@
 </quest>
     <npcType
         id="athleteQuestTortoise" name="Heirax"
-        level="10" maxHealth="47" attack="13" attackTime="3700"
+        level="10" maxHealth="44" attack="10" attackTime="3700"
         xDrawOffset="-18" yDrawOffset="-20"
         imageFile="tortoiseBlue" sounds="tortoise" isNeutral="1" >
         <spell id="tutShield" />

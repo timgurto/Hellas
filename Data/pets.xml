@@ -1,25 +1,15 @@
 <root>
 
 <npcType
-    id="dog6" name="Dog"
-    level="6" maxHealth="34" attack="9" attackTime="2900"
-    imageFile = "dog" sounds="dog" isNeutral="1"
-    xDrawOffset="-13" yDrawOffset="-24" >
-    <canBeTamed consumes="bone" />
-    <collisionRect x="-11" y="-2" w="21" h="4" />
-    <lootTable id="animal" />
-    <loot id="hide" chance="0.1" />
-</npcType>
-<npcType
     id="dog6" name="Dog" template="dog"
-    level="6" maxHealth="34" attack="9" attackTime="2900" isNeutral="1">
+    level="6" maxHealth="39" attack="7" attackTime="2900" isNeutral="1">
     <canBeTamed consumes="bone" />
     <lootTable id="animal" />
     <loot id="hide" chance="0.1" />
 </npcType>
 
 <npcType id="sheep" name="Sheep"
-    level="17" maxHealth="63" attack="24" attackTime="2900" armor="3" isNeutral="1"
+    level="17" maxHealth="83" attack="15" attackTime="2900" armor="3" isNeutral="1"
     xDrawOffset="-23" yDrawOffset="-27" >
     <collisionRect x="-21" y="-4" w="37" h="7" />
     <canBeTamed consumes="collar" />
@@ -28,7 +18,7 @@
     <transform id="sheepWithWool" time="36000000" /> <!-- 10h -->
 </npcType>
 <npcType id="sheepWithWool" name="Sheep (Wooly)"
-    level="17" maxHealth="70" attack="12" attackTime="2900" armor="3" isNeutral="1"
+    level="17" maxHealth="83" attack="15" attackTime="2900" armor="3" isNeutral="1"
     canGather="1" gatherTime="8000" gatherReq="shearing"
     xDrawOffset="-23" yDrawOffset="-27" >
     <collisionRect x="-21" y="-4" w="37" h="7" />
