@@ -491,3 +491,18 @@ TEST_CASE("Composite stats from file") {
     }
   }
 }
+
+TEST_CASE("Disappearance after time") {
+  GIVEN("ghosts disappears after 1s") {
+    auto data = R"(
+      <npcType id="ghost" disappearAfter="1000" />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    WHEN("a ghost is added") {
+      s.addNPC("ghost", {10, 10});
+
+      THEN("it eventually disappears") { WAIT_UNTIL(s.entities().size() == 0); }
+    }
+  }
+}

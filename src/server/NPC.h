@@ -24,6 +24,8 @@ class NPC : public Entity, public QuestNode {
   MapPoint _targetDestination{};
   ms_t _timeEngaged{0};  // For logging purposes
 
+  ms_t _disappearTimer;  // When this hits zero, it disappears.
+
  public:
   NPC(const NPCType *type, const MapPoint &loc);  // Generates a new serial
   virtual ~NPC() {}

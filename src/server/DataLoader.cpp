@@ -525,6 +525,11 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
     else if (xr.findAttr(elem, "isNeutral", n) && n != 0)
       nt->makeNeutral();
 
+    // Disappearance
+    auto disappearTime = 0;
+    if (xr.findAttr(elem, "disappearAfter", disappearTime))
+      nt->disappearsAfter(disappearTime);
+
     // Taming
     auto canBeTamed = xr.findChild("canBeTamed", elem);
     if (canBeTamed) {

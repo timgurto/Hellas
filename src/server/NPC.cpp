@@ -15,7 +15,8 @@ NPC::NPC(const NPCType *type, const MapPoint &loc)
       _level(type->level()),
       _state(IDLE),
       _threatTable(*this),
-      _timeSinceLookedForTargets(rand() % FREQUENCY_TO_LOOK_FOR_TARGETS) {
+      _timeSinceLookedForTargets(rand() % FREQUENCY_TO_LOOK_FOR_TARGETS),
+      _disappearTimer(type->disappearsAfter()) {
   _loot.reset(new Loot);
   onSetType();
 }
@@ -23,6 +24,13 @@ NPC::NPC(const NPCType *type, const MapPoint &loc)
 void NPC::update(ms_t timeElapsed) {
   if (health() > 0) {
     processAI(timeElapsed);  // May call Entity::update()
+  }
+
+  if (_disappearTimer > 0) {
+    if (timeElapsed > _disappearTimer)
+      markForRemoval();
+    else
+      _disappearTimer -= timeElapsed;
   }
 
   Entity::update(timeElapsed);
