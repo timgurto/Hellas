@@ -403,7 +403,7 @@
             
         <!-- Leather (crit resistance) -->
             <item id="hide" name="Animal Hide" gearSlot="3" sounds="leather" durability="5" >
-                <stats endurance="1" />
+                <stats armor="3" />
                 <offset x="-4" y="-1" />
             </item>
 
