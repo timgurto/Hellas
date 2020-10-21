@@ -410,24 +410,24 @@
     <!-- Body -->
         <!-- Lamellar (health) -->
             <item id="tinLamellar" name="Tin Lamellar" gearSlot="2" sounds="mailArmor" lvlReq="12" >
-                <stats armor="16" cunning="5" />
+                <stats armor="16" courage="5" />
                 <offset x="-6" y="-4" />
                 <canBeRepaired cost="tinScale" />
             </item>
                 <item id="tinLamellarSilver" name="Silvered Tin Lamellar" gearSlot="2" sounds="mailArmor" lvlReq="12"
                     iconFile="tinLamellar" gearFile="tinLamellar" quality="2">
-                    <stats armor="20" cunning="7" />
+                    <stats armor="20" courage="7" />
                     <offset x="-6" y="-4" />
                     <canBeRepaired cost="tinScale" />
                 </item>
             <item id="copperLamellar" name="Copper Lamellar" gearSlot="2" sounds="mailArmor" lvlReq="27" >
-                <stats armor="33" cunning="10" />
+                <stats armor="33" courage="10" />
                 <offset x="-6" y="-4" />
                 <canBeRepaired cost="copperScale" />
             </item>
                 <item id="copperLamellarSilver" name="Silvered Copper Lamellar" gearSlot="2" sounds="mailArmor" lvlReq="27"
                     iconFile="copperLamellar" gearFile="copperLamellar" quality="2">
-                    <stats armor="39" cunning="12" />
+                    <stats armor="39" courage="12" />
                     <offset x="-6" y="-4" />
                     <canBeRepaired cost="copperScale" />
                 </item>
