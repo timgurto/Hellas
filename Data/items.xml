@@ -637,16 +637,16 @@
 
         <!-- Knowledge (energy) -->
             <item id="knucklebones" name="Knucklebones" gearSlot="7" >
-                <stats cunning="3" />
+                <stats cunning="2" energy="2" />
                 <offset x="0" y="1" />
                 <canBeRepaired cost="boneDust" />
             </item>
             <item id="tablet" name="Tablet" gearSlot="7" sounds="ceramic" lvlReq="15" >
-                <stats cunning="14" />
+                <stats cunning="11" energy="10" />
                 <offset x="-2" y="-6" />
             </item>
             <item id="parchment" name="Parchment" gearSlot="7" lvlReq="22" >
-                <stats cunning="20" />
+                <stats cunning="15" energy="16" />
             </item>
 
         <!-- Musical instrument (HPS, EPS) -->
