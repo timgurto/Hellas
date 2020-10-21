@@ -519,13 +519,13 @@
 
         <!-- Exomis (resistances) -->
             <item id="woolExomis" name="Wool Exomis" gearSlot="2" sounds="fabric" lvlReq="22" >
-                <stats armor="12" endurance="12" />
+                <stats armor="10" airResist="52" earthResist="52" fireResist="52" waterResist="52" />
                 <offset x="-5" y="-4" />
                 <canBeRepaired cost="woolCloth" tool="sewing" />
             </item>
                 <item id="woolExomisSilver" name="Embroidered Wool Exomis" gearSlot="2" sounds="fabric" lvlReq="22"
                     iconFile="woolExomis" gearFile="woolExomis" quality="2">
-                    <stats armor="13" endurance="15" />
+                    <stats armor="12" airResist="63" earthResist="63" fireResist="63" waterResist="63" />
                     <offset x="-5" y="-4" />
                     <canBeRepaired cost="woolCloth" tool="sewing" />
                 </item>
