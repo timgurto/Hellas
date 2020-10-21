@@ -482,13 +482,13 @@
 
         <!-- Leather (dodge) -->
             <item id="leatherLamellar" name="Leather Lamellar" gearSlot="2" sounds="leather" lvlReq="11" >
-                <stats armor="9" swiftness="6" />
+                <stats armor="8" swiftness="4" dodge="100" />
                 <offset x="-6" y="-4" />
                 <canBeRepaired cost="leatherScale" />
             </item>
                 <item id="leatherLamellarSilver" name="Lacquered Leather Lamellar" gearSlot="2" sounds="leather" lvlReq="11"
                     iconFile="leatherLamellar" gearFile="leatherLamellar" quality="2">
-                    <stats armor="13" swiftness="8" />
+                    <stats armor="11" swiftness="6" dodge="100" />
                     <offset x="-6" y="-4" />
                     <canBeRepaired cost="leatherScale" />
                 </item>
