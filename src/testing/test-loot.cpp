@@ -409,3 +409,26 @@ TEST_CASE("Grouped players can loot each other's kills") {
     }
   }
 }
+
+TEST_CASE("Loot that chooses from a set") {
+  GIVEN("gentlemen drop either an umbrella or a hat") {
+    auto data = R"(
+      <item id="hat" />
+      <item id="umbrella" />
+      <npcType id="gentleman" >
+        <chooseLoot>
+          <choice item="hat" />
+          <choice item="umbrella" />
+        </chooseLoot>
+      </npcType>
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    WHEN("the loot table is instantiated") {
+      const auto &lootTable = s.getFirstNPCType().lootTable();
+      auto loot = Loot{};
+      lootTable.instantiate(loot, nullptr);
+
+      THEN("one item was yielded") { CHECK(loot.size() == 1); }
+    }
+  }

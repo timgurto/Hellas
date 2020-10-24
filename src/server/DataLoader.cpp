@@ -581,8 +581,14 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
       }
     }
 
-    for (auto loot : xr.getChildren("lootTable", elem)) {
-      if (!xr.findAttr(loot, "id", s)) continue;
+    for (auto lootChoice : xr.getChildren("chooseLoot", elem)) {
+      std::set<ServerItem>::const_iterator itemIt =
+          _server._items.insert({"hat"}).first;
+      nt->addSimpleLoot(&*itemIt, 1.0);
+    }
+
+    for (auto predefinedLootTable : xr.getChildren("lootTable", elem)) {
+      if (!xr.findAttr(predefinedLootTable, "id", s)) continue;
       auto it = _server._standaloneLootTables.find(s);
       if (it == _server._standaloneLootTables.end()) {
         _server._debug << Color::CHAT_ERROR << "Standalone loot table " << s
