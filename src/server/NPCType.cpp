@@ -49,5 +49,5 @@ void NPCType::addLootTable(const LootTable &rhs) { _lootTable.addAllFrom(rhs); }
 
 void NPCType::addLootChoice(const std::vector<const ServerItem*>& choices)
 {
-  _lootTable.addChoice(choices);
+  _lootTable.addChoiceOfItems(choices);
 }

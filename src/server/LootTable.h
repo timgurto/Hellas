@@ -2,6 +2,7 @@
 #define LOOT_TABLE_H
 
 #include <map>
+#include <memory>
 
 #include "../NormalVariable.h"
 #include "ServerItem.h"
@@ -12,17 +13,35 @@ class User;
 // Defines the loot chances for a single NPC type, and generates loot.
 class LootTable {
   struct LootEntry {
-    const ServerItem *item;
-    NormalVariable normalDist;
-    double simpleChance = 0;  // Use this instead, if != 0
-
-    bool operator==(const LootEntry &rhs) const;
+    virtual bool operator==(const LootEntry &rhs) const = 0;
     bool operator!=(const LootEntry &rhs) const { return !((*this) == rhs); }
-
-    std::vector<const ServerItem *> choices;
+    virtual std::pair<const ServerItem *, int> instantiate() const = 0;
   };
 
-  std::vector<LootEntry> _entries;
+  struct SimpleEntry : public LootEntry {  // x% chance to receive y item
+    const ServerItem *item{nullptr};
+    double chance{0};
+
+    bool operator==(const LootEntry &rhs) const override;
+    std::pair<const ServerItem *, int> instantiate() const;
+  };
+
+  struct NormalEntry : public LootEntry {  // normal distribution
+    const ServerItem *item;
+    NormalVariable normalDist;
+
+    bool operator==(const LootEntry &rhs) const override;
+    std::pair<const ServerItem *, int> instantiate() const;
+  };
+
+  struct ChoiceEntry : public LootEntry {  // receive one of these items
+    std::vector<const ServerItem *> choices;
+
+    bool operator==(const LootEntry &rhs) const override;
+    std::pair<const ServerItem *, int> instantiate() const;
+  };
+
+  std::vector<std::shared_ptr<LootEntry>> _entries;
 
  public:
   bool operator==(const LootTable &rhs) const;
@@ -30,8 +49,7 @@ class LootTable {
 
   void addNormalItem(const ServerItem *item, double mean, double sd = 0);
   void addSimpleItem(const ServerItem *item, double chance);
-
-  void addChoice(const std::vector<const ServerItem *> choices);
+  void addChoiceOfItems(const std::vector<const ServerItem *> choices);
 
   void addAllFrom(const LootTable &rhs);
 
