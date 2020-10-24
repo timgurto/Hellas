@@ -582,8 +582,11 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
     }
 
     for (auto lootChoice : xr.getChildren("chooseLoot", elem)) {
+      auto choice = xr.findChild("choice", lootChoice);
+      auto itemID = ""s;
+      xr.findAttr(choice, "item", itemID);
       std::set<ServerItem>::const_iterator itemIt =
-          _server._items.insert({"hat"}).first;
+          _server._items.insert(itemID).first;
       nt->addSimpleLoot(&*itemIt, 1.0);
     }
 

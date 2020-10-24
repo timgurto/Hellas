@@ -424,7 +424,7 @@ TEST_CASE("Loot that chooses from a set") {
     )";
     auto s = TestServer::WithDataString(data);
 
-    WHEN("the loot table is instantiated") {
+    WHEN("the gentleman loot table is instantiated") {
       const auto &lootTable = s.getFirstNPCType().lootTable();
       auto loot = Loot{};
       lootTable.instantiate(loot, nullptr);
@@ -432,3 +432,26 @@ TEST_CASE("Loot that chooses from a set") {
       THEN("one item was yielded") { CHECK(loot.size() == 1); }
     }
   }
+
+  GIVEN("chickens drop eggs") {
+    auto data = R"(
+      <item id="egg" />
+      <npcType id="gentleman" >
+        <chooseLoot>
+          <choice item="egg" />
+        </chooseLoot>
+      </npcType>
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    WHEN("the chicken loot table is instantiated") {
+      const auto &lootTable = s.getFirstNPCType().lootTable();
+      auto loot = Loot{};
+      lootTable.instantiate(loot, nullptr);
+
+      THEN("it contains an egg") {
+        CHECK(loot.at(0).first.type()->id() == "egg");
+      }
+    }
+  }
+}
