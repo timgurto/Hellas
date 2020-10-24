@@ -66,6 +66,7 @@ class NPCType : public ObjectType {
   void addSimpleLoot(const ServerItem *item, double chance);
   void addNormalLoot(const ServerItem *item, double mean, double sd);
   void addLootTable(const LootTable &rhs);
+  void addLootChoice(const std::vector<const ServerItem *> &choices);
 };
 
 #endif

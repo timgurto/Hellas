@@ -46,3 +46,8 @@ void NPCType::addNormalLoot(const ServerItem *item, double mean, double sd) {
 }
 
 void NPCType::addLootTable(const LootTable &rhs) { _lootTable.addAllFrom(rhs); }
+
+void NPCType::addLootChoice(const std::vector<const ServerItem*>& choices)
+{
+  _lootTable.addChoice(choices);
+}

@@ -423,13 +423,34 @@ TEST_CASE("Loot that chooses from a set") {
       </npcType>
     )";
     auto s = TestServer::WithDataString(data);
+    const auto &lootTable = s.getFirstNPCType().lootTable();
 
     WHEN("the gentleman loot table is instantiated") {
-      const auto &lootTable = s.getFirstNPCType().lootTable();
       auto loot = Loot{};
       lootTable.instantiate(loot, nullptr);
 
       THEN("one item was yielded") { CHECK(loot.size() == 1); }
+    }
+
+    WHEN("the gentleman loot table is instantiated 100 times") {
+      auto hatAdded = false;
+      auto umbrellaAdded = false;
+      for (auto i = 0; i != 100; ++i) {
+        auto loot = Loot{};
+        lootTable.instantiate(loot, nullptr);
+        auto itemID = loot.at(0).first.type()->id();
+        if (itemID == "hat")
+          hatAdded = true;
+        else if (itemID == "umbrella")
+          umbrellaAdded = true;
+
+        if (hatAdded && umbrellaAdded) break;
+      }
+
+      THEN("both the hat and the umbrella get added at least once each") {
+        CHECK(hatAdded);
+        CHECK(umbrellaAdded);
+      }
     }
   }
 

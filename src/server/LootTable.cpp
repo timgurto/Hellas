@@ -39,6 +39,12 @@ void LootTable::addSimpleItem(const ServerItem *item, double chance) {
   le.simpleChance = chance;
 }
 
+void LootTable::addChoice(const std::vector<const ServerItem *> choices) {
+  LootEntry entry;
+  entry.choices = choices;
+  _entries.push_back(entry);
+}
+
 void LootTable::addAllFrom(const LootTable &rhs) {
   for (const auto &entry : rhs._entries) _entries.push_back(entry);
 }
@@ -70,6 +76,14 @@ void LootTable::instantiate(Loot &loot, const User *killer) const {
           break;
         }
       }
+    }
+
+    if (!entry.choices.empty()) {
+      const auto numChoices = entry.choices.size();
+      const auto randomIndex = rand() % numChoices;
+      const auto chosenItem = entry.choices[randomIndex];
+      loot.add(chosenItem, 1);
+      continue;
     }
 
     auto quantity = 0;

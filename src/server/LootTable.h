@@ -18,6 +18,8 @@ class LootTable {
 
     bool operator==(const LootEntry &rhs) const;
     bool operator!=(const LootEntry &rhs) const { return !((*this) == rhs); }
+
+    std::vector<const ServerItem *> choices;
   };
 
   std::vector<LootEntry> _entries;
@@ -28,6 +30,8 @@ class LootTable {
 
   void addNormalItem(const ServerItem *item, double mean, double sd = 0);
   void addSimpleItem(const ServerItem *item, double chance);
+
+  void addChoice(const std::vector<const ServerItem *> choices);
 
   void addAllFrom(const LootTable &rhs);
 
