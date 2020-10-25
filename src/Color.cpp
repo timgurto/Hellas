@@ -50,11 +50,11 @@ const Color Color::TOOLTIP_INSTRUCTION = YELLOW * .8 + RED * .2;
 const Color Color::TOOLTIP_FLAVOUR = WHITE * .5;
 const Color Color::TOOLTIP_BAD = RED;
 
-const Color Color::ITEM_NAME_NORMAL = WHITE;
-const Color Color::ITEM_NAME_ENHANCED = GREEN * .9 + YELLOW * .1;
-const Color Color::ITEM_NAME_ENHANCED2 = BLUE * .4 + CYAN * .4;
-const Color Color::ITEM_NAME_ENHANCED3 = MAGENTA * .4 + BLUE * .3 + WHITE * .2;
-const Color Color::ITEM_NAME_ENHANCED4 = RED * .5 + YELLOW * .5;
+const Color Color::ITEM_QUALITY_COMMON = WHITE;
+const Color Color::ITEM_QUALITY_UNCOMMON = GREEN * .9 + YELLOW * .1;
+const Color Color::ITEM_QUALITY_RARE = BLUE * .4 + CYAN * .4;
+const Color Color::ITEM_QUALITY_EPIC = MAGENTA * .4 + BLUE * .3 + WHITE * .2;
+const Color Color::ITEM_QUALITY_LEGENDARY = RED * .5 + YELLOW * .5;
 
 const Color Color::STAT_HEALTH = GREEN * .8;
 const Color Color::STAT_ENERGY = RED + GREEN * .8;

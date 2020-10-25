@@ -29,7 +29,7 @@ class EntityType : public HasTags {
     _allowedTerrain = TerrainList::findList(id);
   }
 
-  enum Rank { NORMAL, ELITE, BOSS };
+  enum Rank { COMMON, ELITE, BOSS };
   Rank rank() const { return _rank; }
   void rank(Rank r) { _rank = r; }
 
@@ -54,7 +54,7 @@ class EntityType : public HasTags {
   MapRect _collisionRect;  // Relative to position
 
   const TerrainList *_allowedTerrain;
-  Rank _rank{NORMAL};
+  Rank _rank{COMMON};
 };
 
 #endif

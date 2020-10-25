@@ -925,6 +925,8 @@ void Client::CommonImages::initialise() {
   itemBroken.setAlpha(0x7f);
   itemBroken.setBlend();
 
+  itemQualityMask = Texture{"Images/ui/item-quality-mask.png"};
+
   cityIcon = {"Images/ui/city.png"s};
   playerIcon = {"Images/ui/player.png"s};
 

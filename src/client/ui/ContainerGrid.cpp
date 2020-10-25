@@ -58,7 +58,15 @@ void ContainerGrid::refresh() {
     const auto &draggingFrom = client()->containerGridBeingDraggedFrom;
     if (!draggingFrom.matches(*this, i)) {
       const auto &slot = _linked[i];
-      if (slot.first.type() != nullptr) {
+      const auto *itemType = slot.first.type();
+      if (itemType) {
+        // Quality border
+        const auto qualityColour = itemType->nameColor();
+        if (qualityColour != Color::ITEM_QUALITY_COMMON) {
+          _client->images.itemQualityMask.setColourMod(qualityColour);
+          _client->images.itemQualityMask.draw(slotRect.x + 1, slotRect.y + 1);
+        }
+
         slot.first.type()->icon().draw(slotRect.x + 1, slotRect.y + 1);
 
         if (slot.first.health() == 0)

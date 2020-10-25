@@ -590,6 +590,7 @@ class Client : public TextEntryManager {
     Texture itemHighlightMouseOver, itemHighlightMatch, itemHighlightNoMatch;
     Texture itemDamaged, itemBroken;
 
+    Texture itemQualityMask;
     Texture cityIcon, playerIcon;
 
     Texture loginBackgroundBack, loginBackgroundFront;

@@ -104,6 +104,12 @@ void Texture::setAlpha(Uint8 alpha) const {
   SDL_THREAD_END
 }
 
+void Texture::setColourMod(const Color &colour) {
+  SDL_THREAD_BEGIN(this, &colour)
+  SDL_SetTextureColorMod(_raw.get(), colour.r(), colour.g(), colour.b());
+  SDL_THREAD_END
+}
+
 void Texture::rotateClockwise(const ScreenPoint &centre) {
   SDL_THREAD_BEGIN(this, &centre)
   auto centreSDL = SDL_Point{centre.x, centre.y};

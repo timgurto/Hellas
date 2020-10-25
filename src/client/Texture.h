@@ -44,6 +44,7 @@ class Texture {
   // These functions are const, making blendmode and alpha de-facto mutable
   void setBlend(SDL_BlendMode mode = SDL_BLENDMODE_BLEND) const;
   void setAlpha(Uint8 alpha = 0xff) const;
+  void setColourMod(const Color &colour);
 
   void rotateClockwise(const ScreenPoint &centre);
 

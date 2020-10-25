@@ -49,8 +49,8 @@ class ClientItem : public Item, public HasSounds {
   mutable Optional<Tooltip> _tooltip;
   const Projectile::Type *_projectile{nullptr};
 
-  enum Quality { NORMAL = 1, ENHANCED = 2 };
-  Quality _quality{NORMAL};
+  enum Quality { COMMON = 1, UNCOMMON = 2, RARE = 3, EPIC = 4, LEGENDARY = 5 };
+  Quality _quality{COMMON};
 
   struct Particles {
     std::string profile;

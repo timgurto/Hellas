@@ -137,11 +137,18 @@ bool ClientItem::canUse() const {
 
 Color ClientItem::nameColor() const {
   switch (_quality) {
-    case ENHANCED:
-      return Color::ITEM_NAME_ENHANCED;
-    case NORMAL:
+    case COMMON:
+      return Color::ITEM_QUALITY_COMMON;
+    case UNCOMMON:
+      return Color::ITEM_QUALITY_UNCOMMON;
+    case RARE:
+      return Color::ITEM_QUALITY_RARE;
+    case EPIC:
+      return Color::ITEM_QUALITY_EPIC;
+    case LEGENDARY:
+      return Color::ITEM_QUALITY_LEGENDARY;
     default:
-      return Color::ITEM_NAME_NORMAL;
+      return Color::ITEM_QUALITY_COMMON;
   }
 }
 

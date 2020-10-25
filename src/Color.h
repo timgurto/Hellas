@@ -55,11 +55,11 @@ class Color {
   static const Color TOOLTIP_FLAVOUR;
   static const Color TOOLTIP_BAD;
 
-  static const Color ITEM_NAME_NORMAL;
-  static const Color ITEM_NAME_ENHANCED;
-  static const Color ITEM_NAME_ENHANCED2;
-  static const Color ITEM_NAME_ENHANCED3;
-  static const Color ITEM_NAME_ENHANCED4;
+  static const Color ITEM_QUALITY_COMMON;
+  static const Color ITEM_QUALITY_UNCOMMON;
+  static const Color ITEM_QUALITY_RARE;
+  static const Color ITEM_QUALITY_EPIC;
+  static const Color ITEM_QUALITY_LEGENDARY;
 
   static const Color STAT_HEALTH;
   static const Color STAT_ENERGY;

@@ -18,7 +18,7 @@ class ClientCombatantType {
     _damageParticles = profile;
   }
 
-  enum Rank { NORMAL, ELITE, BOSS };
+  enum Rank { COMMON, ELITE, BOSS };
   void makeElite() { _rank = ELITE; }
   void makeBoss() { _rank = BOSS; }
   Rank rank() const { return _rank; }
@@ -27,7 +27,7 @@ class ClientCombatantType {
   Hitpoints _maxHealth = 0;
   Energy _maxEnergy = 0;
   const ParticleProfile *_damageParticles = nullptr;
-  Rank _rank{NORMAL};
+  Rank _rank{COMMON};
 };
 
 #endif
