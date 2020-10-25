@@ -144,7 +144,7 @@
     </item>
     
 <item id="waterStaff" name="Rod of Water" gearSlot="6" lvlReq="11" >
-    <tag name="wand" toolSpeed="1.15" />
+    <tag name="wand" toolSpeed="1.1" />
     <stats intellect="1" />
     <weapon damage="5" speed="2.4" range="25" school="water" consumes="waterDust" projectile="waterball" />
     <offset x="-5" y="-20" />
