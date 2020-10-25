@@ -16,6 +16,7 @@ class NormalVariable;
 #endif  // NO_SDL
 
 struct StatsMod;
+class BasisPoints;
 
 // Wrapper class for TinyXml functionality
 class XmlReader {

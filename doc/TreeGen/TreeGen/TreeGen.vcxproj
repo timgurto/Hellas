@@ -70,6 +70,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\combatTypes.cpp" />
     <ClCompile Include="..\..\..\src\XmlReader.cpp" />
     <ClCompile Include="..\..\..\third-party\tinyxml\tinystr.cpp" />
     <ClCompile Include="..\..\..\third-party\tinyxml\tinyxml.cpp" />
@@ -81,6 +82,7 @@
     <ClCompile Include="Node.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\src\combatTypes.h" />
     <ClInclude Include="..\..\..\src\XmlReader.h" />
     <ClInclude Include="..\..\..\tinyxml\tinystr.h" />
     <ClInclude Include="..\..\..\tinyxml\tinyxml.h" />

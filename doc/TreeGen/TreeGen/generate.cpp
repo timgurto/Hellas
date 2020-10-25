@@ -9,6 +9,7 @@
 #include <queue>
 #include <set>
 
+#include "../../../src/Stats.h"
 #include "Edge.h"
 #include "JsonWriter.h"
 #include "Node.h"
@@ -17,6 +18,8 @@
 #include "types.h"
 
 using namespace std::string_literals;
+
+std::map<std::string, CompositeStat> Stats::compositeDefinitions;
 
 struct Path {
   std::string child;
