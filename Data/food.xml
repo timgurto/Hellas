@@ -79,7 +79,7 @@
     <unlockedBy recipe="water" />
 </recipe>
 
-<objectType id="rockWell" name="Primitive Well"
+<XobjectType id="rockWell" name="Primitive Well"
     sounds="stone" damageParticles="rocks">
     <tag name="water" toolSpeed="1.05" />
     <material id="rock" quantity="20" />
@@ -88,8 +88,8 @@
     <durability item="rock" quantity="20" />
     <unlockedBy />
     <canBeRepaired cost="rock" />
-</objectType>
-<objectType id="brickWell" name="Well"
+</XobjectType>
+<XobjectType id="brickWell" name="Well"
     sounds="brick" damageParticles="brick" >
     <tag name="water" toolSpeed="1.15" />
     <material id="brick" quantity="12" />
@@ -98,7 +98,7 @@
     <unlockedBy construction="rockWell" chance="0.2" />
     <durability item="brick" quantity="12" />
     <canBeRepaired cost="brick" />
-</objectType>
+</XobjectType>
 <!--objectType id="stoneWell" name="Deep Well" >
     <tag name="water" toolSpeed="1.25" />
 </objectType-->
