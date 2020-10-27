@@ -392,24 +392,28 @@
     <offset x="0" y="0" />
     <canBeRepaired cost="woolCloth" tool="sewing" />
 </item>
-<item id="dAW_setGloves" name="Duplicitous Trader's Armbands" gearSlot="4" sounds="mailArmor" quality="2" lvlReq="18" >
+<item id="dAW_setGloves" name="Duplicitous Trader's Armbands" gearSlot="4" sounds="mailArmor" quality="2" lvlReq="18"
+    iconFile="tinBracers" gearFile="tinArmbands" >
     <stats armour="7" cunning="2" swiftness="1" />
-    <offset x="0" y="0" />
+    <offset x="-1" y="-8" />
     <canBeRepaired cost="tinBar" tool="smelting1" />
 </item>
-<item id="dAW_setBoots" name="Duplicitous Trader's Boots" gearSlot="5" sounds="mailArmor" quality="2" lvlReq="17" >
+<item id="dAW_setBoots" name="Duplicitous Trader's Boots" gearSlot="5" sounds="mailArmor" quality="2" lvlReq="17"
+    iconFile="tinChainBoots" gearFile="tinChainBoots" >
     <stats armour="13" cunning="3" swiftness="3" />
-    <offset x="0" y="0" />
+    <offset x="-3" y="-7" />
     <canBeRepaired cost="tinRing" />
 </item>
-<item id="dAW_setRobe" name="Duplicitous Trader's Chiton" gearSlot="5" sounds="fabric" quality="3" lvlReq="21" >
+<item id="dAW_setRobe" name="Duplicitous Trader's Chiton" gearSlot="5" sounds="fabric" quality="3" lvlReq="21"
+    iconFile="blueChiton" >
     <stats armour="14" cunning="9" swiftness="9" crit="200" />
-    <offset x="0" y="0" />
+    <offset x="-4" y="-3" />
     <canBeRepaired cost="woolCloth" tool="sewing" />
 </item>
-<item id="dAW_eyepatch" name="Sailor's Eyepatch" gearSlot="0" sounds="leather" quality="1" lvlReq="17" >
+<item id="dAW_eyepatch" name="Sailor's Eyepatch" gearSlot="0" sounds="leather" quality="1" lvlReq="17"
+    iconFile="eyepatch" gearFile="eyepatch">
     <stats armour="8" cunning="6" />
-    <offset x="0" y="0" />
+    <offset x="-3" y="-4" />
     <canBeRepaired cost="leather" tool="sewing" />
 </item>
 <item id="dAW_dpsCloak" name="Trader's Cloak" gearSlot="3" sounds="leather" quality="2" lvlReq="17" >
@@ -417,7 +421,8 @@
     <offset x="0" y="0" />
     <canBeRepaired cost="leather" tool="sewing" />
 </item>
-<item id="dAW_shiv" name="Sly Shiv" gearSlot="6" sounds="metalTool" quality="2" lvlReq="16" >
+<item id="dAW_shiv" name="Sly Shiv" gearSlot="6" sounds="metalTool" quality="2" lvlReq="16"
+    iconFile="tinKnife" gearFile="tinKnife" >
     <tag name="carving" toolSpeed="1.15" />
     <tag name="harvesting" toolSpeed="1.15" />
     <tag name="shearing" toolSpeed="1.05" />
@@ -429,11 +434,11 @@
 <item id="dAW_strongmanHammer" name="Giant Hammer" gearSlot="6" quality="3" lvlReq="17" >
     <weapon damage="19" speed="3.9" />
     <stats endurance="3" courage="3" />
-    <offset x="0" y="0" />
+    <offset x="-8" y="-7" />
     <canBeRepaired cost="tinBar" tool="smelting1" />
 </item>
-<item id="dAW_strongmanArmour" name="Strength Harness" gearSlot="6" sounds="mailArmor" quality="2" lvlReq="17" >
-    <stats armour="27" endurance="7" might="5" />
+<item id="dAW_strongmanArmour" name="Champion's Leather Breastplate" gearSlot="6" sounds="leather" quality="2" lvlReq="17" >
+    <stats armour="16" endurance="5" might="11" />
     <offset x="0" y="0" />
     <canBeRepaired cost="tinBar" tool="smelting1" />
 </item>
@@ -482,14 +487,19 @@
     <offset x="0" y="0" />
     <canBeRepaired cost="lumber" />
 </item>
-<item id="dAW_admiralStaff" name="Staff of the Oceanid" gearSlot="6" quality="3" lvlReq="21" >
+<item id="dAW_admiralStaff" name="Staff of the Oceanid" gearSlot="6" quality="3" lvlReq="21"
+    iconFile="waterStaff" gearFile="waterStaff">
+    <particles profile="waterSmall" x="-4" y="-19" />
+    <particles profile="waterSmall" x="5" y="16" />
+    <canBeRepaired cost="waterEssence" />
     <tag name="wand" toolSpeed="1.2" />
     <weapon damage="8" speed="2.3" range="25" school="water" consumes="waterDust" projectile="waterball" />
     <stats intellect="2" cunning="2" energy="3" />
     <offset x="0" y="0" />
     <canBeRepaired cost="waterEssence" />
 </item>
-<item id="dAW_admiralSpear" name="Spear of Command" gearSlot="6" quality="3" lvlReq="21" >
+<item id="dAW_admiralSpear" name="Spear of Command" gearSlot="6" quality="3" lvlReq="21"
+    gearFile="blackSpear" iconFile="blackSpear" >
     <tag name="fishing" toolSpeed="1.2" />
     <weapon damage="15" speed="2.6" />
     <stats might="5" courage="3" />
