@@ -237,6 +237,9 @@ CombatResult SpellEffect::teachRecipe(const SpellEffect &effect, Entity &caster,
                                       const std::string &supplementaryArg) {
   auto *casterAsUser = dynamic_cast<User *>(&caster);
   const auto &recipeID = supplementaryArg;
+
+  if (casterAsUser->knowsRecipe(recipeID)) return FAIL;
+
   casterAsUser->addRecipe(recipeID, true);
   return HIT;
 }

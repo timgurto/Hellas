@@ -428,6 +428,19 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Recipe items") {
           WAIT_UNTIL(user->knownRecipes().size() == 1);
         }
       }
+
+      AND_WHEN("the user already knows the recipe") {
+        user->addRecipe("cake");
+
+        AND_WHEN("he tries to use the recipe item") {
+          client->sendMessage(CL_CAST_ITEM, makeArgs(0));
+
+          THEN("he still has an item") {
+            REPEAT_FOR_MS(100);
+            CHECK(user->inventory(0).first.hasItem());
+          }
+        }
+      }
     }
   }
 
@@ -453,5 +466,4 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Recipe items") {
   }
 
   // Receives message
-  // Don't use if already known
 }
