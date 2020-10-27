@@ -138,7 +138,8 @@ class Entity {
   virtual void sendLostDebuffMsg(const Buff::ID &buff) const;
   void updateBuffs(ms_t timeElapsed);
 
-  CombatResult castSpell(const Spell &spell);
+  CombatResult castSpell(const Spell &spell,
+                         const std::string &supplementaryArg = {});
 
   const Stats &stats() const { return _stats; }
   void stats(const Stats &stats) { _stats = stats; }

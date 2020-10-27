@@ -12,6 +12,7 @@ class Spell;
 
 class SpellEffect {
  public:
+  // Each spell function should know if it needs any of these.
   struct Args {
     int i1{0};
     double d1{0};
@@ -33,15 +34,17 @@ class SpellEffect {
   bool exists() const { return _function != nullptr; }
   bool isAggressive() const;
 
-  CombatResult execute(Entity &caster, Entity &target) const {
-    return _function(*this, caster, target);
+  CombatResult execute(Entity &caster, Entity &target,
+                       const std::string &supplementaryArg = {}) const {
+    return _function(*this, caster, target, supplementaryArg);
   }
 
   static Hitpoints chooseRandomSpellMagnitude(double raw);
 
  private:
   using Function = CombatResult (*)(const SpellEffect &effect, Entity &caster,
-                                    Entity &target);
+                                    Entity &target,
+                                    const std::string &supplementaryArg);
 
   Function _function = nullptr;
   Args _args;
@@ -56,26 +59,20 @@ class SpellEffect {
   static FlagMap
       aggressionMap;  // Ultimately, whether a defense sound should play.
 
-  static CombatResult doDirectDamage(const SpellEffect &effect, Entity &caster,
-                                     Entity &target);
-  static CombatResult doDirectDamageWithModifiedThreat(
-      const SpellEffect &effect, Entity &caster, Entity &target);
-  static CombatResult heal(const SpellEffect &effect, Entity &caster,
-                           Entity &target);
-  static CombatResult scaleThreat(const SpellEffect &effect, Entity &caster,
-                                  Entity &target);
-  static CombatResult buff(const SpellEffect &effect, Entity &caster,
-                           Entity &target);
-  static CombatResult debuff(const SpellEffect &effect, Entity &caster,
-                             Entity &target);
-  static CombatResult dispellDebuff(const SpellEffect &effect, Entity &caster,
-                                    Entity &target);
-  static CombatResult randomTeleport(const SpellEffect &effect, Entity &caster,
-                                     Entity &target);
-  static CombatResult teleportToCity(const SpellEffect &effect, Entity &caster,
-                                     Entity &target);
-  static CombatResult teachRecipe(const SpellEffect &effect, Entity &caster,
-                                  Entity &target);
-  static CombatResult spawnNPC(const SpellEffect &effect, Entity &caster,
-                               Entity &target);
+#define DECLARE_SPELL_FUNCTION(FUNC_NAME)                                  \
+  static CombatResult FUNC_NAME(const SpellEffect &effect, Entity &caster, \
+                                Entity &target,                            \
+                                const std::string &supplementaryArg)
+
+  DECLARE_SPELL_FUNCTION(doDirectDamage);
+  DECLARE_SPELL_FUNCTION(doDirectDamageWithModifiedThreat);
+  DECLARE_SPELL_FUNCTION(heal);
+  DECLARE_SPELL_FUNCTION(scaleThreat);
+  DECLARE_SPELL_FUNCTION(buff);
+  DECLARE_SPELL_FUNCTION(debuff);
+  DECLARE_SPELL_FUNCTION(dispellDebuff);
+  DECLARE_SPELL_FUNCTION(randomTeleport);
+  DECLARE_SPELL_FUNCTION(teleportToCity);
+  DECLARE_SPELL_FUNCTION(teachRecipe);
+  DECLARE_SPELL_FUNCTION(spawnNPC);
 };

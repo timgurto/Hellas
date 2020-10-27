@@ -387,7 +387,8 @@ bool Entity::isSpellCoolingDown(const std::string &spell) const {
   return it->second > 0;
 }
 
-CombatResult Entity::castSpell(const Spell &spell) {
+CombatResult Entity::castSpell(const Spell &spell,
+                               const std::string &supplementaryArg) {
   const Server &server = Server::instance();
 
   auto usersNearCaster = server.findUsersInArea(location());
@@ -419,7 +420,7 @@ CombatResult Entity::castSpell(const Spell &spell) {
   // skip consuming the food if the spell failed.
   auto outcome = CombatResult{};
   for (auto target : targets) {
-    outcome = spell.performAction(*this, *target);
+    outcome = spell.performAction(*this, *target, supplementaryArg);
     if (outcome == FAIL) {
       Server::debug()("Spell "s + spell.id() + " failed."s, Color::CHAT_ERROR);
       continue;

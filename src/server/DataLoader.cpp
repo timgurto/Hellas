@@ -635,7 +635,11 @@ void DataLoader::loadItems(XmlReader &xr) {
       item.returnsOnConstruction(itemToReturn);
     }
 
-    if (xr.findAttr(elem, "castsSpellOnUse", s)) item.castsSpellOnUse(s);
+    if (xr.findAttr(elem, "castsSpellOnUse", s)) {
+      auto spellArg = ""s;
+      xr.findAttr(elem, "spellArg", spellArg);
+      item.castsSpellOnUse(s, spellArg);
+    }
 
     if (xr.findAttr(elem, "returnsOnCast", s)) {
       // Create dummy Item if necessary

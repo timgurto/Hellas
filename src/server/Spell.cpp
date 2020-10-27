@@ -5,7 +5,8 @@
 #include "Server.h"
 #include "User.h"
 
-CombatResult Spell::performAction(Entity &caster, Entity &target) const {
+CombatResult Spell::performAction(Entity &caster, Entity &target,
+                                  const std::string &supplementaryArg) const {
   if (!_effect.exists()) return FAIL;
 
   const Server &server = Server::instance();
@@ -34,7 +35,7 @@ CombatResult Spell::performAction(Entity &caster, Entity &target) const {
     return FAIL;
   }
 
-  return _effect.execute(caster, target);
+  return _effect.execute(caster, target, supplementaryArg);
 }
 
 bool Spell::isTargetValid(const Entity &caster, const Entity &target) const {

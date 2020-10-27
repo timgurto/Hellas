@@ -22,7 +22,8 @@ class Spell {
   using ID = std::string;
   using Name = std::string;
 
-  CombatResult performAction(Entity &caster, Entity &target) const;
+  CombatResult performAction(Entity &caster, Entity &target,
+                             const std::string &supplementaryArg) const;
   bool isTargetValid(const Entity &caster, const Entity &target) const;
 
   void id(const ID &id) { _id = id; }

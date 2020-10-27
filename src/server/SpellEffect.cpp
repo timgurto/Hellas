@@ -35,15 +35,17 @@ bool SpellEffect::isAggressive() const {
 }
 
 CombatResult SpellEffect::doDirectDamage(const SpellEffect &effect,
-                                         Entity &caster, Entity &target) {
+                                         Entity &caster, Entity &target,
+                                         const std::string &supplementaryArg) {
   auto effectWithDefaultThreat = effect;
   effectWithDefaultThreat._args.d1 = 1.0;  // Threat
   return doDirectDamageWithModifiedThreat(effectWithDefaultThreat, caster,
-                                          target);
+                                          target, supplementaryArg);
 }
 
 CombatResult SpellEffect::doDirectDamageWithModifiedThreat(
-    const SpellEffect &effect, Entity &caster, Entity &target) {
+    const SpellEffect &effect, Entity &caster, Entity &target,
+    const std::string &supplementaryArg) {
   const auto outcome =
       caster.generateHitAgainst(target, DAMAGE, effect._school, effect._range);
   if (outcome == MISS || outcome == DODGE) return outcome;
@@ -82,7 +84,8 @@ CombatResult SpellEffect::doDirectDamageWithModifiedThreat(
 }
 
 CombatResult SpellEffect::heal(const SpellEffect &effect, Entity &caster,
-                               Entity &target) {
+                               Entity &target,
+                               const std::string &supplementaryArg) {
   if (!target.canBeHealedBySpell()) return FAIL;
 
   auto outcome =
@@ -100,7 +103,8 @@ CombatResult SpellEffect::heal(const SpellEffect &effect, Entity &caster,
 }
 
 CombatResult SpellEffect::scaleThreat(const SpellEffect &effect, Entity &caster,
-                                      Entity &target) {
+                                      Entity &target,
+                                      const std::string &supplementaryArg) {
   auto outcome = caster.generateHitAgainst(target, THREAT_MOD, effect._school,
                                            effect._range);
   if (outcome == MISS) return outcome;
@@ -115,7 +119,8 @@ CombatResult SpellEffect::scaleThreat(const SpellEffect &effect, Entity &caster,
 }
 
 CombatResult SpellEffect::buff(const SpellEffect &effect, Entity &caster,
-                               Entity &target) {
+                               Entity &target,
+                               const std::string &supplementaryArg) {
   const auto &server = Server::instance();
   const auto *buffType = server.getBuffByName(effect._args.s1);
   if (buffType == nullptr) return FAIL;
@@ -126,7 +131,8 @@ CombatResult SpellEffect::buff(const SpellEffect &effect, Entity &caster,
 }
 
 CombatResult SpellEffect::debuff(const SpellEffect &effect, Entity &caster,
-                                 Entity &target) {
+                                 Entity &target,
+                                 const std::string &supplementaryArg) {
   const auto &server = Server::instance();
   const auto *debuffType = server.getBuffByName(effect._args.s1);
   if (debuffType == nullptr) return FAIL;
@@ -141,7 +147,8 @@ CombatResult SpellEffect::debuff(const SpellEffect &effect, Entity &caster,
 }
 
 CombatResult SpellEffect::dispellDebuff(const SpellEffect &effect,
-                                        Entity &caster, Entity &target) {
+                                        Entity &caster, Entity &target,
+                                        const std::string &supplementaryArg) {
   const auto &server = Server::instance();
   auto schoolToDispell = SpellSchool{effect._args.s1};
   auto numDebuffsInThatSchool = 0;
@@ -165,7 +172,8 @@ CombatResult SpellEffect::dispellDebuff(const SpellEffect &effect,
 }
 
 CombatResult SpellEffect::randomTeleport(const SpellEffect &effect,
-                                         Entity &caster, Entity &target) {
+                                         Entity &caster, Entity &target,
+                                         const std::string &supplementaryArg) {
   auto &server = Server::instance();
 
   auto proposedLocation = MapPoint{};
@@ -189,7 +197,8 @@ CombatResult SpellEffect::randomTeleport(const SpellEffect &effect,
 }
 
 CombatResult SpellEffect::teleportToCity(const SpellEffect &effect,
-                                         Entity &caster, Entity &target) {
+                                         Entity &caster, Entity &target,
+                                         const std::string &supplementaryArg) {
   auto &server = Server::instance();
   const auto *casterAsUser = dynamic_cast<const User *>(&caster);
   if (!casterAsUser) return FAIL;
@@ -224,15 +233,17 @@ CombatResult SpellEffect::teleportToCity(const SpellEffect &effect,
 }
 
 CombatResult SpellEffect::teachRecipe(const SpellEffect &effect, Entity &caster,
-                                      Entity &target) {
+                                      Entity &target,
+                                      const std::string &supplementaryArg) {
   auto *casterAsUser = dynamic_cast<User *>(&caster);
-  casterAsUser->addRecipe("cake", true);
-  casterAsUser->addRecipe("bread", true);
+  const auto &recipeID = supplementaryArg;
+  casterAsUser->addRecipe(recipeID, true);
   return HIT;
 }
 
 CombatResult SpellEffect::spawnNPC(const SpellEffect &effect, Entity &caster,
-                                   Entity &target) {
+                                   Entity &target,
+                                   const std::string &supplementaryArg) {
   auto &server = Server::instance();
 
   const auto *objType = server.findObjectTypeByID(effect._args.s1);

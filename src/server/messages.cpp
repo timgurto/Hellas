@@ -492,7 +492,7 @@ HANDLE_MESSAGE(CL_CAST_ITEM) {
   if (!spell) return;
 
   user.cancelAction();
-  auto result = user.castSpell(*spell);
+  auto result = user.castSpell(*spell, item.spellArg());
   if (result == FAIL) return;
 
   --invSlot.second;

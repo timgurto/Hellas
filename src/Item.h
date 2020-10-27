@@ -29,8 +29,12 @@ class Item : public HasTags {
   void weaponAmmo(const std::string &id) { _weaponAmmoID = id; }
   const Item *weaponAmmo() const { return _weaponAmmo; }
   bool usesAmmo() const { return _weaponAmmo != nullptr; }
-  void castsSpellOnUse(const std::string &spell) { _castsSpellOnUse = spell; }
+  void castsSpellOnUse(const std::string &spell, const std::string &arg) {
+    _castsSpellOnUse = spell;
+    _spellArg = arg;
+  }
   bool castsSpellOnUse() const { return !_castsSpellOnUse.empty(); }
+  const std::string &spellArg() const { return _spellArg; }
   const std::string &spellToCastOnUse() const { return _castsSpellOnUse; }
   void makeRepairable() { _repairInfo.canBeRepaired = true; }
   void repairingCosts(const std::string &costID) { _repairInfo.cost = costID; }
@@ -65,6 +69,7 @@ class Item : public HasTags {
   Hitpoints _durability;
 
   std::string _castsSpellOnUse{};
+  std::string _spellArg{};
 };
 
 #endif

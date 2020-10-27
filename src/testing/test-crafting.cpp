@@ -410,7 +410,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Recipe items") {
     useData(R"(
       <item id="cake" />
       <recipe id="cake" />
-      <item id="cakeRecipe" castsSpellOnUse="teachRecipe" spellStringArg="cake" />
+      <item id="cakeRecipe" castsSpellOnUse="teachRecipe" spellArg="cake" />
     )");
 
     THEN("the user can't craft anything") {
@@ -435,7 +435,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Recipe items") {
     useData(R"(
       <item id="bread" />
       <recipe id="bread" />
-      <item id="breadRecipe" castsSpellOnUse="teachRecipe" spellStringArg="bread" />
+      <item id="breadRecipe" castsSpellOnUse="teachRecipe" spellArg="bread" />
     )");
 
     WHEN("the user has the recipe item") {
