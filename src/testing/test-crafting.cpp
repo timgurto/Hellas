@@ -430,4 +430,29 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Recipe items") {
       }
     }
   }
+
+  GIVEN("a recipe item that teaches how to bake bread") {
+    useData(R"(
+      <item id="bread" />
+      <recipe id="bread" />
+      <item id="breadRecipe" castsSpellOnUse="teachRecipe" spellStringArg="bread" />
+    )");
+
+    WHEN("the user has the recipe item") {
+      auto &breadRecipe = server->findItem("breadRecipe");
+      user->giveItem(&breadRecipe);
+
+      AND_WHEN("he uses it") {
+        client->sendMessage(CL_CAST_ITEM, makeArgs(0));
+
+        THEN("he can craft something") {
+          WAIT_UNTIL(user->knownRecipes().size() == 1);
+        }
+      }
+    }
+  }
+
+  // Non-user caster
+  // Receives message
+  // Don't use if already known
 }

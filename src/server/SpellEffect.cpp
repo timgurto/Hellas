@@ -227,6 +227,7 @@ CombatResult SpellEffect::teachRecipe(const SpellEffect &effect, Entity &caster,
                                       Entity &target) {
   auto *casterAsUser = dynamic_cast<User *>(&caster);
   casterAsUser->addRecipe("cake", true);
+  casterAsUser->addRecipe("bread", true);
   return HIT;
 }
 
