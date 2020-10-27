@@ -427,6 +427,10 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Recipe items") {
         THEN("he can craft something") {
           WAIT_UNTIL(user->knownRecipes().size() == 1);
         }
+
+        THEN("he recieves a message to that effect") {
+          CHECK(client->waitForMessage(SV_NEW_RECIPES));
+        }
       }
 
       AND_WHEN("the user already knows the recipe") {
@@ -464,6 +468,4 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Recipe items") {
       }
     }
   }
-
-  // Receives message
 }

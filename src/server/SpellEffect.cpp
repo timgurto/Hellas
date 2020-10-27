@@ -241,6 +241,7 @@ CombatResult SpellEffect::teachRecipe(const SpellEffect &effect, Entity &caster,
   if (casterAsUser->knowsRecipe(recipeID)) return FAIL;
 
   casterAsUser->addRecipe(recipeID, true);
+  casterAsUser->sendMessage({SV_NEW_RECIPES, makeArgs("1", recipeID)});
   return HIT;
 }
 
