@@ -775,6 +775,7 @@ void DataLoader::loadRecipes(XmlReader &xr) {
 
     bool requiresUnlock = false;
     for (auto unlockedBy : xr.getChildren("unlockedBy", elem)) {
+      requiresUnlock = true;
       double chance = 1.0;
       xr.findAttr(unlockedBy, "chance", chance);
       ProgressLock::Type triggerType;

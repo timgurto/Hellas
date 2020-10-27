@@ -409,7 +409,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Recipe items") {
   GIVEN("a recipe item that teaches how to bake a cake") {
     useData(R"(
       <item id="cake" />
-      <recipe id="cake" />
+      <recipe id="cake"> <unlockedBy/> </recipe>
       <item id="cakeRecipe" castsSpellOnUse="teachRecipe" spellArg="cake" />
     )");
 
@@ -434,7 +434,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Recipe items") {
   GIVEN("a recipe item that teaches how to bake bread") {
     useData(R"(
       <item id="bread" />
-      <recipe id="bread" />
+      <recipe id="bread"> <unlockedBy/> </recipe>
       <item id="breadRecipe" castsSpellOnUse="teachRecipe" spellArg="bread" />
     )");
 
@@ -452,7 +452,6 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Recipe items") {
     }
   }
 
-  // Non-user caster
   // Receives message
   // Don't use if already known
 }
