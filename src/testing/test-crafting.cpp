@@ -1,4 +1,5 @@
 #include "TestClient.h"
+#include "TestFixtures.h"
 #include "TestServer.h"
 #include "testing.h"
 
@@ -390,6 +391,37 @@ TEST_CASE("Extra items returned from crafting") {
           expectedInInventory.add(&happiness);
 
           WAIT_UNTIL(user.hasItems(expectedInInventory));
+        }
+      }
+    }
+  }
+}
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Recipe items") {
+  GIVEN("a recipe item that teaches how to bake a cake") {
+    useData(R"(
+      <item id="cake" />
+      <recipe id="cake" />
+      <item id="cakeRecipe" castsSpellOnUse="teachRecipe" spellStringArg="cake" />
+      <spell id="teachRecipe" >
+        <targets self="1" />
+        <function name="teachRecipe" />
+      </spell>
+    )");
+
+    THEN("the user can't craft anything") {
+      CHECK(user->knownRecipes().empty());
+    }
+
+    WHEN("the user has the recipe item") {
+      auto &cakeRecipe = server->findItem("cakeRecipe");
+      user->giveItem(&cakeRecipe);
+
+      AND_WHEN("he uses it") {
+        client->sendMessage(CL_CAST_ITEM, makeArgs(0));
+
+        THEN("he can craft something") {
+          WAIT_UNTIL(user->knownRecipes().size() == 1);
         }
       }
     }

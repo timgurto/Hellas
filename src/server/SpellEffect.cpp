@@ -17,6 +17,7 @@ SpellEffect::FunctionMap SpellEffect::functionMap = {
     {"dispellDebuff", dispellDebuff},
     {"randomTeleport", randomTeleport},
     {"teleportToCity", teleportToCity},
+    {"teachRecipe", teachRecipe},
     {"spawnNPC", spawnNPC}};
 
 SpellEffect::FlagMap SpellEffect::aggressionMap = {
@@ -219,6 +220,13 @@ CombatResult SpellEffect::teleportToCity(const SpellEffect &effect,
 
   target.teleportTo(proposedLocation);
 
+  return HIT;
+}
+
+CombatResult SpellEffect::teachRecipe(const SpellEffect &effect, Entity &caster,
+                                      Entity &target) {
+  auto *casterAsUser = dynamic_cast<User *>(&caster);
+  casterAsUser->addRecipe("cake", true);
   return HIT;
 }
 
