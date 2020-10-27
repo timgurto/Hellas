@@ -22,6 +22,7 @@ class TestServer {
   TestServer(TestServer &rhs);
   TestServer &operator=(TestServer &rhs);
 
+  void loadMinimalData();
   void loadDataFromFiles(const std::string path);
   void loadDataFromString(const std::string data);
 

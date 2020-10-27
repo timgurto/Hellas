@@ -1,0 +1,8 @@
+<root>
+
+<spell id="teachRecipe" >
+    <targets self="1" />
+    <function name="teachRecipe" />
+</spell>
+
+</root>

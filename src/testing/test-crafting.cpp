@@ -403,10 +403,6 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Recipe items") {
       <item id="cake" />
       <recipe id="cake" />
       <item id="cakeRecipe" castsSpellOnUse="teachRecipe" spellStringArg="cake" />
-      <spell id="teachRecipe" >
-        <targets self="1" />
-        <function name="teachRecipe" />
-      </spell>
     )");
 
     THEN("the user can't craft anything") {

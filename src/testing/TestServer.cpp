@@ -13,26 +13,33 @@ extern Args cmdLineArgs;
 TestServer::TestServer() {
   _server = new Server;
   _server->_isTestServer = true;
-  DataLoader::FromPath(*_server, "testing/data/minimal").load();
+  loadMinimalData();
   run();
 }
 
 TestServer::TestServer(NotRunning) {
   _server = new Server;
   _server->_isTestServer = true;
-  DataLoader::FromPath(*_server, "testing/data/minimal").load();
+  loadMinimalData();
 }
 
 TestServer::TestServer(const std::string &string, StringType type) {
   _server = new Server;
   _server->_isTestServer = true;
-  DataLoader::FromPath(*_server, "testing/data/minimal").load();
+  loadMinimalData();
   if (type == DATA_PATH)
     loadDataFromFiles(string);
   else if (type == DATA_STRING)
     loadDataFromString(string);
 
   run();
+}
+
+void TestServer::loadMinimalData() {
+  auto dataLoader = DataLoader::FromPath(*_server, "testing/data/minimal");
+  dataLoader.load();
+  auto reader = XmlReader::FromFile("Data/core-spells.xml");
+  dataLoader.loadSpells(reader);
 }
 
 void TestServer::loadDataFromFiles(const std::string path) {
