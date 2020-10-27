@@ -812,6 +812,12 @@ const MapRect *Server::findNPCTemplate(const std::string &templateID) const {
   return &it->second;
 }
 
+const Recipe *Server::findRecipe(const std::string &recipeID) const {
+  auto it = _recipes.find(recipeID);
+  if (it == _recipes.end()) return nullptr;
+  return &*it;
+}
+
 const Terrain *Server::terrainType(char index) const {
   auto it = _terrainTypes.find(index);
   if (it == _terrainTypes.end()) return nullptr;

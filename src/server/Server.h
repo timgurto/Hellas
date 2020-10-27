@@ -91,6 +91,7 @@ class Server {
   findObjectsOwnedBy(const Permissions::Owner &owner) const;
   Entity *findEntityBySerial(Serial serial);
   const MapRect *findNPCTemplate(const std::string &templateID) const;
+  const Recipe *findRecipe(const std::string &recipeID) const;
 
   struct ContainerInfo {
     ServerItem::vect_t *container{nullptr};

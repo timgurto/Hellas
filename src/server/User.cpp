@@ -1421,6 +1421,10 @@ bool User::knowsConstruction(const std::string &id) const {
 }
 
 void User::addRecipe(const std::string &id, bool newlyLearned) {
+  const Server &server = *Server::_instance;
+  auto recipeExists = server.findRecipe(id) != nullptr;
+  if (!recipeExists) return;
+
   _knownRecipes.insert(id);
 
   if (!newlyLearned) return;

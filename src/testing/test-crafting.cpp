@@ -397,6 +397,14 @@ TEST_CASE("Extra items returned from crafting") {
   }
 }
 
+TEST_CASE_METHOD(ServerAndClient, "Nonsense recipes can't be added") {
+  WHEN("the user tries to learn a recipe that doesnt exist") {
+    user->addRecipe("fakeRecipe");
+
+    THEN("he still knows no recipes") { CHECK(user->knownRecipes().empty()); }
+  }
+}
+
 TEST_CASE_METHOD(ServerAndClientWithData, "Recipe items") {
   GIVEN("a recipe item that teaches how to bake a cake") {
     useData(R"(
