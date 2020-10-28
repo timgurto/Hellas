@@ -629,6 +629,24 @@ void ClientObject::confirmAndDemolishObject(void *objectToDemolish) {
   obj._confirmDemolishWindow->show();
 }
 
+void ClientObject::addWindowTextToWindow() {
+  px_t x = BUTTON_GAP, y = _window->contentHeight();
+  const auto width = 150_px;
+  y += BUTTON_GAP;
+
+  const auto text = "\""s + objectType()->windowText() + "\""s;
+  const auto lines = WordWrapper{Element::font(), width}.wrap(text);
+  for (const auto &line : lines) {
+    auto label = new Label({x, y, width, Element::TEXT_HEIGHT}, line);
+    label->setColor(Color::WINDOW_FLAVOUR_TEXT);
+    _window->addChild(label);
+    y += Element::TEXT_HEIGHT;
+  }
+
+  auto newContentWidth = max(width + BUTTON_GAP, _window->contentWidth());
+  _window->resize(newContentWidth, y);
+}
+
 void ClientObject::assembleWindow(Client &client) {
   const ClientObjectType &objType = *objectType();
 
@@ -670,15 +688,17 @@ void ClientObject::assembleWindow(Client &client) {
              canDemolish = userHasDemolishAccess(),
              hasAQuest =
                  !(startsQuests().empty() && completableQuests().empty()) &&
-                 userHasAccess();
+                 userHasAccess(),
+             hasWindowText = !objType.windowText().empty();
 
   if (!_window)
     _window = Window::WithRectAndTitle({}, objType.name(), _client.mouse());
 
   auto windowHasClassContent = addClassSpecificStuffToWindow();
-  auto hasNonDemolitionContent =
-      windowHasClassContent || hasContainer || isMerchant || canCede ||
-      canGrant || hasAQuest || objType.hasAction() || objType.canDeconstruct();
+  auto hasNonDemolitionContent = windowHasClassContent || hasContainer ||
+                                 isMerchant || canCede || canGrant ||
+                                 hasAQuest || objType.hasAction() ||
+                                 objType.canDeconstruct() || hasWindowText;
   auto hasAnyContent = hasNonDemolitionContent || canDemolish;
 
   if (isAlive()) {
@@ -700,10 +720,12 @@ void ClientObject::assembleWindow(Client &client) {
       if (canCede) addCedeButtonToWindow();
       if (canGrant) addGrantButtonToWindow();
       if (canDemolish) addDemolishButtonToWindow();
+      if (hasWindowText) addWindowTextToWindow();
 
     } else if (userHasMerchantAccess()) {
       if (isMerchant && _owner.type != Owner::NO_ACCESS)
         addMerchantTradeToWindow();
+      if (hasWindowText) addWindowTextToWindow();
     }
   }
 
@@ -924,6 +946,8 @@ const Texture &ClientObject::cursor() const {
   }
   if (lootable() || ot.merchantSlots() > 0)
     return Client::images.cursorContainer;
+
+  if (!ot.windowText().empty()) return Client::images.cursorText;
 
   return Client::images.cursorNormal;
 }

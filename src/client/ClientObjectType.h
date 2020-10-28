@@ -54,6 +54,8 @@ class ClientObjectType : public SpriteType,
   mutable Optional<Tooltip> _constructionTooltip;
   ImageWithHighlight _constructionImage;  // Shown when under construction.
 
+  std::string _windowText;
+
  protected:
   ImageWithHighlight _corpseImage;
 
@@ -165,6 +167,8 @@ class ClientObjectType : public SpriteType,
     if (_allowedTerrain.empty()) return TerrainList::defaultList().id();
     return _allowedTerrain;
   };
+  void setWindowText(const std::string &text) { _windowText = text; }
+  const std::string &windowText() const { return _windowText; }
 
   const ImageWithHighlight &getProgressImage(ms_t timeRemaining) const;
   const Texture &corpseImage() const { return _corpseImage.getNormalImage(); }

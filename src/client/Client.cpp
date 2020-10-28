@@ -896,6 +896,7 @@ void Client::CommonImages::initialise() {
   cursorEndsQuest = {"Images/Cursors/endsQuest.png"s, Color::MAGENTA};
   cursorRepair = {"Images/Cursors/repair.png"s, Color::MAGENTA};
   cursorVehicle = {"Images/Cursors/vehicle.png"s, Color::MAGENTA};
+  cursorText = {"Images/Cursors/text.png"s, Color::MAGENTA};
 
   startQuestIcon = {"Images/UI/startQuest.png", Color::MAGENTA};
   endQuestIcon = {"Images/UI/endQuest.png", Color::MAGENTA};

@@ -33,6 +33,7 @@ class Color {
   static const Color WINDOW_DARK;
   static const Color WINDOW_LIGHT;
   static const Color WINDOW_FONT;
+  static const Color WINDOW_FLAVOUR_TEXT;
   static const Color WINDOW_HEADING;
 
   static const Color COMBATANT_SELF;

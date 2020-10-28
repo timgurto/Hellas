@@ -208,6 +208,7 @@ class ClientObject : public Sprite, public ClientCombatant {
   void getInputAndGrantObject(void *objectToGrant);
   void addDemolishButtonToWindow();
   void confirmAndDemolishObject(void *objectToDemolish);
+  void addWindowTextToWindow();
 
   // Return value: whether anything was added
   virtual bool addClassSpecificStuffToWindow() { return false; }

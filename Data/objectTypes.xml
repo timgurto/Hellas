@@ -398,7 +398,8 @@
 
 <objectType id="grindstone" name="Grindstone"
     constructionTime="0" 
-    xDrawOffset="-11" yDrawOffset="-21">
+    xDrawOffset="-11" yDrawOffset="-21"
+    windowText="I, Brotachus, a Gortynian of Crete, lie here, where I came not for this purpose, but to trade.">
     <collisionRect x="-11" y="-5" w="22" h="11" />
     <material id="lumber" quantity="8" />
     <material id="rope" quantity="2" />

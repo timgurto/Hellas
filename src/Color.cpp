@@ -28,6 +28,7 @@ const Color Color::WINDOW_BACKGROUND = WHITE * 0.1;
 const Color Color::WINDOW_DARK = WHITE * 0.0;
 const Color Color::WINDOW_LIGHT = WHITE * 0.2;
 const Color Color::WINDOW_FONT{0xcc, 0xcc, 0xcc};
+const Color Color::WINDOW_FLAVOUR_TEXT = RED * 0.5 + YELLOW * 0.5 + BLUE * 0.2;
 const Color Color::WINDOW_HEADING = BLUE * .4 + CYAN * .6;
 
 const Color Color::COMBATANT_SELF = GREEN * 0.8 + BLUE;

@@ -469,6 +469,10 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
       if (xr.findAttr(container, "slots", n)) cot->containerSlots(n);
     }
 
+    auto windowText = ""s;
+    if (xr.findAttr(elem, "windowText", windowText))
+      cot->setWindowText(windowText);
+
     cot->loadTagsFromXML(xr, elem);
 
     if (xr.findAttr(elem, "allowedTerrain", s)) cot->allowedTerrain(s);
