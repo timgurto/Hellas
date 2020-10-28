@@ -631,7 +631,7 @@ void ClientObject::confirmAndDemolishObject(void *objectToDemolish) {
 
 void ClientObject::addWindowTextToWindow() {
   px_t x = BUTTON_GAP, y = _window->contentHeight();
-  const auto width = 150_px;
+  const auto width = 250_px;
   y += BUTTON_GAP;
 
   const auto text = "\""s + objectType()->windowText() + "\""s;

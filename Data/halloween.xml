@@ -1,0 +1,42 @@
+<root>
+
+<quest id="freeTheGhost1" name="The Restless Dead" startsAt="mourner" endsAt="ghostFather"
+    brief="Recently I've been haunted in my dreams; the shade of my deceased father is calling out to me, wailing and thrashing.  I'm afraid to go to sleep because it pains me to see him suffering.
+    What's worse is that I think it's our fault.  My people in Thessaly have neglected the old funeral rites, and so the dead may be struggling to reach Hades.  We didn't want to waste good money on the dead.
+    Please, if you would, travel south to the large burial ground across the river.  My father was buried there.  Give him a tin coin, as payment to cross the river Styx, and maybe that will bring him peace."
+    debrief="Please, end this torment!
+    . . .
+    What's this--a coin?  Thank you, stranger.  After these long weeks of wandering, I can finally pay the ferryman and reach Hades." >
+    <objective type="fetch" id="tinCoin" />
+</quest>
+<quest id="freeTheGhost2" name="Be at Peace" startsAt="ghostFather" endsAt="mourner"
+    brief="Please return to my son, and tell him that I am at rest.  I will no longer haunt his sleep."
+    debrief="Thank you for your help.  I feel better knowing that my father has been properly laid to rest.
+    In my neglect, I failed to mark his grave.  You may have the monument if you wish; my father clearly has no need for it." >
+    <prerequisite id="freeTheGhost1" />
+    <reward type="item" id="halloweenGrave" />
+</quest>
+    <npcType id="mourner" name="Pentheos"
+        level="10" maxHealth="53" attack="7" isCivilian="1" >
+        <humanoid>
+            <gear id="linothorax" />
+            <gear id="sandals" />
+            <gear id="tinJavelin" />
+        </humanoid>
+    </npcType>
+    <npcType id="ghostFather" name="Tormented Shade" imageFile="halloweenGhost" 
+        level="10" maxHealth="53" attack="7" isCivilian="1" />
+    <item id="halloweenGrave" name="Decorative Grave Monument" iconFile="tabletRock" constructs="halloweenGrave" />
+    <objectType id="halloweenGrave" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
+        deconstructs="halloweenGrave" deconstructionTime="1000" >
+        <collisionRect x="-7" y="-3" w="16" h="7" />
+    </objectType>
+    
+<permanentObject x="33000" y="33600" id="graveyardGround" />
+
+<npc id="mourner" x="35450" y="22450" />
+<permanentObject id="halloweenGrave" x="35470" y="22455" />
+<spawnPoint y="33600" x="33000" type="ghostFather" quantity="1" radius="750" respawnTime="0" />
+
+
+</root>
