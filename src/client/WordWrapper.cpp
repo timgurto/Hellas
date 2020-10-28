@@ -84,6 +84,9 @@ WordWrapper::Lines WordWrapper::wrap(const std::string &unwrapped) const {
 
 px_t WordWrapper::getWidth(const std::string &s) const {
   auto total = 0;
-  for (char c : s) total += _glyphWidths[c];
+  for (char c : s) {
+    if (c > 127) continue;
+    total += _glyphWidths[c];
+  }
   return total;
 }
