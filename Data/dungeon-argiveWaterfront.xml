@@ -437,9 +437,10 @@
     <offset x="-8" y="-7" />
     <canBeRepaired cost="tinBar" tool="smelting1" />
 </item>
-<item id="dAW_strongmanArmour" name="Champion's Leather Breastplate" gearSlot="6" sounds="leather" quality="2" lvlReq="17" >
+<item id="dAW_strongmanArmour" name="Champion's Leather Breastplate" gearSlot="6" sounds="leather" quality="2" lvlReq="17"
+    gearFile="leatherBreastplate" iconFile="leatherBreastplate" >
     <stats armour="16" endurance="5" might="11" />
-    <offset x="0" y="0" />
+    <offset x="-4" y="-3" />
     <canBeRepaired cost="tinBar" tool="smelting1" />
 </item>
 <item id="dAW_gangleaderRing" name="Ringleader's Ring" gearSlot="1" quality="1" lvlReq="18" >
