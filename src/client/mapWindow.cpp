@@ -112,6 +112,10 @@ void Client::updateMapWindow(Element &e) {
   client.addIconToMap(client._respawnPoint, &images.mapRespawn,
                       "On death, you will return here");
 
+  // TODO: STOP HARDCODING THIS
+  // Added for the Halloween event.
+  client.addIconToMap({33000, 33600}, &images.mapRespawn, "Thessaly Graveyard");
+
   // Cities
   for (const auto &pair : client._cities) {
     auto tooltipText = "City of "s + pair.first;
