@@ -2,7 +2,7 @@
 
 <!--
 Potion effect
-NPCs1
+Mark graveyard on map
 Pumpkin Patch implemented
 Fog particles on pumpkin patches
 -->
@@ -73,7 +73,6 @@ Fog particles on pumpkin patches
     <objectType id="pumpkinFlower6" name="Grave Flower" xDrawOffset="-9"  yDrawOffset="-8"  isFlat="1" canGather="1" gatherTime="1000" exclusiveToQuest="collectPumpkinFlowers"> <yield id="pumpkinFlower"/> </objectType>
     <objectType id="pumpkinFlower7" name="Grave Flower" xDrawOffset="-10" yDrawOffset="-10" isFlat="1" canGather="1" gatherTime="1000" exclusiveToQuest="collectPumpkinFlowers"> <yield id="pumpkinFlower"/> </objectType>
     <objectType id="pumpkinFlower8" name="Grave Flower" xDrawOffset="-9"  yDrawOffset="-8"  isFlat="1" canGather="1" gatherTime="1000" exclusiveToQuest="collectPumpkinFlowers"> <yield id="pumpkinFlower"/> </objectType>
-    <item id="pumpkinSeed" name="Grave Seed" stackSize="10" sounds="seeds" constructs="pumpkinPatch" />
 
 <objectType
     id="tradeMatBottomless4" name="Trade Mat" imageFile="tradeMat"
@@ -86,11 +85,12 @@ Fog particles on pumpkin patches
     returnsOnCast="smallPot" />
 <item id="pumpkinPotionRecipe" name="Recipe: Potion of Disguise"
     castsSpellOnUse="teachRecipe" spellArg="pumpkinPotion" iconFile="parchment" />
-<recipe id="pumpkinPotion" time="10000" >
+<recipe id="pumpkinPotion" time="8000" >
     <material id="pumpkin" />
     <material id="halloweenSkeletonMat" />
     <material id="halloweenGhostMat" />
     <material id="halloweenMummyMat" />
+    <material id="water" />
     <unlockedBy />
 </recipe>
     <item id="halloweenSkeletonMat" name="Wandering Bone" sounds="bone" iconFile="bone" stackSize="10" />
@@ -137,6 +137,42 @@ Fog particles on pumpkin patches
     <collisionRect x="-9" y="-4" w="16" h="7" />
     <loot id="halloweenGhostMat" />
 </npcType>
+
+
+<item id="pumpkinSeed" name="Grave Seed" stackSize="10" sounds="seeds" constructs="pumpkinPatch" />
+<objectType id="pumpkinPatch0" name="Pumpkin Patch"
+    xDrawOffset="-31"
+    yDrawOffset="-49"
+    damageParticles="leaves" sounds="weakPlant"
+    isUnbuildable="1" constructionTime="10000" constructionText="needs watering"
+    allowedTerrain="fertile" >
+    <collisionRect x="-31" y="-29" w="64" h="62" />
+    <material id="water" />
+    <transform id="pumpkinPatch1" time="1500000" /> <!-- 25m -->
+    <durability item="flax" quantity="5" />
+</objectType>
+<objectType id="pumpkinPatch1" name="Mysterious Farm" xDrawOffset="-31" yDrawOffset="-49" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-31" y="-29" w="64" h="62" /> <durability item="flax" quantity="5" />
+    <material id="water" />
+    <transform id="pumpkinPatch2" time="1500000" />
+</objectType>
+<objectType id="pumpkinPatch2" name="Eerie Farm" xDrawOffset="-31" yDrawOffset="-49" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-31" y="-29" w="64" h="62" /> <durability item="flax" quantity="5" />
+    <material id="water" />
+    <transform id="pumpkinPatch3" time="1500000" />
+</objectType>
+<objectType id="pumpkinPatch3" name="Unearthly Farm" xDrawOffset="-31" yDrawOffset="-49" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-31" y="-29" w="64" h="62" /> <durability item="flax" quantity="5" />
+    <material id="water" />
+    <transform id="pumpkinPatch4" time="1500000" />
+</objectType>
+<objectType id="pumpkinPatch4" name="Pumpkin Patch (ripe)"
+    xDrawOffset="-31"
+    yDrawOffset="-49"
+    isUnbuildable="1"
+    canGather="1" gatherTime="1000"
+    damageParticles="leaves" sounds="weakPlant" >
+    <collisionRect x="-31" y="-29" w="64" h="62" />
+    <yield id="pumpkin" initialMean="4" initialSD="1" initialMin="2" />
+    <durability item="flax" quantity="5" />
+</objectType>
 
 
 <objectType id="grave0" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
