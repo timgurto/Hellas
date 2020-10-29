@@ -42,6 +42,7 @@ class ClientCombatant {
   virtual const Color &healthBarColor() const = 0;
   void drawBuffEffects(const MapPoint &location,
                        const ScreenPoint &clientOffset) const;
+  bool doesAnyBuffHideMe() const;
 
   virtual void addMenuButtons(List &menu) {}
 

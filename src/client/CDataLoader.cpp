@@ -398,6 +398,9 @@ void CDataLoader::loadBuffs(XmlReader &xr) {
       xr.findAttr(effectElem, "yOffset", offset.y);
 
       newBuff.effect({filename, Color::MAGENTA}, offset);
+
+      if (xr.findAttr(effectElem, "makeInvisible", n) && n == 1)
+        newBuff.makesTargetInvisible();
     }
 
     auto functionElem = xr.findChild("function", elem);

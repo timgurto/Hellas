@@ -60,7 +60,7 @@ void Avatar::draw() const {
     renderer.popRenderTarget();
   }
 
-  Sprite::draw();
+  if (!doesAnyBuffHideMe()) Sprite::draw();
 
   drawBuffEffects(location(), _client.offset());
 

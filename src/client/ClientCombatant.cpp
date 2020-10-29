@@ -107,3 +107,10 @@ void ClientCombatant::drawBuffEffects(const MapPoint &location,
                                  buffType->effectOffset());
   }
 }
+
+bool ClientCombatant::doesAnyBuffHideMe() const {
+  for (auto *buffType : buffs()) {
+    if (buffType->isTargetInvisible()) return true;
+  }
+  return false;
+}

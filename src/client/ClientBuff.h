@@ -42,6 +42,8 @@ class ClientBuffType {
   bool hasEffect() const { return {_effect}; }
   const Texture &effectImage() const { return _effect; }
   const ScreenPoint &effectOffset() const { return _effectOffset; }
+  void makesTargetInvisible() { _makesTargetInvisible = true; }
+  bool isTargetInvisible() const { return _makesTargetInvisible; }
 
  private:
   Texture _icon;
@@ -49,6 +51,7 @@ class ClientBuffType {
   Name _name{};
   Description _description{};
   Texture _effect;
+  bool _makesTargetInvisible{false};
   ScreenPoint _effectOffset{};
 
   int _duration{0};
