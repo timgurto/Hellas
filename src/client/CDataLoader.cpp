@@ -453,6 +453,10 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
     if (xr.findAttr(elem, "customCullDistance", customCullDist))
       cot->useCustomCullDistance(customCullDist);
 
+    auto customDrawHeight = 0_px;
+    if (xr.findAttr(elem, "customDrawHeight", customDrawHeight))
+      cot->useCustomDrawHeight(customDrawHeight);
+
     auto name = id;
     xr.findAttr(elem, "name", name);
     cot->name(name);

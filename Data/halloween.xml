@@ -238,7 +238,7 @@ Fog particles on pumpkin patches
     That here, obedient to their laws, we lie.">
     <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
 
-<objectType id="graveyardGround" xDrawOffset="-750" yDrawOffset="-750" customCullDistance="1500" customShadowWidth="0" isDecoration="1" isFlat="1" />
+<objectType id="graveyardGround" xDrawOffset="-750" yDrawOffset="-750" customCullDistance="1500" customShadowWidth="0" isDecoration="1" isFlat="1" customDrawHeight="0" />
 
 
 
