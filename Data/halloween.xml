@@ -81,7 +81,7 @@ Fog particles on pumpkin patches
     <collisionRect x="-12" y="-8" w="25" h="17" />
 </objectType>
 
-<item id="pumpkin" name="Pumpkin" stackSize="10" />
+<item id="pumpkin" name="Pumpkin" constructs="pumpkin" stackSize="10" />
 <item id="pumpkinPotion" name="Potion of Disguise" stackSize="5"
     returnsOnCast="smallPot" />
 <item id="pumpkinPotionRecipe" name="Recipe: Potion of Disguise"
@@ -98,7 +98,7 @@ Fog particles on pumpkin patches
     <item id="halloweenGhostMat" name="Jiggling Ectoplasm" sounds="meat" iconFile="fat" stackSize="10" />
     <item id="halloweenMummyMat" name="Shriveled Bandage" sounds="fabric" iconFile="linenCloth" stackSize="10" />
 
-<item id="jackOLantern" name="Carved Pumpkin" />
+<item id="jackOLantern" name="Carved Pumpkin" constructs="jackOLantern" />
 <item id="jackOLanternRecipe" name="Recipe: Carved Pumpkin"
     castsSpellOnUse="teachRecipe" spellArg="jackOLantern" iconFile="parchment" />
 <recipe id="jackOLantern" time="6000" >
