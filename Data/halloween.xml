@@ -1,5 +1,12 @@
 <root>
 
+<!--
+Potion effect
+NPCs1
+Pumpkin Patch implemented
+Fog particles on pumpkin patches
+-->
+
 <quest id="freeTheGhost1" name="The Restless Dead" startsAt="mourner" endsAt="ghostFather"
     brief="Recently I've been haunted in my dreams; the shade of my deceased father is calling out to me, wailing and thrashing.  I'm afraid to go to sleep because it pains me to see him suffering.
     What's worse is that I think it's our fault.  My people in Thessaly have neglected the old funeral rites, and so the dead may be struggling to reach Hades.  We didn't want to waste good money on the dead.
@@ -32,6 +39,106 @@
         <collisionRect x="-7" y="-3" w="16" h="7" />
     </objectType>
     
+<quest id="collectPumpkinFlowers" name="A Rose on the Grave" startsAt="witch" endsAt="witch"
+    brief="Greetings, traveler!  Strange things are afoot: the dead are restless, and other odd things have sprung up with them.
+    There is an orange flower that I have seen growing throughout this graveyard.  I am an experienced botanist, but I do not recognise these flowers.
+    If you could pick some for me, I believe I could study the plant and perhaps derive some magical properties from it."
+    debrief="Very good, traveler.  These are truly beautiful flowers, though I cannot fathom where they came from.
+    As thanks for your trouble, please have these seeds taken from the flowers.  Perhaps you can find some use for them." >
+    <objective type="fetch" id="pumpkinFlower" qty="10" />
+    <reward type="item" id="pumpkinSeed" qty="10" />
+</quest>
+    <npcType
+        id="witch" name="Wayward Alchemist"
+        level="10" maxHealth="53" attack="7" isCivilian="1" >
+        <humanoid base="green">
+            <gear id="witchRobe" />
+            <gear id="witchHat" />
+            <gear id="staff1" />
+        </humanoid>
+    </npcType>
+    <item id="witchHat" name="Wayward Hat" gearSlot="0" sounds="fabric" >
+        <offset x="-5" y="-10" />
+    </item>
+    <item id="witchRobe" name="Wayward Robe" gearSlot="2" sounds="fabric" >
+        <offset x="-8" y="-3" />
+    </item>
+    <item id="pumpkinFlower" name="Grave Flower" stackSize="10" exclusiveToQuest="collectPumpkinFlowers" />
+    <objectType id="pumpkinFlower0" name="Grave Flower" xDrawOffset="-10" yDrawOffset="-11" isFlat="1" canGather="1" gatherTime="1000" exclusiveToQuest="collectPumpkinFlowers"> <yield id="pumpkinFlower"/> </objectType>
+    <objectType id="pumpkinFlower1" name="Grave Flower" xDrawOffset="-9"  yDrawOffset="-8"  isFlat="1" canGather="1" gatherTime="1000" exclusiveToQuest="collectPumpkinFlowers"> <yield id="pumpkinFlower"/> </objectType>
+    <objectType id="pumpkinFlower2" name="Grave Flower" xDrawOffset="-10" yDrawOffset="-8"  isFlat="1" canGather="1" gatherTime="1000" exclusiveToQuest="collectPumpkinFlowers"> <yield id="pumpkinFlower"/> </objectType>
+    <objectType id="pumpkinFlower3" name="Grave Flower" xDrawOffset="-8"  yDrawOffset="-7"  isFlat="1" canGather="1" gatherTime="1000" exclusiveToQuest="collectPumpkinFlowers"> <yield id="pumpkinFlower"/> </objectType>
+    <objectType id="pumpkinFlower4" name="Grave Flower" xDrawOffset="-9"  yDrawOffset="-9"  isFlat="1" canGather="1" gatherTime="1000" exclusiveToQuest="collectPumpkinFlowers"> <yield id="pumpkinFlower"/> </objectType>
+    <objectType id="pumpkinFlower5" name="Grave Flower" xDrawOffset="-10" yDrawOffset="-10" isFlat="1" canGather="1" gatherTime="1000" exclusiveToQuest="collectPumpkinFlowers"> <yield id="pumpkinFlower"/> </objectType>
+    <objectType id="pumpkinFlower6" name="Grave Flower" xDrawOffset="-9"  yDrawOffset="-8"  isFlat="1" canGather="1" gatherTime="1000" exclusiveToQuest="collectPumpkinFlowers"> <yield id="pumpkinFlower"/> </objectType>
+    <objectType id="pumpkinFlower7" name="Grave Flower" xDrawOffset="-10" yDrawOffset="-10" isFlat="1" canGather="1" gatherTime="1000" exclusiveToQuest="collectPumpkinFlowers"> <yield id="pumpkinFlower"/> </objectType>
+    <objectType id="pumpkinFlower8" name="Grave Flower" xDrawOffset="-9"  yDrawOffset="-8"  isFlat="1" canGather="1" gatherTime="1000" exclusiveToQuest="collectPumpkinFlowers"> <yield id="pumpkinFlower"/> </objectType>
+    <item id="pumpkinSeed" name="Grave Seed" stackSize="10" sounds="seeds" constructs="pumpkinPatch" />
+
+<objectType
+    id="tradeMatBottomless4" name="Trade Mat" imageFile="tradeMat"
+    xDrawOffset="-14" yDrawOffset="-12" merchantSlots="4" bottomlessMerchant="1" >
+    <collisionRect x="-12" y="-8" w="25" h="17" />
+</objectType>
+
+<item id="pumpkin" name="Pumpkin" stackSize="10" />
+<item id="pumpkinPotion" name="Potion of Disguise" stackSize="5"
+    returnsOnCast="smallPot" />
+<item id="pumpkinPotionRecipe" name="Recipe: Potion of Disguise"
+    castsSpellOnUse="teachRecipe" spellArg="pumpkinPotion" iconFile="parchment" />
+<recipe id="pumpkinPotion" time="10000" >
+    <material id="pumpkin" />
+    <material id="halloweenSkeletonMat" />
+    <material id="halloweenGhostMat" />
+    <material id="halloweenMummyMat" />
+    <unlockedBy />
+</recipe>
+    <item id="halloweenSkeletonMat" name="Wandering Bone" sounds="bone" iconFile="bone" stackSize="10" />
+    <item id="halloweenGhostMat" name="Jiggling Ectoplasm" sounds="meat" iconFile="fat" stackSize="10" />
+    <item id="halloweenMummyMat" name="Shriveled Bandage" sounds="fabric" iconFile="linenCloth" stackSize="10" />
+
+<item id="jackOLantern" name="Carved Pumpkin" />
+<item id="jackOLanternRecipe" name="Recipe: Carved Pumpkin"
+    castsSpellOnUse="teachRecipe" spellArg="jackOLantern" iconFile="parchment" />
+<recipe id="jackOLantern" time="6000" >
+    <material id="pumpkin" />
+    <tool class="carving" />
+    <unlockedBy />
+</recipe>
+
+<objectType id="pumpkin" name="Pumpkin" xDrawOffset="-11" yDrawOffset="-14"
+    deconstructs="pumpkin" deconstructionTime="1000">
+    <collisionRect x="-10" y="-3" w="20" h="7" />
+</objectType>
+<objectType id="jackOLantern" name="Carved Pumpkin" xDrawOffset="-11" yDrawOffset="-14"
+    deconstructs="jackOLantern" deconstructionTime="1000">
+    <collisionRect x="-10" y="-3" w="20" h="7" />
+</objectType>
+
+
+<npcType id="halloweenSkeleton" name="Restless Skeleton"
+    xDrawOffset="-7" yDrawOffset="-37" imageFile="skeleton"
+    level="8" maxHealth="45" attack="9" attackTime="3000" >
+    <collisionRect x="-6" y="-4" w="14" h="7" />
+    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
+    <loot id="halloweenSkeletonMat" />
+</npcType>
+<npcType id="halloweenMummy" name="Shambling Mummy"
+    xDrawOffset="-15" yDrawOffset="-37" imageFile="mummy"
+    level="10" maxHealth="55" attack="5" attackTime="1500" >
+    <collisionRect x="-7" y="-3" w="15" h="6" />
+    <loot id="linenThread" chance="0.2" />
+    <loot id="linenCloth" chance="0.01" />
+    <loot id="halloweenMummyMat" />
+</npcType>
+<npcType id="halloweenGhost" name="Agitated Shade"
+    xDrawOffset="-10" yDrawOffset="-39" imageFile="ghost"
+    level="12" maxHealth="64" attack="8" attackTime="2000" >
+    <collisionRect x="-9" y="-4" w="16" h="7" />
+    <loot id="halloweenGhostMat" />
+</npcType>
+
+
 <objectType id="grave0" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="I, Brotachus, a Gortynian of Crete, lie here, where I came not for this purpose, but to trade.">
     <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
@@ -133,38 +240,67 @@
 
 <objectType id="graveyardGround" xDrawOffset="-750" yDrawOffset="-750" customCullDistance="1500" customShadowWidth="0" isDecoration="1" isFlat="1" />
 
+
+
+
+
+
 <permanentObject x="33000" y="33600" id="graveyardGround" />
 
 <npc id="mourner" x="35450" y="22450" />
 <permanentObject id="halloweenGrave" x="35470" y="22455" />
 <spawnPoint y="33600" x="33000" type="ghostFather" quantity="1" radius="750" respawnTime="0" />
 
-<spawnPoint y="33600" x="33000" type="grave0"  quantity="1" radius="750" respawnTime="0" />
-<spawnPoint y="33600" x="33000" type="grave1"  quantity="1" radius="750" respawnTime="0" />
-<spawnPoint y="33600" x="33000" type="grave2"  quantity="1" radius="750" respawnTime="0" />
-<spawnPoint y="33600" x="33000" type="grave3"  quantity="1" radius="750" respawnTime="0" />
-<spawnPoint y="33600" x="33000" type="grave4"  quantity="1" radius="750" respawnTime="0" />
-<spawnPoint y="33600" x="33000" type="grave5"  quantity="1" radius="750" respawnTime="0" />
-<spawnPoint y="33600" x="33000" type="grave6"  quantity="1" radius="750" respawnTime="0" />
-<spawnPoint y="33600" x="33000" type="grave7"  quantity="1" radius="750" respawnTime="0" />
-<spawnPoint y="33600" x="33000" type="grave8"  quantity="1" radius="750" respawnTime="0" />
-<spawnPoint y="33600" x="33000" type="grave9"  quantity="1" radius="750" respawnTime="0" />
-<spawnPoint y="33600" x="33000" type="grave10" quantity="1" radius="750" respawnTime="0" />
-<spawnPoint y="33600" x="33000" type="grave11" quantity="1" radius="750" respawnTime="0" />
-<spawnPoint y="33600" x="33000" type="grave12" quantity="1" radius="750" respawnTime="0" />
-<spawnPoint y="33600" x="33000" type="grave13" quantity="1" radius="750" respawnTime="0" />
-<spawnPoint y="33600" x="33000" type="grave14" quantity="1" radius="750" respawnTime="0" />
-<spawnPoint y="33600" x="33000" type="grave15" quantity="1" radius="750" respawnTime="0" />
-<spawnPoint y="33600" x="33000" type="grave16" quantity="1" radius="750" respawnTime="0" />
-<spawnPoint y="33600" x="33000" type="grave17" quantity="1" radius="750" respawnTime="0" />
-<spawnPoint y="33600" x="33000" type="grave18" quantity="1" radius="750" respawnTime="0" />
-<spawnPoint y="33600" x="33000" type="grave19" quantity="1" radius="750" respawnTime="0" />
-<spawnPoint y="33600" x="33000" type="grave20" quantity="1" radius="750" respawnTime="0" />
-<spawnPoint y="33600" x="33000" type="grave21" quantity="1" radius="750" respawnTime="0" />
-<spawnPoint y="33600" x="33000" type="grave22" quantity="1" radius="750" respawnTime="0" />
-<spawnPoint y="33600" x="33000" type="grave23" quantity="1" radius="750" respawnTime="0" />
-<spawnPoint y="33600" x="33000" type="grave24" quantity="1" radius="750" respawnTime="0" />
-<spawnPoint y="33600" x="33000" type="grave25" quantity="1" radius="750" respawnTime="0" />
-<spawnPoint y="33600" x="33000" type="grave26" quantity="1" radius="750" respawnTime="0" />
+<npc y="33600" x="33000" id="witch" />
+<object id="tradeMatBottomless4" x="33030" y="33590" >
+    <merchant slot="0" wareItem="pumpkinPotionRecipe" priceItem="pumpkin" priceQty="5" />
+    <merchant slot="1" wareItem="jackOLanternRecipe" priceItem="pumpkin" priceQty="5" />
+    <merchant slot="2" wareItem="witchRobe" priceItem="pumpkin" priceQty="5" />
+    <merchant slot="3" wareItem="witchHat" priceItem="pumpkin" priceQty="5" />
+    <owner type="player" name="the Alchemist" />
+</object>
+
+<spawnPoint y="33600" x="33000" type="pumpkinFlower0" quantity="2" radius="700" respawnTime="1000" />
+<spawnPoint y="33600" x="33000" type="pumpkinFlower1" quantity="2" radius="700" respawnTime="1000" />
+<spawnPoint y="33600" x="33000" type="pumpkinFlower2" quantity="2" radius="700" respawnTime="1000" />
+<spawnPoint y="33600" x="33000" type="pumpkinFlower3" quantity="2" radius="700" respawnTime="1000" />
+<spawnPoint y="33600" x="33000" type="pumpkinFlower4" quantity="2" radius="700" respawnTime="1000" />
+<spawnPoint y="33600" x="33000" type="pumpkinFlower5" quantity="2" radius="700" respawnTime="1000" />
+<spawnPoint y="33600" x="33000" type="pumpkinFlower6" quantity="2" radius="700" respawnTime="1000" />
+<spawnPoint y="33600" x="33000" type="pumpkinFlower7" quantity="2" radius="700" respawnTime="1000" />
+<spawnPoint y="33600" x="33000" type="pumpkinFlower8" quantity="2" radius="700" respawnTime="1000" />
+
+<spawnPoint y="33600" x="33000" type="grave0"  quantity="1" radius="700" respawnTime="0" />
+<spawnPoint y="33600" x="33000" type="grave1"  quantity="1" radius="700" respawnTime="0" />
+<spawnPoint y="33600" x="33000" type="grave2"  quantity="1" radius="700" respawnTime="0" />
+<spawnPoint y="33600" x="33000" type="grave3"  quantity="1" radius="700" respawnTime="0" />
+<spawnPoint y="33600" x="33000" type="grave4"  quantity="1" radius="700" respawnTime="0" />
+<spawnPoint y="33600" x="33000" type="grave5"  quantity="1" radius="700" respawnTime="0" />
+<spawnPoint y="33600" x="33000" type="grave6"  quantity="1" radius="700" respawnTime="0" />
+<spawnPoint y="33600" x="33000" type="grave7"  quantity="1" radius="700" respawnTime="0" />
+<spawnPoint y="33600" x="33000" type="grave8"  quantity="1" radius="700" respawnTime="0" />
+<spawnPoint y="33600" x="33000" type="grave9"  quantity="1" radius="700" respawnTime="0" />
+<spawnPoint y="33600" x="33000" type="grave10" quantity="1" radius="700" respawnTime="0" />
+<spawnPoint y="33600" x="33000" type="grave11" quantity="1" radius="700" respawnTime="0" />
+<spawnPoint y="33600" x="33000" type="grave12" quantity="1" radius="700" respawnTime="0" />
+<spawnPoint y="33600" x="33000" type="grave13" quantity="1" radius="700" respawnTime="0" />
+<spawnPoint y="33600" x="33000" type="grave14" quantity="1" radius="700" respawnTime="0" />
+<spawnPoint y="33600" x="33000" type="grave15" quantity="1" radius="700" respawnTime="0" />
+<spawnPoint y="33600" x="33000" type="grave16" quantity="1" radius="700" respawnTime="0" />
+<spawnPoint y="33600" x="33000" type="grave17" quantity="1" radius="700" respawnTime="0" />
+<spawnPoint y="33600" x="33000" type="grave18" quantity="1" radius="700" respawnTime="0" />
+<spawnPoint y="33600" x="33000" type="grave19" quantity="1" radius="700" respawnTime="0" />
+<spawnPoint y="33600" x="33000" type="grave20" quantity="1" radius="700" respawnTime="0" />
+<spawnPoint y="33600" x="33000" type="grave21" quantity="1" radius="700" respawnTime="0" />
+<spawnPoint y="33600" x="33000" type="grave22" quantity="1" radius="700" respawnTime="0" />
+<spawnPoint y="33600" x="33000" type="grave23" quantity="1" radius="700" respawnTime="0" />
+<spawnPoint y="33600" x="33000" type="grave24" quantity="1" radius="700" respawnTime="0" />
+<spawnPoint y="33600" x="33000" type="grave25" quantity="1" radius="700" respawnTime="0" />
+<spawnPoint y="33600" x="33000" type="grave26" quantity="1" radius="700" respawnTime="0" />
+
+<spawnPoint y="33600" x="33000" type="halloweenSkeleton" quantity="30"  radius="750" respawnTime="300000" />
+<spawnPoint y="33600" x="33000" type="halloweenMummy"    quantity="12"  radius="600" respawnTime="120000" />
+<spawnPoint y="33600" x="33000" type="halloweenGhost"    quantity="5"   radius="450" respawnTime="120000" />
+
 
 </root>
