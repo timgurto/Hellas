@@ -101,13 +101,13 @@ Recipe tooltips
         <function name="randomBuff" i1="3" s1="skeletonCostume" s2="mummyCostume" s3="ghostCostume" />
     </spell>
     <buff id="skeletonCostume" name="Wearing skeleton costume" icon="skullGreen" duration="1800" >
-        <effect makeInvisible="1" image="skeleton" xOffset="-20" yOffset="-40" />
+        <effect makeInvisible="1" image="skeleton" xOffset="-7" yOffset="-38" />
     </buff>
     <buff id="mummyCostume" name="Wearing mummy costume" icon="skullRed" duration="1800" >
-        <effect makeInvisible="1" image="mummy" xOffset="-20" yOffset="-40" />
+        <effect makeInvisible="1" image="mummy" xOffset="-7" yOffset="-39" />
     </buff>
     <buff id="ghostCostume" name="Wearing shade costume" icon="skullBlue" duration="1800" >
-        <effect makeInvisible="1" image="ghost" xOffset="-20" yOffset="-40" />
+        <effect makeInvisible="1" image="ghost" xOffset="-9" yOffset="-40" />
     </buff>
 
 <item id="jackOLantern" name="Carved Pumpkin" constructs="jackOLantern" />
