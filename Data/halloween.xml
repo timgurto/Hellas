@@ -1,11 +1,9 @@
 <root>
 
 <!--
-Potion effect
-
-Can wait:
 Mark graveyard on map: not hardcoded
 Fog particles on pumpkin patches
+Recipe tooltips
 -->
 
 <quest id="freeTheGhost1" name="The Restless Dead" startsAt="mourner" endsAt="ghostFather"
@@ -82,8 +80,6 @@ Fog particles on pumpkin patches
 </objectType>
 
 <item id="pumpkin" name="Pumpkin" constructs="pumpkin" stackSize="10" />
-<item id="pumpkinPotion" name="Potion of Disguise" stackSize="5"
-    returnsOnCast="smallPot" />
 <item id="pumpkinPotionRecipe" name="Recipe: Potion of Disguise"
     castsSpellOnUse="teachRecipe" spellArg="pumpkinPotion" iconFile="parchment" />
 <recipe id="pumpkinPotion" time="8000" >
@@ -97,6 +93,22 @@ Fog particles on pumpkin patches
     <item id="halloweenSkeletonMat" name="Wandering Bone" sounds="bone" iconFile="bone" stackSize="10" />
     <item id="halloweenGhostMat" name="Jiggling Ectoplasm" sounds="meat" iconFile="fat" stackSize="10" />
     <item id="halloweenMummyMat" name="Shriveled Bandage" sounds="fabric" iconFile="linenCloth" stackSize="10" />
+    
+<item id="pumpkinPotion" name="Potion of Disguise" stackSize="5" sounds="ceramic"
+    returnsOnCast="smallPot" castsSpellOnUse="randomHalloweenCostume" />
+    <spell id="randomHalloweenCostume" customDescription="Put on a spooky costume!" >
+        <targets self="1" />
+        <function name="randomBuff" i1="3" s1="skeletonCostume" s2="mummyCostume" s3="ghostCostume" />
+    </spell>
+    <buff id="skeletonCostume" name="Wearing skeleton costume" icon="skullGreen" duration="1800" >
+        <effect makeInvisible="1" image="skeleton" xOffset="-20" yOffset="-40" />
+    </buff>
+    <buff id="mummyCostume" name="Wearing mummy costume" icon="skullRed" duration="1800" >
+        <effect makeInvisible="1" image="mummy" xOffset="-20" yOffset="-40" />
+    </buff>
+    <buff id="ghostCostume" name="Wearing shade costume" icon="skullBlue" duration="1800" >
+        <effect makeInvisible="1" image="ghost" xOffset="-20" yOffset="-40" />
+    </buff>
 
 <item id="jackOLantern" name="Carved Pumpkin" constructs="jackOLantern" />
 <item id="jackOLanternRecipe" name="Recipe: Carved Pumpkin"
