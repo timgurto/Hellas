@@ -296,15 +296,15 @@ Fog particles on pumpkin patches
     <owner type="player" name="the Alchemist" />
 </object>
 
-<spawnPoint y="33600" x="33000" type="pumpkinFlower0" quantity="2" radius="700" respawnTime="1000" />
-<spawnPoint y="33600" x="33000" type="pumpkinFlower1" quantity="2" radius="700" respawnTime="1000" />
-<spawnPoint y="33600" x="33000" type="pumpkinFlower2" quantity="2" radius="700" respawnTime="1000" />
-<spawnPoint y="33600" x="33000" type="pumpkinFlower3" quantity="2" radius="700" respawnTime="1000" />
-<spawnPoint y="33600" x="33000" type="pumpkinFlower4" quantity="2" radius="700" respawnTime="1000" />
-<spawnPoint y="33600" x="33000" type="pumpkinFlower5" quantity="2" radius="700" respawnTime="1000" />
-<spawnPoint y="33600" x="33000" type="pumpkinFlower6" quantity="2" radius="700" respawnTime="1000" />
-<spawnPoint y="33600" x="33000" type="pumpkinFlower7" quantity="2" radius="700" respawnTime="1000" />
-<spawnPoint y="33600" x="33000" type="pumpkinFlower8" quantity="2" radius="700" respawnTime="1000" />
+<spawnPoint y="33600" x="33000" type="pumpkinFlower0" quantity="1" radius="700" respawnTime="1000" />
+<spawnPoint y="33600" x="33000" type="pumpkinFlower1" quantity="1" radius="700" respawnTime="1000" />
+<spawnPoint y="33600" x="33000" type="pumpkinFlower2" quantity="1" radius="700" respawnTime="1000" />
+<spawnPoint y="33600" x="33000" type="pumpkinFlower3" quantity="1" radius="700" respawnTime="1000" />
+<spawnPoint y="33600" x="33000" type="pumpkinFlower4" quantity="1" radius="700" respawnTime="1000" />
+<spawnPoint y="33600" x="33000" type="pumpkinFlower5" quantity="1" radius="700" respawnTime="1000" />
+<spawnPoint y="33600" x="33000" type="pumpkinFlower6" quantity="1" radius="700" respawnTime="1000" />
+<spawnPoint y="33600" x="33000" type="pumpkinFlower7" quantity="1" radius="700" respawnTime="1000" />
+<spawnPoint y="33600" x="33000" type="pumpkinFlower8" quantity="1" radius="700" respawnTime="1000" />
 
 <spawnPoint y="33600" x="33000" type="grave0"  quantity="1" radius="700" respawnTime="0" />
 <spawnPoint y="33600" x="33000" type="grave1"  quantity="1" radius="700" respawnTime="0" />
