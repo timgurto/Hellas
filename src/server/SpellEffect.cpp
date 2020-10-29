@@ -18,7 +18,8 @@ SpellEffect::FunctionMap SpellEffect::functionMap = {
     {"randomTeleport", randomTeleport},
     {"teleportToCity", teleportToCity},
     {"teachRecipe", teachRecipe},
-    {"spawnNPC", spawnNPC}};
+    {"spawnNPC", spawnNPC},
+    {"randomBuff", randomBuff}};
 
 SpellEffect::FlagMap SpellEffect::aggressionMap = {
     {doDirectDamage, true}, {doDirectDamageWithModifiedThreat, true},
@@ -271,6 +272,29 @@ CombatResult SpellEffect::spawnNPC(const SpellEffect &effect, Entity &caster,
   if (attempts == 0) return FAIL;
 
   server.addNPC(npcType, proposedLocation);
+
+  return HIT;
+}
+
+CombatResult SpellEffect::randomBuff(const SpellEffect &effect, Entity &caster,
+                                     Entity &target,
+                                     const std::string &supplementaryArg) {
+  auto &server = Server::instance();
+
+  auto buffChoices = std::vector<std::string>{};
+
+  auto numBuffChoices = effect._args.i1;
+  if (numBuffChoices == 0) return FAIL;
+  if (numBuffChoices >= 1) buffChoices.push_back(effect._args.s1);
+  if (numBuffChoices >= 2) buffChoices.push_back(effect._args.s2);
+  if (numBuffChoices >= 3) buffChoices.push_back(effect._args.s3);
+
+  auto choiceIndex = rand() % numBuffChoices;
+  auto chosenBuff = buffChoices[choiceIndex];
+
+  const auto *buff = server.findBuff(chosenBuff);
+  if (!buff) return FAIL;
+  target.applyBuff(*buff, caster);
 
   return HIT;
 }

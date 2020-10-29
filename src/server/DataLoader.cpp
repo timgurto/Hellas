@@ -841,6 +841,8 @@ void DataLoader::loadSpells(XmlReader &xr) {
       auto args = SpellEffect::Args{};
       xr.findAttr(functionElem, "i1", args.i1);
       xr.findAttr(functionElem, "s1", args.s1);
+      xr.findAttr(functionElem, "s2", args.s2);
+      xr.findAttr(functionElem, "s3", args.s3);
       xr.findAttr(functionElem, "d1", args.d1);
 
       newSpell->effect().args(args);

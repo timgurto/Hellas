@@ -16,7 +16,7 @@ class SpellEffect {
   struct Args {
     int i1{0};
     double d1{0};
-    std::string s1{};
+    std::string s1, s2, s3;
   };
 
   void setFunction(const std::string &functionName);
@@ -75,4 +75,5 @@ class SpellEffect {
   DECLARE_SPELL_FUNCTION(teleportToCity);
   DECLARE_SPELL_FUNCTION(teachRecipe);
   DECLARE_SPELL_FUNCTION(spawnNPC);
+  DECLARE_SPELL_FUNCTION(randomBuff);
 };
