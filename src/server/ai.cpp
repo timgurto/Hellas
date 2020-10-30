@@ -152,20 +152,13 @@ void NPC::transitionIfNecessary() {
         break;
       }
 
-      // NPC has gone too far from spawn point
+      // NPC has gone too far from home location
       if (spawner()) {
-        auto distFromSpawner = spawner()->distanceFromEntity(*this);
-        if (distFromSpawner > npcType()->maxDistanceFromSpawner()) {
+        auto distFromHome = distance(_homeLocation, location());
+        if (distFromHome > npcType()->maxDistanceFromHome()) {
           _state = IDLE;
-          static const auto ATTEMPTS = 20;
-          for (auto i = 0; i != ATTEMPTS; ++i) {
-            auto dest = spawner()->getRandomPoint();
-            if (Server::instance().isLocationValid(dest, *type())) {
-              _targetDestination = dest;
-              teleportTo(_targetDestination);
-              break;
-            }
-          }
+          _targetDestination = _homeLocation;
+          teleportTo(_targetDestination);
           break;
         }
       }

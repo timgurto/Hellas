@@ -24,8 +24,8 @@ class NPCType : public ObjectType {
   Aggression _aggression{AGGRESSIVE};
   Spell::ID _knownSpellID;
   mutable const Spell *_knownSpell{nullptr};
-  static const px_t DEFAULT_MAX_DISTANCE_FROM_SPAWNER{500};
-  px_t _maxDistanceFromSpawner{DEFAULT_MAX_DISTANCE_FROM_SPAWNER};
+  static const px_t DEFAULT_MAX_DISTANCE_FROM_HOME{500};
+  px_t _maxDistanceFromHome{DEFAULT_MAX_DISTANCE_FROM_HOME};
 
   bool _canBeTamed{false};
   std::string _tamingRequiresItem;
@@ -54,8 +54,8 @@ class NPCType : public ObjectType {
   SpellSchool school() const { return _school; }
   void knowsSpell(const Spell::ID &spell) { _knownSpellID = spell; }
   const Spell *knownSpell() const { return _knownSpell; }
-  px_t maxDistanceFromSpawner() const { return _maxDistanceFromSpawner; }
-  void maxDistanceFromSpawner(px_t dist) { _maxDistanceFromSpawner = dist; }
+  px_t maxDistanceFromHome() const { return _maxDistanceFromHome; }
+  void maxDistanceFromHome(px_t dist) { _maxDistanceFromHome = dist; }
   void canBeTamed(bool b) { _canBeTamed = b; }
   bool canBeTamed() const { return _canBeTamed; }
   void tamingRequiresItem(const std::string &id) { _tamingRequiresItem = id; }

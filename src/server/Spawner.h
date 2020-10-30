@@ -46,7 +46,6 @@ class Spawner {
   void initialise();
 
   MapPoint getRandomPoint() const;
-  double distanceFromEntity(const Entity &entity) const;
   const ObjectType *type() const { return _type; }
   void radius(double r) { _radius = r; }
   void quantity(size_t qty) { _quantity = qty; }

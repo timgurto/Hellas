@@ -542,7 +542,7 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
     if (xr.findAttr(elem, "gatherTime", n)) nt->yield.gatherTime(n);
 
     if (xr.findAttr(elem, "maxDistanceFromSpawner", n))
-      nt->maxDistanceFromSpawner(n);
+      nt->maxDistanceFromHome(n);
 
     Stats baseStats = NPCType::BASE_STATS;
     xr.findAttr(elem, "maxHealth", baseStats.maxHealth);

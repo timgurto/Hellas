@@ -19,10 +19,6 @@ MapPoint Spawner::getRandomPoint() const {
   return getRandomPointInCircle(_location, _radius);
 }
 
-double Spawner::distanceFromEntity(const Entity &entity) const {
-  return distance(_location, entity.location());
-}
-
 const Entity *Spawner::spawn() {
   static const size_t MAX_ATTEMPTS = 50;
   Server &server = *Server::_instance;

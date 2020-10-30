@@ -20,6 +20,7 @@ class NPC : public Entity, public QuestNode {
   State _state;
   Order _order{FOLLOW};  // Indicates a desire; informs state changes in pets.
   Level _level{0};
+  MapPoint _homeLocation;  // Where it was spawned, and returns after a chase.
   ThreatTable _threatTable;
   MapPoint _targetDestination{};
   ms_t _timeEngaged{0};  // For logging purposes
