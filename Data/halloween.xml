@@ -59,7 +59,7 @@ Recipe tooltips
     <item id="witchHat" name="Wayward Hat" gearSlot="0" sounds="fabric" >
         <offset x="-5" y="-10" />
     </item>
-    <item id="witchRobe" name="Wayward Robe" gearSlot="2" sounds="fabric" >
+    <item id="witchRobe" name="Wayward Robe" gearSlot="2" sounds="fabric" iconFile="leatherBlack" >
         <offset x="-8" y="-3" />
     </item>
     <item id="pumpkinFlower" name="Grave Flower" stackSize="10" exclusiveToQuest="collectPumpkinFlowers" />
