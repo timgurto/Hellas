@@ -88,6 +88,7 @@ Recipe tooltips
     <material id="halloweenGhostMat" />
     <material id="halloweenMummyMat" />
     <material id="water" />
+    <tool class="cooking" />
     <unlockedBy />
 </recipe>
     <item id="halloweenSkeletonMat" name="Wandering Bone" sounds="bone" iconFile="bone" stackSize="10" />
