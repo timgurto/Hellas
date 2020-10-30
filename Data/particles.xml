@@ -2,83 +2,83 @@
 
 <particleProfile
     id="floatingText"
-    gravityModifier=0>
-    <particlesPerHit mean=1 sd=0 />
-    <distance mean=0 sd=5 />
-    <altitude mean=40 sd=4 />
-    <velocity mean=0 sd=0 />
-    <fallSpeed mean=-40 sd=4 />
-    <lifespan mean=1500 sd=50 />
+    gravityModifier="0">
+    <particlesPerHit mean="1" sd="0" />
+    <distance mean="0" sd="5" />
+    <altitude mean="40" sd="4" />
+    <velocity mean="0" sd="0" />
+    <fallSpeed mean="-40" sd="4" />
+    <lifespan mean="1500" sd="50" />
     <variety imageFile="miss" />
 </particleProfile>
 
 <particleProfile
     id="wood"
-    particlesPerSecond=4>
-    <particlesPerHit mean=3 sd=1 />
-    <distance mean=5 sd=0 />
-    <altitude mean=20 sd=4 />
-    <velocity mean=15 sd=3 />
-    <fallSpeed mean=0 sd=3 />
+    particlesPerSecond="4">
+    <particlesPerHit mean="3" sd="1" />
+    <distance mean="5" sd="0" />
+    <altitude mean="20" sd="4" />
+    <velocity mean="15" sd="3" />
+    <fallSpeed mean="0" sd="3" />
     <variety imageFile="wood0" />
     <variety imageFile="wood1" />
 </particleProfile>
 
 <particleProfile
     id="figLeaves"
-    particlesPerSecond=4>
-    <particlesPerHit mean=3 sd=1 />
-    <distance mean=5 sd=0 />
-    <altitude mean=20 sd=4 />
-    <velocity mean=15 sd=3 />
-    <fallSpeed mean=0 sd=3 />
+    particlesPerSecond="4">
+    <particlesPerHit mean="3" sd="1" />
+    <distance mean="5" sd="0" />
+    <altitude mean="20" sd="4" />
+    <velocity mean="15" sd="3" />
+    <fallSpeed mean="0" sd="3" />
     <variety imageFile="figLeaves" />
 </particleProfile>
 <particleProfile
     id="earthSmall"
-    gravityModifier=0.7
-    particlesPerSecond=4>
-    <lifespan mean=1500 sd=300 />
-    <distance mean=0 sd=2 />
-    <altitude mean=0 sd=2 />
-    <velocity mean=5 sd=2 />
-    <fallSpeed mean=0 sd=3 />
+    gravityModifier="0.7"
+    particlesPerSecond="4">
+    <lifespan mean="1500" sd="300" />
+    <distance mean="0" sd="2" />
+    <altitude mean="0" sd="2" />
+    <velocity mean="5" sd="2" />
+    <fallSpeed mean="0" sd="3" />
     <variety imageFile="figLeaves" />
 </particleProfile>
 
 <particleProfile
     id="tree"
-    particlesPerSecond=4>
-    <particlesPerHit mean=3 sd=1 />
-    <distance mean=5 sd=0 />
-    <altitude mean=20 sd=4 />
-    <velocity mean=15 sd=3 />
-    <fallSpeed mean=0 sd=3 />
+    particlesPerSecond="4">
+    <particlesPerHit mean="3" sd="1" />
+    <distance mean="5" sd="0" />
+    <altitude mean="20" sd="4" />
+    <velocity mean="15" sd="3" />
+    <fallSpeed mean="0" sd="3" />
     <variety imageFile="wood0" />
     <variety imageFile="wood1" />
     <variety imageFile="leaves" />
 </particleProfile>
 <particleProfile
     id="leaves"
-    particlesPerSecond=4>
-    <particlesPerHit mean=3 sd=1 />
-    <distance mean=5 sd=0 />
-    <altitude mean=20 sd=4 />
-    <velocity mean=15 sd=3 />
-    <fallSpeed mean=0 sd=3 />
+    particlesPerSecond="4">
+    <particlesPerHit mean="3" sd="1" />
+    <distance mean="5" sd="0" />
+    <altitude mean="20" sd="4" />
+    <velocity mean="15" sd="3" />
+    <fallSpeed mean="0" sd="3" />
     <variety imageFile="green" count="5" />
     <variety imageFile="leaves" />
 </particleProfile>
 
 <particleProfile
     id="lootSparkles"
-    particlesPerSecond=20
-    gravityModifier=0>
-    <lifespan mean=1000 sd=300 />
-    <distance mean=5 sd=3 />
-    <altitude mean=0 sd=0 />
-    <velocity mean=0 sd=0 />
-    <fallSpeed mean=-10 sd=3 />
+    particlesPerSecond="20"
+    gravityModifier="0">
+    <lifespan mean="1000" sd="300" />
+    <distance mean="5" sd="3" />
+    <altitude mean="0" sd="0" />
+    <velocity mean="0" sd="0" />
+    <fallSpeed mean="-10" sd="3" />
     <variety imageFile="sparkleLarge" />
     <variety imageFile="sparkleSmall1" />
     <variety imageFile="sparkleSmall2" />
@@ -86,35 +86,35 @@
 
 <particleProfile
     id="blood">
-    <lifespan mean=180000 sd=20000 />
-    <particlesPerHit mean=6 sd=2 />
-    <distance mean=5 sd=0 />
-    <altitude mean=8 sd=4 />
-    <velocity mean=15 sd=3 />
-    <fallSpeed mean=0 sd=2 />
+    <lifespan mean="180000" sd="20000" />
+    <particlesPerHit mean="6" sd="2" />
+    <distance mean="5" sd="0" />
+    <altitude mean="8" sd="4" />
+    <velocity mean="15" sd="3" />
+    <fallSpeed mean="0" sd="2" />
     <variety imageFile="gib" />
     <variety imageFile="blood" count="3" />
 </particleProfile>
 
 <particleProfile
-    id="wound" particlesPerSecond=3>
-    <velocity mean=0 sd=10 />
-    <fallSpeed mean=0 sd=2 />
+    id="wound" particlesPerSecond="3">
+    <velocity mean="0" sd="10" />
+    <fallSpeed mean="0" sd="2" />
     <variety imageFile="blood" />
 </particleProfile>
 
 <particleProfile
     id="loginFire"
-    particlesPerSecond=400
-    gravityModifier=0
-    noZDimension=1
-    alpha=127
+    particlesPerSecond="400"
+    gravityModifier="0"
+    noZDimension="1"
+    alpha="127"
     >
-    <lifespan mean=1000 sd=300 />
-    <distance mean=0 sd=5 />
-    <altitude mean=0 sd=0 />
-    <velocity mean=0 sd=5 />
-    <fallSpeed mean=-40 sd=10 />
+    <lifespan mean="1000" sd="300" />
+    <distance mean="0" sd="5" />
+    <altitude mean="0" sd="0" />
+    <velocity mean="0" sd="5" />
+    <fallSpeed mean="-40" sd="10" />
     <variety imageFile="loginFire2" />
     <variety imageFile="loginFire1" />
     <variety imageFile="loginFire1" />
@@ -130,85 +130,85 @@
 
 <particleProfile
     id="loginFireLarge"
-    particlesPerSecond=200
-    gravityModifier=0
-    noZDimension=1 >
-    <lifespan mean=500 sd=300 />
-    <distance mean=0 sd=3 />
-    <altitude mean=0 sd=0 />
-    <velocity mean=0 sd=5 />
-    <fallSpeed mean=-25 sd=6 />
+    particlesPerSecond="200"
+    gravityModifier="0"
+    noZDimension="1" >
+    <lifespan mean="500" sd="300" />
+    <distance mean="0" sd="3" />
+    <altitude mean="0" sd="0" />
+    <velocity mean="0" sd="5" />
+    <fallSpeed mean="-25" sd="6" />
     <variety imageFile="loginFireLarge1" />
     <variety imageFile="loginFireLarge2" />
 </particleProfile>
 
 <particleProfile
     id="smoke"
-    particlesPerSecond=8
-    gravityModifier=0
-    alpha=127 >
-    <lifespan mean=10000 sd=1000 />
-    <distance mean=3 sd=3 />
-    <altitude mean=0 sd=0 />
-    <velocity mean=0 sd=0.5 />
-    <fallSpeed mean=-15 sd=4 />
-    <direction x=2.5 y=1 />
+    particlesPerSecond="8"
+    gravityModifier="0"
+    alpha="127" >
+    <lifespan mean="10000" sd="1000" />
+    <distance mean="3" sd="3" />
+    <altitude mean="0" sd="0" />
+    <velocity mean="0" sd="0.5" />
+    <fallSpeed mean="-15" sd="4" />
+    <direction x="2.5" y="1" />
     <variety imageFile="smoke1" />
     <variety imageFile="smoke2" />
     <variety imageFile="smoke4" />
 </particleProfile>
 <particleProfile
     id="vapour"
-    particlesPerSecond=7
-    gravityModifier=0
-    alpha=127 >
-    <lifespan mean=2000 sd=200 />
-    <distance mean=1 sd=3 />
-    <altitude mean=0 sd=0 />
-    <velocity mean=0 sd=0.5 />
-    <fallSpeed mean=-10 sd=3 />
-    <direction x=2.5 y=1 />
+    particlesPerSecond="7"
+    gravityModifier="0"
+    alpha="127" >
+    <lifespan mean="2000" sd="200" />
+    <distance mean="1" sd="3" />
+    <altitude mean="0" sd="0" />
+    <velocity mean="0" sd="0.5" />
+    <fallSpeed mean="-10" sd="3" />
+    <direction x="2.5" y="1" />
     <variety imageFile="vapourSmall" />
     <variety imageFile="vapourLarge" />
 </particleProfile>
 
 <particleProfile
     id="fireball"
-    gravityModifier=-4
-    alpha=127 >
-    <particlesPerHit mean=500 sd=100 />
-    <lifespan mean=200 sd=50 />
-    <distance mean=0 sd=10 />
-    <altitude mean=20 sd=3 />
-    <velocity mean=10 sd=5 />
-    <variety imageFile="loginFire1" count=5 />
-    <variety imageFile="loginFire2" count=5 />
-    <variety imageFile="loginFire3" count=5 />
+    gravityModifier="-4"
+    alpha="127" >
+    <particlesPerHit mean="500" sd="100" />
+    <lifespan mean="200" sd="50" />
+    <distance mean="0" sd="10" />
+    <altitude mean="20" sd="3" />
+    <velocity mean="10" sd="5" />
+    <variety imageFile="loginFire1" count="5" />
+    <variety imageFile="loginFire2" count="5" />
+    <variety imageFile="loginFire3" count="5" />
     <variety imageFile="loginFireLarge1" />
     <variety imageFile="loginFireLarge2" />
 </particleProfile>
 
 <particleProfile
     id="lightRays"
-    gravityModifier=0
-    alpha=127 >
-    <particlesPerHit mean=200 sd=40 />
-    <lifespan mean=500 sd=150 />
-    <distance mean=0 sd=5 />
-    <velocity mean=7 sd=3 />
-    <variety imageFile="ray0"> <drawRect x=-2 y=-33 w=5 h=35 /> </variety>
-    <variety imageFile="ray1L"> <drawRect x=-3 y=-62 w=7 h=64 /> </variety>
-    <variety imageFile="ray1R"> <drawRect x=-3 y=-62 w=7 h=64 /> </variety>
+    gravityModifier="0"
+    alpha="127" >
+    <particlesPerHit mean="200" sd="40" />
+    <lifespan mean="500" sd="150" />
+    <distance mean="0" sd="5" />
+    <velocity mean="7" sd="3" />
+    <variety imageFile="ray0"> <drawRect x="-2" y="-33" w="5" h="35" /> </variety>
+    <variety imageFile="ray1L"> <drawRect x="-3" y="-62" w="7" h="64" /> </variety>
+    <variety imageFile="ray1R"> <drawRect x="-3" y="-62" w="7" h="64" /> </variety>
 </particleProfile>
     
 <particleProfile
     id="levelUp"
-    gravityModifier=0 >
-    <particlesPerHit mean=200 />
-    <lifespan mean=600 sd=100 />
-    <distance mean=4 sd=2 />
-    <altitude mean=20 sd=10 />
-    <velocity mean=10 sd=3 />
+    gravityModifier="0" >
+    <particlesPerHit mean="200" />
+    <lifespan mean="600" sd="100" />
+    <distance mean="4" sd="2" />
+    <altitude mean="20" sd="10" />
+    <velocity mean="10" sd="3" />
     <variety imageFile="sparkleLarge" />
     <variety imageFile="sparkleSmall1" />
     <variety imageFile="sparkleSmall2" />
@@ -216,23 +216,23 @@
 
 <particleProfile
     id="heavyBlood">
-    <particlesPerHit mean=20 sd=4 />
-    <distance mean=10 sd=4 />
-    <altitude mean=20 sd=4 />
-    <velocity mean=15 sd=3 />
-    <fallSpeed mean=0 sd=2 />
+    <particlesPerHit mean="20" sd="4" />
+    <distance mean="10" sd="4" />
+    <altitude mean="20" sd="4" />
+    <velocity mean="15" sd="3" />
+    <fallSpeed mean="0" sd="2" />
     <variety imageFile="gib" />
     <variety imageFile="blood" count="2" />
 </particleProfile>
 
 <particleProfile
     id="poison">
-    <lifespan mean=1000 sd=300 />
-    <particlesPerHit mean=40 sd=8 />
-    <distance mean=10 sd=3 />
-    <altitude mean=20 sd=4 />
-    <velocity mean=15 sd=3 />
-    <fallSpeed mean=0 sd=2 />
+    <lifespan mean="1000" sd="300" />
+    <particlesPerHit mean="40" sd="8" />
+    <distance mean="10" sd="3" />
+    <altitude mean="20" sd="4" />
+    <velocity mean="15" sd="3" />
+    <fallSpeed mean="0" sd="2" />
     <variety imageFile="poison0" />
     <variety imageFile="poison1" />
     <variety imageFile="poison2" />
@@ -241,159 +241,159 @@
 
 <particleProfile
     id="fire"
-    gravityModifier=0
-    alpha=127
-    particlesPerSecond=700 >
-    <lifespan mean=400 sd=100 />
-    <distance mean=0 sd=3 />
-    <altitude mean=0 sd=8 />
-    <velocity mean=3 sd=2 />
-    <fallSpeed mean=-20 sd=5 />
+    gravityModifier="0"
+    alpha="127"
+    particlesPerSecond="700" >
+    <lifespan mean="400" sd="100" />
+    <distance mean="0" sd="3" />
+    <altitude mean="0" sd="8" />
+    <velocity mean="3" sd="2" />
+    <fallSpeed mean="-20" sd="5" />
     <variety imageFile="loginFire1" />
     <variety imageFile="loginFire3" />
 </particleProfile>
 <particleProfile
     id="fireSmall"
-    gravityModifier=0
-    alpha=127
-    particlesPerSecond=100 >
-    <lifespan mean=400 sd=100 />
-    <distance mean=0 sd=2 />
-    <altitude mean=0 sd=2 />
-    <velocity mean=5 sd=2 />
-    <fallSpeed mean=-20 sd=5 />
+    gravityModifier="0"
+    alpha="127"
+    particlesPerSecond="100" >
+    <lifespan mean="400" sd="100" />
+    <distance mean="0" sd="2" />
+    <altitude mean="0" sd="2" />
+    <velocity mean="5" sd="2" />
+    <fallSpeed mean="-20" sd="5" />
     <variety imageFile="loginFire1" />
     <variety imageFile="loginFire2" />
 </particleProfile>
 
 <particleProfile
     id="waterPooling"
-    particlesPerSecond=200
-    alpha=192 >
-    <lifespan mean=3000 sd=400 />
-    <distance mean=3 sd=2 />
-    <altitude mean=0 sd=8 />
-    <velocity mean=0 sd=2 />
+    particlesPerSecond="200"
+    alpha="192" >
+    <lifespan mean="3000" sd="400" />
+    <distance mean="3" sd="2" />
+    <altitude mean="0" sd="8" />
+    <velocity mean="0" sd="2" />
     <variety imageFile="water" />
     <variety imageFile="waterLarge" />
 </particleProfile>
 <particleProfile
     id="waterSparkles"
-    particlesPerSecond=50 >
-    <lifespan mean=150 sd=20 />
-    <distance mean=8 sd=2 />
-    <altitude mean=0 sd=8 />
-    <velocity mean=0 sd=2 />
+    particlesPerSecond="50" >
+    <lifespan mean="150" sd="20" />
+    <distance mean="8" sd="2" />
+    <altitude mean="0" sd="8" />
+    <velocity mean="0" sd="2" />
     <variety imageFile="sparkleSmall2" />
 </particleProfile>
 <particleProfile
     id="water"
-    particlesPerSecond=200
-    alpha=192 >
-    <lifespan mean=200 sd=20 />
-    <distance mean=3 sd=2 />
-    <altitude mean=0 sd=8 />
-    <velocity mean=0 sd=2 />
+    particlesPerSecond="200"
+    alpha="192" >
+    <lifespan mean="200" sd="20" />
+    <distance mean="3" sd="2" />
+    <altitude mean="0" sd="8" />
+    <velocity mean="0" sd="2" />
     <variety imageFile="water" />
     <variety imageFile="waterLarge" />
 </particleProfile>
 <particleProfile
     id="waterSmall"
-    particlesPerSecond=30
-    alpha=192 >
-    <lifespan mean=600 sd=80 />
-    <distance mean=0 sd=2 />
-    <altitude mean=0 sd=2 />
-    <velocity mean=0 sd=2 />
+    particlesPerSecond="30"
+    alpha="192" >
+    <lifespan mean="600" sd="80" />
+    <distance mean="0" sd="2" />
+    <altitude mean="0" sd="2" />
+    <velocity mean="0" sd="2" />
     <variety imageFile="water" />
     <variety imageFile="waterLarge" />
 </particleProfile>
 <particleProfile
     id="waterExplosion"
-    alpha=192 >
-    <particlesPerHit mean=100 sd=20 />
-    <lifespan mean=3000 sd=400 />
-    <distance mean=0 sd=10 />
-    <altitude mean=20 sd=3 />
-    <velocity mean=0 sd=2 />
+    alpha="192" >
+    <particlesPerHit mean="100" sd="20" />
+    <lifespan mean="3000" sd="400" />
+    <distance mean="0" sd="10" />
+    <altitude mean="20" sd="3" />
+    <velocity mean="0" sd="2" />
     <variety imageFile="water" />
     <variety imageFile="waterLarge" />
 </particleProfile>
 
 <particleProfile
     id="vines"
-    particlesPerSecond=15
-    gravityModifier=0.5
-    canBeUnderground=1 >
-    <lifespan mean=1500 sd=0 />
-    <distance mean=5 sd=2 />
-    <altitude mean=-35 sd=10 />
-    <velocity mean=0 sd=0 />
-    <fallSpeed mean=-30 sd=3 />
-    <variety imageFile="vine"> <drawRect x=-4 y=-42 w=7 h=44 /> </variety>
-    <variety imageFile="vineFlipped"> <drawRect x=-2 y=-42 w=7 h=44 /> </variety>
-    <variety imageFile="vineStraight"> <drawRect x=-1 y=-42 w=3 h=44 /> </variety>
+    particlesPerSecond="15"
+    gravityModifier="0.5"
+    canBeUnderground="1" >
+    <lifespan mean="1500" sd="0" />
+    <distance mean="5" sd="2" />
+    <altitude mean="-35" sd="10" />
+    <velocity mean="0" sd="0" />
+    <fallSpeed mean="-30" sd="3" />
+    <variety imageFile="vine"> <drawRect x="-4" y="-42" w="7" h="44" /> </variety>
+    <variety imageFile="vineFlipped"> <drawRect x="-2" y="-42" w="7" h="44" /> </variety>
+    <variety imageFile="vineStraight"> <drawRect x="-1" y="-42" w="3" h="44" /> </variety>
 </particleProfile>
 
 <particleProfile
     id="dirtFromGround"
-    particlesPerSecond=300 >
-    <lifespan mean=500 sd=100 />
-    <distance mean=5 sd=4 />
-    <altitude mean=0 sd=2 />
-    <velocity mean=0 sd=2 />
-    <fallSpeed mean=-10 sd=3 />
+    particlesPerSecond="300" >
+    <lifespan mean="500" sd="100" />
+    <distance mean="5" sd="4" />
+    <altitude mean="0" sd="2" />
+    <velocity mean="0" sd="2" />
+    <fallSpeed mean="-10" sd="3" />
     <variety imageFile="orangePixel" />
-    <variety imageFile="purplePixel" count=2 />
-    <variety imageFile="darkGreyPixel" count=2 />
+    <variety imageFile="purplePixel" count="2" />
+    <variety imageFile="darkGreyPixel" count="2" />
     <variety imageFile="dirtLargeOrange" />
 </particleProfile>
 <particleProfile
     id="dirtExplosion" >
-    <particlesPerHit mean=300 sd=40 />
-    <lifespan mean=3000 sd=400 />
-    <distance mean=0 sd=10 />
-    <altitude mean=20 sd=3 />
-    <velocity mean=0 sd=2 />
-    <fallSpeed mean=0 sd=2 />
+    <particlesPerHit mean="300" sd="40" />
+    <lifespan mean="3000" sd="400" />
+    <distance mean="0" sd="10" />
+    <altitude mean="20" sd="3" />
+    <velocity mean="0" sd="2" />
+    <fallSpeed mean="0" sd="2" />
     <variety imageFile="orangePixel" />
-    <variety imageFile="purplePixel" count=2 />
-    <variety imageFile="darkGreyPixel" count=2 />
+    <variety imageFile="purplePixel" count="2" />
+    <variety imageFile="darkGreyPixel" count="2" />
     <variety imageFile="dirtLargeOrange" />
 </particleProfile>
 
 <particleProfile
     id="air"
-    particlesPerSecond=30
-    gravityModifier=0 >
-    <particlesPerHit mean=30 sd=5 />
-    <lifespan mean=1000 sd=200 />
-    <distance mean=5 sd=2 />
-    <altitude mean=0 sd=7 />
-    <velocity mean=2 sd=2 />
-    <fallSpeed mean=0 sd=4 />
+    particlesPerSecond="30"
+    gravityModifier="0" >
+    <particlesPerHit mean="30" sd="5" />
+    <lifespan mean="1000" sd="200" />
+    <distance mean="5" sd="2" />
+    <altitude mean="0" sd="7" />
+    <velocity mean="2" sd="2" />
+    <fallSpeed mean="0" sd="4" />
     <variety imageFile="dust0" />
     <variety imageFile="sparkleSmall2" />
 </particleProfile>
 <particleProfile
     id="airSmall"
-    particlesPerSecond=20
-    gravityModifier=0 >
-    <lifespan mean=1000 sd=200 />
-    <distance mean=0 sd=2 />
-    <altitude mean=0 sd=2 />
-    <velocity mean=2 sd=2 />
-    <fallSpeed mean=0 sd=4 />
+    particlesPerSecond="20"
+    gravityModifier="0" >
+    <lifespan mean="1000" sd="200" />
+    <distance mean="0" sd="2" />
+    <altitude mean="0" sd="2" />
+    <velocity mean="2" sd="2" />
+    <fallSpeed mean="0" sd="4" />
     <variety imageFile="dust0" />
     <variety imageFile="sparkleSmall2" />
 </particleProfile>
 
 <particleProfile
     id="ceramicShards">
-    <particlesPerHit mean=5 sd=1 />
-    <distance mean=5 sd=0 />
-    <altitude mean=8 sd=4 />
-    <velocity mean=15 sd=3 />
+    <particlesPerHit mean="5" sd="1" />
+    <distance mean="5" sd="0" />
+    <altitude mean="8" sd="4" />
+    <velocity mean="15" sd="3" />
     <variety imageFile="orangePixel" count="12" />
     <variety imageFile="ceramicShard0" />
     <variety imageFile="ceramicShard1" />
@@ -401,22 +401,22 @@
 
 <particleProfile
     id="rocks"
-    particlesPerSecond=10>
-    <particlesPerHit mean=5 sd=1 />
-    <distance mean=5 sd=0 />
-    <altitude mean=8 sd=4 />
-    <velocity mean=15 sd=3 />
+    particlesPerSecond="10">
+    <particlesPerHit mean="5" sd="1" />
+    <distance mean="5" sd="0" />
+    <altitude mean="8" sd="4" />
+    <velocity mean="15" sd="3" />
     <variety imageFile="smallRock" />
     <variety imageFile="darkGreyPixel" count="12" />
 </particleProfile>
 
 <particleProfile
     id="brick"
-    particlesPerSecond=10>
-    <particlesPerHit mean=5 sd=1 />
-    <distance mean=5 sd=0 />
-    <altitude mean=8 sd=4 />
-    <velocity mean=15 sd=3 />
+    particlesPerSecond="10">
+    <particlesPerHit mean="5" sd="1" />
+    <distance mean="5" sd="0" />
+    <altitude mean="8" sd="4" />
+    <velocity mean="15" sd="3" />
     <variety imageFile="brickShard" />
     <variety imageFile="orangePixel" count="6" />
     <variety imageFile="lightOrangePixel" count="6" />
@@ -424,33 +424,33 @@
 
 <particleProfile
     id="lightningSparks"
-    particlesPerSecond=15
-    gravityModifier=0 >
-    <lifespan mean=200 sd=50 />
-    <distance mean=1 sd=1 />
-    <velocity mean=2 sd=1 />
+    particlesPerSecond="15"
+    gravityModifier="0" >
+    <lifespan mean="200" sd="50" />
+    <distance mean="1" sd="1" />
+    <velocity mean="2" sd="1" />
     <variety imageFile="lightning0" count="1" />
     <variety imageFile="whitePixel" count="3" />
 </particleProfile>
 <particleProfile
     id="lightningTail"
-    particlesPerSecond=15
-    gravityModifier=0 >
-    <lifespan mean=400 sd=80 />
-    <distance mean=1 sd=1 />
-    <velocity mean=2 sd=1 />
-    <altitude mean=26 sd=3 />
+    particlesPerSecond="15"
+    gravityModifier="0" >
+    <lifespan mean="400" sd="80" />
+    <distance mean="1" sd="1" />
+    <velocity mean="2" sd="1" />
+    <altitude mean="26" sd="3" />
     <variety imageFile="lightning0" count="1" />
     <variety imageFile="whitePixel" count="3" />
 </particleProfile>
 <particleProfile
     id="lightningExplosion"
-    gravityModifier=0 >
-    <particlesPerHit mean=20 sd=10 />
-    <lifespan mean=700 sd=10 />
-    <distance mean=0 sd=3 />
-    <velocity mean=4 sd=2 />
-    <altitude mean=20 sd=3 />
+    gravityModifier="0" >
+    <particlesPerHit mean="20" sd="10" />
+    <lifespan mean="700" sd="10" />
+    <distance mean="0" sd="3" />
+    <velocity mean="4" sd="2" />
+    <altitude mean="20" sd="3" />
     <variety imageFile="lightning0" count="1" />
     <variety imageFile="whitePixel" count="3" />
 </particleProfile>
