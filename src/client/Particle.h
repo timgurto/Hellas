@@ -24,7 +24,8 @@ class Particle : public Sprite {
   double _fallSpeed;
   double _gravity;
 
-  ms_t _lifespan;
+  ms_t _timeRemaining;
+  ms_t _timeSinceSpawn{0};
 
   const ParticleProfile &_profile;
 

@@ -473,7 +473,8 @@
 
 <particleProfile id="fog"
     particlesPerSecond="2"
-    gravityModifier="0" >
+    gravityModifier="0"
+    fadesInAndOut="1">
     <lifespan mean="20000" sd="4000" />
     <distance mean="40" sd="10" />
     <velocity mean="10" sd="3" />

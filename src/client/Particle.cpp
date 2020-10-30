@@ -18,7 +18,7 @@ Particle::Particle(const MapPoint &loc, const Texture &image,
       _altitude(startingAltitude),
       _fallSpeed(startingFallSpeed),
       _gravity(gravity),
-      _lifespan(lifespan),
+      _timeRemaining(lifespan),
       _profile(profile) {}
 
 void Particle::update(double delta) {
@@ -32,10 +32,11 @@ void Particle::update(double delta) {
   location(location() + _velocity * delta);
 
   ms_t timeElapsed = toInt(1000.0 * delta);
-  if (timeElapsed > _lifespan)
+  _timeSinceSpawn += timeElapsed;
+  if (timeElapsed > _timeRemaining)
     markForRemoval();
   else
-    _lifespan -= timeElapsed;
+    _timeRemaining -= timeElapsed;
 }
 
 void Particle::draw() const {
@@ -48,7 +49,16 @@ void Particle::draw() const {
     drawRect.h -= cutoff;
   }
 
+  const auto FADE_TIME = ms_t{1000};
+  auto alpha = Uint8{0xff};
+  if (_timeRemaining < FADE_TIME)
+    alpha = toInt(1.0 * 0xff * _timeRemaining / FADE_TIME);
+  else if (_timeSinceSpawn < FADE_TIME)
+    alpha = toInt(1.0 * 0xff * _timeSinceSpawn / FADE_TIME);
+
+  _image.setAlpha(alpha);
   _image.draw(drawRect + _client.offset(), srcRect);
+  _image.setAlpha();
 }
 
 void Particle::setImageManually(const Texture &image) {

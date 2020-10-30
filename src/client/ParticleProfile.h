@@ -23,6 +23,7 @@ class ParticleProfile {
           DEFAULT_LIFESPAN_SD};  // The particle will disappear after this time
   MapPoint _direction;
   Uint8 _alpha{0xff};
+  bool _fadeInAndOut{false};
   std::vector<const SpriteType *> _varieties, _pool;
 
  public:
@@ -56,6 +57,8 @@ class ParticleProfile {
   void noZDimension() { _noZDimension = true; }
   void canBeUnderground() { _canBeUnderground = true; }
   void alpha(Uint8 n) { _alpha = n; }
+  void makeFadeInAndOut() { _fadeInAndOut = true; }
+  bool fadesInAndOut() const { return _fadeInAndOut; }
 
   bool canBeUnderground() const { return _canBeUnderground; }
 

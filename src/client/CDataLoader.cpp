@@ -176,6 +176,8 @@ void CDataLoader::loadParticles(XmlReader &xr) {
     if (xr.findAttr(elem, "canBeUnderground", n) && n != 0)
       profile->canBeUnderground();
     if (xr.findAttr(elem, "alpha", n) && n != 0xff) profile->alpha(n);
+    if (xr.findAttr(elem, "fadesInAndOut", n) && n != 0)
+      profile->makeFadeInAndOut();
 
     auto dirE = xr.findChild("direction", elem);
     if (dirE) {
