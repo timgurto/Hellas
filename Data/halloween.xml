@@ -2,8 +2,6 @@
 
 <!--
 Mark graveyard on map: not hardcoded
-Fog particles on pumpkin patches
-Recipe tooltips
 -->
 
 <quest id="freeTheGhost1" name="The Restless Dead" startsAt="mourner" endsAt="ghostFather"
@@ -63,15 +61,15 @@ Recipe tooltips
         <offset x="-8" y="-3" />
     </item>
     <item id="pumpkinFlower" name="Grave Flower" stackSize="10" exclusiveToQuest="collectPumpkinFlowers" />
-    <objectType id="pumpkinFlower0" name="Grave Flower" xDrawOffset="-10" yDrawOffset="-11" isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="collectPumpkinFlowers"> <yield id="pumpkinFlower"/> </objectType>
-    <objectType id="pumpkinFlower1" name="Grave Flower" xDrawOffset="-9"  yDrawOffset="-8"  isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="collectPumpkinFlowers"> <yield id="pumpkinFlower"/> </objectType>
-    <objectType id="pumpkinFlower2" name="Grave Flower" xDrawOffset="-10" yDrawOffset="-8"  isFlat="1" canGather="1" gatherTime="61000" exclusiveToQuest="collectPumpkinFlowers"> <yield id="pumpkinFlower"/> </objectType>
-    <objectType id="pumpkinFlower3" name="Grave Flower" xDrawOffset="-8"  yDrawOffset="-7"  isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="collectPumpkinFlowers"> <yield id="pumpkinFlower"/> </objectType>
-    <objectType id="pumpkinFlower4" name="Grave Flower" xDrawOffset="-9"  yDrawOffset="-9"  isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="collectPumpkinFlowers"> <yield id="pumpkinFlower"/> </objectType>
-    <objectType id="pumpkinFlower5" name="Grave Flower" xDrawOffset="-10" yDrawOffset="-10" isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="collectPumpkinFlowers"> <yield id="pumpkinFlower"/> </objectType>
-    <objectType id="pumpkinFlower6" name="Grave Flower" xDrawOffset="-9"  yDrawOffset="-8"  isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="collectPumpkinFlowers"> <yield id="pumpkinFlower"/> </objectType>
-    <objectType id="pumpkinFlower7" name="Grave Flower" xDrawOffset="-10" yDrawOffset="-10" isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="collectPumpkinFlowers"> <yield id="pumpkinFlower"/> </objectType>
-    <objectType id="pumpkinFlower8" name="Grave Flower" xDrawOffset="-9"  yDrawOffset="-8"  isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="collectPumpkinFlowers"> <yield id="pumpkinFlower"/> </objectType>
+    <objectType id="pumpkinFlower0" name="Grave Flower" xDrawOffset="-10" yDrawOffset="-11" isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
+    <objectType id="pumpkinFlower1" name="Grave Flower" xDrawOffset="-9"  yDrawOffset="-8"  isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
+    <objectType id="pumpkinFlower2" name="Grave Flower" xDrawOffset="-10" yDrawOffset="-8"  isFlat="1" canGather="1" gatherTime="61000" exclusiveToQuest="collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
+    <objectType id="pumpkinFlower3" name="Grave Flower" xDrawOffset="-8"  yDrawOffset="-7"  isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
+    <objectType id="pumpkinFlower4" name="Grave Flower" xDrawOffset="-9"  yDrawOffset="-9"  isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
+    <objectType id="pumpkinFlower5" name="Grave Flower" xDrawOffset="-10" yDrawOffset="-10" isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
+    <objectType id="pumpkinFlower6" name="Grave Flower" xDrawOffset="-9"  yDrawOffset="-8"  isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
+    <objectType id="pumpkinFlower7" name="Grave Flower" xDrawOffset="-10" yDrawOffset="-10" isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
+    <objectType id="pumpkinFlower8" name="Grave Flower" xDrawOffset="-9"  yDrawOffset="-8"  isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
 
 <objectType
     id="tradeMatBottomless4" name="Trade Mat" imageFile="tradeMat"
@@ -168,14 +166,17 @@ Recipe tooltips
 <objectType id="pumpkinPatch1" name="Eerie Farm" xDrawOffset="-31" yDrawOffset="-49" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-29" y="-26" w="56" h="62" /> <durability item="flax" quantity="5" />
     <material id="water" />
     <transform id="pumpkinPatch2" time="1500000" />
+    <particles profile="fog"/>
 </objectType>
 <objectType id="pumpkinPatch2" name="Sinister Farm" xDrawOffset="-31" yDrawOffset="-49" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-29" y="-26" w="56" h="62" /> <durability item="flax" quantity="5" />
     <material id="water" />
     <transform id="pumpkinPatch3" time="1500000" />
+    <particles profile="fog"/>
 </objectType>
 <objectType id="pumpkinPatch3" name="Unearthly Farm" xDrawOffset="-31" yDrawOffset="-49" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-29" y="-26" w="56" h="62" /> <durability item="flax" quantity="5" />
     <material id="water" />
     <transform id="pumpkinPatch4" time="1500000" />
+    <particles profile="fog"/>
 </objectType>
 <objectType id="pumpkinPatch4" name="Pumpkin Patch (ripe)"
     xDrawOffset="-31"
@@ -186,92 +187,93 @@ Recipe tooltips
     <collisionRect x="-29" y="-26" w="56" h="62" />
     <yield id="pumpkin" initialMean="4" initialSD="1" initialMin="2" />
     <durability item="flax" quantity="5" />
+    <particles profile="fog"/>
 </objectType>
 
 
 <objectType id="grave0" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="I, Brotachus, a Gortynian of Crete, lie here, where I came not for this purpose, but to trade.">
-    <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
+    <collisionRect x="-7" y="-3" w="16" h="7" /><particles profile="fog"/></objectType>
 <objectType id="grave1" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="The poet Hipponax lies here.
     In justice, this is only fair.
     His lines were never dark or deep.
     Now he enjoys (like his readers) sleep.">
-    <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
+    <collisionRect x="-7" y="-3" w="16" h="7" /><particles profile="fog"/></objectType>
 <objectType id="grave2" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="Remember Eubolus, who lived and died sober?
     This is his grave. We might as well drink then:
     We'll all drop anchor in the same final harbour.">
-    <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
+    <collisionRect x="-7" y="-3" w="16" h="7" /><particles profile="fog"/></objectType>
 <objectType id="grave3" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="Someone is glad that I, Theodorus, am dead
     Another will be glad when that someone is dead
     We are all in arrears to death.">
-    <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
+    <collisionRect x="-7" y="-3" w="16" h="7" /><particles profile="fog"/></objectType>
 <objectType id="grave4" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="You were the morning star among the living.
     In death, O Evening Star, you light the dead.">
-    <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
+    <collisionRect x="-7" y="-3" w="16" h="7" /><particles profile="fog"/></objectType>
 <objectType id="grave5" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="Mariner, do not ask whose tomb this may be,
     but go with good fortune: I wish you a kinder sea.">
-    <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
+    <collisionRect x="-7" y="-3" w="16" h="7" /><particles profile="fog"/></objectType>
 <objectType id="grave6" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="Does my soul abide in heaven, or hell?
     Only the sea gulls in their high, lonely circuits may tell.">
-    <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
+    <collisionRect x="-7" y="-3" w="16" h="7" /><particles profile="fog"/></objectType>
 <objectType id="grave7" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="Here, the tomb of Timokritos, a hero in the wars.
     It is the coward whom Ares spares--not the brave.">
-    <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
+    <collisionRect x="-7" y="-3" w="16" h="7" /><particles profile="fog"/></objectType>
 <objectType id="grave8" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="We lie here, having given our lives to save all Hellas when she stood on a razor's edge.">
-    <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
+    <collisionRect x="-7" y="-3" w="16" h="7" /><particles profile="fog"/></objectType>
 <objectType id="grave9" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="These men having clothed their dear country in inextinguishable glory, donned the dark cloud of death; and having died, yet they are not dead, for their valour's renown brings them up from the house of Hades.">
-    <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
+    <collisionRect x="-7" y="-3" w="16" h="7" /><particles profile="fog"/></objectType>
 <objectType id="grave10" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="If to die well be the chief part of virtue, Fortune granted this to us above all others; for striving to endue Hellas with freedom, we lie here possessed of praise that grows not old.">
-    <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
+    <collisionRect x="-7" y="-3" w="16" h="7" /><particles profile="fog"/></objectType>
 <objectType id="grave11" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="The sons of Athens utterly destroying the army of the Persians repelled sore slavery from their country.">
-    <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
+    <collisionRect x="-7" y="-3" w="16" h="7" /><particles profile="fog"/></objectType>
 <objectType id="grave12" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="These men once by the Eurymedon lost their bright youth, fighting with the front ranks of the Median bowmen, both on foot and from the swift ships; and dying they left behind them the glorious record of their courage.">
-    <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
+    <collisionRect x="-7" y="-3" w="16" h="7" /><particles profile="fog"/></objectType>
 <objectType id="grave13" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="These men, when bringing the first fruits from Sparta to Phoebus, one sea, one night, one ship brought to the grave.">
-    <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
+    <collisionRect x="-7" y="-3" w="16" h="7" /><particles profile="fog"/></objectType>
 <objectType id="grave14" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="Here the earth covers Pythonax and his brother, before they saw the prime of their lovely youth. Their father, Megaristus, set up this monument to them dead, an immortal gift to his mortal sons.">
-    <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
+    <collisionRect x="-7" y="-3" w="16" h="7" /><particles profile="fog"/></objectType>
 <objectType id="grave15" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="Every man grieves at the death of those near to him, but his friends and the entire city grieve for Nicodicus.">
-    <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
+    <collisionRect x="-7" y="-3" w="16" h="7" /><particles profile="fog"/></objectType>
 <objectType id="grave16" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="Here I lie, Timocreon of Rhodes, after drinking much and eating much and speaking much ill of men.">
-    <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
+    <collisionRect x="-7" y="-3" w="16" h="7" /><particles profile="fog"/></objectType>
 <objectType id="grave17" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="Let us ever remember the men whose tomb this is, who turned not from the battle but fell in arms before their city, defending Tegea rich in flocks, that Greece should never strip from their dead heads the crown of freedom.">
-    <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
+    <collisionRect x="-7" y="-3" w="16" h="7" /><particles profile="fog"/></objectType>
 <objectType id="grave18" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="You do not see the grave of Croesus, but a poor labourer's tomb is this, yet sufficient for me.">
-    <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
+    <collisionRect x="-7" y="-3" w="16" h="7" /><particles profile="fog"/></objectType>
 <objectType id="grave19" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="I, Gorgippus, without having looked on the bridal bed, descended to the chamber that none may escape--the chamber of fair-haired Persephone.">
-    <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
+    <collisionRect x="-7" y="-3" w="16" h="7" /><particles profile="fog"/></objectType>
 <objectType id="grave20" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="The earth of a strange land lies on your body, Cleisthenes, but the doom of death overtook you wandering on the Euxine sea. You were cheated of sweet, honeyed homecoming, nor did you ever return to sea-girt Chios.">
-    <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
+    <collisionRect x="-7" y="-3" w="16" h="7" /><particles profile="fog"/></objectType>
 <objectType id="grave21" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="Alas, cruel sickness, why do you grudge the souls of men their sojourn with lovely youth? Timarchus, too, in his youth you have robbed of his sweet life before he looked on a wedded wife.">
-    <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
+    <collisionRect x="-7" y="-3" w="16" h="7" /><particles profile="fog"/></objectType>
 <objectType id="grave22" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="Zeus, Protector of strangers, let them who slew me meet with the same fate, but may they who laid me in earth live and prosper.">
-    <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
+    <collisionRect x="-7" y="-3" w="16" h="7" /><particles profile="fog"/></objectType>
 <objectType id="grave23" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="This is the tomb of famous Megistias the prophet, whom the Persians slew after crossing the Spercheius. Though he well knew then the impending fate, he disdained to desert the Spartan leaders.">
-    <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
+    <collisionRect x="-7" y="-3" w="16" h="7" /><particles profile="fog"/></objectType>
 <objectType id="grave24" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="Who is this?
     A follower of Dionysus.
@@ -279,14 +281,14 @@ Recipe tooltips
     Scopas.
     And who made her frenzied, Dionysus or Scopas?
     Scopas.">
-    <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
+    <collisionRect x="-7" y="-3" w="16" h="7" /><particles profile="fog"/></objectType>
 <objectType id="grave25" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="Here lies Dandes of Argos, the stadion racer, who gained honour by his victories for his fatherland, rich in pasture for horses. Twice did he conquer at Olympia, thrice at Delphi, twice at the Isthmus, and fifteen times at Nemea, and it is not easy to count his other victories.">
-    <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
+    <collisionRect x="-7" y="-3" w="16" h="7" /><particles profile="fog"/></objectType>
 <objectType id="grave26" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
     windowText="Go tell the Spartans, stranger passing by,
     That here, obedient to their laws, we lie.">
-    <collisionRect x="-7" y="-3" w="16" h="7" /></objectType>
+    <collisionRect x="-7" y="-3" w="16" h="7" /><particles profile="fog"/></objectType>
 
 <objectType id="graveyardGround" xDrawOffset="-750" yDrawOffset="-750" customCullDistance="1500" customShadowWidth="0" isDecoration="1" isFlat="1" customDrawHeight="0" />
 

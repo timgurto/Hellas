@@ -471,4 +471,16 @@
     <variety imageFile="bone7" />
 </particleProfile>
 
+<particleProfile id="fog"
+    particlesPerSecond="2"
+    gravityModifier="0" >
+    <lifespan mean="20000" sd="4000" />
+    <distance mean="40" sd="10" />
+    <velocity mean="10" sd="3" />
+    <altitude mean="10" sd="0" />
+    <variety imageFile="fogLight" />
+    <variety imageFile="fogMedium" />
+    <variety imageFile="fogDark" />
+</particleProfile>
+
 </root>
