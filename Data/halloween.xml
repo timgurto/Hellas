@@ -28,7 +28,8 @@ Mark graveyard on map: not hardcoded
             <gear id="tinJavelin" />
         </humanoid>
     </npcType>
-    <npcType id="ghostFather" name="Tormented Shade" imageFile="ghost" 
+    <npcType id="ghostFather" name="Tormented Shade"
+        imageFile="ghost" xDrawOffset="-10" yDrawOffset="-39"
         level="10" maxHealth="53" attack="7" isCivilian="1" />
     <item id="halloweenGrave" name="Decorative Grave Monument" iconFile="tabletRock" constructs="halloweenGrave" />
     <objectType id="halloweenGrave" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
