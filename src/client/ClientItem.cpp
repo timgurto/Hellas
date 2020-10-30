@@ -109,13 +109,29 @@ const Tooltip &ClientItem::tooltip() const {
 
   // Spell
   if (castsSpellOnUse()) {
-    auto it = _client->gameData.spells.find(spellToCastOnUse());
-    if (it == _client->gameData.spells.end()) {
-      _client->showErrorMessage("Can't find spell: "s + spellToCastOnUse(),
-                                Color::CHAT_ERROR);
+    if (spellToCastOnUse() == "teachRecipe") {
+      auto recipeID = this->spellArg();
+      const auto it = _client->gameData.recipes.find(recipeID);
+      if (it != _client->gameData.recipes.end()) {
+        const auto &recipe = *it;
+        tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
+        tooltip.addLine("Right-click: learn to craft this item.");
+        const auto *product =
+            dynamic_cast<const ClientItem *>(recipe.product());
+        if (product) {
+          tooltip.embed(product->tooltip());
+        }
+      }
     } else {
-      tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
-      tooltip.addLine("Right-click: "s + it->second->createEffectDescription());
+      auto it = _client->gameData.spells.find(spellToCastOnUse());
+      if (it == _client->gameData.spells.end()) {
+        _client->showErrorMessage("Can't find spell: "s + spellToCastOnUse(),
+                                  Color::CHAT_ERROR);
+      } else {
+        tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
+        tooltip.addLine("Right-click: "s +
+                        it->second->createEffectDescription());
+      }
     }
   }
 
