@@ -1028,6 +1028,9 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
       nt->addParticles(profileName, offset);
     }
 
+    if (xr.findAttr(elem, "damageParticles", s))
+      nt->damageParticles(_client.findParticleProfile(s));
+
     for (auto gearElem : xr.getChildren("gear", humanoid)) {
       auto id = ""s;
       if (!xr.findAttr(gearElem, "id", id)) continue;

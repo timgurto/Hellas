@@ -455,4 +455,20 @@
     <variety imageFile="whitePixel" count="3" />
 </particleProfile>
 
+<particleProfile id="bones" >
+    <particlesPerHit mean="2" sd="1" />
+    <lifespan mean="30000" sd="5000" />
+    <distance mean="0" sd="4" />
+    <velocity mean="7" sd="2.5" />
+    <altitude mean="20" sd="5" />
+    <variety imageFile="bone0" />
+    <variety imageFile="bone1" />
+    <variety imageFile="bone2" />
+    <variety imageFile="bone3" />
+    <variety imageFile="bone4" />
+    <variety imageFile="bone5" />
+    <variety imageFile="bone6" />
+    <variety imageFile="bone7" />
+</particleProfile>
+
 </root>
