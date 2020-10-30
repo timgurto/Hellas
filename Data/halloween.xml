@@ -298,7 +298,9 @@ Recipe tooltips
 <permanentObject x="33000" y="33600" id="graveyardGround" />
 
 <npc id="mourner" x="35450" y="22450" />
-<permanentObject id="halloweenGrave" x="35470" y="22455" />
+<object id="halloweenGrave" x="35470" y="22455" >
+    <owner type="noAccess" />
+</object>
 <spawnPoint y="33600" x="33000" type="ghostFather" quantity="1" radius="300" respawnTime="0" />
 
 <npc y="33600" x="33000" id="witch" />
