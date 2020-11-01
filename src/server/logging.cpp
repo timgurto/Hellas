@@ -143,13 +143,18 @@ void Server::publishStats() {
         lastReportingTime = currentTime;
       else
         lastReportingTime += FREQUENCY;
-      std::ofstream{"logging/onlinePlayers.csv", std::ofstream::app}
-          << currentTime << "," << _usersByName.size() << std::endl;
+      logNumberOfOnlineUsers();
     }
   }
 
   --_threadsOpen;
   publishingStats = false;
+}
+
+void Server::logNumberOfOnlineUsers() const {
+  auto currentTime = time(nullptr);
+  std::ofstream{"logging/onlinePlayers.csv", std::ofstream::app}
+      << currentTime << "," << _usersByName.size() << std::endl;
 }
 
 void Server::generateDurabilityList() {

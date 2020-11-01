@@ -316,6 +316,7 @@ class Server {
   void generateDurabilityList();
   static const ms_t PUBLISH_STATS_FREQUENCY = 5000;
   ms_t _timeStatsLastPublished;
+  void logNumberOfOnlineUsers() const;
 
   void writeUserToFile(const User &user, std::ostream &file) const;
 
