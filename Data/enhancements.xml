@@ -276,4 +276,15 @@
     <unlockedBy recipe="waterStaff" chance="0.04" />
 </recipe>
 
+<recipe id="staff1Silver" time="10000" >
+    <material id="staff1" />
+    <material id="silverWire" quantity="2" />
+    <unlockedBy recipe="staff1" chance="0.04" />
+</recipe>
+<recipe id="staff2Silver" time="10000" >
+    <material id="staff2" />
+    <material id="silverWire" quantity="5" />
+    <unlockedBy recipe="staff2" chance="0.04" />
+</recipe>
+
 </root>

@@ -49,7 +49,14 @@
         <unlockedBy gather="wool" chance="0.05" />
         <unlockedBy item="sheepskin" chance="0.02" />
         <unlockedBy recipe="pole1" chance="0.05" />
-    </recipe>    
+    </recipe>
+    <item id="staff1Silver" name="Inlaid Walking Stick"
+        gearSlot="6" lvlReq="13"
+        iconFile="staff1" gearFile="staff1">
+        <stats followerLimit="1" />
+        <offset x="-6" y="-16" />
+        <weapon damage="13" speed="3.2" />
+    </item>
     
 <item id="staff2" name="Staff"
     gearSlot="6" lvlReq="24">
@@ -62,5 +69,12 @@
         <unlockedBy recipe="pole2" chance="0.05" />
         <unlockedBy recipe="staff1" chance="0.1" />
     </recipe>
+    <item id="staff2Silver" name="Inlaid Staff"
+        gearSlot="6" lvlReq="24"
+        iconFile="staff2" gearFile="staff2">
+        <stats followerLimit="2" />
+        <offset x="-3" y="-19" />
+        <weapon damage="17" speed="3.3" />
+    </item>
 
 </root>
