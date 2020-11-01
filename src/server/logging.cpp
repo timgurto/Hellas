@@ -133,20 +133,6 @@ void Server::publishStats() {
 
   std::ofstream{"logging/stats.js"} << oss.str();
 
-  // Number of players online
-  {
-    static const auto FREQUENCY = time_t{600};  // 10 minutes
-    static auto lastReportingTime = time_t{0};
-    auto currentTime = time(nullptr);
-    if (currentTime - lastReportingTime >= FREQUENCY) {
-      if (lastReportingTime == 0)
-        lastReportingTime = currentTime;
-      else
-        lastReportingTime += FREQUENCY;
-      logNumberOfOnlineUsers();
-    }
-  }
-
   --_threadsOpen;
   publishingStats = false;
 }

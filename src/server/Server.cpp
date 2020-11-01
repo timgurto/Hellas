@@ -192,6 +192,8 @@ void Server::run() {
 
   auto threadsOpen = 0;
 
+  logNumberOfOnlineUsers();
+
   _loop = true;
   _running = true;
   _debug("Server is ready", Color::CHAT_SUCCESS);
@@ -295,7 +297,9 @@ void Server::addUser(const Socket &socket, const std::string &name,
   auto newUserToInsert = User{name, {}, &socket};
 
   // Add new user to list
+  logNumberOfOnlineUsers();
   std::set<User>::const_iterator it = _users.insert(newUserToInsert).first;
+  logNumberOfOnlineUsers();
   auto &newUser = const_cast<User &>(*it);
   _usersByName[name] = &*it;
   newUser.pwHash(pwHash);
@@ -466,7 +470,9 @@ void Server::removeUser(const std::set<User>::iterator &it) {
   _entitiesByY.erase(&userToDelete);
   _usersByName.erase(it->name());
 
+  logNumberOfOnlineUsers();
   _users.erase(it);
+  logNumberOfOnlineUsers();
 }
 
 void Server::removeUser(const Socket &socket) {
