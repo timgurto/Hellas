@@ -68,6 +68,8 @@ void Client::draw() const {
 
   visibleSprites.drawConstructionSiteFootprints();
 
+  visibleSprites.drawFlatSprites();
+
   // Base under target combatant
   if (_target.exists()) {
     const Texture &base =
@@ -77,7 +79,6 @@ void Client::draw() const {
               BASE_OFFSET);
   }
 
-  visibleSprites.drawFlatSprites();
   visibleSprites.drawNonFlatSprites();
 
   if (isDebug()) visibleSprites.drawDrawOrder();
