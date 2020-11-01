@@ -299,9 +299,10 @@ void Server::addUser(const Socket &socket, const std::string &name,
   // Add new user to list
   logNumberOfOnlineUsers();
   std::set<User>::const_iterator it = _users.insert(newUserToInsert).first;
-  logNumberOfOnlineUsers();
   auto &newUser = const_cast<User &>(*it);
   _usersByName[name] = &*it;
+  logNumberOfOnlineUsers();
+
   newUser.pwHash(pwHash);
 
   // Announce to all
@@ -468,9 +469,9 @@ void Server::removeUser(const std::set<User>::iterator &it) {
   _usersByY.erase(&userToDelete);
   _entitiesByX.erase(&userToDelete);
   _entitiesByY.erase(&userToDelete);
-  _usersByName.erase(it->name());
 
   logNumberOfOnlineUsers();
+  _usersByName.erase(it->name());
   _users.erase(it);
   logNumberOfOnlineUsers();
 }
