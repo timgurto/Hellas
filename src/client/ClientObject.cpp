@@ -1272,6 +1272,14 @@ bool ClientObject::shouldDrawShadow() const {
   return Sprite::shouldDrawShadow();
 }
 
+bool ClientObject::shouldAddParticles() const {
+  if (!isAlive()) return false;
+  if (isBeingConstructed() &&
+      !objectType()->shouldDrawParticlesWhenUnderConstruction())
+    return false;
+  return true;
+}
+
 bool ClientObject::containerIsEmpty() const {
   for (const auto &pair : _container)
     if (pair.first.type() != nullptr && pair.second > 0) return false;

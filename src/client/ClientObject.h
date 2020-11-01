@@ -178,9 +178,7 @@ class ClientObject : public Sprite, public ClientCombatant {
   virtual Color nameColor() const override;
   virtual bool shouldDrawName() const override;
   virtual bool shouldDrawShadow() const override;
-  bool shouldAddParticles() const override {
-    return isAlive() && !isBeingConstructed();
-  }
+  bool shouldAddParticles() const override;
   bool isFlat() const override;
 
   bool userHasAccess() const;

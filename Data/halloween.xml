@@ -164,17 +164,17 @@ Mark graveyard on map: not hardcoded
     <transform id="pumpkinPatch1" time="1500000" /> <!-- 25m -->
     <durability item="flax" quantity="5" />
 </objectType>
-<objectType id="pumpkinPatch1" name="Eerie Farm" xDrawOffset="-31" yDrawOffset="-49" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-29" y="-26" w="56" h="62" /> <durability item="flax" quantity="5" />
+<objectType id="pumpkinPatch1" name="Eerie Farm" xDrawOffset="-31" yDrawOffset="-49" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" drawParticlesWhenUnderConstruction="1" > <collisionRect x="-29" y="-26" w="56" h="62" /> <durability item="flax" quantity="5" />
     <material id="water" />
     <transform id="pumpkinPatch2" time="1500000" />
     <particles profile="fog"/>
 </objectType>
-<objectType id="pumpkinPatch2" name="Sinister Farm" xDrawOffset="-31" yDrawOffset="-49" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-29" y="-26" w="56" h="62" /> <durability item="flax" quantity="5" />
+<objectType id="pumpkinPatch2" name="Sinister Farm" xDrawOffset="-31" yDrawOffset="-49" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" drawParticlesWhenUnderConstruction="1" > <collisionRect x="-29" y="-26" w="56" h="62" /> <durability item="flax" quantity="5" />
     <material id="water" />
     <transform id="pumpkinPatch3" time="1500000" />
     <particles profile="fog"/>
 </objectType>
-<objectType id="pumpkinPatch3" name="Unearthly Farm" xDrawOffset="-31" yDrawOffset="-49" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-29" y="-26" w="56" h="62" /> <durability item="flax" quantity="5" />
+<objectType id="pumpkinPatch3" name="Unearthly Farm" xDrawOffset="-31" yDrawOffset="-49" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" drawParticlesWhenUnderConstruction="1" > <collisionRect x="-29" y="-26" w="56" h="62" /> <durability item="flax" quantity="5" />
     <material id="water" />
     <transform id="pumpkinPatch4" time="1500000" />
     <particles profile="fog"/>
@@ -184,7 +184,7 @@ Mark graveyard on map: not hardcoded
     yDrawOffset="-49"
     isUnbuildable="1"
     canGather="1" gatherTime="1000"
-    damageParticles="leaves" sounds="weakPlant" >
+    damageParticles="leaves" sounds="weakPlant" drawParticlesWhenUnderConstruction="1" >
     <collisionRect x="-29" y="-26" w="56" h="62" />
     <yield id="pumpkin" initialMean="4" initialSD="1" initialMin="2" />
     <durability item="flax" quantity="5" />

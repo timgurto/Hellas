@@ -53,6 +53,7 @@ class ClientObjectType : public SpriteType,
   ItemSet _materials;
   mutable Optional<Tooltip> _constructionTooltip;
   ImageWithHighlight _constructionImage;  // Shown when under construction.
+  bool _drawParticlesWhenUnderConstruction{false};
 
   std::string _windowText;
 
@@ -169,6 +170,12 @@ class ClientObjectType : public SpriteType,
   };
   void setWindowText(const std::string &text) { _windowText = text; }
   const std::string &windowText() const { return _windowText; }
+  void drawParticlesWhenUnderConstruction() {
+    _drawParticlesWhenUnderConstruction = true;
+  }
+  bool shouldDrawParticlesWhenUnderConstruction() const {
+    return _drawParticlesWhenUnderConstruction;
+  }
 
   const ImageWithHighlight &getProgressImage(ms_t timeRemaining) const;
   const Texture &corpseImage() const { return _corpseImage.getNormalImage(); }
