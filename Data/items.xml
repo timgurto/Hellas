@@ -574,11 +574,17 @@
 
     <!-- Feet -->
         <!-- Shoes (EPS) -->
-            <!--item id="woolShoes" name="Wool Shoes" gearSlot="5" sounds="fabric" lvlReq="19" >
+            <item id="woolShoes" name="Wool Shoes" gearSlot="5" sounds="fabric" lvlReq="19" >
                 <stats armor="2" courage="6" />
                 <offset x="-3" y="-1" />
                 <canBeRepaired cost="woolCloth" tool="sewing" />
-            </item-->
+            </item>
+                <item id="woolShoesSilver" name="Embroidered Wool Shoes" gearSlot="5" sounds="fabric" lvlReq="19"
+                    iconFile="woolShoes" gearFile="woolShoes" quality="2">
+                    <stats armor="4" courage="7" />
+                    <offset x="-3" y="-1" />
+                    <canBeRepaired cost="woolCloth" tool="sewing" />
+                </item>
             
         <!-- Sandals (speed) -->
             <item id="sandals" name="Sandals" gearSlot="5" sounds="leather" lvlReq="12" >

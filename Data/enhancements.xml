@@ -141,6 +141,11 @@
     <material id="silverLeaf" quantity="5" />
     <unlockedBy recipe="copperBracers" chance="0.04" />
 </recipe>
+<recipe id="woolShoesSilver" time="10000" >
+    <material id="woolShoes" />
+    <material id="silverThread" quantity="5" />
+    <unlockedBy recipe="woolShoes" chance="0.04" />
+</recipe>
 <recipe id="sandalsSilver" time="10000" >
     <material id="sandals" />
     <material id="silverLacquer" quantity="3" />

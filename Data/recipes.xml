@@ -598,14 +598,14 @@
     <tool class="sewing" />
     <unlockedBy recipe="woolCloth" chance="0.1" />
 </recipe>
-<!--recipe
+<recipe
     id="woolShoes" time="10000" >
     <material id="woolCloth" quantity="3" />
     <material id="linenThread" quantity="4" />
     <tool class="sewing" />
     <unlockedBy recipe="woolCloth" chance="0.1" />
     <unlockedBy recipe="sandals" chance="0.05" />
-</recipe-->
+</recipe>
 
 
 <recipe
