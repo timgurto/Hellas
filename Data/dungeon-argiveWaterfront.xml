@@ -91,18 +91,9 @@
 
 <npcType id="dAW_tortoise" name="Argive Tortoise" template="tortoise"
     level="20" maxHealth="99" attack="22" attackTime="3500" >
-    <spell id="dAW_tortoiseShield" />
+    <spell id="tutShield" />
     <lootTable id="animal" />
 </npcType>
-    <spell id="dAW_tortoiseShield" cooldown="10" school="water">
-        <targets self="1" />
-        <function name="buff" s1="dAW_tortoiseShield" />
-    </spell>
-        <buff id="dAW_tortoiseShield" name="Hardened Shell" icon="shield" duration="5"
-            description="All damage taken is halved.">
-            <effect image="shield" xOffset="-20" yOffset="-40" />
-            <stats armor="500" airResist="500" earthResist="500" fireResist="500" waterResist="500" />
-        </buff>
 
 <npcType id="dAW_gangPickpocket" name="Vindictive Pickpocket"
     level="21" elite="1" maxHealth="658" attack="31" attackTime="1800" >
