@@ -99,7 +99,7 @@
     level="21" elite="1" maxHealth="658" attack="31" attackTime="1800" >
     <spell id="dAW_disarm" />
     <humanoid base="zealot">
-        <item id="" />
+        <item id="dAW_shiv" />
     </humanoid>
     <lootTable id="dAW_allTrash" />
     <lootTable id="dAW_gangTrash" />
@@ -129,7 +129,8 @@
     level="22" boss="1" maxHealth="1463" attack="98" attackTime="4000" >
     <spell id="dAW_stun" />
     <humanoid base="default">
-        <item id="" />
+        <item id="dAW_strongmanArmour" />
+        <item id="dAW_strongmanHammer" />
     </humanoid>
     <lootTable id="dAW_boss" />
     <chooseLoot>
