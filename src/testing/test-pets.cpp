@@ -1063,7 +1063,7 @@ TEST_CASE("Pets can be fed") {
       <npcType id="dog" maxHealth="10" />
       <item id="steak"> <tag name="food"/> </item>
       <buff id="food" duration="10" canBeInterrupted="1">
-          <stats hps="5" />
+          <stats hps="500" />
       </buff>
     )";
     auto s = TestServer::WithDataString(data);
