@@ -1057,45 +1057,42 @@ TEST_CASE("Followers can count only once") {
   }
 }
 
-TEST_CASE("Pets can be fed") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Pets can be fed") {
   GIVEN("a user with a pet and some food") {
-    auto data = R"(
+    useData(R"(
       <npcType id="dog" maxHealth="10" />
       <item id="steak"> <tag name="food"/> </item>
       <buff id="food" duration="10" canBeInterrupted="1">
           <stats hps="500" />
       </buff>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    const auto &steak = s.getFirstItem();
-    user.giveItem(&steak);
+    )");
 
-    auto &dog = s.addNPC("dog", {15, 10});
-    dog.permissions.setPlayerOwner(c->username());
+    const auto &steak = server->getFirstItem();
+    user->giveItem(&steak);
+
+    auto &dog = server->addNPC("dog", {15, 10});
+    dog.permissions.setPlayerOwner((*client)->username());
 
     AND_GIVEN("its health is down 1") {
       dog.reduceHealth(1);
 
       WHEN("he tries to feed it") {  // Normal success case
-        c.sendMessage(CL_FEED_PET, makeArgs(dog.serial()));
+        client->sendMessage(CL_FEED_PET, makeArgs(dog.serial()));
 
         THEN("it gets to full health") {
           WAIT_UNTIL(dog.health() == dog.stats().maxHealth);
 
           AND_THEN("he no longer has the food") {
-            CHECK(!user.inventory(0).first.hasItem());
+            CHECK(!user->inventory(0).first.hasItem());
           }
         }
       }
 
       WHEN("he has no food") {
-        user.removeItems("food", 1);
+        user->removeItems("food", 1);
 
         WHEN("he tries to feed it") {
-          c.sendMessage(CL_FEED_PET, makeArgs(dog.serial()));
+          client->sendMessage(CL_FEED_PET, makeArgs(dog.serial()));
 
           THEN("it doesn't get healed") {
             REPEAT_FOR_MS(1500);
@@ -1104,28 +1101,23 @@ TEST_CASE("Pets can be fed") {
         }
       }
     }
+
     WHEN("he tries to feed it") {  // Pet is at full health
-      c.sendMessage(CL_FEED_PET, makeArgs(dog.serial()));
+      client->sendMessage(CL_FEED_PET, makeArgs(dog.serial()));
 
       THEN("he still has his food") {
         REPEAT_FOR_MS(100);
-        CHECK(user.inventory(0).first.hasItem());
+        CHECK(user->inventory(0).first.hasItem());
       }
     }
   }
 }
 
-TEST_CASE("Bad args to CL_FEED_PET") {
-  GIVEN("a user") {
-    auto s = TestServer{};
-    auto c = TestClient{};
-    s.waitForUsers(1);
+TEST_CASE_METHOD(ServerAndClient, "Bad args to CL_FEED_PET") {
+  WHEN("a user tries to feed a nonexistent pet") {
+    client.sendMessage(CL_FEED_PET, "50");
 
-    WHEN("he tries to feed a nonexistent pet") {
-      c.sendMessage(CL_FEED_PET, "50");
-
-      THEN("the server survives") { REPEAT_FOR_MS(100); }
-    }
+    THEN("the server survives") { REPEAT_FOR_MS(100); }
   }
 }
 
