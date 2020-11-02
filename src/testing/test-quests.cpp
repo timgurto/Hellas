@@ -738,11 +738,13 @@ TEST_CASE("Quest chains") {
     const auto &cObject = c.getFirstObject();
     auto &user = s.getFirstUser();
 
+    WAIT_UNTIL(cObject.startsQuests().size() == 2);
+
     WHEN("the prerequisite quests are started") {
       c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1a", aSerial));
-      WAIT_UNTIL(user.numQuests() == 1);
       c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1b", aSerial));
-      WAIT_UNTIL(user.numQuests() == 1);
+      WAIT_UNTIL(user.numQuests() == 2);
+      WAIT_UNTIL(cObject.startsQuests().size() == 0);
 
       AND_WHEN("one is completed") {
         c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1a", aSerial));
@@ -1775,8 +1777,10 @@ TEST_CASE("Abandoning quests") {
 
     WHEN("he tries to abandon the quest") {
       c.sendMessage(CL_ABANDON_QUEST, "quest1");
+
       THEN("he is not on any quests") {
         WAIT_UNTIL(user.questsInProgress().empty());
+
         AND_THEN("he knows it") {
           const auto &quest = c.getFirstQuest();
           WAIT_UNTIL(quest.state == CQuest::CAN_START);
@@ -1785,7 +1789,7 @@ TEST_CASE("Abandoning quests") {
     }
   }
 
-  GIVEN("a player on two quest") {
+  GIVEN("a player on two quests") {
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
     user.startQuest(s.findQuest("quest1"));
@@ -1794,6 +1798,7 @@ TEST_CASE("Abandoning quests") {
     WHEN("he tries to abandon one") {
       c.sendMessage(CL_ABANDON_QUEST, "quest1");
       REPEAT_FOR_MS(100);
+
       THEN("he is on one quest") { CHECK(user.questsInProgress().size() == 1); }
     }
   }
