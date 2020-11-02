@@ -1,4 +1,5 @@
 #include "TestClient.h"
+#include "TestFixtures.h"
 #include "TestServer.h"
 #include "testing.h"
 
@@ -634,45 +635,41 @@ TEST_CASE("Kill quests") {
   }
 }
 
-TEST_CASE("Quest chains") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Quest chains") {
   GIVEN("a quest with another quest as a prerequisite") {
-    auto data = R"(
+    useData(R"(
       <objectType id="A" />
       <quest id="quest1" startsAt="A" endsAt="A" />
       <quest id="quest2" startsAt="A" endsAt="A">
         <prerequisite id="quest1" />
       </quest>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-
-    s.addObject("A", {10, 15});
-    auto aSerial = s.getFirstObject().serial();
-    WAIT_UNTIL(c.objects().size() == 1);
-    auto &u = s.getFirstUser();
+    )");
+    server->addObject("A", {10, 15});
+    auto aSerial = server->getFirstObject().serial();
+    WAIT_UNTIL(client->objects().size() == 1);
 
     THEN("the user can see only one quest available") {
-      const auto &a = c.getFirstObject();
+      const auto &a = client->getFirstObject();
       CHECK(a.startsQuests().size() == 1);
     }
 
     WHEN("the user tries to accept the second quest") {
-      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest2", aSerial));
+      client->sendMessage(CL_ACCEPT_QUEST, makeArgs("quest2", aSerial));
 
       THEN("he is not on a quest") {
         REPEAT_FOR_MS(100);
-        CHECK(u.numQuests() == 0);
+        CHECK(user->numQuests() == 0);
       }
     }
 
     WHEN("the user starts and finishes the first quest") {
-      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", aSerial));
-      WAIT_UNTIL(u.numQuests() == 1);
-      c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
-      WAIT_UNTIL(u.numQuests() == 0);
+      client->sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", aSerial));
+      WAIT_UNTIL(user->numQuests() == 1);
+      client->sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
+      WAIT_UNTIL(user->numQuests() == 0);
 
       AND_WHEN("he right-clicks on the object") {
-        auto &obj = c.getFirstObject();
+        auto &obj = client->getFirstObject();
         REPEAT_FOR_MS(100);
         obj.onRightClick();
 
@@ -680,15 +677,15 @@ TEST_CASE("Quest chains") {
       }
 
       AND_WHEN("he tries to accept the second quest") {
-        c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest2", aSerial));
+        client->sendMessage(CL_ACCEPT_QUEST, makeArgs("quest2", aSerial));
 
-        THEN("he is on a quest") { WAIT_UNTIL(u.numQuests() == 1); }
+        THEN("he is on a quest") { WAIT_UNTIL(user->numQuests() == 1); }
       }
     }
   }
 
   GIVEN("one quest that unlocks two others") {
-    auto data = R"(
+    useData(R"(
       <objectType id="A" />
       <quest id="quest1" startsAt="A" endsAt="A" />
       <quest id="quest2a" startsAt="A" endsAt="A">
@@ -697,30 +694,27 @@ TEST_CASE("Quest chains") {
       <quest id="quest2b" startsAt="A" endsAt="A">
         <prerequisite id="quest1" />
       </quest>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
+    )");
 
-    s.addObject("A", {10, 15});
-    auto aSerial = s.getFirstObject().serial();
-    WAIT_UNTIL(c.objects().size() == 1);
-    auto &user = s.getFirstUser();
+    server->addObject("A", {10, 15});
+    auto aSerial = server->getFirstObject().serial();
+    WAIT_UNTIL(client->objects().size() == 1);
 
     WHEN("the first quest is started and finished") {
-      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", aSerial));
-      WAIT_UNTIL(user.numQuests() == 1);
-      c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
-      WAIT_UNTIL(user.numQuests() == 0);
+      client->sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", aSerial));
+      WAIT_UNTIL(user->numQuests() == 1);
+      client->sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", aSerial));
+      WAIT_UNTIL(user->numQuests() == 0);
 
       THEN("the user can see two quests available") {
-        const auto &object = c.getFirstObject();
+        const auto &object = client->getFirstObject();
         WAIT_UNTIL(object.startsQuests().size() == 2);
       }
     }
   }
 
   GIVEN("a quest that has two prerequisite quests") {
-    auto data = R"(
+    useData(R"(
       <objectType id="A" />
       <quest id="quest1a" startsAt="A" endsAt="A" />
       <quest id="quest1b" startsAt="A" endsAt="A" />
@@ -728,26 +722,24 @@ TEST_CASE("Quest chains") {
         <prerequisite id="quest1a" />
         <prerequisite id="quest1b" />
       </quest>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
+    )");
 
-    s.addObject("A", {10, 15});
-    auto aSerial = s.getFirstObject().serial();
-    WAIT_UNTIL(c.objects().size() == 1);
-    const auto &cObject = c.getFirstObject();
-    auto &user = s.getFirstUser();
+    server->addObject("A", {10, 15});
+    auto aSerial = server->getFirstObject().serial();
+    WAIT_UNTIL(client->objects().size() == 1);
+    const auto &cObject = client->getFirstObject();
 
     WAIT_UNTIL(cObject.startsQuests().size() == 2);
 
     WHEN("the prerequisite quests are started") {
-      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1a", aSerial));
-      c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1b", aSerial));
-      WAIT_UNTIL(user.numQuests() == 2);
+      client->sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1a", aSerial));
+      WAIT_UNTIL(user->numQuests() == 1);
+      client->sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1b", aSerial));
+      WAIT_UNTIL(user->numQuests() == 2);
       WAIT_UNTIL(cObject.startsQuests().size() == 0);
 
       AND_WHEN("one is completed") {
-        c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1a", aSerial));
+        client->sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1a", aSerial));
 
         THEN("the user can see no quests available") {
           REPEAT_FOR_MS(100);
@@ -755,7 +747,7 @@ TEST_CASE("Quest chains") {
         }
 
         AND_WHEN("the other is completed") {
-          c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1b", aSerial));
+          client->sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1b", aSerial));
 
           THEN("the user can see a quest available") {
             REPEAT_FOR_MS(100);
