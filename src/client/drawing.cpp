@@ -407,6 +407,12 @@ void SpritesToDraw::drawConstructionSiteFootprints() {
     if (!pObj) continue;
     if (!pObj->isBeingConstructed()) continue;
 
+    // Exception: if it has a custom construction descriptor, then it's probably
+    // some special mechanic piggybacking off construction, rather than an
+    // actual construction site, and thus shouldn't have a footprint.
+    const auto isSpecial = !pObj->objectType()->constructionText().empty();
+    if (isSpecial) continue;
+
     _client.drawFootprint(pObj->collisionRect(), Color::FOOTPRINT_ACTIVE, 0x7f);
   }
 }
