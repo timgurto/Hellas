@@ -60,7 +60,11 @@ void Avatar::draw() const {
     renderer.popRenderTarget();
   }
 
-  if (!doesAnyBuffHideMe()) Sprite::draw();
+  if (doesAnyBuffHideMe()) {
+    if (shouldDrawShadow()) drawShadow();
+  } else {
+    Sprite::draw();
+  }
 
   drawBuffEffects(location(), _client.offset());
 
