@@ -333,7 +333,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   static ObjectType OBJECT_TYPE;
 
   void contact();
-  bool alive()
+  bool hasMadeRecentContact()
       const;  // Whether the client has contacted the server recently enough
 
   // Return value: 0 if there was room for all items, otherwise the remainder.

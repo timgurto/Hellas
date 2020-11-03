@@ -252,7 +252,7 @@ std::string User::makeLocationCommand() const {
 
 void User::contact() { _lastContact = SDL_GetTicks(); }
 
-bool User::alive() const {
+bool User::hasMadeRecentContact() const {
   return SDL_GetTicks() - _lastContact <= Server::CLIENT_TIMEOUT;
 }
 

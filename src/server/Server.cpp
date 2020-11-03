@@ -202,10 +202,11 @@ void Server::run() {
     const ms_t timeElapsed = _time - _lastTime;
     _lastTime = _time;
 
+#ifndef _DEBUG
     // Check that clients are alive
     for (std::set<User>::iterator it = _users.begin(); it != _users.end();) {
-#ifndef _DEBUG
-      if (!it->alive()) {
+      const auto userHasTimedOut = !it->hasMadeRecentContact();
+      if (userHasTimedOut) {
         _debug << Color::CHAT_ERROR << "User " << it->name()
                << " has timed out." << Log::endl;
         std::set<User>::iterator next = it;
@@ -225,10 +226,8 @@ void Server::run() {
       } else {
         ++it;
       }
-#else
-      ++it;
-#endif
     }
+#endif
 
     // Save data
     if (_time - _lastSave >= SAVE_FREQUENCY) {
