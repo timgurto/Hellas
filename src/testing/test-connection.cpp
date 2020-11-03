@@ -1,4 +1,5 @@
 #include "TestClient.h"
+#include "TestFixtures.h"
 #include "TestServer.h"
 #include "testing.h"
 
@@ -152,5 +153,13 @@ TEST_CASE("Accurate health/energy on login") {
     // THEN she knows she isn't on full health
     WAIT_UNTIL(c->character().health() < c->character().maxHealth());
     WAIT_UNTIL(c->character().energy() < c->character().maxEnergy());
+  }
+}
+
+TEST_CASE("The finished-loggin-in message") {
+  GIVEN("a client connects to a server") {
+    auto s = TestServer{};
+    auto c = TestClient{};
+    CHECK(c.waitForMessage(SV_LOGIN_INFO_HAS_FINISHED));
   }
 }

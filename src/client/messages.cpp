@@ -106,6 +106,11 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
+      case SV_LOGIN_INFO_HAS_FINISHED:
+        _connection.state(Connection::LOADED);
+        _loaded = true;
+        break;
+
       case SV_PING_REPLY: {
         ms_t timeSent;
         singleMsg >> timeSent >> del;
@@ -458,8 +463,6 @@ void Client::handleBufferedMessages(const std::string &msg) {
 
           updateOffset();
           _mapWindow->markChanged();
-          _connection.state(Connection::LOADED);
-          _loaded = true;
           _tooltipNeedsRefresh = true;
           _mouseMoved = true;
         } else {
