@@ -124,7 +124,6 @@ Mark graveyard on map: not hardcoded
     <collisionRect x="-10" y="-3" w="20" h="7" />
 </objectType>
 <objectType id="jackOLantern" name="Carved Pumpkin" xDrawOffset="-11" yDrawOffset="-14"
-    deconstructs="jackOLantern" deconstructionTime="1000">
     constructionText="requires fuel" >
     <material id="charcoal" />
     <transform id="jackOLanternLit" time="1" skipConstruction="1" />
