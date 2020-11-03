@@ -109,6 +109,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
       case SV_LOGIN_INFO_HAS_FINISHED:
         _connection.state(Connection::LOADED);
         _loaded = true;
+        _lastPingReply = _time;
         break;
 
       case SV_PING_REPLY: {
