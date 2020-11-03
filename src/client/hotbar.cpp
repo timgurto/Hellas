@@ -142,7 +142,10 @@ void Client::refreshHotbar() {
       const auto *product = dynamic_cast<const ClientItem *>(recipe.product());
       icons[i]->changeTexture(product->icon());
 
-      _hotbarButtons[i]->setTooltip("Craft recipe: "s + recipe.name());
+      auto tooltip = Tooltip{};
+      tooltip.addLine("Craft recipe:"s);
+      tooltip.addRecipe(recipe, gameData.tagNames);
+      _hotbarButtons[i]->setTooltip(tooltip);
 
       auto recipeIsKnown = _knownRecipes.count(recipe.id()) == 1;
       if (!recipeIsKnown) _hotbarButtons[i]->disable();
