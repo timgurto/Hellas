@@ -205,7 +205,8 @@ void Server::run() {
 #ifndef _DEBUG
     // Check that clients are alive
     for (std::set<User>::iterator it = _users.begin(); it != _users.end();) {
-      const auto userHasTimedOut = !it->hasMadeRecentContact();
+      const auto userHasTimedOut =
+          it->isInitialised() && !it->hasMadeRecentContact();
       if (userHasTimedOut) {
         _debug << Color::CHAT_ERROR << "User " << it->name()
                << " has timed out." << Log::endl;
@@ -445,7 +446,7 @@ void Server::addUser(const Socket &socket, const std::string &name,
   _entitiesByX.insert(&newUser);
   _entitiesByY.insert(&newUser);
 
-  newUser.markAsInitialised();
+  newUser.onFinishedLoggingIn();
 }
 
 void Server::removeUser(const std::set<User>::iterator &it) {

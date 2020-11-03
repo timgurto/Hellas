@@ -196,7 +196,10 @@ class User : public Object {  // TODO: Don't inherit from Object
 
   static void init();
   bool isInitialised() const { return _isInitialised; }
-  void markAsInitialised() { _isInitialised = true; }
+  void onFinishedLoggingIn() {
+    _isInitialised = true;
+    contact();
+  }
 
   void updateStats() override;
 
