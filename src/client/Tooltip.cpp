@@ -3,6 +3,7 @@
 #include <sstream>
 
 #include "../HasTags.h"
+#include "CRecipe.h"
 #include "Client.h"
 #include "ClientItem.h"
 #include "Renderer.h"
@@ -169,6 +170,33 @@ void Tooltip::addTags(const HasTags &thingWithTags, const TagNames &tagNames) {
   for (const auto &pair : thingWithTags.tags()) {
     const auto &tag = pair.first;
     addLine(tagNames[tag] + thingWithTags.toolSpeedDisplayText(tag));
+  }
+}
+
+void Tooltip::addRecipe(const CRecipe &recipe, const TagNames &tagNames) {
+  if (!recipe.materials().isEmpty()) {
+    setColor(Color::TOOLTIP_BODY);
+    addLine("Materials needed:");
+    for (auto pair : recipe.materials()) {
+      const auto *material = dynamic_cast<const ClientItem *>(pair.first);
+      auto matText = " "s + material->name();
+      if (pair.second > 1) matText += " ("s + toString(pair.second) + ")"s;
+      setColor(material->nameColor());
+      addLine(matText);
+    }
+  }
+  if (!recipe.tools().empty()) {
+    setColor(Color::TOOLTIP_BODY);
+    addLine("Tools needed:");
+    setColor(Color::TOOLTIP_TAG);
+    for (auto toolID : recipe.tools()) {
+      const auto tag = tagNames[toolID];
+      addLine(" "s + tag);
+    }
+  }
+  const auto *product = dynamic_cast<const ClientItem *>(recipe.product());
+  if (product) {
+    embed(product->tooltip());
   }
 }
 

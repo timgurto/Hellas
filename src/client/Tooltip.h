@@ -54,6 +54,7 @@ class Tooltip {
   void addMerchantSlots(const std::vector<ClientMerchantSlot> &slots);
   void addItem(const ClientItem &item);
   void addTags(const HasTags &thingWithTags, const TagNames &tagNames);
+  void addRecipe(const class CRecipe &recipe, const TagNames &tagNames);
 
   px_t width() const;
   px_t height() const;

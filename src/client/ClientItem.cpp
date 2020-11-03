@@ -116,32 +116,8 @@ const Tooltip &ClientItem::tooltip() const {
         const auto &recipe = *it;
         tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
         tooltip.addLine("Right-click: learn to craft this item.");
-        if (!recipe.materials().isEmpty()) {
-          tooltip.setColor(Color::TOOLTIP_BODY);
-          tooltip.addLine("Materials needed:");
-          for (auto pair : recipe.materials()) {
-            const auto *material = dynamic_cast<const ClientItem *>(pair.first);
-            auto matText = " "s + material->name();
-            if (pair.second > 1)
-              matText += " ("s + toString(pair.second) + ")"s;
-            tooltip.setColor(material->nameColor());
-            tooltip.addLine(matText);
-          }
-        }
-        if (!recipe.tools().empty()) {
-          tooltip.setColor(Color::TOOLTIP_BODY);
-          tooltip.addLine("Tools needed:");
-          tooltip.setColor(Color::TOOLTIP_TAG);
-          for (auto toolID : recipe.tools()) {
-            const auto tag = _client->gameData.tagName(toolID);
-            tooltip.addLine(" "s + tag);
-          }
-        }
-        const auto *product =
-            dynamic_cast<const ClientItem *>(recipe.product());
-        if (product) {
-          tooltip.embed(product->tooltip());
-        }
+
+        tooltip.addRecipe(recipe, _client->gameData.tagNames);
       }
     } else {
       auto it = _client->gameData.spells.find(spellToCastOnUse());
