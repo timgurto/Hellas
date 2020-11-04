@@ -30,7 +30,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Soulbound items can't be dropped") {
 
   GIVEN("rings binds on equip") {
     useData(R"(
-      <item id="ring" bind="equip" />
+      <item id="ring" bind="equip" gearSlot="1" />
     )");
 
     WHEN("a user receives a ring") {
@@ -40,8 +40,22 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Soulbound items can't be dropped") {
       AND_WHEN("he tries to drop it") {
         client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
 
-        THEN("it is no longer in his inventory") {
-          WAIT_UNTIL(!user->inventory(0).first.hasItem());
+        THEN("it is no longer equipped") {
+          WAIT_UNTIL(!user->gear(1).first.hasItem());
+        }
+      }
+
+      AND_WHEN("he equips it") {
+        client->sendMessage(
+            CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0, Serial::Gear(), 1));
+
+        AND_WHEN("he tries to drop it") {
+          client->sendMessage(CL_DROP, makeArgs(Serial::Gear(), 1));
+
+          THEN("it is still equipped") {
+            REPEAT_FOR_MS(100);
+            CHECK(user->gear(1).first.hasItem());
+          }
         }
       }
     }
