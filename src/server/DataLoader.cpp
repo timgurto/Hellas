@@ -616,8 +616,7 @@ void DataLoader::loadItems(XmlReader &xr) {
     if (xr.findAttr(elem, "stackSize", stackSize)) item.stackSize(stackSize);
 
     auto bindMode = ""s;
-    if (xr.findAttr(elem, "bind", bindMode) && bindMode == "pickup")
-      item.setBinding();
+    if (xr.findAttr(elem, "bind", bindMode)) item.setBinding(bindMode);
 
     std::string s;
     if (xr.findAttr(elem, "constructs", s)) {

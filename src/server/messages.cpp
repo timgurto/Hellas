@@ -235,7 +235,8 @@ HANDLE_MESSAGE(CL_DROP) {
   const auto quantity = containerSlot.second;
 
   if (item.bindsOnPickup()) RETURN_WITH(WARNING_ITEM_IS_BOUND);
-  if (serial == Serial::Gear()) RETURN_WITH(WARNING_ITEM_IS_BOUND);
+  if (serial == Serial::Gear() && item.bindsOnEquip())
+    RETURN_WITH(WARNING_ITEM_IS_BOUND);
 
   auto dropLocation = MapPoint{};
   const auto MAX_ATTEMPTS = 50;

@@ -26,6 +26,28 @@ TEST_CASE("Dropping an item creates an object") {
   }
 }
 
+TEST_CASE_METHOD(ServerAndClientWithData, "Equipped items can be dropped") {
+  GIVEN("a gear item") {
+    useData(R"(
+      <item id="hat" gearSlot="0" />
+    )");
+
+    AND_GIVEN("a user has the item equipped") {
+      user->giveItem(&server->getFirstItem());
+      client->sendMessage(CL_SWAP_ITEMS,
+                          makeArgs(Serial::Inventory(), 0, Serial::Gear(), 0));
+
+      WHEN("he drops it") {
+        client->sendMessage(CL_DROP, makeArgs(Serial::Gear(), 0));
+
+        THEN("there's an entity") {
+          WAIT_UNTIL(server->entities().size() == 1);
+        }
+      }
+    }
+  }
+}
+
 TEST_CASE("Name is correct on client") {
   GIVEN("Apple and Orange item types") {
     auto data = R"(

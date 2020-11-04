@@ -8,6 +8,13 @@ void Item::makeWeapon(Hitpoints damage, double speedInS, SpellSchool school) {
   _stats.weaponSchool = school;
 }
 
+void Item::setBinding(std::string mode) {
+  if (mode == "pickup")
+    _soulbinding = BIND_ON_PICKUP;
+  else if (mode == "equip")
+    _soulbinding = BIND_ON_EQUIP;
+}
+
 size_t Item::getRandomArmorSlot() {
   /*
   Randomly return one of:

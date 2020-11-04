@@ -12,7 +12,7 @@ class Item : public HasTags {
  public:
   static const size_t WEAPON_SLOT = 6, OFFHAND_SLOT = 7;
   static const Hitpoints MAX_HEALTH = 100;
-  enum Soulbinding { NO_BINDING, BIND_ON_PICKUP };
+  enum Soulbinding { NO_BINDING, BIND_ON_PICKUP, BIND_ON_EQUIP };
 
   Item(const std::string &id);
   virtual ~Item() {}
@@ -44,8 +44,9 @@ class Item : public HasTags {
   void lvlReq(Level req) { _lvlReq = req; }
   Level lvlReq() const { return _lvlReq; }
   bool hasLvlReq() const { return _lvlReq > 0; }
-  void setBinding() { _soulbinding = BIND_ON_PICKUP; }
+  void setBinding(std::string mode);
   bool bindsOnPickup() const { return _soulbinding == BIND_ON_PICKUP; }
+  bool bindsOnEquip() const { return _soulbinding == BIND_ON_EQUIP; }
 
   bool operator<(const Item &rhs) const { return _id < rhs._id; }
 
