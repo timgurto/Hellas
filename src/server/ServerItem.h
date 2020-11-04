@@ -59,7 +59,7 @@ class ServerItem : public Item {
     void repair() override;
     double toolSpeed(const std::string &tag) const override;
     void onEquip() { _hasBeenEquipped = true; }
-    bool hasBeenEquipped() const { return _hasBeenEquipped; }
+    bool isSoulbound() const;
 
    private:
     Instance(const ServerItem *type, ReportingInfo info, Hitpoints health)

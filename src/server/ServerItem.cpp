@@ -177,6 +177,12 @@ double ServerItem::Instance::toolSpeed(const std::string &tag) const {
   return it->second;
 }
 
+bool ServerItem::Instance::isSoulbound() const {
+  if (_type->bindsOnPickup()) return true;
+  if (_type->bindsOnEquip()) return _hasBeenEquipped;
+  return false;
+}
+
 ServerItem::Instance::ReportingInfo
 ServerItem::Instance::ReportingInfo::UserGear(const User *owner, size_t slot) {
   return {owner, Serial::Gear(), slot};

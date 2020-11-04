@@ -228,16 +228,12 @@ HANDLE_MESSAGE(CL_DROP) {
 
   auto &containerSlot = (*info.container)[slot];
 
-  auto qty = containerSlot.second;
-  if (qty == 0) return;
-
-  const auto &item = *containerSlot.first.type();
   const auto &itemInstance = containerSlot.first;
+  const auto &item = *containerSlot.first.type();
   const auto quantity = containerSlot.second;
+  if (quantity == 0) return;
 
-  if (item.bindsOnPickup()) RETURN_WITH(WARNING_ITEM_IS_BOUND);
-  if (itemInstance.hasBeenEquipped() && item.bindsOnEquip())
-    RETURN_WITH(WARNING_ITEM_IS_BOUND);
+  if (itemInstance.isSoulbound()) RETURN_WITH(WARNING_ITEM_IS_BOUND);
 
   auto dropLocation = MapPoint{};
   const auto MAX_ATTEMPTS = 50;
