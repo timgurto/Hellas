@@ -25,10 +25,17 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Soulbound items can't be dropped") {
           CHECK(client->waitForMessage(WARNING_ITEM_IS_BOUND));
         }
       }
+
+      THEN("he knows it's soulbound") {
+        const auto &clientItem = client->inventory().at(0).first;
+        WAIT_UNTIL(clientItem.type());
+
+        CHECK(clientItem.isSoulbound());
+      }
     }
   }
 
-  GIVEN("rings binds on equip") {
+  GIVEN("rings bind on equip") {
     useData(R"(
       <item id="ring" bind="equip" gearSlot="1" />
     )");

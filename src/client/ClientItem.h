@@ -26,6 +26,7 @@ class ClientItem : public Item, public HasSounds {
     Hitpoints health() const { return _health; }
     const Tooltip &tooltip() const;  // Return the appropriate tooltip,
                                      // generating it first if appropriate.
+    bool isSoulbound() const { return true; }
 
    private:
     const ClientItem *_type{nullptr};
