@@ -761,6 +761,7 @@ enum MessageCode {
   ERROR_NO_INVENTORY, // The user tried to manipulate an object's non-existent inventory
   WARNING_OUT_OF_AMMO, // The user tried to use a weapon that uses ammo, without having said ammo.  Arguments: ammo ID
   WARNING_NOWHERE_TO_DROP_ITEM, // The user tried to drop an item, but all nearby land is obstructed.
+  WARNING_ITEM_IS_BOUND, // The user tried to perform an inappropriate action on a soulbound item.
 
   // War
   ERROR_ATTACKED_PEACFUL_PLAYER, // The user tried to attack a player without being at war with him

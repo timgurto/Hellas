@@ -64,6 +64,10 @@
         text="If an object has any actions available, they can be accessed through the object window.  To bring up an object window, make sure you are close to the object in question and right-click on it." />
 </entry>
 
+<entry name="Soulbound items" >
+    <p text="Some items are 'soulbound' to you, meaning you cannot give them to other players.  Soulbound items cannot be dropped." />
+</entry>
+
 <entry name="Cities" >
     <p text="A city is a group of players who are joined together in a single diplomatic unit.  A player's city is displayed underneath their name.  When a new player begins, he is not in any city." />
     <p heading="Foundation"

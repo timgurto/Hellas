@@ -234,7 +234,7 @@ HANDLE_MESSAGE(CL_DROP) {
   const auto &item = *containerSlot.first.type();
   const auto quantity = containerSlot.second;
 
-  if (item.bindsOnPickup()) return;
+  if (item.bindsOnPickup()) RETURN_WITH(WARNING_ITEM_IS_BOUND);
 
   auto dropLocation = MapPoint{};
   const auto MAX_ATTEMPTS = 50;

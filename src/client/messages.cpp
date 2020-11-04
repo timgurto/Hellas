@@ -263,6 +263,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
       case WARNING_PET_AT_FULL_HEALTH:
       case WARNING_NOWHERE_TO_DROP_ITEM:
       case WARNING_USER_ALREADY_IN_A_GROUP:
+      case WARNING_ITEM_IS_BOUND:
         errorMessageColor = Color::CHAT_WARNING;  // Yellow above, red below
       case ERROR_INVALID_USER:
       case ERROR_INVALID_ITEM:
@@ -2894,6 +2895,8 @@ void Client::initializeMessageNames() {
   _errorMessages[ERROR_USER_NOT_FOUND] = "Cannot find that player.";
   _errorMessages[WARNING_USER_ALREADY_IN_A_GROUP] =
       "That player is already in a group.";
+  _errorMessages[WARNING_ITEM_IS_BOUND] =
+      "You cannot do that with a soulbound item";
 }
 
 void Client::performCommand(const std::string &commandString) {

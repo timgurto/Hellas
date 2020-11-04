@@ -20,6 +20,10 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Soulbound items can't be dropped") {
           REPEAT_FOR_MS(100);
           CHECK(user->inventory(0).first.hasItem());
         }
+
+        THEN("he receives a warning") {
+          CHECK(client->waitForMessage(WARNING_ITEM_IS_BOUND));
+        }
       }
     }
   }
