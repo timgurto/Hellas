@@ -207,6 +207,7 @@
     <ClCompile Include="src\combatTypes.cpp" />
     <ClCompile Include="src\testing\TemporaryUserStats.cpp" />
     <ClCompile Include="src\testing\test-locks.cpp" />
+    <ClCompile Include="src\testing\test-soulbound.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />

@@ -12,6 +12,7 @@ class Item : public HasTags {
  public:
   static const size_t WEAPON_SLOT = 6, OFFHAND_SLOT = 7;
   static const Hitpoints MAX_HEALTH = 100;
+  enum Soulbinding { NO_BINDING, BIND_ON_PICKUP };
 
   Item(const std::string &id);
   virtual ~Item() {}
@@ -43,6 +44,8 @@ class Item : public HasTags {
   void lvlReq(Level req) { _lvlReq = req; }
   Level lvlReq() const { return _lvlReq; }
   bool hasLvlReq() const { return _lvlReq > 0; }
+  void setBinding() { _soulbinding = BIND_ON_PICKUP; }
+  bool bindsOnPickup() const { return _soulbinding == BIND_ON_PICKUP; }
 
   bool operator<(const Item &rhs) const { return _id < rhs._id; }
 
@@ -57,6 +60,7 @@ class Item : public HasTags {
   size_t _gearSlot;
   Level _lvlReq{0};
   StatsMod _stats;  // If gear, the impact it has on its wearer's stats.
+  Soulbinding _soulbinding{NO_BINDING};
 
   RepairInfo _repairInfo;
 

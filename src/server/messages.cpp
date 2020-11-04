@@ -234,6 +234,8 @@ HANDLE_MESSAGE(CL_DROP) {
   const auto &item = *containerSlot.first.type();
   const auto quantity = containerSlot.second;
 
+  if (item.bindsOnPickup()) return;
+
   auto dropLocation = MapPoint{};
   const auto MAX_ATTEMPTS = 50;
   for (auto attempt = 0; attempt != MAX_ATTEMPTS; ++attempt) {
