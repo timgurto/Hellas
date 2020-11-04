@@ -574,7 +574,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
                            Color::CHAT_ERROR);
           break;
         }
-        _otherUsers[username]->gear()[slot].first = {&item, itemHealth};
+        _otherUsers[username]->gear()[slot].first = {&item, itemHealth, false};
         break;
       }
 
@@ -583,11 +583,13 @@ void Client::handleBufferedMessages(const std::string &msg) {
         size_t slot, quantity;
         Hitpoints itemHealth;
         std::string itemID;
+        int isSoulbound;
         singleMsg >> serial >> del >> slot >> del >> itemID >> del >>
-            quantity >> del >> itemHealth >> del;
+            quantity >> del >> itemHealth >> del >> isSoulbound >> del;
         if (del != MSG_END) break;
 
-        handle_SV_INVENTORY(serial, slot, itemID, quantity, itemHealth);
+        handle_SV_INVENTORY(serial, slot, itemID, quantity, itemHealth,
+                            isSoulbound != 0);
         break;
       }
 
@@ -2154,7 +2156,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
 
 void Client::handle_SV_INVENTORY(Serial serial, size_t slot,
                                  const std::string &itemID, size_t quantity,
-                                 Hitpoints itemHealth) {
+                                 Hitpoints itemHealth, bool isSoulbound) {
   const ClientItem *item = nullptr;
   if (quantity > 0) {
     const auto it = gameData.items.find(itemID);
@@ -2192,7 +2194,7 @@ void Client::handle_SV_INVENTORY(Serial serial, size_t slot,
   }
 
   auto &invSlot = (*container)[slot];
-  invSlot.first = ClientItem::Instance{item, itemHealth};
+  invSlot.first = ClientItem::Instance{item, itemHealth, isSoulbound};
   invSlot.second = quantity;
 
   auto userIsReceivingItem = serial.isInventory() || serial.isGear();

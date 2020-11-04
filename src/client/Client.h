@@ -689,7 +689,7 @@ class Client : public TextEntryManager {
  private:
   void handle_SV_INVENTORY(Serial serial, size_t slot,
                            const std::string &itemID, size_t quantity,
-                           Hitpoints itemHealth);
+                           Hitpoints itemHealth, bool isSoulbound);
   void handle_SV_MAX_HEALTH(const std::string &username,
                             Hitpoints newMaxHealth);
   void handle_SV_MAX_ENERGY(const std::string &username, Energy newMaxEnergy);

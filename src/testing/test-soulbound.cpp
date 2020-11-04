@@ -85,6 +85,20 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Soulbound items can't be dropped") {
       }
     }
   }
+
+  GIVEN("a user has a plain item") {
+    useData(R"(
+      <item id="rock" />
+    )");
+    user->giveItem(&server->getFirstItem());
+
+    THEN("he knows it isn't soulbound") {
+      const auto &clientItem = client->inventory().at(0).first;
+      WAIT_UNTIL(clientItem.type());
+
+      CHECK_FALSE(clientItem.isSoulbound());
+    }
+  }
 }
 
 // No trading

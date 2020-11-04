@@ -642,8 +642,8 @@ void User::clearGear() {
     if (_gear[i].first.hasItem()) {
       _gear[i].first = {};
       _gear[i].second = 0;
-      server.sendMessage(socket(),
-                         {SV_INVENTORY, makeArgs(Serial::Gear(), i, "", 0, 0)});
+      server.sendMessage(
+          socket(), {SV_INVENTORY, makeArgs(Serial::Gear(), i, "", 0, 0 /**/)});
     }
 }
 
@@ -1527,7 +1527,7 @@ void User::sendInventorySlot(size_t slotIndex) const {
   if (!item.type()) return;  // Is this right?
   sendMessage(
       {SV_INVENTORY, makeArgs(Serial::Inventory(), slotIndex, item.type()->id(),
-                              slot.second, item.health())});
+                              slot.second, item.health() /**/)});
 }
 
 void User::sendGearSlot(size_t slotIndex) const {
@@ -1536,7 +1536,7 @@ void User::sendGearSlot(size_t slotIndex) const {
   if (!item.type()) return;
   sendMessage(
       {SV_INVENTORY, makeArgs(Serial::Gear(), slotIndex, item.type()->id(),
-                              slot.second, item.health())});
+                              slot.second, item.health() /**/)});
 }
 
 void User::sendSpawnPoint(bool hasChanged) const {

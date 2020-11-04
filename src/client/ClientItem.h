@@ -19,18 +19,19 @@ class ClientItem : public Item, public HasSounds {
   class Instance {
    public:
     Instance() = default;
-    Instance(const ClientItem *type, Hitpoints health)
-        : _type(type), _health(health) {}
+    Instance(const ClientItem *type, Hitpoints health, bool isSoulbound)
+        : _type(type), _health(health), _isSoulbound(isSoulbound) {}
 
     const ClientItem *type() const { return _type; }
     Hitpoints health() const { return _health; }
     const Tooltip &tooltip() const;  // Return the appropriate tooltip,
                                      // generating it first if appropriate.
-    bool isSoulbound() const { return true; }
+    bool isSoulbound() const;
 
    private:
     const ClientItem *_type{nullptr};
     Hitpoints _health{0};
+    bool _isSoulbound{false};
     mutable Optional<Tooltip> _tooltip;  // Builds on the basic item tooltip
     void createRegularTooltip() const;
     mutable Optional<Tooltip> _repairTooltip;

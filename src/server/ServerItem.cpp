@@ -178,6 +178,7 @@ double ServerItem::Instance::toolSpeed(const std::string &tag) const {
 }
 
 bool ServerItem::Instance::isSoulbound() const {
+  if (!_type) return false;
   if (_type->bindsOnPickup()) return true;
   if (_type->bindsOnEquip()) return _hasBeenEquipped;
   return false;

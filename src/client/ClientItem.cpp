@@ -264,3 +264,5 @@ void ClientItem::Instance::createRepairTooltip() const {
     rt.addItem(*costItem);
   }
 }
+
+bool ClientItem::Instance::isSoulbound() const { return _isSoulbound; }

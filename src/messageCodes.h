@@ -327,7 +327,7 @@ enum MessageCode {
   SV_LOCATION_INSTANT_OBJECT,
 
   // An item is in the user's inventory, or a container object
-  // Arguments: serial, slot, ID, quantity, item health
+  // Arguments: serial, slot, ID, quantity, item health, isSoulbound
   SV_INVENTORY,
 
   // A client received something.  Signal for aesthetics (e.g., floating combat text); the more

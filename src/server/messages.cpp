@@ -2097,9 +2097,10 @@ void Server::sendInventoryMessageInner(
   const auto &containerSlot = itemVect[slot];
   std::string itemID =
       containerSlot.first.hasItem() ? containerSlot.first.type()->id() : "none";
-  auto msg =
-      Message{SV_INVENTORY, makeArgs(serial, slot, itemID, containerSlot.second,
-                                     containerSlot.first.health())};
+  auto msg = Message{SV_INVENTORY,
+                     makeArgs(serial, slot, itemID, containerSlot.second,
+                              containerSlot.first.health(),
+                              containerSlot.first.isSoulbound() ? 1 : 0)};
   sendMessage(user.socket(), msg);
 }
 
