@@ -61,6 +61,20 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Soulbound items can't be dropped") {
             CHECK(client->waitForMessage(WARNING_ITEM_IS_BOUND));
           }
         }
+
+        AND_WHEN("he unequips it") {
+          client->sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Gear(), 1,
+                                                      Serial::Inventory(), 0));
+
+          AND_WHEN("he tries to drop it") {
+            client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+
+            THEN("it is still in his inventory") {
+              REPEAT_FOR_MS(100);
+              CHECK(user->inventory(0).first.hasItem());
+            }
+          }
+        }
       }
     }
   }

@@ -232,10 +232,11 @@ HANDLE_MESSAGE(CL_DROP) {
   if (qty == 0) return;
 
   const auto &item = *containerSlot.first.type();
+  const auto &itemInstance = containerSlot.first;
   const auto quantity = containerSlot.second;
 
   if (item.bindsOnPickup()) RETURN_WITH(WARNING_ITEM_IS_BOUND);
-  if (serial == Serial::Gear() && item.bindsOnEquip())
+  if (itemInstance.hasBeenEquipped() && item.bindsOnEquip())
     RETURN_WITH(WARNING_ITEM_IS_BOUND);
 
   auto dropLocation = MapPoint{};
@@ -403,6 +404,8 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
     shouldPerformNormalSwap = false;
 
   } while (false);
+
+  if (obj2.isGear()) fromItem.onEquip();
 
   if (shouldPerformNormalSwap) {
     // Perform the swap

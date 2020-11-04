@@ -58,12 +58,15 @@ class ServerItem : public Item {
     void damageOnPlayerDeath() override;
     void repair() override;
     double toolSpeed(const std::string &tag) const override;
+    void onEquip() { _hasBeenEquipped = true; }
+    bool hasBeenEquipped() const { return _hasBeenEquipped; }
 
    private:
     Instance(const ServerItem *type, ReportingInfo info, Hitpoints health)
         : _type(type), _reportingInfo(info), _health(health) {}
     const ServerItem *_type{nullptr};
     Hitpoints _health{0};
+    bool _hasBeenEquipped{false};
     ReportingInfo _reportingInfo;
   };
 
