@@ -27,10 +27,27 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Soulbound items can't be dropped") {
       }
     }
   }
+
+  GIVEN("rings binds on equip") {
+    useData(R"(
+      <item id="ring" bind="equip" />
+    )");
+
+    WHEN("a user receives a ring") {
+      auto &ring = server->getFirstItem();
+      user->giveItem(&ring);
+
+      AND_WHEN("he tries to drop it") {
+        client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+
+        THEN("it is no longer in his inventory") {
+          WAIT_UNTIL(!user->inventory(0).first.hasItem());
+        }
+      }
+    }
+  }
 }
 
 // No trading
 // Containers must be privately owned
 // Container can't change hands
-// BoP
-// BoE
