@@ -120,6 +120,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 
     AND_GIVEN("a user has an apple") {
       const auto *apple = &server->findItem("apple");
+      const auto *orange = &server->findItem("orange");
       user->giveItem(apple);
 
       AND_GIVEN("a publicly owned barrel") {
@@ -140,7 +141,6 @@ TEST_CASE_METHOD(ServerAndClientWithData,
         }
 
         AND_GIVEN("the barrel has an orange") {
-          const auto *orange = &server->findItem("orange");
           barrel.container().addItems(orange);
 
           WHEN("the user tries to swap the orange with his apple") {
@@ -155,6 +155,33 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 
             THEN("he receives a warning") {
               CHECK(client->waitForMessage(WARNING_OBJECT_MUST_BE_PRIVATE));
+            }
+          }
+        }
+      }
+
+      AND_GIVEN("he owns a barrel") {
+        auto &barrel = server->addObject("barrel", {15, 15}, user->name());
+
+        WHEN("he tries to put it into the barrel") {
+          client->sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0,
+                                                      barrel.serial(), 0));
+
+          THEN("he no longer has it") {
+            WAIT_UNTIL(!user->inventory(0).first.hasItem());
+          }
+        }
+
+        AND_GIVEN("the barrel has an orange") {
+          barrel.container().addItems(orange);
+
+          WHEN("the user tries to swap the orange with his apple") {
+            client->sendMessage(
+                CL_SWAP_ITEMS,
+                makeArgs(barrel.serial(), 0, Serial::Inventory(), 0));
+
+            THEN("he has an orange") {
+              WAIT_UNTIL(user->inventory(0).first.type() == orange);
             }
           }
         }

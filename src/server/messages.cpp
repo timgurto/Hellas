@@ -385,10 +385,15 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
     return;
 
   // Check whether soulbound items can be moved
-  if (obj2.isEntity() && fromItem.isSoulbound())
-    RETURN_WITH(WARNING_OBJECT_MUST_BE_PRIVATE);
-  if (obj1.isEntity() && toItem.isSoulbound())
-    RETURN_WITH(WARNING_OBJECT_MUST_BE_PRIVATE);
+  if (fromItem.isSoulbound()) {
+    if (obj2.isEntity() && !to.object->permissions.isOwnedByPlayer(user.name()))
+      RETURN_WITH(WARNING_OBJECT_MUST_BE_PRIVATE);
+  }
+  if (toItem.isSoulbound()) {
+    if (obj1.isEntity() &&
+        !from.object->permissions.isOwnedByPlayer(user.name()))
+      RETURN_WITH(WARNING_OBJECT_MUST_BE_PRIVATE);
+  }
 
   // Combine stack, if identical types
   auto shouldPerformNormalSwap = true;
