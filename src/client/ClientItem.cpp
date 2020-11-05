@@ -207,17 +207,22 @@ void ClientItem::Instance::createRegularTooltip() const {
   _tooltip = _type->tooltip();
   auto &tooltip = _tooltip.value();
 
-  auto color = Color::TOOLTIP_BODY;
+  tooltip.setColor(Color::TOOLTIP_BODY);
   if (isSoulbound()) {
     tooltip.addGap();
     tooltip.addLine("Soulbound");
+  } else if (_type->bindsOnEquip()) {
+    tooltip.addGap();
+    tooltip.addLine("Binds when equipped");
+  } else if (_type->bindsOnPickup()) {
+    tooltip.addGap();
+    tooltip.addLine("Binds when picked up");
   }
 
   if (_health == 0)
-    color = Color::DURABILITY_BROKEN;
+    tooltip.setColor(Color::DURABILITY_BROKEN);
   else if (_health <= 20)
-    color = Color::DURABILITY_LOW;
-  tooltip.setColor(color);
+    tooltip.setColor(Color::DURABILITY_LOW);
 
   auto isDamaged = _health < Item::MAX_HEALTH;
   if (isDamaged) {
