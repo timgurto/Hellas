@@ -133,6 +133,10 @@ TEST_CASE_METHOD(ServerAndClientWithData,
             REPEAT_FOR_MS(100);
             CHECK(user->inventory(0).first.hasItem());
           }
+
+          THEN("he receives a warning") {
+            CHECK(client->waitForMessage(WARNING_OBJECT_MUST_BE_PRIVATE));
+          }
         }
 
         AND_GIVEN("the barrel has an orange") {
@@ -147,6 +151,10 @@ TEST_CASE_METHOD(ServerAndClientWithData,
             THEN("he still has the apple") {
               REPEAT_FOR_MS(100);
               CHECK(user->inventory(0).first.type() == apple);
+            }
+
+            THEN("he receives a warning") {
+              CHECK(client->waitForMessage(WARNING_OBJECT_MUST_BE_PRIVATE));
             }
           }
         }

@@ -762,7 +762,7 @@ enum MessageCode {
   WARNING_OUT_OF_AMMO, // The user tried to use a weapon that uses ammo, without having said ammo.  Arguments: ammo ID
   WARNING_NOWHERE_TO_DROP_ITEM, // The user tried to drop an item, but all nearby land is obstructed.
   WARNING_ITEM_IS_BOUND, // The user tried to perform an inappropriate action on a soulbound item.
-  WARNING_CONTAINS_BOUND_ITEM, // The user tried to perform an inappropriate action with an object containing a soulbound item.
+  WARNING_OBJECT_MUST_BE_PRIVATE, // That action cannot be performed with a shared object; it must be privately owned.
 
   // War
   ERROR_ATTACKED_PEACFUL_PLAYER, // The user tried to attack a player without being at war with him
