@@ -384,6 +384,8 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
   if (toItem.hasItem() && obj1.isGear() && !user.canEquip(*toItem.type()))
     return;
 
+  if (obj2.isEntity() && fromItem.isSoulbound()) return;
+
   // Combine stack, if identical types
   auto shouldPerformNormalSwap = true;
   do {

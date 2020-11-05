@@ -107,8 +107,39 @@ TEST_CASE_METHOD(ServerAndClientWithData, "By default, items do not bind") {
   }
 }
 
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Soulbound items can be stored only in private containers") {
+  GIVEN("apples are BoP") {
+    useData(R"(
+      <item id="apple" bind="pickup" />
+      <objectType id="barrel" >
+        <container slots="1" />
+      </objectType>
+    )");
+
+    AND_GIVEN("a user has an apple") {
+      user->giveItem(&server->getFirstItem());
+
+      AND_GIVEN("a publicly owned barrel") {
+        const auto &barrel = server->addObject("barrel", {15, 15});
+
+        WHEN("he tries to put it into the barrel") {
+          client->sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0,
+                                                      barrel.serial(), 0));
+
+          THEN("he still has it") {
+            REPEAT_FOR_MS(100);
+            CHECK(user->inventory(0).first.hasItem());
+          }
+        }
+      }
+    }
+  }
+}
+
 // No trading
-// Containers must be privately owned
 // Container can't change hands
+// Use as construction material is fine
 // Persistence
 // Soulbound status in SV_GEAR
+// Swap from gear to inventory: item that was in inventory becomes soulbound
