@@ -683,6 +683,9 @@ void CDataLoader::loadItems(XmlReader &xr) {
 
     if (xr.findAttr(elem, "sounds", s)) item.setSoundProfile(_client, s);
 
+    auto bindMode = ""s;
+    if (xr.findAttr(elem, "bind", bindMode)) item.setBinding(bindMode);
+
     Hitpoints durability;
     if (xr.findAttr(elem, "durability", durability))
       item.durability(durability);

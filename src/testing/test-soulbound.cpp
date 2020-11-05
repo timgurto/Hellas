@@ -9,6 +9,10 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Soulbound items can't be dropped") {
       <item id="ring" bind="pickup" />
     )");
 
+    THEN("the user knows that rings bind on pickup") {
+      CHECK(client->items().begin()->second.bindsOnPickup());
+    }
+
     WHEN("a user receives a ring") {
       auto &ring = server->getFirstItem();
       user->giveItem(&ring);
@@ -104,3 +108,5 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Soulbound items can't be dropped") {
 // No trading
 // Containers must be privately owned
 // Container can't change hands
+// Persistence
+// Soulbound status in SV_GEAR
