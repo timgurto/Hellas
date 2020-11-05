@@ -89,7 +89,9 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Soulbound items can't be dropped") {
       }
     }
   }
+}
 
+TEST_CASE_METHOD(ServerAndClientWithData, "By default, items do not bind") {
   GIVEN("a user has a plain item") {
     useData(R"(
       <item id="rock" />
