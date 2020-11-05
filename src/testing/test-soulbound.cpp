@@ -59,6 +59,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Soulbound items can't be dropped") {
       AND_WHEN("he equips it") {
         client->sendMessage(
             CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0, Serial::Gear(), 1));
+        WAIT_UNTIL(user->gear(1).first.hasItem());
 
         AND_WHEN("he tries to drop it") {
           client->sendMessage(CL_DROP, makeArgs(Serial::Gear(), 1));
@@ -96,6 +97,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Soulbound items can't be dropped") {
                 makeArgs(Serial::Gear(), 1, Serial::Inventory(), 0));
 
             THEN("the newly equipped ring is soulbound") {
+              REPEAT_FOR_MS(100);
               CHECK(user->gear(1).first.isSoulbound());
             }
           }
@@ -208,5 +210,3 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 // Container can't change hands
 // Use as construction material is fine
 // Persistence
-// Soulbound status in SV_GEAR
-// Swap from gear to inventory: item that was in inventory becomes soulbound
