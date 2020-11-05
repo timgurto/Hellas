@@ -216,8 +216,8 @@ TEST_CASE("Soulbound status is persistent") {
       s.waitForUsers(1);
       auto &alice = s.getFirstUser();
 
-      // AND GIVEN she has a soulbound hat
-      alice.giveItem(&s.getFirstItem());
+      // AND GIVEN she has a soulbound hat and a non-soulbound hat
+      alice.giveItem(&s.getFirstItem(), 2);
       alice.inventory(0).first.onEquip();
 
       // WHEN she logs off and back on
@@ -227,8 +227,11 @@ TEST_CASE("Soulbound status is persistent") {
       s.waitForUsers(1);
       auto &alice = s.getFirstUser();
 
-      // THEN her hat is still soulbound
+      // THEN her first hat is still soulbound
       CHECK(alice.inventory(0).first.isSoulbound());
+
+      // AND_THEN her second hat is not
+      CHECK_FALSE(alice.inventory(1).first.isSoulbound());
     }
   }
 }
@@ -236,4 +239,4 @@ TEST_CASE("Soulbound status is persistent") {
 // No trading
 // Container can't change hands
 // Use as construction material is fine
-// Persistence
+// Persistence (in container)

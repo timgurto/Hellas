@@ -105,11 +105,14 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     int qty;
     // Default value to support transition of old data
     Hitpoints health = Item::MAX_HEALTH;
+    bool isSoulbound{false};
 
     if (!xr.findAttr(slotElem, "slot", slot)) continue;
     if (!xr.findAttr(slotElem, "id", id)) continue;
     if (!xr.findAttr(slotElem, "quantity", qty)) continue;
     xr.findAttr(slotElem, "health", health);
+    int n;
+    if (xr.findAttr(slotElem, "soulbound", n)) isSoulbound = n != 0;
 
     std::set<ServerItem>::const_iterator it = _items.find(id);
     if (it == _items.end()) {
@@ -120,7 +123,7 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     user.inventory(slot).first = ServerItem::Instance::LoadFromFile(
         &*it, ServerItem::Instance::ReportingInfo::UserInventory(&user, slot),
         health);
-    user.inventory(slot).first.onEquip();
+    if (isSoulbound) user.inventory(slot).first.onEquip();
     user.inventory(slot).second = qty;
   }
 
@@ -295,6 +298,7 @@ void Server::writeUserData(const User &user) const {
       xw.setAttr(slotElement, "id", slot.first.type()->id());
       xw.setAttr(slotElement, "health", slot.first.health());
       xw.setAttr(slotElement, "quantity", slot.second);
+      if (slot.first.isSoulbound()) xw.setAttr(slotElement, "soulbound", 1);
     }
   }
 
