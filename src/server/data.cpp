@@ -102,14 +102,14 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
   for (auto slotElem : xr.getChildren("slot", elem)) {
     int slot;
     std::string id;
-    int qty;
+    auto qty = 1;
     // Default value to support transition of old data
     Hitpoints health = Item::MAX_HEALTH;
-    bool isSoulbound{false};
+    auto isSoulbound = false;
 
     if (!xr.findAttr(slotElem, "slot", slot)) continue;
     if (!xr.findAttr(slotElem, "id", id)) continue;
-    if (!xr.findAttr(slotElem, "quantity", qty)) continue;
+    xr.findAttr(slotElem, "quantity", qty);
     xr.findAttr(slotElem, "health", health);
     int n;
     if (xr.findAttr(slotElem, "soulbound", n)) isSoulbound = n != 0;
@@ -131,13 +131,13 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
   for (auto slotElem : xr.getChildren("slot", elem)) {
     int slot;
     std::string id;
-    int qty;
+    auto qty = 1;
     // Default value to support transition of old data
     Hitpoints health = Item::MAX_HEALTH;
 
     if (!xr.findAttr(slotElem, "slot", slot)) continue;
     if (!xr.findAttr(slotElem, "id", id)) continue;
-    if (!xr.findAttr(slotElem, "quantity", qty)) continue;
+    xr.findAttr(slotElem, "quantity", qty);
     xr.findAttr(slotElem, "health", health);
 
     std::set<ServerItem>::const_iterator it = _items.find(id);
@@ -297,7 +297,7 @@ void Server::writeUserData(const User &user) const {
       xw.setAttr(slotElement, "slot", i);
       xw.setAttr(slotElement, "id", slot.first.type()->id());
       xw.setAttr(slotElement, "health", slot.first.health());
-      xw.setAttr(slotElement, "quantity", slot.second);
+      if (slot.second > 1) xw.setAttr(slotElement, "quantity", slot.second);
       if (slot.first.isSoulbound()) xw.setAttr(slotElement, "soulbound", 1);
     }
   }
@@ -310,7 +310,7 @@ void Server::writeUserData(const User &user) const {
       xw.setAttr(slotElement, "slot", i);
       xw.setAttr(slotElement, "id", slot.first.type()->id());
       xw.setAttr(slotElement, "health", slot.first.health());
-      xw.setAttr(slotElement, "quantity", slot.second);
+      if (slot.second > 1) xw.setAttr(slotElement, "quantity", slot.second);
     }
   }
 
@@ -721,12 +721,13 @@ void Object::writeToXML(XmlWriter &xw) const {
 
   if (hasContainer()) {
     for (size_t i = 0; i != objType().container().slots(); ++i) {
-      if (container().at(i).second == 0) continue;
+      const auto &pair = container().at(i);
+      if (pair.second == 0) continue;
       auto invSlotE = xw.addChild("inventory", e);
       xw.setAttr(invSlotE, "slot", i);
-      xw.setAttr(invSlotE, "item", container().at(i).first.type()->id());
-      xw.setAttr(invSlotE, "qty", container().at(i).second);
-      xw.setAttr(invSlotE, "health", container().at(i).first.health());
+      xw.setAttr(invSlotE, "item", pair.first.type()->id());
+      if (pair.second > 1) xw.setAttr(invSlotE, "qty", pair.second);
+      xw.setAttr(invSlotE, "health", pair.first.health());
     }
   }
 
