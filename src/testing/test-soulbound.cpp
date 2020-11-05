@@ -109,19 +109,21 @@ TEST_CASE_METHOD(ServerAndClientWithData, "By default, items do not bind") {
 
 TEST_CASE_METHOD(ServerAndClientWithData,
                  "Soulbound items can be stored only in private containers") {
-  GIVEN("apples are BoP") {
+  GIVEN("BoP apples, non-binding oranges, barrels") {
     useData(R"(
       <item id="apple" bind="pickup" />
+      <item id="orange" />
       <objectType id="barrel" >
         <container slots="1" />
       </objectType>
     )");
 
     AND_GIVEN("a user has an apple") {
-      user->giveItem(&server->getFirstItem());
+      const auto *apple = &server->findItem("apple");
+      user->giveItem(apple);
 
       AND_GIVEN("a publicly owned barrel") {
-        const auto &barrel = server->addObject("barrel", {15, 15});
+        auto &barrel = server->addObject("barrel", {15, 15});
 
         WHEN("he tries to put it into the barrel") {
           client->sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0,
@@ -130,6 +132,22 @@ TEST_CASE_METHOD(ServerAndClientWithData,
           THEN("he still has it") {
             REPEAT_FOR_MS(100);
             CHECK(user->inventory(0).first.hasItem());
+          }
+        }
+
+        AND_GIVEN("the barrel has an orange") {
+          const auto *orange = &server->findItem("orange");
+          barrel.container().addItems(orange);
+
+          WHEN("the user tries to swap the orange with his apple") {
+            client->sendMessage(
+                CL_SWAP_ITEMS,
+                makeArgs(barrel.serial(), 0, Serial::Inventory(), 0));
+
+            THEN("he still has the apple") {
+              REPEAT_FOR_MS(100);
+              CHECK(user->inventory(0).first.type() == apple);
+            }
           }
         }
       }

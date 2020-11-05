@@ -385,6 +385,7 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
     return;
 
   if (obj2.isEntity() && fromItem.isSoulbound()) return;
+  if (obj1.isEntity() && toItem.isSoulbound()) return;
 
   // Combine stack, if identical types
   auto shouldPerformNormalSwap = true;
