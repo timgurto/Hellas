@@ -86,6 +86,20 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Soulbound items can't be dropped") {
             }
           }
         }
+
+        AND_WHEN("he receives another ring in his inventory") {
+          user->giveItem(&ring);
+
+          AND_WHEN("he tries to swap from gear to inventory") {
+            client->sendMessage(
+                CL_SWAP_ITEMS,
+                makeArgs(Serial::Gear(), 1, Serial::Inventory(), 0));
+
+            THEN("the newly equipped ring is soulbound") {
+              CHECK(user->gear(1).first.isSoulbound());
+            }
+          }
+        }
       }
     }
   }

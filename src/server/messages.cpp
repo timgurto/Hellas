@@ -412,7 +412,10 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
 
   } while (false);
 
-  if (obj2.isGear()) fromItem.onEquip();
+  if (obj2.isGear())
+    fromItem.onEquip();
+  else if (obj1.isGear())
+    toItem.onEquip();
 
   if (shouldPerformNormalSwap) {
     // Perform the swap
