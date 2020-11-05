@@ -208,6 +208,11 @@ void ClientItem::Instance::createRegularTooltip() const {
   auto &tooltip = _tooltip.value();
 
   auto color = Color::TOOLTIP_BODY;
+  if (isSoulbound()) {
+    tooltip.addGap();
+    tooltip.addLine("Soulbound");
+  }
+
   if (_health == 0)
     color = Color::DURABILITY_BROKEN;
   else if (_health <= 20)
