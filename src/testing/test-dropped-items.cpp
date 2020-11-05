@@ -427,7 +427,7 @@ TEST_CASE("Dropped-item stacks") {
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
 
-    for (auto numCoins : std::vector<size_t>{1, 10}) {
+    for (size_t numCoins : std::vector<size_t>{1, 10}) {
       AND_GIVEN("a player has a stack of " << numCoins) {
         user.giveItem(&s.getFirstItem(), numCoins);
 
