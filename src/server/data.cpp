@@ -120,6 +120,7 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     user.inventory(slot).first = ServerItem::Instance::LoadFromFile(
         &*it, ServerItem::Instance::ReportingInfo::UserInventory(&user, slot),
         health);
+    user.inventory(slot).first.onEquip();
     user.inventory(slot).second = qty;
   }
 

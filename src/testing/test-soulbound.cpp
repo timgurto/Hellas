@@ -115,10 +115,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "By default, items do not bind") {
     user->giveItem(&server->getFirstItem());
 
     THEN("he knows it isn't soulbound") {
-      const auto &clientItem = client->inventory().at(0).first;
-      WAIT_UNTIL(clientItem.type());
-
-      CHECK_FALSE(clientItem.isSoulbound());
+      CHECK_FALSE(client->inventory().at(0).first.isSoulbound());
     }
   }
 }
@@ -202,6 +199,36 @@ TEST_CASE_METHOD(ServerAndClientWithData,
           }
         }
       }
+    }
+  }
+}
+
+TEST_CASE("Soulbound status is persistent") {
+  GIVEN("hats are BoE") {
+    auto data = R"(
+      <item id="hat" gearSlot="0" bind="equip" />
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    // AND GIVEN Alice logs in
+    {
+      auto c = TestClient::WithUsernameAndDataString("Alice", data);
+      s.waitForUsers(1);
+      auto &alice = s.getFirstUser();
+
+      // AND GIVEN she has a soulbound hat
+      alice.giveItem(&s.getFirstItem());
+      alice.inventory(0).first.onEquip();
+
+      // WHEN she logs off and back on
+    }
+    {
+      auto c = TestClient::WithUsernameAndDataString("Alice", data);
+      s.waitForUsers(1);
+      auto &alice = s.getFirstUser();
+
+      // THEN her hat is still soulbound
+      CHECK(alice.inventory(0).first.isSoulbound());
     }
   }
 }
