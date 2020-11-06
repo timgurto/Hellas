@@ -210,28 +210,54 @@ TEST_CASE("Soulbound status is persistent") {
     )";
     auto s = TestServer::WithDataString(data);
 
-    // AND GIVEN Alice logs in
-    {
-      auto c = TestClient::WithUsernameAndDataString("Alice", data);
-      s.waitForUsers(1);
-      auto &alice = s.getFirstUser();
+    SECTION("Inventory") {
+      // AND GIVEN Alice logs in
+      {
+        auto c = TestClient::WithUsernameAndDataString("Alice", data);
+        s.waitForUsers(1);
+        auto &alice = s.getFirstUser();
 
-      // AND GIVEN she has a soulbound hat and a non-soulbound hat
-      alice.giveItem(&s.getFirstItem(), 2);
-      alice.inventory(0).first.onEquip();
+        // AND GIVEN she has a soulbound hat and a non-soulbound hat
+        alice.giveItem(&s.getFirstItem(), 2);
+        alice.inventory(0).first.onEquip();
 
-      // WHEN she logs off and back on
+        // WHEN she logs off and back on
+      }
+      {
+        auto c = TestClient::WithUsernameAndDataString("Alice", data);
+        s.waitForUsers(1);
+        auto &alice = s.getFirstUser();
+
+        // THEN her first hat is still soulbound
+        CHECK(alice.inventory(0).first.isSoulbound());
+
+        // AND_THEN her second hat is not
+        CHECK_FALSE(alice.inventory(1).first.isSoulbound());
+      }
     }
-    {
-      auto c = TestClient::WithUsernameAndDataString("Alice", data);
-      s.waitForUsers(1);
-      auto &alice = s.getFirstUser();
 
-      // THEN her first hat is still soulbound
-      CHECK(alice.inventory(0).first.isSoulbound());
+    SECTION("Gear") {
+      // AND GIVEN Alice logs in
+      {
+        auto c = TestClient::WithUsernameAndDataString("Alice", data);
+        s.waitForUsers(1);
+        auto &alice = s.getFirstUser();
 
-      // AND_THEN her second hat is not
-      CHECK_FALSE(alice.inventory(1).first.isSoulbound());
+        // AND GIVEN she has a soulbound hat equipped
+        alice.giveItem(&s.getFirstItem());
+        c.sendMessage(CL_SWAP_ITEMS,
+                      makeArgs(Serial::Inventory(), 0, Serial::Gear(), 0));
+
+        // WHEN she logs off and back on
+      }
+      {
+        auto c = TestClient::WithUsernameAndDataString("Alice", data);
+        s.waitForUsers(1);
+        auto &alice = s.getFirstUser();
+
+        // THEN her hat is still soulbound
+        CHECK(alice.gear(0).first.isSoulbound());
+      }
     }
   }
 }

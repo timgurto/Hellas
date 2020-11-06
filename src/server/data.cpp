@@ -145,6 +145,7 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     user.gear(slot).first = ServerItem::Instance::LoadFromFile(
         item, ServerItem::Instance::ReportingInfo::UserGear(&user, slot),
         health);
+    user.gear(slot).first.onEquip();
     user.gear(slot).second = qty;
   }
 
