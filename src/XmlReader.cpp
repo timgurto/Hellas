@@ -8,6 +8,7 @@
 #ifndef NO_SDL
 #include "NormalVariable.h"
 #include "Rect.h"
+#include "server/ServerItem.h"
 #endif  // NO_SDL
 
 XmlReader::XmlReader(const std::string &string, bool isFile) : _root(nullptr) {
@@ -100,9 +101,9 @@ bool XmlReader::findAttr(TiXmlElement *elem, const char *attr, Color &val) {
   return false;
 }
 
-bool XmlReader::findNormVarChild(const std::string &val, TiXmlElement *elem,
+bool XmlReader::findNormVarChild(const std::string &name, TiXmlElement *elem,
                                  double &mean, double &sd) {
-  TiXmlElement *child = XmlReader::findChild(val, elem);
+  TiXmlElement *child = XmlReader::findChild(name, elem);
   if (child == nullptr) return false;
   if (!XmlReader::findAttr(child, "mean", mean)) mean = 0;
   if (!XmlReader::findAttr(child, "sd", sd)) sd = 1;
@@ -110,40 +111,40 @@ bool XmlReader::findNormVarChild(const std::string &val, TiXmlElement *elem,
 }
 #endif  // NO_SDL
 
-bool XmlReader::findStatsChild(const std::string &val, TiXmlElement *elem,
-                               StatsMod &stats) {
-  TiXmlElement *child = XmlReader::findChild(val, elem);
+bool XmlReader::findStatsChild(const std::string &name, TiXmlElement *elem,
+                               StatsMod &val) {
+  TiXmlElement *child = XmlReader::findChild(name, elem);
   if (child == nullptr) return false;
 
-  stats = StatsMod{};
-  XmlReader::findAttr(child, "armor", stats.armor);
-  XmlReader::findAttr(child, "armour", stats.armor);
-  XmlReader::findAttr(child, "health", stats.maxHealth);
-  XmlReader::findAttr(child, "energy", stats.maxEnergy);
-  XmlReader::findAttr(child, "hps", stats.hps);
-  XmlReader::findAttr(child, "eps", stats.eps);
+  val = StatsMod{};
+  XmlReader::findAttr(child, "armor", val.armor);
+  XmlReader::findAttr(child, "armour", val.armor);
+  XmlReader::findAttr(child, "health", val.maxHealth);
+  XmlReader::findAttr(child, "energy", val.maxEnergy);
+  XmlReader::findAttr(child, "hps", val.hps);
+  XmlReader::findAttr(child, "eps", val.eps);
 
-  XmlReader::findAttr(child, "hit", stats.hit);
-  XmlReader::findAttr(child, "crit", stats.crit);
-  XmlReader::findAttr(child, "critResist", stats.critResist);
-  XmlReader::findAttr(child, "dodge", stats.dodge);
-  XmlReader::findAttr(child, "block", stats.block);
+  XmlReader::findAttr(child, "hit", val.hit);
+  XmlReader::findAttr(child, "crit", val.crit);
+  XmlReader::findAttr(child, "critResist", val.critResist);
+  XmlReader::findAttr(child, "dodge", val.dodge);
+  XmlReader::findAttr(child, "block", val.block);
 
-  XmlReader::findAttr(child, "blockValue", stats.blockValue);
-  XmlReader::findAttr(child, "magicDamage", stats.magicDamage);
-  XmlReader::findAttr(child, "physicalDamage", stats.physicalDamage);
-  XmlReader::findAttr(child, "healing", stats.healing);
-  XmlReader::findAttr(child, "airResist", stats.airResist);
-  XmlReader::findAttr(child, "earthResist", stats.earthResist);
-  XmlReader::findAttr(child, "fireResist", stats.fireResist);
-  XmlReader::findAttr(child, "waterResist", stats.waterResist);
-  XmlReader::findAttr(child, "followerLimit", stats.followerLimit);
-  XmlReader::findAttr(child, "speed", stats.speed);
-  XmlReader::findAttr(child, "gatherBonus", stats.gatherBonus);
-  XmlReader::findAttr(child, "unlockBonus", stats.unlockBonus);
+  XmlReader::findAttr(child, "blockValue", val.blockValue);
+  XmlReader::findAttr(child, "magicDamage", val.magicDamage);
+  XmlReader::findAttr(child, "physicalDamage", val.physicalDamage);
+  XmlReader::findAttr(child, "healing", val.healing);
+  XmlReader::findAttr(child, "airResist", val.airResist);
+  XmlReader::findAttr(child, "earthResist", val.earthResist);
+  XmlReader::findAttr(child, "fireResist", val.fireResist);
+  XmlReader::findAttr(child, "waterResist", val.waterResist);
+  XmlReader::findAttr(child, "followerLimit", val.followerLimit);
+  XmlReader::findAttr(child, "speed", val.speed);
+  XmlReader::findAttr(child, "gatherBonus", val.gatherBonus);
+  XmlReader::findAttr(child, "unlockBonus", val.unlockBonus);
 
   auto n = 0;
-  stats.stuns = XmlReader::findAttr(child, "stuns", n) && n != 0;
+  val.stuns = XmlReader::findAttr(child, "stuns", n) && n != 0;
 
   for (const auto &compositeStat : Stats::compositeDefinitions) {
     const auto &statName = compositeStat.first;
@@ -154,7 +155,7 @@ bool XmlReader::findStatsChild(const std::string &val, TiXmlElement *elem,
     // Stats::modify(StatsMod) will result in an infinite loop.
     auto amount = 0;
     if (XmlReader::findAttr(child, statName.c_str(), amount))
-      stats.composites[statName] = amount;
+      val.composites[statName] = amount;
   }
 
   return true;

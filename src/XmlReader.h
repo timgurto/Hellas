@@ -72,7 +72,7 @@ class XmlReader {
   mean and sd will be changed if and only if the child is found.
   Return value: whether or not the child was found.
   */
-  static bool findNormVarChild(const std::string &val, TiXmlElement *elem,
+  static bool findNormVarChild(const std::string &name, TiXmlElement *elem,
                                double &mean, double &sd);
 
   /*
@@ -82,14 +82,14 @@ class XmlReader {
   Return value: whether or not the child was found.
   */
   template <typename T>
-  static bool findRectChild(const std::string &val, TiXmlElement *elem,
-                            Rect<T> &rect) {
-    TiXmlElement *child = XmlReader::findChild(val, elem);
+  static bool findRectChild(const std::string &name, TiXmlElement *elem,
+                            Rect<T> &val) {
+    TiXmlElement *child = XmlReader::findChild(name, elem);
     if (child == nullptr) return false;
-    if (!XmlReader::findAttr(child, "x", rect.x)) rect.x = 0;
-    if (!XmlReader::findAttr(child, "y", rect.y)) rect.y = 0;
-    if (!XmlReader::findAttr(child, "w", rect.w)) rect.w = 0;
-    if (!XmlReader::findAttr(child, "h", rect.h)) rect.h = 0;
+    if (!XmlReader::findAttr(child, "x", val.x)) val.x = 0;
+    if (!XmlReader::findAttr(child, "y", val.y)) val.y = 0;
+    if (!XmlReader::findAttr(child, "w", val.w)) val.w = 0;
+    if (!XmlReader::findAttr(child, "h", val.h)) val.h = 0;
     return true;
   }
 #endif  // NO_SDL
@@ -100,8 +100,8 @@ class XmlReader {
   changed if and only if the child is found. Any missing attributes will be set
   to their default values. Return value: whether or not the child was found.
   */
-  static bool findStatsChild(const std::string &val, TiXmlElement *elem,
-                             StatsMod &stats);
+  static bool findStatsChild(const std::string &name, TiXmlElement *elem,
+                             StatsMod &val);
 };
 
 #endif
