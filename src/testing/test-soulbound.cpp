@@ -260,6 +260,43 @@ TEST_CASE("Soulbound status is persistent") {
       }
     }
   }
+
+  GIVEN("BoE shoes, and a shoebox object type") {
+    auto data = R"(
+      <item id="shoes" bind="equip" />
+      <objectType id="shoebox">
+        <container slots="1"/>
+      </objectType>
+    )";
+    {
+      auto s = TestServer::WithDataString(data);
+
+      // AND GIVEN Alice has shoes
+      auto c = TestClient::WithUsernameAndDataString("Alice", data);
+      s.waitForUsers(1);
+      auto &alice = s.getFirstUser();
+      alice.giveItem(&s.getFirstItem());
+
+      // AND GIVEN they're soulbound
+      alice.inventory(0).first.onEquip();
+
+      // AND GIVEN she owns a shoebox
+      const auto &shoebox = s.addObject("shoebox", {20, 20}, "Alice");
+
+      // AND GIVEN the shoes are in the shoebox
+      c.sendMessage(CL_SWAP_ITEMS,
+                    makeArgs(Serial::Inventory(), 0, shoebox.serial(), 0));
+
+      // WHEN the server restarts
+    }
+    {
+      auto s = TestServer::WithDataStringAndKeepingOldData(data);
+
+      // THEN the shoes are still soulbound
+      const auto &shoebox = s.getFirstObject();
+      CHECK(shoebox.container().at(0).first.isSoulbound());
+    }
+  }
 }
 
 // No trading

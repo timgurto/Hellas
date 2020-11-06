@@ -516,6 +516,7 @@ void Server::loadEntities(XmlReader &xr,
           &*_items.find(s),
           ServerItem::Instance::ReportingInfo::InObjectContainer(), health);
       invSlot.second = q;
+      invSlot.first.onEquip();
     }
 
     for (auto merchant : xr.getChildren("merchant", elem)) {
