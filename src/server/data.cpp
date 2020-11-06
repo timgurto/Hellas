@@ -516,7 +516,10 @@ void Server::loadEntities(XmlReader &xr,
           &*_items.find(s),
           ServerItem::Instance::ReportingInfo::InObjectContainer(), health);
       invSlot.second = q;
-      invSlot.first.onEquip();
+
+      auto n = 0;
+      if (xr.findAttr(inventory, "soulbound", n) && n != 0)
+        invSlot.first.onEquip();
     }
 
     for (auto merchant : xr.getChildren("merchant", elem)) {
@@ -726,6 +729,7 @@ void Object::writeToXML(XmlWriter &xw) const {
       xw.setAttr(invSlotE, "item", pair.first.type()->id());
       if (pair.second > 1) xw.setAttr(invSlotE, "qty", pair.second);
       xw.setAttr(invSlotE, "health", pair.first.health());
+      if (pair.first.isSoulbound()) xw.setAttr(invSlotE, "soulbound", 1);
     }
   }
 

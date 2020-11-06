@@ -265,19 +265,19 @@ TEST_CASE("Soulbound status is persistent") {
     auto data = R"(
       <item id="shoes" bind="equip" />
       <objectType id="shoebox">
-        <container slots="1"/>
+        <container slots="2"/>
       </objectType>
     )";
     {
       auto s = TestServer::WithDataString(data);
 
-      // AND GIVEN Alice has shoes
+      // AND GIVEN Alice has two shoes
       auto c = TestClient::WithUsernameAndDataString("Alice", data);
       s.waitForUsers(1);
       auto &alice = s.getFirstUser();
-      alice.giveItem(&s.getFirstItem());
+      alice.giveItem(&s.getFirstItem(), 2);
 
-      // AND GIVEN they're soulbound
+      // AND GIVEN one is soulbound
       alice.inventory(0).first.onEquip();
 
       // AND GIVEN she owns a shoebox
@@ -286,15 +286,21 @@ TEST_CASE("Soulbound status is persistent") {
       // AND GIVEN the shoes are in the shoebox
       c.sendMessage(CL_SWAP_ITEMS,
                     makeArgs(Serial::Inventory(), 0, shoebox.serial(), 0));
+      c.sendMessage(CL_SWAP_ITEMS,
+                    makeArgs(Serial::Inventory(), 1, shoebox.serial(), 1));
+      WAIT_UNTIL(shoebox.container().at(1).first.hasItem());
 
       // WHEN the server restarts
     }
     {
       auto s = TestServer::WithDataStringAndKeepingOldData(data);
 
-      // THEN the shoes are still soulbound
+      // THEN the first shoe is still soulbound
       const auto &shoebox = s.getFirstObject();
       CHECK(shoebox.container().at(0).first.isSoulbound());
+
+      // AND THEN the second shoe is still not soulbound
+      CHECK_FALSE(shoebox.container().at(1).first.isSoulbound());
     }
   }
 }
@@ -302,4 +308,3 @@ TEST_CASE("Soulbound status is persistent") {
 // No trading
 // Container can't change hands
 // Use as construction material is fine
-// Persistence (in container)
