@@ -103,7 +103,6 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     int slot;
     std::string id;
     auto qty = 1;
-    // Default value to support transition of old data
     Hitpoints health = Item::MAX_HEALTH;
     auto isSoulbound = false;
 
@@ -114,14 +113,13 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     int n;
     if (xr.findAttr(slotElem, "soulbound", n)) isSoulbound = n != 0;
 
-    std::set<ServerItem>::const_iterator it = _items.find(id);
-    if (it == _items.end()) {
-      _debug("Invalid user data (inventory item).  Removing item.",
-             Color::CHAT_ERROR);
+    const auto *item = findItem(id);
+    if (!item) {
+      SERVER_ERROR("Invalid user inventory item: "s + id);
       continue;
     }
     user.inventory(slot).first = ServerItem::Instance::LoadFromFile(
-        &*it, ServerItem::Instance::ReportingInfo::UserInventory(&user, slot),
+        item, ServerItem::Instance::ReportingInfo::UserInventory(&user, slot),
         health);
     if (isSoulbound) user.inventory(slot).first.onEquip();
     user.inventory(slot).second = qty;
@@ -132,7 +130,6 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     int slot;
     std::string id;
     auto qty = 1;
-    // Default value to support transition of old data
     Hitpoints health = Item::MAX_HEALTH;
 
     if (!xr.findAttr(slotElem, "slot", slot)) continue;
@@ -140,14 +137,13 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     xr.findAttr(slotElem, "quantity", qty);
     xr.findAttr(slotElem, "health", health);
 
-    std::set<ServerItem>::const_iterator it = _items.find(id);
-    if (it == _items.end()) {
-      _debug("Invalid user data (gear item).  Removing item.",
-             Color::CHAT_ERROR);
+    const auto *item = findItem(id);
+    if (!item) {
+      SERVER_ERROR("Invalid user gear item: "s + id);
       continue;
     }
     user.gear(slot).first = ServerItem::Instance::LoadFromFile(
-        &*it, ServerItem::Instance::ReportingInfo::UserGear(&user, slot),
+        item, ServerItem::Instance::ReportingInfo::UserGear(&user, slot),
         health);
     user.gear(slot).second = qty;
   }
