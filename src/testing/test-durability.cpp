@@ -699,32 +699,46 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Broken items can't be traded") {
     useData(R"(
       <item id="coin" />
       <item id="apple" />
-      <objectType id="appleCart" merchantSlots="1" bottomlessMerchant="1" >
+      <objectType id="appleCart" merchantSlots="1" >
         <container slots="1" />
       </objectType>
     )");
     const auto *coin = &server->findItem("coin");
     const auto *apple = &server->findItem("apple");
-    server->addObject("appleCart", {10, 15}, "someOtherOwner");
-    auto &appleCart = server->getFirstObject();
+    auto &appleCart =
+        server->addObject("appleCart", {10, 15}, "someOtherOwner");
     appleCart.merchantSlot(0) = {apple, 1, coin, 1};
+    appleCart.container().addItems(apple);
 
     user->giveItem(coin);
 
     AND_WHEN("his coin is broken") {
-      auto &invSlot = user->inventory(0).first;
-      BREAK_ITEM(invSlot);
+      auto &priceSlot = user->inventory(0).first;
+      BREAK_ITEM(priceSlot);
 
       AND_WHEN("he tries to buy an apple") {
         client->sendMessage(CL_TRADE, makeArgs(appleCart.serial(), 0));
-        REPEAT_FOR_MS(100);
 
         THEN("he still has the coin") {
+          REPEAT_FOR_MS(100);
           CHECK(user->inventory(0).first.type() == coin);
         }
 
         THEN("he gets a warning") {
           CHECK(client->waitForMessage(WARNING_PRICE_IS_BROKEN));
+        }
+      }
+    }
+
+    AND_WHEN("the apple is broken") {
+      auto &wareSlot = appleCart.container().at(0).first;
+      BREAK_ITEM(wareSlot);
+
+      AND_WHEN("he tries to buy an apple") {
+        client->sendMessage(CL_TRADE, makeArgs(appleCart.serial(), 0));
+
+        THEN("he gets a warning") {
+          CHECK(client->waitForMessage(WARNING_WARE_IS_BROKEN));
         }
       }
     }

@@ -260,6 +260,8 @@ HANDLE_MESSAGE(CL_TRADE) {
       RETURN_WITH(WARNING_NO_WARE)
     else if (wareCheck == ServerItem::ITEMS_SOULBOUND)
       RETURN_WITH(WARNING_WARE_IS_SOULBOUND)
+    else if (wareCheck == ServerItem::ITEMS_BROKEN)
+      RETURN_WITH(WARNING_WARE_IS_BROKEN)
 
     // Check that object has inventory space
     auto priceItem = toServerItem(mSlot.priceItem);
