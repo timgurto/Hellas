@@ -214,6 +214,65 @@ HANDLE_MESSAGE(CL_CONSTRUCT_FOR_CITY) {
   user.tryToConstruct(id, {x, y}, Permissions::Owner::CITY);
 }
 
+HANDLE_MESSAGE(CL_TRADE) {
+  auto serial = Serial{};
+  auto slot = size_t{0};
+  READ_ARGS(serial, slot);
+
+  if (user.isStunned()) RETURN_WITH(WARNING_STUNNED)
+
+  // Check that merchant slot is valid
+  Object *obj = _entities.find<Object>(serial);
+  if (!isEntityInRange(client, user, obj)) return;
+  if (obj->isBeingBuilt()) RETURN_WITH(ERROR_UNDER_CONSTRUCTION)
+  size_t slots = obj->objType().merchantSlots();
+  if (slots == 0)
+    RETURN_WITH(ERROR_NOT_MERCHANT)
+  else if (slot >= slots)
+    RETURN_WITH(ERROR_INVALID_MERCHANT_SLOT)
+  const MerchantSlot &mSlot = obj->merchantSlot(slot);
+  if (!mSlot) RETURN_WITH(ERROR_INVALID_MERCHANT_SLOT)
+
+  // Check that user has price
+  if (mSlot.price() > user.inventory()) RETURN_WITH(WARNING_NO_PRICE)
+
+  // Check that user has inventory space
+  if (!obj->hasContainer() && !obj->objType().bottomlessMerchant())
+    RETURN_WITH(ERROR_NO_INVENTORY)
+  auto wareItem = toServerItem(mSlot.wareItem);
+  auto priceItem = toServerItem(mSlot.priceItem);
+  if (!vectHasSpaceAfterRemovingItems(user.inventory(), wareItem, mSlot.wareQty,
+                                      priceItem, mSlot.priceQty))
+    RETURN_WITH(WARNING_INVENTORY_FULL)
+
+  bool bottomless = obj->objType().bottomlessMerchant();
+  if (!bottomless) {
+    // Check that object has items in stock
+    if (mSlot.ware() > obj->container().raw()) RETURN_WITH(WARNING_NO_WARE)
+
+    // Check that object has inventory space
+    auto priceItem = toServerItem(mSlot.priceItem);
+    if (!vectHasSpaceAfterRemovingItems(obj->container().raw(), priceItem,
+                                        mSlot.priceQty, wareItem,
+                                        mSlot.wareQty))
+      RETURN_WITH(WARNING_MERCHANT_INVENTORY_FULL)
+  }
+
+  // Take price from user
+  user.removeItems(mSlot.price());
+
+  if (!bottomless) {
+    // Take ware from object
+    obj->container().removeItems(mSlot.ware());
+
+    // Give price to object
+    obj->container().addItems(toServerItem(mSlot.priceItem), mSlot.priceQty);
+  }
+
+  // Give ware to user
+  user.giveItem(wareItem, mSlot.wareQty);
+}
+
 HANDLE_MESSAGE(CL_DROP) {
   Serial serial;
   size_t slot;
@@ -753,6 +812,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_CRAFT)
       SEND_MESSAGE_TO_HANDLER(CL_CONSTRUCT)
       SEND_MESSAGE_TO_HANDLER(CL_CONSTRUCT_FOR_CITY)
+      SEND_MESSAGE_TO_HANDLER(CL_TRADE)
       SEND_MESSAGE_TO_HANDLER(CL_DROP)
       SEND_MESSAGE_TO_HANDLER(CL_PICK_UP_DROPPED_ITEM)
       SEND_MESSAGE_TO_HANDLER(CL_SWAP_ITEMS)
@@ -967,70 +1027,6 @@ void Server::handleBufferedMessages(const Socket &client,
         if (user->isStunned()) BREAK_WITH(WARNING_STUNNED)
 
         handle_CL_TAKE_ITEM(*user, serial, slotNum);
-        break;
-      }
-
-      case CL_TRADE: {
-        Serial serial;
-        size_t slot;
-        iss >> serial >> del >> slot >> del;
-        if (del != MSG_END) return;
-
-        if (user->isStunned()) BREAK_WITH(WARNING_STUNNED)
-
-        // Check that merchant slot is valid
-        Object *obj = _entities.find<Object>(serial);
-        if (!isEntityInRange(client, *user, obj)) break;
-        if (obj->isBeingBuilt()) BREAK_WITH(ERROR_UNDER_CONSTRUCTION)
-        size_t slots = obj->objType().merchantSlots();
-        if (slots == 0)
-          BREAK_WITH(ERROR_NOT_MERCHANT)
-        else if (slot >= slots)
-          BREAK_WITH(ERROR_INVALID_MERCHANT_SLOT)
-        const MerchantSlot &mSlot = obj->merchantSlot(slot);
-        if (!mSlot) BREAK_WITH(ERROR_INVALID_MERCHANT_SLOT)
-
-        // Check that user has price
-        if (mSlot.price() > user->inventory()) BREAK_WITH(WARNING_NO_PRICE)
-
-        // Check that user has inventory space
-        if (!obj->hasContainer() && !obj->objType().bottomlessMerchant())
-          BREAK_WITH(ERROR_NO_INVENTORY)
-        auto wareItem = toServerItem(mSlot.wareItem);
-        auto priceItem = toServerItem(mSlot.priceItem);
-        if (!vectHasSpaceAfterRemovingItems(user->inventory(), wareItem,
-                                            mSlot.wareQty, priceItem,
-                                            mSlot.priceQty))
-          BREAK_WITH(WARNING_INVENTORY_FULL)
-
-        bool bottomless = obj->objType().bottomlessMerchant();
-        if (!bottomless) {
-          // Check that object has items in stock
-          if (mSlot.ware() > obj->container().raw()) BREAK_WITH(WARNING_NO_WARE)
-
-          // Check that object has inventory space
-          auto priceItem = toServerItem(mSlot.priceItem);
-          if (!vectHasSpaceAfterRemovingItems(obj->container().raw(), priceItem,
-                                              mSlot.priceQty, wareItem,
-                                              mSlot.wareQty))
-            BREAK_WITH(WARNING_MERCHANT_INVENTORY_FULL)
-        }
-
-        // Take price from user
-        user->removeItems(mSlot.price());
-
-        if (!bottomless) {
-          // Take ware from object
-          obj->container().removeItems(mSlot.ware());
-
-          // Give price to object
-          obj->container().addItems(toServerItem(mSlot.priceItem),
-                                    mSlot.priceQty);
-        }
-
-        // Give ware to user
-        user->giveItem(wareItem, mSlot.wareQty);
-
         break;
       }
 
