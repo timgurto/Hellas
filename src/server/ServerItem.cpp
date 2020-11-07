@@ -111,8 +111,12 @@ ServerItem::ContainerCheckResult containerHasEnoughToTrade(
     const ServerItem::vect_t &container, const ItemSet &items) {
   auto remaining = items;
   auto soulboundItemWasFound = false;
+  auto brokenItemWasFound = false;
   for (const auto &slot : container) {
-    if (slot.first.isBroken()) continue;
+    if (slot.first.isBroken()) {
+      brokenItemWasFound = true;
+      continue;
+    }
     if (slot.first.isSoulbound()) {
       soulboundItemWasFound = true;
       continue;
@@ -121,6 +125,7 @@ ServerItem::ContainerCheckResult containerHasEnoughToTrade(
     if (remaining.isEmpty()) return ServerItem::ITEMS_PRESENT;
   }
   if (soulboundItemWasFound) return ServerItem::ITEMS_SOULBOUND;
+  if (brokenItemWasFound) return ServerItem::ITEMS_BROKEN;
   return ServerItem::ITEMS_MISSING;
 }
 

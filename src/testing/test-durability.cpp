@@ -716,6 +716,10 @@ TEST_CASE("Broken items don't work") {
         THEN("he still has the coin") {
           CHECK(user.inventory(0).first.type() == coin);
         }
+
+        THEN("he gets a warning") {
+          CHECK(c.waitForMessage(WARNING_PRICE_IS_BROKEN));
+        }
       }
     }
   }

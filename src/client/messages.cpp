@@ -266,6 +266,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
       case WARNING_ITEM_IS_BOUND:
       case WARNING_WARE_IS_SOULBOUND:
       case WARNING_PRICE_IS_SOULBOUND:
+      case WARNING_PRICE_IS_BROKEN:
         errorMessageColor = Color::CHAT_WARNING;  // Yellow above, red below
       case ERROR_INVALID_USER:
       case ERROR_INVALID_ITEM:
@@ -2905,6 +2906,7 @@ void Client::initializeMessageNames() {
       "That object's items in stock are soulbound";
   _errorMessages[WARNING_PRICE_IS_SOULBOUND] =
       "You can't buy using soulbound items";
+  _errorMessages[WARNING_PRICE_IS_BROKEN] = "You can't buy using broken items";
 }
 
 void Client::performCommand(const std::string &commandString) {

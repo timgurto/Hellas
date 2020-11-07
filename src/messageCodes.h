@@ -703,6 +703,7 @@ enum MessageCode {
   WARNING_NO_PRICE, // The user cannot afford the price of a merchant exchange
   WARNING_WARE_IS_SOULBOUND, // The merchant has the ware in stock, but it's soulbound
   WARNING_PRICE_IS_SOULBOUND, // The user has the price, but it's soulbound
+  WARNING_PRICE_IS_BROKEN, // The user has the price, but it's broken
   WARNING_MERCHANT_INVENTORY_FULL, // The merchant object does not have enough inventory space to trade with the user
 
   // Talents and spells

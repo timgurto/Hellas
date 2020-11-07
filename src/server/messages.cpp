@@ -239,6 +239,8 @@ HANDLE_MESSAGE(CL_TRADE) {
     RETURN_WITH(WARNING_NO_PRICE)
   else if (priceCheck == ServerItem::ITEMS_SOULBOUND)
     RETURN_WITH(WARNING_PRICE_IS_SOULBOUND)
+  else if (priceCheck == ServerItem::ITEMS_BROKEN)
+    RETURN_WITH(WARNING_PRICE_IS_BROKEN)
 
   // Check that user has inventory space
   if (!obj->hasContainer() && !obj->objType().bottomlessMerchant())

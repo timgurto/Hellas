@@ -70,7 +70,12 @@ class ServerItem : public Item {
     ReportingInfo _reportingInfo;
   };
 
-  enum ContainerCheckResult { ITEMS_PRESENT, ITEMS_MISSING, ITEMS_SOULBOUND };
+  enum ContainerCheckResult {
+    ITEMS_PRESENT,
+    ITEMS_MISSING,
+    ITEMS_SOULBOUND,
+    ITEMS_BROKEN
+  };
 
  private:
   size_t _stackSize{1};
