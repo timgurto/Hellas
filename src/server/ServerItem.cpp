@@ -107,8 +107,8 @@ bool vectHasSpaceAfterRemovingItems(const ServerItem::vect_t &vect,
   return vectHasSpace(v, item, qty);
 }
 
-bool containerContains(const ServerItem::vect_t &container,
-                       const ItemSet &items) {
+bool containerHasEnoughToTrade(const ServerItem::vect_t &container,
+                               const ItemSet &items) {
   auto remaining = items;
   for (const auto &slot : container) {
     if (slot.first.isBroken()) continue;

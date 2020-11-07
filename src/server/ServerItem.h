@@ -120,8 +120,8 @@ bool vectHasSpaceAfterRemovingItems(const ServerItem::vect_t &vect,
                                     const ServerItem *itemThatWillBeRemoved,
                                     size_t qtyThatWillBeRemoved);
 
-bool containerContains(const ServerItem::vect_t &container,
-                       const ItemSet &items);
+bool containerHasEnoughToTrade(const ServerItem::vect_t &container,
+                               const ItemSet &items);
 
 const ServerItem *toServerItem(const Item *item);
 
