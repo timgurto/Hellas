@@ -234,9 +234,11 @@ HANDLE_MESSAGE(CL_TRADE) {
   if (!mSlot) RETURN_WITH(ERROR_INVALID_MERCHANT_SLOT)
 
   // Check that user has price
-  if (containerHasEnoughToTrade(user.inventory(), mSlot.price()) !=
-      ServerItem::ITEMS_PRESENT)
+  auto priceCheck = containerHasEnoughToTrade(user.inventory(), mSlot.price());
+  if (priceCheck == ServerItem::ITEMS_MISSING)
     RETURN_WITH(WARNING_NO_PRICE)
+  else if (priceCheck == ServerItem::ITEMS_SOULBOUND)
+    RETURN_WITH(WARNING_PRICE_IS_SOULBOUND)
 
   // Check that user has inventory space
   if (!obj->hasContainer() && !obj->objType().bottomlessMerchant())

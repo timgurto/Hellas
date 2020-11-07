@@ -323,16 +323,16 @@ TEST_CASE_METHOD(TwoClientsWithData, "Soulbound items can't be traded") {
           CL_SET_MERCHANT_SLOT,
           makeArgs(store.serial(), 0, "blueMarble", 1, "redMarble", 1));
 
-      AND_GIVEN("Bob has a red marble") {
+      AND_GIVEN("Bob has a red marble (price)") {
         uBob->giveItem(redMarble);
 
-        AND_GIVEN("the store has a blue marble") {
+        AND_GIVEN("the store has a blue marble (ware)") {
           uAlice->giveItem(blueMarble);
           cAlice->sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0,
                                                       store.serial(), 0));
           WAIT_UNTIL(store.container().at(0).first.hasItem());
 
-          AND_GIVEN("the blue marble is soulbound") {
+          AND_GIVEN("the blue marble (ware) is soulbound") {
             store.container().at(0).first.onEquip();
 
             WHEN("Bob tries to buy the blue marble") {
@@ -348,12 +348,23 @@ TEST_CASE_METHOD(TwoClientsWithData, "Soulbound items can't be traded") {
               }
             }
           }
+
+          AND_GIVEN("the red marble price) is soulbound") {
+            uBob->inventory(0).first.onEquip();
+
+            WHEN("Bob tries to buy the blue marble") {
+              cBob->sendMessage(CL_TRADE, makeArgs(store.serial(), 0));
+
+              THEN("he gets a warning") {
+                CHECK(cBob->waitForMessage(WARNING_PRICE_IS_SOULBOUND));
+              }
+            }
+          }
         }
       }
     }
   }
 }
 
-// No trading
 // Container can't change hands
 // Use as construction material is fine
