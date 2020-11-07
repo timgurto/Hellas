@@ -55,13 +55,13 @@ Mark graveyard on map: not hardcoded
             <gear id="staff1" />
         </humanoid>
     </npcType>
-    <item id="witchHat" name="Wayward Hat" gearSlot="0" sounds="fabric" >
+    <item id="witchHat" name="Wayward Hat" gearSlot="0" sounds="fabric" bind="pickup" >
         <offset x="-5" y="-10" />
     </item>
-    <item id="witchRobe" name="Wayward Robe" gearSlot="2" sounds="fabric" iconFile="leatherBlack" >
+    <item id="witchRobe" name="Wayward Robe" gearSlot="2" sounds="fabric" iconFile="leatherBlack" bind="pickup" >
         <offset x="-8" y="-3" />
     </item>
-    <item id="pumpkinFlower" name="Grave Flower" stackSize="10" exclusiveToQuest="collectPumpkinFlowers" />
+    <item id="pumpkinFlower" name="Grave Flower" stackSize="10" exclusiveToQuest="collectPumpkinFlowers" bind="pickup" />
     <objectType id="pumpkinFlower0" name="Grave Flower" xDrawOffset="-10" yDrawOffset="-11" isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
     <objectType id="pumpkinFlower1" name="Grave Flower" xDrawOffset="-9"  yDrawOffset="-8"  isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
     <objectType id="pumpkinFlower2" name="Grave Flower" xDrawOffset="-10" yDrawOffset="-8"  isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>

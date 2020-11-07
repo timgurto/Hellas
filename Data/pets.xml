@@ -51,7 +51,7 @@
         <unlockedBy recipe="pole1" chance="0.05" />
     </recipe>
     <item id="staff1Silver" name="Inlaid Walking Stick"
-        gearSlot="6" lvlReq="13"
+        gearSlot="6" lvlReq="13" quality="2" bind="equip"
         iconFile="staff1" gearFile="staff1">
         <stats followerLimit="1" />
         <offset x="-6" y="-16" />
@@ -70,7 +70,7 @@
         <unlockedBy recipe="staff1" chance="0.1" />
     </recipe>
     <item id="staff2Silver" name="Inlaid Staff"
-        gearSlot="6" lvlReq="24"
+        gearSlot="6" lvlReq="24" quality="2" bind="equip"
         iconFile="staff2" gearFile="staff2">
         <stats followerLimit="2" />
         <offset x="-3" y="-19" />

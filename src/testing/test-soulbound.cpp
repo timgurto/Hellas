@@ -404,5 +404,3 @@ TEST_CASE_METHOD(ServerAndClientWithData,
     }
   }
 }
-
-// Use as construction material is fine

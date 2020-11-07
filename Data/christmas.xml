@@ -1,6 +1,6 @@
 <root>
 
-<item id="santaHat" name="Winter Hat" gearSlot="0" sounds="fabric" >
+<item id="santaHat" name="Winter Hat" gearSlot="0" sounds="fabric" bind="pickup" >
     <offset x="-3" y="-8" />
     <particles profile="snow" x="1" y="36" />
     <canBeRepaired cost="linenCloth" tool="sewing" />

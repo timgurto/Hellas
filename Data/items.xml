@@ -76,7 +76,7 @@
 
 
 <item id="bone" name="Bone" stackSize="10" sounds="bone" />
-<item id="boneClub" name="Bone Club" gearSlot="6" iconFile="bone" sounds="bone" lvlReq="3" >
+<item id="boneClub" name="Bone Club" gearSlot="6" iconFile="bone" sounds="bone" lvlReq="3" bind="pickup" >
     <weapon damage="6" speed="3.2" />
     <stats courage="1" />
 	<offset x="-6" y="-15" />
@@ -112,7 +112,7 @@
 			<stats swiftness="1" />
 		</item>
             <item id="stoneKnifeSilver" name="Inlaid Stone Knife" gearSlot="6"
-                iconFile="stoneKnife" gearFile="stoneKnife" sounds="rock" quality="2">
+                iconFile="stoneKnife" gearFile="stoneKnife" sounds="rock" quality="2" bind="equip">
                 <tag name="carving" toolSpeed="1.05" />
                 <tag name="harvesting" toolSpeed="1.05" />
                 <offset x="-4" y="-1" />
@@ -129,7 +129,7 @@
             <canBeRepaired cost="tinBar" tool="smelting1" />
 		</item>
             <item id="tinKnifeSilver" name="Inlaid Tin Knife" gearSlot="6" lvlReq="10"
-                iconFile="tinKnife" gearFile="tinKnife" quality="2">
+                iconFile="tinKnife" gearFile="tinKnife" quality="2" bind="equip">
                 <tag name="carving" toolSpeed="1.15" />
                 <tag name="harvesting" toolSpeed="1.15" />
                 <tag name="shearing" toolSpeed="1.05" />
@@ -148,7 +148,7 @@
             <canBeRepaired cost="copperBar" tool="smelting2" />
 		</item>
             <item id="copperKnifeSilver" name="Inlaid Copper Knife" gearSlot="6" lvlReq="25"
-                iconFile="copperKnife" gearFile="copperKnife" quality="2">
+                iconFile="copperKnife" gearFile="copperKnife" quality="2" bind="equip">
                 <tag name="carving" toolSpeed="1.25" />
                 <tag name="harvesting" toolSpeed="1.25" />
                 <tag name="shearing" toolSpeed="1.15" />
@@ -165,7 +165,7 @@
 			<offset x="-5" y="1" />
 		</item>
             <item id="stoneAxeSilver" name="Inlaid Stone Axe" gearSlot="6"
-                    iconFile="stoneAxe" gearFile="stoneAxe" quality="2" >
+                    iconFile="stoneAxe" gearFile="stoneAxe" quality="2" bind="equip" >
                 <tag name="woodcutting" toolSpeed="1.05" />
                 <stats might="1" />
                 <weapon damage="4" speed="2" />
@@ -179,7 +179,7 @@
             <canBeRepaired cost="tinBar" tool="smelting1" />
         </item>
             <item id="tinAxeSilver" name="Inlaid Tin Axe" gearSlot="6" lvlReq="10"
-                    iconFile="tinAxe" gearFile="tinAxe" quality="2" >
+                    iconFile="tinAxe" gearFile="tinAxe" quality="2" bind="equip" >
                 <tag name="woodcutting" toolSpeed="1.15" />
                 <stats might="2" />
                 <weapon damage="7" speed="2" />
@@ -194,7 +194,7 @@
             <canBeRepaired cost="copperBar" tool="smelting2" />
 		</item>
             <item id="copperAxeSilver" name="Inlaid Copper Axe" gearSlot="6" sounds="metalTool" lvlReq="24"
-                quality="2" iconFile="copperAxe" gearFile="copperAxe">
+                quality="2" bind="equip" iconFile="copperAxe" gearFile="copperAxe">
                 <tag name="woodcutting" toolSpeed="1.25" />
                 <stats might="5" />
                 <weapon damage="11" speed="2.2" />
@@ -209,7 +209,7 @@
             <canBeRepaired cost="copperBar" tool="smelting2" />
 		</item>
             <item id="copperHammerSilver" name="Inlaid Copper Hammer" gearSlot="6"
-                iconFile="copperHammer" gearFile="copperHammer" quality="2" >
+                iconFile="copperHammer" gearFile="copperHammer" quality="2" bind="equip" >
                 <tag name="hammering" toolSpeed="1.05" />
                 <stats courage="5" />
                 <weapon damage="18" speed="3.5" />
@@ -224,7 +224,7 @@
             <tag name="fishing" />
 		</item>
             <item id="woodSpearSilver" name="Inlaid Sharpened Stick" gearSlot="6" sounds="spear"
-                iconFile="woodSpear" gearFile="woodSpear" quality="2" >
+                iconFile="woodSpear" gearFile="woodSpear" quality="2" bind="equip" >
                 <stats cunning="1" />
                 <weapon damage="6" speed="2.5" />
                 <offset x="-6" y="-20" />
@@ -238,7 +238,7 @@
             <canBeRepaired cost="tinBar" tool="smelting1" />
             <tag name="fishing" toolSpeed="1.1" />
 		</item>
-            <item id="tinSpearSilver" name="Inlaid Light Spear" gearSlot="6" sounds="spear" lvlReq="14"      iconFile="tinSpear" gearFile="tinSpear" quality="2" >
+            <item id="tinSpearSilver" name="Inlaid Light Spear" gearSlot="6" sounds="spear" lvlReq="14"      iconFile="tinSpear" gearFile="tinSpear" quality="2" bind="equip" >
                 <stats crit="100" cunning="1" />
                 <weapon damage="10" speed="2.5" />
                 <offset x="-5" y="-21" />
@@ -253,7 +253,7 @@
             <tag name="fishing" toolSpeed="1.2" />
 		</item>
             <item id="copperSpearSilver" name="Inlaid Spear" gearSlot="6" lvlReq="24"
-                iconFile="copperSpear" gearFile="copperSpear" quality="2">
+                iconFile="copperSpear" gearFile="copperSpear" quality="2" bind="equip">
                 <stats crit="200" cunning="1" />
                 <weapon damage="13" speed="2.4" />
                 <offset x="-5" y="-21" />
@@ -269,7 +269,7 @@
             <canBeRepaired cost="copperBar" tool="smelting2" />
 		</item>
             <item id="copperSwordSilver" name="Inlaid Short Sword" gearSlot="6" lvlReq="30"
-                iconFile="copperSword" gearFile="copperSword" quality="2" >
+                iconFile="copperSword" gearFile="copperSword" quality="2" bind="equip" >
                 <stats hit="200" might="2" />
                 <weapon damage="16" speed="2.5" />
                 <offset x="-6" y="-8" />
@@ -290,7 +290,7 @@
                 <canBeRepaired cost="leather" />
             </item>
                 <item id="slingSilver" name="Inlaid Sling" gearSlot="6" lvlReq="9" 
-                    iconFile="sling" gearFile="sling" quality="2" >
+                    iconFile="sling" gearFile="sling" quality="2" bind="equip" >
                     <stats cunning="2" />
                     <weapon damage="4" speed="1.9" range="25" consumes="smoothRock" projectile="smoothRock" />
                     <offset x="-7" y="0" />
@@ -305,7 +305,7 @@
                 <canBeRepaired cost="lumber" />
             </item>
                 <item id="bowSilver" name="Inlaid Bow" gearSlot="6" sounds="bow" lvlReq="12"
-                    iconFile="bow" gearFile="bow" quality="2" >
+                    iconFile="bow" gearFile="bow" quality="2" bind="equip" >
                     <weapon damage="7" speed="3" range="25" consumes="woodArrow" projectile="arrow" />
                     <stats hit="100"/>
                     <offset x="-7" y="-3" />
@@ -344,7 +344,7 @@
                 <canBeRepaired cost="woolCloth" tool="sewing" />
             </item>
                 <item id="woolHoodSilver" name="Embroidered Woolen Hood" gearSlot="0" lvlReq="20"
-                    iconFile="woolHood" gearFile="woolHood" quality="2" >
+                    iconFile="woolHood" gearFile="woolHood" quality="2" bind="equip" >
                     <stats armor="8" energy="31" />
                     <offset x="-4" y="-4" />
                     <canBeRepaired cost="woolCloth" tool="sewing" />
@@ -357,7 +357,7 @@
                 <canBeRepaired cost="leather" tool="sewing" />
             </item>
                 <item id="skullCapSilver" name="Lacquered Skull Cap" gearSlot="0" sounds="leather" lvlReq="9"
-                    iconFile="skullCap" gearFile="skullCap" quality="2">
+                    iconFile="skullCap" gearFile="skullCap" quality="2" bind="equip">
                     <stats armor="7" swiftness="5" />
                     <offset x="-3" y="-4" />
                     <canBeRepaired cost="leather" tool="sewing" />
@@ -370,7 +370,7 @@
                 <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
             <item id="copperHelmetSilver" name="Silvered Copper Helmet" gearSlot="0" lvlReq="30"
-                iconFile="copperHelmet" gearFile="copperHelmet" quality="2">
+                iconFile="copperHelmet" gearFile="copperHelmet" quality="2" bind="equip">
                 <stats armor="28" health="30" />
                 <offset x="-3" y="-5" />
                 <canBeRepaired cost="copperBar" tool="smelting2" />
@@ -384,7 +384,7 @@
                 <canBeRepaired cost="linenCloth" tool="sewing" />
             </item>
                 <item id="linenCloakSilver" name="Embroidered Linen Cloak" gearSlot="3" sounds="fabric" lvlReq="5"
-                    iconFile="linenCloak" gearFile="linenCloak" quality="2">
+                    iconFile="linenCloak" gearFile="linenCloak" quality="2" bind="equip">
                     <stats armor="1" courage="3" />
                     <offset x="-4" y="-1" />
                     <canBeRepaired cost="linenCloth" tool="sewing" />
@@ -395,7 +395,7 @@
                 <canBeRepaired cost="woolCloth" tool="sewing" />
             </item>
                 <item id="woolCloakSilver" name="Embroidered Woolen Cloak" gearSlot="3" sounds="fabric" lvlReq="26"
-                    iconFile="woolCloak" gearFile="woolCloak" quality="2">
+                    iconFile="woolCloak" gearFile="woolCloak" quality="2" bind="equip">
                     <stats armor="7" courage="7" />
                     <offset x="-4" y="-1" />
                     <canBeRepaired cost="woolCloth" tool="sewing" />
@@ -415,7 +415,7 @@
                 <canBeRepaired cost="tinScale" />
             </item>
                 <item id="tinLamellarSilver" name="Silvered Tin Lamellar" gearSlot="2" sounds="mailArmor" lvlReq="12"
-                    iconFile="tinLamellar" gearFile="tinLamellar" quality="2">
+                    iconFile="tinLamellar" gearFile="tinLamellar" quality="2" bind="equip">
                     <stats armor="20" courage="7" />
                     <offset x="-6" y="-4" />
                     <canBeRepaired cost="tinScale" />
@@ -426,7 +426,7 @@
                 <canBeRepaired cost="copperScale" />
             </item>
                 <item id="copperLamellarSilver" name="Silvered Copper Lamellar" gearSlot="2" sounds="mailArmor" lvlReq="27"
-                    iconFile="copperLamellar" gearFile="copperLamellar" quality="2">
+                    iconFile="copperLamellar" gearFile="copperLamellar" quality="2" bind="equip">
                     <stats armor="39" courage="12" />
                     <offset x="-6" y="-4" />
                     <canBeRepaired cost="copperScale" />
@@ -439,7 +439,7 @@
                 <canBeRepaired cost="tinRing" />
             </item>
                 <item id="tinHauberkSilver" name="Silvered Tin Hauberk" gearSlot="2" sounds="mailArmor" lvlReq="14"
-                    iconFile="tinHauberk" gearFile="tinHauberk" quality="2">
+                    iconFile="tinHauberk" gearFile="tinHauberk" quality="2" bind="equip">
                     <stats armor="22" block="400" swiftness="4" />
                     <offset x="-5" y="-3" />
                     <canBeRepaired cost="tinRing" />
@@ -450,7 +450,7 @@
                 <canBeRepaired cost="copperRing" />
             </item>
                 <item id="copperHauberkSilver" name="Silvered Copper Hauberk" gearSlot="2" sounds="mailArmor" lvlReq="29"
-                    iconFile="copperHauberk" gearFile="copperHauberk" quality="2">
+                    iconFile="copperHauberk" gearFile="copperHauberk" quality="2" bind="equip">
                     <stats armor="39" block="700" swiftness="7" />
                     <offset x="-5" y="-3" />
                     <canBeRepaired cost="copperRing" />
@@ -463,7 +463,7 @@
                 <canBeRepaired cost="linenCloth" />
             </item>
                 <item id="linothoraxSilver" name="Silvered Linothorax Armour" gearSlot="2" lvlReq="7"
-                    iconFile="linothorax" gearFile="linothorax" quality="2">
+                    iconFile="linothorax" gearFile="linothorax" quality="2" bind="equip">
                     <stats armor="12" endurance="6" />
                     <offset x="-5" y="-4" />
                     <canBeRepaired cost="linenCloth" />
@@ -474,7 +474,7 @@
                 <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
                 <item id="copperCuirassSilver" name="Silvered Copper Cuirass" gearSlot="2" lvlReq="31"
-                    iconFile="copperCuirass" gearFile="copperCuirass" quality="2" >
+                    iconFile="copperCuirass" gearFile="copperCuirass" quality="2" bind="equip" >
                     <stats armor="42" endurance="14" />
                     <offset x="-3" y="-4" />
                     <canBeRepaired cost="copperBar" tool="smelting2" />
@@ -486,7 +486,7 @@
                 <offset x="-6" y="-4" />
                 <canBeRepaired cost="leatherScale" />
             </item>
-                <item id="leatherLamellarSilver" name="Lacquered Leather Lamellar" gearSlot="2" sounds="leather" lvlReq="11"
+                <item id="leatherLamellarSilver" name="Lacquered Leather Lamellar" gearSlot="2" bind="equip" sounds="leather" lvlReq="11"
                     iconFile="leatherLamellar" gearFile="leatherLamellar" quality="2">
                     <stats armor="11" swiftness="6" dodge="100" />
                     <offset x="-6" y="-4" />
@@ -500,7 +500,7 @@
                 <canBeRepaired cost="linenCloth" tool="sewing" />
             </item>
                 <item id="linenChitonSilver" name="Embroidered Linen Chiton" gearSlot="2" sounds="fabric" lvlReq="5"
-                    iconFile="linenChiton" gearFile="linenChiton" quality="2" >
+                    iconFile="linenChiton" gearFile="linenChiton" quality="2" bind="equip" >
                     <stats armor="3" cunning="7" />
                     <offset x="-6" y="-3" />
                     <canBeRepaired cost="linenCloth" tool="sewing" />
@@ -511,7 +511,7 @@
                 <canBeRepaired cost="woolCloth" tool="sewing" />
             </item>
                 <item id="woolChitonSilver" name="Embroidered Wool Chiton" gearSlot="2" sounds="fabric" lvlReq="20"
-                    iconFile="woolChiton" gearFile="woolChiton" quality="2">
+                    iconFile="woolChiton" gearFile="woolChiton" quality="2" bind="equip">
                     <stats armor="11" cunning="14" />
                     <offset x="-6" y="-3" />
                     <canBeRepaired cost="woolCloth" tool="sewing" />
@@ -524,7 +524,7 @@
                 <canBeRepaired cost="woolCloth" tool="sewing" />
             </item>
                 <item id="woolExomisSilver" name="Embroidered Wool Exomis" gearSlot="2" sounds="fabric" lvlReq="22"
-                    iconFile="woolExomis" gearFile="woolExomis" quality="2">
+                    iconFile="woolExomis" gearFile="woolExomis" quality="2" bind="equip">
                     <stats armor="12" airResist="63" earthResist="63" fireResist="63" waterResist="63" />
                     <offset x="-5" y="-4" />
                     <canBeRepaired cost="woolCloth" tool="sewing" />
@@ -538,7 +538,7 @@
                 <canBeRepaired cost="woolCloth" tool="sewing" />
             </item>
                 <item id="woolWrappingsSilver" name="Embroidered Wool Wrappings" gearSlot="4" sounds="fabric" lvlReq="25"
-                    iconFile="woolWrappings" gearFile="woolWrappings" quality="2">
+                    iconFile="woolWrappings" gearFile="woolWrappings" quality="2" bind="equip">
                     <stats armor="4" intellect="4" />
                     <offset x="0" y="-8" />
                     <canBeRepaired cost="woolCloth" tool="sewing" />
@@ -552,7 +552,7 @@
                 <canBeRepaired cost="leather" tool="sewing" />
             </item>
                 <item id="leatherGlovesSilver" name="Lacquered Leather Gloves" gearSlot="4" sounds="leather" lvlReq="17"
-                    iconFile="leatherGloves" gearFile="leatherGloves" quality="2">
+                    iconFile="leatherGloves" gearFile="leatherGloves" quality="2" bind="equip">
                     <stats armor="3" swiftness="3" />
                     <offset x="-2" y="1" />
                     <tag name="gloves" toolSpeed="1.05" />
@@ -566,7 +566,7 @@
                 <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
                 <item id="copperBracersSilver" name="Silvered Copper Bracers" gearSlot="4" lvlReq="28"
-                    iconFile="copperBracers" gearFile="copperBracers" quality="2">
+                    iconFile="copperBracers" gearFile="copperBracers" quality="2" bind="equip">
                     <stats armor="10" might="3" />
                     <offset x="-1" y="-7" />
                     <canBeRepaired cost="copperBar" tool="smelting2" />
@@ -580,7 +580,7 @@
                 <canBeRepaired cost="woolCloth" tool="sewing" />
             </item>
                 <item id="woolShoesSilver" name="Embroidered Wool Shoes" gearSlot="5" sounds="fabric" lvlReq="19"
-                    iconFile="woolShoes" gearFile="woolShoes" quality="2">
+                    iconFile="woolShoes" gearFile="woolShoes" quality="2" bind="equip">
                     <stats armor="4" courage="7" />
                     <offset x="-3" y="-1" />
                     <canBeRepaired cost="woolCloth" tool="sewing" />
@@ -593,7 +593,7 @@
                 <canBeRepaired cost="leather" tool="sewing" />
             </item>
                 <item id="sandalsSilver" name="Lacquered Sandals" gearSlot="5" sounds="leather" lvlReq="12"
-                    iconFile="sandals" gearFile="sandals" quality="2">
+                    iconFile="sandals" gearFile="sandals" quality="2" bind="equip">
                     <stats armor="8" swiftness="4" />
                     <offset x="-1" y="-5" />
                     <canBeRepaired cost="leather" tool="sewing" />
@@ -606,7 +606,7 @@
                 <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
                 <item id="copperGreavesSilver" name="Silvered Copper Greaves" gearSlot="5" lvlReq="30"
-                    iconFile="copperGreaves" gearFile="copperGreaves" quality="2">
+                    iconFile="copperGreaves" gearFile="copperGreaves" quality="2" bind="equip">
                     <stats armor="20" endurance="7" />
                     <offset x="-2" y="-10" />
                     <canBeRepaired cost="copperBar" tool="smelting2" />
@@ -621,7 +621,7 @@
                 <canBeRepaired cost="lumber" />
             </item>
                 <item id="leatherShieldSilver" name="Lacquered Leather Shield" gearSlot="7" lvlReq="15"
-                    iconFile="leatherShield" gearFile="leatherShield" quality="2" >
+                    iconFile="leatherShield" gearFile="leatherShield" quality="2" bind="equip" >
                     <stats armor="19" endurance="6" blockValue="500" />
                     <offset x="-4" y="-10" />
                     <tag name="shield" />
@@ -634,7 +634,7 @@
                 <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
                 <item id="copperShieldSilver" name="Inlaid Buckler" gearSlot="7" lvlReq="30"
-                    iconFile="copperShield" gearFile="copperShield" quality="2">
+                    iconFile="copperShield" gearFile="copperShield" quality="2" bind="equip">
                     <stats armor="57" endurance="3" block="300" blockValue="800" />
                     <offset x="-6" y="-12" />
                     <tag name="shield" />
