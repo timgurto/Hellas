@@ -107,16 +107,21 @@ bool vectHasSpaceAfterRemovingItems(const ServerItem::vect_t &vect,
   return vectHasSpace(v, item, qty);
 }
 
-bool containerHasEnoughToTrade(const ServerItem::vect_t &container,
-                               const ItemSet &items) {
+ServerItem::ContainerCheckResult containerHasEnoughToTrade(
+    const ServerItem::vect_t &container, const ItemSet &items) {
   auto remaining = items;
+  auto soulboundItemWasFound = false;
   for (const auto &slot : container) {
     if (slot.first.isBroken()) continue;
-    if (slot.first.isSoulbound()) continue;
+    if (slot.first.isSoulbound()) {
+      soulboundItemWasFound = true;
+      continue;
+    }
     remaining.remove(slot.first.type(), slot.second);
-    if (remaining.isEmpty()) return true;
+    if (remaining.isEmpty()) return ServerItem::ITEMS_PRESENT;
   }
-  return false;
+  if (soulboundItemWasFound) return ServerItem::ITEMS_SOULBOUND;
+  return ServerItem::ITEMS_MISSING;
 }
 
 const ServerItem *toServerItem(const Item *item) {

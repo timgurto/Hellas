@@ -234,7 +234,8 @@ HANDLE_MESSAGE(CL_TRADE) {
   if (!mSlot) RETURN_WITH(ERROR_INVALID_MERCHANT_SLOT)
 
   // Check that user has price
-  if (!containerHasEnoughToTrade(user.inventory(), mSlot.price()))
+  if (containerHasEnoughToTrade(user.inventory(), mSlot.price()) !=
+      ServerItem::ITEMS_PRESENT)
     RETURN_WITH(WARNING_NO_PRICE)
 
   // Check that user has inventory space
@@ -249,8 +250,12 @@ HANDLE_MESSAGE(CL_TRADE) {
   bool bottomless = obj->objType().bottomlessMerchant();
   if (!bottomless) {
     // Check that object has items in stock
-    if (!containerHasEnoughToTrade(obj->container().raw(), mSlot.ware()))
+    auto wareCheck =
+        containerHasEnoughToTrade(obj->container().raw(), mSlot.ware());
+    if (wareCheck == ServerItem::ITEMS_MISSING)
       RETURN_WITH(WARNING_NO_WARE)
+    else if (wareCheck == ServerItem::ITEMS_SOULBOUND)
+      RETURN_WITH(WARNING_WARE_IS_SOULBOUND)
 
     // Check that object has inventory space
     auto priceItem = toServerItem(mSlot.priceItem);

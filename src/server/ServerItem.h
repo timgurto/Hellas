@@ -70,6 +70,8 @@ class ServerItem : public Item {
     ReportingInfo _reportingInfo;
   };
 
+  enum ContainerCheckResult { ITEMS_PRESENT, ITEMS_MISSING, ITEMS_SOULBOUND };
+
  private:
   size_t _stackSize{1};
 
@@ -120,8 +122,8 @@ bool vectHasSpaceAfterRemovingItems(const ServerItem::vect_t &vect,
                                     const ServerItem *itemThatWillBeRemoved,
                                     size_t qtyThatWillBeRemoved);
 
-bool containerHasEnoughToTrade(const ServerItem::vect_t &container,
-                               const ItemSet &items);
+ServerItem::ContainerCheckResult containerHasEnoughToTrade(
+    const ServerItem::vect_t &container, const ItemSet &items);
 
 const ServerItem *toServerItem(const Item *item);
 

@@ -340,6 +340,10 @@ TEST_CASE_METHOD(TwoClientsWithData, "Soulbound items can't be traded") {
               REPEAT_FOR_MS(100);
               CHECK(uBob->inventory(0).first.type() == redMarble);
             }
+
+            THEN("he gets a warning") {
+              CHECK(cBob->waitForMessage(WARNING_WARE_IS_SOULBOUND));
+            }
           }
         }
       }
