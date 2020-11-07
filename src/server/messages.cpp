@@ -542,6 +542,25 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
     to.object->tellRelevantUsersAboutInventorySlot(slot2);
 }
 
+HANDLE_MESSAGE(CL_CEDE) {
+  auto serial = Serial{};
+  READ_ARGS(serial);
+
+  if (serial.isInventory() || serial.isGear()) RETURN_WITH(WARNING_DOESNT_EXIST)
+  auto *ent = _entities.find(serial);
+
+  if (!ent->permissions.isOwnedByPlayer(user.name()))
+    RETURN_WITH(WARNING_NO_PERMISSION)
+
+  const City::Name &city = _cities.getPlayerCity(user.name());
+  if (city.empty()) RETURN_WITH(ERROR_NOT_IN_CITY)
+
+  const auto *obj = dynamic_cast<const Object *>(ent);
+  if (obj && obj->objType().isPlayerUnique()) RETURN_WITH(ERROR_CANNOT_CEDE)
+
+  ent->permissions.setCityOwner(city);
+}
+
 HANDLE_MESSAGE(CL_CAST) {
   auto spellID = ""s;
   READ_ARGS(spellID);
@@ -833,6 +852,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_DROP)
       SEND_MESSAGE_TO_HANDLER(CL_PICK_UP_DROPPED_ITEM)
       SEND_MESSAGE_TO_HANDLER(CL_SWAP_ITEMS)
+      SEND_MESSAGE_TO_HANDLER(CL_CEDE)
       SEND_MESSAGE_TO_HANDLER(CL_CAST)
       SEND_MESSAGE_TO_HANDLER(CL_CAST_ITEM)
       SEND_MESSAGE_TO_HANDLER(CL_REPAIR_ITEM)
@@ -1301,14 +1321,6 @@ void Server::handleBufferedMessages(const Socket &client,
         break;
       }
 
-      case CL_CEDE: {
-        auto serial = Serial{};
-        iss >> serial >> del;
-        if (del != MSG_END) return;
-        handle_CL_CEDE(*user, serial);
-        break;
-      }
-
       case CL_GRANT: {
         auto serial = Serial{};
         iss >> serial >> del;
@@ -1621,22 +1633,6 @@ void Server::handle_CL_LEAVE_CITY(User &user) {
   if (_kings.isPlayerAKing(user.name()))
     RETURN_WITH(ERROR_KING_CANNOT_LEAVE_CITY)
   _cities.removeUserFromCity(user, city);
-}
-
-void Server::handle_CL_CEDE(User &user, Serial serial) {
-  if (serial.isInventory() || serial.isGear()) RETURN_WITH(WARNING_DOESNT_EXIST)
-  auto *ent = _entities.find(serial);
-
-  if (!ent->permissions.isOwnedByPlayer(user.name()))
-    RETURN_WITH(WARNING_NO_PERMISSION)
-
-  const City::Name &city = _cities.getPlayerCity(user.name());
-  if (city.empty()) RETURN_WITH(ERROR_NOT_IN_CITY)
-
-  const auto *obj = dynamic_cast<const Object *>(ent);
-  if (obj && obj->objType().isPlayerUnique()) RETURN_WITH(ERROR_CANNOT_CEDE)
-
-  ent->permissions.setCityOwner(city);
 }
 
 void Server::handle_CL_GRANT(User &user, Serial serial, std::string username) {
