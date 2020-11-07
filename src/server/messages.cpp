@@ -556,7 +556,11 @@ HANDLE_MESSAGE(CL_CEDE) {
   if (city.empty()) RETURN_WITH(ERROR_NOT_IN_CITY)
 
   const auto *obj = dynamic_cast<const Object *>(ent);
-  if (obj && obj->objType().isPlayerUnique()) RETURN_WITH(ERROR_CANNOT_CEDE)
+  if (obj) {
+    if (obj->containsAnySoulboundItems()) return;
+
+    if (obj->objType().isPlayerUnique()) RETURN_WITH(ERROR_CANNOT_CEDE)
+  }
 
   ent->permissions.setCityOwner(city);
 }

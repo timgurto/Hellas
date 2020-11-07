@@ -32,6 +32,7 @@ class Container {
   ItemSet generateLootWithChance(double chance) const;
 
   bool isAbleToDeconstruct(const User &user) const;
+  bool containsAnySoulboundItems() const;
 
   // TODO: remove
   const ServerItem::vect_t &raw() const { return _container; }

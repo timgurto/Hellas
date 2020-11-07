@@ -127,6 +127,11 @@ double Object::chanceToGetDamagedOnUse() const {
 
 void Object::repair() { healBy(stats().maxHealth); }
 
+bool Object::containsAnySoulboundItems() const {
+  if (!_container) return false;
+  return _container->containsAnySoulboundItems();
+}
+
 bool Object::isAbleToDeconstruct(const User &user) const {
   if (hasContainer()) return _container->isAbleToDeconstruct(user);
   return true;

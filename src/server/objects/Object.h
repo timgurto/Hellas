@@ -56,6 +56,7 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
   bool hasContainer() const { return _container != nullptr; }
   Container &container() { return *_container; }
   const Container &container() const { return *_container; }
+  bool containsAnySoulboundItems() const;
 
   bool hasDeconstruction() const { return _deconstruction.exists(); }
   Deconstruction &deconstruction() { return _deconstruction; }

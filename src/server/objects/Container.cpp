@@ -100,6 +100,13 @@ bool Container::isAbleToDeconstruct(const User &user) const {
   return true;
 }
 
+bool Container::containsAnySoulboundItems() const {
+  for (auto pair : _container) {
+    if (pair.first.isSoulbound()) return true;
+  }
+  return false;
+}
+
 ItemSet Container::generateLootWithChance(double chance) const {
   ItemSet loot;
 

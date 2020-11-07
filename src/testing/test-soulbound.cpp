@@ -366,5 +366,39 @@ TEST_CASE_METHOD(TwoClientsWithData, "Soulbound items can't be traded") {
   }
 }
 
-// Container can't change hands
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Containers with soulbound items can't be ceded") {
+  GIVEN("carton containers and BoP egg items") {
+    useData(R"(
+      <item id="egg" bind="pickup" />
+      <objectType id="carton">
+        <container slots="1"/>
+      </objectType>
+    )");
+
+    AND_GIVEN("the user is in a city") {
+      server->cities().createCity("Athens", {}, user->name());
+      server->cities().addPlayerToCity(*user, "Athens");
+
+      AND_GIVEN("he owns a carton") {
+        auto &carton = server->addObject("carton", {10, 10}, user->name());
+
+        AND_GIVEN("the carton contains a [soulbound] egg") {
+          const auto *egg = &server->getFirstItem();
+          carton.container().addItems(egg);
+
+          WHEN("he tries to cede the carton to her city") {
+            client->sendMessage(CL_CEDE, makeArgs(carton.serial()));
+
+            THEN("it still belongs to him") {
+              REPEAT_FOR_MS(100);
+              CHECK(carton.permissions.isOwnedByPlayer(user->name()));
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 // Use as construction material is fine
