@@ -1,6 +1,7 @@
 #include <cassert>
 
 #include "TestClient.h"
+#include "TestFixtures.h"
 #include "TestServer.h"
 #include "testing.h"
 
@@ -693,42 +694,37 @@ TEST_CASE("Broken items can't be used as construction materials") {
   }
 }
 
-TEST_CASE("Broken items can't be traded") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Broken items can't be traded") {
   GIVEN("an apple cart with an apple, and a user with a coin") {
-    auto data = R"(
+    useData(R"(
       <item id="coin" />
       <item id="apple" />
       <objectType id="appleCart" merchantSlots="1" bottomlessMerchant="1" >
         <container slots="1" />
       </objectType>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-
-    const auto *coin = &s.findItem("coin");
-    const auto *apple = &s.findItem("apple");
-    s.addObject("appleCart", {10, 15}, "someOtherOwner");
-    auto &appleCart = s.getFirstObject();
+    )");
+    const auto *coin = &server->findItem("coin");
+    const auto *apple = &server->findItem("apple");
+    server->addObject("appleCart", {10, 15}, "someOtherOwner");
+    auto &appleCart = server->getFirstObject();
     appleCart.merchantSlot(0) = {apple, 1, coin, 1};
 
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    user.giveItem(coin);
+    user->giveItem(coin);
 
     AND_WHEN("his coin is broken") {
-      auto &invSlot = user.inventory(0).first;
+      auto &invSlot = user->inventory(0).first;
       BREAK_ITEM(invSlot);
 
       AND_WHEN("he tries to buy an apple") {
-        c.sendMessage(CL_TRADE, makeArgs(appleCart.serial(), 0));
+        client->sendMessage(CL_TRADE, makeArgs(appleCart.serial(), 0));
         REPEAT_FOR_MS(100);
 
         THEN("he still has the coin") {
-          CHECK(user.inventory(0).first.type() == coin);
+          CHECK(user->inventory(0).first.type() == coin);
         }
 
         THEN("he gets a warning") {
-          CHECK(c.waitForMessage(WARNING_PRICE_IS_BROKEN));
+          CHECK(client->waitForMessage(WARNING_PRICE_IS_BROKEN));
         }
       }
     }
