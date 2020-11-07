@@ -394,6 +394,10 @@ TEST_CASE_METHOD(ServerAndClientWithData,
               REPEAT_FOR_MS(100);
               CHECK(carton.permissions.isOwnedByPlayer(user->name()));
             }
+
+            THEN("he receives a warning") {
+              CHECK(client->waitForMessage(WARNING_CONTAINS_BOUND_ITEM));
+            }
           }
         }
       }

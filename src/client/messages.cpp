@@ -268,6 +268,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
       case WARNING_PRICE_IS_SOULBOUND:
       case WARNING_WARE_IS_BROKEN:
       case WARNING_PRICE_IS_BROKEN:
+      case WARNING_CONTAINS_BOUND_ITEM:
         errorMessageColor = Color::CHAT_WARNING;  // Yellow above, red below
       case ERROR_INVALID_USER:
       case ERROR_INVALID_ITEM:
@@ -2902,14 +2903,16 @@ void Client::initializeMessageNames() {
   _errorMessages[WARNING_USER_ALREADY_IN_A_GROUP] =
       "That player is already in a group.";
   _errorMessages[WARNING_ITEM_IS_BOUND] =
-      "You cannot do that with a soulbound item";
+      "You cannot do that with a soulbound item.";
   _errorMessages[WARNING_WARE_IS_SOULBOUND] =
-      "That object's items in stock are soulbound";
+      "That object's items in stock are soulbound.";
   _errorMessages[WARNING_PRICE_IS_SOULBOUND] =
-      "You can't buy using soulbound items";
+      "You can't buy using soulbound items.";
   _errorMessages[WARNING_WARE_IS_BROKEN] =
-      "That object's items in stock are broken";
-  _errorMessages[WARNING_PRICE_IS_BROKEN] = "You can't buy using broken items";
+      "That object's items in stock are broken.";
+  _errorMessages[WARNING_PRICE_IS_BROKEN] = "You can't buy using broken items.";
+  _errorMessages[WARNING_CONTAINS_BOUND_ITEM] =
+      "That container has a soulbound item.";
 }
 
 void Client::performCommand(const std::string &commandString) {

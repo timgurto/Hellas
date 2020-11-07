@@ -557,8 +557,8 @@ HANDLE_MESSAGE(CL_CEDE) {
 
   const auto *obj = dynamic_cast<const Object *>(ent);
   if (obj) {
-    if (obj->containsAnySoulboundItems()) return;
-
+    if (obj->containsAnySoulboundItems())
+      RETURN_WITH(WARNING_CONTAINS_BOUND_ITEM);
     if (obj->objType().isPlayerUnique()) RETURN_WITH(ERROR_CANNOT_CEDE)
   }
 
