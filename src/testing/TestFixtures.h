@@ -70,6 +70,31 @@ class TwoClients {
   User *alice, *bob;
 };
 
+class TwoClientsWithData {
+ public:
+  ~TwoClientsWithData() {
+    delete cAlice;
+    delete cBob;
+    delete server;
+  }
+
+  void useData(const char *dataString) {
+    server = new TestServer(TestServer::WithDataString(dataString));
+    cAlice = new TestClient(
+        TestClient::WithUsernameAndDataString("Alice", dataString));
+    cBob = new TestClient(
+        TestClient::WithUsernameAndDataString("Bob", dataString));
+
+    server->waitForUsers(2);
+    uAlice = &server->findUser("Alice");
+    uBob = &server->findUser("Bob");
+  }
+
+  TestServer *server{nullptr};
+  TestClient *cAlice{nullptr}, *cBob{nullptr};
+  User *uAlice{nullptr}, *uBob{nullptr};
+};
+
 class ThreeClients : public TwoClients {
  public:
   ThreeClients() : cCharlie(TestClient::WithUsername("Charlie")) {

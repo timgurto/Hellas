@@ -112,6 +112,7 @@ bool containerContains(const ServerItem::vect_t &container,
   auto remaining = items;
   for (const auto &slot : container) {
     if (slot.first.isBroken()) continue;
+    if (slot.first.isSoulbound()) continue;
     remaining.remove(slot.first.type(), slot.second);
     if (remaining.isEmpty()) return true;
   }

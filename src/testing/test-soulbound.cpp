@@ -305,6 +305,48 @@ TEST_CASE("Soulbound status is persistent") {
   }
 }
 
+TEST_CASE_METHOD(TwoClientsWithData, "Soulbound items can't be traded") {
+  GIVEN("A marble store, and blue and red BoE marbles") {
+    useData(R"(
+      <item id="blueMarble" bind="equip" />
+      <item id="redMarble" bind="equip" />
+      <objectType id="marbleStore" merchantSlots="1">
+        <container slots="1"/>
+      </objectType>
+    )");
+    const auto *blueMarble = &server->findItem("blueMarble");
+    const auto *redMarble = &server->findItem("redMarble");
+
+    AND_GIVEN("Alice owns a marble store selling blue for red") {
+      const auto &store = server->addObject("marbleStore", {20, 20}, "Alice");
+      cAlice->sendMessage(
+          CL_SET_MERCHANT_SLOT,
+          makeArgs(store.serial(), 0, "blueMarble", 1, "redMarble", 1));
+
+      AND_GIVEN("Bob has a red marble") {
+        uBob->giveItem(redMarble);
+
+        AND_GIVEN("the store has a soulbound blue marble") {
+          uAlice->giveItem(blueMarble);
+          uAlice->inventory(0).first.onEquip();
+          cAlice->sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0,
+                                                      store.serial(), 0));
+          WAIT_UNTIL(store.container().at(0).first.hasItem());
+
+          WHEN("Bob tries to buy the blue marble") {
+            cBob->sendMessage(CL_TRADE, makeArgs(store.serial(), 0));
+
+            THEN("he still has his red one") {
+              REPEAT_FOR_MS(100);
+              CHECK(uBob->inventory(0).first.type() == redMarble);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 // No trading
 // Container can't change hands
 // Use as construction material is fine
