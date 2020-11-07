@@ -509,7 +509,7 @@ TEST_CASE("Persistence of item health: objects' contents") {
   }                                    \
   CHECK((ITEM).isBroken());
 
-TEST_CASE("Broken items don't work") {
+TEST_CASE("Broken weapons don't add attack") {
   GIVEN("a weapon that deals 42 damage") {
     auto data = R"(
       <item id="sword" gearSlot="6" >
@@ -555,7 +555,9 @@ TEST_CASE("Broken items don't work") {
       }
     }
   }
+}
 
+TEST_CASE("Broken shields don't block") {
   GIVEN("a shield") {
     auto data = R"(
       <item id="shield" gearSlot="7" >
@@ -584,7 +586,9 @@ TEST_CASE("Broken items don't work") {
       }
     }
   }
+}
 
+TEST_CASE("Broken items can't be placed as objects") {
   GIVEN("a seed that constructs a tree") {
     auto data = R"(
       <item id="seed" constructs="tree" />
@@ -613,7 +617,9 @@ TEST_CASE("Broken items don't work") {
       }
     }
   }
+}
 
+TEST_CASE("Broken items can't cast spells") {
   GIVEN("a poisoned apple that deals damage to the user") {
     auto data = R"(
       <item id="poisonedApple" castsSpellOnUse="poison" />
@@ -645,7 +651,9 @@ TEST_CASE("Broken items don't work") {
       }
     }
   }
+}
 
+TEST_CASE("Broken items can't be used as construction materials") {
   GIVEN("a tuffet made out of a rock") {
     auto data = R"(
       <item id="rock" />
@@ -683,7 +691,9 @@ TEST_CASE("Broken items don't work") {
       }
     }
   }
+}
 
+TEST_CASE("Broken items can't be traded") {
   GIVEN("an apple cart with an apple, and a user with a coin") {
     auto data = R"(
       <item id="coin" />
