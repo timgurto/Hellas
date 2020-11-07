@@ -7,6 +7,12 @@
     <DisplayString>{{name={_name}}}</DisplayString>    
   </Type>
   <Type Name="Entity">
-    <DisplayString>{{type={_type}}}</DisplayString>    
+    <DisplayString>{{type={_type}}}</DisplayString>
+  </Type>
+  <Type Name="ServerItem">
+    <DisplayString>{{id={_id}}}</DisplayString>
+  </Type>
+  <Type Name="ServerItem::Instance">
+    <DisplayString>{{type={_type}}}</DisplayString>
   </Type>
 </AutoVisualizer>
