@@ -14,8 +14,8 @@ struct MerchantSlot {
 
   operator bool() const;
 
-  const ItemSet ware() const;
-  const ItemSet price() const;
+  ItemSet ware() const;
+  ItemSet price() const;
 };
 
 #endif

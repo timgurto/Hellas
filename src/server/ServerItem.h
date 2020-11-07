@@ -120,11 +120,8 @@ bool vectHasSpaceAfterRemovingItems(const ServerItem::vect_t &vect,
                                     const ServerItem *itemThatWillBeRemoved,
                                     size_t qtyThatWillBeRemoved);
 
-bool operator<=(const ItemSet &itemSet, const ServerItem::vect_t &vect);
-bool operator<=(const ItemSet &itemSet, const Item::vect_t &vect);
-
-bool operator>(const ItemSet &itemSet, const ServerItem::vect_t &vect);
-bool operator>(const ServerItem::vect_t &vect, const ItemSet &itemSet);
+bool containerContains(const ServerItem::vect_t &container,
+                       const ItemSet &items);
 
 const ServerItem *toServerItem(const Item *item);
 

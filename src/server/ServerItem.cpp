@@ -107,22 +107,15 @@ bool vectHasSpaceAfterRemovingItems(const ServerItem::vect_t &vect,
   return vectHasSpace(v, item, qty);
 }
 
-bool operator<=(const ItemSet &itemSet, const ServerItem::vect_t &vect) {
-  ItemSet remaining = itemSet;
-  for (const auto &slot : vect) {
+bool containerContains(const ServerItem::vect_t &container,
+                       const ItemSet &items) {
+  auto remaining = items;
+  for (const auto &slot : container) {
     if (slot.first.isBroken()) continue;
     remaining.remove(slot.first.type(), slot.second);
     if (remaining.isEmpty()) return true;
   }
   return false;
-}
-
-bool operator>(const ItemSet &itemSet, const ServerItem::vect_t &vect) {
-  return !(itemSet <= vect);
-}
-
-bool operator>(const ServerItem::vect_t &vect, const ItemSet &itemSet) {
-  return !(itemSet <= vect);
 }
 
 const ServerItem *toServerItem(const Item *item) {
