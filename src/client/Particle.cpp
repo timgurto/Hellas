@@ -49,16 +49,17 @@ void Particle::draw() const {
     drawRect.h -= cutoff;
   }
 
-  const auto FADE_TIME = ms_t{1000};
   auto alpha = Uint8{0xff};
-  if (_timeRemaining < FADE_TIME)
-    alpha = toInt(1.0 * 0xff * _timeRemaining / FADE_TIME);
-  else if (_timeSinceSpawn < FADE_TIME)
-    alpha = toInt(1.0 * 0xff * _timeSinceSpawn / FADE_TIME);
+  if (_profile.fadesInAndOut()) {
+    const auto FADE_TIME = ms_t{1000};
+    if (_timeRemaining < FADE_TIME)
+      alpha = toInt(1.0 * 0xff * _timeRemaining / FADE_TIME);
+    else if (_timeSinceSpawn < FADE_TIME)
+      alpha = toInt(1.0 * 0xff * _timeSinceSpawn / FADE_TIME);
+    _image.setAlpha(alpha);
+  }
 
-  _image.setAlpha(alpha);
   _image.draw(drawRect + _client.offset(), srcRect);
-  _image.setAlpha();
 }
 
 void Particle::setImageManually(const Texture &image) {
