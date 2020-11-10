@@ -1181,24 +1181,28 @@ TEST_CASE_METHOD(TwoClientsWithData, "Pets are anchored when ordered to stay") {
       <npcType id="dog" maxHealth="1000" attack="1" maxDistanceFromSpawner="50" />
     )");
 
-    AND_GIVEN("a pet dog owned by Alice") {
-      auto &dog = server->addNPC("dog", {20, 20});
+    AND_GIVEN("a pet dog owned by Alice, created at {200,20}") {
+      auto &dog = server->addNPC("dog", {200, 20});
       dog.permissions.setPlayerOwner("Alice");
 
-      AND_GIVEN("it is ordered to stay") {
-        cAlice->sendMessage(CL_ORDER_PET_TO_STAY, makeArgs(dog.serial()));
+      AND_GIVEN("it is at {20,20}") {
+        dog.teleportTo({20, 20});
 
-        AND_GIVEN("Bob is 200px away from the dog") {
-          uBob->teleportTo({220, 20});
+        AND_GIVEN("it is ordered to stay") {
+          cAlice->sendMessage(CL_ORDER_PET_TO_STAY, makeArgs(dog.serial()));
 
-          WHEN("the dog is chasing Bob") {
-            server->wars().declare({"Alice", Belligerent::PLAYER},
-                                   {"Bob", Belligerent::PLAYER});
-            dog.makeAwareOf(*uBob);
-            WAIT_UNTIL(distance(dog.location(), {20, 20}) > 5.0);
+          AND_GIVEN("Bob is near the dog's original spawn point") {
+            uBob->teleportTo({220, 20});
 
-            THEN("it eventually returns home") {
-              WAIT_UNTIL(distance(dog.location(), {20, 20}) < 5.0);
+            WHEN("the dog is chasing Bob") {
+              server->wars().declare({"Alice", Belligerent::PLAYER},
+                                     {"Bob", Belligerent::PLAYER});
+              dog.makeAwareOf(*uBob);
+              WAIT_UNTIL(distance(dog.location(), {20, 20}) > 5.0);
+
+              THEN("it eventually returns to {20,20}") {
+                WAIT_UNTIL(distance(dog.location(), {20, 20}) < 5.0);
+              }
             }
           }
         }

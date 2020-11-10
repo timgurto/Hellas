@@ -3,6 +3,7 @@
 
 void NPC::order(Order newOrder) {
   _order = newOrder;
+  _homeLocation = location();
 
   // Send order confirmation to owner
   auto owner = permissions.getPlayerOwner();
