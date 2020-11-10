@@ -7,7 +7,6 @@ const char MSG_START = '\002',  // STX
     MSG_DELIM = '\037';         // US
 
 enum MessageCode {
-  // clang-format off
 
   // Client -> server
 
@@ -25,7 +24,8 @@ enum MessageCode {
   CL_LOGIN_EXISTING,
 
   // "I'm new; my details are ... and I'm running client version ...
-  // This has the effect of creating the account, then registering the user with the server.
+  // This has the effect of creating the account, then registering the user with
+  // the server.
   // Arguments: username, password hash, class, version
   CL_LOGIN_NEW,
 
@@ -80,7 +80,7 @@ enum MessageCode {
   // Arguments: serial
   CL_PICK_UP_DROPPED_ITEM,
 
-  // "I want to swap the items in container slots ... and ...". 
+  // "I want to swap the items in container slots ... and ...".
   // An object serial of 0 denotes the user's inventory.
   // An object serial of 1 denotes the user's gear.
   // Arguments: serial1, slot1, serial2, slot2
@@ -168,7 +168,8 @@ enum MessageCode {
   CL_ACCEPT_PEACE_OFFER_WITH_PLAYER_AS_CITY,
   CL_ACCEPT_PEACE_OFFER_WITH_CITY_AS_CITY,
 
-  // "I have found out that I'm dead, and future movement requests will be accurate."
+  // "I have found out that I'm dead, and future movement requests will be
+  // accurate."
   CL_ACKNOWLEDGE_DEATH,
 
   // "I want to perform object ...'s action with argument ..."
@@ -244,18 +245,16 @@ enum MessageCode {
   // Roll a number between 1 and 100, and share results with the player's party
   CL_ROLL,
 
-  // "I want to say ... to everybody". 
+  // "I want to say ... to everybody".
   // Arguments: message
   CL_SAY,
 
-  // "I want to say ... to ...". 
+  // "I want to say ... to ...".
   // Arguments: username, message
   CL_WHISPER,
 
-
-
   // Server -> client
-    
+
   // A reply to a ping from a client
   // Arguments: time original was sent, time of reply
   SV_PING_REPLY,
@@ -281,7 +280,8 @@ enum MessageCode {
   // Arguments: username
   SV_USER_DISCONNECTED,
 
-  // The user is in the tutorial, or has finished it.  So that the client can provide UI.
+  // The user is in the tutorial, or has finished it.  So that the client can
+  // provide UI.
   SV_YOU_ARE_IN_THE_TUTORIAL,
   SV_YOU_HAVE_FINISHED_THE_TUTORIAL,
 
@@ -297,11 +297,13 @@ enum MessageCode {
   // Your map is now completely unexplored
   SV_UNEXPLORE_MAP,
 
-  // A user has moved far away from you, and you will stop getting updates from him.
+  // A user has moved far away from you, and you will stop getting updates from
+  // him.
   // Arguments: username
   SV_USER_OUT_OF_RANGE,
 
-  // An object has moved far away from you, and you will stop getting updates from him.
+  // An object has moved far away from you, and you will stop getting updates
+  // from him.
   // Arguments: serial
   SV_OBJECT_OUT_OF_RANGE,
 
@@ -309,7 +311,8 @@ enum MessageCode {
   // Arguments: username, x, y
   SV_USER_LOCATION,
 
-  // User ... is at location ..., and moved there instantly. (Used for respawning)
+  // User ... is at location ..., and moved there instantly. (Used for
+  // respawning)
   // Arguments: username, x, y
   SV_USER_LOCATION_INSTANT,
 
@@ -317,7 +320,8 @@ enum MessageCode {
   // Arguments: serial, x, y
   SV_ENTITY_LOCATION,
 
-  // Object #... is at location ..., and moved there instantly. (Used for respawning)
+  // Object #... is at location ..., and moved there instantly. (Used for
+  // respawning)
   // Arguments: serial, x, y
   SV_ENTITY_LOCATION_INSTANT,
 
@@ -334,7 +338,8 @@ enum MessageCode {
   // Arguments: serial, slot, ID, quantity, item health, isSoulbound
   SV_INVENTORY,
 
-  // A client received something.  Signal for aesthetics (e.g., floating combat text); the more
+  // A client received something.  Signal for aesthetics (e.g., floating combat
+  // text); the more
   // critical message to update client state is SV_INVENTORY.
   // Arguments: ID, quantity
   SV_RECEIVED_ITEM,
@@ -426,8 +431,8 @@ enum MessageCode {
   // Arguments: username
   SV_NO_CITY,
 
-  SV_CITY_FOUNDED, // Arguments: founder name, city name
-  SV_CITY_DESTROYED, // Arguments: city name
+  SV_CITY_FOUNDED,    // Arguments: founder name, city name
+  SV_CITY_DESTROYED,  // Arguments: city name
 
   // A user is a king
   // Arguments: username
@@ -445,23 +450,24 @@ enum MessageCode {
   // An NPC hit an NPC
   // Arguments: attacker's serial, defender's serial
   SV_ENTITY_HIT_ENTITY,
-    
+
   // A player hit an NPC
   // Arguments: username, serial
   SV_PLAYER_HIT_ENTITY,
-    
+
   // A player hit an another player
   // Arguments: attacker's username, defender's username
   SV_PLAYER_HIT_PLAYER,
 
-  // The outcome of a spellcast or ranged attack.  This is purely so that the client can
+  // The outcome of a spellcast or ranged attack.  This is purely so that the
+  // client can
   // illustrate it.
-  SV_SPELL_HIT, // spell ID, from x, from y, to x, to y
-  SV_SPELL_MISS, // spell ID, from x, from y, to x, to y
-  SV_RANGED_NPC_HIT, // npc ID, from x, from y, to x, to y
-  SV_RANGED_NPC_MISS, // npc ID, from x, from y, to x, to y
-  SV_RANGED_WEAPON_HIT, // weapon ID, from x, from y, to x, to y
-  SV_RANGED_WEAPON_MISS, // weapon ID, from x, from y, to x, to y
+  SV_SPELL_HIT,           // spell ID, from x, from y, to x, to y
+  SV_SPELL_MISS,          // spell ID, from x, from y, to x, to y
+  SV_RANGED_NPC_HIT,      // npc ID, from x, from y, to x, to y
+  SV_RANGED_NPC_MISS,     // npc ID, from x, from y, to x, to y
+  SV_RANGED_WEAPON_HIT,   // weapon ID, from x, from y, to x, to y
+  SV_RANGED_WEAPON_MISS,  // weapon ID, from x, from y, to x, to y
 
   // Entity was hit by something.  Used for aesthetic effects only.
   // Arguments: username/serial
@@ -573,7 +579,8 @@ enum MessageCode {
   // Arguments: username, hp
   SV_PLAYER_HEALTH,
 
-  // An entity has been damaged/healed.  For aesthetics, e.g., floating combat text.
+  // An entity has been damaged/healed.  For aesthetics, e.g., floating combat
+  // text.
   // Arguments: username, amount
   SV_PLAYER_DAMAGED,
   SV_PLAYER_HEALED,
@@ -636,7 +643,7 @@ enum MessageCode {
   SV_QUEST_IN_PROGRESS,
   SV_QUEST_CAN_BE_FINISHED,
   SV_QUEST_COMPLETED,
-  SV_QUEST_FAILED, // Sent in addition to SV_QUEST_CAN_BE_STARTED
+  SV_QUEST_FAILED,  // Sent in addition to SV_QUEST_CAN_BE_STARTED
 
   // An attempt to tame an NPC failed.
   SV_TAME_ATTEMPT_FAILED,
@@ -650,7 +657,8 @@ enum MessageCode {
   // Args: questID, ms remaining
   SV_QUEST_TIME_LEFT,
 
-  // For aesthetics only.  Quest-completion aesthetics are handled by SV_QUEST_COMPLETED.
+  // For aesthetics only.  Quest-completion aesthetics are handled by
+  // SV_QUEST_COMPLETED.
   SV_QUEST_ACCEPTED,
 
   // Progress on a quest objective
@@ -681,123 +689,179 @@ enum MessageCode {
   // Arguments: username, message
   SV_WHISPER,
 
-
-
   // Errors and warnings
   // Warning: the user is unable to perform a reasonable action, for X reason
-  // Error: the user should not have been able to attempt that action, or something went wrong.
+  // Error: the user should not have been able to attempt that action, or
+  // something went wrong.
 
   // Connection
-  WARNING_WRONG_VERSION, // The client version differs from the server version. Argument: server version
-  WARNING_DUPLICATE_USERNAME, // The client has attempted to connect with a username already in use
-  WARNING_INVALID_USERNAME, // The client has attempted to connect with an invalid username
-  WARNING_SERVER_FULL, // There is no room for more clients
-  WARNING_USER_DOESNT_EXIST, // User tried to log in to an account that doesn't exist
-  WARNING_NAME_TAKEN, // User tried to create an account with an unavailable name
-  WARNING_WRONG_PASSWORD, // The attempted password doesn't match the existing username
+  WARNING_WRONG_VERSION,  // The client version differs from the server version.
+                          // Argument: server version
+  WARNING_DUPLICATE_USERNAME,  // The client has attempted to connect with a
+                               // username already in use
+  WARNING_INVALID_USERNAME,    // The client has attempted to connect with an
+                               // invalid username
+  WARNING_SERVER_FULL,         // There is no room for more clients
+  WARNING_USER_DOESNT_EXIST,  // User tried to log in to an account that doesn't
+                              // exist
+  WARNING_NAME_TAKEN,  // User tried to create an account with an unavailable
+                       // name
+  WARNING_WRONG_PASSWORD,  // The attempted password doesn't match the existing
+                           // username
 
   // Merchant objects
-  ERROR_NOT_MERCHANT, // The user tried to perform a merchant function on a non-merchant object
-  ERROR_INVALID_MERCHANT_SLOT, // The user tried to perform a merchant function on an invalid merchant slot
-  WARNING_NO_WARE, // The merchant has no wares in stock to sell the user
-  WARNING_NO_PRICE, // The user cannot afford the price of a merchant exchange
-  WARNING_WARE_IS_SOULBOUND, // The merchant has the ware in stock, but it's soulbound
-  WARNING_PRICE_IS_SOULBOUND, // The user has the price, but it's soulbound
-  WARNING_WARE_IS_BROKEN, // The merchant has the ware in stock, but it's broken
-  WARNING_PRICE_IS_BROKEN, // The user has the price, but it's broken
-  WARNING_MERCHANT_INVENTORY_FULL, // The merchant object does not have enough inventory space to trade with the user
+  ERROR_NOT_MERCHANT,  // The user tried to perform a merchant function on a
+                       // non-merchant object
+  ERROR_INVALID_MERCHANT_SLOT,  // The user tried to perform a merchant function
+                                // on an invalid merchant slot
+  WARNING_NO_WARE,   // The merchant has no wares in stock to sell the user
+  WARNING_NO_PRICE,  // The user cannot afford the price of a merchant exchange
+  WARNING_WARE_IS_SOULBOUND,   // The merchant has the ware in stock, but it's
+                               // soulbound
+  WARNING_PRICE_IS_SOULBOUND,  // The user has the price, but it's soulbound
+  WARNING_WARE_IS_BROKEN,      // The merchant has the ware in stock, but it's
+                               // broken
+  WARNING_PRICE_IS_BROKEN,     // The user has the price, but it's broken
+  WARNING_MERCHANT_INVENTORY_FULL,  // The merchant object does not have enough
+                                    // inventory space to trade with the user
 
   // Talents and spells
-  ERROR_INVALID_TALENT, // You tried to learn an invalid spell
-  WARNING_MISSING_ITEMS_FOR_TALENT, // You tried to learn a talent which you can't afford
-  WARNING_MISSING_REQ_FOR_TALENT, // You do not meet the requirements for that talent
-  ERROR_ALREADY_KNOW_SPELL, // You tried to learn a spell that you already know
-  WARNING_NO_TALENT_POINTS, // You don't have any talent points left to allocate
-  ERROR_DONT_KNOW_SPELL, // You tried to cast a spell that you don't know
-  WARNING_INVALID_SPELL_TARGET, // You can't cast that spell at that target
-  WARNING_NOT_ENOUGH_ENERGY, // You don't have enough energy to cast that
-  ERROR_CANNOT_CAST_ITEM, // That item doesn't cast a spell
+  ERROR_INVALID_TALENT,              // You tried to learn an invalid spell
+  WARNING_MISSING_ITEMS_FOR_TALENT,  // You tried to learn a talent which you
+                                     // can't afford
+  WARNING_MISSING_REQ_FOR_TALENT,  // You do not meet the requirements for that
+                                   // talent
+  ERROR_ALREADY_KNOW_SPELL,  // You tried to learn a spell that you already know
+  WARNING_NO_TALENT_POINTS,  // You don't have any talent points left to
+                             // allocate
+  ERROR_DONT_KNOW_SPELL,     // You tried to cast a spell that you don't know
+  WARNING_INVALID_SPELL_TARGET,  // You can't cast that spell at that target
+  WARNING_NOT_ENOUGH_ENERGY,     // You don't have enough energy to cast that
+  ERROR_CANNOT_CAST_ITEM,        // That item doesn't cast a spell
 
   // Vehicles
-  ERROR_NOT_VEHICLE, // The user tried to mount a non-vehicle object.
-  WARNING_VEHICLE_OCCUPIED, // The user tried to perform an action on an occupied vehicle
-  WARNING_NO_VEHICLE, // The user tried to perform an action on an occupied vehicle
-  WARNING_NO_VALID_DISMOUNT_LOCATION, // The user tried to dismount, but there was no place to do so
+  ERROR_NOT_VEHICLE,         // The user tried to mount a non-vehicle object.
+  WARNING_VEHICLE_OCCUPIED,  // The user tried to perform an action on an
+                             // occupied vehicle
+  WARNING_NO_VEHICLE,  // The user tried to perform an action on an occupied
+                       // vehicle
+  WARNING_NO_VALID_DISMOUNT_LOCATION,  // The user tried to dismount, but there
+                                       // was no place to do so
 
   // Crafting
-  WARNING_NEED_MATERIALS, // The user does not have enough materials to craft an item
-  ERROR_INVALID_ITEM, // The user tried to craft an item that does not exist
-  ERROR_CANNOT_CRAFT, // The user referred to a nonexistent item
-  ERROR_UNKNOWN_RECIPE, // The user tried to craft using a recipe he doesn't know
-         
+  WARNING_NEED_MATERIALS,  // The user does not have enough materials to craft
+                           // an item
+  ERROR_INVALID_ITEM,    // The user tried to craft an item that does not exist
+  ERROR_CANNOT_CRAFT,    // The user referred to a nonexistent item
+  ERROR_UNKNOWN_RECIPE,  // The user tried to craft using a recipe he doesn't
+                         // know
+
   // Construction
-  ERROR_INVALID_OBJECT, // The user tried to construct an object type that doesn't exist
-  ERROR_UNKNOWN_CONSTRUCTION, // The user tried to construct something that he doesn't know about
-  WARNING_WRONG_MATERIAL, // The user tried to add the wrong building material to a site
-  ERROR_UNDER_CONSTRUCTION, // The user tried to use an object that is still under construction
-  ERROR_UNBUILDABLE, // The user tried to construct an object that cannot be constructed
-  ERROR_CANNOT_CONSTRUCT, // The user tried to construct an item that cannot be constructed
-  WARNING_UNIQUE_OBJECT, // The user tried to construct a unique object that already exists in the world
-  WARNING_PLAYER_UNIQUE_OBJECT, // The user tried to build a second user-unique object. Arguments: category
+  ERROR_INVALID_OBJECT,  // The user tried to construct an object type that
+                         // doesn't exist
+  ERROR_UNKNOWN_CONSTRUCTION,  // The user tried to construct something that he
+                               // doesn't know about
+  WARNING_WRONG_MATERIAL,  // The user tried to add the wrong building material
+                           // to a site
+  ERROR_UNDER_CONSTRUCTION,  // The user tried to use an object that is still
+                             // under construction
+  ERROR_UNBUILDABLE,  // The user tried to construct an object that cannot be
+                      // constructed
+  ERROR_CANNOT_CONSTRUCT,  // The user tried to construct an item that cannot be
+                           // constructed
+  WARNING_UNIQUE_OBJECT,   // The user tried to construct a unique object that
+                           // already exists in the world
+  WARNING_PLAYER_UNIQUE_OBJECT,  // The user tried to build a second user-unique
+                                 // object. Arguments: category
 
   // Cities
-  ERROR_NOT_IN_CITY, // The user tried to perform a city action when not in a city.
-  ERROR_KING_CANNOT_LEAVE_CITY, // The user tried to leave a city while being its king.
-  ERROR_ALREADY_IN_CITY, // The user tried to recruit a citizen of another city.
-  WARNING_YOU_ARE_ALREADY_IN_CITY, // The user is already in a city and cannot found a new one.
-  ERROR_NOT_A_KING, // Only a king can perform that action
-  WARNING_NOT_A_CITIZEN, // The user tried to perform a city action with a non-citizen
+  ERROR_NOT_IN_CITY,  // The user tried to perform a city action when not in a
+                      // city.
+  ERROR_KING_CANNOT_LEAVE_CITY,  // The user tried to leave a city while being
+                                 // its king.
+  ERROR_ALREADY_IN_CITY,  // The user tried to recruit a citizen of another
+                          // city.
+  WARNING_YOU_ARE_ALREADY_IN_CITY,  // The user is already in a city and cannot
+                                    // found a new one.
+  ERROR_NOT_A_KING,                 // Only a king can perform that action
+  WARNING_NOT_A_CITIZEN,  // The user tried to perform a city action with a
+                          // non-citizen
 
   // Objects
-  WARNING_DOESNT_EXIST, // The user tried to perform an action on an object that doesn't exist
-  ERROR_CANNOT_DECONSTRUCT, // The user tried to deconstruct an object that cannot be deconstructed
-  ERROR_DAMAGED_OBJECT, // That action cannot be performed on a damaged object
-  ERROR_CANNOT_CEDE, // The user tried to cede an uncedable object
-  ERROR_NO_ACTION, // The user tried to perform an action with an object that has none.
+  WARNING_DOESNT_EXIST,      // The user tried to perform an action on an object
+                             // that doesn't exist
+  ERROR_CANNOT_DECONSTRUCT,  // The user tried to deconstruct an object that
+                             // cannot be deconstructed
+  ERROR_DAMAGED_OBJECT,  // That action cannot be performed on a damaged object
+  ERROR_CANNOT_CEDE,     // The user tried to cede an uncedable object
+  ERROR_NO_ACTION,  // The user tried to perform an action with an object that
+                    // has none.
 
   // Inventory and containers
-  WARNING_INVENTORY_FULL, // The user cannot receive an item because his inventory is full
-  ERROR_EMPTY_SLOT, // The user tried to manipulate an empty inventory slot
-  ERROR_INVALID_SLOT, // The user attempted to manipulate an out-of-range inventory slot
-  WARNING_NOT_EMPTY, // The object cannot be removed because it has an inventory of items
-  ERROR_NPC_SWAP, // The user tried to put an item into an NPC
-  ERROR_TAKE_SELF, // The user tried to take an item from himself
-  ERROR_NO_INVENTORY, // The user tried to manipulate an object's non-existent inventory
-  WARNING_OUT_OF_AMMO, // The user tried to use a weapon that uses ammo, without having said ammo.  Arguments: ammo ID
-  WARNING_NOWHERE_TO_DROP_ITEM, // The user tried to drop an item, but all nearby land is obstructed.
-  WARNING_ITEM_IS_BOUND, // The user tried to perform an inappropriate action on a soulbound item.
-  WARNING_OBJECT_MUST_BE_PRIVATE, // That action cannot be performed with a shared object; it must be privately owned.
-  WARNING_CONTAINS_BOUND_ITEM, // The user tried to perform an inappropriate action with an object containing a soulbound item.
+  WARNING_INVENTORY_FULL,  // The user cannot receive an item because his
+                           // inventory is full
+  ERROR_EMPTY_SLOT,     // The user tried to manipulate an empty inventory slot
+  ERROR_INVALID_SLOT,   // The user attempted to manipulate an out-of-range
+                        // inventory slot
+  WARNING_NOT_EMPTY,    // The object cannot be removed because it has an
+                        // inventory of items
+  ERROR_NPC_SWAP,       // The user tried to put an item into an NPC
+  ERROR_TAKE_SELF,      // The user tried to take an item from himself
+  ERROR_NO_INVENTORY,   // The user tried to manipulate an object's non-existent
+                        // inventory
+  WARNING_OUT_OF_AMMO,  // The user tried to use a weapon that uses ammo,
+                        // without having said ammo.  Arguments: ammo ID
+  WARNING_NOWHERE_TO_DROP_ITEM,  // The user tried to drop an item, but all
+                                 // nearby land is obstructed.
+  WARNING_ITEM_IS_BOUND,  // The user tried to perform an inappropriate action
+                          // on a soulbound item.
+  WARNING_OBJECT_MUST_BE_PRIVATE,  // That action cannot be performed with a
+                                   // shared object; it must be privately owned.
+  WARNING_CONTAINS_BOUND_ITEM,     // The user tried to perform an inappropriate
+                                // action with an object containing a soulbound
+                                // item.
 
   // War
-  ERROR_ATTACKED_PEACFUL_PLAYER, // The user tried to attack a player without being at war with him
-  ERROR_ALREADY_AT_WAR, // The user tried to declare war on somebody with whom they are already at war.
+  ERROR_ATTACKED_PEACFUL_PLAYER,  // The user tried to attack a player without
+                                  // being at war with him
+  ERROR_ALREADY_AT_WAR,  // The user tried to declare war on somebody with whom
+                         // they are already at war.
 
   // Pets
   WARNING_PET_IS_ALREADY_FOLLOWING,
   WARNING_PET_IS_ALREADY_STAYING,
   WARNING_NO_ROOM_FOR_MORE_FOLLOWERS,
-  WARNING_PET_AT_FULL_HEALTH, // The user tried to heal it but it's already at full health.
+  WARNING_PET_AT_FULL_HEALTH,  // The user tried to heal it but it's already at
+                               // full health.
 
   // Misc
-  WARNING_TOO_FAR, // The user is too far away to perform an action
-  WARNING_NO_PERMISSION, // The user does not have permission to perform an action
-  ERROR_INVALID_USER, // That user doesn't exist
-  WARNING_NEED_TOOLS, // The user does not have the tools required to craft an item
-  WARNING_ACTION_INTERRUPTED, // The user was unable to complete an action
-  WARNING_ITEM_TAG_NEEDED, // The user tried to perform an action but does not have the requisite item. Arguments: requiredItemTag
-  WARNING_ITEM_NEEDED, // The user tried to perform an action but does not have the requisite item.
-  WARNING_BLOCKED, // The user tried to perform an action at an occupied location
-  ERROR_TARGET_DEAD, // The NPC is dead
-  ERROR_NOT_GEAR, // The user tried to equip an item into a gear slot with which it isn't compatible.
-  WARNING_STUNNED, // The user can't perform an action because he is stunned
-  WARNING_BAD_TERRAIN, // You have died due to being on invalid terrain.
-  WARNING_BROKEN_ITEM, // You have tried to perform an action using a broken item.
-  WARNING_NOT_REPAIRABLE, // You tried to repair something that can't be repaired.
-  ERROR_USER_NOT_FOUND, // You tried to perform an action with a nonexistent user.
-  WARNING_USER_ALREADY_IN_A_GROUP, // You tried to invite an already-grouped person to your group.
-
-
+  WARNING_TOO_FAR,        // The user is too far away to perform an action
+  WARNING_NO_PERMISSION,  // The user does not have permission to perform an
+                          // action
+  ERROR_INVALID_USER,     // That user doesn't exist
+  WARNING_NEED_TOOLS,  // The user does not have the tools required to craft an
+                       // item
+  WARNING_ACTION_INTERRUPTED,  // The user was unable to complete an action
+  WARNING_ITEM_TAG_NEEDED,  // The user tried to perform an action but does not
+                            // have the requisite item. Arguments:
+                            // requiredItemTag
+  WARNING_ITEM_NEEDED,  // The user tried to perform an action but does not have
+                        // the requisite item.
+  WARNING_BLOCKED,      // The user tried to perform an action at an occupied
+                        // location
+  ERROR_TARGET_DEAD,    // The NPC is dead
+  ERROR_NOT_GEAR,       // The user tried to equip an item into a gear slot with
+                        // which it isn't compatible.
+  WARNING_STUNNED,  // The user can't perform an action because he is stunned
+  WARNING_BAD_TERRAIN,     // You have died due to being on invalid terrain.
+  WARNING_BROKEN_ITEM,     // You have tried to perform an action using a broken
+                           // item.
+  WARNING_NOT_REPAIRABLE,  // You tried to repair something that can't be
+                           // repaired.
+  ERROR_USER_NOT_FOUND,    // You tried to perform an action with a nonexistent
+                           // user.
+  WARNING_USER_ALREADY_IN_A_GROUP,  // You tried to invite an already-grouped
+                                    // person to your group.
 
   // Debug requests
 
@@ -825,18 +889,14 @@ enum MessageCode {
   // "Kill me"
   DG_DIE,
 
-
-
   // Messages used in tests
 
-  // Tell the client to send the message back to the server; used for remote clients.
+  // Tell the client to send the message back to the server; used for remote
+  // clients.
   // Arguments: message code, args
   TST_SEND_THIS_BACK,
 
-
-
   NO_CODE
-  // clang-format on
 };
 
 bool isMessageAllowedBeforeLogin(MessageCode message);
