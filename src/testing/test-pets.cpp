@@ -1121,6 +1121,27 @@ TEST_CASE_METHOD(ServerAndClient, "Bad args to CL_FEED_PET") {
   }
 }
 
+TEST_CASE("Pet death") {
+  GIVEN("a pet dog owned by an offline player") {
+    auto data = R"(
+      <npcType id="dog" />
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto &dog = s.addNPC("dog", {15, 10});
+    dog.permissions.setPlayerOwner("Alice");
+
+    WHEN("the pet dies") {
+      dog.kill();
+
+      THEN("the server survives") {
+        REPEAT_FOR_MS(100);
+        s.nop();
+      }
+    }
+  }
+}
+
 // If follow count is reduced, one randomly stays
 // Followers inside vehicle
 // Can't order someone else's pet
+// If staying pet dies, it doesn't affect number of followers

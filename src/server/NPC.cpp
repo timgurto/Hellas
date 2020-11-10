@@ -140,8 +140,8 @@ void NPC::onDeath() {
   server.forceAllToUntarget(*this);
 
   if (owner().type == Permissions::Owner::PLAYER) {
-    auto user = server.getUserByName(owner().name);
-    user->followers.remove();
+    auto *user = server.getUserByName(owner().name);
+    if (user) user->followers.remove();
   }
 
   if (_timeEngaged > 0) {
