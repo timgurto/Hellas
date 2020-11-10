@@ -13,7 +13,7 @@ TEST_CASE("Thin objects block movement") {
   // When the user tries to move up, through the wall
   s.waitForUsers(1);
   REPEAT_FOR_MS(500) {
-    c.sendMessage(CL_LOCATION, makeArgs(10, 3));
+    c.sendMessage(CL_MOVE_TO, makeArgs(10, 3));
     SDL_Delay(5);
   }
 
@@ -37,7 +37,7 @@ TEST_CASE("Dead objects don't block movement") {
   s.waitForUsers(1);
   auto &user = s.getFirstUser();
   REPEAT_FOR_MS(3000) {
-    c.sendMessage(CL_LOCATION, makeArgs(10, 3));
+    c.sendMessage(CL_MOVE_TO, makeArgs(10, 3));
 
     if (user.location().y < 3.5) break;
   }
@@ -59,7 +59,7 @@ TEST_CASE("User and NPC overlap allowed") {
     s.waitForUsers(1);
 
     WHEN("the user tries to move through it") {
-      c.sendMessage(CL_LOCATION, makeArgs(10, 30));
+      c.sendMessage(CL_MOVE_TO, makeArgs(10, 30));
 
       THEN("he gets past the NPC") {
         const auto &user = s.getFirstUser();
@@ -82,7 +82,7 @@ TEST_CASE("Users walking through gates") {
     WHEN("Alice tries to move through it") {
       auto c = TestClient::WithUsernameAndDataString("Alice", data);
       s.waitForUsers(1);
-      c.sendMessage(CL_LOCATION, makeArgs(10, 30));
+      c.sendMessage(CL_MOVE_TO, makeArgs(10, 30));
 
       THEN("she gets past it") {
         const auto &alice = s.getFirstUser();
@@ -92,7 +92,7 @@ TEST_CASE("Users walking through gates") {
     WHEN("Bob tries to move through it") {
       auto c = TestClient::WithUsernameAndDataString("Bob", data);
       s.waitForUsers(1);
-      c.sendMessage(CL_LOCATION, makeArgs(10, 30));
+      c.sendMessage(CL_MOVE_TO, makeArgs(10, 30));
 
       THEN("he doesn't get past it") {
         REPEAT_FOR_MS(1000);

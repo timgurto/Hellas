@@ -56,7 +56,7 @@ TEST_CASE("A talent tier can require a tool") {
     user.levelUp();
 
     WHEN("he tries to take the simple talent") {
-      c.sendMessage(CL_TAKE_TALENT, "Meditate");
+      c.sendMessage(CL_CHOOSE_TALENT, "Meditate");
 
       THEN("he has it") {
         const auto *talent = doctor.findTalent("Meditate");
@@ -68,7 +68,7 @@ TEST_CASE("A talent tier can require a tool") {
       s.addObject("rpa", {10, 15});
 
       AND_WHEN("he tries to take the talent requiring a medicalSchool") {
-        c.sendMessage(CL_TAKE_TALENT, "Study");
+        c.sendMessage(CL_CHOOSE_TALENT, "Study");
 
         THEN("he has it") {
           const auto *talent = doctor.findTalent("Study");
@@ -77,7 +77,7 @@ TEST_CASE("A talent tier can require a tool") {
       }
 
       AND_WHEN("he tries to take the talent requiring a different tool") {
-        c.sendMessage(CL_TAKE_TALENT, "Eat");
+        c.sendMessage(CL_CHOOSE_TALENT, "Eat");
         REPEAT_FOR_MS(100);
 
         THEN("he doesn't have it") {
@@ -88,7 +88,7 @@ TEST_CASE("A talent tier can require a tool") {
     }
 
     WHEN("he tries to take the talent with a tool requirement") {
-      c.sendMessage(CL_TAKE_TALENT, "Study");
+      c.sendMessage(CL_CHOOSE_TALENT, "Study");
       REPEAT_FOR_MS(100);
 
       THEN("he doesn't have it") {

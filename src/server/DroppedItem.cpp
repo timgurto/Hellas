@@ -19,8 +19,8 @@ DroppedItem::DroppedItem(const ServerItem &itemType, size_t quantity,
 void DroppedItem::sendInfoToClient(const User &targetUser, bool isNew) const {
   auto isNewArg = isNew ? "1"s : "0"s;
   targetUser.sendMessage(
-      {SV_DROPPED_ITEM, makeArgs(serial(), location().x, location().y,
-                                 _itemType.id(), _quantity, isNewArg)});
+      {SV_DROPPED_ITEM_INFO, makeArgs(serial(), location().x, location().y,
+                                      _itemType.id(), _quantity, isNewArg)});
 }
 
 void DroppedItem::getPickedUpBy(User &user) {

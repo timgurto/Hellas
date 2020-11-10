@@ -43,7 +43,7 @@ void Class::takeTalent(const Talent *talent) {
   }
 
   _owner->sendMessage(
-      {SV_TALENT, makeArgs(talent->name(), _talentRanks[talent])});
+      {SV_TALENT_INFO, makeArgs(talent->name(), _talentRanks[talent])});
   _owner->sendMessage({SV_POINTS_IN_TREE,
                        makeArgs(talent->tree(), pointsInTree(talent->tree()))});
 }
@@ -139,7 +139,7 @@ Talent::Name Class::loseARandomLeafTalent() {
   --_talentPointsAllocated;
 
   _owner->sendMessage(
-      {SV_TALENT, makeArgs(talentToDrop->name(), _talentRanks[talentToDrop])});
+      {SV_TALENT_INFO, makeArgs(talentToDrop->name(), _talentRanks[talentToDrop])});
   _owner->sendMessage(
       {SV_POINTS_IN_TREE,
        makeArgs(talentToDrop->tree(), pointsInTree(talentToDrop->tree()))});

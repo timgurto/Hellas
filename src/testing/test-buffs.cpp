@@ -185,7 +185,7 @@ TEST_CASE("A buff that changes allowed terrain") {
 
         AND_THEN("he can walk to the other end of the map") {
           REPEAT_FOR_MS(2000) {
-            c.sendMessage(CL_LOCATION, makeArgs(70, 10));
+            c.sendMessage(CL_MOVE_TO, makeArgs(70, 10));
             SDL_Delay(5);
           }
           CHECK(user.location().x == 70.0);
@@ -346,7 +346,7 @@ TEST_CASE("Object-granted buffs") {
 
     WHEN("he touches the object") {
       while (user.location() != MapPoint{20, 20}) {
-        c.sendMessage(CL_LOCATION, makeArgs(20, 20));
+        c.sendMessage(CL_MOVE_TO, makeArgs(20, 20));
         SDL_Delay(5);
       }
 
@@ -354,7 +354,7 @@ TEST_CASE("Object-granted buffs") {
 
       AND_WHEN("he moves away from it") {
         while (user.location() != MapPoint{10, 10}) {
-          c.sendMessage(CL_LOCATION, makeArgs(10, 10));
+          c.sendMessage(CL_MOVE_TO, makeArgs(10, 10));
           SDL_Delay(5);
         }
 

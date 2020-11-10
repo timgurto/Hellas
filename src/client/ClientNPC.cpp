@@ -81,7 +81,7 @@ bool ClientNPC::addClassSpecificStuffToWindow() {
 
   auto *followButton =
       new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Follow", [this]() {
-        _client.sendMessage({CL_ORDER_NPC_TO_FOLLOW, serial()});
+        _client.sendMessage({CL_ORDER_PET_TO_FOLLOW, serial()});
       });
   followButton->setTooltip("Order this pet to follow you.");
   _window->addChild(followButton);
@@ -89,7 +89,7 @@ bool ClientNPC::addClassSpecificStuffToWindow() {
 
   auto *stayButton =
       new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Stay", [this]() {
-        _client.sendMessage({CL_ORDER_NPC_TO_STAY, serial()});
+        _client.sendMessage({CL_ORDER_PET_TO_STAY, serial()});
       });
   stayButton->setTooltip("Order this pet to stay.");
   _window->addChild(stayButton);

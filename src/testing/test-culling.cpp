@@ -56,7 +56,7 @@ TEST_CASE("When one user approaches another, he finds out about him",
   while (alice->character().location().x < 900) {
     if (SDL_GetTicks() - startTime > 100000) break;
 
-    alice.sendMessage(CL_LOCATION, makeArgs(1000, 10));
+    alice.sendMessage(CL_MOVE_TO, makeArgs(1000, 10));
 
     // Then Alice becomes aware of Bob
     if (alice.otherUsers().size() == 1) break;
@@ -83,7 +83,7 @@ TEST_CASE("When a player moves away from his object, he is still aware of it",
   while (c->character().location().x < 1000) {
     if (SDL_GetTicks() - startTime > 100000) break;
 
-    c.sendMessage(CL_LOCATION, makeArgs(1010, 10));
+    c.sendMessage(CL_MOVE_TO, makeArgs(1010, 10));
 
     // Then she is still aware of it
     if (c.objects().size() == 0) break;
@@ -120,7 +120,7 @@ TEST_CASE(
   while (c->character().location().x < 1000) {
     if (SDL_GetTicks() - startTime > 100000) break;
 
-    c.sendMessage(CL_LOCATION, makeArgs(1010, 10));
+    c.sendMessage(CL_MOVE_TO, makeArgs(1010, 10));
 
     // Then she is still aware of it
     if (c.objects().size() == 0) break;
@@ -202,7 +202,7 @@ TEST_CASE("Out-of-range objects are forgotten", "[.slow][only]") {
 
   // When the client moves out of range of the signpost
   while (c->character().location().x < 1000) {
-    c.sendMessage(CL_LOCATION, makeArgs(1010, 10));
+    c.sendMessage(CL_MOVE_TO, makeArgs(1010, 10));
 
     // Then he is no longer aware of it
     if (c.objects().size() == 0) break;

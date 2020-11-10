@@ -117,7 +117,7 @@ void User::sendTimePlayed() const {
 }
 
 Message User::teleportMessage(const MapPoint &destination) const {
-  return {SV_LOCATION_INSTANT_USER,
+  return {SV_USER_LOCATION_INSTANT,
           makeArgs(name(), destination.x, destination.y)};
 }
 
@@ -1463,7 +1463,7 @@ void User::sendInfoToClient(const User &targetUser, bool isNew) const {
   bool isSelf = &targetUser == this;
 
   // Location
-  server.sendMessage(client, {SV_LOCATION, makeLocationCommand()});
+  server.sendMessage(client, {SV_USER_LOCATION, makeLocationCommand()});
 
   // Hitpoints
   server.sendMessage(client,
@@ -1518,7 +1518,8 @@ void User::sendInfoToClient(const User &targetUser, bool isNew) const {
 
   // Vehicle?
   if (isDriving())
-    server.sendMessage(client, {SV_MOUNTED, makeArgs(driving(), _name)});
+    server.sendMessage(client,
+                       {SV_VEHICLE_HAS_DRIVER, makeArgs(driving(), _name)});
 }
 
 void User::sendInventorySlot(size_t slotIndex) const {
@@ -1563,7 +1564,7 @@ void User::sendKnownRecipes() const {
 void User::sendKnownRecipesBatch(const std::set<std::string> &batch) const {
   auto args = makeArgs(batch.size());
   for (auto id : batch) args = makeArgs(args, id);
-  sendMessage({SV_RECIPES, args});
+  sendMessage({SV_YOUR_RECIPES, args});
 }
 
 void User::onOutOfRange(const Entity &rhs) const {
@@ -1599,10 +1600,10 @@ void User::moveToSpawnPoint(bool isNewPlayer) {
 
   server.broadcastToArea(
       oldLoc,
-      {SV_LOCATION_INSTANT_USER, makeArgs(name(), location().x, location().y)});
+      {SV_USER_LOCATION_INSTANT, makeArgs(name(), location().x, location().y)});
   server.broadcastToArea(
       location(),
-      {SV_LOCATION_INSTANT_USER, makeArgs(name(), location().x, location().y)});
+      {SV_USER_LOCATION_INSTANT, makeArgs(name(), location().x, location().y)});
 
   server.sendRelevantEntitiesToUser(*this);
 }
@@ -1815,7 +1816,7 @@ void User::sendLostDebuffMsg(const Buff::ID &buff) const {
 
 void User::sendXPMessage() const {
   const Server &server = Server::instance();
-  sendMessage({SV_XP, makeArgs(_xp, XP_PER_LEVEL[_level])});
+  sendMessage({SV_YOUR_XP, makeArgs(_xp, XP_PER_LEVEL[_level])});
 }
 
 void User::announceLevelUp() const {

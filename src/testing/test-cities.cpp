@@ -83,7 +83,7 @@ TEST_CASE("Client is alerted to city membership") {
         s.cities().addPlayerToCity(alice, "Athens");
 
         THEN("she receives a message to that effect") {
-          bool messageReceived = c.waitForMessage(SV_JOINED_CITY);
+          bool messageReceived = c.waitForMessage(SV_YOU_JOINED_CITY);
           REQUIRE(messageReceived);
 
           AND_THEN("she knows she is in Athens") {

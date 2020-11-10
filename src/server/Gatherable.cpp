@@ -8,7 +8,7 @@ void Gatherable::incrementGatheringUsers(const User *userToSkip) {
   if (_numUsersGathering == 1) {
     for (const User *user : server.findUsersInArea(parent().location()))
       if (user != userToSkip)
-        user->sendMessage({SV_GATHERING_OBJECT, parent().serial()});
+        user->sendMessage({SV_OBJECT_BEING_GATHERED, parent().serial()});
   }
 }
 
@@ -18,7 +18,7 @@ void Gatherable::decrementGatheringUsers(const User *userToSkip) {
   if (_numUsersGathering == 0) {
     for (const User *user : server.findUsersInArea(parent().location()))
       if (user != userToSkip)
-        user->sendMessage({SV_NOT_GATHERING_OBJECT, parent().serial()});
+        user->sendMessage({SV_OBJECT_NOT_BEING_GATHERED, parent().serial()});
   }
 }
 
@@ -26,7 +26,7 @@ void Gatherable::removeAllGatheringUsers() {
   const auto &server = Server::instance();
   _numUsersGathering = 0;
   for (const User *user : server.findUsersInArea(parent().location()))
-    user->sendMessage({SV_NOT_GATHERING_OBJECT, parent().serial()});
+    user->sendMessage({SV_OBJECT_NOT_BEING_GATHERED, parent().serial()});
 }
 
 void Gatherable::setContents(const ItemSet &contents) { _contents = contents; }

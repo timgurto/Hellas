@@ -15,7 +15,7 @@ void Vehicle::onDeath() {
   auto pDriver = Server::instance().getUserByName(_driver);
   if (pDriver) {
     pDriver->driving({});
-    pDriver->sendMessage({SV_UNMOUNTED, makeArgs(serial(), _driver)});
+    pDriver->sendMessage({SV_VEHICLE_WAS_UNMOUNTED, makeArgs(serial(), _driver)});
   }
 
   _driver.clear();

@@ -134,15 +134,15 @@ HANDLE_MESSAGE(CL_SKIP_TUTORIAL) {
   user.clearGear();
 
   if (!user.knowsConstruction("tutFire"))
-    user.sendMessage({SV_NEW_CONSTRUCTIONS, makeArgs(1, "fire")});
+    user.sendMessage({SV_NEW_CONSTRUCTIONS_LEARNED, makeArgs(1, "fire")});
   else
-    user.sendMessage({SV_CONSTRUCTIONS, makeArgs(1, "fire")});
+    user.sendMessage({SV_YOUR_CONSTRUCTIONS, makeArgs(1, "fire")});
   user.removeConstruction("tutFire");
   user.addConstruction("fire");
 
   if (!user.knowsRecipe("cookedMeat")) {
     user.addRecipe("cookedMeat");
-    user.sendMessage({SV_NEW_RECIPES, makeArgs(1, "cookedMeat")});
+    user.sendMessage({SV_NEW_RECIPES_LEARNED, makeArgs(1, "cookedMeat")});
   }
 
   user.updateStats();
@@ -152,15 +152,16 @@ HANDLE_MESSAGE(CL_SKIP_TUTORIAL) {
   user.markTutorialAsCompleted();
 }
 
-HANDLE_MESSAGE(CL_LOCATION) {
+HANDLE_MESSAGE(CL_MOVE_TO) {
   double x, y;
   READ_ARGS(x, y);
 
   if (user.isWaitingForDeathAcknowledgement) return;
 
   if (user.isStunned()) {
-    client.sendMessage({SV_LOCATION, makeArgs(user.name(), user.location().x,
-                                              user.location().y)});
+    client.sendMessage(
+        {SV_USER_LOCATION,
+         makeArgs(user.name(), user.location().x, user.location().y)});
     return;
   }
 
@@ -565,7 +566,7 @@ HANDLE_MESSAGE(CL_CEDE) {
   ent->permissions.setCityOwner(city);
 }
 
-HANDLE_MESSAGE(CL_CAST) {
+HANDLE_MESSAGE(CL_CAST_SPELL) {
   auto spellID = ""s;
   READ_ARGS(spellID);
 
@@ -582,7 +583,7 @@ HANDLE_MESSAGE(CL_CAST) {
   user.castSpell(*spell);
 }
 
-HANDLE_MESSAGE(CL_CAST_ITEM) {
+HANDLE_MESSAGE(CL_CAST_SPELL_FROM_ITEM) {
   auto slot = size_t{};
   READ_ARGS(slot);
 
@@ -735,7 +736,7 @@ HANDLE_MESSAGE(CL_FEED_PET) {
   user.removeItems("food", 1);
 }
 
-HANDLE_MESSAGE(CL_ORDER_NPC_TO_STAY) {
+HANDLE_MESSAGE(CL_ORDER_PET_TO_STAY) {
   auto serial = Serial{};
   READ_ARGS(serial);
 
@@ -751,7 +752,7 @@ HANDLE_MESSAGE(CL_ORDER_NPC_TO_STAY) {
   npc->order(NPC::STAY);
 }
 
-HANDLE_MESSAGE(CL_ORDER_NPC_TO_FOLLOW) {
+HANDLE_MESSAGE(CL_ORDER_PET_TO_FOLLOW) {
   auto serial = Serial{};
   READ_ARGS(serial);
 
@@ -848,7 +849,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_LOGIN_NEW)
       SEND_MESSAGE_TO_HANDLER(CL_REQUEST_TIME_PLAYED)
       SEND_MESSAGE_TO_HANDLER(CL_SKIP_TUTORIAL)
-      SEND_MESSAGE_TO_HANDLER(CL_LOCATION)
+      SEND_MESSAGE_TO_HANDLER(CL_MOVE_TO)
       SEND_MESSAGE_TO_HANDLER(CL_CRAFT)
       SEND_MESSAGE_TO_HANDLER(CL_CONSTRUCT)
       SEND_MESSAGE_TO_HANDLER(CL_CONSTRUCT_FOR_CITY)
@@ -857,13 +858,13 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_PICK_UP_DROPPED_ITEM)
       SEND_MESSAGE_TO_HANDLER(CL_SWAP_ITEMS)
       SEND_MESSAGE_TO_HANDLER(CL_CEDE)
-      SEND_MESSAGE_TO_HANDLER(CL_CAST)
-      SEND_MESSAGE_TO_HANDLER(CL_CAST_ITEM)
+      SEND_MESSAGE_TO_HANDLER(CL_CAST_SPELL)
+      SEND_MESSAGE_TO_HANDLER(CL_CAST_SPELL_FROM_ITEM)
       SEND_MESSAGE_TO_HANDLER(CL_REPAIR_ITEM)
       SEND_MESSAGE_TO_HANDLER(CL_TAME_NPC)
       SEND_MESSAGE_TO_HANDLER(CL_FEED_PET)
-      SEND_MESSAGE_TO_HANDLER(CL_ORDER_NPC_TO_STAY)
-      SEND_MESSAGE_TO_HANDLER(CL_ORDER_NPC_TO_FOLLOW)
+      SEND_MESSAGE_TO_HANDLER(CL_ORDER_PET_TO_STAY)
+      SEND_MESSAGE_TO_HANDLER(CL_ORDER_PET_TO_FOLLOW)
       SEND_MESSAGE_TO_HANDLER(CL_INVITE_TO_GROUP)
       SEND_MESSAGE_TO_HANDLER(CL_ACCEPT_GROUP_INVITATION)
       SEND_MESSAGE_TO_HANDLER(CL_LEAVE_GROUP)
@@ -1152,7 +1153,7 @@ void Server::handleBufferedMessages(const Socket &client,
         // Alert nearby users (including the new driver)
         for (const User *u : findUsersInArea(user->location()))
           sendMessage(u->socket(),
-                      {SV_MOUNTED, makeArgs(serial, user->name())});
+                      {SV_VEHICLE_HAS_DRIVER, makeArgs(serial, user->name())});
 
         user->onTerrainListChange(v->allowedTerrain().id());
 
@@ -1185,8 +1186,8 @@ void Server::handleBufferedMessages(const Socket &client,
         v->driver("");
         user->driving({});
         for (const User *u : findUsersInArea(user->location()))
-          sendMessage(u->socket(),
-                      {SV_UNMOUNTED, makeArgs(serial, user->name())});
+          sendMessage(u->socket(), {SV_VEHICLE_WAS_UNMOUNTED,
+                                    makeArgs(serial, user->name())});
 
         // Teleport him him, to avoid collision with the vehicle.
         user->teleportTo(dst);
@@ -1358,7 +1359,7 @@ void Server::handleBufferedMessages(const Socket &client,
         break;
       }
 
-      case CL_TAKE_TALENT: {
+      case CL_CHOOSE_TALENT: {
         iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
         auto talentName = Talent::Name{_stringInputBuffer};
         iss >> del;
@@ -1367,7 +1368,7 @@ void Server::handleBufferedMessages(const Socket &client,
         break;
       }
 
-      case CL_UNLEARN_TALENTS: {
+      case CL_CLEAR_TALENTS: {
         if (del != MSG_END) return;
         handle_CL_UNLEARN_TALENTS(*user);
         break;
@@ -2182,7 +2183,7 @@ void Server::sendConstructionMaterialsMessage(const User &user,
   for (const auto &pair : obj.remainingMaterials()) {
     args = makeArgs(args, pair.first->id(), pair.second);
   }
-  sendMessage(user.socket(), {SV_CONSTRUCTION_MATERIALS, args});
+  sendMessage(user.socket(), {SV_CONSTRUCTION_MATERIALS_NEEDED, args});
 }
 
 void Server::sendNewBuildsMessage(const User &user,
@@ -2190,7 +2191,7 @@ void Server::sendNewBuildsMessage(const User &user,
   if (!ids.empty()) {  // New constructions unlocked!
     std::string args = makeArgs(ids.size());
     for (const std::string &id : ids) args = makeArgs(args, id);
-    sendMessage(user.socket(), {SV_NEW_CONSTRUCTIONS, args});
+    sendMessage(user.socket(), {SV_NEW_CONSTRUCTIONS_LEARNED, args});
   }
 }
 
@@ -2199,7 +2200,7 @@ void Server::sendNewRecipesMessage(const User &user,
   if (!ids.empty()) {  // New recipes unlocked!
     std::string args = makeArgs(ids.size());
     for (const std::string &id : ids) args = makeArgs(args, id);
-    sendMessage(user.socket(), {SV_NEW_RECIPES, args});
+    sendMessage(user.socket(), {SV_NEW_RECIPES_LEARNED, args});
   }
 }
 

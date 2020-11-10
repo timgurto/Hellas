@@ -128,7 +128,7 @@ void Entity::moveLegallyTowards(
         serverCorrectionWasApplied;
     if (shouldUpdateUser)
       userPtr->sendMessage(
-          {SV_LOCATION, makeArgs(userPtr->name(), newDest.x, newDest.y)});
+          {SV_USER_LOCATION, makeArgs(userPtr->name(), newDest.x, newDest.y)});
 
     // Tell user about any additional objects he can now see
     std::list<const Entity *> nearbyEntities;
@@ -192,7 +192,7 @@ void Entity::moveLegallyTowards(
     args = makeArgs(serial(), newDest.x, newDest.y);
   for (const User *userP : server.findUsersInArea(location())) {
     if (userP == this) continue;
-    auto code = classTag() == 'u' ? SV_LOCATION : SV_OBJECT_LOCATION;
+    auto code = classTag() == 'u' ? SV_USER_LOCATION : SV_ENTITY_LOCATION;
     userP->sendMessage({code, args});
   }
 

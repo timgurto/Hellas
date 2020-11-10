@@ -208,7 +208,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
             WHEN("he casts it at the NPC") {
               client->sendMessage(CL_TARGET_ENTITY,
                                   makeArgs(rockGiant.serial()));
-              client->sendMessage(CL_CAST, "bomb");
+              client->sendMessage(CL_CAST_SPELL, "bomb");
               const auto oldHealth = rockGiant.health();
               WAIT_UNTIL(rockGiant.health() < oldHealth);
 
@@ -617,7 +617,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Bonus damage on spells") {
       user->updateStats();
 
       WHEN("he damages himself with it") {
-        client->sendMessage(CL_CAST, "fireball");
+        client->sendMessage(CL_CAST_SPELL, "fireball");
         WAIT_UNTIL(user->health() < user->stats().maxHealth);
 
         THEN("he has taken around 20 damage") {
@@ -642,7 +642,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Bonus damage on spells") {
       user->updateStats();
 
       WHEN("he damages himself with it") {
-        client->sendMessage(CL_CAST, "shoot");
+        client->sendMessage(CL_CAST_SPELL, "shoot");
         WAIT_UNTIL(user->health() < user->stats().maxHealth);
 
         THEN("he has taken around 20 damage") {
@@ -673,7 +673,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Bonus-healing stat") {
 
         WHEN("he heals himself") {
           const auto healthBefore = user->health();
-          client->sendMessage(CL_CAST, "heal");
+          client->sendMessage(CL_CAST_SPELL, "heal");
           WAIT_UNTIL(user->health() > healthBefore);
 
           THEN("he has recovered around 20 damage") {

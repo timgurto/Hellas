@@ -451,8 +451,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
         player->stopCrafting();
       } break;
 
-      case SV_LOCATION:  // Also the de-facto new-user announcement
-      case SV_LOCATION_INSTANT_USER: {
+      case SV_USER_LOCATION:  // Also the de-facto new-user announcement
+      case SV_USER_LOCATION_INSTANT: {
         std::string name;
         double x, y;
         singleMsg >> name >> del >> x >> del >> y >> del;
@@ -462,7 +462,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         if (isSelf) {
           _character.newLocationFromServer(p);
 
-          auto shouldTeleport = msgCode == SV_LOCATION_INSTANT_USER || !_loaded;
+          auto shouldTeleport = msgCode == SV_USER_LOCATION_INSTANT || !_loaded;
           if (shouldTeleport) {
             _character.location(p);
             _serverHasOutOfDateLocationInfo = false;
@@ -477,7 +477,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
           auto &user = *_otherUsers[name];
 
           user.newLocationFromServer(p);
-          if (msgCode == SV_LOCATION_INSTANT_USER) user.location(p);
+          if (msgCode == SV_USER_LOCATION_INSTANT) user.location(p);
         }
 
         bool shouldTryToCullObjects = name == _username;
@@ -623,7 +623,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
-      case SV_JOINED_CITY: {
+      case SV_YOU_JOINED_CITY: {
         std::string cityName;
         readString(singleMsg, cityName, MSG_END);
         singleMsg >> del;
@@ -708,7 +708,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
-      case SV_OBJECT: {
+      case SV_OBJECT_INFO: {
         Serial serial;
         double x, y;
         std::string type;
@@ -763,7 +763,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
-      case SV_DROPPED_ITEM: {
+      case SV_DROPPED_ITEM_INFO: {
         Serial serial;
         MapPoint location;
         singleMsg >> serial >> del >> location.x >> del >> location.y >> del;
@@ -782,8 +782,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
-      case SV_LOCATION_INSTANT_OBJECT:
-      case SV_OBJECT_LOCATION: {
+      case SV_ENTITY_LOCATION_INSTANT:
+      case SV_ENTITY_LOCATION: {
         Serial serial;
         double x, y;
         singleMsg >> serial >> del >> x >> del >> y >> del;
@@ -796,12 +796,12 @@ void Client::handleBufferedMessages(const std::string &msg) {
           if (asVehicle && _character.isDriving(*asVehicle)) break;
         }
         it->second->newLocationFromServer({x, y});
-        // if (msgCode == SV_LOCATION_INSTANT_OBJECT) it->second->location({x,
+        // if (msgCode == SV_ENTITY_LOCATION_INSTANT) it->second->location({x,
         // y});
         break;
       }
 
-      case SV_REMOVE_OBJECT:
+      case SV_OBJECT_REMOVED:
       case SV_OBJECT_OUT_OF_RANGE: {
         Serial serial;
         singleMsg >> serial >> del;
@@ -877,7 +877,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
-      case SV_GATHERING_OBJECT: {
+      case SV_OBJECT_BEING_GATHERED: {
         Serial serial;
         singleMsg >> serial >> del;
         if (del != MSG_END) break;
@@ -891,7 +891,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
-      case SV_NOT_GATHERING_OBJECT: {
+      case SV_OBJECT_NOT_BEING_GATHERED: {
         Serial serial;
         singleMsg >> serial >> del;
         if (del != MSG_END) break;
@@ -905,8 +905,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
-      case SV_RECIPES:
-      case SV_NEW_RECIPES: {
+      case SV_YOUR_RECIPES:
+      case SV_NEW_RECIPES_LEARNED: {
         int n;
         singleMsg >> n >> del;
         for (size_t i = 0; i != n; ++i) {
@@ -918,7 +918,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
           auto it = gameData.recipes.find(recipe);
           if (it == gameData.recipes.end()) continue;
 
-          if (msgCode == SV_NEW_RECIPES) {
+          if (msgCode == SV_NEW_RECIPES_LEARNED) {
             auto message =
                 "You have learned how to craft a new recipe: " + it->name();
             toast("leather", message);
@@ -941,9 +941,9 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
-      case SV_CONSTRUCTIONS:
-      case SV_NEW_CONSTRUCTIONS: {
-        if (msgCode == SV_CONSTRUCTIONS) _knownConstructions.clear();
+      case SV_YOUR_CONSTRUCTIONS:
+      case SV_NEW_CONSTRUCTIONS_LEARNED: {
+        if (msgCode == SV_YOUR_CONSTRUCTIONS) _knownConstructions.clear();
 
         int n;
         singleMsg >> n >> del;
@@ -955,7 +955,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
 
           auto cot = findObjectType(recipe);
           if (!cot) continue;
-          if (msgCode == SV_NEW_CONSTRUCTIONS) {
+          if (msgCode == SV_NEW_CONSTRUCTIONS_LEARNED) {
             auto message = "You have learned how to construct a new object: " +
                            cot->name();
             toast("hammer", message);
@@ -1096,7 +1096,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
-      case SV_CONSTRUCTION_MATERIALS: {
+      case SV_CONSTRUCTION_MATERIALS_NEEDED: {
         Serial serial;
         int n;
         ItemSet set;
@@ -1219,7 +1219,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
-      case SV_MOUNTED: {
+      case SV_VEHICLE_HAS_DRIVER: {
         auto serial = Serial{};
         std::string user;
         singleMsg >> serial >> del;
@@ -1249,7 +1249,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
-      case SV_UNMOUNTED: {
+      case SV_VEHICLE_WAS_UNMOUNTED: {
         auto serial = Serial{};
         std::string user;
         singleMsg >> serial >> del;
@@ -1310,7 +1310,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
-      case SV_XP: {
+      case SV_YOUR_XP: {
         auto xp = XP{}, maxXP = XP{};
         singleMsg >> xp >> del >> maxXP >> del;
         if (del != MSG_END) break;
@@ -1845,7 +1845,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
-      case SV_TALENT: {
+      case SV_TALENT_INFO: {
         singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
         auto talentName = std::string{buffer};
         auto level = 0;
@@ -2764,7 +2764,7 @@ void Client::disconnect() {
 
 void Client::initializeMessageNames() {
   _messageCommands["played"] = CL_REQUEST_TIME_PLAYED;
-  _messageCommands["location"] = CL_LOCATION;
+  _messageCommands["location"] = CL_MOVE_TO;
   _messageCommands["cancel"] = CL_CANCEL_ACTION;
   _messageCommands["craft"] = CL_CRAFT;
   _messageCommands["constructItem"] = CL_CONSTRUCT_FROM_ITEM;
@@ -2788,7 +2788,7 @@ void Client::initializeMessageNames() {
   _messageCommands["cquit"] = CL_LEAVE_CITY;
   _messageCommands["leave"] = CL_LEAVE_GROUP;
   _messageCommands["recruit"] = CL_RECRUIT;
-  _messageCommands["cast"] = CL_CAST;
+  _messageCommands["cast"] = CL_CAST_SPELL;
   _messageCommands["roll"] = CL_ROLL;
 
   _messageCommands["say"] = CL_SAY;

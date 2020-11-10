@@ -37,7 +37,7 @@ enum MessageCode {
 
   // "My location has changed, and is now ..."
   // Arguments: x, y
-  CL_LOCATION,
+  CL_MOVE_TO,
 
   // Cancel user's current action
   CL_CANCEL_ACTION,
@@ -177,18 +177,18 @@ enum MessageCode {
 
   // I want to take talent ...
   // Arguments: talent name
-  CL_TAKE_TALENT,
+  CL_CHOOSE_TALENT,
 
   // I want to unlearn all of my talents
-  CL_UNLEARN_TALENTS,
+  CL_CLEAR_TALENTS,
 
   // Cast a spell
   // Arguments: spell ID
-  CL_CAST,
+  CL_CAST_SPELL,
 
   // Cast a spell by using an item
   // Arguments: inventory slot containing the item
-  CL_CAST_ITEM,
+  CL_CAST_SPELL_FROM_ITEM,
 
   // Repair a damaged item
   // Arguments: serial, slot
@@ -208,8 +208,8 @@ enum MessageCode {
 
   // Change a pet's order
   // Arguments: serial
-  CL_ORDER_NPC_TO_STAY,
-  CL_ORDER_NPC_TO_FOLLOW,
+  CL_ORDER_PET_TO_STAY,
+  CL_ORDER_PET_TO_FOLLOW,
 
   // Dismiss a buff
   // Arguments: buff ID
@@ -307,7 +307,19 @@ enum MessageCode {
 
   // The location of a user
   // Arguments: username, x, y
-  SV_LOCATION,
+  SV_USER_LOCATION,
+
+  // User ... is at location ..., and moved there instantly. (Used for respawning)
+  // Arguments: username, x, y
+  SV_USER_LOCATION_INSTANT,
+
+  // The location of an object
+  // Arguments: serial, x, y
+  SV_ENTITY_LOCATION,
+
+  // Object #... is at location ..., and moved there instantly. (Used for respawning)
+  // Arguments: serial, x, y
+  SV_ENTITY_LOCATION_INSTANT,
 
   // Your valid terrain is now the ... list.
   // Arguments: listID
@@ -317,14 +329,6 @@ enum MessageCode {
   // Arguments: x, y
   SV_YOUR_SPAWN_POINT,
   SV_YOU_CHANGED_YOUR_SPAWN_POINT,
-
-  // User ... is at location ..., and moved there instantly. (Used for respawning)
-  // Arguments: username, x, y
-  SV_LOCATION_INSTANT_USER,
-
-  // Object #... is at location ..., and moved there instantly. (Used for respawning)
-  // Arguments: serial, x, y
-  SV_LOCATION_INSTANT_OBJECT,
 
   // An item is in the user's inventory, or a container object
   // Arguments: serial, slot, ID, quantity, item health, isSoulbound
@@ -337,15 +341,15 @@ enum MessageCode {
 
   // The details of an object
   // Arguments: serial, x, y, type
-  SV_OBJECT,
+  SV_OBJECT_INFO,
 
   // The details of a dropped item
   // Arguments: serial, x, y, type, quantity, isNew (0/1)
-  SV_DROPPED_ITEM,
+  SV_DROPPED_ITEM_INFO,
 
   // An object has been removed
   // Arguments: serial
-  SV_REMOVE_OBJECT,
+  SV_OBJECT_REMOVED,
 
   // An NPC has this level
   // Arguments: serial, level
@@ -362,10 +366,6 @@ enum MessageCode {
   // The energy of an NPC
   // Arguments: serial, energy
   SV_ENTITY_ENERGY,
-
-  // The location of an object
-  // Arguments: serial, x, y
-  SV_OBJECT_LOCATION,
 
   // An object is transforming
   // Arguments: serial, remaining
@@ -396,19 +396,19 @@ enum MessageCode {
 
   // The recipes a user knows
   // Arguments: quantity, id1, id2, ...
-  SV_RECIPES,
+  SV_YOUR_RECIPES,
 
   // New recipes a user has just learned
   // Arguments: quantity, id1, id2, ...
-  SV_NEW_RECIPES,
+  SV_NEW_RECIPES_LEARNED,
 
   // The constructions a user knows
   // Arguments: quantity, id1, id2, ...
-  SV_CONSTRUCTIONS,
+  SV_YOUR_CONSTRUCTIONS,
 
   // New constructions a user has just learned
   // Arguments: quantity, id1, id2, ...
-  SV_NEW_CONSTRUCTIONS,
+  SV_NEW_CONSTRUCTIONS_LEARNED,
 
   // There's a city called ... at ...
   // Arguments: name, x, y
@@ -416,7 +416,7 @@ enum MessageCode {
 
   // The user has just joined a city
   // Arguments: cityName
-  SV_JOINED_CITY,
+  SV_YOU_JOINED_CITY,
 
   // A user is a member of a city
   // Arguments: username, cityName
@@ -510,7 +510,7 @@ enum MessageCode {
 
   // How many points a player has in a talent
   // Arguments: name, points
-  SV_TALENT,
+  SV_TALENT_INFO,
 
   // The user died and lost a talet point
   // Arguments: talent name
@@ -532,22 +532,22 @@ enum MessageCode {
   SV_OWNER,
 
   // An object is being gathered from
-  SV_GATHERING_OBJECT,
+  SV_OBJECT_BEING_GATHERED,
 
   // An object is not being gathered from
-  SV_NOT_GATHERING_OBJECT,
+  SV_OBJECT_NOT_BEING_GATHERED,
 
   // A vehicle has a driver.
   // Arguments: serial, username
-  SV_MOUNTED,
+  SV_VEHICLE_HAS_DRIVER,
 
   // A vehicle is no longer being driven.
   // Arguments: serial, username
-  SV_UNMOUNTED,
+  SV_VEHICLE_WAS_UNMOUNTED,
 
   // The remaining materials required to construct an object
   // Arguments: serial, n, id1, quantity1, id2, quantity2, ...
-  SV_CONSTRUCTION_MATERIALS,
+  SV_CONSTRUCTION_MATERIALS_NEEDED,
 
   // The user's stats
   // Arguments: armor, max health, max energy, hps, eps,
@@ -559,7 +559,7 @@ enum MessageCode {
 
   // The user's XP
   // Arguments: XP, maxXP
-  SV_XP,
+  SV_YOUR_XP,
 
   // The user received new XP
   // Arguments: XP

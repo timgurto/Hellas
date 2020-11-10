@@ -12,7 +12,7 @@ TEST_CASE("Objects show up on the map when a client logs in") {
   s.addObject("rock", {10, 15});
 
   // When the client finds out his location;
-  CHECK(c.waitForMessage(SV_LOCATION));
+  CHECK(c.waitForMessage(SV_USER_LOCATION));
 
   // And he opens his map window
   c.mapWindow()->show();
@@ -28,7 +28,7 @@ TEST_CASE("A player shows up on his own map", "[.flaky][color]") {
   TestClient c = TestClient::WithData("big_map");
 
   // When the client finds out his location;
-  CHECK(c.waitForMessage(SV_LOCATION));
+  CHECK(c.waitForMessage(SV_USER_LOCATION));
 
   // And he opens his map window
   c.mapWindow()->show();

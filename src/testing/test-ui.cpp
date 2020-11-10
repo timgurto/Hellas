@@ -173,10 +173,10 @@ TEST_CASE("New clients survive recipe unlocks") {
   s.waitForUsers(1);
 
   // When the server alerts the client to a recipe unlock
-  s.getFirstUser().sendMessage({SV_NEW_RECIPES, makeArgs(1, "asdf")});
+  s.getFirstUser().sendMessage({SV_NEW_RECIPES_LEARNED, makeArgs(1, "asdf")});
 
   // The client receives it.
-  CHECK(c.waitForMessage(SV_NEW_RECIPES));
+  CHECK(c.waitForMessage(SV_NEW_RECIPES_LEARNED));
 }
 
 TEST_CASE("Gear-slot names are initialized once",

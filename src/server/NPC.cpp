@@ -227,7 +227,7 @@ double NPC::getTameChance() const {
 void NPC::sendInfoToClient(const User &targetUser, bool isNew) const {
   const Server &server = Server::instance();
 
-  targetUser.sendMessage({SV_OBJECT, makeArgs(serial(), location().x,
+  targetUser.sendMessage({SV_OBJECT_INFO, makeArgs(serial(), location().x,
                                               location().y, type()->id())});
 
   // Owner

@@ -89,7 +89,7 @@ void Entity::changeType(const EntityType *newType,
   // Inform owner
   for (const auto &owner : permissions.ownerAsUsernames())
     server.sendMessageIfOnline(
-        owner, {SV_OBJECT,
+        owner, {SV_OBJECT_INFO,
                 makeArgs(serial(), location().x, location().y, type()->id())});
 }
 
@@ -611,7 +611,7 @@ void Entity::teleportTo(const MapPoint &destination) {
 }
 
 Message Entity::teleportMessage(const MapPoint &destination) const {
-  return {SV_LOCATION_INSTANT_OBJECT,
+  return {SV_ENTITY_LOCATION_INSTANT,
           makeArgs(serial(), destination.x, destination.y)};
 }
 

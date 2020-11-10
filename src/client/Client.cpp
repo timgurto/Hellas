@@ -283,7 +283,7 @@ void Client::gameLoop() {
   else {
     _timeSinceLocUpdate += _timeElapsed;
     if (_timeSinceLocUpdate > TIME_BETWEEN_LOCATION_UPDATES) {
-      sendMessage({CL_LOCATION,
+      sendMessage({CL_MOVE_TO,
                    makeArgs(_character.location().x, _character.location().y)});
       _tooltipNeedsRefresh = true;
       _timeSinceLocUpdate = 0;

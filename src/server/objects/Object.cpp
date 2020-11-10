@@ -140,8 +140,9 @@ bool Object::isAbleToDeconstruct(const User &user) const {
 void Object::sendInfoToClient(const User &targetUser, bool isNew) const {
   const Server &server = Server::instance();
 
-  targetUser.sendMessage({SV_OBJECT, makeArgs(serial(), location().x,
-                                              location().y, type()->id())});
+  targetUser.sendMessage(
+      {SV_OBJECT_INFO,
+       makeArgs(serial(), location().x, location().y, type()->id())});
 
   // Owner
   if (permissions.hasOwner()) {
@@ -159,7 +160,7 @@ void Object::sendInfoToClient(const User &targetUser, bool isNew) const {
 
   // Being gathered
   if (gatherable.numUsersGathering() > 0)
-    targetUser.sendMessage({SV_GATHERING_OBJECT, serial()});
+    targetUser.sendMessage({SV_OBJECT_BEING_GATHERED, serial()});
 
   // Construction materials
   if (isBeingBuilt()) {

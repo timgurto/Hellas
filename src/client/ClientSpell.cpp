@@ -7,7 +7,7 @@
 #include "Tooltip.h"
 
 ClientSpell::ClientSpell(const std::string &id, Client &client)
-    : _id(id), _client(client), _castMessage(CL_CAST, id) {}
+    : _id(id), _client(client), _castMessage(CL_CAST_SPELL, id) {}
 
 void ClientSpell::icon(const Texture &iconTexture) { _icon = iconTexture; }
 

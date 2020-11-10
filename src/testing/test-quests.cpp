@@ -2077,7 +2077,7 @@ TEST_CASE("Quest objective: cast a spell") {
       }
 
       AND_WHEN("he casts the spell") {
-        c.sendMessage(CL_CAST, "fireball");
+        c.sendMessage(CL_CAST_SPELL, "fireball");
 
         AND_WHEN("he tries to complete it") {
           c.sendMessage(CL_COMPLETE_QUEST,
@@ -2091,7 +2091,7 @@ TEST_CASE("Quest objective: cast a spell") {
       }
 
       AND_WHEN("he casts a different spell") {
-        c.sendMessage(CL_CAST, "iceball");
+        c.sendMessage(CL_CAST_SPELL, "iceball");
 
         AND_WHEN("he tries to complete it") {
           c.sendMessage(CL_COMPLETE_QUEST,

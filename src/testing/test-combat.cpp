@@ -153,7 +153,7 @@ TEST_CASE_METHOD(TwoClients, "Clients receive nearby users' health values") {
     AND_GIVEN("Alice is close to Bob") {
       while (distance(alice->collisionRect(), bob->collisionRect()) >=
              Server::ACTION_DISTANCE) {
-        cAlice.sendMessage(CL_LOCATION,
+        cAlice.sendMessage(CL_MOVE_TO,
                            makeArgs(bob->location().x, bob->location().y));
         SDL_Delay(5);
       }

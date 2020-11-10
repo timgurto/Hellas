@@ -642,7 +642,7 @@ TEST_CASE("Broken items can't cast spells") {
         BREAK_ITEM(poisonedApple);
 
         AND_WHEN("he tries to use it") {
-          c.sendMessage(CL_CAST_ITEM, "0");
+          c.sendMessage(CL_CAST_SPELL_FROM_ITEM, "0");
 
           THEN("he is still at full health") {
             REPEAT_FOR_MS(100);

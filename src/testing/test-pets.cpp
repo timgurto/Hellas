@@ -697,7 +697,7 @@ TEST_CASE("Follower limits") {
           CHECK(wildDog.order() == NPC::STAY);
 
           AND_WHEN("he orders it to follow") {
-            c.sendMessage(CL_ORDER_NPC_TO_FOLLOW, makeArgs(wildDog.serial()));
+            c.sendMessage(CL_ORDER_PET_TO_FOLLOW, makeArgs(wildDog.serial()));
 
             THEN("it is still not following") {
               REPEAT_FOR_MS(100);
@@ -840,15 +840,15 @@ TEST_CASE("Pet orders") {
     AND_GIVEN("the dog is the user's pet") {
       dog.permissions.setPlayerOwner(c->username());
 
-      c.sendMessage(CL_ORDER_NPC_TO_STAY, makeArgs(dog.serial()));
+      c.sendMessage(CL_ORDER_PET_TO_STAY, makeArgs(dog.serial()));
       WAIT_UNTIL(dog.order() == NPC::STAY);
 
-      c.sendMessage(CL_ORDER_NPC_TO_FOLLOW, makeArgs(dog.serial()));
+      c.sendMessage(CL_ORDER_PET_TO_FOLLOW, makeArgs(dog.serial()));
       WAIT_UNTIL(dog.order() == NPC::FOLLOW);
     }
 
     WHEN("he tries to order it to stay") {
-      c.sendMessage(CL_ORDER_NPC_TO_STAY, makeArgs(dog.serial()));
+      c.sendMessage(CL_ORDER_PET_TO_STAY, makeArgs(dog.serial()));
 
       THEN("it is still set to Follow") {
         REPEAT_FOR_MS(100);
@@ -872,7 +872,7 @@ TEST_CASE("Order pet to stay") {
       dog.permissions.setPlayerOwner(c->username());
 
       WHEN("its owner sends a Stay order") {
-        c.sendMessage(CL_ORDER_NPC_TO_STAY, makeArgs(dog.serial()));
+        c.sendMessage(CL_ORDER_PET_TO_STAY, makeArgs(dog.serial()));
         auto originalLocation = dog.location();
 
         AND_WHEN("its owner walks away") {
@@ -891,7 +891,7 @@ TEST_CASE("Order pet to stay") {
     s.waitForUsers(1);
 
     WHEN("the client tries to order a nonexistent NPC to stay") {
-      c.sendMessage(CL_ORDER_NPC_TO_STAY, makeArgs(42));
+      c.sendMessage(CL_ORDER_PET_TO_STAY, makeArgs(42));
 
       THEN("the server survives") { s.nop(); }
     }
@@ -916,7 +916,7 @@ TEST_CASE("Ordering a pet to stay makes room for another follower") {
 
     WHEN("a user tames one and orders it to stay") {
       c.sendMessage(CL_TAME_NPC, makeArgs(cat1.serial()));
-      c.sendMessage(CL_ORDER_NPC_TO_STAY, makeArgs(cat1.serial()));
+      c.sendMessage(CL_ORDER_PET_TO_STAY, makeArgs(cat1.serial()));
       WAIT_UNTIL(cat1.order() == NPC::STAY);
 
       AND_WHEN("he tames the other") {
@@ -951,11 +951,11 @@ TEST_CASE("Follow orders contribute to follower limit") {
     CHECK(user.followers.num() == 0);
 
     WHEN("he orders one to follow") {
-      c.sendMessage(CL_ORDER_NPC_TO_FOLLOW, makeArgs(dog1.serial()));
+      c.sendMessage(CL_ORDER_PET_TO_FOLLOW, makeArgs(dog1.serial()));
       REPEAT_FOR_MS(100);
 
       AND_WHEN("he orders the other to follow") {
-        c.sendMessage(CL_ORDER_NPC_TO_FOLLOW, makeArgs(dog2.serial()));
+        c.sendMessage(CL_ORDER_PET_TO_FOLLOW, makeArgs(dog2.serial()));
 
         THEN("the second is not following") {
           REPEAT_FOR_MS(100);
@@ -1042,11 +1042,11 @@ TEST_CASE("Followers can count only once") {
       user.updateStats();
 
       WHEN("he orders the first pet to follow, twice") {
-        c.sendMessage(CL_ORDER_NPC_TO_FOLLOW, makeArgs(dog1.serial()));
-        c.sendMessage(CL_ORDER_NPC_TO_FOLLOW, makeArgs(dog1.serial()));
+        c.sendMessage(CL_ORDER_PET_TO_FOLLOW, makeArgs(dog1.serial()));
+        c.sendMessage(CL_ORDER_PET_TO_FOLLOW, makeArgs(dog1.serial()));
 
         AND_WHEN("he orders the second pet to follow") {
-          c.sendMessage(CL_ORDER_NPC_TO_FOLLOW, makeArgs(dog2.serial()));
+          c.sendMessage(CL_ORDER_PET_TO_FOLLOW, makeArgs(dog2.serial()));
 
           THEN("the second pet is following") {
             WAIT_UNTIL(dog2.order() == NPC::FOLLOW);
@@ -1073,14 +1073,14 @@ TEST_CASE_METHOD(ServerAndClientWithData,
     follower.order(NPC::STAY);
     stayer1.order(NPC::STAY);
     stayer2.order(NPC::STAY);
-    client->sendMessage(CL_ORDER_NPC_TO_FOLLOW, makeArgs(follower.serial()));
+    client->sendMessage(CL_ORDER_PET_TO_FOLLOW, makeArgs(follower.serial()));
     WAIT_UNTIL(follower.order() == NPC::FOLLOW);
 
     WHEN("a stayer dies") {
       stayer1.kill();
 
       AND_WHEN("he orders the other stayer to follow") {
-        client->sendMessage(CL_ORDER_NPC_TO_FOLLOW, makeArgs(stayer2.serial()));
+        client->sendMessage(CL_ORDER_PET_TO_FOLLOW, makeArgs(stayer2.serial()));
 
         THEN("the second pet is not following") {
           REPEAT_FOR_MS(100);
@@ -1178,3 +1178,5 @@ TEST_CASE("Pet death") {
 // If follow count is reduced, one randomly stays
 // Followers inside vehicle
 // Can't order someone else's pet
+// Followers teleport with player
+// Followers are left behind when player dies

@@ -42,7 +42,7 @@ bool Server::endTutorial(const Object &obj, User &performer,
   performer.removeConstruction("tutFire");
   performer.addConstruction("fire");
   server.sendMessage(performer.socket(),
-                     {SV_CONSTRUCTIONS, makeArgs(1, "fire")});
+                     {SV_YOUR_CONSTRUCTIONS, makeArgs(1, "fire")});
 
   performer.updateStats();
 

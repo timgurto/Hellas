@@ -79,7 +79,7 @@ const Tooltip &ClientTalent::tooltip(const Client &client) const {
 }
 
 void ClientTalent::generateLearnMessage() {
-  learnMessage = {CL_TAKE_TALENT, name};
+  learnMessage = {CL_CHOOSE_TALENT, name};
 }
 
 size_t Tree::numTiers() const {

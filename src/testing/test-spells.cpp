@@ -105,12 +105,12 @@ TEST_CASE("Spell cooldowns") {
     alice.getClass().teachSpell("hurtSelf2s");
 
     WHEN("Alice casts the spell with cooldown 1s") {
-      cAlice.sendMessage(CL_CAST, "hurtSelf1s");
+      cAlice.sendMessage(CL_CAST_SPELL, "hurtSelf1s");
       REPEAT_FOR_MS(100);
       auto healthAfterFirstCast = alice.health();
 
       AND_WHEN("she tries casting it again") {
-        cAlice.sendMessage(CL_CAST, "hurtSelf1s");
+        cAlice.sendMessage(CL_CAST_SPELL, "hurtSelf1s");
 
         THEN("she hasn't lost any health") {
           REPEAT_FOR_MS(100);
@@ -119,7 +119,7 @@ TEST_CASE("Spell cooldowns") {
       }
 
       AND_WHEN("she tries a different spell with cooldown 1s") {
-        cAlice.sendMessage(CL_CAST, "hurtSelfAlso1s");
+        cAlice.sendMessage(CL_CAST_SPELL, "hurtSelfAlso1s");
 
         THEN("she has lost health") {
           REPEAT_FOR_MS(100);
@@ -131,7 +131,7 @@ TEST_CASE("Spell cooldowns") {
         REPEAT_FOR_MS(1000);
 
         AND_WHEN("she tries casting it again") {
-          cAlice.sendMessage(CL_CAST, "hurtSelf1s");
+          cAlice.sendMessage(CL_CAST_SPELL, "hurtSelf1s");
 
           THEN("she has lost health") {
             REPEAT_FOR_MS(100);
@@ -141,7 +141,7 @@ TEST_CASE("Spell cooldowns") {
       }
 
       AND_WHEN("she tries casting the spell with no cooldown") {
-        cAlice.sendMessage(CL_CAST, "hurtSelf");
+        cAlice.sendMessage(CL_CAST_SPELL, "hurtSelf");
 
         THEN("she has lost health") {
           REPEAT_FOR_MS(100);
@@ -156,8 +156,8 @@ TEST_CASE("Spell cooldowns") {
         bob.getClass().teachSpell("hurtSelf1s");
 
         auto healthBefore = bob.health();
-        s.sendMessage(bob.socket(),
-                      {TST_SEND_THIS_BACK, makeArgs(CL_CAST, "hurtSelf1s")});
+        s.sendMessage(bob.socket(), {TST_SEND_THIS_BACK,
+                                     makeArgs(CL_CAST_SPELL, "hurtSelf1s")});
 
         THEN("he has lost health") {
           REPEAT_FOR_MS(100);
@@ -167,7 +167,7 @@ TEST_CASE("Spell cooldowns") {
     }
 
     WHEN("Alice casts the spell with cooldown 2s") {
-      cAlice.sendMessage(CL_CAST, "hurtSelf2s");
+      cAlice.sendMessage(CL_CAST_SPELL, "hurtSelf2s");
       REPEAT_FOR_MS(100);
       auto healthAfterFirstCast = alice.health();
 
@@ -175,7 +175,7 @@ TEST_CASE("Spell cooldowns") {
         REPEAT_FOR_MS(1000);
 
         AND_WHEN("she tries casting it again") {
-          cAlice.sendMessage(CL_CAST, "hurtSelf2s");
+          cAlice.sendMessage(CL_CAST_SPELL, "hurtSelf2s");
 
           THEN("she hasn't lost any health") {
             REPEAT_FOR_MS(100);
@@ -204,7 +204,7 @@ TEST_CASE("Spell cooldowns") {
       alice.getClass().teachSpell("nop");
 
       // When she casts it
-      c.sendMessage(CL_CAST, "nop");
+      c.sendMessage(CL_CAST_SPELL, "nop");
       WAIT_UNTIL(alice.isSpellCoolingDown("nop"));
 
       // And when she logs out and back in
@@ -324,7 +324,7 @@ TEST_CASE("Kills with spells give XP") {
       AND_WHEN("he kills the NPC with the spell") {
         const auto &critter = s.getFirstNPC();
         c.sendMessage(CL_SELECT_ENTITY, makeArgs(critter.serial()));
-        c.sendMessage(CL_CAST, "nuke");
+        c.sendMessage(CL_CAST_SPELL, "nuke");
         WAIT_UNTIL(critter.isDead());
 
         THEN("the user has some XP") { WAIT_UNTIL(user.xp() > 0); }
@@ -356,14 +356,14 @@ TEST_CASE("Relearning a talent skill after death") {
 
     WHEN("a level-2 user takes the talent") {
       user.levelUp();
-      c.sendMessage(CL_TAKE_TALENT, "Dance");
+      c.sendMessage(CL_CHOOSE_TALENT, "Dance");
       WAIT_UNTIL(user.getClass().knowsSpell("dance"));
 
       AND_WHEN("he dies") {
         user.kill();
 
         AND_WHEN("he tries to take the talent again") {
-          c.sendMessage(CL_TAKE_TALENT, "Dance");
+          c.sendMessage(CL_CHOOSE_TALENT, "Dance");
 
           THEN("he has the talent") {
             WAIT_UNTIL(user.getClass().knowsSpell("dance"));
@@ -399,7 +399,7 @@ TEST_CASE("Non-damaging spells aggro NPCs") {
       AND_WHEN("he casts it on the NPC") {
         const auto &monster = s.getFirstNPC();
         c.sendMessage(CL_TARGET_ENTITY, makeArgs(monster.serial()));
-        c.sendMessage(CL_CAST, "exhaust");
+        c.sendMessage(CL_CAST_SPELL, "exhaust");
         WAIT_UNTIL(monster.debuffs().size() == 1);
 
         THEN("it is aware of him") { WAIT_UNTIL(monster.isAwareOf(user)); }
@@ -432,7 +432,7 @@ TEST_CASE("Cast-from-item returning an item") {
       user.giveItem(&bucketOfWater);
 
       WHEN("he pours out the water") {
-        c.sendMessage(CL_CAST_ITEM, "0");
+        c.sendMessage(CL_CAST_SPELL_FROM_ITEM, "0");
 
         THEN("he has an empty bucket") {
           auto &emptyBucket = s.findItem("emptyBucket");
@@ -446,7 +446,7 @@ TEST_CASE("Cast-from-item returning an item") {
       user.giveItem(&magicWaterBubble);
 
       WHEN("he pours out the water") {
-        c.sendMessage(CL_CAST_ITEM, "0");
+        c.sendMessage(CL_CAST_SPELL_FROM_ITEM, "0");
 
         THEN("his inventory is empty") {
           REPEAT_FOR_MS(100);
@@ -460,7 +460,7 @@ TEST_CASE("Cast-from-item returning an item") {
       user.giveItem(&glassOfWater);
 
       WHEN("he pours out the water") {
-        c.sendMessage(CL_CAST_ITEM, "0");
+        c.sendMessage(CL_CAST_SPELL_FROM_ITEM, "0");
 
         THEN("he has an empty glass") {
           auto &emptyGlass = s.findItem("emptyGlass");
@@ -491,7 +491,7 @@ TEST_CASE("Cast a spell from a stackable item") {
       user.giveItem(&match, 3);
 
       WHEN("he casts the spell") {
-        c.sendMessage(CL_CAST_ITEM, "0");
+        c.sendMessage(CL_CAST_SPELL_FROM_ITEM, "0");
 
         THEN("he has two matches") {
           const auto &invSlot = user.inventory(0);
@@ -504,7 +504,7 @@ TEST_CASE("Cast a spell from a stackable item") {
       user.giveItem(&match, 10 * User::INVENTORY_SIZE);
 
       WHEN("he casts the spell") {
-        c.sendMessage(CL_CAST_ITEM, "0");
+        c.sendMessage(CL_CAST_SPELL_FROM_ITEM, "0");
 
         THEN("he is still at full health") {
           REPEAT_FOR_MS(100);
@@ -535,7 +535,7 @@ TEST_CASE("Target self if target is invalid") {
       c.sendMessage(CL_TARGET_ENTITY, makeArgs(distraction.serial()));
 
       AND_WHEN("he tries to cast the spell") {
-        c.sendMessage(CL_CAST, "fireball");
+        c.sendMessage(CL_CAST_SPELL, "fireball");
 
         THEN("he himself has lost health") {
           WAIT_UNTIL(user.health() < user.stats().maxHealth);
@@ -571,7 +571,7 @@ TEST_CASE("Objects can't be healed") {
 
         WHEN("the user tries to heal the object") {
           c.sendMessage(CL_SELECT_ENTITY, makeArgs(machine.serial()));
-          c.sendMessage(CL_CAST, "megaHeal");
+          c.sendMessage(CL_CAST_SPELL, "megaHeal");
 
           THEN("it is not at full health") {
             REPEAT_FOR_MS(100);
@@ -597,7 +597,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "A spell that summons an NPC") {
       user->getClass().teachSpell("raiseSkeleton");
 
       WHEN("he casts it") {
-        client->sendMessage(CL_CAST, "raiseSkeleton");
+        client->sendMessage(CL_CAST_SPELL, "raiseSkeleton");
 
         THEN("there is an NPC") { WAIT_UNTIL(server->entities().size() == 1); }
       }

@@ -422,14 +422,14 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Recipe items") {
       user->giveItem(&cakeRecipe);
 
       AND_WHEN("he uses it") {
-        client->sendMessage(CL_CAST_ITEM, makeArgs(0));
+        client->sendMessage(CL_CAST_SPELL_FROM_ITEM, makeArgs(0));
 
         THEN("he can craft something") {
           WAIT_UNTIL(user->knownRecipes().size() == 1);
         }
 
         THEN("he recieves a message to that effect") {
-          CHECK(client->waitForMessage(SV_NEW_RECIPES));
+          CHECK(client->waitForMessage(SV_NEW_RECIPES_LEARNED));
         }
       }
 
@@ -437,7 +437,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Recipe items") {
         user->addRecipe("cake");
 
         AND_WHEN("he tries to use the recipe item") {
-          client->sendMessage(CL_CAST_ITEM, makeArgs(0));
+          client->sendMessage(CL_CAST_SPELL_FROM_ITEM, makeArgs(0));
 
           THEN("he still has an item") {
             REPEAT_FOR_MS(100);
@@ -460,7 +460,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Recipe items") {
       user->giveItem(&breadRecipe);
 
       AND_WHEN("he uses it") {
-        client->sendMessage(CL_CAST_ITEM, makeArgs(0));
+        client->sendMessage(CL_CAST_SPELL_FROM_ITEM, makeArgs(0));
 
         THEN("he can craft something") {
           WAIT_UNTIL(user->knownRecipes().size() == 1);

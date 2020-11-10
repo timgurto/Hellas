@@ -54,7 +54,7 @@ void Client::confirmAndUnlearnTalents() {
     removeWindow(_unlearnTalentsConfirmationWindow);
   else
     _unlearnTalentsConfirmationWindow =
-        new ConfirmationWindow(*this, confirmationText, CL_UNLEARN_TALENTS, {});
+        new ConfirmationWindow(*this, confirmationText, CL_CLEAR_TALENTS, {});
   addWindow(_unlearnTalentsConfirmationWindow);
   _unlearnTalentsConfirmationWindow->show();
 }

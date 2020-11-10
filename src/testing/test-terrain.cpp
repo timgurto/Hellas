@@ -55,7 +55,7 @@ TEST_CASE("Users limited to default terrain list") {
 
     WHEN("he tries to walk onto the water") {
       REPEAT_FOR_MS(2000) {
-        c.sendMessage(CL_LOCATION, makeArgs(70, 10));
+        c.sendMessage(CL_MOVE_TO, makeArgs(70, 10));
         SDL_Delay(5);
       }
 

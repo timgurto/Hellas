@@ -11,7 +11,7 @@ City::City(const Name &name, const MapPoint &location, const std::string &king)
 
 void City::addAndAlertPlayers(const User &user) {
   _members.insert(user.name());
-  user.sendMessage({SV_JOINED_CITY, _name});
+  user.sendMessage({SV_YOU_JOINED_CITY, _name});
   Server::instance().broadcastToArea(
       user.location(), {SV_IN_CITY, makeArgs(user.name(), _name)});
 }

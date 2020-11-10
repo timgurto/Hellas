@@ -24,7 +24,7 @@ static int buttonBeingAssigned{NO_BUTTON_BEING_ASSIGNED};
 
 static void performAction(Client &client, int i) {
   if (actions[i].category == HotbarCategory::HOTBAR_SPELL)
-    client.sendMessage({CL_CAST, actions[i].id});
+    client.sendMessage({CL_CAST_SPELL, actions[i].id});
   else if (actions[i].category == HotbarCategory::HOTBAR_RECIPE) {
     client.sendMessage({CL_CRAFT, actions[i].id});
     client.prepareAction("Crafting"s);

@@ -377,7 +377,7 @@ void Server::addUser(const Socket &socket, const std::string &name,
     for (const std::string &id : newUser.knownConstructions()) {
       args = makeArgs(args, id);
     }
-    newUser.sendMessage({SV_CONSTRUCTIONS, args});
+    newUser.sendMessage({SV_YOUR_CONSTRUCTIONS, args});
   }
 
   // Send him his talents
@@ -385,7 +385,7 @@ void Server::addUser(const Socket &socket, const std::string &name,
   auto treesToSend = std::set<std::string>{};
   for (auto pair : userClass.talentRanks()) {
     const auto &talent = *pair.first;
-    newUser.sendMessage({SV_TALENT, makeArgs(talent.name(), pair.second)});
+    newUser.sendMessage({SV_TALENT_INFO, makeArgs(talent.name(), pair.second)});
     treesToSend.insert(talent.tree());
   }
   for (const auto &tree : treesToSend) {
@@ -596,7 +596,7 @@ void Server::removeEntity(Entity &ent, const User *userToExclude) {
   // Alert nearby users of the removal
   auto serial = ent.serial();
   for (const User *userP : findUsersInArea(ent.location()))
-    userP->sendMessage({SV_REMOVE_OBJECT, serial});
+    userP->sendMessage({SV_OBJECT_REMOVED, serial});
 
   getCollisionChunk(ent.location()).removeEntity(serial);
   _entitiesByX.erase(&ent);

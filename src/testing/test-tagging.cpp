@@ -14,7 +14,7 @@ TEST_CASE("Only the tagging player gets kill XP", "[slow]") {
     s.waitForUsers(1);
     auto &alice = *s->getUserByName("Alice");
     do {
-      cAlice.sendMessage(CL_LOCATION, makeArgs(30, 30));
+      cAlice.sendMessage(CL_MOVE_TO, makeArgs(30, 30));
       REPEAT_FOR_MS(50);
     } while (alice.location() != MapPoint{30, 30});
 

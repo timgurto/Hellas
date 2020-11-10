@@ -441,7 +441,7 @@ void Client::handleInput(double delta) {
             _constructionFootprint = Texture();
 
             if (useItem && useItem->castsSpellOnUse()) {
-              sendMessage({CL_CAST_ITEM, containerGridInUse.slot()});
+              sendMessage({CL_CAST_SPELL_FROM_ITEM, containerGridInUse.slot()});
               containerGridInUse.clear();
               break;
             }
@@ -530,8 +530,8 @@ void Client::handleInput(double delta) {
 
       auto thisDirection = normaliseVector(newLocation - _character.location());
       if (thisDirection != _lastDirection) {
-        sendMessage({CL_LOCATION, makeArgs(_character.location().x,
-                                           _character.location().y)});
+        sendMessage({CL_MOVE_TO, makeArgs(_character.location().x,
+                                          _character.location().y)});
         _timeSinceLocUpdate = 0;
       }
       _lastDirection = thisDirection;
