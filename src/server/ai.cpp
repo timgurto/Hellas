@@ -153,7 +153,7 @@ void NPC::transitionIfNecessary() {
       }
 
       // NPC has gone too far from home location
-      if (spawner()) {
+      {
         auto distFromHome = distance(_homeLocation, location());
         if (distFromHome > npcType()->maxDistanceFromHome()) {
           _state = IDLE;
