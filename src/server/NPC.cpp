@@ -139,10 +139,13 @@ void NPC::onDeath() {
   Server &server = *Server::_instance;
   server.forceAllToUntarget(*this);
 
-  if (owner().type == Permissions::Owner::PLAYER) {
-    auto *user = server.getUserByName(owner().name);
-    if (user) user->followers.remove();
-  }
+  do {
+    if (owner().type != Permissions::Owner::PLAYER) break;
+    if (order() != FOLLOW) break;
+    auto *ownerAsOnlineUser = server.getUserByName(owner().name);
+    if (!ownerAsOnlineUser) break;
+    ownerAsOnlineUser->followers.remove();
+  } while (false);
 
   if (_timeEngaged > 0) {
     auto timeNow = SDL_GetTicks();

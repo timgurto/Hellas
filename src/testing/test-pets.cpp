@@ -1057,6 +1057,40 @@ TEST_CASE("Followers can count only once") {
   }
 }
 
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "A staying pet dying doesn't affect follower count") {
+  GIVEN("A user with two pets on Stay and one on Follow") {
+    useData(R"(
+      <npcType id="dog" />
+    )");
+
+    auto &follower = server->addNPC("dog", {15, 10});
+    auto &stayer1 = server->addNPC("dog", {10, 15});
+    auto &stayer2 = server->addNPC("dog", {20, 10});
+    follower.permissions.setPlayerOwner(user->name());
+    stayer1.permissions.setPlayerOwner(user->name());
+    stayer2.permissions.setPlayerOwner(user->name());
+    follower.order(NPC::STAY);
+    stayer1.order(NPC::STAY);
+    stayer2.order(NPC::STAY);
+    client->sendMessage(CL_ORDER_NPC_TO_FOLLOW, makeArgs(follower.serial()));
+    WAIT_UNTIL(follower.order() == NPC::FOLLOW);
+
+    WHEN("a stayer dies") {
+      stayer1.kill();
+
+      AND_WHEN("he orders the other stayer to follow") {
+        client->sendMessage(CL_ORDER_NPC_TO_FOLLOW, makeArgs(stayer2.serial()));
+
+        THEN("the second pet is not following") {
+          REPEAT_FOR_MS(100);
+          CHECK(stayer2.order() == NPC::STAY);
+        }
+      }
+    }
+  }
+}
+
 TEST_CASE_METHOD(ServerAndClientWithData, "Pets can be fed") {
   GIVEN("a user with a pet and some food") {
     useData(R"(
@@ -1144,4 +1178,3 @@ TEST_CASE("Pet death") {
 // If follow count is reduced, one randomly stays
 // Followers inside vehicle
 // Can't order someone else's pet
-// If staying pet dies, it doesn't affect number of followers
