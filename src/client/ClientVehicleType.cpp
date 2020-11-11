@@ -7,8 +7,7 @@ ClientVehicleType::ClientVehicleType(const std::string& id)
 
 void ClientVehicleType::addClassSpecificStuffToConstructionTooltip(
     std::vector<std::string>& descriptionLines) const {
-  auto speedAsMultiplier = _speed / Client::MOVEMENT_SPEED;
-  auto displaySpeed = proportionToPercentageString(speedAsMultiplier);
+  auto displaySpeed = proportionToPercentageString(_speed);
   descriptionLines.push_back("Vehicle ("s + displaySpeed + " speed)");
 }
 
