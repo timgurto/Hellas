@@ -323,7 +323,6 @@ class Server {
   template <MessageCode M>
   void handleMessage(const Socket &client, User &user, MessageParser &parser);
 
-  void handle_CL_TAKE_ITEM(User &user, Serial serial, size_t slotNum);
   void handle_CL_REPAIR_OBJECT(User &user, Serial serial);
   void handle_CL_LEAVE_CITY(User &user);
   void handle_CL_GRANT(User &user, Serial serial, std::string username);

@@ -543,6 +543,59 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
     to.object->tellRelevantUsersAboutInventorySlot(slot2);
 }
 
+HANDLE_MESSAGE(CL_TAKE_ITEM) {
+  auto serial = Serial{};
+  auto slot = size_t{};
+  READ_ARGS(serial, slot);
+
+  if (user.isStunned()) RETURN_WITH(WARNING_STUNNED)
+  if (serial.isInventory()) RETURN_WITH(ERROR_TAKE_SELF)
+
+  auto *pEnt = (Entity *)nullptr;
+  ServerItem::Slot *pSlot;
+  if (serial.isGear())
+    pSlot = user.getSlotToTakeFromAndSendErrors(slot, user);
+  else {
+    pEnt = _entities.find(serial);
+    if (!pEnt) RETURN_WITH(WARNING_DOESNT_EXIST)
+    pSlot = pEnt->getSlotToTakeFromAndSendErrors(slot, user);
+  }
+  if (!pSlot) return;
+  ServerItem::Slot &containerSlot = *pSlot;
+
+  auto userHasPermissionToLoot =
+      groups->areUsersInSameGroup(user.name(), pEnt->tagger.username());
+  if (!userHasPermissionToLoot) return;
+
+  // Attempt to give item to user
+  size_t remainder =
+      user.giveItem(containerSlot.first.type(), containerSlot.second);
+  if (remainder > 0) {
+    containerSlot.second = remainder;
+    sendMessage(user.socket(), WARNING_INVENTORY_FULL);
+  } else {
+    containerSlot.first = {};
+    containerSlot.second = 0;
+  }
+
+  if (serial.isGear()) {  // Tell user about his empty gear slot, and updated
+                          // stats
+    sendInventoryMessage(user, slot, serial);
+    user.updateStats();
+
+  } else if (pEnt->isDead())  // Loot?
+    pEnt->tellRelevantUsersAboutLootSlot(slot);
+
+  else {  // Container
+    auto *asObject = dynamic_cast<const Object *>(pEnt);
+    if (!asObject) {
+      SERVER_ERROR("Don't know how to handle TAKE_ITEM request");
+      return;
+    }
+    asObject->tellRelevantUsersAboutInventorySlot(slot);
+  }
+}
+
 HANDLE_MESSAGE(CL_CEDE) {
   auto serial = Serial{};
   READ_ARGS(serial);
@@ -857,6 +910,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_DROP)
       SEND_MESSAGE_TO_HANDLER(CL_PICK_UP_DROPPED_ITEM)
       SEND_MESSAGE_TO_HANDLER(CL_SWAP_ITEMS)
+      SEND_MESSAGE_TO_HANDLER(CL_TAKE_ITEM)
       SEND_MESSAGE_TO_HANDLER(CL_CEDE)
       SEND_MESSAGE_TO_HANDLER(CL_CAST_SPELL)
       SEND_MESSAGE_TO_HANDLER(CL_CAST_SPELL_FROM_ITEM)
@@ -1057,18 +1111,6 @@ void Server::handleBufferedMessages(const Socket &client,
         if (del != MSG_END) return;
 
         handle_CL_AUTO_CONSTRUCT(*user, serial);
-        break;
-      }
-
-      case CL_TAKE_ITEM: {
-        Serial serial;
-        size_t slotNum;
-        iss >> serial >> del >> slotNum >> del;
-        if (del != MSG_END) return;
-
-        if (user->isStunned()) BREAK_WITH(WARNING_STUNNED)
-
-        handle_CL_TAKE_ITEM(*user, serial, slotNum);
         break;
       }
 
@@ -1551,53 +1593,6 @@ void Server::handleBufferedMessages(const Socket &client,
     user.sendMessage(MSG); \
     return;                \
   }
-
-void Server::handle_CL_TAKE_ITEM(User &user, Serial serial, size_t slotNum) {
-  if (serial.isInventory()) RETURN_WITH(ERROR_TAKE_SELF)
-
-  Entity *pEnt = nullptr;
-  ServerItem::Slot *pSlot;
-  if (serial.isGear())
-    pSlot = user.getSlotToTakeFromAndSendErrors(slotNum, user);
-  else {
-    pEnt = _entities.find(serial);
-    if (!pEnt) RETURN_WITH(WARNING_DOESNT_EXIST)
-    pSlot = pEnt->getSlotToTakeFromAndSendErrors(slotNum, user);
-  }
-  if (!pSlot) return;
-  ServerItem::Slot &slot = *pSlot;
-
-  auto userHasPermissionToLoot =
-      groups->areUsersInSameGroup(user.name(), pEnt->tagger.username());
-  if (!userHasPermissionToLoot) return;
-
-  // Attempt to give item to user
-  size_t remainder = user.giveItem(slot.first.type(), slot.second);
-  if (remainder > 0) {
-    slot.second = remainder;
-    sendMessage(user.socket(), WARNING_INVENTORY_FULL);
-  } else {
-    slot.first = {};
-    slot.second = 0;
-  }
-
-  if (serial.isGear()) {  // Tell user about his empty gear slot, and updated
-                          // stats
-    sendInventoryMessage(user, slotNum, serial);
-    user.updateStats();
-
-  } else if (pEnt->isDead())  // Loot?
-    pEnt->tellRelevantUsersAboutLootSlot(slotNum);
-
-  else {  // Container
-    auto *asObject = dynamic_cast<const Object *>(pEnt);
-    if (!asObject) {
-      SERVER_ERROR("Don't know how to handle TAKE_ITEM request");
-      return;
-    }
-    asObject->tellRelevantUsersAboutInventorySlot(slotNum);
-  }
-}
 
 void Server::handle_CL_REPAIR_OBJECT(User &user, Serial serial) {
   auto it = _entities.find(serial);
