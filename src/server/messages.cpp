@@ -564,6 +564,8 @@ HANDLE_MESSAGE(CL_TAKE_ITEM) {
   ServerItem::Slot &containerSlot = *pSlot;
 
   auto userHasPermissionToLoot =
+      pEnt->permissions.doesUserHaveAccess((user.name()));
+  userHasPermissionToLoot |=
       groups->areUsersInSameGroup(user.name(), pEnt->tagger.username());
   if (!userHasPermissionToLoot) return;
 
@@ -1740,8 +1742,6 @@ void Server::handle_CL_SELECT_ENTITY(User &user, Serial serial) {
 
 void Server::handle_CL_SELECT_PLAYER(User &user,
                                      const std::string &targetUsername) {
-  user.cancelAction();
-
   auto it = _usersByName.find(targetUsername);
   if (it == _usersByName.end()) RETURN_WITH(ERROR_INVALID_USER)
   User *targetUser = const_cast<User *>(it->second);

@@ -15,7 +15,7 @@ class NPC;
 class Permissions : public EntityComponent {
  public:
   struct Owner {
-    enum Type { PLAYER, CITY, ALL_HAVE_ACCESS, NO_ACCESS };
+    enum Type { PLAYER, CITY, ALL_HAVE_ACCESS, NO_ACCESS, MOB };
     Owner();
     Type type;
     std::string name;
@@ -31,6 +31,7 @@ class Permissions : public EntityComponent {
 
   void setNoAccess();
   void setOwner(const Owner &newOwner);
+  void setAsMob();
   void setPlayerOwner(const std::string &username);
   void setCityOwner(const City::Name &cityName);
   bool hasOwner() const;

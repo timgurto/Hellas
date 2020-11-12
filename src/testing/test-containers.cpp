@@ -1,4 +1,5 @@
 #include "TestClient.h"
+#include "TestFixtures.h"
 #include "TestServer.h"
 #include "testing.h"
 
@@ -119,6 +120,25 @@ TEST_CASE("Bad inventory message to client") {
       user.sendMessage({SV_INVENTORY, makeArgs("50", "0", "gold", "1", "1")});
 
       THEN("the client survives") { REPEAT_FOR_MS(100); }
+    }
+  }
+}
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Taking items") {
+  GIVEN("a box with a chocolate inside") {
+    useData(R"(
+      <item id="chocolate" />
+      <objectType id="box" >
+        <container slots="1"/>
+      </objectType>
+    )");
+    auto &box = server->addObject("box", {15, 15}, user->name());
+    box.container().addItems(&server->getFirstItem());
+
+    WHEN("a user sends CL_TAKE_ITEM") {
+      client->sendMessage(CL_TAKE_ITEM, makeArgs(box.serial(), 0));
+
+      THEN("he has an item") { WAIT_UNTIL(user->inventory(0).first.hasItem()); }
     }
   }
 }

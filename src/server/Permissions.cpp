@@ -54,6 +54,8 @@ void Permissions::setOwner(const Owner &newOwner) {
   parent().onOwnershipChange();
 }
 
+void Permissions::setAsMob() { _owner.type = Owner::MOB; }
+
 void Permissions::setPlayerOwner(const std::string &username) {
   setOwner({Owner::PLAYER, username});
 }

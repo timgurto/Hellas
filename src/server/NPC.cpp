@@ -45,8 +45,8 @@ bool NPC::shouldBeIgnoredByAIProximityAggro() const {
 bool NPC::canBeAttackedBy(const User &user) const {
   if (!npcType()->canBeAttacked()) return false;
 
-  if (permissions.owner().type == Permissions::Owner::ALL_HAVE_ACCESS)
-    return true;
+  if (permissions.owner().type == Permissions::Owner::MOB) return true;
+  if (!permissions.hasOwner()) return false;
 
   const auto &server = Server::instance();
   auto ownerType = permissions.owner().type == Permissions::Owner::PLAYER
@@ -227,8 +227,9 @@ double NPC::getTameChance() const {
 void NPC::sendInfoToClient(const User &targetUser, bool isNew) const {
   const Server &server = Server::instance();
 
-  targetUser.sendMessage({SV_OBJECT_INFO, makeArgs(serial(), location().x,
-                                              location().y, type()->id())});
+  targetUser.sendMessage(
+      {SV_OBJECT_INFO,
+       makeArgs(serial(), location().x, location().y, type()->id())});
 
   // Owner
   auto *nonConst = const_cast<NPC *>(this);

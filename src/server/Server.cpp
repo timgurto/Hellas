@@ -736,7 +736,9 @@ Object &Server::addPermanentObject(const ObjectType *type,
 
 NPC &Server::addNPC(const NPCType *type, const MapPoint &location) {
   NPC *newNPC = new NPC(type, location);
-  return dynamic_cast<NPC &>(addEntity(newNPC));
+  newNPC->permissions.setAsMob();
+  addEntity(newNPC);
+  return dynamic_cast<NPC &>(*newNPC);
 }
 
 Entity &Server::addEntity(Entity *newEntity) {
