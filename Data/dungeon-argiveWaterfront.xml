@@ -445,7 +445,7 @@
     <canBeRepaired cost="leather" tool="sewing" />
 </item>
 <item id="dAW_chefCleaver" name="Cleaver" gearSlot="6" sounds="metalTool" quality="2" lvlReq="19" >
-    <weapon damage="16" speed="2.9" />
+    <weapon damage="13" speed="2.9" />
     <stats might="2" swiftness="2" crit="100" />
     <offset x="0" y="0" />
     <canBeRepaired cost="tinBar" tool="smelting1" />
@@ -457,13 +457,13 @@
     <canBeRepaired cost="woolCloth" tool="sewing" />
 </item>
 <item id="dAW_loverSword" name="Dashing Swashbuckler's Sword" gearSlot="6" quality="2" lvlReq="20" >
-    <weapon damage="14" speed="2.4" />
-    <stats swiftness="2" courage="2" hit="100" />
+    <weapon damage="12" speed="2.4" />
+    <stats swiftness="1" courage="2" hit="100" />
     <offset x="0" y="0" />
     <canBeRepaired cost="tinBar" tool="smelting1" />
 </item>
 <item id="dAW_loverHealOffhand" name="Token of Affection" gearSlot="7" quality="2" lvlReq="20" >
-    <stats intellect="7" cunning="6" energy="24" healing="1200" />
+    <stats cunning="8" energy="6" healing="2500" />
     <offset x="0" y="0" />
     <canBeRepaired cost="tinBar" tool="smelting1" />
 </item>
