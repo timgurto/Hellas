@@ -686,7 +686,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Bonus-healing stat") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Block-value stat") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Block-value stat", "[.flaky]") {
   GIVEN("an NPC that deals 10 damage") {
     useData(R"(
       <npcType id="soldier" attack="10" />
