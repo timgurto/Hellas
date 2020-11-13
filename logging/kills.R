@@ -291,8 +291,8 @@ dataExploration$hoursPlayed = dataExploration$secondsPlayed/3600
 minExplorations = min(dataExploration$chunksExplored)
 maxExplorations = max(dataExploration$chunksExplored)
 
-minTime = min(min(data$hoursPlayed, min(dataRecipes$hoursPlayed), min(dataConstructions$hoursPlayed), min(dataExploration$hoursPlayed)))
-maxTime = max(max(data$hoursPlayed, max(dataRecipes$hoursPlayed), max(dataConstructions$hoursPlayed), max(dataExploration$hoursPlayed)))
+minTime = min(min(data$hoursPlayed))#, min(dataRecipes$hoursPlayed), min(dataConstructions$hoursPlayed), min(dataExploration$hoursPlayed)))
+maxTime = max(max(data$hoursPlayed))#, max(dataRecipes$hoursPlayed), max(dataConstructions$hoursPlayed), max(dataExploration$hoursPlayed)))
 minTime
 
 plot(
@@ -355,117 +355,117 @@ for (i in 1:length(data$name)){
     timeAtLastLevel = thisTime
 }
 
-lastRecipeSeen = 0
-timeAtLastRecipe = 0
-for (i in 1:length(dataRecipes$name)){
-    if (dataRecipes$recipesKnown[i] == 1){
-        lastRecipeSeen = 0
-        timeAtLastRecipe = 0
-    }
-    
-    thisRecipe = dataRecipes$recipesKnown[i]
-    thisTime = dataRecipes$hoursPlayed[i]
-    
-    if ( lastRecipeSeen == 0){
-        lastRecipeSeen = thisRecipe
-        timeAtLastRecipe = thisTime
-        next
-    }
-    
-    segments(
-        x0 = timeAtLastRecipe,
-        x1 = thisTime,
-        y0 = ((lastRecipeSeen-1)/(maxRecipes-1)) * (max(data$level)-2)+2,
-        y1 = ((thisRecipe-1)/(maxRecipes-1)) * (max(data$level)-2)+2,
-        
-        col=colRecipes
-    )
-    
-    lastRecipeSeen = thisRecipe
-    timeAtLastRecipe = thisTime
-}
-
-lastConstructionSeen = 0
-timeAtLastConstruction = 0
-for (i in 1:length(dataConstructions$name)){
-    if (dataConstructions$constructionsKnown[i] == 1){
-        lastConstructionSeen = 0
-        timeAtLastConstruction = 0
-    }
-    
-    thisConstruction = dataConstructions$constructionsKnown[i]
-    thisTime = dataConstructions$hoursPlayed[i]
-    
-    if (lastConstructionSeen == 0){
-        lastConstructionSeen = thisConstruction
-        timeAtLastConstruction = thisTime
-        next
-    }
-    
-    segments(
-        x0 = timeAtLastConstruction,
-        x1 = thisTime,
-        y0 = ((lastConstructionSeen-1)/(maxConstructions-1)) * (max(data$level)-2)+2,
-        y1 = ((thisConstruction-1)/(maxConstructions-1)) * (max(data$level)-2)+2,
-        
-        col=colConstructions
-    )
-    
-    lastConstructionSeen = thisConstruction
-    timeAtLastConstruction = thisTime
-}
-
-lastChunkSeen = 0
-timeAtLastChunk = 0
-for (i in 1:length(dataExploration$name)){
-    if (dataExploration$chunksExplored[i] == 9){
-        lastChunkSeen = 0
-        timeAtLastChunk = 0
-    }
-    
-    thisChunk = dataExploration$chunksExplored[i]
-    thisTime = dataExploration$hoursPlayed[i]
-    
-    if (lastChunkSeen == 0){
-        lastChunkSeen = thisChunk
-        timeAtLastChunk = thisTime
-        next
-    }
-    
-    if (thisTime == 0){
-        next
-    }
-    
-    segments(
-        x0 = timeAtLastChunk,
-        x1 = thisTime,
-        y0 = ((lastChunkSeen-minExplorations)/(maxExplorations-minExplorations)) * (max(data$level)-2)+2,
-        y1 = ((thisChunk-minExplorations)/(maxExplorations-minExplorations)) * (max(data$level)-2)+2,
-        
-        col=colExploration
-    )
-    
-    lastChunkSeen = thisChunk
-    timeAtLastChunk = thisTime
-}
+#lastRecipeSeen = 0
+#timeAtLastRecipe = 0
+#for (i in 1:length(dataRecipes$name)){
+#    if (dataRecipes$recipesKnown[i] == 1){
+#        lastRecipeSeen = 0
+#        timeAtLastRecipe = 0
+#    }
+#    
+#    thisRecipe = dataRecipes$recipesKnown[i]
+#    thisTime = dataRecipes$hoursPlayed[i]
+#    
+#    if ( lastRecipeSeen == 0){
+#        lastRecipeSeen = thisRecipe
+#        timeAtLastRecipe = thisTime
+#        next
+#    }
+#    
+#    segments(
+#        x0 = timeAtLastRecipe,
+#        x1 = thisTime,
+#        y0 = ((lastRecipeSeen-1)/(maxRecipes-1)) * (max(data$level)-2)+2,
+#        y1 = ((thisRecipe-1)/(maxRecipes-1)) * (max(data$level)-2)+2,
+#        
+#        col=colRecipes
+#    )
+#    
+#    lastRecipeSeen = thisRecipe
+#    timeAtLastRecipe = thisTime
+#}
+#
+#lastConstructionSeen = 0
+#timeAtLastConstruction = 0
+#for (i in 1:length(dataConstructions$name)){
+#    if (dataConstructions$constructionsKnown[i] == 1){
+#        lastConstructionSeen = 0
+#        timeAtLastConstruction = 0
+#    }
+#    
+#    thisConstruction = dataConstructions$constructionsKnown[i]
+#    thisTime = dataConstructions$hoursPlayed[i]
+#    
+#    if (lastConstructionSeen == 0){
+#        lastConstructionSeen = thisConstruction
+#        timeAtLastConstruction = thisTime
+#        next
+#    }
+#    
+#    segments(
+#        x0 = timeAtLastConstruction,
+#        x1 = thisTime,
+#        y0 = ((lastConstructionSeen-1)/(maxConstructions-1)) * (max(data$level)-2)+2,
+#        y1 = ((thisConstruction-1)/(maxConstructions-1)) * (max(data$level)-2)+2,
+#        
+#        col=colConstructions
+#    )
+#    
+#    lastConstructionSeen = thisConstruction
+#    timeAtLastConstruction = thisTime
+#}
+#
+#lastChunkSeen = 0
+#timeAtLastChunk = 0
+#for (i in 1:length(dataExploration$name)){
+#    if (dataExploration$chunksExplored[i] == 9){
+#        lastChunkSeen = 0
+#        timeAtLastChunk = 0
+#    }
+#    
+#    thisChunk = dataExploration$chunksExplored[i]
+#    thisTime = dataExploration$hoursPlayed[i]
+#    
+#    if (lastChunkSeen == 0){
+#        lastChunkSeen = thisChunk
+#        timeAtLastChunk = thisTime
+#        next
+#    }
+#    
+#    if (thisTime == 0){
+#        next
+#    }
+#    
+#    segments(
+#        x0 = timeAtLastChunk,
+#        x1 = thisTime,
+#        y0 = ((lastChunkSeen-minExplorations)/(maxExplorations-minExplorations)) * (max(data$level)-2)+2,
+#        y1 = ((thisChunk-minExplorations)/(maxExplorations-minExplorations)) * (max(data$level)-2)+2,
+#        
+#        col=colExploration
+#    )
+#    
+#    lastChunkSeen = thisChunk
+#    timeAtLastChunk = thisTime
+#}
 
 legend(
     "bottomright",
     legend=c(
         "Athlete level",
         "Scholar level",
-        "Zealot level",
-        "Recipes",
-        "Constructions",
-        "Exploration"
+        "Zealot level"#,
+        #"Recipes",
+        #"Constructions",
+        #"Exploration"
     ),
     fill=c(
         set1[2],
         set1[1],
-        set1[3],
-        colRecipes,
-        colConstructions,
-        colExploration
+        set1[3]#,
+        #colRecipes,
+        #colConstructions,
+        #colExploration
     )
 )
 
