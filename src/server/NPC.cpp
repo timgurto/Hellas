@@ -57,10 +57,8 @@ bool NPC::canBeAttackedBy(const User &user) const {
 }
 
 bool NPC::canBeAttackedBy(const NPC &npc) const {
-  const auto thisIsUnowned =
-      owner().type == Permissions::Owner::ALL_HAVE_ACCESS;
-  const auto otherIsUnowned =
-      npc.owner().type == Permissions::Owner::ALL_HAVE_ACCESS;
+  const auto thisIsUnowned = owner().type == Permissions::Owner::MOB;
+  const auto otherIsUnowned = npc.owner().type == Permissions::Owner::MOB;
   if (thisIsUnowned && otherIsUnowned) return false;
   if (thisIsUnowned ^ otherIsUnowned) return true;
 

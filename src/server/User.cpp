@@ -997,7 +997,7 @@ bool User::canBeAttackedBy(const User &user) const {
 }
 
 bool User::canBeAttackedBy(const NPC &npc) const {
-  if (npc.owner().type == Permissions::Owner::ALL_HAVE_ACCESS) return true;
+  if (npc.owner().type == Permissions::Owner::MOB) return true;
   auto ownerBelligerentType = npc.owner().type == Permissions::Owner::PLAYER
                                   ? Belligerent::PLAYER
                                   : Belligerent::CITY;
