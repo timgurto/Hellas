@@ -93,8 +93,7 @@ void NPC::makeAwareOf(Entity &entity) {
   makeNearbyNPCsAwareOf(entity);
 
   auto *user = dynamic_cast<User *>(&entity);
-  if (!user) return;
-  user->putInCombat();
+  if (user) user->putInCombat();
 }
 
 bool NPC::isAwareOf(Entity &entity) const {

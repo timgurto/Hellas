@@ -68,7 +68,9 @@ void Permissions::setCityOwner(const City::Name &cityName) {
 }
 
 bool Permissions::hasOwner() const {
-  return _owner.type != Owner::ALL_HAVE_ACCESS;
+  if (_owner.type == Owner::ALL_HAVE_ACCESS) return false;
+  if (_owner.type == Owner::MOB) return false;
+  return true;
 }
 
 bool Permissions::isOwnedByPlayer(const std::string &username) const {
