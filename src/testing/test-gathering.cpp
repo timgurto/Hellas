@@ -75,7 +75,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Gathering from an NPC") {
       </npcType>
     )");
 
-    const auto &mouse = server->addNPC("mouse", {10, 15});
+    auto &mouse = server->addNPC("mouse", {10, 15});
+    mouse.permissions.setPlayerOwner(user->name());
     WAIT_UNTIL(mouse.gatherable.hasItems());
 
     AND_WHEN("a player tries to gather from it") {
@@ -103,7 +104,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Gathering from an NPC") {
         <yield id="fur" />
       </npcType>
     )");
-    const auto &mouse = server->addNPC("mouse", {10, 15});
+    auto &mouse = server->addNPC("mouse", {10, 15});
+    mouse.permissions.setPlayerOwner(user->name());
 
     WHEN("a user tries to gather from it") {
       client->sendMessage(CL_GATHER, makeArgs(mouse.serial()));
@@ -122,7 +124,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Gathering from an NPC") {
         <yield id="egg" />
       </npcType>
     )");
-    const auto &chicken = server->addNPC("chicken", {10, 15});
+    auto &chicken = server->addNPC("chicken", {10, 15});
+    chicken.permissions.setPlayerOwner(user->name());
 
     WHEN("a user tries to gather from it") {
       client->sendMessage(CL_GATHER, makeArgs(chicken.serial()));
