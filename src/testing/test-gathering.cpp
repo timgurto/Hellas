@@ -1,4 +1,5 @@
 #include "TestClient.h"
+#include "TestFixtures.h"
 #include "TestServer.h"
 #include "testing.h"
 
@@ -65,87 +66,70 @@ TEST_CASE("Minimum yields") {
   }
 }
 
-TEST_CASE("Gathering from an NPC") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Gathering from an NPC") {
   GIVEN("an NPC with a yield") {
-    auto data = R"(
+    useData(R"(
       <item id="fur" />
       <npcType id="mouse" maxHealth="1">
         <yield id="fur" />
       </npcType>
-    )";
+    )");
 
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    const auto &mouse = s.addNPC("mouse", {10, 15});
+    const auto &mouse = server->addNPC("mouse", {10, 15});
     WAIT_UNTIL(mouse.gatherable.hasItems());
 
-    s.waitForUsers(1);
-
     AND_WHEN("a player tries to gather from it") {
-      c.sendMessage(CL_GATHER, makeArgs(mouse.serial()));
+      client->sendMessage(CL_GATHER, makeArgs(mouse.serial()));
 
-      THEN("he has an item") {
-        auto &user = s.getFirstUser();
-        WAIT_UNTIL(user.inventory(0).first.hasItem());
-      }
+      THEN("he has an item") { WAIT_UNTIL(user->inventory(0).first.hasItem()); }
     }
 
     AND_WHEN("a player right-clicks it") {
-      WAIT_UNTIL(c.objects().size() == 1);
-      auto &cMouse = c.getFirstNPC();
+      WAIT_UNTIL(client->objects().size() == 1);
+      auto &cMouse = client->getFirstNPC();
       cMouse.onRightClick();
 
       THEN("he has an item") {
-        auto &user = s.getFirstUser();
+        auto &user = server->getFirstUser();
         WAIT_UNTIL(user.inventory(0).first.hasItem());
       }
     }
   }
 
   GIVEN("an NPC that can be gathered with a tool") {
-    auto data = R"(
+    useData(R"(
       <item id="fur" />
       <npcType id="mouse" maxHealth="1" gatherReq="tweezers">
         <yield id="fur" />
       </npcType>
-    )";
-
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    const auto &mouse = s.addNPC("mouse", {10, 15});
+    )");
+    const auto &mouse = server->addNPC("mouse", {10, 15});
 
     WHEN("a user tries to gather from it") {
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      c.sendMessage(CL_GATHER, makeArgs(mouse.serial()));
+      client->sendMessage(CL_GATHER, makeArgs(mouse.serial()));
 
       THEN("he doesn't have an item") {
         REPEAT_FOR_MS(100);
-        CHECK(!user.inventory(0).first.hasItem());
+        CHECK(!user->inventory(0).first.hasItem());
       }
     }
   }
 
   GIVEN("an NPC that takes 0.5s to gather") {
-    auto data = R"(
+    useData(R"(
       <item id="egg" />
       <npcType id="chicken" maxHealth="1" gatherTime="500">
         <yield id="egg" />
       </npcType>
-    )";
-
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    const auto &chicken = s.addNPC("chicken", {10, 15});
+    )");
+    const auto &chicken = server->addNPC("chicken", {10, 15});
 
     WHEN("a user tries to gather from it") {
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      c.sendMessage(CL_GATHER, makeArgs(chicken.serial()));
+      client->sendMessage(CL_GATHER, makeArgs(chicken.serial()));
 
       THEN("he doesn't have an item") {
         REPEAT_FOR_MS(100);
-        CHECK(!user.inventory(0).first.hasItem());
+        CHECK(!user->inventory(0).first.hasItem());
       }
     }
   }
