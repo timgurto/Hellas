@@ -567,6 +567,8 @@ void Client::onMouseMove() {
 
   Element::resetTooltip();
 
+  for (auto *containerGrid : _containerGrids) containerGrid->clearMouseOver();
+
   auto mouseUpOnWindow = false;
   for (Window *window : _windows)
     if (window->visible() && collision(_mouse, window->rect())) {

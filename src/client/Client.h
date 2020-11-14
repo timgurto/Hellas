@@ -521,6 +521,13 @@ class Client : public TextEntryManager {
   friend void ClientObject::onRightClick();
   friend void ClientObject::startDeconstructing(void *object);
 
+  std::set<ContainerGrid *> _containerGrids;
+
+ public:
+  void registerContainerGrid(ContainerGrid *cg) { _containerGrids.insert(cg); }
+  void deregisterContainerGrid(ContainerGrid *cg) { _containerGrids.erase(cg); }
+
+ private:
   void handleInput(double delta);
   void handleLoginInput(double delta);
   void onMouseMove();

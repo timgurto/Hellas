@@ -35,12 +35,14 @@ class ContainerGrid : public Element {
   static void mouseMove(Element &e, const ScreenPoint &mousePos);
 
   size_t getSlot(const ScreenPoint &mousePos) const;
+  void clearMouseOver();
 
  public:
   ContainerGrid(Client &client, size_t rows, size_t cols,
                 ClientItem::vect_t &linked, Serial serial = Serial::Inventory(),
                 px_t x = 0, px_t y = 0, px_t gap = DEFAULT_GAP,
                 bool solidBackground = true);
+  ~ContainerGrid();
 
   static void dropItem(
       Client &client);  // Drop the item currently being dragged.

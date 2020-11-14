@@ -26,6 +26,7 @@ ContainerGrid::ContainerGrid(Client &client, size_t rows, size_t cols,
       _gap(gap),
       _solidBackground(solidBackground) {
   setClient(client);
+  client.registerContainerGrid(this);
 
   for (size_t i = 0; i != _linked.size(); ++i) {
     const px_t x = i % cols, y = i / cols;
@@ -41,6 +42,8 @@ ContainerGrid::ContainerGrid(Client &client, size_t rows, size_t cols,
   setRightMouseUpFunction(rightMouseUp);
   setMouseMoveFunction(mouseMove);
 }
+
+ContainerGrid::~ContainerGrid() { _client->deregisterContainerGrid(this); }
 
 void ContainerGrid::refresh() {
   renderer.setDrawColor(Color::BLACK);
@@ -130,6 +133,12 @@ size_t ContainerGrid::getSlot(const ScreenPoint &mousePos) const {
   size_t slot = y * _cols + x;
   if (slot >= _linked.size()) return NO_SLOT;
   return slot;
+}
+
+void ContainerGrid::clearMouseOver() {
+  if (_mouseOverSlot == NO_SLOT) return;
+  _mouseOverSlot = NO_SLOT;
+  markChanged();
 }
 
 void ContainerGrid::leftMouseDown(Element &e, const ScreenPoint &mousePos) {
