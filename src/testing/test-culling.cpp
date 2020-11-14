@@ -2,7 +2,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("On login, players are told about their distant objects",
+TEST_CASE("Connecting players are told about their distant objects",
           "[.flaky]") {
   // Given an object at (10000,10000) owned by Alice
   TestServer s = TestServer::WithData("signpost");
@@ -17,8 +17,21 @@ TEST_CASE("On login, players are told about their distant objects",
   REPEAT_FOR_MS(500);
   CHECK(c.objects().size() == 1);
 }
+TEST_CASE("Connecting players are told about their distant pets") {
+  GIVEN("Alice has a pet armadillo very far away") {
+    auto s = TestServer::WithData("armadillos");
+    auto &armadillo = s.addNPC("armadillo", {10000, 10000});
+    armadillo.permissions.setPlayerOwner("Alice");
 
-TEST_CASE("On login, players are not told about others' distant objects",
+    WHEN("she logs in") {
+      auto c = TestClient::WithUsernameAndData("Alice", "armadillos");
+
+      THEN("she knows about her pet") { WAIT_UNTIL(c.objects().size() == 1); }
+    }
+  }
+}
+
+TEST_CASE("Connecting players are not told about others' distant objects",
           "[.flaky]") {
   // Given an object at (10000,10000) owned by Alice
   TestServer s = TestServer::WithData("signpost");

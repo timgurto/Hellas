@@ -2238,9 +2238,6 @@ void Server::sendRelevantEntitiesToUser(const User &user) {
   for (auto pEntity : _entities) {
     if (pEntity->spawner()) continue;  // Optimisation and assumption
 
-    auto *pObject = dynamic_cast<const Object *>(pEntity);
-    if (!pObject) continue;
-
     // Player owns directly
     auto userOwnsThisObject = _objectsByOwner.isObjectOwnedBy(
         pEntity->serial(), {Permissions::Owner::PLAYER, user.name()});
@@ -2249,7 +2246,7 @@ void Server::sendRelevantEntitiesToUser(const User &user) {
 
       // Object-specific stuff
       auto *pObject = dynamic_cast<const Object *>(pEntity);
-      if (!pObject && !pEntity->isDead())
+      if (pObject && !pEntity->isDead())
         user.registerObjectIfPlayerUnique(pObject->objType());
 
       continue;
