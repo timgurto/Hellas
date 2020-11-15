@@ -199,7 +199,6 @@ class User : public Object {  // TODO: Don't inherit from Object
   void onFinishedLoggingIn() {
     contact();
     _isInitialised = true;
-    sendMessage({SV_LOGIN_INFO_HAS_FINISHED});
   }
 
   void updateStats() override;

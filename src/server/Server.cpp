@@ -446,7 +446,7 @@ void Server::addUser(const Socket &socket, const std::string &name,
   _entitiesByX.insert(&newUser);
   _entitiesByY.insert(&newUser);
 
-  newUser.onFinishedLoggingIn();
+  newUser.sendMessage({SV_LOGIN_INFO_HAS_FINISHED});
 }
 
 void Server::removeUser(const std::set<User>::iterator &it) {

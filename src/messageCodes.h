@@ -29,6 +29,9 @@ enum MessageCode {
   // Arguments: username, password hash, class, version
   CL_LOGIN_NEW,
 
+  // I've received everything and now you can start the timeout clock.
+  CL_FINISHED_RECEIVING_LOGIN_INFO,
+
   // "How long have I played?"
   CL_REQUEST_TIME_PLAYED,
 
