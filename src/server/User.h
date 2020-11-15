@@ -336,8 +336,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   static ObjectType OBJECT_TYPE;
 
   void contact();
-  bool hasMadeRecentContact()
-      const;  // Whether the client has contacted the server recently enough
+  bool hasExceededTimeout() const;
 
   // Return value: 0 if there was room for all items, otherwise the remainder.
   size_t giveItem(const ServerItem *item, size_t quantity = 1);

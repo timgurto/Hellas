@@ -252,8 +252,11 @@ std::string User::makeLocationCommand() const {
 
 void User::contact() { _lastContact = SDL_GetTicks(); }
 
-bool User::hasMadeRecentContact() const {
-  return SDL_GetTicks() - _lastContact <= Server::CLIENT_TIMEOUT;
+bool User::hasExceededTimeout() const {
+  const auto timeAllowed = isInitialised()
+                               ? Server::CLIENT_TIMEOUT_AFTER_LOGIN
+                               : Server::CLIENT_TIMEOUT_BEFORE_LOGIN;
+  return SDL_GetTicks() - _lastContact > timeAllowed;
 }
 
 size_t User::giveItem(const ServerItem *item, size_t quantity) {

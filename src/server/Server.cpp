@@ -31,7 +31,6 @@ extern Args cmdLineArgs;
 Server *Server::_instance = nullptr;
 LogConsole *Server::_debugInstance = nullptr;
 
-const ms_t Server::CLIENT_TIMEOUT = 10000;
 const ms_t Server::MAX_TIME_BETWEEN_LOCATION_UPDATES = 1000;
 
 const px_t Server::ACTION_DISTANCE = Podes{4}.toPixels();
@@ -205,9 +204,7 @@ void Server::run() {
 #ifndef _DEBUG
     // Check that clients are alive
     for (std::set<User>::iterator it = _users.begin(); it != _users.end();) {
-      const auto userHasTimedOut =
-          it->isInitialised() && !it->hasMadeRecentContact();
-      if (userHasTimedOut) {
+      if (it->hasExceededTimeout()) {
         _debug << Color::CHAT_ERROR << "User " << it->name()
                << " has timed out." << Log::endl;
         std::set<User>::iterator next = it;

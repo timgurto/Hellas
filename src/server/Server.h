@@ -50,8 +50,10 @@ class Server {
   static const u_short DEBUG_PORT = 8888;
   static const u_short PRODUCTION_PORT = 8889;
 
-  static const ms_t
-      CLIENT_TIMEOUT;  // How much radio silence before we drop a client
+  // How much radio silence before we drop a client
+  static const ms_t CLIENT_TIMEOUT_BEFORE_LOGIN = 120000;  // 2m
+  static const ms_t CLIENT_TIMEOUT_AFTER_LOGIN = 10000;    // 10s
+
   static const ms_t MAX_TIME_BETWEEN_LOCATION_UPDATES;
 
   static const px_t ACTION_DISTANCE;  // How close a character must be to
