@@ -709,6 +709,7 @@ const CNPCTemplate *Client::findNPCTemplate(const std::string &id) const {
 }
 
 Avatar *Client::findUser(const std::string &username) {
+  if (username == _character.name()) return &_character;
   auto it = _otherUsers.find(username);
   if (it == _otherUsers.end()) return nullptr;
   return it->second;

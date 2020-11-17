@@ -1011,20 +1011,13 @@ void Client::handleBufferedMessages(const std::string &msg) {
         readString(singleMsg, username, MSG_DELIM);
         singleMsg >> del >> serial >> del;
         if (del != MSG_END) break;
-        const Avatar *attacker = nullptr;
-        if (username == _username)
-          attacker = &character();
-        else {
-          auto userIt = _otherUsers.find(username);
-          if (userIt == _otherUsers.end()) {
-            // showErrorMessage("Received combat info for an unknown player.",
-            // Color::TODO);
-            break;
-          }
-          attacker = userIt->second;
-        }
+        auto *attacker = findUser(username);
+        if (!attacker) break;
+
+        // Attacker sound
         attacker->playAttackSound();
 
+        // Defender sound/particles
         handle_SV_ENTITY_WAS_HIT(serial);
         break;
       }
@@ -1042,10 +1035,12 @@ void Client::handleBufferedMessages(const std::string &msg) {
           // Color::TODO);
           break;
         }
-        const ClientNPC &attacker =
-            *dynamic_cast<const ClientNPC *>(objIt->second);
+        ClientNPC &attacker = *dynamic_cast<ClientNPC *>(objIt->second);
+
+        // Attacker sound
         attacker.playAttackSound();
 
+        // Defender sound/particles
         handle_SV_PLAYER_WAS_HIT(username);
         break;
       }
@@ -1062,10 +1057,12 @@ void Client::handleBufferedMessages(const std::string &msg) {
           // Color::TODO);
           break;
         }
-        const ClientNPC &attacker =
-            *dynamic_cast<const ClientNPC *>(attackerIt->second);
+        ClientNPC &attacker = *dynamic_cast<ClientNPC *>(attackerIt->second);
+
+        // Attacker sound
         attacker.playAttackSound();
 
+        // Defender sound/particles
         handle_SV_ENTITY_WAS_HIT(defenderSerial);
         break;
       }
@@ -1078,21 +1075,13 @@ void Client::handleBufferedMessages(const std::string &msg) {
         singleMsg >> del;
         if (del != MSG_END) break;
 
-        const Avatar *attacker = nullptr;
-        if (attackerName == _username)
-          attacker = &character();
-        else {
-          auto userIt = _otherUsers.find(attackerName);
-          if (userIt == _otherUsers.end()) {
-            // showErrorMessage("Received combat info for an unknown attacking
-            // player.", Color::TODO);
-            break;
-          }
-          attacker = userIt->second;
-        }
+        auto *attacker = findUser(attackerName);
+        if (!attacker) break;
 
+        // Attacker sound
         attacker->playAttackSound();
 
+        // Defender sound/particles
         handle_SV_PLAYER_WAS_HIT(defenderName);
         break;
       }
@@ -2380,14 +2369,9 @@ void Client::handle_SV_RANGED_WEAPON_MISS(const std::string &weaponID,
 }
 
 void Client::handle_SV_PLAYER_WAS_HIT(const std::string &username) {
-  Avatar *victim = nullptr;
-  if (username == _username)
-    victim = &_character;
-  else {
-    auto it = _otherUsers.find(username);
-    if (it == _otherUsers.end()) return;
-    victim = it->second;
-  }
+  Avatar *victim = findUser(username);
+  if (!victim) return;
+
   victim->playSoundWhenHit();
   victim->createDamageParticles();
 }
