@@ -12,6 +12,8 @@ extern Renderer renderer;
 
 const std::string Sprite::EMPTY_NAME = "";
 const ScreenPoint Sprite::HIGHLIGHT_OFFSET{-1, -1};
+const double Sprite::ATTACK_ANIMATION_SPEED = 50.0;
+const double Sprite::ATTACK_ANIMATION_DISTANCE = 10.0;
 
 Sprite::Sprite(const SpriteType *type, const MapPoint &location, Client &client)
     : _client(client),
@@ -28,7 +30,7 @@ Sprite Sprite::YCoordOnly(double y) {
 ScreenRect Sprite::drawRect() const {
   assert(_type != nullptr);
   auto typeDrawRect = _type->drawRect();
-  auto drawRect = typeDrawRect + toScreenPoint(_location);
+  auto drawRect = typeDrawRect + toScreenPoint(drawLocation());
   return drawRect;
 }
 
@@ -94,6 +96,7 @@ void Sprite::drawName() const {
 
 void Sprite::update(double delta) {
   driftTowardsServerLocation(delta);
+  progressAttackAnimation(delta);
 
   if (!shouldAddParticles()) return;
 
@@ -136,6 +139,24 @@ bool Sprite::mouseIsOverRealPixel(const MapPoint &p) const {
   if (pixel == Color::MAGENTA) return false;
 
   return true;
+}
+
+void Sprite::animateAttackingTowards(const Sprite &target) {
+  const auto towardsTarget = target.location() - location();
+  const auto normalised = towardsTarget / towardsTarget.length();
+  _offsetForAttackAnimation = normalised * ATTACK_ANIMATION_DISTANCE;
+}
+
+MapPoint Sprite::drawLocation() const {
+  return _location + _offsetForAttackAnimation;
+}
+
+void Sprite::progressAttackAnimation(double delta) {
+  if (_offsetForAttackAnimation == MapPoint{}) return;
+
+  const auto distToMove = ATTACK_ANIMATION_SPEED * delta;
+  _offsetForAttackAnimation =
+      interpolate(_offsetForAttackAnimation, {}, distToMove);
 }
 
 const Texture &Sprite::cursor() const { return Client::images.cursorNormal; }

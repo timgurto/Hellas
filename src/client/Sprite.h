@@ -20,6 +20,12 @@ class Sprite {
   const SpriteType *_type;
   MapPoint _location;
 
+  // Attack animation
+  MapPoint _offsetForAttackAnimation;
+  static const double ATTACK_ANIMATION_SPEED;  // px/s
+  static const double ATTACK_ANIMATION_DISTANCE;
+  void progressAttackAnimation(double delta);
+
   // Lerping
   MapPoint _locationOnServer;
   bool _serverHasOrderedACorrection{true};
@@ -92,6 +98,9 @@ class Sprite {
   double bottomEdge() const;
   bool collision(const MapPoint &p) const;
   bool mouseIsOverRealPixel(const MapPoint &p) const;
+
+  void animateAttackingTowards(const Sprite &target);
+  MapPoint drawLocation() const;
 
   struct ComparePointers {
     bool operator()(const Sprite *lhs, const Sprite *rhs) const {

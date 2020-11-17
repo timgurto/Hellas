@@ -46,6 +46,8 @@ struct Point {
 
   operator Rect<T>() const { return {x, y, 0, 0}; }
 
+  double length() const { return sqrt(x * x + y * y); };
+
  private:
   static const double EPSILON;
 };
@@ -76,6 +78,11 @@ Point<T> operator+(const Point<T> &lhs, const Rect<T> &rhs) {
 template <typename T>
 Point<T> operator*(const Point<T> &lhs, T rhs) {
   return {lhs.x * rhs, lhs.y * rhs};
+}
+
+template <typename T>
+Point<T> operator/(const Point<T> &lhs, T rhs) {
+  return {lhs.x / rhs, lhs.y / rhs};
 }
 
 template <typename T>

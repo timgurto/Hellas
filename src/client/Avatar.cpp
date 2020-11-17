@@ -66,7 +66,7 @@ void Avatar::draw() const {
     Sprite::draw();
   }
 
-  drawBuffEffects(location(), _client.offset());
+  drawBuffEffects(drawLocation(), _client.offset());
 
   if (isDebug()) {
     renderer.setDrawColor(Color::CYAN);
@@ -111,7 +111,7 @@ void Avatar::drawName() const {
 }
 
 void Avatar::update(double delta) {
-  _client.drawGearParticles(_gear, location(), delta);
+  _client.drawGearParticles(_gear, drawLocation(), delta);
 
   ms_t timeElapsed = toInt(1000 * delta);
   if (_currentlyCrafting) {

@@ -1,10 +1,11 @@
+#include "drawing.h"
+
 #include <cassert>
 
 #include "../TerrainList.h"
 #include "Client.h"
 #include "ClientNPC.h"
 #include "Renderer.h"
-#include "drawing.h"
 #include "ui/ContainerGrid.h"
 
 extern Args cmdLineArgs;
@@ -462,7 +463,7 @@ void SpritesToDraw::drawNamesAndHealthbars() {
 
     const auto *asCombatant = dynamic_cast<const ClientCombatant *>(sprite);
     if (!asCombatant) continue;
-    asCombatant->drawHealthBarIfAppropriate(sprite->location(),
+    asCombatant->drawHealthBarIfAppropriate(sprite->drawLocation(),
                                             sprite->height());
   }
 }

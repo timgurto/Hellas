@@ -1017,6 +1017,13 @@ void Client::handleBufferedMessages(const std::string &msg) {
         // Attacker sound
         attacker->playAttackSound();
 
+        // Attack animation
+        auto targetIt = _objects.find(serial);
+        if (targetIt != _objects.end()) {
+          const auto &target = *targetIt->second;
+          attacker->animateAttackingTowards(target);
+        }
+
         // Defender sound/particles
         handle_SV_ENTITY_WAS_HIT(serial);
         break;
@@ -1040,6 +1047,10 @@ void Client::handleBufferedMessages(const std::string &msg) {
         // Attacker sound
         attacker.playAttackSound();
 
+        // Attack animation
+        const auto *target = findUser(username);
+        if (target) attacker.animateAttackingTowards(*target);
+
         // Defender sound/particles
         handle_SV_PLAYER_WAS_HIT(username);
         break;
@@ -1062,6 +1073,13 @@ void Client::handleBufferedMessages(const std::string &msg) {
         // Attacker sound
         attacker.playAttackSound();
 
+        // Attack animation
+        auto targetIt = _objects.find(defenderSerial);
+        if (targetIt != _objects.end()) {
+          const auto &target = *targetIt->second;
+          attacker.animateAttackingTowards(target);
+        }
+
         // Defender sound/particles
         handle_SV_ENTITY_WAS_HIT(defenderSerial);
         break;
@@ -1080,6 +1098,10 @@ void Client::handleBufferedMessages(const std::string &msg) {
 
         // Attacker sound
         attacker->playAttackSound();
+
+        // Attack animation
+        const auto *target = findUser(defenderName);
+        if (target) attacker->animateAttackingTowards(*target);
 
         // Defender sound/particles
         handle_SV_PLAYER_WAS_HIT(defenderName);
@@ -2534,7 +2556,7 @@ void Client::handle_SV_LEVEL_UP(const std::string &username) {
   avatar->levelUp();
   avatar->refreshTooltip();
 
-  addParticles("levelUp", avatar->location());
+  addParticles("levelUp", avatar->drawLocation());
   groupUI->onPlayerLevelChange(username, avatar->level());
 
   if (username == _username) {
