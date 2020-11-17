@@ -80,6 +80,7 @@
     <weapon damage="6" speed="3.2" />
     <stats courage="1" />
 	<offset x="-6" y="-15" />
+    <canBeRepaired cost="bone" />
 </item>
 
 <!-- Tools -->
