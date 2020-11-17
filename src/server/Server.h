@@ -182,8 +182,8 @@ class Server {
 
   Socket _socket;
 
-  bool _loop;
-  bool _running;  // True while run() is being executed.
+  bool _loop{false};
+  bool _running{false};  // True while run() is being executed.
 
   // Clients
   // All connected sockets, including those without registered users
@@ -240,7 +240,7 @@ class Server {
                               bool shouldBeExcludedFromPersistentState);
   void loadEntities(XmlReader &xr, bool shouldBeExcludedFromPersistentState);
   void initialiseData();
-  bool _dataLoaded;  // If false when run() is called, load default data.
+  bool _dataLoaded{false};  // If false when run() is called, load default data.
   static void saveData(const Entities &entities, const Wars &wars,
                        const Cities &cities);
   void spawnInitialObjects();

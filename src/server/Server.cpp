@@ -40,13 +40,10 @@ Server::Server()
     : _time(SDL_GetTicks()),
       _lastTime(_time),
       _socket(),
-      _loop(false),
-      _running(false),
       _debug("server.log"),
       _userFilesPath("Users/"),
       _lastSave(_time),
       _timeStatsLastPublished(_time),
-      _dataLoaded(false),
       groups(new Groups) {
   _instance = this;
   _debugInstance = &_debug;
