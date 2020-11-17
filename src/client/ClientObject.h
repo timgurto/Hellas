@@ -166,7 +166,7 @@ class ClientObject : public Sprite, public ClientCombatant {
   virtual const Sprite *entityPointer() const override { return this; }
   virtual bool canBeAttackedByPlayer() const override;
   virtual const MapPoint &combatantLocation() const { return location(); }
-  const Color &healthBarColor() const override { return nameColor(); }
+  Color healthBarColor() const override { return nameColor(); }
   void playAttackSound() const override;
   void playDefendSound() const override;
   void playDeathSound() const override;

@@ -39,7 +39,7 @@ class ClientCombatant {
   virtual const Sprite *entityPointer() const = 0;
   virtual const MapPoint &combatantLocation() const = 0;
   virtual bool shouldDrawHealthBar() const;
-  virtual const Color &healthBarColor() const = 0;
+  virtual Color healthBarColor() const = 0;
   void drawBuffEffects(const MapPoint &location,
                        const ScreenPoint &clientOffset) const;
   bool doesAnyBuffHideMe() const;
