@@ -304,7 +304,7 @@ Mark graveyard on map: not hardcoded
 
 
 
-
+<!--
 
 <permanentObject x="33000" y="33600" id="graveyardGround" />
 
@@ -365,5 +365,5 @@ Mark graveyard on map: not hardcoded
 <spawnPoint y="33600" x="33000" type="halloweenMummy"    quantity="12"  radius="600" respawnTime="120000" />
 <spawnPoint y="33600" x="33000" type="halloweenGhost"    quantity="5"   radius="450" respawnTime="120000" />
 
-
+-->
 </root>
