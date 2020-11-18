@@ -1753,28 +1753,24 @@ TEST_CASE("Client remembers quest progress after death") {
   }
 }
 
-TEST_CASE("Abandoning quests") {
-  auto data = R"(
+TEST_CASE_METHOD(ServerAndClientWithData, "Abandoning quests") {
+  useData(R"(
     <objectType id="questgiver" />
     <quest id="quest1" startsAt="questgiver" endsAt="questgiver" />
     <quest id="quest2" startsAt="questgiver" endsAt="questgiver" />
-  )";
-  auto s = TestServer::WithDataString(data);
-  auto c = TestClient::WithDataString(data);
+  )");
 
   GIVEN("a player on a quest") {
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    user.startQuest(s.findQuest("quest1"));
+    user->startQuest(server->findQuest("quest1"));
 
     WHEN("he tries to abandon the quest") {
-      c.sendMessage(CL_ABANDON_QUEST, "quest1");
+      client->sendMessage(CL_ABANDON_QUEST, "quest1");
 
       THEN("he is not on any quests") {
-        WAIT_UNTIL(user.questsInProgress().empty());
+        WAIT_UNTIL(user->questsInProgress().empty());
 
         AND_THEN("he knows it") {
-          const auto &quest = c.getFirstQuest();
+          const auto &quest = client->getFirstQuest();
           WAIT_UNTIL(quest.state == CQuest::CAN_START);
         }
       }
@@ -1782,16 +1778,16 @@ TEST_CASE("Abandoning quests") {
   }
 
   GIVEN("a player on two quests") {
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    user.startQuest(s.findQuest("quest1"));
-    user.startQuest(s.findQuest("quest2"));
+    user->startQuest(server->findQuest("quest1"));
+    user->startQuest(server->findQuest("quest2"));
 
     WHEN("he tries to abandon one") {
-      c.sendMessage(CL_ABANDON_QUEST, "quest1");
+      client->sendMessage(CL_ABANDON_QUEST, "quest1");
       REPEAT_FOR_MS(100);
 
-      THEN("he is on one quest") { CHECK(user.questsInProgress().size() == 1); }
+      THEN("he is on one quest") {
+        CHECK(user->questsInProgress().size() == 1);
+      }
     }
   }
 }
