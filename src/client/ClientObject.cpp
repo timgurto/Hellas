@@ -859,7 +859,7 @@ void ClientObject::update(double delta) {
 
   // If being gathered, add particles and play sounds.
   if (beingGathered()) {
-    _client.addParticles(objectType()->gatherParticles(), drawLocation(),
+    _client.addParticles(objectType()->gatherParticles(), animationLocation(),
                          delta);
     if (_gatherSoundTimer > timeElapsed)
       _gatherSoundTimer -= timeElapsed;
@@ -899,7 +899,8 @@ void ClientObject::update(double delta) {
   }
 
   // Loot sparkles
-  if (lootable()) _client.addParticles("lootSparkles", drawLocation(), delta);
+  if (lootable())
+    _client.addParticles("lootSparkles", animationLocation(), delta);
 
   Sprite::update(delta);
 }

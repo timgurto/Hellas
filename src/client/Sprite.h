@@ -100,7 +100,7 @@ class Sprite {
   bool mouseIsOverRealPixel(const MapPoint &p) const;
 
   void animateAttackingTowards(const Sprite &target);
-  MapPoint drawLocation() const;
+  MapPoint animationLocation() const;
 
   struct ComparePointers {
     bool operator()(const Sprite *lhs, const Sprite *rhs) const {

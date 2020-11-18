@@ -44,7 +44,7 @@ Color ClientNPC::nameColor() const {
 void ClientNPC::update(double delta) {
   auto shouldDrawGear = isAlive() && npcType()->hasGear();
   if (shouldDrawGear)
-    _client.drawGearParticles(npcType()->gear(), drawLocation(), delta);
+    _client.drawGearParticles(npcType()->gear(), animationLocation(), delta);
 
   ClientObject::update(delta);
 }
@@ -57,11 +57,11 @@ void ClientNPC::draw() const {
     const auto screenOffset = _client.offset();
     for (const auto &pair : ClientItem::drawOrder()) {
       const ClientItem *item = npcType()->gear(pair.second);
-      if (item) item->draw(toScreenPoint(drawLocation()) + screenOffset);
+      if (item) item->draw(toScreenPoint(animationLocation()) + screenOffset);
     }
   }
 
-  drawBuffEffects(drawLocation(), _client.offset());
+  drawBuffEffects(animationLocation(), _client.offset());
 }
 
 bool ClientNPC::shouldDrawName() const {

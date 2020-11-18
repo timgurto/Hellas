@@ -2556,7 +2556,7 @@ void Client::handle_SV_LEVEL_UP(const std::string &username) {
   avatar->levelUp();
   avatar->refreshTooltip();
 
-  addParticles("levelUp", avatar->drawLocation());
+  addParticles("levelUp", avatar->animationLocation());
   groupUI->onPlayerLevelChange(username, avatar->level());
 
   if (username == _username) {

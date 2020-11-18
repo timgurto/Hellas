@@ -30,7 +30,7 @@ Sprite Sprite::YCoordOnly(double y) {
 ScreenRect Sprite::drawRect() const {
   assert(_type != nullptr);
   auto typeDrawRect = _type->drawRect();
-  auto drawRect = typeDrawRect + toScreenPoint(drawLocation());
+  auto drawRect = typeDrawRect + toScreenPoint(animationLocation());
   return drawRect;
 }
 
@@ -147,7 +147,7 @@ void Sprite::animateAttackingTowards(const Sprite &target) {
   _offsetForAttackAnimation = normalised * ATTACK_ANIMATION_DISTANCE;
 }
 
-MapPoint Sprite::drawLocation() const {
+MapPoint Sprite::animationLocation() const {
   return _location + _offsetForAttackAnimation;
 }
 
