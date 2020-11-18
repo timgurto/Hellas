@@ -464,7 +464,7 @@ void Client::populateQuestLog() {
     auto pQuestID = const_cast<std::string *>(&quest.info().id);
     entry->addChild(new Button({x, 0, BUTTON_W, entry->height() - GAP},
                                "Abandon", [this, pQuestID]() {
-                                 sendMessage({CL_ABANDON_QUEST, pQuestID});
+                                 sendMessage({CL_ABANDON_QUEST, *pQuestID});
                                }));
   }
 }
