@@ -347,7 +347,6 @@ class Server {
                               Serial giverSerial);
   void handle_CL_COMPLETE_QUEST(User &user, const Quest::ID &quest,
                                 Serial giverSerial);
-  void handle_CL_ABANDON_QUEST(User &user, const Quest::ID &quest);
   void handle_CL_AUTO_CONSTRUCT(User &user, Serial serial);
 };
 

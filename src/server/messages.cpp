@@ -827,6 +827,12 @@ HANDLE_MESSAGE(CL_ORDER_PET_TO_FOLLOW) {
   npc->order(NPC::FOLLOW);
 }
 
+HANDLE_MESSAGE(CL_ABANDON_QUEST) {
+  auto questID = ""s;
+  READ_ARGS(questID);
+  user.abandonQuest(questID);
+}
+
 HANDLE_MESSAGE(CL_INVITE_TO_GROUP) {
   auto inviteeName = ""s;
   READ_ARGS(inviteeName);
@@ -924,6 +930,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_FEED_PET)
       SEND_MESSAGE_TO_HANDLER(CL_ORDER_PET_TO_STAY)
       SEND_MESSAGE_TO_HANDLER(CL_ORDER_PET_TO_FOLLOW)
+      SEND_MESSAGE_TO_HANDLER(CL_ABANDON_QUEST)
       SEND_MESSAGE_TO_HANDLER(CL_INVITE_TO_GROUP)
       SEND_MESSAGE_TO_HANDLER(CL_ACCEPT_GROUP_INVITATION)
       SEND_MESSAGE_TO_HANDLER(CL_LEAVE_GROUP)
@@ -1446,17 +1453,6 @@ void Server::handleBufferedMessages(const Socket &client,
         if (del != MSG_END) return;
 
         handle_CL_COMPLETE_QUEST(*user, questID, endSerial);
-        break;
-      }
-
-      case CL_ABANDON_QUEST: {
-        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
-        auto questID = Quest::ID{_stringInputBuffer};
-        iss >> del;
-
-        if (del != MSG_END) return;
-
-        handle_CL_ABANDON_QUEST(*user, questID);
         break;
       }
 
@@ -2017,10 +2013,6 @@ void Server::handle_CL_COMPLETE_QUEST(User &user, const Quest::ID &quest,
   if (!q.canBeCompletedByUser(user)) return;
 
   user.completeQuest(quest);
-}
-
-void Server::handle_CL_ABANDON_QUEST(User &user, const Quest::ID &quest) {
-  user.abandonQuest(quest);
 }
 
 void Server::handle_CL_AUTO_CONSTRUCT(User &user, Serial serial) {
