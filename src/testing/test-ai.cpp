@@ -1,49 +1,45 @@
 #include "TestClient.h"
+#include "TestFixtures.h"
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("NPCs chain pull") {
+TEST_CASE_METHOD(ServerAndClientWithData, "NPCs chain pull") {
   GIVEN("a user with a spear") {
-    auto data = R"(
+    useData(R"(
       <npcType id="bear" />
       <npcType id="critter"  isNeutral="1" />
       <item id="spear" gearSlot="6">
         <weapon range="25" consumes="spear" damage="1" speed="1" />
       </item>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
+    )");
 
-    s.waitForUsers(1);
-
-    auto &user = s.getFirstUser();
-    auto spear = &s.getFirstItem();
-    user.giveItem(spear);
-    c.sendMessage(CL_SWAP_ITEMS,
-                  makeArgs(Serial::Inventory(), 0, Serial::Gear(), 6));
-    WAIT_UNTIL(user.gear(6).first.type() == spear);
+    auto spear = &server->getFirstItem();
+    user->giveItem(spear);
+    client->sendMessage(CL_SWAP_ITEMS,
+                        makeArgs(Serial::Inventory(), 0, Serial::Gear(), 6));
+    WAIT_UNTIL(user->gear(6).first.type() == spear);
 
     WHEN(
         "there are two bears and a neutral critter, close to each other but "
         "out of aggro range") {
-      auto &bear1 = s.addNPC("bear", {100, 5});
-      auto &bear2 = s.addNPC("bear", {100, 15});
-      auto &critter = s.addNPC("critter", {100, 25});
+      auto &bear1 = server->addNPC("bear", {100, 5});
+      auto &bear2 = server->addNPC("bear", {100, 15});
+      auto &critter = server->addNPC("critter", {100, 25});
 
       AND_WHEN("There's a third bear off in the distance") {
-        auto &bear3 = s.addNPC("bear", {10, 300});
+        auto &bear3 = server->addNPC("bear", {10, 300});
 
         AND_WHEN("the user throws a spear at one") {
-          WAIT_UNTIL(c.objects().size() >= 2);
-          c.sendMessage(CL_TARGET_ENTITY, makeArgs(bear1.serial()));
+          WAIT_UNTIL(client->objects().size() >= 2);
+          client->sendMessage(CL_TARGET_ENTITY, makeArgs(bear1.serial()));
 
           THEN("the two close bears are aware of him") {
-            WAIT_UNTIL(bear1.isAwareOf(user));
-            WAIT_UNTIL(bear2.isAwareOf(user));
+            WAIT_UNTIL(bear1.isAwareOf(*user));
+            WAIT_UNTIL(bear2.isAwareOf(*user));
 
             AND_THEN("the distant bear and critter are not") {
-              CHECK_FALSE(bear3.isAwareOf(user));
-              CHECK_FALSE(critter.isAwareOf(user));
+              CHECK_FALSE(bear3.isAwareOf(*user));
+              CHECK_FALSE(critter.isAwareOf(*user));
             }
           }
         }
