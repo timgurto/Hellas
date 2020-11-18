@@ -34,7 +34,7 @@ frameTime          *
 <terrain index="x" id="desert"          color="F3F3CA" />
 <terrain index="y" id="desertRocky"     color="E3D7B4" />
 <terrain index="z" id="desertMountain"  color="B3A19C" />
-<terrain index="T" id="beachCoast"      color="6893D7" />
+<terrain index="T" id="beachCoast"      color="6893D7" imageFile="shallowWater" frames="32" frameTime="200" />
 <terrain index="A" id="beach"           color="F3E9AD" />
 <terrain index="C" id="beachRocky"      color="AF9C99" />
 <terrain index="D" id="beachMountain"   color="705F89" />
