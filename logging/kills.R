@@ -51,6 +51,11 @@ for (i in 1:length(data$npcID)){
     
     playerLvl = data$killerLevel[i]
     mobLvl = data$npcLevel[i]
+    
+    lvlDiff = playerLvl - mobLvl
+    if (lvlDiff < -5) {next}
+    if (lvlDiff > 5) {next}
+    
     index = (playerLvl-1) * MAX_MOB_LVL + mobLvl
     
     if (data$killingClass[i] == "Athlete"){
