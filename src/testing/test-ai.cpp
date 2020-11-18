@@ -26,6 +26,12 @@ TEST_CASE_METHOD(ServerAndClientWithData, "NPCs chain pull") {
       auto &bear2 = server->addNPC("bear", {100, 15});
       auto &critter = server->addNPC("critter", {100, 25});
 
+      THEN("the two close bears are unaware of him") {
+        REPEAT_FOR_MS(100);
+        CHECK_FALSE(bear1.isAwareOf(*user));
+        CHECK_FALSE(bear2.isAwareOf(*user));
+      }
+
       AND_WHEN("There's a third bear off in the distance") {
         auto &bear3 = server->addNPC("bear", {10, 300});
 

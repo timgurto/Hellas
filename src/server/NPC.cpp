@@ -101,7 +101,10 @@ bool NPC::isAwareOf(Entity &entity) const {
 void NPC::makeNearbyNPCsAwareOf(Entity &entity) {
   const Server &server = *Server::_instance;
 
-  for (auto nearbyEntity : server._entities) {
+  const auto CHAIN_PULL_DISTANCE = Podes{10}.toPixels();
+  auto nearbyEntities =
+      server.findEntitiesInArea(location(), CHAIN_PULL_DISTANCE);
+  for (auto nearbyEntity : nearbyEntities) {
     auto npc = dynamic_cast<NPC *>(nearbyEntity);
     if (!npc) continue;
 
@@ -111,9 +114,7 @@ void NPC::makeNearbyNPCsAwareOf(Entity &entity) {
     // Skip those already aware, otherwise we'd get infinite loops
     if (npc->isAwareOf(entity)) continue;
 
-    const auto CHAIN_PULL_DISTANCE = Podes{10}.toPixels();
-    if (distance(location(), npc->location()) <= CHAIN_PULL_DISTANCE)
-      npc->makeAwareOf(entity);
+    npc->makeAwareOf(entity);
   }
 }
 
