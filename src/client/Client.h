@@ -479,7 +479,9 @@ class Client : public TextEntryManager {
     List *classDescription{nullptr};
     OutlinedLabel *loginErrorLabel{nullptr};
     Window *donateWindow{nullptr};
+    List *releaseNotes{nullptr};
   } loginScreenElements;
+  static void fetchReleaseNotes(List *releaseNotes);
 
   // These are superficial, and relate only to the cast bar.
   ms_t _actionTimer{0};        // How long the character has been performing the

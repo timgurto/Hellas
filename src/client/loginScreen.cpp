@@ -5,6 +5,7 @@
 
 #include "../Message.h"
 #include "../XmlWriter.h"
+#include "../curlUtil.h"
 #include "../threadNaming.h"
 #include "../versionUtil.h"
 #include "Client.h"
@@ -379,6 +380,23 @@ void Client::initLoginScreen() {
 
   // Right-hand content
   {
+    const auto RELEASE_NOTES_Y = 5_px, RELEASE_NOTES_W = 175_px,
+               RELEASE_NOTES_H = 235_px;
+    const auto RELEASE_NOTES_RECT =
+        ScreenRect{SCREEN_X - RELEASE_NOTES_W - 5, RELEASE_NOTES_Y,
+                   RELEASE_NOTES_W, RELEASE_NOTES_H};
+    auto releaseNotesBackground =
+        new ColorBlock(RELEASE_NOTES_RECT, Color::BLACK);
+    releaseNotesBackground->setAlpha(0x7f);
+    _loginUI.push_back(releaseNotesBackground);
+    loginScreenElements.releaseNotes = new List(RELEASE_NOTES_RECT);
+    loginScreenElements.releaseNotes->addChild(
+        new Label({}, "Fetching release notes . . ."));
+    _loginUI.push_back(loginScreenElements.releaseNotes);
+#ifndef TESTING
+    std::thread(fetchReleaseNotes, loginScreenElements.releaseNotes).detach();
+#endif
+
     _loginUI.push_back(
         new Button({SCREEN_X - BUTTON_W - GAP, SCREEN_Y - BUTTON_HEIGHT - GAP,
                     BUTTON_W, BUTTON_HEIGHT},
@@ -453,6 +471,34 @@ void Client::initLoginScreen() {
   _loginUI.push_back(loginScreenElements.loginErrorLabel);
 
   _loginUI.push_back(_toasts);
+}
+void Client::fetchReleaseNotes(List *releaseNotes) {
+  const auto rawText = readFromURL("https://playhellas.com/release-notes.txt");
+  /*
+  **0.13.9-19 (November 19, 2020)
+  *Bugs
+  Item1
+  Item2
+  *Features
+  Item1
+  Item2
+
+  **0.13.9-9 (November 18, 2020)
+  etc.
+  */
+
+  releaseNotes->clearChildren();
+
+  auto wordWrapper = WordWrapper{Element::font(), releaseNotes->contentWidth()};
+
+  auto iss = std::istringstream{rawText};
+  char buffer[1024];
+  while (iss.getline(buffer, 1023)) {
+    auto rawLine = std::string{buffer};
+    auto wrappedLines = wordWrapper.wrap(rawLine);
+    for (const auto &line : wrappedLines)
+      releaseNotes->addChild(new Label({}, line));
+  }
 }
 
 void Client::handleLoginInput(double delta) {
