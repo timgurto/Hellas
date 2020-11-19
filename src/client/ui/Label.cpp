@@ -51,6 +51,10 @@ void Label::setColor(const Color &color) {
   markChanged();
 }
 
+void Label::setJustificationH(const Justification justification) {
+  _justificationH = justification;
+}
+
 void Label::changeText(const std::string &text) {
   _text = text;
   markChanged();

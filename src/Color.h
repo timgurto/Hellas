@@ -86,6 +86,10 @@ class Color {
   static const Color UI_DISABLED;
   static const Color UI_PROGRESS_BAR;
 
+  static const Color RELEASE_NOTES_VERSION;
+  static const Color RELEASE_NOTES_SUBHEADING;
+  static const Color RELEASE_NOTES_BODY;
+
   static const Color CHANCE_SMALL;
   static const Color CHANCE_MODERATE;
   static const Color CHANCE_HIGH;

@@ -387,7 +387,7 @@ void Client::initLoginScreen() {
                    RELEASE_NOTES_W, RELEASE_NOTES_H};
     auto releaseNotesBackground =
         new ColorBlock(RELEASE_NOTES_RECT, Color::BLACK);
-    releaseNotesBackground->setAlpha(0x7f);
+    releaseNotesBackground->setAlpha(0xbf);
     _loginUI.push_back(releaseNotesBackground);
     loginScreenElements.releaseNotes = new List(RELEASE_NOTES_RECT);
     loginScreenElements.releaseNotes->addChild(
@@ -495,9 +495,29 @@ void Client::fetchReleaseNotes(List *releaseNotes) {
   char buffer[1024];
   while (iss.getline(buffer, 1023)) {
     auto rawLine = std::string{buffer};
+    const auto isHeading = rawLine.substr(0, 2) == "**";
+    const auto isSubheading = !isHeading && rawLine.substr(0, 1) == "*";
+    if (isHeading)
+      rawLine = rawLine.substr(2);
+    else if (isSubheading)
+      rawLine = rawLine.substr(1);
+    else if (rawLine != "\r")
+      rawLine = "- " + rawLine;
+
     auto wrappedLines = wordWrapper.wrap(rawLine);
-    for (const auto &line : wrappedLines)
-      releaseNotes->addChild(new Label({}, line));
+    for (const auto &line : wrappedLines) {
+      auto label = new Label{{}, line};
+      if (isHeading) {
+        label->setColor(Color::RELEASE_NOTES_VERSION);
+        label->setJustificationH(Element::CENTER_JUSTIFIED);
+      } else if (isSubheading) {
+        label->setColor(Color::RELEASE_NOTES_SUBHEADING);
+        label->setJustificationH(Element::CENTER_JUSTIFIED);
+      } else {
+        label->setColor(Color::RELEASE_NOTES_BODY);
+      }
+      releaseNotes->addChild(label);
+    }
   }
 }
 

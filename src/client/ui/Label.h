@@ -24,6 +24,7 @@ class Label : public Element {
   virtual void refresh() override;
 
   void setColor(const Color &color);
+  void setJustificationH(const Justification justification);
 
   void
   matchW();  // Set the label's width to the width of the contained text image.

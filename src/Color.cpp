@@ -81,6 +81,10 @@ const Color Color::UI_TEXT = YELLOW * 0.9;
 const Color Color::UI_DISABLED = WHITE * 0.6;
 const Color Color::UI_PROGRESS_BAR = WINDOW_LIGHT;
 
+const Color Color::RELEASE_NOTES_VERSION = GREEN * .7 + WHITE * .3;
+const Color Color::RELEASE_NOTES_SUBHEADING = YELLOW * .8 + RED * .2;
+const Color Color::RELEASE_NOTES_BODY{0xcc, 0xcc, 0xcc};
+
 const Color Color::CHANCE_SMALL = YELLOW * .4 + WHITE * .3;
 const Color Color::CHANCE_MODERATE = GREEN * .5 + WHITE * .4;
 const Color Color::CHANCE_HIGH = CYAN * .4 + BLUE * .2 + WHITE * .4;
