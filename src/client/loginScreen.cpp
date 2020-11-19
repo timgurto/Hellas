@@ -32,6 +32,11 @@ void Client::loginScreenLoop() {
     }}.detach();
   }
 
+  if (_releaseNotesStatus == RELEASE_NOTES_DOWNLOADED) {
+    showReleaseNotes();
+    _releaseNotesStatus = RELEASE_NOTES_DISPLAYED;
+  }
+
   if (_shouldAutoLogIn && _connection.state() == Connection::CONNECTED) login();
 
   // Send ping
@@ -394,7 +399,11 @@ void Client::initLoginScreen() {
         new Label({}, "Fetching release notes . . ."));
     _loginUI.push_back(loginScreenElements.releaseNotes);
 #ifndef TESTING
-    std::thread(fetchReleaseNotes, loginScreenElements.releaseNotes).detach();
+    std::thread([this]() {
+      _releaseNotesRaw =
+          readFromURL("https://playhellas.com/release-notes.txt");
+      _releaseNotesStatus = RELEASE_NOTES_DOWNLOADED;
+    }).detach();
 #endif
 
     _loginUI.push_back(
@@ -472,8 +481,7 @@ void Client::initLoginScreen() {
 
   _loginUI.push_back(_toasts);
 }
-void Client::fetchReleaseNotes(List *releaseNotes) {
-  const auto rawText = readFromURL("https://playhellas.com/release-notes.txt");
+void Client::showReleaseNotes() {
   /*
   **0.13.9-19 (November 19, 2020)
   *Bugs
@@ -487,11 +495,12 @@ void Client::fetchReleaseNotes(List *releaseNotes) {
   etc.
   */
 
-  releaseNotes->clearChildren();
+  auto &list = *loginScreenElements.releaseNotes;
+  list.clearChildren();
 
-  auto wordWrapper = WordWrapper{Element::font(), releaseNotes->contentWidth()};
+  auto wordWrapper = WordWrapper{Element::font(), list.contentWidth()};
 
-  auto iss = std::istringstream{rawText};
+  auto iss = std::istringstream{_releaseNotesRaw};
   char buffer[1024];
   while (iss.getline(buffer, 1023)) {
     auto rawLine = std::string{buffer};
@@ -516,7 +525,7 @@ void Client::fetchReleaseNotes(List *releaseNotes) {
       } else {
         label->setColor(Color::RELEASE_NOTES_BODY);
       }
-      releaseNotes->addChild(label);
+      list.addChild(label);
     }
   }
 }

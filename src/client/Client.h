@@ -468,6 +468,13 @@ class Client : public TextEntryManager {
   std::string _autoClassID =
       {};  // For automated account creation, i.e., in tests
   std::string _savedPwHash;
+  enum ReleaseNotesStatus {
+    RELEASE_NOTES_DOWNLOADING,
+    RELEASE_NOTES_DOWNLOADED,
+    RELEASE_NOTES_DISPLAYED
+  } _releaseNotesStatus{RELEASE_NOTES_DOWNLOADING};
+  std::string _releaseNotesRaw;
+  void showReleaseNotes();
   struct LoginScreenElements {
     TextBox *nameBox{nullptr};
     TextBox *newNameBox{nullptr};
@@ -481,7 +488,6 @@ class Client : public TextEntryManager {
     Window *donateWindow{nullptr};
     List *releaseNotes{nullptr};
   } loginScreenElements;
-  static void fetchReleaseNotes(List *releaseNotes);
 
   // These are superficial, and relate only to the cast bar.
   ms_t _actionTimer{0};        // How long the character has been performing the
