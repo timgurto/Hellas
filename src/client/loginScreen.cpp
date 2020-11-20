@@ -385,10 +385,10 @@ void Client::initLoginScreen() {
 
   // Right-hand content
   {
-    const auto RELEASE_NOTES_Y = 5_px, RELEASE_NOTES_W = 175_px,
-               RELEASE_NOTES_H = 235_px;
+    const auto RELEASE_NOTES_Y = 3_px, RELEASE_NOTES_W = 179_px,
+               RELEASE_NOTES_H = 239_px;
     const auto RELEASE_NOTES_RECT =
-        ScreenRect{SCREEN_X - RELEASE_NOTES_W - 5, RELEASE_NOTES_Y,
+        ScreenRect{SCREEN_X - RELEASE_NOTES_W - 3, RELEASE_NOTES_Y,
                    RELEASE_NOTES_W, RELEASE_NOTES_H};
     auto releaseNotesBackground =
         new ColorBlock(RELEASE_NOTES_RECT, Color::BLACK);
