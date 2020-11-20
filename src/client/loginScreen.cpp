@@ -393,6 +393,7 @@ void Client::initLoginScreen() {
     auto releaseNotesBackground =
         new ColorBlock(RELEASE_NOTES_RECT, Color::BLACK);
     releaseNotesBackground->setAlpha(0xbf);
+    releaseNotesBackground->ignoreMouseEvents();
     _loginUI.push_back(releaseNotesBackground);
     loginScreenElements.releaseNotes = new List(RELEASE_NOTES_RECT);
     loginScreenElements.releaseNotes->addChild(
@@ -575,6 +576,27 @@ void Client::handleLoginInput(double delta) {
             break;
         }
         break;
+
+      case SDL_MOUSEWHEEL: {
+        const auto scrollingDown = e.wheel.y < 0;
+        auto eventWasCaptured = false;
+        for (Window *window : _windows)
+          if (window->visible() && collision(_mouse, window->rect())) {
+            scrollingDown ? window->onScrollDown(_mouse)
+                          : window->onScrollUp(_mouse);
+            eventWasCaptured = true;
+            break;
+          }
+        for (Element *element : _loginUI)
+          if (!eventWasCaptured && element->visible() &&
+              element->canReceiveMouseEvents() &&
+              collision(_mouse, element->rect())) {
+            scrollingDown ? element->onScrollDown(_mouse)
+                          : element->onScrollUp(_mouse);
+            eventWasCaptured = true;
+            break;
+          }
+      } break;
 
       case SDL_MOUSEMOTION: {
         px_t x, y;
