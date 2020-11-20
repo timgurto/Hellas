@@ -486,6 +486,7 @@ void Client::handleInput(double delta) {
             ImageWithHighlight::forceAllToRedraw();
             populateClassWindow();
             redrawFogOfWar();
+            images.generateItemDamageOverlays();
             break;
         }
 

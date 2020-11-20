@@ -911,21 +911,7 @@ void Client::CommonImages::initialise() {
   itemHighlightMatch = {"Images/Items/highlightGood.png"s, Color::MAGENTA};
   itemHighlightNoMatch = {"Images/Items/highlightBad.png"s, Color::MAGENTA};
 
-  itemDamaged = itemDamaged = {Client::ICON_SIZE, Client::ICON_SIZE};
-  renderer.pushRenderTarget(itemDamaged);
-  renderer.setDrawColor(Color::DURABILITY_LOW);
-  renderer.fill();
-  renderer.popRenderTarget();
-  itemDamaged.setAlpha(0x7f);
-  itemDamaged.setBlend();
-
-  itemBroken = {Client::ICON_SIZE, Client::ICON_SIZE};
-  renderer.pushRenderTarget(itemBroken);
-  renderer.setDrawColor(Color::DURABILITY_BROKEN);
-  renderer.fill();
-  renderer.popRenderTarget();
-  itemBroken.setAlpha(0x7f);
-  itemBroken.setBlend();
+  generateItemDamageOverlays();
 
   itemQualityMask = Texture{"Images/ui/item-quality-mask.png"};
 
@@ -954,4 +940,22 @@ void Client::CommonImages::initialise() {
   logoDiscord = {"Images/logo-discord.png", Color::MAGENTA};
   logoBTC = {"Images/logo-bitcoin.png", Color::MAGENTA};
   btcQR = {"Images/btc-qr.png", Color::MAGENTA};
+}
+
+void Client::CommonImages::generateItemDamageOverlays() {
+  itemDamaged = itemDamaged = {Client::ICON_SIZE, Client::ICON_SIZE};
+  renderer.pushRenderTarget(itemDamaged);
+  renderer.setDrawColor(Color::DURABILITY_LOW);
+  renderer.fill();
+  renderer.popRenderTarget();
+  itemDamaged.setAlpha(0x7f);
+  itemDamaged.setBlend();
+
+  itemBroken = {Client::ICON_SIZE, Client::ICON_SIZE};
+  renderer.pushRenderTarget(itemBroken);
+  renderer.setDrawColor(Color::DURABILITY_BROKEN);
+  renderer.fill();
+  renderer.popRenderTarget();
+  itemBroken.setAlpha(0x7f);
+  itemBroken.setBlend();
 }

@@ -594,6 +594,7 @@ class Client : public TextEntryManager {
 
   static struct CommonImages {
     void initialise();
+    void generateItemDamageOverlays();
 
     Texture shadow;
     Texture cursorNormal, cursorGather, cursorContainer, cursorAttack,
