@@ -135,12 +135,12 @@
         <owner type="player" name="Calydon" />
         <merchant slot="0" wareItem="linenCloak" priceItem="tinCoin" priceQty="600" />
     </object>
+    <object id="calydonBrazier" x="29458" y="43575" />
     <permanentObject id="figTree8" x="29419" y="43817"> <owner type="noAccess" /> </permanentObject>
     <permanentObject id="figTree8" x="29475" y="43863"> <owner type="noAccess" /> </permanentObject>
     <permanentObject id="figTree8" x="29485" y="43828"> <owner type="noAccess" /> </permanentObject>
     <permanentObject id="handCart" x="29564" y="44036"> <owner type="noAccess" /> </permanentObject>
     <permanentObject id="handCart" x="29546" y="44070"> <owner type="noAccess" /> </permanentObject>
-    <permanentObject id="calydonBrazier" x="29458" y="43575" />
     <permanentObject id="flaxCrop8" x="29689" y="44151"> <owner type="noAccess" /> </permanentObject>
     <permanentObject id="flaxCrop8" x="29738" y="44249"> <owner type="noAccess" /> </permanentObject>
     <permanentObject id="flaxCrop8" x="29633" y="44346"> <owner type="noAccess" /> </permanentObject>
