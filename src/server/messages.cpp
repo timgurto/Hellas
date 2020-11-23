@@ -827,6 +827,31 @@ HANDLE_MESSAGE(CL_ORDER_PET_TO_FOLLOW) {
   npc->order(NPC::FOLLOW);
 }
 
+HANDLE_MESSAGE(CL_COMPLETE_QUEST) {
+  auto questID = ""s;
+  auto endSerial = Serial{};
+  READ_ARGS(questID, endSerial);
+
+  if (!user.isOnQuest(questID)) return;
+
+  const auto entity = _entities.find(endSerial);
+  if (!entity) return;
+  auto node = dynamic_cast<const QuestNode *>(entity);
+  if (!node) return;
+
+  if (!isEntityInRange(user.socket(), user, entity)) return;
+
+  if (!node->endsQuest(questID)) return;
+
+  const auto it = _quests.find(questID);
+  if (it == _quests.end()) return;
+  const auto &q = it->second;
+
+  if (!q.canBeCompletedByUser(user)) return;
+
+  user.completeQuest(questID);
+}
+
 HANDLE_MESSAGE(CL_ABANDON_QUEST) {
   auto questID = ""s;
   READ_ARGS(questID);
@@ -930,6 +955,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_FEED_PET)
       SEND_MESSAGE_TO_HANDLER(CL_ORDER_PET_TO_STAY)
       SEND_MESSAGE_TO_HANDLER(CL_ORDER_PET_TO_FOLLOW)
+      SEND_MESSAGE_TO_HANDLER(CL_COMPLETE_QUEST)
       SEND_MESSAGE_TO_HANDLER(CL_ABANDON_QUEST)
       SEND_MESSAGE_TO_HANDLER(CL_INVITE_TO_GROUP)
       SEND_MESSAGE_TO_HANDLER(CL_ACCEPT_GROUP_INVITATION)
@@ -1439,20 +1465,6 @@ void Server::handleBufferedMessages(const Socket &client,
         if (del != MSG_END) return;
 
         handle_CL_ACCEPT_QUEST(*user, questID, startSerial);
-        break;
-      }
-
-      case CL_COMPLETE_QUEST: {
-        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_DELIM);
-        auto questID = Quest::ID{_stringInputBuffer};
-        iss >> del;
-
-        auto endSerial = Serial{};
-        iss >> endSerial >> del;
-
-        if (del != MSG_END) return;
-
-        handle_CL_COMPLETE_QUEST(*user, questID, endSerial);
         break;
       }
 
@@ -1991,28 +2003,6 @@ void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &questID,
     RETURN_WITH(WARNING_INVENTORY_FULL)
 
   user.startQuest(*quest);
-}
-
-void Server::handle_CL_COMPLETE_QUEST(User &user, const Quest::ID &quest,
-                                      Serial endSerial) {
-  if (!user.isOnQuest(quest)) return;
-
-  const auto entity = _entities.find(endSerial);
-  if (!entity) return;
-  auto node = dynamic_cast<const QuestNode *>(entity);
-  if (!node) return;
-
-  if (!isEntityInRange(user.socket(), user, entity)) return;
-
-  if (!node->endsQuest(quest)) return;
-
-  const auto it = _quests.find(quest);
-  if (it == _quests.end()) return;
-  const auto &q = it->second;
-
-  if (!q.canBeCompletedByUser(user)) return;
-
-  user.completeQuest(quest);
 }
 
 void Server::handle_CL_AUTO_CONSTRUCT(User &user, Serial serial) {

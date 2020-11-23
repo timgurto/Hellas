@@ -345,8 +345,6 @@ class Server {
   void handle_CL_UNLEARN_TALENTS(User &user);
   void handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &quest,
                               Serial giverSerial);
-  void handle_CL_COMPLETE_QUEST(User &user, const Quest::ID &quest,
-                                Serial giverSerial);
   void handle_CL_AUTO_CONSTRUCT(User &user, Serial serial);
 };
 
