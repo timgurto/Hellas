@@ -373,6 +373,22 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Permanent objects") {
     }
   }
 
+  GIVEN("a permanent object with item-based health") {
+    useData(R"(
+      <item id="brick" durability="10" />
+      <objectType id="wall" >
+        <durability item="brick" quantity="10" />
+      </objectType>
+      <permanentObject id="wall" x="5" y="5" />
+    )");
+
+    THEN("the entity has nonzero health") {
+      const auto &cSprite = client->getFirstNonAvatarSprite();
+      const auto &cObject = dynamic_cast<const ClientObject &>(cSprite);
+      CHECK(cObject.health() > 0);
+    }
+  }
+
   GIVEN("a permanent object at (5,5)") {
     useData(R"(
       <objectType id="tree" />
