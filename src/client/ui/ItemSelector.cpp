@@ -61,13 +61,13 @@ ItemSelector::ItemSelector(Client &client, const ClientItem *&item, px_t x,
         new List({GAP, y, LIST_WIDTH, LIST_HEIGHT}, ITEM_HEIGHT + 2 + LIST_GAP);
     _findItemWindow->addChild(_itemList);
 
-    applyFilter();  // Populate list for the first time.
     _client->addWindow(_findItemWindow);
   }
 }
 
 void ItemSelector::openFindItemWindow(void *data) {
   _findItemWindow->show();
+  applyFilter();
   _client->removeWindow(_findItemWindow);
   _client->addWindow(_findItemWindow);
   _itemBeingSelected = static_cast<ClientItem **>(data);
