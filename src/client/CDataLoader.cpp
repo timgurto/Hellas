@@ -62,8 +62,8 @@ void CDataLoader::load(bool keepOldData) {
     }
 
     loadFromAllFiles(&CDataLoader::loadObjectTypes);
-    loadFromAllFiles(&CDataLoader::loadPermanentObjects);
     loadFromAllFiles(&CDataLoader::loadItems);
+    loadFromAllFiles(&CDataLoader::loadPermanentObjects);
     loadFromAllFiles(&CDataLoader::loadClasses);
     loadFromAllFiles(&CDataLoader::loadRecipes);
     loadFromAllFiles(&CDataLoader::loadNPCTemplates);
@@ -90,8 +90,8 @@ void CDataLoader::load(bool keepOldData) {
     loadBuffs(reader);
     _client.gameData.tagNames.readFromXML(reader);
     loadObjectTypes(reader);
-    loadPermanentObjects(reader);
     loadItems(reader);
+    loadPermanentObjects(reader);
     loadClasses(reader);
     loadRecipes(reader);
     loadNPCTemplates(reader);
