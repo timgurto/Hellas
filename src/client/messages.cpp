@@ -2144,6 +2144,15 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
+      case SV_SYSTEM_MESSAGE: {
+        auto message = ""s;
+        readString(singleMsg, message, MSG_END);
+        singleMsg >> del;
+        if (del != MSG_END) break;
+        addChatMessage(message, Color::CHAT_DEFAULT);
+        break;
+      }
+
       case TST_SEND_THIS_BACK: {
         auto msgCodeAsInt = 0;
         singleMsg >> msgCodeAsInt >> del;
@@ -2797,6 +2806,7 @@ void Client::initializeMessageNames() {
   _messageCommands["recruit"] = CL_RECRUIT;
   _messageCommands["cast"] = CL_CAST_SPELL;
   _messageCommands["roll"] = CL_ROLL;
+  _messageCommands["invite"] = CL_INVITE_TO_GROUP;
 
   _messageCommands["say"] = CL_SAY;
   _messageCommands["s"] = CL_SAY;
@@ -2810,7 +2820,7 @@ void Client::initializeMessageNames() {
   _messageCommands["skip"] = CL_SKIP_TUTORIAL;
   _messageCommands["spells"] = DG_SPELLS;
   _messageCommands["die"] = DG_DIE;
-  _messageCommands["invite"] = CL_INVITE_TO_GROUP;
+  _messageCommands["simulateYields"] = DG_SIMULATE_YIELDS;
 
   _errorMessages[WARNING_TOO_FAR] =
       "You are too far away to perform that action.";

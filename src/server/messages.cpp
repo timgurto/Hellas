@@ -894,6 +894,17 @@ HANDLE_MESSAGE(DG_UNLOCK) {
   ProgressLock::unlockAll(user);
 }
 
+HANDLE_MESSAGE(DG_SIMULATE_YIELDS) {
+  auto objTypeID = ""s;
+  READ_ARGS(objTypeID);
+
+  if (!isDebug()) return;
+  auto objType = findObjectTypeByID(objTypeID);
+  if (!objType) RETURN_WITH(ERROR_INVALID_OBJECT);
+
+  objType->yield.simulate(user);
+}
+
 #define SEND_MESSAGE_TO_HANDLER(MESSAGE_CODE)           \
   case MESSAGE_CODE:                                    \
     handleMessage<MESSAGE_CODE>(client, *user, parser); \
@@ -962,6 +973,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_LEAVE_GROUP)
       SEND_MESSAGE_TO_HANDLER(CL_ROLL)
       SEND_MESSAGE_TO_HANDLER(DG_UNLOCK)
+      SEND_MESSAGE_TO_HANDLER(DG_SIMULATE_YIELDS)
 
       case CL_CONSTRUCT_FROM_ITEM:
       case CL_CONSTRUCT_FROM_ITEM_FOR_CITY: {

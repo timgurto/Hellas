@@ -150,6 +150,8 @@ class ObjectType : public EntityType, public QuestNodeType {
 
  private:
   void checkUniquenessInvariant() const;
+
+ public:
 };
 
 #endif

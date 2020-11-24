@@ -2,6 +2,7 @@
 
 #include "../util.h"
 #include "Server.h"
+#include "User.h"
 
 void Yield::addItem(const ServerItem *item, double initMean, double initSD,
                     size_t initMin, double gatherMean, double gatherSD) {
@@ -47,6 +48,17 @@ void Yield::loadFromXML(XmlReader xr, TiXmlElement *elem) {
 
     auto item = Server::instance().createAndFindItem(id);
     addItem(item, initMean, initSD, initMin, gatherMean, gatherSD);
+  }
+}
+
+void Yield::simulate(const User &recipient) const {
+  auto items = ItemSet{};
+  instantiate(items);
+  for (const auto &pair : items) {
+    const auto item = pair.first;
+    const auto qty = pair.second;
+    recipient.sendMessage(
+        {SV_SYSTEM_MESSAGE, item->id() + ": "s + toString(qty)});
   }
 }
 

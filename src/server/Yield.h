@@ -43,6 +43,8 @@ class Yield {
   void gatherTime(ms_t t) { _gatherTime = t; }
   ms_t gatherTime() const { return _gatherTime; }
 
+  void simulate(const User &recipient) const;
+
  private:
   std::string _requiredTool;
   ms_t _gatherTime{0};

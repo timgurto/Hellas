@@ -270,6 +270,10 @@ enum MessageCode {
   // Arguments: time original was sent, time of reply
   SV_PING_REPLY,
 
+  // Text to display directly in the client, providing system information.
+  // Arguments: message
+  SV_SYSTEM_MESSAGE,
+
   // The client has been successfully registered
   SV_WELCOME,
 
@@ -897,6 +901,10 @@ enum MessageCode {
 
   // "Kill me"
   DG_DIE,
+
+  // "Run a large number of simulations for gather yields
+  // Arguments: object-type ID
+  DG_SIMULATE_YIELDS,
 
   // Messages used in tests
 
