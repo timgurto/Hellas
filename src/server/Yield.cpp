@@ -52,13 +52,29 @@ void Yield::loadFromXML(XmlReader xr, TiXmlElement *elem) {
 }
 
 void Yield::simulate(const User &recipient) const {
-  auto items = ItemSet{};
-  instantiate(items);
-  for (const auto &pair : items) {
-    const auto item = pair.first;
-    const auto qty = pair.second;
-    recipient.sendMessage(
-        {SV_SYSTEM_MESSAGE, item->id() + ": "s + toString(qty)});
+  using QuantityCounts = std::map<int, int>;
+  auto quantitiesByItem = std::map<std::string, QuantityCounts>{};
+
+  for (auto i = 0; i != 1000 * 1000; ++i) {
+    auto items = ItemSet{};
+    instantiate(items);
+    for (const auto &pair : items) {
+      const auto item = pair.first;
+      const auto qty = pair.second;
+
+      quantitiesByItem[item->id()][qty]++;
+    }
+  }
+
+  for (auto itemResults : quantitiesByItem) {
+    auto message = itemResults.first + ": "s;
+    for (auto pair : itemResults.second) {
+      const auto qty = pair.first;
+      const auto instancesOfThisQty = pair.second;
+      message +=
+          " " + toString(qty) + " ("s + toString(instancesOfThisQty) + ")"s;
+    }
+    recipient.sendMessage({SV_SYSTEM_MESSAGE, message});
   }
 }
 
