@@ -55,7 +55,9 @@ void Yield::simulate(const User &recipient) const {
   using QuantityCounts = std::map<int, int>;
   auto quantitiesByItem = std::map<std::string, QuantityCounts>{};
 
-  for (auto i = 0; i != 1000 * 1000; ++i) {
+  const auto NUM_SIMULATIONS = 1000 * 10;
+
+  for (auto i = 0; i != NUM_SIMULATIONS; ++i) {
     auto items = ItemSet{};
     instantiate(items);
     for (const auto &pair : items) {
@@ -71,8 +73,9 @@ void Yield::simulate(const User &recipient) const {
     for (auto pair : itemResults.second) {
       const auto qty = pair.first;
       const auto instancesOfThisQty = pair.second;
-      message +=
-          " " + toString(qty) + " ("s + toString(instancesOfThisQty) + ")"s;
+      const auto percentage =
+          toInt(100.0 * instancesOfThisQty / NUM_SIMULATIONS);
+      message += " " + toString(qty) + " ("s + toString(percentage) + "%)"s;
     }
     recipient.sendMessage({SV_SYSTEM_MESSAGE, message});
   }
