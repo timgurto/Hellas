@@ -8,7 +8,26 @@ const char MSG_START = '\002',  // STX
 
 enum MessageCode {
 
+  // These first three messages should never change their code, for the sake of
+  // stability, so that if the client and server are different versions, the
+  // user is made aware..
+
+  // The client version differs from the server version.
+  // Argument: server version
+  WARNING_WRONG_VERSION = 0,
+
   // Client -> server
+
+  // "I'm an existing user.  My details are ... and my client version is ..."
+  // This has the effect of registering the user with the server.
+  // Arguments: username, password hash, version
+  CL_LOGIN_EXISTING = 1,
+
+  // "I'm new; my details are ... and I'm running client version ...
+  // This has the effect of creating the account, then registering the user with
+  // the server.
+  // Arguments: username, password hash, class, version
+  CL_LOGIN_NEW = 2,
 
   // Feedback to the developer
   // Arguments: bug text
@@ -17,17 +36,6 @@ enum MessageCode {
   // A ping, to measure latency and reassure the server
   // Arguments: time sent
   CL_PING,
-
-  // "I'm an existing user.  My details are ... and my client version is ..."
-  // This has the effect of registering the user with the server.
-  // Arguments: username, password hash, version
-  CL_LOGIN_EXISTING,
-
-  // "I'm new; my details are ... and I'm running client version ...
-  // This has the effect of creating the account, then registering the user with
-  // the server.
-  // Arguments: username, password hash, class, version
-  CL_LOGIN_NEW,
 
   // I've received everything and now you can start the timeout clock.
   CL_FINISHED_RECEIVING_LOGIN_INFO,
@@ -698,8 +706,6 @@ enum MessageCode {
   // something went wrong.
 
   // Connection
-  WARNING_WRONG_VERSION,  // The client version differs from the server version.
-                          // Argument: server version
   WARNING_DUPLICATE_USERNAME,  // The client has attempted to connect with a
                                // username already in use
   WARNING_INVALID_USERNAME,    // The client has attempted to connect with an
