@@ -886,6 +886,10 @@ enum MessageCode {
   // Arguments: id
   DG_GIVE_OBJECT,
 
+  // Spawn an unowned object
+  // Arguments: id
+  DG_SPAWN,
+
   // "Unlock everything for me"
   DG_UNLOCK,
 

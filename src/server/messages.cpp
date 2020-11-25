@@ -887,6 +887,46 @@ HANDLE_MESSAGE(CL_ROLL) {
                    {SV_ROLL_RESULT, makeArgs(user.name(), result)});
 }
 
+HANDLE_MESSAGE(DG_GIVE_OBJECT) {
+  auto objTypeID = ""s;
+  READ_ARGS(objTypeID);
+
+  if (!isDebug()) return;
+
+  auto *ot = findObjectTypeByID(objTypeID);
+  if (!ot) RETURN_WITH(ERROR_INVALID_OBJECT)
+  if (ot->classTag() == 'n') {
+    auto *nt = dynamic_cast<NPCType *>(ot);
+    if (!nt) return;
+    auto &npc = addNPC(nt, user.location() + MapPoint{50, 0});
+    npc.permissions.setPlayerOwner(user.name());
+  } else {
+    auto owner = Permissions::Owner{Permissions::Owner::PLAYER, user.name()};
+    auto &obj = addObject(ot, user.location() + MapPoint{50, 0}, owner);
+    if (obj.isBeingBuilt()) {
+      obj.remainingMaterials().clear();
+      sendConstructionMaterialsMessage(user, obj);
+    }
+  }
+}
+
+HANDLE_MESSAGE(DG_SPAWN) {
+  auto objTypeID = ""s;
+  READ_ARGS(objTypeID);
+
+  if (!isDebug()) return;
+
+  auto *ot = findObjectTypeByID(objTypeID);
+  if (!ot) RETURN_WITH(ERROR_INVALID_OBJECT)
+  if (ot->classTag() == 'n') {
+    auto *nt = dynamic_cast<NPCType *>(ot);
+    if (!nt) return;
+    auto &npc = addNPC(nt, user.location() + MapPoint{50, 0});
+  } else {
+    auto &obj = addObject(ot, user.location() + MapPoint{50, 0}, {});
+  }
+}
+
 HANDLE_MESSAGE(DG_UNLOCK) {
   CHECK_NO_ARGS;
 
@@ -972,6 +1012,8 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_ACCEPT_GROUP_INVITATION)
       SEND_MESSAGE_TO_HANDLER(CL_LEAVE_GROUP)
       SEND_MESSAGE_TO_HANDLER(CL_ROLL)
+      SEND_MESSAGE_TO_HANDLER(DG_GIVE_OBJECT)
+      SEND_MESSAGE_TO_HANDLER(DG_SPAWN)
       SEND_MESSAGE_TO_HANDLER(DG_UNLOCK)
       SEND_MESSAGE_TO_HANDLER(DG_SIMULATE_YIELDS)
 
@@ -1539,31 +1581,6 @@ void Server::handleBufferedMessages(const Socket &client,
         const ServerItem &item = *it;
         ;
         user->giveItem(&item, item.stackSize());
-        break;
-      }
-
-      case DG_GIVE_OBJECT: {
-        if (!isDebug()) break;
-        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
-        std::string id(_stringInputBuffer);
-        iss >> del;
-        if (del != MSG_END) return;
-        auto *ot = findObjectTypeByID(id);
-        if (!ot) BREAK_WITH(ERROR_INVALID_OBJECT)
-        if (ot->classTag() == 'n') {
-          auto *nt = dynamic_cast<NPCType *>(ot);
-          if (!nt) break;
-          auto &npc = addNPC(nt, user->location() + MapPoint{50, 0});
-          npc.permissions.setPlayerOwner(user->name());
-        } else {
-          auto owner =
-              Permissions::Owner{Permissions::Owner::PLAYER, user->name()};
-          auto &obj = addObject(ot, user->location() + MapPoint{50, 0}, owner);
-          if (obj.isBeingBuilt()) {
-            obj.remainingMaterials().clear();
-            sendConstructionMaterialsMessage(*user, obj);
-          }
-        }
         break;
       }
 

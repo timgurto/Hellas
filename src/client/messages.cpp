@@ -2815,6 +2815,7 @@ void Client::initializeMessageNames() {
 
   _messageCommands["give"] = DG_GIVE;
   _messageCommands["giveObject"] = DG_GIVE_OBJECT;
+  _messageCommands["spawn"] = DG_SPAWN;
   _messageCommands["unlock"] = DG_UNLOCK;
   _messageCommands["level"] = DG_LEVEL;
   _messageCommands["skip"] = CL_SKIP_TUTORIAL;
