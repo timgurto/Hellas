@@ -263,16 +263,16 @@
             </item>
 
 	<!-- Swords (hit) -->
-		<item id="copperSword" name="Short Sword" gearSlot="6" lvlReq="30" >
-			<stats hit="200" might="1" />
-            <weapon damage="14" speed="2.5" />
+		<item id="copperSword" name="Short Sword" gearSlot="6" lvlReq="30" quality="2" bind="equip" >
+			<stats hit="200" might="2" />
+            <weapon damage="16" speed="2.5" />
             <offset x="-6" y="-8" />
             <canBeRepaired cost="copperBar" tool="smelting2" />
 		</item>
             <item id="copperSwordSilver" name="Inlaid Short Sword" gearSlot="6" lvlReq="30"
-                iconFile="copperSword" gearFile="copperSword" quality="2" bind="equip" >
+                iconFile="copperSword" gearFile="copperSword" quality="3" bind="equip" >
                 <stats hit="200" might="2" />
-                <weapon damage="16" speed="2.5" />
+                <weapon damage="19" speed="2.5" />
                 <offset x="-6" y="-8" />
                 <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
@@ -319,9 +319,9 @@
                 <offset x="-5" y="-21" />
                 <canBeRepaired cost="tinBar" tool="smelting1" />
             </item>
-            <item id="copperJavelin" name="Javelin" stackSize="100" gearSlot="6" sounds="spear" lvlReq="26" >
-                <weapon damage="7" speed="2.4" range="25" consumes="copperJavelin" />
-                <stats crit="100" cunning="1"/>
+            <item id="copperJavelin" name="Javelin" stackSize="100" gearSlot="6" sounds="spear" lvlReq="26" quality="2" bind="equip" >
+                <weapon damage="8" speed="2.5" range="25" consumes="copperJavelin" />
+                <stats crit="100" cunning="2"/>
                 <offset x="-5" y="-21" />
                 <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
@@ -365,14 +365,14 @@
                 </item>
         
         <!-- Helmet (Health) -->
-            <item id="copperHelmet" name="Copper Helmet" gearSlot="0" lvlReq="30" >
-                <stats armor="24" health="25" />
+            <item id="copperHelmet" name="Copper Helmet" gearSlot="0" lvlReq="30" quality="2" bind="equip" >
+                <stats armor="28" health="30" />
                 <offset x="-3" y="-5" />
                 <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
             <item id="copperHelmetSilver" name="Silvered Copper Helmet" gearSlot="0" lvlReq="30"
-                iconFile="copperHelmet" gearFile="copperHelmet" quality="2" bind="equip">
-                <stats armor="28" health="30" />
+                iconFile="copperHelmet" gearFile="copperHelmet" quality="3" bind="equip">
+                <stats armor="32" health="35" />
                 <offset x="-3" y="-5" />
                 <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
@@ -390,14 +390,14 @@
                     <offset x="-4" y="-1" />
                     <canBeRepaired cost="linenCloth" tool="sewing" />
                 </item>
-            <item id="woolCloak" name="Woolen Cloak" gearSlot="3" sounds="fabric" lvlReq="26" >
-                <stats armor="5" courage="6" />
+            <item id="woolCloak" name="Woolen Cloak" gearSlot="3" sounds="fabric" lvlReq="26" quality="2" bind="equip" >
+                <stats armor="7" courage="7" />
                 <offset x="-4" y="-1" />
                 <canBeRepaired cost="woolCloth" tool="sewing" />
             </item>
                 <item id="woolCloakSilver" name="Embroidered Woolen Cloak" gearSlot="3" sounds="fabric" lvlReq="26"
-                    iconFile="woolCloak" gearFile="woolCloak" quality="2" bind="equip">
-                    <stats armor="7" courage="7" />
+                    iconFile="woolCloak" gearFile="woolCloak" quality="3" bind="equip">
+                    <stats armor="9" courage="8" />
                     <offset x="-4" y="-1" />
                     <canBeRepaired cost="woolCloth" tool="sewing" />
                 </item>
@@ -421,14 +421,14 @@
                     <offset x="-6" y="-4" />
                     <canBeRepaired cost="tinScale" />
                 </item>
-            <item id="copperLamellar" name="Copper Lamellar" gearSlot="2" sounds="mailArmor" lvlReq="27" >
-                <stats armor="33" courage="10" />
+            <item id="copperLamellar" name="Copper Lamellar" gearSlot="2" sounds="mailArmor" lvlReq="27" quality="2" bind="equip" >
+                <stats armor="393" courage="12" />
                 <offset x="-6" y="-4" />
                 <canBeRepaired cost="copperScale" />
             </item>
                 <item id="copperLamellarSilver" name="Silvered Copper Lamellar" gearSlot="2" sounds="mailArmor" lvlReq="27"
-                    iconFile="copperLamellar" gearFile="copperLamellar" quality="2" bind="equip">
-                    <stats armor="39" courage="12" />
+                    iconFile="copperLamellar" gearFile="copperLamellar" quality="3" bind="equip">
+                    <stats armor="45" courage="14" />
                     <offset x="-6" y="-4" />
                     <canBeRepaired cost="copperScale" />
                 </item>
@@ -445,14 +445,14 @@
                     <offset x="-5" y="-3" />
                     <canBeRepaired cost="tinRing" />
                 </item>
-            <item id="copperHauberk" name="Copper Hauberk" gearSlot="2" sounds="mailArmor" lvlReq="29" >
-                <stats armor="33" block="600" swiftness="6" />
+            <item id="copperHauberk" name="Copper Hauberk" gearSlot="2" sounds="mailArmor" lvlReq="29" quality="2" bind="equip" >
+                <stats armor="39" block="700" swiftness="7" />
                 <offset x="-5" y="-3" />
                 <canBeRepaired cost="copperRing" />
             </item>
                 <item id="copperHauberkSilver" name="Silvered Copper Hauberk" gearSlot="2" sounds="mailArmor" lvlReq="29"
-                    iconFile="copperHauberk" gearFile="copperHauberk" quality="2" bind="equip">
-                    <stats armor="39" block="700" swiftness="7" />
+                    iconFile="copperHauberk" gearFile="copperHauberk" quality="3" bind="equip">
+                    <stats armor="46" block="800" swiftness="8" />
                     <offset x="-5" y="-3" />
                     <canBeRepaired cost="copperRing" />
                 </item>
@@ -469,14 +469,14 @@
                     <offset x="-5" y="-4" />
                     <canBeRepaired cost="linenCloth" />
                 </item>
-            <item id="copperCuirass" name="Copper Cuirass" gearSlot="2" lvlReq="31" >
-                <stats armor="36" endurance="12" />
+            <item id="copperCuirass" name="Copper Cuirass" gearSlot="2" lvlReq="31" quality="2" bind="equip" >
+                <stats armor="42" endurance="14" />
                 <offset x="-3" y="-4" />
                 <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
                 <item id="copperCuirassSilver" name="Silvered Copper Cuirass" gearSlot="2" lvlReq="31"
-                    iconFile="copperCuirass" gearFile="copperCuirass" quality="2" bind="equip" >
-                    <stats armor="42" endurance="14" />
+                    iconFile="copperCuirass" gearFile="copperCuirass" quality="3" bind="equip" >
+                    <stats armor="49" endurance="16" />
                     <offset x="-3" y="-4" />
                     <canBeRepaired cost="copperBar" tool="smelting2" />
                 </item>
@@ -561,14 +561,14 @@
                 </item>
             
         <!-- Bracers (physical damage) -->
-            <item id="copperBracers" name="Copper Bracers" gearSlot="4" lvlReq="28" >
-                <stats armor="7" might="3" />
+            <item id="copperBracers" name="Copper Bracers" gearSlot="4" lvlReq="28" quality="2" bind="equip" >
+                <stats armor="10" might="3" />
                 <offset x="-1" y="-7" />
                 <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
                 <item id="copperBracersSilver" name="Silvered Copper Bracers" gearSlot="4" lvlReq="28"
-                    iconFile="copperBracers" gearFile="copperBracers" quality="2" bind="equip">
-                    <stats armor="10" might="3" />
+                    iconFile="copperBracers" gearFile="copperBracers" quality="3" bind="equip">
+                    <stats armor="10" might="4" />
                     <offset x="-1" y="-7" />
                     <canBeRepaired cost="copperBar" tool="smelting2" />
                 </item>
@@ -601,14 +601,14 @@
                 </item>
             
         <!-- Greaves (HPS) -->
-            <item id="copperGreaves" name="Copper Greaves" gearSlot="5" lvlReq="30" >
-                <stats armor="17" endurance="6" />
+            <item id="copperGreaves" name="Copper Greaves" gearSlot="5" lvlReq="30" quality="2" bind="equip" >
+                <stats armor="20" endurance="7" />
                 <offset x="-2" y="-10" />
                 <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
                 <item id="copperGreavesSilver" name="Silvered Copper Greaves" gearSlot="5" lvlReq="30"
-                    iconFile="copperGreaves" gearFile="copperGreaves" quality="2" bind="equip">
-                    <stats armor="20" endurance="7" />
+                    iconFile="copperGreaves" gearFile="copperGreaves" quality="3" bind="equip">
+                    <stats armor="23" endurance="8" />
                     <offset x="-2" y="-10" />
                     <canBeRepaired cost="copperBar" tool="smelting2" />
                 </item>
