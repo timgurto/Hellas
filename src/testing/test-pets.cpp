@@ -296,7 +296,7 @@ TEST_CASE("Pets follow their owners") {
         user.teleportTo({100, 100});
 
         THEN("The guinea pig moves nearby") {
-          const auto maxDist = NPC::FOLLOW_DISTANCE;
+          const auto maxDist = AI::FOLLOW_DISTANCE;
           const auto timeAllowed = ms_t{10000};
           WAIT_UNTIL_TIMEOUT(distance(guineaPig.collisionRect(),
                                       user.collisionRect()) <= maxDist,

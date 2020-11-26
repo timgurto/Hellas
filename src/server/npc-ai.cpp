@@ -43,17 +43,17 @@ void NPC::getNewTargetsFromProximity(ms_t timeElapsed) {
   if (!shouldLookForNewTargetsNearby) return;
 
   _timeSinceLookedForTargets += timeElapsed;
-  if (_timeSinceLookedForTargets < FREQUENCY_TO_LOOK_FOR_TARGETS) return;
+  if (_timeSinceLookedForTargets < AI::FREQUENCY_TO_LOOK_FOR_TARGETS) return;
   _timeSinceLookedForTargets =
-      _timeSinceLookedForTargets % FREQUENCY_TO_LOOK_FOR_TARGETS;
+      _timeSinceLookedForTargets % AI::FREQUENCY_TO_LOOK_FOR_TARGETS;
 
   for (auto *potentialTarget :
-       Server::_instance->findEntitiesInArea(location(), AGGRO_RANGE)) {
+       Server::_instance->findEntitiesInArea(location(), AI::AGGRO_RANGE)) {
     if (potentialTarget == this) continue;
     if (!potentialTarget->canBeAttackedBy(*this)) continue;
     if (potentialTarget->shouldBeIgnoredByAIProximityAggro()) continue;
     if (distance(collisionRect(), potentialTarget->collisionRect()) >
-        AGGRO_RANGE)
+        AI::AGGRO_RANGE)
       continue;
 
     makeAwareOf(*potentialTarget);
@@ -89,7 +89,7 @@ void NPC::transitionIfNecessary() {
             Server::instance().getUserByName(owner().name);
         if (ownerPlayer == nullptr) break;
         if (distance(ownerPlayer->collisionRect(), collisionRect()) <=
-            FOLLOW_DISTANCE)
+            AI::FOLLOW_DISTANCE)
           break;
         ai.state = AI::PET_FOLLOW_OWNER;
         _followTarget = ownerPlayer;
@@ -118,14 +118,14 @@ void NPC::transitionIfNecessary() {
           distance(_followTarget->collisionRect(), collisionRect());
 
       // Owner is close enough
-      if (distanceFromOwner <= FOLLOW_DISTANCE) {
+      if (distanceFromOwner <= AI::FOLLOW_DISTANCE) {
         ai.state = AI::IDLE;
         _followTarget = nullptr;
         break;
       }
 
       // Owner is too far away
-      if (distanceFromOwner >= MAX_FOLLOW_RANGE) {
+      if (distanceFromOwner >= AI::MAX_FOLLOW_RANGE) {
         ai.state = AI::IDLE;
         _order = STAY;
 
@@ -165,7 +165,7 @@ void NPC::transitionIfNecessary() {
       }
 
       // Target has run out of range: give up
-      if (distToTarget > PURSUIT_RANGE) {
+      if (distToTarget > AI::PURSUIT_RANGE) {
         ai.state = AI::IDLE;
         tagger.clear();
         break;
@@ -214,7 +214,7 @@ void NPC::onTransition(AI::State previousState) {
 
     if (owner().type != Permissions::Owner::ALL_HAVE_ACCESS) return;
 
-    static const auto ATTEMPTS = 20;
+    const auto ATTEMPTS = 20;
     for (auto i = 0; i != ATTEMPTS; ++i) {
       if (!spawner()) break;
 

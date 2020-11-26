@@ -2,19 +2,12 @@
 
 #include "Server.h"
 
-const px_t NPC::AGGRO_RANGE = Podes{10}.toPixels();
-// Assumption: this is farther than any ranged attack/spell can reach:
-const px_t NPC::PURSUIT_RANGE = Podes{35}.toPixels();
-const px_t NPC::FOLLOW_DISTANCE = Podes{4}.toPixels();
-const px_t NPC::MAX_FOLLOW_RANGE = Podes{30}.toPixels();
-const ms_t NPC::FREQUENCY_TO_LOOK_FOR_TARGETS = 250;
-
 NPC::NPC(const NPCType *type, const MapPoint &loc)
     : Entity(type, loc),
       QuestNode(*type, serial()),
       _level(type->level()),
       _threatTable(*this),
-      _timeSinceLookedForTargets(rand() % FREQUENCY_TO_LOOK_FOR_TARGETS),
+      _timeSinceLookedForTargets(rand() % AI::FREQUENCY_TO_LOOK_FOR_TARGETS),
       _disappearTimer(type->disappearsAfter()),
       _homeLocation(loc),
       ai(*this) {
