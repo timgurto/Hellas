@@ -15,6 +15,12 @@ class AI {
 
   enum State { IDLE, CHASE, ATTACK, PET_FOLLOW_OWNER } state{IDLE};
 
+  void process(ms_t timeElapsed);
+
  private:
   NPC &_owner;
+
+  void transitionIfNecessary();
+  void onTransition(AI::State previousState);
+  void act();
 };

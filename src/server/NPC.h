@@ -88,12 +88,10 @@ class NPC : public Entity, public QuestNode {
  private:
   ms_t _timeSinceLookedForTargets;
   const User *_followTarget{nullptr};
-  void processAI(ms_t timeElapsed);
   void getNewTargetsFromProximity(ms_t timeElapsed);
-  void transitionIfNecessary();
-  void onTransition(AI::State previousState);
-  void act();
   void setStateBasedOnOrder();
+
+  friend class AI;
 };
 
 #endif
