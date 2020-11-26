@@ -177,7 +177,6 @@
     <ClCompile Include="src\testing\test-durability.cpp" />
     <ClCompile Include="src\server\DamageOnUse.cpp" />
     <ClCompile Include="src\testing\test-pets.cpp" />
-    <ClCompile Include="src\server\ai.cpp" />
     <ClCompile Include="src\HasTags.cpp" />
     <ClCompile Include="src\client\HasSounds.cpp" />
     <ClCompile Include="src\Message.cpp" />
@@ -208,6 +207,7 @@
     <ClCompile Include="src\testing\TemporaryUserStats.cpp" />
     <ClCompile Include="src\testing\test-locks.cpp" />
     <ClCompile Include="src\testing\test-soulbound.cpp" />
+    <ClCompile Include="src\server\npc-ai.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />

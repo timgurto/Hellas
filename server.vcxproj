@@ -112,7 +112,7 @@
     <ClCompile Include="src\Recipe.cpp" />
     <ClCompile Include="src\Rect.cpp" />
     <ClCompile Include="src\Serial.cpp" />
-    <ClCompile Include="src\server\ai.cpp" />
+    <ClCompile Include="src\server\npc-ai.cpp" />
     <ClCompile Include="src\server\Buff.cpp" />
     <ClCompile Include="src\server\City.cpp" />
     <ClCompile Include="src\server\Class.cpp" />

@@ -189,7 +189,6 @@
     <ClCompile Include="src\Recipe.cpp" />
     <ClCompile Include="src\Rect.cpp" />
     <ClCompile Include="src\Serial.cpp" />
-    <ClCompile Include="src\server\ai.cpp" />
     <ClCompile Include="src\server\Buff.cpp" />
     <ClCompile Include="src\server\City.cpp" />
     <ClCompile Include="src\server\Class.cpp" />
@@ -212,6 +211,7 @@
     <ClCompile Include="src\server\logging.cpp" />
     <ClCompile Include="src\server\Loot.cpp" />
     <ClCompile Include="src\server\LootTable.cpp" />
+    <ClCompile Include="src\server\npc-ai.cpp" />
     <ClCompile Include="src\server\ObjectsByOwner.cpp" />
     <ClCompile Include="src\server\objects\Action.cpp" />
     <ClCompile Include="src\server\objects\Container.cpp" />
