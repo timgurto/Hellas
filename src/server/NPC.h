@@ -3,6 +3,7 @@
 
 #include "../Point.h"
 #include "../SpellSchool.h"
+#include "AI.h"
 #include "Entity.h"
 #include "NPCType.h"
 #include "ThreatTable.h"
@@ -35,13 +36,7 @@ class NPC : public Entity, public QuestNode {
     return dynamic_cast<const NPCType *>(type());
   }
 
-  class AI {
-   public:
-    AI(NPC &owner);
-
-   private:
-    NPC &_owner;
-  } ai;
+  AI ai;
 
   ms_t timeToRemainAsCorpse() const override { return 600000; }  // 10 minutes
   bool shouldBeIgnoredByAIProximityAggro() const override;

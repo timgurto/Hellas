@@ -208,6 +208,7 @@
     <ClCompile Include="src\testing\test-locks.cpp" />
     <ClCompile Include="src\testing\test-soulbound.cpp" />
     <ClCompile Include="src\server\npc-ai.cpp" />
+    <ClCompile Include="src\server\AI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -363,6 +364,7 @@
     <ClInclude Include="src\server\Tagger.h" />
     <ClInclude Include="src\combatTypes.h" />
     <ClInclude Include="src\testing\TemporaryUserStats.h" />
+    <ClInclude Include="src\server\AI.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />

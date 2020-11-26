@@ -1,8 +1,6 @@
 #include "NPC.h"
 #include "Server.h"
 
-NPC::AI::AI(NPC &owner) : _owner(owner) {}
-
 void NPC::order(Order newOrder) {
   _order = newOrder;
   _homeLocation = location();

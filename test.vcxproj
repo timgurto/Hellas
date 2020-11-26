@@ -189,6 +189,7 @@
     <ClCompile Include="src\Recipe.cpp" />
     <ClCompile Include="src\Rect.cpp" />
     <ClCompile Include="src\Serial.cpp" />
+    <ClCompile Include="src\server\AI.cpp" />
     <ClCompile Include="src\server\Buff.cpp" />
     <ClCompile Include="src\server\City.cpp" />
     <ClCompile Include="src\server\Class.cpp" />
@@ -394,6 +395,7 @@
     <ClInclude Include="src\Recipe.h" />
     <ClInclude Include="src\Rect.h" />
     <ClInclude Include="src\Serial.h" />
+    <ClInclude Include="src\server\AI.h" />
     <ClInclude Include="src\server\Buff.h" />
     <ClInclude Include="src\server\City.h" />
     <ClInclude Include="src\server\Class.h" />
