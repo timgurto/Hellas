@@ -17,8 +17,6 @@ class NPC : public Entity, public QuestNode {
   enum Order { STAY, FOLLOW };
 
  private:
-  enum State { IDLE, CHASE, ATTACK, PET_FOLLOW_OWNER };
-  State _state;
   Order _order{FOLLOW};  // Indicates a desire; informs state changes in pets.
   Level _level{0};
   MapPoint _homeLocation;  // Where it was spawned, and returns after a chase.
@@ -98,7 +96,7 @@ class NPC : public Entity, public QuestNode {
   void processAI(ms_t timeElapsed);
   void getNewTargetsFromProximity(ms_t timeElapsed);
   void transitionIfNecessary();
-  void onTransition(State previousState);
+  void onTransition(AI::State previousState);
   void act();
   void setStateBasedOnOrder();
 };

@@ -30,10 +30,10 @@ void NPC::processAI(ms_t timeElapsed) {
 
   target(_threatTable.getTarget());
 
-  State previousState = _state;
+  AI::State previousState = ai.state;
 
   transitionIfNecessary();
-  if (_state != previousState) onTransition(previousState);
+  if (ai.state != previousState) onTransition(previousState);
   act();
 }
 
@@ -66,17 +66,17 @@ void NPC::transitionIfNecessary() {
   auto distToTarget =
       target() ? distance(collisionRect(), target()->collisionRect()) : 0;
 
-  switch (_state) {
-    case IDLE:
+  switch (ai.state) {
+    case AI::IDLE:
       // There's a target to attack
       {
         auto canAttack = combatDamage() > 0 || npcType()->knownSpell();
         if (canAttack && target()) {
           if (distToTarget > ATTACK_RANGE) {
-            _state = CHASE;
+            ai.state = AI::CHASE;
             resetLocationUpdateTimer();
           } else
-            _state = ATTACK;
+            ai.state = AI::ATTACK;
           break;
         }
       }
@@ -91,26 +91,26 @@ void NPC::transitionIfNecessary() {
         if (distance(ownerPlayer->collisionRect(), collisionRect()) <=
             FOLLOW_DISTANCE)
           break;
-        _state = PET_FOLLOW_OWNER;
+        ai.state = AI::PET_FOLLOW_OWNER;
         _followTarget = ownerPlayer;
         break;
       }
 
       break;
 
-    case PET_FOLLOW_OWNER: {
+    case AI::PET_FOLLOW_OWNER: {
       if (_order == STAY) {
-        _state = IDLE;
+        ai.state = AI::IDLE;
         break;
       }
 
       // There's a target to attack
       if (target()) {
         if (distToTarget > ATTACK_RANGE) {
-          _state = CHASE;
+          ai.state = AI::CHASE;
           resetLocationUpdateTimer();
         } else
-          _state = ATTACK;
+          ai.state = AI::ATTACK;
         break;
       }
 
@@ -119,14 +119,14 @@ void NPC::transitionIfNecessary() {
 
       // Owner is close enough
       if (distanceFromOwner <= FOLLOW_DISTANCE) {
-        _state = IDLE;
+        ai.state = AI::IDLE;
         _followTarget = nullptr;
         break;
       }
 
       // Owner is too far away
       if (distanceFromOwner >= MAX_FOLLOW_RANGE) {
-        _state = IDLE;
+        ai.state = AI::IDLE;
         _order = STAY;
 
         if (owner().type == Permissions::Owner::PLAYER) {
@@ -140,16 +140,16 @@ void NPC::transitionIfNecessary() {
       break;
     }
 
-    case CHASE:
+    case AI::CHASE:
       // Target has disappeared
       if (!target()) {
-        _state = IDLE;
+        ai.state = AI::IDLE;
         break;
       }
 
       // Target is dead
       if (target()->isDead()) {
-        _state = IDLE;
+        ai.state = AI::IDLE;
         break;
       }
 
@@ -157,7 +157,7 @@ void NPC::transitionIfNecessary() {
       {
         auto distFromHome = distance(_homeLocation, location());
         if (distFromHome > npcType()->maxDistanceFromHome()) {
-          _state = IDLE;
+          ai.state = AI::IDLE;
           _targetDestination = _homeLocation;
           teleportTo(_targetDestination);
           break;
@@ -166,35 +166,35 @@ void NPC::transitionIfNecessary() {
 
       // Target has run out of range: give up
       if (distToTarget > PURSUIT_RANGE) {
-        _state = IDLE;
+        ai.state = AI::IDLE;
         tagger.clear();
         break;
       }
 
       // Target is close enough to attack
       if (distToTarget <= ATTACK_RANGE) {
-        _state = ATTACK;
+        ai.state = AI::ATTACK;
         break;
       }
 
       break;
 
-    case ATTACK:
+    case AI::ATTACK:
       // Target has disappeared
       if (target() == nullptr) {
-        _state = IDLE;
+        ai.state = AI::IDLE;
         break;
       }
 
       // Target is dead
       if (target()->isDead()) {
-        _state = IDLE;
+        ai.state = AI::IDLE;
         break;
       }
 
       // Target has run out of attack range: chase
       if (distToTarget > ATTACK_RANGE) {
-        _state = CHASE;
+        ai.state = AI::CHASE;
         resetLocationUpdateTimer();
         break;
       }
@@ -203,10 +203,11 @@ void NPC::transitionIfNecessary() {
   }
 }
 
-void NPC::onTransition(State previousState) {
+void NPC::onTransition(AI::State previousState) {
   auto previousLocation = location();
 
-  if ((previousState == CHASE || previousState == ATTACK) && _state == IDLE) {
+  if ((previousState == AI::CHASE || previousState == AI::ATTACK) &&
+      ai.state == AI::IDLE) {
     target(nullptr);
     _threatTable.clear();
     tagger.clear();
@@ -238,21 +239,21 @@ void NPC::onTransition(State previousState) {
 }
 
 void NPC::act() {
-  switch (_state) {
-    case IDLE:
+  switch (ai.state) {
+    case AI::IDLE:
       target(nullptr);
       break;
 
-    case PET_FOLLOW_OWNER:
+    case AI::PET_FOLLOW_OWNER:
       moveLegallyTowards(_followTarget->location());
       break;
 
-    case CHASE:
+    case AI::CHASE:
       // Move towards target
       moveLegallyTowards(target()->location());
       break;
 
-    case ATTACK:
+    case AI::ATTACK:
       // Cast any spells it knows
       auto knownSpell = npcType()->knownSpell();
       if (knownSpell) {
@@ -266,7 +267,7 @@ void NPC::act() {
 
 void NPC::setStateBasedOnOrder() {
   if (_order == STAY)
-    _state = IDLE;
+    ai.state = AI::IDLE;
   else
-    _state = PET_FOLLOW_OWNER;
+    ai.state = AI::PET_FOLLOW_OWNER;
 }

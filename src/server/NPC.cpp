@@ -13,7 +13,6 @@ NPC::NPC(const NPCType *type, const MapPoint &loc)
     : Entity(type, loc),
       QuestNode(*type, serial()),
       _level(type->level()),
-      _state(IDLE),
       _threatTable(*this),
       _timeSinceLookedForTargets(rand() % FREQUENCY_TO_LOOK_FOR_TARGETS),
       _disappearTimer(type->disappearsAfter()),
