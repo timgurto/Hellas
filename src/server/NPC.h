@@ -35,6 +35,14 @@ class NPC : public Entity, public QuestNode {
     return dynamic_cast<const NPCType *>(type());
   }
 
+  class AI {
+   public:
+    AI(NPC &owner);
+
+   private:
+    NPC &_owner;
+  } ai;
+
   ms_t timeToRemainAsCorpse() const override { return 600000; }  // 10 minutes
   bool shouldBeIgnoredByAIProximityAggro() const override;
   bool canBeAttackedBy(const User &user) const override;
