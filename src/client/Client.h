@@ -504,8 +504,10 @@ class Client : public TextEntryManager {
   Target _target;
 
   bool _loop{true};
+
+  enum State { STARTING_UP, RUNNING, FINISHED };
   // True while run() is being executed.
-  bool _running{false};
+  State _state{STARTING_UP};
   // For testing purposes only; should otherwise remain false.
   bool _freeze{false};
   bool _shouldAutoLogIn{false};  // Used for tests

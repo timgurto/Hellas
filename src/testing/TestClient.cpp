@@ -106,7 +106,7 @@ void TestClient::run() {
 void TestClient::stop() {
   _client->_loop = false;
   _client->_freeze = false;
-  WAIT_UNTIL(!_client->_running);
+  WAIT_UNTIL(_client->_state == Client::FINISHED);
   WAIT_UNTIL(connectionState() != Connection::TRYING_TO_CONNECT);
 }
 

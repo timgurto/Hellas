@@ -206,7 +206,7 @@ void Client::cleanUpStatics() {
 }
 
 void Client::run() {
-  _running = true;
+  _state = RUNNING;
   if (!_dataLoaded) {
     drawLoadingScreen("Loading data");
     bool shouldLoadDefaultData = true;
@@ -247,7 +247,7 @@ void Client::run() {
     while (_freeze)
       ;
   }
-  _running = false;
+  _state = FINISHED;
   _connection.state(Connection::FINISHED);
 }
 
