@@ -132,7 +132,7 @@ void NPC::onDeath() {
 
   do {
     if (owner().type != Permissions::Owner::PLAYER) break;
-    if (order() != FOLLOW) break;
+    if (ai.currentOrder() != AI::FOLLOW) break;
     auto *ownerAsOnlineUser = server.getUserByName(owner().name);
     if (!ownerAsOnlineUser) break;
     ownerAsOnlineUser->followers.remove();

@@ -46,7 +46,7 @@ void AI::transitionIfNecessary() {
 
       // Follow owner, if nearby
       {
-        if (_owner._order != NPC::FOLLOW) break;
+        if (order != FOLLOW) break;
         if (_owner.owner().type != Permissions::Owner::PLAYER) break;
         const auto *ownerPlayer =
             Server::instance().getUserByName(_owner.owner().name);
@@ -62,7 +62,7 @@ void AI::transitionIfNecessary() {
       break;
 
     case PET_FOLLOW_OWNER: {
-      if (_owner._order == NPC::STAY) {
+      if (order == STAY) {
         state = IDLE;
         break;
       }
@@ -90,7 +90,7 @@ void AI::transitionIfNecessary() {
       // Owner is too far away
       if (distanceFromOwner >= MAX_FOLLOW_RANGE) {
         state = IDLE;
-        _owner._order = NPC::STAY;
+        order = STAY;
 
         if (_owner.owner().type == Permissions::Owner::PLAYER) {
           auto *ownerPlayer =
@@ -226,5 +226,27 @@ void AI::act() {
         _owner.castSpell(*knownSpell);
       }
       break;  // Entity::update() will handle combat
+  }
+}
+
+void AI::giveOrder(Order newOrder) {
+  order = newOrder;
+  _owner._homeLocation = _owner.location();
+
+  // Send order confirmation to owner
+  auto owner = _owner.permissions.getPlayerOwner();
+  if (!owner) return;
+  auto serialArg = makeArgs(_owner.serial());
+  switch (order) {
+    case STAY:
+      owner->sendMessage({SV_PET_IS_NOW_STAYING, serialArg});
+      break;
+
+    case FOLLOW:
+      owner->sendMessage({SV_PET_IS_NOW_FOLLOWING, serialArg});
+      break;
+
+    default:
+      break;
   }
 }

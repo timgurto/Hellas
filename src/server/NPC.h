@@ -14,10 +14,7 @@ class User;
 // Objects that can engage in combat, and that are AI-driven
 class NPC : public Entity, public QuestNode {
  public:
-  enum Order { STAY, FOLLOW };
-
  private:
-  Order _order{FOLLOW};  // Indicates a desire; informs state changes in pets.
   Level _level{0};
   MapPoint _homeLocation;  // Where it was spawned, and returns after a chase.
   ThreatTable _threatTable;
@@ -81,9 +78,6 @@ class NPC : public Entity, public QuestNode {
 
   void update(ms_t timeElapsed);
 
-  // AI
-  void order(Order newOrder);
-  Order order() const { return _order; }
   // AI
  private:
   ms_t _timeSinceLookedForTargets;

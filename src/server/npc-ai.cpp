@@ -1,28 +1,6 @@
 #include "NPC.h"
 #include "Server.h"
 
-void NPC::order(Order newOrder) {
-  _order = newOrder;
-  _homeLocation = location();
-
-  // Send order confirmation to owner
-  auto owner = permissions.getPlayerOwner();
-  if (!owner) return;
-  auto serialArg = makeArgs(serial());
-  switch (_order) {
-    case NPC::STAY:
-      owner->sendMessage({SV_PET_IS_NOW_STAYING, serialArg});
-      break;
-
-    case NPC::FOLLOW:
-      owner->sendMessage({SV_PET_IS_NOW_FOLLOWING, serialArg});
-      break;
-
-    default:
-      break;
-  }
-}
-
 void NPC::getNewTargetsFromProximity(ms_t timeElapsed) {
   auto shouldLookForNewTargetsNearby =
       npcType()->attacksNearby() || permissions.hasOwner();
@@ -44,7 +22,7 @@ void NPC::getNewTargetsFromProximity(ms_t timeElapsed) {
 }
 
 void NPC::setStateBasedOnOrder() {
-  if (_order == STAY)
+  if (ai.order == AI::STAY)
     ai.state = AI::IDLE;
   else
     ai.state = AI::PET_FOLLOW_OWNER;
