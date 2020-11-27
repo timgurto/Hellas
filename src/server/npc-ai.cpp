@@ -20,10 +20,3 @@ void NPC::getNewTargetsFromProximity(ms_t timeElapsed) {
     makeAwareOf(*potentialTarget);
   }
 }
-
-void NPC::setStateBasedOnOrder() {
-  if (ai.order == AI::STAY)
-    ai.state = AI::IDLE;
-  else
-    ai.state = AI::PET_FOLLOW_OWNER;
-}

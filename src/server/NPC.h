@@ -83,7 +83,6 @@ class NPC : public Entity, public QuestNode {
   ms_t _timeSinceLookedForTargets;
   const User *_followTarget{nullptr};
   void getNewTargetsFromProximity(ms_t timeElapsed);
-  void setStateBasedOnOrder();
 
   friend class AI;
 };
