@@ -122,8 +122,8 @@ void AI::transitionIfNecessary() {
         auto distFromHome = distance(_homeLocation, _owner.location());
         if (distFromHome > _owner.npcType()->maxDistanceFromHome()) {
           state = IDLE;
-          _targetDestination = _homeLocation;
-          _owner.teleportTo(_targetDestination);
+          clearPath();
+          _owner.teleportTo(_homeLocation);
           break;
         }
       }
@@ -183,8 +183,8 @@ void AI::onTransition(State previousState) {
 
       auto dest = _owner.spawner()->getRandomPoint();
       if (Server::instance().isLocationValid(dest, *_owner.type())) {
-        _targetDestination = dest;
-        _owner.teleportTo(_targetDestination);
+        clearPath();
+        _owner.teleportTo(dest);
         break;
       }
     }
@@ -250,3 +250,10 @@ void AI::giveOrder(Order newOrder) {
       break;
   }
 }
+
+void AI::setDirectPathTo(const MapPoint &destination) {
+  clearPath();
+  _pathToDestination.push(destination);
+}
+
+void AI::clearPath() { _pathToDestination = {}; }

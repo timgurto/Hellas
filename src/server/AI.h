@@ -1,5 +1,7 @@
 #pragma once
 
+#include <queue>
+
 #include "../Point.h"
 #include "../types.h"
 
@@ -26,8 +28,11 @@ class AI {
  private:
   NPC &_owner;
 
-  MapPoint _targetDestination{};
   MapPoint _homeLocation;  // Where it returns after a chase.
+
+  std::queue<MapPoint> _pathToDestination;
+  void setDirectPathTo(const MapPoint &destination);
+  void clearPath();
 
   void transitionIfNecessary();
   void onTransition(AI::State previousState);
