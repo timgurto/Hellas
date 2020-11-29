@@ -9,7 +9,6 @@ NPC::NPC(const NPCType *type, const MapPoint &loc)
       _threatTable(*this),
       _timeSinceLookedForTargets(rand() % AI::FREQUENCY_TO_LOOK_FOR_TARGETS),
       _disappearTimer(type->disappearsAfter()),
-      _homeLocation(loc),
       ai(*this) {
   _loot.reset(new Loot);
   onSetType();

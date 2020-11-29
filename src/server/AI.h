@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Point.h"
 #include "../types.h"
 
 class AI {
@@ -24,6 +25,9 @@ class AI {
 
  private:
   NPC &_owner;
+
+  MapPoint _targetDestination{};
+  MapPoint _homeLocation;  // Where it returns after a chase.
 
   void transitionIfNecessary();
   void onTransition(AI::State previousState);

@@ -16,9 +16,7 @@ class NPC : public Entity, public QuestNode {
  public:
  private:
   Level _level{0};
-  MapPoint _homeLocation;  // Where it was spawned, and returns after a chase.
   ThreatTable _threatTable;
-  MapPoint _targetDestination{};
   ms_t _timeEngaged{0};  // For logging purposes
 
   ms_t _disappearTimer;  // When this hits zero, it disappears.

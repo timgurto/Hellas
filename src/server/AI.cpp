@@ -4,7 +4,7 @@
 #include "Server.h"
 #include "User.h"
 
-AI::AI(NPC &owner) : _owner(owner) {}
+AI::AI(NPC &owner) : _owner(owner) { _homeLocation = _owner.location(); }
 
 void AI::process(ms_t timeElapsed) {
   _owner.target(nullptr);
@@ -119,11 +119,11 @@ void AI::transitionIfNecessary() {
 
       // NPC has gone too far from home location
       {
-        auto distFromHome = distance(_owner._homeLocation, _owner.location());
+        auto distFromHome = distance(_homeLocation, _owner.location());
         if (distFromHome > _owner.npcType()->maxDistanceFromHome()) {
           state = IDLE;
-          _owner._targetDestination = _owner._homeLocation;
-          _owner.teleportTo(_owner._targetDestination);
+          _targetDestination = _homeLocation;
+          _owner.teleportTo(_targetDestination);
           break;
         }
       }
@@ -183,8 +183,8 @@ void AI::onTransition(State previousState) {
 
       auto dest = _owner.spawner()->getRandomPoint();
       if (Server::instance().isLocationValid(dest, *_owner.type())) {
-        _owner._targetDestination = dest;
-        _owner.teleportTo(_owner._targetDestination);
+        _targetDestination = dest;
+        _owner.teleportTo(_targetDestination);
         break;
       }
     }
@@ -231,7 +231,7 @@ void AI::act() {
 
 void AI::giveOrder(Order newOrder) {
   order = newOrder;
-  _owner._homeLocation = _owner.location();
+  _homeLocation = _owner.location();
 
   // Send order confirmation to owner
   auto owner = _owner.permissions.getPlayerOwner();
