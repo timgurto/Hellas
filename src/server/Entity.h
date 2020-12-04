@@ -210,9 +210,11 @@ class Entity {
   legal location.
   */
   enum ClientLocationUpdateCase { OnServerCorrection, AlwaysSendUpdate };
-  void moveLegallyTowards(const MapPoint &requestedDest,
-                          ClientLocationUpdateCase whenToSendClientHisLocation =
-                              OnServerCorrection);
+  enum StraightLineMoveResult { MOVED, DID_NOT_MOVE, TELEPORTED_NEARBY };
+  StraightLineMoveResult moveLegallyTowards(
+      const MapPoint &requestedDest,
+      ClientLocationUpdateCase whenToSendClientHisLocation =
+          OnServerCorrection);
 
   virtual bool areOverlapsAllowedWith(const Entity &rhs) const;
 

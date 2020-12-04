@@ -1,7 +1,7 @@
 #include "Server.h"
 #include "objects/Object.h"
 
-void Entity::moveLegallyTowards(
+Entity::StraightLineMoveResult Entity::moveLegallyTowards(
     const MapPoint &requestedDest,
     ClientLocationUpdateCase whenToSendClientHisLocation) {
   Server &server = *Server::_instance;
@@ -44,10 +44,10 @@ void Entity::moveLegallyTowards(
           randomTeleport.args(teleportArgs);
           randomTeleport.setFunction("randomTeleport");
           auto result = randomTeleport.execute(*this, *this);
-          if (result == CombatResult::HIT) return;
+          if (result == CombatResult::HIT) return TELEPORTED_NEARBY;
         }
         SERVER_ERROR("Failed to find valid place to teleport.");
-        return;
+        return DID_NOT_MOVE;
       }
       static const double ACCURACY = 0.5;
       MapPoint displacementNorm(rawDisplacement.x / distanceToMove * ACCURACY,
@@ -69,7 +69,7 @@ void Entity::moveLegallyTowards(
     }
   }
 
-  if (newDest == _location) return;
+  if (newDest == _location) return DID_NOT_MOVE;
 
   // At this point, the new location has been finalized.  Now new information
   // must be propagated.
@@ -83,10 +83,10 @@ void Entity::moveLegallyTowards(
       randomTeleport.args(teleportArgs);
       randomTeleport.setFunction("randomTeleport");
       auto result = randomTeleport.execute(*this, *this);
-      if (result == CombatResult::HIT) return;
+      if (result == CombatResult::HIT) return TELEPORTED_NEARBY;
     }
     SERVER_ERROR("Failed to find valid place to teleport.");
-    return;
+    return DID_NOT_MOVE;
   }
 
   double left, right, top, bottom;  // Area newly visible
@@ -243,4 +243,6 @@ void Entity::moveLegallyTowards(
       userP->sendInfoToClient(thisUser);
     }
   }
+
+  return MOVED;
 }
