@@ -628,7 +628,8 @@ void Server::loadEntities(XmlReader &xr,
 
     auto orderString = ""s;
     if (xr.findAttr(elem, "order", orderString))
-      npc.ai.giveOrder(orderString == "stay" ? AI::STAY : AI::FOLLOW);
+      npc.ai.giveOrder(orderString == "stay" ? AI::ORDER_TO_STAY
+                                             : AI::ORDER_TO_FOLLOW);
   }
 
   for (auto elem : xr.getChildren("droppedItem")) {
@@ -778,7 +779,8 @@ void NPC::writeToXML(XmlWriter &xw) const {
   if (transformation.transformTimer() > 0)
     xw.setAttr(e, "transformTime", transformation.transformTimer());
 
-  auto orderString = ai.currentOrder() == AI::FOLLOW ? "follow" : "stay";
+  auto orderString =
+      ai.currentOrder() == AI::ORDER_TO_FOLLOW ? "follow" : "stay";
   xw.setAttr(e, "order", orderString);
 
   if (isDead() && corpseTime() > 0) xw.setAttr(e, "corpseTime", corpseTime());

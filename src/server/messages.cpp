@@ -770,7 +770,7 @@ HANDLE_MESSAGE(CL_TAME_NPC) {
   if (user.hasRoomForMoreFollowers())
     user.followers.add();
   else
-    npc->ai.giveOrder(AI::STAY);
+    npc->ai.giveOrder(AI::ORDER_TO_STAY);
 }
 
 HANDLE_MESSAGE(CL_FEED_PET) {
@@ -803,11 +803,11 @@ HANDLE_MESSAGE(CL_ORDER_PET_TO_STAY) {
     RETURN_WITH(WARNING_NO_PERMISSION)
   if (distance(npc->location(), user.location()) > ACTION_DISTANCE)
     RETURN_WITH(WARNING_TOO_FAR)
-  if (npc->ai.currentOrder() == AI::STAY)
+  if (npc->ai.currentOrder() == AI::ORDER_TO_STAY)
     RETURN_WITH(WARNING_PET_IS_ALREADY_STAYING)
 
   user.followers.remove();
-  npc->ai.giveOrder(AI::STAY);
+  npc->ai.giveOrder(AI::ORDER_TO_STAY);
 }
 
 HANDLE_MESSAGE(CL_ORDER_PET_TO_FOLLOW) {
@@ -820,13 +820,13 @@ HANDLE_MESSAGE(CL_ORDER_PET_TO_FOLLOW) {
     RETURN_WITH(WARNING_NO_PERMISSION)
   if (distance(npc->location(), user.location()) > ACTION_DISTANCE)
     RETURN_WITH(WARNING_TOO_FAR)
-  if (npc->ai.currentOrder() == AI::FOLLOW)
+  if (npc->ai.currentOrder() == AI::ORDER_TO_FOLLOW)
     RETURN_WITH(WARNING_PET_IS_ALREADY_FOLLOWING)
   if (!user.hasRoomForMoreFollowers())
     RETURN_WITH(WARNING_NO_ROOM_FOR_MORE_FOLLOWERS)
 
   user.followers.add();
-  npc->ai.giveOrder(AI::FOLLOW);
+  npc->ai.giveOrder(AI::ORDER_TO_FOLLOW);
 }
 
 HANDLE_MESSAGE(CL_COMPLETE_QUEST) {

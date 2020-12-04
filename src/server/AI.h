@@ -18,12 +18,15 @@ class AI {
 
   enum State { IDLE, CHASE, ATTACK, PET_FOLLOW_OWNER } state{IDLE};
 
-  enum Order { STAY, FOLLOW } order{FOLLOW};  // A desire; informs pet actions
+  enum PetOrder {
+    ORDER_TO_STAY,
+    ORDER_TO_FOLLOW
+  } order{ORDER_TO_FOLLOW};  // A desire; informs pet actions
 
   void process(ms_t timeElapsed);
 
-  void giveOrder(AI::Order newOrder);
-  Order currentOrder() const { return order; }
+  void giveOrder(AI::PetOrder newOrder);
+  PetOrder currentOrder() const { return order; }
 
  private:
   NPC &_owner;
