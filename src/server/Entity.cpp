@@ -905,3 +905,7 @@ void Entity::regen(ms_t timeElapsed) {
     if (energy() != oldEnergy) onEnergyChange();
   }
 }
+
+double distance(const Entity &a, const Entity &b) {
+  return distance(a.collisionRect(), b.collisionRect());
+}

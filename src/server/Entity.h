@@ -284,4 +284,6 @@ class Dummy : public Entity {
   static Stats _stats;
 };
 
+double distance(const Entity &a, const Entity &b);
+
 #endif

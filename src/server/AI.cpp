@@ -227,6 +227,13 @@ void AI::act() {
     case CHASE: {
       // Move towards target
       auto outcome = _owner.moveLegallyTowards(_pathToDestination.front());
+      if (outcome == Entity::DID_NOT_MOVE) {
+        clearPath();
+        _pathToDestination.push({95, 50});
+        _pathToDestination.push({10, 50});
+        _pathToDestination.push(_owner.target()->location());
+      } else if (_owner.location() == _pathToDestination.front())
+        _pathToDestination.pop();
     }
 
     break;

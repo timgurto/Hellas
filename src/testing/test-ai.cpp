@@ -77,28 +77,30 @@ TEST_CASE("NPCs don't attack each other") {
   }
 }
 
-TEST_CASE("NPCs can get around obstacles (not yet implemented)", "[.]") {
-  GIVEN("a wall between an NPC and a player") {
-    auto data = R"(
-      <npcType id="wolf" maxHealth="1" attack="1" />
-      <objectType id="wall">
-        <collisionRect x="-5" y="-5" w="10" h="10" />
-      </objectType>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.addObject("wall", {30, 10});
-    auto &wolf = s.addNPC("wolf", {60, 10});
+TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
+  SECTION("NPCs can get around obstacles") {
+    GIVEN("a wall between a wolf and a player") {
+      useData(R"(
+        <npcType id="wolf" maxHealth="10000" attack="1" speed="200" >
+          <collisionRect x="-5" y="-5" w="10" h="10" />
+        </npcType>
+        <objectType id="wall">
+          <collisionRect x="-5" y="-5" w="10" h="10" />
+        </objectType>
+      )");
+      server->addObject("wall", {60, 10});
+      auto &wolf = server->addNPC("wolf", {90, 10});
 
-    WHEN("the NPC becomes aware of the user") {
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      wolf.makeAwareOf(user);
+      WHEN("the wolf starts chasing the user") {
+        wolf.makeAwareOf(*user);
 
-      THEN("it can reach him") {
-        // WAIT_UNTIL(distance(wolf.collisionRect(), user.collisionRect())
-        // < 1.0);
+        THEN("it can reach him") {
+          WAIT_UNTIL_TIMEOUT(distance(wolf, *user) < wolf.attackRange(), 3000);
+        }
       }
     }
   }
+
+  // Generate path properly
+  // React to target moving
 }
