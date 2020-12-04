@@ -170,36 +170,50 @@ void AI::transitionIfNecessary() {
 void AI::onTransition(State previousState) {
   auto previousLocation = _owner.location();
 
-  if ((previousState == CHASE || previousState == ATTACK) && state == IDLE) {
-    _owner.target(nullptr);
-    _owner._threatTable.clear();
-    _owner.tagger.clear();
+  switch (state) {
+    case IDLE: {
+      if (previousState != CHASE && previousState != ATTACK) break;
+      _owner.target(nullptr);
+      _owner._threatTable.clear();
+      _owner.tagger.clear();
 
-    if (_owner.owner().type != Permissions::Owner::ALL_HAVE_ACCESS) return;
+      if (_owner.owner().type != Permissions::Owner::ALL_HAVE_ACCESS) return;
 
-    const auto ATTEMPTS = 20;
-    for (auto i = 0; i != ATTEMPTS; ++i) {
-      if (!_owner.spawner()) break;
+      const auto ATTEMPTS = 20;
+      for (auto i = 0; i != ATTEMPTS; ++i) {
+        if (!_owner.spawner()) break;
 
-      auto dest = _owner.spawner()->getRandomPoint();
-      if (Server::instance().isLocationValid(dest, *_owner.type())) {
-        clearPath();
-        _owner.teleportTo(dest);
-        break;
+        auto dest = _owner.spawner()->getRandomPoint();
+        if (Server::instance().isLocationValid(dest, *_owner.type())) {
+          clearPath();
+          _owner.teleportTo(dest);
+          break;
+        }
       }
+
+      auto maxHealth = _owner.type()->baseStats().maxHealth;
+      if (_owner.health() < maxHealth) {
+        _owner.health(maxHealth);
+        _owner.onHealthChange();  // Only broadcasts to the new location, not
+                                  // the old.
+
+        for (const User *user :
+             Server::instance().findUsersInArea(previousLocation))
+          user->sendMessage(
+              {SV_ENTITY_HEALTH, makeArgs(_owner.serial(), _owner.health())});
+      }
+      break;
     }
 
-    auto maxHealth = _owner.type()->baseStats().maxHealth;
-    if (_owner.health() < maxHealth) {
-      _owner.health(maxHealth);
-      _owner.onHealthChange();  // Only broadcasts to the new location, not the
-                                // old.
+    case CHASE:
+      clearPath();
+      setDirectPathTo(_owner.target()->location());
+      break;
 
-      for (const User *user :
-           Server::instance().findUsersInArea(previousLocation))
-        user->sendMessage(
-            {SV_ENTITY_HEALTH, makeArgs(_owner.serial(), _owner.health())});
-    }
+    case PET_FOLLOW_OWNER:
+      clearPath();
+      setDirectPathTo(_owner.followTarget()->location());
+      break;
   }
 }
 
@@ -210,13 +224,12 @@ void AI::act() {
       break;
 
     case PET_FOLLOW_OWNER:
-      _owner.moveLegallyTowards(_owner._followTarget->location());
-      break;
-
-    case CHASE:
+    case CHASE: {
       // Move towards target
-      _owner.moveLegallyTowards(_owner.target()->location());
-      break;
+      auto outcome = _owner.moveLegallyTowards(_pathToDestination.front());
+    }
+
+    break;
 
     case ATTACK:
       // Cast any spells it knows
