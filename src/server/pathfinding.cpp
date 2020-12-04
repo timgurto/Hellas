@@ -69,6 +69,8 @@ void Entity::moveLegallyTowards(
     }
   }
 
+  if (newDest == _location) return;
+
   // At this point, the new location has been finalized.  Now new information
   // must be propagated.
   if (!server.isLocationValid(newDest, *this)) {
