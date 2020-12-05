@@ -295,9 +295,7 @@ TEST_CASE("Pets follow their owners") {
         THEN("The guinea pig moves nearby") {
           const auto maxDist = AI::FOLLOW_DISTANCE;
           const auto timeAllowed = ms_t{10000};
-          WAIT_UNTIL_TIMEOUT(distance(guineaPig.collisionRect(),
-                                      user.collisionRect()) <= maxDist,
-                             timeAllowed);
+          WAIT_UNTIL_TIMEOUT(distance(guineaPig, user) <= maxDist, timeAllowed);
         }
       }
     }

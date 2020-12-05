@@ -261,8 +261,7 @@ void Entity::update(ms_t timeElapsed) {
   if (combatDamage() == 0) return;
 
   // Check if within range
-  if (distance(collisionRect(), pTarget->collisionRect()) > attackRange())
-    return;
+  if (distance(*this, *pTarget) > attackRange()) return;
 
   resetAttackTimer();
 

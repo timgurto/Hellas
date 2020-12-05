@@ -537,7 +537,7 @@ bool Server::isEntityInRange(const Socket &client, const User &user,
   }
 
   // Check distance from user
-  if (distance(user.collisionRect(), ent->collisionRect()) > ACTION_DISTANCE) {
+  if (distance(user, *ent) > ACTION_DISTANCE) {
     if (!suppressErrorMessages) sendMessage(client, WARNING_TOO_FAR);
     return false;
   }

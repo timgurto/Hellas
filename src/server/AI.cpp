@@ -23,10 +23,7 @@ void AI::process(ms_t timeElapsed) {
 void AI::transitionIfNecessary() {
   const auto ATTACK_RANGE = _owner.attackRange() - Podes{1}.toPixels();
 
-  auto distToTarget =
-      _owner.target()
-          ? distance(_owner.collisionRect(), _owner.target()->collisionRect())
-          : 0;
+  auto distToTarget = _owner.target() ? distance(_owner, *_owner.target()) : 0;
 
   switch (state) {
     case IDLE:
@@ -51,9 +48,7 @@ void AI::transitionIfNecessary() {
         const auto *ownerPlayer =
             Server::instance().getUserByName(_owner.owner().name);
         if (ownerPlayer == nullptr) break;
-        if (distance(ownerPlayer->collisionRect(), _owner.collisionRect()) <=
-            FOLLOW_DISTANCE)
-          break;
+        if (distance(*ownerPlayer, _owner) <= FOLLOW_DISTANCE) break;
         state = PET_FOLLOW_OWNER;
         _owner._followTarget = ownerPlayer;
         break;
@@ -77,8 +72,7 @@ void AI::transitionIfNecessary() {
         break;
       }
 
-      const auto distanceFromOwner = distance(
-          _owner._followTarget->collisionRect(), _owner.collisionRect());
+      const auto distanceFromOwner = distance(*_owner._followTarget, _owner);
 
       // Owner is close enough
       if (distanceFromOwner <= AI::FOLLOW_DISTANCE) {

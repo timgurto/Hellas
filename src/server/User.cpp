@@ -584,9 +584,7 @@ User::ToolSearchResult User::findTool(const std::string &tagName) {
     if (pObj->isBeingBuilt()) continue;
     const auto *type = pObj->type();
     if (!type->isTag(tagName)) continue;
-    if (distance(pObj->collisionRect(), collisionRect()) >
-        Server::ACTION_DISTANCE)
-      continue;
+    if (distance(*pObj, *this) > Server::ACTION_DISTANCE) continue;
     if (!pObj->permissions.doesUserHaveAccess(_name)) continue;
 
     auto toolSpeed = type->toolSpeed(tagName);
@@ -955,8 +953,7 @@ void User::onMove() {
     if (pObj->isBeingBuilt()) continue;
     const auto &objType = pObj->objType();
     if (!objType.grantsBuff()) continue;
-    if (distance(pObj->collisionRect(), collisionRect()) > objType.buffRadius())
-      continue;
+    if (distance(*pObj, *this) > objType.buffRadius()) continue;
 
     buffsToAdd[objType.buffGranted()] = entity;
   }

@@ -344,8 +344,7 @@ HANDLE_MESSAGE(CL_PICK_UP_DROPPED_ITEM) {
   READ_ARGS(serial);
   auto entity = findEntityBySerial(serial);
   if (!entity) RETURN_WITH(WARNING_DOESNT_EXIST);
-  if (distance(entity->collisionRect(), user.collisionRect()) > ACTION_DISTANCE)
-    RETURN_WITH(WARNING_TOO_FAR);
+  if (distance(*entity, user) > ACTION_DISTANCE) RETURN_WITH(WARNING_TOO_FAR);
   auto asDroppedItem = dynamic_cast<DroppedItem *>(entity);
   if (!asDroppedItem) return;
 

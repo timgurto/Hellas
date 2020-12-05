@@ -136,8 +136,7 @@ TEST_CASE("Dropped items land near the dropping player") {
             WAIT_UNTIL(s.entities().size() == 1);
             const auto &di = s.getFirstDroppedItem();
 
-            auto distanceFromDropper =
-                distance(di.collisionRect(), user.collisionRect());
+            auto distanceFromDropper = distance(di, user);
             CHECK(distanceFromDropper < Server::ACTION_DISTANCE);
 
             AND_THEN("it is at the same location on the client") {
