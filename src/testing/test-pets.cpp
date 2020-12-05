@@ -129,17 +129,14 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
       dog.permissions.setPlayerOwner(user.name());
 
       THEN("the owner doesn't lose any health") {
-        REPEAT_FOR_MS(1000) {
-          REQUIRE(user.health() == user.stats().maxHealth);
-        }
+        REPEAT_FOR_MS(100) { REQUIRE(user.health() == user.stats().maxHealth); }
       }
 
       AND_WHEN("the owner tries to target it") {
         c.sendMessage(CL_TARGET_ENTITY, makeArgs(dog.serial()));
 
         THEN("the dog doesn't lose any health") {
-          REPEAT_FOR_MS(100);
-          REQUIRE(dog.health() == dog.stats().maxHealth);
+          REPEAT_FOR_MS(100) { REQUIRE(dog.health() == dog.stats().maxHealth); }
         }
       }
     }
