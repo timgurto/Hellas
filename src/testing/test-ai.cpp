@@ -78,24 +78,29 @@ TEST_CASE("NPCs don't attack each other") {
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
-  SECTION("NPCs can get around obstacles") {
-    GIVEN("a wall between a wolf and a player") {
-      useData(R"(
-        <npcType id="wolf" maxHealth="10000" attack="1" speed="200" >
-          <collisionRect x="-5" y="-5" w="10" h="10" />
-        </npcType>
-        <objectType id="wall">
-          <collisionRect x="-5" y="-5" w="10" h="10" />
-        </objectType>
-      )");
-      server->addObject("wall", {60, 10});
-      auto &wolf = server->addNPC("wolf", {90, 10});
+  GIVEN("a colliding square wall object type, and a wolf NPC") {
+    auto data = ""s;
+    data = R"(
+      <npcType id="wolf" maxHealth="10000" attack="1" speed="200" >
+        <collisionRect x="-5" y="-5" w="10" h="10" />
+      </npcType>
+      <objectType id="wall">
+        <collisionRect x="-5" y="-5" w="10" h="10" />
+      </objectType>
+    )";
 
-      WHEN("the wolf starts chasing the user") {
-        wolf.makeAwareOf(*user);
+    SECTION("Single static obstacle") {
+      GIVEN("a wall between a wolf and a player") {
+        useData(data.c_str());
+        server->addObject("wall", {60, 10});
+        auto &wolf = server->addNPC("wolf", {90, 10});
 
-        THEN("it can reach him") {
-          WAIT_UNTIL_TIMEOUT(distance(wolf, *user) < wolf.attackRange(), 3000);
+        WHEN("the wolf starts chasing the user") {
+          wolf.makeAwareOf(*user);
+
+          THEN("it can reach him") {
+            WAIT_UNTIL(distance(wolf, *user) < wolf.attackRange());
+          }
         }
       }
     }
