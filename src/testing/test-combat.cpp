@@ -44,8 +44,7 @@ TEST_CASE_METHOD(TwoClients, "Only belligerents can target each other") {
 
 TEST_CASE_METHOD(TwoClients, "Only belligerents can fight") {
   GIVEN("Alice and Bob are within melee range") {
-    while (distance(alice->location(), bob->location()) >
-           Server::ACTION_DISTANCE)
+    while (distance(*alice, *bob) > Server::ACTION_DISTANCE)
       alice->moveLegallyTowards(bob->location());
 
     WHEN("Alice tries to target Bob") {
@@ -134,8 +133,7 @@ TEST_CASE("Players can target distant entities") {
   s.waitForUsers(1);
   const NPC &wolf = s.getFirstNPC();
   const User &user = s.getFirstUser();
-  REQUIRE(distance(wolf.collisionRect(), user.collisionRect()) >
-          Server::ACTION_DISTANCE);
+  REQUIRE(distance(wolf, user) > Server::ACTION_DISTANCE);
 
   // When the client attempts to target the wolf
   WAIT_UNTIL(c.objects().size() == 1);
@@ -151,8 +149,7 @@ TEST_CASE_METHOD(TwoClients, "Clients receive nearby users' health values") {
     server.wars().declare("Alice", "Bob");
 
     AND_GIVEN("Alice is close to Bob") {
-      while (distance(alice->collisionRect(), bob->collisionRect()) >=
-             Server::ACTION_DISTANCE) {
+      while (distance(*alice, *bob) >= Server::ACTION_DISTANCE) {
         cAlice.sendMessage(CL_MOVE_TO,
                            makeArgs(bob->location().x, bob->location().y));
         SDL_Delay(5);

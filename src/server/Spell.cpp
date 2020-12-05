@@ -29,7 +29,7 @@ CombatResult Spell::performAction(Entity &caster, Entity &target,
   }
 
   // Range check
-  if (distance(caster.location(), target.location()) > _range) {
+  if (distance(caster, target) > _range) {
     if (casterAsUser && !skipWarnings)
       casterAsUser->sendMessage(WARNING_TOO_FAR);
     return FAIL;
