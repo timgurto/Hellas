@@ -116,7 +116,7 @@ void AI::transitionIfNecessary() {
         auto distFromHome = distance(_homeLocation, _owner.location());
         if (distFromHome > _owner.npcType()->maxDistanceFromHome()) {
           state = IDLE;
-          clearPath();
+          _path.clear();
           _owner.teleportTo(_homeLocation);
           break;
         }
@@ -179,7 +179,7 @@ void AI::onTransition(State previousState) {
 
         auto dest = _owner.spawner()->getRandomPoint();
         if (Server::instance().isLocationValid(dest, *_owner.type())) {
-          clearPath();
+          _path.clear();
           _owner.teleportTo(dest);
           break;
         }
@@ -200,13 +200,11 @@ void AI::onTransition(State previousState) {
     }
 
     case CHASE:
-      clearPath();
-      setDirectPathTo(_owner.target()->location());
+      _path.findDirectPathTo(_owner.target()->location());
       break;
 
     case PET_FOLLOW_OWNER:
-      clearPath();
-      setDirectPathTo(_owner.followTarget()->location());
+      _path.findDirectPathTo(_owner.followTarget()->location());
       break;
   }
 }
@@ -220,14 +218,11 @@ void AI::act() {
     case PET_FOLLOW_OWNER:
     case CHASE: {
       // Move towards target
-      auto outcome = _owner.moveLegallyTowards(_pathToDestination.front());
+      auto outcome = _owner.moveLegallyTowards(_path.currentWaypoint());
       if (outcome == Entity::DID_NOT_MOVE) {
-        clearPath();
-        _pathToDestination.push({95, 50});
-        _pathToDestination.push({10, 50});
-        _pathToDestination.push(_owner.target()->location());
-      } else if (_owner.location() == _pathToDestination.front())
-        _pathToDestination.pop();
+        _path.findIndirectPathTo(_owner.target()->location());
+      } else if (_owner.location() == _path.currentWaypoint())
+        _path.changeToNextWaypoint();
     }
 
     break;
@@ -265,9 +260,13 @@ void AI::giveOrder(PetOrder newOrder) {
   }
 }
 
-void AI::setDirectPathTo(const MapPoint &destination) {
-  clearPath();
-  _pathToDestination.push(destination);
+void AI::Path::findIndirectPathTo(const MapPoint &destination) {
+  clear();
+  _queue.push({95, 50});
+  _queue.push({10, 50});
+  _queue.push(destination);
 }
-
-void AI::clearPath() { _pathToDestination = {}; }
+void AI::Path::findDirectPathTo(const MapPoint &destination) {
+  clear();
+  _queue.push(destination);
+}

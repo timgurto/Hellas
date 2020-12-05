@@ -33,11 +33,19 @@ class AI {
 
   MapPoint _homeLocation;  // Where it returns after a chase.
 
-  std::queue<MapPoint> _pathToDestination;
-  void setDirectPathTo(const MapPoint &destination);
-  void clearPath();
-
   void transitionIfNecessary();
   void onTransition(AI::State previousState);
   void act();
+
+  class Path {
+   public:
+    MapPoint currentWaypoint() const { return _queue.front(); }
+    void changeToNextWaypoint() { _queue.pop(); }
+    void findIndirectPathTo(const MapPoint &destination);
+    void findDirectPathTo(const MapPoint &destination);
+    void clear() { _queue = {}; }
+
+   private:
+    std::queue<MapPoint> _queue;
+  } _path;
 };
