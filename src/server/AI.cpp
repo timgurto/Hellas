@@ -4,7 +4,9 @@
 #include "Server.h"
 #include "User.h"
 
-AI::AI(NPC &owner) : _owner(owner) { _homeLocation = _owner.location(); }
+AI::AI(NPC &owner) : _owner(owner), _path(owner) {
+  _homeLocation = _owner.location();
+}
 
 void AI::process(ms_t timeElapsed) {
   _owner.target(nullptr);
@@ -261,10 +263,95 @@ void AI::giveOrder(PetOrder newOrder) {
 }
 
 void AI::Path::findIndirectPathTo(const MapPoint &destination) {
+  // 25x25 breadth-first search
+  const auto GRID_SIZE = 25.0;
+  // const auto currentLocation = _owner.location();
+
+  class PossiblePath {
+   public:
+    void addWaypoint(const MapPoint &nextWaypoint) {
+      _waypoints.push(nextWaypoint);
+      _lastWaypoint = nextWaypoint;
+    }
+
+    const MapPoint &lastWaypoint() const { return _lastWaypoint; }
+    const std::queue<MapPoint> &waypoints() const { return _waypoints; }
+
+    PossiblePath extendUp() {
+      auto newPath = *this;
+      auto nextWaypoint = newPath.lastWaypoint() + MapPoint{0, -GRID_SIZE};
+      newPath.addWaypoint(nextWaypoint);
+      return newPath;
+    }
+
+    PossiblePath extendDown() {
+      auto newPath = *this;
+      auto nextWaypoint = newPath.lastWaypoint() + MapPoint{0, +GRID_SIZE};
+      newPath.addWaypoint(nextWaypoint);
+      return newPath;
+    }
+
+    PossiblePath extendLeft() {
+      auto newPath = *this;
+      auto nextWaypoint = newPath.lastWaypoint() + MapPoint{-GRID_SIZE, 0};
+      newPath.addWaypoint(nextWaypoint);
+      return newPath;
+    }
+
+    PossiblePath extendRight() {
+      auto newPath = *this;
+      auto nextWaypoint = newPath.lastWaypoint() + MapPoint{-GRID_SIZE, 0};
+      newPath.addWaypoint(nextWaypoint);
+      return newPath;
+    }
+
+   private:
+    std::queue<MapPoint> _waypoints;
+    MapPoint _lastWaypoint;
+  };
+
+  struct UniqueMapPointOrdering {
+    bool operator()(const MapPoint &lhs, const MapPoint &rhs) const {
+      if (lhs.x != rhs.x) return lhs.x < rhs.x;
+      return lhs.y < rhs.y;
+    }
+  };
+  auto pointsCovered = std::set<MapPoint, UniqueMapPointOrdering>{};
+
+  auto pathsUnderConsideration = std::queue<PossiblePath>{};
+
+  auto starterPath = PossiblePath{};
+  starterPath.addWaypoint(_owner.location());
+  pathsUnderConsideration.push(starterPath);
+  pointsCovered.insert(_owner.location());
+
+  while (!pathsUnderConsideration.empty()) {
+    auto currentPath = pathsUnderConsideration.front();
+    if (distance(currentPath.lastWaypoint(), destination) < GRID_SIZE / 2) {
+      _queue = currentPath.waypoints();
+      return;
+    }
+
+    auto extendedUp = currentPath.extendUp();
+    if (!pointsCovered.count(extendedUp.lastWaypoint()))
+      pathsUnderConsideration.push(extendedUp);
+
+    auto extendedDown = currentPath.extendDown();
+    if (!pointsCovered.count(extendedDown.lastWaypoint()))
+      pathsUnderConsideration.push(extendedDown);
+
+    auto extendedLeft = currentPath.extendLeft();
+    if (!pointsCovered.count(extendedLeft.lastWaypoint()))
+      pathsUnderConsideration.push(extendedLeft);
+
+    auto extendedRight = currentPath.extendRight();
+    if (!pointsCovered.count(extendedRight.lastWaypoint()))
+      pathsUnderConsideration.push(extendedRight);
+
+    pathsUnderConsideration.pop();
+  }
+
   clear();
-  _queue.push({95, 50});
-  _queue.push({10, 50});
-  _queue.push(destination);
 }
 void AI::Path::findDirectPathTo(const MapPoint &destination) {
   clear();

@@ -1,5 +1,4 @@
-#ifndef POINT_H
-#define POINT_H
+#pragma once
 
 #include "Rect.h"
 #include "types.h"
@@ -104,5 +103,3 @@ MapPoint toMapPoint(const ScreenPoint &rhs);
 ScreenPoint toScreenPoint(const MapPoint &rhs);
 
 MapPoint normaliseVector(const MapPoint &v);
-
-#endif

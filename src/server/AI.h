@@ -39,6 +39,7 @@ class AI {
 
   class Path {
    public:
+    Path(const NPC &owner) : _owner(owner) {}
     MapPoint currentWaypoint() const { return _queue.front(); }
     void changeToNextWaypoint() { _queue.pop(); }
     void findIndirectPathTo(const MapPoint &destination);
@@ -47,5 +48,6 @@ class AI {
 
    private:
     std::queue<MapPoint> _queue;
+    const NPC &_owner;
   } _path;
 };
