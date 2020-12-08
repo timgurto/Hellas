@@ -265,6 +265,8 @@ void AI::giveOrder(PetOrder newOrder) {
 void AI::Path::findIndirectPathTo(const MapPoint &destination) {
   // 25x25 breadth-first search
   const auto GRID_SIZE = 25.0;
+  const auto CLOSE_ENOUGH =
+      sqrt(GRID_SIZE * GRID_SIZE + GRID_SIZE * GRID_SIZE) / 2;
 
   class PossiblePath {
    public:
@@ -349,7 +351,7 @@ void AI::Path::findIndirectPathTo(const MapPoint &destination) {
 
   while (!pathsUnderConsideration.empty()) {
     auto currentPath = pathsUnderConsideration.front();
-    if (distance(currentPath.lastWaypoint(), destination) < GRID_SIZE / 2) {
+    if (distance(currentPath.lastWaypoint(), destination) <= CLOSE_ENOUGH) {
       _queue = currentPath.waypoints();
       return;
     }
