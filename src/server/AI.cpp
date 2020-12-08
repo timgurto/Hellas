@@ -281,29 +281,47 @@ void AI::Path::findIndirectPathTo(const MapPoint &destination) {
 
     PossiblePath extendUp() {
       auto newPath = *this;
-      auto nextWaypoint = newPath.lastWaypoint() + MapPoint{0, -GRID_SIZE};
-      newPath.addWaypoint(nextWaypoint);
+      auto betweenWaypoints = _footprint + _lastWaypoint;
+      betweenWaypoints.y -= GRID_SIZE;
+      betweenWaypoints.h += GRID_SIZE;
+      if (Server::instance().isLocationValid(betweenWaypoints, _owner)) {
+        auto nextWaypoint = newPath.lastWaypoint() + MapPoint{0, -GRID_SIZE};
+        newPath.addWaypoint(nextWaypoint);
+      }
       return newPath;
     }
 
     PossiblePath extendDown() {
       auto newPath = *this;
-      auto nextWaypoint = newPath.lastWaypoint() + MapPoint{0, +GRID_SIZE};
-      newPath.addWaypoint(nextWaypoint);
+      auto betweenWaypoints = _footprint + _lastWaypoint;
+      betweenWaypoints.h += GRID_SIZE;
+      if (Server::instance().isLocationValid(betweenWaypoints, _owner)) {
+        auto nextWaypoint = newPath.lastWaypoint() + MapPoint{0, +GRID_SIZE};
+        newPath.addWaypoint(nextWaypoint);
+      }
       return newPath;
     }
 
     PossiblePath extendLeft() {
       auto newPath = *this;
-      auto nextWaypoint = newPath.lastWaypoint() + MapPoint{-GRID_SIZE, 0};
-      newPath.addWaypoint(nextWaypoint);
+      auto betweenWaypoints = _footprint + _lastWaypoint;
+      betweenWaypoints.x -= GRID_SIZE;
+      betweenWaypoints.w += GRID_SIZE;
+      if (Server::instance().isLocationValid(betweenWaypoints, _owner)) {
+        auto nextWaypoint = newPath.lastWaypoint() + MapPoint{-GRID_SIZE, 0};
+        newPath.addWaypoint(nextWaypoint);
+      }
       return newPath;
     }
 
     PossiblePath extendRight() {
       auto newPath = *this;
-      auto nextWaypoint = newPath.lastWaypoint() + MapPoint{-GRID_SIZE, 0};
-      newPath.addWaypoint(nextWaypoint);
+      auto betweenWaypoints = _footprint + _lastWaypoint;
+      betweenWaypoints.w += GRID_SIZE;
+      if (Server::instance().isLocationValid(betweenWaypoints, _owner)) {
+        auto nextWaypoint = newPath.lastWaypoint() + MapPoint{-GRID_SIZE, 0};
+        newPath.addWaypoint(nextWaypoint);
+      }
       return newPath;
     }
 
