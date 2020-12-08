@@ -265,10 +265,12 @@ void AI::giveOrder(PetOrder newOrder) {
 void AI::Path::findIndirectPathTo(const MapPoint &destination) {
   // 25x25 breadth-first search
   const auto GRID_SIZE = 25.0;
-  // const auto currentLocation = _owner.location();
 
   class PossiblePath {
    public:
+    PossiblePath(const NPC &owner)
+        : _owner(owner), _footprint(owner.type()->collisionRect()) {}
+
     void addWaypoint(const MapPoint &nextWaypoint) {
       _waypoints.push(nextWaypoint);
       _lastWaypoint = nextWaypoint;
@@ -308,6 +310,8 @@ void AI::Path::findIndirectPathTo(const MapPoint &destination) {
    private:
     std::queue<MapPoint> _waypoints;
     MapPoint _lastWaypoint;
+    const NPC &_owner;
+    MapRect _footprint;
   };
 
   struct UniqueMapPointOrdering {
@@ -320,7 +324,7 @@ void AI::Path::findIndirectPathTo(const MapPoint &destination) {
 
   auto pathsUnderConsideration = std::queue<PossiblePath>{};
 
-  auto starterPath = PossiblePath{};
+  auto starterPath = PossiblePath{_owner};
   starterPath.addWaypoint(_owner.location());
   pathsUnderConsideration.push(starterPath);
   pointsCovered.insert(_owner.location());
