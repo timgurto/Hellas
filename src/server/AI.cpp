@@ -334,6 +334,21 @@ void AI::Path::findIndirectPathTo(const MapPoint &destination) {
       return newPath;
     }
 
+    PossiblePath extendTo(const MapPoint &destination) {
+      auto newPath = *this;
+      auto betweenWaypoints = _footprint + _lastWaypoint;
+      auto dX = destination.x - _lastWaypoint.x;
+      auto dY = destination.y - _lastWaypoint.y;
+      if (dX < 0) betweenWaypoints.x += dX;
+      if (dY < 0) betweenWaypoints.y += dY;
+      betweenWaypoints.w += abs(dX);
+      betweenWaypoints.h += abs(dY);
+      if (Server::instance().isLocationValid(betweenWaypoints, _owner)) {
+        newPath.addWaypoint(destination);
+      }
+      return newPath;
+    }
+
    private:
     std::queue<MapPoint> _waypoints;
     MapPoint _lastWaypoint;
@@ -360,6 +375,13 @@ void AI::Path::findIndirectPathTo(const MapPoint &destination) {
     auto currentPath = pathsUnderConsideration.front();
     if (distance(currentPath.lastWaypoint(), destination) <= CLOSE_ENOUGH) {
       _queue = currentPath.waypoints();
+      return;
+    }
+
+    auto extendedToDestination = currentPath.extendTo(destination);
+    if (extendedToDestination.lastWaypoint() == destination &&
+        !pointsCovered.count(destination)) {
+      _queue = extendedToDestination.waypoints();
       return;
     }
 
