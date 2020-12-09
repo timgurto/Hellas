@@ -26,6 +26,7 @@ class NPCType : public ObjectType {
   mutable const Spell *_knownSpell{nullptr};
   static const px_t DEFAULT_MAX_DISTANCE_FROM_HOME{500};
   px_t _maxDistanceFromHome{DEFAULT_MAX_DISTANCE_FROM_HOME};
+  bool _pursuesEndlessly{false};
 
   bool _canBeTamed{false};
   std::string _tamingRequiresItem;
@@ -60,6 +61,8 @@ class NPCType : public ObjectType {
   bool canBeTamed() const { return _canBeTamed; }
   void tamingRequiresItem(const std::string &id) { _tamingRequiresItem = id; }
   const std::string &tamingRequiresItem() const { return _tamingRequiresItem; }
+  void pursuesEndlessly(bool b) { _pursuesEndlessly = b; }
+  bool pursuesEndlessly() const { return _pursuesEndlessly; }
 
   virtual char classTag() const override { return 'n'; }
 

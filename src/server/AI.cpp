@@ -130,7 +130,8 @@ void AI::transitionIfNecessary() {
       }
 
       // Target has run out of range: give up
-      if (distToTarget > PURSUIT_RANGE) {
+      if (!_owner.npcType()->pursuesEndlessly() &&
+          distToTarget > PURSUIT_RANGE) {
         state = IDLE;
         _owner.tagger.clear();
         break;

@@ -520,6 +520,7 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
 
     auto n = 0;
     if (xr.findAttr(elem, "isRanged", n) && n != 0) nt->makeRanged();
+    if (xr.findAttr(elem, "pursuesEndlessly", n)) nt->pursuesEndlessly(n != 0);
     if (xr.findAttr(elem, "isCivilian", n) && n != 0)
       nt->makeCivilian();
     else if (xr.findAttr(elem, "isNeutral", n) && n != 0)
