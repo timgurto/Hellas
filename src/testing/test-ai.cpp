@@ -107,24 +107,20 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
     }
 
     SECTION("Random obstacles") {
-      const auto NUM_TRIALS = 10;
-      for (auto i = 1; i <= NUM_TRIALS; ++i) {
-        INFO("Trial #"s << i << "/" << NUM_TRIALS);
-        GIVEN("three walls randomly between a wolf and the user") {
-          data += R"(
+      GIVEN("three walls randomly between a wolf and the user") {
+        data += R"(
             <spawnPoint y="55" x="55" type="wall" quantity="3" radius="50" />
           )";
-          useData(data.c_str());
+        useData(data.c_str());
 
-          auto &wolf = server->addNPC("wolf", {100, 100});
+        auto &wolf = server->addNPC("wolf", {100, 100});
 
-          WHEN("the wolf starts chasing the user") {
-            wolf.makeAwareOf(*user);
+        WHEN("the wolf starts chasing the user") {
+          wolf.makeAwareOf(*user);
 
-            THEN("it can reach him") {
-              WAIT_UNTIL_TIMEOUT(distance(wolf, *user) <= wolf.attackRange(),
-                                 10000);
-            }
+          THEN("it can reach him") {
+            WAIT_UNTIL_TIMEOUT(distance(wolf, *user) <= wolf.attackRange(),
+                               10000);
           }
         }
       }
