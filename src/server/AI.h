@@ -43,7 +43,6 @@ class AI {
     MapPoint currentWaypoint() const { return _queue.front(); }
     void changeToNextWaypoint() { _queue.pop(); }
     void findIndirectPathTo(const MapPoint &destination);
-    void findDirectPathTo(const MapPoint &destination);
     void clear() { _queue = {}; }
     bool exists() const { return !_queue.empty(); }
 

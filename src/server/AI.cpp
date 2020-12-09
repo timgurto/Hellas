@@ -212,11 +212,11 @@ void AI::onTransition(State previousState) {
     }
 
     case CHASE:
-      _path.findDirectPathTo(_owner.target()->location());
+      _path.findIndirectPathTo(_owner.target()->location());
       break;
 
     case PET_FOLLOW_OWNER:
-      _path.findDirectPathTo(_owner.followTarget()->location());
+      _path.findIndirectPathTo(_owner.followTarget()->location());
       break;
   }
 }
@@ -228,16 +228,13 @@ void AI::act() {
       break;
 
     case PET_FOLLOW_OWNER:
-    case CHASE: {
+    case CHASE:
       // Move towards target
-      auto outcome = _owner.moveLegallyTowards(_path.currentWaypoint());
-      if (outcome == Entity::DID_NOT_MOVE) {
-        _path.findIndirectPathTo(_owner.target()->location());
-      } else if (_owner.location() == _path.currentWaypoint())
+      if (!_path.exists()) break;
+      if (_owner.location() == _path.currentWaypoint())
         _path.changeToNextWaypoint();
-    }
-
-    break;
+      _owner.moveLegallyTowards(_path.currentWaypoint());
+      break;
 
     case ATTACK:
       // Cast any spells it knows
@@ -275,8 +272,7 @@ void AI::giveOrder(PetOrder newOrder) {
 void AI::Path::findIndirectPathTo(const MapPoint &destination) {
   // 25x25 breadth-first search
   const auto GRID_SIZE = 25.0;
-  const auto CLOSE_ENOUGH =
-      sqrt(GRID_SIZE * GRID_SIZE + GRID_SIZE * GRID_SIZE) / 2;
+  const auto CLOSE_ENOUGH = sqrt(GRID_SIZE * GRID_SIZE + GRID_SIZE * GRID_SIZE);
 
   class PossiblePath {
    public:
@@ -394,8 +390,4 @@ void AI::Path::findIndirectPathTo(const MapPoint &destination) {
   }
 
   clear();
-}
-void AI::Path::findDirectPathTo(const MapPoint &destination) {
-  clear();
-  _queue.push(destination);
 }
