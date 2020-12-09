@@ -367,20 +367,28 @@ void AI::Path::findIndirectPathTo(const MapPoint &destination) {
     }
 
     auto extendedUp = currentPath.extendUp();
-    if (!pointsCovered.count(extendedUp.lastWaypoint()))
+    if (!pointsCovered.count(extendedUp.lastWaypoint())) {
+      pointsCovered.insert(extendedUp.lastWaypoint());
       pathsUnderConsideration.push(extendedUp);
+    }
 
     auto extendedDown = currentPath.extendDown();
-    if (!pointsCovered.count(extendedDown.lastWaypoint()))
+    if (!pointsCovered.count(extendedDown.lastWaypoint())) {
+      pointsCovered.insert(extendedDown.lastWaypoint());
       pathsUnderConsideration.push(extendedDown);
+    }
 
     auto extendedLeft = currentPath.extendLeft();
-    if (!pointsCovered.count(extendedLeft.lastWaypoint()))
+    if (!pointsCovered.count(extendedLeft.lastWaypoint())) {
+      pointsCovered.insert(extendedLeft.lastWaypoint());
       pathsUnderConsideration.push(extendedLeft);
+    }
 
     auto extendedRight = currentPath.extendRight();
-    if (!pointsCovered.count(extendedRight.lastWaypoint()))
+    if (!pointsCovered.count(extendedRight.lastWaypoint())) {
+      pointsCovered.insert(extendedRight.lastWaypoint());
       pathsUnderConsideration.push(extendedRight);
+    }
 
     pathsUnderConsideration.pop();
   }
