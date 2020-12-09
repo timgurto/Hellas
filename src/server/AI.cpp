@@ -321,7 +321,7 @@ void AI::Path::findIndirectPathTo(const MapPoint &destination) {
       auto betweenWaypoints = _footprint + _lastWaypoint;
       betweenWaypoints.w += GRID_SIZE;
       if (Server::instance().isLocationValid(betweenWaypoints, _owner)) {
-        auto nextWaypoint = newPath.lastWaypoint() + MapPoint{-GRID_SIZE, 0};
+        auto nextWaypoint = newPath.lastWaypoint() + MapPoint{+GRID_SIZE, 0};
         newPath.addWaypoint(nextWaypoint);
       }
       return newPath;
