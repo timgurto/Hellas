@@ -98,6 +98,11 @@ void AI::transitionIfNecessary() {
         break;
       }
       break;
+
+      if (!_path.exists()) {
+        state = IDLE;
+        break;
+      }
     }
 
     case CHASE:
@@ -134,6 +139,11 @@ void AI::transitionIfNecessary() {
       // Target is close enough to attack
       if (distToTarget <= ATTACK_RANGE) {
         state = ATTACK;
+        break;
+      }
+
+      if (!_path.exists()) {
+        state = IDLE;
         break;
       }
 

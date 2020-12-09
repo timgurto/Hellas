@@ -45,6 +45,7 @@ class AI {
     void findIndirectPathTo(const MapPoint &destination);
     void findDirectPathTo(const MapPoint &destination);
     void clear() { _queue = {}; }
+    bool exists() const { return !_queue.empty(); }
 
    private:
     std::queue<MapPoint> _queue;
