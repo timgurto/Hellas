@@ -234,6 +234,8 @@ void AI::act() {
       if (!_path.exists()) break;
       if (_owner.location() == _path.currentWaypoint())
         _path.changeToNextWaypoint();
+      if (!_path.exists()) break;
+
       const auto result = _owner.moveLegallyTowards(_path.currentWaypoint());
       if (result == Entity::DID_NOT_MOVE) {
         const auto destination = state == CHASE
