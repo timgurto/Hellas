@@ -229,13 +229,20 @@ void AI::act() {
       break;
 
     case PET_FOLLOW_OWNER:
-    case CHASE:
+    case CHASE: {
       // Move towards target
       if (!_path.exists()) break;
       if (_owner.location() == _path.currentWaypoint())
         _path.changeToNextWaypoint();
-      _owner.moveLegallyTowards(_path.currentWaypoint());
+      const auto result = _owner.moveLegallyTowards(_path.currentWaypoint());
+      if (result == Entity::DID_NOT_MOVE) {
+        const auto destination = state == CHASE
+                                     ? _owner.target()->location()
+                                     : _owner.followTarget()->location();
+        _path.findIndirectPathTo(destination);
+      }
       break;
+    }
 
     case ATTACK:
       // Cast any spells it knows

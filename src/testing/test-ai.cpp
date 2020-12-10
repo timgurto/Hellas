@@ -127,7 +127,29 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
       }
     }
 
-    SECTION("Performance on a large map") {
+    SECTION("Reacting to a path becoming blocked") {
+      GIVEN("a clear path between wolf and user") {
+        useData(data.c_str());
+        auto &wolf = server->addNPC("wolf", {280, 10});
+
+        WHEN("the wolf starts following a path to the user") {
+          const auto wolfStartLocation = wolf.location();
+          wolf.makeAwareOf(*user);
+          WAIT_UNTIL(wolf.location() != wolfStartLocation);
+
+          AND_WHEN("a wall appears that blocks the wolf") {
+            server->addObject("wall", {200, 10});
+
+            THEN("the wolf can reach the user") {
+              WAIT_UNTIL_TIMEOUT(distance(wolf, *user) <= wolf.attackRange(),
+                                 10000);
+            }
+          }
+        }
+      }
+    }
+
+    SECTION("Performance on a large, empty map") {
       GIVEN("a very large map") {
         data += R"(
           <newPlayerSpawn x="10" y="10" range="0" />
