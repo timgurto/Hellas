@@ -33,6 +33,7 @@ void pushBackMultiple(std::vector<T> &vec, const T &val, size_t count) {
 }
 
 double distance(const MapPoint &a, const MapPoint &b);
+double distanceSquared(const MapPoint &a, const MapPoint &b);
 double distance(const MapPoint &p, const MapPoint &a,
                 const MapPoint &b);  // point P to line AB
 

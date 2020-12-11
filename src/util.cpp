@@ -25,8 +25,12 @@ bool isDebug() {
 bool almostEquals(double a, double b) { return abs(a - b) < 0.001; }
 
 double distance(const MapPoint &a, const MapPoint &b) {
-  double xDelta = a.x - b.x, yDelta = a.y - b.y;
-  return sqrt(xDelta * xDelta + yDelta * yDelta);
+  return sqrt(distanceSquared(a, b));
+}
+
+double distanceSquared(const MapPoint &a, const MapPoint &b) {
+  auto xDelta = a.x - b.x, yDelta = a.y - b.y;
+  return xDelta * xDelta + yDelta * yDelta;
 }
 
 double distance(const MapPoint &p, const MapPoint &a, const MapPoint &b) {
