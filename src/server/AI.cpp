@@ -232,6 +232,7 @@ void AI::act() {
     case CHASE: {
       // Move towards target
       if (!_path.exists()) break;
+      if (targetHasMoved()) calculatePath();
       if (_owner.location() == _path.currentWaypoint())
         _path.changeToNextWaypoint();
       if (!_path.exists()) break;
@@ -422,4 +423,22 @@ void AI::Path::findIndirectPathTo(const MapPoint &destination) {
   }
 
   clear();
+}
+
+void AI::calculatePath() { _path.findIndirectPathTo(getTargetLocation()); }
+
+bool AI::targetHasMoved() const {
+  if (!_path.exists()) return false;
+
+  const auto expectedLocation = _path.lastWaypoint();
+  const auto currentLocation = getTargetLocation();
+
+  const auto MAX_TARGET_MOVEMENT_BEFORE_REPATH_SQUARED = 900.0;
+  return distanceSquared(expectedLocation, currentLocation) >
+         MAX_TARGET_MOVEMENT_BEFORE_REPATH_SQUARED;
+}
+
+MapPoint AI::getTargetLocation() const {
+  if (state == AI::CHASE) return _owner.target()->location();
+  if (state == AI::PET_FOLLOW_OWNER) return _owner.followTarget()->location();
 }

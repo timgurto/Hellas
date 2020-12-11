@@ -149,6 +149,28 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
       }
     }
 
+    SECTION("Reacting to the target moving") {
+      GIVEN("a clear path between wolf and user") {
+        useData(data.c_str());
+        auto &wolf = server->addNPC("wolf", {280, 10});
+
+        WHEN("the wolf starts following a path to the user") {
+          const auto wolfStartLocation = wolf.location();
+          wolf.makeAwareOf(*user);
+          WAIT_UNTIL(wolf.location() != wolfStartLocation);
+
+          AND_WHEN("the user teleports away") {
+            user->teleportTo({200, 200});
+
+            THEN("the wolf can reach the user") {
+              WAIT_UNTIL_TIMEOUT(distance(wolf, *user) <= wolf.attackRange(),
+                                 10000);
+            }
+          }
+        }
+      }
+    }
+
     SECTION("Performance on a large, empty map") {
       GIVEN("a very large map") {
         data += R"(
@@ -279,6 +301,5 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
     }
   }
 
-  // React to target moving
-  // React to obstacles moving into path
+  // Separate thread
 }

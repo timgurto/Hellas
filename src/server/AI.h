@@ -37,10 +37,15 @@ class AI {
   void onTransition(AI::State previousState);
   void act();
 
+  void calculatePath();
+  bool targetHasMoved() const;
+  MapPoint getTargetLocation() const;
+
   class Path {
    public:
     Path(const NPC &owner) : _owner(owner) {}
     MapPoint currentWaypoint() const { return _queue.front(); }
+    MapPoint lastWaypoint() const { return _queue.back(); }
     void changeToNextWaypoint() { _queue.pop(); }
     void findIndirectPathTo(const MapPoint &destination);
     void clear() { _queue = {}; }
