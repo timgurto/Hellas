@@ -213,11 +213,8 @@ void AI::onTransition(State previousState) {
     }
 
     case CHASE:
-      _path.findIndirectPathTo(_owner.target()->location());
-      break;
-
     case PET_FOLLOW_OWNER:
-      _path.findIndirectPathTo(_owner.followTarget()->location());
+      calculatePath();
       break;
   }
 }
@@ -242,7 +239,7 @@ void AI::act() {
         const auto destination = state == CHASE
                                      ? _owner.target()->location()
                                      : _owner.followTarget()->location();
-        _path.findIndirectPathTo(destination);
+        _path.findPathToLocation(destination);
       }
       break;
     }
@@ -280,7 +277,7 @@ void AI::giveOrder(PetOrder newOrder) {
   }
 }
 
-void AI::Path::findIndirectPathTo(const MapPoint &destination) {
+void AI::Path::findPathToLocation(const MapPoint &destination) {
   // 25x25 breadth-first search
   const auto GRID_SIZE = 25.0;
   const auto CLOSE_ENOUGH = sqrt(GRID_SIZE * GRID_SIZE + GRID_SIZE * GRID_SIZE);
@@ -425,7 +422,7 @@ void AI::Path::findIndirectPathTo(const MapPoint &destination) {
   clear();
 }
 
-void AI::calculatePath() { _path.findIndirectPathTo(getTargetLocation()); }
+void AI::calculatePath() { _path.findPathToLocation(getTargetLocation()); }
 
 bool AI::targetHasMoved() const {
   if (!_path.exists()) return false;
