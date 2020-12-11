@@ -302,4 +302,5 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
   }
 
   // Separate thread
+  // Performance on large, complex map (A*)
 }

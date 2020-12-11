@@ -392,29 +392,16 @@ void AI::Path::findPathToLocation(const MapPoint &destination) {
       return;
     }
 
-    auto extendedUp = currentPath.extendUp();
-    if (!pointsCovered.count(extendedUp.lastWaypoint())) {
-      pointsCovered.insert(extendedUp.lastWaypoint());
-      pathsUnderConsideration.push(extendedUp);
-    }
+    auto enqueueIfNew = [&](const PossiblePath &newPath) {
+      if (pointsCovered.count(newPath.lastWaypoint())) return;
+      pointsCovered.insert(newPath.lastWaypoint());
+      pathsUnderConsideration.push(newPath);
+    };
 
-    auto extendedDown = currentPath.extendDown();
-    if (!pointsCovered.count(extendedDown.lastWaypoint())) {
-      pointsCovered.insert(extendedDown.lastWaypoint());
-      pathsUnderConsideration.push(extendedDown);
-    }
-
-    auto extendedLeft = currentPath.extendLeft();
-    if (!pointsCovered.count(extendedLeft.lastWaypoint())) {
-      pointsCovered.insert(extendedLeft.lastWaypoint());
-      pathsUnderConsideration.push(extendedLeft);
-    }
-
-    auto extendedRight = currentPath.extendRight();
-    if (!pointsCovered.count(extendedRight.lastWaypoint())) {
-      pointsCovered.insert(extendedRight.lastWaypoint());
-      pathsUnderConsideration.push(extendedRight);
-    }
+    enqueueIfNew(currentPath.extendUp());
+    enqueueIfNew(currentPath.extendDown());
+    enqueueIfNew(currentPath.extendLeft());
+    enqueueIfNew(currentPath.extendRight());
 
     pathsUnderConsideration.pop();
   }
@@ -438,4 +425,5 @@ bool AI::targetHasMoved() const {
 MapPoint AI::getTargetLocation() const {
   if (state == AI::CHASE) return _owner.target()->location();
   if (state == AI::PET_FOLLOW_OWNER) return _owner.followTarget()->location();
+  return {};
 }
