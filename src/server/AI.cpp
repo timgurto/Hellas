@@ -386,8 +386,7 @@ void AI::Path::findPathToLocation(const MapPoint &destination) {
     }
 
     auto extendedToDestination = currentPath.extendTo(destination);
-    if (extendedToDestination.lastWaypoint() == destination &&
-        !pointsCovered.count(destination)) {
+    if (extendedToDestination.lastWaypoint() == destination) {
       _queue = extendedToDestination.waypoints();
       return;
     }
