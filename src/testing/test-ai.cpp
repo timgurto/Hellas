@@ -358,15 +358,20 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
              .....
              WWWW.
              ..... */
-          server->addObject("wall", {30, 0});
-          server->addObject("wall", {30, 10});
-          server->addObject("wall", {30, 20});
-          server->addObject("wall", {30, 30});
+          server->addObject("wall", {90, 0});
+          server->addObject("wall", {90, 10});
+          server->addObject("wall", {90, 20});
+          server->addObject("wall", {90, 30});
           server->addObject("wall", {0, 90});
           server->addObject("wall", {10, 90});
           server->addObject("wall", {20, 90});
           server->addObject("wall", {30, 90});
           server->addObject("wall", {40, 90});
+          server->addObject("wall", {50, 90});
+          server->addObject("wall", {60, 90});
+          server->addObject("wall", {70, 90});
+          server->addObject("wall", {80, 90});
+          server->addObject("wall", {90, 90});
 
           AND_GIVEN("a wolf on the opposite side of the map") {
             auto &wolf = server->addNPC("wolf", {2000, 2000});
@@ -376,9 +381,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
               wolf.makeAwareOf(*user);
 
               THEN("it begins moving in a reasonable amount of time") {
-                REPEAT_FOR_MS(1000);
-                CHECK(wolf.isAwareOf(*user));
-                CHECK(wolf.location() != originalLocation);
+                WAIT_UNTIL_TIMEOUT(wolf.location() != originalLocation, 5000);
               }
             }
           }
