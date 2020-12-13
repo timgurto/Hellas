@@ -344,7 +344,49 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
         }
       }
     }
+
+    SECTION("More efficient than breadth-first") {
+      GIVEN("a very large map") {
+        data += LARGE_MAP;
+        useData(data.c_str());
+
+        AND_GIVEN("the user is walled off to block the direct-path shortcut") {
+          /* ...W.
+             .U.W.
+             ...W.
+             ...W.
+             .....
+             WWWW.
+             ..... */
+          server->addObject("wall", {30, 0});
+          server->addObject("wall", {30, 10});
+          server->addObject("wall", {30, 20});
+          server->addObject("wall", {30, 30});
+          server->addObject("wall", {0, 90});
+          server->addObject("wall", {10, 90});
+          server->addObject("wall", {20, 90});
+          server->addObject("wall", {30, 90});
+          server->addObject("wall", {40, 90});
+
+          AND_GIVEN("a wolf on the opposite side of the map") {
+            auto &wolf = server->addNPC("wolf", {2000, 2000});
+
+            WHEN("the wolf starts chasing the user") {
+              const auto originalLocation = wolf.location();
+              wolf.makeAwareOf(*user);
+
+              THEN("it begins moving in a reasonable amount of time") {
+                REPEAT_FOR_MS(1000);
+                CHECK(wolf.isAwareOf(*user));
+                CHECK(wolf.location() != originalLocation);
+              }
+            }
+          }
+        }
+      }
+    }
   }
+
+  // Shortcut if direct path available
   // Separate thread
-  // Performance on large, complex map (A*)
 }
