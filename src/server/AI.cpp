@@ -333,11 +333,9 @@ void AI::Path::findPathToLocation(const MapPoint &destination) {
     // For each direction from here
     // Calculate F, set to this if existing entry is higher or missing
 
-    {
-      const auto nextPoint = bestCandidatePoint + MapPoint{0, -GRID_SIZE};
-      auto stepRect = FOOTPRINT + bestCandidatePoint;
-      stepRect.y -= GRID_SIZE;
-      stepRect.h += GRID_SIZE;
+    auto considerExtension = [&](MapPoint delta, MapRect deltaForJourneyRect) {
+      const auto nextPoint = bestCandidatePoint + delta;
+      auto stepRect = FOOTPRINT + bestCandidatePoint + deltaForJourneyRect;
       if (Server::instance().isLocationValid(stepRect, _owner)) {
         const auto currentNode = nodesByPoint[bestCandidatePoint];
         auto nextNode = AStarNode{};
@@ -367,110 +365,12 @@ void AI::Path::findPathToLocation(const MapPoint &destination) {
           nodesByPoint[nextPoint] = nextNode;
         }
       }
-    }
-    {
-      const auto nextPoint = bestCandidatePoint + MapPoint{0, +GRID_SIZE};
-      auto stepRect = FOOTPRINT + bestCandidatePoint;
-      stepRect.h += GRID_SIZE;
-      if (Server::instance().isLocationValid(stepRect, _owner)) {
-        const auto currentNode = nodesByPoint[bestCandidatePoint];
-        auto nextNode = AStarNode{};
-        nextNode.parentInBestPath = bestCandidatePoint;
-        nextNode.g = currentNode.g + GRID_SIZE;
-        const auto h = distance(nextPoint, destination);
-        nextNode.f = nextNode.g + h;
-        auto nodeIter = nodesByPoint.find(nextPoint);
-        const auto pointHasntBeenVisited = nodeIter == nodesByPoint.end();
-        const auto pointIsBetterFromThisPath =
-            !pointHasntBeenVisited && nodeIter->second.f > nextNode.f;
-        const auto shouldInsertThisNode =
-            pointHasntBeenVisited || pointIsBetterFromThisPath;
-        if (pointIsBetterFromThisPath) {
-          // Remove old node
-          auto lo = pointsBeingConsidered.lower_bound(nodeIter->second.f);
-          auto hi = pointsBeingConsidered.upper_bound(nodeIter->second.f);
-          for (auto it = lo; it != hi; ++it) {
-            if (it->second == nextPoint) {
-              pointsBeingConsidered.erase(it);
-              break;
-            }
-          }
-        }
-        if (shouldInsertThisNode) {
-          pointsBeingConsidered.insert(std::make_pair(nextNode.f, nextPoint));
-          nodesByPoint[nextPoint] = nextNode;
-        }
-      }
-    }
-    {
-      const auto nextPoint = bestCandidatePoint + MapPoint{-GRID_SIZE, 0};
-      auto stepRect = FOOTPRINT + bestCandidatePoint;
-      stepRect.x -= GRID_SIZE;
-      stepRect.w += GRID_SIZE;
-      if (Server::instance().isLocationValid(stepRect, _owner)) {
-        const auto currentNode = nodesByPoint[bestCandidatePoint];
-        auto nextNode = AStarNode{};
-        nextNode.parentInBestPath = bestCandidatePoint;
-        nextNode.g = currentNode.g + GRID_SIZE;
-        const auto h = distance(nextPoint, destination);
-        nextNode.f = nextNode.g + h;
-        auto nodeIter = nodesByPoint.find(nextPoint);
-        const auto pointHasntBeenVisited = nodeIter == nodesByPoint.end();
-        const auto pointIsBetterFromThisPath =
-            !pointHasntBeenVisited && nodeIter->second.f > nextNode.f;
-        const auto shouldInsertThisNode =
-            pointHasntBeenVisited || pointIsBetterFromThisPath;
-        if (pointIsBetterFromThisPath) {
-          // Remove old node
-          auto lo = pointsBeingConsidered.lower_bound(nodeIter->second.f);
-          auto hi = pointsBeingConsidered.upper_bound(nodeIter->second.f);
-          for (auto it = lo; it != hi; ++it) {
-            if (it->second == nextPoint) {
-              pointsBeingConsidered.erase(it);
-              break;
-            }
-          }
-        }
-        if (shouldInsertThisNode) {
-          pointsBeingConsidered.insert(std::make_pair(nextNode.f, nextPoint));
-          nodesByPoint[nextPoint] = nextNode;
-        }
-      }
-    }
-    {
-      const auto nextPoint = bestCandidatePoint + MapPoint{+GRID_SIZE, 0};
-      auto stepRect = FOOTPRINT + bestCandidatePoint;
-      stepRect.w += GRID_SIZE;
-      if (Server::instance().isLocationValid(stepRect, _owner)) {
-        const auto currentNode = nodesByPoint[bestCandidatePoint];
-        auto nextNode = AStarNode{};
-        nextNode.parentInBestPath = bestCandidatePoint;
-        nextNode.g = currentNode.g + GRID_SIZE;
-        const auto h = distance(nextPoint, destination);
-        nextNode.f = nextNode.g + h;
-        auto nodeIter = nodesByPoint.find(nextPoint);
-        const auto pointHasntBeenVisited = nodeIter == nodesByPoint.end();
-        const auto pointIsBetterFromThisPath =
-            !pointHasntBeenVisited && nodeIter->second.f > nextNode.f;
-        const auto shouldInsertThisNode =
-            pointHasntBeenVisited || pointIsBetterFromThisPath;
-        if (pointIsBetterFromThisPath) {
-          // Remove old node
-          auto lo = pointsBeingConsidered.lower_bound(nodeIter->second.f);
-          auto hi = pointsBeingConsidered.upper_bound(nodeIter->second.f);
-          for (auto it = lo; it != hi; ++it) {
-            if (it->second == nextPoint) {
-              pointsBeingConsidered.erase(it);
-              break;
-            }
-          }
-        }
-        if (shouldInsertThisNode) {
-          pointsBeingConsidered.insert(std::make_pair(nextNode.f, nextPoint));
-          nodesByPoint[nextPoint] = nextNode;
-        }
-      }
-    }
+    };
+
+    considerExtension({0, -GRID_SIZE}, {0, -GRID_SIZE, 0, +GRID_SIZE});  // Up
+    considerExtension({0, +GRID_SIZE}, {0, 0, 0, +GRID_SIZE});           // Down
+    considerExtension({-GRID_SIZE, 0}, {-GRID_SIZE, 0, +GRID_SIZE, 0});  // Left
+    considerExtension({+GRID_SIZE, 0}, {0, 0, +GRID_SIZE, 0});  // Right
   }
 
   clear();
