@@ -301,8 +301,50 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
         }
       }
     }
-  }
 
+    SECTION("Obstacles are properly identified across collision chunks") {
+      GIVEN("a map spanning a number of collision chunks") {
+        data += R"(
+          <newPlayerSpawn x="10" y="10" range="0" />
+          <terrain index="." id="grass" />
+          <list id="default" default="1" >
+            <allow id="grass" />
+          </list>
+          <size x="30" y="2" />
+          <row y= "0" terrain = ".............................." />
+          <row y= "1" terrain = ".............................." />
+        )";
+        useData(data.c_str());
+
+        AND_GIVEN("the user is blocked by walls in the leftmost chunk") {
+          /* ...W....|.......|.......|...
+             .U.W....|.......|.......|.N.
+             ...W....|.......|.......|... */
+          server->addObject("wall", {30, 5});
+          server->addObject("wall", {30, 15});
+          server->addObject("wall", {30, 25});
+          server->addObject("wall", {30, 35});
+          server->addObject("wall", {30, 45});
+          server->addObject("wall", {30, 55});
+          server->addObject("wall", {30, 65});
+
+          AND_GIVEN("a wolf on the opposite side of the map") {
+            auto &wolf = server->addNPC("wolf", {900, 30});
+
+            WHEN("the wolf tries to chase the user") {
+              const auto wolfStartingPosition = wolf.location();
+              wolf.makeAwareOf(*user);
+
+              THEN("the wolf never moves") {
+                REPEAT_FOR_MS(1000);
+                CHECK(wolf.location() == wolfStartingPosition);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
   // Separate thread
   // Performance on large, complex map (A*)
 }

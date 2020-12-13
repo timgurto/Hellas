@@ -294,7 +294,8 @@ class Server {
   static const px_t COLLISION_CHUNK_SIZE;
   CollisionGrid _collisionGrid;
   CollisionChunk &getCollisionChunk(const MapPoint &p);
-  std::list<CollisionChunk *> getCollisionSuperChunk(const MapPoint &p);
+  std::list<const CollisionChunk *> getAllCollisionChunksTouchingRect(
+      const MapRect &r);
 
  public:
   // thisObject = object to omit from collision detection (usually "this", to

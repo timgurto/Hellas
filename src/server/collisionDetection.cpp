@@ -43,9 +43,8 @@ bool Server::isLocationValid(const MapRect &rect,
     if (!allowedTerrain.allows(terrainType)) return false;
 
   // Objects
-  MapPoint rectCenter(rect.x + rect.w / 2, rect.y + rect.h / 2);
-  auto superChunk = getCollisionSuperChunk(rectCenter);
-  for (CollisionChunk *chunk : superChunk)
+  auto superChunk = getAllCollisionChunksTouchingRect(rect);
+  for (const auto *chunk : superChunk)
     for (const auto &pair : chunk->entities()) {
       const Entity *pEnt = pair.second;
       if (pEnt == thisEntity) continue;
@@ -75,17 +74,35 @@ CollisionChunk &Server::getCollisionChunk(const MapPoint &p) {
   return _collisionGrid[x][y];
 }
 
-std::list<CollisionChunk *> Server::getCollisionSuperChunk(const MapPoint &p) {
-  size_t x = static_cast<size_t>(p.x / COLLISION_CHUNK_SIZE), minX = x - 1,
-         maxX = x + 1, y = static_cast<size_t>(p.y / COLLISION_CHUNK_SIZE),
-         minY = y - 1, maxY = y + 1;
-  if (x == 0) minX = 0;
-  if (y == 0) minY = 0;
-  std::list<CollisionChunk *> superChunk;
-  for (size_t x = minX; x <= maxX; ++x)
-    for (size_t y = minY; y <= maxY; ++y)
-      superChunk.push_back(&_collisionGrid[x][y]);
-  return superChunk;
+std::list<const CollisionChunk *> Server::getAllCollisionChunksTouchingRect(
+    const MapRect &r) {
+  auto chunks = std::list<const CollisionChunk *>{};
+  auto left = static_cast<size_t>(r.x / COLLISION_CHUNK_SIZE),
+       right = static_cast<size_t>((r.x + r.w) / COLLISION_CHUNK_SIZE),
+       top = static_cast<size_t>(r.y / COLLISION_CHUNK_SIZE),
+       bottom = static_cast<size_t>((r.y + r.h) / COLLISION_CHUNK_SIZE);
+
+  // Consider neighbours, in case an object covers two chunks
+  if (left > 0) --left;
+  if (top > 0) --top;
+  ++right;
+  ++bottom;
+
+  for (auto x = left; x <= right; ++x) {
+    const auto rowIt = _collisionGrid.find(x);
+    if (rowIt == _collisionGrid.end()) continue;
+    const auto &row = rowIt->second;
+
+    for (auto y = top; y <= bottom; ++y) {
+      const auto chunkIter = row.find(y);
+      if (chunkIter == row.end()) continue;
+      const auto &chunk = chunkIter->second;
+
+      chunks.push_back(&chunk);
+    }
+  }
+
+  return chunks;
 }
 
 // For the functions below:
