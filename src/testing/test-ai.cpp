@@ -391,5 +391,6 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
   }
 
   // Shortcut if direct path available
+  // Consider diagonals
   // Separate thread
 }

@@ -278,7 +278,7 @@ void AI::giveOrder(PetOrder newOrder) {
 }
 
 void AI::Path::findPathToLocation(const MapPoint &destination) {
-  // 25x25 breadth-first search
+  // A* on a 25x25 grid
   const auto GRID_SIZE = 25.0;
   const auto CLOSE_ENOUGH = sqrt(GRID_SIZE * GRID_SIZE + GRID_SIZE * GRID_SIZE);
   const auto FOOTPRINT = _owner.type()->collisionRect();
@@ -295,7 +295,29 @@ void AI::Path::findPathToLocation(const MapPoint &destination) {
     MapPoint parentInBestPath;
   };
   std::map<MapPoint, AStarNode, UniqueMapPointOrdering> nodesByPoint;
-  std::multimap<double, MapPoint> pointsBeingConsidered;
+
+  class PointsByFCost {
+   public:
+    void add(double fCost, MapPoint point) {
+      _container.insert(std::make_pair(fCost, point));
+    }
+    void remove(double fCost, MapPoint point) {
+      auto lo = _container.lower_bound(fCost);
+      auto hi = _container.upper_bound(fCost);
+      for (auto it = lo; it != hi; ++it) {
+        if (it->second == point) {
+          _container.erase(it);
+          return;
+        }
+      }
+    }
+    bool stillSomeLeft() const { return !_container.empty(); }
+    MapPoint getBestCandidate() const { return _container.begin()->second; };
+    void removeBest() { _container.erase(_container.begin()); }
+
+   private:
+    std::multimap<double, MapPoint> _container;
+  } candidatePoints;
 
   auto tracePathTo = [&](MapPoint endpoint) {
     auto pathInReverse = std::vector<MapPoint>{};
@@ -316,13 +338,12 @@ void AI::Path::findPathToLocation(const MapPoint &destination) {
   const auto startPoint = _owner.location();
   startNode.f = distance(startPoint, destination);
   nodesByPoint[startPoint] = startNode;
-  pointsBeingConsidered.insert(std::make_pair(startNode.f, startPoint));
+  candidatePoints.add(startNode.f, startPoint);
 
-  while (!pointsBeingConsidered.empty()) {
+  while (candidatePoints.stillSomeLeft()) {
     // Work from the point with the best F cost
-    const auto bestCandidateIter = pointsBeingConsidered.begin();
-    const auto bestCandidatePoint = bestCandidateIter->second;
-    pointsBeingConsidered.erase(bestCandidateIter);
+    const auto bestCandidatePoint = candidatePoints.getBestCandidate();
+    candidatePoints.removeBest();
 
     if (distance(bestCandidatePoint, destination) <= CLOSE_ENOUGH) {
       const auto currentNode = nodesByPoint[bestCandidatePoint];
@@ -349,19 +370,10 @@ void AI::Path::findPathToLocation(const MapPoint &destination) {
             !pointHasntBeenVisited && nodeIter->second.f > nextNode.f;
         const auto shouldInsertThisNode =
             pointHasntBeenVisited || pointIsBetterFromThisPath;
-        if (pointIsBetterFromThisPath) {
-          // Remove old node
-          auto lo = pointsBeingConsidered.lower_bound(nodeIter->second.f);
-          auto hi = pointsBeingConsidered.upper_bound(nodeIter->second.f);
-          for (auto it = lo; it != hi; ++it) {
-            if (it->second == nextPoint) {
-              pointsBeingConsidered.erase(it);
-              break;
-            }
-          }
-        }
+        if (pointIsBetterFromThisPath)
+          candidatePoints.remove(nodeIter->second.f, nextPoint);
         if (shouldInsertThisNode) {
-          pointsBeingConsidered.insert(std::make_pair(nextNode.f, nextPoint));
+          candidatePoints.add(nextNode.f, nextPoint);
           nodesByPoint[nextPoint] = nextNode;
         }
       }
