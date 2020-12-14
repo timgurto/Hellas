@@ -280,7 +280,7 @@ void AI::giveOrder(PetOrder newOrder) {
 void AI::Path::findPathToLocation(const MapPoint &destination) {
   // A* on a 25x25 grid
   const auto GRID = 25.0;
-  const auto DIAGONAL_DIST = sqrt(GRID * GRID + GRID * GRID);
+  const auto DIAG = sqrt(GRID * GRID + GRID * GRID);
   const auto CLOSE_ENOUGH = sqrt(GRID * GRID + GRID * GRID);
   const auto FOOTPRINT = _owner.type()->collisionRect();
 
@@ -355,14 +355,15 @@ void AI::Path::findPathToLocation(const MapPoint &destination) {
     // For each direction from here
     // Calculate F, set to this if existing entry is higher or missing
 
-    auto considerExtension = [&](MapPoint delta, MapRect deltaForJourneyRect) {
+    auto considerExtension = [&](MapPoint delta, MapRect deltaForJourneyRect,
+                                 double extraGCost) {
       const auto nextPoint = bestCandidatePoint + delta;
       auto stepRect = FOOTPRINT + bestCandidatePoint + deltaForJourneyRect;
       if (Server::instance().isLocationValid(stepRect, _owner)) {
         const auto currentNode = nodesByPoint[bestCandidatePoint];
         auto nextNode = AStarNode{};
         nextNode.parentInBestPath = bestCandidatePoint;
-        nextNode.g = currentNode.g + GRID;
+        nextNode.g = currentNode.g + extraGCost;
         const auto h = distance(nextPoint, destination);
         nextNode.f = nextNode.g + h;
         auto nodeIter = nodesByPoint.find(nextPoint);
@@ -381,14 +382,14 @@ void AI::Path::findPathToLocation(const MapPoint &destination) {
     };
 
     // clang-format off
-    considerExtension({ +GRID, -GRID }, {     0, -GRID, +GRID, +GRID }); // E
-    considerExtension({ +GRID, +GRID }, {     0,     0, +GRID, +GRID }); // F
-    considerExtension({ -GRID, +GRID }, { -GRID,     0, +GRID, +GRID }); // G
-    considerExtension({ -GRID, -GRID }, { -GRID, -GRID, +GRID, +GRID }); // H
-    considerExtension({     0, -GRID }, {     0, -GRID,     0, +GRID }); // Up
-    considerExtension({     0, +GRID }, {     0,     0,     0, +GRID }); // Down
-    considerExtension({ -GRID,     0 }, { -GRID,     0, +GRID,     0 }); // Left
-    considerExtension({ +GRID,     0 }, {     0,     0, +GRID,     0 }); // Right
+    considerExtension({ +GRID, -GRID }, {     0, -GRID, +GRID, +GRID }, DIAG); // E
+    considerExtension({ +GRID, +GRID }, {     0,     0, +GRID, +GRID }, DIAG); // F
+    considerExtension({ -GRID, +GRID }, { -GRID,     0, +GRID, +GRID }, DIAG); // G
+    considerExtension({ -GRID, -GRID }, { -GRID, -GRID, +GRID, +GRID }, DIAG); // H
+    considerExtension({     0, -GRID }, {     0, -GRID,     0, +GRID }, GRID); // Up
+    considerExtension({     0, +GRID }, {     0,     0,     0, +GRID }, GRID); // Down
+    considerExtension({ -GRID,     0 }, { -GRID,     0, +GRID,     0 }, GRID); // Left
+    considerExtension({ +GRID,     0 }, {     0,     0, +GRID,     0 }, GRID); // Right
     // clang-format on
   }
 
