@@ -279,8 +279,9 @@ void AI::giveOrder(PetOrder newOrder) {
 
 void AI::Path::findPathToLocation(const MapPoint &destination) {
   // A* on a 25x25 grid
-  const auto GRID_SIZE = 25.0;
-  const auto CLOSE_ENOUGH = sqrt(GRID_SIZE * GRID_SIZE + GRID_SIZE * GRID_SIZE);
+  const auto GRID = 25.0;
+  const auto DIAGONAL_DIST = sqrt(GRID * GRID + GRID * GRID);
+  const auto CLOSE_ENOUGH = sqrt(GRID * GRID + GRID * GRID);
   const auto FOOTPRINT = _owner.type()->collisionRect();
 
   struct UniqueMapPointOrdering {
@@ -361,7 +362,7 @@ void AI::Path::findPathToLocation(const MapPoint &destination) {
         const auto currentNode = nodesByPoint[bestCandidatePoint];
         auto nextNode = AStarNode{};
         nextNode.parentInBestPath = bestCandidatePoint;
-        nextNode.g = currentNode.g + GRID_SIZE;
+        nextNode.g = currentNode.g + GRID;
         const auto h = distance(nextPoint, destination);
         nextNode.f = nextNode.g + h;
         auto nodeIter = nodesByPoint.find(nextPoint);
@@ -379,10 +380,16 @@ void AI::Path::findPathToLocation(const MapPoint &destination) {
       }
     };
 
-    considerExtension({0, -GRID_SIZE}, {0, -GRID_SIZE, 0, +GRID_SIZE});  // Up
-    considerExtension({0, +GRID_SIZE}, {0, 0, 0, +GRID_SIZE});           // Down
-    considerExtension({-GRID_SIZE, 0}, {-GRID_SIZE, 0, +GRID_SIZE, 0});  // Left
-    considerExtension({+GRID_SIZE, 0}, {0, 0, +GRID_SIZE, 0});  // Right
+    // clang-format off
+    considerExtension({ +GRID, -GRID }, {     0, -GRID, +GRID, +GRID }); // E
+    considerExtension({ +GRID, +GRID }, {     0,     0, +GRID, +GRID }); // F
+    considerExtension({ -GRID, +GRID }, { -GRID,     0, +GRID, +GRID }); // G
+    considerExtension({ -GRID, -GRID }, { -GRID, -GRID, +GRID, +GRID }); // H
+    considerExtension({     0, -GRID }, {     0, -GRID,     0, +GRID }); // Up
+    considerExtension({     0, +GRID }, {     0,     0,     0, +GRID }); // Down
+    considerExtension({ -GRID,     0 }, { -GRID,     0, +GRID,     0 }); // Left
+    considerExtension({ +GRID,     0 }, {     0,     0, +GRID,     0 }); // Right
+    // clang-format on
   }
 
   clear();
