@@ -390,7 +390,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
     }
   }
 
-  // Shortcut if direct path available
   // Exclude target entity from collision checks
+  // Limit path length
   // Separate thread
 }

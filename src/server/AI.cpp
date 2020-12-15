@@ -281,7 +281,7 @@ void AI::Path::findPathToLocation(const MapPoint &destination) {
   // A* on a 25x25 grid
   const auto GRID = 25.0;
   const auto DIAG = sqrt(GRID * GRID + GRID * GRID);
-  const auto CLOSE_ENOUGH = sqrt(GRID * GRID + GRID * GRID);
+  const auto CLOSE_ENOUGH = DIAG;
   const auto FOOTPRINT = _owner.type()->collisionRect();
 
   struct UniqueMapPointOrdering {
@@ -347,14 +347,26 @@ void AI::Path::findPathToLocation(const MapPoint &destination) {
     candidatePoints.removeBest();
 
     if (distance(bestCandidatePoint, destination) <= CLOSE_ENOUGH) {
-      const auto currentNode = nodesByPoint[bestCandidatePoint];
       _queue = tracePathTo(bestCandidatePoint);
       return;
     }
 
-    // For each direction from here
-    // Calculate F, set to this if existing entry is higher or missing
+    // Try going straight to the destination from here
+    const auto deltaToDestination = destination - bestCandidatePoint;
+    auto journeyRectToDestination = FOOTPRINT + bestCandidatePoint;
+    if (deltaToDestination.x < 0)
+      journeyRectToDestination.x += deltaToDestination.x;
+    if (deltaToDestination.y < 0)
+      journeyRectToDestination.y += deltaToDestination.y;
+    journeyRectToDestination.w += abs(deltaToDestination.x);
+    journeyRectToDestination.h += abs(deltaToDestination.y);
+    if (Server::instance().isLocationValid(journeyRectToDestination, _owner)) {
+      _queue = tracePathTo(bestCandidatePoint);
+      _queue.push(destination);
+      return;
+    }
 
+    // Calculate F, set to this if existing entry is higher or missing
     auto considerExtension = [&](MapPoint delta, MapRect deltaForJourneyRect,
                                  double extraGCost) {
       const auto nextPoint = bestCandidatePoint + delta;
