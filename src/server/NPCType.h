@@ -26,7 +26,7 @@ class NPCType : public ObjectType {
   mutable const Spell *_knownSpell{nullptr};
   static const px_t DEFAULT_MAX_DISTANCE_FROM_HOME{500};
   px_t _maxDistanceFromHome{DEFAULT_MAX_DISTANCE_FROM_HOME};
-  bool _pursuesEndlessly{false};
+  bool _pursuesEndlessly{false};  // Expected to be used only by tests.
 
   bool _canBeTamed{false};
   std::string _tamingRequiresItem;

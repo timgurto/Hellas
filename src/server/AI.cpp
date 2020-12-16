@@ -377,6 +377,11 @@ void AI::Path::findPathToLocation(const MapPoint &destination) {
         nextNode.parentInBestPath = bestCandidatePoint;
         nextNode.g = currentNode.g + extraGCost;
         const auto h = distance(nextPoint, destination);
+
+        const auto pathStraysTooFar =
+            h > PURSUIT_RANGE && !_owner.npcType()->pursuesEndlessly();
+        if (pathStraysTooFar) return;
+
         nextNode.f = nextNode.g + h;
         auto nodeIter = nodesByPoint.find(nextPoint);
         const auto pointHasntBeenVisited = nodeIter == nodesByPoint.end();

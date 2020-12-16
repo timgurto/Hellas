@@ -373,7 +373,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
           server->addObject("wall", {80, 90});
           server->addObject("wall", {90, 90});
 
-          AND_GIVEN("a wolf on the opposite side of the map") {
+          AND_GIVEN("a wolf on the opposite side of the map from the user") {
             auto &wolf = server->addNPC("wolf", {2000, 2000});
 
             WHEN("the wolf starts chasing the user") {
@@ -390,7 +390,34 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
     }
   }
 
+  SECTION("Path lengths are limited") {
+    GIVEN("kobold NPCs (without pursuesEndlessly)") {
+      auto data = ""s;
+      data = R"(
+        <npcType id="kobold" attack="1" />
+      )";
+
+      AND_GIVEN("a very large map") {
+        data += LARGE_MAP;
+        useData(data.c_str());
+
+        AND_GIVEN("a kobold on the other side of the map from the user") {
+          auto &kobold = server->addNPC("kobold", {2000, 2000});
+
+          WHEN("the kobold starts chasing the user") {
+            const auto originalLocation = kobold.location();
+            kobold.makeAwareOf(*user);
+
+            THEN("it never moves") {
+              REPEAT_FOR_MS(5000);
+              CHECK(kobold.location() == originalLocation);
+            }
+          }
+        }
+      }
+    }
+  }
+
   // Exclude target entity from collision checks
-  // Limit path length
   // Separate thread
 }
