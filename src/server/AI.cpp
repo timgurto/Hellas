@@ -4,7 +4,7 @@
 #include "Server.h"
 #include "User.h"
 
-AI::AI(NPC &owner) : _owner(owner), _path(owner) {
+AI::AI(NPC &owner) : _owner(owner), _activePath(owner) {
   _homeLocation = _owner.location();
 }
 
@@ -99,7 +99,7 @@ void AI::transitionIfNecessary() {
       }
       break;
 
-      if (!_path.exists()) {
+      if (!_activePath.exists()) {
         state = IDLE;
         break;
       }
@@ -123,7 +123,7 @@ void AI::transitionIfNecessary() {
         auto distFromHome = distance(_homeLocation, _owner.location());
         if (distFromHome > _owner.npcType()->maxDistanceFromHome()) {
           state = IDLE;
-          _path.clear();
+          _activePath.clear();
           _owner.teleportTo(_homeLocation);
           break;
         }
@@ -143,7 +143,7 @@ void AI::transitionIfNecessary() {
         break;
       }
 
-      if (!_path.exists()) {
+      if (!_activePath.exists()) {
         state = IDLE;
         break;
       }
@@ -192,7 +192,7 @@ void AI::onTransition(State previousState) {
 
         auto dest = _owner.spawner()->getRandomPoint();
         if (Server::instance().isLocationValid(dest, *_owner.type())) {
-          _path.clear();
+          _activePath.clear();
           _owner.teleportTo(dest);
           break;
         }
@@ -228,18 +228,19 @@ void AI::act() {
     case PET_FOLLOW_OWNER:
     case CHASE: {
       // Move towards target
-      if (!_path.exists()) break;
+      if (!_activePath.exists()) break;
       if (targetHasMoved()) calculatePath();
-      if (_owner.location() == _path.currentWaypoint())
-        _path.changeToNextWaypoint();
-      if (!_path.exists()) break;
+      if (_owner.location() == _activePath.currentWaypoint())
+        _activePath.changeToNextWaypoint();
+      if (!_activePath.exists()) break;
 
-      const auto result = _owner.moveLegallyTowards(_path.currentWaypoint());
+      const auto result =
+          _owner.moveLegallyTowards(_activePath.currentWaypoint());
       if (result == Entity::DID_NOT_MOVE) {
         const auto destination = state == CHASE
                                      ? _owner.target()->location()
                                      : _owner.followTarget()->location();
-        _path.findPathToLocation(destination);
+        _activePath.findPathTo(destination);
       }
       break;
     }
@@ -277,7 +278,7 @@ void AI::giveOrder(PetOrder newOrder) {
   }
 }
 
-void AI::Path::findPathToLocation(const MapPoint &destination) {
+void AI::Path::findPathTo(const MapPoint &destination) {
   // A* on a 25x25 grid
   const auto GRID = 25.0;
   const auto DIAG = sqrt(GRID * GRID + GRID * GRID);
@@ -413,12 +414,12 @@ void AI::Path::findPathToLocation(const MapPoint &destination) {
   clear();
 }
 
-void AI::calculatePath() { _path.findPathToLocation(getTargetLocation()); }
+void AI::calculatePath() { _activePath.findPathTo(getTargetLocation()); }
 
 bool AI::targetHasMoved() const {
-  if (!_path.exists()) return false;
+  if (!_activePath.exists()) return false;
 
-  const auto expectedLocation = _path.lastWaypoint();
+  const auto expectedLocation = _activePath.lastWaypoint();
   const auto currentLocation = getTargetLocation();
 
   const auto MAX_TARGET_MOVEMENT_BEFORE_REPATH_SQUARED = 900.0;

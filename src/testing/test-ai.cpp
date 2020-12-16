@@ -420,4 +420,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
 
   // Exclude target entity from collision checks
   // Separate thread
+  // Ranged NPCs trying to attack don't need to get as close
 }
+
+// Make NPCs invincible if they can't path to user
