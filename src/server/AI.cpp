@@ -283,7 +283,7 @@ void AI::Path::findPathTo(const MapPoint &destination) {
   const auto GRID = 25.0;
   const auto DIAG = sqrt(GRID * GRID + GRID * GRID);
   const auto CLOSE_ENOUGH = DIAG;
-  const auto FOOTPRINT = _owner.type()->collisionRect();
+  const auto footprint = _owner.type()->collisionRect();
 
   struct UniqueMapPointOrdering {
     bool operator()(const MapPoint &lhs, const MapPoint &rhs) const {
@@ -371,7 +371,7 @@ void AI::Path::findPathTo(const MapPoint &destination) {
     auto considerExtension = [&](MapPoint delta, MapRect deltaForJourneyRect,
                                  double extraGCost) {
       const auto nextPoint = bestCandidatePoint + delta;
-      auto stepRect = FOOTPRINT + bestCandidatePoint + deltaForJourneyRect;
+      auto stepRect = footprint + bestCandidatePoint + deltaForJourneyRect;
       if (Server::instance().isLocationValid(stepRect, _owner)) {
         const auto currentNode = nodesByPoint[bestCandidatePoint];
         auto nextNode = AStarNode{};
