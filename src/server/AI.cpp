@@ -279,10 +279,10 @@ void AI::giveOrder(PetOrder newOrder) {
 }
 
 void AI::Path::findPathTo(const MapRect &targetFootprint) {
-  // A* on a 25x25 grid
+  // A*
   const auto GRID = 25.0;
   const auto DIAG = sqrt(GRID * GRID + GRID * GRID);
-  const auto CLOSE_ENOUGH = DIAG;
+  const auto closeEnough = _owner.attackRange();
   const auto footprint = _owner.type()->collisionRect();
 
   struct UniqueMapPointOrdering {
@@ -348,7 +348,7 @@ void AI::Path::findPathTo(const MapRect &targetFootprint) {
     candidatePoints.removeBest();
 
     if (distance(footprint + bestCandidatePoint, targetFootprint) <=
-        CLOSE_ENOUGH) {
+        closeEnough) {
       _queue = tracePathTo(bestCandidatePoint);
       return;
     }
