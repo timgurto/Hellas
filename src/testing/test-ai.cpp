@@ -320,13 +320,13 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
           /* ...W....|.......|.......|...
              .U.W....|.......|.......|.N.
              ...W....|.......|.......|... */
-          server->addObject("wall", {30, 5});
-          server->addObject("wall", {30, 15});
-          server->addObject("wall", {30, 25});
-          server->addObject("wall", {30, 35});
-          server->addObject("wall", {30, 45});
-          server->addObject("wall", {30, 55});
-          server->addObject("wall", {30, 65});
+          server->addObject("wall", {150, 5});
+          server->addObject("wall", {150, 15});
+          server->addObject("wall", {150, 25});
+          server->addObject("wall", {150, 35});
+          server->addObject("wall", {150, 45});
+          server->addObject("wall", {150, 55});
+          server->addObject("wall", {150, 65});
 
           AND_GIVEN("a wolf on the opposite side of the map") {
             auto &wolf = server->addNPC("wolf", {900, 30});
@@ -335,7 +335,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
               const auto wolfStartingPosition = wolf.location();
               wolf.makeAwareOf(*user);
 
-              THEN("the wolf never moves") {
+              THEN("the wolf never moves (i.e., it knows there's no path") {
                 REPEAT_FOR_MS(1000);
                 CHECK(wolf.location() == wolfStartingPosition);
               }
@@ -388,6 +388,34 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
         }
       }
     }
+
+    SECTION("a large target entity doesn't block pathfinding to it") {
+      GIVEN("dinosaurs have a wide collision rect") {
+        data += R"(
+          <npcType id="dinosaur">
+            <collisionRect x="-100" y="-100" w="200" h="200" />
+          </npcType>
+        )";
+        useData(data.c_str());
+
+        AND_GIVEN("a dinosaur and a wolf hostile to it") {
+          auto &dinosaur = server->addNPC("dinosaur", {100, 150});
+          dinosaur.permissions.setPlayerOwner(user->name());
+          dinosaur.ai.giveOrder(AI::PetOrder::ORDER_TO_STAY);
+
+          auto &wolf = server->addNPC("wolf", {275, 150});
+
+          WHEN("the wolf starts chasing the dinosaur") {
+            const auto originalLocation = wolf.location();
+            wolf.makeAwareOf(dinosaur);
+
+            THEN("it begins moving (i.e., a path is successfully found)") {
+              WAIT_UNTIL_TIMEOUT(wolf.location() != originalLocation, 5000);
+            }
+          }
+        }
+      }
+    }
   }
 
   SECTION("Path lengths are limited") {
@@ -418,7 +446,6 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
     }
   }
 
-  // Exclude target entity from collision checks
   // Separate thread
   // Ranged NPCs trying to attack don't need to get as close
 }

@@ -39,7 +39,7 @@ class AI {
 
   void calculatePath();
   bool targetHasMoved() const;
-  MapPoint getTargetLocation() const;
+  MapRect getTargetFootprint() const;
 
   class Path {
    public:
@@ -47,7 +47,7 @@ class AI {
     MapPoint currentWaypoint() const { return _queue.front(); }
     MapPoint lastWaypoint() const { return _queue.back(); }
     void changeToNextWaypoint() { _queue.pop(); }
-    void findPathTo(const MapPoint &destination);
+    void findPathTo(const MapRect &destinationFootprint);
     void clear() { _queue = {}; }
     bool exists() const { return !_queue.empty(); }
 

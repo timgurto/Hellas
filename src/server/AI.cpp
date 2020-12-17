@@ -228,8 +228,8 @@ void AI::act() {
     case PET_FOLLOW_OWNER:
     case CHASE: {
       // Move towards target
-      if (!_activePath.exists()) break;
       if (targetHasMoved()) calculatePath();
+      if (!_activePath.exists()) break;
       if (_owner.location() == _activePath.currentWaypoint())
         _activePath.changeToNextWaypoint();
       if (!_activePath.exists()) break;
@@ -278,7 +278,7 @@ void AI::giveOrder(PetOrder newOrder) {
   }
 }
 
-void AI::Path::findPathTo(const MapPoint &destination) {
+void AI::Path::findPathTo(const MapRect &targetFootprint) {
   // A* on a 25x25 grid
   const auto GRID = 25.0;
   const auto DIAG = sqrt(GRID * GRID + GRID * GRID);
@@ -338,7 +338,7 @@ void AI::Path::findPathTo(const MapPoint &destination) {
   // Start with the current location as the first node
   auto startNode = AStarNode{};
   const auto startPoint = _owner.location();
-  startNode.f = distance(startPoint, destination);
+  startNode.f = distance(footprint + startPoint, targetFootprint);
   nodesByPoint[startPoint] = startNode;
   candidatePoints.add(startNode.f, startPoint);
 
@@ -347,14 +347,16 @@ void AI::Path::findPathTo(const MapPoint &destination) {
     const auto bestCandidatePoint = candidatePoints.getBestCandidate();
     candidatePoints.removeBest();
 
-    if (distance(bestCandidatePoint, destination) <= CLOSE_ENOUGH) {
+    if (distance(footprint + bestCandidatePoint, targetFootprint) <=
+        CLOSE_ENOUGH) {
       _queue = tracePathTo(bestCandidatePoint);
       return;
     }
 
     // Try going straight to the destination from here
-    const auto deltaToDestination = destination - bestCandidatePoint;
-    auto journeyRectToDestination = FOOTPRINT + bestCandidatePoint;
+    const auto deltaToDestination =
+        MapPoint{targetFootprint} - bestCandidatePoint;
+    auto journeyRectToDestination = footprint + bestCandidatePoint;
     if (deltaToDestination.x < 0)
       journeyRectToDestination.x += deltaToDestination.x;
     if (deltaToDestination.y < 0)
@@ -363,7 +365,7 @@ void AI::Path::findPathTo(const MapPoint &destination) {
     journeyRectToDestination.h += abs(deltaToDestination.y);
     if (Server::instance().isLocationValid(journeyRectToDestination, _owner)) {
       _queue = tracePathTo(bestCandidatePoint);
-      _queue.push(destination);
+      _queue.push(targetFootprint);
       return;
     }
 
@@ -377,7 +379,7 @@ void AI::Path::findPathTo(const MapPoint &destination) {
         auto nextNode = AStarNode{};
         nextNode.parentInBestPath = bestCandidatePoint;
         nextNode.g = currentNode.g + extraGCost;
-        const auto h = distance(nextPoint, destination);
+        const auto h = distance(footprint + nextPoint, targetFootprint);
 
         const auto pathStraysTooFar =
             h > PURSUIT_RANGE && !_owner.npcType()->pursuesEndlessly();
@@ -414,21 +416,22 @@ void AI::Path::findPathTo(const MapPoint &destination) {
   clear();
 }
 
-void AI::calculatePath() { _activePath.findPathTo(getTargetLocation()); }
+void AI::calculatePath() { _activePath.findPathTo(getTargetFootprint()); }
 
 bool AI::targetHasMoved() const {
   if (!_activePath.exists()) return false;
 
   const auto expectedLocation = _activePath.lastWaypoint();
-  const auto currentLocation = getTargetLocation();
+  const auto currentLocation = getTargetFootprint();
 
   const auto MAX_TARGET_MOVEMENT_BEFORE_REPATH_SQUARED = 900.0;
   return distanceSquared(expectedLocation, currentLocation) >
          MAX_TARGET_MOVEMENT_BEFORE_REPATH_SQUARED;
 }
 
-MapPoint AI::getTargetLocation() const {
-  if (state == AI::CHASE) return _owner.target()->location();
-  if (state == AI::PET_FOLLOW_OWNER) return _owner.followTarget()->location();
+MapRect AI::getTargetFootprint() const {
+  if (state == AI::CHASE) return _owner.target()->collisionRect();
+  if (state == AI::PET_FOLLOW_OWNER)
+    return _owner.followTarget()->collisionRect();
   return {};
 }
