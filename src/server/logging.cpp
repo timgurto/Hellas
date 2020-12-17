@@ -92,7 +92,7 @@ void Server::publishStats() {
   static auto publishingStats = false;
   if (publishingStats) return;
   publishingStats = true;
-  ++_threadsOpen;
+  incrementThreadCount();
 
   std::ostringstream oss;
 
@@ -133,7 +133,7 @@ void Server::publishStats() {
 
   std::ofstream{"logging/stats.js"} << oss.str();
 
-  --_threadsOpen;
+  decrementThreadCount();
   publishingStats = false;
 }
 

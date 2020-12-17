@@ -166,8 +166,8 @@ class Server {
   void MoveAllObjectsFromOwnerToOwner(const Permissions::Owner &oldOwner,
                                       const Permissions::Owner &newOwner);
 
-  void incrementThreadCount() { ++_threadsOpen; }
-  void decrementThreadCount() { --_threadsOpen; }
+  void incrementThreadCount() const { ++_threadsOpen; }
+  void decrementThreadCount() const { --_threadsOpen; }
 
   void addObjectType(const ObjectType *p);
   Entity &addEntity(Entity *newEntity);

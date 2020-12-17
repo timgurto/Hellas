@@ -257,7 +257,7 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
 }
 
 void Server::writeUserData(const User &user) const {
-  ++_threadsOpen;
+  incrementThreadCount();
 
   XmlWriter xw(_userFilesPath + user.name() + ".usr");
 
@@ -391,7 +391,7 @@ void Server::writeUserData(const User &user) const {
   user.exploration.writeTo(xw);
 
   xw.publish();
-  --_threadsOpen;
+  decrementThreadCount();
 }
 
 void Server::loadEntitiesFromFile(const std::string &path,
