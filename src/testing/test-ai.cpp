@@ -461,6 +461,18 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
           }
         }
       }
+
+      SECTION("ranged pets follow close") {
+        WHEN("the longbowman becomes the user's pet [and tries to follow]") {
+          longbowman.permissions.setPlayerOwner(user->name());
+
+          THEN("it doesn't move (i.e., correctly concludes there's no path)") {
+            const auto oldLocation = longbowman.location();
+            REPEAT_FOR_MS(1000);
+            CHECK(longbowman.location() == oldLocation);
+          }
+        }
+      }
     }
   }
 
@@ -493,7 +505,6 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
   }
 
   // Separate thread
-  // Ranged NPCs trying to attack don't need to get as close
 }
 
 // Make NPCs invincible if they can't path to user

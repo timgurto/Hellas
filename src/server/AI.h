@@ -40,6 +40,7 @@ class AI {
   void calculatePath();
   bool targetHasMoved() const;
   MapRect getTargetFootprint() const;
+  double howCloseShouldPathfindingGet() const;
 
   class Path {
    public:

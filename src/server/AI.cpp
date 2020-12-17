@@ -282,7 +282,7 @@ void AI::Path::findPathTo(const MapRect &targetFootprint) {
   // A*
   const auto GRID = 25.0;
   const auto DIAG = sqrt(GRID * GRID + GRID * GRID);
-  const auto closeEnough = _owner.attackRange();
+  const auto closeEnough = _owner.ai.howCloseShouldPathfindingGet();
   const auto footprint = _owner.type()->collisionRect();
 
   struct UniqueMapPointOrdering {
@@ -433,5 +433,15 @@ MapRect AI::getTargetFootprint() const {
   if (state == AI::CHASE) return _owner.target()->collisionRect();
   if (state == AI::PET_FOLLOW_OWNER)
     return _owner.followTarget()->collisionRect();
+
+  SERVER_ERROR("Pathfinding while AI is in an inappropriate state");
   return {};
+}
+
+double AI::howCloseShouldPathfindingGet() const {
+  if (state == AI::CHASE) return _owner.attackRange();
+  if (state == AI::PET_FOLLOW_OWNER) return AI::FOLLOW_DISTANCE;
+
+  SERVER_ERROR("Pathfinding while AI is in an inappropriate state");
+  return 0;
 }
