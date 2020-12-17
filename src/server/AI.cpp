@@ -1,5 +1,6 @@
 #include "AI.h"
 
+#include "../threadNaming.h"
 #include "NPC.h"
 #include "Server.h"
 #include "User.h"
@@ -214,7 +215,7 @@ void AI::onTransition(State previousState) {
 
     case CHASE:
     case PET_FOLLOW_OWNER:
-      calculatePath();
+      calculatePathInSeparateThread();
       break;
   }
 }
@@ -228,7 +229,7 @@ void AI::act() {
     case PET_FOLLOW_OWNER:
     case CHASE: {
       // Move towards target
-      if (targetHasMoved()) calculatePath();
+      if (targetHasMoved()) calculatePathInSeparateThread();
       if (!_activePath.exists()) break;
       if (_owner.location() == _activePath.currentWaypoint())
         _activePath.changeToNextWaypoint();
@@ -425,7 +426,21 @@ void AI::Path::findPathTo(const MapRect &targetFootprint) {
   clear();
 }
 
-void AI::calculatePath() { _activePath.findPathTo(getTargetFootprint()); }
+void AI::calculatePathInSeparateThread() {
+  const auto targetFootprint = getTargetFootprint();
+  std::thread([this, targetFootprint]() {
+    setThreadName("Pathfinding for " + _owner.type()->id() + " serial " +
+                  toString(_owner.serial()));
+    const auto thisThreadHasTheLock = _pathfindingMutex.try_lock();
+    if (!thisThreadHasTheLock) return;
+    Server::instance().incrementThreadCount();
+
+    _activePath.findPathTo(targetFootprint);
+
+    _pathfindingMutex.unlock();
+    Server::instance().decrementThreadCount();
+  }).detach();
+}
 
 bool AI::targetHasMoved() const {
   if (!_activePath.exists()) return false;

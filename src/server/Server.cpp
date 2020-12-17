@@ -280,10 +280,10 @@ void Server::run() {
   for (const User &user : _users) {
     writeUserData(user);
   }
-  _running = false;
 
   while (_threadsOpen > 0)
     ;
+  _running = false;
 }
 
 void Server::addUser(const Socket &socket, const std::string &name,

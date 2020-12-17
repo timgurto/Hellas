@@ -1,5 +1,6 @@
 #pragma once
 
+#include <mutex>
 #include <queue>
 
 #include "../Point.h"
@@ -32,12 +33,13 @@ class AI {
   NPC &_owner;
 
   MapPoint _homeLocation;  // Where it returns after a chase.
+  std::mutex _pathfindingMutex;
 
   void transitionIfNecessary();
   void onTransition(AI::State previousState);
   void act();
 
-  void calculatePath();
+  void calculatePathInSeparateThread();
   bool targetHasMoved() const;
   MapRect getTargetFootprint() const;
   double howCloseShouldPathfindingGet() const;

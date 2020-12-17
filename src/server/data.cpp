@@ -768,9 +768,8 @@ void NPC::writeToXML(XmlWriter &xw) const {
 
   xw.setAttr(e, "health", health());
 
-  auto constRef = const_cast<const NPC &>(*this);
-  if (constRef.permissions.hasOwner()) {
-    const auto &owner = constRef.permissions.owner();
+  if (permissions.hasOwner()) {
+    const auto &owner = permissions.owner();
     auto ownerElem = xw.addChild("owner", e);
     xw.setAttr(ownerElem, "type", owner.typeString());
     xw.setAttr(ownerElem, "name", owner.name);
