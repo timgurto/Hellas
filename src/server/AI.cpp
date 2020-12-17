@@ -342,6 +342,26 @@ void AI::Path::findPathTo(const MapRect &targetFootprint) {
   nodesByPoint[startPoint] = startNode;
   candidatePoints.add(startNode.f, startPoint);
 
+  struct Extension {
+    MapPoint delta;
+    double distance;
+    MapRect calculateJourneyFootprintDelta() const {
+      auto ret = MapRect{0, 0, abs(delta.x), abs(delta.y)};
+      if (delta.x < 0) ret.x = delta.x;
+      if (delta.y < 0) ret.y = delta.y;
+      return ret;
+    }
+  };
+  auto extensionCandidates = std::vector<Extension>{};
+  extensionCandidates.push_back({{+GRID, -GRID}, DIAG});
+  extensionCandidates.push_back({{+GRID, +GRID}, DIAG});
+  extensionCandidates.push_back({{-GRID, +GRID}, DIAG});
+  extensionCandidates.push_back({{-GRID, -GRID}, DIAG});
+  extensionCandidates.push_back({{0, -GRID}, GRID});
+  extensionCandidates.push_back({{0, +GRID}, GRID});
+  extensionCandidates.push_back({{-GRID, 0}, GRID});
+  extensionCandidates.push_back({{+GRID, 0}, GRID});
+
   while (candidatePoints.stillSomeLeft()) {
     // Work from the point with the best F cost
     const auto bestCandidatePoint = candidatePoints.getBestCandidate();
@@ -401,16 +421,11 @@ void AI::Path::findPathTo(const MapRect &targetFootprint) {
       }
     };
 
-    // clang-format off
-    considerExtension({ +GRID, -GRID }, {     0, -GRID, +GRID, +GRID }, DIAG); // E
-    considerExtension({ +GRID, +GRID }, {     0,     0, +GRID, +GRID }, DIAG); // F
-    considerExtension({ -GRID, +GRID }, { -GRID,     0, +GRID, +GRID }, DIAG); // G
-    considerExtension({ -GRID, -GRID }, { -GRID, -GRID, +GRID, +GRID }, DIAG); // H
-    considerExtension({     0, -GRID }, {     0, -GRID,     0, +GRID }, GRID); // Up
-    considerExtension({     0, +GRID }, {     0,     0,     0, +GRID }, GRID); // Down
-    considerExtension({ -GRID,     0 }, { -GRID,     0, +GRID,     0 }, GRID); // Left
-    considerExtension({ +GRID,     0 }, {     0,     0, +GRID,     0 }, GRID); // Right
-    // clang-format on
+    for (const auto &extension : extensionCandidates) {
+      considerExtension(extension.delta,
+                        extension.calculateJourneyFootprintDelta(),
+                        extension.distance);
+    }
   }
 
   clear();
