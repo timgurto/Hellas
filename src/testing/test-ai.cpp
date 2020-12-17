@@ -418,41 +418,41 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
     }
   }
 
-  SECTION("longer-ranged NPCs don't need to path as close") {
-    GIVEN("walls, and ranged longbowmen") {
-      auto data = R"(
-        <npcType id="longbowman" maxHealth="10000" attack="1" isRanged="1"
-          pursuesEndlessly="1" >
-          <collisionRect x="-5" y="-5" w="10" h="10" />
-        </npcType>
-        <objectType id="wall">
-          <collisionRect x="-5" y="-5" w="10" h="10" />
-        </objectType>
-      )";
-      useData(data);
+  GIVEN("walls, and ranged longbowmen") {
+    auto data = R"(
+      <npcType id="longbowman" maxHealth="10000" attack="1" isRanged="1"
+        pursuesEndlessly="1" >
+        <collisionRect x="-5" y="-5" w="10" h="10" />
+      </npcType>
+      <objectType id="wall">
+        <collisionRect x="-5" y="-5" w="10" h="10" />
+      </objectType>
+    )";
+    useData(data);
 
-      AND_GIVEN("the user is blocked off from a longbowman") {
-        auto &longbowman = server->addNPC("longbowman", {280, 280});
-        server->addObject("wall", {90, 0});
-        server->addObject("wall", {90, 10});
-        server->addObject("wall", {90, 20});
-        server->addObject("wall", {90, 30});
-        server->addObject("wall", {90, 40});
-        server->addObject("wall", {90, 50});
-        server->addObject("wall", {90, 60});
-        server->addObject("wall", {90, 70});
-        server->addObject("wall", {90, 80});
-        server->addObject("wall", {0, 90});
-        server->addObject("wall", {10, 90});
-        server->addObject("wall", {20, 90});
-        server->addObject("wall", {30, 90});
-        server->addObject("wall", {40, 90});
-        server->addObject("wall", {50, 90});
-        server->addObject("wall", {60, 90});
-        server->addObject("wall", {70, 90});
-        server->addObject("wall", {80, 90});
-        server->addObject("wall", {90, 90});
+    AND_GIVEN("the user is blocked off from a longbowman") {
+      auto &longbowman = server->addNPC("longbowman", {280, 280});
+      server->addObject("wall", {90, 0});
+      server->addObject("wall", {90, 10});
+      server->addObject("wall", {90, 20});
+      server->addObject("wall", {90, 30});
+      server->addObject("wall", {90, 40});
+      server->addObject("wall", {90, 50});
+      server->addObject("wall", {90, 60});
+      server->addObject("wall", {90, 70});
+      server->addObject("wall", {90, 80});
+      server->addObject("wall", {0, 90});
+      server->addObject("wall", {10, 90});
+      server->addObject("wall", {20, 90});
+      server->addObject("wall", {30, 90});
+      server->addObject("wall", {40, 90});
+      server->addObject("wall", {50, 90});
+      server->addObject("wall", {60, 90});
+      server->addObject("wall", {70, 90});
+      server->addObject("wall", {80, 90});
+      server->addObject("wall", {90, 90});
 
+      SECTION("longer-ranged NPCs don't need to path as close") {
         WHEN("the longbowman starts chasing the player") {
           longbowman.makeAwareOf(*user);
 
