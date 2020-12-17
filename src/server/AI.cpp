@@ -345,7 +345,7 @@ void AI::Path::findPathTo(const MapRect &targetFootprint) {
   struct Extension {
     MapPoint delta;
     double distance;
-    MapRect calculateJourneyFootprintDelta() const {
+    MapRect journeyRectDelta() const {
       auto ret = MapRect{0, 0, abs(delta.x), abs(delta.y)};
       if (delta.x < 0) ret.x = delta.x;
       if (delta.y < 0) ret.y = delta.y;
@@ -390,15 +390,15 @@ void AI::Path::findPathTo(const MapRect &targetFootprint) {
     }
 
     // Calculate F, set to this if existing entry is higher or missing
-    auto considerExtension = [&](MapPoint delta, MapRect deltaForJourneyRect,
-                                 double extraGCost) {
-      const auto nextPoint = bestCandidatePoint + delta;
-      auto stepRect = footprint + bestCandidatePoint + deltaForJourneyRect;
+    for (const auto &extension : extensionCandidates) {
+      const auto nextPoint = bestCandidatePoint + extension.delta;
+      auto stepRect =
+          footprint + bestCandidatePoint + extension.journeyRectDelta();
       if (Server::instance().isLocationValid(stepRect, _owner)) {
         const auto currentNode = nodesByPoint[bestCandidatePoint];
         auto nextNode = AStarNode{};
         nextNode.parentInBestPath = bestCandidatePoint;
-        nextNode.g = currentNode.g + extraGCost;
+        nextNode.g = currentNode.g + extension.distance;
         const auto h = distance(footprint + nextPoint, targetFootprint);
 
         const auto pathStraysTooFar =
@@ -419,12 +419,6 @@ void AI::Path::findPathTo(const MapRect &targetFootprint) {
           nodesByPoint[nextPoint] = nextNode;
         }
       }
-    };
-
-    for (const auto &extension : extensionCandidates) {
-      considerExtension(extension.delta,
-                        extension.calculateJourneyFootprintDelta(),
-                        extension.distance);
     }
   }
 
