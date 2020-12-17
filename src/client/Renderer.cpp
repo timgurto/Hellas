@@ -6,8 +6,8 @@
 #include <cassert>
 
 #include "../Args.h"
+#include "../WorkerThread.h"
 #include "../types.h"
-#include "WorkerThread.h"
 
 extern Args cmdLineArgs;
 extern Renderer renderer;

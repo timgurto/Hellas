@@ -2,7 +2,7 @@
 
 #include <SDL.h>
 
-#include "WorkerThread.h"
+#include "../WorkerThread.h"
 
 #ifdef TESTING
 extern WorkerThread SDLThread;

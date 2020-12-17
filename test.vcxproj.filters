@@ -197,7 +197,6 @@
     <ClCompile Include="src\client\CDroppedItem.cpp" />
     <ClCompile Include="src\testing\test-grouping.cpp" />
     <ClCompile Include="src\threadNaming.cpp" />
-    <ClCompile Include="src\client\WorkerThread.cpp" />
     <ClCompile Include="src\client\MemoisedImageDirectory.cpp" />
     <ClCompile Include="src\client\SDLwrappers.cpp" />
     <ClCompile Include="src\server\Groups.cpp" />
@@ -209,6 +208,7 @@
     <ClCompile Include="src\testing\test-soulbound.cpp" />
     <ClCompile Include="src\server\npc-ai.cpp" />
     <ClCompile Include="src\server\AI.cpp" />
+    <ClCompile Include="src\WorkerThread.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -355,7 +355,6 @@
     <ClInclude Include="src\server\DroppedItem.h" />
     <ClInclude Include="src\client\CDroppedItem.h" />
     <ClInclude Include="src\threadNaming.h" />
-    <ClInclude Include="src\client\WorkerThread.h" />
     <ClInclude Include="src\client\MemoisedImageDirectory.h" />
     <ClInclude Include="src\client\SDLwrappers.h" />
     <ClInclude Include="src\server\Groups.h" />
@@ -365,6 +364,7 @@
     <ClInclude Include="src\combatTypes.h" />
     <ClInclude Include="src\testing\TemporaryUserStats.h" />
     <ClInclude Include="src\server\AI.h" />
+    <ClInclude Include="src\WorkerThread.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />

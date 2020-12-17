@@ -3,9 +3,9 @@
 #include <cassert>
 
 #include "../Color.h"
+#include "../WorkerThread.h"
 #include "Renderer.h"
 #include "Surface.h"
-#include "WorkerThread.h"
 
 extern Renderer renderer;
 

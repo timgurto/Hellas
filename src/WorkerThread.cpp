@@ -4,7 +4,7 @@
 
 #include <cassert>
 
-#include "../threadNaming.h"
+#include "threadNaming.h"
 
 WorkerThread::WorkerThread(const std::string threadName) {
   std::thread([this, threadName]() {

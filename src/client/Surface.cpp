@@ -8,8 +8,8 @@
 #include <string>
 
 #include "../Color.h"
+#include "../WorkerThread.h"
 #include "Renderer.h"
-#include "WorkerThread.h"
 
 extern Renderer renderer;
 

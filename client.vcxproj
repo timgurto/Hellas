@@ -179,7 +179,6 @@
     <ClCompile Include="src\client\ui\Window.cpp" />
     <ClCompile Include="src\client\Unlocks.cpp" />
     <ClCompile Include="src\client\WordWrapper.cpp" />
-    <ClCompile Include="src\client\WorkerThread.cpp" />
     <ClCompile Include="src\Color.cpp" />
     <ClCompile Include="src\combatTypes.cpp" />
     <ClCompile Include="src\curlUtil.cpp" />
@@ -203,6 +202,7 @@
     <ClCompile Include="src\types.cpp" />
     <ClCompile Include="src\util.cpp" />
     <ClCompile Include="src\versionUtil.cpp" />
+    <ClCompile Include="src\WorkerThread.cpp" />
     <ClCompile Include="src\XmlReader.cpp" />
     <ClCompile Include="src\XmlWriter.cpp" />
     <ClCompile Include="third-party\tinyxml\tinystr.cpp" />
@@ -283,7 +283,6 @@
     <ClInclude Include="src\client\ui\Window.h" />
     <ClInclude Include="src\client\Unlocks.h" />
     <ClInclude Include="src\client\WordWrapper.h" />
-    <ClInclude Include="src\client\WorkerThread.h" />
     <ClInclude Include="src\Color.h" />
     <ClInclude Include="src\combatTypes.h" />
     <ClInclude Include="src\curlUtil.h" />
@@ -311,6 +310,7 @@
     <ClInclude Include="src\util.h" />
     <ClInclude Include="src\version.h" />
     <ClInclude Include="src\versionUtil.h" />
+    <ClInclude Include="src\WorkerThread.h" />
     <ClInclude Include="src\XmlReader.h" />
     <ClInclude Include="src\XmlWriter.h" />
     <ClInclude Include="third-party\tinyxml\tinystr.h" />

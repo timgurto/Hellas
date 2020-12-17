@@ -2,10 +2,10 @@
 
 #include <cassert>
 
+#include "../../WorkerThread.h"
 #include "../../util.h"
 #include "../Client.h"
 #include "../Tooltip.h"
-#include "../WorkerThread.h"
 #include "Window.h"
 
 extern Renderer renderer;

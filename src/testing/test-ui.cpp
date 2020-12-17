@@ -1,5 +1,5 @@
+#include "../WorkerThread.h"
 #include "../client/ClientNPCType.h"
-#include "../client/WorkerThread.h"
 #include "../client/ui/Label.h"
 #include "../client/ui/List.h"
 #include "TestClient.h"

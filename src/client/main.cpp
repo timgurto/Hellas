@@ -4,10 +4,10 @@
 #include <string>
 
 #include "../Args.h"
+#include "../WorkerThread.h"
 #include "Client.h"
 #include "Renderer.h"
 #include "Texture.h"
-#include "WorkerThread.h"
 
 extern "C" {
 FILE __iob_func[3] = {*stdin, *stdout, *stderr};

@@ -119,7 +119,6 @@
     <ClCompile Include="src\client\MemoisedImageDirectory.cpp" />
     <ClCompile Include="src\client\SDLwrappers.cpp" />
     <ClCompile Include="src\client\UIGroup.cpp" />
-    <ClCompile Include="src\client\WorkerThread.cpp" />
     <ClCompile Include="src\client\HasSounds.cpp" />
     <ClCompile Include="src\client\HelpEntry.cpp" />
     <ClCompile Include="src\client\helpWindow.cpp" />
@@ -300,6 +299,7 @@
     <ClCompile Include="src\types.cpp" />
     <ClCompile Include="src\util.cpp" />
     <ClCompile Include="src\versionUtil.cpp" />
+    <ClCompile Include="src\WorkerThread.cpp" />
     <ClCompile Include="src\XmlReader.cpp" />
     <ClCompile Include="src\XmlWriter.cpp" />
     <ClCompile Include="third-party\tinyxml\tinystr.cpp" />
@@ -335,7 +335,6 @@
     <ClInclude Include="src\client\MemoisedImageDirectory.h" />
     <ClInclude Include="src\client\SDLwrappers.h" />
     <ClInclude Include="src\client\UIGroup.h" />
-    <ClInclude Include="src\client\WorkerThread.h" />
     <ClInclude Include="src\client\HasSounds.h" />
     <ClInclude Include="src\client\HelpEntry.h" />
     <ClInclude Include="src\client\ImageWithHighlight.h" />
@@ -458,6 +457,7 @@
     <ClInclude Include="src\util.h" />
     <ClInclude Include="src\version.h" />
     <ClInclude Include="src\versionUtil.h" />
+    <ClInclude Include="src\WorkerThread.h" />
     <ClInclude Include="src\XmlReader.h" />
     <ClInclude Include="src\XmlWriter.h" />
     <ClInclude Include="third-party\tinyxml\tinystr.h" />
