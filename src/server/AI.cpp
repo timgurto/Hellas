@@ -428,6 +428,7 @@ void AI::Path::findPathTo(const MapRect &targetFootprint) {
 
 void AI::calculatePathInSeparateThread() {
   const auto targetFootprint = getTargetFootprint();
+
   std::thread([this, targetFootprint]() {
     setThreadName("Pathfinding for " + _owner.type()->id() + " serial " +
                   toString(_owner.serial()));
@@ -435,7 +436,18 @@ void AI::calculatePathInSeparateThread() {
     if (!thisThreadHasTheLock) return;
     Server::instance().incrementThreadCount();
 
+    const auto distToTravel = distance(_owner.collisionRect(), targetFootprint);
+    const auto startTime = SDL_GetTicks();
+
     _activePath.findPathTo(targetFootprint);
+
+    const auto endTime = SDL_GetTicks();
+    const auto timeElapsed = endTime - startTime;
+    auto of = std::ofstream{"pathfinding.log", std::ios_base::app};
+    of << _owner.type()->id()  // NPC ID
+       << "," << distToTravel  // Straight-line distance
+       << "," << timeElapsed   // Pathfinding time
+       << std::endl;
 
     _pathfindingMutex.unlock();
     Server::instance().decrementThreadCount();
