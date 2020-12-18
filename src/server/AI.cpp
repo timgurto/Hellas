@@ -231,6 +231,8 @@ void AI::act() {
       // Move towards target
       if (targetHasMoved()) calculatePathInSeparateThread();
       if (!_activePath.exists()) break;
+
+      // If reached the current waypoint, move to the next one
       if (_owner.location() == _activePath.currentWaypoint())
         _activePath.changeToNextWaypoint();
       if (!_activePath.exists()) break;
@@ -238,10 +240,7 @@ void AI::act() {
       const auto result =
           _owner.moveLegallyTowards(_activePath.currentWaypoint());
       if (result == Entity::DID_NOT_MOVE) {
-        const auto destination = state == CHASE
-                                     ? _owner.target()->location()
-                                     : _owner.followTarget()->location();
-        _activePath.findPathTo(destination);
+        calculatePathInSeparateThread();
       }
       break;
     }
