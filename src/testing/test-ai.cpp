@@ -503,8 +503,6 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
       }
     }
   }
-
-  // Separate thread
 }
 
 // Make NPCs invincible if they can't path to user

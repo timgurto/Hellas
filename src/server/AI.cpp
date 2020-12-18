@@ -144,11 +144,6 @@ void AI::transitionIfNecessary() {
         break;
       }
 
-      if (!_activePath.exists()) {
-        state = IDLE;
-        break;
-      }
-
       break;
 
     case AI::ATTACK:
