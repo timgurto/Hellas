@@ -464,12 +464,14 @@ void AI::calculatePathInSeparateThread() {
 bool AI::targetHasMoved() const {
   if (!_activePath.exists()) return false;
 
-  const auto expectedLocation = _activePath.lastWaypoint();
-  const auto currentLocation = getTargetFootprint();
+  const auto pathEnd = _activePath.lastWaypoint();
+  const auto targetLocation = getTargetFootprint();
 
-  const auto MAX_TARGET_MOVEMENT_BEFORE_REPATH_SQUARED = 900.0;
-  return distanceSquared(expectedLocation, currentLocation) >
-         MAX_TARGET_MOVEMENT_BEFORE_REPATH_SQUARED;
+  const auto MAX_TARGET_MOVEMENT_BEFORE_REPATH = 30.0;
+  const auto maxDistanceAllowed =
+      MAX_TARGET_MOVEMENT_BEFORE_REPATH + howCloseShouldPathfindingGet();
+  const auto gapBetweenTargetAndPathEnd = distance(pathEnd, targetLocation);
+  return gapBetweenTargetAndPathEnd > maxDistanceAllowed;
 }
 
 MapRect AI::getTargetFootprint() const {

@@ -505,6 +505,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
   }
 
   // Separate thread
+  // Compare NPC movement with its speed to determine whether it's become
+  // blocked
 }
 
 // Make NPCs invincible if they can't path to user
