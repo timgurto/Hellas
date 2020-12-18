@@ -239,9 +239,8 @@ void AI::act() {
 
       const auto result =
           _owner.moveLegallyTowards(_activePath.currentWaypoint());
-      if (result == Entity::DID_NOT_MOVE) {
+      if (result == Entity::MOVED_INTO_OBSTACLE)
         calculatePathInSeparateThread();
-      }
       break;
     }
 

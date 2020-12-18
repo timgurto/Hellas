@@ -249,9 +249,9 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
           AND_WHEN("a wall appears that blocks the wolf") {
             server->addObject("wall", {200, 10});
 
-            THEN("the wolf can reach the user") {
+            THEN("the wolf can reach the user without getting stuck") {
               WAIT_UNTIL_TIMEOUT(distance(wolf, *user) <= wolf.attackRange(),
-                                 10000);
+                                 3000);
             }
           }
         }
@@ -505,8 +505,6 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
   }
 
   // Separate thread
-  // Compare NPC movement with its speed to determine whether it's become
-  // blocked
 }
 
 // Make NPCs invincible if they can't path to user

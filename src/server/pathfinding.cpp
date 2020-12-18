@@ -244,5 +244,7 @@ Entity::StraightLineMoveResult Entity::moveLegallyTowards(
     }
   }
 
-  return MOVED;
+  const auto movedAsMuchAsWasAllowed =
+      almostEquals(requestedDistance, distanceToMove);
+  return movedAsMuchAsWasAllowed ? MOVED_FREELY : MOVED_INTO_OBSTACLE;
 }

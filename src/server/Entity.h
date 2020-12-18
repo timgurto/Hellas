@@ -210,7 +210,12 @@ class Entity {
   legal location.
   */
   enum ClientLocationUpdateCase { OnServerCorrection, AlwaysSendUpdate };
-  enum StraightLineMoveResult { MOVED, DID_NOT_MOVE, TELEPORTED_NEARBY };
+  enum StraightLineMoveResult {
+    MOVED_FREELY,
+    MOVED_INTO_OBSTACLE,
+    DID_NOT_MOVE,
+    TELEPORTED_NEARBY
+  };
   StraightLineMoveResult moveLegallyTowards(
       const MapPoint &requestedDest,
       ClientLocationUpdateCase whenToSendClientHisLocation =
