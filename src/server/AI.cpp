@@ -322,12 +322,19 @@ void AI::Path::findPathTo(const MapRect &targetFootprint) {
     std::multimap<double, MapPoint> _container;
   } candidatePoints;
 
+  const auto NO_PARENT = MapPoint{-12345, -12345};
+
   auto tracePathTo = [&](MapPoint endpoint) {
     auto pathInReverse = std::vector<MapPoint>{};
     auto point = endpoint;
-    while (point != _owner.location()) {
+    while (point != NO_PARENT) {
+      auto it = nodesByPoint.find(point);
+      if (it == nodesByPoint.end()) {
+        SERVER_ERROR("Tracing path failed; parent not found.");
+        break;
+      }
       pathInReverse.push_back(point);
-      point = nodesByPoint[point].parentInBestPath;
+      point = it->second.parentInBestPath;
     }
     // Reverse
     auto path = std::queue<MapPoint>{};
@@ -340,6 +347,7 @@ void AI::Path::findPathTo(const MapRect &targetFootprint) {
   auto startNode = AStarNode{};
   const auto startPoint = _owner.location();
   startNode.f = distance(footprint + startPoint, targetFootprint);
+  startNode.parentInBestPath = NO_PARENT;
   nodesByPoint[startPoint] = startNode;
   candidatePoints.add(startNode.f, startPoint);
 
