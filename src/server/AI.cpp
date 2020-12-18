@@ -410,7 +410,7 @@ void AI::Path::findPathTo(const MapRect &targetFootprint) {
 
         const auto pathStraysTooFar =
             h > PURSUIT_RANGE && !_owner.npcType()->pursuesEndlessly();
-        if (pathStraysTooFar) return;
+        if (pathStraysTooFar) continue;
 
         nextNode.f = nextNode.g + h;
         auto nodeIter = nodesByPoint.find(nextPoint);
@@ -429,6 +429,7 @@ void AI::Path::findPathTo(const MapRect &targetFootprint) {
     }
   }
 
+  // If execution gets here, no valid path was found.
   clear();
 }
 
