@@ -223,9 +223,16 @@ void AI::act() {
 
     case PET_FOLLOW_OWNER:
     case CHASE: {
+      if (!_activePath.exists()) {
+        calculatePathInSeparateThread();
+        break;
+      }
+
       // Move towards target
-      if (targetHasMoved()) calculatePathInSeparateThread();
-      if (!_activePath.exists()) break;
+      if (targetHasMoved()) {
+        calculatePathInSeparateThread();
+        break;
+      }
 
       // If reached the current waypoint, move to the next one
       if (_owner.location() == _activePath.currentWaypoint())
@@ -236,6 +243,7 @@ void AI::act() {
           _owner.moveLegallyTowards(_activePath.currentWaypoint());
       if (result == Entity::MOVED_INTO_OBSTACLE)
         calculatePathInSeparateThread();
+
       break;
     }
 
