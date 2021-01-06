@@ -37,7 +37,7 @@
 
 <!-- Copied from trees, except with 1h respawn instead of 5 or 10 mins, and qty reduced due to the two alternatives -->
 <!-- Comment out these spawn points to disable the event.  The item and particle effects above must remain active. -->
-<spawnPoint y="12048" x="11984" type="xmasGift2019a" quantity="12" radius="1500" respawnTime="3600000" />
+<!--spawnPoint y="12048" x="11984" type="xmasGift2019a" quantity="12" radius="1500" respawnTime="3600000" />
 <spawnPoint y="13200" x="14528" type="xmasGift2019a" quantity="12" radius="1500" respawnTime="3600000" />
 <spawnPoint y="15536" x="12864" type="xmasGift2019a" quantity="12" radius="1500" respawnTime="3600000" />
 <spawnPoint y="18608" x="13200" type="xmasGift2019a" quantity="12" radius="1500" respawnTime="3600000" />
@@ -125,6 +125,6 @@
 <spawnPoint y="49568" x="43360" type="xmasGift2019b" quantity="2" radius="1500" respawnTime="3600000" />
 <spawnPoint y="50256" x="32544" type="xmasGift2019b" quantity="2" radius="1500" respawnTime="3600000" />
 <spawnPoint y="50944" x="47456" type="xmasGift2019b" quantity="2" radius="1500" respawnTime="3600000" />
-<spawnPoint y="58112" x="46448" type="xmasGift2019b" quantity="2" radius="1500" respawnTime="3600000" />
+<spawnPoint y="58112" x="46448" type="xmasGift2019b" quantity="2" radius="1500" respawnTime="3600000" /-->
 
 </root>
