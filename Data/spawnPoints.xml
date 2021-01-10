@@ -415,7 +415,7 @@
     <spawnPoint type="sheep" y="46752" x="44480" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint type="sheep" y="48504" x="45928" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint type="sheep" y="48552" x="42864" quantity="1" radius="250" respawnTime="300000" />
-    <spawnPoint type="sheep" y="50184" x="43816" quantity="1" radius="250" respawnTime="300000" />
+    <spawnPoint type="sheep" y="50184" x="44100" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint type="sheep" y="51256" x="42600" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint type="sheep" y="51304" x="47128" quantity="1" radius="250" respawnTime="300000" />
     <spawnPoint type="sheepGuardian" y="11432" x="12056" quantity="5" radius="250" respawnTime="300000" />
@@ -451,7 +451,7 @@
     <spawnPoint type="sheepGuardian" y="46752" x="44480" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="sheepGuardian" y="48504" x="45928" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="sheepGuardian" y="48552" x="42864" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint type="sheepGuardian" y="50184" x="43816" quantity="5" radius="250" respawnTime="300000" />
+    <spawnPoint type="sheepGuardian" y="50184" x="44100" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="sheepGuardian" y="51256" x="42600" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="sheepGuardian" y="51304" x="47128" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="silver" y="35296" x="34720" quantity="10" radius="30000" respawnTime="1" useCachedTerrain="1" />

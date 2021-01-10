@@ -79,7 +79,6 @@ A dungeon gate.  Will ultimately move you into the dungeon instance.  For now,
  - Always visible, if that part of the map has been explored.
 Think about how everything in the dungeon can be reset over time.  The way mobs respawn after... 1h?
 Patrols
-Pathfinding
 Chests
 
 
@@ -188,3 +187,52 @@ Loot ideas:
 26 Admiral Lotharios
 
 Woman
+
+
+Quests
+1. Silver coinage
+    Initial quest from anvil?
+    Questgiver is silversmith/coinsmith in Argos
+    Need some tool or recipe from the harbour
+        Just arrived?
+        Abandoned due to crime?
+    Bar -> coins (quest to "make sure it works")
+    Reward: recipes in both directions
+    
+2. Missing women
+    Community leader: Phoenicians took our women
+    Kill n Skirt Chasers (or loot something silly, like flowers or fancy underthings)
+    Kill the boss
+    
+3. Missing princess
+    1. King: Io is missing.  Strange man might be the cause.  Kill strange man in Hera's temple.  Seemingly unrelated pre-quest.  Io was priestess of Hera.  See cow.
+    2. Rumors of Phoenicians taking women.  Go to waterfront and find her.
+    3. One of the women at the end of the dungeon tells the story about Hera, the cow, and the gadfly.  Back to King.
+    4. Hunt the gadfly!
+    5. Quest from king to tell the people that she is in Egypt.  Tell some community leader.  He refuses to believe Hera story, instead draws the conclusion that it was the Phoenicians.
+    
+    
+4. Crime wave
+    Community leader/group leader: we are a group of citizens upset about our women going missing.  But some are taking it too far and assaulting the merchant class.  Please go rein them in.
+    Kill n pickpockets, vandals.
+    
+    
+City of Argos:
+    Marketplace
+        Coinsmith
+            questgiver
+            anvil
+            ingots/coins?
+        Townspeople to complain about women being taken (malcontents)
+        Community leader?  Mayor?
+        Room for player merchants
+    Palace?
+        King
+        Queen
+    Temple of Hera (doesn't need to be in city proper)
+        Cow
+        Hermes
+        Argus
+
+In dungeon:
+    

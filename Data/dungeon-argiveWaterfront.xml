@@ -378,7 +378,6 @@
         <function name="doDirectDamage" i1="150" />
     </spell>
 
-
 <item id="dAW_setHat" name="Duplicitous Trader's Hat" gearSlot="0" sounds="fabric" quality="2" lvlReq="19" >
     <stats armour="7" cunning="7" swiftness="6" />
     <offset x="0" y="0" />
@@ -499,5 +498,56 @@
     <offset x="0" y="0" />
     <canBeRepaired cost="tinBar" tool="smelting1" />
 </item>
+
+
+<!-- Argos (overworld) -->
+<!-- Palace -->
+<npcType id="argosKing" name="King Inachus"
+    level="20" maxHealth="174" isCivilian="1" >
+    <humanoid base="noble">
+        <gear id="crown" />
+        <gear id="royalChiton" />
+        <gear id="purpleCloak" />
+        <gear id="sandals" />
+    </humanoid>
+</npcType>
+<npcType id="argosQueen" name="Queen Melia"
+    level="20" maxHealth="174" isCivilian="1" imageFile="waterNymph"
+    xDrawOffset="-18" yDrawOffset="-40" >
+    <collisionRect x="-5" y="-2" w="9" h="4" />
+</npcType>
+<npc id="argosKing" x="42817" y="49599" />
+<npc id="argosQueen" x="42972" y="49599" />
+<permanentObject isDecoration="1" id="brickGateEW" x="42896" y="49666"/>
+<permanentObject isDecoration="1" id="brickWallEW" x="42815" y="49666"/>
+<permanentObject isDecoration="1" id="brickWallEW" x="42977" y="49666"/>
+<permanentObject isDecoration="1" id="brickWallEW" x="42822" y="49544"/>
+<permanentObject isDecoration="1" id="brickWallEW" x="42902" y="49544"/>
+<permanentObject isDecoration="1" id="brickWallEW" x="42972" y="49544"/>
+<permanentObject isDecoration="1" id="brickWallNS" x="42757" y="49603"/>
+<permanentObject isDecoration="1" id="brickWallNS" x="43033" y="49603"/>
+<permanentObject isDecoration="1" id="cityAltar" x="42895" y="49568"/>
+
+<!-- Market -->
+<npcType id="argosCoinsmith" name="Argive Coinsmith"
+    level="20" maxHealth="174" isCivilian="1" >
+    <humanoid base="default">
+        <gear id="copperHammer" />
+        <gear id="knucklebones" />
+        <gear id="linenChiton" />
+        <gear id="sandals" />
+    </humanoid>
+</npcType>
+<npc id="argosCoinsmith" x="43397" y="49707" />
+<permanentObject isDecoration="1" id="brickGateEW" x="43279" y="49984" />
+<permanentObject isDecoration="1" id="copperAnvil" x="43425" y="49712"/>
+<permanentObject isDecoration="1" id="handCart" x="43188" y="49712"/>
+<permanentObject isDecoration="1" id="handCart" x="43355" y="49619"/>
+<permanentObject isDecoration="1" id="mediumPot" x="43188" y="49791"/>
+<permanentObject isDecoration="1" id="smallPot" x="43192" y="49769"/>
+<permanentObject isDecoration="1" id="smallPot" x="43200" y="49778"/>
+<permanentObject isDecoration="1" id="smallPot" x="43433" y="49691"/>
+<permanentObject isDecoration="1" id="smallPot" x="43440" y="49700"/>
+<permanentObject isDecoration="1" id="tradeStall" x="43361" y="49700"/>
 
 </root>
