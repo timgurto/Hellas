@@ -522,3 +522,45 @@ TEST_CASE("Disappearance after time") {
     }
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Permanent-object decorations") {
+  auto getFirstNonUserEntity = [](TestClient *client) {
+    for (auto *entity : client->entities())
+      if (entity->classTag() != 'u') return entity;
+    return *client->entities().begin();
+  };
+
+  GIVEN("a default object type, and a permanent instance") {
+    useData(R"(
+      <objectType id="rug" />
+      <permanentObject id="rug" x="10" y="10" />
+    )");
+
+    THEN("the client knows it's not decorative") {
+      const auto &cRug = *getFirstNonUserEntity(client);
+      CHECK_FALSE(cRug.isDecoration());
+    }
+  }
+  GIVEN("a default object type, and a permanent instance marked decorative") {
+    useData(R"(
+      <objectType id="rug" />
+      <permanentObject id="rug" x="10" y="10" isDecoration="1" />
+    )");
+
+    THEN("the client knows it's decorative") {
+      const auto &cRug = *getFirstNonUserEntity(client);
+      CHECK(cRug.isDecoration());
+    }
+  }
+  GIVEN("a decorative object type, and a default permanent instance") {
+    useData(R"(
+      <objectType id="rug" isDecoration="1" />
+      <permanentObject id="rug" x="10" y="10" />
+    )");
+
+    THEN("the client knows it's decorative") {
+      const auto &cRug = *getFirstNonUserEntity(client);
+      CHECK(cRug.isDecoration());
+    }
+  }
+}

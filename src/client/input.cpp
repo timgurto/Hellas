@@ -602,7 +602,7 @@ Sprite *Client::getEntityAtMouse() {
       const auto &entity = **it;
       if (entity.type()->isFlat() != flat) continue;
       if (&entity == &_character) continue;  // Can't interact with self
-      if (entity.type()->isDecoration()) continue;
+      if (entity.isDecoration()) continue;
 
       auto *asObject = dynamic_cast<const ClientObject *>(&entity);
       if (asObject && asObject->owner().type == ClientObject::Owner::NO_ACCESS)

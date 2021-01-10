@@ -20,6 +20,9 @@ class Sprite {
   const SpriteType *_type;
   MapPoint _location;
 
+  bool _isDecoration{false};  // If true, cannot be interacted with.  Overrides
+                              // SpriteType::_isDecoration.
+
   // Attack animation
   MapPoint _offsetForAttackAnimation;
   static const double ATTACK_ANIMATION_SPEED;  // px/s
@@ -68,6 +71,8 @@ class Sprite {
   virtual std::string additionalTextInName() const { return {}; }
   virtual bool shouldAddParticles() const { return true; }
   bool isCharacter() const;
+  bool isDecoration() const { return _isDecoration || type()->isDecoration(); }
+  void isDecoration(bool b) { _isDecoration = b; }
 
   // Movement lerping
   const MapPoint &locationOnServer() const { return _locationOnServer; }

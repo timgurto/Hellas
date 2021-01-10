@@ -39,10 +39,7 @@ class TestClient {
   void freeze();
 
   std::map<Serial, ClientObject *> &objects() { return _client->_objects; }
-  Sprite::set_t &entities() {
-    return _client->_entities;
-    ;
-  }
+  Sprite::set_t &entities() { return _client->_entities; }
   const Sprite &getFirstNonAvatarSprite() const;
   CGameData::ObjectTypes &objectTypes() {
     return _client->gameData.objectTypes;

@@ -659,6 +659,11 @@ void CDataLoader::loadPermanentObjects(XmlReader &xr) {
 
     if (type->hasCustomCullDistance())
       _client._spritesWithCustomCullDistances.insert(obj);
+
+    auto n = 0;
+    if (xr.findAttr(elem, "isDecoration", n) && n != 0) {
+      obj->isDecoration(true);
+    }
   }
 }
 
