@@ -516,8 +516,18 @@
     xDrawOffset="-18" yDrawOffset="-40" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
 </npcType>
+<npcType id="argosMagistrate" name="Magistrate Astyanax"
+    level="20" maxHealth="174" isCivilian="1" >
+    <humanoid base="athlete">
+        <gear id="staff2" />
+        <gear id="tablet" />
+        <gear id="linenChiton" />
+        <gear id="sandals" />
+    </humanoid>
+</npcType>
 <npc id="argosKing" x="42817" y="49599" />
 <npc id="argosQueen" x="42972" y="49599" />
+<npc id="argosMagistrate" x="43095" y="49656" />
 <permanentObject isDecoration="1" id="brickGateEW" x="42896" y="49666"/>
 <permanentObject isDecoration="1" id="brickWallEW" x="42815" y="49666"/>
 <permanentObject isDecoration="1" id="brickWallEW" x="42977" y="49666"/>
@@ -534,7 +544,7 @@
     <humanoid base="default">
         <gear id="copperHammer" />
         <gear id="knucklebones" />
-        <gear id="linenChiton" />
+        <gear id="leatherLamellar" />
         <gear id="sandals" />
     </humanoid>
 </npcType>
