@@ -96,6 +96,14 @@ void CQuest::generateWindow(CQuest *quest, Serial startObjectSerial,
         if (type) rewardTooltip = &type->constructionTooltip(*quest->_client);
         break;
       }
+      case Info::Reward::LEARN_RECIPE: {
+        const auto &recipes = quest->_client->gameData.recipes;
+        const auto it = recipes.find(reward.id);
+        if (it == recipes.end()) break;
+        rewardDescription = "Learn recipe: " + it->name();
+        rewardTooltip = &it->tooltip(quest->_client->gameData.tagNames);
+        break;
+      }
       case Info::Reward::RECEIVE_ITEM: {
         const auto *item = quest->_client->findItem(reward.id);
         auto name = item ? item->name() : reward.id;

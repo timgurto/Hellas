@@ -1172,6 +1172,8 @@ void CDataLoader::loadQuests(XmlReader &xr) {
         type = CQuest::Info::Reward::LEARN_SPELL;
       else if (typeString == "construction")
         type = CQuest::Info::Reward::LEARN_CONSTRUCTION;
+      else if (typeString == "recipe")
+        type = CQuest::Info::Reward::LEARN_RECIPE;
       else if (typeString == "item")
         type = CQuest::Info::Reward::RECEIVE_ITEM;
 

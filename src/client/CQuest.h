@@ -24,7 +24,13 @@ class CQuest {
     };
 
     struct Reward {
-      enum Type { NONE, LEARN_SPELL, LEARN_CONSTRUCTION, RECEIVE_ITEM };
+      enum Type {
+        NONE,
+        LEARN_SPELL,
+        LEARN_CONSTRUCTION,
+        LEARN_RECIPE,
+        RECEIVE_ITEM
+      };
       Type type{NONE};
       std::string id{};
       int itemQuantity{1};
