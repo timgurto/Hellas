@@ -35,14 +35,12 @@
     <material id="silverBar" />
     <tool class="anvil1" />
     <tool class="hammering" />
-    <unlockedBy recipe="silverBar" chance="0.4" />
-    <unlockedBy construction="copperAnvil" chance="0.1" />
+    <unlockedBy />
 </recipe>
 <recipe id="meltSilverCoins" name="Melt Silver Coins" product="silverBar" time="1000" >
     <material id="silverCoin" quantity="100" />
     <tool class="smelting2" />
-    <unlockedBy recipe="silverCoin" />
-    <unlockedBy recipe="silverBar" chance="0.4" />
+    <unlockedBy />
 </recipe>
 
 </root>
