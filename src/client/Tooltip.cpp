@@ -174,7 +174,20 @@ void Tooltip::addTags(const HasTags &thingWithTags, const TagNames &tagNames) {
 }
 
 void Tooltip::addRecipe(const CRecipe &recipe, const TagNames &tagNames) {
+  const auto *product = dynamic_cast<const ClientItem *>(recipe.product());
+  if (product) {
+    setColor(Color::TOOLTIP_BODY);
+    auto oss = std::ostringstream{};
+    oss << "Product";
+    if (recipe.quantity() > 1) oss << " (x" << recipe.quantity() << ")";
+    oss << ":";
+    addLine(oss.str());
+
+    embed(product->tooltip());
+  }
+
   if (!recipe.materials().isEmpty()) {
+    addGap();
     setColor(Color::TOOLTIP_BODY);
     addLine("Materials needed:");
     for (auto pair : recipe.materials()) {
@@ -186,6 +199,7 @@ void Tooltip::addRecipe(const CRecipe &recipe, const TagNames &tagNames) {
     }
   }
   if (!recipe.tools().empty()) {
+    addGap();
     setColor(Color::TOOLTIP_BODY);
     addLine("Tools needed:");
     setColor(Color::TOOLTIP_TAG);
@@ -193,10 +207,6 @@ void Tooltip::addRecipe(const CRecipe &recipe, const TagNames &tagNames) {
       const auto tag = tagNames[toolID];
       addLine(" "s + tag);
     }
-  }
-  const auto *product = dynamic_cast<const ClientItem *>(recipe.product());
-  if (product) {
-    embed(product->tooltip());
   }
 }
 
