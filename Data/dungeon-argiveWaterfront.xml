@@ -81,6 +81,7 @@
 </lootTable>
 <lootTable id="dAW_gangTrash" >
     <loot id="dAW_shiv" chance="0.01" />
+    <loot id="dAW_coinRecipe" chance="0.2" />
 </lootTable>
 <lootTable id="dAW_phoenicianTrash" >
     <loot id="dAW_eyepatch" chance="0.01" />
@@ -559,5 +560,35 @@
 <permanentObject isDecoration="1" id="smallPot" x="43433" y="49691"/>
 <permanentObject isDecoration="1" id="smallPot" x="43440" y="49700"/>
 <permanentObject isDecoration="1" id="tradeStall" x="43361" y="49700"/>
+
+
+<quest id="dAW_silverCoins1" name="Seeking the Silversmiths" startsAt="copperAnvil" endsAt="argosCoinsmith"
+    brief="Wiping the sweat from your brow, you consider your journey so far.  Persistence and patience in mining, smelting and casting have brought you here: ready to shape metal by striking with a hammer.
+    Stories have reached you of metalworkers in Argos, who know the secrets of striking silver into coins.  This would facilitate easier exchange, and could also be a lucrative trade unto itself.
+    The city of Argos is on the east coast of the Peloponnesus, the large peninsula at the bottom of mainland Greece.  Go there, and see if you can learn how these coins are made."
+    debrief="Welcome, stranger!  What's that?  You've come to learn how to make coins from silver?  Hmm . . . perhaps we can help each other." >
+</quest>
+<quest id="dAW_silverCoins2" name="Trade Secrets" startsAt="argosCoinsmith" endsAt="argosCoinsmith"
+    brief="Each metal has different properties, and one must learn to see it as a partner with whom to co-operate, rather than a mere substance to be dominated.
+    Silver, too, has its own idiosyncracies, but alas, that knowledge is lost to me.
+    Everything I have learned over the years was recorded in a journal.  On a recent visit to the city's waterfront, I was accosted by gangsters who robbed me.  My journal was among the items taken.
+    If you could return it to me, I would gladly share the knowledge with you."
+    debrief="My journal!  Thank you, stranger!" >
+    <prerequisite id="dAW_silverCoins1" />
+    <objective type="fetch" id="dAW_coinRecipe" qty="1" />
+</quest>
+    <item id="dAW_coinRecipe" name="Coinsmith's Journal" iconFile="parchment" exclusiveToQuest="dAW_silverCoins2" bind="pickup" />
+<quest id="dAW_silverCoins3" name="Trial and Error" startsAt="argosCoinsmith" endsAt="argosCoinsmith"
+    brief="Most of my journal is intact, but a critical entry about temperature has been damaged.  I believe I can figure out the details once again, but it will take some experimentation.
+    Please provide me with an ingot of silver.  I'll salvage what I can from the experiments."
+    debrief="I have managed to fill in the gaps, and will happily share my knowledge with you.
+    Additionally, here are the coins I made with the silver you provided.  Thankfully only a little was wasted.
+    Thanks again for your help!  I look forward to seeing your coins in circulation." >
+    <prerequisite id="dAW_silverCoins2" />
+    <objective type="fetch" id="silverBar" qty="1" />
+    <reward type="item" id="silverCoin" qty="90" />
+    <reward type="recipe" id="silverCoin" />
+    <reward type="recipe" id="meltSilverCoins" />
+</quest>
 
 </root>
