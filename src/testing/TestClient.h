@@ -51,8 +51,10 @@ class TestClient {
   const List &recipeList() const { return *_client->_recipeList; }
   void showCraftingWindow();
   bool knowsConstruction(const std::string &id) const {
-    return _client->_knownConstructions.find(id) !=
-           _client->_knownConstructions.end();
+    return _client->_knownConstructions.count(id) == 1;
+  }
+  bool knowsRecipe(const std::string &id) const {
+    return _client->_knownRecipes.count(id) == 1;
   }
   const ChoiceList &uiBuildList() const { return *_client->_buildList; }
   bool knowsSpell(const std::string &id) const;

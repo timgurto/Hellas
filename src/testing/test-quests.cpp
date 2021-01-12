@@ -1574,6 +1574,35 @@ TEST_CASE("Quest reward: construction") {
   }
 }
 
+TEST_CASE("Quest reward: recipe") {
+  GIVEN("a quest that awards a crafting recipe") {
+    auto data = R"(
+      <objectType id="questgiver" />
+      <item id="sweat" />
+      <recipe id="sweat"> <unlockedBy/> </recipe>
+      <quest id="teachesSweat" startsAt="questgiver" endsAt="questgiver">
+        <reward type="recipe" id="sweat" />
+      </quest>
+    )";
+    auto s = TestServer::WithDataString(data);
+    auto c = TestClient::WithDataString(data);
+    s.waitForUsers(1);
+    auto &user = s.getFirstUser();
+
+    WHEN("a user completes the quest") {
+      const auto &quest = s.getFirstQuest();
+      user.startQuest(quest);
+      user.completeQuest(quest.id);
+
+      THEN("he knows the recipe") {
+        WAIT_UNTIL(user.knowsRecipe("sweat"));
+
+        AND_THEN("and he knows it") { WAIT_UNTIL(c.knowsRecipe("sweat")); }
+      }
+    }
+  }
+}
+
 TEST_CASE("Quest reward: spell") {
   GIVEN("a quest that awards a spell") {
     auto data = R"(

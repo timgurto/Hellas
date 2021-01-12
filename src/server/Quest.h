@@ -31,7 +31,7 @@ struct Quest {
   bool hasObjective() const { return !objectives.empty(); }
 
   struct Reward {
-    enum Type { NONE, CONSTRUCTION, SPELL, ITEM };
+    enum Type { NONE, CONSTRUCTION, RECIPE, SPELL, ITEM };
     Type type{NONE};
     std::string id;
     int itemQuantity{1};

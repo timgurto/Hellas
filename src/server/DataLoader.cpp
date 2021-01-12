@@ -410,8 +410,11 @@ void DataLoader::loadQuests(XmlReader &xr) {
       xr.findAttr(rewardElem, "qty", reward.itemQuantity);
 
       if (!xr.findAttr(rewardElem, "type", type)) continue;
+
       if (type == "construction")
         reward.type = Quest::Reward::CONSTRUCTION;
+      else if (type == "recipe")
+        reward.type = Quest::Reward::RECIPE;
       else if (type == "spell")
         reward.type = Quest::Reward::SPELL;
       else if (type == "item")

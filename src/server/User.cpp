@@ -1702,6 +1702,10 @@ void User::giveQuestReward(const Quest::Reward &reward) {
       addConstruction(reward.id);
       server.sendNewBuildsMessage(*this, {reward.id});
       break;
+    case Quest::Reward::RECIPE:
+      addRecipe(reward.id);
+      server.sendNewRecipesMessage(*this, {reward.id});
+      break;
 
     case Quest::Reward::SPELL:
       getClass().teachSpell(reward.id);
