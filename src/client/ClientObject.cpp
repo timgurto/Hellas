@@ -915,6 +915,7 @@ void ClientObject::drawAppropriateQuestIndicator() const {
 
   if (!userHasAccess()) return;
   if (isBeingConstructed()) return;
+  if (isDecoration()) return;
   if (!completableQuests().empty())
     questIndicator = &Client::images.endQuestIndicator;
   else if (!startsQuests().empty())
