@@ -191,18 +191,7 @@ Woman
 
 Quests
 1. Silver coinage
-    Initial quest from anvil?
-    Questgiver is silversmith/coinsmith in Argos
-    Need some tool or recipe from the harbour
-        Just arrived?
-        Abandoned due to crime?
-    Bar -> coins (quest to "make sure it works")
-    Reward: recipes in both directions
-    
 2. Missing women
-    Community leader: Phoenicians took our women
-    Kill n Skirt Chasers (or loot something silly, like flowers or fancy underthings)
-    Kill the boss
     
 3. Missing princess
     1. King: Io is missing.  Strange man might be the cause.  Kill strange man in Hera's temple.  Seemingly unrelated pre-quest.  Io was priestess of Hera.  See cow.
@@ -233,6 +222,3 @@ City of Argos:
         Cow
         Hermes
         Argus
-
-In dungeon:
-    

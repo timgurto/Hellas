@@ -290,6 +290,7 @@
     <lootTable id="dAW_phoenicianTrash" />
     <lootTable id="human" />
     <lootTable id="humanTinAge" />
+    <loot id="dAW_phnLoverBoxers" />
 </npcType>
 
 <npcType id="dAW_phnLoverBoss" name="Lotharios"
@@ -301,6 +302,7 @@
     <lootTable id="dAW_boss" />
     <lootTable id="human" />
     <lootTable id="humanTinAge" />
+    <loot id="dAW_phnLoverBoxers" />
     <chooseLoot>
         <choice item="dAW_loverSword"/>
         <choice item="dAW_loverHealOffhand"/>
@@ -549,7 +551,16 @@
         <gear id="sandals" />
     </humanoid>
 </npcType>
+<npcType id="phnMerchant" name="Phoenician Merchant"
+    level="20" maxHealth="174" isCivilian="1" >
+    <humanoid base="athlete">
+        <gear id="dAW_setHat" />
+        <gear id="sandals" />
+        <gear id="dAW_setRobe" />
+    </humanoid>
+</npcType>
 <npc id="argosCoinsmith" x="43397" y="49707" />
+<npc id="phnMerchant" x="43208" y="49528" />
 <permanentObject isDecoration="1" id="brickGateEW" x="43279" y="49984" />
 <permanentObject isDecoration="1" id="copperAnvil" x="43425" y="49712"/>
 <permanentObject isDecoration="1" id="handCart" x="43188" y="49712"/>
@@ -561,7 +572,8 @@
 <permanentObject isDecoration="1" id="smallPot" x="43440" y="49700"/>
 <permanentObject isDecoration="1" id="tradeStall" x="43361" y="49700"/>
 
-
+<!-- QUESTS -->
+<!-- Silver coinage -->
 <quest id="dAW_silverCoins1" name="Seeking the Silversmiths" startsAt="copperAnvil" endsAt="argosCoinsmith"
     brief="Wiping the sweat from your brow, you consider your journey so far.  Persistence and patience in mining, smelting and casting have brought you here: ready to shape metal by striking with a hammer.
     Stories have reached you of metalworkers in Argos, who know the secrets of striking silver into coins.  This would facilitate easier exchange, and could also be a lucrative trade unto itself.
@@ -591,4 +603,44 @@
     <reward type="recipe" id="meltSilverCoins" />
 </quest>
 
+<!-- Missing women -->
+<quest id="dAW_missingWomen1" name="The Missing Women" startsAt="argosMagistrate" endsAt="phnMerchant"
+    brief="You look like you can handle yourself; perhaps you can aid our city.
+    Many of our young women have disappeared recently, and I suspect it has something to do with the Phoenician merchants who are visiting the city.  We can't have foreigners kidnapping our women!
+    If you could, please head to the market square and find out what you can."
+    debrief="Good day!  Today I have a wonderful assortment of . . .
+    Kidnapping?  We would never do such a thing!  I have indeed seen Greek maidens stop by the markets to inspect our wares.  Many became enamoured with my countrymen--rugged and handsome sailors all--and followed them down to the docks for a grand adventure on the seas.">
+</quest>
+<quest id="dAW_missingWomen2" name="The Missing Women" startsAt="phnMerchant" endsAt="argosMagistrate"
+    brief="We cannot be blamed for the caprice of young women.  Tell your magistrate that his slander is an outrage, and shall be reflected in our future dealings with this city."
+    debrief="So my suspicion about the Phoenicians was correct.  And their story is that the women went willingly?  Whatever the truth is, they must still be rescued, and avenged.">
+    <prerequisite id="dAW_missingWomen1" />
+</quest>
+<quest id="dAW_missingWomenRescue" name="Rescue from the Waterfront" startsAt="argosMagistrate" endsAt="dAW_womanQG1"
+    brief="We've confirmed that the Phoenicians took a number of women from the marketplace, and are holding them in the Waterfront district.  Go there, and rescue the poor girls."
+    debrief="Did you really think we were taken against our will?  The promise of a life at sea holds much more promise than our dreary lives in the city.  We're all staying onboard.  I'm sorry that your heroic tale won't get a satisfying ending.">
+    <prerequisite id="dAW_missingWomen2" />
+</quest>
+    <npcType id="dAW_woman" name="Argive Maiden" template="girllTeal" isCivilian="1" level="17" maxHealth="136" />
+    <npcType id="dAW_womanQG1" name="Argive Maiden" template="girllTeal" isCivilian="1" level="17" maxHealth="136" />
+    <npc id="dAW_womanQG1" x="17920" y="70565" />
+<quest id="dAW_missingWomenAvenge" name="Revenge at the Waterfront" startsAt="argosMagistrate" endsAt="argosMagistrate"
+    brief="The sailors who absconded with our treasured maidens must pay.  Go down to the city's Waterfront, kill those responsible, and bring me proof of your deed so that the city can satisfied."
+    debrief="It's disgraceful that men can behave so wickedly, and that they would repay our hospitality with such disrespect.  The city of Argos thanks you for your service.">
+    <prerequisite id="dAW_missingWomen2" />
+    <objective type="fetch" id="dAW_phnLoverBoxers" qty="10" />
+    <reward type="item" id="dAW_questGloves" />
+</quest>
+    <item id="dAW_phnLoverBoxers" name="Fancy Underthings" exclusiveToQuest="dAW_missingWomenAvenge" bind="pickup" />
+    <item id="dAW_questGloves" name="Magistrate's Gloves" gearSlot="4" bind="pickup" quality="2"
+        sounds="leather" iconFile="leatherGlovesGreen" gearFile="leatherGlovesGreen" >
+        <tag name="gloves" toolSpeed="1.05" />
+        <stats armour="4" courage="3" />
+        <offset x="0" y="0" />
+        <canBeRepaired cost="leather" tool="sewing" />
+    </item>
+
+    <!--npcType id="dAW_womanQG2" name="Argive Maiden" template="girllTeal" isCivilian="1" level="17" maxHealth="136" />
+    <npc id="dAW_womanQG2" x="17980" y="70625" /-->
+    
 </root>

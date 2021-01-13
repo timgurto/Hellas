@@ -176,7 +176,7 @@
     <spawnPoint type="dAW_phnLover" y="70592" x="17253.5" quantity="1" radius="0" respawnTime="300000" />
     <spawnPoint type="dAW_phnLover" y="70758" x="17224" quantity="1" radius="0" respawnTime="300000" />
     <spawnPoint type="dAW_phnLover" y="70766" x="17503" quantity="1" radius="0" respawnTime="300000" />
-    <spawnPoint type="dAW_woman" y="70595" x="17950" quantity="4" radius="250" respawnTime="300000" />
+    <spawnPoint type="dAW_woman" y="70595" x="17950" quantity="4" radius="100" respawnTime="300000" />
     <spawnPoint type="dAW_phnLover" y="70780.5" x="17470.5" quantity="1" radius="0" respawnTime="300000" />
     <spawnPoint type="dAW_phnLoverBoss" y="70680.5" x="17741" quantity="1" radius="0" respawnTime="300000" />
     <spawnPoint type="dAW_phnNavigator" y="71151.5" x="18675" quantity="1" radius="0" respawnTime="300000" />
