@@ -381,7 +381,7 @@
 
 <item id="dAW_setHat" name="Duplicitous Trader's Hat" gearSlot="0" sounds="fabric" quality="2" lvlReq="19" >
     <stats armour="7" cunning="7" swiftness="6" />
-    <offset x="0" y="0" />
+    <offset x="-3" y="-8" />
     <canBeRepaired cost="woolCloth" tool="sewing" />
 </item>
 <item id="dAW_setGloves" name="Duplicitous Trader's Armbands" gearSlot="4" sounds="mailArmor" quality="1" lvlReq="18"
@@ -396,7 +396,7 @@
     <offset x="-3" y="-7" />
     <canBeRepaired cost="tinRing" />
 </item>
-<item id="dAW_setRobe" name="Duplicitous Trader's Chiton" gearSlot="5" sounds="fabric" quality="3" lvlReq="21"
+<item id="dAW_setRobe" name="Duplicitous Trader's Chiton" gearSlot="2" sounds="fabric" quality="3" lvlReq="21"
     iconFile="blueChiton" >
     <stats armour="14" cunning="9" swiftness="9" crit="200" />
     <offset x="-4" y="-3" />
@@ -429,7 +429,7 @@
     <offset x="-8" y="-7" />
     <canBeRepaired cost="tinBar" tool="smelting1" />
 </item>
-<item id="dAW_strongmanArmour" name="Champion's Leather Breastplate" gearSlot="6" sounds="leather" quality="2" lvlReq="17"
+<item id="dAW_strongmanArmour" name="Champion's Leather Breastplate" gearSlot="2" sounds="leather" quality="2" lvlReq="17"
     gearFile="leatherBreastplate" iconFile="leatherBreastplate" >
     <stats armour="16" endurance="5" might="11" />
     <offset x="-4" y="-3" />
@@ -582,7 +582,7 @@
     brief="Most of my journal is intact, but a critical entry about temperature has been damaged.  I believe I can figure out the details once again, but it will take some experimentation.
     Please provide me with an ingot of silver.  I'll salvage what I can from the experiments."
     debrief="I have managed to fill in the gaps, and will happily share my knowledge with you.
-    Additionally, here are the coins I made with the silver you provided.  Thankfully only a little was wasted.
+    Additionally, here are the coins I made with the silver you provided.  Luckily only a little was wasted.
     Thanks again for your help!  I look forward to seeing your coins in circulation." >
     <prerequisite id="dAW_silverCoins2" />
     <objective type="fetch" id="silverBar" qty="1" />
