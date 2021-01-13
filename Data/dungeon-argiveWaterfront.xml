@@ -621,8 +621,8 @@
     debrief="Did you really think we were taken against our will?  The promise of a life at sea holds much more promise than our dreary lives in the city.  We're all staying onboard.  I'm sorry that your heroic tale won't get a satisfying ending.">
     <prerequisite id="dAW_missingWomen2" />
 </quest>
-    <npcType id="dAW_woman" name="Argive Maiden" template="girllTeal" isCivilian="1" level="17" maxHealth="136" />
-    <npcType id="dAW_womanQG1" name="Argive Maiden" template="girllTeal" isCivilian="1" level="17" maxHealth="136" />
+    <npcType id="dAW_woman" name="Argive Maiden" template="girlTeal" isCivilian="1" level="17" maxHealth="136" />
+    <npcType id="dAW_womanQG1" name="Argive Maiden" template="girlTeal" isCivilian="1" level="17" maxHealth="136" />
     <npc id="dAW_womanQG1" x="17920" y="70565" />
 <quest id="dAW_missingWomenAvenge" name="Revenge at the Waterfront" startsAt="argosMagistrate" endsAt="argosMagistrate"
     brief="The sailors who absconded with our treasured maidens must pay.  Go down to the city's Waterfront, kill those responsible, and bring me proof of your deed so that the city can satisfied."
@@ -640,7 +640,7 @@
         <canBeRepaired cost="leather" tool="sewing" />
     </item>
 
-    <!--npcType id="dAW_womanQG2" name="Argive Maiden" template="girllTeal" isCivilian="1" level="17" maxHealth="136" />
+    <!--npcType id="dAW_womanQG2" name="Argive Maiden" template="girlTeal" isCivilian="1" level="17" maxHealth="136" />
     <npc id="dAW_womanQG2" x="17980" y="70625" /-->
     
 </root>
