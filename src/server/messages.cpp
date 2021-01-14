@@ -622,6 +622,38 @@ HANDLE_MESSAGE(CL_CEDE) {
   ent->permissions.setCityOwner(city);
 }
 
+HANDLE_MESSAGE(CL_PERFORM_OBJECT_ACTION) {
+  auto serial = Serial{};
+  auto textArg = ""s;
+  READ_ARGS(serial, textArg);
+
+  if (user.isStunned()) RETURN_WITH(WARNING_STUNNED)
+  if (!serial.isEntity()) RETURN_WITH(WARNING_DOESNT_EXIST)
+
+  auto *obj = _entities.find<Object>(serial);
+  if (!obj->permissions.doesUserHaveAccess(user.name(), true))
+    RETURN_WITH(WARNING_NO_PERMISSION)
+
+  const auto &objType = obj->objType();
+  if (!objType.hasAction()) RETURN_WITH(ERROR_NO_ACTION)
+
+  if (objType.action().cost) {
+    auto cost = ItemSet{};
+    cost.add(objType.action().cost);
+    if (!user.hasItems(cost)) RETURN_WITH(WARNING_ITEM_NEEDED)
+  }
+
+  auto succeeded = objType.action().function(*obj, user, textArg);
+
+  if (succeeded) {
+    if (objType.action().cost) {
+      auto cost = ItemSet{};
+      cost.add(objType.action().cost);
+      user.removeItems(cost);
+    }
+  }
+}
+
 HANDLE_MESSAGE(CL_CAST_SPELL) {
   auto spellID = ""s;
   READ_ARGS(spellID);
@@ -997,6 +1029,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_SWAP_ITEMS)
       SEND_MESSAGE_TO_HANDLER(CL_TAKE_ITEM)
       SEND_MESSAGE_TO_HANDLER(CL_CEDE)
+      SEND_MESSAGE_TO_HANDLER(CL_PERFORM_OBJECT_ACTION)
       SEND_MESSAGE_TO_HANDLER(CL_CAST_SPELL)
       SEND_MESSAGE_TO_HANDLER(CL_CAST_SPELL_FROM_ITEM)
       SEND_MESSAGE_TO_HANDLER(CL_REPAIR_ITEM)
@@ -1469,19 +1502,6 @@ void Server::handleBufferedMessages(const Socket &client,
         break;
       }
 
-      case CL_PERFORM_OBJECT_ACTION: {
-        auto serial = Serial{};
-        iss >> serial >> del;
-        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
-        auto textArg = std::string{_stringInputBuffer};
-        iss >> del;
-        if (del != MSG_END) return;
-        if (user->isStunned()) BREAK_WITH(WARNING_STUNNED)
-        handle_CL_PERFORM_OBJECT_ACTION(*user, serial, textArg);
-
-        break;
-      }
-
       case CL_RECRUIT: {
         iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
         auto username = std::string{_stringInputBuffer};
@@ -1687,34 +1707,6 @@ void Server::handle_CL_GRANT(User &user, Serial serial, std::string username) {
     RETURN_WITH(WARNING_NOT_A_CITIZEN)
 
   obj->permissions.setPlayerOwner(username);
-}
-
-void Server::handle_CL_PERFORM_OBJECT_ACTION(User &user, Serial serial,
-                                             const std::string &textArg) {
-  if (!serial.isEntity()) RETURN_WITH(WARNING_DOESNT_EXIST)
-  auto *obj = _entities.find<Object>(serial);
-
-  if (!obj->permissions.doesUserHaveAccess(user.name(), true))
-    RETURN_WITH(WARNING_NO_PERMISSION)
-
-  const auto &objType = obj->objType();
-  if (!objType.hasAction()) RETURN_WITH(ERROR_NO_ACTION)
-
-  if (objType.action().cost) {
-    auto cost = ItemSet{};
-    cost.add(objType.action().cost);
-    if (!user.hasItems(cost)) RETURN_WITH(WARNING_ITEM_NEEDED)
-  }
-
-  auto succeeded = objType.action().function(*obj, user, textArg);
-
-  if (succeeded) {
-    if (objType.action().cost) {
-      auto cost = ItemSet{};
-      cost.add(objType.action().cost);
-      user.removeItems(cost);
-    }
-  }
 }
 
 void Server::handle_CL_TARGET_ENTITY(User &user, Serial serial) {
