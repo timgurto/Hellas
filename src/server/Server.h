@@ -151,15 +151,18 @@ class Server {
 
   // Action functions
   static bool endTutorial(const Object &obj, User &performer,
-                          const std::string &textArg);
+                          const std::string &textArg, const Action::Args &args);
   static bool createCityOrTeachCityPort(const Object &obj, User &performer,
-                                        const std::string &textArg);
+                                        const std::string &textArg,
+                                        const Action::Args &args);
   static bool createCity(const Object &obj, User &performer,
-                         const std::string &textArg);
+                         const std::string &textArg, const Action::Args &args);
   static bool setRespawnPoint(const Object &obj, User &performer,
-                              const std::string &textArg);
+                              const std::string &textArg,
+                              const Action::Args &args);
   static bool teleportToArea(const Object &obj, User &performer,
-                             const std::string &textArg);
+                             const std::string &textArg,
+                             const Action::Args &args);
   // Callback-action functions
   static void destroyCity(const Object &obj);
 

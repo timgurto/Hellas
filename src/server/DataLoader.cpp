@@ -303,6 +303,9 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
       }
       pAction->function = it->second;
 
+      xr.findAttr(action, "d1", pAction->args.d1);
+      xr.findAttr(action, "d2", pAction->args.d2);
+
       auto costID = ""s;
       if (xr.findAttr(action, "cost", costID)) {
         std::set<ServerItem>::const_iterator itemIt =

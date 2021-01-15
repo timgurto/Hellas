@@ -643,7 +643,8 @@ HANDLE_MESSAGE(CL_PERFORM_OBJECT_ACTION) {
     if (!user.hasItems(cost)) RETURN_WITH(WARNING_ITEM_NEEDED)
   }
 
-  auto succeeded = objType.action().function(*obj, user, textArg);
+  auto succeeded =
+      objType.action().function(*obj, user, textArg, objType.action().args);
 
   if (succeeded) {
     if (objType.action().cost) {

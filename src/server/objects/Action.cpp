@@ -12,7 +12,7 @@ CallbackAction::FunctionMap CallbackAction::functionMap = {
     {"destroyCity", Server::destroyCity}};
 
 bool Server::endTutorial(const Object &obj, User &performer,
-                         const std::string &textArg) {
+                         const std::string &textArg, const Action::Args &args) {
   auto &server = Server::instance();
 
   performer.exploration.unexploreAll(performer.socket());
@@ -56,17 +56,18 @@ bool Server::endTutorial(const Object &obj, User &performer,
 }
 
 bool Server::createCityOrTeachCityPort(const Object &obj, User &performer,
-                                       const std::string &textArg) {
+                                       const std::string &textArg,
+                                       const Action::Args &args) {
   auto &server = Server::instance();
   if (server.cities().isPlayerInACity(performer.name())) {
     performer.getClass().teachSpell("cityPort");
     return true;
   } else
-    return createCity(obj, performer, textArg);
+    return createCity(obj, performer, textArg, args);
 }
 
 bool Server::createCity(const Object &obj, User &performer,
-                        const std::string &textArg) {
+                        const std::string &textArg, const Action::Args &args) {
   auto &server = Server::instance();
 
   if (textArg == "_") return false;
@@ -81,7 +82,8 @@ bool Server::createCity(const Object &obj, User &performer,
 }
 
 bool Server::setRespawnPoint(const Object &obj, User &performer,
-                             const std::string &textArg) {
+                             const std::string &textArg,
+                             const Action::Args &args) {
   performer.respawnPoint(obj.location());
 
   performer.sendSpawnPoint(true);
@@ -97,6 +99,8 @@ void Server::destroyCity(const Object &obj) {
 }
 
 bool Server::teleportToArea(const Object &obj, User &performer,
-                            const std::string &textArg) {
-  return performer.teleportToValidLocationInCircle({200.0, 200.0}, 50.0);
+                            const std::string &textArg,
+                            const Action::Args &args) {
+  const auto targetLocation = MapRect{args.d1, args.d2};
+  return performer.teleportToValidLocationInCircle(targetLocation, 50.0);
 }
