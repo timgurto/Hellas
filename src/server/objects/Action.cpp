@@ -6,7 +6,7 @@ Action::FunctionMap Action::functionMap = {
     {"endTutorial", Server::endTutorial},
     {"createCityOrTeachCityPort", Server::createCityOrTeachCityPort},
     {"setRespawnPoint", Server::setRespawnPoint},
-    {"teleportToArea", {}}};
+    {"teleportToArea", Server::teleportToArea}};
 
 CallbackAction::FunctionMap CallbackAction::functionMap = {
     {"destroyCity", Server::destroyCity}};
@@ -94,4 +94,10 @@ void Server::destroyCity(const Object &obj) {
   if (cityName.empty()) return;
 
   instance()._cities.destroyCity(cityName);
+}
+
+bool Server::teleportToArea(const Object &obj, User &performer,
+                            const std::string &textArg) {
+  performer.teleportTo({200, 200});
+  return true;
 }

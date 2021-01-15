@@ -268,5 +268,14 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Effect: teleport to area") {
       </objectType>
     )");
     const auto &slipgate = server->addObject("slipgate", {5.0, 5.0});
+
+    WHEN("a player users it") {
+      client->sendMessage(CL_PERFORM_OBJECT_ACTION,
+                          makeArgs(slipgate.serial(), "_"s));
+
+      THEN("he is near (200,200)") {
+        WAIT_UNTIL(distance(user->location(), MapPoint{200.0, 200.0}) <= 50.0);
+      }
+    }
   }
 }

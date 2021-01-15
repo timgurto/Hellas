@@ -158,6 +158,8 @@ class Server {
                          const std::string &textArg);
   static bool setRespawnPoint(const Object &obj, User &performer,
                               const std::string &textArg);
+  static bool teleportToArea(const Object &obj, User &performer,
+                             const std::string &textArg);
   // Callback-action functions
   static void destroyCity(const Object &obj);
 
