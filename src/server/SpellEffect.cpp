@@ -212,25 +212,8 @@ CombatResult SpellEffect::teleportToCity(const SpellEffect &effect,
 
   auto cityLoc = server.cities().locationOf(cityName);
 
-  auto proposedLocation = MapPoint{};
-  const auto MAX_RADIUS = 150_px;
-
-  auto attempts = 100;
-  while (attempts-- > 0) {
-    auto angle = randDouble() * 2 * PI;
-    auto radius = sqrt(randDouble()) * MAX_RADIUS;
-    auto dX = cos(angle) * radius;
-    auto dY = sin(angle) * radius;
-
-    proposedLocation = cityLoc + MapPoint{dX, dY};
-    if (server.isLocationValid(proposedLocation, target)) break;
-  }
-
-  if (attempts == 0) return FAIL;
-
-  target.teleportTo(proposedLocation);
-
-  return HIT;
+  const auto succeeded = target.teleportToValidLocationInCircle(cityLoc, 150.0);
+  return succeeded ? HIT : FAIL;
 }
 
 CombatResult SpellEffect::teachRecipe(const SpellEffect &effect, Entity &caster,

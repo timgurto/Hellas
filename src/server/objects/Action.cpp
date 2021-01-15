@@ -98,22 +98,5 @@ void Server::destroyCity(const Object &obj) {
 
 bool Server::teleportToArea(const Object &obj, User &performer,
                             const std::string &textArg) {
-  const auto RADIUS = 50.0;
-  const auto targetLocation = MapPoint{200, 200};
-
-  auto attempts = 100;
-  while (attempts-- > 0) {
-    auto angle = randDouble() * 2 * PI;
-    auto radius = sqrt(randDouble()) * RADIUS;
-    auto dX = cos(angle) * radius;
-    auto dY = sin(angle) * radius;
-
-    const auto proposedLocation = targetLocation + MapPoint{dX, dY};
-    if (Server::instance().isLocationValid(proposedLocation, performer)) {
-      performer.teleportTo(proposedLocation);
-      return true;
-    }
-  }
-
-  return false;
+  return performer.teleportToValidLocationInCircle({200.0, 200.0}, 50.0);
 }

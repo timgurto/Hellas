@@ -78,6 +78,7 @@ class Entity {
   virtual double legalMoveDistance(double requestedDistance,
                                    double timeElapsed) const;
   virtual bool shouldMoveWhereverRequested() const { return false; }
+  bool teleportToValidLocationInCircle(const MapPoint &centre, double radius);
   void teleportTo(const MapPoint &destination);
   virtual Message teleportMessage(const MapPoint &destination) const;
   virtual void onTeleport() {}

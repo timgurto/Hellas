@@ -596,6 +596,27 @@ double Entity::legalMoveDistance(double requestedDistance,
   return min(maxLegalDistance, requestedDistance);
 }
 
+bool Entity::teleportToValidLocationInCircle(const MapPoint &centre,
+                                             double maxRadius) {
+  auto &server = Server::instance();
+
+  auto attempts = 100;
+  while (attempts-- > 0) {
+    auto angle = randDouble() * 2 * PI;
+    auto radius = sqrt(randDouble()) * maxRadius;
+    auto dX = cos(angle) * radius;
+    auto dY = sin(angle) * radius;
+
+    const auto proposedLocation = centre + MapPoint{dX, dY};
+    if (server.isLocationValid(proposedLocation, *this)) {
+      teleportTo(proposedLocation);
+      return true;
+    };
+  }
+
+  return false;
+}
+
 void Entity::teleportTo(const MapPoint &destination) {
   const auto &server = Server::instance();
   auto startingLocation = location();
