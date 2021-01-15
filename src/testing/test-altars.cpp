@@ -261,20 +261,38 @@ TEST_CASE("End-of-tutorial altar") {
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Effect: teleport to area") {
-  GIVEN("an object that teleports the user near (200,200)") {
+  GIVEN("a slipgate that teleports the user near (200,200)") {
     useData(R"(
       <objectType id="slipgate">
         <action target="teleportToArea" d1="200" d2="200" d3="50" />
       </objectType>
+      <objectType id="wall" >
+        <collisionRect x="-5" y="-5" w="10" h="10" />
+      </objectType>
     )");
     const auto &slipgate = server->addObject("slipgate", {5.0, 5.0});
 
-    WHEN("a player users it") {
+    WHEN("a player users the slipgate") {
       client->sendMessage(CL_PERFORM_OBJECT_ACTION,
                           makeArgs(slipgate.serial(), "_"s));
 
       THEN("he is near (200,200)") {
         WAIT_UNTIL(distance(user->location(), MapPoint{200.0, 200.0}) <= 50.0);
+      }
+    }
+
+    AND_GIVEN("there's an obstacle at exactly (200,200)") {
+      server->addObject("wall", {200, 200});
+
+      WHEN("a player users the slipgate") {
+        client->sendMessage(CL_PERFORM_OBJECT_ACTION,
+                            makeArgs(slipgate.serial(), "_"s));
+
+        THEN("he moves somewhere other than (200,200)") {
+          WAIT_UNTIL(distance(user->location(), MapPoint{200.0, 200.0}) <=
+                     50.0);
+          CHECK(user->location() != MapPoint{200.0, 200.0});
+        }
       }
     }
   }
