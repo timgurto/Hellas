@@ -305,6 +305,7 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
 
       xr.findAttr(action, "d1", pAction->args.d1);
       xr.findAttr(action, "d2", pAction->args.d2);
+      xr.findAttr(action, "d3", pAction->args.d3);
 
       auto costID = ""s;
       if (xr.findAttr(action, "cost", costID)) {

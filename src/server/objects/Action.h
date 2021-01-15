@@ -11,6 +11,7 @@ struct Action {
     std::string textFromUser;
     double d1 = 0;
     double d2 = 0;
+    double d3 = 0;
   };
   using Function = bool (*)(const Object &obj, User &performer,
                             const Args &args);

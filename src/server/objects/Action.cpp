@@ -100,5 +100,6 @@ void Server::destroyCity(const Object &obj) {
 bool Server::teleportToArea(const Object &obj, User &performer,
                             const Action::Args &args) {
   const auto targetLocation = MapRect{args.d1, args.d2};
-  return performer.teleportToValidLocationInCircle(targetLocation, 50.0);
+  const auto maxRadius = args.d3;
+  return performer.teleportToValidLocationInCircle(targetLocation, maxRadius);
 }

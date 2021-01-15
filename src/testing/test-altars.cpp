@@ -314,4 +314,22 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Effect: teleport to area") {
       }
     }
   }
+
+  GIVEN("a slipgate that teleports the user extremely close to (200,200)") {
+    useData(R"(
+      <objectType id="slipgate">
+        <action target="teleportToArea" d1="200" d2="200" d3="1" />
+      </objectType>
+    )");
+    const auto &slipgate = server->addObject("slipgate", {5.0, 5.0});
+
+    WHEN("a player users the slipgate") {
+      client->sendMessage(CL_PERFORM_OBJECT_ACTION,
+                          makeArgs(slipgate.serial(), "_"s));
+
+      THEN("he is extremely close to (200,200)") {
+        WAIT_UNTIL(distance(user->location(), MapPoint{200.0, 200.0}) <= 1.0);
+      }
+    }
+  }
 }
