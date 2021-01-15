@@ -445,7 +445,7 @@ TEST_CASE("City objects go to king on city destruction") {
       {
         auto c = TestClient::WithUsernameAndDataString("Bob", data);
         s.waitForUsers(1);
-        s->createCity(house, s.findUser("Bob"), "Athens", {});
+        s.cities().createCity("Athens", house.location(), "Bob");
       }
       {
         auto c = TestClient::WithUsernameAndDataString("Alice", data);

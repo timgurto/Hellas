@@ -12,7 +12,7 @@ CallbackAction::FunctionMap CallbackAction::functionMap = {
     {"destroyCity", Server::destroyCity}};
 
 bool Server::endTutorial(const Object &obj, User &performer,
-                         const std::string &textArg, const Action::Args &args) {
+                         const Action::Args &args) {
   auto &server = Server::instance();
 
   performer.exploration.unexploreAll(performer.socket());
@@ -56,33 +56,32 @@ bool Server::endTutorial(const Object &obj, User &performer,
 }
 
 bool Server::createCityOrTeachCityPort(const Object &obj, User &performer,
-                                       const std::string &textArg,
                                        const Action::Args &args) {
   auto &server = Server::instance();
   if (server.cities().isPlayerInACity(performer.name())) {
     performer.getClass().teachSpell("cityPort");
     return true;
   } else
-    return createCity(obj, performer, textArg, args);
+    return createCity(obj, performer, args);
 }
 
 bool Server::createCity(const Object &obj, User &performer,
-                        const std::string &textArg, const Action::Args &args) {
+                        const Action::Args &args) {
   auto &server = Server::instance();
 
-  if (textArg == "_") return false;
+  const auto cityName = args.textFromUser;
+  if (cityName == "_") return false;
 
-  server._cities.createCity(textArg, obj.location(), performer.name());
-  server._cities.addPlayerToCity(performer, textArg);
+  server._cities.createCity(cityName, obj.location(), performer.name());
+  server._cities.addPlayerToCity(performer, cityName);
 
   server.makePlayerAKing(performer);
 
-  server.broadcast({SV_CITY_FOUNDED, makeArgs(performer.name(), textArg)});
+  server.broadcast({SV_CITY_FOUNDED, makeArgs(performer.name(), cityName)});
   return true;
 }
 
 bool Server::setRespawnPoint(const Object &obj, User &performer,
-                             const std::string &textArg,
                              const Action::Args &args) {
   performer.respawnPoint(obj.location());
 
@@ -99,7 +98,6 @@ void Server::destroyCity(const Object &obj) {
 }
 
 bool Server::teleportToArea(const Object &obj, User &performer,
-                            const std::string &textArg,
                             const Action::Args &args) {
   const auto targetLocation = MapRect{args.d1, args.d2};
   return performer.teleportToValidLocationInCircle(targetLocation, 50.0);

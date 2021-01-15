@@ -8,11 +8,12 @@ class User;
 
 struct Action {
   struct Args {
+    std::string textFromUser;
     double d1 = 0;
     double d2 = 0;
   };
   using Function = bool (*)(const Object &obj, User &performer,
-                            const std::string &textArg, const Args &args);
+                            const Args &args);
   using FunctionMap = std::map<std::string, Function>;
 
   static FunctionMap functionMap;
