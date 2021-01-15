@@ -5,7 +5,8 @@
 Action::FunctionMap Action::functionMap = {
     {"endTutorial", Server::endTutorial},
     {"createCityOrTeachCityPort", Server::createCityOrTeachCityPort},
-    {"setRespawnPoint", Server::setRespawnPoint}};
+    {"setRespawnPoint", Server::setRespawnPoint},
+    {"teleportToArea", {}}};
 
 CallbackAction::FunctionMap CallbackAction::functionMap = {
     {"destroyCity", Server::destroyCity}};

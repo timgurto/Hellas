@@ -1,4 +1,5 @@
 #include "TestClient.h"
+#include "TestFixtures.h"
 #include "TestServer.h"
 #include "testing.h"
 
@@ -256,5 +257,16 @@ TEST_CASE("End-of-tutorial altar") {
         CHECK(objectsOwnedByUser.size() == 0);
       }
     }
+  }
+}
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Effect: teleport to area") {
+  GIVEN("an object that teleports the user near (200,200)") {
+    useData(R"(
+      <objectType id="slipgate">
+        <action target="teleportToArea" d1="200" d2="200" d3="50" />
+      </objectType>
+    )");
+    const auto &slipgate = server->addObject("slipgate", {5.0, 5.0});
   }
 }
