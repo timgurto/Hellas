@@ -484,7 +484,7 @@
     <variety imageFile="fogDark" />
 </particleProfile>
 
-<particleProfile id="portal"
+<particleProfile id="portalSuck"
     particlesPerSecond="20"
     gravityModifier="0"
     convergesToCentre="1" >
@@ -492,11 +492,19 @@
     <distance mean="25" sd="7" />
     <velocity mean="10" sd="2" />
     <altitude mean="25" sd="0" />
-    <!--variety imageFile="portal-red" />
-    <variety imageFile="portal-green" />
-    <variety imageFile="portal-blue" /-->
     <variety imageFile="portal-yellow" />
     <variety imageFile="portal-white" />
+</particleProfile>
+<particleProfile id="portalSparkle"
+    particlesPerSecond="200"
+    gravityModifier="0" >
+    <lifespan mean="800" sd="80" />
+    <distance mean="20" sd="0" />
+    <velocity mean="0" sd="0" />
+    <altitude mean="35" sd="7" />
+    <variety imageFile="sparkleLarge" />
+    <variety imageFile="sparkleSmall1" />
+    <variety imageFile="sparkleSmall2" />
 </particleProfile>
 
 </root>
