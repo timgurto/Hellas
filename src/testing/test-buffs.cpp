@@ -1,4 +1,5 @@
 #include "TestClient.h"
+#include "TestFixtures.h"
 #include "TestServer.h"
 #include "testing.h"
 
@@ -328,37 +329,33 @@ TEST_CASE("Returning users know their buffs") {
   WAIT_UNTIL(c->character().buffs().size() == 1);
 }
 
-TEST_CASE("Object-granted buffs") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Object-granted buffs") {
   GIVEN("a user owns a buff-granting object") {
-    auto data = R"(
+    useData(R"(
       <buff id="glowing" />
       <objectType id="uranium">
         <grantsBuff id="glowing" radius="5" />
       </objectType>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    s.addObject("uranium", {20, 20}, user.name());
+    )");
+    server->addObject("uranium", {20, 20}, user->name());
 
-    THEN("he has no buffs") { CHECK(user.buffs().empty()); }
+    THEN("he has no buffs") { CHECK(user->buffs().empty()); }
 
     WHEN("he touches the object") {
-      while (user.location() != MapPoint{20, 20}) {
-        c.sendMessage(CL_MOVE_TO, makeArgs(20, 20));
-        SDL_Delay(5);
+      while (user->location() != MapPoint{20, 20}) {
+        client->sendMessage(CL_MOVE_TO, makeArgs(20, 20));
+        REPEAT_FOR_MS(100);
       }
 
-      THEN("he has a buff") { CHECK(user.buffs().size() == 1); }
+      THEN("he has a buff") { CHECK(user->buffs().size() == 1); }
 
       AND_WHEN("he moves away from it") {
-        while (user.location() != MapPoint{10, 10}) {
-          c.sendMessage(CL_MOVE_TO, makeArgs(10, 10));
-          SDL_Delay(5);
+        while (user->location() != MapPoint{10, 10}) {
+          client->sendMessage(CL_MOVE_TO, makeArgs(10, 10));
+          REPEAT_FOR_MS(100);
         }
 
-        THEN("he has no buffs") { CHECK(user.buffs().empty()); }
+        THEN("he has no buffs") { CHECK(user->buffs().empty()); }
       }
     }
   }
