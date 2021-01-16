@@ -1,5 +1,25 @@
 <root>
 
+<!-- Recommended level based on lowest boss, and highest boss +5 -->
+<objectType id="dAW_entryGate" name="Dungeon Portal" 
+    imageFile="marbleGate" xDrawOffset="-24" yDrawOffset="-75"
+    windowText="Argive Waterfront
+    Recommended for players of level 22-31.
+    Recommended for 4-5 players." >
+    <collisionRect x="-23" y="-6" w="47" h="11" />
+    <action label="Enter portal" target="teleportToArea" d1="16432" d2="69918" d3="64" />
+</objectType>
+<object id="dAW_entryGate" x="43266" y="49956" />
+
+<objectType id="dAW_exitGateStart" name="Dungeon Portal" 
+    imageFile="marbleGate" xDrawOffset="-24" yDrawOffset="-75"
+    windowText="Return to Hellas" >
+    <collisionRect x="-23" y="-6" w="47" h="11" />
+    <action label="Enter portal" target="teleportToArea" d1="43274" d2="49891" d3="60"/>
+</objectType>
+<object id="dAW_exitGateStart" x="16422" y="69858" />
+
+
 <objectType id="wallBlack1" isDecoration="1" xDrawOffset="-16" yDrawOffset="-16">
     <collisionRect x="-16" y="-16" w="32" h="32" />
 </objectType>
@@ -561,7 +581,6 @@
 </npcType>
 <npc id="argosCoinsmith" x="43397" y="49707" />
 <npc id="phnMerchant" x="43208" y="49528" />
-<permanentObject isDecoration="1" id="brickGateEW" x="43279" y="49984" />
 <permanentObject isDecoration="1" id="copperAnvil" x="43425" y="49712"/>
 <permanentObject isDecoration="1" id="handCart" x="43188" y="49712"/>
 <permanentObject isDecoration="1" id="handCart" x="43355" y="49619"/>
