@@ -8,7 +8,6 @@
     Recommended for 4-5 players." >
     <collisionRect x="-23" y="-6" w="47" h="11" />
     <action label="Enter portal" target="teleportToArea" d1="16432" d2="69918" d3="64" />
-    <particles profile="portal" x="0" y="0" />
     <particles profile="portalSparkle" x="0" y="0" />
 </objectType>
 <object id="dAW_entryGate" x="43266" y="49956" />
@@ -18,7 +17,6 @@
     windowText="Return to Hellas" >
     <collisionRect x="-23" y="-6" w="47" h="11" />
     <action label="Enter portal" target="teleportToArea" d1="43274" d2="49891" d3="60"/>
-    <particles profile="portal" x="0" y="0" />
     <particles profile="portalSparkle" x="0" y="0" />
 </objectType>
 <object id="dAW_exitGateStart" x="16422" y="69858" />
@@ -370,7 +368,7 @@
     </chooseLoot>
 </npcType>
 
-<npcType id="dAW_phnNavigator" name="Oceanid Navigator"
+<npcType id="dAW_phnNavigator" name="Lyris, Oceanid Navigator"
     level="25" elite="1" maxHealth="1096" attack="48" attackTime="2300"
     isRanged="1" projectile="waterball" school="water" imageFile="waterNymph" sounds="nymph"
     xDrawOffset="-18" yDrawOffset="-40" >
@@ -384,7 +382,7 @@
     <lootTable id="dAW_phoenicianTrash" />
 </npcType>
 
-<npcType id="dAW_phnAdmiral" name="Admiral Akbar"
+<npcType id="dAW_phnAdmiral" name="Akbar, Admiral of the Fleet"
     level="26" boss="1" maxHealth="2105" attack="88" attackTime="2500" >
     <spell id="dAW_admiralAoE" />
     <humanoid base="noble">
@@ -538,7 +536,7 @@
         <gear id="sandals" />
     </humanoid>
 </npcType>
-<npcType id="argosQueen" name="Queen Melia"
+<npcType id="argosQueen" name="Melia, Consort to the King"
     level="20" maxHealth="174" isCivilian="1" imageFile="waterNymph"
     xDrawOffset="-18" yDrawOffset="-40" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
@@ -662,8 +660,70 @@
         <offset x="0" y="0" />
         <canBeRepaired cost="leather" tool="sewing" />
     </item>
+    
+<!-- Missing princess -->
+<quest id="dAW_princess1" name="The Monster at the Temple" startsAt="argosKing" endsAt="hermesArgos"
+    brief="[Princess Io is missing.  She's a priestess to Hera.  There are reports of a strange monster in the temple to Hera.  Please kill the monster and look for Io.]"
+    debrief="[I'm Hermes.  I can help you kill it.]" />
+    <npcType id="hermesArgos" name="Unusual Shepherd" 
+        level="20" maxHealth="174" isCivilian="1" >
+        <humanoid base="scholar">
+            <gear id="skullCap" />
+            <gear id="sandals" />
+            <gear id="staff2" />
+            <gear id="horn" />
+        </humanoid>
+    </npcType>
+    <npc id="hermesArgos" x="41410" y="49115" />
+    <npc id="sheep" x="41386" y="49120" > <owner type="noAccess" /> </npc>
+    <npc id="sheep" x="41370" y="49110" > <owner type="noAccess" /> </npc>
+<quest id="dAW_princess2" name="Forty Winks" startsAt="hermesArgos" endsAt="hermesArgos"
+    brief="[The monster is Argus Panoptes, the all-seeing.  He has many eyes, and is ever-vigilant.  Bring the monster to me and I'll put him to sleep for you, making it easier to kill him.]"
+    debrief="[Nice!]" >
+    <objective type="kill" id="argusPanoptes" />
+    <prerequisite id="dAW_princess1" />
+</quest>
+    <npcType id="argusPanoptes"
+    level="22" elite="1" maxHealth="864" attack="46" attackTime="2000" >
+        <humanoid base="gigantis">
+            <gear id="copperBraces" />
+            <gear id="copperSword" />
+            <gear id="sandals" />
+            <gear id="linothorax" />
+            <gear id="hide" />
+        </humanoid>
+        <!-- sleep AoE debuff, similar to roads.  Low health, no attack. -->
+    </npcType>
+    <!-- white cow, brown cows -->
+<quest id="dAW_princess3" name="The Monster at the Temple" startsAt="hermesArgos" endsAt="argosKing"
+    brief="[Go back to King Inachus]"
+    debrief="[I'm glad you killed the monster.  But you didn't see my daughter?]" >
+    <prerequisite id="dAW_princess2" />
+</quest>
+<quest id="dAW_princess4" name="The Missing Princess" startsAt="argosKing" endsAt="dAW_womanQG2"
+    brief="[There are rumours that Phoenician merchants have taken a number of Argive women to the waterfront.  Go there and see if Io is among them.]"
+    debrief="[Io isn't here.  But I can tell you what happened.  I was a priestess of Hera, like Io.]">
+    <prerequisite id="dAW_princess3" />
+</quest>
+    <npcType id="dAW_womanQG2" name="Argive Priestess" template="girlTealWhite" isCivilian="1" level="17" maxHealth="136" />
+    <npc id="dAW_womanQG2" x="17980" y="70625" />
+<quest id="dAW_princess5" name="The Missing Princess" startsAt="dAW_womanQG2" endsAt="argosKing"
+    brief="[Zeus lusted after her, Hera turned her into a white cow, Hermes disguised himself as a shepherd and helped kill Argus.  Io escaped, but was chased to the south coast of the Peloponnesus by a giant gadfly.]"
+    debrief="[That's no good.]" >
+    <prerequisite id="dAW_princess4" />
+</quest>
+<quest id="dAW_princess6" name="The Gadfly" startsAt="argosKing" endsAt="argosQueen"
+    brief="[Kill the gadfly and look for Io.]"
+    debrief="[I heard on the grapevine that the gadfly chased Io into the sea, and she traveled south to Egypt.  Please speak to the King.]" >
+    <prerequisite id="dAW_princess5" />
+</quest>
+    <!-- Gadfly -->
+<quest id="dAW_princess7" name="Sharing the Bad News" startsAt="argosKing" endsAt="argosMagistrate"
+    brief="[So my daughter is gone.  At least she's alive.  Please tell the magistrate so that he can inform the people.]"
+    debrief="[I don't believe you.  Monsters and gods?  Egypt?  It must have been the Phoenicians.  Taking maidens from the town is one thing, but our princess?  The people won't stand for this.]" >
+    <prerequisite id="dAW_princess6" />
+</quest>
+<!-- Chain rewards -->
 
-    <!--npcType id="dAW_womanQG2" name="Argive Maiden" template="girlTeal" isCivilian="1" level="17" maxHealth="136" />
-    <npc id="dAW_womanQG2" x="17980" y="70625" /-->
     
 </root>

@@ -617,6 +617,8 @@ void Server::loadEntities(XmlReader &xr,
         npc.permissions.setPlayerOwner(name);
       else if (type == "city")
         npc.permissions.setCityOwner(name);
+      else if (type == "noAccess")
+        npc.permissions.setNoAccess();
       else
         _debug << Color::CHAT_ERROR << "Skipping bad NPC owner type \"" << type
                << "\"." << Log::endl;

@@ -222,3 +222,5 @@ City of Argos:
         Cow
         Hermes
         Argus
+    Coast somewhere
+        Gadfly

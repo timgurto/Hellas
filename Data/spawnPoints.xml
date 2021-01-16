@@ -5,6 +5,7 @@
     <spawnPoint type="airNymph" y="30304" x="20600" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="airNymph" y="31912" x="19512" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="airNymph" y="33232" x="21144" quantity="5" radius="250" respawnTime="300000" />
+    <spawnPoint type="argusPanoptes" y="49011" x="41116" quantity="1" radius="30" respawnTime="120000" />
     <spawnPoint type="athleteQuestTortoise" y="23672" x="37412" quantity="1" radius="1300" respawnTime="30000" />
     <spawnPoint type="boar10" y="22368" x="23104" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="boar10" y="22432" x="21536" quantity="5" radius="250" respawnTime="300000" />
