@@ -24,6 +24,7 @@ class ParticleProfile {
   MapPoint _direction;
   Uint8 _alpha{0xff};
   bool _fadeInAndOut{false};
+  bool _convergeToCentre{false};  // Direct all velocities towards centre
   std::vector<const SpriteType *> _varieties, _pool;
 
  public:
@@ -59,6 +60,8 @@ class ParticleProfile {
   void alpha(Uint8 n) { _alpha = n; }
   void makeFadeInAndOut() { _fadeInAndOut = true; }
   bool fadesInAndOut() const { return _fadeInAndOut; }
+  void makeConvergeToCentre() { _convergeToCentre = true; }
+  bool convergesToCentre() const { return _convergeToCentre; }
 
   bool canBeUnderground() const { return _canBeUnderground; }
 

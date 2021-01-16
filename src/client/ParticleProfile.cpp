@@ -50,23 +50,31 @@ Particle *ParticleProfile::instantiate(const MapPoint &location,
   MapPoint locationOffset(cos(angle) * distance, sin(angle) * distance);
   MapPoint startingLoc = location + locationOffset;
 
-  // Initialize velocity from base direction
-  MapPoint startingVelocity = _direction;
-
-  // Modify velocity based on random direction
-  angle = 2 * PI * randDouble();
   double velocity = _velocity.generate();
-  startingVelocity += {cos(angle) * velocity, sin(angle) * velocity};
+  auto startingVelocity = MapPoint{};
+  if (convergesToCentre()) {
+    velocity = abs(velocity);
+    const auto directionVector = -locationOffset / distance;
+    startingVelocity = directionVector * velocity;
+  } else {
+    // Initialize velocity from base direction
+    startingVelocity = _direction;
+
+    // Modify by random direction
+    angle = 2 * PI * randDouble();
+    startingVelocity += {cos(angle) * velocity, sin(angle) * velocity};
+  }
 
   if (_noZDimension) {
     startingLoc.y = location.y;
     startingVelocity.y = 0;
   }
 
+  const auto lifespan = max(0, toInt(_lifespan.generate()));
+
   return new Particle(startingLoc, variety.image(), variety.drawRect(),
                       startingVelocity, _altitude.generate(),
-                      _fallSpeed.generate(), _gravity,
-                      max(0, toInt(_lifespan.generate())), *this, client);
+                      _fallSpeed.generate(), _gravity, lifespan, *this, client);
 }
 
 size_t ParticleProfile::numParticlesContinuous(double delta) const {

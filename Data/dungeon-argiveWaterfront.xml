@@ -8,6 +8,7 @@
     Recommended for 4-5 players." >
     <collisionRect x="-23" y="-6" w="47" h="11" />
     <action label="Enter portal" target="teleportToArea" d1="16432" d2="69918" d3="64" />
+    <particles profile="portal" x="0" y="0" />
 </objectType>
 <object id="dAW_entryGate" x="43266" y="49956" />
 
@@ -16,6 +17,7 @@
     windowText="Return to Hellas" >
     <collisionRect x="-23" y="-6" w="47" h="11" />
     <action label="Enter portal" target="teleportToArea" d1="43274" d2="49891" d3="60"/>
+    <particles profile="portal" x="0" y="0" />
 </objectType>
 <object id="dAW_exitGateStart" x="16422" y="69858" />
 

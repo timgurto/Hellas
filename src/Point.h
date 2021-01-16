@@ -43,6 +43,8 @@ struct Point {
     return ret;
   }
 
+  Point operator-() const { return {-x, -y}; }
+
   operator Rect<T>() const { return {x, y, 0, 0}; }
 
   double length() const { return sqrt(x * x + y * y); };
