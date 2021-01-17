@@ -51,6 +51,7 @@ class TestServer {
   const BuffType &getFirstBuff();
   const ClassType &getFirstClass();
   Spawner &getFirstSpawner();
+  const Spell &getFirstSpell() const;
 
   User &findUser(const std::string &username);
   const Quest &findQuest(const Quest::ID &questID) const;

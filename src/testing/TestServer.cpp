@@ -242,3 +242,8 @@ Spawner &TestServer::getFirstSpawner() {
   REQUIRE(!_server->_spawners.empty());
   return _server->_spawners.front();
 }
+
+const Spell &TestServer::getFirstSpell() const {
+  REQUIRE(!_server->_spells.empty());
+  return *_server->_spells.begin()->second;
+}

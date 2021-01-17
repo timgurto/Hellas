@@ -43,6 +43,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       </spell>
       <npcType id="pirate" />
     )");
+    const auto &shiverTimbers = server->getFirstSpell();
   }
 }
 
