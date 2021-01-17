@@ -343,12 +343,15 @@ void CDataLoader::loadSpells(XmlReader &xr) {
     auto validTargets = xr.findChild("targets", elem);
     assert(validTargets);
     if (validTargets) {
-      auto val = 0;
-      auto self = xr.findAttr(validTargets, "self", val) && val != 0;
-      auto friendly = xr.findAttr(validTargets, "friendly", val) && val != 0;
-      auto enemy = xr.findAttr(validTargets, "enemy", val) && val != 0;
+      auto n = 0;
+      auto s = ""s;
+      auto self = xr.findAttr(validTargets, "self", n) && n != 0;
+      auto friendly = xr.findAttr(validTargets, "friendly", n) && n != 0;
+      auto enemy = xr.findAttr(validTargets, "enemy", n) && n != 0;
+      auto specificNPC = xr.findAttr(validTargets, "specificNPC", s);
 
-      if (friendly) {
+      if (specificNPC) {
+      } else if (friendly) {
         assert(self);
         if (enemy)
           newSpell->targetType(ClientSpell::TargetType::ALL);

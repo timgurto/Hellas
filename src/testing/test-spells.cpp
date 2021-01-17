@@ -34,6 +34,18 @@ TEST_CASE("Non-talent spells") {
   }
 }
 
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Spells that can target only a specific NPC") {
+  GIVEN("a shiver-timbers spell that can only be cast on pirates") {
+    useData(R"(
+      <spell id="shiverTimbers" >
+        <targets specificNPC="pirate" />
+      </spell>
+      <npcType id="pirate" />
+    )");
+  }
+}
+
 TEST_CASE("Non-talent spells are persistent") {
   // Given a spell
   auto data = R"(
