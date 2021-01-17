@@ -350,8 +350,9 @@ void CDataLoader::loadSpells(XmlReader &xr) {
       auto enemy = xr.findAttr(validTargets, "enemy", n) && n != 0;
       auto specificNPC = xr.findAttr(validTargets, "specificNPC", s);
 
-      if (specificNPC) {
-      } else if (friendly) {
+      if (specificNPC) return;
+
+      if (friendly) {
         assert(self);
         if (enemy)
           newSpell->targetType(ClientSpell::TargetType::ALL);

@@ -862,12 +862,16 @@ void DataLoader::loadSpells(XmlReader &xr) {
 
     auto validTargets = xr.findChild("targets", elem);
     if (validTargets) {
-      auto val = 0;
-      if (xr.findAttr(validTargets, "self", val) && val != 0)
+      auto n = 0;
+      auto s = ""s;
+      if (xr.findAttr(validTargets, "specificNPC", s)) {
+        return;
+      }
+      if (xr.findAttr(validTargets, "self", n) && n != 0)
         newSpell->setCanTarget(Spell::SELF);
-      if (xr.findAttr(validTargets, "friendly", val) && val != 0)
+      if (xr.findAttr(validTargets, "friendly", n) && n != 0)
         newSpell->setCanTarget(Spell::FRIENDLY);
-      if (xr.findAttr(validTargets, "enemy", val) && val != 0)
+      if (xr.findAttr(validTargets, "enemy", n) && n != 0)
         newSpell->setCanTarget(Spell::ENEMY);
     }
   }

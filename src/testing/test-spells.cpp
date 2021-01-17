@@ -39,11 +39,28 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   GIVEN("a shiver-timbers spell that can only be cast on pirates") {
     useData(R"(
       <spell id="shiverTimbers" >
-        <targets specificNPC="pirate" />
+        <targets specificNPC="pirate" enemy="1" />
+        <function name="doDirectDamage" i1="1" />
       </spell>
-      <npcType id="pirate" />
+      <npcType id="pirate" maxHealth="1000" attack="1" />
+      <npcType id="vampire" maxHealth="1000" attack="1" />
     )");
     const auto &shiverTimbers = server->getFirstSpell();
+
+    AND_GIVEN("the user knows the spell") {
+      user->getClass().teachSpell("shiverTimbers");
+
+      AND_GIVEN("a vampire") {
+        auto &vampire = server->addNPC("vampire", {20.0, 20.0});
+
+        WHEN("the user tries to shiver the vampire's timbers") {
+          user->target(&vampire);
+          const auto result = user->castSpell(shiverTimbers);
+
+          THEN("the spellcast fails") { CHECK(result == CombatResult::FAIL); }
+        }
+      }
+    }
   }
 }
 
