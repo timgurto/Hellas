@@ -1,3 +1,4 @@
+#include "TemporaryUserStats.h"
 #include "TestClient.h"
 #include "TestFixtures.h"
 #include "TestServer.h"
@@ -48,29 +49,36 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       )");
       const auto &shiverTimbers = server->getFirstSpell();
 
-      AND_GIVEN("the user knows the spell") {
-        user->getClass().teachSpell("shiverTimbers");
+      AND_GIVEN("user spells never miss") {
+        CHANGE_BASE_USER_STATS.hit(10000);
+        user->updateStats();
 
-        AND_GIVEN("a vampire") {
-          auto &vampire = server->addNPC("vampire", {20.0, 20.0});
+        AND_GIVEN("the user knows the spell") {
+          user->getClass().teachSpell("shiverTimbers");
 
-          WHEN("the user tries to shiver the vampire's timbers") {
-            user->target(&vampire);
-            const auto result = user->castSpell(shiverTimbers);
+          AND_GIVEN("a vampire") {
+            auto &vampire = server->addNPC("vampire", {20.0, 20.0});
 
-            THEN("the spellcast fails") { CHECK(result == CombatResult::FAIL); }
+            WHEN("the user tries to shiver the vampire's timbers") {
+              user->target(&vampire);
+              const auto result = user->castSpell(shiverTimbers);
+
+              THEN("the spellcast fails") {
+                CHECK(result == CombatResult::FAIL);
+              }
+            }
           }
-        }
 
-        AND_GIVEN("a pirate") {
-          auto &pirate = server->addNPC("pirate", {20.0, 20.0});
+          AND_GIVEN("a pirate") {
+            auto &pirate = server->addNPC("pirate", {20.0, 20.0});
 
-          WHEN("the user tries to shiver the pirate's timbers") {
-            user->target(&pirate);
-            const auto result = user->castSpell(shiverTimbers);
+            WHEN("the user tries to shiver the pirate's timbers") {
+              user->target(&pirate);
+              const auto result = user->castSpell(shiverTimbers);
 
-            THEN("the spellcast succeeds") {
-              CHECK(result == CombatResult::HIT);
+              THEN("the spellcast succeeds") {
+                CHECK(result == CombatResult::HIT);
+              }
             }
           }
         }
@@ -90,22 +98,27 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       )");
       const auto &shiverTimbers = server->getFirstSpell();
 
-      AND_GIVEN("the user knows the spell") {
-        user->getClass().teachSpell("shiverTimbers");
+      AND_GIVEN("user spells never miss") {
+        CHANGE_BASE_USER_STATS.hit(10000);
+        user->updateStats();
 
-        AND_GIVEN("a vampire and a pirate") {
-          auto &vampire = server->addNPC("vampire", {20.0, 30.0});
-          auto &pirate = server->addNPC("pirate", {30.0, 20.0});
+        AND_GIVEN("the user knows the spell") {
+          user->getClass().teachSpell("shiverTimbers");
 
-          WHEN("the user tries to shiver everyone's timbers") {
-            const auto result = user->castSpell(shiverTimbers);
-            REPEAT_FOR_MS(100);
+          AND_GIVEN("a vampire and a pirate") {
+            auto &vampire = server->addNPC("vampire", {20.0, 30.0});
+            auto &pirate = server->addNPC("pirate", {30.0, 20.0});
 
-            THEN("the pirate is affected") {
-              CHECK(pirate.health() < pirate.stats().maxHealth);
+            WHEN("the user tries to shiver everyone's timbers") {
+              const auto result = user->castSpell(shiverTimbers);
+              REPEAT_FOR_MS(100);
 
-              AND_THEN("the vampire is not") {
-                CHECK(vampire.health() == vampire.stats().maxHealth);
+              THEN("the pirate is affected") {
+                CHECK(pirate.health() < pirate.stats().maxHealth);
+
+                AND_THEN("the vampire is not") {
+                  CHECK(vampire.health() == vampire.stats().maxHealth);
+                }
               }
             }
           }
