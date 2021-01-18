@@ -326,11 +326,11 @@ TEST_CASE("Spell cooldowns") {
   }
 }
 
-TEST_CASE("NPC spells") {
+TEST_CASE_METHOD(ServerAndClientWithData, "NPC spells") {
   GIVEN(
-      "A Wizard NPC with no combat damage and a fireball spell (with a 2s "
-      "cooldown)") {
-    auto data = R"(
+      "A wizard with no combat damage, and a fireball spell with a 2s "
+      "cooldown") {
+    useData(R"(
       <spell id="fireball" range=30 cooldown=2 >
         <targets enemy=1 />
         <function name="doDirectDamage" i1=5 />
@@ -338,60 +338,56 @@ TEST_CASE("NPC spells") {
       <npcType id="wizard">
         <spell id="fireball" />
       </npcType>
-    )";
-    auto s = TestServer::WithDataString(data);
-    s.addNPC("wizard", {10, 15});
+    )");
+
+    server->addNPC("wizard", {10, 15});
 
     WHEN("a player is nearby") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-
       THEN("he gets damaged") {
-        WAIT_UNTIL(user.health() < user.stats().maxHealth);
+        WAIT_UNTIL(user->health() < user->stats().maxHealth);
 
-        AND_WHEN("1 more second elapses") {
-          auto oldHealth = user.health();
-          auto oldLocation = user.location();
-          REPEAT_FOR_MS(1000);
+        SECTION("Spell cooldowns apply correctly") {
+          AND_WHEN("1 more second elapses") {
+            const auto oldHealth = user->health();
+            const auto oldLocation = user->location();
+            REPEAT_FOR_MS(1000);
 
-          THEN("his health is unchanged") {
-            // Proxies for the user not dying.  Before implementation, the
-            // user died and respawned many times. If the effects on dying are
-            // changed, perhaps this can be improved or simplified.
-            auto expectedHealthAfter1s =
-                oldHealth + User::OBJECT_TYPE.baseStats().hps;
-            CHECK(user.health() == expectedHealthAfter1s);
-            CHECK(user.location() == oldLocation);
+            THEN("his health is unchanged") {
+              // Proxies for the user not dying.  Before implementation, the
+              // user died and respawned many times. If the effects on dying are
+              // changed, perhaps this can be improved or simplified.
+              const auto expectedHealthAfter1s =
+                  oldHealth + User::OBJECT_TYPE.baseStats().hps;
+              CHECK(user->health() == expectedHealthAfter1s);
+              CHECK(user->location() == oldLocation);
+            }
           }
         }
       }
     }
   }
 
-  GIVEN("a sorcerer with a buff, and an apprentice with no spells") {
-    auto data = R"(
-      <spell id="buffMagic" >
-          <targets self=1 />
-          <function name="buff" s1="magic" />
-      </spell>
-      <buff id="magic" />
-      <npcType id="sorcerer">
-        <spell id="buffMagic" />
-      </npcType>
-      <npcType id="apprentice" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    s.addNPC("apprentice", {10, 15});
+  SECTION("Other NPCs don't get the spell") {
+    GIVEN("sorcerers can self-buff, and apprentices can't") {
+      useData(R"(
+        <spell id="buffMagic" >
+            <targets self=1 />
+            <function name="buff" s1="magic" />
+        </spell>
+        <buff id="magic" />
+        <npcType id="sorcerer">
+          <spell id="buffMagic" />
+        </npcType>
+        <npcType id="apprentice" />
+      )");
 
-    WHEN("a user appears near the apprentice") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
+      WHEN("an apprentice is created") {
+        const auto &apprentice = server->addNPC("apprentice", {10, 15});
 
-      THEN("the apprentice has no buffs") {
-        const auto &apprentice = s.getFirstNPC();
-        REPEAT_FOR_MS(100);
-        CHECK(apprentice.buffs().empty());
+        THEN("he has no buffs") {
+          REPEAT_FOR_MS(100);
+          CHECK(apprentice.buffs().empty());
+        }
       }
     }
   }
