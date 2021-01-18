@@ -36,39 +36,73 @@ TEST_CASE("Non-talent spells") {
 
 TEST_CASE_METHOD(ServerAndClientWithData,
                  "Spells that can target only a specific NPC") {
-  GIVEN("a shiver-timbers spell that can only be cast on pirates") {
-    useData(R"(
-      <spell id="shiverTimbers" >
-        <targets specificNPC="pirate" enemy="1" />
-        <function name="doDirectDamage" i1="1" />
-      </spell>
-      <npcType id="pirate" maxHealth="1000" attack="1" />
-      <npcType id="vampire" maxHealth="1000" attack="1" />
-    )");
-    const auto &shiverTimbers = server->getFirstSpell();
+  SECTION("Direct-target spell") {
+    GIVEN("a shiver-timbers spell that can only be cast on pirates") {
+      useData(R"(
+        <spell id="shiverTimbers" >
+          <targets specificNPC="pirate" enemy="1" />
+          <function name="doDirectDamage" i1="1" />
+        </spell>
+        <npcType id="pirate" maxHealth="1000" attack="1" />
+        <npcType id="vampire" maxHealth="1000" attack="1" />
+      )");
+      const auto &shiverTimbers = server->getFirstSpell();
 
-    AND_GIVEN("the user knows the spell") {
-      user->getClass().teachSpell("shiverTimbers");
+      AND_GIVEN("the user knows the spell") {
+        user->getClass().teachSpell("shiverTimbers");
 
-      AND_GIVEN("a vampire") {
-        auto &vampire = server->addNPC("vampire", {20.0, 20.0});
+        AND_GIVEN("a vampire") {
+          auto &vampire = server->addNPC("vampire", {20.0, 20.0});
 
-        WHEN("the user tries to shiver the vampire's timbers") {
-          user->target(&vampire);
-          const auto result = user->castSpell(shiverTimbers);
+          WHEN("the user tries to shiver the vampire's timbers") {
+            user->target(&vampire);
+            const auto result = user->castSpell(shiverTimbers);
 
-          THEN("the spellcast fails") { CHECK(result == CombatResult::FAIL); }
+            THEN("the spellcast fails") { CHECK(result == CombatResult::FAIL); }
+          }
+        }
+
+        AND_GIVEN("a pirate") {
+          auto &pirate = server->addNPC("pirate", {20.0, 20.0});
+
+          WHEN("the user tries to shiver the pirate's timbers") {
+            user->target(&pirate);
+            const auto result = user->castSpell(shiverTimbers);
+
+            THEN("the spellcast succeeds") {
+              CHECK(result == CombatResult::HIT);
+            }
+          }
         }
       }
+    }
+  }
 
-      AND_GIVEN("a pirate") {
-        auto &pirate = server->addNPC("pirate", {20.0, 20.0});
+  SECTION("AoE spell") {
+    GIVEN("a shiver-timbers AoE spell that can only be cast on pirates") {
+      useData(R"(
+        <spell id="shiverTimbers" radius="100" >
+          <targets specificNPC="pirate" enemy="1" />
+          <function name="doDirectDamage" i1="5" />
+        </spell>
+        <npcType id="vampire" maxHealth="1000" />
+      )");
+      const auto &shiverTimbers = server->getFirstSpell();
 
-        WHEN("the user tries to shiver the pirate's timbers") {
-          user->target(&pirate);
-          const auto result = user->castSpell(shiverTimbers);
+      AND_GIVEN("the user knows the spell") {
+        user->getClass().teachSpell("shiverTimbers");
 
-          THEN("the spellcast succeeds") { CHECK(result == CombatResult::HIT); }
+        AND_GIVEN("a vampire") {
+          auto &vampire = server->addNPC("vampire", {20.0, 20.0});
+
+          WHEN("the user tries to shiver everyone's timbers") {
+            const auto result = user->castSpell(shiverTimbers);
+
+            THEN("the vampire is unaffected") {
+              REPEAT_FOR_MS(100);
+              CHECK(vampire.health() == vampire.stats().maxHealth);
+            }
+          }
         }
       }
     }
@@ -109,7 +143,8 @@ TEST_CASE("Non-talent spells are persistent") {
 
 TEST_CASE("Spell cooldowns") {
   GIVEN(
-      "Alice and Bob know a range of self-damaging spells, and extremely high "
+      "Alice and Bob know a range of self-damaging spells, and extremely "
+      "high "
       "hit chance") {
     auto data = R"(
       <spell id="hurtSelf1s" cooldown="1" >
@@ -302,10 +337,9 @@ TEST_CASE("NPC spells") {
           REPEAT_FOR_MS(1000);
 
           THEN("his health is unchanged") {
-            // Proxies for the user not dying.  Before implementation, the user
-            // died and respawned many times.
-            // If the effects on dying are changed, perhaps this can be
-            // improved or simplified.
+            // Proxies for the user not dying.  Before implementation, the
+            // user died and respawned many times. If the effects on dying are
+            // changed, perhaps this can be improved or simplified.
             auto expectedHealthAfter1s =
                 oldHealth + User::OBJECT_TYPE.baseStats().hps;
             CHECK(user.health() == expectedHealthAfter1s);

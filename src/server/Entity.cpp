@@ -395,9 +395,11 @@ CombatResult Entity::castSpell(const Spell &spell,
   const auto &effect = spell.effect();
   auto targets = std::set<Entity *>{};
   if (effect.isAoE()) {
-    targets = server.findEntitiesInArea(location(), effect.range());
-    auto nearbyUsers = server.findUsersInArea(location(), effect.range());
-    for (auto *user : nearbyUsers) targets.insert(user);
+    if (!spell.isTargetingRestrictedToSpecificNPC()) {
+      targets = server.findEntitiesInArea(location(), effect.range());
+      auto nearbyUsers = server.findUsersInArea(location(), effect.range());
+      for (auto *user : nearbyUsers) targets.insert(user);
+    }
   } else {
     auto target = this->target();
     if (!target)
