@@ -395,11 +395,9 @@ CombatResult Entity::castSpell(const Spell &spell,
   const auto &effect = spell.effect();
   auto targets = std::set<Entity *>{};
   if (effect.isAoE()) {
-    if (!spell.isTargetingRestrictedToSpecificNPC()) {
-      targets = server.findEntitiesInArea(location(), effect.range());
-      auto nearbyUsers = server.findUsersInArea(location(), effect.range());
-      for (auto *user : nearbyUsers) targets.insert(user);
-    }
+    targets = server.findEntitiesInArea(location(), effect.range());
+    auto nearbyUsers = server.findUsersInArea(location(), effect.range());
+    for (auto *user : nearbyUsers) targets.insert(user);
   } else {
     auto target = this->target();
     if (!target)
@@ -410,11 +408,7 @@ CombatResult Entity::castSpell(const Spell &spell,
     else if (canAttack(*_target) && !spell.canTarget(Spell::ENEMY))
       target = this;
 
-    const auto spellIsAllowedToTargetThisType =
-        !spell.isTargetingRestrictedToSpecificNPC() ||
-        target->type()->id() == spell.onlyAllowedNPCTarget();
-
-    if (spellIsAllowedToTargetThisType) targets.insert(target);
+    targets.insert(target);
   }
 
   if (effect.isAoE()) reduceEnergy(spell.cost());
@@ -425,6 +419,12 @@ CombatResult Entity::castSpell(const Spell &spell,
   // skip consuming the food if the spell failed.
   auto outcome = CombatResult{};
   for (auto target : targets) {
+    // Cull target if type is restricted
+    const auto spellIsAllowedToTargetThisType =
+        !spell.isTargetingRestrictedToSpecificNPC() ||
+        target->type()->id() == spell.onlyAllowedNPCTarget();
+    if (!spellIsAllowedToTargetThisType) continue;
+
     outcome = spell.performAction(*this, *target, supplementaryArg);
     if (outcome == FAIL) {
       Server::debug()("Spell "s + spell.id() + " failed."s, Color::CHAT_ERROR);

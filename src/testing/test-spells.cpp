@@ -85,6 +85,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
           <targets specificNPC="pirate" enemy="1" />
           <function name="doDirectDamage" i1="5" />
         </spell>
+        <npcType id="pirate" maxHealth="1000" />
         <npcType id="vampire" maxHealth="1000" />
       )");
       const auto &shiverTimbers = server->getFirstSpell();
@@ -92,15 +93,20 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       AND_GIVEN("the user knows the spell") {
         user->getClass().teachSpell("shiverTimbers");
 
-        AND_GIVEN("a vampire") {
-          auto &vampire = server->addNPC("vampire", {20.0, 20.0});
+        AND_GIVEN("a vampire and a pirate") {
+          auto &vampire = server->addNPC("vampire", {20.0, 30.0});
+          auto &pirate = server->addNPC("pirate", {30.0, 20.0});
 
           WHEN("the user tries to shiver everyone's timbers") {
             const auto result = user->castSpell(shiverTimbers);
+            REPEAT_FOR_MS(100);
 
-            THEN("the vampire is unaffected") {
-              REPEAT_FOR_MS(100);
-              CHECK(vampire.health() == vampire.stats().maxHealth);
+            THEN("the pirate is affected") {
+              CHECK(pirate.health() < pirate.stats().maxHealth);
+
+              AND_THEN("the vampire is not") {
+                CHECK(vampire.health() == vampire.stats().maxHealth);
+              }
             }
           }
         }
