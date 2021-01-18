@@ -408,7 +408,11 @@ CombatResult Entity::castSpell(const Spell &spell,
     else if (canAttack(*_target) && !spell.canTarget(Spell::ENEMY))
       target = this;
 
-    targets.insert(target);
+    const auto spellIsAllowedToTargetThisType =
+        !spell.isTargetingRestrictedToSpecificNPC() ||
+        target->type()->id() == spell.onlyAllowedNPCTarget();
+
+    if (spellIsAllowedToTargetThisType) targets.insert(target);
   }
 
   if (effect.isAoE()) reduceEnergy(spell.cost());

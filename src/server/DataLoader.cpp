@@ -864,9 +864,8 @@ void DataLoader::loadSpells(XmlReader &xr) {
     if (validTargets) {
       auto n = 0;
       auto s = ""s;
-      if (xr.findAttr(validTargets, "specificNPC", s)) {
-        return;
-      }
+      if (xr.findAttr(validTargets, "specificNPC", s))
+        newSpell->restrictTargetsToNPCsOfType(s);
       if (xr.findAttr(validTargets, "self", n) && n != 0)
         newSpell->setCanTarget(Spell::SELF);
       if (xr.findAttr(validTargets, "friendly", n) && n != 0)

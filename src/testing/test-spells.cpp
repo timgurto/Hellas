@@ -60,6 +60,17 @@ TEST_CASE_METHOD(ServerAndClientWithData,
           THEN("the spellcast fails") { CHECK(result == CombatResult::FAIL); }
         }
       }
+
+      AND_GIVEN("a pirate") {
+        auto &pirate = server->addNPC("pirate", {20.0, 20.0});
+
+        WHEN("the user tries to shiver the pirate's timbers") {
+          user->target(&pirate);
+          const auto result = user->castSpell(shiverTimbers);
+
+          THEN("the spellcast succeeds") { CHECK(result == CombatResult::HIT); }
+        }
+      }
     }
   }
 }

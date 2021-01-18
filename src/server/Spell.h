@@ -32,6 +32,15 @@ class Spell {
   const Name &name() const { return _name; }
   void setCanTarget(TargetType type) { _validTargets[type] = true; }
   bool canTarget(TargetType type) const { return _validTargets[type]; }
+  void restrictTargetsToNPCsOfType(const std::string &npcTypeID) {
+    _onlyAllowedNPCTarget = npcTypeID;
+  }
+  bool isTargetingRestrictedToSpecificNPC() const {
+    return !_onlyAllowedNPCTarget.empty();
+  }
+  const std::string &onlyAllowedNPCTarget() const {
+    return _onlyAllowedNPCTarget;
+  }
   void cost(Energy e) { _cost = e; }
   Energy cost() const { return _cost; }
   bool shouldPlayDefenseSound() const { return _effect.isAggressive(); }
@@ -53,6 +62,7 @@ class Spell {
 
   using ValidTargets = std::vector<bool>;
   ValidTargets _validTargets = ValidTargets(NUM_TARGET_TYPES, false);
+  std::string _onlyAllowedNPCTarget;  // Only NPCs of this type can be targeted.
 };
 
 using Spells = std::map<Spell::ID, Spell *>;
