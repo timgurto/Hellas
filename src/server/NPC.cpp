@@ -306,7 +306,21 @@ void NPC::updateStats() {
   // Apply debuffs
   for (auto &debuff : debuffs()) debuff.applyStatsTo(newStats);
 
-  // Assumption: max health/energy won't change
+  const int healthDecrease = oldMaxHealth - newStats.maxHealth;
+  const int oldHealth = health();
+  auto newHealth = oldHealth - healthDecrease;
+  if (newStats.maxHealth == 0)
+    newHealth = 0;
+  else if (newHealth < 1)
+    newHealth = 1;
+  else if (newHealth > static_cast<int>(newStats.maxHealth))
+    newHealth = newStats.maxHealth;
+  if (healthDecrease != 0) {
+    health(newHealth);
+    onHealthChange();
+  }
+
+  // Assumption: max energy won't change
 
   stats(newStats);
 }

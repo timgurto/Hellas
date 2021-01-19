@@ -1193,3 +1193,27 @@ TEST_CASE("Composite stats' conversion to strings") {
     }
   }
 }
+
+TEST_CASE("Buffs can reduce max health") {
+  GIVEN("a kobold with 10 health, and a buff that reduces max health by 5") {
+    const auto data = R"(
+      <npcType id="kobold" maxHealth="10" />
+      <buff id="drainEnergy" >
+        <stats health="-5" />
+      </buff>
+    )";
+    auto s = TestServer::WithDataString(data);
+
+    auto &kobold = s.addNPC("kobold", {10, 10});
+
+    WHEN("the kobold gets the buff") {
+      kobold.applyBuff(s.getFirstBuff(), kobold);
+
+      THEN("it has 5 max health") {
+        CHECK(kobold.stats().maxHealth == 5);
+
+        AND_THEN("it has 5 health") { CHECK(kobold.health() == 5); }
+      }
+    }
+  }
+}
