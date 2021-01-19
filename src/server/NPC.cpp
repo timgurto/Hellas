@@ -15,9 +15,7 @@ NPC::NPC(const NPCType *type, const MapPoint &loc)
 }
 
 void NPC::update(ms_t timeElapsed) {
-  if (health() > 0) {
-    ai.process(timeElapsed);  // May call Entity::update()
-  }
+  if (health() > 0 && !isStunned()) ai.process(timeElapsed);
 
   if (_disappearTimer > 0) {
     if (timeElapsed > _disappearTimer)

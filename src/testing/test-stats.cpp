@@ -1217,3 +1217,37 @@ TEST_CASE("Buffs can reduce max health") {
     }
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Stun") {
+  GIVEN("a hostile lion, and a stun debuff") {
+    useData(R"(
+      <npcType id="lion" maxHealth="1000" attack="5" attackTime="50" />
+      <buff id="stunned" >
+        <stats stuns="1" />
+      </buff>"
+    )");
+    auto &lion = server->addNPC("lion", {10, 15});
+
+    WAIT_UNTIL(user->health() < user->stats().maxHealth);
+
+    WHEN("the lion gets the debuff") {
+      lion.applyDebuff(server->getFirstBuff(), lion);
+
+      THEN("the user doesn't lose any health") {
+        const auto oldHealth = user->health();
+        REPEAT_FOR_MS(100);
+        CHECK(user->health() >= oldHealth);
+      }
+
+      AND_WHEN("the user teleports out of melee range") {
+        user->teleportTo({150, 150});
+
+        THEN("the lion doesn't move") {
+          const auto oldLocation = lion.location();
+          REPEAT_FOR_MS(100);
+          CHECK(lion.location() == oldLocation);
+        }
+      }
+    }
+  }
+}
