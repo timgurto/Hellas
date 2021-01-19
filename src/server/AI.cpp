@@ -248,14 +248,13 @@ void AI::act() {
     }
 
     case ATTACK:
-      // Cast any spells it knows
-      auto knownSpell = _owner.npcType()->knownSpell();
-      if (knownSpell) {
-        if (_owner.isSpellCoolingDown(knownSpell->id())) break;
-        _owner.castSpell(*knownSpell);
-      }
       break;  // Entity::update() will handle combat
   }
+
+  // Cast any spells it knows
+  auto knownSpell = _owner.npcType()->knownSpell();
+  if (knownSpell && !_owner.isSpellCoolingDown(knownSpell->id()))
+    _owner.castSpell(*knownSpell);
 }
 
 void AI::giveOrder(PetOrder newOrder) {

@@ -393,6 +393,30 @@ TEST_CASE_METHOD(ServerAndClientWithData, "NPC spells") {
   }
 }
 
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "NPCs cast AoE spells even with no target selected") {
+  GIVEN("an NPC with an AoE spell that targets enemies") {
+    useData(R"(
+      <spell id="explosion" radius="100" >
+          <targets enemy="1" cooldown="1" />
+          <function name="doDirectDamage" i1="5" />
+      </spell>
+      <npcType id="pyromaniac" >
+        <spell id="explosion" />
+      </npcType>
+    )");
+    server->addNPC("pyromaniac", {20, 20});
+
+    WHEN("enough time passes for the spell to be cast") {
+      REPEAT_FOR_MS(100);
+
+      THEN("a nearby user has taken damage") {
+        CHECK(user->health() < user->stats().maxHealth);
+      }
+    }
+  }
+}
+
 TEST_CASE("Kills with spells give XP") {
   GIVEN("a high-damage spell and low-health NPC") {
     auto data = R"(
