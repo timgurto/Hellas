@@ -335,10 +335,7 @@
         <function name="spawnNPC" s1="dAW_phnConsort" />
     </spell>
 <npcType id="dAW_phnConsort" name="Loyal Consort"
-    level="23" maxHealth="154" attack="20" attackTime="2400" disappearAfter="120000" >
-    <humanoid base="zealot">
-        <item id="" />
-    </humanoid>
+    level="23" maxHealth="154" attack="20" attackTime="2400" disappearAfter="120000" template="girlTeal" >
     <lootTable id="human" />
     <lootTable id="humanTinAge" />
 </npcType>
@@ -705,7 +702,7 @@
     debrief="[Io isn't here.  But I can tell you what happened.  I was a priestess of Hera, like Io.]">
     <prerequisite id="dAW_princess3" />
 </quest>
-    <npcType id="dAW_womanQG2" name="Argive Priestess" template="girlTealWhite" isCivilian="1" level="17" maxHealth="136" />
+    <npcType id="dAW_womanQG2" name="Argive Priestess" template="girlWhite" isCivilian="1" level="17" maxHealth="136" />
     <npc id="dAW_womanQG2" x="17980" y="70625" />
 <quest id="dAW_princess5" name="The Missing Princess" startsAt="dAW_womanQG2" endsAt="argosKing"
     brief="[Zeus lusted after her, Hera turned her into a white cow, Hermes disguised himself as a shepherd and helped kill Argus.  Io escaped, but was chased to the south coast of the Peloponnesus by a giant gadfly.]"
