@@ -101,10 +101,14 @@ void ClientCombatant::playSoundWhenHit() const {
 
 void ClientCombatant::drawBuffEffects(const MapPoint &location,
                                       const ScreenPoint &clientOffset) const {
+  const auto delta = _cClient._timeElapsed / 1000.0;
   for (auto *buffType : buffs()) {
-    if (!buffType->hasEffect()) continue;
-    buffType->effectImage().draw(toScreenPoint(location) + clientOffset +
-                                 buffType->effectOffset());
+    if (!buffType->particles().empty())
+      _cClient.addParticles(buffType->particles(), location, delta);
+
+    if (buffType->hasEffect())
+      buffType->effectImage().draw(toScreenPoint(location) + clientOffset +
+                                   buffType->effectOffset());
   }
 }
 
