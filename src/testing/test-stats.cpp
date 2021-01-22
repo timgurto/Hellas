@@ -1213,6 +1213,17 @@ TEST_CASE("Buffs can reduce max health") {
         CHECK(kobold.stats().maxHealth == 5);
 
         AND_THEN("it has 5 health") { CHECK(kobold.health() == 5); }
+
+        SECTION("When it loses the buff on death, it stays dead") {
+          AND_WHEN("it dies") {
+            kobold.kill();
+
+            THEN("it stays dead") {
+              REPEAT_FOR_MS(100);
+              CHECK(kobold.isDead());
+            }
+          }
+        }
       }
     }
   }
