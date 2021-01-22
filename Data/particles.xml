@@ -507,4 +507,13 @@
     <variety imageFile="sparkleSmall2" />
 </particleProfile>
 
+<particleProfile id="sleeping"
+    particlesPerSecond="1.5"
+    gravityModifier="0">
+    <fallSpeed mean="-10" sd="0" />
+    <lifespan mean="1500" sd="200" />
+    <altitude mean="40" sd="0" />
+    <variety imageFile="z" />
+</particleProfile>
+
 </root>

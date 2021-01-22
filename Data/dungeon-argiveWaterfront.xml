@@ -670,27 +670,38 @@
             <gear id="staff2" />
             <gear id="horn" />
         </humanoid>
+        <spell id="hermesSleep" />
     </npcType>
     <npc id="hermesArgos" x="41410" y="49115" />
-    <npc id="sheep" x="41386" y="49120" > <owner type="noAccess" /> </npc>
-    <npc id="sheep" x="41370" y="49110" > <owner type="noAccess" /> </npc>
+    <npcType id="hermesSheep" name="Protected Sheep" template="sheep"
+        level="20" maxHealth="174" isCivilian="1" />
+    <npc id="hermesSheep" x="41386" y="49120" > <owner type="noAccess" /> </npc>
+    <npc id="hermesSheep" x="41370" y="49110" > <owner type="noAccess" /> </npc>
 <quest id="dAW_princess2" name="Forty Winks" startsAt="hermesArgos" endsAt="hermesArgos"
     brief="[The monster is Argus Panoptes, the all-seeing.  He has many eyes, and is ever-vigilant.  Bring the monster to me and I'll put him to sleep for you, making it easier to kill him.]"
     debrief="[Nice!]" >
     <objective type="kill" id="argusPanoptes" />
     <prerequisite id="dAW_princess1" />
 </quest>
-    <npcType id="argusPanoptes"
+    <npcType id="argusPanoptes" name="Argus Panoptes"
     level="22" elite="1" maxHealth="864" attack="46" attackTime="2000" >
         <humanoid base="gigantis">
-            <gear id="copperBraces" />
+            <gear id="copperBracers" />
             <gear id="copperSword" />
             <gear id="sandals" />
             <gear id="linothorax" />
             <gear id="hide" />
         </humanoid>
-        <!-- sleep AoE debuff, similar to roads.  Low health, no attack. -->
     </npcType>
+        <spell id="hermesSleep" radius="15" cooldown="1" >
+            <targets specificNPC="argusPanoptes" friendly="1" enemy="1" />
+            <function name="buff" s1="hermesSleep" />
+        </spell>
+            <buff id="hermesSleep" name="Shepherd's sleep charm" icon="eyes"
+                description="Cannot move or attack.  Severely reduced health."
+                particles="sleeping" >
+                <stats health="-863" stuns="1" />
+            </buff>
     <!-- white cow, brown cows -->
 <quest id="dAW_princess3" name="The Monster at the Temple" startsAt="hermesArgos" endsAt="argosKing"
     brief="[Go back to King Inachus]"
