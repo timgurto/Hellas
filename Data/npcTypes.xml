@@ -105,6 +105,11 @@
     xDrawOffset="-13" yDrawOffset="-24" >
     <collisionRect x="-11" y="-2" w="21" h="4" />
 </npcTemplate>
+<npcTemplate id="sheep"
+    imageFile="sheep" 
+    xDrawOffset="-23" yDrawOffset="-27" >
+    <collisionRect x="-21" y="-4" w="37" h="7" />
+</npcTemplate>
 <npcTemplate id="girlTeal"
     imageFile="girl-teal"
     xDrawOffset="-6" yDrawOffset="-35" >

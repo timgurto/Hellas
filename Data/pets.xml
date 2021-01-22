@@ -8,10 +8,8 @@
     <loot id="hide" chance="0.1" />
 </npcType>
 
-<npcType id="sheep" name="Sheep"
-    level="17" maxHealth="83" attack="15" attackTime="2900" armor="3" isNeutral="1"
-    xDrawOffset="-23" yDrawOffset="-27" >
-    <collisionRect x="-21" y="-4" w="37" h="7" />
+<npcType id="sheep" name="Sheep" template="sheep"
+    level="17" maxHealth="83" attack="15" attackTime="2900" armor="3" isNeutral="1" >
     <canBeTamed consumes="collar" />
     <lootTable id="animal" />
     <loot id="sheepskin" chance="0.1" />
