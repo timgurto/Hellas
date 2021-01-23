@@ -1,4 +1,5 @@
 #include "TestClient.h"
+#include "TestFixtures.h"
 #include "TestServer.h"
 #include "testing.h"
 
@@ -47,6 +48,26 @@ TEST_CASE("Only the tagging player gets kill XP", "[slow]") {
             AND_THEN("Alice does") { CHECK(alice.xp() > 0); }
           }
         }
+      }
+    }
+  }
+}
+
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "NPCs can be marked as rewarding no XP") {
+  GIVEN("an NPC that gives no XP") {
+    useData(R"(
+      <npcType id="ghost" noXP="1" />
+    )");
+    auto &ghost = server->addNPC("ghost", {10, 15});
+
+    WHEN("the user kills it") {
+      client->sendMessage(CL_TARGET_ENTITY, makeArgs(ghost.serial()));
+      WAIT_UNTIL(ghost.isDead());
+
+      THEN("the user has no XP") {
+        REPEAT_FOR_MS(100);
+        CHECK(user->xp() == 0);
       }
     }
   }

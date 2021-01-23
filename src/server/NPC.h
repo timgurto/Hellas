@@ -63,7 +63,7 @@ class NPC : public Entity, public QuestNode {
   SpellSchool school() const override { return npcType()->school(); }
   int getLevelDifference(const User &user) const override;
   double combatDamage() const override;
-  bool grantsXPOnDeath() const override { return true; }
+  bool grantsXPOnDeath() const override { return type()->rewardsXP; }
   double getTameChance() const;
 
   char classTag() const override { return 'n'; }

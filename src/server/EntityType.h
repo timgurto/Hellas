@@ -37,6 +37,8 @@ class EntityType : public HasTags {
   void baseStats(const Stats &stats) { _baseStats = stats; }
   const Stats &baseStats() const { return _baseStats; }
 
+  bool rewardsXP{true};
+
   // Other
   Yield yield;
   TransformationType transformation;

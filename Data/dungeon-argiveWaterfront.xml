@@ -684,7 +684,7 @@
     <prerequisite id="dAW_princess1" />
 </quest>
     <npcType id="argusPanoptes" name="Argus Panoptes"
-    level="22" elite="1" maxHealth="864" attack="46" attackTime="2000" >
+    level="22" elite="1" maxHealth="864" attack="46" attackTime="2000" noXP="1" >
         <humanoid base="gigantis">
             <gear id="copperBracers" />
             <gear id="copperSword" />

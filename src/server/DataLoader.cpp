@@ -532,6 +532,7 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
       nt->makeCivilian();
     else if (xr.findAttr(elem, "isNeutral", n) && n != 0)
       nt->makeNeutral();
+    if (xr.findAttr(elem, "noXP", n) && n == 1) nt->rewardsXP = false;
 
     // Disappearance
     auto disappearTime = 0;
