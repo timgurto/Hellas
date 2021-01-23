@@ -736,7 +736,7 @@ std::vector<BuffType::ID> Entity::buffsThatCancelOnOOE() const {
 }
 
 void Entity::applyBuff(const BuffType &type, Entity &caster) {
-  auto newBuff = Buff{type, *this, caster};
+  if (isDead()) return;
 
   // Check whether it doesn't stack with something else
   for (auto &buff : _buffs) {
@@ -744,6 +744,8 @@ void Entity::applyBuff(const BuffType &type, Entity &caster) {
       return;
     }
   }
+
+  auto newBuff = Buff{type, *this, caster};
 
   // Check for duplicates
   auto buffWasReapplied = false;
@@ -770,6 +772,8 @@ void Entity::applyBuff(const BuffType &type, Entity &caster) {
 }
 
 void Entity::applyDebuff(const BuffType &type, Entity &caster) {
+  if (isDead()) return;
+
   auto newDebuff = Buff{type, *this, caster};
 
   // Check for duplicates

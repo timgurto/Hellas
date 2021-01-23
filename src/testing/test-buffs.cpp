@@ -56,6 +56,19 @@ TEST_CASE("Buffs disappear on death") {
             WAIT_UNTIL(cDog.debuffs().empty());
             WAIT_UNTIL(cDog.buffs().empty());
           }
+
+          SECTION("buffs and debuffs can't be applied to a dead entity") {
+            AND_WHEN("the flea buff tries to reapply to the dead dog") {
+              dog.applyBuff(flea, dog);
+              dog.applyDebuff(flea, dog);
+
+              THEN("it has no buffs") {
+                REPEAT_FOR_MS(100);
+                CHECK(dog.buffs().empty());
+                CHECK(dog.debuffs().empty());
+              }
+            }
+          }
         }
       }
     }
