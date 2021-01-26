@@ -702,7 +702,13 @@
                 particles="sleeping" >
                 <stats health="-863" stuns="1" />
             </buff>
-    <!-- white cow, brown cows -->
+    <npcType id="argusCowBrown" name="Protected Cow" template="cowBrown"
+        level="20" maxHealth="174" isCivilian="1" />
+    <npcType id="argusCowWhite" name="Protected Cow" template="cowWhite"
+        level="20" maxHealth="174" isCivilian="1" />
+    <npc id="argusCowBrown" x="41076" y="48944" > <owner type="noAccess" /> </npc>
+    <npc id="argusCowBrown" x="41146" y="48934" > <owner type="noAccess" /> </npc>
+    <npc id="argusCowWhite" x="41116" y="48953" > <owner type="noAccess" /> </npc>
 <quest id="dAW_princess3" name="The Monster at the Temple" startsAt="hermesArgos" endsAt="argosKing"
     brief="[Go back to King Inachus]"
     debrief="[I'm glad you killed the monster.  But you didn't see my daughter?]" >

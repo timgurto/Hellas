@@ -120,6 +120,16 @@
     xDrawOffset="-6" yDrawOffset="-35" >
     <collisionRect x="-4" y="-2" w="9" h="4" />
 </npcTemplate>
+<npcTemplate id="cowBrown"
+    imageFile="cowBrown"
+    xDrawOffset="-20" yDrawOffset="-31" >
+    <collisionRect x="-17" y="-4" w="40" h="6" />
+</npcTemplate>
+<npcTemplate id="cowWhite"
+    imageFile="cowWhite"
+    xDrawOffset="-20" yDrawOffset="-31" >
+    <collisionRect x="-17" y="-4" w="40" h="6" />
+</npcTemplate>
 
 <npcType
     id="pig1" name="Critter" template="pig"
