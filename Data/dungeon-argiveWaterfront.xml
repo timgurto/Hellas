@@ -724,8 +724,14 @@
     brief="[Kill the gadfly and look for Io.]"
     debrief="[I heard on the grapevine that the gadfly chased Io into the sea, and she traveled south to Egypt.  Please speak to the King.]" >
     <prerequisite id="dAW_princess5" />
+    <objective type="kill" id="gadfly" />
 </quest>
-    <!-- Gadfly -->
+    <npcType id="gadfly" name="Gadfly"
+        level="26" elite="1" maxHealth="509" attack="21" attackTime="1600"
+        dodge="5000" airResist="5000" earthResist="5000" fireResist="5000" waterResist="5000"
+        xDrawOffset="-6" yDrawOffset="-26">
+        <collisionRect x="-6" y="-4" w="12" h="8" />
+    </npcType>
 <quest id="dAW_princess7" name="Sharing the Bad News" startsAt="argosKing" endsAt="argosMagistrate"
     brief="[So my daughter is gone.  At least she's alive.  Please tell the magistrate so that he can inform the people.]"
     debrief="[I don't believe you.  Monsters and gods?  Egypt?  It must have been the Phoenicians.  Taking maidens from the town is one thing, but our princess?  The people won't stand for this.]" >

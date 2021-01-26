@@ -559,6 +559,11 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
     xr.findAttr(elem, "attackTime", baseStats.attackTime);
     xr.findAttr(elem, "speed", baseStats.speed);
     xr.findAttr(elem, "armor", baseStats.armor);
+    xr.findAttr(elem, "dodge", baseStats.dodge);
+    xr.findAttr(elem, "airResist", baseStats.airResist);
+    xr.findAttr(elem, "earthResist", baseStats.earthResist);
+    xr.findAttr(elem, "fireResist", baseStats.fireResist);
+    xr.findAttr(elem, "waterResist", baseStats.waterResist);
     nt->baseStats(baseStats);
 
     if (xr.findAttr(elem, "elite", n) && n != 0)

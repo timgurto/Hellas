@@ -177,7 +177,6 @@
     <spawnPoint type="dAW_phnLover" y="70592" x="17253.5" quantity="1" radius="0" respawnTime="300000" />
     <spawnPoint type="dAW_phnLover" y="70758" x="17224" quantity="1" radius="0" respawnTime="300000" />
     <spawnPoint type="dAW_phnLover" y="70766" x="17503" quantity="1" radius="0" respawnTime="300000" />
-    <spawnPoint type="dAW_woman" y="70595" x="17950" quantity="4" radius="100" respawnTime="300000" />
     <spawnPoint type="dAW_phnLover" y="70780.5" x="17470.5" quantity="1" radius="0" respawnTime="300000" />
     <spawnPoint type="dAW_phnLoverBoss" y="70680.5" x="17741" quantity="1" radius="0" respawnTime="300000" />
     <spawnPoint type="dAW_phnNavigator" y="71151.5" x="18675" quantity="1" radius="0" respawnTime="300000" />
@@ -223,6 +222,7 @@
     <spawnPoint type="dAW_tortoise" y="70942.5" x="14934" quantity="1" radius="0" respawnTime="3600000" />
     <spawnPoint type="dAW_tortoise" y="70945" x="15020" quantity="1" radius="0" respawnTime="3600000" />
     <spawnPoint type="dAW_tortoise" y="70987" x="14956" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_woman" y="70595" x="17950" quantity="4" radius="100" respawnTime="300000" />
     <spawnPoint type="dog6" y="25204" x="34108" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="dog6" y="25412" x="35588" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="dog6" y="25520" x="32880" quantity="5" radius="250" respawnTime="300000" />
@@ -243,6 +243,7 @@
     <spawnPoint type="fireNymph" y="49440" x="39408" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="fish" y="26800" x="33520" quantity="30" radius="6300" respawnTime="300000" useCachedTerrain="1" />
     <spawnPoint type="fish" y="33120" x="33744" quantity="600" radius="30000" respawnTime="300000" useCachedTerrain="1" />
+    <spawnPoint type="gadfly" y="60864" x="48416" quantity="1" radius="100" respawnTime="300000" />
     <spawnPoint type="gigantis" y="58777" x="4978" quantity="1" radius="15" respawnTime="10000" />
     <spawnPoint type="gigantis" y="58897" x="5050" quantity="1" radius="15" respawnTime="10000" />
     <spawnPoint type="goat12" y="24136" x="30608" quantity="5" radius="250" respawnTime="300000" />
