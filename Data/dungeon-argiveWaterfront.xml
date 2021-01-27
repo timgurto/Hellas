@@ -458,7 +458,7 @@
 </item>
 <item id="dAW_gangleaderRing" name="Ringleader's Ring" gearSlot="1" quality="1" lvlReq="18" >
     <stats health="9" />
-    <offset x="0" y="0" />
+    <canBeRepaired cost="silverWire" />
 </item>
 <item id="dAW_gangleaderBoots" name="Fancy Boots" gearSlot="5" sounds="leather" quality="2" lvlReq="18" >
     <stats armour="9" intellect="4" cunning="4" />
@@ -728,9 +728,10 @@
 </quest>
 <quest id="dAW_princess6" name="The Gadfly" startsAt="argosKing" endsAt="argosQueen"
     brief="[Kill the gadfly and look for Io.]"
-    debrief="[I heard on the grapevine that the gadfly chased Io into the sea, and she traveled south to Egypt.  Please speak to the King.]" >
+    debrief="[I heard on the grapevine that the gadfly chased Io into the sea, and she traveled south to Egypt.  Here's a jewel, since I can no longer give it to her.  Please speak to the King.]" >
     <prerequisite id="dAW_princess5" />
     <objective type="kill" id="gadfly" />
+    <reward type="item" id="dAW_queensJewel" />
 </quest>
     <npcType id="gadfly" name="Gadfly"
         level="26" elite="1" maxHealth="509" attack="21" attackTime="1600"
@@ -738,12 +739,16 @@
         xDrawOffset="-6" yDrawOffset="-26">
         <collisionRect x="-6" y="-4" w="12" h="8" />
     </npcType>
+    <item id="dAW_queensJewel" name="Jewel of the Oceanid Queen" gearSlot="1" quality="2" lvlReq="21"
+        iconFile="">
+        <stats intellect="3" />
+        <canBeRepaired cost="silverWire" />
+    </item>
 <quest id="dAW_princess7" name="Sharing the Bad News" startsAt="argosKing" endsAt="argosMagistrate"
     brief="[So my daughter is gone.  At least she's alive.  Please tell the magistrate so that he can inform the people.]"
     debrief="[I don't believe you.  Monsters and gods?  Egypt?  It must have been the Phoenicians.  Taking maidens from the town is one thing, but our princess?  The people won't stand for this.]" >
     <prerequisite id="dAW_princess6" />
 </quest>
-<!-- Chain rewards -->
 
-    
+
 </root>
