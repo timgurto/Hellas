@@ -660,8 +660,10 @@
     
 <!-- Missing princess -->
 <quest id="dAW_princess1" name="The Monster at the Temple" startsAt="argosKing" endsAt="hermesArgos"
-    brief="[Princess Io is missing.  She's a priestess to Hera.  There are reports of a strange monster in the temple to Hera.  Please kill the monster and look for Io.]"
-    debrief="[I'm Hermes.  I can help you kill it.]" />
+    brief="I'll get straight to the point, stranger: my daughter, Princess Io, is missing.  It would be a service to the whole city of Argos if you were to help find her.
+    Io is a priestess to Hera, and there are stories of a strange monster in the temple where she served.  I suspect the monster may be responsible for my daughter's disappearance, but I hope I'm wrong.
+    Cleanse Hera's temple of this beast.  And if it did indeed take the princess, then please return her to me--dead or alive."
+    debrief="Hello, friend!  Are you looking to vanquish the creature in Hera's temple?  Perhaps I can help." />
     <npcType id="hermesArgos" name="Unusual Shepherd" 
         level="20" maxHealth="174" isCivilian="1" >
         <humanoid base="scholar">
@@ -673,13 +675,14 @@
         <spell id="hermesSleep" />
     </npcType>
     <npc id="hermesArgos" x="41410" y="49115" />
-    <npcType id="hermesSheep" name="Protected Sheep" template="sheep"
+    <npcType id="hermesSheep" name="" template="sheep"
         level="20" maxHealth="174" isCivilian="1" />
     <npc id="hermesSheep" x="41386" y="49120" > <owner type="noAccess" /> </npc>
     <npc id="hermesSheep" x="41370" y="49110" > <owner type="noAccess" /> </npc>
 <quest id="dAW_princess2" name="Forty Winks" startsAt="hermesArgos" endsAt="hermesArgos"
-    brief="[The monster is Argus Panoptes, the all-seeing.  He has many eyes, and is ever-vigilant.  Bring the monster to me and I'll put him to sleep for you, making it easier to kill him.]"
-    debrief="[Nice!]" >
+    brief="The monster in the temple is Argus Panoptes, a watchman of the gods who has many eyes.  He is all seeing; ever vigilant.  And he will be hard to best in combat.
+    If you lead him to me, I can play a soothing melody that will put him to sleep--all of his eyes at once.  You may then slay him without trouble."
+    debrief="Argus Panoptes is slain.  Well done!" >
     <objective type="kill" id="argusPanoptes" />
     <prerequisite id="dAW_princess1" />
 </quest>
@@ -702,36 +705,41 @@
                 particles="sleeping" >
                 <stats health="-863" stuns="1" />
             </buff>
-    <npcType id="argusCowBrown" name="Protected Cow" template="cowBrown"
+    <npcType id="argusCowBrown" name="" template="cowBrown"
         level="20" maxHealth="174" isCivilian="1" />
-    <npcType id="argusCowWhite" name="Protected Cow" template="cowWhite"
+    <npcType id="argusCowWhite" name="" template="cowWhite"
         level="20" maxHealth="174" isCivilian="1" />
     <npc id="argusCowBrown" x="41076" y="48944" > <owner type="noAccess" /> </npc>
     <npc id="argusCowBrown" x="41146" y="48934" > <owner type="noAccess" /> </npc>
     <npc id="argusCowWhite" x="41116" y="48953" > <owner type="noAccess" /> </npc>
 <quest id="dAW_princess3" name="The Monster at the Temple" startsAt="hermesArgos" endsAt="argosKing"
-    brief="[Go back to King Inachus]"
-    debrief="[I'm glad you killed the monster.  But you didn't see my daughter?]" >
+    brief="You should return to King Inachus to report the demise of Argus Panoptes."
+    debrief="You've returned!  I'm glad that you were able to cleanse the temple.  But tell me, did you see any sign of the princess?" >
     <prerequisite id="dAW_princess2" />
 </quest>
 <quest id="dAW_princess4" name="The Missing Princess" startsAt="argosKing" endsAt="dAW_womanQG2"
-    brief="[There are rumours that Phoenician merchants have taken a number of Argive women to the waterfront.  Go there and see if Io is among them.]"
-    debrief="[Io isn't here.  But I can tell you what happened.  I was a priestess of Hera, like Io.]">
+    brief="So my daughter was not taken at the temple.  A relief, I suppose.  And another possibility has emerged.
+    There are rumours that Phoenician merchants have run wild in the market, abducting a number of Argive maidens and taking them to the city's waterfront.  This is a problem in itself, but right now I am most concerned about the princess.  Go to the waterfront, and see if Io is among the women taken."
+    debrief="You seek the princess?  Alas, our beloved Io isn't here.  But I can tell you what happened to her.  Like Io, I was a priestess of Hera.">
     <prerequisite id="dAW_princess3" />
 </quest>
     <npcType id="dAW_womanQG2" name="Argive Priestess" template="girlWhite" isCivilian="1" level="17" maxHealth="136" />
     <npc id="dAW_womanQG2" x="17980" y="70625" />
 <quest id="dAW_princess5" name="The Missing Princess" startsAt="dAW_womanQG2" endsAt="argosKing"
-    brief="[Zeus lusted after her, Hera turned her into a white cow, Hermes disguised himself as a shepherd and helped kill Argus.  Io escaped, but was chased to the south coast of the Peloponnesus by a giant gadfly.]"
-    debrief="[That's no good.]" >
+    brief="Hera has revealed to me the story of her priestess, the princess Io.
+    Zeus the lecher, with no regard for fidelity to Hera, lusted after Io.  Hera, justifiably angry, transformed Io into a beautiful white cow, and set her many-eyed servant Argus Panoptes to protect her from Zeus's advances.
+    To overcome this, Zeus sent Hermes, disguised as a shepherd.  Hermes lulled Argus to sleep, making it easy to kill him.
+    But Io could not escape the wrath of Hera so easily.  Io was free, but Hera sent a giant gadfly to chase and bite her wherever she went.
+    Please tell King Inachus what I have told you.  He will want to know what became of his daughter."
+    debrief="That's quite a story!  I lament that my daughter has incurred the wrath of Hera, but I cannot give up my search." >
     <prerequisite id="dAW_princess4" />
 </quest>
-<quest id="dAW_princess6" name="The Gadfly" startsAt="argosKing" endsAt="argosQueen"
-    brief="[Kill the gadfly and look for Io.]"
-    debrief="[I heard on the grapevine that the gadfly chased Io into the sea, and she traveled south to Egypt.  Here's a jewel, since I can no longer give it to her.  Please speak to the King.]" >
+<quest id="dAW_princess6" name="The Gadfly" startsAt="argosKing" endsAt="princessNecklace"
+    brief="Scouts have reported the giant gadfly south, at the southeast tip of the Peloponnesus.  With any luck, if we find it then we will find Io.
+    Kill the blasted gadfly, and look for any sign of my daughter nearby."
+    debrief="Half buried in the sand, you find a jeweled necklace that looks fit for royalty.  You can only assume that it is all that is left of the Argive princess Io." >
     <prerequisite id="dAW_princess5" />
     <objective type="kill" id="gadfly" />
-    <reward type="item" id="dAW_queensJewel" />
 </quest>
     <npcType id="gadfly" name="Gadfly"
         level="26" elite="1" maxHealth="509" attack="21" attackTime="1600"
@@ -739,16 +747,30 @@
         xDrawOffset="-6" yDrawOffset="-26">
         <collisionRect x="-6" y="-4" w="12" h="8" />
     </npcType>
-    <item id="dAW_queensJewel" name="Jewel of the Oceanid Queen" gearSlot="1" quality="2" lvlReq="21"
+    <objectType id="princessNecklace" name="Jeweled necklace"
+        xDrawOffset="" yDrawOffset=""/>
+    <object id="princessNecklace" x="48420" y="60911" />
+<quest id="dAW_princess7" name="All That Remains" startsAt="princessNecklace" endsAt="argosQueen"
+    brief="This necklace should be returned to Io's parents in the Argive palace."
+    debrief="Thank you for returning this to me.
+    My sister Oceanids have told me that my daughter survived.  The gadfly chased her into the water, and she crossed the sea into the distant land of Egypt.  I imagine this is the end of Io's story; she is no longer ours.
+    The necklace you found was my gift to her, and I think it appropriate that you should have it now, as thanks for your role in uncovering the truth." >
+    <prerequisite id="dAW_princess6" />
+    <reward type="item" id="dAW_princessNecklace" />
+</quest>
+    <item id="dAW_princessNecklace" name="Jewel of the Sea" gearSlot="1" quality="2" lvlReq="21"
         iconFile="">
         <stats intellect="3" />
         <canBeRepaired cost="silverWire" />
     </item>
-<quest id="dAW_princess7" name="Sharing the Bad News" startsAt="argosKing" endsAt="argosMagistrate"
-    brief="[So my daughter is gone.  At least she's alive.  Please tell the magistrate so that he can inform the people.]"
-    debrief="[I don't believe you.  Monsters and gods?  Egypt?  It must have been the Phoenicians.  Taking maidens from the town is one thing, but our princess?  The people won't stand for this.]" >
-    <prerequisite id="dAW_princess6" />
-</quest>
+<!-- To do: uncomment this quest to bridge it to the followup wife-stealing content, be it the Trojan War or something intermediary. -->
+<!--quest id="dAW_princess8" name="Sharing the Bad News" startsAt="argosKing" endsAt="argosMagistrate"
+    brief="So my daughter is gone.  At least she's alive.  Please tell the city magistrate what happened, so that he can inform the people what happened to their princess."
+    debrief="That's an unbelievable story!  Monsters and gods?  Egypt?!
+    No, I think you must have misunderstood the king.  The only logical explanation is that the Phoenicians took off with Princess Io.
+    Taking maidens from the town is one thing, but our princess?  The people won't stand for this." >
+    <prerequisite id="dAW_princess7" />
+</quest-->
 
 
 </root>
