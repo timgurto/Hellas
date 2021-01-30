@@ -314,6 +314,7 @@
     <lootTable id="human" />
     <lootTable id="humanTinAge" />
     <loot id="dAW_phnLoverBoxers" />
+    <loot id="dAW_wearableBoxers" chance="0.02" />
 </npcType>
 
 <npcType id="dAW_phnLoverBoss" name="Lotharios"
@@ -326,6 +327,7 @@
     <lootTable id="human" />
     <lootTable id="humanTinAge" />
     <loot id="dAW_phnLoverBoxers" />
+    <loot id="dAW_wearableBoxers" chance="0.02" />
     <chooseLoot>
         <choice item="dAW_loverSword"/>
         <choice item="dAW_loverHealOffhand"/>
@@ -476,6 +478,10 @@
     <tag name="gloves" toolSpeed="1.05" />
     <stats armour="3" endurance="2" fireResist="11" />
     <offset x="0" y="0" />
+    <canBeRepaired cost="woolCloth" tool="sewing" />
+</item>
+<item id="dAW_wearableBoxers" name="Phoenician Underthings" gearSlot="2" sounds="fabric" iconFile="dAW_PhnLoverBoxers" >
+    <offset x="-5" y="8" />
     <canBeRepaired cost="woolCloth" tool="sewing" />
 </item>
 <item id="dAW_loverSword" name="Dashing Swashbuckler's Sword" gearSlot="6" quality="2" lvlReq="20" >
