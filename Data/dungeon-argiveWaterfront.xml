@@ -128,6 +128,7 @@
     <lootTable id="dAW_gangTrash" />
     <lootTable id="human" />
     <lootTable id="humanTinAge" />
+    <loot id="tinCoin" > <normal mean="4" sd="2" /> </loot>
 </npcType>
     <spell id="dAW_disarm" cooldown="10" school="physical">
         <targets enemy="1" />
