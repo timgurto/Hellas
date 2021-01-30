@@ -772,5 +772,20 @@
     <prerequisite id="dAW_princess7" />
 </quest-->
 
+<!-- Crime wave -->
+<quest id="dAW_crime" name="Crime Wave" startsAt="argosMagistrate" endsAt="argosMagistrate"
+    brief="As you may have heard, many young maidens have gone missing from the city.  This alone is troubling enough, but in addition, a group of citizens have sworn to take action.  Calling themselves 'The Vindictives', this violent gang has laid their blame on the whole merchant class.  They've taken over the waterfront district and are dispensing mob justice.
+    The city is understandably upset, but that isn't an excuse for vigilantes.  Please go to the waterfront and restore order by bringing this crime wave to an end."
+    debrief="Thank you.  Your service to our city will not be forgotten.">
+    <objective type="kill" id="dAW_gangPickpocket" qty="5" />
+    <objective type="kill" id="dAW_gangBrawler" qty="5" />
+    <objective type="kill" id="dAW_gangVandal" qty="5" />
+    <reward type="item" id="dAW_tankCloak" />
+</quest>
+    <item id="dAW_tankCloak" name="Argive Deputy's Cloak" gearSlot="3" sounds="fabric" >
+        <stats armour="5" cunning="3" endurance="4" />
+        <offset x="0" y="0" />
+        <canBeRepaired cost="woolCloth" tool="sewing" />
+    </item>
 
 </root>

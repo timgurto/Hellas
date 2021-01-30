@@ -224,3 +224,12 @@ City of Argos:
         Argus
     Coast somewhere
         Gadfly
+
+Crime-wave quest chain
+Gear art
+Necklace-object art
+Decorations in dungeon
+Interesting loot
+Lootable chest-like things
+Spell/buff sounds/art?
+Test princess chain
