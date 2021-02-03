@@ -96,6 +96,42 @@
 <permanentObject id="wallClear3" y="70864" x="18016" />
 <permanentObject id="wallClear5" y="70976" x="18016" />
 
+<!-- Obstacles -->
+<permanentObject id="brickWallEW" x="15613" y="70121" />
+<permanentObject id="brickWallEW" x="15673" y="70121" />
+<permanentObject id="brickWallEW" x="15687" y="70295" />
+<permanentObject id="brickWallEW" x="15747" y="70295" />
+<permanentObject id="brickWallNS" x="15348" y="69959" />
+<permanentObject id="brickWallNS" x="15348" y="70019" />
+<permanentObject id="handCart" x="15006" y="70313" />
+<permanentObject id="handCart" x="15082" y="70324" />
+<permanentObject id="handCart" x="15245" y="70313" />
+<permanentObject id="handCart" x="15345" y="70322" />
+<permanentObject id="handCart" x="15353" y="70338" />
+<permanentObject id="mediumPot" x="15120" y="70330" />
+<permanentObject id="mediumPot" x="15181" y="70330" />
+<permanentObject id="mediumPot" x="15191" y="70323" />
+<permanentObject id="mediumPot" x="15283" y="70334" />
+<permanentObject id="mediumPot" x="15309" y="70330" />
+<permanentObject id="mediumPot" x="15327" y="70339" />
+<permanentObject id="smallPot" x="15030" y="70330" />
+<permanentObject id="smallPot" x="15039" y="70321" />
+<permanentObject id="smallPot" x="15046" y="70332" />
+<permanentObject id="smallPot" x="15054" y="70342" />
+<permanentObject id="smallPot" x="15061" y="70331" />
+<permanentObject id="smallPot" x="15135" y="70337" />
+<permanentObject id="smallPot" x="15139" y="70348" />
+<permanentObject id="smallPot" x="15149" y="70327" />
+<permanentObject id="smallPot" x="15204" y="70331" />
+<permanentObject id="smallPot" x="15211" y="70342" />
+<permanentObject id="smallPot" x="15220" y="70330" />
+<permanentObject id="smallPot" x="15224" y="70319" />
+<permanentObject id="smallPot" x="15235" y="70329" />
+<permanentObject id="smallPot" x="15243" y="70338" />
+<permanentObject id="smallPot" x="15279" y="70325" />
+<permanentObject id="smallPot" x="15298" y="70341" />
+<permanentObject id="tradeStall" x="15160" y="70340" />
+
 <lootTable id="dAW_allTrash" >
     <loot id="dAW_setGloves" chance="0.01" />
     <loot id="dAW_setBoots" chance="0.01" />
@@ -263,7 +299,7 @@
 
 <npcType id="dAW_phnCook" name="Phoenician Cook"
     level="23" elite="1" maxHealth="938" attack="44" attackTime="2500"
-    isRanged="1" projectile="rock" school="fire" >
+    isRanged="1" projectile="food" school="fire" >
     <humanoid base="scholar">
         <item id="" />
     </humanoid>
@@ -789,7 +825,7 @@
     <objective type="kill" id="dAW_gangVandal" qty="5" />
     <reward type="item" id="dAW_tankCloak" />
 </quest>
-    <item id="dAW_tankCloak" name="Argive Deputy's Cloak" gearSlot="3" sounds="fabric" >
+    <item id="dAW_tankCloak" name="Argive Deputy's Cloak" gearSlot="3" quality="2" sounds="fabric" >
         <stats armour="5" cunning="3" endurance="4" />
         <offset x="0" y="0" />
         <canBeRepaired cost="woolCloth" tool="sewing" />

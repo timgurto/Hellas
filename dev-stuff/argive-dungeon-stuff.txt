@@ -100,6 +100,14 @@ Obstacle objects and fences on ships
 Gear art
 Necklace-object art
 Decorations in dungeon
+    Pots
+    Carts
+    Cargo piles?
+Food-projectile art
 Spell/buff sounds/art?
 Test princess chain
 Test whole dungeon with a high-level character
+Double-check mob chaining
+Corner pulling for ranged mobs
+Prevent shooting through some "tall" objects?
+Prevent aggro around corners
