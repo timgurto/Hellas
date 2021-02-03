@@ -427,7 +427,6 @@ CombatResult Entity::castSpell(const Spell &spell,
 
     outcome = spell.performAction(*this, *target, supplementaryArg);
     if (outcome == FAIL) {
-      Server::debug()("Spell "s + spell.id() + " failed."s, Color::CHAT_ERROR);
       continue;
     }
 
