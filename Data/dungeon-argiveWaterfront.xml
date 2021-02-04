@@ -139,6 +139,28 @@
 <permanentObject id="smallPot" x="15298" y="70341" />
 <permanentObject id="tradeStall" x="15160" y="70340" />
 
+<!-- Ship fences -->
+<objectType id="wickerFenceEW"
+    xDrawOffset="-141" yDrawOffset="-22" customShadowWidth="0" isDecoration="1" >
+    <collisionRect x="-140" y="-1" w="280" h="3" />
+    <material id="stick" quantity="1" />
+</objectType>
+<permanentObject id="wickerFenceEW" x="16618" y="71325" />
+<permanentObject id="wickerFenceEW" x="16745" y="71042" />
+<permanentObject id="wickerFenceEW" x="16896" y="71325" />
+<permanentObject id="wickerFenceEW" x="17047" y="71042" />
+<permanentObject id="wickerFenceEW" x="17174" y="71325" />
+<permanentObject id="wickerFenceEW" x="17322" y="70530" />
+<permanentObject id="wickerFenceEW" x="17453" y="70813" />
+<permanentObject id="wickerFenceEW" x="17600" y="70530" />
+<permanentObject id="wickerFenceEW" x="17741" y="70813" />
+<permanentObject id="wickerFenceEW" x="17878" y="70530" />
+<permanentObject id="wickerFenceEW" x="18020" y="71325" />
+<permanentObject id="wickerFenceEW" x="18153" y="71042" />
+<permanentObject id="wickerFenceEW" x="18298" y="71325" />
+<permanentObject id="wickerFenceEW" x="18576" y="71325" />
+<permanentObject id="wickerFenceEW" x="18435" y="71042" />
+
 <lootTable id="dAW_allTrash" >
     <loot id="dAW_setGloves" chance="0.01" />
     <loot id="dAW_setBoots" chance="0.01" />
