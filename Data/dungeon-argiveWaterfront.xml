@@ -12,14 +12,15 @@
 </objectType>
 <object id="dAW_entryGate" x="43266" y="49956" />
 
-<objectType id="dAW_exitGateStart" name="Dungeon Portal" 
+<objectType id="dAW_exitGate" name="Dungeon Portal" 
     imageFile="marbleGate" xDrawOffset="-24" yDrawOffset="-75"
     windowText="Return to Hellas" >
     <collisionRect x="-23" y="-6" w="47" h="11" />
     <action label="Enter portal" target="teleportToArea" d1="43274" d2="49891" d3="60"/>
     <particles profile="portalSparkle" x="0" y="0" />
 </objectType>
-<object id="dAW_exitGateStart" x="16422" y="69858" />
+<object id="dAW_exitGate" x="16422" y="69858" /> <!-- Start -->
+<object id="dAW_exitGate" x="18650" y="70642" /> <!-- End -->
 
 
 <objectType id="wallBlack1" isDecoration="1" xDrawOffset="-16" yDrawOffset="-16">
@@ -92,9 +93,15 @@
 
 <permanentObject id="phoenicianGangplank"  y="70912" x="17952" />
 <permanentObject id="wallClear3" y="70864" x="17888" />
-<permanentObject id="wallClear5" y="70976" x="17888" />
+<permanentObject id="wallClear5" y="70960" x="17888" />
 <permanentObject id="wallClear3" y="70864" x="18016" />
-<permanentObject id="wallClear5" y="70976" x="18016" />
+<permanentObject id="wallClear5" y="70960" x="18016" />
+
+<permanentObject id="phoenicianGangplank"  y="70912" x="18656" />
+<permanentObject id="wallClear3" y="70864" x="18592" />
+<permanentObject id="wallClear5" y="70960" x="18592" />
+<permanentObject id="wallClear3" y="70864" x="18720" />
+<permanentObject id="wallClear5" y="70960" x="18720" />
 
 <!-- Obstacles -->
 <permanentObject id="brickWallEW" x="15613" y="70121" />
