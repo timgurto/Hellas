@@ -149,6 +149,16 @@
     <collisionRect x="-140" y="-1" w="280" h="3" />
     <material id="stick" quantity="1" />
 </objectType>
+<objectType id="wickerFenceNS"
+    xDrawOffset="-2" yDrawOffset="-167" customShadowWidth="0" isDecoration="1" >
+    <collisionRect x="-2" y="-144" w="4" h="288" />
+    <material id="stick" quantity="1" />
+</objectType>
+<objectType id="wickerFenceNSHalf"
+    xDrawOffset="-2" yDrawOffset="-93" customShadowWidth="0" isDecoration="1" >
+    <collisionRect x="-2" y="-70" w="4" h="140" />
+    <material id="stick" quantity="1" />
+</objectType>
 <permanentObject id="wickerFenceEW" x="16618" y="71325" />
 <permanentObject id="wickerFenceEW" x="16745" y="71042" />
 <permanentObject id="wickerFenceEW" x="16896" y="71325" />
@@ -164,6 +174,20 @@
 <permanentObject id="wickerFenceEW" x="18298" y="71325" />
 <permanentObject id="wickerFenceEW" x="18576" y="71325" />
 <permanentObject id="wickerFenceEW" x="18435" y="71042" />
+<permanentObject id="wickerFenceNS" x="18719" y="71184" />
+<permanentObject id="wickerFenceNS" x="17889" y="71187" />
+<permanentObject id="wickerFenceNS" x="18017" y="70675" />
+<permanentObject id="wickerFenceNS" x="17183" y="70675" />
+<permanentObject id="wickerFenceNS" x="17313" y="71183" />
+<permanentObject id="wickerFenceNS" x="16479" y="71183" />
+<permanentObject id="wickerFenceNSHalf" x="18116" y="71114" />
+<permanentObject id="wickerFenceNSHalf" x="18301" y="71256" />
+<permanentObject id="wickerFenceNSHalf" x="18496" y="71113" />
+<permanentObject id="wickerFenceNSHalf" x="17372" y="70745" />
+<permanentObject id="wickerFenceNSHalf" x="17588" y="70603" />
+<permanentObject id="wickerFenceNSHalf" x="16700" y="71113" />
+<permanentObject id="wickerFenceNSHalf" x="16899" y="71257" />
+<permanentObject id="wickerFenceNSHalf" x="17129" y="71113" />
 
 <lootTable id="dAW_allTrash" >
     <loot id="dAW_setGloves" chance="0.01" />
