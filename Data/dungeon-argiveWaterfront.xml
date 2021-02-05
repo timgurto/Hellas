@@ -67,17 +67,21 @@
 </objectType>
 <objectType id="phoenicianShip"
     xDrawOffset="-619" yDrawOffset="-207" isDecoration="1" customCullDistance="1000" customShadowWidth="0" isFlat="1" />
+<objectType id="phoenicianShipFront"
+    xDrawOffset="-540" yDrawOffset="69" isDecoration="1" customCullDistance="1000" customShadowWidth="0"  />
 <objectType id="phoenicianGangplank"
     xDrawOffset="-50" yDrawOffset="-144" isDecoration="1" customCullDistance="2000"  isFlat="1" />
 
-<permanentObject id="phoenicianShip"     y="71184" x="16896" />
-<permanentObject id="phoenicianShipMast" y="71184" x="16896" />
+<permanentObject id="phoenicianShip"      y="71184" x="16896" />
+<permanentObject id="phoenicianShipFront" y="71184" x="16896" />
+<permanentObject id="phoenicianShipMast"  y="71184" x="16896" />
 
-<permanentObject id="phoenicianShip"     y="70672" x="17600" />
-<permanentObject id="phoenicianShipMast" y="70672" x="17600" />
+<permanentObject id="phoenicianShip"      y="70672" x="17600" />
+<permanentObject id="phoenicianShipMast"  y="70672" x="17600" />
 
-<permanentObject id="phoenicianShip"     y="71184" x="18304" />
-<permanentObject id="phoenicianShipMast" y="71184" x="18304" />
+<permanentObject id="phoenicianShip"      y="71184" x="18304" />
+<permanentObject id="phoenicianShipFront" y="71184" x="18304" />
+<permanentObject id="phoenicianShipMast"  y="71184" x="18304" />
 
 <permanentObject id="phoenicianGangplank"  y="70912" x="16544" />
 <permanentObject id="wallClear3" y="70864" x="16480" />
