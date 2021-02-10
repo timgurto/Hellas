@@ -3,6 +3,7 @@
 <particleProfile
     id="newPlayerClay"
     particlesPerSecond="50">
+    <lifespan mean="10000" sd="2000" />
     <distance mean="5" sd="0" />
     <altitude mean="30" sd="4" />
     <velocity mean="15" sd="3" />
