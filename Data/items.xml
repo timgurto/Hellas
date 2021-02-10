@@ -170,6 +170,7 @@
                 <tag name="woodcutting" toolSpeed="1.05" />
                 <stats might="1" />
                 <weapon damage="4" speed="2" />
+                <offset x="-5" y="1" />
                 <canBeRepaired cost="knapper" />
             </item>
 		<item id="tinAxe" name="Tin Axe" gearSlot="6" lvlReq="10" >
@@ -199,6 +200,8 @@
                 <tag name="woodcutting" toolSpeed="1.25" />
                 <stats might="5" />
                 <weapon damage="11" speed="2.2" />
+                <offset x="-5" y="1" />
+                <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
 
 	<!-- Hammers (slow) -->
@@ -209,11 +212,13 @@
 			<offset x="-8" y="-1" />
             <canBeRepaired cost="copperBar" tool="smelting2" />
 		</item>
-            <item id="copperHammerSilver" name="Inlaid Copper Hammer" gearSlot="6"
+            <item id="copperHammerSilver" name="Inlaid Copper Hammer" gearSlot="6" sounds="metalTool"
                 iconFile="copperHammer" gearFile="copperHammer" quality="2" bind="equip" >
                 <tag name="hammering" toolSpeed="1.05" />
                 <stats courage="5" />
                 <weapon damage="18" speed="3.5" />
+                <offset x="-8" y="-1" />
+                <canBeRepaired cost="copperBar" tool="smelting2" />
             </item>
 
 <!-- Weapons -->
@@ -246,14 +251,14 @@
                 <canBeRepaired cost="tinBar" tool="smelting1" />
                 <tag name="fishing" toolSpeed="1.15" />
             </item>
-		<item id="copperSpear" name="Spear" gearSlot="6" lvlReq="24" >
+		<item id="copperSpear" name="Spear" gearSlot="6" sounds="spear" lvlReq="24" >
 			<stats crit="100" cunning="1" />
             <weapon damage="13" speed="2.5" />
 			<offset x="-5" y="-21" />
             <canBeRepaired cost="copperBar" tool="smelting2" />
             <tag name="fishing" toolSpeed="1.2" />
 		</item>
-            <item id="copperSpearSilver" name="Inlaid Spear" gearSlot="6" lvlReq="24"
+            <item id="copperSpearSilver" name="Inlaid Spear" gearSlot="6" sounds="spear" lvlReq="24"
                 iconFile="copperSpear" gearFile="copperSpear" quality="2" bind="equip">
                 <stats crit="200" cunning="1" />
                 <weapon damage="13" speed="2.4" />
@@ -339,12 +344,12 @@
 <!-- Armor -->
     <!-- Head -->
         <!-- Hood (Energy) -->
-            <item id="woolHood" name="Woolen Hood" gearSlot="0" lvlReq="20" >
+            <item id="woolHood" name="Woolen Hood" gearSlot="0" sounds="fabric" lvlReq="20" >
                 <stats armor="6" energy="25" />
                 <offset x="-4" y="-4" />
                 <canBeRepaired cost="woolCloth" tool="sewing" />
             </item>
-                <item id="woolHoodSilver" name="Embroidered Woolen Hood" gearSlot="0" lvlReq="20"
+                <item id="woolHoodSilver" name="Embroidered Woolen Hood" gearSlot="0" sounds="fabric" lvlReq="20"
                     iconFile="woolHood" gearFile="woolHood" quality="2" bind="equip" >
                     <stats armor="8" energy="31" />
                     <offset x="-4" y="-4" />
