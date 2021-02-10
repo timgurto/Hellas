@@ -591,24 +591,26 @@
     <canBeRepaired cost="tinBar" tool="smelting1" />
 </item>
 <item id="dAW_loverHealOffhand" name="Token of Affection" gearSlot="7" quality="2" lvlReq="20" bind="pickup"
-    iconFile="" gearFile="lantern" >
+    iconFile="fireEssence" gearFile="lantern" >
     <particles profile="fireSmall" x="2" y="0" />
     <particles profile="fireSmall" x="3" y="0" />
     <stats cunning="8" energy="6" healing="2500" />
     <offset x="-1" y="-9" />
     <canBeRepaired cost="clay" />
 </item>
-<item id="dAW_shipwrightHammer" name="Shipbuilding Mallet" gearSlot="6" quality="2" lvlReq="19" bind="pickup" >
+<item id="dAW_shipwrightHammer" name="Shipbuilding Mallet" gearSlot="6" quality="2" lvlReq="19" bind="pickup"
+    iconFile="tinHammer" gearFile="tinHammer" >
     <tag name="hammering" toolSpeed="0.9" />
     <weapon damage="16" speed="3.5" />
     <stats might="2" endurance="3" />
-    <offset x="0" y="0" />
+    <offset x="-8" y="-1" />
     <canBeRepaired cost="tinBar" tool="smelting1" />
 </item>
-<item id="dAW_shipwrightShield" name="Salty Shield" gearSlot="7" quality="2" lvlReq="19" bind="pickup" >
+<item id="dAW_shipwrightShield" name="Ship's Wheel" gearSlot="7" quality="2" lvlReq="19" bind="pickup"
+    iconFile="shipWheel" gearFile="shipWheel" >
     <tag name="shield" />
     <stats armor="23" endurance="5" block="200" blockValue="600" />
-    <offset x="0" y="0" />
+    <offset x="-6" y="-7" />
     <canBeRepaired cost="lumber" />
 </item>
 <item id="dAW_admiralStaff" name="Staff of the Oceanid" gearSlot="6" quality="3" lvlReq="21" bind="pickup"
