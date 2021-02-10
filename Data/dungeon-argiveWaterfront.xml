@@ -496,42 +496,42 @@
         <function name="doDirectDamage" i1="150" />
     </spell>
 
-<item id="dAW_setHat" name="Duplicitous Trader's Hat" gearSlot="0" sounds="fabric" quality="2" lvlReq="19" >
+<item id="dAW_setHat" name="Duplicitous Trader's Hat" gearSlot="0" sounds="fabric" quality="2" lvlReq="19" bind="pickup" >
     <stats armour="7" cunning="7" swiftness="6" />
     <offset x="-3" y="-8" />
     <canBeRepaired cost="woolCloth" tool="sewing" />
 </item>
-<item id="dAW_setGloves" name="Duplicitous Trader's Armbands" gearSlot="4" sounds="mailArmor" quality="1" lvlReq="18"
+<item id="dAW_setGloves" name="Duplicitous Trader's Armbands" gearSlot="4" sounds="mailArmor" quality="1" lvlReq="18" bind="equip"
     iconFile="tinBracers" gearFile="tinArmbands" >
     <stats armour="4" cunning="2" swiftness="1" />
     <offset x="-1" y="-8" />
     <canBeRepaired cost="tinBar" tool="smelting1" />
 </item>
-<item id="dAW_setBoots" name="Duplicitous Trader's Boots" gearSlot="5" sounds="mailArmor" quality="1" lvlReq="17"
+<item id="dAW_setBoots" name="Duplicitous Trader's Boots" gearSlot="5" sounds="mailArmor" quality="1" lvlReq="17" bind="pickup"
     iconFile="tinChainBoots" gearFile="tinChainBoots" >
     <stats armour="10" cunning="2" swiftness="3" />
     <offset x="-3" y="-7" />
     <canBeRepaired cost="tinRing" />
 </item>
-<item id="dAW_setRobe" name="Duplicitous Trader's Chiton" gearSlot="2" sounds="fabric" quality="3" lvlReq="21"
+<item id="dAW_setRobe" name="Duplicitous Trader's Chiton" gearSlot="2" sounds="fabric" quality="3" lvlReq="21" bind="pickup"
     iconFile="blueChiton" >
     <stats armour="14" cunning="9" swiftness="9" crit="200" />
     <offset x="-4" y="-3" />
     <canBeRepaired cost="woolCloth" tool="sewing" />
 </item>
-<item id="dAW_eyepatch" name="Sailor's Eyepatch" gearSlot="0" sounds="leather" quality="1" lvlReq="17"
+<item id="dAW_eyepatch" name="Sailor's Eyepatch" gearSlot="0" sounds="leather" quality="1" lvlReq="17" bind="pickup"
     iconFile="eyepatch" gearFile="eyepatch">
     <stats armour="8" cunning="6" />
     <offset x="-3" y="-4" />
     <canBeRepaired cost="leather" tool="sewing" />
 </item>
-<item id="dAW_dpsCloak" name="Foreign Cloak" gearSlot="3" sounds="leather" quality="1" lvlReq="17"
+<item id="dAW_dpsCloak" name="Foreign Cloak" gearSlot="3" sounds="leather" quality="1" lvlReq="17" bind="pickup"
     iconFile="leatherCloak" gearFile="leatherCloak" >
     <stats armour="3" might="3" intellect="3" />
     <offset x="-4" y="-1" />
     <canBeRepaired cost="leather" tool="sewing" />
 </item>
-<item id="dAW_shiv" name="Sly Shiv" gearSlot="6" sounds="metalTool" quality="1" lvlReq="16"
+<item id="dAW_shiv" name="Sly Shiv" gearSlot="6" sounds="metalTool" quality="1" lvlReq="16" bind="pickup"
     iconFile="tinKnife" gearFile="tinKnife" >
     <tag name="carving" toolSpeed="1.15" />
     <tag name="harvesting" toolSpeed="1.15" />
@@ -541,55 +541,56 @@
     <offset x="-6" y="-3" />
     <canBeRepaired cost="tinBar" tool="smelting1" />
 </item>
-<item id="dAW_strongmanHammer" name="Giant Hammer" gearSlot="6" quality="2" lvlReq="17" >
+<item id="dAW_strongmanHammer" name="Giant Hammer" gearSlot="6" quality="2" lvlReq="17" bind="pickup" >
     <weapon damage="16" speed="3.8" />
     <stats endurance="3" courage="2" />
     <offset x="-8" y="-7" />
     <canBeRepaired cost="tinBar" tool="smelting1" />
 </item>
-<item id="dAW_strongmanArmour" name="Champion's Leather Breastplate" gearSlot="2" sounds="leather" quality="2" lvlReq="17"
+<item id="dAW_strongmanArmour" name="Champion's Leather Breastplate" gearSlot="2" sounds="leather" quality="2" lvlReq="17" bind="pickup"
     gearFile="leatherBreastplate" iconFile="leatherBreastplate" >
     <stats armour="16" endurance="5" might="11" />
     <offset x="-4" y="-3" />
     <canBeRepaired cost="leather" tool="sewing" />
 </item>
-<item id="dAW_gangleaderRing" name="Ringleader's Ring" gearSlot="1" quality="1" lvlReq="18"
+<item id="dAW_gangleaderRing" name="Ringleader's Ring" gearSlot="1" quality="1" lvlReq="18" bind="pickup"
     iconFile="silverRing" >
     <stats health="9" />
     <canBeRepaired cost="silverWire" />
 </item>
-<item id="dAW_gangleaderBoots" name="Fancy Boots" gearSlot="5" sounds="leather" quality="2" lvlReq="18" 
+<item id="dAW_gangleaderBoots" name="Fancy Boots" gearSlot="5" sounds="leather" quality="2" lvlReq="18" bind="pickup"
     iconFile="darkBoots" gearFile="darkBoots" >
     <stats armour="9" intellect="4" cunning="4" />
     <offset x="-3" y="-7" />
     <canBeRepaired cost="leather" tool="sewing" />
 </item>
-<item id="dAW_chefCleaver" name="Meat Cleaver" gearSlot="6" sounds="metalTool" quality="2" lvlReq="19" 
+<item id="dAW_chefCleaver" name="Meat Cleaver" gearSlot="6" sounds="metalTool" quality="2" lvlReq="19" bind="pickup"
     iconFile="tinAxe" gearFile="cleaver" >
     <weapon damage="13" speed="2.9" />
     <stats might="2" swiftness="2" crit="100" />
     <offset x="-5" y="1" />
     <canBeRepaired cost="tinBar" tool="smelting1" />
 </item>
-<item id="dAW_chefOvenMitts" name="Oven Mitts" gearSlot="4" sounds="fabric" quality="2" lvlReq="19" 
+<item id="dAW_chefOvenMitts" name="Oven Mitts" gearSlot="4" sounds="fabric" quality="2" lvlReq="19" bind="pickup"
     iconFile="ovenMitts" gearFile="ovenMitts" >
     <tag name="gloves" toolSpeed="1.05" />
     <stats armour="3" endurance="2" fireResist="11" />
     <offset x="-3" y="-1" />
     <canBeRepaired cost="woolCloth" tool="sewing" />
 </item>
-<item id="dAW_wearableBoxers" name="Phoenician Underthings" gearSlot="2" sounds="fabric" iconFile="dAW_PhnLoverBoxers" >
+<item id="dAW_wearableBoxers" name="Phoenician Underthings" gearSlot="2" sounds="fabric" bind="pickup"
+    iconFile="dAW_PhnLoverBoxers" >
     <offset x="-5" y="8" />
     <canBeRepaired cost="woolCloth" tool="sewing" />
 </item>
-<item id="dAW_loverSword" name="Dashing Swashbuckler's Sword" gearSlot="6" quality="2" lvlReq="20"
+<item id="dAW_loverSword" name="Dashing Swashbuckler's Sword" gearSlot="6" quality="2" lvlReq="20" bind="pickup"
     iconFile="tinSword" gearFile="tinRapier" >
     <weapon damage="12" speed="2.4" />
     <stats swiftness="1" courage="2" hit="100" />
     <offset x="-13" y="-5" />
     <canBeRepaired cost="tinBar" tool="smelting1" />
 </item>
-<item id="dAW_loverHealOffhand" name="Token of Affection" gearSlot="7" quality="2" lvlReq="20"
+<item id="dAW_loverHealOffhand" name="Token of Affection" gearSlot="7" quality="2" lvlReq="20" bind="pickup"
     iconFile="" gearFile="lantern" >
     <particles profile="fireSmall" x="2" y="0" />
     <particles profile="fireSmall" x="3" y="0" />
@@ -597,20 +598,20 @@
     <offset x="-1" y="-9" />
     <canBeRepaired cost="clay" />
 </item>
-<item id="dAW_shipwrightHammer" name="Shipbuilding Mallet" gearSlot="6" quality="2" lvlReq="19" >
+<item id="dAW_shipwrightHammer" name="Shipbuilding Mallet" gearSlot="6" quality="2" lvlReq="19" bind="pickup" >
     <tag name="hammering" toolSpeed="0.9" />
     <weapon damage="16" speed="3.5" />
     <stats might="2" endurance="3" />
     <offset x="0" y="0" />
     <canBeRepaired cost="tinBar" tool="smelting1" />
 </item>
-<item id="dAW_shipwrightShield" name="Salty Shield" gearSlot="7" quality="2" lvlReq="19" >
+<item id="dAW_shipwrightShield" name="Salty Shield" gearSlot="7" quality="2" lvlReq="19" bind="pickup" >
     <tag name="shield" />
     <stats armor="23" endurance="5" block="200" blockValue="600" />
     <offset x="0" y="0" />
     <canBeRepaired cost="lumber" />
 </item>
-<item id="dAW_admiralStaff" name="Staff of the Oceanid" gearSlot="6" quality="3" lvlReq="21"
+<item id="dAW_admiralStaff" name="Staff of the Oceanid" gearSlot="6" quality="3" lvlReq="21" bind="pickup"
     iconFile="waterStaff" gearFile="waterStaff">
     <particles profile="waterSmall" x="-4" y="-19" />
     <particles profile="waterSmall" x="5" y="16" />
@@ -621,7 +622,7 @@
     <offset x="-5" y="-20" />
     <canBeRepaired cost="waterEssence" />
 </item>
-<item id="dAW_admiralSpear" name="Spear of Command" gearSlot="6" quality="3" lvlReq="21"
+<item id="dAW_admiralSpear" name="Spear of Command" gearSlot="6" quality="3" lvlReq="21" bind="pickup"
     gearFile="blackSpear" iconFile="blackSpear" >
     <tag name="fishing" toolSpeed="1.2" />
     <weapon damage="15" speed="2.6" />
