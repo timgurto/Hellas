@@ -96,8 +96,7 @@ Loot ideas:
 
 
 
-Gear art
-Necklace-object art
+
 Decorations in dungeon
     Pots
     Carts

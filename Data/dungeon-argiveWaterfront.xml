@@ -860,7 +860,7 @@
         <collisionRect x="-6" y="-4" w="12" h="8" />
     </npcType>
     <objectType id="princessNecklace" name="Jeweled necklace"
-        xDrawOffset="" yDrawOffset=""/>
+        imageFile="gemBlue" xDrawOffset="-8" yDrawOffset="-8"/>
     <object id="princessNecklace" x="48420" y="60911" />
 <quest id="dAW_princess7" name="All That Remains" startsAt="princessNecklace" endsAt="argosQueen"
     brief="This necklace should be returned to Io's parents in the Argive palace."
@@ -871,7 +871,7 @@
     <reward type="item" id="dAW_princessNecklace" />
 </quest>
     <item id="dAW_princessNecklace" name="Jewel of the Sea" gearSlot="1" quality="2" lvlReq="21"
-        iconFile="">
+        iconFile="gemBlue">
         <stats intellect="3" />
         <canBeRepaired cost="silverWire" />
     </item>
@@ -894,7 +894,8 @@
     <objective type="kill" id="dAW_gangVandal" qty="5" />
     <reward type="item" id="dAW_tankCloak" />
 </quest>
-    <item id="dAW_tankCloak" name="Argive Deputy's Cloak" gearSlot="3" quality="2" sounds="fabric" >
+    <item id="dAW_tankCloak" name="Argive Deputy's Cloak" gearSlot="3" quality="2" sounds="fabric"
+        iconFile="woolCloakTeal" gearFile="woolCloakTeal">
         <stats armour="5" cunning="3" endurance="4" />
         <offset x="0" y="0" />
         <canBeRepaired cost="woolCloth" tool="sewing" />
