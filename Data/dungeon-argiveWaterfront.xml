@@ -189,6 +189,12 @@
 <permanentObject id="wickerFenceNSHalf" x="16899" y="71257" />
 <permanentObject id="wickerFenceNSHalf" x="17129" y="71113" />
 
+<npcType id="dAW_cargoHold" name="Cargo Hold"
+    level="20" maxHealth="200" speed="0"
+    xDrawOffset="-22" yDrawOffset="-21" isFlat="1" damageParticles="wood" >
+    <collisionRect x="-22" y="-21" w="44" h="42" />
+</npcType>
+
 <lootTable id="dAW_allTrash" >
     <loot id="dAW_setGloves" chance="0.01" />
     <loot id="dAW_setBoots" chance="0.01" />

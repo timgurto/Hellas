@@ -109,6 +109,12 @@
     <spawnPoint type="copperGuardian" y="92016" x="34768" quantity="15" radius="2000" respawnTime="300000" />
     <spawnPoint type="copperGuardian" y="93744" x="81952" quantity="15" radius="2000" respawnTime="300000" />
     <spawnPoint type="copperGuardian" y="94864" x="94688" quantity="15" radius="2000" respawnTime="300000" />
+    <spawnPoint type="dAW_cargoHold" y="70579" x="17753" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_cargoHold" y="70670" x="17478" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_cargoHold" y="71130" x="17062" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_cargoHold" y="71181" x="18401" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_cargoHold" y="71182" x="16793" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_cargoHold" y="71257" x="17968" quantity="1" radius="0" respawnTime="3600000" />
     <spawnPoint type="dAW_dog" y="70190.5" x="15450.5" quantity="1" radius="0" respawnTime="3600000" />
     <spawnPoint type="dAW_dog" y="70224" x="15134" quantity="1" radius="0" respawnTime="3600000" />
     <spawnPoint type="dAW_dog" y="70248" x="15359.5" quantity="1" radius="0" respawnTime="3600000" />
