@@ -202,9 +202,21 @@
         <choice item="leather" qty="3"/>
         <choice item="leather" qty="4"/>
         <choice id="water" qty="5" />
+        <choice id="wine" qty="5" />
     </chooseLoot>
     <loot id="tinCoin" > <normal mean="10" sd="3" /> </loot>
 </npcType>
+
+<objectType id="amphoraWater" name="Amphora"
+    imageFile="amphora" xDrawOffset="-5" yDrawOffset="-22"
+    canGather="1" gatherTime="1500" >
+    <yield id="water" />
+</objectType>
+<objectType id="amphoraWine" name="Amphora"
+    imageFile="amphora" xDrawOffset="-5" yDrawOffset="-22"
+    canGather="1" gatherTime="1500" >
+    <yield id="wine" />
+</objectType>
 
 <lootTable id="dAW_allTrash" >
     <loot id="dAW_setGloves" chance="0.01" />

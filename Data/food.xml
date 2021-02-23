@@ -79,6 +79,18 @@
     <unlockedBy recipe="water" />
 </recipe>
 
+<buff id="wine" name="Drunk" icon="foodGrapes" duration="300"
+    description="Increased courage and endurance, at the cost of cunning and swiftness." >
+    <stats courage="10" endurance="10" swiftness="-8" cunning="-8" />
+</buff>
+<spell id="wine" name="Drink wine" >
+    <targets self="1" />
+    <function name="debuff" s1="wine" />
+</spell>
+<item id="wine" name="Wine" stackSize="5" castsSpellOnUse="wine"
+    sounds="ceramic"
+    returnsOnCast="smallPot" />
+
 <XobjectType id="rockWell" name="Primitive Well"
     sounds="stone" damageParticles="rocks">
     <tag name="water" toolSpeed="1.05" />

@@ -5,6 +5,24 @@
     <spawnPoint type="airNymph" y="30304" x="20600" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="airNymph" y="31912" x="19512" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="airNymph" y="33232" x="21144" quantity="5" radius="250" respawnTime="300000" />
+    <spawnPoint type="amphoraWater" y="69872" x="15152" quantity="2" radius="50" respawnTime="3600000" />
+    <spawnPoint type="amphoraWater" y="69920" x="15344" quantity="2" radius="50" respawnTime="3600000" />
+    <spawnPoint type="amphoraWater" y="70032" x="15344" quantity="2" radius="50" respawnTime="3600000" />
+    <spawnPoint type="amphoraWater" y="70160" x="15584" quantity="2" radius="50" respawnTime="3600000" />
+    <spawnPoint type="amphoraWater" y="70336" x="15760" quantity="2" radius="50" respawnTime="3600000" />
+    <spawnPoint type="amphoraWater" y="70576" x="17376" quantity="2" radius="50" respawnTime="3600000" />
+    <spawnPoint type="amphoraWater" y="70576" x="17648" quantity="2" radius="50" respawnTime="3600000" />
+    <spawnPoint type="amphoraWater" y="70672" x="17984" quantity="2" radius="50" respawnTime="3600000" />
+    <spawnPoint type="amphoraWater" y="70752" x="17632" quantity="2" radius="50" respawnTime="3600000" />
+    <spawnPoint type="amphoraWine" y="69872" x="15152" quantity="1" radius="50" respawnTime="3600000" />
+    <spawnPoint type="amphoraWine" y="69920" x="15344" quantity="1" radius="50" respawnTime="3600000" />
+    <spawnPoint type="amphoraWine" y="70032" x="15344" quantity="1" radius="50" respawnTime="3600000" />
+    <spawnPoint type="amphoraWine" y="70160" x="15584" quantity="1" radius="50" respawnTime="3600000" />
+    <spawnPoint type="amphoraWine" y="70336" x="15760" quantity="1" radius="50" respawnTime="3600000" />
+    <spawnPoint type="amphoraWine" y="70576" x="17376" quantity="1" radius="50" respawnTime="3600000" />
+    <spawnPoint type="amphoraWine" y="70576" x="17648" quantity="1" radius="50" respawnTime="3600000" />
+    <spawnPoint type="amphoraWine" y="70672" x="17984" quantity="1" radius="50" respawnTime="3600000" />
+    <spawnPoint type="amphoraWine" y="70752" x="17632" quantity="1" radius="50" respawnTime="3600000" />
     <spawnPoint type="argusPanoptes" y="49011" x="41116" quantity="1" radius="30" respawnTime="120000" />
     <spawnPoint type="athleteQuestTortoise" y="23672" x="37412" quantity="1" radius="1300" respawnTime="30000" />
     <spawnPoint type="boar10" y="22368" x="23104" quantity="5" radius="250" respawnTime="300000" />
