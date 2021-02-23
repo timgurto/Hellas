@@ -596,13 +596,15 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
     }
 
     for (auto lootChoice : xr.getChildren("chooseLoot", elem)) {
-      auto choices = std::vector<const ServerItem *>{};
+      auto choices = std::vector<std::pair<const ServerItem *, int>>{};
       for (auto choice : xr.getChildren("choice", lootChoice)) {
         auto itemID = ""s;
         xr.findAttr(choice, "item", itemID);
         const auto itemIterator = _server._items.insert(itemID).first;
         const auto *item = &*itemIterator;
-        choices.push_back(item);
+        auto qty = 1;
+        xr.findAttr(choice, "qty", qty);
+        choices.push_back(std::make_pair(item, qty));
       }
       nt->addLootChoice(choices);
     }

@@ -413,8 +413,8 @@ TEST_CASE("Grouped players can loot each other's kills") {
 TEST_CASE("Loot that chooses from a set") {
   GIVEN("gentlemen drop either an umbrella or a hat") {
     auto data = R"(
-      <item id="hat" />
-      <item id="umbrella" />
+      <item id="hat" stackSize="10" />
+      <item id="umbrella" stackSize="10" />
       <npcType id="gentleman" >
         <chooseLoot>
           <choice item="hat" />
@@ -429,7 +429,13 @@ TEST_CASE("Loot that chooses from a set") {
       auto loot = Loot{};
       lootTable.instantiate(loot, nullptr);
 
-      THEN("one item was yielded") { CHECK(loot.size() == 1); }
+      THEN("one item was yielded") {
+        const auto itemStacks = loot.size();
+        CHECK(itemStacks == 1);
+
+        const auto qty = loot.at(0).second;
+        CHECK(qty == 1);
+      }
     }
 
     WHEN("the gentleman loot table is instantiated 100 times") {
@@ -457,7 +463,7 @@ TEST_CASE("Loot that chooses from a set") {
   GIVEN("chickens drop eggs") {
     auto data = R"(
       <item id="egg" />
-      <npcType id="gentleman" >
+      <npcType id="chicken" >
         <chooseLoot>
           <choice item="egg" />
         </chooseLoot>
@@ -472,6 +478,28 @@ TEST_CASE("Loot that chooses from a set") {
 
       THEN("it contains an egg") {
         CHECK(loot.at(0).first.type()->id() == "egg");
+      }
+    }
+  }
+
+  SECTION("quantities >1 are supported") {
+    GIVEN("skeletons drop five gold") {
+      auto data = R"(
+      <item id="gold" stackSize="10" />
+      <npcType id="skeleton" >
+        <chooseLoot>
+          <choice item="gold" qty="5" />
+        </chooseLoot>
+      </npcType>
+    )";
+      auto s = TestServer::WithDataString(data);
+
+      WHEN("the skeleton loot table is instantiated") {
+        const auto &lootTable = s.getFirstNPCType().lootTable();
+        auto loot = Loot{};
+        lootTable.instantiate(loot, nullptr);
+
+        THEN("it contains five items") { CHECK(loot.at(0).second == 5); }
       }
     }
   }

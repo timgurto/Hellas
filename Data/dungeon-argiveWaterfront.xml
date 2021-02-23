@@ -193,6 +193,17 @@
     level="20" maxHealth="200" speed="0"
     xDrawOffset="-22" yDrawOffset="-21" isFlat="1" damageParticles="wood" >
     <collisionRect x="-22" y="-21" w="44" h="42" />
+    <chooseLoot>
+        <choice item="woolCloth" qty="2"/>
+        <choice item="woolCloth" qty="3"/>
+        <choice item="woolCloth" qty="4"/>
+        <choice item="tinBar" qty="1"/>
+        <choice item="tinBar" qty="2"/>
+        <choice item="leather" qty="3"/>
+        <choice item="leather" qty="4"/>
+        <choice id="water" qty="5" />
+    </chooseLoot>
+    <loot id="tinCoin" > <normal mean="10" sd="3" /> </loot>
 </npcType>
 
 <lootTable id="dAW_allTrash" >

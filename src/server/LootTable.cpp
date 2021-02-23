@@ -40,7 +40,7 @@ void LootTable::addSimpleItem(const ServerItem *item, double chance) {
 }
 
 void LootTable::addChoiceOfItems(
-    const std::vector<const ServerItem *> choices) {
+    const std::vector<std::pair<const ServerItem *, int>> choices) {
   auto entry = std::shared_ptr<ChoiceEntry>{new ChoiceEntry};
   entry->choices = choices;
   _entries.push_back(entry);
@@ -107,7 +107,7 @@ std::pair<const ServerItem *, int> LootTable::ChoiceEntry::instantiate() const {
   const auto numChoices = choices.size();
   const auto randomIndex = rand() % numChoices;
   const auto chosenItem = choices[randomIndex];
-  return {chosenItem, 1};
+  return chosenItem;
 }
 
 bool LootTable::SimpleEntry::operator==(const LootEntry &rhs) const {

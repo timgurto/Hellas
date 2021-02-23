@@ -35,7 +35,7 @@ class LootTable {
   };
 
   struct ChoiceEntry : public LootEntry {  // receive one of these items
-    std::vector<const ServerItem *> choices;
+    std::vector<std::pair<const ServerItem *, int>> choices;
 
     bool operator==(const LootEntry &rhs) const override;
     std::pair<const ServerItem *, int> instantiate() const;
@@ -49,7 +49,8 @@ class LootTable {
 
   void addNormalItem(const ServerItem *item, double mean, double sd = 0);
   void addSimpleItem(const ServerItem *item, double chance);
-  void addChoiceOfItems(const std::vector<const ServerItem *> choices);
+  void addChoiceOfItems(
+      const std::vector<std::pair<const ServerItem *, int>> choices);
 
   void addAllFrom(const LootTable &rhs);
 
