@@ -516,4 +516,14 @@
     <variety imageFile="z" />
 </particleProfile>
 
+<particleProfile id="bubbles"
+    particlesPerSecond="0.8"
+    gravityModifier="0">
+    <velocity mean="0" sd="2" />
+    <fallSpeed mean="-10" sd="3" />
+    <lifespan mean="1500" sd="200" />
+    <altitude mean="40" sd="0" />
+    <variety imageFile="bubble" />
+</particleProfile>
+
 </root>

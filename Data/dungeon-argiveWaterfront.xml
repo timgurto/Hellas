@@ -437,6 +437,7 @@
     <lootTable id="humanTinAge" />
     <loot id="dAW_phnLoverBoxers" />
     <loot id="dAW_wearableBoxers" chance="0.02" />
+    <loot id="wine" chance="0.3" />
 </npcType>
 
 <npcType id="dAW_phnLoverBoss" name="Lotharios"

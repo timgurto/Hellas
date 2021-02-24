@@ -54,7 +54,7 @@
 </recipe>
 
 
-<buff id="water" name="Drinking" icon="waterRipples" duration="10" canBeInterrupted="1"
+<buff id="water" name="Drinking" icon="waterRipples" duration="10" canBeInterrupted="1" school="water"
     description="Replenishing energy.">
     <stats eps="500" />
 </buff>
@@ -79,7 +79,8 @@
     <unlockedBy recipe="water" />
 </recipe>
 
-<buff id="wine" name="Drunk" icon="foodGrapes" duration="300"
+<buff id="wine" name="Drunk" icon="foodGrapes" duration="300" school="water"
+    particles="bubbles"
     description="Increased courage and endurance, at the cost of cunning and swiftness." >
     <stats courage="10" endurance="10" swiftness="-8" cunning="-8" />
 </buff>

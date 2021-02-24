@@ -97,19 +97,7 @@ Loot ideas:
 
 
 
-Decorations in dungeon
-    Pots
-    Carts
-    Cargo piles?
-    Amphorae
 Food-projectile art
-Extra stuff
-    wine
-    Chests
-    Cargo holds on ships (like chests)
-        Wine
-        Pots
-        Linen
         
 Spell/buff sounds/art?
 Test princess chain
