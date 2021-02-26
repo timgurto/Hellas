@@ -724,6 +724,11 @@
     level="20" maxHealth="174" isCivilian="1" imageFile="waterNymph"
     xDrawOffset="-18" yDrawOffset="-40" >
     <collisionRect x="-5" y="-2" w="9" h="4" />
+    <particles profile="waterPooling" y="-15" />
+    <particles profile="waterSparkles" y="-18" />
+    <particles profile="water" y="-15" />
+    <particles profile="waterSmall" x="-7" y="-21" />
+    <particles profile="waterSmall" x="7" y="-28" />
 </npcType>
 <npcType id="argosMagistrate" name="Magistrate Astyanax"
     level="20" maxHealth="174" isCivilian="1" >
