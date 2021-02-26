@@ -6,10 +6,10 @@ const double CDroppedItem::DROP_HEIGHT = 60.0;
 const double CDroppedItem::DROP_ACCELERATION = 20.0;
 
 CDroppedItem::Type::Type() : ClientObjectType("droppedItem") {
-  drawRect(ScreenRect{-Client::ICON_SIZE / 2, -Client::ICON_SIZE / 2,
+  drawRect(ScreenRect{-Client::ICON_SIZE / 2, -Client::ICON_SIZE,
                       Client::ICON_SIZE, Client::ICON_SIZE});
   auto iconSize = static_cast<double>(Client::ICON_SIZE);
-  collisionRect({-iconSize / 2, -iconSize / 2, iconSize, iconSize});
+  collisionRect({-iconSize / 2, -iconSize / 4, iconSize, iconSize / 2});
 }
 
 CDroppedItem::CDroppedItem(Client& client, Serial serial,
