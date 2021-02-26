@@ -114,10 +114,10 @@ TEST_CASE_METHOD(ServerAndClientWithData,
               REPEAT_FOR_MS(100);
 
               THEN("the pirate is affected") {
-                CHECK(pirate.health() < pirate.stats().maxHealth);
+                CHECK(pirate.isMissingHealth());
 
                 AND_THEN("the vampire is not") {
-                  CHECK(vampire.health() == vampire.stats().maxHealth);
+                  CHECK(!vampire.isMissingHealth());
                 }
               }
             }
@@ -344,7 +344,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "NPC spells") {
 
     WHEN("a player is nearby") {
       THEN("he gets damaged") {
-        WAIT_UNTIL(user->health() < user->stats().maxHealth);
+        WAIT_UNTIL(user->isMissingHealth());
 
         SECTION("Spell cooldowns apply correctly") {
           AND_WHEN("1 more second elapses") {
@@ -411,7 +411,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       REPEAT_FOR_MS(100);
 
       THEN("a nearby user has taken damage") {
-        CHECK(user->health() < user->stats().maxHealth);
+        CHECK(user->isMissingHealth());
       }
     }
   }
@@ -622,7 +622,7 @@ TEST_CASE("Cast a spell from a stackable item") {
 
         THEN("he is still at full health") {
           REPEAT_FOR_MS(100);
-          CHECK(user.health() == user.stats().maxHealth);
+          CHECK(!user.isMissingHealth());
         }
       }
     }
@@ -652,7 +652,7 @@ TEST_CASE("Target self if target is invalid") {
         c.sendMessage(CL_CAST_SPELL, "fireball");
 
         THEN("he himself has lost health") {
-          WAIT_UNTIL(user.health() < user.stats().maxHealth);
+          WAIT_UNTIL(user.isMissingHealth());
         }
       }
     }
@@ -689,7 +689,7 @@ TEST_CASE("Objects can't be healed") {
 
           THEN("it is not at full health") {
             REPEAT_FOR_MS(100);
-            CHECK(machine.health() < machine.stats().maxHealth);
+            CHECK(machine.isMissingHealth());
           }
         }
       }

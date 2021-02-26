@@ -273,8 +273,7 @@ void Server::writeUserData(const User &user) const {
   xw.setAttr(e, "xp", user.xp());
   if (user.isDriving()) xw.setAttr(e, "isDriving", 1);
 
-  if (user.health() < user.stats().maxHealth)
-    xw.setAttr(e, "health", user.health());
+  if (user.isMissingHealth()) xw.setAttr(e, "health", user.health());
   if (user.energy() < user.stats().maxEnergy)
     xw.setAttr(e, "energy", user.energy());
 
@@ -716,7 +715,7 @@ void Object::writeToXML(XmlWriter &xw) const {
     xw.setAttr(ownerElem, "name", owner.name);
   }
 
-  if (health() < stats().maxHealth) xw.setAttr(e, "health", health());
+  if (isMissingHealth()) xw.setAttr(e, "health", health());
 
   if (isDead() && corpseTime() > 0) xw.setAttr(e, "corpseTime", corpseTime());
 

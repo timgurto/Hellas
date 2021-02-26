@@ -380,14 +380,13 @@ TEST_CASE("Tool objects lose durability") {
 
     WHEN("many objects are constructed") {
       const auto &earthMover = s.getFirstObject();
-      auto maxHealth = earthMover.type()->baseStats().maxHealth;
       for (auto i = 0; i != 200; ++i) {
         c.sendMessage(CL_CONSTRUCT, makeArgs("hole", 10, 15));
         REPEAT_FOR_MS(20);
-        if (earthMover.health() < maxHealth) break;
+        if (earthMover.isMissingHealth()) break;
       }
 
-      THEN("the tool is damaged") { CHECK(earthMover.health() < maxHealth); }
+      THEN("the tool is damaged") { CHECK(earthMover.isMissingHealth()); }
     }
   }
 }
@@ -646,7 +645,7 @@ TEST_CASE("Broken items can't cast spells") {
 
           THEN("he is still at full health") {
             REPEAT_FOR_MS(100);
-            CHECK(user.health() == user.stats().maxHealth);
+            CHECK(!user.isMissingHealth());
           }
         }
       }
@@ -1055,7 +1054,7 @@ TEST_CASE("Object repair") {
         c.sendMessage(CL_REPAIR_OBJECT, makeArgs(wall.serial()));
 
         THEN("it is back at full health") {
-          WAIT_UNTIL(wall.health() == wall.stats().maxHealth);
+          WAIT_UNTIL(!wall.isMissingHealth());
         }
       }
     }
@@ -1086,7 +1085,7 @@ TEST_CASE("Non-repairable objects") {
 
         THEN("it is still not at full health") {
           REPEAT_FOR_MS(100);
-          CHECK(window.health() < window.stats().maxHealth);
+          CHECK(window.isMissingHealth());
         }
       }
     }
@@ -1135,7 +1134,7 @@ TEST_CASE("Object repair at a cost") {
 
         THEN("it is still not at full health") {
           REPEAT_FOR_MS(100);
-          CHECK(snowman.health() < snowman.stats().maxHealth);
+          CHECK(snowman.isMissingHealth());
         }
       }
 
@@ -1146,7 +1145,7 @@ TEST_CASE("Object repair at a cost") {
           c.sendMessage(CL_REPAIR_OBJECT, makeArgs(snowman.serial()));
 
           THEN("it is  at full health") {
-            WAIT_UNTIL(snowman.health() == snowman.stats().maxHealth);
+            WAIT_UNTIL(!snowman.isMissingHealth());
 
             AND_THEN("he no longer has the item") {
               WAIT_UNTIL(!user.inventory(0).first.hasItem());
@@ -1186,7 +1185,7 @@ TEST_CASE("Object repair requiring a tool") {
 
         THEN("it is still not at full health") {
           REPEAT_FOR_MS(100);
-          CHECK(machine.health() < machine.stats().maxHealth);
+          CHECK(machine.isMissingHealth());
         }
       }
 
@@ -1197,7 +1196,7 @@ TEST_CASE("Object repair requiring a tool") {
           c.sendMessage(CL_REPAIR_OBJECT, makeArgs(machine.serial()));
 
           THEN("it is  at full health") {
-            WAIT_UNTIL(machine.health() == machine.stats().maxHealth);
+            WAIT_UNTIL(!machine.isMissingHealth());
           }
         }
       }

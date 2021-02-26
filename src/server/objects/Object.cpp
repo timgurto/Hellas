@@ -175,7 +175,7 @@ void Object::sendInfoToClient(const User &targetUser, bool isNew) const {
   }
 
   // Hitpoints
-  if (health() < stats().maxHealth)
+  if (isMissingHealth())
     targetUser.sendMessage({SV_ENTITY_HEALTH, makeArgs(serial(), health())});
 
   // Lootable

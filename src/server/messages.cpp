@@ -810,18 +810,17 @@ HANDLE_MESSAGE(CL_FEED_PET) {
   auto serial = Serial{};
   READ_ARGS(serial);
 
-  auto *npc = _entities.find<NPC>(serial);
-  if (!npc) RETURN_WITH(WARNING_DOESNT_EXIST)
+  auto *pet = _entities.find<NPC>(serial);
+  if (!pet) RETURN_WITH(WARNING_DOESNT_EXIST)
   const auto it = _buffTypes.find("food");
   if (it == _buffTypes.end()) return;
-  if (!npc->permissions.isOwnedByPlayer(user.name()))
+  if (!pet->permissions.isOwnedByPlayer(user.name()))
     RETURN_WITH(WARNING_NO_PERMISSION)
-  if (distance(*npc, user) > ACTION_DISTANCE) RETURN_WITH(WARNING_TOO_FAR)
-  if (npc->health() == npc->stats().maxHealth)
-    RETURN_WITH(WARNING_PET_AT_FULL_HEALTH)
+  if (distance(*pet, user) > ACTION_DISTANCE) RETURN_WITH(WARNING_TOO_FAR)
+  if (!pet->isMissingHealth()) RETURN_WITH(WARNING_PET_AT_FULL_HEALTH)
   if (!user.hasItems("food", 1)) RETURN_WITH(WARNING_ITEM_NEEDED)
 
-  npc->applyBuff(it->second, user);
+  pet->applyBuff(it->second, user);
   user.removeItems("food", 1);
 }
 
@@ -1181,8 +1180,7 @@ void Server::handleBufferedMessages(const Socket &client,
           BREAK_WITH(WARNING_NO_PERMISSION)
         // Check that the object can be deconstructed
         if (!obj->hasDeconstruction()) BREAK_WITH(ERROR_CANNOT_DECONSTRUCT)
-        if (obj->health() < obj->stats().maxHealth)
-          BREAK_WITH(ERROR_DAMAGED_OBJECT)
+        if (obj->isMissingHealth()) BREAK_WITH(ERROR_DAMAGED_OBJECT)
         if (!obj->isAbleToDeconstruct(*user)) {
           break;
         }

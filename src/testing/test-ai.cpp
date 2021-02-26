@@ -457,7 +457,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
           longbowman.makeAwareOf(*user);
 
           THEN("the user takes damage)") {
-            WAIT_UNTIL_TIMEOUT(user->health() < user->stats().maxHealth, 10000);
+            WAIT_UNTIL_TIMEOUT(user->isMissingHealth(), 10000);
           }
         }
       }

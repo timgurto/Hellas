@@ -15,7 +15,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Players can attack immediately") {
       client->sendMessage(CL_TARGET_ENTITY, makeArgs(ant.serial()));
 
       THEN("the NPC should be damaged very quickly") {
-        WAIT_UNTIL_TIMEOUT(ant.health() < ant.stats().maxHealth, 100);
+        WAIT_UNTIL_TIMEOUT(ant.isMissingHealth(), 100);
       }
     }
   }
@@ -52,7 +52,7 @@ TEST_CASE_METHOD(TwoClients, "Only belligerents can fight") {
 
       THEN("Bob doesn't lose health") {
         REPEAT_FOR_MS(500);
-        CHECK(bob->health() == bob->stats().maxHealth);
+        CHECK(!bob->isMissingHealth());
       }
     }
 
@@ -62,9 +62,7 @@ TEST_CASE_METHOD(TwoClients, "Only belligerents can fight") {
       AND_WHEN("Alice targets Bob") {
         cAlice.sendMessage(CL_TARGET_PLAYER, "Bob");
 
-        THEN("Bob loses health") {
-          WAIT_UNTIL(bob->health() < bob->stats().maxHealth);
-        }
+        THEN("Bob loses health") { WAIT_UNTIL(bob->isMissingHealth()); }
       }
     }
   }
@@ -224,7 +222,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Neutral NPCs") {
 
     THEN("the user doesn't get attacked") {
       REPEAT_FOR_MS(100);
-      CHECK(user->health() == user->stats().maxHealth);
+      CHECK(!user->isMissingHealth());
     }
   }
 }
@@ -252,7 +250,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 
         THEN("the maiden doesn't take damage") {
           REPEAT_FOR_MS(3000);
-          CHECK(maiden.health() == maiden.stats().maxHealth);
+          CHECK(!maiden.isMissingHealth());
         }
       }
     }

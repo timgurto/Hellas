@@ -13,14 +13,14 @@ TEST_CASE("Leveling up restores health and energy") {
   auto &user = s.getFirstUser();
   user.reduceHealth(1);
   user.reduceEnergy(1);
-  CHECK(user.health() < user.stats().maxHealth);
+  CHECK(user.isMissingHealth());
   CHECK(user.energy() < user.stats().maxEnergy);
 
   // When the user levels up
   user.addXP(User::XP_PER_LEVEL[1]);
 
   // Then the user's health and energy are full
-  WAIT_UNTIL(user.health() == user.stats().maxHealth);
+  WAIT_UNTIL(!user.isMissingHealth());
   WAIT_UNTIL(user.energy() == user.stats().maxEnergy);
 }
 
@@ -618,7 +618,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Bonus damage on spells") {
 
       WHEN("he damages himself with it") {
         client->sendMessage(CL_CAST_SPELL, "fireball");
-        WAIT_UNTIL(user->health() < user->stats().maxHealth);
+        WAIT_UNTIL(user->isMissingHealth());
 
         THEN("he has taken around 20 damage") {
           auto healthLost = user->stats().maxHealth - user->health();
@@ -643,7 +643,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Bonus damage on spells") {
 
       WHEN("he damages himself with it") {
         client->sendMessage(CL_CAST_SPELL, "shoot");
-        WAIT_UNTIL(user->health() < user->stats().maxHealth);
+        WAIT_UNTIL(user->isMissingHealth());
 
         THEN("he has taken around 20 damage") {
           auto healthLost = user->stats().maxHealth - user->health();

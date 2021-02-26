@@ -129,14 +129,14 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
       dog.permissions.setPlayerOwner(user.name());
 
       THEN("the owner doesn't lose any health") {
-        REPEAT_FOR_MS(100) { REQUIRE(user.health() == user.stats().maxHealth); }
+        REPEAT_FOR_MS(100) { REQUIRE(!user.isMissingHealth()); }
       }
 
       AND_WHEN("the owner tries to target it") {
         c.sendMessage(CL_TARGET_ENTITY, makeArgs(dog.serial()));
 
         THEN("the dog doesn't lose any health") {
-          REPEAT_FOR_MS(100) { REQUIRE(dog.health() == dog.stats().maxHealth); }
+          REPEAT_FOR_MS(100) { REQUIRE(!dog.isMissingHealth()); }
         }
       }
     }
@@ -154,7 +154,7 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
 
           THEN("the dog doesn't lose any health") {
             REPEAT_FOR_MS(100);
-            REQUIRE(dog.health() == dog.stats().maxHealth);
+            REQUIRE(!dog.isMissingHealth());
           }
         }
 
@@ -163,13 +163,13 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
                            {"Bob", Belligerent::PLAYER});
 
           THEN("Bob loses health") {
-            WAIT_UNTIL(bob.health() < bob.stats().maxHealth);
+            WAIT_UNTIL(bob.isMissingHealth());
 
             AND_WHEN("Bob tries to target Alice's dog") {
               c.sendMessage(CL_TARGET_ENTITY, makeArgs(dog.serial()));
 
               THEN("the dog loses health") {
-                WAIT_UNTIL(dog.health() < dog.stats().maxHealth);
+                WAIT_UNTIL(dog.isMissingHealth());
               }
             }
           }
@@ -189,7 +189,7 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
               c.sendMessage(CL_TARGET_ENTITY, makeArgs(dog.serial()));
 
               THEN("the dog loses health") {
-                WAIT_UNTIL(dog.health() < dog.stats().maxHealth);
+                WAIT_UNTIL(dog.isMissingHealth());
               }
             }
           }
@@ -206,7 +206,7 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
           s.addNPC("dog", {15, 10});
 
           THEN("Alice's dog loses health") {
-            WAIT_UNTIL(dog.health() < dog.stats().maxHealth);
+            WAIT_UNTIL(dog.isMissingHealth());
 
             AND_THEN("the observer receives a SV_ENTITY_HIT_ENTITY message") {
               CHECK(c.waitForMessage(SV_ENTITY_HIT_ENTITY));
@@ -223,7 +223,7 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
           REPEAT_FOR_MS(100);
 
           THEN("Alice's dog hasn't lost any health") {
-            CHECK(dog.health() == dog.stats().maxHealth);
+            CHECK(!dog.isMissingHealth());
           }
         }
 
@@ -232,7 +232,7 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
                            {"Bob", Belligerent::PLAYER});
 
           THEN("Alice's dog loses health") {
-            WAIT_UNTIL(dog.health() < dog.stats().maxHealth);
+            WAIT_UNTIL(dog.isMissingHealth());
           }
         }
       }
@@ -251,9 +251,7 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
           s.wars().declare({"Athens", Belligerent::CITY},
                            {"Bob", Belligerent::PLAYER});
 
-          THEN("Bob loses health") {
-            WAIT_UNTIL(bob.health() < bob.stats().maxHealth);
-          }
+          THEN("Bob loses health") { WAIT_UNTIL(bob.isMissingHealth()); }
         }
       }
 
@@ -267,7 +265,7 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
                            {"Sparta", Belligerent::CITY});
 
           THEN("Athens' dog loses health") {
-            WAIT_UNTIL(dog.health() < dog.stats().maxHealth);
+            WAIT_UNTIL(dog.isMissingHealth());
           }
         }
       }
@@ -473,7 +471,7 @@ TEST_CASE("Pets don't attack neutral NPCs") {
 
       THEN("they don't fight") {
         REPEAT_FOR_MS(1000);
-        CHECK(fido.health() == fido.stats().maxHealth);
+        CHECK(!fido.isMissingHealth());
       }
     }
   }
@@ -1110,7 +1108,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pets can be fed") {
         client->sendMessage(CL_FEED_PET, makeArgs(dog.serial()));
 
         THEN("it gets to full health") {
-          WAIT_UNTIL(dog.health() == dog.stats().maxHealth);
+          WAIT_UNTIL(!dog.isMissingHealth());
 
           AND_THEN("he no longer has the food") {
             CHECK(!user->inventory(0).first.hasItem());
@@ -1126,7 +1124,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pets can be fed") {
 
           THEN("it doesn't get healed") {
             REPEAT_FOR_MS(1500);
-            CHECK(dog.health() < dog.stats().maxHealth);
+            CHECK(dog.isMissingHealth());
           }
         }
       }

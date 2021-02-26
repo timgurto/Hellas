@@ -194,9 +194,8 @@ void AI::onTransition(State previousState) {
         }
       }
 
-      auto maxHealth = _owner.type()->baseStats().maxHealth;
-      if (_owner.health() < maxHealth) {
-        _owner.health(maxHealth);
+      if (_owner.isMissingHealth()) {
+        _owner.health(_owner.stats().maxHealth);
         _owner.onHealthChange();  // Only broadcasts to the new location, not
                                   // the old.
 

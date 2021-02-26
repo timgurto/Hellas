@@ -66,21 +66,30 @@ TEST_CASE("Map with extra row doesn't crash client", "[.flaky]") {
 }
 
 TEST_CASE("New servers clear old user data") {
+  // GIVEN Alice is logged into a server
   {
     TestServer s;
     TestClient c = TestClient::WithUsername("Alice");
     s.waitForUsers(1);
     User &alice = s.getFirstUser();
-    CHECK(alice.health() == alice.stats().maxHealth);
     alice.reduceHealth(1);
-    CHECK(alice.health() < alice.stats().maxHealth);
+    CHECK(!alice.isMissingHealth());
+
+    // AND GIVEN she is missing health
+    CHECK(alice.isMissingHealth());
+
+    // WHEN a new server starts without preserving old data
   }
   {
     TestServer s;
+
+    // AND WHEN Alice logs in
     TestClient c = TestClient::WithUsername("Alice");
     s.waitForUsers(1);
     User &alice = s.getFirstUser();
-    CHECK(alice.health() == alice.stats().maxHealth);
+
+    // THEN she is at full health
+    CHECK(!alice.isMissingHealth());
   }
 }
 

@@ -238,7 +238,7 @@ void NPC::sendInfoToClient(const User &targetUser, bool isNew) const {
   targetUser.sendMessage({SV_NPC_LEVEL, makeArgs(serial(), _level)});
 
   // Hitpoints
-  if (health() < stats().maxHealth)
+  if (isMissingHealth())
     targetUser.sendMessage({SV_ENTITY_HEALTH, makeArgs(serial(), health())});
 
   // Loot

@@ -164,6 +164,7 @@ class Entity {
   void reduceHealth(int damage);
   void reduceEnergy(int amount);
   void healBy(Hitpoints amount);
+  bool isMissingHealth() const { return _health < _stats.maxHealth; }
   virtual void onHealthChange(){};  // Probably alerting relevant users.
   virtual void onEnergyChange();    // Probably alerting relevant users.
   virtual void onDeath();           // Anything that needs to happen upon death.
