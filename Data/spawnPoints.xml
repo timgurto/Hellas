@@ -133,6 +133,9 @@
     <spawnPoint type="dAW_cargoHold" y="71181" x="18401" quantity="1" radius="0" respawnTime="3600000" />
     <spawnPoint type="dAW_cargoHold" y="71182" x="16793" quantity="1" radius="0" respawnTime="3600000" />
     <spawnPoint type="dAW_cargoHold" y="71257" x="17968" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_dockworker" y="70850" x="16292" quantity="5" radius="400" respawnTime="300000" />
+    <spawnPoint type="dAW_dockworker" y="70978" x="15392" quantity="5" radius="400" respawnTime="300000" />
+    <spawnPoint type="dAW_dockworker" y="71344" x="15728" quantity="5" radius="200" respawnTime="300000" />
     <spawnPoint type="dAW_dog" y="70190.5" x="15450.5" quantity="1" radius="0" respawnTime="3600000" />
     <spawnPoint type="dAW_dog" y="70224" x="15134" quantity="1" radius="0" respawnTime="3600000" />
     <spawnPoint type="dAW_dog" y="70248" x="15359.5" quantity="1" radius="0" respawnTime="3600000" />
@@ -140,6 +143,9 @@
     <spawnPoint type="dAW_dog" y="70446" x="15434.5" quantity="1" radius="0" respawnTime="3600000" />
     <spawnPoint type="dAW_dog" y="70469.5" x="15132" quantity="1" radius="0" respawnTime="3600000" />
     <spawnPoint type="dAW_dog" y="70490" x="15401" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_drinker" y="69920" x="15264" quantity="5" radius="200" respawnTime="300000" />
+    <spawnPoint type="dAW_drinker" y="70272" x="15712" quantity="5" radius="200" respawnTime="300000" />
+    <spawnPoint type="dAW_gambler" y="70370" x="15278" quantity="5" radius="280" respawnTime="300000" />
     <spawnPoint type="dAW_gangBrawler" y="70051" x="15743.5" quantity="1" radius="0" respawnTime="3600000" />
     <spawnPoint type="dAW_gangBrawler" y="70212" x="15779" quantity="1" radius="0" respawnTime="3600000" />
     <spawnPoint type="dAW_gangBrawler" y="70332" x="15604" quantity="1" radius="0" respawnTime="3600000" />

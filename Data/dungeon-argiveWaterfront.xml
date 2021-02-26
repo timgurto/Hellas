@@ -218,6 +218,32 @@
     <yield id="wine" />
 </objectType>
 
+<!-- Neutral NPCs -->
+<npcType id="dAW_drinker" name="Argive Drinker"
+    level="20" maxHealth="174" isCivilian="1" >
+    <humanoid base="scholar">
+        <gear id="linenChiton" />
+        <gear id="sandals" />
+    </humanoid>
+    <particles profile="bubbles" />
+</npcType>
+
+<npcType id="dAW_gambler" name="Argive Gambler"
+    level="20" maxHealth="174" isCivilian="1" >
+    <humanoid base="zealot">
+        <gear id="knucklebones" />
+        <gear id="linenChitonOrange" />
+        <gear id="sandals" />
+    </humanoid>
+</npcType>
+
+<npcType id="dAW_dockworker" name="Argive Dockworker"
+    level="20" maxHealth="174" isCivilian="1" >
+    <humanoid base="athlete">
+        <gear id="sandals" />
+    </humanoid>
+</npcType>
+
 <lootTable id="dAW_allTrash" >
     <loot id="dAW_setGloves" chance="0.01" />
     <loot id="dAW_setBoots" chance="0.01" />
