@@ -11,8 +11,8 @@ TEST_CASE("Leveling up restores health and energy") {
   // Given a damaged user
   s.waitForUsers(1);
   auto &user = s.getFirstUser();
-  user.reduceHealth(1);
-  user.reduceEnergy(1);
+  user.reduceHealth(5);
+  user.reduceEnergy(5);
   CHECK(user.isMissingHealth());
   CHECK(user.energy() < user.stats().maxEnergy);
 

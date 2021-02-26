@@ -72,10 +72,10 @@ TEST_CASE("New servers clear old user data") {
     TestClient c = TestClient::WithUsername("Alice");
     s.waitForUsers(1);
     User &alice = s.getFirstUser();
-    alice.reduceHealth(1);
     CHECK(!alice.isMissingHealth());
 
     // AND GIVEN she is missing health
+    alice.reduceHealth(5);
     CHECK(alice.isMissingHealth());
 
     // WHEN a new server starts without preserving old data
