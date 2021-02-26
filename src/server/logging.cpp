@@ -25,12 +25,14 @@ void Server::writeUserToFile(const User &user, std::ostream &stream) const {
   auto secondsOnlineOrOffline =
       user.hasSocket() ? user.secondsPlayedThisSession() : user.secondsOffline;
 
+  const auto className = user.getClass() ? user.getClass().type().id() : "None";
+
   stream << "\n{"
          << "name: \"" << user.name() << "\","
          << "online: " << user.hasSocket() << ","
          << "secondsPlayed: " << user.secondsPlayed() << ","
          << "secondsOnlineOrOffline: " << secondsOnlineOrOffline << ","
-         << "class: \"" << user.getClass().type().id() << "\","
+         << "class: \"" << className << "\","
          << "level: \"" << user.level() << "\","
          << "xp: \"" << user.xp() << "\","
          << "xpNeeded: \"" << user.XP_PER_LEVEL[user.level()] << "\","
