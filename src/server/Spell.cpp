@@ -13,24 +13,21 @@ CombatResult Spell::performAction(Entity &caster, Entity &target,
   const auto *casterAsUser = dynamic_cast<const User *>(&caster);
 
   auto skipWarnings =
+      !casterAsUser ||  // No point warning an NPC
       _effect.isAoE();  // Since there may be many targets, not all valid.
 
-  // Target check
   if (!isTargetValid(caster, target)) {
-    if (casterAsUser && !skipWarnings)
-      casterAsUser->sendMessage(WARNING_INVALID_SPELL_TARGET);
-    return FAIL;
-  }
-  if (target.isDead()) {
-    if (casterAsUser && !skipWarnings)
-      casterAsUser->sendMessage(ERROR_TARGET_DEAD);
+    if (!skipWarnings) casterAsUser->sendMessage(WARNING_INVALID_SPELL_TARGET);
     return FAIL;
   }
 
-  // Range check
+  if (target.isDead()) {
+    if (!skipWarnings) casterAsUser->sendMessage(ERROR_TARGET_DEAD);
+    return FAIL;
+  }
+
   if (distance(caster, target) > _range) {
-    if (casterAsUser && !skipWarnings)
-      casterAsUser->sendMessage(WARNING_TOO_FAR);
+    if (!skipWarnings) casterAsUser->sendMessage(WARNING_TOO_FAR);
     return FAIL;
   }
 
