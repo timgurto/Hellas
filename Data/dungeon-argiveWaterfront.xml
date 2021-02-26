@@ -255,7 +255,7 @@
 </npcType>
     <spell id="dAW_disarm" cooldown="10" school="physical">
         <targets enemy="1" />
-        <function name="buff" s1="dAW_disarm" />
+        <function name="debuff" s1="dAW_disarm" />
     </spell>
         <buff id="dAW_disarm" name="Disarmed" icon="sword" duration="5" description="Might reduced">
             <stats might="-100" />
