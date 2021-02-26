@@ -16,25 +16,22 @@ CombatResult Spell::performAction(Entity &caster, Entity &target,
       _effect.isAoE();  // Since there may be many targets, not all valid.
 
   // Target check
-  if (!_effect.isAoE()) {
-    if (!isTargetValid(caster, target)) {
-      if (casterAsUser && !skipWarnings)
-        casterAsUser->sendMessage(WARNING_INVALID_SPELL_TARGET);
-      return FAIL;
-    }
+  if (!isTargetValid(caster, target)) {
+    if (casterAsUser && !skipWarnings)
+      casterAsUser->sendMessage(WARNING_INVALID_SPELL_TARGET);
+    return FAIL;
+  }
+  if (target.isDead()) {
+    if (casterAsUser && !skipWarnings)
+      casterAsUser->sendMessage(ERROR_TARGET_DEAD);
+    return FAIL;
+  }
 
-    if (target.isDead()) {
-      if (casterAsUser && !skipWarnings)
-        casterAsUser->sendMessage(ERROR_TARGET_DEAD);
-      return FAIL;
-    }
-
-    // Range check
-    if (distance(caster, target) > _range) {
-      if (casterAsUser && !skipWarnings)
-        casterAsUser->sendMessage(WARNING_TOO_FAR);
-      return FAIL;
-    }
+  // Range check
+  if (distance(caster, target) > _range) {
+    if (casterAsUser && !skipWarnings)
+      casterAsUser->sendMessage(WARNING_TOO_FAR);
+    return FAIL;
   }
 
   return _effect.execute(caster, target, supplementaryArg);

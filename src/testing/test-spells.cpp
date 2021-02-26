@@ -401,17 +401,26 @@ TEST_CASE_METHOD(ServerAndClientWithData,
           <targets enemy="1" cooldown="1" />
           <function name="doDirectDamage" i1="5" />
       </spell>
-      <npcType id="pyromaniac" >
+      <npcType id="pyromaniac" maxHealth="1000" >
         <spell id="explosion" />
       </npcType>
     )");
-    server->addNPC("pyromaniac", {20, 20});
+    const auto &pyromaniac = server->addNPC("pyromaniac", {20, 20});
 
-    WHEN("enough time passes for the spell to be cast") {
-      REPEAT_FOR_MS(100);
+    AND_GIVEN("users can't attack") {
+      CHANGE_BASE_USER_STATS.weaponDamage(0);
+      user->updateStats();
 
-      THEN("a nearby user has taken damage") {
-        CHECK(user->isMissingHealth());
+      WHEN("enough time passes for the spell to be cast") {
+        REPEAT_FOR_MS(100);
+
+        THEN("a nearby user has taken damage") {
+          CHECK(user->isMissingHealth());
+
+          AND_THEN("The NPC doesn't target itself as an \"enemy\"") {
+            CHECK(!pyromaniac.isMissingHealth());
+          }
+        }
       }
     }
   }
