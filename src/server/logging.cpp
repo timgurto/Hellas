@@ -25,7 +25,8 @@ void Server::writeUserToFile(const User &user, std::ostream &stream) const {
   auto secondsOnlineOrOffline =
       user.hasSocket() ? user.secondsPlayedThisSession() : user.secondsOffline;
 
-  const auto className = user.getClass() ? user.getClass().type().id() : "None";
+  const auto className =
+      &user.getClass() ? user.getClass().type().id() : "None";
 
   stream << "\n{"
          << "name: \"" << user.name() << "\","
