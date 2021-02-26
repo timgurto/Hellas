@@ -978,7 +978,7 @@
     <item id="dAW_tankCloak" name="Argive Deputy's Cloak" gearSlot="3" quality="2" sounds="fabric"
         iconFile="woolCloakTeal" gearFile="woolCloakTeal">
         <stats armour="5" cunning="3" endurance="4" />
-        <offset x="0" y="0" />
+            <offset x="-4" y="-1" />
         <canBeRepaired cost="woolCloth" tool="sewing" />
     </item>
 
