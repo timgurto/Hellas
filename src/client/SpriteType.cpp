@@ -8,7 +8,7 @@ extern Renderer renderer;
 
 ms_t SpriteType::timeThatTheLastRedrawWasOrdered{0};
 
-const double SpriteType::SHADOW_RATIO = 0.8;
+const double SpriteType::SHADOW_RATIO = 1.1;
 const double SpriteType::SHADOW_WIDTH_HEIGHT_RATIO = 1.8;
 
 SpriteType::SpriteType(const ScreenRect &drawRect, const std::string &imageFile)
