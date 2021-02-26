@@ -85,7 +85,7 @@
 </particleProfile>
 
 <particleProfile
-    id="blood">
+    id="blood" particlesPerSecond="3">
     <lifespan mean="180000" sd="20000" />
     <particlesPerHit mean="6" sd="2" />
     <distance mean="5" sd="0" />

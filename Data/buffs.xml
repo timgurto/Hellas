@@ -16,7 +16,8 @@
     <function name="doDirectDamage" i1="2" tickTime="1500" />
 </buff>
 <buff id="bleed" name="Bleeding" icon="dripRed" duration="12"
-    description="Taking damage over time.">
+    description="Taking damage over time."
+    particles="blood">
     <function name="doDirectDamage" i1="2" tickTime="1500" />
 </buff>
 <buff id="majorEnergy" name="Blessed by Apollo" icon="symbolApollo" duration="1800"
