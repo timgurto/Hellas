@@ -244,7 +244,8 @@
     level="21" elite="1" maxHealth="658" attack="31" attackTime="1800" >
     <spell id="dAW_disarm" />
     <humanoid base="zealot">
-        <item id="dAW_shiv" />
+        <gear id="dAW_shiv" />
+        <gear id="sandals" />
     </humanoid>
     <lootTable id="dAW_allTrash" />
     <lootTable id="dAW_gangTrash" />
@@ -263,7 +264,9 @@
 <npcType id="dAW_gangBrawler" name="Vindictive Brawler"
     level="21" elite="1" maxHealth="800" attack="61" attackTime="2900" >
     <humanoid base="athlete">
-        <item id="" />
+        <gear id="linothorax" />
+        <gear id="sandals" />
+        <gear id="tinAxe" />
     </humanoid>
     <lootTable id="dAW_allTrash" />
     <lootTable id="dAW_gangTrash" />
@@ -275,8 +278,9 @@
     level="22" boss="1" maxHealth="1463" attack="98" attackTime="4000" >
     <spell id="dAW_stun" />
     <humanoid base="default">
-        <item id="dAW_strongmanArmour" />
-        <item id="dAW_strongmanHammer" />
+        <gear id="dAW_strongmanArmour" />
+        <gear id="dAW_strongmanHammer" />
+        <gear id="sandals" />
     </humanoid>
     <lootTable id="dAW_boss" />
     <chooseLoot>
@@ -298,7 +302,10 @@
     level="22" elite="1" maxHealth="583" attack="38" attackTime="2500" >
     <spell id="dAW_silence" />
     <humanoid base="scholar">
-        <item id="" />
+        <gear id="woolExomis" />
+        <gear id="staff1" />
+        <gear id="tablet" />
+        <gear id="sandals" />
     </humanoid>
     <lootTable id="dAW_allTrash" />
     <lootTable id="dAW_gangTrash" />
@@ -313,7 +320,7 @@
             <stats intellect="-100" />
         </buff>
 
-<npcType id="dAW_dog" name="Argive Fighting Dog" template="dog"
+<npcType id="dAW_dog" name="Fighting Dog" template="dog"
     level="22" maxHealth="58" attack="11" attackTime="2900" >
     <spell id="dAW_dogBleed" />
     <lootTable id="animal" />
@@ -323,7 +330,8 @@
         <function name="debuff" s1="dAW_dogBleed" />
     </spell>
         <buff id="dAW_dogBleed" name="Bleeding" icon="dripRed" duration="10"
-        description="Taking damage over time.">
+        description="Taking damage over time."
+        particles="blood">
             <function name="doDirectDamage" i1="15" tickTime="1000" />
         </buff>
 
@@ -331,7 +339,9 @@
     level="22" elite="1" maxHealth="865" attack="41" attackTime="2500"
     isRanged="1" projectile="rock" >
     <humanoid base="athlete">
-        <item id="" />
+        <gear id="rock" />
+        <gear id="leatherLamellar" />
+        <gear id="sandals" />
     </humanoid>
     <lootTable id="dAW_allTrash" />
     <lootTable id="dAW_gangTrash" />
@@ -342,7 +352,10 @@
 <npcType id="dAW_gangLeader" name="Oulixes the Vindictive"
     level="23" boss="1" maxHealth="1982" attack="83" attackTime="2500" >
     <humanoid base="default">
-        <item id="" />
+        <gear id="linenChitonOrange" />
+        <gear id="woolHood" />
+        <gear id="dAW_gangleaderBoots" />
+        <gear id="tinAxe" />
     </humanoid>
     <lootTable id="dAW_boss" />
     <chooseLoot>
@@ -357,7 +370,11 @@
     level="22" elite="1" maxHealth="722" attack="56" attackTime="2900" >
     <spell id="dAW_intimidate" />
     <humanoid base="athlete">
-        <item id="" />
+        <gear id="tinHauberk" />
+        <gear id="tinSpear" />
+        <gear id="skullCap" />
+        <gear id="leatherShield" />
+        <gear id="sandals" />
     </humanoid>
     <lootTable id="dAW_allTrash" />
     <lootTable id="dAW_phoenicianTrash" />
@@ -374,8 +391,10 @@
 
 <npcType id="dAW_phnDeckhand" name="Phoenician Deckhand"
     level="23" elite="1" maxHealth="937" attack="52" attackTime="2100" >
-    <humanoid base="athlete">
-        <item id="" />
+    <humanoid base="zealot">
+        <gear id="tinSpear" />
+        <gear id="horn" />
+        <gear id="sandals" />
     </humanoid>
     <lootTable id="dAW_allTrash" />
     <lootTable id="dAW_phoenicianTrash" />
@@ -387,7 +406,9 @@
     level="23" elite="1" maxHealth="938" attack="44" attackTime="2500"
     isRanged="1" projectile="food" school="fire" >
     <humanoid base="scholar">
-        <item id="" />
+        <gear id="linenChiton" />
+        <gear id="tinKnife" />
+        <gear id="sandals" />
     </humanoid>
     <lootTable id="dAW_allTrash" />
     <lootTable id="dAW_phoenicianTrash" />
@@ -403,7 +424,11 @@
     <spell id="dAW_chefBleed" />
     <spell id="dAW_chefAoE" />
     <humanoid base="default">
-        <item id="" />
+        <gear id="dAW_chefCleaver" />
+        <gear id="fireWandOffhand" />
+        <gear id="dAW_chefOvenMitts" />
+        <gear id="woolChiton" />
+        <gear id="sandals" />
     </humanoid>
     <lootTable id="dAW_boss" />
     <lootTable id="human" />
@@ -418,18 +443,24 @@
         <function name="debuff" s1="dAW_chefBleed" />
     </spell>
         <buff id="dAW_chefBleed" name="Bleeding" icon="dripRed" duration="5"
-        description="Taking damage over time.">
+            description="Taking damage over time."
+            particles="blood">
             <function name="doDirectDamage" i1="80" tickTime="1000" />
         </buff>
     <spell id="dAW_chefAoE" cooldown="7" school="fire" radius="30">
         <targets enemy="1" />
         <function name="doDirectDamage" i1="100" />
     </spell>
+    <item id="fireWandOffhand" gearSlot="7">    
+        <particles profile="fireSmall" x="4" y="0" />
+    </item>
 
 <npcType id="dAW_phnLover" name="Phoenician Skirt Chaser"
     level="24" elite="1" maxHealth="1014" attack="67" attackTime="2500" >
-    <humanoid base="zealot">
-        <item id="" />
+    <humanoid base="athlete">
+        <gear id="puffyShirt" />
+        <gear id="tinSpear" />
+        <gear id="sandals" />
     </humanoid>
     <lootTable id="dAW_allTrash" />
     <lootTable id="dAW_phoenicianTrash" />
@@ -439,12 +470,17 @@
     <loot id="dAW_wearableBoxers" chance="0.02" />
     <loot id="wine" chance="0.3" />
 </npcType>
+    <item id="puffyShirt" gearSlot="2" >
+        <offset x="-5" y="-3" />
+    </item>
 
 <npcType id="dAW_phnLoverBoss" name="Lotharios"
     level="25" boss="1" maxHealth="1728" attack="69" attackTime="2400" >
     <spell id="dAW_summonConsort" />
     <humanoid base="default">
-        <item id="" />
+        <gear id="dAW_loverSword" />
+        <gear id="puffyShirt" />
+        <gear id="sandals" />
     </humanoid>
     <lootTable id="dAW_boss" />
     <lootTable id="human" />
@@ -469,7 +505,10 @@
 <npcType id="dAW_phnSailor" name="Phoenician Sailor"
     level="24" elite="1" maxHealth="1014" attack="75" attackTime="2800" >
     <humanoid base="athlete">
-        <item id="" />
+        <gear id="tinAxe" />
+        <gear id="puffyShirt" />
+        <gear id="dAW_eyepatch" />
+        <gear id="sandals" />
     </humanoid>
     <lootTable id="dAW_allTrash" />
     <lootTable id="dAW_phoenicianTrash" />
@@ -480,7 +519,10 @@
 <npcType id="dAW_phnShipwright" name="Phoenician Shipwright"
     level="24" boss="1" maxHealth="2147" attack="125" attackTime="3500" >
     <humanoid base="default">
-        <item id="" />
+        <gear id="leatherLamellar" />
+        <gear id="dAW_shipwrightHammer" />
+        <gear id="parchment" />
+        <gear id="sandals" />
     </humanoid>
     <lootTable id="dAW_boss" />
     <lootTable id="human" />
@@ -509,7 +551,10 @@
     level="26" boss="1" maxHealth="2105" attack="88" attackTime="2500" >
     <spell id="dAW_admiralAoE" />
     <humanoid base="noble">
-        <item id="" />
+        <gear id="dAW_admiralSpear" />
+        <gear id="dAW_setHat" />
+        <gear id="dAW_setRobe" />
+        <gear id="sandals" />
     </humanoid>
     <lootTable id="dAW_boss" />
     <lootTable id="human" />
@@ -804,7 +849,8 @@
 <quest id="dAW_princess1" name="The Monster at the Temple" startsAt="argosKing" endsAt="hermesArgos"
     brief="I'll get straight to the point, stranger: my daughter, Princess Io, is missing.  It would be a service to the whole city of Argos if you were to help find her.
     Io is a priestess to Hera, and there are stories of a strange monster in the temple where she served.  I suspect the monster may be responsible for my daughter's disappearance, but I hope I'm wrong.
-    Cleanse Hera's temple of this beast.  And if it did indeed take the princess, then please return her to me--dead or alive."
+    Cleanse Hera's temple of this beast.  And if it did indeed take the princess, then please return her to me--dead or alive.
+    The temple is in the rocky lands west of this palace."
     debrief="Hello, friend!  Are you looking to vanquish the creature in Hera's temple?  Perhaps I can help." />
     <npcType id="hermesArgos" name="Unusual Shepherd" 
         level="20" maxHealth="174" isCivilian="1" >
