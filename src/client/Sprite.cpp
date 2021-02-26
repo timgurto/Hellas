@@ -85,7 +85,8 @@ void Sprite::drawName() const {
   const auto nameOutline =
       Texture{_client.defaultFont(), text, Color::UI_OUTLINE};
   auto namePosition = toScreenPoint(location()) + _client.offset();
-  namePosition.y -= height();
+  namePosition.y -=
+      _type->hasCustomDrawHeight() ? _type->customDrawHeight() : height();
   namePosition.y -= 16;
   namePosition.x -= nameLabel.width() / 2;
   for (int x = -1; x <= 1; ++x)

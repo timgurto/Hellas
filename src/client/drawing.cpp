@@ -463,7 +463,9 @@ void SpritesToDraw::drawNamesAndHealthbars() {
 
     const auto *asCombatant = dynamic_cast<const ClientCombatant *>(sprite);
     if (!asCombatant) continue;
-    asCombatant->drawHealthBarIfAppropriate(sprite->location(),
-                                            sprite->height());
+    const auto drawHeight = sprite->type()->hasCustomDrawHeight()
+                                ? sprite->type()->customDrawHeight()
+                                : sprite->height();
+    asCombatant->drawHealthBarIfAppropriate(sprite->location(), drawHeight);
   }
 }

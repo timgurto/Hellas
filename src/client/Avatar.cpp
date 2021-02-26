@@ -83,7 +83,8 @@ void Avatar::drawName() const {
   Texture cityOutline, cityLabel;
 
   ScreenPoint namePosition = toScreenPoint(location()) + _client.offset();
-  namePosition.y -= 60;
+  namePosition.y -= type()->customDrawHeight();
+  namePosition.y -= 16;
   namePosition.x -= nameLabel.width() / 2;
 
   ScreenPoint cityPosition;

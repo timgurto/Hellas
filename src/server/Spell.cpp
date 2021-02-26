@@ -48,7 +48,8 @@ bool Spell::isTargetValid(const Entity &caster, const Entity &target) const {
                                     // enemies for the purposes of spells.  This
                                     // will need to be changed if, e.g., a
                                     // friendly NPC casts a positive spell on a
-                                    // User.
+                                    // User, or if a friendly NPC has a negative
+                                    // AoE spell.
   }
 
   return _validTargets[FRIENDLY];

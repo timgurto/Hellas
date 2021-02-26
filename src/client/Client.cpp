@@ -112,6 +112,8 @@ Client::Client()
   }
   Mix_AllocateChannels(MIXING_CHANNELS);
 
+  avatarSpriteType.useCustomDrawHeight(40);
+
   _entities.insert(&_character);
 
   gameData.unlocks.linkToKnownRecipes(_knownRecipes);
