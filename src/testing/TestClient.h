@@ -117,7 +117,7 @@ class TestClient {
   bool waitForMessage(MessageCode desiredMsg,
                       ms_t timeout = DEFAULT_TIMEOUT) const;
   void waitForRedraw();
-  void simulateClick(const ScreenPoint &position);
+  void simulateClick(const ScreenPoint &position, Uint8 button);
   void simulateKeypress(SDL_Scancode key);
   bool isKeyPressed(SDL_Scancode key) const;
   void sendLocationUpdatesInstantly();

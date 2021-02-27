@@ -230,15 +230,11 @@ CDroppedItem &TestClient::getFirstDroppedItem() {
   return *asDroppedItem;  // To circumvent warning
 }
 
-void TestClient::simulateClick(const ScreenPoint &position) {
-  const auto oldPosition = _client->_mouse;
-  _client->_mouse = position;
-  _client->onMouseMove();
-
+void TestClient::simulateClick(const ScreenPoint &position, Uint8 button) {
   SDL_Event mouseDownEvent, mouseUpEvent;
   mouseDownEvent.type = SDL_MOUSEBUTTONDOWN;
   mouseUpEvent.type = SDL_MOUSEBUTTONUP;
-  mouseDownEvent.button.button = mouseUpEvent.button.button = SDL_BUTTON_LEFT;
+  mouseDownEvent.button.button = mouseUpEvent.button.button = button;
 
   SDL_PushEvent(&mouseDownEvent);
   SDL_PushEvent(&mouseUpEvent);
