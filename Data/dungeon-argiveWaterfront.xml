@@ -241,6 +241,7 @@
     level="20" maxHealth="174" isCivilian="1" >
     <humanoid base="athlete">
         <gear id="sandals" />
+        <gear id="copperHammer" />
     </humanoid>
 </npcType>
 
