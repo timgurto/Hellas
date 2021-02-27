@@ -108,6 +108,7 @@ std::vector<std::string> StatsMod::toStrings() const {
   for (auto pair : composites) {
     auto statID = pair.first;
     auto statName = Stats::compositeDefinitions[statID].name;
+    statName = toLower(statName);
     auto amount = toString(pair.second);
     if (pair.second > 0) amount = "+"s + amount;
     v.push_back(amount + " "s + statName);
