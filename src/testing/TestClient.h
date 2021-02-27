@@ -59,6 +59,9 @@ class TestClient {
   const ChoiceList &uiBuildList() const { return *_client->_buildList; }
   bool knowsSpell(const std::string &id) const;
   Target target() { return _client->_target; }
+  const Sprite *entityUnderCursor() const {
+    return _client->_currentMouseOverEntity;
+  }
   const std::set<std::string> &knownRecipes() const {
     return _client->_knownRecipes;
   }
@@ -117,6 +120,7 @@ class TestClient {
   bool waitForMessage(MessageCode desiredMsg,
                       ms_t timeout = DEFAULT_TIMEOUT) const;
   void waitForRedraw();
+  void simulateMouseMove(const ScreenPoint &position);
   void simulateClick(const ScreenPoint &position, Uint8 button);
   void simulateKeypress(SDL_Scancode key);
   bool isKeyPressed(SDL_Scancode key) const;

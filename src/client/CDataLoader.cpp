@@ -661,6 +661,7 @@ void CDataLoader::loadPermanentObjects(XmlReader &xr) {
     if (!xr.findAttr(elem, "y", loc.y)) continue;
 
     auto obj = new ClientObject{{}, type, loc, _client};
+    obj->owner({ClientObject::Owner::NO_ACCESS, {}});
     _client._entities.insert(obj);
 
     if (type->hasCustomCullDistance())

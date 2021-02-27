@@ -564,3 +564,26 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Permanent-object decorations") {
     }
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Permanent objects can't be interacted with") {
+  GIVEN("a permanent instance of a container object") {
+    useData(R"(
+        <objectType id="box" >
+          <container slots="1" />
+        </objectType>
+        <permanentObject id="box" x="10" y="10" />
+      )");
+
+    WHEN("the client moves the mouse over it") {
+      const auto objectPositionOnScreen =
+          ScreenPoint{10, 10} + ScreenPoint{2, 2} + (*client)->offset();
+      client->simulateMouseMove(objectPositionOnScreen);
+
+      THEN("it does not get highlighted") {
+        REPEAT_FOR_MS(100);
+        CHECK_FALSE(client->entityUnderCursor());
+      }
+    }
+  }
+}
