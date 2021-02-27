@@ -97,14 +97,15 @@ Loot ideas:
 
 
 
-Food-projectile art
-        
-Spell/buff sounds/art?
 Test princess chain
 Test whole dungeon with a high-level character
-Double-check mob chaining
 If mob runs past idle mob, chain-pull it
 
 Corner pulling for ranged mobs
 Prevent shooting through some "tall" objects?
 Prevent aggro around corners
+
+Bleed-debuff particles don't work
+
+Avatars drawing in front of humanoid mobs even when behind
+Corpses not showing up on bridge
