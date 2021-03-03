@@ -239,7 +239,7 @@ CombatResult SpellEffect::spawnNPC(const SpellEffect &effect, Entity &caster,
   if (!npcType) return FAIL;
 
   auto proposedLocation = MapPoint{};
-  const auto MAX_RADIUS = 150_px;
+  const auto MAX_RADIUS = 100_px;
 
   auto attempts = 100;
   while (attempts-- > 0) {
