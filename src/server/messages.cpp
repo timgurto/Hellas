@@ -312,18 +312,21 @@ HANDLE_MESSAGE(CL_DROP) {
   const auto quantity = containerSlot.second;
   if (quantity == 0) return;
 
-  auto dropLocation = MapPoint{};
-  const auto MAX_ATTEMPTS = 50;
-  for (auto attempt = 0; attempt != MAX_ATTEMPTS; ++attempt) {
-    dropLocation =
-        getRandomPointInCircle(user.location(), Server::ACTION_DISTANCE);
-    if (isLocationValid(dropLocation, DroppedItem::TYPE)) {
-      addEntity(new DroppedItem(item, quantity, dropLocation));
-      break;
-    }
+  const auto shouldCreateDroppedItem = !itemInstance.isSoulbound();
+  if (shouldCreateDroppedItem) {
+    auto dropLocation = MapPoint{};
+    const auto MAX_ATTEMPTS = 50;
+    for (auto attempt = 0; attempt != MAX_ATTEMPTS; ++attempt) {
+      dropLocation =
+          getRandomPointInCircle(user.location(), Server::ACTION_DISTANCE);
+      if (isLocationValid(dropLocation, DroppedItem::TYPE)) {
+        addEntity(new DroppedItem(item, quantity, dropLocation));
+        break;
+      }
 
-    if (attempt == MAX_ATTEMPTS - 1) {
-      RETURN_WITH(WARNING_NOWHERE_TO_DROP_ITEM);
+      if (attempt == MAX_ATTEMPTS - 1) {
+        RETURN_WITH(WARNING_NOWHERE_TO_DROP_ITEM);
+      }
     }
   }
 

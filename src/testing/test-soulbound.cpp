@@ -23,6 +23,11 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 
         THEN("it is gone from his inventory") {
           WAIT_UNTIL(!user->inventory(0).first.hasItem());
+
+          AND_THEN("no dropped item was created") {
+            REPEAT_FOR_MS(100);
+            CHECK(server->entities().empty());
+          }
         }
       }
 
@@ -62,6 +67,11 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 
           THEN("it is gone from his inventory") {
             WAIT_UNTIL(!user->inventory(0).first.hasItem());
+
+            AND_THEN("no dropped item was created") {
+              REPEAT_FOR_MS(100);
+              CHECK(server->entities().empty());
+            }
           }
         }
 
@@ -74,6 +84,11 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 
             THEN("it is gone from his inventory") {
               WAIT_UNTIL(!user->inventory(0).first.hasItem());
+
+              AND_THEN("no dropped item was created") {
+                REPEAT_FOR_MS(100);
+                CHECK(server->entities().empty());
+              }
             }
           }
         }
