@@ -46,6 +46,8 @@ ContainerGrid::ContainerGrid(Client &client, size_t rows, size_t cols,
 ContainerGrid::~ContainerGrid() { _client->deregisterContainerGrid(this); }
 
 void ContainerGrid::refresh() {
+  static const auto SLOT_BACKGROUND_OFFSET = ScreenRect{1, 1, -2, -2};
+
   renderer.setDrawColor(Color::BLACK);
   for (size_t i = 0; i != _linked.size(); ++i) {
     const px_t x = i % _cols, y = i / _cols;
@@ -54,7 +56,6 @@ void ContainerGrid::refresh() {
                    y * (Client::ICON_SIZE + _gap + 2) + 1,
                    Client::ICON_SIZE + 2, Client::ICON_SIZE + 2};
     if (_solidBackground) {
-      static const auto SLOT_BACKGROUND_OFFSET = ScreenRect{1, 1, -2, -2};
       renderer.fillRect(slotRect + SLOT_BACKGROUND_OFFSET);
     }
     // Don't draw an item being moved by the mouse.
@@ -63,6 +64,9 @@ void ContainerGrid::refresh() {
       const auto &slot = _linked[i];
       const auto *itemType = slot.first.type();
       if (itemType) {
+        // Solid background (even if set to false)
+        renderer.fillRect(slotRect + SLOT_BACKGROUND_OFFSET);
+
         // Quality border
         const auto qualityColour = itemType->nameColor();
         if (qualityColour != Color::ITEM_QUALITY_COMMON) {

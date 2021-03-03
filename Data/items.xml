@@ -672,7 +672,7 @@
                 <canBeRepaired cost="tinScale" />
             </item>
 
-<item id="debugRing" name="Ring of Power" gearSlot="1" iconFile="tinRing" >
+<item id="debugRing" name="Ring of Power" gearSlot="1" quality="4" iconFile="tinRing" >
     <stats might="300" intellect="300" cunning="1000" swiftness="1000" endurance="1000" courage="1000" />
 </item>
 
