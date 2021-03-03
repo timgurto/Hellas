@@ -6,6 +6,8 @@
 #include "Element.h"
 #include "List.h"
 
+class ConfirmationWindow;
+
 // An alternative to a container, that allows only taking items, and not
 // swapping.  e.g., loot.
 class TakeContainer : public Element {
@@ -33,6 +35,8 @@ class TakeContainer : public Element {
   typedef std::pair<Serial, size_t> slot_t;
   std::vector<slot_t>
       _slots;  // slot -> serial/slot pairs, for button functions
+
+  void takeOnConfirmation();
 };
 
 #endif

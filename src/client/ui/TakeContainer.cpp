@@ -7,6 +7,7 @@
 #include "../Client.h"
 #include "Button.h"
 #include "ColorBlock.h"
+#include "ConfirmationWindow.h"
 #include "Label.h"
 #include "List.h"
 
@@ -76,5 +77,16 @@ void TakeContainer::repopulate() {
 
 void TakeContainer::take(void *data) {
   slot_t &slot = *reinterpret_cast<slot_t *>(data);
-  _client->sendMessage({CL_TAKE_ITEM, makeArgs(slot.first, slot.second)});
+  auto *&window = _client->_confirmLootSoulboundItem;
+
+  const auto windowText =
+      "Looting this item will bind it to you.  Are you sure?";
+  const auto msgArgs = makeArgs(slot.first, slot.second);
+  if (window != nullptr) {
+    _client->removeWindow(window);
+    delete window;
+  }
+  window = new ConfirmationWindow(*_client, windowText, CL_TAKE_ITEM, msgArgs);
+  _client->addWindow(window);
+  window->show();
 }

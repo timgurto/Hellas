@@ -764,6 +764,7 @@ class Client : public TextEntryManager {
   ConfirmationWindow *_confirmDropSoulboundItem = nullptr;
   // Show a confirmation window, then drop item if confirmed
   void dropItemOnConfirmation(const ContainerGrid::GridInUse &toDrop);
+  ConfirmationWindow *_confirmLootSoulboundItem = nullptr;
 
   // Searches
  public:
