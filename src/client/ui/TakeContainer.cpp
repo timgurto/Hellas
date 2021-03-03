@@ -56,9 +56,11 @@ void TakeContainer::repopulate() {
     const auto *itemType = slot.first.type();
     if (!itemType) continue;
 
-    auto pSlot = &_slots[i];
-    auto *button = new Button({0, 0, row->width(), row->height()}, {},
-                              [this, pSlot]() { take(pSlot); });
+    const auto &pSlot = _slots[i];
+    auto *button = new Button(
+        {0, 0, row->width(), row->height()}, {}, [&pSlot, itemType, this]() {
+          take(pSlot.first, pSlot.second, itemType->bindsOnPickup());
+        });
     row->addChild(button);
     button->addChild(new Picture(1, 1, itemType->icon()));
     px_t labX = Client::ICON_SIZE + 2;
@@ -75,18 +77,21 @@ void TakeContainer::repopulate() {
   _list->scrollPos(oldScroll);
 }
 
-void TakeContainer::take(void *data) {
-  slot_t &slot = *reinterpret_cast<slot_t *>(data);
-  auto *&window = _client->_confirmLootSoulboundItem;
+void TakeContainer::take(Serial serial, size_t slot, bool itemBindsOnPickup) {
+  if (!itemBindsOnPickup) {
+    _client->sendMessage({CL_TAKE_ITEM, makeArgs(serial, slot)});
 
-  const auto windowText =
-      "Looting this item will bind it to you.  Are you sure?";
-  const auto msgArgs = makeArgs(slot.first, slot.second);
-  if (window != nullptr) {
-    _client->removeWindow(window);
-    delete window;
+  } else {
+    auto *&window = _client->_confirmLootSoulboundItem;
+
+    const auto text = "Looting this item will bind it to you.  Are you sure?";
+    const auto msgArgs = makeArgs(serial, slot);
+    if (window != nullptr) {
+      _client->removeWindow(window);
+      delete window;
+    }
+    window = new ConfirmationWindow(*_client, text, CL_TAKE_ITEM, msgArgs);
+    _client->addWindow(window);
+    window->show();
   }
-  window = new ConfirmationWindow(*_client, windowText, CL_TAKE_ITEM, msgArgs);
-  _client->addWindow(window);
-  window->show();
 }

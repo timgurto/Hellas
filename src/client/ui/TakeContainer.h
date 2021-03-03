@@ -19,7 +19,7 @@ class TakeContainer : public Element {
   size_t size() const { return _list->size(); }
 
   // Send a CL_TAKE message.  data: a pair containing the serial and slot.
-  void take(void *data);
+  void take(Serial serial, size_t slot, bool itemBindsOnPickup);
 
   static const size_t LOOT_CAPACITY = 10;  // TODO find a better solution
 
@@ -35,8 +35,6 @@ class TakeContainer : public Element {
   typedef std::pair<Serial, size_t> slot_t;
   std::vector<slot_t>
       _slots;  // slot -> serial/slot pairs, for button functions
-
-  void takeOnConfirmation();
 };
 
 #endif
