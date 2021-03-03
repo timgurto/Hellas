@@ -853,7 +853,7 @@
 </quest>
 <quest id="dAW_missingWomenRescue" name="Rescue from the Waterfront" startsAt="argosMagistrate" endsAt="dAW_womanQG1"
     brief="We've confirmed that the Phoenicians took a number of women from the marketplace, and are holding them in the Waterfront district.  Go there, and rescue the poor girls."
-    debrief="Did you really think we were taken against our will?  The promise of a life at sea holds much more promise than our dreary lives in the city.  We're all staying onboard.  I'm sorry that your heroic tale won't get a satisfying ending.">
+    debrief="Did you really think we were taken against our will?  The promise of a life at sea is much more thrilling than our dreary lives in the city.  We're all staying onboard.  I'm sorry that your heroic tale won't get a satisfying ending.">
     <prerequisite id="dAW_missingWomen2" />
 </quest>
     <npcType id="dAW_woman" name="Argive Maiden" template="girlTeal" isCivilian="1" level="17" maxHealth="136" />
