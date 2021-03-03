@@ -525,8 +525,6 @@
     </spell>
 <npcType id="dAW_phnConsort" name="Loyal Consort"
     level="23" maxHealth="154" attack="20" attackTime="2400" disappearAfter="120000" template="girlTeal" >
-    <lootTable id="human" />
-    <lootTable id="humanTinAge" />
 </npcType>
 
 <npcType id="dAW_phnSailor" name="Phoenician Sailor"
