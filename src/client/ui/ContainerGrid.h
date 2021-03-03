@@ -62,6 +62,7 @@ class ContainerGrid : public Element {
     const Serial object() const;
     void clear();
     void markGridAsChanged();
+    bool isItemSoulbound() const;
 
    private:
     size_t _slot{ContainerGrid::NO_SLOT};

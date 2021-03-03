@@ -533,6 +533,21 @@ void Client::closeWindowsFromOutOfRangeObjects() {
   }
 }
 
+void Client::dropItemOnConfirmation(const ContainerGrid::GridInUse &toDrop) {
+  std::string windowText =
+      "Dropping a soulbound item will destroy it.  Are you sure?";
+  std::string msgArgs = makeArgs(toDrop.object(), toDrop.slot());
+
+  if (_confirmDropSoulboundItem != nullptr) {
+    removeWindow(_confirmDropSoulboundItem);
+    delete _confirmDropSoulboundItem;
+  }
+  _confirmDropSoulboundItem =
+      new ConfirmationWindow(*this, windowText, CL_DROP, msgArgs);
+  addWindow(_confirmDropSoulboundItem);
+  _confirmDropSoulboundItem->show();
+}
+
 bool Client::outsideCullRange(const MapPoint &loc, px_t hysteresis) const {
   px_t testCullDist = CULL_DISTANCE + hysteresis;
   return abs(loc.x - _character.location().x) > testCullDist ||

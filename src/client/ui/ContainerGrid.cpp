@@ -251,8 +251,11 @@ void ContainerGrid::dropItem(Client &client) {
   auto &draggingFrom = client.containerGridBeingDraggedFrom;
   if (!draggingFrom.validGrid() || !draggingFrom.validSlot()) return;
 
-  client.sendMessage(
-      {CL_DROP, makeArgs(draggingFrom.object(), draggingFrom.slot())});
+  if (draggingFrom.isItemSoulbound())
+    client.dropItemOnConfirmation(draggingFrom);
+  else
+    client.sendMessage(
+        {CL_DROP, makeArgs(draggingFrom.object(), draggingFrom.slot())});
   draggingFrom.markGridAsChanged();
   draggingFrom.clear();
   client.onChangeDragItem();
@@ -289,3 +292,8 @@ void ContainerGrid::GridInUse::clear() {
 }
 
 void ContainerGrid::GridInUse::markGridAsChanged() { _grid->markChanged(); }
+
+bool ContainerGrid::GridInUse::isItemSoulbound() const {
+  if (!validGrid() || !validSlot()) return false;
+  return _grid->_linked[_slot].first.isSoulbound();
+}

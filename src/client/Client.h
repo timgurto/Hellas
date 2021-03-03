@@ -761,6 +761,10 @@ class Client : public TextEntryManager {
 
   void sendClearTargetMessage() const;
 
+  ConfirmationWindow *_confirmDropSoulboundItem = nullptr;
+  // Show a confirmation window, then drop item if confirmed
+  void dropItemOnConfirmation(const ContainerGrid::GridInUse &toDrop);
+
   // Searches
  public:
   const ParticleProfile *findParticleProfile(const std::string &id) const;
