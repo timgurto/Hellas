@@ -653,7 +653,7 @@
     <offset x="-4" y="-3" />
     <canBeRepaired cost="leather" tool="sewing" />
 </item>
-<item id="dAW_gangleaderRing" name="Ringleader's Ring" gearSlot="1" quality="1" lvlReq="18" bind="pickup"
+<item id="dAW_gangleaderRing" name="Ringleader's Ring" gearSlot="1" quality="2" lvlReq="18" bind="pickup"
     iconFile="silverRing" >
     <stats health="9" />
     <canBeRepaired cost="silverWire" />
