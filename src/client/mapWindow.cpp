@@ -119,7 +119,7 @@ void Client::updateMapWindow(Element &e) {
 
   // Cities
   for (const auto &pair : client._cities) {
-    auto tooltipText = "City of "s + pair.first;
+    auto tooltipText = pair.first + " (player city)";
     auto cityIcon = &images.mapCityNeutral;
 
     auto isInCity = !client.character().cityName().empty();
@@ -133,6 +133,9 @@ void Client::updateMapWindow(Element &e) {
     }
     client.addIconToMap(pair.second, cityIcon, tooltipText);
   }
+
+  for (const auto &pin : client.gameData.mapPins)
+    client.addIconToMap(pin.location, &images.mapCityNeutral, pin.tooltip);
 
   client.addOutlinedMapPin(client._character.location(), Color::COMBATANT_SELF);
 

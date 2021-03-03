@@ -45,5 +45,11 @@ struct CGameData {
     return tagNames[id];
   }
 
+  struct MapPin {
+    MapPoint location;
+    std::string tooltip;
+  };
+  std::vector<MapPin> mapPins;
+
   std::vector<std::string> compositeStatsDisplayOrder;
 };

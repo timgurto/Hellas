@@ -11,6 +11,7 @@
     <particles profile="portalSparkle" x="0" y="0" />
 </objectType>
 <object id="dAW_entryGate" x="43266" y="49956" />
+<mapPin x="43266" y="49956" tooltip="Argive Waterfront (lvl 22-31)" />
 
 <objectType id="dAW_exitGate" name="Dungeon Portal" 
     imageFile="marbleGate" xDrawOffset="-24" yDrawOffset="-75"

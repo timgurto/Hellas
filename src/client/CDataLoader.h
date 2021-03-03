@@ -17,6 +17,7 @@ class CDataLoader {
 
   void loadTerrain(XmlReader &reader);
   void loadTerrainLists(XmlReader &reader);
+  void loadMapPins(XmlReader &reader);
   void loadCompositeStats(XmlReader &reader);
   void loadParticles(XmlReader &reader);
   void loadSounds(XmlReader &reader);

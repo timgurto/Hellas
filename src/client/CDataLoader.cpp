@@ -39,6 +39,7 @@ void CDataLoader::load(bool keepOldData) {
     _client.gameData.items.clear();
     _client.gameData.classes.clear();
     _client.gameData.recipes.clear();
+    _client.gameData.mapPins.clear();
   }
 
   _client.drawLoadingScreen("Loading data");
@@ -49,6 +50,7 @@ void CDataLoader::load(bool keepOldData) {
 
     loadFromAllFiles(&CDataLoader::loadTerrain);
     loadFromAllFiles(&CDataLoader::loadTerrainLists);
+    loadFromAllFiles(&CDataLoader::loadMapPins);
     loadFromAllFiles(&CDataLoader::loadCompositeStats);
     loadFromAllFiles(&CDataLoader::loadParticles);
     loadFromAllFiles(&CDataLoader::loadSounds);
@@ -82,6 +84,7 @@ void CDataLoader::load(bool keepOldData) {
     loadTerrain(reader);
     loadTerrainLists(reader);
     loadMap(reader);
+    loadMapPins(reader);
     loadCompositeStats(reader);
     loadParticles(reader);
     loadSounds(reader);
@@ -134,6 +137,18 @@ void CDataLoader::loadTerrain(XmlReader &xr) {
 
 void CDataLoader::loadTerrainLists(XmlReader &xr) {
   TerrainList::loadFromXML(xr);
+}
+
+void CDataLoader::loadMapPins(XmlReader &xr) {
+  for (auto elem : xr.getChildren("mapPin")) {
+    auto pin = CGameData::MapPin{};
+
+    xr.findAttr(elem, "x", pin.location.x);
+    xr.findAttr(elem, "y", pin.location.y);
+    xr.findAttr(elem, "tooltip", pin.tooltip);
+
+    _client.gameData.mapPins.push_back(pin);
+  }
 }
 
 void CDataLoader::loadCompositeStats(XmlReader &xr) {
