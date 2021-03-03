@@ -3,7 +3,8 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Soulbound items can't be dropped") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Soulbound items are deleted when dropped") {
   GIVEN("rings binds on pickup") {
     useData(R"(
       <item id="ring" bind="pickup" />
@@ -20,13 +21,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Soulbound items can't be dropped") {
       AND_WHEN("he tries to drop it") {
         client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
 
-        THEN("it is still in his inventory") {
-          REPEAT_FOR_MS(100);
-          CHECK(user->inventory(0).first.hasItem());
-        }
-
-        THEN("he receives a warning") {
-          CHECK(client->waitForMessage(WARNING_ITEM_IS_BOUND));
+        THEN("it is gone from his inventory") {
+          WAIT_UNTIL(!user->inventory(0).first.hasItem());
         }
       }
 
@@ -64,13 +60,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Soulbound items can't be dropped") {
         AND_WHEN("he tries to drop it") {
           client->sendMessage(CL_DROP, makeArgs(Serial::Gear(), 1));
 
-          THEN("it is still equipped") {
-            REPEAT_FOR_MS(100);
-            CHECK(user->gear(1).first.hasItem());
-          }
-
-          THEN("he receives a warning") {
-            CHECK(client->waitForMessage(WARNING_ITEM_IS_BOUND));
+          THEN("it is gone from his inventory") {
+            WAIT_UNTIL(!user->inventory(0).first.hasItem());
           }
         }
 
@@ -81,9 +72,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Soulbound items can't be dropped") {
           AND_WHEN("he tries to drop it") {
             client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
 
-            THEN("it is still in his inventory") {
-              REPEAT_FOR_MS(100);
-              CHECK(user->inventory(0).first.hasItem());
+            THEN("it is gone from his inventory") {
+              WAIT_UNTIL(!user->inventory(0).first.hasItem());
             }
           }
         }

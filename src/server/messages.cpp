@@ -312,8 +312,6 @@ HANDLE_MESSAGE(CL_DROP) {
   const auto quantity = containerSlot.second;
   if (quantity == 0) return;
 
-  if (itemInstance.isSoulbound()) RETURN_WITH(WARNING_ITEM_IS_BOUND);
-
   auto dropLocation = MapPoint{};
   const auto MAX_ATTEMPTS = 50;
   for (auto attempt = 0; attempt != MAX_ATTEMPTS; ++attempt) {

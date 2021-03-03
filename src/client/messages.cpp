@@ -264,7 +264,6 @@ void Client::handleBufferedMessages(const std::string &msg) {
       case WARNING_PET_AT_FULL_HEALTH:
       case WARNING_NOWHERE_TO_DROP_ITEM:
       case WARNING_USER_ALREADY_IN_A_GROUP:
-      case WARNING_ITEM_IS_BOUND:
       case WARNING_WARE_IS_SOULBOUND:
       case WARNING_PRICE_IS_SOULBOUND:
       case WARNING_WARE_IS_BROKEN:
@@ -2920,8 +2919,6 @@ void Client::initializeMessageNames() {
   _errorMessages[ERROR_USER_NOT_FOUND] = "Cannot find that player.";
   _errorMessages[WARNING_USER_ALREADY_IN_A_GROUP] =
       "That player is already in a group.";
-  _errorMessages[WARNING_ITEM_IS_BOUND] =
-      "You cannot do that with a soulbound item.";
   _errorMessages[WARNING_WARE_IS_SOULBOUND] =
       "That object's items in stock are soulbound.";
   _errorMessages[WARNING_PRICE_IS_SOULBOUND] =
