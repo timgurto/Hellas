@@ -863,10 +863,10 @@
     brief="The sailors who absconded with our treasured maidens must pay.  Go down to the city's Waterfront, kill those responsible, and bring me proof of your deed so that the city can satisfied."
     debrief="It's disgraceful that men can behave so wickedly, and that they would repay our hospitality with such disrespect.  The city of Argos thanks you for your service.">
     <prerequisite id="dAW_missingWomen2" />
-    <objective type="fetch" id="dAW_phnLoverBoxers" qty="10" />
+    <objective type="fetch" id="dAW_phnLoverBoxers" qty="5" />
     <reward type="item" id="dAW_questGloves" />
 </quest>
-    <item id="dAW_phnLoverBoxers" name="Fancy Underthings" exclusiveToQuest="dAW_missingWomenAvenge" bind="pickup" />
+    <item id="dAW_phnLoverBoxers" name="Fancy Underthings" exclusiveToQuest="dAW_missingWomenAvenge" stackSize="5" bind="pickup" />
     <item id="dAW_questGloves" name="Magistrate's Gloves" gearSlot="4" bind="pickup" quality="2"
         sounds="leather" iconFile="leatherGlovesGreen" gearFile="leatherGlovesGreen" >
         <tag name="gloves" toolSpeed="1.05" />
