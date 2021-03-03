@@ -202,28 +202,28 @@
     <spawnPoint type="dAW_phnDeckhand" y="71299.5" x="17098" quantity="1" radius="0" respawnTime="3600000" />
     <spawnPoint type="dAW_phnDeckhand" y="71305.5" x="16536" quantity="1" radius="0" respawnTime="3600000" />
     <spawnPoint type="dAW_phnDeckhand" y="71306.5" x="16770.5" quantity="1" radius="0" respawnTime="3600000" />
-    <spawnPoint type="dAW_phnLover" y="70579.5" x="17458.5" quantity="1" radius="0" respawnTime="300000" />
-    <spawnPoint type="dAW_phnLover" y="70582.5" x="17232" quantity="1" radius="0" respawnTime="300000" />
-    <spawnPoint type="dAW_phnLover" y="70592" x="17253.5" quantity="1" radius="0" respawnTime="300000" />
-    <spawnPoint type="dAW_phnLover" y="70758" x="17224" quantity="1" radius="0" respawnTime="300000" />
-    <spawnPoint type="dAW_phnLover" y="70766" x="17503" quantity="1" radius="0" respawnTime="300000" />
-    <spawnPoint type="dAW_phnLover" y="70780.5" x="17470.5" quantity="1" radius="0" respawnTime="300000" />
-    <spawnPoint type="dAW_phnLoverBoss" y="70680.5" x="17741" quantity="1" radius="0" respawnTime="300000" />
-    <spawnPoint type="dAW_phnNavigator" y="71151.5" x="18675" quantity="1" radius="0" respawnTime="300000" />
-    <spawnPoint type="dAW_phnSailor" y="70863" x="17968" quantity="1" radius="0" respawnTime="300000" />
-    <spawnPoint type="dAW_phnSailor" y="70988" x="17934" quantity="1" radius="0" respawnTime="300000" />
-    <spawnPoint type="dAW_phnSailor" y="71015.5" x="17962.5" quantity="1" radius="0" respawnTime="300000" />
-    <spawnPoint type="dAW_phnSailor" y="71080" x="18352" quantity="1" radius="0" respawnTime="300000" />
-    <spawnPoint type="dAW_phnSailor" y="71109.5" x="18389.5" quantity="1" radius="0" respawnTime="300000" />
-    <spawnPoint type="dAW_phnSailor" y="71170.5" x="17987.5" quantity="1" radius="0" respawnTime="300000" />
-    <spawnPoint type="dAW_phnSailor" y="71178.5" x="17936.5" quantity="1" radius="0" respawnTime="300000" />
-    <spawnPoint type="dAW_phnSailor" y="71282.5" x="18434.5" quantity="1" radius="0" respawnTime="300000" />
-    <spawnPoint type="dAW_phnSailor" y="71291.5" x="18081" quantity="1" radius="0" respawnTime="300000" />
-    <spawnPoint type="dAW_phnSailor" y="71305" x="18397.5" quantity="1" radius="0" respawnTime="300000" />
-    <spawnPoint type="dAW_phnSailor" y="71308.5" x="18452.5" quantity="1" radius="0" respawnTime="300000" />
-    <spawnPoint type="dAW_phnSailor" y="71310" x="18103" quantity="1" radius="0" respawnTime="300000" />
-    <spawnPoint type="dAW_phnSailor" y="71314" x="18059.5" quantity="1" radius="0" respawnTime="300000" />
-    <spawnPoint type="dAW_phnShipwright" y="71175.5" x="18197" quantity="1" radius="0" respawnTime="300000" />
+    <spawnPoint type="dAW_phnLover" y="70579.5" x="17458.5" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_phnLover" y="70582.5" x="17232" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_phnLover" y="70592" x="17253.5" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_phnLover" y="70758" x="17224" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_phnLover" y="70766" x="17503" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_phnLover" y="70780.5" x="17470.5" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_phnLoverBoss" y="70680.5" x="17741" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_phnNavigator" y="71151.5" x="18675" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_phnSailor" y="70863" x="17968" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_phnSailor" y="70988" x="17934" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_phnSailor" y="71015.5" x="17962.5" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_phnSailor" y="71080" x="18352" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_phnSailor" y="71109.5" x="18389.5" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_phnSailor" y="71170.5" x="17987.5" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_phnSailor" y="71178.5" x="17936.5" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_phnSailor" y="71282.5" x="18434.5" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_phnSailor" y="71291.5" x="18081" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_phnSailor" y="71305" x="18397.5" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_phnSailor" y="71308.5" x="18452.5" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_phnSailor" y="71310" x="18103" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_phnSailor" y="71314" x="18059.5" quantity="1" radius="0" respawnTime="3600000" />
+    <spawnPoint type="dAW_phnShipwright" y="71175.5" x="18197" quantity="1" radius="0" respawnTime="3600000" />
     <spawnPoint type="dAW_phnSoldier" y="70757.5" x="15895.5" quantity="1" radius="0" respawnTime="3600000" />
     <spawnPoint type="dAW_phnSoldier" y="70782" x="16224.5" quantity="1" radius="0" respawnTime="3600000" />
     <spawnPoint type="dAW_phnSoldier" y="70798.5" x="16243.5" quantity="1" radius="0" respawnTime="3600000" />
