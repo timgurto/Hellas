@@ -976,7 +976,7 @@
     <prerequisite id="dAW_princess6" />
     <reward type="item" id="dAW_princessNecklace" />
 </quest>
-    <item id="dAW_princessNecklace" name="Jewel of the Sea" gearSlot="1" quality="2" lvlReq="21"
+    <item id="dAW_princessNecklace" name="Jewel of the Sea" gearSlot="1" quality="2" lvlReq="21" bind="pickup"
         iconFile="gemBlue">
         <stats intellect="3" />
         <canBeRepaired cost="silverWire" />
@@ -1000,7 +1000,7 @@
     <objective type="kill" id="dAW_gangVandal" qty="5" />
     <reward type="item" id="dAW_tankCloak" />
 </quest>
-    <item id="dAW_tankCloak" name="Argive Deputy's Cloak" gearSlot="3" quality="2" sounds="fabric"
+    <item id="dAW_tankCloak" name="Argive Deputy's Cloak" gearSlot="3" quality="2" sounds="fabric" bind="pickup"
         iconFile="woolCloakTeal" gearFile="woolCloakTeal">
         <stats armour="5" cunning="3" endurance="4" />
             <offset x="-4" y="-1" />
