@@ -201,8 +201,8 @@
         <choice item="tinBar" qty="2"/>
         <choice item="leather" qty="3"/>
         <choice item="leather" qty="4"/>
-        <choice id="water" qty="5" />
-        <choice id="wine" qty="5" />
+        <choice item="water" qty="5" />
+        <choice item="wine" qty="5" />
     </chooseLoot>
     <loot id="tinCoin" > <normal mean="10" sd="3" /> </loot>
 </npcType>
