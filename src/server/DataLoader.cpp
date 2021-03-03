@@ -600,6 +600,10 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
       for (auto choice : xr.getChildren("choice", lootChoice)) {
         auto itemID = ""s;
         xr.findAttr(choice, "item", itemID);
+        if (itemID.empty()) {
+          SERVER_ERROR("Skipping loot choice with no item ID");
+          continue;
+        }
         const auto itemIterator = _server._items.insert(itemID).first;
         const auto *item = &*itemIterator;
         auto qty = 1;
