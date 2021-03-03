@@ -105,7 +105,7 @@ Corner pulling for ranged mobs
 Prevent shooting through some "tall" objects?
 Prevent aggro around corners
 
-Bleed-debuff particles don't work
-
-Avatars drawing in front of humanoid mobs even when behind
 Corpses not showing up on bridge
+Gear quality outlines very faint in gear window
+Spell resist not affected by level difference?
+Many packs are far enough away that they don't aggro

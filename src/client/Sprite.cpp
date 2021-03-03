@@ -49,6 +49,17 @@ double Sprite::speed() const {
 }
 
 void Sprite::draw() const {
+  if (isDebug()) {
+    auto rect = this->drawRect() + _client.offset();
+    renderer.setDrawColor(Color::WHITE);
+    renderer.drawRect(rect);
+
+    rect.y = toInt(bottomEdge() + _client.offset().y);
+    rect.h = 0;
+    renderer.setDrawColor(Color::YELLOW);
+    renderer.drawRect(rect);
+  }
+
   if (shouldDrawShadow()) drawShadow();
 
   auto shouldDrawHighlightInstead = _client.currentMouseOverEntity() == this;

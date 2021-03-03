@@ -1007,7 +1007,7 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
     if (humanoid) {
       nt->drawRect(Avatar::DRAW_RECT);
       nt->useCustomShadowWidth(16);
-      nt->useCustomDrawHeight(40);
+      nt->useCustomDrawHeight(50);
     } else {
       xr.findAttr(elem, "xDrawOffset", drawRect.x);
       xr.findAttr(elem, "yDrawOffset", drawRect.y);
