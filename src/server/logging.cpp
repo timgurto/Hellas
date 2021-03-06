@@ -54,8 +54,6 @@ void Server::writeUserToFile(const User &user, std::ostream &stream) const {
          << "chunksTotal: " << user.exploration.numChunks() << ","
          << "location: " << user.realWorldLocation() << ",";
 
-  if (isOnline) stream << "ip: \"" << user.socket().ip() << "\",";
-
   stream << "inventory: [";
   for (auto inventorySlot : user.inventory()) {
     auto id =

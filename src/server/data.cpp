@@ -265,6 +265,7 @@ void Server::writeUserData(const User &user) const {
   xw.setAttr(e, "passwordHash", user.pwHash());
   xw.setAttr(e, "timeThisWasWritten", time(nullptr));
   xw.setAttr(e, "secondsPlayed", user.secondsPlayed());
+  xw.setAttr(e, "ip", user.socket().ip());
   xw.setAttr(e, "realWorldLocation", user.realWorldLocation());
   xw.setAttr(e, "class", user.getClass().type().id());
   if (_kings.isPlayerAKing(user.name())) xw.setAttr(e, "isKing", 1);
