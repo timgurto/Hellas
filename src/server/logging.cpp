@@ -22,8 +22,9 @@ static int toSeconds(_FILETIME windowsTime) {
 }
 
 void Server::writeUserToFile(const User &user, std::ostream &stream) const {
+  const auto isOnline = user.hasSocket();
   auto secondsOnlineOrOffline =
-      user.hasSocket() ? user.secondsPlayedThisSession() : user.secondsOffline;
+      isOnline ? user.secondsPlayedThisSession() : user.secondsOffline;
 
   const auto className =
       &user.getClass() ? user.getClass().type().id() : "None";
@@ -52,6 +53,8 @@ void Server::writeUserToFile(const User &user, std::ostream &stream) const {
          << "chunksExplored: " << user.exploration.numChunksExplored() << ","
          << "chunksTotal: " << user.exploration.numChunks() << ","
          << "location: " << user.realWorldLocation() << ",";
+
+  if (isOnline) stream << "ip: \"" << user.socket().ip() << "\",";
 
   stream << "inventory: [";
   for (auto inventorySlot : user.inventory()) {
