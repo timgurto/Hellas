@@ -73,10 +73,7 @@ void CDroppedItem::draw() const {
   image().draw(drawRect.x, drawRect.y);
 }
 
-bool CDroppedItem::isFlat() const {
-  if (isFalling()) return false;
-  return true;
-}
+bool CDroppedItem::isFlat() const { return false; }
 
 Color CDroppedItem::nameColor() const { return _itemType.nameColor(); }
 
