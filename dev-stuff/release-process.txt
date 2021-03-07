@@ -7,15 +7,16 @@ Release process:
 ------- If tagging a release version -------
 1. Open command line
 2. "git tag" to see current tags
-3. "git tag 0.13.6"
+3. "git tag 0.13.6" (make sure to use 0.15.0 and not 0.15)
 4. "git push origin 0.13.6"
 5. Run generateVersionHeader.sh
 -------
-6. Build Release in Visual Studio
+6. Build Release in Visual Studio (needs to build with new tag as version)
 8. Watch the server-recovery process.  Wait until its 10s timer has just started.
 9. Kill the currently running production server
 10. Run "Publish new version/Publish and start production server"
-10. Run "Publish new version/publish-client-and-copy-local.bat"
-Play Production as a quick smoke test
-11. Check reported server version in login screen.
+11. Run "Publish new version/publish-client-and-copy-local.bat"
+12. Play Production as a quick smoke test
+13. Make sure player-made objects have persisted.
+14. Check reported server version in login screen.
 

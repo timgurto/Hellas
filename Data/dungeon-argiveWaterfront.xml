@@ -148,17 +148,14 @@
 <objectType id="wickerFenceEW"
     xDrawOffset="-141" yDrawOffset="-22" customShadowWidth="0" isDecoration="1" >
     <collisionRect x="-140" y="-1" w="280" h="3" />
-    <material id="stick" quantity="1" />
 </objectType>
 <objectType id="wickerFenceNS"
     xDrawOffset="-2" yDrawOffset="-167" customShadowWidth="0" isDecoration="1" >
     <collisionRect x="-2" y="-144" w="4" h="288" />
-    <material id="stick" quantity="1" />
 </objectType>
 <objectType id="wickerFenceNSHalf"
     xDrawOffset="-2" yDrawOffset="-93" customShadowWidth="0" isDecoration="1" >
     <collisionRect x="-2" y="-70" w="4" h="140" />
-    <material id="stick" quantity="1" />
 </objectType>
 <permanentObject id="wickerFenceEW" x="16618" y="71325" />
 <permanentObject id="wickerFenceEW" x="16745" y="71042" />
