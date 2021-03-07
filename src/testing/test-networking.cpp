@@ -120,3 +120,8 @@ TEST_CASE("Bulk messages") {
     }
   }
 }
+
+TEST_CASE("Real-world locations can be determined from IP addresses") {
+  const auto result = getLocationFromIP("20.43.161.105"s);
+  CHECK(result.find("\"status\":\"success\"") != std::string::npos);
+}
