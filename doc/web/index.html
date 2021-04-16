@@ -1,41 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Hellas</title>
+    <title>Download Hellas</title>
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <link href="bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
     <link href="style.css" rel="stylesheet" type="text/css" />
-
 </head>
 
-<body class="no-background">
-    <div class="container-fluid" id="topLevelContainer">
-        <span id="navBarGetsLoadedInHere"></span>
-        <div class="col-xs-12">
-            <h1>Hellas<br><small>Game Data</small></h1>
-            <img src="tree.svg" usemap="#treeMap"/>
-            <map id="treeMap" name="treeMap"></map>
+<body>
+
+    <div class="container" id="topLevelContainer" align="center"> <!-- consider whether you need the id-->
+
+        <div class="col-sm-12">
+            <div class="col-sm-0 col-md-3"></div>
+            <div class="col-sm-12 col-md-6">
+                <p><img src="logo.png" width="100%" /></p>
+            </div>
+            <div class="col-sm-0 col-md-3"></div>
         </div>
+        <div class="col-sm-12">
+            <p>A free-to-play MMORPG set in Ancient Greece, inspired by <a href="https://en.wikipedia.org/wiki/World_of_Warcraft">Classic World of Warcraft</a> and <a href="http://wiki.terrafirmacraft.com/">TerraFirmaCraft</a>.</p>
+            <p><a class="btn btn-success btn-lg btn-block" href="launcher/Launcher.zip">Download the client</a></p>
+            <hr/>
+        </div>
+    
+        <div class="col-sm-12 col-md-6">
+            <p>Explore the legends of Ancient Greece, making contact with distant lands and battling enemies from history and myth.</p>
+            <p><img src="hermes.png" width="60%"/></p>
+            <p>Place permanent structures to make your mark on the world, from small pots to enormous monuments.</p>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <p>Advance from a brutish caveman to a bronze-age champion, through an extensive crafting system.</p>
+            <p><img src="goat and horn.png" width="60%"/></p>
+            <p>Engage with others in with others in prosperous trade or savage warfare.</p>
+        </div>
+        
+        
+        
+        
+        
+        
+        <div class="col-sm-12">
+            <hr/>
+            <a href="https://www.facebook.com/hellasgame/" title="Facebook" class="btn btn-facebook btn-lg"><i class="fa fa-facebook fa-fw"></i>Visit us on Facebook</a>
+            <p>&copy; 2015&ndash;2017 Tim Gurto</p>
+        </div>
+    
     </div>
 
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script type="text/javascript">    
-        $(document).ready(function(){
-            function loadNavBarAndForceHorizontal(){
-                $("#navBarGetsLoadedInHere").load("navBar.html", function(){
-                    $("#navBar").removeClass("col-sm-2");
-                    $("#navBar").children().removeClass("col-sm-12");
-                });
-            }
-        
-            loadNavBarAndForceHorizontal();
-            
-            $("#treeMap").load("tree.map area");
-        });
-    </script>
 </body>
 
 </html>
