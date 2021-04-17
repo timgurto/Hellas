@@ -217,6 +217,8 @@ void Client::clearChunkFromFogOfWar(size_t x, size_t y) {
 }
 
 void Client::redrawFogOfWar() {
+  if (isDebug()) return;
+
   _fogOfWar = {_fogOfWar.width(), _fogOfWar.height()};
   _fogOfWar.setBlend();
 
