@@ -12,7 +12,6 @@
             <gear id="linothorax" />
         </humanoid>
     </npcType>
-    <npc id="anzacQG" x="64674" y="17774" />
 
 <quest id="anzacAres1" name="The Face of Ares" startsAt="anzacQG" endsAt="anzacTomb"
     brief="Ares is the god of war: of strife, of slaughter, of bloodshed, and of the chaos of battle.
@@ -29,13 +28,6 @@
         We will remember them.">
         <collisionRect x="-7" y="-3" w="16" h="7" />
     </objectType>
-    <object id="anzacTomb" x="65991" y="16482" />
-    <object id="tree" x="65941" y="16482" >
-        <owner type="noAccess" />
-    </object>
-    <object id="tree" x="66041" y="16482" >
-        <owner type="noAccess" />
-    </object>
     <item id="anzacPoppy" name="Battlefield Poppy" bind="pickup" stackSize="15" />
     <objectType id="anzacPoppy" name="Battlefield Poppy" exclusiveToQuest="anzacAres1"
         xDrawOffset="-3" yDrawOffset="-12"
@@ -90,17 +82,87 @@
     <item id="anzacCandle" name="Memorial Candle" bind="pickup" />
     <objectType id="anzacPool" name="Reflecting Pool" exclusiveToQuest="anzacAthena"
         canGather="1" gatherTime="60000"
-        xDrawOffset="-??????" yDrawOffset="-??????" >
-        <collisionRect x="-??????" y="-??????" w="??????" h="??????" />
+        xDrawOffset="-26" yDrawOffset="-42" isFlat="1" >
+        <collisionRect x="-26" y="-42" w="52" h="85" />
+        <particles profile="candleFire" x="-11.5" y="-39" />
+        <particles profile="candleFire" x="15.5" y="-35" />
+        <particles profile="candleFire" x="-16.5" y="-29" />
+        <particles profile="candleFire" x="6.5" y="-26" />
+        <particles profile="candleFire" x="-17.5" y="-8" />
+        <particles profile="candleFire" x="15.5" y="-5" />
+        <particles profile="candleFire" x="-13.5" y="10" />
+        <particles profile="candleFire" x="6.5" y="19" />
+        <particles profile="candleFire" x="1.5" y="24" />
+        <particles profile="candleFire" x="15.5" y="22" />
         <yield id="anzacCandle" />
     </objectType>
-    <object id="anzacPool" x="64974" y="18322" />
-    <npcType id="anzacPeer" name="Gallipolis ??????"
-        level="10" maxHealth="53" attack="7" isCivilian="1" >
-        <humanoid>
-            <gear id="linothorax" />
+    <particleProfile
+        id="candleFire"
+        gravityModifier="0"
+        alpha="127"
+        particlesPerSecond="100" >
+        <lifespan mean="400" sd="100" />
+        <distance mean="0" sd="0.5" />
+        <altitude mean="0" sd="1" />
+        <velocity mean="2" sd="1" />
+        <fallSpeed mean="-6" sd="2" />
+        <variety imageFile="loginFire2" />
+    </particleProfile>
+    <npcType id="anzacPeer" name=""
+        level="19" maxHealth="53" attack="7" isCivilian="1" >
+        <humanoid base="athlete">
+            <gear id="tinSpear" />
+            <gear id="leatherShield" />
+            <gear id="sandals" />
+            <gear id="tinLamellar" />
         </humanoid>
     </npcType>
     
+    
+
+<npc id="anzacQG" x="64674" y="17774" />
+    
+<object id="anzacTomb" x="65991" y="16482" />
+<object id="tree" x="65941" y="16482" >
+    <owner type="noAccess" />
+</object>
+<object id="tree" x="66041" y="16482" >
+    <owner type="noAccess" />
+</object>
+
+
+<object id="anzacPool" x="64974" y="18322" />
+
+<npc id="anzacPeer" x="64950" y="18389" />
+<npc id="anzacPeer" x="64930" y="18389" />
+<npc id="anzacPeer" x="64910" y="18389" />
+<npc id="anzacPeer" x="64890" y="18389" />
+<npc id="anzacPeer" x="64870" y="18389" />
+    <npc id="anzacPeer" x="64940" y="18419" />
+    <npc id="anzacPeer" x="64920" y="18419" />
+    <npc id="anzacPeer" x="64900" y="18419" />
+    <npc id="anzacPeer" x="64880" y="18419" />
+    <npc id="anzacPeer" x="64860" y="18419" />
+        <npc id="anzacPeer" x="64930" y="18449" />
+        <npc id="anzacPeer" x="64910" y="18449" />
+        <npc id="anzacPeer" x="64890" y="18449" />
+        <npc id="anzacPeer" x="64870" y="18449" />
+        <npc id="anzacPeer" x="64850" y="18449" />
+
+<npc id="anzacPeer" x="64998" y="18389" />
+<npc id="anzacPeer" x="65018" y="18389" />
+<npc id="anzacPeer" x="65038" y="18389" />
+<npc id="anzacPeer" x="65058" y="18389" />
+<npc id="anzacPeer" x="65078" y="18389" />
+    <npc id="anzacPeer" x="65008" y="18419" />
+    <npc id="anzacPeer" x="65028" y="18419" />
+    <npc id="anzacPeer" x="65048" y="18419" />
+    <npc id="anzacPeer" x="65068" y="18419" />
+    <npc id="anzacPeer" x="65088" y="18419" />
+        <npc id="anzacPeer" x="65018" y="18449" />
+        <npc id="anzacPeer" x="65038" y="18449" />
+        <npc id="anzacPeer" x="65058" y="18449" />
+        <npc id="anzacPeer" x="65078" y="18449" />
+        <npc id="anzacPeer" x="65098" y="18449" />
 
 </root>
