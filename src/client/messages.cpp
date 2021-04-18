@@ -2127,13 +2127,27 @@ void Client::handleBufferedMessages(const std::string &msg) {
         singleMsg >> del;
         if (del != MSG_END) break;
 
-        auto messageForResult = std::map<MessageCode, std::string>{
-            {SV_TWO_UP_WIN, "Two heads: " + playerName + " wins!"},
-            {SV_TWO_UP_LOSE, "Two tails: " + playerName + " loses."},
-            {SV_TWO_UP_DRAW, "Odds: try again, " + playerName + "."}};
-        const auto result = static_cast<MessageCode>(msgCode);
-        const auto messageToShow = messageForResult[result];
-        addChatMessage(messageToShow, Color::CHAT_DEFAULT);
+        auto message = std::ostringstream{};
+
+        const auto youAreThePlayer = playerName == _username;
+        if (youAreThePlayer)
+          message << "You toss ";
+        else
+          message << playerName + " tosses ";
+
+        switch (msgCode) {
+          case SV_TWO_UP_WIN:
+            message << "two heads.  A win!";
+            break;
+          case SV_TWO_UP_LOSE:
+            message << "two tails.  A loss.";
+            break;
+          case SV_TWO_UP_DRAW:
+            message << "odds.  Try again.";
+            break;
+        }
+
+        addChatMessage(message.str(), Color::CHAT_DEFAULT);
 
         break;
       }
@@ -2184,7 +2198,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
-      default:;  // showErrorMessage("Unhandled message: "s + msg, Color::TODO);
+      default:;  // showErrorMessage("Unhandled message: "s + msg,
+                 // Color::TODO);
     }
 
     if (del != MSG_END && !iss.eof()) {
