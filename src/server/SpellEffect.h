@@ -76,4 +76,5 @@ class SpellEffect {
   DECLARE_SPELL_FUNCTION(teachRecipe);
   DECLARE_SPELL_FUNCTION(spawnNPC);
   DECLARE_SPELL_FUNCTION(randomBuff);
+  DECLARE_SPELL_FUNCTION(playTwoUp);
 };

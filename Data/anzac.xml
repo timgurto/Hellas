@@ -121,9 +121,24 @@
             <fallSpeed mean="0" sd="0" />
             <variety imageFile="poppy" />
         </particleProfile>
-    <item id="anzacTwoUp" name="Gallipolis Coin-Toss Game" bind="pickup" >
+    <item id="anzacTwoUp" name="Gallipolis Coin-Toss Game" bind="pickup"
+        castsSpellOnUse="playTwoUp" returnsOnCast="anzacTwoUp" >
     </item>
-
+        <spell id="playTwoUp" >
+            <targets self="1"/>
+            <function name="playTwoUp"/>
+            <aesthetics impactParticles="twoUp" />
+        </spell>
+        <particleProfile id="twoUp"
+            gravityModifier="4">
+            <particlesPerHit mean="2" sd="0" />
+            <lifespan mean="60000" sd="30000" />
+            <distance mean="0" sd="0" />
+            <altitude mean="20" sd="0" />
+            <velocity mean="20" sd="10" />
+            <fallSpeed mean="-100" sd="20" />
+            <variety imageFile="copperCoin" />
+        </particleProfile>
 
 
 

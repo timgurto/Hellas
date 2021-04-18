@@ -2119,6 +2119,25 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
+      case SV_TWO_UP_WIN:
+      case SV_TWO_UP_LOSE:
+      case SV_TWO_UP_DRAW: {
+        auto playerName = ""s;
+        readString(singleMsg, playerName, MSG_END);
+        singleMsg >> del;
+        if (del != MSG_END) break;
+
+        auto messageForResult = std::map<MessageCode, std::string>{
+            {SV_TWO_UP_WIN, "Two heads: " + playerName + " wins!"},
+            {SV_TWO_UP_LOSE, "Two tails: " + playerName + " loses."},
+            {SV_TWO_UP_DRAW, "Odds: try again, " + playerName + "."}};
+        const auto result = static_cast<MessageCode>(msgCode);
+        const auto messageToShow = messageForResult[result];
+        addChatMessage(messageToShow, Color::CHAT_DEFAULT);
+
+        break;
+      }
+
       case SV_SAY: {
         std::string username, message;
         singleMsg >> username >> del;

@@ -19,7 +19,8 @@ SpellEffect::FunctionMap SpellEffect::functionMap = {
     {"teleportToCity", teleportToCity},
     {"teachRecipe", teachRecipe},
     {"spawnNPC", spawnNPC},
-    {"randomBuff", randomBuff}};
+    {"randomBuff", randomBuff},
+    {"playTwoUp", playTwoUp}};
 
 SpellEffect::FlagMap SpellEffect::aggressionMap = {
     {doDirectDamage, true}, {doDirectDamageWithModifiedThreat, true},
@@ -278,6 +279,23 @@ CombatResult SpellEffect::randomBuff(const SpellEffect &effect, Entity &caster,
   const auto *buff = server.findBuff(chosenBuff);
   if (!buff) return FAIL;
   target.applyBuff(*buff, caster);
+
+  return HIT;
+}
+
+CombatResult SpellEffect::playTwoUp(const SpellEffect &effect, Entity &caster,
+                                    Entity &target,
+                                    const std::string &supplementaryArg) {
+  const auto *casterAsUser = dynamic_cast<const User *>(&caster);
+  if (!casterAsUser) return FAIL;
+  auto &server = Server::instance();
+
+  const auto possibleResults = std::vector<MessageCode>{
+      SV_TWO_UP_WIN, SV_TWO_UP_LOSE, SV_TWO_UP_DRAW, SV_TWO_UP_DRAW};
+  const auto randomIndex = rand() % possibleResults.size();
+  const auto gameResult = possibleResults[randomIndex];
+
+  server.broadcastToArea(caster.location(), {gameResult, casterAsUser->name()});
 
   return HIT;
 }

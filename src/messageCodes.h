@@ -696,6 +696,12 @@ enum MessageCode {
   // Arguments: username, result
   SV_ROLL_RESULT,
 
+  // Two-Up results, for Anzac Day.
+  // Argument: player name
+  SV_TWO_UP_WIN,
+  SV_TWO_UP_LOSE,
+  SV_TWO_UP_DRAW,
+
   // "User ... has said ...".
   // Arguments: username, message
   SV_SAY,
