@@ -36,24 +36,17 @@
 
 <quest id="anzacAres2" name="The Face of Ares" startsAt="anzacTomb" endsAt="anzacQG"
     brief="Return to Gregorios."
-    debrief="Thank you for remembering our fallen dead.  The face of Ares is hard to envisage, but it's important to confront human nature and the realities of war.
-    Now that you understand those realities, I feel like you will appreciate this.  I want you to have my grandfather's old hat.">
+    debrief="Thank you for remembering our fallen dead.  The face of Ares is hard to envisage, but it's important to confront human nature and the realities of war.">
     <prerequisite id="anzacAres1" />
-    <reward type="item" id="anzacHat" />
 </quest>
-    <item id="anzacHat" bind="pickup" >
-    </item>
 
 <quest id="anzacAthena" name="The Face of Athena" startsAt="anzacQG" endsAt="anzacQG"
     brief="Athena is the goddess of war: of strategy and discipline, and of the war's justice.
     The prosecution of a war is a great undertaking, one that demands the most of men at the hardest of times.  The self-control to hold his position against arrow volley or cavalry charge.  The confidence and gravity to command men to their deaths.  The wisdom to know whether he fights for a noble and just purpose.
     Travel south, and you will find a reflecting pool.  Pick up a candle from it, and while standing there, look upon my peers who also spend today remembering.  Study their flawless ranks and rigid faces.  Consider what is required of a soldier."
-    debrief="The face of Athena is one to aspire to.  She guides soldiers to be their best.
-    I thank you again for taking the time to contemplate war.  As we conclude today's ceremonies, I want to give you another artifact from my grandfather's wartime possessions: a gambling game.  There are two copper coins, and a small paddle to toss them in the air before watching how they land.
-    Please take these treasures with you.  May they remind you of today's lessons throughout your travels." >
+    debrief="The face of Athena is one to aspire to.  She guides soldiers to be their best." >
     <prerequisite id="anzacAres2" />
     <objective type="fetch" id="anzacCandle" />
-    <reward type="item" id="anzacTwoUp" />
 </quest>
     <item id="anzacCandle" name="Memorial Candle" bind="pickup" />
     <objectType id="anzacPool" name="Reflecting Pool" exclusiveToQuest="anzacAthena"
@@ -93,9 +86,25 @@
             <gear id="tinLamellar" />
         </humanoid>
     </npcType>
-    <item id="anzacTwoUp" bind="pickup" >
+    
+<quest id="anzacOutro" name="The Legacy of Gallipolis" startsAt="anzacQG" endsAt="anzacStash"
+    brief="Thank you for taking the time to contemplate war.  Today we remember all of our fallen, and we take seriously our duty to honour their memory.
+    To that end, I now feel comfortable entrusting you with part of my family's legacy: some wartime possessions of my grandfather.  Perhaps they will remind you of today's lessons during your travels.  You can find them here beside me."
+    debrief="You reach into the pot and find two artifacts.
+    First, a wide-brimmed leather scouting hat, with one side of the wide brim turned up to avoid brushing against a drawn bowstring.
+    Second, a gambling game: two copper coins and a small paddle to toss them in the air." >
+    <prerequisite id="anzacAthena" />
+    <reward type="item" id="anzacHat" />
+    <reward type="item" id="anzacTwoUp" />
+</quest>
+    <objectType id="anzacStash" name="Gregarios' Legacy" imageFile="mediumPot"
+        xDrawOffset="-19" yDrawOffset="-27" >
+        <collisionRect x="-13" y="-4" w="25" h="6" />
+    </objectType>
+    <item id="anzacHat" name="Gallipolis Scouting Hat" bind="pickup" >
     </item>
-
+    <item id="anzacTwoUp" name="Gallipolis Coin-Toss Game" bind="pickup" >
+    </item>
 
 
 
@@ -168,5 +177,7 @@
             <npc id="anzacPeer" x="65058" y="18449" />
             <npc id="anzacPeer" x="65078" y="18449" />
             <npc id="anzacPeer" x="65098" y="18449" />
+
+<object id="anzacStash" x="64737" y="17799" />
 
 </root>
