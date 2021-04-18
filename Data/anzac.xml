@@ -91,7 +91,7 @@
     </npcType>
     
 <quest id="anzacOutro" name="The Legacy of Gallipolis" startsAt="anzacQG" endsAt="anzacStash"
-    brief="Thank you for taking the time to contemplate war.  Today we remember all of our fallen, and we take seriously our duty to honour their memory.
+    brief="Thank you for taking the time to contemplate the nature of war.  Today we remember all of our fallen, and we take seriously our duty to honour their memory.
     To that end, I now feel comfortable entrusting you with part of my family's legacy: some wartime possessions of my grandfather.  Perhaps they will remind you of today's lessons during your travels.  You can find them here beside me."
     debrief="You reach into the pot and find two artifacts.
     First, a wide-brimmed leather scouting hat, with one side of the wide brim turned up to avoid brushing against a drawn bowstring.
@@ -122,9 +122,9 @@
             <variety imageFile="poppy" />
         </particleProfile>
     <item id="anzacTwoUp" name="Gallipolis Coin-Toss Game" bind="pickup"
-        castsSpellOnUse="playTwoUp" returnsOnCast="anzacTwoUp" >
+        castsSpellOnUse="playTwoUp" keepOnCast="1" >
     </item>
-        <spell id="playTwoUp" >
+        <spell id="playTwoUp" customDescription="Toss two coins and watch how they land." >
             <targets self="1"/>
             <function name="playTwoUp"/>
             <aesthetics impactParticles="twoUp" />
