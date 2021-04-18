@@ -594,6 +594,32 @@ TEST_CASE("Cast-from-item returning an item") {
   }
 }
 
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Cast-from-item with no item removal") {
+  GIVEN("a button that casts a spell without being lost") {
+    useData(R"(
+      <spell id="zap"  >
+        <targets self="1" />
+        <function name="doDirectDamage" s1="0" />
+      </spell>
+      <item id="button" castsSpellOnUse="zap" keepOnCast="1" />
+    )");
+
+    AND_GIVEN("the user has a button") {
+      user->giveItem(&server->getFirstItem());
+
+      WHEN("he casts with it") {
+        client->sendMessage(CL_CAST_SPELL_FROM_ITEM, "0");
+
+        THEN("he still has an item") {
+          REPEAT_FOR_MS(100);
+          CHECK(user->inventory(0).first.hasItem());
+        }
+      }
+    }
+  }
+}
+
 TEST_CASE("Cast a spell from a stackable item") {
   GIVEN("stackable matches cast self-fireballs and return used matches") {
     auto data = R"(

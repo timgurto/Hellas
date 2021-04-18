@@ -703,9 +703,13 @@ HANDLE_MESSAGE(CL_CAST_SPELL_FROM_ITEM) {
   auto result = user.castSpell(*spell, item.spellArg());
   if (result == FAIL) return;
 
-  --invSlot.second;
-  if (invSlot.second == 0) invSlot.first = {};
-  sendInventoryMessage(user, slot, Serial::Inventory());
+  if (item.isLostOnCast()) {
+    --invSlot.second;
+    if (invSlot.second == 0) invSlot.first = {};
+    sendInventoryMessage(user, slot, Serial::Inventory());
+  }
+  // NOTE: the case where an item is not lost, something is returned, and
+  // the inventory is full, is NOT covered.
 
   if (item.returnsOnCast()) user.giveItem(item.returnsOnCast());
 }

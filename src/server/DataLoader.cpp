@@ -658,18 +658,20 @@ void DataLoader::loadItems(XmlReader &xr) {
       item.returnsOnConstruction(itemToReturn);
     }
 
+    int n;
+
     if (xr.findAttr(elem, "castsSpellOnUse", s)) {
       auto spellArg = ""s;
       xr.findAttr(elem, "spellArg", spellArg);
       item.castsSpellOnUse(s, spellArg);
     }
-
     if (xr.findAttr(elem, "returnsOnCast", s)) {
       // Create dummy Item if necessary
       auto dummy = ServerItem{s};
       const auto *itemToReturn = &*_server._items.insert(dummy).first;
       item.returnsOnCast(itemToReturn);
     }
+    if (xr.findAttr(elem, "keepOnCast", n) && n != 0) item.keepOnCast();
 
     auto stats = StatsMod{};
     if (xr.findStatsChild("stats", elem, stats)) item.stats(stats);
@@ -705,7 +707,6 @@ void DataLoader::loadItems(XmlReader &xr) {
         item.weaponAmmo({ammoType});
     }
 
-    int n;
     n = User::GEAR_SLOTS;  // Default; won't match any slot.
     xr.findAttr(elem, "gearSlot", n);
     item.gearSlot(n);
