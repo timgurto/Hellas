@@ -824,9 +824,11 @@ void User::update(ms_t timeElapsed) {
 
       // Create object
       server.addObject(_actionObjectType, _actionLocation, owner);
-      if (_actionSlot ==
-          INVENTORY_SIZE)  // Constructing an object without an item
-        break;
+
+      addQuestProgress(Quest::Objective::CONSTRUCT, _actionObjectType->id());
+
+      const auto wasBuiltFromItem = _actionSlot != INVENTORY_SIZE;
+      if (!wasBuiltFromItem) break;
 
       // Remove item from user's inventory
       auto &slot = _inventory[_actionSlot];

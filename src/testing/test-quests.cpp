@@ -1447,6 +1447,41 @@ TEST_CASE("Construction quests") {
   }
 }
 
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Construction quest with no materials needed") {
+  GIVEN("a quest to place a provided rock") {
+    useData(R"(
+      <objectType id="questgiver" />
+      <objectType id="rock" constructionTime="1" />
+      <item id="rockItem" constructs="rock" />
+      <quest id="quest1" startsAt="questgiver" endsAt="questgiver">
+        <objective type="construct" id="rock" />
+        <startsWithItem id="rockItem" />
+      </quest>
+    )");
+    const auto questgiver = server->addObject("questgiver", {15, 15}).serial();
+
+    AND_GIVEN("the user starts the quest") {
+      client->sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", questgiver));
+      // WAIT_UNTIL(user->inventory(0).first.hasItem());
+
+      WHEN("he places the rock") {
+        client->sendMessage(CL_CONSTRUCT_FROM_ITEM, makeArgs(0, 10, 15));
+        WAIT_UNTIL(server->entities().size() == 2);
+
+        AND_WHEN("he tries to complete the quest") {
+          client->sendMessage(CL_COMPLETE_QUEST,
+                              makeArgs("quest1", questgiver));
+
+          THEN("he has completed it") {
+            WAIT_UNTIL(user->hasCompletedQuest("quest1"));
+          }
+        }
+      }
+    }
+  }
+}
+
 TEST_CASE("Quests that give items when you start") {
   GIVEN("a questgiver, and a variety of quests") {
     auto data = R"(
