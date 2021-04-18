@@ -33,32 +33,7 @@
         canGather="1" gatherTime="1500" >
         <yield id="anzacPoppy" />
     </objectType>
-    
-    <spawnPoint type="anzacPoppy" y="16368" x="65952" quantity="40" radius="250" respawnTime="300000" />
-    <spawnPoint type="anzacPoppy" y="16480" x="65888" quantity="40" radius="250" respawnTime="300000" />
-    <spawnPoint type="anzacPoppy" y="16400" x="65936" quantity="40" radius="250" respawnTime="300000" />
-    <spawnPoint type="anzacPoppy" y="16512" x="65920" quantity="40" radius="250" respawnTime="300000" />
-    <spawnPoint type="anzacPoppy" y="16576" x="65968" quantity="40" radius="250" respawnTime="300000" />
-    
-    <spawnPoint type="anzacPoppy" y="16576" x="65520" quantity="10" radius="250" respawnTime="300000" />
-    <spawnPoint type="anzacPoppy" y="16576" x="65792" quantity="10" radius="250" respawnTime="300000" />
-    <spawnPoint type="anzacPoppy" y="16656" x="65536" quantity="10" radius="250" respawnTime="300000" />
-    <spawnPoint type="anzacPoppy" y="16656" x="65744" quantity="10" radius="250" respawnTime="300000" />
-    <spawnPoint type="anzacPoppy" y="16688" x="65440" quantity="10" radius="250" respawnTime="300000" />
-    <spawnPoint type="anzacPoppy" y="16720" x="65344" quantity="10" radius="250" respawnTime="300000" />
-    <spawnPoint type="anzacPoppy" y="16816" x="65104" quantity="10" radius="250" respawnTime="300000" />
-    <spawnPoint type="anzacPoppy" y="16928" x="65024" quantity="10" radius="250" respawnTime="300000" />
-    <spawnPoint type="anzacPoppy" y="16416" x="65520" quantity="10" radius="250" respawnTime="300000" />
-    <spawnPoint type="anzacPoppy" y="16496" x="66064" quantity="10" radius="250" respawnTime="300000" />
-    <spawnPoint type="anzacPoppy" y="16512" x="66080" quantity="10" radius="250" respawnTime="300000" />
-    <spawnPoint type="anzacPoppy" y="16544" x="65696" quantity="10" radius="250" respawnTime="300000" />
-    <spawnPoint type="anzacPoppy" y="16544" x="65824" quantity="10" radius="250" respawnTime="300000" />
-    
-    <!-- Closest to the questgiver: few, but fast respawn so players can find their way. -->
-    <spawnPoint type="anzacPoppy" y="17120" x="65280" quantity="5" radius="250" respawnTime="30000" />
-    <spawnPoint type="anzacPoppy" y="17408" x="65248" quantity="7" radius="300" respawnTime="30000" />
-    <spawnPoint type="anzacPoppy" y="17488" x="64864" quantity="5" radius="250" respawnTime="30000" />
-    
+
 <quest id="anzacAres2" name="The Face of Ares" startsAt="anzacTomb" endsAt="anzacQG"
     brief="Return to Gregorios."
     debrief="Thank you for remembering our fallen dead.  The face of Ares is hard to envisage, but it's important to confront human nature and the realities of war.
@@ -120,48 +95,78 @@
     </npcType>
     <item id="anzacTwoUp" bind="pickup" >
     </item>
-    
-    
+
+
+
+
+
+<!-- Below here to be commented out when holiday is not active -->
+
+
+
 
 <npc id="anzacQG" x="64674" y="17774" />
-    
+
 <object id="anzacTomb" x="65991" y="16482" />
-<permanentObject id="tree" x="65941" y="16482" />
-<permanentObject id="tree" x="66041" y="16482" />
+    <permanentObject id="tree" x="65941" y="16482" />
+    <permanentObject id="tree" x="66041" y="16482" />
+
+    <spawnPoint type="anzacPoppy" y="16368" x="65952" quantity="40" radius="250" respawnTime="300000" />
+    <spawnPoint type="anzacPoppy" y="16480" x="65888" quantity="40" radius="250" respawnTime="300000" />
+    <spawnPoint type="anzacPoppy" y="16400" x="65936" quantity="40" radius="250" respawnTime="300000" />
+    <spawnPoint type="anzacPoppy" y="16512" x="65920" quantity="40" radius="250" respawnTime="300000" />
+    <spawnPoint type="anzacPoppy" y="16576" x="65968" quantity="40" radius="250" respawnTime="300000" />
+
+    <spawnPoint type="anzacPoppy" y="16576" x="65520" quantity="10" radius="250" respawnTime="300000" />
+    <spawnPoint type="anzacPoppy" y="16576" x="65792" quantity="10" radius="250" respawnTime="300000" />
+    <spawnPoint type="anzacPoppy" y="16656" x="65536" quantity="10" radius="250" respawnTime="300000" />
+    <spawnPoint type="anzacPoppy" y="16656" x="65744" quantity="10" radius="250" respawnTime="300000" />
+    <spawnPoint type="anzacPoppy" y="16688" x="65440" quantity="10" radius="250" respawnTime="300000" />
+    <spawnPoint type="anzacPoppy" y="16720" x="65344" quantity="10" radius="250" respawnTime="300000" />
+    <spawnPoint type="anzacPoppy" y="16816" x="65104" quantity="10" radius="250" respawnTime="300000" />
+    <spawnPoint type="anzacPoppy" y="16928" x="65024" quantity="10" radius="250" respawnTime="300000" />
+    <spawnPoint type="anzacPoppy" y="16416" x="65520" quantity="10" radius="250" respawnTime="300000" />
+    <spawnPoint type="anzacPoppy" y="16496" x="66064" quantity="10" radius="250" respawnTime="300000" />
+    <spawnPoint type="anzacPoppy" y="16512" x="66080" quantity="10" radius="250" respawnTime="300000" />
+    <spawnPoint type="anzacPoppy" y="16544" x="65696" quantity="10" radius="250" respawnTime="300000" />
+    <spawnPoint type="anzacPoppy" y="16544" x="65824" quantity="10" radius="250" respawnTime="300000" />
+
+    <!-- Closest to the questgiver: few, but fast respawn so players can find their way. -->
+    <spawnPoint type="anzacPoppy" y="17120" x="65280" quantity="5" radius="250" respawnTime="30000" />
+    <spawnPoint type="anzacPoppy" y="17408" x="65248" quantity="7" radius="300" respawnTime="30000" />
+    <spawnPoint type="anzacPoppy" y="17488" x="64864" quantity="5" radius="250" respawnTime="30000" />
 
 
 <spawnPoint type="anzacPool" x="64974" y="18322" radius="0" quantity="1" respawnTime="0" />
-
-<npc id="anzacPeer" x="64950" y="18389" />
-<npc id="anzacPeer" x="64930" y="18389" />
-<npc id="anzacPeer" x="64910" y="18389" />
-<npc id="anzacPeer" x="64890" y="18389" />
-<npc id="anzacPeer" x="64870" y="18389" />
-    <npc id="anzacPeer" x="64940" y="18419" />
-    <npc id="anzacPeer" x="64920" y="18419" />
-    <npc id="anzacPeer" x="64900" y="18419" />
-    <npc id="anzacPeer" x="64880" y="18419" />
-    <npc id="anzacPeer" x="64860" y="18419" />
-        <npc id="anzacPeer" x="64930" y="18449" />
-        <npc id="anzacPeer" x="64910" y="18449" />
-        <npc id="anzacPeer" x="64890" y="18449" />
-        <npc id="anzacPeer" x="64870" y="18449" />
-        <npc id="anzacPeer" x="64850" y="18449" />
-
-<npc id="anzacPeer" x="64998" y="18389" />
-<npc id="anzacPeer" x="65018" y="18389" />
-<npc id="anzacPeer" x="65038" y="18389" />
-<npc id="anzacPeer" x="65058" y="18389" />
-<npc id="anzacPeer" x="65078" y="18389" />
-    <npc id="anzacPeer" x="65008" y="18419" />
-    <npc id="anzacPeer" x="65028" y="18419" />
-    <npc id="anzacPeer" x="65048" y="18419" />
-    <npc id="anzacPeer" x="65068" y="18419" />
-    <npc id="anzacPeer" x="65088" y="18419" />
-        <npc id="anzacPeer" x="65018" y="18449" />
-        <npc id="anzacPeer" x="65038" y="18449" />
-        <npc id="anzacPeer" x="65058" y="18449" />
-        <npc id="anzacPeer" x="65078" y="18449" />
-        <npc id="anzacPeer" x="65098" y="18449" />
+    <npc id="anzacPeer" x="64950" y="18389" />
+    <npc id="anzacPeer" x="64930" y="18389" />
+    <npc id="anzacPeer" x="64910" y="18389" />
+    <npc id="anzacPeer" x="64890" y="18389" />
+    <npc id="anzacPeer" x="64870" y="18389" />
+        <npc id="anzacPeer" x="64940" y="18419" />
+        <npc id="anzacPeer" x="64920" y="18419" />
+        <npc id="anzacPeer" x="64900" y="18419" />
+        <npc id="anzacPeer" x="64880" y="18419" />
+        <npc id="anzacPeer" x="64860" y="18419" />
+            <npc id="anzacPeer" x="64930" y="18449" />
+            <npc id="anzacPeer" x="64910" y="18449" />
+            <npc id="anzacPeer" x="64890" y="18449" />
+            <npc id="anzacPeer" x="64870" y="18449" />
+            <npc id="anzacPeer" x="64850" y="18449" />
+    <npc id="anzacPeer" x="64998" y="18389" />
+    <npc id="anzacPeer" x="65018" y="18389" />
+    <npc id="anzacPeer" x="65038" y="18389" />
+    <npc id="anzacPeer" x="65058" y="18389" />
+    <npc id="anzacPeer" x="65078" y="18389" />
+        <npc id="anzacPeer" x="65008" y="18419" />
+        <npc id="anzacPeer" x="65028" y="18419" />
+        <npc id="anzacPeer" x="65048" y="18419" />
+        <npc id="anzacPeer" x="65068" y="18419" />
+        <npc id="anzacPeer" x="65088" y="18419" />
+            <npc id="anzacPeer" x="65018" y="18449" />
+            <npc id="anzacPeer" x="65038" y="18449" />
+            <npc id="anzacPeer" x="65058" y="18449" />
+            <npc id="anzacPeer" x="65078" y="18449" />
+            <npc id="anzacPeer" x="65098" y="18449" />
 
 </root>
