@@ -1,10 +1,9 @@
 <root>
 
 <quest id="anzacIntro" name="The Great War" startsAt="anzacQG" endsAt="anzacQG"
-    brief="Good morning, stranger.  It's good that you visited today, for today we hold our annual memorial of the great war.  Would you like to hear about it?
-    Debrief: It was over a hundred years ago.  My grandfather fought bravely, and fell in these fields.  Thousands like him also fell. For my city, it was our first real taste of battle, and so on this day we remember not just the fighting that took place here, but all battles, and the nature of war.
-    War is a coin with two faces: the face of Ares and the face of Athena.  Both faces must be understood and respected.  You are welcome to participate in our memorial ceremonies in order to better understand both--speak to me again if you will."
-    debrief="I'm very glad you wish to join us in remembering.  Come, let us begin." >
+    brief="Good morning, stranger.  It's good that you visited today, for today we hold our annual memorial of the great war.  Would you like to hear about it?"
+    debrief="It was over a hundred years ago.  My grandfather fought bravely, and fell in these fields.  Thousands like him also fell. For my city, it was our first real taste of battle, and so on this day we remember not just the fighting that took place here, but all battles, and the nature of war.
+    War is a coin with two faces: the face of Ares and the face of Athena.  Both faces must be understood and respected.  You are welcome to participate in our memorial ceremonies in order to better understand both--speak to me again if you will." >
 </quest>
     <npcType id="anzacQG" name="Gregorios of Gallipolis"
         level="10" maxHealth="53" attack="7" isCivilian="1" >
@@ -16,7 +15,7 @@
 <quest id="anzacAres1" name="The Face of Ares" startsAt="anzacQG" endsAt="anzacTomb"
     brief="Ares is the god of war: of strife, of slaughter, of bloodshed, and of the chaos of battle.
     We hear at length about the glory of victory, but ultimately, fighting is miserable and messy.  You may die, or you may wish for death.  Depression, bloodlust, rage and fear are deep within all men, and all spill out on the battlefield.  And of course, many of your closest friends will fall around you.  In war we sacrifice not just humans, but humanity.
-    Travel northeast, and you will find a tomb to all of the unknown soldiers that fell here.  On your way there, observe the flowers that dot the landscape.  Pick a handful and place them at the tomb.  Consider their colour."
+    Travel along the mountain pass northeast, and you will find a tomb to all of the unknown soldiers that fell here.  On your way there, observe the flowers that dot the landscape.  Pick a handful, to place at the tomb.  Consider their colour."
     debrief="You respectfully place the flowers down in front of the tomb." >
     <objective type="fetch" id="anzacPoppy" qty="15" />
     <prerequisite id="anzacIntro" />
@@ -35,11 +34,11 @@
         <yield id="anzacPoppy" />
     </objectType>
     
-    <spawnPoint type="anzacPoppy" y="16368" x="65952" quantity="25" radius="250" respawnTime="300000" />
-    <spawnPoint type="anzacPoppy" y="16480" x="65888" quantity="25" radius="250" respawnTime="300000" />
-    <spawnPoint type="anzacPoppy" y="16400" x="65936" quantity="25" radius="250" respawnTime="300000" />
-    <spawnPoint type="anzacPoppy" y="16512" x="65920" quantity="25" radius="250" respawnTime="300000" />
-    <spawnPoint type="anzacPoppy" y="16576" x="65968" quantity="25" radius="250" respawnTime="300000" />
+    <spawnPoint type="anzacPoppy" y="16368" x="65952" quantity="40" radius="250" respawnTime="300000" />
+    <spawnPoint type="anzacPoppy" y="16480" x="65888" quantity="40" radius="250" respawnTime="300000" />
+    <spawnPoint type="anzacPoppy" y="16400" x="65936" quantity="40" radius="250" respawnTime="300000" />
+    <spawnPoint type="anzacPoppy" y="16512" x="65920" quantity="40" radius="250" respawnTime="300000" />
+    <spawnPoint type="anzacPoppy" y="16576" x="65968" quantity="40" radius="250" respawnTime="300000" />
     
     <spawnPoint type="anzacPoppy" y="16576" x="65520" quantity="10" radius="250" respawnTime="300000" />
     <spawnPoint type="anzacPoppy" y="16576" x="65792" quantity="10" radius="250" respawnTime="300000" />
@@ -55,9 +54,10 @@
     <spawnPoint type="anzacPoppy" y="16544" x="65696" quantity="10" radius="250" respawnTime="300000" />
     <spawnPoint type="anzacPoppy" y="16544" x="65824" quantity="10" radius="250" respawnTime="300000" />
     
-    <spawnPoint type="anzacPoppy" y="17120" x="65280" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint type="anzacPoppy" y="17408" x="65248" quantity="7" radius="300" respawnTime="300000" />
-    <spawnPoint type="anzacPoppy" y="17488" x="64864" quantity="5" radius="250" respawnTime="300000" />
+    <!-- Closest to the questgiver: few, but fast respawn so players can find their way. -->
+    <spawnPoint type="anzacPoppy" y="17120" x="65280" quantity="5" radius="250" respawnTime="30000" />
+    <spawnPoint type="anzacPoppy" y="17408" x="65248" quantity="7" radius="300" respawnTime="30000" />
+    <spawnPoint type="anzacPoppy" y="17488" x="64864" quantity="5" radius="250" respawnTime="30000" />
     
 <quest id="anzacAres2" name="The Face of Ares" startsAt="anzacTomb" endsAt="anzacQG"
     brief="Return to Gregorios."
@@ -66,18 +66,19 @@
     <prerequisite id="anzacAres1" />
     <reward type="item" id="anzacHat" />
 </quest>
-    <item id="anzacHat" >
+    <item id="anzacHat" bind="pickup" >
     </item>
 
 <quest id="anzacAthena" name="The Face of Athena" startsAt="anzacQG" endsAt="anzacQG"
-    brief="Athena is the god of war: of strategy and discipline, and of the war's justice.
-    The prosecution of a war is a great undertaking, one that demands the most of men at the hardest of times.  The self-control to hold his position against arrow volley or cavalry charge.  The confidence and gravity to command men to their deaths.  The wisdom to know that he fights for a noble and just purpose.
+    brief="Athena is the goddess of war: of strategy and discipline, and of the war's justice.
+    The prosecution of a war is a great undertaking, one that demands the most of men at the hardest of times.  The self-control to hold his position against arrow volley or cavalry charge.  The confidence and gravity to command men to their deaths.  The wisdom to know whether he fights for a noble and just purpose.
     Travel south, and you will find a reflecting pool.  Pick up a candle from it, and while standing there, look upon my peers who also spend today remembering.  Study their flawless ranks and rigid faces.  Consider what is required of a soldier."
     debrief="The face of Athena is one to aspire to.  She guides soldiers to be their best.
     I thank you again for taking the time to contemplate war.  As we conclude today's ceremonies, I want to give you another artifact from my grandfather's wartime possessions: a gambling game.  There are two copper coins, and a small paddle to toss them in the air before watching how they land.
     Please take these treasures with you.  May they remind you of today's lessons throughout your travels." >
     <prerequisite id="anzacAres2" />
     <objective type="fetch" id="anzacCandle" />
+    <reward type="item" id="anzacTwoUp" />
 </quest>
     <item id="anzacCandle" name="Memorial Candle" bind="pickup" />
     <objectType id="anzacPool" name="Reflecting Pool" exclusiveToQuest="anzacAthena"
@@ -94,7 +95,7 @@
         <particles profile="candleFire" x="6.5" y="19" />
         <particles profile="candleFire" x="1.5" y="24" />
         <particles profile="candleFire" x="15.5" y="22" />
-        <yield id="anzacCandle" />
+        <yield id="anzacCandle" initialMean="99999" /> <!-- To avoid a glitchy-looking instant respawn when it runs out -->
     </objectType>
     <particleProfile
         id="candleFire"
@@ -117,21 +118,19 @@
             <gear id="tinLamellar" />
         </humanoid>
     </npcType>
+    <item id="anzacTwoUp" bind="pickup" >
+    </item>
     
     
 
 <npc id="anzacQG" x="64674" y="17774" />
     
 <object id="anzacTomb" x="65991" y="16482" />
-<object id="tree" x="65941" y="16482" >
-    <owner type="noAccess" />
-</object>
-<object id="tree" x="66041" y="16482" >
-    <owner type="noAccess" />
-</object>
+<permanentObject id="tree" x="65941" y="16482" />
+<permanentObject id="tree" x="66041" y="16482" />
 
 
-<object id="anzacPool" x="64974" y="18322" />
+<spawnPoint type="anzacPool" x="64974" y="18322" radius="0" quantity="1" respawnTime="0" />
 
 <npc id="anzacPeer" x="64950" y="18389" />
 <npc id="anzacPeer" x="64930" y="18389" />
