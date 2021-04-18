@@ -8,7 +8,10 @@
     <npcType id="anzacQG" name="Gregorios of Gallipolis"
         level="10" maxHealth="53" attack="7" isCivilian="1" >
         <humanoid>
-            <gear id="linothorax" />
+            <gear id="tablet" />
+            <gear id="woolExomis" />
+            <gear id="sandals" />
+            <gear id="staff2" />
         </humanoid>
     </npcType>
 
@@ -48,7 +51,7 @@
     <prerequisite id="anzacAres2" />
     <objective type="fetch" id="anzacCandle" />
 </quest>
-    <item id="anzacCandle" name="Memorial Candle" bind="pickup" />
+    <item id="anzacCandle" name="Memorial Candle" bind="pickup" iconFile="fireEssence" />
     <objectType id="anzacPool" name="Reflecting Pool" exclusiveToQuest="anzacAthena"
         canGather="1" gatherTime="60000"
         xDrawOffset="-26" yDrawOffset="-42" isFlat="1" >
@@ -105,7 +108,19 @@
         sounds="leather" >
         <offset x="-5" y="-5" />
         <canBeRepaired cost="leather" tool="sewing" />
+        <particles profile="poppyGrowth" />
     </item>
+        <particleProfile
+            id="poppyGrowth"
+            particlesPerSecond="0.05"
+            gravityModifier="0">
+            <lifespan mean="300000" sd="30000" />
+            <distance mean="100" sd="70" />
+            <altitude mean="-32" sd="0" />
+            <velocity mean="0" sd="0" />
+            <fallSpeed mean="0" sd="0" />
+            <variety imageFile="poppy" />
+        </particleProfile>
     <item id="anzacTwoUp" name="Gallipolis Coin-Toss Game" bind="pickup" >
     </item>
 
