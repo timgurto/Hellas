@@ -213,4 +213,8 @@ Must contain either <forbid> nodes only (for a blacklist) or <allow> nodes only 
     <allow id="volcanoMountain" />
 </list>
 
+<list id="anzacPoppies" >
+    <allow id="normal" />
+</list>
+
 </root>
