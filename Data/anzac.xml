@@ -44,7 +44,7 @@
     brief="Athena is the goddess of war: of strategy and discipline, and of the war's justice.
     The prosecution of a war is a great undertaking, one that demands the most of men at the hardest of times.  The self-control to hold his position against arrow volley or cavalry charge.  The confidence and gravity to command men to their deaths.  The wisdom to know whether he fights for a noble and just purpose.
     Travel south, and you will find a reflecting pool.  Pick up a candle from it, and while standing there, look upon my peers who also spend today remembering.  Study their flawless ranks and rigid faces.  Consider what is required of a soldier."
-    debrief="The face of Athena is one to aspire to.  She guides soldiers to be their best." >
+    debrief="The face of Athena is one to which we should aspire.  She guides soldiers to be their best." >
     <prerequisite id="anzacAres2" />
     <objective type="fetch" id="anzacCandle" />
 </quest>
@@ -101,7 +101,10 @@
         xDrawOffset="-19" yDrawOffset="-27" >
         <collisionRect x="-13" y="-4" w="25" h="6" />
     </objectType>
-    <item id="anzacHat" name="Gallipolis Scouting Hat" bind="pickup" >
+    <item id="anzacHat" name="Gallipolis Scouting Hat" bind="pickup" gearSlot="0"
+        sounds="leather" >
+        <offset x="-5" y="-5" />
+        <canBeRepaired cost="leather" tool="sewing" />
     </item>
     <item id="anzacTwoUp" name="Gallipolis Coin-Toss Game" bind="pickup" >
     </item>
