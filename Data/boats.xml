@@ -31,9 +31,9 @@
     allowedTerrain="normalWater"
     isVehicle="1" vehicleSpeed="1.75"
     xDrawOffset="-65" yDrawOffset="-148" >
-    <driver x="-32" y="12" />
+    <driver x="-32" y="-12" />
     <collisionRect x="-50" y="-11" w="101" h="22" />
-    <container slots="8" />
+    <container slots="5" />
     <material id="lumber" quantity="25" />
     <material id="rope" quantity="6" />
     <material id="linenCloth" quantity="9" />
