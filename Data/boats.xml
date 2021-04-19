@@ -26,10 +26,14 @@
     <durability item="stick" quantity="40" />
 </objectType>
 
-<!--objectType
-    id="basicShip" name="Ship"
+<objectType
+    id="basicShip" name="Light Ship"
     allowedTerrain="normalWater"
-    isVehicle="1" vehicleSpeed="1.25" >
+    isVehicle="1" vehicleSpeed="1.75"
+    xDrawOffset="-65" yDrawOffset="-148" >
+    <driver x="-32" y="12" />
+    <collisionRect x="-50" y="-11" w="101" h="22" />
+    <container slots="8" />
     <material id="lumber" quantity="25" />
     <material id="rope" quantity="6" />
     <material id="linenCloth" quantity="9" />
@@ -37,11 +41,12 @@
     <unlockedBy recipe="linenCloth" chance="0.02" />
     <unlockedBy construction="canoe" chance="0.1" />
     <durability item="lumber" quantity="25" />
-</objectType-->
+    <canBeRepaired cost="lumber" />
+</objectType>
 
 <!--
                             Normal      Deep (with Acacia)
-    Fast (transport)        Canoe       Yacht
+    Fast (transport)        Light Ship  Yacht
     Capacity (merchant)     Trade Boat  Merchant Ship
     Heavy (industrial)      Freighter   Freight Barge
     Military?               Galley      Trireme
