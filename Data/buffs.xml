@@ -24,6 +24,10 @@
     description="Energy increased">
     <stats energy="100" />
 </buff>
+<buff id="naturalistHOT" name="Soothing Tea" icon="cupGreen" duration="10"
+    description="Recovering health">
+    <stats hps="800" />
+</buff>
 <buff id="burn" name="Burning" icon="fire" duration="12" school="fire"
     description="Taking damage over time.">
     <function name="doDirectDamage" i1="2" tickTime="1500" />

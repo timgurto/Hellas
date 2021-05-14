@@ -94,6 +94,10 @@ Functions:
     <targets friendly="1" self="1" />
     <function name="dispellDebuff" s1="earth" />
 </spell>
+<spell id="naturalistHOT" name="Soothing Tea" icon="cupGreen" cost="25" range="30" school="water" >
+    <targets self="1" friendly="1" />
+    <function name="buff" s1="naturalistHOT" />
+</spell>
 
 <!-- Alchemist -->
 <spell id="threatDropAlchemist" name="Disappear" icon="shadow" cost="20" range="30" school="air" >

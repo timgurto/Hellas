@@ -71,6 +71,7 @@
         <tier>
             <cost tag="food" quantity="2" />
             <requires pointsInTree="5" tool="classScholar" />
+            <talent type="spell" id="naturalistHOT" flavourText="Give a warm herbal drink to an ally, to help him recover from battle." />
             <talent type="stats" name="Study Classification" icon="classification" flavourText="A habit of collecting and categorising nature helps you to find more when foraging and mining." > <stats gatherBonus="1" /> </talent> 
             <talent type="spell" id="dispellEarthDebuff" flavourText="Apply leeches, to remove bad blood and associated disorders." />
         </tier>
