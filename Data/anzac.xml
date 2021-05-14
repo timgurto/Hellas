@@ -144,7 +144,7 @@
 <!-- Below here to be commented out when holiday is not active -->
 
 
-
+<!--
 
 <npc id="anzacQG" x="64674" y="17774" />
 
@@ -175,15 +175,12 @@
     <spawnPoint type="anzacPoppy" y="16138" x="66222" quantity="8" radius="250" respawnTime="300000" />
     <spawnPoint type="anzacPoppy" y="16425" x="66462" quantity="8" radius="250" respawnTime="300000" />
 
-    <!-- Closest to the questgiver: few, but fast respawn so players can find their way. -->
     <spawnPoint type="anzacPoppy" y="17120" x="65280" quantity="5" radius="250" respawnTime="30000" />
     <spawnPoint type="anzacPoppy" y="17408" x="65248" quantity="7" radius="300" respawnTime="30000" />
     <spawnPoint type="anzacPoppy" y="17488" x="64864" quantity="5" radius="250" respawnTime="30000" />
 
 
 <object id="anzacPool" x="64974" y="18322" />
-    <!-- What has more impact: if all candles are player-placed, or if there are some starters? -->
-    <!--spawnPoint type="anzacCandle" x="64974" y="18322" radius="50" quantity="20" respawnTime="0" /-->
 
     <npc id="anzacPeer" x="64950" y="18429" />
     <npc id="anzacPeer" x="64930" y="18429" />
@@ -217,5 +214,7 @@
             <npc id="anzacPeer" x="65098" y="18489" />
 
 <object id="anzacStash" x="64737" y="17799" />
+
+-->
 
 </root>
