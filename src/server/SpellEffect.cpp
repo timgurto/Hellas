@@ -181,7 +181,7 @@ CombatResult SpellEffect::randomTeleport(const SpellEffect &effect,
   auto proposedLocation = MapPoint{};
 
   auto attempts = 50;
-  while (attempts-- > 0) {
+  while (--attempts > 0) {
     auto angle = randDouble() * 2 * PI;
     auto radius = Podes{effect._args.i1}.toPixels();
     auto dX = cos(angle) * radius;

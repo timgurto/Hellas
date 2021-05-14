@@ -1,4 +1,5 @@
 #include "TestClient.h"
+#include "TestFixtures.h"
 #include "TestServer.h"
 #include "testing.h"
 
@@ -143,6 +144,39 @@ TEST_CASE("Pets walking through gates") {
         pet.moveLegallyTowards({10, 30});
 
         THEN("it doesn't get past it") { CHECK(pet.location().y < 20); }
+      }
+    }
+  }
+}
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Boat-on-land glitch") {
+  GIVEN("a vehicle on forbidden terrain") {
+    useData(R"(
+    <list id="noTerrainAllowed" >
+        <forbid id="grass" />
+    </list>
+      <objectType id="boat"
+        allowedTerrain="noTerrainAllowed"
+        isVehicle="1" >
+        <collisionRect x="0" y="0" w="1" h="1" />
+      </objectType>
+    )");
+    const auto &boat = server->addObject("boat", {15, 15}, user->name());
+
+    AND_GIVEN("the user is driving it") {
+      client->sendMessage(CL_MOUNT, makeArgs(boat.serial()));
+      WAIT_UNTIL(user->isDriving());
+
+      WHEN("he tries to move") {
+        const auto startingLocation = user->location();
+        const auto targetLocation = startingLocation + MapPoint{50., 50.};
+        client->sendMessage(CL_MOVE_TO,
+                            makeArgs(targetLocation.x, targetLocation.y));
+
+        THEN("he is still in the same place") {
+          REPEAT_FOR_MS(100);
+          CHECK(user->location() == startingLocation);
+        }
       }
     }
   }
