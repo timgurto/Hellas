@@ -790,14 +790,28 @@ void Client::handleBufferedMessages(const std::string &msg) {
         if (del != MSG_END) break;
         std::map<Serial, ClientObject *>::iterator it = _objects.find(serial);
         if (it == _objects.end()) break;  // We didn't know about this object
+
+        const auto teleported = msgCode == SV_ENTITY_LOCATION_INSTANT;
+
+        auto iAmDrivingThis = false;
         if (_character.isDriving()) {
           const auto *asVehicle =
               dynamic_cast<const ClientVehicle *>(it->second);
-          if (asVehicle && _character.isDriving(*asVehicle)) break;
+          if (asVehicle && _character.isDriving(*asVehicle))
+            iAmDrivingThis = true;
         }
+
+        // Prevent server interference with normal vehicle movement
+        if (iAmDrivingThis && !teleported) break;
+
         it->second->newLocationFromServer({x, y});
-        // if (msgCode == SV_ENTITY_LOCATION_INSTANT) it->second->location({x,
-        // y});
+        if (teleported) {
+          it->second->location({x, y});
+
+          // Vehicle is out-of-bounds; immediately reflect valid server
+          // location.
+          if (iAmDrivingThis) _character.location({x, y});
+        }
         break;
       }
 
