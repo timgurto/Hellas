@@ -12,6 +12,7 @@ Release process:
 5. Run generateVersionHeader.sh
 -------
 6. Build Release in Visual Studio (needs to build with new tag as version)
+7. Update release-notes.txt, ensuring version is correct.
 8. Watch the server-recovery process.  Wait until its 10s timer has just started.
 9. Kill the currently running production server
 10. Run "Publish new version/Publish and start production server"
