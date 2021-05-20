@@ -28,8 +28,8 @@ void Client::HelpWindow::initialise(Client &client) {
     auto topic = new Element;
     topic->id(entry.name());
     topicList->addChild(topic);
-    auto *topicLabel = new Label({1, 1, 0, Element::TEXT_HEIGHT}, entry.name());
-    topicLabel->matchW();
+    auto *topicLabel =
+        new Label({1, 1, topic->width(), Element::TEXT_HEIGHT}, entry.name());
     topic->addChild(topicLabel);
   }
   topicList->verifyBoxes();
