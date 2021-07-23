@@ -360,15 +360,18 @@ void AI::Path::findPathTo(const MapRect &targetFootprint) {
       return ret;
     }
   };
-  auto extensionCandidates = std::vector<Extension>{};
-  extensionCandidates.push_back({{+GRID, -GRID}, DIAG});
-  extensionCandidates.push_back({{+GRID, +GRID}, DIAG});
-  extensionCandidates.push_back({{-GRID, +GRID}, DIAG});
-  extensionCandidates.push_back({{-GRID, -GRID}, DIAG});
-  extensionCandidates.push_back({{0, -GRID}, GRID});
-  extensionCandidates.push_back({{0, +GRID}, GRID});
-  extensionCandidates.push_back({{-GRID, 0}, GRID});
-  extensionCandidates.push_back({{+GRID, 0}, GRID});
+  const auto extensionCandidates = std::vector<Extension>{
+      // clang-format off
+      {{+GRID, -GRID}, DIAG},
+      {{+GRID, +GRID}, DIAG},
+      {{-GRID, +GRID}, DIAG},
+      {{-GRID, -GRID}, DIAG},
+      {{    0, -GRID}, GRID},
+      {{    0, +GRID}, GRID },
+      {{-GRID,     0}, GRID },
+      {{+GRID,     0}, GRID }
+      // clang-format on
+  };
 
   while (candidatePoints.stillSomeLeft()) {
     // Work from the point with the best F cost
