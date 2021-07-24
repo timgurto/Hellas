@@ -27,6 +27,11 @@
     .critical{
         color: #E2D026;
     }
+    
+    .includingBlockers{
+        font-style: italic;
+        color: #ffaaaa;
+    }
 
     .issue{
         text-align: right;
@@ -108,14 +113,66 @@
     }
 
     var nameLookup = {};
-    for (i in PBIs)
+    var pbisByID = {};
+    for (i in PBIs){
         /*nameLookup.push({
             key: PBIs[i].issue,
             value: PBIs[i].description
         });*/
-        nameLookup[PBIs[i].issue] = PBIs[i].description;
+        var id = PBIs[i].issue
+        nameLookup[id] = PBIs[i].description;
+        pbisByID[id] = PBIs[i]
+    }
 
+    var effortIncludingBlockers = {};
+    var valueIncludingBlockers = {};
+    var allBlockersAreCounted = false
+    while (! allBlockersAreCounted){
+        allBlockersAreCounted = true
+        for (i in PBIs){
+            var pbi = PBIs[i]
+            var id = pbi.issue
+            
+            var thisPBIIsAlreadyCounted = effortIncludingBlockers.hasOwnProperty(id)
+            if (thisPBIIsAlreadyCounted)
+                continue;
+                
+            var thisPBIIsUnblocked = ! pbi.hasOwnProperty("blockedBy");
+            if (thisPBIIsUnblocked){
+                effortIncludingBlockers[id] = pbi.effort;
+                valueIncludingBlockers[id] = pbi.value;
+                continue;
+            }
+            
+            // Blocked by something
+            blockingPBI = pbisByID[pbi.blockedBy]
+            var blockerIsAlreadyCounted = effortIncludingBlockers.hasOwnProperty(blockingPBI.issue)
+            if (blockerIsAlreadyCounted){
+                effortIncludingBlockers[id] = pbi.effort + blockingPBI.effort;
+                valueIncludingBlockers[id] = pbi.value + blockingPBI.value;
+                continue;
+            }
+            
+            // Blocker is not counted
+            allBlockersAreCounted = false
+        }
+    }
     
+    
+    for (i in PBIs){
+        var isBlocked = PBIs[i].hasOwnProperty("blockedBy");
+        if (! isBlocked) continue;
+        
+        var id = PBIs[i].issue;
+        PBIs[i].value = valueIncludingBlockers[id];
+        PBIs[i].effort = effortIncludingBlockers[id];
+        var rawROI = PBIs[i].value / PBIs[i].effort;
+        PBIs[i].roi = Math.log(rawROI) / Math.log(1.61803)
+    }
+    
+   
+
+
     function sortBy(compare){
         var shouldReverseSort = compare == lastCompareUsed;
         // Allow reversing the last sort while staying stable
@@ -134,10 +191,10 @@
         }
         PBIs.sort(sortFunction);
         refreshTable();
-        
+
         lastCompareUsed = compare
     }
-    
+
     function compareIssue(a, b){ return a.issue - b.issue; }
     function compareDescription(a, b){ return a.description.localeCompare(b.description) }
     function compareType(a, b){ return a.type.localeCompare(b.type); }
@@ -164,6 +221,8 @@
             var row = table.insertRow(-1);
 			if (PBI.done)
 				row.className += " doneRow";
+                
+            var pbiIsBlocked = PBI.hasOwnProperty("blockedBy");
 
             var cell = row.insertCell(-1);
             cell.innerHTML =
@@ -182,18 +241,28 @@
             cell.style.color = PBI.typeColor;
 
             cell = row.insertCell(-1);
-            cell.innerHTML = PBI.value;
+            if (pbiIsBlocked)
+                cell.innerHTML = '<span class="includingBlockers">' + PBI.value + '</span>';
+            else
+                cell.innerHTML = PBI.value;
             cell.className = "value";
 
             cell = row.insertCell(-1);
-            cell.innerHTML = PBI.effort;
+            if (pbiIsBlocked)
+                cell.innerHTML = '<span class="includingBlockers">' + PBI.effort + '</span>';
+            else
+                cell.innerHTML = PBI.effort;
             cell.className = "effort";
 
             cell = row.insertCell(-1);
-            cell.innerHTML = PBI.roi;
             cell.className = "roi";
-            cell.style.backgroundColor = PBI.roiColor;
-            cell.style.color = getfg(PBI.roiColor);
+            if (pbiIsBlocked)
+                cell.innerHTML = '<span class="includingBlockers">' + PBI.roi + '</span>';
+            else {
+                cell.innerHTML = PBI.roi;
+                cell.style.backgroundColor = PBI.roiColor;
+                cell.style.color = getfg(PBI.roiColor);
+            }
 
             cell = row.insertCell(-1);
             if (PBI.milestone != "999")
@@ -201,7 +270,7 @@
             cell.className = "milestone";
 
             cell = row.insertCell(-1);
-            if (PBI.hasOwnProperty("blockedBy")){
+            if (pbiIsBlocked){
                 cell.innerHTML += '<a class="blocked" title="Blocked by: ' +
                         nameLookup[PBI.blockedBy] +
                         '" href="#' + PBI.blockedBy + '">&#9888;</span>';
@@ -240,7 +309,7 @@
         if ($("#hideBlocked").is(':checked'))
             $(".blockedRow").hide();
     }
-    
+
     function filterAll(){
         for (i in PBIs){
             PBIs[i].filter = true;
