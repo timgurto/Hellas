@@ -272,7 +272,6 @@ TEST_CASE("Users are alerted to peace proposals on login") {
 
   SECTION("Alice logs in") {
     auto c = TestClient::WithUsername("Alice");
-    s.waitForUsers(1);
 
     // Then Alice is alerted
     CHECK(c.waitForMessage(SV_YOU_PROPOSED_PEACE_TO_PLAYER));
@@ -280,7 +279,6 @@ TEST_CASE("Users are alerted to peace proposals on login") {
 
   SECTION("Bob logs in") {
     auto c = TestClient::WithUsername("Bob");
-    s.waitForUsers(1);
 
     // Then Bob is alerted
     CHECK(c.waitForMessage(SV_PEACE_WAS_PROPOSED_TO_YOU_BY_PLAYER));
