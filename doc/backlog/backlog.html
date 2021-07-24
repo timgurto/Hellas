@@ -157,8 +157,6 @@
             allBlockersAreCounted = false
         }
     }
-    
-    
     for (i in PBIs){
         var isBlocked = PBIs[i].hasOwnProperty("blockedBy");
         if (! isBlocked) continue;
@@ -167,7 +165,8 @@
         PBIs[i].value = valueIncludingBlockers[id];
         PBIs[i].effort = effortIncludingBlockers[id];
         var rawROI = PBIs[i].value / PBIs[i].effort;
-        PBIs[i].roi = Math.log(rawROI) / Math.log(1.61803)
+        roi = Math.log(rawROI) / Math.log(1.61803)
+        PBIs[i].roi = roi.toFixed(1)
     }
     
    
