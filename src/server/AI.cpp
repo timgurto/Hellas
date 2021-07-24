@@ -468,7 +468,7 @@ void AI::calculatePathInSeparateThread() {
 bool AI::targetHasMoved() const {
   if (!_activePath.exists()) return false;
 
-  const auto pathEnd = _activePath.lastWaypoint();
+  const auto pathEnd = MapRect{_activePath.lastWaypoint()};
   const auto targetLocation = getTargetFootprint();
 
   const auto MAX_TARGET_MOVEMENT_BEFORE_REPATH = 30.0;
