@@ -224,7 +224,6 @@ TEST_CASE("New users are alerted to lootable objects") {
   }
   {
     auto c = TestClient::WithUsernameAndDataString("Alice", data);
-    s.waitForUsers(1);
 
     // Then she knows it's lootable
     CHECK(c.waitForMessage(SV_INVENTORY));
