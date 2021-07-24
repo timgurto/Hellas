@@ -1141,7 +1141,7 @@ TEST_CASE("Composite stats' conversion to strings") {
         THEN("toStrings() shows Intellect") {
           auto strings = stats.toStrings();
           REQUIRE(strings.size() == 1);
-          CHECK(strings.front() == "+1 Intellect");
+          CHECK(strings.front() == "+1 intellect");
         }
       }
 
@@ -1150,7 +1150,7 @@ TEST_CASE("Composite stats' conversion to strings") {
 
         THEN("toStrings() shows Constitution") {
           auto strings = stats.toStrings();
-          CHECK(strings.front() == "+1 Constitution");
+          CHECK(strings.front() == "+1 constitution");
         }
       }
 
@@ -1159,7 +1159,7 @@ TEST_CASE("Composite stats' conversion to strings") {
 
         THEN("toStrings() shows the correct amount of Constitution") {
           auto strings = stats.toStrings();
-          CHECK(strings.front() == "+2 Constitution");
+          CHECK(strings.front() == "+2 constitution");
         }
       }
 
@@ -1168,7 +1168,7 @@ TEST_CASE("Composite stats' conversion to strings") {
 
         THEN("toStrings() shows the correct amount of Constitution") {
           auto strings = stats.toStrings();
-          CHECK(strings.front() == "-1 Constitution");
+          CHECK(strings.front() == "-1 constitution");
         }
       }
 
@@ -1181,9 +1181,9 @@ TEST_CASE("Composite stats' conversion to strings") {
           REQUIRE(strings.size() == 2);
           auto intFound = false, conFound = false;
           for (auto string : strings) {
-            if (string == "+1 Intellect")
+            if (string == "+1 intellect")
               intFound = true;
-            else if (string == "+1 Constitution")
+            else if (string == "+1 constitution")
               conFound = true;
           }
           CHECK(intFound);
