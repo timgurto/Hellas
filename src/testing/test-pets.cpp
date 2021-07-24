@@ -129,14 +129,16 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
       dog.permissions.setPlayerOwner(user.name());
 
       THEN("the owner doesn't lose any health") {
-        REPEAT_FOR_MS(100) { REQUIRE(!user.isMissingHealth()); }
+        const auto healthBefore = user.health();
+        REPEAT_FOR_MS(100) { REQUIRE(user.health() == healthBefore); }
       }
 
       AND_WHEN("the owner tries to target it") {
         c.sendMessage(CL_TARGET_ENTITY, makeArgs(dog.serial()));
 
         THEN("the dog doesn't lose any health") {
-          REPEAT_FOR_MS(100) { REQUIRE(!dog.isMissingHealth()); }
+          const auto healthBefore = dog.health();
+          REPEAT_FOR_MS(100) { REQUIRE(dog.health() == healthBefore); }
         }
       }
     }
@@ -153,8 +155,8 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
           c.sendMessage(CL_TARGET_ENTITY, makeArgs(dog.serial()));
 
           THEN("the dog doesn't lose any health") {
-            REPEAT_FOR_MS(100);
-            REQUIRE(!dog.isMissingHealth());
+            const auto healthBefore = dog.health();
+            REPEAT_FOR_MS(100) { REQUIRE(dog.health() == healthBefore); }
           }
         }
 
@@ -219,12 +221,9 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
         auto &dog2 = s.addNPC("dog", {15, 10});
         dog2.permissions.setPlayerOwner("Bob");
 
-        AND_WHEN("some time passes") {
-          REPEAT_FOR_MS(100);
-
-          THEN("Alice's dog hasn't lost any health") {
-            CHECK(!dog.isMissingHealth());
-          }
+        THEN("Alice's dog hasn't lost any health over time") {
+          const auto healthBefore = dog.health();
+          REPEAT_FOR_MS(100) { REQUIRE(dog.health() == healthBefore); }
         }
 
         AND_WHEN("Alice and Bob declare war") {
