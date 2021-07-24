@@ -2238,6 +2238,7 @@ void Server::sendRelevantEntitiesToUser(const User &user) {
       _entitiesByX.upper_bound(&Dummy::Location(loc.x + CULL_DISTANCE, 0));
   for (auto it = loX; it != hiX; ++it) {
     const Entity *entity = *it;
+    if (entity == &user) continue;
     if (abs(entity->location().y - loc.y) > CULL_DISTANCE)  // Cull y
       continue;
     entitiesToDescribe.insert(entity);
