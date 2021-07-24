@@ -479,8 +479,9 @@ bool AI::targetHasMoved() const {
 }
 
 MapRect AI::getTargetFootprint() const {
-  if (state == AI::CHASE) return _owner.target()->collisionRect();
-  if (state == AI::PET_FOLLOW_OWNER)
+  if (state == AI::CHASE && _owner.target())
+    return _owner.target()->collisionRect();
+  if (state == AI::PET_FOLLOW_OWNER && _owner.followTarget())
     return _owner.followTarget()->collisionRect();
 
   SERVER_ERROR("Pathfinding while AI is in an inappropriate state");
