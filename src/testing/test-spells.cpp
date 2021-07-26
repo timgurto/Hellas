@@ -160,12 +160,11 @@ TEST_CASE("Non-talent spells are persistent") {
   }
 }
 
-TEST_CASE("Spell cooldowns") {
+TEST_CASE_METHOD(TwoClientsWithData, "Spell cooldowns") {
   GIVEN(
-      "Alice and Bob know a range of self-damaging spells, and extremely "
-      "high "
-      "hit chance") {
-    auto data = R"(
+      "Alice and Bob know a range of self-damaging spells, and have extremely "
+      "high hit chance") {
+    useData(R"(
       <spell id="hurtSelf1s" cooldown="1" >
         <targets self=1 />
         <function name="doDirectDamage" i1="5" />
@@ -182,43 +181,38 @@ TEST_CASE("Spell cooldowns") {
         <targets self=1 />
         <function name="doDirectDamage" i1="5" />
       </spell>
-    )";
-    auto s = TestServer::WithDataString(data);
+    )");
 
     auto oldStats = User::OBJECT_TYPE.baseStats();
     auto highHitChance = oldStats;
     highHitChance.hit = 100;
     User::OBJECT_TYPE.baseStats(highHitChance);
 
-    auto cAlice = TestClient::WithUsername("Alice");
-    s.waitForUsers(1);
-    auto &alice = s.getFirstUser();
-
-    alice.getClass().teachSpell("hurtSelf");
-    alice.getClass().teachSpell("hurtSelf1s");
-    alice.getClass().teachSpell("hurtSelfAlso1s");
-    alice.getClass().teachSpell("hurtSelf2s");
+    uAlice->getClass().teachSpell("hurtSelf");
+    uAlice->getClass().teachSpell("hurtSelf1s");
+    uAlice->getClass().teachSpell("hurtSelfAlso1s");
+    uAlice->getClass().teachSpell("hurtSelf2s");
 
     WHEN("Alice casts the spell with cooldown 1s") {
-      cAlice.sendMessage(CL_CAST_SPELL, "hurtSelf1s");
+      cAlice->sendMessage(CL_CAST_SPELL, "hurtSelf1s");
       REPEAT_FOR_MS(100);
-      auto healthAfterFirstCast = alice.health();
+      auto healthAfterFirstCast = uAlice->health();
 
       AND_WHEN("she tries casting it again") {
-        cAlice.sendMessage(CL_CAST_SPELL, "hurtSelf1s");
+        cAlice->sendMessage(CL_CAST_SPELL, "hurtSelf1s");
 
         THEN("she hasn't lost any health") {
           REPEAT_FOR_MS(100);
-          CHECK(alice.health() >= healthAfterFirstCast);
+          CHECK(uAlice->health() >= healthAfterFirstCast);
         }
       }
 
       AND_WHEN("she tries a different spell with cooldown 1s") {
-        cAlice.sendMessage(CL_CAST_SPELL, "hurtSelfAlso1s");
+        cAlice->sendMessage(CL_CAST_SPELL, "hurtSelfAlso1s");
 
         THEN("she has lost health") {
           REPEAT_FOR_MS(100);
-          CHECK(alice.health() < healthAfterFirstCast);
+          CHECK(uAlice->health() < healthAfterFirstCast);
         }
       }
 
@@ -226,55 +220,53 @@ TEST_CASE("Spell cooldowns") {
         REPEAT_FOR_MS(1000);
 
         AND_WHEN("she tries casting it again") {
-          cAlice.sendMessage(CL_CAST_SPELL, "hurtSelf1s");
+          cAlice->sendMessage(CL_CAST_SPELL, "hurtSelf1s");
 
           THEN("she has lost health") {
             REPEAT_FOR_MS(100);
-            CHECK(alice.health() < healthAfterFirstCast);
+            CHECK(uAlice->health() < healthAfterFirstCast);
           }
         }
       }
 
       AND_WHEN("she tries casting the spell with no cooldown") {
-        cAlice.sendMessage(CL_CAST_SPELL, "hurtSelf");
+        cAlice->sendMessage(CL_CAST_SPELL, "hurtSelf");
 
         THEN("she has lost health") {
           REPEAT_FOR_MS(100);
-          CHECK(alice.health() < healthAfterFirstCast);
+          CHECK(uAlice->health() < healthAfterFirstCast);
         }
       }
 
       AND_WHEN("Bob tries casting it") {
-        auto cBob = TestClient::WithUsername("Bob");
-        s.waitForUsers(2);
-        auto &bob = *s->getUserByName("Bob");
-        bob.getClass().teachSpell("hurtSelf1s");
+        uBob->getClass().teachSpell("hurtSelf1s");
 
-        auto healthBefore = bob.health();
-        s.sendMessage(bob.socket(), {TST_SEND_THIS_BACK,
-                                     makeArgs(CL_CAST_SPELL, "hurtSelf1s")});
+        const auto healthBefore = uBob->health();
+        server->sendMessage(
+            uBob->socket(),
+            {TST_SEND_THIS_BACK, makeArgs(CL_CAST_SPELL, "hurtSelf1s")});
 
         THEN("he has lost health") {
           REPEAT_FOR_MS(100);
-          CHECK(bob.health() < healthBefore);
+          CHECK(uBob->health() < healthBefore);
         }
       }
     }
 
     WHEN("Alice casts the spell with cooldown 2s") {
-      cAlice.sendMessage(CL_CAST_SPELL, "hurtSelf2s");
+      cAlice->sendMessage(CL_CAST_SPELL, "hurtSelf2s");
       REPEAT_FOR_MS(100);
-      auto healthAfterFirstCast = alice.health();
+      auto healthAfterFirstCast = uAlice->health();
 
       AND_WHEN("1s elapses") {
         REPEAT_FOR_MS(1000);
 
         AND_WHEN("she tries casting it again") {
-          cAlice.sendMessage(CL_CAST_SPELL, "hurtSelf2s");
+          cAlice->sendMessage(CL_CAST_SPELL, "hurtSelf2s");
 
           THEN("she hasn't lost any health") {
             REPEAT_FOR_MS(100);
-            CHECK(alice.health() >= healthAfterFirstCast);
+            CHECK(uAlice->health() >= healthAfterFirstCast);
           }
         }
       }
