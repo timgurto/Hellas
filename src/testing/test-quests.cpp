@@ -1939,9 +1939,10 @@ TEST_CASE("Class-specific quests", "[.flaky]") {
   }
 }
 
-TEST_CASE("A class-specific quests with a prerequisite") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "A class-specific quests with a prerequisite") {
   GIVEN("A police-exclusive quest, that requires going to school") {
-    auto data = R"(
+    useDataAndSpecificClass(R"(
       <class name="police" />
       <objectType id="questgiver" />
       <quest id="arrestCriminals" startsAt="questgiver" endsAt="questgiver"
@@ -1949,26 +1950,25 @@ TEST_CASE("A class-specific quests with a prerequisite") {
         <prerequisite id="goToSchool" />
       </quest>
       <quest id="goToSchool" startsAt="questgiver" endsAt="questgiver" />
-    )";
+    )",
+                            "frog");
 
     WHEN("a non-police player logs in") {
-      auto s = TestServer::WithDataString(data);
-      auto c = TestClient::WithClassAndDataString("frog", data);
-      s.addObject("questgiver", {10, 15});
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      CHECK(user.getClass().type().id() != "police");
+      CHECK(user->getClass().type().id() != "police");
+
+      server->addObject("questgiver", {10, 15});
 
       AND_WHEN("he goes to school") {
-        const auto &goToSchool = s.findQuest("goToSchool");
-        user.startQuest(goToSchool);
-        user.completeQuest(goToSchool.id);
+        const auto &goToSchool = server->findQuest("goToSchool");
+        user->startQuest(goToSchool);
+        user->completeQuest(goToSchool.id);
 
         THEN("he sees no quests at the questgiver") {
-          WAIT_UNTIL(c.objects().size() == 1);
-          const auto &obj = c.getFirstObject();
+          WAIT_UNTIL(client->objects().size() == 1);
+          const auto &obj = client->getFirstObject();
           REPEAT_FOR_MS(100);
-          CHECK(obj.startsQuests().size() == 0);
+          const auto questsAvailable = obj.startsQuests();
+          CHECK(questsAvailable.size() == 0);
         }
       }
     }

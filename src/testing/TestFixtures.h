@@ -17,7 +17,7 @@ class ServerAndClient {
 
 class ServerAndClientWithData {
  public:
-  ~ServerAndClientWithData() {
+  virtual ~ServerAndClientWithData() {
     delete client;
     delete server;
   }
@@ -25,6 +25,15 @@ class ServerAndClientWithData {
   void useData(const char *dataString) {
     server = new TestServer(TestServer::WithDataString(dataString));
     client = new TestClient(TestClient::WithDataString(dataString));
+
+    server->waitForUsers(1);
+    user = &server->getFirstUser();
+  }
+
+  void useDataAndSpecificClass(const char *dataString, const char *userClass) {
+    server = new TestServer(TestServer::WithDataString(dataString));
+    client = new TestClient(
+        TestClient::WithClassAndDataString(userClass, dataString));
 
     server->waitForUsers(1);
     user = &server->getFirstUser();
