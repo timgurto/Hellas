@@ -75,24 +75,22 @@ TEST_CASE("Buffs disappear on death") {
   }
 }
 
-TEST_CASE("Interruptible buffs disappear on interrupt", "[combat]") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Interruptible buffs disappear on interrupt", "[combat]") {
   GIVEN("An interruptible buff, and a fox") {
-    auto data = R"(
+    useData(R"(
       <buff id="food" canBeInterrupted="1"/>
       <npcType id="fox" attack="1" attackTime="1" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
+    )");
 
-    s.addNPC("fox", {10, 15});
+    server->addNPC("fox", {10, 15});
 
     WHEN("a user near the fox has the buff") {
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      user.applyBuff(s.getFirstBuff(), user);
-      CHECK(user.buffs().size() == 1);
+      const auto &buff = server->getFirstBuff();
+      user->applyBuff(buff, *user);
+      CHECK(user->buffs().size() == 1);
 
-      THEN("he loses the buff") { WAIT_UNTIL(user.buffs().empty()); }
+      THEN("he loses the buff") { WAIT_UNTIL(user->buffs().empty()); }
     }
   }
 }
