@@ -242,9 +242,7 @@ TEST_CASE_METHOD(TwoClientsWithData, "Spell cooldowns") {
         uBob->getClass().teachSpell("hurtSelf1s");
 
         const auto healthBefore = uBob->health();
-        server->sendMessage(
-            uBob->socket(),
-            {TST_SEND_THIS_BACK, makeArgs(CL_CAST_SPELL, "hurtSelf1s")});
+        cBob->sendMessage(CL_CAST_SPELL, "hurtSelf1s");
 
         THEN("he has lost health") {
           REPEAT_FOR_MS(100);
