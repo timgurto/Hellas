@@ -527,6 +527,17 @@ void Entity::onAttackedBy(Entity &attacker, Threat threat) {
 
 void Entity::startCorpseTimer() { _corpseTime = timeToRemainAsCorpse(); }
 
+void Entity::removeOnTimer(ms_t &timer, ms_t timeElapsed) {
+  if (timer == 0) return;
+
+  if (timeElapsed < timer)
+    timer -= timeElapsed;
+  else {
+    markForRemoval();
+    timer = 0;
+  }
+}
+
 void Entity::location(const MapPoint &newLoc, bool firstInsertion) {
   Server &server = *Server::_instance;
 

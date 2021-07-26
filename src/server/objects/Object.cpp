@@ -36,12 +36,7 @@ void Object::accountForOwnershipByUser(const User &owner) const {
 void Object::update(ms_t timeElapsed) {
   if (isBeingBuilt()) return;
 
-  if (_disappearTimer > 0) {
-    if (timeElapsed > _disappearTimer)
-      markForRemoval();
-    else
-      _disappearTimer -= timeElapsed;
-  }
+  removeOnTimer(_disappearTimer, timeElapsed);
 
   Entity::update(timeElapsed);
 }

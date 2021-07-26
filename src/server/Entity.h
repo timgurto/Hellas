@@ -72,6 +72,8 @@ class Entity {
 
   virtual bool shouldBePropagatedToClients() const { return true; }
 
+  void removeOnTimer(ms_t &timer, ms_t timeElapsed);
+
   // Space
   const MapPoint &location() const { return _location; }
   void location(const MapPoint &loc, bool firstInsertion = false);

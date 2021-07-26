@@ -17,12 +17,7 @@ NPC::NPC(const NPCType *type, const MapPoint &loc)
 void NPC::update(ms_t timeElapsed) {
   if (health() > 0 && !isStunned()) ai.process(timeElapsed);
 
-  if (_disappearTimer > 0) {
-    if (timeElapsed > _disappearTimer)
-      markForRemoval();
-    else
-      _disappearTimer -= timeElapsed;
-  }
+  removeOnTimer(_disappearTimer, timeElapsed);
 
   Entity::update(timeElapsed);
 }
