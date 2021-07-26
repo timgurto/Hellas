@@ -188,6 +188,7 @@ HANDLE_MESSAGE(CL_CRAFT) {
 
   if (user.isStunned()) RETURN_WITH(WARNING_STUNNED)
   user.cancelAction();
+  user.removeInterruptibleBuffs();
   const std::set<SRecipe>::const_iterator it = _recipes.find(recipeID);
   if (!user.knowsRecipe(recipeID)) RETURN_WITH(ERROR_UNKNOWN_RECIPE)
   ItemSet remaining;

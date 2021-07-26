@@ -521,8 +521,7 @@ void Entity::onAttackedBy(Entity &attacker, Threat threat) {
     buff->proc(&attacker);
   }
 
-  // Remove interruptible buffs
-  for (auto buff : interruptibleBuffs()) removeBuff(buff);
+  removeInterruptibleBuffs();
 }
 
 void Entity::startCorpseTimer() { _corpseTime = timeToRemainAsCorpse(); }
@@ -882,6 +881,10 @@ void Entity::removeAllBuffsAndDebuffs() {
   auto debuffIDs = std::set<std::string>{};
   for (const auto &debuff : debuffs()) debuffIDs.insert(debuff.type());
   for (const auto &debuffID : debuffIDs) removeDebuff(debuffID);
+}
+
+void Entity::removeInterruptibleBuffs() {
+  for (auto buff : interruptibleBuffs()) removeBuff(buff);
 }
 
 void Entity::sendBuffMsg(const Buff::ID &buff) const {

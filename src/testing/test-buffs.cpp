@@ -77,25 +77,48 @@ TEST_CASE("Buffs disappear on death") {
 
 TEST_CASE_METHOD(ServerAndClientWithData,
                  "Interruptible buffs disappear on interrupt", "[combat]") {
-  GIVEN("An interruptible buff, and a fox") {
-    useData(R"(
-      <buff id="food" canBeInterrupted="1"/>
-      <npcType id="fox" attack="1" attackTime="1" />
-    )");
+  SECTION("When attacked") {
+    GIVEN("An interruptible buff, and a fox") {
+      useData(R"(
+        <buff id="food" canBeInterrupted="1"/>
+        <npcType id="fox" attack="1" attackTime="1" />
+      )");
 
-    server->addNPC("fox", {10, 15});
+      server->addNPC("fox", {10, 15});
 
-    WHEN("a user near the fox has the buff") {
-      const auto &buff = server->getFirstBuff();
-      user->applyBuff(buff, *user);
-      CHECK(user->buffs().size() == 1);
+      WHEN("the user near the fox has the buff") {
+        const auto &buff = server->getFirstBuff();
+        user->applyBuff(buff, *user);
+        CHECK(user->buffs().size() == 1);
 
-      THEN("he loses the buff") { WAIT_UNTIL(user->buffs().empty()); }
+        THEN("he loses the buff") { WAIT_UNTIL(user->buffs().empty()); }
+      }
+    }
+  }
+
+  SECTION("When crafting") {
+    GIVEN("An interruptible buff, and a recipe") {
+      useData(R"(
+        <buff id="food" canBeInterrupted="1"/>
+        <recipe id="idea" time="100" />
+        <item id="idea" />
+      )");
+
+      AND_GIVEN("the user has the buff") {
+        const auto &buff = server->getFirstBuff();
+        user->applyBuff(buff, *user);
+
+        WHEN("he starts crafting") {
+          client->sendMessage(CL_CRAFT, "idea");
+
+          THEN("he loses the buff") { WAIT_UNTIL(user->buffs().empty()); }
+        }
+      }
     }
   }
 }
 
-TEST_CASE("Normal buffs persist when attacked", "[combat]") {
+TEST_CASE("Non-interruptible buffs persist when attacked", "[combat]") {
   GIVEN("A buff, and a fox") {
     auto data = R"(
       <buff id="intellect" />

@@ -135,6 +135,7 @@ class Entity {
   void removeBuff(Buff::ID id);
   void removeDebuff(Buff::ID id);
   void removeAllBuffsAndDebuffs();
+  void removeInterruptibleBuffs();
   virtual void sendBuffMsg(const Buff::ID &buff) const;
   virtual void sendDebuffMsg(const Buff::ID &buff) const;
   virtual void sendLostBuffMsg(const Buff::ID &buff) const;
