@@ -1,4 +1,5 @@
 #include "TestClient.h"
+#include "TestFixtures.h"
 #include "TestServer.h"
 #include "testing.h"
 
@@ -431,42 +432,25 @@ TEST_CASE("New users know about cities") {
   }
 }
 
-TEST_CASE("City objects go to king on city destruction") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "City objects go to king on city destruction") {
   GIVEN("a house") {
-    auto data = R"(
+    useData(R"(
       <objectType id="house" />
-    )";
-    auto s = TestServer::WithDataString(data);
+    )");
+    auto &house = server->addObject("house", {10, 15});
 
-    auto &house = s.addObject("house", {10, 15});
-
-    AND_GIVEN(
-        "Bob is king of Athens, and Alice and Charlie are also citizens") {
-      {
-        auto c = TestClient::WithUsernameAndDataString("Bob", data);
-        s.waitForUsers(1);
-        s.cities().createCity("Athens", house.location(), "Bob");
-      }
-      {
-        auto c = TestClient::WithUsernameAndDataString("Alice", data);
-        REPEAT_FOR_MS(100);
-        s.cities().addPlayerToCity(s.findUser("Alice"), "Athens");
-      }
-      {
-        auto c = TestClient::WithUsernameAndDataString("Charlie", data);
-        REPEAT_FOR_MS(100);
-        s.cities().addPlayerToCity(s.findUser("Charlie"), "Athens");
-      }
-      s.waitForUsers(0);
+    AND_GIVEN("A player is the king of Athens") {
+      server->cities().createCity("Athens", house.location(), user->name());
 
       AND_GIVEN("the house belongs to Athens") {
         house.permissions.setCityOwner("Athens");
 
         WHEN("the city is destroyed") {
-          s.cities().destroyCity("Athens");
+          server->cities().destroyCity("Athens");
 
-          THEN("the house belongs to Bob") {
-            WAIT_UNTIL(house.permissions.isOwnedByPlayer("Bob"));
+          THEN("the house belongs to the player") {
+            WAIT_UNTIL(house.permissions.isOwnedByPlayer(user->name()));
           }
         }
       }
