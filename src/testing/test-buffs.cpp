@@ -96,23 +96,27 @@ TEST_CASE_METHOD(ServerAndClientWithData,
     }
   }
 
-  SECTION("When crafting") {
-    GIVEN("An interruptible buff, and a recipe") {
-      useData(R"(
+  GIVEN("An interruptible buff, and a recipe") {
+    useData(R"(
         <buff id="food" canBeInterrupted="1"/>
         <recipe id="idea" time="100" />
         <item id="idea" />
       )");
 
-      AND_GIVEN("the user has the buff") {
-        const auto &buff = server->getFirstBuff();
-        user->applyBuff(buff, *user);
+    AND_GIVEN("the user has the buff") {
+      const auto &buff = server->getFirstBuff();
+      user->applyBuff(buff, *user);
 
-        WHEN("he starts crafting") {
-          client->sendMessage(CL_CRAFT, "idea");
+      WHEN("he starts crafting") {
+        client->sendMessage(CL_CRAFT, "idea");
 
-          THEN("he loses the buff") { WAIT_UNTIL(user->buffs().empty()); }
-        }
+        THEN("he loses the buff") { WAIT_UNTIL(user->buffs().empty()); }
+      }
+
+      WHEN("he starts moving") {
+        client->sendMessage(CL_MOVE_TO, makeArgs(100, 100));
+
+        THEN("he loses the buff") { WAIT_UNTIL(user->buffs().empty()); }
       }
     }
   }

@@ -168,6 +168,7 @@ HANDLE_MESSAGE(CL_MOVE_TO) {
   }
 
   if (user.action() != User::ATTACK) user.cancelAction();
+  user.removeInterruptibleBuffs();
   if (user.isDriving()) {
     // Move vehicle and user together
     auto vehicleSerial = user.driving();
