@@ -652,28 +652,80 @@ HANDLE_MESSAGE(CL_TARGET_ENTITY) {
   auto serial = Serial{};
   READ_ARGS(serial);
 
-  handle_CL_TARGET_ENTITY(user, serial);
+  if (serial.isInventory() || serial.isGear()) {
+    user.setTargetAndAttack(nullptr);
+    return;
+  }
+
+  user.cancelAction();
+
+  auto target = _entities.find(serial);
+  if (!target) {
+    sendMessage(user.socket(), WARNING_DOESNT_EXIST);
+  }
+
+  else if (target->health() == 0) {
+    target = nullptr;
+    sendMessage(user.socket(), ERROR_TARGET_DEAD);
+  }
+
+  else if (!target->canBeAttackedBy(user)) {
+    target = nullptr;
+    sendMessage(user.socket(), ERROR_ATTACKED_PEACFUL_PLAYER);
+  }
+
+  user.setTargetAndAttack(target);
 }
 
 HANDLE_MESSAGE(CL_TARGET_PLAYER) {
-  auto username = ""s;
-  READ_ARGS(username);
+  auto targetUsername = ""s;
+  READ_ARGS(targetUsername);
 
-  handle_CL_TARGET_PLAYER(user, username);
+  user.cancelAction();
+
+  auto it = _usersByName.find(targetUsername);
+  if (it == _usersByName.end()) RETURN_WITH(ERROR_INVALID_USER)
+  User *targetUser = const_cast<User *>(it->second);
+  if (targetUser->health() == 0) {
+    targetUser = nullptr;
+    sendMessage(user.socket(), ERROR_TARGET_DEAD);
+  } else if (!_wars.isAtWar(user.name(), targetUsername)) {
+    targetUser = nullptr;
+    sendMessage(user.socket(), ERROR_ATTACKED_PEACFUL_PLAYER);
+  }
+
+  user.setTargetAndAttack(targetUser);
 }
 
 HANDLE_MESSAGE(CL_SELECT_ENTITY) {
   auto serial = Serial{};
   READ_ARGS(serial);
 
-  handle_CL_SELECT_ENTITY(user, serial);
+  if (serial.isInventory() || serial.isGear()) {
+    user.setTargetAndAttack(nullptr);
+    return;
+  }
+
+  auto target = _entities.find(serial);
+  if (target == nullptr) {
+    user.setTargetAndAttack(nullptr);
+    sendMessage(user.socket(), WARNING_DOESNT_EXIST);
+    return;
+  }
+
+  user.target(target);
+  if (user.action() == User::ATTACK) user.action(User::NO_ACTION);
 }
 
 HANDLE_MESSAGE(CL_SELECT_PLAYER) {
-  auto username = ""s;
-  READ_ARGS(username);
+  auto targetUsername = ""s;
+  READ_ARGS(targetUsername);
 
-  handle_CL_SELECT_PLAYER(user, username);
+  auto it = _usersByName.find(targetUsername);
+  if (it == _usersByName.end()) RETURN_WITH(ERROR_INVALID_USER)
+  User *targetUser = const_cast<User *>(it->second);
+  user.target(targetUser);
+  if (user.action() == User::ATTACK) user.action(User::NO_ACTION);
 }
 
 HANDLE_MESSAGE(CL_PERFORM_OBJECT_ACTION) {
@@ -1690,76 +1742,6 @@ void Server::handle_CL_GRANT(User &user, Serial serial, std::string username) {
     RETURN_WITH(WARNING_NOT_A_CITIZEN)
 
   obj->permissions.setPlayerOwner(username);
-}
-
-void Server::handle_CL_TARGET_ENTITY(User &user, Serial serial) {
-  if (serial.isInventory() || serial.isGear()) {
-    user.setTargetAndAttack(nullptr);
-    return;
-  }
-
-  user.cancelAction();
-
-  auto target = _entities.find(serial);
-  if (!target) {
-    sendMessage(user.socket(), WARNING_DOESNT_EXIST);
-  }
-
-  else if (target->health() == 0) {
-    target = nullptr;
-    sendMessage(user.socket(), ERROR_TARGET_DEAD);
-  }
-
-  else if (!target->canBeAttackedBy(user)) {
-    target = nullptr;
-    sendMessage(user.socket(), ERROR_ATTACKED_PEACFUL_PLAYER);
-  }
-
-  user.setTargetAndAttack(target);
-}
-
-void Server::handle_CL_TARGET_PLAYER(User &user,
-                                     const std::string &targetUsername) {
-  user.cancelAction();
-
-  auto it = _usersByName.find(targetUsername);
-  if (it == _usersByName.end()) RETURN_WITH(ERROR_INVALID_USER)
-  User *targetUser = const_cast<User *>(it->second);
-  if (targetUser->health() == 0) {
-    targetUser = nullptr;
-    sendMessage(user.socket(), ERROR_TARGET_DEAD);
-  } else if (!_wars.isAtWar(user.name(), targetUsername)) {
-    targetUser = nullptr;
-    sendMessage(user.socket(), ERROR_ATTACKED_PEACFUL_PLAYER);
-  }
-
-  user.setTargetAndAttack(targetUser);
-}
-
-void Server::handle_CL_SELECT_ENTITY(User &user, Serial serial) {
-  if (serial.isInventory() || serial.isGear()) {
-    user.setTargetAndAttack(nullptr);
-    return;
-  }
-
-  auto target = _entities.find(serial);
-  if (target == nullptr) {
-    user.setTargetAndAttack(nullptr);
-    sendMessage(user.socket(), WARNING_DOESNT_EXIST);
-    return;
-  }
-
-  user.target(target);
-  if (user.action() == User::ATTACK) user.action(User::NO_ACTION);
-}
-
-void Server::handle_CL_SELECT_PLAYER(User &user,
-                                     const std::string &targetUsername) {
-  auto it = _usersByName.find(targetUsername);
-  if (it == _usersByName.end()) RETURN_WITH(ERROR_INVALID_USER)
-  User *targetUser = const_cast<User *>(it->second);
-  user.target(targetUser);
-  if (user.action() == User::ATTACK) user.action(User::NO_ACTION);
 }
 
 void Server::handle_CL_RECRUIT(User &user, std::string username) {
