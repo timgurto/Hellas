@@ -459,11 +459,12 @@ void User::alertReactivelyTargetingUser(const User &targetingUser) const {
 void User::tryToConstruct(const std::string &id, const MapPoint &location,
                           Permissions::Owner::Type owner) {
   auto &server = Server::instance();
+  auto *objType = server.findObjectTypeByID(id);
+  if (!objType) RETURN_WITH(ERROR_INVALID_OBJECT)
+  tryToConstructInner(*objType, location, owner);
 
   if (isStunned()) RETURN_WITH(WARNING_STUNNED)
   cancelAction();
-  auto *objType = server.findObjectTypeByID(id);
-  if (!objType) RETURN_WITH(ERROR_INVALID_OBJECT)
 
   if (!knowsConstruction(id)) RETURN_WITH(ERROR_UNKNOWN_CONSTRUCTION)
   if (objType->isUnique() && objType->numInWorld() == 1)
@@ -494,16 +495,19 @@ void User::tryToConstruct(const std::string &id, const MapPoint &location,
 
 void User::tryToConstructFromItem(size_t slot, const MapPoint &location,
                                   Permissions::Owner::Type owner) {
-  if (isStunned()) RETURN_WITH(WARNING_STUNNED)
-  cancelAction();
   if (slot >= INVENTORY_SIZE) RETURN_WITH(ERROR_INVALID_SLOT)
   const auto &invSlot = inventory(slot);
   if (!invSlot.first.hasItem()) RETURN_WITH(ERROR_EMPTY_SLOT)
   const ServerItem &item = *invSlot.first.type();
   if (!item.constructsObject()) RETURN_WITH(ERROR_CANNOT_CONSTRUCT);
+  const ObjectType &objType = *item.constructsObject();
+
+  tryToConstructInner(objType, location, owner);
+
+  if (isStunned()) RETURN_WITH(WARNING_STUNNED)
+  cancelAction();
   if (invSlot.first.isBroken()) RETURN_WITH(WARNING_BROKEN_ITEM)
 
-  const ObjectType &objType = *item.constructsObject();
   if (distance(collisionRect(), objType.collisionRect() + location) >
       Server::ACTION_DISTANCE)
     RETURN_WITH(WARNING_TOO_FAR)
@@ -522,6 +526,9 @@ void User::tryToConstructFromItem(size_t slot, const MapPoint &location,
   beginConstructing(objType, location, ownerIsCity, toolSpeed, slot);
   sendMessage({SV_ACTION_STARTED, objType.constructionTime() / toolSpeed});
 }
+
+void User::tryToConstructInner(const ObjectType &type, const MapPoint &location,
+                               Permissions::Owner::Type owner) {}
 
 bool User::hasItems(const ItemSet &items) const {
   ItemSet remaining = items;
