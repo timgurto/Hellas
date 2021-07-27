@@ -461,10 +461,6 @@ void User::tryToConstruct(const std::string &id, const MapPoint &location,
   auto &server = Server::instance();
   auto *objType = server.findObjectTypeByID(id);
   if (!objType) RETURN_WITH(ERROR_INVALID_OBJECT)
-  tryToConstructInner(*objType, location, owner);
-
-  if (isStunned()) RETURN_WITH(WARNING_STUNNED)
-  cancelAction();
 
   if (!knowsConstruction(id)) RETURN_WITH(ERROR_UNKNOWN_CONSTRUCTION)
   if (objType->isUnique() && objType->numInWorld() == 1)
@@ -477,20 +473,8 @@ void User::tryToConstruct(const std::string &id, const MapPoint &location,
   }
   if (objType->isUnbuildable()) RETURN_WITH(ERROR_UNBUILDABLE)
 
-  if (distance(collisionRect(), objType->collisionRect() + location) >
-      Server::ACTION_DISTANCE)
-    RETURN_WITH(WARNING_TOO_FAR)
-  if (!server.isLocationValid(location, *objType)) RETURN_WITH(WARNING_BLOCKED)
-
-  // Tool check must be the last check, as it damages the tools.
-  auto requiresTool = !objType->constructionReq().empty();
-  auto toolSpeed = 1.0;
-  if (requiresTool) {
-    toolSpeed = checkAndDamageToolAndGetSpeed(objType->constructionReq());
-    if (toolSpeed == 0) RETURN_WITH(WARNING_NEED_TOOLS)
-  }
-  auto ownerIsCity = owner == Permissions::Owner::CITY;
-  beginConstructing(*objType, location, ownerIsCity, toolSpeed);
+  // Must be last due to RETURN_WITH macros inside.
+  tryToConstructInner(*objType, location, owner);
 }
 
 void User::tryToConstructFromItem(size_t slot, const MapPoint &location,
@@ -502,16 +486,26 @@ void User::tryToConstructFromItem(size_t slot, const MapPoint &location,
   if (!item.constructsObject()) RETURN_WITH(ERROR_CANNOT_CONSTRUCT);
   const ObjectType &objType = *item.constructsObject();
 
-  tryToConstructInner(objType, location, owner);
+  if (invSlot.first.isBroken()) RETURN_WITH(WARNING_BROKEN_ITEM)
+
+  // Must be last due to RETURN_WITH macros inside.
+  tryToConstructInner(objType, location, owner, slot);
+
+  // Note: currently broken.  This will be sent even if the above fails.
+  // sendMessage({SV_ACTION_STARTED, objType.constructionTime() / toolSpeed});
+}
+
+void User::tryToConstructInner(const ObjectType &objType,
+                               const MapPoint &location,
+                               Permissions::Owner::Type owner, size_t slot) {
+  auto &server = Server::instance();
 
   if (isStunned()) RETURN_WITH(WARNING_STUNNED)
   cancelAction();
-  if (invSlot.first.isBroken()) RETURN_WITH(WARNING_BROKEN_ITEM)
 
   if (distance(collisionRect(), objType.collisionRect() + location) >
       Server::ACTION_DISTANCE)
     RETURN_WITH(WARNING_TOO_FAR)
-  auto &server = Server::instance();
   if (!server.isLocationValid(location, objType)) RETURN_WITH(WARNING_BLOCKED)
 
   // Tool check must be the last check, as it damages the tools.
@@ -524,11 +518,7 @@ void User::tryToConstructFromItem(size_t slot, const MapPoint &location,
 
   const auto ownerIsCity = owner == Permissions::Owner::CITY;
   beginConstructing(objType, location, ownerIsCity, toolSpeed, slot);
-  sendMessage({SV_ACTION_STARTED, objType.constructionTime() / toolSpeed});
 }
-
-void User::tryToConstructInner(const ObjectType &type, const MapPoint &location,
-                               Permissions::Owner::Type owner) {}
 
 bool User::hasItems(const ItemSet &items) const {
   ItemSet remaining = items;
