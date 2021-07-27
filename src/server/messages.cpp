@@ -648,6 +648,34 @@ HANDLE_MESSAGE(CL_CEDE) {
   ent->permissions.setCityOwner(city);
 }
 
+HANDLE_MESSAGE(CL_TARGET_ENTITY) {
+  auto serial = Serial{};
+  READ_ARGS(serial);
+
+  handle_CL_TARGET_ENTITY(user, serial);
+}
+
+HANDLE_MESSAGE(CL_TARGET_PLAYER) {
+  auto username = ""s;
+  READ_ARGS(username);
+
+  handle_CL_TARGET_PLAYER(user, username);
+}
+
+HANDLE_MESSAGE(CL_SELECT_ENTITY) {
+  auto serial = Serial{};
+  READ_ARGS(serial);
+
+  handle_CL_SELECT_ENTITY(user, serial);
+}
+
+HANDLE_MESSAGE(CL_SELECT_PLAYER) {
+  auto username = ""s;
+  READ_ARGS(username);
+
+  handle_CL_SELECT_PLAYER(user, username);
+}
+
 HANDLE_MESSAGE(CL_PERFORM_OBJECT_ACTION) {
   auto serial = Serial{};
   auto textArg = ""s;
@@ -1076,6 +1104,10 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_SWAP_ITEMS)
       SEND_MESSAGE_TO_HANDLER(CL_TAKE_ITEM)
       SEND_MESSAGE_TO_HANDLER(CL_CEDE)
+      SEND_MESSAGE_TO_HANDLER(CL_TARGET_ENTITY)
+      SEND_MESSAGE_TO_HANDLER(CL_TARGET_PLAYER)
+      SEND_MESSAGE_TO_HANDLER(CL_SELECT_ENTITY)
+      SEND_MESSAGE_TO_HANDLER(CL_SELECT_PLAYER)
       SEND_MESSAGE_TO_HANDLER(CL_PERFORM_OBJECT_ACTION)
       SEND_MESSAGE_TO_HANDLER(CL_CAST_SPELL)
       SEND_MESSAGE_TO_HANDLER(CL_CAST_SPELL_FROM_ITEM)
@@ -1348,44 +1380,6 @@ void Server::handleBufferedMessages(const Socket &client,
 
         user->onTerrainListChange(TerrainList::defaultList().id());
 
-        break;
-      }
-
-      case CL_TARGET_ENTITY: {
-        Serial serial;
-        iss >> serial >> del;
-        if (del != MSG_END) return;
-
-        handle_CL_TARGET_ENTITY(*user, serial);
-        break;
-      }
-
-      case CL_TARGET_PLAYER: {
-        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
-        std::string targetUsername(_stringInputBuffer);
-        iss >> del;
-        if (del != MSG_END) return;
-
-        handle_CL_TARGET_PLAYER(*user, targetUsername);
-        break;
-      }
-
-      case CL_SELECT_ENTITY: {
-        Serial serial;
-        iss >> serial >> del;
-        if (del != MSG_END) return;
-
-        handle_CL_SELECT_ENTITY(*user, serial);
-        break;
-      }
-
-      case CL_SELECT_PLAYER: {
-        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
-        std::string targetUsername(_stringInputBuffer);
-        iss >> del;
-        if (del != MSG_END) return;
-
-        handle_CL_SELECT_PLAYER(*user, targetUsername);
         break;
       }
 
