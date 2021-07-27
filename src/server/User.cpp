@@ -490,7 +490,6 @@ void User::tryToConstructInner(const ObjectType &objType,
   auto &server = Server::instance();
 
   if (isStunned()) RETURN_WITH(WARNING_STUNNED)
-  cancelAction();
 
   if (objType.isUnique() && objType.numInWorld() == 1)
     RETURN_WITH(WARNING_UNIQUE_OBJECT)
@@ -512,6 +511,8 @@ void User::tryToConstructInner(const ObjectType &objType,
     toolSpeed = checkAndDamageToolAndGetSpeed(objType.constructionReq());
     if (toolSpeed == 0) RETURN_WITH(WARNING_NEED_TOOLS)
   }
+
+  cancelAction();
 
   const auto ownerIsCity = owner == Permissions::Owner::CITY;
 
