@@ -184,6 +184,11 @@ HANDLE_MESSAGE(CL_MOVE_TO) {
   }
 }
 
+HANDLE_MESSAGE(CL_CANCEL_ACTION) {
+  CHECK_NO_ARGS
+  user.cancelAction();
+}
+
 HANDLE_MESSAGE(CL_CRAFT) {
   auto recipeID = ""s;
   READ_ARGS(recipeID);
@@ -1059,6 +1064,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_REQUEST_TIME_PLAYED)
       SEND_MESSAGE_TO_HANDLER(CL_SKIP_TUTORIAL)
       SEND_MESSAGE_TO_HANDLER(CL_MOVE_TO)
+      SEND_MESSAGE_TO_HANDLER(CL_CANCEL_ACTION)
       SEND_MESSAGE_TO_HANDLER(CL_CRAFT)
       SEND_MESSAGE_TO_HANDLER(CL_CONSTRUCT_FROM_ITEM)
       SEND_MESSAGE_TO_HANDLER(CL_CONSTRUCT_FROM_ITEM_FOR_CITY)
@@ -1089,13 +1095,6 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(DG_SPAWN)
       SEND_MESSAGE_TO_HANDLER(DG_UNLOCK)
       SEND_MESSAGE_TO_HANDLER(DG_SIMULATE_YIELDS)
-
-      case CL_CANCEL_ACTION: {
-        iss >> del;
-        if (del != MSG_END) return;
-        user->cancelAction();
-        break;
-      }
 
       case CL_GATHER: {
         auto serial = Serial{};
