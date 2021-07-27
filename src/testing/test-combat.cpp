@@ -316,6 +316,14 @@ TEST_CASE_METHOD(
           WAIT_UNTIL(server->entities().size() == 2);
         }
       }
+
+      WHEN("she selects (left-clicks) Bob") {
+        cAlice->sendMessage(CL_SELECT_PLAYER, "Bob");
+
+        THEN("the new tower still gets built") {
+          WAIT_UNTIL_TIMEOUT(server->entities().size() == 1, 150);
+        }
+      }
     }
   }
 }
