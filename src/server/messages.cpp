@@ -664,6 +664,7 @@ HANDLE_MESSAGE(CL_CAST_SPELL) {
   READ_ARGS(spellID);
 
   if (user.isStunned()) RETURN_WITH(WARNING_STUNNED)
+  user.removeInterruptibleBuffs();
 
   if (!user.getClass().knowsSpell(spellID)) RETURN_WITH(ERROR_DONT_KNOW_SPELL)
   if (user.isSpellCoolingDown(spellID)) return;

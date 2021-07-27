@@ -77,7 +77,7 @@ TEST_CASE("Buffs disappear on death") {
 
 TEST_CASE_METHOD(ServerAndClientWithData,
                  "Interruptible buffs disappear on interrupt", "[combat]") {
-  GIVEN("An interruptible buff, a fox NPC, and a recipe") {
+  GIVEN("An interruptible buff, a fox NPC, a recipe, a hostile spell") {
     useData(R"(
         <buff id="food" canBeInterrupted="1"/>
 
@@ -85,6 +85,11 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 
         <recipe id="idea" time="100" />
         <item id="idea" />
+
+        <spell id="explosion" radius="100" >
+            <targets enemy="1" cooldown="1" />
+            <function name="doDirectDamage" i1="5" />
+        </spell>
       )");
 
     AND_GIVEN("the user has the buff") {
@@ -98,6 +103,10 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 
       WHEN("he starts moving") {
         client->sendMessage(CL_MOVE_TO, makeArgs(100, 100));
+      }
+
+      WHEN("he casts a spell") {
+        client->sendMessage(CL_CAST_SPELL, "explosion");
       }
 
       // Then he loses the buff
