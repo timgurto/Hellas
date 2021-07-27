@@ -490,9 +490,6 @@ void User::tryToConstructFromItem(size_t slot, const MapPoint &location,
 
   // Must be last due to RETURN_WITH macros inside.
   tryToConstructInner(objType, location, owner, slot);
-
-  // Note: currently broken.  This will be sent even if the above fails.
-  // sendMessage({SV_ACTION_STARTED, objType.constructionTime() / toolSpeed});
 }
 
 void User::tryToConstructInner(const ObjectType &objType,
@@ -517,7 +514,9 @@ void User::tryToConstructInner(const ObjectType &objType,
   }
 
   const auto ownerIsCity = owner == Permissions::Owner::CITY;
+
   beginConstructing(objType, location, ownerIsCity, toolSpeed, slot);
+  sendMessage({SV_ACTION_STARTED, objType.constructionTime() / toolSpeed});
 }
 
 bool User::hasItems(const ItemSet &items) const {
