@@ -205,34 +205,34 @@ HANDLE_MESSAGE(CL_CRAFT) {
 
 HANDLE_MESSAGE(CL_CONSTRUCT_FROM_ITEM) {
   auto slot = size_t{};
-  auto x = double{}, y = double{};
-  READ_ARGS(slot, x, y);
+  auto location = MapPoint{};
+  READ_ARGS(slot, location.x, location.y);
 
-  user.tryToConstructFromItem(slot, {x, y}, Permissions::Owner::PLAYER);
+  user.tryToConstructFromItem(slot, location, Permissions::Owner::PLAYER);
 }
 
 HANDLE_MESSAGE(CL_CONSTRUCT_FROM_ITEM_FOR_CITY) {
   auto slot = size_t{};
-  auto x = double{}, y = double{};
-  READ_ARGS(slot, x, y);
+  auto location = MapPoint{};
+  READ_ARGS(slot, location.x, location.y);
 
-  user.tryToConstructFromItem(slot, {x, y}, Permissions::Owner::CITY);
+  user.tryToConstructFromItem(slot, location, Permissions::Owner::CITY);
 }
 
 HANDLE_MESSAGE(CL_CONSTRUCT) {
   auto id = ""s;
-  auto x = double{}, y = double{};
-  READ_ARGS(id, x, y);
+  auto location = MapPoint{};
+  READ_ARGS(id, location.x, location.y);
 
-  user.tryToConstruct(id, {x, y}, Permissions::Owner::PLAYER);
+  user.tryToConstruct(id, location, Permissions::Owner::PLAYER);
 }
 
 HANDLE_MESSAGE(CL_CONSTRUCT_FOR_CITY) {
   auto id = ""s;
-  auto x = double{}, y = double{};
-  READ_ARGS(id, x, y);
+  auto location = MapPoint{};
+  READ_ARGS(id, location.x, location.y);
 
-  user.tryToConstruct(id, {x, y}, Permissions::Owner::CITY);
+  user.tryToConstruct(id, location, Permissions::Owner::CITY);
 }
 
 HANDLE_MESSAGE(CL_TRADE) {
