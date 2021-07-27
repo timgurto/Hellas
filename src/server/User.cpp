@@ -513,6 +513,7 @@ void User::tryToConstructInner(const ObjectType &objType,
   }
 
   cancelAction();
+  removeInterruptibleBuffs();
 
   const auto ownerIsCity = owner == Permissions::Owner::CITY;
 

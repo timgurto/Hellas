@@ -79,7 +79,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
                  "Interruptible buffs disappear on interrupt", "[combat]") {
   GIVEN(
       "An interruptible buff, a fox NPC, a recipe, a hostile spell, a spell "
-      "item") {
+      "item, a construction") {
     useData(R"(
         <buff id="food" canBeInterrupted="1"/>
 
@@ -94,6 +94,11 @@ TEST_CASE_METHOD(ServerAndClientWithData,
         </spell>
 
         <item id="tnt" castsSpellOnUse="explosion" />
+
+        <objectType
+          id="startup" constructionTime="0" >
+          <material id="idea" quantity="1" />
+        </objectType>
       
       )");
 
@@ -131,6 +136,12 @@ TEST_CASE_METHOD(ServerAndClientWithData,
         const auto tnt = server->findItem("tnt");
         user->giveItem(&tnt);
         client->sendMessage(CL_CAST_SPELL_FROM_ITEM, "0");
+
+        THEN("he loses the buff") { WAIT_UNTIL(user->buffs().empty()); }
+      }
+
+      WHEN("he constructs an object") {
+        client->sendMessage(CL_CONSTRUCT, makeArgs("startup", 30, 30));
 
         THEN("he loses the buff") { WAIT_UNTIL(user->buffs().empty()); }
       }
