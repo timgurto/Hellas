@@ -92,23 +92,16 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       user->applyBuff(buff, *user);
       CHECK(user->buffs().size() == 1);
 
-      WHEN("a hostile fox attacks him") {
-        server->addNPC("fox", {10, 15});
+      WHEN("a hostile fox attacks him") { server->addNPC("fox", {10, 15}); }
 
-        THEN("he loses the buff") { WAIT_UNTIL(user->buffs().empty()); }
-      }
-
-      WHEN("he starts crafting") {
-        client->sendMessage(CL_CRAFT, "idea");
-
-        THEN("he loses the buff") { WAIT_UNTIL(user->buffs().empty()); }
-      }
+      WHEN("he starts crafting") { client->sendMessage(CL_CRAFT, "idea"); }
 
       WHEN("he starts moving") {
         client->sendMessage(CL_MOVE_TO, makeArgs(100, 100));
-
-        THEN("he loses the buff") { WAIT_UNTIL(user->buffs().empty()); }
       }
+
+      // Then he loses the buff
+      WAIT_UNTIL(user->buffs().empty());
     }
   }
 }
