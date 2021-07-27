@@ -492,6 +492,37 @@ void User::tryToConstruct(const std::string &id, const MapPoint &location,
   beginConstructing(*objType, location, ownerIsCity, toolSpeed);
 }
 
+void User::tryToConstructFromItem(size_t slot, const MapPoint &location,
+                                  Permissions::Owner::Type owner) {
+  if (isStunned()) RETURN_WITH(WARNING_STUNNED)
+  cancelAction();
+  if (slot >= INVENTORY_SIZE) RETURN_WITH(ERROR_INVALID_SLOT)
+  const auto &invSlot = inventory(slot);
+  if (!invSlot.first.hasItem()) RETURN_WITH(ERROR_EMPTY_SLOT)
+  const ServerItem &item = *invSlot.first.type();
+  if (!item.constructsObject()) RETURN_WITH(ERROR_CANNOT_CONSTRUCT);
+  if (invSlot.first.isBroken()) RETURN_WITH(WARNING_BROKEN_ITEM)
+
+  const ObjectType &objType = *item.constructsObject();
+  if (distance(collisionRect(), objType.collisionRect() + location) >
+      Server::ACTION_DISTANCE)
+    RETURN_WITH(WARNING_TOO_FAR)
+  auto &server = Server::instance();
+  if (!server.isLocationValid(location, objType)) RETURN_WITH(WARNING_BLOCKED)
+
+  // Tool check must be the last check, as it damages the tools.
+  auto requiresTool = !objType.constructionReq().empty();
+  auto toolSpeed = 1.0;
+  if (requiresTool) {
+    toolSpeed = checkAndDamageToolAndGetSpeed(objType.constructionReq());
+    if (toolSpeed == 0) RETURN_WITH(WARNING_NEED_TOOLS)
+  }
+
+  const auto ownerIsCity = owner == Permissions::Owner::CITY;
+  beginConstructing(objType, location, ownerIsCity, toolSpeed, slot);
+  sendMessage({SV_ACTION_STARTED, objType.constructionTime() / toolSpeed});
+}
+
 bool User::hasItems(const ItemSet &items) const {
   ItemSet remaining = items;
   for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {

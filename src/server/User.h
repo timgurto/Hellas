@@ -274,6 +274,8 @@ class User : public Object {  // TODO: Don't inherit from Object
   void alertReactivelyTargetingUser(const User &targetingUser) const override;
   void tryToConstruct(const std::string &id, const MapPoint &location,
                       Permissions::Owner::Type owner);
+  void tryToConstructFromItem(size_t invSlot, const MapPoint &location,
+                              Permissions::Owner::Type owner);
 
   // Whether the user has enough materials to craft a recipe
   bool hasItems(const ItemSet &items) const;

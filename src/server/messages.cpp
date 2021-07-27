@@ -203,6 +203,22 @@ HANDLE_MESSAGE(CL_CRAFT) {
   user.beginCrafting(*it, speed);
 }
 
+HANDLE_MESSAGE(CL_CONSTRUCT_FROM_ITEM) {
+  auto slot = size_t{};
+  auto x = double{}, y = double{};
+  READ_ARGS(slot, x, y);
+
+  user.tryToConstructFromItem(slot, {x, y}, Permissions::Owner::PLAYER);
+}
+
+HANDLE_MESSAGE(CL_CONSTRUCT_FROM_ITEM_FOR_CITY) {
+  auto slot = size_t{};
+  auto x = double{}, y = double{};
+  READ_ARGS(slot, x, y);
+
+  user.tryToConstructFromItem(slot, {x, y}, Permissions::Owner::CITY);
+}
+
 HANDLE_MESSAGE(CL_CONSTRUCT) {
   auto id = ""s;
   auto x = double{}, y = double{};
@@ -1033,6 +1049,8 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_SKIP_TUTORIAL)
       SEND_MESSAGE_TO_HANDLER(CL_MOVE_TO)
       SEND_MESSAGE_TO_HANDLER(CL_CRAFT)
+      SEND_MESSAGE_TO_HANDLER(CL_CONSTRUCT_FROM_ITEM)
+      SEND_MESSAGE_TO_HANDLER(CL_CONSTRUCT_FROM_ITEM_FOR_CITY)
       SEND_MESSAGE_TO_HANDLER(CL_CONSTRUCT)
       SEND_MESSAGE_TO_HANDLER(CL_CONSTRUCT_FOR_CITY)
       SEND_MESSAGE_TO_HANDLER(CL_TRADE)
@@ -1059,45 +1077,6 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(DG_SPAWN)
       SEND_MESSAGE_TO_HANDLER(DG_UNLOCK)
       SEND_MESSAGE_TO_HANDLER(DG_SIMULATE_YIELDS)
-
-      case CL_CONSTRUCT_FROM_ITEM:
-      case CL_CONSTRUCT_FROM_ITEM_FOR_CITY: {
-        size_t slot;
-        double x, y;
-        iss >> slot >> del >> x >> del >> y >> del;
-        if (del != MSG_END) return;
-        if (user->isStunned()) BREAK_WITH(WARNING_STUNNED)
-        user->cancelAction();
-        if (slot >= User::INVENTORY_SIZE) BREAK_WITH(ERROR_INVALID_SLOT)
-        const auto &invSlot = user->inventory(slot);
-        if (!invSlot.first.hasItem()) BREAK_WITH(ERROR_EMPTY_SLOT)
-        const ServerItem &item = *invSlot.first.type();
-        if (item.constructsObject() == nullptr)
-          BREAK_WITH(ERROR_CANNOT_CONSTRUCT);
-        if (invSlot.first.isBroken()) BREAK_WITH(WARNING_BROKEN_ITEM)
-        const MapPoint location(x, y);
-        const ObjectType &objType = *item.constructsObject();
-        if (distance(user->collisionRect(),
-                     objType.collisionRect() + location) > ACTION_DISTANCE)
-          BREAK_WITH(WARNING_TOO_FAR)
-        if (!isLocationValid(location, objType)) BREAK_WITH(WARNING_BLOCKED)
-
-        // Tool check must be the last check, as it damages the tools.
-        auto requiresTool = !objType.constructionReq().empty();
-        auto toolSpeed = 1.0;
-        if (requiresTool) {
-          toolSpeed =
-              user->checkAndDamageToolAndGetSpeed(objType.constructionReq());
-          if (toolSpeed == 0) BREAK_WITH(WARNING_NEED_TOOLS)
-        }
-
-        auto ownerIsCity = msgCode == CL_CONSTRUCT_FROM_ITEM_FOR_CITY;
-        user->beginConstructing(objType, location, ownerIsCity, toolSpeed,
-                                slot);
-        sendMessage(client, {SV_ACTION_STARTED,
-                             objType.constructionTime() / toolSpeed});
-        break;
-      }
 
       case CL_DISMISS_BUFF: {
         iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
