@@ -145,6 +145,9 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 
         THEN("he loses the buff") { WAIT_UNTIL(user->buffs().empty()); }
       }
+
+      // TODO: gathering, object actions, taming, feeding, repairing, destroying
+      // objects, picking up objects, mounting, dismounting
     }
   }
 }

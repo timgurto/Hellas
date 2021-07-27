@@ -97,7 +97,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 96,Direct trading,144,377,Feature,,,TRUE,
 97,Block quest completion if multiple rewards would overfill inventory,2,5,Bug,,,TRUE,
 98,Crash if looking at map while pet dies,2,21,Bug,,,TRUE,
-99,Being hit and crafting should interrupt food buff,21,2,Bug,,,TRUE,
+99,Being hit and crafting should interrupt food buff,21,2,Bug,,TRUE,TRUE,
 100,Quest reward should account for quest items when calculating space for rewards,1,3,Bug,,,TRUE,
 101,Phantom items after picking them up,13,34,Bug,,,TRUE,
 102,Make it clear that dropped items are unowned,8,1,Usability,,,,
