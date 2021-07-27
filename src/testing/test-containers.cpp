@@ -29,7 +29,7 @@ TEST_CASE("Dismantle an object with an inventory", "[.flaky]") {
   WAIT_UNTIL(c.objects().size() == 1);
 
   // When the user tries to deconstruct the box
-  c.sendMessage(CL_DECONSTRUCT, makeArgs(box.serial()));
+  c.sendMessage(CL_PICK_UP_OBJECT_AS_ITEM, makeArgs(box.serial()));
 
   // The deconstruction action successfully begins
   CHECK(c.waitForMessage(SV_ACTION_STARTED));

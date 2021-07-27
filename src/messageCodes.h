@@ -73,11 +73,11 @@ enum MessageCode {
 
   // "I want to deconstruct an object"
   // Arguments: serial
-  CL_DECONSTRUCT,
+  CL_PICK_UP_OBJECT_AS_ITEM,
 
   // "I want to demolish an object"
   // Arguments: serial
-  CL_DEMOLISH,
+  CL_DESTROY_OBJECT,
 
   // "I want to trade using merchant slot ... in object ..."
   // Arguments: serial, slot

@@ -624,7 +624,7 @@ void ClientObject::confirmAndDemolishObject(void *objectToDemolish) {
     _client.removeWindow(obj._confirmDemolishWindow);
   else
     obj._confirmDemolishWindow = new ConfirmationWindow(
-        _client, confirmationText, CL_DEMOLISH, makeArgs(obj.serial()));
+        _client, confirmationText, CL_DESTROY_OBJECT, makeArgs(obj.serial()));
   _client.addWindow(obj._confirmDemolishWindow);
   obj._confirmDemolishWindow->show();
 }
@@ -763,7 +763,7 @@ void ClientObject::hideWindow() {
 
 void ClientObject::startDeconstructing(void *object) {
   const ClientObject &obj = *static_cast<const ClientObject *>(object);
-  obj._client.sendMessage({CL_DECONSTRUCT, obj.serial()});
+  obj._client.sendMessage({CL_PICK_UP_OBJECT_AS_ITEM, obj.serial()});
   obj._client.prepareAction(std::string("Dismantling ") +
                             obj.objectType()->name());
 }

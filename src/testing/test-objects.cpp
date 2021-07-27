@@ -19,7 +19,7 @@ TEST_CASE("Damaged objects can't be deconstructed") {
     REQUIRE(brick.health() == 1);
 
     WHEN("the user tries to deconstruct the brick") {
-      c.sendMessage(CL_DECONSTRUCT, makeArgs(brick.serial()));
+      c.sendMessage(CL_PICK_UP_OBJECT_AS_ITEM, makeArgs(brick.serial()));
 
       THEN("the object still exists") {
         REPEAT_FOR_MS(100);

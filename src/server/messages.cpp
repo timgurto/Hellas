@@ -169,6 +169,7 @@ HANDLE_MESSAGE(CL_MOVE_TO) {
 
   if (user.action() != User::ATTACK) user.cancelAction();
   user.removeInterruptibleBuffs();
+
   if (user.isDriving()) {
     // Move vehicle and user together
     auto vehicleSerial = user.driving();
@@ -188,8 +189,6 @@ HANDLE_MESSAGE(CL_CRAFT) {
   READ_ARGS(recipeID);
 
   if (user.isStunned()) RETURN_WITH(WARNING_STUNNED)
-  user.cancelAction();
-  user.removeInterruptibleBuffs();
   const std::set<SRecipe>::const_iterator it = _recipes.find(recipeID);
   if (!user.knowsRecipe(recipeID)) RETURN_WITH(ERROR_UNKNOWN_RECIPE)
   ItemSet remaining;
@@ -199,6 +198,9 @@ HANDLE_MESSAGE(CL_CRAFT) {
   auto speed = user.checkAndDamageToolsAndGetSpeed(it->tools());
   auto userHasRequiredTools = speed != 0;
   if (!userHasRequiredTools) RETURN_WITH(WARNING_NEED_TOOLS)
+
+  user.cancelAction();
+  user.removeInterruptibleBuffs();
 
   user.beginCrafting(*it, speed);
 }
@@ -1148,7 +1150,7 @@ void Server::handleBufferedMessages(const Socket &client,
         break;
       }
 
-      case CL_DECONSTRUCT: {
+      case CL_PICK_UP_OBJECT_AS_ITEM: {
         Serial serial;
         iss >> serial >> del;
         if (del != MSG_END) return;
@@ -1185,7 +1187,7 @@ void Server::handleBufferedMessages(const Socket &client,
         break;
       }
 
-      case CL_DEMOLISH: {
+      case CL_DESTROY_OBJECT: {
         Serial serial;
         iss >> serial >> del;
         if (del != MSG_END) return;

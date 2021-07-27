@@ -2833,7 +2833,7 @@ void Client::initializeMessageNames() {
   _messageCommands["constructItem"] = CL_CONSTRUCT_FROM_ITEM;
   _messageCommands["construct"] = CL_CONSTRUCT;
   _messageCommands["gather"] = CL_GATHER;
-  _messageCommands["deconstruct"] = CL_DECONSTRUCT;
+  _messageCommands["deconstruct"] = CL_PICK_UP_OBJECT_AS_ITEM;
   _messageCommands["tame"] = CL_TAME_NPC;
   _messageCommands["drop"] = CL_DROP;
   _messageCommands["swap"] = CL_SWAP_ITEMS;

@@ -423,7 +423,7 @@ TEST_CASE("Pets can be slaughtered") {
     pig.permissions.setPlayerOwner(user.name());
 
     WHEN("he tries to slaughter it") {
-      c.sendMessage(CL_DEMOLISH, makeArgs(pig.serial()));
+      c.sendMessage(CL_DESTROY_OBJECT, makeArgs(pig.serial()));
 
       THEN("it dies") { WAIT_UNTIL(pig.isDead()); }
     }
