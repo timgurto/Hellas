@@ -292,3 +292,34 @@ TEST_CASE_METHOD(ServerAndClientWithData, "XP from kills") {
     }
   }
 }
+
+TEST_CASE_METHOD(
+    ServerAndClientWithData,
+    "Players can select stuff without interrupting their actions") {
+  GIVEN("towers type that takes time to construct") {
+    useData(R"(
+      <objectType
+        id="tower" constructionTime="100" >
+        <material id="wood" quantity="1" />
+      </objectType>
+      <item id="wood" />
+    )");
+
+    AND_GIVEN("there's a tower on the map") {
+      const auto &existingTower = server->addObject("tower", {100, 100});
+
+      AND_GIVEN("the user is constructing another one") {
+        client->sendMessage(CL_CONSTRUCT, makeArgs("tower", 30, 30));
+
+        WHEN("he selects (left-clicks) the existing tower") {
+          client->sendMessage(CL_SELECT_ENTITY,
+                              makeArgs(existingTower.serial()));
+
+          THEN("the new tower still gets built") {
+            WAIT_UNTIL(server->entities().size() == 2);
+          }
+        }
+      }
+    }
+  }
+}
