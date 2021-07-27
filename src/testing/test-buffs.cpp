@@ -121,6 +121,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       }
 
       WHEN("he casts a spell") {
+        user->getClass().teachSpell("explosion");
         client->sendMessage(CL_CAST_SPELL, "explosion");
 
         THEN("he loses the buff") { WAIT_UNTIL(user->buffs().empty()); }

@@ -664,7 +664,6 @@ HANDLE_MESSAGE(CL_CAST_SPELL) {
   READ_ARGS(spellID);
 
   if (user.isStunned()) RETURN_WITH(WARNING_STUNNED)
-  user.removeInterruptibleBuffs();
 
   if (!user.getClass().knowsSpell(spellID)) RETURN_WITH(ERROR_DONT_KNOW_SPELL)
   if (user.isSpellCoolingDown(spellID)) return;
@@ -673,6 +672,8 @@ HANDLE_MESSAGE(CL_CAST_SPELL) {
   if (!spell) return;
 
   if (user.energy() < spell->cost()) RETURN_WITH(WARNING_NOT_ENOUGH_ENERGY)
+
+  user.removeInterruptibleBuffs();
 
   user.castSpell(*spell);
 }
