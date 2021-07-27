@@ -887,6 +887,15 @@ HANDLE_MESSAGE(CL_ORDER_PET_TO_FOLLOW) {
   npc->ai.giveOrder(AI::ORDER_TO_FOLLOW);
 }
 
+HANDLE_MESSAGE(CL_DISMISS_BUFF) {
+  auto buffID = ""s;
+  READ_ARGS(buffID);
+
+  if (user.isStunned()) RETURN_WITH(WARNING_STUNNED)
+
+  user.removeBuff(buffID);
+}
+
 HANDLE_MESSAGE(CL_COMPLETE_QUEST) {
   auto questID = ""s;
   auto endSerial = Serial{};
@@ -1069,6 +1078,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_FEED_PET)
       SEND_MESSAGE_TO_HANDLER(CL_ORDER_PET_TO_STAY)
       SEND_MESSAGE_TO_HANDLER(CL_ORDER_PET_TO_FOLLOW)
+      SEND_MESSAGE_TO_HANDLER(CL_DISMISS_BUFF)
       SEND_MESSAGE_TO_HANDLER(CL_COMPLETE_QUEST)
       SEND_MESSAGE_TO_HANDLER(CL_ABANDON_QUEST)
       SEND_MESSAGE_TO_HANDLER(CL_INVITE_TO_GROUP)
@@ -1079,18 +1089,6 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(DG_SPAWN)
       SEND_MESSAGE_TO_HANDLER(DG_UNLOCK)
       SEND_MESSAGE_TO_HANDLER(DG_SIMULATE_YIELDS)
-
-      case CL_DISMISS_BUFF: {
-        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
-        auto buffID = std::string{_stringInputBuffer};
-        iss >> del;
-        if (del != MSG_END) return;
-
-        if (user->isStunned()) BREAK_WITH(WARNING_STUNNED)
-
-        user->removeBuff(buffID);
-        break;
-      }
 
       case CL_CANCEL_ACTION: {
         iss >> del;
