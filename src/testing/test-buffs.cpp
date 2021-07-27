@@ -77,7 +77,9 @@ TEST_CASE("Buffs disappear on death") {
 
 TEST_CASE_METHOD(ServerAndClientWithData,
                  "Interruptible buffs disappear on interrupt", "[combat]") {
-  GIVEN("An interruptible buff, a fox NPC, a recipe, a hostile spell") {
+  GIVEN(
+      "An interruptible buff, a fox NPC, a recipe, a hostile spell, a spell "
+      "item") {
     useData(R"(
         <buff id="food" canBeInterrupted="1"/>
 
@@ -90,6 +92,9 @@ TEST_CASE_METHOD(ServerAndClientWithData,
             <targets enemy="1" cooldown="1" />
             <function name="doDirectDamage" i1="5" />
         </spell>
+
+        <item id="tnt" castsSpellOnUse="explosion" />
+      
       )");
 
     AND_GIVEN("the user has the buff") {
@@ -97,20 +102,37 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       user->applyBuff(buff, *user);
       CHECK(user->buffs().size() == 1);
 
-      WHEN("a hostile fox attacks him") { server->addNPC("fox", {10, 15}); }
+      WHEN("a hostile fox attacks him") {
+        server->addNPC("fox", {10, 15});
 
-      WHEN("he starts crafting") { client->sendMessage(CL_CRAFT, "idea"); }
+        THEN("he loses the buff") { WAIT_UNTIL(user->buffs().empty()); }
+      }
+
+      WHEN("he starts crafting") {
+        client->sendMessage(CL_CRAFT, "idea");
+
+        THEN("he loses the buff") { WAIT_UNTIL(user->buffs().empty()); }
+      }
 
       WHEN("he starts moving") {
         client->sendMessage(CL_MOVE_TO, makeArgs(100, 100));
+
+        THEN("he loses the buff") { WAIT_UNTIL(user->buffs().empty()); }
       }
 
       WHEN("he casts a spell") {
         client->sendMessage(CL_CAST_SPELL, "explosion");
+
+        THEN("he loses the buff") { WAIT_UNTIL(user->buffs().empty()); }
       }
 
-      // Then he loses the buff
-      WAIT_UNTIL(user->buffs().empty());
+      WHEN("he casts a spell from an item") {
+        const auto tnt = server->findItem("tnt");
+        user->giveItem(&tnt);
+        client->sendMessage(CL_CAST_SPELL_FROM_ITEM, "0");
+
+        THEN("he loses the buff") { WAIT_UNTIL(user->buffs().empty()); }
+      }
     }
   }
 }

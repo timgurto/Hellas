@@ -703,6 +703,8 @@ HANDLE_MESSAGE(CL_CAST_SPELL_FROM_ITEM) {
   if (!spell) return;
 
   user.cancelAction();
+  user.removeInterruptibleBuffs();
+
   auto result = user.castSpell(*spell, item.spellArg());
   if (result == FAIL) return;
 
