@@ -463,14 +463,6 @@ void User::tryToConstruct(const std::string &id, const MapPoint &location,
   if (!objType) RETURN_WITH(ERROR_INVALID_OBJECT)
 
   if (!knowsConstruction(id)) RETURN_WITH(ERROR_UNKNOWN_CONSTRUCTION)
-  if (objType->isUnique() && objType->numInWorld() == 1)
-    RETURN_WITH(WARNING_UNIQUE_OBJECT)
-  if (objType->isPlayerUnique() &&
-      hasPlayerUnique(objType->playerUniqueCategory())) {
-    sendMessage(
-        {WARNING_PLAYER_UNIQUE_OBJECT, objType->playerUniqueCategory()});
-    return;
-  }
   if (objType->isUnbuildable()) RETURN_WITH(ERROR_UNBUILDABLE)
 
   // Must be last due to RETURN_WITH macros inside.
@@ -499,6 +491,14 @@ void User::tryToConstructInner(const ObjectType &objType,
 
   if (isStunned()) RETURN_WITH(WARNING_STUNNED)
   cancelAction();
+
+  if (objType.isUnique() && objType.numInWorld() == 1)
+    RETURN_WITH(WARNING_UNIQUE_OBJECT)
+  if (objType.isPlayerUnique() &&
+      hasPlayerUnique(objType.playerUniqueCategory())) {
+    sendMessage({WARNING_PLAYER_UNIQUE_OBJECT, objType.playerUniqueCategory()});
+    return;
+  }
 
   if (distance(collisionRect(), objType.collisionRect() + location) >
       Server::ACTION_DISTANCE)
