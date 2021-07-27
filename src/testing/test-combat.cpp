@@ -305,19 +305,15 @@ TEST_CASE_METHOD(
       <item id="wood" />
     )");
 
-    AND_GIVEN("there's a tower on the map") {
-      const auto &existingTower = server->addObject("tower", {100, 100});
+    AND_GIVEN("Alice is constructing a tower") {
+      cAlice->sendMessage(CL_CONSTRUCT, makeArgs("tower", 30, 30));
 
-      AND_GIVEN("Alice is constructing another one") {
-        cAlice->sendMessage(CL_CONSTRUCT, makeArgs("tower", 30, 30));
+      WHEN("she selects (left-clicks) an existing tower") {
+        const auto &existingTower = server->addObject("tower", {100, 100});
+        cAlice->sendMessage(CL_SELECT_ENTITY, makeArgs(existingTower.serial()));
 
-        WHEN("she selects (left-clicks) the existing tower") {
-          cAlice->sendMessage(CL_SELECT_ENTITY,
-                              makeArgs(existingTower.serial()));
-
-          THEN("the new tower still gets built") {
-            WAIT_UNTIL(server->entities().size() == 2);
-          }
+        THEN("the new tower still gets built") {
+          WAIT_UNTIL(server->entities().size() == 2);
         }
       }
     }
