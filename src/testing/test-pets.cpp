@@ -1210,6 +1210,7 @@ TEST_CASE_METHOD(TwoClientsWithData, "Pets are anchored when ordered to stay",
   }
 }
 
+// TODO:
 // If follow count is reduced, one randomly stays
 // Followers inside vehicle
 // Can't order someone else's pet

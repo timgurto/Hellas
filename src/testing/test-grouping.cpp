@@ -433,6 +433,7 @@ TEST_CASE_METHOD(TwoClients, "Groups disappear when down to last member",
   }
 }
 
+// TODO:
 // Shared XP only if nearby
 // Round-robin loot
 // Master looter

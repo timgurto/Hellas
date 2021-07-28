@@ -10,9 +10,7 @@ ConfirmationWindow::ConfirmationWindow(Client &client,
                                        const std::string &msgArgs)
     : DialogWindow(client), _msgCode(msgCode), _msgArgs(msgArgs) {
   resize(WINDOW_WIDTH, WINDOW_HEIGHT);
-  setPosition(
-      (Client::SCREEN_X - WINDOW_WIDTH) / 2,
-      (Client::SCREEN_Y - WINDOW_HEIGHT) / 2);  // TODO add a center() function
+  center();
   setTitle("Confirmation");
 
   static const px_t PADDING = 2, BUTTON_WIDTH = 60, BUTTON_HEIGHT = 15,
@@ -39,9 +37,7 @@ void ConfirmationWindow::sendMessageAndHideWindow(void *thisConfWindow) {
 InfoWindow::InfoWindow(Client &client, const std::string &windowText)
     : DialogWindow(client) {
   resize(WINDOW_WIDTH, WINDOW_HEIGHT);
-  setPosition(
-      (Client::SCREEN_X - WINDOW_WIDTH) / 2,
-      (Client::SCREEN_Y - WINDOW_HEIGHT) / 2);  // TODO add a center() function
+  center();
   setTitle("Info");
 
   static const px_t PADDING = 2, BUTTON_WIDTH = 60, BUTTON_HEIGHT = 15,
@@ -67,9 +63,7 @@ InputWindow::InputWindow(Client &client, const std::string &windowText,
              BUTTON_WIDTH = 60, BUTTON_HEIGHT = 15;
 
   resize(WINDOW_WIDTH, WINDOW_HEIGHT);
-  setPosition(
-      (Client::SCREEN_X - WINDOW_WIDTH) / 2,
-      (Client::SCREEN_Y - WINDOW_HEIGHT) / 2);  // TODO add a center() function
+  center();
   setTitle("Input");
 
   auto y = PADDING;
