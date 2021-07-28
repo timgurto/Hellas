@@ -39,6 +39,7 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     if (it == _classes.end()) {
       _debug << Color::CHAT_ERROR << "Invalid class (" << classID
              << ") specified; creating new character." << Log::endl;
+      it = _classes.begin();
     }
     user.setClass(it->second);
 
