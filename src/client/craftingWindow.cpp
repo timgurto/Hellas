@@ -45,9 +45,9 @@ void Client::initializeCraftingWindow() {
 
   _craftingWindow->rect({100, 50, CRAFTING_WINDOW_W, CRAFTING_WINDOW_H});
   _craftingWindow->setTitle("Crafting");
-  _craftingWindow->addChild(new Line(RECIPES_PANE_X - PANE_GAP / 2, CONTENT_Y,
+  _craftingWindow->addChild(new Line({RECIPES_PANE_X - PANE_GAP / 2, CONTENT_Y},
                                      CONTENT_H, Element::VERTICAL));
-  _craftingWindow->addChild(new Line(DETAILS_PANE_X - PANE_GAP / 2, CONTENT_Y,
+  _craftingWindow->addChild(new Line({DETAILS_PANE_X - PANE_GAP / 2, CONTENT_Y},
                                      CONTENT_H, Element::VERTICAL));
 
   // Filters
@@ -64,7 +64,7 @@ void Client::initializeCraftingWindow() {
   pCB->onChange([](Client &client) { client.scrollRecipeListToTop(); });
   filterPane->addChild(pCB);
   y += Element::TEXT_HEIGHT;
-  filterPane->addChild(new Line(0, y + LINE_GAP / 2, FILTERS_PANE_W));
+  filterPane->addChild(new Line({0, y + LINE_GAP / 2}, FILTERS_PANE_W));
   y += LINE_GAP;
 
   static const px_t TOTAL_FILTERS_HEIGHT =
@@ -100,7 +100,7 @@ void Client::initializeCraftingWindow() {
   filterPane->addChild(pCB);
 
   y += Element::TEXT_HEIGHT;
-  filterPane->addChild(new Line(0, y + LINE_GAP / 2, FILTERS_PANE_W));
+  filterPane->addChild(new Line({0, y + LINE_GAP / 2}, FILTERS_PANE_W));
   y += LINE_GAP;
 
   // Material filters
@@ -206,7 +206,7 @@ void Client::refreshRecipeDetailsPane() {
   y += ICON_SIZE;
 
   // Divider
-  pane.addChild(new Line(0, y + LINE_GAP / 2, paneRect.w));
+  pane.addChild(new Line({0, y + LINE_GAP / 2}, paneRect.w));
   y += LINE_GAP;
 
   // Materials list

@@ -3,8 +3,8 @@
 
 extern Renderer renderer;
 
-Line::Line(px_t x, px_t y, px_t length, Orientation orientation)
-    : Element({x, y, 2, 2}), _orientation(orientation) {
+Line::Line(ScreenPoint topLeft, px_t length, Orientation orientation)
+    : Element({topLeft.x, topLeft.y, 2, 2}), _orientation(orientation) {
   if (_orientation == HORIZONTAL)
     width(length);
   else

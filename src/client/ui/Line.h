@@ -11,7 +11,7 @@ class Line : public Element {
 
  public:
   // TODO: Take a ScreenPoint instead of x and y
-  Line(px_t x, px_t y, px_t length,
+  Line(ScreenPoint topLeft, px_t length,
        Orientation _orientation = HORIZONTAL);  // x,y = top-left corner.
 };
 

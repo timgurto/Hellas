@@ -26,7 +26,7 @@ void Client::initializeSocialWindow() {
   onlinePlayersSection->addChild(_onlinePlayersList);
   y += onlinePlayersSection->height() + GAP;
 
-  _socialWindow->addChild(new Line{0, y, WIN_WIDTH});
+  _socialWindow->addChild(new Line{{0, y}, WIN_WIDTH});
   y += 2 + GAP;
 
   const auto CITY_SECTION_HEIGHT = 30_px;
@@ -34,7 +34,7 @@ void Client::initializeSocialWindow() {
   _socialWindow->addChild(_citySection);
   y += _citySection->height() + GAP;
 
-  _socialWindow->addChild(new Line{0, y, WIN_WIDTH});
+  _socialWindow->addChild(new Line{{0, y}, WIN_WIDTH});
   y += 2 + GAP;
 
   _socialWindow->addChild(

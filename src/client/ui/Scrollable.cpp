@@ -25,7 +25,7 @@ Scrollable::Scrollable(const ScreenRect &rect)
 
   // Scroll bar details
   _scrollBar->addChild(
-      new Line(ARROW_W / 2 - 1, ARROW_H, rect.h - 2 * ARROW_H, VERTICAL));
+      new Line({ARROW_W / 2 - 1, ARROW_H}, rect.h - 2 * ARROW_H, VERTICAL));
 
   _whiteUp =
       new Picture({0, 0, ARROW_W, ARROW_H}, Client::images.scrollArrowWhiteUp);

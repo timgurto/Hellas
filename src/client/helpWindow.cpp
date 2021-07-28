@@ -40,7 +40,7 @@ void Client::HelpWindow::initialise(Client &client) {
 
   // Divider
   const px_t LINE_X = TOPIC_W + TOPIC_BORDER * 2;
-  window->addChild(new Line(LINE_X, 0, WIN_HEIGHT, Element::VERTICAL));
+  window->addChild(new Line({LINE_X, 0}, WIN_HEIGHT, Element::VERTICAL));
 
   // Help text
   const px_t TEXT_GAP = 1, TEXT_X = LINE_X + 2 + TEXT_GAP, TEXT_Y = TEXT_GAP,

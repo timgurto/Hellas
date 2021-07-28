@@ -14,7 +14,7 @@ void Client::initializeClassWindow() {
   _talentTrees = new Element({0, TREES_Y, WIN_W, TREES_H});
   _classWindow->addChild(_talentTrees);
 
-  _classWindow->addChild(new Line(0, XP_H + SECTION_GAP / 2 - 1, WIN_W));
+  _classWindow->addChild(new Line({0, XP_H + SECTION_GAP / 2 - 1}, WIN_W));
 
   // Class and level
   auto y = MARGIN;
@@ -34,7 +34,7 @@ void Client::initializeClassWindow() {
 
   // Points available
   const px_t RESET_Y = TREES_Y + TREES_H + SECTION_GAP;
-  _classWindow->addChild(new Line(0, RESET_Y - SECTION_GAP / 2 - 1, WIN_W));
+  _classWindow->addChild(new Line({0, RESET_Y - SECTION_GAP / 2 - 1}, WIN_W));
   _pointsAllocatedLabel =
       new Label({MARGIN, RESET_Y, WIN_W - 2 * MARGIN, RESET_H}, {});
   _classWindow->addChild(_pointsAllocatedLabel);
@@ -105,7 +105,7 @@ void Client::populateClassWindow() {
 
     if (linesDrawn < classInfo.trees().size() - 1)
       _talentTrees->addChild(
-          new Line(x + (GAP / 2) - 1, 0, TREE_HEIGHT, Element::VERTICAL));
+          new Line({x + (GAP / 2) - 1, 0}, TREE_HEIGHT, Element::VERTICAL));
     ++linesDrawn;
 
     x += GAP;

@@ -55,7 +55,7 @@ ItemSelector::ItemSelector(Client &client, const ClientItem *&item, px_t x,
                     SEARCH_BUTTON_HEIGHT},
                    "Search", [this]() { applyFilter(); }));
     y += SEARCH_BUTTON_HEIGHT + GAP;
-    _findItemWindow->addChild(new Line(0, y, WINDOW_WIDTH));
+    _findItemWindow->addChild(new Line({0, y}, WINDOW_WIDTH));
     y += 2 + GAP;
     _itemList =
         new List({GAP, y, LIST_WIDTH, LIST_HEIGHT}, ITEM_HEIGHT + 2 + LIST_GAP);

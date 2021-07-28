@@ -76,7 +76,7 @@ void Window::addHeading() {
   _heading->setLeftMouseDownFunction(&startDragging, this);
   Element::addChild(_heading);
 
-  _headingLine = new Line(0, HEADING_HEIGHT, UNINIT);
+  _headingLine = new Line({0, HEADING_HEIGHT}, UNINIT);
   _headingLine->setLeftMouseDownFunction(&startDragging, this);
   Element::addChild(_headingLine);
 

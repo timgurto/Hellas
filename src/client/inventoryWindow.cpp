@@ -49,7 +49,7 @@ static void addStat(const std::string &label, const T &value,
 
 static void addGap(px_t &y, Element *gearWindow) {
   const auto X = 2_px, W = 98_px;
-  gearWindow->addChild(new Line(X - 2, y, W + 4));
+  gearWindow->addChild(new Line({X - 2, y}, W + 4));
   y += 2;
 }
 
@@ -126,5 +126,5 @@ void Client::initializeGearWindow() {
   y += 2;
   _gearWindow->height(y);
 
-  _gearWindow->addChild(new Line(STATS_WIDTH, 0, y, Element::VERTICAL));
+  _gearWindow->addChild(new Line({STATS_WIDTH, 0}, y, Element::VERTICAL));
 }

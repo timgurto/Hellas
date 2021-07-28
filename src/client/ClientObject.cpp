@@ -383,13 +383,13 @@ void ClientObject::addMerchantSetupToWindow() {
                               Element::CENTER_JUSTIFIED));
   x += PANE_WIDTH + GAP;
   Line *vertDivider =
-      new Line(x, y, TITLE_HEIGHT + LIST_HEIGHT, Line::VERTICAL);
+      new Line({x, y}, TITLE_HEIGHT + LIST_HEIGHT, Line::VERTICAL);
   _window->addChild(vertDivider);
   x += vertDivider->width() + GAP;
   _window->addChild(new Label({x, y, PANE_WIDTH, TITLE_HEIGHT}, "Price",
                               Element::CENTER_JUSTIFIED));
   x += PANE_WIDTH + GAP;
-  vertDivider = new Line(x, y, TITLE_HEIGHT + LIST_HEIGHT, Line::VERTICAL);
+  vertDivider = new Line({x, y}, TITLE_HEIGHT + LIST_HEIGHT, Line::VERTICAL);
   _window->addChild(vertDivider);
   x += 2 * GAP + vertDivider->width() + SET_BUTTON_WIDTH;
   x += List::ARROW_W;
