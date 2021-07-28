@@ -3,7 +3,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Buffs can be applied") {
+TEST_CASE("Buffs can be applied", "[buffs]") {
   GIVEN("A buff") {
     auto data = R"(
       <buff id="intellect" />
@@ -21,7 +21,7 @@ TEST_CASE("Buffs can be applied") {
   }
 }
 
-TEST_CASE("Buffs disappear on death") {
+TEST_CASE("Buffs disappear on death", "[buffs][death]") {
   GIVEN("a dog and a flea buff") {
     auto data = R"(
       <buff id="flea" />
@@ -76,7 +76,8 @@ TEST_CASE("Buffs disappear on death") {
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData,
-                 "Interruptible buffs disappear on interrupt", "[combat]") {
+                 "Interruptible buffs disappear on interrupt",
+                 "[buffs][construction][combat][crafting][spells]") {
   GIVEN(
       "An interruptible buff, a fox NPC, a recipe, a hostile spell, a spell "
       "item, a construction") {
@@ -152,7 +153,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   }
 }
 
-TEST_CASE("Non-interruptible buffs persist when attacked", "[combat]") {
+TEST_CASE("Non-interruptible buffs persist when attacked", "[buffs][combat]") {
   GIVEN("A buff, and a fox") {
     auto data = R"(
       <buff id="intellect" />
@@ -177,7 +178,7 @@ TEST_CASE("Non-interruptible buffs persist when attacked", "[combat]") {
   }
 }
 
-TEST_CASE("A buff that ends when out of energy") {
+TEST_CASE("A buff that ends when out of energy", "[buffs][stats]") {
   GIVEN("A user with a cancel-on-OOE buff") {
     auto data = R"(
       <buff id="focus" cancelsOnOOE="1" />
@@ -216,7 +217,7 @@ TEST_CASE("A buff that ends when out of energy") {
   }
 }
 
-TEST_CASE("A buff that changes allowed terrain") {
+TEST_CASE("A buff that changes allowed terrain", "[buffs][allowed-terrain]") {
   GIVEN("a map with grass and water, and buff that allows water walking") {
     auto data = R"(
       <terrain index="G" id="grass" />
@@ -264,7 +265,7 @@ TEST_CASE("A buff that changes allowed terrain") {
   }
 }
 
-TEST_CASE("A buff on new players") {
+TEST_CASE("A buff on new players", "[buffs][persistence]") {
   GIVEN("a buff set to be given to new players") {
     auto data = R"(
       <buff id="newbie" onNewPlayers="1" />
@@ -331,7 +332,7 @@ TEST_CASE("A buff on new players") {
   }
 }
 
-TEST_CASE("Buff removal propagates to client") {
+TEST_CASE("Buff removal propagates to client", "[buffs]") {
   GIVEN("a buff that lasts 1s") {
     auto data = R"(
       <buff id="sneezy" duration="1" />
@@ -374,7 +375,7 @@ TEST_CASE("Buff removal propagates to client") {
   }
 }
 
-TEST_CASE("Returning users know their buffs") {
+TEST_CASE("Returning users know their buffs", "[buffs][persistence]") {
   // Given a user with a buff
   auto data = R"(
       <buff id="grumpy" />
@@ -397,7 +398,7 @@ TEST_CASE("Returning users know their buffs") {
   WAIT_UNTIL(c->character().buffs().size() == 1);
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Object-granted buffs") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Object-granted buffs", "[buffs]") {
   GIVEN("a user owns a buff-granting object") {
     useData(R"(
       <buff id="glowing" />
@@ -429,7 +430,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Object-granted buffs") {
   }
 }
 
-TEST_CASE("Buffs that don't stack") {
+TEST_CASE("Buffs that don't stack", "[buffs]") {
   GIVEN(
       "Two non-stacking paint colours, and a nonStacking emotion "
       "category") {

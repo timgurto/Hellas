@@ -3,7 +3,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Taming NPCs") {
+TEST_CASE("Taming NPCs", "[pets]") {
   GIVEN("a tamable cat") {
     auto data = R"(
       <npcType id="cat" maxHealth="10000" >
@@ -41,7 +41,7 @@ TEST_CASE("Taming NPCs") {
   }
 }
 
-TEST_CASE("Owned NPCs can't be tamed") {
+TEST_CASE("Owned NPCs can't be tamed", "[pets][permissions]") {
   GIVEN("a tameable NPC") {
     auto data = R"(
       <npcType id="cat" maxHealth="1" >
@@ -68,7 +68,7 @@ TEST_CASE("Owned NPCs can't be tamed") {
   }
 }
 
-TEST_CASE("Bad arguments to taming command") {
+TEST_CASE("Bad arguments to taming command", "[pets]") {
   GIVEN("a server and client") {
     auto s = TestServer{};
     auto c = TestClient{};
@@ -84,7 +84,7 @@ TEST_CASE("Bad arguments to taming command") {
   }
 }
 
-TEST_CASE("Taming an NPC untargets it") {
+TEST_CASE("Taming an NPC untargets it", "[pets]") {
   GIVEN("a tamable NPC with plenty of health") {
     auto data = R"(
       <npcType id="hippo" maxHealth="100000000" >
@@ -114,7 +114,8 @@ TEST_CASE("Taming an NPC untargets it") {
   }
 }
 
-TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
+TEST_CASE("Pet shares owner's diplomacy",
+          "[ai][war][permissions][pets][combat]") {
   GIVEN("an aggressive dog NPC") {
     auto data = R"(
       <npcType id="dog" maxHealth="1000" attack="2" speed="1" />
@@ -272,7 +273,7 @@ TEST_CASE("Pet shares owner's diplomacy", "[ai][war]") {
   }
 }
 
-TEST_CASE("Pets follow their owners") {
+TEST_CASE("Pets follow their owners", "[pets][ai]") {
   GIVEN("A guinea pig") {
     auto data = R"(
       <npcType id="guineaPig" />
@@ -299,7 +300,7 @@ TEST_CASE("Pets follow their owners") {
   }
 }
 
-TEST_CASE("Non-tamable NPCs can't be tamed") {
+TEST_CASE("Non-tamable NPCs can't be tamed", "[pets]") {
   GIVEN("A non-tamable tiger NPC") {
     auto data = R"(
       <npcType id="tiger" maxHealth="1" />
@@ -321,7 +322,7 @@ TEST_CASE("Non-tamable NPCs can't be tamed") {
   }
 }
 
-TEST_CASE("Taming can require an item") {
+TEST_CASE("Taming can require an item", "[pets]") {
   GIVEN("An NPC that can be tamed with an item") {
     auto data = R"(
       <item id="chocolate" />
@@ -408,7 +409,7 @@ TEST_CASE("Taming can require an item") {
   }
 }
 
-TEST_CASE("Pets can be slaughtered") {
+TEST_CASE("Pets can be slaughtered", "[pets]") {
   GIVEN("a player with a pet") {
     auto data = R"(
       <npcType id="pig" maxHealth="1" />
@@ -430,7 +431,7 @@ TEST_CASE("Pets can be slaughtered") {
   }
 }
 
-TEST_CASE("Neutral pets defend their owners") {
+TEST_CASE("Neutral pets defend their owners", "[pets][combat][ai]") {
   GIVEN("an NPC attacking a player") {
     auto data = R"(
       <npcType id="dog" maxHealth="1000" attack="2" speed="1" isNeutral="1" />
@@ -456,7 +457,7 @@ TEST_CASE("Neutral pets defend their owners") {
   }
 }
 
-TEST_CASE("Pets don't attack neutral NPCs") {
+TEST_CASE("Pets don't attack neutral NPCs", "[pets][combat][ai]") {
   GIVEN("two neutral NPCs") {
     auto data = R"(
       <npcType id="dog" maxHealth="1000" attack="2" speed="1" isNeutral="1" />
@@ -476,7 +477,8 @@ TEST_CASE("Pets don't attack neutral NPCs") {
   }
 }
 
-TEST_CASE("NPCs defend themselves against NPC attackers") {
+TEST_CASE("NPCs defend themselves against NPC attackers",
+          "[pets][combat][ai]") {
   GIVEN("two neutral NPCs") {
     auto data = R"(
       <npcType id="dog" maxHealth="1000" attack="2" speed="1" isNeutral="1" />
@@ -497,7 +499,7 @@ TEST_CASE("NPCs defend themselves against NPC attackers") {
   }
 }
 
-TEST_CASE("Neutral pets have the correct UI colours") {
+TEST_CASE("Neutral pets have the correct UI colours", "[pets][ui]") {
   GIVEN("a neutral NPC") {
     auto data = R"(
       <npcType id="dog" maxHealth="1" isNeutral="1" />
@@ -527,7 +529,7 @@ TEST_CASE("Neutral pets have the correct UI colours") {
   }
 }
 
-TEST_CASE("Pets from spawn points") {
+TEST_CASE("Pets from spawn points", "[pets][spawning][persistence]") {
   // Given a spawn point with a tameable NPC
   auto data = R"(
       <spawnPoint y="10" x="10" type="sheep" quantity="1" radius="100" respawnTime="1" />
@@ -568,7 +570,7 @@ TEST_CASE("Pets from spawn points") {
   }
 }
 
-TEST_CASE("Respawning tamed NPCs") {
+TEST_CASE("Respawning tamed NPCs", "[pets][spawning]") {
   GIVEN("a fast spawn point with a tameable NPC") {
     auto data = R"(
       <spawnPoint y="10" x="10" type="sheep" quantity="1" radius="100" respawnTime="1" />
@@ -599,7 +601,7 @@ TEST_CASE("Respawning tamed NPCs") {
   }
 }
 
-TEST_CASE("Chance to tame based on health") {
+TEST_CASE("Chance to tame based on health", "[pets]") {
   GIVEN("a tameable NPC") {
     auto data = R"(
       <npcType id="cat" maxHealth="10000" >
@@ -660,7 +662,7 @@ TEST_CASE("Chance to tame based on health") {
   }
 }
 
-TEST_CASE("Follower limits") {
+TEST_CASE("Follower limits", "[pets]") {
   GIVEN("a user owns an NPC") {
     auto data = R"(
       <npcType id="dog" maxHealth="10000" >
@@ -760,7 +762,7 @@ TEST_CASE("Follower limits") {
   }
 }
 
-TEST_CASE("Failed taming attempts should consume item") {
+TEST_CASE("Failed taming attempts should consume item", "[pets]") {
   GIVEN("an NPC that can be tamed with an item, with 0% success chance") {
     auto data = R"(
       <item id="chocolate" />
@@ -790,7 +792,8 @@ TEST_CASE("Failed taming attempts should consume item") {
 }
 
 // Note that this feature is currently disabled.
-TEST_CASE_METHOD(ServerAndClientWithData, "Ceding pets to the city") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Ceding pets to the city",
+                 "[pets][city][permissions]") {
   GIVEN("A tameable NPC") {
     useData(R"(
       <npcType id="dog" maxHealth="10000" >
@@ -819,7 +822,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Ceding pets to the city") {
   }
 }
 
-TEST_CASE("Pet orders") {
+TEST_CASE("Pet orders", "[pets][ai]") {
   GIVEN("a user and a dog") {
     auto data = R"(
       <npcType id="dog" />
@@ -850,7 +853,7 @@ TEST_CASE("Pet orders") {
   }
 }
 
-TEST_CASE("Order pet to stay") {
+TEST_CASE("Order pet to stay", "[pets][ai]") {
   GIVEN("a user and an NPC type") {
     auto data = R"(
       <npcType id="dog" />
@@ -890,7 +893,8 @@ TEST_CASE("Order pet to stay") {
   }
 }
 
-TEST_CASE("Ordering a pet to stay makes room for another follower") {
+TEST_CASE("Ordering a pet to stay makes room for another follower",
+          "[pets][stats]") {
   GIVEN("two tameable NPCs") {
     auto data = R"(
       <npcType id="cat" maxHealth="10000" >
@@ -923,7 +927,7 @@ TEST_CASE("Ordering a pet to stay makes room for another follower") {
   }
 }
 
-TEST_CASE("Follow orders contribute to follower limit") {
+TEST_CASE("Follow orders contribute to follower limit", "[pets][stats]") {
   GIVEN("a user has two pets ordered to stay") {
     auto data = R"(
       <npcType id="dog" />
@@ -958,7 +962,7 @@ TEST_CASE("Follow orders contribute to follower limit") {
   }
 }
 
-TEST_CASE("Pets stop following if owner is far away") {
+TEST_CASE("Pets stop following if owner is far away", "[pets]") {
   GIVEN("a user with a pet") {
     auto data = R"(
       <npcType id="dog" />
@@ -981,7 +985,7 @@ TEST_CASE("Pets stop following if owner is far away") {
   }
 }
 
-TEST_CASE("Persistence of pet orders") {
+TEST_CASE("Persistence of pet orders", "[pets][persistence]") {
   auto data = R"(
       <npcType id="dog" />
     )";
@@ -1010,7 +1014,7 @@ TEST_CASE("Persistence of pet orders") {
   }
 }
 
-TEST_CASE("Followers can count only once") {
+TEST_CASE("Followers can count only once", "[pets][stats]") {
   GIVEN("A user with two pets on Stay") {
     auto data = R"(
       <npcType id="dog" />
@@ -1051,7 +1055,8 @@ TEST_CASE("Followers can count only once") {
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData,
-                 "A staying pet dying doesn't affect follower count") {
+                 "A staying pet dying doesn't affect follower count",
+                 "[pets][stats]") {
   GIVEN("A user with two pets on Stay and one on Follow") {
     useData(R"(
       <npcType id="dog" />
@@ -1084,7 +1089,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Pets can be fed") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Pets can be fed", "[pets]") {
   GIVEN("a user with a pet and some food") {
     useData(R"(
       <npcType id="dog" maxHealth="10" />
@@ -1140,7 +1145,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pets can be fed") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClient, "Bad args to CL_FEED_PET") {
+TEST_CASE_METHOD(ServerAndClient, "Bad args to CL_FEED_PET", "[pets]") {
   WHEN("a user tries to feed a nonexistent pet") {
     client.sendMessage(CL_FEED_PET, "50");
 
@@ -1148,7 +1153,7 @@ TEST_CASE_METHOD(ServerAndClient, "Bad args to CL_FEED_PET") {
   }
 }
 
-TEST_CASE("Pet death") {
+TEST_CASE("Pet death", "[pets]") {
   GIVEN("a pet dog owned by an offline player") {
     auto data = R"(
       <npcType id="dog" />
@@ -1168,7 +1173,8 @@ TEST_CASE("Pet death") {
   }
 }
 
-TEST_CASE_METHOD(TwoClientsWithData, "Pets are anchored when ordered to stay") {
+TEST_CASE_METHOD(TwoClientsWithData, "Pets are anchored when ordered to stay",
+                 "[pets][ai]") {
   GIVEN("dogs have a chase distance of 50px") {
     useData(R"(
       <npcType id="dog" maxHealth="1000" attack="1" maxDistanceFromSpawner="50" />

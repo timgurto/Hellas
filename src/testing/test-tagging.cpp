@@ -3,7 +3,8 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Only the tagging player gets kill XP", "[slow]") {
+TEST_CASE("Only the tagging player gets kill XP",
+          "[.slow][tagging][leveling][combat]") {
   GIVEN("Alice and Bob are next to a seal") {
     auto data = R"(
       <newPlayerSpawn x="10" y="10" range="0" />
@@ -54,7 +55,8 @@ TEST_CASE("Only the tagging player gets kill XP", "[slow]") {
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData,
-                 "NPCs can be marked as rewarding no XP") {
+                 "NPCs can be marked as rewarding no XP",
+                 "[tagging][leveling][combat]") {
   GIVEN("an NPC that gives no XP") {
     useData(R"(
       <npcType id="ghost" noXP="1" />

@@ -3,7 +3,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Gather an item from an object") {
+TEST_CASE("Gather an item from an object", "[gathering]") {
   auto s = TestServer::WithData("basic_rock");
   auto c = TestClient::WithData("basic_rock");
 
@@ -35,7 +35,7 @@ One gather worth of 1 million units of iron
 This is to test the new gather algorithm, which would favor rocks rather than
 iron. It will fail randomly about 1 every 1000 times
 */
-TEST_CASE("Gather chance is by gathers, not quantity") {
+TEST_CASE("Gather chance is by gathers, not quantity", "[gathering]") {
   auto s = TestServer::WithData("rare_iron");
   auto c = TestClient::WithData("rare_iron");
 
@@ -58,7 +58,7 @@ TEST_CASE("Gather chance is by gathers, not quantity") {
   CHECK(user.inventory()[0].first.type() == &item);
 }
 
-TEST_CASE("Minimum yields") {
+TEST_CASE("Minimum yields", "[gathering]") {
   auto s = TestServer::WithData("min_apples");
   for (auto entity : s.entities()) {
     const Object *obj = dynamic_cast<const Object *>(entity);
@@ -66,7 +66,8 @@ TEST_CASE("Minimum yields") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Gathering from an NPC") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Gathering from an NPC",
+                 "[gathering]") {
   GIVEN("an NPC with a yield") {
     useData(R"(
       <item id="fur" />

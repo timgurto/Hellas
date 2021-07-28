@@ -85,13 +85,13 @@ TEST_CASE("toPascal") {
   CHECK(toPascal("AAA") == "Aaa");
 }
 
-TEST_CASE("Tool-speed display") {
+TEST_CASE("Tool-speed display", "[ui][tool]") {
   HasTags thing;
   thing.addTag("fast", 1.1);
   CHECK(thing.toolSpeedDisplayText("fast") == " +10%"s);
 }
 
-TEST_CASE_METHOD(TwoClients, "Roll command") {
+TEST_CASE_METHOD(TwoClients, "Roll command", "[grouping]") {
   WHEN("Alice rolls") {
     cAlice.sendMessage(CL_ROLL);
 

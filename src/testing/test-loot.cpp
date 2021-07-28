@@ -5,8 +5,8 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE_METHOD(ServerAndClientWithData,
-                 "Client gets loot info and can loot") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Client gets loot info and can loot",
+                 "[loot]") {
   GIVEN("an NPC that always drops 1 gold") {
     useData(R"(
       <npcType id="goldbug" maxHealth="1" >
@@ -39,7 +39,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   }
 }
 
-TEST_CASE("Objects have health", "[strength]") {
+TEST_CASE("Objects have health", "[damage-on-use][stats]") {
   GIVEN("a chair type with strength 6*wood, and a wood item with strength 5") {
     auto data = R"(
       <objectType id="chair" name="Chair" >
@@ -59,7 +59,8 @@ TEST_CASE("Objects have health", "[strength]") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Clients discern NPCs with no loot") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Clients discern NPCs with no loot",
+                 "[loot]") {
   GIVEN("an ant with 1 health and no loot table") {
     useData(R"(
       <npcType id="ant" maxHealth="1" />
@@ -83,7 +84,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Clients discern NPCs with no loot") {
 
 TEST_CASE_METHOD(ServerAndClientWithData,
                  "Chance for strength-items as loot from object",
-                 "[strength]") {
+                 "[damage-on-use][loot]") {
   GIVEN("a snowman made of 1000 1-health snowflake items") {
     useData(R"(
       <item id="snowflake" stackSize="1000" durabilty="1" />
@@ -119,7 +120,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Looting from a container",
-                 "[container][only]") {
+                 "[containers][loot]") {
   GIVEN("a chest that can store 1000 gold") {
     useData(R"(
       <item id="gold" name="Gold" stackSize="100" />
@@ -200,7 +201,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Looting from a container",
   }
 }
 
-TEST_CASE("New users are alerted to lootable objects") {
+TEST_CASE("New users are alerted to lootable objects", "[loot]") {
   // Given an NPC that drops loot
   auto data = R"(
       <npcType id="goldbug" maxHealth="1" >
@@ -230,7 +231,8 @@ TEST_CASE("New users are alerted to lootable objects") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Non-taggers can't loot") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Non-taggers can't loot",
+                 "[loot][tagging]") {
   GIVEN("an NPC that drops loot") {
     useData(R"(
       <npcType id="goldbug" maxHealth="1" >
@@ -259,7 +261,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Non-taggers can't loot") {
   }
 }
 
-TEST_CASE("Loot-table equality") {
+TEST_CASE("Loot-table equality", "[loot]") {
   auto rock = ServerItem{"rock"};
   auto stick = ServerItem{"stick"};
 
@@ -310,7 +312,7 @@ TEST_CASE("Loot-table equality") {
   }
 }
 
-TEST_CASE("Composite loot tables") {
+TEST_CASE("Composite loot tables", "[loot]") {
   GIVEN("two NPCs drop gold: one directly and one with a <lootTable>") {
     auto data = R"(
       <item id="gold" />
@@ -337,8 +339,8 @@ TEST_CASE("Composite loot tables") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData,
-                 "Clients know when loot is all gone") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Clients know when loot is all gone",
+                 "[loot]") {
   GIVEN("an NPC that drops an item") {
     useData(R"(
       <item id="wart" />
@@ -369,7 +371,8 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   }
 }
 
-TEST_CASE("Grouped players can loot each other's kills") {
+TEST_CASE("Grouped players can loot each other's kills",
+          "[loot][grouping][tagging]") {
   GIVEN("a mouse that always drops a tail") {
     auto data = R"(
       <item id="tail" />
@@ -409,7 +412,7 @@ TEST_CASE("Grouped players can loot each other's kills") {
   }
 }
 
-TEST_CASE("Loot that chooses from a set") {
+TEST_CASE("Loot that chooses from a set", "[loot]") {
   GIVEN("gentlemen drop either an umbrella or a hat") {
     auto data = R"(
       <item id="hat" stackSize="10" />

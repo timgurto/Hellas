@@ -2,7 +2,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("No erroneous transform messages on login", "") {
+TEST_CASE("No erroneous transform messages on login", "[transformation]") {
   TestServer s = TestServer::WithData("basic_rock");
   s.addObject("rock", {20, 20});
   TestClient c = TestClient::WithData("basic_rock");
@@ -12,7 +12,7 @@ TEST_CASE("No erroneous transform messages on login", "") {
   CHECK_FALSE(transformTimeReceived);
 }
 
-TEST_CASE("Basic transformation") {
+TEST_CASE("Basic transformation", "[transformation]") {
   GIVEN("a sapling that turns into a tree after 0.1s") {
     auto data = R"(
       <objectType id="sapling">
@@ -31,7 +31,7 @@ TEST_CASE("Basic transformation") {
   }
 }
 
-TEST_CASE("NPC transformation persists") {
+TEST_CASE("NPC transformation persists", "[transformation][persistence]") {
   // Given a Bulbasaur that turns into an Ivysaur after 2s
   auto data = R"(
       <npcType id="bulbasaur">
@@ -58,7 +58,8 @@ TEST_CASE("NPC transformation persists") {
   }
 }
 
-TEST_CASE("Transforming to a constructible object", "[construction]") {
+TEST_CASE("Transforming to a constructible object",
+          "[construction][transformation]") {
   GIVEN("liquid metal that transforms into a T-1000 requiring sunglasses") {
     auto data = R"(
       <objectType id="liquidMetal" >
@@ -101,7 +102,7 @@ TEST_CASE("Transforming to a constructible object", "[construction]") {
   }
 }
 
-TEST_CASE("NPC transformation") {
+TEST_CASE("NPC transformation", "[transformation]") {
   GIVEN("a caterpillar that turns into a butterfly after 0.1s") {
     auto data = R"(
       <npcType id="caterpillar" maxHealth="1" >
@@ -134,7 +135,7 @@ TEST_CASE("NPC transformation") {
   }
 }
 
-TEST_CASE("Transform on gather") {
+TEST_CASE("Transform on gather", "[transformation][gathering]") {
   GIVEN("a tree that transforms into a stump when gathered") {
     auto data = R"(
       <objectType id="tree" >

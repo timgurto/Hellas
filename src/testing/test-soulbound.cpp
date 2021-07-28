@@ -4,7 +4,8 @@
 #include "testing.h"
 
 TEST_CASE_METHOD(ServerAndClientWithData,
-                 "Soulbound items are deleted when dropped") {
+                 "Soulbound items are deleted when dropped",
+                 "[soulbound][inventory][dropped-items][gear]") {
   GIVEN("rings binds on pickup") {
     useData(R"(
       <item id="ring" bind="pickup" />
@@ -112,7 +113,8 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "By default, items do not bind") {
+TEST_CASE_METHOD(ServerAndClientWithData, "By default, items do not bind",
+                 "[soulbound]") {
   GIVEN("a user has a plain item") {
     useData(R"(
       <item id="rock" />
@@ -126,7 +128,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "By default, items do not bind") {
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData,
-                 "Soulbound items can be stored only in private containers") {
+                 "Soulbound items can be stored only in private containers",
+                 "[soulbound][containers]") {
   GIVEN("BoP apples, non-binding oranges, barrels") {
     useData(R"(
       <item id="apple" bind="pickup" />
@@ -208,7 +211,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   }
 }
 
-TEST_CASE("Soulbound status is persistent") {
+TEST_CASE("Soulbound status is persistent", "[soulbound][persistence]") {
   GIVEN("hats are BoE") {
     auto data = R"(
       <item id="hat" gearSlot="0" bind="equip" />
@@ -310,7 +313,8 @@ TEST_CASE("Soulbound status is persistent") {
   }
 }
 
-TEST_CASE_METHOD(TwoClientsWithData, "Soulbound items can't be traded") {
+TEST_CASE_METHOD(TwoClientsWithData, "Soulbound items can't be traded",
+                 "[soulbound][merchant]") {
   GIVEN("A marble store, and blue and red BoE marbles") {
     useData(R"(
       <item id="blueMarble" bind="equip" />
@@ -372,7 +376,8 @@ TEST_CASE_METHOD(TwoClientsWithData, "Soulbound items can't be traded") {
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData,
-                 "Containers with soulbound items can't be ceded") {
+                 "Containers with soulbound items can't be ceded",
+                 "[soulbound][containers][permissions]") {
   GIVEN("carton containers and BoP egg items") {
     useData(R"(
       <item id="egg" bind="pickup" />

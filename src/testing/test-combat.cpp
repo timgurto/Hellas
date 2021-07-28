@@ -4,7 +4,8 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Players can attack immediately") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Players can attack immediately",
+                 "[combat]") {
   GIVEN("a targetable NPC") {
     useData(R"(
       <npcType id="ant" maxHealth="1" />
@@ -21,7 +22,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Players can attack immediately") {
   }
 }
 
-TEST_CASE_METHOD(TwoClients, "Only belligerents can target each other") {
+TEST_CASE_METHOD(TwoClients, "Only belligerents can target each other",
+                 "[combat][war]") {
   WHEN("Alice tries to target Bob") {
     cAlice.sendMessage(CL_TARGET_PLAYER, "Bob");
 
@@ -42,7 +44,7 @@ TEST_CASE_METHOD(TwoClients, "Only belligerents can target each other") {
   }
 }
 
-TEST_CASE_METHOD(TwoClients, "Only belligerents can fight") {
+TEST_CASE_METHOD(TwoClients, "Only belligerents can fight", "[combat][war]") {
   GIVEN("Alice and Bob are within melee range") {
     while (distance(*alice, *bob) > Server::ACTION_DISTANCE)
       alice->moveLegallyTowards(bob->location());
@@ -69,7 +71,7 @@ TEST_CASE_METHOD(TwoClients, "Only belligerents can fight") {
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Attack rate is respected",
-                 "[.flaky]") {
+                 "[.flaky][combat]") {
   GIVEN("a wolf that hits for 1 every 100ms") {
     useData(R"(
       <npcType id="wolf" maxHealth="4000" attack="1" attackTime="100" />
@@ -98,7 +100,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Attack rate is respected",
   }
 }
 
-TEST_CASE("Belligerents can attack each other's objects") {
+TEST_CASE("Belligerents can attack each other's objects",
+          "[combat][war][permissions]") {
   // Given a logged-in user;
   // And a vase object type with 1 health;
   TestServer s = TestServer::WithData("vase");
@@ -166,7 +169,8 @@ TEST_CASE_METHOD(TwoClients, "Clients receive nearby users' health values") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClient, "A player dying doesn't crash the server") {
+TEST_CASE_METHOD(ServerAndClient, "A player dying doesn't crash the server",
+                 "[death]") {
   WHEN("a user dies") {
     user->reduceHealth(999999);
 
@@ -174,7 +178,7 @@ TEST_CASE_METHOD(ServerAndClient, "A player dying doesn't crash the server") {
   }
 }
 
-TEST_CASE("Civilian NPCs") {
+TEST_CASE("Civilian NPCs", "[combat]") {
   GIVEN("An NPC with \"isCivilian\" and 1 health") {
     auto s = TestServer::WithData("civilian");
     auto c = TestClient::WithData("civilian");
@@ -194,7 +198,7 @@ TEST_CASE("Civilian NPCs") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "In-combat flag") {
+TEST_CASE_METHOD(ServerAndClientWithData, "In-combat flag", "[combat]") {
   GIVEN("a user and a fox out of aggro range") {
     useData(R"(
       <npcType id="fox" attack="1" />
@@ -212,7 +216,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "In-combat flag") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Neutral NPCs") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Neutral NPCs", "[combat]") {
   GIVEN("a \"neutral\" NPC with attack, close to a user") {
     useData(R"(
       <npcType id="snake" attack="1" isNeutral="1" />
@@ -227,8 +231,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Neutral NPCs") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData,
-                 "Targeting civilians after attacking") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Targeting civilians after attacking",
+                 "[combat]") {
   GIVEN("A user between an attackable sloth and a civilian maiden") {
     useData(R"(
       <newPlayerSpawn x="10" y="10" range="0" />
@@ -257,7 +261,8 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "XP from kills") {
+TEST_CASE_METHOD(ServerAndClientWithData, "XP from kills",
+                 "[combat][leveling]") {
   GIVEN("normal and elite NPC types") {
     useData(R"(
       <npcType id="queenBee" maxHealth="1" boss="1" />
@@ -293,9 +298,9 @@ TEST_CASE_METHOD(ServerAndClientWithData, "XP from kills") {
   }
 }
 
-TEST_CASE_METHOD(
-    TwoClientsWithData,
-    "Players can select stuff without interrupting their actions") {
+TEST_CASE_METHOD(TwoClientsWithData,
+                 "Players can select stuff without interrupting their actions",
+                 "[construction]") {
   GIVEN("towers type that takes time to construct") {
     useData(R"(
       <objectType

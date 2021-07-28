@@ -2,7 +2,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Construction materials can be added") {
+TEST_CASE("Construction materials can be added", "[construction]") {
   GIVEN("a wall that requires a brick") {
     auto data = R"(
       <objectType
@@ -39,7 +39,7 @@ TEST_CASE("Construction materials can be added") {
   }
 }
 
-TEST_CASE("Client knows about default constructions") {
+TEST_CASE("Client knows about default constructions", "[construction]") {
   GIVEN("a wall that requires a brick, and has no unlocks specified") {
     auto data = R"(
       <objectType
@@ -59,7 +59,8 @@ TEST_CASE("Client knows about default constructions") {
   }
 }
 
-TEST_CASE("New client doesn't know any locked constructions") {
+TEST_CASE("New client doesn't know any locked constructions",
+          "[construction]") {
   GIVEN("a constructable table with an unlock") {
     auto data = R"(
       <objectType
@@ -80,7 +81,7 @@ TEST_CASE("New client doesn't know any locked constructions") {
   }
 }
 
-TEST_CASE("Unique objects are unique") {
+TEST_CASE("Unique objects are unique", "[construction]") {
   GIVEN("a buildable, unique object") {
     auto data = R"(
       <objectType id="throne" constructionTime="0" isUnique="1" >
@@ -112,7 +113,7 @@ TEST_CASE("Unique objects are unique") {
   }
 }
 
-TEST_CASE("Constructing invalid object fails gracefully") {
+TEST_CASE("Constructing invalid object fails gracefully", "[construction]") {
   GIVEN("a user") {
     TestServer s;
     TestClient c;
@@ -129,7 +130,7 @@ TEST_CASE("Constructing invalid object fails gracefully") {
   }
 }
 
-TEST_CASE("Objects can be unbuildable") {
+TEST_CASE("Objects can be unbuildable", "[construction]") {
   GIVEN("an object with materials, but marked as \"unbuildable\"") {
     auto data = R"(
     <objectType id="treehouse" constructionTime="0" isUnbuildable="1" >
@@ -150,7 +151,7 @@ TEST_CASE("Objects can be unbuildable") {
   }
 }
 
-TEST_CASE("Clients can't see unbuildable constructions") {
+TEST_CASE("Clients can't see unbuildable constructions", "[construction]") {
   GIVEN("an object with materials, but marked as \"unbuildable\"") {
     auto data = R"(
     <objectType id="treehouse" constructionTime="0" isUnbuildable="1" >
@@ -171,7 +172,7 @@ TEST_CASE("Clients can't see unbuildable constructions") {
   }
 }
 
-TEST_CASE("Objects without materials can't be built") {
+TEST_CASE("Object types without materials can't be built", "[construction]") {
   GIVEN("an object with no materials listed") {
     auto data = R"(
       <objectType id="rock" />
@@ -189,7 +190,7 @@ TEST_CASE("Objects without materials can't be built") {
   }
 }
 
-TEST_CASE("Construction tools") {
+TEST_CASE("Construction tools", "[construction][tool]") {
   GIVEN("an object that needs a tool to be constructed") {
     auto data = R"(
         <item id="circuitboard" />
@@ -248,7 +249,8 @@ TEST_CASE("Construction tools") {
   }
 }
 
-TEST_CASE("Construction progress is persistent", "[persistence]") {
+TEST_CASE("Construction progress is persistent",
+          "[construction][persistence]") {
   // Given a brick wall with no materials added, owned by Alice
   auto data = R"(
     <objectType
@@ -288,7 +290,8 @@ TEST_CASE("Construction progress is persistent", "[persistence]") {
   }
 }
 
-TEST_CASE("A construction material can 'return' an item") {
+TEST_CASE("A construction material can 'return' an item",
+          "[construction][inventory]") {
   GIVEN("matches are needed to build a fire, and return a matchbox") {
     auto data = R"(
       <objectType id="fire" constructionTime="0" >
@@ -329,7 +332,8 @@ TEST_CASE("A construction material can 'return' an item") {
   }
 }
 
-TEST_CASE("Stackable items that build and return") {
+TEST_CASE("Stackable items that build and return",
+          "[construction][inventory]") {
   GIVEN("stackable ice cubes build an igloo and return an ice-cube tray") {
     auto data = R"(
       <objectType id="igloo" constructionTime="0" >
@@ -366,7 +370,7 @@ TEST_CASE("Stackable items that build and return") {
   }
 }
 
-TEST_CASE("Auto-fill") {
+TEST_CASE("Auto-fill", "[construction][inventory]") {
   GIVEN("an object requiring an item") {
     auto data = R"(
       <objectType id="trap" constructionTime="0" >
@@ -491,7 +495,7 @@ TEST_CASE("Auto-fill") {
   }
 }
 
-TEST_CASE("Objects destroyed when used as tools") {
+TEST_CASE("Objects destroyed when used as tools", "[construction][tool]") {
   GIVEN("a rock that is destroyed when used to build an anvil") {
     auto data = R"(
       <objectType id="anvil" constructionTime="0" constructionReq="rock">

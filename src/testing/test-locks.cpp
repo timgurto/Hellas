@@ -3,7 +3,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Unlock-chance-bonus stat", "[slow]") {
+TEST_CASE("Unlock-chance-bonus stat", "[.slow][unlocking]") {
   GIVEN("obtaining a fish has a 50% chance of teaching how to catch a fish") {
     auto data = R"(
       <item id="fish" />
@@ -52,7 +52,7 @@ TEST_CASE("Unlock-chance-bonus stat", "[slow]") {
   }
 }
 
-TEST_CASE("The locking systems") {
+TEST_CASE("The locking systems", "[unlocking][crafting]") {
   GIVEN("obtaining an item has a 0% chance of unlocking a pencil recipe") {
     auto data = R"(
       <item id="pencil" />

@@ -5,7 +5,7 @@
 
 TEST_CASE("Start and stop server") { TestServer server; }
 
-TEST_CASE("Concurrent clients") {
+TEST_CASE("Concurrent clients", "[connection]") {
   GIVEN("two clients") {
     auto s = TestServer{};
     auto c1 = TestClient{};
@@ -15,7 +15,7 @@ TEST_CASE("Concurrent clients") {
   }
 }
 
-TEST_CASE("Run TestClient with custom username") {
+TEST_CASE("Run TestClient with custom username", "[connection]") {
   // Given a server
   TestServer s;
 
@@ -27,7 +27,7 @@ TEST_CASE("Run TestClient with custom username") {
   CHECK(alice->username() == "Alice");
 }
 
-TEST_CASE("Removed users are removed from co-ord indices") {
+TEST_CASE("Removed users are removed from co-ord indices", "[connection]") {
   // Given a server
   TestServer s;
 
@@ -40,7 +40,7 @@ TEST_CASE("Removed users are removed from co-ord indices") {
 }
 
 TEST_CASE("Server remains functional with unresponsive client",
-          "[.slow][.flaky]") {
+          "[slow][.flaky][connection]") {
   // Given a server and client
   TestServer s;
   {
@@ -59,13 +59,13 @@ TEST_CASE("Server remains functional with unresponsive client",
   s.waitForUsers(1);
 }
 
-TEST_CASE("Map with extra row doesn't crash client", "[.flaky]") {
+TEST_CASE("Map with extra row doesn't crash client", "[.flaky][connection]") {
   TestServer s;
   TestClient c = TestClient::WithData("abort");
   REPEAT_FOR_MS(1000);
 }
 
-TEST_CASE("New servers clear old user data") {
+TEST_CASE("New servers clear old user data", "[connection]") {
   // GIVEN Alice is logged into a server
   {
     TestServer s;
@@ -93,7 +93,7 @@ TEST_CASE("New servers clear old user data") {
   }
 }
 
-TEST_CASE("The client handles a server appearing") {
+TEST_CASE("The client handles a server appearing", "[connection]") {
   // Given a client
   auto c = TestClient{};
 
@@ -106,7 +106,7 @@ TEST_CASE("The client handles a server appearing") {
   s.waitForUsers(1);
 }
 
-TEST_CASE("Online-players list includes existing players") {
+TEST_CASE("Online-players list includes existing players", "[connection]") {
   GIVEN("a server and client") {
     auto s = TestServer{};
     auto c1 = TestClient{};
@@ -122,7 +122,7 @@ TEST_CASE("Online-players list includes existing players") {
   }
 }
 
-TEST_CASE("Windows close on disconnect") {
+TEST_CASE("Windows close on disconnect", "[connection][ui]") {
   // Given a client with windows open
   auto c = TestClient{};
   {
@@ -165,7 +165,7 @@ TEST_CASE("Accurate health/energy on login") {
   }
 }
 
-TEST_CASE("The finished-loggin-in message") {
+TEST_CASE("The finished-loggin-in message", "[connection]") {
   GIVEN("a client connects to a server") {
     auto s = TestServer{};
     auto c = TestClient{};

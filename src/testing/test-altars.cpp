@@ -3,7 +3,8 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("A user can't build multiple player-unique objects") {
+TEST_CASE("A user can't build multiple player-unique objects",
+          "[construction][player-unique]") {
   GIVEN("blonde and readhead objects with the \"wife\" player-unique tag") {
     auto data = R"(
       <item id="engagementRing" />
@@ -108,7 +109,7 @@ TEST_CASE("A user can't build multiple player-unique objects") {
   }
 }
 
-TEST_CASE("Clients can discern player-uniqueness") {
+TEST_CASE("Clients can discern player-uniqueness", "[player-unique]") {
   GIVEN("a player-unique house object") {
     auto data = R"(
       <objectType id="house" playerUnique="house" />
@@ -124,7 +125,7 @@ TEST_CASE("Clients can discern player-uniqueness") {
   }
 }
 
-TEST_CASE("End-of-tutorial altar") {
+TEST_CASE("End-of-tutorial altar", "[death][object-action]") {
   GIVEN("an altar that ends the tutorial, and a user next to it") {
     auto data = R"(
       <objectType id="altar">
@@ -260,7 +261,8 @@ TEST_CASE("End-of-tutorial altar") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Effect: teleport to area") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Effect: teleport to area",
+                 "[object-action]") {
   GIVEN("a slipgate that teleports the user near (200,200)") {
     useData(R"(
       <objectType id="slipgate">

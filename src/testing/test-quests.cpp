@@ -3,7 +3,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Simple quest") {
+TEST_CASE("Simple quest", "[quests]") {
   GIVEN("a quest starting at A and ending at B") {
     auto data = R"(
       <objectType id="A" />
@@ -32,7 +32,7 @@ TEST_CASE("Simple quest") {
   }
 }
 
-TEST_CASE("Cases where a quest should not be accepted") {
+TEST_CASE("Cases where a quest should not be accepted", "[quests]") {
   auto data = R"(
     <objectType id="A" />
     <objectType id="B" />
@@ -73,7 +73,7 @@ TEST_CASE("Cases where a quest should not be accepted") {
   CHECK(user.numQuests() == 0);
 }
 
-TEST_CASE("Cases where a quest should not be completed") {
+TEST_CASE("Cases where a quest should not be completed", "[quests]") {
   auto data = R"(
     <objectType id="A" />
     <objectType id="B" />
@@ -108,7 +108,7 @@ TEST_CASE("Cases where a quest should not be completed") {
   CHECK(user.numQuests() == 1);
 }
 
-TEST_CASE("A user must be on a quest to complete it") {
+TEST_CASE("A user must be on a quest to complete it", "[quests]") {
   GIVEN("A user, quest and quest node") {
     auto data = R"(
       <objectType id="A" />
@@ -134,7 +134,7 @@ TEST_CASE("A user must be on a quest to complete it") {
   }
 }
 
-TEST_CASE("Identical source and destination") {
+TEST_CASE("Identical source and destination", "[quests]") {
   GIVEN("two quests that start at A and end at B") {
     auto data = R"(
     <objectType id="A" />
@@ -171,7 +171,7 @@ TEST_CASE("Identical source and destination") {
   }
 }
 
-TEST_CASE("Client knows about objects' quests") {
+TEST_CASE("Client knows about objects' quests", "[quests]") {
   auto data = R"(
     <objectType id="A" />
     <quest id="quest1" startsAt="A" endsAt="A" />
@@ -203,7 +203,7 @@ TEST_CASE("Client knows about objects' quests") {
   CHECK(hasQuest2);
 }
 
-TEST_CASE("Clients know quests' correct end nodes") {
+TEST_CASE("Clients know quests' correct end nodes", "[quests]") {
   GIVEN("a quest from A to B") {
     auto data = R"(
       <objectType id="A" />
@@ -229,7 +229,7 @@ TEST_CASE("Clients know quests' correct end nodes") {
   }
 }
 
-TEST_CASE("Client knows when quests can be completed") {
+TEST_CASE("Client knows when quests can be completed", "[quests]") {
   GIVEN("an object that starts and ends a quest") {
     auto data = R"(
       <objectType id="A" />
@@ -260,7 +260,7 @@ TEST_CASE("Client knows when quests can be completed") {
   }
 }
 
-TEST_CASE("Client knows when objects have no quests") {
+TEST_CASE("Client knows when objects have no quests", "[quests]") {
   GIVEN("an object B, with no quests") {
     auto data = R"(
       <objectType id="B" />
@@ -281,7 +281,7 @@ TEST_CASE("Client knows when objects have no quests") {
   }
 }
 
-TEST_CASE("A user can't pick up a quest he's already on") {
+TEST_CASE("A user can't pick up a quest he's already on", "[quests]") {
   GIVEN("a user is already on the quest that A offers") {
     auto data = R"(
       <objectType id="A" />
@@ -306,7 +306,7 @@ TEST_CASE("A user can't pick up a quest he's already on") {
   }
 }
 
-TEST_CASE("After a user accepts a quest, he can't do so again") {
+TEST_CASE("After a user accepts a quest, he can't do so again", "[quests]") {
   auto data = R"(
     <objectType id="A" />
     <quest id="quest1" startsAt="A" endsAt="A" />
@@ -331,7 +331,7 @@ TEST_CASE("After a user accepts a quest, he can't do so again") {
   CHECK(a.startsQuests().size() == 1);
 }
 
-TEST_CASE("Quest UI", "[ui][.flaky]") {
+TEST_CASE("Quest UI", "[ui][.flaky][quests]") {
   GIVEN("an object that gives a quest") {
     auto data = R"(
       <objectType id="A" />
@@ -393,7 +393,7 @@ TEST_CASE("Quest UI", "[ui][.flaky]") {
   }
 }
 
-TEST_CASE("Quest UI for NPCs", "[ui][.flaky]") {
+TEST_CASE("Quest UI for NPCs", "[ui][.flaky][quests]") {
   GIVEN("an NPC that gives a quest") {
     auto data = R"(
       <npcType id="A" maxHealth="1" />
@@ -420,7 +420,7 @@ TEST_CASE("Quest UI for NPCs", "[ui][.flaky]") {
   }
 }
 
-TEST_CASE("Show the user when an object has no more quests") {
+TEST_CASE("Show the user when an object has no more quests", "[quests]") {
   GIVEN("an object that gives a quest") {
     auto data = R"(
       <objectType id="A" />
@@ -444,7 +444,7 @@ TEST_CASE("Show the user when an object has no more quests") {
   }
 }
 
-TEST_CASE("Kill quests") {
+TEST_CASE("Kill quests", "[quests][combat]") {
   GIVEN("A quest that requires a rat to be killed, and a rat") {
     auto data = R"(
       <objectType id="A" />
@@ -635,7 +635,7 @@ TEST_CASE("Kill quests") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Quest chains") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Quest chains", "[quests]") {
   GIVEN("a quest with another quest as a prerequisite") {
     useData(R"(
       <objectType id="A" />
@@ -759,7 +759,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Quest chains") {
   }
 }
 
-TEST_CASE("Object window stays open for chained quests", "[ui][.flaky]") {
+TEST_CASE("Object window stays open for chained quests",
+          "[ui][.flaky][quests]") {
   GIVEN("a quest chain") {
     auto data = R"(
       <objectType id="A" />
@@ -796,7 +797,8 @@ TEST_CASE("Object window stays open for chained quests", "[ui][.flaky]") {
   }
 }
 
-TEST_CASE("Object window is updated with quest changes", "[ui][.flaky]") {
+TEST_CASE("Object window is updated with quest changes",
+          "[quests][ui][.flaky]") {
   GIVEN("an object that only starts one quest") {
     auto data = R"(
       <objectType id="A" />
@@ -858,7 +860,7 @@ TEST_CASE("Object window is updated with quest changes", "[ui][.flaky]") {
   }
 }
 
-TEST_CASE("Quest progress is persistent") {
+TEST_CASE("Quest progress is persistent", "[quests][persistence]") {
   auto data = R"(
     <objectType id="A" />
     <objectType id="B" />
@@ -961,7 +963,7 @@ TEST_CASE("Quest progress is persistent") {
   }
 }
 
-TEST_CASE("Clients get the correct state on login") {
+TEST_CASE("Clients get the correct state on login", "[quests]") {
   GIVEN("two quests, and a questgiver") {
     auto data = R"(
       <objectType id="questgiver" />
@@ -1018,7 +1020,7 @@ TEST_CASE("Clients get the correct state on login") {
   }
 }
 
-TEST_CASE("Quests give XP") {
+TEST_CASE("Quests give XP", "[quests][leveling]") {
   GIVEN("A quest and a user") {
     auto data = R"(
       <objectType id="A" />
@@ -1038,7 +1040,7 @@ TEST_CASE("Quests give XP") {
   }
 }
 
-TEST_CASE("Fetch quests") {
+TEST_CASE("Fetch quests", "[quests][inventory]") {
   GIVEN("a fetch quest") {
     auto data = R"(
       <objectType id="A" />
@@ -1211,7 +1213,7 @@ TEST_CASE("Fetch quests") {
   }
 }
 
-TEST_CASE("Multiple objectives", "[!mayfail]") {
+TEST_CASE("Multiple objectives", "[!mayfail][quests]") {
   GIVEN("A user on a fetch quest for two items") {
     auto data = R"(
       <objectType id="A" />
@@ -1245,7 +1247,7 @@ TEST_CASE("Multiple objectives", "[!mayfail]") {
   }
 }
 
-TEST_CASE("Quest items that drop only while on quest") {
+TEST_CASE("Quest items that drop only while on quest", "[quests][loot]") {
   GIVEN("A quest for a dragon's scale") {
     auto data = R"(
       <objectType id="questgiver" />
@@ -1335,7 +1337,7 @@ TEST_CASE("Quest items that drop only while on quest") {
   }
 }
 
-TEST_CASE("Construction quests") {
+TEST_CASE("Construction quests", "[quests][construction]") {
   GIVEN("a quest to construct a chair") {
     auto data = R"(
       <objectType id="questgiver" />
@@ -1448,7 +1450,8 @@ TEST_CASE("Construction quests") {
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData,
-                 "Construction quest with no materials needed") {
+                 "Construction quest with no materials needed",
+                 "[quests][construction]") {
   GIVEN("a quest to place a provided rock") {
     useData(R"(
       <objectType id="questgiver" />
@@ -1482,7 +1485,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   }
 }
 
-TEST_CASE("Quests that give items when you start") {
+TEST_CASE("Quests that give items when you start", "[quests][inventory]") {
   GIVEN("a questgiver, and a variety of quests") {
     auto data = R"(
       <objectType id="questgiver" />
@@ -1568,7 +1571,7 @@ TEST_CASE("Quests that give items when you start") {
   }
 }
 
-TEST_CASE("Quest reward: construction") {
+TEST_CASE("Quest reward: construction", "[quests][unlocking][construction]") {
   GIVEN("a quest that awards a construction project") {
     auto data = R"(
       <objectType id="questgiver" />
@@ -1609,7 +1612,7 @@ TEST_CASE("Quest reward: construction") {
   }
 }
 
-TEST_CASE("Quest reward: recipe") {
+TEST_CASE("Quest reward: recipe", "[quests][unlocking][crafting]") {
   GIVEN("a quest that awards a crafting recipe") {
     auto data = R"(
       <objectType id="questgiver" />
@@ -1638,7 +1641,7 @@ TEST_CASE("Quest reward: recipe") {
   }
 }
 
-TEST_CASE("Quest reward: spell") {
+TEST_CASE("Quest reward: spell", "[quests][spells]") {
   GIVEN("a quest that awards a spell") {
     auto data = R"(
       <objectType id="questgiver" />
@@ -1671,7 +1674,7 @@ TEST_CASE("Quest reward: spell") {
   }
 }
 
-TEST_CASE("Quest reward: item") {
+TEST_CASE("Quest reward: item", "[quests][inventory]") {
   GIVEN("a quest that awards an item") {
     auto data = R"(
       <objectType id="questgiver" />
@@ -1759,7 +1762,7 @@ TEST_CASE("Quest reward: item") {
   }
 }
 
-TEST_CASE("Multiple quest rewards") {
+TEST_CASE("Multiple quest rewards", "[quests]") {
   GIVEN("a quest that awards two different items") {
     auto data = R"(
       <objectType id="questgiver" />
@@ -1788,7 +1791,7 @@ TEST_CASE("Multiple quest rewards") {
   }
 }
 
-TEST_CASE("Client remembers quest progress after death") {
+TEST_CASE("Client remembers quest progress after death", "[quests][death]") {
   GIVEN("a player on a quest, and a quest-starter object") {
     auto data = R"(
       <objectType id="questStarter" />
@@ -1817,7 +1820,7 @@ TEST_CASE("Client remembers quest progress after death") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Abandoning quests") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Abandoning quests", "[quests]") {
   useData(R"(
     <objectType id="questgiver" />
     <quest id="quest1" startsAt="questgiver" endsAt="questgiver" />
@@ -1858,7 +1861,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Abandoning quests") {
 
 // Sometimes causes a failed assertion: bad state when removing/inserting
 // entities in Server::_entitiesBy?
-TEST_CASE("Class-specific quests", "[.flaky]") {
+TEST_CASE("Class-specific quests", "[.flaky][quests]") {
   GIVEN("a quest marked as exclusive to a 'politician' class") {
     auto data = R"(
       <class name="politician" />
@@ -1940,7 +1943,7 @@ TEST_CASE("Class-specific quests", "[.flaky]") {
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData,
-                 "A class-specific quests with a prerequisite") {
+                 "A class-specific quests with a prerequisite", "[quests]") {
   GIVEN("A police-exclusive quest, that requires going to school") {
     useDataAndSpecificClass(R"(
       <class name="police" />
@@ -1975,7 +1978,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   }
 }
 
-TEST_CASE("Quest-exclusive objects") {
+TEST_CASE("Quest-exclusive objects", "[quests]") {
   GIVEN("a quest-exclusive tree that gives an acorn") {
     auto data = R"(
       <objectType id="tree" exclusiveToQuest="getAcorn">
@@ -2029,7 +2032,7 @@ TEST_CASE("Quest-exclusive objects") {
   }
 }
 
-TEST_CASE("Quest with a time limit") {
+TEST_CASE("Quest with a time limit", "[quests]") {
   GIVEN("a quest with a time limit of 1s") {
     auto data = R"(
       <objectType id="questgiver" />
@@ -2056,7 +2059,7 @@ TEST_CASE("Quest with a time limit") {
   }
 }
 
-TEST_CASE("Quest time remaining is persistent") {
+TEST_CASE("Quest time remaining is persistent", "[quests][persistence]") {
   // Given a quest with a time limit of 1s
   auto data = R"(
       <objectType id="questgiver" />
@@ -2095,7 +2098,7 @@ TEST_CASE("Quest time remaining is persistent") {
   }
 }
 
-TEST_CASE("Quest objective: cast a spell") {
+TEST_CASE("Quest objective: cast a spell", "[quests][spells]") {
   GIVEN("a quest to cast a spell") {
     auto data = R"(
       <objectType id="questgiver" />

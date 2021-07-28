@@ -2,7 +2,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Simple spawner") {
+TEST_CASE("Simple spawner", "[spawning]") {
   GIVEN("a small object spawner") {
     auto data = R"(
       <objectType id="tree" />
@@ -22,7 +22,7 @@ TEST_CASE("Simple spawner") {
   }
 }
 
-TEST_CASE("Cached terrain for spawning") {
+TEST_CASE("Cached terrain for spawning", "[spawning]") {
   GIVEN("a large map with one tile of water, and a cached fish spawner") {
     auto data = R"(
       <objectType id="fish" allowedTerrain="water" />
@@ -177,7 +177,7 @@ TEST_CASE("Cached terrain for spawning") {
     }
   }
 
-  SECTION("Distribution over multiple tiles") {
+  SECTION("Distribution over multiple tiles", "[spawning]") {
     // GIVEN a cached spawner on a two-tile map
     auto data = R"(
       <objectType id="flower" />
@@ -244,7 +244,7 @@ TEST_CASE("Cached terrain for spawning") {
   }
 }
 
-TEST_CASE("Dead objects respawn") {
+TEST_CASE("Dead objects respawn", "[spawning]") {
   GIVEN("an object that respawns instantly") {
     auto data = R"(
       <objectType id="whackamole" />

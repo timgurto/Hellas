@@ -4,7 +4,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Dropping an item creates an object") {
+TEST_CASE("Dropping an item creates an object", "[dropped-items]") {
   GIVEN("an item type") {
     auto data = R"(
       <item id="apple" />
@@ -26,7 +26,8 @@ TEST_CASE("Dropping an item creates an object") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Equipped items can be dropped") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Equipped items can be dropped",
+                 "[gear][dropped-items]") {
   GIVEN("a gear item") {
     useData(R"(
       <item id="hat" gearSlot="0" />
@@ -48,7 +49,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Equipped items can be dropped") {
   }
 }
 
-TEST_CASE("Name is correct on client") {
+TEST_CASE("Name is correct on client", "[dropped-items][loading]") {
   GIVEN("Apple and Orange item types") {
     auto data = R"(
       <item id="apple" name="Apple" />
@@ -80,7 +81,7 @@ TEST_CASE("Name is correct on client") {
   }
 }
 
-TEST_CASE("Dropped items have correct serials in client") {
+TEST_CASE("Dropped items have correct serials in client", "[dropped-items]") {
   GIVEN("an item type") {
     auto data = R"(
       <item id="apple" />
@@ -112,7 +113,7 @@ TEST_CASE("Dropped items have correct serials in client") {
   }
 }
 
-TEST_CASE("Dropped items land near the dropping player") {
+TEST_CASE("Dropped items land near the dropping player", "[dropped-items]") {
   GIVEN("an item type") {
     auto data = R"(
       <item id="apple" />
@@ -176,8 +177,8 @@ TEST_CASE("Dropped items land near the dropping player") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData,
-                 "Dropped items don't overlap objects") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Dropped items don't overlap objects",
+                 "[dropped-items][construction]") {
   GIVEN("an item type, and a colliding wall near a user") {
     useData(R"(
       <item id="apple" />
@@ -243,7 +244,8 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   }
 }
 
-TEST_CASE("If nowhere to drop an item, keep it in inventory") {
+TEST_CASE("If nowhere to drop an item, keep it in inventory",
+          "[dropped-items][inventory]") {
   GIVEN("an item type, and a colliding wall all around a user") {
     auto data = R"(
       <item id="apple" />
@@ -273,7 +275,7 @@ TEST_CASE("If nowhere to drop an item, keep it in inventory") {
   }
 }
 
-TEST_CASE("Picking items back up") {
+TEST_CASE("Picking items back up", "[inventory][dropped-items]") {
   GIVEN("an item type") {
     auto data = R"(
       <item id="apple" />
@@ -416,7 +418,7 @@ TEST_CASE("Picking items back up") {
   }
 }
 
-TEST_CASE("Dropped-item stacks") {
+TEST_CASE("Dropped-item stacks", "[dropped-items]") {
   GIVEN("coins stack to 10") {
     auto data = R"(
         <item id="coin" stackSize="10" />
@@ -449,7 +451,7 @@ TEST_CASE("Dropped-item stacks") {
   }
 }
 
-TEST_CASE("Dropped-item names reflect stack size") {
+TEST_CASE("Dropped-item names reflect stack size", "[dropped-items]") {
   GIVEN("coins stack to 10") {
     auto data = R"(
         <item id="coin" name="Coin" stackSize="10" />
@@ -475,7 +477,7 @@ TEST_CASE("Dropped-item names reflect stack size") {
   }
 }
 
-TEST_CASE("Bad dropped-item calls") {
+TEST_CASE("Bad dropped-item calls", "[dropped-items]") {
   SECTION("Bad serial") {
     GIVEN("No entities") {
       auto s = TestServer{};
@@ -509,7 +511,7 @@ TEST_CASE("Bad dropped-item calls") {
   }
 }
 
-TEST_CASE("Dropped items are persistent") {
+TEST_CASE("Dropped items are persistent", "[persistence][dropped-items]") {
   // Given a dropped stack of 5 coins
   auto data = R"(
     <item id="coin" stackSize="10" />

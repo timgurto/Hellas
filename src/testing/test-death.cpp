@@ -2,7 +2,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("NPCs untarget dead players") {
+TEST_CASE("NPCs untarget dead players", "[ai][death]") {
   GIVEN("A fox targeting a user but out of aggro range") {
     auto data = R"(
       <npcType id="fox" attack="1" />
@@ -29,7 +29,7 @@ TEST_CASE("NPCs untarget dead players") {
   }
 }
 
-TEST_CASE("Players know their respawn points") {
+TEST_CASE("Players know their respawn points", "[death]") {
   GIVEN("a user") {
     auto s = TestServer{};
     auto c = TestClient{};

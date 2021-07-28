@@ -2,7 +2,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Objects have no owner by default") {
+TEST_CASE("Objects have no owner by default", "[permissions]") {
   // When a basic object is created
   TestServer s = TestServer::WithData("basic_rock");
   s.addObject("rock", {10, 10});
@@ -13,7 +13,8 @@ TEST_CASE("Objects have no owner by default") {
   CHECK_FALSE(rock.permissions.hasOwner());
 }
 
-TEST_CASE("Constructing an object grants ownership") {
+TEST_CASE("Constructing an object grants ownership",
+          "[permissions][construction]") {
   GIVEN("a logged-in client") {
     TestServer s = TestServer::WithData("brick_wall");
     TestClient c = TestClient::WithData("brick_wall");
@@ -32,7 +33,7 @@ TEST_CASE("Constructing an object grants ownership") {
   }
 }
 
-TEST_CASE("Public-access objects") {
+TEST_CASE("Public-access objects", "[permissions][gathering]") {
   // Given a rock with no owner
   TestServer s = TestServer::WithData("basic_rock");
   TestClient c = TestClient::WithData("basic_rock");
@@ -51,7 +52,7 @@ TEST_CASE("Public-access objects") {
   WAIT_UNTIL_TIMEOUT(user.inventory()[0].first.type() == &rockItem, 200);
 }
 
-TEST_CASE("The owner can access an owned object") {
+TEST_CASE("The owner can access an owned object", "[permissions][gathering]") {
   // Given a rock owned by a user
   TestServer s = TestServer::WithData("basic_rock");
   TestClient c = TestClient::WithData("basic_rock");
@@ -71,7 +72,8 @@ TEST_CASE("The owner can access an owned object") {
   WAIT_UNTIL_TIMEOUT(user.inventory()[0].first.type() == &rockItem, 200);
 }
 
-TEST_CASE("A non-owner cannot access an owned object") {
+TEST_CASE("A non-owner cannot access an owned object",
+          "[permissions][gathering]") {
   GIVEN("a rock owned by Alice") {
     TestServer s = TestServer::WithData("basic_rock");
     auto &rock = s.addObject("rock", {10, 10});
@@ -92,7 +94,7 @@ TEST_CASE("A non-owner cannot access an owned object") {
   }
 }
 
-TEST_CASE("A city can own an object", "[city]") {
+TEST_CASE("A city can own an object", "[city][permissions]") {
   // Given a rock, and a city named Athens
   TestServer s = TestServer::WithData("basic_rock");
   s.cities().createCity("Athens", {}, {});
@@ -109,7 +111,7 @@ TEST_CASE("A city can own an object", "[city]") {
   CHECK_FALSE(rock.permissions.isOwnedByPlayer("Athens"));
 }
 
-TEST_CASE("City ownership is persistent", "[city][persistence]") {
+TEST_CASE("City ownership is persistent", "[city][permissions][persistence]") {
   // Given a rock owned by Athens
   {
     TestServer s1 = TestServer::WithData("basic_rock");
@@ -127,7 +129,8 @@ TEST_CASE("City ownership is persistent", "[city][persistence]") {
   CHECK(rock.permissions.isOwnedByCity("Athens"));
 }
 
-TEST_CASE("City members can use city objects", "[city]") {
+TEST_CASE("City members can use city objects",
+          "[city][permissions][gathering]") {
   // Given a rock owned by Athens;
   TestServer s = TestServer::WithData("basic_rock");
   s.cities().createCity("Athens", {}, {});
@@ -154,7 +157,8 @@ TEST_CASE("City members can use city objects", "[city]") {
   WAIT_UNTIL_TIMEOUT(s.entities().empty(), 200);
 }
 
-TEST_CASE("Non-members cannot use city objects", "[city]") {
+TEST_CASE("Non-members cannot use city objects",
+          "[city][permissions][gathering]") {
   GIVEN("a rock owned by Athens") {
     TestServer s = TestServer::WithData("basic_rock");
     TestClient c = TestClient::WithData("basic_rock");
@@ -182,7 +186,7 @@ TEST_CASE("Non-members cannot use city objects", "[city]") {
   }
 }
 
-TEST_CASE("Non-existent cities can't own objects", "[city]") {
+TEST_CASE("Non-existent cities can't own objects", "[city][permissions]") {
   GIVEN("a rock, and no cities") {
     TestServer s = TestServer::WithData("basic_rock");
     s.addObject("rock", {10, 10});
@@ -198,7 +202,7 @@ TEST_CASE("Non-existent cities can't own objects", "[city]") {
   }
 }
 
-TEST_CASE("New objects are added to owner index") {
+TEST_CASE("New objects are added to owner index", "[permissions]") {
   // Given a server with rock objects
   TestServer s = TestServer::WithData("basic_rock");
 
@@ -210,7 +214,7 @@ TEST_CASE("New objects are added to owner index") {
   WAIT_UNTIL(s.objectsByOwner().getObjectsWithSpecificOwner(owner).size() == 1);
 }
 
-TEST_CASE("The object-owner index is initially empty") {
+TEST_CASE("The object-owner index is initially empty", "[permissions]") {
   // Given an empty server
   TestServer s;
 
@@ -219,7 +223,8 @@ TEST_CASE("The object-owner index is initially empty") {
   CHECK(s.objectsByOwner().getObjectsWithSpecificOwner(owner).size() == 0);
 }
 
-TEST_CASE("A removed object is removed from the object-owner index") {
+TEST_CASE("A removed object is removed from the object-owner index",
+          "[permissions]") {
   // Given a server
   TestServer s = TestServer::WithData("basic_rock");
   // And a rock object owned by Alice
@@ -234,7 +239,8 @@ TEST_CASE("A removed object is removed from the object-owner index") {
   WAIT_UNTIL(s.objectsByOwner().getObjectsWithSpecificOwner(owner).size() == 0);
 }
 
-TEST_CASE("New ownership is reflected in the object-owner index") {
+TEST_CASE("New ownership is reflected in the object-owner index",
+          "[permissions]") {
   // Given a server with rock objects
   TestServer s = TestServer::WithData("basic_rock");
 
@@ -253,7 +259,8 @@ TEST_CASE("New ownership is reflected in the object-owner index") {
   CHECK(s.objectsByOwner().getObjectsWithSpecificOwner(ownerBob).size() == 1);
 }
 
-TEST_CASE("Objects can be granted to citizens", "[king][city][grant]") {
+TEST_CASE("Objects can be granted to citizens",
+          "[permissions][city][gifting]") {
   // Given a Rock object type;
   auto s = TestServer::WithData("basic_rock");
 
@@ -279,7 +286,7 @@ TEST_CASE("Objects can be granted to citizens", "[king][city][grant]") {
   WAIT_UNTIL(rock.permissions.isOwnedByPlayer("Alice"));
 }
 
-TEST_CASE("Non kings can't grant objects", "[king][city][grant]") {
+TEST_CASE("Non kings can't grant objects", "[permissions][city][gifting]") {
   // Given a Rock object type;
   auto s = TestServer::WithData("basic_rock");
 
@@ -307,7 +314,7 @@ TEST_CASE("Non kings can't grant objects", "[king][city][grant]") {
   CHECK(rock.permissions.isOwnedByCity("Athens"));
 }
 
-TEST_CASE("Unowned objects cannot be granted", "[city][grant]") {
+TEST_CASE("Unowned objects cannot be granted", "[permissions][gifting]") {
   // Given a Rock object type;
   auto s = TestServer::WithData("basic_rock");
 
@@ -336,7 +343,7 @@ TEST_CASE("Unowned objects cannot be granted", "[city][grant]") {
 }
 
 TEST_CASE("Only objects owned by your city can be granted",
-          "[king][city][grant]") {
+          "[permissions][city][gifting]") {
   // Given a Rock object type;
   auto s = TestServer::WithData("basic_rock");
 
@@ -366,7 +373,7 @@ TEST_CASE("Only objects owned by your city can be granted",
   CHECK(rock.permissions.isOwnedByCity("Sparta"));
 }
 
-TEST_CASE("New object permissions are propagated to clients") {
+TEST_CASE("New object permissions are propagated to clients", "[permissions]") {
   GIVEN("an unowned Rock object") {
     auto s = TestServer::WithData("basic_rock");
     auto c = TestClient::WithData("basic_rock");
@@ -383,14 +390,7 @@ TEST_CASE("New object permissions are propagated to clients") {
   }
 }
 
-TEST_CASE("The first player to attack an object tags it") {
-  // Given a client and server with rock objects;
-  // And a rock object owned by Alice;
-  // When the client attacks it
-  // Then the client can loot it
-}
-
-TEST_CASE("No-access objects") {
+TEST_CASE("No-access objects", "[permissions]") {
   GIVEN("an object marked no-access") {
     auto data = R"(
       <objectType id="house" />

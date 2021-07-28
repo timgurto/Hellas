@@ -22,7 +22,7 @@ TEST_CASE("Class can be specified in TestClients") {
   }
 }
 
-TEST_CASE("A talent tier can require a tool") {
+TEST_CASE("A talent tier can require a tool", "[talents][tool]") {
   GIVEN(
       "a level-2 user, tagged objects, and talent tiers with various "
       "requirements") {
@@ -99,7 +99,7 @@ TEST_CASE("A talent tier can require a tool") {
   }
 }
 
-TEST_CASE("Free spells") {
+TEST_CASE("Free spells", "[spells]") {
   GIVEN("a spell, but no free spells on classes") {
     auto data = R"(
       <spell id="tackle" ><targets enemy=1 /></spell>

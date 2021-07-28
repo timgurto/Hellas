@@ -3,7 +3,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Recipes can be known by default") {
+TEST_CASE("Recipes can be known by default", "[crafting]") {
   TestServer s = TestServer::WithData("box_from_nothing");
   TestClient c = TestClient::WithData("box_from_nothing");
   s.waitForUsers(1);
@@ -20,7 +20,7 @@ TEST_CASE("Recipes can be known by default") {
   CHECK(itemInFirstSlot->id() == "box");
 }
 
-TEST_CASE("Terrain as tool", "[tool]") {
+TEST_CASE("Terrain as tool", "[crafting][tool]") {
   TestServer s = TestServer::WithData("daisy_chain");
   TestClient c = TestClient::WithData("daisy_chain");
   s.waitForUsers(1);
@@ -37,7 +37,7 @@ TEST_CASE("Terrain as tool", "[tool]") {
   CHECK(itemInFirstSlot->id() == "daisyChain");
 }
 
-TEST_CASE("Tools can have speed modifiers") {
+TEST_CASE("Tools can have speed modifiers", "[crafting][tool]") {
   GIVEN(
       "a 200ms recipe that requires a tool, and a variety of matching tools") {
     auto data = R"(
@@ -142,7 +142,7 @@ TEST_CASE("Tools can have speed modifiers") {
   }
 }
 
-TEST_CASE("The fastest tool is used") {
+TEST_CASE("The fastest tool is used", "[crafting][tool]") {
   GIVEN("a 200ms recipe, a 1x tool and a 2x tool") {
     auto data = R"(
       <item id="grass" />
@@ -187,7 +187,7 @@ TEST_CASE("The fastest tool is used") {
   }
 }
 
-TEST_CASE("Client sees default recipes") {
+TEST_CASE("Client sees default recipes", "[crafting]") {
   TestServer s = TestServer::WithData("box_from_nothing");
   TestClient c = TestClient::WithData("box_from_nothing");
   s.waitForUsers(1);
@@ -197,7 +197,8 @@ TEST_CASE("Client sees default recipes") {
   CHECK(c.recipeList().size() == 1);
 }
 
-TEST_CASE("Crafting is allowed if materials will vacate a slot") {
+TEST_CASE("Crafting is allowed if materials will vacate a slot",
+          "[crafting][inventory]") {
   // Given a server and client;
   // And items/recipe for meat -> cooked meat;
   TestServer s = TestServer::WithData("cooking_meat");
@@ -221,7 +222,7 @@ TEST_CASE("Crafting is allowed if materials will vacate a slot") {
   CHECK(itemInFirstSlot->id() == "cookedMeat");
 }
 
-TEST_CASE("NPCs don't cause tool checks to crash", "[tool][crash]") {
+TEST_CASE("NPCs don't cause tool checks to crash", "[tool]") {
   // Given a server and client with an NPC type defined;
   auto s = TestServer::WithData("wolf");
   auto c = TestClient::WithData("wolf");
@@ -237,7 +238,7 @@ TEST_CASE("NPCs don't cause tool checks to crash", "[tool][crash]") {
   // Then the server doesn't crash
 }
 
-TEST_CASE("Gear counts towards materials") {
+TEST_CASE("Gear counts towards materials", "[crafting][gear]") {
   GIVEN("A user wearing an item, and a recipe that needs that item") {
     auto data = R"(
       <item id="sock" gearSlot="5" />
@@ -267,7 +268,7 @@ TEST_CASE("Gear counts towards materials") {
   }
 }
 
-TEST_CASE("Duping exploit") {
+TEST_CASE("Duping exploit", "[crafting][containers]") {
   GIVEN("a user with a container, and a recipe and its material") {
     auto data = R"(
       <item id="brick" />
@@ -310,7 +311,7 @@ TEST_CASE("Duping exploit") {
   }
 }
 
-TEST_CASE("Extra items returned from crafting") {
+TEST_CASE("Extra items returned from crafting", "[crafting][inventory]") {
   GIVEN("a nuclear reaction that takes U235 and returns 2 U238") {
     auto data = R"(
       <item id="u235" />
@@ -397,7 +398,8 @@ TEST_CASE("Extra items returned from crafting") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClient, "Nonsense recipes can't be added") {
+TEST_CASE_METHOD(ServerAndClient, "Nonsense recipes can't be added",
+                 "[crafting]") {
   WHEN("the user tries to learn a recipe that doesnt exist") {
     user->addRecipe("fakeRecipe");
 
@@ -405,7 +407,7 @@ TEST_CASE_METHOD(ServerAndClient, "Nonsense recipes can't be added") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Recipe items") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Recipe items", "[crafting]") {
   GIVEN("a recipe item that teaches how to bake a cake") {
     useData(R"(
       <item id="cake" />

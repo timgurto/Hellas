@@ -2,7 +2,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Damaged objects can't be deconstructed") {
+TEST_CASE("Damaged objects can't be deconstructed", "[damage-on-use]") {
   GIVEN("a 'brick' object with 1 out of 2 health") {
     auto data = R"(
       <item id="brick" durability="2" />
@@ -29,7 +29,8 @@ TEST_CASE("Damaged objects can't be deconstructed") {
   }
 }
 
-TEST_CASE("Objects with no durability have 1 health in client") {
+TEST_CASE("Objects with no durability have 1 health in client",
+          "[loading][damage-on-use]") {
   // Given an object type A with no strength;
   auto data = R"(
       <objectType id="A" />
@@ -49,7 +50,7 @@ TEST_CASE("Objects with no durability have 1 health in client") {
   CHECK(obj.health() == 1);
 }
 
-TEST_CASE("Object durability") {
+TEST_CASE("Object durability", "[damage-on-use]") {
   GIVEN("n item of durability 3, and an object type of durability item*5") {
     auto data = R"(
       <item id="brick" durability="3" />

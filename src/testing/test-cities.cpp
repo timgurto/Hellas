@@ -3,7 +3,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("City creation") {
+TEST_CASE("City creation", "[city]") {
   GIVEN("a server") {
     TestServer s;
 
@@ -19,7 +19,7 @@ TEST_CASE("City creation") {
   }
 }
 
-TEST_CASE("Add a player to a city") {
+TEST_CASE("Add a player to a city", "[city]") {
   GIVEN("a player named Alice") {
     TestServer s;
     TestClient c = TestClient::WithUsername("Alice");
@@ -44,7 +44,7 @@ TEST_CASE("Add a player to a city") {
   }
 }
 
-TEST_CASE("Cities can't be overwritten") {
+TEST_CASE("Cities can't be overwritten", "[city]") {
   GIVEN("a player named Alice") {
     TestServer s;
     TestClient c = TestClient::WithUsername("Alice");
@@ -70,7 +70,7 @@ TEST_CASE("Cities can't be overwritten") {
   }
 }
 
-TEST_CASE("Client is alerted to city membership") {
+TEST_CASE("Client is alerted to city membership", "[city]") {
   GIVEN("a user named Alice") {
     TestServer s;
     TestClient c = TestClient::WithUsername("Alice");
@@ -96,7 +96,7 @@ TEST_CASE("Client is alerted to city membership") {
   }
 }
 
-TEST_CASE("Cities are persistent", "[persistence]") {
+TEST_CASE("Cities are persistent", "[city][persistence]") {
   // Given Alice is in Athens
   {
     TestServer server1;
@@ -116,7 +116,7 @@ TEST_CASE("Cities are persistent", "[persistence]") {
   CHECK(server2.cities().isPlayerInCity("Alice", "Athens"));
 }
 
-TEST_CASE("Clients are told if in a city on login") {
+TEST_CASE("Clients are told if in a city on login", "[city][persistence]") {
   TestServer server;
   server.cities().createCity("Athens", {}, {});
   {
@@ -130,7 +130,7 @@ TEST_CASE("Clients are told if in a city on login") {
   WAIT_UNTIL(client2->character().cityName() == "Athens");
 }
 
-TEST_CASE("Clients know nearby players' cities") {
+TEST_CASE("Clients know nearby players' cities", "[city]") {
   GIVEN("Alice is in Athens") {
     TestServer s;
     s.cities().createCity("Athens", {}, {});
@@ -151,7 +151,7 @@ TEST_CASE("Clients know nearby players' cities") {
   }
 }
 
-TEST_CASE("Ceding") {
+TEST_CASE("Ceding", "[city][permissions]") {
   GIVEN("rock objects and a user") {
     auto data = R"(
       <objectType id="rock" />
@@ -214,7 +214,7 @@ TEST_CASE("Ceding") {
   }
 }
 
-TEST_CASE("A player can leave a city", "[.flaky]") {
+TEST_CASE("A player can leave a city", "[.flaky][city]") {
   // Given a user named Alice;
   auto c = TestClient::WithUsername("Alice");
   auto s = TestServer{};
@@ -244,7 +244,7 @@ TEST_CASE("A player can leave a city", "[.flaky]") {
   WAIT_UNTIL(c.cityName().empty());
 }
 
-TEST_CASE("A player can't leave a city if not in one") {
+TEST_CASE("A player can't leave a city if not in one", "[city]") {
   GIVEN("a user") {
     auto c = TestClient{};
     auto s = TestServer{};
@@ -261,7 +261,7 @@ TEST_CASE("A player can't leave a city if not in one") {
   }
 }
 
-TEST_CASE("A king can't leave his city", "[king]") {
+TEST_CASE("A king can't leave his city", "[city]") {
   GIVEN("a user named Alice") {
     auto c = TestClient::WithUsername("Alice");
     auto s = TestServer{};
@@ -293,7 +293,7 @@ TEST_CASE("A king can't leave his city", "[king]") {
   }
 }
 
-TEST_CASE("Kingship is persistent", "[king]") {
+TEST_CASE("Kingship is persistent", "[city][persistence]") {
   // Given a user named Alice;
   {
     auto c = TestClient::WithUsername("Alice");
@@ -316,7 +316,8 @@ TEST_CASE("Kingship is persistent", "[king]") {
   }
 }
 
-TEST_CASE("Citizens know about their city's distant objects") {
+TEST_CASE("Citizens know about their city's distant objects",
+          "[city][permissions]") {
   GIVEN("a map big enough to exceed the cull distance") {
     auto data = R"(
       <terrain index="G" id="grass" />
@@ -352,7 +353,7 @@ TEST_CASE("Citizens know about their city's distant objects") {
   }
 }
 
-TEST_CASE("New users know about cities") {
+TEST_CASE("New users know about cities", "[city]") {
   auto s = TestServer{};
 
   GIVEN("a city called Athens") {
@@ -433,7 +434,8 @@ TEST_CASE("New users know about cities") {
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData,
-                 "City objects go to king on city destruction") {
+                 "City objects go to king on city destruction",
+                 "[city][permissions]") {
   GIVEN("a house") {
     useData(R"(
       <objectType id="house" />
@@ -458,7 +460,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   }
 }
 
-TEST_CASE("Cities persistently know about their kings") {
+TEST_CASE("Cities persistently know about their kings", "[city][persistence]") {
   // GIVEN Alice is the king of Athens
   {
     auto s = TestServer{};

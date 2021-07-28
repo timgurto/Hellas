@@ -3,7 +3,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Custom vehicle speeds") {
+TEST_CASE("Custom vehicle speeds", "[vehicles][stats]") {
   GIVEN("a user driving a simple vehicle") {
     auto data = R"(
       <objectType id="wheelbarrow" isVehicle="1" />
@@ -84,7 +84,7 @@ TEST_CASE("Custom vehicle speeds") {
   }
 }
 
-TEST_CASE("If a vehicle dies stop driving it") {
+TEST_CASE("If a vehicle dies stop driving it", "[vehicles]") {
   GIVEN("a player driving a vehicle") {
     auto data = R"(
     <objectType id="horse" isVehicle="1" />

@@ -4,7 +4,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Leveling up restores health and energy") {
+TEST_CASE("Leveling up restores health and energy", "[stats][leveling]") {
   auto s = TestServer{};
   auto c = TestClient{};
 
@@ -24,7 +24,7 @@ TEST_CASE("Leveling up restores health and energy") {
   WAIT_UNTIL(user.energy() == user.stats().maxEnergy);
 }
 
-TEST_CASE("Client has correct XP on level up") {
+TEST_CASE("Client has correct XP on level up", "[stats][leveling]") {
   GIVEN("A player") {
     auto s = TestServer{};
     auto c = TestClient{};
@@ -43,7 +43,7 @@ TEST_CASE("Client has correct XP on level up") {
   }
 }
 
-TEST_CASE("Follower-limit stat") {
+TEST_CASE("Follower-limit stat", "[stats][pets]") {
   GIVEN("a user") {
     auto s = TestServer{};
     auto c = TestClient{};
@@ -123,13 +123,14 @@ TEST_CASE("Follower-limit stat") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClient, "Speed stat") {
+TEST_CASE_METHOD(ServerAndClient, "Speed stat", "[stats]") {
   THEN("the client receives a valid speed") {
     WAIT_UNTIL(client.stats().speed > 0);
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Damage reduction from armour") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Damage reduction from armour",
+                 "[stats][combat]") {
   GIVEN("an NPC type that deals 50 damage") {
     auto oldNPCStats = NPCType::BASE_STATS;
     NPCType::BASE_STATS.crit = 0;
@@ -173,13 +174,14 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Damage reduction from armour") {
   }
 }
 
-TEST_CASE("Armour is clamped to 0-1000") {
+TEST_CASE("Armour is clamped to 0-1000", "[stats]") {
   CHECK(ArmourClass{-100}.applyTo(100.0) == 100.0);
   CHECK(ArmourClass{2000}.applyTo(100.0) == 0);
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData,
-                 "Resistances are affected by level differences") {
+                 "Resistances are affected by level differences",
+                 "[stats][spells][leveling]") {
   GIVEN("a lvl-21 NPC type with high health, and a 1000-damage spell") {
     useData(R"(
       <npcType id="rockGiant" level="21" maxHealth="1000000" />
@@ -252,7 +254,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   CHECK(ArmourClass{500}.modifyByLevelDiff(4, 1) == ArmourClass{410});
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Hit chance") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Hit chance", "[stats][combat]") {
   // Assumption: base miss chance of 10%
 
   GIVEN("NPCs have 5% hit chance") {
@@ -299,7 +301,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Hit chance") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClient, "Crit chance") {
+TEST_CASE_METHOD(ServerAndClient, "Crit chance", "[stats][combat]") {
   GIVEN("users have 50% crit chance") {
     CHANGE_BASE_USER_STATS.crit(5000);
     user->updateStats();
@@ -318,7 +320,7 @@ TEST_CASE_METHOD(ServerAndClient, "Crit chance") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClient, "Crit resistance") {
+TEST_CASE_METHOD(ServerAndClient, "Crit resistance", "[stats][combat]") {
   GIVEN("users have 50% crit chance and 25% crit resistance") {
     CHANGE_BASE_USER_STATS.crit(5000).critResist(2500);
     user->updateStats();
@@ -337,7 +339,7 @@ TEST_CASE_METHOD(ServerAndClient, "Crit resistance") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClient, "Dodge chance") {
+TEST_CASE_METHOD(ServerAndClient, "Dodge chance", "[stats][combat]") {
   GIVEN("users have 50% dodge chance") {
     CHANGE_BASE_USER_STATS.dodge(5000);
     user->updateStats();
@@ -356,7 +358,7 @@ TEST_CASE_METHOD(ServerAndClient, "Dodge chance") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Block chance") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Block chance", "[stats][combat]") {
   useData(R"(
     <item id="shield" gearSlot="7">
       <tag name="shield" />
@@ -389,7 +391,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Block chance") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Gather-bonus stat") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Gather-bonus stat",
+                 "[stats][gathering]") {
   GIVEN("an object with a large yield, one at a time") {
     useData(R"(
       <item id="tissue" stackSize="10000000" />
@@ -416,7 +419,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Gather-bonus stat") {
   }
 }
 
-TEST_CASE("Basis-point display") {
+TEST_CASE("Basis-point display", "[stats][ui]") {
   CHECK(BasisPoints{0}.display() == "0.00%"s);
   CHECK(BasisPoints{1}.display() == "0.01%"s);
   CHECK(BasisPoints{50}.display() == "0.50%"s);
@@ -426,7 +429,8 @@ TEST_CASE("Basis-point display") {
   CHECK(BasisPoints{200}.displayShort() == "2%"s);
 }
 
-TEST_CASE("Basis-point stats are read as hundredths of percentages") {
+TEST_CASE("Basis-point stats are read as hundredths of percentages",
+          "[stats][loading]") {
   GIVEN("an item specified to grant \"1 crit\" and \"2 dodge\"") {
     auto data = R"(
       <item id="critSword" >
@@ -446,7 +450,7 @@ TEST_CASE("Basis-point stats are read as hundredths of percentages") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClient, "Health regen") {
+TEST_CASE_METHOD(ServerAndClient, "Health regen", "[stats]") {
   GIVEN("a user is missing 10 health") {
     user->reduceHealth(10);
     auto oldHealth = user->health();
@@ -498,7 +502,7 @@ TEST_CASE_METHOD(ServerAndClient, "Health regen") {
   }
 }
 
-TEST_CASE("Regen display") {
+TEST_CASE("Regen display", "[stats][ui]") {
   StatsMod stats;
   CHECK(stats.toStrings().empty());
 
@@ -516,7 +520,7 @@ TEST_CASE("Regen display") {
   CHECK(stats.toStrings()[0] == "+1 energy per second");
 }
 
-TEST_CASE("Bonus-damage stat") {
+TEST_CASE("Bonus-damage stat", "[stats][combat]") {
   struct TestValues {
     BasisPoints bonusPhysicalDamage;
     double expectedDamage;
@@ -584,7 +588,8 @@ TEST_CASE("Bonus-damage stat") {
 }
 
 TEST_CASE_METHOD(ServerAndClient,
-                 "User combat damage is modified by bonus damage") {
+                 "User combat damage is modified by bonus damage",
+                 "[stats][combat]") {
   GIVEN("users deal 100 physical attack and +100% physical damage") {
     CHANGE_BASE_USER_STATS.weaponDamage(100).physicalDamage(10000);
     user->updateStats();
@@ -602,7 +607,8 @@ TEST_CASE_METHOD(ServerAndClient,
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Bonus damage on spells") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Bonus damage on spells",
+                 "[stats][spells]") {
   GIVEN("the user knows a fireball spell that deals 10 fire damage") {
     useData(R"(
       <spell id="fireball" school="fire" >
@@ -654,7 +660,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Bonus damage on spells") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Bonus-healing stat") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Bonus-healing stat",
+                 "[stats][spells]") {
   GIVEN("the user knows a spell that heals 10 damage") {
     useData(R"(
       <spell id="heal" >
@@ -686,7 +693,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Bonus-healing stat") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Block-value stat", "[.flaky]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Block-value stat",
+                 "[.flaky][stats][gear][combat]") {
   GIVEN("an NPC that deals 10 damage") {
     useData(R"(
       <npcType id="soldier" attack="10" />
@@ -723,7 +731,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Block-value stat", "[.flaky]") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Composite stats") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Composite stats",
+                 "[stats][gear][buffs]") {
   GIVEN("an item with a new stat, \"stamina\", that grants max health") {
     useData(R"(
       <compositeStat id="stamina">
@@ -843,7 +852,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Composite stats") {
   }
 }
 
-TEST_CASE("StatsMod * scalar") {
+TEST_CASE("StatsMod * scalar", "[stats]") {
   GIVEN("A StatsMod object with values of 1") {
     auto stats = StatsMod{};
     stats.maxHealth = 1;
@@ -987,7 +996,7 @@ TEST_CASE("StatsMod * scalar") {
   }
 }
 
-TEST_CASE("Unlock bonus is part of StatsMod") {
+TEST_CASE("Unlock bonus is part of StatsMod", "[stats][unlocking]") {
   auto stats = Stats{};
   auto statsMod = StatsMod{};
   statsMod.unlockBonus = 1;
@@ -996,7 +1005,7 @@ TEST_CASE("Unlock bonus is part of StatsMod") {
   CHECK(stats.unlockBonus == BasisPoints{1});
 }
 
-TEST_CASE("Loading stats from XML") {
+TEST_CASE("Loading stats from XML", "[stats][loading]") {
   GIVEN("an item has stats specified") {
     auto data = R"(
       <item id="ring" gearSlot="2">
@@ -1019,7 +1028,8 @@ TEST_CASE("Loading stats from XML") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Composite stats in Stats") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Composite stats in Stats",
+                 "[stats]") {
   GIVEN("a buff that gives a composite stat") {
     useData(R"(
       <compositeStat id="awesomeness" />
@@ -1054,7 +1064,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Composite stats in Stats") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Stat propagation to clients") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Stat propagation to clients",
+                 "[stats]") {
   GIVEN("a \"power\" stat") {
     useData(R"(
       <compositeStat id="power" />
@@ -1095,8 +1106,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Stat propagation to clients") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData,
-                 "Composite stats have display names") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Composite stats have display names",
+                 "[stats][ui]") {
   GIVEN("composite stats with display names") {
     useData(R"(
       <compositeStat id="con" name="Constitution" />
@@ -1120,7 +1131,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   }
 }
 
-TEST_CASE("Composite stats' conversion to strings") {
+TEST_CASE("Composite stats' conversion to strings", "[stats][ui]") {
   GIVEN("int (Intellect) and con (Constitution) stats") {
     auto intellect = CompositeStat{};
     intellect.name = "Intellect";
@@ -1194,7 +1205,7 @@ TEST_CASE("Composite stats' conversion to strings") {
   }
 }
 
-TEST_CASE("Buffs can reduce max health") {
+TEST_CASE("Buffs can reduce max health", "[stats][buffs]") {
   GIVEN("a kobold with 10 health, and a buff that reduces max health by 5") {
     const auto data = R"(
       <npcType id="kobold" maxHealth="10" />
@@ -1229,7 +1240,7 @@ TEST_CASE("Buffs can reduce max health") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Stun") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Stun", "[stats][combat]") {
   GIVEN("a hostile lion, and a stun debuff") {
     useData(R"(
       <npcType id="lion" maxHealth="1000" attack="5" attackTime="50" />

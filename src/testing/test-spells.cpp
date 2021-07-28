@@ -4,7 +4,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Non-talent spells") {
+TEST_CASE("Non-talent spells", "[spells]") {
   GIVEN("a spell") {
     auto data = R"(
       <spell id="fireball" >
@@ -36,7 +36,7 @@ TEST_CASE("Non-talent spells") {
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData,
-                 "Spells that can target only a specific NPC") {
+                 "Spells that can target only a specific NPC", "[spells]") {
   SECTION("Direct-target spell") {
     GIVEN("a shiver-timbers spell that can only be cast on pirates") {
       useData(R"(
@@ -128,7 +128,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   }
 }
 
-TEST_CASE("Non-talent spells are persistent") {
+TEST_CASE("Non-talent spells are persistent", "[spells][persistence]") {
   // Given a spell
   auto data = R"(
     <spell id="fireball" >
@@ -160,7 +160,7 @@ TEST_CASE("Non-talent spells are persistent") {
   }
 }
 
-TEST_CASE_METHOD(TwoClientsWithData, "Spell cooldowns") {
+TEST_CASE_METHOD(TwoClientsWithData, "Spell cooldowns", "[spells]") {
   GIVEN(
       "Alice and Bob know a range of self-damaging spells, and have extremely "
       "high hit chance") {
@@ -316,7 +316,7 @@ TEST_CASE_METHOD(TwoClientsWithData, "Spell cooldowns") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "NPC spells") {
+TEST_CASE_METHOD(ServerAndClientWithData, "NPC spells", "[spells][ai]") {
   GIVEN(
       "A wizard with no combat damage, and a fireball spell with a 2s "
       "cooldown") {
@@ -384,7 +384,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "NPC spells") {
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData,
-                 "NPCs cast AoE spells even with no target selected") {
+                 "NPCs cast AoE spells even with no target selected",
+                 "[spells][ai]") {
   GIVEN("an NPC with an AoE spell that targets enemies") {
     useData(R"(
       <spell id="explosion" radius="100" >
@@ -416,7 +417,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   }
 }
 
-TEST_CASE("Kills with spells give XP") {
+TEST_CASE("Kills with spells give XP", "[spells][leveling]") {
   GIVEN("a high-damage spell and low-health NPC") {
     auto data = R"(
       <spell id="nuke" range=30 >
@@ -446,7 +447,7 @@ TEST_CASE("Kills with spells give XP") {
   }
 }
 
-TEST_CASE("Relearning a talent skill after death") {
+TEST_CASE("Relearning a talent skill after death", "[spells][death][talents]") {
   GIVEN("a talent that teaches a spell") {
     auto data = R"(
       <class name="Dancer">
@@ -487,7 +488,7 @@ TEST_CASE("Relearning a talent skill after death") {
   }
 }
 
-TEST_CASE("Non-damaging spells aggro NPCs") {
+TEST_CASE("Non-damaging spells aggro NPCs", "[spells][ai]") {
   GIVEN("a debuff spell, and an NPC out of range") {
     auto data = R"(
       <spell id="exhaust" range="100" >
@@ -521,7 +522,7 @@ TEST_CASE("Non-damaging spells aggro NPCs") {
   }
 }
 
-TEST_CASE("Cast-from-item returning an item") {
+TEST_CASE("Cast-from-item returning an item", "[spells][inventory]") {
   GIVEN("items that can pour water; the bucket is returned afterwards") {
     auto data = R"(
       <spell id="pourWater"  >
@@ -584,8 +585,8 @@ TEST_CASE("Cast-from-item returning an item") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData,
-                 "Cast-from-item with no item removal") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Cast-from-item with no item removal",
+                 "[spells][inventory]") {
   GIVEN("a button that casts a spell without being lost") {
     useData(R"(
       <spell id="zap"  >
@@ -610,7 +611,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   }
 }
 
-TEST_CASE("Cast a spell from a stackable item") {
+TEST_CASE("Cast a spell from a stackable item", "[spells][inventory]") {
   GIVEN("stackable matches cast self-fireballs and return used matches") {
     auto data = R"(
       <spell id="fireball"  >
@@ -654,7 +655,7 @@ TEST_CASE("Cast a spell from a stackable item") {
   }
 }
 
-TEST_CASE("Target self if target is invalid") {
+TEST_CASE("Target self if target is invalid", "[spells]") {
   GIVEN("a friendly-fire fireball spell and an enemy") {
     auto data = R"(
       <spell id="fireball"  >
@@ -684,7 +685,7 @@ TEST_CASE("Target self if target is invalid") {
   }
 }
 
-TEST_CASE("Objects can't be healed") {
+TEST_CASE("Objects can't be healed", "[spells][damage-on-use]") {
   GIVEN("an object, and a heal-all spell") {
     auto data = R"(
       <spell id="megaHeal" range="100" >
@@ -722,7 +723,8 @@ TEST_CASE("Objects can't be healed") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "A spell that summons an NPC") {
+TEST_CASE_METHOD(ServerAndClientWithData, "A spell that summons an NPC",
+                 "[spells]") {
   GIVEN("a spell that summons an NPC") {
     useData(R"(
       <npcType id="skeleton" />

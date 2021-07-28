@@ -7,7 +7,7 @@
 
 using ItemReportingInfo = ServerItem::Instance::ReportingInfo;
 
-TEST_CASE("Newly given items have full health") {
+TEST_CASE("Newly given items have full health", "[damage-on-use]") {
   GIVEN("apple items") {
     auto data = R"(
       <item id="apple" />
@@ -29,7 +29,7 @@ TEST_CASE("Newly given items have full health") {
   }
 }
 
-TEST_CASE("Combat reduces weapon/armour health") {
+TEST_CASE("Combat reduces weapon/armour health", "[damage-on-use][combat]") {
   GIVEN(
       "a very fast, low-damage weapon; a very fast, low-damage enemy; some "
       "armour") {
@@ -137,7 +137,8 @@ TEST_CASE("Combat reduces weapon/armour health") {
   }
 }
 
-TEST_CASE("Thrown weapons don't take damage from attacking") {
+TEST_CASE("Thrown weapons don't take damage from attacking",
+          "[damage-on-use][combat]") {
   GIVEN("a whale, and harpoons that can be thrown or shot") {
     auto data = R"(
       <item id="harpoon" gearSlot="6" stackSize="1000000" >
@@ -200,7 +201,7 @@ TEST_CASE("Thrown weapons don't take damage from attacking") {
   }
 }
 
-TEST_CASE("Item damage is limited to 1") {
+TEST_CASE("Item damage is limited to 1", "[damage-on-use]") {
   GIVEN("a user with an item") {
     auto data = R"(
       <item id="thing" />
@@ -222,7 +223,7 @@ TEST_CASE("Item damage is limited to 1") {
   }
 }
 
-TEST_CASE("Item damage happens randomly") {
+TEST_CASE("Item damage happens randomly", "[damage-on-use]") {
   GIVEN("a user with an item") {
     auto data = R"(
       <item id="thing" />
@@ -244,7 +245,7 @@ TEST_CASE("Item damage happens randomly") {
   }
 }
 
-TEST_CASE("Crafting tools lose durability") {
+TEST_CASE("Crafting tools lose durability", "[damage-on-use][crafting][tool]") {
   GIVEN("a user with a crafting tool") {
     auto data = R"(
       <item id="rabbit" stackSize="1000" />
@@ -298,7 +299,8 @@ TEST_CASE("Crafting tools lose durability") {
   }
 }
 
-TEST_CASE("Construction tools lose durability") {
+TEST_CASE("Construction tools lose durability",
+          "[damage-on-use][construction][tool]") {
   GIVEN("a user with a construction tool") {
     auto data = R"(
       <objectType id="hole" constructionReq="digging" />
@@ -327,7 +329,8 @@ TEST_CASE("Construction tools lose durability") {
   }
 }
 
-TEST_CASE("Gathering tools lose durability") {
+TEST_CASE("Gathering tools lose durability",
+          "[damage-on-use][gathering][tool]") {
   GIVEN("a user with a shovel, and a garden with many onions") {
     auto data = R"(
       <objectType id="onionPatch" gatherReq="digging">
@@ -363,7 +366,8 @@ TEST_CASE("Gathering tools lose durability") {
   }
 }
 
-TEST_CASE("Tool objects lose durability") {
+TEST_CASE("Tool objects lose durability",
+          "[damage-on-use][construction][tool]") {
   GIVEN("a user with a construction tool") {
     auto data = R"(
       <objectType id="hole" constructionReq="digging" />
@@ -391,7 +395,7 @@ TEST_CASE("Tool objects lose durability") {
   }
 }
 
-TEST_CASE("Swapping items preserves damage") {
+TEST_CASE("Swapping items preserves damage", "[damage-on-use][inventory]") {
   GIVEN("a user with two items") {
     auto data = R"(
       <item id="coin"/>
@@ -422,7 +426,8 @@ TEST_CASE("Swapping items preserves damage") {
   }
 }
 
-TEST_CASE("Persistence of item health: users' items") {
+TEST_CASE("Persistence of item health: users' items",
+          "[damage-on-use][persistence][inventory]") {
   // Given a server with an item type
   auto data = R"(
     <item id="shoe" gearSlot="5" />
@@ -466,7 +471,8 @@ TEST_CASE("Persistence of item health: users' items") {
   CHECK(user.gear(5).first.health() == gearHealth);
 }
 
-TEST_CASE("Persistence of item health: objects' contents") {
+TEST_CASE("Persistence of item health: objects' contents",
+          "[damage-on-use][persistence][containers]") {
   // Given a server with an item type and a container type
   auto itemHealth = Hitpoints{0};
 
@@ -509,7 +515,7 @@ TEST_CASE("Persistence of item health: objects' contents") {
   }                                    \
   CHECK((ITEM).isBroken());
 
-TEST_CASE("Broken weapons don't add attack") {
+TEST_CASE("Broken weapons don't add attack", "[damage-on-use][stats][gear]") {
   GIVEN("a weapon that deals 42 damage") {
     auto data = R"(
       <item id="sword" gearSlot="6" >
@@ -557,7 +563,7 @@ TEST_CASE("Broken weapons don't add attack") {
   }
 }
 
-TEST_CASE("Broken shields don't block") {
+TEST_CASE("Broken shields don't block", "[damage-on-use][stats][gear]") {
   GIVEN("a shield") {
     auto data = R"(
       <item id="shield" gearSlot="7" >
@@ -588,7 +594,8 @@ TEST_CASE("Broken shields don't block") {
   }
 }
 
-TEST_CASE("Broken items can't be placed as objects") {
+TEST_CASE("Broken items can't be placed as objects",
+          "[damage-on-use][construction]") {
   GIVEN("a seed that constructs a tree") {
     auto data = R"(
       <item id="seed" constructs="tree" />
@@ -619,7 +626,7 @@ TEST_CASE("Broken items can't be placed as objects") {
   }
 }
 
-TEST_CASE("Broken items can't cast spells") {
+TEST_CASE("Broken items can't cast spells", "[damage-on-use][spells]") {
   GIVEN("a poisoned apple that deals damage to the user") {
     auto data = R"(
       <item id="poisonedApple" castsSpellOnUse="poison" />
@@ -653,7 +660,8 @@ TEST_CASE("Broken items can't cast spells") {
   }
 }
 
-TEST_CASE("Broken items can't be used as construction materials") {
+TEST_CASE("Broken items can't be used as construction materials",
+          "[damage-on-use][construction]") {
   GIVEN("a tuffet made out of a rock") {
     auto data = R"(
       <item id="rock" />
@@ -693,7 +701,8 @@ TEST_CASE("Broken items can't be used as construction materials") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Broken items can't be traded") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Broken items can't be traded",
+                 "[damage-on-use][merchant]") {
   GIVEN("an apple cart with an apple, and a user with a coin") {
     useData(R"(
       <item id="coin" />
@@ -744,7 +753,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Broken items can't be traded") {
   }
 }
 
-TEST_CASE("Repairing items") {
+TEST_CASE("Repairing items", "[damage-on-use][repair][gear][containers]") {
   GIVEN("a user, repairable hats, and hatstand objects") {
     auto data = R"(
       <item id="hat" gearSlot="0"> <canBeRepaired/> </item>
@@ -870,7 +879,7 @@ TEST_CASE("Repairing items") {
   }
 }
 
-TEST_CASE("Non-repairable item") {
+TEST_CASE("Non-repairable item", "[damage-on-use][repair]") {
   GIVEN("a user with a non-repairable feather") {
     auto data = R"(
       <item id="feather" />
@@ -900,7 +909,7 @@ TEST_CASE("Non-repairable item") {
   }
 }
 
-TEST_CASE("Item repair that consumes items") {
+TEST_CASE("Item repair that consumes items", "[damage-on-use][repair]") {
   GIVEN("food repairs a broken heart") {
     auto data = R"(
       <item id="heart">
@@ -950,7 +959,7 @@ TEST_CASE("Item repair that consumes items") {
   }
 }
 
-TEST_CASE("Item repair that requires a tool") {
+TEST_CASE("Item repair that requires a tool", "[damage-on-use][repair][tool]") {
   GIVEN("a soldering iron is needed to repair a circuit") {
     auto data = R"(
       <item id="circuit">
@@ -1030,7 +1039,7 @@ TEST_CASE("Item repair that requires a tool") {
   }
 }
 
-TEST_CASE("Object repair") {
+TEST_CASE("Object repair", "[damage-on-use][repair]") {
   GIVEN("a repairable object") {
     auto data = R"(
       <item id="brick" durability="10" />
@@ -1061,7 +1070,7 @@ TEST_CASE("Object repair") {
   }
 }
 
-TEST_CASE("Non-repairable objects") {
+TEST_CASE("Non-repairable objects", "[damage-on-use][repair]") {
   GIVEN("a non-repairable object") {
     auto data = R"(
       <item id="glass" durability="10" />
@@ -1092,7 +1101,7 @@ TEST_CASE("Non-repairable objects") {
   }
 }
 
-TEST_CASE("Repairing a nonexistent object") {
+TEST_CASE("Repairing a nonexistent object", "[repair]") {
   GIVEN("a user") {
     auto s = TestServer{};
     auto c = TestClient{};
@@ -1109,7 +1118,7 @@ TEST_CASE("Repairing a nonexistent object") {
   }
 }
 
-TEST_CASE("Object repair at a cost") {
+TEST_CASE("Object repair at a cost", "[damage-on-use][repair]") {
   GIVEN("an object that can be repaired for a cost") {
     auto data = R"(
       <item id="snow" durability="10" />
@@ -1157,7 +1166,7 @@ TEST_CASE("Object repair at a cost") {
   }
 }
 
-TEST_CASE("Object repair requiring a tool") {
+TEST_CASE("Object repair requiring a tool", "[damage-on-use][repair][tool]") {
   GIVEN("an object that can be repaired using a tool") {
     auto data = R"(
       <item id="wrench">
@@ -1203,7 +1212,3 @@ TEST_CASE("Object repair requiring a tool") {
     }
   }
 }
-
-/* TODO
-Give objects straight health values, not item-based health
-*/

@@ -9,7 +9,7 @@
 
 extern Args cmdLineArgs;
 
-TEST_CASE("Clients can find the server", "[slow]") {
+TEST_CASE("Clients can find the server", "[.slow][connection]") {
   SECTION("Server IP points to this computer") {
     auto clientConfig = ClientConfig{};
     clientConfig.loadFromFile("client-config.xml");
@@ -58,7 +58,7 @@ TEST_CASE("Read test URL", "[.slow]") {
         "This is a file for testing web-access accuracy.");
 }
 
-TEST_CASE("Use socket after cleanup") {
+TEST_CASE("Use socket after cleanup", "[connection]") {
   {
     TestServer s;
     TestClient c;

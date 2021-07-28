@@ -3,7 +3,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Object container empty check") {
+TEST_CASE("Object container empty check", "[containers]") {
   TestServer s;
   ObjectType type("box");
   type.addContainer(ContainerType::WithSlots(5));
@@ -16,7 +16,7 @@ TEST_CASE("Object container empty check") {
   CHECK_FALSE(obj.container().isEmpty());
 }
 
-TEST_CASE("Dismantle an object with an inventory", "[.flaky]") {
+TEST_CASE("Dismantle an object with an inventory", "[.flaky][containers]") {
   // Given a running server;
   TestServer s = TestServer::WithData("dismantle");
   // And a user at (10, 10);
@@ -35,7 +35,7 @@ TEST_CASE("Dismantle an object with an inventory", "[.flaky]") {
   CHECK(c.waitForMessage(SV_ACTION_STARTED));
 }
 
-TEST_CASE("Place item in object", "[.flaky]") {
+TEST_CASE("Place item in object", "[.flaky][containers]") {
   TestServer s = TestServer::WithData("dismantle");
   TestClient c = TestClient::WithData("dismantle");
 
@@ -55,7 +55,7 @@ TEST_CASE("Place item in object", "[.flaky]") {
   CHECK(c.waitForMessage(SV_INVENTORY));
 }
 
-TEST_CASE("Client-side containers don't spontaneously clear") {
+TEST_CASE("Client-side containers don't spontaneously clear", "[containers]") {
   // Given a server and client, and a "box" container object,
   auto s = TestServer::WithData("dismantle");
   auto c = TestClient::WithData("dismantle");
@@ -73,7 +73,8 @@ TEST_CASE("Client-side containers don't spontaneously clear") {
   CHECK_FALSE(c.getFirstObject().container().empty());
 }
 
-TEST_CASE("Merchant can use same slot for ware and price") {
+TEST_CASE("Merchant can use same slot for ware and price",
+          "[containers][merchant]") {
   GIVEN("a merchant object with one inventory slot, containing the ware") {
     auto data = R"(
         <item id="diamond" />
@@ -106,7 +107,8 @@ TEST_CASE("Merchant can use same slot for ware and price") {
   }
 }
 
-TEST_CASE("Bad inventory message to client") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Bad inventory message to client",
+                 "[containers]") {
   GIVEN("a server and client, and an item type") {
     useData(R"(
       <item id="gold" />
@@ -121,7 +123,8 @@ TEST_CASE("Bad inventory message to client") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Taking items") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Taking items",
+                 "[containers][inventory]") {
   GIVEN("a box with a chocolate inside") {
     useData(R"(
       <item id="chocolate" />

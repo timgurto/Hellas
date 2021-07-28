@@ -3,7 +3,7 @@
 #include "testing.h"
 
 TEST_CASE("Connecting players are told about their distant objects",
-          "[.flaky]") {
+          "[.flaky][persistence][permissions]") {
   // Given an object at (10000,10000) owned by Alice
   TestServer s = TestServer::WithData("signpost");
   s.addObject("signpost", {10000, 10000}, "Alice");
@@ -32,7 +32,7 @@ TEST_CASE("Connecting players are told about their distant pets") {
 }
 
 TEST_CASE("Connecting players are not told about others' distant objects",
-          "[.flaky]") {
+          "[.flaky][persistence][permissions]") {
   // Given an object at (10000,10000) owned by Alice
   TestServer s = TestServer::WithData("signpost");
   s.addObject("signpost", {10000, 10000}, "Bob");
@@ -79,7 +79,7 @@ TEST_CASE("When one user approaches another, he finds out about him",
 }
 
 TEST_CASE("When a player moves away from his object, he is still aware of it",
-          "[.slow]") {
+          "[.slow][permissions]") {
   // Given a server with signpost objects;
   TestServer s = TestServer::WithData("signpost");
 
@@ -107,7 +107,7 @@ TEST_CASE("When a player moves away from his object, he is still aware of it",
 
 TEST_CASE(
     "When a player moves away from his city's object, he is still aware of it",
-    "[.slow]") {
+    "[.slow][city][permissions]") {
   // Given a server with signpost objects;
   TestServer s = TestServer::WithData("signpost");
 
@@ -142,7 +142,7 @@ TEST_CASE(
   CHECK(c.objects().size() == 1);
 }
 
-TEST_CASE("New citizens find out about city objects") {
+TEST_CASE("New citizens find out about city objects", "[city][permissions]") {
   GIVEN("a city object far away from a player") {
     auto s = TestServer::WithData("signpost");
     auto c = TestClient::WithData("signpost");
@@ -201,7 +201,7 @@ TEST_CASE("Unwatching NPCs", "[.flaky]") {
   }
 }
 
-TEST_CASE("Out-of-range objects are forgotten", "[.slow][only]") {
+TEST_CASE("Out-of-range objects are forgotten", "[.slow]") {
   // Given a server and client with signpost objects;
   TestServer s = TestServer::WithData("signpost");
   TestClient c = TestClient::WithData("signpost");

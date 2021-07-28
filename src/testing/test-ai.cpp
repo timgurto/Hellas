@@ -3,7 +3,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE_METHOD(ServerAndClientWithData, "NPCs chain pull") {
+TEST_CASE_METHOD(ServerAndClientWithData, "NPCs chain pull", "[ai]") {
   GIVEN("a user with a spear") {
     useData(R"(
       <npcType id="bear" />
@@ -54,7 +54,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "NPCs chain pull") {
   }
 }
 
-TEST_CASE("NPCs don't attack each other") {
+TEST_CASE("NPCs don't attack each other", "[ai][combat]") {
   GIVEN("An aggressive wolf NPC type") {
     auto data = R"(
       <npcType id="wolf" maxHealth="10000" attack="2" speed="10" />
@@ -77,7 +77,7 @@ TEST_CASE("NPCs don't attack each other") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding", "[ai]") {
   const auto LARGE_MAP = R"(
     <newPlayerSpawn x="10" y="10" range="0" />
     <terrain index="." id="grass" />

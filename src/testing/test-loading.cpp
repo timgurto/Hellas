@@ -5,23 +5,23 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Read XML file with root only") {
+TEST_CASE("Read XML file with root only", "[loading]") {
   auto xr = XmlReader::FromFile("testing/empty.xml");
   for (auto elem : xr.getChildren("nonexistent_tag"))
     ;
 }
 
-TEST_CASE("Invalid items are removed") {
+TEST_CASE("Invalid items are removed", "[loading]") {
   TestServer s = TestServer::WithData("fake_item");
   auto it = s.items().find(ServerItem("fakeStone"));
   CHECK(it == s.items().end());
 }
 
-TEST_CASE("No crash on bad data") {
+TEST_CASE("No crash on bad data", "[loading]") {
   TestServer s = TestServer::WithData("this_doesnt_exist");
 }
 
-TEST_CASE("Get spawn point from map file") {
+TEST_CASE("Get spawn point from map file", "[loading]") {
   TestServer s = TestServer::WithData("spawn_point_37");
   TestClient c;
   s.waitForUsers(1);
@@ -29,7 +29,7 @@ TEST_CASE("Get spawn point from map file") {
   CHECK(user.location() == MapPoint(37, 37));
 }
 
-TEST_CASE("Get spawn range from map file") {
+TEST_CASE("Get spawn range from map file", "[loading]") {
   TestServer s = TestServer::WithData("spawn_point_37ish");
   auto c1 = TestClient::WithData("spawn_point_37ish"),
        c2 = TestClient::WithData("spawn_point_37ish"),
@@ -45,7 +45,7 @@ TEST_CASE("Get spawn range from map file") {
   }
 }
 
-TEST_CASE("Constructible NPC is loaded as NPC") {
+TEST_CASE("Constructible NPC is loaded as NPC", "[loading][construction]") {
   // Load an item that refers to an object type, then an NPC type to define it
   TestClient c = TestClient::WithData("construct_an_npc");
 
@@ -57,7 +57,7 @@ TEST_CASE("Constructible NPC is loaded as NPC") {
   CHECK(npcType.maxHealth() == 5);
 }
 
-TEST_CASE("Object spawners work") {
+TEST_CASE("Object spawners work", "[loading][spawning]") {
   // Given a spawner that maintains 3 rocks
   // When a server runs
   TestServer s = TestServer::WithData("spawned_rocks");
@@ -66,7 +66,7 @@ TEST_CASE("Object spawners work") {
   WAIT_UNTIL(s.entities().size() == 3);
 }
 
-TEST_CASE("NPC spawners work") {
+TEST_CASE("NPC spawners work", "[loading][spawning]") {
   // Given a spawner that maintains 3 chickens
   // When a server runs
   TestServer s = TestServer::WithData("spawned_chickens");
@@ -75,7 +75,7 @@ TEST_CASE("NPC spawners work") {
   WAIT_UNTIL(s.entities().size() == 3);
 }
 
-TEST_CASE("Clients load map properly") {
+TEST_CASE("Clients load map properly", "[loading]") {
   GIVEN(
       "a server and client, with a 101x101 map on which users spawn at the "
       "midpoint") {
@@ -122,13 +122,13 @@ TEST_CASE("Clients load map properly") {
   }
 }
 
-TEST_CASE("Help text is valid XML") {
+TEST_CASE("Help text is valid XML", "[loading]") {
   auto c = TestClient{};
   const auto &helpTextEntries = c->helpEntries();
   CHECK(helpTextEntries.begin() != helpTextEntries.end());
 }
 
-TEST_CASE("NPC types have correct defaults") {
+TEST_CASE("NPC types have correct defaults", "[loading]") {
   GIVEN("an NPC type with unspecified level") {
     auto data = R"(
       <npcType id="bacterium" />
@@ -146,7 +146,7 @@ TEST_CASE("NPC types have correct defaults") {
   }
 }
 
-TEST_CASE("NPC tags are loaded in client") {
+TEST_CASE("NPC tags are loaded in client", "[loading]") {
   GIVEN("An NPC type with a tag") {
     auto data = R"(
       <npcType
@@ -164,7 +164,7 @@ TEST_CASE("NPC tags are loaded in client") {
   }
 }
 
-TEST_CASE("Load XML from string") {
+TEST_CASE("Load XML from string", "[loading]") {
   GIVEN("An XML string defining an item") {
     auto data = R"(
       <item id="rock" />
@@ -180,7 +180,7 @@ TEST_CASE("Load XML from string") {
   }
 }
 
-TEST_CASE("Clients load quests", "[quests]") {
+TEST_CASE("Clients load quests", "[loading][quests]") {
   GIVEN("a quest") {
     auto data = R"(
       <quest id="quest1" name="Quest" startsAt="a" endsAt="b"
@@ -203,7 +203,7 @@ TEST_CASE("Clients load quests", "[quests]") {
   }
 }
 
-TEST_CASE("NPCs have default max health") {
+TEST_CASE("NPCs have default max health", "[loading][stats]") {
   GIVEN("an NPC type with only the ID defined") {
     auto data = R"(
       <npcType id="ant" />
@@ -215,7 +215,8 @@ TEST_CASE("NPCs have default max health") {
   }
 }
 
-TEST_CASE("Existing users load at the correct location") {
+TEST_CASE("Existing users load at the correct location",
+          "[loading][persistence]") {
   // Given Alice spawns at (10, 10)
   auto s = TestServer{};
   User *alice = nullptr;
@@ -241,7 +242,7 @@ TEST_CASE("Existing users load at the correct location") {
   }
 }
 
-TEST_CASE("The map can be loaded from a string") {
+TEST_CASE("The map can be loaded from a string", "[loading]") {
   GIVEN("a 2x2 map specified by string") {
     auto data = R"(
       <size x="2" y="2" />
@@ -256,7 +257,7 @@ TEST_CASE("The map can be loaded from a string") {
   }
 }
 
-TEST_CASE("Weapon damage school is loaded") {
+TEST_CASE("Weapon damage school is loaded", "[loading][combat]") {
   GIVEN("a weapon that does fire damage") {
     auto data = R"(
       <item id="fireSword" >
@@ -284,14 +285,14 @@ TEST_CASE("Weapon damage school is loaded") {
   }
 }
 
-TEST_CASE("Server loads terrain types") {
+TEST_CASE("Server loads terrain types", "[loading]") {
   GIVEN("a server") {
     auto s = TestServer{};
     THEN("there's one terrain type") { CHECK(s.terrainTypes().size() == 1); }
   }
 }
 
-TEST_CASE("NPC templates") {
+TEST_CASE("NPC templates", "[loading]") {
   GIVEN("an NPC that uses a template") {
     auto data = R"(
       <npcTemplate id="bear">
@@ -308,7 +309,7 @@ TEST_CASE("NPC templates") {
   }
 }
 
-TEST_CASE("NPC forward declaration") {
+TEST_CASE("NPC forward declaration", "[loading]") {
   GIVEN("A forward-declared NPC type with a yield") {
     auto data = R"(
       <npcType id="pig" maxHealth="1" >
@@ -329,7 +330,7 @@ TEST_CASE("NPC forward declaration") {
 }
 
 TEST_CASE_METHOD(ServerAndClientWithDataFiles,
-                 "Static objects can be listed in any file") {
+                 "Static objects can be listed in any file", "[loading]") {
   GIVEN("a tree defined in each of data.xml and staticObjects.xml") {
     useData("static_tree");
 
@@ -339,7 +340,8 @@ TEST_CASE_METHOD(ServerAndClientWithDataFiles,
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Static objects in data string") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Static objects in data string",
+                 "[loading]") {
   GIVEN("a static-defined tree") {
     useData(R"(
       <objectType id="tree" />
@@ -351,7 +353,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Static objects in data string") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Permanent objects") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Permanent objects", "[loading]") {
   GIVEN("a permanent object, and a a user far away from it") {
     useData(R"(
       <newPlayerSpawn x="9000" y="10" />
@@ -468,7 +470,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Permanent objects") {
 }
 
 TEST_CASE_METHOD(ServerAndClientWithDataFiles,
-                 "Clients load permanent objects from files") {
+                 "Clients load permanent objects from files", "[loading]") {
   GIVEN("a permanent object") {
     useData("a_permanent_object");
 
@@ -478,7 +480,7 @@ TEST_CASE_METHOD(ServerAndClientWithDataFiles,
   }
 }
 
-TEST_CASE("Composite stats from file") {
+TEST_CASE("Composite stats from file", "[loading][stats]") {
   WHEN("a server starts with a composite stat in a data file") {
     auto s = TestServer::WithData("a_composite_stat");
 
@@ -508,7 +510,7 @@ TEST_CASE("Composite stats from file") {
   }
 }
 
-TEST_CASE("Disappearance after time") {
+TEST_CASE("Disappearance after time", "[loading]") {
   GIVEN("ghosts disappears after 1s") {
     auto data = R"(
       <npcType id="ghost" disappearAfter="1000" />
@@ -523,7 +525,8 @@ TEST_CASE("Disappearance after time") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Permanent-object decorations") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Permanent-object decorations",
+                 "[loading]") {
   auto getFirstNonUserEntity = [](TestClient *client) {
     for (auto *entity : client->entities())
       if (entity->classTag() != 'u') return entity;
@@ -566,7 +569,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Permanent-object decorations") {
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData,
-                 "Permanent objects can't be interacted with") {
+                 "Permanent objects can't be interacted with", "[loading]") {
   GIVEN("a permanent instance of a container object") {
     useData(R"(
         <objectType id="box" >

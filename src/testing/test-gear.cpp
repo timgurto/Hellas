@@ -2,7 +2,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Simple gear equip") {
+TEST_CASE("Simple gear equip", "[gear]") {
   GIVEN("a user with gear in his inventory") {
     auto data = R"(
       <item id="hat" gearSlot="0" />
@@ -32,7 +32,7 @@ TEST_CASE("Simple gear equip") {
   }
 }
 
-TEST_CASE("Damage is updated when a weapon depletes") {
+TEST_CASE("Damage is updated when a weapon depletes", "[gear][stats]") {
   GIVEN("a consumable weapon that deals 100 damage") {
     auto data = R"(
       <item id="rock" gearSlot="6" >
@@ -65,7 +65,7 @@ TEST_CASE("Damage is updated when a weapon depletes") {
   }
 }
 
-TEST_CASE("Level requirements") {
+TEST_CASE("Level requirements", "[gear][leveling]") {
   GIVEN("a fancy hat that requires level 2, and a plain hat with no req") {
     auto data = R"(
       <item id="plainHat" gearSlot="0" />
@@ -143,7 +143,8 @@ TEST_CASE("Level requirements") {
   }
 }
 
-TEST_CASE("Level requirements enforced on already-equipped gear") {
+TEST_CASE("Level requirements enforced on already-equipped gear",
+          "[gear][leveling]") {
   GIVEN("a level-2 hat that gives 1000 health") {
     auto data = R"(
       <item id="hat" lvlReq="2" gearSlot="0" >

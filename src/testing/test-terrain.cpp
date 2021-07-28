@@ -20,7 +20,7 @@ TEST_CASE("nearbyTerrainTypes with radius") {
   CHECK(set.count('.') == 0);
 }
 
-TEST_CASE("Large map is read accurately", "[.slow]") {
+TEST_CASE("Large map is read accurately", "[.slow][loading]") {
   TestServer s = TestServer::WithData("signpost");
   REQUIRE(s->map().width() == 315);
   REQUIRE(s->map().height() == 315);
@@ -32,7 +32,7 @@ TEST_CASE("Large map is read accurately", "[.slow]") {
     }
 }
 
-TEST_CASE("Users limited to default terrain list") {
+TEST_CASE("Users limited to default terrain list", "[allowed-terrain]") {
   GIVEN("a map with grass and water, and only grass in the default list") {
     auto data = R"(
       <terrain index="G" id="grass" />
@@ -64,7 +64,7 @@ TEST_CASE("Users limited to default terrain list") {
   }
 }
 
-TEST_CASE("Client objects' allowed-terrain sets") {
+TEST_CASE("Client objects' allowed-terrain sets", "[allowed-terrain]") {
   GIVEN("an object type allowed on non-default terrain") {
     auto data = R"(
       <objectType id="boat" allowedTerrain="water" />
@@ -89,7 +89,7 @@ TEST_CASE("Client objects' allowed-terrain sets") {
   }
 }
 
-TEST_CASE("Terrain-set descriptions") {
+TEST_CASE("Terrain-set descriptions", "[allowed-terrain][ui]") {
   GIVEN("terrain lists with descriptions") {
     auto data = R"(
       <list id="land" description="Suitable on land." />

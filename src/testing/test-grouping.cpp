@@ -5,7 +5,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Shared XP") {
+TEST_CASE("Shared XP", "[grouping][leveling]") {
   GIVEN("Alice, Bob, Charlie, and a critter") {
     auto data = R"(
       <npcType id="critter" />
@@ -80,7 +80,7 @@ TEST_CASE("Shared XP") {
   }
 }
 
-TEST_CASE_METHOD(ThreeClients, "Inviting and accepting") {
+TEST_CASE_METHOD(ThreeClients, "Inviting and accepting", "[grouping]") {
   THEN("Alice is not in a group") {
     CHECK_FALSE(server->groups->isUserInAGroup("Alice"));
   }
@@ -147,7 +147,7 @@ TEST_CASE_METHOD(ThreeClients, "Inviting and accepting") {
   }
 }
 
-TEST_CASE_METHOD(TwoClients, "Invitations are case-insensitive") {
+TEST_CASE_METHOD(TwoClients, "Invitations are case-insensitive", "[grouping]") {
   WHEN("Alice tries inviting \"bOb\" to a group") {
     cAlice.sendMessage(CL_INVITE_TO_GROUP, "bOb");
     THEN("Bob receives the invitation") {
@@ -156,7 +156,7 @@ TEST_CASE_METHOD(TwoClients, "Invitations are case-insensitive") {
   }
 }
 
-TEST_CASE_METHOD(FourClients, "No duplicate groups") {
+TEST_CASE_METHOD(FourClients, "No duplicate groups", "[grouping]") {
   THEN("There are no groups") { CHECK(server->groups->numGroups() == 0); }
 
   GIVEN("Alice and Bob are in a group") {
@@ -185,7 +185,8 @@ TEST_CASE_METHOD(FourClients, "No duplicate groups") {
   }
 }
 
-TEST_CASE_METHOD(ThreeClients, "Grouped players can't accept invitations") {
+TEST_CASE_METHOD(ThreeClients, "Grouped players can't accept invitations",
+                 "[grouping]") {
   WHEN("Alice invites Bob to a group") {
     cAlice.sendMessage(CL_INVITE_TO_GROUP, "Bob");
 
@@ -210,7 +211,8 @@ TEST_CASE_METHOD(ThreeClients, "Grouped players can't accept invitations") {
   }
 }
 
-TEST_CASE_METHOD(ThreeClients, "Grouped players can't be invited") {
+TEST_CASE_METHOD(ThreeClients, "Grouped players can't be invited",
+                 "[grouping]") {
   GIVEN("Alice and Bob are in a group") {
     server->groups->addToGroup("Bob", "Alice");
 
@@ -228,7 +230,8 @@ TEST_CASE_METHOD(ThreeClients, "Grouped players can't be invited") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClient, "Group self-invites have no effect") {
+TEST_CASE_METHOD(ServerAndClient, "Group self-invites have no effect",
+                 "[grouping]") {
   WHEN("the user invites himself to a group") {
     client.sendMessage(CL_INVITE_TO_GROUP, user->name());
 
@@ -238,7 +241,7 @@ TEST_CASE_METHOD(ServerAndClient, "Group self-invites have no effect") {
   }
 }
 
-TEST_CASE_METHOD(ThreeClients, "Clients know their teammates") {
+TEST_CASE_METHOD(ThreeClients, "Clients know their teammates", "[grouping]") {
   THEN("Alice knows she has no other groupmates") {
     CHECK(cAlice->groupUI->otherMembers.empty());
   }
@@ -266,7 +269,8 @@ TEST_CASE_METHOD(ThreeClients, "Clients know their teammates") {
   }
 }
 
-TEST_CASE("A disconnected user remains in his group") {
+TEST_CASE("A disconnected user remains in his group",
+          "[grouping][connection]") {
   auto s = TestServer{};
   auto cBob = TestClient::WithUsername("Bob");
 
@@ -292,7 +296,7 @@ TEST_CASE("A disconnected user remains in his group") {
   }
 }
 
-TEST_CASE_METHOD(TwoClients, "Group UI") {
+TEST_CASE_METHOD(TwoClients, "Group UI", "[grouping][ui]") {
   WHEN("Alice and Bob join a group") {
     server->groups->addToGroup("Alice", "Bob");
 
@@ -350,7 +354,7 @@ TEST_CASE_METHOD(TwoClients, "Group UI") {
   }
 }
 
-TEST_CASE_METHOD(ThreeClients, "Leaving a group") {
+TEST_CASE_METHOD(ThreeClients, "Leaving a group", "[grouping]") {
   GIVEN("Alice, Bob and Charlie are in a group") {
     server->groups->addToGroup("Bob", "Alice");
     server->groups->addToGroup("Charlie", "Alice");
@@ -414,7 +418,8 @@ TEST_CASE_METHOD(ThreeClients, "Leaving a group") {
   }
 }
 
-TEST_CASE_METHOD(TwoClients, "Groups disappear when down to last member") {
+TEST_CASE_METHOD(TwoClients, "Groups disappear when down to last member",
+                 "[grouping]") {
   GIVEN("Alice and Bob are in a group") {
     server->groups->addToGroup("Bob", "Alice");
 
