@@ -14,6 +14,7 @@ class ThreatTable {
   void makeAwareOf(Entity &entity);
   bool isAwareOf(Entity &entity) const;
   void forgetAbout(const Entity &entity);
+  void forgetCurrentTarget();
   void addThreat(Entity &entity, Threat amount);
   void scaleThreat(Entity &entity, double multiplier);
   Entity *getTarget();  // nullptr if table is empty

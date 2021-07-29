@@ -19,6 +19,11 @@ void ThreatTable::forgetAbout(const Entity& entity) {
   _container.erase(it);
 }
 
+void ThreatTable::forgetCurrentTarget() {
+  auto* target = getTarget();
+  if (target) forgetAbout(*target);
+}
+
 void ThreatTable::addThreat(Entity& entity, Threat amount) {
   auto it = _container.find(&entity);
   if (it == _container.end())

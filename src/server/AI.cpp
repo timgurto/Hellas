@@ -182,7 +182,17 @@ void AI::onTransition(State previousState) {
 
   switch (state) {
     case IDLE: {
-      if (previousState != CHASE && previousState != ATTACK) break;
+      const auto targetWasLost =
+          previousState == CHASE || previousState == ATTACK;
+      if (!targetWasLost) break;
+
+      // Look for new target
+      _owner._threatTable.forgetCurrentTarget();
+      _owner.target(_owner._threatTable.getTarget());
+      if (_owner.target()) break;
+
+      // No target; time to go home.
+
       _owner.target(nullptr);
       _owner._threatTable.clear();
       _owner.tagger.clear();
@@ -190,15 +200,15 @@ void AI::onTransition(State previousState) {
       const auto isPetAndShouldFollow = _owner.permissions.hasOwner();
       if (isPetAndShouldFollow) return;
 
-      const auto ATTEMPTS = 20;
-      for (auto i = 0; i != ATTEMPTS; ++i) {
-        if (!_owner.spawner()) break;
-
-        auto dest = _owner.spawner()->getRandomPoint();
-        if (Server::instance().isLocationValid(dest, _owner)) {
-          _activePath.clear();
-          _owner.teleportTo(dest);
-          break;
+      if (_owner.spawner()) {  // Return to spawn point
+        const auto ATTEMPTS = 20;
+        for (auto i = 0; i != ATTEMPTS; ++i) {
+          auto dest = _owner.spawner()->getRandomPoint();
+          if (Server::instance().isLocationValid(dest, _owner)) {
+            _activePath.clear();
+            _owner.teleportTo(dest);
+            break;
+          }
         }
       }
 

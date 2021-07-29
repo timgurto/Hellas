@@ -361,6 +361,28 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding", "[ai]") {
                     WAIT_UNTIL(wolf.location() == wolfStart);
                   }
                 }
+
+                SECTION(
+                    "if there's another target nearby, the mob will chase it "
+                    "instead") {
+                  AND_GIVEN("the player has a pet wolf nearby") {
+                    auto &pet = server->addNPC("wolf", user->location());
+                    pet.permissions.setPlayerOwner(user->name());
+
+                    AND_GIVEN("the enemy wolf is aware of it") {
+                      wolf.makeAwareOf(pet);
+
+                      WHEN("the user teleports very far away") {
+                        user->teleportTo({900, 30});
+
+                        THEN("the enemy wolf doesn't return home") {
+                          REPEAT_FOR_MS(100);
+                          CHECK(wolf.location() != wolfStart);
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
           }
