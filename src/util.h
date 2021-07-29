@@ -6,6 +6,7 @@
 #include <sstream>
 #include <vector>
 
+#include "Color.h"
 #include "Point.h"
 #include "Rect.h"
 #include "combatTypes.h"
@@ -140,5 +141,7 @@ std::string multiplicativeToString(double d);
 int roll();
 
 std::set<std::string> getXMLFiles(std::string path, std::string toExclude);
+
+Color getDifficultyColor(Level contentLevel, Level playerLevel);
 
 #endif

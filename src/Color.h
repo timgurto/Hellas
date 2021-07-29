@@ -100,6 +100,12 @@ class Color {
   static const Color DURABILITY_LOW;
   static const Color DURABILITY_BROKEN;
 
+  static const Color DIFFICULTY_VERY_HIGH;
+  static const Color DIFFICULTY_HIGH;
+  static const Color DIFFICULTY_NEUTRAL;
+  static const Color DIFFICULTY_LOW;
+  static const Color DIFFICULTY_VERY_LOW;
+
   Color(Uint8 r, Uint8 g, Uint8 b);
   Color(const SDL_Color &rhs);
   Color(Uint32 rhs = 0);

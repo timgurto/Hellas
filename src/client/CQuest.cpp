@@ -196,6 +196,10 @@ std::string CQuest::nameAndLevel() const {
   return oss.str();
 }
 
+Color CQuest::difficultyColor() const {
+  return getDifficultyColor(_info.level, _client->character().level());
+}
+
 void CQuest::update(ms_t timeElapsed) {
   if (_timeRemaining > 0) {
     if (timeElapsed > _timeRemaining)

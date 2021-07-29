@@ -455,6 +455,7 @@ void Client::populateQuestLog() {
     auto questName =
         new Label({x, 0, NAME_W, entry->height()}, quest.nameAndLevel(),
                   Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED);
+    questName->setColor(quest.difficultyColor());
     entry->addChild(questName);
     x += NAME_W + GAP;
     entry->addChild(new Button(
@@ -509,7 +510,7 @@ void Client::refreshQuestProgress() {
     isEmpty = false;
 
     auto questName = new OutlinedLabel({}, quest.nameInProgressUI());
-    questName->setColor(Color::UI_TEXT);
+    questName->setColor(quest.difficultyColor());
     _questProgress->addChild(questName);
 
     auto allObjectivesCompleted = true;

@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include "../Color.h"
 #include "../Serial.h"
 #include "../combatTypes.h"
 #include "../types.h"
@@ -74,6 +75,7 @@ class CQuest {
   void setTimeRemaining(ms_t t) { _timeRemaining = t; }
   std::string nameInProgressUI() const;
   std::string nameAndLevel() const;
+  Color difficultyColor() const;
 
   void update(ms_t timeElapsed);
 

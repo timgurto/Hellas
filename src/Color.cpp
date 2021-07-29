@@ -95,6 +95,12 @@ const Color Color::SPRITE_OUTLINE_HIGHLIGHT = 0xE5E5E5;
 const Color Color::DURABILITY_LOW = YELLOW;
 const Color Color::DURABILITY_BROKEN = RED;
 
+const Color Color::DIFFICULTY_VERY_HIGH = RED;
+const Color Color::DIFFICULTY_HIGH = RED * .5 + YELLOW * .5;
+const Color Color::DIFFICULTY_NEUTRAL = YELLOW;
+const Color Color::DIFFICULTY_LOW = GREEN * 0.75;
+const Color Color::DIFFICULTY_VERY_LOW = WHITE * 0.75;
+
 Color::Color(Uint8 r, Uint8 g, Uint8 b) : _r(r), _g(g), _b(b) {}
 
 Color::Color(const SDL_Color &rhs) : _r(rhs.r), _g(rhs.g), _b(rhs.b) {}

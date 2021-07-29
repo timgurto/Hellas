@@ -207,3 +207,12 @@ std::set<std::string> getXMLFiles(std::string path, std::string toExclude) {
 
   return list;
 }
+
+Color getDifficultyColor(Level contentLevel, Level playerLevel) {
+  const auto difficulty = contentLevel - playerLevel;
+  if (difficulty <= -10) return Color::DIFFICULTY_VERY_LOW;
+  if (difficulty <= -5) return Color::DIFFICULTY_LOW;
+  if (difficulty <= 4) return Color::DIFFICULTY_NEUTRAL;
+  if (difficulty <= 9) return Color::DIFFICULTY_HIGH;
+  return Color::DIFFICULTY_VERY_HIGH;
+}
