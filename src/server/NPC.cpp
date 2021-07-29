@@ -113,22 +113,22 @@ Message NPC::outOfRangeMessage() const {
 }
 
 void NPC::restoreHealthAndBroadcastTo(const MapPoint &p) {
-  if (!_owner.isMissingHealth()) return;
+  if (!isMissingHealth()) return;
 
   health(stats().maxHealth);
   onHealthChange();  // Only broadcasts to the new location, not
                      // the old.
 
-  const auto healthUpdate =
-      Message{SV_ENTITY_HEALTH, makeArgs(serial(), health())};
-  for (const auto *user : Server::instance().findUsersInArea(p))
-    user->sendMessage(healthUpdate);
+  broadcastHealthTo(p);
 }
 
-void NPC::onHealthChange() {
-  const Server &server = *Server::_instance;
-  for (const User *user : server.findUsersInArea(location()))
-    user->sendMessage({SV_ENTITY_HEALTH, makeArgs(serial(), health())});
+void NPC::onHealthChange() { broadcastHealthTo(location()); }
+
+void NPC::broadcastHealthTo(const MapPoint &p) {
+  const auto healthMsg =
+      Message{SV_ENTITY_HEALTH, makeArgs(serial(), health())};
+  for (const User *user : Server::_instance->findUsersInArea(p))
+    user->sendMessage(healthMsg);
 }
 
 void NPC::onDeath() {
