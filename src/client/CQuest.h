@@ -73,6 +73,7 @@ class CQuest {
   int getProgress(size_t objective) const;
   void setTimeRemaining(ms_t t) { _timeRemaining = t; }
   std::string nameInProgressUI() const;
+  std::string nameAndLevel() const;
 
   void update(ms_t timeElapsed);
 

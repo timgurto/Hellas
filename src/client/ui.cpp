@@ -453,7 +453,7 @@ void Client::populateQuestLog() {
     _questList->addChild(entry);
     auto x = GAP;
     auto questName =
-        new Label({x, 0, NAME_W, entry->height()}, quest.info().name,
+        new Label({x, 0, NAME_W, entry->height()}, quest.nameAndLevel(),
                   Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED);
     entry->addChild(questName);
     x += NAME_W + GAP;

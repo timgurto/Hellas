@@ -1,5 +1,6 @@
 #include "CQuest.h"
 
+#include <sstream>
 #include "../Rect.h"
 #include "../util.h"
 #include "CQuest.h"
@@ -183,10 +184,16 @@ int CQuest::getProgress(size_t objective) const {
 }
 
 std::string CQuest::nameInProgressUI() const {
-  auto ret = _info.name;
+  auto ret = nameAndLevel();
   if (_timeRemaining > 0)
     ret += " (" + msAsShortTimeDisplay(_timeRemaining) + ")";
   return ret;
+}
+
+std::string CQuest::nameAndLevel() const {
+  auto oss = std::ostringstream{};
+  oss << '[' << _info.level << "] " << _info.name;
+  return oss.str();
 }
 
 void CQuest::update(ms_t timeElapsed) {
