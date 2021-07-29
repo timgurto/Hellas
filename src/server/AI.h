@@ -44,6 +44,7 @@ class AI {
   bool targetHasMoved() const;
   MapRect getTargetFootprint() const;
   double howCloseShouldPathfindingGet() const;
+  void returnToSpawnPoint();
 
   class Path {
    public:

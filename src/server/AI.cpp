@@ -200,17 +200,7 @@ void AI::onTransition(State previousState) {
       const auto isPetAndShouldFollow = _owner.permissions.hasOwner();
       if (isPetAndShouldFollow) return;
 
-      if (_owner.spawner()) {  // Return to spawn point
-        const auto ATTEMPTS = 20;
-        for (auto i = 0; i != ATTEMPTS; ++i) {
-          auto dest = _owner.spawner()->getRandomPoint();
-          if (Server::instance().isLocationValid(dest, _owner)) {
-            _activePath.clear();
-            _owner.teleportTo(dest);
-            break;
-          }
-        }
-      }
+      returnToSpawnPoint();
 
       if (_owner.isMissingHealth()) {
         _owner.health(_owner.stats().maxHealth);
@@ -514,4 +504,18 @@ double AI::howCloseShouldPathfindingGet() const {
 
   SERVER_ERROR("Pathfinding while AI is in an inappropriate state");
   return 0;
+}
+
+void AI::returnToSpawnPoint() {
+  if (!_owner.spawner()) return;
+
+  const auto ATTEMPTS = 20;
+  for (auto i = 0; i != ATTEMPTS; ++i) {
+    auto dest = _owner.spawner()->getRandomPoint();
+    if (Server::instance().isLocationValid(dest, _owner)) {
+      _activePath.clear();
+      _owner.teleportTo(dest);
+      return;
+    }
+  }
 }
