@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "../Serial.h"
+#include "../combatTypes.h"
 #include "../types.h"
 
 class Window;
@@ -38,6 +39,7 @@ class CQuest {
 
     ID id;
     Name name;
+    Level level{1};
     Prose brief, debrief;
     ID startsAt, endsAt;
     std::vector<Objective> objectives;

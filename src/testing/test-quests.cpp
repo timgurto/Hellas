@@ -2171,7 +2171,7 @@ TEST_CASE("Quest objective: cast a spell", "[quests][spells]") {
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Quest levels and XP",
-                 "[quest][leveling]") {
+                 "[quests][leveling]") {
   GIVEN("a level-1 quest and a level-2 quest") {
     useData(R"(
       <objectType id="questgiver" />
@@ -2221,19 +2221,30 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Quest levels and XP",
         }
       }
     }
+
+    SECTION("Clients know quests' levels") {
+      const auto &cNoobQuest = client->quests().find("noobQuest")->second;
+      CHECK(cNoobQuest.info().level == 1);
+      const auto &cLeetQuest = client->quests().find("leetQuest")->second;
+      CHECK(cLeetQuest.info().level == 2);
+    }
   }
 }
 
-TEST_CASE("Default quest level is 1") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Default quest level is 1",
+                 "[quests][loading]") {
   GIVEN("a quest with no explicit level") {
-    auto server = TestServer::WithDataString(R"(
+    useData(R"(
       <objectType id="questgiver" />
       <quest id="simpleQuest" startsAt="questgiver" endsAt="questgiver" />
     )");
-    const auto &quest = server.findQuest("simpleQuest");
+    const auto &quest = server->findQuest("simpleQuest");
 
-    THEN("it is level 1") {
-      CHECK(quest.level == 1);
+    THEN("it is level 1") { CHECK(quest.level == 1); }
+
+    THEN("the client knows it is level 1") {
+      const auto &cQuest = client->quests().find("simpleQuest")->second;
+      CHECK(cQuest.info().level == 1);
     }
   }
 }

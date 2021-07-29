@@ -1149,6 +1149,7 @@ void CDataLoader::loadQuests(XmlReader &xr) {
       continue;  // End node is mandatory
 
     xr.findAttr(elem, "name", questInfo.name);
+    xr.findAttr(elem, "level", questInfo.level);
     xr.findAttr(elem, "brief", questInfo.brief);
     xr.findAttr(elem, "debrief", questInfo.debrief);
     xr.findAttr(elem, "helpTopicOnAccept", questInfo.helpTopicOnAccept);
