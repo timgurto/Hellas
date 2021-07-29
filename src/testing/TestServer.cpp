@@ -197,6 +197,7 @@ NPC &TestServer::getFirstNPC() {
     if (pNpc) return *pNpc;
   }
   FAIL("No NPCs on the server.");
+  return NPC{nullptr, {}};
 }
 
 DroppedItem &TestServer::getFirstDroppedItem() {
@@ -215,6 +216,7 @@ NPCType &TestServer::getFirstNPCType() {
     if (pNpcType) return *pNpcType;
   }
   FAIL("No NPC types on the server");
+  return NPCType{{}};
 }
 
 ServerItem &TestServer::getFirstItem() {

@@ -2169,3 +2169,36 @@ TEST_CASE("Quest objective: cast a spell", "[quests][spells]") {
     }
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Higher-level quests give more XP",
+                 "[quest][leveling]") {
+  GIVEN("a level-1 quest and a level-2 quest") {
+    useData(R"(
+      <objectType id="questgiver" />
+      <quest id="noobQuest" level="1" startsAt="questgiver" endsAt="questgiver" />
+      <quest id="leetQuest" level="2" startsAt="questgiver" endsAt="questgiver" />
+    )");
+    const auto &noobQuest = server->findQuest("noobQuest");
+    const auto &leetQuest = server->findQuest("leetQuest");
+
+    AND_GIVEN("the player is level 2") {  // to avoid a level up from quest XP
+      user->levelUp();
+
+      WHEN("he completes the level-1 quest") {
+        user->startQuest(noobQuest);
+        user->completeQuest("noobQuest");
+        const auto xpFromNoobQuest = user->xp();
+
+        AND_WHEN("he completes the level-2 quest") {
+          user->startQuest(leetQuest);
+          user->completeQuest("leetQuest");
+          const auto xpFromLeetQuest = user->xp() - xpFromNoobQuest;
+
+          THEN("the level-2 quest awarded more XP") {
+            CHECK(xpFromLeetQuest > xpFromNoobQuest);
+          }
+        }
+      }
+    }
+  }
+}

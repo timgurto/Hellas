@@ -374,6 +374,8 @@ void DataLoader::loadQuests(XmlReader &xr) {
     auto &q = _server._quests[id];
     q.id = id;
 
+    xr.findAttr(elem, "level", q.level);
+
     auto startsAt = ""s;
     if (!xr.findAttr(elem, "startsAt", startsAt)) continue;
     auto startingObject = _server.findObjectTypeByID(startsAt);

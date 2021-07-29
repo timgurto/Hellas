@@ -4,6 +4,7 @@
 #include <set>
 #include <string>
 #include <vector>
+#include "../combatTypes.h"
 
 class User;
 class ServerItem;
@@ -12,6 +13,7 @@ struct Quest {
  public:
   using ID = std::string;
   ID id;
+  Level level;
   std::set<std::string> startsWithItems{};
   int timeLimit = 0;  // in seconds.  0 = no time limit
 
