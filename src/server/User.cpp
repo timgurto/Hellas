@@ -1715,7 +1715,7 @@ void User::completeQuest(const Quest::ID &id) {
   _quests.erase(id);
 
   // Rewards
-  addXP(quest->level);
+  addXP(100 + quest->level - _level);
   for (const auto &reward : quest->rewards) giveQuestReward(reward);
 
   for (const auto &unlockedQuestID : quest->otherQuestsWithThisAsPrerequisite) {

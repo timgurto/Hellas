@@ -2170,7 +2170,7 @@ TEST_CASE("Quest objective: cast a spell", "[quests][spells]") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Higher-level quests give more XP",
+TEST_CASE_METHOD(ServerAndClientWithData, "Quest levels and XP",
                  "[quest][leveling]") {
   GIVEN("a level-1 quest and a level-2 quest") {
     useData(R"(
@@ -2196,6 +2196,27 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Higher-level quests give more XP",
 
           THEN("the level-2 quest awarded more XP") {
             CHECK(xpFromLeetQuest > xpFromNoobQuest);
+          }
+        }
+      }
+    }
+
+    SECTION("XP is based on level difference, not merely quest level") {
+      WHEN("a level-1 player completes the level-1 quest") {
+        user->startQuest(noobQuest);
+        user->completeQuest("noobQuest");
+        const auto xpFromNoobQuest = user->xp();
+
+        AND_WHEN("a level-2 player completest the level-2 quest") {
+          user->levelUp();
+
+          user->startQuest(leetQuest);
+          const auto xpBefore = user->xp();
+          user->completeQuest("leetQuest");
+          const auto xpFromLeetQuest = user->xp() - xpBefore;
+
+          THEN("each quest awarded equal XP") {
+            CHECK(xpFromNoobQuest == xpFromLeetQuest);
           }
         }
       }
