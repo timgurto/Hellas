@@ -192,12 +192,11 @@ Object &TestServer::getFirstObject() {
 }
 
 NPC &TestServer::getFirstNPC() {
-  REQUIRE(!_server->_entities.empty());
-  auto it = _server->_entities.begin();
-  auto pEntity = *it;
-  auto pNpc = dynamic_cast<NPC *>(pEntity);
-  REQUIRE(pNpc);
-  return *pNpc;
+  for (auto *pObj : _server->_entities) {
+    auto pNpc = dynamic_cast<NPC *>(pObj);
+    if (pNpc) return *pNpc;
+  }
+  FAIL("No NPCs on the server.");
 }
 
 DroppedItem &TestServer::getFirstDroppedItem() {
@@ -210,12 +209,12 @@ DroppedItem &TestServer::getFirstDroppedItem() {
 }
 
 NPCType &TestServer::getFirstNPCType() {
-  REQUIRE(!_server->_objectTypes.empty());
-  auto it = _server->_objectTypes.begin();
-  auto *pObjType = const_cast<ObjectType *>(*it);
-  auto pNpcType = dynamic_cast<NPCType *>(pObjType);
-  REQUIRE(pNpcType);
-  return *pNpcType;
+  for (auto *pConstObjType : _server->_objectTypes) {
+    auto *pObjType = const_cast<ObjectType *>(pConstObjType);
+    auto *pNpcType = dynamic_cast<NPCType *>(pObjType);
+    if (pNpcType) return *pNpcType;
+  }
+  FAIL("No NPC types on the server");
 }
 
 ServerItem &TestServer::getFirstItem() {
