@@ -34,6 +34,7 @@ class AI {
 
   MapPoint _homeLocation;  // Where it returns after a chase.
   std::mutex _pathfindingMutex;
+  bool _failedToFindPath{false};
 
   void transitionIfNecessary();
   void onTransition(AI::State previousState);

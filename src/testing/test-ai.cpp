@@ -341,6 +341,29 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding", "[ai]") {
               }
             }
           }
+
+          SECTION("spawned mobs return if target becomes unreachable") {
+            AND_GIVEN("a wolf spawns near the user") {
+              const auto wolfStart = MapPoint{120, 55};
+              auto spawner = Spawner{wolfStart, &server->getFirstNPCType()};
+              spawner.spawn();
+              WAIT_UNTIL(server->entities().size() == 8);  // 7 walls + wolf
+              auto &wolf = server->getFirstNPC();
+
+              AND_GIVEN("it is chasing him") {
+                wolf.makeAwareOf(*user);
+                WAIT_UNTIL(wolf.location() != wolfStart);
+
+                WHEN("the user teleports very far away") {
+                  user->teleportTo({900, 30});
+
+                  THEN("the wolf returns home") {
+                    WAIT_UNTIL(wolf.location() == wolfStart);
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -504,5 +527,3 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding", "[ai]") {
     }
   }
 }
-
-// Make NPCs invincible if they can't path to user

@@ -144,6 +144,13 @@ void AI::transitionIfNecessary() {
         break;
       }
 
+      // Previous pathfinding attempt failed
+      if (_failedToFindPath) {
+        _failedToFindPath = false;
+        state = IDLE;
+        break;
+      }
+
       break;
 
     case AI::ATTACK:
@@ -180,14 +187,15 @@ void AI::onTransition(State previousState) {
       _owner._threatTable.clear();
       _owner.tagger.clear();
 
-      if (_owner.owner().type != Permissions::Owner::ALL_HAVE_ACCESS) return;
+      const auto isPetAndShouldFollow = _owner.permissions.hasOwner();
+      if (isPetAndShouldFollow) return;
 
       const auto ATTEMPTS = 20;
       for (auto i = 0; i != ATTEMPTS; ++i) {
         if (!_owner.spawner()) break;
 
         auto dest = _owner.spawner()->getRandomPoint();
-        if (Server::instance().isLocationValid(dest, *_owner.type())) {
+        if (Server::instance().isLocationValid(dest, _owner)) {
           _activePath.clear();
           _owner.teleportTo(dest);
           break;
@@ -451,6 +459,7 @@ void AI::calculatePathInSeparateThread() {
     const auto startTime = SDL_GetTicks();
 
     _activePath.findPathTo(targetFootprint);
+    if (!_activePath.exists()) _failedToFindPath = true;
 
     const auto endTime = SDL_GetTicks();
     const auto timeElapsed = endTime - startTime;
@@ -458,6 +467,7 @@ void AI::calculatePathInSeparateThread() {
     of << _owner.type()->id()  // NPC ID
        << "," << distToTravel  // Straight-line distance
        << "," << timeElapsed   // Pathfinding time
+       << "," << (_failedToFindPath ? "failed" : "succeeded")  //
        << std::endl;
 
     _pathfindingMutex.unlock();
