@@ -197,7 +197,10 @@ NPC &TestServer::getFirstNPC() {
     if (pNpc) return *pNpc;
   }
   FAIL("No NPCs on the server.");
-  return NPC{nullptr, {}};
+
+  // Execution won't get here
+  static NPC dummy{nullptr, {}};
+  return dummy;
 }
 
 DroppedItem &TestServer::getFirstDroppedItem() {
@@ -216,7 +219,10 @@ NPCType &TestServer::getFirstNPCType() {
     if (pNpcType) return *pNpcType;
   }
   FAIL("No NPC types on the server");
-  return NPCType{{}};
+
+  // Execution won't get here
+  static auto dummy = NPCType{{}};
+  return dummy;
 }
 
 ServerItem &TestServer::getFirstItem() {
