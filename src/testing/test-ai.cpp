@@ -302,32 +302,32 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding", "[ai]") {
       }
     }
 
-    SECTION("Obstacles are properly identified across collision chunks") {
-      GIVEN("a map spanning a number of collision chunks") {
-        data += R"(
-          <newPlayerSpawn x="10" y="10" range="0" />
-          <terrain index="." id="grass" />
-          <list id="default" default="1" >
-            <allow id="grass" />
-          </list>
-          <size x="30" y="2" />
-          <row y= "0" terrain = ".............................." />
-          <row y= "1" terrain = ".............................." />
-        )";
-        useData(data.c_str());
+    GIVEN("a map spanning a number of collision chunks") {
+      data += R"(
+        <newPlayerSpawn x="10" y="10" range="0" />
+        <terrain index="." id="grass" />
+        <list id="default" default="1" >
+          <allow id="grass" />
+        </list>
+        <size x="30" y="2" />
+        <row y= "0" terrain = ".............................." />
+        <row y= "1" terrain = ".............................." />
+      )";
+      useData(data.c_str());
 
-        AND_GIVEN("the user is blocked by walls in the leftmost chunk") {
-          /* ...W....|.......|.......|...
-             .U.W....|.......|.......|.N.
-             ...W....|.......|.......|... */
-          server->addObject("wall", {150, 5});
-          server->addObject("wall", {150, 15});
-          server->addObject("wall", {150, 25});
-          server->addObject("wall", {150, 35});
-          server->addObject("wall", {150, 45});
-          server->addObject("wall", {150, 55});
-          server->addObject("wall", {150, 65});
+      AND_GIVEN("the user is blocked by walls in the leftmost chunk") {
+        /* ...W....|.......|.......|...
+           .U.W....|.......|.......|.N.
+           ...W....|.......|.......|... */
+        server->addObject("wall", {150, 5});
+        server->addObject("wall", {150, 15});
+        server->addObject("wall", {150, 25});
+        server->addObject("wall", {150, 35});
+        server->addObject("wall", {150, 45});
+        server->addObject("wall", {150, 55});
+        server->addObject("wall", {150, 65});
 
+        SECTION("Obstacles are properly identified across collision chunks") {
           AND_GIVEN("a wolf on the opposite side of the map") {
             const auto wolfStart = MapPoint{900, 30};
             auto &wolf = server->addNPC("wolf", wolfStart);
