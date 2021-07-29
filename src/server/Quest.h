@@ -13,7 +13,7 @@ struct Quest {
  public:
   using ID = std::string;
   ID id;
-  Level level;
+  Level level{1};
   std::set<std::string> startsWithItems{};
   int timeLimit = 0;  // in seconds.  0 = no time limit
 

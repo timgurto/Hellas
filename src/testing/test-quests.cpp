@@ -2223,3 +2223,17 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Quest levels and XP",
     }
   }
 }
+
+TEST_CASE("Default quest level is 1") {
+  GIVEN("a quest with no explicit level") {
+    auto server = TestServer::WithDataString(R"(
+      <objectType id="questgiver" />
+      <quest id="simpleQuest" startsAt="questgiver" endsAt="questgiver" />
+    )");
+    const auto &quest = server.findQuest("simpleQuest");
+
+    THEN("it is level 1") {
+      CHECK(quest.level == 1);
+    }
+  }
+}
