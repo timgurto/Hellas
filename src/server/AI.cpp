@@ -201,17 +201,8 @@ void AI::onTransition(State previousState) {
       if (isPetAndShouldFollow) return;
 
       returnToSpawnPoint();
+      _owner.restoreHealthAndBroadcastTo(previousLocation);
 
-      if (_owner.isMissingHealth()) {
-        _owner.health(_owner.stats().maxHealth);
-        _owner.onHealthChange();  // Only broadcasts to the new location, not
-                                  // the old.
-
-        for (const User *user :
-             Server::instance().findUsersInArea(previousLocation))
-          user->sendMessage(
-              {SV_ENTITY_HEALTH, makeArgs(_owner.serial(), _owner.health())});
-      }
       break;
     }
 

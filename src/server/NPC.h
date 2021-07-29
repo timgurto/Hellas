@@ -46,6 +46,7 @@ class NPC : public Entity, public QuestNode {
   void addThreat(User &attacker, Threat amount);
   Level level() const override { return _level; }
   Message outOfRangeMessage() const override;
+  void restoreHealthAndBroadcastTo(const MapPoint &p);
 
   Permissions::Owner owner() const { return permissions.owner(); }
   virtual void onOwnershipChange() override;
