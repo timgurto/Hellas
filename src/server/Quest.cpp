@@ -55,3 +55,12 @@ bool Quest::canBeCompletedByUser(const User& user) const {
   }
   return true;
 }
+
+XP Quest::getXPFor(Level userLevel) const {
+  const auto difficulty = level - userLevel;
+
+  if (difficulty <= -10) return 0;
+  if (difficulty >= 10) return 500;
+
+  return 250 + difficulty * 25;
+}

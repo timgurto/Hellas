@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include "../combatTypes.h"
+#include "../types.h"
 
 class User;
 class ServerItem;
@@ -45,6 +46,8 @@ struct Quest {
   std::set<std::string> otherQuestsWithThisAsPrerequisite;
 
   bool canBeCompletedByUser(const User &user) const;
+
+  XP getXPFor(Level userLevel) const;
 
   std::string exclusiveToClass{};
 };
