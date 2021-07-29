@@ -329,15 +329,15 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding", "[ai]") {
           server->addObject("wall", {150, 65});
 
           AND_GIVEN("a wolf on the opposite side of the map") {
-            auto &wolf = server->addNPC("wolf", {900, 30});
+            const auto wolfStart = MapPoint{900, 30};
+            auto &wolf = server->addNPC("wolf", wolfStart);
 
             WHEN("the wolf tries to chase the user") {
-              const auto wolfStartingPosition = wolf.location();
               wolf.makeAwareOf(*user);
 
               THEN("the wolf never moves (i.e., it knows there's no path") {
                 REPEAT_FOR_MS(1000);
-                CHECK(wolf.location() == wolfStartingPosition);
+                CHECK(wolf.location() == wolfStart);
               }
             }
           }
