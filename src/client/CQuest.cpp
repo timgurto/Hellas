@@ -192,7 +192,12 @@ std::string CQuest::nameInProgressUI() const {
 
 std::string CQuest::nameAndLevel() const {
   auto oss = std::ostringstream{};
-  oss << '[' << _info.level << "] " << _info.name;
+  oss << '[' << _info.level;
+  if (_info.elite) oss << '+';
+  oss << "] ";
+
+  oss << _info.name;
+
   return oss.str();
 }
 
