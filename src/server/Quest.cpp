@@ -61,6 +61,9 @@ XP Quest::getXPFor(Level userLevel) const {
 
   if (difficulty <= -10) return 0;
   if (difficulty >= 10) return 500;
+  auto xpToReward = 250 + difficulty * 25;
 
-  return 250 + difficulty * 25;
+  if (elite) xpToReward *= 2;
+
+  return xpToReward;
 }

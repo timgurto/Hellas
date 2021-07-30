@@ -15,6 +15,7 @@ struct Quest {
   using ID = std::string;
   ID id;
   Level level{1};
+  bool elite{false};  // Group is recommended; double XP
   std::set<std::string> startsWithItems{};
   int timeLimit = 0;  // in seconds.  0 = no time limit
 
