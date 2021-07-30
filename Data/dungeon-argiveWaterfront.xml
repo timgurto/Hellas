@@ -808,12 +808,14 @@
 <!-- QUESTS -->
 <!-- Silver coinage -->
 <quest id="dAW_silverCoins1" name="Seeking the Silversmiths" startsAt="copperAnvil" endsAt="argosCoinsmith"
+    level="20"
     brief="Wiping the sweat from your brow, you consider your journey so far.  Persistence and patience in mining, smelting and casting have brought you here: ready to shape metal by striking with a hammer.
     Stories have reached you of metalworkers in Argos, who know the secrets of striking silver into coins.  This would facilitate easier exchange, and could also be a lucrative trade unto itself.
     The city of Argos is on the east coast of the Peloponnesus, the large peninsula at the bottom of mainland Greece.  Go there, and see if you can learn how these coins are made."
     debrief="Welcome, stranger!  What's that?  You've come to learn how to make coins from silver?  Hmm . . . perhaps we can help each other." >
 </quest>
 <quest id="dAW_silverCoins2" name="Trade Secrets" startsAt="argosCoinsmith" endsAt="argosCoinsmith"
+    level="22" elite="1"
     brief="Each metal has different properties, and one must learn to see it as a partner with whom to co-operate, rather than a mere substance to be dominated.
     Silver, too, has its own idiosyncracies, but alas, that knowledge is lost to me.
     Everything I have learned over the years was recorded in a journal.  On a recent visit to the city's waterfront, I was accosted by gangsters who robbed me.  My journal was among the items taken.
@@ -824,6 +826,7 @@
 </quest>
     <item id="dAW_coinRecipe" name="Coinsmith's Journal" iconFile="parchment" exclusiveToQuest="dAW_silverCoins2" bind="pickup" />
 <quest id="dAW_silverCoins3" name="Trial and Error" startsAt="argosCoinsmith" endsAt="argosCoinsmith"
+    level="23"
     brief="Most of my journal is intact, but a critical entry about temperature has been damaged.  I believe I can figure out the details once again, but it will take some experimentation.
     Please provide me with an ingot of silver.  I'll salvage what I can from the experiments."
     debrief="I have managed to fill in the gaps, and will happily share my knowledge with you.
@@ -838,6 +841,7 @@
 
 <!-- Missing women -->
 <quest id="dAW_missingWomen1" name="The Missing Women" startsAt="argosMagistrate" endsAt="phnMerchant"
+    level="21"
     brief="You look like you can handle yourself; perhaps you can aid our city.
     Many of our young women have disappeared recently, and I suspect it has something to do with the Phoenician merchants who are visiting the city.  We can't have foreigners kidnapping our women!
     If you could, please head to the market square and find out what you can."
@@ -845,11 +849,13 @@
     Kidnapping?  We would never do such a thing!  I have indeed seen Greek maidens stop by the markets to inspect our wares.  Many became enamoured with my countrymen--rugged and handsome sailors all--and followed them down to the docks for a grand adventure on the seas.">
 </quest>
 <quest id="dAW_missingWomen2" name="The Missing Women" startsAt="phnMerchant" endsAt="argosMagistrate"
+    level="21"
     brief="We cannot be blamed for the caprice of young women.  Tell your magistrate that his slander is an outrage, and shall be reflected in our future dealings with this city."
     debrief="So my suspicion about the Phoenicians was correct.  And their story is that the women went willingly?  Whatever the truth is, they must still be rescued, and avenged.">
     <prerequisite id="dAW_missingWomen1" />
 </quest>
 <quest id="dAW_missingWomenRescue" name="Rescue from the Waterfront" startsAt="argosMagistrate" endsAt="dAW_womanQG1"
+    level="21"
     brief="We've confirmed that the Phoenicians took a number of women from the marketplace, and are holding them in the Waterfront district.  Go there, and rescue the poor girls."
     debrief="Did you really think we were taken against our will?  The promise of a life at sea is much more thrilling than our dreary lives in the city.  We're all staying onboard.  I'm sorry that your heroic tale won't get a satisfying ending.">
     <prerequisite id="dAW_missingWomen2" />
@@ -858,6 +864,7 @@
     <npcType id="dAW_womanQG1" name="Argive Maiden" template="girlTeal" isCivilian="1" level="17" maxHealth="136" />
     <npc id="dAW_womanQG1" x="17920" y="70565" />
 <quest id="dAW_missingWomenAvenge" name="Revenge at the Waterfront" startsAt="argosMagistrate" endsAt="argosMagistrate"
+    level="24" elite="1"
     brief="The sailors who absconded with our treasured maidens must pay.  Go down to the city's Waterfront, kill those responsible, and bring me proof of your deed so that the city can satisfied."
     debrief="It's disgraceful that men can behave so wickedly, and that they would repay our hospitality with such disrespect.  The city of Argos thanks you for your service.">
     <prerequisite id="dAW_missingWomen2" />
@@ -875,6 +882,7 @@
     
 <!-- Missing princess -->
 <quest id="dAW_princess1" name="The Monster at the Temple" startsAt="argosKing" endsAt="hermesArgos"
+    level="22"
     brief="I'll get straight to the point, stranger: my daughter, Princess Io, is missing.  It would be a service to the whole city of Argos if you were to help find her.
     Io is a priestess to Hera, and there are stories of a strange monster in the temple where she served.  I suspect the monster may be responsible for my daughter's disappearance, but I hope I'm wrong.
     Cleanse Hera's temple of this beast.  And if it did indeed take the princess, then please return her to me--dead or alive.
@@ -896,6 +904,7 @@
     <npc id="hermesSheep" x="41386" y="49120" > <owner type="noAccess" /> </npc>
     <npc id="hermesSheep" x="41370" y="49110" > <owner type="noAccess" /> </npc>
 <quest id="dAW_princess2" name="Forty Winks" startsAt="hermesArgos" endsAt="hermesArgos"
+    level="22"
     brief="The monster in the temple is Argus Panoptes, a watchman of the gods who has many eyes.  He is all seeing; ever vigilant.  And he will be hard to best in combat.
     If you lead him to me, I can play a soothing melody that will put him to sleep--all of his eyes at once.  You may then slay him without trouble."
     debrief="Argus Panoptes is slain.  Well done!" >
@@ -929,11 +938,13 @@
     <npc id="argusCowBrown" x="41146" y="48934" > <owner type="noAccess" /> </npc>
     <npc id="argusCowWhite" x="41116" y="48953" > <owner type="noAccess" /> </npc>
 <quest id="dAW_princess3" name="The Monster at the Temple" startsAt="hermesArgos" endsAt="argosKing"
+    level="22"
     brief="You should return to King Inachus to report the demise of Argus Panoptes."
     debrief="You've returned!  I'm glad that you were able to cleanse the temple.  But tell me, did you see any sign of the princess?" >
     <prerequisite id="dAW_princess2" />
 </quest>
 <quest id="dAW_princess4" name="The Missing Princess" startsAt="argosKing" endsAt="dAW_womanQG2"
+    level="25" elite="1"
     brief="So my daughter was not taken at the temple.  A relief, I suppose.  And another possibility has emerged.
     There are rumours that Phoenician merchants have run wild in the market, abducting a number of Argive maidens and taking them to the city's waterfront.  This is a problem in itself, but right now I am most concerned about the princess.  Go to the waterfront, and see if Io is among the women taken."
     debrief="You seek the princess?  Alas, our beloved Io isn't here.  But I can tell you what happened to her.  Like Io, I was a priestess of Hera.">
@@ -942,6 +953,7 @@
     <npcType id="dAW_womanQG2" name="Argive Priestess" template="girlWhite" isCivilian="1" level="17" maxHealth="136" />
     <npc id="dAW_womanQG2" x="17980" y="70625" />
 <quest id="dAW_princess5" name="The Missing Princess" startsAt="dAW_womanQG2" endsAt="argosKing"
+    level="25"
     brief="Hera has revealed to me the story of her priestess, the princess Io.
     Zeus the lecher, with no regard for fidelity to Hera, lusted after Io.  Hera, justifiably angry, transformed Io into a beautiful white cow, and set her many-eyed servant Argus Panoptes to protect her from Zeus's advances.
     To overcome this, Zeus sent Hermes, disguised as a shepherd.  Hermes lulled Argus to sleep, making it easy to kill him.
@@ -951,6 +963,7 @@
     <prerequisite id="dAW_princess4" />
 </quest>
 <quest id="dAW_princess6" name="The Gadfly" startsAt="argosKing" endsAt="princessNecklace"
+    level="26" elite="1"
     brief="Scouts have reported the giant gadfly south, at the southeast tip of the Peloponnesus.  With any luck, if we find it then we will find Io.
     Kill the blasted gadfly, and look for any sign of my daughter nearby."
     debrief="Half buried in the sand, you find a jeweled necklace that looks fit for royalty.  You can only assume that it is all that is left of the Argive princess Io." >
@@ -967,6 +980,7 @@
         imageFile="gemBlue" xDrawOffset="-8" yDrawOffset="-8"/>
     <object id="princessNecklace" x="48420" y="60911" />
 <quest id="dAW_princess7" name="All That Remains" startsAt="princessNecklace" endsAt="argosQueen"
+    level="26"
     brief="This necklace should be returned to Io's parents in the Argive palace."
     debrief="Thank you for returning this to me.
     My sister Oceanids have told me that my daughter survived.  The gadfly chased her into the water, and she crossed the sea into the distant land of Egypt.  I imagine this is the end of Io's story; she is no longer ours.
@@ -990,6 +1004,7 @@
 
 <!-- Crime wave -->
 <quest id="dAW_crime" name="Crime Wave" startsAt="argosMagistrate" endsAt="argosMagistrate"
+    level="22" elite="1"
     brief="As you may have heard, many young maidens have gone missing from the city.  This alone is troubling enough, but in addition, a group of citizens have sworn to take action.  Calling themselves 'The Vindictives', this violent gang has laid their blame on the whole merchant class.  They've taken over the waterfront district and are dispensing mob justice.
     The city is understandably upset, but that isn't an excuse for vigilantes.  Please go to the waterfront and restore order by bringing this crime wave to an end."
     debrief="Thank you.  Your service to our city will not be forgotten.">

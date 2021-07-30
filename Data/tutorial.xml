@@ -40,6 +40,7 @@
 
 
 <quest id="tutCombat" name="A New Creation" startsAt="prometheus" endsAt="prometheus"
+    level="1"
     brief="Ah, finally free from the clay!  Welcome to Mt. Othrys--or what's left of it.  My name is Prometheus, and I created you.
     It looks like your eyes and ears are in working order, so let's test your arms and legs.  Head over to that grassy area nearby, and kill some pigs."
     debrief="Excellent, everything seems to be working as intended.  You're quite impressive, if I do say so myself!"
@@ -63,6 +64,7 @@
         xDrawOffset="-11" yDrawOffset="-13" />
 
 <quest id="tutParts" name="Goat Accumulator" startsAt="prometheus" endsAt="prometheus"
+    level="2"
     brief="My kin used to rule the cosmos, but cruelty and jealousy led to a war ... a war that we lost.  Our beloved mountain was all but destroyed.  Now the youngsters on Mt. Olympus rule, while the other Titans, my family, suffer imprisonment in the underworld.
     Zeus, the king of these Olympian gods, wants you humans to worship his kind with animal sacrifices.
     Before we negotiate the details, you'll need to get your hands dirty.  There's a small pass north of the pigs you just encountered, that leads to a herd of wild goats.  Slay some, and gather what you can of their remains."
@@ -88,6 +90,7 @@
     <item id="tutFat"      name="Goat Fat"      iconFile="fat"      stackSize="10" exclusiveToQuest="tutParts" />
 
 <quest id="tutOfferings" name="An Offer he Can't Refuse" startsAt="prometheus" endsAt="tutBrazier"
+    level="2"
     brief="Zeus wants to decide which parts of the animal should be sacrificed, and so you'll need to make two offerings and let him choose.  This gives us an opportunity to trick him.
     Don't look at me like that--we're talking about an eternity of sacrifices here, and this will make it easier for you humans!
     Follow the tiled path up north, until you find a smoking brazier.  That is where Zeus will make his choice.
@@ -130,6 +133,7 @@
     </objectType>
 
 <quest id="tutReturnFromZeus" name="Into Darkness" startsAt="tutBrazier" endsAt="prometheus"
+    level="2"
     brief="What the ... disgusting!  Where is the meat?  What are we supposed to do with these revolting entrails?
     The insolence to believe that you, a mere mortal, could outsmart a god!  Did you think you'd get away with this?
     What's done is done, and these are the sacrifices we must now accept.  But I can punish you in a different way.  I am banishing fire from your world; you and your kind can languish in primitive savagery for all time.
@@ -139,6 +143,7 @@
 </quest>
 
 <quest id="tutLearnFire" name="Burning Desire" startsAt="prometheus" endsAt="prometheus"
+    level="3"
     brief="What?  He removed fire from the world?  But it's critical to ... that would stop you from ever ... hmm ...
     I know what I must do.
     Head to the woods, westward, and pick up some sticks for me.  When you get back, I will restore fire to mankind."
@@ -188,6 +193,7 @@
     <item id="tutEntrails3" name="Entrails" sounds="meat" stackSize="10" iconFile="entrails" />
     
 <quest id="tutCooking" name="Hungry Work" startsAt="prometheus" endsAt="atlas"
+    level="4"
     brief="My brother Atlas was a general in the war against the Olympians, and for that they devised a special punishment for him--a rather exhausting one.
     Now that you know how to cook, I would greatly appreciate it if you could pay him a visit and bring him some food.  If you manage to get a fire going, that experience will teach you all the knowledge necessary to cook raw boar meat into a nutritious meal.
     Now that I think about it, given his history fighting against the gods, Atlas might be able to offer you some guidance of his own.  Be sure to ask him for any advice he may have.
@@ -207,6 +213,7 @@
     <npc id="atlas" x="15" y="59604" />
     
 <quest id="tutCyclops" name="Eye on the Prize" startsAt="atlas" endsAt="tutCyclopsQuestgiver"
+    level="4"
     brief="Thank you, I feel much better.  Bearing the heavens for all eternity is hungry work.  Would you mind holding this for a moment while I wipe my mouth?
     Hah, I'm joking; relax!
     Advice?  Actually, there is something that might prove useful to you.  Down the path to the south are the craftsmen that made weapons for Zeus during the war.  Go speak to them, and see if they have any surplus weapons now that the war is over.  Sure, they sided with the enemy, but the blood of the Titans flows through their veins and they might be willing to bargain."
@@ -301,6 +308,7 @@
     
 
 <quest id="tutSnakes" name="Gifts of the Wild" startsAt="prometheus" endsAt="prometheus"
+    level="3"
     brief="After Zeus took power, he asked my aunt Themis and me to populate the world with new types of creatures.
     Themis quickly created all sorts of animals, giving them interesting gifts and talents.  I created you--and I'm afraid I took so long trying to get you right, that there are no gifts left!  All of the good ideas are already taken.
     Maybe inspecting Themis's work will give me some inspiration.  We've already seen goats and pigs, so let's take a look at some of the other sorts of animals she has created.  Head out and kill some snakes, taking note of anything that makes them special.  You can find them north, slithering around in a swamp."
@@ -317,6 +325,7 @@
     </npcType>
 
 <quest id="tutTortoises" name="Gifts of the Wild" startsAt="prometheus" endsAt="prometheus"
+    level="3"
     brief="Another fascinating new animal Themis created is tortoises.  They look quite strange; go north-east to the beach, and see if you can discern their gift."
     debrief="A shield that protects them from damage?  Huh ..." >
     <prerequisite id="tutSnakes" />
@@ -341,6 +350,7 @@
     
 
 <quest id="tutLizards" name="Gifts of the Wild" startsAt="prometheus" endsAt="prometheus"
+    level="4"
     brief="There's one final animal I want you to investigate: lizards.  I saw some crawling around out west past the forest, in a desert.  Please engage a few in combat."
     debrief="How very strange ... the lizards healed themselves while you fought?  That's quite a defense mechanism." >
     <prerequisite id="tutTortoises" />
@@ -361,6 +371,7 @@
 
     
 <quest id="tutEnd" name="Dawn of Man" startsAt="prometheus" endsAt="prometheusBound"
+    level="4"
     brief="Some animals can attack, up close or from far away.  Some do physical damage, and others draw on the elements.  Some can protect themselves with shields, and others can restore health.
     With your help, I have decided on a gift to bestow upon mankind: you will receive them all.  No man can excel at everything, but together, you and your fellow humans will have access to each of these gifts.  Another gift I grant you is reason--the ability to know and improve yourself, and choose how best to make the most of your talents.
     Now it's time to leave this mountain for good, and enter the wider world.  To do this, enlist the aid of my cousin Eos; she is the goddess of the dawn, and will gladly help to establish mankind in the mortal realm.  Travel northeast and look for her Altar."
@@ -381,6 +392,7 @@
     
     
 <quest id="tutUtilityAthlete" name="Sprint Zero" startsAt="prometheusBound" endsAt="prometheusBound" exclusiveToClass="Athlete"
+    level="4"
     brief="Zeus has put some of his servants between us and Eos's altar--I guess he's trying to keep us up here and out of trouble.  I have one final gift for you that might help: I will teach you a spell."
     debrief="I've set you on your feet, young Athlete, and it's up to you to find your path and walk it as best you can.
     Now go.  Find some entrails to sacrifice, worship at her altar, and get off this accursed mountain.  I hope the gods look kindly upon you." >
@@ -389,6 +401,7 @@
 </quest>
     
 <quest id="tutUtilityScholar" name="Blink and Stretch" startsAt="prometheusBound" endsAt="prometheusBound" exclusiveToClass="Scholar"
+    level="4"
     brief="Zeus has put some of his servants between us and Eos's altar--I guess he's trying to keep us up here and out of trouble.  I have one final gift for you that might help: I will teach you a spell."
     debrief="I've set you on your feet, young Scholar, and it's up to you to find your path and walk it as best you can.
     Now go.  Find some entrails to sacrifice, worship at her altar, and get off this accursed mountain.  I hope the gods look kindly upon you." >
@@ -397,6 +410,7 @@
 </quest>
     
 <quest id="tutUtilityZealot" name="Fight or Flight" startsAt="prometheusBound" endsAt="prometheusBound" exclusiveToClass="Zealot"
+    level="4"
     brief="Zeus has put some of his servants between us and Eos's altar--I guess he's trying to keep us up here and out of trouble.  I have one final gift for you that might help: I will teach you a spell."
     debrief="I've set you on your feet, young Zealot, and it's up to you to find your path and walk it as best you can.
     Now go.  Find some entrails to sacrifice, worship at her altar, and get off this accursed mountain.  I hope the gods look kindly upon you." >

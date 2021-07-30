@@ -5,6 +5,7 @@ Mark graveyard on map: not hardcoded
 -->
 
 <quest id="freeTheGhost1" name="The Restless Dead" startsAt="mourner" endsAt="ghostFather"
+    level="10"
     brief="Recently I've been haunted in my dreams; the shade of my deceased father is calling out to me, wailing and thrashing.  I'm afraid to go to sleep because it pains me to see him suffering.
     What's worse is that I think it's our fault.  My people in Thessaly have neglected the old funeral rites, and so the dead may be struggling to reach Hades.  We didn't want to waste good money on the dead.
     Please, if you would, travel south to the large burial ground across the river.  My father was buried there.  Give him a tin coin, as payment to cross the river Styx, and maybe that will bring him peace."
@@ -14,6 +15,7 @@ Mark graveyard on map: not hardcoded
     <objective type="fetch" id="tinCoin" />
 </quest>
 <quest id="freeTheGhost2" name="Be at Peace" startsAt="ghostFather" endsAt="mourner"
+    level="10"
     brief="Please return to my son, and tell him that I am at rest.  I will no longer haunt his sleep."
     debrief="Thank you for your help.  I feel better knowing that my father has been properly laid to rest.
     In my neglect, I failed to mark his grave.  You may have the monument if you wish; my father clearly has no need for it." >
@@ -38,6 +40,7 @@ Mark graveyard on map: not hardcoded
     </objectType>
     
 <quest id="collectPumpkinFlowers" name="A Rose on the Grave" startsAt="witch" endsAt="witch"
+    level="12"
     brief="Greetings, traveler!  Strange things are afoot: the dead are restless, and other odd things have sprung up with them.
     There is an orange flower that I have seen growing throughout this graveyard.  I am an experienced botanist, but I do not recognise these flowers.
     If you could pick some for me, I believe I could study the plant and perhaps derive some magical properties from it."

@@ -1,6 +1,7 @@
 <root>
 
 <quest id="anzacIntro" name="The Great War" startsAt="anzacQG" endsAt="anzacQG"
+    level="10"
     brief="Good morning, stranger.  It's good that you visited today, for today we hold our annual memorial of the great war.  Would you like to hear about it?"
     debrief="It was over a hundred years ago.  My grandfather fought bravely, and fell in these fields.  Thousands like him also fell. For my city, it was our first real taste of battle, and so on this day we remember not just the fighting that took place here, but all battles, and the nature of war.
     War is a coin with two faces: the face of Ares and the face of Athena.  Both faces must be understood and respected.  You are welcome to participate in our memorial ceremonies in order to better understand both--speak to me again if you so desire." >
@@ -16,6 +17,7 @@
     </npcType>
 
 <quest id="anzacAres1" name="The Face of Ares" startsAt="anzacQG" endsAt="anzacTomb"
+    level="10"
     brief="Ares is the god of war: of strife, of slaughter, of bloodshed, and of the chaos of battle.
     We hear at length about the glory of victory, but ultimately, fighting is miserable and messy.  You may die, or you may wish for death.  Depression, bloodlust, rage and fear are deep within all men, and all spill out on the battlefield.  And of course, many of your closest friends will fall around you.  In war we sacrifice not just humans, but humanity.
     Travel along the mountain pass northeast, and you will find a tomb to all of the unknown soldiers that fell here.  On your way there, observe the flowers that dot the landscape.  Pick a handful, to place at the tomb.  Consider their colour."
@@ -39,12 +41,14 @@
     </objectType>
 
 <quest id="anzacAres2" name="The Face of Ares" startsAt="anzacTomb" endsAt="anzacQG"
+    level="10"
     brief="Return to Menaides."
     debrief="Thank you for remembering our fallen dead.  The face of Ares is hard to envisage, but it's important to confront human nature and the realities of war.">
     <prerequisite id="anzacAres1" />
 </quest>
 
 <quest id="anzacAthena" name="The Face of Athena" startsAt="anzacQG" endsAt="anzacQG"
+    level="10"
     brief="Athena is the goddess of war: of strategy and discipline, and of the war's justice.
     The prosecution of a war is a great undertaking, one that demands the most of a man at the hardest of times.  The self-control to hold his position against arrow volley or cavalry charge.  The confidence and gravity to command men to their deaths.  The wisdom to know whether he fights for a noble and just purpose.
     Travel south, and you will find a reflecting pool.  Bring this candle and place it by the pool.  While doing so, take a silent minute to look upon my peers, who also spend today remembering.  Study their flawless ranks and rigid faces.  Consider what is required of a soldier."
@@ -90,6 +94,7 @@
     </npcType>
     
 <quest id="anzacOutro" name="The Legacy of Gallipolis" startsAt="anzacQG" endsAt="anzacStash"
+    level="10"
     brief="Thank you for taking the time to contemplate the nature of war.  Today we remember all of our fallen, and we take seriously our duty to honour their memory.
     To that end, I now feel comfortable entrusting you with part of my family's legacy: some wartime possessions of my grandfather.  Perhaps they will remind you of today's lessons during your travels.  You can find them here beside me."
     debrief="You reach into the pot and find two artifacts.

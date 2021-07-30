@@ -11,6 +11,7 @@
 
 
 <quest id="directionsToClay" name="A toy for the children" startsAt="grug" endsAt="grug"
+    level="7"
     brief="Grug have only bones and rocks to keep family happy.  Want make toy for Grugling, but need clay.
     Shaman say there lots of clay past rivers, southwest, where land green and water big.  Grug also see red patches in riverbed.
     You bring Grug clay?"
@@ -29,8 +30,9 @@
     <npc id="grug" x="35503" y="22322" />
 
 <quest id="calydonianBoarPre" name="Honouring the Harvest" startsAt="flaxCrop0" endsAt="calydonBrazier"
+    level="14"
     brief="You have sown the fields, and contemplate life as a farmer--most of all, the importance of honouring the gods once you have reaped a harvest.
-    The Calydonians, devout textile traders, have a regular ceremony to show appreciation for their crops.  That would be a good place bring some of your produce to burn in offering.
+    The Calydonians, devout textile traders, have a regular ceremony to show appreciation for their crops.  That would be a good place to bring some of your produce, to burn in offering.
     The city of Calydon is located in the fertile river region of the south west, near the coast."
     debrief="You burn the offering of Flax in the brazier, confident that you have satisfied the gods." >
     <objective type="fetch" id="flax" qty="1" />
@@ -158,6 +160,7 @@
     <permanentObject id="skeleton" x="30024" y="44520" />
     <permanentObject id="skeleton" x="29957" y="44487" />
 <quest id="calydonianBoar" name="The Calydonian Boar" startsAt="kingOineus" endsAt="kingOineus"
+    level="15" elite="1"
     brief="Welcome to our humble city!  Like you, we grow and weave flax, but recently we have fallen victim to the gods' wrath.
     Each harvest we make offerings to the gods, as you have done.  Regrettably, our merriment during the last harvest distracted us, and we neglected to thank Artemis, goddess of the hunt.
     Since then, the scorned goddess has terrorised our southern farmlands with a monstrous boar.
@@ -198,6 +201,7 @@
 <npc id="zealotQG" x="35040" y="22545" />
 
 <quest id="learnAthleteBuilding1" name="Kron's Kill" startsAt="athleteQG" endsAt="athleteQG" timeLimit="35" exclusiveToClass="Athlete"
+    level="6"
     brief="You look fast; you help Kron?
     Kron hunt big goat today for tribe, but too much meat to carry.  Meat rotting; soon no good to eat.  You get rest of meat?
     Kron remember hunting west, near river.  Go fast, before meat rot!"
@@ -219,6 +223,7 @@
         <yield id="kronMeat" />
     </objectType>
 <quest id="learnAthleteBuilding2" name="Tortoise Trouble" startsAt="athleteQG" endsAt="athleteQG" exclusiveToClass="Athlete"
+    level="6"
     brief="Maybe you help Kron with another problem.  A monster threatens tribe!  Big creature with lots of meat, but wears hard armour.
     We can't break him; maybe you can.  We call him Heirax.  He on the coast, southeast."
     debrief="You save tribe!  Thank you.
@@ -242,6 +247,7 @@
     </npcType>
 
 <quest id="learnScholarBuilding1" name="A Shortcut to Mushrooms" startsAt="scholarQG" endsAt="scholarQG" exclusiveToClass="Scholar"
+    level="6"
     brief="Mushrooms can be good to eat, and Briv want to help tribe eat well.
     Briv see big mushroom patch nearby, northwest; lots of different mushrooms.  Go pick some, bring back, then we test them."
     debrief="Wow, many different mushrooms!  You have good eye for foraging." >
@@ -276,6 +282,7 @@
         <yield id="whiteMushroomGather" />
     </objectType>
 <quest id="learnScholarBuilding2" name="Poison; Poison; tasty mushroom" startsAt="scholarQG" endsAt="scholarQG" exclusiveToClass="Scholar"
+    level="6"
     brief="Three different mushrooms.  Might be bad, might be good.  Before feeding to tribe, need to test them.
     You put your body on line for greater good?  Good way to learn more about world!"
     debrief="You real hero!  Now we know that brown mushrooms good to eat, and others not.
@@ -314,6 +321,7 @@
     </buff>
 
 <quest id="learnZealotBuilding" name="Divination" startsAt="zealotQG" endsAt="zealotQG" exclusiveToClass="Zealot"
+    level="6"
     brief="Zaar the shaman of tribe, but not heard gods' wishes for many days.
     Watching birds, reading entrails, nothing works.  Last resort is throwing knucklebones from animal paws; they land in special ways.
     You bring knucklebones?  Hard to get, but hearing gods very important!"
