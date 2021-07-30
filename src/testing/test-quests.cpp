@@ -2223,9 +2223,9 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Quest levels and XP",
     }
 
     SECTION("Clients know quests' levels") {
-      const auto &cNoobQuest = client->quests().find("noobQuest")->second;
+      const auto &cNoobQuest = client->findQuest("noobQuest");
       CHECK(cNoobQuest.info().level == 1);
-      const auto &cLeetQuest = client->quests().find("leetQuest")->second;
+      const auto &cLeetQuest = client->findQuest("leetQuest");
       CHECK(cLeetQuest.info().level == 2);
     }
   }
@@ -2243,13 +2243,13 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Default quest level is 1",
     THEN("it is level 1") { CHECK(quest.level == 1); }
 
     THEN("the client knows it is level 1") {
-      const auto &cQuest = client->quests().find("simpleQuest")->second;
+      const auto &cQuest = client->findQuest("simpleQuest");
       CHECK(cQuest.info().level == 1);
     }
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Elite quests", "[quest]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Elite quests", "[quest][loading]") {
   GIVEN("an elite quest and a non-elite quest") {
     useData(R"(
       <objectType id="questgiver" />
@@ -2280,6 +2280,13 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Elite quests", "[quest]") {
           }
         }
       }
+    }
+
+    SECTION("the client knows when a quest is elite") {
+      const auto &normalQuest = client->findQuest("normalQuest");
+      CHECK_FALSE(normalQuest.info().elite);
+      const auto &eliteQuest = client->findQuest("eliteQuest");
+      CHECK(eliteQuest.info().elite);
     }
   }
 }

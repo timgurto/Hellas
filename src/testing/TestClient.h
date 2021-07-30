@@ -108,6 +108,8 @@ class TestClient {
   const CQuest &getFirstQuest();
   CDroppedItem &getFirstDroppedItem();
 
+  const CQuest &findQuest(std::string id) const;
+
   Client *operator->() { return _client; }
   Client &client() { return *_client; }
   void performCommand(const std::string &command) {

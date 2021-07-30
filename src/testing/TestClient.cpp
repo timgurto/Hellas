@@ -230,6 +230,10 @@ CDroppedItem &TestClient::getFirstDroppedItem() {
   return *asDroppedItem;  // To circumvent warning
 }
 
+const CQuest &TestClient::findQuest(std::string id) const {
+  return quests().find(id)->second;
+}
+
 void TestClient::simulateMouseMove(const ScreenPoint &position) {
   _client->_mouse = position;
   _client->onMouseMove();

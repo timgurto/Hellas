@@ -41,6 +41,7 @@ class CQuest {
     ID id;
     Name name;
     Level level{1};
+    bool elite{false};
     Prose brief, debrief;
     ID startsAt, endsAt;
     std::vector<Objective> objectives;
