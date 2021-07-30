@@ -421,6 +421,7 @@ void Client::initPlayerPanels() {
       _character.maxEnergy(), _character.level());
   playerPanel->addXPBar(_xp, _maxXP);
   playerPanel->id("Player panel");
+  playerPanel->setLevelColor(Color::DIFFICULTY_NEUTRAL);
   addUI(playerPanel);
   /*
   initializeMenu() must be called before initializePanel(), otherwise the

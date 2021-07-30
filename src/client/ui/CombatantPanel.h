@@ -31,6 +31,7 @@ class CombatantPanel : public Element {
   virtual void height(px_t h) override;
   void setRank(ClientCombatantType::Rank rank);
   void setLevelColor(Level combatantLevel);
+  void setLevelColor(Color color);
 
  private:
   ProgressBar<Hitpoints> *_healthBar;

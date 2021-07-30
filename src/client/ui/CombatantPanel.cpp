@@ -106,3 +106,7 @@ void CombatantPanel::setLevelColor(Level combatantLevel) {
   const auto userLevel = _client->character().level();
   _levelLabel->setColor(getDifficultyColor(combatantLevel, userLevel));
 }
+
+void CombatantPanel::setLevelColor(Color color) {
+  _levelLabel->setColor(color);
+}
