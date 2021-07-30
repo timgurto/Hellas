@@ -3,8 +3,10 @@
 
 #include <string>
 
+#include "../../combatTypes.h"
 #include "../ClientCombatant.h"
 #include "Element.h"
+#include "LinkedLabel.h"
 #include "ProgressBar.h"
 
 class ColorBlock;
@@ -28,6 +30,7 @@ class CombatantPanel : public Element {
 
   virtual void height(px_t h) override;
   void setRank(ClientCombatantType::Rank rank);
+  void setLevelColor(Level combatantLevel);
 
  private:
   ProgressBar<Hitpoints> *_healthBar;
@@ -38,6 +41,7 @@ class CombatantPanel : public Element {
   ShadowBox *_outline;
 
   Picture *_eliteMarker{nullptr}, *_bossMarker{nullptr};
+  LinkedLabel<Level> *_levelLabel{nullptr};
 
   const px_t ELEMENT_WIDTH;
 };

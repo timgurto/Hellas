@@ -1,5 +1,6 @@
 #include "CombatantPanel.h"
 
+#include "../../util.h"
 #include "../Client.h"
 #include "ColorBlock.h"
 #include "LinkedLabel.h"
@@ -30,12 +31,13 @@ CombatantPanel::CombatantPanel(px_t panelX, px_t panelY, px_t width,
   addChild(_bossMarker);
   _bossMarker->hide();
 
-  addChild(new LinkedLabel<Level>{
+  _levelLabel = new LinkedLabel<Level>{
       {GAP * 2, y, SPACE_FOR_LEVEL, Element::TEXT_HEIGHT},
       level,
       {},
       {},
-      Element::CENTER_JUSTIFIED});
+      Element::CENTER_JUSTIFIED};
+  addChild(_levelLabel);
 
   addChild(new LinkedLabel<std::string>(
       {GAP, y, ELEMENT_WIDTH, Element::TEXT_HEIGHT}, name, {}, {},
@@ -98,4 +100,9 @@ void CombatantPanel::setRank(ClientCombatantType::Rank rank) {
     _eliteMarker->hide();
     _bossMarker->hide();
   }
+}
+
+void CombatantPanel::setLevelColor(Level combatantLevel) {
+  const auto userLevel = _client->character().level();
+  _levelLabel->setColor(getDifficultyColor(combatantLevel, userLevel));
 }

@@ -96,6 +96,8 @@ void Target::onTypeChange() {
   _maxEnergy = _combatant->maxEnergy();
   _level = _combatant->level();
 
+  _panel->setLevelColor(_level);
+
   _panel->setRank(_combatant->rank());
 
   if (_maxEnergy == 0)
