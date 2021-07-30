@@ -2625,6 +2625,11 @@ void Client::handle_SV_LEVEL_UP(const std::string &username) {
     toast("light", message);
     _debug(message);
 
+    // Refresh these, since they may change colour with the reduced difficulty
+    populateQuestLog();
+    refreshQuestProgress();
+    if (_target.panel()) _target.panel()->setLevelColor(_target.level());
+
     // Redraw tooltips, in case gear level requirements are no longer red
     for (auto &pair : gameData.items) pair.second.refreshTooltip();
     Tooltip::forceAllToRedraw();
