@@ -2249,8 +2249,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Default quest level is 1",
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Elite quests give extra XP",
-                 "[quest]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Elite quests", "[quest]") {
   GIVEN("an elite quest and a non-elite quest") {
     useData(R"(
       <objectType id="questgiver" />
@@ -2258,24 +2257,26 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Elite quests give extra XP",
       <quest id="eliteQuest" elite="1" startsAt="questgiver" endsAt="questgiver" />
     )");
 
-    AND_GIVEN("the user is level 2 (so that XP doesn't cause a level up") {
-      user->levelUp();
+    SECTION("They give extra XP") {
+      AND_GIVEN("the user is level 2 (so that XP doesn't cause a level up") {
+        user->levelUp();
 
-      WHEN("the user completes the normal quest") {
-        const auto &normalQuest = server->findQuest("normalQuest");
-        user->startQuest(normalQuest);
-        user->completeQuest("normalQuest");
-        const auto xpFromNormalQuest = user->xp();
+        WHEN("the user completes the normal quest") {
+          const auto &normalQuest = server->findQuest("normalQuest");
+          user->startQuest(normalQuest);
+          user->completeQuest("normalQuest");
+          const auto xpFromNormalQuest = user->xp();
 
-        AND_WHEN("he completes the elite quest") {
-          const auto &eliteQuest = server->findQuest("eliteQuest");
-          user->startQuest(eliteQuest);
-          user->completeQuest("eliteQuest");
-          const auto xpFromEliteQuest = user->xp() - xpFromNormalQuest;
+          AND_WHEN("he completes the elite quest") {
+            const auto &eliteQuest = server->findQuest("eliteQuest");
+            user->startQuest(eliteQuest);
+            user->completeQuest("eliteQuest");
+            const auto xpFromEliteQuest = user->xp() - xpFromNormalQuest;
 
-          THEN("the elite quest awarded more XP") {
-            REQUIRE(user->level() == 2);
-            CHECK(xpFromEliteQuest > xpFromNormalQuest);
+            THEN("the elite quest awarded more XP") {
+              REQUIRE(user->level() == 2);
+              CHECK(xpFromEliteQuest > xpFromNormalQuest);
+            }
           }
         }
       }
