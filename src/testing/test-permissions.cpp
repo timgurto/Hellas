@@ -280,7 +280,7 @@ TEST_CASE("Objects can be granted to citizens",
   rock.permissions.setCityOwner("Athens");
 
   // When Alice tries to grant the rock to herself
-  c.sendMessage(CL_GRANT, makeArgs(rock.serial(), "Alice"));
+  c.sendMessage(CL_GIVE_OBJECT, makeArgs(rock.serial(), "Alice"));
 
   // Then the rock is owned by Alice
   WAIT_UNTIL(rock.permissions.isOwnedByPlayer("Alice"));
@@ -305,7 +305,7 @@ TEST_CASE("Non kings can't grant objects", "[permissions][city][gifting]") {
   rock.permissions.setCityOwner("Athens");
 
   // When Alice tries to grant the rock to herself
-  c.sendMessage(CL_GRANT, makeArgs(rock.serial(), "Alice"));
+  c.sendMessage(CL_GIVE_OBJECT, makeArgs(rock.serial(), "Alice"));
 
   // Then Alice receives an error message;
   c.waitForMessage(ERROR_NOT_A_KING);
@@ -333,7 +333,7 @@ TEST_CASE("Unowned objects cannot be granted", "[permissions][gifting]") {
 
   // When Alice tries to grant the rock to herself
   auto &rock = s.getFirstObject();
-  c.sendMessage(CL_GRANT, makeArgs(rock.serial(), "Alice"));
+  c.sendMessage(CL_GIVE_OBJECT, makeArgs(rock.serial(), "Alice"));
 
   // Then Alice receives an error message;
   c.waitForMessage(WARNING_NO_PERMISSION);
@@ -364,7 +364,7 @@ TEST_CASE("Only objects owned by your city can be granted",
   rock.permissions.setCityOwner("Sparta");
 
   // When Alice tries to grant the rock to herself
-  c.sendMessage(CL_GRANT, makeArgs(rock.serial(), "Alice"));
+  c.sendMessage(CL_GIVE_OBJECT, makeArgs(rock.serial(), "Alice"));
 
   // Then Alice receives an error message;
   c.waitForMessage(WARNING_NO_PERMISSION);

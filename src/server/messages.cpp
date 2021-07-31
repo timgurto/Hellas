@@ -1526,7 +1526,7 @@ void Server::handleBufferedMessages(const Socket &client,
         break;
       }
 
-      case CL_GRANT: {
+      case CL_GIVE_OBJECT: {
         auto serial = Serial{};
         iss >> serial >> del;
         iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);

@@ -592,8 +592,8 @@ void ClientObject::getInputAndGrantObject(void *objectToGrant) {
     _client.removeWindow(obj._grantWindow);
   else
     obj._grantWindow =
-        new InputWindow(_client, windowText, CL_GRANT, makeArgs(obj.serial()),
-                        TextBox::LETTERS);
+        new InputWindow(_client, windowText, CL_GIVE_OBJECT,
+                        makeArgs(obj.serial()), TextBox::LETTERS);
   _client.addWindow(obj._grantWindow);
   obj._grantWindow->show();
 }
