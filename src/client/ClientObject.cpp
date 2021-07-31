@@ -681,7 +681,8 @@ void ClientObject::assembleWindow(Client &client) {
              canCede = (canBeOwnedByACity() &&
                         !client.character().cityName().empty()) &&
                        userIsOwner && (!objType.isPlayerUnique()),
-             canGrant =
+             canGiveAway =
+                 _owner == Owner{Owner::PLAYER, client.username()} ||
                  (client.character().isKing() &&
                   _owner == Owner{Owner::CITY, client.character().cityName()}),
              canDemolish = userHasDemolishAccess(),
@@ -695,7 +696,7 @@ void ClientObject::assembleWindow(Client &client) {
 
   auto windowHasClassContent = addClassSpecificStuffToWindow();
   auto hasNonDemolitionContent = windowHasClassContent || hasContainer ||
-                                 isMerchant || canCede || canGrant ||
+                                 isMerchant || canCede || canGiveAway ||
                                  hasAQuest || objType.hasAction() ||
                                  objType.canDeconstruct() || hasWindowText;
   auto hasAnyContent = hasNonDemolitionContent || canDemolish;
@@ -705,7 +706,7 @@ void ClientObject::assembleWindow(Client &client) {
       if (userHasAccess()) {
         addConstructionToWindow(client);
         if (canCede) addCedeButtonToWindow();
-        if (canGrant) addGiveButtonToWindow();
+        if (canGiveAway) addGiveButtonToWindow();
         if (canDemolish) addDemolishButtonToWindow();
         hasNonDemolitionContent = hasAnyContent = true;
       }
@@ -717,7 +718,7 @@ void ClientObject::assembleWindow(Client &client) {
       if (objType.hasAction()) addActionToWindow();
       if (objType.canDeconstruct()) addDeconstructionToWindow();
       if (canCede) addCedeButtonToWindow();
-      if (canGrant) addGiveButtonToWindow();
+      if (canGiveAway) addGiveButtonToWindow();
       if (canDemolish) addDemolishButtonToWindow();
       if (hasWindowText) addWindowTextToWindow();
 
