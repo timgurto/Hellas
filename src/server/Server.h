@@ -330,7 +330,6 @@ class Server {
 
   void handle_CL_REPAIR_OBJECT(User &user, Serial serial);
   void handle_CL_LEAVE_CITY(User &user);
-  void handle_CL_GRANT(User &user, Serial serial, std::string username);
   void handle_CL_RECRUIT(User &user, std::string username);
   void handle_CL_SUE_FOR_PEACE(User &user, MessageCode code,
                                const std::string &name);

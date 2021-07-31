@@ -648,6 +648,25 @@ HANDLE_MESSAGE(CL_CEDE) {
   ent->permissions.setCityOwner(city);
 }
 
+HANDLE_MESSAGE(CL_GIVE_OBJECT) {
+  auto serial = Serial{};
+  auto receiverName = ""s;
+  READ_ARGS(serial, receiverName);
+
+  auto *obj = _entities.find<Object>(serial);
+  if (!obj) RETURN_WITH(WARNING_DOESNT_EXIST)
+  auto playerCity = cities().getPlayerCity(user.name());
+  if (!obj->permissions.isOwnedByCity(playerCity))
+    RETURN_WITH(WARNING_NO_PERMISSION)
+  if (!_kings.isPlayerAKing(user.name())) RETURN_WITH(ERROR_NOT_A_KING)
+
+  receiverName = toPascal(receiverName);
+  if (!cities().isPlayerInCity(receiverName, playerCity))
+    RETURN_WITH(WARNING_NOT_A_CITIZEN)
+
+  obj->permissions.setPlayerOwner(receiverName);
+}
+
 HANDLE_MESSAGE(CL_TARGET_ENTITY) {
   auto serial = Serial{};
   READ_ARGS(serial);
@@ -1156,6 +1175,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_SWAP_ITEMS)
       SEND_MESSAGE_TO_HANDLER(CL_TAKE_ITEM)
       SEND_MESSAGE_TO_HANDLER(CL_CEDE)
+      SEND_MESSAGE_TO_HANDLER(CL_GIVE_OBJECT)
       SEND_MESSAGE_TO_HANDLER(CL_TARGET_ENTITY)
       SEND_MESSAGE_TO_HANDLER(CL_TARGET_PLAYER)
       SEND_MESSAGE_TO_HANDLER(CL_SELECT_ENTITY)
@@ -1526,17 +1546,6 @@ void Server::handleBufferedMessages(const Socket &client,
         break;
       }
 
-      case CL_GIVE_OBJECT: {
-        auto serial = Serial{};
-        iss >> serial >> del;
-        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
-        auto username = std::string{_stringInputBuffer};
-        iss >> del;
-        if (del != MSG_END) return;
-        handle_CL_GRANT(*user, serial, username);
-        break;
-      }
-
       case CL_RECRUIT: {
         iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
         auto username = std::string{_stringInputBuffer};
@@ -1728,20 +1737,6 @@ void Server::handle_CL_LEAVE_CITY(User &user) {
   if (_kings.isPlayerAKing(user.name()))
     RETURN_WITH(ERROR_KING_CANNOT_LEAVE_CITY)
   _cities.removeUserFromCity(user, city);
-}
-
-void Server::handle_CL_GRANT(User &user, Serial serial, std::string username) {
-  auto *obj = _entities.find<Object>(serial);
-  if (!obj) RETURN_WITH(WARNING_DOESNT_EXIST)
-  auto playerCity = cities().getPlayerCity(user.name());
-  if (!obj->permissions.isOwnedByCity(playerCity))
-    RETURN_WITH(WARNING_NO_PERMISSION)
-  if (!_kings.isPlayerAKing(user.name())) RETURN_WITH(ERROR_NOT_A_KING)
-  username = toPascal(username);
-  if (!cities().isPlayerInCity(username, playerCity))
-    RETURN_WITH(WARNING_NOT_A_CITIZEN)
-
-  obj->permissions.setPlayerOwner(username);
 }
 
 void Server::handle_CL_RECRUIT(User &user, std::string username) {
