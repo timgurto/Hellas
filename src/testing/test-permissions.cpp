@@ -319,38 +319,32 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Kings can give objects to citizens",
         }
       }
     }
+
+    SECTION("A king can't give another city's object") {
+      AND_GIVEN("Sparta owns a thing") {
+        server->cities().createCity("Sparta", {}, {});
+        auto &thing = server->addObject("thing");
+        thing.permissions.setCityOwner("Sparta");
+
+        AND_GIVEN("the player is king of Athens") {
+          (*server)->makePlayerAKing(*user);
+
+          WHEN("the player tries to give it to himself") {
+            client->sendMessage(CL_GIVE_OBJECT,
+                                makeArgs(thing.serial(), user->name()));
+
+            THEN("he receives a warning message") {
+              client->waitForMessage(WARNING_NO_PERMISSION);
+            }
+
+            THEN("it's still owned by Sparta") {
+              CHECK(thing.permissions.isOwnedByCity("Sparta"));
+            }
+          }
+        }
+      }
+    }
   }
-}
-
-TEST_CASE("Only objects owned by your city can be granted",
-          "[permissions][city][giving-objects]") {
-  // Given a Rock object type;
-  auto s = TestServer::WithData("basic_rock");
-
-  // And two cities, Athens and Sparts;
-  s.cities().createCity("Athens", {}, {});
-  s.cities().createCity("Sparta", {}, {});
-
-  // And Alice, Athens' king;
-  auto c = TestClient::WithUsernameAndData("Alice", "basic_rock");
-  s.waitForUsers(1);
-  auto &alice = s.getFirstUser();
-  s.cities().addPlayerToCity(alice, "Athens");
-  s->makePlayerAKing(alice);
-
-  // And a rock, owned by Sparta
-  s.addObject("rock");
-  auto &rock = s.getFirstObject();
-  rock.permissions.setCityOwner("Sparta");
-
-  // When Alice tries to grant the rock to herself
-  c.sendMessage(CL_GIVE_OBJECT, makeArgs(rock.serial(), "Alice"));
-
-  // Then Alice receives an error message;
-  c.waitForMessage(WARNING_NO_PERMISSION);
-
-  // And the rock is still owned by the city
-  CHECK(rock.permissions.isOwnedByCity("Sparta"));
 }
 
 TEST_CASE("A player can gift his own objects",
