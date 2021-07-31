@@ -9,7 +9,7 @@ class OutlinedLabel : public Element {
                 Element::Justification justificationH = Element::LEFT_JUSTIFIED,
                 Element::Justification justificationV = Element::TOP_JUSTIFIED);
 
-  Label *centralLabel() { return _central; }
+  Label *centralLabel() { return _mainText; }
 
   void setColor(const Color &color);
   void changeText(const std::string &text);
@@ -17,18 +17,6 @@ class OutlinedLabel : public Element {
   void refresh() override;
 
  private:
-  /*
-  hue
-  lCr
-  gdf
-  */
-  Label *_central{nullptr};
-  Label *_u{nullptr};
-  Label *_d{nullptr};
-  Label *_l{nullptr};
-  Label *_r{nullptr};
-  Label *_e{nullptr};
-  Label *_f{nullptr};
-  Label *_g{nullptr};
-  Label *_h{nullptr};
+  Label *_mainText{nullptr};
+  std::vector<Label *> _labels;
 };
