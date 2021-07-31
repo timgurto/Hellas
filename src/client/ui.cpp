@@ -472,7 +472,7 @@ void Client::populateQuestLog() {
 }
 
 void Client::initQuestProgress() {
-  const auto WIDTH = 150_px, Y = 100_px, HEIGHT = 200_px;
+  const auto WIDTH = 152_px, Y = 100_px, HEIGHT = 200_px;
   _questProgress =
       new List{{SCREEN_X - WIDTH, Y, WIDTH, HEIGHT}, Element::TEXT_HEIGHT + 2};
   _questProgress->id("Quest tracker");

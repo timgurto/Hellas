@@ -23,7 +23,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 22,Allow declaring war on object,3,5,Usability,40,,,7 War
 23,Disable war,55,13,Feature,,,,
 24,Crafting particles,21,5,Aesthetics,,,,
-25,Universal complete text outlines,2,3,Aesthetics,,,,
+25,Universal complete text outlines,2,3,Aesthetics,,TRUE,,
 26,Remapping keys,89,55,Usability,,,,
 27,Fix scroll-bar dragging,2,21,Bug,,,TRUE,
 28,"When city object moves, show citizens",1,3,Bug,,,TRUE,

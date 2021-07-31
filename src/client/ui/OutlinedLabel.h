@@ -17,9 +17,18 @@ class OutlinedLabel : public Element {
   void refresh() override;
 
  private:
+  /*
+  hue
+  lCr
+  gdf
+  */
   Label *_central{nullptr};
   Label *_u{nullptr};
   Label *_d{nullptr};
   Label *_l{nullptr};
   Label *_r{nullptr};
+  Label *_e{nullptr};
+  Label *_f{nullptr};
+  Label *_g{nullptr};
+  Label *_h{nullptr};
 };
