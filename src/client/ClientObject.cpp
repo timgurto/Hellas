@@ -567,16 +567,15 @@ void ClientObject::confirmAndCedeObject(void *objectToCede) {
   obj._confirmCedeWindow->show();
 }
 
-void ClientObject::addGrantButtonToWindow() {
+void ClientObject::addGiveButtonToWindow() {
   px_t x = BUTTON_GAP, y = _window->contentHeight(),
        newWidth = _window->contentWidth();
   y += BUTTON_GAP;
-  Button *grantButton =
-      new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Grant to citizen",
-                 [this]() { getInputAndGrantObject(this); });
-  grantButton->setTooltip(
-      "Transfer ownership of this object over to a member of your city");
-  _window->addChild(grantButton);
+  Button *giveButton =
+      new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Give away",
+                 [this]() { getInputAndGiveObject(this); });
+  giveButton->setTooltip("Transfer ownership of this object to a player");
+  _window->addChild(giveButton);
   y += BUTTON_GAP + BUTTON_HEIGHT;
   x += BUTTON_GAP + BUTTON_WIDTH;
   if (newWidth < x) newWidth = x;
@@ -584,7 +583,7 @@ void ClientObject::addGrantButtonToWindow() {
   _window->resize(newWidth, y);
 }
 
-void ClientObject::getInputAndGrantObject(void *objectToGrant) {
+void ClientObject::getInputAndGiveObject(void *objectToGrant) {
   assert(objectToGrant != nullptr);
   ClientObject &obj = *reinterpret_cast<ClientObject *>(objectToGrant);
   auto windowText = "Please enter the name of the new owner:"s;
@@ -706,7 +705,7 @@ void ClientObject::assembleWindow(Client &client) {
       if (userHasAccess()) {
         addConstructionToWindow(client);
         if (canCede) addCedeButtonToWindow();
-        if (canGrant) addGrantButtonToWindow();
+        if (canGrant) addGiveButtonToWindow();
         if (canDemolish) addDemolishButtonToWindow();
         hasNonDemolitionContent = hasAnyContent = true;
       }
@@ -718,7 +717,7 @@ void ClientObject::assembleWindow(Client &client) {
       if (objType.hasAction()) addActionToWindow();
       if (objType.canDeconstruct()) addDeconstructionToWindow();
       if (canCede) addCedeButtonToWindow();
-      if (canGrant) addGrantButtonToWindow();
+      if (canGrant) addGiveButtonToWindow();
       if (canDemolish) addDemolishButtonToWindow();
       if (hasWindowText) addWindowTextToWindow();
 

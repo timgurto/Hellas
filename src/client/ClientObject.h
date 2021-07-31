@@ -202,8 +202,8 @@ class ClientObject : public Sprite, public ClientCombatant {
   void addMerchantTradeToWindow();
   void addCedeButtonToWindow();
   void confirmAndCedeObject(void *objectToCede);
-  void addGrantButtonToWindow();
-  void getInputAndGrantObject(void *objectToGrant);
+  void addGiveButtonToWindow();
+  void getInputAndGiveObject(void *objectToGrant);
   void addDemolishButtonToWindow();
   void confirmAndDemolishObject(void *objectToDemolish);
   void addWindowTextToWindow();
