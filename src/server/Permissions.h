@@ -37,6 +37,7 @@ class Permissions : public EntityComponent {
   bool hasOwner() const;
   bool isOwnedByPlayer(const std::string &username) const;
   bool isOwnedByCity(const City::Name &cityName) const;
+  bool isOwnedByPlayerCity(City::Name cityName) const;
   const Owner &owner() const;
   const User *getPlayerOwner() const;
 

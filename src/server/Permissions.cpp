@@ -81,6 +81,13 @@ bool Permissions::isOwnedByCity(const City::Name &cityName) const {
   return _owner.type == Owner::CITY && _owner.name == cityName;
 }
 
+bool Permissions::isOwnedByPlayerCity(std::string username) const {
+  const auto &cities = Server::instance()._cities;
+  const auto playerCity = cities.getPlayerCity(username);
+  if (playerCity.empty()) return false;
+  return isOwnedByCity(playerCity);
+}
+
 const Permissions::Owner &Permissions::owner() const { return _owner; }
 
 const User *Permissions::getPlayerOwner() const {
@@ -95,33 +102,18 @@ bool Permissions::doesUserHaveNormalAccess(const std::string &username) const {
   if (_owner.type == Owner::ALL_HAVE_ACCESS) return true;
   if (_owner.type == Owner::NO_ACCESS) return false;
 
-  // Owned by player
-  if (isOwnedByPlayer(username)) return true;
-
-  const Cities &cities = Server::instance()._cities;
-  const std::string &playerCity = cities.getPlayerCity(username);
-  if (playerCity.empty()) return false;
-
-  // Owned by player's city
-  return isOwnedByCity(playerCity);
+  return isOwnedByPlayer(username) || isOwnedByPlayerCity(username);
 }
 
 bool Permissions::canUserGiveAway(std::string username) const {
-  if (_owner.type == Owner::ALL_HAVE_ACCESS) return false;
+  if (_owner.type == Owner::ALL_HAVE_ACCESS) return false;  // More strict
   if (_owner.type == Owner::NO_ACCESS) return false;
 
-  // Owned by player
   if (isOwnedByPlayer(username)) return true;
 
-  const Cities &cities = Server::instance()._cities;
-  const std::string &playerCity = cities.getPlayerCity(username);
-  if (playerCity.empty()) return false;
-
-  // Owned by player's city
-  if (isOwnedByCity(playerCity))
-    return Server::instance()._kings.isPlayerAKing(username);
-
-  return false;
+  // Must be king to give away a city object
+  const auto playerIsKing = Server::instance()._kings.isPlayerAKing(username);
+  return isOwnedByPlayerCity(username) && playerIsKing;
 }
 
 bool Permissions::canUserPerformAction(std::string username) const {
@@ -129,20 +121,16 @@ bool Permissions::canUserPerformAction(std::string username) const {
   if (_owner.type == Owner::ALL_HAVE_ACCESS) return true;
   if (_owner.type == Owner::NO_ACCESS) return false;
 
-  // Owned by player
   if (isOwnedByPlayer(username)) return true;
+  if (isOwnedByPlayerCity(username)) return true;
 
-  const Cities &cities = Server::instance()._cities;
-  const std::string &playerCity = cities.getPlayerCity(username);
-  if (playerCity.empty()) return false;
-
-  // Owned by player's city
-  if (isOwnedByCity(playerCity)) return true;
-
-  // Fellow citizens (e.g., for altars)
   if (_owner.type != Owner::PLAYER) return false;  // Some other city
-  auto ownerCity = cities.getPlayerCity(_owner.name);
+
+  // Owned by a fellow citizen (e.g., for altars)
+  const auto &cities = Server::instance()._cities;
+  const auto ownerCity = cities.getPlayerCity(_owner.name);
   if (ownerCity.empty()) return false;
+  const auto playerCity = cities.getPlayerCity(username);
   return playerCity == ownerCity;
 }
 
@@ -155,17 +143,10 @@ bool Permissions::canUserLoot(std::string username) const {
 }
 
 bool Permissions::canUserDemolish(std::string username) const {
-  // Excludes all-access; more strict than doesUserHaveAccess().
+  if (_owner.type == Owner::ALL_HAVE_ACCESS) return false;  // More strict
+  if (_owner.type == Owner::NO_ACCESS) return false;
 
-  // Owned by player
-  if (_owner == Owner{Owner::PLAYER, username}) return true;
-
-  // Owned by city
-  const auto &cities = Server::instance().cities();
-  if (!cities.isPlayerInACity(username)) return false;
-  if (_owner == Owner{Owner::CITY, cities.getPlayerCity(username)}) return true;
-
-  return false;
+  return isOwnedByPlayer(username) || isOwnedByPlayerCity(username);
 }
 
 bool Permissions::canUserRepair(std::string username) const {
