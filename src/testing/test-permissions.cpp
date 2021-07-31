@@ -1,4 +1,5 @@
 #include "TestClient.h"
+#include "TestFixtures.h"
 #include "TestServer.h"
 #include "testing.h"
 
@@ -259,34 +260,33 @@ TEST_CASE("New ownership is reflected in the object-owner index",
   CHECK(s.objectsByOwner().getObjectsWithSpecificOwner(ownerBob).size() == 1);
 }
 
-TEST_CASE("Objects can be granted to citizens",
-          "[permissions][city][gifting]") {
-  // Given a Rock object type;
-  auto s = TestServer::WithData("basic_rock");
+TEST_CASE_METHOD(ServerAndClientWithData, "Objects can be given to citizens",
+                 "[permissions][city][giving-objects]") {
+  useData(R"(<objectType id="thing" />)");
 
-  // And a city, Athens;
-  s.cities().createCity("Athens", {}, {});
+  GIVEN("a player is king of Athens") {
+    server->cities().createCity("Athens", {}, {});
+    server->cities().addPlayerToCity(*user, "Athens");
+    (*server)->makePlayerAKing(*user);
 
-  // And its king, Alice;
-  auto c = TestClient::WithUsernameAndData("Alice", "basic_rock");
-  s.waitForUsers(1);
-  auto &alice = s.getFirstUser();
-  s.cities().addPlayerToCity(alice, "Athens");
-  s->makePlayerAKing(alice);
+    AND_GIVEN("Athens owns a thing") {
+      auto &thing = server->addObject("thing");
+      thing.permissions.setCityOwner("Athens");
 
-  // And a rock, owned by Athens
-  s.addObject("rock");
-  auto &rock = s.getFirstObject();
-  rock.permissions.setCityOwner("Athens");
+      WHEN("the player tries to give it to himself") {
+        client->sendMessage(CL_GIVE_OBJECT,
+                            makeArgs(thing.serial(), user->name()));
 
-  // When Alice tries to grant the rock to herself
-  c.sendMessage(CL_GIVE_OBJECT, makeArgs(rock.serial(), "Alice"));
-
-  // Then the rock is owned by Alice
-  WAIT_UNTIL(rock.permissions.isOwnedByPlayer("Alice"));
+        THEN("it is owned by him") {
+          WAIT_UNTIL(thing.permissions.isOwnedByPlayer(user->name()));
+        }
+      }
+    }
+  }
 }
 
-TEST_CASE("Non kings can't grant objects", "[permissions][city][gifting]") {
+TEST_CASE("Non kings can't grant objects",
+          "[permissions][city][giving-objects]") {
   // Given a Rock object type;
   auto s = TestServer::WithData("basic_rock");
 
@@ -314,7 +314,8 @@ TEST_CASE("Non kings can't grant objects", "[permissions][city][gifting]") {
   CHECK(rock.permissions.isOwnedByCity("Athens"));
 }
 
-TEST_CASE("Unowned objects cannot be granted", "[permissions][gifting]") {
+TEST_CASE("Unowned objects cannot be granted",
+          "[permissions][giving-objects]") {
   // Given a Rock object type;
   auto s = TestServer::WithData("basic_rock");
 
@@ -343,7 +344,7 @@ TEST_CASE("Unowned objects cannot be granted", "[permissions][gifting]") {
 }
 
 TEST_CASE("Only objects owned by your city can be granted",
-          "[permissions][city][gifting]") {
+          "[permissions][city][giving-objects]") {
   // Given a Rock object type;
   auto s = TestServer::WithData("basic_rock");
 
@@ -372,6 +373,9 @@ TEST_CASE("Only objects owned by your city can be granted",
   // And the rock is still owned by the city
   CHECK(rock.permissions.isOwnedByCity("Sparta"));
 }
+
+TEST_CASE("A player can gift his own objects",
+          "[giving-objects][permissions]") {}
 
 TEST_CASE("New object permissions are propagated to clients", "[permissions]") {
   GIVEN("an unowned Rock object") {
