@@ -1,4 +1,5 @@
 #include "TestClient.h"
+#include "TestFixtures.h"
 #include "TestServer.h"
 #include "testing.h"
 
@@ -78,68 +79,47 @@ TEST_CASE("When one user approaches another, he finds out about him",
   CHECK(alice.otherUsers().size() == 1);
 }
 
-TEST_CASE("When a player moves away from his object, he is still aware of it",
-          "[.slow][permissions]") {
-  // Given a server with signpost objects;
-  TestServer s = TestServer::WithData("signpost");
+TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+                 "When a player moves away from his [city's] object, he is "
+                 "still aware of it",
+                 "[city][permissions]") {
+  useData("signpost");
 
-  // And a signpost near the user spawn point that belongs to Alice;
-  s.addObject("signpost", {10, 15}, "Alice");
+  GIVEN("the player is in a city") {
+    server->cities().createCity("Athens", {}, {});
+    server->cities().addPlayerToCity(*user, "Athens");
 
-  // And Alice is logged in
-  TestClient c = TestClient::WithUsernameAndData("Alice", "signpost");
-  s.waitForUsers(1);
-  WAIT_UNTIL(c.objects().size() == 1);
+    AND_GIVEN("signposts near the user that belong to himself and his city") {
+      auto &personalSignpost = server->addObject("signpost", {10, 15});
+      auto &citySignpost = server->addObject("signpost", {10, 5});
+      personalSignpost.permissions.setPlayerOwner(user->name());
+      citySignpost.permissions.setCityOwner("Athens");
 
-  // When Alice moves out of range of the signpost
-  auto startTime = SDL_GetTicks();
-  while (c->character().location().x < 1000) {
-    if (SDL_GetTicks() - startTime > 100000) break;
+      AND_GIVEN("he is aware of them") {
+        WAIT_UNTIL(client->objects().size() == 2);
 
-    c.sendMessage(CL_MOVE_TO, makeArgs(1010, 10));
+        WHEN("he moves out of range of the signposts") {
+          const auto startTime = SDL_GetTicks();
+          while (user->location().x < 1000) {
+            if (SDL_GetTicks() - startTime > 100000) {
+              break;
+            }  // 100s timeout
+            if (client->objects().size() < 2) {
+              break;
+            }  // fail early
 
-    // Then she is still aware of it
-    if (c.objects().size() == 0) break;
-    SDL_Delay(5);
+            client->sendMessage(CL_MOVE_TO, makeArgs(1010, 10));
+            SDL_Delay(5);
+          }
+
+          THEN("he is still aware of them") {
+            REPEAT_FOR_MS(100);
+            CHECK(client->objects().size() == 2);
+          }
+        }
+      }
+    }
   }
-  CHECK(c.objects().size() == 1);
-}
-
-TEST_CASE(
-    "When a player moves away from his city's object, he is still aware of it",
-    "[.slow][city][permissions]") {
-  // Given a server with signpost objects;
-  TestServer s = TestServer::WithData("signpost");
-
-  // And a city named Athens
-  s.cities().createCity("Athens", {}, {});
-
-  // And a signpost near the user spawn point that belongs to Athens;
-  s.addObject("signpost", {10, 15});
-  Object &signpost = s.getFirstObject();
-  signpost.permissions.setCityOwner("Athens");
-
-  // And Alice is logged in
-  TestClient c = TestClient::WithUsernameAndData("Alice", "signpost");
-
-  // And Alice is a member of Athens
-  s.waitForUsers(1);
-  User &user = s.getFirstUser();
-  s.cities().addPlayerToCity(user, "Athens");
-
-  // When Alice moves out of range of the signpost
-  WAIT_UNTIL(c.objects().size() == 1);
-  auto startTime = SDL_GetTicks();
-  while (c->character().location().x < 1000) {
-    if (SDL_GetTicks() - startTime > 100000) break;
-
-    c.sendMessage(CL_MOVE_TO, makeArgs(1010, 10));
-
-    // Then she is still aware of it
-    if (c.objects().size() == 0) break;
-    SDL_Delay(5);
-  }
-  CHECK(c.objects().size() == 1);
 }
 
 TEST_CASE("New citizens find out about city objects", "[city][permissions]") {
