@@ -6,24 +6,16 @@ OutlinedLabel::OutlinedLabel(const ScreenRect &rect, const std::string &text,
                              Element::Justification justificationV)
     : Element(rect) {
   const auto w = rect.w - 2, h = rect.h - 2;
-  _labels.push_back(
-      new Label({0, 0, w, h}, text, justificationH, justificationV));
-  _labels.push_back(
-      new Label({1, 0, w, h}, text, justificationH, justificationV));
-  _labels.push_back(
-      new Label({2, 0, w, h}, text, justificationH, justificationV));
-  _labels.push_back(
-      new Label({2, 1, w, h}, text, justificationH, justificationV));
-  _labels.push_back(
-      new Label({2, 2, w, h}, text, justificationH, justificationV));
-  _labels.push_back(
-      new Label({1, 2, w, h}, text, justificationH, justificationV));
-  _labels.push_back(
-      new Label({0, 2, w, h}, text, justificationH, justificationV));
-  _labels.push_back(
-      new Label({0, 1, w, h}, text, justificationH, justificationV));
 
-  for (auto *outlineLabel : _labels) outlineLabel->setColor(Color::UI_OUTLINE);
+  for (auto x = 0; x <= 2; ++x)
+    for (auto y = 0; y <= 2; ++y) {
+      if (x == 1 && y == 1) continue;  // centre will be handled later
+
+      const auto outline =
+          new Label({x, y, w, h}, text, justificationH, justificationV);
+      outline->setColor(Color::UI_OUTLINE);
+      _labels.push_back(outline);
+    }
 
   _mainText = new Label({1, 1, w, h}, text, justificationH, justificationV);
   _labels.push_back(_mainText);  // Must be last, so that it's drawn in front
