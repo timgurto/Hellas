@@ -298,36 +298,24 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Kings can give objects to citizens",
         }
       }
     }
+
+    AND_GIVEN("an unowned thing") {
+      auto &thing = server->addObject("thing");
+
+      WHEN("the player tries to give it to himself") {
+        client->sendMessage(CL_GIVE_OBJECT,
+                            makeArgs(thing.serial(), user->name()));
+
+        THEN("he receives a warning message") {
+          client->waitForMessage(WARNING_NO_PERMISSION);
+        }
+
+        THEN("it's still unowned") {
+          CHECK_FALSE(thing.permissions.hasOwner());
+        }
+      }
+    }
   }
-}
-
-TEST_CASE("Unowned objects cannot be granted",
-          "[permissions][giving-objects]") {
-  // Given a Rock object type;
-  auto s = TestServer::WithData("basic_rock");
-
-  // And a city, Athens;
-  s.cities().createCity("Athens", {}, {});
-
-  // And its king, Alice;
-  auto c = TestClient::WithUsernameAndData("Alice", "basic_rock");
-  s.waitForUsers(1);
-  auto &alice = s.getFirstUser();
-  s.cities().addPlayerToCity(alice, "Athens");
-  s->makePlayerAKing(alice);
-
-  // And an unowned rock
-  s.addObject("rock");
-
-  // When Alice tries to grant the rock to herself
-  auto &rock = s.getFirstObject();
-  c.sendMessage(CL_GIVE_OBJECT, makeArgs(rock.serial(), "Alice"));
-
-  // Then Alice receives an error message;
-  c.waitForMessage(WARNING_NO_PERMISSION);
-
-  // And the rock is still unowned
-  CHECK_FALSE(rock.permissions.hasOwner());
 }
 
 TEST_CASE("Only objects owned by your city can be granted",
