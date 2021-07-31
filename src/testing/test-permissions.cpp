@@ -263,6 +263,20 @@ TEST_CASE("New ownership is reflected in the object-owner index",
 TEST_CASE_METHOD(TwoClientsWithData, "Giving objects", "[permissions][city]") {
   useData(R"(<objectType id="thing" />)");
 
+  SECTION("Standard user -> user") {
+    GIVEN("Alice owns a thing") {
+      const auto &thing = server->addObject("thing", {}, "Alice");
+
+      WHEN("she gives it to Bob") {
+        cAlice->sendMessage(CL_GIVE_OBJECT, makeArgs(thing.serial(), "Bob"));
+
+        THEN("it is owned by Bob") {
+          WAIT_UNTIL(thing.permissions.isOwnedByPlayer("Bob"));
+        }
+      }
+    }
+  }
+
   SECTION("Unowned objects can't be given") {
     AND_GIVEN("an unowned thing") {
       auto &thing = server->addObject("thing");
@@ -346,9 +360,6 @@ TEST_CASE_METHOD(TwoClientsWithData, "Giving objects", "[permissions][city]") {
     }
   }
 }
-
-TEST_CASE("A player can gift his own objects",
-          "[giving-objects][permissions]") {}
 
 TEST_CASE("New object permissions are propagated to clients", "[permissions]") {
   GIVEN("an unowned Rock object") {

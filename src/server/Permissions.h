@@ -40,7 +40,11 @@ class Permissions : public EntityComponent {
   const Owner &owner() const;
   const User *getPlayerOwner() const;
 
-  enum AccessRules { NORMAL_ACCESS, FELLOW_CITIZENS_CAN_USE_PERSONAL_OBJECTS };
+  enum AccessRules {
+    NORMAL_ACCESS,
+    FELLOW_CITIZENS_CAN_USE_PERSONAL_OBJECTS,
+    ONLY_KINGS_CAN_USE_CITY_OBJECTS
+  };
   bool doesUserHaveAccess(const std::string &username,
                           AccessRules accessRules = NORMAL_ACCESS) const;
   bool doesNPCHaveAccess(const NPC &rhs) const;

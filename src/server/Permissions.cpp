@@ -104,7 +104,12 @@ bool Permissions::doesUserHaveAccess(const std::string &username,
   if (playerCity.empty()) return false;
 
   // Owned by player's city
-  if (_owner == Owner{Owner::CITY, playerCity}) return true;
+  if (_owner == Owner{Owner::CITY, playerCity}) {
+    if (accessRules == ONLY_KINGS_CAN_USE_CITY_OBJECTS)
+      return Server::instance()._kings.isPlayerAKing(username);
+    else
+      return true;
+  }
 
   // Fellow citizens (e.g., for altars)
   if (accessRules == FELLOW_CITIZENS_CAN_USE_PERSONAL_OBJECTS) {

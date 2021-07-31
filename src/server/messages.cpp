@@ -655,15 +655,11 @@ HANDLE_MESSAGE(CL_GIVE_OBJECT) {
 
   auto *obj = _entities.find<Object>(serial);
   if (!obj) RETURN_WITH(WARNING_DOESNT_EXIST)
-  auto playerCity = cities().getPlayerCity(user.name());
-  if (!obj->permissions.isOwnedByCity(playerCity))
-    RETURN_WITH(WARNING_NO_PERMISSION)
-  if (!_kings.isPlayerAKing(user.name())) RETURN_WITH(ERROR_NOT_A_KING)
+
+  const auto allowedToGive = obj->permissions.doesUserHaveAccess(
+      user.name(), Permissions::ONLY_KINGS_CAN_USE_CITY_OBJECTS);
 
   receiverName = toPascal(receiverName);
-  if (!cities().isPlayerInCity(receiverName, playerCity))
-    RETURN_WITH(WARNING_NOT_A_CITIZEN)
-
   obj->permissions.setPlayerOwner(receiverName);
 }
 
