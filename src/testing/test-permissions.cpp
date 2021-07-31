@@ -260,7 +260,7 @@ TEST_CASE("New ownership is reflected in the object-owner index",
   CHECK(s.objectsByOwner().getObjectsWithSpecificOwner(ownerBob).size() == 1);
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Objects can be given to citizens",
+TEST_CASE_METHOD(ServerAndClientWithData, "Kings can give objects to citizens",
                  "[permissions][city][giving-objects]") {
   useData(R"(<objectType id="thing" />)");
 
@@ -271,6 +271,19 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Objects can be given to citizens",
     AND_GIVEN("Athens owns a thing") {
       auto &thing = server->addObject("thing");
       thing.permissions.setCityOwner("Athens");
+
+      WHEN("the player tries to give it to himself") {
+        client->sendMessage(CL_GIVE_OBJECT,
+                            makeArgs(thing.serial(), user->name()));
+
+        THEN("he receives an error message") {
+          client->waitForMessage(ERROR_NOT_A_KING);
+        }
+
+        THEN("it's still owned by the city") {
+          CHECK(thing.permissions.isOwnedByCity("Athens"));
+        }
+      }
 
       AND_GIVEN("the player is king of Athens") {
         (*server)->makePlayerAKing(*user);
@@ -286,35 +299,6 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Objects can be given to citizens",
       }
     }
   }
-}
-
-TEST_CASE("Non kings can't grant objects",
-          "[permissions][city][giving-objects]") {
-  // Given a Rock object type;
-  auto s = TestServer::WithData("basic_rock");
-
-  // And a city, Athens;
-  s.cities().createCity("Athens", {}, {});
-
-  // And its citizen, Alice;
-  auto c = TestClient::WithUsernameAndData("Alice", "basic_rock");
-  s.waitForUsers(1);
-  auto &alice = s.getFirstUser();
-  s.cities().addPlayerToCity(alice, "Athens");
-
-  // And a rock, owned by Athens
-  s.addObject("rock");
-  auto &rock = s.getFirstObject();
-  rock.permissions.setCityOwner("Athens");
-
-  // When Alice tries to grant the rock to herself
-  c.sendMessage(CL_GIVE_OBJECT, makeArgs(rock.serial(), "Alice"));
-
-  // Then Alice receives an error message;
-  c.waitForMessage(ERROR_NOT_A_KING);
-
-  // And the rock is still owned by the city
-  CHECK(rock.permissions.isOwnedByCity("Athens"));
 }
 
 TEST_CASE("Unowned objects cannot be granted",
