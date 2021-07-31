@@ -260,20 +260,18 @@ TEST_CASE("New ownership is reflected in the object-owner index",
   CHECK(s.objectsByOwner().getObjectsWithSpecificOwner(ownerBob).size() == 1);
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Giving objects",
-                 "[permissions][city]") {
+TEST_CASE_METHOD(TwoClientsWithData, "Giving objects", "[permissions][city]") {
   useData(R"(<objectType id="thing" />)");
 
   SECTION("Unowned objects can't be given") {
     AND_GIVEN("an unowned thing") {
       auto &thing = server->addObject("thing");
 
-      WHEN("the player tries to give it to himself") {
-        client->sendMessage(CL_GIVE_OBJECT,
-                            makeArgs(thing.serial(), user->name()));
+      WHEN("Alice tries to give it to herself") {
+        cAlice->sendMessage(CL_GIVE_OBJECT, makeArgs(thing.serial(), "Alice"));
 
-        THEN("he receives a warning message") {
-          client->waitForMessage(WARNING_NO_PERMISSION);
+        THEN("she receives a warning message") {
+          cAlice->waitForMessage(WARNING_NO_PERMISSION);
         }
 
         THEN("it's still unowned") {
@@ -284,34 +282,34 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Giving objects",
   }
 
   SECTION("Kings can give city objects") {
-    AND_GIVEN("the player is a citizen of Athens") {
+    AND_GIVEN("Alice is a citizen of Athens") {
       server->cities().createCity("Athens", {}, {});
-      server->cities().addPlayerToCity(*user, "Athens");
+      server->cities().addPlayerToCity(*uAlice, "Athens");
 
       AND_GIVEN("Athens owns a thing") {
         auto &thing = server->addObject("thing");
         thing.permissions.setCityOwner("Athens");
 
-        AND_GIVEN("the player is king of Athens") {
-          (*server)->makePlayerAKing(*user);
+        AND_GIVEN("Alice is king of Athens") {
+          (*server)->makePlayerAKing(*uAlice);
 
-          WHEN("the player tries to give it to himself") {
-            client->sendMessage(CL_GIVE_OBJECT,
-                                makeArgs(thing.serial(), user->name()));
+          WHEN("she tries to give it to herself") {
+            cAlice->sendMessage(CL_GIVE_OBJECT,
+                                makeArgs(thing.serial(), "Alice"));
 
-            THEN("it is owned by him") {
-              WAIT_UNTIL(thing.permissions.isOwnedByPlayer(user->name()));
+            THEN("it is owned by her") {
+              WAIT_UNTIL(thing.permissions.isOwnedByPlayer("Alice"));
             }
           }
         }
 
         SECTION("Non-kings can't give city objects") {
-          WHEN("the player tries to give it to himself") {
-            client->sendMessage(CL_GIVE_OBJECT,
-                                makeArgs(thing.serial(), user->name()));
+          WHEN("Alice tries to give it to herself") {
+            cAlice->sendMessage(CL_GIVE_OBJECT,
+                                makeArgs(thing.serial(), "Alice"));
 
-            THEN("he receives an error message") {
-              client->waitForMessage(ERROR_NOT_A_KING);
+            THEN("she receives an error message") {
+              cAlice->waitForMessage(ERROR_NOT_A_KING);
             }
 
             THEN("it's still owned by the city") {
@@ -327,15 +325,15 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Giving objects",
           auto &thing = server->addObject("thing");
           thing.permissions.setCityOwner("Sparta");
 
-          AND_GIVEN("the player is king of Athens") {
-            (*server)->makePlayerAKing(*user);
+          AND_GIVEN("Alice is king of Athens") {
+            (*server)->makePlayerAKing(*uAlice);
 
-            WHEN("the player tries to give it to himself") {
-              client->sendMessage(CL_GIVE_OBJECT,
-                                  makeArgs(thing.serial(), user->name()));
+            WHEN("she tries to give it to himself") {
+              cAlice->sendMessage(CL_GIVE_OBJECT,
+                                  makeArgs(thing.serial(), "Alice"));
 
               THEN("he receives a warning message") {
-                client->waitForMessage(WARNING_NO_PERMISSION);
+                cAlice->waitForMessage(WARNING_NO_PERMISSION);
               }
 
               THEN("it's still owned by Sparta") {
