@@ -756,7 +756,9 @@ HANDLE_MESSAGE(CL_PERFORM_OBJECT_ACTION) {
   if (!serial.isEntity()) RETURN_WITH(WARNING_DOESNT_EXIST)
 
   auto *obj = _entities.find<Object>(serial);
-  if (!obj->permissions.doesUserHaveAccess(user.name(), true))
+  // TODO: Make this open to fellow citizens for altars, but nothing else
+  if (!obj->permissions.doesUserHaveAccess(
+          user.name(), Permissions::FELLOW_CITIZENS_CAN_USE_PERSONAL_OBJECTS))
     RETURN_WITH(WARNING_NO_PERMISSION)
 
   const auto &objType = obj->objType();

@@ -91,7 +91,7 @@ const User *Permissions::getPlayerOwner() const {
 }
 
 bool Permissions::doesUserHaveAccess(const std::string &username,
-                                     bool allowFellowCitizens) const {
+                                     AccessRules accessRules) const {
   // Unowned
   if (_owner.type == Owner::ALL_HAVE_ACCESS) return true;
   if (_owner.type == Owner::NO_ACCESS) return false;
@@ -107,11 +107,12 @@ bool Permissions::doesUserHaveAccess(const std::string &username,
   if (_owner == Owner{Owner::CITY, playerCity}) return true;
 
   // Fellow citizens (e.g., for altars)
-  if (!allowFellowCitizens) return false;
-  if (_owner.type != Owner::PLAYER) return false;
-  auto ownerCity = cities.getPlayerCity(_owner.name);
-  if (ownerCity.empty()) return false;
-  return playerCity == ownerCity;
+  if (accessRules == FELLOW_CITIZENS_CAN_USE_PERSONAL_OBJECTS) {
+    if (_owner.type != Owner::PLAYER) return false;
+    auto ownerCity = cities.getPlayerCity(_owner.name);
+    if (ownerCity.empty()) return false;
+    return playerCity == ownerCity;
+  }
 }
 
 bool Permissions::doesNPCHaveAccess(const NPC &rhs) const {

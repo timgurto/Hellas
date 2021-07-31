@@ -40,8 +40,9 @@ class Permissions : public EntityComponent {
   const Owner &owner() const;
   const User *getPlayerOwner() const;
 
+  enum AccessRules { NORMAL_ACCESS, FELLOW_CITIZENS_CAN_USE_PERSONAL_OBJECTS };
   bool doesUserHaveAccess(const std::string &username,
-                          bool allowFellowCitizens = false) const;
+                          AccessRules accessRules = NORMAL_ACCESS) const;
   bool doesNPCHaveAccess(const NPC &rhs) const;
   bool canUserDemolish(const std::string &username) const;
 
