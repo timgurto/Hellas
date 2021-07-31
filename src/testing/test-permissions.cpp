@@ -272,19 +272,6 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Kings can give objects to citizens",
       auto &thing = server->addObject("thing");
       thing.permissions.setCityOwner("Athens");
 
-      WHEN("the player tries to give it to himself") {
-        client->sendMessage(CL_GIVE_OBJECT,
-                            makeArgs(thing.serial(), user->name()));
-
-        THEN("he receives an error message") {
-          client->waitForMessage(ERROR_NOT_A_KING);
-        }
-
-        THEN("it's still owned by the city") {
-          CHECK(thing.permissions.isOwnedByCity("Athens"));
-        }
-      }
-
       AND_GIVEN("the player is king of Athens") {
         (*server)->makePlayerAKing(*user);
 
@@ -297,21 +284,38 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Kings can give objects to citizens",
           }
         }
       }
+
+      SECTION("Non-kings can't give city objects") {
+        WHEN("the player tries to give it to himself") {
+          client->sendMessage(CL_GIVE_OBJECT,
+                              makeArgs(thing.serial(), user->name()));
+
+          THEN("he receives an error message") {
+            client->waitForMessage(ERROR_NOT_A_KING);
+          }
+
+          THEN("it's still owned by the city") {
+            CHECK(thing.permissions.isOwnedByCity("Athens"));
+          }
+        }
+      }
     }
 
-    AND_GIVEN("an unowned thing") {
-      auto &thing = server->addObject("thing");
+    SECTION("Unowned objects can't be given") {
+      AND_GIVEN("an unowned thing") {
+        auto &thing = server->addObject("thing");
 
-      WHEN("the player tries to give it to himself") {
-        client->sendMessage(CL_GIVE_OBJECT,
-                            makeArgs(thing.serial(), user->name()));
+        WHEN("the player tries to give it to himself") {
+          client->sendMessage(CL_GIVE_OBJECT,
+                              makeArgs(thing.serial(), user->name()));
 
-        THEN("he receives a warning message") {
-          client->waitForMessage(WARNING_NO_PERMISSION);
-        }
+          THEN("he receives a warning message") {
+            client->waitForMessage(WARNING_NO_PERMISSION);
+          }
 
-        THEN("it's still unowned") {
-          CHECK_FALSE(thing.permissions.hasOwner());
+          THEN("it's still unowned") {
+            CHECK_FALSE(thing.permissions.hasOwner());
+          }
         }
       }
     }
