@@ -72,7 +72,7 @@ void Client::initUI() {
   _instructionsLabel =
       new OutlinedLabel({0, INSTRUCTIONS_Y, SCREEN_X, Element::TEXT_HEIGHT + 2},
                         {}, Element::CENTER_JUSTIFIED);
-  _instructionsLabel->setColor(Color::UI_TEXT);
+  _instructionsLabel->setColor(Color::UI_FEEDBACK);
   _instructionsLabel->id("Centre-screen Instructions");
   _instructionsLabel->ignoreMouseEvents();
   addUI(_instructionsLabel);

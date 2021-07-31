@@ -82,6 +82,7 @@ class Color {
 
   static const Color UI_OUTLINE;
   static const Color UI_OUTLINE_HIGHLIGHT;
+  static const Color UI_FEEDBACK;  // Instructions; server messages
   static const Color UI_TEXT;
   static const Color UI_DISABLED;
   static const Color UI_PROGRESS_BAR;

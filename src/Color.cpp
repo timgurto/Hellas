@@ -77,7 +77,8 @@ const Color Color::DEBUFF = RED * 0.9 + WHITE * 0.1;
 
 const Color Color::UI_OUTLINE = BLACK;
 const Color Color::UI_OUTLINE_HIGHLIGHT = WHITE;
-const Color Color::UI_TEXT = YELLOW * 0.9;
+const Color Color::UI_FEEDBACK = YELLOW * 0.9;
+const Color Color::UI_TEXT = WHITE;
 const Color Color::UI_DISABLED = WHITE * 0.6;
 const Color Color::UI_PROGRESS_BAR = WINDOW_LIGHT;
 

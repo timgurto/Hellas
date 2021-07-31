@@ -436,7 +436,7 @@ class Client : public TextEntryManager {
   List *_chatLog;
   TextBox *_chatTextBox;
   void addChatMessage(const std::string &msg,
-                      const Color &color = Color::UI_TEXT);
+                      const Color &color = Color::UI_FEEDBACK);
   std::string _lastWhisperer;  // The username of the last person to whisper,
                                // for fast replying.
 
