@@ -393,7 +393,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       AND_GIVEN("he owns a carton") {
         auto &carton = server->addObject("carton", {10, 10}, user->name());
 
-        AND_GIVEN("the carton contains a [soulbound] egg") {
+        AND_GIVEN("the carton contains a soulbound egg") {
           const auto *egg = &server->getFirstItem();
           carton.container().addItems(egg);
 
@@ -408,6 +408,41 @@ TEST_CASE_METHOD(ServerAndClientWithData,
             THEN("he receives a warning") {
               CHECK(client->waitForMessage(WARNING_CONTAINS_BOUND_ITEM));
             }
+          }
+        }
+      }
+    }
+  }
+}
+
+TEST_CASE_METHOD(TwoClientsWithData,
+                 "Containers with soulbound items can't be given away",
+                 "[soulbound][containers][permissions]") {
+  GIVEN("carton containers and BoP egg items") {
+    useData(R"(
+      <item id="egg" bind="pickup" />
+      <objectType id="carton">
+        <container slots="1"/>
+      </objectType>
+    )");
+
+    AND_GIVEN("Alice owns a carton") {
+      auto &carton = server->addObject("carton", {10, 10}, "Alice");
+
+      AND_GIVEN("the carton contains a soulbound egg") {
+        const auto *egg = &server->getFirstItem();
+        carton.container().addItems(egg);
+
+        WHEN("she tries to give the carton to Bob") {
+          cAlice->sendMessage(CL_GIVE_OBJECT, makeArgs(carton.serial(), "Bob"));
+
+          THEN("it still belongs to her") {
+            REPEAT_FOR_MS(100);
+            CHECK(carton.permissions.isOwnedByPlayer("Alice"));
+          }
+
+          THEN("she receives a warning") {
+            CHECK(cAlice->waitForMessage(WARNING_CONTAINS_BOUND_ITEM));
           }
         }
       }

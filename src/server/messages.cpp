@@ -659,6 +659,9 @@ HANDLE_MESSAGE(CL_GIVE_OBJECT) {
   const auto allowedToGive = obj->permissions.doesUserHaveAccess(
       user.name(), Permissions::ONLY_KINGS_CAN_USE_CITY_OBJECTS);
 
+  if (obj->containsAnySoulboundItems())
+    RETURN_WITH(WARNING_CONTAINS_BOUND_ITEM);
+
   receiverName = toPascal(receiverName);
   obj->permissions.setPlayerOwner(receiverName);
 }
