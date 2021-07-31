@@ -40,15 +40,24 @@ class Permissions : public EntityComponent {
   const Owner &owner() const;
   const User *getPlayerOwner() const;
 
-  enum AccessRules {
-    NORMAL_ACCESS,
-    FELLOW_CITIZENS_CAN_USE_PERSONAL_OBJECTS,
-    ONLY_KINGS_CAN_USE_CITY_OBJECTS
-  };
-  bool doesUserHaveAccess(const std::string &username,
-                          AccessRules accessRules = NORMAL_ACCESS) const;
-  bool doesNPCHaveAccess(const NPC &rhs) const;
-  bool canUserDemolish(const std::string &username) const;
+ private:
+  bool doesUserHaveNormalAccess(const std::string &username) const;
+
+ public:
+  bool canUserGiveAway(std::string username) const;
+  bool canUserPerformAction(std::string username) const;
+  bool canUserAccessContainer(std::string username) const;
+  bool canUserLoot(std::string username) const;
+  bool canUserDemolish(std::string username) const;
+  bool canUserRepair(std::string username) const;
+  bool canUserPickUp(std::string username) const;
+  bool canUserSetMerchantSlots(std::string username) const;
+  bool canUserMount(std::string username) const;
+  bool canUserOverlap(std::string username) const;
+  bool canUserUseAsTool(std::string username) const;
+  bool canUserGather(std::string username) const;
+  bool canUserGetBuffs(std::string username) const;
+  bool canNPCOverlap(const NPC &rhs) const;
 
   void alertNearbyUsersToNewOwner() const;
 

@@ -90,44 +90,71 @@ const User *Permissions::getPlayerOwner() const {
   return server.getUserByName(_owner.name);
 }
 
-bool Permissions::doesUserHaveAccess(const std::string &username,
-                                     AccessRules accessRules) const {
+bool Permissions::doesUserHaveNormalAccess(const std::string &username) const {
   // Unowned
   if (_owner.type == Owner::ALL_HAVE_ACCESS) return true;
   if (_owner.type == Owner::NO_ACCESS) return false;
 
   // Owned by player
-  if (_owner == Owner{Owner::PLAYER, username}) return true;
+  if (isOwnedByPlayer(username)) return true;
 
   const Cities &cities = Server::instance()._cities;
   const std::string &playerCity = cities.getPlayerCity(username);
   if (playerCity.empty()) return false;
 
   // Owned by player's city
-  if (_owner == Owner{Owner::CITY, playerCity}) {
-    if (accessRules == ONLY_KINGS_CAN_USE_CITY_OBJECTS)
-      return Server::instance()._kings.isPlayerAKing(username);
-    else
-      return true;
-  }
+  return isOwnedByCity(playerCity);
+}
+
+bool Permissions::canUserGiveAway(std::string username) const {
+  if (_owner.type == Owner::ALL_HAVE_ACCESS) return false;
+  if (_owner.type == Owner::NO_ACCESS) return false;
+
+  // Owned by player
+  if (isOwnedByPlayer(username)) return true;
+
+  const Cities &cities = Server::instance()._cities;
+  const std::string &playerCity = cities.getPlayerCity(username);
+  if (playerCity.empty()) return false;
+
+  // Owned by player's city
+  if (isOwnedByCity(playerCity))
+    return Server::instance()._kings.isPlayerAKing(username);
+
+  return false;
+}
+
+bool Permissions::canUserPerformAction(std::string username) const {
+  // Unowned
+  if (_owner.type == Owner::ALL_HAVE_ACCESS) return true;
+  if (_owner.type == Owner::NO_ACCESS) return false;
+
+  // Owned by player
+  if (isOwnedByPlayer(username)) return true;
+
+  const Cities &cities = Server::instance()._cities;
+  const std::string &playerCity = cities.getPlayerCity(username);
+  if (playerCity.empty()) return false;
+
+  // Owned by player's city
+  if (isOwnedByCity(playerCity)) return true;
 
   // Fellow citizens (e.g., for altars)
-  if (accessRules == FELLOW_CITIZENS_CAN_USE_PERSONAL_OBJECTS) {
-    if (_owner.type != Owner::PLAYER) return false;
-    auto ownerCity = cities.getPlayerCity(_owner.name);
-    if (ownerCity.empty()) return false;
-    return playerCity == ownerCity;
-  }
+  if (_owner.type != Owner::PLAYER) return false;  // Some other city
+  auto ownerCity = cities.getPlayerCity(_owner.name);
+  if (ownerCity.empty()) return false;
+  return playerCity == ownerCity;
 }
 
-bool Permissions::doesNPCHaveAccess(const NPC &rhs) const {
-  if (!rhs.permissions.hasOwner()) return false;
-  // Assume a player, not a city, as pets can't be owned by cities
-  const auto &ownerPlayerName = rhs.permissions.owner().name;
-  return doesUserHaveAccess(ownerPlayerName);
+bool Permissions::canUserAccessContainer(std::string username) const {
+  return doesUserHaveNormalAccess(username);
 }
 
-bool Permissions::canUserDemolish(const std::string &username) const {
+bool Permissions::canUserLoot(std::string username) const {
+  return doesUserHaveNormalAccess(username);
+}
+
+bool Permissions::canUserDemolish(std::string username) const {
   // Excludes all-access; more strict than doesUserHaveAccess().
 
   // Owned by player
@@ -139,6 +166,45 @@ bool Permissions::canUserDemolish(const std::string &username) const {
   if (_owner == Owner{Owner::CITY, cities.getPlayerCity(username)}) return true;
 
   return false;
+}
+
+bool Permissions::canUserRepair(std::string username) const {
+  return doesUserHaveNormalAccess(username);
+}
+
+bool Permissions::canUserPickUp(std::string username) const {
+  return doesUserHaveNormalAccess(username);
+}
+
+bool Permissions::canUserSetMerchantSlots(std::string username) const {
+  return doesUserHaveNormalAccess(username);
+}
+
+bool Permissions::canUserMount(std::string username) const {
+  return doesUserHaveNormalAccess(username);
+}
+
+bool Permissions::canUserOverlap(std::string username) const {
+  return doesUserHaveNormalAccess(username);
+}
+
+bool Permissions::canUserUseAsTool(std::string username) const {
+  return doesUserHaveNormalAccess(username);
+}
+
+bool Permissions::canUserGather(std::string username) const {
+  return doesUserHaveNormalAccess(username);
+}
+
+bool Permissions::canUserGetBuffs(std::string username) const {
+  return doesUserHaveNormalAccess(username);
+}
+
+bool Permissions::canNPCOverlap(const NPC &rhs) const {
+  if (!rhs.permissions.hasOwner()) return false;
+  // Assume a player, not a city, as pets can't be owned by cities
+  const auto &ownerPlayerName = rhs.permissions.owner().name;
+  return canUserOverlap(ownerPlayerName);
 }
 
 void Permissions::alertNearbyUsersToNewOwner() const {

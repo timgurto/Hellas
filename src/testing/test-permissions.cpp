@@ -289,6 +289,7 @@ TEST_CASE_METHOD(TwoClientsWithData, "Giving objects", "[permissions][city]") {
         }
 
         THEN("it's still unowned") {
+          REPEAT_FOR_MS(100);
           CHECK_FALSE(thing.permissions.hasOwner());
         }
       }
@@ -327,6 +328,7 @@ TEST_CASE_METHOD(TwoClientsWithData, "Giving objects", "[permissions][city]") {
             }
 
             THEN("it's still owned by the city") {
+              REPEAT_FOR_MS(100);
               CHECK(thing.permissions.isOwnedByCity("Athens"));
             }
           }
@@ -351,6 +353,7 @@ TEST_CASE_METHOD(TwoClientsWithData, "Giving objects", "[permissions][city]") {
               }
 
               THEN("it's still owned by Sparta") {
+                REPEAT_FOR_MS(100);
                 CHECK(thing.permissions.isOwnedByCity("Sparta"));
               }
             }
@@ -389,7 +392,7 @@ TEST_CASE("No-access objects", "[permissions]") {
     const auto &house = s.addObject("house", {10, 15}, noPermissions);
 
     THEN("a user has no access") {
-      CHECK_FALSE(house.permissions.doesUserHaveAccess("noname"));
+      CHECK_FALSE(house.permissions.canUserAccessContainer("noname"));
     }
   }
 }

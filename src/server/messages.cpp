@@ -431,7 +431,7 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
     // Remove from object requirements
     to.object->remainingMaterials().remove(materialType, qtyToTake);
     for (const User *otherUser : findUsersInArea(user.location()))
-      if (to.object->permissions.doesUserHaveAccess(otherUser->name()))
+      if (to.object->permissions.canUserAccessContainer(otherUser->name()))
         sendConstructionMaterialsMessage(*otherUser, *to.object);
 
     // Remove items from user
@@ -590,8 +590,7 @@ HANDLE_MESSAGE(CL_TAKE_ITEM) {
   if (!pSlot) return;
   ServerItem::Slot &containerSlot = *pSlot;
 
-  auto userHasPermissionToLoot =
-      pEnt->permissions.doesUserHaveAccess((user.name()));
+  auto userHasPermissionToLoot = pEnt->permissions.canUserLoot((user.name()));
   userHasPermissionToLoot |=
       groups->areUsersInSameGroup(user.name(), pEnt->tagger.username());
   if (!userHasPermissionToLoot) return;
@@ -656,8 +655,8 @@ HANDLE_MESSAGE(CL_GIVE_OBJECT) {
   auto *obj = _entities.find<Object>(serial);
   if (!obj) RETURN_WITH(WARNING_DOESNT_EXIST)
 
-  const auto allowedToGive = obj->permissions.doesUserHaveAccess(
-      user.name(), Permissions::ONLY_KINGS_CAN_USE_CITY_OBJECTS);
+  const auto allowedToGive = obj->permissions.canUserGiveAway(user.name());
+  if (!allowedToGive) RETURN_WITH(WARNING_NO_PERMISSION);
 
   if (obj->containsAnySoulboundItems())
     RETURN_WITH(WARNING_CONTAINS_BOUND_ITEM);
@@ -756,8 +755,7 @@ HANDLE_MESSAGE(CL_PERFORM_OBJECT_ACTION) {
 
   auto *obj = _entities.find<Object>(serial);
   // TODO: Make this open to fellow citizens for altars, but nothing else
-  if (!obj->permissions.doesUserHaveAccess(
-          user.name(), Permissions::FELLOW_CITIZENS_CAN_USE_PERSONAL_OBJECTS))
+  if (!obj->permissions.canUserPerformAction(user.name()))
     RETURN_WITH(WARNING_NO_PERMISSION)
 
   const auto &objType = obj->objType();
@@ -859,7 +857,7 @@ HANDLE_MESSAGE(CL_REPAIR_ITEM) {
 
     if (!obj) RETURN_WITH(WARNING_DOESNT_EXIST)
 
-    if (!obj->permissions.doesUserHaveAccess(user.name()))
+    if (!obj->permissions.canUserRepair(user.name()))
       RETURN_WITH(WARNING_NO_PERMISSION)
 
     auto numSlots = obj->objType().container().slots();
@@ -1232,7 +1230,7 @@ void Server::handleBufferedMessages(const Socket &client,
           if (asObject->hasContainer() && !asObject->container().isEmpty())
             BREAK_WITH(WARNING_NOT_EMPTY)
         }
-        if (!ent->permissions.doesUserHaveAccess(user->name()))
+        if (!ent->permissions.canUserGather(user->name()))
           BREAK_WITH(WARNING_NO_PERMISSION)
 
         // Tool check must be the last check, as it damages the tools.
@@ -1270,7 +1268,7 @@ void Server::handleBufferedMessages(const Socket &client,
           break;
         }
 
-        if (!obj->permissions.doesUserHaveAccess(user->name()))
+        if (!obj->permissions.canUserPickUp(user->name()))
           BREAK_WITH(WARNING_NO_PERMISSION)
         // Check that the object can be deconstructed
         if (!obj->hasDeconstruction()) BREAK_WITH(ERROR_CANNOT_DECONSTRUCT)
@@ -1345,7 +1343,7 @@ void Server::handleBufferedMessages(const Socket &client,
         Object *obj = _entities.find<Object>(serial);
         if (!isEntityInRange(client, *user, obj)) break;
         if (obj->isBeingBuilt()) BREAK_WITH(ERROR_UNDER_CONSTRUCTION)
-        if (!obj->permissions.doesUserHaveAccess(user->name()))
+        if (!obj->permissions.canUserSetMerchantSlots(user->name()))
           BREAK_WITH(WARNING_NO_PERMISSION)
         size_t slots = obj->objType().merchantSlots();
         if (slots == 0) BREAK_WITH(ERROR_NOT_MERCHANT)
@@ -1370,7 +1368,7 @@ void Server::handleBufferedMessages(const Socket &client,
         Object *obj = _entities.find<Object>(serial);
         if (!isEntityInRange(client, *user, obj)) break;
         if (obj->isBeingBuilt()) BREAK_WITH(ERROR_UNDER_CONSTRUCTION)
-        if (!obj->permissions.doesUserHaveAccess(user->name()))
+        if (!obj->permissions.canUserSetMerchantSlots(user->name()))
           BREAK_WITH(WARNING_NO_PERMISSION)
         size_t slots = obj->objType().merchantSlots();
         if (slots == 0) BREAK_WITH(ERROR_NOT_MERCHANT)
@@ -1399,7 +1397,7 @@ void Server::handleBufferedMessages(const Socket &client,
         Object *obj = _entities.find<Object>(serial);
         if (!isEntityInRange(client, *user, obj)) break;
         if (obj->isBeingBuilt()) BREAK_WITH(ERROR_UNDER_CONSTRUCTION)
-        if (!obj->permissions.doesUserHaveAccess(user->name()))
+        if (!obj->permissions.canUserMount(user->name()))
           BREAK_WITH(WARNING_NO_PERMISSION)
         if (obj->classTag() != 'v') BREAK_WITH(ERROR_NOT_VEHICLE)
         Vehicle *v = dynamic_cast<Vehicle *>(obj);

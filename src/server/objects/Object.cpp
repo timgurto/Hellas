@@ -177,7 +177,7 @@ void Object::sendInfoToClient(const User &targetUser, bool isNew) const {
   if (_loot != nullptr && !_loot->empty()) sendAllLootToTaggers();
 
   // Container
-  if (hasContainer() && permissions.doesUserHaveAccess(targetUser.name()))
+  if (hasContainer() && permissions.canUserAccessContainer(targetUser.name()))
     for (auto i = 0; i != objType().container().slots(); ++i)
       server.sendInventoryMessage(targetUser, i, *this);
 
@@ -200,7 +200,7 @@ void Object::sendInfoToClient(const User &targetUser, bool isNew) const {
 void Object::tellRelevantUsersAboutInventorySlot(size_t slot) const {
   const Server &server = Server::instance();
   for (const auto *user : server.findUsersInArea(location())) {
-    if (!permissions.doesUserHaveAccess(user->name())) continue;
+    if (!permissions.canUserAccessContainer(user->name())) continue;
 
     server.sendInventoryMessage(*user, slot, *this);
   }
@@ -241,7 +241,7 @@ ServerItem::Slot *Object::getSlotToTakeFromAndSendErrors(size_t slotNum,
     return &slot;
   }
 
-  if (!permissions.doesUserHaveAccess(user.name())) {
+  if (!permissions.canUserAccessContainer(user.name())) {
     user.sendMessage(WARNING_NO_PERMISSION);
     return nullptr;
   }

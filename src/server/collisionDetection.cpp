@@ -123,7 +123,7 @@ bool User::areOverlapsAllowedWith(const Entity &rhs) const {
 
   if (rhs.classTag() == 'o') {
     const auto &obj = dynamic_cast<const Object &>(rhs);
-    if (obj.isGate()) return obj.permissions.doesUserHaveAccess(_name);
+    if (obj.isGate()) return obj.permissions.canUserOverlap(_name);
   }
   return false;
 }
@@ -133,7 +133,7 @@ bool NPC::areOverlapsAllowedWith(const Entity &rhs) const {
 
   if (rhs.classTag() == 'o') {
     const auto &obj = dynamic_cast<const Object &>(rhs);
-    if (obj.isGate()) return obj.permissions.doesNPCHaveAccess(*this);
+    if (obj.isGate()) return obj.permissions.canNPCOverlap(*this);
   }
 
   return false;
@@ -143,11 +143,11 @@ bool Object::areOverlapsAllowedWith(const Entity &rhs) const {
   if (!isGate()) return false;
   if (rhs.classTag() == 'u') {
     const auto &user = dynamic_cast<const User &>(rhs);
-    return permissions.doesUserHaveAccess(user.name());
+    return permissions.canUserOverlap(user.name());
   }
   if (rhs.classTag() == 'n') {
     const auto &npc = dynamic_cast<const NPC &>(rhs);
-    return permissions.doesNPCHaveAccess(npc);
+    return permissions.canNPCOverlap(npc);
   }
   return false;
 }

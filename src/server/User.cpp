@@ -614,7 +614,7 @@ User::ToolSearchResult User::findTool(const std::string &tagName) {
     const auto *type = pObj->type();
     if (!type->isTag(tagName)) continue;
     if (distance(*pObj, *this) > Server::ACTION_DISTANCE) continue;
-    if (!pObj->permissions.doesUserHaveAccess(_name)) continue;
+    if (!pObj->permissions.canUserUseAsTool(_name)) continue;
 
     auto toolSpeed = type->toolSpeed(tagName);
     if (toolSpeed > bestSpeed || !bestTool) {
@@ -980,7 +980,7 @@ void User::onMove() {
   for (auto *entity : server.findEntitiesInArea(location())) {
     const Object *pObj = dynamic_cast<const Object *>(entity);
     if (pObj == nullptr) continue;
-    if (!pObj->permissions.doesUserHaveAccess(_name)) continue;
+    if (!pObj->permissions.canUserGetBuffs(_name)) continue;
     if (pObj->isBeingBuilt()) continue;
     const auto &objType = pObj->objType();
     if (!objType.grantsBuff()) continue;

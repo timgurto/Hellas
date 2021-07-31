@@ -519,7 +519,7 @@ Server::ContainerInfo Server::getContainer(User &user, Serial serial) {
   ret.object = _entities.find<Object>(serial);
 
   if (!isEntityInRange(user.socket(), user, ret.object)) return WARNING_TOO_FAR;
-  if (!ret.object->permissions.doesUserHaveAccess(user.name()))
+  if (!ret.object->permissions.canUserAccessContainer(user.name()))
     return WARNING_NO_PERMISSION;
 
   if (ret.object->hasContainer())
