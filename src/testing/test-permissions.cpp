@@ -264,21 +264,24 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Objects can be given to citizens",
                  "[permissions][city][giving-objects]") {
   useData(R"(<objectType id="thing" />)");
 
-  GIVEN("a player is king of Athens") {
+  AND_GIVEN("the player is a citizen of Athens") {
     server->cities().createCity("Athens", {}, {});
     server->cities().addPlayerToCity(*user, "Athens");
-    (*server)->makePlayerAKing(*user);
 
     AND_GIVEN("Athens owns a thing") {
       auto &thing = server->addObject("thing");
       thing.permissions.setCityOwner("Athens");
 
-      WHEN("the player tries to give it to himself") {
-        client->sendMessage(CL_GIVE_OBJECT,
-                            makeArgs(thing.serial(), user->name()));
+      AND_GIVEN("the player is king of Athens") {
+        (*server)->makePlayerAKing(*user);
 
-        THEN("it is owned by him") {
-          WAIT_UNTIL(thing.permissions.isOwnedByPlayer(user->name()));
+        WHEN("the player tries to give it to himself") {
+          client->sendMessage(CL_GIVE_OBJECT,
+                              makeArgs(thing.serial(), user->name()));
+
+          THEN("it is owned by him") {
+            WAIT_UNTIL(thing.permissions.isOwnedByPlayer(user->name()));
+          }
         }
       }
     }
