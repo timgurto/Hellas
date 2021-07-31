@@ -260,72 +260,9 @@ TEST_CASE("New ownership is reflected in the object-owner index",
   CHECK(s.objectsByOwner().getObjectsWithSpecificOwner(ownerBob).size() == 1);
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Kings can give objects to citizens",
-                 "[permissions][city][giving-objects]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Giving objects",
+                 "[permissions][city]") {
   useData(R"(<objectType id="thing" />)");
-
-  AND_GIVEN("the player is a citizen of Athens") {
-    server->cities().createCity("Athens", {}, {});
-    server->cities().addPlayerToCity(*user, "Athens");
-
-    AND_GIVEN("Athens owns a thing") {
-      auto &thing = server->addObject("thing");
-      thing.permissions.setCityOwner("Athens");
-
-      AND_GIVEN("the player is king of Athens") {
-        (*server)->makePlayerAKing(*user);
-
-        WHEN("the player tries to give it to himself") {
-          client->sendMessage(CL_GIVE_OBJECT,
-                              makeArgs(thing.serial(), user->name()));
-
-          THEN("it is owned by him") {
-            WAIT_UNTIL(thing.permissions.isOwnedByPlayer(user->name()));
-          }
-        }
-      }
-
-      SECTION("Non-kings can't give city objects") {
-        WHEN("the player tries to give it to himself") {
-          client->sendMessage(CL_GIVE_OBJECT,
-                              makeArgs(thing.serial(), user->name()));
-
-          THEN("he receives an error message") {
-            client->waitForMessage(ERROR_NOT_A_KING);
-          }
-
-          THEN("it's still owned by the city") {
-            CHECK(thing.permissions.isOwnedByCity("Athens"));
-          }
-        }
-      }
-    }
-
-    SECTION("A king can't give another city's object") {
-      AND_GIVEN("Sparta owns a thing") {
-        server->cities().createCity("Sparta", {}, {});
-        auto &thing = server->addObject("thing");
-        thing.permissions.setCityOwner("Sparta");
-
-        AND_GIVEN("the player is king of Athens") {
-          (*server)->makePlayerAKing(*user);
-
-          WHEN("the player tries to give it to himself") {
-            client->sendMessage(CL_GIVE_OBJECT,
-                                makeArgs(thing.serial(), user->name()));
-
-            THEN("he receives a warning message") {
-              client->waitForMessage(WARNING_NO_PERMISSION);
-            }
-
-            THEN("it's still owned by Sparta") {
-              CHECK(thing.permissions.isOwnedByCity("Sparta"));
-            }
-          }
-        }
-      }
-    }
-  }
 
   SECTION("Unowned objects can't be given") {
     AND_GIVEN("an unowned thing") {
@@ -341,6 +278,71 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Kings can give objects to citizens",
 
         THEN("it's still unowned") {
           CHECK_FALSE(thing.permissions.hasOwner());
+        }
+      }
+    }
+  }
+
+  SECTION("Kings can give city objects") {
+    AND_GIVEN("the player is a citizen of Athens") {
+      server->cities().createCity("Athens", {}, {});
+      server->cities().addPlayerToCity(*user, "Athens");
+
+      AND_GIVEN("Athens owns a thing") {
+        auto &thing = server->addObject("thing");
+        thing.permissions.setCityOwner("Athens");
+
+        AND_GIVEN("the player is king of Athens") {
+          (*server)->makePlayerAKing(*user);
+
+          WHEN("the player tries to give it to himself") {
+            client->sendMessage(CL_GIVE_OBJECT,
+                                makeArgs(thing.serial(), user->name()));
+
+            THEN("it is owned by him") {
+              WAIT_UNTIL(thing.permissions.isOwnedByPlayer(user->name()));
+            }
+          }
+        }
+
+        SECTION("Non-kings can't give city objects") {
+          WHEN("the player tries to give it to himself") {
+            client->sendMessage(CL_GIVE_OBJECT,
+                                makeArgs(thing.serial(), user->name()));
+
+            THEN("he receives an error message") {
+              client->waitForMessage(ERROR_NOT_A_KING);
+            }
+
+            THEN("it's still owned by the city") {
+              CHECK(thing.permissions.isOwnedByCity("Athens"));
+            }
+          }
+        }
+      }
+
+      SECTION("A king can't give another city's object") {
+        AND_GIVEN("Sparta owns a thing") {
+          server->cities().createCity("Sparta", {}, {});
+          auto &thing = server->addObject("thing");
+          thing.permissions.setCityOwner("Sparta");
+
+          AND_GIVEN("the player is king of Athens") {
+            (*server)->makePlayerAKing(*user);
+
+            WHEN("the player tries to give it to himself") {
+              client->sendMessage(CL_GIVE_OBJECT,
+                                  makeArgs(thing.serial(), user->name()));
+
+              THEN("he receives a warning message") {
+                client->waitForMessage(WARNING_NO_PERMISSION);
+              }
+
+              THEN("it's still owned by Sparta") {
+                CHECK(thing.permissions.isOwnedByCity("Sparta"));
+              }
+            }
+          }
         }
       }
     }
