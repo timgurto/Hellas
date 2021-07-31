@@ -301,25 +301,6 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Kings can give objects to citizens",
       }
     }
 
-    SECTION("Unowned objects can't be given") {
-      AND_GIVEN("an unowned thing") {
-        auto &thing = server->addObject("thing");
-
-        WHEN("the player tries to give it to himself") {
-          client->sendMessage(CL_GIVE_OBJECT,
-                              makeArgs(thing.serial(), user->name()));
-
-          THEN("he receives a warning message") {
-            client->waitForMessage(WARNING_NO_PERMISSION);
-          }
-
-          THEN("it's still unowned") {
-            CHECK_FALSE(thing.permissions.hasOwner());
-          }
-        }
-      }
-    }
-
     SECTION("A king can't give another city's object") {
       AND_GIVEN("Sparta owns a thing") {
         server->cities().createCity("Sparta", {}, {});
@@ -341,6 +322,25 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Kings can give objects to citizens",
               CHECK(thing.permissions.isOwnedByCity("Sparta"));
             }
           }
+        }
+      }
+    }
+  }
+
+  SECTION("Unowned objects can't be given") {
+    AND_GIVEN("an unowned thing") {
+      auto &thing = server->addObject("thing");
+
+      WHEN("the player tries to give it to himself") {
+        client->sendMessage(CL_GIVE_OBJECT,
+                            makeArgs(thing.serial(), user->name()));
+
+        THEN("he receives a warning message") {
+          client->waitForMessage(WARNING_NO_PERMISSION);
+        }
+
+        THEN("it's still unowned") {
+          CHECK_FALSE(thing.permissions.hasOwner());
         }
       }
     }
