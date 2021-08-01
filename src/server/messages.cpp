@@ -663,7 +663,7 @@ HANDLE_MESSAGE(CL_GIVE_OBJECT) {
 
   receiverName = toPascal(receiverName);
 
-  if (!doesPlayerExist(receiverName)) return;
+  if (!doesPlayerExist(receiverName)) RETURN_WITH(ERROR_USER_NOT_FOUND);
 
   obj->permissions.setPlayerOwner(receiverName);
 }

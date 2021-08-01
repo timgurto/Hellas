@@ -284,6 +284,10 @@ TEST_CASE_METHOD(TwoClientsWithData, "Giving objects", "[permissions][city]") {
             REPEAT_FOR_MS(100);
             CHECK(thing.permissions.isOwnedByPlayer("Alice"));
           }
+
+          THEN("she receives an error message") {
+            CHECK(cAlice->waitForMessage(ERROR_USER_NOT_FOUND));
+          }
         }
       }
     }

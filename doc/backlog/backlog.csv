@@ -34,10 +34,10 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 33,Class-restricted gear,3,13,Feature,,,,
 34,"Play defend/death sounds on projectile hit, not launch",1,3,Bug,,,,
 35,SFX on aggro,89,21,Aesthetics,,,,
-36,Allow giving object to anyone,144,21,Feature,,,,
+36,Allow giving object to anyone,144,21,Feature,,TRUE,,
 37,Sanitise war declarations,1,2,Usability,40,,TRUE,7 War
 38,Partial repairs,55,13,Feature,,,TRUE,
-39,Sanitise object granting,21,2,Usability,36,,TRUE,
+39,Sanitise object granting,21,2,Usability,36,TRUE,TRUE,
 40,Fix war,34,89,Content,,,TRUE,7 War
 41,Weather particles,89,144,Aesthetics,,,,
 42,Recruitment invitations,2,3,Usability,,,TRUE,
