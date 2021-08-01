@@ -297,7 +297,7 @@ TEST_CASE_METHOD(TwoClientsWithData, "Giving objects", "[permissions][city]") {
         cAlice->sendMessage(CL_GIVE_OBJECT, makeArgs(thing.serial(), "Alice"));
 
         THEN("she receives a warning message") {
-          cAlice->waitForMessage(WARNING_NO_PERMISSION);
+          CHECK(cAlice->waitForMessage(WARNING_NO_PERMISSION));
         }
 
         THEN("it's still unowned") {
@@ -336,7 +336,7 @@ TEST_CASE_METHOD(TwoClientsWithData, "Giving objects", "[permissions][city]") {
                                 makeArgs(thing.serial(), "Alice"));
 
             THEN("she receives an error message") {
-              cAlice->waitForMessage(ERROR_NOT_A_KING);
+              CHECK(cAlice->waitForMessage(WARNING_NO_PERMISSION));
             }
 
             THEN("it's still owned by the city") {
@@ -361,7 +361,7 @@ TEST_CASE_METHOD(TwoClientsWithData, "Giving objects", "[permissions][city]") {
                                   makeArgs(thing.serial(), "Alice"));
 
               THEN("he receives a warning message") {
-                cAlice->waitForMessage(WARNING_NO_PERMISSION);
+                CHECK(cAlice->waitForMessage(WARNING_NO_PERMISSION));
               }
 
               THEN("it's still owned by Sparta") {
