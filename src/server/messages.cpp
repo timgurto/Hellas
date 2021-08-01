@@ -57,7 +57,7 @@ HANDLE_MESSAGE(CL_LOGIN_EXISTING) {
 
   if (!isUsernameValid(username)) RETURN_WITH(WARNING_INVALID_USERNAME)
 
-  auto userIsAlreadyLoggedIn = _usersByName.count(username) == 1;
+  auto userIsAlreadyLoggedIn = _onlineUsersByName.count(username) == 1;
   if (userIsAlreadyLoggedIn) RETURN_WITH(WARNING_DUPLICATE_USERNAME)
 
   // Check that user exists
@@ -700,8 +700,8 @@ HANDLE_MESSAGE(CL_TARGET_PLAYER) {
 
   user.cancelAction();
 
-  auto it = _usersByName.find(targetUsername);
-  if (it == _usersByName.end()) RETURN_WITH(ERROR_INVALID_USER)
+  auto it = _onlineUsersByName.find(targetUsername);
+  if (it == _onlineUsersByName.end()) RETURN_WITH(ERROR_INVALID_USER)
   User *targetUser = const_cast<User *>(it->second);
   if (targetUser->health() == 0) {
     targetUser = nullptr;
@@ -738,8 +738,8 @@ HANDLE_MESSAGE(CL_SELECT_PLAYER) {
   auto targetUsername = ""s;
   READ_ARGS(targetUsername);
 
-  auto it = _usersByName.find(targetUsername);
-  if (it == _usersByName.end()) RETURN_WITH(ERROR_INVALID_USER)
+  auto it = _onlineUsersByName.find(targetUsername);
+  if (it == _onlineUsersByName.end()) RETURN_WITH(ERROR_INVALID_USER)
   User *targetUser = const_cast<User *>(it->second);
   user.target(targetUser);
   if (user.action() == User::ATTACK) user.action(User::NO_ACTION);
@@ -1138,8 +1138,8 @@ void Server::handleBufferedMessages(const Socket &client,
     auto msgCode = parser.nextMessage();
 
     // Discard message if this client has not yet logged in
-    auto it = _users.find(client);
-    auto userHasLoggedIn = it != _users.end();
+    auto it = _onlineUsers.find(client);
+    auto userHasLoggedIn = it != _onlineUsers.end();
     if (!userHasLoggedIn && !isMessageAllowedBeforeLogin(msgCode)) {
       continue;
     }
@@ -1619,8 +1619,8 @@ void Server::handleBufferedMessages(const Socket &client,
         std::string message(_stringInputBuffer);
         iss >> del;
         if (del != MSG_END) return;
-        auto it = _usersByName.find(username);
-        if (it == _usersByName.end()) BREAK_WITH(ERROR_INVALID_USER)
+        auto it = _onlineUsersByName.find(username);
+        if (it == _onlineUsersByName.end()) BREAK_WITH(ERROR_INVALID_USER)
         const User *target = it->second;
         sendMessage(target->socket(),
                     {SV_WHISPER, makeArgs(user->name(), message)});
@@ -2036,7 +2036,7 @@ void Server::handle_CL_AUTO_CONSTRUCT(User &user, Serial serial) {
 }
 
 void Server::broadcast(const Message &msg) {
-  for (const User &user : _users) sendMessage(user.socket(), msg);
+  for (const User &user : _onlineUsers) sendMessage(user.socket(), msg);
 }
 
 void Server::broadcastToArea(const MapPoint &location,
@@ -2070,8 +2070,8 @@ void Server::sendMessage(const Socket &dstSocket, const Message &msg) const {
 
 void Server::sendMessageIfOnline(const std::string username,
                                  const Message &msg) const {
-  auto it = _usersByName.find(username);
-  if (it == _usersByName.end()) return;
+  auto it = _onlineUsersByName.find(username);
+  if (it == _onlineUsersByName.end()) return;
   sendMessage(it->second->socket(), msg);
 }
 
@@ -2165,8 +2165,8 @@ void Server::sendNewRecipesMessage(const User &user,
 void Server::alertUserToWar(const std::string &username,
                             const Belligerent &otherBelligerent,
                             bool isUserCityTheBelligerent) const {
-  auto it = _usersByName.find(username);
-  if (it == _usersByName.end())  // user is offline
+  auto it = _onlineUsersByName.find(username);
+  if (it == _onlineUsersByName.end())  // user is offline
     return;
 
   MessageCode code;
@@ -2237,7 +2237,7 @@ void Server::sendRelevantEntitiesToUser(const User &user) {
 void Server::sendOnlineUsersTo(const User &recipient) const {
   auto numNames = 0;
   auto args = ""s;
-  for (auto &user : _users) {
+  for (auto &user : _onlineUsers) {
     if (user.name() == recipient.name()) continue;
 
     args = makeArgs(args, user.name());

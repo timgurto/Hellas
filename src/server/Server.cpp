@@ -200,7 +200,8 @@ void Server::run() {
 
 #ifndef _DEBUG
     // Check that clients are alive
-    for (std::set<User>::iterator it = _users.begin(); it != _users.end();) {
+    for (std::set<User>::iterator it = _onlineUsers.begin();
+         it != _onlineUsers.end();) {
       if (it->hasExceededTimeout()) {
         _debug << Color::CHAT_ERROR << "User " << it->name()
                << " has timed out." << Log::endl;
@@ -226,7 +227,7 @@ void Server::run() {
 
     // Save data
     if (_time - _lastSave >= SAVE_FREQUENCY) {
-      for (const User &user : _users) {
+      for (const User &user : _onlineUsers) {
         writeUserData(user);
       }
 
@@ -250,7 +251,7 @@ void Server::run() {
       }
 
     // Update users
-    for (const User &user : _users)
+    for (const User &user : _onlineUsers)
       const_cast<User &>(user).update(timeElapsed);
 
     // Update non-user entities
@@ -277,7 +278,7 @@ void Server::run() {
   }
 
   // Save all user data
-  for (const User &user : _users) {
+  for (const User &user : _onlineUsers) {
     writeUserData(user);
   }
 
@@ -292,9 +293,10 @@ void Server::addUser(const Socket &socket, const std::string &name,
 
   // Add new user to list
   logNumberOfOnlineUsers();
-  std::set<User>::const_iterator it = _users.insert(newUserToInsert).first;
+  std::set<User>::const_iterator it =
+      _onlineUsers.insert(newUserToInsert).first;
   auto &newUser = const_cast<User &>(*it);
-  _usersByName[name] = &*it;
+  _onlineUsersByName[name] = &*it;
   logNumberOfOnlineUsers();
 
   newUser.pwHash(pwHash);
@@ -447,7 +449,7 @@ void Server::removeUser(const std::set<User>::iterator &it) {
   const auto &userToDelete = *it;
 
   // Alert all users
-  for (const User &user : _users) {
+  for (const User &user : _onlineUsers) {
     if (&user == &userToDelete) continue;
     sendMessage(user.socket(), {SV_USER_DISCONNECTED, userToDelete.name()});
   }
@@ -465,14 +467,14 @@ void Server::removeUser(const std::set<User>::iterator &it) {
   _entitiesByY.erase(&userToDelete);
 
   logNumberOfOnlineUsers();
-  _usersByName.erase(it->name());
-  _users.erase(it);
+  _onlineUsersByName.erase(it->name());
+  _onlineUsers.erase(it);
   logNumberOfOnlineUsers();
 }
 
 void Server::removeUser(const Socket &socket) {
-  const std::set<User>::iterator it = _users.find(socket);
-  if (it != _users.end()) {
+  const std::set<User>::iterator it = _onlineUsers.find(socket);
+  if (it != _onlineUsers.end()) {
     _debug << "Removing user " << it->name() << Log::endl;
     removeUser(it);
   } else
@@ -549,7 +551,7 @@ void Server::forceAllToUntarget(const Entity &target,
                                 const User *userToExclude) {
   // Fix users targeting the entity
   auto serial = target.serial();
-  for (const User &constUser : _users) {
+  for (const User &constUser : _onlineUsers) {
     User &user = const_cast<User &>(constUser);
     if (&user == userToExclude) continue;
     if (user.target() == &target) {
@@ -758,9 +760,9 @@ Entity &Server::addEntity(Entity *newEntity) {
 }
 
 User *Server::getUserByName(const std::string &username) {
-  if (_usersByName.empty()) return nullptr;
-  auto it = _usersByName.find(username);
-  if (it == _usersByName.end()) return nullptr;
+  if (_onlineUsersByName.empty()) return nullptr;
+  auto it = _onlineUsersByName.find(username);
+  if (it == _onlineUsersByName.end()) return nullptr;
   return const_cast<User *>(it->second);
 }
 

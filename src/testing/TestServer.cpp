@@ -145,8 +145,8 @@ NPC &TestServer::addNPC(const std::string &typeName, const MapPoint &loc) {
 
 void TestServer::waitForUsers(size_t numUsers) const {
   // Timeout must be longer than Connection::TIME_BETWEEN_CONNECTION_ATTEMPTS
-  WAIT_UNTIL_TIMEOUT(_server->_users.size() == numUsers, 4000);
-  for (auto &user : _server->_users) WAIT_UNTIL(user.isInitialised());
+  WAIT_UNTIL_TIMEOUT(_server->_onlineUsers.size() == numUsers, 4000);
+  for (auto &user : _server->_onlineUsers) WAIT_UNTIL(user.isInitialised());
 }
 
 void TestServer::saveData() {
@@ -156,7 +156,7 @@ void TestServer::saveData() {
 }
 
 User &TestServer::findUser(const std::string &username) {
-  auto usersByName = _server->_usersByName;
+  auto usersByName = _server->_onlineUsersByName;
   auto it = usersByName.find(username);
   REQUIRE(it != usersByName.end());
   User *user = const_cast<User *>(it->second);
@@ -178,8 +178,8 @@ const BuffType &TestServer::findBuff(const std::string &id) const {
 }
 
 User &TestServer::getFirstUser() {
-  REQUIRE(!_server->_users.empty());
-  return const_cast<User &>(*_server->_users.begin());
+  REQUIRE(!_server->_onlineUsers.empty());
+  return const_cast<User &>(*_server->_onlineUsers.begin());
 }
 
 Object &TestServer::getFirstObject() {

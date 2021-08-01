@@ -114,14 +114,14 @@ void Server::publishStats() {
   oss << "users: [";
 
   // Online users
-  for (const auto userEntry : _usersByName)
+  for (const auto userEntry : _onlineUsersByName)
     writeUserToFile(*userEntry.second, oss);
 
   // Ofline users
   auto offlineUsers = getUsersFromFiles();
   for (const auto &offlineUser : offlineUsers) {
     auto userIsOnline =
-        _usersByName.find(offlineUser.first) != _usersByName.end();
+        _onlineUsersByName.find(offlineUser.first) != _onlineUsersByName.end();
     if (userIsOnline) continue;
 
     auto user = User{offlineUser.first, {}, nullptr};
@@ -144,7 +144,7 @@ void Server::publishStats() {
 void Server::logNumberOfOnlineUsers() const {
   auto currentTime = time(nullptr);
   std::ofstream{"logging/onlinePlayers.csv", std::ofstream::app}
-      << currentTime << "," << _usersByName.size() << std::endl;
+      << currentTime << "," << _onlineUsersByName.size() << std::endl;
 }
 
 void Server::generateDurabilityList() {

@@ -190,9 +190,9 @@ class Server {
   // Clients
   // All connected sockets, including those without registered users
   std::set<Socket> _clientSockets;
-  std::set<User> _users;  // All connected users
+  std::set<User> _onlineUsers;  // All connected users
   // Pointers to all connected users, ordered by name for faster lookup
-  mutable std::map<std::string, const User *> _usersByName;
+  mutable std::map<std::string, const User *> _onlineUsersByName;
   std::string _userFilesPath;
   void deleteUserFiles();
   /*
