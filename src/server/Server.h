@@ -194,11 +194,20 @@ class Server {
   // Pointers to all connected users, ordered by name for faster lookup
   mutable std::map<std::string, const User *> _onlineUsersByName;
   std::string _userFilesPath;
-  std::set<std::string> _onlineAndOfflineUsers;
   static std::map<std::string, int> getUsersFromFiles();
   void deleteUserFiles();
-  void countUserFiles();
   bool doesPlayerExist(std::string username) const;
+
+  class OnlineAndOfflineUsers {
+   public:
+    void includeUsersFromDataFiles();
+    void includeUser(std::string username) { _container.insert(username); }
+    bool includes(std::string username) const;
+
+   private:
+    std::set<std::string> _container;
+  } _onlineAndOfflineUsers;
+
   /*
   Add the newly logged-in user
   This happens not once the client connects, but rather when a CL_LOGIN_*

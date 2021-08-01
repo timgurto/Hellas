@@ -189,7 +189,7 @@ void Server::run() {
   auto threadsOpen = 0;
 
   logNumberOfOnlineUsers();
-  countUserFiles();
+  _onlineAndOfflineUsers.includeUsersFromDataFiles();
 
   _loop = true;
   _running = true;
@@ -313,7 +313,7 @@ void Server::addUser(const Socket &socket, const std::string &name,
   const bool userExisted = readUserData(newUser);
   const auto isNewUser = !userExisted;
   if (isNewUser) {
-    _onlineAndOfflineUsers.insert(name);
+    _onlineAndOfflineUsers.includeUser(name);
     newUser.setClass(_classes[classID]);
     newUser.moveToSpawnPoint(true);
     _debug << "New";
@@ -846,13 +846,8 @@ void Server::deleteUserFiles() {
   }
 }
 
-void Server::countUserFiles() {
-  auto users = getUsersFromFiles();
-  for (const auto &pair : users) _onlineAndOfflineUsers.insert(pair.first);
-}
-
 bool Server::doesPlayerExist(std::string username) const {
-  return _onlineAndOfflineUsers.count(username) == 1;
+  return _onlineAndOfflineUsers.includes(username);
 }
 
 void Server::makePlayerAKing(const User &user) {
@@ -889,4 +884,12 @@ void Server::initialiseData() {
   }
 
   for (auto &ot : _objectTypes) ot->initialise();
+}
+
+void Server::OnlineAndOfflineUsers::includeUsersFromDataFiles() {
+  for (const auto &pair : getUsersFromFiles()) includeUser(pair.first);
+}
+
+bool Server::OnlineAndOfflineUsers::includes(std::string username) const {
+  return _container.count(username) == 1;
 }
