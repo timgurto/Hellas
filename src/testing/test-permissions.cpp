@@ -274,11 +274,23 @@ TEST_CASE_METHOD(TwoClientsWithData, "Giving objects", "[permissions][city]") {
           WAIT_UNTIL(thing.permissions.isOwnedByPlayer("Bob"));
         }
       }
+
+      SECTION("Bad recipient name") {
+        WHEN("she tries to give it to a nonexistent player") {
+          cAlice->sendMessage(CL_GIVE_OBJECT,
+                              makeArgs(thing.serial(), "Notarealplayer"));
+
+          THEN("it is still owned by her") {
+            REPEAT_FOR_MS(100);
+            CHECK(thing.permissions.isOwnedByPlayer("Alice"));
+          }
+        }
+      }
     }
   }
 
   SECTION("Unowned objects can't be given") {
-    AND_GIVEN("an unowned thing") {
+    GIVEN("an unowned thing") {
       auto &thing = server->addObject("thing");
 
       WHEN("Alice tries to give it to herself") {
@@ -297,7 +309,7 @@ TEST_CASE_METHOD(TwoClientsWithData, "Giving objects", "[permissions][city]") {
   }
 
   SECTION("Kings can give city objects") {
-    AND_GIVEN("Alice is a citizen of Athens") {
+    GIVEN("Alice is a citizen of Athens") {
       server->cities().createCity("Athens", {}, {});
       server->cities().addPlayerToCity(*uAlice, "Athens");
 

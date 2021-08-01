@@ -189,6 +189,7 @@ void Server::run() {
   auto threadsOpen = 0;
 
   logNumberOfOnlineUsers();
+  countUserFiles();
 
   _loop = true;
   _running = true;
@@ -312,6 +313,7 @@ void Server::addUser(const Socket &socket, const std::string &name,
   const bool userExisted = readUserData(newUser);
   const auto isNewUser = !userExisted;
   if (isNewUser) {
+    _onlineAndOfflineUsers.insert(name);
     newUser.setClass(_classes[classID]);
     newUser.moveToSpawnPoint(true);
     _debug << "New";
@@ -842,6 +844,15 @@ void Server::deleteUserFiles() {
     } while (FindNextFileW(hFind, &fd));
     FindClose(hFind);
   }
+}
+
+void Server::countUserFiles() {
+  auto users = getUsersFromFiles();
+  for (const auto &pair : users) _onlineAndOfflineUsers.insert(pair.first);
+}
+
+bool Server::doesPlayerExist(std::string username) const {
+  return _onlineAndOfflineUsers.count(username) == 1;
 }
 
 void Server::makePlayerAKing(const User &user) {

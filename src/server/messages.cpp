@@ -662,6 +662,9 @@ HANDLE_MESSAGE(CL_GIVE_OBJECT) {
     RETURN_WITH(WARNING_CONTAINS_BOUND_ITEM);
 
   receiverName = toPascal(receiverName);
+
+  if (!doesPlayerExist(receiverName)) return;
+
   obj->permissions.setPlayerOwner(receiverName);
 }
 

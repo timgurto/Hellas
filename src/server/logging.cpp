@@ -72,7 +72,7 @@ void Server::writeUserToFile(const User &user, std::ostream &stream) const {
   stream << "},";
 }
 
-static std::map<std::string, int> getUsersFromFiles() {
+std::map<std::string, int> Server::getUsersFromFiles() {
   // Name -> seconds offline
   std::map<std::string, int> users{};
   auto findData = WIN32_FIND_DATA{};
