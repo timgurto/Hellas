@@ -44,6 +44,7 @@ ItemSelector::ItemSelector(Client &client, const ClientItem *&item,
       _item(item),
       _lastItem(item),
       _filterType(filterType),
+      _linkedContainer(linkedContainer),
       _icon(new Picture({1, 1, ITEM_HEIGHT, ITEM_HEIGHT}, Texture())),
       _name(new Label({ITEM_HEIGHT + 1 + GAP, 1, WIDTH, ITEM_HEIGHT}, "",
                       Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED)) {
@@ -102,8 +103,15 @@ void ItemSelector::applyFilter() {
     }
 
   } else if (_filterType == IN_CONTAINER) {
-    _linkedContainer;
-    // TODO
+    auto itemsInContainer = std::set<ClientItem *>{};
+    for (const auto &slot : *_linkedContainer) {
+      const auto *item = slot.first.type();
+      if (!item) continue;
+      auto *nonConstItem = const_cast<ClientItem *>(item);
+      itemsInContainer.insert(nonConstItem);
+    }
+
+    for (auto *item : itemsInContainer) addItemToList(item);
   }
 
   // Add 'none' option
