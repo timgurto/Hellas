@@ -83,20 +83,7 @@ void ItemSelector::applyFilter() {
   _itemList->clearChildren();
 
   if (_filterType == SHOW_ITEMS_MATCHING_SEARCH_TERM) {
-    for (auto *item : itemsMatchingSearchText()) {
-      // Add item to list
-      Element *container = new Element();
-      _itemList->addChild(container);
-      Button *itemButton =
-          new Button({0, 0, LIST_WIDTH - List::ARROW_W, ITEM_HEIGHT + 2}, "",
-                     [this, item]() { selectItem(item); });
-      container->addChild(itemButton);
-      itemButton->addChild(
-          new Picture({1, 1, ITEM_HEIGHT, ITEM_HEIGHT}, item->icon()));
-      itemButton->addChild(
-          new Label({ITEM_HEIGHT + GAP, LABEL_TOP, LABEL_WIDTH, TEXT_HEIGHT},
-                    item->name()));
-    }
+    for (auto *item : itemsMatchingSearchText()) addItemToList(item);
 
   } else if (_filterType == SHOW_ITEMS_IN_CONTAINER) {
     // TODO
@@ -122,6 +109,19 @@ std::vector<ClientItem *> ItemSelector::itemsMatchingSearchText() const {
     if (itemMatchesSearchText(item, searchText)) matchingItems.push_back(&item);
   }
   return matchingItems;
+}
+
+void ItemSelector::addItemToList(ClientItem *item) {
+  Element *container = new Element();
+  _itemList->addChild(container);
+  Button *itemButton =
+      new Button({0, 0, LIST_WIDTH - List::ARROW_W, ITEM_HEIGHT + 2}, "",
+                 [this, item]() { selectItem(item); });
+  container->addChild(itemButton);
+  itemButton->addChild(
+      new Picture({1, 1, ITEM_HEIGHT, ITEM_HEIGHT}, item->icon()));
+  itemButton->addChild(new Label(
+      {ITEM_HEIGHT + GAP, LABEL_TOP, LABEL_WIDTH, TEXT_HEIGHT}, item->name()));
 }
 
 void ItemSelector::selectItem(void *data) {

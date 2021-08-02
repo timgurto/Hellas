@@ -51,6 +51,7 @@ class ItemSelector : public Button {
       void *data);  // The find-item window, when a selector is clicked.
   void applyFilter();
   std::vector<ClientItem *> itemsMatchingSearchText() const;
+  void addItemToList(ClientItem *item);
   void selectItem(void *data);
 
   static bool itemMatchesSearchText(const ClientItem &item,
