@@ -753,36 +753,31 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Broken items can't be traded",
   }
 }
 
-TEST_CASE("Repairing items", "[damage-on-use][repair][gear][containers]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Repairing items",
+                 "[damage-on-use][repair][gear][containers]") {
   GIVEN("a user, repairable hats, and hatstand objects") {
-    auto data = R"(
+    useData(R"(
       <item id="hat" gearSlot="0"> <canBeRepaired/> </item>
       <objectType id="hatstand"> <container slots="1"/> </objectType>
-    )";
-    auto s = TestServer::WithDataString(data);
-    const auto *hat = &s.getFirstItem();
-
-    auto c = TestClient::WithDataString(data);
-
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
+    )");
+    const auto *hat = &server->getFirstItem();
 
     GIVEN("he has two hats in his inventory") {
-      user.giveItem(hat, 2);
-      auto &hat0 = user.inventory(0).first;
-      auto &hat1 = user.inventory(1).first;
+      user->giveItem(hat, 2);
+      auto &hat0 = user->inventory(0).first;
+      auto &hat1 = user->inventory(1).first;
 
       WHEN("the first is broken") {
         BREAK_ITEM(hat0);
 
         AND_WHEN("he repairs it") {
-          c.sendMessage(CL_REPAIR_ITEM, makeArgs(Serial::Inventory(), 0));
+          client->sendMessage(CL_REPAIR_ITEM, makeArgs(Serial::Inventory(), 0));
 
           THEN("it's no longer broken") {
             WAIT_UNTIL(!hat0.isBroken());
 
             AND_THEN("the client knows its current health") {
-              const auto &clientSlot = c.inventory().at(0).first;
+              const auto &clientSlot = client->inventory().at(0).first;
               WAIT_UNTIL(clientSlot.health() == hat0.health());
             }
           }
@@ -793,7 +788,7 @@ TEST_CASE("Repairing items", "[damage-on-use][repair][gear][containers]") {
         BREAK_ITEM(hat0);
         BREAK_ITEM(hat1);
         AND_WHEN("he repairs it") {
-          c.sendMessage(CL_REPAIR_ITEM, makeArgs(Serial::Inventory(), 1));
+          client->sendMessage(CL_REPAIR_ITEM, makeArgs(Serial::Inventory(), 1));
 
           THEN("it's no longer broken") {
             WAIT_UNTIL(!hat1.isBroken());
@@ -805,17 +800,17 @@ TEST_CASE("Repairing items", "[damage-on-use][repair][gear][containers]") {
     }
 
     GIVEN("he is wearing a hat") {
-      user.giveItem(hat);
-      c.sendMessage(CL_SWAP_ITEMS,
-                    makeArgs(Serial::Inventory(), 0, Serial::Gear(), 0));
-      auto &headSlot = user.gear().at(0).first;
+      user->giveItem(hat);
+      client->sendMessage(CL_SWAP_ITEMS,
+                          makeArgs(Serial::Inventory(), 0, Serial::Gear(), 0));
+      auto &headSlot = user->gear().at(0).first;
       WAIT_UNTIL(headSlot.hasItem());
 
       WHEN("it is broken") {
         BREAK_ITEM(headSlot);
 
         AND_WHEN("he repairs it") {
-          c.sendMessage(CL_REPAIR_ITEM, makeArgs(Serial::Gear(), 0));
+          client->sendMessage(CL_REPAIR_ITEM, makeArgs(Serial::Gear(), 0));
 
           THEN("it is no longer broken") { WAIT_UNTIL(!headSlot.isBroken()); }
         }
@@ -823,12 +818,12 @@ TEST_CASE("Repairing items", "[damage-on-use][repair][gear][containers]") {
     }
 
     GIVEN("he owns a hatstand with a hat") {
-      s.addObject("hatstand", {10, 15}, user.name());
-      auto &hatstand = s.getFirstObject();
+      server->addObject("hatstand", {10, 15}, user->name());
+      auto &hatstand = server->getFirstObject();
       hatstand.container().addItems(hat);
 
       WHEN("he tries to repair an invalid slot") {
-        c.sendMessage(CL_REPAIR_ITEM, makeArgs(hatstand.serial(), 99));
+        client->sendMessage(CL_REPAIR_ITEM, makeArgs(hatstand.serial(), 99));
 
         THEN("the server doesn't crash") {
           REPEAT_FOR_MS(100);
@@ -841,7 +836,7 @@ TEST_CASE("Repairing items", "[damage-on-use][repair][gear][containers]") {
         BREAK_ITEM(slot);
 
         AND_WHEN("he repairs it") {
-          c.sendMessage(CL_REPAIR_ITEM, makeArgs(hatstand.serial(), 0));
+          client->sendMessage(CL_REPAIR_ITEM, makeArgs(hatstand.serial(), 0));
 
           THEN("it's no longer broken") { WAIT_UNTIL(!slot.isBroken()); }
         }
@@ -849,8 +844,8 @@ TEST_CASE("Repairing items", "[damage-on-use][repair][gear][containers]") {
     }
 
     GIVEN("an unowned hatstand with a hat") {
-      s.addObject("hatstand", {10, 15}, "someoneElse");
-      auto &hatstand = s.getFirstObject();
+      server->addObject("hatstand", {10, 15}, "someoneElse");
+      auto &hatstand = server->getFirstObject();
       hatstand.container().addItems(hat);
 
       WHEN("the hat is broken") {
@@ -858,7 +853,7 @@ TEST_CASE("Repairing items", "[damage-on-use][repair][gear][containers]") {
         BREAK_ITEM(slot);
 
         AND_WHEN("he tries to repair it") {
-          c.sendMessage(CL_REPAIR_ITEM, makeArgs(hatstand.serial(), 0));
+          client->sendMessage(CL_REPAIR_ITEM, makeArgs(hatstand.serial(), 0));
 
           THEN("it's still broken") {
             REPEAT_FOR_MS(100);
@@ -869,7 +864,7 @@ TEST_CASE("Repairing items", "[damage-on-use][repair][gear][containers]") {
     }
 
     WHEN("he tries to repair an item in a nonexistent container") {
-      c.sendMessage(CL_REPAIR_ITEM, makeArgs(5, 0));
+      client->sendMessage(CL_REPAIR_ITEM, makeArgs(5, 0));
 
       THEN("the server doesn't crash") {
         REPEAT_FOR_MS(100);
@@ -879,26 +874,21 @@ TEST_CASE("Repairing items", "[damage-on-use][repair][gear][containers]") {
   }
 }
 
-TEST_CASE("Non-repairable item", "[damage-on-use][repair]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Non-repairable item",
+                 "[damage-on-use][repair]") {
   GIVEN("a user with a non-repairable feather") {
-    auto data = R"(
+    useData(R"(
       <item id="feather" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    const auto *feather = &s.getFirstItem();
-
-    auto c = TestClient::WithDataString(data);
-
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    user.giveItem(feather);
+    )");
+    const auto *feather = &server->getFirstItem();
+    user->giveItem(feather);
 
     WHEN("it is broken") {
-      auto &slot = user.inventory(0).first;
+      auto &slot = user->inventory(0).first;
       BREAK_ITEM(slot);
 
       AND_WHEN("he tries to repair it") {
-        c.sendMessage(CL_REPAIR_ITEM, makeArgs(Serial::Inventory(), 0));
+        client->sendMessage(CL_REPAIR_ITEM, makeArgs(Serial::Inventory(), 0));
 
         THEN("it is still broken") {
           REPEAT_FOR_MS(100);
@@ -909,28 +899,25 @@ TEST_CASE("Non-repairable item", "[damage-on-use][repair]") {
   }
 }
 
-TEST_CASE("Item repair that consumes items", "[damage-on-use][repair]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Item repair that consumes items",
+                 "[damage-on-use][repair]") {
   GIVEN("food repairs a broken heart") {
-    auto data = R"(
+    useData(R"(
       <item id="heart">
         <canBeRepaired cost="food" />
       </item>
       <item id="food" />
-    )";
-    auto s = TestServer::WithDataString(data);
+    )");
 
     WHEN("a user has a heart") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      user.giveItem(&s.findItem("heart"));
+      user->giveItem(&server->findItem("heart"));
 
       AND_WHEN("it is broken") {
-        auto &heart = user.inventory(0).first;
+        auto &heart = user->inventory(0).first;
         BREAK_ITEM(heart);
 
         AND_WHEN("he tries to repair it") {
-          c.sendMessage(CL_REPAIR_ITEM, makeArgs(Serial::Inventory(), 0));
+          client->sendMessage(CL_REPAIR_ITEM, makeArgs(Serial::Inventory(), 0));
 
           THEN("it is still broken") {
             REPEAT_FOR_MS(100);
@@ -939,16 +926,17 @@ TEST_CASE("Item repair that consumes items", "[damage-on-use][repair]") {
         }
 
         AND_WHEN("he has food") {
-          user.giveItem(&s.findItem("food"));
+          user->giveItem(&server->findItem("food"));
 
           AND_WHEN("he tries to repair the heart") {
-            c.sendMessage(CL_REPAIR_ITEM, makeArgs(Serial::Inventory(), 0));
+            client->sendMessage(CL_REPAIR_ITEM,
+                                makeArgs(Serial::Inventory(), 0));
 
             THEN("it is no longer broken") {
               WAIT_UNTIL(!heart.isBroken());
 
               AND_THEN("he no longer has food") {
-                const auto &foodSlot = user.inventory(1).first;
+                const auto &foodSlot = user->inventory(1).first;
                 WAIT_UNTIL(!foodSlot.hasItem());
               }
             }
@@ -959,30 +947,27 @@ TEST_CASE("Item repair that consumes items", "[damage-on-use][repair]") {
   }
 }
 
-TEST_CASE("Item repair that requires a tool", "[damage-on-use][repair][tool]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Item repair that requires a tool",
+                 "[damage-on-use][repair][tool]") {
   GIVEN("a soldering iron is needed to repair a circuit") {
-    auto data = R"(
+    useData(R"(
       <item id="circuit">
         <canBeRepaired tool="soldering" />
       </item>
       <item id="solderingIron">
         <tag name="soldering" />
       </item>
-    )";
-    auto s = TestServer::WithDataString(data);
+    )");
 
     WHEN("a user has a circuit") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      user.giveItem(&s.findItem("circuit"));
+      user->giveItem(&server->findItem("circuit"));
 
       AND_WHEN("it is broken") {
-        auto &circuit = user.inventory(0).first;
+        auto &circuit = user->inventory(0).first;
         BREAK_ITEM(circuit);
 
         AND_WHEN("he tries to repair it") {
-          c.sendMessage(CL_REPAIR_ITEM, makeArgs(Serial::Inventory(), 0));
+          client->sendMessage(CL_REPAIR_ITEM, makeArgs(Serial::Inventory(), 0));
 
           THEN("it is still broken") {
             REPEAT_FOR_MS(100);
@@ -991,10 +976,11 @@ TEST_CASE("Item repair that requires a tool", "[damage-on-use][repair][tool]") {
         }
 
         AND_WHEN("he has a soldering iron") {
-          user.giveItem(&s.findItem("solderingIron"));
+          user->giveItem(&server->findItem("solderingIron"));
 
           AND_WHEN("he tries to repair the circuit") {
-            c.sendMessage(CL_REPAIR_ITEM, makeArgs(Serial::Inventory(), 0));
+            client->sendMessage(CL_REPAIR_ITEM,
+                                makeArgs(Serial::Inventory(), 0));
 
             THEN("it is no longer broken") { WAIT_UNTIL(!circuit.isBroken()); }
           }
@@ -1004,7 +990,7 @@ TEST_CASE("Item repair that requires a tool", "[damage-on-use][repair][tool]") {
   }
 
   GIVEN("repairing a watch requires tweezers and costs parts") {
-    auto data = R"(
+    useData(R"(
       <item id="watch">
         <canBeRepaired tool="tweezers" cost="parts" />
       </item>
@@ -1012,26 +998,22 @@ TEST_CASE("Item repair that requires a tool", "[damage-on-use][repair][tool]") {
         <tag name="tweezers" />
       </item>
       <item id="parts" />
-    )";
-    auto s = TestServer::WithDataString(data);
+    )");
 
     WHEN("a user has a watch and parts, but no tweezers") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      user.giveItem(&s.findItem("watch"));
-      user.giveItem(&s.findItem("parts"));
+      user->giveItem(&server->findItem("watch"));
+      user->giveItem(&server->findItem("parts"));
 
       AND_WHEN("it is broken") {
-        auto &watch = user.inventory(0).first;
+        auto &watch = user->inventory(0).first;
         BREAK_ITEM(watch);
 
         AND_WHEN("he tries to repair it") {
-          c.sendMessage(CL_REPAIR_ITEM, makeArgs(Serial::Inventory(), 0));
+          client->sendMessage(CL_REPAIR_ITEM, makeArgs(Serial::Inventory(), 0));
 
           THEN("he still has his parts") {
             REPEAT_FOR_MS(100);
-            CHECK(user.inventory(1).first.hasItem());
+            CHECK(user->inventory(1).first.hasItem());
           }
         }
       }
