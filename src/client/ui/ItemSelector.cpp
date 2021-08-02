@@ -40,34 +40,33 @@ ItemSelector::ItemSelector(Client &client, const ClientItem *&item,
   auto ppItem = &_item;
   clickFun([this, ppItem]() { openFindItemWindow(ppItem); });
 
-  if (_findItemWindow == nullptr) {
-    _findItemWindow = Window::WithRectAndTitle(
+  if (_findItemWindow) return;
 
-        {(Client::SCREEN_X - WINDOW_WIDTH) / 2,
-         (Client::SCREEN_Y - WINDOW_HEIGHT) / 2, WINDOW_WIDTH, WINDOW_HEIGHT},
-        "Find Item", client.mouse());
-    px_t y = GAP;
+  _findItemWindow = Window::WithRectAndTitle(
+      {(Client::SCREEN_X - WINDOW_WIDTH) / 2,
+       (Client::SCREEN_Y - WINDOW_HEIGHT) / 2, WINDOW_WIDTH, WINDOW_HEIGHT},
+      "Find Item", client.mouse());
+  px_t y = GAP;
 
-    if (_filterType == SHOW_ITEMS_MATCHING_SEARCH_TERM) {
-      _searchText =
-          new TextBox(client, {GAP, y, SEARCH_TEXT_WIDTH, SEARCH_BUTTON_HEIGHT},
-                      TextBox::LETTERS);
-      _findItemWindow->addChild(_searchText);
-      _findItemWindow->addChild(
-          new Button({SEARCH_TEXT_WIDTH + 2 * GAP, y, SEARCH_BUTTON_WIDTH,
-                      SEARCH_BUTTON_HEIGHT},
-                     "Search", [this]() { applyFilter(); }));
-      y += SEARCH_BUTTON_HEIGHT + GAP;
-      _findItemWindow->addChild(new Line({0, y}, WINDOW_WIDTH));
-      y += 2 + GAP;
-    }
-
-    _itemList =
-        new List({GAP, y, LIST_WIDTH, LIST_HEIGHT}, ITEM_HEIGHT + 2 + LIST_GAP);
-    _findItemWindow->addChild(_itemList);
-
-    _client->addWindow(_findItemWindow);
+  if (_filterType == SHOW_ITEMS_MATCHING_SEARCH_TERM) {
+    _searchText =
+        new TextBox(client, {GAP, y, SEARCH_TEXT_WIDTH, SEARCH_BUTTON_HEIGHT},
+                    TextBox::LETTERS);
+    _findItemWindow->addChild(_searchText);
+    _findItemWindow->addChild(
+        new Button({SEARCH_TEXT_WIDTH + 2 * GAP, y, SEARCH_BUTTON_WIDTH,
+                    SEARCH_BUTTON_HEIGHT},
+                   "Search", [this]() { applyFilter(); }));
+    y += SEARCH_BUTTON_HEIGHT + GAP;
+    _findItemWindow->addChild(new Line({0, y}, WINDOW_WIDTH));
+    y += 2 + GAP;
   }
+
+  _itemList =
+      new List({GAP, y, LIST_WIDTH, LIST_HEIGHT}, ITEM_HEIGHT + 2 + LIST_GAP);
+  _findItemWindow->addChild(_itemList);
+
+  _client->addWindow(_findItemWindow);
 }
 
 void ItemSelector::openFindItemWindow(void *data) {
