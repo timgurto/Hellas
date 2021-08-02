@@ -83,7 +83,10 @@ void ItemSelector::applyFilter() {
   _itemList->clearChildren();
 
   if (_filterType == SHOW_ITEMS_MATCHING_SEARCH_TERM) {
-    for (auto *item : itemsMatchingSearchText()) addItemToList(item);
+    for (auto *item : itemsMatchingSearchText()) {
+      if (item->bindsOnPickup()) continue;
+      addItemToList(item);
+    }
 
   } else if (_filterType == SHOW_ITEMS_IN_CONTAINER) {
     // TODO

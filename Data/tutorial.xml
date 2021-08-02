@@ -84,10 +84,10 @@
         <loot id="tutEntrails"> <normal mean="0.7" sd="0.5" /> </loot>
         <loot id="tutFat" chance="0.2" />
     </npcType>
-    <item id="tutMeat"     name="Goat Meat"     iconFile="meat"     stackSize="10" exclusiveToQuest="tutParts" />
-    <item id="tutHide"     name="Goat Hide"     iconFile="hide"     stackSize="10" exclusiveToQuest="tutParts" />
-    <item id="tutEntrails" name="Goat Entrails" iconFile="entrails" stackSize="10" exclusiveToQuest="tutParts" />
-    <item id="tutFat"      name="Goat Fat"      iconFile="fat"      stackSize="10" exclusiveToQuest="tutParts" />
+    <item id="tutMeat"     name="Goat Meat"     iconFile="meat"     stackSize="10" exclusiveToQuest="tutParts" bind="pickup" />
+    <item id="tutHide"     name="Goat Hide"     iconFile="hide"     stackSize="10" exclusiveToQuest="tutParts" bind="pickup" />
+    <item id="tutEntrails" name="Goat Entrails" iconFile="entrails" stackSize="10" exclusiveToQuest="tutParts" bind="pickup" />
+    <item id="tutFat"      name="Goat Fat"      iconFile="fat"      stackSize="10" exclusiveToQuest="tutParts" bind="pickup" />
 
 <quest id="tutOfferings" name="An Offer he Can't Refuse" startsAt="prometheus" endsAt="tutBrazier"
     level="2"
@@ -112,10 +112,10 @@
         <collisionRect x="-6" y="-3" w="13" h="6" />
         <particles profile="smoke" x="0" y="-15" />
     </objectType>
-    <item id="tutMeat2"     name="Sacrificial Meat"     iconFile="meat"     exclusiveToQuest="tutOfferings" constructs="leanOffering" />
-    <item id="tutEntrails2" name="Sacrificial Entrails" iconFile="entrails" exclusiveToQuest="tutOfferings" constructs="fattyOffering" />
-    <item id="tutHide2"     name="Sacrificial Hide"     iconFile="hide"     exclusiveToQuest="tutOfferings" />
-    <item id="tutFat2"      name="Sacrificial Fat"      iconFile="fat"      exclusiveToQuest="tutOfferings" />
+    <item id="tutMeat2"     name="Sacrificial Meat"     iconFile="meat"     exclusiveToQuest="tutOfferings" bind="pickup" constructs="leanOffering" />
+    <item id="tutEntrails2" name="Sacrificial Entrails" iconFile="entrails" exclusiveToQuest="tutOfferings" bind="pickup" constructs="fattyOffering" />
+    <item id="tutHide2"     name="Sacrificial Hide"     iconFile="hide"     exclusiveToQuest="tutOfferings" bind="pickup" />
+    <item id="tutFat2"      name="Sacrificial Fat"      iconFile="fat"      exclusiveToQuest="tutOfferings" bind="pickup" />
     <objectType
         id="leanOffering" name="Scrawny Sacrifice"
         allowedTerrain="tutOfferings" constructionTime="6000"  isUnbuildable="true" disappearAfter="300000"
@@ -175,7 +175,7 @@
         <durability item="stick" quantity="5" />
         <transform id="tutFire" time="1" skipConstruction="1" />
     </objectType>
-    <item id="tutStick" name="Stick" iconFile="stick" stackSize="10" sounds="stick" />
+    <item id="tutStick" name="Stick" iconFile="stick" stackSize="10" sounds="stick" bind="pickup" />
     <objectType id="tutStick" name="Stick"
         xDrawOffset="-10" yDrawOffset="-4"
         canGather="1" gatherTime="1000"
@@ -190,7 +190,7 @@
         <loot id="meat" > <normal mean="0.5" sd="0.7" /> </loot>
         <loot id="tutEntrails3" chance="0.05" />
     </npcType>
-    <item id="tutEntrails3" name="Entrails" sounds="meat" stackSize="10" iconFile="entrails" />
+    <item id="tutEntrails3" name="Entrails" sounds="meat" stackSize="10" iconFile="entrails" bind="pickup" />
     
 <quest id="tutCooking" name="Hungry Work" startsAt="prometheus" endsAt="atlas"
     level="4"
@@ -277,8 +277,8 @@
     <object id="tutAnvil" x="816" y="60564" >
         <owner type="player" name="Othrys" />
     </object>
-    <item id="tutOre" name="Othrysian Ore" stackSize="5" durability="3" />
-    <item id="tutLightning" name="Handheld Lightning" stackSize="5" gearSlot="6" sounds="lightning" >
+    <item id="tutOre" name="Othrysian Ore" stackSize="5" durability="3" bind="pickup" />
+    <item id="tutLightning" name="Handheld Lightning" stackSize="5" gearSlot="6" sounds="lightning" bind="pickup" >
         <weapon damage="12" speed="2.1" range="25" consumes="tutLightning" projectile="lightning" />
         <offset x="-8" y="-6" />
         <particles profile="lightningSparks" x="-7" y="-5" />
