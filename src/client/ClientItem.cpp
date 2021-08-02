@@ -1,6 +1,7 @@
 #include "ClientItem.h"
 
 #include "../XmlReader.h"
+#include "../server/ItemClass.h"
 #include "Client.h"
 #include "Tooltip.h"
 #include "Unlocks.h"
@@ -230,8 +231,12 @@ void ClientItem::Instance::createRegularTooltip() const {
     oss << "Durability: "s << _health << "/"s << Item::MAX_HEALTH;
     tooltip.addGap();
     tooltip.addLine(oss.str());
-    auto needsRepairing = _health < Item::MAX_HEALTH;
-    if (_type->repairInfo().canBeRepaired && needsRepairing) {
+
+    if (!_type->_class) return;
+
+    const auto needsRepairing = _health < Item::MAX_HEALTH;
+    const auto canBeRepaired = _type->_class->repairInfo.canBeRepaired;
+    if (canBeRepaired && needsRepairing) {
       tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
       tooltip.addLine("Alt-click to repair.");
     }
@@ -239,7 +244,13 @@ void ClientItem::Instance::createRegularTooltip() const {
 }
 
 void ClientItem::Instance::createRepairTooltip() const {
-  if (!_type->repairInfo().canBeRepaired) {
+  if (!_type->_class) {
+    _repairTooltip = Tooltip::basicTooltip("This item cannot be repaired.");
+    return;
+  }
+  const auto &repairInfo = _type->_class->repairInfo;
+
+  if (!repairInfo.canBeRepaired) {
     _repairTooltip = Tooltip::basicTooltip("This item cannot be repaired.");
     return;
   }
@@ -257,19 +268,19 @@ void ClientItem::Instance::createRepairTooltip() const {
   rt.setColor(Color::TOOLTIP_INSTRUCTION);
   rt.addLine("Alt-click to repair.");
 
-  if (_type->repairInfo().requiresTool()) {
+  if (repairInfo.requiresTool()) {
     rt.addGap();
     rt.setColor(Color::TOOLTIP_BODY);
     rt.addLine("Requires tool:");
     rt.setColor(Color::TOOLTIP_TAG);
-    rt.addLine(_type->_client->gameData.tagName(_type->repairInfo().tool));
+    rt.addLine(_type->_client->gameData.tagName(repairInfo.tool));
   }
 
-  if (_type->repairInfo().hasCost()) {
+  if (repairInfo.hasCost()) {
     rt.addGap();
     rt.setColor(Color::TOOLTIP_BODY);
     rt.addLine("Will consume:");
-    const auto *costItem = _type->_client->findItem(_type->repairInfo().cost);
+    const auto *costItem = _type->_client->findItem(repairInfo.cost);
     if (!costItem) return;
     rt.addItem(*costItem);
   }

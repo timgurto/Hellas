@@ -36,6 +36,7 @@ void CDataLoader::load(bool keepOldData) {
     _client.gameData.soundProfiles.clear();
     _client.gameData.projectileTypes.clear();
     _client._objects.clear();
+    _client.gameData.itemClasses.clear();
     _client.gameData.items.clear();
     _client.gameData.classes.clear();
     _client.gameData.recipes.clear();
@@ -64,6 +65,7 @@ void CDataLoader::load(bool keepOldData) {
     }
 
     loadFromAllFiles(&CDataLoader::loadObjectTypes);
+    loadFromAllFiles(&CDataLoader::loadItemClasses);
     loadFromAllFiles(&CDataLoader::loadItems);
     loadFromAllFiles(&CDataLoader::loadPermanentObjects);
     loadFromAllFiles(&CDataLoader::loadClasses);
@@ -93,6 +95,7 @@ void CDataLoader::load(bool keepOldData) {
     loadBuffs(reader);
     _client.gameData.tagNames.readFromXML(reader);
     loadObjectTypes(reader);
+    loadItemClasses(reader);
     loadItems(reader);
     loadPermanentObjects(reader);
     loadClasses(reader);
@@ -689,6 +692,24 @@ void CDataLoader::loadPermanentObjects(XmlReader &xr) {
   }
 }
 
+void CDataLoader::loadItemClasses(XmlReader &xr) {
+  for (auto elem : xr.getChildren("itemClass")) {
+    auto ic = ItemClass{};
+    auto classID = ""s;
+    xr.findAttr(elem, "id", classID);
+
+    auto repairElem = xr.findChild("canBeRepaired", elem);
+    if (repairElem) {
+      ic.repairInfo.canBeRepaired = true;
+      auto s = ""s;
+      xr.findAttr(repairElem, "cost", ic.repairInfo.cost);
+      xr.findAttr(repairElem, "tool", ic.repairInfo.tool);
+    }
+
+    _client.gameData.itemClasses[classID] = ic;
+  }
+}
+
 void CDataLoader::loadItems(XmlReader &xr) {
   for (auto elem : xr.getChildren("item")) {
     std::string id, name;
@@ -785,11 +806,9 @@ void CDataLoader::loadItems(XmlReader &xr) {
       item.addParticles(profileName, offset);
     }
 
-    auto repairElem = xr.findChild("canBeRepaired", elem);
-    if (repairElem) {
-      item.makeRepairable();
-      if (xr.findAttr(repairElem, "cost", s)) item.repairingCosts(s);
-      if (xr.findAttr(repairElem, "tool", s)) item.repairingRequiresTool(s);
+    if (xr.findAttr(elem, "class", s)) {
+      const auto it = _client.gameData.itemClasses.find(s);
+      if (it != _client.gameData.itemClasses.end()) item.setClass(it->second);
     }
 
     _client.gameData.items[id] = item;

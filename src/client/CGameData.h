@@ -4,6 +4,7 @@
 #include <set>
 #include <string>
 
+#include "../server/ItemClass.h"
 #include "CQuest.h"
 #include "CRecipe.h"
 #include "ClassInfo.h"
@@ -17,6 +18,7 @@
 #include "Unlocks.h"
 
 struct CGameData {
+  std::map<std::string, ItemClass> itemClasses;
   std::map<std::string, ClientItem> items;
   std::map<char, ClientTerrain> terrain;
   std::set<CRecipe> recipes;

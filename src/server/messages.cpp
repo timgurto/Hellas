@@ -869,7 +869,9 @@ HANDLE_MESSAGE(CL_REPAIR_ITEM) {
     itemToRepair = &obj->container().at(slot).first;
   }
 
-  const auto &repairInfo = itemToRepair->type()->repairInfo();
+  const auto *itemClass = itemToRepair->type()->getClass();
+  if (!itemClass) RETURN_WITH(WARNING_NOT_REPAIRABLE)
+  const auto &repairInfo = itemClass->repairInfo;
   if (!repairInfo.canBeRepaired) RETURN_WITH(WARNING_NOT_REPAIRABLE)
 
   auto costItem = findItem(repairInfo.cost);

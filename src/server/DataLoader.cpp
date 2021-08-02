@@ -7,6 +7,7 @@
 
 #include "../Args.h"
 #include "../XmlReader.h"
+#include "ItemClass.h"
 #include "ProgressLock.h"
 #include "Server.h"
 #include "VehicleType.h"
@@ -35,6 +36,7 @@ void DataLoader::load(bool keepOldData) {
     _server._entities.clear();
     TerrainList::clearLists();
     Stats::compositeDefinitions.clear();
+    _server._itemClasses.clear();
     _server._items.clear();
     _server._objectTypes.clear();
     _server._recipes.clear();
@@ -68,6 +70,7 @@ void DataLoader::load(bool keepOldData) {
     loadFromAllFiles(&DataLoader::loadObjectTypes);
     loadFromAllFiles(&DataLoader::loadNPCTemplates);
     loadFromAllFiles(&DataLoader::loadNPCTypes);
+    loadFromAllFiles(&DataLoader::loadItemClasses);
     loadFromAllFiles(&DataLoader::loadItems);
     loadFromAllFiles(&DataLoader::loadQuests);
     loadFromAllFiles(&DataLoader::loadRecipes);
@@ -90,6 +93,7 @@ void DataLoader::load(bool keepOldData) {
     loadObjectTypes(data);
     loadNPCTemplates(data);
     loadNPCTypes(data);
+    loadItemClasses(data);
     loadItems(data);
     loadQuests(data);
     loadRecipes(data);
@@ -629,6 +633,24 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
   }
 }
 
+void DataLoader::loadItemClasses(XmlReader &xr) {
+  for (auto elem : xr.getChildren("itemClass")) {
+    auto ic = ItemClass{};
+    auto classID = ""s;
+    xr.findAttr(elem, "id", classID);
+
+    auto repairElem = xr.findChild("canBeRepaired", elem);
+    if (repairElem) {
+      ic.repairInfo.canBeRepaired = true;
+      auto s = ""s;
+      xr.findAttr(repairElem, "cost", ic.repairInfo.cost);
+      xr.findAttr(repairElem, "tool", ic.repairInfo.tool);
+    }
+
+    _server._itemClasses[classID] = ic;
+  }
+}
+
 void DataLoader::loadItems(XmlReader &xr) {
   for (auto elem : xr.getChildren("item")) {
     std::string id;
@@ -720,11 +742,9 @@ void DataLoader::loadItems(XmlReader &xr) {
 
     if (xr.findAttr(elem, "durability", n)) item.durability(n);
 
-    auto repairElem = xr.findChild("canBeRepaired", elem);
-    if (repairElem) {
-      item.makeRepairable();
-      if (xr.findAttr(repairElem, "cost", s)) item.repairingCosts(s);
-      if (xr.findAttr(repairElem, "tool", s)) item.repairingRequiresTool(s);
+    if (xr.findAttr(elem, "class", s)) {
+      const auto it = _server._itemClasses.find(s);
+      if (it != _server._itemClasses.end()) item.setClass(it->second);
     }
 
     item.loaded();

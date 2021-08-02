@@ -19,6 +19,7 @@
 #include "CollisionChunk.h"
 #include "DataLoader.h"
 #include "Entities.h"
+#include "ItemClass.h"
 #include "ItemSet.h"
 #include "LogConsole.h"
 #include "NPC.h"
@@ -262,7 +263,8 @@ class Server {
   volatile mutable int _threadsOpen{0};
   Map _map;
 
-  // World data
+  // Game data
+  std::map<std::string, ItemClass> _itemClasses;
   std::set<ServerItem> _items;
   std::set<SRecipe> _recipes;
   std::map<std::string, LootTable> _standaloneLootTables;

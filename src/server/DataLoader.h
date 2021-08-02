@@ -23,6 +23,7 @@ class DataLoader {
   void loadQuests(XmlReader &reader);
   void loadNPCTemplates(XmlReader &reader);
   void loadNPCTypes(XmlReader &reader);
+  void loadItemClasses(XmlReader &reader);
   void loadItems(XmlReader &reader);
   void loadRecipes(XmlReader &reader);
   void loadSpells(XmlReader &reader);

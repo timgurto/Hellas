@@ -365,6 +365,7 @@
     <ClInclude Include="src\testing\TemporaryUserStats.h" />
     <ClInclude Include="src\server\AI.h" />
     <ClInclude Include="src\WorkerThread.h" />
+    <ClInclude Include="src\server\ItemClass.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />

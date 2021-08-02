@@ -8,6 +8,8 @@
 #include "Podes.h"
 #include "Stats.h"
 
+struct ItemClass;
+
 class Item : public HasTags {
  public:
   static const size_t WEAPON_SLOT = 6, OFFHAND_SLOT = 7;
@@ -37,16 +39,14 @@ class Item : public HasTags {
   bool castsSpellOnUse() const { return !_castsSpellOnUse.empty(); }
   const std::string &spellArg() const { return _spellArg; }
   const std::string &spellToCastOnUse() const { return _castsSpellOnUse; }
-  void makeRepairable() { _repairInfo.canBeRepaired = true; }
-  void repairingCosts(const std::string &costID) { _repairInfo.cost = costID; }
-  void repairingRequiresTool(const std::string &tag) { _repairInfo.tool = tag; }
-  RepairInfo repairInfo() const { return _repairInfo; }
   void lvlReq(Level req) { _lvlReq = req; }
   Level lvlReq() const { return _lvlReq; }
   bool hasLvlReq() const { return _lvlReq > 0; }
   void setBinding(std::string mode);
   bool bindsOnPickup() const { return _soulbinding == BIND_ON_PICKUP; }
   bool bindsOnEquip() const { return _soulbinding == BIND_ON_EQUIP; }
+  void setClass(const ItemClass &itemClass) { _class = &itemClass; }
+  const ItemClass *getClass() const { return _class; }
 
   bool operator<(const Item &rhs) const { return _id < rhs._id; }
 
@@ -63,7 +63,7 @@ class Item : public HasTags {
   StatsMod _stats;  // If gear, the impact it has on its wearer's stats.
   Soulbinding _soulbinding{NO_BINDING};
 
-  RepairInfo _repairInfo;
+  const ItemClass *_class{nullptr};
 
   // If a weapon, how close the holder must be to a target to it.
   px_t _weaponRange = Podes::MELEE_RANGE.toPixels();

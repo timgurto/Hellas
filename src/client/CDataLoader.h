@@ -26,6 +26,7 @@ class CDataLoader {
   void loadBuffs(XmlReader &reader);
   void loadObjectTypes(XmlReader &reader);
   void loadPermanentObjects(XmlReader &reader);
+  void loadItemClasses(XmlReader &reader);
   void loadItems(XmlReader &reader);
   void loadClasses(XmlReader &reader);
   void loadRecipes(XmlReader &reader);

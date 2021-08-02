@@ -757,7 +757,10 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Repairing items",
                  "[damage-on-use][repair][gear][containers]") {
   GIVEN("a user, repairable hats, and hatstand objects") {
     useData(R"(
-      <item id="hat" gearSlot="0"> <canBeRepaired/> </item>
+      <itemClass id="headwear">
+        <canBeRepaired/>
+      </itemClass>
+      <item id="hat" class="headwear" gearSlot="0" />
       <objectType id="hatstand"> <container slots="1"/> </objectType>
     )");
     const auto *hat = &server->getFirstItem();
@@ -903,9 +906,10 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Item repair that consumes items",
                  "[damage-on-use][repair]") {
   GIVEN("food repairs a broken heart") {
     useData(R"(
-      <item id="heart">
+      <itemClass id="organ" >
         <canBeRepaired cost="food" />
-      </item>
+      </itemClass>
+      <item id="heart" class="organ" />
       <item id="food" />
     )");
 
@@ -951,9 +955,10 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Item repair that requires a tool",
                  "[damage-on-use][repair][tool]") {
   GIVEN("a soldering iron is needed to repair a circuit") {
     useData(R"(
-      <item id="circuit">
+      <itemClass id="highTech" >
         <canBeRepaired tool="soldering" />
-      </item>
+      </itemClass>
+      <item id="circuit" class="highTech" />
       <item id="solderingIron">
         <tag name="soldering" />
       </item>
@@ -991,9 +996,10 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Item repair that requires a tool",
 
   GIVEN("repairing a watch requires tweezers and costs parts") {
     useData(R"(
-      <item id="watch">
+      <itemClass id="mechanical">
         <canBeRepaired tool="tweezers" cost="parts" />
-      </item>
+      </itemClass>
+      <item id="watch" class="mechanical" />
       <item id="tweezers">
         <tag name="tweezers" />
       </item>
