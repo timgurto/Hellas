@@ -13,6 +13,10 @@ class Window;
 
 // A button used to choose an Item, and display that choice.
 class ItemSelector : public Button {
+ public:
+  enum FilterType { SHOW_ITEMS_MATCHING_SEARCH_TERM, SHOW_ITEMS_IN_CONTAINER };
+
+ private:
   static const px_t GAP, LABEL_WIDTH, WIDTH, LABEL_TOP, LIST_WIDTH, LIST_GAP,
       WINDOW_WIDTH, WINDOW_HEIGHT, SEARCH_BUTTON_WIDTH, SEARCH_BUTTON_HEIGHT,
       SEARCH_TEXT_WIDTH, LIST_HEIGHT;
@@ -26,7 +30,8 @@ class ItemSelector : public Button {
   Label *_name;
 
  public:
-  ItemSelector(Client &client, const ClientItem *&item, px_t x = 0, px_t y = 0);
+  ItemSelector(Client &client, const ClientItem *&item, FilterType filterType,
+               px_t x = 0, px_t y = 0);
 
   const ClientItem *item() const { return _item; }
   void item(const ClientItem *item) { _item = item; }
@@ -37,16 +42,17 @@ class ItemSelector : public Button {
   static ClientItem **_itemBeingSelected;
 
   Window *_findItemWindow{nullptr};
-  TextBox *_filterText{nullptr};
+  TextBox *_searchText{nullptr};
   List *_itemList{nullptr};
+  FilterType _filterType;
 
   void openFindItemWindow(
       void *data);  // The find-item window, when a selector is clicked.
   void applyFilter();
   void selectItem(void *data);
 
-  static bool itemMatchesFilter(const ClientItem &item,
-                                const std::string &filter);
+  static bool itemMatchesSearchText(const ClientItem &item,
+                                    const std::string &filter);
 
   friend class Client;
 };
