@@ -16,6 +16,15 @@ class ItemSelector : public Button {
  public:
   enum FilterType { SHOW_ITEMS_MATCHING_SEARCH_TERM, SHOW_ITEMS_IN_CONTAINER };
 
+  ItemSelector(Client &client, const ClientItem *&item, FilterType filterType,
+               px_t x = 0, px_t y = 0);
+
+  const ClientItem *item() const { return _item; }
+  void item(const ClientItem *item) { _item = item; }
+
+  virtual void refresh() override;
+  virtual void checkIfChanged() override;
+
  private:
   static const px_t GAP, LABEL_WIDTH, WIDTH, LABEL_TOP, LIST_WIDTH, LIST_GAP,
       WINDOW_WIDTH, WINDOW_HEIGHT, SEARCH_BUTTON_WIDTH, SEARCH_BUTTON_HEIGHT,
@@ -28,16 +37,6 @@ class ItemSelector : public Button {
 
   Picture *_icon;
   Label *_name;
-
- public:
-  ItemSelector(Client &client, const ClientItem *&item, FilterType filterType,
-               px_t x = 0, px_t y = 0);
-
-  const ClientItem *item() const { return _item; }
-  void item(const ClientItem *item) { _item = item; }
-
-  virtual void refresh() override;
-  virtual void checkIfChanged() override;
 
   static ClientItem **_itemBeingSelected;
 
