@@ -1,10 +1,10 @@
 #ifndef ITEM_SELECTOR_H
 #define ITEM_SELECTOR_H
 
+#include "../ClientItem.h"
 #include "Button.h"
 
 class Client;
-class ClientItem;
 class Label;
 class List;
 class Picture;
@@ -14,10 +14,14 @@ class Window;
 // A button used to choose an Item, and display that choice.
 class ItemSelector : public Button {
  public:
-  enum FilterType { SHOW_ITEMS_MATCHING_SEARCH_TERM, SHOW_ITEMS_IN_CONTAINER };
+  enum FilterType { MATCHING_SEARCH_TERM, IN_CONTAINER };
 
-  ItemSelector(Client &client, const ClientItem *&item, FilterType filterType,
-               ScreenPoint position);
+  static ItemSelector *ShowItemsMatchingSearchTerm(Client &client,
+                                                   const ClientItem *&item,
+                                                   ScreenPoint position);
+  static ItemSelector *ShowItemsInContainer(
+      Client &client, const ClientItem *&item, ScreenPoint position,
+      const ClientItem::vect_t &linkedContainer);
 
   const ClientItem *item() const { return _item; }
   void item(const ClientItem *item) { _item = item; }
@@ -26,6 +30,10 @@ class ItemSelector : public Button {
   virtual void checkIfChanged() override;
 
  private:
+  ItemSelector(Client &client, const ClientItem *&item, FilterType filterType,
+               ScreenPoint position,
+               const ClientItem::vect_t *linkedContainer = nullptr);
+
   static const px_t GAP, LABEL_WIDTH, WIDTH, LABEL_TOP, LIST_WIDTH, LIST_GAP,
       WINDOW_WIDTH, WINDOW_HEIGHT, SEARCH_BUTTON_WIDTH, SEARCH_BUTTON_HEIGHT,
       SEARCH_TEXT_WIDTH, LIST_HEIGHT;
@@ -39,6 +47,8 @@ class ItemSelector : public Button {
   Label *_name;
 
   static ClientItem **_itemBeingSelected;
+
+  const ClientItem::vect_t *_linkedContainer{nullptr};
 
   Window *_findItemWindow{nullptr};
   TextBox *_searchText{nullptr};

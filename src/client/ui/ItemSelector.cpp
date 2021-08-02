@@ -24,8 +24,22 @@ const px_t ItemSelector::LIST_HEIGHT =
 
 ClientItem **ItemSelector::_itemBeingSelected = nullptr;
 
+ItemSelector *ItemSelector::ShowItemsMatchingSearchTerm(Client &client,
+                                                        const ClientItem *&item,
+                                                        ScreenPoint position) {
+  return new ItemSelector{client, item, MATCHING_SEARCH_TERM, position};
+}
+
+ItemSelector *ItemSelector::ShowItemsInContainer(
+    Client &client, const ClientItem *&item, ScreenPoint position,
+    const ClientItem::vect_t &linkedContainer) {
+  return new ItemSelector{client, item, IN_CONTAINER, position,
+                          &linkedContainer};
+}
+
 ItemSelector::ItemSelector(Client &client, const ClientItem *&item,
-                           FilterType filterType, ScreenPoint position)
+                           FilterType filterType, ScreenPoint position,
+                           const ClientItem::vect_t *linkedContainer)
     : Button({position.x, position.y, WIDTH, Element::ITEM_HEIGHT + 2}),
       _item(item),
       _lastItem(item),
@@ -48,7 +62,7 @@ ItemSelector::ItemSelector(Client &client, const ClientItem *&item,
       "Find Item", client.mouse());
   px_t y = GAP;
 
-  if (_filterType == SHOW_ITEMS_MATCHING_SEARCH_TERM) addSearchTextBox(y);
+  if (_filterType == MATCHING_SEARCH_TERM) addSearchTextBox(y);
 
   _itemList =
       new List({GAP, y, LIST_WIDTH, LIST_HEIGHT}, ITEM_HEIGHT + 2 + LIST_GAP);
@@ -81,13 +95,14 @@ void ItemSelector::openFindItemWindow(void *data) {
 void ItemSelector::applyFilter() {
   _itemList->clearChildren();
 
-  if (_filterType == SHOW_ITEMS_MATCHING_SEARCH_TERM) {
+  if (_filterType == MATCHING_SEARCH_TERM) {
     for (auto *item : itemsMatchingSearchText()) {
       if (item->bindsOnPickup()) continue;
       addItemToList(item);
     }
 
-  } else if (_filterType == SHOW_ITEMS_IN_CONTAINER) {
+  } else if (_filterType == IN_CONTAINER) {
+    _linkedContainer;
     // TODO
   }
 
