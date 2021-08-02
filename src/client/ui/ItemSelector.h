@@ -17,7 +17,7 @@ class ItemSelector : public Button {
   enum FilterType { SHOW_ITEMS_MATCHING_SEARCH_TERM, SHOW_ITEMS_IN_CONTAINER };
 
   ItemSelector(Client &client, const ClientItem *&item, FilterType filterType,
-               px_t x = 0, px_t y = 0);
+               ScreenPoint position);
 
   const ClientItem *item() const { return _item; }
   void item(const ClientItem *item) { _item = item; }
@@ -45,9 +45,12 @@ class ItemSelector : public Button {
   List *_itemList{nullptr};
   FilterType _filterType;
 
+  void addSearchTextBox(px_t &y);
+
   void openFindItemWindow(
       void *data);  // The find-item window, when a selector is clicked.
   void applyFilter();
+  std::vector<ClientItem *> itemsMatchingSearchText() const;
   void selectItem(void *data);
 
   static bool itemMatchesSearchText(const ClientItem &item,

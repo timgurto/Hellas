@@ -134,8 +134,8 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg) {
     e.addChild(textBox);
     x += QUANTITY_WIDTH + GAP;
     e.addChild(new ItemSelector(_client, mSlot.wareItem,
-                                ItemSelector::SHOW_ITEMS_IN_CONTAINER, x,
-                                BUTTON_TOP));
+                                ItemSelector::SHOW_ITEMS_IN_CONTAINER,
+                                ScreenPoint{x, BUTTON_TOP}));
     x += ICON_SIZE + 2 + NAME_WIDTH + 3 * GAP + 2;
     textBox = new TextBox(_client, {x, TEXT_TOP, QUANTITY_WIDTH, TEXT_HEIGHT},
                           TextBox::NUMERALS);
@@ -145,7 +145,7 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg) {
     x += QUANTITY_WIDTH + GAP;
     e.addChild(new ItemSelector(_client, mSlot.priceItem,
                                 ItemSelector::SHOW_ITEMS_MATCHING_SEARCH_TERM,
-                                x, BUTTON_TOP));
+                                ScreenPoint{x, BUTTON_TOP}));
     x += ICON_SIZE + 2 + NAME_WIDTH + 2 * GAP + 2;
     e.addChild(new Button(
         {x, SET_BUTTON_TOP, SET_BUTTON_WIDTH, SET_BUTTON_HEIGHT}, "Set",

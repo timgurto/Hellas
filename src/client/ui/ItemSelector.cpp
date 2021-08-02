@@ -25,8 +25,8 @@ const px_t ItemSelector::LIST_HEIGHT =
 ClientItem **ItemSelector::_itemBeingSelected = nullptr;
 
 ItemSelector::ItemSelector(Client &client, const ClientItem *&item,
-                           FilterType filterType, px_t x, px_t y)
-    : Button({x, y, WIDTH, Element::ITEM_HEIGHT + 2}),
+                           FilterType filterType, ScreenPoint position)
+    : Button({position.x, position.y, WIDTH, Element::ITEM_HEIGHT + 2}),
       _item(item),
       _lastItem(item),
       _filterType(filterType),
@@ -48,25 +48,27 @@ ItemSelector::ItemSelector(Client &client, const ClientItem *&item,
       "Find Item", client.mouse());
   px_t y = GAP;
 
-  if (_filterType == SHOW_ITEMS_MATCHING_SEARCH_TERM) {
-    _searchText =
-        new TextBox(client, {GAP, y, SEARCH_TEXT_WIDTH, SEARCH_BUTTON_HEIGHT},
-                    TextBox::LETTERS);
-    _findItemWindow->addChild(_searchText);
-    _findItemWindow->addChild(
-        new Button({SEARCH_TEXT_WIDTH + 2 * GAP, y, SEARCH_BUTTON_WIDTH,
-                    SEARCH_BUTTON_HEIGHT},
-                   "Search", [this]() { applyFilter(); }));
-    y += SEARCH_BUTTON_HEIGHT + GAP;
-    _findItemWindow->addChild(new Line({0, y}, WINDOW_WIDTH));
-    y += 2 + GAP;
-  }
+  if (_filterType == SHOW_ITEMS_MATCHING_SEARCH_TERM) addSearchTextBox(y);
 
   _itemList =
       new List({GAP, y, LIST_WIDTH, LIST_HEIGHT}, ITEM_HEIGHT + 2 + LIST_GAP);
   _findItemWindow->addChild(_itemList);
 
   _client->addWindow(_findItemWindow);
+}
+
+void ItemSelector::addSearchTextBox(px_t &y) {
+  _searchText =
+      new TextBox(*_client, {GAP, y, SEARCH_TEXT_WIDTH, SEARCH_BUTTON_HEIGHT},
+                  TextBox::LETTERS);
+  _findItemWindow->addChild(_searchText);
+  _findItemWindow->addChild(
+      new Button({SEARCH_TEXT_WIDTH + 2 * GAP, y, SEARCH_BUTTON_WIDTH,
+                  SEARCH_BUTTON_HEIGHT},
+                 "Search", [this]() { applyFilter(); }));
+  y += SEARCH_BUTTON_HEIGHT + GAP;
+  _findItemWindow->addChild(new Line({0, y}, WINDOW_WIDTH));
+  y += 2 + GAP;
 }
 
 void ItemSelector::openFindItemWindow(void *data) {
@@ -79,28 +81,23 @@ void ItemSelector::openFindItemWindow(void *data) {
 
 void ItemSelector::applyFilter() {
   _itemList->clearChildren();
-  const std::string &searchText = _searchText->text();
 
   if (_filterType == SHOW_ITEMS_MATCHING_SEARCH_TERM) {
-    const auto &items = _client->gameData.items;
-    for (const auto &pair : _client->gameData.items) {
-      const ClientItem &item = pair.second;
-      if (itemMatchesSearchText(item, searchText)) {
-        // Add item to list
-        Element *container = new Element();
-        _itemList->addChild(container);
-        auto pItem = const_cast<ClientItem *>(&item);
-        Button *itemButton =
-            new Button({0, 0, LIST_WIDTH - List::ARROW_W, ITEM_HEIGHT + 2}, "",
-                       [this, pItem]() { selectItem(pItem); });
-        container->addChild(itemButton);
-        itemButton->addChild(
-            new Picture({1, 1, ITEM_HEIGHT, ITEM_HEIGHT}, item.icon()));
-        itemButton->addChild(
-            new Label({ITEM_HEIGHT + GAP, LABEL_TOP, LABEL_WIDTH, TEXT_HEIGHT},
-                      item.name()));
-      }
+    for (auto *item : itemsMatchingSearchText()) {
+      // Add item to list
+      Element *container = new Element();
+      _itemList->addChild(container);
+      Button *itemButton =
+          new Button({0, 0, LIST_WIDTH - List::ARROW_W, ITEM_HEIGHT + 2}, "",
+                     [this, item]() { selectItem(item); });
+      container->addChild(itemButton);
+      itemButton->addChild(
+          new Picture({1, 1, ITEM_HEIGHT, ITEM_HEIGHT}, item->icon()));
+      itemButton->addChild(
+          new Label({ITEM_HEIGHT + GAP, LABEL_TOP, LABEL_WIDTH, TEXT_HEIGHT},
+                    item->name()));
     }
+
   } else if (_filterType == SHOW_ITEMS_IN_CONTAINER) {
     // TODO
   }
@@ -114,6 +111,17 @@ void ItemSelector::applyFilter() {
   container->addChild(itemButton);
   itemButton->addChild(new Label(
       {ITEM_HEIGHT + GAP, LABEL_TOP, LABEL_WIDTH, TEXT_HEIGHT}, "[None]"));
+}
+
+std::vector<ClientItem *> ItemSelector::itemsMatchingSearchText() const {
+  std::string searchText = _searchText->text();
+  std::vector<ClientItem *> matchingItems;
+  const auto &items = _client->gameData.items;
+  for (auto &pair : _client->gameData.items) {
+    auto &item = pair.second;
+    if (itemMatchesSearchText(item, searchText)) matchingItems.push_back(&item);
+  }
+  return matchingItems;
 }
 
 void ItemSelector::selectItem(void *data) {
