@@ -59,8 +59,7 @@ ItemSelector::ItemSelector(Client &client, const ClientItem *&item,
 
 void ItemSelector::addSearchTextBox(px_t &y) {
   _searchText =
-      new TextBox(*_client, {GAP, y, SEARCH_TEXT_WIDTH, SEARCH_BUTTON_HEIGHT},
-                  TextBox::LETTERS);
+      new TextBox(*_client, {GAP, y, SEARCH_TEXT_WIDTH, SEARCH_BUTTON_HEIGHT});
   _findItemWindow->addChild(_searchText);
   _findItemWindow->addChild(
       new Button({SEARCH_TEXT_WIDTH + 2 * GAP, y, SEARCH_BUTTON_WIDTH,
