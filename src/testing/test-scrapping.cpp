@@ -72,8 +72,9 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping", "[scrapping]") {
           WHEN("he scraps one wood") {
             client->sendMessage(CL_SCRAP_ITEM, makeArgs(0, 0));
 
-            THEN("he still has wood left") {
-              REPEAT_FOR_MS(100);
+            THEN("he has both wood and woodchips") {
+              const auto &woodchip = server->findItem("woodchip");
+              WAIT_UNTIL(user->inventory()[1].first.type() == &woodchip);
               CHECK(user->inventory()[0].first.type() == &wood);
             }
           }

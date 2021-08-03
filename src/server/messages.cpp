@@ -908,12 +908,11 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
   READ_ARGS(serial, slot);
 
   auto &invSlot = user.inventory()[0];
-  if (invSlot.second > 1) return;
 
   const auto *itemClass = invSlot.first.type()->getClass();
   const auto resultID = itemClass->scrapResult;
 
-  invSlot = {};
+  if (invSlot.second == 1) invSlot = {};
   user.giveItem(findItem(resultID));
 }
 
