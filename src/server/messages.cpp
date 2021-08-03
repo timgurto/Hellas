@@ -907,6 +907,7 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
   auto slot = 0;
   READ_ARGS(serial, slot);
 
+  if (slot >= User::INVENTORY_SIZE) RETURN_WITH(ERROR_INVALID_SLOT);
   auto &invSlot = user.inventory()[slot].first;
   if (!invSlot.type()) RETURN_WITH(ERROR_EMPTY_SLOT);
 

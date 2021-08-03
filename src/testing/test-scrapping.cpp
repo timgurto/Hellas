@@ -46,13 +46,13 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping", "[scrapping]") {
     }
 
     SECTION("Empty slot") {
-      WHEN("the user tries scrapping an empty slot") {
-        client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
+      client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
+      CHECK(client->waitForMessage(ERROR_EMPTY_SLOT));
+    }
 
-        THEN("he gets a warning") {
-          CHECK(client->waitForMessage(ERROR_EMPTY_SLOT));
-        }
-      }
+    SECTION("Invalid slot number") {
+      client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 1000));
+      CHECK(client->waitForMessage(ERROR_INVALID_SLOT));
     }
   }
 
@@ -126,8 +126,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping", "[scrapping]") {
 // TODO
 // Gear
 // Container
-// Empty slot
-// Invalid slot number
+// Container slot exceeding inventory size
 // Object out of range
 // Object no permission
 // Not scrappable
