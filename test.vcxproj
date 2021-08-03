@@ -250,6 +250,7 @@
     <ClCompile Include="src\Socket.cpp" />
     <ClCompile Include="src\SpellSchool.cpp" />
     <ClCompile Include="src\Stats.cpp" />
+    <ClCompile Include="src\testing\test-scrapping.cpp" />
     <ClCompile Include="src\testing\test-soulbound.cpp" />
     <ClCompile Include="src\testing\TemporaryUserStats.cpp" />
     <ClCompile Include="src\testing\test-ai.cpp" />

@@ -209,6 +209,7 @@
     <ClCompile Include="src\server\npc-ai.cpp" />
     <ClCompile Include="src\server\AI.cpp" />
     <ClCompile Include="src\WorkerThread.cpp" />
+    <ClCompile Include="src\testing\test-scrapping.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />

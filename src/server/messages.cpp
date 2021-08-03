@@ -902,6 +902,15 @@ HANDLE_MESSAGE(CL_REPAIR_ITEM) {
   if (wasBroken) user.updateStats();
 }
 
+HANDLE_MESSAGE(CL_SCRAP_ITEM) {
+  auto serial = Serial{};
+  auto slot = 0;
+  READ_ARGS(serial, slot);
+
+  user.inventory()[0] = {};
+  user.giveItem(findItem("woodchip"));
+}
+
 HANDLE_MESSAGE(CL_TAME_NPC) {
   auto serial = Serial{};
   READ_ARGS(serial);
@@ -1188,6 +1197,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_CAST_SPELL)
       SEND_MESSAGE_TO_HANDLER(CL_CAST_SPELL_FROM_ITEM)
       SEND_MESSAGE_TO_HANDLER(CL_REPAIR_ITEM)
+      SEND_MESSAGE_TO_HANDLER(CL_SCRAP_ITEM)
       SEND_MESSAGE_TO_HANDLER(CL_TAME_NPC)
       SEND_MESSAGE_TO_HANDLER(CL_FEED_PET)
       SEND_MESSAGE_TO_HANDLER(CL_ORDER_PET_TO_STAY)

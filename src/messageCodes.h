@@ -210,6 +210,10 @@ enum MessageCode {
   // Arguments: serial
   CL_REPAIR_OBJECT,
 
+  // Scrap item in a container/inventory
+  // arguments: serial, slot
+  CL_SCRAP_ITEM,
+
   // Attempt to turn an NPC into a pet
   // Arguments: serial
   CL_TAME_NPC,
