@@ -235,6 +235,24 @@
     <unlockedBy recipe="bow" chance="0.04" />
 </recipe>
 
+<recipe id="tambourineSilver" time="10000" >
+    <material id="tambourine" />
+    <material id="silverWire" quantity="3" />
+    <unlockedBy recipe="tambourine" chance="0.04" />
+</recipe>
+<recipe id="tabletSilver" time="10000" >
+    <material id="tablet" />
+    <material id="silverLacquer" quantity="3" />
+    <byproduct id="smallPot" quantity="3" />
+    <unlockedBy recipe="tablet" chance="0.04" />
+</recipe>
+<recipe id="parchmentSilver" time="10000" >
+    <material id="parchment" />
+    <material id="silverLacquer" quantity="5" />
+    <byproduct id="smallPot" quantity="5" />
+    <unlockedBy recipe="parchment" chance="0.04" />
+</recipe>
+
 <recipe id="airWandSilver" time="10000" >
     <material id="airWand" />
     <material id="silverWire" quantity="3" />

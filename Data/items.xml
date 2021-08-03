@@ -581,9 +581,16 @@
                 <stats cunning="11" energy="10" />
                 <offset x="-2" y="-6" />
             </item>
+                <item id="tabletSilver" name="Illuminated Tablet" class="ceramic" gearSlot="7" sounds="ceramic" lvlReq="15" iconFile="tablet" quality="2" >
+                    <stats cunning="14" energy="14" />
+                    <offset x="-2" y="-6" />
+                </item>
             <item id="parchment" name="Parchment" class="parchment" gearSlot="7" lvlReq="22" >
                 <stats cunning="15" energy="16" />
             </item>
+                <item id="parchmentSilver" name="Illuminated Parchment" class="parchment" gearSlot="7" lvlReq="22" iconFile="parchment" quality="2" >
+                    <stats cunning="18" energy="20" />
+                </item>
 
         <!-- Musical instrument (HPS, EPS) -->
             <item id="horn" name="Horn" class="horn" gearSlot="7" >
@@ -594,6 +601,10 @@
                 <stats courage="10" />
                 <offset x="-5" y="-2" />
             </item>
+                <item id="tambourineSilver" name="Inlaid Tambourine" class="tambourine" gearSlot="7" lvlReq="10" icon="tambourine" quality="2" >
+                    <stats courage="14" />
+                    <offset x="-5" y="-2" />
+                </item>
 
 <item id="debugRing" name="Ring of Power" gearSlot="1" quality="4" iconFile="tinRing" >
     <stats might="300" intellect="300" cunning="1000" swiftness="1000" endurance="1000" courage="1000" />
