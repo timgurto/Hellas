@@ -577,11 +577,11 @@
                 <stats cunning="2" energy="2" />
                 <offset x="0" y="1" />
             </item>
-            <item id="tablet" name="Tablet" gearSlot="7" sounds="ceramic" lvlReq="15" >
+            <item id="tablet" name="Tablet" class="ceramic" gearSlot="7" sounds="ceramic" lvlReq="15" >
                 <stats cunning="11" energy="10" />
                 <offset x="-2" y="-6" />
             </item>
-            <item id="parchment" name="Parchment" gearSlot="7" lvlReq="22" >
+            <item id="parchment" name="Parchment" class="parchment" gearSlot="7" lvlReq="22" >
                 <stats cunning="15" energy="16" />
             </item>
 

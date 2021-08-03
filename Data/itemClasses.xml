@@ -71,6 +71,9 @@
 <itemClass id="hide" >
     <canBeRepaired cost="hide" tool="sewing" />
 </itemClass>
+<itemClass id="parchment" >
+    <canBeRepaired cost="sheepskin" tool="leatherStretching" />
+</itemClass>
 
 <!-- LEATHER -->
 <itemClass id="sling" >
