@@ -53,6 +53,34 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping", "[scrapping]") {
       }
     }
   }
+
+  SECTION("Nontrivial yield") {
+    GIVEN("wood can be scrapped into 1-3 woodchips") {
+      useData(R"(
+        <item id="wood" class="wood" stackSize="100" />
+        <item id="woodchip" stackSize="1000" />
+        <itemClass id="wood">
+          <canBeScrapped result="woodchip" mean="2" sd="0.5" />
+        </itemClass>
+      )");
+
+      AND_GIVEN("the user has 100 wood") {
+        const auto &wood = server->findItem("wood");
+        user->giveItem(&wood, 100);
+
+        SECTION("Scrapping a stack only removes one item") {
+          WHEN("he scraps one wood") {
+            client->sendMessage(CL_SCRAP_ITEM, makeArgs(0, 0));
+
+            THEN("he still has wood left") {
+              REPEAT_FOR_MS(100);
+              CHECK(user->inventory()[0].first.type() == &wood);
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 // TODO
