@@ -1,0 +1,147 @@
+<!-- STONE -->
+<itemClass id="stoneKnife">
+    <canBeRepaired cost="knapper" />
+</itemClass>
+<itemClass id="stoneAxe">
+    <canBeRepaired cost="knapper" />
+</itemClass>
+
+<!-- BONE -->
+<itemClass id="boneClub">
+    <canBeRepaired cost="bone" />
+</itemClass>
+<itemClass id="knucklebones">
+    <canBeRepaired cost="boneDust" />
+</itemClass>
+
+<!-- WOOD -->
+<itemClass id="woodSpear">
+    <canBeRepaired tool="grinding1" />
+</itemClass>
+
+<!-- LUMBER -->
+<itemClass id="bow" >
+    <canBeRepaired cost="lumber" />
+</itemClass>
+<itemClass id="lumberShield" >
+    <canBeRepaired cost="lumber" />
+</itemClass>
+
+<!-- LINEN -->
+<itemClass id="linenBack" >
+    <canBeRepaired cost="linenCloth" tool="sewing" />
+</itemClass>
+<itemClass id="linenBody" >
+    <canBeRepaired cost="linenCloth" tool="sewing" />
+</itemClass>
+
+<!-- WOOL -->
+<itemClass id="woolHead" >
+    <canBeRepaired cost="woolCloth" tool="sewing" />
+</itemClass>
+<itemClass id="woolBack" >
+    <canBeRepaired cost="woolCloth" tool="sewing" />
+</itemClass>
+<itemClass id="woolBody" >
+    <canBeRepaired cost="woolCloth" tool="sewing" />
+</itemClass>
+<itemClass id="woolHands" >
+    <canBeRepaired cost="woolCloth" tool="sewing" />
+</itemClass>
+<itemClass id="woolFeet" >
+    <canBeRepaired cost="woolCloth" tool="sewing" />
+</itemClass>
+
+<!-- LEATHER -->
+<itemClass id="sling" >
+    <canBeRepaired cost="leather" tool="sewing" />
+</itemClass>
+<itemClass id="leatherHead" >
+    <canBeRepaired cost="leather" tool="sewing" />
+</itemClass>
+<itemClass id="leatherScaleMail" >
+    <canBeRepaired cost="leatherScale" />
+</itemClass>
+<itemClass id="leatherHands" >
+    <canBeRepaired cost="leather" tool="sewing" />
+</itemClass>
+<itemClass id="leatherFeet" >
+    <canBeRepaired cost="leather" tool="sewing" />
+</itemClass>
+
+<!-- TIN -->
+<itemClass id="tinKnife">
+    <canBeRepaired cost="tinBar" tool="smelting1" />
+</itemClass>
+<itemClass id="tinSaw">
+    <canBeRepaired cost="tinBar" tool="smelting1" />
+</itemClass>
+<itemClass id="tinPickaxe">
+    <canBeRepaired cost="tinBar" tool="smelting1" />
+</itemClass>
+<itemClass id="tinAxe">
+    <canBeRepaired cost="tinBar" tool="smelting1" />
+</itemClass>
+<itemClass id="tinSpear">
+    <canBeRepaired cost="tinBar" tool="smelting1" />
+</itemClass>
+<itemClass id="tinScaleMail">
+    <canBeRepaired cost="tinScale" />
+</itemClass>
+<itemClass id="tinRingMail">
+    <canBeRepaired cost="tinRing" />
+</itemClass>
+<itemClass id="tambourine">
+    <canBeRepaired cost="tinScale" />
+</itemClass>
+
+<!-- COPPER -->
+<itemClass id="copperKnife">
+    <canBeRepaired cost="copperBar" tool="smelting2" />
+</itemClass>
+<itemClass id="copperSaw">
+    <canBeRepaired cost="copperBar" tool="hammering" />
+</itemClass>
+<itemClass id="copperPickaxe">
+    <canBeRepaired cost="copperBar" tool="hammering" />
+</itemClass>
+<itemClass id="copperAxe">
+    <canBeRepaired cost="copperBar" tool="smelting2" />
+</itemClass>
+<itemClass id="copperHammer">
+    <canBeRepaired cost="copperBar" tool="smelting2" />
+</itemClass>
+<itemClass id="copperSpear">
+    <canBeRepaired cost="copperBar" tool="smelting2" />
+</itemClass>
+<itemClass id="copperSword">
+    <canBeRepaired cost="copperBar" tool="smelting2" />
+</itemClass>
+<itemClass id="copperHead" >
+    <canBeRepaired cost="copperBar" tool="smelting2" />
+</itemClass>
+<itemClass id="copperScaleMail">
+    <canBeRepaired cost="copperScale" />
+</itemClass>
+<itemClass id="copperRingMail">
+    <canBeRepaired cost="copperRing" />
+</itemClass>
+<itemClass id="copperChest">
+    <canBeRepaired cost="copperBar" tool="smelting2" />
+</itemClass>
+<itemClass id="copperHands">
+    <canBeRepaired cost="copperBar" tool="smelting2" />
+</itemClass>
+<itemClass id="copperFeet">
+    <canBeRepaired cost="copperBar" tool="smelting2" />
+</itemClass>
+<itemClass id="copperShield">
+    <canBeRepaired cost="copperBar" tool="smelting2" />
+</itemClass>
+
+
+
+
+
+
+
