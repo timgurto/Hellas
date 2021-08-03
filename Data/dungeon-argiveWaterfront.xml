@@ -689,7 +689,7 @@
     <stats might="2" endurance="3" />
     <offset x="-8" y="-1" />
 </item>
-<item id="dAW_shipwrightShield" name="Ship's Wheel" class="woodShield" gearSlot="7" quality="2" lvlReq="19" bind="pickup"
+<item id="dAW_shipwrightShield" name="Ship's Wheel" class="lumberShield" gearSlot="7" quality="2" lvlReq="19" bind="pickup"
     iconFile="shipWheel" gearFile="shipWheel" >
     <tag name="shield" />
     <stats armor="23" endurance="5" block="200" blockValue="600" />
