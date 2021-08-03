@@ -907,7 +907,7 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
   auto slot = 0;
   READ_ARGS(serial, slot);
 
-  auto &invSlot = user.inventory()[0];
+  auto &invSlot = user.inventory()[slot];
 
   const auto *itemClass = invSlot.first.type()->getClass();
   const auto resultID = itemClass->scrapResult;

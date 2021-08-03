@@ -18,11 +18,29 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping", "[scrapping]") {
       user->giveItem(&wood);
 
       WHEN("he scraps it") {
-        client->sendMessage(CL_SCRAP_ITEM, makeArgs(0, 0));
+        client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
 
         THEN("he has a wood chip") {
           const auto &woodchip = server->findItem("woodchip");
           WAIT_UNTIL(user->inventory()[0].first.type() == &woodchip);
+        }
+      }
+    }
+
+    SECTION("Different slot") {
+      AND_GIVEN("the user has wood in slot 5") {
+        const auto &wood = server->findItem("wood");
+        user->giveItem(&wood);
+        client->sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0,
+                                                    Serial::Inventory(), 5));
+
+        WHEN("he scraps it") {
+          client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 5));
+
+          THEN("he has a wood chip") {
+            const auto &woodchip = server->findItem("woodchip");
+            WAIT_UNTIL(user->inventory()[0].first.type() == &woodchip);
+          }
         }
       }
     }
@@ -43,7 +61,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping", "[scrapping]") {
         user->giveItem(&rock);
 
         WHEN("he scraps it") {
-          client->sendMessage(CL_SCRAP_ITEM, makeArgs(0, 0));
+          client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
 
           THEN("he has sand") {
             const auto &sand = server->findItem("sand");
@@ -70,7 +88,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping", "[scrapping]") {
 
         SECTION("Scrapping a stack only removes one item") {
           WHEN("he scraps one wood") {
-            client->sendMessage(CL_SCRAP_ITEM, makeArgs(0, 0));
+            client->sendMessage(CL_SCRAP_ITEM,
+                                makeArgs(Serial::Inventory(), 0));
 
             THEN("he has both wood and woodchips") {
               const auto &woodchip = server->findItem("woodchip");
@@ -81,7 +100,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping", "[scrapping]") {
 
           WHEN("he scraps all 100 wood") {
             for (auto i = 0; i != 100; ++i)
-              client->sendMessage(CL_SCRAP_ITEM, makeArgs(0, 0));
+              client->sendMessage(CL_SCRAP_ITEM,
+                                  makeArgs(Serial::Inventory(), 0));
 
             THEN("he has no wood left") {
               WAIT_UNTIL(!user->inventory()[0].first.hasItem());
@@ -96,6 +116,11 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping", "[scrapping]") {
 // TODO
 // Gear
 // Container
+// Empty slot
+// Invalid slot number
+// Object out of range
+// Object no permission
+// Not scrappable
 // Bell curve
 // Check inventory space
 // Later: unlock repair skill
