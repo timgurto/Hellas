@@ -44,6 +44,12 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping", "[scrapping]") {
         }
       }
     }
+
+    SECTION("Empty slot") {
+      WHEN("the user tries scrapping an empty slot") {
+        client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
+      }
+    }
   }
 
   SECTION("Different items") {

@@ -907,12 +907,13 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
   auto slot = 0;
   READ_ARGS(serial, slot);
 
-  auto &invSlot = user.inventory()[slot];
+  auto &invSlot = user.inventory()[slot].first;
+  if (!invSlot.type()) return;
 
-  const auto *itemClass = invSlot.first.type()->getClass();
+  const auto *itemClass = invSlot.type()->getClass();
   const auto resultID = itemClass->scrapResult;
 
-  user.removeItems({invSlot.first.type()});
+  user.removeItems({invSlot.type()});
   user.giveItem(findItem(resultID));
 }
 
