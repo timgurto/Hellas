@@ -912,7 +912,7 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
   const auto *itemClass = invSlot.first.type()->getClass();
   const auto resultID = itemClass->scrapResult;
 
-  if (invSlot.second == 1) invSlot = {};
+  user.removeItems({invSlot.first.type()});
   user.giveItem(findItem(resultID));
 }
 

@@ -78,6 +78,15 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping", "[scrapping]") {
               CHECK(user->inventory()[0].first.type() == &wood);
             }
           }
+
+          WHEN("he scraps all 100 wood") {
+            for (auto i = 0; i != 100; ++i)
+              client->sendMessage(CL_SCRAP_ITEM, makeArgs(0, 0));
+
+            THEN("he has no wood left") {
+              WAIT_UNTIL(!user->inventory()[0].first.hasItem());
+            }
+          }
         }
       }
     }
@@ -88,6 +97,5 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping", "[scrapping]") {
 // Gear
 // Container
 // Bell curve
-// Scrap one of a stack?
 // Check inventory space
 // Later: unlock repair skill

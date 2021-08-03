@@ -3,7 +3,7 @@
 #include "../Item.h"
 #include "../util.h"
 
-ItemSet::ItemSet() : _totalQty(0) {}
+ItemSet::ItemSet(const Item *item) { add(item); }
 
 const ItemSet &ItemSet::operator+=(const ItemSet &rhs) {
   for (const auto &pair : rhs) {

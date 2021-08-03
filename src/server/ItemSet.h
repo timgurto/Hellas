@@ -10,10 +10,11 @@ class Item;
 // A collection of Items, with duplicates/quantities allowed.
 class ItemSet {
   std::map<const Item *, size_t> _set;
-  size_t _totalQty;
+  size_t _totalQty{0};
 
  public:
-  ItemSet();
+  ItemSet() = default;
+  ItemSet(const Item *item);
 
   const ItemSet &operator+=(const ItemSet &rhs);
   const ItemSet &operator+=(const Item *newItem);
