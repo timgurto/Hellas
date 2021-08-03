@@ -35,7 +35,7 @@
         <unlockedBy recipe="linenCloth" chance="0.1" />
     </recipe>
 
-<item id="staff1" name="Walking Stick"
+<item id="staff1" name="Walking Stick" class="woodStaff"
     gearSlot="6" lvlReq="13">
     <stats followerLimit="1" />
     <offset x="-6" y="-16" />
@@ -48,7 +48,7 @@
         <unlockedBy item="sheepskin" chance="0.02" />
         <unlockedBy recipe="pole1" chance="0.05" />
     </recipe>
-    <item id="staff1Silver" name="Inlaid Walking Stick"
+    <item id="staff1Silver" name="Inlaid Walking Stick" class="woodStaff"
         gearSlot="6" lvlReq="13" quality="2" bind="equip"
         iconFile="staff1" gearFile="staff1">
         <stats followerLimit="1" />
@@ -56,7 +56,7 @@
         <weapon damage="13" speed="3.2" />
     </item>
     
-<item id="staff2" name="Staff"
+<item id="staff2" name="Staff" class="lumberStaff"
     gearSlot="6" lvlReq="24">
     <stats followerLimit="2" />
     <offset x="-3" y="-19" />
@@ -67,7 +67,7 @@
         <unlockedBy recipe="pole2" chance="0.05" />
         <unlockedBy recipe="staff1" chance="0.1" />
     </recipe>
-    <item id="staff2Silver" name="Inlaid Staff"
+    <item id="staff2Silver" name="Inlaid Staff" class="lumberStaff"
         gearSlot="6" lvlReq="24" quality="2" bind="equip"
         iconFile="staff2" gearFile="staff2">
         <stats followerLimit="2" />

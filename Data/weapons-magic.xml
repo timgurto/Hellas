@@ -1,11 +1,10 @@
 <root>
 
-<item id="airWand" name="Wand of Air" gearSlot="6" >
+<item id="airWand" name="Wand of Air" class="airWand" gearSlot="6" >
     <tag name="wand" />
     <weapon damage="4" speed="2.6" range="25" school="air" consumes="boneDust" projectile="airball" />
     <offset x="-5" y="-2" />
     <particles profile="airSmall" x="-4" y="0" />
-    <canBeRepaired cost="airEssence" />
 </item>
     <recipe
         id="airWand" time="10000" >
@@ -17,22 +16,20 @@
         <unlockedBy recipe="waterWand" chance="0.1" />
         <unlockedBy recipe="boneDust" chance="0.02" />
     </recipe>
-    <item id="airWandSilver" name="Inlaid Wand of Air" gearSlot="6" 
+    <item id="airWandSilver" name="Inlaid Wand of Air" class="airWand" gearSlot="6" 
         iconFile="airWand" gearFile="airWand" quality="2" bind="equip">
         <tag name="wand" toolSpeed="1.05" />
         <stats intellect="1" />
         <weapon damage="4" speed="2.4" range="25" school="air" consumes="boneDust" projectile="airball" />
         <offset x="-5" y="-2" />
         <particles profile="airSmall" x="-4" y="0" />
-        <canBeRepaired cost="airEssence" />
     </item>
     
-<item id="waterWand" name="Wand of Water" gearSlot="6" >
+<item id="waterWand" name="Wand of Water" class="waterWand" gearSlot="6" >
     <tag name="wand" />
     <weapon damage="4" speed="2.6" range="25" school="water" consumes="boneDust" projectile="waterball" />
     <offset x="-5" y="-2" />
     <particles profile="waterSmall" x="-4" y="0" />
-    <canBeRepaired cost="waterEssence" />
 </item>
     <recipe
         id="waterWand" time="10000" >
@@ -44,23 +41,21 @@
         <unlockedBy recipe="fireWand" chance="0.1" />
         <unlockedBy recipe="boneDust" chance="0.02" />
     </recipe>
-    <item id="waterWandSilver" name="Inlaid Wand of Water" gearSlot="6"
+    <item id="waterWandSilver" name="Inlaid Wand of Water" class="waterWand" gearSlot="6"
         iconFile="waterWand" gearFile="waterWand" quality="2" bind="equip">
         <tag name="wand" toolSpeed="1.05" />
         <stats intellect="1" />
         <weapon damage="4" speed="2.4" range="25" school="water" consumes="boneDust" projectile="waterball" />
         <offset x="-5" y="-2" />
         <particles profile="waterSmall" x="-4" y="0" />
-        <canBeRepaired cost="waterEssence" />
     </item>
 
-<item id="earthWand" name="Wand of Earth" gearSlot="6" lvlReq="3" >
+<item id="earthWand" name="Wand of Earth" class="earthWand" gearSlot="6" lvlReq="3" >
     <tag name="wand" />
     <stats intellect="1" />
     <weapon damage="4" speed="2.9" range="25" school="earth" consumes="boneDust" projectile="earthball" />
     <offset x="-5" y="-2" />
     <particles profile="earthSmall" x="-4" y="0" />
-    <canBeRepaired cost="earthEssence" />
 </item>
     <recipe
         id="earthWand" time="10000" >
@@ -72,7 +67,7 @@
         <unlockedBy recipe="waterWand" chance="0.1" />
         <unlockedBy recipe="boneDust" chance="0.02" />
     </recipe>
-    <item id="earthWandSilver" name="Inlaid Wand of Earth" gearSlot="6" lvlReq="3"
+    <item id="earthWandSilver" name="Inlaid Wand of Earth" class="earthWand" gearSlot="6" lvlReq="3"
         iconFile="earthWand" gearFile="earthWand" quality="2" bind="equip">
         <tag name="wand" toolSpeed="1.05" />
         <stats intellect="1" />
@@ -80,17 +75,15 @@
         <stats intellect="2" />
         <offset x="-5" y="-2" />
         <particles profile="earthSmall" x="-4" y="0" />
-        <canBeRepaired cost="earthEssence" />
     </item>
     
-<item id="fireWand" name="Wand of Fire" gearSlot="6" lvlReq="3" >
+<item id="fireWand" name="Wand of Fire" class="fireWand" gearSlot="6" lvlReq="3" >
     <tag name="wand" />
     <stats intellect="1" />
         <stats intellect="1" />
     <weapon damage="5" speed="2.4" range="25" school="fire" consumes="boneDust" projectile="fireball" />
     <offset x="-5" y="-2" />
     <particles profile="fireSmall" x="-4" y="0" />
-    <canBeRepaired cost="fireEssence" />
 </item>
     <recipe
         id="fireWand" time="10000" >
@@ -102,24 +95,22 @@
         <unlockedBy recipe="waterWand" chance="0.1" />
         <unlockedBy recipe="boneDust" chance="0.02" />
     </recipe>
-    <item id="fireWandSilver" name="Inlaid Wand of Fire" gearSlot="6" lvlReq="3"
+    <item id="fireWandSilver" name="Inlaid Wand of Fire" class="fireWand" gearSlot="6" lvlReq="3"
         iconFile="fireWand" gearFile="fireWand" quality="2" bind="equip">
         <tag name="wand" toolSpeed="1.05" />
         <stats intellect="2" />
         <weapon damage="5" speed="2.7" range="25" school="fire" consumes="boneDust" projectile="fireball" />
         <offset x="-5" y="-2" />
         <particles profile="fireSmall" x="-4" y="0" />
-        <canBeRepaired cost="fireEssence" />
     </item>
     
-<item id="airStaff" name="Rod of Air" gearSlot="6" lvlReq="11" >
+<item id="airStaff" name="Rod of Air" class="airStaff" gearSlot="6" lvlReq="11" >
     <tag name="wand" toolSpeed="1.1" />
     <stats intellect="1" />
     <weapon damage="5" speed="2.4" range="25" school="air" consumes="airDust" projectile="airball" />
     <offset x="-5" y="-20" />
     <particles profile="airSmall" x="-4" y="-19" />
     <particles profile="airSmall" x="5" y="16" />
-    <canBeRepaired cost="airEssence" />
 </item>
     <recipe
         id="airStaff" time="10000" >
@@ -132,7 +123,7 @@
         <unlockedBy recipe="fireStaff" chance="0.1" />
         <unlockedBy recipe="waterStaff" chance="0.1" />
     </recipe>
-    <item id="airStaffSilver" name="Inlaid Rod of Air" gearSlot="6" lvlReq="11"
+    <item id="airStaffSilver" name="Inlaid Rod of Air" class="airStaff" gearSlot="6" lvlReq="11"
         iconFile="airStaff" gearFile="airStaff" quality="2" bind="equip">
         <tag name="wand" toolSpeed="1.15" />
         <stats intellect="2" />
@@ -140,17 +131,15 @@
         <offset x="-5" y="-20" />
         <particles profile="airSmall" x="-4" y="-19" />
         <particles profile="airSmall" x="5" y="16" />
-        <canBeRepaired cost="airEssence" />
     </item>
     
-<item id="waterStaff" name="Rod of Water" gearSlot="6" lvlReq="11" >
+<item id="waterStaff" name="Rod of Water" class="waterStaff" gearSlot="6" lvlReq="11" >
     <tag name="wand" toolSpeed="1.1" />
     <stats intellect="1" />
     <weapon damage="5" speed="2.4" range="25" school="water" consumes="waterDust" projectile="waterball" />
     <offset x="-5" y="-20" />
     <particles profile="waterSmall" x="-4" y="-19" />
     <particles profile="waterSmall" x="5" y="16" />
-    <canBeRepaired cost="waterEssence" />
 </item>
     <recipe
         id="waterStaff" time="10000" >
@@ -163,7 +152,7 @@
         <unlockedBy recipe="earthStaff" chance="0.1" />
         <unlockedBy recipe="fireStaff" chance="0.1" />
     </recipe>
-    <item id="waterStaffSilver" name="Inlaid Rod of Water" gearSlot="6" lvlReq="11"
+    <item id="waterStaffSilver" name="Inlaid Rod of Water" class="waterStaff" gearSlot="6" lvlReq="11"
         iconFile="waterStaff" gearFile="waterStaff" quality="2" bind="equip">
         <tag name="wand" toolSpeed="1.15" />
         <stats intellect="2" />
@@ -171,17 +160,15 @@
         <offset x="-5" y="-20" />
         <particles profile="waterSmall" x="-4" y="-19" />
         <particles profile="waterSmall" x="5" y="16" />
-        <canBeRepaired cost="waterEssence" />
     </item>
     
-<item id="earthStaff" name="Rod of Earth" gearSlot="6" lvlReq="13" >
+<item id="earthStaff" name="Rod of Earth" class="earthStaff" gearSlot="6" lvlReq="13" >
     <tag name="wand" toolSpeed="1.1" />
     <stats intellect="2" />
     <weapon damage="5" speed="2.5" range="25" school="earth" consumes="earthDust" projectile="earthball" />
     <offset x="-5" y="-20" />
     <particles profile="earthSmall" x="-4" y="-19" />
     <particles profile="earthSmall" x="5" y="16" />
-    <canBeRepaired cost="earthEssence" />
 </item>
     <recipe
         id="earthStaff" time="10000" >
@@ -194,7 +181,7 @@
         <unlockedBy recipe="fireStaff" chance="0.1" />
         <unlockedBy recipe="waterStaff" chance="0.1" />
     </recipe>
-    <item id="earthStaffSilver" name="Inlaid Rod of Earth" gearSlot="6" lvlReq="13"
+    <item id="earthStaffSilver" name="Inlaid Rod of Earth" class="earthStaff" gearSlot="6" lvlReq="13"
         iconFile="earthStaff" gearFile="earthStaff" quality="2" bind="equip">
         <stats intellect="2" />
         <tag name="wand" toolSpeed="1.15" />
@@ -202,17 +189,15 @@
         <offset x="-5" y="-20" />
         <particles profile="earthSmall" x="-4" y="-19" />
         <particles profile="earthSmall" x="5" y="16" />
-        <canBeRepaired cost="earthEssence" />
     </item>
     
-<item id="fireStaff" name="Rod of Fire" gearSlot="6" lvlReq="13" >
+<item id="fireStaff" name="Rod of Fire" class="fireStaff" gearSlot="6" lvlReq="13" >
     <tag name="wand" toolSpeed="1.1" />
     <stats intellect="2" />
     <weapon damage="5" speed="2.5" range="25" school="fire" consumes="fireDust" projectile="fireball" />
     <offset x="-5" y="-20" />
     <particles profile="fireSmall" x="-4" y="-19" />
     <particles profile="fireSmall" x="5" y="16" />
-    <canBeRepaired cost="fireEssence" />
 </item>
     <recipe
         id="fireStaff" time="10000" >
@@ -225,7 +210,7 @@
         <unlockedBy recipe="earthStaff" chance="0.1" />
         <unlockedBy recipe="waterStaff" chance="0.1" />
     </recipe>
-    <item id="fireStaffSilver" name="Inlaid Rod of Fire" gearSlot="6" lvlReq="13"
+    <item id="fireStaffSilver" name="Inlaid Rod of Fire" class="fireStaff" gearSlot="6" lvlReq="13"
         iconFile="fireStaff" gearFile="fireStaff" quality="2" bind="equip">
         <stats intellect="2" />
         <tag name="wand" toolSpeed="1.15" />
@@ -233,7 +218,6 @@
         <offset x="-5" y="-20" />
         <particles profile="fireSmall" x="-4" y="-19" />
         <particles profile="fireSmall" x="5" y="16" />
-        <canBeRepaired cost="fireEssence" />
     </item>
 
 

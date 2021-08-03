@@ -586,7 +586,7 @@
             </item>
 
         <!-- Musical instrument (HPS, EPS) -->
-            <item id="horn" name="Horn" gearSlot="7" >
+            <item id="horn" name="Horn" class="horn" gearSlot="7" >
                 <stats courage="2" />
                 <offset x="0" y="-3" />
             </item>

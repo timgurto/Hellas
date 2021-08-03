@@ -13,10 +13,20 @@
 <itemClass id="knucklebones">
     <canBeRepaired cost="boneDust" />
 </itemClass>
+<itemClass id="horn">
+    <canBeRepaired cost="boneDust" />
+</itemClass>
+
+<itemClass id="ceramic">
+    <canBeRepaired cost="clay" tool="pottery2" />
+</itemClass>
 
 <!-- WOOD -->
 <itemClass id="woodSpear">
-    <canBeRepaired tool="grinding1" />
+    <canBeRepaired cost="pole1" tool="grinding1" />
+</itemClass>
+<itemClass id="woodStaff">
+    <canBeRepaired cost="pole1" />
 </itemClass>
 
 <!-- LUMBER -->
@@ -25,6 +35,9 @@
 </itemClass>
 <itemClass id="lumberShield" >
     <canBeRepaired cost="lumber" />
+</itemClass>
+<itemClass id="lumberStaff" >
+    <canBeRepaired cost="pole2" />
 </itemClass>
 
 <!-- LINEN -->
@@ -52,6 +65,11 @@
     <canBeRepaired cost="woolCloth" tool="sewing" />
 </itemClass>
 
+<!-- HIDE -->
+<itemClass id="hide" >
+    <canBeRepaired cost="hide" tool="sewing" />
+</itemClass>
+
 <!-- LEATHER -->
 <itemClass id="sling" >
     <canBeRepaired cost="leather" tool="sewing" />
@@ -59,8 +77,14 @@
 <itemClass id="leatherHead" >
     <canBeRepaired cost="leather" tool="sewing" />
 </itemClass>
+<itemClass id="leatherBack" >
+    <canBeRepaired cost="leather" tool="sewing" />
+</itemClass>
 <itemClass id="leatherScaleMail" >
     <canBeRepaired cost="leatherScale" />
+</itemClass>
+<itemClass id="leatherBody" >
+    <canBeRepaired cost="leather" tool="sewing" />
 </itemClass>
 <itemClass id="leatherHands" >
     <canBeRepaired cost="leather" tool="sewing" />
@@ -82,14 +106,26 @@
 <itemClass id="tinAxe">
     <canBeRepaired cost="tinBar" tool="smelting1" />
 </itemClass>
+<itemClass id="tinHammer">
+    <canBeRepaired cost="tinBar" tool="smelting1" />
+</itemClass>
 <itemClass id="tinSpear">
+    <canBeRepaired cost="tinBar" tool="smelting1" />
+</itemClass>
+<itemClass id="tinSword">
     <canBeRepaired cost="tinBar" tool="smelting1" />
 </itemClass>
 <itemClass id="tinScaleMail">
     <canBeRepaired cost="tinScale" />
 </itemClass>
+<itemClass id="tinScaleBoots">
+    <canBeRepaired cost="tinScale" />
+</itemClass>
 <itemClass id="tinRingMail">
     <canBeRepaired cost="tinRing" />
+</itemClass>
+<itemClass id="tinHands">
+    <canBeRepaired cost="tinBar" tool="smelting1" />
 </itemClass>
 <itemClass id="tambourine">
     <canBeRepaired cost="tinScale" />
@@ -137,6 +173,37 @@
 </itemClass>
 <itemClass id="copperShield">
     <canBeRepaired cost="copperBar" tool="smelting2" />
+</itemClass>
+
+<!-- SILVER -->
+<itemClass id="silverJewelry">
+    <canBeRepaired cost="silverWire" />
+</itemClass>
+
+<!-- MAGIC -->
+<itemClass id="airWand">
+    <canBeRepaired cost="airEssence" />
+</itemClass>
+<itemClass id="airStaff">
+    <canBeRepaired cost="airEssence" />
+</itemClass>
+<itemClass id="waterWand">
+    <canBeRepaired cost="airEssence" />
+</itemClass>
+<itemClass id="waterStaff">
+    <canBeRepaired cost="waterEssence" />
+</itemClass>
+<itemClass id="earthWand">
+    <canBeRepaired cost="earthEssence" />
+</itemClass>
+<itemClass id="earthStaff">
+    <canBeRepaired cost="earthEssence" />
+</itemClass>
+<itemClass id="fireWand">
+    <canBeRepaired cost="fireEssence" />
+</itemClass>
+<itemClass id="fireStaff">
+    <canBeRepaired cost="fireEssence" />
 </itemClass>
 
 
