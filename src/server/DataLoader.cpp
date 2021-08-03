@@ -647,6 +647,11 @@ void DataLoader::loadItemClasses(XmlReader &xr) {
       xr.findAttr(repairElem, "tool", ic.repairInfo.tool);
     }
 
+    auto scrapElem = xr.findChild("canBeScrapped", elem);
+    if (scrapElem) {
+      xr.findAttr(scrapElem, "result", ic.scrapResult);
+    }
+
     _server._itemClasses[classID] = ic;
   }
 }

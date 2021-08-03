@@ -907,8 +907,12 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
   auto slot = 0;
   READ_ARGS(serial, slot);
 
-  user.inventory()[0] = {};
-  user.giveItem(findItem("woodchip"));
+  auto &invSlot = user.inventory()[0];
+  const auto &itemClass = invSlot.first.type()->getClass();
+  const auto resultID = itemClass->scrapResult;
+
+  invSlot = {};
+  user.giveItem(findItem(resultID));
 }
 
 HANDLE_MESSAGE(CL_TAME_NPC) {

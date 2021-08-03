@@ -4,4 +4,5 @@
 
 struct ItemClass {
   RepairInfo repairInfo;
+  std::string scrapResult;
 };
