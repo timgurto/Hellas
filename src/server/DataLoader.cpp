@@ -744,7 +744,11 @@ void DataLoader::loadItems(XmlReader &xr) {
 
     if (xr.findAttr(elem, "class", s)) {
       const auto it = _server._itemClasses.find(s);
-      if (it != _server._itemClasses.end()) item.setClass(it->second);
+      if (it != _server._itemClasses.end())
+        item.setClass(it->second);
+      else
+        SERVER_ERROR("Unknown item class specified: \""s + s +
+                     "\", by item \""s + id + "\""s);
     }
 
     item.loaded();
