@@ -4,7 +4,7 @@
 #include <set>
 #include <string>
 
-#include "../server/ItemClass.h"
+#include "../ItemClass.h"
 #include "CQuest.h"
 #include "CRecipe.h"
 #include "ClassInfo.h"

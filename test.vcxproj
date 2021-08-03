@@ -382,6 +382,7 @@
     <ClInclude Include="src\curlUtil.h" />
     <ClInclude Include="src\HasTags.h" />
     <ClInclude Include="src\Item.h" />
+    <ClInclude Include="src\ItemClass.h" />
     <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\Map.h" />
     <ClInclude Include="src\Message.h" />
@@ -411,7 +412,6 @@
     <ClInclude Include="src\server\Exploration.h" />
     <ClInclude Include="src\server\Gatherable.h" />
     <ClInclude Include="src\server\Groups.h" />
-    <ClInclude Include="src\server\ItemClass.h" />
     <ClInclude Include="src\server\Loot.h" />
     <ClInclude Include="src\server\LootTable.h" />
     <ClInclude Include="src\server\ObjectsByOwner.h" />

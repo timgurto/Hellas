@@ -188,6 +188,7 @@
     <ClInclude Include="src\curlUtil.h" />
     <ClInclude Include="src\HasTags.h" />
     <ClInclude Include="src\Item.h" />
+    <ClInclude Include="src\ItemClass.h" />
     <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\Map.h" />
     <ClInclude Include="src\Message.h" />

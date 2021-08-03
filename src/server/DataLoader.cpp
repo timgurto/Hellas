@@ -6,8 +6,8 @@
 #include <set>
 
 #include "../Args.h"
+#include "../ItemClass.h"
 #include "../XmlReader.h"
-#include "ItemClass.h"
 #include "ProgressLock.h"
 #include "Server.h"
 #include "VehicleType.h"

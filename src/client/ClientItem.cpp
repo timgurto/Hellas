@@ -1,7 +1,7 @@
 #include "ClientItem.h"
 
+#include "../ItemClass.h"
 #include "../XmlReader.h"
-#include "../server/ItemClass.h"
 #include "Client.h"
 #include "Tooltip.h"
 #include "Unlocks.h"

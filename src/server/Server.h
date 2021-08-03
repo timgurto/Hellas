@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "../Args.h"
+#include "../ItemClass.h"
 #include "../Map.h"
 #include "../Socket.h"
 #include "../Terrain.h"
@@ -19,7 +20,6 @@
 #include "CollisionChunk.h"
 #include "DataLoader.h"
 #include "Entities.h"
-#include "ItemClass.h"
 #include "ItemSet.h"
 #include "LogConsole.h"
 #include "NPC.h"
