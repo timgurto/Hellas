@@ -148,8 +148,14 @@ TEST_CASE_METHOD(ServerAndClient, "Scrapping with bad data", "[scrapping]") {
     CHECK(client.waitForMessage(ERROR_EMPTY_SLOT));
   }
 
-  SECTION("Invalid slot number") {
+  SECTION("Invalid inventory slot") {
     client.sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 1000));
+    CHECK(client.waitForMessage(ERROR_INVALID_SLOT));
+  }
+
+  SECTION("Invalid gear slot") {
+    // Number of gear slots < 9 < number of inventory slots
+    client.sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Gear(), 9));
     CHECK(client.waitForMessage(ERROR_INVALID_SLOT));
   }
 }

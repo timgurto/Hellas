@@ -907,12 +907,14 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
   auto slot = 0;
   READ_ARGS(serial, slot);
 
-  if (slot >= User::INVENTORY_SIZE) RETURN_WITH(ERROR_INVALID_SLOT);
   ServerItem::Instance *invSlot;
-  if (serial == Serial::Inventory())
+  if (serial == Serial::Inventory()) {
+    if (slot >= User::INVENTORY_SIZE) RETURN_WITH(ERROR_INVALID_SLOT);
     invSlot = &user.inventory()[slot].first;
-  else
+  } else {
+    if (slot >= User::GEAR_SLOTS) RETURN_WITH(ERROR_INVALID_SLOT);
     invSlot = &user.gear()[slot].first;
+  }
   if (!invSlot->type()) RETURN_WITH(ERROR_EMPTY_SLOT);
 
   const auto *itemClass = invSlot->type()->getClass();
