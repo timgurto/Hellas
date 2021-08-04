@@ -935,6 +935,7 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
   if (!itemToScrap) RETURN_WITH(ERROR_EMPTY_SLOT);
 
   const auto *itemClass = itemToScrap->getClass();
+  if (!itemClass) return;
   const auto resultID = itemClass->scrapResult;
 
   auto &qtyInSlot = containerSlot.second;

@@ -244,6 +244,24 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping item in container",
   }
 }
 
+TEST_CASE_METHOD(ServerAndClientWithData, "Scrapped items must be scrappable",
+                 "[scrapping]") {
+  GIVEN("the user has a non-scrappable item") {
+    useData("<item id=\"diamond\"/>");
+    const auto *diamond = &server->getFirstItem();
+    user->giveItem(diamond);
+
+    WHEN("he tries to scrap it") {
+      client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
+
+      THEN("he still has it") {
+        REPEAT_FOR_MS(100);
+        CHECK(user->inventory()[0].first.type() == diamond);
+      }
+    }
+  }
+}
+
 TEST_CASE_METHOD(ServerAndClient, "Scrapping with bad data", "[scrapping]") {
   SECTION("Empty slot") {
     client.sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
@@ -269,6 +287,7 @@ TEST_CASE_METHOD(ServerAndClient, "Scrapping with bad data", "[scrapping]") {
 
 // TODO
 // Not scrappable
+// Empty slot
 // Bell curve
 // Check inventory space
 // Later: unlock repair skill
