@@ -188,7 +188,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping item in container",
 
           THEN("it is empty") {
             REPEAT_FOR_MS(100);
-            WAIT_UNTIL(carton.container().isEmpty());
+            CHECK(carton.container().isEmpty());
           }
         }
 
@@ -198,6 +198,21 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping item in container",
 
             THEN("he gets a warning") {
               CHECK(client->waitForMessage(ERROR_INVALID_SLOT));
+            }
+          }
+        }
+      }
+
+      SECTION("No permission to use container") {
+        AND_GIVEN("nobody has access to it") {
+          carton.permissions.setNoAccess();
+
+          WHEN("the user tries to scrap it") {
+            client->sendMessage(CL_SCRAP_ITEM, makeArgs(carton.serial(), 0));
+
+            THEN("it is not empty") {
+              REPEAT_FOR_MS(100);
+              CHECK_FALSE(carton.container().isEmpty());
             }
           }
         }
@@ -225,10 +240,8 @@ TEST_CASE_METHOD(ServerAndClient, "Scrapping with bad data", "[scrapping]") {
 }
 
 // TODO
-// Container slot exceeding inventory size
 // Object out of range
 // Object no permission
-// Object has no container
 // Not scrappable
 // Bell curve
 // Check inventory space
