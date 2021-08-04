@@ -912,9 +912,13 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
   if (serial == Serial::Inventory()) {
     container = &user.inventory();
     numValidSlots = User::INVENTORY_SIZE;
-  } else {
+  } else if (serial == Serial::Gear()) {
     container = &user.gear();
     numValidSlots = User::GEAR_SLOTS;
+  } else {
+    auto *obj = _entities.find<Object>(serial);
+    container = &obj->container().raw();
+    numValidSlots = 100;
   }
 
   if (slot >= numValidSlots) RETURN_WITH(ERROR_INVALID_SLOT);

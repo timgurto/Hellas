@@ -161,6 +161,41 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping Equipped gear",
   }
 }
 
+TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping item in container",
+                 "[scrapping]") {
+  GIVEN("an egg that can be scrapped into a shell, and a carton container") {
+    useData(R"(
+      <item id="egg" class="egg" />
+      <item id="shell" />
+      <itemClass id="egg">
+        <canBeScrapped result="shell" />
+      </itemClass>
+      <objectType id="carton">
+        <container slots="1"/>
+      </objectType>
+    )");
+
+    AND_GIVEN("a carton containing an egg") {
+      auto &carton = server->addObject("carton");
+      const auto &egg = server->findItem("egg");
+      carton.container().addItems(&egg);
+
+      AND_GIVEN("the carton belongs to the player") {
+        carton.permissions.setPlayerOwner(user->name());
+
+        WHEN("he scraps it") {
+          client->sendMessage(CL_SCRAP_ITEM, makeArgs(carton.serial(), 0));
+
+          THEN("it is empty") {
+            REPEAT_FOR_MS(100);
+            WAIT_UNTIL(carton.container().isEmpty());
+          }
+        }
+      }
+    }
+  }
+}
+
 TEST_CASE_METHOD(ServerAndClient, "Scrapping with bad data", "[scrapping]") {
   SECTION("Empty slot") {
     client.sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
@@ -180,10 +215,10 @@ TEST_CASE_METHOD(ServerAndClient, "Scrapping with bad data", "[scrapping]") {
 }
 
 // TODO
-// Container
 // Container slot exceeding inventory size
 // Object out of range
 // Object no permission
+// Object has no container
 // Not scrappable
 // Bell curve
 // Check inventory space
