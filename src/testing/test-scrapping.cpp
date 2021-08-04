@@ -213,6 +213,10 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping item in container",
                 REPEAT_FOR_MS(100);
                 CHECK_FALSE(carton.container().isEmpty());
               }
+
+              THEN("he gets a warning") {
+                CHECK(client->waitForMessage(WARNING_TOO_FAR));
+              }
             }
           }
         }
@@ -264,7 +268,6 @@ TEST_CASE_METHOD(ServerAndClient, "Scrapping with bad data", "[scrapping]") {
 }
 
 // TODO
-// Object out of range
 // Not scrappable
 // Bell curve
 // Check inventory space

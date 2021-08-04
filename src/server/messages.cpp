@@ -922,7 +922,7 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
     if (!obj->permissions.canUserAccessContainer(user.name()))
       RETURN_WITH(WARNING_NO_PERMISSION);
 
-    if (distance(*obj, user) > ACTION_DISTANCE) return;
+    if (distance(*obj, user) > ACTION_DISTANCE) RETURN_WITH(WARNING_TOO_FAR);
 
     container = &obj->container().raw();
     numValidSlots = obj->objType().container().slots();
