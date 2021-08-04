@@ -908,13 +908,17 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
   READ_ARGS(serial, slot);
 
   if (slot >= User::INVENTORY_SIZE) RETURN_WITH(ERROR_INVALID_SLOT);
-  auto &invSlot = user.inventory()[slot].first;
-  if (!invSlot.type()) RETURN_WITH(ERROR_EMPTY_SLOT);
+  ServerItem::Instance *invSlot;
+  if (serial == Serial::Inventory())
+    invSlot = &user.inventory()[slot].first;
+  else
+    invSlot = &user.gear()[slot].first;
+  if (!invSlot->type()) RETURN_WITH(ERROR_EMPTY_SLOT);
 
-  const auto *itemClass = invSlot.type()->getClass();
+  const auto *itemClass = invSlot->type()->getClass();
   const auto resultID = itemClass->scrapResult;
 
-  user.removeItems({invSlot.type()});
+  user.removeItems({invSlot->type()});
   user.giveItem(findItem(resultID));
 }
 

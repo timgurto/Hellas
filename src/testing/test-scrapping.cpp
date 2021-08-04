@@ -113,6 +113,35 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   }
 }
 
+TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping Equipped gear",
+                 "[scrapping]") {
+  GIVEN("a hat that can be scrapped into felt") {
+    useData(R"(
+      <item id="hat" class="hat" gearSlot="0" />
+      <item id="felt" />
+      <itemClass id="hat">
+        <canBeScrapped result="felt" />
+      </itemClass>
+    )");
+
+    AND_GIVEN("the user is wearing one") {
+      const auto &hat = server->findItem("hat");
+      user->giveItem(&hat);
+      client->sendMessage(CL_SWAP_ITEMS,
+                          makeArgs(Serial::Inventory(), 0, Serial::Gear(), 0));
+
+      WHEN("he scraps it") {
+        client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Gear(), 0));
+
+        THEN("he has felt") {
+          const auto &felt = server->findItem("felt");
+          WAIT_UNTIL(user->inventory()[0].first.type() == &felt);
+        }
+      }
+    }
+  }
+}
+
 TEST_CASE_METHOD(ServerAndClient, "Scrapping with bad data", "[scrapping]") {
   SECTION("Empty slot") {
     client.sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
@@ -126,7 +155,6 @@ TEST_CASE_METHOD(ServerAndClient, "Scrapping with bad data", "[scrapping]") {
 }
 
 // TODO
-// Gear
 // Container
 // Container slot exceeding inventory size
 // Object out of range
