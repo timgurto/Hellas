@@ -918,7 +918,7 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
   } else {
     auto *obj = _entities.find<Object>(serial);
     container = &obj->container().raw();
-    numValidSlots = 100;
+    numValidSlots = obj->objType().container().slots();
   }
 
   if (slot >= numValidSlots) RETURN_WITH(ERROR_INVALID_SLOT);

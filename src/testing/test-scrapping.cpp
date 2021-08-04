@@ -191,6 +191,16 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping item in container",
             WAIT_UNTIL(carton.container().isEmpty());
           }
         }
+
+        SECTION("Bad slot number") {
+          WHEN("he tries scrapping from an invalid container slot") {
+            client->sendMessage(CL_SCRAP_ITEM, makeArgs(carton.serial(), 1));
+
+            THEN("he gets a warning") {
+              CHECK(client->waitForMessage(ERROR_INVALID_SLOT));
+            }
+          }
+        }
       }
     }
   }
