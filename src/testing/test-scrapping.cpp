@@ -214,6 +214,10 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping item in container",
               REPEAT_FOR_MS(100);
               CHECK_FALSE(carton.container().isEmpty());
             }
+
+            THEN("he gets a warning") {
+              CHECK(client->waitForMessage(WARNING_NO_PERMISSION));
+            }
           }
         }
       }
@@ -241,7 +245,7 @@ TEST_CASE_METHOD(ServerAndClient, "Scrapping with bad data", "[scrapping]") {
 
 // TODO
 // Object out of range
-// Object no permission
+// Object with bad serial
 // Not scrappable
 // Bell curve
 // Check inventory space

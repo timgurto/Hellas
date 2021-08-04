@@ -918,7 +918,8 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
   } else {
     auto *obj = _entities.find<Object>(serial);
 
-    if (!obj->permissions.canUserAccessContainer(user.name())) return;
+    if (!obj->permissions.canUserAccessContainer(user.name()))
+      RETURN_WITH(WARNING_NO_PERMISSION);
 
     container = &obj->container().raw();
     numValidSlots = obj->objType().container().slots();
