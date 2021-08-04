@@ -12,16 +12,16 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping items", "[scrapping]") {
         <canBeScrapped result="woodchip" />
       </itemClass>
     )");
+    const auto &wood = server->findItem("wood");
+    const auto &woodchip = server->findItem("woodchip");
 
     AND_GIVEN("the user has wood") {
-      const auto &wood = server->findItem("wood");
       user->giveItem(&wood);
 
       WHEN("he scraps it") {
         client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
 
         THEN("he has a wood chip") {
-          const auto &woodchip = server->findItem("woodchip");
           WAIT_UNTIL(user->inventory()[0].first.type() == &woodchip);
         }
       }
@@ -29,7 +29,6 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping items", "[scrapping]") {
 
     SECTION("Different slot") {
       AND_GIVEN("the user has wood in slot 5") {
-        const auto &wood = server->findItem("wood");
         user->giveItem(&wood);
         client->sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0,
                                                     Serial::Inventory(), 5));
@@ -38,8 +37,21 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping items", "[scrapping]") {
           client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 5));
 
           THEN("he has a wood chip") {
-            const auto &woodchip = server->findItem("woodchip");
             WAIT_UNTIL(user->inventory()[0].first.type() == &woodchip);
+          }
+        }
+      }
+    }
+
+    SECTION("Correct slot is scrapped") {
+      AND_GIVEN("the user has wood in inventory slots 0-2") {
+        user->giveItem(&wood, 3);
+
+        WHEN("he scraps the wood in slot 1") {
+          client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 1));
+
+          THEN("he has a wood chip in slot 1") {
+            WAIT_UNTIL(user->inventory()[1].first.type() == &woodchip);
           }
         }
       }
@@ -154,7 +166,7 @@ TEST_CASE_METHOD(ServerAndClient, "Scrapping with bad data", "[scrapping]") {
   }
 
   SECTION("Invalid gear slot") {
-    // Number of gear slots < 9 < number of inventory slots
+    // Number of gear slots <= 9 < number of inventory slots
     client.sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Gear(), 9));
     CHECK(client.waitForMessage(ERROR_INVALID_SLOT));
   }

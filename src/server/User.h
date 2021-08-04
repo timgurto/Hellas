@@ -285,6 +285,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   bool hasItems(const std::string &tag, size_t quantity) const;
   ItemSet removeItems(const ItemSet &items);  // Return: remainder
   void removeItems(const std::string &tag, size_t quantity);
+
   int countItems(const ServerItem *item) const;
   class ToolSearchResult {
    public:

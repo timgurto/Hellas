@@ -919,14 +919,17 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
 
   if (slot >= numValidSlots) RETURN_WITH(ERROR_INVALID_SLOT);
 
-  auto &containerSlot = (*container)[slot].first;
-  const auto *itemToScrap = containerSlot.type();
+  auto &containerSlot = (*container)[slot];
+  const auto *itemToScrap = containerSlot.first.type();
   if (!itemToScrap) RETURN_WITH(ERROR_EMPTY_SLOT);
 
   const auto *itemClass = itemToScrap->getClass();
   const auto resultID = itemClass->scrapResult;
 
-  user.removeItems({itemToScrap});
+  auto &qtyInSlot = containerSlot.second;
+  --qtyInSlot;
+  if (qtyInSlot == 0) containerSlot.first = {};
+
   user.giveItem(findItem(resultID));
 }
 
