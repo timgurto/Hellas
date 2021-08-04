@@ -241,11 +241,15 @@ TEST_CASE_METHOD(ServerAndClient, "Scrapping with bad data", "[scrapping]") {
     client.sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Gear(), 9));
     CHECK(client.waitForMessage(ERROR_INVALID_SLOT));
   }
+
+  SECTION("Invalid container serial") {
+    client.sendMessage(CL_SCRAP_ITEM, makeArgs(42, 0));
+    CHECK(client.waitForMessage(WARNING_DOESNT_EXIST));
+  }
 }
 
 // TODO
 // Object out of range
-// Object with bad serial
 // Not scrappable
 // Bell curve
 // Check inventory space

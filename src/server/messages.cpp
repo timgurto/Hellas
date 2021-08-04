@@ -917,6 +917,7 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
     numValidSlots = User::GEAR_SLOTS;
   } else {
     auto *obj = _entities.find<Object>(serial);
+    if (!obj) RETURN_WITH(WARNING_DOESNT_EXIST);
 
     if (!obj->permissions.canUserAccessContainer(user.name()))
       RETURN_WITH(WARNING_NO_PERMISSION);
