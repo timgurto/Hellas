@@ -3,7 +3,7 @@
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping", "[scrapping]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping items", "[scrapping]") {
   GIVEN("wood that can be scrapped into a woodchip") {
     useData(R"(
       <item id="wood" class="wood" />
@@ -44,16 +44,6 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping", "[scrapping]") {
         }
       }
     }
-
-    SECTION("Empty slot") {
-      client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
-      CHECK(client->waitForMessage(ERROR_EMPTY_SLOT));
-    }
-
-    SECTION("Invalid slot number") {
-      client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 1000));
-      CHECK(client->waitForMessage(ERROR_INVALID_SLOT));
-    }
   }
 
   SECTION("Different items") {
@@ -81,10 +71,12 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping", "[scrapping]") {
       }
     }
   }
+}
 
-  SECTION("Nontrivial yield") {
-    GIVEN("wood can be scrapped into 1-3 woodchips") {
-      useData(R"(
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Normal-distribution yield from scrapping", "[scrapping]") {
+  GIVEN("wood can be scrapped into 1-3 woodchips") {
+    useData(R"(
         <item id="wood" class="wood" stackSize="100" />
         <item id="woodchip" stackSize="1000" />
         <itemClass id="wood">
@@ -92,34 +84,44 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping", "[scrapping]") {
         </itemClass>
       )");
 
-      AND_GIVEN("the user has 100 wood") {
-        const auto &wood = server->findItem("wood");
-        user->giveItem(&wood, 100);
+    AND_GIVEN("the user has 100 wood") {
+      const auto &wood = server->findItem("wood");
+      user->giveItem(&wood, 100);
 
-        SECTION("Scrapping a stack only removes one item") {
-          WHEN("he scraps one wood") {
+      SECTION("Scrapping a stack only removes one item") {
+        WHEN("he scraps one wood") {
+          client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
+
+          THEN("he has both wood and woodchips") {
+            const auto &woodchip = server->findItem("woodchip");
+            WAIT_UNTIL(user->inventory()[1].first.type() == &woodchip);
+            CHECK(user->inventory()[0].first.type() == &wood);
+          }
+        }
+
+        WHEN("he scraps all 100 wood") {
+          for (auto i = 0; i != 100; ++i)
             client->sendMessage(CL_SCRAP_ITEM,
                                 makeArgs(Serial::Inventory(), 0));
 
-            THEN("he has both wood and woodchips") {
-              const auto &woodchip = server->findItem("woodchip");
-              WAIT_UNTIL(user->inventory()[1].first.type() == &woodchip);
-              CHECK(user->inventory()[0].first.type() == &wood);
-            }
-          }
-
-          WHEN("he scraps all 100 wood") {
-            for (auto i = 0; i != 100; ++i)
-              client->sendMessage(CL_SCRAP_ITEM,
-                                  makeArgs(Serial::Inventory(), 0));
-
-            THEN("he has no wood left") {
-              WAIT_UNTIL(!user->inventory()[0].first.hasItem());
-            }
+          THEN("he has no wood left") {
+            WAIT_UNTIL(!user->inventory()[0].first.hasItem());
           }
         }
       }
     }
+  }
+}
+
+TEST_CASE_METHOD(ServerAndClient, "Scrapping with bad data", "[scrapping]") {
+  SECTION("Empty slot") {
+    client.sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
+    CHECK(client.waitForMessage(ERROR_EMPTY_SLOT));
+  }
+
+  SECTION("Invalid slot number") {
+    client.sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 1000));
+    CHECK(client.waitForMessage(ERROR_INVALID_SLOT));
   }
 }
 
