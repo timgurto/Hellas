@@ -149,6 +149,13 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping Equipped gear",
           const auto &felt = server->findItem("felt");
           WAIT_UNTIL(user->inventory()[0].first.type() == &felt);
         }
+
+        SECTION("user gets inventory message for scrapped item") {
+          THEN("he knows he isn't wearing a hat") {
+            REPEAT_FOR_MS(100);
+            CHECK(client->gear()[0].first.type() == nullptr);
+          }
+        }
       }
     }
   }

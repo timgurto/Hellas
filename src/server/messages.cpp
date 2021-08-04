@@ -929,6 +929,7 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
   auto &qtyInSlot = containerSlot.second;
   --qtyInSlot;
   if (qtyInSlot == 0) containerSlot.first = {};
+  sendInventoryMessage(user, slot, serial);
 
   user.giveItem(findItem(resultID));
 }
