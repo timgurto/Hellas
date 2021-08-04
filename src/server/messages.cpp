@@ -936,7 +936,7 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
 
   const auto *itemClass = itemToScrap->getClass();
   if (!itemClass) RETURN_WITH(WARNING_NOT_SCRAPPABLE);
-  const auto resultID = itemClass->scrapResult;
+  const auto resultID = itemClass->scrapInfo.result;
 
   auto &qtyInSlot = containerSlot.second;
   --qtyInSlot;

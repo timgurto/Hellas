@@ -25,6 +25,12 @@ struct RepairInfo {
   bool requiresTool() const { return !tool.empty(); }
 };
 
+struct ScrapInfo {
+  bool canBeRepaired{false};
+
+  std::string result;
+};
+
 using Filename = std::string;
 using FilenameWithoutSuffix = std::string;
 using Username = std::string;
