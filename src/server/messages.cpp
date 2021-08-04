@@ -907,20 +907,26 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
   auto slot = 0;
   READ_ARGS(serial, slot);
 
-  ServerItem::Instance *invSlot;
+  ServerItem::vect_t *container;
+  auto numValidSlots = 0;
   if (serial == Serial::Inventory()) {
-    if (slot >= User::INVENTORY_SIZE) RETURN_WITH(ERROR_INVALID_SLOT);
-    invSlot = &user.inventory()[slot].first;
+    container = &user.inventory();
+    numValidSlots = User::INVENTORY_SIZE;
   } else {
-    if (slot >= User::GEAR_SLOTS) RETURN_WITH(ERROR_INVALID_SLOT);
-    invSlot = &user.gear()[slot].first;
+    container = &user.gear();
+    numValidSlots = User::GEAR_SLOTS;
   }
-  if (!invSlot->type()) RETURN_WITH(ERROR_EMPTY_SLOT);
 
-  const auto *itemClass = invSlot->type()->getClass();
+  if (slot >= numValidSlots) RETURN_WITH(ERROR_INVALID_SLOT);
+
+  auto &containerSlot = (*container)[slot].first;
+  const auto *itemToScrap = containerSlot.type();
+  if (!itemToScrap) RETURN_WITH(ERROR_EMPTY_SLOT);
+
+  const auto *itemClass = itemToScrap->getClass();
   const auto resultID = itemClass->scrapResult;
 
-  user.removeItems({invSlot->type()});
+  user.removeItems({itemToScrap});
   user.giveItem(findItem(resultID));
 }
 
