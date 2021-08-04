@@ -258,6 +258,10 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapped items must be scrappable",
         REPEAT_FOR_MS(100);
         CHECK(user->inventory()[0].first.type() == diamond);
       }
+
+      THEN("he gets a warning") {
+        CHECK(client->waitForMessage(WARNING_NOT_SCRAPPABLE));
+      }
     }
   }
 }

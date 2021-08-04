@@ -879,6 +879,7 @@ enum MessageCode {
                            // item.
   WARNING_NOT_REPAIRABLE,  // You tried to repair something that can't be
                            // repaired.
+  WARNING_NOT_SCRAPPABLE,  // You tried to scrap an item that can't be scrapped.
   ERROR_USER_NOT_FOUND,    // You tried to perform an action with a nonexistent
                            // user.
   WARNING_USER_ALREADY_IN_A_GROUP,  // You tried to invite an already-grouped
