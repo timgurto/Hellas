@@ -183,7 +183,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping item in container",
       AND_GIVEN("the carton belongs to the player") {
         carton.permissions.setPlayerOwner(user->name());
 
-        WHEN("he scraps it") {
+        WHEN("he scraps the egg") {
           client->sendMessage(CL_SCRAP_ITEM, makeArgs(carton.serial(), 0));
 
           THEN("it is empty") {
@@ -201,16 +201,31 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping item in container",
             }
           }
         }
+
+        SECTION("Too far away") {
+          AND_GIVEN("he is far away from the carton") {
+            user->teleportTo({300, 300});
+
+            WHEN("he tries scrapping the egg") {
+              client->sendMessage(CL_SCRAP_ITEM, makeArgs(carton.serial(), 0));
+
+              THEN("the carton still has the egg") {
+                REPEAT_FOR_MS(100);
+                CHECK_FALSE(carton.container().isEmpty());
+              }
+            }
+          }
+        }
       }
 
       SECTION("No permission to use container") {
         AND_GIVEN("nobody has access to it") {
           carton.permissions.setNoAccess();
 
-          WHEN("the user tries to scrap it") {
+          WHEN("the user tries to scrap the egg") {
             client->sendMessage(CL_SCRAP_ITEM, makeArgs(carton.serial(), 0));
 
-            THEN("it is not empty") {
+            THEN("the carton still has the egg") {
               REPEAT_FOR_MS(100);
               CHECK_FALSE(carton.container().isEmpty());
             }
