@@ -61,12 +61,12 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping items", "[scrapping]") {
   SECTION("Different items") {
     GIVEN("a rock that can be scrapped into sand") {
       useData(R"(
-      <item id="rock" class="rock" />
-      <item id="sand" />
-      <itemClass id="rock">
-        <canBeScrapped result="sand" />
-      </itemClass>
-    )");
+        <item id="rock" class="rock" />
+        <item id="sand" />
+        <itemClass id="rock">
+          <canBeScrapped result="sand" />
+        </itemClass>
+      )");
 
       AND_GIVEN("the user has a rock") {
         const auto &rock = server->findItem("rock");
@@ -123,10 +123,31 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       }
     }
   }
+
+  GIVEN("a circle can be scrapped into two semicircles") {
+    useData(R"(
+        <item id="circle" class="circle" />
+        <item id="semicircle" stackSize="2" />
+        <itemClass id="circle">
+          <canBeScrapped result="semicircle" mean="2" sd="0" />
+        </itemClass>
+      )");
+    const auto *circle = &server->findItem("circle");
+    const auto *semicircle = &server->findItem("semicircle");
+
+    WHEN("the user scraps a circle") {
+      user->giveItem(circle);
+      client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
+
+      THEN("he has two semicircles") {
+        WAIT_UNTIL(user->inventory()[0].second == 2);
+      }
+    }
+  }
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping Equipped gear",
-                 "[scrapping]") {
+                 "[scrapping][gear]") {
   GIVEN("a hat that can be scrapped into felt") {
     useData(R"(
       <item id="hat" class="hat" gearSlot="0" />
@@ -162,7 +183,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping Equipped gear",
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping item in container",
-                 "[scrapping]") {
+                 "[scrapping][container]") {
   GIVEN("an egg that can be scrapped into a shell, and a carton container") {
     useData(R"(
       <item id="egg" class="egg" />

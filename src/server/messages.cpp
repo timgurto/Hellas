@@ -956,7 +956,7 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
   sendInventoryMessage(user, slot, serial);
 
   // Give scraps
-  user.giveItem(scrap);
+  user.giveItem(scrap, itemClass->scrapping.mean);
 }
 
 HANDLE_MESSAGE(CL_TAME_NPC) {

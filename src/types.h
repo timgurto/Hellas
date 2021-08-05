@@ -29,6 +29,7 @@ struct ScrapInfo {
   bool canBeScrapped{false};
 
   std::string result;
+  double mean = 1.0;
 };
 
 using Filename = std::string;
