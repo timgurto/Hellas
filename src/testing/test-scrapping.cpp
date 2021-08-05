@@ -349,6 +349,28 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   }
 }
 
+TEST_CASE_METHOD(ServerAndClientWithData, "Bad scrap result", "[scrapping]") {
+  GIVEN("the user has an item that scraps to an invalid item") {
+    useData(R"(
+      <item id="box" class="box"/>
+      <itemClass id="box">
+        <canBeScrapped result="notARealItem" />
+      </itemClass>
+    )");
+    user->giveItem(&server->getFirstItem());
+
+    WHEN("he tries to scrap it") {
+      client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
+
+      // [Then the server doesn't crash]
+
+      THEN("the user gets an error message") {
+        CHECK(client->waitForMessage(ERROR_INVALID_ITEM));
+      }
+    }
+  }
+}
+
 TEST_CASE_METHOD(ServerAndClient, "Scrapping with bad data", "[scrapping]") {
   SECTION("Empty slot") {
     client.sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
@@ -373,7 +395,6 @@ TEST_CASE_METHOD(ServerAndClient, "Scrapping with bad data", "[scrapping]") {
 }
 
 // TODO
-// Inventory full of hats; scrap the one being worn. -->  Full inventory
 // Check for room when result is >1 item
 // Bell curve
 // Later: unlock repair skill

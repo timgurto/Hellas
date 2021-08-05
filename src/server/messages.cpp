@@ -939,6 +939,7 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
     RETURN_WITH(WARNING_NOT_SCRAPPABLE);
 
   const auto *scrap = findItem(itemClass->scrapping.result);
+  if (!scrap) RETURN_WITH(ERROR_INVALID_ITEM);
 
   auto userHasInventorySpace = true;
   if (serial == Serial::Inventory())
