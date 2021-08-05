@@ -123,7 +123,8 @@ void Client::draw() const {
                                              -Client::ICON_SIZE / 2);
   const auto *draggedItem = containerGridBeingDraggedFrom.item();
   if (draggedItem) {
-    _instructionsLabel->changeText("Press Delete to scrap this item.");
+    if (draggedItem->canBeScrapped())
+      _instructionsLabel->changeText("Press Delete to scrap this item.");
     draggedItem->icon().draw(_mouse + MOUSE_ICON_OFFSET);
   }
 

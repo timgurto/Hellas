@@ -85,6 +85,7 @@ class ClientItem : public Item, public HasSounds {
   bool canUse() const;
   void quality(int q) { _quality = static_cast<Quality>(q); }
   Color nameColor() const;
+  bool canBeScrapped() const;
 
   static const ScreenPoint &gearOffset(size_t slot) {
     return gearOffsets[slot];

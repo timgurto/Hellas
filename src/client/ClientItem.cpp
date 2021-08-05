@@ -166,6 +166,10 @@ Color ClientItem::nameColor() const {
   }
 }
 
+bool ClientItem::canBeScrapped() const {
+  return _class && _class->scrapping.canBeScrapped;
+}
+
 void ClientItem::fetchAmmoItem() const {
   if (_weaponAmmoID.empty()) return;
 
@@ -242,7 +246,7 @@ void ClientItem::Instance::createRegularTooltip() const {
     }
   }
 
-  if (_type->_class->scrapping.canBeScrapped) {
+  if (_type->canBeScrapped()) {
     tooltip.addGap();
     tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
     tooltip.addLine("Can be scrapped (pick up + Del).");
