@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "NormalVariable.h"
+
 // Pixels
 typedef int px_t;
 px_t operator"" _px(unsigned long long x);
@@ -29,8 +31,7 @@ struct ScrapInfo {
   bool canBeScrapped{false};
 
   std::string result;
-  double mean = 1.0;
-  double sd = 0.0;
+  NormalVariable qtyGenerator;
 };
 
 using Filename = std::string;

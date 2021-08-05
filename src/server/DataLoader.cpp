@@ -650,8 +650,11 @@ void DataLoader::loadItemClasses(XmlReader &xr) {
     if (scrapElem) {
       ic.scrapping.canBeScrapped = true;
       xr.findAttr(scrapElem, "result", ic.scrapping.result);
-      xr.findAttr(scrapElem, "mean", ic.scrapping.mean);
-      xr.findAttr(scrapElem, "sd", ic.scrapping.sd);
+
+      auto mean = 1.0, sd = 0.0;
+      xr.findAttr(scrapElem, "mean", mean);
+      xr.findAttr(scrapElem, "sd", sd);
+      ic.scrapping.qtyGenerator = {mean, sd};
     }
 
     _server._itemClasses[classID] = ic;
