@@ -937,22 +937,25 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
   const auto *itemClass = itemToScrap->getClass();
   if (!itemClass || !itemClass->scrapping.canBeScrapped)
     RETURN_WITH(WARNING_NOT_SCRAPPABLE);
-  const auto resultID = itemClass->scrapping.result;
+
+  const auto *scrap = findItem(itemClass->scrapping.result);
 
   auto userHasInventorySpace = true;
   if (serial == Serial::Inventory())
-    userHasInventorySpace = user.hasRoomToRemoveThenAdd(
-        ItemSet{itemToScrap}, ItemSet{findItem(resultID)});
+    userHasInventorySpace =
+        user.hasRoomToRemoveThenAdd(ItemSet{itemToScrap}, ItemSet{scrap});
   else
-    userHasInventorySpace = vectHasSpace(user.inventory(), findItem(resultID));
+    userHasInventorySpace = vectHasSpace(user.inventory(), scrap);
   if (!userHasInventorySpace) RETURN_WITH(WARNING_INVENTORY_FULL);
 
+  // Remove item to be scrapped
   auto &qtyInSlot = containerSlot.second;
   --qtyInSlot;
   if (qtyInSlot == 0) containerSlot.first = {};
   sendInventoryMessage(user, slot, serial);
 
-  user.giveItem(findItem(resultID));
+  // Give scraps
+  user.giveItem(scrap);
 }
 
 HANDLE_MESSAGE(CL_TAME_NPC) {
