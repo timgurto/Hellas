@@ -111,6 +111,8 @@ void Client::draw() const {
     e.draw();
   }
 
+  _instructionsLabel->changeText({});
+
   // Windows
   for (windows_t::const_reverse_iterator it = _windows.rbegin();
        it != _windows.rend(); ++it)
@@ -120,10 +122,12 @@ void Client::draw() const {
   static const ScreenPoint MOUSE_ICON_OFFSET(-Client::ICON_SIZE / 2,
                                              -Client::ICON_SIZE / 2);
   const auto *draggedItem = containerGridBeingDraggedFrom.item();
-  if (draggedItem) draggedItem->icon().draw(_mouse + MOUSE_ICON_OFFSET);
+  if (draggedItem) {
+    _instructionsLabel->changeText("Press Delete to scrap this item.");
+    draggedItem->icon().draw(_mouse + MOUSE_ICON_OFFSET);
+  }
 
   // Construction footprint
-  _instructionsLabel->changeText({});
   if (_constructionFootprint && _constructionFootprintType) {
     auto footprintRect = _constructionFootprintType->collisionRect() +
                          toMapPoint(_mouse) - _offset;
