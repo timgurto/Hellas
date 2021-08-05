@@ -939,6 +939,10 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
     RETURN_WITH(WARNING_NOT_SCRAPPABLE);
   const auto resultID = itemClass->scrapping.result;
 
+  if (!user.hasRoomToRemoveThenAdd(ItemSet{itemToScrap},
+                                   ItemSet{findItem(resultID)}))
+    return;
+
   auto &qtyInSlot = containerSlot.second;
   --qtyInSlot;
   if (qtyInSlot == 0) containerSlot.first = {};

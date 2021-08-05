@@ -285,6 +285,38 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapped items must be scrappable",
   }
 }
 
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Scrapping is prevented when no inventory space",
+                 "[scrapping]") {
+  GIVEN("coins stack to 10 and can be scrapped into gold dust") {
+    useData(R"(
+      <item id="coin" class="gold" stackSize="10"/>
+      <item id="goldDust" />
+      <itemClass id="gold">
+        <canBeScrapped result="goldDust" />
+      </itemClass>
+    )");
+
+    AND_GIVEN("the user's inventory is full of full stacks of coins") {
+      const auto *coin = &server->findItem("coin");
+      user->giveItem(coin, 10 * User::INVENTORY_SIZE);
+
+      WHEN("he tries to scrap one") {
+        client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
+
+        THEN("he hasn't lost any coins") {
+          REPEAT_FOR_MS(100);
+          CHECK(user->inventory()[0].second == 10);  // Still a full stack
+        }
+
+        THEN("he receives a warning") {
+          CHECK(client->waitForMessage(WARNING_INVENTORY_FULL));
+        }
+      }
+    }
+  }
+}
+
 TEST_CASE_METHOD(ServerAndClient, "Scrapping with bad data", "[scrapping]") {
   SECTION("Empty slot") {
     client.sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
@@ -309,8 +341,7 @@ TEST_CASE_METHOD(ServerAndClient, "Scrapping with bad data", "[scrapping]") {
 }
 
 // TODO
-// Not scrappable
-// Empty slot
+// Inventory full of hats; scrap the one being worn. -->  Full inventory
+// Check for room when result is >1 item
 // Bell curve
-// Check inventory space
 // Later: unlock repair skill
