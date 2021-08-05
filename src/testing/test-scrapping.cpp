@@ -192,6 +192,28 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       }
     }
   }
+
+  SECTION("Never negative") {
+    GIVEN("an item that always yields a negative number of scraps") {
+      useData(R"(
+        <item id="item" class="item" />
+        <item id="scrap" />
+        <itemClass id="item">
+          <canBeScrapped result="scrap" mean="-10" sd="0" />
+        </itemClass>
+      )");
+
+      WHEN("the user scraps one") {
+        user->giveItem(&server->findItem("item"));
+        client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
+
+        THEN("he has nothing in inventory") {
+          REPEAT_FOR_MS(100);
+          CHECK_FALSE(user->inventory()[0].first.hasItem());
+        }
+      }
+    }
+  }
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping Equipped gear",
@@ -465,5 +487,4 @@ TEST_CASE_METHOD(ServerAndClient, "Scrapping with bad data", "[scrapping]") {
 
 // TODO
 // Check for room when result is >1 item
-// Min 1
 // Later: unlock repair skill

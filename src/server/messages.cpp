@@ -957,7 +957,7 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
 
   // Give scraps
   const auto numScraps = itemClass->scrapping.qtyGenerator.generate();
-  user.giveItem(scrap, numScraps);
+  if (numScraps > 0) user.giveItem(scrap, numScraps);
 }
 
 HANDLE_MESSAGE(CL_TAME_NPC) {
