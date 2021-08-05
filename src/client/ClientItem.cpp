@@ -235,7 +235,7 @@ void ClientItem::Instance::createRegularTooltip() const {
     if (!_type->_class) return;
 
     const auto needsRepairing = _health < Item::MAX_HEALTH;
-    const auto canBeRepaired = _type->_class->repairInfo.canBeRepaired;
+    const auto canBeRepaired = _type->_class->repairing.canBeRepaired;
     if (canBeRepaired && needsRepairing) {
       tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
       tooltip.addLine("Alt-click to repair.");
@@ -248,7 +248,7 @@ void ClientItem::Instance::createRepairTooltip() const {
     _repairTooltip = Tooltip::basicTooltip("This item cannot be repaired.");
     return;
   }
-  const auto &repairInfo = _type->_class->repairInfo;
+  const auto &repairInfo = _type->_class->repairing;
 
   if (!repairInfo.canBeRepaired) {
     _repairTooltip = Tooltip::basicTooltip("This item cannot be repaired.");

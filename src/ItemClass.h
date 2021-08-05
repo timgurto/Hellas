@@ -3,6 +3,6 @@
 #include "types.h"
 
 struct ItemClass {
-  RepairInfo repairInfo;
-  ScrapInfo scrapInfo;
+  RepairInfo repairing;
+  ScrapInfo scrapping;
 };

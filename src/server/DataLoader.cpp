@@ -641,15 +641,15 @@ void DataLoader::loadItemClasses(XmlReader &xr) {
 
     auto repairElem = xr.findChild("canBeRepaired", elem);
     if (repairElem) {
-      ic.repairInfo.canBeRepaired = true;
+      ic.repairing.canBeRepaired = true;
       auto s = ""s;
-      xr.findAttr(repairElem, "cost", ic.repairInfo.cost);
-      xr.findAttr(repairElem, "tool", ic.repairInfo.tool);
+      xr.findAttr(repairElem, "cost", ic.repairing.cost);
+      xr.findAttr(repairElem, "tool", ic.repairing.tool);
     }
 
     auto scrapElem = xr.findChild("canBeScrapped", elem);
     if (scrapElem) {
-      xr.findAttr(scrapElem, "result", ic.scrapInfo.result);
+      xr.findAttr(scrapElem, "result", ic.scrapping.result);
     }
 
     _server._itemClasses[classID] = ic;

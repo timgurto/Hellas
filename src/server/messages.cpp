@@ -871,7 +871,7 @@ HANDLE_MESSAGE(CL_REPAIR_ITEM) {
 
   const auto *itemClass = itemToRepair->type()->getClass();
   if (!itemClass) RETURN_WITH(WARNING_NOT_REPAIRABLE)
-  const auto &repairInfo = itemClass->repairInfo;
+  const auto &repairInfo = itemClass->repairing;
   if (!repairInfo.canBeRepaired) RETURN_WITH(WARNING_NOT_REPAIRABLE)
 
   auto costItem = findItem(repairInfo.cost);
@@ -936,7 +936,7 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
 
   const auto *itemClass = itemToScrap->getClass();
   if (!itemClass) RETURN_WITH(WARNING_NOT_SCRAPPABLE);
-  const auto resultID = itemClass->scrapInfo.result;
+  const auto resultID = itemClass->scrapping.result;
 
   auto &qtyInSlot = containerSlot.second;
   --qtyInSlot;
