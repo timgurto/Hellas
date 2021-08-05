@@ -144,6 +144,54 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       }
     }
   }
+
+  SECTION("Randomness") {
+    GIVEN("three different coins, scrappable into random numbers of dust") {
+      useData(R"(
+        <item id="goldCoin" class="gold" />
+        <item id="silverCoin" class="silver" />
+        <item id="copperCoin" class="copper" />
+
+        <item id="goldDust" stackSize="1000000" />
+        <item id="silverDust" stackSize="1000000" />
+        <item id="copperDust" stackSize="1000000" />
+
+        <itemClass id="gold">
+          <canBeScrapped result="goldDust" mean="100000" sd="20000" />
+        </itemClass>
+        <itemClass id="silver">
+          <canBeScrapped result="silverDust" mean="100000" sd="20000" />
+        </itemClass>
+        <itemClass id="copper">
+          <canBeScrapped result="copperDust" mean="100000" sd="20000" />
+        </itemClass>
+      )");
+
+      AND_GIVEN("the player has one of each") {
+        user->giveItem(&server->findItem("goldCoin"));
+        user->giveItem(&server->findItem("silverCoin"));
+        user->giveItem(&server->findItem("copperCoin"));
+
+        WHEN("each is scrapped") {
+          client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
+          client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 1));
+          client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 2));
+          WAIT_UNTIL(user->inventory()[2].first.type() ==
+                     &server->findItem("copperDust"));
+
+          THEN("the quantities of scraps are different") {
+            const auto qtyGoldDust = user->inventory()[0].second;
+            const auto qtySilverDust = user->inventory()[1].second;
+            const auto qtyCopperDust = user->inventory()[2].second;
+
+            const auto allEqual =
+                qtyGoldDust == qtySilverDust && qtySilverDust == qtyCopperDust;
+            CHECK_FALSE(allEqual);
+          }
+        }
+      }
+    }
+  }
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping Equipped gear",
@@ -417,5 +465,5 @@ TEST_CASE_METHOD(ServerAndClient, "Scrapping with bad data", "[scrapping]") {
 
 // TODO
 // Check for room when result is >1 item
-// Bell curve
+// Min 1
 // Later: unlock repair skill

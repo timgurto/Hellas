@@ -956,7 +956,10 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
   sendInventoryMessage(user, slot, serial);
 
   // Give scraps
-  user.giveItem(scrap, itemClass->scrapping.mean);
+  const auto numScraps =
+      NormalVariable{itemClass->scrapping.mean, itemClass->scrapping.sd}
+          .generate();
+  user.giveItem(scrap, numScraps);
 }
 
 HANDLE_MESSAGE(CL_TAME_NPC) {

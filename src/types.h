@@ -30,6 +30,7 @@ struct ScrapInfo {
 
   std::string result;
   double mean = 1.0;
+  double sd = 0.0;
 };
 
 using Filename = std::string;
