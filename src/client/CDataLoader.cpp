@@ -706,6 +706,9 @@ void CDataLoader::loadItemClasses(XmlReader &xr) {
       xr.findAttr(repairElem, "tool", ic.repairing.tool);
     }
 
+    auto scrapElem = xr.findChild("canBeScrapped", elem);
+    if (scrapElem) ic.scrapping.canBeScrapped = true;
+
     _client.gameData.itemClasses[classID] = ic;
   }
 }

@@ -225,6 +225,8 @@ void ClientItem::Instance::createRegularTooltip() const {
   else if (_health <= 20)
     tooltip.setColor(Color::DURABILITY_LOW);
 
+  if (!_type->_class) return;
+
   auto isDamaged = _health < Item::MAX_HEALTH;
   if (isDamaged) {
     auto oss = std::ostringstream{};
@@ -232,14 +234,18 @@ void ClientItem::Instance::createRegularTooltip() const {
     tooltip.addGap();
     tooltip.addLine(oss.str());
 
-    if (!_type->_class) return;
-
     const auto needsRepairing = _health < Item::MAX_HEALTH;
     const auto canBeRepaired = _type->_class->repairing.canBeRepaired;
     if (canBeRepaired && needsRepairing) {
       tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
-      tooltip.addLine("Alt-click to repair.");
+      tooltip.addLine("Can be repaired (Alt-click).");
     }
+  }
+
+  if (_type->_class->scrapping.canBeScrapped) {
+    tooltip.addGap();
+    tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
+    tooltip.addLine("Can be scrapped (pick up + Del).");
   }
 }
 
