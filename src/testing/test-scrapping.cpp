@@ -315,6 +315,38 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       }
     }
   }
+
+  SECTION("When scrapping gear, it doesn't make room for the result") {
+    GIVEN("a hat can be scrapped into straw") {
+      useData(R"(
+        <item id="hat" class="hat" gearSlot="0"/>
+        <item id="straw" />
+        <itemClass id="hat">
+          <canBeScrapped result="straw" />
+        </itemClass>
+      )");
+
+      AND_GIVEN("the user is wearing one") {
+        const auto *hat = &server->findItem("hat");
+        user->giveItem(hat);
+        client->sendMessage(
+            CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0, Serial::Gear(), 0));
+        WAIT_UNTIL(!user->inventory()[0].first.hasItem());
+
+        AND_GIVEN("he has an inventory full of them") {
+          user->giveItem(hat, User::INVENTORY_SIZE);
+
+          WHEN("he tries scrapping the one he's wearing") {
+            client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Gear(), 0));
+
+            THEN("he gets a full-inventory warning") {
+              CHECK(client->waitForMessage(WARNING_INVENTORY_FULL));
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 TEST_CASE_METHOD(ServerAndClient, "Scrapping with bad data", "[scrapping]") {

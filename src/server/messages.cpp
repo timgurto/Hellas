@@ -939,9 +939,13 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
     RETURN_WITH(WARNING_NOT_SCRAPPABLE);
   const auto resultID = itemClass->scrapping.result;
 
-  if (!user.hasRoomToRemoveThenAdd(ItemSet{itemToScrap},
-                                   ItemSet{findItem(resultID)}))
-    return;
+  auto userHasInventorySpace = true;
+  if (serial == Serial::Inventory())
+    userHasInventorySpace = user.hasRoomToRemoveThenAdd(
+        ItemSet{itemToScrap}, ItemSet{findItem(resultID)});
+  else
+    userHasInventorySpace = vectHasSpace(user.inventory(), findItem(resultID));
+  if (!userHasInventorySpace) RETURN_WITH(WARNING_INVENTORY_FULL);
 
   auto &qtyInSlot = containerSlot.second;
   --qtyInSlot;
