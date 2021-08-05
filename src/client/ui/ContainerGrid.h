@@ -44,8 +44,8 @@ class ContainerGrid : public Element {
                 bool solidBackground = true);
   ~ContainerGrid();
 
-  static void dropItem(
-      Client &client);  // Drop the item currently being dragged.
+  static void dropItem(Client &client);   // Drop the item being dragged.
+  static void scrapItem(Client &client);  // Scrap the item being dragged.
 
   friend Client;
 

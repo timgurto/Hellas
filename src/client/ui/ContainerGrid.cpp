@@ -265,6 +265,17 @@ void ContainerGrid::dropItem(Client &client) {
   client.onChangeDragItem();
 }
 
+void ContainerGrid::scrapItem(Client &client) {
+  auto &draggingFrom = client.containerGridBeingDraggedFrom;
+  if (!draggingFrom.validGrid() || !draggingFrom.validSlot()) return;
+
+  client.sendMessage(
+      {CL_SCRAP_ITEM, makeArgs(draggingFrom.object(), draggingFrom.slot())});
+  draggingFrom.markGridAsChanged();
+  draggingFrom.clear();
+  client.onChangeDragItem();
+}
+
 ContainerGrid::GridInUse::GridInUse(const ContainerGrid &grid, size_t slot)
     : _grid(&grid), _slot(slot) {}
 

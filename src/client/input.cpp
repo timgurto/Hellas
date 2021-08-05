@@ -123,6 +123,12 @@ void Client::handleInput(double delta) {
               }
               break;
 
+            case SDLK_DELETE:
+              if (containerGridBeingDraggedFrom.item() != nullptr) {
+                ContainerGrid::scrapItem(*this);
+              }
+              break;
+
             case SDLK_b:
               _buildWindow->toggleVisibility();
               removeWindow(_buildWindow);
