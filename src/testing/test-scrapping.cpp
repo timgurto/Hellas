@@ -407,6 +407,29 @@ TEST_CASE_METHOD(ServerAndClientWithData,
     }
   }
 
+  SECTION("Quantity > 1") {
+    GIVEN("a wonka bar that can be scrapped into a million pieces") {
+      useData(R"(
+        <item id="wonkaBar" class="transmissable"/>
+        <item id="piece" />
+        <itemClass id="transmissable">
+          <canBeScrapped result="piece" mean="1000000" />
+        </itemClass>
+      )");
+      const auto *wonkaBar = &server->findItem("wonkaBar");
+
+      WHEN("the user tries to scrap one") {
+        user->giveItem(wonkaBar);
+        client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
+
+        THEN("he still has the wonka bar") {
+          REPEAT_FOR_MS(100);
+          CHECK(user->inventory()[0].first.type() == wonkaBar);
+        }
+      }
+    }
+  }
+
   SECTION("When scrapping gear, it doesn't make room for the result") {
     GIVEN("a hat can be scrapped into straw") {
       useData(R"(
@@ -485,6 +508,4 @@ TEST_CASE_METHOD(ServerAndClient, "Scrapping with bad data", "[scrapping]") {
   }
 }
 
-// TODO
-// Check for room when result is >1 item
-// Later: unlock repair skill
+// TODO later: unlock repair skill

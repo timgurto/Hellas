@@ -941,13 +941,19 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
   const auto *scrap = findItem(itemClass->scrapping.result);
   if (!scrap) RETURN_WITH(ERROR_INVALID_ITEM);
 
-  auto userHasInventorySpace = true;
-  if (serial == Serial::Inventory())
-    userHasInventorySpace =
-        user.hasRoomToRemoveThenAdd(ItemSet{itemToScrap}, ItemSet{scrap});
-  else
-    userHasInventorySpace = vectHasSpace(user.inventory(), scrap);
-  if (!userHasInventorySpace) RETURN_WITH(WARNING_INVENTORY_FULL);
+  const auto numScraps = itemClass->scrapping.qtyGenerator.generate();
+  if (numScraps > 0) {
+    auto scraps = ItemSet{};
+    scraps.add(scrap, numScraps);
+
+    auto userHasInventorySpace = true;
+    if (serial == Serial::Inventory())
+      userHasInventorySpace =
+          user.hasRoomToRemoveThenAdd(ItemSet{itemToScrap}, scraps);
+    else
+      userHasInventorySpace = vectHasSpace(user.inventory(), scraps);
+    if (!userHasInventorySpace) RETURN_WITH(WARNING_INVENTORY_FULL);
+  }
 
   // Remove item to be scrapped
   auto &qtyInSlot = containerSlot.second;
@@ -956,7 +962,6 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
   sendInventoryMessage(user, slot, serial);
 
   // Give scraps
-  const auto numScraps = itemClass->scrapping.qtyGenerator.generate();
   if (numScraps > 0) user.giveItem(scrap, numScraps);
 }
 
