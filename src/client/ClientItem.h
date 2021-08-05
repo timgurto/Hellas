@@ -84,6 +84,7 @@ class ClientItem : public Item, public HasSounds {
   const Projectile::Type *projectile() const { return _projectile; }
   bool canUse() const;
   void quality(int q) { _quality = static_cast<Quality>(q); }
+  bool shouldWarnBeforeScrapping() const;
   Color nameColor() const;
   bool canBeScrapped() const;
 

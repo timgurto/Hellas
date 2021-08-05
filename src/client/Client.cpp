@@ -548,6 +548,21 @@ void Client::dropItemOnConfirmation(const ContainerGrid::GridInUse &toDrop) {
   _confirmDropSoulboundItem->show();
 }
 
+void Client::scrapItemOnConfirmation(const ContainerGrid::GridInUse &toScrap,
+                                     std ::string itemName) {
+  std::string windowText = "Are you sure you want to scrap "s + itemName + "?"s;
+  std::string msgArgs = makeArgs(toScrap.object(), toScrap.slot());
+
+  if (_confirmScrapItem != nullptr) {
+    removeWindow(_confirmScrapItem);
+    delete _confirmScrapItem;
+  }
+  _confirmScrapItem =
+      new ConfirmationWindow(*this, windowText, CL_SCRAP_ITEM, msgArgs);
+  addWindow(_confirmScrapItem);
+  _confirmScrapItem->show();
+}
+
 bool Client::outsideCullRange(const MapPoint &loc, px_t hysteresis) const {
   px_t testCullDist = CULL_DISTANCE + hysteresis;
   return abs(loc.x - _character.location().x) > testCullDist ||

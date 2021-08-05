@@ -149,6 +149,19 @@ bool ClientItem::canUse() const {
   return _constructsObject != nullptr || castsSpellOnUse();
 }
 
+bool ClientItem::shouldWarnBeforeScrapping() const {
+  switch (_quality) {
+    case COMMON:
+      return false;
+    case UNCOMMON:
+    case RARE:
+    case EPIC:
+    case LEGENDARY:
+    default:
+      return true;
+  }
+}
+
 Color ClientItem::nameColor() const {
   switch (_quality) {
     case COMMON:

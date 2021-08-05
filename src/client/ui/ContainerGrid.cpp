@@ -269,8 +269,11 @@ void ContainerGrid::scrapItem(Client &client) {
   auto &draggingFrom = client.containerGridBeingDraggedFrom;
   if (!draggingFrom.validGrid() || !draggingFrom.validSlot()) return;
 
-  client.sendMessage(
-      {CL_SCRAP_ITEM, makeArgs(draggingFrom.object(), draggingFrom.slot())});
+  if (draggingFrom.item()->shouldWarnBeforeScrapping())
+    client.scrapItemOnConfirmation(draggingFrom, draggingFrom.item()->name());
+  else
+    client.sendMessage(
+        {CL_SCRAP_ITEM, makeArgs(draggingFrom.object(), draggingFrom.slot())});
   draggingFrom.markGridAsChanged();
   draggingFrom.clear();
   client.onChangeDragItem();
