@@ -935,7 +935,8 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
   if (!itemToScrap) RETURN_WITH(ERROR_EMPTY_SLOT);
 
   const auto *itemClass = itemToScrap->getClass();
-  if (!itemClass) RETURN_WITH(WARNING_NOT_SCRAPPABLE);
+  if (!itemClass || !itemClass->scrapping.canBeScrapped)
+    RETURN_WITH(WARNING_NOT_SCRAPPABLE);
   const auto resultID = itemClass->scrapping.result;
 
   auto &qtyInSlot = containerSlot.second;

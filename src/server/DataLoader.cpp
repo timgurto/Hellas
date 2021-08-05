@@ -642,13 +642,13 @@ void DataLoader::loadItemClasses(XmlReader &xr) {
     auto repairElem = xr.findChild("canBeRepaired", elem);
     if (repairElem) {
       ic.repairing.canBeRepaired = true;
-      auto s = ""s;
       xr.findAttr(repairElem, "cost", ic.repairing.cost);
       xr.findAttr(repairElem, "tool", ic.repairing.tool);
     }
 
     auto scrapElem = xr.findChild("canBeScrapped", elem);
     if (scrapElem) {
+      ic.scrapping.canBeScrapped = true;
       xr.findAttr(scrapElem, "result", ic.scrapping.result);
     }
 

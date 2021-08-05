@@ -246,7 +246,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping item in container",
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Scrapped items must be scrappable",
                  "[scrapping]") {
-  GIVEN("the user has a non-scrappable item") {
+  GIVEN("the user has an item with no item class") {
     useData("<item id=\"diamond\"/>");
     const auto *diamond = &server->getFirstItem();
     user->giveItem(diamond);
@@ -261,6 +261,25 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapped items must be scrappable",
 
       THEN("he gets a warning") {
         CHECK(client->waitForMessage(WARNING_NOT_SCRAPPABLE));
+      }
+    }
+  }
+
+  GIVEN("the user has an item with a non-scrappable item class") {
+    useData(R"(
+      <item id="diamond" class="unbreakable" />
+      <itemClass id="unbreakable" />
+    )");
+
+    const auto *diamond = &server->getFirstItem();
+    user->giveItem(diamond);
+
+    WHEN("he tries to scrap it") {
+      client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
+
+      THEN("he still has it") {
+        REPEAT_FOR_MS(100);
+        CHECK(user->inventory()[0].first.type() == diamond);
       }
     }
   }

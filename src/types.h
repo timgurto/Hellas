@@ -26,6 +26,8 @@ struct RepairInfo {
 };
 
 struct ScrapInfo {
+  bool canBeScrapped{false};
+
   std::string result;
 };
 
