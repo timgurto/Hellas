@@ -336,7 +336,7 @@ class User : public Object {  // TODO: Don't inherit from Object
 
   std::string makeLocationCommand() const;
 
-  static const size_t INVENTORY_SIZE = 10;
+  static const size_t INVENTORY_SIZE = 15;
   static const size_t GEAR_SLOTS = 8;
 
   static ObjectType OBJECT_TYPE;

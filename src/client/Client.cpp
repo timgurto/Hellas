@@ -60,7 +60,7 @@ const px_t Client::ACTION_DISTANCE = Podes{4}.toPixels();
 const px_t Client::CULL_DISTANCE = 450;  // Just copy Server::CULL_DISTANCE
 const px_t Client::CULL_HYSTERESIS_DISTANCE = 50;
 
-const size_t Client::INVENTORY_SIZE = 10;
+const size_t Client::INVENTORY_SIZE = 15;
 const size_t Client::GEAR_SLOTS = 8;
 std::vector<std::string> Client::GEAR_SLOT_NAMES;
 
