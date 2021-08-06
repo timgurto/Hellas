@@ -259,7 +259,8 @@ bool User::hasExceededTimeout() const {
   return SDL_GetTicks() - _lastContact > timeAllowed;
 }
 
-size_t User::giveItem(const ServerItem *item, size_t quantity) {
+size_t User::giveItem(const ServerItem *item, size_t quantity,
+                      Hitpoints health) {
   auto &server = Server::instance();
 
   auto remaining = quantity;
@@ -279,6 +280,7 @@ size_t User::giveItem(const ServerItem *item, size_t quantity) {
   }
 
   // Inventory pass 1: partial stacks
+  // Assumption: stacking items can't be damaged (thus this pass ignores health)
   if (remaining > 0) {
     for (auto i = 0; i != INVENTORY_SIZE; ++i) {
       if (_inventory[i].first.type() != item) continue;
@@ -326,6 +328,7 @@ size_t User::giveItem(const ServerItem *item, size_t quantity) {
       auto qtyInThisSlot = min(item->stackSize(), remaining);
       _inventory[i].first = {
           item, ServerItem::Instance::ReportingInfo::UserInventory(this, i)};
+      _inventory[i].first.initHealth(health);
       _inventory[i].second = qtyInThisSlot;
       server.sendInventoryMessage(*this, i, Serial::Inventory());
       remaining -= qtyInThisSlot;

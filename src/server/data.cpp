@@ -660,7 +660,7 @@ void Server::loadEntities(XmlReader &xr,
       }
     }
 
-    addEntity(new DroppedItem(*itemType, quantity, p));
+    addEntity(new DroppedItem(*itemType, Item::MAX_HEALTH, quantity, p));
   }
 }
 

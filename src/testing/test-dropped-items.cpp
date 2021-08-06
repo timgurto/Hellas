@@ -519,7 +519,7 @@ TEST_CASE("Dropped items are persistent", "[persistence][dropped-items]") {
   {
     auto s = TestServer::WithDataString(data);
     const auto &coin = s.getFirstItem();
-    s->addEntity(new DroppedItem(coin, 5, {20, 20}));
+    s->addEntity(new DroppedItem(coin, Hitpoints{}, 5, {20, 20}));
 
     // When the server restarts
   }
@@ -528,5 +528,36 @@ TEST_CASE("Dropped items are persistent", "[persistence][dropped-items]") {
 
     // Then it's still there
     WAIT_UNTIL(s.entities().size() == 1);
+  }
+}
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Dropped items preserve item damage",
+                 "[dropped-items]") {
+  GIVEN("a user has an item") {
+    useData("<item id=\"box\"/>");
+    user->giveItem(&server->getFirstItem());
+
+    AND_GIVEN("it is damaged") {
+      auto &slot0 = user->inventory()[0].first;
+      do {
+        slot0.onUse();
+      } while (slot0.health() == Item::MAX_HEALTH);
+      const auto itemHealth = slot0.health();
+
+      WHEN("he drops it") {
+        client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+
+        AND_WHEN("he picks it back up") {
+          WAIT_UNTIL(client->entities().size() == 2);
+          auto &di = client->getFirstDroppedItem();
+          client->sendMessage(CL_PICK_UP_DROPPED_ITEM, makeArgs(di.serial()));
+
+          THEN("it is still damaged") {
+            WAIT_UNTIL(slot0.hasItem());
+            CHECK(slot0.health() == itemHealth);
+          }
+        }
+      }
+    }
   }
 }

@@ -53,6 +53,7 @@ class ServerItem : public Item {
     bool hasItem() const { return _type != nullptr; }
     const ServerItem *type() const { return _type; }
     Hitpoints health() const { return _health; }
+    void initHealth(Hitpoints startingHealth) { _health = startingHealth; }
     bool isBroken() const;
     void damageFromUse() override;
     void damageOnPlayerDeath() override;

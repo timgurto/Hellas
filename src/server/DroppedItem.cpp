@@ -9,9 +9,12 @@ DroppedItem::Type::Type() : EntityType("droppedItem") {
   _baseStats.maxHealth = 1;
 }
 
-DroppedItem::DroppedItem(const ServerItem &itemType, size_t quantity,
-                         const MapPoint &location)
-    : Entity(&TYPE, location), _quantity(quantity), _itemType(itemType) {
+DroppedItem::DroppedItem(const ServerItem &itemType, Hitpoints health,
+                         size_t quantity, const MapPoint &location)
+    : Entity(&TYPE, location),
+      _quantity(quantity),
+      _health(health),
+      _itemType(itemType) {
   // Once-off init
   if (!TYPE.collides()) TYPE.collisionRect({-8, -8, 16, 16});
 }
@@ -24,7 +27,7 @@ void DroppedItem::sendInfoToClient(const User &targetUser, bool isNew) const {
 }
 
 void DroppedItem::getPickedUpBy(User &user) {
-  auto remainder = user.giveItem(&_itemType, _quantity);
+  auto remainder = user.giveItem(&_itemType, _quantity, _health);
 
   if (remainder == _quantity) {
     user.sendMessage({WARNING_INVENTORY_FULL});
@@ -34,7 +37,7 @@ void DroppedItem::getPickedUpBy(User &user) {
   if (remainder > 0) {
     user.sendMessage({WARNING_INVENTORY_FULL});
     Server::instance().addEntity(
-        new DroppedItem(_itemType, remainder, location()));
+        new DroppedItem(_itemType, _health, remainder, location()));
   }
 
   markForRemoval();
