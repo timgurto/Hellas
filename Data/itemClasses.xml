@@ -1,224 +1,409 @@
 <root>
 <!--
+Rule of thumb: get 10% of materials back.
+If a recipe takes n copper bars,
+Then it gives n copper scraps on average.
+10 scraps -> 1 bar, 1 cloth, 1 bone, 1 crudey clay.
+
 By default, each SD is half of the mean.
+
+Where we generate the material directly (e.g., rocks), instead use mean=0 and SD=:
+Desired chance  SD
+--------------  --
+10%             0.39
+20%             0.58
+30%             0.81
+40%             1.04
+50%             1.29
+60%             1.53
+70%             1.78
+80%             2.03
+90%             2.28
+100%            2.52
+110%            2.77
+120%            3.02
+130%            3.27
+140%            3.52
+150%            3.77
+160%            4.02
+170%            4.28
+180%            4.54
+190%            4.8
+200%            5.07
+
+For the salvage recipes, use these unlocks:
+ - Building the tool (10%)
+ - Creating the material (1%)
 -->
 
 
 <item id="ceramicScrap" name="Ceramic Shard" stackSize="50" />
-    <recipe id="salvageCeramic" name="Salvage Ceramics" product="crudeClay" >
+    <recipe id="salvageCeramic" name="Salvage Ceramics" product="crudeClay" time="1500" >
         <material id="ceramicScrap" quantity="10" />
         <tool class="grinding2" />
+        <unlockedBy construction="grindstone" chance="0.1" />
+        <unlockedBy recipe="clay" chance="0.01" />
+    </recipe>
+
+<item id="boneScrap" name="Bone Shard" stackSize="50" />
+    <recipe id="salvageBone" name="Salvage Bone" product="boneDust" quantity="2" time="1500" >
+        <material id="boneScrap" quantity="10" />
+        <tool class="grinding1" />
+        <unlockedBy recipe="knapper" chance="0.1" />
+        <unlockedBy construction="grindstone" chance="0.1" />
+        <unlockedBy recipe="boneDust" chance="0.01" />
+    </recipe>
+
+<item id="linenScrap" name="Scrap of Linen" stackSize="50" />
+    <recipe id="salvageLinen" name="Salvage Linen" product="linenCloth" time="1500" >
+        <material id="linenScrap" quantity="10" />
+        <tool class="weaving" />
+        <unlockedBy construction="loom" chance="0.1" />
+        <unlockedBy recipe="linenCloth" chance="0.01" />
+    </recipe>
+
+<item id="woolScrap" name="Scrap of Wool" stackSize="50" />
+    <recipe id="salvageWool" name="Salvage Wool" product="woolCloth" time="1500" >
+        <material id="woolScrap" quantity="10" />
+        <tool class="weaving" />
+        <unlockedBy construction="loom" chance="0.1" />
+        <unlockedBy recipe="woolCloth" chance="0.01" />
+    </recipe>
+
+<item id="leatherScrap" name="Scrap of Leather" stackSize="50" />
+    <recipe id="salvageLeather" name="Salvage Leather" product="leather" time="1500" >
+        <material id="leatherScrap" quantity="10" />
+        <tool class="leatherStretching" />
+        <unlockedBy construction="stretchingFrame" chance="0.1" />
+        <unlockedBy recipe="leather" chance="0.01" />
+        <unlockedBy recipe="sheepLeather" chance="0.01" />
+    </recipe>
+
+<item id="tinScrap" name="Tin Scrap" stackSize="50" />
+    <recipe id="salvageTin" name="Salvage Tin" product="tinBar" time="1500" >
+        <material id="tinScrap" quantity="10" />
+        <tool class="smelting1" />
+        <tool class="gloves" />
+        <unlockedBy construction="oven" chance="0.1" />
+        <unlockedBy construction="kiln" chance="0.1" />
+        <unlockedBy recipe="tinBar" chance="0.01" />
+    </recipe>
+
+<item id="copperScrap" name="Copper Scrap" stackSize="50" />
+    <recipe id="salvageCopper" name="Salvage Copper" product="copperBar" time="1500" >
+        <material id="copperScrap" quantity="10" />
+        <tool class="smelting2" />
+        <tool class="gloves" />
+        <unlockedBy construction="kiln" chance="0.1" />
+        <unlockedBy recipe="copperBar" chance="0.01" />
+    </recipe>
+
+<item id="silverScrap" name="Silver Scrap" stackSize="50" />
+    <recipe id="salvageSilver" name="Salvage Silver" product="silverBar" time="1500" >
+        <material id="silverScrap" quantity="10" />
+        <tool class="smelting2" />
+        <tool class="gloves" />
+        <unlockedBy construction="kiln" chance="0.1" />
+        <unlockedBy recipe="silverBar" chance="0.01" />
     </recipe>
 
 <!-- STONE -->
 <itemClass id="stoneKnife">
     <canBeRepaired cost="knapper" />
+    <canBeScrapped result="rock" mean="0" sd="0.39" />
 </itemClass>
 <itemClass id="stoneAxe">
     <canBeRepaired cost="knapper" />
+    <canBeScrapped result="rock" mean="0" sd="0.39" />
 </itemClass>
 
 <!-- BONE -->
+<itemClass id="boneJunk">
+    <canBeScrapped result="boneScrap" />
+</itemClass>
 <itemClass id="boneClub">
     <canBeRepaired cost="bone" />
-</itemClass>
-<itemClass id="knucklebones">
-    <canBeRepaired cost="boneDust" />
+    <canBeScrapped result="boneScrap" />
 </itemClass>
 <itemClass id="horn">
     <canBeRepaired cost="boneDust" />
+    <canBeScrapped result="boneScrap" />
 </itemClass>
 
+<!-- CERAMIC -->
+<itemClass id="mould">
+    <canBeScrapped result="ceramicScrap" mean="2" />
+</itemClass>
 <itemClass id="ceramic">
     <canBeRepaired cost="clay" tool="pottery2" />
+    <canBeScrapped result="ceramicScrap" mean="2" />
 </itemClass>
 
 <!-- WOOD -->
 <itemClass id="woodSpear">
     <canBeRepaired cost="pole1" tool="grinding1" />
+    <canBeScrapped result="pole1" mean="0" sd="0.39" />
 </itemClass>
 <itemClass id="woodStaff">
     <canBeRepaired cost="pole1" />
+    <canBeScrapped result="pole1" mean="0" sd="0.39" />
 </itemClass>
 
 <!-- LUMBER -->
 <itemClass id="bow" >
     <canBeRepaired cost="lumber" />
+    <canBeScrapped result="lumber" mean="0" sd="0.39" />
 </itemClass>
 <itemClass id="lumberShield" >
     <canBeRepaired cost="lumber" />
+    <canBeScrapped result="lumber" mean="0" sd="0.39" />
 </itemClass>
 <itemClass id="lumberStaff" >
     <canBeRepaired cost="pole2" />
+    <canBeScrapped result="pole2" mean="0" sd="0.39" />
 </itemClass>
 
 <!-- LINEN -->
+<itemClass id="fishingNet" >
+    <canBeScrapped result="rope" mean="0" sd="2.03" />
+</itemClass>
+<itemClass id="linenJunk" >
+    <canBeScrapped result="linenScrap" />
+</itemClass>
 <itemClass id="linenBack" >
     <canBeRepaired cost="linenCloth" tool="sewing" />
+    <canBeScrapped result="linenScrap" mean="4" />
 </itemClass>
 <itemClass id="linenBody" >
     <canBeRepaired cost="linenCloth" tool="sewing" />
+    <canBeScrapped result="linenScrap" mean="5" />
 </itemClass>
 
 <!-- WOOL -->
 <itemClass id="woolHead" >
     <canBeRepaired cost="woolCloth" tool="sewing" />
+    <canBeScrapped result="woolScrap" mean="2" />
 </itemClass>
 <itemClass id="woolBack" >
     <canBeRepaired cost="woolCloth" tool="sewing" />
+    <canBeScrapped result="woolScrap" mean="4" />
 </itemClass>
 <itemClass id="woolBody" >
     <canBeRepaired cost="woolCloth" tool="sewing" />
+    <canBeScrapped result="woolScrap" mean="6" />
 </itemClass>
 <itemClass id="woolHands" >
     <canBeRepaired cost="woolCloth" tool="sewing" />
+    <canBeScrapped result="woolScrap" mean="2" />
 </itemClass>
 <itemClass id="woolFeet" >
     <canBeRepaired cost="woolCloth" tool="sewing" />
+    <canBeScrapped result="woolScrap" mean="3" />
 </itemClass>
 
 <!-- HIDE -->
+<itemClass id="hideNoRepair" >
+    <canBeScrapped result="hide" mean="0" sd="0.39" />
+</itemClass>
 <itemClass id="hide" >
     <canBeRepaired cost="hide" tool="sewing" />
+    <canBeScrapped result="hide" mean="0" sd="0.39" />
 </itemClass>
 <itemClass id="parchment" >
     <canBeRepaired cost="sheepskin" tool="leatherStretching" />
+    <canBeScrapped result="sheepskin" mean="0" sd="0.39" />
 </itemClass>
 
 <!-- LEATHER -->
 <itemClass id="sling" >
     <canBeRepaired cost="leather" tool="sewing" />
+    <canBeScrapped result="leatherScrap" />
 </itemClass>
 <itemClass id="leatherHead" >
     <canBeRepaired cost="leather" tool="sewing" />
+    <canBeScrapped result="leatherScrap" mean="4" />
 </itemClass>
 <itemClass id="leatherBack" >
     <canBeRepaired cost="leather" tool="sewing" />
+    <canBeScrapped result="leatherScrap" mean="4" />
 </itemClass>
 <itemClass id="leatherScaleMail" >
     <canBeRepaired cost="leatherScale" />
+    <canBeScrapped result="leatherScrap" mean="6" />
 </itemClass>
 <itemClass id="leatherBody" >
     <canBeRepaired cost="leather" tool="sewing" />
+    <canBeScrapped result="leatherScrap" mean="6" />
 </itemClass>
 <itemClass id="leatherHands" >
     <canBeRepaired cost="leather" tool="sewing" />
+    <canBeScrapped result="leatherScrap" mean="2" />
 </itemClass>
 <itemClass id="leatherFeet" >
     <canBeRepaired cost="leather" tool="sewing" />
+    <canBeScrapped result="leatherScrap" mean="3" />
 </itemClass>
 
 <!-- TIN -->
+<itemClass id="tinJunk">
+    <canBeScrapped result="tinScrap" />
+</itemClass>
 <itemClass id="tinKnife">
     <canBeRepaired cost="tinBar" tool="smelting1" />
+    <canBeScrapped result="tinScrap" mean="4" />
 </itemClass>
 <itemClass id="tinSaw">
     <canBeRepaired cost="tinBar" tool="smelting1" />
+    <canBeScrapped result="tinScrap" />
 </itemClass>
 <itemClass id="tinPickaxe">
     <canBeRepaired cost="tinBar" tool="smelting1" />
+    <canBeScrapped result="tinScrap" />
 </itemClass>
 <itemClass id="tinAxe">
     <canBeRepaired cost="tinBar" tool="smelting1" />
+    <canBeScrapped result="tinScrap" mean="4" />
 </itemClass>
 <itemClass id="tinHammer">
     <canBeRepaired cost="tinBar" tool="smelting1" />
+    <canBeScrapped result="tinScrap" mean="4" />
 </itemClass>
 <itemClass id="tinSpear">
     <canBeRepaired cost="tinBar" tool="smelting1" />
+    <canBeScrapped result="tinScrap" />
 </itemClass>
 <itemClass id="tinSword">
     <canBeRepaired cost="tinBar" tool="smelting1" />
+    <canBeScrapped result="tinScrap" mean="5" />
+</itemClass>
+<itemClass id="tinJavelin">
+    <canBeScrapped result="tinScrap" mean="0" sd="0.58" />
 </itemClass>
 <itemClass id="tinScaleMail">
     <canBeRepaired cost="tinScale" />
+    <canBeScrapped result="tinScrap" mean="6" />
 </itemClass>
 <itemClass id="tinScaleBoots">
     <canBeRepaired cost="tinScale" />
+    <canBeScrapped result="tinScrap" mean="3" />
 </itemClass>
 <itemClass id="tinRingMail">
     <canBeRepaired cost="tinRing" />
+    <canBeScrapped result="tinScrap" mean="7" />
 </itemClass>
 <itemClass id="tinHands">
     <canBeRepaired cost="tinBar" tool="smelting1" />
+    <canBeScrapped result="tinScrap" />
 </itemClass>
 <itemClass id="tambourine">
     <canBeRepaired cost="tinScale" />
+    <canBeScrapped result="tinScrap" mean="4" />
 </itemClass>
 
 <!-- COPPER -->
+<itemClass id="copperJunk">
+    <canBeScrapped result="copperScrap" />
+</itemClass>
 <itemClass id="copperKnife">
     <canBeRepaired cost="copperBar" tool="smelting2" />
+    <canBeScrapped result="copperScrap" mean="4" />
 </itemClass>
 <itemClass id="copperSaw">
     <canBeRepaired cost="copperBar" tool="hammering" />
+    <canBeScrapped result="copperScrap" />
 </itemClass>
 <itemClass id="copperPickaxe">
     <canBeRepaired cost="copperBar" tool="hammering" />
+    <canBeScrapped result="copperScrap" />
 </itemClass>
 <itemClass id="copperAxe">
     <canBeRepaired cost="copperBar" tool="smelting2" />
+    <canBeScrapped result="copperScrap" mean="4" />
 </itemClass>
 <itemClass id="copperHammer">
     <canBeRepaired cost="copperBar" tool="smelting2" />
+    <canBeScrapped result="copperScrap" mean="4" />
 </itemClass>
 <itemClass id="copperSpear">
     <canBeRepaired cost="copperBar" tool="smelting2" />
+    <canBeScrapped result="copperScrap" />
 </itemClass>
 <itemClass id="copperSword">
     <canBeRepaired cost="copperBar" tool="smelting2" />
+    <canBeScrapped result="copperScrap" mean="5" />
+</itemClass>
+<itemClass id="copperJavelin">
+    <canBeScrapped result="copperScrap" mean="0" sd="0.58" />
 </itemClass>
 <itemClass id="copperHead" >
     <canBeRepaired cost="copperBar" tool="smelting2" />
+    <canBeScrapped result="copperScrap" mean="4" />
 </itemClass>
 <itemClass id="copperScaleMail">
     <canBeRepaired cost="copperScale" />
+    <canBeScrapped result="copperScrap" mean="6" />
 </itemClass>
 <itemClass id="copperRingMail">
     <canBeRepaired cost="copperRing" />
+    <canBeScrapped result="copperScrap" mean="7" />
 </itemClass>
-<itemClass id="copperChest">
+<itemClass id="copperBody">
     <canBeRepaired cost="copperBar" tool="smelting2" />
+    <canBeScrapped result="copperScrap" mean="6" />
 </itemClass>
 <itemClass id="copperHands">
     <canBeRepaired cost="copperBar" tool="smelting2" />
+    <canBeScrapped result="copperScrap" />
 </itemClass>
 <itemClass id="copperFeet">
     <canBeRepaired cost="copperBar" tool="smelting2" />
+    <canBeScrapped result="copperScrap" mean="3" />
 </itemClass>
 <itemClass id="copperShield">
     <canBeRepaired cost="copperBar" tool="smelting2" />
+    <canBeScrapped result="copperScrap" mean="8" />
 </itemClass>
 
 <!-- SILVER -->
 <itemClass id="silverJewelry">
     <canBeRepaired cost="silverWire" />
+    <canBeScrapped result="silverScrap" />
 </itemClass>
 
 <!-- MAGIC -->
+<itemClass id="magicJunk">
+</itemClass>
 <itemClass id="airWand">
     <canBeRepaired cost="airEssence" />
+    <canBeScrapped result="airEssence" mean="0" sd="0.58" />
 </itemClass>
 <itemClass id="airStaff">
     <canBeRepaired cost="airEssence" />
+    <canBeScrapped result="airEssence" mean="0" sd="1.29" />
 </itemClass>
 <itemClass id="waterWand">
-    <canBeRepaired cost="airEssence" />
+    <canBeRepaired cost="waterEssence" />
+    <canBeScrapped result="waterEssence" mean="0" sd="0.58" />
 </itemClass>
 <itemClass id="waterStaff">
     <canBeRepaired cost="waterEssence" />
+    <canBeScrapped result="waterEssence" mean="0" sd="1.29" />
 </itemClass>
 <itemClass id="earthWand">
     <canBeRepaired cost="earthEssence" />
+    <canBeScrapped result="earthEssence" mean="0" sd="0.58" />
 </itemClass>
 <itemClass id="earthStaff">
     <canBeRepaired cost="earthEssence" />
+    <canBeScrapped result="earthEssence" mean="0" sd="1.29" />
 </itemClass>
 <itemClass id="fireWand">
     <canBeRepaired cost="fireEssence" />
+    <canBeScrapped result="fireEssence" mean="0" sd="0.58" />
 </itemClass>
 <itemClass id="fireStaff">
     <canBeRepaired cost="fireEssence" />
+    <canBeScrapped result="fireEssence" mean="0" sd="1.29" />
 </itemClass>
 
 </root>

@@ -108,10 +108,9 @@
         xDrawOffset="-19" yDrawOffset="-27" >
         <collisionRect x="-13" y="-4" w="25" h="6" />
     </objectType>
-    <item id="anzacHat" name="Gallipolis Scouting Hat" bind="pickup" gearSlot="0"
+    <item id="anzacHat" name="Gallipolis Scouting Hat" class="leatherHead" bind="pickup" gearSlot="0"
         sounds="leather" >
         <offset x="-5" y="-5" />
-        <canBeRepaired cost="leather" tool="sewing" />
         <particles profile="poppyGrowth" />
     </item>
         <particleProfile
@@ -125,7 +124,7 @@
             <fallSpeed mean="0" sd="0" />
             <variety imageFile="poppy" />
         </particleProfile>
-    <item id="anzacTwoUp" name="Gallipolis Coin-Toss Game" bind="pickup"
+    <item id="anzacTwoUp" name="Gallipolis Coin-Toss Game" class="copperJunk" bind="pickup"
         castsSpellOnUse="playTwoUp" keepOnCast="1" >
     </item>
         <spell id="playTwoUp" customDescription="Toss two coins and watch how they land." >

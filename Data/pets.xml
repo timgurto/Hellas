@@ -26,7 +26,7 @@
     <yield id="wool" initialMean="0" initialSD="1.5" initialMin="1" />
     <transform id="sheep" whenEmpty="1" />
 </npcType>
-<item id="collar" name="Collar"
+<item id="collar" name="Collar" class="linenJunk"
     sounds="fabric" stackSize="10"/>
     <recipe id="collar" time="10000">
         <material id="linenCloth" />

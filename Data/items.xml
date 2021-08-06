@@ -53,19 +53,19 @@
 <item id="figSeeds"     name="Fig Seeds"      sounds="seeds"     constructs="figTree0"       stackSize="10"/>
 <item id="flaxSeeds"    name="Flax Seeds"     sounds="seeds"     constructs="flaxCrop0"      stackSize="10"/>
 
-<item id="tinTube"      name="Metal Tube"     sounds="metalTool" durability="8"> <tag name="wireDrawing" /> </item>
+<item id="tinTube"      name="Metal Tube"     class="tinJunk" sounds="metalTool" durability="8"> <tag name="wireDrawing" /> </item>
 <item id="pole1"		name="Crude Pole"     sounds="wood" />
 <item id="pole2"		name="Pole" />
 
-<item id="pickMould"    name="Pickaxe Mould"  sounds="ceramic" >   <tag name="pickMould" />  </item>
-<item id="knifeMould"   name="Knife Mould"    sounds="ceramic" >   <tag name="knifeMould" /> </item>
-<item id="axeMould"     name="Axe Mould"      sounds="ceramic" >   <tag name="axeMould" />   </item>
-<item id="hammerMould"  name="Hammer Mould"   sounds="ceramic" >   <tag name="hammerMould" />   </item>
-<item id="tubeMould"    name="Tube Mould"     sounds="ceramic" >   <tag name="tubeMould" />  </item>
-<item id="sawMould"     name="Saw Mould"      sounds="ceramic" >   <tag name="sawMould" />   </item>
-<item id="scaleMould"   name="Scale Mould"    sounds="ceramic" >   <tag name="scaleMould" /> </item>
-<item id="spearMould"   name="Spear Mould"    sounds="ceramic" >   <tag name="spearMould" /> </item>
-<item id="boneNeedle"   name="Bone Needle"    sounds="metalTool" > <tag name="sewing" />     </item>
+<item id="pickMould"    name="Pickaxe Mould"  class="mould" sounds="ceramic" >   <tag name="pickMould" />  </item>
+<item id="knifeMould"   name="Knife Mould"    class="mould" sounds="ceramic" >   <tag name="knifeMould" /> </item>
+<item id="axeMould"     name="Axe Mould"      class="mould" sounds="ceramic" >   <tag name="axeMould" />   </item>
+<item id="hammerMould"  name="Hammer Mould"   class="mould" sounds="ceramic" >   <tag name="hammerMould" />   </item>
+<item id="tubeMould"    name="Tube Mould"     class="mould" sounds="ceramic" >   <tag name="tubeMould" />  </item>
+<item id="sawMould"     name="Saw Mould"      class="mould" sounds="ceramic" >   <tag name="sawMould" />   </item>
+<item id="scaleMould"   name="Scale Mould"    class="mould" sounds="ceramic" >   <tag name="scaleMould" /> </item>
+<item id="spearMould"   name="Spear Mould"    class="mould" sounds="ceramic" >   <tag name="spearMould" /> </item>
+<item id="boneNeedle"   name="Bone Needle"    class="boneJunk" sounds="metalTool" > <tag name="sewing" />     </item>
 
 <item id="stick" name="Stick" stackSize="10" durability="2" sounds="stick" >
     <offset x="-8" y="-1" />
@@ -291,12 +291,12 @@
                     <offset x="-7" y="-3" />
                 </item>
         <!-- Javelin (crit) -->
-            <item id="tinJavelin" name="Light Javelin" stackSize="100" gearSlot="6" sounds="spear" lvlReq="12" >
+            <item id="tinJavelin" name="Light Javelin" class="tinJavelin" stackSize="100" gearSlot="6" sounds="spear" lvlReq="12" >
                 <weapon damage="5" speed="2.7" range="25" consumes="tinJavelin" projectile="tinJavelin" />
                 <stats crit="100"/>
                 <offset x="-5" y="-21" />
             </item>
-            <item id="copperJavelin" name="Javelin" stackSize="100" gearSlot="6" sounds="spear" lvlReq="26" quality="2" bind="equip" >
+            <item id="copperJavelin" name="Javelin" class="copperJavelin" stackSize="100" gearSlot="6" sounds="spear" lvlReq="26" quality="2" bind="equip" >
                 <weapon damage="8" speed="2.5" range="25" consumes="copperJavelin" />
                 <stats crit="100" cunning="2"/>
                 <offset x="-5" y="-21" />
@@ -369,7 +369,7 @@
                 </item>
             
         <!-- Leather (crit resistance) -->
-            <item id="hide" name="Animal Hide" gearSlot="3" sounds="leather" durability="5" >
+            <item id="hide" name="Animal Hide" class="hideNoRepair" gearSlot="3" sounds="leather" durability="5" >
                 <stats armor="3" />
                 <offset x="-4" y="-1" />
             </item>
@@ -405,11 +405,11 @@
                     <stats armor="22" block="400" swiftness="4" />
                     <offset x="-5" y="-3" />
                 </item>
-            <item id="copperHauberk" name="Copper Hauberk" clas="copperRingMail" gearSlot="2" sounds="mailArmor" lvlReq="29" quality="2" bind="equip" >
+            <item id="copperHauberk" name="Copper Hauberk" class="copperRingMail" gearSlot="2" sounds="mailArmor" lvlReq="29" quality="2" bind="equip" >
                 <stats armor="39" block="700" swiftness="7" />
                 <offset x="-5" y="-3" />
             </item>
-                <item id="copperHauberkSilver" name="Silvered Copper Hauberk" clas="copperRingMail" gearSlot="2" sounds="mailArmor" lvlReq="29"
+                <item id="copperHauberkSilver" name="Silvered Copper Hauberk" class="copperRingMail" gearSlot="2" sounds="mailArmor" lvlReq="29"
                     iconFile="copperHauberk" gearFile="copperHauberk" quality="3" bind="equip">
                     <stats armor="46" block="800" swiftness="8" />
                     <offset x="-5" y="-3" />
@@ -425,11 +425,11 @@
                     <stats armor="12" endurance="6" />
                     <offset x="-5" y="-4" />
                 </item>
-            <item id="copperCuirass" name="Copper Cuirass" class="copperChest" gearSlot="2" lvlReq="31" quality="2" bind="equip" >
+            <item id="copperCuirass" name="Copper Cuirass" class="copperBody" gearSlot="2" lvlReq="31" quality="2" bind="equip" >
                 <stats armor="42" endurance="14" />
                 <offset x="-3" y="-4" />
             </item>
-                <item id="copperCuirassSilver" name="Silvered Copper Cuirass" class="copperChest" gearSlot="2" lvlReq="31"
+                <item id="copperCuirassSilver" name="Silvered Copper Cuirass" class="copperBody" gearSlot="2" lvlReq="31"
                     iconFile="copperCuirass" gearFile="copperCuirass" quality="3" bind="equip" >
                     <stats armor="49" endurance="16" />
                     <offset x="-3" y="-4" />
@@ -573,7 +573,7 @@
                 </item>
 
         <!-- Knowledge (energy) -->
-            <item id="knucklebones" name="Knucklebones" class="knucklebones" gearSlot="7" >
+            <item id="knucklebones" name="Knucklebones" class="boneJunk" gearSlot="7" >
                 <stats cunning="2" energy="2" />
                 <offset x="0" y="1" />
             </item>
@@ -593,7 +593,7 @@
                 </item>
 
         <!-- Musical instrument (HPS, EPS) -->
-            <item id="horn" name="Horn" class="horn" gearSlot="7" >
+            <item id="horn" name="Horn" class="boneJunk" gearSlot="7" >
                 <stats courage="2" />
                 <offset x="0" y="-3" />
             </item>
