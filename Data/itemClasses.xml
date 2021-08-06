@@ -9,7 +9,6 @@ By default, each SD is half of the mean.
 
 Where we generate the material directly (e.g., rocks), instead use mean=0 and SD=:
 Desired chance  SD
---------------  --
 10%             0.39
 20%             0.58
 30%             0.81
@@ -45,7 +44,7 @@ For the salvage recipes, use these unlocks:
         <unlockedBy recipe="clay" chance="0.01" />
     </recipe>
 
-<item id="boneScrap" name="Bone Shard" stackSize="50" />
+<item id="boneScrap" name="Bone Splinter" stackSize="50" />
     <recipe id="salvageBone" name="Salvage Bone" product="boneDust" quantity="2" time="1500" >
         <material id="boneScrap" quantity="10" />
         <tool class="grinding1" />

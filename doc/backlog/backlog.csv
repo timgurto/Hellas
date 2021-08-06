@@ -123,7 +123,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 123,Bridges,8,89,Feature,109,,,3 Bronze Age
 124,Adventure: primeval forest,377,987,Content,125,,,
 125,Move adventures to instances,13,610,Feature,,,,
-126,Salvage mats from unwanted items,34,34,Feature,,,,
+126,Salvage mats from unwanted items,34,34,Feature,,TRUE,,
 127,Random item drops,233,233,Feature,126,,,
 128,Allow remote deletion of city construction sites by king,1,5,Usability,120,,,1 Housing
 129,Gear classes; require known recipe to repair that class,13,89,Feature,,,,
