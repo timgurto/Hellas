@@ -2481,6 +2481,28 @@ void Client::handle_SV_SHOW_OUTCOME_AT(int msgCode, const MapPoint &loc) {
   }
 }
 
+static void showGainedBuffFloatingText(Client &client, std::string buffID,
+                                       bool isBuff,
+                                       const ClientCombatant &receiver) {
+  const auto buffName = client.gameData.buffTypes[buffID].name();
+  const auto isHostile = receiver.canBeAttackedByPlayer();
+  const auto isGoodOutcomeForPlayer = isHostile != isBuff;
+  const auto colour = isGoodOutcomeForPlayer ? Color::BUFF : Color::DEBUFF;
+  client.addFloatingCombatText("Gained "s + buffName,
+                               receiver.combatantLocation(), colour);
+}
+
+static void showLostBuffFloatingText(Client &client, std::string buffID,
+                                     bool isBuff,
+                                     const ClientCombatant &receiver) {
+  const auto buffName = client.gameData.buffTypes[buffID].name();
+  const auto isHostile = receiver.canBeAttackedByPlayer();
+  const auto isGoodOutcomeForPlayer = isHostile == isBuff;
+  const auto colour = isGoodOutcomeForPlayer ? Color::BUFF : Color::DEBUFF;
+  client.addFloatingCombatText("Lost "s + buffName,
+                               receiver.combatantLocation(), colour);
+}
+
 void Client::handle_SV_ENTITY_GOT_BUFF(int msgCode, Serial serial,
                                        const std::string &buffID) {
   auto objIt = _objects.find(serial);
@@ -2488,7 +2510,10 @@ void Client::handle_SV_ENTITY_GOT_BUFF(int msgCode, Serial serial,
     return;
   }
 
-  objIt->second->addBuffOrDebuff(buffID, msgCode == SV_ENTITY_GOT_BUFF);
+  const auto isBuff = msgCode == SV_ENTITY_GOT_BUFF;
+  objIt->second->addBuffOrDebuff(buffID, isBuff);
+
+  showGainedBuffFloatingText(*this, buffID, isBuff, *objIt->second);
 
   if (objIt->second == _target.entity()) refreshTargetBuffs();
 }
@@ -2500,7 +2525,10 @@ void Client::handle_SV_ENTITY_LOST_BUFF(int msgCode, Serial serial,
     return;
   }
 
-  objIt->second->removeBuffOrDebuff(buffID, msgCode == SV_ENTITY_LOST_BUFF);
+  const auto isBuff = msgCode == SV_ENTITY_LOST_BUFF;
+  objIt->second->removeBuffOrDebuff(buffID, isBuff);
+
+  showLostBuffFloatingText(*this, buffID, isBuff, *objIt->second);
 
   if (objIt->second == _target.entity()) refreshTargetBuffs();
 }
@@ -2516,8 +2544,10 @@ void Client::handle_SV_PLAYER_GOT_BUFF(int msgCode, const std::string &username,
     avatar = it->second;
   }
 
-  auto isBuff = msgCode == SV_PLAYER_GOT_BUFF;
+  const auto isBuff = msgCode == SV_PLAYER_GOT_BUFF;
   avatar->addBuffOrDebuff(buffID, isBuff);
+
+  showGainedBuffFloatingText(*this, buffID, isBuff, *avatar);
 
   if (avatar == &_character) {
     auto it = gameData.buffTypes.find(buffID);
@@ -2549,7 +2579,10 @@ void Client::handle_SV_PLAYER_LOST_BUFF(int msgCode,
     avatar = it->second;
   }
 
-  avatar->removeBuffOrDebuff(buffID, msgCode == SV_PLAYER_LOST_BUFF);
+  const auto isBuff = msgCode == SV_PLAYER_LOST_BUFF;
+  avatar->removeBuffOrDebuff(buffID, isBuff);
+
+  showLostBuffFloatingText(*this, buffID, isBuff, *avatar);
 
   if (avatar == &_character) refreshBuffsDisplay();
 
