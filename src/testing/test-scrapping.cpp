@@ -463,6 +463,28 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   }
 }
 
+TEST_CASE_METHOD(ServerAndClientWithData, "Rounding of scrapping quantity",
+                 "[scrapping]") {
+  GIVEN("Scrapping a matrioshka doll gives ~0.999999 matrioshka dolls") {
+    useData(R"(
+      <item id="matrioshkaDoll" class="matrioshkaDoll"/>
+      <itemClass id="matrioshkaDoll">
+        <canBeScrapped result="matrioshkaDoll" mean="0.999999" />
+      </itemClass>
+    )");
+
+    WHEN("the user scraps one") {
+      user->giveItem(&server->getFirstItem());
+      client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
+
+      THEN("he has a matrioshka doll") {
+        REPEAT_FOR_MS(100);
+        CHECK(user->inventory()[0].first.hasItem());
+      }
+    }
+  }
+}
+
 TEST_CASE_METHOD(ServerAndClientWithData, "Bad scrap result", "[scrapping]") {
   GIVEN("the user has an item that scraps to an invalid item") {
     useData(R"(

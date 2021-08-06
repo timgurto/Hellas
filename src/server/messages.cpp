@@ -941,7 +941,7 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
   const auto *scrap = findItem(itemClass->scrapping.result);
   if (!scrap) RETURN_WITH(ERROR_INVALID_ITEM);
 
-  const auto numScraps = itemClass->scrapping.qtyGenerator.generate();
+  const auto numScraps = toInt(itemClass->scrapping.qtyGenerator.generate());
   if (numScraps > 0) {
     auto scraps = ItemSet{};
     scraps.add(scrap, numScraps);
