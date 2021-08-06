@@ -648,6 +648,9 @@ void Server::loadEntities(XmlReader &xr,
     size_t quantity = 1;
     xr.findAttr(elem, "qty", quantity);
 
+    auto health = Item::MAX_HEALTH;
+    xr.findAttr(elem, "health", health);
+
     auto p = MapPoint{};
     if (!xr.findAttr(elem, "x", p.x) || !xr.findAttr(elem, "y", p.y)) {
       // Try old location format
@@ -660,7 +663,7 @@ void Server::loadEntities(XmlReader &xr,
       }
     }
 
-    addEntity(new DroppedItem(*itemType, Item::MAX_HEALTH, quantity, p));
+    addEntity(new DroppedItem(*itemType, health, quantity, p));
   }
 }
 
@@ -795,6 +798,7 @@ void DroppedItem::writeToXML(XmlWriter &xw) const {
   if (_quantity > 1) xw.setAttr(e, "qty", _quantity);
   xw.setAttr(e, "x", location().x);
   xw.setAttr(e, "y", location().y);
+  if (_health < Item::MAX_HEALTH) xw.setAttr(e, "health", _health);
 }
 
 void Server::saveData(const Entities &entities, const Wars &wars,

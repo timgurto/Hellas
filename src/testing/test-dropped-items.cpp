@@ -561,3 +561,26 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Dropped items preserve item damage",
     }
   }
 }
+
+TEST_CASE("Dropped-item health is persistent", "[persistence][dropped-items]") {
+  // For different values of n
+  for (const auto testHealth : std::vector<Hitpoints>{5, 6}) {
+    // Given a dropped item with n health
+    auto data = "<item id=\"thing\"/>";
+    {
+      auto s = TestServer::WithDataString(data);
+      const auto &thing = s.getFirstItem();
+      s->addEntity(new DroppedItem(thing, testHealth, 1, {20, 20}));
+
+      // When the server restarts
+    }
+    {
+      auto s = TestServer::WithDataStringAndKeepingOldData(data);
+
+      // Then it still has n health
+      WAIT_UNTIL(s.entities().size() == 1);
+      const auto &thing = s.getFirstDroppedItem();
+      CHECK(thing.health() == testHealth);
+    }
+  }
+}

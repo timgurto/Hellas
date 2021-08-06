@@ -23,6 +23,7 @@ class DroppedItem : public Entity {
   bool canBeAttackedBy(const User &) const override { return false; }
   bool areOverlapsAllowedWith(const Entity &rhs) const override;
   void getPickedUpBy(User &user);
+  Hitpoints health() const { return _health; }
 
   void writeToXML(XmlWriter &xw) const override;
 
