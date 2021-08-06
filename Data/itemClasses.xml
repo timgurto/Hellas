@@ -1,4 +1,14 @@
 <root>
+<!--
+By default, each SD is half of the mean.
+-->
+
+
+<item id="ceramicScrap" name="Ceramic Shard" stackSize="50" />
+    <recipe id="salvageCeramic" name="Salvage Ceramics" product="crudeClay" >
+        <material id="ceramicScrap" quantity="10" />
+        <tool class="grinding2" />
+    </recipe>
 
 <!-- STONE -->
 <itemClass id="stoneKnife">

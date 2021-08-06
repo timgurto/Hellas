@@ -651,8 +651,9 @@ void DataLoader::loadItemClasses(XmlReader &xr) {
       ic.scrapping.canBeScrapped = true;
       xr.findAttr(scrapElem, "result", ic.scrapping.result);
 
-      auto mean = 1.0, sd = 0.0;
+      auto mean = 1.0;
       xr.findAttr(scrapElem, "mean", mean);
+      auto sd = mean / 2;  // Always half the mean by default.  Nice and random.
       xr.findAttr(scrapElem, "sd", sd);
       ic.scrapping.qtyGenerator = {mean, sd};
     }
