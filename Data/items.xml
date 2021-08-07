@@ -70,7 +70,7 @@
 <item id="stick" name="Stick" stackSize="10" durability="2" sounds="stick" >
     <offset x="-8" y="-1" />
 </item>
-<item id="knapper" name="Knapper" sounds="rock" >
+<item id="knapper" name="Knapper" class="stoneJunk" sounds="rock" >
     <tag name="grinding1" />
 </item>
 
