@@ -63,6 +63,7 @@ void TakeContainer::repopulate() {
                itemType->isQuestItem());
         });
     row->addChild(button);
+    button->setTooltip(slot.first.tooltip());
     button->addChild(new Picture(1, 1, itemType->icon()));
     px_t labX = Client::ICON_SIZE + 2;
     button->addChild(new Label({labX, 0, row->width() - labX, row->height()},
