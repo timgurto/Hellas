@@ -358,8 +358,7 @@ enum MessageCode {
   SV_INVENTORY,
 
   // A client received something.  Signal for aesthetics (e.g., floating combat
-  // text); the more
-  // critical message to update client state is SV_INVENTORY.
+  // text); the more critical message to update client state is SV_INVENTORY.
   // Arguments: ID, quantity
   SV_RECEIVED_ITEM,
 
@@ -409,6 +408,9 @@ enum MessageCode {
   // A player has stopped/finished crafting a recipe.
   // Arguments: username
   SV_PLAYER_STOPPED_CRAFTING,
+
+  // A player scrapped an item but yielded nothing.
+  SV_SCRAPPING_FAILED,
 
   // A user's class and level
   // Arguments: username, classID, level

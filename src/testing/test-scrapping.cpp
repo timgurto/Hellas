@@ -485,6 +485,27 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Rounding of scrapping quantity",
   }
 }
 
+TEST_CASE_METHOD(ServerAndClientWithData, "Alert user when scrapping fails",
+                 "[scrapping]") {
+  GIVEN("scrapping dust has no chance to yield anything") {
+    useData(R"(
+      <item id="dust" class="noYield"/>
+      <itemClass id="noYield">
+        <canBeScrapped result="dust" mean="0" sd="0" />
+      </itemClass>
+    )");
+
+    WHEN("a user tries to scrap some dust") {
+      user->giveItem(&server->getFirstItem());
+      client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
+
+      THEN("he gets a scrapping-failed message") {
+        CHECK(client->waitForMessage(SV_SCRAPPING_FAILED));
+      }
+    }
+  }
+}
+
 TEST_CASE_METHOD(ServerAndClientWithData, "Bad scrap result", "[scrapping]") {
   GIVEN("the user has an item that scraps to an invalid item") {
     useData(R"(

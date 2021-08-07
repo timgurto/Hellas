@@ -962,8 +962,10 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
   if (qtyInSlot == 0) containerSlot.first = {};
   sendInventoryMessage(user, slot, serial);
 
+  if (numScraps <= 0) RETURN_WITH(SV_SCRAPPING_FAILED);
+
   // Give scraps
-  if (numScraps > 0) user.giveItem(scrap, numScraps);
+  user.giveItem(scrap, numScraps);
 }
 
 HANDLE_MESSAGE(CL_TAME_NPC) {

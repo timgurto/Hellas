@@ -2122,6 +2122,14 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
+      case SV_SCRAPPING_FAILED:
+        singleMsg >> del;
+        if (del != MSG_END) break;
+
+        addChatMessage("Failed to recover anything useful.",
+                       Color::CHAT_DEFAULT);
+        break;
+
       case SV_ROLL_RESULT: {
         auto username = ""s;
         auto result = 0;
