@@ -227,7 +227,7 @@ void ClientItem::Instance::createRegularTooltip() const {
 
   tooltip.setColor(Color::TOOLTIP_BODY);
 
-  if (isQuestItem()) {
+  if (_type->isQuestItem()) {
     tooltip.addGap();
     tooltip.addLine("Quest item");
   }
