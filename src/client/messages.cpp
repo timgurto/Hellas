@@ -2267,10 +2267,6 @@ void Client::handle_SV_INVENTORY(Serial serial, size_t slot,
     }
   }
 
-  auto &invSlot = (*container)[slot];
-  invSlot.first = ClientItem::Instance{item, itemHealth, isSoulbound};
-  invSlot.second = quantity;
-
   auto userIsReceivingItem = serial.isInventory() || serial.isGear();
 
   // Loot
@@ -2285,9 +2281,14 @@ void Client::handle_SV_INVENTORY(Serial serial, size_t slot,
       }
   auto isLootable = !userIsReceivingItem && object->isDead() && hasItems;
   if (isLootable) {
-    object->lootable(isLootable);
+    object->lootable(true);
     object->assembleWindow(*this);
+    isSoulbound = false;  // Hasn't been picked up yet
   }
+
+  auto &invSlot = (*container)[slot];
+  invSlot.first = ClientItem::Instance{item, itemHealth, isSoulbound};
+  invSlot.second = quantity;
 
   // Update any UI stuff
   if (_recipeList) _recipeList->markChanged();
