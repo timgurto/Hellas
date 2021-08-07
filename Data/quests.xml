@@ -209,7 +209,7 @@
     <objective type="fetch" id="kronMeat" />
 </quest>
     <npcType
-        id="athleteQG" name="Hunter Kron"
+        id="athleteQG" name="Kron, Hunter"
         level="6" maxHealth="38" isCivilian="1" >
         <humanoid base="athlete">
             <gear id="bow" />
@@ -256,7 +256,7 @@
     <objective type="fetch" id="whiteMushroomGather" />
 </quest>
     <npcType
-        id="scholarQG" name="Gatherer Briv"
+        id="scholarQG" name="Briv, Gatherer"
         level="6" maxHealth="38" isCivilian="1" >
         <humanoid base="scholar">
             <gear id="stoneKnife" />
@@ -332,7 +332,7 @@
     <reward type="construction" id="zealotBuilding" />
 </quest>
     <npcType
-        id="zealotQG" name="Shaman Zaar"
+        id="zealotQG" name="Zaar, Shaman"
         level="6" maxHealth="38" isCivilian="1" >
         <humanoid base="zealot">
             <gear id="hide" />
