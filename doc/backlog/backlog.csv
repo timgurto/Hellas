@@ -36,7 +36,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 35,SFX on aggro,89,21,Aesthetics,,,,
 36,Allow giving object to anyone,144,21,Feature,,TRUE,,
 37,Sanitise war declarations,1,2,Usability,40,,TRUE,7 War
-38,Partial repairs,55,13,Feature,,,TRUE,
+38,Partial repairs,55,21,Feature,,,TRUE,
 39,Sanitise object granting,21,2,Usability,36,TRUE,TRUE,
 40,Fix war,34,89,Content,,,TRUE,7 War
 41,Weather particles,89,144,Aesthetics,,,,
@@ -134,3 +134,13 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 134,lvl-50 adventure,55,987,Content,125,,,
 135,lvl-60 adventure,34,987,Content,125,,,
 136,lvl-60 raid,55,987,Content,125,,,
+137,Stop using ASCII numbers in messages,55,89,Performance,,,,
+138,Repair via trade window,8,89,Feature,96,,,
+139,Ships get stuck in rivers,21,5,Bug,,,,
+140,Constructions on hotbar,3,21,Usability,,,,
+141,Allow trading objects,21,13,Feature,96,,TRUE,
+142,Make quests hidable in UI,2,13,Usability,,,,
+143,Cancel action on spellcast,1,2,Exploit,,,,
+144,Right-click to move,89,34,Feature,,,,
+145,Allow giving object to a city,2,2,Feature,,,,
+146,Replace gloves with bellows as tin prereq,2,3,Content,,,,
