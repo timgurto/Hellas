@@ -71,29 +71,28 @@ std::string makeArgs(T1 val1) {
 template <typename T1, typename T2>
 std::string makeArgs(T1 val1, T2 val2) {
   std::ostringstream oss;
-  oss << val1 << MSG_DELIM << val2;
+  oss << makeArgs(val1) << MSG_DELIM << val2;
   return oss.str();
 }
 
 template <typename T1, typename T2, typename T3>
 std::string makeArgs(T1 val1, T2 val2, T3 val3) {
   std::ostringstream oss;
-  oss << val1 << MSG_DELIM << val2 << MSG_DELIM << val3;
+  oss << makeArgs(val1, val2) << MSG_DELIM << val3;
   return oss.str();
 }
 
 template <typename T1, typename T2, typename T3, typename T4>
 std::string makeArgs(T1 val1, T2 val2, T3 val3, T4 val4) {
   std::ostringstream oss;
-  oss << val1 << MSG_DELIM << val2 << MSG_DELIM << val3 << MSG_DELIM << val4;
+  oss << makeArgs(val1, val2, val3) << MSG_DELIM << val4;
   return oss.str();
 }
 
 template <typename T1, typename T2, typename T3, typename T4, typename T5>
 std::string makeArgs(T1 val1, T2 val2, T3 val3, T4 val4, T5 val5) {
   std::ostringstream oss;
-  oss << val1 << MSG_DELIM << val2 << MSG_DELIM << val3 << MSG_DELIM << val4
-      << MSG_DELIM << val5;
+  oss << makeArgs(val1, val2, val3, val4) << MSG_DELIM << val5;
   return oss.str();
 }
 
@@ -101,8 +100,9 @@ template <typename T1, typename T2, typename T3, typename T4, typename T5,
           typename T6>
 std::string makeArgs(T1 val1, T2 val2, T3 val3, T4 val4, T5 val5, T6 val6) {
   std::ostringstream oss;
-  oss << val1 << MSG_DELIM << val2 << MSG_DELIM << val3 << MSG_DELIM << val4
-      << MSG_DELIM << val5 << MSG_DELIM << val6;
+  oss << makeArgs(val1, val2, val3, val4, val5) << MSG_DELIM << val6;
+  return oss.str();
+}
   return oss.str();
 }
 
