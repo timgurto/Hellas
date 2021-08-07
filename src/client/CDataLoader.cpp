@@ -809,6 +809,8 @@ void CDataLoader::loadItems(XmlReader &xr) {
       item.addParticles(profileName, offset);
     }
 
+    if (xr.findAttr(elem, "exclusiveToQuest", s)) item.markAsQuestItem();
+
     if (xr.findAttr(elem, "class", s)) {
       const auto it = _client.gameData.itemClasses.find(s);
       if (it != _client.gameData.itemClasses.end()) item.setClass(it->second);

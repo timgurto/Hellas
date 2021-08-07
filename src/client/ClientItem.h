@@ -43,6 +43,7 @@ class ClientItem : public Item, public HasSounds {
   ImageWithHighlight _icon;
   Texture _gearImage;
   ScreenPoint _drawLoc;
+  bool _isQuestItem{false};
 
   // Should never be null.  Pointer rather than a reference so
   // that the type can be copied.
@@ -87,6 +88,8 @@ class ClientItem : public Item, public HasSounds {
   bool shouldWarnBeforeScrapping() const;
   Color nameColor() const;
   bool canBeScrapped() const;
+  void markAsQuestItem() { _isQuestItem = true; }
+  bool isQuestItem() const { return _isQuestItem; }
 
   static const ScreenPoint &gearOffset(size_t slot) {
     return gearOffsets[slot];

@@ -19,7 +19,8 @@ class TakeContainer : public Element {
   size_t size() const { return _list->size(); }
 
   // Send a CL_TAKE message.  data: a pair containing the serial and slot.
-  void take(Serial serial, size_t slot, bool itemBindsOnPickup);
+  void take(Serial serial, size_t slot, bool itemBindsOnPickup,
+            bool isQuestItem);
 
   static const size_t LOOT_CAPACITY = 10;  // TODO find a better solution
 

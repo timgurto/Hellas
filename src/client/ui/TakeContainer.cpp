@@ -59,7 +59,8 @@ void TakeContainer::repopulate() {
     const auto &pSlot = _slots[i];
     auto *button = new Button(
         {0, 0, row->width(), row->height()}, {}, [&pSlot, itemType, this]() {
-          take(pSlot.first, pSlot.second, itemType->bindsOnPickup());
+          take(pSlot.first, pSlot.second, itemType->bindsOnPickup(),
+               itemType->isQuestItem());
         });
     row->addChild(button);
     button->addChild(new Picture(1, 1, itemType->icon()));
@@ -77,8 +78,11 @@ void TakeContainer::repopulate() {
   _list->scrollPos(oldScroll);
 }
 
-void TakeContainer::take(Serial serial, size_t slot, bool itemBindsOnPickup) {
-  if (!itemBindsOnPickup) {
+void TakeContainer::take(Serial serial, size_t slot, bool itemBindsOnPickup,
+                         bool isQuestItem) {
+  const auto shouldRequireConfirmation = itemBindsOnPickup && !isQuestItem;
+
+  if (!shouldRequireConfirmation) {
     _client->sendMessage({CL_TAKE_ITEM, makeArgs(serial, slot)});
 
   } else {
