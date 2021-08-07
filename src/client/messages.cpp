@@ -2485,6 +2485,8 @@ void Client::handle_SV_SHOW_OUTCOME_AT(int msgCode, const MapPoint &loc) {
 static void showGainedBuffFloatingText(Client &client, std::string buffID,
                                        bool isBuff,
                                        const ClientCombatant &receiver) {
+  if (buffID == "newPlayerClay") return;
+
   const auto buffName = client.gameData.buffTypes[buffID].name();
   const auto isHostile = receiver.canBeAttackedByPlayer();
   const auto isGoodOutcomeForPlayer = isHostile != isBuff;
@@ -2496,6 +2498,8 @@ static void showGainedBuffFloatingText(Client &client, std::string buffID,
 static void showLostBuffFloatingText(Client &client, std::string buffID,
                                      bool isBuff,
                                      const ClientCombatant &receiver) {
+  if (buffID == "newPlayerClay") return;
+
   const auto buffName = client.gameData.buffTypes[buffID].name();
   const auto isHostile = receiver.canBeAttackedByPlayer();
   const auto isGoodOutcomeForPlayer = isHostile == isBuff;
