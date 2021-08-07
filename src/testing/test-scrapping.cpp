@@ -9,7 +9,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping items", "[scrapping]") {
       <item id="wood" class="wood" />
       <item id="woodchip" />
       <itemClass id="wood">
-        <canBeScrapped result="woodchip" />
+        <canBeScrapped result="woodchip" sd="0" />
       </itemClass>
     )");
     const auto &wood = server->findItem("wood");
@@ -64,7 +64,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping items", "[scrapping]") {
         <item id="rock" class="rock" />
         <item id="sand" />
         <itemClass id="rock">
-          <canBeScrapped result="sand" />
+          <canBeScrapped result="sand" sd="0" />
         </itemClass>
       )");
 
@@ -223,7 +223,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping Equipped gear",
       <item id="hat" class="hat" gearSlot="0" />
       <item id="felt" />
       <itemClass id="hat">
-        <canBeScrapped result="felt" />
+        <canBeScrapped result="felt" sd="0" />
       </itemClass>
     )");
 
@@ -259,7 +259,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping item in container",
       <item id="egg" class="egg" />
       <item id="shell" />
       <itemClass id="egg">
-        <canBeScrapped result="shell" />
+        <canBeScrapped result="shell" sd="0" />
       </itemClass>
       <objectType id="carton">
         <container slots="1"/>
@@ -384,7 +384,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       <item id="coin" class="gold" stackSize="10"/>
       <item id="goldDust" />
       <itemClass id="gold">
-        <canBeScrapped result="goldDust" />
+        <canBeScrapped result="goldDust" sd="0" />
       </itemClass>
     )");
 
@@ -413,7 +413,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
         <item id="wonkaBar" class="transmissable"/>
         <item id="piece" />
         <itemClass id="transmissable">
-          <canBeScrapped result="piece" mean="1000000" />
+          <canBeScrapped result="piece" mean="1000000" sd="0" />
         </itemClass>
       )");
       const auto *wonkaBar = &server->findItem("wonkaBar");
@@ -436,7 +436,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
         <item id="hat" class="hat" gearSlot="0"/>
         <item id="straw" />
         <itemClass id="hat">
-          <canBeScrapped result="straw" />
+          <canBeScrapped result="straw" sd="0" />
         </itemClass>
       )");
 
@@ -469,7 +469,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Rounding of scrapping quantity",
     useData(R"(
       <item id="matrioshkaDoll" class="matrioshkaDoll"/>
       <itemClass id="matrioshkaDoll">
-        <canBeScrapped result="matrioshkaDoll" mean="0.999999" />
+        <canBeScrapped result="matrioshkaDoll" mean="0.999999" sd="0" />
       </itemClass>
     )");
 
@@ -490,7 +490,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Bad scrap result", "[scrapping]") {
     useData(R"(
       <item id="box" class="box"/>
       <itemClass id="box">
-        <canBeScrapped result="notARealItem" />
+        <canBeScrapped result="notARealItem" sd="0" />
       </itemClass>
     )");
     user->giveItem(&server->getFirstItem());
