@@ -35,7 +35,25 @@ const Texture& CDroppedItem::getHighlightImage() const {
 }
 
 const Tooltip& CDroppedItem::tooltip() const {
-  return Sprite::tooltip();  // No tooltip
+  if (_tooltip.hasValue()) return _tooltip.value();
+  _tooltip = Tooltip{};
+  auto& tooltip = _tooltip.value();
+
+  tooltip.embed(_itemType.tooltip());
+
+  if (_health < Item::MAX_HEALTH) {
+    tooltip.addGap();
+
+    if (_health == 0)
+      tooltip.setColor(Color::DURABILITY_BROKEN);
+    else if (_health <= 20)
+      tooltip.setColor(Color::DURABILITY_LOW);
+
+    tooltip.addLine("Durability: "s + toString(_health) + "/"s +
+                    toString(Item::MAX_HEALTH));
+  }
+
+  return tooltip;
 }
 
 void CDroppedItem::onLeftClick() {
