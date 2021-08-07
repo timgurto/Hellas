@@ -53,6 +53,10 @@ const Tooltip& CDroppedItem::tooltip() const {
                     toString(Item::MAX_HEALTH));
   }
 
+  tooltip.addGap();
+  tooltip.setColor(Color::TOOLTIP_BODY);
+  tooltip.addLine("Can be picked up by any player");
+
   return tooltip;
 }
 

@@ -99,7 +99,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 99,Being hit and crafting should interrupt food buff,21,2,Bug,,TRUE,TRUE,
 100,Quest reward should account for quest items when calculating space for rewards,1,3,Bug,,,TRUE,
 101,Phantom items after picking them up,13,34,Bug,,,TRUE,
-102,Make it clear that dropped items are unowned,8,1,Usability,,,,
+102,Make it clear that dropped items are unowned,8,1,Usability,,TRUE,,
 103,Destroy/drop item: re-check quest progress,1,5,Bug,,,TRUE,
 104,"Standardised, and much higher, object health",5,5,Content,,,,
 105,Roads should affect pets,1,3,Feature,,,,
