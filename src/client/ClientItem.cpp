@@ -261,7 +261,7 @@ void ClientItem::Instance::createRegularTooltip() const {
 
   if (_type->canBeScrapped()) {
     tooltip.addGap();
-    tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
+    tooltip.setColor(Color::TOOLTIP_BODY);
     tooltip.addLine("Can be scrapped (pick up + Del).");
   }
 }
