@@ -226,6 +226,12 @@ void ClientItem::Instance::createRegularTooltip() const {
   auto &tooltip = _tooltip.value();
 
   tooltip.setColor(Color::TOOLTIP_BODY);
+
+  if (isQuestItem()) {
+    tooltip.addGap();
+    tooltip.addLine("Quest item");
+  }
+
   if (isSoulbound()) {
     tooltip.addGap();
     tooltip.addLine("Soulbound");
