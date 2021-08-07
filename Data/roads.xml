@@ -1,11 +1,11 @@
 <root>
 
-<buff id="roadMovement1" name="Road" icon="outlineFoot"
+<buff id="roadMovement1" name="Road Travel" icon="outlineFoot"
     description="Movement speed increased by 15%">
     <stats speed="1.15" />
     <nonStacking category="road" />
 </buff>
-<buff id="roadMovement2" name="Road" icon="outlineFoot"
+<buff id="roadMovement2" name="Road Travel" icon="outlineFoot"
     description="Movement speed increased by 25%">
     <stats speed="1.25" />
     <nonStacking category="road" />
