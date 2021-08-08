@@ -220,25 +220,25 @@
                 <offset x="-6" y="-20" />
                 <tag name="fishing" toolSpeed="1.05" />
             </item>
-		<item id="tinSpear" name="Light Spear" class="tinSpear" gearSlot="6" sounds="spear" lvlReq="14" >
+		<item id="tinSpear" name="Tin Spear" class="tinSpear" gearSlot="6" sounds="spear" lvlReq="14" >
 			<stats crit="100" />
             <weapon damage="9" speed="2.6" />
 			<offset x="-5" y="-21" />
             <tag name="fishing" toolSpeed="1.1" />
 		</item>
-            <item id="tinSpearSilver" name="Inlaid Light Spear" class="tinSpear" gearSlot="6" sounds="spear" lvlReq="14" iconFile="tinSpear" gearFile="tinSpear" quality="2" bind="equip" >
+            <item id="tinSpearSilver" name="Inlaid Tin Spear" class="tinSpear" gearSlot="6" sounds="spear" lvlReq="14" iconFile="tinSpear" gearFile="tinSpear" quality="2" bind="equip" >
                 <stats crit="100" cunning="1" />
                 <weapon damage="10" speed="2.5" />
                 <offset x="-5" y="-21" />
                 <tag name="fishing" toolSpeed="1.15" />
             </item>
-		<item id="copperSpear" name="Spear" class="copperSpear" gearSlot="6" sounds="spear" lvlReq="24" >
+		<item id="copperSpear" name="Copper Spear" class="copperSpear" gearSlot="6" sounds="spear" lvlReq="24" >
 			<stats crit="100" cunning="1" />
             <weapon damage="13" speed="2.5" />
 			<offset x="-5" y="-21" />
             <tag name="fishing" toolSpeed="1.2" />
 		</item>
-            <item id="copperSpearSilver" name="Inlaid Spear" class="copperSpear" gearSlot="6" sounds="spear" lvlReq="24"
+            <item id="copperSpearSilver" name="Inlaid Copper Spear" class="copperSpear" gearSlot="6" sounds="spear" lvlReq="24"
                 iconFile="copperSpear" gearFile="copperSpear" quality="2" bind="equip">
                 <stats crit="200" cunning="1" />
                 <weapon damage="13" speed="2.4" />
@@ -247,12 +247,12 @@
             </item>
 
 	<!-- Swords (hit) -->
-		<item id="copperSword" name="Short Sword" class="copperSword" gearSlot="6" lvlReq="30" quality="2" bind="equip" >
+		<item id="copperSword" name="Copper Sword" class="copperSword" gearSlot="6" lvlReq="30" quality="2" bind="equip" >
 			<stats hit="200" might="2" />
             <weapon damage="16" speed="2.5" />
             <offset x="-6" y="-8" />
 		</item>
-            <item id="copperSwordSilver" name="Inlaid Short Sword" class="copperSword" gearSlot="6" lvlReq="30"
+            <item id="copperSwordSilver" name="Inlaid Copper Sword" class="copperSword" gearSlot="6" lvlReq="30"
                 iconFile="copperSword" gearFile="copperSword" quality="3" bind="equip" >
                 <stats hit="200" might="2" />
                 <weapon damage="19" speed="2.5" />
