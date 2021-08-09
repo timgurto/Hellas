@@ -528,17 +528,16 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Looted gear and tools are broken",
       AND_WHEN("he loots it") {
         client->sendMessage(CL_TAKE_ITEM, makeArgs(penguin.serial(), 0));
         client->sendMessage(CL_TAKE_ITEM, makeArgs(penguin.serial(), 1));
-        const auto &slot0 = user->inventory()[0].first;
-        const auto &slot1 = user->inventory()[1].first;
-        WAIT_UNTIL(slot0.hasItem() && slot1.hasItem());
 
         THEN("the tuxedo is broken, and the fish is not") {
-          if (slot0.type()->id() == "tuxedo") {
-            CHECK(slot0.health() == 0);
-            CHECK(slot1.health() == Item::MAX_HEALTH);
-          } else {
-            CHECK(slot0.health() == Item::MAX_HEALTH);
-            CHECK(slot1.health() == 0);
+          for (auto i = 0; i != 2; ++i) {
+            const auto &inventoryItem = user->inventory()[i].first;
+            WAIT_UNTIL(inventoryItem.hasItem());
+
+            if (inventoryItem.type()->id() == "tuxedo")
+              CHECK(inventoryItem.health() == 0);
+            else
+              CHECK(inventoryItem.health() == Item::MAX_HEALTH);
           }
         }
       }
