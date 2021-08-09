@@ -1116,6 +1116,7 @@ void User::onDeath() {
 
   for (auto &pair : _gear) {
     if (!pair.first.hasItem()) continue;
+    if (!pair.first.type()->canBeDamaged()) continue;
     pair.first.damageOnPlayerDeath();
   }
 

@@ -1197,3 +1197,28 @@ TEST_CASE("Object repair requiring a tool", "[damage-on-use][repair][tool]") {
     }
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Thrown weapons aren't damaged on death",
+                 "[damage-on-use][death][gear]") {
+  GIVEN("a user has a throwable grenade") {
+    useData(R"(
+      <item id="grenade" gearSlot="6" >
+          <weapon damage="1" speed="1" consumes="grenade" />
+      </item>
+    )");
+    user->gear(6).first = {
+        &server->getFirstItem(),
+        ServerItem::Instance::ReportingInfo::UserGear(user, 6)};
+    user->gear(6).second = 1;
+
+    WHEN("he dies") {
+      user->kill();
+
+      THEN("his grenade is still at full health") {
+        REPEAT_FOR_MS(100);
+        CHECK(user->gear()[6].first.health() == Item::MAX_HEALTH);
+      }
+    }
+  }
+}

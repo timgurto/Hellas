@@ -5,6 +5,12 @@
 
 ServerItem::ServerItem(const std::string &idArg) : Item(idArg) {}
 
+bool ServerItem::canBeDamaged() const {
+  if (_weaponAmmo == this) return false;  // Thrown weapon; consumes itself
+
+  return true;
+}
+
 void ServerItem::fetchAmmoItem() const {
   if (_weaponAmmoID.empty()) return;
 
