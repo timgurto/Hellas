@@ -509,13 +509,15 @@ TEST_CASE("Loot that chooses from a set", "[loot]") {
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Looted gear and tools are broken",
                  "[loot][damage-on-use]") {
-  GIVEN("a penguin mob that drops a tuxedo and a fish") {
+  GIVEN("a penguin mob that drops tuxedo gear, a fishing tool, and a fish") {
     useData(R"(
       <npcType id="penguin" maxHealth="1" >
         <loot id="tuxedo" />
+        <loot id="fishingRod" />
         <loot id="fish" />
       </npcType>
       <item id="tuxedo" gearSlot="2" />
+      <item id="fishingRod"> <tag name="fishing" /> </item>
       <item id="fish" />
     )");
     auto &penguin = server->addNPC("penguin", {10, 15});
@@ -526,17 +528,23 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Looted gear and tools are broken",
       WAIT_UNTIL(penguin.isDead());
 
       AND_WHEN("he loots it") {
-        client->sendMessage(CL_TAKE_ITEM, makeArgs(penguin.serial(), 0));
-        client->sendMessage(CL_TAKE_ITEM, makeArgs(penguin.serial(), 1));
+        for (auto i = 0; i != 3; ++i) {
+          client->sendMessage(CL_TAKE_ITEM, makeArgs(penguin.serial(), i));
+          WAIT_UNTIL(user->inventory()[i].first.hasItem());
+        }
 
-        THEN("the tuxedo is broken, and the fish is not") {
-          for (auto i = 0; i != 2; ++i) {
+        THEN("the gear and tool are broken, while the simple item is not") {
+          for (auto i = 0; i != 3; ++i) {
             const auto &inventoryItem = user->inventory()[i].first;
             WAIT_UNTIL(inventoryItem.hasItem());
 
-            if (inventoryItem.type()->id() == "tuxedo")
+            const auto itemID = inventoryItem.type()->id();
+
+            if (itemID == "tuxedo")
               CHECK(inventoryItem.health() == 0);
-            else
+            else if (itemID == "fishingRod")
+              CHECK(inventoryItem.health() == 0);
+            else if (itemID == "fish")
               CHECK(inventoryItem.health() == Item::MAX_HEALTH);
           }
         }

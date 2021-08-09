@@ -7,6 +7,7 @@
 ServerItem::ServerItem(const std::string &idArg) : Item(idArg) {}
 
 bool ServerItem::canBeDamaged() const {
+  if (hasTags()) return true;  // Tools can always be damaged
   if (!isGear()) return false;
   if (_weaponAmmo == this) return false;  // Thrown weapon; consumes itself
 
