@@ -509,12 +509,14 @@ TEST_CASE("Loot that chooses from a set", "[loot]") {
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Looted gear and tools are broken",
                  "[loot][damage-on-use]") {
-  GIVEN("a penguin mob that drops a tuxedo") {
+  GIVEN("a penguin mob that drops a tuxedo and a fish") {
     useData(R"(
       <npcType id="penguin" maxHealth="1" >
         <loot id="tuxedo" />
+        <loot id="fish" />
       </npcType>
       <item id="tuxedo" gearSlot="2" />
+      <item id="fish" />
     )");
     auto &penguin = server->addNPC("penguin", {10, 15});
 
@@ -525,10 +527,20 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Looted gear and tools are broken",
 
       AND_WHEN("he loots it") {
         client->sendMessage(CL_TAKE_ITEM, makeArgs(penguin.serial(), 0));
-        const auto &invSlot = user->inventory()[0].first;
-        WAIT_UNTIL(invSlot.hasItem());
+        client->sendMessage(CL_TAKE_ITEM, makeArgs(penguin.serial(), 1));
+        const auto &slot0 = user->inventory()[0].first;
+        const auto &slot1 = user->inventory()[1].first;
+        WAIT_UNTIL(slot0.hasItem() && slot1.hasItem());
 
-        THEN("the tuxedo has 0 item health") { CHECK(invSlot.health() == 0); }
+        THEN("the tuxedo is broken, and the fish is not") {
+          if (slot0.type()->id() == "tuxedo") {
+            CHECK(slot0.health() == 0);
+            CHECK(slot1.health() == Item::MAX_HEALTH);
+          } else {
+            CHECK(slot0.health() == Item::MAX_HEALTH);
+            CHECK(slot1.health() == 0);
+          }
+        }
       }
     }
   }

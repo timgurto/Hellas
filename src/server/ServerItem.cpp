@@ -1,15 +1,19 @@
 #include "ServerItem.h"
 
 #include "Server.h"
+#include "User.h"
 #include "objects/ObjectType.h"
 
 ServerItem::ServerItem(const std::string &idArg) : Item(idArg) {}
 
 bool ServerItem::canBeDamaged() const {
+  if (!isGear()) return false;
   if (_weaponAmmo == this) return false;  // Thrown weapon; consumes itself
 
   return true;
 }
+
+bool ServerItem::isGear() const { return _gearSlot < User::GEAR_SLOTS; }
 
 void ServerItem::fetchAmmoItem() const {
   if (_weaponAmmoID.empty()) return;
