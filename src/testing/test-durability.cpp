@@ -395,30 +395,27 @@ TEST_CASE("Tool objects lose durability",
   }
 }
 
-TEST_CASE("Swapping items preserves damage", "[damage-on-use][inventory]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Swapping items preserves damage",
+                 "[damage-on-use][inventory]") {
   GIVEN("a user with two items") {
-    auto data = R"(
+    useData(R"(
       <item id="coin"/>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    user.giveItem(&s.getFirstItem(), 2);
+    )");
+    user->giveItem(&server->getFirstItem(), 2);
 
     WHEN("one is damaged") {
-      auto &slot0 = user.inventory(0).first;
+      auto &slot0 = user->inventory(0).first;
       do {
         slot0.onUse();
       } while (slot0.health() == Item::MAX_HEALTH);
       auto itemHealth = slot0.health();
 
       AND_WHEN("he swaps them") {
-        c.sendMessage(CL_SWAP_ITEMS, makeArgs(0, 0, 0, 1));
+        client->sendMessage(CL_SWAP_ITEMS, makeArgs(0, 0, 0, 1));
         REPEAT_FOR_MS(100);
 
         THEN("it is still damaged in its new location") {
-          auto &slot1 = user.inventory(1).first;
+          auto &slot1 = user->inventory(1).first;
           CHECK(slot1.health() == itemHealth);
         }
       }
