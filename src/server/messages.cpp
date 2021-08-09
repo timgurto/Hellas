@@ -598,7 +598,8 @@ HANDLE_MESSAGE(CL_TAKE_ITEM) {
 
   // Attempt to give item to user
   size_t remainder =
-      user.giveItem(containerSlot.first.type(), containerSlot.second);
+      user.giveItem(containerSlot.first.type(), containerSlot.second,
+                    containerSlot.first.health());
   if (remainder > 0) {
     containerSlot.second = remainder;
     sendMessage(user.socket(), WARNING_INVENTORY_FULL);

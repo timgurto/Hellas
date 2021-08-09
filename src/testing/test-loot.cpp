@@ -506,3 +506,30 @@ TEST_CASE("Loot that chooses from a set", "[loot]") {
     }
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Looted gear and tools are broken",
+                 "[loot][damage-on-use]") {
+  GIVEN("a penguin mob that drops a tuxedo") {
+    useData(R"(
+      <npcType id="penguin" maxHealth="1" >
+        <loot id="tuxedo" />
+      </npcType>
+      <item id="tuxedo" gearSlot="2" />
+    )");
+    auto &penguin = server->addNPC("penguin", {10, 15});
+
+    WHEN("a user kills it") {
+      WAIT_UNTIL(client->objects().size() == 1);
+      client->sendMessage(CL_TARGET_ENTITY, makeArgs(penguin.serial()));
+      WAIT_UNTIL(penguin.isDead());
+
+      AND_WHEN("he loots it") {
+        client->sendMessage(CL_TAKE_ITEM, makeArgs(penguin.serial(), 0));
+        const auto &invSlot = user->inventory()[0].first;
+        WAIT_UNTIL(invSlot.hasItem());
+
+        THEN("the tuxedo has 0 item health") { CHECK(invSlot.health() == 0); }
+      }
+    }
+  }
+}

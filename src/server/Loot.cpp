@@ -23,6 +23,7 @@ void Loot::add(const ServerItem *item, size_t qty) {
     ServerItem::Slot entry;
     entry.first = {item,
                    ServerItem::Instance::ReportingInfo::InObjectContainer()};
+    entry.first.initHealth(0);  // Loot items are always broken
     entry.second = quantityInThisSlot;
     remainingQuantity -= quantityInThisSlot;
     _container.push_back(entry);
