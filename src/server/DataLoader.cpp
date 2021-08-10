@@ -638,9 +638,8 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
 void DataLoader::loadSuffixes(XmlReader &xr) {
   for (auto elem : xr.getChildren("suffixSet")) {
     auto suffix = xr.findChild("suffix", elem);
-    auto suffixID = ""s;
-    xr.findAttr(suffix, "id", suffixID);
-    _server._suffixSets.suffixID = suffixID;
+
+    xr.findStatsChild("stats", suffix, _server._suffixSets.stats);
   }
 }
 
@@ -722,12 +721,10 @@ void DataLoader::loadItems(XmlReader &xr) {
 
     auto stats = StatsMod{};
     xr.findStatsChild("stats", elem, stats);
+    item.stats(stats);
 
     auto randomSuffix = xr.findChild("randomSuffix", elem);
-    if (randomSuffix) stats.armor += 1;
-    if (randomSuffix) stats.fireResist += 1;
-
-    item.stats(stats);
+    if (randomSuffix) item.setStatsFromSuffix(_server._suffixSets.stats);
 
     if (xr.findAttr(elem, "exclusiveToQuest", s)) item.exclusiveToQuest(s);
 

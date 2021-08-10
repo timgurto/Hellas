@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../Stats.h"
+
 struct SuffixSets {
-  std::string suffixID;
+  StatsMod stats;
 };

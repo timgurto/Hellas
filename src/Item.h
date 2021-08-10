@@ -36,6 +36,8 @@ class Item : public HasTags {
   GearSlot gearSlot() const { return _gearSlot; }
   void stats(const StatsMod &stats) { _stats = stats; }
   const StatsMod &stats() const { return _stats; }
+  void setStatsFromSuffix(StatsMod stats) { _statsFromSuffix = stats; }
+  const StatsMod &statsFromSuffix() const { return _statsFromSuffix; }
   Hitpoints durability() const { return _durability; }
   void durability(Hitpoints n) { _durability = n; }
   void makeWeapon(Hitpoints damage, double speedInS, SpellSchool school);
@@ -73,6 +75,7 @@ class Item : public HasTags {
   GearSlot _gearSlot = NOT_GEAR;
   Level _lvlReq{0};
   StatsMod _stats;  // If gear, the impact it has on its wearer's stats.
+  StatsMod _statsFromSuffix;
   Soulbinding _soulbinding{NO_BINDING};
 
   const ItemClass *_class{nullptr};

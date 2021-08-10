@@ -1366,6 +1366,7 @@ void User::updateStats() {
     if (!canEquip(*item.type())) continue;
 
     newStats &= item.type()->stats();
+    newStats &= item.type()->statsFromSuffix();
   }
 
   // Apply buffs

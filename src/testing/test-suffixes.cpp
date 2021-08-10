@@ -8,12 +8,10 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Suffixes add stats", "[suffixes]") {
     auto data = ""s;
     data = R"(
       <suffixSet id="suffixes" >
-        <suffix id="extraArmour" />
+        <suffix id="extraArmour">
+          <stats armour="1" />
+        </suffix>
       </suffixSet>
-
-      <suffix id="extraArmour">
-        <stats armour="1" />
-      </suffix>
     )";
 
     GIVEN("a sword with the suffix but no base stats") {
@@ -73,12 +71,10 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Suffixes add stats", "[suffixes]") {
   GIVEN("a sword with a +1 fire-resist suffix") {
     useData(R"(
       <suffixSet id="suffixes" >
-        <suffix id="extraFireResist" />
+        <suffix id="extraFireResist">
+          <stats fireResist="1" />
+        </suffix>
       </suffixSet>
-
-      <suffix id="extraFireResist">
-        <stats fireResist="1" />
-      </suffix>
     
       <item id="sword" gearSlot="weapon" >
         <randomSuffix fromSet="suffixes" />
@@ -95,8 +91,9 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Suffixes add stats", "[suffixes]") {
             makeArgs(Serial::Inventory(), 0, Serial::Gear(), Item::WEAPON));
         WAIT_UNTIL(user->gear()[Item::WEAPON].first.hasItem());
 
-        THEN("he has 1 fire resist") {
+        THEN("he has 1 fire resist and 0 armour") {
           CHECK(user->stats().fireResist == ArmourClass{1});
+          CHECK(user->stats().armor == ArmourClass{0});
         }
       }
     }
