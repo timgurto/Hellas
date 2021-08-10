@@ -210,6 +210,7 @@
     <ClCompile Include="src\server\AI.cpp" />
     <ClCompile Include="src\WorkerThread.cpp" />
     <ClCompile Include="src\testing\test-scrapping.cpp" />
+    <ClCompile Include="src\testing\test-suffixes.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />

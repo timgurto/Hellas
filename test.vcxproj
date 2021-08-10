@@ -282,6 +282,7 @@
     <ClCompile Include="src\testing\test-spawning.cpp" />
     <ClCompile Include="src\testing\test-spells.cpp" />
     <ClCompile Include="src\testing\test-stats.cpp" />
+    <ClCompile Include="src\testing\test-suffixes.cpp" />
     <ClCompile Include="src\testing\test-tagging.cpp" />
     <ClCompile Include="src\testing\test-transformation.cpp" />
     <ClCompile Include="src\testing\test-vehicles.cpp" />

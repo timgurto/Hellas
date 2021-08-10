@@ -666,6 +666,10 @@ void DataLoader::loadItems(XmlReader &xr) {
   for (auto elem : xr.getChildren("item")) {
     std::string id;
     if (!xr.findAttr(elem, "id", id)) continue;  // ID and name are mandatory.
+
+    auto randomSuffix = xr.findChild("randomSuffix", elem);
+    if (randomSuffix) id = "sword_extraArmour";
+
     ServerItem item(id);
 
     auto stackSize = size_t{};
