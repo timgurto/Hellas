@@ -513,10 +513,12 @@ TEST_CASE("Persistence of item health: objects' contents",
 TEST_CASE("Broken weapons don't add attack", "[damage-on-use][stats][gear]") {
   GIVEN("a weapon that deals 42 damage") {
     auto data = R"(
-      <item id="sword" gearSlot="weapon" >
+      <item id="sword" gearSlot="weapon" class="weapon" >
         <weapon damage="42"  speed="1" />
-        <canBeRepaired/>
       </item>
+      <itemClass id="weapon">
+        <canBeRepaired/>
+      </itemClass>
     )";
     auto s = TestServer::WithDataString(data);
 
