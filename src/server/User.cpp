@@ -265,6 +265,7 @@ size_t User::giveItem(const ServerItem *item, size_t quantity,
 
   auto remaining = quantity;
 
+  // Assumption: stacking items can't be damaged (thus this pass ignores health)
   // Gear pass 1: partial stacks
   for (auto i = 0; i != GEAR_SLOTS; ++i) {
     if (_gear[i].first.type() != item) continue;
@@ -280,7 +281,6 @@ size_t User::giveItem(const ServerItem *item, size_t quantity,
   }
 
   // Inventory pass 1: partial stacks
-  // Assumption: stacking items can't be damaged (thus this pass ignores health)
   if (remaining > 0) {
     for (auto i = 0; i != INVENTORY_SIZE; ++i) {
       if (_inventory[i].first.type() != item) continue;

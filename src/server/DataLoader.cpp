@@ -677,10 +677,6 @@ void DataLoader::loadItems(XmlReader &xr) {
   for (auto elem : xr.getChildren("item")) {
     std::string id;
     if (!xr.findAttr(elem, "id", id)) continue;  // ID and name are mandatory.
-
-    auto randomSuffix = xr.findChild("randomSuffix", elem);
-    if (randomSuffix) id += "_"s + _server._suffixSets.suffixID;
-
     ServerItem item(id);
 
     auto stackSize = size_t{};
@@ -725,7 +721,12 @@ void DataLoader::loadItems(XmlReader &xr) {
     if (xr.findAttr(elem, "keepOnCast", n) && n != 0) item.keepOnCast();
 
     auto stats = StatsMod{};
-    if (xr.findStatsChild("stats", elem, stats)) item.stats(stats);
+    xr.findStatsChild("stats", elem, stats);
+
+    auto randomSuffix = xr.findChild("randomSuffix", elem);
+    if (randomSuffix) stats.armor = 1;
+
+    item.stats(stats);
 
     if (xr.findAttr(elem, "exclusiveToQuest", s)) item.exclusiveToQuest(s);
 
