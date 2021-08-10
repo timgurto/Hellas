@@ -69,4 +69,36 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Suffixes add stats", "[suffixes]") {
       }
     }
   }
+
+  GIVEN("a sword with a +1 fire-resist suffix") {
+    useData(R"(
+      <suffixSet id="suffixes" >
+        <suffix id="extraFireResist" />
+      </suffixSet>
+
+      <suffix id="extraFireResist">
+        <stats fireResist="1" />
+      </suffix>
+    
+      <item id="sword" gearSlot="weapon" >
+        <randomSuffix fromSet="suffixes" />
+      </item>
+    )");
+
+    WHEN("the user gets a sword") {
+      const auto &sword = server->getFirstItem();
+      user->giveItem(&sword);
+
+      AND_WHEN("he equips it") {
+        client->sendMessage(
+            CL_SWAP_ITEMS,
+            makeArgs(Serial::Inventory(), 0, Serial::Gear(), Item::WEAPON));
+        WAIT_UNTIL(user->gear()[Item::WEAPON].first.hasItem());
+
+        THEN("he has 1 fire resist") {
+          CHECK(user->stats().fireResist == ArmourClass{1});
+        }
+      }
+    }
+  }
 }
