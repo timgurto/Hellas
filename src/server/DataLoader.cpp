@@ -724,7 +724,7 @@ void DataLoader::loadItems(XmlReader &xr) {
     xr.findStatsChild("stats", elem, stats);
 
     auto randomSuffix = xr.findChild("randomSuffix", elem);
-    if (randomSuffix) stats.armor = 1;
+    if (randomSuffix) stats.armor += 1;
 
     item.stats(stats);
 
