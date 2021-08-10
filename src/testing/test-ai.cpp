@@ -8,7 +8,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "NPCs chain pull", "[ai]") {
     useData(R"(
       <npcType id="bear" />
       <npcType id="critter"  isNeutral="1" />
-      <item id="spear" gearSlot="6">
+      <item id="spear" gearSlot="weapon">
         <weapon range="25" consumes="spear" damage="1" speed="1" />
       </item>
     )");

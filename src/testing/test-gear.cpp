@@ -5,7 +5,7 @@
 TEST_CASE("Simple gear equip", "[gear]") {
   GIVEN("a user with gear in his inventory") {
     auto data = R"(
-      <item id="hat" gearSlot="0" />
+      <item id="hat" gearSlot="head" />
     )";
     auto s = TestServer::WithDataString(data);
     auto c = TestClient::WithDataString(data);
@@ -35,7 +35,7 @@ TEST_CASE("Simple gear equip", "[gear]") {
 TEST_CASE("Damage is updated when a weapon depletes", "[gear][stats]") {
   GIVEN("a consumable weapon that deals 100 damage") {
     auto data = R"(
-      <item id="rock" gearSlot="6" >
+      <item id="rock" gearSlot="weapon" >
         <weapon consumes="rock" damage="100" speed="1" range="100" />
       </item>
       <npcType id="ant" maxHealth="1" />
@@ -47,10 +47,10 @@ TEST_CASE("Damage is updated when a weapon depletes", "[gear][stats]") {
     auto &user = s.getFirstUser();
 
     const auto rock = &s.getFirstItem();
-    user.gear(Item::WEAPON_SLOT).first = {
-        rock, ServerItem::Instance::ReportingInfo::UserGear(&user,
-                                                            Item::WEAPON_SLOT)};
-    user.gear(Item::WEAPON_SLOT).second = 1;
+    user.gear(Item::WEAPON).first = {
+        rock,
+        ServerItem::Instance::ReportingInfo::UserGear(&user, Item::WEAPON)};
+    user.gear(Item::WEAPON).second = 1;
     user.updateStats();
 
     WHEN("the weapon is used") {
@@ -68,8 +68,8 @@ TEST_CASE("Damage is updated when a weapon depletes", "[gear][stats]") {
 TEST_CASE("Level requirements", "[gear][leveling]") {
   GIVEN("a fancy hat that requires level 2, and a plain hat with no req") {
     auto data = R"(
-      <item id="plainHat" gearSlot="0" />
-      <item id="fancyHat" lvlReq="2" gearSlot="0" />
+      <item id="plainHat" gearSlot="head" />
+      <item id="fancyHat" lvlReq="2" gearSlot="head" />
     )";
     auto s = TestServer::WithDataString(data);
 
@@ -147,7 +147,7 @@ TEST_CASE("Level requirements enforced on already-equipped gear",
           "[gear][leveling]") {
   GIVEN("a level-2 hat that gives 1000 health") {
     auto data = R"(
-      <item id="hat" lvlReq="2" gearSlot="0" >
+      <item id="hat" lvlReq="2" gearSlot="head" >
         <stats health="1000" />
       </item>
     )";

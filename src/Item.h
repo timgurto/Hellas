@@ -12,7 +12,18 @@ struct ItemClass;
 
 class Item : public HasTags {
  public:
-  static const size_t WEAPON_SLOT = 6, OFFHAND_SLOT = 7;
+  enum GearSlot {
+    HEAD = 0,
+    JEWELRY = 1,
+    BODY = 2,
+    SHOULDERS = 3,
+    HANDS = 4,
+    FEET = 5,
+    WEAPON = 6,
+    OFFHAND = 7,
+
+    NOT_GEAR
+  };
   static const Hitpoints MAX_HEALTH = 100;
   enum Soulbinding { NO_BINDING, BIND_ON_PICKUP, BIND_ON_EQUIP };
 
@@ -20,8 +31,9 @@ class Item : public HasTags {
   virtual ~Item() {}
 
   const std::string &id() const { return _id; }
-  void gearSlot(size_t slot) { _gearSlot = slot; }
-  size_t gearSlot() const { return _gearSlot; }
+  void gearSlot(GearSlot slot) { _gearSlot = slot; }
+  static GearSlot parseGearSlot(std::string slotName);
+  GearSlot gearSlot() const { return _gearSlot; }
   void stats(const StatsMod &stats) { _stats = stats; }
   const StatsMod &stats() const { return _stats; }
   Hitpoints durability() const { return _durability; }
@@ -52,13 +64,13 @@ class Item : public HasTags {
 
   typedef std::vector<std::pair<const Item *, size_t> > vect_t;
 
-  static size_t getRandomArmorSlot();
+  static GearSlot getRandomArmorSlot();
 
   virtual void fetchAmmoItem() const = 0;
 
  protected:
   std::string _id;  // The no-space, unique name used in data files
-  size_t _gearSlot;
+  GearSlot _gearSlot = NOT_GEAR;
   Level _lvlReq{0};
   StatsMod _stats;  // If gear, the impact it has on its wearer's stats.
   Soulbinding _soulbinding{NO_BINDING};

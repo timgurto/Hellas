@@ -743,9 +743,7 @@ void DataLoader::loadItems(XmlReader &xr) {
         item.weaponAmmo({ammoType});
     }
 
-    n = User::GEAR_SLOTS;  // Default; won't match any slot.
-    xr.findAttr(elem, "gearSlot", n);
-    item.gearSlot(n);
+    if (xr.findAttr(elem, "gearSlot", s)) item.gearSlot(Item::parseGearSlot(s));
 
     if (xr.findAttr(elem, "lvlReq", n)) item.lvlReq(n);
 

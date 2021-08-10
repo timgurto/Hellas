@@ -66,7 +66,7 @@ TEST_CASE("Follower-limit stat", "[stats][pets]") {
 
   GIVEN("gear that gives +1 follower count") {
     auto data = R"(
-      <item id="bait" gearSlot="7" >
+      <item id="bait" gearSlot="offhand" >
         <stats followerLimit="1" />
       </item>
     )";
@@ -97,7 +97,7 @@ TEST_CASE("Follower-limit stat", "[stats][pets]") {
 
   GIVEN("gear with very negative follower count") {
     auto data = R"(
-      <item id="megaphone" gearSlot="7" >
+      <item id="megaphone" gearSlot="offhand" >
         <stats followerLimit="-1000" />
       </item>
     )";
@@ -360,7 +360,7 @@ TEST_CASE_METHOD(ServerAndClient, "Dodge chance", "[stats][combat]") {
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Block chance", "[stats][combat]") {
   useData(R"(
-    <item id="shield" gearSlot="7">
+    <item id="shield" gearSlot="offhand">
       <tag name="shield" />
     </item>
     )");
@@ -373,8 +373,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Block chance", "[stats][combat]") {
       user->giveItem(&shield);
       client->sendMessage(
           CL_SWAP_ITEMS,
-          makeArgs(Serial::Inventory(), 0, Serial::Gear(), Item::OFFHAND_SLOT));
-      WAIT_UNTIL(user->gear(Item::OFFHAND_SLOT).first.hasItem());
+          makeArgs(Serial::Inventory(), 0, Serial::Gear(), Item::OFFHAND));
+      WAIT_UNTIL(user->gear(Item::OFFHAND).first.hasItem());
 
       WHEN("10000 hits are generated against him") {
         auto numBlocks = 0;
@@ -699,7 +699,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Block-value stat",
     useData(R"(
       <npcType id="soldier" attack="10" />
 
-      <item id="shield" gearSlot="7">
+      <item id="shield" gearSlot="offhand">
         <tag name="shield" />
       </item>
     )");
@@ -712,10 +712,10 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Block-value stat",
       AND_GIVEN("the user has a shield") {
         auto &shield = server->getFirstItem();
         user->giveItem(&shield);
-        client->sendMessage(CL_SWAP_ITEMS,
-                            makeArgs(Serial::Inventory(), 0, Serial::Gear(),
-                                     Item::OFFHAND_SLOT));
-        WAIT_UNTIL(user->gear(Item::OFFHAND_SLOT).first.hasItem());
+        client->sendMessage(
+            CL_SWAP_ITEMS,
+            makeArgs(Serial::Inventory(), 0, Serial::Gear(), Item::OFFHAND));
+        WAIT_UNTIL(user->gear(Item::OFFHAND).first.hasItem());
 
         WHEN("the NPC hits him") {
           auto healthBefore = user->health();
@@ -739,11 +739,11 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Composite stats",
         <stats health="1" />
       </compositeStat>
 
-      <item id="staminaRing" gearSlot="2">
+      <item id="staminaRing" gearSlot="body">
         <stats stamina="1" />
       </item>
 
-      <item id="healthAndStamRing" gearSlot="2">
+      <item id="healthAndStamRing" gearSlot="body">
         <stats stamina="1" health="1" />
       </item>
     )");
@@ -1008,7 +1008,7 @@ TEST_CASE("Unlock bonus is part of StatsMod", "[stats][unlocking]") {
 TEST_CASE("Loading stats from XML", "[stats][loading]") {
   GIVEN("an item has stats specified") {
     auto data = R"(
-      <item id="ring" gearSlot="2">
+      <item id="ring" gearSlot="body">
         <stats
           unlockBonus="100"
         />

@@ -34,11 +34,11 @@ TEST_CASE("Combat reduces weapon/armour health", "[damage-on-use][combat]") {
       "a very fast, low-damage weapon; a very fast, low-damage enemy; some "
       "armour") {
     auto data = R"(
-      <item id="tuningFork" gearSlot="6" >
+      <item id="tuningFork" gearSlot="weapon" >
         <weapon damage="1"  speed="0.01" />
       </item>
-      <item id="hat" gearSlot="0" />
-      <item id="shoes" gearSlot="5" />
+      <item id="hat" gearSlot="head" />
+      <item id="shoes" gearSlot="feet" />
       <npcType id="hummingbird" level="1" attack="1" attackTime="10" maxHealth="1000000000" />
     )";
     auto s = TestServer::WithDataString(data);
@@ -46,11 +46,9 @@ TEST_CASE("Combat reduces weapon/armour health", "[damage-on-use][combat]") {
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
 
-    const auto HEAD_SLOT = 0;
-    const auto FEET_SLOT = 5;
-    auto &weaponSlot = user.gear(Item::WEAPON_SLOT);
-    auto &headSlot = user.gear(HEAD_SLOT);
-    auto &feetSlot = user.gear(FEET_SLOT);
+    auto &weaponSlot = user.gear(Item::WEAPON);
+    auto &headSlot = user.gear(Item::HEAD);
+    auto &feetSlot = user.gear(Item::FEET);
     const auto &tuningFork = s.findItem("tuningFork");
     const auto &hat = s.findItem("hat");
     const auto &shoes = s.findItem("shoes");
@@ -59,8 +57,8 @@ TEST_CASE("Combat reduces weapon/armour health", "[damage-on-use][combat]") {
     const auto &hummingbird = s.getFirstNPC();
 
     WHEN("a player has the weapon equipped") {
-      weaponSlot.first = {
-          &tuningFork, ItemReportingInfo::UserGear(&user, Item::WEAPON_SLOT)};
+      weaponSlot.first = {&tuningFork,
+                          ItemReportingInfo::UserGear(&user, Item::WEAPON)};
       weaponSlot.second = 1;
       user.updateStats();
 
@@ -74,7 +72,7 @@ TEST_CASE("Combat reduces weapon/armour health", "[damage-on-use][combat]") {
                              10000);
 
           AND_THEN("the user knows it") {
-            const auto &cWeaponSlot = c.gear().at(Item::WEAPON_SLOT).first;
+            const auto &cWeaponSlot = c.gear().at(Item::WEAPON).first;
             WAIT_UNTIL(cWeaponSlot.health() < ServerItem::MAX_HEALTH);
           }
         }
@@ -90,14 +88,14 @@ TEST_CASE("Combat reduces weapon/armour health", "[damage-on-use][combat]") {
     }
 
     WHEN("a player has the weapon and armour equipped") {
-      weaponSlot.first = {
-          &tuningFork, ItemReportingInfo::UserGear(&user, Item::WEAPON_SLOT)};
+      weaponSlot.first = {&tuningFork,
+                          ItemReportingInfo::UserGear(&user, Item::WEAPON)};
       weaponSlot.second = 1;
 
-      headSlot.first = {&hat, ItemReportingInfo::UserGear(&user, HEAD_SLOT)};
+      headSlot.first = {&hat, ItemReportingInfo::UserGear(&user, Item::HEAD)};
       headSlot.second = 1;
 
-      feetSlot.first = {&shoes, ItemReportingInfo::UserGear(&user, FEET_SLOT)};
+      feetSlot.first = {&shoes, ItemReportingInfo::UserGear(&user, Item::FEET)};
       feetSlot.second = 1;
 
       AND_WHEN("the enemy attacks for a while") {
@@ -141,10 +139,10 @@ TEST_CASE("Thrown weapons don't take damage from attacking",
           "[damage-on-use][combat]") {
   GIVEN("a whale, and harpoons that can be thrown or shot") {
     auto data = R"(
-      <item id="harpoon" gearSlot="6" stackSize="1000000" >
+      <item id="harpoon" gearSlot="weapon" stackSize="1000000" >
         <weapon damage="1" speed="0.01" consumes="harpoon" />
       </item>
-      <item id="harpoonGun" gearSlot="6" stackSize="1000000" >
+      <item id="harpoonGun" gearSlot="weapon" stackSize="1000000" >
         <weapon damage="1" speed="0.01" consumes="harpoon" />
       </item>
       <npcType id="whale" level="1" attack="1" attackTime="1000000" maxHealth="1000000000" />
@@ -163,11 +161,11 @@ TEST_CASE("Thrown weapons don't take damage from attacking",
 
     WHEN("the user equips harpoons") {
       c.sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0,
-                                            Serial::Gear(), Item::WEAPON_SLOT));
-      WAIT_UNTIL(user.gear(Item::WEAPON_SLOT).first.hasItem());
+                                            Serial::Gear(), Item::WEAPON));
+      WAIT_UNTIL(user.gear(Item::WEAPON).first.hasItem());
 
       AND_WHEN("he attacks the whale many times") {
-        const auto &equippedWeapon = user.gear(Item::WEAPON_SLOT).first;
+        const auto &equippedWeapon = user.gear(Item::WEAPON).first;
         auto whaleSerial = s.getFirstNPC().serial();
         c.sendMessage(CL_TARGET_ENTITY, makeArgs(whaleSerial));
         REPEAT_FOR_MS(5000) {
@@ -182,11 +180,11 @@ TEST_CASE("Thrown weapons don't take damage from attacking",
 
     WHEN("the user equips a harpoon gun") {
       c.sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 1,
-                                            Serial::Gear(), Item::WEAPON_SLOT));
-      WAIT_UNTIL(user.gear(Item::WEAPON_SLOT).first.hasItem());
+                                            Serial::Gear(), Item::WEAPON));
+      WAIT_UNTIL(user.gear(Item::WEAPON).first.hasItem());
 
       AND_WHEN("he attacks the whale many times") {
-        const auto &equippedWeapon = user.gear(Item::WEAPON_SLOT).first;
+        const auto &equippedWeapon = user.gear(Item::WEAPON).first;
         auto whaleSerial = s.getFirstNPC().serial();
         c.sendMessage(CL_TARGET_ENTITY, makeArgs(whaleSerial));
         REPEAT_FOR_MS(5000) {
@@ -427,7 +425,7 @@ TEST_CASE("Persistence of item health: users' items",
           "[damage-on-use][persistence][inventory]") {
   // Given a server with an item type
   auto data = R"(
-    <item id="shoe" gearSlot="5" />
+    <item id="shoe" gearSlot="feet" />
   )";
   auto s = TestServer::WithDataString(data);
   auto invHealth = Hitpoints{0}, gearHealth = Hitpoints{0};
@@ -515,7 +513,7 @@ TEST_CASE("Persistence of item health: objects' contents",
 TEST_CASE("Broken weapons don't add attack", "[damage-on-use][stats][gear]") {
   GIVEN("a weapon that deals 42 damage") {
     auto data = R"(
-      <item id="sword" gearSlot="6" >
+      <item id="sword" gearSlot="weapon" >
         <weapon damage="42"  speed="1" />
         <canBeRepaired/>
       </item>
@@ -528,9 +526,9 @@ TEST_CASE("Broken weapons don't add attack", "[damage-on-use][stats][gear]") {
       auto &user = s.getFirstUser();
       const auto DEFAULT_DAMAGE = User::OBJECT_TYPE.baseStats().weaponDamage;
 
-      auto &weaponSlot = user.gear(Item::WEAPON_SLOT);
-      weaponSlot.first = {&s.getFirstItem(), ItemReportingInfo::UserGear(
-                                                 &user, Item::WEAPON_SLOT)};
+      auto &weaponSlot = user.gear(Item::WEAPON);
+      weaponSlot.first = {&s.getFirstItem(),
+                          ItemReportingInfo::UserGear(&user, Item::WEAPON)};
       weaponSlot.second = 1;
 
       user.updateStats();
@@ -548,7 +546,7 @@ TEST_CASE("Broken weapons don't add attack", "[damage-on-use][stats][gear]") {
 
           AND_WHEN("he repairs it") {
             c.sendMessage(CL_REPAIR_ITEM,
-                          makeArgs(Serial::Gear(), Item::WEAPON_SLOT));
+                          makeArgs(Serial::Gear(), Item::WEAPON));
 
             THEN("his attack is higher than the baseline again") {
               WAIT_UNTIL(user.stats().weaponDamage > DEFAULT_DAMAGE);
@@ -563,7 +561,7 @@ TEST_CASE("Broken weapons don't add attack", "[damage-on-use][stats][gear]") {
 TEST_CASE("Broken shields don't block", "[damage-on-use][stats][gear]") {
   GIVEN("a shield") {
     auto data = R"(
-      <item id="shield" gearSlot="7" >
+      <item id="shield" gearSlot="offhand" >
         <tag name="shield" />
       </item>
     )";
@@ -574,15 +572,15 @@ TEST_CASE("Broken shields don't block", "[damage-on-use][stats][gear]") {
       s.waitForUsers(1);
       auto &user = s.getFirstUser();
 
-      auto &offhand = user.gear(Item::OFFHAND_SLOT);
+      auto &offhand = user.gear(Item::OFFHAND);
       offhand.first = {&s.getFirstItem(),
-                       ItemReportingInfo::UserGear(&user, Item::OFFHAND_SLOT)};
+                       ItemReportingInfo::UserGear(&user, Item::OFFHAND)};
       offhand.second = 1;
       user.updateStats();
       CHECK(user.canBlock());
 
       AND_WHEN("it is broken") {
-        auto &shield = user.gear(Item::OFFHAND_SLOT).first;
+        auto &shield = user.gear(Item::OFFHAND).first;
         BREAK_ITEM(shield);
 
         THEN("he can't block") { CHECK_FALSE(user.canBlock()); }
@@ -757,7 +755,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Repairing items",
       <itemClass id="headwear">
         <canBeRepaired/>
       </itemClass>
-      <item id="hat" class="headwear" gearSlot="0" />
+      <item id="hat" class="headwear" gearSlot="head" />
       <objectType id="hatstand"> <container slots="1"/> </objectType>
     )");
     const auto *hat = &server->getFirstItem();
@@ -1203,7 +1201,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
                  "[damage-on-use][death][gear]") {
   GIVEN("a user has a throwable grenade") {
     useData(R"(
-      <item id="grenade" gearSlot="6" >
+      <item id="grenade" gearSlot="weapon" >
           <weapon damage="1" speed="1" consumes="grenade" />
       </item>
     )");

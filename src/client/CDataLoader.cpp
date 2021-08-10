@@ -781,9 +781,7 @@ void CDataLoader::loadItems(XmlReader &xr) {
         item.projectile(_client.findProjectileType(projectile));
     }
 
-    size_t gearSlot = _client.GEAR_SLOTS;  // Default; won't match any slot.
-    xr.findAttr(elem, "gearSlot", gearSlot);
-    item.gearSlot(gearSlot);
+    if (xr.findAttr(elem, "gearSlot", s)) item.gearSlot(Item::parseGearSlot(s));
 
     auto lvlReq = Level{};
     if (xr.findAttr(elem, "lvlReq", lvlReq)) item.lvlReq(lvlReq);

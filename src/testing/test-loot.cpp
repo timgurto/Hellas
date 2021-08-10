@@ -516,7 +516,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Looted gear and tools are broken",
         <loot id="fishingRod" />
         <loot id="fish" />
       </npcType>
-      <item id="tuxedo" gearSlot="2" />
+      <item id="tuxedo" gearSlot="body" />
       <item id="fishingRod"> <tag name="fishing" /> </item>
       <item id="fish" />
     )");

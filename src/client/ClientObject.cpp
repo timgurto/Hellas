@@ -218,8 +218,7 @@ void ClientObject::onRightClick() {
   // Make sure object is in range
   auto relevantRange = Client::ACTION_DISTANCE;
   if (canBeAttackedByPlayer()) {
-    const auto *weapon =
-        _client.character().gear()[Item::WEAPON_SLOT].first.type();
+    const auto *weapon = _client.character().gear()[Item::WEAPON].first.type();
     if (weapon) relevantRange = weapon->weaponRange();
   }
   if (distance(_client.playerCollisionRect(), collisionRect()) >

@@ -30,7 +30,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Equipped items can be dropped",
                  "[gear][dropped-items]") {
   GIVEN("a gear item") {
     useData(R"(
-      <item id="hat" gearSlot="0" />
+      <item id="hat" gearSlot="head" />
     )");
 
     AND_GIVEN("a user has the item equipped") {

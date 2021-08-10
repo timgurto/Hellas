@@ -220,7 +220,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping Equipped gear",
                  "[scrapping][gear]") {
   GIVEN("a hat that can be scrapped into felt") {
     useData(R"(
-      <item id="hat" class="hat" gearSlot="0" />
+      <item id="hat" class="hat" gearSlot="head" />
       <item id="felt" />
       <itemClass id="hat">
         <canBeScrapped result="felt" sd="0" />
@@ -433,7 +433,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   SECTION("When scrapping gear, it doesn't make room for the result") {
     GIVEN("a hat can be scrapped into straw") {
       useData(R"(
-        <item id="hat" class="hat" gearSlot="0"/>
+        <item id="hat" class="hat" gearSlot="head"/>
         <item id="straw" />
         <itemClass id="hat">
           <canBeScrapped result="straw" sd="0" />

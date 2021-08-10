@@ -1,13 +1,13 @@
 <root>
 
-<item id="linenChitonOrange" gearSlot="2" ><offset x="-6" y="-3" /></item>
+<item id="linenChitonOrange" gearSlot="body" ><offset x="-6" y="-3" /></item>
 
-<item id="flintstones" gearSlot="2" ><offset x="-5" y="-4" /> </item>
+<item id="flintstones" gearSlot="body" ><offset x="-5" y="-4" /> </item>
 
-<item id="crown" gearSlot="0" ><offset x="-3" y="-5" /> </item>
-<item id="royalChiton" gearSlot="2" ><offset x="-6" y="-3" /> </item>
-<item id="purpleCloak" gearSlot="3" ><offset x="-4" y="-1" /> </item>
-<item id="flaxGear" gearSlot="7" ><offset x="-10" y="-4" /> </item>
+<item id="crown" gearSlot="head" ><offset x="-3" y="-5" /> </item>
+<item id="royalChiton" gearSlot="body" ><offset x="-6" y="-3" /> </item>
+<item id="purpleCloak" gearSlot="shoulders" ><offset x="-4" y="-1" /> </item>
+<item id="flaxGear" gearSlot="offhand" ><offset x="-10" y="-4" /> </item>
 
 
 <quest id="directionsToClay" name="A toy for the children" startsAt="grug" endsAt="grug"
@@ -183,12 +183,12 @@
         <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
         <loot id="calydonianHorn" chance="0.2" />
     </npcType>
-    <item id="calydonianHorn" name="Horn of the Calydonian Boar" class="horn" gearSlot="7" lvlReq="10"
+    <item id="calydonianHorn" name="Horn of the Calydonian Boar" class="horn" gearSlot="offhand" lvlReq="10"
         iconFile="hornBlack" gearFile="hornBlack" quality="2" bind="equip" >
 		<stats courage="14" />
 		<offset x="0" y="-3" />
     </item>
-    <item id="calydonianHide" name="Hide of the Calydonian Boar" class="hide" gearSlot="3" sounds="leather"
+    <item id="calydonianHide" name="Hide of the Calydonian Boar" class="hide" gearSlot="shoulders" sounds="leather"
         iconFile="hideBlack" gearFile="hideBlack" lvlReq="10" quality="2" bind="pickup" >
         <stats armor="6" endurance="3" />
         <offset x="-4" y="-1" />

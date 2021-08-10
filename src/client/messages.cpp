@@ -574,7 +574,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
           break;
         }
         const ClientItem &item = it->second;
-        if (item.gearSlot() >= GEAR_SLOTS) {
+        if (item.gearSlot() == Item::NOT_GEAR) {
           showErrorMessage("Gear info received for a non-gear item.  Ignoring.",
                            Color::CHAT_ERROR);
           break;

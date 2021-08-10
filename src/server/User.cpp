@@ -1044,7 +1044,7 @@ bool User::canAttack(const Entity &other) const {
 }
 
 px_t User::attackRange() const {
-  const auto weapon = _gear[Item::WEAPON_SLOT].first;
+  const auto weapon = _gear[Item::WEAPON].first;
   if (!weapon.hasItem()) return Object::attackRange();
   return weapon.type()->weaponRange();
 }
@@ -1054,7 +1054,7 @@ void User::sendGotHitMessageTo(const User &user) const {
 }
 
 bool User::canBlock() const {
-  auto offhandItem = _gear[Item::OFFHAND_SLOT].first;
+  auto offhandItem = _gear[Item::OFFHAND].first;
   if (!offhandItem.hasItem()) return false;
   if (!offhandItem.type()->isTag("shield")) return false;
   if (offhandItem.isBroken()) return false;
@@ -1062,7 +1062,7 @@ bool User::canBlock() const {
 }
 
 SpellSchool User::school() const {
-  auto weapon = _gear[Item::WEAPON_SLOT].first;
+  auto weapon = _gear[Item::WEAPON].first;
   if (!weapon.hasItem()) return {};
   return weapon.type()->stats().weaponSchool;
 }
@@ -1254,7 +1254,7 @@ bool User::canStartQuest(const Quest::ID &id) const {
 }
 
 bool User::canAttack() {
-  const auto &gearSlot = _gear[Item::WEAPON_SLOT];
+  const auto &gearSlot = _gear[Item::WEAPON];
 
   auto hasWeapon = gearSlot.first.hasItem();
   if (!hasWeapon) return true;
@@ -1279,7 +1279,7 @@ void User::onCanAttack() { _shouldSuppressAmmoWarnings = false; }
 
 void User::onAttack() {
   // Remove ammo if ranged weapon
-  auto &weapon = _gear[Item::WEAPON_SLOT].first;
+  auto &weapon = _gear[Item::WEAPON].first;
   if (!weapon.hasItem()) return;
 
   auto usesAmmo = weapon.type()->weaponAmmo() != nullptr;
@@ -1311,7 +1311,7 @@ void User::onSuccessfulSpellcast(const std::string &id, const Spell &spell) {
 
 void User::sendRangedHitMessageTo(const User &userToInform) const {
   if (!target()) return;
-  auto weapon = _gear[Item::WEAPON_SLOT].first.type();
+  auto weapon = _gear[Item::WEAPON].first.type();
   if (!weapon) return;
 
   Server &server = *Server::_instance;
@@ -1324,7 +1324,7 @@ void User::sendRangedHitMessageTo(const User &userToInform) const {
 
 void User::sendRangedMissMessageTo(const User &userToInform) const {
   if (!target()) return;
-  auto weapon = _gear[Item::WEAPON_SLOT].first.type();
+  auto weapon = _gear[Item::WEAPON].first.type();
   if (!weapon) return;
 
   Server &server = *Server::_instance;

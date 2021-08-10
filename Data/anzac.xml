@@ -108,7 +108,7 @@
         xDrawOffset="-19" yDrawOffset="-27" >
         <collisionRect x="-13" y="-4" w="25" h="6" />
     </objectType>
-    <item id="anzacHat" name="Gallipolis Scouting Hat" class="leatherHead" bind="pickup" gearSlot="0"
+    <item id="anzacHat" name="Gallipolis Scouting Hat" class="leatherHead" bind="pickup" gearSlot="head"
         sounds="leather" >
         <offset x="-5" y="-5" />
         <particles profile="poppyGrowth" />

@@ -43,7 +43,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 
   GIVEN("rings bind on equip") {
     useData(R"(
-      <item id="ring" bind="equip" gearSlot="1" />
+      <item id="ring" bind="equip" gearSlot="jewelry" />
     )");
 
     WHEN("a user receives a ring") {
@@ -214,7 +214,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 TEST_CASE("Soulbound status is persistent", "[soulbound][persistence]") {
   GIVEN("hats are BoE") {
     auto data = R"(
-      <item id="hat" gearSlot="0" bind="equip" />
+      <item id="hat" gearSlot="head" bind="equip" />
     )";
     auto s = TestServer::WithDataString(data);
 

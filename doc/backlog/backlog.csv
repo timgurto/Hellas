@@ -60,7 +60,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 60,Magic dust shouldn't sound like a bone,1,2,Aesthetics,,,,
 61,Allow line break after -,3,2,Aesthetics,,,,
 62,Allow selecting behind Atlas,2,3,Bug,,,,
-63,Use names for gear slots in data,3,8,Code Quality,,,,
+63,Use names for gear slots in data,3,8,Code Quality,,TRUE,,
 64,Set bonuses,13,144,Feature,,,,
 65,Fellow citizens not always visible on map,3,34,Bug,,,TRUE,
 66,Friends list,3,144,Feature,,,,
@@ -126,7 +126,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 126,Salvage mats from unwanted items,34,34,Feature,,TRUE,,
 127,Random item drops,233,233,Feature,126,,,
 128,Allow remote deletion of city construction sites by king,1,5,Usability,120,,,1 Housing
-129,Gear classes; require known recipe to repair that class,13,89,Feature,,,,
 130,Make death more clear,5,34,Aesthetics,,,,
 131,Ships,13,377,Content,,,TRUE,2 Tier-3
 132,lvl-30 adventure,144,987,Content,125,,,

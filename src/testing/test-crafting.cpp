@@ -241,7 +241,7 @@ TEST_CASE("NPCs don't cause tool checks to crash", "[tool]") {
 TEST_CASE("Gear counts towards materials", "[crafting][gear]") {
   GIVEN("A user wearing an item, and a recipe that needs that item") {
     auto data = R"(
-      <item id="sock" gearSlot="5" />
+      <item id="sock" gearSlot="feet" />
       <item id="sockPuppet" />
       <recipe id="sockPuppet" time="1" >
         <material id="sock" />
