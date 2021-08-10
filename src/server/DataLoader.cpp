@@ -668,7 +668,7 @@ void DataLoader::loadItems(XmlReader &xr) {
     if (!xr.findAttr(elem, "id", id)) continue;  // ID and name are mandatory.
 
     auto randomSuffix = xr.findChild("randomSuffix", elem);
-    if (randomSuffix) id = "sword_extraArmour";
+    if (randomSuffix) id += "_extraArmour";
 
     ServerItem item(id);
 

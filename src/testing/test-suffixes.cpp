@@ -39,4 +39,21 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Simple suffixes", "[suffixes]") {
       CHECK(item.id() == "sword_extraArmour");
     }
   }
+
+  SECTION("Different base-item ID") {
+    GIVEN("a base item called \"spear\" with a suffix") {
+      useData(R"(
+        <item id="spear" >
+          <randomSuffix fromSet="suffixes" />
+        </item>
+
+        <suffixSet id="suffixes" />
+      )");
+
+      THEN("the item's ID starts with \"spear_\"") {
+        auto &item = server->getFirstItem();
+        CHECK(item.id().find("spear_") != std::string::npos);
+      }
+    }
+  }
 }
