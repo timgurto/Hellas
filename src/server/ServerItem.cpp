@@ -14,7 +14,7 @@ bool ServerItem::canBeDamaged() const {
   return true;
 }
 
-bool ServerItem::isGear() const { return _gearSlot < User::GEAR_SLOTS; }
+bool ServerItem::isGear() const { return _gearSlot != Item::NOT_GEAR; }
 
 void ServerItem::fetchAmmoItem() const {
   if (_weaponAmmoID.empty()) return;
