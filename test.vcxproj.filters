@@ -368,6 +368,7 @@
     <ClInclude Include="src\server\AI.h" />
     <ClInclude Include="src\WorkerThread.h" />
     <ClInclude Include="src\ItemClass.h" />
+    <ClInclude Include="src\server\Suffix.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />

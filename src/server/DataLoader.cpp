@@ -70,6 +70,7 @@ void DataLoader::load(bool keepOldData) {
     loadFromAllFiles(&DataLoader::loadObjectTypes);
     loadFromAllFiles(&DataLoader::loadNPCTemplates);
     loadFromAllFiles(&DataLoader::loadNPCTypes);
+    loadFromAllFiles(&DataLoader::loadSuffixes);
     loadFromAllFiles(&DataLoader::loadItemClasses);
     loadFromAllFiles(&DataLoader::loadItems);
     loadFromAllFiles(&DataLoader::loadQuests);
@@ -93,6 +94,7 @@ void DataLoader::load(bool keepOldData) {
     loadObjectTypes(data);
     loadNPCTemplates(data);
     loadNPCTypes(data);
+    loadSuffixes(data);
     loadItemClasses(data);
     loadItems(data);
     loadQuests(data);
@@ -633,6 +635,15 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
   }
 }
 
+void DataLoader::loadSuffixes(XmlReader &xr) {
+  for (auto elem : xr.getChildren("suffixSet")) {
+    auto suffix = xr.findChild("suffix", elem);
+    auto suffixID = ""s;
+    xr.findAttr(suffix, "id", suffixID);
+    _server._suffixSets.suffixID = suffixID;
+  }
+}
+
 void DataLoader::loadItemClasses(XmlReader &xr) {
   for (auto elem : xr.getChildren("itemClass")) {
     auto ic = ItemClass{};
@@ -668,7 +679,7 @@ void DataLoader::loadItems(XmlReader &xr) {
     if (!xr.findAttr(elem, "id", id)) continue;  // ID and name are mandatory.
 
     auto randomSuffix = xr.findChild("randomSuffix", elem);
-    if (randomSuffix) id += "_extraArmour";
+    if (randomSuffix) id += "_"s + _server._suffixSets.suffixID;
 
     ServerItem item(id);
 

@@ -437,6 +437,7 @@
     <ClInclude Include="src\server\Spell.h" />
     <ClInclude Include="src\server\SpellEffect.h" />
     <ClInclude Include="src\server\SRecipe.h" />
+    <ClInclude Include="src\server\Suffix.h" />
     <ClInclude Include="src\server\Tagger.h" />
     <ClInclude Include="src\server\Transformation.h" />
     <ClInclude Include="src\TerrainList.h" />

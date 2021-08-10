@@ -29,6 +29,7 @@
 #include "ServerItem.h"
 #include "Spawner.h"
 #include "Spell.h"
+#include "Suffix.h"
 #include "User.h"
 #include "Wars.h"
 #include "objects/Object.h"
@@ -278,6 +279,7 @@ class Server {
   Tiers _tiers;  // Objects are never accessed via container.  This is just
                  // dynamic-object storage.
   Quests _quests;
+  SuffixSets _suffixSets;
 
   size_t _numBuildableObjects = 0;
 
