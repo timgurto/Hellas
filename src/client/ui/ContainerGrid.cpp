@@ -225,7 +225,7 @@ void ContainerGrid::rightMouseUp(Element &e, const ScreenPoint &mousePos) {
       if (grid._serial.isInventory()) {
         if (item->canUse()) {
           usingFrom = {grid, slot};
-        } else if (item->gearSlot() < Client::GEAR_SLOTS) {
+        } else if (item->gearSlot() != Item::NOT_GEAR) {
           grid._client->sendMessage(
               {CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), slot,
                                        Serial::Gear(), item->gearSlot())});
