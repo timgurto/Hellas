@@ -61,6 +61,7 @@ class ServerItem : public Item {
     double toolSpeed(const std::string &tag) const override;
     void onEquip() { _hasBeenEquipped = true; }
     bool isSoulbound() const;
+    StatsMod statsFromSuffix() const { return _type->statsFromSuffix(); }
 
    private:
     Instance(const ServerItem *type, ReportingInfo info, Hitpoints health)
