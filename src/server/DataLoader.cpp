@@ -640,11 +640,11 @@ void DataLoader::loadSuffixes(XmlReader &xr) {
     auto suffixSetID = ""s;
     xr.findAttr(elem, "id", suffixSetID);
 
-    auto suffix = xr.findChild("suffix", elem);
-
-    auto stats = StatsMod{};
-    xr.findStatsChild("stats", suffix, stats);
-    _server._suffixSets.suffixStats[suffixSetID] = stats;
+    for (auto suffix : xr.getChildren("suffix", elem)) {
+      auto stats = StatsMod{};
+      xr.findStatsChild("stats", suffix, stats);
+      _server._suffixSets.suffixStats[suffixSetID].push_back(stats);
+    }
   }
 }
 
@@ -732,7 +732,7 @@ void DataLoader::loadItems(XmlReader &xr) {
     if (randomSuffix) {
       auto suffixSetID = ""s;
       xr.findAttr(randomSuffix, "fromSet", suffixSetID);
-      item.setStatsFromSuffix(_server._suffixSets.suffixStats[suffixSetID]);
+      item.useSuffixSet(suffixSetID);
     }
 
     if (xr.findAttr(elem, "exclusiveToQuest", s)) item.exclusiveToQuest(s);

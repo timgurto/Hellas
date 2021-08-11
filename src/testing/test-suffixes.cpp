@@ -147,9 +147,49 @@ TEST_CASE_METHOD(ServerAndClientWithData, "The correct item suffix is applied",
   }
 }
 
+TEST_CASE_METHOD(ServerAndClientWithData, "Multiple suffixes in a suffix set",
+                 "[suffixes]") {
+  GIVEN("a shield can have either fire or water resistance") {
+    useData(R"(
+      <suffixSet id="shieldSuffixes" >
+        <suffix id="extraFireResist">
+          <stats fireResist="1" />
+        </suffix>
+        <suffix id="extraWaterResist">
+          <stats waterResist="1" />
+        </suffix>
+      </suffixSet>
+      <item id="shield" gearSlot="offhand" >
+        <randomSuffix fromSet="shieldSuffixes" />
+      </item>
+    )");
+
+    WHEN("the user receives a shield in each inventory slot") {
+      const auto *shield = &server->getFirstItem();
+      user->giveItem(shield, User::INVENTORY_SIZE);
+
+      THEN(
+          "at least one shield has fire resistance, and at least one has water "
+          "resistance") {
+        bool fireResistanceFound{false}, waterResistanceFound{false};
+        for (auto i = 0; i != User::INVENTORY_SIZE; ++i) {
+          const auto statsFromThisShield =
+              user->inventory()[i].first.statsFromSuffix();
+          if (statsFromThisShield.fireResist == ArmourClass{1})
+            fireResistanceFound = true;
+          else if (statsFromThisShield.waterResist == ArmourClass{1})
+            waterResistanceFound = true;
+        }
+
+        CHECK(fireResistanceFound);
+        CHECK(waterResistanceFound);
+      }
+    }
+  }
+}
+
 /*
 TODO:
-Multiple suffixes in a set
 Persistence (in container/gear/inventory)
 Propagate to client
 Generate item names

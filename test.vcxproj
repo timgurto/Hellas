@@ -239,6 +239,7 @@
     <ClCompile Include="src\server\Spell.cpp" />
     <ClCompile Include="src\server\SpellEffect.cpp" />
     <ClCompile Include="src\server\SRecipe.cpp" />
+    <ClCompile Include="src\server\Suffix.cpp" />
     <ClCompile Include="src\server\Tagger.cpp" />
     <ClCompile Include="src\server\Transformation.cpp" />
     <ClCompile Include="src\TerrainList.cpp" />

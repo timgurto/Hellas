@@ -146,7 +146,12 @@ const ServerItem *toServerItem(const Item *item) {
 
 ServerItem::Instance::Instance(const ServerItem *type, ReportingInfo info)
     : _type(type), _reportingInfo(info) {
-  if (type) _health = MAX_HEALTH;
+  if (!type) return;
+
+  _health = MAX_HEALTH;
+
+  _statsFromSuffix =
+      Server::instance()._suffixSets.chooseRandomSuffix(_type->_suffixSet);
 }
 
 void ServerItem::Instance::swap(std::pair<ServerItem::Instance, size_t> &lhs,
