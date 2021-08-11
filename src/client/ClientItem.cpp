@@ -36,7 +36,7 @@ static ScreenPoint toScreenPoint(const MapPoint &rhs) {
 }
 
 void ClientItem::draw(const ScreenPoint &screenLoc) const {
-  if (_gearSlot <= Client::GEAR_SLOTS && _gearImage) {
+  if (_gearSlot != Item::NOT_GEAR && _gearImage) {
     ScreenPoint drawLoc = _drawLoc +                // The item's offset
                           gearOffsets[_gearSlot] +  // The slot's offset
                           screenLoc;  // The avatar's location on the screen
