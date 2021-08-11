@@ -3,5 +3,5 @@
 #include "../Stats.h"
 
 struct SuffixSets {
-  StatsMod stats;
+  std::map<std::string, StatsMod> suffixStats;
 };

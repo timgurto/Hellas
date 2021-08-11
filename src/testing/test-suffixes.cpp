@@ -99,3 +99,59 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Suffixes add stats", "[suffixes]") {
     }
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData, "The correct item suffix is applied",
+                 "[suffixes]") {
+  GIVEN("a sword with a 1-hit suffix, and a wand with a 1-healing suffix") {
+    useData(R"(
+      <suffixSet id="swordSuffixes" >
+        <suffix id="extraHit">
+          <stats hit="1" />
+        </suffix>
+      </suffixSet>
+      <item id="sword" gearSlot="weapon" >
+        <randomSuffix fromSet="swordSuffixes" />
+      </item>
+
+      <suffixSet id="wandSuffixes" >
+        <suffix id="extraHealing">
+          <stats healing="1" />
+        </suffix>
+      </suffixSet>
+      <item id="magicWand" gearSlot="weapon" >
+        <randomSuffix fromSet="wandSuffixes" />
+      </item>
+    )");
+
+    WHEN("a user equips a sword") {
+      const auto &sword = server->findItem("sword");
+      user->giveItem(&sword);
+      client->sendMessage(
+          CL_SWAP_ITEMS,
+          makeArgs(Serial::Inventory(), 0, Serial::Gear(), Item::WEAPON));
+
+      THEN("he has 1 hit") { WAIT_UNTIL(user->stats().hit == BasisPoints{1}); }
+    }
+
+    WHEN("a user equips a magic wand") {
+      const auto &magicWand = server->findItem("magicWand");
+      user->giveItem(&magicWand);
+      client->sendMessage(
+          CL_SWAP_ITEMS,
+          makeArgs(Serial::Inventory(), 0, Serial::Gear(), Item::WEAPON));
+
+      THEN("he has 1 healing") {
+        WAIT_UNTIL(user->stats().healing == BasisPoints{1});
+      }
+    }
+  }
+}
+
+/*
+TODO:
+Multiple suffixes in a set
+Persistence (in container/gear/inventory)
+Propagate to client
+Generate item names
+Merchant-object search?
+*/
