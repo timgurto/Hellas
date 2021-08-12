@@ -159,7 +159,7 @@ ServerItem::Instance::Instance(const ServerItem *type, ReportingInfo info)
 ServerItem::Instance::Instance(const ServerItem *type, ReportingInfo info,
                                Hitpoints health, std::string suffix)
     : _type(type), _reportingInfo(info), _health(health) {
-  _suffix = "extraFireResist";
+  _suffix = suffix;
   _statsFromSuffix = Server::instance()._suffixSets.getStatsForSuffix(
       _type->_suffixSet, _suffix);
 }

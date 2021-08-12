@@ -237,22 +237,18 @@ TEST_CASE("Items loaded from data have the correct suffix", "[suffixes]") {
     </item>
   )";
   auto server = TestServer::WithDataString(data);
+  auto shieldStats = std::vector<StatsMod>{};
 
-  // And given Alice has an inventory full of fire-resist shields
+  // And given Alice has an inventory full of shields
   {
     auto client = TestClient::WithUsernameAndDataString("Alice", data);
     server.waitForUsers(1);
     auto &alice = server.getFirstUser();
 
     for (auto i = 0; i != User::INVENTORY_SIZE; ++i) {
-      const auto attempts = 100;
-      for (auto attempt = 0; attempt != attempts; ++attempt) {
-        alice.giveItem(&server.getFirstItem());
-        const auto statsFromSuffix =
-            alice.inventory()[i].first.statsFromSuffix();
-        if (statsFromSuffix.fireResist == ArmourClass{1}) break;
-        alice.inventory()[i].first = {};
-      }
+      alice.giveItem(&server.getFirstItem());
+      const auto statsFromSuffix = alice.inventory()[i].first.statsFromSuffix();
+      shieldStats.push_back(statsFromSuffix);
     }
 
     // When she logs off
@@ -263,10 +259,10 @@ TEST_CASE("Items loaded from data have the correct suffix", "[suffixes]") {
   server.waitForUsers(1);
   auto &alice = server.getFirstUser();
 
-  // Then all of her shields have fire resist
+  // Then each of her shields has the same stats as before
   for (auto i = 0; i != User::INVENTORY_SIZE; ++i) {
     const auto statsFromSuffix = alice.inventory()[i].first.statsFromSuffix();
-    CHECK(statsFromSuffix.fireResist == ArmourClass{1});
+    CHECK(statsFromSuffix.fireResist == shieldStats[i].fireResist);
   }
 }
 
