@@ -188,6 +188,39 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Multiple suffixes in a suffix set",
   }
 }
 
+TEST_CASE("Item suffixes persist when user is offline", "[suffixes]") {
+  // Given Alice has a sword with a fire-resist suffix
+  const auto data = R"(
+    <suffixSet id="swordSuffixes" >
+      <suffix id="extraFireResist">
+        <stats fireResist="1" />
+      </suffix>
+    </suffixSet>
+    <item id="sword" gearSlot="weapon" >
+      <randomSuffix fromSet="swordSuffixes" />
+    </item>
+  )";
+  auto server = TestServer::WithDataString(data);
+
+  {
+    auto client = TestClient::WithUsernameAndDataString("Alice", data);
+    server.waitForUsers(1);
+    auto &alice = server.getFirstUser();
+    alice.giveItem(&server.getFirstItem());
+
+    // When she logs off
+  }
+
+  // And when she logs back in
+  auto client = TestClient::WithUsernameAndDataString("Alice", data);
+  server.waitForUsers(1);
+  auto &alice = server.getFirstUser();
+
+  // Then her sword still has the suffix
+  const auto statsFromSuffix = alice.inventory()[0].first.statsFromSuffix();
+  CHECK(statsFromSuffix.fireResist == ArmourClass{1});
+}
+
 /*
 TODO:
 Persistence (in container/gear/inventory)

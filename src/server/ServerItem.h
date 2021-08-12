@@ -64,8 +64,7 @@ class ServerItem : public Item {
     StatsMod statsFromSuffix() const { return _statsFromSuffix; }
 
    private:
-    Instance(const ServerItem *type, ReportingInfo info, Hitpoints health)
-        : _type(type), _reportingInfo(info), _health(health) {}
+    Instance(const ServerItem *type, ReportingInfo info, Hitpoints health);
     const ServerItem *_type{nullptr};
     Hitpoints _health{0};
     bool _hasBeenEquipped{false};

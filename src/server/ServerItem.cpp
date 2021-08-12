@@ -154,6 +154,13 @@ ServerItem::Instance::Instance(const ServerItem *type, ReportingInfo info)
       Server::instance()._suffixSets.chooseRandomSuffix(_type->_suffixSet);
 }
 
+ServerItem::Instance::Instance(const ServerItem *type, ReportingInfo info,
+                               Hitpoints health)
+    : _type(type), _reportingInfo(info), _health(health) {
+  _statsFromSuffix =
+      Server::instance()._suffixSets.chooseRandomSuffix(_type->_suffixSet);
+}
+
 void ServerItem::Instance::swap(std::pair<ServerItem::Instance, size_t> &lhs,
                                 std::pair<ServerItem::Instance, size_t> &rhs) {
   auto temp = lhs;

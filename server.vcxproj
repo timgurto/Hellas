@@ -158,6 +158,7 @@
     <ClCompile Include="src\server\Spawner.cpp" />
     <ClCompile Include="src\server\Spell.cpp" />
     <ClCompile Include="src\server\SpellEffect.cpp" />
+    <ClCompile Include="src\server\Suffix.cpp" />
     <ClCompile Include="src\server\Tagger.cpp" />
     <ClCompile Include="src\server\Transformation.cpp" />
     <ClCompile Include="src\TerrainList.cpp" />
@@ -242,6 +243,7 @@
     <ClInclude Include="src\server\Spawner.h" />
     <ClInclude Include="src\server\Spell.h" />
     <ClInclude Include="src\server\SpellEffect.h" />
+    <ClInclude Include="src\server\Suffix.h" />
     <ClInclude Include="src\server\Tagger.h" />
     <ClInclude Include="src\server\Transformation.h" />
     <ClInclude Include="src\TerrainList.h" />
