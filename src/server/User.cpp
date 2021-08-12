@@ -265,47 +265,51 @@ size_t User::giveItem(const ServerItem *item, size_t quantity,
 
   auto remaining = quantity;
 
-  // Assumption: stacking items can't be damaged (thus this pass ignores health)
-  // Gear pass 1: partial stacks
-  for (auto i = 0; i != GEAR_SLOTS; ++i) {
-    if (_gear[i].first.type() != item) continue;
-    auto spaceAvailable =
-        static_cast<int>(item->stackSize()) - static_cast<int>(_gear[i].second);
-    if (spaceAvailable > 0) {
-      auto qtyInThisSlot = min(static_cast<size_t>(spaceAvailable), remaining);
-      _gear[i].second += qtyInThisSlot;
-      Server::instance().sendInventoryMessage(*this, i, Serial::Gear());
-      remaining -= qtyInThisSlot;
-    }
-    if (remaining == 0) break;
-  }
-
-  // Inventory pass 1: partial stacks
-  if (remaining > 0) {
-    for (auto i = 0; i != INVENTORY_SIZE; ++i) {
-      if (_inventory[i].first.type() != item) continue;
-
-      if (remaining == 0) {
-        SERVER_ERROR(
-            "Trying to find room for an item that has already been added");
-        return false;
-      }
-
-      if (item->stackSize() == 0) {
-        SERVER_ERROR("Item with stack size 0");
-        return false;
-      }
-
+  if (item->stackSize() > 1) {
+    // Assumption: stacking items can't be damaged (thus this pass ignores
+    // health) Gear pass 1: partial stacks
+    for (auto i = 0; i != GEAR_SLOTS; ++i) {
+      if (_gear[i].first.type() != item) continue;
       auto spaceAvailable = static_cast<int>(item->stackSize()) -
-                            static_cast<int>(_inventory[i].second);
+                            static_cast<int>(_gear[i].second);
       if (spaceAvailable > 0) {
         auto qtyInThisSlot =
             min(static_cast<size_t>(spaceAvailable), remaining);
-        _inventory[i].second += qtyInThisSlot;
-        Server::instance().sendInventoryMessage(*this, i, Serial::Inventory());
+        _gear[i].second += qtyInThisSlot;
+        Server::instance().sendInventoryMessage(*this, i, Serial::Gear());
         remaining -= qtyInThisSlot;
       }
       if (remaining == 0) break;
+    }
+
+    // Inventory pass 1: partial stacks
+    if (remaining > 0) {
+      for (auto i = 0; i != INVENTORY_SIZE; ++i) {
+        if (_inventory[i].first.type() != item) continue;
+
+        if (remaining == 0) {
+          SERVER_ERROR(
+              "Trying to find room for an item that has already been added");
+          return false;
+        }
+
+        if (item->stackSize() == 0) {
+          SERVER_ERROR("Item with stack size 0");
+          return false;
+        }
+
+        auto spaceAvailable = static_cast<int>(item->stackSize()) -
+                              static_cast<int>(_inventory[i].second);
+        if (spaceAvailable > 0) {
+          auto qtyInThisSlot =
+              min(static_cast<size_t>(spaceAvailable), remaining);
+          _inventory[i].second += qtyInThisSlot;
+          Server::instance().sendInventoryMessage(*this, i,
+                                                  Serial::Inventory());
+          remaining -= qtyInThisSlot;
+        }
+        if (remaining == 0) break;
+      }
     }
   }
 
