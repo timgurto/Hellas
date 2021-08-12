@@ -150,10 +150,10 @@ ServerItem::Instance::Instance(const ServerItem *type, ReportingInfo info)
 
   _health = MAX_HEALTH;
 
-  _suffix =
+  const auto &suffix =
       Server::instance()._suffixSets.chooseRandomSuffix(_type->_suffixSet);
-  _statsFromSuffix = Server::instance()._suffixSets.getStatsForSuffix(
-      _type->_suffixSet, _suffix);
+  _suffix = suffix.id;
+  _statsFromSuffix = suffix.stats;
 }
 
 ServerItem::Instance::Instance(const ServerItem *type, ReportingInfo info,
