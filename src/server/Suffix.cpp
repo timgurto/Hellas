@@ -10,6 +10,6 @@ std::string SuffixSets::chooseRandomSuffix(std::string setID) const {
 }
 
 StatsMod SuffixSets::getStatsForSuffix(std::string setID,
-                                          std::string suffixID) {
-  return suffixStats[setID][suffixID];
+                                       std::string suffixID) {
+  return suffixStats[setID][suffixID].stats;
 }
