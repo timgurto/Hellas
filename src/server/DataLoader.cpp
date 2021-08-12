@@ -641,9 +641,11 @@ void DataLoader::loadSuffixes(XmlReader &xr) {
     xr.findAttr(elem, "id", suffixSetID);
 
     for (auto suffix : xr.getChildren("suffix", elem)) {
+      auto suffixID = ""s;
+      xr.findAttr(suffix, "id", suffixID);
       auto stats = StatsMod{};
       xr.findStatsChild("stats", suffix, stats);
-      _server._suffixSets.suffixStats[suffixSetID].push_back(stats);
+      _server._suffixSets.suffixStats[suffixSetID][suffixID] = stats;
     }
   }
 }

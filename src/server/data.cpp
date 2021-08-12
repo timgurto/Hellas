@@ -113,6 +113,8 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     xr.findAttr(slotElem, "health", health);
     int n;
     if (xr.findAttr(slotElem, "soulbound", n)) isSoulbound = n != 0;
+    auto suffix = ""s;
+    xr.findAttr(slotElem, "suffix", suffix);
 
     const auto *item = findItem(id);
     if (!item) {
@@ -121,7 +123,7 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     }
     user.inventory(slot).first = ServerItem::Instance::LoadFromFile(
         item, ServerItem::Instance::ReportingInfo::UserInventory(&user, slot),
-        health);
+        health, suffix);
     if (isSoulbound) user.inventory(slot).first.onEquip();
     user.inventory(slot).second = qty;
   }
@@ -145,7 +147,7 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     }
     user.gear(slot).first = ServerItem::Instance::LoadFromFile(
         item, ServerItem::Instance::ReportingInfo::UserGear(&user, slot),
-        health);
+        health, {});
     user.gear(slot).first.onEquip();
     user.gear(slot).second = qty;
   }
@@ -295,6 +297,8 @@ void Server::writeUserData(const User &user) const {
       xw.setAttr(slotElement, "slot", i);
       xw.setAttr(slotElement, "id", slot.first.type()->id());
       xw.setAttr(slotElement, "health", slot.first.health());
+      if (slot.first.type()->hasSuffix())
+        xw.setAttr(slotElement, "suffix", slot.first.suffix());
       if (slot.second > 1) xw.setAttr(slotElement, "quantity", slot.second);
       if (slot.first.isSoulbound()) xw.setAttr(slotElement, "soulbound", 1);
     }
@@ -515,7 +519,7 @@ void Server::loadEntities(XmlReader &xr,
       auto &invSlot = obj.container().at(n);
       invSlot.first = ServerItem::Instance::LoadFromFile(
           &*_items.find(s),
-          ServerItem::Instance::ReportingInfo::InObjectContainer(), health);
+          ServerItem::Instance::ReportingInfo::InObjectContainer(), health, {});
       invSlot.second = q;
 
       auto n = 0;

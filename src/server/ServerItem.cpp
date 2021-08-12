@@ -150,15 +150,18 @@ ServerItem::Instance::Instance(const ServerItem *type, ReportingInfo info)
 
   _health = MAX_HEALTH;
 
-  _statsFromSuffix =
+  _suffix =
       Server::instance()._suffixSets.chooseRandomSuffix(_type->_suffixSet);
+  _statsFromSuffix = Server::instance()._suffixSets.getStatsForSuffix(
+      _type->_suffixSet, _suffix);
 }
 
 ServerItem::Instance::Instance(const ServerItem *type, ReportingInfo info,
-                               Hitpoints health)
+                               Hitpoints health, std::string suffix)
     : _type(type), _reportingInfo(info), _health(health) {
-  _statsFromSuffix =
-      Server::instance()._suffixSets.chooseRandomSuffix(_type->_suffixSet);
+  _suffix = "extraFireResist";
+  _statsFromSuffix = Server::instance()._suffixSets.getStatsForSuffix(
+      _type->_suffixSet, _suffix);
 }
 
 void ServerItem::Instance::swap(std::pair<ServerItem::Instance, size_t> &lhs,

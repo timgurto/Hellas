@@ -37,6 +37,7 @@ class Item : public HasTags {
   void stats(const StatsMod &stats) { _stats = stats; }
   const StatsMod &stats() const { return _stats; }
   void useSuffixSet(std::string suffixSetID) { _suffixSet = suffixSetID; }
+  bool hasSuffix() const { return !_suffixSet.empty(); }
   Hitpoints durability() const { return _durability; }
   void durability(Hitpoints n) { _durability = n; }
   void makeWeapon(Hitpoints damage, double speedInS, SpellSchool school);

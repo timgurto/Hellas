@@ -43,8 +43,8 @@ class ServerItem : public Item {
     Instance() = default;
     Instance(const ServerItem *type, ReportingInfo info);
     static Instance LoadFromFile(const ServerItem *type, ReportingInfo info,
-                                 Hitpoints health) {
-      return {type, info, health};
+                                 Hitpoints health, std::string suffix) {
+      return {type, info, health, suffix};
     }
 
     static void swap(std::pair<ServerItem::Instance, size_t> &lhs,
@@ -62,14 +62,17 @@ class ServerItem : public Item {
     void onEquip() { _hasBeenEquipped = true; }
     bool isSoulbound() const;
     StatsMod statsFromSuffix() const { return _statsFromSuffix; }
+    std::string suffix() const { return _suffix; }
 
    private:
-    Instance(const ServerItem *type, ReportingInfo info, Hitpoints health);
+    Instance(const ServerItem *type, ReportingInfo info, Hitpoints health,
+             std::string suffix);
     const ServerItem *_type{nullptr};
     Hitpoints _health{0};
     bool _hasBeenEquipped{false};
     ReportingInfo _reportingInfo;
     StatsMod _statsFromSuffix{};
+    std::string _suffix{};
   };
 
   enum ContainerCheckResult {
