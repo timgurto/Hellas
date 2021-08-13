@@ -7,7 +7,7 @@
 bool Loot::empty() const {
   if (_container.size() == 0) return true;
   for (const auto &slot : _container) {
-    if (!slot.hasItem() && slot.quantity() > 0) return false;
+    if (slot.hasItem() && slot.quantity() > 0) return false;
   }
   return true;
 }
