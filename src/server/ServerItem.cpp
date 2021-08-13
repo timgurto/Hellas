@@ -147,10 +147,12 @@ ServerItem::Instance::Instance(const ServerItem *type, ReportingInfo info,
 
   _health = MAX_HEALTH;
 
-  const auto &suffix =
-      Server::instance()._suffixSets.chooseRandomSuffix(_type->_suffixSet);
-  _suffix = suffix.id;
-  _statsFromSuffix = suffix.stats;
+  if (!_type->_suffixSet.empty()) {
+    const auto &suffix =
+        Server::instance()._suffixSets.chooseRandomSuffix(_type->_suffixSet);
+    _suffix = suffix.id;
+    _statsFromSuffix = suffix.stats;
+  }
 }
 
 ServerItem::Instance::Instance(const ServerItem *type, ReportingInfo info,
@@ -161,8 +163,9 @@ ServerItem::Instance::Instance(const ServerItem *type, ReportingInfo info,
       _health(health),
       _suffix(suffix),
       _quantity(quantity) {
-  _statsFromSuffix = Server::instance()._suffixSets.getStatsForSuffix(
-      _type->_suffixSet, _suffix);
+  if (!_type->_suffixSet.empty())
+    _statsFromSuffix = Server::instance()._suffixSets.getStatsForSuffix(
+        _type->_suffixSet, _suffix);
 }
 
 void ServerItem::Instance::swap(ServerItem::Instance &lhs,
