@@ -27,7 +27,7 @@ class ClientItem : public Item, public HasSounds {
     const Tooltip &tooltip() const;  // Return the appropriate tooltip,
                                      // generating it first if appropriate.
     bool isSoulbound() const;
-    std::string name() const { return "Sword of Power"s; }
+    std::string name() const;
 
    private:
     const ClientItem *_type{nullptr};

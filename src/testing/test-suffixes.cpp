@@ -364,21 +364,40 @@ TEST_CASE("Suffixes on items in containers persist", "[suffixes]") {
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Suffix names", "[suffixes]") {
-  GIVEN("the user has a \"Sword\" item with \"of Power\" suffix") {
+  GIVEN(
+      "the user has \"Sword\" and \"Axe\" items with an \"of Power\" suffix") {
     useData(R"(
-      <suffixSet id="swordSuffixes" >
+      <suffixSet id="weaponSuffixes" >
         <suffix id="power" name="Power" />
       </suffixSet>
-      <item id="sword" gearSlot="weapon" >
-        <randomSuffix fromSet="swordSuffixes" />
+      <item id="sword" name="Sword" gearSlot="weapon" >
+        <randomSuffix fromSet="weaponSuffixes" />
+      </item>
+      <item id="axe" name="Axe" gearSlot="weapon" >
+        <randomSuffix fromSet="weaponSuffixes" />
       </item>
     )");
-    user->giveItem(&server->getFirstItem());
+    const auto *sword = &server->findItem("sword");
+    const auto *axe = &server->findItem("axe");
 
-    THEN("the client knows its name is \"Sword of Power\"") {
-      const auto &cSlot = client->inventory()[0].first;
-      WAIT_UNTIL(cSlot.type() != nullptr);
-      CHECK(cSlot.name() == "Sword of Power"s);
+    WHEN("the user has a sword") {
+      user->giveItem(sword);
+
+      THEN("the client knows its name is \"Sword of Power\"") {
+        const auto &cSlot = client->inventory()[0].first;
+        WAIT_UNTIL(cSlot.type() != nullptr);
+        CHECK(cSlot.name() == "Sword of Power"s);
+      }
+    }
+
+    WHEN("the user has an axe") {
+      user->giveItem(axe);
+
+      THEN("the client knows its name is \"Axe of Power\"") {
+        const auto &cSlot = client->inventory()[0].first;
+        WAIT_UNTIL(cSlot.type() != nullptr);
+        CHECK(cSlot.name() == "Axe of Power"s);
+      }
     }
   }
 }

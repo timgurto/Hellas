@@ -316,3 +316,7 @@ void ClientItem::Instance::createRepairTooltip() const {
 }
 
 bool ClientItem::Instance::isSoulbound() const { return _isSoulbound; }
+
+std::string ClientItem::Instance::name() const {
+  return _type->name() + " of Power"s;
+}
