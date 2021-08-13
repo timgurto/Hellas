@@ -326,13 +326,13 @@ TEST_CASE("Items loaded from data have the correct suffix", "[suffixes]") {
 
       // Then her shield has the same stats as before
       const auto statsAfter = alice.gear()[Item::OFFHAND].statsFromSuffix();
-      CHECK(statsBefore.fireResist == statsAfter.fireResist);
-      CHECK(statsBefore.waterResist == statsAfter.waterResist);
+      REQUIRE(statsBefore.fireResist == statsAfter.fireResist);
+      REQUIRE(statsBefore.waterResist == statsAfter.waterResist);
     }
   }
 }
 
-TEST_CASE("Suffixes on items in containers persist", "[suffisxes]") {
+TEST_CASE("Suffixes on items in containers persist", "[suffixes]") {
   // Given a box containing a sword with a fire-resist suffix
   const auto data = R"(
     <suffixSet id="swordSuffixes" >
