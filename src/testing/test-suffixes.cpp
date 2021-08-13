@@ -221,6 +221,34 @@ TEST_CASE("Item suffixes persist when user is offline", "[suffixes]") {
   CHECK(statsFromSuffix.fireResist == ArmourClass{1});
 }
 
+TEST_CASE_METHOD(ServerAndClientWithData, "Swapping items preserves suffixes",
+                 "[suffixes]") {
+  GIVEN("the user has a sword with a fire-resist suffix") {
+    useData(R"(
+      <suffixSet id="swordSuffixes" >
+        <suffix id="extraFireResist">
+          <stats fireResist="1" />
+        </suffix>
+      </suffixSet>
+      <item id="sword" gearSlot="weapon" >
+        <randomSuffix fromSet="swordSuffixes" />
+      </item>
+    )");
+    user->giveItem(&server->getFirstItem());
+
+    WHEN("he moves it to a different inventory slot") {
+      client->sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0,
+                                                  Serial::Inventory(), 1));
+      const auto &invSlot1 = user->inventory()[1].first;
+      WAIT_UNTIL(invSlot1.hasItem());
+
+      THEN("it still has fire resistance") {
+        CHECK(invSlot1.statsFromSuffix().fireResist == ArmourClass{1});
+      }
+    }
+  }
+}
+
 TEST_CASE("Items loaded from data have the correct suffix", "[suffixes]") {
   // Given shields have either a fire-resist or a water-resist suffix
   const auto data = R"(
