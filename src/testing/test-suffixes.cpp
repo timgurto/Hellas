@@ -265,32 +265,72 @@ TEST_CASE("Items loaded from data have the correct suffix", "[suffixes]") {
     </item>
   )";
   auto server = TestServer::WithDataString(data);
-  auto shieldStats = std::vector<StatsMod>{};
+  const auto *shield = &server.getFirstItem();
 
-  // And given Alice has an inventory full of shields
-  {
+  SECTION("Inventory") {
+    auto shieldStats = std::vector<StatsMod>{};
+    // And given Alice has an inventory full of shields
+    {
+      auto client = TestClient::WithUsernameAndDataString("Alice", data);
+      server.waitForUsers(1);
+      auto &alice = server.getFirstUser();
+
+      for (auto i = 0; i != User::INVENTORY_SIZE; ++i) {
+        alice.giveItem(shield);
+        const auto statsFromSuffix =
+            alice.inventory()[i].first.statsFromSuffix();
+        shieldStats.push_back(statsFromSuffix);
+      }
+
+      // When she logs off
+    }
+
+    // And when she logs back in
     auto client = TestClient::WithUsernameAndDataString("Alice", data);
     server.waitForUsers(1);
     auto &alice = server.getFirstUser();
 
+    // Then each of her shields has the same stats as before
     for (auto i = 0; i != User::INVENTORY_SIZE; ++i) {
-      alice.giveItem(&server.getFirstItem());
       const auto statsFromSuffix = alice.inventory()[i].first.statsFromSuffix();
-      shieldStats.push_back(statsFromSuffix);
+      CHECK(statsFromSuffix.fireResist == shieldStats[i].fireResist);
     }
-
-    // When she logs off
   }
 
-  // And when she logs back in
-  auto client = TestClient::WithUsernameAndDataString("Alice", data);
-  server.waitForUsers(1);
-  auto &alice = server.getFirstUser();
+  SECTION("Gear") {
+    //  Multiple repetitions to ensure that both suffixes get generated
+    const auto REPETITIONS = 20;  // 1 in 2^20 chance to have lower coverage
+    for (auto i = 0; i != REPETITIONS; ++i) {
+      auto statsBefore = StatsMod{};
 
-  // Then each of her shields has the same stats as before
-  for (auto i = 0; i != User::INVENTORY_SIZE; ++i) {
-    const auto statsFromSuffix = alice.inventory()[i].first.statsFromSuffix();
-    CHECK(statsFromSuffix.fireResist == shieldStats[i].fireResist);
+      // And given Alice has a shield equipped
+      {
+        auto client = TestClient::WithUsernameAndDataString("Alice", data);
+        server.waitForUsers(1);
+        auto &alice = server.getFirstUser();
+
+        alice.giveItem(shield);
+        client.sendMessage(
+            CL_SWAP_ITEMS,
+            makeArgs(Serial::Inventory(), 0, Serial::Gear(), Item::OFFHAND));
+        WAIT_UNTIL(alice.gear()[Item::OFFHAND].first.hasItem());
+
+        statsBefore = alice.gear()[Item::OFFHAND].first.statsFromSuffix();
+
+        // When she logs off
+      }
+
+      // And when she logs back in
+      auto client = TestClient::WithUsernameAndDataString("Alice", data);
+      server.waitForUsers(1);
+      auto &alice = server.getFirstUser();
+
+      // Then her shield has the same stats as before
+      const auto statsAfter =
+          alice.gear()[Item::OFFHAND].first.statsFromSuffix();
+      CHECK(statsBefore.fireResist == statsAfter.fireResist);
+      CHECK(statsBefore.waterResist == statsAfter.waterResist);
+    }
   }
 }
 

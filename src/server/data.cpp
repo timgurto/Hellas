@@ -139,6 +139,8 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     if (!xr.findAttr(slotElem, "id", id)) continue;
     xr.findAttr(slotElem, "quantity", qty);
     xr.findAttr(slotElem, "health", health);
+    auto suffix = ""s;
+    xr.findAttr(slotElem, "suffix", suffix);
 
     const auto *item = findItem(id);
     if (!item) {
@@ -147,7 +149,7 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     }
     user.gear(slot).first = ServerItem::Instance::LoadFromFile(
         item, ServerItem::Instance::ReportingInfo::UserGear(&user, slot),
-        health, {});
+        health, suffix);
     user.gear(slot).first.onEquip();
     user.gear(slot).second = qty;
   }
@@ -312,6 +314,8 @@ void Server::writeUserData(const User &user) const {
       xw.setAttr(slotElement, "slot", i);
       xw.setAttr(slotElement, "id", slot.first.type()->id());
       xw.setAttr(slotElement, "health", slot.first.health());
+      if (slot.first.type()->hasSuffix())
+        xw.setAttr(slotElement, "suffix", slot.first.suffix());
       if (slot.second > 1) xw.setAttr(slotElement, "quantity", slot.second);
     }
   }
