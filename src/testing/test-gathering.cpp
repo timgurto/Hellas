@@ -23,7 +23,7 @@ TEST_CASE("Gather an item from an object", "[gathering]") {
 
   // Make sure user has item
   const auto &item = *s.items().begin();
-  CHECK(user.inventory()[0].first.type() == &item);
+  CHECK(user.inventory(0).type() == &item);
 
   // Make sure object no longer exists
   CHECK(s.entities().empty());
@@ -55,7 +55,7 @@ TEST_CASE("Gather chance is by gathers, not quantity", "[gathering]") {
 
   // Make sure user has a rock, and not the iron
   const auto &item = *s.items().find(ServerItem("rock"));
-  CHECK(user.inventory()[0].first.type() == &item);
+  CHECK(user.inventory(0).type() == &item);
 }
 
 TEST_CASE("Minimum yields", "[gathering]") {
@@ -83,7 +83,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Gathering from an NPC",
     AND_WHEN("a player tries to gather from it") {
       client->sendMessage(CL_GATHER, makeArgs(mouse.serial()));
 
-      THEN("he has an item") { WAIT_UNTIL(user->inventory(0).first.hasItem()); }
+      THEN("he has an item") { WAIT_UNTIL(user->inventory(0).hasItem()); }
     }
 
     AND_WHEN("a player right-clicks it") {
@@ -93,7 +93,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Gathering from an NPC",
 
       THEN("he has an item") {
         auto &user = server->getFirstUser();
-        WAIT_UNTIL(user.inventory(0).first.hasItem());
+        WAIT_UNTIL(user.inventory(0).hasItem());
       }
     }
   }
@@ -113,7 +113,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Gathering from an NPC",
 
       THEN("he doesn't have an item") {
         REPEAT_FOR_MS(100);
-        CHECK(!user->inventory(0).first.hasItem());
+        CHECK(!user->inventory(0).hasItem());
       }
     }
   }
@@ -133,7 +133,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Gathering from an NPC",
 
       THEN("he doesn't have an item") {
         REPEAT_FOR_MS(100);
-        CHECK(!user->inventory(0).first.hasItem());
+        CHECK(!user->inventory(0).hasItem());
       }
     }
   }

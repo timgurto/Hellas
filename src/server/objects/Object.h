@@ -87,8 +87,8 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
                         bool isNew = false) const override;
   void tellRelevantUsersAboutInventorySlot(size_t slot) const;
   void tellRelevantUsersAboutMerchantSlot(size_t slot) const;
-  ServerItem::Slot *getSlotToTakeFromAndSendErrors(size_t slotNum,
-                                                   const User &user) override;
+  ServerItem::Instance *getSlotToTakeFromAndSendErrors(
+      size_t slotNum, const User &user) override;
   bool areOverlapsAllowedWith(const Entity &rhs) const override;
   Message outOfRangeMessage() const override;
   virtual void broadcastDamagedMessage(Hitpoints amount) const override;

@@ -32,14 +32,13 @@ void ServerItem::fetchAmmoItem() const {
 bool vectHasSpace(const ServerItem::vect_t &vect, const ServerItem *item,
                   size_t qty) {
   for (const auto &slot : vect) {
-    auto itemInSlot = slot.first.type();
-    auto qtyInSlot = slot.second;
+    auto itemInSlot = slot.type();
 
     if (!itemInSlot) {
       if (qty <= item->stackSize()) return true;
       qty -= item->stackSize();
     } else if (itemInSlot == item) {
-      auto roomInSlot = item->stackSize() - qtyInSlot;
+      auto roomInSlot = item->stackSize() - slot.quantity();
       if (qty <= roomInSlot) return true;
       qty -= roomInSlot;
     } else
@@ -55,14 +54,13 @@ bool vectHasSpace(ServerItem::vect_t vect, ItemSet items) {
 
     // Try to top up slots already containing that item
     for (auto &slot : vect) {
-      const auto itemInSlot = slot.first.type();
-      auto &qtyInSlot = slot.second;
+      const auto *itemInSlot = slot.type();
 
       if (itemInSlot != itemToAdd) continue;
 
-      auto roomInSlot = itemToAdd->stackSize() - qtyInSlot;
+      auto roomInSlot = itemToAdd->stackSize() - slot.quantity();
       if (qtyToAdd <= roomInSlot) {
-        qtyInSlot += qtyToAdd;
+        slot.addItems(qtyToAdd);
         qtyToAdd = 0;
         break;  // All of the item fits into this slot
       }
@@ -72,18 +70,18 @@ bool vectHasSpace(ServerItem::vect_t vect, ItemSet items) {
 
     // Try to add to empty slots
     for (auto &slot : vect) {
-      if (slot.first.hasItem()) continue;
+      if (slot.hasItem()) continue;
 
       if (qtyToAdd <= itemToAdd->stackSize()) {
-        slot.first = ServerItem::Instance{
-            itemToAdd, ServerItem::Instance::ReportingInfo::DummyUser()};
-        slot.second = qtyToAdd;
+        slot = ServerItem::Instance{
+            itemToAdd, ServerItem::Instance::ReportingInfo::DummyUser(),
+            qtyToAdd};
         qtyToAdd = 0;
         break;  // All of this item fits into this empty slot
       }
-      slot.first = ServerItem::Instance{
-          itemToAdd, ServerItem::Instance::ReportingInfo::DummyUser()};
-      slot.second = itemToAdd->stackSize();
+      slot = ServerItem::Instance{
+          itemToAdd, ServerItem::Instance::ReportingInfo::DummyUser(),
+          itemToAdd->stackSize()};
       qtyToAdd -= itemToAdd->stackSize();
     }
 
@@ -103,15 +101,13 @@ bool vectHasSpaceAfterRemovingItems(const ServerItem::vect_t &vect,
   // Remove items from copy
   auto qtyLeft = qtyThatWillBeRemoved;
   for (auto &slot : v) {
-    if (slot.first.type() != itemThatWillBeRemoved) continue;
-    if (slot.second > qtyLeft) {
-      slot.first = {};
-      slot.second = 0;
+    if (slot.type() != itemThatWillBeRemoved) continue;
+    if (slot.quantity() > qtyLeft) {
+      slot = {};
       break;
     }
-    qtyLeft -= slot.second;
-    slot.first = {};
-    slot.second = 0;
+    qtyLeft -= slot.quantity();
+    slot = {};
   }
 
   // Call normal function on copy
@@ -124,15 +120,15 @@ ServerItem::ContainerCheckResult containerHasEnoughToTrade(
   auto soulboundItemWasFound = false;
   auto brokenItemWasFound = false;
   for (const auto &slot : container) {
-    if (slot.first.isBroken()) {
+    if (slot.isBroken()) {
       brokenItemWasFound = true;
       continue;
     }
-    if (slot.first.isSoulbound()) {
+    if (slot.isSoulbound()) {
       soulboundItemWasFound = true;
       continue;
     }
-    remaining.remove(slot.first.type(), slot.second);
+    remaining.remove(slot.type(), slot.quantity());
     if (remaining.isEmpty()) return ServerItem::ITEMS_PRESENT;
   }
   if (soulboundItemWasFound) return ServerItem::ITEMS_SOULBOUND;
@@ -144,8 +140,9 @@ const ServerItem *toServerItem(const Item *item) {
   return dynamic_cast<const ServerItem *>(item);
 }
 
-ServerItem::Instance::Instance(const ServerItem *type, ReportingInfo info)
-    : _type(type), _reportingInfo(info) {
+ServerItem::Instance::Instance(const ServerItem *type, ReportingInfo info,
+                               size_t quantity)
+    : _type(type), _reportingInfo(info), _quantity(quantity) {
   if (!type) return;
 
   _health = MAX_HEALTH;
@@ -157,24 +154,28 @@ ServerItem::Instance::Instance(const ServerItem *type, ReportingInfo info)
 }
 
 ServerItem::Instance::Instance(const ServerItem *type, ReportingInfo info,
-                               Hitpoints health, std::string suffix)
-    : _type(type), _reportingInfo(info), _health(health) {
-  _suffix = suffix;
+                               Hitpoints health, std::string suffix,
+                               size_t quantity)
+    : _type(type),
+      _reportingInfo(info),
+      _health(health),
+      _suffix(suffix),
+      _quantity(quantity) {
   _statsFromSuffix = Server::instance()._suffixSets.getStatsForSuffix(
       _type->_suffixSet, _suffix);
 }
 
-void ServerItem::Instance::swap(std::pair<ServerItem::Instance, size_t> &lhs,
-                                std::pair<ServerItem::Instance, size_t> &rhs) {
+void ServerItem::Instance::swap(ServerItem::Instance &lhs,
+                                ServerItem::Instance &rhs) {
   auto temp = lhs;
   lhs = rhs;
   rhs = temp;
 
   // Unswap reporting info, since reporting info describes the location of the
   // item rather than the item itself.
-  auto tempReportingInfo = lhs.first._reportingInfo;
-  lhs.first._reportingInfo = rhs.first._reportingInfo;
-  rhs.first._reportingInfo = tempReportingInfo;
+  auto tempReportingInfo = lhs._reportingInfo;
+  lhs._reportingInfo = rhs._reportingInfo;
+  rhs._reportingInfo = tempReportingInfo;
 }
 
 bool ServerItem::Instance::isBroken() const { return _health == 0; }

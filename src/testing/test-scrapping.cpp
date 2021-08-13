@@ -22,7 +22,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping items", "[scrapping]") {
         client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
 
         THEN("he has a wood chip") {
-          WAIT_UNTIL(user->inventory()[0].first.type() == &woodchip);
+          WAIT_UNTIL(user->inventory()[0].type() == &woodchip);
         }
       }
     }
@@ -37,7 +37,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping items", "[scrapping]") {
           client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 5));
 
           THEN("he has a wood chip") {
-            WAIT_UNTIL(user->inventory()[0].first.type() == &woodchip);
+            WAIT_UNTIL(user->inventory()[0].type() == &woodchip);
           }
         }
       }
@@ -51,7 +51,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping items", "[scrapping]") {
           client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 1));
 
           THEN("he has a wood chip in slot 1") {
-            WAIT_UNTIL(user->inventory()[1].first.type() == &woodchip);
+            WAIT_UNTIL(user->inventory()[1].type() == &woodchip);
           }
         }
       }
@@ -77,7 +77,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping items", "[scrapping]") {
 
           THEN("he has sand") {
             const auto &sand = server->findItem("sand");
-            WAIT_UNTIL(user->inventory()[0].first.type() == &sand);
+            WAIT_UNTIL(user->inventory()[0].type() == &sand);
           }
         }
       }
@@ -106,8 +106,8 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 
           THEN("he has both wood and woodchips") {
             const auto &woodchip = server->findItem("woodchip");
-            WAIT_UNTIL(user->inventory()[1].first.type() == &woodchip);
-            CHECK(user->inventory()[0].first.type() == &wood);
+            WAIT_UNTIL(user->inventory()[1].type() == &woodchip);
+            CHECK(user->inventory()[0].type() == &wood);
           }
         }
 
@@ -117,7 +117,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
                                 makeArgs(Serial::Inventory(), 0));
 
           THEN("he has no wood left") {
-            WAIT_UNTIL(!user->inventory()[0].first.hasItem());
+            WAIT_UNTIL(!user->inventory()[0].hasItem());
           }
         }
       }
@@ -140,7 +140,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
 
       THEN("he has two semicircles") {
-        WAIT_UNTIL(user->inventory()[0].second == 2);
+        WAIT_UNTIL(user->inventory()[0].quantity() == 2);
       }
     }
   }
@@ -176,13 +176,13 @@ TEST_CASE_METHOD(ServerAndClientWithData,
           client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
           client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 1));
           client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 2));
-          WAIT_UNTIL(user->inventory()[2].first.type() ==
+          WAIT_UNTIL(user->inventory()[2].type() ==
                      &server->findItem("copperDust"));
 
           THEN("the quantities of scraps are different") {
-            const auto qtyGoldDust = user->inventory()[0].second;
-            const auto qtySilverDust = user->inventory()[1].second;
-            const auto qtyCopperDust = user->inventory()[2].second;
+            const auto qtyGoldDust = user->inventory()[0].quantity();
+            const auto qtySilverDust = user->inventory()[1].quantity();
+            const auto qtyCopperDust = user->inventory()[2].quantity();
 
             const auto allEqual =
                 qtyGoldDust == qtySilverDust && qtySilverDust == qtyCopperDust;
@@ -209,7 +209,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 
         THEN("he has nothing in inventory") {
           REPEAT_FOR_MS(100);
-          CHECK_FALSE(user->inventory()[0].first.hasItem());
+          CHECK_FALSE(user->inventory()[0].hasItem());
         }
       }
     }
@@ -238,7 +238,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping Equipped gear",
 
         THEN("he has felt") {
           const auto &felt = server->findItem("felt");
-          WAIT_UNTIL(user->inventory()[0].first.type() == &felt);
+          WAIT_UNTIL(user->inventory()[0].type() == &felt);
         }
 
         SECTION("user gets inventory message for scrapped item") {
@@ -347,7 +347,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapped items must be scrappable",
 
       THEN("he still has it") {
         REPEAT_FOR_MS(100);
-        CHECK(user->inventory()[0].first.type() == diamond);
+        CHECK(user->inventory()[0].type() == diamond);
       }
 
       THEN("he gets a warning") {
@@ -370,7 +370,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapped items must be scrappable",
 
       THEN("he still has it") {
         REPEAT_FOR_MS(100);
-        CHECK(user->inventory()[0].first.type() == diamond);
+        CHECK(user->inventory()[0].type() == diamond);
       }
     }
   }
@@ -397,7 +397,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 
         THEN("he hasn't lost any coins") {
           REPEAT_FOR_MS(100);
-          CHECK(user->inventory()[0].second == 10);  // Still a full stack
+          CHECK(user->inventory()[0].quantity() == 10);  // Still a full stack
         }
 
         THEN("he receives a warning") {
@@ -424,7 +424,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 
         THEN("he still has the wonka bar") {
           REPEAT_FOR_MS(100);
-          CHECK(user->inventory()[0].first.type() == wonkaBar);
+          CHECK(user->inventory()[0].type() == wonkaBar);
         }
       }
     }
@@ -445,7 +445,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
         user->giveItem(hat);
         client->sendMessage(
             CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0, Serial::Gear(), 0));
-        WAIT_UNTIL(!user->inventory()[0].first.hasItem());
+        WAIT_UNTIL(!user->inventory()[0].hasItem());
 
         AND_GIVEN("he has an inventory full of them") {
           user->giveItem(hat, User::INVENTORY_SIZE);
@@ -479,7 +479,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Rounding of scrapping quantity",
 
       THEN("he has a matrioshka doll") {
         REPEAT_FOR_MS(100);
-        CHECK(user->inventory()[0].first.hasItem());
+        CHECK(user->inventory()[0].hasItem());
       }
     }
   }

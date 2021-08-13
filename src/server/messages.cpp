@@ -330,12 +330,10 @@ HANDLE_MESSAGE(CL_DROP) {
 
   if (slot >= info.container->size()) RETURN_WITH(ERROR_INVALID_SLOT)
 
-  auto &containerSlot = (*info.container)[slot];
+  auto &itemInstance = (*info.container)[slot];
 
-  const auto &itemInstance = containerSlot.first;
-  const auto &item = *containerSlot.first.type();
-  const auto quantity = containerSlot.second;
-  if (quantity == 0) return;
+  if (itemInstance.quantity() == 0) return;
+  const auto &item = itemInstance.type();
 
   const auto shouldCreateDroppedItem = !itemInstance.isSoulbound();
   if (shouldCreateDroppedItem) {
@@ -345,8 +343,8 @@ HANDLE_MESSAGE(CL_DROP) {
       dropLocation =
           getRandomPointInCircle(user.location(), Server::ACTION_DISTANCE);
       if (isLocationValid(dropLocation, DroppedItem::TYPE)) {
-        addEntity(new DroppedItem(item, itemInstance.health(), quantity,
-                                  dropLocation));
+        addEntity(new DroppedItem(*item, itemInstance.health(),
+                                  itemInstance.quantity(), dropLocation));
         break;
       }
 
@@ -356,8 +354,7 @@ HANDLE_MESSAGE(CL_DROP) {
     }
   }
 
-  containerSlot.first = {};
-  containerSlot.second = 0;
+  itemInstance = {};
 
   // Alert relevant users
   if (serial.isInventory() || serial.isGear())
@@ -402,8 +399,7 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
   if (slot1 >= from.container->size() || slot2 > maxValidToSlot)
     RETURN_WITH(ERROR_INVALID_SLOT)
 
-  auto &slotFrom = (*from.container)[slot1];
-  auto &fromItem = slotFrom.first;
+  auto &fromItem = (*from.container)[slot1];
   if (!fromItem.hasItem()) {
     SERVER_ERROR("Attempting to move nonexistent item");
     return;
@@ -413,7 +409,7 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
     if (fromItem.isBroken()) RETURN_WITH(WARNING_BROKEN_ITEM)
 
     const auto *materialType = fromItem.type();
-    size_t qtyInSlot = slotFrom.second,
+    size_t qtyInSlot = fromItem.quantity(),
            qtyNeeded = to.object->remainingMaterials()[materialType],
            qtyToTake = min(qtyInSlot, qtyNeeded);
 
@@ -436,8 +432,8 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
         sendConstructionMaterialsMessage(*otherUser, *to.object);
 
     // Remove items from user
-    slotFrom.second -= qtyToTake;
-    if (slotFrom.second == 0) fromItem = {};
+    fromItem.removeItems(qtyToTake);
+    if (fromItem.quantity() == 0) fromItem = {};
     sendInventoryMessage(user, slot1, obj1);
 
     // Check if this action completed construction
@@ -469,8 +465,7 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
     return;
   }
 
-  auto &slotTo = (*to.container)[slot2];
-  auto &toItem = slotTo.first;
+  auto &toItem = (*to.container)[slot2];
 
   if (from.object && from.object->classTag() == 'n' && toItem.hasItem() ||
       to.object && to.object->classTag() == 'n' && fromItem.hasItem())
@@ -506,13 +501,13 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
     if (!(fromItem.hasItem() && toItem.hasItem())) break;
     auto identicalItems = fromItem.type() == toItem.type();
     if (!identicalItems) break;
-    auto roomInDest = toItem.type()->stackSize() - slotTo.second;
+    auto roomInDest = toItem.type()->stackSize() - toItem.quantity();
     if (roomInDest == 0) break;
 
-    auto qtyToMove = min(roomInDest, slotFrom.second);
-    slotFrom.second -= qtyToMove;
-    slotTo.second += qtyToMove;
-    if (slotFrom.second == 0) fromItem = {};
+    auto qtyToMove = min(roomInDest, fromItem.quantity());
+    fromItem.removeItems(qtyToMove);
+    toItem.addItems(qtyToMove);
+    if (fromItem.quantity() == 0) fromItem = {};
     shouldPerformNormalSwap = false;
 
   } while (false);
@@ -524,7 +519,7 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
 
   if (shouldPerformNormalSwap) {
     // Perform the swap
-    ServerItem::Instance::swap(slotFrom, slotTo);
+    ServerItem::Instance::swap(fromItem, toItem);
 
     // If gear was changed
     if (obj1.isGear() || obj2.isGear()) {
@@ -580,7 +575,7 @@ HANDLE_MESSAGE(CL_TAKE_ITEM) {
   if (serial.isInventory()) RETURN_WITH(ERROR_TAKE_SELF)
 
   auto *pEnt = (Entity *)nullptr;
-  ServerItem::Slot *pSlot;
+  ServerItem::Instance *pSlot;
   if (serial.isGear())
     pSlot = user.getSlotToTakeFromAndSendErrors(slot, user);
   else {
@@ -589,7 +584,7 @@ HANDLE_MESSAGE(CL_TAKE_ITEM) {
     pSlot = pEnt->getSlotToTakeFromAndSendErrors(slot, user);
   }
   if (!pSlot) return;
-  ServerItem::Slot &containerSlot = *pSlot;
+  ServerItem::Instance &containerSlot = *pSlot;
 
   auto userHasPermissionToLoot = pEnt->permissions.canUserLoot((user.name()));
   userHasPermissionToLoot |=
@@ -597,15 +592,13 @@ HANDLE_MESSAGE(CL_TAKE_ITEM) {
   if (!userHasPermissionToLoot) return;
 
   // Attempt to give item to user
-  size_t remainder =
-      user.giveItem(containerSlot.first.type(), containerSlot.second,
-                    containerSlot.first.health());
+  size_t remainder = user.giveItem(
+      containerSlot.type(), containerSlot.quantity(), containerSlot.health());
   if (remainder > 0) {
-    containerSlot.second = remainder;
+    containerSlot.setQuantity(remainder);
     sendMessage(user.socket(), WARNING_INVENTORY_FULL);
   } else {
-    containerSlot.first = {};
-    containerSlot.second = 0;
+    containerSlot = {};
   }
 
   if (serial.isGear()) {  // Tell user about his empty gear slot, and updated
@@ -811,10 +804,10 @@ HANDLE_MESSAGE(CL_CAST_SPELL_FROM_ITEM) {
   if (user.isStunned()) RETURN_WITH(WARNING_STUNNED)
   if (slot >= User::INVENTORY_SIZE) RETURN_WITH(ERROR_INVALID_SLOT)
   auto &invSlot = user.inventory(slot);
-  if (!invSlot.first.hasItem()) RETURN_WITH(ERROR_EMPTY_SLOT)
-  const ServerItem &item = *invSlot.first.type();
+  if (!invSlot.hasItem()) RETURN_WITH(ERROR_EMPTY_SLOT)
+  const ServerItem &item = *invSlot.type();
   if (!item.castsSpellOnUse()) RETURN_WITH(ERROR_CANNOT_CAST_ITEM)
-  if (invSlot.first.isBroken()) RETURN_WITH(WARNING_BROKEN_ITEM)
+  if (invSlot.isBroken()) RETURN_WITH(WARNING_BROKEN_ITEM)
 
   if (item.returnsOnCast()) {
     auto toBeRemoved = ItemSet{};
@@ -836,8 +829,8 @@ HANDLE_MESSAGE(CL_CAST_SPELL_FROM_ITEM) {
   if (result == FAIL) return;
 
   if (item.isLostOnCast()) {
-    --invSlot.second;
-    if (invSlot.second == 0) invSlot.first = {};
+    invSlot.removeItems(1);
+    if (invSlot.quantity() == 0) invSlot = {};
     sendInventoryMessage(user, slot, Serial::Inventory());
   }
   // NOTE: the case where an item is not lost, something is returned, and
@@ -853,9 +846,9 @@ HANDLE_MESSAGE(CL_REPAIR_ITEM) {
 
   ServerItem::Instance *itemToRepair = nullptr;
   if (serial.isInventory())
-    itemToRepair = &user.inventory(slot).first;
+    itemToRepair = &user.inventory(slot);
   else if (serial.isGear())
-    itemToRepair = &user.gear(slot).first;
+    itemToRepair = &user.gear(slot);
   else {  // Container object
     auto *ent = _entities.find(serial);
     auto *obj = dynamic_cast<Object *>(ent);
@@ -868,7 +861,7 @@ HANDLE_MESSAGE(CL_REPAIR_ITEM) {
     auto numSlots = obj->objType().container().slots();
     if (slot >= numSlots) RETURN_WITH(ERROR_INVALID_SLOT)
 
-    itemToRepair = &obj->container().at(slot).first;
+    itemToRepair = &obj->container().at(slot);
   }
 
   const auto *itemClass = itemToRepair->type()->getClass();
@@ -933,7 +926,7 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
   if (slot >= numValidSlots) RETURN_WITH(ERROR_INVALID_SLOT);
 
   auto &containerSlot = (*container)[slot];
-  const auto *itemToScrap = containerSlot.first.type();
+  const auto *itemToScrap = containerSlot.type();
   if (!itemToScrap) RETURN_WITH(ERROR_EMPTY_SLOT);
 
   const auto *itemClass = itemToScrap->getClass();
@@ -958,9 +951,8 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
   }
 
   // Remove item to be scrapped
-  auto &qtyInSlot = containerSlot.second;
-  --qtyInSlot;
-  if (qtyInSlot == 0) containerSlot.first = {};
+  containerSlot.removeItems(1);
+  if (containerSlot.quantity() == 0) containerSlot = {};
   sendInventoryMessage(user, slot, serial);
 
   if (numScraps <= 0) RETURN_WITH(SV_SCRAPPING_FAILED);
@@ -2155,11 +2147,11 @@ void Server::sendInventoryMessageInner(
 
   const auto &containerSlot = itemVect[slot];
   std::string itemID =
-      containerSlot.first.hasItem() ? containerSlot.first.type()->id() : "none";
-  auto msg = Message{SV_INVENTORY,
-                     makeArgs(serial, slot, itemID, containerSlot.second,
-                              containerSlot.first.health(),
-                              containerSlot.first.isSoulbound() ? 1 : 0)};
+      containerSlot.hasItem() ? containerSlot.type()->id() : "none";
+  auto msg = Message{
+      SV_INVENTORY,
+      makeArgs(serial, slot, itemID, containerSlot.quantity(),
+               containerSlot.health(), containerSlot.isSoulbound() ? 1 : 0)};
   sendMessage(user.socket(), msg);
 }
 

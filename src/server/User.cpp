@@ -66,16 +66,13 @@ User::User(const MapPoint &loc)
     : Object(loc), _socket(Socket::Empty()), exploration(0, 0) {}
 
 void User::initialiseInventoryAndGear() {
-  for (size_t i = 0; i != INVENTORY_SIZE; ++i) {
-    _inventory[i].first = {
-        nullptr, ServerItem::Instance::ReportingInfo::UserInventory(this, i)};
-    _inventory[i].second = 0;
-  }
-  for (size_t i = 0; i != GEAR_SLOTS; ++i) {
-    _gear[i].first = {nullptr,
-                      ServerItem::Instance::ReportingInfo::UserGear(this, i)};
-    _gear[i].second = 0;
-  }
+  for (size_t i = 0; i != INVENTORY_SIZE; ++i)
+    _inventory[i] = {
+        nullptr, ServerItem::Instance::ReportingInfo::UserInventory(this, i),
+        0};
+  for (size_t i = 0; i != GEAR_SLOTS; ++i)
+    _gear[i] = {nullptr, ServerItem::Instance::ReportingInfo::UserGear(this, i),
+                0};
 }
 
 void User::findRealWorldLocationStatic() {
@@ -145,11 +142,11 @@ bool User::hasRoomFor(std::set<std::string> itemNames) const {
 
     // Gear pass 1: partial stacks
     for (auto i = 0; i != GEAR_SLOTS; ++i) {
-      if (gear[i].first.type() != item) continue;
+      if (gear[i].type() != item) continue;
       auto spaceAvailable = static_cast<int>(item->stackSize()) -
-                            static_cast<int>(gear[i].second);
+                            static_cast<int>(gear[i].quantity());
       if (spaceAvailable > 0) {
-        gear[i].second++;
+        gear[i].addItems(1);
         itemAdded = true;
         break;
       }
@@ -158,7 +155,7 @@ bool User::hasRoomFor(std::set<std::string> itemNames) const {
 
     // Inventory pass 1: partial stacks
     for (auto i = 0; i != INVENTORY_SIZE; ++i) {
-      if (inventory[i].first.type() != item) continue;
+      if (inventory[i].type() != item) continue;
 
       if (itemAdded) {
         SERVER_ERROR(
@@ -167,9 +164,9 @@ bool User::hasRoomFor(std::set<std::string> itemNames) const {
       }
 
       auto spaceAvailable = static_cast<int>(item->stackSize()) -
-                            static_cast<int>(inventory[i].second);
+                            static_cast<int>(inventory[i].quantity());
       if (spaceAvailable > 0) {
-        inventory[i].second++;
+        inventory[i].addItems(1);
         itemAdded = true;
         break;
       }
@@ -178,7 +175,7 @@ bool User::hasRoomFor(std::set<std::string> itemNames) const {
 
     // Inventory pass 2: empty slots
     for (auto i = 0; i != INVENTORY_SIZE; ++i) {
-      auto slotIsEmpty = !inventory[i].first.hasItem();
+      auto slotIsEmpty = !inventory[i].hasItem();
       if (!slotIsEmpty) continue;
 
       if (itemAdded) {
@@ -187,9 +184,8 @@ bool User::hasRoomFor(std::set<std::string> itemNames) const {
         return false;
       }
 
-      inventory[i].first = {item,
-                            ServerItem::Instance::ReportingInfo::DummyUser()};
-      inventory[i].second = 1;
+      inventory[i] = {item, ServerItem::Instance::ReportingInfo::DummyUser(),
+                      1};
       itemAdded = true;
       break;
     }
@@ -269,13 +265,13 @@ size_t User::giveItem(const ServerItem *item, size_t quantity,
     // Assumption: stacking items can't be damaged (thus this pass ignores
     // health) Gear pass 1: partial stacks
     for (auto i = 0; i != GEAR_SLOTS; ++i) {
-      if (_gear[i].first.type() != item) continue;
+      if (_gear[i].type() != item) continue;
       auto spaceAvailable = static_cast<int>(item->stackSize()) -
-                            static_cast<int>(_gear[i].second);
+                            static_cast<int>(_gear[i].quantity());
       if (spaceAvailable > 0) {
         auto qtyInThisSlot =
             min(static_cast<size_t>(spaceAvailable), remaining);
-        _gear[i].second += qtyInThisSlot;
+        _gear[i].addItems(qtyInThisSlot);
         Server::instance().sendInventoryMessage(*this, i, Serial::Gear());
         remaining -= qtyInThisSlot;
       }
@@ -285,7 +281,7 @@ size_t User::giveItem(const ServerItem *item, size_t quantity,
     // Inventory pass 1: partial stacks
     if (remaining > 0) {
       for (auto i = 0; i != INVENTORY_SIZE; ++i) {
-        if (_inventory[i].first.type() != item) continue;
+        if (_inventory[i].type() != item) continue;
 
         if (remaining == 0) {
           SERVER_ERROR(
@@ -299,11 +295,11 @@ size_t User::giveItem(const ServerItem *item, size_t quantity,
         }
 
         auto spaceAvailable = static_cast<int>(item->stackSize()) -
-                              static_cast<int>(_inventory[i].second);
+                              static_cast<int>(_inventory[i].quantity());
         if (spaceAvailable > 0) {
           auto qtyInThisSlot =
               min(static_cast<size_t>(spaceAvailable), remaining);
-          _inventory[i].second += qtyInThisSlot;
+          _inventory[i].addItems(qtyInThisSlot);
           Server::instance().sendInventoryMessage(*this, i,
                                                   Serial::Inventory());
           remaining -= qtyInThisSlot;
@@ -316,7 +312,7 @@ size_t User::giveItem(const ServerItem *item, size_t quantity,
   // Inventory pass 2: empty slots
   if (remaining > 0) {
     for (auto i = 0; i != INVENTORY_SIZE; ++i) {
-      if (_inventory[i].first.hasItem()) continue;
+      if (_inventory[i].hasItem()) continue;
 
       if (remaining == 0) {
         SERVER_ERROR(
@@ -330,10 +326,10 @@ size_t User::giveItem(const ServerItem *item, size_t quantity,
       }
 
       auto qtyInThisSlot = min(item->stackSize(), remaining);
-      _inventory[i].first = {
-          item, ServerItem::Instance::ReportingInfo::UserInventory(this, i)};
-      _inventory[i].first.initHealth(health);
-      _inventory[i].second = qtyInThisSlot;
+      _inventory[i] = ServerItem::Instance{
+          item, ServerItem::Instance::ReportingInfo::UserInventory(this, i),
+          qtyInThisSlot};
+      _inventory[i].initHealth(health);
       server.sendInventoryMessage(*this, i, Serial::Inventory());
       remaining -= qtyInThisSlot;
       if (remaining == 0) break;
@@ -480,12 +476,12 @@ void User::tryToConstructFromItem(size_t slot, const MapPoint &location,
                                   Permissions::Owner::Type owner) {
   if (slot >= INVENTORY_SIZE) RETURN_WITH(ERROR_INVALID_SLOT)
   const auto &invSlot = inventory(slot);
-  if (!invSlot.first.hasItem()) RETURN_WITH(ERROR_EMPTY_SLOT)
-  const ServerItem &item = *invSlot.first.type();
+  if (!invSlot.hasItem()) RETURN_WITH(ERROR_EMPTY_SLOT)
+  const ServerItem &item = *invSlot.type();
   if (!item.constructsObject()) RETURN_WITH(ERROR_CANNOT_CONSTRUCT);
   const ObjectType &objType = *item.constructsObject();
 
-  if (invSlot.first.isBroken()) RETURN_WITH(WARNING_BROKEN_ITEM)
+  if (invSlot.isBroken()) RETURN_WITH(WARNING_BROKEN_ITEM)
 
   // Must be last due to RETURN_WITH macros inside.
   tryToConstructInner(objType, location, owner, slot);
@@ -532,12 +528,12 @@ bool User::hasItems(const ItemSet &items) const {
   ItemSet remaining = items;
   for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
     const auto &invSlot = _inventory[i];
-    remaining.remove(invSlot.first.type(), invSlot.second);
+    remaining.remove(invSlot.type(), invSlot.quantity());
     if (remaining.isEmpty()) return true;
   }
   for (size_t i = 0; i != User::GEAR_SLOTS; ++i) {
     const auto &gearSlot = _gear[i];
-    remaining.remove(gearSlot.first.type(), gearSlot.second);
+    remaining.remove(gearSlot.type(), gearSlot.quantity());
     if (remaining.isEmpty()) return true;
   }
   return false;
@@ -547,18 +543,18 @@ bool User::hasItems(const std::string &tag, size_t quantity) const {
   auto remaining = quantity;
   for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
     const auto &invSlot = _inventory[i];
-    if (!invSlot.first.hasItem()) continue;
-    if (invSlot.first.type()->isTag(tag)) {
-      if (invSlot.second >= remaining) return true;
-      remaining -= invSlot.second;
+    if (!invSlot.hasItem()) continue;
+    if (invSlot.type()->isTag(tag)) {
+      if (invSlot.quantity() >= remaining) return true;
+      remaining -= invSlot.quantity();
     }
   }
   for (size_t i = 0; i != User::GEAR_SLOTS; ++i) {
     const auto &gearSlot = _gear[i];
-    if (!gearSlot.first.hasItem()) continue;
-    if (gearSlot.first.type()->isTag(tag)) {
-      if (gearSlot.second >= remaining) return true;
-      remaining -= gearSlot.second;
+    if (!gearSlot.hasItem()) continue;
+    if (gearSlot.type()->isTag(tag)) {
+      if (gearSlot.quantity() >= remaining) return true;
+      remaining -= gearSlot.quantity();
     }
   }
   return false;
@@ -570,7 +566,7 @@ User::ToolSearchResult User::findTool(const std::string &tagName) {
 
   // Check gear
   for (size_t i = 0; i != User::GEAR_SLOTS; ++i) {
-    auto &slot = _gear[i].first;
+    auto &slot = _gear[i];
     const auto *type = slot.type();
     if (!slot.hasItem()) continue;
     if (!type->isTag(tagName)) continue;
@@ -584,7 +580,7 @@ User::ToolSearchResult User::findTool(const std::string &tagName) {
 
   // Check inventory
   for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
-    auto &slot = _inventory[i].first;
+    auto &slot = _inventory[i];
     const auto *type = slot.type();
     if (!slot.hasItem()) continue;
     if (!type->isTag(tagName)) continue;
@@ -665,9 +661,8 @@ bool User::hasRoomForMoreFollowers() const {
 void User::clearInventory() {
   const Server &server = *Server::_instance;
   for (auto i = 0; i != INVENTORY_SIZE; ++i)
-    if (_inventory[i].first.hasItem()) {
-      _inventory[i].first = {};
-      _inventory[i].second = 0;
+    if (_inventory[i].hasItem()) {
+      _inventory[i] = {};
       server.sendMessage(
           socket(), {SV_INVENTORY, makeArgs(Serial::Inventory(), i, "", 0, 0)});
     }
@@ -676,9 +671,8 @@ void User::clearInventory() {
 void User::clearGear() {
   const Server &server = *Server::_instance;
   for (auto i = 0; i != GEAR_SLOTS; ++i)
-    if (_gear[i].first.hasItem()) {
-      _gear[i].first = {};
-      _gear[i].second = 0;
+    if (_gear[i].hasItem()) {
+      _gear[i] = {};
       server.sendMessage(
           socket(), {SV_INVENTORY, makeArgs(Serial::Gear(), i, "", 0, 0 /**/)});
     }
@@ -689,13 +683,11 @@ static void removeItemsFrom(ItemSet &remaining, ServerItem::vect_t &container,
   slotsChanged = {};
   for (size_t i = 0; i != container.size(); ++i) {
     auto &slot = container[i];
-    auto &itemType = slot.first;
-    auto &qty = slot.second;
-    if (remaining.contains(itemType.type())) {
-      size_t itemsToRemove = min(qty, remaining[itemType.type()]);
-      remaining.remove(itemType.type(), itemsToRemove);
-      qty -= itemsToRemove;
-      if (qty == 0) itemType = {};
+    if (remaining.contains(slot.type())) {
+      size_t itemsToRemove = min(slot.quantity(), remaining[slot.type()]);
+      remaining.remove(slot.type(), itemsToRemove);
+      slot.removeItems(itemsToRemove);
+      if (slot.quantity() == 0) slot = {};
       slotsChanged.insert(i);
       if (remaining.isEmpty()) break;
     }
@@ -726,15 +718,13 @@ static void removeItemsFrom(const std::string &tag, size_t &remaining,
   slotsChanged = {};
   for (size_t i = 0; i != container.size(); ++i) {
     auto &slot = container[i];
-    auto &itemType = slot.first;
-    auto &qty = slot.second;
-    if (!itemType.hasItem()) continue;
-    if (itemType.type()->isTag(tag)) {
-      size_t itemsToRemove = min(qty, remaining);
+    if (!slot.hasItem()) continue;
+    if (slot.type()->isTag(tag)) {
+      size_t itemsToRemove = min(slot.quantity(), remaining);
       remaining -= itemsToRemove;
 
-      qty -= itemsToRemove;
-      if (qty == 0) itemType = {};
+      slot.removeItems(itemsToRemove);
+      if (slot.quantity() == 0) slot = {};
 
       slotsChanged.insert(i);
       if (remaining == 0) break;
@@ -759,11 +749,11 @@ void User::removeItems(const std::string &tag, size_t quantity) {
 int User::countItems(const ServerItem *item) const {
   auto count = 0;
 
-  for (auto &pair : _gear)
-    if (pair.first.type() == item) count += pair.second;
+  for (auto &slot : _gear)
+    if (slot.type() == item) count += slot.quantity();
 
-  for (auto &pair : _inventory)
-    if (pair.first.type() == item) count += pair.second;
+  for (auto &slot : _inventory)
+    if (slot.type() == item) count += slot.quantity();
 
   return count;
 }
@@ -868,13 +858,13 @@ void User::update(ms_t timeElapsed) {
 
       // Remove item from user's inventory
       auto &slot = _inventory[_actionSlot];
-      if (!slot.first.hasItem() ||
-          slot.first.type()->constructsObject() != _actionObjectType) {
+      if (!slot.hasItem() ||
+          slot.type()->constructsObject() != _actionObjectType) {
         SERVER_ERROR("Trying to construct object from an invalid item");
         break;
       }
-      --slot.second;
-      if (slot.second == 0) slot.first = {};
+      slot.removeItems(1);
+      if (slot.quantity() == 0) slot = {};
       server.sendInventoryMessage(*this, _actionSlot, Serial::Inventory());
 
       // Trigger any new unlocks
@@ -918,12 +908,12 @@ bool User::hasRoomToRemoveThenAdd(ItemSet toBeRemoved,
   ServerItem::vect_t inventoryCopy = _inventory;
   for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
     auto &invSlot = inventoryCopy[i];
-    if (toBeRemoved.contains(invSlot.first.type())) {
+    if (toBeRemoved.contains(invSlot.type())) {
       size_t itemsToRemove =
-          min(invSlot.second, toBeRemoved[invSlot.first.type()]);
-      toBeRemoved.remove(invSlot.first.type(), itemsToRemove);
-      inventoryCopy[i].second -= itemsToRemove;
-      if (inventoryCopy[i].second == 0) inventoryCopy[i].first = {};
+          min(invSlot.quantity(), toBeRemoved[invSlot.type()]);
+      toBeRemoved.remove(invSlot.type(), itemsToRemove);
+      inventoryCopy[i].removeItems(itemsToRemove);
+      if (inventoryCopy[i].quantity() == 0) inventoryCopy[i] = {};
       if (toBeRemoved.isEmpty()) break;
     }
   }
@@ -1048,7 +1038,7 @@ bool User::canAttack(const Entity &other) const {
 }
 
 px_t User::attackRange() const {
-  const auto weapon = _gear[Item::WEAPON].first;
+  const auto &weapon = _gear[Item::WEAPON];
   if (!weapon.hasItem()) return Object::attackRange();
   return weapon.type()->weaponRange();
 }
@@ -1058,7 +1048,7 @@ void User::sendGotHitMessageTo(const User &user) const {
 }
 
 bool User::canBlock() const {
-  auto offhandItem = _gear[Item::OFFHAND].first;
+  const auto &offhandItem = _gear[Item::OFFHAND];
   if (!offhandItem.hasItem()) return false;
   if (!offhandItem.type()->isTag("shield")) return false;
   if (offhandItem.isBroken()) return false;
@@ -1066,7 +1056,7 @@ bool User::canBlock() const {
 }
 
 SpellSchool User::school() const {
-  auto weapon = _gear[Item::WEAPON].first;
+  const auto &weapon = _gear[Item::WEAPON];
   if (!weapon.hasItem()) return {};
   return weapon.type()->stats().weaponSchool;
 }
@@ -1118,10 +1108,10 @@ void User::onDeath() {
 
   removeAllBuffsAndDebuffs();
 
-  for (auto &pair : _gear) {
-    if (!pair.first.hasItem()) continue;
-    if (!pair.first.type()->canBeDamaged()) continue;
-    pair.first.damageOnPlayerDeath();
+  for (auto &slot : _gear) {
+    if (!slot.hasItem()) continue;
+    if (!slot.type()->canBeDamaged()) continue;
+    slot.damageOnPlayerDeath();
   }
 
   // Handle respawn etc.
@@ -1161,7 +1151,7 @@ void User::onAttackedBy(Entity &attacker, Threat threat) {
   cancelAction();
 
   auto armourSlotToUse = Item::getRandomArmorSlot();
-  _gear[armourSlotToUse].first.onUse();
+  _gear[armourSlotToUse].onUse();
 
   // Fight back if no current target
   if (!target() && attacker.canBeAttackedBy(*this)) {
@@ -1260,10 +1250,10 @@ bool User::canStartQuest(const Quest::ID &id) const {
 bool User::canAttack() {
   const auto &gearSlot = _gear[Item::WEAPON];
 
-  auto hasWeapon = gearSlot.first.hasItem();
+  auto hasWeapon = gearSlot.hasItem();
   if (!hasWeapon) return true;
 
-  auto weapon = gearSlot.first.type();
+  auto *weapon = gearSlot.type();
   if (!weapon->usesAmmo()) return true;
 
   auto ammoType = weapon->weaponAmmo();
@@ -1283,7 +1273,7 @@ void User::onCanAttack() { _shouldSuppressAmmoWarnings = false; }
 
 void User::onAttack() {
   // Remove ammo if ranged weapon
-  auto &weapon = _gear[Item::WEAPON].first;
+  auto &weapon = _gear[Item::WEAPON];
   if (!weapon.hasItem()) return;
 
   auto usesAmmo = weapon.type()->weaponAmmo() != nullptr;
@@ -1315,7 +1305,7 @@ void User::onSuccessfulSpellcast(const std::string &id, const Spell &spell) {
 
 void User::sendRangedHitMessageTo(const User &userToInform) const {
   if (!target()) return;
-  auto weapon = _gear[Item::WEAPON].first.type();
+  const auto *weapon = _gear[Item::WEAPON].type();
   if (!weapon) return;
 
   Server &server = *Server::_instance;
@@ -1328,7 +1318,7 @@ void User::sendRangedHitMessageTo(const User &userToInform) const {
 
 void User::sendRangedMissMessageTo(const User &userToInform) const {
   if (!target()) return;
-  auto weapon = _gear[Item::WEAPON].first.type();
+  const auto *weapon = _gear[Item::WEAPON].type();
   if (!weapon) return;
 
   Server &server = *Server::_instance;
@@ -1364,7 +1354,7 @@ void User::updateStats() {
 
   // Apply gear
   for (size_t i = 0; i != GEAR_SLOTS; ++i) {
-    const auto &item = _gear[i].first;
+    const auto &item = _gear[i];
     if (!item.hasItem()) continue;
     if (item.isBroken()) continue;
     if (!canEquip(*item.type())) continue;
@@ -1533,10 +1523,10 @@ void User::sendInfoToClient(const User &targetUser, bool isNew) const {
 
   // Gear
   for (size_t i = 0; i != User::GEAR_SLOTS; ++i) {
-    const ServerItem *item = gear(i).first.type();
-    if (item != nullptr)
-      server.sendMessage(client, {SV_GEAR, makeArgs(_name, i, item->id(),
-                                                    gear(i).first.health())});
+    const ServerItem *item = gear(i).type();
+    if (item)
+      server.sendMessage(
+          client, {SV_GEAR, makeArgs(_name, i, item->id(), gear(i).health())});
   }
 
   // Buffs/debuffs
@@ -1564,20 +1554,18 @@ void User::sendInfoToClient(const User &targetUser, bool isNew) const {
 
 void User::sendInventorySlot(size_t slotIndex) const {
   const auto &slot = _inventory[slotIndex];
-  const auto &item = slot.first;
-  if (!item.type()) return;  // Is this right?
+  if (!slot.type()) return;  // Is this right?
   sendMessage(
-      {SV_INVENTORY, makeArgs(Serial::Inventory(), slotIndex, item.type()->id(),
-                              slot.second, item.health() /**/)});
+      {SV_INVENTORY, makeArgs(Serial::Inventory(), slotIndex, slot.type()->id(),
+                              slot.quantity(), slot.health())});
 }
 
 void User::sendGearSlot(size_t slotIndex) const {
   const auto &slot = _gear[slotIndex];
-  const auto &item = slot.first;
-  if (!item.type()) return;
+  if (!slot.type()) return;
   sendMessage(
-      {SV_INVENTORY, makeArgs(Serial::Gear(), slotIndex, item.type()->id(),
-                              slot.second, item.health() /**/)});
+      {SV_INVENTORY, makeArgs(Serial::Gear(), slotIndex, slot.type()->id(),
+                              slot.quantity(), slot.health())});
 }
 
 void User::sendSpawnPoint(bool hasChanged) const {
@@ -1786,20 +1774,16 @@ void User::abandonQuest(Quest::ID id) {
   // Remove quest-exclusive items
   auto &server = Server::instance();
   for (auto i = 0; i != INVENTORY_SIZE; ++i) {
-    auto &slotPair = _inventory[i];
-    if (slotPair.first.hasItem() &&
-        slotPair.first.type()->exclusiveToQuest() == id) {
-      slotPair.first = {};
-      slotPair.second = 0;
+    auto &slot = _inventory[i];
+    if (slot.hasItem() && slot.type()->exclusiveToQuest() == id) {
+      slot = {};
       server.sendInventoryMessage(*this, i, Serial::Inventory());
     }
   }
   for (auto i = 0; i != GEAR_SLOTS; ++i) {
-    auto &slotPair = _gear[i];
-    if (slotPair.first.hasItem() &&
-        slotPair.first.type()->exclusiveToQuest() == id) {
-      slotPair.first = {};
-      slotPair.second = 0;
+    auto &slot = _gear[i];
+    if (slot.hasItem() && slot.type()->exclusiveToQuest() == id) {
+      slot = {};
       server.sendInventoryMessage(*this, i, Serial::Gear());
     }
   }

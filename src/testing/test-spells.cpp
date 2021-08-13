@@ -539,7 +539,7 @@ TEST_CASE("Cast-from-item returning an item", "[spells][inventory]") {
     auto c = TestClient::WithDataString(data);
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
-    const auto &invSlot = user.inventory(0).first;
+    const auto &invSlot = user.inventory(0);
 
     AND_GIVEN("a user has a bucket") {
       auto &bucketOfWater = s.findItem("bucketOfWater");
@@ -604,7 +604,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Cast-from-item with no item removal",
 
         THEN("he still has an item") {
           REPEAT_FOR_MS(100);
-          CHECK(user->inventory(0).first.hasItem());
+          CHECK(user->inventory(0).hasItem());
         }
       }
     }
@@ -635,7 +635,7 @@ TEST_CASE("Cast a spell from a stackable item", "[spells][inventory]") {
 
         THEN("he has two matches") {
           const auto &invSlot = user.inventory(0);
-          WAIT_UNTIL(invSlot.second == 2);
+          WAIT_UNTIL(invSlot.quantity() == 2);
         }
       }
     }

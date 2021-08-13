@@ -121,11 +121,10 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
       SERVER_ERROR("Invalid user inventory item: "s + id);
       continue;
     }
-    user.inventory(slot).first = ServerItem::Instance::LoadFromFile(
+    user.inventory(slot) = ServerItem::Instance::LoadFromFile(
         item, ServerItem::Instance::ReportingInfo::UserInventory(&user, slot),
-        health, suffix);
-    if (isSoulbound) user.inventory(slot).first.onEquip();
-    user.inventory(slot).second = qty;
+        health, suffix, qty);
+    if (isSoulbound) user.inventory(slot).onEquip();
   }
 
   elem = xr.findChild("gear");
@@ -147,11 +146,10 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
       SERVER_ERROR("Invalid user gear item: "s + id);
       continue;
     }
-    user.gear(slot).first = ServerItem::Instance::LoadFromFile(
+    user.gear(slot) = ServerItem::Instance::LoadFromFile(
         item, ServerItem::Instance::ReportingInfo::UserGear(&user, slot),
-        health, suffix);
-    user.gear(slot).first.onEquip();
-    user.gear(slot).second = qty;
+        health, suffix, qty);
+    user.gear(slot).onEquip();
   }
 
   if (allowSideEffects) {
@@ -294,29 +292,31 @@ void Server::writeUserData(const User &user) const {
   e = xw.addChild("inventory");
   for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
     const auto &slot = user.inventory(i);
-    if (slot.first.hasItem()) {
+    if (slot.hasItem()) {
       auto slotElement = xw.addChild("slot", e);
       xw.setAttr(slotElement, "slot", i);
-      xw.setAttr(slotElement, "id", slot.first.type()->id());
-      xw.setAttr(slotElement, "health", slot.first.health());
-      if (slot.first.type()->hasSuffix())
-        xw.setAttr(slotElement, "suffix", slot.first.suffix());
-      if (slot.second > 1) xw.setAttr(slotElement, "quantity", slot.second);
-      if (slot.first.isSoulbound()) xw.setAttr(slotElement, "soulbound", 1);
+      xw.setAttr(slotElement, "id", slot.type()->id());
+      xw.setAttr(slotElement, "health", slot.health());
+      if (slot.type()->hasSuffix())
+        xw.setAttr(slotElement, "suffix", slot.suffix());
+      if (slot.quantity() > 1)
+        xw.setAttr(slotElement, "quantity", slot.quantity());
+      if (slot.isSoulbound()) xw.setAttr(slotElement, "soulbound", 1);
     }
   }
 
   e = xw.addChild("gear");
   for (size_t i = 0; i != User::GEAR_SLOTS; ++i) {
     const auto &slot = user.gear(i);
-    if (slot.first.hasItem()) {
+    if (slot.hasItem()) {
       auto slotElement = xw.addChild("slot", e);
       xw.setAttr(slotElement, "slot", i);
-      xw.setAttr(slotElement, "id", slot.first.type()->id());
-      xw.setAttr(slotElement, "health", slot.first.health());
-      if (slot.first.type()->hasSuffix())
-        xw.setAttr(slotElement, "suffix", slot.first.suffix());
-      if (slot.second > 1) xw.setAttr(slotElement, "quantity", slot.second);
+      xw.setAttr(slotElement, "id", slot.type()->id());
+      xw.setAttr(slotElement, "health", slot.health());
+      if (slot.type()->hasSuffix())
+        xw.setAttr(slotElement, "suffix", slot.suffix());
+      if (slot.quantity() > 1)
+        xw.setAttr(slotElement, "quantity", slot.quantity());
     }
   }
 
@@ -523,15 +523,13 @@ void Server::loadEntities(XmlReader &xr,
         continue;
       }
       auto &invSlot = obj.container().at(n);
-      invSlot.first = ServerItem::Instance::LoadFromFile(
+      invSlot = ServerItem::Instance::LoadFromFile(
           &*_items.find(s),
           ServerItem::Instance::ReportingInfo::InObjectContainer(), health,
-          suffix);
-      invSlot.second = q;
+          suffix, q);
 
       auto n = 0;
-      if (xr.findAttr(inventory, "soulbound", n) && n != 0)
-        invSlot.first.onEquip();
+      if (xr.findAttr(inventory, "soulbound", n) && n != 0) invSlot.onEquip();
     }
 
     for (auto merchant : xr.getChildren("merchant", elem)) {
@@ -740,16 +738,16 @@ void Object::writeToXML(XmlWriter &xw) const {
 
   if (hasContainer()) {
     for (size_t i = 0; i != objType().container().slots(); ++i) {
-      const auto &pair = container().at(i);
-      if (pair.second == 0) continue;
+      const auto &slot = container().at(i);
+      if (slot.quantity() == 0) continue;
       auto invSlotE = xw.addChild("inventory", e);
       xw.setAttr(invSlotE, "slot", i);
-      xw.setAttr(invSlotE, "item", pair.first.type()->id());
-      if (pair.second > 1) xw.setAttr(invSlotE, "qty", pair.second);
-      xw.setAttr(invSlotE, "health", pair.first.health());
-      if (pair.first.type()->hasSuffix())
-        xw.setAttr(invSlotE, "suffix", pair.first.suffix());
-      if (pair.first.isSoulbound()) xw.setAttr(invSlotE, "soulbound", 1);
+      xw.setAttr(invSlotE, "item", slot.type()->id());
+      if (slot.quantity() > 1) xw.setAttr(invSlotE, "qty", slot.quantity());
+      xw.setAttr(invSlotE, "health", slot.health());
+      if (slot.type()->hasSuffix())
+        xw.setAttr(invSlotE, "suffix", slot.suffix());
+      if (slot.isSoulbound()) xw.setAttr(invSlotE, "soulbound", 1);
     }
   }
 

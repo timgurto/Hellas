@@ -323,8 +323,8 @@ TEST_CASE("A construction material can 'return' an item",
           REPEAT_FOR_MS(100);
 
           THEN("he has a matchbox") {
-            const auto &pItem = user.inventory()[0].first;
-            CHECK(pItem.type()->id() == "matchbox");
+            const auto &item = user.inventory(0);
+            CHECK(item.type()->id() == "matchbox");
           }
         }
       }

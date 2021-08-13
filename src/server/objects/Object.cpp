@@ -214,8 +214,8 @@ void Object::tellRelevantUsersAboutMerchantSlot(size_t slot) const {
     server.sendMerchantSlotMessage(*user, *this, slot);
 }
 
-ServerItem::Slot *Object::getSlotToTakeFromAndSendErrors(size_t slotNum,
-                                                         const User &user) {
+ServerItem::Instance *Object::getSlotToTakeFromAndSendErrors(size_t slotNum,
+                                                             const User &user) {
   const Server &server = Server::instance();
   const Socket &socket = user.socket();
 
@@ -233,8 +233,8 @@ ServerItem::Slot *Object::getSlotToTakeFromAndSendErrors(size_t slotNum,
   }
 
   if (hasLoot) {
-    ServerItem::Slot &slot = _loot->at(slotNum);
-    if (!slot.first.hasItem()) {
+    auto &slot = _loot->at(slotNum);
+    if (!slot.hasItem()) {
       user.sendMessage(ERROR_EMPTY_SLOT);
       return nullptr;
     }
@@ -256,8 +256,8 @@ ServerItem::Slot *Object::getSlotToTakeFromAndSendErrors(size_t slotNum,
     return nullptr;
   }
 
-  ServerItem::Slot &slot = container().at(slotNum);
-  if (!slot.first.hasItem()) {
+  auto &slot = container().at(slotNum);
+  if (!slot.hasItem()) {
     user.sendMessage(ERROR_EMPTY_SLOT);
     return nullptr;
   }

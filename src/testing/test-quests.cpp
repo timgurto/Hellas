@@ -1313,7 +1313,7 @@ TEST_CASE("Quest items that drop only while on quest", "[quests][loot]") {
               c.sendMessage(CL_ABANDON_QUEST, "quest1");
 
               THEN("he doesn't have the scale any more") {
-                WAIT_UNTIL(!user.inventory(0).first.hasItem());
+                WAIT_UNTIL(!user.inventory(0).hasItem());
               }
             }
           }
@@ -1515,8 +1515,8 @@ TEST_CASE("Quests that give items when you start", "[quests][inventory]") {
       c.sendMessage(CL_ACCEPT_QUEST, makeArgs("openTheDoor", serial));
 
       THEN("the user has a key") {
-        const auto &firstSlot = user.inventory()[0];
-        WAIT_UNTIL(firstSlot.first.hasItem());
+        const auto &firstSlot = user.inventory(0);
+        WAIT_UNTIL(firstSlot.hasItem());
       }
     }
 
@@ -1525,8 +1525,8 @@ TEST_CASE("Quests that give items when you start", "[quests][inventory]") {
 
       THEN("the user has no items") {
         REPEAT_FOR_MS(100);
-        const auto &firstSlot = user.inventory()[0];
-        CHECK_FALSE(firstSlot.first.hasItem());
+        const auto &firstSlot = user.inventory(0);
+        CHECK_FALSE(firstSlot.hasItem());
       }
     }
 
@@ -1695,7 +1695,7 @@ TEST_CASE("Quest reward: item", "[quests][inventory]") {
       user.completeQuest(quest.id);
 
       THEN("he has an inventory item") {
-        WAIT_UNTIL(user.inventory(0).first.hasItem());
+        WAIT_UNTIL(user.inventory(0).hasItem());
       }
     }
 
@@ -1735,7 +1735,9 @@ TEST_CASE("Quest reward: item", "[quests][inventory]") {
       user.startQuest(quest);
       user.completeQuest(quest.id);
 
-      THEN("he has two of the items") { CHECK(user.inventory(0).second == 2); }
+      THEN("he has two of the items") {
+        CHECK(user.inventory(0).quantity() == 2);
+      }
     }
   }
 
@@ -1784,8 +1786,8 @@ TEST_CASE("Multiple quest rewards", "[quests]") {
       user.completeQuest(quest.id);
 
       THEN("he has two items") {
-        WAIT_UNTIL(user.inventory(0).first.hasItem());
-        WAIT_UNTIL(user.inventory(1).first.hasItem());
+        WAIT_UNTIL(user.inventory(0).hasItem());
+        WAIT_UNTIL(user.inventory(1).hasItem());
       }
     }
   }
@@ -2001,7 +2003,7 @@ TEST_CASE("Quest-exclusive objects", "[quests]") {
 
       THEN("he doesn't have an item") {
         REPEAT_FOR_MS(100);
-        CHECK_FALSE(user.inventory(0).first.hasItem());
+        CHECK_FALSE(user.inventory(0).hasItem());
       }
     }
 
@@ -2011,9 +2013,7 @@ TEST_CASE("Quest-exclusive objects", "[quests]") {
       AND_WHEN("he tries to gather from it") {
         c.sendMessage(CL_GATHER, makeArgs(tree.serial()));
 
-        THEN("he has an item") {
-          WAIT_UNTIL(user.inventory(0).first.hasItem());
-        }
+        THEN("he has an item") { WAIT_UNTIL(user.inventory(0).hasItem()); }
       }
     }
 
@@ -2025,7 +2025,7 @@ TEST_CASE("Quest-exclusive objects", "[quests]") {
 
         THEN("he doesn't have an item") {
           REPEAT_FOR_MS(100);
-          CHECK_FALSE(user.inventory(0).first.hasItem());
+          CHECK_FALSE(user.inventory(0).hasItem());
         }
       }
     }

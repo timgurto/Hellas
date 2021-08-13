@@ -15,7 +15,7 @@ TEST_CASE("Recipes can be known by default", "[crafting]") {
   WAIT_UNTIL(user.action() ==
              User::Action::NO_ACTION);  // Wait for gathering to finish
 
-  const ServerItem *itemInFirstSlot = user.inventory()[0].first.type();
+  const ServerItem *itemInFirstSlot = user.inventory(0).type();
   REQUIRE(itemInFirstSlot != nullptr);
   CHECK(itemInFirstSlot->id() == "box");
 }
@@ -32,7 +32,7 @@ TEST_CASE("Terrain as tool", "[crafting][tool]") {
   WAIT_UNTIL(user.action() ==
              User::Action::NO_ACTION);  // Wait for gathering to finish
 
-  const ServerItem *itemInFirstSlot = user.inventory()[0].first.type();
+  const ServerItem *itemInFirstSlot = user.inventory(0).type();
   REQUIRE(itemInFirstSlot != nullptr);
   CHECK(itemInFirstSlot->id() == "daisyChain");
 }
@@ -217,7 +217,7 @@ TEST_CASE("Crafting is allowed if materials will vacate a slot",
              User::Action::NO_ACTION);  // Wait for gathering to finish
 
   // Then his inventory contains cooked meat
-  const ServerItem *itemInFirstSlot = u.inventory()[0].first.type();
+  const ServerItem *itemInFirstSlot = u.inventory(0).type();
   REQUIRE(itemInFirstSlot != nullptr);
   CHECK(itemInFirstSlot->id() == "cookedMeat");
 }
@@ -252,9 +252,8 @@ TEST_CASE("Gear counts towards materials", "[crafting][gear]") {
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
     auto &sock = s.findItem("sock");
-    user.gear(5).first = {
-        &sock, ServerItem::Instance::ReportingInfo::UserGear(&user, 5)};
-    user.gear(5).second = 1;
+    user.gear(5) = {&sock,
+                    ServerItem::Instance::ReportingInfo::UserGear(&user, 5), 1};
 
     WHEN("he tries to craft the recipe") {
       REPEAT_FOR_MS(100);
@@ -262,7 +261,7 @@ TEST_CASE("Gear counts towards materials", "[crafting][gear]") {
 
       THEN("he has the new item") {
         auto &sockPuppet = s.findItem("sockPuppet");
-        WAIT_UNTIL(user.inventory(0).first.type() == &sockPuppet);
+        WAIT_UNTIL(user.inventory(0).type() == &sockPuppet);
       }
     }
   }
@@ -303,7 +302,7 @@ TEST_CASE("Duping exploit", "[crafting][containers]") {
           REPEAT_FOR_MS(150);
 
           THEN("his inventory is still empty") {
-            CHECK_FALSE(user.inventory(0).first.hasItem());
+            CHECK_FALSE(user.inventory(0).hasItem());
           }
         }
       }
@@ -443,7 +442,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Recipe items", "[crafting]") {
 
           THEN("he still has an item") {
             REPEAT_FOR_MS(100);
-            CHECK(user->inventory(0).first.hasItem());
+            CHECK(user->inventory(0).hasItem());
           }
         }
       }

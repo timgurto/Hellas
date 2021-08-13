@@ -30,7 +30,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Suffixes add stats", "[suffixes]") {
           client->sendMessage(
               CL_SWAP_ITEMS,
               makeArgs(Serial::Inventory(), 0, Serial::Gear(), Item::WEAPON));
-          WAIT_UNTIL(user->gear()[Item::WEAPON].first.hasItem());
+          WAIT_UNTIL(user->gear()[Item::WEAPON].hasItem());
 
           THEN("he has 1 armour") {
             CHECK(user->stats().armor == ArmourClass{1});
@@ -57,7 +57,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Suffixes add stats", "[suffixes]") {
             client->sendMessage(
                 CL_SWAP_ITEMS,
                 makeArgs(Serial::Inventory(), 0, Serial::Gear(), Item::WEAPON));
-            WAIT_UNTIL(user->gear()[Item::WEAPON].first.hasItem());
+            WAIT_UNTIL(user->gear()[Item::WEAPON].hasItem());
 
             THEN("he has 2 armour") {
               CHECK(user->stats().armor == ArmourClass{2});
@@ -89,7 +89,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Suffixes add stats", "[suffixes]") {
         client->sendMessage(
             CL_SWAP_ITEMS,
             makeArgs(Serial::Inventory(), 0, Serial::Gear(), Item::WEAPON));
-        WAIT_UNTIL(user->gear()[Item::WEAPON].first.hasItem());
+        WAIT_UNTIL(user->gear()[Item::WEAPON].hasItem());
 
         THEN("he has 1 fire resist and 0 armour") {
           CHECK(user->stats().fireResist == ArmourClass{1});
@@ -174,7 +174,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Multiple suffixes in a suffix set",
         bool fireResistanceFound{false}, waterResistanceFound{false};
         for (auto i = 0; i != User::INVENTORY_SIZE; ++i) {
           const auto statsFromThisShield =
-              user->inventory()[i].first.statsFromSuffix();
+              user->inventory()[i].statsFromSuffix();
           if (statsFromThisShield.fireResist == ArmourClass{1})
             fireResistanceFound = true;
           else if (statsFromThisShield.waterResist == ArmourClass{1})
@@ -217,7 +217,7 @@ TEST_CASE("Item suffixes persist when user is offline", "[suffixes]") {
   auto &alice = server.getFirstUser();
 
   // Then her sword still has the suffix
-  const auto statsFromSuffix = alice.inventory()[0].first.statsFromSuffix();
+  const auto statsFromSuffix = alice.inventory()[0].statsFromSuffix();
   CHECK(statsFromSuffix.fireResist == ArmourClass{1});
 }
 
@@ -239,7 +239,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Swapping items preserves suffixes",
     WHEN("he moves it to a different inventory slot") {
       client->sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0,
                                                   Serial::Inventory(), 1));
-      const auto &invSlot1 = user->inventory()[1].first;
+      const auto &invSlot1 = user->inventory()[1];
       WAIT_UNTIL(invSlot1.hasItem());
 
       THEN("it still has fire resistance") {
@@ -277,8 +277,7 @@ TEST_CASE("Items loaded from data have the correct suffix", "[suffixes]") {
 
       for (auto i = 0; i != User::INVENTORY_SIZE; ++i) {
         alice.giveItem(shield);
-        const auto statsFromSuffix =
-            alice.inventory()[i].first.statsFromSuffix();
+        const auto statsFromSuffix = alice.inventory()[i].statsFromSuffix();
         shieldStats.push_back(statsFromSuffix);
       }
 
@@ -292,7 +291,7 @@ TEST_CASE("Items loaded from data have the correct suffix", "[suffixes]") {
 
     // Then each of her shields has the same stats as before
     for (auto i = 0; i != User::INVENTORY_SIZE; ++i) {
-      const auto statsFromSuffix = alice.inventory()[i].first.statsFromSuffix();
+      const auto statsFromSuffix = alice.inventory()[i].statsFromSuffix();
       CHECK(statsFromSuffix.fireResist == shieldStats[i].fireResist);
     }
   }
@@ -313,9 +312,9 @@ TEST_CASE("Items loaded from data have the correct suffix", "[suffixes]") {
         client.sendMessage(
             CL_SWAP_ITEMS,
             makeArgs(Serial::Inventory(), 0, Serial::Gear(), Item::OFFHAND));
-        WAIT_UNTIL(alice.gear()[Item::OFFHAND].first.hasItem());
+        WAIT_UNTIL(alice.gear()[Item::OFFHAND].hasItem());
 
-        statsBefore = alice.gear()[Item::OFFHAND].first.statsFromSuffix();
+        statsBefore = alice.gear()[Item::OFFHAND].statsFromSuffix();
 
         // When she logs off
       }
@@ -326,8 +325,7 @@ TEST_CASE("Items loaded from data have the correct suffix", "[suffixes]") {
       auto &alice = server.getFirstUser();
 
       // Then her shield has the same stats as before
-      const auto statsAfter =
-          alice.gear()[Item::OFFHAND].first.statsFromSuffix();
+      const auto statsAfter = alice.gear()[Item::OFFHAND].statsFromSuffix();
       CHECK(statsBefore.fireResist == statsAfter.fireResist);
       CHECK(statsBefore.waterResist == statsAfter.waterResist);
     }
@@ -361,7 +359,7 @@ TEST_CASE("Suffixes on items in containers persist", "[suffisxes]") {
 
     // Then the sword still has the suffix
     const auto &box = server.getFirstObject();
-    CHECK(box.container().at(0).first.suffix() == "extraFireResist");
+    CHECK(box.container().at(0).suffix() == "extraFireResist");
   }
 }
 

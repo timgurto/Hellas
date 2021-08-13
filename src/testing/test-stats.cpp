@@ -374,7 +374,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Block chance", "[stats][combat]") {
       client->sendMessage(
           CL_SWAP_ITEMS,
           makeArgs(Serial::Inventory(), 0, Serial::Gear(), Item::OFFHAND));
-      WAIT_UNTIL(user->gear(Item::OFFHAND).first.hasItem());
+      WAIT_UNTIL(user->gear(Item::OFFHAND).hasItem());
 
       WHEN("10000 hits are generated against him") {
         auto numBlocks = 0;
@@ -411,7 +411,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Gather-bonus stat",
           server->gatherObject(tissueBox.serial(), *user);
 
         THEN("he has around 1500 items") {
-          auto numTissuesGathered = int(user->inventory(0).second);
+          auto numTissuesGathered = int(user->inventory(0).quantity());
           CHECK_ROUGHLY_EQUAL(numTissuesGathered, 1500, 0.1);
         }
       }
@@ -715,7 +715,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Block-value stat",
         client->sendMessage(
             CL_SWAP_ITEMS,
             makeArgs(Serial::Inventory(), 0, Serial::Gear(), Item::OFFHAND));
-        WAIT_UNTIL(user->gear(Item::OFFHAND).first.hasItem());
+        WAIT_UNTIL(user->gear(Item::OFFHAND).hasItem());
 
         WHEN("the NPC hits him") {
           auto healthBefore = user->health();

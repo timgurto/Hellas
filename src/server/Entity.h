@@ -198,8 +198,8 @@ class Entity {
   virtual void alertReactivelyTargetingUser(const User &targetingUser) const;
 
   void tellRelevantUsersAboutLootSlot(size_t slot) const;
-  virtual ServerItem::Slot *getSlotToTakeFromAndSendErrors(size_t slotNum,
-                                                           const User &user) {
+  virtual ServerItem::Instance *getSlotToTakeFromAndSendErrors(
+      size_t slotNum, const User &user) {
     return nullptr;
   }
   virtual void onOutOfRange(const Entity &rhs) const {

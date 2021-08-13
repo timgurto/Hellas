@@ -50,7 +50,7 @@ TEST_CASE("Public-access objects", "[permissions][gathering]") {
   WAIT_UNTIL(user.action() == User::Action::NO_ACTION);
   WAIT_UNTIL_TIMEOUT(s.entities().empty(), 200);
   const Item &rockItem = s.getFirstItem();
-  WAIT_UNTIL_TIMEOUT(user.inventory()[0].first.type() == &rockItem, 200);
+  WAIT_UNTIL_TIMEOUT(user.inventory()[0].type() == &rockItem, 200);
 }
 
 TEST_CASE("The owner can access an owned object", "[permissions][gathering]") {
@@ -70,7 +70,7 @@ TEST_CASE("The owner can access an owned object", "[permissions][gathering]") {
   WAIT_UNTIL(user.action() == User::Action::NO_ACTION);
   WAIT_UNTIL_TIMEOUT(s.entities().empty(), 200);
   const Item &rockItem = s.getFirstItem();
-  WAIT_UNTIL_TIMEOUT(user.inventory()[0].first.type() == &rockItem, 200);
+  WAIT_UNTIL_TIMEOUT(user.inventory()[0].type() == &rockItem, 200);
 }
 
 TEST_CASE("A non-owner cannot access an owned object",
@@ -89,7 +89,7 @@ TEST_CASE("A non-owner cannot access an owned object",
       THEN("the rock remains, and his inventory remains empty") {
         CHECK_FALSE(s.entities().empty());
         User &user = s.getFirstUser();
-        CHECK_FALSE(user.inventory()[0].first.hasItem());
+        CHECK_FALSE(user.inventory()[0].hasItem());
       }
     }
   }
@@ -153,7 +153,7 @@ TEST_CASE("City members can use city objects",
   WAIT_UNTIL(user.action() == User::Action::NO_ACTION);
   // And he receives a Rock item;
   const Item &rockItem = s.getFirstItem();
-  WAIT_UNTIL_TIMEOUT(user.inventory()[0].first.type() == &rockItem, 200);
+  WAIT_UNTIL_TIMEOUT(user.inventory()[0].type() == &rockItem, 200);
   // And the Rock object disappears
   WAIT_UNTIL_TIMEOUT(s.entities().empty(), 200);
 }
@@ -180,7 +180,7 @@ TEST_CASE("Non-members cannot use city objects",
 
         AND_THEN("his inventory is empty") {
           User &user = s.getFirstUser();
-          CHECK_FALSE(user.inventory()[0].first.hasItem());
+          CHECK_FALSE(user.inventory()[0].hasItem());
         }
       }
     }

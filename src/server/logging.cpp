@@ -56,16 +56,15 @@ void Server::writeUserToFile(const User &user, std::ostream &stream) const {
 
   stream << "inventory: [";
   for (auto inventorySlot : user.inventory()) {
-    auto id =
-        inventorySlot.first.hasItem() ? inventorySlot.first.type()->id() : ""s;
-    stream << "{id:\"" << id << "\", qty:" << inventorySlot.second << "},";
+    auto id = inventorySlot.hasItem() ? inventorySlot.type()->id() : ""s;
+    stream << "{id:\"" << id << "\", qty:" << inventorySlot.quantity() << "},";
   }
   stream << "],";
 
   stream << "gear: [";
   for (auto gearSlot : user.gear()) {
-    auto id = gearSlot.first.hasItem() ? gearSlot.first.type()->id() : ""s;
-    stream << "{id:\"" << id << "\", qty:" << gearSlot.second << "},";
+    auto id = gearSlot.hasItem() ? gearSlot.type()->id() : ""s;
+    stream << "{id:\"" << id << "\", qty:" << gearSlot.quantity() << "},";
   }
   stream << "],";
 

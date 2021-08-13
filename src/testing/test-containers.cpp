@@ -10,9 +10,8 @@ TEST_CASE("Object container empty check", "[containers]") {
   Object obj(&type, {});
   CHECK(obj.container().isEmpty());
   ServerItem item("rock");
-  obj.container().at(1).first = {
-      &item, ServerItem::Instance::ReportingInfo::InObjectContainer()};
-  obj.container().at(1).second = 1;
+  obj.container().at(1) = {
+      &item, ServerItem::Instance::ReportingInfo::InObjectContainer(), 1};
   CHECK_FALSE(obj.container().isEmpty());
 }
 
@@ -101,7 +100,7 @@ TEST_CASE("Merchant can use same slot for ware and price",
 
       THEN("he has the ware") {
         const auto &invSlot = user.inventory(0);
-        WAIT_UNTIL(invSlot.first.type() == diamond);
+        WAIT_UNTIL(invSlot.type() == diamond);
       }
     }
   }
@@ -138,7 +137,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Taking items",
     WHEN("a user sends CL_TAKE_ITEM") {
       client->sendMessage(CL_TAKE_ITEM, makeArgs(box.serial(), 0));
 
-      THEN("he has an item") { WAIT_UNTIL(user->inventory(0).first.hasItem()); }
+      THEN("he has an item") { WAIT_UNTIL(user->inventory(0).hasItem()); }
     }
   }
 }

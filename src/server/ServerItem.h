@@ -41,14 +41,14 @@ class ServerItem : public Item {
     };
 
     Instance() = default;
-    Instance(const ServerItem *type, ReportingInfo info);
+    Instance(const ServerItem *type, ReportingInfo info, size_t quantity);
     static Instance LoadFromFile(const ServerItem *type, ReportingInfo info,
-                                 Hitpoints health, std::string suffix) {
-      return {type, info, health, suffix};
+                                 Hitpoints health, std::string suffix,
+                                 size_t quantity) {
+      return {type, info, health, suffix, quantity};
     }
 
-    static void swap(std::pair<ServerItem::Instance, size_t> &lhs,
-                     std::pair<ServerItem::Instance, size_t> &rhs);
+    static void swap(ServerItem::Instance &lhs, ServerItem::Instance &rhs);
 
     bool hasItem() const { return _type != nullptr; }
     const ServerItem *type() const { return _type; }
@@ -63,16 +63,21 @@ class ServerItem : public Item {
     bool isSoulbound() const;
     StatsMod statsFromSuffix() const { return _statsFromSuffix; }
     std::string suffix() const { return _suffix; }
+    size_t quantity() const { return _quantity; }
+    void setQuantity(size_t quantity) { _quantity = quantity; }
+    void removeItems(size_t toRemove) { _quantity -= toRemove; }
+    void addItems(size_t toAdd) { _quantity += toAdd; }
 
    private:
     Instance(const ServerItem *type, ReportingInfo info, Hitpoints health,
-             std::string suffix);
+             std::string suffix, size_t quantity);
     const ServerItem *_type{nullptr};
     Hitpoints _health{0};
     bool _hasBeenEquipped{false};
     ReportingInfo _reportingInfo;
     StatsMod _statsFromSuffix{};
     std::string _suffix{};
+    size_t _quantity{0};
   };
 
   enum ContainerCheckResult {
@@ -102,8 +107,7 @@ class ServerItem : public Item {
  public:
   ServerItem(const std::string &id);
 
-  typedef std::pair<ServerItem::Instance, size_t> Slot;
-  typedef std::vector<Slot> vect_t;
+  using vect_t = std::vector<ServerItem::Instance>;
 
   size_t stackSize() const { return _stackSize; }
   void stackSize(size_t n) { _stackSize = n; }

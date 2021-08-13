@@ -23,7 +23,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
         client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
 
         THEN("it is gone from his inventory") {
-          WAIT_UNTIL(!user->inventory(0).first.hasItem());
+          WAIT_UNTIL(!user->inventory(0).hasItem());
 
           AND_THEN("no dropped item was created") {
             REPEAT_FOR_MS(100);
@@ -33,10 +33,10 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       }
 
       THEN("he knows it's soulbound") {
-        const auto &clientItem = client->inventory().at(0).first;
-        WAIT_UNTIL(clientItem.type());
+        const auto &clientItem = client->inventory().at(0);
+        WAIT_UNTIL(clientItem.first.type());
 
-        CHECK(clientItem.isSoulbound());
+        CHECK(clientItem.first.isSoulbound());
       }
     }
   }
@@ -54,20 +54,20 @@ TEST_CASE_METHOD(ServerAndClientWithData,
         client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
 
         THEN("it is no longer equipped") {
-          WAIT_UNTIL(!user->gear(1).first.hasItem());
+          WAIT_UNTIL(!user->gear(1).hasItem());
         }
       }
 
       AND_WHEN("he equips it") {
         client->sendMessage(
             CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0, Serial::Gear(), 1));
-        WAIT_UNTIL(user->gear(1).first.hasItem());
+        WAIT_UNTIL(user->gear(1).hasItem());
 
         AND_WHEN("he tries to drop it") {
           client->sendMessage(CL_DROP, makeArgs(Serial::Gear(), 1));
 
           THEN("it is gone from his inventory") {
-            WAIT_UNTIL(!user->inventory(0).first.hasItem());
+            WAIT_UNTIL(!user->inventory(0).hasItem());
 
             AND_THEN("no dropped item was created") {
               REPEAT_FOR_MS(100);
@@ -84,7 +84,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
             client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
 
             THEN("it is gone from his inventory") {
-              WAIT_UNTIL(!user->inventory(0).first.hasItem());
+              WAIT_UNTIL(!user->inventory(0).hasItem());
 
               AND_THEN("no dropped item was created") {
                 REPEAT_FOR_MS(100);
@@ -104,7 +104,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 
             THEN("the newly equipped ring is soulbound") {
               REPEAT_FOR_MS(100);
-              CHECK(user->gear(1).first.isSoulbound());
+              CHECK(user->gear(1).isSoulbound());
             }
           }
         }
@@ -153,7 +153,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 
           THEN("he still has it") {
             REPEAT_FOR_MS(100);
-            CHECK(user->inventory(0).first.hasItem());
+            CHECK(user->inventory(0).hasItem());
           }
 
           THEN("he receives a warning") {
@@ -171,7 +171,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 
             THEN("he still has the apple") {
               REPEAT_FOR_MS(100);
-              CHECK(user->inventory(0).first.type() == apple);
+              CHECK(user->inventory(0).type() == apple);
             }
 
             THEN("he receives a warning") {
@@ -189,7 +189,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
                                                       barrel.serial(), 0));
 
           THEN("he no longer has it") {
-            WAIT_UNTIL(!user->inventory(0).first.hasItem());
+            WAIT_UNTIL(!user->inventory(0).hasItem());
           }
         }
 
@@ -202,7 +202,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
                 makeArgs(barrel.serial(), 0, Serial::Inventory(), 0));
 
             THEN("he has an orange") {
-              WAIT_UNTIL(user->inventory(0).first.type() == orange);
+              WAIT_UNTIL(user->inventory(0).type() == orange);
             }
           }
         }
@@ -227,7 +227,7 @@ TEST_CASE("Soulbound status is persistent", "[soulbound][persistence]") {
 
         // AND GIVEN she has a soulbound hat and a non-soulbound hat
         alice.giveItem(&s.getFirstItem(), 2);
-        alice.inventory(0).first.onEquip();
+        alice.inventory(0).onEquip();
 
         // WHEN she logs off and back on
       }
@@ -237,10 +237,10 @@ TEST_CASE("Soulbound status is persistent", "[soulbound][persistence]") {
         auto &alice = s.getFirstUser();
 
         // THEN her first hat is still soulbound
-        CHECK(alice.inventory(0).first.isSoulbound());
+        CHECK(alice.inventory(0).isSoulbound());
 
         // AND_THEN her second hat is not
-        CHECK_FALSE(alice.inventory(1).first.isSoulbound());
+        CHECK_FALSE(alice.inventory(1).isSoulbound());
       }
     }
 
@@ -264,7 +264,7 @@ TEST_CASE("Soulbound status is persistent", "[soulbound][persistence]") {
         auto &alice = s.getFirstUser();
 
         // THEN her hat is still soulbound
-        CHECK(alice.gear(0).first.isSoulbound());
+        CHECK(alice.gear(0).isSoulbound());
       }
     }
   }
@@ -286,7 +286,7 @@ TEST_CASE("Soulbound status is persistent", "[soulbound][persistence]") {
       alice.giveItem(&s.getFirstItem(), 2);
 
       // AND GIVEN one is soulbound
-      alice.inventory(0).first.onEquip();
+      alice.inventory(0).onEquip();
 
       // AND GIVEN she owns a shoebox
       const auto &shoebox = s.addObject("shoebox", {20, 20}, "Alice");
@@ -296,7 +296,7 @@ TEST_CASE("Soulbound status is persistent", "[soulbound][persistence]") {
                     makeArgs(Serial::Inventory(), 0, shoebox.serial(), 0));
       c.sendMessage(CL_SWAP_ITEMS,
                     makeArgs(Serial::Inventory(), 1, shoebox.serial(), 1));
-      WAIT_UNTIL(shoebox.container().at(1).first.hasItem());
+      WAIT_UNTIL(shoebox.container().at(1).hasItem());
 
       // WHEN the server restarts
     }
@@ -305,10 +305,10 @@ TEST_CASE("Soulbound status is persistent", "[soulbound][persistence]") {
 
       // THEN the first shoe is still soulbound
       const auto &shoebox = s.getFirstObject();
-      CHECK(shoebox.container().at(0).first.isSoulbound());
+      CHECK(shoebox.container().at(0).isSoulbound());
 
       // AND THEN the second shoe is still not soulbound
-      CHECK_FALSE(shoebox.container().at(1).first.isSoulbound());
+      CHECK_FALSE(shoebox.container().at(1).isSoulbound());
     }
   }
 }
@@ -339,17 +339,17 @@ TEST_CASE_METHOD(TwoClientsWithData, "Soulbound items can't be traded",
           uAlice->giveItem(blueMarble);
           cAlice->sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0,
                                                       store.serial(), 0));
-          WAIT_UNTIL(store.container().at(0).first.hasItem());
+          WAIT_UNTIL(store.container().at(0).hasItem());
 
           AND_GIVEN("the blue marble (ware) is soulbound") {
-            store.container().at(0).first.onEquip();
+            store.container().at(0).onEquip();
 
             WHEN("Bob tries to buy the blue marble") {
               cBob->sendMessage(CL_TRADE, makeArgs(store.serial(), 0));
 
               THEN("he still has his red one") {
                 REPEAT_FOR_MS(100);
-                CHECK(uBob->inventory(0).first.type() == redMarble);
+                CHECK(uBob->inventory(0).type() == redMarble);
               }
 
               THEN("he gets a warning") {
@@ -359,7 +359,7 @@ TEST_CASE_METHOD(TwoClientsWithData, "Soulbound items can't be traded",
           }
 
           AND_GIVEN("the red marble price) is soulbound") {
-            uBob->inventory(0).first.onEquip();
+            uBob->inventory(0).onEquip();
 
             WHEN("Bob tries to buy the blue marble") {
               cBob->sendMessage(CL_TRADE, makeArgs(store.serial(), 0));

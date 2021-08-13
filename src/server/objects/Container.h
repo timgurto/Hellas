@@ -27,8 +27,8 @@ class Container {
   void removeItems(const ItemSet &items);
   void removeAll();
   void addItems(const ServerItem *item, size_t qty = 1);
-  const ServerItem::Slot &at(size_t i) const { return _container[i]; }
-  ServerItem::Slot &at(size_t i) { return _container[i]; }
+  const ServerItem::Instance &at(size_t i) const { return _container[i]; }
+  ServerItem::Instance &at(size_t i) { return _container[i]; }
   ItemSet generateLootWithChance(double chance) const;
 
   bool isAbleToDeconstruct(const User &user) const;

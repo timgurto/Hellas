@@ -31,13 +31,12 @@ bool Server::endTutorial(const Object &obj, User &performer,
   // Replenish the usage cost, after clearing the inventory.  Do it directly,
   // rather than via User::giveItem(), to avoid alerting the client
   // unnecessarily.
-  const auto costItem = obj.objType().action().cost;
+  const auto *costItem = obj.objType().action().cost;
   if (costItem) {
     auto &inventorySlot = performer.inventory(0);
-    inventorySlot.first = {
+    inventorySlot = {
         costItem,
-        ServerItem::Instance::ReportingInfo::UserInventory(&performer, 0)};
-    inventorySlot.second = 1;
+        ServerItem::Instance::ReportingInfo::UserInventory(&performer, 0), 1};
   }
 
   performer.removeConstruction("tutFire");

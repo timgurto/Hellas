@@ -784,7 +784,7 @@ TEST_CASE("Failed taming attempts should consume item", "[pets]") {
         c.sendMessage(CL_TAME_NPC, makeArgs(girl.serial()));
 
         THEN("he no longer has the item") {
-          WAIT_UNTIL(!user.inventory(0).first.hasItem());
+          WAIT_UNTIL(!user.inventory(0).hasItem());
         }
       }
     }
@@ -1115,7 +1115,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pets can be fed", "[pets]") {
           WAIT_UNTIL(!dog.isMissingHealth());
 
           AND_THEN("he no longer has the food") {
-            CHECK(!user->inventory(0).first.hasItem());
+            CHECK(!user->inventory(0).hasItem());
           }
         }
       }
@@ -1139,7 +1139,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pets can be fed", "[pets]") {
 
       THEN("he still has his food") {
         REPEAT_FOR_MS(100);
-        CHECK(user->inventory(0).first.hasItem());
+        CHECK(user->inventory(0).hasItem());
       }
     }
   }

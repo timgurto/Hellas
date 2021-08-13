@@ -254,7 +254,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Non-taggers can't loot",
 
         THEN("his inventory is still empty") {
           REPEAT_FOR_MS(100);
-          CHECK_FALSE(user->inventory(0).first.hasItem());
+          CHECK_FALSE(user->inventory(0).hasItem());
         }
       }
     }
@@ -362,7 +362,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Clients know when loot is all gone",
         AND_WHEN("he loots it") {
           client->sendMessage(CL_TAKE_ITEM, makeArgs(frog.serial(), 0));
           const auto &user = server->getFirstUser();
-          WAIT_UNTIL(user.inventory(0).first.hasItem());
+          WAIT_UNTIL(user.inventory(0).hasItem());
 
           THEN("he knows it isn't lootable") { WAIT_UNTIL(!cFrog.lootable()); }
         }
@@ -399,9 +399,7 @@ TEST_CASE("Grouped players can loot each other's kills",
         AND_WHEN("Bob tries to loot it") {
           cBob.sendMessage(CL_TAKE_ITEM, makeArgs(mouse.serial(), 0));
 
-          THEN("Bob has an item") {
-            WAIT_UNTIL(bob.inventory(0).first.hasItem());
-          }
+          THEN("Bob has an item") { WAIT_UNTIL(bob.inventory(0).hasItem()); }
         }
 
         THEN("Bob is told that it's lootable") {
@@ -435,8 +433,7 @@ TEST_CASE("Loot that chooses from a set", "[loot]") {
         const auto itemStacks = loot.size();
         CHECK(itemStacks == 1);
 
-        const auto qty = loot.at(0).second;
-        CHECK(qty == 1);
+        CHECK(loot.at(0).quantity() == 1);
       }
     }
 
@@ -446,7 +443,7 @@ TEST_CASE("Loot that chooses from a set", "[loot]") {
       for (auto i = 0; i != 100; ++i) {
         auto loot = Loot{};
         lootTable.instantiate(loot, nullptr);
-        auto itemID = loot.at(0).first.type()->id();
+        auto itemID = loot.at(0).type()->id();
         if (itemID == "hat")
           hatAdded = true;
         else if (itemID == "umbrella")
@@ -478,9 +475,7 @@ TEST_CASE("Loot that chooses from a set", "[loot]") {
       auto loot = Loot{};
       lootTable.instantiate(loot, nullptr);
 
-      THEN("it contains an egg") {
-        CHECK(loot.at(0).first.type()->id() == "egg");
-      }
+      THEN("it contains an egg") { CHECK(loot.at(0).type()->id() == "egg"); }
     }
   }
 
@@ -501,7 +496,7 @@ TEST_CASE("Loot that chooses from a set", "[loot]") {
         auto loot = Loot{};
         lootTable.instantiate(loot, nullptr);
 
-        THEN("it contains five items") { CHECK(loot.at(0).second == 5); }
+        THEN("it contains five items") { CHECK(loot.at(0).quantity() == 5); }
       }
     }
   }
@@ -530,12 +525,12 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Looted gear and tools are broken",
       AND_WHEN("he loots it") {
         for (auto i = 0; i != 3; ++i) {
           client->sendMessage(CL_TAKE_ITEM, makeArgs(penguin.serial(), i));
-          WAIT_UNTIL(user->inventory()[i].first.hasItem());
+          WAIT_UNTIL(user->inventory()[i].hasItem());
         }
 
         THEN("the gear and tool are broken, while the simple item is not") {
           for (auto i = 0; i != 3; ++i) {
-            const auto &inventoryItem = user->inventory()[i].first;
+            const auto &inventoryItem = user->inventory()[i];
             WAIT_UNTIL(inventoryItem.hasItem());
 
             const auto itemID = inventoryItem.type()->id();

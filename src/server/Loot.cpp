@@ -6,11 +6,8 @@
 
 bool Loot::empty() const {
   if (_container.size() == 0) return true;
-  for (const auto &pair : _container) {
-    auto item = pair.first;
-    if (!item.hasItem()) continue;
-    size_t quantity = pair.second;
-    if (quantity > 0) return false;
+  for (const auto &slot : _container) {
+    if (!slot.hasItem() && slot.quantity() > 0) return false;
   }
   return true;
 }
@@ -20,14 +17,13 @@ void Loot::add(const ServerItem *item, size_t qty) {
   size_t remainingQuantity = qty;
   while (remainingQuantity > 0) {
     size_t quantityInThisSlot = min(stackSize, remainingQuantity);
-    ServerItem::Slot entry;
-    entry.first = {item,
-                   ServerItem::Instance::ReportingInfo::InObjectContainer()};
+    auto entry = ServerItem::Instance{
+        item, ServerItem::Instance::ReportingInfo::InObjectContainer(),
+        quantityInThisSlot};
 
     if (item->canBeDamaged())
-      entry.first.initHealth(0);  // Loot items are always broken
+      entry.initHealth(0);  // Loot items are always broken
 
-    entry.second = quantityInThisSlot;
     remainingQuantity -= quantityInThisSlot;
     _container.push_back(entry);
   }

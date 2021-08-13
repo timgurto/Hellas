@@ -180,17 +180,17 @@ class User : public Object {  // TODO: Don't inherit from Object
   bool isWaitingForDeathAcknowledgement{false};
 
   // Inventory getters/setters
-  const ServerItem::Slot &inventory(size_t index) const {
+  const ServerItem::Instance &inventory(size_t index) const {
     return _inventory[index];
   }
-  ServerItem::Slot &inventory(size_t index) { return _inventory[index]; }
+  ServerItem::Instance &inventory(size_t index) { return _inventory[index]; }
   ServerItem::vect_t &inventory() { return _inventory; }
   const ServerItem::vect_t &inventory() const { return _inventory; }
   bool hasRoomFor(std::set<std::string> itemNames) const;
 
   // Gear getters/setters
-  const ServerItem::Slot &gear(size_t index) const { return _gear[index]; }
-  ServerItem::Slot &gear(size_t index) { return _gear[index]; }
+  const ServerItem::Instance &gear(size_t index) const { return _gear[index]; }
+  ServerItem::Instance &gear(size_t index) { return _gear[index]; }
   ServerItem::vect_t &gear() { return _gear; }
   const ServerItem::vect_t &gear() const { return _gear; }
 

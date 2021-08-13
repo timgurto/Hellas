@@ -19,7 +19,7 @@ TEST_CASE("Simple gear equip", "[gear]") {
                     makeArgs(Serial::Inventory(), 0, Serial::Gear(), 0));
 
       THEN("he has an item in that gear slot") {
-        WAIT_UNTIL(user.gear(0).first.hasItem());
+        WAIT_UNTIL(user.gear(0).hasItem());
 
         AND_WHEN("he takes it off") {
           c.sendMessage(CL_SWAP_ITEMS,
@@ -47,10 +47,9 @@ TEST_CASE("Damage is updated when a weapon depletes", "[gear][stats]") {
     auto &user = s.getFirstUser();
 
     const auto rock = &s.getFirstItem();
-    user.gear(Item::WEAPON).first = {
+    user.gear(Item::WEAPON) = {
         rock,
-        ServerItem::Instance::ReportingInfo::UserGear(&user, Item::WEAPON)};
-    user.gear(Item::WEAPON).second = 1;
+        ServerItem::Instance::ReportingInfo::UserGear(&user, Item::WEAPON), 1};
     user.updateStats();
 
     WHEN("the weapon is used") {
@@ -86,7 +85,7 @@ TEST_CASE("Level requirements", "[gear][leveling]") {
 
         THEN("he is not wearing it") {
           REPEAT_FOR_MS(100);
-          CHECK(!user.gear(0).first.hasItem());
+          CHECK(!user.gear(0).hasItem());
         }
       }
 
@@ -97,7 +96,7 @@ TEST_CASE("Level requirements", "[gear][leveling]") {
           c.sendMessage(CL_SWAP_ITEMS,
                         makeArgs(Serial::Inventory(), 0, Serial::Gear(), 0));
 
-          THEN("he is wearing it") { WAIT_UNTIL(user.gear(0).first.hasItem()); }
+          THEN("he is wearing it") { WAIT_UNTIL(user.gear(0).hasItem()); }
         }
       }
 
@@ -106,15 +105,15 @@ TEST_CASE("Level requirements", "[gear][leveling]") {
                       makeArgs(Serial::Inventory(), 0, Serial::Inventory(), 1));
 
         THEN("inventory slot 1 has an item") {
-          WAIT_UNTIL(user.inventory(1).first.hasItem());
+          WAIT_UNTIL(user.inventory(1).hasItem());
         }
       }
 
       AND_GIVEN("he is already wearing a plain hat") {
         const auto &plainHat = s.findItem("plainHat");
-        user.gear(0).first = {
-            &plainHat, ServerItem::Instance::ReportingInfo::UserGear(&user, 0)};
-        user.gear(0).second = 1;
+        user.gear(0) = {&plainHat,
+                        ServerItem::Instance::ReportingInfo::UserGear(&user, 0),
+                        1};
 
         WHEN("he tries to swap it for the fancy hat") {
           c.sendMessage(CL_SWAP_ITEMS,
@@ -122,7 +121,7 @@ TEST_CASE("Level requirements", "[gear][leveling]") {
 
           THEN("he is still wearing the plain hat") {
             REPEAT_FOR_MS(100);
-            CHECK(user.gear(0).first.type()->id() == "plainHat");
+            CHECK(user.gear(0).type()->id() == "plainHat");
           }
         }
 
@@ -134,7 +133,7 @@ TEST_CASE("Level requirements", "[gear][leveling]") {
                           makeArgs(Serial::Gear(), 0, Serial::Inventory(), 0));
 
             THEN("he is wearing the fancy hat") {
-              WAIT_UNTIL(user.gear(0).first.type()->id() == "fancyHat");
+              WAIT_UNTIL(user.gear(0).type()->id() == "fancyHat");
             }
           }
         }
@@ -159,9 +158,8 @@ TEST_CASE("Level requirements enforced on already-equipped gear",
       auto &user = s.getFirstUser();
       const auto &hat = s.findItem("hat");
 
-      user.gear(0).first = {
-          &hat, ServerItem::Instance::ReportingInfo::UserGear(&user, 0)};
-      user.gear(0).second = 1;
+      user.gear(0) = {
+          &hat, ServerItem::Instance::ReportingInfo::UserGear(&user, 0), 1};
       user.updateStats();
 
       THEN("his health is less than 1000") {

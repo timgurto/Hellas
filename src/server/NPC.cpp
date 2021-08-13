@@ -271,8 +271,8 @@ void NPC::sendInfoToClient(const User &targetUser, bool isNew) const {
   }
 }
 
-ServerItem::Slot *NPC::getSlotToTakeFromAndSendErrors(size_t slotNum,
-                                                      const User &user) {
+ServerItem::Instance *NPC::getSlotToTakeFromAndSendErrors(size_t slotNum,
+                                                          const User &user) {
   const Server &server = Server::instance();
 
   if (_loot->empty()) {
@@ -287,8 +287,8 @@ ServerItem::Slot *NPC::getSlotToTakeFromAndSendErrors(size_t slotNum,
     return nullptr;
   }
 
-  ServerItem::Slot &slot = _loot->at(slotNum);
-  if (!slot.first.hasItem()) {
+  ServerItem::Instance &slot = _loot->at(slotNum);
+  if (!slot.hasItem()) {
     user.sendMessage(ERROR_EMPTY_SLOT);
     return nullptr;
   }

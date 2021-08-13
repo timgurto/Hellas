@@ -195,7 +195,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Dropped items don't overlap objects",
         user->giveItem(apple);
         client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
         REPEAT_FOR_MS(100) {
-          if (!user->inventory(0).first.hasItem()) break;
+          if (!user->inventory(0).hasItem()) break;
         }
       }
 
@@ -268,7 +268,7 @@ TEST_CASE("If nowhere to drop an item, keep it in inventory",
         CHECK(c.waitForMessage(WARNING_NOWHERE_TO_DROP_ITEM));
 
         AND_THEN("he still has it in his inventory") {
-          CHECK(user.inventory(0).first.hasItem());
+          CHECK(user.inventory(0).hasItem());
         }
       }
     }
@@ -290,7 +290,7 @@ TEST_CASE("Picking items back up", "[inventory][dropped-items]") {
       AND_GIVEN("a user has dropped one") {
         user.giveItem(apple);
         c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
-        WAIT_UNTIL(!user.inventory(0).first.hasItem());
+        WAIT_UNTIL(!user.inventory(0).hasItem());
 
         WHEN("he picks it back up") {
           WAIT_UNTIL(c.entities().size() == 2);
@@ -298,7 +298,7 @@ TEST_CASE("Picking items back up", "[inventory][dropped-items]") {
           c.sendMessage(CL_PICK_UP_DROPPED_ITEM, makeArgs(di.serial()));
 
           THEN("he has the item again") {
-            WAIT_UNTIL(user.inventory(0).first.hasItem());
+            WAIT_UNTIL(user.inventory(0).hasItem());
 
             AND_THEN("the entity is gone") {
               WAIT_UNTIL(s.entities().empty());
@@ -322,7 +322,7 @@ TEST_CASE("Picking items back up", "[inventory][dropped-items]") {
           c.sendMessage(CL_PICK_UP_DROPPED_ITEM, makeArgs(serial));
 
           THEN("he has the item again") {
-            WAIT_UNTIL(user.inventory(0).first.hasItem());
+            WAIT_UNTIL(user.inventory(0).hasItem());
 
             AND_THEN("there is still one entity left") {
               WAIT_UNTIL(s.entities().size() == 1);
@@ -340,7 +340,7 @@ TEST_CASE("Picking items back up", "[inventory][dropped-items]") {
       AND_GIVEN("a user has dropped one") {
         user.giveItem(apple);
         c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
-        WAIT_UNTIL(!user.inventory(0).first.hasItem());
+        WAIT_UNTIL(!user.inventory(0).hasItem());
 
         AND_GIVEN("it's very far away") {
           user.teleportTo({200, 200});
@@ -352,7 +352,7 @@ TEST_CASE("Picking items back up", "[inventory][dropped-items]") {
 
             THEN("he has no item") {
               REPEAT_FOR_MS(100);
-              CHECK(!user.inventory(0).first.hasItem());
+              CHECK(!user.inventory(0).hasItem());
             }
           }
         }
@@ -363,7 +363,7 @@ TEST_CASE("Picking items back up", "[inventory][dropped-items]") {
       AND_GIVEN("a user has dropped one") {
         user.giveItem(apple);
         c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
-        WAIT_UNTIL(!user.inventory(0).first.hasItem());
+        WAIT_UNTIL(!user.inventory(0).hasItem());
         WAIT_UNTIL(s.entities().size() == 1);
 
         AND_GIVEN("he has a full inventory") {
@@ -398,7 +398,7 @@ TEST_CASE("Picking items back up", "[inventory][dropped-items]") {
       AND_GIVEN("a user has dropped an orange") {
         user.giveItem(&s.findItem("orange"));
         c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
-        WAIT_UNTIL(!user.inventory(0).first.hasItem());
+        WAIT_UNTIL(!user.inventory(0).hasItem());
 
         WHEN("he picks it back up") {
           WAIT_UNTIL(c.entities().size() == 2);
@@ -406,10 +406,10 @@ TEST_CASE("Picking items back up", "[inventory][dropped-items]") {
           c.sendMessage(CL_PICK_UP_DROPPED_ITEM, makeArgs(di.serial()));
 
           THEN("he has an item") {
-            WAIT_UNTIL(user.inventory(0).first.hasItem());
+            WAIT_UNTIL(user.inventory(0).hasItem());
 
             AND_THEN("it is an orange") {
-              CHECK(user.inventory(0).first.type()->id() == "orange");
+              CHECK(user.inventory(0).type()->id() == "orange");
             }
           }
         }
@@ -441,8 +441,8 @@ TEST_CASE("Dropped-item stacks", "[dropped-items]") {
             c.sendMessage(CL_PICK_UP_DROPPED_ITEM, makeArgs(serial));
 
             THEN("he has a stack of " << numCoins) {
-              WAIT_UNTIL(user.inventory(0).first.hasItem());
-              CHECK(user.inventory(0).second == numCoins);
+              WAIT_UNTIL(user.inventory(0).hasItem());
+              CHECK(user.inventory(0).quantity() == numCoins);
             }
           }
         }
@@ -538,7 +538,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Dropped items preserve item damage",
     user->giveItem(&server->getFirstItem());
 
     AND_GIVEN("it is damaged") {
-      auto &slot0 = user->inventory()[0].first;
+      auto &slot0 = user->inventory(0);
       do {
         slot0.onUse();
       } while (slot0.health() == Item::MAX_HEALTH);

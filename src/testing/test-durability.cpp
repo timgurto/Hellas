@@ -23,7 +23,7 @@ TEST_CASE("Newly given items have full health", "[damage-on-use]") {
       user.giveItem(&apple);
 
       THEN("it has full health") {
-        CHECK(user.inventory(0).first.health() == ServerItem::MAX_HEALTH);
+        CHECK(user.inventory(0).health() == ServerItem::MAX_HEALTH);
       }
     }
   }
@@ -57,9 +57,8 @@ TEST_CASE("Combat reduces weapon/armour health", "[damage-on-use][combat]") {
     const auto &hummingbird = s.getFirstNPC();
 
     WHEN("a player has the weapon equipped") {
-      weaponSlot.first = {&tuningFork,
-                          ItemReportingInfo::UserGear(&user, Item::WEAPON)};
-      weaponSlot.second = 1;
+      weaponSlot = {&tuningFork,
+                    ItemReportingInfo::UserGear(&user, Item::WEAPON), 1};
       user.updateStats();
 
       AND_WHEN("he attacks the enemy with the weapon for a while") {
@@ -68,12 +67,12 @@ TEST_CASE("Combat reduces weapon/armour health", "[damage-on-use][combat]") {
         THEN("the weapon's health is reduced") {
           // Should result in about 1000 hits.  Hopefully enough for durability
           // to kick in.
-          WAIT_UNTIL_TIMEOUT(weaponSlot.first.health() < ServerItem::MAX_HEALTH,
+          WAIT_UNTIL_TIMEOUT(weaponSlot.health() < ServerItem::MAX_HEALTH,
                              10000);
 
           AND_THEN("the user knows it") {
-            const auto &cWeaponSlot = c.gear().at(Item::WEAPON).first;
-            WAIT_UNTIL(cWeaponSlot.health() < ServerItem::MAX_HEALTH);
+            const auto &cWeaponSlot = c.gear()[Item::WEAPON];
+            WAIT_UNTIL(cWeaponSlot.first.health() < ServerItem::MAX_HEALTH);
           }
         }
       }
@@ -82,30 +81,23 @@ TEST_CASE("Combat reduces weapon/armour health", "[damage-on-use][combat]") {
         user.kill();
 
         THEN("the weapon's health is reduced") {
-          CHECK(weaponSlot.first.health() < ServerItem::MAX_HEALTH);
+          CHECK(weaponSlot.health() < ServerItem::MAX_HEALTH);
         }
       }
     }
 
     WHEN("a player has the weapon and armour equipped") {
-      weaponSlot.first = {&tuningFork,
-                          ItemReportingInfo::UserGear(&user, Item::WEAPON)};
-      weaponSlot.second = 1;
-
-      headSlot.first = {&hat, ItemReportingInfo::UserGear(&user, Item::HEAD)};
-      headSlot.second = 1;
-
-      feetSlot.first = {&shoes, ItemReportingInfo::UserGear(&user, Item::FEET)};
-      feetSlot.second = 1;
+      weaponSlot = {&tuningFork,
+                    ItemReportingInfo::UserGear(&user, Item::WEAPON), 1};
+      headSlot = {&hat, ItemReportingInfo::UserGear(&user, Item::HEAD), 1};
+      feetSlot = {&shoes, ItemReportingInfo::UserGear(&user, Item::FEET), 1};
 
       AND_WHEN("the enemy attacks for a while") {
         // Should happen automatically
 
         THEN("all armour gets damaged") {
-          WAIT_UNTIL_TIMEOUT(headSlot.first.health() < ServerItem::MAX_HEALTH,
-                             10000);
-          WAIT_UNTIL_TIMEOUT(feetSlot.first.health() < ServerItem::MAX_HEALTH,
-                             10000);
+          WAIT_UNTIL_TIMEOUT(headSlot.health() < ServerItem::MAX_HEALTH, 10000);
+          WAIT_UNTIL_TIMEOUT(feetSlot.health() < ServerItem::MAX_HEALTH, 10000);
         }
       }
 
@@ -116,8 +108,8 @@ TEST_CASE("Combat reduces weapon/armour health", "[damage-on-use][combat]") {
         stats.crit = 0;
         hummingbird.stats(stats);
 
-        CHECK(headSlot.first.health() == ServerItem::MAX_HEALTH);
-        CHECK(feetSlot.first.health() == ServerItem::MAX_HEALTH);
+        CHECK(headSlot.health() == ServerItem::MAX_HEALTH);
+        CHECK(feetSlot.health() == ServerItem::MAX_HEALTH);
         auto healthBefore = user.health();
 
         REPEAT_FOR_MS(1000);
@@ -125,8 +117,8 @@ TEST_CASE("Combat reduces weapon/armour health", "[damage-on-use][combat]") {
         CHECK(user.health() >= healthBefore - 1);
 
         THEN("a maximum of one piece of armour is damaged") {
-          auto hatDamaged = headSlot.first.health() < ServerItem::MAX_HEALTH;
-          auto shoesDamaged = feetSlot.first.health() < ServerItem::MAX_HEALTH;
+          auto hatDamaged = headSlot.health() < ServerItem::MAX_HEALTH;
+          auto shoesDamaged = feetSlot.health() < ServerItem::MAX_HEALTH;
           auto bothDamaged = hatDamaged && shoesDamaged;
           CHECK_FALSE(bothDamaged);
         }
@@ -162,10 +154,10 @@ TEST_CASE("Thrown weapons don't take damage from attacking",
     WHEN("the user equips harpoons") {
       c.sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0,
                                             Serial::Gear(), Item::WEAPON));
-      WAIT_UNTIL(user.gear(Item::WEAPON).first.hasItem());
+      WAIT_UNTIL(user.gear(Item::WEAPON).hasItem());
 
       AND_WHEN("he attacks the whale many times") {
-        const auto &equippedWeapon = user.gear(Item::WEAPON).first;
+        const auto &equippedWeapon = user.gear(Item::WEAPON);
         auto whaleSerial = s.getFirstNPC().serial();
         c.sendMessage(CL_TARGET_ENTITY, makeArgs(whaleSerial));
         REPEAT_FOR_MS(5000) {
@@ -181,10 +173,10 @@ TEST_CASE("Thrown weapons don't take damage from attacking",
     WHEN("the user equips a harpoon gun") {
       c.sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 1,
                                             Serial::Gear(), Item::WEAPON));
-      WAIT_UNTIL(user.gear(Item::WEAPON).first.hasItem());
+      WAIT_UNTIL(user.gear(Item::WEAPON).hasItem());
 
       AND_WHEN("he attacks the whale many times") {
-        const auto &equippedWeapon = user.gear(Item::WEAPON).first;
+        const auto &equippedWeapon = user.gear(Item::WEAPON);
         auto whaleSerial = s.getFirstNPC().serial();
         c.sendMessage(CL_TARGET_ENTITY, makeArgs(whaleSerial));
         REPEAT_FOR_MS(5000) {
@@ -211,7 +203,7 @@ TEST_CASE("Item damage is limited to 1", "[damage-on-use]") {
     user.giveItem(&s.getFirstItem());
 
     WHEN("it is used") {
-      auto &itemInInventory = user.inventory(0).first;
+      auto &itemInInventory = user.inventory(0);
       itemInInventory.onUse();
 
       THEN("it has lost at most 1 health") {
@@ -233,7 +225,7 @@ TEST_CASE("Item damage happens randomly", "[damage-on-use]") {
     user.giveItem(&s.getFirstItem());
 
     WHEN("it is used {max-health} times") {
-      auto &itemInInventory = user.inventory(0).first;
+      auto &itemInInventory = user.inventory(0);
       for (auto i = 0; i != Item::MAX_HEALTH; ++i) itemInInventory.onUse();
 
       THEN("it still has at least 1 health") {
@@ -259,7 +251,7 @@ TEST_CASE("Crafting tools lose durability", "[damage-on-use][crafting][tool]") {
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
     user.giveItem(&s.findItem("hat"));
-    auto &hat = user.inventory(0).first;
+    auto &hat = user.inventory(0);
 
     WHEN("the recipe is crafted many times") {
       for (auto i = 0; i != 200; ++i) {
@@ -272,8 +264,8 @@ TEST_CASE("Crafting tools lose durability", "[damage-on-use][crafting][tool]") {
         CHECK(hat.health() < Item::MAX_HEALTH);
 
         AND_THEN("the client knows it's damaged") {
-          auto &cItem = c.inventory()[0].first;
-          WAIT_UNTIL(cItem.health() < Item::MAX_HEALTH);
+          auto &cItem = c.inventory()[0];
+          WAIT_UNTIL(cItem.first.health() < Item::MAX_HEALTH);
         }
       }
     }
@@ -290,7 +282,7 @@ TEST_CASE("Crafting tools lose durability", "[damage-on-use][crafting][tool]") {
 
         THEN("he doesn't have any products") {
           REPEAT_FOR_MS(100);
-          CHECK_FALSE(user.inventory(1).first.hasItem());
+          CHECK_FALSE(user.inventory(1).hasItem());
         }
       }
     }
@@ -314,7 +306,7 @@ TEST_CASE("Construction tools lose durability",
     user.addConstruction("hole");
 
     WHEN("many objects are constructed") {
-      const auto &shovel = user.inventory(0).first;
+      const auto &shovel = user.inventory(0);
 
       for (auto i = 0; i != 200; ++i) {
         c.sendMessage(CL_CONSTRUCT, makeArgs("hole", 10, 15));
@@ -349,7 +341,7 @@ TEST_CASE("Gathering tools lose durability",
     user.giveItem(&s.findItem("shovel"));
 
     WHEN("many onions are gathered") {
-      const auto &shovel = user.inventory(0).first;
+      const auto &shovel = user.inventory(0);
 
       for (auto i = 0; i != 200; ++i) {
         c.sendMessage(CL_GATHER, makeArgs(s.getFirstObject().serial()));
@@ -402,7 +394,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Swapping items preserves damage",
     user->giveItem(&server->getFirstItem(), 2);
 
     WHEN("one is damaged") {
-      auto &slot0 = user->inventory(0).first;
+      auto &slot0 = user->inventory(0);
       do {
         slot0.onUse();
       } while (slot0.health() == Item::MAX_HEALTH);
@@ -413,7 +405,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Swapping items preserves damage",
         REPEAT_FOR_MS(100);
 
         THEN("it is still damaged in its new location") {
-          auto &slot1 = user->inventory(1).first;
+          auto &slot1 = user->inventory(1);
           CHECK(slot1.health() == itemHealth);
         }
       }
@@ -441,14 +433,14 @@ TEST_CASE("Persistence of item health: users' items",
     c.sendMessage(CL_SWAP_ITEMS, makeArgs(0, 1, 1, 5));
 
     // When the inventory item is damaged
-    auto &invSlot = user.inventory(0).first;
+    auto &invSlot = user.inventory(0);
     do {
       invSlot.onUse();
     } while (invSlot.health() == Item::MAX_HEALTH);
     invHealth = invSlot.health();
 
     // And when the equipped item is damaged even more)
-    auto &gearSlot = user.gear(5).first;
+    auto &gearSlot = user.gear(5);
     WAIT_UNTIL(gearSlot.hasItem());
     do {
       gearSlot.onUse();
@@ -462,8 +454,8 @@ TEST_CASE("Persistence of item health: users' items",
   auto &user = s.getFirstUser();
 
   // Then the items are still damaged to the same degree
-  CHECK(user.inventory(0).first.health() == invHealth);
-  CHECK(user.gear(5).first.health() == gearHealth);
+  CHECK(user.inventory(0).health() == invHealth);
+  CHECK(user.gear(5).health() == gearHealth);
 }
 
 TEST_CASE("Persistence of item health: objects' contents",
@@ -488,7 +480,7 @@ TEST_CASE("Persistence of item health: objects' contents",
     toybox.container().addItems(toy);
 
     // When the item is damaged
-    auto &containerSlot = toybox.container().at(0).first;
+    auto &containerSlot = toybox.container().at(0);
     do {
       containerSlot.onUse();
     } while (containerSlot.health() == Item::MAX_HEALTH);
@@ -500,7 +492,7 @@ TEST_CASE("Persistence of item health: objects' contents",
 
   // Then the item is still damaged to the same degree
   auto &toybox = s.getFirstObject();
-  CHECK(toybox.container().at(0).first.health() == itemHealth);
+  CHECK(toybox.container().at(0).health() == itemHealth);
 }
 
 #define BREAK_ITEM(ITEM)               \
@@ -529,9 +521,8 @@ TEST_CASE("Broken weapons don't add attack", "[damage-on-use][stats][gear]") {
       const auto DEFAULT_DAMAGE = User::OBJECT_TYPE.baseStats().weaponDamage;
 
       auto &weaponSlot = user.gear(Item::WEAPON);
-      weaponSlot.first = {&s.getFirstItem(),
-                          ItemReportingInfo::UserGear(&user, Item::WEAPON)};
-      weaponSlot.second = 1;
+      weaponSlot = {&s.getFirstItem(),
+                    ItemReportingInfo::UserGear(&user, Item::WEAPON), 1};
 
       user.updateStats();
       CHECK(user.stats().weaponDamage == 42);
@@ -539,9 +530,9 @@ TEST_CASE("Broken weapons don't add attack", "[damage-on-use][stats][gear]") {
       AND_WHEN("it is broken") {
         for (auto i = 0; i != 100000; ++i) {
           user.onAttack();
-          if (weaponSlot.first.isBroken()) break;
+          if (weaponSlot.isBroken()) break;
         }
-        CHECK(weaponSlot.first.isBroken());
+        CHECK(weaponSlot.isBroken());
 
         THEN("his attack is the baseline User attack") {
           CHECK(user.stats().weaponDamage == DEFAULT_DAMAGE);
@@ -575,14 +566,13 @@ TEST_CASE("Broken shields don't block", "[damage-on-use][stats][gear]") {
       auto &user = s.getFirstUser();
 
       auto &offhand = user.gear(Item::OFFHAND);
-      offhand.first = {&s.getFirstItem(),
-                       ItemReportingInfo::UserGear(&user, Item::OFFHAND)};
-      offhand.second = 1;
+      offhand = {&s.getFirstItem(),
+                 ItemReportingInfo::UserGear(&user, Item::OFFHAND), 1};
       user.updateStats();
       CHECK(user.canBlock());
 
       AND_WHEN("it is broken") {
-        auto &shield = user.gear(Item::OFFHAND).first;
+        auto &shield = user.gear(Item::OFFHAND);
         BREAK_ITEM(shield);
 
         THEN("he can't block") { CHECK_FALSE(user.canBlock()); }
@@ -607,7 +597,7 @@ TEST_CASE("Broken items can't be placed as objects",
       user.giveItem(&s.getFirstItem());
 
       AND_WHEN("it is broken") {
-        auto &seed = user.inventory(0).first;
+        auto &seed = user.inventory(0);
         BREAK_ITEM(seed);
 
         AND_WHEN("he tries to construct a tree from it") {
@@ -641,7 +631,7 @@ TEST_CASE("Broken items can't cast spells", "[damage-on-use][spells]") {
       user.giveItem(&s.getFirstItem());
 
       AND_WHEN("it is broken") {
-        auto &poisonedApple = user.inventory(0).first;
+        auto &poisonedApple = user.inventory(0);
         BREAK_ITEM(poisonedApple);
 
         AND_WHEN("he tries to use it") {
@@ -678,7 +668,7 @@ TEST_CASE("Broken items can't be used as construction materials",
         c.sendMessage(CL_CONSTRUCT, makeArgs("tuffet", 10, 15));
 
         AND_WHEN("his rock is broken") {
-          auto &rock = user.inventory(0).first;
+          auto &rock = user.inventory(0);
           BREAK_ITEM(rock);
 
           AND_WHEN("he tries to use it to build the tuffet") {
@@ -718,7 +708,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Broken items can't be traded",
     user->giveItem(coin);
 
     AND_WHEN("his coin is broken") {
-      auto &priceSlot = user->inventory(0).first;
+      auto &priceSlot = user->inventory(0);
       BREAK_ITEM(priceSlot);
 
       AND_WHEN("he tries to buy an apple") {
@@ -726,7 +716,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Broken items can't be traded",
 
         THEN("he still has the coin") {
           REPEAT_FOR_MS(100);
-          CHECK(user->inventory(0).first.type() == coin);
+          CHECK(user->inventory(0).type() == coin);
         }
 
         THEN("he gets a warning") {
@@ -736,7 +726,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Broken items can't be traded",
     }
 
     AND_WHEN("the apple is broken") {
-      auto &wareSlot = appleCart.container().at(0).first;
+      auto &wareSlot = appleCart.container().at(0);
       BREAK_ITEM(wareSlot);
 
       AND_WHEN("he tries to buy an apple") {
@@ -764,8 +754,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Repairing items",
 
     GIVEN("he has two hats in his inventory") {
       user->giveItem(hat, 2);
-      auto &hat0 = user->inventory(0).first;
-      auto &hat1 = user->inventory(1).first;
+      auto &hat0 = user->inventory(0);
+      auto &hat1 = user->inventory(1);
 
       WHEN("the first is broken") {
         BREAK_ITEM(hat0);
@@ -777,7 +767,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Repairing items",
             WAIT_UNTIL(!hat0.isBroken());
 
             AND_THEN("the client knows its current health") {
-              const auto &clientSlot = client->inventory().at(0).first;
+              const auto &clientSlot = client->inventory()[0].first;
               WAIT_UNTIL(clientSlot.health() == hat0.health());
             }
           }
@@ -803,7 +793,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Repairing items",
       user->giveItem(hat);
       client->sendMessage(CL_SWAP_ITEMS,
                           makeArgs(Serial::Inventory(), 0, Serial::Gear(), 0));
-      auto &headSlot = user->gear().at(0).first;
+      auto &headSlot = user->gear(0);
       WAIT_UNTIL(headSlot.hasItem());
 
       WHEN("it is broken") {
@@ -832,7 +822,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Repairing items",
       }
 
       WHEN("the hat is broken") {
-        auto &slot = hatstand.container().at(0).first;
+        auto &slot = hatstand.container().at(0);
         BREAK_ITEM(slot);
 
         AND_WHEN("he repairs it") {
@@ -849,7 +839,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Repairing items",
       hatstand.container().addItems(hat);
 
       WHEN("the hat is broken") {
-        auto &slot = hatstand.container().at(0).first;
+        auto &slot = hatstand.container().at(0);
         BREAK_ITEM(slot);
 
         AND_WHEN("he tries to repair it") {
@@ -884,7 +874,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Non-repairable item",
     user->giveItem(feather);
 
     WHEN("it is broken") {
-      auto &slot = user->inventory(0).first;
+      auto &slot = user->inventory(0);
       BREAK_ITEM(slot);
 
       AND_WHEN("he tries to repair it") {
@@ -914,7 +904,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Item repair that consumes items",
       user->giveItem(&server->findItem("heart"));
 
       AND_WHEN("it is broken") {
-        auto &heart = user->inventory(0).first;
+        auto &heart = user->inventory(0);
         BREAK_ITEM(heart);
 
         AND_WHEN("he tries to repair it") {
@@ -937,7 +927,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Item repair that consumes items",
               WAIT_UNTIL(!heart.isBroken());
 
               AND_THEN("he no longer has food") {
-                const auto &foodSlot = user->inventory(1).first;
+                const auto &foodSlot = user->inventory(1);
                 WAIT_UNTIL(!foodSlot.hasItem());
               }
             }
@@ -965,7 +955,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Item repair that requires a tool",
       user->giveItem(&server->findItem("circuit"));
 
       AND_WHEN("it is broken") {
-        auto &circuit = user->inventory(0).first;
+        auto &circuit = user->inventory(0);
         BREAK_ITEM(circuit);
 
         AND_WHEN("he tries to repair it") {
@@ -1008,7 +998,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Item repair that requires a tool",
       user->giveItem(&server->findItem("parts"));
 
       AND_WHEN("it is broken") {
-        auto &watch = user->inventory(0).first;
+        auto &watch = user->inventory(0);
         BREAK_ITEM(watch);
 
         AND_WHEN("he tries to repair it") {
@@ -1016,7 +1006,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Item repair that requires a tool",
 
           THEN("he still has his parts") {
             REPEAT_FOR_MS(100);
-            CHECK(user->inventory(1).first.hasItem());
+            CHECK(user->inventory(1).hasItem());
           }
         }
       }
@@ -1142,7 +1132,7 @@ TEST_CASE("Object repair at a cost", "[damage-on-use][repair]") {
             WAIT_UNTIL(!snowman.isMissingHealth());
 
             AND_THEN("he no longer has the item") {
-              WAIT_UNTIL(!user.inventory(0).first.hasItem());
+              WAIT_UNTIL(!user.inventory(0).hasItem());
             }
           }
         }
@@ -1207,17 +1197,15 @@ TEST_CASE_METHOD(ServerAndClientWithData,
           <weapon damage="1" speed="1" consumes="grenade" />
       </item>
     )");
-    user->gear(6).first = {
-        &server->getFirstItem(),
-        ServerItem::Instance::ReportingInfo::UserGear(user, 6)};
-    user->gear(6).second = 1;
+    user->gear(6) = {&server->getFirstItem(),
+                     ServerItem::Instance::ReportingInfo::UserGear(user, 6), 1};
 
     WHEN("he dies") {
       user->kill();
 
       THEN("his grenade is still at full health") {
         REPEAT_FOR_MS(100);
-        CHECK(user->gear()[6].first.health() == Item::MAX_HEALTH);
+        CHECK(user->gear(6).health() == Item::MAX_HEALTH);
       }
     }
   }

@@ -17,7 +17,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "NPCs chain pull", "[ai]") {
     user->giveItem(spear);
     client->sendMessage(CL_SWAP_ITEMS,
                         makeArgs(Serial::Inventory(), 0, Serial::Gear(), 6));
-    WAIT_UNTIL(user->gear(6).first.type() == spear);
+    WAIT_UNTIL(user->gear(6).type() == spear);
 
     WHEN(
         "there are two bears and a neutral critter, close to each other but "

@@ -72,8 +72,8 @@ class NPC : public Entity, public QuestNode {
 
   void sendInfoToClient(const User &targetUser,
                         bool isNew = false) const override;
-  ServerItem::Slot *getSlotToTakeFromAndSendErrors(size_t slotNum,
-                                                   const User &user) override;
+  ServerItem::Instance *getSlotToTakeFromAndSendErrors(
+      size_t slotNum, const User &user) override;
 
   void writeToXML(XmlWriter &xw) const override;
 
