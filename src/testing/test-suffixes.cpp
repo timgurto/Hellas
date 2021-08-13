@@ -359,13 +359,26 @@ TEST_CASE("Suffixes on items in containers persist", "[suffixes]") {
 
     // Then the sword still has the suffix
     const auto &box = server.getFirstObject();
-    CHECK(box.container().at(0).suffix() == "extraFireResist");
+    CHECK(box.container().at(0).suffix() == "extraFireResist"s);
   }
 }
 
-/*
-TODO:
-Propagate to client
-Generate item names
-Merchant-object search?
-*/
+TEST_CASE_METHOD(ServerAndClientWithData, "Suffix names", "[suffixes]") {
+  GIVEN("the user has a \"Sword\" item with \"of Power\" suffix") {
+    useData(R"(
+      <suffixSet id="swordSuffixes" >
+        <suffix id="power" name="Power" />
+      </suffixSet>
+      <item id="sword" gearSlot="weapon" >
+        <randomSuffix fromSet="swordSuffixes" />
+      </item>
+    )");
+    user->giveItem(&server->getFirstItem());
+
+    THEN("the client knows its name is \"Sword of Power\"") {
+      const auto &cSlot = client->inventory()[0].first;
+      WAIT_UNTIL(cSlot.type() != nullptr);
+      CHECK(cSlot.name() == "Sword of Power"s);
+    }
+  }
+}
