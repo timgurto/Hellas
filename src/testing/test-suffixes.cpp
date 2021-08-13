@@ -334,9 +334,39 @@ TEST_CASE("Items loaded from data have the correct suffix", "[suffixes]") {
   }
 }
 
+TEST_CASE("Suffixes on items in containers persist", "[suffisxes]") {
+  // Given a box containing a sword with a fire-resist suffix
+  const auto data = R"(
+    <suffixSet id="swordSuffixes" >
+      <suffix id="extraFireResist">
+        <stats fireResist="1" />
+      </suffix>
+    </suffixSet>
+    <item id="sword" gearSlot="weapon" >
+      <randomSuffix fromSet="swordSuffixes" />
+    </item>
+    <objectType id="box" >
+      <container slots="1"/>
+    </objectType>
+  )";
+  {
+    auto server = TestServer::WithDataString(data);
+    auto &box = server.addObject("box", {10, 10});
+    box.container().addItems(&server.getFirstItem());
+
+    // When the server restarts
+  }
+  {
+    auto server = TestServer::WithDataStringAndKeepingOldData(data);
+
+    // Then the sword still has the suffix
+    const auto &box = server.getFirstObject();
+    CHECK(box.container().at(0).first.suffix() == "extraFireResist");
+  }
+}
+
 /*
 TODO:
-Persistence (in container/gear/inventory)
 Propagate to client
 Generate item names
 Merchant-object search?

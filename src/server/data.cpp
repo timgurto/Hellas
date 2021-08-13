@@ -508,6 +508,7 @@ void Server::loadEntities(XmlReader &xr,
     size_t q;
     // Default value to support transition of old data
     Hitpoints health = Item::MAX_HEALTH;
+    auto suffix = ""s;
     for (auto inventory : xr.getChildren("inventory", elem)) {
       assert(obj.hasContainer());
       if (!xr.findAttr(inventory, "item", s)) continue;
@@ -515,6 +516,7 @@ void Server::loadEntities(XmlReader &xr,
       q = 1;
       xr.findAttr(inventory, "qty", q);
       xr.findAttr(inventory, "health", health);
+      xr.findAttr(inventory, "suffix", suffix);
       if (obj.objType().container().slots() <= n) {
         _debug << Color::CHAT_ERROR
                << "Skipping object with invalid inventory slot." << Log::endl;
@@ -523,7 +525,8 @@ void Server::loadEntities(XmlReader &xr,
       auto &invSlot = obj.container().at(n);
       invSlot.first = ServerItem::Instance::LoadFromFile(
           &*_items.find(s),
-          ServerItem::Instance::ReportingInfo::InObjectContainer(), health, {});
+          ServerItem::Instance::ReportingInfo::InObjectContainer(), health,
+          suffix);
       invSlot.second = q;
 
       auto n = 0;
@@ -744,6 +747,8 @@ void Object::writeToXML(XmlWriter &xw) const {
       xw.setAttr(invSlotE, "item", pair.first.type()->id());
       if (pair.second > 1) xw.setAttr(invSlotE, "qty", pair.second);
       xw.setAttr(invSlotE, "health", pair.first.health());
+      if (pair.first.type()->hasSuffix())
+        xw.setAttr(invSlotE, "suffix", pair.first.suffix());
       if (pair.first.isSoulbound()) xw.setAttr(invSlotE, "soulbound", 1);
     }
   }
