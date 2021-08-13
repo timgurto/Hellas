@@ -306,29 +306,29 @@ TEST_CASE("A user can't pick up a quest he's already on", "[quests]") {
   }
 }
 
-TEST_CASE("After a user accepts a quest, he can't do so again", "[quests]") {
-  auto data = R"(
-    <objectType id="A" />
-    <quest id="quest1" startsAt="A" endsAt="A" />
-    <quest id="quest2" startsAt="A" endsAt="A" />
-  )";
-  auto s = TestServer::WithDataString(data);
-  auto c = TestClient::WithDataString(data);
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "After a user accepts a quest he can't do so again",
+                 "[quests]") {
+  GIVEN("an object A that gives two quests") {
+    useData(R"(
+      <objectType id="A" />
+      <quest id="quest1" startsAt="A" endsAt="A" />
+      <quest id="quest2" startsAt="A" endsAt="A" />
+    )");
+    const auto &questgiver = server->addObject("A", {10, 15});
 
-  // Given an object, A
-  s.addObject("A", {10, 15});
-  auto serial = s.getFirstObject().serial();
+    WHEN("the user accepts a quest from A") {
+      client->sendMessage(CL_ACCEPT_QUEST,
+                          makeArgs("quest1", questgiver.serial()));
+      WAIT_UNTIL(user->numQuests() == 1);
 
-  // When a client accepts a quest from A
-  s.waitForUsers(1);
-  c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", serial));
-  auto &user = s.getFirstUser();
-  WAIT_UNTIL(user.numQuests() == 1);
-
-  // Then he can see only one quest at object A
-  REPEAT_FOR_MS(100);
-  const auto &a = c.getFirstObject();
-  CHECK(a.startsQuests().size() == 1);
+      THEN("he can see only one quest at object A") {
+        WAIT_UNTIL(client->objects().size() == 1);
+        const auto &a = client->getFirstObject();
+        CHECK(a.startsQuests().size() == 1);
+      }
+    }
+  }
 }
 
 TEST_CASE("Quest UI", "[ui][.flaky][quests]") {
