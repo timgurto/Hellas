@@ -696,9 +696,13 @@ void CDataLoader::loadPermanentObjects(XmlReader &xr) {
 
 void CDataLoader::loadSuffixSets(XmlReader &xr) {
   for (auto elem : xr.getChildren("suffixSet")) {
+    auto setID = ""s;
+    xr.findAttr(elem, "id", setID);
+
     auto suffixElem = xr.findChild("suffix", elem);
     if (!suffixElem) continue;
-    xr.findAttr(suffixElem, "name", _client.gameData.suffixSets.name);
+    xr.findAttr(suffixElem, "name",
+                _client.gameData.suffixSets.setIDToSuffixName[setID]);
   }
 }
 
@@ -754,7 +758,12 @@ void CDataLoader::loadItems(XmlReader &xr) {
     auto quality = 0;
     if (xr.findAttr(elem, "quality", quality)) item.quality(quality);
 
-    if (xr.findChild("randomSuffix", elem)) item.setSuffix();
+    auto suffixSetElem = xr.findChild("randomSuffix", elem);
+    if (suffixSetElem) {
+      auto suffixSetID = ""s;
+      xr.findAttr(suffixSetElem, "fromSet", suffixSetID);
+      item.setSuffixSet(suffixSetID);
+    }
 
     auto offset = xr.findChild("offset", elem);
     if (offset != nullptr) {

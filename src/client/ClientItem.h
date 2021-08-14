@@ -45,7 +45,7 @@ class ClientItem : public Item, public HasSounds {
   Texture _gearImage;
   ScreenPoint _drawLoc;
   bool _isQuestItem{false};
-  bool _hasSuffix{false};
+  std::string _suffixSet{};
 
   // Should never be null.  Pointer rather than a reference so
   // that the type can be copied.
@@ -92,7 +92,7 @@ class ClientItem : public Item, public HasSounds {
   bool canBeScrapped() const;
   void markAsQuestItem() { _isQuestItem = true; }
   bool isQuestItem() const { return _isQuestItem; }
-  void setSuffix() { _hasSuffix = true; }
+  void setSuffixSet(std::string suffixSetID) { _suffixSet = suffixSetID; }
 
   static const ScreenPoint &gearOffset(size_t slot) {
     return gearOffsets[slot];

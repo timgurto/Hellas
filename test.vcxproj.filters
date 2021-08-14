@@ -212,6 +212,7 @@
     <ClCompile Include="src\testing\test-scrapping.cpp" />
     <ClCompile Include="src\testing\test-suffixes.cpp" />
     <ClCompile Include="src\server\Suffix.cpp" />
+    <ClCompile Include="src\client\CSuffixes.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />

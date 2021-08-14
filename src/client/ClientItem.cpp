@@ -319,7 +319,11 @@ bool ClientItem::Instance::isSoulbound() const { return _isSoulbound; }
 
 std::string ClientItem::Instance::name() const {
   auto ret = _type->name();
-  if (_type->_hasSuffix)
-    ret += " of "s + _type->_client->gameData.suffixSets.name;
+  const auto hasSuffix = !_type->_suffixSet.empty();
+  if (hasSuffix) {
+    const auto suffixName =
+        _type->_client->gameData.suffixSets.getSuffixName(_type->_suffixSet);
+    ret += " of "s + suffixName;
+  }
   return ret;
 }

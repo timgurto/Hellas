@@ -115,6 +115,7 @@
     <ClCompile Include="src\client\craftingWindow.cpp" />
     <ClCompile Include="src\client\CDataLoader.cpp" />
     <ClCompile Include="src\client\CRecipe.cpp" />
+    <ClCompile Include="src\client\CSuffixes.cpp" />
     <ClCompile Include="src\client\drawing.cpp" />
     <ClCompile Include="src\client\MemoisedImageDirectory.cpp" />
     <ClCompile Include="src\client\SDLwrappers.cpp" />

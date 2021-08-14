@@ -401,25 +401,44 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Suffix names", "[suffixes]") {
     }
   }
 
-  SECTION("Different suffix")
-  GIVEN("the user has a \"Sword\" item with an \"of Speed\" suffix") {
-    useData(R"(
-      <suffixSet id="weaponSuffixes" >
-        <suffix id="power" name="Speed" />
-      </suffixSet>
-      <item id="sword" name="Sword" gearSlot="weapon" >
-        <randomSuffix fromSet="weaponSuffixes" />
-      </item>
-    )");
-    const auto *sword = &server->findItem("sword");
+  SECTION("Distinct suffix sets") {
+    GIVEN("\"Sword\"s have \"of Speed\", and \"Axe\"s have \"of Might\"") {
+      useData(R"(
+        <suffixSet id="swordSuffixes" >
+          <suffix id="speed" name="Speed" />
+        </suffixSet>
+        <item id="sword" name="Sword" gearSlot="weapon" >
+          <randomSuffix fromSet="swordSuffixes" />
+        </item>
 
-    WHEN("the user has a sword") {
-      user->giveItem(sword);
+        <suffixSet id="axeSuffixes" >
+          <suffix id="might" name="Might" />
+        </suffixSet>
+        <item id="axe" name="Axe" gearSlot="weapon" >
+          <randomSuffix fromSet="axeSuffixes" />
+        </item>
+      )");
 
-      THEN("the client knows its name is \"Sword of Speed\"") {
-        const auto &cSlot = client->inventory()[0].first;
-        WAIT_UNTIL(cSlot.type() != nullptr);
-        CHECK(cSlot.name() == "Sword of Speed"s);
+      WHEN("the user has a sword") {
+        const auto *sword = &server->findItem("sword");
+        user->giveItem(sword);
+
+        THEN("the client knows its name is \"Sword of Speed\"") {
+          const auto &cSlot = client->inventory()[0].first;
+          WAIT_UNTIL(cSlot.type() != nullptr);
+          CHECK(cSlot.name() == "Sword of Speed"s);
+        }
+      }
+
+      WHEN("the user has an axe") {
+        const auto *axe = &server->findItem("axe");
+        user->giveItem(axe);
+
+        THEN("the client knows its name is \"Axe of Might\"") {
+          const auto &cSlot = client->inventory()[0].first;
+          WAIT_UNTIL(cSlot.type() != nullptr);
+          CHECK(cSlot.name() == "Axe of Might"s);
+        }
       }
     }
   }
@@ -427,8 +446,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Suffix names", "[suffixes]") {
   SECTION("items with no suffix") {
     GIVEN("the user has a simple item named \"gold\"") {
       useData(R"(
-      <item id="gold" name="Gold" />
-    )");
+        <item id="gold" name="Gold" />
+      )");
       user->giveItem(&server->getFirstItem());
 
       THEN("the client knows its name is \"gold\"") {

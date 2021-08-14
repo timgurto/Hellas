@@ -1,5 +1,8 @@
 #pragma once
 
+#include <map>
+
 struct CSuffixSets {
-  std::string name;
+  std::map<std::string, std::string> setIDToSuffixName;
+  std::string getSuffixName(std::string suffixSetID) const;
 };
