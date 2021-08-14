@@ -319,6 +319,7 @@ bool ClientItem::Instance::isSoulbound() const { return _isSoulbound; }
 
 std::string ClientItem::Instance::name() const {
   auto ret = _type->name();
-  if (_type->_hasSuffix) ret += " of Power"s;
+  if (_type->_hasSuffix)
+    ret += " of "s + _type->_client->gameData.suffixSets.name;
   return ret;
 }

@@ -65,6 +65,7 @@ void CDataLoader::load(bool keepOldData) {
     }
 
     loadFromAllFiles(&CDataLoader::loadObjectTypes);
+    loadFromAllFiles(&CDataLoader::loadSuffixSets);
     loadFromAllFiles(&CDataLoader::loadItemClasses);
     loadFromAllFiles(&CDataLoader::loadItems);
     loadFromAllFiles(&CDataLoader::loadPermanentObjects);
@@ -95,6 +96,7 @@ void CDataLoader::load(bool keepOldData) {
     loadBuffs(reader);
     _client.gameData.tagNames.readFromXML(reader);
     loadObjectTypes(reader);
+    loadSuffixSets(reader);
     loadItemClasses(reader);
     loadItems(reader);
     loadPermanentObjects(reader);
@@ -689,6 +691,14 @@ void CDataLoader::loadPermanentObjects(XmlReader &xr) {
     if (xr.findAttr(elem, "isDecoration", n) && n != 0) {
       obj->isDecoration(true);
     }
+  }
+}
+
+void CDataLoader::loadSuffixSets(XmlReader &xr) {
+  for (auto elem : xr.getChildren("suffixSet")) {
+    auto suffixElem = xr.findChild("suffix", elem);
+    if (!suffixElem) continue;
+    xr.findAttr(suffixElem, "name", _client.gameData.suffixSets.name);
   }
 }
 

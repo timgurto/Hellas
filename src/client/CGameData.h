@@ -7,6 +7,7 @@
 #include "../ItemClass.h"
 #include "CQuest.h"
 #include "CRecipe.h"
+#include "CSuffixes.h"
 #include "ClassInfo.h"
 #include "ClientBuff.h"
 #include "ClientItem.h"
@@ -30,6 +31,7 @@ struct CGameData {
   ClassInfo::Container classes;
   CQuests quests;
   Unlocks unlocks;
+  CSuffixSets suffixSets;
 
   using ObjectTypes =
       std::set<const ClientObjectType *, ClientObjectType::ptrCompare>;

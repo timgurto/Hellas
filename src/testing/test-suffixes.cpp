@@ -401,6 +401,29 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Suffix names", "[suffixes]") {
     }
   }
 
+  SECTION("Different suffix")
+  GIVEN("the user has a \"Sword\" item with an \"of Speed\" suffix") {
+    useData(R"(
+      <suffixSet id="weaponSuffixes" >
+        <suffix id="power" name="Speed" />
+      </suffixSet>
+      <item id="sword" name="Sword" gearSlot="weapon" >
+        <randomSuffix fromSet="weaponSuffixes" />
+      </item>
+    )");
+    const auto *sword = &server->findItem("sword");
+
+    WHEN("the user has a sword") {
+      user->giveItem(sword);
+
+      THEN("the client knows its name is \"Sword of Speed\"") {
+        const auto &cSlot = client->inventory()[0].first;
+        WAIT_UNTIL(cSlot.type() != nullptr);
+        CHECK(cSlot.name() == "Sword of Speed"s);
+      }
+    }
+  }
+
   SECTION("items with no suffix") {
     GIVEN("the user has a simple item named \"gold\"") {
       useData(R"(
