@@ -400,4 +400,19 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Suffix names", "[suffixes]") {
       }
     }
   }
+
+  SECTION("items with no suffix") {
+    GIVEN("the user has a simple item named \"gold\"") {
+      useData(R"(
+      <item id="gold" name="Gold" />
+    )");
+      user->giveItem(&server->getFirstItem());
+
+      THEN("the client knows its name is \"gold\"") {
+        const auto &cSlot = client->inventory()[0].first;
+        WAIT_UNTIL(cSlot.type() != nullptr);
+        CHECK(cSlot.name() == "Gold"s);
+      }
+    }
+  }
 }

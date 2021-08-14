@@ -744,6 +744,8 @@ void CDataLoader::loadItems(XmlReader &xr) {
     auto quality = 0;
     if (xr.findAttr(elem, "quality", quality)) item.quality(quality);
 
+    if (xr.findChild("randomSuffix", elem)) item.setSuffix();
+
     auto offset = xr.findChild("offset", elem);
     if (offset != nullptr) {
       ScreenPoint drawLoc;
