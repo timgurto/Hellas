@@ -69,14 +69,17 @@ void ClientItem::init() {
   }
 }
 
-const Tooltip &ClientItem::tooltip() const {
+const Tooltip &ClientItem::tooltip(std::string suffixID) const {
   if (_tooltip.hasValue()) return _tooltip.value();
 
   _tooltip = Tooltip{};
   auto &tooltip = _tooltip.value();
 
   tooltip.setColor(nameColor());
-  tooltip.addLine(_name);
+  if (suffixID.empty())
+    tooltip.addLine(_name);
+  else
+    tooltip.addLine(nameWithSuffix(suffixID));
 
   // Gear slot/stats
   if (_gearSlot != Client::GEAR_SLOTS) {
@@ -229,7 +232,7 @@ void ClientItem::Instance::createRegularTooltip() const {
     return;
   }
 
-  _tooltip = _type->tooltip();
+  _tooltip = _type->tooltip(_suffix);
   auto &tooltip = _tooltip.value();
 
   tooltip.setColor(Color::TOOLTIP_BODY);

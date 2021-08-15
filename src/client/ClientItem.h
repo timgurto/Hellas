@@ -117,7 +117,7 @@ class ClientItem : public Item, public HasSounds {
   }
   const ClientObjectType *constructsObject() const { return _constructsObject; }
 
-  const Tooltip &tooltip() const;  // Getter; creates tooltip on first call.
+  const Tooltip &tooltip(std::string suffixID = {}) const;
   void refreshTooltip() { _tooltip = Optional<Tooltip>{}; }
 
   enum DrawOffset { MAP_OFFSET, NO_OFFSET };
