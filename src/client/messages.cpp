@@ -603,23 +603,23 @@ void Client::handleBufferedMessages(const std::string &msg) {
       }
 
       case SV_RECEIVED_ITEM: {
-        singleMsg.get(buffer, BUFFER_SIZE, MSG_DELIM);
-        auto id = std::string{buffer};
         auto qty = 0;
-        singleMsg >> del >> qty >> del;
-
+        auto id = ""s;
+        auto suffixID = ""s;
+        singleMsg >> id >> del >> suffixID >> del >> qty >> del;
         if (del != MSG_END) return;
 
         auto item = gameData.items.find(id);
         if (item == gameData.items.end()) break;
 
-        addFloatingCombatText("+"s + toString(qty) + " "s + item->second.name(),
+        const auto itemName = item->second.nameWithSuffix(suffixID);
+        addFloatingCombatText("+"s + toString(qty) + " "s + itemName,
                               _character.location(),
                               Color::ITEM_QUALITY_COMMON);
 
         auto logMessage = "Received "s;
         if (qty > 1) logMessage += toString(qty) + "x "s;
-        logMessage += item->second.name();
+        logMessage += itemName;
         _debug(logMessage);
 
         item->second.playSoundOnce(*this, "drop");

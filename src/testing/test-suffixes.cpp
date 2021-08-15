@@ -481,10 +481,10 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Suffix names", "[suffixes]") {
 
 /*
 TODO
+Dropped items (and their display names)
 Client:
 stats
 
 Maybe not with tests:
 Show stats in tooltip
-Use item instance's name everywhere
 */

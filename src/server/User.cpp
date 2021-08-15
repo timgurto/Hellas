@@ -258,6 +258,7 @@ bool User::hasExceededTimeout() const {
 size_t User::giveItem(const ServerItem *item, size_t quantity,
                       Hitpoints health) {
   auto &server = Server::instance();
+  auto suffixChosen = ""s;
 
   auto remaining = quantity;
 
@@ -330,6 +331,7 @@ size_t User::giveItem(const ServerItem *item, size_t quantity,
           item, ServerItem::Instance::ReportingInfo::UserInventory(this, i),
           qtyInThisSlot};
       _inventory[i].initHealth(health);
+      suffixChosen = _inventory[i].suffix();
       server.sendInventoryMessage(*this, i, Serial::Inventory());
       remaining -= qtyInThisSlot;
       if (remaining == 0) break;
@@ -365,7 +367,8 @@ size_t User::giveItem(const ServerItem *item, size_t quantity,
   auto quantityGiven = quantity - remaining;
   if (quantityGiven > 0) {
     ProgressLock::triggerUnlocks(*this, ProgressLock::ITEM, item);
-    sendMessage({SV_RECEIVED_ITEM, makeArgs(item->id(), quantityGiven)});
+    sendMessage(
+        {SV_RECEIVED_ITEM, makeArgs(item->id(), suffixChosen, quantityGiven)});
   }
   return remaining;
 }

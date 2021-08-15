@@ -15,6 +15,13 @@ ClientItem::ClientItem(const Client &client, const std::string &id,
                        const std::string &name)
     : _client(&client), Item(id), _name(name), _constructsObject(nullptr) {}
 
+std::string ClientItem::nameWithSuffix(std::string suffixID) const {
+  if (!hasSuffix()) return _name;
+
+  return _name + " of "s +
+         _client->gameData.suffixSets.getSuffixName(_suffixSet, suffixID);
+}
+
 void ClientItem::icon(const std::string &filename) {
   static const std::string prefix = "Images/Items/";
   _icon = {prefix + filename};

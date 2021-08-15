@@ -359,7 +359,7 @@ enum MessageCode {
 
   // A client received something.  Signal for aesthetics (e.g., floating combat
   // text); the more critical message to update client state is SV_INVENTORY.
-  // Arguments: ID, quantity
+  // Arguments: ID, suffix, quantity
   SV_RECEIVED_ITEM,
 
   // The details of an object
