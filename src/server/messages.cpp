@@ -344,7 +344,8 @@ HANDLE_MESSAGE(CL_DROP) {
           getRandomPointInCircle(user.location(), Server::ACTION_DISTANCE);
       if (isLocationValid(dropLocation, DroppedItem::TYPE)) {
         addEntity(new DroppedItem(*item, itemInstance.health(),
-                                  itemInstance.quantity(), dropLocation));
+                                  itemInstance.quantity(),
+                                  itemInstance.suffix(), dropLocation));
         break;
       }
 

@@ -346,7 +346,7 @@ class User : public Object {  // TODO: Don't inherit from Object
 
   // Return value: 0 if there was room for all items, otherwise the remainder.
   size_t giveItem(const ServerItem *item, size_t quantity = 1,
-                  Hitpoints health = Item::MAX_HEALTH);
+                  Hitpoints health = Item::MAX_HEALTH, std::string suffix = {});
 
   static const Level MAX_LEVEL = 60;
   static const std::vector<XP> XP_PER_LEVEL;

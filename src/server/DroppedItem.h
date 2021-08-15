@@ -13,7 +13,7 @@ class DroppedItem : public Entity {
   };
 
   DroppedItem(const ServerItem &itemType, Hitpoints health, size_t quantity,
-              const MapPoint &location);
+              std::string suffix, const MapPoint &location);
   ~DroppedItem() {}
 
   char classTag() const override { return 'i'; }
@@ -33,4 +33,5 @@ class DroppedItem : public Entity {
   const ServerItem &_itemType{nullptr};
   size_t _quantity;
   Hitpoints _health;
+  std::string _suffix;
 };

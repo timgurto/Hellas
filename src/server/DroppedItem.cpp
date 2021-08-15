@@ -10,11 +10,13 @@ DroppedItem::Type::Type() : EntityType("droppedItem") {
 }
 
 DroppedItem::DroppedItem(const ServerItem &itemType, Hitpoints health,
-                         size_t quantity, const MapPoint &location)
+                         size_t quantity, std::string suffix,
+                         const MapPoint &location)
     : Entity(&TYPE, location),
       _quantity(quantity),
       _health(health),
-      _itemType(itemType) {
+      _itemType(itemType),
+      _suffix(suffix) {
   // Once-off init
   if (!TYPE.collides()) TYPE.collisionRect({-8, -8, 16, 16});
 }
@@ -28,7 +30,7 @@ void DroppedItem::sendInfoToClient(const User &targetUser, bool isNew) const {
 }
 
 void DroppedItem::getPickedUpBy(User &user) {
-  auto remainder = user.giveItem(&_itemType, _quantity, _health);
+  auto remainder = user.giveItem(&_itemType, _quantity, _health, _suffix);
 
   if (remainder == _quantity) {
     user.sendMessage({WARNING_INVENTORY_FULL});
@@ -38,7 +40,7 @@ void DroppedItem::getPickedUpBy(User &user) {
   if (remainder > 0) {
     user.sendMessage({WARNING_INVENTORY_FULL});
     Server::instance().addEntity(
-        new DroppedItem(_itemType, _health, remainder, location()));
+        new DroppedItem(_itemType, _health, remainder, _suffix, location()));
   }
 
   markForRemoval();

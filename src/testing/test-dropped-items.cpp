@@ -519,7 +519,7 @@ TEST_CASE("Dropped items are persistent", "[persistence][dropped-items]") {
   {
     auto s = TestServer::WithDataString(data);
     const auto &coin = s.getFirstItem();
-    s->addEntity(new DroppedItem(coin, Hitpoints{}, 5, {20, 20}));
+    s->addEntity(new DroppedItem(coin, Hitpoints{}, 5, {}, {20, 20}));
 
     // When the server restarts
   }
@@ -570,7 +570,7 @@ TEST_CASE("Dropped-item health is persistent", "[persistence][dropped-items]") {
     {
       auto s = TestServer::WithDataString(data);
       const auto &thing = s.getFirstItem();
-      s->addEntity(new DroppedItem(thing, testHealth, 1, {20, 20}));
+      s->addEntity(new DroppedItem(thing, testHealth, 1, {}, {20, 20}));
 
       // When the server restarts
     }
@@ -584,3 +584,50 @@ TEST_CASE("Dropped-item health is persistent", "[persistence][dropped-items]") {
     }
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Dropped items preserve suffixes",
+                 "[dropped-items][suffixes]") {
+  GIVEN("swords have either a \"rad\" or \"cool\" suffix") {
+    useData(R"(
+      <suffixSet id="swordSuffixes" >
+        <suffix id="rad"/>
+        <suffix id="cool"/>
+      </suffixSet>
+      <item id="sword" gearSlot="weapon" >
+        <randomSuffix fromSet="swordSuffixes" />
+      </item>
+    )");
+
+    const auto ATTEMPTS = 20;
+    for (auto i = 0; i != ATTEMPTS; ++i) {
+      AND_GIVEN("the user has a sword with a random suffix") {
+        user->giveItem(&server->getFirstItem());
+        auto &slot0 = user->inventory(0);
+        const auto suffixBefore = slot0.suffix();
+
+        WHEN("he drops it") {
+          client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+
+          AND_WHEN("he picks it back up") {
+            WAIT_UNTIL(client->entities().size() == 2);
+            auto &di = client->getFirstDroppedItem();
+            client->sendMessage(CL_PICK_UP_DROPPED_ITEM, makeArgs(di.serial()));
+            WAIT_UNTIL(slot0.hasItem());
+
+            THEN("it still has the same suffix") {
+              REQUIRE(slot0.suffix() == suffixBefore);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/*
+TODO
+Persistent suffixes
+Suffix names
+Suffix stats/tooltip?
+Propagation to client
+*/

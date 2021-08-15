@@ -505,8 +505,3 @@ TEST_CASE("Suffix stats in client", "[suffixes][stats]") {
     }
   }
 }
-
-/*
-TODO
-Dropped items (plus names, tooltips)
-*/

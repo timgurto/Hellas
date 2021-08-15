@@ -255,8 +255,8 @@ bool User::hasExceededTimeout() const {
   return SDL_GetTicks() - _lastContact > timeAllowed;
 }
 
-size_t User::giveItem(const ServerItem *item, size_t quantity,
-                      Hitpoints health) {
+size_t User::giveItem(const ServerItem *item, size_t quantity, Hitpoints health,
+                      std::string suffix) {
   auto &server = Server::instance();
   auto suffixChosen = ""s;
 
@@ -331,6 +331,7 @@ size_t User::giveItem(const ServerItem *item, size_t quantity,
           item, ServerItem::Instance::ReportingInfo::UserInventory(this, i),
           qtyInThisSlot};
       _inventory[i].initHealth(health);
+      if (!suffix.empty()) _inventory[i].setSuffix(suffix);
       suffixChosen = _inventory[i].suffix();
       server.sendInventoryMessage(*this, i, Serial::Inventory());
       remaining -= qtyInThisSlot;
