@@ -87,6 +87,11 @@ const Tooltip &ClientItem::tooltip(std::string suffixID) const {
   else
     tooltip.addLine(_name);
 
+  if (isQuestItem()) {
+    tooltip.addGap();
+    tooltip.addLine("Quest item");
+  }
+
   // Gear slot/stats
   if (_gearSlot != Client::GEAR_SLOTS) {
     tooltip.addGap();
@@ -244,11 +249,6 @@ void ClientItem::Instance::createRegularTooltip() const {
   auto &tooltip = _tooltip.value();
 
   tooltip.setColor(Color::TOOLTIP_BODY);
-
-  if (_type->isQuestItem()) {
-    tooltip.addGap();
-    tooltip.addLine("Quest item");
-  }
 
   if (isSoulbound()) {
     tooltip.addGap();
