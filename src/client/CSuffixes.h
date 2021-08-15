@@ -6,6 +6,7 @@
 struct CSuffixSets {
   struct Suffix {
     std::string name;
+    StatsMod stats;
   };
   using SuffixSet = std::map<std::string, Suffix>;
   std::map<std::string, SuffixSet> sets;

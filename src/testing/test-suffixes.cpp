@@ -480,19 +480,28 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Suffix names", "[suffixes]") {
 }
 
 TEST_CASE("Suffix stats in client", "[suffixes][stats]") {
-  GIVEN("a fire-resist suffix") {
+  GIVEN("fire-resist suffixes") {
     auto client = TestClient::WithDataString(R"(
       <suffixSet id="suffixes" >
-        <suffix id="extraFireResist">
+        <suffix id="1FR">
           <stats fireResist="1" />
+        </suffix>
+        <suffix id="2FR">
+          <stats fireResist="2" />
         </suffix>
       </suffixSet>
     )");
 
-    THEN("the client knows it gives fire resistance") {
-      const auto stats = client->gameData.suffixSets.getSuffixStats(
-          "suffixes", "extraFireResist");
+    THEN("the client knows that 1FR gives 1 fire resist") {
+      auto stats =
+          client->gameData.suffixSets.getSuffixStats("suffixes", "1FR");
       CHECK(stats.fireResist == ArmourClass{1});
+    }
+
+    THEN("the client knows that 2FR gives 2 fire resist") {
+      auto stats =
+          client->gameData.suffixSets.getSuffixStats("suffixes", "2FR");
+      CHECK(stats.fireResist == ArmourClass{2});
     }
   }
 }
