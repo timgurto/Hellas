@@ -102,7 +102,7 @@ void ContainerGrid::refresh() {
 
       // Indicate matching gear slot if an item is being dragged
     } else if (_serial.isGear() && draggingFrom.validGrid()) {
-      auto itemSlot = draggingFrom.item()->gearSlot();
+      auto itemSlot = draggingFrom.item()->type()->gearSlot();
       (i == itemSlot ? Client::images.itemHighlightMatch
                      : Client::images.itemHighlightNoMatch)
           .draw(slotRect.x + 1, slotRect.y + 1);
@@ -171,7 +171,7 @@ void ContainerGrid::leftMouseUp(Element &e, const ScreenPoint &mousePos) {
       if (item && !draggingFrom.slotMatches(item->gearSlot())) return;
     } else if (grid._serial.isGear()) {  // To gear slot
       const auto *item = draggingFrom.item();
-      if (item && item->gearSlot() != slot) return;
+      if (item && item->type()->gearSlot() != slot) return;
     }
   }
 
@@ -181,7 +181,7 @@ void ContainerGrid::leftMouseUp(Element &e, const ScreenPoint &mousePos) {
         {CL_SWAP_ITEMS, makeArgs(draggingFrom.object(), draggingFrom.slot(),
                                  grid._serial, slot)});
     const auto *item = draggingFrom.item();
-    if (item) item->playSoundOnce(*grid.client(), "drop");
+    if (item) item->type()->playSoundOnce(*grid.client(), "drop");
 
     draggingFrom.clear();
     grid._client->onChangeDragItem();
@@ -269,7 +269,7 @@ void ContainerGrid::scrapItem(Client &client) {
   auto &draggingFrom = client.containerGridBeingDraggedFrom;
   if (!draggingFrom.validGrid() || !draggingFrom.validSlot()) return;
 
-  if (draggingFrom.item()->shouldWarnBeforeScrapping())
+  if (draggingFrom.item()->type()->shouldWarnBeforeScrapping())
     client.scrapItemOnConfirmation(draggingFrom, draggingFrom.item()->name());
   else
     client.sendMessage(
@@ -297,9 +297,9 @@ bool ContainerGrid::GridInUse::matches(const ContainerGrid &grid,
   return _grid == &grid && _slot == slot;
 }
 
-const ClientItem *ContainerGrid::GridInUse::item() const {
+const ClientItem::Instance *ContainerGrid::GridInUse::item() const {
   if (!validGrid() || !validSlot()) return nullptr;
-  return _grid->_linked[_slot].first.type();
+  return &_grid->_linked[_slot].first;
 }
 
 const Serial ContainerGrid::GridInUse::object() const { return _grid->_serial; }

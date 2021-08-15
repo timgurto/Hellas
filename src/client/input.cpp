@@ -375,7 +375,7 @@ void Client::handleInput(double delta) {
             if (useItem) {
               px_t x = toInt(_mouse.x - offset().x),
                    y = toInt(_mouse.y - offset().y);
-              if (useItem->constructsObject()) {
+              if (useItem->type()->constructsObject()) {
                 auto messageCode = isCtrlPressed()
                                        ? CL_CONSTRUCT_FROM_ITEM_FOR_CITY
                                        : CL_CONSTRUCT_FROM_ITEM;
@@ -440,13 +440,14 @@ void Client::handleInput(double delta) {
 
             // Use item
             const auto *useItem = containerGridInUse.item();
-            if (useItem && useItem->constructsObject()) {
-              _constructionFootprint = useItem->constructsObject()->image();
+            if (useItem && useItem->type()->constructsObject()) {
+              _constructionFootprint =
+                  useItem->type()->constructsObject()->image();
               break;
             }
             _constructionFootprint = Texture();
 
-            if (useItem && useItem->castsSpellOnUse()) {
+            if (useItem && useItem->type()->castsSpellOnUse()) {
               sendMessage({CL_CAST_SPELL_FROM_ITEM, containerGridInUse.slot()});
               containerGridInUse.clear();
               break;

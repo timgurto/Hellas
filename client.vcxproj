@@ -123,6 +123,7 @@
     <ClCompile Include="src\client\CQuest.cpp" />
     <ClCompile Include="src\client\craftingWindow.cpp" />
     <ClCompile Include="src\client\CRecipe.cpp" />
+    <ClCompile Include="src\client\CSuffixes.cpp" />
     <ClCompile Include="src\client\drawing.cpp" />
     <ClCompile Include="src\client\HasSounds.cpp" />
     <ClCompile Include="src\client\HelpEntry.cpp" />
@@ -235,6 +236,7 @@
     <ClInclude Include="src\client\Connection.h" />
     <ClInclude Include="src\client\CQuest.h" />
     <ClInclude Include="src\client\CRecipe.h" />
+    <ClInclude Include="src\client\CSuffixes.h" />
     <ClInclude Include="src\client\drawing.h" />
     <ClInclude Include="src\client\HasSounds.h" />
     <ClInclude Include="src\client\HelpEntry.h" />

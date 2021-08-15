@@ -27,7 +27,8 @@ void Client::draw() const {
   // Used below by terrain and entities
   _constructionFootprintType = _selectedConstruction;
   if (!_constructionFootprintType && containerGridInUse.item())
-    _constructionFootprintType = containerGridInUse.item()->constructsObject();
+    _constructionFootprintType =
+        containerGridInUse.item()->type()->constructsObject();
   if (_constructionFootprintType)
     _constructionFootprintAllowedTerrain =
         TerrainList::findList(_constructionFootprintType->allowedTerrain());
@@ -123,9 +124,9 @@ void Client::draw() const {
                                              -Client::ICON_SIZE / 2);
   const auto *draggedItem = containerGridBeingDraggedFrom.item();
   if (draggedItem) {
-    if (draggedItem->canBeScrapped())
+    if (draggedItem->type()->canBeScrapped())
       _instructionsLabel->changeText("Press Delete to scrap this item.");
-    draggedItem->icon().draw(_mouse + MOUSE_ICON_OFFSET);
+    draggedItem->type()->icon().draw(_mouse + MOUSE_ICON_OFFSET);
   }
 
   // Construction footprint

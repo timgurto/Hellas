@@ -58,7 +58,7 @@ class ContainerGrid : public Element {
     size_t slot() const;
     bool slotMatches(size_t slot) const;
     bool matches(const ContainerGrid &grid, size_t slot) const;
-    const ClientItem *item() const;
+    const ClientItem::Instance *item() const;
     const Serial object() const;
     void clear();
     void markGridAsChanged();
