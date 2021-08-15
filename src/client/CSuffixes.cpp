@@ -11,3 +11,10 @@ std::string CSuffixSets::getSuffixName(std::string suffixSetID,
 
   return suffixIt->second.name;
 }
+
+const StatsMod &CSuffixSets::getSuffixStats(std::string suffixSetID,
+                                            std::string suffixID) const {
+  static auto stats = StatsMod{};
+  stats.fireResist = 1;
+  return stats;
+}

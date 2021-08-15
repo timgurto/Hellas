@@ -479,11 +479,27 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Suffix names", "[suffixes]") {
   }
 }
 
+TEST_CASE("Suffix stats in client", "[suffixes][stats]") {
+  GIVEN("a fire-resist suffix") {
+    auto client = TestClient::WithDataString(R"(
+      <suffixSet id="suffixes" >
+        <suffix id="extraFireResist">
+          <stats fireResist="1" />
+        </suffix>
+      </suffixSet>
+    )");
+
+    THEN("the client knows it gives fire resistance") {
+      const auto stats = client->gameData.suffixSets.getSuffixStats(
+          "suffixes", "extraFireResist");
+      CHECK(stats.fireResist == ArmourClass{1});
+    }
+  }
+}
+
 /*
 TODO
 Dropped items (and their display names)
-Client:
-stats
 
 Maybe not with tests:
 Show stats in tooltip
