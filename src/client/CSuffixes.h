@@ -3,7 +3,10 @@
 #include <map>
 
 struct CSuffixSets {
-  using SuffixSet = std::map<std::string, std::string>;  // ID -> name
+  struct Suffix {
+    std::string name;
+  };
+  using SuffixSet = std::map<std::string, Suffix>;
   std::map<std::string, SuffixSet> sets;
   std::string getSuffixName(std::string suffixSetID,
                             std::string suffixID) const;

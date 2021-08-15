@@ -9,5 +9,5 @@ std::string CSuffixSets::getSuffixName(std::string suffixSetID,
   auto suffixIt = set.find(suffixID);
   if (suffixIt == set.end()) return {};
 
-  return suffixIt->second;
+  return suffixIt->second.name;
 }
