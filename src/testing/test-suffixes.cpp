@@ -152,14 +152,14 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Multiple suffixes in a suffix set",
   GIVEN("a shield can have either fire or water resistance") {
     useData(R"(
       <suffixSet id="shieldSuffixes" >
-        <suffix id="extraFireResist">
+        <suffix id="extraFireResist" name="Fire Resist">
           <stats fireResist="1" />
         </suffix>
-        <suffix id="extraWaterResist">
+        <suffix id="extraWaterResist" name="Water Resist">
           <stats waterResist="1" />
         </suffix>
       </suffixSet>
-      <item id="shield" gearSlot="offhand" >
+      <item id="shield" name="Shield" gearSlot="offhand" >
         <randomSuffix fromSet="shieldSuffixes" />
       </item>
     )");
@@ -173,8 +173,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Multiple suffixes in a suffix set",
           "resistance") {
         bool fireResistanceFound{false}, waterResistanceFound{false};
         for (auto i = 0; i != User::INVENTORY_SIZE; ++i) {
-          const auto statsFromThisShield =
-              user->inventory()[i].statsFromSuffix();
+          const auto statsFromThisShield = user->inventory(i).statsFromSuffix();
           if (statsFromThisShield.fireResist == ArmourClass{1})
             fireResistanceFound = true;
           else if (statsFromThisShield.waterResist == ArmourClass{1})
@@ -183,6 +182,27 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Multiple suffixes in a suffix set",
 
         CHECK(fireResistanceFound);
         CHECK(waterResistanceFound);
+      }
+
+      AND_WHEN("the client receives that information") {
+        WAIT_UNTIL(client->inventory()[User::INVENTORY_SIZE - 1].first.type() !=
+                   nullptr);
+
+        THEN(
+            "at least one shield has \"of Fire Resistance\", and at least one "
+            "has \"of Water Resistance\"") {
+          bool fireResistanceFound{false}, waterResistanceFound{false};
+          for (auto i = 0; i != User::INVENTORY_SIZE; ++i) {
+            const auto itemName = client->inventory()[i].first.name();
+            if (itemName == "Shield of Fire Resist"s)
+              fireResistanceFound = true;
+            else if (itemName == "Shield of Water Resist"s)
+              waterResistanceFound = true;
+          }
+
+          CHECK(fireResistanceFound);
+          CHECK(waterResistanceFound);
+        }
       }
     }
   }
@@ -458,3 +478,13 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Suffix names", "[suffixes]") {
     }
   }
 }
+
+/*
+TODO
+Client:
+stats
+
+Maybe not with tests:
+Show stats in tooltip
+Use item instance's name everywhere
+*/

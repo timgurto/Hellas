@@ -321,8 +321,8 @@ std::string ClientItem::Instance::name() const {
   auto ret = _type->name();
   const auto hasSuffix = !_type->_suffixSet.empty();
   if (hasSuffix) {
-    const auto suffixName =
-        _type->_client->gameData.suffixSets.getSuffixName(_type->_suffixSet);
+    const auto suffixName = _type->_client->gameData.suffixSets.getSuffixName(
+        _type->_suffixSet, _suffix);
     ret += " of "s + suffixName;
   }
   return ret;

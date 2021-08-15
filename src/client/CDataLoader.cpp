@@ -701,8 +701,11 @@ void CDataLoader::loadSuffixSets(XmlReader &xr) {
 
     auto suffixElem = xr.findChild("suffix", elem);
     if (!suffixElem) continue;
+    auto suffixID = ""s;
+    xr.findAttr(suffixElem, "id", suffixID);
+
     xr.findAttr(suffixElem, "name",
-                _client.gameData.suffixSets.setIDToSuffixName[setID]);
+                _client.gameData.suffixSets.sets[setID][suffixID]);
   }
 }
 

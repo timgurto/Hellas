@@ -115,7 +115,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Bad inventory message to client",
 
     WHEN("the server sends SV_INVENTORY with a bad serial") {
       const auto badSerial = 50;
-      user->sendMessage({SV_INVENTORY, makeArgs(badSerial, 0, "gold", 1, 1)});
+      user->sendMessage(
+          {SV_INVENTORY, makeArgs(badSerial, 0, "gold"s, 1, 1, ""s)});
 
       THEN("the client survives") { REPEAT_FOR_MS(100); }
     }

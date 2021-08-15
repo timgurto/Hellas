@@ -663,8 +663,8 @@ void User::clearInventory() {
   for (auto i = 0; i != INVENTORY_SIZE; ++i)
     if (_inventory[i].hasItem()) {
       _inventory[i] = {};
-      server.sendMessage(
-          socket(), {SV_INVENTORY, makeArgs(Serial::Inventory(), i, "", 0, 0)});
+      server.sendMessage(socket(), {SV_INVENTORY, makeArgs(Serial::Inventory(),
+                                                           i, ""s, 0, 0, ""s)});
     }
 }
 
@@ -673,8 +673,8 @@ void User::clearGear() {
   for (auto i = 0; i != GEAR_SLOTS; ++i)
     if (_gear[i].hasItem()) {
       _gear[i] = {};
-      server.sendMessage(
-          socket(), {SV_INVENTORY, makeArgs(Serial::Gear(), i, "", 0, 0 /**/)});
+      server.sendMessage(socket(), {SV_INVENTORY, makeArgs(Serial::Gear(), i,
+                                                           ""s, 0, 0, ""s)});
     }
 }
 
@@ -1557,7 +1557,7 @@ void User::sendInventorySlot(size_t slotIndex) const {
   if (!slot.type()) return;  // Is this right?
   sendMessage(
       {SV_INVENTORY, makeArgs(Serial::Inventory(), slotIndex, slot.type()->id(),
-                              slot.quantity(), slot.health())});
+                              slot.quantity(), slot.health(), slot.suffix())});
 }
 
 void User::sendGearSlot(size_t slotIndex) const {
@@ -1565,7 +1565,7 @@ void User::sendGearSlot(size_t slotIndex) const {
   if (!slot.type()) return;
   sendMessage(
       {SV_INVENTORY, makeArgs(Serial::Gear(), slotIndex, slot.type()->id(),
-                              slot.quantity(), slot.health())});
+                              slot.quantity(), slot.health(), slot.suffix())});
 }
 
 void User::sendSpawnPoint(bool hasChanged) const {

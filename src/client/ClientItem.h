@@ -19,8 +19,12 @@ class ClientItem : public Item, public HasSounds {
   class Instance {
    public:
     Instance() = default;
-    Instance(const ClientItem *type, Hitpoints health, bool isSoulbound)
-        : _type(type), _health(health), _isSoulbound(isSoulbound) {}
+    Instance(const ClientItem *type, Hitpoints health, bool isSoulbound,
+             std::string suffix)
+        : _type(type),
+          _health(health),
+          _isSoulbound(isSoulbound),
+          _suffix(suffix) {}
 
     const ClientItem *type() const { return _type; }
     Hitpoints health() const { return _health; }
@@ -33,6 +37,8 @@ class ClientItem : public Item, public HasSounds {
     const ClientItem *_type{nullptr};
     Hitpoints _health{0};
     bool _isSoulbound{false};
+    std::string _suffix{};
+
     mutable Optional<Tooltip> _tooltip;  // Builds on the basic item tooltip
     void createRegularTooltip() const;
     mutable Optional<Tooltip> _repairTooltip;

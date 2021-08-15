@@ -354,7 +354,7 @@ enum MessageCode {
   SV_YOU_CHANGED_YOUR_SPAWN_POINT,
 
   // An item is in the user's inventory, or a container object
-  // Arguments: serial, slot, ID, quantity, item health, isSoulbound
+  // Arguments: serial, slot, ID, quantity, item health, isSoulbound, suffixID
   SV_INVENTORY,
 
   // A client received something.  Signal for aesthetics (e.g., floating combat

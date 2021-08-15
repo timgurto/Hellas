@@ -579,22 +579,26 @@ void Client::handleBufferedMessages(const std::string &msg) {
                            Color::CHAT_ERROR);
           break;
         }
-        _otherUsers[username]->gear()[slot].first = {&item, itemHealth, false};
+        _otherUsers[username]->gear()[slot].first = {
+            &item, itemHealth, false, {}};
         break;
       }
 
       case SV_INVENTORY: {
-        Serial serial;
+        auto serial = Serial{};
         size_t slot, quantity;
-        Hitpoints itemHealth;
-        std::string itemID;
-        int isSoulbound;
+        auto itemHealth = Hitpoints{};
+        auto itemID = ""s;
+        auto isSoulbound = 0;
+        auto suffixID = ""s;
         singleMsg >> serial >> del >> slot >> del >> itemID >> del >>
             quantity >> del >> itemHealth >> del >> isSoulbound >> del;
+        readString(singleMsg, suffixID, MSG_END);
+        singleMsg >> del;
         if (del != MSG_END) break;
 
         handle_SV_INVENTORY(serial, slot, itemID, quantity, itemHealth,
-                            isSoulbound != 0);
+                            isSoulbound != 0, suffixID);
         break;
       }
 
@@ -2238,7 +2242,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
 
 void Client::handle_SV_INVENTORY(Serial serial, size_t slot,
                                  const std::string &itemID, size_t quantity,
-                                 Hitpoints itemHealth, bool isSoulbound) {
+                                 Hitpoints itemHealth, bool isSoulbound,
+                                 std::string suffixID) {
   const ClientItem *item = nullptr;
   if (quantity > 0) {
     const auto it = gameData.items.find(itemID);
@@ -2295,7 +2300,7 @@ void Client::handle_SV_INVENTORY(Serial serial, size_t slot,
   }
 
   auto &invSlot = (*container)[slot];
-  invSlot.first = ClientItem::Instance{item, itemHealth, isSoulbound};
+  invSlot.first = ClientItem::Instance{item, itemHealth, isSoulbound, suffixID};
   invSlot.second = quantity;
 
   // Update any UI stuff

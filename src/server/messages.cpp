@@ -2151,7 +2151,8 @@ void Server::sendInventoryMessageInner(
   auto msg = Message{
       SV_INVENTORY,
       makeArgs(serial, slot, itemID, containerSlot.quantity(),
-               containerSlot.health(), containerSlot.isSoulbound() ? 1 : 0)};
+               containerSlot.health(), containerSlot.isSoulbound() ? 1 : 0,
+               containerSlot.suffix())};
   sendMessage(user.socket(), msg);
 }
 
