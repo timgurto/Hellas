@@ -508,8 +508,5 @@ TEST_CASE("Suffix stats in client", "[suffixes][stats]") {
 
 /*
 TODO
-Dropped items (and their display names)
-
-Maybe not with tests:
-Show stats in tooltip
+Dropped items (plus names, tooltips)
 */

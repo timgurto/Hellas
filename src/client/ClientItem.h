@@ -84,6 +84,7 @@ class ClientItem : public Item, public HasSounds {
 
   const std::string &name() const { return _name; }
   std::string nameWithSuffix(std::string suffixID) const;
+  const StatsMod &getSuffixStats(std::string suffixID) const;
   const Texture &icon() const { return _icon.getNormalImage(); }
   const Texture &iconHighlighted() const { return _icon.getHighlightImage(); }
   void icon(const std::string &filename);

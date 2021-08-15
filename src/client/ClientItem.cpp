@@ -22,6 +22,10 @@ std::string ClientItem::nameWithSuffix(std::string suffixID) const {
          _client->gameData.suffixSets.getSuffixName(_suffixSet, suffixID);
 }
 
+const StatsMod &ClientItem::getSuffixStats(std::string suffixID) const {
+  return _client->gameData.suffixSets.getSuffixStats(_suffixSet, suffixID);
+}
+
 void ClientItem::icon(const std::string &filename) {
   static const std::string prefix = "Images/Items/";
   _icon = {prefix + filename};
@@ -76,10 +80,12 @@ const Tooltip &ClientItem::tooltip(std::string suffixID) const {
   auto &tooltip = _tooltip.value();
 
   tooltip.setColor(nameColor());
-  if (suffixID.empty())
-    tooltip.addLine(_name);
-  else
+
+  const auto hasSuffix = !suffixID.empty();
+  if (hasSuffix)
     tooltip.addLine(nameWithSuffix(suffixID));
+  else
+    tooltip.addLine(_name);
 
   // Gear slot/stats
   if (_gearSlot != Client::GEAR_SLOTS) {
@@ -95,6 +101,8 @@ const Tooltip &ClientItem::tooltip(std::string suffixID) const {
 
     tooltip.setColor(Color::TOOLTIP_BODY);
     tooltip.addLines(_stats.toStrings());
+
+    if (hasSuffix) tooltip.addLines(getSuffixStats(suffixID).toStrings());
 
     if (weaponRange() > Podes::MELEE_RANGE.toPixels())
       tooltip.addLine("Range: "s + toString(Podes::FromPixels(weaponRange())) +
