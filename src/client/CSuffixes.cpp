@@ -14,12 +14,14 @@ std::string CSuffixSets::getSuffixName(std::string suffixSetID,
 
 const StatsMod &CSuffixSets::getSuffixStats(std::string suffixSetID,
                                             std::string suffixID) const {
+  static const auto dummy = StatsMod{};
+
   auto it = sets.find(suffixSetID);
-  if (it == sets.end()) return {};
+  if (it == sets.end()) return dummy;
   const auto &set = it->second;
 
   auto suffixIt = set.find(suffixID);
-  if (suffixIt == set.end()) return {};
+  if (suffixIt == set.end()) return dummy;
 
   return suffixIt->second.stats;
 }
