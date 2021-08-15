@@ -67,7 +67,7 @@ void TakeContainer::repopulate() {
     button->addChild(new Picture(1, 1, itemType->icon()));
     px_t labX = Client::ICON_SIZE + 2;
     button->addChild(new Label({labX, 0, row->width() - labX, row->height()},
-                               itemType->name(), LEFT_JUSTIFIED,
+                               slot.first.name(), LEFT_JUSTIFIED,
                                CENTER_JUSTIFIED));
     const auto quantity = slot.second;
     if (quantity > 1)
