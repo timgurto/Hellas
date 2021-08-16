@@ -660,6 +660,9 @@ void Server::loadEntities(XmlReader &xr,
     auto health = Item::MAX_HEALTH;
     xr.findAttr(elem, "health", health);
 
+    auto suffixID = ""s;
+    xr.findAttr(elem, "suffix", suffixID);
+
     auto p = MapPoint{};
     if (!xr.findAttr(elem, "x", p.x) || !xr.findAttr(elem, "y", p.y)) {
       // Try old location format
@@ -672,7 +675,7 @@ void Server::loadEntities(XmlReader &xr,
       }
     }
 
-    addEntity(new DroppedItem(*itemType, health, quantity, "rad"s, p));
+    addEntity(new DroppedItem(*itemType, health, quantity, suffixID, p));
   }
 }
 
@@ -810,6 +813,7 @@ void DroppedItem::writeToXML(XmlWriter &xw) const {
   xw.setAttr(e, "x", location().x);
   xw.setAttr(e, "y", location().y);
   if (_health < Item::MAX_HEALTH) xw.setAttr(e, "health", _health);
+  if (!_suffix.empty()) xw.setAttr(e, "suffix", _suffix);
 }
 
 void Server::saveData(const Entities &entities, const Wars &wars,

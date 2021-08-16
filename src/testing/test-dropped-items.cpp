@@ -626,29 +626,35 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Dropped items preserve suffixes",
 
 TEST_CASE("Dropped-item suffixes are persistent",
           "[persistence][dropped-items][suffixes]") {
-  // Given a dropped item with a suffix
+  // For suffixes "rad" and "cool"
   auto data = R"(
       <suffixSet id="swordSuffixes" >
         <suffix id="rad"/>
+        <suffix id="cool"/>
       </suffixSet>
       <item id="sword" gearSlot="weapon" >
         <randomSuffix fromSet="swordSuffixes" />
       </item>
   )";
-  {
-    auto s = TestServer::WithDataString(data);
-    const auto &sword = s.getFirstItem();
-    s->addEntity(new DroppedItem(sword, Item::MAX_HEALTH, 1, "rad", {20, 20}));
 
-    // When the server restarts
-  }
-  {
-    auto s = TestServer::WithDataStringAndKeepingOldData(data);
+  for (auto suffixID : std::vector<std::string>{"rad"s, "cool"s}) {
+    // Given a dropped item with the suffix
+    {
+      auto s = TestServer::WithDataString(data);
+      const auto &sword = s.getFirstItem();
+      s->addEntity(
+          new DroppedItem(sword, Item::MAX_HEALTH, 1, suffixID, {20, 20}));
 
-    // Then it still has the suffix
-    WAIT_UNTIL(s.entities().size() == 1);
-    const auto &thing = s.getFirstDroppedItem();
-    CHECK(thing.suffix() == "rad");
+      // When the server restarts
+    }
+    {
+      auto s = TestServer::WithDataStringAndKeepingOldData(data);
+
+      // Then it still has the suffix
+      WAIT_UNTIL(s.entities().size() == 1);
+      const auto &sword = s.getFirstDroppedItem();
+      CHECK(sword.suffix() == suffixID);
+    }
   }
 }
 
