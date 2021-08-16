@@ -1,0 +1,352 @@
+<root>
+
+<!-- numeric prefix refers to content level, not ilvl or lvl req. -->
+
+
+<item id="10_shoulders"  lvlReq="5"                          name="Soiled   Cloak" class="linenBack" gearSlot="shoulders" iconFile="" gearFile="" sounds="fabric" ><stats  armour="1"/><randomSuffix fromSet="9p"/></item>
+<item id="13_shoulders"  lvlReq="8"                          name="Stained   Cape" class="linenBack" gearSlot="shoulders" iconFile="" gearFile="" sounds="fabric" ><stats  armour="2"/><randomSuffix fromSet="11p"/></item>
+<item id="16_shoulders" lvlReq="11"                          name="Damp      Cape" class="linenBack" gearSlot="shoulders" iconFile="" gearFile="" sounds="fabric" ><stats  armour="2"/><randomSuffix fromSet="15p"/></item>
+<item id="19_shoulders" lvlReq="14"                          name="Dirty     Cape" class="linenBack" gearSlot="shoulders" iconFile="" gearFile="" sounds="fabric" ><stats  armour="3"/><randomSuffix fromSet="17p"/></item>
+<item id="22_shoulders" lvlReq="17"                          name="Drab      Cape" class="linenBack" gearSlot="shoulders" iconFile="" gearFile="" sounds="fabric" ><stats  armour="3"/><randomSuffix fromSet="21p"/></item>
+<item id="25_shoulders" lvlReq="20"                          name="Faded     Cape" class="linenBack" gearSlot="shoulders" iconFile="" gearFile="" sounds="fabric" ><stats  armour="4"/><randomSuffix fromSet="23p"/></item>
+<item id="28_shoulders" lvlReq="23"                          name="Bloody    Cape" class="linenBack" gearSlot="shoulders" iconFile="" gearFile="" sounds="fabric" ><stats  armour="4"/><randomSuffix fromSet="27p"/></item>
+<item id="31_shoulders" lvlReq="26" quality="2" bind="equip" name="Azure     Cape" class="woolBack"  gearSlot="shoulders" iconFile="" gearFile="" sounds="fabric" ><stats  armour="6"/><randomSuffix fromSet="36p"/></item>
+<item id="34_shoulders" lvlReq="29" quality="2" bind="equip" name="Cool      Cape" class="woolBack"  gearSlot="shoulders" iconFile="" gearFile="" sounds="fabric" ><stats  armour="6"/><randomSuffix fromSet="40p"/></item>
+<item id="37_shoulders" lvlReq="32" quality="2" bind="equip" name="Scout's   Cape" class="woolBack"  gearSlot="shoulders" iconFile="" gearFile="" sounds="fabric" ><stats  armour="7"/><randomSuffix fromSet="44p"/></item>
+<item id="40_shoulders" lvlReq="35" quality="2" bind="equip" name="Dark      Cape" class="woolBack"  gearSlot="shoulders" iconFile="" gearFile="" sounds="fabric" ><stats  armour="8"/><randomSuffix fromSet="47p"/></item>
+<item id="43_shoulders" lvlReq="38" quality="2" bind="equip" name="Bright    Cape" class="woolBack"  gearSlot="shoulders" iconFile="" gearFile="" sounds="fabric" ><stats  armour="8"/><randomSuffix fromSet="52p"/></item>
+<item id="46_shoulders" lvlReq="41" quality="2" bind="equip" name="Crimson   Cape"                   gearSlot="shoulders" iconFile="" gearFile="" sounds="fabric" ><stats  armour="9"/><randomSuffix fromSet="55p"/></item>
+<item id="49_shoulders" lvlReq="44" quality="2" bind="equip" name="Royal     Cape"                   gearSlot="shoulders" iconFile="" gearFile="" sounds="fabric" ><stats armour="10"/><randomSuffix fromSet="59p"/></item>
+<item id="52_shoulders" lvlReq="47" quality="2" bind="equip" name="Horizon   Cape"                   gearSlot="shoulders" iconFile="" gearFile="" sounds="fabric" ><stats armour="10"/><randomSuffix fromSet="64p"/></item>
+<item id="55_shoulders" lvlReq="50" quality="2" bind="equip" name="Frontier  Cape"                   gearSlot="shoulders" iconFile="" gearFile="" sounds="fabric" ><stats armour="11"/><randomSuffix fromSet="69p"/></item>
+<item id="58_shoulders" lvlReq="53" quality="2" bind="equip" name="Shadow    Cape"                   gearSlot="shoulders" iconFile="" gearFile="" sounds="fabric" ><stats armour="12"/><randomSuffix fromSet="73p"/></item>
+<item id="61_shoulders" lvlReq="56" quality="2" bind="equip" name="Brilliant Cape"                   gearSlot="shoulders" iconFile="" gearFile="" sounds="fabric" ><stats armour="13"/><randomSuffix fromSet="77p"/></item>
+
+
+
+<suffixSet id="9p">
+    <suffix id="1a" name="Might">    <stats     might="2" /></suffix>
+    <suffix id="1b" name="Intellect"><stats intellect="2" /></suffix>
+    <suffix id="1c" name="Cunning">  <stats   cunning="2" /></suffix>
+    <suffix id="1d" name="Swiftness"><stats swiftness="2" /></suffix>
+    <suffix id="1e" name="Endurance"><stats endurance="2" /></suffix>
+    <suffix id="1f" name="Courage">  <stats   courage="2" /></suffix>
+    <suffix id="2a" name="Dragon">  <stats intellect="2"     might="1" /></suffix>
+    <suffix id="2b" name="Siren">   <stats intellect="2"   cunning="1" /></suffix>
+    <suffix id="2c" name="Hydra">   <stats intellect="2" endurance="1" /></suffix>
+    <suffix id="2d" name="Centaur"> <stats intellect="2" swiftness="1" /></suffix>
+    <suffix id="2e" name="Chimera"> <stats intellect="2"   courage="1" /></suffix>
+    <suffix id="2f" name="Sphinx">  <stats     might="2"   cunning="1" /></suffix>
+    <suffix id="2g" name="Giant">   <stats     might="2" endurance="1" /></suffix>
+    <suffix id="2h" name="Gryphon"> <stats     might="2" swiftness="1" /></suffix>
+    <suffix id="2i" name="Lion">    <stats     might="2"   courage="1" /></suffix>
+    <suffix id="2j" name="Nymph">   <stats   cunning="2" endurance="1" /></suffix>
+    <suffix id="2k" name="Harpie">  <stats   cunning="2" swiftness="1" /></suffix>
+    <suffix id="2l" name="Satyr">   <stats   cunning="2"   courage="1" /></suffix>
+    <suffix id="2m" name="Phoenix"> <stats endurance="2" swiftness="1" /></suffix>
+    <suffix id="2n" name="Tortoise"><stats endurance="2"   courage="1" /></suffix>
+    <suffix id="2o" name="Unicorn"> <stats swiftness="2"   courage="1" /></suffix>
+    <suffix id="Ra" name="Air Resistance"  > <stats   airResist="15" /></suffix>
+    <suffix id="Rb" name="Earth Resistance"> <stats earthResist="15" /></suffix>
+    <suffix id="Rc" name="Fire Resistance" > <stats  fireResist="15" /></suffix>
+    <suffix id="Rd" name="Water Resistance"> <stats waterResist="15" /></suffix>
+</suffixSet>
+<suffixSet id="11p">
+    <suffix id="1a" name="Might">    <stats     might="2" /></suffix>
+    <suffix id="1b" name="Intellect"><stats intellect="2" /></suffix>
+    <suffix id="1c" name="Cunning">  <stats   cunning="2" /></suffix>
+    <suffix id="1d" name="Swiftness"><stats swiftness="2" /></suffix>
+    <suffix id="1e" name="Endurance"><stats endurance="2" /></suffix>
+    <suffix id="1f" name="Courage">  <stats   courage="2" /></suffix>
+    <suffix id="2a" name="Dragon">  <stats intellect="2"     might="1" /></suffix>
+    <suffix id="2b" name="Siren">   <stats intellect="2"   cunning="1" /></suffix>
+    <suffix id="2c" name="Hydra">   <stats intellect="2" endurance="1" /></suffix>
+    <suffix id="2d" name="Centaur"> <stats intellect="2" swiftness="1" /></suffix>
+    <suffix id="2e" name="Chimera"> <stats intellect="2"   courage="1" /></suffix>
+    <suffix id="2f" name="Sphinx">  <stats     might="2"   cunning="1" /></suffix>
+    <suffix id="2g" name="Giant">   <stats     might="2" endurance="1" /></suffix>
+    <suffix id="2h" name="Gryphon"> <stats     might="2" swiftness="1" /></suffix>
+    <suffix id="2i" name="Lion">    <stats     might="2"   courage="1" /></suffix>
+    <suffix id="2j" name="Nymph">   <stats   cunning="2" endurance="1" /></suffix>
+    <suffix id="2k" name="Harpie">  <stats   cunning="2" swiftness="1" /></suffix>
+    <suffix id="2l" name="Satyr">   <stats   cunning="2"   courage="1" /></suffix>
+    <suffix id="2m" name="Phoenix"> <stats endurance="2" swiftness="1" /></suffix>
+    <suffix id="2n" name="Tortoise"><stats endurance="2"   courage="1" /></suffix>
+    <suffix id="2o" name="Unicorn"> <stats swiftness="2"   courage="1" /></suffix>
+    <suffix id="Ra" name="Air Resistance"  > <stats   airResist="18" /></suffix>
+    <suffix id="Rb" name="Earth Resistance"> <stats earthResist="18" /></suffix>
+    <suffix id="Rc" name="Fire Resistance" > <stats  fireResist="18" /></suffix>
+    <suffix id="Rd" name="Water Resistance"> <stats waterResist="18" /></suffix>
+</suffixSet>
+<suffixSet id="15p">
+    <suffix id="1a" name="Might">    <stats     might="3" /></suffix>
+    <suffix id="1b" name="Intellect"><stats intellect="3" /></suffix>
+    <suffix id="1c" name="Cunning">  <stats   cunning="3" /></suffix>
+    <suffix id="1d" name="Swiftness"><stats swiftness="3" /></suffix>
+    <suffix id="1e" name="Endurance"><stats endurance="3" /></suffix>
+    <suffix id="1f" name="Courage">  <stats   courage="3" /></suffix>
+    <suffix id="2a" name="Dragon">  <stats intellect="2"     might="2" /></suffix>
+    <suffix id="2b" name="Siren">   <stats intellect="2"   cunning="2" /></suffix>
+    <suffix id="2c" name="Hydra">   <stats intellect="2" endurance="2" /></suffix>
+    <suffix id="2d" name="Centaur"> <stats intellect="2" swiftness="2" /></suffix>
+    <suffix id="2e" name="Chimera"> <stats intellect="2"   courage="2" /></suffix>
+    <suffix id="2f" name="Sphinx">  <stats     might="2"   cunning="2" /></suffix>
+    <suffix id="2g" name="Giant">   <stats     might="2" endurance="2" /></suffix>
+    <suffix id="2h" name="Gryphon"> <stats     might="2" swiftness="2" /></suffix>
+    <suffix id="2i" name="Lion">    <stats     might="2"   courage="2" /></suffix>
+    <suffix id="2j" name="Nymph">   <stats   cunning="2" endurance="2" /></suffix>
+    <suffix id="2k" name="Harpie">  <stats   cunning="2" swiftness="2" /></suffix>
+    <suffix id="2l" name="Satyr">   <stats   cunning="2"   courage="2" /></suffix>
+    <suffix id="2m" name="Phoenix"> <stats endurance="2" swiftness="2" /></suffix>
+    <suffix id="2n" name="Tortoise"><stats endurance="2"   courage="2" /></suffix>
+    <suffix id="2o" name="Unicorn"> <stats swiftness="2"   courage="2" /></suffix>
+    <suffix id="Ra" name="Air Resistance"  > <stats   airResist="25" /></suffix>
+    <suffix id="Rb" name="Earth Resistance"> <stats earthResist="25" /></suffix>
+    <suffix id="Rc" name="Fire Resistance" > <stats  fireResist="25" /></suffix>
+    <suffix id="Rd" name="Water Resistance"> <stats waterResist="25" /></suffix>
+</suffixSet>
+<suffixSet id="17p">
+    <suffix id="1a" name="Might">    <stats     might="3" /></suffix>
+    <suffix id="1b" name="Intellect"><stats intellect="3" /></suffix>
+    <suffix id="1c" name="Cunning">  <stats   cunning="3" /></suffix>
+    <suffix id="1d" name="Swiftness"><stats swiftness="3" /></suffix>
+    <suffix id="1e" name="Endurance"><stats endurance="3" /></suffix>
+    <suffix id="1f" name="Courage">  <stats   courage="3" /></suffix>
+    <suffix id="2a" name="Dragon">  <stats intellect="3"     might="2" /></suffix>
+    <suffix id="2b" name="Siren">   <stats intellect="3"   cunning="2" /></suffix>
+    <suffix id="2c" name="Hydra">   <stats intellect="3" endurance="2" /></suffix>
+    <suffix id="2d" name="Centaur"> <stats intellect="3" swiftness="2" /></suffix>
+    <suffix id="2e" name="Chimera"> <stats intellect="3"   courage="2" /></suffix>
+    <suffix id="2f" name="Sphinx">  <stats     might="3"   cunning="2" /></suffix>
+    <suffix id="2g" name="Giant">   <stats     might="3" endurance="2" /></suffix>
+    <suffix id="2h" name="Gryphon"> <stats     might="3" swiftness="2" /></suffix>
+    <suffix id="2i" name="Lion">    <stats     might="3"   courage="2" /></suffix>
+    <suffix id="2j" name="Nymph">   <stats   cunning="3" endurance="2" /></suffix>
+    <suffix id="2k" name="Harpie">  <stats   cunning="3" swiftness="2" /></suffix>
+    <suffix id="2l" name="Satyr">   <stats   cunning="3"   courage="2" /></suffix>
+    <suffix id="2m" name="Phoenix"> <stats endurance="3" swiftness="2" /></suffix>
+    <suffix id="2n" name="Tortoise"><stats endurance="3"   courage="2" /></suffix>
+    <suffix id="2o" name="Unicorn"> <stats swiftness="3"   courage="2" /></suffix>
+    <suffix id="Ra" name="Air Resistance"  > <stats   airResist="28" /></suffix>
+    <suffix id="Rb" name="Earth Resistance"> <stats earthResist="28" /></suffix>
+    <suffix id="Rc" name="Fire Resistance" > <stats  fireResist="28" /></suffix>
+    <suffix id="Rd" name="Water Resistance"> <stats waterResist="28" /></suffix>
+</suffixSet>
+<suffixSet id="21p">
+    <suffix id="1a" name="Might">    <stats     might="4" /></suffix>
+    <suffix id="1b" name="Intellect"><stats intellect="4" /></suffix>
+    <suffix id="1c" name="Cunning">  <stats   cunning="4" /></suffix>
+    <suffix id="1d" name="Swiftness"><stats swiftness="4" /></suffix>
+    <suffix id="1e" name="Endurance"><stats endurance="4" /></suffix>
+    <suffix id="1f" name="Courage">  <stats   courage="4" /></suffix>
+    <suffix id="2a" name="Dragon">  <stats intellect="3"     might="3" /></suffix>
+    <suffix id="2b" name="Siren">   <stats intellect="3"   cunning="3" /></suffix>
+    <suffix id="2c" name="Hydra">   <stats intellect="3" endurance="3" /></suffix>
+    <suffix id="2d" name="Centaur"> <stats intellect="3" swiftness="3" /></suffix>
+    <suffix id="2e" name="Chimera"> <stats intellect="3"   courage="3" /></suffix>
+    <suffix id="2f" name="Sphinx">  <stats     might="3"   cunning="3" /></suffix>
+    <suffix id="2g" name="Giant">   <stats     might="3" endurance="3" /></suffix>
+    <suffix id="2h" name="Gryphon"> <stats     might="3" swiftness="3" /></suffix>
+    <suffix id="2i" name="Lion">    <stats     might="3"   courage="3" /></suffix>
+    <suffix id="2j" name="Nymph">   <stats   cunning="3" endurance="3" /></suffix>
+    <suffix id="2k" name="Harpie">  <stats   cunning="3" swiftness="3" /></suffix>
+    <suffix id="2l" name="Satyr">   <stats   cunning="3"   courage="3" /></suffix>
+    <suffix id="2m" name="Phoenix"> <stats endurance="3" swiftness="3" /></suffix>
+    <suffix id="2n" name="Tortoise"><stats endurance="3"   courage="3" /></suffix>
+    <suffix id="2o" name="Unicorn"> <stats swiftness="3"   courage="3" /></suffix>
+    <suffix id="Ra" name="Air Resistance"  > <stats   airResist="35" /></suffix>
+    <suffix id="Rb" name="Earth Resistance"> <stats earthResist="35" /></suffix>
+    <suffix id="Rc" name="Fire Resistance" > <stats  fireResist="35" /></suffix>
+    <suffix id="Rd" name="Water Resistance"> <stats waterResist="35" /></suffix>
+</suffixSet>
+<suffixSet id="23p">
+    <suffix id="1a" name="Might">    <stats     might="5" /></suffix>
+    <suffix id="1b" name="Intellect"><stats intellect="5" /></suffix>
+    <suffix id="1c" name="Cunning">  <stats   cunning="5" /></suffix>
+    <suffix id="1d" name="Swiftness"><stats swiftness="5" /></suffix>
+    <suffix id="1e" name="Endurance"><stats endurance="5" /></suffix>
+    <suffix id="1f" name="Courage">  <stats   courage="5" /></suffix>
+    <suffix id="2a" name="Dragon">  <stats intellect="4"     might="3" /></suffix>
+    <suffix id="2b" name="Siren">   <stats intellect="4"   cunning="3" /></suffix>
+    <suffix id="2c" name="Hydra">   <stats intellect="4" endurance="3" /></suffix>
+    <suffix id="2d" name="Centaur"> <stats intellect="4" swiftness="3" /></suffix>
+    <suffix id="2e" name="Chimera"> <stats intellect="4"   courage="3" /></suffix>
+    <suffix id="2f" name="Sphinx">  <stats     might="4"   cunning="3" /></suffix>
+    <suffix id="2g" name="Giant">   <stats     might="4" endurance="3" /></suffix>
+    <suffix id="2h" name="Gryphon"> <stats     might="4" swiftness="3" /></suffix>
+    <suffix id="2i" name="Lion">    <stats     might="4"   courage="3" /></suffix>
+    <suffix id="2j" name="Nymph">   <stats   cunning="4" endurance="3" /></suffix>
+    <suffix id="2k" name="Harpie">  <stats   cunning="4" swiftness="3" /></suffix>
+    <suffix id="2l" name="Satyr">   <stats   cunning="4"   courage="3" /></suffix>
+    <suffix id="2m" name="Phoenix"> <stats endurance="4" swiftness="3" /></suffix>
+    <suffix id="2n" name="Tortoise"><stats endurance="4"   courage="3" /></suffix>
+    <suffix id="2o" name="Unicorn"> <stats swiftness="4"   courage="3" /></suffix>
+    <suffix id="Ra" name="Air Resistance"  > <stats   airResist="38" /></suffix>
+    <suffix id="Rb" name="Earth Resistance"> <stats earthResist="38" /></suffix>
+    <suffix id="Rc" name="Fire Resistance" > <stats  fireResist="38" /></suffix>
+    <suffix id="Rd" name="Water Resistance"> <stats waterResist="38" /></suffix>
+</suffixSet>
+<suffixSet id="27p">
+    <suffix id="1a" name="Might">    <stats     might="5" /></suffix>
+    <suffix id="1b" name="Intellect"><stats intellect="5" /></suffix>
+    <suffix id="1c" name="Cunning">  <stats   cunning="5" /></suffix>
+    <suffix id="1d" name="Swiftness"><stats swiftness="5" /></suffix>
+    <suffix id="1e" name="Endurance"><stats endurance="5" /></suffix>
+    <suffix id="1f" name="Courage">  <stats   courage="5" /></suffix>
+    <suffix id="2a" name="Dragon">  <stats intellect="4"     might="4" /></suffix>
+    <suffix id="2b" name="Siren">   <stats intellect="4"   cunning="4" /></suffix>
+    <suffix id="2c" name="Hydra">   <stats intellect="4" endurance="4" /></suffix>
+    <suffix id="2d" name="Centaur"> <stats intellect="4" swiftness="4" /></suffix>
+    <suffix id="2e" name="Chimera"> <stats intellect="4"   courage="4" /></suffix>
+    <suffix id="2f" name="Sphinx">  <stats     might="4"   cunning="4" /></suffix>
+    <suffix id="2g" name="Giant">   <stats     might="4" endurance="4" /></suffix>
+    <suffix id="2h" name="Gryphon"> <stats     might="4" swiftness="4" /></suffix>
+    <suffix id="2i" name="Lion">    <stats     might="4"   courage="4" /></suffix>
+    <suffix id="2j" name="Nymph">   <stats   cunning="4" endurance="4" /></suffix>
+    <suffix id="2k" name="Harpie">  <stats   cunning="4" swiftness="4" /></suffix>
+    <suffix id="2l" name="Satyr">   <stats   cunning="4"   courage="4" /></suffix>
+    <suffix id="2m" name="Phoenix"> <stats endurance="4" swiftness="4" /></suffix>
+    <suffix id="2n" name="Tortoise"><stats endurance="4"   courage="4" /></suffix>
+    <suffix id="2o" name="Unicorn"> <stats swiftness="4"   courage="4" /></suffix>
+    <suffix id="Ra" name="Air Resistance"  > <stats   airResist="45" /></suffix>
+    <suffix id="Rb" name="Earth Resistance"> <stats earthResist="45" /></suffix>
+    <suffix id="Rc" name="Fire Resistance" > <stats  fireResist="45" /></suffix>
+    <suffix id="Rd" name="Water Resistance"> <stats waterResist="45" /></suffix>
+</suffixSet>
+<suffixSet id="36p">
+    <suffix id="1a" name="Might">    <stats     might="7" /></suffix>
+    <suffix id="1b" name="Intellect"><stats intellect="7" /></suffix>
+    <suffix id="1c" name="Cunning">  <stats   cunning="7" /></suffix>
+    <suffix id="1d" name="Swiftness"><stats swiftness="7" /></suffix>
+    <suffix id="1e" name="Endurance"><stats endurance="7" /></suffix>
+    <suffix id="1f" name="Courage">  <stats   courage="7" /></suffix>
+    <suffix id="2a" name="Dragon">  <stats intellect="5"     might="5" /></suffix>
+    <suffix id="2b" name="Siren">   <stats intellect="5"   cunning="5" /></suffix>
+    <suffix id="2c" name="Hydra">   <stats intellect="5" endurance="5" /></suffix>
+    <suffix id="2d" name="Centaur"> <stats intellect="5" swiftness="5" /></suffix>
+    <suffix id="2e" name="Chimera"> <stats intellect="5"   courage="5" /></suffix>
+    <suffix id="2f" name="Sphinx">  <stats     might="5"   cunning="5" /></suffix>
+    <suffix id="2g" name="Giant">   <stats     might="5" endurance="5" /></suffix>
+    <suffix id="2h" name="Gryphon"> <stats     might="5" swiftness="5" /></suffix>
+    <suffix id="2i" name="Lion">    <stats     might="5"   courage="5" /></suffix>
+    <suffix id="2j" name="Nymph">   <stats   cunning="5" endurance="5" /></suffix>
+    <suffix id="2k" name="Harpie">  <stats   cunning="5" swiftness="5" /></suffix>
+    <suffix id="2l" name="Satyr">   <stats   cunning="5"   courage="5" /></suffix>
+    <suffix id="2m" name="Phoenix"> <stats endurance="5" swiftness="5" /></suffix>
+    <suffix id="2n" name="Tortoise"><stats endurance="5"   courage="5" /></suffix>
+    <suffix id="2o" name="Unicorn"> <stats swiftness="5"   courage="5" /></suffix>
+    <suffix id="Ra" name="Air Resistance"  > <stats   airResist="60" /></suffix>
+    <suffix id="Rb" name="Earth Resistance"> <stats earthResist="60" /></suffix>
+    <suffix id="Rc" name="Fire Resistance" > <stats  fireResist="60" /></suffix>
+    <suffix id="Rd" name="Water Resistance"> <stats waterResist="60" /></suffix>
+</suffixSet>
+<suffixSet id="40p">
+    <suffix id="1a" name="Might">    <stats     might="8" /></suffix>
+    <suffix id="1b" name="Intellect"><stats intellect="8" /></suffix>
+    <suffix id="1c" name="Cunning">  <stats   cunning="8" /></suffix>
+    <suffix id="1d" name="Swiftness"><stats swiftness="8" /></suffix>
+    <suffix id="1e" name="Endurance"><stats endurance="8" /></suffix>
+    <suffix id="1f" name="Courage">  <stats   courage="8" /></suffix>
+    <suffix id="2a" name="Dragon">  <stats intellect="6"     might="5" /></suffix>
+    <suffix id="2b" name="Siren">   <stats intellect="6"   cunning="5" /></suffix>
+    <suffix id="2c" name="Hydra">   <stats intellect="6" endurance="5" /></suffix>
+    <suffix id="2d" name="Centaur"> <stats intellect="6" swiftness="5" /></suffix>
+    <suffix id="2e" name="Chimera"> <stats intellect="6"   courage="5" /></suffix>
+    <suffix id="2f" name="Sphinx">  <stats     might="6"   cunning="5" /></suffix>
+    <suffix id="2g" name="Giant">   <stats     might="6" endurance="5" /></suffix>
+    <suffix id="2h" name="Gryphon"> <stats     might="6" swiftness="5" /></suffix>
+    <suffix id="2i" name="Lion">    <stats     might="6"   courage="5" /></suffix>
+    <suffix id="2j" name="Nymph">   <stats   cunning="6" endurance="5" /></suffix>
+    <suffix id="2k" name="Harpie">  <stats   cunning="6" swiftness="5" /></suffix>
+    <suffix id="2l" name="Satyr">   <stats   cunning="6"   courage="5" /></suffix>
+    <suffix id="2m" name="Phoenix"> <stats endurance="6" swiftness="5" /></suffix>
+    <suffix id="2n" name="Tortoise"><stats endurance="6"   courage="5" /></suffix>
+    <suffix id="2o" name="Unicorn"> <stats swiftness="6"   courage="5" /></suffix>
+    <suffix id="Ra" name="Air Resistance"  > <stats   airResist="67" /></suffix>
+    <suffix id="Rb" name="Earth Resistance"> <stats earthResist="67" /></suffix>
+    <suffix id="Rc" name="Fire Resistance" > <stats  fireResist="67" /></suffix>
+    <suffix id="Rd" name="Water Resistance"> <stats waterResist="67" /></suffix>
+</suffixSet>
+<suffixSet id="44p">
+    <suffix id="1a" name="Might">    <stats     might="9" /></suffix>
+    <suffix id="1b" name="Intellect"><stats intellect="9" /></suffix>
+    <suffix id="1c" name="Cunning">  <stats   cunning="9" /></suffix>
+    <suffix id="1d" name="Swiftness"><stats swiftness="9" /></suffix>
+    <suffix id="1e" name="Endurance"><stats endurance="9" /></suffix>
+    <suffix id="1f" name="Courage">  <stats   courage="9" /></suffix>
+    <suffix id="2a" name="Dragon">  <stats intellect="7"     might="6" /></suffix>
+    <suffix id="2b" name="Siren">   <stats intellect="7"   cunning="6" /></suffix>
+    <suffix id="2c" name="Hydra">   <stats intellect="7" endurance="6" /></suffix>
+    <suffix id="2d" name="Centaur"> <stats intellect="7" swiftness="6" /></suffix>
+    <suffix id="2e" name="Chimera"> <stats intellect="7"   courage="6" /></suffix>
+    <suffix id="2f" name="Sphinx">  <stats     might="7"   cunning="6" /></suffix>
+    <suffix id="2g" name="Giant">   <stats     might="7" endurance="6" /></suffix>
+    <suffix id="2h" name="Gryphon"> <stats     might="7" swiftness="6" /></suffix>
+    <suffix id="2i" name="Lion">    <stats     might="7"   courage="6" /></suffix>
+    <suffix id="2j" name="Nymph">   <stats   cunning="7" endurance="6" /></suffix>
+    <suffix id="2k" name="Harpie">  <stats   cunning="7" swiftness="6" /></suffix>
+    <suffix id="2l" name="Satyr">   <stats   cunning="7"   courage="6" /></suffix>
+    <suffix id="2m" name="Phoenix"> <stats endurance="7" swiftness="6" /></suffix>
+    <suffix id="2n" name="Tortoise"><stats endurance="7"   courage="6" /></suffix>
+    <suffix id="2o" name="Unicorn"> <stats swiftness="7"   courage="6" /></suffix>
+    <suffix id="Ra" name="Air Resistance"  > <stats   airResist="73" /></suffix>
+    <suffix id="Rb" name="Earth Resistance"> <stats earthResist="73" /></suffix>
+    <suffix id="Rc" name="Fire Resistance" > <stats  fireResist="73" /></suffix>
+    <suffix id="Rd" name="Water Resistance"> <stats waterResist="73" /></suffix>
+</suffixSet>
+<suffixSet id="47p">
+    <suffix id="1a" name="Might">    <stats     might="9" /></suffix>
+    <suffix id="1b" name="Intellect"><stats intellect="9" /></suffix>
+    <suffix id="1c" name="Cunning">  <stats   cunning="9" /></suffix>
+    <suffix id="1d" name="Swiftness"><stats swiftness="9" /></suffix>
+    <suffix id="1e" name="Endurance"><stats endurance="9" /></suffix>
+    <suffix id="1f" name="Courage">  <stats   courage="9" /></suffix>
+    <suffix id="2a" name="Dragon">  <stats intellect="7"     might="6" /></suffix>
+    <suffix id="2b" name="Siren">   <stats intellect="7"   cunning="6" /></suffix>
+    <suffix id="2c" name="Hydra">   <stats intellect="7" endurance="6" /></suffix>
+    <suffix id="2d" name="Centaur"> <stats intellect="7" swiftness="6" /></suffix>
+    <suffix id="2e" name="Chimera"> <stats intellect="7"   courage="6" /></suffix>
+    <suffix id="2f" name="Sphinx">  <stats     might="7"   cunning="6" /></suffix>
+    <suffix id="2g" name="Giant">   <stats     might="7" endurance="6" /></suffix>
+    <suffix id="2h" name="Gryphon"> <stats     might="7" swiftness="6" /></suffix>
+    <suffix id="2i" name="Lion">    <stats     might="7"   courage="6" /></suffix>
+    <suffix id="2j" name="Nymph">   <stats   cunning="7" endurance="6" /></suffix>
+    <suffix id="2k" name="Harpie">  <stats   cunning="7" swiftness="6" /></suffix>
+    <suffix id="2l" name="Satyr">   <stats   cunning="7"   courage="6" /></suffix>
+    <suffix id="2m" name="Phoenix"> <stats endurance="7" swiftness="6" /></suffix>
+    <suffix id="2n" name="Tortoise"><stats endurance="7"   courage="6" /></suffix>
+    <suffix id="2o" name="Unicorn"> <stats swiftness="7"   courage="6" /></suffix>
+    <suffix id="Ra" name="Air Resistance"  > <stats   airResist="78" /></suffix>
+    <suffix id="Rb" name="Earth Resistance"> <stats earthResist="78" /></suffix>
+    <suffix id="Rc" name="Fire Resistance" > <stats  fireResist="78" /></suffix>
+    <suffix id="Rd" name="Water Resistance"> <stats waterResist="78" /></suffix>
+</suffixSet>
+<suffixSet id="52p">
+    <suffix id="1a" name="Might">    <stats     might="10" /></suffix>
+    <suffix id="1b" name="Intellect"><stats intellect="10" /></suffix>
+    <suffix id="1c" name="Cunning">  <stats   cunning="10" /></suffix>
+    <suffix id="1d" name="Swiftness"><stats swiftness="10" /></suffix>
+    <suffix id="1e" name="Endurance"><stats endurance="10" /></suffix>
+    <suffix id="1f" name="Courage">  <stats   courage="10" /></suffix>
+    <suffix id="2a" name="Dragon">  <stats intellect="8"     might="7" /></suffix>
+    <suffix id="2b" name="Siren">   <stats intellect="8"   cunning="7" /></suffix>
+    <suffix id="2c" name="Hydra">   <stats intellect="8" endurance="7" /></suffix>
+    <suffix id="2d" name="Centaur"> <stats intellect="8" swiftness="7" /></suffix>
+    <suffix id="2e" name="Chimera"> <stats intellect="8"   courage="7" /></suffix>
+    <suffix id="2f" name="Sphinx">  <stats     might="8"   cunning="7" /></suffix>
+    <suffix id="2g" name="Giant">   <stats     might="8" endurance="7" /></suffix>
+    <suffix id="2h" name="Gryphon"> <stats     might="8" swiftness="7" /></suffix>
+    <suffix id="2i" name="Lion">    <stats     might="8"   courage="7" /></suffix>
+    <suffix id="2j" name="Nymph">   <stats   cunning="8" endurance="7" /></suffix>
+    <suffix id="2k" name="Harpie">  <stats   cunning="8" swiftness="7" /></suffix>
+    <suffix id="2l" name="Satyr">   <stats   cunning="8"   courage="7" /></suffix>
+    <suffix id="2m" name="Phoenix"> <stats endurance="8" swiftness="7" /></suffix>
+    <suffix id="2n" name="Tortoise"><stats endurance="8"   courage="7" /></suffix>
+    <suffix id="2o" name="Unicorn"> <stats swiftness="8"   courage="7" /></suffix>
+    <suffix id="Ra" name="Air Resistance"  > <stats   airResist="87" /></suffix>
+    <suffix id="Rb" name="Earth Resistance"> <stats earthResist="87" /></suffix>
+    <suffix id="Rc" name="Fire Resistance" > <stats  fireResist="87" /></suffix>
+    <suffix id="Rd" name="Water Resistance"> <stats waterResist="87" /></suffix>
+</suffixSet>
+
+</root>
