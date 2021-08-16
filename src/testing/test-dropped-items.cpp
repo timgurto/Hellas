@@ -624,9 +624,36 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Dropped items preserve suffixes",
   }
 }
 
+TEST_CASE("Dropped-item suffixes are persistent",
+          "[persistence][dropped-items][suffixes]") {
+  // Given a dropped item with a suffix
+  auto data = R"(
+      <suffixSet id="swordSuffixes" >
+        <suffix id="rad"/>
+      </suffixSet>
+      <item id="sword" gearSlot="weapon" >
+        <randomSuffix fromSet="swordSuffixes" />
+      </item>
+  )";
+  {
+    auto s = TestServer::WithDataString(data);
+    const auto &sword = s.getFirstItem();
+    s->addEntity(new DroppedItem(sword, Item::MAX_HEALTH, 1, "rad", {20, 20}));
+
+    // When the server restarts
+  }
+  {
+    auto s = TestServer::WithDataStringAndKeepingOldData(data);
+
+    // Then it still has the suffix
+    WAIT_UNTIL(s.entities().size() == 1);
+    const auto &thing = s.getFirstDroppedItem();
+    CHECK(thing.suffix() == "rad");
+  }
+}
+
 /*
 TODO
-Persistent suffixes
 Suffix names
 Suffix stats/tooltip?
 Propagation to client

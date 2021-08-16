@@ -24,6 +24,7 @@ class DroppedItem : public Entity {
   bool areOverlapsAllowedWith(const Entity &rhs) const override;
   void getPickedUpBy(User &user);
   Hitpoints health() const { return _health; }
+  std::string suffix() const { return _suffix; }
 
   void writeToXML(XmlWriter &xw) const override;
 

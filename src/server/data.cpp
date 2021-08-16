@@ -672,7 +672,7 @@ void Server::loadEntities(XmlReader &xr,
       }
     }
 
-    addEntity(new DroppedItem(*itemType, health, quantity, {}, p));
+    addEntity(new DroppedItem(*itemType, health, quantity, "rad"s, p));
   }
 }
 
