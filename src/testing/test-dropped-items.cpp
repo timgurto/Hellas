@@ -546,6 +546,9 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Dropped items preserve item damage",
 
       WHEN("he drops it") {
         client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+        WAIT_UNTIL(server->entities().size() == 1);
+        auto &serverDroppedItem = server->getFirstDroppedItem();
+        CHECK(serverDroppedItem.health() == itemHealth);
 
         AND_WHEN("he picks it back up") {
           WAIT_UNTIL(client->entities().size() == 2);
