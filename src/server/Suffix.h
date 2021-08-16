@@ -12,4 +12,5 @@ struct SuffixSets {
 
   const Suffix& chooseRandomSuffix(std::string setID) const;
   StatsMod getStatsForSuffix(std::string setID, std::string suffixID);
+  bool doesSuffixSetExist(std::string setID) const;
 };

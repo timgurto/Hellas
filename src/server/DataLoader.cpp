@@ -734,7 +734,11 @@ void DataLoader::loadItems(XmlReader &xr) {
     if (randomSuffix) {
       auto suffixSetID = ""s;
       xr.findAttr(randomSuffix, "fromSet", suffixSetID);
-      item.useSuffixSet(suffixSetID);
+      if (_server._suffixSets.doesSuffixSetExist(suffixSetID))
+        item.useSuffixSet(suffixSetID);
+      else
+        SERVER_ERROR("Unknown suffix set specified: \""s + suffixSetID +
+          "\", by item \""s + id + "\""s);
     }
 
     if (xr.findAttr(elem, "exclusiveToQuest", s)) item.exclusiveToQuest(s);

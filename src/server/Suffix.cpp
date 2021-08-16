@@ -14,3 +14,7 @@ StatsMod SuffixSets::getStatsForSuffix(std::string setID,
                                        std::string suffixID) {
   return suffixStats[setID][suffixID].stats;
 }
+
+bool SuffixSets::doesSuffixSetExist(std::string setID) const {
+  return suffixStats.find(setID) != suffixStats.end();
+}
