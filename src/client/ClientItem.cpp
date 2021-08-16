@@ -16,7 +16,7 @@ ClientItem::ClientItem(const Client &client, const std::string &id,
     : _client(&client), Item(id), _name(name), _constructsObject(nullptr) {}
 
 std::string ClientItem::nameWithSuffix(std::string suffixID) const {
-  if (!hasSuffix()) return _name;
+  if (_suffixSet.empty()) return _name;
 
   return _name + " of "s +
          _client->gameData.suffixSets.getSuffixName(_suffixSet, suffixID);
@@ -74,9 +74,11 @@ void ClientItem::init() {
 }
 
 const Tooltip &ClientItem::tooltip(std::string suffixID) const {
-  if (_tooltip.hasValue()) return _tooltip.value();
+  if (_tooltip.hasValue() && _suffixInGeneratedTooltip == suffixID)
+    return _tooltip.value();
 
   _tooltip = Tooltip{};
+  _suffixInGeneratedTooltip = suffixID;
   auto &tooltip = _tooltip.value();
 
   tooltip.setColor(nameColor());

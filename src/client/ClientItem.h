@@ -52,6 +52,7 @@ class ClientItem : public Item, public HasSounds {
   ScreenPoint _drawLoc;
   bool _isQuestItem{false};
   std::string _suffixSet{};
+  mutable std::string _suffixInGeneratedTooltip{};
 
   // Should never be null.  Pointer rather than a reference so
   // that the type can be copied.
