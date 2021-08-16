@@ -26,7 +26,7 @@ void DroppedItem::sendInfoToClient(const User &targetUser, bool isNew) const {
   targetUser.sendMessage(
       {SV_DROPPED_ITEM_INFO,
        makeArgs(serial(), location().x, location().y, _itemType.id(), _quantity,
-                _health, isNewArg)});
+                _health, _suffix, isNewArg)});
 }
 
 void DroppedItem::getPickedUpBy(User &user) {

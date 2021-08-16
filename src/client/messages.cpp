@@ -770,18 +770,18 @@ void Client::handleBufferedMessages(const std::string &msg) {
       case SV_DROPPED_ITEM_INFO: {
         Serial serial;
         MapPoint location;
-        singleMsg >> serial >> del >> location.x >> del >> location.y >> del;
-        std::string itemID;
-        readString(singleMsg, itemID, MSG_DELIM);
         size_t qty;
         Hitpoints health;
+        std::string itemID, suffixID;
         int isNew;
-        singleMsg >> del >> qty >> del >> health >> del >> isNew >> del;
+        singleMsg >> serial >> del >> location.x >> del >> location.y >> del >>
+            itemID >> del >> qty >> del >> health >> del >> suffixID >> del >>
+            isNew >> del;
         if (del != MSG_END) break;
 
         const auto *itemType = findItem(itemID);
         auto *droppedItem = new CDroppedItem(*this, serial, location, *itemType,
-                                             qty, health, isNew != 0);
+                                             qty, health, suffixID, isNew != 0);
         _entities.insert(droppedItem);
         _objects[serial] = droppedItem;
         break;

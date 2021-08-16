@@ -11,7 +11,7 @@ class CDroppedItem : public ClientObject {
 
   CDroppedItem(Client &client, Serial serial, const MapPoint &location,
                const ClientItem &itemType, size_t quantity, Hitpoints health,
-               bool isNew);
+               std::string suffix, bool isNew);
   virtual const std::string &name() const override;
   virtual const Texture &image() const override;
   virtual const Texture &getHighlightImage() const override;
@@ -28,6 +28,7 @@ class CDroppedItem : public ClientObject {
   const ClientItem &_itemType;
   size_t _quantity;
   Hitpoints _health{Item::MAX_HEALTH};
+  std::string _suffix;
   mutable std::string _name;
   double _altitude{0};
   double _fallSpeed{0};

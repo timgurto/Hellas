@@ -14,16 +14,18 @@ CDroppedItem::Type::Type() : ClientObjectType("droppedItem") {
 
 CDroppedItem::CDroppedItem(Client& client, Serial serial,
                            const MapPoint& location, const ClientItem& itemType,
-                           size_t quantity, Hitpoints health, bool isNew)
+                           size_t quantity, Hitpoints health,
+                           std::string suffix, bool isNew)
     : ClientObject(serial, &client.droppedItemType, location, client),
       _itemType(itemType),
       _quantity(quantity),
-      _health(health) {
+      _health(health),
+      _suffix(suffix) {
   if (isNew) _altitude = DROP_HEIGHT;
 }
 
 const std::string& CDroppedItem::name() const {
-  _name = _itemType.name();
+  _name = _itemType.nameWithSuffix(_suffix);
   if (_quantity > 1) _name += " x"s + toString(_quantity);
   return _name;
 }
@@ -39,7 +41,7 @@ const Tooltip& CDroppedItem::tooltip() const {
   _tooltip = Tooltip{};
   auto& tooltip = _tooltip.value();
 
-  tooltip.embed(_itemType.tooltip());
+  tooltip.embed(_itemType.tooltip(_suffix));
 
   if (_health < Item::MAX_HEALTH) {
     tooltip.addGap();

@@ -657,10 +657,3 @@ TEST_CASE("Dropped-item suffixes are persistent",
     }
   }
 }
-
-/*
-TODO
-Suffix names
-Suffix stats/tooltip?
-Propagation to client
-*/
