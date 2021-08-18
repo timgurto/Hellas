@@ -76,3 +76,4 @@ version.txt
 tools/Launcher/Hellas client/*
 *.bak
 release-notes.txt
+tools/Suffix generator/Suffix generator/output.xml
