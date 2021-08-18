@@ -183,7 +183,7 @@
         <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
         <loot id="calydonianHorn" chance="0.2" />
     </npcType>
-    <item id="calydonianHorn" name="Horn of the Calydonian Boar" class="horn" gearSlot="offhand" lvlReq="10"
+    <item id="calydonianHorn" name="Horn of the Calydonian Boar" class="boneRepairable" gearSlot="offhand" lvlReq="10"
         iconFile="hornBlack" gearFile="hornBlack" quality="2" bind="equip" >
 		<stats courage="14" />
 		<offset x="0" y="-3" />

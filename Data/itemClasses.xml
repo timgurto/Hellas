@@ -127,7 +127,7 @@ For the salvage recipes, use these unlocks:
     <canBeRepaired cost="bone" />
     <canBeScrapped result="boneScrap" />
 </itemClass>
-<itemClass id="horn">
+<itemClass id="boneRepairable">
     <canBeRepaired cost="boneDust" />
     <canBeScrapped result="boneScrap" />
 </itemClass>
