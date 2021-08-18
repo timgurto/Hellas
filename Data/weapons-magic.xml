@@ -104,117 +104,117 @@
         <particles profile="fireSmall" x="-4" y="0" />
     </item>
     
-<item id="airStaff" name="Rod of Air" class="airStaff" gearSlot="weapon" lvlReq="11" >
+<item id="airStaff" name="Rod of Air" class="airStaff" gearSlot="weapon" lvlReq="15" >
     <tag name="wand" toolSpeed="1.1" />
-    <stats intellect="1" />
-    <weapon damage="5" speed="2.4" range="25" school="air" consumes="airDust" projectile="airball" />
+    <stats intellect="2" />
+    <weapon damage="6" speed="2.7" range="25" school="air" consumes="airDust" projectile="airball" />
     <offset x="-5" y="-20" />
     <particles profile="airSmall" x="-4" y="-19" />
     <particles profile="airSmall" x="5" y="16" />
 </item>
     <recipe
         id="airStaff" time="10000" >
-        <material id="pole1" />
+        <material id="pole2" />
         <material id="airEssence" quantity="5" />
         <tool class="wand" />
-        <unlockedBy recipe="pole1" chance="0.05" />
+        <unlockedBy recipe="pole2" chance="0.05" />
         <unlockedBy recipe="airWand" chance="0.1" />
         <unlockedBy recipe="earthStaff" chance="0.1" />
         <unlockedBy recipe="fireStaff" chance="0.1" />
         <unlockedBy recipe="waterStaff" chance="0.1" />
     </recipe>
-    <item id="airStaffSilver" name="Inlaid Rod of Air" class="airStaff" gearSlot="weapon" lvlReq="11"
+    <item id="airStaffSilver" name="Inlaid Rod of Air" class="airStaff" gearSlot="weapon" lvlReq="15"
         iconFile="airStaff" gearFile="airStaff" quality="2" bind="equip">
         <tag name="wand" toolSpeed="1.15" />
-        <stats intellect="2" />
-        <weapon damage="6" speed="2.6" range="25" school="air" consumes="airDust" projectile="airball" />
+        <stats intellect="3" />
+        <weapon damage="6" speed="2.5" range="25" school="air" consumes="airDust" projectile="airball" />
         <offset x="-5" y="-20" />
         <particles profile="airSmall" x="-4" y="-19" />
         <particles profile="airSmall" x="5" y="16" />
     </item>
     
-<item id="waterStaff" name="Rod of Water" class="waterStaff" gearSlot="weapon" lvlReq="11" >
+<item id="waterStaff" name="Rod of Water" class="waterStaff" gearSlot="weapon" lvlReq="15" >
     <tag name="wand" toolSpeed="1.1" />
-    <stats intellect="1" />
-    <weapon damage="5" speed="2.4" range="25" school="water" consumes="waterDust" projectile="waterball" />
+    <stats intellect="2" />
+    <weapon damage="6" speed="2.7" range="25" school="water" consumes="waterDust" projectile="waterball" />
     <offset x="-5" y="-20" />
     <particles profile="waterSmall" x="-4" y="-19" />
     <particles profile="waterSmall" x="5" y="16" />
 </item>
     <recipe
         id="waterStaff" time="10000" >
-        <material id="pole1" />
+        <material id="pole2" />
         <material id="waterEssence" quantity="5" />
         <tool class="wand" />
-        <unlockedBy recipe="pole1" chance="0.05" />
+        <unlockedBy recipe="pole2" chance="0.05" />
         <unlockedBy recipe="waterWand" chance="0.1" />
         <unlockedBy recipe="airStaff" chance="0.1" />
         <unlockedBy recipe="earthStaff" chance="0.1" />
         <unlockedBy recipe="fireStaff" chance="0.1" />
     </recipe>
-    <item id="waterStaffSilver" name="Inlaid Rod of Water" class="waterStaff" gearSlot="weapon" lvlReq="11"
+    <item id="waterStaffSilver" name="Inlaid Rod of Water" class="waterStaff" gearSlot="weapon" lvlReq="15"
         iconFile="waterStaff" gearFile="waterStaff" quality="2" bind="equip">
         <tag name="wand" toolSpeed="1.15" />
-        <stats intellect="2" />
-        <weapon damage="6" speed="2.6" range="25" school="water" consumes="waterDust" projectile="waterball" />
+        <stats intellect="3" />
+        <weapon damage="6" speed="2.5" range="25" school="water" consumes="waterDust" projectile="waterball" />
         <offset x="-5" y="-20" />
         <particles profile="waterSmall" x="-4" y="-19" />
         <particles profile="waterSmall" x="5" y="16" />
     </item>
     
-<item id="earthStaff" name="Rod of Earth" class="earthStaff" gearSlot="weapon" lvlReq="13" >
+<item id="earthStaff" name="Rod of Earth" class="earthStaff" gearSlot="weapon" lvlReq="17" >
     <tag name="wand" toolSpeed="1.1" />
     <stats intellect="2" />
-    <weapon damage="5" speed="2.5" range="25" school="earth" consumes="earthDust" projectile="earthball" />
+    <weapon damage="6" speed="2.5" range="25" school="earth" consumes="earthDust" projectile="earthball" />
     <offset x="-5" y="-20" />
     <particles profile="earthSmall" x="-4" y="-19" />
     <particles profile="earthSmall" x="5" y="16" />
 </item>
     <recipe
         id="earthStaff" time="10000" >
-        <material id="pole1" />
+        <material id="pole2" />
         <material id="earthEssence" quantity="5" />
         <tool class="wand" />
-        <unlockedBy recipe="pole1" chance="0.05" />
+        <unlockedBy recipe="pole2" chance="0.05" />
         <unlockedBy recipe="earthWand" chance="0.1" />
         <unlockedBy recipe="airStaff" chance="0.1" />
         <unlockedBy recipe="fireStaff" chance="0.1" />
         <unlockedBy recipe="waterStaff" chance="0.1" />
     </recipe>
-    <item id="earthStaffSilver" name="Inlaid Rod of Earth" class="earthStaff" gearSlot="weapon" lvlReq="13"
+    <item id="earthStaffSilver" name="Inlaid Rod of Earth" class="earthStaff" gearSlot="weapon" lvlReq="17"
         iconFile="earthStaff" gearFile="earthStaff" quality="2" bind="equip">
-        <stats intellect="2" />
+        <stats intellect="3" />
         <tag name="wand" toolSpeed="1.15" />
-        <weapon damage="6" speed="2.4" range="25" school="earth" consumes="earthDust" projectile="earthball" />
+        <weapon damage="7" speed="2.6" range="25" school="earth" consumes="earthDust" projectile="earthball" />
         <offset x="-5" y="-20" />
         <particles profile="earthSmall" x="-4" y="-19" />
         <particles profile="earthSmall" x="5" y="16" />
     </item>
     
-<item id="fireStaff" name="Rod of Fire" class="fireStaff" gearSlot="weapon" lvlReq="13" >
+<item id="fireStaff" name="Rod of Fire" class="fireStaff" gearSlot="weapon" lvlReq="17" >
     <tag name="wand" toolSpeed="1.1" />
     <stats intellect="2" />
-    <weapon damage="5" speed="2.5" range="25" school="fire" consumes="fireDust" projectile="fireball" />
+    <weapon damage="6" speed="2.5" range="25" school="fire" consumes="fireDust" projectile="fireball" />
     <offset x="-5" y="-20" />
     <particles profile="fireSmall" x="-4" y="-19" />
     <particles profile="fireSmall" x="5" y="16" />
 </item>
     <recipe
         id="fireStaff" time="10000" >
-        <material id="pole1" />
+        <material id="pole2" />
         <material id="fireEssence" quantity="5" />
         <tool class="wand" />
-        <unlockedBy recipe="pole1" chance="0.05" />
+        <unlockedBy recipe="pole2" chance="0.05" />
         <unlockedBy recipe="fireWand" chance="0.1" />
         <unlockedBy recipe="airStaff" chance="0.1" />
         <unlockedBy recipe="earthStaff" chance="0.1" />
         <unlockedBy recipe="waterStaff" chance="0.1" />
     </recipe>
-    <item id="fireStaffSilver" name="Inlaid Rod of Fire" class="fireStaff" gearSlot="weapon" lvlReq="13"
+    <item id="fireStaffSilver" name="Inlaid Rod of Fire" class="fireStaff" gearSlot="weapon" lvlReq="17"
         iconFile="fireStaff" gearFile="fireStaff" quality="2" bind="equip">
-        <stats intellect="2" />
+        <stats intellect="3" />
         <tag name="wand" toolSpeed="1.15" />
-        <weapon damage="6" speed="2.4" range="25" school="fire" consumes="fireDust" projectile="fireball" />
+        <weapon damage="7" speed="2.6" range="25" school="fire" consumes="fireDust" projectile="fireball" />
         <offset x="-5" y="-20" />
         <particles profile="fireSmall" x="-4" y="-19" />
         <particles profile="fireSmall" x="5" y="16" />
