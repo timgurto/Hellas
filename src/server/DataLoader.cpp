@@ -483,6 +483,11 @@ void DataLoader::loadLootTables(XmlReader &xr) {
       }
     }
 
+    for (auto loot : xr.getChildren("nestedLootTable", elem)) {
+      const auto *arbitraryItem = &*_server._items.begin();
+      lt.addSimpleItem(arbitraryItem, 1.0);
+    }
+
     _server._standaloneLootTables[id] = lt;
   }
 }
@@ -738,7 +743,7 @@ void DataLoader::loadItems(XmlReader &xr) {
         item.useSuffixSet(suffixSetID);
       else
         SERVER_ERROR("Unknown suffix set specified: \""s + suffixSetID +
-          "\", by item \""s + id + "\""s);
+                     "\", by item \""s + id + "\""s);
     }
 
     if (xr.findAttr(elem, "exclusiveToQuest", s)) item.exclusiveToQuest(s);

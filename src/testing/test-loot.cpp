@@ -339,6 +339,29 @@ TEST_CASE("Composite loot tables", "[loot]") {
   }
 }
 
+TEST_CASE("Nested loot tables", "[loot]") {
+  GIVEN("an NPC uses a nested loot table, with an item in the inner table") {
+    const auto data = R"(
+      <lootTable id="inner">
+        <loot id="item"/>
+      </lootTable>
+      <lootTable id="outer" >
+        <nestedLootTable id="inner" />
+      </lootTable>
+      <npcType id="npc" >
+        <lootTable id="outer" />
+      </npcType>
+    )";
+    auto server = TestServer::WithDataString(data);
+
+    THEN("the NPC's loot table is not empty") {
+      const auto *objType = server->findObjectTypeByID("npc");
+      const auto &npcType = dynamic_cast<const NPCType &>(*objType);
+      CHECK(npcType.lootTable() != LootTable{});
+    }
+  }
+}
+
 TEST_CASE_METHOD(ServerAndClientWithData, "Clients know when loot is all gone",
                  "[loot]") {
   GIVEN("an NPC that drops an item") {
