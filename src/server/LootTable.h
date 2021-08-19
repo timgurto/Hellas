@@ -12,36 +12,36 @@ class User;
 
 // Defines the loot chances for a single NPC type, and generates loot.
 class LootTable {
-  struct LootEntry {
-    virtual bool operator==(const LootEntry &rhs) const = 0;
-    bool operator!=(const LootEntry &rhs) const { return !((*this) == rhs); }
+  struct ILootEntry {
+    virtual bool operator==(const ILootEntry &rhs) const = 0;
+    bool operator!=(const ILootEntry &rhs) const { return !((*this) == rhs); }
     virtual std::pair<const ServerItem *, int> instantiate() const = 0;
   };
 
-  struct SimpleEntry : public LootEntry {  // x% chance to receive y item
+  struct SimpleEntry : public ILootEntry {  // x% chance to receive y item
     const ServerItem *item{nullptr};
     double chance{0};
 
-    bool operator==(const LootEntry &rhs) const override;
+    bool operator==(const ILootEntry &rhs) const override;
     std::pair<const ServerItem *, int> instantiate() const;
   };
 
-  struct NormalEntry : public LootEntry {  // normal distribution
+  struct NormalEntry : public ILootEntry {  // normal distribution
     const ServerItem *item;
     NormalVariable normalDist;
 
-    bool operator==(const LootEntry &rhs) const override;
+    bool operator==(const ILootEntry &rhs) const override;
     std::pair<const ServerItem *, int> instantiate() const;
   };
 
-  struct ChoiceEntry : public LootEntry {  // receive one of these items
+  struct ChoiceEntry : public ILootEntry {  // receive one of these items
     std::vector<std::pair<const ServerItem *, int>> choices;
 
-    bool operator==(const LootEntry &rhs) const override;
+    bool operator==(const ILootEntry &rhs) const override;
     std::pair<const ServerItem *, int> instantiate() const;
   };
 
-  std::vector<std::shared_ptr<LootEntry>> _entries;
+  std::vector<std::shared_ptr<ILootEntry>> _entries;
 
  public:
   bool operator==(const LootTable &rhs) const;

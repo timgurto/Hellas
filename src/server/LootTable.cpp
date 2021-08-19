@@ -110,7 +110,7 @@ std::pair<const ServerItem *, int> LootTable::ChoiceEntry::instantiate() const {
   return chosenItem;
 }
 
-bool LootTable::SimpleEntry::operator==(const LootEntry &rhs) const {
+bool LootTable::SimpleEntry::operator==(const ILootEntry &rhs) const {
   auto *simpleRHS = dynamic_cast<const SimpleEntry *>(&rhs);
   if (!simpleRHS) return false;
   if (item != simpleRHS->item) return false;
@@ -118,7 +118,7 @@ bool LootTable::SimpleEntry::operator==(const LootEntry &rhs) const {
   return true;
 }
 
-bool LootTable::NormalEntry::operator==(const LootEntry &rhs) const {
+bool LootTable::NormalEntry::operator==(const ILootEntry &rhs) const {
   auto *normalRHS = dynamic_cast<const NormalEntry *>(&rhs);
   if (!normalRHS) return false;
   if (item != normalRHS->item) return false;
@@ -126,7 +126,7 @@ bool LootTable::NormalEntry::operator==(const LootEntry &rhs) const {
   return true;
 }
 
-bool LootTable::ChoiceEntry::operator==(const LootEntry &rhs) const {
+bool LootTable::ChoiceEntry::operator==(const ILootEntry &rhs) const {
   // These == operators were added for testability.  No tests cover this.
   return false;
 }
