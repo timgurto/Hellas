@@ -601,11 +601,11 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
       std::set<ServerItem>::const_iterator itemIt =
           _server._items.insert(ServerItem(s)).first;
       if (xr.findAttr(loot, "chance", mean)) {
-        nt->addSimpleLoot(&*itemIt, mean);
+        nt->lootTable().addSimpleItem(&*itemIt, mean);
       } else if (xr.findNormVarChild("normal", loot, mean, sd)) {
-        nt->addNormalLoot(&*itemIt, mean, sd);
+        nt->lootTable().addNormalItem(&*itemIt, mean, sd);
       } else {
-        nt->addSimpleLoot(&*itemIt, 1.0);
+        nt->lootTable().addSimpleItem(&*itemIt, 1.0);
       }
     }
 

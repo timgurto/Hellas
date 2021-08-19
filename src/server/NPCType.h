@@ -43,6 +43,7 @@ class NPCType : public ObjectType {
   void applyTemplate(const std::string &templateID);
 
   const LootTable &lootTable() const { return _lootTable; }
+  LootTable &lootTable() { return _lootTable; }
   void level(Level l) { _level = l; }
   Level level() const { return _level; }
   void makeRanged() { _isRanged = true; }
