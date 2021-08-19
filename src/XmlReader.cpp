@@ -5,9 +5,11 @@
 
 #include "Stats.h"
 
-#ifndef NO_SDL
+#ifndef NO_SDL  // Implying server-only
 #include "NormalVariable.h"
 #include "Rect.h"
+#include "server/LootTable.h"
+#include "server/Server.h"
 #include "server/ServerItem.h"
 #endif  // NO_SDL
 
@@ -109,6 +111,25 @@ bool XmlReader::findNormVarChild(const std::string &name, TiXmlElement *elem,
   if (!XmlReader::findAttr(child, "sd", sd)) sd = 1;
   return true;
 }
+
+void XmlReader::findLootChildren(const std::string &name, TiXmlElement *elem,
+                                 LootTable &lootTable) {
+  for (auto lootElem : getChildren(name, elem)) {
+    auto itemID = ""s;
+    if (!findAttr(lootElem, "id", itemID)) continue;
+    const auto *item = Server::instance().createAndFindItem(itemID);
+
+    double mean = 1.0, sd = 0;
+    if (findAttr(lootElem, "chance", mean)) {
+      lootTable.addSimpleItem(item, mean);
+    } else if (findNormVarChild("normal", lootElem, mean, sd)) {
+      lootTable.addNormalItem(item, mean, sd);
+    } else {
+      lootTable.addSimpleItem(item, 1.0);
+    }
+  }
+}
+
 #endif  // NO_SDL
 
 bool XmlReader::findStatsChild(const std::string &name, TiXmlElement *elem,

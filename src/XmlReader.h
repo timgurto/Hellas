@@ -76,6 +76,15 @@ class XmlReader {
                                double &mean, double &sd);
 
   /*
+  Find and parse one or more <loot> children.  These can specify either a simple
+  chance for an item to drop, or a normal distribution for quantity.
+  The results are added to the provided loot table.
+  Return value: whether or not the child was found.
+  */
+  static void findLootChildren(const std::string &name, TiXmlElement *elem,
+                               class LootTable &lootTable);
+
+  /*
   If a child exists with the specified name, attempt to read its 'x', 'y', 'w',
   and 'h' attributes into the provided Rect variable.  It will be changed if and
   only if the child is found. Any missing attributes will be assumed to be 0.

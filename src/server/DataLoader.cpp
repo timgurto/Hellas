@@ -467,23 +467,9 @@ void DataLoader::loadLootTables(XmlReader &xr) {
 
     auto lt = LootTable{};
 
-    auto itemID = ""s;
-    for (auto loot : xr.getChildren("loot", elem)) {
-      if (!xr.findAttr(loot, "id", itemID)) continue;
+    xr.findLootChildren("loot", elem, lt);
 
-      double mean = 1.0, sd = 0;
-      std::set<ServerItem>::const_iterator itemIt =
-          _server._items.insert(ServerItem(itemID)).first;
-      if (xr.findAttr(loot, "chance", mean)) {
-        lt.addSimpleItem(&*itemIt, mean);
-      } else if (xr.findNormVarChild("normal", loot, mean, sd)) {
-        lt.addNormalItem(&*itemIt, mean, sd);
-      } else {
-        lt.addSimpleItem(&*itemIt, 1.0);
-      }
-    }
-
-    for (auto loot : xr.getChildren("nestedLootTable", elem)) {
+    for (auto lootTable : xr.getChildren("nestedLootTable", elem)) {
       const auto *arbitraryItem = &*_server._items.begin();
       lt.addSimpleItem(arbitraryItem, 1.0);
     }
@@ -595,20 +581,7 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
     nt->transformation.loadFromXML<NPCType>(xr, elem);
 
     auto &lootTable = nt->lootTable();
-    for (auto loot : xr.getChildren("loot", elem)) {
-      if (!xr.findAttr(loot, "id", s)) continue;
-
-      double mean = 1.0, sd = 0;
-      std::set<ServerItem>::const_iterator itemIt =
-          _server._items.insert(ServerItem(s)).first;
-      if (xr.findAttr(loot, "chance", mean)) {
-        lootTable.addSimpleItem(&*itemIt, mean);
-      } else if (xr.findNormVarChild("normal", loot, mean, sd)) {
-        lootTable.addNormalItem(&*itemIt, mean, sd);
-      } else {
-        lootTable.addSimpleItem(&*itemIt, 1.0);
-      }
-    }
+    xr.findLootChildren("loot", elem, lootTable);
 
     for (auto lootChoice : xr.getChildren("chooseLoot", elem)) {
       auto choices = std::vector<std::pair<const ServerItem *, int>>{};
