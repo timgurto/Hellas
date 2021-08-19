@@ -594,6 +594,7 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
     nt->yield.loadFromXML(xr, elem);
     nt->transformation.loadFromXML<NPCType>(xr, elem);
 
+    auto &lootTable = nt->lootTable();
     for (auto loot : xr.getChildren("loot", elem)) {
       if (!xr.findAttr(loot, "id", s)) continue;
 
@@ -601,11 +602,11 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
       std::set<ServerItem>::const_iterator itemIt =
           _server._items.insert(ServerItem(s)).first;
       if (xr.findAttr(loot, "chance", mean)) {
-        nt->lootTable().addSimpleItem(&*itemIt, mean);
+        lootTable.addSimpleItem(&*itemIt, mean);
       } else if (xr.findNormVarChild("normal", loot, mean, sd)) {
-        nt->lootTable().addNormalItem(&*itemIt, mean, sd);
+        lootTable.addNormalItem(&*itemIt, mean, sd);
       } else {
-        nt->lootTable().addSimpleItem(&*itemIt, 1.0);
+        lootTable.addSimpleItem(&*itemIt, 1.0);
       }
     }
 
