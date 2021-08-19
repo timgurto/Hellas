@@ -67,8 +67,6 @@ class NPCType : public ObjectType {
 
   virtual char classTag() const override { return 'n'; }
 
-  void addSimpleLoot(const ServerItem *item, double chance);
-  void addNormalLoot(const ServerItem *item, double mean, double sd);
   void addLootTable(const LootTable &rhs);
   void addLootChoice(
       const std::vector<std::pair<const ServerItem *, int>> &choices);
