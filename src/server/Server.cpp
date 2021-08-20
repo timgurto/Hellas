@@ -876,12 +876,9 @@ void Server::initialiseData() {
   ProgressLock::registerStagedLocks();
 
   // Remove invalid items referred to by objects/recipes
-  for (auto it = _items.begin(); it != _items.end();) {
-    if (!it->valid()) {
-      _items.erase(it++);
-    } else
-      ++it;
-  }
+  for (const auto &item : _items)
+    if (!item.valid())
+      SERVER_ERROR("Item referred to but not specified: "s + item.id());
 
   for (auto &ot : _objectTypes) ot->initialise();
 }

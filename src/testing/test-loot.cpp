@@ -82,6 +82,27 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Clients discern NPCs with no loot",
   }
 }
 
+TEST_CASE("Nonexistent loot item", "[loot]") {
+  GIVEN("an NPC that drops a nonexistent item)") {
+    const auto data = R"(
+      <npcType id="dog" maxHealth="1">
+        <loot id="doesntExist" />
+      </npcType>
+    )";
+    auto server = TestServer::WithDataString(data);
+
+    AND_GIVEN("an NPC on the map") {
+      auto &dog = server.addNPC("dog", {10, 10});
+
+      WHEN("the NPC dies (and loot is created") {
+        dog.kill();
+
+        THEN("the server doesn't crash") { server.nop(); }
+      }
+    }
+  }
+}
+
 TEST_CASE_METHOD(ServerAndClientWithData,
                  "Chance for strength-items as loot from object",
                  "[damage-on-use][loot]") {
