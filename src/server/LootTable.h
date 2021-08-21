@@ -23,7 +23,7 @@ class LootTable {
     double chance{0};
 
     bool operator==(const ILootEntry &rhs) const override;
-    std::pair<const ServerItem *, int> instantiate() const;
+    std::pair<const ServerItem *, int> instantiate() const override;
   };
 
   struct NormalEntry : public ILootEntry {  // normal distribution
@@ -31,14 +31,14 @@ class LootTable {
     NormalVariable normalDist;
 
     bool operator==(const ILootEntry &rhs) const override;
-    std::pair<const ServerItem *, int> instantiate() const;
+    std::pair<const ServerItem *, int> instantiate() const override;
   };
 
   struct ChoiceEntry : public ILootEntry {  // receive one of these items
     std::vector<std::pair<const ServerItem *, int>> choices;
 
     bool operator==(const ILootEntry &rhs) const override;
-    std::pair<const ServerItem *, int> instantiate() const;
+    std::pair<const ServerItem *, int> instantiate() const override;
   };
 
   std::vector<std::shared_ptr<ILootEntry>> _entries;
