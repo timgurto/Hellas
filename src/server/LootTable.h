@@ -53,8 +53,6 @@ class LootTable {
   void addSimpleItem(const ServerItem *item, double chance);
   void addChoiceOfItems(
       const std::vector<std::pair<const ServerItem *, int>> choices);
-
-  void addAllFrom(const LootTable &rhs);
   void addNestedLootTable(const LootTable &table) { _nestedTable = &table; }
 
   // Creates a new instance of this Yield, with random init values, in the
