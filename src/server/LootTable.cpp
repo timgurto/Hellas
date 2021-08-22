@@ -89,6 +89,8 @@ void LootTable::instantiate(Loot &loot, const User *killer) const {
 
     loot.add(item, quantity);
   }
+
+  if (_nestedTable) _nestedTable->instantiate(loot, killer);
 }
 
 std::pair<const ServerItem *, int> LootTable::SimpleEntry::instantiate() const {

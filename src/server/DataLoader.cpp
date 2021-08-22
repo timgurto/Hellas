@@ -469,9 +469,13 @@ void DataLoader::loadLootTables(XmlReader &xr) {
 
     xr.findLootChildren("loot", elem, lt);
 
-    for (auto lootTable : xr.getChildren("nestedLootTable", elem)) {
-      const auto *arbitraryItem = &*_server._items.begin();
-      lt.addSimpleItem(arbitraryItem, 1.0);
+    for (auto nestedTableElem : xr.getChildren("nestedLootTable", elem)) {
+      auto nestedTableID = ""s;
+      if (!xr.findAttr(nestedTableElem, "id", nestedTableID)) continue;
+
+      // Creates nested table if it hasn't yet been loaded.
+      const auto &nestedTable = _server._standaloneLootTables[nestedTableID];
+      lt.addNestedLootTable(nestedTable);
     }
 
     _server._standaloneLootTables[id] = lt;
@@ -603,13 +607,9 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
 
     for (auto predefinedLootTable : xr.getChildren("lootTable", elem)) {
       if (!xr.findAttr(predefinedLootTable, "id", s)) continue;
-      auto it = _server._standaloneLootTables.find(s);
-      if (it == _server._standaloneLootTables.end()) {
-        _server._debug << Color::CHAT_ERROR << "Standalone loot table " << s
-                       << " doesn't exist; skipping." << Log::endl;
-        continue;
-      }
-      nt->addLootTable(it->second);
+
+      const auto &nestedTable = _server._standaloneLootTables[s];
+      nt->lootTable().addNestedLootTable(nestedTable);
     }
   }
 }

@@ -43,6 +43,8 @@ class LootTable {
 
   std::vector<std::shared_ptr<ILootEntry>> _entries;
 
+  const LootTable *_nestedTable{nullptr};
+
  public:
   bool operator==(const LootTable &rhs) const;
   bool operator!=(const LootTable &rhs) const { return !((*this) == rhs); }
@@ -53,6 +55,7 @@ class LootTable {
       const std::vector<std::pair<const ServerItem *, int>> choices);
 
   void addAllFrom(const LootTable &rhs);
+  void addNestedLootTable(const LootTable &table) { _nestedTable = &table; }
 
   // Creates a new instance of this Yield, with random init values, in the
   // specified ItemSet

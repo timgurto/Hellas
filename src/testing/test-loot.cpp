@@ -282,7 +282,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Non-taggers can't loot",
   }
 }
 
-TEST_CASE("Loot-table equality", "[loot]") {
+/*TEST_CASE("Loot-table equality", "[loot]") {
   auto rock = ServerItem{"rock"};
   auto stick = ServerItem{"stick"};
 
@@ -331,16 +331,12 @@ TEST_CASE("Loot-table equality", "[loot]") {
       THEN("they are not equal") { CHECK(a != b); }
     }
   }
-}
+}*/
 
 TEST_CASE("Composite loot tables", "[loot]") {
-  GIVEN("two NPCs drop gold: one directly and one with a <lootTable>") {
+  GIVEN("an NPC type has a <lootTable> that drops gold") {
     auto data = R"(
       <item id="gold" />
-      <lootTable id="wealthyMob" >
-        <loot id="gold" />
-      </lootTable>
-
       <npcType id="merchant" >
         <loot id="gold" />
       </npcType>
@@ -348,14 +344,14 @@ TEST_CASE("Composite loot tables", "[loot]") {
         <lootTable id="wealthyMob" />
       </npcType>
     )";
-    auto s = TestServer::WithDataString(data);
-    const auto &merchant =
-        dynamic_cast<const NPCType &>(*s->findObjectTypeByID("merchant"));
-    const auto &trader =
-        dynamic_cast<const NPCType &>(*s->findObjectTypeByID("trader"));
+    auto server = TestServer::WithDataString(data);
 
-    THEN("they have identical loot tables") {
-      CHECK(merchant.lootTable() == trader.lootTable());
+    WHEN("it its loot table is instantiated") {
+      const auto &lootTable = server.getFirstNPCType().lootTable();
+      auto loot = Loot{};
+      lootTable.instantiate(loot, nullptr);
+
+      THEN("it has gold") { CHECK(loot.at(0).hasItem()); }
     }
   }
 }
@@ -375,12 +371,44 @@ TEST_CASE("Nested loot tables", "[loot]") {
     )";
     auto server = TestServer::WithDataString(data);
 
-    THEN("the NPC's loot table is not empty") {
-      const auto *objType = server->findObjectTypeByID("npc");
-      const auto &npcType = dynamic_cast<const NPCType &>(*objType);
-      CHECK(npcType.lootTable() != LootTable{});
+    WHEN("the NPC's loot table is instantiated") {
+      const auto &lootTable = server.getFirstNPCType().lootTable();
+      auto loot = Loot{};
+      lootTable.instantiate(loot, nullptr);
+
+      THEN("it has an item") { CHECK_FALSE(loot.empty()); }
     }
   }
+
+  SECTION("empty nested table") {
+    GIVEN("an NPC uses a nested loot table, with an empty inner table") {
+      const auto data = R"(
+        <lootTable id="emptyInner" />
+        <lootTable id="outer" >
+          <nestedLootTable id="emptyInner" />
+        </lootTable>
+        <npcType id="npc" >
+          <lootTable id="outer" />
+        </npcType>
+        <item id="notIncludedInLootTables" />
+      )";
+      auto server = TestServer::WithDataString(data);
+
+      WHEN("the NPC's loot table is instantiated") {
+        const auto &lootTable = server.getFirstNPCType().lootTable();
+        auto loot = Loot{};
+        lootTable.instantiate(loot, nullptr);
+
+        THEN("it's empty") { CHECK(loot.empty()); }
+      }
+    }
+  }
+
+  /*
+  TODO:
+  Multiple nested tables
+  Multiple loot tables in an NPC
+  */
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Clients know when loot is all gone",
