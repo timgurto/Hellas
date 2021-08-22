@@ -57,7 +57,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>TESTING;CURL_STATICLIB;%(PreprocessorDefinitions);_DEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SERVER;CLIENT;TESTING;CURL_STATICLIB;%(PreprocessorDefinitions);_DEBUG</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)$(ProjectName)\</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)$(ProjectName)\vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
       <AdditionalIncludeDirectories>

@@ -1,5 +1,4 @@
-#ifndef XML_READER_H
-#define XML_READER_H
+#pragma once
 
 #include <tinyxml.h>
 
@@ -7,16 +6,12 @@
 #include <string>
 #include <vector>
 
-#ifndef NO_SDL
+#ifdef CLIENT
 #include "Color.h"
+#endif
+
 #include "Rect.h"
 #include "combatTypes.h"
-class NormalVariable;
-;
-#endif  // NO_SDL
-
-struct StatsMod;
-class BasisPoints;
 
 // Wrapper class for TinyXml functionality
 class XmlReader {
@@ -61,10 +56,13 @@ class XmlReader {
     return true;
   }
   static bool findAttr(TiXmlElement *elem, const char *attr, std::string &val);
-  static bool findAttr(TiXmlElement *elem, const char *attr, BasisPoints &val);
-#ifndef NO_SDL
+  static bool findAttr(TiXmlElement *elem, const char *attr,
+                       class BasisPoints &val);
+
+#ifdef CLIENT
   static bool findAttr(TiXmlElement *elem, const char *attr,
                        Color &val);  // Hex string -> Color
+#endif
 
   /*
   If a child exists with the specified name, attempt to read its 'mean' and 'sd'
@@ -75,6 +73,7 @@ class XmlReader {
   static bool findNormVarChild(const std::string &name, TiXmlElement *elem,
                                double &mean, double &sd);
 
+#ifdef SERVER
   /*
   Find and parse one or more <loot> children.  These can specify either a simple
   chance for an item to drop, or a normal distribution for quantity.
@@ -83,6 +82,7 @@ class XmlReader {
   */
   static void findLootChildren(const std::string &name, TiXmlElement *elem,
                                class LootTable &lootTable);
+#endif
 
   /*
   If a child exists with the specified name, attempt to read its 'x', 'y', 'w',
@@ -101,7 +101,6 @@ class XmlReader {
     if (!XmlReader::findAttr(child, "h", val.h)) val.h = 0;
     return true;
   }
-#endif  // NO_SDL
 
   /*
   If a child exists with the specified name, attempt to read its 'armor',
@@ -110,7 +109,5 @@ class XmlReader {
   to their default values. Return value: whether or not the child was found.
   */
   static bool findStatsChild(const std::string &name, TiXmlElement *elem,
-                             StatsMod &val);
+                             struct StatsMod &val);
 };
-
-#endif

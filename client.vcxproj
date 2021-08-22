@@ -65,7 +65,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <ObjectFileName>$(IntDir)$(ProjectName)\</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)$(ProjectName)\vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
-      <PreprocessorDefinitions>CURL_STATICLIB;%(PreprocessorDefinitions);DEBUG;_DEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CLIENT;CURL_STATICLIB;%(PreprocessorDefinitions);DEBUG;_DEBUG</PreprocessorDefinitions>
       <DisableSpecificWarnings>4074;4217</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -86,7 +86,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ObjectFileName>$(IntDir)$(ProjectName)\</ObjectFileName>
-      <PreprocessorDefinitions>CURL_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CLIENT;CURL_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;ws2_32.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>

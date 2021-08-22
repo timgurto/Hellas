@@ -3,15 +3,16 @@
 #include <set>
 #include <sstream>
 
+#include "NormalVariable.h"
 #include "Stats.h"
 
-#ifndef NO_SDL  // Implying server-only
-#include "NormalVariable.h"
-#include "Rect.h"
+#ifdef SERVER
 #include "server/LootTable.h"
 #include "server/Server.h"
 #include "server/ServerItem.h"
-#endif  // NO_SDL
+#endif
+
+#include "Rect.h"
 
 XmlReader::XmlReader(const std::string &string, bool isFile) : _root(nullptr) {
   if (isFile)
@@ -87,7 +88,7 @@ bool XmlReader::findAttr(TiXmlElement *elem, const char *attr,
   return true;
 }
 
-#ifndef NO_SDL
+#ifdef CLIENT
 bool XmlReader::findAttr(TiXmlElement *elem, const char *attr, Color &val) {
   if (elem == nullptr) return false;
 
@@ -102,7 +103,7 @@ bool XmlReader::findAttr(TiXmlElement *elem, const char *attr, Color &val) {
   }
   return false;
 }
-
+#endif
 bool XmlReader::findNormVarChild(const std::string &name, TiXmlElement *elem,
                                  double &mean, double &sd) {
   TiXmlElement *child = XmlReader::findChild(name, elem);
@@ -112,6 +113,7 @@ bool XmlReader::findNormVarChild(const std::string &name, TiXmlElement *elem,
   return true;
 }
 
+#ifdef SERVER
 void XmlReader::findLootChildren(const std::string &name, TiXmlElement *elem,
                                  LootTable &lootTable) {
   for (auto lootElem : getChildren(name, elem)) {
@@ -129,8 +131,7 @@ void XmlReader::findLootChildren(const std::string &name, TiXmlElement *elem,
     }
   }
 }
-
-#endif  // NO_SDL
+#endif
 
 bool XmlReader::findStatsChild(const std::string &name, TiXmlElement *elem,
                                StatsMod &val) {
