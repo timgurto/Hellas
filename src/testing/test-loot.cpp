@@ -286,16 +286,16 @@ TEST_CASE("Composite loot tables", "[loot]") {
   GIVEN("an NPC type has a <lootTable> that drops gold") {
     auto data = R"(
       <item id="gold" />
-      <npcType id="merchant" >
-        <loot id="gold" />
-      </npcType>
+      <lootTable id="wealthyMob">
+        <loot id="gold"/>
+      </lootTable>
       <npcType id="trader" >
         <lootTable id="wealthyMob" />
       </npcType>
     )";
     auto server = TestServer::WithDataString(data);
 
-    WHEN("it its loot table is instantiated") {
+    WHEN("its loot table is instantiated") {
       const auto &lootTable = server.getFirstNPCType().lootTable();
       auto loot = Loot{};
       lootTable.instantiate(loot, nullptr);
