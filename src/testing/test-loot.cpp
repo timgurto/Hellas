@@ -282,57 +282,6 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Non-taggers can't loot",
   }
 }
 
-/*TEST_CASE("Loot-table equality", "[loot]") {
-  auto rock = ServerItem{"rock"};
-  auto stick = ServerItem{"stick"};
-
-  GIVEN("Two loot tables") {
-    auto a = LootTable{}, b = LootTable{};
-    a == b;
-
-    WHEN("One has a rock") {
-      a.addSimpleItem(&rock, 1.0);
-      THEN("they are not equal") {
-        CHECK(a != b);
-
-        AND_WHEN("the other has a rock") {
-          b.addSimpleItem(&rock, 1.0);
-          THEN("they are equal") { CHECK(a == b); }
-        }
-
-        AND_WHEN("the other has a stick") {
-          b.addSimpleItem(&stick, 1.0);
-          THEN("they are not equal") { CHECK(a != b); }
-        }
-      }
-    }
-
-    WHEN("they have the same entries in different orders") {
-      a.addSimpleItem(&rock, 1.0);
-      a.addSimpleItem(&stick, 1.0);
-
-      b.addSimpleItem(&stick, 1.0);
-      b.addSimpleItem(&rock, 1.0);
-
-      THEN("they are equal") { CHECK(a == b); }
-    }
-
-    WHEN("they differ only by loot chance") {
-      a.addSimpleItem(&rock, 1.0);
-      b.addSimpleItem(&rock, 0.5);
-
-      THEN("they are not equal") { CHECK(a != b); }
-    }
-
-    WHEN("they differ only by distribution") {
-      a.addNormalItem(&rock, 1.0);
-      b.addNormalItem(&rock, 0.5);
-
-      THEN("they are not equal") { CHECK(a != b); }
-    }
-  }
-}*/
-
 TEST_CASE("Composite loot tables", "[loot]") {
   GIVEN("an NPC type has a <lootTable> that drops gold") {
     auto data = R"(
