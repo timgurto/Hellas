@@ -13,8 +13,6 @@ class User;
 // Defines the loot chances for a single NPC type, and generates loot.
 class LootTable {
   struct ILootEntry {
-    virtual bool operator==(const ILootEntry &rhs) const = 0;
-    bool operator!=(const ILootEntry &rhs) const { return !((*this) == rhs); }
     virtual std::pair<const ServerItem *, int> instantiate() const = 0;
   };
 
@@ -22,7 +20,6 @@ class LootTable {
     const ServerItem *item{nullptr};
     double chance{0};
 
-    bool operator==(const ILootEntry &rhs) const override;
     std::pair<const ServerItem *, int> instantiate() const override;
   };
 
@@ -30,14 +27,12 @@ class LootTable {
     const ServerItem *item;
     NormalVariable normalDist;
 
-    bool operator==(const ILootEntry &rhs) const override;
     std::pair<const ServerItem *, int> instantiate() const override;
   };
 
   struct ChoiceEntry : public ILootEntry {  // receive one of these items
     std::vector<std::pair<const ServerItem *, int>> choices;
 
-    bool operator==(const ILootEntry &rhs) const override;
     std::pair<const ServerItem *, int> instantiate() const override;
   };
 
@@ -46,9 +41,6 @@ class LootTable {
   const LootTable *_nestedTable{nullptr};
 
  public:
-  bool operator==(const LootTable &rhs) const;
-  bool operator!=(const LootTable &rhs) const { return !((*this) == rhs); }
-
   void addNormalItem(const ServerItem *item, double mean, double sd = 0);
   void addSimpleItem(const ServerItem *item, double chance);
   void addChoiceOfItems(

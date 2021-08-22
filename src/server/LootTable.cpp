@@ -5,26 +5,6 @@
 #include "Server.h"
 #include "User.h"
 
-bool LootTable::operator==(const LootTable &rhs) const {
-  if (_entries.size() != rhs._entries.size()) return false;
-  auto other = rhs._entries;  // copy to modify
-  for (const auto entry : _entries) {
-    auto entryFound = false;
-    for (auto i = 0; i != other.size(); ++i) {
-      if (*other[i] != *entry) continue;
-
-      // Remove from vector
-      other[i] = other.back();
-      other.pop_back();
-      entryFound = true;
-      break;
-    }
-
-    if (!entryFound) return false;
-  }
-  return true;
-}
-
 void LootTable::addNormalItem(const ServerItem *item, double mean, double sd) {
   auto entry = std::shared_ptr<NormalEntry>{new NormalEntry};
   entry->item = item;
@@ -106,25 +86,4 @@ std::pair<const ServerItem *, int> LootTable::ChoiceEntry::instantiate() const {
   const auto randomIndex = rand() % numChoices;
   const auto chosenItem = choices[randomIndex];
   return chosenItem;
-}
-
-bool LootTable::SimpleEntry::operator==(const ILootEntry &rhs) const {
-  auto *simpleRHS = dynamic_cast<const SimpleEntry *>(&rhs);
-  if (!simpleRHS) return false;
-  if (item != simpleRHS->item) return false;
-  if (chance != simpleRHS->chance) return false;
-  return true;
-}
-
-bool LootTable::NormalEntry::operator==(const ILootEntry &rhs) const {
-  auto *normalRHS = dynamic_cast<const NormalEntry *>(&rhs);
-  if (!normalRHS) return false;
-  if (item != normalRHS->item) return false;
-  if (!(normalDist == normalRHS->normalDist)) return false;
-  return true;
-}
-
-bool LootTable::ChoiceEntry::operator==(const ILootEntry &rhs) const {
-  // These == operators were added for testability.  No tests cover this.
-  return false;
 }
