@@ -26,6 +26,10 @@ void LootTable::addChoiceOfItems(
   _entries.push_back(entry);
 }
 
+void LootTable::addNestedLootTable(const LootTable &table) {
+  _nestedTables.push_back(&table);
+}
+
 void LootTable::instantiate(Loot &loot, const User *killer) const {
   if (!loot.empty()) {
     SERVER_ERROR("Loot object provided was not empty");
@@ -66,7 +70,8 @@ void LootTable::instantiate(Loot &loot, const User *killer) const {
     loot.add(item, quantity);
   }
 
-  if (_nestedTable) _nestedTable->instantiate(loot, killer);
+  for (const auto *nestedTable : _nestedTables)
+    nestedTable->instantiate(loot, killer);
 }
 
 std::pair<const ServerItem *, int> LootTable::SimpleEntry::instantiate() const {

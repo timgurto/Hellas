@@ -303,6 +303,32 @@ TEST_CASE("Composite loot tables", "[loot]") {
       THEN("it has gold") { CHECK(loot.at(0).hasItem()); }
     }
   }
+
+  GIVEN("an NPC type with two <lootTable> nodes, each with an item") {
+    auto data = R"(
+      <item id="head" />
+      <item id="armour" />
+      <lootTable id="human">
+        <loot id="head"/>
+      </lootTable>
+      <lootTable id="soldier">
+        <loot id="armour"/>
+      </lootTable>
+      <npcType id="grenadier" >
+        <lootTable id="human" />
+        <lootTable id="soldier" />
+      </npcType>
+    )";
+    auto server = TestServer::WithDataString(data);
+
+    WHEN("its loot table is instantiated") {
+      const auto &lootTable = server.getFirstNPCType().lootTable();
+      auto loot = Loot{};
+      lootTable.instantiate(loot, nullptr);
+
+      THEN("it has both items") { CHECK(loot.size() == 2); }
+    }
+  }
 }
 
 TEST_CASE("Nested loot tables", "[loot]") {
@@ -352,12 +378,6 @@ TEST_CASE("Nested loot tables", "[loot]") {
       }
     }
   }
-
-  /*
-  TODO:
-  Multiple nested tables
-  Multiple loot tables in an NPC
-  */
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Clients know when loot is all gone",
