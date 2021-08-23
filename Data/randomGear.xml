@@ -60,25 +60,6 @@
 <item id="59_magic" lvlReq="54" quality="2" bind="equip" name="Shadow Caduceus"                       gearSlot="weapon" iconFile=""                gearFile="" >                                        <tag name="wand" toolSpeed="1.20"/><weapon damage="18" speed="3.0" range="25" school="water"                      projectile="waterBall" /><randomSuffix fromSet="40p"/></item>
 <item id="62_magic" lvlReq="57" quality="2" bind="equip" name="Brilliant Caduceus"                    gearSlot="weapon" iconFile=""                gearFile="" >                                        <tag name="wand" toolSpeed="1.20"/><weapon damage="19" speed="3.0" range="25" school="air"                        projectile="airBall"   /><randomSuffix fromSet="42p"/></item>
 
-<item id="11_offhand"  lvlReq="6"                          name="Soiled Knucklebones" class="boneRepairable" gearSlot="offhand" iconFile="" gearFile="" ><randomSuffix  fromSet="37p"/></item>
-<item id="14_offhand"  lvlReq="9"                          name="Stained Horn"        class="boneRepairable" gearSlot="offhand" iconFile="" gearFile="" ><randomSuffix  fromSet="48p"/></item>
-<item id="17_offhand" lvlReq="12"                          name="Damp Knucklebones"   class="boneRepairable" gearSlot="offhand" iconFile="" gearFile="" ><randomSuffix  fromSet="59p"/></item>
-<item id="20_offhand" lvlReq="15"                          name="Dirty Tambourine"    class="tambourine"     gearSlot="offhand" iconFile="" gearFile="" ><randomSuffix  fromSet="71p"/></item>
-<item id="23_offhand" lvlReq="18"                          name="Drab Tablet"         class="ceramic"        gearSlot="offhand" iconFile="" gearFile="" ><randomSuffix  fromSet="82p"/></item>
-<item id="26_offhand" lvlReq="21"                          name="Faded Tablet"        class="ceramic"        gearSlot="offhand" iconFile="" gearFile="" ><randomSuffix  fromSet="95p"/></item>
-<item id="29_offhand" lvlReq="24"                          name="Bloody Tambourine"   class="tambourine"     gearSlot="offhand" iconFile="" gearFile="" ><randomSuffix fromSet="107p"/></item>
-<item id="32_offhand" lvlReq="27" quality="2" bind="equip" name="Azure Parchment"     class="parchment"      gearSlot="offhand" iconFile="" gearFile="" ><randomSuffix fromSet="142p"/></item>
-<item id="35_offhand" lvlReq="30" quality="2" bind="equip" name="Cool Aulos"                                 gearSlot="offhand" iconFile="" gearFile="" ><randomSuffix fromSet="156p"/></item>
-<item id="38_offhand" lvlReq="33" quality="2" bind="equip" name="Scout's Parchment"   class="parchment"      gearSlot="offhand" iconFile="" gearFile="" ><randomSuffix fromSet="171p"/></item>
-<item id="41_offhand" lvlReq="36" quality="2" bind="equip" name="Dark Aulos"                                 gearSlot="offhand" iconFile="" gearFile="" ><randomSuffix fromSet="186p"/></item>
-<item id="44_offhand" lvlReq="39" quality="2" bind="equip" name="Bright Parchment"    class="parchment"      gearSlot="offhand" iconFile="" gearFile="" ><randomSuffix fromSet="201p"/></item>
-<item id="47_offhand" lvlReq="42" quality="2" bind="equip" name="Crimson Lyre"                               gearSlot="offhand" iconFile="" gearFile="" ><randomSuffix fromSet="217p"/></item>
-<item id="50_offhand" lvlReq="45" quality="2" bind="equip" name="Royal Codex"                                gearSlot="offhand" iconFile="" gearFile="" ><randomSuffix fromSet="233p"/></item>
-<item id="53_offhand" lvlReq="48" quality="2" bind="equip" name="Horizon Lyre"                               gearSlot="offhand" iconFile="" gearFile="" ><randomSuffix fromSet="250p"/></item>
-<item id="56_offhand" lvlReq="51" quality="2" bind="equip" name="Frontier Codex"                             gearSlot="offhand" iconFile="" gearFile="" ><randomSuffix fromSet="267p"/></item>
-<item id="59_offhand" lvlReq="54" quality="2" bind="equip" name="Shadow Lyre"                                gearSlot="offhand" iconFile="" gearFile="" ><randomSuffix fromSet="285p"/></item>
-<item id="62_offhand" lvlReq="57" quality="2" bind="equip" name="Brilliant Codex"                            gearSlot="offhand" iconFile="" gearFile="" ><randomSuffix fromSet="303p"/></item>
-
 <item id="30_jewelry" lvlReq="25" quality="2" bind="equip" name="Bloody    Jewelry" class="silverJewelry" gearSlot="jewelry" iconFile="gemRed"   gearFile="" ><randomSuffix fromSet="17p"/></item>
 <item id="33_jewelry" lvlReq="28" quality="2" bind="equip" name="Azure     Jewelry" class="silverJewelry" gearSlot="jewelry" iconFile="gemBlue"  gearFile="" ><randomSuffix fromSet="18p"/></item>
 <item id="36_jewelry" lvlReq="31" quality="2" bind="equip" name="Cool      Jewelry" class="silverJewelry" gearSlot="jewelry" iconFile="gemTeal"  gearFile="" ><randomSuffix fromSet="20p"/></item>
@@ -1471,33 +1452,6 @@
   <suffix id="rE" name="Earth Resistance"><stats earthResist="78"/></suffix>
   <suffix id="rF" name="Fire Resistance"><stats fireResist="78"/></suffix>
   <suffix id="rW" name="Water Resistance"><stats waterResist="78"/></suffix>
-</suffixSet>
-<suffixSet id="48p">
-  <suffix id="Mi" name="Might"><stats might="10"/></suffix>
-  <suffix id="In" name="Intellect"><stats intellect="10"/></suffix>
-  <suffix id="Cu" name="Cunning"><stats cunning="10"/></suffix>
-  <suffix id="Sw" name="Swiftness"><stats swiftness="10"/></suffix>
-  <suffix id="En" name="Endurance"><stats endurance="10"/></suffix>
-  <suffix id="Co" name="Courage"><stats courage="10"/></suffix>
-  <suffix id="InMi" name="the Dragon"><stats intellect="7" might="7"/></suffix>
-  <suffix id="InCu" name="the Siren"><stats intellect="7" cunning="7"/></suffix>
-  <suffix id="InEn" name="the Hydra"><stats intellect="7" endurance="7"/></suffix>
-  <suffix id="InSw" name="the Centaur"><stats intellect="7" swiftness="7"/></suffix>
-  <suffix id="InCo" name="the Chimera"><stats intellect="7" courage="7"/></suffix>
-  <suffix id="MiCu" name="the Sphinx"><stats might="7" cunning="7"/></suffix>
-  <suffix id="MiEn" name="the Giant"><stats might="7" endurance="7"/></suffix>
-  <suffix id="MiSw" name="the Gryphon"><stats might="7" swiftness="7"/></suffix>
-  <suffix id="MiCo" name="the Lion"><stats might="7" courage="7"/></suffix>
-  <suffix id="CuEn" name="the Nymph"><stats cunning="7" endurance="7"/></suffix>
-  <suffix id="CuSw" name="the Harpie"><stats cunning="7" swiftness="7"/></suffix>
-  <suffix id="CuCo" name="the Satyr"><stats cunning="7" courage="7"/></suffix>
-  <suffix id="EnSw" name="the Phoenix"><stats endurance="7" swiftness="7"/></suffix>
-  <suffix id="EnCo" name="the Tortoise"><stats endurance="7" courage="7"/></suffix>
-  <suffix id="SwCo" name="the Unicorn"><stats swiftness="7" courage="7"/></suffix>
-  <suffix id="rA" name="Air Resistance"><stats airResist="80"/></suffix>
-  <suffix id="rE" name="Earth Resistance"><stats earthResist="80"/></suffix>
-  <suffix id="rF" name="Fire Resistance"><stats fireResist="80"/></suffix>
-  <suffix id="rW" name="Water Resistance"><stats waterResist="80"/></suffix>
 </suffixSet>
 <suffixSet id="49p">
   <suffix id="Mi" name="Might"><stats might="10"/></suffix>
@@ -3038,33 +2992,6 @@
   <suffix id="rF" name="Fire Resistance"><stats fireResist="230"/></suffix>
   <suffix id="rW" name="Water Resistance"><stats waterResist="230"/></suffix>
 </suffixSet>
-<suffixSet id="142p">
-  <suffix id="Mi" name="Might"><stats might="28"/></suffix>
-  <suffix id="In" name="Intellect"><stats intellect="28"/></suffix>
-  <suffix id="Cu" name="Cunning"><stats cunning="28"/></suffix>
-  <suffix id="Sw" name="Swiftness"><stats swiftness="28"/></suffix>
-  <suffix id="En" name="Endurance"><stats endurance="28"/></suffix>
-  <suffix id="Co" name="Courage"><stats courage="28"/></suffix>
-  <suffix id="InMi" name="the Dragon"><stats intellect="21" might="20"/></suffix>
-  <suffix id="InCu" name="the Siren"><stats intellect="21" cunning="20"/></suffix>
-  <suffix id="InEn" name="the Hydra"><stats intellect="21" endurance="20"/></suffix>
-  <suffix id="InSw" name="the Centaur"><stats intellect="21" swiftness="20"/></suffix>
-  <suffix id="InCo" name="the Chimera"><stats intellect="21" courage="20"/></suffix>
-  <suffix id="MiCu" name="the Sphinx"><stats might="21" cunning="20"/></suffix>
-  <suffix id="MiEn" name="the Giant"><stats might="21" endurance="20"/></suffix>
-  <suffix id="MiSw" name="the Gryphon"><stats might="21" swiftness="20"/></suffix>
-  <suffix id="MiCo" name="the Lion"><stats might="21" courage="20"/></suffix>
-  <suffix id="CuEn" name="the Nymph"><stats cunning="21" endurance="20"/></suffix>
-  <suffix id="CuSw" name="the Harpie"><stats cunning="21" swiftness="20"/></suffix>
-  <suffix id="CuCo" name="the Satyr"><stats cunning="21" courage="20"/></suffix>
-  <suffix id="EnSw" name="the Phoenix"><stats endurance="21" swiftness="20"/></suffix>
-  <suffix id="EnCo" name="the Tortoise"><stats endurance="21" courage="20"/></suffix>
-  <suffix id="SwCo" name="the Unicorn"><stats swiftness="21" courage="20"/></suffix>
-  <suffix id="rA" name="Air Resistance"><stats airResist="237"/></suffix>
-  <suffix id="rE" name="Earth Resistance"><stats earthResist="237"/></suffix>
-  <suffix id="rF" name="Fire Resistance"><stats fireResist="237"/></suffix>
-  <suffix id="rW" name="Water Resistance"><stats waterResist="237"/></suffix>
-</suffixSet>
 <suffixSet id="143p">
   <suffix id="Mi" name="Might"><stats might="29"/></suffix>
   <suffix id="In" name="Intellect"><stats intellect="29"/></suffix>
@@ -3145,33 +3072,6 @@
   <suffix id="rE" name="Earth Resistance"><stats earthResist="255"/></suffix>
   <suffix id="rF" name="Fire Resistance"><stats fireResist="255"/></suffix>
   <suffix id="rW" name="Water Resistance"><stats waterResist="255"/></suffix>
-</suffixSet>
-<suffixSet id="156p">
-  <suffix id="Mi" name="Might"><stats might="31"/></suffix>
-  <suffix id="In" name="Intellect"><stats intellect="31"/></suffix>
-  <suffix id="Cu" name="Cunning"><stats cunning="31"/></suffix>
-  <suffix id="Sw" name="Swiftness"><stats swiftness="31"/></suffix>
-  <suffix id="En" name="Endurance"><stats endurance="31"/></suffix>
-  <suffix id="Co" name="Courage"><stats courage="31"/></suffix>
-  <suffix id="InMi" name="the Dragon"><stats intellect="23" might="22"/></suffix>
-  <suffix id="InCu" name="the Siren"><stats intellect="23" cunning="22"/></suffix>
-  <suffix id="InEn" name="the Hydra"><stats intellect="23" endurance="22"/></suffix>
-  <suffix id="InSw" name="the Centaur"><stats intellect="23" swiftness="22"/></suffix>
-  <suffix id="InCo" name="the Chimera"><stats intellect="23" courage="22"/></suffix>
-  <suffix id="MiCu" name="the Sphinx"><stats might="23" cunning="22"/></suffix>
-  <suffix id="MiEn" name="the Giant"><stats might="23" endurance="22"/></suffix>
-  <suffix id="MiSw" name="the Gryphon"><stats might="23" swiftness="22"/></suffix>
-  <suffix id="MiCo" name="the Lion"><stats might="23" courage="22"/></suffix>
-  <suffix id="CuEn" name="the Nymph"><stats cunning="23" endurance="22"/></suffix>
-  <suffix id="CuSw" name="the Harpie"><stats cunning="23" swiftness="22"/></suffix>
-  <suffix id="CuCo" name="the Satyr"><stats cunning="23" courage="22"/></suffix>
-  <suffix id="EnSw" name="the Phoenix"><stats endurance="23" swiftness="22"/></suffix>
-  <suffix id="EnCo" name="the Tortoise"><stats endurance="23" courage="22"/></suffix>
-  <suffix id="SwCo" name="the Unicorn"><stats swiftness="23" courage="22"/></suffix>
-  <suffix id="rA" name="Air Resistance"><stats airResist="260"/></suffix>
-  <suffix id="rE" name="Earth Resistance"><stats earthResist="260"/></suffix>
-  <suffix id="rF" name="Fire Resistance"><stats fireResist="260"/></suffix>
-  <suffix id="rW" name="Water Resistance"><stats waterResist="260"/></suffix>
 </suffixSet>
 <suffixSet id="157p">
   <suffix id="Mi" name="Might"><stats might="31"/></suffix>
@@ -3254,33 +3154,6 @@
   <suffix id="rF" name="Fire Resistance"><stats fireResist="280"/></suffix>
   <suffix id="rW" name="Water Resistance"><stats waterResist="280"/></suffix>
 </suffixSet>
-<suffixSet id="171p">
-  <suffix id="Mi" name="Might"><stats might="34"/></suffix>
-  <suffix id="In" name="Intellect"><stats intellect="34"/></suffix>
-  <suffix id="Cu" name="Cunning"><stats cunning="34"/></suffix>
-  <suffix id="Sw" name="Swiftness"><stats swiftness="34"/></suffix>
-  <suffix id="En" name="Endurance"><stats endurance="34"/></suffix>
-  <suffix id="Co" name="Courage"><stats courage="34"/></suffix>
-  <suffix id="InMi" name="the Dragon"><stats intellect="25" might="24"/></suffix>
-  <suffix id="InCu" name="the Siren"><stats intellect="25" cunning="24"/></suffix>
-  <suffix id="InEn" name="the Hydra"><stats intellect="25" endurance="24"/></suffix>
-  <suffix id="InSw" name="the Centaur"><stats intellect="25" swiftness="24"/></suffix>
-  <suffix id="InCo" name="the Chimera"><stats intellect="25" courage="24"/></suffix>
-  <suffix id="MiCu" name="the Sphinx"><stats might="25" cunning="24"/></suffix>
-  <suffix id="MiEn" name="the Giant"><stats might="25" endurance="24"/></suffix>
-  <suffix id="MiSw" name="the Gryphon"><stats might="25" swiftness="24"/></suffix>
-  <suffix id="MiCo" name="the Lion"><stats might="25" courage="24"/></suffix>
-  <suffix id="CuEn" name="the Nymph"><stats cunning="25" endurance="24"/></suffix>
-  <suffix id="CuSw" name="the Harpie"><stats cunning="25" swiftness="24"/></suffix>
-  <suffix id="CuCo" name="the Satyr"><stats cunning="25" courage="24"/></suffix>
-  <suffix id="EnSw" name="the Phoenix"><stats endurance="25" swiftness="24"/></suffix>
-  <suffix id="EnCo" name="the Tortoise"><stats endurance="25" courage="24"/></suffix>
-  <suffix id="SwCo" name="the Unicorn"><stats swiftness="25" courage="24"/></suffix>
-  <suffix id="rA" name="Air Resistance"><stats airResist="285"/></suffix>
-  <suffix id="rE" name="Earth Resistance"><stats earthResist="285"/></suffix>
-  <suffix id="rF" name="Fire Resistance"><stats fireResist="285"/></suffix>
-  <suffix id="rW" name="Water Resistance"><stats waterResist="285"/></suffix>
-</suffixSet>
 <suffixSet id="176p">
   <suffix id="Mi" name="Might"><stats might="35"/></suffix>
   <suffix id="In" name="Intellect"><stats intellect="35"/></suffix>
@@ -3308,33 +3181,6 @@
   <suffix id="rF" name="Fire Resistance"><stats fireResist="293"/></suffix>
   <suffix id="rW" name="Water Resistance"><stats waterResist="293"/></suffix>
 </suffixSet>
-<suffixSet id="186p">
-  <suffix id="Mi" name="Might"><stats might="37"/></suffix>
-  <suffix id="In" name="Intellect"><stats intellect="37"/></suffix>
-  <suffix id="Cu" name="Cunning"><stats cunning="37"/></suffix>
-  <suffix id="Sw" name="Swiftness"><stats swiftness="37"/></suffix>
-  <suffix id="En" name="Endurance"><stats endurance="37"/></suffix>
-  <suffix id="Co" name="Courage"><stats courage="37"/></suffix>
-  <suffix id="InMi" name="the Dragon"><stats intellect="27" might="26"/></suffix>
-  <suffix id="InCu" name="the Siren"><stats intellect="27" cunning="26"/></suffix>
-  <suffix id="InEn" name="the Hydra"><stats intellect="27" endurance="26"/></suffix>
-  <suffix id="InSw" name="the Centaur"><stats intellect="27" swiftness="26"/></suffix>
-  <suffix id="InCo" name="the Chimera"><stats intellect="27" courage="26"/></suffix>
-  <suffix id="MiCu" name="the Sphinx"><stats might="27" cunning="26"/></suffix>
-  <suffix id="MiEn" name="the Giant"><stats might="27" endurance="26"/></suffix>
-  <suffix id="MiSw" name="the Gryphon"><stats might="27" swiftness="26"/></suffix>
-  <suffix id="MiCo" name="the Lion"><stats might="27" courage="26"/></suffix>
-  <suffix id="CuEn" name="the Nymph"><stats cunning="27" endurance="26"/></suffix>
-  <suffix id="CuSw" name="the Harpie"><stats cunning="27" swiftness="26"/></suffix>
-  <suffix id="CuCo" name="the Satyr"><stats cunning="27" courage="26"/></suffix>
-  <suffix id="EnSw" name="the Phoenix"><stats endurance="27" swiftness="26"/></suffix>
-  <suffix id="EnCo" name="the Tortoise"><stats endurance="27" courage="26"/></suffix>
-  <suffix id="SwCo" name="the Unicorn"><stats swiftness="27" courage="26"/></suffix>
-  <suffix id="rA" name="Air Resistance"><stats airResist="310"/></suffix>
-  <suffix id="rE" name="Earth Resistance"><stats earthResist="310"/></suffix>
-  <suffix id="rF" name="Fire Resistance"><stats fireResist="310"/></suffix>
-  <suffix id="rW" name="Water Resistance"><stats waterResist="310"/></suffix>
-</suffixSet>
 <suffixSet id="187p">
   <suffix id="Mi" name="Might"><stats might="37"/></suffix>
   <suffix id="In" name="Intellect"><stats intellect="37"/></suffix>
@@ -3361,195 +3207,6 @@
   <suffix id="rE" name="Earth Resistance"><stats earthResist="312"/></suffix>
   <suffix id="rF" name="Fire Resistance"><stats fireResist="312"/></suffix>
   <suffix id="rW" name="Water Resistance"><stats waterResist="312"/></suffix>
-</suffixSet>
-<suffixSet id="201p">
-  <suffix id="Mi" name="Might"><stats might="40"/></suffix>
-  <suffix id="In" name="Intellect"><stats intellect="40"/></suffix>
-  <suffix id="Cu" name="Cunning"><stats cunning="40"/></suffix>
-  <suffix id="Sw" name="Swiftness"><stats swiftness="40"/></suffix>
-  <suffix id="En" name="Endurance"><stats endurance="40"/></suffix>
-  <suffix id="Co" name="Courage"><stats courage="40"/></suffix>
-  <suffix id="InMi" name="the Dragon"><stats intellect="29" might="28"/></suffix>
-  <suffix id="InCu" name="the Siren"><stats intellect="29" cunning="28"/></suffix>
-  <suffix id="InEn" name="the Hydra"><stats intellect="29" endurance="28"/></suffix>
-  <suffix id="InSw" name="the Centaur"><stats intellect="29" swiftness="28"/></suffix>
-  <suffix id="InCo" name="the Chimera"><stats intellect="29" courage="28"/></suffix>
-  <suffix id="MiCu" name="the Sphinx"><stats might="29" cunning="28"/></suffix>
-  <suffix id="MiEn" name="the Giant"><stats might="29" endurance="28"/></suffix>
-  <suffix id="MiSw" name="the Gryphon"><stats might="29" swiftness="28"/></suffix>
-  <suffix id="MiCo" name="the Lion"><stats might="29" courage="28"/></suffix>
-  <suffix id="CuEn" name="the Nymph"><stats cunning="29" endurance="28"/></suffix>
-  <suffix id="CuSw" name="the Harpie"><stats cunning="29" swiftness="28"/></suffix>
-  <suffix id="CuCo" name="the Satyr"><stats cunning="29" courage="28"/></suffix>
-  <suffix id="EnSw" name="the Phoenix"><stats endurance="29" swiftness="28"/></suffix>
-  <suffix id="EnCo" name="the Tortoise"><stats endurance="29" courage="28"/></suffix>
-  <suffix id="SwCo" name="the Unicorn"><stats swiftness="29" courage="28"/></suffix>
-  <suffix id="rA" name="Air Resistance"><stats airResist="335"/></suffix>
-  <suffix id="rE" name="Earth Resistance"><stats earthResist="335"/></suffix>
-  <suffix id="rF" name="Fire Resistance"><stats fireResist="335"/></suffix>
-  <suffix id="rW" name="Water Resistance"><stats waterResist="335"/></suffix>
-</suffixSet>
-<suffixSet id="217p">
-  <suffix id="Mi" name="Might"><stats might="43"/></suffix>
-  <suffix id="In" name="Intellect"><stats intellect="43"/></suffix>
-  <suffix id="Cu" name="Cunning"><stats cunning="43"/></suffix>
-  <suffix id="Sw" name="Swiftness"><stats swiftness="43"/></suffix>
-  <suffix id="En" name="Endurance"><stats endurance="43"/></suffix>
-  <suffix id="Co" name="Courage"><stats courage="43"/></suffix>
-  <suffix id="InMi" name="the Dragon"><stats intellect="31" might="31"/></suffix>
-  <suffix id="InCu" name="the Siren"><stats intellect="31" cunning="31"/></suffix>
-  <suffix id="InEn" name="the Hydra"><stats intellect="31" endurance="31"/></suffix>
-  <suffix id="InSw" name="the Centaur"><stats intellect="31" swiftness="31"/></suffix>
-  <suffix id="InCo" name="the Chimera"><stats intellect="31" courage="31"/></suffix>
-  <suffix id="MiCu" name="the Sphinx"><stats might="31" cunning="31"/></suffix>
-  <suffix id="MiEn" name="the Giant"><stats might="31" endurance="31"/></suffix>
-  <suffix id="MiSw" name="the Gryphon"><stats might="31" swiftness="31"/></suffix>
-  <suffix id="MiCo" name="the Lion"><stats might="31" courage="31"/></suffix>
-  <suffix id="CuEn" name="the Nymph"><stats cunning="31" endurance="31"/></suffix>
-  <suffix id="CuSw" name="the Harpie"><stats cunning="31" swiftness="31"/></suffix>
-  <suffix id="CuCo" name="the Satyr"><stats cunning="31" courage="31"/></suffix>
-  <suffix id="EnSw" name="the Phoenix"><stats endurance="31" swiftness="31"/></suffix>
-  <suffix id="EnCo" name="the Tortoise"><stats endurance="31" courage="31"/></suffix>
-  <suffix id="SwCo" name="the Unicorn"><stats swiftness="31" courage="31"/></suffix>
-  <suffix id="rA" name="Air Resistance"><stats airResist="362"/></suffix>
-  <suffix id="rE" name="Earth Resistance"><stats earthResist="362"/></suffix>
-  <suffix id="rF" name="Fire Resistance"><stats fireResist="362"/></suffix>
-  <suffix id="rW" name="Water Resistance"><stats waterResist="362"/></suffix>
-</suffixSet>
-<suffixSet id="233p">
-  <suffix id="Mi" name="Might"><stats might="47"/></suffix>
-  <suffix id="In" name="Intellect"><stats intellect="47"/></suffix>
-  <suffix id="Cu" name="Cunning"><stats cunning="47"/></suffix>
-  <suffix id="Sw" name="Swiftness"><stats swiftness="47"/></suffix>
-  <suffix id="En" name="Endurance"><stats endurance="47"/></suffix>
-  <suffix id="Co" name="Courage"><stats courage="47"/></suffix>
-  <suffix id="InMi" name="the Dragon"><stats intellect="24" might="33"/></suffix>
-  <suffix id="InCu" name="the Siren"><stats intellect="24" cunning="33"/></suffix>
-  <suffix id="InEn" name="the Hydra"><stats intellect="24" endurance="33"/></suffix>
-  <suffix id="InSw" name="the Centaur"><stats intellect="24" swiftness="33"/></suffix>
-  <suffix id="InCo" name="the Chimera"><stats intellect="24" courage="33"/></suffix>
-  <suffix id="MiCu" name="the Sphinx"><stats might="24" cunning="33"/></suffix>
-  <suffix id="MiEn" name="the Giant"><stats might="24" endurance="33"/></suffix>
-  <suffix id="MiSw" name="the Gryphon"><stats might="24" swiftness="33"/></suffix>
-  <suffix id="MiCo" name="the Lion"><stats might="24" courage="33"/></suffix>
-  <suffix id="CuEn" name="the Nymph"><stats cunning="24" endurance="33"/></suffix>
-  <suffix id="CuSw" name="the Harpie"><stats cunning="24" swiftness="33"/></suffix>
-  <suffix id="CuCo" name="the Satyr"><stats cunning="24" courage="33"/></suffix>
-  <suffix id="EnSw" name="the Phoenix"><stats endurance="24" swiftness="33"/></suffix>
-  <suffix id="EnCo" name="the Tortoise"><stats endurance="24" courage="33"/></suffix>
-  <suffix id="SwCo" name="the Unicorn"><stats swiftness="24" courage="33"/></suffix>
-  <suffix id="rA" name="Air Resistance"><stats airResist="388"/></suffix>
-  <suffix id="rE" name="Earth Resistance"><stats earthResist="388"/></suffix>
-  <suffix id="rF" name="Fire Resistance"><stats fireResist="388"/></suffix>
-  <suffix id="rW" name="Water Resistance"><stats waterResist="388"/></suffix>
-</suffixSet>
-<suffixSet id="250p">
-  <suffix id="Mi" name="Might"><stats might="50"/></suffix>
-  <suffix id="In" name="Intellect"><stats intellect="50"/></suffix>
-  <suffix id="Cu" name="Cunning"><stats cunning="50"/></suffix>
-  <suffix id="Sw" name="Swiftness"><stats swiftness="50"/></suffix>
-  <suffix id="En" name="Endurance"><stats endurance="50"/></suffix>
-  <suffix id="Co" name="Courage"><stats courage="50"/></suffix>
-  <suffix id="InMi" name="the Dragon"><stats intellect="36" might="35"/></suffix>
-  <suffix id="InCu" name="the Siren"><stats intellect="36" cunning="35"/></suffix>
-  <suffix id="InEn" name="the Hydra"><stats intellect="36" endurance="35"/></suffix>
-  <suffix id="InSw" name="the Centaur"><stats intellect="36" swiftness="35"/></suffix>
-  <suffix id="InCo" name="the Chimera"><stats intellect="36" courage="35"/></suffix>
-  <suffix id="MiCu" name="the Sphinx"><stats might="36" cunning="35"/></suffix>
-  <suffix id="MiEn" name="the Giant"><stats might="36" endurance="35"/></suffix>
-  <suffix id="MiSw" name="the Gryphon"><stats might="36" swiftness="35"/></suffix>
-  <suffix id="MiCo" name="the Lion"><stats might="36" courage="35"/></suffix>
-  <suffix id="CuEn" name="the Nymph"><stats cunning="36" endurance="35"/></suffix>
-  <suffix id="CuSw" name="the Harpie"><stats cunning="36" swiftness="35"/></suffix>
-  <suffix id="CuCo" name="the Satyr"><stats cunning="36" courage="35"/></suffix>
-  <suffix id="EnSw" name="the Phoenix"><stats endurance="36" swiftness="35"/></suffix>
-  <suffix id="EnCo" name="the Tortoise"><stats endurance="36" courage="35"/></suffix>
-  <suffix id="SwCo" name="the Unicorn"><stats swiftness="36" courage="35"/></suffix>
-  <suffix id="rA" name="Air Resistance"><stats airResist="417"/></suffix>
-  <suffix id="rE" name="Earth Resistance"><stats earthResist="417"/></suffix>
-  <suffix id="rF" name="Fire Resistance"><stats fireResist="417"/></suffix>
-  <suffix id="rW" name="Water Resistance"><stats waterResist="417"/></suffix>
-</suffixSet>
-<suffixSet id="267p">
-  <suffix id="Mi" name="Might"><stats might="53"/></suffix>
-  <suffix id="In" name="Intellect"><stats intellect="53"/></suffix>
-  <suffix id="Cu" name="Cunning"><stats cunning="53"/></suffix>
-  <suffix id="Sw" name="Swiftness"><stats swiftness="53"/></suffix>
-  <suffix id="En" name="Endurance"><stats endurance="53"/></suffix>
-  <suffix id="Co" name="Courage"><stats courage="53"/></suffix>
-  <suffix id="InMi" name="the Dragon"><stats intellect="38" might="38"/></suffix>
-  <suffix id="InCu" name="the Siren"><stats intellect="38" cunning="38"/></suffix>
-  <suffix id="InEn" name="the Hydra"><stats intellect="38" endurance="38"/></suffix>
-  <suffix id="InSw" name="the Centaur"><stats intellect="38" swiftness="38"/></suffix>
-  <suffix id="InCo" name="the Chimera"><stats intellect="38" courage="38"/></suffix>
-  <suffix id="MiCu" name="the Sphinx"><stats might="38" cunning="38"/></suffix>
-  <suffix id="MiEn" name="the Giant"><stats might="38" endurance="38"/></suffix>
-  <suffix id="MiSw" name="the Gryphon"><stats might="38" swiftness="38"/></suffix>
-  <suffix id="MiCo" name="the Lion"><stats might="38" courage="38"/></suffix>
-  <suffix id="CuEn" name="the Nymph"><stats cunning="38" endurance="38"/></suffix>
-  <suffix id="CuSw" name="the Harpie"><stats cunning="38" swiftness="38"/></suffix>
-  <suffix id="CuCo" name="the Satyr"><stats cunning="38" courage="38"/></suffix>
-  <suffix id="EnSw" name="the Phoenix"><stats endurance="38" swiftness="38"/></suffix>
-  <suffix id="EnCo" name="the Tortoise"><stats endurance="38" courage="38"/></suffix>
-  <suffix id="SwCo" name="the Unicorn"><stats swiftness="38" courage="38"/></suffix>
-  <suffix id="rA" name="Air Resistance"><stats airResist="445"/></suffix>
-  <suffix id="rE" name="Earth Resistance"><stats earthResist="445"/></suffix>
-  <suffix id="rF" name="Fire Resistance"><stats fireResist="445"/></suffix>
-  <suffix id="rW" name="Water Resistance"><stats waterResist="445"/></suffix>
-</suffixSet>
-<suffixSet id="285p">
-  <suffix id="Mi" name="Might"><stats might="57"/></suffix>
-  <suffix id="In" name="Intellect"><stats intellect="57"/></suffix>
-  <suffix id="Cu" name="Cunning"><stats cunning="57"/></suffix>
-  <suffix id="Sw" name="Swiftness"><stats swiftness="57"/></suffix>
-  <suffix id="En" name="Endurance"><stats endurance="57"/></suffix>
-  <suffix id="Co" name="Courage"><stats courage="57"/></suffix>
-  <suffix id="InMi" name="the Dragon"><stats intellect="41" might="40"/></suffix>
-  <suffix id="InCu" name="the Siren"><stats intellect="41" cunning="40"/></suffix>
-  <suffix id="InEn" name="the Hydra"><stats intellect="41" endurance="40"/></suffix>
-  <suffix id="InSw" name="the Centaur"><stats intellect="41" swiftness="40"/></suffix>
-  <suffix id="InCo" name="the Chimera"><stats intellect="41" courage="40"/></suffix>
-  <suffix id="MiCu" name="the Sphinx"><stats might="41" cunning="40"/></suffix>
-  <suffix id="MiEn" name="the Giant"><stats might="41" endurance="40"/></suffix>
-  <suffix id="MiSw" name="the Gryphon"><stats might="41" swiftness="40"/></suffix>
-  <suffix id="MiCo" name="the Lion"><stats might="41" courage="40"/></suffix>
-  <suffix id="CuEn" name="the Nymph"><stats cunning="41" endurance="40"/></suffix>
-  <suffix id="CuSw" name="the Harpie"><stats cunning="41" swiftness="40"/></suffix>
-  <suffix id="CuCo" name="the Satyr"><stats cunning="41" courage="40"/></suffix>
-  <suffix id="EnSw" name="the Phoenix"><stats endurance="41" swiftness="40"/></suffix>
-  <suffix id="EnCo" name="the Tortoise"><stats endurance="41" courage="40"/></suffix>
-  <suffix id="SwCo" name="the Unicorn"><stats swiftness="41" courage="40"/></suffix>
-  <suffix id="rA" name="Air Resistance"><stats airResist="475"/></suffix>
-  <suffix id="rE" name="Earth Resistance"><stats earthResist="475"/></suffix>
-  <suffix id="rF" name="Fire Resistance"><stats fireResist="475"/></suffix>
-  <suffix id="rW" name="Water Resistance"><stats waterResist="475"/></suffix>
-</suffixSet>
-<suffixSet id="303p">
-  <suffix id="Mi" name="Might"><stats might="61"/></suffix>
-  <suffix id="In" name="Intellect"><stats intellect="61"/></suffix>
-  <suffix id="Cu" name="Cunning"><stats cunning="61"/></suffix>
-  <suffix id="Sw" name="Swiftness"><stats swiftness="61"/></suffix>
-  <suffix id="En" name="Endurance"><stats endurance="61"/></suffix>
-  <suffix id="Co" name="Courage"><stats courage="61"/></suffix>
-  <suffix id="InMi" name="the Dragon"><stats intellect="44" might="43"/></suffix>
-  <suffix id="InCu" name="the Siren"><stats intellect="44" cunning="43"/></suffix>
-  <suffix id="InEn" name="the Hydra"><stats intellect="44" endurance="43"/></suffix>
-  <suffix id="InSw" name="the Centaur"><stats intellect="44" swiftness="43"/></suffix>
-  <suffix id="InCo" name="the Chimera"><stats intellect="44" courage="43"/></suffix>
-  <suffix id="MiCu" name="the Sphinx"><stats might="44" cunning="43"/></suffix>
-  <suffix id="MiEn" name="the Giant"><stats might="44" endurance="43"/></suffix>
-  <suffix id="MiSw" name="the Gryphon"><stats might="44" swiftness="43"/></suffix>
-  <suffix id="MiCo" name="the Lion"><stats might="44" courage="43"/></suffix>
-  <suffix id="CuEn" name="the Nymph"><stats cunning="44" endurance="43"/></suffix>
-  <suffix id="CuSw" name="the Harpie"><stats cunning="44" swiftness="43"/></suffix>
-  <suffix id="CuCo" name="the Satyr"><stats cunning="44" courage="43"/></suffix>
-  <suffix id="EnSw" name="the Phoenix"><stats endurance="44" swiftness="43"/></suffix>
-  <suffix id="EnCo" name="the Tortoise"><stats endurance="44" courage="43"/></suffix>
-  <suffix id="SwCo" name="the Unicorn"><stats swiftness="44" courage="43"/></suffix>
-  <suffix id="rA" name="Air Resistance"><stats airResist="505"/></suffix>
-  <suffix id="rE" name="Earth Resistance"><stats earthResist="505"/></suffix>
-  <suffix id="rF" name="Fire Resistance"><stats fireResist="505"/></suffix>
-  <suffix id="rW" name="Water Resistance"><stats waterResist="505"/></suffix>
 </suffixSet>
 
 </root>
