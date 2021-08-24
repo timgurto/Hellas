@@ -62,6 +62,8 @@ void EntityType::load(Container& container,
 
     xr.findRectChild("collisionRect", elem, et.collisionRect);
 
+    xr.findAttr(elem, "level", et.level);
+
     xr.findAttr(elem, "xDrawOffset", et.drawRect.x);
     xr.findAttr(elem, "yDrawOffset", et.drawRect.y);
     container[id] = et;

@@ -19,6 +19,7 @@ struct EntityType {
   Texture image;
   ScreenRect drawRect;
   ScreenRect collisionRect;
+  short level;
 
   using Container = std::map<std::string, EntityType>;
   static void load(Container& container,
