@@ -129,7 +129,6 @@
     <ClCompile Include="..\..\..\src\client\Surface.cpp" />
     <ClCompile Include="..\..\..\src\client\Tag.cpp" />
     <ClCompile Include="..\..\..\src\client\Texture.cpp" />
-    <ClCompile Include="..\..\..\src\client\Tooltip.cpp" />
     <ClCompile Include="..\..\..\src\client\ui\Button.cpp" />
     <ClCompile Include="..\..\..\src\client\ui\CheckBox.cpp" />
     <ClCompile Include="..\..\..\src\client\ui\ChoiceList.cpp" />
@@ -164,6 +163,7 @@
     <ClCompile Include="SpawnPoint.cpp" />
     <ClCompile Include="StaticObject.cpp" />
     <ClCompile Include="Terrain.cpp" />
+    <ClCompile Include="TooltipDummyImpl.cpp" />
     <ClCompile Include="util.cpp" />
   </ItemGroup>
   <ItemGroup>
