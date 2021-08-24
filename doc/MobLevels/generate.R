@@ -17,8 +17,9 @@ paletteSize = max(data$level) - min(data$level) + 1;
 levelColours = palette(paletteSize)
 
 colourForLevel <- function(level){
-    index = level - min(data$level) + 1
-    levelColours[index]
+    levelIndex = level - min(data$level) + 1    
+    reversedIndex = paletteSize - levelIndex + 1
+    levelColours[reversedIndex]
 }
 
 # For each entry
