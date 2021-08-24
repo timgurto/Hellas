@@ -13,10 +13,12 @@ rasterImage(map, 0, maxCoord, maxCoord, 0)
 # For each entry
 for (i in 1:length(data$level)){
     # Circle radius based on quantity
-    circleSize=1
+    circleArea = data$quantity[i]
+    rawRadius = sqrt(circleArea / 3.14159)
+    radius = rawRadius
     
     # Circle colour based on level
     
     # Draw circle at x,y
-    points(data$x[i], data$y[i], pch=21, bg="white", cex=circleSize, col="transparent")
+    points(data$x[i], data$y[i], pch=21, bg="white", cex=radius, col="transparent")
 }
