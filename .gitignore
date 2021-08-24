@@ -78,3 +78,4 @@ tools/Launcher/Hellas client/*
 release-notes.txt
 tools/Suffix generator/Suffix generator/output.xml
 doc/MobLevels/data.csv
+doc/MobLevels/plot.svg
