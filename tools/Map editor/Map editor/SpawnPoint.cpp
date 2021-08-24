@@ -55,6 +55,8 @@ void SpawnPoint::save(const Container& container, std::string xmlOutputFilename,
   // NPCs CSV
   auto csvOut = std::ofstream{csvNPCsOutputFilename};
   for (const auto& sp : container) {
+    if (entityTypes[sp.id].category != EntityType::NPC) continue;
+
     csvOut << sp.id << std::endl;
   }
 }
