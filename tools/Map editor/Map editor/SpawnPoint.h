@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "../../../src/Point.h"
+#include "EntityType.h"
 
 struct SpawnPoint {
   std::string id;
@@ -18,5 +19,7 @@ struct SpawnPoint {
 
   using Container = std::set<SpawnPoint>;
   static void load(Container &container, const std::string &filename);
-  static void save(const Container &container, const std::string &filename);
+  static void save(const Container &container, std::string xmlOutputFilename,
+                   std::string csvNPCsOutputFilename,
+                   EntityType::Container &entityTypes);
 };

@@ -479,9 +479,11 @@ void initUI() {
         spawnPoints.clear();
         for (const auto &file : dataFiles) SpawnPoint::load(spawnPoints, file);
       }));
-  saveLoadWindow->addChild(new Button(
-      {COL2_X, y, BUTTON_W, BUTTON_H}, "Save spawn points",
-      []() { SpawnPoint::save(spawnPoints, "../../Data/spawnPoints.xml"); }));
+  saveLoadWindow->addChild(
+      new Button({COL2_X, y, BUTTON_W, BUTTON_H}, "Save spawn points", []() {
+        SpawnPoint::save(spawnPoints, "../../Data/spawnPoints.xml",
+                         "../../doc/MobLevels/data.csv", entityTypes);
+      }));
   y += BUTTON_H + GAP;
 
   saveLoadWindow->addChild(

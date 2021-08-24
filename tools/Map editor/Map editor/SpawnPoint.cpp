@@ -1,5 +1,7 @@
 #include "SpawnPoint.h"
 
+#include <fstream>
+
 #include "../../../src/XmlReader.h"
 #include "../../../src/XmlWriter.h"
 
@@ -33,9 +35,11 @@ void SpawnPoint::load(Container& container, const std::string& filename) {
   }
 }
 
-void SpawnPoint::save(const Container& container, const std::string& filename) {
-  auto xw = XmlWriter{filename};
-
+void SpawnPoint::save(const Container& container, std::string xmlOutputFilename,
+                      std::string csvNPCsOutputFilename,
+                      EntityType::Container& entityTypes) {
+  // XML
+  auto xw = XmlWriter{xmlOutputFilename};
   for (const auto& sp : container) {
     auto e = xw.addChild("spawnPoint");
     xw.setAttr(e, "type", sp.id);
@@ -47,4 +51,10 @@ void SpawnPoint::save(const Container& container, const std::string& filename) {
     if (sp.useCachedTerrain) xw.setAttr(e, "useCachedTerrain", 1);
   }
   xw.publish();
+
+  // NPCs CSV
+  auto csvOut = std::ofstream{csvNPCsOutputFilename};
+  for (const auto& sp : container) {
+    csvOut << sp.id << std::endl;
+  }
 }
