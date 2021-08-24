@@ -530,7 +530,7 @@ void initUI() {
   y += contextTerrainLabel->height() + GAP;
 
   const auto LINE_SIZE = 200 - 2 * GAP;
-  contextWindow->addChild(new Line(GAP, y, LINE_SIZE));
+  contextWindow->addChild(new Line({GAP, y}, LINE_SIZE));
   y += GAP + 2;
 
   const auto ICON_SIZE = 32_px;
@@ -556,7 +556,7 @@ void initUI() {
     y += BUTTON_SIZE + GAP;
   }
 
-  contextWindow->addChild(new Line(GAP, y, LINE_SIZE));
+  contextWindow->addChild(new Line({GAP, y}, LINE_SIZE));
   y += GAP + 2;
 
   // Row 2: tools
