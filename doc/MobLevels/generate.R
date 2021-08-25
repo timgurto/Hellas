@@ -6,9 +6,16 @@ data <- read.csv("data.csv", sep=",")
 
 # Draw map
 svg("plot.svg", width=12, height=12, bg=NA)
+par(mar=c(0,0,0,0))
 map <- readPNG("..\\..\\Images\\map.png")
 maxCoord = 3000 * 32
-plot(NULL, xlim=c(0, maxCoord), ylim=c(maxCoord ,0))
+plot(
+    NULL,
+    xlim=c(0, maxCoord), ylim=c(maxCoord ,0),
+    axes = FALSE,
+    xlab="", ylab="",
+    xaxs = "i", yaxs = "i"
+)
 rasterImage(map, 0, maxCoord, maxCoord, 0)
 
 #Generate colour palette
@@ -35,3 +42,5 @@ for (i in 1:length(data$level)){
     # Draw circle at x,y
     points(data$x[i], data$y[i], pch=21, bg=colour, cex=radius, col="black")
 }
+
+dev.off()
