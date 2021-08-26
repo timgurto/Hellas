@@ -124,7 +124,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 124,Adventure: primeval forest,377,987,Content,125,,,
 125,Move adventures to instances,13,610,Feature,,,,
 126,Salvage mats from unwanted items,34,34,Feature,,TRUE,,
-127,Random item drops,233,233,Feature,126,,,
+127,Random item drops,233,233,Feature,126,TRUE,,
 128,Allow remote deletion of city construction sites by king,1,5,Usability,120,,,1 Housing
 130,Make death more clear,5,34,Aesthetics,,,,
 131,Ships,13,377,Content,,,TRUE,2 Tier-3
