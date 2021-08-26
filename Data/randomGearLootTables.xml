@@ -8,7 +8,6 @@
 </lootTable>
 <lootTable id="gear11" >
     <loot chance="0.005" id="11_magic"/>
-    <loot chance="0.005" id="11_offhand"/>
 </lootTable>
 <lootTable id="gear12" >
     <loot chance="0.005" id="12_melee"/>
@@ -22,7 +21,6 @@
     <loot chance="0.005" id="14_leatherBody"/>
     <loot chance="0.005" id="14_leatherHands"/>
     <loot chance="0.005" id="14_magic"/>
-    <loot chance="0.005" id="14_offhand"/>
 </lootTable>
 <lootTable id="gear15" >
     <loot chance="0.005" id="15_leatherFeet"/>
@@ -40,7 +38,6 @@
     <loot chance="0.005" id="17_leatherBody"/>
     <loot chance="0.005" id="17_leatherHands"/>
     <loot chance="0.005" id="17_magic"/>
-    <loot chance="0.005" id="17_offhand"/>
 </lootTable>
 <lootTable id="gear18" >
     <loot chance="0.005" id="18_leatherFeet"/>
@@ -58,7 +55,6 @@
     <loot chance="0.005" id="20_leatherBody"/>
     <loot chance="0.005" id="20_leatherHands"/>
     <loot chance="0.005" id="20_magic"/>
-    <loot chance="0.005" id="20_offhand"/>
 </lootTable>
 <lootTable id="gear21" >
     <loot chance="0.005" id="21_leatherFeet"/>
@@ -76,7 +72,6 @@
     <loot chance="0.005" id="23_leatherBody"/>
     <loot chance="0.005" id="23_leatherHands"/>
     <loot chance="0.005" id="23_magic"/>
-    <loot chance="0.005" id="23_offhand"/>
 </lootTable>
 <lootTable id="gear24" >
     <loot chance="0.005" id="24_leatherFeet"/>
@@ -95,7 +90,6 @@
     <loot chance="0.005" id="26_leatherBody"/>
     <loot chance="0.005" id="26_leatherHands"/>
     <loot chance="0.005" id="26_magic"/>
-    <loot chance="0.005" id="26_offhand"/>
 </lootTable>
 <lootTable id="gear27" >
     <loot chance="0.005" id="27_clothHead"/>
@@ -115,7 +109,6 @@
     <loot chance="0.005" id="29_leatherBody"/>
     <loot chance="0.005" id="29_leatherHands"/>
     <loot chance="0.005" id="29_magic"/>
-    <loot chance="0.005" id="29_offhand"/>
 </lootTable>
 <lootTable id="gear30" >
     <loot chance="0.005" id="30_clothHead"/>
@@ -139,7 +132,6 @@
     <loot chance="0.005" id="32_leatherHands"/>
     <loot chance="0.005" id="32_magic"/>
     <loot chance="0.005" id="32_metalHead"/>
-    <loot chance="0.005" id="32_offhand"/>
 </lootTable>
 <lootTable id="gear33" >
     <loot chance="0.005" id="33_clothHead"/>
@@ -163,7 +155,6 @@
     <loot chance="0.005" id="35_leatherHands"/>
     <loot chance="0.005" id="35_magic"/>
     <loot chance="0.005" id="35_metalHead"/>
-    <loot chance="0.005" id="35_offhand"/>
 </lootTable>
 <lootTable id="gear36" >
     <loot chance="0.005" id="36_clothHead"/>
@@ -187,7 +178,6 @@
     <loot chance="0.005" id="38_leatherHands"/>
     <loot chance="0.005" id="38_magic"/>
     <loot chance="0.005" id="38_metalHead"/>
-    <loot chance="0.005" id="38_offhand"/>
 </lootTable>
 <lootTable id="gear39" >
     <loot chance="0.005" id="39_clothHead"/>
@@ -211,7 +201,6 @@
     <loot chance="0.005" id="41_leatherHands"/>
     <loot chance="0.005" id="41_magic"/>
     <loot chance="0.005" id="41_metalHead"/>
-    <loot chance="0.005" id="41_offhand"/>
 </lootTable>
 <lootTable id="gear42" >
     <loot chance="0.005" id="42_clothHead"/>
@@ -235,7 +224,6 @@
     <loot chance="0.005" id="44_leatherHands"/>
     <loot chance="0.005" id="44_magic"/>
     <loot chance="0.005" id="44_metalHead"/>
-    <loot chance="0.005" id="44_offhand"/>
 </lootTable>
 <lootTable id="gear45" >
     <loot chance="0.005" id="45_clothHead"/>
@@ -259,7 +247,6 @@
     <loot chance="0.005" id="47_leatherHands"/>
     <loot chance="0.005" id="47_magic"/>
     <loot chance="0.005" id="47_metalHead"/>
-    <loot chance="0.005" id="47_offhand"/>
 </lootTable>
 <lootTable id="gear48" >
     <loot chance="0.005" id="48_clothHead"/>
@@ -283,7 +270,6 @@
     <loot chance="0.005" id="50_leatherHands"/>
     <loot chance="0.005" id="50_magic"/>
     <loot chance="0.005" id="50_metalHead"/>
-    <loot chance="0.005" id="50_offhand"/>
 </lootTable>
 <lootTable id="gear51" >
     <loot chance="0.005" id="51_clothHead"/>
@@ -307,7 +293,6 @@
     <loot chance="0.005" id="53_leatherHands"/>
     <loot chance="0.005" id="53_magic"/>
     <loot chance="0.005" id="53_metalHead"/>
-    <loot chance="0.005" id="53_offhand"/>
 </lootTable>
 <lootTable id="gear54" >
     <loot chance="0.005" id="54_clothHead"/>
@@ -331,7 +316,6 @@
     <loot chance="0.005" id="56_leatherHands"/>
     <loot chance="0.005" id="56_magic"/>
     <loot chance="0.005" id="56_metalHead"/>
-    <loot chance="0.005" id="56_offhand"/>
 </lootTable>
 <lootTable id="gear57" >
     <loot chance="0.005" id="57_clothHead"/>
@@ -355,7 +339,6 @@
     <loot chance="0.005" id="59_leatherHands"/>
     <loot chance="0.005" id="59_magic"/>
     <loot chance="0.005" id="59_metalHead"/>
-    <loot chance="0.005" id="59_offhand"/>
 </lootTable>
 <lootTable id="gear60" >
     <loot chance="0.005" id="60_clothHead"/>
@@ -379,7 +362,6 @@
     <loot chance="0.005" id="62_leatherHands"/>
     <loot chance="0.005" id="62_magic"/>
     <loot chance="0.005" id="62_metalHead"/>
-    <loot chance="0.005" id="62_offhand"/>
 </lootTable>
 <lootTable id="gear63" >
     <loot chance="0.005" id="63_clothHead"/>
