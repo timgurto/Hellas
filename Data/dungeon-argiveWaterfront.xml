@@ -263,6 +263,7 @@
     level="20" maxHealth="99" attack="22" attackTime="3500" >
     <spell id="tutShield" />
     <lootTable id="animal" />
+    <lootTable id="20mob" />
 </npcType>
 
 <npcType id="dAW_gangPickpocket" name="Vindictive Pickpocket"
@@ -277,6 +278,7 @@
     <lootTable id="human" />
     <lootTable id="humanTinAge" />
     <loot id="tinCoin" > <normal mean="4" sd="2" /> </loot>
+    <lootTable id="21elite" />
 </npcType>
     <spell id="dAW_disarm" cooldown="10" school="physical">
         <targets enemy="1" />
@@ -297,6 +299,7 @@
     <lootTable id="dAW_gangTrash" />
     <lootTable id="human" />
     <lootTable id="humanTinAge" />
+    <lootTable id="21elite" />
 </npcType>
 
 <npcType id="dAW_gangStrongman" name="Heimon, Vindictive Champion"
@@ -314,6 +317,7 @@
     </chooseLoot>
     <lootTable id="human" />
     <lootTable id="humanTinAge" />
+    <lootTable id="22elite" />
 </npcType>
     <spell id="dAW_stun" cooldown="10" school="physical">
         <targets enemy="1" />
@@ -336,6 +340,7 @@
     <lootTable id="dAW_gangTrash" />
     <lootTable id="human" />
     <lootTable id="humanTinAge" />
+    <lootTable id="22elite" />
 </npcType>
     <spell id="dAW_silence" cooldown="10" school="air" radius="15">
         <targets enemy="1" />
@@ -349,6 +354,7 @@
     level="22" maxHealth="58" attack="11" attackTime="2900" >
     <spell id="dAW_dogBleed" />
     <lootTable id="animal" />
+    <lootTable id="22mob" />
 </npcType>
     <spell id="dAW_dogBleed" cooldown="10" school="physical">
         <targets enemy="1" />
@@ -372,6 +378,7 @@
     <lootTable id="dAW_gangTrash" />
     <lootTable id="human" />
     <lootTable id="humanTinAge" />
+    <lootTable id="22elite" />
 </npcType>
 
 <npcType id="dAW_gangLeader" name="Oulixes the Vindictive"
@@ -389,6 +396,7 @@
     </chooseLoot>
     <lootTable id="human" />
     <lootTable id="humanTinAge" />
+    <lootTable id="23elite" />
 </npcType>
 
 <npcType id="dAW_phnSoldier" name="Phoenician Soldier"
@@ -405,6 +413,7 @@
     <lootTable id="dAW_phoenicianTrash" />
     <lootTable id="human" />
     <lootTable id="humanTinAge" />
+    <lootTable id="22elite" />
 </npcType>
     <spell id="dAW_intimidate" cooldown="10" school="air" radius="30">
         <targets enemy="1" />
@@ -425,6 +434,7 @@
     <lootTable id="dAW_phoenicianTrash" />
     <lootTable id="human" />
     <lootTable id="humanTinAge" />
+    <lootTable id="23elite" />
 </npcType>
 
 <npcType id="dAW_phnCook" name="Phoenician Cook"
@@ -439,6 +449,7 @@
     <lootTable id="dAW_phoenicianTrash" />
     <lootTable id="human" />
     <lootTable id="humanTinAge" />
+    <lootTable id="23elite" />
 </npcType>
     <projectile id="food" speed="200" particlesAtEnd="dirtExplosion" sounds="water" >
         <drawRect x="-7" y="-28" w="16" h="36" />
@@ -462,6 +473,7 @@
         <choice item="dAW_chefCleaver"/>
         <choice item="dAW_chefOvenMitts"/>
     </chooseLoot>
+    <lootTable id="24elite" />
 </npcType>
     <spell id="dAW_chefBleed" cooldown="5" school="physical">
         <targets enemy="1" />
@@ -494,6 +506,7 @@
     <loot id="dAW_phnLoverBoxers" />
     <loot id="dAW_wearableBoxers" chance="0.02" />
     <loot id="wine" chance="0.3" />
+    <lootTable id="24elite" />
 </npcType>
     <item id="puffyShirt" gearSlot="body" >
         <offset x="-5" y="-3" />
@@ -516,6 +529,7 @@
         <choice item="dAW_loverSword"/>
         <choice item="dAW_loverHealOffhand"/>
     </chooseLoot>
+    <lootTable id="25elite" />
 </npcType>
     <spell id="dAW_summonConsort" cooldown="10" school="physical">
         <targets enemy="1" />
@@ -537,6 +551,7 @@
     <lootTable id="dAW_phoenicianTrash" />
     <lootTable id="human" />
     <lootTable id="humanTinAge" />
+    <lootTable id="24elite" />
 </npcType>
 
 <npcType id="dAW_phnShipwright" name="Phoenician Shipwright"
@@ -554,6 +569,7 @@
         <choice item="dAW_shipwrightHammer"/>
         <choice item="dAW_shipwrightShield"/>
     </chooseLoot>
+    <lootTable id="24elite" />
 </npcType>
 
 <npcType id="dAW_phnNavigator" name="Lyris, Oceanid Navigator"
@@ -568,6 +584,7 @@
     <particles profile="waterSmall" x="7" y="-28" />
     <lootTable id="dAW_allTrash" />
     <lootTable id="dAW_phoenicianTrash" />
+    <lootTable id="25elite" />
 </npcType>
 
 <npcType id="dAW_phnAdmiral" name="Akbar, Admiral of the Fleet"
@@ -587,6 +604,7 @@
         <choice item="dAW_admiralSpear"/>
         <choice item="dAW_setRobe"/>
     </chooseLoot>
+    <lootTable id="26elite" />
     <loot id="waterEssence" > <normal mean="7" sd="2" /> </loot>
 </npcType>
     <spell id="dAW_admiralAoE" cooldown="5" school="water" radius="30">
@@ -956,6 +974,7 @@
         dodge="5000" airResist="5000" earthResist="5000" fireResist="5000" waterResist="5000"
         xDrawOffset="-6" yDrawOffset="-26">
         <collisionRect x="-6" y="-4" w="12" h="8" />
+        <lootTable id="26elite" />
     </npcType>
     <objectType id="princessNecklace" name="Jeweled necklace"
         imageFile="gemBlue" xDrawOffset="-8" yDrawOffset="-8"/>

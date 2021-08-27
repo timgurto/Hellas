@@ -147,6 +147,7 @@ Mark graveyard on map: not hardcoded
     <collisionRect x="-6" y="-4" w="14" h="7" />
     <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
     <loot id="halloweenSkeletonMat" chance="0.5" />
+    <lootTable id="8mob" />
 </npcType>
 <npcType id="halloweenMummy" name="Shambling Mummy"
     xDrawOffset="-15" yDrawOffset="-37" imageFile="mummy"
@@ -155,12 +156,14 @@ Mark graveyard on map: not hardcoded
     <loot id="linenThread" chance="0.2" />
     <loot id="linenCloth" chance="0.01" />
     <loot id="halloweenMummyMat" chance="0.5" />
+    <lootTable id="10mob" />
 </npcType>
 <npcType id="halloweenGhost" name="Agitated Shade"
     xDrawOffset="-10" yDrawOffset="-39" imageFile="ghost"
     level="12" maxHealth="64" attack="8" attackTime="2000" >
     <collisionRect x="-9" y="-4" w="16" h="7" />
     <loot id="halloweenGhostMat" chance="0.5" />
+    <lootTable id="12mob" />
 </npcType>
 
 

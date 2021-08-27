@@ -182,6 +182,7 @@
         <loot id="knucklebones" chance="0.02" />
         <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
         <loot id="calydonianHorn" chance="0.2" />
+        <lootTable id="15elite" />
     </npcType>
     <item id="calydonianHorn" name="Horn of the Calydonian Boar" class="boneRepairable" gearSlot="offhand" lvlReq="10"
         iconFile="hornBlack" gearFile="hornBlack" quality="2" bind="equip" >
@@ -244,6 +245,7 @@
         <loot id="knucklebones" chance="0.02" />
         <loot id="entrails" chance="0.1" />
         <loot id="fat" chance="0.05" />
+        <lootTable id="10mob" />
     </npcType>
 
 <quest id="learnScholarBuilding1" name="A Shortcut to Mushrooms" startsAt="scholarQG" endsAt="scholarQG" exclusiveToClass="Scholar"

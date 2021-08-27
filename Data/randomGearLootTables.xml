@@ -464,4 +464,82 @@
     <nestedLootTable id="gear20" />
 </lootTable>
 
+<lootTable id="15elite" >
+    <nestedLootTable id="gear13" />
+    <nestedLootTable id="gear13" />
+    <nestedLootTable id="gear13" />
+    <nestedLootTable id="gear14" />
+    <nestedLootTable id="gear14" />
+    <nestedLootTable id="gear14" />
+    <nestedLootTable id="gear15" />
+    <nestedLootTable id="gear15" />
+    <nestedLootTable id="gear15" />
+</lootTable>
+<lootTable id="21elite" >
+    <nestedLootTable id="gear19" />
+    <nestedLootTable id="gear19" />
+    <nestedLootTable id="gear19" />
+    <nestedLootTable id="gear20" />
+    <nestedLootTable id="gear20" />
+    <nestedLootTable id="gear20" />
+    <nestedLootTable id="gear21" />
+    <nestedLootTable id="gear21" />
+    <nestedLootTable id="gear21" />
+</lootTable>
+<lootTable id="22elite" >
+    <nestedLootTable id="gear20" />
+    <nestedLootTable id="gear20" />
+    <nestedLootTable id="gear20" />
+    <nestedLootTable id="gear21" />
+    <nestedLootTable id="gear21" />
+    <nestedLootTable id="gear21" />
+    <nestedLootTable id="gear22" />
+    <nestedLootTable id="gear22" />
+    <nestedLootTable id="gear22" />
+</lootTable>
+<lootTable id="23elite" >
+    <nestedLootTable id="gear21" />
+    <nestedLootTable id="gear21" />
+    <nestedLootTable id="gear21" />
+    <nestedLootTable id="gear22" />
+    <nestedLootTable id="gear22" />
+    <nestedLootTable id="gear22" />
+    <nestedLootTable id="gear23" />
+    <nestedLootTable id="gear23" />
+    <nestedLootTable id="gear23" />
+</lootTable>
+<lootTable id="24elite" >
+    <nestedLootTable id="gear22" />
+    <nestedLootTable id="gear22" />
+    <nestedLootTable id="gear22" />
+    <nestedLootTable id="gear23" />
+    <nestedLootTable id="gear23" />
+    <nestedLootTable id="gear23" />
+    <nestedLootTable id="gear24" />
+    <nestedLootTable id="gear24" />
+    <nestedLootTable id="gear24" />
+</lootTable>
+<lootTable id="25elite" >
+    <nestedLootTable id="gear23" />
+    <nestedLootTable id="gear23" />
+    <nestedLootTable id="gear23" />
+    <nestedLootTable id="gear24" />
+    <nestedLootTable id="gear24" />
+    <nestedLootTable id="gear24" />
+    <nestedLootTable id="gear25" />
+    <nestedLootTable id="gear25" />
+    <nestedLootTable id="gear25" />
+</lootTable>
+<lootTable id="26elite" >
+    <nestedLootTable id="gear24" />
+    <nestedLootTable id="gear24" />
+    <nestedLootTable id="gear24" />
+    <nestedLootTable id="gear25" />
+    <nestedLootTable id="gear25" />
+    <nestedLootTable id="gear25" />
+    <nestedLootTable id="gear26" />
+    <nestedLootTable id="gear26" />
+    <nestedLootTable id="gear26" />
+</lootTable>
+
 </root>
