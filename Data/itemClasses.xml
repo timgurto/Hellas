@@ -82,7 +82,7 @@ For the salvage recipes, use these unlocks:
     <recipe id="salvageTin" name="Salvage Tin" product="tinBar" time="1500" >
         <material id="tinScrap" quantity="10" />
         <tool class="smelting1" />
-        <tool class="gloves" />
+        <tool class="bellows" />
         <unlockedBy construction="oven" chance="0.1" />
         <unlockedBy construction="kiln" chance="0.1" />
         <unlockedBy recipe="tinBar" chance="0.01" />
@@ -92,7 +92,7 @@ For the salvage recipes, use these unlocks:
     <recipe id="salvageCopper" name="Salvage Copper" product="copperBar" time="1500" >
         <material id="copperScrap" quantity="10" />
         <tool class="smelting2" />
-        <tool class="gloves" />
+        <tool class="bellows" />
         <unlockedBy construction="kiln" chance="0.1" />
         <unlockedBy recipe="copperBar" chance="0.01" />
     </recipe>
@@ -101,7 +101,7 @@ For the salvage recipes, use these unlocks:
     <recipe id="salvageSilver" name="Salvage Silver" product="silverBar" time="1500" >
         <material id="silverScrap" quantity="10" />
         <tool class="smelting2" />
-        <tool class="gloves" />
+        <tool class="bellows" />
         <unlockedBy construction="kiln" chance="0.1" />
         <unlockedBy recipe="silverBar" chance="0.01" />
     </recipe>

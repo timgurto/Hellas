@@ -13,7 +13,6 @@
 <tag id="carving"           name="Carving" />
 <tag id="clayRefinement"    name="Clay Refinement" />
 <tag id="fishing"           name="Fishing" />
-<tag id="gloves"            name="Gloves" />
 <tag id="grinding1"         name="Knapping" />
 <tag id="grinding2"         name="Grinding" />
 <tag id="harvesting"        name="Foraging" />
@@ -32,6 +31,7 @@
 <tag id="weaving"           name="Weaving" />
 <tag id="shearing"          name="Sheep Shearing" />
 <tag id="wireDrawing"       name="Wire Drawing" />
+<tag id="bellows"           name="Air Blasting" />
 
 <tag id="waterSource"   name="Water Source" />
 <tag id="anvil1"        name="Metalworking" />

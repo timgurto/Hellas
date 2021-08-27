@@ -678,7 +678,6 @@
 </item>
 <item id="dAW_chefOvenMitts" name="Oven Mitts" class="woolHands" gearSlot="hands" sounds="fabric" quality="2" lvlReq="19" bind="pickup"
     iconFile="ovenMitts" gearFile="ovenMitts" >
-    <tag name="gloves" toolSpeed="1.05" />
     <stats armour="3" endurance="2" fireResist="11" />
     <offset x="-3" y="-1" />
 </item>
@@ -874,7 +873,6 @@
     <item id="dAW_phnLoverBoxers" name="Fancy Underthings" exclusiveToQuest="dAW_missingWomenAvenge" stackSize="5" bind="pickup" />
     <item id="dAW_questGloves" name="Magistrate's Gloves" class="leatherHands" gearSlot="hands" bind="pickup" quality="2"
         sounds="leather" iconFile="leatherGlovesGreen" gearFile="leatherGlovesGreen" >
-        <tag name="gloves" toolSpeed="1.05" />
         <stats armour="4" courage="3" />
         <offset x="0" y="0" />
     </item>

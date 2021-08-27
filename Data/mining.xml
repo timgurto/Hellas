@@ -11,21 +11,22 @@
     time="12000" >
     <material id="tin" quantity="3" />
     <tool class="smelting1" />
-    <tool class="gloves" />
+    <tool class="bellows" />
     <unlockedBy item="tin" />
+    <unlockedBy recipe="bellows" />
 </recipe>
 <recipe id="copperBar"
     time="12000" >
     <material id="copper" quantity="4" />
     <tool class="smelting2" />
-    <tool class="gloves" />
+    <tool class="bellows" />
     <unlockedBy gather="copper" chance="0.2" />
 </recipe>
 <recipe id="silverBar"
     time="12000" >
     <material id="silver" quantity="4" />
     <tool class="smelting2" />
-    <tool class="gloves" />
+    <tool class="bellows" />
     <unlockedBy gather="silver" />
 </recipe>
 

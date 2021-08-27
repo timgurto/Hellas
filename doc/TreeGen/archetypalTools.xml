@@ -7,7 +7,6 @@
 <tool id="planting"     archetype="item_stick" />
 <tool id="hammering"    archetype="item_copperHammer" />
 <tool id="carpentry"    archetype="item_tinSaw" />
-<tool id="fireHandling" archetype="item_leatherGloves" />
 <tool id="sewing"       archetype="item_boneNeedle" />
 <tool id="fishing"      archetype="item_woodSpear" />
 
@@ -117,7 +116,6 @@
 <blacklist parent="object_silverMine"   child="item_rock" />
 <blacklist parent="item_tinPick"        child="object_silverMine" />
 
-<extra parent="item_leatherGloves" child="item_tinBar" />
 <extra parent="object_kiln"        child="item_copperBar" />
 <extra parent="item_tinBar"        child="item_tinSaw" />
 <extra parent="item_tinBar"        child="item_tinTube" />

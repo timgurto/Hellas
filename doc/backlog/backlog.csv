@@ -142,4 +142,4 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 143,Cancel action on spellcast,1,2,Exploit,,,,
 144,Right-click to move,89,34,Feature,,,,
 145,Allow giving object to a city,2,2,Feature,,,,
-146,Replace gloves with bellows as tin prereq,2,3,Content,,,,
+146,Replace gloves with bellows as tin prereq,2,3,Content,,,TRUE,

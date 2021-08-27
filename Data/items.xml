@@ -32,6 +32,7 @@
 <item id="smallPot"     name="Small Pot"      sounds="ceramic"   constructs="smallPot"       stackSize="5" />
 <item id="mediumPot"    name="Medium Pot"     sounds="ceramic"   constructs="mediumPot" />
 <!--item id="largePot"     name="Large Pot"      sounds="ceramic"   constructs="largePot" /-->
+<item id="potBellows"   name="Pot Bellows"    sounds="ceramic"   constructs="potBellows" />
 <item id="elutriator"   name="Elutriator"     sounds="ceramic"   constructs="elutriator" />
 <item id="tannin"       name="Tannin"         sounds="ceramic"   constructs="tannin" />
 <item id="woodenStatue" name="Wooden Statue"  sounds="wood"      constructs="woodenStatue" />
@@ -481,13 +482,11 @@
             <item id="leatherGloves" name="Leather Gloves" class="leatherHands" gearSlot="hands" sounds="leather" lvlReq="17" >
                 <stats armor="4" swiftness="2" />
                 <offset x="-2" y="1" />
-                <tag name="gloves" />
             </item>
                 <item id="leatherGlovesSilver" name="Lacquered Leather Gloves" class="leatherHands" gearSlot="hands" sounds="leather" lvlReq="17"
                     iconFile="leatherGloves" gearFile="leatherGloves" quality="2" bind="equip">
                     <stats armor="3" swiftness="3" />
                     <offset x="-2" y="1" />
-                    <tag name="gloves" toolSpeed="1.05" />
                 </item>
             
         <!-- Bracers (physical damage) -->

@@ -161,6 +161,16 @@
     <canBeRepaired cost="clay" />
 </objectType-->
 
+<objectType id="potBellows" name="Pot Bellows"
+    xDrawOffset="-10" yDrawOffset="-16"
+    deconstructs="potBellows" deconstructionTime="1000"
+    damageParticles="ceramicShards" sounds="pottery" >
+    <collisionRect x="-7" y="-4" w="14" h="9" />
+    <durability item="clay" quantity="3" />
+    <canBeRepaired cost="leather" />
+    <tag name="bellows" />
+</objectType>
+
 <objectType id="handCart" name="Hand Cart"
     xDrawOffset="-13" yDrawOffset="-16"
     isVehicle="1" damageParticles="wood" sounds="wood" >

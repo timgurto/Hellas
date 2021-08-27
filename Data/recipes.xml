@@ -78,6 +78,18 @@
         <tool id="pottery2" />
         <unlockedBy construction="kiln" />
     </recipe-->
+    
+    <recipe id="potBellows"
+        time="10000" >
+        <material id="smallPot" />
+        <material id="rope" />
+        <material id="leather" quantity="3" />
+        <material id="linenThread" quantity="3" />
+        <tool class="sewing" />
+        <unlockedBy recipe="leather" chance="0.1" />
+        <unlockedBy recipe="smallPot" chance="0.05" />
+        <unlockedBy gather="tin" chance="0.3" />
+    </recipe>
 
 <!-- Moulds-->
     <recipe id="pickMould"
