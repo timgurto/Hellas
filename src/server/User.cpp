@@ -1559,17 +1559,21 @@ void User::sendInfoToClient(const User &targetUser, bool isNew) const {
 void User::sendInventorySlot(size_t slotIndex) const {
   const auto &slot = _inventory[slotIndex];
   if (!slot.type()) return;  // Is this right?
+  const auto isSoulbound = slot.isSoulbound() ? "1" : "0";
   sendMessage(
-      {SV_INVENTORY, makeArgs(Serial::Inventory(), slotIndex, slot.type()->id(),
-                              slot.quantity(), slot.health(), slot.suffix())});
+      {SV_INVENTORY,
+       makeArgs(Serial::Inventory(), slotIndex, slot.type()->id(),
+                slot.quantity(), slot.health(), isSoulbound, slot.suffix())});
 }
 
 void User::sendGearSlot(size_t slotIndex) const {
   const auto &slot = _gear[slotIndex];
   if (!slot.type()) return;
+  const auto isSoulbound = slot.isSoulbound() ? "1" : "0";
   sendMessage(
-      {SV_INVENTORY, makeArgs(Serial::Gear(), slotIndex, slot.type()->id(),
-                              slot.quantity(), slot.health(), slot.suffix())});
+      {SV_INVENTORY,
+       makeArgs(Serial::Gear(), slotIndex, slot.type()->id(), slot.quantity(),
+                slot.health(), isSoulbound, slot.suffix())});
 }
 
 void User::sendSpawnPoint(bool hasChanged) const {
