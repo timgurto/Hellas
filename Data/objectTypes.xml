@@ -69,8 +69,8 @@
     <tag name="pottery1" />
     <material id="rock" quantity="20" />
     <material id="log" />
-    <unlockedBy gather="rock" chance="0.05" />
-    <unlockedBy construction="fire" chance="0.1" />
+    <unlockedBy gather="rock" chance="0.1" />
+    <unlockedBy construction="fire" chance="0.3" />
     <unlockedBy construction="extinguishedOven" chance="0.1" />
     <durability item="rock" quantity="20" />
     <transform id="extinguishedOven" time="90000" />
