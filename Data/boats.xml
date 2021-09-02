@@ -6,7 +6,7 @@
     allowedTerrain="shallowWater"
     isVehicle="1" vehicleSpeed="0.65" >
     <driver x="0" y="0" />
-    <collisionRect x="-7" y="-5" w="15" h="10" />
+    <collisionRect x="-5" y="-2" w="10" h="4" />
     <material id="log" quantity="8" />
     <unlockedBy gather="log" chance="0.1" />
     <durability item="log" quantity="8" />
@@ -18,7 +18,7 @@
     allowedTerrain="shallowWater"
     isVehicle="1" vehicleSpeed="1.25" >
     <driver x="11" y="12" cutOffBottom="27" />
-    <collisionRect x="-24" y="-4" w="47" h="7" />
+    <collisionRect x="-5" y="-2" w="10" h="4" />
     <material id="stick" quantity="40" />
     <material id="rope" quantity="4" />
     <unlockedBy recipe="rope" chance="0.05" />
@@ -32,7 +32,7 @@
     isVehicle="1" vehicleSpeed="1.75"
     xDrawOffset="-65" yDrawOffset="-148" >
     <driver x="-32" y="-12" />
-    <collisionRect x="-50" y="-11" w="101" h="22" />
+    <collisionRect x="-5" y="-2" w="10" h="4" />
     <container slots="5" />
     <material id="lumber" quantity="25" />
     <material id="rope" quantity="6" />
