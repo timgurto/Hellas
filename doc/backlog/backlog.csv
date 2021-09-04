@@ -135,7 +135,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 136,lvl-60 raid,55,987,Content,125,,,
 137,Stop using ASCII numbers in messages,55,89,Performance,,,,
 138,Repair via trade window,8,89,Feature,96,,,
-139,Ships get stuck in rivers,21,5,Bug,,,,
+139,Ships get stuck in rivers,21,5,Bug,,TRUE,,
 140,Constructions on hotbar,3,21,Usability,,,,
 141,Allow trading objects,21,13,Feature,96,,TRUE,
 142,Make quests hidable in UI,2,13,Usability,,,,

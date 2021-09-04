@@ -469,3 +469,32 @@ TEST_CASE("Buffs that don't stack", "[buffs]") {
     }
   }
 }
+
+TEST_CASE("Buffs that use calendar time", "[buffs]") {
+  // Given a 2-second buff using calendar time
+  auto data = R"(
+    <buff id="caseOfTheMondays" duration="2" usesCalendarTime="1" />
+  )";
+  auto server = TestServer::WithDataString(data);
+
+  // And given Alice is connected
+  {
+    auto cAlice = TestClient::WithUsernameAndDataString("Alice", data);
+    server.waitForUsers(1);
+
+    // When Alice has the buff
+    auto &alice = server.getFirstUser();
+    alice.applyBuff(server.getFirstBuff(), alice);
+
+    // And when she logs off for more than 2 seconds
+  }
+  REPEAT_FOR_MS(2100);
+  {
+    auto cAlice = TestClient::WithUsernameAndDataString("Alice", data);
+    server.waitForUsers(1);
+
+    // Then she doesn't have the buff
+    const auto &alice = server.getFirstUser();
+    CHECK(alice.buffs().empty());
+  }
+}
