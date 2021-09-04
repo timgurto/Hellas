@@ -56,6 +56,8 @@ void Wars::declare(const Belligerent &a, const Belligerent &b) {
   if (a == b) return;
   container.insert({a, b});
 
+  Server::instance().giveWarDeclarationDebuffs(a);
+
   a.alertToWarWith(b);
   b.alertToWarWith(a);
 }

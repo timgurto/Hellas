@@ -176,6 +176,8 @@ class Server {
   void addObjectType(const ObjectType *p);
   Entity &addEntity(Entity *newEntity);
 
+  void giveWarDeclarationDebuffs(const Belligerent declarer);
+
  private:
   static Server *_instance;
   static LogConsole *_debugInstance;
