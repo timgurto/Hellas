@@ -765,9 +765,8 @@ void Server::giveWarDeclarationDebuffs(const Belligerent declarer) {
   auto *user = getUserByName(declarer.name);
   if (!user) return;
 
-  for (const auto &pair : _buffTypes) {
-    const auto &buffType = pair.second;
-    user->applyDebuff(buffType, *user);
+  for (const auto *buffType : _warDeclarationDebuffs) {
+    user->applyDebuff(*buffType, *user);
   }
 }
 

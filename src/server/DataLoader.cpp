@@ -1002,7 +1002,6 @@ void DataLoader::loadBuffs(XmlReader &xr) {
         newBuff.tickTime(tickTime);
       }
 
-      auto n = 0;
       if (xr.findAttr(functionElem, "onHit", n) && n != 0) {
         newBuff.effectOnHit();
       }
@@ -1013,6 +1012,9 @@ void DataLoader::loadBuffs(XmlReader &xr) {
     }
 
     _server._buffTypes[id] = newBuff;
+
+    if (xr.findAttr(elem, "givenToDeclarersOfWar", n))
+      _server.addWarDeclarationDebuff(_server._buffTypes[id]);
   }
 }
 

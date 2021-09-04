@@ -177,6 +177,9 @@ class Server {
   Entity &addEntity(Entity *newEntity);
 
   void giveWarDeclarationDebuffs(const Belligerent declarer);
+  void addWarDeclarationDebuff(const BuffType &buffType) {
+    _warDeclarationDebuffs.insert(&buffType);
+  }
 
  private:
   static Server *_instance;
@@ -282,6 +285,7 @@ class Server {
                  // dynamic-object storage.
   Quests _quests;
   SuffixSets _suffixSets;
+  std::set<const BuffType *> _warDeclarationDebuffs;
 
   size_t _numBuildableObjects = 0;
 
