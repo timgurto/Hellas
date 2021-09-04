@@ -482,10 +482,12 @@ TEST_CASE("Buffs that count down while offline", "[buffs]") {
     auto cAlice = TestClient::WithUsernameAndDataString("Alice", data);
     server.waitForUsers(1);
 
-    // When Alice has the buff
+    // When Alice has it as both a buff and a debuff
     auto &alice = server.getFirstUser();
     alice.applyBuff(server.getFirstBuff(), alice);
+    alice.applyDebuff(server.getFirstBuff(), alice);
     CHECK_FALSE(alice.buffs().empty());
+    CHECK_FALSE(alice.debuffs().empty());
 
     // And when she logs off for 1 second
   }
@@ -494,9 +496,10 @@ TEST_CASE("Buffs that count down while offline", "[buffs]") {
     auto cAlice = TestClient::WithUsernameAndDataString("Alice", data);
     server.waitForUsers(1);
 
-    // Then she still has the buff
+    // Then she still has the buff and debuff
     const auto &alice = server.getFirstUser();
     CHECK_FALSE(alice.buffs().empty());
+    CHECK_FALSE(alice.debuffs().empty());
 
     // And when she logs off again for more than 1 second
   }

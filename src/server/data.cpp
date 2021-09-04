@@ -335,7 +335,7 @@ void Server::writeUserData(const User &user) const {
     xw.setAttr(buffElement, "timeRemaining", buff.timeRemaining());
   }
   for (const auto &debuff : user.debuffs()) {
-    auto buffElement = xw.addChild("buff", e);
+    auto buffElement = xw.addChild("debuff", e);
     xw.setAttr(buffElement, "type", debuff.type());
     xw.setAttr(buffElement, "timeRemaining", debuff.timeRemaining());
   }
