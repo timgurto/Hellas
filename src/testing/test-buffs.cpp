@@ -471,9 +471,9 @@ TEST_CASE("Buffs that don't stack", "[buffs]") {
 }
 
 TEST_CASE("Buffs that count down while offline", "[buffs]") {
-  // Given a 2-second buff using calendar time
+  // Given a 3-second buff using calendar time
   auto data = R"(
-    <buff id="caseOfTheMondays" duration="2" countsDownWhileOffline="1" />
+    <buff id="caseOfTheMondays" duration="3" countsDownWhileOffline="1" />
   )";
   auto server = TestServer::WithDataString(data);
 
@@ -501,9 +501,9 @@ TEST_CASE("Buffs that count down while offline", "[buffs]") {
     CHECK_FALSE(alice.buffs().empty());
     CHECK_FALSE(alice.debuffs().empty());
 
-    // And when she logs off again for more than 1 second
+    // And when she logs off again for more than 2 seconds
   }
-  REPEAT_FOR_MS(1100);
+  REPEAT_FOR_MS(2100);
   {
     auto cAlice = TestClient::WithUsernameAndDataString("Alice", data);
     server.waitForUsers(1);
