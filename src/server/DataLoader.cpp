@@ -937,7 +937,8 @@ void DataLoader::loadBuffs(XmlReader &xr) {
   for (auto elem : xr.getChildren("buff")) {
     std::string id;
     if (!xr.findAttr(elem, "id", id)) continue;  // ID is mandatory
-    auto newBuff = BuffType{id};
+
+    auto &newBuff = _server._buffTypes[id] = BuffType{id};
 
     auto stats = StatsMod{};
     if (xr.findStatsChild("stats", elem, stats)) {
@@ -1011,10 +1012,8 @@ void DataLoader::loadBuffs(XmlReader &xr) {
       newBuff.effect().args(args);
     }
 
-    _server._buffTypes[id] = newBuff;
-
     if (xr.findAttr(elem, "givenToDeclarersOfWar", n))
-      _server.addWarDeclarationDebuff(_server._buffTypes[id]);
+      _server.addWarDeclarationDebuff(newBuff);
   }
 }
 
