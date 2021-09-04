@@ -1817,6 +1817,7 @@ void User::markQuestAsStarted(const Quest::ID &id, ms_t timeRemaining) {
 }
 
 void User::loadBuff(const BuffType &type, ms_t timeRemaining) {
+  if (type.usesCalendarTime()) return;
   Object::loadBuff(type, timeRemaining);
   sendMessage({SV_REMAINING_BUFF_TIME, makeArgs(type.id(), timeRemaining)});
 }

@@ -745,8 +745,6 @@ std::vector<BuffType::ID> Entity::buffsThatCancelOnOOE() const {
 void Entity::applyBuff(const BuffType &type, Entity &caster) {
   if (isDead()) return;
 
-  if (type.usesCalendarTime()) return;
-
   // Check whether it doesn't stack with something else
   for (auto &buff : _buffs) {
     if (buff.doesntStackWith(type)) {

@@ -485,6 +485,7 @@ TEST_CASE("Buffs that use calendar time", "[buffs]") {
     // When Alice has the buff
     auto &alice = server.getFirstUser();
     alice.applyBuff(server.getFirstBuff(), alice);
+    CHECK_FALSE(alice.buffs().empty());
 
     // And when she logs off for more than 2 seconds
   }
