@@ -764,9 +764,11 @@ Entity &Server::addEntity(Entity *newEntity) {
 void Server::giveWarDeclarationDebuffs(const Belligerent declarer) {
   auto *user = getUserByName(declarer.name);
   if (!user) return;
-  const auto *debuff = getBuffByName("frownedUpon");
-  if (!debuff) return;
-  user->applyDebuff(*debuff, *user);
+
+  for (const auto &pair : _buffTypes) {
+    const auto &buffType = pair.second;
+    user->applyDebuff(buffType, *user);
+  }
 }
 
 User *Server::getUserByName(const std::string &username) {

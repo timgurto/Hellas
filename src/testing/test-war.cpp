@@ -289,15 +289,18 @@ TEST_CASE("Users are alerted to peace proposals on login", "[war]") {
 
 TEST_CASE_METHOD(TwoClientsWithData, "Debuffs for declarers of war",
                  "[buffs][war]") {
-  GIVEN("a debuff specified for those who declare war") {
+  GIVEN("two debuffs specified for those who declare war") {
     useData(R"(
       <buff id="frownedUpon" duration="60" givenToDeclarersOfWar="1" />
+      <buff id="regretful" duration="60" givenToDeclarersOfWar="1" />
     )");
 
     WHEN("Alice declares war on Bob") {
       cAlice->sendMessage(CL_DECLARE_WAR_ON_PLAYER, "Bob");
 
-      THEN("Alice has a debuff") { WAIT_UNTIL(!uAlice->debuffs().empty()); }
+      THEN("Alice has both debuffs") {
+        WAIT_UNTIL(uAlice->debuffs().size() == 2);
+      }
     }
   }
 }
