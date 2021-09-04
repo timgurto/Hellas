@@ -487,9 +487,20 @@ TEST_CASE("Buffs that use calendar time", "[buffs]") {
     alice.applyBuff(server.getFirstBuff(), alice);
     CHECK_FALSE(alice.buffs().empty());
 
-    // And when she logs off for more than 2 seconds
+    // And when she logs off for 1 second
   }
-  REPEAT_FOR_MS(2100);
+  REPEAT_FOR_MS(1000);
+  {
+    auto cAlice = TestClient::WithUsernameAndDataString("Alice", data);
+    server.waitForUsers(1);
+
+    // Then she still has the buff
+    const auto &alice = server.getFirstUser();
+    CHECK_FALSE(alice.buffs().empty());
+
+    // And when she logs off again for more than 1 second
+  }
+  REPEAT_FOR_MS(1100);
   {
     auto cAlice = TestClient::WithUsernameAndDataString("Alice", data);
     server.waitForUsers(1);
