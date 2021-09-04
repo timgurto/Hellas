@@ -470,10 +470,10 @@ TEST_CASE("Buffs that don't stack", "[buffs]") {
   }
 }
 
-TEST_CASE("Buffs that use calendar time", "[buffs]") {
+TEST_CASE("Buffs that count down while offline", "[buffs]") {
   // Given a 2-second buff using calendar time
   auto data = R"(
-    <buff id="caseOfTheMondays" duration="2" usesCalendarTime="1" />
+    <buff id="caseOfTheMondays" duration="2" countsDownWhileOffline="1" />
   )";
   auto server = TestServer::WithDataString(data);
 

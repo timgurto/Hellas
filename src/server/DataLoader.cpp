@@ -950,8 +950,8 @@ void DataLoader::loadBuffs(XmlReader &xr) {
     }
 
     auto n = 0;
-    if (xr.findAttr(elem, "usesCalendarTime", n))
-      newBuff.setToUseCalendarTime();
+    if (xr.findAttr(elem, "countsDownWhileOffline", n))
+      newBuff.setToCountDownWhileOffline();
 
     if (xr.findAttr(elem, "canBeInterrupted", n) && n == 1)
       newBuff.makeInterruptible();

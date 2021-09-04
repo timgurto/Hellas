@@ -52,8 +52,8 @@ class BuffType {
     _nonStackingCategory = category;
   }
   bool doesntStackWith(const BuffType &otherType) const;
-  void setToUseCalendarTime() { _usesCalendarTime = true; }
-  bool usesCalendarTime() const { return _usesCalendarTime; }
+  void setToCountDownWhileOffline() { _countsDownWhileOffline = true; }
+  bool countsDownWhileOffline() const { return _countsDownWhileOffline; }
 
   bool hasType() const { return _type != UNKNOWN; }
   bool hasEffectOnHit() const { return _type == SPELL_ON_HIT; }
@@ -77,7 +77,7 @@ class BuffType {
   // that grants this, it will be removed from him.
   mutable bool _grantedByObject{false};
   std::string _nonStackingCategory;  // If any
-  bool _usesCalendarTime{false};  // Buff should countdown while user is offline
+  bool _countsDownWhileOffline{false};
 };
 
 // An instance of a buff type, on a specific target, from a specific caster
