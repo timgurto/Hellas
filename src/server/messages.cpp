@@ -744,6 +744,66 @@ HANDLE_MESSAGE(CL_SELECT_PLAYER) {
   if (user.action() == User::ATTACK) user.action(User::NO_ACTION);
 }
 
+HANDLE_MESSAGE(CL_DECLARE_WAR_ON_PLAYER) {
+  auto targetName = ""s;
+  READ_ARGS(targetName);
+  targetName = toPascal(targetName);
+
+  const auto declarer = Belligerent{user.name(), Belligerent::PLAYER};
+  const auto target = Belligerent{targetName, Belligerent::PLAYER};
+
+  if (_wars.isAtWarExact(declarer, target)) RETURN_WITH(ERROR_ALREADY_AT_WAR)
+
+  _wars.declare(declarer, target);
+}
+
+HANDLE_MESSAGE(CL_DECLARE_WAR_ON_CITY) {
+  auto targetName = ""s;
+  READ_ARGS(targetName);
+  targetName = toPascal(targetName);
+
+  const auto declarer = Belligerent{user.name(), Belligerent::PLAYER};
+  const auto target = Belligerent{targetName, Belligerent::CITY};
+
+  if (_wars.isAtWarExact(declarer, target)) RETURN_WITH(ERROR_ALREADY_AT_WAR)
+
+  _wars.declare(declarer, target);
+}
+
+HANDLE_MESSAGE(CL_DECLARE_WAR_ON_PLAYER_AS_CITY) {
+  auto targetName = ""s;
+  READ_ARGS(targetName);
+  targetName = toPascal(targetName);
+
+  if (!_cities.isPlayerInACity(user.name())) RETURN_WITH(ERROR_NOT_IN_CITY)
+  if (!_kings.isPlayerAKing(user.name())) RETURN_WITH(ERROR_NOT_A_KING)
+
+  const auto declarer =
+      Belligerent{_cities.getPlayerCity(user.name()), Belligerent::CITY};
+  auto target = Belligerent{targetName, Belligerent::PLAYER};
+
+  if (_wars.isAtWarExact(declarer, target)) RETURN_WITH(ERROR_ALREADY_AT_WAR)
+
+  _wars.declare(declarer, target);
+}
+
+HANDLE_MESSAGE(CL_DECLARE_WAR_ON_CITY_AS_CITY) {
+  auto targetName = ""s;
+  READ_ARGS(targetName);
+  targetName = toPascal(targetName);
+
+  if (!_cities.isPlayerInACity(user.name())) RETURN_WITH(ERROR_NOT_IN_CITY)
+  if (!_kings.isPlayerAKing(user.name())) RETURN_WITH(ERROR_NOT_A_KING)
+
+  const auto declarer =
+      Belligerent{_cities.getPlayerCity(user.name()), Belligerent::CITY};
+  auto target = Belligerent{targetName, Belligerent::CITY};
+
+  if (_wars.isAtWarExact(declarer, target)) RETURN_WITH(ERROR_ALREADY_AT_WAR)
+
+  _wars.declare(declarer, target);
+}
+
 HANDLE_MESSAGE(CL_PERFORM_OBJECT_ACTION) {
   auto serial = Serial{};
   auto textArg = ""s;
@@ -1244,6 +1304,10 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_TARGET_PLAYER)
       SEND_MESSAGE_TO_HANDLER(CL_SELECT_ENTITY)
       SEND_MESSAGE_TO_HANDLER(CL_SELECT_PLAYER)
+      SEND_MESSAGE_TO_HANDLER(CL_DECLARE_WAR_ON_PLAYER)
+      SEND_MESSAGE_TO_HANDLER(CL_DECLARE_WAR_ON_CITY)
+      SEND_MESSAGE_TO_HANDLER(CL_DECLARE_WAR_ON_PLAYER_AS_CITY)
+      SEND_MESSAGE_TO_HANDLER(CL_DECLARE_WAR_ON_CITY_AS_CITY)
       SEND_MESSAGE_TO_HANDLER(CL_PERFORM_OBJECT_ACTION)
       SEND_MESSAGE_TO_HANDLER(CL_CAST_SPELL)
       SEND_MESSAGE_TO_HANDLER(CL_CAST_SPELL_FROM_ITEM)
@@ -1517,53 +1581,6 @@ void Server::handleBufferedMessages(const Socket &client,
 
         user->onTerrainListChange(TerrainList::defaultList().id());
 
-        break;
-      }
-
-      case CL_DECLARE_WAR_ON_PLAYER:
-      case CL_DECLARE_WAR_ON_CITY: {
-        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
-        std::string targetName(_stringInputBuffer);
-        iss >> del;
-        if (del != MSG_END) return;
-
-        targetName = toPascal(targetName);
-        auto thisBelligerent = Belligerent{user->name(), Belligerent::PLAYER};
-        Belligerent::Type targetType = msgCode == CL_DECLARE_WAR_ON_PLAYER
-                                           ? Belligerent::PLAYER
-                                           : Belligerent::CITY;
-        auto targetBelligerent = Belligerent{targetName, targetType};
-
-        if (_wars.isAtWarExact(user->name(), targetBelligerent))
-          BREAK_WITH(ERROR_ALREADY_AT_WAR)
-
-        _wars.declare(thisBelligerent, targetBelligerent);
-        break;
-      }
-
-      case CL_DECLARE_WAR_ON_PLAYER_AS_CITY:
-      case CL_DECLARE_WAR_ON_CITY_AS_CITY: {
-        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
-        std::string targetName(_stringInputBuffer);
-        iss >> del;
-        if (del != MSG_END) return;
-
-        if (!_cities.isPlayerInACity(user->name()))
-          BREAK_WITH(ERROR_NOT_IN_CITY)
-        if (!_kings.isPlayerAKing(user->name())) BREAK_WITH(ERROR_NOT_A_KING)
-        auto declarer =
-            Belligerent{_cities.getPlayerCity(user->name()), Belligerent::CITY};
-
-        targetName = toPascal(targetName);
-        Belligerent::Type targetType =
-            msgCode == CL_DECLARE_WAR_ON_PLAYER_AS_CITY ? Belligerent::PLAYER
-                                                        : Belligerent::CITY;
-        auto targetBelligerent = Belligerent{targetName, targetType};
-
-        if (_wars.isAtWarExact(declarer, targetBelligerent))
-          BREAK_WITH(ERROR_ALREADY_AT_WAR)
-
-        _wars.declare(declarer, targetBelligerent);
         break;
       }
 
