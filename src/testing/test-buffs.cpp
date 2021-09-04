@@ -508,9 +508,10 @@ TEST_CASE("Buffs that count down while offline", "[buffs]") {
     auto cAlice = TestClient::WithUsernameAndDataString("Alice", data);
     server.waitForUsers(1);
 
-    // Then she doesn't have the buff
+    // Then she doesn't have the buff or the debuff
     const auto &alice = server.getFirstUser();
     CHECK(alice.buffs().empty());
+    CHECK(alice.debuffs().empty());
   }
 }
 

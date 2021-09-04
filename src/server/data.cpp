@@ -180,6 +180,14 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
 
       auto timeRemaining = ms_t{};
       if (!xr.findAttr(buffElem, "timeRemaining", timeRemaining)) continue;
+
+      if (buffTypeIt->second.countsDownWhileOffline()) {
+        if (timeSinceThisDataWasWritten > timeRemaining)
+          continue;
+        else
+          timeRemaining -= timeSinceThisDataWasWritten;
+      }
+
       user.loadDebuff(buffTypeIt->second, timeRemaining);
     }
   }
