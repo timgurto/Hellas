@@ -510,3 +510,33 @@ TEST_CASE("Buffs that use calendar time", "[buffs]") {
     CHECK(alice.buffs().empty());
   }
 }
+
+TEST_CASE("Normal buffs stop ticking while user is offline", "[buffs]") {
+  // Given a 1-second buff using calendar time
+  auto data = R"(
+    <buff id="blessed" duration="1" />
+  )";
+  auto server = TestServer::WithDataString(data);
+
+  // And given Alice is connected
+  {
+    auto cAlice = TestClient::WithUsernameAndDataString("Alice", data);
+    server.waitForUsers(1);
+
+    // When Alice has the buff
+    auto &alice = server.getFirstUser();
+    alice.applyBuff(server.getFirstBuff(), alice);
+    CHECK_FALSE(alice.buffs().empty());
+
+    // And when she logs off for more than 1 second
+  }
+  REPEAT_FOR_MS(1100);
+  {
+    auto cAlice = TestClient::WithUsernameAndDataString("Alice", data);
+    server.waitForUsers(1);
+
+    // Then she still has the buff
+    const auto &alice = server.getFirstUser();
+    CHECK_FALSE(alice.buffs().empty());
+  }
+}

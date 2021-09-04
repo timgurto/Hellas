@@ -163,10 +163,12 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
       auto timeRemaining = ms_t{};
       if (!xr.findAttr(buffElem, "timeRemaining", timeRemaining)) continue;
 
-      if (timeSinceThisDataWasWritten > timeRemaining)
-        continue;
-      else
-        timeRemaining -= timeSinceThisDataWasWritten;
+      if (buffTypeIt->second.usesCalendarTime()) {
+        if (timeSinceThisDataWasWritten > timeRemaining)
+          continue;
+        else
+          timeRemaining -= timeSinceThisDataWasWritten;
+      }
 
       user.loadBuff(buffTypeIt->second, timeRemaining);
     }
