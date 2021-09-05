@@ -762,18 +762,20 @@ Entity &Server::addEntity(Entity *newEntity) {
 }
 
 void Server::giveWarDeclarationDebuffs(const Belligerent declarer) {
-  auto userToDebuff = ""s;
+  auto usersToDebuff = std::set<std::string>{};
 
   if (declarer.type == Belligerent::PLAYER)
-    userToDebuff = declarer.name;
+    usersToDebuff.insert(declarer.name);
   else
-    userToDebuff = *cities().membersOf(declarer.name).begin();
+    usersToDebuff = cities().membersOf(declarer.name);
 
-  auto *user = getUserByName(userToDebuff);
-  if (!user) return;
+  for (const auto &username : usersToDebuff) {
+    auto *userToDebuff = getUserByName(username);
+    if (!userToDebuff) return;
 
-  for (const auto *buffType : _warDeclarationDebuffs) {
-    user->applyDebuff(*buffType, *user);
+    for (const auto *buffType : _warDeclarationDebuffs) {
+      userToDebuff->applyDebuff(*buffType, *userToDebuff);
+    }
   }
 }
 

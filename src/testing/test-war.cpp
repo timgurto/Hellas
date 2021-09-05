@@ -316,6 +316,20 @@ TEST_CASE_METHOD(TwoClientsWithData, "War-declaration debuffs",
             WAIT_UNTIL(uAlice->debuffs().size() == 2);
           }
         }
+
+        SECTION("All citizens get debuffed") {
+          AND_GIVEN("Bob is in the city") {
+            server->cities().addPlayerToCity(*uBob, "Athens");
+
+            WHEN("Alice declares a city war on Charlie") {
+              cAlice->sendMessage(CL_DECLARE_WAR_ON_PLAYER_AS_CITY, "Charlie");
+
+              THEN("Bob has two debuffs") {
+                WAIT_UNTIL(uBob->debuffs().size() == 2);
+              }
+            }
+          }
+        }
       }
     }
   }
