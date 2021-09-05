@@ -68,6 +68,7 @@ class TestServer {
   void gatherObject(Serial serial, User &user) {
     _server->gatherObject(serial, user);
   }
+  void createCityWithUserAsKing(std::string cityName, const User &king);
   void waitForUsers(size_t numUsers) const;
 
   void saveData();

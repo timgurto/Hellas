@@ -762,7 +762,14 @@ Entity &Server::addEntity(Entity *newEntity) {
 }
 
 void Server::giveWarDeclarationDebuffs(const Belligerent declarer) {
-  auto *user = getUserByName(declarer.name);
+  auto userToDebuff = ""s;
+
+  if (declarer.type == Belligerent::PLAYER)
+    userToDebuff = declarer.name;
+  else
+    userToDebuff = *cities().membersOf(declarer.name).begin();
+
+  auto *user = getUserByName(userToDebuff);
   if (!user) return;
 
   for (const auto *buffType : _warDeclarationDebuffs) {

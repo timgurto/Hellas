@@ -287,7 +287,7 @@ TEST_CASE("Users are alerted to peace proposals on login", "[war]") {
   }
 }
 
-TEST_CASE_METHOD(TwoClientsWithData, "Debuffs for declarers of war",
+TEST_CASE_METHOD(TwoClientsWithData, "War-declaration debuffs",
                  "[buffs][war]") {
   GIVEN("two debuffs for those who declare war, plus one unused") {
     useData(R"(
@@ -302,6 +302,20 @@ TEST_CASE_METHOD(TwoClientsWithData, "Debuffs for declarers of war",
       THEN("Alice has two debuffs") {
         REPEAT_FOR_MS(100);
         CHECK(uAlice->debuffs().size() == 2);
+      }
+    }
+
+    SECTION("When a city declares war") {
+      AND_GIVEN("Alice is in a city") {
+        server->createCityWithUserAsKing("Athens", *uAlice);
+
+        WHEN("Alice declares a city war on Bob") {
+          cAlice->sendMessage(CL_DECLARE_WAR_ON_PLAYER_AS_CITY, "Bob");
+
+          THEN("Alice has two debuffs") {
+            WAIT_UNTIL(uAlice->debuffs().size() == 2);
+          }
+        }
       }
     }
   }

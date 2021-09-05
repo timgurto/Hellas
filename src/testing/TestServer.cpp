@@ -143,6 +143,13 @@ NPC &TestServer::addNPC(const std::string &typeName, const MapPoint &loc) {
   return _server->addNPC(npcType, loc);
 }
 
+void TestServer::createCityWithUserAsKing(std::string cityName,
+                                          const User &king) {
+  _server->_cities.createCity(cityName, king.location(), king.name());
+  _server->_cities.addPlayerToCity(king, cityName);
+  _server->makePlayerAKing(king);
+}
+
 void TestServer::waitForUsers(size_t numUsers) const {
   // Timeout must be longer than Connection::TIME_BETWEEN_CONNECTION_ATTEMPTS
   WAIT_UNTIL_TIMEOUT(_server->_onlineUsers.size() == numUsers, 4000);
