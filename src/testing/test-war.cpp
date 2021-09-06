@@ -382,6 +382,32 @@ TEST_CASE("War-declaration debuffs for offline citizens",
           }
         }
       }
+
+      SECTION("A different city declares war") {
+        AND_GIVEN("Bob is king of Sparta, and is offline") {
+          {
+            auto cBob = TestClient::WithUsernameAndDataString("Bob", data);
+            server.waitForUsers(2);
+            const auto &uBob = server.findUser("Bob");
+            server.createCityWithUserAsKing("Sparta", uBob);
+          }
+
+          WHEN("Alice declares a city war on Charlie") {
+            cAlice.sendMessage(CL_DECLARE_WAR_ON_PLAYER_AS_CITY, "Charlie");
+
+            AND_WHEN("Bob comes online") {
+              auto cBob = TestClient::WithUsernameAndDataString("Bob", data);
+              server.waitForUsers(2);
+              const auto &uBob = server.findUser("Bob");
+
+              THEN("Bob has no debuffs") {
+                REPEAT_FOR_MS(100);
+                CHECK(uBob.debuffs().empty());
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

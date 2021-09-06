@@ -437,8 +437,10 @@ void Server::addUser(const Socket &socket, const std::string &name,
     }
   }
 
-  if (_cities.isPlayerInACity(name) && _cities.hasACityDeclaredWar()) {
-    giveWarDeclarationDebuffs({name});
+  if (_cities.isPlayerInACity(name)) {
+    const auto playerCity = _cities.getPlayerCity(name);
+    if (_cities.hasCityDeclaredWar(playerCity))
+      giveWarDeclarationDebuffs({name});
   }
 
   // Add user to location-indexed trees
@@ -772,7 +774,7 @@ void Server::giveWarDeclarationDebuffs(const Belligerent declarer) {
     usersToDebuff.insert(declarer.name);
   else {
     usersToDebuff = cities().membersOf(declarer.name);
-    _cities.onCityDeclaredWar();
+    _cities.onCityDeclaredWar(declarer.name);
   }
 
   for (const auto &username : usersToDebuff) {

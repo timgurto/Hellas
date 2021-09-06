@@ -209,6 +209,18 @@ std::string Cities::kingOf(const std::string &cityName) const {
   return it->second.king();
 }
 
+void Cities::onCityDeclaredWar(std::string cityName) {
+  auto it = _container.find(cityName);
+  if (it == _container.end()) return;
+  it->second.onDeclaredWar();
+}
+
+bool Cities::hasCityDeclaredWar(std::string cityName) const {
+  const auto it = _container.find(cityName);
+  if (it == _container.end()) return false;
+  return it->second.hasDeclaredWar();
+}
+
 void Cities::sendInfoAboutCitiesTo(const User &recipient) const {
   for (const auto pair : _container)
     recipient.sendMessage(

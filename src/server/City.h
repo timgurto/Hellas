@@ -36,6 +36,8 @@ class City {
   void removeAndAlertPlayers(const User &user);
   void addPlayerWithoutAlerting(const std::string &username);
   bool isPlayerAMember(const std::string &username) const;
+  void onDeclaredWar() { _hasDeclaredWar = true; }
+  bool hasDeclaredWar() const { return _hasDeclaredWar; }
 
   const MapPoint &location() const { return _location; }
   const std::string &king() const { return _king; }
@@ -45,6 +47,7 @@ class City {
   Members _members;
   MapPoint _location;  // Normally, the location of the Altar to Athena
   std::string _king;
+  bool _hasDeclaredWar{false};
 };
 
 class Cities {
@@ -65,8 +68,8 @@ class Cities {
   void sendCityObjectsToCitizen(const User &citizen) const;
   MapPoint locationOf(const std::string &cityName) const;
   std::string kingOf(const std::string &cityName) const;
-  void onCityDeclaredWar() { _aCityHasDeclaredWar = true; }
-  bool hasACityDeclaredWar() const { return _aCityHasDeclaredWar; }
+  void onCityDeclaredWar(std::string cityName);
+  bool hasCityDeclaredWar(std::string cityName) const;
 
   void sendInfoAboutCitiesTo(const User &recipient) const;
 
@@ -76,8 +79,6 @@ class Cities {
  private:
   std::map<City::Name, City> _container;
   std::map<std::string, City::Name> _usersToCities;
-
-  bool _aCityHasDeclaredWar{false};
 
   static City::Members dummyMembersList;
 };
