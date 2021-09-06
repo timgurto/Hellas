@@ -165,6 +165,7 @@ void TestServer::saveData() {
 User &TestServer::findUser(const std::string &username) {
   auto usersByName = _server->_onlineUsersByName;
   auto it = usersByName.find(username);
+  INFO("Looking for user "s + username);
   REQUIRE(it != usersByName.end());
   User *user = const_cast<User *>(it->second);
   return *user;

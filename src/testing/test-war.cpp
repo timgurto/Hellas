@@ -288,7 +288,7 @@ TEST_CASE("Users are alerted to peace proposals on login", "[war]") {
 }
 
 TEST_CASE_METHOD(TwoClientsWithData, "War-declaration debuffs",
-                 "[buffs][war]") {
+                 "[buffs][war][city]") {
   GIVEN("two debuffs for those who declare war, plus one unused") {
     useData(R"(
       <buff id="frownedUpon" duration="60" givenToDeclarersOfWar="1" />
@@ -329,6 +329,40 @@ TEST_CASE_METHOD(TwoClientsWithData, "War-declaration debuffs",
               }
             }
           }
+        }
+      }
+    }
+  }
+}
+
+TEST_CASE("War-declaration debuffs for offline citizens",
+          "[buffs][war][city][persistence]") {
+  GIVEN("a war-declaration debuff") {
+    const auto data = R"(
+      <buff id="frownedUpon" duration="60" givenToDeclarersOfWar="1" />
+    )";
+    auto server = TestServer::WithDataString(data);
+
+    AND_GIVEN("Alice and Bob are in a city, and Bob is offline") {
+      auto cAlice = TestClient::WithUsernameAndDataString("Alice", data);
+      {
+        auto cBob = TestClient::WithUsernameAndDataString("Bob", data);
+        server.waitForUsers(2);
+        const auto &uAlice = server.findUser("Alice");
+        const auto &uBob = server.findUser("Bob");
+        server.createCityWithUserAsKing("Athens", uAlice);
+        server.cities().addPlayerToCity(uBob, "Athens");
+      }
+
+      WHEN("Alice declares a city war on Charlie") {
+        cAlice.sendMessage(CL_DECLARE_WAR_ON_PLAYER_AS_CITY, "Charlie");
+
+        AND_WHEN("Bob comes online") {
+          auto cBob = TestClient::WithUsernameAndDataString("Bob", data);
+          server.waitForUsers(2);
+          const auto &uBob = server.findUser("Bob");
+
+          THEN("Bob has a debuff") { WAIT_UNTIL(uBob.debuffs().size() == 1); }
         }
       }
     }

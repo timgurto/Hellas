@@ -437,6 +437,10 @@ void Server::addUser(const Socket &socket, const std::string &name,
     }
   }
 
+  if (_cities.isPlayerInACity(name)) {
+    giveWarDeclarationDebuffs({name});
+  }
+
   // Add user to location-indexed trees
   getCollisionChunk(newUser.location()).addEntity(&newUser);
   _usersByX.insert(&newUser);
