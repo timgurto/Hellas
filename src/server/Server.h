@@ -177,6 +177,7 @@ class Server {
   Entity &addEntity(Entity *newEntity);
 
   void giveWarDeclarationDebuffs(const Belligerent declarer);
+  void giveWarDeclarationDebuffsToReturningCitizen(User &user);
   void addWarDeclarationDebuff(const BuffType &buffType) {
     _warDeclarationDebuffs.insert(&buffType);
   }

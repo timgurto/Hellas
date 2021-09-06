@@ -78,7 +78,8 @@ class Cities {
   MapPoint locationOf(const std::string &cityName) const;
   std::string kingOf(const std::string &cityName) const;
   void onCityDeclaredWar(std::string cityName);
-  bool doesCityStillHaveWarDebuff(std::string cityName) const;
+  bool doesCityStillHaveWarDebuff(std::string cityName,
+                                  const class BuffType &buff) const;
 
   void sendInfoAboutCitiesTo(const User &recipient) const;
 

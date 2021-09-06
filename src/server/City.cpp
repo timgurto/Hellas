@@ -2,6 +2,7 @@
 
 #include "../XmlReader.h"
 #include "../XmlWriter.h"
+#include "Buff.h"
 #include "Server.h"
 
 City::Members Cities::dummyMembersList{};
@@ -225,11 +226,14 @@ void Cities::onCityDeclaredWar(std::string cityName) {
   it->second.onDeclaredWar();
 }
 
-bool Cities::doesCityStillHaveWarDebuff(std::string cityName) const {
+bool Cities::doesCityStillHaveWarDebuff(std::string cityName,
+                                        const BuffType &buff) const {
   const auto it = _container.find(cityName);
   if (it == _container.end()) return false;
-  return it->second.hasDeclaredWar() &&
-         it->second.timeSinceLastWarDeclaration() <= 1000;
+  const auto &city = it->second;
+
+  if (!city.hasDeclaredWar()) return false;
+  return city.timeSinceLastWarDeclaration() < buff.duration();
 }
 
 void Cities::sendInfoAboutCitiesTo(const User &recipient) const {
