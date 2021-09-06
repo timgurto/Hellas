@@ -11,9 +11,14 @@ City::City(const Name &name, const MapPoint &location, const std::string &king)
     : _name(name), _location(location), _king(king) {}
 
 void City::update(ms_t timeElapsed) {
-  const ms_t MAX = 30 * 24 * 3600 * 1000;  // 30 days
-  _timeSinceLastWarDeclaration += timeElapsed;
-  _timeSinceLastWarDeclaration = min(MAX, _timeSinceLastWarDeclaration);
+  // UINT32_MAX is around 49.7 days.  All war debuffs must be shorter than this.
+  if (_timeSinceLastWarDeclaration == UINT32_MAX) return;
+
+  const auto spaceLeftInInt = UINT32_MAX - _timeSinceLastWarDeclaration;
+  if (timeElapsed > spaceLeftInInt)
+    _timeSinceLastWarDeclaration = UINT32_MAX;
+  else
+    _timeSinceLastWarDeclaration += timeElapsed;
 }
 
 void City::addAndAlertPlayers(const User &user) {
