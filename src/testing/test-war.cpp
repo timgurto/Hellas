@@ -343,38 +343,42 @@ TEST_CASE("War-declaration debuffs for offline citizens",
     )";
     auto server = TestServer::WithDataString(data);
 
-    AND_GIVEN("Alice and Bob are in a city, and Bob is offline") {
+    AND_GIVEN("Alice is king of Athens") {
       auto cAlice = TestClient::WithUsernameAndDataString("Alice", data);
-      {
-        auto cBob = TestClient::WithUsernameAndDataString("Bob", data);
-        server.waitForUsers(2);
-        const auto &uAlice = server.findUser("Alice");
-        const auto &uBob = server.findUser("Bob");
-        server.createCityWithUserAsKing("Athens", uAlice);
-        server.cities().addPlayerToCity(uBob, "Athens");
-      }
+      server.waitForUsers(1);
+      const auto &uAlice = server.findUser("Alice");
+      server.createCityWithUserAsKing("Athens", uAlice);
 
-      WHEN("Alice declares a city war on Charlie") {
-        cAlice.sendMessage(CL_DECLARE_WAR_ON_PLAYER_AS_CITY, "Charlie");
-
-        AND_WHEN("Bob comes online") {
+      AND_GIVEN("Bob is also in Athens, and Bob is offline") {
+        {
           auto cBob = TestClient::WithUsernameAndDataString("Bob", data);
           server.waitForUsers(2);
           const auto &uBob = server.findUser("Bob");
-
-          THEN("Bob has a debuff") { WAIT_UNTIL(uBob.debuffs().size() == 1); }
+          server.cities().addPlayerToCity(uBob, "Athens");
         }
-      }
 
-      SECTION("City did not declare any war") {
-        AND_WHEN("Bob comes online") {
-          auto cBob = TestClient::WithUsernameAndDataString("Bob", data);
-          server.waitForUsers(2);
-          const auto &uBob = server.findUser("Bob");
+        WHEN("Alice declares a city war on Charlie") {
+          cAlice.sendMessage(CL_DECLARE_WAR_ON_PLAYER_AS_CITY, "Charlie");
 
-          THEN("Bob has no debuffs") {
-            REPEAT_FOR_MS(100);
-            CHECK(uBob.debuffs().empty());
+          AND_WHEN("Bob comes online") {
+            auto cBob = TestClient::WithUsernameAndDataString("Bob", data);
+            server.waitForUsers(2);
+            const auto &uBob = server.findUser("Bob");
+
+            THEN("Bob has a debuff") { WAIT_UNTIL(uBob.debuffs().size() == 1); }
+          }
+        }
+
+        SECTION("City did not declare any war") {
+          AND_WHEN("Bob comes online") {
+            auto cBob = TestClient::WithUsernameAndDataString("Bob", data);
+            server.waitForUsers(2);
+            const auto &uBob = server.findUser("Bob");
+
+            THEN("Bob has no debuffs") {
+              REPEAT_FOR_MS(100);
+              CHECK(uBob.debuffs().empty());
+            }
           }
         }
       }
