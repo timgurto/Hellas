@@ -437,7 +437,7 @@ void Server::addUser(const Socket &socket, const std::string &name,
     }
   }
 
-  if (_cities.isPlayerInACity(name)) {
+  if (_cities.isPlayerInACity(name) && _cities.hasACityDeclaredWar()) {
     giveWarDeclarationDebuffs({name});
   }
 
@@ -770,8 +770,10 @@ void Server::giveWarDeclarationDebuffs(const Belligerent declarer) {
 
   if (declarer.type == Belligerent::PLAYER)
     usersToDebuff.insert(declarer.name);
-  else
+  else {
     usersToDebuff = cities().membersOf(declarer.name);
+    _cities.onCityDeclaredWar();
+  }
 
   for (const auto &username : usersToDebuff) {
     auto *userToDebuff = getUserByName(username);

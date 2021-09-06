@@ -65,6 +65,8 @@ class Cities {
   void sendCityObjectsToCitizen(const User &citizen) const;
   MapPoint locationOf(const std::string &cityName) const;
   std::string kingOf(const std::string &cityName) const;
+  void onCityDeclaredWar() { _aCityHasDeclaredWar = true; }
+  bool hasACityDeclaredWar() const { return _aCityHasDeclaredWar; }
 
   void sendInfoAboutCitiesTo(const User &recipient) const;
 
@@ -74,6 +76,8 @@ class Cities {
  private:
   std::map<City::Name, City> _container;
   std::map<std::string, City::Name> _usersToCities;
+
+  bool _aCityHasDeclaredWar{false};
 
   static City::Members dummyMembersList;
 };

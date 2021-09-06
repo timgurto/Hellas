@@ -365,6 +365,19 @@ TEST_CASE("War-declaration debuffs for offline citizens",
           THEN("Bob has a debuff") { WAIT_UNTIL(uBob.debuffs().size() == 1); }
         }
       }
+
+      SECTION("City did not declare any war") {
+        AND_WHEN("Bob comes online") {
+          auto cBob = TestClient::WithUsernameAndDataString("Bob", data);
+          server.waitForUsers(2);
+          const auto &uBob = server.findUser("Bob");
+
+          THEN("Bob has no debuffs") {
+            REPEAT_FOR_MS(100);
+            CHECK(uBob.debuffs().empty());
+          }
+        }
+      }
     }
   }
 }
