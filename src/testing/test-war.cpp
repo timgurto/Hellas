@@ -337,9 +337,9 @@ TEST_CASE_METHOD(TwoClientsWithData, "War-declaration debuffs",
 
 TEST_CASE("War-declaration debuffs for offline citizens",
           "[buffs][war][city][persistence]") {
-  GIVEN("a war-declaration debuff") {
+  GIVEN("a one-second war-declaration debuff") {
     const auto data = R"(
-      <buff id="frownedUpon" duration="60" givenToDeclarersOfWar="1" />
+      <buff id="frownedUpon" duration="1" givenToDeclarersOfWar="1" />
     )";
     auto server = TestServer::WithDataString(data);
 
@@ -366,6 +366,24 @@ TEST_CASE("War-declaration debuffs for offline citizens",
             const auto &uBob = server.findUser("Bob");
 
             THEN("Bob has a debuff") { WAIT_UNTIL(uBob.debuffs().size() == 1); }
+          }
+
+          SECTION("Debuff timing") {
+            AND_WHEN(
+                "at least 1s elapses (enough for the debuff to disappear)") {
+              REPEAT_FOR_MS(1100);
+
+              AND_WHEN("Bob comes online") {
+                auto cBob = TestClient::WithUsernameAndDataString("Bob", data);
+                server.waitForUsers(2);
+                const auto &uBob = server.findUser("Bob");
+
+                THEN("Bob has no debuffs") {
+                  REPEAT_FOR_MS(100);
+                  CHECK(uBob.debuffs().empty());
+                }
+              }
+            }
           }
         }
 

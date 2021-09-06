@@ -267,6 +267,8 @@ void Server::run() {
     // Update spawners
     for (auto &spawner : _spawners) spawner.update(_time);
 
+    _cities.update(timeElapsed);
+
     // Deal with any messages from the server
     while (!_messages.empty()) {
       handleBufferedMessages(_messages.front().first, _messages.front().second);
@@ -439,7 +441,7 @@ void Server::addUser(const Socket &socket, const std::string &name,
 
   if (_cities.isPlayerInACity(name)) {
     const auto playerCity = _cities.getPlayerCity(name);
-    if (_cities.hasCityDeclaredWar(playerCity))
+    if (_cities.doesCityStillHaveWarDebuff(playerCity))
       giveWarDeclarationDebuffs({name});
   }
 

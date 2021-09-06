@@ -32,12 +32,18 @@ class City {
   typedef std::set<std::string> Members;
   const Members &members() const { return _members; }
 
+  void update(ms_t timeElapsed);
+
   void addAndAlertPlayers(const User &user);
   void removeAndAlertPlayers(const User &user);
   void addPlayerWithoutAlerting(const std::string &username);
   bool isPlayerAMember(const std::string &username) const;
+
   void onDeclaredWar() { _hasDeclaredWar = true; }
   bool hasDeclaredWar() const { return _hasDeclaredWar; }
+  ms_t timeSinceLastWarDeclaration() const {
+    return _timeSinceLastWarDeclaration;
+  }
 
   const MapPoint &location() const { return _location; }
   const std::string &king() const { return _king; }
@@ -47,11 +53,14 @@ class City {
   Members _members;
   MapPoint _location;  // Normally, the location of the Altar to Athena
   std::string _king;
+
+  ms_t _timeSinceLastWarDeclaration{0};
   bool _hasDeclaredWar{false};
 };
 
 class Cities {
  public:
+  void update(ms_t timeElapsed);
   void createCity(const City::Name &cityName, const MapPoint &location,
                   std::string founder);
   bool doesCityExist(const City::Name &cityName) const;
@@ -69,7 +78,7 @@ class Cities {
   MapPoint locationOf(const std::string &cityName) const;
   std::string kingOf(const std::string &cityName) const;
   void onCityDeclaredWar(std::string cityName);
-  bool hasCityDeclaredWar(std::string cityName) const;
+  bool doesCityStillHaveWarDebuff(std::string cityName) const;
 
   void sendInfoAboutCitiesTo(const User &recipient) const;
 

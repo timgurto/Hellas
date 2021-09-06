@@ -9,6 +9,12 @@ City::Members Cities::dummyMembersList{};
 City::City(const Name &name, const MapPoint &location, const std::string &king)
     : _name(name), _location(location), _king(king) {}
 
+void City::update(ms_t timeElapsed) {
+  const ms_t MAX = 30 * 24 * 3600 * 1000;  // 30 days
+  _timeSinceLastWarDeclaration += timeElapsed;
+  _timeSinceLastWarDeclaration = min(MAX, _timeSinceLastWarDeclaration);
+}
+
 void City::addAndAlertPlayers(const User &user) {
   _members.insert(user.name());
   user.sendMessage({SV_YOU_JOINED_CITY, _name});
@@ -28,6 +34,10 @@ void City::addPlayerWithoutAlerting(const std::string &username) {
 
 bool City::isPlayerAMember(const std::string &username) const {
   return _members.count(username) == 1;
+}
+
+void Cities::update(ms_t timeElapsed) {
+  for (auto &pair : _container) pair.second.update(timeElapsed);
 }
 
 void Cities::createCity(const City::Name &cityName, const MapPoint &location,
@@ -215,10 +225,11 @@ void Cities::onCityDeclaredWar(std::string cityName) {
   it->second.onDeclaredWar();
 }
 
-bool Cities::hasCityDeclaredWar(std::string cityName) const {
+bool Cities::doesCityStillHaveWarDebuff(std::string cityName) const {
   const auto it = _container.find(cityName);
   if (it == _container.end()) return false;
-  return it->second.hasDeclaredWar();
+  return it->second.hasDeclaredWar() &&
+         it->second.timeSinceLastWarDeclaration() <= 1000;
 }
 
 void Cities::sendInfoAboutCitiesTo(const User &recipient) const {
