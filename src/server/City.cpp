@@ -145,6 +145,8 @@ void Cities::writeToXMLFile(const std::string &filename) const {
 
     xw.setAttr(e, "king", city.king());
 
+    if (city.hasDeclaredWar()) xw.setAttr(e, "hasDeclaredWar", 1);
+
     for (const std::string &member : city.members()) {
       auto memberE = xw.addChild("member", e);
       xw.setAttr(memberE, "username", member);
@@ -181,7 +183,8 @@ void Cities::readFromXMLFile(const std::string &filename) {
       _usersToCities[username] = name;
     }
 
-    city.onDeclaredWar();
+    auto n = 0;
+    if (xr.findAttr(elem, "hasDeclaredWar", n)) city.onDeclaredWar();
   }
 }
 

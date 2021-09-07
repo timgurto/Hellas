@@ -493,3 +493,34 @@ TEST_CASE("City war debuffs are persistent",
     WAIT_UNTIL(uBob.debuffs().size() == 1);
   }
 }
+
+TEST_CASE("Cities that have not declared war don't load with debuffs",
+          "[war][city][buffs][persistence]") {
+  // GIVEN a war-declaration debuff
+  const auto data = R"(
+    <buff id="frownedUpon" duration="60" givenToDeclarersOfWar="1" />
+  )";
+
+  // AND GIVEN Athens has not declared any war
+  {
+    auto server = TestServer::WithDataString(data);
+    auto cFounder = TestClient::WithDataString(data);
+    server.waitForUsers(1);
+    server.createCityWithUserAsKing("Athens", server.getFirstUser());
+
+    // WHEN the server restarts
+  }
+  {
+    auto server = TestServer::WithDataStringAndKeepingOldData(data);
+
+    // AND WHEN Bob joins the city
+    auto cBob = TestClient::WithUsernameAndDataString("Bob", data);
+    server.waitForUsers(1);
+    auto &uBob = server.findUser("Bob");
+    server.cities().addPlayerToCity(uBob, "Athens");
+
+    // THEN Bob has no debuffs
+    REPEAT_FOR_MS(100);
+    CHECK(uBob.debuffs().empty());
+  }
+}
