@@ -462,3 +462,33 @@ TEST_CASE_METHOD(TwoClientsWithData, "New citizens get city's war debuffs",
     }
   }
 }
+
+TEST_CASE("City war debuffs are persistent",
+          "[war][city][buffs][persistence]") {
+  // GIVEN a war-declaration debuff
+  const auto data = R"(
+    <buff id="frownedUpon" duration="60" givenToDeclarersOfWar="1" />
+  )";
+
+  // AND GIVEN Athens has declared a city war, and has the debuff
+  {
+    auto server = TestServer::WithDataString(data);
+    auto cFounder = TestClient::WithDataString(data);
+    server.waitForUsers(1);
+    server.createCityWithUserAsKing("Athens", server.getFirstUser());
+
+    // WHEN the server restarts
+  }
+  {
+    auto server = TestServer::WithDataStringAndKeepingOldData(data);
+
+    // AND WHEN Bob joins the city
+    auto cBob = TestClient::WithUsernameAndDataString("Bob", data);
+    server.waitForUsers(1);
+    auto &uBob = server.findUser("Bob");
+    server.cities().addPlayerToCity(uBob, "Athens");
+
+    // THEN Bob has the debuff
+    WAIT_UNTIL(uBob.debuffs().size() == 1);
+  }
+}

@@ -180,6 +180,8 @@ void Cities::readFromXMLFile(const std::string &filename) {
       city.addPlayerWithoutAlerting(username);
       _usersToCities[username] = name;
     }
+
+    city.onDeclaredWar();
   }
 }
 
