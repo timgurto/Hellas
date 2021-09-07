@@ -347,14 +347,14 @@ TEST_CASE("War-declaration debuffs for offline citizens",
     AND_GIVEN("Alice is king of Athens") {
       auto cAlice = TestClient::WithUsernameAndDataString("Alice", data);
       server.waitForUsers(1);
-      const auto &uAlice = server.findUser("Alice");
+      auto &uAlice = server.findUser("Alice");
       server.createCityWithUserAsKing("Athens", uAlice);
 
       AND_GIVEN("Bob is also in Athens, and Bob is offline") {
         {
           auto cBob = TestClient::WithUsernameAndDataString("Bob", data);
           server.waitForUsers(2);
-          const auto &uBob = server.findUser("Bob");
+          auto &uBob = server.findUser("Bob");
           server.cities().addPlayerToCity(uBob, "Athens");
         }
 
@@ -408,7 +408,7 @@ TEST_CASE("War-declaration debuffs for offline citizens",
           {
             auto cBob = TestClient::WithUsernameAndDataString("Bob", data);
             server.waitForUsers(2);
-            const auto &uBob = server.findUser("Bob");
+            auto &uBob = server.findUser("Bob");
             server.createCityWithUserAsKing("Sparta", uBob);
           }
 

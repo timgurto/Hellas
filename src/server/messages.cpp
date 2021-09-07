@@ -751,7 +751,7 @@ HANDLE_MESSAGE(CL_RECRUIT) {
 
   if (!_cities.isPlayerInACity(user.name())) RETURN_WITH(ERROR_NOT_IN_CITY)
   if (_cities.isPlayerInACity(recruitName)) RETURN_WITH(ERROR_ALREADY_IN_CITY)
-  const auto *pRecruit = getUserByName(recruitName);
+  auto *pRecruit = getUserByName(recruitName);
   if (!pRecruit) RETURN_WITH(ERROR_INVALID_USER);
 
   const auto &cityName = _cities.getPlayerCity(user.name());

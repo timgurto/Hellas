@@ -67,7 +67,7 @@ class Cities {
 
   void destroyCity(const City::Name &cityName);
 
-  void addPlayerToCity(const User &user, const City::Name &cityName);
+  void addPlayerToCity(User &user, const City::Name &cityName);
   void removeUserFromCity(const User &user, const City::Name &cityName);
   bool isPlayerInCity(const std::string &username,
                       const City::Name &cityName) const;

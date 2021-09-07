@@ -81,7 +81,7 @@ void Cities::destroyCity(const City::Name &cityName) {
   Server::instance().broadcast({SV_CITY_DESTROYED, cityName});
 }
 
-void Cities::addPlayerToCity(const User &user, const City::Name &cityName) {
+void Cities::addPlayerToCity(User &user, const City::Name &cityName) {
   auto it = _container.find(cityName);
   bool cityExists = it != _container.end();
   if (!cityExists) {

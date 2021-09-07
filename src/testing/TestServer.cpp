@@ -143,8 +143,7 @@ NPC &TestServer::addNPC(const std::string &typeName, const MapPoint &loc) {
   return _server->addNPC(npcType, loc);
 }
 
-void TestServer::createCityWithUserAsKing(std::string cityName,
-                                          const User &king) {
+void TestServer::createCityWithUserAsKing(std::string cityName, User &king) {
   _server->_cities.createCity(cityName, king.location(), king.name());
   _server->_cities.addPlayerToCity(king, cityName);
   _server->makePlayerAKing(king);

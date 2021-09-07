@@ -150,7 +150,7 @@ TEST_CASE("Pet shares owner's diplomacy",
       AND_GIVEN("a player named Bob") {
         auto c = TestClient::WithUsernameAndDataString("Bob", data);
         s.waitForUsers(1);
-        const auto &bob = s.getFirstUser();
+        auto &bob = s.getFirstUser();
 
         WHEN("Bob tries to target Alice's dog") {
           c.sendMessage(CL_TARGET_ENTITY, makeArgs(dog.serial()));
