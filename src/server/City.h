@@ -39,7 +39,7 @@ class City {
   void addPlayerWithoutAlerting(const std::string &username);
   bool isPlayerAMember(const std::string &username) const;
 
-  void onDeclaredWar() { _hasDeclaredWar = true; }
+  void onDeclaredWar();
   bool hasDeclaredWar() const { return _hasDeclaredWar; }
   ms_t timeSinceLastWarDeclaration() const {
     return _timeSinceLastWarDeclaration;

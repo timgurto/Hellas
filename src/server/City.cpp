@@ -42,6 +42,10 @@ bool City::isPlayerAMember(const std::string &username) const {
   return _members.count(username) == 1;
 }
 
+void City::onDeclaredWar() {
+  _hasDeclaredWar = true;
+}
+
 void Cities::update(ms_t timeElapsed) {
   for (auto &pair : _container) pair.second.update(timeElapsed);
 }
