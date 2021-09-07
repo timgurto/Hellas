@@ -470,12 +470,13 @@ TEST_CASE("City war debuffs are persistent",
     <buff id="frownedUpon" duration="60" givenToDeclarersOfWar="1" />
   )";
 
-  // AND GIVEN Athens has declared a city war, and has the debuff
+  // AND GIVEN Sparta has declared a city war, and has the debuff
   {
     auto server = TestServer::WithDataString(data);
     auto cFounder = TestClient::WithDataString(data);
     server.waitForUsers(1);
-    server.createCityWithUserAsKing("Athens", server.getFirstUser());
+    server.createCityWithUserAsKing("Sparta", server.getFirstUser());
+    cFounder.sendMessage(CL_DECLARE_WAR_ON_PLAYER_AS_CITY, "Charlie");
 
     // WHEN the server restarts
   }
@@ -486,7 +487,7 @@ TEST_CASE("City war debuffs are persistent",
     auto cBob = TestClient::WithUsernameAndDataString("Bob", data);
     server.waitForUsers(1);
     auto &uBob = server.findUser("Bob");
-    server.cities().addPlayerToCity(uBob, "Athens");
+    server.cities().addPlayerToCity(uBob, "Sparta");
 
     // THEN Bob has the debuff
     WAIT_UNTIL(uBob.debuffs().size() == 1);
