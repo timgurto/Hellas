@@ -384,6 +384,16 @@ TEST_CASE("War-declaration debuffs for offline citizens",
                   REPEAT_FOR_MS(100);
                   CHECK(uBob.debuffs().size() == 1);
                 }
+
+                AND_WHEN(
+                    "enough time passes for the longer debuff to disappear") {
+                  REPEAT_FOR_MS(2000);
+
+                  THEN("Bob has no debuffs") {
+                    REPEAT_FOR_MS(100);
+                    CHECK(uBob.debuffs().empty());
+                  }
+                }
               }
             }
           }

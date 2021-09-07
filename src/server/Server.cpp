@@ -792,8 +792,9 @@ void Server::giveWarDeclarationDebuffsToCitizenAfterTheFact(User &user) {
   const auto cityName = _cities.getPlayerCity(user.name());
 
   for (const auto *buffType : _warDeclarationDebuffs) {
-    if (_cities.doesCityStillHaveWarDebuff(cityName, *buffType))
-      user.applyDebuff(*buffType, user);
+    const auto buffDuration =
+        _cities.getRemainingTimeOnWarDebuff(cityName, *buffType);
+    if (buffDuration > 0) user.applyDebuff(*buffType, user, buffDuration);
   }
 }
 

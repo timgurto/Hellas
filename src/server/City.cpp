@@ -232,14 +232,15 @@ void Cities::onCityDeclaredWar(std::string cityName) {
   it->second.onDeclaredWar();
 }
 
-bool Cities::doesCityStillHaveWarDebuff(std::string cityName,
-                                        const BuffType &buff) const {
+ms_t Cities::getRemainingTimeOnWarDebuff(std::string cityName,
+                                         const BuffType &buff) const {
   const auto it = _container.find(cityName);
-  if (it == _container.end()) return false;
+  if (it == _container.end()) return 0;
   const auto &city = it->second;
 
-  if (!city.hasDeclaredWar()) return false;
-  return city.timeSinceLastWarDeclaration() < buff.duration();
+  if (!city.hasDeclaredWar()) return 0;
+  if (buff.duration() <= city.timeSinceLastWarDeclaration()) return 0;
+  return buff.duration() - city.timeSinceLastWarDeclaration();
 }
 
 void Cities::sendInfoAboutCitiesTo(const User &recipient) const {
