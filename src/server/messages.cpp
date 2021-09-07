@@ -744,6 +744,20 @@ HANDLE_MESSAGE(CL_SELECT_PLAYER) {
   if (user.action() == User::ATTACK) user.action(User::NO_ACTION);
 }
 
+HANDLE_MESSAGE(CL_RECRUIT) {
+  auto recruitName = ""s;
+  READ_ARGS(recruitName);
+  recruitName = toPascal(recruitName);
+
+  if (!_cities.isPlayerInACity(user.name())) RETURN_WITH(ERROR_NOT_IN_CITY)
+  if (_cities.isPlayerInACity(recruitName)) RETURN_WITH(ERROR_ALREADY_IN_CITY)
+  const auto *pRecruit = getUserByName(recruitName);
+  if (!pRecruit) RETURN_WITH(ERROR_INVALID_USER);
+
+  const auto &cityName = _cities.getPlayerCity(user.name());
+  _cities.addPlayerToCity(*pRecruit, cityName);
+}
+
 HANDLE_MESSAGE(CL_DECLARE_WAR_ON_PLAYER) {
   auto targetName = ""s;
   READ_ARGS(targetName);
@@ -1304,6 +1318,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_TARGET_PLAYER)
       SEND_MESSAGE_TO_HANDLER(CL_SELECT_ENTITY)
       SEND_MESSAGE_TO_HANDLER(CL_SELECT_PLAYER)
+      SEND_MESSAGE_TO_HANDLER(CL_RECRUIT)
       SEND_MESSAGE_TO_HANDLER(CL_DECLARE_WAR_ON_PLAYER)
       SEND_MESSAGE_TO_HANDLER(CL_DECLARE_WAR_ON_CITY)
       SEND_MESSAGE_TO_HANDLER(CL_DECLARE_WAR_ON_PLAYER_AS_CITY)
@@ -1628,15 +1643,6 @@ void Server::handleBufferedMessages(const Socket &client,
         break;
       }
 
-      case CL_RECRUIT: {
-        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
-        auto username = std::string{_stringInputBuffer};
-        iss >> del;
-        if (del != MSG_END) return;
-        handle_CL_RECRUIT(*user, username);
-        break;
-      }
-
       case CL_CHOOSE_TALENT: {
         iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
         auto talentName = Talent::Name{_stringInputBuffer};
@@ -1819,21 +1825,6 @@ void Server::handle_CL_LEAVE_CITY(User &user) {
   if (_kings.isPlayerAKing(user.name()))
     RETURN_WITH(ERROR_KING_CANNOT_LEAVE_CITY)
   _cities.removeUserFromCity(user, city);
-}
-
-void Server::handle_CL_RECRUIT(User &user, std::string username) {
-  const auto &cityName = _cities.getPlayerCity(user.name());
-  if (cityName.empty()) RETURN_WITH(ERROR_NOT_IN_CITY)
-  username = toPascal(username);
-  if (!_cities.getPlayerCity(username).empty())
-    RETURN_WITH(ERROR_ALREADY_IN_CITY)
-  const auto *pTargetUser = getUserByName(username);
-  if (pTargetUser == nullptr) {
-    sendMessage(user.socket(), ERROR_INVALID_USER);
-    return;
-  }
-
-  _cities.addPlayerToCity(*pTargetUser, cityName);
 }
 
 void Server::handle_CL_SUE_FOR_PEACE(User &user, MessageCode code,
