@@ -44,6 +44,9 @@ class City {
   ms_t timeSinceLastWarDeclaration() const {
     return _timeSinceLastWarDeclaration;
   }
+  void loadTimeSinceLastWarDeclaration(ms_t newTime) {
+    _timeSinceLastWarDeclaration = newTime;
+  }
 
   const MapPoint &location() const { return _location; }
   const std::string &king() const { return _king; }

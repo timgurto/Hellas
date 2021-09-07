@@ -524,3 +524,38 @@ TEST_CASE("Cities that have not declared war don't load with debuffs",
     CHECK(uBob.debuffs().empty());
   }
 }
+
+TEST_CASE("Cities' war-debuff durations persist",
+          "[war][city][buffs][persistence]") {
+  // GIVEN a 1-second war-declaration debuff
+  const auto data = R"(
+    <buff id="frownedUpon" duration="1" givenToDeclarersOfWar="1" />
+  )";
+
+  // AND GIVEN Sparta has declared a city war
+  {
+    auto server = TestServer::WithDataString(data);
+    auto cFounder = TestClient::WithDataString(data);
+    server.waitForUsers(1);
+    server.createCityWithUserAsKing("Sparta", server.getFirstUser());
+    cFounder.sendMessage(CL_DECLARE_WAR_ON_PLAYER_AS_CITY, "Charlie");
+
+    // WHEN more than 1s elapses (such that the city debuff expires)
+    REPEAT_FOR_MS(1100);
+
+    // AND WHEN the server restarts
+  }
+  {
+    auto server = TestServer::WithDataStringAndKeepingOldData(data);
+
+    // AND WHEN Bob joins the city
+    auto cBob = TestClient::WithUsernameAndDataString("Bob", data);
+    server.waitForUsers(1);
+    auto &uBob = server.findUser("Bob");
+    server.cities().addPlayerToCity(uBob, "Sparta");
+
+    // THEN Bob has no debuffs
+    REPEAT_FOR_MS(100);
+    CHECK(uBob.debuffs().empty());
+  }
+}
