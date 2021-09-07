@@ -44,6 +44,7 @@ bool City::isPlayerAMember(const std::string &username) const {
 
 void City::onDeclaredWar() {
   _hasDeclaredWar = true;
+  _timeSinceLastWarDeclaration = 0;
 }
 
 void Cities::update(ms_t timeElapsed) {

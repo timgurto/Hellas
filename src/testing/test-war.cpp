@@ -559,3 +559,34 @@ TEST_CASE("Cities' war-debuff durations persist",
     CHECK(uBob.debuffs().empty());
   }
 }
+
+TEST_CASE_METHOD(TwoClientsWithData,
+                 "Cities get debuffs for non-immediate wars",
+                 "[war][city][buffs]") {
+  GIVEN("a 1-second war-declaration debuff") {
+    useData(R"(
+      <buff id="frownedUpon" duration="1" givenToDeclarersOfWar="1" />
+    )");
+
+    AND_GIVEN("a city, Athens") {
+      server->createCityWithUserAsKing("Athens", *uAlice);
+
+      WHEN("at least 1 second elapses (more than the debuff duration)") {
+        REPEAT_FOR_MS(1100);
+
+        AND_WHEN("Athens declares a city war") {
+          cAlice->sendMessage(CL_DECLARE_WAR_ON_PLAYER_AS_CITY, "Charlie");
+          REPEAT_FOR_MS(100);
+
+          AND_WHEN("Bob joins Athens") {
+            server->cities().addPlayerToCity(*uBob, "Athens");
+
+            THEN("Bob has the debuff") {
+              WAIT_UNTIL(uBob->debuffs().size() == 1);
+            }
+          }
+        }
+      }
+    }
+  }
+}
