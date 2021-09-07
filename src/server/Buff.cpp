@@ -59,6 +59,10 @@ void Buff::update(ms_t timeElapsed) {
   _timeRemaining -= timeElapsed;
 }
 
+void Buff::manuallyChangeTimeRemaining(ms_t newTimeRemaining) {
+  _timeRemaining = newTimeRemaining;
+}
+
 void Buff::proc(Entity *target) const {
   if (target == nullptr) target = _owner;
   _type->effect().execute(*_caster, *target);

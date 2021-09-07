@@ -778,10 +778,12 @@ void Entity::applyBuff(const BuffType &type, Entity &caster) {
   }
 }
 
-void Entity::applyDebuff(const BuffType &type, Entity &caster) {
+void Entity::applyDebuff(const BuffType &type, Entity &caster,
+                         ms_t customDuration) {
   if (isDead()) return;
 
   auto newDebuff = Buff{type, *this, caster};
+  if (customDuration > 0) newDebuff.manuallyChangeTimeRemaining(customDuration);
 
   // Check for duplicates
   auto debuffWasReapplied = false;

@@ -108,6 +108,7 @@ class Buff {
   ms_t timeRemaining() const { return _timeRemaining; }
 
   void update(ms_t timeElapsed);
+  void manuallyChangeTimeRemaining(ms_t newTimeRemaining);
 
   void proc(Entity *target = nullptr) const;  // Default: buff owner is target
 
