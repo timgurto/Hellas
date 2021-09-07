@@ -91,6 +91,7 @@ void Cities::addPlayerToCity(User &user, const City::Name &cityName) {
   City &city = it->second;
   city.addAndAlertPlayers(user);
   _usersToCities[user.name()] = cityName;
+  Server::instance().giveWarDeclarationDebuffsToCitizenAfterTheFact(user);
   sendCityObjectsToCitizen(user);
 }
 

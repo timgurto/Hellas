@@ -431,3 +431,24 @@ TEST_CASE("War-declaration debuffs for offline citizens",
     }
   }
 }
+
+TEST_CASE_METHOD(TwoClientsWithData, "New citizens get city's war debuffs",
+                 "[city][war][buffs]") {
+  GIVEN("a war-declaration debuff") {
+    useData(R"(
+      <buff id="frownedUpon" duration="60" givenToDeclarersOfWar="1" />
+    )");
+
+    AND_GIVEN("Athens has declared a city war on Charlie") {
+      server->createCityWithUserAsKing("Athens", *uAlice);
+      cAlice->sendMessage(CL_DECLARE_WAR_ON_PLAYER_AS_CITY, "Charlie");
+      REPEAT_FOR_MS(100);
+
+      WHEN("Bob joins that city") {
+        server->cities().addPlayerToCity(*uBob, "Athens");
+
+        THEN("he has the debuff") { WAIT_UNTIL(uBob->debuffs().size() == 1); }
+      }
+    }
+  }
+}
