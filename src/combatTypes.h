@@ -43,7 +43,7 @@ class ArmourClass : public AliasOfShort {
 class BasisPoints : public AliasOfShort {
  public:
   BasisPoints(short v) : AliasOfShort(v) { onChanged(); }
-  double asChance() const;
+  double asChance(bool allowNegative = false) const;
   double addTo(double base) const;
   const std::string& display() const;
   std::string displayShort() const;

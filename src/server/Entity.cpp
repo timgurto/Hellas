@@ -106,7 +106,7 @@ CombatResult Entity::generateHitAgainst(const Entity &target, CombatType type,
   // Miss
   const auto BASE_MISS_CHANCE = 0.1;
   auto missChance =
-      BASE_MISS_CHANCE - stats().hit.asChance() + modifierFromLevelDiff;
+      BASE_MISS_CHANCE - stats().hit.asChance(true) + modifierFromLevelDiff;
   missChance = max(missChance, 0);
   if (combatTypeCanHaveOutcome(type, MISS, school, range)) {
     if (roll < missChance) return MISS;

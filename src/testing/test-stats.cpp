@@ -268,14 +268,14 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Hit chance", "[stats][combat]") {
     AND_GIVEN("an NPC") {
       const auto &npc = server->addNPC("dog", {15, 15});
 
-      WHEN("100000 hits are generated for it") {
+      WHEN("100k hits are generated for it") {
         auto numMisses = 0;
         for (auto i = 0; i != 100000; ++i) {
           auto result = npc.generateHitAgainst(npc, DAMAGE, {}, 0);
           if (result == MISS) ++numMisses;
         }
 
-        THEN("around 5% of them are misses") {
+        THEN("around 5k of them are misses") {
           CHECK_ROUGHLY_EQUAL(numMisses, 5000, 0.1)
         }
       }
@@ -287,15 +287,33 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Hit chance", "[stats][combat]") {
     CHANGE_BASE_USER_STATS.hit(500);
     user->updateStats();
 
-    WHEN("100000 hits are generated for a user") {
+    WHEN("100k hits are generated for a user") {
       auto numMisses = 0;
       for (auto i = 0; i != 100000; ++i) {
         auto result = user->generateHitAgainst(*user, DAMAGE, {}, 0);
         if (result == MISS) ++numMisses;
       }
 
-      THEN("around 5% of them are misses") {
+      THEN("around 5k of them are misses") {
         CHECK_ROUGHLY_EQUAL(numMisses, 5000, 0.1)
+      }
+    }
+  }
+
+  GIVEN("users have 50% miss chance") {
+    useData("");
+    CHANGE_BASE_USER_STATS.hit(-4000);
+    user->updateStats();
+
+    WHEN("100k hits are generated for a user") {
+      auto numMisses = 0;
+      for (auto i = 0; i != 100000; ++i) {
+        auto result = user->generateHitAgainst(*user, DAMAGE, {}, 0);
+        if (result == MISS) ++numMisses;
+      }
+
+      THEN("around 50k of them are misses") {
+        CHECK_ROUGHLY_EQUAL(numMisses, 50000, 0.1)
       }
     }
   }
