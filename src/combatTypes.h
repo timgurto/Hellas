@@ -42,8 +42,9 @@ class ArmourClass : public AliasOfShort {
 // 100 points = 1.00%
 class BasisPoints : public AliasOfShort {
  public:
+  enum ShouldAllowNegative { CanBeNegative, CannotBeNegative };
   BasisPoints(short v) : AliasOfShort(v) { onChanged(); }
-  double asChance(bool allowNegative = false) const;
+  double asChance(ShouldAllowNegative rules = CannotBeNegative) const;
   double addTo(double base) const;
   const std::string& display() const;
   std::string displayShort() const;

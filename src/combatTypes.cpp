@@ -40,8 +40,8 @@ ArmourClass ArmourClass::modifyByLevelDiff(Level attacker, Level target) const {
   return _raw - diff * 30;
 }
 
-double BasisPoints::asChance(bool allowNegative) const {
-  if (_raw < 0 && !allowNegative) return 0;
+double BasisPoints::asChance(ShouldAllowNegative rules) const {
+  if (rules == CannotBeNegative && _raw < 0) return 0;
   return _raw * 1.0 / 10000;
 }
 
