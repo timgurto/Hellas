@@ -9,7 +9,17 @@
 15 min: 900
 30 min: 1800
 1 hour: 3600
+3 hours: 10800
 -->
+
+<buff id="warPunishmentShort" name="Chaos of Ares" icon="dagger" duration="600" givenToDeclarersOfWar="1"
+    description="Because you have started a war, Ares has significantly reduced your chance to hit.">
+    <stats hit="-5000" />
+</buff>
+<buff id="warPunishmentLong" name="Justice of Athena" icon="dagger" duration="10800" givenToDeclarersOfWar="1"
+    description="Because you have started a war, Athena has reduced your stats.">
+    <stats might="-5" intellect="-5" cunning="-5" swiftness="-5" courage="-5" />
+</buff>
 
 <buff id="airDot" name="Socratic questioning" icon="lettersCopper" duration="12" school="air"
     description="Taking damage over time.">

@@ -21,7 +21,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 20,Serpent scales + gear,21,144,Content,,,TRUE,5 Iron Age
 21,Consume small stacks first,5,21,Usability,,,,
 22,Allow declaring war on object,3,5,Usability,40,,,7 War
-23,Disable war,55,13,Feature,,,,
 24,Crafting particles,21,5,Aesthetics,,,,
 25,Universal complete text outlines,2,3,Aesthetics,,TRUE,,
 26,Remapping keys,89,55,Usability,,,,
@@ -38,7 +37,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 37,Sanitise war declarations,1,2,Usability,40,,TRUE,7 War
 38,Partial repairs,55,21,Feature,,,TRUE,
 39,Sanitise object granting,21,2,Usability,36,TRUE,TRUE,
-40,Fix war,34,89,Content,,,TRUE,7 War
+40,Fix war,34,89,Content,,TRUE,TRUE,7 War
 41,Weather particles,89,144,Aesthetics,,,,
 42,Recruitment invitations,2,3,Usability,,,TRUE,
 43,UI SFX,89,34,Aesthetics,,,,
