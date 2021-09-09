@@ -266,18 +266,6 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
     if (xr.findAttr(elem, "disappearAfter", disappearTime))
       ot->disappearsAfter(disappearTime);
 
-    // Durability
-    auto durability = xr.findChild("durability", elem);
-    if (durability) {
-      if (xr.findAttr(durability, "item", s) &&
-          xr.findAttr(durability, "quantity", n)) {
-        std::set<ServerItem>::const_iterator itemIt =
-            _server._items.insert(ServerItem(s)).first;
-        ot->setHealthBasedOnItems(&*itemIt, n);
-      } else
-        _server._debug("Durability specified without item type; skipping.",
-                       Color::CHAT_ERROR);
-    }
 
     if (xr.findAttr(elem, "destroyIfUsedAsTool", n) && n == 1)
       ot->destroyIfUsedAsTool(true);

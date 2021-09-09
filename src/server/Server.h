@@ -342,7 +342,6 @@ class Server {
   ms_t _lastSave;
 
   void publishStats();
-  void generateDurabilityList();
   static const ms_t PUBLISH_STATS_FREQUENCY = 5000;
   ms_t _timeStatsLastPublished;
   void logNumberOfOnlineUsers() const;

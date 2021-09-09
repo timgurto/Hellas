@@ -2,7 +2,6 @@
 #define OBJECT_TYPE_H
 
 #include "../../types.h"
-#include "../Durability.h"
 #include "../EntityType.h"
 #include "../QuestNode.h"
 #include "../Transformation.h"
@@ -16,7 +15,6 @@ class BuffType;
 // Describes a class of Objects, the "instances" of which share common
 // properties
 class ObjectType : public EntityType, public QuestNodeType {
-  Durability _strength;
   RepairInfo _repairInfo;
 
   mutable size_t _numInWorld;
@@ -110,10 +108,6 @@ class ObjectType : public EntityType, public QuestNodeType {
   const ItemSet &materials() const { return _materials; }
   void disappearsAfter(ms_t time) { _disappearsAfter = time; }
   ms_t disappearsAfter() const { return _disappearsAfter; }
-  void setHealthBasedOnItems(const ServerItem *item, size_t quantity);
-  std::pair<const ServerItem *, size_t> strengthPair() const {
-    return std::make_pair(_strength.item(), _strength.quantity());
-  }
 
   bool hasContainer() const { return _container != nullptr; }
   ContainerType &container() { return *_container; }
@@ -140,7 +134,6 @@ class ObjectType : public EntityType, public QuestNodeType {
   const BuffType *buffGranted() const { return _buffGranted; }
   double buffRadius() const { return _buffRadius; }
 
-  void initStrengthAndMaxHealth() const;
   const RepairInfo &repairInfo() const { return _repairInfo; }
   void makeRepairable() { _repairInfo.canBeRepaired = true; }
   void repairingCosts(const std::string &id) { _repairInfo.cost = id; }

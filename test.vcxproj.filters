@@ -173,7 +173,6 @@
     <ClCompile Include="src\server\logging.cpp" />
     <ClCompile Include="src\server\Exploration.cpp" />
     <ClCompile Include="src\client\hotbar.cpp" />
-    <ClCompile Include="src\server\Durability.cpp" />
     <ClCompile Include="src\testing\test-durability.cpp" />
     <ClCompile Include="src\server\DamageOnUse.cpp" />
     <ClCompile Include="src\testing\test-pets.cpp" />
@@ -345,7 +344,6 @@
     <ClInclude Include="src\server\SRecipe.h" />
     <ClInclude Include="src\client\Unlocks.h" />
     <ClInclude Include="src\server\Exploration.h" />
-    <ClInclude Include="src\server\Durability.h" />
     <ClInclude Include="src\server\DamageOnUse.h" />
     <ClInclude Include="src\HasTags.h" />
     <ClInclude Include="src\client\HasSounds.h" />

@@ -13,7 +13,6 @@ class ObjectLoot : public Loot {
  private:
   Object &_parent;
 
-  void addStrengthItemsToLoot();
   void addContainerItemsToLoot();
 };
 

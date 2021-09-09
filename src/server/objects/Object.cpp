@@ -10,7 +10,6 @@ Object::Object(const ObjectType *type, const MapPoint &loc)
       _disappearTimer(type->disappearsAfter()) {
   objType().incrementCounter();
 
-  if (type != &User::OBJECT_TYPE) type->initStrengthAndMaxHealth();
   initStatsFromType();
 
   _loot.reset(new ObjectLoot(*this));
