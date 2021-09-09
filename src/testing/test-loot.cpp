@@ -39,26 +39,6 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Client gets loot info and can loot",
   }
 }
 
-TEST_CASE("Objects have health", "[damage-on-use][stats]") {
-  GIVEN("a chair type with strength 6*wood, and a wood item with strength 5") {
-    auto data = R"(
-      <objectType id="chair" name="Chair" >
-        <durability item="wood" quantity="6" />
-      </objectType>
-      <item id="wood" name="Wood" durability="5" />
-    )";
-    auto s = TestServer::WithDataString(data);
-
-    WHEN("a chair object is created") {
-      s.addObject("chair");
-
-      THEN("it has 30 (6*5) health") {
-        CHECK(s.getFirstObject().health() == 30);
-      }
-    }
-  }
-}
-
 TEST_CASE_METHOD(ServerAndClientWithData, "Clients discern NPCs with no loot",
                  "[loot]") {
   GIVEN("an ant with 1 health and no loot table") {
@@ -98,43 +78,6 @@ TEST_CASE("Nonexistent loot item", "[loot]") {
         dog.kill();
 
         THEN("the server doesn't crash") { server.nop(); }
-      }
-    }
-  }
-}
-
-TEST_CASE_METHOD(ServerAndClientWithData,
-                 "Chance for strength-items as loot from object",
-                 "[damage-on-use][loot]") {
-  GIVEN("a snowman made of 1000 1-health snowflake items") {
-    useData(R"(
-      <item id="snowflake" stackSize="1000" durabilty="1" />
-      <objectType id="snowman">
-        <durability item="snowflake" quantity="1000" />
-      </objectType>
-    )");
-
-    auto &snowman = server->addObject("snowman", {10, 15});
-
-    WHEN("a user kills the snowman") {
-      snowman.onAttackedBy(*user, 1);
-      snowman.kill();
-
-      THEN("the client finds out that it's lootable") {
-        WAIT_UNTIL(client->objects().size() == 1);
-        ClientObject &clientSnowman = client->getFirstObject();
-        client->waitForMessage(SV_INVENTORY);
-
-        WAIT_UNTIL(clientSnowman.lootable());
-
-        AND_WHEN("he tries to take the item") {
-          WAIT_UNTIL(clientSnowman.container().size() > 0);
-          client->sendMessage(CL_TAKE_ITEM, makeArgs(snowman.serial(), 0));
-
-          THEN("he recieves it") {
-            WAIT_UNTIL(client->inventory()[0].first.type() != nullptr);
-          }
-        }
       }
     }
   }
