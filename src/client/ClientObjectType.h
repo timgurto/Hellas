@@ -65,12 +65,6 @@ class ClientObjectType : public SpriteType,
 
   std::string _allowedTerrain;
 
-  struct Durability {
-    Durability() : item(nullptr), quantity(0) {}
-    const ClientItem *item;
-    size_t quantity;
-  };
-  Durability _durability;
   RepairInfo _repairInfo;
 
   // To show transformations.  Which image is displayed depends on progress.
@@ -138,10 +132,6 @@ class ClientObjectType : public SpriteType,
   const ImageWithHighlight &constructionImage() const {
     return _constructionImage;
   }
-  void durability(const ClientItem *item, size_t quantity) {
-    _durability.item = item;
-    _durability.quantity = quantity;
-  }
   const RepairInfo &repairInfo() const { return _repairInfo; }
   void makeRepairable() { _repairInfo.canBeRepaired = true; }
   void repairingCosts(const std::string &id) { _repairInfo.cost = id; }
@@ -185,8 +175,6 @@ class ClientObjectType : public SpriteType,
   void initialiseHumanoidCorpse();
 
   virtual char classTag() const override { return 'o'; }
-
-  void calculateAndInitDurability();
 
   struct ptrCompare {
     bool operator()(const ClientObjectType *lhs,

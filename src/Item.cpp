@@ -1,6 +1,6 @@
 #include "Item.h"
 
-Item::Item(const std::string &id) : _id(id), _durability(0) {}
+Item::Item(const std::string &id) : _id(id) {}
 
 Item::GearSlot Item::parseGearSlot(std::string slotName) {
   slotName = toLower(slotName);

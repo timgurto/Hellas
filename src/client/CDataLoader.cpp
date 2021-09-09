@@ -599,19 +599,6 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
       }
     }
 
-    // Strength
-    auto strength = xr.findChild("durability", elem);
-    if (strength) {
-      if (xr.findAttr(strength, "item", s) &&
-          xr.findAttr(strength, "quantity", n)) {
-        ClientItem &item = _client.gameData.items[s];
-        cot->durability(&item, n);
-      } else
-        _client.showErrorMessage(
-            "Transformation specified without target id; skipping.",
-            Color::CHAT_ERROR);
-    }
-
     // Repairing
     auto repairElem = xr.findChild("canBeRepaired", elem);
     if (repairElem) {
@@ -672,9 +659,6 @@ void CDataLoader::loadPermanentObjects(XmlReader &xr) {
     if (!xr.findAttr(elem, "id", id)) continue;
     const auto *type = _client.findObjectType(id);
     if (!type) continue;
-
-    auto *nonConstType = const_cast<ClientObjectType *>(type);
-    nonConstType->calculateAndInitDurability();
 
     auto loc = MapPoint{};
     if (!xr.findAttr(elem, "x", loc.x)) continue;
@@ -755,10 +739,6 @@ void CDataLoader::loadItems(XmlReader &xr) {
 
     auto bindMode = ""s;
     if (xr.findAttr(elem, "bind", bindMode)) item.setBinding(bindMode);
-
-    Hitpoints durability;
-    if (xr.findAttr(elem, "durability", durability))
-      item.durability(durability);
 
     auto quality = 0;
     if (xr.findAttr(elem, "quality", quality)) item.quality(quality);

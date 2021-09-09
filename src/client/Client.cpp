@@ -134,12 +134,6 @@ void Client::initialiseData() {
     item.fetchAmmoItem();
   }
 
-  // Initialize object-type strengths
-  for (auto *objectType : gameData.objectTypes) {
-    auto nonConstType = const_cast<ClientObjectType *>(objectType);
-    nonConstType->calculateAndInitDurability();
-  }
-
   populateBuildList();
 
   // Tell quest nodes about their quests

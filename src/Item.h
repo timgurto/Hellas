@@ -38,8 +38,6 @@ class Item : public HasTags {
   const StatsMod &stats() const { return _stats; }
   void useSuffixSet(std::string suffixSetID) { _suffixSet = suffixSetID; }
   bool hasSuffix() const { return !_suffixSet.empty(); }
-  Hitpoints durability() const { return _durability; }
-  void durability(Hitpoints n) { _durability = n; }
   void makeWeapon(Hitpoints damage, double speedInS, SpellSchool school);
   void weaponRange(Podes range) { _weaponRange = range.toPixels(); }
   px_t weaponRange() const { return _weaponRange; }
@@ -86,8 +84,6 @@ class Item : public HasTags {
   mutable const Item *_weaponAmmo{nullptr};  // Fetched in fetchAmmoItem()
 
  private:
-  Hitpoints _durability;
-
   std::string _castsSpellOnUse{};
   std::string _spellArg{};
 };

@@ -745,8 +745,6 @@ void DataLoader::loadItems(XmlReader &xr) {
 
     item.loadTagsFromXML(xr, elem);
 
-    if (xr.findAttr(elem, "durability", n)) item.durability(n);
-
     if (xr.findAttr(elem, "class", s)) {
       const auto it = _server._itemClasses.find(s);
       if (it != _server._itemClasses.end())
