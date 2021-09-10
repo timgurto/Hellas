@@ -287,7 +287,7 @@ class Server {
   Quests _quests;
   SuffixSets _suffixSets;
   std::set<const BuffType *> _warDeclarationDebuffs;
-  Hitpoints _healthCategoryHealth;
+  std::map<std::string, Hitpoints> _objectHealthCategories;
 
   size_t _numBuildableObjects = 0;
 

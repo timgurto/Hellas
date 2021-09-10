@@ -122,4 +122,24 @@ TEST_CASE("Object-health categories", "[stats]") {
       THEN("it has 2 health") { CHECK(flower.health() == 2); }
     }
   }
+
+  SECTION("Two categories are defined") {
+    GIVEN("straw houses and brick houses have different health categories") {
+      auto server = TestServer::WithDataString(R"(
+        <objectHealthCategory id="straw" maxHealth="1" />
+        <objectHealthCategory id="brick" maxHealth="10" />
+        <objectType id="strawHouse" healthCategory="straw" />
+        <objectType id="brickHouse" healthCategory="brick" />
+      )");
+
+      WHEN("both are spawned") {
+        const auto &strawHouse = server.addObject("strawHouse", {10, 10});
+        const auto &brickHouse = server.addObject("brickHouse", {10, 20});
+
+        THEN("they have different health") {
+          CHECK(strawHouse.health() != brickHouse.health());
+        }
+      }
+    }
+  }
 }

@@ -270,8 +270,8 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
 
     // Health
     if (xr.findAttr(elem, "maxHealth", n)) ot->setMaxHealth(n);
-    if (xr.findAttr(elem, "healthCategory", n))
-      ot->setMaxHealth(_server._healthCategoryHealth);
+    if (xr.findAttr(elem, "healthCategory", s))
+      ot->setMaxHealth(_server._objectHealthCategories[s]);
 
     if (xr.findAttr(elem, "destroyIfUsedAsTool", n) && n == 1)
       ot->destroyIfUsedAsTool(true);
@@ -477,9 +477,15 @@ void DataLoader::loadLootTables(XmlReader &xr) {
 }
 
 void DataLoader::loadObjectHealthCategories(XmlReader &xr) {
-  auto elem = xr.findChild("objectHealthCategory");
-  if (!elem) return;
-  xr.findAttr(elem, "maxHealth", _server._healthCategoryHealth);
+  for (auto elem : xr.getChildren("objectHealthCategory")) {
+    auto id = ""s;
+    if (!xr.findAttr(elem, "id", id)) continue;
+
+    auto maxHealth = Hitpoints{};
+    if (!xr.findAttr(elem, "maxHealth", maxHealth)) continue;
+
+    _server._objectHealthCategories[id] = maxHealth;
+  }
 }
 
 void DataLoader::loadNPCTemplates(XmlReader &xr) {
