@@ -36,7 +36,6 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Specifying object health",
     )");
 
     WHEN("a sapling is created") {
-      const auto &sapling = server->addObject("sapling", {10, 10});
       const auto &serverObject = server->addObject("sapling", {10, 10});
 
       THEN("it has 2 health") { CHECK(serverObject.health() == 2); }
