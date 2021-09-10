@@ -28,24 +28,26 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   }
 }
 
-TEST_CASE("Objects have 1 health by default", "[loading][stats]") {
-  // Given an object type A with no strength;
-  auto data = R"(
+TEST_CASE_METHOD(ServerAndClientWithData, "Objects have 1 health by default",
+                 "[loading][stats]") {
+  GIVEN("an object with no explicit health") {
+    useData(R"(
       <objectType id="A" />
-    )";
-  TestServer s = TestServer::WithDataString(data);
-  TestClient c = TestClient::WithDataString(data);
+    )");
 
-  // When an A object is added
-  s.addObject("A", {10, 15});
+    const auto &serverObject = server->addObject("A", {10, 15});
 
-  // And the client becomes aware of it
-  s.waitForUsers(1);
-  WAIT_UNTIL(c.objects().size() == 1);
+    THEN("it has 1 health") { CHECK(serverObject.health() == 1); }
 
-  // Then the client knows it has 1 health
-  auto &obj = c.getFirstObject();
-  CHECK(obj.health() == 1);
+    WHEN("the client becomes aware of it") {
+      WAIT_UNTIL(client->objects().size() == 1);
+      const auto &clientObject = client->getFirstObject();
+
+      THEN("the client knows it has 1 health") {
+        CHECK(clientObject.health() == 1);
+      }
+    }
+  }
 }
 
 TEST_CASE("Objects that disappear after a time") {
