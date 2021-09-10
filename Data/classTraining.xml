@@ -10,7 +10,6 @@
     <material id="water" quantity="2" />
     <material id="smallPot" quantity="2" />
     <material id="rock" quantity="2" />
-    <durability item="stick" quantity="25" />
     <unlockedBy />
     <canBeRepaired cost="smallPot" />
 </objectType>
@@ -26,7 +25,6 @@
     <material id="boneDust" quantity="5" />
     <material id="crudeClay" />
     <material id="log" quantity="6" />
-    <durability item="log" quantity="6" />
     <canBeRepaired cost="smallPot" />
     <unlockedBy />
 </objectType>
@@ -38,7 +36,6 @@
     <tag name="classZealot" />
     <material id="rock" quantity="12" />
     <material item="boneDust" quantity="40" />
-    <durability item="rock" quantity="12" />
     <unlockedBy />
     <particles profile="vapour" x="6" y="-13" />
     <particles profile="vapour" x="-2" y="-7" />

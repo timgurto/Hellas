@@ -64,9 +64,8 @@
         <particles profile="candleFire" x="0q.5" y="-8" />
         <collisionRect x="-2" y="-2" w="4" h="4" />
     </objectType>
-    <objectType id="anzacPool" name="Reflecting Pool" exclusiveToQuest="anzacAthena"
+    <objectType id="anzacPool" name="Reflecting Pool" exclusiveToQuest="anzacAthena" maxHealth="600"
         xDrawOffset="-26" yDrawOffset="-42" isFlat="1" >
-        <durability item="brick" quantity="50" />
         <collisionRect x="-26" y="-42" w="52" h="85" />
         <tag name="anzacPool" />
     </objectType>

@@ -65,7 +65,6 @@
         id="tradeMatBottomless" name="Trade Mat" imageFile="tradeMat"
         xDrawOffset="-14" yDrawOffset="-12" merchantSlots="1" bottomlessMerchant="1" >
         <collisionRect x="-12" y="-8" w="25" h="17" />
-        <durability item="hide" quantity="1" />
     </objectType>
     <spawnPoint y="43695" x="29623" type="calydonWeaver" quantity="8" radius="300" respawnTime="300000" />
     <npc id="kingOineus" x="29533" y="43524" />

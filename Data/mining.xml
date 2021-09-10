@@ -1,11 +1,11 @@
 <root>
 
-<item id="tin"          name="Tin Ore"        sounds="ore"       stackSize="10" durability="8" />
-<item id="tinBar"       name="Tin Ingot"      sounds="metalBar"  stackSize="10" durability="25"/>
-<item id="copper"       name="Copper Ore"     sounds="ore"       stackSize="10" durability="10" />
-<item id="copperBar"    name="Copper Ingot"   sounds="metalBar"  stackSize="10" durability="20"/>
-<item id="silver"       name="Silver Ore"     sounds="ore"       stackSize="10" durability="10" quality="2" />
-<item id="silverBar"    name="Silver Ingot"   sounds="metalBar"  stackSize="10" durability="20" quality="2" />
+<item id="tin"          name="Tin Ore"        sounds="ore"       stackSize="10" />
+<item id="tinBar"       name="Tin Ingot"      sounds="metalBar"  stackSize="10" />
+<item id="copper"       name="Copper Ore"     sounds="ore"       stackSize="10" />
+<item id="copperBar"    name="Copper Ingot"   sounds="metalBar"  stackSize="10" />
+<item id="silver"       name="Silver Ore"     sounds="ore"       stackSize="10" quality="2" />
+<item id="silverBar"    name="Silver Ingot"   sounds="metalBar"  stackSize="10" quality="2" />
 
 <recipe id="tinBar"
     time="12000" >
@@ -37,7 +37,6 @@
     allowedTerrain="rocky" >
     <yield id="tin" initialMean="2.5" initialSD="1" initialMin="1" />
     <yield id="rock" initialMean="2" initialSD="2" />
-    <durability item="tin" quantity="5" />
 </objectType>
 
 <objectType id="copper" name="Copper Deposit"
@@ -60,7 +59,6 @@
     <unlockedBy recipe="brick" chance="0.02" />
     <unlockedBy recipe="tinBar" chance="0.05" />
     <unlockedBy gather="tin" chance="0.02" />
-    <durability item="brick" quantity="6" />
 </objectType>
 
 <objectType id="silver" name="Silver Deposit"
@@ -83,7 +81,6 @@
     <unlockedBy recipe="brick" chance="0.01" />
     <unlockedBy recipe="copperBar" chance="0.1" />
     <unlockedBy gather="copper" chance="0.05" />
-    <durability item="brick" quantity="6" />
 </objectType>
 
 </root>

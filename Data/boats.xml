@@ -9,7 +9,6 @@
     <collisionRect x="-5" y="-2" w="10" h="4" />
     <material id="log" quantity="8" />
     <unlockedBy gather="log" chance="0.1" />
-    <durability item="log" quantity="8" />
 </objectType>
 
 <objectType
@@ -23,7 +22,6 @@
     <material id="rope" quantity="4" />
     <unlockedBy recipe="rope" chance="0.05" />
     <unlockedBy construction="raft" chance="0.1" />
-    <durability item="stick" quantity="40" />
 </objectType>
 
 <objectType
@@ -40,7 +38,6 @@
     <unlockedBy recipe="lumber" chance="0.05" />
     <unlockedBy recipe="linenCloth" chance="0.02" />
     <unlockedBy construction="canoe" chance="0.1" />
-    <durability item="lumber" quantity="25" />
     <canBeRepaired cost="lumber" />
 </objectType>
 

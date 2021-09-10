@@ -1,14 +1,14 @@
 <root>
 
-<item id="log"          name="Log"            sounds="wood"      stackSize="5"  durability="8" />
-<item id="crudeClay"    name="Crude Clay"     sounds="clay"      stackSize="10" durability="6" />
-<item id="clay"         name="Clay"           sounds="clay"      stackSize="10" durability="10" />
+<item id="log"          name="Log"            sounds="wood"      stackSize="5" />
+<item id="crudeClay"    name="Crude Clay"     sounds="clay"      stackSize="10" />
+<item id="clay"         name="Clay"           sounds="clay"      stackSize="10"  />
 <item id="tinRing"      name="Tin Ringlet"                       stackSize="1000" />
 <item id="copperRing"   name="Copper Ringlet"                    stackSize="1000" />
-<item id="charcoal"     name="Charcoal"                          stackSize="10" durability="6"/>
+<item id="charcoal"     name="Charcoal"                          stackSize="10" />
 
-<item id="flax"         name="Flax"           sounds="weakPlant" stackSize="10" durability="2" />
-<item id="linenThread"  name="Thread"         sounds="fabric"    stackSize="10" durability="5"/>
+<item id="flax"         name="Flax"           sounds="weakPlant" stackSize="10" />
+<item id="linenThread"  name="Thread"         sounds="fabric"    stackSize="10" />
 <item id="linenCloth"   name="Linen Cloth"    sounds="fabric"    stackSize="10" />
 <item id="wool"         name="Wool"           sounds="fabric"    stackSize="10" />
 <item id="woolCloth"    name="Wool Cloth"     sounds="fabric"    stackSize="10" />
@@ -20,8 +20,8 @@
 <item id="tinScale"     name="Tin Scale"      sounds="metalTool" stackSize="50" />
 <item id="copperScale"  name="Copper Scale"   sounds="metalTool" stackSize="50" />
 
-<item id="rope"         name="Rope"                              stackSize="10" durability="4" />
-<item id="brick"        name="Brick"          sounds="brick"     stackSize="10" durability="12" />
+<item id="rope"         name="Rope"                              stackSize="10" />
+<item id="brick"        name="Brick"          sounds="brick"     stackSize="10" />
 <item id="fat"          name="Animal Fat"     sounds="meat"      stackSize="10" />
 <item id="entrails"     name="Entrails"       sounds="meat"      stackSize="10" />
 <item id="airEssence"   name="Air Essence"                       stackSize="10" />
@@ -37,12 +37,12 @@
 <item id="tannin"       name="Tannin"         sounds="ceramic"   constructs="tannin" />
 <item id="woodenStatue" name="Wooden Statue"  sounds="wood"      constructs="woodenStatue" />
 <item id="tinStatue"    name="Tin Statue"     sounds="metalBar"  constructs="tinStatue" />
-<item id="lumber"       name="Lumber"         sounds="wood"                                  stackSize="10" durability="8" />
+<item id="lumber"       name="Lumber"         sounds="wood"                                  stackSize="10" />
 
 <item id="figSeeds"     name="Fig Seeds"      sounds="seeds"     constructs="figTree0"       stackSize="10"/>
 <item id="flaxSeeds"    name="Flax Seeds"     sounds="seeds"     constructs="flaxCrop0"      stackSize="10"/>
 
-<item id="tinTube"      name="Metal Tube"     class="tinJunk" sounds="metalTool" durability="8"> <tag name="wireDrawing" /> </item>
+<item id="tinTube"      name="Metal Tube"     class="tinJunk" sounds="metalTool" > <tag name="wireDrawing" /> </item>
 <item id="pole1"		name="Crude Pole"     sounds="wood" />
 <item id="pole2"		name="Pole" />
 
@@ -56,7 +56,7 @@
 <item id="spearMould"   name="Spear Mould"    class="mould" sounds="ceramic" >   <tag name="spearMould" /> </item>
 <item id="boneNeedle"   name="Bone Needle"    class="boneJunk" sounds="metalTool" > <tag name="sewing" />     </item>
 
-<item id="stick" name="Stick" stackSize="10" durability="2" sounds="stick" >
+<item id="stick" name="Stick" stackSize="10" sounds="stick" >
     <offset x="-8" y="-1" />
 </item>
 <item id="knapper" name="Knapper" class="stoneJunk" sounds="rock" >
@@ -250,7 +250,7 @@
 
     <!-- Ranged -->
         <!-- Sling -->
-            <item id="rock" name="Rock" stackSize="100" durability="6" gearSlot="weapon" sounds="rock" >
+            <item id="rock" name="Rock" stackSize="100" gearSlot="weapon" sounds="rock" >
                 <stats cunning="1" />
                 <weapon damage="3" speed="2.5" range="25" consumes="rock" projectile="rock" />
                 <offset x="-3" />
@@ -293,7 +293,7 @@
 
         <!-- Ammo -->
             <!-- Rock -->
-            <item id="smoothRock"   name="Smooth Rock"  stackSize="100"  sounds="rock" durability="12" />
+            <item id="smoothRock"   name="Smooth Rock"  stackSize="100"  sounds="rock" />
             <item id="woodArrow"    name="Arrow"        stackSize="100"  sounds="rock" />
             <!-- Tin Javelin -->
             <!-- Copper Javelin -->
@@ -358,7 +358,7 @@
                 </item>
             
         <!-- Leather (crit resistance) -->
-            <item id="hide" name="Animal Hide" class="hideNoRepair" gearSlot="shoulders" sounds="leather" durability="5" >
+            <item id="hide" name="Animal Hide" class="hideNoRepair" gearSlot="shoulders" sounds="leather" >
                 <stats armor="3" />
                 <offset x="-4" y="-1" />
             </item>

@@ -160,7 +160,6 @@
         <collisionRect x="-10" y="-3" w="20" h="8" />
         <tag name="cooking" />
         <material id="tutStick" quantity="5" />
-        <durability item="stick" quantity="5" />
         <transform id="tutExtinguishedFire" time="60000" />
         <particles profile="fire" x="0" y="-6" />
         <particles profile="smoke" x="0" y="-10" />
@@ -172,7 +171,6 @@
         constructionText="requires fuel">
         <collisionRect x="-10" y="-3" w="20" h="8" />
         <material id="tutStick" quantity="2" />
-        <durability item="stick" quantity="5" />
         <transform id="tutFire" time="1" skipConstruction="1" />
     </objectType>
     <item id="tutStick" name="Stick" iconFile="stick" stackSize="10" sounds="stick" bind="pickup" />
@@ -182,7 +180,6 @@
         sounds="stick" imageFile="stick"
         allowedTerrain="tutSticks" >
         <yield id="tutStick" />
-        <durability item="stick" quantity="1" />
     </objectType>
     <npcType
         id="tutBoar" name="Boar" template="boar"
@@ -277,7 +274,7 @@
     <object id="tutAnvil" x="816" y="60564" >
         <owner type="player" name="Othrys" />
     </object>
-    <item id="tutOre" name="Othrysian Ore" stackSize="5" durability="3" bind="pickup" />
+    <item id="tutOre" name="Othrysian Ore" stackSize="5" bind="pickup" />
     <item id="tutLightning" name="Handheld Lightning" stackSize="5" gearSlot="weapon" sounds="lightning" bind="pickup" >
         <weapon damage="12" speed="2.1" range="25" consumes="tutLightning" projectile="lightning" />
         <offset x="-8" y="-6" />
@@ -303,7 +300,6 @@
         xDrawOffset="-5" yDrawOffset="-5"
         canGather="1" gatherTime="4000" sounds="rock" >
         <yield id="tutOre" />
-        <durability item="tutOre" quantity="1" />
     </objectType>
     
 

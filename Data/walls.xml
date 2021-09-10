@@ -7,7 +7,6 @@
     <material id="log" quantity="15" />
     <unlockedBy gather="log" chance="0.05" />
     <unlockedBy construction="palisadeNS" />
-    <durability item="log" quantity="15" />
     <canBeRepaired cost="log" />
 </objectType>
 <objectType id="palisadeNS" name="Palisade N/S"
@@ -17,7 +16,6 @@
     <material id="log" quantity="15" />
     <unlockedBy gather="log" chance="0.05" />
     <unlockedBy construction="palisadeEW" />
-    <durability item="log" quantity="15" />
     <canBeRepaired cost="log" />
 </objectType>
 <objectType id="woodGateEW" name="Palisade Gate E/W"
@@ -28,7 +26,6 @@
     <material id="log" quantity="8" /> <!-- Half price, less than half size.  Otherwise no incentive to build normal walls. -->
     <unlockedBy construction="palisadeNS" />
     <unlockedBy construction="palisadeEW" />
-    <durability item="log" quantity="8" />
     <canBeRepaired cost="log" />
 </objectType>
 <objectType id="woodGateNS" name="Palisade Gate N/S"
@@ -39,7 +36,6 @@
     <material id="log" quantity="8" /> <!-- Half price, less than half size.  Otherwise no incentive to build normal walls. -->
     <unlockedBy construction="palisadeNS" />
     <unlockedBy construction="palisadeEW" />
-    <durability item="log" quantity="8" />
     <canBeRepaired cost="log" />
 </objectType>
 
@@ -50,7 +46,6 @@
     <material id="brick" quantity="12" />
     <unlockedBy recipe="brick" chance="0.05" />
     <unlockedBy construction="brickWallNS" />
-    <durability item="brick" quantity="12" />
     <canBeRepaired cost="brick" />
 </objectType>
 <objectType id="brickWallNS" name="Brick Wall N/S"
@@ -60,7 +55,6 @@
     <material id="brick" quantity="12" />
     <unlockedBy recipe="brick" chance="0.05" />
     <unlockedBy construction="brickWallEW" />
-    <durability item="brick" quantity="12" />
     <canBeRepaired cost="brick" />
 </objectType>
 <objectType id="brickGateEW" name="Brick Gate E/W"
@@ -71,7 +65,6 @@
     <material id="brick" quantity="6" /> <!-- Half price, less than half size.  Otherwise no incentive to build normal walls. -->
     <unlockedBy construction="brickWallNS" />
     <unlockedBy construction="brickWallEW" />
-    <durability item="brick" quantity="6" />
     <canBeRepaired cost="brick" />
 </objectType>
 <objectType id="brickGateNS" name="Brick Gate N/S"
@@ -82,7 +75,6 @@
     <material id="brick" quantity="6" /> <!-- Half price, less than half size.  Otherwise no incentive to build normal walls. -->
     <unlockedBy construction="brickWallNS" />
     <unlockedBy construction="brickWallEW" />
-    <durability item="brick" quantity="6" />
     <canBeRepaired cost="brick" />
 </objectType>
 

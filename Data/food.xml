@@ -98,7 +98,6 @@
     <material id="rock" quantity="20" />
     <!--unlockedBy gather="rock" chance="0.02" />
     <unlockedBy recipe="water" chance="0.05" /-->
-    <durability item="rock" quantity="20" />
     <unlockedBy />
     <canBeRepaired cost="rock" />
 </XobjectType>
@@ -109,7 +108,6 @@
     <material id="rope" quantity="1" />
     <!--unlockedBy recipe="brick" chance="0.04" /-->
     <unlockedBy construction="rockWell" chance="0.2" />
-    <durability item="brick" quantity="12" />
     <canBeRepaired cost="brick" />
 </XobjectType>
 <!--objectType id="stoneWell" name="Deep Well" >

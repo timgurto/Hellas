@@ -18,7 +18,6 @@
     <material id="smoothRock" quantity="9" />
     <unlockedBy recipe="smoothRock" chance="0.2" />
     <unlockedBy gather="rock" chance="0.01" />
-    <durability item="smoothRock" quantity="9" />
     <canBeRepaired cost="smoothRock" />
 </objectType>
 <objectType id="brickRoad" name="Brick Road"
@@ -28,7 +27,6 @@
     <material id="brick" quantity="4" />
     <unlockedBy recipe="brick" chance="0.02" />
     <unlockedBy construction="rockRoad" chance="0.02" />
-    <durability item="brick" quantity="4" />
     <canBeRepaired cost="brick" />
 </objectType>
 <!--objectType id="stoneRoad" name="Stone Road"

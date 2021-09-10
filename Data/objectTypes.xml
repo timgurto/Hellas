@@ -6,7 +6,6 @@
     sounds="stick"
     allowedTerrain="sticks" >
     <yield id="stick" />
-    <durability item="stick" quantity="1" />
 </objectType>
 
 <objectType id="rock" name="Rock"
@@ -15,7 +14,6 @@
     allowedTerrain="rocks"
     sounds="rock">
     <yield id="rock" />
-    <durability item="rock" quantity="1" />
 </objectType>
 
 <objectType id="tree" name="Pine Tree"
@@ -25,7 +23,6 @@
     <yield id="log" initialMean="5.5" initialSD="1" initialMin="1" />
     <yield id="stick" initialMean="2" initialSD="1" />
     <collisionRect x="-5" y="-4" w="10" h="7" />
-    <durability item="log" quantity="6" />
 </objectType>
 <objectType id="dummyTree" name="Pine Tree" xDrawOffset="-21" yDrawOffset="-96" imageFile="tree" allowedTerrain="tutSticks" isDecoration="1">
     <collisionRect x="-5" y="-4" w="10" h="7" />
@@ -36,7 +33,6 @@
     <collisionRect x="-10" y="-3" w="20" h="8" />
     <tag name="cooking" />
     <material id="stick" quantity="5" />
-    <durability item="stick" quantity="5" />
     <transform id="extinguishedFire" time="60000" />
     <particles profile="fire" x="0" y="-6" />
     <particles profile="smoke" x="0" y="-10" />
@@ -45,7 +41,6 @@
         <objectType id="decoFire" isDecoration="1"
             xDrawOffset="-10" yDrawOffset="-7" imageFile="fire" >
             <collisionRect x="-10" y="-3" w="20" h="8" />
-            <durability item="stick" quantity="5" />
             <particles profile="fire" x="0" y="-6" />
             <particles profile="smoke" x="0" y="-10" />
             <unlockedBy />
@@ -56,7 +51,6 @@
     constructionText="requires fuel">
     <collisionRect x="-10" y="-3" w="20" h="8" />
     <material id="stick" quantity="3" />
-    <durability item="stick" quantity="5" />
     <transform id="fire" time="1" skipConstruction="1" />
 </objectType>
 <objectType id="oven" name="Oven"
@@ -72,7 +66,6 @@
     <unlockedBy gather="rock" chance="0.1" />
     <unlockedBy construction="fire" chance="0.3" />
     <unlockedBy construction="extinguishedOven" chance="0.1" />
-    <durability item="rock" quantity="20" />
     <transform id="extinguishedOven" time="90000" />
     <canBeRepaired cost="rock" />
 </objectType>
@@ -83,7 +76,6 @@
     sounds="stone" damageParticles="rocks" >
     <collisionRect x="-13" y="-9" w="24" h="15" />
     <material id="log" />
-    <durability item="rock" quantity="20" />
     <transform id="oven" time="1" skipConstruction="1" />
     <canBeRepaired cost="rock" />
 </objectType>
@@ -101,7 +93,6 @@
     <material id="crudeClay" quantity="12" />
     <material id="charcoal" />
     <unlockedBy recipe="brick" />
-    <durability item="brick" quantity="20" />
     <transform id="extinguishedKiln" time="120000" />
     <particles profile="smoke" x="-1" y="-23" />
     <canBeRepaired cost="brick" />
@@ -113,7 +104,6 @@
     sounds="brick" damageParticles="brick" >
     <collisionRect x="-12" y="-4" w="27" h="10" />
     <material id="charcoal" />
-    <durability item="brick" quantity="20" />
     <transform id="kiln" time="1" skipConstruction="1" />
     <canBeRepaired cost="brick" />
 </objectType>
@@ -125,7 +115,6 @@
     allowedTerrain="fertile" >
     <collisionRect x="-12" y="-2" w="25" h="24" />
     <yield id="crudeClay" initialMean="4" initialSD="1" initialMin="1" />
-    <durability item="crudeClay" quantity="3" />
 </objectType>
 <objectType id="underwaterClay" name="Clay Deposit"
     xDrawOffset="-13" yDrawOffset="-11"
@@ -133,7 +122,6 @@
     isFlat="1" sounds="dirt"
     allowedTerrain="shallowWater" >
     <yield id="crudeClay" initialMean="4" initialSD="1" initialMin="1" />
-    <durability item="crudeClay" quantity="3" />
 </objectType>
 
 <objectType id="smallPot" name="Small Pot"
@@ -142,7 +130,6 @@
     sounds="pottery" damageParticles="ceramicShards" >
     <collisionRect x="-7" y="-4" w="14" h="8" />
     <container slots="1" />
-    <durability item="crudeClay" quantity="2" />
     <canBeRepaired cost="crudeClay" />
 </objectType>
 <objectType id="mediumPot" name="Medium Pot"
@@ -151,13 +138,11 @@
     sounds="pottery" >
     <collisionRect x="-13" y="-4" w="25" h="6" />
     <container slots="4" />
-    <durability item="clay" quantity="3" />
     <canBeRepaired cost="clay" />
 </objectType>
 <!--objectType id="largePot" name="Large Pot"
     deconstructs="largePot" deconstructionTime="1000" >
     <container slots="10" />
-    <durability item="clay" quantity="5" />
     <canBeRepaired cost="clay" />
 </objectType-->
 
@@ -166,7 +151,6 @@
     deconstructs="potBellows" deconstructionTime="1000"
     damageParticles="ceramicShards" sounds="pottery" >
     <collisionRect x="-7" y="-4" w="14" h="9" />
-    <durability item="clay" quantity="3" />
     <canBeRepaired cost="leather" />
     <tag name="bellows" />
 </objectType>
@@ -181,7 +165,6 @@
     <material id="smallPot" quantity="5" />
     <unlockedBy recipe="lumber" chance="0.1" />
     <unlockedBy recipe="smallPot" chance="0.05" />
-    <durability item="lumber" quantity="8" />
     <canBeRepaired cost="lumber" />
 </objectType>
 <objectType
@@ -194,7 +177,6 @@
     <material id="hide" quantity="1" />
     <material id="smallPot" quantity="3" />
     <unlockedBy recipe="smallPot" chance="0.1" />
-    <durability item="hide" quantity="1" />
     <canBeRepaired cost="smallPot" />
 </objectType>
 <objectType
@@ -210,7 +192,6 @@
     <unlockedBy recipe="lumber" chance="0.05" />
     <unlockedBy recipe="mediumPot" chance="0.1" />
     <unlockedBy construction="tradeMat" chance="0.3" />
-    <durability item="lumber" quantity="12" />
     <canBeRepaired cost="lumber" />
 </objectType>
 <objectType
@@ -227,7 +208,6 @@
     sounds="pottery" damageParticles="ceramicShards" >
     <tag name="clayRefinement" />
     <collisionRect x="-15" y="-4" w="31" h="8" />
-    <durability item="crudeClay" quantity="4" />
     <canBeRepaired cost="tinTube" />
 </objectType>
 
@@ -235,7 +215,6 @@
     xDrawOffset="-4" yDrawOffset="-47"
     deconstructs="lumber" deconstructionTime="1000" damageParticles="wood" sounds="wood" >
     <collisionRect x="-4" y="-4" w="8" h="8" />
-    <durability item="lumber" quantity="1" />
 </objectType>
 
 <objectType id="wildFigTree" name="Wild Fig Tree"
@@ -246,7 +225,6 @@
     <collisionRect x="-13" y="-9" w="26" h="18" />
     <yield id="fig" initialMean="1.2" initialSD="0.5" initialMin="1" />
     <yield id="figSeeds" initialMean="0.2" initialSD="0.2" />
-    <durability item="log" quantity="1" />
 </objectType>
 <objectType id="figTree0" name="Fig Tree"
     constructionTime="10000" isUnbuildable="1"
@@ -258,52 +236,43 @@
         <progress image="figTree0a" />
         <progress image="figTree0b" />
     </transform>
-    <durability item="log" quantity="1" />
 </objectType>
 <objectType id="figTree1" name="Fig Tree (overgrown)" xDrawOffset="-19" yDrawOffset="-37"
     canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="woodcutting" gatherTime="3000" damageParticles="wood" > <collisionRect x="-13" y="-9" w="26" h="18" /> <durability item="log" quantity="1" />
     <yield id="stick" initialMean="1" initialSD="1" initialMin="1" />
     <transform id="figTree2" whenEmpty="1" />
-    <durability item="log" quantity="1" />
 </objectType>
 <objectType id="figTree2" name="Fig Tree" imageFile="figTree0b" xDrawOffset="-19" yDrawOffset="-37" damageParticles="wood" sounds="tree" > <collisionRect x="-13" y="-9" w="26" h="18" /> <durability item="log" quantity="1" />
     <transform id="figTree3" time="1500000" >
         <progress image="figTree2a" />
     </transform>
-    <durability item="log" quantity="1" />
 </objectType>
 <objectType id="figTree3" name="Fig Tree (overgrown)" xDrawOffset="-19" yDrawOffset="-37"
     canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="woodcutting" gatherTime="3000" damageParticles="wood" > <collisionRect x="-13" y="-9" w="26" h="18" /> <durability item="log" quantity="1" />
     <yield id="stick" initialMean="1" initialSD="1" initialMin="1" />
     <transform id="figTree4" whenEmpty="1" />
-    <durability item="log" quantity="1" />
 </objectType>
 <objectType id="figTree4" name="Fig Tree" imageFile="figTree2a" xDrawOffset="-19" yDrawOffset="-37" damageParticles="wood" sounds="tree" > <collisionRect x="-13" y="-9" w="26" h="18" /> <durability item="log" quantity="1" />
     <transform id="figTree6" time="1500000" >
         <progress image="figTree5" />
     </transform>
-    <durability item="log" quantity="1" />
 </objectType>
 <objectType id="figTree5" name="Fig Tree" xDrawOffset="-19" yDrawOffset="-37" damageParticles="wood" sounds="tree" > <collisionRect x="-13" y="-9" w="26" h="18" /> <durability item="log" quantity="1" />
     <transform id="figTree6" time="1500000" />
-    <durability item="log" quantity="1" />
 </objectType>
 <objectType id="figTree6" name="Fig Tree (overgrown)" xDrawOffset="-19" yDrawOffset="-37"
     canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="woodcutting" gatherTime="3000" damageParticles="wood" > <collisionRect x="-13" y="-9" w="26" h="18" /> <durability item="log" quantity="1" />
     <yield id="stick" initialMean="1" initialSD="1" initialMin="1" />
     <transform id="figTree7" whenEmpty="1" />
-    <durability item="log" quantity="1" />
 </objectType>
 <objectType id="figTree7" name="Fig Tree" imageFile="figTree5" xDrawOffset="-19" yDrawOffset="-37" damageParticles="wood" sounds="tree" > <collisionRect x="-13" y="-9" w="26" h="18" /> <durability item="log" quantity="1" />
     <transform id="figTree8" time="1500000" />
-    <durability item="log" quantity="1" />
 </objectType>
 <objectType id="figTree8" name="Fig Tree (ripe)" xDrawOffset="-19" yDrawOffset="-37"
     canGather="1" gatherParticles="figLeaves" gatherTime="1000" damageParticles="figLeaves" sounds="figTree" > <collisionRect x="-13" y="-9" w="26" h="18" /> <durability item="log" quantity="1" />
     <yield id="fig" initialMean="2" initialSD="2" initialMin="1" />
     <yield id="figSeeds" initialMean="0.2" initialSD="0.2" />
     <transform id="figTree5" whenEmpty="1" />
-    <durability item="log" quantity="1" />
 </objectType>
 
 <objectType id="wildFlax" name="Wild Flax"
@@ -312,7 +281,6 @@
     xDrawOffset="-5" yDrawOffset="-19" damageParticles="leaves" sounds="weakPlant" >
     <collisionRect x="-5" y="-4" w="11" h="7" />
     <yield id="flaxSeeds" initialMean="1.2" initialSD="0.5" initialMin="1" />
-    <durability item="flax" quantity="5" />
 </objectType>
 <objectType id="flaxCrop0" name="Flax Farm"
     xDrawOffset="-20"
@@ -323,33 +291,32 @@
     <collisionRect x="-19" y="-20" w="38" h="40" />
     <material id="water" />
     <transform id="flaxCrop1" time="1500000" /> <!-- 25m -->
-    <durability item="flax" quantity="5" />
 </objectType>
-<objectType id="flaxCrop1" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" /> <durability item="flax" quantity="5" />
+<objectType id="flaxCrop1" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" />
     <material id="water" />
     <transform id="flaxCrop2" time="1500000" />
 </objectType>
-<objectType id="flaxCrop2" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" /> <durability item="flax" quantity="5" />
+<objectType id="flaxCrop2" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" />
     <material id="water" />
     <transform id="flaxCrop3" time="1500000" />
 </objectType>
-<objectType id="flaxCrop3" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" /> <durability item="flax" quantity="5" />
+<objectType id="flaxCrop3" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" />
     <material id="water" />
     <transform id="flaxCrop4" time="1500000" />
 </objectType>
-<objectType id="flaxCrop4" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" /> <durability item="flax" quantity="5" />
+<objectType id="flaxCrop4" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" />
     <material id="water" />
     <transform id="flaxCrop5" time="1500000" />
 </objectType>
-<objectType id="flaxCrop5" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" /> <durability item="flax" quantity="5" />
+<objectType id="flaxCrop5" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" />
     <material id="water" />
     <transform id="flaxCrop6" time="1500000" />
 </objectType>
-<objectType id="flaxCrop6" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" /> <durability item="flax" quantity="5" />
+<objectType id="flaxCrop6" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" />
     <material id="water" />
     <transform id="flaxCrop7" time="1500000" />
 </objectType>
-<objectType id="flaxCrop7" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" /> <durability item="flax" quantity="5" />
+<objectType id="flaxCrop7" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" />
     <material id="water" />
     <transform id="flaxCrop8" time="1500000" />
 </objectType>
@@ -362,7 +329,6 @@
     <collisionRect x="-19" y="-20" w="38" h="40" />
     <yield id="flax" initialMean="5" initialSD="1" initialMin="1" />
     <yield id="flaxSeeds" initialMean="1.2" initialSD="0.5" />
-    <durability item="flax" quantity="5" />
 </objectType>
 
 <objectType id="loom" name="Loom"
@@ -375,7 +341,6 @@
     <material id="linenThread" quantity="10" />
     <tag name="weaving" />
     <unlockedBy recipe="linenThread" />
-    <durability item="linenThread" quantity="5" />
     <canBeRepaired cost="linenThread" />
 </objectType>
 
@@ -388,7 +353,6 @@
     <material id="rope" quantity="2" />
     <tag name="leatherStretching" />
     <unlockedBy recipe="rope" />
-    <durability item="rope" quantity="2" />
     <canBeRepaired cost="rope" />
 </objectType>
 
@@ -401,8 +365,7 @@
     <material id="tinTube" quantity="3" />
     <material id="fat" />
     <tag name="woodTurning" />
-    <unlockedBy recipe="tinTube" />
-    <durability item="tinTube" quantity="2" chance="0.5" />
+    <unlockedBy recipe="tinTube" chance="0.3" />
     <canBeRepaired cost="tinTube" />
 </objectType>
 
@@ -421,7 +384,6 @@
     <unlockedBy recipe="lumber" chance="0.1" />
     <unlockedBy recipe="stoneAxe" chance="0.02" />
     <unlockedBy recipe="stoneKnife" chance="0.02" />
-    <durability item="tinTube" quantity="2" />
     <canBeRepaired cost="tinTube" />
 </objectType>
 
@@ -433,7 +395,6 @@
     <tag name="anvil1" />
     <unlockedBy recipe="copperBar" chance="0.1" />
     <unlockedBy recipe="copperHammer" />
-    <durability item="copperBar" quantity="20" />
     <canBeRepaired cost="copperBar" tool="hammering" />
 </objectType>
 
@@ -444,7 +405,6 @@
     sounds="pottery" damageParticles="ceramicShards" >
     <collisionRect x="-7" y="-3" w="16" h="7" />
     <tag name="tanning" />
-    <durability item="crudeClay" quantity="2" />
     <canBeRepaired cost="smallPot" />
 </objectType>
 
@@ -455,7 +415,6 @@
     xDrawOffset="-150" yDrawOffset="-150" >
     <collisionRect x="-150" y="-150" w="301" h="301" />
     <material id="brick" quantity="1" />
-    <durability item="brick" quantity="1" />
 </objectType-->
 
 <objectType id="woodenStatue" name="Wooden Statue"
@@ -463,13 +422,11 @@
     xDrawOffset="-12" yDrawOffset="-16"
     damageParticles="wood" sounds="wood" >
     <collisionRect x="-12" y="-3" w="24" h="7" />
-    <durability item="log" quantity="1" />
 </objectType>
 <objectType id="tinStatue" name="Tin Statue"
     xDrawOffset="-18" yDrawOffset="-36"
     constructionTime="0" deconstructs="tinStatue" deconstructionTime="1000" >
     <collisionRect x="-6" y="-2" w="6" h="3f" />
-    <durability item="tinBar" quantity="5" />
     <canBeRepaired cost="tinBar" tool="hammering" />
 </objectType>
 
@@ -479,7 +436,6 @@
     <collisionRect x="-13" y="-7" w="28" h="13" />
     <material id="woodenStatue" />
     <material id="rock" quantity="8" />
-    <durability item="rock" quantity="8" />
     <action label="Worship" target="setRespawnPoint" tooltip="Worshipping Hermes entreats him to return you to this location when you die." cost="entrails" />
     <unlockedBy recipe="woodenStatue" />
     <canBeRepaired cost="rock" />
@@ -494,7 +450,6 @@
     <material id="tinStatue" />
     <material id="brick" quantity="8" />
     <unlockedBy recipe="tinStatue" />
-    <durability item="brick" quantity="8" />
     <canBeRepaired cost="brick" />
 </objectType>
 
