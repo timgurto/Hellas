@@ -1,29 +1,28 @@
 #include "TestClient.h"
+#include "TestFixtures.h"
 #include "TestServer.h"
 #include "testing.h"
 
-TEST_CASE("Damaged objects can't be deconstructed", "[damage-on-use]") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Damaged objects can't be deconstructed", "[damage-on-use]") {
   GIVEN("a 'brick' object with 1 out of 2 health") {
-    auto data = R"(
+    useData(R"(
       <item id="brick" durability="2" />
       <objectType id="brick" deconstructs="brick">
         <durability item="brick" quantity="1"/>
       </objectType>
-    )";
-    TestServer s = TestServer::WithDataString(data);
-    TestClient c = TestClient::WithDataString(data);
+    )");
 
-    s.addObject("brick", {10, 15});
-    Object &brick = s.getFirstObject();
+    auto &brick = server->addObject("brick", {10, 15});
     brick.reduceHealth(1);
     REQUIRE(brick.health() == 1);
 
     WHEN("the user tries to deconstruct the brick") {
-      c.sendMessage(CL_PICK_UP_OBJECT_AS_ITEM, makeArgs(brick.serial()));
+      client->sendMessage(CL_PICK_UP_OBJECT_AS_ITEM, makeArgs(brick.serial()));
 
       THEN("the object still exists") {
         REPEAT_FOR_MS(100);
-        CHECK_FALSE(s.entities().empty());
+        CHECK_FALSE(server->entities().empty());
       }
     }
   }
@@ -70,5 +69,7 @@ TEST_CASE("Objects that disappear after a time") {
         THEN("There are no objects") { CHECK(s.entities().size() == 0); }
       }
     }
+  }
+}
   }
 }
