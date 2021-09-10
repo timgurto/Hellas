@@ -685,9 +685,10 @@ TEST_CASE("Target self if target is invalid", "[spells]") {
   }
 }
 
-TEST_CASE("Objects can't be healed", "[spells][damage-on-use]") {
-  GIVEN("an object, and a heal-all spell") {
-    auto data = R"(
+TEST_CASE_METHOD(ServerAndClientWithData, "Objects can't be healed",
+                 "[spells][damage-on-use]") {
+  GIVEN("a damaged object, and a heal-all spell") {
+    useData(R"(
       <spell id="megaHeal" range="100" >
         <targets friendly="1" self="1" enemy="1" />
         <function name="heal" i1="99999" />
@@ -696,27 +697,20 @@ TEST_CASE("Objects can't be healed", "[spells][damage-on-use]") {
       <objectType id="machine">
         <durability item="sprocket" quantity="10"/>
       </objectType>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto &machine = s.addObject("machine", {10, 15});
+    )");
+    auto &machine = server->addObject("machine", {10, 15});
+    machine.reduceHealth(1);
 
     AND_GIVEN("a user knows the spell") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      user.getClass().teachSpell("megaHeal");
+      user->getClass().teachSpell("megaHeal");
 
-      AND_GIVEN("the object is damaged") {
-        machine.reduceHealth(1);
+      WHEN("the user tries to heal the object") {
+        client->sendMessage(CL_SELECT_ENTITY, makeArgs(machine.serial()));
+        client->sendMessage(CL_CAST_SPELL, "megaHeal");
 
-        WHEN("the user tries to heal the object") {
-          c.sendMessage(CL_SELECT_ENTITY, makeArgs(machine.serial()));
-          c.sendMessage(CL_CAST_SPELL, "megaHeal");
-
-          THEN("it is not at full health") {
-            REPEAT_FOR_MS(100);
-            CHECK(machine.isMissingHealth());
-          }
+        THEN("it is not at full health") {
+          REPEAT_FOR_MS(100);
+          CHECK(machine.isMissingHealth());
         }
       }
     }

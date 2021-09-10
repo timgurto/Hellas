@@ -1014,28 +1014,24 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Item repair that requires a tool",
   }
 }
 
-TEST_CASE("Object repair", "[damage-on-use][repair]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Object repair",
+                 "[damage-on-use][repair]") {
   GIVEN("a repairable object") {
-    auto data = R"(
       <item id="brick" durability="10" />
       <objectType id="wall">
+    useData(R"(
         <canBeRepaired />
         <durability item="brick" quantity="10" />
       </objectType>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
+    )");
 
-    s.addObject("wall", {10, 15});
-    auto &wall = s.getFirstObject();
+    auto &wall = server->addObject("wall", {10, 15});
 
     WHEN("it is missing 1 health") {
       wall.reduceHealth(1);
 
       AND_WHEN("a user tries to repair it") {
-        c.sendMessage(CL_REPAIR_OBJECT, makeArgs(wall.serial()));
+        client->sendMessage(CL_REPAIR_OBJECT, makeArgs(wall.serial()));
 
         THEN("it is back at full health") {
           WAIT_UNTIL(!wall.isMissingHealth());
@@ -1045,27 +1041,23 @@ TEST_CASE("Object repair", "[damage-on-use][repair]") {
   }
 }
 
-TEST_CASE("Non-repairable objects", "[damage-on-use][repair]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Non-repairable objects",
+                 "[damage-on-use][repair]") {
   GIVEN("a non-repairable object") {
-    auto data = R"(
       <item id="glass" durability="10" />
       <objectType id="window">
         <durability item="glass" quantity="10" />
       </objectType>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
+    useData(R"(
+    )");
 
-    s.addObject("window", {10, 15}, user.name());
-    auto &window = s.getFirstObject();
+    auto &window = server->addObject("window", {10, 15}, user->name());
 
     WHEN("it is missing 1 health") {
       window.reduceHealth(1);
 
       AND_WHEN("a user tries to repair it") {
-        c.sendMessage(CL_REPAIR_OBJECT, makeArgs(window.serial()));
+        client->sendMessage(CL_REPAIR_OBJECT, makeArgs(window.serial()));
 
         THEN("it is still not at full health") {
           REPEAT_FOR_MS(100);
@@ -1076,45 +1068,36 @@ TEST_CASE("Non-repairable objects", "[damage-on-use][repair]") {
   }
 }
 
-TEST_CASE("Repairing a nonexistent object", "[repair]") {
-  GIVEN("a user") {
-    auto s = TestServer{};
-    auto c = TestClient{};
-    s.waitForUsers(1);
+TEST_CASE_METHOD(ServerAndClient, "Repairing a nonexistent object",
+                 "[repair]") {
+  WHEN("a user tries to repair a nonexistent entity") {
+    client.sendMessage(CL_REPAIR_OBJECT, "50");
 
-    WHEN("he tries to repair a nonexistent entity") {
-      c.sendMessage(CL_REPAIR_OBJECT, "50");
-
-      THEN("the server doesn't crash") {
-        REPEAT_FOR_MS(100);
-        CHECK(true);
-      }
+    THEN("the server doesn't crash") {
+      REPEAT_FOR_MS(100);
+      CHECK(true);
     }
   }
 }
 
-TEST_CASE("Object repair at a cost", "[damage-on-use][repair]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Object repair at a cost",
+                 "[damage-on-use][repair]") {
   GIVEN("an object that can be repaired for a cost") {
-    auto data = R"(
       <item id="snow" durability="10" />
       <objectType id="snowman">
         <durability item="snow" quantity="10" />
+    useData(R"(
         <canBeRepaired cost="snow" />
       </objectType>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
+    )");
 
-    s.addObject("snowman", {10, 15}, user.name());
-    auto &snowman = s.getFirstObject();
+    auto &snowman = server->addObject("snowman", {10, 15}, user->name());
 
     WHEN("it is missing 1 health") {
       snowman.reduceHealth(1);
 
       AND_WHEN("a user tries to repair it") {
-        c.sendMessage(CL_REPAIR_OBJECT, makeArgs(snowman.serial()));
+        client->sendMessage(CL_REPAIR_OBJECT, makeArgs(snowman.serial()));
 
         THEN("it is still not at full health") {
           REPEAT_FOR_MS(100);
@@ -1123,16 +1106,16 @@ TEST_CASE("Object repair at a cost", "[damage-on-use][repair]") {
       }
 
       AND_WHEN("a user has the cost item") {
-        user.giveItem(&s.getFirstItem());
+        user->giveItem(&server->getFirstItem());
 
         AND_WHEN("he tries to repair it") {
-          c.sendMessage(CL_REPAIR_OBJECT, makeArgs(snowman.serial()));
+          client->sendMessage(CL_REPAIR_OBJECT, makeArgs(snowman.serial()));
 
           THEN("it is  at full health") {
             WAIT_UNTIL(!snowman.isMissingHealth());
 
             AND_THEN("he no longer has the item") {
-              WAIT_UNTIL(!user.inventory(0).hasItem());
+              WAIT_UNTIL(!user->inventory(0).hasItem());
             }
           }
         }
@@ -1141,9 +1124,10 @@ TEST_CASE("Object repair at a cost", "[damage-on-use][repair]") {
   }
 }
 
-TEST_CASE("Object repair requiring a tool", "[damage-on-use][repair][tool]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Object repair requiring a tool",
+                 "[damage-on-use][repair][tool]") {
   GIVEN("an object that can be repaired using a tool") {
-    auto data = R"(
+    useData(R"(
       <item id="wrench">
         <tag name="wrench" />
       </item>
@@ -1152,20 +1136,15 @@ TEST_CASE("Object repair requiring a tool", "[damage-on-use][repair][tool]") {
         <durability item="metal" quantity="10" />
         <canBeRepaired tool="wrench" />
       </objectType>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
+    )");
 
-    s.addObject("machine", {10, 15}, user.name());
-    auto &machine = s.getFirstObject();
+    auto &machine = server->addObject("machine", {10, 15}, user->name());
 
     WHEN("it is missing 1 health") {
       machine.reduceHealth(1);
 
       AND_WHEN("a user tries to repair it") {
-        c.sendMessage(CL_REPAIR_OBJECT, makeArgs(machine.serial()));
+        client->sendMessage(CL_REPAIR_OBJECT, makeArgs(machine.serial()));
 
         THEN("it is still not at full health") {
           REPEAT_FOR_MS(100);
@@ -1174,10 +1153,10 @@ TEST_CASE("Object repair requiring a tool", "[damage-on-use][repair][tool]") {
       }
 
       AND_WHEN("a user has the tool") {
-        user.giveItem(&s.findItem("wrench"));
+        user->giveItem(&server->findItem("wrench"));
 
         AND_WHEN("he tries to repair it") {
-          c.sendMessage(CL_REPAIR_OBJECT, makeArgs(machine.serial()));
+          client->sendMessage(CL_REPAIR_OBJECT, makeArgs(machine.serial()));
 
           THEN("it is  at full health") {
             WAIT_UNTIL(!machine.isMissingHealth());
