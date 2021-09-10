@@ -693,10 +693,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Objects can't be healed",
         <targets friendly="1" self="1" enemy="1" />
         <function name="heal" i1="99999" />
       </spell>
-      <item id="sprocket" durability="10" />
-      <objectType id="machine">
-        <durability item="sprocket" quantity="10"/>
-      </objectType>
+      <objectType id="machine" maxHealth="100"/>
     )");
     auto &machine = server->addObject("machine", {10, 15});
     machine.reduceHealth(1);

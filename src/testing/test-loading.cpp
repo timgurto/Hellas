@@ -375,12 +375,9 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Permanent objects", "[loading]") {
     }
   }
 
-  GIVEN("a permanent object with item-based health") {
+  GIVEN("a permanent object with non-default health") {
     useData(R"(
-      <item id="brick" durability="10" />
-      <objectType id="wall" >
-        <durability item="brick" quantity="10" />
-      </objectType>
+      <objectType id="wall" maxHealth="100" />
       <permanentObject id="wall" x="5" y="5" />
     )");
 

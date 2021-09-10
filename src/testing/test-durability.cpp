@@ -1017,11 +1017,9 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Item repair that requires a tool",
 TEST_CASE_METHOD(ServerAndClientWithData, "Object repair",
                  "[damage-on-use][repair]") {
   GIVEN("a repairable object") {
-      <item id="brick" durability="10" />
-      <objectType id="wall">
     useData(R"(
+      <objectType id="wall" maxHealth="100">
         <canBeRepaired />
-        <durability item="brick" quantity="10" />
       </objectType>
     )");
 
@@ -1044,11 +1042,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Object repair",
 TEST_CASE_METHOD(ServerAndClientWithData, "Non-repairable objects",
                  "[damage-on-use][repair]") {
   GIVEN("a non-repairable object") {
-      <item id="glass" durability="10" />
-      <objectType id="window">
-        <durability item="glass" quantity="10" />
-      </objectType>
     useData(R"(
+      <objectType id="window" maxHealth="100" />
     )");
 
     auto &window = server->addObject("window", {10, 15}, user->name());
@@ -1083,10 +1078,9 @@ TEST_CASE_METHOD(ServerAndClient, "Repairing a nonexistent object",
 TEST_CASE_METHOD(ServerAndClientWithData, "Object repair at a cost",
                  "[damage-on-use][repair]") {
   GIVEN("an object that can be repaired for a cost") {
-      <item id="snow" durability="10" />
-      <objectType id="snowman">
-        <durability item="snow" quantity="10" />
     useData(R"(
+      <item id="snow" />
+      <objectType id="snowman" maxHealth="100">
         <canBeRepaired cost="snow" />
       </objectType>
     )");
@@ -1131,9 +1125,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Object repair requiring a tool",
       <item id="wrench">
         <tag name="wrench" />
       </item>
-      <item id="metal" durability="10" />
-      <objectType id="machine">
-        <durability item="metal" quantity="10" />
+      <objectType id="machine" maxHealth="100" >
         <canBeRepaired tool="wrench" />
       </objectType>
     )");

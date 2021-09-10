@@ -7,10 +7,8 @@ TEST_CASE_METHOD(ServerAndClientWithData,
                  "Damaged objects can't be deconstructed", "[damage-on-use]") {
   GIVEN("a 'brick' object with 1 out of 2 health") {
     useData(R"(
-      <item id="brick" durability="2" />
-      <objectType id="brick" deconstructs="brick">
-        <durability item="brick" quantity="1"/>
-      </objectType>
+      <item id="brick" />
+      <objectType id="brick" deconstructs="brick" maxHealth="2" />
     )");
 
     auto &brick = server->addObject("brick", {10, 15});
@@ -95,7 +93,5 @@ TEST_CASE("Objects that disappear after a time") {
         THEN("There are no objects") { CHECK(s.entities().size() == 0); }
       }
     }
-  }
-}
   }
 }
