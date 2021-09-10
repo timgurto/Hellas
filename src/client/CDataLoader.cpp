@@ -494,6 +494,9 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
     auto name = id;
     xr.findAttr(elem, "name", name);
     cot->name(name);
+
+    if (xr.findAttr(elem, "maxHealth", n)) cot->maxHealth(n);
+
     ScreenRect drawRect(0, 0, cot->width(), cot->height());
     bool xSet = xr.findAttr(elem, "xDrawOffset", drawRect.x),
          ySet = xr.findAttr(elem, "yDrawOffset", drawRect.y);
