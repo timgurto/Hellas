@@ -142,4 +142,18 @@ TEST_CASE("Object-health categories", "[stats]") {
       }
     }
   }
+
+  SECTION("Default health for nonexistent categories") {
+    GIVEN("a house type with a fake health category") {
+      auto server = TestServer::WithDataString(R"(
+        <objectType id="house" healthCategory="building" />
+      )");
+
+      WHEN("a house is spawned") {
+        const auto &house = server.addObject("house", {10, 10});
+
+        THEN("it has 1 health") { CHECK(house.health() == 1); }
+      }
+    }
+  }
 }
