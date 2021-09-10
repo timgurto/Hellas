@@ -95,3 +95,18 @@ TEST_CASE("Objects that disappear after a time") {
     }
   }
 }
+
+TEST_CASE("Object-health categories", "[stats]") {
+  GIVEN("a house type whose health category specifies 100 health") {
+    auto server = TestServer::WithDataString(R"(
+      <objectHealthCategory id="building" health="100" />
+      <objectType id="house" healthCategory="building" />
+    )");
+
+    WHEN("a house is spawned") {
+      const auto &house = server.addObject("house", {10, 10});
+
+      THEN("it has 100 health") { CHECK(house.health() == 100); }
+    }
+  }
+}

@@ -268,6 +268,7 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
 
     // Health
     if (xr.findAttr(elem, "maxHealth", n)) ot->setMaxHealth(n);
+    if (xr.findAttr(elem, "healthCategory", n)) ot->setMaxHealth(100);
 
     if (xr.findAttr(elem, "destroyIfUsedAsTool", n) && n == 1)
       ot->destroyIfUsedAsTool(true);
