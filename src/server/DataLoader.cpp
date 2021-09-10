@@ -266,6 +266,8 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
     if (xr.findAttr(elem, "disappearAfter", disappearTime))
       ot->disappearsAfter(disappearTime);
 
+    // Health
+    if (xr.findAttr(elem, "maxHealth", n)) ot->setMaxHealth(n);
 
     if (xr.findAttr(elem, "destroyIfUsedAsTool", n) && n == 1)
       ot->destroyIfUsedAsTool(true);

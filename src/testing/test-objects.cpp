@@ -28,6 +28,21 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   }
 }
 
+TEST_CASE("Specifying object health", "[loading][stats]") {
+  GIVEN("saplings have 2 max health") {
+    const auto data = R"(
+      <objectType id="sapling" maxHealth="2" />
+    )";
+    auto server = TestServer::WithDataString(data);
+
+    WHEN("a sapling is created") {
+      const auto &sapling = server.addObject("sapling", {10, 10});
+
+      THEN("it has 2 health") { CHECK(sapling.health() == 2); }
+    }
+  }
+}
+
 TEST_CASE_METHOD(ServerAndClientWithData, "Objects have 1 health by default",
                  "[loading][stats]") {
   GIVEN("an object with no explicit health") {

@@ -97,6 +97,7 @@ class ObjectType : public EntityType, public QuestNodeType {
   const std::string &exclusiveToQuest() const { return _exclusiveToQuest; }
   void markAsGate() { _isGate = true; }
   bool isGate() const { return _isGate; }
+  void setMaxHealth(Hitpoints h) { _baseStats.maxHealth = h; }
 
   virtual char classTag() const override { return 'o'; }
 
