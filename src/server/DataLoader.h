@@ -19,6 +19,7 @@ class DataLoader {
   void loadTerrainLists(XmlReader &reader);
   void loadCompositeStats(XmlReader &reader);
   void loadLootTables(XmlReader &reader);
+  void loadObjectHealthCategories(XmlReader &reader);
   void loadObjectTypes(XmlReader &reader);
   void loadQuests(XmlReader &reader);
   void loadNPCTemplates(XmlReader &reader);

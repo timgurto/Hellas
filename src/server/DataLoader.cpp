@@ -67,6 +67,7 @@ void DataLoader::load(bool keepOldData) {
 
     loadFromAllFiles(&DataLoader::loadCompositeStats);
     loadFromAllFiles(&DataLoader::loadLootTables);
+    loadFromAllFiles(&DataLoader::loadObjectHealthCategories);
     loadFromAllFiles(&DataLoader::loadObjectTypes);
     loadFromAllFiles(&DataLoader::loadNPCTemplates);
     loadFromAllFiles(&DataLoader::loadNPCTypes);
@@ -91,6 +92,7 @@ void DataLoader::load(bool keepOldData) {
     loadMap(data);
     loadCompositeStats(data);
     loadLootTables(data);
+    loadObjectHealthCategories(data);
     loadObjectTypes(data);
     loadNPCTemplates(data);
     loadNPCTypes(data);
@@ -268,7 +270,8 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
 
     // Health
     if (xr.findAttr(elem, "maxHealth", n)) ot->setMaxHealth(n);
-    if (xr.findAttr(elem, "healthCategory", n)) ot->setMaxHealth(100);
+    if (xr.findAttr(elem, "healthCategory", n))
+      ot->setMaxHealth(_server._healthCategoryHealth);
 
     if (xr.findAttr(elem, "destroyIfUsedAsTool", n) && n == 1)
       ot->destroyIfUsedAsTool(true);
@@ -471,6 +474,12 @@ void DataLoader::loadLootTables(XmlReader &xr) {
 
     _server._standaloneLootTables[id] = lt;
   }
+}
+
+void DataLoader::loadObjectHealthCategories(XmlReader &xr) {
+  auto elem = xr.findChild("objectHealthCategory");
+  if (!elem) return;
+  xr.findAttr(elem, "maxHealth", _server._healthCategoryHealth);
 }
 
 void DataLoader::loadNPCTemplates(XmlReader &xr) {
