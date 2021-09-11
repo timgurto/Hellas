@@ -96,28 +96,29 @@ TEST_CASE("Objects that disappear after a time") {
   }
 }
 
-TEST_CASE("Object-health categories", "[stats]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Object-health categories",
+                 "[stats]") {
   GIVEN("a house type whose health category specifies 100 health") {
-    auto server = TestServer::WithDataString(R"(
+    useData(R"(
       <objectHealthCategory id="building" maxHealth="100" />
       <objectType id="house" healthCategory="building" />
     )");
 
     WHEN("a house is spawned") {
-      const auto &house = server.addObject("house", {10, 10});
+      const auto &house = server->addObject("house", {10, 10});
 
       THEN("it has 100 health") { CHECK(house.health() == 100); }
     }
   }
 
   GIVEN("a flower type whose health category specifies 2 health") {
-    auto server = TestServer::WithDataString(R"(
+    useData(R"(
       <objectHealthCategory id="plant" maxHealth="2" />
       <objectType id="flower" healthCategory="plant" />
     )");
 
     WHEN("a flower is spawned") {
-      const auto &flower = server.addObject("flower", {10, 10});
+      const auto &flower = server->addObject("flower", {10, 10});
 
       THEN("it has 2 health") { CHECK(flower.health() == 2); }
     }
@@ -125,7 +126,7 @@ TEST_CASE("Object-health categories", "[stats]") {
 
   SECTION("Two categories are defined") {
     GIVEN("straw houses and brick houses have different health categories") {
-      auto server = TestServer::WithDataString(R"(
+      useData(R"(
         <objectHealthCategory id="straw" maxHealth="1" />
         <objectHealthCategory id="brick" maxHealth="10" />
         <objectType id="strawHouse" healthCategory="straw" />
@@ -133,8 +134,8 @@ TEST_CASE("Object-health categories", "[stats]") {
       )");
 
       WHEN("both are spawned") {
-        const auto &strawHouse = server.addObject("strawHouse", {10, 10});
-        const auto &brickHouse = server.addObject("brickHouse", {10, 20});
+        const auto &strawHouse = server->addObject("strawHouse", {10, 10});
+        const auto &brickHouse = server->addObject("brickHouse", {10, 20});
 
         THEN("they have different health") {
           CHECK(strawHouse.health() != brickHouse.health());
@@ -145,12 +146,12 @@ TEST_CASE("Object-health categories", "[stats]") {
 
   SECTION("Default health for nonexistent categories") {
     GIVEN("a house type with a fake health category") {
-      auto server = TestServer::WithDataString(R"(
+      useData(R"(
         <objectType id="house" healthCategory="building" />
       )");
 
       WHEN("a house is spawned") {
-        const auto &house = server.addObject("house", {10, 10});
+        const auto &house = server->addObject("house", {10, 10});
 
         THEN("it has 1 health") { CHECK(house.health() == 1); }
       }
