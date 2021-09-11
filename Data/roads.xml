@@ -11,7 +11,7 @@
     <nonStacking category="road" />
 </buff>
 
-<objectType id="rockRoad" name="Primitive Road"
+<objectType id="rockRoad" name="Primitive Road" healthCategory="primitive"
     xDrawOffset="-16" yDrawOffset="-16" collides="0" isFlat="1">
     <collisionRect x="-16" y="-16" w="32" h="32" />
     <grantsBuff id="roadMovement1" radius="0" />
@@ -20,7 +20,7 @@
     <unlockedBy gather="rock" chance="0.01" />
     <canBeRepaired cost="smoothRock" />
 </objectType>
-<objectType id="brickRoad" name="Brick Road"
+<objectType id="brickRoad" name="Brick Road" healthCategory="brick"
     xDrawOffset="-16" yDrawOffset="-16" collides="0" isFlat="1">
     <collisionRect x="-16" y="-16" w="32" h="32" />
     <grantsBuff id="roadMovement2" radius="0" />
@@ -29,7 +29,7 @@
     <unlockedBy construction="rockRoad" chance="0.02" />
     <canBeRepaired cost="brick" />
 </objectType>
-<!--objectType id="stoneRoad" name="Stone Road"
+<!--objectType id="stoneRoad" name="Stone Road" healthCategory=""
     xDrawOffset="-24" yDrawOffset="-24" collides="0" isFlat="1">
     <collisionRect x="-16" y="-16" w="32" h="32" />
     <grantsBuff id="roadMovement3" radius="0" />

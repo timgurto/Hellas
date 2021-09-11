@@ -45,7 +45,7 @@
     destroyIfUsedAsTool="1" >
     <tag name="copperDeposit" />
 </objectType>
-<objectType id="copperMine" name="Copper Mine"
+<objectType id="copperMine" name="Copper Mine" healthCategory="brick"
     xDrawOffset="-60" yDrawOffset="-74"
     canGather="1" gatherTime="8000" gatherReq="mining"
     allowedTerrain="rocksAndMountains"
@@ -67,7 +67,7 @@
     destroyIfUsedAsTool="1" >
     <tag name="silverDeposit" />
 </objectType>
-<objectType id="silverMine" name="Silver Mine"
+<objectType id="silverMine" name="Silver Mine" healthCategory="brick"
     xDrawOffset="-60" yDrawOffset="-74"
     canGather="1" gatherTime="8000" gatherReq="mining"
     allowedTerrain="rocksAndMountains"

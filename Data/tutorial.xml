@@ -116,16 +116,14 @@
     <item id="tutEntrails2" name="Sacrificial Entrails" iconFile="entrails" exclusiveToQuest="tutOfferings" bind="pickup" constructs="fattyOffering" />
     <item id="tutHide2"     name="Sacrificial Hide"     iconFile="hide"     exclusiveToQuest="tutOfferings" bind="pickup" />
     <item id="tutFat2"      name="Sacrificial Fat"      iconFile="fat"      exclusiveToQuest="tutOfferings" bind="pickup" />
-    <objectType
-        id="leanOffering" name="Scrawny Sacrifice"
+    <objectType id="leanOffering" name="Scrawny Sacrifice" healthCategory="primitive"
         allowedTerrain="tutOfferings" constructionTime="6000"  isUnbuildable="true" disappearAfter="300000"
         xDrawOffset="-9" yDrawOffset="-9" >
         <collisionRect x="-9" y="-4" w="18" h="9" />
         <material id="tutHide2" />
     </objectType>
     <object id="tutBrazier" x="3886" y="58420" />
-    <objectType
-        id="fattyOffering" name="Fatty Sacrifice"
+    <objectType id="fattyOffering" name="Fatty Sacrifice" healthCategory="primitive"
         allowedTerrain="tutOfferings" constructionTime="6000" isUnbuildable="true" disappearAfter="300000"
         xDrawOffset="-9" yDrawOffset="-9" >
         <collisionRect x="-9" y="-4" w="18" h="9" />
@@ -155,7 +153,7 @@
     <reward type="construction" id="tutFire" />
     <reward type="item" id="tutStick" qty="8" />
 </quest>
-    <objectType id="tutFire" name="Cooking Fire"
+    <objectType id="tutFire" name="Cooking Fire" healthCategory="primitiveWeak"
         xDrawOffset="-10" yDrawOffset="-7" imageFile="fire" >
         <collisionRect x="-10" y="-3" w="20" h="8" />
         <tag name="cooking" />
@@ -165,7 +163,7 @@
         <particles profile="smoke" x="0" y="-10" />
         <unlockedBy />
     </objectType>
-    <objectType id="tutExtinguishedFire" name="Extinguished Cooking Fire"
+    <objectType id="tutExtinguishedFire" name="Extinguished Cooking Fire" healthCategory="primitiveWeak"
         xDrawOffset="-10" yDrawOffset="-7" imageFile="extinguishedFire"
         isUnbuildable="1" disappearAfter="300000"
         constructionText="requires fuel">

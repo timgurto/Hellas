@@ -28,7 +28,7 @@
     <collisionRect x="-5" y="-4" w="10" h="7" />
 </objectType>
 
-<objectType id="fire" name="Cooking Fire"
+<objectType id="fire" name="Cooking Fire" healthCategory="primitiveWeak"
     xDrawOffset="-10" yDrawOffset="-7" >
     <collisionRect x="-10" y="-3" w="20" h="8" />
     <tag name="cooking" />
@@ -45,7 +45,7 @@
             <particles profile="smoke" x="0" y="-10" />
             <unlockedBy />
         </objectType>
-<objectType id="extinguishedFire" name="Extinguished Cooking Fire"
+<objectType id="extinguishedFire" name="Extinguished Cooking Fire"  healthCategory="primitiveWeak"
     xDrawOffset="-10" yDrawOffset="-7"
     isUnbuildable="1" disappearAfter="3600000"
     constructionText="requires fuel">
@@ -53,7 +53,7 @@
     <material id="stick" quantity="3" />
     <transform id="fire" time="1" skipConstruction="1" />
 </objectType>
-<objectType id="oven" name="Oven"
+<objectType id="oven" name="Oven" healthCategory="primitive"
     xDrawOffset="-14" yDrawOffset="-17"
     sounds="stone" damageParticles="rocks">
     <collisionRect x="-13" y="-9" w="24" h="15" />
@@ -69,7 +69,7 @@
     <transform id="extinguishedOven" time="90000" />
     <canBeRepaired cost="rock" />
 </objectType>
-<objectType id="extinguishedOven" name="Extinguished Oven"
+<objectType id="extinguishedOven" name="Extinguished Oven" healthCategory="primitive"
     xDrawOffset="-14" yDrawOffset="-17"
     isUnbuildable="1"
     constructionText="requires fuel"
@@ -79,7 +79,7 @@
     <transform id="oven" time="1" skipConstruction="1" />
     <canBeRepaired cost="rock" />
 </objectType>
-<objectType id="kiln" name="Kiln"
+<objectType id="kiln" name="Kiln" healthCategory="brick"
     xDrawOffset="-13" yDrawOffset="-26"
     sounds="brick" damageParticles="brick" >
     <collisionRect x="-12" y="-4" w="27" h="10" />
@@ -97,7 +97,7 @@
     <particles profile="smoke" x="-1" y="-23" />
     <canBeRepaired cost="brick" />
 </objectType>
-<objectType id="extinguishedKiln" name="Extinguished Kiln"
+<objectType id="extinguishedKiln" name="Extinguished Kiln" healthCategory="brick"
     xDrawOffset="-13" yDrawOffset="-26"
     isUnbuildable="1"
     constructionText="requires fuel"
@@ -124,7 +124,7 @@
     <yield id="crudeClay" initialMean="4" initialSD="1" initialMin="1" />
 </objectType>
 
-<objectType id="smallPot" name="Small Pot"
+<objectType id="smallPot" name="Small Pot" healthCategory="log"
     xDrawOffset="-8" yDrawOffset="-16"
     deconstructs="smallPot" deconstructionTime="1000"
     sounds="pottery" damageParticles="ceramicShards" >
@@ -132,7 +132,7 @@
     <container slots="1" />
     <canBeRepaired cost="crudeClay" />
 </objectType>
-<objectType id="mediumPot" name="Medium Pot"
+<objectType id="mediumPot" name="Medium Pot" healthCategory="lumber"
     xDrawOffset="-19" yDrawOffset="-27"
     deconstructs="mediumPot" deconstructionTime="1000"
     sounds="pottery" >
@@ -140,13 +140,13 @@
     <container slots="4" />
     <canBeRepaired cost="clay" />
 </objectType>
-<!--objectType id="largePot" name="Large Pot"
+<!--objectType id="largePot" name="Large Pot" healthCategory=""
     deconstructs="largePot" deconstructionTime="1000" >
     <container slots="10" />
     <canBeRepaired cost="clay" />
 </objectType-->
 
-<objectType id="potBellows" name="Pot Bellows"
+<objectType id="potBellows" name="Pot Bellows" healthCategory="log"
     xDrawOffset="-10" yDrawOffset="-16"
     deconstructs="potBellows" deconstructionTime="1000"
     damageParticles="ceramicShards" sounds="pottery" >
@@ -155,7 +155,7 @@
     <tag name="bellows" />
 </objectType>
 
-<objectType id="handCart" name="Hand Cart"
+<objectType id="handCart" name="Hand Cart" healthCategory="lumberVehicle"
     xDrawOffset="-13" yDrawOffset="-16"
     isVehicle="1" damageParticles="wood" sounds="wood" >
     <driver x="18" y="12" />
@@ -168,7 +168,7 @@
     <canBeRepaired cost="lumber" />
 </objectType>
 <objectType
-    id="tradeMat" name="Trade Mat"
+    id="tradeMat" name="Trade Mat" healthCategory="log"
     xDrawOffset="-14"
     yDrawOffset="-12"
     merchantSlots="1" >
@@ -180,7 +180,7 @@
     <canBeRepaired cost="smallPot" />
 </objectType>
 <objectType
-    id="tradeStall" name="Trade Stall"
+    id="tradeStall" name="Trade Stall" healthCategory="lumber"
     xDrawOffset="-20"
     yDrawOffset="-35"
     merchantSlots="2" >
@@ -195,14 +195,14 @@
     <canBeRepaired cost="lumber" />
 </objectType>
 <objectType
-    id="merchantBrick" name="Small Shop"
+    id="merchantBrick" name="Small Shop" healthCategory="brick"
     merchantSlots="2" >
     <container slots="10" />
     <material id="mediumPot" quantity="3" />
     <unlockedBy />
 </objectType>
 
-<objectType id="elutriator" name="Elutriator"
+<objectType id="elutriator" name="Elutriator" healthCategory="lumber"
     xDrawOffset="-15" yDrawOffset="-21"
     deconstructs="elutriator" deconstructionTime="1000"
     sounds="pottery" damageParticles="ceramicShards" >
@@ -211,7 +211,7 @@
     <canBeRepaired cost="tinTube" />
 </objectType>
 
-<objectType id="post" name="Post"
+<objectType id="post" name="Post" healthCategory="lumberWeak"
     xDrawOffset="-4" yDrawOffset="-47"
     deconstructs="lumber" deconstructionTime="1000" damageParticles="wood" sounds="wood" >
     <collisionRect x="-4" y="-4" w="8" h="8" />
@@ -226,7 +226,7 @@
     <yield id="fig" initialMean="1.2" initialSD="0.5" initialMin="1" />
     <yield id="figSeeds" initialMean="0.2" initialSD="0.2" />
 </objectType>
-<objectType id="figTree0" name="Fig Tree"
+<objectType id="figTree0" name="Fig Tree" healthCategory="logWeak"
     constructionTime="10000" isUnbuildable="1"
     xDrawOffset="-19" yDrawOffset="-37"
     allowedTerrain="fertile"
@@ -237,38 +237,38 @@
         <progress image="figTree0b" />
     </transform>
 </objectType>
-<objectType id="figTree1" name="Fig Tree (overgrown)" xDrawOffset="-19" yDrawOffset="-37"
+<objectType id="figTree1" name="Fig Tree (overgrown)" healthCategory="logWeak" xDrawOffset="-19" yDrawOffset="-37"
     canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="woodcutting" gatherTime="3000" damageParticles="wood" > <collisionRect x="-13" y="-9" w="26" h="18" /> <durability item="log" quantity="1" />
     <yield id="stick" initialMean="1" initialSD="1" initialMin="1" />
     <transform id="figTree2" whenEmpty="1" />
 </objectType>
-<objectType id="figTree2" name="Fig Tree" imageFile="figTree0b" xDrawOffset="-19" yDrawOffset="-37" damageParticles="wood" sounds="tree" > <collisionRect x="-13" y="-9" w="26" h="18" /> <durability item="log" quantity="1" />
+<objectType id="figTree2" name="Fig Tree" healthCategory="logWeak" imageFile="figTree0b" xDrawOffset="-19" yDrawOffset="-37" damageParticles="wood" sounds="tree" > <collisionRect x="-13" y="-9" w="26" h="18" /> <durability item="log" quantity="1" />
     <transform id="figTree3" time="1500000" >
         <progress image="figTree2a" />
     </transform>
 </objectType>
-<objectType id="figTree3" name="Fig Tree (overgrown)" xDrawOffset="-19" yDrawOffset="-37"
+<objectType id="figTree3" name="Fig Tree (overgrown)" healthCategory="logWeak" xDrawOffset="-19" yDrawOffset="-37"
     canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="woodcutting" gatherTime="3000" damageParticles="wood" > <collisionRect x="-13" y="-9" w="26" h="18" /> <durability item="log" quantity="1" />
     <yield id="stick" initialMean="1" initialSD="1" initialMin="1" />
     <transform id="figTree4" whenEmpty="1" />
 </objectType>
-<objectType id="figTree4" name="Fig Tree" imageFile="figTree2a" xDrawOffset="-19" yDrawOffset="-37" damageParticles="wood" sounds="tree" > <collisionRect x="-13" y="-9" w="26" h="18" /> <durability item="log" quantity="1" />
+<objectType id="figTree4" name="Fig Tree" healthCategory="logWeak" imageFile="figTree2a" xDrawOffset="-19" yDrawOffset="-37" damageParticles="wood" sounds="tree" > <collisionRect x="-13" y="-9" w="26" h="18" /> <durability item="log" quantity="1" />
     <transform id="figTree6" time="1500000" >
         <progress image="figTree5" />
     </transform>
 </objectType>
-<objectType id="figTree5" name="Fig Tree" xDrawOffset="-19" yDrawOffset="-37" damageParticles="wood" sounds="tree" > <collisionRect x="-13" y="-9" w="26" h="18" /> <durability item="log" quantity="1" />
+<objectType id="figTree5" name="Fig Tree" healthCategory="logWeak" xDrawOffset="-19" yDrawOffset="-37" damageParticles="wood" sounds="tree" > <collisionRect x="-13" y="-9" w="26" h="18" /> <durability item="log" quantity="1" />
     <transform id="figTree6" time="1500000" />
 </objectType>
-<objectType id="figTree6" name="Fig Tree (overgrown)" xDrawOffset="-19" yDrawOffset="-37"
+<objectType id="figTree6" name="Fig Tree (overgrown)" healthCategory="logWeak" xDrawOffset="-19" yDrawOffset="-37"
     canGather="1"  sounds="tree" gatherParticles="wood" gatherReq="woodcutting" gatherTime="3000" damageParticles="wood" > <collisionRect x="-13" y="-9" w="26" h="18" /> <durability item="log" quantity="1" />
     <yield id="stick" initialMean="1" initialSD="1" initialMin="1" />
     <transform id="figTree7" whenEmpty="1" />
 </objectType>
-<objectType id="figTree7" name="Fig Tree" imageFile="figTree5" xDrawOffset="-19" yDrawOffset="-37" damageParticles="wood" sounds="tree" > <collisionRect x="-13" y="-9" w="26" h="18" /> <durability item="log" quantity="1" />
+<objectType id="figTree7" name="Fig Tree" healthCategory="logWeak" imageFile="figTree5" xDrawOffset="-19" yDrawOffset="-37" damageParticles="wood" sounds="tree" > <collisionRect x="-13" y="-9" w="26" h="18" /> <durability item="log" quantity="1" />
     <transform id="figTree8" time="1500000" />
 </objectType>
-<objectType id="figTree8" name="Fig Tree (ripe)" xDrawOffset="-19" yDrawOffset="-37"
+<objectType id="figTree8" name="Fig Tree (ripe)" healthCategory="logWeak" xDrawOffset="-19" yDrawOffset="-37"
     canGather="1" gatherParticles="figLeaves" gatherTime="1000" damageParticles="figLeaves" sounds="figTree" > <collisionRect x="-13" y="-9" w="26" h="18" /> <durability item="log" quantity="1" />
     <yield id="fig" initialMean="2" initialSD="2" initialMin="1" />
     <yield id="figSeeds" initialMean="0.2" initialSD="0.2" />
@@ -282,7 +282,7 @@
     <collisionRect x="-5" y="-4" w="11" h="7" />
     <yield id="flaxSeeds" initialMean="1.2" initialSD="0.5" initialMin="1" />
 </objectType>
-<objectType id="flaxCrop0" name="Flax Farm"
+<objectType id="flaxCrop0" name="Flax Farm" healthCategory="logWeak"
     xDrawOffset="-20"
     yDrawOffset="-34"
     isFlat="1" damageParticles="leaves" sounds="weakPlant"
@@ -292,35 +292,35 @@
     <material id="water" />
     <transform id="flaxCrop1" time="1500000" /> <!-- 25m -->
 </objectType>
-<objectType id="flaxCrop1" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" />
+<objectType id="flaxCrop1" name="Flax Farm" healthCategory="logWeak" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" />
     <material id="water" />
     <transform id="flaxCrop2" time="1500000" />
 </objectType>
-<objectType id="flaxCrop2" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" />
+<objectType id="flaxCrop2" name="Flax Farm" healthCategory="logWeak" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" />
     <material id="water" />
     <transform id="flaxCrop3" time="1500000" />
 </objectType>
-<objectType id="flaxCrop3" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" />
+<objectType id="flaxCrop3" name="Flax Farm" healthCategory="logWeak" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" />
     <material id="water" />
     <transform id="flaxCrop4" time="1500000" />
 </objectType>
-<objectType id="flaxCrop4" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" />
+<objectType id="flaxCrop4" name="Flax Farm" healthCategory="logWeak" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" />
     <material id="water" />
     <transform id="flaxCrop5" time="1500000" />
 </objectType>
-<objectType id="flaxCrop5" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" />
+<objectType id="flaxCrop5" name="Flax Farm" healthCategory="logWeak" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" />
     <material id="water" />
     <transform id="flaxCrop6" time="1500000" />
 </objectType>
-<objectType id="flaxCrop6" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" />
+<objectType id="flaxCrop6" name="Flax Farm" healthCategory="logWeak" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" />
     <material id="water" />
     <transform id="flaxCrop7" time="1500000" />
 </objectType>
-<objectType id="flaxCrop7" name="Flax Farm" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" />
+<objectType id="flaxCrop7" name="Flax Farm" healthCategory="logWeak" xDrawOffset="-20" yDrawOffset="-34" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" > <collisionRect x="-19" y="-20" w="38" h="40" />
     <material id="water" />
     <transform id="flaxCrop8" time="1500000" />
 </objectType>
-<objectType id="flaxCrop8" name="Flax Farm (ripe)"
+<objectType id="flaxCrop8" name="Flax Farm (ripe)" healthCategory="logWeak"
     xDrawOffset="-20"
     yDrawOffset="-34"
     isUnbuildable="1"
@@ -331,7 +331,7 @@
     <yield id="flaxSeeds" initialMean="1.2" initialSD="0.5" />
 </objectType>
 
-<objectType id="loom" name="Loom"
+<objectType id="loom" name="Loom" healthCategory="log"
     xDrawOffset="-17"
     yDrawOffset="-24"
     constructionTime="0"
@@ -344,7 +344,7 @@
     <canBeRepaired cost="linenThread" />
 </objectType>
 
-<objectType id="stretchingFrame" name="Stretching Frame"
+<objectType id="stretchingFrame" name="Stretching Frame" healthCategory="log"
     constructionTime="0" 
     xDrawOffset="-10" yDrawOffset="-9"
     damageParticles="wood" sounds="wood">
@@ -356,7 +356,7 @@
     <canBeRepaired cost="rope" />
 </objectType>
 
-<objectType id="lathe" name="Lathe"
+<objectType id="lathe" name="Lathe" healthCategory="lumber"
     xDrawOffset="-15" yDrawOffset="-30"
     constructionTime="0" >
     <collisionRect x="-14" y="-11" w="29" h="18" />
@@ -369,7 +369,7 @@
     <canBeRepaired cost="tinTube" />
 </objectType>
 
-<objectType id="grindstone" name="Grindstone"
+<objectType id="grindstone" name="Grindstone" healthCategory="lumber"
     constructionTime="0" 
     xDrawOffset="-11" yDrawOffset="-21" >
     <collisionRect x="-11" y="-5" w="22" h="11" />
@@ -387,7 +387,7 @@
     <canBeRepaired cost="tinTube" />
 </objectType>
 
-<objectType id="copperAnvil" name="Copper Anvil"
+<objectType id="copperAnvil" name="Copper Anvil" healthCategory="brick"
     constructionTime="0" constructionReq="hammering"
     xDrawOffset="-11" yDrawOffset="-18" >
     <collisionRect x="-11" y="-5" w="24" h="10" />
@@ -398,7 +398,7 @@
     <canBeRepaired cost="copperBar" tool="hammering" />
 </objectType>
 
-<objectType id="tannin" name="Pot of Tannin"
+<objectType id="tannin" name="Pot of Tannin" healthCategory="log"
     constructionTime="1000"
     deconstructs="tannin"
     xDrawOffset="-7" yDrawOffset="-14"
@@ -409,7 +409,7 @@
 </objectType>
 
 <!-- isFlat: Given the sloping shape, all other objects should be drawn above it. -->
-<!--objectType id="pyramid" name="Pyramid"
+<!--objectType id="pyramid" name="Pyramid" healthCategory=""
     isFlat = "1"
     isUnique = "1"
     xDrawOffset="-150" yDrawOffset="-150" >
@@ -417,20 +417,20 @@
     <material id="brick" quantity="1" />
 </objectType-->
 
-<objectType id="woodenStatue" name="Wooden Statue"
+<objectType id="woodenStatue" name="Wooden Statue" healthCategory="log"
     constructionTime="0" deconstructs="woodenStatue" deconstructionTime="1000"
     xDrawOffset="-12" yDrawOffset="-16"
     damageParticles="wood" sounds="wood" >
     <collisionRect x="-12" y="-3" w="24" h="7" />
 </objectType>
-<objectType id="tinStatue" name="Tin Statue"
+<objectType id="tinStatue" name="Tin Statue" healthCategory="log"
     xDrawOffset="-18" yDrawOffset="-36"
     constructionTime="0" deconstructs="tinStatue" deconstructionTime="1000" >
     <collisionRect x="-6" y="-2" w="6" h="3f" />
     <canBeRepaired cost="tinBar" tool="hammering" />
 </objectType>
 
-<objectType id="respawnAltar" name="Altar to Hermes"
+<objectType id="respawnAltar" name="Altar to Hermes" healthCategory="log"
     xDrawOffset="-13" yDrawOffset="-57"
     constructionTime="0" damageParticles="wood" sounds="wood" playerUnique="altar" >
     <collisionRect x="-13" y="-7" w="28" h="13" />
@@ -440,7 +440,7 @@
     <unlockedBy recipe="woodenStatue" />
     <canBeRepaired cost="rock" />
 </objectType>
-<objectType id="cityAltar" name="Altar to Athena"
+<objectType id="cityAltar" name="Altar to Athena" healthCategory="brick"
     xDrawOffset="-18" yDrawOffset="-56"
     constructionTime="0" playerUnique="altar"
     sounds="brick" damageParticles="brick" >

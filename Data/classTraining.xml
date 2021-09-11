@@ -1,6 +1,6 @@
 <root>
 
-<objectType id="athleteBuilding" name="Gymnasium"
+<objectType id="athleteBuilding" name="Gymnasium" healthCategory="log"
     xDrawOffset="-49" yDrawOffset="-63" customShadowWidth="40" isFlat="1"
     constructionTime="1000" >
     <collisionRect x="-49" y="-63" w="96" h="96" />
@@ -14,7 +14,7 @@
     <canBeRepaired cost="smallPot" />
 </objectType>
 
-<objectType id="scholarBuilding" name="School"
+<objectType id="scholarBuilding" name="School" healthCategory="log"
     xDrawOffset="-45" yDrawOffset="-47"
     constructionTime="1000" >
     <collisionRect x="-45" y="-47" w="90" h="94" />
@@ -29,7 +29,7 @@
     <unlockedBy />
 </objectType>
 
-<objectType id="zealotBuilding" name="Oracle"
+<objectType id="zealotBuilding" name="Oracle" healthCategory="log"
     xDrawOffset="-30" yDrawOffset="-30" customShadowWidth="0" isFlat="1"
     constructionTime="1000" >
     <collisionRect x="-30" y="-30" w="60" h="60" />

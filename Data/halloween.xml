@@ -34,7 +34,7 @@ Mark graveyard on map: not hardcoded
         imageFile="ghost" xDrawOffset="-10" yDrawOffset="-39"
         level="10" maxHealth="53" attack="7" isCivilian="1" />
     <item id="halloweenGrave" name="Decorative Grave Monument" iconFile="tabletRock" constructs="halloweenGrave" />
-    <objectType id="halloweenGrave" name="Grave Monument" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
+    <objectType id="halloweenGrave" name="Grave Monument" healthCategory="log" xDrawOffset="-7" yDrawOffset="-21" imageFile="gravestone"
         deconstructs="halloweenGrave" deconstructionTime="1000" >
         <collisionRect x="-7" y="-3" w="16" h="7" />
     </objectType>
@@ -122,18 +122,18 @@ Mark graveyard on map: not hardcoded
     <unlockedBy />
 </recipe>
 
-<objectType id="pumpkin" name="Pumpkin" xDrawOffset="-11" yDrawOffset="-14"
+<objectType id="pumpkin" name="Pumpkin" xDrawOffset="-11" yDrawOffset="-14" healthCategory="log"
     deconstructs="pumpkin" deconstructionTime="1000">
     <collisionRect x="-10" y="-3" w="20" h="7" />
 </objectType>
-<objectType id="jackOLantern" name="Carved Pumpkin" xDrawOffset="-11" yDrawOffset="-14"
+<objectType id="jackOLantern" name="Carved Pumpkin" xDrawOffset="-11" yDrawOffset="-14" healthCategory="log"
     constructionText="requires fuel" >
     <material id="charcoal" />
     <transform id="jackOLanternLit" time="1" skipConstruction="1" />
     <collisionRect x="-10" y="-3" w="20" h="7" />
     <unlockedBy />
 </objectType>
-<objectType id="jackOLanternLit" name="Lit Pumpkin" xDrawOffset="-11" yDrawOffset="-14"
+<objectType id="jackOLanternLit" name="Lit Pumpkin" xDrawOffset="-11" yDrawOffset="-14" healthCategory="log"
     isUnbuildable="1" >
     <collisionRect x="-10" y="-3" w="20" h="7" />
     <transform id="jackOLantern" time="3600000" /> <!-- 1hr -->
@@ -168,7 +168,7 @@ Mark graveyard on map: not hardcoded
 
 
 <item id="pumpkinSeed" name="Grave Seed" stackSize="10" sounds="seeds" constructs="pumpkinPatch0" />
-<objectType id="pumpkinPatch0" name="Mysterious Farm"
+<objectType id="pumpkinPatch0" name="Mysterious Farm" healthCategory="logWeak"
     xDrawOffset="-31"
     yDrawOffset="-49"
     damageParticles="leaves" sounds="weakPlant"
@@ -178,22 +178,22 @@ Mark graveyard on map: not hardcoded
     <material id="water" />
     <transform id="pumpkinPatch1" time="1500000" /> <!-- 25m -->
 </objectType>
-<objectType id="pumpkinPatch1" name="Eerie Farm" xDrawOffset="-31" yDrawOffset="-49" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" drawParticlesWhenUnderConstruction="1" > <collisionRect x="-29" y="-26" w="56" h="62" /> <durability item="flax" quantity="5" />
+<objectType id="pumpkinPatch1" name="Eerie Farm" healthCategory="logWeak" xDrawOffset="-31" yDrawOffset="-49" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" drawParticlesWhenUnderConstruction="1" > <collisionRect x="-29" y="-26" w="56" h="62" /> <durability item="flax" quantity="5" />
     <material id="water" />
     <transform id="pumpkinPatch2" time="1500000" />
     <particles profile="fog"/>
 </objectType>
-<objectType id="pumpkinPatch2" name="Sinister Farm" xDrawOffset="-31" yDrawOffset="-49" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" drawParticlesWhenUnderConstruction="1" > <collisionRect x="-29" y="-26" w="56" h="62" /> <durability item="flax" quantity="5" />
+<objectType id="pumpkinPatch2" name="Sinister Farm" healthCategory="logWeak" xDrawOffset="-31" yDrawOffset="-49" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" drawParticlesWhenUnderConstruction="1" > <collisionRect x="-29" y="-26" w="56" h="62" /> <durability item="flax" quantity="5" />
     <material id="water" />
     <transform id="pumpkinPatch3" time="1500000" />
     <particles profile="fog"/>
 </objectType>
-<objectType id="pumpkinPatch3" name="Unearthly Farm" xDrawOffset="-31" yDrawOffset="-49" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" drawParticlesWhenUnderConstruction="1" > <collisionRect x="-29" y="-26" w="56" h="62" /> <durability item="flax" quantity="5" />
+<objectType id="pumpkinPatch3" name="Unearthly Farm" healthCategory="logWeak" xDrawOffset="-31" yDrawOffset="-49" isUnbuildable="1" constructionText="needs watering" damageParticles="leaves" sounds="weakPlant" drawParticlesWhenUnderConstruction="1" > <collisionRect x="-29" y="-26" w="56" h="62" /> <durability item="flax" quantity="5" />
     <material id="water" />
     <transform id="pumpkinPatch4" time="1500000" />
     <particles profile="fog"/>
 </objectType>
-<objectType id="pumpkinPatch4" name="Pumpkin Patch (ripe)"
+<objectType id="pumpkinPatch4" name="Pumpkin Patch (ripe)" healthCategory="logWeak"
     xDrawOffset="-31"
     yDrawOffset="-49"
     isUnbuildable="1"

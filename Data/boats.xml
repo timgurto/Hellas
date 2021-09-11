@@ -1,7 +1,6 @@
 <root>
 
-<objectType
-    id="raft" name="Raft"
+<objectType id="raft" name="Raft" healthCategory="logVehicle"
     xDrawOffset="-16" yDrawOffset="-11"
     allowedTerrain="shallowWater"
     isVehicle="1" vehicleSpeed="0.65" >
@@ -11,8 +10,7 @@
     <unlockedBy gather="log" chance="0.1" />
 </objectType>
 
-<objectType
-    id="canoe" name="Canoe"
+<objectType id="canoe" name="Canoe" healthCategory="logVehicle"
     xDrawOffset="-32" yDrawOffset="-18"
     allowedTerrain="shallowWater"
     isVehicle="1" vehicleSpeed="1.25" >
@@ -24,8 +22,7 @@
     <unlockedBy construction="raft" chance="0.1" />
 </objectType>
 
-<objectType
-    id="basicShip" name="Light Ship"
+<objectType id="basicShip" name="Light Ship" healthCategory="lumberVehicle"
     allowedTerrain="normalWater"
     isVehicle="1" vehicleSpeed="1.75"
     xDrawOffset="-65" yDrawOffset="-148" >
