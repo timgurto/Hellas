@@ -104,6 +104,7 @@ class TestClient {
   Avatar &getFirstOtherUser();
   ClientNPC &getFirstNPC();
   ClientObject &getFirstObject();
+  ClientObject &waitForFirstObject();
   const ClientObjectType &getFirstObjectType();
   const CQuest &getFirstQuest();
   CDroppedItem &getFirstDroppedItem();

@@ -107,7 +107,13 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Object-health categories",
     WHEN("a house is spawned") {
       const auto &house = server->addObject("house", {10, 10});
 
-      THEN("it has 100 health") { CHECK(house.health() == 100); }
+      THEN("it has 100 health") {
+        CHECK(house.health() == 100);
+
+        AND_THEN("it has 100 health on the client") {
+          CHECK(client->waitForFirstObject().health() == 100);
+        }
+      }
     }
   }
 
@@ -120,7 +126,13 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Object-health categories",
     WHEN("a flower is spawned") {
       const auto &flower = server->addObject("flower", {10, 10});
 
-      THEN("it has 2 health") { CHECK(flower.health() == 2); }
+      THEN("it has 2 health") {
+        CHECK(flower.health() == 2);
+
+        AND_THEN("it has 2 health on the client") {
+          CHECK(client->waitForFirstObject().health() == 2);
+        }
+      }
     }
   }
 
@@ -139,6 +151,13 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Object-health categories",
 
         THEN("they have different health") {
           CHECK(strawHouse.health() != brickHouse.health());
+
+          AND_THEN("they have different health on the client") {
+            WAIT_UNTIL(client->objects().size() == 2);
+            const auto &cStrawHouse = *client->objects()[strawHouse.serial()];
+            const auto &cBrickHouse = *client->objects()[brickHouse.serial()];
+            CHECK(cStrawHouse.health() != cBrickHouse.health());
+          }
         }
       }
     }
@@ -153,7 +172,13 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Object-health categories",
       WHEN("a house is spawned") {
         const auto &house = server->addObject("house", {10, 10});
 
-        THEN("it has 1 health") { CHECK(house.health() == 1); }
+        THEN("it has 1 health") {
+          CHECK(house.health() == 1);
+
+          AND_THEN("it has 1 health on the client") {
+            CHECK(client->waitForFirstObject().health() == 1);
+          }
+        }
       }
     }
   }

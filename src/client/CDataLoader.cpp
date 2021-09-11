@@ -64,6 +64,7 @@ void CDataLoader::load(bool keepOldData) {
       _client.gameData.tagNames.readFromXML(xr);
     }
 
+    loadFromAllFiles(&CDataLoader::loadObjectHealthCategories);
     loadFromAllFiles(&CDataLoader::loadObjectTypes);
     loadFromAllFiles(&CDataLoader::loadSuffixSets);
     loadFromAllFiles(&CDataLoader::loadItemClasses);
@@ -95,6 +96,7 @@ void CDataLoader::load(bool keepOldData) {
     loadSpells(reader);
     loadBuffs(reader);
     _client.gameData.tagNames.readFromXML(reader);
+    loadObjectHealthCategories(reader);
     loadObjectTypes(reader);
     loadSuffixSets(reader);
     loadItemClasses(reader);
@@ -457,6 +459,18 @@ void CDataLoader::loadBuffs(XmlReader &xr) {
   }
 }
 
+void CDataLoader::loadObjectHealthCategories(XmlReader &xr) {
+  for (auto elem : xr.getChildren("objectHealthCategory")) {
+    auto id = ""s;
+    if (!xr.findAttr(elem, "id", id)) continue;
+
+    auto maxHealth = Hitpoints{};
+    if (!xr.findAttr(elem, "maxHealth", maxHealth)) continue;
+
+    _client.gameData.objectHealthCategories[id] = maxHealth;
+  }
+}
+
 void CDataLoader::loadObjectTypes(XmlReader &xr) {
   for (auto elem : xr.getChildren("objectType")) {
     std::string id;
@@ -495,8 +509,17 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
     xr.findAttr(elem, "name", name);
     cot->name(name);
 
+    auto s = ""s;
+
+    // Health
     auto maxHealth = Hitpoints{1};
     xr.findAttr(elem, "maxHealth", maxHealth);
+    if (xr.findAttr(elem, "healthCategory", s)) {
+      auto it = _client.gameData.objectHealthCategories.find(s);
+      const auto categoryExists =
+          it != _client.gameData.objectHealthCategories.end();
+      if (categoryExists) maxHealth = it->second;
+    }
     cot->maxHealth(maxHealth);
 
     ScreenRect drawRect(0, 0, cot->width(), cot->height());
@@ -504,7 +527,6 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
          ySet = xr.findAttr(elem, "yDrawOffset", drawRect.y);
     if (xSet || ySet) cot->drawRect(drawRect);
     if (xr.getChildren("yield", elem).size() > 0) cot->canGather(true);
-    auto s = ""s;
     if (xr.findAttr(elem, "deconstructs", s)) cot->canDeconstruct(true);
 
     auto container = xr.findChild("container", elem);

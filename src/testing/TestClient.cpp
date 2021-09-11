@@ -204,6 +204,11 @@ ClientObject &TestClient::getFirstObject() {
   return *it->second;
 }
 
+ClientObject &TestClient::waitForFirstObject() {
+  WAIT_UNTIL(objects().size() == 1);
+  return getFirstObject();
+}
+
 const ClientObjectType &TestClient::getFirstObjectType() {
   auto types = _client->gameData.objectTypes;
   REQUIRE(!types.empty());

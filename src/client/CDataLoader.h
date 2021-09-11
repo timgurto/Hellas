@@ -24,6 +24,7 @@ class CDataLoader {
   void loadProjectiles(XmlReader &reader);
   void loadSpells(XmlReader &reader);
   void loadBuffs(XmlReader &reader);
+  void loadObjectHealthCategories(XmlReader &reader);
   void loadObjectTypes(XmlReader &reader);
   void loadPermanentObjects(XmlReader &reader);
   void loadSuffixSets(XmlReader &reader);

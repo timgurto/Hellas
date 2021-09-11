@@ -32,6 +32,7 @@ struct CGameData {
   CQuests quests;
   Unlocks unlocks;
   CSuffixSets suffixSets;
+  std::map<std::string, Hitpoints> objectHealthCategories;
 
   using ObjectTypes =
       std::set<const ClientObjectType *, ClientObjectType::ptrCompare>;
