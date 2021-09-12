@@ -198,7 +198,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Object-health categories",
   SECTION("Levels") {
     GIVEN("a house type with a category specifying level 2") {
       useData(R"(
-        <objectHealthCategory id="building" maxHealth="100" />
+        <objectHealthCategory id="building" level="2" />
         <objectType id="house" healthCategory="building" />
       )");
 
@@ -206,6 +206,19 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Object-health categories",
         const auto &house = server->addObject("house", {10, 10});
 
         THEN("it is level 2") { CHECK(house.level() == 2); }
+      }
+    }
+
+    GIVEN("a house type with a category specifying level 3") {
+      useData(R"(
+        <objectHealthCategory id="building" level="3" />
+        <objectType id="house" healthCategory="building" />
+      )");
+
+      WHEN("a house is spawned") {
+        const auto &house = server->addObject("house", {10, 10});
+
+        THEN("it is level 3") { CHECK(house.level() == 3); }
       }
     }
   }

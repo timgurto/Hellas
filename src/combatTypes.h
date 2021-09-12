@@ -76,3 +76,8 @@ class Hundredths : public AliasOfShort {
   virtual void onChanged() override;
   std::string _memoisedDisplay;
 };
+
+struct ObjectHealthCategory {
+  Hitpoints maxHealth;
+  Level level;
+};

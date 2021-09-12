@@ -274,8 +274,8 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
       auto it = _server._objectHealthCategories.find(s);
       const auto categoryExists = it != _server._objectHealthCategories.end();
       if (categoryExists) {
-        ot->setMaxHealth(it->second);
-        ot->setLevel(2);
+        ot->setMaxHealth(it->second.maxHealth);
+        ot->setLevel(it->second.level);
       }
     }
 
@@ -487,10 +487,13 @@ void DataLoader::loadObjectHealthCategories(XmlReader &xr) {
     auto id = ""s;
     if (!xr.findAttr(elem, "id", id)) continue;
 
-    auto maxHealth = Hitpoints{};
-    if (!xr.findAttr(elem, "maxHealth", maxHealth)) continue;
+    auto maxHealth = Hitpoints{1};
+    xr.findAttr(elem, "maxHealth", maxHealth);
 
-    _server._objectHealthCategories[id] = maxHealth;
+    auto level = Level{1};
+    xr.findAttr(elem, "level", level);
+
+    _server._objectHealthCategories[id] = {maxHealth, level};
   }
 }
 
