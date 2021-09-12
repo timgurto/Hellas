@@ -37,6 +37,8 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
     return *dynamic_cast<const ObjectType *>(type());
   }
 
+  virtual Level level() const override { return 2; }
+
   void accountForOwnershipByUser(const User &owner) const override;
 
   const std::vector<MerchantSlot> &merchantSlots() const {

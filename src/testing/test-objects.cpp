@@ -182,4 +182,19 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Object-health categories",
       }
     }
   }
+
+  SECTION("Levels") {
+    GIVEN("a house type with a category specifying level 2") {
+      useData(R"(
+        <objectHealthCategory id="building" maxHealth="100" />
+        <objectType id="house" healthCategory="building" />
+      )");
+
+      WHEN("a house is spawned") {
+        const auto &house = server->addObject("house", {10, 10});
+
+        THEN("it is level 2") { CHECK(house.level() == 2); }
+      }
+    }
+  }
 }
