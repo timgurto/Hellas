@@ -54,6 +54,7 @@ class ClientObjectType : public SpriteType,
   mutable Optional<Tooltip> _constructionTooltip;
   ImageWithHighlight _constructionImage;  // Shown when under construction.
   bool _drawParticlesWhenUnderConstruction{false};
+  Level _level{1};
 
   std::string _windowText;
 
@@ -88,6 +89,8 @@ class ClientObjectType : public SpriteType,
   void setCorpseImage(const std::string &filename) {
     _corpseImage = {filename};
   }
+  void setLevel(Level l) { _level = l; }
+  Level level() const { return _level; }
   bool canGather(const CQuests &quests) const;
   void canGather(bool b) { _canGather = b; }
   const std::string &gatherReq() const { return _gatherReq; }

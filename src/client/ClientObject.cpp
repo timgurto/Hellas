@@ -56,6 +56,7 @@ ClientObject::ClientObject(Serial serialArg, const ClientObjectType *type,
       _lootable(false),
       _lootContainer(nullptr) {
   _transformTimer = type->transformTime();
+  level(type->level());
 
   const size_t containerSlots = objectType()->containerSlots(),
                merchantSlots = objectType()->merchantSlots();

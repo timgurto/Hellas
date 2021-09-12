@@ -80,7 +80,13 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Objects are level 1 by default",
     )");
     const auto &serverObject = server->addObject("A", {10, 15});
 
-    THEN("it is level 1") { CHECK(serverObject.level() == 1); }
+    THEN("it is level 1") {
+      CHECK(serverObject.level() == 1);
+
+      AND_THEN("it's level 1 on the client") {
+        CHECK(client->waitForFirstObject().level() == 1);
+      }
+    }
   }
 }
 
@@ -205,7 +211,13 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Object-health categories",
       WHEN("a house is spawned") {
         const auto &house = server->addObject("house", {10, 10});
 
-        THEN("it is level 2") { CHECK(house.level() == 2); }
+        THEN("it is level 2") {
+          CHECK(house.level() == 2);
+
+          AND_THEN("it's level 2 on the client") {
+            CHECK(client->waitForFirstObject().level() == 2);
+          }
+        }
       }
     }
 
@@ -218,7 +230,13 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Object-health categories",
       WHEN("a house is spawned") {
         const auto &house = server->addObject("house", {10, 10});
 
-        THEN("it is level 3") { CHECK(house.level() == 3); }
+        THEN("it is level 3") {
+          CHECK(house.level() == 3);
+
+          AND_THEN("it's level 2 on the client") {
+            CHECK(client->waitForFirstObject().level() == 3);
+          }
+        }
       }
     }
   }

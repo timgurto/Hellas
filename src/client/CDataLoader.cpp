@@ -464,10 +464,13 @@ void CDataLoader::loadObjectHealthCategories(XmlReader &xr) {
     auto id = ""s;
     if (!xr.findAttr(elem, "id", id)) continue;
 
-    auto maxHealth = Hitpoints{};
-    if (!xr.findAttr(elem, "maxHealth", maxHealth)) continue;
+    auto maxHealth = Hitpoints{1};
+    xr.findAttr(elem, "maxHealth", maxHealth);
 
-    _client.gameData.objectHealthCategories[id] = maxHealth;
+    auto level = Level{1};
+    xr.findAttr(elem, "level", level);
+
+    _client.gameData.objectHealthCategories[id] = {maxHealth, level};
   }
 }
 
@@ -511,14 +514,17 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
 
     auto s = ""s;
 
-    // Health
+    // Health/level
     auto maxHealth = Hitpoints{1};
     xr.findAttr(elem, "maxHealth", maxHealth);
     if (xr.findAttr(elem, "healthCategory", s)) {
       auto it = _client.gameData.objectHealthCategories.find(s);
       const auto categoryExists =
           it != _client.gameData.objectHealthCategories.end();
-      if (categoryExists) maxHealth = it->second;
+      if (categoryExists) {
+        maxHealth = it->second.maxHealth;
+        cot->setLevel(it->second.level);
+      }
     }
     cot->maxHealth(maxHealth);
 
