@@ -15,6 +15,7 @@ class BuffType;
 // Describes a class of Objects, the "instances" of which share common
 // properties
 class ObjectType : public EntityType, public QuestNodeType {
+  Level _level{1};
   RepairInfo _repairInfo;
 
   mutable size_t _numInWorld;
@@ -63,6 +64,8 @@ class ObjectType : public EntityType, public QuestNodeType {
 
   virtual void initialise() const;
 
+  Level level() const { return _level; }
+  void setLevel(Level l) { _level = l; }
   const std::string &constructionReq() const { return _constructionReq; }
   void constructionReq(const std::string &req) { _constructionReq = req; }
   size_t merchantSlots() const { return _merchantSlots; }

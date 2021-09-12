@@ -268,12 +268,15 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
     if (xr.findAttr(elem, "disappearAfter", disappearTime))
       ot->disappearsAfter(disappearTime);
 
-    // Health
+    // Health/level
     if (xr.findAttr(elem, "maxHealth", n)) ot->setMaxHealth(n);
     if (xr.findAttr(elem, "healthCategory", s)) {
       auto it = _server._objectHealthCategories.find(s);
       const auto categoryExists = it != _server._objectHealthCategories.end();
-      if (categoryExists) ot->setMaxHealth(it->second);
+      if (categoryExists) {
+        ot->setMaxHealth(it->second);
+        ot->setLevel(2);
+      }
     }
 
     if (xr.findAttr(elem, "destroyIfUsedAsTool", n) && n == 1)

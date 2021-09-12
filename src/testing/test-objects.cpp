@@ -72,6 +72,18 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Objects have 1 health by default",
   }
 }
 
+TEST_CASE_METHOD(ServerAndClientWithData, "Objects are level 1 by default",
+                 "[loading]") {
+  GIVEN("an object") {
+    useData(R"(
+      <objectType id="A" />
+    )");
+    const auto &serverObject = server->addObject("A", {10, 15});
+
+    THEN("it is level 1") { CHECK(serverObject.level() == 1); }
+  }
+}
+
 TEST_CASE("Objects that disappear after a time") {
   GIVEN("an object that disappears after 1s") {
     auto data = R"(
