@@ -106,7 +106,7 @@ TEST_CASE("Objects that disappear after a time") {
       THEN("There is an object") { CHECK(s.entities().size() == 1); }
 
       AND_WHEN("Another 0.2s elapses") {
-        REPEAT_FOR_MS(1100);
+        REPEAT_FOR_MS(200);
 
         THEN("There are no objects") { CHECK(s.entities().size() == 0); }
       }
