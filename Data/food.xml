@@ -9,12 +9,12 @@
     <function name="buff" s1="food" />
 </spell>
 
-<item id="fig"  name="Fig"  stackSize="10"  castsSpellOnUse="food" >
+<item id="fig"  name="Fig"  stackSize="20"  castsSpellOnUse="food" >
     <tag name="food" />
 </item>
 
 <item id="meat" name="Meat" stackSize="10" sounds="meat" />
-<item id="cookedMeat" name="Cooked Meat" stackSize="10" sounds="meat" castsSpellOnUse="food" >
+<item id="cookedMeat" name="Cooked Meat" stackSize="20" sounds="meat" castsSpellOnUse="food" >
     <tag name="food" />
 </item>
 <recipe id="cookedMeat"
@@ -41,7 +41,7 @@
     <unlockedBy gather="fish" chance="0.05" />
 </recipe>
 <item id="fish" name="Fish" stackSize="10" sounds="meat" />
-<item id="cookedFish" name="Cooked Fish" stackSize="10" sounds="meat" castsSpellOnUse="food" >
+<item id="cookedFish" name="Cooked Fish" stackSize="20" sounds="meat" castsSpellOnUse="food" >
     <tag name="food" />
 </item>
 <recipe id="cookedFish"
