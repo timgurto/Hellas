@@ -21,7 +21,7 @@ void Loot::add(const ServerItem *item, size_t qty) {
         item, ServerItem::Instance::ReportingInfo::InObjectContainer(),
         quantityInThisSlot};
 
-    if (item->canBeDamaged())
+    if (item->canBeDamaged() && item->canBeRepaired())
       entry.initHealth(0);  // Loot items are always broken
 
     remainingQuantity -= quantityInThisSlot;

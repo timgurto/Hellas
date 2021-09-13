@@ -495,9 +495,14 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Looted gear and tools are broken",
         <loot id="fishingRod" />
         <loot id="fish" />
       </npcType>
-      <item id="tuxedo" gearSlot="body" />
-      <item id="fishingRod"> <tag name="fishing" /> </item>
-      <item id="fish" />
+      <item id="tuxedo" gearSlot="body" class="repairable" />
+      <item id="fishingRod" class="repairable">
+        <tag name="fishing" />
+      </item>
+      <item id="fish" class="repairable" />
+      <itemClass id="repairable" >
+        <canBeRepaired />
+      </itemClass>
     )");
     auto &penguin = server->addNPC("penguin", {10, 15});
 
@@ -519,13 +524,47 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Looted gear and tools are broken",
 
             const auto itemID = inventoryItem.type()->id();
 
-            if (itemID == "tuxedo")
+            if (itemID == "tuxedo") {
+              INFO("Gear health: "s + toString(inventoryItem.health()));
               CHECK(inventoryItem.health() == 0);
-            else if (itemID == "fishingRod")
+            } else if (itemID == "fishingRod") {
+              INFO("Tool health: "s + toString(inventoryItem.health()));
               CHECK(inventoryItem.health() == 0);
-            else if (itemID == "fish")
+            } else if (itemID == "fish") {
+              INFO("Normal-item health: "s + toString(inventoryItem.health()));
               CHECK(inventoryItem.health() == Item::MAX_HEALTH);
+            }
           }
+        }
+      }
+    }
+  }
+}
+
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Items that can't be repaired aren't broken when looted",
+                 "[loot][damage-on-use]") {
+  GIVEN("an NPC that drops a tool that can't be repaired") {
+    useData(R"(
+      <npcType id="penguin" maxHealth="1" >
+        <loot id="fishingRod" />
+      </npcType>
+      <item id="fishingRod"> <tag name="fishing" /> </item>
+    )");
+    auto &penguin = server->addNPC("penguin", {10, 15});
+
+    WHEN("a user kills it") {
+      WAIT_UNTIL(client->objects().size() == 1);
+      client->sendMessage(CL_TARGET_ENTITY, makeArgs(penguin.serial()));
+      WAIT_UNTIL(penguin.isDead());
+
+      AND_WHEN("he loots it") {
+        client->sendMessage(CL_TAKE_ITEM, makeArgs(penguin.serial(), 0));
+        const auto &inventoryItem = user->inventory()[0];
+        WAIT_UNTIL(inventoryItem.hasItem());
+
+        THEN("it is not broken") {
+          CHECK(inventoryItem.health() == Item::MAX_HEALTH);
         }
       }
     }
