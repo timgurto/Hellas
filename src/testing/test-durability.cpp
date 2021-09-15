@@ -7,30 +7,6 @@
 
 using ItemReportingInfo = ServerItem::Instance::ReportingInfo;
 
-TEST_CASE("Item levels and health", "[damage-on-use][loading]") {
-  GIVEN("a default item") {
-    auto server = TestServer::WithDataString(R"(
-      <item id="straw" />
-    )");
-
-    THEN("it is level 1") {
-      const auto &straw = server.getFirstItem();
-      CHECK(straw.ilvl() == 1);
-    }
-  }
-
-  GIVEN("an item specified to be level 2") {
-    auto server = TestServer::WithDataString(R"(
-      <item id="brick" ilvl="2" />
-    )");
-
-    THEN("it is level 2") {
-      const auto &brick = server.getFirstItem();
-      CHECK(brick.ilvl() == 2);
-    }
-  }
-}
-
 TEST_CASE("Newly given items have full health", "[damage-on-use]") {
   GIVEN("apple items") {
     auto data = R"(
