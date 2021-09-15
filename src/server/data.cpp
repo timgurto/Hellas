@@ -104,13 +104,11 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     int slot;
     std::string id;
     auto qty = 1;
-    Hitpoints health = Item::MAX_HEALTH;
     auto isSoulbound = false;
 
     if (!xr.findAttr(slotElem, "slot", slot)) continue;
     if (!xr.findAttr(slotElem, "id", id)) continue;
     xr.findAttr(slotElem, "quantity", qty);
-    xr.findAttr(slotElem, "health", health);
     int n;
     if (xr.findAttr(slotElem, "soulbound", n)) isSoulbound = n != 0;
     auto suffix = ""s;
@@ -121,6 +119,10 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
       SERVER_ERROR("Invalid user inventory item: "s + id);
       continue;
     }
+
+    auto health = item->maxHealth();
+    xr.findAttr(slotElem, "health", health);
+
     user.inventory(slot) = ServerItem::Instance::LoadFromFile(
         item, ServerItem::Instance::ReportingInfo::UserInventory(&user, slot),
         health, suffix, qty);
@@ -132,12 +134,10 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     int slot;
     std::string id;
     auto qty = 1;
-    Hitpoints health = Item::MAX_HEALTH;
 
     if (!xr.findAttr(slotElem, "slot", slot)) continue;
     if (!xr.findAttr(slotElem, "id", id)) continue;
     xr.findAttr(slotElem, "quantity", qty);
-    xr.findAttr(slotElem, "health", health);
     auto suffix = ""s;
     xr.findAttr(slotElem, "suffix", suffix);
 
@@ -146,6 +146,10 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
       SERVER_ERROR("Invalid user gear item: "s + id);
       continue;
     }
+
+    auto health = item->maxHealth();
+    xr.findAttr(slotElem, "health", health);
+
     user.gear(slot) = ServerItem::Instance::LoadFromFile(
         item, ServerItem::Instance::ReportingInfo::UserGear(&user, slot),
         health, suffix, qty);
@@ -523,7 +527,6 @@ void Server::loadEntities(XmlReader &xr,
 
     size_t q;
     // Default value to support transition of old data
-    Hitpoints health = Item::MAX_HEALTH;
     auto suffix = ""s;
     for (auto inventory : xr.getChildren("inventory", elem)) {
       assert(obj.hasContainer());
@@ -531,18 +534,24 @@ void Server::loadEntities(XmlReader &xr,
       if (!xr.findAttr(inventory, "slot", n)) continue;
       q = 1;
       xr.findAttr(inventory, "qty", q);
-      xr.findAttr(inventory, "health", health);
       xr.findAttr(inventory, "suffix", suffix);
       if (obj.objType().container().slots() <= n) {
         _debug << Color::CHAT_ERROR
                << "Skipping object with invalid inventory slot." << Log::endl;
         continue;
       }
+
+      const auto it = _items.find(s);
+      if (it == _items.end()) continue;
+      const auto &item = *it;
+
+      auto health = item.maxHealth();
+      xr.findAttr(inventory, "health", health);
+
       auto &invSlot = obj.container().at(n);
       invSlot = ServerItem::Instance::LoadFromFile(
-          &*_items.find(s),
-          ServerItem::Instance::ReportingInfo::InObjectContainer(), health,
-          suffix, q);
+          &item, ServerItem::Instance::ReportingInfo::InObjectContainer(),
+          health, suffix, q);
 
       auto n = 0;
       if (xr.findAttr(inventory, "soulbound", n) && n != 0) invSlot.onEquip();
@@ -576,6 +585,7 @@ void Server::loadEntities(XmlReader &xr,
       obj.remainingMaterials().set(&*it, n);
     }
 
+    auto health = Hitpoints{};
     if (xr.findAttr(elem, "health", health)) obj.health(health);
 
     auto corpseTime = ms_t{};
@@ -673,7 +683,7 @@ void Server::loadEntities(XmlReader &xr,
     size_t quantity = 1;
     xr.findAttr(elem, "qty", quantity);
 
-    auto health = Item::MAX_HEALTH;
+    auto health = itemType->maxHealth();
     xr.findAttr(elem, "health", health);
 
     auto suffixID = ""s;
@@ -828,7 +838,7 @@ void DroppedItem::writeToXML(XmlWriter &xw) const {
   if (_quantity > 1) xw.setAttr(e, "qty", _quantity);
   xw.setAttr(e, "x", location().x);
   xw.setAttr(e, "y", location().y);
-  if (_health < Item::MAX_HEALTH) xw.setAttr(e, "health", _health);
+  if (_health < _itemType.maxHealth()) xw.setAttr(e, "health", _health);
   if (!_suffix.empty()) xw.setAttr(e, "suffix", _suffix);
 }
 

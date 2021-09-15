@@ -532,7 +532,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Looted gear and tools are broken",
               CHECK(inventoryItem.health() == 0);
             } else if (itemID == "fish") {
               INFO("Normal-item health: "s + toString(inventoryItem.health()));
-              CHECK(inventoryItem.health() == Item::MAX_HEALTH);
+              CHECK(inventoryItem.isAtFullHealth());
             }
           }
         }
@@ -563,9 +563,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
         const auto &inventoryItem = user->inventory()[0];
         WAIT_UNTIL(inventoryItem.hasItem());
 
-        THEN("it is not broken") {
-          CHECK(inventoryItem.health() == Item::MAX_HEALTH);
-        }
+        THEN("it is not broken") { CHECK(inventoryItem.isAtFullHealth()); }
       }
     }
   }

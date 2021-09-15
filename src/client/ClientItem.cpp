@@ -270,16 +270,15 @@ void ClientItem::Instance::createRegularTooltip() const {
 
   if (!_type->_class) return;
 
-  auto isDamaged = _health < Item::MAX_HEALTH;
+  auto isDamaged = _health < _type->maxHealth();
   if (isDamaged) {
     auto oss = std::ostringstream{};
-    oss << "Durability: "s << _health << "/"s << Item::MAX_HEALTH;
+    oss << "Durability: "s << _health << "/"s << _type->maxHealth();
     tooltip.addGap();
     tooltip.addLine(oss.str());
 
-    const auto needsRepairing = _health < Item::MAX_HEALTH;
     const auto canBeRepaired = _type->_class->repairing.canBeRepaired;
-    if (canBeRepaired && needsRepairing) {
+    if (canBeRepaired && isDamaged) {
       tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
       tooltip.addLine("Can be repaired (Alt-click).");
     }
@@ -304,7 +303,7 @@ void ClientItem::Instance::createRepairTooltip() const {
     return;
   }
 
-  auto needsRepairing = _health < Item::MAX_HEALTH;
+  auto needsRepairing = _health < _type->maxHealth();
   if (!needsRepairing) {
     _repairTooltip =
         Tooltip::basicTooltip("This item is already at full health.");
@@ -346,4 +345,8 @@ std::string ClientItem::Instance::name() const {
     ret += " of "s + suffixName;
   }
   return ret;
+}
+
+bool ClientItem::Instance::isDamaged() const {
+  return _health < _type->maxHealth();
 }

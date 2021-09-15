@@ -43,7 +43,7 @@ const Tooltip& CDroppedItem::tooltip() const {
 
   tooltip.embed(_itemType.tooltip(_suffix));
 
-  if (_health < Item::MAX_HEALTH) {
+  if (_health < _itemType.maxHealth()) {
     tooltip.addGap();
 
     if (_health == 0)
@@ -52,7 +52,7 @@ const Tooltip& CDroppedItem::tooltip() const {
       tooltip.setColor(Color::DURABILITY_LOW);
 
     tooltip.addLine("Durability: "s + toString(_health) + "/"s +
-                    toString(Item::MAX_HEALTH));
+                    toString(_itemType.maxHealth()));
   }
 
   tooltip.addGap();

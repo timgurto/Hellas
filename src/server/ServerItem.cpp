@@ -129,6 +129,7 @@ ServerItem::ContainerCheckResult containerHasEnoughToTrade(
   auto soulboundItemWasFound = false;
   auto brokenItemWasFound = false;
   for (const auto &slot : container) {
+    if (!slot.hasItem()) continue;
     if (slot.isBroken()) {
       brokenItemWasFound = true;
       continue;
@@ -154,7 +155,7 @@ ServerItem::Instance::Instance(const ServerItem *type, ReportingInfo info,
     : _type(type), _reportingInfo(info), _quantity(quantity) {
   if (!type) return;
 
-  _health = MAX_HEALTH;
+  _health = _type->maxHealth();
 
   if (!_type->_suffixSet.empty()) {
     const auto &suffix =
@@ -190,6 +191,12 @@ void ServerItem::Instance::swap(ServerItem::Instance &lhs,
   rhs._reportingInfo = tempReportingInfo;
 }
 
+bool ServerItem::Instance::isAtFullHealth() const {
+  return _health == _type->maxHealth();
+}
+
+bool ServerItem::Instance::isDamaged() const { return !isAtFullHealth(); }
+
 bool ServerItem::Instance::isBroken() const { return _health == 0; }
 
 void ServerItem::Instance::damageFromUse() {
@@ -208,7 +215,7 @@ void ServerItem::Instance::damageOnPlayerDeath() {
 }
 
 void ServerItem::Instance::repair() {
-  _health = MAX_HEALTH;
+  _health = _type->maxHealth();
   _reportingInfo.report();
 }
 

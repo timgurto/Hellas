@@ -24,7 +24,6 @@ class Item : public HasTags {
 
     NOT_GEAR
   };
-  static const Hitpoints MAX_HEALTH = 100;
   enum Soulbinding { NO_BINDING, BIND_ON_PICKUP, BIND_ON_EQUIP };
 
   Item(const std::string &id);
@@ -61,6 +60,8 @@ class Item : public HasTags {
   const ItemClass *getClass() const { return _class; }
   Level ilvl() const { return _ilvl; }
   void ilvl(Level l) { _ilvl = l; }
+  Hitpoints maxHealth() const { return _maxHealth; }
+  void maxHealth(Hitpoints h) { _maxHealth = h; }
 
   bool operator<(const Item &rhs) const { return _id < rhs._id; }
 
@@ -78,6 +79,7 @@ class Item : public HasTags {
   std::string _suffixSet;
   Soulbinding _soulbinding{NO_BINDING};
   Level _ilvl{1};
+  Hitpoints _maxHealth{1};
 
   const ItemClass *_class{nullptr};
 

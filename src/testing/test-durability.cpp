@@ -22,9 +22,7 @@ TEST_CASE("Newly given items have full health", "[damage-on-use]") {
 
       user.giveItem(&apple);
 
-      THEN("it has full health") {
-        CHECK(user.inventory(0).health() == ServerItem::MAX_HEALTH);
-      }
+      THEN("it has full health") { CHECK_FALSE(user.inventory(0).isDamaged()); }
     }
   }
 }
@@ -67,12 +65,12 @@ TEST_CASE("Combat reduces weapon/armour health", "[damage-on-use][combat]") {
         THEN("the weapon's health is reduced") {
           // Should result in about 1000 hits.  Hopefully enough for durability
           // to kick in.
-          WAIT_UNTIL_TIMEOUT(weaponSlot.health() < ServerItem::MAX_HEALTH,
-                             10000);
+          WAIT_UNTIL_TIMEOUT(weaponSlot.isDamaged(), 10000);
 
           AND_THEN("the user knows it") {
             const auto &cWeaponSlot = c.gear()[Item::WEAPON];
-            WAIT_UNTIL(cWeaponSlot.first.health() < ServerItem::MAX_HEALTH);
+            WAIT_UNTIL(cWeaponSlot.first.type());
+            WAIT_UNTIL(cWeaponSlot.first.isDamaged());
           }
         }
       }
@@ -81,7 +79,7 @@ TEST_CASE("Combat reduces weapon/armour health", "[damage-on-use][combat]") {
         user.kill();
 
         THEN("the weapon's health is reduced") {
-          CHECK(weaponSlot.health() < ServerItem::MAX_HEALTH);
+          CHECK(weaponSlot.isDamaged());
         }
       }
     }
@@ -96,8 +94,8 @@ TEST_CASE("Combat reduces weapon/armour health", "[damage-on-use][combat]") {
         // Should happen automatically
 
         THEN("all armour gets damaged") {
-          WAIT_UNTIL_TIMEOUT(headSlot.health() < ServerItem::MAX_HEALTH, 10000);
-          WAIT_UNTIL_TIMEOUT(feetSlot.health() < ServerItem::MAX_HEALTH, 10000);
+          WAIT_UNTIL_TIMEOUT(headSlot.isDamaged(), 10000);
+          WAIT_UNTIL_TIMEOUT(feetSlot.isDamaged(), 10000);
         }
       }
 
@@ -108,8 +106,8 @@ TEST_CASE("Combat reduces weapon/armour health", "[damage-on-use][combat]") {
         stats.crit = 0;
         hummingbird.stats(stats);
 
-        CHECK(headSlot.health() == ServerItem::MAX_HEALTH);
-        CHECK(feetSlot.health() == ServerItem::MAX_HEALTH);
+        CHECK_FALSE(headSlot.isDamaged());
+        CHECK_FALSE(feetSlot.isDamaged());
         auto healthBefore = user.health();
 
         REPEAT_FOR_MS(1000);
@@ -117,9 +115,7 @@ TEST_CASE("Combat reduces weapon/armour health", "[damage-on-use][combat]") {
         CHECK(user.health() >= healthBefore - 1);
 
         THEN("a maximum of one piece of armour is damaged") {
-          auto hatDamaged = headSlot.health() < ServerItem::MAX_HEALTH;
-          auto shoesDamaged = feetSlot.health() < ServerItem::MAX_HEALTH;
-          auto bothDamaged = hatDamaged && shoesDamaged;
+          auto bothDamaged = headSlot.isDamaged() && feetSlot.isDamaged();
           CHECK_FALSE(bothDamaged);
         }
       }
@@ -161,11 +157,11 @@ TEST_CASE("Thrown weapons don't take damage from attacking",
         auto whaleSerial = s.getFirstNPC().serial();
         c.sendMessage(CL_TARGET_ENTITY, makeArgs(whaleSerial));
         REPEAT_FOR_MS(5000) {
-          if (equippedWeapon.health() != Item::MAX_HEALTH) break;
+          if (equippedWeapon.isDamaged()) break;
         }
 
         THEN("his remaining harpoons are at full health") {
-          CHECK(equippedWeapon.health() == Item::MAX_HEALTH);
+          CHECK_FALSE(equippedWeapon.isDamaged());
         }
       }
     }
@@ -180,11 +176,11 @@ TEST_CASE("Thrown weapons don't take damage from attacking",
         auto whaleSerial = s.getFirstNPC().serial();
         c.sendMessage(CL_TARGET_ENTITY, makeArgs(whaleSerial));
         REPEAT_FOR_MS(5000) {
-          if (equippedWeapon.health() != Item::MAX_HEALTH) break;
+          if (equippedWeapon.isDamaged()) break;
         }
 
         THEN("his harpoon gun is damaged") {
-          CHECK(equippedWeapon.health() != Item::MAX_HEALTH);
+          CHECK(equippedWeapon.isDamaged());
         }
       }
     }
@@ -207,7 +203,9 @@ TEST_CASE("Item damage is limited to 1", "[damage-on-use]") {
       itemInInventory.onUse();
 
       THEN("it has lost at most 1 health") {
-        CHECK(itemInInventory.health() >= Item::MAX_HEALTH - 1);
+        const auto healthMissing =
+            itemInInventory.type()->maxHealth() - itemInInventory.health();
+        CHECK(healthMissing <= 1);
       }
     }
   }
@@ -226,7 +224,8 @@ TEST_CASE("Item damage happens randomly", "[damage-on-use]") {
 
     WHEN("it is used {max-health} times") {
       auto &itemInInventory = user.inventory(0);
-      for (auto i = 0; i != Item::MAX_HEALTH; ++i) itemInInventory.onUse();
+      for (auto i = 0; i != itemInInventory.type()->maxHealth(); ++i)
+        itemInInventory.onUse();
 
       THEN("it still has at least 1 health") {
         CHECK(itemInInventory.health() >= 1);
@@ -257,15 +256,16 @@ TEST_CASE("Crafting tools lose durability", "[damage-on-use][crafting][tool]") {
       for (auto i = 0; i != 200; ++i) {
         c.sendMessage(CL_CRAFT, "rabbit");
         REPEAT_FOR_MS(20);
-        if (hat.health() < Item::MAX_HEALTH) break;
+        if (hat.isDamaged()) break;
       }
 
       THEN("the tool is damaged") {
-        CHECK(hat.health() < Item::MAX_HEALTH);
+        CHECK(hat.isDamaged());
 
         AND_THEN("the client knows it's damaged") {
           auto &cItem = c.inventory()[0];
-          WAIT_UNTIL(cItem.first.health() < Item::MAX_HEALTH);
+          WAIT_UNTIL(cItem.first.type());
+          WAIT_UNTIL(cItem.first.isDamaged());
         }
       }
     }
@@ -311,10 +311,10 @@ TEST_CASE("Construction tools lose durability",
       for (auto i = 0; i != 200; ++i) {
         c.sendMessage(CL_CONSTRUCT, makeArgs("hole", 10, 15));
         REPEAT_FOR_MS(20);
-        if (shovel.health() < Item::MAX_HEALTH) break;
+        if (shovel.isDamaged()) break;
       }
 
-      THEN("the tool is damaged") { CHECK(shovel.health() < Item::MAX_HEALTH); }
+      THEN("the tool is damaged") { CHECK(shovel.isDamaged()); }
     }
   }
 }
@@ -346,12 +346,10 @@ TEST_CASE("Gathering tools lose durability",
       for (auto i = 0; i != 200; ++i) {
         c.sendMessage(CL_GATHER, makeArgs(s.getFirstObject().serial()));
         REPEAT_FOR_MS(20);
-        if (shovel.health() < Item::MAX_HEALTH) break;
+        if (shovel.isDamaged()) break;
       }
 
-      THEN("the shovel is damaged") {
-        CHECK(shovel.health() < Item::MAX_HEALTH);
-      }
+      THEN("the shovel is damaged") { CHECK(shovel.isDamaged()); }
     }
   }
 }
@@ -397,7 +395,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Swapping items preserves damage",
       auto &slot0 = user->inventory(0);
       do {
         slot0.onUse();
-      } while (slot0.health() == Item::MAX_HEALTH);
+      } while (slot0.isAtFullHealth());
       auto itemHealth = slot0.health();
 
       AND_WHEN("he swaps them") {
@@ -436,8 +434,9 @@ TEST_CASE("Persistence of item health: users' items",
     auto &invSlot = user.inventory(0);
     do {
       invSlot.onUse();
-    } while (invSlot.health() == Item::MAX_HEALTH);
+    } while (invSlot.isAtFullHealth());
     invHealth = invSlot.health();
+    REQUIRE(invHealth >= 1);
 
     // And when the equipped item is damaged even more)
     auto &gearSlot = user.gear(5);
@@ -483,7 +482,7 @@ TEST_CASE("Persistence of item health: objects' contents",
     auto &containerSlot = toybox.container().at(0);
     do {
       containerSlot.onUse();
-    } while (containerSlot.health() == Item::MAX_HEALTH);
+    } while (containerSlot.isAtFullHealth());
     itemHealth = containerSlot.health();
 
     // And when the server restarts
@@ -1176,7 +1175,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 
       THEN("his grenade is still at full health") {
         REPEAT_FOR_MS(100);
-        CHECK(user->gear(6).health() == Item::MAX_HEALTH);
+        CHECK(user->gear(6).isAtFullHealth());
       }
     }
   }

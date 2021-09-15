@@ -541,7 +541,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Dropped items preserve item damage",
       auto &slot0 = user->inventory(0);
       do {
         slot0.onUse();
-      } while (slot0.health() == Item::MAX_HEALTH);
+      } while (slot0.isAtFullHealth());
       const auto itemHealth = slot0.health();
 
       WHEN("he drops it") {
@@ -646,7 +646,7 @@ TEST_CASE("Dropped-item suffixes are persistent",
       auto s = TestServer::WithDataString(data);
       const auto &sword = s.getFirstItem();
       s->addEntity(
-          new DroppedItem(sword, Item::MAX_HEALTH, 1, suffixID, {20, 20}));
+          new DroppedItem(sword, sword.maxHealth(), 1, suffixID, {20, 20}));
 
       // When the server restarts
     }

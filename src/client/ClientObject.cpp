@@ -1164,7 +1164,7 @@ void ClientObject::createRepairTooltip() const {
     return;
   }
 
-  auto needsRepairing = health() < Item::MAX_HEALTH;
+  auto needsRepairing = health() < ot.maxHealth();
   if (!needsRepairing) {
     _repairTooltip =
         Tooltip::basicTooltip("This object is already at full health.");

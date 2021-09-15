@@ -755,6 +755,9 @@ void CDataLoader::loadItems(XmlReader &xr) {
     if (!xr.findAttr(elem, "id", id)) continue;  // ID is mandatory.
     if (!xr.findAttr(elem, "name", name)) name = id;
     ClientItem item(_client, id, name);
+
+    item.maxHealth(100);
+
     std::string s;
 
     item.loadTagsFromXML(xr, elem);

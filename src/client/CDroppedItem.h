@@ -27,7 +27,7 @@ class CDroppedItem : public ClientObject {
  private:
   const ClientItem &_itemType;
   size_t _quantity;
-  Hitpoints _health{Item::MAX_HEALTH};
+  Hitpoints _health{0};
   std::string _suffix;
   mutable std::string _name;
   double _altitude{0};

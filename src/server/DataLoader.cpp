@@ -679,6 +679,8 @@ void DataLoader::loadItems(XmlReader &xr) {
     if (!xr.findAttr(elem, "id", id)) continue;  // ID and name are mandatory.
     ServerItem item(id);
 
+    item.maxHealth(100);
+
     auto ilvl = Level{0};
     if (xr.findAttr(elem, "ilvl", ilvl)) item.ilvl(ilvl);
 

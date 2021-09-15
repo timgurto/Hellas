@@ -26,7 +26,7 @@ void ClientNPCType::addGear(const ClientItem &item) {
   if (_gear.empty()) {
     _gear = {Client::GEAR_SLOTS, {ClientItem::Instance{}, 0}};
   }
-  _gear[slot].first = ClientItem::Instance{&item, Item::MAX_HEALTH, false, {}};
+  _gear[slot].first = ClientItem::Instance{&item, item.maxHealth(), false, {}};
   _gear[slot].second = 1;
 }
 
