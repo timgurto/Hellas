@@ -679,10 +679,10 @@ void DataLoader::loadItems(XmlReader &xr) {
     if (!xr.findAttr(elem, "id", id)) continue;  // ID and name are mandatory.
     ServerItem item(id);
 
-    item.maxHealth(100);
-
-    auto ilvl = Level{0};
+    auto ilvl = Level{1};
     if (xr.findAttr(elem, "ilvl", ilvl)) item.ilvl(ilvl);
+
+    item.maxHealth(ilvl * 10);
 
     auto stackSize = size_t{};
     if (xr.findAttr(elem, "stackSize", stackSize)) item.stackSize(stackSize);

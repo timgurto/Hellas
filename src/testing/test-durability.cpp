@@ -7,6 +7,31 @@
 
 using ItemReportingInfo = ServerItem::Instance::ReportingInfo;
 
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Item health is derived from item level and quality",
+                 "[damage-on-use]") {
+  SECTION("item level") {
+    GIVEN("copper is level-10 and bronze is level-20") {
+      useData(R"(
+        <item id="copper" ilvl="10" />
+        <item id="bronze" ilvl="20" />
+      )");
+
+      WHEN("a user has one of each") {
+        user->giveItem(&server->findItem("copper"));
+        user->giveItem(&server->findItem("bronze"));
+
+        THEN("the bronze has more health") {
+          const auto &copperInInventory = user->inventory(0);
+          const auto &bronzeInInventory = user->inventory(1);
+
+          CHECK(copperInInventory.health() < bronzeInInventory.health());
+        }
+      }
+    }
+  }
+}
+
 TEST_CASE("Newly given items have full health", "[damage-on-use]") {
   GIVEN("apple items") {
     auto data = R"(
