@@ -59,7 +59,8 @@ class Item : public HasTags {
   bool bindsOnEquip() const { return _soulbinding == BIND_ON_EQUIP; }
   void setClass(const ItemClass &itemClass) { _class = &itemClass; }
   const ItemClass *getClass() const { return _class; }
-  Level itemLevel() const { return _itemLevel; }
+  Level ilvl() const { return _ilvl; }
+  void ilvl(Level l) { _ilvl = l; }
 
   bool operator<(const Item &rhs) const { return _id < rhs._id; }
 
@@ -76,7 +77,7 @@ class Item : public HasTags {
   StatsMod _stats;  // If gear, the impact it has on its wearer's stats.
   std::string _suffixSet;
   Soulbinding _soulbinding{NO_BINDING};
-  Level _itemLevel{1};
+  Level _ilvl{1};
 
   const ItemClass *_class{nullptr};
 
