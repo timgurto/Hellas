@@ -13,8 +13,8 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   SECTION("item level") {
     GIVEN("copper is level-10 and bronze is level-20") {
       useData(R"(
-        <item id="copper" ilvl="10" />
-        <item id="bronze" ilvl="20" />
+        <item id="copper" ilvl="1" />
+        <item id="bronze" ilvl="60" />
       )");
 
       WHEN("a user has one of each") {
@@ -26,6 +26,27 @@ TEST_CASE_METHOD(ServerAndClientWithData,
           const auto &bronzeInInventory = user->inventory(1);
 
           CHECK(copperInInventory.health() < bronzeInInventory.health());
+        }
+      }
+    }
+  }
+
+  SECTION("item level") {
+    GIVEN("lead is common and gold is rare (with equal significant ilvls)") {
+      useData(R"(
+        <item id="lead" quality="1" ilvl="60" />
+        <item id="gold" quality="3" ilvl="60" />
+      )");
+
+      WHEN("a user has one of each") {
+        user->giveItem(&server->findItem("lead"));
+        user->giveItem(&server->findItem("gold"));
+
+        THEN("the gold has more health") {
+          const auto &leadInInventory = user->inventory(0);
+          const auto &goldInInventory = user->inventory(1);
+
+          CHECK(leadInInventory.health() < goldInInventory.health());
         }
       }
     }

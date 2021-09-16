@@ -682,7 +682,10 @@ void DataLoader::loadItems(XmlReader &xr) {
     auto ilvl = Level{1};
     if (xr.findAttr(elem, "ilvl", ilvl)) item.ilvl(ilvl);
 
-    item.maxHealth(ilvl * 10);
+    auto quality = 1;
+    xr.findAttr(elem, "quality", quality);
+
+    item.maxHealth(ilvl * 10 + quality);
 
     auto stackSize = size_t{};
     if (xr.findAttr(elem, "stackSize", stackSize)) item.stackSize(stackSize);
