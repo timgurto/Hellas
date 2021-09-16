@@ -246,7 +246,7 @@ TEST_CASE("Item damage is limited to 1", "[damage-on-use]") {
 
     WHEN("it is used") {
       auto &itemInInventory = user.inventory(0);
-      itemInInventory.onUse();
+      itemInInventory.onUseAsTool();
 
       THEN("it has lost at most 1 health") {
         const auto healthMissing =
@@ -271,7 +271,7 @@ TEST_CASE("Item damage happens randomly", "[damage-on-use]") {
     WHEN("it is used {max-health} times") {
       auto &itemInInventory = user.inventory(0);
       for (auto i = 0; i != itemInInventory.type()->maxHealth(); ++i)
-        itemInInventory.onUse();
+        itemInInventory.onUseAsTool();
 
       THEN("it still has at least 1 health") {
         CHECK(itemInInventory.health() >= 1);
@@ -318,7 +318,7 @@ TEST_CASE("Crafting tools lose durability", "[damage-on-use][crafting][tool]") {
 
     WHEN("the tool is broken") {
       for (auto i = 0; i != 100000; ++i) {
-        hat.onUse();
+        hat.onUseAsTool();
         if (hat.isBroken()) break;
       }
       CHECK(hat.isBroken());
@@ -440,7 +440,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Swapping items preserves damage",
     WHEN("one is damaged") {
       auto &slot0 = user->inventory(0);
       do {
-        slot0.onUse();
+        slot0.onUseAsTool();
       } while (slot0.isAtFullHealth());
       auto itemHealth = slot0.health();
 
@@ -479,7 +479,7 @@ TEST_CASE("Persistence of item health: users' items",
     // When the inventory item is damaged
     auto &invSlot = user.inventory(0);
     do {
-      invSlot.onUse();
+      invSlot.onUseAsTool();
     } while (invSlot.isAtFullHealth());
     invHealth = invSlot.health();
     REQUIRE(invHealth >= 1);
@@ -488,7 +488,7 @@ TEST_CASE("Persistence of item health: users' items",
     auto &gearSlot = user.gear(5);
     WAIT_UNTIL(gearSlot.hasItem());
     do {
-      gearSlot.onUse();
+      gearSlot.onUseAsTool();
     } while (gearSlot.health() >= invHealth);
     gearHealth = gearSlot.health();
 
@@ -527,7 +527,7 @@ TEST_CASE("Persistence of item health: objects' contents",
     // When the item is damaged
     auto &containerSlot = toybox.container().at(0);
     do {
-      containerSlot.onUse();
+      containerSlot.onUseAsTool();
     } while (containerSlot.isAtFullHealth());
     itemHealth = containerSlot.health();
 
@@ -542,7 +542,7 @@ TEST_CASE("Persistence of item health: objects' contents",
 
 #define BREAK_ITEM(ITEM)               \
   for (auto i = 0; i != 100000; ++i) { \
-    (ITEM).onUse();                    \
+    (ITEM).onUseAsTool();              \
     if ((ITEM).isBroken()) break;      \
   }                                    \
   CHECK((ITEM).isBroken());

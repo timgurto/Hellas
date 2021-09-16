@@ -8,9 +8,11 @@ class DamageOnUse {
 
   // Return value: whether item health changed as a result. Whenever true, the
   // owner should be udpated.
-  void onUse();
+  void onUseAsTool();
+  void onUseInCombat();
 
-  virtual double chanceToGetDamagedOnUse() const { return 0.1; }
+  virtual double chanceToGetDamagedOnUseAsTool() const { return 0.25; }
+  virtual double chanceToGetDamagedOnUseInCombat() const { return 0.01; }
   virtual void damageFromUse() = 0;
   virtual void damageOnPlayerDeath() {}
 

@@ -197,34 +197,6 @@ bool ServerItem::Instance::isDamaged() const { return !isAtFullHealth(); }
 
 bool ServerItem::Instance::isBroken() const { return _health == 0; }
 
-void ServerItem::Instance::damageFromUse() {
-  --_health;
-  _reportingInfo.report();
-}
-
-void ServerItem::Instance::damageOnPlayerDeath() {
-  const auto DAMAGE_ON_DEATH = Hitpoints{10};
-  if (DAMAGE_ON_DEATH >= _health)
-    _health = 0;
-  else
-    _health -= DAMAGE_ON_DEATH;
-
-  _reportingInfo.report();
-}
-
-void ServerItem::Instance::repair() {
-  _health = _type->maxHealth();
-  _reportingInfo.report();
-}
-
-double ServerItem::Instance::toolSpeed(const std::string &tag) const {
-  const auto &tags = _type->tags();
-  auto it = tags.find(tag);
-  if (it == tags.end()) return 1.0;
-
-  return it->second;
-}
-
 bool ServerItem::Instance::isSoulbound() const {
   if (!_type) return false;
   if (_type->bindsOnPickup()) return true;

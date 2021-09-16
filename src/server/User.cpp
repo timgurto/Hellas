@@ -1155,7 +1155,7 @@ void User::onAttackedBy(Entity &attacker, Threat threat) {
   cancelAction();
 
   auto armourSlotToUse = Item::getRandomArmorSlot();
-  _gear[armourSlotToUse].onUse();
+  _gear[armourSlotToUse].onUseInCombat();
 
   // Fight back if no current target
   if (!target() && attacker.canBeAttackedBy(*this)) {
@@ -1294,7 +1294,7 @@ void User::onAttack() {
   auto weaponIsConsumedByAttack =
       usesAmmo && weapon.type() && weapon.type() == weapon.type()->weaponAmmo();
   if (weaponIsConsumedByAttack) return;
-  weapon.onUse();
+  weapon.onUseInCombat();
   if (weapon.isBroken()) updateStats();
 }
 
@@ -1958,5 +1958,5 @@ User::ToolSearchResult::operator bool() const {
 
 void User::ToolSearchResult::use() const {
   if (!_toolToDamage) return;
-  _toolToDamage->onUse();
+  _toolToDamage->onUseAsTool();
 }

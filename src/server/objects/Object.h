@@ -106,9 +106,8 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
 
   // From DamageOnUse
   virtual bool isBroken() const override { return isDead(); }
-  virtual void damageFromUse() override { reduceHealth(1); };
-  virtual double chanceToGetDamagedOnUse() const override;
-
+  virtual void damageFromUse() override;
+  virtual double chanceToGetDamagedOnUseAsTool() const override;
   void repair() override;
 
  private:

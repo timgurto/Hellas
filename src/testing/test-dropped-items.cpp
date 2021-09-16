@@ -540,7 +540,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Dropped items preserve item damage",
     AND_GIVEN("it is damaged") {
       auto &slot0 = user->inventory(0);
       do {
-        slot0.onUse();
+        slot0.onUseAsTool();
       } while (slot0.isAtFullHealth());
       const auto itemHealth = slot0.health();
 

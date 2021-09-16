@@ -114,13 +114,6 @@ void Object::populateLoot() {
   objLoot.populate();
 }
 
-double Object::chanceToGetDamagedOnUse() const {
-  if (objType().destroyIfUsedAsTool()) return 1.0;
-  return DamageOnUse::chanceToGetDamagedOnUse();
-}
-
-void Object::repair() { healBy(stats().maxHealth); }
-
 bool Object::containsAnySoulboundItems() const {
   if (!_container) return false;
   return _container->containsAnySoulboundItems();

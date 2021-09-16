@@ -70,6 +70,8 @@ static double qualityMultiplierForItemHealth(Item::Quality quality) {
       return Q3;
     case Item::LEGENDARY:
       return Q4;
+    default:
+      return 1;
   }
 }
 
