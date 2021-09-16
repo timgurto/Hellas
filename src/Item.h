@@ -24,6 +24,7 @@ class Item : public HasTags {
 
     NOT_GEAR
   };
+  enum Quality { COMMON = 1, UNCOMMON = 2, RARE = 3, EPIC = 4, LEGENDARY = 5 };
   enum Soulbinding { NO_BINDING, BIND_ON_PICKUP, BIND_ON_EQUIP };
 
   Item(const std::string &id);
@@ -61,7 +62,8 @@ class Item : public HasTags {
   Level ilvl() const { return _ilvl; }
   void ilvl(Level l) { _ilvl = l; }
   Hitpoints maxHealth() const { return _maxHealth; }
-  void maxHealth(Hitpoints h) { _maxHealth = h; }
+  void quality(int q) { _quality = static_cast<Quality>(q); }
+  void initialiseMaxHealthFromIlvlAndQuality();
 
   bool operator<(const Item &rhs) const { return _id < rhs._id; }
 
@@ -80,6 +82,7 @@ class Item : public HasTags {
   Soulbinding _soulbinding{NO_BINDING};
   Level _ilvl{1};
   Hitpoints _maxHealth{1};
+  Quality _quality{COMMON};
 
   const ItemClass *_class{nullptr};
 

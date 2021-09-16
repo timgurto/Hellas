@@ -29,6 +29,10 @@ void Item::setBinding(std::string mode) {
     _soulbinding = BIND_ON_EQUIP;
 }
 
+void Item::initialiseMaxHealthFromIlvlAndQuality() {
+  _maxHealth = _ilvl * 10 + _quality;
+}
+
 Item::GearSlot Item::getRandomArmorSlot() {
   const auto choice = rand() % 6;
   switch (choice) {

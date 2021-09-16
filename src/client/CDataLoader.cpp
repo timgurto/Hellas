@@ -756,7 +756,13 @@ void CDataLoader::loadItems(XmlReader &xr) {
     if (!xr.findAttr(elem, "name", name)) name = id;
     ClientItem item(_client, id, name);
 
-    item.maxHealth(100);
+    auto ilvl = Level{1};
+    if (xr.findAttr(elem, "ilvl", ilvl)) item.ilvl(ilvl);
+
+    auto quality = 0;
+    if (xr.findAttr(elem, "quality", quality)) item.quality(quality);
+
+    item.initialiseMaxHealthFromIlvlAndQuality();
 
     std::string s;
 
@@ -775,9 +781,6 @@ void CDataLoader::loadItems(XmlReader &xr) {
 
     auto bindMode = ""s;
     if (xr.findAttr(elem, "bind", bindMode)) item.setBinding(bindMode);
-
-    auto quality = 0;
-    if (xr.findAttr(elem, "quality", quality)) item.quality(quality);
 
     auto suffixSetElem = xr.findChild("randomSuffix", elem);
     if (suffixSetElem) {
