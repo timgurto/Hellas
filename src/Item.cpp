@@ -52,8 +52,33 @@ void Item::initialiseLvlReq() {
   if (_lvlReq < 0) _lvlReq = 0;
 }
 
+static double qualityMultiplierForItemHealth(Item::Quality quality) {
+  const auto QUALITY_EXPONENT = 1.2;
+  const auto Q0 = 1.0;
+  const auto Q1 = QUALITY_EXPONENT;
+  const auto Q2 = Q1 * QUALITY_EXPONENT;
+  const auto Q3 = Q2 * QUALITY_EXPONENT;
+  const auto Q4 = Q3 * QUALITY_EXPONENT;
+  switch (quality) {
+    case Item::COMMON:
+      return Q0;
+    case Item::UNCOMMON:
+      return Q1;
+    case Item::RARE:
+      return Q2;
+    case Item::EPIC:
+      return Q3;
+    case Item::LEGENDARY:
+      return Q4;
+  }
+}
+
 void Item::initialiseMaxHealthFromIlvlAndQuality() {
-  _maxHealth = _ilvl * 10 + _quality;
+  const auto base = 9;
+  const auto qualityMultiplier = qualityMultiplierForItemHealth(_quality);
+  auto raw = base + qualityMultiplier * _ilvl;
+
+  _maxHealth = toInt(raw);
 }
 
 Item::GearSlot Item::getRandomArmorSlot() {
