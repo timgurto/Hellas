@@ -133,7 +133,6 @@ class ServerItem : public Item {
   void loaded() { _loaded = true; }
   bool canBeDamaged() const;
   bool canBeRepaired() const;
-  bool isGear() const;
 
   void fetchAmmoItem() const override;
 };

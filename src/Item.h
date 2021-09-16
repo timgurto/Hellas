@@ -34,6 +34,7 @@ class Item : public HasTags {
   void gearSlot(GearSlot slot) { _gearSlot = slot; }
   static GearSlot parseGearSlot(std::string slotName);
   GearSlot gearSlot() const { return _gearSlot; }
+  bool isGear() const { return _gearSlot != Item::NOT_GEAR; }
   void stats(const StatsMod &stats) { _stats = stats; }
   const StatsMod &stats() const { return _stats; }
   void useSuffixSet(std::string suffixSetID) { _suffixSet = suffixSetID; }
@@ -51,7 +52,6 @@ class Item : public HasTags {
   bool castsSpellOnUse() const { return !_castsSpellOnUse.empty(); }
   const std::string &spellArg() const { return _spellArg; }
   const std::string &spellToCastOnUse() const { return _castsSpellOnUse; }
-  void lvlReq(Level req) { _lvlReq = req; }
   Level lvlReq() const { return _lvlReq; }
   bool hasLvlReq() const { return _lvlReq > 0; }
   void setBinding(std::string mode);
@@ -63,6 +63,7 @@ class Item : public HasTags {
   void ilvl(Level l) { _ilvl = l; }
   Hitpoints maxHealth() const { return _maxHealth; }
   void quality(int q) { _quality = static_cast<Quality>(q); }
+  void initialiseLvlReq();
   void initialiseMaxHealthFromIlvlAndQuality();
 
   bool operator<(const Item &rhs) const { return _id < rhs._id; }

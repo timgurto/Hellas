@@ -682,6 +682,8 @@ void DataLoader::loadItems(XmlReader &xr) {
     auto ilvl = Level{1};
     if (xr.findAttr(elem, "ilvl", ilvl)) item.ilvl(ilvl);
 
+    item.initialiseLvlReq();
+
     auto quality = 0;
     if (xr.findAttr(elem, "quality", quality)) item.quality(quality);
 
@@ -775,8 +777,6 @@ void DataLoader::loadItems(XmlReader &xr) {
     }
 
     if (xr.findAttr(elem, "gearSlot", s)) item.gearSlot(Item::parseGearSlot(s));
-
-    if (xr.findAttr(elem, "lvlReq", n)) item.lvlReq(n);
 
     item.loadTagsFromXML(xr, elem);
 

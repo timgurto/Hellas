@@ -29,6 +29,29 @@ void Item::setBinding(std::string mode) {
     _soulbinding = BIND_ON_EQUIP;
 }
 
+void Item::initialiseLvlReq() {
+  if (isGear()) return;
+
+  switch (_quality) {
+    case COMMON:
+      _lvlReq = _ilvl - 5;
+      break;
+    case UNCOMMON:
+      _lvlReq = _ilvl - 10;
+      break;
+    case RARE:
+      _lvlReq = _ilvl - 15;
+      break;
+    case EPIC:
+      _lvlReq = _ilvl - 20;
+      break;
+    case LEGENDARY:
+      _lvlReq = _ilvl - 25;
+      break;
+  }
+  if (_lvlReq < 0) _lvlReq = 0;
+}
+
 void Item::initialiseMaxHealthFromIlvlAndQuality() {
   _maxHealth = _ilvl * 10 + _quality;
 }

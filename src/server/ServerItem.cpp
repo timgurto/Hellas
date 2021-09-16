@@ -23,8 +23,6 @@ bool ServerItem::canBeRepaired() const {
   return _class->repairing.canBeRepaired;
 }
 
-bool ServerItem::isGear() const { return _gearSlot != Item::NOT_GEAR; }
-
 void ServerItem::fetchAmmoItem() const {
   if (_weaponAmmoID.empty()) return;
 

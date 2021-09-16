@@ -828,9 +828,6 @@ void CDataLoader::loadItems(XmlReader &xr) {
 
     if (xr.findAttr(elem, "gearSlot", s)) item.gearSlot(Item::parseGearSlot(s));
 
-    auto lvlReq = Level{};
-    if (xr.findAttr(elem, "lvlReq", lvlReq)) item.lvlReq(lvlReq);
-
     if (xr.findAttr(elem, "constructs", s)) {
       // Create dummy ObjectType if necessary
       auto pair = _client.gameData.objectTypes.insert(new ClientObjectType(s));
