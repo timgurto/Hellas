@@ -547,13 +547,13 @@
                     <offset x="-4" y="-10" />
                     <tag name="shield" />
                 </item>
-            <item id="copperShield" name="Buckler" class="copperShield" gearSlot="offhand" lvlReq="30" >
+            <item id="copperShield" name="Buckler" class="copperShield" gearSlot="offhand" lvlReq="30" quality="2" bind="equip" >
                 <stats armor="47" endurance="3" block="200" blockValue="700" />
                 <offset x="-6" y="-12" />
                 <tag name="shield" />
             </item>
                 <item id="copperShieldSilver" name="Inlaid Buckler" class="copperShield" gearSlot="offhand" lvlReq="30"
-                    iconFile="copperShield" gearFile="copperShield" quality="2" bind="equip">
+                    iconFile="copperShield" gearFile="copperShield" quality="3" bind="equip">
                     <stats armor="57" endurance="3" block="300" blockValue="800" />
                     <offset x="-6" y="-12" />
                     <tag name="shield" />
