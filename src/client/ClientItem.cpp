@@ -263,9 +263,9 @@ void ClientItem::Instance::createRegularTooltip() const {
     tooltip.addLine("Binds when picked up");
   }
 
-  if (_health == 0)
+  if (shouldDrawAsBroken())
     tooltip.setColor(Color::DURABILITY_BROKEN);
-  else if (_health <= 20)
+  else if (shouldDrawAsDamaged())
     tooltip.setColor(Color::DURABILITY_LOW);
 
   if (!_type->_class) return;
@@ -335,6 +335,13 @@ void ClientItem::Instance::createRepairTooltip() const {
 }
 
 bool ClientItem::Instance::isSoulbound() const { return _isSoulbound; }
+
+bool ClientItem::Instance::shouldDrawAsBroken() const { return _health == 0; }
+
+bool ClientItem::Instance::shouldDrawAsDamaged() const {
+  const auto threshold = 0.25;
+  return 1.0 * _health / _type->maxHealth() <= threshold;
+}
 
 std::string ClientItem::Instance::name() const {
   auto ret = _type->name();

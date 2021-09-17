@@ -76,9 +76,9 @@ void ContainerGrid::refresh() {
 
         slot.first.type()->icon().draw(slotRect.x + 1, slotRect.y + 1);
 
-        if (slot.first.health() == 0)
+        if (slot.first.shouldDrawAsBroken())
           Client::images.itemBroken.draw(slotRect.x + 1, slotRect.y + 1);
-        else if (slot.first.health() <= 20)
+        else if (slot.first.shouldDrawAsDamaged())
           Client::images.itemDamaged.draw(slotRect.x + 1, slotRect.y + 1);
 
         if (slot.second > 1) {

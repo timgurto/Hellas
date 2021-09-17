@@ -33,6 +33,8 @@ class ClientItem : public Item, public HasSounds {
     bool isSoulbound() const;
     std::string name() const;
     bool isDamaged() const;
+    bool shouldDrawAsBroken() const;
+    bool shouldDrawAsDamaged() const;
 
    private:
     const ClientItem *_type{nullptr};
