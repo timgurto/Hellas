@@ -271,7 +271,7 @@ void ClientItem::Instance::createRegularTooltip() const {
   if (!_type->_class) return;
 
   auto isDamaged = _health < _type->maxHealth();
-  if (isDamaged) {
+  if (isDamaged || _type->canBeDamaged()) {
     auto oss = std::ostringstream{};
     oss << "Durability: "s << _health << "/"s << _type->maxHealth();
     tooltip.addGap();

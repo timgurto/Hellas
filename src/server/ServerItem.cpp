@@ -6,18 +6,6 @@
 
 ServerItem::ServerItem(const std::string &idArg) : Item(idArg) {}
 
-bool ServerItem::canBeDamaged() const {
-  if (hasTags()) return true;  // Tools can always be damaged
-  // Note that this will also affect food, but that should be okay:
-  // - food should never be damaged on use because it's single-use.
-  // - food shouldn't be broken when looted, since it can't be repaired.
-
-  if (!isGear()) return false;
-  if (_weaponAmmo == this) return false;  // Thrown weapon; consumes itself
-
-  return true;
-}
-
 bool ServerItem::canBeRepaired() const {
   if (!_class) return false;
   return _class->repairing.canBeRepaired;

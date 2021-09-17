@@ -131,7 +131,6 @@ class ServerItem : public Item {
   const std::string &exclusiveToQuest() const { return _exclusiveToQuest; }
   bool valid() const { return _loaded; }
   void loaded() { _loaded = true; }
-  bool canBeDamaged() const;
   bool canBeRepaired() const;
 
   void fetchAmmoItem() const override;

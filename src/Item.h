@@ -65,6 +65,7 @@ class Item : public HasTags {
   void quality(int q) { _quality = static_cast<Quality>(q); }
   void initialiseLvlReq();
   void initialiseMaxHealthFromIlvlAndQuality();
+  bool canBeDamaged() const;
 
   bool operator<(const Item &rhs) const { return _id < rhs._id; }
 

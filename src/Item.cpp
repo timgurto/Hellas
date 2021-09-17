@@ -83,6 +83,22 @@ void Item::initialiseMaxHealthFromIlvlAndQuality() {
   _maxHealth = toInt(raw);
 }
 
+bool Item::canBeDamaged() const {
+  if (hasTags())
+    return true;  // Tools can always be damaged
+                  // Note that this will also affect food, but that should be
+                  // okay:
+                  // - food should never be damaged on use because it's
+                  // single-use.
+                  // - food shouldn't be broken when looted, since it can't be
+                  // repaired.
+
+  if (!isGear()) return false;
+  if (_weaponAmmo == this) return false;  // Thrown weapon; consumes itself
+
+  return true;
+}
+
 Item::GearSlot Item::getRandomArmorSlot() {
   const auto choice = rand() % 6;
   switch (choice) {
