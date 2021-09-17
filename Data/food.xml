@@ -31,7 +31,7 @@
     allowedTerrain="shallowWater">
     <yield id="fish" initialMean="1" initialSD="2" initialMin="1" />
 </objectType>
-<item id="fishingNet" name="Fishing Net" class="fishingNet" >
+<item id="fishingNet" name="Fishing Net" ilvl="10" class="fishingNet" >
     <tag name="fishing" toolSpeed="2" />
 </item>
 <recipe id="fishingNet" >

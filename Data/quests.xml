@@ -183,13 +183,13 @@
         <loot id="calydonianHorn" chance="0.2" />
         <lootTable id="15elite" />
     </npcType>
-    <item id="calydonianHorn" name="Horn of the Calydonian Boar" class="boneRepairable" gearSlot="offhand" lvlReq="10"
+    <item id="calydonianHorn" name="Horn of the Calydonian Boar" ilvl="20" class="boneRepairable" gearSlot="offhand"
         iconFile="hornBlack" gearFile="hornBlack" quality="2" bind="equip" >
 		<stats courage="14" />
 		<offset x="0" y="-3" />
     </item>
-    <item id="calydonianHide" name="Hide of the Calydonian Boar" class="hide" gearSlot="shoulders" sounds="leather"
-        iconFile="hideBlack" gearFile="hideBlack" lvlReq="10" quality="2" bind="pickup" >
+    <item id="calydonianHide" name="Hide of the Calydonian Boar" ilvl="20" class="hide" gearSlot="shoulders" sounds="leather"
+        iconFile="hideBlack" gearFile="hideBlack" quality="2" bind="pickup" >
         <stats armor="6" endurance="3" />
         <offset x="-4" y="-1" />
     </item>

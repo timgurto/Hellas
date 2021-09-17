@@ -273,7 +273,7 @@
         <owner type="player" name="Othrys" />
     </object>
     <item id="tutOre" name="Othrysian Ore" stackSize="5" bind="pickup" />
-    <item id="tutLightning" name="Handheld Lightning" stackSize="5" gearSlot="weapon" sounds="lightning" bind="pickup" >
+    <item id="tutLightning" name="Handheld Lightning" ilvl="1" stackSize="5" gearSlot="weapon" sounds="lightning" bind="pickup" >
         <weapon damage="12" speed="2.1" range="25" consumes="tutLightning" projectile="lightning" />
         <offset x="-8" y="-6" />
         <particles profile="lightningSparks" x="-7" y="-5" />

@@ -58,10 +58,10 @@ Mark graveyard on map: not hardcoded
             <gear id="staff1" />
         </humanoid>
     </npcType>
-    <item id="witchHat" name="Wayward Hat" class="woolHead" gearSlot="head" sounds="fabric" bind="pickup" >
+    <item id="witchHat" name="Wayward Hat" ilvl="1" class="woolHead" gearSlot="head" sounds="fabric" bind="pickup" >
         <offset x="-5" y="-10" />
     </item>
-    <item id="witchRobe" name="Wayward Robe" class="woolBody" gearSlot="body" sounds="fabric" iconFile="leatherBlack" bind="pickup" >
+    <item id="witchRobe" name="Wayward Robe" ilvl="1" class="woolBody" gearSlot="body" sounds="fabric" iconFile="leatherBlack" bind="pickup" >
         <offset x="-8" y="-3" />
     </item>
     <item id="pumpkinFlower" name="Grave Flower" stackSize="10" exclusiveToQuest="collectPumpkinFlowers" bind="pickup" />
