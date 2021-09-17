@@ -569,14 +569,14 @@
                 <stats cunning="11" energy="10" />
                 <offset x="-2" y="-6" />
             </item>
-                <item id="tabletSilver" name="Illuminated Tablet" ilvl="25" class="ceramic" gearSlot="offhand" sounds="ceramic" iconFile="tablet" quality="2" >
+                <item id="tabletSilver" name="Illuminated Tablet" ilvl="25" class="ceramic" gearSlot="offhand" sounds="ceramic" iconFile="tablet" quality="2" bind="equip" >
                     <stats cunning="14" energy="14" />
                     <offset x="-2" y="-6" />
                 </item>
             <item id="parchment" name="Parchment" ilvl="27" class="parchment" gearSlot="offhand" >
                 <stats cunning="15" energy="16" />
             </item>
-                <item id="parchmentSilver" name="Illuminated Parchment" ilvl="32" class="parchment" gearSlot="offhand" iconFile="parchment" quality="2" >
+                <item id="parchmentSilver" name="Illuminated Parchment" ilvl="32" class="parchment" gearSlot="offhand" iconFile="parchment" quality="2" bind="equip" >
                     <stats cunning="18" energy="20" />
                 </item>
 
@@ -589,7 +589,7 @@
                 <stats courage="10" />
                 <offset x="-5" y="-2" />
             </item>
-                <item id="tambourineSilver" name="Inlaid Tambourine" ilvl="20" class="tambourine" gearSlot="offhand" icon="tambourine" quality="2" >
+                <item id="tambourineSilver" name="Inlaid Tambourine" ilvl="20" class="tambourine" gearSlot="offhand" icon="tambourine" quality="2" bind="equip" >
                     <stats courage="14" />
                     <offset x="-5" y="-2" />
                 </item>
