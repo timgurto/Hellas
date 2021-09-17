@@ -108,6 +108,7 @@ class TestClient {
   const ClientObjectType &getFirstObjectType();
   const CQuest &getFirstQuest();
   CDroppedItem &getFirstDroppedItem();
+  const ClientItem &getFirstItem() const;
 
   const CQuest &findQuest(std::string id) const;
 

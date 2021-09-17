@@ -759,6 +759,8 @@ void CDataLoader::loadItems(XmlReader &xr) {
     auto ilvl = Level{1};
     if (xr.findAttr(elem, "ilvl", ilvl)) item.ilvl(ilvl);
 
+    item.initialiseLvlReq();
+
     auto quality = 0;
     if (xr.findAttr(elem, "quality", quality)) item.quality(quality);
 

@@ -611,3 +611,16 @@ TEST_CASE("Item levels", "[loading]") {
     }
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Level requirements on gear",
+                 "[loading]") {
+  GIVEN("an item with ilvl 10") {
+    useData(R"(
+      <item id="hat" ilvl="10" />
+    )");
+
+    THEN("the client knows it requires level 5") {
+      CHECK(client->getFirstItem().lvlReq() == 5);
+    }
+  }
+}

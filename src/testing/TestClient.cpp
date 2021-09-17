@@ -235,6 +235,12 @@ CDroppedItem &TestClient::getFirstDroppedItem() {
   return *asDroppedItem;  // To circumvent warning
 }
 
+const ClientItem &TestClient::getFirstItem() const {
+  auto &items = _client->gameData.items;
+  REQUIRE(!items.empty());
+  return items.begin()->second;
+}
+
 const CQuest &TestClient::findQuest(std::string id) const {
   return quests().find(id)->second;
 }
