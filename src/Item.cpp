@@ -53,7 +53,7 @@ void Item::initialiseLvlReq() {
 }
 
 static double qualityMultiplierForItemHealth(Item::Quality quality) {
-  const auto QUALITY_EXPONENT = 1.2;
+  const auto QUALITY_EXPONENT = 1.1;
   const auto Q0 = 1.0;
   const auto Q1 = QUALITY_EXPONENT;
   const auto Q2 = Q1 * QUALITY_EXPONENT;
@@ -76,7 +76,7 @@ static double qualityMultiplierForItemHealth(Item::Quality quality) {
 }
 
 void Item::initialiseMaxHealthFromIlvlAndQuality() {
-  const auto base = 9;
+  const auto base = 3;
   const auto qualityMultiplier = qualityMultiplierForItemHealth(_quality);
   auto raw = base + qualityMultiplier * _ilvl;
 
