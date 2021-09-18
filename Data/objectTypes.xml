@@ -22,10 +22,18 @@
     allowedTerrain="fertile" >
     <yield id="log" initialMean="5.5" initialSD="1" initialMin="1" />
     <yield id="stick" initialMean="2" initialSD="1" />
+    <yield id="pineSapling" chance="0.2" />
     <collisionRect x="-5" y="-4" w="10" h="7" />
 </objectType>
 <objectType id="dummyTree" name="Pine Tree" xDrawOffset="-21" yDrawOffset="-96" imageFile="tree" allowedTerrain="tutSticks" isDecoration="1">
     <collisionRect x="-5" y="-4" w="10" h="7" />
+</objectType>
+<objectType id="pineSapling" name="Pine Sapling"
+    allowedTerrain="fertile"
+    xDrawOffset="-5" yDrawOffset="-12" >
+    <collisionRect x="-5" y="-4" w="10" h="7" />
+    <transform id="tree" time="72000000" /> <!-- 20h -->
+    <unlockedBy />
 </objectType>
 
 <objectType id="fire" name="Cooking Fire" healthCategory="primitiveWeak"

@@ -41,6 +41,7 @@
 
 <item id="figSeeds"     name="Fig Seeds"      sounds="seeds"     constructs="figTree0"       stackSize="10"/>
 <item id="flaxSeeds"    name="Flax Seeds"     sounds="seeds"     constructs="flaxCrop0"      stackSize="10"/>
+<item id="pineSapling"  name="Pine Sapling"                      constructs="pineSapling"    stackSize="10"/>
 
 <item id="tinTube"      name="Metal Tube"     ilvl="15" class="tinJunk" sounds="metalTool" > <tag name="wireDrawing" /> </item>
 <item id="pole1"		name="Crude Pole"     sounds="wood" />
