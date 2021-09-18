@@ -111,11 +111,9 @@ For the salvage recipes, use these unlocks:
     <canBeScrapped result="rock" mean="0" sd="0.39" />
 </itemClass>
 <itemClass id="stoneKnife">
-    <canBeRepaired cost="knapper" />
     <canBeScrapped result="rock" mean="0" sd="0.39" />
 </itemClass>
 <itemClass id="stoneAxe">
-    <canBeRepaired cost="knapper" />
     <canBeScrapped result="rock" mean="0" sd="0.39" />
 </itemClass>
 
