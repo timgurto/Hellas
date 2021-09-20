@@ -100,7 +100,8 @@
     <material id="brick" quantity="20" />
     <material id="crudeClay" quantity="12" />
     <material id="charcoal" />
-    <unlockedBy gather="brick" />
+    <unlockedBy gather="brick" chance="0.05" />
+    <unlockedBy recipe="charcoal" />
     <transform id="extinguishedKiln" time="120000" />
     <particles profile="smoke" x="-1" y="-23" />
     <canBeRepaired cost="brick" />
