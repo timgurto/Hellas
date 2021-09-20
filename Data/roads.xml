@@ -25,7 +25,7 @@
     <collisionRect x="-16" y="-16" w="32" h="32" />
     <grantsBuff id="roadMovement2" radius="0" />
     <material id="brick" quantity="4" />
-    <unlockedBy recipe="brick" chance="0.02" />
+    <unlockedBy gather="brick" chance="0.02" />
     <unlockedBy construction="rockRoad" chance="0.02" />
     <canBeRepaired cost="brick" />
 </objectType>

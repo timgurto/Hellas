@@ -106,7 +106,7 @@
     <tag name="water" toolSpeed="1.15" />
     <material id="brick" quantity="12" />
     <material id="rope" quantity="1" />
-    <!--unlockedBy recipe="brick" chance="0.04" /-->
+    <!--unlockedBy gather="brick" chance="0.04" /-->
     <unlockedBy construction="rockWell" chance="0.2" />
     <canBeRepaired cost="brick" />
 </XobjectType>

@@ -44,7 +44,7 @@
     sounds="brick" damageParticles="brick" >
     <collisionRect x="-60" y="-2" w="120" h="6" />
     <material id="brick" quantity="12" />
-    <unlockedBy recipe="brick" chance="0.05" />
+    <unlockedBy gather="brick" chance="0.05" />
     <unlockedBy construction="brickWallNS" />
     <canBeRepaired cost="brick" />
 </objectType>
@@ -53,7 +53,7 @@
     sounds="brick" damageParticles="brick" >
     <collisionRect x="-3" y="-60" w="6" h="120" />
     <material id="brick" quantity="12" />
-    <unlockedBy recipe="brick" chance="0.05" />
+    <unlockedBy gather="brick" chance="0.05" />
     <unlockedBy construction="brickWallEW" />
     <canBeRepaired cost="brick" />
 </objectType>

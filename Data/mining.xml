@@ -56,7 +56,7 @@
     <material id="brick" quantity="6" />
     <material id="lumber" quantity="9" />
     <unlockedBy recipe="tinPick" chance="0.2" />
-    <unlockedBy recipe="brick" chance="0.02" />
+    <unlockedBy gather="brick" chance="0.02" />
     <unlockedBy recipe="tinBar" chance="0.05" />
     <unlockedBy gather="tin" chance="0.02" />
 </objectType>
@@ -78,7 +78,7 @@
     <material id="brick" quantity="6" />
     <material id="lumber" quantity="9" />
     <unlockedBy recipe="tinPick" chance="0.1" />
-    <unlockedBy recipe="brick" chance="0.01" />
+    <unlockedBy gather="brick" chance="0.01" />
     <unlockedBy recipe="copperBar" chance="0.1" />
     <unlockedBy gather="copper" chance="0.05" />
 </objectType>

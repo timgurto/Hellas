@@ -505,14 +505,7 @@
     id="charcoal" time="12000" >
     <material id="log" />
     <tool class="charcoalMaking" />
-    <unlockedBy recipe="brick" />
-</recipe>
-
-<recipe
-    id="brick" time="12000" >
-    <material id="clay" quantity="4" />
-    <tool class="pottery1" />
-    <unlockedBy recipe="clay" />
+    <unlockedBy gather="brick" />
 </recipe>
 
 <recipe
