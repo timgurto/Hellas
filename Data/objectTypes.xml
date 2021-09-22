@@ -369,6 +369,7 @@
     <material id="fat" />
     <tag name="woodTurning" />
     <unlockedBy recipe="tinTube" chance="0.3" />
+    <unlockedBy recipe="tinSpear" chance="0.1" />
     <canBeRepaired cost="tinTube" />
 </objectType>
 
