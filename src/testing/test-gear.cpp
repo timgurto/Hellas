@@ -142,28 +142,24 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Level requirements",
   }
 }
 
-TEST_CASE("Level requirements enforced on already-equipped gear",
-          "[gear][leveling]") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Level requirements enforced on already-equipped gear",
+                 "[gear][leveling]") {
   GIVEN("a level-2 hat that gives 1000 health") {
-    auto data = R"(
+    useData(R"(
       <item id="hat" lvlReq="2" gearSlot="head" >
         <stats health="1000" />
       </item>
-    )";
-    auto s = TestServer::WithDataString(data);
+    )");
+    const auto &hat = server->findItem("hat");
 
     AND_GIVEN("a level-1 user wearing one") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      const auto &hat = s.findItem("hat");
-
-      user.gear(0) = {
-          &hat, ServerItem::Instance::ReportingInfo::UserGear(&user, 0), 1};
-      user.updateStats();
+      user->gear(0) = {
+          &hat, ServerItem::Instance::ReportingInfo::UserGear(user, 0), 1};
+      user->updateStats();
 
       THEN("his health is less than 1000") {
-        CHECK(user.stats().maxHealth < 1000);
+        CHECK(user->stats().maxHealth < 1000);
       }
     }
   }
