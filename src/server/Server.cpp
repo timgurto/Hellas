@@ -182,6 +182,8 @@ void Server::run() {
 
   if (!_dataLoaded) DataLoader::FromPath(*this).load();
   initialiseData();
+  publishGameData();
+
   loadWorldState();
   if (!cmdLineArgs.contains("nospawn")) spawnInitialObjects();
 

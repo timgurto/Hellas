@@ -103,6 +103,8 @@ class ServerItem : public Item {
   const ServerItem *_returnsOnCast{nullptr};
   bool _isLostOnCast{true};
 
+  std::string _iconFile{};  // Used for logging purposes
+
   bool _loaded{false};
 
   std::string _exclusiveToQuest{};
@@ -132,6 +134,8 @@ class ServerItem : public Item {
   bool valid() const { return _loaded; }
   void loaded() { _loaded = true; }
   bool canBeRepaired() const;
+  void iconFile(std::string filename) { _iconFile = filename; }
+  std::string iconFile() const { return _iconFile; }
 
   void fetchAmmoItem() const override;
 };

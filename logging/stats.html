@@ -38,6 +38,7 @@
 </body>
 
 <script type="text/javascript" src="stats.js"></script>
+<script type="text/javascript" src="gameData.js"></script>
 <script type="text/javascript">
     function make2Digits(n){
         return ("0" + n).slice(-2)
@@ -95,10 +96,15 @@
         var gearText = "";
         for (var i = 0; i < user.gear.length; ++i){
             var id = user.gear[i].id;
+            var item = itemsByID[id];
             var qty = user.gear[i].qty;
             var icon = "<img width='16px'/>";
-            if (id != "")
-                icon = "<img width='16px' src='../Images/Items/" + id + ".png' title='" + id + "'>";
+            
+            if (id != ""){
+                var iconFile = id;
+                if (item.hasOwnProperty("iconFile")) iconFile = item.iconFile;
+                icon = "<img width='16px' src='../Images/Items/" + iconFile + ".png' title='" + id + "'>";
+            }
             gearText += icon;
         }
         cells += "<td>" + gearText + "</td>";
@@ -106,10 +112,14 @@
         var inventoryText = "";
         for (var i = 0; i < user.inventory.length; ++i){
             var id = user.inventory[i].id;
+            var item = itemsByID[id];
             var qty = user.inventory[i].qty;
             var icon = "<img width='16px'/>";
-            if (id != "")
-                icon = "<img width='16px' src='../Images/Items/" + id + ".png' title='" + id + "'>";
+            if (id != ""){
+                var iconFile = id;
+                if (item.hasOwnProperty("iconFile")) iconFile = item.iconFile;
+                icon = "<img width='16px' src='../Images/Items/" + iconFile + ".png' title='" + id + "'>";
+            }
             inventoryText += icon;
         }
         cells += "<td>" + inventoryText + "</td>";
@@ -167,6 +177,11 @@
             
         return a.name - b.name
     });
+    
+    var itemsByID = [];
+    for (var i = 0; i < items.length; ++i){
+        itemsByID[items[i].id] = items[i];    
+    }
     
     var numPlayersOnline = 0;
     for (var i = 0; i < stats.users.length; ++i){

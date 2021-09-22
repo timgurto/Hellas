@@ -689,6 +689,9 @@ void DataLoader::loadItems(XmlReader &xr) {
 
     item.initialiseMaxHealthFromIlvlAndQuality();
 
+    auto iconFile = ""s;
+    if (xr.findAttr(elem, "iconFile", iconFile)) item.iconFile(iconFile);
+
     auto stackSize = size_t{};
     if (xr.findAttr(elem, "stackSize", stackSize)) item.stackSize(stackSize);
 

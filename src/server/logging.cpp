@@ -91,6 +91,22 @@ std::map<std::string, int> Server::getUsersFromFiles() {
   return users;
 }
 
+void Server::publishGameData() {
+  auto ofs = std::ofstream{"logging/gameData.js"};
+
+  ofs << "items=[\n";
+  for (const auto &item : _items) {
+    ofs << "{";
+    ofs << "id: \"" << item.id() << "\"";
+
+    if (!item.iconFile().empty())
+      ofs << ", iconFile: \"" << item.iconFile() << "\"";
+
+    ofs << "},\n";
+  }
+  ofs << "];\n";
+}
+
 void Server::publishStats() {
   static auto publishingStats = false;
   if (publishingStats) return;
