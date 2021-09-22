@@ -323,8 +323,8 @@ Mark graveyard on map: not hardcoded
 <object id="tradeMatBottomless4" x="33030" y="33590" >
     <merchant slot="0" wareItem="pumpkinPotionRecipe" priceItem="pumpkin" priceQty="5" />
     <merchant slot="1" wareItem="jackOLanternRecipe" priceItem="pumpkin" priceQty="5" />
-    <merchant slot="2" wareItem="witchRobe" priceItem="pumpkin" priceQty="5" />
-    <merchant slot="3" wareItem="witchHat" priceItem="pumpkin" priceQty="5" />
+    <merchant slot="2" wareItem="witchRobe" priceItem="pumpkin" priceQty="10" />
+    <merchant slot="3" wareItem="witchHat" priceItem="pumpkin" priceQty="10" />
     <owner type="player" name="the Alchemist" />
 </object>
 
