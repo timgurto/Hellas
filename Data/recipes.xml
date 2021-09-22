@@ -97,6 +97,7 @@
         <material id="crudeClay" quantity="2" />
         <tool class="pottery1" />
         <unlockedBy gather="tin" chance="0.04" />
+        <unlockedBy recipe="supportBeam" />
     </recipe>
     <recipe id="knifeMould"
         time="12000" >
@@ -119,6 +120,14 @@
         <material id="crudeClay" quantity="2" />
         <tool class="pottery1" />
         <unlockedBy gather="crudeClay" chance="0.02" />
+    </recipe>
+    <recipe id="bracketMould"
+        time="12000" >
+        <material id="crudeClay" quantity="2" />
+        <tool class="pottery1" />
+        <unlockedBy recipe="tinBar" chance="0.05" />
+        <unlockedBy recipe="tinPick" />
+        <unlockedBy gather="tin" chance="0.01" />
     </recipe>
     <recipe id="sawMould"
         time="12000" >

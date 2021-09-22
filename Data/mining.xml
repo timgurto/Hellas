@@ -39,6 +39,23 @@
     <yield id="rock" initialMean="2" initialSD="2" />
 </objectType>
 
+<item id="tinBracket" name="Metal Bracket" stackSize="20" />
+<recipe id="tinBracket"
+    time="4000" >
+    <material id="tinBar" />
+    <tool class="smelting1" />
+    <tool class="bracketMould" />
+    <unlockedBy recipe="bracketMould" />
+</recipe>
+
+<item id="supportBeam" name="Support Beam" stackSize="10" />
+<recipe id="supportBeam"
+    time="1000" >
+    <material id="lumber" />
+    <material id="tinBracket" quantity="2" />
+    <unlockedBy recipe="tinBracket" />`
+</recipe>
+
 <objectType id="copper" name="Copper Deposit"
     xDrawOffset="-13" yDrawOffset="-11" isFlat="1"
     allowedTerrain="rocky"
@@ -51,14 +68,11 @@
     allowedTerrain="rocksAndMountains"
     constructionTime="0" constructionReq="copperDeposit" >
     <collisionRect x="-59" y="-38" w="119" h="61" />
-    <yield id="copper" initialMean="10" initialSD="2" initialMin="1" />
+    <yield id="copper" initialMean="12" initialSD="2.5" initialMin="1" />
     <yield id="rock" initialMean="6" initialSD="2" />
-    <material id="brick" quantity="6" />
-    <material id="lumber" quantity="9" />
-    <unlockedBy recipe="tinPick" chance="0.2" />
-    <unlockedBy gather="brick" chance="0.02" />
-    <unlockedBy recipe="tinBar" chance="0.05" />
-    <unlockedBy gather="tin" chance="0.02" />
+    <material id="brick" quantity="4" />
+    <material id="supportBeam" quantity="3" />
+    <unlockedBy recipe="supportBeam" />
 </objectType>
 
 <objectType id="silver" name="Silver Deposit"
@@ -75,12 +89,10 @@
     <collisionRect x="-59" y="-38" w="119" h="61" />
     <yield id="silver" initialMean="4" initialSD="2" initialMin="1" />
     <yield id="rock" initialMean="4" initialSD="2" />
-    <material id="brick" quantity="6" />
-    <material id="lumber" quantity="9" />
-    <unlockedBy recipe="tinPick" chance="0.1" />
-    <unlockedBy gather="brick" chance="0.01" />
-    <unlockedBy recipe="copperBar" chance="0.1" />
-    <unlockedBy gather="copper" chance="0.05" />
+    <material id="brick" quantity="4" />
+    <material id="supportBeam" quantity="3" />
+    <unlockedBy recipe="supportBeam" chance="0.05" />
+    <unlockedBy construction="copperMine" chance="0.2" />
 </objectType>
 
 </root>

@@ -52,6 +52,7 @@
 <item id="axeMould"     name="Axe Mould"      ilvl="8"  class="mould" sounds="ceramic" >   <tag name="axeMould" />   </item>
 <item id="hammerMould"  name="Hammer Mould"   ilvl="8"  class="mould" sounds="ceramic" >   <tag name="hammerMould" />   </item>
 <item id="tubeMould"    name="Tube Mould"     ilvl="8"  class="mould" sounds="ceramic" >   <tag name="tubeMould" />  </item>
+<item id="bracketMould" name="Bracket Mould"  ilvl="8"  class="mould" sounds="ceramic" >   <tag name="bracketMould" />  </item>
 <item id="sawMould"     name="Saw Mould"      ilvl="8"  class="mould" sounds="ceramic" >   <tag name="sawMould" />   </item>
 <item id="scaleMould"   name="Scale Mould"    ilvl="8"  class="mould" sounds="ceramic" >   <tag name="scaleMould" /> </item>
 <item id="spearMould"   name="Spear Mould"    ilvl="8"  class="mould" sounds="ceramic" >   <tag name="spearMould" /> </item>

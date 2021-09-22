@@ -1,13 +1,14 @@
 <root>
 
-<tag id="axeMould"    name="Axe Casting" />
-<tag id="hammerMould" name="Hammer Casting" />
-<tag id="knifeMould"  name="Knife Casting" />
-<tag id="pickMould"   name="Pick Casting" />
-<tag id="sawMould"    name="Saw Casting" />
-<tag id="scaleMould"  name="Scale Casting" />
-<tag id="spearMould"  name="Spear Casting" />
-<tag id="tubeMould"   name="Tube Casting" />
+<tag id="axeMould"     name="Axe Casting" />
+<tag id="bracketMould" name="Bracket Casting" />
+<tag id="hammerMould"  name="Hammer Casting" />
+<tag id="knifeMould"   name="Knife Casting" />
+<tag id="pickMould"    name="Pick Casting" />
+<tag id="sawMould"     name="Saw Casting" />
+<tag id="scaleMould"   name="Scale Casting" />
+<tag id="spearMould"   name="Spear Casting" />
+<tag id="tubeMould"    name="Tube Casting" />
 
 <tag id="carpentry"         name="Carpentry" />
 <tag id="carving"           name="Carving" />
