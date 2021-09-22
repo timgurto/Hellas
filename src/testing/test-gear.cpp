@@ -70,9 +70,10 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Level requirements",
   GIVEN("a fancy hat that requires level 2, and a plain hat with no req") {
     useData(R"(
       <item id="plainHat" gearSlot="head" />
-      <item id="fancyHat" lvlReq="2" gearSlot="head" />
+      <item id="fancyHat" ilvl="7" gearSlot="head" />
     )");
     const auto &fancyHat = server->findItem("fancyHat");
+    REQUIRE(fancyHat.lvlReq() == 2);
 
     AND_GIVEN("a level-1 user with a fancy hat") {
       user->giveItem(&fancyHat);
