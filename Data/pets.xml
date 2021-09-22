@@ -31,8 +31,8 @@
 <item id="collar" name="Collar" class="linenJunk"
     sounds="fabric" stackSize="10"/>
     <recipe id="collar" time="10000">
-        <material id="linenCloth" />
-        <material id="linenThread" />
+        <material id="linenCloth" quantity="7" />
+        <material id="linenThread" quantity="5" />
         <tool class="sewing" />
         <unlockedBy recipe="linenCloth" chance="0.1" />
     </recipe>
