@@ -1,12 +1,12 @@
 <root>
 
-<objectType id="raft" name="Raft" healthCategory="logVehicle"
+<objectType id="raft" name="Raft" healthCategory="primitiveVehicle"
     xDrawOffset="-16" yDrawOffset="-11"
     allowedTerrain="shallowWater"
     isVehicle="1" vehicleSpeed="0.65" >
     <driver x="0" y="0" />
     <collisionRect x="-5" y="-2" w="10" h="4" />
-    <material id="log" quantity="8" />
+    <material id="log" quantity="12" />
     <unlockedBy gather="log" chance="0.1" />
 </objectType>
 
@@ -16,8 +16,9 @@
     isVehicle="1" vehicleSpeed="1.25" >
     <driver x="11" y="12" cutOffBottom="27" />
     <collisionRect x="-5" y="-2" w="10" h="4" />
+    <material id="log" quantity="10" />
     <material id="stick" quantity="40" />
-    <material id="rope" quantity="4" />
+    <material id="rope" quantity="2" />
     <unlockedBy recipe="rope" chance="0.05" />
     <unlockedBy construction="raft" chance="0.1" />
 </objectType>
@@ -29,8 +30,8 @@
     <driver x="-32" y="-12" />
     <collisionRect x="-5" y="-2" w="10" h="4" />
     <container slots="5" />
-    <material id="lumber" quantity="25" />
-    <material id="rope" quantity="6" />
+    <material id="lumber" quantity="50" />
+    <material id="rope" quantity="5" />
     <material id="linenCloth" quantity="9" />
     <unlockedBy recipe="lumber" chance="0.05" />
     <unlockedBy recipe="linenCloth" chance="0.02" />

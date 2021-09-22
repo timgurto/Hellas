@@ -4,7 +4,7 @@
     damageParticles="wood" sounds="wood"
     xDrawOffset="-46" yDrawOffset="-31" >
     <collisionRect x="-45" y="-3" w="90" h="6" />
-    <material id="log" quantity="15" />
+    <material id="log" quantity="12" />
     <unlockedBy gather="log" chance="0.05" />
     <unlockedBy construction="palisadeNS" />
     <canBeRepaired cost="log" />
@@ -13,7 +13,7 @@
     damageParticles="wood" sounds="wood"
     xDrawOffset="-3" yDrawOffset="-73" >
     <collisionRect x="-3" y="-45" w="6" h="90" />
-    <material id="log" quantity="15" />
+    <material id="log" quantity="12" />
     <unlockedBy gather="log" chance="0.05" />
     <unlockedBy construction="palisadeEW" />
     <canBeRepaired cost="log" />
@@ -23,7 +23,7 @@
     isGate="1"
     xDrawOffset="-17" yDrawOffset="-45" >
     <collisionRect x="-14" y="-2" w="30" h="5" />
-    <material id="log" quantity="8" /> <!-- Half price, less than half size.  Otherwise no incentive to build normal walls. -->
+    <material id="log" quantity="6" /> <!-- Half price, less than half size.  Otherwise no incentive to build normal walls. -->
     <unlockedBy construction="palisadeNS" />
     <unlockedBy construction="palisadeEW" />
     <canBeRepaired cost="log" />
@@ -33,7 +33,7 @@
     isGate="1"
     xDrawOffset="-3" yDrawOffset="-60" >
     <collisionRect x="-2" y="-15" w="6" h="30" />
-    <material id="log" quantity="8" /> <!-- Half price, less than half size.  Otherwise no incentive to build normal walls. -->
+    <material id="log" quantity="6" /> <!-- Half price, less than half size.  Otherwise no incentive to build normal walls. -->
     <unlockedBy construction="palisadeNS" />
     <unlockedBy construction="palisadeEW" />
     <canBeRepaired cost="log" />
@@ -43,7 +43,7 @@
     xDrawOffset="-61" yDrawOffset="-42"
     sounds="brick" damageParticles="brick" >
     <collisionRect x="-60" y="-2" w="120" h="6" />
-    <material id="brick" quantity="12" />
+    <material id="brick" quantity="24" />
     <unlockedBy gather="brick" chance="0.05" />
     <unlockedBy construction="brickWallNS" />
     <canBeRepaired cost="brick" />
@@ -52,7 +52,7 @@
     xDrawOffset="-3" yDrawOffset="-101"
     sounds="brick" damageParticles="brick" >
     <collisionRect x="-3" y="-60" w="6" h="120" />
-    <material id="brick" quantity="12" />
+    <material id="brick" quantity="24" />
     <unlockedBy gather="brick" chance="0.05" />
     <unlockedBy construction="brickWallEW" />
     <canBeRepaired cost="brick" />
@@ -62,7 +62,7 @@
     isGate="1"
     xDrawOffset="-21" yDrawOffset="-58" >
     <collisionRect x="-20" y="-2" w="40" h="6" />
-    <material id="brick" quantity="6" /> <!-- Half price, less than half size.  Otherwise no incentive to build normal walls. -->
+    <material id="brick" quantity="12" /> <!-- Half price, less than half size.  Otherwise no incentive to build normal walls. -->
     <unlockedBy construction="brickWallNS" />
     <unlockedBy construction="brickWallEW" />
     <canBeRepaired cost="brick" />
@@ -72,7 +72,7 @@
     isGate="1"
     xDrawOffset="-3" yDrawOffset="-48" >
     <collisionRect x="-3" y="-20" w="6" h="40" />
-    <material id="brick" quantity="6" /> <!-- Half price, less than half size.  Otherwise no incentive to build normal walls. -->
+    <material id="brick" quantity="12" /> <!-- Half price, less than half size.  Otherwise no incentive to build normal walls. -->
     <unlockedBy construction="brickWallNS" />
     <unlockedBy construction="brickWallEW" />
     <canBeRepaired cost="brick" />

@@ -69,7 +69,7 @@
     <tag name="charcoalMaking" />
     <tag name="smelting1" />
     <tag name="pottery1" />
-    <material id="rock" quantity="20" />
+    <material id="rock" quantity="40" />
     <material id="log" />
     <unlockedBy gather="rock" chance="0.1" />
     <unlockedBy construction="fire" chance="0.3" />
@@ -97,7 +97,7 @@
     <tag name="pottery1" toolSpeed="1.1" />
     <tag name="pottery2" />
     <tag name="charcoalMaking" toolSpeed="1.1" />
-    <material id="brick" quantity="20" />
+    <material id="brick" quantity="40" />
     <material id="crudeClay" quantity="12" />
     <material id="charcoal" />
     <unlockedBy gather="brick" chance="0.05" />
@@ -170,7 +170,7 @@
     <driver x="18" y="12" />
     <container slots="5" />
     <collisionRect x="-5" y="-2" w="10" h="4" />
-    <material id="lumber" quantity="8" />
+    <material id="lumber" quantity="16" />
     <material id="smallPot" quantity="5" />
     <unlockedBy recipe="lumber" chance="0.1" />
     <unlockedBy recipe="smallPot" chance="0.05" />
@@ -184,7 +184,7 @@
     <container slots="2" />
     <collisionRect x="-12" y="-8" w="25" h="17" />
     <material id="hide" quantity="1" />
-    <material id="smallPot" quantity="3" />
+    <material id="smallPot" quantity="4" />
     <unlockedBy recipe="smallPot" chance="0.1" />
     <canBeRepaired cost="smallPot" />
 </objectType>
@@ -196,8 +196,8 @@
     <container slots="4" />
     <collisionRect x="-16" y="-7" w="30" h="10" />
     <material id="linenCloth" quantity="2" />
-    <material id="lumber" quantity="12" />
-    <material id="mediumPot" quantity="1" />
+    <material id="lumber" quantity="10" />
+    <material id="mediumPot" quantity="2" />
     <unlockedBy recipe="lumber" chance="0.05" />
     <unlockedBy recipe="mediumPot" chance="0.1" />
     <unlockedBy construction="tradeMat" chance="0.3" />
@@ -218,12 +218,6 @@
     <tag name="clayRefinement" />
     <collisionRect x="-15" y="-4" w="31" h="8" />
     <canBeRepaired cost="tinTube" />
-</objectType>
-
-<objectType id="post" name="Post" healthCategory="lumberWeak"
-    xDrawOffset="-4" yDrawOffset="-47"
-    deconstructs="lumber" deconstructionTime="1000" damageParticles="wood" sounds="wood" >
-    <collisionRect x="-4" y="-4" w="8" h="8" />
 </objectType>
 
 <objectType id="wildFigTree" name="Wild Fig Tree"
@@ -346,8 +340,8 @@
     constructionTime="0"
     damageParticles="wood" sounds="wood">
     <collisionRect x="-17" y="-6" w="33" h="11" />
-    <material id="stick" quantity="8" />
-    <material id="linenThread" quantity="10" />
+    <material id="log" quantity="12" />
+    <material id="linenThread" quantity="12" />
     <tag name="weaving" />
     <unlockedBy recipe="linenThread" />
     <canBeRepaired cost="linenThread" />
@@ -358,8 +352,8 @@
     xDrawOffset="-10" yDrawOffset="-9"
     damageParticles="wood" sounds="wood">
     <collisionRect x="-10" y="-9" w="20" h="17" />
-    <material id="stick" quantity="4" />
-    <material id="rope" quantity="2" />
+    <material id="log" quantity="4" />
+    <material id="rope" quantity="4" />
     <tag name="leatherStretching" />
     <unlockedBy recipe="rope" />
     <canBeRepaired cost="rope" />
@@ -369,8 +363,8 @@
     xDrawOffset="-15" yDrawOffset="-30"
     constructionTime="0" >
     <collisionRect x="-14" y="-11" w="29" h="18" />
-    <material id="lumber" quantity="10" />
-    <material id="rope" quantity="2" />
+    <material id="lumber" quantity="30" />
+    <material id="rope" quantity="4" />
     <material id="tinTube" quantity="3" />
     <material id="fat" />
     <tag name="woodTurning" />
@@ -382,10 +376,10 @@
     constructionTime="0" 
     xDrawOffset="-11" yDrawOffset="-21" >
     <collisionRect x="-11" y="-5" w="22" h="11" />
-    <material id="lumber" quantity="8" />
-    <material id="rope" quantity="2" />
-    <material id="tinTube" quantity="1" />
-    <material id="rock" quantity="1" />
+    <material id="lumber" quantity="30" />
+    <material id="rope" quantity="4" />
+    <material id="tinTube" quantity="3" />
+    <material id="smoothRock" quantity="1" />
     <material id="fat" />
     <tag name="grinding1" toolSpeed="1.15" />
     <tag name="grinding2" />
@@ -444,7 +438,7 @@
     constructionTime="0" damageParticles="wood" sounds="wood" playerUnique="altar" >
     <collisionRect x="-13" y="-7" w="28" h="13" />
     <material id="woodenStatue" />
-    <material id="rock" quantity="8" />
+    <material id="rock" quantity="24" />
     <action label="Worship" target="setRespawnPoint" tooltip="Worshipping Hermes entreats him to return you to this location when you die." cost="entrails" />
     <unlockedBy recipe="woodenStatue" />
     <canBeRepaired cost="rock" />
@@ -457,7 +451,7 @@
     <action label="Worship" target="createCityOrTeachCityPort" tooltip="Worshipping Athena will found a city.  If you are already a citizen of a city, Athena will instead grant you the power to return immediately to her altar." textInput="City name" cost="entrails" />
     <onDestroy target="destroyCity" />
     <material id="tinStatue" />
-    <material id="brick" quantity="8" />
+    <material id="brick" quantity="24" />
     <unlockedBy recipe="tinStatue" />
     <canBeRepaired cost="brick" />
 </objectType>

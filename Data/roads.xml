@@ -15,7 +15,7 @@
     xDrawOffset="-16" yDrawOffset="-16" collides="0" isFlat="1">
     <collisionRect x="-16" y="-16" w="32" h="32" />
     <grantsBuff id="roadMovement1" radius="0" />
-    <material id="smoothRock" quantity="9" />
+    <material id="smoothRock" quantity="4" />
     <unlockedBy recipe="smoothRock" chance="0.2" />
     <unlockedBy gather="rock" chance="0.01" />
     <canBeRepaired cost="smoothRock" />
