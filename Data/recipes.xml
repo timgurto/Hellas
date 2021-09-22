@@ -119,7 +119,7 @@
         time="12000" >
         <material id="crudeClay" quantity="2" />
         <tool class="pottery1" />
-        <unlockedBy gather="crudeClay" chance="0.02" />
+        <unlockedBy gather="crudeClay" chance="0.05" />
     </recipe>
     <recipe id="bracketMould"
         time="12000" >
