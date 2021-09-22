@@ -37,3 +37,18 @@ td {
     padding-left: 7px;
     padding-right: 7px;
 }
+
+.item-quality-1 {
+}
+.item-quality-2 {
+    background-color: #1aff00;
+}
+.item-quality-3 {
+    background-color: #0066cc;
+}
+.item-quality-4 {
+    background-color: #9933e6;
+}
+.item-quality-5 {
+    background-color: #ff8000;
+}

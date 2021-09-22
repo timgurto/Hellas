@@ -99,6 +99,9 @@ void Server::publishGameData() {
     ofs << "{";
     ofs << "id: \"" << item.id() << "\"";
 
+    if (item.quality() != Item::COMMON)
+      ofs << ", quality: \"" << static_cast<int>(item.quality()) << "\"";
+
     if (!item.iconFile().empty())
       ofs << ", iconFile: \"" << item.iconFile() << "\"";
 

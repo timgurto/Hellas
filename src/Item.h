@@ -63,6 +63,7 @@ class Item : public HasTags {
   void ilvl(Level l) { _ilvl = l; }
   Hitpoints maxHealth() const { return _maxHealth; }
   void quality(int q) { _quality = static_cast<Quality>(q); }
+  Quality quality() const { return _quality; }
   void initialiseLvlReq();
   void initialiseMaxHealthFromIlvlAndQuality();
   bool canBeDamaged() const;

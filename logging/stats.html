@@ -103,7 +103,9 @@
             if (id != ""){
                 var iconFile = id;
                 if (item.hasOwnProperty("iconFile")) iconFile = item.iconFile;
-                icon = "<img width='16px' src='../Images/Items/" + iconFile + ".png' title='" + id + "'>";
+                icon = "<img width='16px' src='../Images/Items/" + iconFile + ".png' title='" + id + "'";
+                icon += " class='item-quality-" + item.quality + "'";
+                icon += ">";
             }
             gearText += icon;
         }
@@ -118,7 +120,9 @@
             if (id != ""){
                 var iconFile = id;
                 if (item.hasOwnProperty("iconFile")) iconFile = item.iconFile;
-                icon = "<img width='16px' src='../Images/Items/" + iconFile + ".png' title='" + id + "'>";
+                icon = "<img width='16px' src='../Images/Items/" + iconFile + ".png' title='" + id + "'";
+                icon += " class='item-quality-" + item.quality + "'";
+                icon += ">";
             }
             inventoryText += icon;
         }
@@ -180,7 +184,9 @@
     
     var itemsByID = [];
     for (var i = 0; i < items.length; ++i){
-        itemsByID[items[i].id] = items[i];    
+        var item = items[i];
+        if (!item.hasOwnProperty("quality")) item.quality = 1;
+        itemsByID[items[i].id] = item;
     }
     
     var numPlayersOnline = 0;
