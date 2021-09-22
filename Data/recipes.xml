@@ -629,7 +629,7 @@
     <unlockedBy recipe="water" />
 </recipe>
 <recipe
-    id="leather" time="10000" quantity="2" >
+    id="leather" time="6000" >
     <material id="hide" />
     <tool class="tanning" />
     <tool class="leatherStretching" />
