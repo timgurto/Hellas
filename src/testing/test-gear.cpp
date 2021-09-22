@@ -1,4 +1,5 @@
 #include "TestClient.h"
+#include "TestFixtures.h"
 #include "TestServer.h"
 #include "testing.h"
 
@@ -64,76 +65,74 @@ TEST_CASE("Damage is updated when a weapon depletes", "[gear][stats]") {
   }
 }
 
-TEST_CASE("Level requirements", "[gear][leveling]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Level requirements",
+                 "[gear][leveling]") {
   GIVEN("a fancy hat that requires level 2, and a plain hat with no req") {
-    auto data = R"(
+    useData(R"(
       <item id="plainHat" gearSlot="head" />
       <item id="fancyHat" lvlReq="2" gearSlot="head" />
-    )";
-    auto s = TestServer::WithDataString(data);
+    )");
+    const auto &fancyHat = server->findItem("fancyHat");
 
     AND_GIVEN("a level-1 user with a fancy hat") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      const auto &fancyHat = s.findItem("fancyHat");
-      user.giveItem(&fancyHat);
+      user->giveItem(&fancyHat);
 
       WHEN("he tries to equip it") {
-        c.sendMessage(CL_SWAP_ITEMS,
-                      makeArgs(Serial::Inventory(), 0, Serial::Gear(), 0));
+        client->sendMessage(
+            CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0, Serial::Gear(), 0));
 
         THEN("he is not wearing it") {
           REPEAT_FOR_MS(100);
-          CHECK(!user.gear(0).hasItem());
+          CHECK(!user->gear(0).hasItem());
         }
       }
 
       AND_GIVEN("he's level 2") {
-        user.levelUp();
+        user->levelUp();
 
         WHEN("he tries to equip it") {
-          c.sendMessage(CL_SWAP_ITEMS,
-                        makeArgs(Serial::Inventory(), 0, Serial::Gear(), 0));
+          client->sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0,
+                                                      Serial::Gear(), 0));
 
-          THEN("he is wearing it") { WAIT_UNTIL(user.gear(0).hasItem()); }
+          THEN("he is wearing it") { WAIT_UNTIL(user->gear(0).hasItem()); }
         }
       }
 
       WHEN("he tries to move it to inventory slot 1") {
-        c.sendMessage(CL_SWAP_ITEMS,
-                      makeArgs(Serial::Inventory(), 0, Serial::Inventory(), 1));
+        client->sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0,
+                                                    Serial::Inventory(), 1));
 
         THEN("inventory slot 1 has an item") {
-          WAIT_UNTIL(user.inventory(1).hasItem());
+          WAIT_UNTIL(user->inventory(1).hasItem());
         }
       }
 
       AND_GIVEN("he is already wearing a plain hat") {
-        const auto &plainHat = s.findItem("plainHat");
-        user.gear(0) = {&plainHat,
-                        ServerItem::Instance::ReportingInfo::UserGear(&user, 0),
-                        1};
+        const auto &plainHat = server->findItem("plainHat");
+        user->gear(0) = {&plainHat,
+                         ServerItem::Instance::ReportingInfo::UserGear(user, 0),
+                         1};
 
         WHEN("he tries to swap it for the fancy hat") {
-          c.sendMessage(CL_SWAP_ITEMS,
-                        makeArgs(Serial::Gear(), 0, Serial::Inventory(), 0));
+          client->sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Gear(), 0,
+                                                      Serial::Inventory(), 0));
 
           THEN("he is still wearing the plain hat") {
             REPEAT_FOR_MS(100);
-            CHECK(user.gear(0).type()->id() == "plainHat");
+            CHECK(user->gear(0).type()->id() == "plainHat");
           }
         }
 
         AND_GIVEN("he is level 2") {
-          user.levelUp();
+          user->levelUp();
 
           WHEN("he tries to swap it for the fancy hat") {
-            c.sendMessage(CL_SWAP_ITEMS,
-                          makeArgs(Serial::Gear(), 0, Serial::Inventory(), 0));
+            client->sendMessage(
+                CL_SWAP_ITEMS,
+                makeArgs(Serial::Gear(), 0, Serial::Inventory(), 0));
 
             THEN("he is wearing the fancy hat") {
-              WAIT_UNTIL(user.gear(0).type()->id() == "fancyHat");
+              WAIT_UNTIL(user->gear(0).type()->id() == "fancyHat");
             }
           }
         }
