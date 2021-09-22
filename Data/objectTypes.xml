@@ -193,7 +193,7 @@
     xDrawOffset="-20"
     yDrawOffset="-35"
     merchantSlots="2" >
-    <container slots="4" />
+    <container slots="5" />
     <collisionRect x="-16" y="-7" w="30" h="10" />
     <material id="linenCloth" quantity="2" />
     <material id="lumber" quantity="10" />
