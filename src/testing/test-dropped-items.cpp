@@ -532,9 +532,11 @@ TEST_CASE("Dropped items are persistent", "[persistence][dropped-items]") {
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Dropped items preserve item damage",
-                 "[dropped-items]") {
+                 "[dropped-items][damage-on-use]") {
   GIVEN("a user has an item") {
-    useData("<item id=\"box\"/>");
+    useData(R"(
+      <item id="box"/>
+    )");
     user->giveItem(&server->getFirstItem());
 
     AND_GIVEN("it is damaged") {
@@ -549,6 +551,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Dropped items preserve item damage",
         WAIT_UNTIL(server->entities().size() == 1);
         auto &serverDroppedItem = server->getFirstDroppedItem();
         CHECK(serverDroppedItem.health() == itemHealth);
+        WAIT_UNTIL(!slot0.hasItem());
 
         AND_WHEN("he picks it back up") {
           WAIT_UNTIL(client->entities().size() == 2);
@@ -557,7 +560,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Dropped items preserve item damage",
 
           THEN("it is still damaged") {
             WAIT_UNTIL(slot0.hasItem());
-            CHECK(slot0.health() == itemHealth);
+            WAIT_UNTIL(slot0.health() == itemHealth);
           }
         }
       }
@@ -565,7 +568,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Dropped items preserve item damage",
   }
 }
 
-TEST_CASE("Dropped-item health is persistent", "[persistence][dropped-items]") {
+TEST_CASE("Dropped-item health is persistent",
+          "[persistence][dropped-items][damage-on-use]") {
   // For different values of n
   for (const auto testHealth : std::vector<Hitpoints>{5, 6}) {
     // Given a dropped item with n health
