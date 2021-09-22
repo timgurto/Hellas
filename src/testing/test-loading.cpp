@@ -11,12 +11,6 @@ TEST_CASE("Read XML file with root only", "[loading]") {
     ;
 }
 
-TEST_CASE("Invalid items are removed", "[loading]") {
-  TestServer s = TestServer::WithData("fake_item");
-  auto it = s.items().find(ServerItem("fakeStone"));
-  CHECK(it == s.items().end());
-}
-
 TEST_CASE("No crash on bad data", "[loading]") {
   TestServer s = TestServer::WithData("this_doesnt_exist");
 }
