@@ -147,11 +147,12 @@ TEST_CASE_METHOD(ServerAndClientWithData,
                  "[gear][leveling]") {
   GIVEN("a level-2 hat that gives 1000 health") {
     useData(R"(
-      <item id="hat" lvlReq="2" gearSlot="head" >
+      <item id="hat" ilvl="7" gearSlot="head" >
         <stats health="1000" />
       </item>
     )");
     const auto &hat = server->findItem("hat");
+    REQUIRE(hat.lvlReq() == 2);
 
     AND_GIVEN("a level-1 user wearing one") {
       user->gear(0) = {
