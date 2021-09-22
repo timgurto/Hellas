@@ -697,12 +697,11 @@ void ClientObject::assembleWindow(Client &client) {
     _window = Window::WithRectAndTitle({}, objType.name(), _client.mouse());
 
   const auto windowHasClassContent = addClassSpecificStuffToWindow();
-  const auto hasNonStandardContent = windowHasClassContent || hasContainer ||
-                                     isMerchant || canCede || hasAQuest ||
-                                     objType.hasAction() ||
-                                     objType.canDeconstruct() || hasWindowText;
-  const auto hasAnyContent =
-      hasNonStandardContent || canGiveAway || canDemolish;
+  auto hasNonStandardContent = windowHasClassContent || hasContainer ||
+                               isMerchant || canCede || hasAQuest ||
+                               objType.hasAction() ||
+                               objType.canDeconstruct() || hasWindowText;
+  auto hasAnyContent = hasNonStandardContent || canGiveAway || canDemolish;
 
   if (isAlive()) {
     if (isBeingConstructed()) {
