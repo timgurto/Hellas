@@ -14,7 +14,7 @@ DroppedItem::DroppedItem(const ServerItem &itemType, Hitpoints health,
                          const MapPoint &location)
     : Entity(&TYPE, location),
       _quantity(quantity),
-      _health(health),
+      _itemHealth(health),
       _itemType(itemType),
       _suffix(suffix) {
   // Once-off init
@@ -26,11 +26,11 @@ void DroppedItem::sendInfoToClient(const User &targetUser, bool isNew) const {
   targetUser.sendMessage(
       {SV_DROPPED_ITEM_INFO,
        makeArgs(serial(), location().x, location().y, _itemType.id(), _quantity,
-                _health, _suffix, isNewArg)});
+                _itemHealth, _suffix, isNewArg)});
 }
 
 void DroppedItem::getPickedUpBy(User &user) {
-  auto remainder = user.giveItem(&_itemType, _quantity, _health, _suffix);
+  auto remainder = user.giveItem(&_itemType, _quantity, _itemHealth, _suffix);
 
   if (remainder == _quantity) {
     user.sendMessage({WARNING_INVENTORY_FULL});
@@ -39,8 +39,8 @@ void DroppedItem::getPickedUpBy(User &user) {
 
   if (remainder > 0) {
     user.sendMessage({WARNING_INVENTORY_FULL});
-    Server::instance().addEntity(
-        new DroppedItem(_itemType, _health, remainder, _suffix, location()));
+    Server::instance().addEntity(new DroppedItem(
+        _itemType, _itemHealth, remainder, _suffix, location()));
   }
 
   markForRemoval();

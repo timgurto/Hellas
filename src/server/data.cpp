@@ -838,7 +838,7 @@ void DroppedItem::writeToXML(XmlWriter &xw) const {
   if (_quantity > 1) xw.setAttr(e, "qty", _quantity);
   xw.setAttr(e, "x", location().x);
   xw.setAttr(e, "y", location().y);
-  if (_health < _itemType.maxHealth()) xw.setAttr(e, "health", _health);
+  if (_itemHealth < _itemType.maxHealth()) xw.setAttr(e, "health", _itemHealth);
   if (!_suffix.empty()) xw.setAttr(e, "suffix", _suffix);
 }
 

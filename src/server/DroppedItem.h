@@ -23,7 +23,7 @@ class DroppedItem : public Entity {
   bool canBeAttackedBy(const User &) const override { return false; }
   bool areOverlapsAllowedWith(const Entity &rhs) const override;
   void getPickedUpBy(User &user);
-  Hitpoints health() const { return _health; }
+  Hitpoints itemHealth() const { return _itemHealth; }
   std::string suffix() const { return _suffix; }
 
   void writeToXML(XmlWriter &xw) const override;
@@ -33,6 +33,6 @@ class DroppedItem : public Entity {
  private:
   const ServerItem &_itemType{nullptr};
   size_t _quantity;
-  Hitpoints _health;
+  Hitpoints _itemHealth;
   std::string _suffix;
 };

@@ -572,12 +572,18 @@ TEST_CASE("Dropped-item health is persistent",
           "[persistence][dropped-items][damage-on-use]") {
   // For different values of n
   for (const auto testHealth : std::vector<Hitpoints>{5, 6}) {
+    INFO("n = "s + toString(testHealth));
+
     // Given a dropped item with n health
-    auto data = "<item id=\"thing\"/>";
+    auto data = R"(
+      <item id="thing" ilvl="10"/>
+    )";
     {
       auto s = TestServer::WithDataString(data);
       const auto &thing = s.getFirstItem();
       s->addEntity(new DroppedItem(thing, testHealth, 1, {}, {20, 20}));
+      const auto &droppedThing = s.getFirstDroppedItem();
+      CHECK(droppedThing.itemHealth() == testHealth);
 
       // When the server restarts
     }
@@ -587,7 +593,7 @@ TEST_CASE("Dropped-item health is persistent",
       // Then it still has n health
       WAIT_UNTIL(s.entities().size() == 1);
       const auto &thing = s.getFirstDroppedItem();
-      CHECK(thing.health() == testHealth);
+      CHECK(thing.itemHealth() == testHealth);
     }
   }
 }
