@@ -328,6 +328,8 @@ TEST_CASE("Items loaded from data have the correct suffix", "[suffixes]") {
         server.waitForUsers(1);
         auto &alice = server.getFirstUser();
 
+        alice.clearInventory();
+        alice.clearGear();
         alice.giveItem(shield);
         client.sendMessage(
             CL_SWAP_ITEMS,
