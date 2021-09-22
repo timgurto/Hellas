@@ -696,12 +696,13 @@ void ClientObject::assembleWindow(Client &client) {
   if (!_window)
     _window = Window::WithRectAndTitle({}, objType.name(), _client.mouse());
 
-  auto windowHasClassContent = addClassSpecificStuffToWindow();
-  auto hasNonDemolitionContent = windowHasClassContent || hasContainer ||
-                                 isMerchant || canCede || canGiveAway ||
-                                 hasAQuest || objType.hasAction() ||
-                                 objType.canDeconstruct() || hasWindowText;
-  auto hasAnyContent = hasNonDemolitionContent || canDemolish;
+  const auto windowHasClassContent = addClassSpecificStuffToWindow();
+  const auto hasNonStandardContent = windowHasClassContent || hasContainer ||
+                                     isMerchant || canCede || hasAQuest ||
+                                     objType.hasAction() ||
+                                     objType.canDeconstruct() || hasWindowText;
+  const auto hasAnyContent =
+      hasNonStandardContent || canGiveAway || canDemolish;
 
   if (isAlive()) {
     if (isBeingConstructed()) {
@@ -710,7 +711,7 @@ void ClientObject::assembleWindow(Client &client) {
         if (canCede) addCedeButtonToWindow();
         if (canGiveAway) addGiveButtonToWindow();
         if (canDemolish) addDemolishButtonToWindow();
-        hasNonDemolitionContent = hasAnyContent = true;
+        hasNonStandardContent = hasAnyContent = true;
       }
 
     } else if (userHasAccess()) {
@@ -742,7 +743,9 @@ void ClientObject::assembleWindow(Client &client) {
        currentHeight = _window->contentHeight();
   _window->resize(currentWidth, currentHeight + BUTTON_GAP);
 
-  if (!hasNonDemolitionContent) _window->hide();
+  // Hide window if it now has only standard controls.  It can be manually
+  // reopened.
+  if (!hasNonStandardContent) _window->hide();
 }
 
 void ClientObject::onInventoryUpdate() {
