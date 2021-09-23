@@ -18,13 +18,13 @@ TEST_CASE("Taming NPCs", "[pets]") {
     cat.reduceHealth(9999);
 
     THEN("it has no owner") {
-      CHECK(cat.owner().type == Permissions::Owner::MOB);
+      CHECK((cat.owner().type == Permissions::Owner::MOB));
 
       WHEN("a user tries to tame it") {
         c.sendMessage(CL_TAME_NPC, makeArgs(cat.serial()));
 
         THEN("it belongs to the user") {
-          WAIT_UNTIL(cat.owner().type == Permissions::Owner::PLAYER);
+          WAIT_UNTIL((cat.owner().type == Permissions::Owner::PLAYER));
           CHECK(cat.owner().name == c->username());
         }
       }
@@ -34,7 +34,7 @@ TEST_CASE("Taming NPCs", "[pets]") {
 
         THEN("it has no owner") {
           REPEAT_FOR_MS(50);
-          CHECK(cat.owner().type == Permissions::Owner::MOB);
+          CHECK((cat.owner().type == Permissions::Owner::MOB));
         }
       }
     }
@@ -101,13 +101,13 @@ TEST_CASE("Taming an NPC untargets it", "[pets]") {
     AND_GIVEN("a user is attacking it") {
       c.sendMessage(CL_TARGET_ENTITY, makeArgs(hippo.serial()));
       const auto &user = s.getFirstUser();
-      WAIT_UNTIL(user.action() == User::ATTACK);
+      WAIT_UNTIL((user.action() == User::ATTACK));
 
       WHEN("he tames it") {
         c.sendMessage(CL_TAME_NPC, makeArgs(hippo.serial()));
 
         THEN("he is no longer attacking it") {
-          WAIT_UNTIL(user.action() != User::ATTACK);
+          WAIT_UNTIL((user.action() != User::ATTACK));
         }
       }
     }
@@ -316,7 +316,7 @@ TEST_CASE("Non-tamable NPCs can't be tamed", "[pets]") {
 
       THEN("it is still unowned") {
         REPEAT_FOR_MS(100);
-        CHECK(tiger.owner().type == Permissions::Owner::MOB);
+        CHECK((tiger.owner().type == Permissions::Owner::MOB));
       }
     }
   }
@@ -351,7 +351,7 @@ TEST_CASE("Taming can require an item", "[pets]") {
           CHECK(c.waitForMessage(WARNING_ITEM_NEEDED));
 
           AND_THEN("it is still unowned") {
-            CHECK(girl.owner().type == Permissions::Owner::MOB);
+            CHECK((girl.owner().type == Permissions::Owner::MOB));
           }
         }
       }
@@ -363,7 +363,7 @@ TEST_CASE("Taming can require an item", "[pets]") {
           c.sendMessage(CL_TAME_NPC, makeArgs(girl.serial()));
 
           THEN("it belongs to him") {
-            WAIT_UNTIL(girl.owner().type == Permissions::Owner::PLAYER);
+            WAIT_UNTIL((girl.owner().type == Permissions::Owner::PLAYER));
 
             AND_THEN("he no longer has the item") {
               auto consumable = ItemSet{};
@@ -382,7 +382,7 @@ TEST_CASE("Taming can require an item", "[pets]") {
 
           THEN("it is still unowned") {
             REPEAT_FOR_MS(100);
-            CHECK(girl.owner().type == Permissions::Owner::MOB);
+            CHECK((girl.owner().type == Permissions::Owner::MOB));
           }
         }
 
@@ -393,7 +393,7 @@ TEST_CASE("Taming can require an item", "[pets]") {
             c.sendMessage(CL_TAME_NPC, makeArgs(girl.serial()));
 
             THEN("it belongs to him") {
-              WAIT_UNTIL(girl.owner().type == Permissions::Owner::PLAYER);
+              WAIT_UNTIL((girl.owner().type == Permissions::Owner::PLAYER));
 
               AND_THEN("he still has the wrong item") {
                 auto extraStuff = ItemSet{};
@@ -688,14 +688,14 @@ TEST_CASE("Follower limits", "[pets]") {
         THEN("it is owned but not following") {
           REPEAT_FOR_MS(10);
           CHECK(wildDog.permissions.hasOwner());
-          CHECK(wildDog.ai.currentOrder() == AI::ORDER_TO_STAY);
+          CHECK((wildDog.ai.currentOrder() == AI::ORDER_TO_STAY));
 
           AND_WHEN("he orders it to follow") {
             c.sendMessage(CL_ORDER_PET_TO_FOLLOW, makeArgs(wildDog.serial()));
 
             THEN("it is still not following") {
               REPEAT_FOR_MS(100);
-              CHECK(wildDog.ai.currentOrder() == AI::ORDER_TO_STAY);
+              CHECK((wildDog.ai.currentOrder() == AI::ORDER_TO_STAY));
             }
           }
         }
@@ -709,7 +709,7 @@ TEST_CASE("Follower limits", "[pets]") {
 
           THEN("it has an owner and is following") {
             WAIT_UNTIL(wildDog.permissions.hasOwner());
-            CHECK(wildDog.ai.currentOrder() == AI::ORDER_TO_FOLLOW);
+            CHECK((wildDog.ai.currentOrder() == AI::ORDER_TO_FOLLOW));
           }
         }
       }
@@ -727,7 +727,7 @@ TEST_CASE("Follower limits", "[pets]") {
 
           THEN("it has an owner and is following") {
             WAIT_UNTIL(wildDog.permissions.hasOwner());
-            CHECK(wildDog.ai.currentOrder() == AI::ORDER_TO_FOLLOW);
+            CHECK((wildDog.ai.currentOrder() == AI::ORDER_TO_FOLLOW));
           }
         }
 
@@ -836,10 +836,10 @@ TEST_CASE("Pet orders", "[pets][ai]") {
       dog.permissions.setPlayerOwner(c->username());
 
       c.sendMessage(CL_ORDER_PET_TO_STAY, makeArgs(dog.serial()));
-      WAIT_UNTIL(dog.ai.currentOrder() == AI::ORDER_TO_STAY);
+      WAIT_UNTIL((dog.ai.currentOrder() == AI::ORDER_TO_STAY));
 
       c.sendMessage(CL_ORDER_PET_TO_FOLLOW, makeArgs(dog.serial()));
-      WAIT_UNTIL(dog.ai.currentOrder() == AI::ORDER_TO_FOLLOW);
+      WAIT_UNTIL((dog.ai.currentOrder() == AI::ORDER_TO_FOLLOW));
     }
 
     WHEN("he tries to order it to stay") {
@@ -847,7 +847,7 @@ TEST_CASE("Pet orders", "[pets][ai]") {
 
       THEN("it is still set to Follow") {
         REPEAT_FOR_MS(100);
-        CHECK(dog.ai.currentOrder() == AI::ORDER_TO_FOLLOW);
+        CHECK((dog.ai.currentOrder() == AI::ORDER_TO_FOLLOW));
       }
     }
   }
@@ -913,14 +913,14 @@ TEST_CASE("Ordering a pet to stay makes room for another follower",
     WHEN("a user tames one and orders it to stay") {
       c.sendMessage(CL_TAME_NPC, makeArgs(cat1.serial()));
       c.sendMessage(CL_ORDER_PET_TO_STAY, makeArgs(cat1.serial()));
-      WAIT_UNTIL(cat1.ai.currentOrder() == AI::ORDER_TO_STAY);
+      WAIT_UNTIL((cat1.ai.currentOrder() == AI::ORDER_TO_STAY));
 
       AND_WHEN("he tames the other") {
         c.sendMessage(CL_TAME_NPC, makeArgs(cat2.serial()));
 
         THEN("the new pet is following him") {
           REPEAT_FOR_MS(100);
-          CHECK(cat2.ai.currentOrder() == AI::ORDER_TO_FOLLOW);
+          CHECK((cat2.ai.currentOrder() == AI::ORDER_TO_FOLLOW));
         }
       }
     }
@@ -955,7 +955,7 @@ TEST_CASE("Follow orders contribute to follower limit", "[pets][stats]") {
 
         THEN("the second is not following") {
           REPEAT_FOR_MS(100);
-          CHECK(dog2.ai.currentOrder() == AI::ORDER_TO_STAY);
+          CHECK((dog2.ai.currentOrder() == AI::ORDER_TO_STAY));
         }
       }
     }
@@ -979,7 +979,7 @@ TEST_CASE("Pets stop following if owner is far away", "[pets]") {
       user.teleportTo({300, 300});
 
       THEN("the pet is no longer following") {
-        WAIT_UNTIL(dog.ai.currentOrder() == AI::ORDER_TO_STAY);
+        WAIT_UNTIL((dog.ai.currentOrder() == AI::ORDER_TO_STAY));
       }
     }
   }
@@ -1009,7 +1009,7 @@ TEST_CASE("Persistence of pet orders", "[pets][persistence]") {
 
       // Then the pet still has the same order
       auto &dog = s.getFirstNPC();
-      CHECK(dog.ai.currentOrder() == order);
+      CHECK((dog.ai.currentOrder() == order));
     }
   }
 }
@@ -1046,7 +1046,7 @@ TEST_CASE("Followers can count only once", "[pets][stats]") {
           c.sendMessage(CL_ORDER_PET_TO_FOLLOW, makeArgs(dog2.serial()));
 
           THEN("the second pet is following") {
-            WAIT_UNTIL(dog2.ai.currentOrder() == AI::ORDER_TO_FOLLOW);
+            WAIT_UNTIL((dog2.ai.currentOrder() == AI::ORDER_TO_FOLLOW));
           }
         }
       }
@@ -1072,7 +1072,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
     stayer1.ai.giveOrder(AI::ORDER_TO_STAY);
     stayer2.ai.giveOrder(AI::ORDER_TO_STAY);
     client->sendMessage(CL_ORDER_PET_TO_FOLLOW, makeArgs(follower.serial()));
-    WAIT_UNTIL(follower.ai.currentOrder() == AI::ORDER_TO_FOLLOW);
+    WAIT_UNTIL((follower.ai.currentOrder() == AI::ORDER_TO_FOLLOW));
 
     WHEN("a stayer dies") {
       stayer1.kill();
@@ -1082,7 +1082,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 
         THEN("the second pet is not following") {
           REPEAT_FOR_MS(100);
-          CHECK(stayer2.ai.currentOrder() == AI::ORDER_TO_STAY);
+          CHECK((stayer2.ai.currentOrder() == AI::ORDER_TO_STAY));
         }
       }
     }

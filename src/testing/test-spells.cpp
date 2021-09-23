@@ -64,7 +64,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
               const auto result = user->castSpell(shiverTimbers);
 
               THEN("the spellcast fails") {
-                CHECK(result == CombatResult::FAIL);
+                CHECK((result == CombatResult::FAIL));
               }
             }
           }
@@ -77,7 +77,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
               const auto result = user->castSpell(shiverTimbers);
 
               THEN("the spellcast succeeds") {
-                CHECK(result == CombatResult::HIT);
+                CHECK((result == CombatResult::HIT));
               }
             }
           }

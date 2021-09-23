@@ -139,7 +139,7 @@ TEST_CASE("Free spells", "[spells]") {
         AND_THEN("he has Tackle on his hotbar") {
           const auto &user = s.getFirstUser();
           WAIT_UNTIL(user.hotbar().size() >= 2);
-          WAIT_UNTIL(user.hotbar()[1].category == HOTBAR_SPELL);
+          WAIT_UNTIL((user.hotbar()[1].category == HOTBAR_SPELL));
           WAIT_UNTIL(user.hotbar()[1].id == "tackle");
         }
       }

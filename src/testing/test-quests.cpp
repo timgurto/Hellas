@@ -932,12 +932,12 @@ TEST_CASE("Quest progress is persistent", "[quests][persistence]") {
     // And she knows she's on B
     const auto &leaveUnfinished =
         c->gameData.quests.find("leaveUnfinished")->second;
-    WAIT_UNTIL(leaveUnfinished.state == CQuest::IN_PROGRESS);
+    WAIT_UNTIL((leaveUnfinished.state == CQuest::IN_PROGRESS));
 
     // And she knows she's on C
     const auto &makeNoProgress =
         c->gameData.quests.find("makeNoProgress")->second;
-    WAIT_UNTIL(makeNoProgress.state == CQuest::IN_PROGRESS);
+    WAIT_UNTIL((makeNoProgress.state == CQuest::IN_PROGRESS));
 
     // And has achieved the objective of D
     auto killIt = s->findQuest("killIt");
@@ -1012,7 +1012,7 @@ TEST_CASE("Clients get the correct state on login", "[quests]") {
           AND_THEN("she knows that she is on 'completable'") {
             const auto &questInProgress =
                 c->gameData.quests.find("completable")->second;
-            WAIT_UNTIL(questInProgress.state == CQuest::CAN_FINISH);
+            WAIT_UNTIL((questInProgress.state == CQuest::CAN_FINISH));
           }
         }
       }
@@ -1090,7 +1090,7 @@ TEST_CASE("Fetch quests", "[quests][inventory]") {
 
         THEN("he knows he can complete it") {
           const auto &cQuest = c.getFirstQuest();
-          WAIT_UNTIL(cQuest.state == CQuest::CAN_FINISH);
+          WAIT_UNTIL((cQuest.state == CQuest::CAN_FINISH));
         }
       }
     }
@@ -1207,7 +1207,7 @@ TEST_CASE("Fetch quests", "[quests][inventory]") {
 
       THEN("he knows that he can complete the quest") {
         const auto &quest = c.getFirstQuest();
-        WAIT_UNTIL(quest.state == CQuest::CAN_FINISH);
+        WAIT_UNTIL((quest.state == CQuest::CAN_FINISH));
       }
     }
   }
@@ -1364,7 +1364,7 @@ TEST_CASE("Construction quests", "[quests][construction]") {
       THEN("the client knows it isn't completable") {
         REPEAT_FOR_MS(100);
         const auto &quest1 = c->gameData.quests.find("quest1")->second;
-        CHECK(quest1.state == CQuest::IN_PROGRESS);
+        CHECK((quest1.state == CQuest::IN_PROGRESS));
         const auto &cQuestgiver = c.getFirstObject();
         CHECK(cQuestgiver.completableQuests().empty());
       }
@@ -1816,7 +1816,7 @@ TEST_CASE("Client remembers quest progress after death", "[quests][death]") {
       THEN("he knows he's on the quest") {
         REPEAT_FOR_MS(100);
         const auto &quest = c.getFirstQuest();
-        CHECK(quest.state == CQuest::CAN_FINISH);
+        CHECK((quest.state == CQuest::CAN_FINISH));
       }
     }
   }
@@ -1840,7 +1840,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Abandoning quests", "[quests]") {
 
         AND_THEN("he knows it") {
           const auto &quest = client->getFirstQuest();
-          WAIT_UNTIL(quest.state == CQuest::CAN_START);
+          WAIT_UNTIL((quest.state == CQuest::CAN_START));
         }
       }
     }

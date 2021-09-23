@@ -264,7 +264,7 @@ TEST_CASE("Weapon damage school is loaded", "[loading][combat]") {
 
       THEN("that weapon has the correct school") {
         const auto &fireSword = s.getFirstItem();
-        CHECK(fireSword.stats().weaponSchool == SpellSchool::FIRE);
+        CHECK((fireSword.stats().weaponSchool == SpellSchool::FIRE));
       }
     }
 
@@ -273,7 +273,7 @@ TEST_CASE("Weapon damage school is loaded", "[loading][combat]") {
 
       THEN("that weapon has the correct school") {
         const auto &fireSword = c.items().begin()->second;
-        CHECK(fireSword.stats().weaponSchool == SpellSchool::FIRE);
+        CHECK((fireSword.stats().weaponSchool == SpellSchool::FIRE));
       }
     }
   }

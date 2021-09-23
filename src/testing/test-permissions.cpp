@@ -46,8 +46,8 @@ TEST_CASE("Public-access objects", "[permissions][gathering]") {
 
   // Then he gathers, receives a rock item, and the rock object disapears
   User &user = s.getFirstUser();
-  WAIT_UNTIL(user.action() == User::Action::GATHER);
-  WAIT_UNTIL(user.action() == User::Action::NO_ACTION);
+  WAIT_UNTIL((user.action() == User::Action::GATHER));
+  WAIT_UNTIL((user.action() == User::Action::NO_ACTION));
   WAIT_UNTIL_TIMEOUT(s.entities().empty(), 200);
   const Item &rockItem = s.getFirstItem();
   WAIT_UNTIL_TIMEOUT(user.inventory()[0].type() == &rockItem, 200);
@@ -66,8 +66,8 @@ TEST_CASE("The owner can access an owned object", "[permissions][gathering]") {
   c.sendMessage(CL_GATHER, makeArgs(rock.serial()));
 
   // Then he gathers, receives a rock item, and the object disapears
-  WAIT_UNTIL(user.action() == User::Action::GATHER);
-  WAIT_UNTIL(user.action() == User::Action::NO_ACTION);
+  WAIT_UNTIL((user.action() == User::Action::GATHER));
+  WAIT_UNTIL((user.action() == User::Action::NO_ACTION));
   WAIT_UNTIL_TIMEOUT(s.entities().empty(), 200);
   const Item &rockItem = s.getFirstItem();
   WAIT_UNTIL_TIMEOUT(user.inventory()[0].type() == &rockItem, 200);
@@ -149,8 +149,8 @@ TEST_CASE("City members can use city objects",
   c.sendMessage(CL_GATHER, makeArgs(rock.serial()));
 
   // Then he gathers;
-  WAIT_UNTIL(user.action() == User::Action::GATHER);
-  WAIT_UNTIL(user.action() == User::Action::NO_ACTION);
+  WAIT_UNTIL((user.action() == User::Action::GATHER));
+  WAIT_UNTIL((user.action() == User::Action::NO_ACTION));
   // And he receives a Rock item;
   const Item &rockItem = s.getFirstItem();
   WAIT_UNTIL_TIMEOUT(user.inventory()[0].type() == &rockItem, 200);
