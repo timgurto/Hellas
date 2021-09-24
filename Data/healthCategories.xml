@@ -8,6 +8,7 @@
 <objectHealthCategory id="logWall"       level="10" maxHealth="6400" />
 
 <objectHealthCategory id="lumberVehicle" level="20" maxHealth="175" />
+<objectHealthCategory id="lumberWeak"    level="20" maxHealth="500" />
 <objectHealthCategory id="lumber"        level="20" maxHealth="2500" />
 
 <objectHealthCategory id="brick"         level="30" maxHealth="6500" />
