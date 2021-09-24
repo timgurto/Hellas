@@ -205,10 +205,12 @@ TEST_CASE_METHOD(ServerAndClientWithData,
         <container slots="1" restrictedToItem="candy" />
       </objectType>
     )");
-    const auto &candyDish = server->addObject("candyDish", {10, 10});
+    auto &candyDish = server->addObject("candyDish", {10, 10});
+    const auto *candy = &server->findItem("candy");
+    const auto *niceThing = &server->findItem("niceThing");
 
     WHEN("Ned tries putting candy into it") {
-      user->giveItem(&server->findItem("candy"));
+      user->giveItem(candy);
       client->sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0,
                                                   candyDish.serial(), 0));
 
@@ -218,13 +220,34 @@ TEST_CASE_METHOD(ServerAndClientWithData,
     }
 
     WHEN("Ned tries putting some other nice thing into it") {
-      user->giveItem(&server->findItem("niceThing"));
+      user->giveItem(niceThing);
       client->sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0,
                                                   candyDish.serial(), 0));
 
       THEN("he still has the nice thing") {
         REPEAT_FOR_MS(100);
         CHECK(user->inventory(0).hasItem());
+      }
+    }
+
+    SECTION("swapping in the other direction") {
+      AND_GIVEN("the candy dish has candy") {
+        candyDish.container().addItems(candy);
+
+        AND_GIVEN("Ned has a nice thing") {
+          user->giveItem(niceThing);
+
+          WHEN("he tries to swap the candy dish into his inventory") {
+            client->sendMessage(
+                CL_SWAP_ITEMS,
+                makeArgs(candyDish.serial(), 0, Serial::Inventory(), 0));
+
+            THEN("the candy dish still has candy") {
+              REPEAT_FOR_MS(100);
+              CHECK(candyDish.container().at(0).type() == candy);
+            }
+          }
+        }
       }
     }
   }
