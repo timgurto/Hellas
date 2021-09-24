@@ -1092,7 +1092,7 @@ HANDLE_MESSAGE(CL_FEED_PET) {
   if (!user.hasItems("food", 1)) RETURN_WITH(WARNING_ITEM_NEEDED)
 
   pet->applyBuff(it->second, user);
-  user.removeItems("food", 1);
+  user.removeItemsMatchingTag("food", 1);
 }
 
 HANDLE_MESSAGE(CL_ORDER_PET_TO_STAY) {
@@ -2006,7 +2006,8 @@ void Server::handle_CL_TAKE_TALENT(User &user, const Talent::Name &talentName) {
 
   // All checks must be done by this point.
 
-  if (tier.hasItemCost()) user.removeItems(tier.costTag, tier.costQuantity);
+  if (tier.hasItemCost())
+    user.removeItemsMatchingTag(tier.costTag, tier.costQuantity);
 
   userClass.takeTalent(talent);
 

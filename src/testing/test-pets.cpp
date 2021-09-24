@@ -1121,7 +1121,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pets can be fed", "[pets]") {
       }
 
       WHEN("he has no food") {
-        user->removeItems("food", 1);
+        user->removeItemsMatchingTag("food", 1);
 
         WHEN("he tries to feed it") {
           client->sendMessage(CL_FEED_PET, makeArgs(dog.serial()));

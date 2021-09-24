@@ -682,8 +682,9 @@ void User::clearGear() {
     }
 }
 
-static void removeItemsFrom(ItemSet &remaining, ServerItem::vect_t &container,
-                            std::set<size_t> &slotsChanged) {
+static void removeItemsFromContainer(ItemSet &remaining,
+                                     ServerItem::vect_t &container,
+                                     std::set<size_t> &slotsChanged) {
   slotsChanged = {};
   for (size_t i = 0; i != container.size(); ++i) {
     auto &slot = container[i];
@@ -702,21 +703,21 @@ ItemSet User::removeItems(const ItemSet &items) {
   auto remaining = items;
   std::set<size_t> slotsChanged;
 
-  removeItemsFrom(remaining, _inventory, slotsChanged);
+  removeItemsFromContainer(remaining, _inventory, slotsChanged);
   for (size_t slotNum : slotsChanged)
     Server::instance().sendInventoryMessage(*this, slotNum,
                                             Serial::Inventory());
 
-  removeItemsFrom(remaining, _gear, slotsChanged);
+  removeItemsFromContainer(remaining, _gear, slotsChanged);
   for (size_t slotNum : slotsChanged)
     Server::instance().sendInventoryMessage(*this, slotNum, Serial::Gear());
 
   return remaining;
 }
 
-static void removeItemsFrom(const std::string &tag, size_t &remaining,
-                            ServerItem::vect_t &container,
-                            std::set<size_t> &slotsChanged) {
+static void removeItemsMatchingTagFromContainer(
+    const std::string &tag, size_t &remaining, ServerItem::vect_t &container,
+    std::set<size_t> &slotsChanged) {
   if (remaining == 0) return;
 
   slotsChanged = {};
@@ -736,16 +737,16 @@ static void removeItemsFrom(const std::string &tag, size_t &remaining,
   }
 }
 
-void User::removeItems(const std::string &tag, size_t quantity) {
+void User::removeItemsMatchingTag(const std::string &tag, size_t quantity) {
   std::set<size_t> slotsChanged;
   auto remaining = quantity;
 
-  removeItemsFrom(tag, remaining, _inventory, slotsChanged);
+  removeItemsMatchingTagFromContainer(tag, remaining, _inventory, slotsChanged);
   for (size_t slotNum : slotsChanged)
     Server::instance().sendInventoryMessage(*this, slotNum,
                                             Serial::Inventory());
 
-  removeItemsFrom(tag, remaining, _gear, slotsChanged);
+  removeItemsMatchingTagFromContainer(tag, remaining, _gear, slotsChanged);
   for (size_t slotNum : slotsChanged)
     Server::instance().sendInventoryMessage(*this, slotNum, Serial::Gear());
 }
