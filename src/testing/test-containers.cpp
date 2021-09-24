@@ -196,7 +196,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Small stacks are consumed first",
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData,
-                 "Containers restricted to a specific item") {
+                 "Containers restricted to a specific item", "[containers]") {
   GIVEN("a candy dish that can hold only candy") {
     useData(R"(
       <item id="candy" />
@@ -225,6 +225,28 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       THEN("he still has the nice thing") {
         REPEAT_FOR_MS(100);
         CHECK(user->inventory(0).hasItem());
+      }
+    }
+  }
+
+  SECTION("Different item ID") {
+    GIVEN("a water glass that can hold only water") {
+      useData(R"(
+        <item id="water" />
+        <objectType id="waterGlass" >
+          <container slots="1" restrictedToItem="water" />
+        </objectType>
+      )");
+      const auto &waterGlass = server->addObject("waterGlass", {10, 10});
+
+      WHEN("the user tries to put water into it") {
+        user->giveItem(&server->findItem("water"));
+        client->sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0,
+                                                    waterGlass.serial(), 0));
+
+        THEN("the glass has water") {
+          WAIT_UNTIL(waterGlass.container().at(0).hasItem());
+        }
       }
     }
   }

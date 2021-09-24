@@ -18,12 +18,12 @@ Container *ContainerType::instantiate(Object &parent) const {
 }
 
 void ContainerType::restrictTo(std::string itemID) {
-  _onlyAllowedItem = "asdf";
+  _onlyAllowedItem = itemID;
 }
 
 bool ContainerType::canStoreItem(const ServerItem &item) const {
   if (_onlyAllowedItem.empty()) return true;
-  return (item.id() == "candy");
+  return (item.id() == _onlyAllowedItem);
 }
 
 Container::Container(Object &parent) : _parent(parent) {}
