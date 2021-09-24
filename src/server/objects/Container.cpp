@@ -17,6 +17,15 @@ Container *ContainerType::instantiate(Object &parent) const {
   return p;
 }
 
+void ContainerType::restrictTo(std::string itemID) {
+  _onlyAllowedItem = "asdf";
+}
+
+bool ContainerType::canStoreItem(std::string itemID) const {
+  if (_onlyAllowedItem.empty()) return true;
+  return false;
+}
+
 Container::Container(Object &parent) : _parent(parent) {}
 
 bool Container::isEmpty() const {
@@ -53,7 +62,7 @@ void Container::addItems(const ServerItem *item, size_t qty) {
   std::set<size_t> changedSlots;
   // First pass: partial stacks
   for (size_t i = 0; i != _container.size(); ++i) {
-    auto &invSlot=_container[i];
+    auto &invSlot = _container[i];
     if (invSlot.type() != item) continue;
     size_t spaceAvailable = item->stackSize() - invSlot.quantity();
     if (spaceAvailable > 0) {
@@ -100,6 +109,11 @@ bool Container::containsAnySoulboundItems() const {
     if (item.isSoulbound()) return true;
 
   return false;
+}
+
+bool Container::canStoreItem(std::string itemID) const {
+  const auto &containerType = _parent.objType().container();
+  return (containerType.canStoreItem(itemID));
 }
 
 ItemSet Container::generateLootWithChance(double chance) const {

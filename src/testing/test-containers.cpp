@@ -194,3 +194,28 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Small stacks are consumed first",
     }
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Containers restricted to a specific item") {
+  GIVEN("a candy dish that can hold only candy") {
+    useData(R"(
+      <item id="candy" />
+      <item id="niceThing" />
+      <objectType id="candyDish" >
+        <container slots="1" restrictedToItem="candy" />
+      </objectType>
+    )");
+    const auto &candyDish = server->addObject("candyDish", {10, 10});
+
+    WHEN("Ned tries putting some other nice thing into it") {
+      user->giveItem(&server->findItem("niceThing"));
+      client->sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0,
+                                                  candyDish.serial(), 0));
+
+      THEN("Ned still has the nice thing") {
+        REPEAT_FOR_MS(100);
+        CHECK(user->inventory(0).hasItem());
+      }
+    }
+  }
+}

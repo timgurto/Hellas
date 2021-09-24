@@ -252,10 +252,12 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
 
     // Container
     auto container = xr.findChild("container", elem);
-    if (container != nullptr) {
+    if (container) {
       if (xr.findAttr(container, "slots", n)) {
         ot->addContainer(ContainerType::WithSlots(n));
       }
+      if (xr.findAttr(container, "restrictedToItem", s))
+        ot->container().restrictTo({});
     }
 
     // Terrain restrictions

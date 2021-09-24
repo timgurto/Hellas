@@ -485,6 +485,9 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
   if (toItem.hasItem() && obj1.isGear() && !user.canEquip(*toItem.type()))
     return;
 
+  // Check container restrictions
+  if (to.object && !to.object->container().canStoreItem("asdf")) return;
+
   // Check whether soulbound items can be moved
   if (fromItem.isSoulbound()) {
     if (obj2.isEntity() && !to.object->permissions.isOwnedByPlayer(user.name()))
