@@ -12,7 +12,7 @@ class ContainerType {
   Container *instantiate(Object &parent) const;
   size_t slots() const { return _slots; }
   void restrictTo(std::string itemID);
-  bool canStoreItem(std::string itemID) const;
+  bool canStoreItem(const ServerItem &item) const;
 
  private:
   size_t _slots;
@@ -36,7 +36,7 @@ class Container {
 
   bool isAbleToDeconstruct(const User &user) const;
   bool containsAnySoulboundItems() const;
-  bool canStoreItem(std::string itemID) const;
+  bool canStoreItem(const ServerItem &item) const;
 
   // TODO: remove
   const ServerItem::vect_t &raw() const { return _container; }

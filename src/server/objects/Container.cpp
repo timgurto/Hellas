@@ -21,9 +21,9 @@ void ContainerType::restrictTo(std::string itemID) {
   _onlyAllowedItem = "asdf";
 }
 
-bool ContainerType::canStoreItem(std::string itemID) const {
+bool ContainerType::canStoreItem(const ServerItem &item) const {
   if (_onlyAllowedItem.empty()) return true;
-  return false;
+  return (item.id() == "candy");
 }
 
 Container::Container(Object &parent) : _parent(parent) {}
@@ -111,9 +111,9 @@ bool Container::containsAnySoulboundItems() const {
   return false;
 }
 
-bool Container::canStoreItem(std::string itemID) const {
+bool Container::canStoreItem(const ServerItem &item) const {
   const auto &containerType = _parent.objType().container();
-  return (containerType.canStoreItem(itemID));
+  return (containerType.canStoreItem(item));
 }
 
 ItemSet Container::generateLootWithChance(double chance) const {

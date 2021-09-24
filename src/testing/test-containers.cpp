@@ -207,12 +207,22 @@ TEST_CASE_METHOD(ServerAndClientWithData,
     )");
     const auto &candyDish = server->addObject("candyDish", {10, 10});
 
+    WHEN("Ned tries putting candy into it") {
+      user->giveItem(&server->findItem("candy"));
+      client->sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0,
+                                                  candyDish.serial(), 0));
+
+      THEN("the dish has the candy") {
+        WAIT_UNTIL(candyDish.container().at(0).hasItem());
+      }
+    }
+
     WHEN("Ned tries putting some other nice thing into it") {
       user->giveItem(&server->findItem("niceThing"));
       client->sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0,
                                                   candyDish.serial(), 0));
 
-      THEN("Ned still has the nice thing") {
+      THEN("he still has the nice thing") {
         REPEAT_FOR_MS(100);
         CHECK(user->inventory(0).hasItem());
       }
