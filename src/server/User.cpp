@@ -1,5 +1,6 @@
 #include "User.h"
 
+#include <algorithm>
 #include <thread>
 
 #include "../curlUtil.h"
@@ -682,12 +683,20 @@ void User::clearGear() {
     }
 }
 
-static std::multimap<size_t, size_t> containerSlotsByQuantity(
+static std::vector<size_t> containerSlotsByQuantity(
     const ServerItem::vect_t &container) {
-  auto slotsOrderedByQuantity = std::multimap<size_t, size_t>{};
-  for (auto i = 0; i != container.size(); ++i)
-    slotsOrderedByQuantity.insert({container[i].quantity(), i});
-  return slotsOrderedByQuantity;
+  auto orderedSlots = std::vector<size_t>{};
+  for (auto i = 0; i != container.size(); ++i) orderedSlots.push_back(i);
+
+  auto comparison = [&container](const size_t &lhs, const size_t &rhs) {
+    const auto leftQty = container[lhs].quantity(),
+               rightQty = container[rhs].quantity();
+    if (leftQty != rightQty) return leftQty < rightQty;
+    return lhs < rhs;
+  };
+  std::sort(orderedSlots.begin(), orderedSlots.end(), comparison);
+
+  return orderedSlots;
 }
 
 static void removeItemsFromContainer(ItemSet &remaining,
@@ -695,8 +704,7 @@ static void removeItemsFromContainer(ItemSet &remaining,
                                      std::set<size_t> &slotsChanged) {
   slotsChanged = {};
 
-  for (auto pair : containerSlotsByQuantity(container)) {
-    auto i = pair.second;
+  for (auto i : containerSlotsByQuantity(container)) {
     auto &slot = container[i];
     if (remaining.contains(slot.type())) {
       size_t itemsToRemove = min(slot.quantity(), remaining[slot.type()]);
