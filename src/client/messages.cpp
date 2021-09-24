@@ -269,6 +269,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
       case WARNING_WARE_IS_BROKEN:
       case WARNING_PRICE_IS_BROKEN:
       case WARNING_CONTAINS_BOUND_ITEM:
+      case WARNING_RESTRICTED_CONTAINER:
         errorMessageColor = Color::CHAT_WARNING;  // Yellow above, red below
       case ERROR_INVALID_USER:
       case ERROR_INVALID_ITEM:
@@ -3033,6 +3034,8 @@ void Client::initializeMessageNames() {
   _errorMessages[WARNING_PRICE_IS_BROKEN] = "You can't buy using broken items.";
   _errorMessages[WARNING_CONTAINS_BOUND_ITEM] =
       "That container has a soulbound item.";
+  _errorMessages[WARNING_RESTRICTED_CONTAINER] =
+      "The container cannot hold that item.";
 }
 
 void Client::performCommand(const std::string &commandString) {

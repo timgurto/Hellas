@@ -228,6 +228,10 @@ TEST_CASE_METHOD(ServerAndClientWithData,
         REPEAT_FOR_MS(100);
         CHECK(user->inventory(0).hasItem());
       }
+
+      THEN("he gets a warning") {
+        CHECK(client->waitForMessage(WARNING_RESTRICTED_CONTAINER));
+      }
     }
 
     SECTION("swapping in the other direction") {
@@ -245,6 +249,10 @@ TEST_CASE_METHOD(ServerAndClientWithData,
             THEN("the candy dish still has candy") {
               REPEAT_FOR_MS(100);
               CHECK(candyDish.container().at(0).type() == candy);
+            }
+
+            THEN("he gets a warning") {
+              CHECK(client->waitForMessage(WARNING_RESTRICTED_CONTAINER));
             }
           }
         }

@@ -843,6 +843,8 @@ enum MessageCode {
   WARNING_CONTAINS_BOUND_ITEM,     // The user tried to perform an inappropriate
                                 // action with an object containing a soulbound
                                 // item.
+  WARNING_RESTRICTED_CONTAINER,  // That container cannot hold that kind of
+                                 // item.
 
   // War
   ERROR_ATTACKED_PEACFUL_PLAYER,  // The user tried to attack a player without
