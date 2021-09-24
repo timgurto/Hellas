@@ -686,7 +686,12 @@ static void removeItemsFromContainer(ItemSet &remaining,
                                      ServerItem::vect_t &container,
                                      std::set<size_t> &slotsChanged) {
   slotsChanged = {};
-  for (size_t i = 0; i != container.size(); ++i) {
+  auto slotsOrderedByQuantity = std::map<size_t, size_t>{};
+  for (auto i = 0; i != container.size(); ++i)
+    slotsOrderedByQuantity[container[i].quantity()] = i;
+
+  for (auto pair : slotsOrderedByQuantity) {
+    auto i = pair.second;
     auto &slot = container[i];
     if (remaining.contains(slot.type())) {
       size_t itemsToRemove = min(slot.quantity(), remaining[slot.type()]);

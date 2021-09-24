@@ -142,3 +142,27 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Taking items",
     }
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Small stacks are consumed first",
+                 "[inventory") {
+  GIVEN("an item that stacks to 5") {
+    useData(R"(
+      <item id="coin" stackSize="5" />
+    )");
+    const auto *coin = &server->getFirstItem();
+
+    AND_GIVEN("the user has  of them (a 5 stack and a 2 stack") {
+      user->giveItem(coin, 7);
+
+      WHEN("one is removed") {
+        auto itemsToRemove = ItemSet{};
+        itemsToRemove.add(coin, 1);
+        user->removeItems(itemsToRemove);
+
+        THEN("he still has the entire 5 stack") {
+          CHECK(user->inventory(0).quantity() == 5);
+        }
+      }
+    }
+  }
+}
