@@ -151,7 +151,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Small stacks are consumed first",
     )");
     const auto *coin = &server->getFirstItem();
 
-    AND_GIVEN("the user has  of them (a 5 stack and a 2 stack") {
+    AND_GIVEN("the user has 7 of them (a 5 stack and a 2 stack)") {
       user->giveItem(coin, 7);
 
       WHEN("one is removed") {
@@ -161,6 +161,24 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Small stacks are consumed first",
 
         THEN("he still has the entire 5 stack") {
           CHECK(user->inventory(0).quantity() == 5);
+        }
+      }
+    }
+
+    SECTION("All slots are counted if they are reordered") {
+      AND_GIVEN("the user has 10 of them (two full stacks)") {
+        user->giveItem(coin, 10);
+
+        WHEN("6 are removed") {
+          auto itemsToRemove = ItemSet{};
+          itemsToRemove.add(coin, 6);
+          user->removeItems(itemsToRemove);
+
+          THEN("he has 4 left") {
+            const auto qtyInSlot0 = user->inventory(0).quantity();
+            const auto qtyInSlot1 = user->inventory(1).quantity();
+            CHECK(qtyInSlot0 + qtyInSlot1 == 4);
+          }
         }
       }
     }

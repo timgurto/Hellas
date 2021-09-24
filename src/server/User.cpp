@@ -682,11 +682,11 @@ void User::clearGear() {
     }
 }
 
-static std::map<size_t, size_t> containerSlotsByQuantity(
+static std::multimap<size_t, size_t> containerSlotsByQuantity(
     const ServerItem::vect_t &container) {
-  auto slotsOrderedByQuantity = std::map<size_t, size_t>{};
+  auto slotsOrderedByQuantity = std::multimap<size_t, size_t>{};
   for (auto i = 0; i != container.size(); ++i)
-    slotsOrderedByQuantity[container[i].quantity()] = i;
+    slotsOrderedByQuantity.insert({container[i].quantity(), i});
   return slotsOrderedByQuantity;
 }
 
