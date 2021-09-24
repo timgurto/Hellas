@@ -1094,6 +1094,11 @@ void ClientObject::createRegularTooltip() const {
         tooltip.addGap();
       }
       tooltip.addLine("Container: " + toString(ot.containerSlots()) + " slots");
+      if (!objectType()->onlyAllowedItemInContainer.empty()) {
+        tooltip.addLine("Restricted: can store only");
+        tooltip.addItem(
+            *_client.findItem(objectType()->onlyAllowedItemInContainer));
+      }
       tooltip.addItemGrid(&_container);
     }
   }

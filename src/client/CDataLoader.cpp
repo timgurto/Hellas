@@ -538,6 +538,8 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
     auto container = xr.findChild("container", elem);
     if (container != nullptr) {
       if (xr.findAttr(container, "slots", n)) cot->containerSlots(n);
+      xr.findAttr(container, "restrictedToItem",
+                  cot->onlyAllowedItemInContainer);
     }
 
     auto windowText = ""s;

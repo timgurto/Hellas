@@ -3035,7 +3035,7 @@ void Client::initializeMessageNames() {
   _errorMessages[WARNING_CONTAINS_BOUND_ITEM] =
       "That container has a soulbound item.";
   _errorMessages[WARNING_RESTRICTED_CONTAINER] =
-      "The container cannot hold that item.";
+      "That container cannot hold that item.";
 }
 
 void Client::performCommand(const std::string &commandString) {

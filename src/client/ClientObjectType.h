@@ -169,6 +169,7 @@ class ClientObjectType : public SpriteType,
   bool shouldDrawParticlesWhenUnderConstruction() const {
     return _drawParticlesWhenUnderConstruction;
   }
+  std::string onlyAllowedItemInContainer;
 
   const ImageWithHighlight &getProgressImage(ms_t timeRemaining) const;
   const Texture &corpseImage() const { return _corpseImage.getNormalImage(); }
