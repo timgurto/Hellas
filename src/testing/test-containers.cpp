@@ -145,9 +145,11 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Taking items",
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Small stacks are consumed first",
                  "[inventory") {
-  GIVEN("an item that stacks to 5") {
+  GIVEN("an item that stacks to 5, with a tag") {
     useData(R"(
-      <item id="coin" stackSize="5" />
+      <item id="coin" stackSize="5">
+        <tag name="money" />
+      </item>
     )");
     const auto *coin = &server->getFirstItem();
 
@@ -158,6 +160,14 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Small stacks are consumed first",
         auto itemsToRemove = ItemSet{};
         itemsToRemove.add(coin, 1);
         user->removeItems(itemsToRemove);
+
+        THEN("he still has the entire 5 stack") {
+          CHECK(user->inventory(0).quantity() == 5);
+        }
+      }
+
+      WHEN("one is removed by tag") {
+        user->removeItemsMatchingTag("money", 1);
 
         THEN("he still has the entire 5 stack") {
           CHECK(user->inventory(0).quantity() == 5);

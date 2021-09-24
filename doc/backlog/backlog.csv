@@ -19,7 +19,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 18,Bronze + gear,21,144,Content,,,TRUE,3 Bronze Age
 19,Boiled leather + gear,21,144,Content,9,,TRUE,3 Bronze Age
 20,Serpent scales + gear,21,144,Content,,,TRUE,5 Iron Age
-21,Consume small stacks first,5,21,Usability,,,,
+21,Consume small stacks first,5,21,Usability,,TRUE,,
 22,Allow declaring war on object,3,5,Usability,40,,,7 War
 24,Crafting particles,21,5,Aesthetics,,,,
 25,Universal complete text outlines,2,3,Aesthetics,,TRUE,,
@@ -29,7 +29,6 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 29,Show tagger in client,2,3,Usability,,,,
 30,Editor: skip drawing circles outside window,5,13,Tooling,,,,
 31,Cancel/recast energy buff for free energy regen,3,13,Exploit,,,TRUE,
-32,Damage vehicles as they're used,3,5,Feature,,,TRUE,
 33,Class-restricted gear,3,13,Feature,,,,
 34,"Play defend/death sounds on projectile hit, not launch",1,3,Bug,,,,
 35,SFX on aggro,89,21,Aesthetics,,,,
@@ -141,4 +140,4 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 143,Cancel action on spellcast,1,2,Exploit,,,,
 144,Right-click to move,89,34,Feature,,,,
 145,Allow giving object to a city,2,2,Feature,,,,
-146,Replace gloves with bellows as tin prereq,2,3,Content,,,TRUE,
+146,Replace gloves with bellows as tin prereq,2,3,Content,,TRUE,TRUE,

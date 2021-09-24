@@ -739,7 +739,7 @@ static void removeItemsMatchingTagFromContainer(
   if (remaining == 0) return;
 
   slotsChanged = {};
-  for (size_t i = 0; i != container.size(); ++i) {
+  for (auto i : containerSlotsByQuantity(container)) {
     auto &slot = container[i];
     if (!slot.hasItem()) continue;
     if (slot.type()->isTag(tag)) {
