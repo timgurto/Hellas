@@ -682,15 +682,20 @@ void User::clearGear() {
     }
 }
 
+static std::map<size_t, size_t> containerSlotsByQuantity(
+    const ServerItem::vect_t &container) {
+  auto slotsOrderedByQuantity = std::map<size_t, size_t>{};
+  for (auto i = 0; i != container.size(); ++i)
+    slotsOrderedByQuantity[container[i].quantity()] = i;
+  return slotsOrderedByQuantity;
+}
+
 static void removeItemsFromContainer(ItemSet &remaining,
                                      ServerItem::vect_t &container,
                                      std::set<size_t> &slotsChanged) {
   slotsChanged = {};
-  auto slotsOrderedByQuantity = std::map<size_t, size_t>{};
-  for (auto i = 0; i != container.size(); ++i)
-    slotsOrderedByQuantity[container[i].quantity()] = i;
 
-  for (auto pair : slotsOrderedByQuantity) {
+  for (auto pair : containerSlotsByQuantity(container)) {
     auto i = pair.second;
     auto &slot = container[i];
     if (remaining.contains(slot.type())) {
