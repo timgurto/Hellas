@@ -683,7 +683,7 @@ void User::clearGear() {
     }
 }
 
-static std::vector<size_t> containerSlotsByQuantity(
+static std::vector<size_t> smallSlotsFirst(
     const ServerItem::vect_t &container) {
   auto orderedSlots = std::vector<size_t>{};
   for (auto i = 0; i != container.size(); ++i) orderedSlots.push_back(i);
@@ -704,14 +704,14 @@ static void removeItemsFromContainer(ItemSet &remaining,
                                      std::set<size_t> &slotsChanged) {
   slotsChanged = {};
 
-  for (auto i : containerSlotsByQuantity(container)) {
-    auto &slot = container[i];
+  for (auto slotIndex : smallSlotsFirst(container)) {
+    auto &slot = container[slotIndex];
     if (remaining.contains(slot.type())) {
       size_t itemsToRemove = min(slot.quantity(), remaining[slot.type()]);
       remaining.remove(slot.type(), itemsToRemove);
       slot.removeItems(itemsToRemove);
       if (slot.quantity() == 0) slot = {};
-      slotsChanged.insert(i);
+      slotsChanged.insert(slotIndex);
       if (remaining.isEmpty()) break;
     }
   }
@@ -739,8 +739,8 @@ static void removeItemsMatchingTagFromContainer(
   if (remaining == 0) return;
 
   slotsChanged = {};
-  for (auto i : containerSlotsByQuantity(container)) {
-    auto &slot = container[i];
+  for (auto slotIndex : smallSlotsFirst(container)) {
+    auto &slot = container[slotIndex];
     if (!slot.hasItem()) continue;
     if (slot.type()->isTag(tag)) {
       size_t itemsToRemove = min(slot.quantity(), remaining);
@@ -749,7 +749,7 @@ static void removeItemsMatchingTagFromContainer(
       slot.removeItems(itemsToRemove);
       if (slot.quantity() == 0) slot = {};
 
-      slotsChanged.insert(i);
+      slotsChanged.insert(slotIndex);
       if (remaining == 0) break;
     }
   }
