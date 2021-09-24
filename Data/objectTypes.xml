@@ -133,7 +133,7 @@
     <yield id="crudeClay" initialMean="4" initialSD="1" initialMin="1" />
 </objectType>
 
-<objectType id="smallPot" name="Small Pot" healthCategory="log"
+<objectType id="smallPot" name="Small Pot" healthCategory="logWeak"
     xDrawOffset="-8" yDrawOffset="-16"
     deconstructs="smallPot" deconstructionTime="1000"
     sounds="pottery" damageParticles="ceramicShards" >
@@ -141,7 +141,7 @@
     <container slots="1" />
     <canBeRepaired cost="crudeClay" />
 </objectType>
-<objectType id="mediumPot" name="Medium Pot" healthCategory="lumber"
+<objectType id="mediumPot" name="Medium Pot" healthCategory="lumberWeak"
     xDrawOffset="-19" yDrawOffset="-27"
     deconstructs="mediumPot" deconstructionTime="1000"
     sounds="pottery" >
