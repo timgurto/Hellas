@@ -327,4 +327,20 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Containers that spawn with an item",
       THEN("it has an item") { CHECK(suitcase.container().at(0).hasItem()); }
     }
   }
+
+  SECTION("handle bad data") {
+    GIVEN("a box that comes with a nonexistent item") {
+      useData(R"(
+        <objectType id="box" >
+          <container slots="1" spawnsWithItem="notAnItem" />
+        </objectType>
+      )");
+
+      WHEN("a box is created") {
+        const auto &box = server->addObject("box", {10, 10});
+
+        THEN("the server survives") { server->nop(); }
+      }
+    }
+  }
 }

@@ -730,7 +730,7 @@ Object &Server::addObject(const ObjectType *type, const MapPoint &location,
 
   if (!type->container().spawnsWithItem.empty()) {
     const auto *item = findItem(type->container().spawnsWithItem);
-    newObj->container().addItems(item);
+    if (item) newObj->container().addItems(item);
   }
 
   return dynamic_cast<Object &>(addEntity(newObj));
