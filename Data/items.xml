@@ -1,6 +1,6 @@
 <root>
 
-<item id="log"          name="Log"            sounds="wood"      stackSize="5" />
+<item id="log"          name="Log"            sounds="wood"      constructs="logPile"       stackSize="5" />
 <item id="crudeClay"    name="Crude Clay"     sounds="clay"      stackSize="10" />
 <item id="clay"         name="Clay"           sounds="clay"      stackSize="10"  />
 <item id="tinRing"      name="Tin Ringlet"                       stackSize="1000" />

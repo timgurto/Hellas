@@ -648,6 +648,14 @@ void ClientObject::addWindowTextToWindow() {
   _window->resize(newContentWidth, y);
 }
 
+size_t ClientObject::numItemsInContainer() const {
+  auto sum = 0;
+  for (const auto &pair : container()) {
+    sum += pair.second;
+  }
+  return sum;
+}
+
 void ClientObject::assembleWindow(Client &client) {
   const ClientObjectType &objType = *objectType();
 
@@ -911,6 +919,8 @@ void ClientObject::update(double delta) {
 
 void ClientObject::draw() const {
   Sprite::draw();
+  objectType()->drawPerItemInfo.drawItems(
+      toScreenPoint(location()) + _client.offset(), numItemsInContainer());
   drawAppropriateQuestIndicator();
 }
 

@@ -16,6 +16,7 @@
 #include "HasSounds.h"
 #include "SpriteType.h"
 #include "Texture.h"
+#include "drawPerItem.h"
 
 class ConfirmationWindow;
 class SoundProfile;
@@ -170,6 +171,7 @@ class ClientObjectType : public SpriteType,
     return _drawParticlesWhenUnderConstruction;
   }
   std::string onlyAllowedItemInContainer;
+  DrawPerItemInfo drawPerItemInfo;
 
   const ImageWithHighlight &getProgressImage(ms_t timeRemaining) const;
   const Texture &corpseImage() const { return _corpseImage.getNormalImage(); }

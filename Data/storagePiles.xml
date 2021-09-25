@@ -1,0 +1,77 @@
+<root>
+
+<objectType id="mediumPot" name="Medium Pot" healthCategory="lumberWeak"
+    xDrawOffset="-19" yDrawOffset="-27"
+    deconstructs="mediumPot" deconstructionTime="1000"
+    sounds="pottery" >
+    <collisionRect x="-13" y="-4" w="25" h="6" />
+    <container slots="4" />
+    <canBeRepaired cost="clay" />
+</objectType>
+
+<objectType id="logPile" name="Logs" healthCategory="logWeak"
+    xDrawOffset="-41" yDrawOffset="-96"
+    deconstructs="log" deconstructionTime="1000" >
+    <collisionRect x="-40" y="-44" w="80" h="88" />
+    <container slots="10" restrictedToItem="log" > <!-- 10x5 = 50 items -->
+        <drawPerItem>
+            <entry image="logV2" x="-40" y="-23" />
+            <entry image="logV2" x="-32" y="-23" />
+            <entry image="logV1" x="-24" y="-23" />
+            <entry image="logV2" x="-16" y="-23" />
+            <entry image="logV3" x="-8"  y="-23" />
+            <entry image="logV3" x="0"   y="-23" />
+            <entry image="logV2" x="8"   y="-23" />
+            <entry image="logV1" x="16"  y="-23" />
+            <entry image="logV3" x="24"  y="-23" />
+            <entry image="logV1" x="32"  y="-23" />
+            
+            <entry image="logH1" x="-40" y="-23" />
+            <entry image="logH1" x="-40" y="-15" />
+            <entry image="logH1" x="-40" y="-7"  />
+            <entry image="logH1" x="-40" y="1"   />
+            <entry image="logH1" x="-40" y="9"   />
+            <entry image="logH1" x="0"   y="-23" />
+            <entry image="logH1" x="0"   y="-15" />
+            <entry image="logH1" x="0"   y="-7"  />
+            <entry image="logH1" x="0"   y="1"   />
+            <entry image="logH1" x="0"   y="9"   />
+            
+            <entry image="logV1" x="-40" y="-39" />
+            <entry image="logV3" x="-32" y="-39" />
+            <entry image="logV2" x="-24" y="-39" />
+            <entry image="logV1" x="-16" y="-39" />
+            <entry image="logV3" x="-8"  y="-39" />
+            <entry image="logV2" x="0"   y="-39" />
+            <entry image="logV3" x="8"   y="-39" />
+            <entry image="logV2" x="16"  y="-39" />
+            <entry image="logV1" x="24"  y="-39" />
+            <entry image="logV1" x="32"  y="-39" />
+            
+            <entry image="logH1" x="-40" y="-39" />
+            <entry image="logH1" x="-40" y="-31" />
+            <entry image="logH1" x="-40" y="-23" />
+            <entry image="logH1" x="-40" y="-15" />
+            <entry image="logH1" x="-40" y="1"   />
+            <entry image="logH1" x="0"   y="-39" />
+            <entry image="logH1" x="0"   y="-31" />
+            <entry image="logH1" x="0"   y="-23" />
+            <entry image="logH1" x="0"   y="-15" />
+            <entry image="logH1" x="0"   y="1"   />
+            
+            <entry image="logV2" x="-40" y="-55" />
+            <entry image="logV3" x="-32" y="-55" />
+            <entry image="logV2" x="-24" y="-55" />
+            <entry image="logV3" x="-16" y="-55" />
+            <entry image="logV3" x="-8"  y="-55" />
+            <entry image="logV3" x="0"   y="-55" />
+            <entry image="logV2" x="8"   y="-55" />
+            <entry image="logV1" x="16"  y="-55" />
+            <entry image="logV1" x="24"  y="-55" />
+            <entry image="logV1" x="32"  y="-55" />
+        </drawPerItem>
+    </container>
+    <canBeRepaired cost="log" />
+</objectType>
+
+</root>

@@ -540,6 +540,18 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
       if (xr.findAttr(container, "slots", n)) cot->containerSlots(n);
       xr.findAttr(container, "restrictedToItem",
                   cot->onlyAllowedItemInContainer);
+
+      auto drawPerItem = xr.findChild("drawPerItem", container);
+      if (drawPerItem) {
+        for (auto entry : xr.getChildren("entry", drawPerItem)) {
+          auto imageFile = ""s;
+          auto offset = ScreenPoint{};
+          if (!xr.findAttr(entry, "image", imageFile)) continue;
+          if (!xr.findAttr(entry, "x", offset.x)) continue;
+          if (!xr.findAttr(entry, "y", offset.y)) continue;
+          cot->drawPerItemInfo.addEntry(imageFile, offset);
+        }
+      }
     }
 
     auto windowText = ""s;

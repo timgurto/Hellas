@@ -210,6 +210,8 @@ class ClientObject : public Sprite, public ClientCombatant {
 
   // Return value: whether anything was added
   virtual bool addClassSpecificStuffToWindow() { return false; }
+
+  size_t numItemsInContainer() const;
 };
 
 #endif

@@ -117,6 +117,7 @@
     <ClCompile Include="src\client\CRecipe.cpp" />
     <ClCompile Include="src\client\CSuffixes.cpp" />
     <ClCompile Include="src\client\drawing.cpp" />
+    <ClCompile Include="src\client\drawPerItem.cpp" />
     <ClCompile Include="src\client\MemoisedImageDirectory.cpp" />
     <ClCompile Include="src\client\SDLwrappers.cpp" />
     <ClCompile Include="src\client\UIGroup.cpp" />
@@ -336,6 +337,7 @@
     <ClInclude Include="src\client\CQuest.h" />
     <ClInclude Include="src\client\CRecipe.h" />
     <ClInclude Include="src\client\CSuffixes.h" />
+    <ClInclude Include="src\client\drawPerItem.h" />
     <ClInclude Include="src\client\MemoisedImageDirectory.h" />
     <ClInclude Include="src\client\SDLwrappers.h" />
     <ClInclude Include="src\client\UIGroup.h" />
