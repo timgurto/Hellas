@@ -312,4 +312,19 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Containers that spawn with an item",
       THEN("it has an item") { CHECK(computer.container().at(0).hasItem()); }
     }
   }
+
+  GIVEN("a suitcase that comes with silica gel") {
+    useData(R"(
+      <item id="silicaGel" />
+      <objectType id="suitcase" >
+        <container slots="1" spawnsWithItem="silicaGel" />
+      </objectType>
+    )");
+
+    WHEN("a suitcase is created") {
+      const auto &suitcase = server->addObject("suitcase", {10, 10});
+
+      THEN("it has an item") { CHECK(suitcase.container().at(0).hasItem()); }
+    }
+  }
 }
