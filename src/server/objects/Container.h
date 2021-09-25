@@ -14,6 +14,7 @@ class ContainerType {
   void restrictTo(std::string itemID);
   bool canStoreItem(const ServerItem &item) const;
   std::string spawnsWithItem{};
+  bool objectDisappearsWhenEmpty{false};
 
  private:
   size_t _slots;
