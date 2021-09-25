@@ -258,6 +258,7 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
       }
       if (xr.findAttr(container, "restrictedToItem", s))
         ot->container().restrictTo(s);
+      xr.findAttr(container, "spawnsWithItem", ot->container().spawnsWithItem);
     }
 
     // Terrain restrictions

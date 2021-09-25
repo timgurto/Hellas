@@ -295,3 +295,21 @@ TEST_CASE_METHOD(ServerAndClientWithData,
     }
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Containers that spawn with an item",
+                 "[containers]") {
+  GIVEN("a computer that comes with an OS") {
+    useData(R"(
+      <item id="os" />
+      <objectType id="computer" >
+        <container slots="1" spawnsWithItem="os" />
+      </objectType>
+    )");
+
+    WHEN("a computer is created") {
+      const auto &computer = server->addObject("computer", {10, 10});
+
+      THEN("it has an item") { CHECK(computer.container().at(0).hasItem()); }
+    }
+  }
+}

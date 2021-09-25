@@ -13,6 +13,7 @@ class ContainerType {
   size_t slots() const { return _slots; }
   void restrictTo(std::string itemID);
   bool canStoreItem(const ServerItem &item) const;
+  std::string spawnsWithItem{};
 
  private:
   size_t _slots;

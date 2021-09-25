@@ -728,6 +728,10 @@ Object &Server::addObject(const ObjectType *type, const MapPoint &location,
       break;
   }
 
+  if (!type->container().spawnsWithItem.empty()) {
+    newObj->container().addItems(findItem("os"));
+  }
+
   return dynamic_cast<Object &>(addEntity(newObj));
 }
 
