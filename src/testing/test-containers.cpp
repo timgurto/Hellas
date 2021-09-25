@@ -256,6 +256,19 @@ TEST_CASE_METHOD(ServerAndClientWithData,
             }
           }
         }
+
+        SECTION("Moving from object to empty slot") {
+          WHEN("Ned tries to swap the candy dish into his inventory") {
+            client->sendMessage(
+                CL_SWAP_ITEMS,
+                makeArgs(candyDish.serial(), 0, Serial::Inventory(), 0));
+
+            THEN("the server survives") {
+              REPEAT_FOR_MS(100);
+              server->nop();
+            }
+          }
+        }
       }
     }
   }

@@ -486,9 +486,11 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
     return;
 
   // Check container restrictions
-  if (to.object && !to.object->container().canStoreItem(*fromItem.type()))
+  if (fromItem.hasItem() && to.object &&
+      !to.object->container().canStoreItem(*fromItem.type()))
     RETURN_WITH(WARNING_RESTRICTED_CONTAINER);
-  if (from.object && !from.object->container().canStoreItem(*toItem.type()))
+  if (toItem.hasItem() && from.object &&
+      !from.object->container().canStoreItem(*toItem.type()))
     RETURN_WITH(WARNING_RESTRICTED_CONTAINER);
 
   // Check whether soulbound items can be moved
