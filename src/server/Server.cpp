@@ -728,7 +728,7 @@ Object &Server::addObject(const ObjectType *type, const MapPoint &location,
       break;
   }
 
-  if (!type->container().spawnsWithItem.empty()) {
+  if (type->hasContainer() && !type->container().spawnsWithItem.empty()) {
     const auto *item = findItem(type->container().spawnsWithItem);
     if (item) newObj->container().addItems(item);
   }
