@@ -55,7 +55,7 @@ void Tooltip::addItemGrid(const void *itemVector) {
 
   static const size_t MAX_COLS = 5;
   static const auto GAP = 1_px;
-  auto cols = max(items.size(), MAX_COLS);
+  auto cols = min(items.size(), MAX_COLS);
   auto rows = (items.size() - 1) / MAX_COLS + 1;
   auto gridW = static_cast<px_t>(cols * (Client::ICON_SIZE + GAP) - GAP);
   auto gridH = static_cast<px_t>(rows * (Client::ICON_SIZE + GAP) - GAP);
