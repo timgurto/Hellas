@@ -344,9 +344,10 @@ TEST_CASE("Containers that spawn with an item", "[containers]") {
   }
 }
 
-TEST_CASE("Containers that disappear when empty", "[containers]") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Containers that disappear when empty", "[containers]") {
   GIVEN("rainclouds disappear when empty; rainwater tanks don't") {
-    auto server = TestServer::WithDataString(R"(
+    useData(R"(
       <item id="rain" />
       <objectType id="raincloud" >
         <container slots="1" disappearsWhenEmpty="1" />
@@ -355,10 +356,10 @@ TEST_CASE("Containers that disappear when empty", "[containers]") {
         <container slots="1" />
       </objectType>
     )");
-    const auto *rain = &server.getFirstItem();
+    const auto *rain = &server->getFirstItem();
 
     AND_GIVEN("a raincloud with rain") {
-      auto &raincloud = server.addObject("raincloud", {10, 10});
+      auto &raincloud = server->addObject("raincloud", {10, 10});
       raincloud.container().addItems(rain);
 
       WHEN("the rain is removed") {
@@ -367,13 +368,13 @@ TEST_CASE("Containers that disappear when empty", "[containers]") {
         raincloud.container().removeItems(itemsToRemove);
 
         THEN("the raincloud disappears") {
-          WAIT_UNTIL(server.entities().size() == 0);
+          WAIT_UNTIL(server->entities().size() == 0);
         }
       }
     }
 
     AND_GIVEN("a rainwater tank with rain") {
-      auto &rainwaterTank = server.addObject("rainwaterTank", {10, 10});
+      auto &rainwaterTank = server->addObject("rainwaterTank", {10, 10});
       rainwaterTank.container().addItems(rain);
 
       WHEN("the rain is removed") {
@@ -383,7 +384,7 @@ TEST_CASE("Containers that disappear when empty", "[containers]") {
 
         THEN("the rainwaterTank doesn't disappear") {
           REPEAT_FOR_MS(100);
-          CHECK(server.entities().size() == 1);
+          CHECK(server->entities().size() == 1);
         }
       }
     }
