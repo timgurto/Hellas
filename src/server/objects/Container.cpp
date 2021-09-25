@@ -50,6 +50,8 @@ void Container::removeItems(const ItemSet &items) {
   }
   for (size_t slotNum : invSlotsChanged)
     _parent.tellRelevantUsersAboutInventorySlot(slotNum);
+
+  if (isEmpty()) _parent.markForRemoval();
 }
 
 void Container::removeAll() {

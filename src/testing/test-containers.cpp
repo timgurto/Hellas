@@ -343,3 +343,30 @@ TEST_CASE("Containers that spawn with an item", "[containers]") {
     }
   }
 }
+
+TEST_CASE("Containers that disappear when empty", "[containers]") {
+  GIVEN("rainclouds disappears when empty") {
+    auto server = TestServer::WithDataString(R"(
+      <item id="rain" />
+      <objectType id="raincloud" >
+        <container slots="1" disappearsWhenEmpty="1" />
+      </objectType>
+    )");
+    const auto *rain = &server.getFirstItem();
+
+    AND_GIVEN("a raincloud with rain") {
+      auto &raincloud = server.addObject("raincloud", {10, 10});
+      raincloud.container().addItems(rain);
+
+      WHEN("the rain is removed") {
+        auto itemsToRemove = ItemSet{};
+        itemsToRemove.add(rain);
+        raincloud.container().removeItems(itemsToRemove);
+
+        THEN("the raincloud disappears") {
+          WAIT_UNTIL(server.entities().size() == 0);
+        }
+      }
+    }
+  }
+}
