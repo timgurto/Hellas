@@ -371,6 +371,15 @@ TEST_CASE_METHOD(ServerAndClientWithData,
           WAIT_UNTIL(server->entities().size() == 0);
         }
       }
+
+      WHEN("the user takes the rain (swapping cloud -> inventory)") {
+        client->sendMessage(CL_SWAP_ITEMS, makeArgs(raincloud.serial(), 0,
+                                                    Serial::Inventory(), 0));
+
+        THEN("the raincloud disappears") {
+          WAIT_UNTIL(server->entities().size() == 0);
+        }
+      }
     }
 
     AND_GIVEN("a rainwater tank with rain") {

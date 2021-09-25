@@ -51,8 +51,7 @@ void Container::removeItems(const ItemSet &items) {
   for (size_t slotNum : invSlotsChanged)
     _parent.tellRelevantUsersAboutInventorySlot(slotNum);
 
-  if (_parent.objType().container().objectDisappearsWhenEmpty && isEmpty())
-    _parent.markForRemoval();
+  onItemRemoved();
 }
 
 void Container::removeAll() {
@@ -117,6 +116,11 @@ bool Container::containsAnySoulboundItems() const {
 bool Container::canStoreItem(const ServerItem &item) const {
   const auto &containerType = _parent.objType().container();
   return (containerType.canStoreItem(item));
+}
+
+void Container::onItemRemoved() {
+  if (_parent.objType().container().objectDisappearsWhenEmpty && isEmpty())
+    _parent.markForRemoval();
 }
 
 ItemSet Container::generateLootWithChance(double chance) const {

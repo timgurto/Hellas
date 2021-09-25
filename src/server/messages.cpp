@@ -573,6 +573,10 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
     ProgressLock::triggerUnlocks(user, ProgressLock::ITEM, toItem.type());
   } else
     to.object->tellRelevantUsersAboutInventorySlot(slot2);
+
+  // Remove newly empty containers for whom that is a rule
+  if (from.object) from.object->container().onItemRemoved();
+  if (to.object) to.object->container().onItemRemoved();
 }
 
 HANDLE_MESSAGE(CL_TAKE_ITEM) {

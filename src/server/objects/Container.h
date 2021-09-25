@@ -39,6 +39,7 @@ class Container {
   bool isAbleToDeconstruct(const User &user) const;
   bool containsAnySoulboundItems() const;
   bool canStoreItem(const ServerItem &item) const;
+  void onItemRemoved();
 
   // TODO: remove
   const ServerItem::vect_t &raw() const { return _container; }
