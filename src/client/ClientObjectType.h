@@ -171,7 +171,7 @@ class ClientObjectType : public SpriteType,
     return _drawParticlesWhenUnderConstruction;
   }
   std::string onlyAllowedItemInContainer;
-  DrawPerItemInfo drawPerItemInfo;
+  DrawPerItemTypeInfo drawPerItemInfo;
 
   const ImageWithHighlight &getProgressImage(ms_t timeRemaining) const;
   const Texture &corpseImage() const { return _corpseImage.getNormalImage(); }

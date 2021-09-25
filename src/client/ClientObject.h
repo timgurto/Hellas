@@ -49,6 +49,7 @@ class ClientObject : public Sprite, public ClientCombatant {
       _dropbox;  // A slot where construction materials can be added.
   ms_t _transformTimer;
   ms_t _gatherSoundTimer;
+  DrawPerItemInfo drawPerItemInfo;
 
   /*
   True if the NPC is dead and has loot available.  This is used as the loot
@@ -133,10 +134,6 @@ class ClientObject : public Sprite, public ClientCombatant {
   virtual const std::string &name() const override {
     return objectType()->name();
   }
-  virtual const Texture &image() const override;
-  virtual const Texture &getHighlightImage() const override;
-  const Tooltip &tooltip()
-      const override;  // Getter; creates tooltip on first call.
 
   MapRect collisionRect() const {
     return objectType()->collisionRect() + location();
@@ -155,6 +152,7 @@ class ClientObject : public Sprite, public ClientCombatant {
   void hideWindow();
   virtual void assembleWindow(Client &client);
   virtual bool canBeOwnedByACity() const { return true; }
+  size_t numItemsInContainer() const;
 
   // Quests
   std::set<CQuest *> startsQuests() const;
@@ -172,6 +170,10 @@ class ClientObject : public Sprite, public ClientCombatant {
   void playDeathSound() const override;
 
   // From Sprite
+  virtual const Texture &image() const override;
+  virtual const Texture &getHighlightImage() const override;
+  const Tooltip &tooltip()
+      const override;  // Getter; creates tooltip on first call.
   void draw() const override;
   void drawAppropriateQuestIndicator() const;
   const Texture &cursor() const override;
@@ -210,8 +212,6 @@ class ClientObject : public Sprite, public ClientCombatant {
 
   // Return value: whether anything was added
   virtual bool addClassSpecificStuffToWindow() { return false; }
-
-  size_t numItemsInContainer() const;
 };
 
 #endif

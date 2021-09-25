@@ -12,7 +12,7 @@
 <objectType id="logPile" name="Logs" healthCategory="logWeak"
     xDrawOffset="-41" yDrawOffset="-96"
     deconstructs="log" deconstructionTime="1000" >
-    <collisionRect x="-40" y="-44" w="80" h="88" />
+    <collisionRect x="-41" y="-24" w="82" h="48" />
     <container slots="10" restrictedToItem="log" > <!-- 10x5 = 50 items -->
         <drawPerItem>
             <entry image="logV2" x="-40" y="-23" />

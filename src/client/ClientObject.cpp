@@ -40,7 +40,8 @@ ClientObject::ClientObject(const ClientObject &rhs)
       _container(rhs._container),
       _window(nullptr),
       _confirmCedeWindow(nullptr),
-      _beingGathered(rhs._beingGathered) {}
+      _beingGathered(rhs._beingGathered),
+      drawPerItemInfo(*this, {}) {}
 
 ClientObject::ClientObject(Serial serialArg, const ClientObjectType *type,
                            const MapPoint &loc, Client &client)
@@ -54,7 +55,8 @@ ClientObject::ClientObject(Serial serialArg, const ClientObjectType *type,
       _dropbox(1),
       _gatherSoundTimer(0),
       _lootable(false),
-      _lootContainer(nullptr) {
+      _lootContainer(nullptr),
+      drawPerItemInfo(*this, type->drawPerItemInfo) {
   _transformTimer = type->transformTime();
   level(type->level());
 
@@ -71,7 +73,8 @@ ClientObject::ClientObject(Serial serialArg)
     : Sprite(nullptr, MapPoint{}, *(Client *)(nullptr)),
       ClientCombatant(*(Client *)(nullptr), nullptr),
       _serial(serialArg),
-      _owner({Owner::ALL_HAVE_ACCESS, {}}) {}
+      _owner({Owner::ALL_HAVE_ACCESS, {}}),
+      drawPerItemInfo(*this, {}) {}
 
 ClientObject::~ClientObject() {
   if (_window != nullptr) {
@@ -919,8 +922,6 @@ void ClientObject::update(double delta) {
 
 void ClientObject::draw() const {
   Sprite::draw();
-  objectType()->drawPerItemInfo.drawItems(
-      toScreenPoint(location()) + _client.offset(), numItemsInContainer());
   drawAppropriateQuestIndicator();
 }
 
@@ -1214,6 +1215,7 @@ void ClientObject::createRepairTooltip() const {
 
 const Texture &ClientObject::image() const {
   if (health() == 0) return objectType()->corpseImage();
+  if (drawPerItemInfo) return drawPerItemInfo.image();
   if (isBeingConstructed())
     return objectType()->constructionImage().getNormalImage();
   if (objectType()->transforms())
