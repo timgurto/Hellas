@@ -296,10 +296,9 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Containers that spawn with an item",
-                 "[containers]") {
+TEST_CASE("Containers that spawn with an item", "[containers]") {
   GIVEN("a computer that comes with an OS") {
-    useData(R"(
+    auto server = TestServer::WithDataString(R"(
       <item id="os" />
       <objectType id="computer" >
         <container slots="1" spawnsWithItem="os" />
@@ -307,14 +306,14 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Containers that spawn with an item",
     )");
 
     WHEN("a computer is created") {
-      const auto &computer = server->addObject("computer", {10, 10});
+      const auto &computer = server.addObject("computer", {10, 10});
 
       THEN("it has an item") { CHECK(computer.container().at(0).hasItem()); }
     }
   }
 
   GIVEN("a suitcase that comes with silica gel") {
-    useData(R"(
+    auto server = TestServer::WithDataString(R"(
       <item id="silicaGel" />
       <objectType id="suitcase" >
         <container slots="1" spawnsWithItem="silicaGel" />
@@ -322,7 +321,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Containers that spawn with an item",
     )");
 
     WHEN("a suitcase is created") {
-      const auto &suitcase = server->addObject("suitcase", {10, 10});
+      const auto &suitcase = server.addObject("suitcase", {10, 10});
 
       THEN("it has an item") { CHECK(suitcase.container().at(0).hasItem()); }
     }
@@ -330,16 +329,16 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Containers that spawn with an item",
 
   SECTION("handle bad data") {
     GIVEN("a box that comes with a nonexistent item") {
-      useData(R"(
+      auto server = TestServer::WithDataString(R"(
         <objectType id="box" >
           <container slots="1" spawnsWithItem="notAnItem" />
         </objectType>
       )");
 
       WHEN("a box is created") {
-        const auto &box = server->addObject("box", {10, 10});
+        const auto &box = server.addObject("box", {10, 10});
 
-        THEN("the server survives") { server->nop(); }
+        THEN("the server survives") { server.nop(); }
       }
     }
   }
