@@ -2,6 +2,7 @@
 #include "../util.h"
 #include "ClientObject.h"
 #include "Sprite.h"
+#include "Surface.h"
 #include "Texture.h"
 
 using namespace std::string_literals;
@@ -21,12 +22,24 @@ const Texture& DrawPerItemInfo::image() const {
   renderer.pushRenderTarget(_image);
   renderer.fillWithTransparency();
 
-  // Draw base image
-  baseImage.draw();
-
-  // Draw items on top
   const auto itemsToDraw =
       min(_owner.numItemsInContainer(), _type._entries.size());
+
+  // Create border from items
+  const auto borderOffsets =
+      std::vector<ScreenPoint>{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+  for (auto i = 0; i != itemsToDraw; ++i) {
+    const auto& entry = _type._entries[i];
+    auto itemSurface =
+        Surface{"Images/Storage/"s + entry.imageFile + ".png", Color::MAGENTA};
+    itemSurface.swapAllVisibleColors(Color::SPRITE_OUTLINE);
+    auto itemTexture = Texture{itemSurface};
+    for (const auto borderOffset : borderOffsets)
+      itemTexture.draw(entry.offset - _owner.objectType()->drawRect() +
+                       borderOffset);
+  }
+
+  // Draw items normally on top
   for (auto i = 0; i != itemsToDraw; ++i) {
     const auto& entry = _type._entries[i];
     auto itemImage =
@@ -35,6 +48,5 @@ const Texture& DrawPerItemInfo::image() const {
   }
 
   renderer.popRenderTarget();
-
   return _image;
 }
