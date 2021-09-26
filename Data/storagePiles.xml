@@ -20,59 +20,59 @@
         spawnsWithItem="log"
         disappearsWhenEmpty="1" > 
         <drawPerItem>
-            <entry image="logV2" x="-40" y="-23" />
-            <entry image="logV2" x="-32" y="-23" />
-            <entry image="logV1" x="-24" y="-23" />
-            <entry image="logV2" x="-16" y="-23" />
-            <entry image="logV3" x="-8"  y="-23" />
-            <entry image="logV3" x="0"   y="-23" />
+            <entry image="logV1" x="-40" y="-23" />
+            <entry image="logV3" x="-32" y="-23" />
+            <entry image="logV2" x="-24" y="-23" />
+            <entry image="logV3" x="-16" y="-23" />
+            <entry image="logV1" x="-8"  y="-23" />
+            <entry image="logV4" x="0"   y="-23" />
             <entry image="logV2" x="8"   y="-23" />
             <entry image="logV1" x="16"  y="-23" />
             <entry image="logV3" x="24"  y="-23" />
-            <entry image="logV1" x="32"  y="-23" />
+            <entry image="logV4" x="32"  y="-23" />
             
-            <entry image="logH1" x="-40" y="-23" />
+            <entry image="logH3" x="-40" y="-23" />
             <entry image="logH1" x="-40" y="-15" />
-            <entry image="logH1" x="-40" y="-7"  />
+            <entry image="logH4" x="-40" y="-7"  />
             <entry image="logH1" x="-40" y="1"   />
-            <entry image="logH1" x="-40" y="9"   />
-            <entry image="logH1" x="0"   y="-23" />
-            <entry image="logH1" x="0"   y="-15" />
+            <entry image="logH3" x="-40" y="9"   />
+            <entry image="logH4" x="0"   y="-23" />
+            <entry image="logH2" x="0"   y="-15" />
             <entry image="logH1" x="0"   y="-7"  />
-            <entry image="logH1" x="0"   y="1"   />
-            <entry image="logH1" x="0"   y="9"   />
+            <entry image="logH2" x="0"   y="1"   />
+            <entry image="logH3" x="0"   y="9"   />
             
-            <entry image="logV1" x="-40" y="-39" />
-            <entry image="logV3" x="-32" y="-39" />
+            <entry image="logV4" x="-40" y="-39" />
+            <entry image="logV2" x="-32" y="-39" />
             <entry image="logV2" x="-24" y="-39" />
-            <entry image="logV1" x="-16" y="-39" />
+            <entry image="logV4" x="-16" y="-39" />
             <entry image="logV3" x="-8"  y="-39" />
-            <entry image="logV2" x="0"   y="-39" />
-            <entry image="logV3" x="8"   y="-39" />
-            <entry image="logV2" x="16"  y="-39" />
-            <entry image="logV1" x="24"  y="-39" />
+            <entry image="logV1" x="0"   y="-39" />
+            <entry image="logV2" x="8"   y="-39" />
+            <entry image="logV3" x="16"  y="-39" />
+            <entry image="logV4" x="24"  y="-39" />
             <entry image="logV1" x="32"  y="-39" />
             
-            <entry image="logH1" x="-40" y="-39" />
-            <entry image="logH1" x="-40" y="-31" />
-            <entry image="logH1" x="-40" y="-23" />
-            <entry image="logH1" x="-40" y="-15" />
-            <entry image="logH1" x="-40" y="1"   />
-            <entry image="logH1" x="0"   y="-39" />
+            <entry image="logH4" x="-40" y="-39" />
+            <entry image="logH2" x="-40" y="-31" />
+            <entry image="logH3" x="-40" y="-23" />
+            <entry image="logH2" x="-40" y="-15" />
+            <entry image="logH1" x="-40" y="-7"   />
+            <entry image="logH4" x="0"   y="-39" />
             <entry image="logH1" x="0"   y="-31" />
-            <entry image="logH1" x="0"   y="-23" />
-            <entry image="logH1" x="0"   y="-15" />
-            <entry image="logH1" x="0"   y="1"   />
+            <entry image="logH3" x="0"   y="-23" />
+            <entry image="logH2" x="0"   y="-15" />
+            <entry image="logH4" x="0"   y="-7"   />
             
             <entry image="logV2" x="-40" y="-55" />
             <entry image="logV3" x="-32" y="-55" />
             <entry image="logV2" x="-24" y="-55" />
-            <entry image="logV3" x="-16" y="-55" />
-            <entry image="logV3" x="-8"  y="-55" />
+            <entry image="logV1" x="-16" y="-55" />
+            <entry image="logV4" x="-8"  y="-55" />
             <entry image="logV3" x="0"   y="-55" />
-            <entry image="logV2" x="8"   y="-55" />
-            <entry image="logV1" x="16"  y="-55" />
-            <entry image="logV1" x="24"  y="-55" />
+            <entry image="logV1" x="8"   y="-55" />
+            <entry image="logV2" x="16"  y="-55" />
+            <entry image="logV4" x="24"  y="-55" />
             <entry image="logV1" x="32"  y="-55" />
         </drawPerItem>
     </container>
