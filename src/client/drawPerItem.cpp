@@ -15,6 +15,16 @@ void DrawPerItemTypeInfo::addEntry(std::string imageFile,
 }
 
 const Texture& DrawPerItemInfo::image() const {
+  generateImage();
+  return _image;
+}
+
+const Texture& DrawPerItemInfo::highlightImage() const {
+  generateHighlightImage();
+  return _highlightImage;
+}
+
+void DrawPerItemInfo::generateImage() const {
   const auto& baseImage = _owner.objectType()->image();
   _image = {baseImage.width(), baseImage.height()};
   _image.setBlend();
@@ -48,10 +58,9 @@ const Texture& DrawPerItemInfo::image() const {
   }
 
   renderer.popRenderTarget();
-  return _image;
 }
 
-const Texture& DrawPerItemInfo::highlightImage() const {
+void DrawPerItemInfo::generateHighlightImage() const {
   const auto& baseImage = _owner.objectType()->image();
   _highlightImage = {baseImage.width() + 2, baseImage.height() + 2};
   _highlightImage.setBlend();
@@ -80,5 +89,4 @@ const Texture& DrawPerItemInfo::highlightImage() const {
   _image.draw(1, 1);
 
   renderer.popRenderTarget();
-  return _highlightImage;
 }

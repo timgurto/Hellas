@@ -33,4 +33,7 @@ class DrawPerItemInfo {
   const ClientObject& _owner;
   const DrawPerItemTypeInfo& _type;
   mutable Texture _image, _highlightImage;
+
+  void generateImage() const;
+  void generateHighlightImage() const;
 };
