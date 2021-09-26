@@ -313,32 +313,57 @@ TEST_CASE("Containers that spawn with an item", "[containers]") {
   }
 
   GIVEN("a suitcase that comes with silica gel") {
-    auto server = TestServer::WithDataString(R"(
-      <item id="silicaGel" />
+    const auto data = R"(
+      <item id="silicaGel" stackSize="10" />
       <objectType id="suitcase" >
-        <container slots="1" spawnsWithItem="silicaGel" />
+        <container slots="2" spawnsWithItem="silicaGel" />
       </objectType>
-    )");
+    )";
 
     WHEN("a suitcase is created") {
+      auto server = TestServer::WithDataString(data);
       const auto &suitcase = server.addObject("suitcase", {10, 10});
 
       THEN("it has an item") { CHECK(suitcase.container().at(0).hasItem()); }
     }
-  }
 
-  SECTION("handle bad data") {
-    GIVEN("a box that comes with a nonexistent item") {
-      auto server = TestServer::WithDataString(R"(
-        <objectType id="box" >
-          <container slots="1" spawnsWithItem="notAnItem" />
-        </objectType>
-      )");
+    SECTION("New objects only") {
+      // AND GIVEN a server with a suitcase
+      {
+        auto server = TestServer::WithDataString(data);
+        auto &suitcase = server.addObject("suitcase", {10, 10});
 
-      WHEN("a box is created") {
-        const auto &box = server.addObject("box", {10, 10});
+        // And GIVEN the suitcase has a silica gel in slot 1
+        const auto *silicaGel = &server.getFirstItem();
+        suitcase.container().at(1) = {
+            silicaGel, ServerItem::Instance::ReportingInfo::InObjectContainer(),
+            1};
 
-        THEN("the server survives") { server.nop(); }
+        // WHEN the server restarts
+      }
+      {
+        auto server = TestServer::WithDataStringAndKeepingOldData(data);
+
+        // THEN the suitcase has no silica gel in slot 0
+        const auto &suitcase = server.getFirstObject();
+        REPEAT_FOR_MS(100);
+        CHECK(suitcase.container().at(0).quantity() == 1);
+      }
+    }
+
+    SECTION("handle bad data") {
+      GIVEN("a box that comes with a nonexistent item") {
+        auto server = TestServer::WithDataString(R"(
+          <objectType id="box" >
+            <container slots="1" spawnsWithItem="notAnItem" />
+          </objectType>
+        )");
+
+        WHEN("a box is created") {
+          const auto &box = server.addObject("box", {10, 10});
+
+          THEN("the server survives") { server.nop(); }
+        }
       }
     }
   }

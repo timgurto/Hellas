@@ -721,8 +721,8 @@ Object &Server::addObject(const ObjectType *type, const MapPoint &location,
         const auto *user = this->getUserByName(owner.name);
         if (user != nullptr) user->registerObjectIfPlayerUnique(*type);
       }
-
       break;
+
     case Permissions::Owner::CITY:
       newObj->permissions.setCityOwner(owner.name);
       break;
