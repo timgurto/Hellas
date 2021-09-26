@@ -1225,6 +1225,7 @@ const Texture &ClientObject::image() const {
 
 const Texture &ClientObject::getHighlightImage() const {
   if (health() == 0) return objectType()->corpseHighlightImage();
+  if (drawPerItemInfo) return drawPerItemInfo.highlightImage();
   if (isBeingConstructed())
     return objectType()->constructionImage().getHighlightImage();
   if (objectType()->transforms())

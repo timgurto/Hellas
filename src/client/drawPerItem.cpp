@@ -50,3 +50,35 @@ const Texture& DrawPerItemInfo::image() const {
   renderer.popRenderTarget();
   return _image;
 }
+
+const Texture& DrawPerItemInfo::highlightImage() const {
+  const auto& baseImage = _owner.objectType()->image();
+  _highlightImage = {baseImage.width() + 2, baseImage.height() + 2};
+  _highlightImage.setBlend();
+
+  renderer.pushRenderTarget(_highlightImage);
+  renderer.fillWithTransparency();
+
+  const auto itemsToDraw =
+      min(_owner.numItemsInContainer(), _type._entries.size());
+
+  // Create highlight from items
+  const auto highlightOffsets = std::vector<ScreenPoint>{
+      {-2, 0}, {2, 0}, {0, -2}, {0, 2}, {-1, -1}, {-1, 1}, {1, -1}, {1, 1}};
+  for (auto i = 0; i != itemsToDraw; ++i) {
+    const auto& entry = _type._entries[i];
+    auto itemSurface =
+        Surface{"Images/Storage/"s + entry.imageFile + ".png", Color::MAGENTA};
+    itemSurface.swapAllVisibleColors(Color::SPRITE_OUTLINE_HIGHLIGHT);
+    auto itemTexture = Texture{itemSurface};
+    for (const auto& highlightOffset : highlightOffsets)
+      itemTexture.draw(entry.offset - _owner.objectType()->drawRect() +
+                       highlightOffset + ScreenPoint{1, 1});
+  }
+
+  // Draw normal image on top
+  _image.draw(1, 1);
+
+  renderer.popRenderTarget();
+  return _highlightImage;
+}

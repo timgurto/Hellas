@@ -27,9 +27,10 @@ class DrawPerItemInfo {
   operator bool() const { return !_type._entries.empty(); }
 
   const Texture& image() const;
+  const Texture& highlightImage() const;
 
  private:
   const ClientObject& _owner;
   const DrawPerItemTypeInfo& _type;
-  mutable Texture _image;
+  mutable Texture _image, _highlightImage;
 };
