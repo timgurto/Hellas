@@ -19,7 +19,7 @@
         restrictedToItem="log"
         spawnsWithItem="log"
         disappearsWhenEmpty="1" > 
-        <drawPerItem>
+        <drawPerItem quantityShownToEnemies="10" >
             <entry image="logV1" x="-40" y="-23" />
             <entry image="logV3" x="-32" y="-23" />
             <entry image="logV2" x="-24" y="-23" />

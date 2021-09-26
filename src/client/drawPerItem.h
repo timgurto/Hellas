@@ -16,6 +16,11 @@ class DrawPerItemTypeInfo {
     std::string imageFile;
     ScreenPoint offset;
   };
+  size_t quantityShownToEnemies{0};
+
+  friend class DrawPerItemInfo;
+
+ private:
   std::vector<Entry> _entries;
 };
 

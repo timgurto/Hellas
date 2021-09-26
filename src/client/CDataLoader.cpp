@@ -543,6 +543,8 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
 
       auto drawPerItem = xr.findChild("drawPerItem", container);
       if (drawPerItem) {
+        xr.findAttr(drawPerItem, "quantityShownToEnemies",
+                    cot->drawPerItemInfo.quantityShownToEnemies);
         for (auto entry : xr.getChildren("entry", drawPerItem)) {
           auto imageFile = ""s;
           auto offset = ScreenPoint{};

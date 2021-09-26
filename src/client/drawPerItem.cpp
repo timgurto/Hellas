@@ -25,8 +25,13 @@ const Texture& DrawPerItemInfo::highlightImage() const {
 }
 
 void DrawPerItemInfo::generateImagesIfNecessary() const {
-  const auto quantityToDraw =
-      min(_owner.numItemsInContainer(), _type._entries.size());
+  auto quantityToDraw = size_t{};
+  if (_owner.userHasAccess())
+    quantityToDraw = _owner.numItemsInContainer();
+  else
+    quantityToDraw = _type.quantityShownToEnemies;
+  quantityToDraw = min(quantityToDraw, _type._entries.size());
+
   if (quantityToDraw == _quantityForWhichImagesHaveBeenGenerated) return;
 
   // Must be done in this order, as the normal image is used to create the
