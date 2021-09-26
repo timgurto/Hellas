@@ -16,9 +16,15 @@ void DrawPerItemTypeInfo::addEntry(std::string imageFile,
 const Texture& DrawPerItemInfo::image() const {
   const auto& baseImage = _owner.objectType()->image();
   _image = {baseImage.width(), baseImage.height()};
+  _image.setBlend();
 
   renderer.pushRenderTarget(_image);
+  renderer.fillWithTransparency();
+
+  // Draw base image
   baseImage.draw();
+
+  // Draw items on top
   const auto itemsToDraw =
       min(_owner.numItemsInContainer(), _type._entries.size());
   for (auto i = 0; i != itemsToDraw; ++i) {
@@ -27,6 +33,7 @@ const Texture& DrawPerItemInfo::image() const {
         Texture{"Images/Storage/"s + entry.imageFile + ".png", Color::MAGENTA};
     itemImage.draw(entry.offset - _owner.objectType()->drawRect());
   }
+
   renderer.popRenderTarget();
 
   return _image;
