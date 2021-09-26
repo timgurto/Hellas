@@ -10,7 +10,7 @@
 </objectType>
 
 <objectType id="logPile" name="Logs" healthCategory="logWeak"
-    xDrawOffset="-41" yDrawOffset="-96"
+    xDrawOffset="-41" yDrawOffset="-56"
     deconstructs="log" deconstructionTime="1000" >
     <collisionRect x="-41" y="-24" w="82" h="48" />
     <!-- 10x5 = 50 items -->
