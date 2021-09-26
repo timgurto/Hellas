@@ -1002,7 +1002,8 @@ void ClientObject::createRegularTooltip() const {
                                 ? "under construction"s
                                 : ot.constructionText();
     title += " ("s + constructionText + ")"s;
-  }
+  } else if (drawPerItemInfo && !userHasAccess())
+    title += " (quantity unknown)"s;
   tooltip.addLine(title);
 
   // Debug info
