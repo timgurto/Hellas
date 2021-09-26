@@ -15,16 +15,29 @@ void DrawPerItemTypeInfo::addEntry(std::string imageFile,
 }
 
 const Texture& DrawPerItemInfo::image() const {
-  generateImage();
+  generateImagesIfNecessary();
   return _image;
 }
 
 const Texture& DrawPerItemInfo::highlightImage() const {
-  generateHighlightImage();
+  generateImagesIfNecessary();
   return _highlightImage;
 }
 
-void DrawPerItemInfo::generateImage() const {
+void DrawPerItemInfo::generateImagesIfNecessary() const {
+  const auto quantityToDraw =
+      min(_owner.numItemsInContainer(), _type._entries.size());
+  if (quantityToDraw == _quantityForWhichImagesHaveBeenGenerated) return;
+
+  // Must be done in this order, as the normal image is used to create the
+  // highlight image.
+  generateImage(quantityToDraw);
+  generateHighlightImage(quantityToDraw);
+
+  _quantityForWhichImagesHaveBeenGenerated = quantityToDraw;
+}
+
+void DrawPerItemInfo::generateImage(size_t quantity) const {
   const auto& baseImage = _owner.objectType()->image();
   _image = {baseImage.width(), baseImage.height()};
   _image.setBlend();
@@ -32,13 +45,10 @@ void DrawPerItemInfo::generateImage() const {
   renderer.pushRenderTarget(_image);
   renderer.fillWithTransparency();
 
-  const auto itemsToDraw =
-      min(_owner.numItemsInContainer(), _type._entries.size());
-
   // Create border from items
   const auto borderOffsets =
       std::vector<ScreenPoint>{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-  for (auto i = 0; i != itemsToDraw; ++i) {
+  for (auto i = 0; i != quantity; ++i) {
     const auto& entry = _type._entries[i];
     auto itemSurface =
         Surface{"Images/Storage/"s + entry.imageFile + ".png", Color::MAGENTA};
@@ -50,7 +60,7 @@ void DrawPerItemInfo::generateImage() const {
   }
 
   // Draw items normally on top
-  for (auto i = 0; i != itemsToDraw; ++i) {
+  for (auto i = 0; i != quantity; ++i) {
     const auto& entry = _type._entries[i];
     auto itemImage =
         Texture{"Images/Storage/"s + entry.imageFile + ".png", Color::MAGENTA};
@@ -60,7 +70,7 @@ void DrawPerItemInfo::generateImage() const {
   renderer.popRenderTarget();
 }
 
-void DrawPerItemInfo::generateHighlightImage() const {
+void DrawPerItemInfo::generateHighlightImage(size_t quantity) const {
   const auto& baseImage = _owner.objectType()->image();
   _highlightImage = {baseImage.width() + 2, baseImage.height() + 2};
   _highlightImage.setBlend();
@@ -68,13 +78,10 @@ void DrawPerItemInfo::generateHighlightImage() const {
   renderer.pushRenderTarget(_highlightImage);
   renderer.fillWithTransparency();
 
-  const auto itemsToDraw =
-      min(_owner.numItemsInContainer(), _type._entries.size());
-
   // Create highlight from items
   const auto highlightOffsets = std::vector<ScreenPoint>{
       {-2, 0}, {2, 0}, {0, -2}, {0, 2}, {-1, -1}, {-1, 1}, {1, -1}, {1, 1}};
-  for (auto i = 0; i != itemsToDraw; ++i) {
+  for (auto i = 0; i != quantity; ++i) {
     const auto& entry = _type._entries[i];
     auto itemSurface =
         Surface{"Images/Storage/"s + entry.imageFile + ".png", Color::MAGENTA};
