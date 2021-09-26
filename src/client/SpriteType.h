@@ -24,7 +24,7 @@ class SpriteType {
   static ms_t timeThatTheLastRedrawWasOrdered;
   mutable ms_t _timeShadowGenerated{0};
 
- protected:
+ public:
   static ms_t timeLastRedrawWasOrdered() {
     return timeThatTheLastRedrawWasOrdered;
   }

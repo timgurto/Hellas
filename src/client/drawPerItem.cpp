@@ -25,6 +25,9 @@ const Texture& DrawPerItemInfo::highlightImage() const {
 }
 
 void DrawPerItemInfo::generateImagesIfNecessary() const {
+  const auto redrawWasOrdered =
+      SpriteType::timeLastRedrawWasOrdered() > _timeLastDrawn;
+
   auto quantityToDraw = size_t{};
   if (_owner.userHasAccess())
     quantityToDraw = _owner.numItemsInContainer();
@@ -32,14 +35,17 @@ void DrawPerItemInfo::generateImagesIfNecessary() const {
     quantityToDraw = _type.quantityShownToEnemies;
   quantityToDraw = min(quantityToDraw, _type._entries.size());
 
-  if (quantityToDraw == _quantityForWhichImagesHaveBeenGenerated) return;
+  const auto quantityHasChanged = quantityToDraw != _quantityLastDrawn;
 
-  // Must be done in this order, as the normal image is used to create the
-  // highlight image.
-  generateImage(quantityToDraw);
-  generateHighlightImage(quantityToDraw);
+  if (redrawWasOrdered || quantityHasChanged) {
+    // Must be done in this order, as the normal image is used to create the
+    // highlight image.
+    generateImage(quantityToDraw);
+    generateHighlightImage(quantityToDraw);
 
-  _quantityForWhichImagesHaveBeenGenerated = quantityToDraw;
+    _quantityLastDrawn = quantityToDraw;
+    _timeLastDrawn = SDL_GetTicks();
+  }
 }
 
 void DrawPerItemInfo::generateImage(size_t quantity) const {
