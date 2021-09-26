@@ -871,6 +871,7 @@ void ClientObject::update(double delta) {
   }
 
   ms_t timeElapsed = toInt(1000 * delta);
+  if (drawPerItemInfo) drawPerItemInfo.update(timeElapsed);
 
   // If being gathered, add particles and play sounds.
   if (beingGathered()) {

@@ -34,10 +34,15 @@ class DrawPerItemInfo {
   const Texture& image() const;
   const Texture& highlightImage() const;
 
+  void update(ms_t timeElapsed);
+
  private:
   const ClientObject& _owner;
   const DrawPerItemTypeInfo& _type;
   mutable Texture _image, _highlightImage;
+
+  mutable ms_t _timeUntilNextQuantityUpdate{0};
+  static const ms_t TIME_BETWEEN_QUANTITY_UPDATES{100};
 
   mutable size_t _quantityLastDrawn{0};
   mutable ms_t _timeLastDrawn{0};

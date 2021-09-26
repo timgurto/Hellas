@@ -24,6 +24,15 @@ const Texture& DrawPerItemInfo::highlightImage() const {
   return _highlightImage;
 }
 
+void DrawPerItemInfo::update(ms_t timeElapsed) {
+  if (_timeUntilNextQuantityUpdate == 0) return;
+
+  if (timeElapsed >= _timeUntilNextQuantityUpdate)
+    _timeUntilNextQuantityUpdate = 0;
+  else
+    _timeUntilNextQuantityUpdate -= timeElapsed;
+}
+
 void DrawPerItemInfo::generateImagesIfNecessary() const {
   const auto redrawWasOrdered =
       SpriteType::timeLastRedrawWasOrdered() > _timeLastDrawn;
@@ -35,7 +44,17 @@ void DrawPerItemInfo::generateImagesIfNecessary() const {
     quantityToDraw = _type.quantityShownToEnemies;
   quantityToDraw = min(quantityToDraw, _type._entries.size());
 
-  const auto quantityHasChanged = quantityToDraw != _quantityLastDrawn;
+  const auto quantityHasChanged =
+      quantityToDraw != _quantityLastDrawn && _timeUntilNextQuantityUpdate == 0;
+  if (quantityHasChanged) {
+    _timeUntilNextQuantityUpdate = TIME_BETWEEN_QUANTITY_UPDATES;
+
+    // Animate one item at a time
+    if (quantityToDraw > _quantityLastDrawn)
+      quantityToDraw = _quantityLastDrawn + 1;
+    else
+      quantityToDraw = _quantityLastDrawn - 1;
+  }
 
   if (redrawWasOrdered || quantityHasChanged) {
     // Must be done in this order, as the normal image is used to create the
