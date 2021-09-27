@@ -1,9 +1,11 @@
 #pragma once
 
+#include <map>
 #include <string>
 #include <vector>
 
 #include "../Point.h"
+#include "Surface.h"
 #include "Texture.h"
 
 class ClientObject;
@@ -18,10 +20,14 @@ class DrawPerItemTypeInfo {
   };
   size_t quantityShownToEnemies{0};
 
+  const Surface& getImage(std::string imageName) const;
+
   friend class DrawPerItemInfo;
 
  private:
   std::vector<Entry> _entries;
+
+  mutable std::map<std::string, Surface> _imagesByName;
 };
 
 class DrawPerItemInfo {

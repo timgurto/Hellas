@@ -14,6 +14,15 @@ void DrawPerItemTypeInfo::addEntry(std::string imageFile,
   _entries.push_back({imageFile, offset});
 }
 
+const Surface& DrawPerItemTypeInfo::getImage(std::string imageName) const {
+  auto it = _imagesByName.find(imageName);
+  if (it != _imagesByName.end()) return it->second;
+
+  const auto& surface = _imagesByName[imageName] =
+      Surface{"Images/Storage/"s + imageName + ".png", Color::MAGENTA};
+  return surface;
+}
+
 const Texture& DrawPerItemInfo::image() const {
   generateImagesIfNecessary();
   return _image;
@@ -82,8 +91,7 @@ void DrawPerItemInfo::generateImage(size_t quantity) const {
       std::vector<ScreenPoint>{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
   for (auto i = 0; i != quantity; ++i) {
     const auto& entry = _type._entries[i];
-    auto itemSurface =
-        Surface{"Images/Storage/"s + entry.imageFile + ".png", Color::MAGENTA};
+    auto itemSurface = _type.getImage(entry.imageFile);
     itemSurface.swapAllVisibleColors(Color::SPRITE_OUTLINE);
     auto itemTexture = Texture{itemSurface};
     for (const auto borderOffset : borderOffsets)
@@ -115,8 +123,7 @@ void DrawPerItemInfo::generateHighlightImage(size_t quantity) const {
       {-2, 0}, {2, 0}, {0, -2}, {0, 2}, {-1, -1}, {-1, 1}, {1, -1}, {1, 1}};
   for (auto i = 0; i != quantity; ++i) {
     const auto& entry = _type._entries[i];
-    auto itemSurface =
-        Surface{"Images/Storage/"s + entry.imageFile + ".png", Color::MAGENTA};
+    auto itemSurface = _type.getImage(entry.imageFile);
     itemSurface.swapAllVisibleColors(Color::SPRITE_OUTLINE_HIGHLIGHT);
     auto itemTexture = Texture{itemSurface};
     for (const auto& highlightOffset : highlightOffsets)
