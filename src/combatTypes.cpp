@@ -55,8 +55,8 @@ const std::string& BasisPoints::display() const { return _memoisedDisplay; }
 std::string BasisPoints::displayShort() const {
   auto oss = std::ostringstream{};
   oss << _raw / 100;
-  auto fraction = _raw % 100;
-  if (fraction > 0) oss << '.' << _raw % 100;
+  auto fraction = abs(_raw % 100);
+  if (fraction > 0) oss << '.' << fraction;
   oss << '%';
   return oss.str();
 }
@@ -65,7 +65,7 @@ void BasisPoints::onChanged() {
   auto oss = std::ostringstream{};
   oss << _raw / 100;
   oss << '.';
-  oss << std::setw(2) << std::setfill('0') << _raw % 100;
+  oss << std::setw(2) << std::setfill('0') << abs(_raw % 100);
   oss << '%';
 
   _memoisedDisplay = oss.str();
