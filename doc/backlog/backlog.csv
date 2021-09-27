@@ -57,7 +57,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 59,Themed UI windows,233,987,Aesthetics,,,,
 60,Magic dust shouldn't sound like a bone,1,2,Aesthetics,,,,
 61,Allow line break after -,3,2,Aesthetics,,,,
-62,Allow selecting behind Atlas,2,3,Bug,,,,
+62,Allow selecting behind Atlas,2,3,Bug,,TRUE,,
 63,Use names for gear slots in data,3,8,Code Quality,,TRUE,,
 64,Set bonuses,13,144,Feature,,,,
 65,Fellow citizens not always visible on map,3,34,Bug,,,TRUE,
