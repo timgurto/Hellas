@@ -56,6 +56,7 @@ std::string BasisPoints::displayShort() const {
   auto oss = std::ostringstream{};
   oss << _raw / 100;
   auto fraction = abs(_raw % 100);
+  if (fraction % 10 == 0) fraction /= 10;  // Chop off trailing 0
   if (fraction > 0) oss << '.' << fraction;
   oss << '%';
   return oss.str();

@@ -441,12 +441,14 @@ TEST_CASE("Basis-point display", "[stats][ui]") {
   CHECK(BasisPoints{0}.display() == "0.00%"s);
   CHECK(BasisPoints{1}.display() == "0.01%"s);
   CHECK(BasisPoints{50}.display() == "0.50%"s);
+  CHECK(BasisPoints{50}.displayShort() == "0.5%"s);
   CHECK(BasisPoints{100}.display() == "1.00%"s);
   CHECK(BasisPoints{100}.displayShort() == "1%"s);
+  CHECK(BasisPoints{110}.displayShort() == "1.1%"s);
   CHECK(BasisPoints{200}.display() == "2.00%"s);
   CHECK(BasisPoints{200}.displayShort() == "2%"s);
   CHECK(BasisPoints{-550}.display() == "-5.50%"s);
-  CHECK(BasisPoints{-550}.displayShort() == "-5.50%"s);
+  CHECK(BasisPoints{-550}.displayShort() == "-5.5%"s);
 }
 
 TEST_CASE("Basis-point stats are read as hundredths of percentages",
