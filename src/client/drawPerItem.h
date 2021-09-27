@@ -20,14 +20,19 @@ class DrawPerItemTypeInfo {
   };
   size_t quantityShownToEnemies{0};
 
-  const Surface& getImage(std::string imageName) const;
+  struct ItemSurfaces {
+    Surface original;
+    Surface outline;
+    Surface highlight;
+  };
+  const ItemSurfaces& getSurfaces(std::string imageName) const;
 
   friend class DrawPerItemInfo;
 
  private:
   std::vector<Entry> _entries;
 
-  mutable std::map<std::string, Surface> _imagesByName;
+  mutable std::map<std::string, ItemSurfaces> _itemSurfaces;
 };
 
 class DrawPerItemInfo {
