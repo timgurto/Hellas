@@ -26,7 +26,8 @@ void Client::draw() const {
 
   // Used below by terrain and entities
   _constructionFootprintType = _selectedConstruction;
-  if (!_constructionFootprintType && containerGridInUse.item())
+  if (!_constructionFootprintType && containerGridInUse.item() &&
+      containerGridInUse.item()->type())
     _constructionFootprintType =
         containerGridInUse.item()->type()->constructsObject();
   if (_constructionFootprintType)
