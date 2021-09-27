@@ -10,7 +10,7 @@
         restrictedToItem="log"
         spawnsWithItem="log"
         disappearsWhenEmpty="1" > 
-        <drawPerItem quantityShownToEnemies="10" >
+        <drawPerItem quantityShownToEnemies="1" >
             <entry image="logV1" x="-40" y="-23" />
             <entry image="logV3" x="-32" y="-23" />
             <entry image="logV2" x="-24" y="-23" />
@@ -80,7 +80,7 @@
         restrictedToItem="charcoal"
         spawnsWithItem="charcoal"
         disappearsWhenEmpty="1" > 
-        <drawPerItem quantityShownToEnemies="20" >
+        <drawPerItem quantityShownToEnemies="1" >
             <entry image="charcoalV2" x="-40" y="-23" />
             <entry image="charcoalV1" x="-32" y="-23" />
             <entry image="charcoalV2" x="-24" y="-23" />
@@ -199,7 +199,7 @@
         restrictedToItem="tinBar"
         spawnsWithItem="tinBar"
         disappearsWhenEmpty="1" > 
-        <drawPerItem quantityShownToEnemies="52" >
+        <drawPerItem quantityShownToEnemies="1" >
             <entry image="tinIngot" x="-39" y="-18" />
             <entry image="tinIngot" x="-39" y="-10" />
             <entry image="tinIngot" x="-39"  y="-2" />
@@ -315,7 +315,7 @@
         restrictedToItem="copperBar"
         spawnsWithItem="copperBar"
         disappearsWhenEmpty="1" > 
-        <drawPerItem quantityShownToEnemies="52" >
+        <drawPerItem quantityShownToEnemies="1" >
             <entry image="copperIngot" x="-39" y="-18" />
             <entry image="copperIngot" x="-39" y="-10" />
             <entry image="copperIngot" x="-39"  y="-2" />
@@ -431,7 +431,7 @@
         restrictedToItem="silverBar"
         spawnsWithItem="silverBar"
         disappearsWhenEmpty="1" > 
-        <drawPerItem quantityShownToEnemies="52" >
+        <drawPerItem quantityShownToEnemies="1" >
             <entry image="silverIngot" x="-39" y="-18" />
             <entry image="silverIngot" x="-39" y="-10" />
             <entry image="silverIngot" x="-39"  y="-2" />
