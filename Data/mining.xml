@@ -1,11 +1,11 @@
 <root>
 
-<item id="tin"          name="Tin Ore"                              sounds="ore"       stackSize="10" />
-<item id="tinBar"       name="Tin Ingot"      constructs="tinPile"  sounds="metalBar"  stackSize="10" />
-<item id="copper"       name="Copper Ore"                           sounds="ore"       stackSize="10" />
-<item id="copperBar"    name="Copper Ingot"                         sounds="metalBar"  stackSize="10" />
-<item id="silver"       name="Silver Ore"                           sounds="ore"       stackSize="10" quality="2" />
-<item id="silverBar"    name="Silver Ingot"                         sounds="metalBar"  stackSize="10" quality="2" />
+<item id="tin"          name="Tin Ore"                                  sounds="ore"       stackSize="10" />
+<item id="tinBar"       name="Tin Ingot"      constructs="tinPile"      sounds="metalBar"  stackSize="10" />
+<item id="copper"       name="Copper Ore"                               sounds="ore"       stackSize="10" />
+<item id="copperBar"    name="Copper Ingot"   constructs="copperPile"   sounds="metalBar"  stackSize="10" />
+<item id="silver"       name="Silver Ore"                               sounds="ore"       stackSize="10" quality="2" />
+<item id="silverBar"    name="Silver Ingot"   constructs="silverPile"   sounds="metalBar"  stackSize="10" quality="2" />
 
 <recipe id="tinBar"
     time="12000" >

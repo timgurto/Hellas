@@ -11,6 +11,7 @@
 <objectHealthCategory id="lumberWeak"    level="20" maxHealth="500" />
 <objectHealthCategory id="lumber"        level="20" maxHealth="2500" />
 
+<objectHealthCategory id="brickWeak"     level="30" maxHealth="1200" />
 <objectHealthCategory id="brick"         level="30" maxHealth="6500" />
 <objectHealthCategory id="brickWall"     level="30" maxHealth="38000" />
 
