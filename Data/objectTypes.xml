@@ -332,6 +332,17 @@
     <collisionRect x="-19" y="-20" w="38" h="40" />
     <yield id="flax" initialMean="5" initialSD="1" initialMin="1" />
     <yield id="flaxSeeds" initialMean="1.2" initialSD="0.5" />
+    <transform id="flaxCropEmpty" whenEmpty="1" />
+</objectType>
+<objectType id="flaxCropEmpty" name="Flax Farm" healthCategory="logWeak"
+    xDrawOffset="-20"
+    yDrawOffset="-34"
+    isFlat="1" damageParticles="leaves" sounds="weakPlant" imageFile="flaxCrop0"
+    isUnbuildable="1" constructionText="unseeded" >
+    <collisionRect x="-19" y="-20" w="38" h="40" />
+    <material id="flaxSeeds" />
+    <material id="water" />
+    <transform id="flaxCrop1" time="1500000" /> <!-- 25m -->
 </objectType>
 
 <objectType id="loom" name="Loom" healthCategory="log"
