@@ -55,6 +55,7 @@ class Sprite {
   virtual void onLocationChange() {}
 
   virtual ScreenRect drawRect() const;
+  virtual ScreenRect mouseOverRect() const;
   px_t width() const { return _type->width(); }
   px_t height() const { return _type->height(); }
   bool yChanged() const { return _yChanged; }
@@ -101,7 +102,7 @@ class Sprite {
   void refreshTooltip() const { _tooltip = Optional<Tooltip>{}; }
 
   double bottomEdge() const;
-  bool collision(const MapPoint &p) const;
+  bool collidesWithMouse(const MapPoint &p) const;
   bool mouseIsOverRealPixel(const MapPoint &p) const;
 
   void animateAttackingTowards(const Sprite &target);

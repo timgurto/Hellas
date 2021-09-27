@@ -203,6 +203,7 @@
         level="20" maxHealth="82" isCivilian="1"
         xDrawOffset="-188" yDrawOffset="-129" customShadowWidth="25" >
         <collisionRect x="-15" y="-3" w="23" h="6" />
+        <customMouseOverRect x="-15" y="-23" w="24" h="25" />
         <class name="titan"/>
     </npcType>
     <npc id="atlas" x="15" y="59604" />

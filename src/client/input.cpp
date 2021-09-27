@@ -615,7 +615,8 @@ Sprite *Client::getEntityAtMouse() {
       if (asObject && asObject->owner().type == ClientObject::Owner::NO_ACCESS)
         continue;
 
-      if (!entity.collision(mouseOffset)) continue;  // Crude collision check
+      if (!entity.collidesWithMouse(mouseOffset))
+        continue;  // Crude collision check
       if (!entity.mouseIsOverRealPixel(mouseOffset))
         continue;  // Detailed check
       mouseOverIt = it;

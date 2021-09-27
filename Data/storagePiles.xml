@@ -13,6 +13,7 @@
     xDrawOffset="-41" yDrawOffset="-56"
     deconstructs="log" deconstructionTime="1000" >
     <collisionRect x="-41" y="-24" w="82" h="48" />
+    <customMouseOverRect x="-41" y="-32" w="82" h="56" />
     <!-- 10x5 = 50 items -->
     <container
         slots="10"

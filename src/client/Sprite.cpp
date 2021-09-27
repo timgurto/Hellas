@@ -34,6 +34,15 @@ ScreenRect Sprite::drawRect() const {
   return drawRect;
 }
 
+ScreenRect Sprite::mouseOverRect() const {
+  assert(_type != nullptr);
+  const auto &typeDrawRect = _type->usesCustomMouseOverRect
+                                 ? _type->customMouseOverRect
+                                 : _type->drawRect();
+  auto drawRect = typeDrawRect + toScreenPoint(animationLocation());
+  return drawRect;
+}
+
 bool Sprite::isCharacter() const { return this == &_client.character(); }
 
 void Sprite::newLocationFromServer(const MapPoint &loc) {
@@ -137,8 +146,8 @@ void Sprite::location(const MapPoint &loc) {
   onLocationChange();
 }
 
-bool Sprite::collision(const MapPoint &p) const {
-  return ::collision(toScreenPoint(p), drawRect());
+bool Sprite::collidesWithMouse(const MapPoint &mouseOffset) const {
+  return ::collision(toScreenPoint(mouseOffset), mouseOverRect());
 }
 
 bool Sprite::mouseIsOverRealPixel(const MapPoint &p) const {

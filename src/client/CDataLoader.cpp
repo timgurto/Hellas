@@ -579,6 +579,9 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
     if (xr.findAttr(elem, "collides", n)) cot->collides(n != 0);
     if (xr.findAttr(elem, "isGate", n)) cot->collides(false);
 
+    if (xr.findRectChild("customMouseOverRect", elem, cot->customMouseOverRect))
+      cot->usesCustomMouseOverRect = true;
+
     if (xr.findAttr(elem, "playerUnique", s)) {
       cot->makePlayerUnique();
       cot->addTag(s + " (1 per player)", 1.0);
@@ -1110,6 +1113,9 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
       xr.findAttr(elem, "yDrawOffset", drawRect.y);
       nt->drawRect(drawRect);
     }
+
+    if (xr.findRectChild("customMouseOverRect", elem, nt->customMouseOverRect))
+      nt->usesCustomMouseOverRect = true;
 
     auto customShadowDiameter = 0_px;
     if (xr.findAttr(elem, "customShadowWidth", customShadowDiameter))

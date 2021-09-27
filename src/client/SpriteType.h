@@ -67,6 +67,8 @@ class SpriteType {
   px_t height() const { return _drawRect.h; }
   void addParticles(const std::string &profileName, const MapPoint &offset);
   const std::vector<Particles> &particles() const { return _particles; }
+  ScreenRect customMouseOverRect;
+  bool usesCustomMouseOverRect{false};
 
   void setAlpha(Uint8 alpha) { _image.setAlpha(alpha); }
 
