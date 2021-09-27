@@ -5,7 +5,6 @@
 #include <vector>
 
 #include "../Point.h"
-#include "Surface.h"
 #include "Texture.h"
 
 class ClientObject;
@@ -20,19 +19,19 @@ class DrawPerItemTypeInfo {
   };
   size_t quantityShownToEnemies{0};
 
-  struct ItemSurfaces {
-    Surface original;
-    Surface outline;
-    Surface highlight;
+  struct ItemTextures {
+    Texture original;
+    Texture outline;
+    Texture highlight;
   };
-  const ItemSurfaces& getSurfaces(std::string imageName) const;
+  const ItemTextures& getTextures(std::string imageName) const;
 
   friend class DrawPerItemInfo;
 
  private:
   std::vector<Entry> _entries;
 
-  mutable std::map<std::string, ItemSurfaces> _itemSurfaces;
+  mutable std::map<std::string, ItemTextures> _itemTextures;
 };
 
 class DrawPerItemInfo {

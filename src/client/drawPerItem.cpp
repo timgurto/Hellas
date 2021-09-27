@@ -14,23 +14,25 @@ void DrawPerItemTypeInfo::addEntry(std::string imageFile,
   _entries.push_back({imageFile, offset});
 }
 
-const DrawPerItemTypeInfo::ItemSurfaces& DrawPerItemTypeInfo::getSurfaces(
+const DrawPerItemTypeInfo::ItemTextures& DrawPerItemTypeInfo::getTextures(
     std::string imageName) const {
-  auto it = _itemSurfaces.find(imageName);
-  if (it != _itemSurfaces.end()) return it->second;
+  auto it = _itemTextures.find(imageName);
+  if (it != _itemTextures.end()) return it->second;
 
-  auto& surfaces = _itemSurfaces[imageName];
+  auto& textures = _itemTextures[imageName];
 
-  surfaces.original = {"Images/Storage/"s + imageName + ".png", Color::MAGENTA};
+  auto surface =
+      Surface{"Images/Storage/"s + imageName + ".png", Color::MAGENTA};
 
-  surfaces.highlight = {"Images/Storage/"s + imageName + ".png",
-                        Color::MAGENTA};
-  surfaces.highlight.swapAllVisibleColors(Color::SPRITE_OUTLINE_HIGHLIGHT);
+  textures.original = Texture{surface};
 
-  surfaces.outline = {"Images/Storage/"s + imageName + ".png", Color::MAGENTA};
-  surfaces.outline.swapAllVisibleColors(Color::SPRITE_OUTLINE);
+  surface.swapAllVisibleColors(Color::SPRITE_OUTLINE_HIGHLIGHT);
+  textures.highlight = Texture{surface};
 
-  return surfaces;
+  surface.swapAllVisibleColors(Color::SPRITE_OUTLINE);
+  textures.outline = Texture{surface};
+
+  return textures;
 }
 
 const Texture& DrawPerItemInfo::image() const {
@@ -101,18 +103,17 @@ void DrawPerItemInfo::generateImage(size_t quantity) const {
       std::vector<ScreenPoint>{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
   for (auto i = 0; i != quantity; ++i) {
     const auto& entry = _type._entries[i];
-    auto& itemSurface = _type.getSurfaces(entry.imageFile).outline;
-    auto itemTexture = Texture{itemSurface};
+    const auto& outlineTexture = _type.getTextures(entry.imageFile).outline;
     for (const auto borderOffset : borderOffsets)
-      itemTexture.draw(entry.offset - _owner.objectType()->drawRect() +
-                       borderOffset);
+      outlineTexture.draw(entry.offset - _owner.objectType()->drawRect() +
+                          borderOffset);
   }
 
   // Draw items normally on top
   for (auto i = 0; i != quantity; ++i) {
     const auto& entry = _type._entries[i];
-    auto& itemImage = _type.getSurfaces(entry.imageFile).original;
-    auto texture = Texture{itemImage};
+    const auto& itemTexture = _type.getTextures(entry.imageFile).original;
+    auto texture = Texture{itemTexture};
     texture.draw(entry.offset - _owner.objectType()->drawRect());
   }
 
@@ -132,11 +133,10 @@ void DrawPerItemInfo::generateHighlightImage(size_t quantity) const {
       {-2, 0}, {2, 0}, {0, -2}, {0, 2}, {-1, -1}, {-1, 1}, {1, -1}, {1, 1}};
   for (auto i = 0; i != quantity; ++i) {
     const auto& entry = _type._entries[i];
-    auto& itemSurface = _type.getSurfaces(entry.imageFile).highlight;
-    auto itemTexture = Texture{itemSurface};
+    const auto& highlightTexture = _type.getTextures(entry.imageFile).highlight;
     for (const auto& highlightOffset : highlightOffsets)
-      itemTexture.draw(entry.offset - _owner.objectType()->drawRect() +
-                       highlightOffset + ScreenPoint{1, 1});
+      highlightTexture.draw(entry.offset - _owner.objectType()->drawRect() +
+                            highlightOffset + ScreenPoint{1, 1});
   }
 
   // Draw normal image on top
