@@ -5,7 +5,7 @@
 <item id="clay"         name="Clay"           sounds="clay"      stackSize="10"  />
 <item id="tinRing"      name="Tin Ringlet"                       stackSize="1000" />
 <item id="copperRing"   name="Copper Ringlet"                    stackSize="1000" />
-<item id="charcoal"     name="Charcoal"                          stackSize="10" />
+<item id="charcoal"     name="Charcoal"                          constructs="charcoalPile"      stackSize="10" />
 
 <item id="flax"         name="Flax"           sounds="weakPlant" stackSize="10" />
 <item id="linenThread"  name="Thread"         sounds="fabric"    stackSize="10" />

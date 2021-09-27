@@ -1,17 +1,7 @@
 <root>
 
-<objectType id="mediumPot" name="Medium Pot" healthCategory="lumberWeak"
-    xDrawOffset="-19" yDrawOffset="-27"
-    deconstructs="mediumPot" deconstructionTime="1000"
-    sounds="pottery" >
-    <collisionRect x="-13" y="-4" w="25" h="6" />
-    <container slots="4" />
-    <canBeRepaired cost="clay" />
-</objectType>
-
-<objectType id="logPile" name="Logs" healthCategory="logWeak"
-    xDrawOffset="-41" yDrawOffset="-56"
-    deconstructs="log" deconstructionTime="1000" >
+<objectType id="logPile" name="Log Pile" healthCategory="logWeak"
+    xDrawOffset="-41" yDrawOffset="-56" >
     <collisionRect x="-41" y="-24" w="82" h="48" />
     <customMouseOverRect x="-41" y="-32" w="82" h="56" />
     <!-- 10x5 = 50 items -->
@@ -78,6 +68,126 @@
         </drawPerItem>
     </container>
     <canBeRepaired cost="log" />
+</objectType>
+
+<objectType id="charcoalPile" name="Charcoal Pile" healthCategory="logWeak"
+    xDrawOffset="-41" yDrawOffset="-56" >
+    <collisionRect x="-41" y="-24" w="82" h="48" />
+    <customMouseOverRect x="-41" y="-32" w="82" h="56" />
+    <!-- 10x10 = 100 items -->
+    <container
+        slots="10"
+        restrictedToItem="charcoal"
+        spawnsWithItem="charcoal"
+        disappearsWhenEmpty="1" > 
+        <drawPerItem quantityShownToEnemies="10" >
+            <entry image="charcoalV2" x="-40" y="-23" />
+            <entry image="charcoalV1" x="-32" y="-23" />
+            <entry image="charcoalV2" x="-24" y="-23" />
+            <entry image="charcoalV3" x="-16" y="-23" />
+            <entry image="charcoalV3" x="-8"  y="-23" />
+            <entry image="charcoalV1" x="0"   y="-23" />
+            <entry image="charcoalV3" x="8"   y="-23" />
+            <entry image="charcoalV4" x="16"  y="-23" />
+            <entry image="charcoalV1" x="24"  y="-23" />
+            <entry image="charcoalV4" x="32"  y="-23" />
+            <entry image="charcoalV2" x="-40" y="-3" />
+            <entry image="charcoalV4" x="-32" y="-3" />
+            <entry image="charcoalV2" x="-24" y="-3" />
+            <entry image="charcoalV3" x="-16" y="-3" />
+            <entry image="charcoalV2" x="-8"  y="-3" />
+            <entry image="charcoalV1" x="0"   y="-3" />
+            <entry image="charcoalV4" x="8"   y="-3" />
+            <entry image="charcoalV1" x="16"  y="-3" />
+            <entry image="charcoalV4" x="24"  y="-3" />
+            <entry image="charcoalV3" x="32"  y="-3" />
+            
+            <entry image="charcoalH1" x="-40" y="-23" />
+            <entry image="charcoalH4" x="-40" y="-15" />
+            <entry image="charcoalH3" x="-40" y="-7"  />
+            <entry image="charcoalH1" x="-40" y="1"   />
+            <entry image="charcoalH4" x="-40" y="9"   />
+            <entry image="charcoalH2" x="-20" y="-23" />
+            <entry image="charcoalH3" x="-20" y="-15" />
+            <entry image="charcoalH1" x="-20" y="-7"  />
+            <entry image="charcoalH2" x="-20" y="1"   />
+            <entry image="charcoalH3" x="-20" y="9"   />
+            <entry image="charcoalH2" x="0"   y="-23" />
+            <entry image="charcoalH4" x="0"   y="-15" />
+            <entry image="charcoalH2" x="0"   y="-7"  />
+            <entry image="charcoalH3" x="0"   y="1"   />
+            <entry image="charcoalH4" x="0"   y="9"   />
+            <entry image="charcoalH2" x="20"  y="-23" />
+            <entry image="charcoalH1" x="20"  y="-15" />
+            <entry image="charcoalH4" x="20"  y="-7"  />
+            <entry image="charcoalH1" x="20"  y="1"   />
+            <entry image="charcoalH3" x="20"  y="9"   />
+            
+            <entry image="charcoalV1" x="-40" y="-39" />
+            <entry image="charcoalV2" x="-32" y="-39" />
+            <entry image="charcoalV3" x="-24" y="-39" />
+            <entry image="charcoalV2" x="-16" y="-39" />
+            <entry image="charcoalV1" x="-8"  y="-39" />
+            <entry image="charcoalV4" x="0"   y="-39" />
+            <entry image="charcoalV2" x="8"   y="-39" />
+            <entry image="charcoalV4" x="16"  y="-39" />
+            <entry image="charcoalV1" x="24"  y="-39" />
+            <entry image="charcoalV2" x="32"  y="-39" />
+            <entry image="charcoalV1" x="-40" y="-19" />
+            <entry image="charcoalV4" x="-32" y="-19" />
+            <entry image="charcoalV3" x="-24" y="-19" />
+            <entry image="charcoalV4" x="-16" y="-19" />
+            <entry image="charcoalV3" x="-8"  y="-19" />
+            <entry image="charcoalV1" x="0"   y="-19" />
+            <entry image="charcoalV3" x="8"   y="-19" />
+            <entry image="charcoalV2" x="16"  y="-19" />
+            <entry image="charcoalV3" x="24"  y="-19" />
+            <entry image="charcoalV4" x="32"  y="-19" />
+            
+            <entry image="charcoalH1" x="-40" y="-39" />
+            <entry image="charcoalH4" x="-40" y="-31" />
+            <entry image="charcoalH1" x="-40" y="-23" />
+            <entry image="charcoalH2" x="-40" y="-15" />
+            <entry image="charcoalH4" x="-40" y="-7"   />
+            <entry image="charcoalH3" x="-20" y="-39" />
+            <entry image="charcoalH1" x="-20" y="-31" />
+            <entry image="charcoalH2" x="-20" y="-23" />
+            <entry image="charcoalH3" x="-20" y="-15" />
+            <entry image="charcoalH1" x="-20" y="-7"  />
+            <entry image="charcoalH2" x="0"   y="-39" />
+            <entry image="charcoalH4" x="0"   y="-31" />
+            <entry image="charcoalH2" x="0"   y="-23" />
+            <entry image="charcoalH3" x="0"   y="-15" />
+            <entry image="charcoalH4" x="0"   y="-7"  />
+            <entry image="charcoalH1" x="20"  y="-39" />
+            <entry image="charcoalH2" x="20"  y="-31" />
+            <entry image="charcoalH3" x="20"  y="-23" />
+            <entry image="charcoalH4" x="20"  y="-15" />
+            <entry image="charcoalH3" x="20"  y="-7"  />
+            
+            <entry image="charcoalV4" x="-40" y="-55" />
+            <entry image="charcoalV1" x="-32" y="-55" />
+            <entry image="charcoalV2" x="-24" y="-55" />
+            <entry image="charcoalV4" x="-16" y="-55" />
+            <entry image="charcoalV1" x="-8"  y="-55" />
+            <entry image="charcoalV3" x="0"   y="-55" />
+            <entry image="charcoalV1" x="8"   y="-55" />
+            <entry image="charcoalV2" x="16"  y="-55" />
+            <entry image="charcoalV3" x="24"  y="-55" />
+            <entry image="charcoalV1" x="32"  y="-55" />
+            <entry image="charcoalV3" x="-40" y="-35" />
+            <entry image="charcoalV4" x="-32" y="-35" />
+            <entry image="charcoalV3" x="-24" y="-35" />
+            <entry image="charcoalV1" x="-16" y="-35" />
+            <entry image="charcoalV2" x="-8"  y="-35" />
+            <entry image="charcoalV3" x="0"   y="-35" />
+            <entry image="charcoalV4" x="8"   y="-35" />
+            <entry image="charcoalV2" x="16"  y="-35" />
+            <entry image="charcoalV4" x="24"  y="-35" />
+            <entry image="charcoalV2" x="32"  y="-35" />
+        </drawPerItem>
+    </container>
+    <canBeRepaired cost="charcoal" />
 </objectType>
 
 </root>
