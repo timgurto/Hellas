@@ -5,7 +5,7 @@
 <item id="clay"         name="Clay"           sounds="clay"      stackSize="10"  />
 <item id="tinRing"      name="Tin Ringlet"                       stackSize="1000" />
 <item id="copperRing"   name="Copper Ringlet"                    stackSize="1000" />
-<item id="charcoal"     name="Charcoal"                          constructs="charcoalPile"      stackSize="10" />
+<item id="charcoal"     name="Charcoal"                          constructs="charcoalPile"  stackSize="10" />
 
 <item id="flax"         name="Flax"           sounds="weakPlant" stackSize="10" />
 <item id="linenThread"  name="Thread"         sounds="fabric"    stackSize="10" />
@@ -21,7 +21,7 @@
 <item id="copperScale"  name="Copper Scale"   sounds="metalTool" stackSize="50" />
 
 <item id="rope"         name="Rope"                              stackSize="10" />
-<item id="brick"        name="Brick"          sounds="brick"     stackSize="10" />
+<item id="brick"        name="Brick"          sounds="brick"     constructs="brickPile"     stackSize="10" />
 <item id="fat"          name="Animal Fat"     sounds="meat"      stackSize="10" />
 <item id="entrails"     name="Entrails"       sounds="meat"      stackSize="10" />
 <item id="airEssence"   name="Air Essence"                       stackSize="10" />

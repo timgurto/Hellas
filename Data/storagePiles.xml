@@ -538,4 +538,122 @@
     <canBeRepaired cost="silverBar" />
 </objectType>
 
+<objectType id="brickPile" name="Brick Pile" healthCategory="brickWeak"
+    xDrawOffset="-26" yDrawOffset="-30" >
+    <collisionRect x="-25" y="-10" w="50" h="20" />
+    <!-- 10x10 = 100 items -->
+    <container
+        slots="10"
+        restrictedToItem="brick"
+        spawnsWithItem="brick"
+        disappearsWhenEmpty="1" > 
+        <drawPerItem quantityShownToEnemies="1" >
+            <entry image="brick1" x="-25" y="-14" />
+            <entry image="brick1" x="-25" y="-10" />
+            <entry image="brick1" x="-25"  y="-6" />
+            <entry image="brick1" x="-25"  y="-2" />
+            <entry image="brick1" x="-25"   y="2" />
+            <entry image="brick1" x="-15" y="-14" />
+            <entry image="brick1" x="-15" y="-10" />
+            <entry image="brick1" x="-15"  y="-6" />
+            <entry image="brick1" x="-15"  y="-2" />
+            <entry image="brick1" x="-15"   y="2" />
+            <entry image="brick1"  x="-5" y="-14" />
+            <entry image="brick1"  x="-5" y="-10" />
+            <entry image="brick1"  x="-5"  y="-6" />
+            <entry image="brick1"  x="-5"  y="-2" />
+            <entry image="brick1"  x="-5"   y="2" />
+            <entry image="brick1"   x="5" y="-14" />
+            <entry image="brick1"   x="5" y="-10" />
+            <entry image="brick1"   x="5"  y="-6" />
+            <entry image="brick1"   x="5"  y="-2" />
+            <entry image="brick1"   x="5"   y="2" />
+            <entry image="brick1"  x="15" y="-14" />
+            <entry image="brick1"  x="15" y="-10" />
+            <entry image="brick1"  x="15"  y="-6" />
+            <entry image="brick1"  x="15"  y="-2" />
+            <entry image="brick1"  x="15"   y="2" />
+            
+            <entry image="brick1" x="-25" y="-19" />
+            <entry image="brick1" x="-25" y="-15" />
+            <entry image="brick1" x="-25" y="-11" />
+            <entry image="brick1" x="-25"  y="-7" />
+            <entry image="brick1" x="-25"  y="-3" />
+            <entry image="brick1" x="-15" y="-19" />
+            <entry image="brick1" x="-15" y="-15" />
+            <entry image="brick1" x="-15" y="-11" />
+            <entry image="brick1" x="-15"  y="-7" />
+            <entry image="brick1" x="-15"  y="-3" />
+            <entry image="brick1"  x="-5" y="-19" />
+            <entry image="brick1"  x="-5" y="-15" />
+            <entry image="brick1"  x="-5" y="-11" />
+            <entry image="brick1"  x="-5"  y="-7" />
+            <entry image="brick1"  x="-5"  y="-3" />
+            <entry image="brick1"   x="5" y="-19" />
+            <entry image="brick1"   x="5" y="-15" />
+            <entry image="brick1"   x="5" y="-11" />
+            <entry image="brick1"   x="5"  y="-7" />
+            <entry image="brick1"   x="5"  y="-3" />
+            <entry image="brick1"  x="15" y="-19" />
+            <entry image="brick1"  x="15" y="-15" />
+            <entry image="brick1"  x="15" y="-11" />
+            <entry image="brick1"  x="15"  y="-7" />
+            <entry image="brick1"  x="15"  y="-3" />
+            
+            <entry image="brick1" x="-25" y="-24" />
+            <entry image="brick1" x="-25" y="-20" />
+            <entry image="brick1" x="-25" y="-16" />
+            <entry image="brick1" x="-25" y="-12" />
+            <entry image="brick1" x="-25"  y="-8" />
+            <entry image="brick1" x="-15" y="-24" />
+            <entry image="brick1" x="-15" y="-20" />
+            <entry image="brick1" x="-15" y="-16" />
+            <entry image="brick1" x="-15" y="-12" />
+            <entry image="brick1" x="-15"  y="-8" />
+            <entry image="brick1"  x="-5" y="-24" />
+            <entry image="brick1"  x="-5" y="-20" />
+            <entry image="brick1"  x="-5" y="-16" />
+            <entry image="brick1"  x="-5" y="-12" />
+            <entry image="brick1"  x="-5"  y="-8" />
+            <entry image="brick1"   x="5" y="-24" />
+            <entry image="brick1"   x="5" y="-20" />
+            <entry image="brick1"   x="5" y="-16" />
+            <entry image="brick1"   x="5" y="-12" />
+            <entry image="brick1"   x="5"  y="-8" />
+            <entry image="brick1"  x="15" y="-24" />
+            <entry image="brick1"  x="15" y="-20" />
+            <entry image="brick1"  x="15" y="-16" />
+            <entry image="brick1"  x="15" y="-12" />
+            <entry image="brick1"  x="15"  y="-8" />
+            
+            <entry image="brick1" x="-25" y="-29" />
+            <entry image="brick1" x="-25" y="-25" />
+            <entry image="brick1" x="-25" y="-21" />
+            <entry image="brick1" x="-25" y="-17" />
+            <entry image="brick1" x="-25" y="-13" />
+            <entry image="brick1" x="-15" y="-29" />
+            <entry image="brick1" x="-15" y="-25" />
+            <entry image="brick1" x="-15" y="-21" />
+            <entry image="brick1" x="-15" y="-17" />
+            <entry image="brick1" x="-15" y="-13" />
+            <entry image="brick1"  x="-5" y="-29" />
+            <entry image="brick1"  x="-5" y="-25" />
+            <entry image="brick1"  x="-5" y="-21" />
+            <entry image="brick1"  x="-5" y="-17" />
+            <entry image="brick1"  x="-5" y="-13" />
+            <entry image="brick1"   x="5" y="-29" />
+            <entry image="brick1"   x="5" y="-25" />
+            <entry image="brick1"   x="5" y="-21" />
+            <entry image="brick1"   x="5" y="-17" />
+            <entry image="brick1"   x="5" y="-13" />
+            <entry image="brick1"  x="15" y="-29" />
+            <entry image="brick1"  x="15" y="-25" />
+            <entry image="brick1"  x="15" y="-21" />
+            <entry image="brick1"  x="15" y="-17" />
+            <entry image="brick1"  x="15" y="-13" />
+        </drawPerItem>
+    </container>
+    <canBeRepaired cost="brick" />
+</objectType>
+
 </root>
