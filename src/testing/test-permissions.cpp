@@ -415,28 +415,30 @@ TEST_CASE("No-access objects", "[permissions]") {
 
 TEST_CASE_METHOD(TwoClientsWithData, "New owners can see container contents",
                  "[permissions][containers]") {
-  GIVEN("a box of fruit") {
+  GIVEN("a box") {
     useData(R"(
       <objectType id="box" >
         <container slots="1" />
       </objectType>
       <item id="fruit" />
     )");
+    const auto *fruit = &server->getFirstItem();
     auto &box = server->addObject("box", {10, 10});
+    WAIT_UNTIL(cBob->objects().size() == 1);
+    WAIT_UNTIL(cAlice->objects().size() == 1);
+    const auto &boxInBobsClient = cBob->getFirstObject();
+    const auto &boxInAlicesClient = cAlice->getFirstObject();
 
     AND_GIVEN("Alice owns the box") {
       box.permissions.setPlayerOwner("Alice");
 
       AND_GIVEN("the box contains fruit") {
-        const auto *fruit = &server->getFirstItem();
         box.container().addItems(fruit);
 
         WHEN("Alice gives the box to Bob") {
           cAlice->sendMessage(CL_GIVE_OBJECT, makeArgs(box.serial(), "Bob"));
 
-          THEN("Bob is told about the box's inventory") {
-            WAIT_UNTIL(cBob->objects().size() == 1);
-            const auto &boxInBobsClient = cBob->getFirstObject();
+          THEN("he knows it contains fruit") {
             WAIT_UNTIL(boxInBobsClient.container()[0].first.type());
           }
         }
@@ -450,6 +452,23 @@ TEST_CASE_METHOD(TwoClientsWithData, "New owners can see container contents",
                               makeArgs(box.serial(), "Charlie"));
 
           THEN("the server doesn't crash") { server->nop(); }
+        }
+      }
+    }
+
+    AND_GIVEN("a city owns the box") {
+      server->cities().createCity("Athens", {}, {});
+      box.permissions.setCityOwner("Athens");
+
+      AND_GIVEN("the box contains fruit") {
+        box.container().addItems(fruit);
+
+        WHEN("Alice joins the city") {
+          server->cities().addPlayerToCity(*uAlice, "Athens");
+
+          THEN("she knows it contains fruit") {
+            WAIT_UNTIL(boxInAlicesClient.container()[0].first.type());
+          }
         }
       }
     }
