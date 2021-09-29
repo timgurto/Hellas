@@ -623,12 +623,13 @@ HANDLE_MESSAGE(CL_TAKE_ITEM) {
     pEnt->tellRelevantUsersAboutLootSlot(slot);
 
   else {  // Container
-    auto *asObject = dynamic_cast<const Object *>(pEnt);
+    auto *asObject = dynamic_cast<Object *>(pEnt);
     if (!asObject) {
       SERVER_ERROR("Don't know how to handle TAKE_ITEM request");
       return;
     }
     asObject->tellRelevantUsersAboutInventorySlot(slot);
+    asObject->container().onItemRemoved();
   }
 }
 
