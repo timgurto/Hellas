@@ -181,6 +181,7 @@ class Server {
   void addWarDeclarationDebuff(const BuffType &buffType) {
     _warDeclarationDebuffs.insert(&buffType);
   }
+  bool doesPlayerExist(std::string username) const;
 
  private:
   static Server *_instance;
@@ -204,7 +205,6 @@ class Server {
   std::string _userFilesPath;
   static std::map<std::string, int> getUsersFromFiles();
   void deleteUserFiles();
-  bool doesPlayerExist(std::string username) const;
 
   class OnlineAndOfflineUsers {
    public:

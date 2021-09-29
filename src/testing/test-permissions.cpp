@@ -440,6 +440,17 @@ TEST_CASE_METHOD(TwoClientsWithData, "New owners can see container contents",
             WAIT_UNTIL(boxInBobsClient.container()[0].first.type());
           }
         }
+
+        WHEN("Alice gives the box to a logged-out player") {
+          {
+            auto cCharlie = TestClient::WithUsername("Charlie");
+            WAIT_UNTIL((*server)->doesPlayerExist("Charlie"));
+          }
+          cAlice->sendMessage(CL_GIVE_OBJECT,
+                              makeArgs(box.serial(), "Charlie"));
+
+          THEN("the server doesn't crash") { server->nop(); }
+        }
       }
     }
   }
