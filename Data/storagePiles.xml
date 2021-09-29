@@ -191,8 +191,9 @@
 </objectType>
 
 <objectType id="tinPile" name="Tin-Ingot Pile" healthCategory="lumberWeak"
-    xDrawOffset="-40" yDrawOffset="-24" imageFile="ingotPile" >
-    <collisionRect x="-39" y="-15" w="78" h="31" />
+    xDrawOffset="-22" yDrawOffset="-36" imageFile="ingotPile" >
+    <collisionRect x="-21" y="-15" w="42" h="31" />
+    <customMouseOverRect x="-22" y="-26" w="44" h="41" />
     <!-- 10x10 = 100 items -->
     <container
         slots="10"
@@ -200,107 +201,110 @@
         spawnsWithItem="tinBar"
         disappearsWhenEmpty="1" > 
         <drawPerItem quantityShownToEnemies="1" >
-            <entry image="tinIngot" x="-39" y="-18" />
-            <entry image="tinIngot" x="-39" y="-10" />
-            <entry image="tinIngot" x="-39"  y="-2" />
-            <entry image="tinIngot" x="-39"   y="6" />
-            <entry image="tinIngot" x="-33" y="-18" />
-            <entry image="tinIngot" x="-33" y="-10" />
-            <entry image="tinIngot" x="-33"  y="-2" />
-            <entry image="tinIngot" x="-33"   y="6" />
-            <entry image="tinIngot" x="-27" y="-18" />
-            <entry image="tinIngot" x="-27" y="-10" />
-            <entry image="tinIngot" x="-27"  y="-2" />
-            <entry image="tinIngot" x="-27"   y="6" />
             <entry image="tinIngot" x="-21" y="-18" />
             <entry image="tinIngot" x="-21" y="-10" />
             <entry image="tinIngot" x="-21"  y="-2" />
             <entry image="tinIngot" x="-21"   y="6" />
             <entry image="tinIngot" x="-15" y="-18" />
             <entry image="tinIngot" x="-15" y="-10" />
-            <entry image="tinIngot" x="-15"  y="-2" />
-            <entry image="tinIngot" x="-15"   y="6" />
-            <entry image="tinIngot"  x="-9" y="-18" />
-            <entry image="tinIngot"  x="-9" y="-10" />
-            <entry image="tinIngot"  x="-9"  y="-2" />
-            <entry image="tinIngot"  x="-9"   y="6" />
-            <entry image="tinIngot"  x="-3" y="-18" />
-            <entry image="tinIngot"  x="-3" y="-10" />
-            <entry image="tinIngot"  x="-3"  y="-2" />
-            <entry image="tinIngot"  x="-3"   y="6" />
-            <entry image="tinIngot"  x="3" y="-18" />
-            <entry image="tinIngot"  x="3" y="-10" />
-            <entry image="tinIngot"  x="3"  y="-2" />
-            <entry image="tinIngot"  x="3"   y="6" />
-            <entry image="tinIngot"  x="9" y="-18" />
-            <entry image="tinIngot"  x="9" y="-10" />
-            <entry image="tinIngot"  x="9"  y="-2" />
-            <entry image="tinIngot"  x="9"   y="6" />
-            <entry image="tinIngot"  x="15" y="-18" />
-            <entry image="tinIngot"  x="15" y="-10" />
-            <entry image="tinIngot"  x="15"  y="-2" />
-            <entry image="tinIngot"  x="15"   y="6" />
-            <entry image="tinIngot"  x="21" y="-18" />
-            <entry image="tinIngot"  x="21" y="-10" />
-            <entry image="tinIngot"  x="21"  y="-2" />
-            <entry image="tinIngot"  x="21"   y="6" />
-            <entry image="tinIngot"  x="27" y="-18" />
-            <entry image="tinIngot"  x="27" y="-10" />
-            <entry image="tinIngot"  x="27"  y="-2" />
-            <entry image="tinIngot"  x="27"   y="6" />
-            <entry image="tinIngot"  x="33" y="-18" />
-            <entry image="tinIngot"  x="33" y="-10" />
-            <entry image="tinIngot"  x="33"  y="-2" />
-            <entry image="tinIngot"  x="33"   y="6" />
+            <entry image="tinIngotLight" x="-15"  y="-2" />
+            <entry image="tinIngotLight" x="-15"   y="6" />
+            <entry image="tinIngotLight" x="-9"  y="-18" />
+            <entry image="tinIngotLight" x="-9"  y="-10" />
+            <entry image="tinIngotLight" x="-9"   y="-2" />
+            <entry image="tinIngotLight" x="-9"    y="6" />
+            <entry image="tinIngotLight" x="-3"  y="-18" />
+            <entry image="tinIngotLight" x="-3"  y="-10" />
+            <entry image="tinIngotLight" x="-3"   y="-2" />
+            <entry image="tinIngotLight" x="-3"    y="6" />
+            <entry image="tinIngotLight" x="3"   y="-18" />
+            <entry image="tinIngotLight" x="3"   y="-10" />
+            <entry image="tinIngotLight" x="3"    y="-2" />
+            <entry image="tinIngotLight" x="3"     y="6" />
+            <entry image="tinIngotLight" x="9"   y="-18" />
+            <entry image="tinIngotLight" x="9"   y="-10" />
+            <entry image="tinIngot" x="9"    y="-2" />
+            <entry image="tinIngot" x="9"     y="6" />
+            <entry image="tinIngot" x="15"  y="-18" />
+            <entry image="tinIngot" x="15"  y="-10" />
+            <entry image="tinIngot" x="15"   y="-2" />
+            <entry image="tinIngot" x="15"    y="6" />
             
-            <entry image="tinIngot" x="-36" y="-22" />
-            <entry image="tinIngot" x="-36" y="-14" />
-            <entry image="tinIngot" x="-36"  y="-6" />
-            <entry image="tinIngot" x="-36"   y="2" />
-            <entry image="tinIngot" x="-30" y="-22" />
-            <entry image="tinIngot" x="-30" y="-14" />
-            <entry image="tinIngot" x="-30"  y="-6" />
-            <entry image="tinIngot" x="-30"   y="2" />
-            <entry image="tinIngot" x="-24" y="-22" />
-            <entry image="tinIngot" x="-24" y="-14" />
-            <entry image="tinIngot" x="-24"  y="-6" />
-            <entry image="tinIngot" x="-24"   y="2" />
             <entry image="tinIngot" x="-18" y="-22" />
             <entry image="tinIngot" x="-18" y="-14" />
             <entry image="tinIngot" x="-18"  y="-6" />
-            <entry image="tinIngot" x="-18"   y="2" />
+            <entry image="tinIngotLight" x="-18"   y="2" />
             <entry image="tinIngot" x="-12" y="-22" />
-            <entry image="tinIngot" x="-12" y="-14" />
-            <entry image="tinIngot" x="-12"  y="-6" />
-            <entry image="tinIngot" x="-12"   y="2" />
-            <entry image="tinIngot" x="-6" y="-22" />
-            <entry image="tinIngot" x="-6" y="-14" />
-            <entry image="tinIngot" x="-6"  y="-6" />
-            <entry image="tinIngot" x="-6"   y="2" />
-            <entry image="tinIngot"  x="0" y="-22" />
-            <entry image="tinIngot"  x="0" y="-14" />
-            <entry image="tinIngot"  x="0"  y="-6" />
-            <entry image="tinIngot"  x="0"   y="2" />
-            <entry image="tinIngot"  x="6" y="-22" />
-            <entry image="tinIngot"  x="6" y="-14" />
-            <entry image="tinIngot"  x="6"  y="-6" />
-            <entry image="tinIngot"  x="6"   y="2" />
-            <entry image="tinIngot" x="12" y="-22" />
-            <entry image="tinIngot" x="12" y="-14" />
-            <entry image="tinIngot" x="12"  y="-6" />
-            <entry image="tinIngot" x="12"   y="2" />
-            <entry image="tinIngot" x="18" y="-22" />
-            <entry image="tinIngot" x="18" y="-14" />
-            <entry image="tinIngot" x="18"  y="-6" />
-            <entry image="tinIngot" x="18"   y="2" />
-            <entry image="tinIngot" x="24" y="-22" />
-            <entry image="tinIngot" x="24" y="-14" />
-            <entry image="tinIngot" x="24"  y="-6" />
-            <entry image="tinIngot" x="24"   y="2" />
-            <entry image="tinIngot" x="30" y="-22" />
-            <entry image="tinIngot" x="30" y="-14" />
-            <entry image="tinIngot" x="30"  y="-6" />
-            <entry image="tinIngot" x="30"   y="2" />
+            <entry image="tinIngotLight" x="-12" y="-14" />
+            <entry image="tinIngotLight" x="-12"  y="-6" />
+            <entry image="tinIngotLight" x="-12"   y="2" />
+            <entry image="tinIngotLight" x="-6"  y="-22" />
+            <entry image="tinIngotLight" x="-6"  y="-14" />
+            <entry image="tinIngotLight" x="-6"   y="-6" />
+            <entry image="tinIngotLight" x="-6"    y="2" />
+            <entry image="tinIngotLight" x="0"   y="-22" />
+            <entry image="tinIngotLight" x="0"   y="-14" />
+            <entry image="tinIngotLight" x="0"    y="-6" />
+            <entry image="tinIngotLight" x="0"     y="2" />
+            <entry image="tinIngotLight" x="6"   y="-22" />
+            <entry image="tinIngotLight" x="6"   y="-14" />
+            <entry image="tinIngotLight" x="6"    y="-6" />
+            <entry image="tinIngot" x="6"     y="2" />
+            <entry image="tinIngotLight" x="12"  y="-22" />
+            <entry image="tinIngot" x="12"  y="-14" />
+            <entry image="tinIngot" x="12"   y="-6" />
+            <entry image="tinIngot" x="12"    y="2" />
+            
+            <entry image="tinIngot" x="-15" y="-26" />
+            <entry image="tinIngot" x="-15" y="-18" />
+            <entry image="tinIngotLight" x="-15" y="-10" />
+            <entry image="tinIngotLight" x="-15"  y="-2" />
+            <entry image="tinIngotLight" x="-9"  y="-26" />
+            <entry image="tinIngotLight" x="-9"  y="-18" />
+            <entry image="tinIngotLight" x="-9"  y="-10" />
+            <entry image="tinIngotLight" x="-9"   y="-2" />
+            <entry image="tinIngotLight" x="-3"  y="-26" />
+            <entry image="tinIngotLight" x="-3"  y="-18" />
+            <entry image="tinIngotLight" x="-3"  y="-10" />
+            <entry image="tinIngotLight" x="-3"   y="-2" />
+            <entry image="tinIngotLight" x="3"   y="-26" />
+            <entry image="tinIngotLight" x="3"   y="-18" />
+            <entry image="tinIngotLight" x="3"   y="-10" />
+            <entry image="tinIngotLight" x="3"    y="-2" />
+            <entry image="tinIngotLight" x="9"   y="-26" />
+            <entry image="tinIngotLight" x="9"   y="-18" />
+            <entry image="tinIngot" x="9"   y="-10" />
+            <entry image="tinIngot" x="9"    y="-2" />
+            
+            <entry image="tinIngot" x="-12" y="-30" />
+            <entry image="tinIngotLight" x="-12" y="-22" />
+            <entry image="tinIngotLight" x="-12" y="-14" />
+            <entry image="tinIngotLight" x="-12"  y="-6" />
+            <entry image="tinIngotLight" x="-6"  y="-30" />
+            <entry image="tinIngotLight" x="-6"  y="-22" />
+            <entry image="tinIngotLight" x="-6"  y="-14" />
+            <entry image="tinIngotLight" x="-6"   y="-6" />
+            <entry image="tinIngotLight" x="0"   y="-30" />
+            <entry image="tinIngotLight" x="0"   y="-22" />
+            <entry image="tinIngotLight" x="0"   y="-14" />
+            <entry image="tinIngotLight" x="0"    y="-6" />
+            <entry image="tinIngotLight" x="6"   y="-30" />
+            <entry image="tinIngotLight" x="6"   y="-22" />
+            <entry image="tinIngotLight" x="6"   y="-14" />
+            <entry image="tinIngot" x="6"    y="-6" />
+            
+            <entry image="tinIngotLight" x="-9" y="-34" />
+            <entry image="tinIngotLight" x="-9" y="-26" />
+            <entry image="tinIngotLight" x="-9" y="-18" />
+            <entry image="tinIngotLight" x="-9" y="-10" />
+            <entry image="tinIngotLight" x="-3" y="-34" />
+            <entry image="tinIngotLight" x="-3" y="-26" />
+            <entry image="tinIngotLight" x="-3" y="-18" />
+            <entry image="tinIngotLight" x="-3" y="-10" />
+            <entry image="tinIngotLight" x="3"  y="-34" />
+            <entry image="tinIngotLight" x="3"  y="-26" />
+            <entry image="tinIngotLight" x="3"  y="-18" />
+            <entry image="tinIngotLight" x="3"  y="-10" />
         </drawPerItem>
     </container>
     <canBeRepaired cost="tinBar" />
@@ -427,8 +431,9 @@
 </objectType>
 
 <objectType id="silverPile" name="Silver-Ingot Pile" healthCategory="brickWeak"
-    xDrawOffset="-40" yDrawOffset="-24" imageFile="ingotPile" >
-    <collisionRect x="-39" y="-15" w="78" h="31" />
+    xDrawOffset="-22" yDrawOffset="-36" imageFile="ingotPile" >
+    <collisionRect x="-21" y="-15" w="42" h="31" />
+    <customMouseOverRect x="-22" y="-26" w="44" h="41" />
     <!-- 10x10 = 100 items -->
     <container
         slots="10"
@@ -436,107 +441,110 @@
         spawnsWithItem="silverBar"
         disappearsWhenEmpty="1" > 
         <drawPerItem quantityShownToEnemies="1" >
-            <entry image="silverIngot" x="-39" y="-18" />
-            <entry image="silverIngot" x="-39" y="-10" />
-            <entry image="silverIngot" x="-39"  y="-2" />
-            <entry image="silverIngot" x="-39"   y="6" />
-            <entry image="silverIngot" x="-33" y="-18" />
-            <entry image="silverIngot" x="-33" y="-10" />
-            <entry image="silverIngot" x="-33"  y="-2" />
-            <entry image="silverIngot" x="-33"   y="6" />
-            <entry image="silverIngot" x="-27" y="-18" />
-            <entry image="silverIngot" x="-27" y="-10" />
-            <entry image="silverIngot" x="-27"  y="-2" />
-            <entry image="silverIngot" x="-27"   y="6" />
             <entry image="silverIngot" x="-21" y="-18" />
             <entry image="silverIngot" x="-21" y="-10" />
             <entry image="silverIngot" x="-21"  y="-2" />
             <entry image="silverIngot" x="-21"   y="6" />
             <entry image="silverIngot" x="-15" y="-18" />
             <entry image="silverIngot" x="-15" y="-10" />
-            <entry image="silverIngot" x="-15"  y="-2" />
-            <entry image="silverIngot" x="-15"   y="6" />
-            <entry image="silverIngot"  x="-9" y="-18" />
-            <entry image="silverIngot"  x="-9" y="-10" />
-            <entry image="silverIngot"  x="-9"  y="-2" />
-            <entry image="silverIngot"  x="-9"   y="6" />
-            <entry image="silverIngot"  x="-3" y="-18" />
-            <entry image="silverIngot"  x="-3" y="-10" />
-            <entry image="silverIngot"  x="-3"  y="-2" />
-            <entry image="silverIngot"  x="-3"   y="6" />
-            <entry image="silverIngot"  x="3" y="-18" />
-            <entry image="silverIngot"  x="3" y="-10" />
-            <entry image="silverIngot"  x="3"  y="-2" />
-            <entry image="silverIngot"  x="3"   y="6" />
-            <entry image="silverIngot"  x="9" y="-18" />
-            <entry image="silverIngot"  x="9" y="-10" />
-            <entry image="silverIngot"  x="9"  y="-2" />
-            <entry image="silverIngot"  x="9"   y="6" />
-            <entry image="silverIngot"  x="15" y="-18" />
-            <entry image="silverIngot"  x="15" y="-10" />
-            <entry image="silverIngot"  x="15"  y="-2" />
-            <entry image="silverIngot"  x="15"   y="6" />
-            <entry image="silverIngot"  x="21" y="-18" />
-            <entry image="silverIngot"  x="21" y="-10" />
-            <entry image="silverIngot"  x="21"  y="-2" />
-            <entry image="silverIngot"  x="21"   y="6" />
-            <entry image="silverIngot"  x="27" y="-18" />
-            <entry image="silverIngot"  x="27" y="-10" />
-            <entry image="silverIngot"  x="27"  y="-2" />
-            <entry image="silverIngot"  x="27"   y="6" />
-            <entry image="silverIngot"  x="33" y="-18" />
-            <entry image="silverIngot"  x="33" y="-10" />
-            <entry image="silverIngot"  x="33"  y="-2" />
-            <entry image="silverIngot"  x="33"   y="6" />
+            <entry image="silverIngotLight" x="-15"  y="-2" />
+            <entry image="silverIngotLight" x="-15"   y="6" />
+            <entry image="silverIngotLight" x="-9"  y="-18" />
+            <entry image="silverIngotLight" x="-9"  y="-10" />
+            <entry image="silverIngotLight" x="-9"   y="-2" />
+            <entry image="silverIngotLight" x="-9"    y="6" />
+            <entry image="silverIngotLight" x="-3"  y="-18" />
+            <entry image="silverIngotLight" x="-3"  y="-10" />
+            <entry image="silverIngotLight" x="-3"   y="-2" />
+            <entry image="silverIngotLight" x="-3"    y="6" />
+            <entry image="silverIngotLight" x="3"   y="-18" />
+            <entry image="silverIngotLight" x="3"   y="-10" />
+            <entry image="silverIngotLight" x="3"    y="-2" />
+            <entry image="silverIngotLight" x="3"     y="6" />
+            <entry image="silverIngotLight" x="9"   y="-18" />
+            <entry image="silverIngotLight" x="9"   y="-10" />
+            <entry image="silverIngot" x="9"    y="-2" />
+            <entry image="silverIngot" x="9"     y="6" />
+            <entry image="silverIngot" x="15"  y="-18" />
+            <entry image="silverIngot" x="15"  y="-10" />
+            <entry image="silverIngot" x="15"   y="-2" />
+            <entry image="silverIngot" x="15"    y="6" />
             
-            <entry image="silverIngot" x="-36" y="-22" />
-            <entry image="silverIngot" x="-36" y="-14" />
-            <entry image="silverIngot" x="-36"  y="-6" />
-            <entry image="silverIngot" x="-36"   y="2" />
-            <entry image="silverIngot" x="-30" y="-22" />
-            <entry image="silverIngot" x="-30" y="-14" />
-            <entry image="silverIngot" x="-30"  y="-6" />
-            <entry image="silverIngot" x="-30"   y="2" />
-            <entry image="silverIngot" x="-24" y="-22" />
-            <entry image="silverIngot" x="-24" y="-14" />
-            <entry image="silverIngot" x="-24"  y="-6" />
-            <entry image="silverIngot" x="-24"   y="2" />
             <entry image="silverIngot" x="-18" y="-22" />
             <entry image="silverIngot" x="-18" y="-14" />
             <entry image="silverIngot" x="-18"  y="-6" />
-            <entry image="silverIngot" x="-18"   y="2" />
+            <entry image="silverIngotLight" x="-18"   y="2" />
             <entry image="silverIngot" x="-12" y="-22" />
-            <entry image="silverIngot" x="-12" y="-14" />
-            <entry image="silverIngot" x="-12"  y="-6" />
-            <entry image="silverIngot" x="-12"   y="2" />
-            <entry image="silverIngot" x="-6" y="-22" />
-            <entry image="silverIngot" x="-6" y="-14" />
-            <entry image="silverIngot" x="-6"  y="-6" />
-            <entry image="silverIngot" x="-6"   y="2" />
-            <entry image="silverIngot"  x="0" y="-22" />
-            <entry image="silverIngot"  x="0" y="-14" />
-            <entry image="silverIngot"  x="0"  y="-6" />
-            <entry image="silverIngot"  x="0"   y="2" />
-            <entry image="silverIngot"  x="6" y="-22" />
-            <entry image="silverIngot"  x="6" y="-14" />
-            <entry image="silverIngot"  x="6"  y="-6" />
-            <entry image="silverIngot"  x="6"   y="2" />
-            <entry image="silverIngot" x="12" y="-22" />
-            <entry image="silverIngot" x="12" y="-14" />
-            <entry image="silverIngot" x="12"  y="-6" />
-            <entry image="silverIngot" x="12"   y="2" />
-            <entry image="silverIngot" x="18" y="-22" />
-            <entry image="silverIngot" x="18" y="-14" />
-            <entry image="silverIngot" x="18"  y="-6" />
-            <entry image="silverIngot" x="18"   y="2" />
-            <entry image="silverIngot" x="24" y="-22" />
-            <entry image="silverIngot" x="24" y="-14" />
-            <entry image="silverIngot" x="24"  y="-6" />
-            <entry image="silverIngot" x="24"   y="2" />
-            <entry image="silverIngot" x="30" y="-22" />
-            <entry image="silverIngot" x="30" y="-14" />
-            <entry image="silverIngot" x="30"  y="-6" />
-            <entry image="silverIngot" x="30"   y="2" />
+            <entry image="silverIngotLight" x="-12" y="-14" />
+            <entry image="silverIngotLight" x="-12"  y="-6" />
+            <entry image="silverIngotLight" x="-12"   y="2" />
+            <entry image="silverIngotLight" x="-6"  y="-22" />
+            <entry image="silverIngotLight" x="-6"  y="-14" />
+            <entry image="silverIngotLight" x="-6"   y="-6" />
+            <entry image="silverIngotLight" x="-6"    y="2" />
+            <entry image="silverIngotLight" x="0"   y="-22" />
+            <entry image="silverIngotLight" x="0"   y="-14" />
+            <entry image="silverIngotLight" x="0"    y="-6" />
+            <entry image="silverIngotLight" x="0"     y="2" />
+            <entry image="silverIngotLight" x="6"   y="-22" />
+            <entry image="silverIngotLight" x="6"   y="-14" />
+            <entry image="silverIngotLight" x="6"    y="-6" />
+            <entry image="silverIngot" x="6"     y="2" />
+            <entry image="silverIngotLight" x="12"  y="-22" />
+            <entry image="silverIngot" x="12"  y="-14" />
+            <entry image="silverIngot" x="12"   y="-6" />
+            <entry image="silverIngot" x="12"    y="2" />
+            
+            <entry image="silverIngot" x="-15" y="-26" />
+            <entry image="silverIngot" x="-15" y="-18" />
+            <entry image="silverIngotLight" x="-15" y="-10" />
+            <entry image="silverIngotLight" x="-15"  y="-2" />
+            <entry image="silverIngotLight" x="-9"  y="-26" />
+            <entry image="silverIngotLight" x="-9"  y="-18" />
+            <entry image="silverIngotLight" x="-9"  y="-10" />
+            <entry image="silverIngotLight" x="-9"   y="-2" />
+            <entry image="silverIngotLight" x="-3"  y="-26" />
+            <entry image="silverIngotLight" x="-3"  y="-18" />
+            <entry image="silverIngotLight" x="-3"  y="-10" />
+            <entry image="silverIngotLight" x="-3"   y="-2" />
+            <entry image="silverIngotLight" x="3"   y="-26" />
+            <entry image="silverIngotLight" x="3"   y="-18" />
+            <entry image="silverIngotLight" x="3"   y="-10" />
+            <entry image="silverIngotLight" x="3"    y="-2" />
+            <entry image="silverIngotLight" x="9"   y="-26" />
+            <entry image="silverIngotLight" x="9"   y="-18" />
+            <entry image="silverIngot" x="9"   y="-10" />
+            <entry image="silverIngot" x="9"    y="-2" />
+            
+            <entry image="silverIngot" x="-12" y="-30" />
+            <entry image="silverIngotLight" x="-12" y="-22" />
+            <entry image="silverIngotLight" x="-12" y="-14" />
+            <entry image="silverIngotLight" x="-12"  y="-6" />
+            <entry image="silverIngotLight" x="-6"  y="-30" />
+            <entry image="silverIngotLight" x="-6"  y="-22" />
+            <entry image="silverIngotLight" x="-6"  y="-14" />
+            <entry image="silverIngotLight" x="-6"   y="-6" />
+            <entry image="silverIngotLight" x="0"   y="-30" />
+            <entry image="silverIngotLight" x="0"   y="-22" />
+            <entry image="silverIngotLight" x="0"   y="-14" />
+            <entry image="silverIngotLight" x="0"    y="-6" />
+            <entry image="silverIngotLight" x="6"   y="-30" />
+            <entry image="silverIngotLight" x="6"   y="-22" />
+            <entry image="silverIngotLight" x="6"   y="-14" />
+            <entry image="silverIngot" x="6"    y="-6" />
+            
+            <entry image="silverIngotLight" x="-9" y="-34" />
+            <entry image="silverIngotLight" x="-9" y="-26" />
+            <entry image="silverIngotLight" x="-9" y="-18" />
+            <entry image="silverIngotLight" x="-9" y="-10" />
+            <entry image="silverIngotLight" x="-3" y="-34" />
+            <entry image="silverIngotLight" x="-3" y="-26" />
+            <entry image="silverIngotLight" x="-3" y="-18" />
+            <entry image="silverIngotLight" x="-3" y="-10" />
+            <entry image="silverIngotLight" x="3"  y="-34" />
+            <entry image="silverIngotLight" x="3"  y="-26" />
+            <entry image="silverIngotLight" x="3"  y="-18" />
+            <entry image="silverIngotLight" x="3"  y="-10" />
         </drawPerItem>
     </container>
     <canBeRepaired cost="silverBar" />
