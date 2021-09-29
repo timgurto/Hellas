@@ -323,22 +323,22 @@
             <entry image="copperIngot" x="-21"   y="6" />
             <entry image="copperIngot" x="-15" y="-18" />
             <entry image="copperIngot" x="-15" y="-10" />
-            <entry image="copperIngot" x="-15"  y="-2" />
-            <entry image="copperIngot" x="-15"   y="6" />
-            <entry image="copperIngot" x="-9"  y="-18" />
-            <entry image="copperIngot" x="-9"  y="-10" />
-            <entry image="copperIngot" x="-9"   y="-2" />
-            <entry image="copperIngot" x="-9"    y="6" />
-            <entry image="copperIngot" x="-3"  y="-18" />
-            <entry image="copperIngot" x="-3"  y="-10" />
-            <entry image="copperIngot" x="-3"   y="-2" />
-            <entry image="copperIngot" x="-3"    y="6" />
-            <entry image="copperIngot" x="3"   y="-18" />
-            <entry image="copperIngot" x="3"   y="-10" />
-            <entry image="copperIngot" x="3"    y="-2" />
-            <entry image="copperIngot" x="3"     y="6" />
-            <entry image="copperIngot" x="9"   y="-18" />
-            <entry image="copperIngot" x="9"   y="-10" />
+            <entry image="copperIngotLight" x="-15"  y="-2" />
+            <entry image="copperIngotLight" x="-15"   y="6" />
+            <entry image="copperIngotLight" x="-9"  y="-18" />
+            <entry image="copperIngotLight" x="-9"  y="-10" />
+            <entry image="copperIngotLight" x="-9"   y="-2" />
+            <entry image="copperIngotLight" x="-9"    y="6" />
+            <entry image="copperIngotLight" x="-3"  y="-18" />
+            <entry image="copperIngotLight" x="-3"  y="-10" />
+            <entry image="copperIngotLight" x="-3"   y="-2" />
+            <entry image="copperIngotLight" x="-3"    y="6" />
+            <entry image="copperIngotLight" x="3"   y="-18" />
+            <entry image="copperIngotLight" x="3"   y="-10" />
+            <entry image="copperIngotLight" x="3"    y="-2" />
+            <entry image="copperIngotLight" x="3"     y="6" />
+            <entry image="copperIngotLight" x="9"   y="-18" />
+            <entry image="copperIngotLight" x="9"   y="-10" />
             <entry image="copperIngot" x="9"    y="-2" />
             <entry image="copperIngot" x="9"     y="6" />
             <entry image="copperIngot" x="15"  y="-18" />
@@ -349,78 +349,78 @@
             <entry image="copperIngot" x="-18" y="-22" />
             <entry image="copperIngot" x="-18" y="-14" />
             <entry image="copperIngot" x="-18"  y="-6" />
-            <entry image="copperIngot" x="-18"   y="2" />
+            <entry image="copperIngotLight" x="-18"   y="2" />
             <entry image="copperIngot" x="-12" y="-22" />
-            <entry image="copperIngot" x="-12" y="-14" />
-            <entry image="copperIngot" x="-12"  y="-6" />
-            <entry image="copperIngot" x="-12"   y="2" />
-            <entry image="copperIngot" x="-6"  y="-22" />
-            <entry image="copperIngot" x="-6"  y="-14" />
-            <entry image="copperIngot" x="-6"   y="-6" />
-            <entry image="copperIngot" x="-6"    y="2" />
-            <entry image="copperIngot" x="0"   y="-22" />
-            <entry image="copperIngot" x="0"   y="-14" />
-            <entry image="copperIngot" x="0"    y="-6" />
-            <entry image="copperIngot" x="0"     y="2" />
-            <entry image="copperIngot" x="6"   y="-22" />
-            <entry image="copperIngot" x="6"   y="-14" />
-            <entry image="copperIngot" x="6"    y="-6" />
+            <entry image="copperIngotLight" x="-12" y="-14" />
+            <entry image="copperIngotLight" x="-12"  y="-6" />
+            <entry image="copperIngotLight" x="-12"   y="2" />
+            <entry image="copperIngotLight" x="-6"  y="-22" />
+            <entry image="copperIngotLight" x="-6"  y="-14" />
+            <entry image="copperIngotLight" x="-6"   y="-6" />
+            <entry image="copperIngotLight" x="-6"    y="2" />
+            <entry image="copperIngotLight" x="0"   y="-22" />
+            <entry image="copperIngotLight" x="0"   y="-14" />
+            <entry image="copperIngotLight" x="0"    y="-6" />
+            <entry image="copperIngotLight" x="0"     y="2" />
+            <entry image="copperIngotLight" x="6"   y="-22" />
+            <entry image="copperIngotLight" x="6"   y="-14" />
+            <entry image="copperIngotLight" x="6"    y="-6" />
             <entry image="copperIngot" x="6"     y="2" />
-            <entry image="copperIngot" x="12"  y="-22" />
+            <entry image="copperIngotLight" x="12"  y="-22" />
             <entry image="copperIngot" x="12"  y="-14" />
             <entry image="copperIngot" x="12"   y="-6" />
             <entry image="copperIngot" x="12"    y="2" />
             
             <entry image="copperIngot" x="-15" y="-26" />
             <entry image="copperIngot" x="-15" y="-18" />
-            <entry image="copperIngot" x="-15" y="-10" />
-            <entry image="copperIngot" x="-15"  y="-2" />
-            <entry image="copperIngot" x="-9"  y="-26" />
-            <entry image="copperIngot" x="-9"  y="-18" />
-            <entry image="copperIngot" x="-9"  y="-10" />
-            <entry image="copperIngot" x="-9"   y="-2" />
-            <entry image="copperIngot" x="-3"  y="-26" />
-            <entry image="copperIngot" x="-3"  y="-18" />
-            <entry image="copperIngot" x="-3"  y="-10" />
-            <entry image="copperIngot" x="-3"   y="-2" />
-            <entry image="copperIngot" x="3"   y="-26" />
-            <entry image="copperIngot" x="3"   y="-18" />
-            <entry image="copperIngot" x="3"   y="-10" />
-            <entry image="copperIngot" x="3"    y="-2" />
-            <entry image="copperIngot" x="9"   y="-26" />
-            <entry image="copperIngot" x="9"   y="-18" />
+            <entry image="copperIngotLight" x="-15" y="-10" />
+            <entry image="copperIngotLight" x="-15"  y="-2" />
+            <entry image="copperIngotLight" x="-9"  y="-26" />
+            <entry image="copperIngotLight" x="-9"  y="-18" />
+            <entry image="copperIngotLight" x="-9"  y="-10" />
+            <entry image="copperIngotLight" x="-9"   y="-2" />
+            <entry image="copperIngotLight" x="-3"  y="-26" />
+            <entry image="copperIngotLight" x="-3"  y="-18" />
+            <entry image="copperIngotLight" x="-3"  y="-10" />
+            <entry image="copperIngotLight" x="-3"   y="-2" />
+            <entry image="copperIngotLight" x="3"   y="-26" />
+            <entry image="copperIngotLight" x="3"   y="-18" />
+            <entry image="copperIngotLight" x="3"   y="-10" />
+            <entry image="copperIngotLight" x="3"    y="-2" />
+            <entry image="copperIngotLight" x="9"   y="-26" />
+            <entry image="copperIngotLight" x="9"   y="-18" />
             <entry image="copperIngot" x="9"   y="-10" />
             <entry image="copperIngot" x="9"    y="-2" />
             
             <entry image="copperIngot" x="-12" y="-30" />
-            <entry image="copperIngot" x="-12" y="-22" />
-            <entry image="copperIngot" x="-12" y="-14" />
-            <entry image="copperIngot" x="-12"  y="-6" />
-            <entry image="copperIngot" x="-6"  y="-30" />
-            <entry image="copperIngot" x="-6"  y="-22" />
-            <entry image="copperIngot" x="-6"  y="-14" />
-            <entry image="copperIngot" x="-6"   y="-6" />
-            <entry image="copperIngot" x="0"   y="-30" />
-            <entry image="copperIngot" x="0"   y="-22" />
-            <entry image="copperIngot" x="0"   y="-14" />
-            <entry image="copperIngot" x="0"    y="-6" />
-            <entry image="copperIngot" x="6"   y="-30" />
-            <entry image="copperIngot" x="6"   y="-22" />
-            <entry image="copperIngot" x="6"   y="-14" />
+            <entry image="copperIngotLight" x="-12" y="-22" />
+            <entry image="copperIngotLight" x="-12" y="-14" />
+            <entry image="copperIngotLight" x="-12"  y="-6" />
+            <entry image="copperIngotLight" x="-6"  y="-30" />
+            <entry image="copperIngotLight" x="-6"  y="-22" />
+            <entry image="copperIngotLight" x="-6"  y="-14" />
+            <entry image="copperIngotLight" x="-6"   y="-6" />
+            <entry image="copperIngotLight" x="0"   y="-30" />
+            <entry image="copperIngotLight" x="0"   y="-22" />
+            <entry image="copperIngotLight" x="0"   y="-14" />
+            <entry image="copperIngotLight" x="0"    y="-6" />
+            <entry image="copperIngotLight" x="6"   y="-30" />
+            <entry image="copperIngotLight" x="6"   y="-22" />
+            <entry image="copperIngotLight" x="6"   y="-14" />
             <entry image="copperIngot" x="6"    y="-6" />
             
-            <entry image="copperIngot" x="-9" y="-34" />
-            <entry image="copperIngot" x="-9" y="-26" />
-            <entry image="copperIngot" x="-9" y="-18" />
-            <entry image="copperIngot" x="-9" y="-10" />
-            <entry image="copperIngot" x="-3" y="-34" />
-            <entry image="copperIngot" x="-3" y="-26" />
-            <entry image="copperIngot" x="-3" y="-18" />
-            <entry image="copperIngot" x="-3" y="-10" />
-            <entry image="copperIngot" x="3"  y="-34" />
-            <entry image="copperIngot" x="3"  y="-26" />
-            <entry image="copperIngot" x="3"  y="-18" />
-            <entry image="copperIngot" x="3"  y="-10" />
+            <entry image="copperIngotLight" x="-9" y="-34" />
+            <entry image="copperIngotLight" x="-9" y="-26" />
+            <entry image="copperIngotLight" x="-9" y="-18" />
+            <entry image="copperIngotLight" x="-9" y="-10" />
+            <entry image="copperIngotLight" x="-3" y="-34" />
+            <entry image="copperIngotLight" x="-3" y="-26" />
+            <entry image="copperIngotLight" x="-3" y="-18" />
+            <entry image="copperIngotLight" x="-3" y="-10" />
+            <entry image="copperIngotLight" x="3"  y="-34" />
+            <entry image="copperIngotLight" x="3"  y="-26" />
+            <entry image="copperIngotLight" x="3"  y="-18" />
+            <entry image="copperIngotLight" x="3"  y="-10" />
         </drawPerItem>
     </container>
     <canBeRepaired cost="copperBar" />
