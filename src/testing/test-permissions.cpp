@@ -435,6 +435,20 @@ TEST_CASE_METHOD(TwoClientsWithData, "New owners can see container contents",
       AND_GIVEN("the box contains fruit") {
         box.container().addItems(fruit);
 
+        AND_GIVEN("Alice and Bob are in a city") {
+          server->cities().createCity("Athens", {}, {});
+          server->cities().addPlayerToCity(*uAlice, "Athens");
+          server->cities().addPlayerToCity(*uBob, "Athens");
+
+          WHEN("Alice cedes the box to the city") {
+            cAlice->sendMessage(CL_CEDE, makeArgs(box.serial()));
+
+            THEN("Bob knows it contains fruit") {
+              WAIT_UNTIL(boxInBobsClient.container()[0].first.type());
+            }
+          }
+        }
+
         WHEN("Alice gives the box to Bob") {
           cAlice->sendMessage(CL_GIVE_OBJECT, makeArgs(box.serial(), "Bob"));
 
@@ -474,6 +488,3 @@ TEST_CASE_METHOD(TwoClientsWithData, "New owners can see container contents",
     }
   }
 }
-
-// Cede
-// Join city

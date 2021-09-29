@@ -68,6 +68,7 @@ void Permissions::setCityOwner(const City::Name &cityName) {
   if (!server.cities().doesCityExist(cityName)) return;
 
   setOwner({Owner::CITY, cityName});
+  server.cities().sendObjectToAllCitizens(cityName, parent());
 }
 
 bool Permissions::hasOwner() const {

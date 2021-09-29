@@ -78,6 +78,8 @@ class Cities {
   City::Name getPlayerCity(const std::string &username) const;
   const City::Members &membersOf(const std::string &cityName) const;
   void sendCityObjectsToCitizen(const User &citizen) const;
+  void sendObjectToAllCitizens(std::string cityName,
+                               const class Entity &ent) const;
   MapPoint locationOf(const std::string &cityName) const;
   std::string kingOf(const std::string &cityName) const;
   void onCityDeclaredWar(std::string cityName);

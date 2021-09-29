@@ -224,6 +224,16 @@ void Cities::sendCityObjectsToCitizen(const User &citizen) const {
   }
 }
 
+void Cities::sendObjectToAllCitizens(std::string cityName,
+                                     const Entity &ent) const {
+  auto citizenNames = membersOf(cityName);
+  for (const auto &citizenName : citizenNames) {
+    const auto *citizen = Server::instance().getUserByName(citizenName);
+    if (citizen == nullptr) continue;
+    ent.sendInfoToClient(*citizen);
+  }
+}
+
 MapPoint Cities::locationOf(const std::string &cityName) const {
   auto it = _container.find(cityName);
   bool cityExists = it != _container.end();
