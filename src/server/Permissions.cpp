@@ -58,6 +58,9 @@ void Permissions::setAsMob() { _owner.type = Owner::MOB; }
 
 void Permissions::setPlayerOwner(const std::string &username) {
   setOwner({Owner::PLAYER, username});
+
+  const auto *user = Server::instance().getUserByName(username);
+  parent().sendInfoToClient(*user);
 }
 
 void Permissions::setCityOwner(const City::Name &cityName) {

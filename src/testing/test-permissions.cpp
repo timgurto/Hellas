@@ -412,3 +412,38 @@ TEST_CASE("No-access objects", "[permissions]") {
     }
   }
 }
+
+TEST_CASE_METHOD(TwoClientsWithData, "New owners can see container contents",
+                 "[permissions][containers]") {
+  GIVEN("a box of fruit") {
+    useData(R"(
+      <objectType id="box" >
+        <container slots="1" />
+      </objectType>
+      <item id="fruit" />
+    )");
+    auto &box = server->addObject("box", {10, 10});
+
+    AND_GIVEN("Alice owns the box") {
+      box.permissions.setPlayerOwner("Alice");
+
+      AND_GIVEN("the box contains fruit") {
+        const auto *fruit = &server->getFirstItem();
+        box.container().addItems(fruit);
+
+        WHEN("Alice gives the box to Bob") {
+          cAlice->sendMessage(CL_GIVE_OBJECT, makeArgs(box.serial(), "Bob"));
+
+          THEN("Bob is told about the box's inventory") {
+            WAIT_UNTIL(cBob->objects().size() == 1);
+            const auto &boxInBobsClient = cBob->getFirstObject();
+            WAIT_UNTIL(boxInBobsClient.container()[0].first.type());
+          }
+        }
+      }
+    }
+  }
+}
+
+// Cede
+// Join city
