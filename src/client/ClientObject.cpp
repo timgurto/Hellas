@@ -1059,7 +1059,7 @@ void ClientObject::createRegularTooltip() const {
   tooltip.setColor(Color::TOOLTIP_BODY);
 
   if (addClassSpecificStuffToTooltip(tooltip))
-    includeOneGapBeforeAllGeneralContent();
+    hasGapBeenDrawnForGeneralContent = true;
 
   if (userHasAccess()) {
     if (ot.canGather(_client.gameData.quests)) {

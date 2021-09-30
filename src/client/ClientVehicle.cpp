@@ -59,6 +59,7 @@ bool ClientVehicle::addClassSpecificStuffToWindow() {
 }
 
 bool ClientVehicle::addClassSpecificStuffToTooltip(Tooltip &tooltip) const {
+  tooltip.addGap();
   auto displaySpeed = proportionToPercentageString(speed());
   tooltip.addLine("Vehicle ("s + displaySpeed + " speed)");
 
