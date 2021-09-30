@@ -1050,21 +1050,21 @@ void ClientObject::createRegularTooltip() const {
 
   // Stats
   bool hasGapBeenDrawnForGeneralContent = false;
+  auto includeOneGapBeforeAllGeneralContent =
+      [&hasGapBeenDrawnForGeneralContent, &tooltip]() {
+        if (!hasGapBeenDrawnForGeneralContent) tooltip.addGap();
+        hasGapBeenDrawnForGeneralContent = true;
+      };
+
   tooltip.setColor(Color::TOOLTIP_BODY);
 
-  if (addClassSpecificStuffToTooltip(tooltip)) {
-    if (!hasGapBeenDrawnForGeneralContent) {
-      hasGapBeenDrawnForGeneralContent = true;
-      tooltip.addGap();
-    }
-  }
+  if (addClassSpecificStuffToTooltip(tooltip))
+    includeOneGapBeforeAllGeneralContent();
 
   if (userHasAccess()) {
     if (ot.canGather(_client.gameData.quests)) {
-      if (!hasGapBeenDrawnForGeneralContent) {
-        hasGapBeenDrawnForGeneralContent = true;
-        tooltip.addGap();
-      }
+      includeOneGapBeforeAllGeneralContent();
+
       std::string text = "Gatherable";
       if (!ot.gatherReq().empty())
         text += " (requires " + _client.gameData.tagName(ot.gatherReq()) + ")";
@@ -1094,18 +1094,12 @@ void ClientObject::createRegularTooltip() const {
     }
 
     if (ot.canDeconstruct()) {
-      if (!hasGapBeenDrawnForGeneralContent) {
-        hasGapBeenDrawnForGeneralContent = true;
-        tooltip.addGap();
-      }
+      includeOneGapBeforeAllGeneralContent();
       tooltip.addLine("Can pick up as item");
     }
 
     if (isContainer) {
-      if (!hasGapBeenDrawnForGeneralContent) {
-        hasGapBeenDrawnForGeneralContent = true;
-        tooltip.addGap();
-      }
+      includeOneGapBeforeAllGeneralContent();
       tooltip.addLine("Container: " + toString(ot.containerSlots()) + " slots");
       if (!objectType()->onlyAllowedItemInContainer.empty()) {
         tooltip.addLine("Restricted to storing only:");
@@ -1117,10 +1111,7 @@ void ClientObject::createRegularTooltip() const {
   }
 
   if (ot.merchantSlots() > 0) {
-    if (!hasGapBeenDrawnForGeneralContent) {
-      hasGapBeenDrawnForGeneralContent = true;
-      tooltip.addGap();
-    }
+    includeOneGapBeforeAllGeneralContent();
     tooltip.addLine("Merchant: " + toString(ot.merchantSlots()) + " slots");
     tooltip.addMerchantSlots(_merchantSlots);
   }
