@@ -37,7 +37,7 @@
 <item id="tannin"       name="Tannin"         sounds="ceramic"   constructs="tannin" />
 <item id="woodenStatue" name="Wooden Statue"  sounds="wood"      constructs="woodenStatue" />
 <item id="tinStatue"    name="Tin Statue"     sounds="metalBar"  constructs="tinStatue" />
-<item id="lumber"       name="Lumber"         sounds="wood"                                  stackSize="10" />
+<item id="lumber"       name="Lumber"         sounds="wood"      constructs="lumberPile"     stackSize="10" />
 
 <item id="figSeeds"     name="Fig Seeds"      sounds="seeds"     constructs="figTree0"       stackSize="10"/>
 <item id="flaxSeeds"    name="Flax Seeds"     sounds="seeds"     constructs="flaxCrop0"      stackSize="10"/>

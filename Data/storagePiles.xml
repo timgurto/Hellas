@@ -668,4 +668,128 @@
     <canBeRepaired cost="brick" />
 </objectType>
 
+<objectType id="lumberPile" name="Lumber Pile" healthCategory="lumberWeak"
+    xDrawOffset="-41" yDrawOffset="-51" >
+    <collisionRect x="-40" y="-20" w="80" h="40" />
+    <!-- 10x10 = 100 items -->
+    <container
+        slots="10"
+        restrictedToItem="lumber"
+        spawnsWithItem="lumber"
+        disappearsWhenEmpty="1" > 
+        <drawPerItem quantityShownToEnemies="1" >
+            <entry image="lumber1" x="-40" y="-23" />
+            <entry image="lumber3" x="-32" y="-23" />
+            <entry image="lumber2" x="-24" y="-23" />
+            <entry image="lumber1" x="-16" y="-23" />
+            <entry image="lumber2" x="-8"  y="-23" />
+            <entry image="lumber1" x="0"   y="-23" />
+            <entry image="lumber4" x="8"   y="-23" />
+            <entry image="lumber3" x="16"  y="-23" />
+            <entry image="lumber4" x="24"  y="-23" />
+            <entry image="lumber2" x="32"  y="-23" />
+            
+            <entry image="lumber1" x="-40" y="-26" />
+            <entry image="lumber4" x="-32" y="-26" />
+            <entry image="lumber3" x="-24" y="-26" />
+            <entry image="lumber4" x="-16" y="-26" />
+            <entry image="lumber1" x="-8"  y="-26" />
+            <entry image="lumber3" x="0"   y="-26" />
+            <entry image="lumber2" x="8"   y="-26" />
+            <entry image="lumber1" x="16"  y="-26" />
+            <entry image="lumber2" x="24"  y="-26" />
+            <entry image="lumber3" x="32"  y="-26" />
+            
+            <entry image="lumber3" x="-40" y="-29" />
+            <entry image="lumber2" x="-32" y="-29" />
+            <entry image="lumber2" x="-24" y="-29" />
+            <entry image="lumber4" x="-16" y="-29" />
+            <entry image="lumber1" x="-8"  y="-29" />
+            <entry image="lumber3" x="0"   y="-29" />
+            <entry image="lumber4" x="8"   y="-29" />
+            <entry image="lumber1" x="16"  y="-29" />
+            <entry image="lumber4" x="24"  y="-29" />
+            <entry image="lumber1" x="32"  y="-29" />
+            
+            <entry image="lumber1" x="-40" y="-32" />
+            <entry image="lumber2" x="-32" y="-32" />
+            <entry image="lumber3" x="-24" y="-32" />
+            <entry image="lumber2" x="-16" y="-32" />
+            <entry image="lumber3" x="-8"  y="-32" />
+            <entry image="lumber4" x="0"   y="-32" />
+            <entry image="lumber3" x="8"   y="-32" />
+            <entry image="lumber4" x="16"  y="-32" />
+            <entry image="lumber2" x="24"  y="-32" />
+            <entry image="lumber1" x="32"  y="-32" />
+            
+            <entry image="lumber3" x="-40" y="-35" />
+            <entry image="lumber1" x="-32" y="-35" />
+            <entry image="lumber2" x="-24" y="-35" />
+            <entry image="lumber4" x="-16" y="-35" />
+            <entry image="lumber1" x="-8"  y="-35" />
+            <entry image="lumber2" x="0"   y="-35" />
+            <entry image="lumber4" x="8"   y="-35" />
+            <entry image="lumber2" x="16"  y="-35" />
+            <entry image="lumber3" x="24"  y="-35" />
+            <entry image="lumber4" x="32"  y="-35" />
+            
+            <entry image="lumber3" x="-40" y="-38" />
+            <entry image="lumber4" x="-32" y="-38" />
+            <entry image="lumber3" x="-24" y="-38" />
+            <entry image="lumber4" x="-16" y="-38" />
+            <entry image="lumber3" x="-8"  y="-38" />
+            <entry image="lumber1" x="0"   y="-38" />
+            <entry image="lumber2" x="8"   y="-38" />
+            <entry image="lumber1" x="16"  y="-38" />
+            <entry image="lumber4" x="24"  y="-38" />
+            <entry image="lumber2" x="32"  y="-38" />
+            
+            <entry image="lumber2" x="-40" y="-41" />
+            <entry image="lumber1" x="-32" y="-41" />
+            <entry image="lumber2" x="-24" y="-41" />
+            <entry image="lumber4" x="-16" y="-41" />
+            <entry image="lumber3" x="-8"  y="-41" />
+            <entry image="lumber1" x="0"   y="-41" />
+            <entry image="lumber2" x="8"   y="-41" />
+            <entry image="lumber1" x="16"  y="-41" />
+            <entry image="lumber4" x="24"  y="-41" />
+            <entry image="lumber3" x="32"  y="-41" />
+            
+            <entry image="lumber4" x="-40" y="-44" />
+            <entry image="lumber3" x="-32" y="-44" />
+            <entry image="lumber1" x="-24" y="-44" />
+            <entry image="lumber3" x="-16" y="-44" />
+            <entry image="lumber1" x="-8"  y="-44" />
+            <entry image="lumber4" x="0"   y="-44" />
+            <entry image="lumber1" x="8"   y="-44" />
+            <entry image="lumber2" x="16"  y="-44" />
+            <entry image="lumber3" x="24"  y="-44" />
+            <entry image="lumber2" x="32"  y="-44" />
+            
+            <entry image="lumber1" x="-40" y="-47" />
+            <entry image="lumber4" x="-32" y="-47" />
+            <entry image="lumber2" x="-24" y="-47" />
+            <entry image="lumber3" x="-16" y="-47" />
+            <entry image="lumber1" x="-8"  y="-47" />
+            <entry image="lumber3" x="0"   y="-47" />
+            <entry image="lumber2" x="8"   y="-47" />
+            <entry image="lumber3" x="16"  y="-47" />
+            <entry image="lumber4" x="24"  y="-47" />
+            <entry image="lumber2" x="32"  y="-47" />
+            
+            <entry image="lumber2" x="-40" y="-50" />
+            <entry image="lumber1" x="-32" y="-50" />
+            <entry image="lumber4" x="-24" y="-50" />
+            <entry image="lumber3" x="-16" y="-50" />
+            <entry image="lumber4" x="-8"  y="-50" />
+            <entry image="lumber2" x="0"   y="-50" />
+            <entry image="lumber1" x="8"   y="-50" />
+            <entry image="lumber3" x="16"  y="-50" />
+            <entry image="lumber4" x="24"  y="-50" />
+            <entry image="lumber3" x="32"  y="-50" />
+        </drawPerItem>
+    </container>
+    <canBeRepaired cost="lumber" />
+</objectType>
+
 </root>
