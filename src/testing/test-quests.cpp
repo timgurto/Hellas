@@ -2290,3 +2290,40 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Elite quests", "[quest][loading]") {
     }
   }
 }
+
+TEST_CASE("Nonexistent quests don't get loaded", "[quests][loading]") {
+  // Given a server with two quests
+  {
+    const auto data = R"(
+    <objectType id="questgiver" />
+    <quest id="quest1" startsAt="questgiver" endsAt="questgiver" />
+    <quest id="quest2" startsAt="questgiver" endsAt="questgiver" />
+  )";
+    auto server = TestServer::WithDataString(data);
+    const auto &quest1 = server.findQuest("quest1");
+    const auto &quest2 = server.findQuest("quest2");
+
+    // And given Alice has completed one quest and started the other
+    auto client = TestClient::WithUsernameAndDataString("Alice", data);
+    server.waitForUsers(1);
+    auto &user = server.getFirstUser();
+
+    user.startQuest(quest1);
+    user.startQuest(quest2);
+    user.completeQuest("quest1");
+
+    // And given that Alice has logged off
+  }
+
+  // When a server starts with no quests
+  auto server = TestServer::KeepingOldData();
+
+  // And when Alice logs in
+  auto client = TestClient::WithUsername("Alice");
+  server.waitForUsers(1);
+  auto &user = server.getFirstUser();
+
+  // Then she has no completed or in-progress quests
+  CHECK(user.numQuests() == 0);
+  CHECK_FALSE(user.hasCompletedQuest("quest1"));
+}

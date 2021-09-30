@@ -244,11 +244,13 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
   for (auto questElem : xr.getChildren("completed", elem)) {
     auto questID = ""s;
     if (!xr.findAttr(questElem, "quest", questID)) continue;
+    if (!findQuest(questID)) continue;
     user.markQuestAsCompleted(questID);
   }
   for (auto questElem : xr.getChildren("inProgress", elem)) {
     auto questID = ""s;
     if (!xr.findAttr(questElem, "quest", questID)) continue;
+    if (!findQuest(questID)) continue;
     auto timeRemaining = ms_t{0};  // Default: no time limit
     xr.findAttr(questElem, "timeRemaining", timeRemaining);
     user.markQuestAsStarted(questID, timeRemaining);
