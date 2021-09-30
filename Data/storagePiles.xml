@@ -1,6 +1,6 @@
 <root>
 
-<objectType id="logPile" name="Log Pile" healthCategory="logWeak"
+<objectType id="logPile" name="Log Pile" healthCategory="log"
     xDrawOffset="-41" yDrawOffset="-56" >
     <collisionRect x="-41" y="-24" w="82" h="48" />
     <customMouseOverRect x="-41" y="-32" w="82" h="56" />
@@ -70,7 +70,7 @@
     <canBeRepaired cost="log" />
 </objectType>
 
-<objectType id="charcoalPile" name="Charcoal Pile" healthCategory="logWeak"
+<objectType id="charcoalPile" name="Charcoal Pile" healthCategory="log"
     xDrawOffset="-41" yDrawOffset="-56" imageFile="logPile" >
     <collisionRect x="-41" y="-24" w="82" h="48" />
     <customMouseOverRect x="-41" y="-32" w="82" h="56" />
@@ -190,7 +190,7 @@
     <canBeRepaired cost="charcoal" />
 </objectType>
 
-<objectType id="tinPile" name="Tin-Ingot Pile" healthCategory="lumberWeak"
+<objectType id="tinPile" name="Tin-Ingot Pile" healthCategory="lumber"
     xDrawOffset="-22" yDrawOffset="-36" imageFile="ingotPile" >
     <collisionRect x="-21" y="-15" w="42" h="31" />
     <customMouseOverRect x="-22" y="-26" w="44" h="41" />
@@ -310,7 +310,7 @@
     <canBeRepaired cost="tinBar" />
 </objectType>
 
-<objectType id="copperPile" name="Copper-Ingot Pile" healthCategory="brickWeak"
+<objectType id="copperPile" name="Copper-Ingot Pile" healthCategory="brick"
     xDrawOffset="-22" yDrawOffset="-36" imageFile="ingotPile" >
     <collisionRect x="-21" y="-15" w="42" h="31" />
     <customMouseOverRect x="-22" y="-26" w="44" h="41" />
@@ -430,7 +430,7 @@
     <canBeRepaired cost="copperBar" />
 </objectType>
 
-<objectType id="silverPile" name="Silver-Ingot Pile" healthCategory="brickWeak"
+<objectType id="silverPile" name="Silver-Ingot Pile" healthCategory="brick"
     xDrawOffset="-22" yDrawOffset="-36" imageFile="ingotPile" >
     <collisionRect x="-21" y="-15" w="42" h="31" />
     <customMouseOverRect x="-22" y="-26" w="44" h="41" />
@@ -550,7 +550,7 @@
     <canBeRepaired cost="silverBar" />
 </objectType>
 
-<objectType id="brickPile" name="Brick Pile" healthCategory="brickWeak"
+<objectType id="brickPile" name="Brick Pile" healthCategory="brick"
     xDrawOffset="-26" yDrawOffset="-30" >
     <collisionRect x="-25" y="-10" w="50" h="20" />
     <!-- 10x10 = 100 items -->
@@ -668,7 +668,7 @@
     <canBeRepaired cost="brick" />
 </objectType>
 
-<objectType id="lumberPile" name="Lumber Pile" healthCategory="lumberWeak"
+<objectType id="lumberPile" name="Lumber Pile" healthCategory="lumber"
     xDrawOffset="-41" yDrawOffset="-51" >
     <collisionRect x="-40" y="-20" w="80" h="40" />
     <!-- 10x10 = 100 items -->
