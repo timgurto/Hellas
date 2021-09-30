@@ -122,6 +122,7 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
 
     auto health = item->maxHealth();
     xr.findAttr(slotElem, "health", health);
+    health = min(health, item->maxHealth());
 
     user.inventory(slot) = ServerItem::Instance::LoadFromFile(
         item, ServerItem::Instance::ReportingInfo::UserInventory(&user, slot),
@@ -149,6 +150,7 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
 
     auto health = item->maxHealth();
     xr.findAttr(slotElem, "health", health);
+    health = min(health, item->maxHealth());
 
     user.gear(slot) = ServerItem::Instance::LoadFromFile(
         item, ServerItem::Instance::ReportingInfo::UserGear(&user, slot),
@@ -549,6 +551,7 @@ void Server::loadEntities(XmlReader &xr,
 
       auto health = item.maxHealth();
       xr.findAttr(inventory, "health", health);
+      health = min(health, item.maxHealth());
 
       auto &invSlot = obj.container().at(n);
       invSlot = ServerItem::Instance::LoadFromFile(

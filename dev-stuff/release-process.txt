@@ -19,5 +19,6 @@ Release process:
 11. Run "Publish new version/publish-client-and-copy-local.bat"
 12. Play Production as a quick smoke test
 13. Make sure player-made objects have persisted.
-14. Check reported server version in login screen.
+14. Make sure rocks/sticks/etc. are spawning on the ground.
+15. Check reported server version in login screen.
 
