@@ -1049,20 +1049,20 @@ void ClientObject::createRegularTooltip() const {
   }
 
   // Stats
-  bool stats = false;
+  bool hasGapBeenDrawnForGeneralContent = false;
   tooltip.setColor(Color::TOOLTIP_BODY);
 
   if (addClassSpecificStuffToTooltip(tooltip)) {
-    if (!stats) {
-      stats = true;
+    if (!hasGapBeenDrawnForGeneralContent) {
+      hasGapBeenDrawnForGeneralContent = true;
       tooltip.addGap();
     }
   }
 
   if (userHasAccess()) {
     if (ot.canGather(_client.gameData.quests)) {
-      if (!stats) {
-        stats = true;
+      if (!hasGapBeenDrawnForGeneralContent) {
+        hasGapBeenDrawnForGeneralContent = true;
         tooltip.addGap();
       }
       std::string text = "Gatherable";
@@ -1094,16 +1094,16 @@ void ClientObject::createRegularTooltip() const {
     }
 
     if (ot.canDeconstruct()) {
-      if (!stats) {
-        stats = true;
+      if (!hasGapBeenDrawnForGeneralContent) {
+        hasGapBeenDrawnForGeneralContent = true;
         tooltip.addGap();
       }
       tooltip.addLine("Can pick up as item");
     }
 
     if (isContainer) {
-      if (!stats) {
-        stats = true;
+      if (!hasGapBeenDrawnForGeneralContent) {
+        hasGapBeenDrawnForGeneralContent = true;
         tooltip.addGap();
       }
       tooltip.addLine("Container: " + toString(ot.containerSlots()) + " slots");
@@ -1117,8 +1117,8 @@ void ClientObject::createRegularTooltip() const {
   }
 
   if (ot.merchantSlots() > 0) {
-    if (!stats) {
-      stats = true;
+    if (!hasGapBeenDrawnForGeneralContent) {
+      hasGapBeenDrawnForGeneralContent = true;
       tooltip.addGap();
     }
     tooltip.addLine("Merchant: " + toString(ot.merchantSlots()) + " slots");
