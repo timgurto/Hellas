@@ -154,7 +154,7 @@ void Tooltip::addMerchantSlots(const std::vector<ClientMerchantSlot> &slots) {
 }
 
 void Tooltip::addItem(const ClientItem &item) {
-  auto label = Texture{font, item.name(), Color::TOOLTIP_BODY};
+  auto label = Texture{font, item.name(), item.nameColor()};
 
   auto GAP = 1_px;
   auto texture = Texture{Client::ICON_SIZE + 3 * GAP + label.width(),
