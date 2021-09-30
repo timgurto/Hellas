@@ -1108,7 +1108,7 @@ void ClientObject::createRegularTooltip() const {
       }
       tooltip.addLine("Container: " + toString(ot.containerSlots()) + " slots");
       if (!objectType()->onlyAllowedItemInContainer.empty()) {
-        tooltip.addLine("Restricted: can store only");
+        tooltip.addLine("Restricted to storing only:");
         tooltip.addItem(
             *_client.findItem(objectType()->onlyAllowedItemInContainer));
       }
