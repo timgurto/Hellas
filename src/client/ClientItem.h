@@ -83,6 +83,8 @@ class ClientItem : public Item, public HasSounds {
 
   bool operator<(const ClientItem &rhs) const { return _name < rhs._name; }
 
+  const Client &client() const { return *_client; }
+
   const std::string &name() const { return _name; }
   std::string nameWithSuffix(std::string suffixID) const;
   const StatsMod &getSuffixStats(std::string suffixID) const;

@@ -71,9 +71,19 @@ void Tooltip::addItemGrid(const void *itemVector) {
     renderer.setDrawColor(Color::BLACK);
     renderer.fillRect({x, y, Client::ICON_SIZE, Client::ICON_SIZE});
 
-    // Icon
     auto item = slot.first.type();
-    if (item) item->icon().draw(x, y);
+
+    // Quality border
+    if (item) {
+      const auto qualityColour = item->nameColor();
+      if (qualityColour != Color::ITEM_QUALITY_COMMON) {
+        item->client().images.itemQualityMask.setColourMod(qualityColour);
+        item->client().images.itemQualityMask.draw(x + 1, y + 1);
+      }
+
+      // Icon
+      item->icon().draw(x, y);
+    }
 
     // Quantity
     auto qty = slot.second;
