@@ -31,11 +31,12 @@ void ServerItem::Instance::damageFromUse() {
 }
 
 void ServerItem::Instance::damageOnPlayerDeath() {
-  const auto DAMAGE_ON_DEATH = Hitpoints{5};
-  if (DAMAGE_ON_DEATH >= _health)
+  const auto DAMAGE_ON_DEATH_RATE = .05;  // 5%.
+  const auto rawDamage = DAMAGE_ON_DEATH_RATE * _type->maxHealth();
+  if (rawDamage >= _health)
     _health = 0;
   else
-    _health -= DAMAGE_ON_DEATH;
+    _health -= rawDamage;  // De-facto minimum of 1 damage due to int-=double.
 
   _reportingInfo.report();
 }

@@ -1226,3 +1226,45 @@ TEST_CASE_METHOD(ServerAndClientWithData,
     }
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Item damage on death scales with max item health",
+                 "[damage-on-use][death]") {
+  GIVEN("a user has a high-health hat and a medium-health weapon") {
+    useData(R"(
+      <item id="highLevelHat" gearSlot="head" ilvl="100" />
+      <item id="lowLevelWeapon" gearSlot="weapon" ilvl="50" />
+    )");
+    const auto *highLevelHat = &server->findItem("highLevelHat");
+    const auto *lowLevelWeapon = &server->findItem("lowLevelWeapon");
+    user->gear(Item::WEAPON) = {
+        lowLevelWeapon,
+        ServerItem::Instance::ReportingInfo::UserGear(user, Item::WEAPON), 1};
+    user->gear(Item::HEAD) = {
+        highLevelHat,
+        ServerItem::Instance::ReportingInfo::UserGear(user, Item::HEAD), 1};
+
+    WHEN("he dies") {
+      user->kill();
+
+      THEN("his weapon has taken less damage than his hat") {
+        WAIT_UNTIL(user->gear(Item::HEAD).health() < highLevelHat->maxHealth());
+
+        const auto hatFullHealth = highLevelHat->maxHealth(),
+                   weaponFullHealth = lowLevelWeapon->maxHealth(),
+                   hatHealth = user->gear(Item::HEAD).health(),
+                   weaponHealth = user->gear(Item::WEAPON).health();
+
+        const auto missingHatHealth = hatFullHealth - hatHealth,
+                   missingWeaponHealth = weaponFullHealth - weaponHealth;
+
+        INFO("Hat health: "s + toString(hatHealth) + "/"s +
+             toString(hatFullHealth));
+        INFO("Weapon health: "s + toString(weaponHealth) + "/"s +
+             toString(weaponFullHealth));
+
+        CHECK(missingHatHealth > missingWeaponHealth);
+      }
+    }
+  }
+}
