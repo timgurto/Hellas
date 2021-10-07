@@ -87,6 +87,7 @@
         <material id="linenThread" quantity="3" />
         <tool class="sewing" />
         <unlockedBy recipe="leather" />
+        <unlockedBy recipe="sheepLeather" />
         <unlockedBy recipe="smallPot" chance="0.05" />
         <unlockedBy gather="tin" chance="0.3" />
     </recipe>
@@ -222,6 +223,7 @@
         id="leatherScale" time="10000" quantity="6" >
         <material id="leather" />
         <unlockedBy recipe="leather" chance="0.05" />
+        <unlockedBy recipe="sheepLeather" chance="0.05" />
     </recipe>
     <recipe
         id="tinScale" time="10000" quantity="6" >
@@ -325,6 +327,7 @@
         id="sling" time="4000" >
         <material id="leather" />
         <unlockedBy recipe="leather" chance="0.1" />
+        <unlockedBy recipe="sheepLeather" chance="0.1" />
         <unlockedBy recipe="smoothRock" />
     </recipe>
     <recipe
@@ -452,6 +455,7 @@
         <material id="lumber" />
         <unlockedBy recipe="lumber" chance="0.1" />
         <unlockedBy recipe="leather" chance="0.1" />
+        <unlockedBy recipe="sheepLeather" chance="0.1" />
     </recipe>
     <recipe id="copperShield"
         sounds="anvil" time="4000" >
@@ -658,6 +662,7 @@
     <material id="linenThread" />
     <tool class="sewing" />
     <unlockedBy recipe="leather" chance="0.2" />
+    <unlockedBy recipe="sheepLeather" chance="0.2" />
 </recipe>
 
 <recipe
@@ -666,6 +671,7 @@
     <material id="linenThread" />
     <tool class="sewing" />
     <unlockedBy recipe="leather" chance="0.1" />
+    <unlockedBy recipe="sheepLeather" chance="0.1" />
 </recipe>
 
 <recipe
@@ -674,6 +680,7 @@
     <material id="linenThread" />
     <tool class="sewing" />
     <unlockedBy recipe="leather" chance="0.1" />
+    <unlockedBy recipe="sheepLeather" chance="0.1" />
 </recipe>
 
 <recipe
