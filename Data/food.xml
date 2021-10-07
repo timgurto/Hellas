@@ -50,6 +50,7 @@
     <tool class="cooking" />
     <unlockedBy construction="fire" chance="0.05" />
     <unlockedBy construction="oven" chance="0.05" />
+    <unlockedBy construction="kiln" chance="0.05" />
     <unlockedBy gather="fish" chance="0.2" />
 </recipe>
 
