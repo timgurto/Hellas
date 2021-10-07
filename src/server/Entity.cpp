@@ -101,7 +101,7 @@ void Entity::onSetType(bool shouldSkipConstruction) {
 CombatResult Entity::generateHitAgainst(const Entity &target, CombatType type,
                                         SpellSchool school, px_t range) const {
   auto levelDiff = target.level() - level();
-  auto modifierFromLevelDiff = levelDiff * .03;
+  auto modifierFromLevelDiff = levelDiff * .01;
   auto roll = randDouble();
   // Miss
   const auto BASE_MISS_CHANCE = 0.1;
