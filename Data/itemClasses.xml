@@ -5,6 +5,7 @@ If a recipe takes n copper bars,
 Then it gives n copper scraps on average.
 10 scraps -> 1 bar, 1 cloth, 1 bone, 1 crudey clay.
 
+Default mean is 1.
 By default, each SD is half of the mean.
 
 Where we generate the material directly (e.g., rocks), instead use mean=0 and SD=:
@@ -169,6 +170,9 @@ For the salvage recipes, use these unlocks:
 </itemClass>
 <itemClass id="linenJunk" >
     <canBeScrapped result="linenScrap" />
+</itemClass>
+<itemClass id="threadJunk" >
+    <canBeScrapped result="linenThread" mean="0" sd="0.39" />
 </itemClass>
 <itemClass id="linenBack" >
     <canBeRepaired cost="linenCloth" tool="sewing" />

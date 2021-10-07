@@ -95,7 +95,7 @@ Mark graveyard on map: not hardcoded
 </recipe>
     <item id="halloweenSkeletonMat" name="Wandering Bone" class="boneJunk" sounds="bone" iconFile="bone" stackSize="10" />
     <item id="halloweenGhostMat" name="Jiggling Ectoplasm" class="magicJunk" sounds="meat" iconFile="fat" stackSize="10" />
-    <item id="halloweenMummyMat" name="Shriveled Bandage" class="linenJunk" sounds="fabric" iconFile="linenCloth" stackSize="10" />
+    <item id="halloweenMummyMat" name="Shriveled Bandage" class="threadJunk" sounds="fabric" iconFile="linenCloth" stackSize="10" />
     
 <item id="pumpkinPotion" name="Potion of Disguise" stackSize="5" sounds="ceramic"
     returnsOnCast="smallPot" castsSpellOnUse="randomHalloweenCostume" />
