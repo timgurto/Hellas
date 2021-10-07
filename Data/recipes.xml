@@ -673,7 +673,7 @@
     <material id="leather" quantity="2" />
     <material id="linenThread" />
     <tool class="sewing" />
-    <unlockedBy recipe="leather" chance="0.2" />
+    <unlockedBy recipe="leather" chance="0.1" />
 </recipe>
 
 <recipe
