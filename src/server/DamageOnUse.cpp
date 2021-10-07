@@ -36,7 +36,8 @@ void ServerItem::Instance::damageOnPlayerDeath() {
   if (rawDamage >= _health)
     _health = 0;
   else
-    _health -= rawDamage;  // De-facto minimum of 1 damage due to int-=double.
+    // De-facto minimum of 1 damage due to int -= double
+    _health = static_cast<Hitpoints>(_health - rawDamage);
 
   _reportingInfo.report();
 }
