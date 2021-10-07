@@ -153,7 +153,7 @@ Mark graveyard on map: not hardcoded
     xDrawOffset="-15" yDrawOffset="-37" imageFile="mummy"
     level="10" maxHealth="55" attack="5" attackTime="1500" >
     <collisionRect x="-7" y="-3" w="15" h="6" />
-    <loot id="linenThread" chance="0.2" />
+    <loot id="linenThread" chance="0.1" />
     <loot id="linenCloth" chance="0.01" />
     <loot id="halloweenMummyMat" chance="0.5" />
     <lootTable id="10mob" />
