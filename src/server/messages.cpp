@@ -579,6 +579,61 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
   if (to.object) to.object->container().onItemRemoved();
 }
 
+HANDLE_MESSAGE(CL_AUTO_CONSTRUCT) {
+  auto serial = Serial{};
+  READ_ARGS(serial);
+
+  auto *obj = _entities.find<Object>(serial);
+  if (!obj) return;
+
+  auto materialsToLookFor = ItemSet{};
+  for (const auto &pair : obj->remainingMaterials()) {
+    const auto *material = dynamic_cast<const ServerItem *>(pair.first);
+    auto userWillHaveSpace =
+        !material->returnsOnConstruction() || material->stackSize() == 1;
+
+    if (userWillHaveSpace) {
+      materialsToLookFor.add(pair.first, pair.second);
+      continue;
+    }
+
+    // Take a closer look.  Will the user have space for the returned item?
+    auto materialToBeRemoved = ItemSet{};
+    materialToBeRemoved.add(pair.first, pair.second);
+    auto qtyToBeReturned = min<int>(
+        pair.second, user.countItems(material->returnsOnConstruction()));
+    auto toBeReturned = ItemSet{};
+    toBeReturned.add(material->returnsOnConstruction(), qtyToBeReturned);
+    if (user.hasRoomToRemoveThenAdd(materialToBeRemoved, toBeReturned))
+      materialsToLookFor.add(pair.first, pair.second);
+  }
+
+  auto remainder = user.removeItems(materialsToLookFor);
+  auto materialsAdded = materialsToLookFor - remainder;
+  obj->remainingMaterials().remove(materialsAdded);
+
+  // Return items to user
+  for (auto &pair : materialsAdded) {
+    const auto *material = dynamic_cast<const ServerItem *>(pair.first);
+    auto itemToReturn = material->returnsOnConstruction();
+    if (!itemToReturn) continue;
+    user.giveItem(itemToReturn, pair.second);
+  }
+
+  for (const User *nearbyUser : findUsersInArea(obj->location()))
+    sendConstructionMaterialsMessage(*nearbyUser, *obj);
+
+  if (!obj->isBeingBuilt()) {
+    // Trigger completing user's unlocks
+    if (user.knowsConstruction(obj->type()->id()))
+      ProgressLock::triggerUnlocks(user, ProgressLock::CONSTRUCTION,
+                                   obj->type());
+
+    // Update quest progress for completing user
+    user.addQuestProgress(Quest::Objective::CONSTRUCT, obj->type()->id());
+  }
+}
+
 HANDLE_MESSAGE(CL_TAKE_ITEM) {
   auto serial = Serial{};
   auto slot = size_t{};
@@ -1324,6 +1379,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_DROP)
       SEND_MESSAGE_TO_HANDLER(CL_PICK_UP_DROPPED_ITEM)
       SEND_MESSAGE_TO_HANDLER(CL_SWAP_ITEMS)
+      SEND_MESSAGE_TO_HANDLER(CL_AUTO_CONSTRUCT)
       SEND_MESSAGE_TO_HANDLER(CL_TAKE_ITEM)
       SEND_MESSAGE_TO_HANDLER(CL_CEDE)
       SEND_MESSAGE_TO_HANDLER(CL_GIVE_OBJECT)
@@ -1475,15 +1531,6 @@ void Server::handleBufferedMessages(const Socket &client,
 
         ent->kill();
         ent->setShorterCorpseTimerForFriendlyKill();
-        break;
-      }
-
-      case CL_AUTO_CONSTRUCT: {
-        Serial serial;
-        iss >> serial >> del;
-        if (del != MSG_END) return;
-
-        handle_CL_AUTO_CONSTRUCT(*user, serial);
         break;
       }
 
@@ -2069,58 +2116,6 @@ void Server::handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &questID,
     RETURN_WITH(WARNING_INVENTORY_FULL)
 
   user.startQuest(*quest);
-}
-
-void Server::handle_CL_AUTO_CONSTRUCT(User &user, Serial serial) {
-  auto *obj = _entities.find<Object>(serial);
-  if (!obj) return;
-
-  auto materialsToLookFor = ItemSet{};
-  for (const auto &pair : obj->remainingMaterials()) {
-    const auto *material = dynamic_cast<const ServerItem *>(pair.first);
-    auto userWillHaveSpace =
-        !material->returnsOnConstruction() || material->stackSize() == 1;
-
-    if (userWillHaveSpace) {
-      materialsToLookFor.add(pair.first, pair.second);
-      continue;
-    }
-
-    // Take a closer look.  Will the user have space for the returned item?
-    auto materialToBeRemoved = ItemSet{};
-    materialToBeRemoved.add(pair.first, pair.second);
-    auto qtyToBeReturned = min<int>(
-        pair.second, user.countItems(material->returnsOnConstruction()));
-    auto toBeReturned = ItemSet{};
-    toBeReturned.add(material->returnsOnConstruction(), qtyToBeReturned);
-    if (user.hasRoomToRemoveThenAdd(materialToBeRemoved, toBeReturned))
-      materialsToLookFor.add(pair.first, pair.second);
-  }
-
-  auto remainder = user.removeItems(materialsToLookFor);
-  auto materialsAdded = materialsToLookFor - remainder;
-  obj->remainingMaterials().remove(materialsAdded);
-
-  // Return items to user
-  for (auto &pair : materialsAdded) {
-    const auto *material = dynamic_cast<const ServerItem *>(pair.first);
-    auto itemToReturn = material->returnsOnConstruction();
-    if (!itemToReturn) continue;
-    user.giveItem(itemToReturn, pair.second);
-  }
-
-  for (const User *nearbyUser : findUsersInArea(obj->location()))
-    sendConstructionMaterialsMessage(*nearbyUser, *obj);
-
-  if (!obj->isBeingBuilt()) {
-    // Trigger completing user's unlocks
-    if (user.knowsConstruction(obj->type()->id()))
-      ProgressLock::triggerUnlocks(user, ProgressLock::CONSTRUCTION,
-                                   obj->type());
-
-    // Update quest progress for completing user
-    user.addQuestProgress(Quest::Objective::CONSTRUCT, obj->type()->id());
-  }
 }
 
 void Server::broadcast(const Message &msg) {
