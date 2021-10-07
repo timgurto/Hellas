@@ -86,7 +86,7 @@
         <material id="leather" quantity="3" />
         <material id="linenThread" quantity="3" />
         <tool class="sewing" />
-        <unlockedBy recipe="leather" chance="0.1" />
+        <unlockedBy recipe="leather" />
         <unlockedBy recipe="smallPot" chance="0.05" />
         <unlockedBy gather="tin" chance="0.3" />
     </recipe>
