@@ -334,7 +334,7 @@ TEST_CASE("A construction material can 'return' an item",
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData,
-                 "Stackable items that build and return",
+                 "Return-on-construction with full inventory",
                  "[construction][inventory]") {
   GIVEN("stackable ice cubes build an igloo and return an ice-cube tray") {
     useData(R"(
@@ -354,9 +354,18 @@ TEST_CASE_METHOD(ServerAndClientWithData,
         WAIT_UNTIL(server->entities().size() == 1);
         const Object &igloo = server->getFirstObject();
 
-        AND_WHEN("he tries to add ice") {
+        AND_WHEN("he tries to add ice (swap)") {
           client->sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0,
                                                       igloo.serial(), 0));
+
+          THEN("the igloo is still unfinished") {
+            REPEAT_FOR_MS(100);
+            CHECK(igloo.isBeingBuilt());
+          }
+        }
+
+        AND_WHEN("he tries to add ice (auto-construct)") {
+          client->sendMessage(CL_AUTO_CONSTRUCT, makeArgs(igloo.serial()));
 
           THEN("the igloo is still unfinished") {
             REPEAT_FOR_MS(100);

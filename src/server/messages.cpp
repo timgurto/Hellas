@@ -600,8 +600,7 @@ HANDLE_MESSAGE(CL_AUTO_CONSTRUCT) {
     // Take a closer look.  Will the user have space for the returned item?
     auto materialToBeRemoved = ItemSet{};
     materialToBeRemoved.add(pair.first, pair.second);
-    auto qtyToBeReturned = min<int>(
-        pair.second, user.countItems(material->returnsOnConstruction()));
+    auto qtyToBeReturned = pair.second;
     auto toBeReturned = ItemSet{};
     toBeReturned.add(material->returnsOnConstruction(), qtyToBeReturned);
     if (user.hasRoomToRemoveThenAdd(materialToBeRemoved, toBeReturned))
