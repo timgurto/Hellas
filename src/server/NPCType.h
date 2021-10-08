@@ -29,9 +29,8 @@ class NPCType : public ObjectType {
   struct KnownSpell {
     std::string id;
     mutable const Spell *spell;
-    bool operator<(const KnownSpell &rhs) const { return id < rhs.id; }
   };
-  using KnownSpells = std::set<KnownSpell>;
+  using KnownSpells = std::vector<KnownSpell>;
   KnownSpells _knownSpells;
 
   bool _canBeTamed{false};
@@ -60,7 +59,9 @@ class NPCType : public ObjectType {
   bool attacksNearby() const;
   void school(SpellSchool school) { _school = school; }
   SpellSchool school() const { return _school; }
-  void knowsSpell(const Spell::ID &id) { _knownSpells.insert({id, nullptr}); }
+  void knowsSpell(const Spell::ID &id) {
+    _knownSpells.push_back({id, nullptr});
+  }
   const KnownSpells &knownSpells() const { return _knownSpells; }
   px_t maxDistanceFromHome() const { return _maxDistanceFromHome; }
   void maxDistanceFromHome(px_t dist) { _maxDistanceFromHome = dist; }
