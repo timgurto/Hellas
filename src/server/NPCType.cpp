@@ -20,14 +20,8 @@ void NPCType::initialise() const {
 
   // Fetch known spells
   const auto &server = Server::instance();
-  for (const auto spellID : _knownSpellIDs) {
-    const auto *spell = server.findSpell(spellID);
-    if (spell)
-      _knownSpells.insert(spell);
-    else
-      Server::debug()("Skipping nonexistent NPC spell "s + spellID,
-                      Color::CHAT_ERROR);
-  }
+  for (auto &knownSpell : _knownSpells)
+    knownSpell.spell = server.findSpell(knownSpell.id);
 }
 
 void NPCType::applyTemplate(const std::string &templateID) {

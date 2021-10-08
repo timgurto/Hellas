@@ -250,10 +250,10 @@ void AI::act() {
   }
 
   // Cast any spells it knows
-  for (const auto *spell : _owner.npcType()->knownSpells()) {
-    if (!spell) continue;
-    if (_owner.isSpellCoolingDown(spell->id())) continue;
-    _owner.castSpell(*spell);
+  for (const auto &knownSpell : _owner.npcType()->knownSpells()) {
+    if (!knownSpell.spell) continue;
+    if (_owner.isSpellCoolingDown(knownSpell.id)) continue;
+    _owner.castSpell(*knownSpell.spell);
   }
 }
 

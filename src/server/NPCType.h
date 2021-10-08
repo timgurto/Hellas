@@ -22,11 +22,17 @@ class NPCType : public ObjectType {
   bool _isRanged{false};
   SpellSchool _school{SpellSchool::PHYSICAL};
   Aggression _aggression{AGGRESSIVE};
-  std::set<Spell::ID> _knownSpellIDs;
-  mutable std::set<const Spell *> _knownSpells{nullptr};
   static const px_t DEFAULT_MAX_DISTANCE_FROM_HOME{500};
   px_t _maxDistanceFromHome{DEFAULT_MAX_DISTANCE_FROM_HOME};
   bool _pursuesEndlessly{false};  // Expected to be used only by tests.
+
+  struct KnownSpell {
+    std::string id;
+    mutable const Spell *spell;
+    bool operator<(const KnownSpell &rhs) const { return id < rhs.id; }
+  };
+  using KnownSpells = std::set<KnownSpell>;
+  KnownSpells _knownSpells;
 
   bool _canBeTamed{false};
   std::string _tamingRequiresItem;
@@ -54,8 +60,8 @@ class NPCType : public ObjectType {
   bool attacksNearby() const;
   void school(SpellSchool school) { _school = school; }
   SpellSchool school() const { return _school; }
-  void knowsSpell(const Spell::ID &spell) { _knownSpellIDs.insert(spell); }
-  const std::set<const Spell *> &knownSpells() const { return _knownSpells; }
+  void knowsSpell(const Spell::ID &id) { _knownSpells.insert({id, nullptr}); }
+  const KnownSpells &knownSpells() const { return _knownSpells; }
   px_t maxDistanceFromHome() const { return _maxDistanceFromHome; }
   void maxDistanceFromHome(px_t dist) { _maxDistanceFromHome = dist; }
   void canBeTamed(bool b) { _canBeTamed = b; }
