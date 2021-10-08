@@ -314,7 +314,7 @@
     </spell>
     <spell id="eatWhiteMushroom" name="Eat white mushroom" customDescription="Eat mushroom">
         <targets self="1" />
-        <function name="buff" s1="mushroomDebuff" />
+        <function name="debuff" s1="mushroomDebuff" />
     </spell>
     <buff id="mushroomDebuff" name="Ill" icon="skullBlue" duration="30" school="earth"
         description="Reduced health and energy.">
