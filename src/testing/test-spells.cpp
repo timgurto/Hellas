@@ -383,6 +383,36 @@ TEST_CASE_METHOD(ServerAndClientWithData, "NPC spells", "[spells][ai]") {
   }
 }
 
+TEST_CASE("NPCs can know multiple spells", "[spells][ai]") {
+  GIVEN("a wizard with a self-damage spell and a teleport spell") {
+    auto server = TestServer::WithDataString(R"(
+      <spell id="hurtSelf" >
+        <targets self="1" />
+        <function name="doDirectDamage" i1="5" />
+      </spell>
+      <spell id="teleport" >
+        <targets self="1" />
+        <function name="randomTeleport" i1="8" />
+      </spell>
+      <npcType id="wizard">
+        <spell id="hurtSelf" allowedOutOfCombat="1" />
+        <spell id="teleport" allowedOutOfCombat="1" />
+      </npcType>
+    )");
+    const auto &wizard = server.addNPC("wizard", {10, 10});
+
+    WHEN("enough time elapses for him to cast his spells once") {
+      REPEAT_FOR_MS(100);
+
+      THEN("he has moved") {
+        CHECK(wizard.location() != MapPoint{10, 10});
+
+        AND_THEN("he has taken damage") { CHECK(wizard.isMissingHealth()); }
+      }
+    }
+  }
+}
+
 TEST_CASE_METHOD(ServerAndClientWithData,
                  "NPCs cast AoE spells even with no target selected",
                  "[spells][ai]") {

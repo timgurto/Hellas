@@ -32,8 +32,8 @@ void AI::transitionIfNecessary() {
     case IDLE:
       // There's a target to attack
       {
-        auto canAttack =
-            _owner.combatDamage() > 0 || _owner.npcType()->knownSpell();
+        auto canAttack = _owner.combatDamage() > 0 ||
+                         _owner.npcType()->knownSpells().size() >= 1;
         if (canAttack && _owner.target()) {
           if (distToTarget > ATTACK_RANGE) {
             state = CHASE;
@@ -250,9 +250,11 @@ void AI::act() {
   }
 
   // Cast any spells it knows
-  auto knownSpell = _owner.npcType()->knownSpell();
-  if (knownSpell && !_owner.isSpellCoolingDown(knownSpell->id()))
-    _owner.castSpell(*knownSpell);
+  for (const auto *spell : _owner.npcType()->knownSpells()) {
+    if (!spell) continue;
+    if (_owner.isSpellCoolingDown(spell->id())) continue;
+    _owner.castSpell(*spell);
+  }
 }
 
 void AI::giveOrder(PetOrder newOrder) {

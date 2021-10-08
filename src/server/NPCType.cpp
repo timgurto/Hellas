@@ -19,11 +19,14 @@ void NPCType::initialise() const {
   ObjectType::initialise();
 
   // Fetch known spells
-  if (_knownSpellID.empty()) return;
-  _knownSpell = Server::instance().findSpell(_knownSpellID);
-  if (!_knownSpell) {
-    Server::debug()("Skipping nonexistent NPC spell " + _knownSpellID,
-                    Color::CHAT_ERROR);
+  const auto &server = Server::instance();
+  for (const auto spellID : _knownSpellIDs) {
+    const auto *spell = server.findSpell(spellID);
+    if (spell)
+      _knownSpells.insert(spell);
+    else
+      Server::debug()("Skipping nonexistent NPC spell "s + spellID,
+                      Color::CHAT_ERROR);
   }
 }
 

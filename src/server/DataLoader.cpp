@@ -595,8 +595,8 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
     else if (xr.findAttr(elem, "boss", n) && n != 0)
       nt->rank(EntityType::BOSS);
 
-    auto elemSpell = xr.findChild("spell", elem);
-    if (elemSpell) {
+    // Spells
+    for (auto elemSpell : xr.getChildren("spell", elem)) {
       auto spellID = ""s;
       if (xr.findAttr(elemSpell, "id", spellID)) nt->knowsSpell(spellID);
     }
