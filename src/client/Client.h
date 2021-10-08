@@ -560,6 +560,7 @@ class Client : public TextEntryManager {
  public:
   void drawFootprint(const MapRect &rect, Color color,
                      Uint8 alpha = 0xff) const;
+  void drawSelectionCircle() const;
 
  private:
   MapPoint _offset;  // An offset for drawing, based on the character's location

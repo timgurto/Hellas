@@ -438,6 +438,14 @@ void Client::cullObjects() {
 
 TTF_Font *Client::defaultFont() const { return _defaultFont; }
 
+void Client::drawSelectionCircle() const {
+  const auto &base =
+      _target.isAggressive() ? images.baseAggressive : images.basePassive;
+  const auto BASE_OFFSET = ScreenPoint{-15, -10};
+  base.draw(toScreenPoint(_target.entity()->location()) + offset() +
+            BASE_OFFSET);
+}
+
 void Client::updateOffset() {
   _offset = {SCREEN_X / 2 - _character.location().x,
              SCREEN_Y / 2 - _character.location().y};

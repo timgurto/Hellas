@@ -71,17 +71,17 @@ void Client::draw() const {
 
   visibleSprites.drawConstructionSiteFootprints();
 
+  // We may have a large flat entity, with combat happening on top, in which
+  // case we don't want selection circles to be invisible.
+  // In normal cases, flat entities like corpses should have a visible selection
+  // circle.
+  // No perfect answer, unless we add a special super-flat type that is never
+  // intended to be selected, and is drawn before flat entities.
+
+  if (_target.exists() && _target.entity()->isFlat()) drawSelectionCircle();
   visibleSprites.drawFlatSprites();
 
-  // Base under target combatant
-  if (_target.exists()) {
-    const Texture &base =
-        _target.isAggressive() ? images.baseAggressive : images.basePassive;
-    static const ScreenPoint BASE_OFFSET(-15, -10);
-    base.draw(toScreenPoint(_target.entity()->location()) + offset() +
-              BASE_OFFSET);
-  }
-
+  if (_target.exists() && !_target.entity()->isFlat()) drawSelectionCircle();
   visibleSprites.drawNonFlatSprites();
 
   if (isDebug()) visibleSprites.drawDrawOrder();
