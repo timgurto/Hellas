@@ -1363,8 +1363,8 @@ TEST_CASE("Construction quests", "[quests][construction]") {
       user.startQuest(*s->findQuest("quest1"));
 
       THEN("the client knows it isn't completable") {
-        REPEAT_FOR_MS(100);
         const auto &quest1 = c->gameData.quests.find("quest1")->second;
+        WAIT_UNTIL(quest1.state != CQuest::CAN_START);
         CHECK((quest1.state == CQuest::IN_PROGRESS));
         const auto &cQuestgiver = c.getFirstObject();
         CHECK(cQuestgiver.completableQuests().empty());
