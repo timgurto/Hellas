@@ -325,6 +325,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       THEN("he can see only one quest at object A") {
         WAIT_UNTIL(client->objects().size() == 1);
         const auto &a = client->getFirstObject();
+        REPEAT_FOR_MS(100);
         CHECK(a.startsQuests().size() == 1);
       }
     }
