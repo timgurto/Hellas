@@ -199,8 +199,7 @@ HANDLE_MESSAGE(CL_CRAFT) {
   ItemSet remaining;
   if (!user.hasItems(it->materials())) RETURN_WITH(WARNING_NEED_MATERIALS)
 
-  // Tool check must be the last check, as it damages the tools.
-  auto speed = user.checkAndDamageToolsAndGetSpeed(it->tools());
+  auto speed = user.getToolSpeed(it->tools());
   auto userHasRequiredTools = speed != 0;
   if (!userHasRequiredTools) RETURN_WITH(WARNING_NEED_TOOLS)
 
@@ -279,7 +278,7 @@ HANDLE_MESSAGE(CL_GATHER) {
   auto toolSpeed = 1.0;
   auto requiresTool = !gatherReq.empty();
   if (requiresTool) {
-    toolSpeed = user.checkAndDamageToolAndGetSpeed(gatherReq);
+    toolSpeed = user.getToolSpeed(gatherReq);
     if (toolSpeed == 0) {
       sendMessage(client, {WARNING_ITEM_TAG_NEEDED, gatherReq});
       return;
@@ -1067,7 +1066,7 @@ HANDLE_MESSAGE(CL_REPAIR_ITEM) {
   }
 
   if (repairInfo.requiresTool()) {
-    if (!user.checkAndDamageToolAndGetSpeed(repairInfo.tool)) {
+    if (!user.getToolSpeed(repairInfo.tool)) {
       user.sendMessage({WARNING_ITEM_TAG_NEEDED, repairInfo.tool});
       return;
     }
@@ -1860,7 +1859,7 @@ void Server::handle_CL_REPAIR_OBJECT(User &user, Serial serial) {
   }
 
   if (repairInfo.requiresTool()) {
-    if (!user.checkAndDamageToolAndGetSpeed(repairInfo.tool)) {
+    if (!user.getToolSpeed(repairInfo.tool)) {
       user.sendMessage({WARNING_ITEM_TAG_NEEDED, repairInfo.tool});
       return;
     }
@@ -2055,7 +2054,7 @@ void Server::handle_CL_TAKE_TALENT(User &user, const Talent::Name &talentName) {
   // Tool check must be the last check, as it damages the tools.
   const auto &requiredTool = talent->tier().requiredTool;
   auto requiresTool = !requiredTool.empty();
-  if (requiresTool && !user.checkAndDamageToolAndGetSpeed(requiredTool)) {
+  if (requiresTool && !user.getToolSpeed(requiredTool)) {
     sendMessage(user.socket(), {WARNING_ITEM_TAG_NEEDED, requiredTool});
     return;
   }

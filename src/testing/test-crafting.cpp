@@ -233,7 +233,7 @@ TEST_CASE("NPCs don't cause tool checks to crash", "[tool]") {
   s.addNPC("wolf", user.location() + MapPoint{0, 5});
 
   // When hasTool() is called
-  user.checkAndDamageToolAndGetSpeed("fakeTool");
+  user.getToolSpeed("fakeTool");
 
   // Then the server doesn't crash
 }

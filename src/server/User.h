@@ -306,9 +306,12 @@ class User : public Object {  // TODO: Don't inherit from Object
     DamageOnUse *_toolToDamage{nullptr};
     double _toolSpeed{1.0};
   };
-  // Return value of 0: tool not found.
-  double checkAndDamageToolsAndGetSpeed(const std::set<std::string> &tags);
-  double checkAndDamageToolAndGetSpeed(const std::string &tag);
+
+  // Assumption: tool search is deterministic; same result for both functions
+  double getToolSpeed(const std::set<std::string> &tags);  // 0: not found
+  void damageTools(const std::set<std::string> &tags);
+  double getToolSpeed(std::string tag);  // 0: not found
+  void damageTool(std::string tag);
 
   Followers followers;
   bool hasRoomForMoreFollowers() const;

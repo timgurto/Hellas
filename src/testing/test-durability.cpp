@@ -356,7 +356,7 @@ TEST_CASE("Construction tools lose durability",
 
       for (auto i = 0; i != 200; ++i) {
         c.sendMessage(CL_CONSTRUCT, makeArgs("hole", 10, 15));
-        REPEAT_FOR_MS(20);
+        WAIT_UNTIL(s.entities().size() == i);
         if (shovel.isDamaged()) break;
       }
 
@@ -400,6 +400,39 @@ TEST_CASE("Gathering tools lose durability",
   }
 }
 
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Tools don't take damage until gathering finishes",
+                 "[damage-on-use][gathering][tool]") {
+  GIVEN("gathering from a tree requires an axe and takes 10s") {
+    useData(R"(
+      <objectType id="tree" gatherReq="axe" gatherTime="10000">
+        <yield id="wood" />
+      </objectType>
+      <item id="axe">
+        <tag name="axe" />
+      </item>
+      <item id="wood" />
+    )");
+    const auto &tree = server->addObject("tree", {10, 10});
+
+    AND_GIVEN("the user has an axe") {
+      const auto *axe = &server->findItem("axe");
+      user->giveItem(axe);
+
+      WHEN("the client starts gathering 1000 times (but doesn't finish)") {
+        for (auto i = 0; i != 1000; ++i)
+          client->sendMessage(CL_GATHER, makeArgs(tree.serial()));
+
+        THEN("the axe is undamaged") {
+          REPEAT_FOR_MS(100);
+          const auto &usersAxe = user->inventory(0);
+          CHECK(usersAxe.health() == axe->maxHealth());
+        }
+      }
+    }
+  }
+}
+
 TEST_CASE("Tool objects lose durability",
           "[damage-on-use][construction][tool]") {
   GIVEN("a user with a construction tool") {
@@ -420,7 +453,7 @@ TEST_CASE("Tool objects lose durability",
       const auto &earthMover = s.getFirstObject();
       for (auto i = 0; i != 200; ++i) {
         c.sendMessage(CL_CONSTRUCT, makeArgs("hole", 10, 15));
-        REPEAT_FOR_MS(20);
+        WAIT_UNTIL(s.entities().size() == i + 1);
         if (earthMover.isMissingHealth()) break;
       }
 

@@ -516,7 +516,7 @@ void User::tryToConstructInner(const ObjectType &objType,
   auto requiresTool = !objType.constructionReq().empty();
   auto toolSpeed = 1.0;
   if (requiresTool) {
-    toolSpeed = checkAndDamageToolAndGetSpeed(objType.constructionReq());
+    toolSpeed = getToolSpeed(objType.constructionReq());
     if (toolSpeed == 0) RETURN_WITH(WARNING_NEED_TOOLS)
   }
 
@@ -567,7 +567,7 @@ bool User::hasItems(const std::string &tag, size_t quantity) const {
 
 User::ToolSearchResult User::findTool(const std::string &tagName) {
   auto bestSpeed = 0.0;
-  auto bestTool = User::ToolSearchResult{User::ToolSearchResult::NOT_FOUND};
+  auto bestTool = ToolSearchResult{ToolSearchResult::NOT_FOUND};
 
   // Check gear
   for (size_t i = 0; i != User::GEAR_SLOTS; ++i) {
@@ -579,7 +579,7 @@ User::ToolSearchResult User::findTool(const std::string &tagName) {
     auto toolSpeed = type->toolSpeed(tagName);
     if (toolSpeed > bestSpeed || !bestTool) {
       bestSpeed = toolSpeed;
-      bestTool = {slot, *type, tagName};
+      bestTool = ToolSearchResult{slot, *type, tagName};
     }
   }
 
@@ -593,7 +593,7 @@ User::ToolSearchResult User::findTool(const std::string &tagName) {
     auto toolSpeed = type->toolSpeed(tagName);
     if (toolSpeed > bestSpeed || !bestTool) {
       bestSpeed = toolSpeed;
-      bestTool = {slot, *type, tagName};
+      bestTool = ToolSearchResult{slot, *type, tagName};
     }
   }
 
@@ -627,36 +627,40 @@ User::ToolSearchResult User::findTool(const std::string &tagName) {
     auto toolSpeed = type->toolSpeed(tagName);
     if (toolSpeed > bestSpeed || !bestTool) {
       bestSpeed = toolSpeed;
-      bestTool = {*pObj, *type, tagName};
+      bestTool = ToolSearchResult{*pObj, *type, tagName};
     }
   }
 
   return bestTool;
 }
 
-double User::checkAndDamageToolsAndGetSpeed(const std::set<std::string> &tags) {
-  auto toolsFound = std::vector<ToolSearchResult>{};
-  for (const std::string &tagName : tags) {
-    auto result = findTool(tagName);
-    if (!result) return 0;
-    toolsFound.push_back(result);
-  }
-
+double User::getToolSpeed(const std::set<std::string> &tags) {
   auto speed = 1.0;
-  for (const auto &tool : toolsFound) speed *= tool.toolSpeed();
-
-  // At this point, all tools were found and true will be returned.  Only now
-  // should all tools be damaged.
-  for (const auto &tool : toolsFound) tool.use();
+  for (const std::string &tagName : tags) {
+    auto tool = findTool(tagName);
+    if (!tool) return 0;
+    speed *= tool.toolSpeed();
+  }
 
   return speed;
 }
 
-double User::checkAndDamageToolAndGetSpeed(const std::string &tag) {
+void User::damageTools(const std::set<std::string> &tags) {
+  for (const std::string &tagName : tags) {
+    auto tool = findTool(tagName);
+    if (tool) tool.use();
+  }
+}
+
+double User::getToolSpeed(std::string tag) {
   auto tool = findTool(tag);
   if (!tool) return 0;
-  tool.use();
   return tool.toolSpeed();
+}
+
+void User::damageTool(std::string tag) {
+  auto tool = findTool(tag);
+  if (tool) tool.use();
 }
 
 bool User::hasRoomForMoreFollowers() const {
@@ -847,6 +851,8 @@ void User::update(ms_t timeElapsed) {
         return;
       }
 
+      damageTools(_actionRecipe->tools());
+
       removeItems(_actionRecipe->materials());
 
       const auto *product = toServerItem(_actionRecipe->product());
@@ -870,6 +876,10 @@ void User::update(ms_t timeElapsed) {
         owner.type = Permissions::Owner::PLAYER;
         owner.name = _name;
       }
+
+      // Damage tool
+      const auto toolRequired = !_actionObjectType->constructionReq().empty();
+      if (toolRequired) damageTool(_actionObjectType->constructionReq());
 
       // Create object
       server.addObject(_actionObjectType, _actionLocation, owner);

@@ -626,9 +626,14 @@ void Server::gatherObject(Serial serial, User &user) {
     user.sendMessage(WARNING_INVENTORY_FULL);
     qtyToRemove -= remaining;
   }
-  if (remaining <
-      qtyToGive)  // User received something: trigger any new unlocks
-    ProgressLock::triggerUnlocks(user, ProgressLock::GATHER, toGive);
+  if (remaining >= qtyToGive) return;  // User received nothing
+
+  // Trigger any new unlocks
+  ProgressLock::triggerUnlocks(user, ProgressLock::GATHER, toGive);
+
+  // Damage tool
+  auto tool = ent->type()->yield.requiredTool();
+  if (!tool.empty()) user.damageTool(tool);
 
   // Remove object if empty
   ent->gatherable.removeItem(toGive, qtyToRemove);
