@@ -242,6 +242,53 @@ HANDLE_MESSAGE(CL_CONSTRUCT_FOR_CITY) {
   user.tryToConstruct(id, location, Permissions::Owner::CITY);
 }
 
+HANDLE_MESSAGE(CL_GATHER) {
+  auto serial = Serial{};
+  READ_ARGS(serial);
+
+  if (user.isStunned()) RETURN_WITH(WARNING_STUNNED)
+  user.cancelAction();
+
+  auto *ent = _entities.find(serial);
+
+  if (!isEntityInRange(client, user, ent)) return;
+  if (!ent->type()) {
+    SERVER_ERROR("Can't gather from object with no type");
+    return;
+  }
+
+  auto *asObject = dynamic_cast<Object *>(ent);
+  if (asObject) {
+    // Check that the user meets the requirements
+    const auto &exclusiveQuestID = asObject->objType().exclusiveToQuest();
+    auto isQuestExclusive = !exclusiveQuestID.empty();
+    if (isQuestExclusive) {
+      auto userIsOnQuest = user.questsInProgress().count(exclusiveQuestID) == 1;
+      if (!userIsOnQuest) return;
+    }
+    if (asObject->isBeingBuilt()) RETURN_WITH(ERROR_UNDER_CONSTRUCTION)
+    // Check whether it has an inventory
+    if (asObject->hasContainer() && !asObject->container().isEmpty())
+      RETURN_WITH(WARNING_NOT_EMPTY)
+  }
+  if (!ent->permissions.canUserGather(user.name()))
+    RETURN_WITH(WARNING_NO_PERMISSION)
+
+  // Tool check must be the last check, as it damages the tools.
+  const auto &gatherReq = ent->type()->yield.requiredTool();
+  auto toolSpeed = 1.0;
+  auto requiresTool = !gatherReq.empty();
+  if (requiresTool) {
+    toolSpeed = user.checkAndDamageToolAndGetSpeed(gatherReq);
+    if (toolSpeed == 0) {
+      sendMessage(client, {WARNING_ITEM_TAG_NEEDED, gatherReq});
+      return;
+    }
+  }
+
+  user.beginGathering(ent, toolSpeed);
+}
+
 HANDLE_MESSAGE(CL_TRADE) {
   auto serial = Serial{};
   auto slot = size_t{0};
@@ -1374,6 +1421,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_CONSTRUCT_FROM_ITEM_FOR_CITY)
       SEND_MESSAGE_TO_HANDLER(CL_CONSTRUCT)
       SEND_MESSAGE_TO_HANDLER(CL_CONSTRUCT_FOR_CITY)
+      SEND_MESSAGE_TO_HANDLER(CL_GATHER)
       SEND_MESSAGE_TO_HANDLER(CL_TRADE)
       SEND_MESSAGE_TO_HANDLER(CL_DROP)
       SEND_MESSAGE_TO_HANDLER(CL_PICK_UP_DROPPED_ITEM)
@@ -1411,57 +1459,6 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(DG_SPAWN)
       SEND_MESSAGE_TO_HANDLER(DG_UNLOCK)
       SEND_MESSAGE_TO_HANDLER(DG_SIMULATE_YIELDS)
-
-      case CL_GATHER: {
-        auto serial = Serial{};
-        iss >> serial >> del;
-        if (del != MSG_END) return;
-        if (user->isStunned()) BREAK_WITH(WARNING_STUNNED)
-        user->cancelAction();
-        auto *ent = _entities.find(serial);
-        if (!isEntityInRange(client, *user, ent)) {
-          // isEntityInRange() sends error messages if applicable.
-          break;
-        }
-        if (!ent->type()) {
-          SERVER_ERROR("Can't gather from object with no type");
-          break;
-        }
-
-        auto *asObject = dynamic_cast<Object *>(ent);
-        if (asObject) {
-          // Check that the user meets the requirements
-          const auto &exclusiveQuestID = asObject->objType().exclusiveToQuest();
-          auto isQuestExclusive = !exclusiveQuestID.empty();
-          if (isQuestExclusive) {
-            auto userIsOnQuest =
-                user->questsInProgress().count(exclusiveQuestID) == 1;
-            if (!userIsOnQuest) break;
-          }
-          if (asObject->isBeingBuilt()) BREAK_WITH(ERROR_UNDER_CONSTRUCTION)
-          // Check whether it has an inventory
-          if (asObject->hasContainer() && !asObject->container().isEmpty())
-            BREAK_WITH(WARNING_NOT_EMPTY)
-        }
-        if (!ent->permissions.canUserGather(user->name()))
-          BREAK_WITH(WARNING_NO_PERMISSION)
-
-        // Tool check must be the last check, as it damages the tools.
-        const auto &gatherReq = ent->type()->yield.requiredTool();
-        auto toolSpeed = 1.0;
-        auto requiresTool = !gatherReq.empty();
-        if (requiresTool) {
-          toolSpeed = user->checkAndDamageToolAndGetSpeed(gatherReq);
-          if (toolSpeed == 0) {
-            sendMessage(client, {WARNING_ITEM_TAG_NEEDED, gatherReq});
-            break;
-          }
-        }
-
-        user->beginGathering(ent, toolSpeed);
-
-        break;
-      }
 
       case CL_PICK_UP_OBJECT_AS_ITEM: {
         Serial serial;
