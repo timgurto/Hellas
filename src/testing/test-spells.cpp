@@ -401,13 +401,13 @@ TEST_CASE("NPCs can know multiple spells", "[spells][ai]") {
     )");
     const auto &wizard = server.addNPC("wizard", {10, 10});
 
-    WHEN("enough time elapses for him to cast his spells once") {
-      REPEAT_FOR_MS(100);
-
+    WHEN("enough time elapses for him to cast his spells") {
       THEN("he has moved") {
-        CHECK(wizard.location() != MapPoint{10, 10});
+        WAIT_UNTIL((wizard.location() != MapPoint{10, 10}));
 
-        AND_THEN("he has taken damage") { CHECK(wizard.isMissingHealth()); }
+        AND_THEN("he has taken damage") {
+          WAIT_UNTIL(wizard.isMissingHealth());
+        }
       }
     }
   }
