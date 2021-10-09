@@ -582,26 +582,26 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   }
 }
 
-TEST_CASE("Item levels", "[loading]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Item levels", "[loading]") {
   GIVEN("a default item") {
-    auto server = TestServer::WithDataString(R"(
+    useData(R"(
       <item id="straw" />
     )");
 
-    THEN("it is level 1") {
-      const auto &straw = server.getFirstItem();
-      CHECK(straw.ilvl() == 1);
+    THEN("it is level 0 on both server and client") {
+      CHECK(server->getFirstItem().ilvl() == 0);
+      CHECK(client->getFirstItem().ilvl() == 0);
     }
   }
 
   GIVEN("an item specified to be level 2") {
-    auto server = TestServer::WithDataString(R"(
+    useData(R"(
       <item id="brick" ilvl="2" />
     )");
 
-    THEN("it is level 2") {
-      const auto &brick = server.getFirstItem();
-      CHECK(brick.ilvl() == 2);
+    THEN("it is level 2 on both server and client") {
+      CHECK(server->getFirstItem().ilvl() == 2);
+      CHECK(client->getFirstItem().ilvl() == 2);
     }
   }
 }

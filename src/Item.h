@@ -83,7 +83,7 @@ class Item : public HasTags {
   StatsMod _stats;  // If gear, the impact it has on its wearer's stats.
   std::string _suffixSet;
   Soulbinding _soulbinding{NO_BINDING};
-  Level _ilvl{1};
+  Level _ilvl{0};
   Hitpoints _maxHealth{1};
   Quality _quality{COMMON};
 
