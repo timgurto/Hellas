@@ -1,4 +1,5 @@
 #include "TestClient.h"
+#include "TestFixtures.h"
 #include "TestServer.h"
 #include "testing.h"
 
@@ -94,6 +95,47 @@ TEST_CASE("A talent tier can require a tool", "[talents][tool]") {
       THEN("he doesn't have it") {
         const auto *talent = doctor.findTalent("Study");
         CHECK_FALSE(user.getClass().hasTalent(talent));
+      }
+    }
+  }
+}
+
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Players can't lose load-bearing talents on death",
+                 "[talents][death]") {
+  GIVEN("players must walk before they can run") {
+    useData(R"(
+      <class name="DefaultClass">
+          <tree name="Movement">
+              <tier>
+                  <requires />
+                  <talent type="stats" name="Walking"> <stats /> </talent>
+              </tier>
+              <tier>
+                  <requires pointsInTree="1" />
+                  <talent type="stats" name="Running"> <stats /> </talent>
+              </tier>
+          </tree>
+      </class>
+    )");
+    const auto *walking = server->getFirstClass().findTalent("Walking");
+    const auto *running = server->getFirstClass().findTalent("Running");
+
+    AND_GIVEN("the player has a point in each") {
+      user->getClass().takeTalent(walking);
+      user->getClass().takeTalent(running);
+
+      // For a large number of samples
+      for (auto i = 0; i != 20; ++i) {
+        // When he loses a random talent as if from death
+        const auto talentLost = user->getClass().loseARandomLeafTalent();
+
+        // Then it was running he forgot, not walking
+        INFO("The correct talent was removed " << i << " times.");
+        REQUIRE(talentLost == "Running");
+
+        // Re-learn for the next iteration
+        user->getClass().takeTalent(running);
       }
     }
   }
