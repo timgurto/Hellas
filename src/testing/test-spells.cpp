@@ -395,20 +395,42 @@ TEST_CASE("NPCs can know multiple spells", "[spells][ai]") {
         <function name="randomTeleport" i1="8" />
       </spell>
       <npcType id="wizard">
-        <spell id="hurtSelf" allowedOutOfCombat="1" />
-        <spell id="teleport" allowedOutOfCombat="1" />
+        <spell id="hurtSelf" canCastOutOfCombat="1" />
+        <spell id="teleport" canCastOutOfCombat="1" />
       </npcType>
     )");
     const auto &wizard = server.addNPC("wizard", {10, 10});
 
     WHEN("enough time elapses for him to cast his spells") {
       THEN("he has moved") {
-        WAIT_UNTIL((wizard.location() != MapPoint{10, 10}));
+        const auto startingLoc = MapPoint{10, 10};
+        WAIT_UNTIL(wizard.location() != startingLoc);
 
         AND_THEN("he has taken damage") {
           WAIT_UNTIL(wizard.isMissingHealth());
         }
       }
+    }
+  }
+}
+
+TEST_CASE("NPCs not in combat can't cast spells by default", "[spells][ai]") {
+  GIVEN("a wizard with a self-damage spell restricted to combat") {
+    auto server = TestServer::WithDataString(R"(
+      <spell id="hurtSelf" >
+        <targets self="1" />
+        <function name="doDirectDamage" i1="5" />
+      </spell>
+      <npcType id="wizard">
+        <spell id="hurtSelf" />
+      </npcType>
+    )");
+    const auto &wizard = server.addNPC("wizard", {10, 10});
+
+    WHEN("enough time elapses for him to cast his spell") {
+      REPEAT_FOR_MS(100);
+
+      THEN("he has not taken damage") { CHECK_FALSE(wizard.isMissingHealth()); }
     }
   }
 }
@@ -423,7 +445,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
           <function name="doDirectDamage" i1="5" />
       </spell>
       <npcType id="pyromaniac" maxHealth="1000" >
-        <spell id="explosion" />
+        <spell id="explosion" canCastOutOfCombat="1" />
       </npcType>
     )");
     const auto &pyromaniac = server->addNPC("pyromaniac", {20, 20});

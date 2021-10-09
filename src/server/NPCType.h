@@ -29,6 +29,7 @@ class NPCType : public ObjectType {
   struct KnownSpell {
     std::string id;
     mutable const Spell *spell;
+    bool canCastOutOfCombat;
   };
   using KnownSpells = std::vector<KnownSpell>;
   KnownSpells _knownSpells;
@@ -59,8 +60,8 @@ class NPCType : public ObjectType {
   bool attacksNearby() const;
   void school(SpellSchool school) { _school = school; }
   SpellSchool school() const { return _school; }
-  void knowsSpell(const Spell::ID &id) {
-    _knownSpells.push_back({id, nullptr});
+  void knowsSpell(Spell::ID id, bool canCastOutOfCombat) {
+    _knownSpells.push_back({id, nullptr, canCastOutOfCombat});
   }
   const KnownSpells &knownSpells() const { return _knownSpells; }
   px_t maxDistanceFromHome() const { return _maxDistanceFromHome; }

@@ -598,7 +598,11 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
     // Spells
     for (auto elemSpell : xr.getChildren("spell", elem)) {
       auto spellID = ""s;
-      if (xr.findAttr(elemSpell, "id", spellID)) nt->knowsSpell(spellID);
+      auto canCastOutOfCombat = false;
+      if (xr.findAttr(elemSpell, "canCastOutOfCombat", n) && n != 0)
+        canCastOutOfCombat = true;
+      if (xr.findAttr(elemSpell, "id", spellID))
+        nt->knowsSpell(spellID, canCastOutOfCombat);
     }
 
     nt->yield.loadFromXML(xr, elem);

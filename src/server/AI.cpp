@@ -246,12 +246,20 @@ void AI::act() {
     }
 
     case ATTACK:
+      // Cast any spells it knows
+      for (const auto &knownSpell : _owner.npcType()->knownSpells()) {
+        if (!knownSpell.spell) continue;
+        if (_owner.isSpellCoolingDown(knownSpell.id)) continue;
+        _owner.castSpell(*knownSpell.spell);
+      }
+
       break;  // Entity::update() will handle combat
   }
 
-  // Cast any spells it knows
+  // Cast any allowed-out-of-combat spells it knows
   for (const auto &knownSpell : _owner.npcType()->knownSpells()) {
     if (!knownSpell.spell) continue;
+    if (!knownSpell.canCastOutOfCombat) continue;
     if (_owner.isSpellCoolingDown(knownSpell.id)) continue;
     _owner.castSpell(*knownSpell.spell);
   }
