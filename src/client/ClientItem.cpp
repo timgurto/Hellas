@@ -268,20 +268,20 @@ void ClientItem::Instance::createRegularTooltip() const {
   else if (shouldDrawAsDamaged())
     tooltip.setColor(Color::DURABILITY_LOW);
 
-  if (!_type->_class) return;
-
-  auto isDamaged = _health < _type->maxHealth();
-  if (isDamaged || _type->canBeDamaged()) {
+  if (_type->canBeDamaged()) {
     auto oss = std::ostringstream{};
     oss << "Durability: "s << _health << "/"s << _type->maxHealth();
     tooltip.addGap();
     tooltip.addLine(oss.str());
+  }
 
-    const auto canBeRepaired = _type->_class->repairing.canBeRepaired;
-    if (canBeRepaired && isDamaged) {
-      tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
-      tooltip.addLine("Can be repaired (Alt-click).");
-    }
+  if (!_type->_class) return;
+
+  const auto canBeRepaired = _type->_class->repairing.canBeRepaired;
+  auto isDamaged = _health < _type->maxHealth();
+  if (canBeRepaired && isDamaged) {
+    tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
+    tooltip.addLine("Can be repaired (Alt-click).");
   }
 
   if (_type->canBeScrapped()) {

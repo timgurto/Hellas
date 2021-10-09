@@ -85,13 +85,10 @@ void Item::initialiseMaxHealthFromIlvlAndQuality() {
 
 bool Item::canBeDamaged() const {
   if (hasTags())
-    return true;  // Tools can always be damaged
-                  // Note that this will also affect food, but that should be
-                  // okay:
-                  // - food should never be damaged on use because it's
-                  // single-use.
-                  // - food shouldn't be broken when looted, since it can't be
-                  // repaired.
+    return _ilvl > 0;  // Tools can always be damaged.
+                       // The assumption here is that items without an explicit
+                       // ilvl cannot be tools. Food is a good example here: has
+                       // a tag, but no ilvl.
 
   if (!isGear()) return false;
   if (_weaponAmmo == this) return false;  // Thrown weapon; consumes itself
