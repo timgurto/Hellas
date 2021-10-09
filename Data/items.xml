@@ -378,7 +378,7 @@
                     <offset x="-6" y="-4" />
                 </item>
             <item id="copperLamellar" name="Copper Lamellar" ilvl="37" class="copperScaleMail" gearSlot="body" sounds="mailArmor" quality="2" bind="equip" >
-                <stats armor="393" courage="12" />
+                <stats armor="39" courage="12" />
                 <offset x="-6" y="-4" />
             </item>
                 <item id="copperLamellarSilver" name="Silvered Copper Lamellar" ilvl="42" class="copperScaleMail" gearSlot="body" sounds="mailArmor"
