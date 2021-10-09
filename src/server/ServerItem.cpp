@@ -197,6 +197,10 @@ void ServerItem::Instance::setSuffixStatsBasedOnSelectedSuffix() {
       _type->_suffixSet, _suffix);
 }
 
+void ServerItem::Instance::setSuffix(std::string suffixID) {
+  _suffix = suffixID;
+}
+
 ServerItem::Instance::ReportingInfo
 ServerItem::Instance::ReportingInfo::UserGear(const User *owner, size_t slot) {
   return {owner, Serial::Gear(), slot};

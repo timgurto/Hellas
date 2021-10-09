@@ -66,7 +66,7 @@ class ServerItem : public Item {
     void setSuffixStatsBasedOnSelectedSuffix();
     StatsMod statsFromSuffix() const { return _statsFromSuffix; }
     std::string suffix() const { return _suffix; }
-    void setSuffix(std::string suffixID) { _suffix = suffixID; }
+    void setSuffix(std::string suffixID);
     size_t quantity() const { return _quantity; }
     void setQuantity(size_t quantity) { _quantity = quantity; }
     void removeItems(size_t toRemove) { _quantity -= toRemove; }
