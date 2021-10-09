@@ -159,9 +159,7 @@ ServerItem::Instance::Instance(const ServerItem *type, ReportingInfo info,
       _health(health),
       _suffix(suffix),
       _quantity(quantity) {
-  if (!_type->_suffixSet.empty())
-    _statsFromSuffix = Server::instance()._suffixSets.getStatsForSuffix(
-        _type->_suffixSet, _suffix);
+  setSuffixStatsBasedOnSelectedSuffix();
 }
 
 void ServerItem::Instance::swap(ServerItem::Instance &lhs,
@@ -190,6 +188,13 @@ bool ServerItem::Instance::isSoulbound() const {
   if (_type->bindsOnPickup()) return true;
   if (_type->bindsOnEquip()) return _hasBeenEquipped;
   return false;
+}
+
+void ServerItem::Instance::setSuffixStatsBasedOnSelectedSuffix() {
+  if (_type->_suffixSet.empty()) return;
+
+  _statsFromSuffix = Server::instance()._suffixSets.getStatsForSuffix(
+      _type->_suffixSet, _suffix);
 }
 
 ServerItem::Instance::ReportingInfo

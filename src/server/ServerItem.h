@@ -63,6 +63,7 @@ class ServerItem : public Item {
     double toolSpeed(const std::string &tag) const override;
     void onEquip() { _hasBeenEquipped = true; }
     bool isSoulbound() const;
+    void setSuffixStatsBasedOnSelectedSuffix();
     StatsMod statsFromSuffix() const { return _statsFromSuffix; }
     std::string suffix() const { return _suffix; }
     void setSuffix(std::string suffixID) { _suffix = suffixID; }
