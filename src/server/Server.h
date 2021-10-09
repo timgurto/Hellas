@@ -361,7 +361,6 @@ class Server {
                                     const std::string &name);
   void handle_CL_ACCEPT_PEACE_OFFER(User &user, MessageCode code,
                                     const std::string &name);
-  void handle_CL_TAKE_TALENT(User &user, const Talent::Name &talent);
   void handle_CL_UNLEARN_TALENTS(User &user);
   void handle_CL_ACCEPT_QUEST(User &user, const Quest::ID &quest,
                               Serial giverSerial);

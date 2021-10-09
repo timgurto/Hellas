@@ -966,6 +966,52 @@ HANDLE_MESSAGE(CL_PERFORM_OBJECT_ACTION) {
   }
 }
 
+HANDLE_MESSAGE(CL_CHOOSE_TALENT) {
+  auto talentName = ""s;
+  READ_ARGS(talentName);
+
+  auto &userClass = user.getClass();
+  const auto &classType = userClass.type();
+  auto talent = classType.findTalent(talentName);
+  if (talent == nullptr) RETURN_WITH(ERROR_INVALID_TALENT)
+  if (!user.getClass().canTakeATalent()) RETURN_WITH(WARNING_NO_TALENT_POINTS)
+  if (talent->type() == Talent::SPELL && userClass.hasTalent(talent))
+    RETURN_WITH(ERROR_ALREADY_KNOW_SPELL)
+
+  auto &tier = talent->tier();
+
+  if (tier.reqPointsInTree > 0 &&
+      user.getClass().pointsInTree(talent->tree()) < tier.reqPointsInTree)
+    RETURN_WITH(WARNING_MISSING_REQ_FOR_TALENT)
+  if (tier.hasItemCost() && !user.hasItems(tier.costTag, tier.costQuantity))
+    RETURN_WITH(WARNING_MISSING_ITEMS_FOR_TALENT)
+
+  // Tool check must be the last check, as it damages the tools.
+  const auto &requiredTool = talent->tier().requiredTool;
+  auto requiresTool = !requiredTool.empty();
+  if (requiresTool && !user.getToolSpeed(requiredTool)) {
+    user.sendMessage({WARNING_ITEM_TAG_NEEDED, requiredTool});
+    return;
+  }
+
+  // All checks must be done by this point.
+
+  if (tier.hasItemCost())
+    user.removeItemsMatchingTag(tier.costTag, tier.costQuantity);
+
+  userClass.takeTalent(talent);
+
+  switch (talent->type()) {
+    case Talent::SPELL:
+      user.sendMessage({SV_LEARNED_SPELL, talent->spellID()});
+      break;
+
+    case Talent::STATS:
+      user.updateStats();
+      break;
+  }
+}
+
 HANDLE_MESSAGE(CL_CAST_SPELL) {
   auto spellID = ""s;
   READ_ARGS(spellID);
@@ -1439,6 +1485,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_DECLARE_WAR_ON_PLAYER_AS_CITY)
       SEND_MESSAGE_TO_HANDLER(CL_DECLARE_WAR_ON_CITY_AS_CITY)
       SEND_MESSAGE_TO_HANDLER(CL_PERFORM_OBJECT_ACTION)
+      SEND_MESSAGE_TO_HANDLER(CL_CHOOSE_TALENT)
       SEND_MESSAGE_TO_HANDLER(CL_CAST_SPELL)
       SEND_MESSAGE_TO_HANDLER(CL_CAST_SPELL_FROM_ITEM)
       SEND_MESSAGE_TO_HANDLER(CL_REPAIR_ITEM)
@@ -1695,15 +1742,6 @@ void Server::handleBufferedMessages(const Socket &client,
       case CL_LEAVE_CITY: {
         if (del != MSG_END) return;
         handle_CL_LEAVE_CITY(*user);
-        break;
-      }
-
-      case CL_CHOOSE_TALENT: {
-        iss.get(_stringInputBuffer, BUFFER_SIZE, MSG_END);
-        auto talentName = Talent::Name{_stringInputBuffer};
-        iss >> del;
-        if (del != MSG_END) return;
-        handle_CL_TAKE_TALENT(*user, talentName);
         break;
       }
 
@@ -2032,49 +2070,6 @@ void Server::handle_CL_ACCEPT_PEACE_OFFER(User &user, MessageCode code,
     sendMessageIfOnline(enemy.name, {codeForEnemy, proposer.name});
   else
     broadcastToCity(enemy.name, {codeForEnemy, proposer.name});
-}
-
-void Server::handle_CL_TAKE_TALENT(User &user, const Talent::Name &talentName) {
-  auto &userClass = user.getClass();
-  const auto &classType = userClass.type();
-  auto talent = classType.findTalent(talentName);
-  if (talent == nullptr) RETURN_WITH(ERROR_INVALID_TALENT)
-  if (!user.getClass().canTakeATalent()) RETURN_WITH(WARNING_NO_TALENT_POINTS)
-  if (talent->type() == Talent::SPELL && userClass.hasTalent(talent))
-    RETURN_WITH(ERROR_ALREADY_KNOW_SPELL)
-
-  auto &tier = talent->tier();
-
-  if (tier.reqPointsInTree > 0 &&
-      user.getClass().pointsInTree(talent->tree()) < tier.reqPointsInTree)
-    RETURN_WITH(WARNING_MISSING_REQ_FOR_TALENT)
-  if (tier.hasItemCost() && !user.hasItems(tier.costTag, tier.costQuantity))
-    RETURN_WITH(WARNING_MISSING_ITEMS_FOR_TALENT)
-
-  // Tool check must be the last check, as it damages the tools.
-  const auto &requiredTool = talent->tier().requiredTool;
-  auto requiresTool = !requiredTool.empty();
-  if (requiresTool && !user.getToolSpeed(requiredTool)) {
-    sendMessage(user.socket(), {WARNING_ITEM_TAG_NEEDED, requiredTool});
-    return;
-  }
-
-  // All checks must be done by this point.
-
-  if (tier.hasItemCost())
-    user.removeItemsMatchingTag(tier.costTag, tier.costQuantity);
-
-  userClass.takeTalent(talent);
-
-  switch (talent->type()) {
-    case Talent::SPELL:
-      sendMessage(user.socket(), {SV_LEARNED_SPELL, talent->spellID()});
-      break;
-
-    case Talent::STATS:
-      user.updateStats();
-      break;
-  }
 }
 
 void Server::handle_CL_UNLEARN_TALENTS(User &user) {

@@ -1152,7 +1152,6 @@ void User::onDeath() {
 
   auto talentLost = _class.value().loseARandomLeafTalent();
   if (!talentLost.empty()) {
-    const Server &server = *Server::_instance;
     sendMessage({SV_LOST_TALENT, talentLost});
   }
 }
