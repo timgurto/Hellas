@@ -25,7 +25,7 @@
     <lootTable id="17mob" />
     <loot id="sheepskin" chance="0.1" />
     <loot id="wool" />
-    <yield id="wool" initialMean="0" initialSD="1.5" initialMin="1" />
+    <yield id="wool" initialMean="0" initialSD="1.5" initialMin="1" gatherMean="100" />
     <transform id="sheep" whenEmpty="1" />
 </npcType>
 <item id="collar" name="Collar" class="linenJunk"

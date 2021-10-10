@@ -576,6 +576,7 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
 
     if (xr.findAttr(elem, "maxDistanceFromSpawner", n))
       nt->maxDistanceFromHome(n);
+    nt->yield.loadFromXML(xr, elem);
 
     Stats baseStats = NPCType::BASE_STATS;
     xr.findAttr(elem, "maxHealth", baseStats.maxHealth);
@@ -605,7 +606,6 @@ void DataLoader::loadNPCTypes(XmlReader &xr) {
         nt->knowsSpell(spellID, canCastOutOfCombat);
     }
 
-    nt->yield.loadFromXML(xr, elem);
     nt->transformation.loadFromXML<NPCType>(xr, elem);
 
     auto &lootTable = nt->lootTable();
