@@ -961,8 +961,10 @@ const Texture &ClientObject::cursor() const {
     if (isBeingConstructed()) return Client::images.cursorContainer;
     if (completableQuests().size() > 0) return Client::images.cursorEndsQuest;
     if (startsQuests().size() > 0) return Client::images.cursorStartsQuest;
-    if (ot.canGather(_client.gameData.quests))
-      return Client::images.cursorGather;
+    if (ot.canGather(_client.gameData.quests)) {
+      return Client::isShiftPressed() ? Client::images.cursorNormal
+                                      : Client::images.cursorGather;
+    }
     if (ot.hasAction()) return Client::images.cursorContainer;
     if (classTag() == 'v') return Client::images.cursorVehicle;
     if (ot.containerSlots() > 0) return Client::images.cursorContainer;
@@ -1074,7 +1076,9 @@ void ClientObject::createRegularTooltip() const {
         text += " (requires " + _client.gameData.tagName(ot.gatherReq()) + ")";
       tooltip.addLine(text);
       tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
-      tooltip.addLine(std::string("Right-click to gather"));
+      if (userHasDemolishAccess())
+        tooltip.addLine("Shift-right-click to open window");
+      tooltip.addLine("Right-click to gather"s);
 
       // Unlocks from gathering
       auto bestUnlockChance = 0.0;
