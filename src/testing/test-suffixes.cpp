@@ -294,26 +294,46 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Taking items preserves suffixes",
     const auto &containerSlot = sheath.container().at(0);
     const auto chosenSuffix = inventorySlot.suffix();
     INFO("Suffix on item when initially given: " << inventorySlot.suffix());
+    const auto originalStats = inventorySlot.statsFromSuffix();
+    INFO("Stats on item when initially given: "
+         << originalStats.fireResist << "FR, " << originalStats.waterResist
+         << "WR");
 
     // For a number of samples
     for (auto i = 0; i != 20; ++i) {
-      INFO("Correct suffix was applied " << i << " times before this failure.");
+      INFO(i << " samples succeeded before this failure.");
 
       // When he puts the sword into the sheath
       client->sendMessage(CL_SWAP_ITEMS,
                           makeArgs(Serial::Inventory(), 0, sheath.serial(), 0));
       WAIT_UNTIL(containerSlot.hasItem());
+
+      // Then it has the same suffix
       INFO("Suffix of item in sheath: " << sheath.container().at(0).suffix());
       REQUIRE(containerSlot.suffix() == chosenSuffix);
+
+      // And the same stats
+      const auto statsInContainer = containerSlot.statsFromSuffix();
+      INFO("Stats in container: " << statsInContainer.fireResist << "FR, "
+                                  << statsInContainer.waterResist << "WR");
+      REQUIRE(originalStats.fireResist == statsInContainer.fireResist);
+      REQUIRE(originalStats.waterResist == statsInContainer.waterResist);
 
       // And when he takes it back out
       client->sendMessage(CL_TAKE_ITEM, makeArgs(sheath.serial(), 0));
       WAIT_UNTIL(inventorySlot.hasItem());
-      INFO("Suffix of item after moving to inventory: "
-           << inventorySlot.suffix());
 
       // Then it has the same suffix
+      INFO("Suffix of item after moving to inventory: "
+           << inventorySlot.suffix());
       REQUIRE(inventorySlot.suffix() == chosenSuffix);
+
+      // And the same stats
+      const auto statsInInventory = inventorySlot.statsFromSuffix();
+      INFO("Stats in inventory: " << statsInInventory.fireResist << "FR, "
+                                  << statsInInventory.waterResist << "WR");
+      REQUIRE(originalStats.fireResist == statsInInventory.fireResist);
+      REQUIRE(originalStats.waterResist == statsInInventory.waterResist);
     }
   }
 }
