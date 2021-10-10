@@ -139,6 +139,7 @@ class ServerItem : public Item {
   bool canBeRepaired() const;
   void iconFile(std::string filename) { _iconFile = filename; }
   std::string iconFile() const { return _iconFile; }
+  std::string randomSuffixFromSet() const;
 
   void fetchAmmoItem() const override;
 };

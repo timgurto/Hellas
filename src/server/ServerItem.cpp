@@ -11,6 +11,13 @@ bool ServerItem::canBeRepaired() const {
   return _class->repairing.canBeRepaired;
 }
 
+std::string ServerItem::randomSuffixFromSet() const {
+  if (_suffixSet.empty()) return {};
+  const auto &suffix =
+      Server::instance()._suffixSets.chooseRandomSuffix(_suffixSet);
+  return suffix.id;
+}
+
 void ServerItem::fetchAmmoItem() const {
   if (_weaponAmmoID.empty()) return;
 

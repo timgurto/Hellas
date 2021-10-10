@@ -349,9 +349,11 @@ class User : public Object {  // TODO: Don't inherit from Object
 
   // Return value: 0 if there was room for all items, otherwise the remainder.
   size_t giveItem(const ServerItem *item, size_t quantity, Hitpoints health,
-                  std::string suffix = {});
+                  std::string suffix);
   size_t giveItem(const ServerItem *item, size_t quantity = 1) {
-    return giveItem(item, quantity, item->maxHealth());
+    const auto health = item->maxHealth();
+    const auto suffix = item->randomSuffixFromSet();
+    return giveItem(item, quantity, health, suffix);
   }
 
   static const Level MAX_LEVEL = 60;
