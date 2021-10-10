@@ -171,9 +171,6 @@ For the salvage recipes, use these unlocks:
 <itemClass id="linenJunk" >
     <canBeScrapped result="linenScrap" />
 </itemClass>
-<itemClass id="threadJunk" >
-    <canBeScrapped result="linenThread" mean="0" sd="0.39" />
-</itemClass>
 <itemClass id="linenBack" >
     <canBeRepaired cost="linenCloth" tool="sewing" />
     <canBeScrapped result="linenScrap" mean="4" />

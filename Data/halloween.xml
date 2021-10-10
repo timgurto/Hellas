@@ -95,7 +95,7 @@ Mark graveyard on map: not hardcoded
 </recipe>
     <item id="halloweenSkeletonMat" name="Wandering Bone" class="boneJunk" sounds="bone" iconFile="bone" stackSize="10" />
     <item id="halloweenGhostMat" name="Jiggling Ectoplasm" class="magicJunk" sounds="meat" iconFile="fat" stackSize="10" />
-    <item id="halloweenMummyMat" name="Shriveled Bandage" class="threadJunk" sounds="fabric" iconFile="linenCloth" stackSize="10" />
+    <item id="halloweenMummyMat" name="Shriveled Bandage" class="linenJunk" sounds="fabric" iconFile="linenCloth" stackSize="10" />
     
 <item id="pumpkinPotion" name="Potion of Disguise" stackSize="5" sounds="ceramic"
     returnsOnCast="smallPot" castsSpellOnUse="randomHalloweenCostume" />
@@ -145,7 +145,6 @@ Mark graveyard on map: not hardcoded
     xDrawOffset="-7" yDrawOffset="-37" imageFile="skeleton"
     level="8" maxHealth="45" attack="9" attackTime="3000" >
     <collisionRect x="-6" y="-4" w="14" h="7" />
-    <loot id="bone" > <normal mean="0.8" sd="0.5" /> </loot>
     <loot id="halloweenSkeletonMat" chance="0.5" />
     <lootTable id="8mob" />
 </npcType>
@@ -153,8 +152,6 @@ Mark graveyard on map: not hardcoded
     xDrawOffset="-15" yDrawOffset="-37" imageFile="mummy"
     level="10" maxHealth="55" attack="5" attackTime="1500" >
     <collisionRect x="-7" y="-3" w="15" h="6" />
-    <loot id="linenThread" chance="0.1" />
-    <loot id="linenCloth" chance="0.01" />
     <loot id="halloweenMummyMat" chance="0.5" />
     <lootTable id="10mob" />
 </npcType>
