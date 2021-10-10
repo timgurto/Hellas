@@ -269,6 +269,55 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Swapping items preserves suffixes",
   }
 }
 
+TEST_CASE_METHOD(ServerAndClientWithData, "Taking items preserves suffixes",
+                 "[suffixes][containers]") {
+  GIVEN("the user has a sword with fire or water resist, and a sheath") {
+    useData(R"(
+      <suffixSet id="swordSuffixes" >
+        <suffix id="extraFireResist">
+          <stats fireResist="1" />
+        </suffix>
+        <suffix id="extraWaterResist">
+          <stats waterResist="1" />
+        </suffix>
+      </suffixSet>
+      <item id="sword" gearSlot="weapon" >
+        <randomSuffix fromSet="swordSuffixes" />
+      </item>
+      <objectType id="sheath">
+        <container slots="1" />
+      </objectType>
+    )");
+    const auto &sheath = server->addObject("sheath", {10, 10});
+    user->giveItem(&server->getFirstItem());
+    const auto &inventorySlot = user->inventory()[0];
+    const auto &containerSlot = sheath.container().at(0);
+    const auto chosenSuffix = inventorySlot.suffix();
+    INFO("Suffix on item when initially given: " << inventorySlot.suffix());
+
+    // For a number of samples
+    for (auto i = 0; i != 20; ++i) {
+      INFO("Correct suffix was applied " << i << " times before this failure.");
+
+      // When he puts the sword into the sheath
+      client->sendMessage(CL_SWAP_ITEMS,
+                          makeArgs(Serial::Inventory(), 0, sheath.serial(), 0));
+      WAIT_UNTIL(containerSlot.hasItem());
+      INFO("Suffix of item in sheath: " << sheath.container().at(0).suffix());
+      REQUIRE(containerSlot.suffix() == chosenSuffix);
+
+      // And when he takes it back out
+      client->sendMessage(CL_TAKE_ITEM, makeArgs(sheath.serial(), 0));
+      WAIT_UNTIL(inventorySlot.hasItem());
+      INFO("Suffix of item after moving to inventory: "
+           << inventorySlot.suffix());
+
+      // Then it has the same suffix
+      REQUIRE(inventorySlot.suffix() == chosenSuffix);
+    }
+  }
+}
+
 TEST_CASE("Items loaded from data have the correct suffix", "[suffixes]") {
   // Given shields have either a fire-resist or a water-resist suffix
   const auto data = R"(

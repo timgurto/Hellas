@@ -705,8 +705,9 @@ HANDLE_MESSAGE(CL_TAKE_ITEM) {
   if (!userHasPermissionToLoot) return;
 
   // Attempt to give item to user
-  size_t remainder = user.giveItem(
-      containerSlot.type(), containerSlot.quantity(), containerSlot.health());
+  size_t remainder =
+      user.giveItem(containerSlot.type(), containerSlot.quantity(),
+                    containerSlot.health(), containerSlot.suffix());
   if (remainder > 0) {
     containerSlot.setQuantity(remainder);
     sendMessage(user.socket(), WARNING_INVENTORY_FULL);
