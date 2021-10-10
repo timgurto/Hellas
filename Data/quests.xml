@@ -302,7 +302,7 @@
     <item id="whiteMushroomEat" name="White Mushroom" iconFile="mushroomWhite" castsSpellOnUse="eatWhiteMushroom" exclusiveToQuest="learnScholarBuilding2" />
     <spell id="eatRedMushroom" name="Eat red mushroom" customDescription="Eat mushroom" >
         <targets self="1" />
-        <function name="buff" s1="mushroomPoison" />
+        <function name="debuff" s1="mushroomPoison" />
     </spell>
     <buff id="mushroomPoison" name="Poisoned" icon="dripGreen" duration="11" school="earth"
         description="Taking damage over time.">
