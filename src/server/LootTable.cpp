@@ -31,9 +31,6 @@ void LootTable::addNestedLootTable(const LootTable &table) {
 }
 
 void LootTable::instantiate(Loot &loot, const User *killer) const {
-  if (!loot.empty()) {
-    SERVER_ERROR("Loot object provided was not empty");
-  }
   for (const auto entry : _entries) {
     auto pair = entry->instantiate();
     auto item = pair.first;
