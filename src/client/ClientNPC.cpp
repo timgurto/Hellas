@@ -74,6 +74,7 @@ bool ClientNPC::shouldDrawName() const {
 bool ClientNPC::addClassSpecificStuffToWindow() {
   if (this->owner().type == Owner::ALL_HAVE_ACCESS) return false;
   if (!userHasAccess()) return false;
+  if (isDead()) return false;
 
   px_t x = BUTTON_GAP, y = _window->contentHeight(),
        newWidth = _window->contentWidth();
