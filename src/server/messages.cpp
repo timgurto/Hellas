@@ -288,6 +288,38 @@ HANDLE_MESSAGE(CL_GATHER) {
   user.beginGathering(ent, toolSpeed);
 }
 
+HANDLE_MESSAGE(CL_DESTROY_OBJECT) {
+  auto serial = Serial{};
+  READ_ARGS(serial);
+
+  if (user.isStunned()) RETURN_WITH(WARNING_STUNNED)
+  user.cancelAction();
+  auto *ent = _entities.find(serial);
+  if (!isEntityInRange(client, user, ent)) RETURN_WITH(WARNING_TOO_FAR)
+  if (!ent->type()) {
+    SERVER_ERROR("Can't demolish object with no type");
+    return;
+  }
+
+  auto userHasPermission = bool{};
+  if (ent->classTag() == 'n') {
+    auto *npc = dynamic_cast<NPC *>(ent);
+    userHasPermission = npc->permissions.canUserDemolish(user.name());
+  } else {
+    const auto *obj = dynamic_cast<Object *>(ent);
+    userHasPermission = obj->permissions.canUserDemolish(user.name());
+  }
+  if (!userHasPermission) RETURN_WITH(WARNING_NO_PERMISSION)
+
+  // Check that it isn't an occupied vehicle
+  if (ent->classTag() == 'v' &&
+      !dynamic_cast<const Vehicle *>(ent)->driver().empty())
+    RETURN_WITH(WARNING_VEHICLE_OCCUPIED)
+  ent->kill();
+
+  ent->setShorterCorpseTimerForFriendlyKill();
+}
+
 HANDLE_MESSAGE(CL_TRADE) {
   auto serial = Serial{};
   auto slot = size_t{0};
@@ -1468,6 +1500,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_CONSTRUCT)
       SEND_MESSAGE_TO_HANDLER(CL_CONSTRUCT_FOR_CITY)
       SEND_MESSAGE_TO_HANDLER(CL_GATHER)
+      SEND_MESSAGE_TO_HANDLER(CL_DESTROY_OBJECT)
       SEND_MESSAGE_TO_HANDLER(CL_TRADE)
       SEND_MESSAGE_TO_HANDLER(CL_DROP)
       SEND_MESSAGE_TO_HANDLER(CL_PICK_UP_DROPPED_ITEM)
@@ -1541,39 +1574,6 @@ void Server::handleBufferedMessages(const Socket &client,
         user->beginDeconstructing(*obj);
         sendMessage(client, {SV_ACTION_STARTED,
                              obj->deconstruction().timeToDeconstruct()});
-        break;
-      }
-
-      case CL_DESTROY_OBJECT: {
-        Serial serial;
-        iss >> serial >> del;
-        if (del != MSG_END) return;
-        if (user->isStunned()) BREAK_WITH(WARNING_STUNNED)
-        user->cancelAction();
-        auto *ent = _entities.find(serial);
-        if (!isEntityInRange(client, *user, ent)) BREAK_WITH(WARNING_TOO_FAR)
-        if (!ent->type()) {
-          SERVER_ERROR("Can't demolish object with no type");
-          break;
-        }
-
-        auto userHasPermission = bool{};
-        if (ent->classTag() == 'n') {
-          auto *npc = dynamic_cast<NPC *>(ent);
-          userHasPermission = npc->permissions.canUserDemolish(user->name());
-        } else {
-          const auto *obj = dynamic_cast<Object *>(ent);
-          userHasPermission = obj->permissions.canUserDemolish(user->name());
-        }
-        if (!userHasPermission) BREAK_WITH(WARNING_NO_PERMISSION)
-
-        // Check that it isn't an occupied vehicle
-        if (ent->classTag() == 'v' &&
-            !dynamic_cast<const Vehicle *>(ent)->driver().empty())
-          BREAK_WITH(WARNING_VEHICLE_OCCUPIED)
-
-        ent->kill();
-        ent->setShorterCorpseTimerForFriendlyKill();
         break;
       }
 
