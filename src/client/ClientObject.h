@@ -112,6 +112,7 @@ class ClientObject : public Sprite, public ClientCombatant {
     _gatherSoundTimer = 0;
   }
   bool beingGathered() const { return _beingGathered; }
+  bool canGather() const;
   const ItemSet &constructionMaterials() const {
     return _constructionMaterials;
   }

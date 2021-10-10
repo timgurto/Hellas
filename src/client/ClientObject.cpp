@@ -99,6 +99,13 @@ bool ClientObject::isOwnedByCity(const std::string &cityName) const {
   return _owner.type == Owner::CITY && _owner.name == cityName;
 }
 
+bool ClientObject::canGather() const {
+  if (isDead()) return false;
+  if (!userHasAccess()) return false;
+  if (isBeingConstructed()) return false;
+  return objectType()->canGather(_client.gameData.quests);
+}
+
 void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg) {
   _merchantSlots[i] = mSlotArg;
   ClientMerchantSlot &mSlot = _merchantSlots[i];
@@ -233,17 +240,12 @@ void ClientObject::onRightClick() {
   }
 
   // Gatherable
-  const ClientObjectType &objType = *objectType();
-
-  const auto canGather = isAlive() &&
-                         objType.canGather(_client.gameData.quests) &&
-                         userHasAccess() && !isBeingConstructed();
-
-  if (canGather) {
+  if (canGather()) {
     const auto shouldShowWindowInsteadOfGathering = _client.isShiftPressed();
     if (!shouldShowWindowInsteadOfGathering) {
       _client.sendMessage({CL_GATHER, _serial});
-      _client.prepareAction(std::string("Gathering from ") + objType.name());
+      _client.prepareAction(std::string("Gathering from ") +
+                            objectType()->name());
       return;
     }
   }
@@ -962,10 +964,9 @@ const Texture &ClientObject::cursor() const {
     if (isBeingConstructed()) return Client::images.cursorContainer;
     if (completableQuests().size() > 0) return Client::images.cursorEndsQuest;
     if (startsQuests().size() > 0) return Client::images.cursorStartsQuest;
-    if (ot.canGather(_client.gameData.quests) && isAlive()) {
+    if (canGather())
       return Client::isShiftPressed() ? Client::images.cursorNormal
                                       : Client::images.cursorGather;
-    }
     if (ot.hasAction()) return Client::images.cursorContainer;
     if (classTag() == 'v') return Client::images.cursorVehicle;
     if (ot.containerSlots() > 0) return Client::images.cursorContainer;
@@ -1068,40 +1069,40 @@ void ClientObject::createRegularTooltip() const {
   if (addClassSpecificStuffToTooltip(tooltip))
     hasGapBeenDrawnForGeneralContent = true;
 
-  if (userHasAccess()) {
-    if (ot.canGather(_client.gameData.quests) && isAlive()) {
-      includeOneGapBeforeAllGeneralContent();
+  if (canGather()) {
+    includeOneGapBeforeAllGeneralContent();
 
-      std::string text = "Gatherable";
-      if (!ot.gatherReq().empty())
-        text += " (requires " + _client.gameData.tagName(ot.gatherReq()) + ")";
-      tooltip.addLine(text);
-      tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
-      if (userHasDemolishAccess())
-        tooltip.addLine("Shift-right-click to open window");
-      tooltip.addLine("Right-click to gather"s);
+    std::string text = "Gatherable";
+    if (!ot.gatherReq().empty())
+      text += " (requires " + _client.gameData.tagName(ot.gatherReq()) + ")";
+    tooltip.addLine(text);
+    tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
+    if (userHasDemolishAccess())
+      tooltip.addLine("Shift-right-click to open window");
+    tooltip.addLine("Right-click to gather"s);
 
-      // Unlocks from gathering
-      auto bestUnlockChance = 0.0;
-      auto bestEffectInfo = Unlocks::EffectInfo{};
-      for (auto &pair : objectType()->gatherChances()) {
-        const auto &itemID = pair.first;
-        auto gatherChance = pair.second;
-        auto unlockInfo =
-            _client.gameData.unlocks.getEffectInfo({Unlocks::GATHER, itemID});
-        auto unlockChance = gatherChance * unlockInfo.chance;
+    // Unlocks from gathering
+    auto bestUnlockChance = 0.0;
+    auto bestEffectInfo = Unlocks::EffectInfo{};
+    for (auto &pair : objectType()->gatherChances()) {
+      const auto &itemID = pair.first;
+      auto gatherChance = pair.second;
+      auto unlockInfo =
+          _client.gameData.unlocks.getEffectInfo({Unlocks::GATHER, itemID});
+      auto unlockChance = gatherChance * unlockInfo.chance;
 
-        if (unlockChance > bestUnlockChance) {
-          bestUnlockChance = unlockChance;
-          bestEffectInfo = unlockInfo;
-        }
-      }
-      if (bestEffectInfo.hasEffect) {
-        tooltip.setColor(bestEffectInfo.color);
-        tooltip.addLine(bestEffectInfo.message);
+      if (unlockChance > bestUnlockChance) {
+        bestUnlockChance = unlockChance;
+        bestEffectInfo = unlockInfo;
       }
     }
+    if (bestEffectInfo.hasEffect) {
+      tooltip.setColor(bestEffectInfo.color);
+      tooltip.addLine(bestEffectInfo.message);
+    }
+  }
 
+  if (userHasAccess()) {
     if (ot.canDeconstruct()) {
       includeOneGapBeforeAllGeneralContent();
       tooltip.addLine("Can pick up as item");
