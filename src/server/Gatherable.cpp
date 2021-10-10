@@ -48,6 +48,8 @@ void Gatherable::populateContents() {
   parent().type()->yield.instantiate(_contents);
 }
 
+void Gatherable::clearContents() { _contents.clear(); }
+
 const ServerItem *Gatherable::chooseRandomItem() const {
   if (_contents.isEmpty()) {
     SERVER_ERROR("Can't gather from an empty object");

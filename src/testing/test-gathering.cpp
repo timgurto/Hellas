@@ -138,3 +138,29 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Gathering from an NPC",
     }
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Dead objects can't be gathered from",
+                 "[gathering][death]") {
+  GIVEN("a tree that yields wood") {
+    useData(R"(
+      <item id="wood" />
+      <objectType id="tree" >
+        <yield id="wood" />
+      </objectType>
+    )");
+    auto &tree = server->addObject("tree", {10, 10});
+
+    WHEN("the tree dies") {
+      tree.kill();
+
+      AND_WHEN("the user tries to gather from it") {
+        client->sendMessage(CL_GATHER, makeArgs(tree.serial()));
+
+        THEN("he receives nothing") {
+          REPEAT_FOR_MS(100);
+          CHECK_FALSE(user->inventory(0).hasItem());
+        }
+      }
+    }
+  }
+}

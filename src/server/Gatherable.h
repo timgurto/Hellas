@@ -12,6 +12,7 @@ class Gatherable : EntityComponent {
   void setContents(const ItemSet &contents);
   void populateContents();
   bool hasItems() const { return !_contents.isEmpty(); }
+  void clearContents();
 
   // Randomly choose an item type for the user to gather.
   const ServerItem *chooseRandomItem() const;

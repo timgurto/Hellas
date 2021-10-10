@@ -78,6 +78,7 @@ void Object::onDeath() {
   Server &server = *Server::_instance;
   server.forceAllToUntarget(*this);
 
+  if (gatherable.hasItems()) gatherable.clearContents();
   populateLoot();
 
   if (hasContainer()) container().removeAll();

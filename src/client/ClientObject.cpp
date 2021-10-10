@@ -235,7 +235,8 @@ void ClientObject::onRightClick() {
   // Gatherable
   const ClientObjectType &objType = *objectType();
 
-  const auto canGather = objType.canGather(_client.gameData.quests) &&
+  const auto canGather = isAlive() &&
+                         objType.canGather(_client.gameData.quests) &&
                          userHasAccess() && !isBeingConstructed();
 
   if (canGather) {
@@ -961,7 +962,7 @@ const Texture &ClientObject::cursor() const {
     if (isBeingConstructed()) return Client::images.cursorContainer;
     if (completableQuests().size() > 0) return Client::images.cursorEndsQuest;
     if (startsQuests().size() > 0) return Client::images.cursorStartsQuest;
-    if (ot.canGather(_client.gameData.quests)) {
+    if (ot.canGather(_client.gameData.quests) && isAlive()) {
       return Client::isShiftPressed() ? Client::images.cursorNormal
                                       : Client::images.cursorGather;
     }
@@ -1068,7 +1069,7 @@ void ClientObject::createRegularTooltip() const {
     hasGapBeenDrawnForGeneralContent = true;
 
   if (userHasAccess()) {
-    if (ot.canGather(_client.gameData.quests)) {
+    if (ot.canGather(_client.gameData.quests) && isAlive()) {
       includeOneGapBeforeAllGeneralContent();
 
       std::string text = "Gatherable";
