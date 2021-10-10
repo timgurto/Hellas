@@ -541,8 +541,9 @@ class Client : public TextEntryManager {
   void handleInput(double delta);
   void handleLoginInput(double delta);
   void onMouseMove();
-  bool isCtrlPressed() const;
-  bool isAltPressed() const;
+  static bool isCtrlPressed();
+  static bool isAltPressed();
+  static bool isShiftPressed();
 
   void drawLoadingScreen(const std::string &msg) const;
   mutable int _loadingScreenProgress{0};

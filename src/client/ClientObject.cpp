@@ -237,10 +237,14 @@ void ClientObject::onRightClick() {
 
   const auto canGather = objType.canGather(_client.gameData.quests) &&
                          userHasAccess() && !isBeingConstructed();
+
   if (canGather) {
-    _client.sendMessage({CL_GATHER, _serial});
-    _client.prepareAction(std::string("Gathering from ") + objType.name());
-    return;
+    const auto shouldShowWindowInsteadOfGathering = _client.isShiftPressed();
+    if (!shouldShowWindowInsteadOfGathering) {
+      _client.sendMessage({CL_GATHER, _serial});
+      _client.prepareAction(std::string("Gathering from ") + objType.name());
+      return;
+    }
   }
 
   // Bring existing window to front

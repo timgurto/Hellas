@@ -556,17 +556,24 @@ void Client::handleInput(double delta) {
   }
 }
 
-bool Client::isCtrlPressed() const {
-  static const auto *keyboardState = SDL_GetKeyboardState(nullptr);
+bool Client::isCtrlPressed() {
+  const auto *keyboardState = SDL_GetKeyboardState(nullptr);
   if (keyboardState[SDL_SCANCODE_LCTRL] == SDL_PRESSED) return true;
   if (keyboardState[SDL_SCANCODE_RCTRL] == SDL_PRESSED) return true;
   return false;
 }
 
-bool Client::isAltPressed() const {
-  static const auto *keyboardState = SDL_GetKeyboardState(nullptr);
+bool Client::isAltPressed() {
+  const auto *keyboardState = SDL_GetKeyboardState(nullptr);
   if (keyboardState[SDL_SCANCODE_LALT] == SDL_PRESSED) return true;
   if (keyboardState[SDL_SCANCODE_RALT] == SDL_PRESSED) return true;
+  return false;
+}
+
+bool Client::isShiftPressed() {
+  const auto *keyboardState = SDL_GetKeyboardState(nullptr);
+  if (keyboardState[SDL_SCANCODE_LSHIFT] == SDL_PRESSED) return true;
+  if (keyboardState[SDL_SCANCODE_RSHIFT] == SDL_PRESSED) return true;
   return false;
 }
 
