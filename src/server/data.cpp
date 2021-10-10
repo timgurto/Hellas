@@ -124,7 +124,7 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     xr.findAttr(slotElem, "health", health);
     health = min(health, item->maxHealth());
 
-    user.inventory(slot) = ServerItem::Instance::LoadFromFile(
+    user.inventory(slot) = ServerItem::Instance::CopyCompletelyFromExisting(
         item, ServerItem::Instance::ReportingInfo::UserInventory(&user, slot),
         health, suffix, qty);
     if (isSoulbound) user.inventory(slot).onEquip();
@@ -152,7 +152,7 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     xr.findAttr(slotElem, "health", health);
     health = min(health, item->maxHealth());
 
-    user.gear(slot) = ServerItem::Instance::LoadFromFile(
+    user.gear(slot) = ServerItem::Instance::CopyCompletelyFromExisting(
         item, ServerItem::Instance::ReportingInfo::UserGear(&user, slot),
         health, suffix, qty);
     user.gear(slot).onEquip();
@@ -554,7 +554,7 @@ void Server::loadEntities(XmlReader &xr,
       health = min(health, item.maxHealth());
 
       auto &invSlot = obj.container().at(n);
-      invSlot = ServerItem::Instance::LoadFromFile(
+      invSlot = ServerItem::Instance::CopyCompletelyFromExisting(
           &item, ServerItem::Instance::ReportingInfo::InObjectContainer(),
           health, suffix, q);
 

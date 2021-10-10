@@ -42,9 +42,11 @@ class ServerItem : public Item {
 
     Instance() = default;
     Instance(const ServerItem *type, ReportingInfo info, size_t quantity);
-    static Instance LoadFromFile(const ServerItem *type, ReportingInfo info,
-                                 Hitpoints health, std::string suffix,
-                                 size_t quantity) {
+    static Instance CopyCompletelyFromExisting(const ServerItem *type,
+                                               ReportingInfo info,
+                                               Hitpoints health,
+                                               std::string suffix,
+                                               size_t quantity) {
       return {type, info, health, suffix, quantity};
     }
 
