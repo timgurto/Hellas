@@ -35,6 +35,7 @@ class NPC : public Entity, public QuestNode {
   bool shouldBeIgnoredByAIProximityAggro() const override;
   bool canBeAttackedBy(const User &user) const override;
   bool canBeAttackedBy(const NPC &npc) const override;
+  bool canBeDamagedAndWarn() const override;
   bool canAttack(const Entity &other) const override;
   bool areOverlapsAllowedWith(const Entity &rhs) const;
   bool canBeHealedBySpell() const override { return true; }

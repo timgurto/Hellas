@@ -60,6 +60,15 @@ bool NPC::canBeAttackedBy(const NPC &npc) const {
   return server.wars().isAtWar(thisOwner, otherOwner);
 }
 
+bool NPC::canBeDamagedAndWarn() const {
+  if (ai.state == AI::RETREAT) {
+    Server::instance().broadcastToArea(
+        location(), {SV_NPC_EVADED_ATTACK, makeArgs(serial())});
+    return false;
+  }
+  return true;
+}
+
 bool NPC::canAttack(const Entity &other) const {
   return other.canBeAttackedBy(*this);
 }

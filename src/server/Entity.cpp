@@ -183,6 +183,7 @@ void Entity::fillHealthAndEnergy() {
 }
 
 void Entity::reduceHealth(int damage) {
+  if (!canBeDamagedAndWarn()) return;
   if (damage == 0) return;
   if (damage >= static_cast<int>(_health)) {
     startCorpseTimer();

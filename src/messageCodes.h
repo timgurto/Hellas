@@ -564,6 +564,10 @@ enum MessageCode {
   // An object is not being gathered from
   SV_OBJECT_NOT_BEING_GATHERED,
 
+  // An NPC resisted an attack because it is retreating
+  // Arguments: serial
+  SV_NPC_EVADED_ATTACK,
+
   // A vehicle has a driver.
   // Arguments: serial, username
   SV_VEHICLE_HAS_DRIVER,

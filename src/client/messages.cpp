@@ -1224,6 +1224,18 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
+      case SV_NPC_EVADED_ATTACK: {
+        auto serial = Serial{};
+        singleMsg >> serial >> del;
+        if (del != MSG_END) break;
+
+        auto it = _objects.find(serial);
+        if (it == _objects.end()) return;
+
+        addFloatingCombatText("Evade", it->second->location(),
+                              Color::FLOATING_MISS);
+      }
+
       case SV_PLAYER_ENERGY: {
         std::string username;
         auto newEnergy = Energy{};
