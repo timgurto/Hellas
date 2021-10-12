@@ -17,7 +17,7 @@ class AI {
 
   AI(class NPC &owner);
 
-  enum State { IDLE, CHASE, ATTACK, PET_FOLLOW_OWNER } state{IDLE};
+  enum State { IDLE, CHASE, ATTACK, PET_FOLLOW_OWNER, RETREAT } state{IDLE};
 
   enum PetOrder {
     ORDER_TO_STAY,
@@ -44,7 +44,7 @@ class AI {
   bool targetHasMoved() const;
   MapRect getTargetFootprint() const;
   double howCloseShouldPathfindingGet() const;
-  void returnToSpawnPoint();
+  void pickRandomSpotNearSpawnPoint();
 
   class Path {
    public:

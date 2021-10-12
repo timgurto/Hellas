@@ -28,6 +28,15 @@ void AI::transitionIfNecessary() {
 
   auto distToTarget = _owner.target() ? distance(_owner, *_owner.target()) : 0;
 
+  auto findNewTargetOrRetreat = [&]() {
+    _owner._threatTable.forgetCurrentTarget();
+    _owner.target(_owner._threatTable.getTarget());
+    if (_owner.target())
+      state = CHASE;
+    else
+      state = RETREAT;
+  };
+
   switch (state) {
     case IDLE:
       // There's a target to attack
@@ -107,15 +116,9 @@ void AI::transitionIfNecessary() {
     }
 
     case CHASE:
-      // Target has disappeared
-      if (!_owner.target()) {
-        state = IDLE;
-        break;
-      }
-
-      // Target is dead
-      if (_owner.target()->isDead()) {
-        state = IDLE;
+      // Target's gone
+      if (!_owner.target() || _owner.target()->isDead()) {
+        findNewTargetOrRetreat();
         break;
       }
 
@@ -123,9 +126,7 @@ void AI::transitionIfNecessary() {
       {
         auto distFromHome = distance(_homeLocation, _owner.location());
         if (distFromHome > _owner.npcType()->maxDistanceFromHome()) {
-          state = IDLE;
-          _activePath.clear();
-          _owner.teleportTo(_homeLocation);
+          state = RETREAT;
           break;
         }
       }
@@ -133,8 +134,7 @@ void AI::transitionIfNecessary() {
       // Target has run out of range: give up
       if (!_owner.npcType()->pursuesEndlessly() &&
           distToTarget > PURSUIT_RANGE) {
-        state = IDLE;
-        _owner.tagger.clear();
+        findNewTargetOrRetreat();
         break;
       }
 
@@ -147,22 +147,16 @@ void AI::transitionIfNecessary() {
       // Previous pathfinding attempt failed
       if (_failedToFindPath) {
         _failedToFindPath = false;
-        state = IDLE;
+        state = RETREAT;
         break;
       }
 
       break;
 
     case AI::ATTACK:
-      // Target has disappeared
-      if (_owner.target() == nullptr) {
-        state = IDLE;
-        break;
-      }
-
-      // Target is dead
-      if (_owner.target()->isDead()) {
-        state = IDLE;
+      // Target's gone
+      if (!_owner.target() || _owner.target()->isDead()) {
+        findNewTargetOrRetreat();
         break;
       }
 
@@ -174,6 +168,14 @@ void AI::transitionIfNecessary() {
       }
 
       break;
+
+    case AI::RETREAT:
+      // Previous pathfinding attempt failed: pick new location and try again
+      if (_failedToFindPath) {
+        _failedToFindPath = false;
+        pickRandomSpotNearSpawnPoint();
+        break;
+      }
   }
 }
 
@@ -181,35 +183,25 @@ void AI::onTransition(State previousState) {
   auto previousLocation = _owner.location();
 
   switch (state) {
-    case IDLE: {
-      const auto targetWasLost =
-          previousState == CHASE || previousState == ATTACK;
-      if (!targetWasLost) break;
+    case CHASE:
+    case PET_FOLLOW_OWNER:
+      calculatePathInSeparateThread();
+      break;
 
-      // Look for new target
-      _owner._threatTable.forgetCurrentTarget();
-      _owner.target(_owner._threatTable.getTarget());
-      if (_owner.target()) break;
-
-      // No target; time to go home.
-
+    case RETREAT: {
       _owner.target(nullptr);
       _owner._threatTable.clear();
       _owner.tagger.clear();
 
       const auto isPetAndShouldFollow = _owner.permissions.hasOwner();
-      if (isPetAndShouldFollow) return;
-
-      returnToSpawnPoint();
-      _owner.restoreHealthAndBroadcastTo(previousLocation);
-
+      if (isPetAndShouldFollow)
+        break;
+      else {
+        pickRandomSpotNearSpawnPoint();
+        _owner.restoreHealthAndBroadcastTo(previousLocation);
+      }
       break;
     }
-
-    case CHASE:
-    case PET_FOLLOW_OWNER:
-      calculatePathInSeparateThread();
-      break;
   }
 }
 
@@ -220,7 +212,8 @@ void AI::act() {
       break;
 
     case PET_FOLLOW_OWNER:
-    case CHASE: {
+    case CHASE:
+    case RETREAT: {
       if (!_activePath.exists()) {
         calculatePathInSeparateThread();
         break;
@@ -494,6 +487,8 @@ MapRect AI::getTargetFootprint() const {
     return _owner.target()->collisionRect();
   if (state == AI::PET_FOLLOW_OWNER && _owner.followTarget())
     return _owner.followTarget()->collisionRect();
+  if (state == AI::RETREAT)
+    return _homeLocation + _owner.type()->collisionRect();
 
   SERVER_ERROR("Pathfinding while AI is in an inappropriate state");
   return {};
@@ -502,20 +497,21 @@ MapRect AI::getTargetFootprint() const {
 double AI::howCloseShouldPathfindingGet() const {
   if (state == AI::CHASE) return _owner.attackRange();
   if (state == AI::PET_FOLLOW_OWNER) return AI::FOLLOW_DISTANCE;
+  if (state == AI::RETREAT) return 0;
 
   SERVER_ERROR("Pathfinding while AI is in an inappropriate state");
   return 0;
 }
 
-void AI::returnToSpawnPoint() {
+void AI::pickRandomSpotNearSpawnPoint() {
   if (!_owner.spawner()) return;
 
-  const auto ATTEMPTS = 20;
+  const auto ATTEMPTS = 50;
   for (auto i = 0; i != ATTEMPTS; ++i) {
     auto dest = _owner.spawner()->getRandomPoint();
     if (Server::instance().isLocationValid(dest, _owner)) {
       _activePath.clear();
-      _owner.teleportTo(dest);
+      _homeLocation = dest;
       return;
     }
   }
