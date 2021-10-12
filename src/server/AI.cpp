@@ -170,6 +170,13 @@ void AI::transitionIfNecessary() {
       break;
 
     case AI::RETREAT:
+      // Reached target
+      const auto CLOSE_ENOUGH = Server::ACTION_DISTANCE;
+      if (distance(_owner.location(), _homeLocation) <= CLOSE_ENOUGH) {
+        state = IDLE;
+        break;
+      }
+
       // Previous pathfinding attempt failed: pick new location and try again
       if (_failedToFindPath) {
         _failedToFindPath = false;
