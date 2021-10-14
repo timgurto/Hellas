@@ -873,11 +873,17 @@ void User::update(ms_t timeElapsed) {
       ProgressLock::triggerUnlocks(*this, ProgressLock::RECIPE,
                                    _actionProperties.recipe);
 
-      --_actionProperties.quantityToCraft;
-      if (_actionProperties.quantityToCraft >= 1) {
-        beginCrafting(*_actionProperties.recipe, 1.0,
-                      _actionProperties.quantityToCraft);
+      const auto quantityRemaining = _actionProperties.quantityToCraft - 1;
+      if (quantityRemaining >= 1) {
+        sendMessage(SV_ACTION_FINISHED);
+        finishAction();
+
+        tryCrafting(*_actionProperties.recipe, quantityRemaining);
+
+        Entity::update(timeElapsed);
+        return;
       }
+
       break;
     }
 
@@ -949,8 +955,7 @@ void User::update(ms_t timeElapsed) {
       SERVER_ERROR("Unhandled message");
   }
 
-  if (_actionProperties.quantityToCraft == 0 &&
-      _action != ATTACK) {  // ATTACK is a repeating action.
+  if (_action != ATTACK) {  // ATTACK is a repeating action.
     sendMessage(SV_ACTION_FINISHED);
     finishAction();
   }

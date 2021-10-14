@@ -510,12 +510,37 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Crafting quantity", "[crafting]") {
 
   SECTION("Tools are checked for each crafting action") {
     GIVEN("ideas take 100ms and inspiration") {
-      AND_GIVEN("the user has inspiration") {
+      useData(R"(
+        <item id="idea" stackSize="10" />
+        <recipe id="idea" time="100" >
+          <tool class="inspiration" />
+        </recipe>
+        <objectType id="flower" destroyIfUsedAsTool="1" >
+          <tag name="inspiration" />
+        </objectType>
+      )");
+
+      AND_GIVEN(
+          "there is a flower nearby that will get destroyed when used as "
+          "inspiration") {
+        server->addObject("flower", {10, 15});
+
         WHEN("he tries to come up with 2 ideas") {
-          AND_WHEN("50ms elapses (i.e., the first idea is still in progress") {
-            AND_WHEN("the inspiration disappears") {
-              AND_WHEN("another 200ms elapses (enough for both ideas)") {
-                THEN("he has only one idea") {}
+          client->sendMessage(CL_CRAFT, makeArgs("idea", 2));
+
+          AND_WHEN("150ms elapses") {
+            REPEAT_FOR_MS(150);
+
+            THEN("he has one idea") {
+              const auto &invSlot = user->inventory(0);
+              WAIT_UNTIL(invSlot.quantity() == 1);
+
+              AND_WHEN("another 100ms elapses") {
+                REPEAT_FOR_MS(100);
+
+                THEN("he still has only one idea") {
+                  WAIT_UNTIL(invSlot.quantity() == 1);
+                }
               }
             }
           }
@@ -529,5 +554,3 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Crafting quantity", "[crafting]") {
 // Display number left to craft in client (actual number,
 // even if less than the button pressed.  Including for "infinite")
 // Add buttons to crafting window
-// Handle tool breaking during first craft
-// Handle speed change from the above
