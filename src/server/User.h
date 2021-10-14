@@ -59,7 +59,7 @@ class User : public Object {  // TODO: Don't inherit from Object
     // Information used when action completes:
     Entity *object{nullptr};  // Gather, deconstruct
     const SRecipe *recipe{nullptr};
-    size_t quantityToCraft{0};
+    int quantityToCraft{0};
     const ObjectType *objectToConstruct{nullptr};
     size_t slotToConstructFrom{INVENTORY_SIZE};
     MapPoint constructionLocation{0, 0};
@@ -283,7 +283,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   void tryToConstructInner(const ObjectType &type, const MapPoint &location,
                            Permissions::Owner::Type owner,
                            size_t slot = INVENTORY_SIZE);
-  void tryCrafting(const SRecipe &recipe, size_t quantity);
+  void tryCrafting(const SRecipe &recipe, int quantity);
 
   // Whether the user has enough materials to craft a recipe
   bool hasItems(const ItemSet &items) const;

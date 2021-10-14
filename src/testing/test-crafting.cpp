@@ -474,8 +474,19 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Crafting quantity", "[crafting]") {
       client->sendMessage(CL_CRAFT, makeArgs("bread", 2));
 
       THEN("he gets 2 bread") {
-        const auto &invSlot = user->inventory(0);
-        WAIT_UNTIL(invSlot.quantity() == 2);
+        const auto &invSlot0 = user->inventory(0);
+        WAIT_UNTIL(invSlot0.quantity() == 2);
+      }
+    }
+
+    SECTION("No integer underflow") {
+      WHEN("the user sends a craft message with quantity -1") {
+        client->sendMessage(CL_CRAFT, makeArgs("bread", -1));
+
+        THEN("his inventory is not full of bread (it may have 1)") {
+          REPEAT_FOR_MS(100);
+          CHECK_FALSE(user->inventory(1).hasItem());
+        }
       }
     }
   }
@@ -550,7 +561,6 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Crafting quantity", "[crafting]") {
   }
 }
 
-// 0 for infinite
 // Display number left to craft in client (actual number,
 // even if less than the button pressed.  Including for "infinite")
 // Add buttons to crafting window

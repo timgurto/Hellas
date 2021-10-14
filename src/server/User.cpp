@@ -520,7 +520,7 @@ void User::tryToConstructInner(const ObjectType &objType,
   sendMessage({SV_ACTION_STARTED, objType.constructionTime() / toolSpeed});
 }
 
-void User::tryCrafting(const SRecipe &recipe, size_t quantity) {
+void User::tryCrafting(const SRecipe &recipe, int quantity) {
   if (isStunned()) RETURN_WITH(WARNING_STUNNED)
   if (!knowsRecipe(recipe.id())) RETURN_WITH(ERROR_UNKNOWN_RECIPE)
   if (!hasItems(recipe.materials())) RETURN_WITH(WARNING_NEED_MATERIALS)
