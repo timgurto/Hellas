@@ -109,6 +109,7 @@ class TestClient {
   const CQuest &getFirstQuest();
   CDroppedItem &getFirstDroppedItem();
   const ClientItem &getFirstItem() const;
+  const CRecipe &getFirstRecipe() const;
 
   const CQuest &findQuest(std::string id) const;
 
@@ -129,6 +130,7 @@ class TestClient {
   void simulateKeypress(SDL_Scancode key);
   bool isKeyPressed(SDL_Scancode key) const;
   void sendLocationUpdatesInstantly();
+  void startCrafting(const CRecipe *recipe);
 
  private:
   Client *_client;

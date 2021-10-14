@@ -241,6 +241,12 @@ const ClientItem &TestClient::getFirstItem() const {
   return items.begin()->second;
 }
 
+const CRecipe &TestClient::getFirstRecipe() const {
+  auto &items = _client->gameData.recipes;
+  REQUIRE(!items.empty());
+  return *items.begin();
+}
+
 const CQuest &TestClient::findQuest(std::string id) const {
   return quests().find(id)->second;
 }
@@ -270,4 +276,9 @@ bool TestClient::isKeyPressed(SDL_Scancode key) const {
 
 void TestClient::sendLocationUpdatesInstantly() {
   _client->TIME_BETWEEN_LOCATION_UPDATES = 0;
+}
+
+void TestClient::startCrafting(const CRecipe *recipe) {
+  _client->_activeRecipe = recipe;
+  _client->startCrafting();
 }

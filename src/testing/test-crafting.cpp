@@ -469,14 +469,13 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Crafting quantity", "[crafting]") {
       <item id="bread" stackSize="10" />
       <recipe id="bread"/>
     )");
+    const auto &invSlot0 = user->inventory(0);
+    const auto &invSlot1 = user->inventory(1);
 
     WHEN("the user crafts 2 with one message") {
       client->sendMessage(CL_CRAFT, makeArgs("bread", 2));
 
-      THEN("he gets 2 bread") {
-        const auto &invSlot0 = user->inventory(0);
-        WAIT_UNTIL(invSlot0.quantity() == 2);
-      }
+      THEN("he gets 2 bread") { WAIT_UNTIL(invSlot0.quantity() == 2); }
     }
 
     SECTION("Crafting 'infinite' times") {
@@ -484,9 +483,16 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Crafting quantity", "[crafting]") {
         client->sendMessage(CL_CRAFT, makeArgs("bread", 0));
 
         THEN("his inventory gets filled up with bread") {
-          const auto &invSlot1 = user->inventory(1);
           WAIT_UNTIL(invSlot1.hasItem());
         }
+      }
+    }
+
+    SECTION("Ordering from earlier in the client") {
+      WHEN("the client's startCrafting() is called") {
+        client->startCrafting(&client->getFirstRecipe());
+
+        THEN("the user gets bread") { WAIT_UNTIL(invSlot0.hasItem()); }
       }
     }
 
@@ -571,7 +577,3 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Crafting quantity", "[crafting]") {
     }
   }
 }
-
-// Display number left to craft in client (actual number,
-// even if less than the button pressed.  Including for "infinite")
-// Add buttons to crafting window
