@@ -479,6 +479,17 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Crafting quantity", "[crafting]") {
       }
     }
 
+    SECTION("Crafting 'infinite' times") {
+      WHEN("the user sends a craft message with quantity 0") {
+        client->sendMessage(CL_CRAFT, makeArgs("bread", 0));
+
+        THEN("his inventory gets filled up with bread") {
+          const auto &invSlot1 = user->inventory(1);
+          WAIT_UNTIL(invSlot1.hasItem());
+        }
+      }
+    }
+
     SECTION("No integer underflow") {
       WHEN("the user sends a craft message with quantity -1") {
         client->sendMessage(CL_CRAFT, makeArgs("bread", -1));
