@@ -507,12 +507,25 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Crafting quantity", "[crafting]") {
       }
     }
   }
+
+  SECTION("Tools are checked for each crafting action") {
+    GIVEN("ideas take 100ms and inspiration") {
+      AND_GIVEN("the user has inspiration") {
+        WHEN("he tries to come up with 2 ideas") {
+          AND_WHEN("50ms elapses (i.e., the first idea is still in progress") {
+            AND_WHEN("the inspiration disappears") {
+              AND_WHEN("another 200ms elapses (enough for both ideas)") {
+                THEN("he has only one idea") {}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
-// Each item is given as it's made
-// Remove the right number of materials
 // 0 for infinite
-// Stop when out of space or materials, even if quantity not hit
 // Display number left to craft in client (actual number,
 // even if less than the button pressed.  Including for "infinite")
 // Add buttons to crafting window
