@@ -1041,42 +1041,36 @@ TEST_CASE("Quests give XP", "[quests][leveling]") {
   }
 }
 
-TEST_CASE("Fetch quests", "[quests][inventory]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Fetch quests",
+                 "[quests][inventory]") {
   GIVEN("a fetch quest") {
-    auto data = R"(
+    useData(R"(
       <objectType id="A" />
       <item id="eyeball" />
       <quest id="quest1" startsAt="A" endsAt="A">
         <objective id="eyeball" type="fetch" />
       </quest>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-
-    auto &eyeball = s.getFirstItem();
-
-    s.addObject("A", {10, 15});
-    auto serial = s.getFirstObject().serial();
-
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
+    )");
+    auto *eyeball = &server->getFirstItem();
+    const auto questgiver = server->addObject("A", {10, 15}).serial();
 
     WHEN("a user accepts the quest") {
-      user.startQuest(*s->findQuest("quest1"));
+      user->startQuest(server->findQuest("quest1"));
 
       AND_WHEN("he gets the item") {
-        user.giveItem(&eyeball);
+        user->giveItem(eyeball);
 
         AND_WHEN("he tries to complete the quest") {
-          c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", serial));
+          client->sendMessage(CL_COMPLETE_QUEST,
+                              makeArgs("quest1", questgiver));
 
           THEN("he has completed the quest") {
-            WAIT_UNTIL(user.hasCompletedQuest("quest1"));
+            WAIT_UNTIL(user->hasCompletedQuest("quest1"));
 
             AND_THEN("he no longer has the item") {
               auto itemSet = ItemSet{};
-              itemSet.add(&eyeball);
-              CHECK_FALSE(user.hasItems(itemSet));
+              itemSet.add(eyeball);
+              CHECK_FALSE(user->hasItems(itemSet));
             }
           }
         }
@@ -1084,13 +1078,13 @@ TEST_CASE("Fetch quests", "[quests][inventory]") {
     }
 
     WHEN("a user has the item already") {
-      user.giveItem(&eyeball);
+      user->giveItem(eyeball);
 
       AND_WHEN("he accepts the quest") {
-        user.startQuest(*s->findQuest("quest1"));
+        user->startQuest(server->findQuest("quest1"));
 
         THEN("he knows he can complete it") {
-          const auto &cQuest = c.getFirstQuest();
+          const auto &cQuest = client->getFirstQuest();
           WAIT_UNTIL((cQuest.state == CQuest::CAN_FINISH));
         }
       }
@@ -1098,40 +1092,34 @@ TEST_CASE("Fetch quests", "[quests][inventory]") {
   }
 
   GIVEN("A user on a quest to get two eyeballs") {
-    auto data = R"(
+    useData(R"(
       <objectType id="A" />
       <item id="eyeball" />
       <quest id="quest1" startsAt="A" endsAt="A">
         <objective id="eyeball" type="fetch" qty="2" />
       </quest>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
+    )");
+    const auto questgiver = server->addObject("A", {10, 15}).serial();
 
-    s.addObject("A", {10, 15});
-    auto serial = s.getFirstObject().serial();
-
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    user.startQuest(*s->findQuest("quest1"));
+    user->startQuest(server->findQuest("quest1"));
 
     WHEN("he gets one") {
-      auto &eyeball = s.getFirstItem();
-      user.giveItem(&eyeball);
+      auto *eyeball = &server->getFirstItem();
+      user->giveItem(eyeball);
 
       AND_WHEN("he tries to complete the quest") {
-        c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", serial));
+        client->sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", questgiver));
 
         THEN("he is still on the quest") {
           REPEAT_FOR_MS(100);
-          CHECK_FALSE(user.hasCompletedQuest("quest1"));
+          CHECK_FALSE(user->hasCompletedQuest("quest1"));
         }
       }
     }
   }
 
   GIVEN("A user on a quest to get two eyeballs and a nose") {
-    auto data = R"(
+    useData(R"(
       <objectType id="A" />
       <item id="eyeball" />
       <item id="nose" />
@@ -1139,44 +1127,38 @@ TEST_CASE("Fetch quests", "[quests][inventory]") {
         <objective type="fetch" id="eyeball" qty="2" />
         <objective type="fetch" id="nose" />
       </quest>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-
-    s.addObject("A", {10, 15});
-    auto serial = s.getFirstObject().serial();
-
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    user.startQuest(*s->findQuest("quest1"));
+    )");
+    const auto questgiver = server->addObject("A", {10, 15}).serial();
+    user->startQuest(server->findQuest("quest1"));
 
     WHEN("he gets the eyeballs") {
-      auto eyeball = s->findItem("eyeball");
-      user.giveItem(eyeball, 2);
+      const auto *eyeball = &server->findItem("eyeball");
+      user->giveItem(eyeball, 2);
 
       AND_WHEN("he tries to complete the quest") {
-        c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", serial));
+        client->sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", questgiver));
 
         THEN("he is still on the quest") {
           REPEAT_FOR_MS(100);
-          CHECK_FALSE(user.hasCompletedQuest("quest1"));
+          CHECK_FALSE(user->hasCompletedQuest("quest1"));
         }
       }
 
       AND_WHEN("he gets the nose") {
-        auto nose = s->findItem("nose");
-        user.giveItem(nose, 1);
+        const auto *nose = &server->findItem("nose");
+        user->giveItem(nose, 1);
 
         AND_WHEN("he tries to complete the quest") {
-          c.sendMessage(CL_COMPLETE_QUEST, makeArgs("quest1", serial));
+          client->sendMessage(CL_COMPLETE_QUEST,
+                              makeArgs("quest1", questgiver));
 
           THEN("he has completed the quest") {
-            WAIT_UNTIL(user.hasCompletedQuest("quest1"));
+            WAIT_UNTIL(user->hasCompletedQuest("quest1"));
 
             AND_THEN("all items are removed from his inventory") {
               auto eyeballAsSet = ItemSet{};
               eyeballAsSet.add(eyeball);
-              CHECK_FALSE(user.hasItems(eyeballAsSet));
+              CHECK_FALSE(user->hasItems(eyeballAsSet));
             }
           }
         }
@@ -1185,29 +1167,21 @@ TEST_CASE("Fetch quests", "[quests][inventory]") {
   }
 
   GIVEN("a quest to get a craftable breath") {
-    auto data = R"(
+    useData(R"(
       <objectType id="questgiver" />
       <item id="breath" />
       <recipe id="breath" time="1" />
       <quest id="breatheOnMe" startsAt="questgiver" endsAt="questgiver">
         <objective type="fetch" id="breath" />
       </quest>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-
-    /*s.addObject("questgiver", {10, 15});
-    auto serial = s.getFirstObject().serial();*/
-
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    user.startQuest(s.getFirstQuest());
+    )");
+    user->startQuest(server->getFirstQuest());
 
     WHEN("the user creates a breath") {
-      c.sendMessage(CL_CRAFT, "breath");
+      client->sendMessage(CL_CRAFT, "breath");
 
       THEN("he knows that he can complete the quest") {
-        const auto &quest = c.getFirstQuest();
+        const auto &quest = client->getFirstQuest();
         WAIT_UNTIL((quest.state == CQuest::CAN_FINISH));
       }
     }
