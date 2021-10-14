@@ -853,7 +853,7 @@ void User::update(ms_t timeElapsed) {
       removeItems(_actionRecipe->materials());
 
       const auto *product = toServerItem(_actionRecipe->product());
-      giveItem(product, _actionRecipe->quantity() * _actionQuantity);
+      giveItem(product, _actionRecipe->quantity());
 
       if (_actionRecipe->byproduct()) {
         const auto *byproduct = toServerItem(_actionRecipe->byproduct());
@@ -861,6 +861,11 @@ void User::update(ms_t timeElapsed) {
       }
 
       ProgressLock::triggerUnlocks(*this, ProgressLock::RECIPE, _actionRecipe);
+
+      --_actionQuantity;
+      if (_actionQuantity >= 1) {
+        beginCrafting(*_actionRecipe, 1.0, _actionQuantity);
+      }
       break;
     }
 
@@ -925,7 +930,8 @@ void User::update(ms_t timeElapsed) {
       SERVER_ERROR("Unhandled message");
   }
 
-  if (_action != ATTACK) {  // ATTACK is a repeating action.
+  if (_actionQuantity == 0 &&
+      _action != ATTACK) {  // ATTACK is a repeating action.
     sendMessage(SV_ACTION_FINISHED);
     finishAction();
   }

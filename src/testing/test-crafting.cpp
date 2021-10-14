@@ -479,6 +479,34 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Crafting quantity", "[crafting]") {
       }
     }
   }
+
+  SECTION("items are crafted one at a time") {
+    GIVEN("it takes takes 100ms to come up with an idea") {
+      useData(R"(
+        <item id="idea" stackSize="10" />
+        <recipe id="idea" time="100" />
+      )");
+
+      WHEN("the user tries to come up with 2 ideas") {
+        client->sendMessage(CL_CRAFT, makeArgs("idea", 2));
+
+        AND_WHEN("150ms elapses") {
+          REPEAT_FOR_MS(150);
+
+          THEN("he has one idea") {
+            const auto &invSlot = user->inventory(0);
+            WAIT_UNTIL(invSlot.quantity() == 1);
+
+            AND_WHEN("another 100ms elapses") {
+              REPEAT_FOR_MS(100);
+
+              THEN("he has two ideas") { WAIT_UNTIL(invSlot.quantity() == 2); }
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 // Each item is given as it's made
