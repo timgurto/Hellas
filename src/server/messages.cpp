@@ -194,20 +194,10 @@ HANDLE_MESSAGE(CL_CRAFT) {
   auto quantity = 0;
   READ_ARGS(recipeID, quantity);
 
-  if (user.isStunned()) RETURN_WITH(WARNING_STUNNED)
   const std::set<SRecipe>::const_iterator it = _recipes.find(recipeID);
-  if (!user.knowsRecipe(recipeID)) RETURN_WITH(ERROR_UNKNOWN_RECIPE)
-  ItemSet remaining;
-  if (!user.hasItems(it->materials())) RETURN_WITH(WARNING_NEED_MATERIALS)
+  if (it == _recipes.end()) RETURN_WITH(ERROR_UNKNOWN_RECIPE);
 
-  auto speed = user.getToolSpeed(it->tools());
-  auto userHasRequiredTools = speed != 0;
-  if (!userHasRequiredTools) RETURN_WITH(WARNING_NEED_TOOLS)
-
-  user.cancelAction();
-  user.removeInterruptibleBuffs();
-
-  user.beginCrafting(*it, speed, quantity);
+  user.tryCrafting(*it, quantity);
 }
 
 HANDLE_MESSAGE(CL_CONSTRUCT_FROM_ITEM) {

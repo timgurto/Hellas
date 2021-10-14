@@ -283,6 +283,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   void tryToConstructInner(const ObjectType &type, const MapPoint &location,
                            Permissions::Owner::Type owner,
                            size_t slot = INVENTORY_SIZE);
+  void tryCrafting(const SRecipe &recipe, size_t quantity);
 
   // Whether the user has enough materials to craft a recipe
   bool hasItems(const ItemSet &items) const;

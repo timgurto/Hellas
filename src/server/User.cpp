@@ -520,6 +520,21 @@ void User::tryToConstructInner(const ObjectType &objType,
   sendMessage({SV_ACTION_STARTED, objType.constructionTime() / toolSpeed});
 }
 
+void User::tryCrafting(const SRecipe &recipe, size_t quantity) {
+  if (isStunned()) RETURN_WITH(WARNING_STUNNED)
+  if (!knowsRecipe(recipe.id())) RETURN_WITH(ERROR_UNKNOWN_RECIPE)
+  if (!hasItems(recipe.materials())) RETURN_WITH(WARNING_NEED_MATERIALS)
+
+  auto speed = getToolSpeed(recipe.tools());
+  auto userHasRequiredTools = speed != 0;
+  if (!userHasRequiredTools) RETURN_WITH(WARNING_NEED_TOOLS)
+
+  cancelAction();
+  removeInterruptibleBuffs();
+
+  beginCrafting(recipe, speed, quantity);
+}
+
 bool User::hasItems(const ItemSet &items) const {
   ItemSet remaining = items;
   for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
