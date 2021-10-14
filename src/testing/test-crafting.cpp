@@ -37,10 +37,11 @@ TEST_CASE("Terrain as tool", "[crafting][tool]") {
   CHECK(itemInFirstSlot->id() == "daisyChain");
 }
 
-TEST_CASE("Tools can have speed modifiers", "[crafting][tool]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Tools can have speed modifiers",
+                 "[crafting][tool]") {
   GIVEN(
       "a 200ms recipe that requires a tool, and a variety of matching tools") {
-    auto data = R"(
+    useData(R"(
       <item id="grass" />
       <recipe id="grass" time="200" >
         <tool class="grassPicking" />
@@ -56,7 +57,7 @@ TEST_CASE("Tools can have speed modifiers", "[crafting][tool]") {
         <tag name="grassPicking" />
         <tag name="bleating" toolSpeed = "2" />
       </item>
-    )";
+    )");
     struct GrassPickingTool {
       std::string id;
       std::string description;
@@ -67,22 +68,17 @@ TEST_CASE("Tools can have speed modifiers", "[crafting][tool]") {
         {"mower", "a double-speed tool", true},
         {"goat", "a tool with double speed for a different tag", false}};
 
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-
-    const auto &grass = s.findItem("grass");
+    const auto *grass = &server->findItem("grass");
     auto expectedProduct = ItemSet{};
-    expectedProduct.add(&grass);
+    expectedProduct.add(grass);
 
     for (const auto &tool : grassPickingTools) {
       AND_GIVEN("a user has " + tool.description) {
-        s.waitForUsers(1);
-        auto &user = s.getFirstUser();
-        const auto &item = s.findItem(tool.id);
-        user.giveItem(&item);
+        const auto *item = &server->findItem(tool.id);
+        user->giveItem(item);
 
         WHEN("he starts crafting the recipe") {
-          c.sendMessage(CL_CRAFT, makeArgs("grass", 1));
+          client->sendMessage(CL_CRAFT, makeArgs("grass", 1));
 
           AND_WHEN("150ms elapses") {
             REPEAT_FOR_MS(150);
@@ -90,7 +86,7 @@ TEST_CASE("Tools can have speed modifiers", "[crafting][tool]") {
             THEN("the product has "s +
                  (tool.canPickGrassAtDoubleSpeed ? "" : "not ") +
                  "been crafted") {
-              CHECK(user.hasItems(expectedProduct) ==
+              CHECK(user->hasItems(expectedProduct) ==
                     tool.canPickGrassAtDoubleSpeed);
             }
           }
@@ -102,7 +98,7 @@ TEST_CASE("Tools can have speed modifiers", "[crafting][tool]") {
   GIVEN(
       "a 200ms recipe requires a tool, and the terrain is a double-speed "
       "tool") {
-    auto data = R"(
+    useData(R"(
       <item id="grass" />
       <recipe id="grass" time="200" >
         <tool class="grassSource" />
@@ -118,24 +114,20 @@ TEST_CASE("Tools can have speed modifiers", "[crafting][tool]") {
       <size x="1" y="1" />
       <row y="0" terrain = "G" />
 
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
+    )");
 
-    const auto &grass = s.findItem("grass");
+    const auto *grass = &server->findItem("grass");
     auto expectedProduct = ItemSet{};
-    expectedProduct.add(&grass);
+    expectedProduct.add(grass);
 
     WHEN("a user starts crafting the recipe") {
-      s.waitForUsers(1);
-      c.sendMessage(CL_CRAFT, makeArgs("grass", 1));
+      client->sendMessage(CL_CRAFT, makeArgs("grass", 1));
 
       AND_WHEN("150ms elapses") {
         REPEAT_FOR_MS(150);
 
         THEN("the product has been crafted") {
-          auto &user = s.getFirstUser();
-          CHECK(user.hasItems(expectedProduct));
+          CHECK(user->hasItems(expectedProduct));
         }
       }
     }
@@ -496,3 +488,5 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Crafting quantity", "[crafting]") {
 // Display number left to craft in client (actual number,
 // even if less than the button pressed.  Including for "infinite")
 // Add buttons to crafting window
+// Handle tool breaking during first craft
+// Handle speed change from the above
