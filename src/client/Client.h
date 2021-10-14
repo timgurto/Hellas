@@ -248,8 +248,8 @@ class Client : public TextEntryManager {
   static const px_t LINE_GAP;
   // The recipe currently selected, if any
   const CRecipe *_activeRecipe{nullptr};
-  // Called when the "Craft" button is clicked.
-  void startCrafting();
+  // Called when the "Craft" button is clicked.  0 = infinite.
+  void startCrafting(int quantity);
   // Populated at load time, after _items
   std::map<std::string, bool> _tagFilters;
   std::map<const ClientItem *, bool> _matFilters;

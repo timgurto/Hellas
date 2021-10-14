@@ -178,9 +178,13 @@ void Client::refreshRecipeDetailsPane() {
   }
 
   // Crafting Button
-  pane.addChild(new Button({paneRect.w - 2 * BUTTON_WIDTH - BUTTON_GAP,
-                            BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT},
-                           "Craft", [this]() { startCrafting(); }));
+  const auto WIDE_BUTTON_WIDTH = 50_px;
+  auto x = BUTTON_GAP;
+  pane.addChild(new Button({x, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT},
+                           "Craft 1", [this]() { startCrafting(1); }));
+  x += BUTTON_WIDTH + BUTTON_GAP;
+  pane.addChild(new Button({x, BUTTON_Y, WIDE_BUTTON_WIDTH, BUTTON_HEIGHT},
+                           "Craft max", [this]() { startCrafting(0); }));
 
   const std::set<CRecipe>::const_iterator it =
       Client::gameData.recipes.find(selectedID);
@@ -211,7 +215,7 @@ void Client::refreshRecipeDetailsPane() {
 
   // Materials list
   const px_t TOTAL_LIST_SPACE =
-                 BUTTON_Y - BUTTON_GAP - y - 2 * Element::TEXT_HEIGHT,
+                 BUTTON_Y - BUTTON_GAP - y - 3 * Element::TEXT_HEIGHT,
              MATS_LIST_HEIGHT = TOTAL_LIST_SPACE / 2,
              UNLOCKS_HEIGHT = Element::TEXT_HEIGHT * 2,
              TOOLS_LIST_HEIGHT = TOTAL_LIST_SPACE - MATS_LIST_HEIGHT -
