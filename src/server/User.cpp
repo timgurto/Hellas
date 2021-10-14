@@ -873,24 +873,15 @@ void User::update(ms_t timeElapsed) {
       ProgressLock::triggerUnlocks(*this, ProgressLock::RECIPE,
                                    _actionProperties.recipe);
 
+      const auto quantityRemaining = _actionProperties.quantityToCraft - 1;
       const auto infiniteCraftingWasRequested =
           _actionProperties.quantityToCraft == 0;
-      if (infiniteCraftingWasRequested) {
+      if (quantityRemaining >= 1 || infiniteCraftingWasRequested) {
         sendMessage(SV_ACTION_FINISHED);
         finishAction();
 
-        tryCrafting(*_actionProperties.recipe, 0);
-
-        Entity::update(timeElapsed);
-        return;
-      }
-
-      const auto quantityRemaining = _actionProperties.quantityToCraft - 1;
-      if (quantityRemaining >= 1) {
-        sendMessage(SV_ACTION_FINISHED);
-        finishAction();
-
-        tryCrafting(*_actionProperties.recipe, quantityRemaining);
+        tryCrafting(*_actionProperties.recipe,
+                    infiniteCraftingWasRequested ? 0 : quantityRemaining);
 
         Entity::update(timeElapsed);
         return;
