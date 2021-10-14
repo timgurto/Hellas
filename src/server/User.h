@@ -54,15 +54,16 @@ class User : public Object {  // TODO: Don't inherit from Object
 
   Action _action{NO_ACTION};
   struct ActionProperties {
-    ms_t _actionTime{0};             // Time remaining on current action.
-                                     // Information used when action completes:
-    Entity *_actionObject{nullptr};  // Gather, deconstruct
-    const SRecipe *_actionRecipe{nullptr};         // Craft
-    size_t _actionQuantity{0};                     // Craft
-    const ObjectType *_actionObjectType{nullptr};  // Construct
-    size_t _actionSlot{INVENTORY_SIZE};            // Construct
-    MapPoint _actionLocation{0, 0};                // Construct
-    bool _actionOwnedByCity{false};                // Construct
+    ms_t timeRemaining{0};
+
+    // Information used when action completes:
+    Entity *object{nullptr};  // Gather, deconstruct
+    const SRecipe *recipe{nullptr};
+    size_t quantityToCraft{0};
+    const ObjectType *objectToConstruct{nullptr};
+    size_t slotToConstructFrom{INVENTORY_SIZE};
+    MapPoint constructionLocation{0, 0};
+    bool shouldConstructionBeOwnedByCity{false};
   } _actionProperties;
 
   bool _isInTutorial{true};
@@ -268,7 +269,7 @@ class User : public Object {  // TODO: Don't inherit from Object
 
   Action action() const { return _action; }
   void action(Action a) { _action = a; }
-  const Entity *actionObject() const { return _actionProperties._actionObject; }
+  const Entity *actionObject() const { return _actionProperties.object; }
   void beginGathering(Entity *ent,
                       double speedMultiplier);  // Configure user to perform an
                                                 // action on an object

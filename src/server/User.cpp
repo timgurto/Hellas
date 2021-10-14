@@ -368,7 +368,7 @@ void User::cancelAction() {
 
   switch (_action) {
     case GATHER:
-      _actionProperties._actionObject->gatherable.decrementGatheringUsers();
+      _actionProperties.object->gatherable.decrementGatheringUsers();
       break;
 
     case CRAFT:
@@ -398,25 +398,25 @@ void User::finishAction() {
 
 void User::beginGathering(Entity *ent, double speedMultiplier) {
   _action = GATHER;
-  _actionProperties._actionObject = ent;
-  _actionProperties._actionObject->gatherable.incrementGatheringUsers();
+  _actionProperties.object = ent;
+  _actionProperties.object->gatherable.incrementGatheringUsers();
   if (!ent->type()) {
     SERVER_ERROR("Can't gather from object with no type");
     return;
   }
-  _actionProperties._actionTime =
+  _actionProperties.timeRemaining =
       toInt(ent->type()->yield.gatherTime() / speedMultiplier);
 
-  sendMessage({SV_ACTION_STARTED, _actionProperties._actionTime});
+  sendMessage({SV_ACTION_STARTED, _actionProperties.timeRemaining});
 }
 
 void User::beginCrafting(const SRecipe &recipe, double speed, size_t quantity) {
   _action = CRAFT;
-  _actionProperties._actionRecipe = &recipe;
-  _actionProperties._actionTime = toInt(recipe.time() / speed);
-  _actionProperties._actionQuantity = quantity;
+  _actionProperties.recipe = &recipe;
+  _actionProperties.timeRemaining = toInt(recipe.time() / speed);
+  _actionProperties.quantityToCraft = quantity;
 
-  sendMessage({SV_ACTION_STARTED, _actionProperties._actionTime});
+  sendMessage({SV_ACTION_STARTED, _actionProperties.timeRemaining});
   Server::instance().broadcastToArea(
       location(), {SV_PLAYER_STARTED_CRAFTING, makeArgs(_name, recipe.id())});
 }
@@ -425,20 +425,20 @@ void User::beginConstructing(const ObjectType &obj, const MapPoint &location,
                              bool cityOwned, double speedMultiplier,
                              size_t slot) {
   _action = CONSTRUCT;
-  _actionProperties._actionObjectType = &obj;
-  _actionProperties._actionTime =
+  _actionProperties.objectToConstruct = &obj;
+  _actionProperties.timeRemaining =
       toInt(obj.constructionTime() / speedMultiplier);
-  _actionProperties._actionSlot = slot;
-  _actionProperties._actionLocation = location;
-  _actionProperties._actionOwnedByCity = cityOwned;
+  _actionProperties.slotToConstructFrom = slot;
+  _actionProperties.constructionLocation = location;
+  _actionProperties.shouldConstructionBeOwnedByCity = cityOwned;
 
-  sendMessage({SV_ACTION_STARTED, _actionProperties._actionTime});
+  sendMessage({SV_ACTION_STARTED, _actionProperties.timeRemaining});
 }
 
 void User::beginDeconstructing(Object &obj) {
   _action = DECONSTRUCT;
-  _actionProperties._actionObject = &obj;
-  _actionProperties._actionTime = obj.deconstruction().timeToDeconstruct();
+  _actionProperties.object = &obj;
+  _actionProperties.timeRemaining = obj.deconstruction().timeToDeconstruct();
 }
 
 void User::setTargetAndAttack(Entity *target) {
@@ -814,12 +814,12 @@ void User::update(ms_t timeElapsed) {
     return;
   }
 
-  if (_actionProperties._actionTime > timeElapsed)
-    _actionProperties._actionTime -= timeElapsed;
+  if (_actionProperties.timeRemaining > timeElapsed)
+    _actionProperties.timeRemaining -= timeElapsed;
   else
-    _actionProperties._actionTime = 0;
+    _actionProperties.timeRemaining = 0;
 
-  if (_actionProperties._actionTime > 0) {  // Action hasn't finished yet.
+  if (_actionProperties.timeRemaining > 0) {  // Action hasn't finished yet.
     Entity::update(timeElapsed);
     return;
   }
@@ -830,46 +830,45 @@ void User::update(ms_t timeElapsed) {
       break;  // All handled by Entity::update()
 
     case GATHER:
-      if (_actionProperties._actionObject->gatherable.hasItems())
-        server.gatherObject(_actionProperties._actionObject->serial(), *this);
+      if (_actionProperties.object->gatherable.hasItems())
+        server.gatherObject(_actionProperties.object->serial(), *this);
       break;
 
     case CRAFT: {
-      if (!hasRoomToCraft(*_actionProperties._actionRecipe)) {
+      if (!hasRoomToCraft(*_actionProperties.recipe)) {
         sendMessage(WARNING_INVENTORY_FULL);
         cancelAction();
         Entity::update(timeElapsed);
         return;
       }
 
-      damageTools(_actionProperties._actionRecipe->tools());
+      damageTools(_actionProperties.recipe->tools());
 
-      removeItems(_actionProperties._actionRecipe->materials());
+      removeItems(_actionProperties.recipe->materials());
 
-      const auto *product =
-          toServerItem(_actionProperties._actionRecipe->product());
-      giveItem(product, _actionProperties._actionRecipe->quantity());
+      const auto *product = toServerItem(_actionProperties.recipe->product());
+      giveItem(product, _actionProperties.recipe->quantity());
 
-      if (_actionProperties._actionRecipe->byproduct()) {
+      if (_actionProperties.recipe->byproduct()) {
         const auto *byproduct =
-            toServerItem(_actionProperties._actionRecipe->byproduct());
-        giveItem(byproduct, _actionProperties._actionRecipe->byproductQty());
+            toServerItem(_actionProperties.recipe->byproduct());
+        giveItem(byproduct, _actionProperties.recipe->byproductQty());
       }
 
       ProgressLock::triggerUnlocks(*this, ProgressLock::RECIPE,
-                                   _actionProperties._actionRecipe);
+                                   _actionProperties.recipe);
 
-      --_actionProperties._actionQuantity;
-      if (_actionProperties._actionQuantity >= 1) {
-        beginCrafting(*_actionProperties._actionRecipe, 1.0,
-                      _actionProperties._actionQuantity);
+      --_actionProperties.quantityToCraft;
+      if (_actionProperties.quantityToCraft >= 1) {
+        beginCrafting(*_actionProperties.recipe, 1.0,
+                      _actionProperties.quantityToCraft);
       }
       break;
     }
 
     case CONSTRUCT: {
       auto owner = Permissions::Owner{};
-      if (_actionProperties._actionOwnedByCity &&
+      if (_actionProperties.shouldConstructionBeOwnedByCity &&
           server.cities().isPlayerInACity(_name)) {
         owner.type = Permissions::Owner::CITY;
         owner.name = server.cities().getPlayerCity(_name);
@@ -880,41 +879,41 @@ void User::update(ms_t timeElapsed) {
 
       // Damage tool
       const auto toolRequired =
-          !_actionProperties._actionObjectType->constructionReq().empty();
+          !_actionProperties.objectToConstruct->constructionReq().empty();
       if (toolRequired)
-        damageTool(_actionProperties._actionObjectType->constructionReq());
+        damageTool(_actionProperties.objectToConstruct->constructionReq());
 
       // Create object
-      server.addObject(_actionProperties._actionObjectType,
-                       _actionProperties._actionLocation, owner);
+      server.addObject(_actionProperties.objectToConstruct,
+                       _actionProperties.constructionLocation, owner);
 
       addQuestProgress(Quest::Objective::CONSTRUCT,
-                       _actionProperties._actionObjectType->id());
+                       _actionProperties.objectToConstruct->id());
 
       const auto wasBuiltFromItem =
-          _actionProperties._actionSlot != INVENTORY_SIZE;
+          _actionProperties.slotToConstructFrom != INVENTORY_SIZE;
       if (!wasBuiltFromItem) break;
 
       // Remove item from user's inventory
-      auto &slot = _inventory[_actionProperties._actionSlot];
+      auto &slot = _inventory[_actionProperties.slotToConstructFrom];
       if (!slot.hasItem() || slot.type()->constructsObject() !=
-                                 _actionProperties._actionObjectType) {
+                                 _actionProperties.objectToConstruct) {
         SERVER_ERROR("Trying to construct object from an invalid item");
         break;
       }
       slot.removeItems(1);
       if (slot.quantity() == 0) slot = {};
-      server.sendInventoryMessage(*this, _actionProperties._actionSlot,
+      server.sendInventoryMessage(*this, _actionProperties.slotToConstructFrom,
                                   Serial::Inventory());
 
       // Trigger any new unlocks
       ProgressLock::triggerUnlocks(*this, ProgressLock::CONSTRUCTION,
-                                   _actionProperties._actionObjectType);
+                                   _actionProperties.objectToConstruct);
       break;
     }
 
     case DECONSTRUCT: {
-      auto *obj = dynamic_cast<Object *>(_actionProperties._actionObject);
+      auto *obj = dynamic_cast<Object *>(_actionProperties.object);
       if (!obj) break;
 
       // Check for inventory space
@@ -935,7 +934,7 @@ void User::update(ms_t timeElapsed) {
       SERVER_ERROR("Unhandled message");
   }
 
-  if (_actionProperties._actionQuantity == 0 &&
+  if (_actionProperties.quantityToCraft == 0 &&
       _action != ATTACK) {  // ATTACK is a repeating action.
     sendMessage(SV_ACTION_FINISHED);
     finishAction();
