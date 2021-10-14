@@ -54,7 +54,7 @@ enum MessageCode {
   CL_CANCEL_ACTION,
 
   // "I want to craft using recipe ..."
-  // Arguments: id
+  // Arguments: id, quantity
   CL_CRAFT,
 
   // "I want to construct the item in inventory slot ..., at location ..."

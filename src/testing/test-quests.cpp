@@ -1178,7 +1178,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Fetch quests",
     user->startQuest(server->getFirstQuest());
 
     WHEN("the user creates a breath") {
-      client->sendMessage(CL_CRAFT, "breath");
+      client->sendMessage(CL_CRAFT, makeArgs("breath", 1));
 
       THEN("he knows that he can complete the quest") {
         const auto &quest = client->getFirstQuest();

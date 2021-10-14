@@ -115,7 +115,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       }
 
       WHEN("he starts crafting") {
-        client->sendMessage(CL_CRAFT, "idea");
+        client->sendMessage(CL_CRAFT, makeArgs("idea", 1));
 
         THEN("he loses the buff") { WAIT_UNTIL(user->buffs().empty()); }
       }

@@ -57,6 +57,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   // Information used when action completes:
   Entity *_actionObject;                // Gather, deconstruct
   const SRecipe *_actionRecipe;         // Craft
+  size_t _actionQuantity;               // Craft
   const ObjectType *_actionObjectType;  // Construct
   size_t _actionSlot;                   // Construct
   MapPoint _actionLocation;             // Construct
@@ -324,7 +325,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   void clearGear();
 
   // Configure user to craft an item
-  void beginCrafting(const SRecipe &item, double speed);
+  void beginCrafting(const SRecipe &item, double speed, size_t quantity);
 
   // Configure user to construct an item, or an object from no item
   void beginConstructing(const ObjectType &obj, const MapPoint &location,

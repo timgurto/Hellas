@@ -300,7 +300,7 @@ TEST_CASE("Crafting tools lose durability", "[damage-on-use][crafting][tool]") {
 
     WHEN("the recipe is crafted many times") {
       for (auto i = 0; i != 200; ++i) {
-        c.sendMessage(CL_CRAFT, "rabbit");
+        c.sendMessage(CL_CRAFT, makeArgs("rabbit", 1));
         REPEAT_FOR_MS(20);
         if (hat.isDamaged()) break;
       }
@@ -324,7 +324,7 @@ TEST_CASE("Crafting tools lose durability", "[damage-on-use][crafting][tool]") {
       CHECK(hat.isBroken());
 
       AND_WHEN("the user tries to craft the recipe") {
-        c.sendMessage(CL_CRAFT, "rabbit");
+        c.sendMessage(CL_CRAFT, makeArgs("rabbit", 1));
 
         THEN("he doesn't have any products") {
           REPEAT_FOR_MS(100);

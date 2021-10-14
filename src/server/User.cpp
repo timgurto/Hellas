@@ -417,10 +417,11 @@ void User::beginGathering(Entity *ent, double speedMultiplier) {
   sendMessage({SV_ACTION_STARTED, _actionTime});
 }
 
-void User::beginCrafting(const SRecipe &recipe, double speed) {
+void User::beginCrafting(const SRecipe &recipe, double speed, size_t quantity) {
   _action = CRAFT;
   _actionRecipe = &recipe;
   _actionTime = toInt(recipe.time() / speed);
+  _actionQuantity = quantity;
 
   sendMessage({SV_ACTION_STARTED, _actionTime});
   Server::instance().broadcastToArea(
@@ -852,7 +853,7 @@ void User::update(ms_t timeElapsed) {
       removeItems(_actionRecipe->materials());
 
       const auto *product = toServerItem(_actionRecipe->product());
-      giveItem(product, _actionRecipe->quantity());
+      giveItem(product, _actionRecipe->quantity() * _actionQuantity);
 
       if (_actionRecipe->byproduct()) {
         const auto *byproduct = toServerItem(_actionRecipe->byproduct());

@@ -191,7 +191,8 @@ HANDLE_MESSAGE(CL_CANCEL_ACTION) {
 
 HANDLE_MESSAGE(CL_CRAFT) {
   auto recipeID = ""s;
-  READ_ARGS(recipeID);
+  auto quantity = 0;
+  READ_ARGS(recipeID, quantity);
 
   if (user.isStunned()) RETURN_WITH(WARNING_STUNNED)
   const std::set<SRecipe>::const_iterator it = _recipes.find(recipeID);
@@ -206,7 +207,7 @@ HANDLE_MESSAGE(CL_CRAFT) {
   user.cancelAction();
   user.removeInterruptibleBuffs();
 
-  user.beginCrafting(*it, speed);
+  user.beginCrafting(*it, speed, quantity);
 }
 
 HANDLE_MESSAGE(CL_CONSTRUCT_FROM_ITEM) {

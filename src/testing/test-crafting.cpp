@@ -9,7 +9,7 @@ TEST_CASE("Recipes can be known by default", "[crafting]") {
   s.waitForUsers(1);
 
   User &user = s.getFirstUser();
-  c.sendMessage(CL_CRAFT, "box");
+  c.sendMessage(CL_CRAFT, makeArgs("box", 1));
   WAIT_UNTIL(user.action() ==
              User::Action::CRAFT);  // Wait for gathering to start
   WAIT_UNTIL(user.action() ==
@@ -26,7 +26,7 @@ TEST_CASE("Terrain as tool", "[crafting][tool]") {
   s.waitForUsers(1);
 
   User &user = s.getFirstUser();
-  c.sendMessage(CL_CRAFT, "daisyChain");
+  c.sendMessage(CL_CRAFT, makeArgs("daisyChain", 1));
   WAIT_UNTIL(user.action() ==
              User::Action::CRAFT);  // Wait for gathering to start
   WAIT_UNTIL(user.action() ==
@@ -82,7 +82,7 @@ TEST_CASE("Tools can have speed modifiers", "[crafting][tool]") {
         user.giveItem(&item);
 
         WHEN("he starts crafting the recipe") {
-          c.sendMessage(CL_CRAFT, "grass");
+          c.sendMessage(CL_CRAFT, makeArgs("grass", 1));
 
           AND_WHEN("150ms elapses") {
             REPEAT_FOR_MS(150);
@@ -128,7 +128,7 @@ TEST_CASE("Tools can have speed modifiers", "[crafting][tool]") {
 
     WHEN("a user starts crafting the recipe") {
       s.waitForUsers(1);
-      c.sendMessage(CL_CRAFT, "grass");
+      c.sendMessage(CL_CRAFT, makeArgs("grass", 1));
 
       AND_WHEN("150ms elapses") {
         REPEAT_FOR_MS(150);
@@ -171,7 +171,7 @@ TEST_CASE("The fastest tool is used", "[crafting][tool]") {
       user.giveItem(&s.findItem("mower"));
 
       WHEN("he starts crafting the recipe") {
-        c.sendMessage(CL_CRAFT, "grass");
+        c.sendMessage(CL_CRAFT, makeArgs("grass", 1));
 
         AND_WHEN("150ms elapses") {
           REPEAT_FOR_MS(150);
@@ -211,7 +211,7 @@ TEST_CASE("Crafting is allowed if materials will vacate a slot",
   u.giveItem(&meat, User::INVENTORY_SIZE);
 
   // When he tries to craft cooked meat
-  c.sendMessage(CL_CRAFT, "cookedMeat");
+  c.sendMessage(CL_CRAFT, makeArgs("cookedMeat", 1));
   WAIT_UNTIL(u.action() == User::Action::CRAFT);  // Wait for gathering to start
   WAIT_UNTIL(u.action() ==
              User::Action::NO_ACTION);  // Wait for gathering to finish
@@ -257,7 +257,7 @@ TEST_CASE("Gear counts towards materials", "[crafting][gear]") {
 
     WHEN("he tries to craft the recipe") {
       REPEAT_FOR_MS(100);
-      c.sendMessage(CL_CRAFT, "sockPuppet");
+      c.sendMessage(CL_CRAFT, makeArgs("sockPuppet", 1));
 
       THEN("he has the new item") {
         auto &sockPuppet = s.findItem("sockPuppet");
@@ -292,7 +292,7 @@ TEST_CASE("Duping exploit", "[crafting][containers]") {
     const auto &box = s.getFirstObject();
 
     WHEN("a user starts crafting the recipe") {
-      c.sendMessage(CL_CRAFT, "brick");
+      c.sendMessage(CL_CRAFT, makeArgs("brick", 1));
 
       AND_WHEN("he puts the material into the container") {
         c.sendMessage(CL_SWAP_ITEMS,
@@ -336,7 +336,7 @@ TEST_CASE("Extra items returned from crafting", "[crafting][inventory]") {
         user.giveItem(&u235);
 
         WHEN("he makes electricity") {
-          c.sendMessage(CL_CRAFT, "electricity");
+          c.sendMessage(CL_CRAFT, makeArgs("electricity", 1));
 
           THEN("the user has electricity and U238") {
             auto expectedInInventory = ItemSet{};
@@ -352,7 +352,7 @@ TEST_CASE("Extra items returned from crafting", "[crafting][inventory]") {
         user.giveItem(&u235, User::INVENTORY_SIZE - 1);
 
         WHEN("he tries to make electricity") {
-          c.sendMessage(CL_CRAFT, "electricity");
+          c.sendMessage(CL_CRAFT, makeArgs("electricity", 1));
 
           THEN("the user has no electricity") {
             auto product = ItemSet{};
@@ -384,7 +384,7 @@ TEST_CASE("Extra items returned from crafting", "[crafting][inventory]") {
       user.addRecipe("money");
 
       WHEN("he does so") {
-        c.sendMessage(CL_CRAFT, "money");
+        c.sendMessage(CL_CRAFT, makeArgs("money", 1));
 
         THEN("he has happiness") {
           auto expectedInInventory = ItemSet{};
@@ -470,3 +470,29 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Recipe items", "[crafting]") {
     }
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Crafting quantity", "[crafting]") {
+  GIVEN("a recipe to conjur bread from nothing") {
+    useData(R"(
+      <item id="bread" stackSize="10" />
+      <recipe id="bread"/>
+    )");
+
+    WHEN("the user crafts 2 with one message") {
+      client->sendMessage(CL_CRAFT, makeArgs("bread", 2));
+
+      THEN("he gets 2 bread") {
+        const auto &invSlot = user->inventory(0);
+        WAIT_UNTIL(invSlot.quantity() == 2);
+      }
+    }
+  }
+}
+
+// Each item is given as it's made
+// Remove the right number of materials
+// 0 for infinite
+// Stop when out of space or materials, even if quantity not hit
+// Display number left to craft in client (actual number,
+// even if less than the button pressed.  Including for "infinite")
+// Add buttons to crafting window
