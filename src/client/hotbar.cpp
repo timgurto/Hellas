@@ -26,7 +26,8 @@ static void performAction(Client &client, int i) {
   if (actions[i].category == HotbarCategory::HOTBAR_SPELL)
     client.sendMessage({CL_CAST_SPELL, actions[i].id});
   else if (actions[i].category == HotbarCategory::HOTBAR_RECIPE) {
-    client.sendMessage({CL_CRAFT, actions[i].id});
+    const auto quantityToCraft = client.isShiftPressed() ? 0 : 1;
+    client.sendMessage({CL_CRAFT, makeArgs(actions[i].id, quantityToCraft)});
     client.prepareAction("Crafting"s);
   }
 }
@@ -145,9 +146,12 @@ void Client::refreshHotbar() {
       auto tooltip = Tooltip{};
       tooltip.addLine("Craft recipe:"s);
       tooltip.addRecipe(recipe, gameData.tagNames);
+      tooltip.addGap();
+      tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
+      tooltip.addLine("(Shift-click to craft as many as possible)");
       _hotbarButtons[i]->setTooltip(tooltip);
 
-      auto recipeIsKnown = _knownRecipes.count(recipe.id()) == 1;
+      const auto recipeIsKnown = _knownRecipes.count(recipe.id()) == 1;
       if (!recipeIsKnown) _hotbarButtons[i]->disable();
     }
   }

@@ -537,13 +537,14 @@ class Client : public TextEntryManager {
   void registerContainerGrid(ContainerGrid *cg) { _containerGrids.insert(cg); }
   void deregisterContainerGrid(ContainerGrid *cg) { _containerGrids.erase(cg); }
 
+  static bool isCtrlPressed();
+  static bool isAltPressed();
+  static bool isShiftPressed();
+
  private:
   void handleInput(double delta);
   void handleLoginInput(double delta);
   void onMouseMove();
-  static bool isCtrlPressed();
-  static bool isAltPressed();
-  static bool isShiftPressed();
 
   void drawLoadingScreen(const std::string &msg) const;
   mutable int _loadingScreenProgress{0};
