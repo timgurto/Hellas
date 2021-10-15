@@ -490,7 +490,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Crafting quantity", "[crafting]") {
 
     SECTION("Ordering from earlier in the client") {
       WHEN("the client's startCrafting() is called") {
-        client->startCrafting(&client->getFirstRecipe());
+        client->startCrafting(&client->getFirstRecipe(), 1);
 
         THEN("the user gets bread") { WAIT_UNTIL(invSlot0.hasItem()); }
       }

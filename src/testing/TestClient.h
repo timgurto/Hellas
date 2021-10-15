@@ -130,7 +130,7 @@ class TestClient {
   void simulateKeypress(SDL_Scancode key);
   bool isKeyPressed(SDL_Scancode key) const;
   void sendLocationUpdatesInstantly();
-  void startCrafting(const CRecipe *recipe);
+  void startCrafting(const CRecipe *recipe, int quantity);
 
  private:
   Client *_client;

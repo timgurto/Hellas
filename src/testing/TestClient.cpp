@@ -278,7 +278,7 @@ void TestClient::sendLocationUpdatesInstantly() {
   _client->TIME_BETWEEN_LOCATION_UPDATES = 0;
 }
 
-void TestClient::startCrafting(const CRecipe *recipe) {
+void TestClient::startCrafting(const CRecipe *recipe, int quantity) {
   _client->_activeRecipe = recipe;
-  _client->startCrafting();
+  _client->startCrafting(quantity);
 }
