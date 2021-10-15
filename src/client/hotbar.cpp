@@ -148,7 +148,7 @@ void Client::refreshHotbar() {
       tooltip.addRecipe(recipe, gameData.tagNames);
       tooltip.addGap();
       tooltip.setColor(Color::TOOLTIP_INSTRUCTION);
-      tooltip.addLine("(Shift-click to craft as many as possible)");
+      tooltip.addLine("(Shift-click to craft max)");
       _hotbarButtons[i]->setTooltip(tooltip);
 
       const auto recipeIsKnown = _knownRecipes.count(recipe.id()) == 1;
