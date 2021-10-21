@@ -13,7 +13,7 @@
     xDrawOffset="-20" yDrawOffset="-11"
     isUnbuildable="1" constructionText="needs clay" >
     <collisionRect x="-20" y="-11" w="41" h="22" />
-    <material id="clay" quantity="2" />
+    <material id="clay" quantity="4" />
     <transform id="bricksWet" />
 </objectType>
 
