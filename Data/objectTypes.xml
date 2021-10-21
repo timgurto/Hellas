@@ -363,7 +363,7 @@
     xDrawOffset="-10" yDrawOffset="-9"
     damageParticles="wood" sounds="wood">
     <collisionRect x="-10" y="-9" w="20" h="17" />
-    <material id="log" quantity="4" />
+    <material id="log" quantity="16" />
     <material id="rope" quantity="4" />
     <tag name="leatherStretching" />
     <unlockedBy recipe="rope" />
