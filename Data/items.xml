@@ -1,603 +1,176 @@
 <root>
 
-<item id="log"          name="Log"            sounds="wood"      constructs="logPile"       stackSize="5" />
-<item id="crudeClay"    name="Crude Clay"     sounds="clay"      stackSize="10" />
-<item id="clay"         name="Clay"           sounds="clay"      stackSize="10"  />
-<item id="tinRing"      name="Tin Ringlet"                       stackSize="1000" />
-<item id="copperRing"   name="Copper Ringlet"                    stackSize="1000" />
-<item id="charcoal"     name="Charcoal"                          constructs="charcoalPile"  stackSize="10" />
+<item id="wood" name="Wood" iconFile="lumber" stackSize="10" />
+<item id="leaves" name="Wood" iconFile="earthEssence" stackSize="10" />
+<item id="iron" name="Iron" iconFile="silverBar" stackSize="10" />
 
-<item id="flax"         name="Flax"           sounds="weakPlant" stackSize="10" />
-<item id="linenThread"  name="Thread"         sounds="fabric"    stackSize="10" />
-<item id="linenCloth"   name="Linen Cloth"    sounds="fabric"    stackSize="10" />
-<item id="wool"         name="Wool"           sounds="fabric"    stackSize="10" />
-<item id="woolCloth"    name="Wool Cloth"     sounds="fabric"    stackSize="10" />
+<itemClass id="wood" >
+    <canBeRepaired cost="wood" />
+    <canBeScrapped result="wood" mean="0.81" />
+</itemClass>
+<itemClass id="iron" >
+    <canBeRepaired cost="iron" />
+    <canBeScrapped result="iron" mean="0.81" />
+</itemClass>
 
-<item id="sheepskin"    name="Sheepskin"      sounds="leather"   stackSize="10" />
-<item id="leather"      name="Leather"        sounds="leather"   stackSize="10" />
+<item id="chocolate" name="Panzer Chocolate" iconFile="tablet" stackSize="10" castsSpellOnUse="chocolate" />
+    <buff id="chocolate" name="Eating" icon="lettersCopper" duration="10" school="water"
+        description="Increased courage and endurance, at the cost of cunning and swiftness." >
+        <stats courage="10" endurance="10" swiftness="-8" cunning="-8" />
+    </buff>
+    <spell id="chocolate" name="Eat" >
+        <targets self="1" />
+        <function name="debuff" s1="wine" />
+    </spell>
+    
+<item id="ammo" name="Ammunition" stackSize="100" />
+    <recipe id="ammo" time="2000" quantity="20" >
+        <material id="iron" />
+        <unlockedBy gather="iron" chance="0.4" />
+    </recipe>
 
-<item id="leatherScale" name="Leather Scale"  sounds="leather"   stackSize="50" />
-<item id="tinScale"     name="Tin Scale"      sounds="metalTool" stackSize="50" />
-<item id="copperScale"  name="Copper Scale"   sounds="metalTool" stackSize="50" />
-
-<item id="rope"         name="Rope"                              stackSize="10" />
-<item id="brick"        name="Brick"          sounds="brick"     constructs="brickPile"     stackSize="10" />
-<item id="fat"          name="Animal Fat"     sounds="meat"      stackSize="10" />
-<item id="entrails"     name="Entrails"       sounds="meat"      stackSize="10" />
-<item id="airEssence"   name="Air Essence"                       stackSize="10" />
-<item id="earthEssence" name="Earth Essence"                     stackSize="10" />
-<item id="fireEssence"  name="Fire Essence"                      stackSize="10" />
-<item id="waterEssence" name="Water Essence"                     stackSize="10" />
-
-<item id="smallPot"     name="Small Pot"      sounds="ceramic"   constructs="smallPot"       stackSize="5" />
-<item id="mediumPot"    name="Medium Pot"     sounds="ceramic"   constructs="mediumPot" />
-<!--item id="largePot"     name="Large Pot"      sounds="ceramic"   constructs="largePot" /-->
-<item id="potBellows"   name="Pot Bellows"    sounds="ceramic"   constructs="potBellows" />
-<item id="elutriator"   name="Elutriator"     sounds="ceramic"   constructs="elutriator" />
-<item id="tannin"       name="Tannin"         sounds="ceramic"   constructs="tannin" />
-<item id="woodenStatue" name="Wooden Statue"  sounds="wood"      constructs="woodenStatue" />
-<item id="tinStatue"    name="Tin Statue"     sounds="metalBar"  constructs="tinStatue" />
-<item id="lumber"       name="Lumber"         sounds="wood"      constructs="lumberPile"     stackSize="10" />
-
-<item id="figSeeds"     name="Fig Seeds"      sounds="seeds"     constructs="figTree0"       stackSize="10"/>
-<item id="flaxSeeds"    name="Flax Seeds"     sounds="seeds"     constructs="flaxCrop0"      stackSize="10"/>
-<item id="pineSapling"  name="Pine Sapling"                      constructs="pineSapling"    stackSize="10"/>
-
-<item id="tinTube"      name="Metal Tube"     ilvl="15" class="tinJunk" sounds="metalTool" > <tag name="wireDrawing" /> </item>
-<item id="pole1"		name="Crude Pole"     sounds="wood" />
-<item id="pole2"		name="Pole" />
-
-<item id="pickMould"    name="Pickaxe Mould"  ilvl="8"  class="mould" sounds="ceramic" >   <tag name="pickMould" />  </item>
-<item id="knifeMould"   name="Knife Mould"    ilvl="8"  class="mould" sounds="ceramic" >   <tag name="knifeMould" /> </item>
-<item id="axeMould"     name="Axe Mould"      ilvl="8"  class="mould" sounds="ceramic" >   <tag name="axeMould" />   </item>
-<item id="hammerMould"  name="Hammer Mould"   ilvl="8"  class="mould" sounds="ceramic" >   <tag name="hammerMould" />   </item>
-<item id="tubeMould"    name="Tube Mould"     ilvl="8"  class="mould" sounds="ceramic" >   <tag name="tubeMould" />  </item>
-<item id="bracketMould" name="Bracket Mould"  ilvl="8"  class="mould" sounds="ceramic" >   <tag name="bracketMould" />  </item>
-<item id="sawMould"     name="Saw Mould"      ilvl="8"  class="mould" sounds="ceramic" >   <tag name="sawMould" />   </item>
-<item id="scaleMould"   name="Scale Mould"    ilvl="8"  class="mould" sounds="ceramic" >   <tag name="scaleMould" /> </item>
-<item id="spearMould"   name="Spear Mould"    ilvl="8"  class="mould" sounds="ceramic" >   <tag name="spearMould" /> </item>
-
-<item id="boneNeedle"   name="Bone Needle"    ilvl="6"  class="boneJunk" sounds="metalTool" > <tag name="sewing" />     </item>
-
-<item id="stick" name="Stick" stackSize="10" sounds="stick" >
-    <offset x="-8" y="-1" />
+<item id="chassisWood" name="Wooden Platform" class="wood" ilvl="5" gearSlot="chassis" >
+	<offset x="0" y="0" />
 </item>
-<item id="knapper" name="Knapper" class="stoneJunk" sounds="rock" >
-    <tag name="grinding1" />
+<!--item id="chassisTank" name="Tank Chassis" class="iron" ilvl="7" gearSlot="chassis" >
+    <stats armour="20"/>
+	<offset x="0" y="0" />
+</item-->
+
+<item id="wheelsBasic" name="Cart wheels" class="wood" ilvl="5" gearSlot="wheels" >
+	<offset x="0" y="0" />
+</item>
+<item id="tankTracks" name="Tank Tracks" class="iron" ilvl="7" gearSlot="wheels" >
+	<offset x="0" y="0" />
+    <stats speed="1.3"/>
+</item>
+<item id="niceItem" name="Rugged Tank Tracks" class="iron" ilvl="7" gearSlot="wheels" quality="2" bind="equip" >
+	<offset x="0" y="0" />
+    <stats speed="1.4" armour="10"/>
 </item>
 
-
-<item id="bone" name="Bone" stackSize="10" sounds="bone" />
-<item id="boneClub" name="Bone Club" ilvl="8" class="boneClub" gearSlot="weapon" iconFile="bone" sounds="bone" bind="pickup" >
-    <weapon damage="6" speed="3.2" />
-    <stats courage="1" />
-	<offset x="-6" y="-15" />
+<item id="machineGun" name="Machine Gun" class="iron" ilvl="5" gearSlot="gun" >
+	<offset x="0" y="0" />
+    <weapon damage="1" speed="0.2" range="25" consumes="ammo" projectile="smoothRock" />
+</item>
+<item id="cannon" name="Tank Cannon" class="iron" ilvl="7" gearSlot="gun" >
+	<offset x="0" y="0" />
+    <weapon damage="20" speed="2.0" range="25" consumes="ammo" projectile="smoothRock" />
 </item>
 
-<!-- Tools -->
-	<!-- Saws -->
-		<item id="tinSaw" name="Tin Saw" ilvl="15" class="tinSaw" sounds="metalTool" >
-			<tag name="carpentry" />
-		</item>
-		<item id="copperSaw" name="Copper Saw" ilvl="30" class="copperSaw" sounds="metalTool" >
-			<tag name="carpentry" toolSpeed="1.1" />
-		</item>
-
-	<!-- Pickaxes -->
-		<item id="tinPick" name="Tin Pickaxe" ilvl="15" class="tinPickaxe" sounds="metalTool" >
-			<tag name="mining" />
-		</item>
-		<item id="copperPick" name="Copper Pickaxe" ilvl="30" class="copperPickaxe" sounds="metalTool" >
-			<tag name="mining" toolSpeed="1.1" />
-		</item>
-
-	<!-- Knives (fast) -->
-		<item id="stoneKnife" name="Stone Knife" ilvl="6" class="stoneKnife" gearSlot="weapon" sounds="rock" >
-			<tag name="carving" />
-			<tag name="harvesting" />
-			<offset x="-4" y="-1" />
-			<weapon damage="3" speed="2" />
-			<stats swiftness="1" />
-		</item>
-            <item id="stoneKnifeSilver" name="Inlaid Stone Knife" ilvl="11" class="stoneKnife" gearSlot="weapon"
-                iconFile="stoneKnife" gearFile="stoneKnife" sounds="rock" quality="2" bind="equip">
-                <tag name="carving" toolSpeed="1.05" />
-                <tag name="harvesting" toolSpeed="1.05" />
-                <offset x="-4" y="-1" />
-                <stats swiftness="1" />
-                <weapon damage="3" speed="1.3" />
-            </item>
-		<item id="tinKnife" name="Tin Knife" ilvl="15" class="tinKnife" gearSlot="weapon" >
-			<tag name="carving" toolSpeed="1.1" />
-			<tag name="harvesting" toolSpeed="1.1" />
-			<tag name="shearing" />
-			<offset x="-6" y="-3" />
-                <stats swiftness="2" />
-			<weapon damage="4" speed="1.5" />
-		</item>
-            <item id="tinKnifeSilver" name="Inlaid Tin Knife" ilvl="20" class="tinKnife" gearSlot="weapon"
-                iconFile="tinKnife" gearFile="tinKnife" quality="2" bind="equip">
-                <tag name="carving" toolSpeed="1.15" />
-                <tag name="harvesting" toolSpeed="1.15" />
-                <tag name="shearing" toolSpeed="1.05" />
-                <offset x="-6" y="-3" />
-                <stats swiftness="2" />
-                <weapon damage="5" speed="1.4" />
-            </item>
-		<item id="copperKnife" name="Copper Knife" ilvl="30" class="copperKnife" gearSlot="weapon" >
-			<tag name="carving" toolSpeed="1.2" />
-			<tag name="harvesting" toolSpeed="1.2" />
-			<tag name="shearing" toolSpeed="1.1" />
-			<offset x="-6" y="-3" />
-            <stats swiftness="4" />
-			<weapon damage="6" speed="1.3" />
-		</item>
-            <item id="copperKnifeSilver" name="Inlaid Copper Knife" ilvl="35" class="copperKnife" gearSlot="weapon"
-                iconFile="copperKnife" gearFile="copperKnife" quality="2" bind="equip">
-                <tag name="carving" toolSpeed="1.25" />
-                <tag name="harvesting" toolSpeed="1.25" />
-                <tag name="shearing" toolSpeed="1.15" />
-                <offset x="-6" y="-3" />
-                <stats swiftness="4" />
-                <weapon damage="6" speed="1.1" />
-            </item>
-
-	<!-- Axes -->
-		<item id="stoneAxe" name="Stone Axe" ilvl="4" class="stoneAxe" gearSlot="weapon" >
-			<tag name="woodcutting" />
-			<weapon damage="3" speed="1.9" />
-			<offset x="-5" y="1" />
-		</item>
-            <item id="stoneAxeSilver" name="Inlaid Stone Axe" ilvl="9" class="stoneAxe" gearSlot="weapon"
-                    iconFile="stoneAxe" gearFile="stoneAxe" quality="2" bind="equip" >
-                <tag name="woodcutting" toolSpeed="1.05" />
-                <stats might="1" />
-                <weapon damage="4" speed="2" />
-                <offset x="-5" y="1" />
-            </item>
-		<item id="tinAxe" name="Tin Axe" ilvl="15" gearSlot="weapon" class="tinAxe" >
-			<tag name="woodcutting" toolSpeed="1.1" />
-            <stats might="2" />
-			<weapon damage="5" speed="1.9" />
-			<offset x="-5" y="1" />
-        </item>
-            <item id="tinAxeSilver" name="Inlaid Tin Axe" ilvl="20" class="tinAxe" gearSlot="weapon"
-                    iconFile="tinAxe" gearFile="tinAxe" quality="2" bind="equip" >
-                <tag name="woodcutting" toolSpeed="1.15" />
-                <stats might="2" />
-                <weapon damage="7" speed="2" />
-                <offset x="-5" y="1" />
-            </item>
-		<item id="copperAxe" name="Copper Axe" ilvl="29" class="copperAxe" gearSlot="weapon" sounds="metalTool" >
-			<tag name="woodcutting" toolSpeed="1.2" />
-            <stats might="4" />
-			<weapon damage="9" speed="2.1" />
-			<offset x="-5" y="1" />
-		</item>
-            <item id="copperAxeSilver" name="Inlaid Copper Axe" ilvl="34" class="copperAxe" gearSlot="weapon" sounds="metalTool"
-                quality="2" bind="equip" iconFile="copperAxe" gearFile="copperAxe">
-                <tag name="woodcutting" toolSpeed="1.25" />
-                <stats might="5" />
-                <weapon damage="11" speed="2.2" />
-                <offset x="-5" y="1" />
-            </item>
-
-	<!-- Hammers (slow) -->
-		<item id="copperHammer" name="Copper Hammer" ilvl="30" class="copperHammer" gearSlot="weapon" sounds="metalTool"  >
-			<tag name="hammering" />
-            <stats courage="4" />
-			<weapon damage="16" speed="3.5" />
-			<offset x="-8" y="-1" />
-		</item>
-            <item id="copperHammerSilver" name="Inlaid Copper Hammer" ilvl="35" class="copperHammer" gearSlot="weapon" sounds="metalTool"
-                iconFile="copperHammer" gearFile="copperHammer" quality="2" bind="equip" >
-                <tag name="hammering" toolSpeed="1.05" />
-                <stats courage="5" />
-                <weapon damage="18" speed="3.5" />
-                <offset x="-8" y="-1" />
-            </item>
-
-<!-- Weapons -->
-	<!-- Spears (crit) -->
-		<item id="woodSpear" name="Sharpened Stick" ilvl="5" class="woodSpear" gearSlot="weapon" sounds="spear" >
-            <stats cunning="1" />
-            <weapon damage="4" speed="2.7" />
-			<offset x="-6" y="-20" />
-            <tag name="fishing" />
-		</item>
-            <item id="woodSpearSilver" name="Inlaid Sharpened Stick" ilvl="10" class="woodSpear" gearSlot="weapon" sounds="spear"
-                iconFile="woodSpear" gearFile="woodSpear" quality="2" bind="equip" >
-                <stats cunning="1" />
-                <weapon damage="6" speed="2.5" />
-                <offset x="-6" y="-20" />
-                <tag name="fishing" toolSpeed="1.05" />
-            </item>
-		<item id="tinSpear" name="Tin Spear" ilvl="19" class="tinSpear" gearSlot="weapon" sounds="spear" >
-			<stats crit="100" />
-            <weapon damage="9" speed="2.6" />
-			<offset x="-5" y="-21" />
-            <tag name="fishing" toolSpeed="1.1" />
-		</item>
-            <item id="tinSpearSilver" name="Inlaid Tin Spear" ilvl="24" class="tinSpear" gearSlot="weapon" sounds="spear" iconFile="tinSpear" gearFile="tinSpear" quality="2" bind="equip" >
-                <stats crit="100" cunning="1" />
-                <weapon damage="10" speed="2.5" />
-                <offset x="-5" y="-21" />
-                <tag name="fishing" toolSpeed="1.15" />
-            </item>
-		<item id="copperSpear" name="Copper Spear" ilvl="29" class="copperSpear" gearSlot="weapon" sounds="spear" >
-			<stats crit="100" cunning="1" />
-            <weapon damage="13" speed="2.5" />
-			<offset x="-5" y="-21" />
-            <tag name="fishing" toolSpeed="1.2" />
-		</item>
-            <item id="copperSpearSilver" name="Inlaid Copper Spear" ilvl="34" class="copperSpear" gearSlot="weapon" sounds="spear"
-                iconFile="copperSpear" gearFile="copperSpear" quality="2" bind="equip">
-                <stats crit="200" cunning="1" />
-                <weapon damage="13" speed="2.4" />
-                <offset x="-5" y="-21" />
-                <tag name="fishing" toolSpeed="1.25" />
-            </item>
-
-	<!-- Swords (hit) -->
-		<item id="copperSword" name="Copper Sword" ilvl="40" class="copperSword" gearSlot="weapon" quality="2" bind="equip" >
-			<stats hit="200" might="2" />
-            <weapon damage="16" speed="2.5" />
-            <offset x="-6" y="-8" />
-		</item>
-            <item id="copperSwordSilver" name="Inlaid Copper Sword" ilvl="45" class="copperSword" gearSlot="weapon"
-                iconFile="copperSword" gearFile="copperSword" quality="3" bind="equip" >
-                <stats hit="200" might="2" />
-                <weapon damage="19" speed="2.5" />
-                <offset x="-6" y="-8" />
-            </item>
-
-    <!-- Ranged -->
-        <!-- Sling -->
-            <item id="rock" name="Rock" ilvl="1" stackSize="100" gearSlot="weapon" sounds="rock" >
-                <stats cunning="1" />
-                <weapon damage="3" speed="2.5" range="25" consumes="rock" projectile="rock" />
-                <offset x="-3" />
-            </item>
-            <item id="sling" name="Sling" ilvl="14" class="sling" gearSlot="weapon" >
-                <stats cunning="1" />
-                <weapon damage="4" speed="2.1" range="25" consumes="smoothRock" projectile="smoothRock" />
-                <offset x="-7" y="0" />
-            </item>
-                <item id="slingSilver" name="Inlaid Sling" ilvl="19" class="sling" gearSlot="weapon" 
-                    iconFile="sling" gearFile="sling" quality="2" bind="equip" >
-                    <stats cunning="2" />
-                    <weapon damage="4" speed="1.9" range="25" consumes="smoothRock" projectile="smoothRock" />
-                    <offset x="-7" y="0" />
-                </item>
-            
-        <!-- Bow (hit) -->
-            <item id="bow" name="Bow" ilvl="17" class="bow" gearSlot="weapon" sounds="bow" >
-                <weapon damage="6" speed="3.3" range="25" consumes="woodArrow" projectile="arrow" />
-                <stats hit="100"/>
-                <offset x="-7" y="-3" />
-            </item>
-                <item id="bowSilver" name="Inlaid Bow" ilvl="22" class="bow" gearSlot="weapon" sounds="bow"
-                    iconFile="bow" gearFile="bow" quality="2" bind="equip" >
-                    <weapon damage="7" speed="3" range="25" consumes="woodArrow" projectile="arrow" />
-                    <stats hit="100"/>
-                    <offset x="-7" y="-3" />
-                </item>
-        <!-- Javelin (crit) -->
-            <item id="tinJavelin" name="Light Javelin" ilvl="17" class="tinJavelin" stackSize="100" gearSlot="weapon" sounds="spear" >
-                <weapon damage="5" speed="2.7" range="25" consumes="tinJavelin" projectile="tinJavelin" />
-                <stats crit="100"/>
-                <offset x="-5" y="-21" />
-            </item>
-            <item id="copperJavelin" name="Javelin" ilvl="36" class="copperJavelin" stackSize="100" gearSlot="weapon" sounds="spear" quality="2" bind="equip" >
-                <weapon damage="8" speed="2.5" range="25" consumes="copperJavelin" />
-                <stats crit="100" cunning="2"/>
-                <offset x="-5" y="-21" />
-            </item>
-
-        <!-- Ammo -->
-            <!-- Rock -->
-            <item id="smoothRock"   name="Smooth Rock"  stackSize="100"  sounds="rock" />
-            <item id="woodArrow"    name="Arrow"        stackSize="100"  sounds="rock" />
-            <!-- Tin Javelin -->
-            <!-- Copper Javelin -->
-
-
-
-
-<!-- Armor -->
-    <!-- Head -->
-        <!-- Hood (Energy) -->
-            <item id="woolHood" name="Woolen Hood" ilvl="25" class="woolHead" gearSlot="head" sounds="fabric" >
-                <stats armor="6" energy="25" />
-                <offset x="-4" y="-4" />
-            </item>
-                <item id="woolHoodSilver" name="Embroidered Woolen Hood" ilvl="30" class="woolHead" gearSlot="head" sounds="fabric"
-                    iconFile="woolHood" gearFile="woolHood" quality="2" bind="equip" >
-                    <stats armor="8" energy="31" />
-                    <offset x="-4" y="-4" />
-                </item>
-            
-        <!-- Leather (Dodge) -->
-            <item id="skullCap" name="Skull Cap" ilvl="14" class="leatherHead" gearSlot="head" sounds="leather" >
-                <stats armor="3" swiftness="4" />
-                <offset x="-3" y="-4" />
-            </item>
-                <item id="skullCapSilver" name="Lacquered Skull Cap" ilvl="19" class="leatherHead" gearSlot="head" sounds="leather"
-                    iconFile="skullCap" gearFile="skullCap" quality="2" bind="equip">
-                    <stats armor="7" swiftness="5" />
-                    <offset x="-3" y="-4" />
-                </item>
-        
-        <!-- Helmet (Health) -->
-            <item id="copperHelmet" name="Copper Helmet" ilvl="40" class="copperHead" gearSlot="head" quality="2" bind="equip" >
-                <stats armor="28" health="30" />
-                <offset x="-3" y="-5" />
-            </item>
-            <item id="copperHelmetSilver" name="Silvered Copper Helmet" ilvl="45" class="copperHead" gearSlot="head"
-                iconFile="copperHelmet" gearFile="copperHelmet" quality="3" bind="equip">
-                <stats armor="32" health="35" />
-                <offset x="-3" y="-5" />
-            </item>
-
-    <!-- Shoulders -->
-        <!-- Cloak (EPS) -->
-            <item id="linenCloak" name="Linen Cloak" ilvl="10" class="linenBack" gearSlot="shoulders" sounds="fabric" >
-                <stats courage="2" />
-                <offset x="-4" y="-1" />
-            </item>
-                <item id="linenCloakSilver" name="Embroidered Linen Cloak" ilvl="15" class="linenBack" gearSlot="shoulders" sounds="fabric"
-                    iconFile="linenCloak" gearFile="linenCloak" quality="2" bind="equip">
-                    <stats armor="1" courage="3" />
-                    <offset x="-4" y="-1" />
-                </item>
-            <item id="woolCloak" name="Woolen Cloak" ilvl="36" class="woolBack" gearSlot="shoulders" sounds="fabric" quality="2" bind="equip" >
-                <stats armor="7" courage="7" />
-                <offset x="-4" y="-1" />
-            </item>
-                <item id="woolCloakSilver" name="Embroidered Woolen Cloak" ilvl="41" class="woolBack" gearSlot="shoulders" sounds="fabric"
-                    iconFile="woolCloak" gearFile="woolCloak" quality="3" bind="equip">
-                    <stats armor="9" courage="8" />
-                    <offset x="-4" y="-1" />
-                </item>
-            
-        <!-- Leather (crit resistance) -->
-            <item id="hide" name="Animal Hide" ilvl="4" class="hideNoRepair" gearSlot="shoulders" sounds="leather" >
-                <stats armor="3" />
-                <offset x="-4" y="-1" />
-            </item>
-
-    <!-- Body -->
-        <!-- Lamellar (health) -->
-            <item id="tinLamellar" name="Tin Lamellar" ilvl="17" class="tinScaleMail" gearSlot="body" sounds="mailArmor" >
-                <stats armor="16" courage="5" />
-                <offset x="-6" y="-4" />
-            </item>
-                <item id="tinLamellarSilver" name="Silvered Tin Lamellar" ilvl="22" class="tinScaleMail" gearSlot="body" sounds="mailArmor"
-                    iconFile="tinLamellar" gearFile="tinLamellar" quality="2" bind="equip">
-                    <stats armor="20" courage="7" />
-                    <offset x="-6" y="-4" />
-                </item>
-            <item id="copperLamellar" name="Copper Lamellar" ilvl="37" class="copperScaleMail" gearSlot="body" sounds="mailArmor" quality="2" bind="equip" >
-                <stats armor="39" courage="12" />
-                <offset x="-6" y="-4" />
-            </item>
-                <item id="copperLamellarSilver" name="Silvered Copper Lamellar" ilvl="42" class="copperScaleMail" gearSlot="body" sounds="mailArmor"
-                    iconFile="copperLamellar" gearFile="copperLamellar" quality="3" bind="equip">
-                    <stats armor="45" courage="14" />
-                    <offset x="-6" y="-4" />
-                </item>
-
-        <!-- Hauberk (block %) -->
-            <item id="tinHauberk" name="Tin Hauberk" ilvl="19" class="tinRingMail" gearSlot="body" sounds="mailArmor" >
-                <stats armor="18" block="300" swiftness="3" />
-                <offset x="-5" y="-3" />
-            </item>
-                <item id="tinHauberkSilver" name="Silvered Tin Hauberk" ilvl="24" class="tinRingMail" gearSlot="body" sounds="mailArmor"
-                    iconFile="tinHauberk" gearFile="tinHauberk" quality="2" bind="equip">
-                    <stats armor="22" block="400" swiftness="4" />
-                    <offset x="-5" y="-3" />
-                </item>
-            <item id="copperHauberk" name="Copper Hauberk" ilvl="39" class="copperRingMail" gearSlot="body" sounds="mailArmor" quality="2" bind="equip" >
-                <stats armor="39" block="700" swiftness="7" />
-                <offset x="-5" y="-3" />
-            </item>
-                <item id="copperHauberkSilver" name="Silvered Copper Hauberk" ilvl="44" class="copperRingMail" gearSlot="body" sounds="mailArmor"
-                    iconFile="copperHauberk" gearFile="copperHauberk" quality="3" bind="equip">
-                    <stats armor="46" block="800" swiftness="8" />
-                    <offset x="-5" y="-3" />
-                </item>
-
-        <!-- Cuirass (crit resist) -->
-            <item id="linothorax" name="Linothorax Armour" ilvl="12" class="linenBody" gearSlot="body" >
-                <stats armor="9" endurance="4" />
-                <offset x="-5" y="-4" />
-            </item>
-                <item id="linothoraxSilver" name="Silvered Linothorax Armour" ilvl="17" class="linenBody" gearSlot="body"
-                    iconFile="linothorax" gearFile="linothorax" quality="2" bind="equip">
-                    <stats armor="12" endurance="6" />
-                    <offset x="-5" y="-4" />
-                </item>
-            <item id="copperCuirass" name="Copper Cuirass" ilvl="41" class="copperBody" gearSlot="body" quality="2" bind="equip" >
-                <stats armor="42" endurance="14" />
-                <offset x="-3" y="-4" />
-            </item>
-                <item id="copperCuirassSilver" name="Silvered Copper Cuirass" ilvl="46" class="copperBody" gearSlot="body"
-                    iconFile="copperCuirass" gearFile="copperCuirass" quality="3" bind="equip" >
-                    <stats armor="49" endurance="16" />
-                    <offset x="-3" y="-4" />
-                </item>
-
-        <!-- Leather (dodge) -->
-            <item id="leatherLamellar" name="Leather Lamellar" ilvl="16" class="leatherScaleMail" gearSlot="body" sounds="leather" >
-                <stats armor="8" swiftness="4" dodge="100" />
-                <offset x="-6" y="-4" />
-            </item>
-                <item id="leatherLamellarSilver" name="Lacquered Leather Lamellar" ilvl="21" class="leatherScaleMail" gearSlot="body" bind="equip" sounds="leather"
-                    iconFile="leatherLamellar" gearFile="leatherLamellar" quality="2">
-                    <stats armor="11" swiftness="6" dodge="100" />
-                    <offset x="-6" y="-4" />
-                </item>
-
-        <!-- Chiton (energy) -->
-            <item id="linenChiton" name="Linen Chiton" ilvl="10" class="linenBody" gearSlot="body" sounds="fabric" >
-                <stats armor="4" cunning="4" />
-                <offset x="-6" y="-3" />
-            </item>
-                <item id="linenChitonSilver" name="Embroidered Linen Chiton" ilvl="15" class="linenBody" gearSlot="body" sounds="fabric"
-                    iconFile="linenChiton" gearFile="linenChiton" quality="2" bind="equip" >
-                    <stats armor="3" cunning="7" />
-                    <offset x="-6" y="-3" />
-                </item>
-            <item id="woolChiton" name="Wool Chiton" ilvl="25" class="woolBody" gearSlot="body" sounds="fabric" >
-                <stats armor="11" cunning="11" />
-                <offset x="-6" y="-3" />
-            </item>
-                <item id="woolChitonSilver" name="Embroidered Wool Chiton" ilvl="30" class="woolBody" gearSlot="body" sounds="fabric"
-                    iconFile="woolChiton" gearFile="woolChiton" quality="2" bind="equip">
-                    <stats armor="11" cunning="14" />
-                    <offset x="-6" y="-3" />
-                </item>
-
-        <!-- Exomis (resistances) -->
-            <item id="woolExomis" name="Wool Exomis" ilvl="27" class="woolBody" gearSlot="body" sounds="fabric" >
-                <stats armor="10" airResist="52" earthResist="52" fireResist="52" waterResist="52" />
-                <offset x="-5" y="-4" />
-            </item>
-                <item id="woolExomisSilver" name="Embroidered Wool Exomis" ilvl="32" class="woolBody" gearSlot="body" sounds="fabric"
-                    iconFile="woolExomis" gearFile="woolExomis" quality="2" bind="equip">
-                    <stats armor="12" airResist="63" earthResist="63" fireResist="63" waterResist="63" />
-                    <offset x="-5" y="-4" />
-                </item>
-
-    <!-- Hands -->
-        <!-- Wrappings (magic damage) -->
-            <item id="woolWrappings" name="Wool Wrappings" ilvl="30" class="woolHands" gearSlot="hands" sounds="fabric" >
-                <stats armor="5" intellect="3" />
-                <offset x="0" y="-8" />
-            </item>
-                <item id="woolWrappingsSilver" name="Embroidered Wool Wrappings" ilvl="35" class="woolHands" gearSlot="hands" sounds="fabric"
-                    iconFile="woolWrappings" gearFile="woolWrappings" quality="2" bind="equip">
-                    <stats armor="4" intellect="4" />
-                    <offset x="0" y="-8" />
-                </item>
-            
-        <!-- Gloves (crit) -->
-            <item id="leatherGloves" name="Leather Gloves" ilvl="22" class="leatherHands" gearSlot="hands" sounds="leather" >
-                <stats armor="4" swiftness="2" />
-                <offset x="-2" y="1" />
-            </item>
-                <item id="leatherGlovesSilver" name="Lacquered Leather Gloves" ilvl="27" class="leatherHands" gearSlot="hands" sounds="leather"
-                    iconFile="leatherGloves" gearFile="leatherGloves" quality="2" bind="equip">
-                    <stats armor="3" swiftness="3" />
-                    <offset x="-2" y="1" />
-                </item>
-            
-        <!-- Bracers (physical damage) -->
-            <item id="copperBracers" name="Copper Bracers" ilvl="38" class="copperHands" gearSlot="hands" quality="2" bind="equip" >
-                <stats armor="10" might="3" />
-                <offset x="-1" y="-7" />
-            </item>
-                <item id="copperBracersSilver" name="Silvered Copper Bracers" ilvl="43" class="copperHands" gearSlot="hands"
-                    iconFile="copperBracers" gearFile="copperBracers" quality="3" bind="equip">
-                    <stats armor="10" might="4" />
-                    <offset x="-1" y="-7" />
-                </item>
-
-    <!-- Feet -->
-        <!-- Shoes (EPS) -->
-            <item id="woolShoes" name="Wool Shoes" ilvl="24" class="woolFeet" gearSlot="feet" sounds="fabric" >
-                <stats armor="2" courage="6" />
-                <offset x="-3" y="-1" />
-            </item>
-                <item id="woolShoesSilver" name="Embroidered Wool Shoes" ilvl="29" class="woolFeet" gearSlot="feet" sounds="fabric"
-                    iconFile="woolShoes" gearFile="woolShoes" quality="2" bind="equip">
-                    <stats armor="4" courage="7" />
-                    <offset x="-3" y="-1" />
-                </item>
-            
-        <!-- Sandals (speed) -->
-            <item id="sandals" name="Sandals" ilvl="17" class="leatherFeet" gearSlot="feet" sounds="leather" >
-                <stats armor="6" swiftness="3" />
-                <offset x="-1" y="-5" />
-            </item>
-                <item id="sandalsSilver" name="Lacquered Sandals" ilvl="22" class="leatherFeet" gearSlot="feet" sounds="leather"
-                    iconFile="sandals" gearFile="sandals" quality="2" bind="equip">
-                    <stats armor="8" swiftness="4" />
-                    <offset x="-1" y="-5" />
-                </item>
-            
-        <!-- Greaves (HPS) -->
-            <item id="copperGreaves" name="Copper Greaves" ilvl="40" class="copperFeet" gearSlot="feet" quality="2" bind="equip" >
-                <stats armor="20" endurance="7" />
-                <offset x="-2" y="-10" />
-            </item>
-                <item id="copperGreavesSilver" name="Silvered Copper Greaves" ilvl="45" class="copperFeet" gearSlot="feet"
-                    iconFile="copperGreaves" gearFile="copperGreaves" quality="3" bind="equip">
-                    <stats armor="23" endurance="8" />
-                    <offset x="-2" y="-10" />
-                </item>
-
-    <!-- Left hand -->
-        <!-- Shield (block %, BV) -->
-            <item id="leatherShield" name="Leather Shield" ilvl="20" class="lumberShield" gearSlot="offhand" >
-                <stats armor="17" endurance="4" blockValue="400" />
-                <offset x="-4" y="-10" />
-                <tag name="shield" />
-            </item>
-                <item id="leatherShieldSilver" name="Lacquered Leather Shield" ilvl="25" class="lumberShield" gearSlot="offhand"
-                    iconFile="leatherShield" gearFile="leatherShield" quality="2" bind="equip" >
-                    <stats armor="19" endurance="6" blockValue="500" />
-                    <offset x="-4" y="-10" />
-                    <tag name="shield" />
-                </item>
-            <item id="copperShield" name="Buckler" ilvl="40" class="copperShield" gearSlot="offhand" quality="2" bind="equip" >
-                <stats armor="47" endurance="3" block="200" blockValue="700" />
-                <offset x="-6" y="-12" />
-                <tag name="shield" />
-            </item>
-                <item id="copperShieldSilver" name="Inlaid Buckler" ilvl="45" class="copperShield" gearSlot="offhand"
-                    iconFile="copperShield" gearFile="copperShield" quality="3" bind="equip">
-                    <stats armor="57" endurance="3" block="300" blockValue="800" />
-                    <offset x="-6" y="-12" />
-                    <tag name="shield" />
-                </item>
-
-        <!-- Knowledge (energy) -->
-            <item id="knucklebones" name="Knucklebones" ilvl="4" class="boneJunk" gearSlot="offhand" >
-                <stats cunning="2" energy="2" />
-                <offset x="0" y="1" />
-            </item>
-            <item id="tablet" name="Tablet" ilvl="20" class="ceramic" gearSlot="offhand" sounds="ceramic" >
-                <stats cunning="11" energy="10" />
-                <offset x="-2" y="-6" />
-            </item>
-                <item id="tabletSilver" name="Illuminated Tablet" ilvl="25" class="ceramic" gearSlot="offhand" sounds="ceramic" iconFile="tablet" quality="2" bind="equip" >
-                    <stats cunning="14" energy="14" />
-                    <offset x="-2" y="-6" />
-                </item>
-            <item id="parchment" name="Parchment" ilvl="27" class="parchment" gearSlot="offhand" >
-                <stats cunning="15" energy="16" />
-            </item>
-                <item id="parchmentSilver" name="Illuminated Parchment" ilvl="32" class="parchment" gearSlot="offhand" iconFile="parchment" quality="2" bind="equip" >
-                    <stats cunning="18" energy="20" />
-                </item>
-
-        <!-- Musical instrument (HPS, EPS) -->
-            <item id="horn" name="Horn" ilvl="3" class="boneJunk" gearSlot="offhand" >
-                <stats courage="2" />
-                <offset x="0" y="-3" />
-            </item>
-            <item id="tambourine" name="Tambourine" ilvl="15" class="tambourine" gearSlot="offhand" >
-                <stats courage="10" />
-                <offset x="-5" y="-2" />
-            </item>
-                <item id="tambourineSilver" name="Inlaid Tambourine" ilvl="20" class="tambourine" gearSlot="offhand" icon="tambourine" quality="2" bind="equip" >
-                    <stats courage="14" />
-                    <offset x="-5" y="-2" />
-                </item>
-
-<item id="debugRing" name="Ring of Power" gearSlot="jewelry" quality="4" iconFile="tinRing" >
-    <stats might="300" intellect="300" cunning="1000" swiftness="1000" endurance="1000" courage="1000" />
+<!--item id="armour" name="Armour Plating" class="iron" ilvl="8" gearSlot="armour" >
+	<offset x="0" y="0" />
+    <stats armour="100" />
 </item>
+    <recipe id="armour" time="6000" >
+        <material id="iron" quantity="8" />
+        <unlockedBy gather="iron" chance="0.2" />
+    </recipe-->
+<item id="chassisTank" name="Tank Chassis" class="iron" ilvl="7" gearSlot="chassis" >
+    <stats armour="100"/>
+	<offset x="0" y="0" />
+</item>
+    <recipe id="chassisTank" time="6000" >
+        <material id="iron" quantity="8" />
+        <unlockedBy gather="iron" chance="0.2" />
+    </recipe>
+
+<item id="camo" name="Forest Camouflage" ilvl="8" gearSlot="camo" >
+	<offset x="0" y="0" />
+    <stats dodge="2000" />
+</item>
+    <recipe id="camo" time="2000" >
+        <material id="leaves" quantity="4" />
+        <unlockedBy gather="leaves" chance="0.5" />
+    </recipe>
+
+
+<objectType id="bridge" name="Wooden Bridge" 
+    healthCategory="log"
+    xDrawOffset="-30" yDrawOffset="-30"
+    damageParticles="wood" sounds="wood" >
+    <collisionRect x="-30" y="-30" w="60" h="60" />
+    <material id="wood" quantity="8" />
+    <unlockedBy gather="wood" />
+    <canBeRepaired cost="wood" />
+    <grantsBuff id="bridgeTravel" radius="0" />
+</objectType>
+    <buff id="bridgeTravel" name="Bridge Travel" icon="waterRipples" school="air"  
+        description="Can drive on both land and water.">
+        <changeAllowedTerrain terrainList="notMountains" />
+    </buff>
+
+<objectType id="wreck" name="Wreck"
+    xDrawOffset="-21" yDrawOffset="-96"
+    canGather="1" gatherTime="3000" >
+    <yield id="iron" initialMean="3" initialSD="1" initialMin="1" />
+    <collisionRect x="-1" y="-1" w="2" h="2" />
+</objectType>
+
+<objectType id="tree" name="Tree"
+    xDrawOffset="-21" yDrawOffset="-96"
+    canGather="1" sounds="tree" gatherParticles="tree" damageParticles="tree" gatherTime="3000" >
+    <yield id="wood" initialMean="5.5" initialSD="1" initialMin="1" />
+    <yield id="leaves" initialMean="2" initialSD="0.5" />
+    <collisionRect x="-5" y="-4" w="10" h="7" />
+</objectType>
+
+
+<npcType
+    id="practiceTarget" name="Practice Target"
+	level="1" maxHealth="1" attack="0" attackTime="1780"
+    xDrawOffset="-1" yDrawOffset="-1" isNeutral="1" >
+    <collisionRect x="-1" y="-1" w="2" h="2" />
+</npcType>
+<npcType
+    id="enemy" name="Enemy Scout"
+	level="2" maxHealth="20" attack="5" attackTime="1780" isRanged="1" school="physical" projectile="smoothRock"
+    xDrawOffset="-1" yDrawOffset="-1" >
+    <collisionRect x="-1" y="-1" w="2" h="2" />
+    <loot id="ammo" > <normal mean="-2" sd="3" /> </loot>
+    <loot id="chocolate" chance="0.3" />
+    <loot id="iron" > <normal mean="-2" sd="2" /> </loot>
+</npcType>
+<npcType
+    id="base" name="Enemy Base"
+	level="4" maxHealth="50" attack="0" attackTime="1780"
+    xDrawOffset="-1" yDrawOffset="-1" >
+    <collisionRect x="-1" y="-1" w="2" h="2" />
+    <loot id="niceItem" />
+</npcType>
+<npcType id="commander" name="Captain Jones" >
+</npcType>
+<npcType id="engineer" name="Engineer Bruce" >
+</npcType>
+
+
+<quest id="targetPractice" name="Boot Camp" startsAt="commander" endsAt="commander"
+    level="1"
+    brief="Welcome to the front, soldier!  I'm your commanding officer here.  I trust you know how to use that gun?
+    Head to the range and shoot a few targets.  Make sure your equipment still works."
+    debrief="Well the gun works, but those wheels aren't quite cut out for the fight ahead.  Here's an upgrade.
+    I think you're ready to see some action!" >
+    <objective type="kill" id="practiceTarget" qty="3" />
+    <reward type="item" id="tankTracks" />
+</quest>
+<quest id="killEnemies" name="A Taste of Blood" startsAt="commander" endsAt="engineer"
+    level="2"
+    brief="We've got a beachhead here, but can't hold it forever.  We need to advance.
+    There are enemy forces to the East, but that's our path forward.  Take out as many as you can, and press through to the river.  Your contact there is an engineer, name of Bruce.
+    Oh, and soldier?  Try not to get killed out there."
+    debrief="G'day!  Stoked you made it through; I was starting to think that yank officer would never send any support." >
+    <prerequisite id="targetPractice" />
+    <objective type="kill" id="enemy" qty="4" />
+    <reward type="item" id="chassisTank" />
+</quest>
+<quest id="buildBridge" name="Troubled Waters" startsAt="engineer" endsAt="engineer"
+    level="3"
+    brief="The enemy base is across this river.  It's too deep to drive through, so I reckon we'll need to bridge it.
+    Grab some wood from these trees, then have a go at building a bridge."
+    debrief="You beauty!  Should just be a quick trip up the road now to take out the base.  Here's a proper gun to do the job.
+    Catch you afterwards for a cold one, mate?" >
+    <objective type="construct" id="bridge" />
+    <reward type="item" id="cannon" />
+</quest>
 
 </root>
