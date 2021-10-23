@@ -33,7 +33,7 @@ LogConsole *Server::_debugInstance = nullptr;
 
 const ms_t Server::MAX_TIME_BETWEEN_LOCATION_UPDATES = 1000;
 
-const px_t Server::ACTION_DISTANCE = Podes{4}.toPixels();
+const px_t Server::ACTION_DISTANCE = Podes{10}.toPixels();
 const px_t Server::CULL_DISTANCE = 450;
 
 Server::Server()
