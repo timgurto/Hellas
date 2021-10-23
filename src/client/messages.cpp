@@ -124,7 +124,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
 
       case SV_YOU_ARE_IN_THE_TUTORIAL:
         if (del != MSG_END) break;
-        _skipTutorialButton->show();
+        //_skipTutorialButton->show();
         break;
       case SV_YOU_HAVE_FINISHED_THE_TUTORIAL:
         if (del != MSG_END) break;
