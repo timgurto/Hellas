@@ -5,6 +5,7 @@ Item::Item(const std::string &id) : _id(id) {}
 Item::GearSlot Item::parseGearSlot(std::string slotName) {
   slotName = toLower(slotName);
   if (slotName == "chassis") return CHASSIS;
+  if (slotName == "flag") return FLAG;
   if (slotName == "camo") return CAMO;
   if (slotName == "wheels") return WHEELS;
   if (slotName == "weapon") return WEAPON;

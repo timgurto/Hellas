@@ -14,9 +14,10 @@ class Item : public HasTags {
  public:
   enum GearSlot {
     CHASSIS = 0,
-    CAMO = 1,
-    WHEELS = 2,
-    WEAPON = 3,
+    FLAG = 1,
+    CAMO = 2,
+    WHEELS = 3,
+    WEAPON = 4,
 
     NOT_GEAR
   };
