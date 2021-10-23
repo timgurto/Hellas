@@ -53,11 +53,11 @@
     <stats speed="1.4" armour="10"/>
 </item>
 
-<item id="machineGun" name="Machine Gun" class="iron" ilvl="5" gearSlot="gun" >
+<item id="machineGun" name="Machine Gun" class="iron" ilvl="5" gearSlot="weapon" >
 	<offset x="5" y="-3" />
     <weapon damage="1" speed="0.2" range="25" consumes="ammo" projectile="smoothRock" />
 </item>
-<item id="cannon" name="Tank Cannon" class="iron" ilvl="7" gearSlot="gun" >
+<item id="cannon" name="Tank Cannon" class="iron" ilvl="7" gearSlot="weapon" >
 	<offset x="0" y="0" />
     <weapon damage="20" speed="2.0" range="25" consumes="ammo" projectile="smoothRock" />
 </item>

@@ -7,7 +7,7 @@ Item::GearSlot Item::parseGearSlot(std::string slotName) {
   if (slotName == "chassis") return CHASSIS;
   if (slotName == "camo") return CAMO;
   if (slotName == "wheels") return WHEELS;
-  if (slotName == "gun") return GUN;
+  if (slotName == "weapon") return WEAPON;
 
   return NOT_GEAR;
 }

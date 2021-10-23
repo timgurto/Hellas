@@ -16,7 +16,7 @@ class Item : public HasTags {
     CHASSIS = 0,
     CAMO = 1,
     WHEELS = 2,
-    GUN = 3,
+    WEAPON = 3,
 
     NOT_GEAR
   };

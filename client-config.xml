@@ -14,7 +14,7 @@
     <slot num="0" midX="-37" midY="-30" drawOrder="1"/> <!-- chassis       -->
     <slot num="1" midX="-37" midY="-30" drawOrder="2"/> <!-- camo  -->
     <slot num="2" midX="-34" midY="1"   drawOrder="3"/> <!-- wheels       -->
-    <slot num="3" midX="-19" smidY="-30" drawOrder="4"/> <!-- gun      -->
+    <slot num="3" midX="-19" smidY="-30" drawOrder="4"/> <!-- weapon      -->
 </gearDisplay>
 
 </root>
