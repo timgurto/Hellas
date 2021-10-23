@@ -153,14 +153,10 @@ void Client::initialiseData() {
 
 void Client::initializeGearSlotNames() {
   if (!GEAR_SLOT_NAMES.empty()) return;
-  GEAR_SLOT_NAMES.push_back("Head");
-  GEAR_SLOT_NAMES.push_back("Jewelry");
-  GEAR_SLOT_NAMES.push_back("Body");
-  GEAR_SLOT_NAMES.push_back("Shoulders");
-  GEAR_SLOT_NAMES.push_back("Hands");
-  GEAR_SLOT_NAMES.push_back("Feet");
+  GEAR_SLOT_NAMES.push_back("Chassis");
+  GEAR_SLOT_NAMES.push_back("Camouflage");
+  GEAR_SLOT_NAMES.push_back("Wheels");
   GEAR_SLOT_NAMES.push_back("Weapon");
-  GEAR_SLOT_NAMES.push_back("Offhand");
 }
 
 void Client::initStatics() {
