@@ -1,7 +1,7 @@
 <root>
 
 <item id="wood" name="Wood" iconFile="lumber" stackSize="10" />
-<item id="leaves" name="Wood" iconFile="earthEssence" stackSize="10" />
+<item id="leaves" name="Leaves" iconFile="earthEssence" stackSize="10" />
 <item id="iron" name="Iron" iconFile="silverBar" stackSize="10" />
 
 <itemClass id="wood" >
@@ -71,7 +71,7 @@
 	<offset x="-20" y="-4" />
 </item>
 
-<item id="camo" name="Forest Camouflage" ilvl="8" gearSlot="camo" >
+<item id="camo" name="Forest Camouflage" ilvl="8" gearSlot="camo" iconFile="earthEssence" >
 	<offset x="0" y="0" />
     <stats dodge="2000" />
 </item>
@@ -87,9 +87,10 @@
 
 <objectType id="bridge" name="Wooden Bridge" 
     healthCategory="log"
-    xDrawOffset="-30" yDrawOffset="-30"
-    damageParticles="wood" sounds="wood" >
-    <collisionRect x="-30" y="-30" w="60" h="60" />
+    xDrawOffset="-50" yDrawOffset="-50"
+    damageParticles="wood" sounds="wood"
+        allowedTerrain="notMountains">
+    <collisionRect x="-50" y="-50" w="100" h="100" />
     <material id="wood" quantity="8" />
     <unlockedBy gather="wood" />
     <canBeRepaired cost="wood" />
@@ -188,6 +189,7 @@
     Grab some wood from these trees, then have a go at building a bridge."
     debrief="You beauty!  Should just be a quick trip up the road now to take out the base.  Here's a proper gun to do the job.
     Catch you afterwards for a cold one, mate?" >
+    <prerequisite id="killEnemies" />
     <objective type="construct" id="bridge" />
     <reward type="item" id="cannon" />
 </quest>
