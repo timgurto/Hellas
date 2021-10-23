@@ -93,20 +93,13 @@ bool Item::canBeDamaged() const {
 }
 
 Item::GearSlot Item::getRandomArmorSlot() {
-  const auto choice = rand() % 6;
+  const auto choice = rand() % 3;
   switch (choice) {
     case 0:
-      return HEAD;
+      return WHEELS;
     case 1:
-      return BODY;
+      return CHASSIS;
     case 2:
-      return SHOULDERS;
-    case 3:
-      return HANDS;
-    case 4:
-      return FEET;
-    case 5:
-    default:
-      return OFFHAND;
+      return CAMO;
   }
 }

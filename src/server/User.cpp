@@ -1110,13 +1110,7 @@ void User::sendGotHitMessageTo(const User &user) const {
   Server::_instance->sendMessage(user.socket(), {SV_PLAYER_WAS_HIT, _name});
 }
 
-bool User::canBlock() const {
-  const auto &offhandItem = _gear[Item::OFFHAND];
-  if (!offhandItem.hasItem()) return false;
-  if (!offhandItem.type()->isTag("shield")) return false;
-  if (offhandItem.isBroken()) return false;
-  return true;
-}
+bool User::canBlock() const { return false; }
 
 SpellSchool User::school() const {
   const auto &weapon = _gear[Item::WEAPON];
