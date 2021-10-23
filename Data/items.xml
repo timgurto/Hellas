@@ -30,15 +30,19 @@
     </recipe>
 
 <item id="chassisWood" name="Wooden Platform" class="wood" ilvl="5" gearSlot="chassis" >
+	<offset x="-2" y="-3" />
+</item>
+<item id="chassisTank" name="Tank Chassis" class="iron" ilvl="7" gearSlot="chassis" >
+    <stats armour="100"/>
 	<offset x="0" y="0" />
 </item>
-<!--item id="chassisTank" name="Tank Chassis" class="iron" ilvl="7" gearSlot="chassis" >
-    <stats armour="20"/>
-	<offset x="0" y="0" />
-</item-->
+    <recipe id="chassisTank" time="6000" >
+        <material id="iron" quantity="8" />
+        <unlockedBy gather="iron" chance="0.2" />
+    </recipe>
 
 <item id="wheelsBasic" name="Cart wheels" class="wood" ilvl="5" gearSlot="wheels" >
-	<offset x="0" y="0" />
+	<offset x="-5" y="0" />
 </item>
 <item id="tankTracks" name="Tank Tracks" class="iron" ilvl="7" gearSlot="wheels" >
 	<offset x="0" y="0" />
@@ -50,30 +54,13 @@
 </item>
 
 <item id="machineGun" name="Machine Gun" class="iron" ilvl="5" gearSlot="gun" >
-	<offset x="0" y="0" />
+	<offset x="5" y="-3" />
     <weapon damage="1" speed="0.2" range="25" consumes="ammo" projectile="smoothRock" />
 </item>
 <item id="cannon" name="Tank Cannon" class="iron" ilvl="7" gearSlot="gun" >
 	<offset x="0" y="0" />
     <weapon damage="20" speed="2.0" range="25" consumes="ammo" projectile="smoothRock" />
 </item>
-
-<!--item id="armour" name="Armour Plating" class="iron" ilvl="8" gearSlot="armour" >
-	<offset x="0" y="0" />
-    <stats armour="100" />
-</item>
-    <recipe id="armour" time="6000" >
-        <material id="iron" quantity="8" />
-        <unlockedBy gather="iron" chance="0.2" />
-    </recipe-->
-<item id="chassisTank" name="Tank Chassis" class="iron" ilvl="7" gearSlot="chassis" >
-    <stats armour="100"/>
-	<offset x="0" y="0" />
-</item>
-    <recipe id="chassisTank" time="6000" >
-        <material id="iron" quantity="8" />
-        <unlockedBy gather="iron" chance="0.2" />
-    </recipe>
 
 <item id="camo" name="Forest Camouflage" ilvl="8" gearSlot="camo" >
 	<offset x="0" y="0" />
