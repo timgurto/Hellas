@@ -40,6 +40,9 @@
         <material id="iron" quantity="8" />
         <unlockedBy gather="iron" chance="0.2" />
     </recipe>
+<item id="chassisTankTan" gearSlot="chassis" >
+	<offset x="-1" y="-1" />
+</item>
 
 <item id="wheelsBasic" name="Cart wheels" class="wood" ilvl="5" gearSlot="wheels" >
 	<offset x="3" y="-2" />
@@ -47,6 +50,9 @@
 <item id="tankTracks" name="Tank Tracks" class="iron" ilvl="7" gearSlot="wheels" >
 	<offset x="-2" y="-3" />
     <stats speed="1.3"/>
+</item>
+<item id="tankTracksTan" gearSlot="wheels" >
+	<offset x="-2" y="-3" />
 </item>
 <item id="niceItem" name="Rugged Tank Tracks" imageFile="tankTracks" class="iron" ilvl="14" gearSlot="wheels" quality="2" bind="equip" >
 	<offset x="-2" y="-3" />
@@ -61,6 +67,9 @@
 	<offset x="4" y="-4" />
     <weapon damage="20" speed="2.0" range="25" consumes="ammo" projectile="smoothRock" />
 </item>
+<item id="cannonTan" gearSlot="weapon" >
+	<offset x="-20" y="-4" />
+</item>
 
 <item id="camo" name="Forest Camouflage" ilvl="8" gearSlot="camo" >
 	<offset x="0" y="0" />
@@ -73,6 +82,7 @@
     
 <item id="flag-us" name="U.S. Flag" ilvl="1" gearSlot="flag" />
 <item id="flag-aus" name="Australian Flag" ilvl="1" gearSlot="flag" />
+<item id="flag-ger" name="German Flag" ilvl="1" gearSlot="flag" />
 
 
 <objectType id="bridge" name="Wooden Bridge" 
@@ -117,6 +127,12 @@
 	level="2" maxHealth="20" attack="5" attackTime="1780" isRanged="1" school="physical" projectile="smoothRock"
     xDrawOffset="-1" yDrawOffset="-1" >
     <collisionRect x="-1" y="-1" w="2" h="2" />
+    <humanoid>
+        <gear id="chassisTankTan" />
+        <gear id="tankTracksTan" />
+        <gear id="cannonTan" />
+        <gear id="flag-ger" />
+    </humanoid>
     <loot id="ammo" > <normal mean="-2" sd="3" /> </loot>
     <loot id="chocolate" chance="0.3" />
     <loot id="iron" > <normal mean="-2" sd="2" /> </loot>
@@ -129,9 +145,20 @@
     <loot id="niceItem" />
 </npcType>
 <npcType id="commander" name="Captain Jones" isCivilian="1" >
+    <humanoid>
+        <gear id="chassisTank" />
+        <gear id="tankTracks" />
+        <gear id="cannon" />
+        <gear id="flag-us" />
+    </humanoid>
 </npcType>
     <npc id="commander" y="39808" x="48560" />
 <npcType id="engineer" name="Engineer Bruce" isCivilian="1" >
+    <humanoid>
+        <gear id="chassisWood" />
+        <gear id="wheelsBasic" />
+        <gear id="flag-aus" />
+    </humanoid>
 </npcType>
     <npc id="engineer" y="39792" x="49632" />
 
