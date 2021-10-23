@@ -24,7 +24,6 @@ Global
 		{F587C0B6-1063-43A4-BB6F-F512036EF518}.Release|Win32.ActiveCfg = Release|Win32
 		{F587C0B6-1063-43A4-BB6F-F512036EF518}.Release|Win32.Build.0 = Release|Win32
 		{294EE75E-5C8D-4EA3-BBD1-545374329693}.Debug|Win32.ActiveCfg = Debug|Win32
-		{294EE75E-5C8D-4EA3-BBD1-545374329693}.Debug|Win32.Build.0 = Debug|Win32
 		{294EE75E-5C8D-4EA3-BBD1-545374329693}.Release|Win32.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
