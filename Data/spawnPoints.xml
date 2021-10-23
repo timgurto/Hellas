@@ -1,2 +1,15 @@
 <root>
+    <spawnPoint type="commander" y="39808" x="48560" quantity="5" radius="250" respawnTime="300000" />
+    <spawnPoint type="engineer" y="39792" x="49632" quantity="5" radius="250" respawnTime="300000" />
+    <spawnPoint type="practiceTarget" y="38992" x="48480" quantity="5" radius="150" respawnTime="300000" />
+    <spawnPoint type="practiceTarget" y="39120" x="48288" quantity="5" radius="150" respawnTime="300000" />
+    <spawnPoint type="practiceTarget" y="39296" x="48512" quantity="5" radius="150" respawnTime="300000" />
+    <spawnPoint type="practiceTarget" y="39360" x="48224" quantity="5" radius="150" respawnTime="300000" />
+    <spawnPoint type="practiceTarget" y="39584" x="48464" quantity="5" radius="150" respawnTime="300000" />
+    <spawnPoint type="tree" y="39072" x="49200" quantity="30" radius="500" respawnTime="300000" />
+    <spawnPoint type="tree" y="39536" x="49600" quantity="2" radius="150" respawnTime="300000" />
+    <spawnPoint type="tree" y="40016" x="49216" quantity="30" radius="500" respawnTime="300000" />
+    <spawnPoint type="wreck" y="39072" x="49200" quantity="10" radius="500" respawnTime="300000" />
+    <spawnPoint type="wreck" y="39536" x="49600" quantity="1" radius="150" respawnTime="300000" />
+    <spawnPoint type="wreck" y="40016" x="49216" quantity="10" radius="500" respawnTime="300000" />
 </root>
