@@ -158,8 +158,7 @@ const Tooltip &Avatar::tooltip() const {
 }
 
 void Avatar::playAttackSound() const {
-  static const size_t WEAPON_SLOT = 6;
-  const ClientItem *weapon = _gear[WEAPON_SLOT].first.type();
+  const ClientItem *weapon = _gear[Item::WEAPON].first.type();
 
   if (weapon)
     weapon->playSoundOnce(_client, "attack");

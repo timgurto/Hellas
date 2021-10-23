@@ -61,7 +61,7 @@ const px_t Client::CULL_DISTANCE = 450;  // Just copy Server::CULL_DISTANCE
 const px_t Client::CULL_HYSTERESIS_DISTANCE = 50;
 
 const size_t Client::INVENTORY_SIZE = 15;
-const size_t Client::GEAR_SLOTS = 8;
+const size_t Client::GEAR_SLOTS = 5;
 std::vector<std::string> Client::GEAR_SLOT_NAMES;
 
 std::map<std::string, int> Client::_messageCommands;
