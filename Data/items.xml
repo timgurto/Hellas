@@ -34,7 +34,7 @@
 </item>
 <item id="chassisTank" name="Tank Chassis" class="iron" ilvl="7" gearSlot="chassis" >
     <stats armour="100"/>
-	<offset x="0" y="0" />
+	<offset x="-1" y="-1" />
 </item>
     <recipe id="chassisTank" time="6000" >
         <material id="iron" quantity="8" />
@@ -45,10 +45,10 @@
 	<offset x="-5" y="0" />
 </item>
 <item id="tankTracks" name="Tank Tracks" class="iron" ilvl="7" gearSlot="wheels" >
-	<offset x="0" y="0" />
+	<offset x="-2" y="-3" />
     <stats speed="1.3"/>
 </item>
-<item id="niceItem" name="Rugged Tank Tracks" class="iron" ilvl="7" gearSlot="wheels" quality="2" bind="equip" >
+<item id="niceItem" name="Rugged Tank Tracks" imageFile="tankTracks" class="iron" ilvl="14" gearSlot="wheels" quality="2" bind="equip" >
 	<offset x="0" y="0" />
     <stats speed="1.4" armour="10"/>
 </item>
@@ -58,7 +58,7 @@
     <weapon damage="1" speed="0.2" range="25" consumes="ammo" projectile="smoothRock" />
 </item>
 <item id="cannon" name="Tank Cannon" class="iron" ilvl="7" gearSlot="weapon" >
-	<offset x="0" y="0" />
+	<offset x="4" y="-4" />
     <weapon damage="20" speed="2.0" range="25" consumes="ammo" projectile="smoothRock" />
 </item>
 
@@ -70,6 +70,9 @@
         <material id="leaves" quantity="4" />
         <unlockedBy gather="leaves" chance="0.5" />
     </recipe>
+    
+<item id="flag-us" name="U.S. Flag" ilvl="1" gearSlot="flag" />
+<item id="flag-aus" name="Australian Flag" ilvl="1" gearSlot="flag" />
 
 
 <objectType id="bridge" name="Wooden Bridge" 
