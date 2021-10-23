@@ -11,14 +11,10 @@
 />
 
 <gearDisplay>
-    <slot num="0" midX="-1" midY="-36" drawOrder="5"/> <!-- head       -->
-                                               <!-- jewelry    -->
-    <slot num="2" midX="0"  midY="-30" drawOrder="2"/> <!-- body       -->
-    <slot num="3" midX="-3" midY="-33" drawOrder="1"/> <!-- shoulders  -->
-    <slot num="4" midX="-6" midY="-19" drawOrder="3"/> <!-- hands      -->
-    <slot num="5" midX="-4" midY="-2"  drawOrder="4"/> <!-- feet       -->
-    <slot num="6" midX="-6" midY="-16" drawOrder="6"/> <!-- right hand -->
-    <slot num="7" midX="6"  midY="-18" drawOrder="7"/> <!-- left hand  -->
+    <slot num="0" midX="-37" midY="-30" drawOrder="1"/> <!-- chassis       -->
+    <slot num="1" midX="-37" midY="-30" drawOrder="2"/> <!-- camo  -->
+    <slot num="2" midX="-34" midY="1"   drawOrder="3"/> <!-- wheels       -->
+    <slot num="3" midX="-37" midY="-30" drawOrder="4"/> <!-- gun      -->
 </gearDisplay>
 
 </root>

@@ -4,14 +4,10 @@ Item::Item(const std::string &id) : _id(id) {}
 
 Item::GearSlot Item::parseGearSlot(std::string slotName) {
   slotName = toLower(slotName);
-  if (slotName == "head") return HEAD;
-  if (slotName == "jewelry") return JEWELRY;
-  if (slotName == "body") return BODY;
-  if (slotName == "shoulders") return SHOULDERS;
-  if (slotName == "hands") return HANDS;
-  if (slotName == "feet") return FEET;
-  if (slotName == "weapon") return WEAPON;
-  if (slotName == "offhand") return OFFHAND;
+  if (slotName == "wheels") return WHEELS;
+  if (slotName == "chassis") return CHASSIS;
+  if (slotName == "camo") return CAMO;
+  if (slotName == "gun") return GUN;
 
   return NOT_GEAR;
 }

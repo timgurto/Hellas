@@ -13,14 +13,10 @@ struct ItemClass;
 class Item : public HasTags {
  public:
   enum GearSlot {
-    HEAD = 0,
-    JEWELRY = 1,
-    BODY = 2,
-    SHOULDERS = 3,
-    HANDS = 4,
-    FEET = 5,
-    WEAPON = 6,
-    OFFHAND = 7,
+    CHASSIS = 0,
+    CAMO = 1,
+    WHEELS = 2,
+    GUN = 3,
 
     NOT_GEAR
   };
