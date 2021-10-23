@@ -138,10 +138,12 @@
     <collisionRect x="-1" y="-1" w="2" h="2" />
     <loot id="niceItem" />
 </npcType>
-<npcType id="commander" name="Captain Jones" >
+<npcType id="commander" name="Captain Jones" isCivilian="1" >
 </npcType>
-<npcType id="engineer" name="Engineer Bruce" >
+    <npc id="commander" y="39808" x="48560" />
+<npcType id="engineer" name="Engineer Bruce" isCivilian="1" >
 </npcType>
+    <npc id="engineer" y="39792" x="49632" />
 
 
 <quest id="targetPractice" name="Boot Camp" startsAt="commander" endsAt="commander"

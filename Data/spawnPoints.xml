@@ -1,6 +1,4 @@
 <root>
-    <spawnPoint type="commander" y="39808" x="48560" quantity="5" radius="250" respawnTime="300000" />
-    <spawnPoint type="engineer" y="39792" x="49632" quantity="5" radius="250" respawnTime="300000" />
     <spawnPoint type="practiceTarget" y="38992" x="48480" quantity="5" radius="150" respawnTime="300000" />
     <spawnPoint type="practiceTarget" y="39120" x="48288" quantity="5" radius="150" respawnTime="300000" />
     <spawnPoint type="practiceTarget" y="39296" x="48512" quantity="5" radius="150" respawnTime="300000" />
