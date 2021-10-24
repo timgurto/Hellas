@@ -10,7 +10,7 @@
 extern Renderer renderer;
 
 const ScreenRect Avatar::DRAW_RECT(-39, -34, 88, 56);
-const MapRect Avatar::COLLISION_RECT(-5, -2, 10, 4);
+const MapRect Avatar::COLLISION_RECT(-30, -20, 60, 40);
 
 Avatar::Avatar(const std::string &name, const MapPoint &location,
                Client &client)

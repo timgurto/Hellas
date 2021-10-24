@@ -128,7 +128,7 @@
     id="enemy" name="Enemy Scout"
 	level="2" maxHealth="20" attack="5" attackTime="1780" isRanged="1" school="physical" projectile="smoothRock"
     xDrawOffset="-1" yDrawOffset="-1" >
-    <collisionRect x="-1" y="-1" w="2" h="2" />
+    <collisionRect x="-30" y="-20" w="60" h="40" />
     <humanoid>
         <gear id="chassisTankTan" />
         <gear id="tankTracksTan" />

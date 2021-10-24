@@ -48,7 +48,7 @@ User::User(const std::string &name, const MapPoint &loc, const Socket *socket)
 
   // Once-off init
   if (!OBJECT_TYPE.collides()) {
-    OBJECT_TYPE.collisionRect({-5, -2, 10, 4});
+    OBJECT_TYPE.collisionRect({-30, -20, 60, 40});
   }
 }
 
