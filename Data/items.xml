@@ -72,7 +72,7 @@
 </item>
 
 <item id="camo" name="Forest Camouflage" ilvl="8" gearSlot="camo" iconFile="earthEssence" >
-	<offset x="0" y="0" />
+	<offset x="-2" y="-4" />
     <stats dodge="2000" />
 </item>
     <recipe id="camo" time="2000" >
@@ -81,8 +81,8 @@
     </recipe>
     
 <item id="flag-us" name="U.S. Flag" ilvl="1" gearSlot="flag" />
-<item id="flag-aus" name="Australian Flag" ilvl="1" gearSlot="flag" />
-<item id="flag-ger" name="German Flag" ilvl="1" gearSlot="flag" />
+<item id="flag-aus" ilvl="1" gearSlot="flag" />
+<item id="flag-ger" ilvl="1" gearSlot="flag" />
 
 
 <objectType id="bridge" name="Wooden Bridge" 
