@@ -59,7 +59,7 @@
     <sound type="death" file="paperBreak" />
 </soundProfile>
 
-<soundProfile id="tank" >
+<soundProfile id="tank" period="1000" >
     <sound type="gather" file="metalHammer0" />
     <sound type="gather" file="metalHammer1" />
     <sound type="gather" file="metalHammer2" />
@@ -91,6 +91,16 @@
     <sound type="gather" file="chop9" />
     <sound type="gather" file="chop10" />
     <sound type="gather" file="chop11" />
+</soundProfile>
+
+<soundProfile id="anvil" period="1700" >
+    <sound type="crafting" file="anvil0" />
+    <sound type="crafting" file="anvil1" />
+    <sound type="crafting" file="anvil2" />
+    <sound type="crafting" file="anvil3" />
+    <sound type="crafting" file="anvilDouble0" />
+    <sound type="crafting" file="anvilTriple0" />
+    <sound type="crafting" file="anvilTriple1" />
 </soundProfile>
 
 </root>

@@ -85,11 +85,12 @@
 <item id="flag-ger" ilvl="1" gearSlot="flag" />
 
 
-<objectType id="bridge" name="Wooden Bridge" 
+<objectType id="bridge" name="Wooden Bridge"  isFlat="1"
     healthCategory="log"
     xDrawOffset="-50" yDrawOffset="-50"
     damageParticles="wood" sounds="wood"
-        allowedTerrain="notMountains">
+        allowedTerrain="notMountains" collides="0">
+    <collisionRect x="-50" y="-50" w="100" h="100" />
     <material id="wood" quantity="8" />
     <unlockedBy gather="wood" />
     <canBeRepaired cost="wood" />
@@ -102,7 +103,7 @@
 
 <objectType id="wreck" name="Wreck"
     xDrawOffset="-37" yDrawOffset="-25" sounds="tank"
-    canGather="1" gatherTime="3000" gatherParticles="metal" >
+    canGather="1" gatherTime="2000" gatherParticles="metal" >
     <particles profile="smoke" x="0" y="-10" />
     <yield id="iron" initialMean="3" initialSD="1" initialMin="1" />
     <collisionRect x="-37" y="-15" w="74" h="30" />
@@ -110,7 +111,7 @@
 
 <objectType id="tree" name="Tree"
     xDrawOffset="-21" yDrawOffset="-96"
-    canGather="1" sounds="tree" gatherParticles="tree" damageParticles="tree" gatherTime="3000" >
+    canGather="1" sounds="tree" gatherParticles="tree" damageParticles="tree" gatherTime="2000" >
     <yield id="wood" initialMean="5.5" initialSD="1" initialMin="1" />
     <yield id="leaves" initialMean="2" initialSD="0.5" />
     <collisionRect x="-5" y="-4" w="10" h="7" />
