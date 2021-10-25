@@ -50,9 +50,6 @@ Channel SoundProfile::checkAndPlaySound(const Client &client,
   SoundVariants variants = it->second;
   Mix_Chunk *sound = variants.choose();
   if (sound == nullptr) {
-    client.showErrorMessage(
-        "\""s + _id + ":" + type + "\" sound variant not found."s,
-        Color::CHAT_ERROR);
     return NO_CHANNEL;
   }
   int loopArg = loop ? -1 : 0;

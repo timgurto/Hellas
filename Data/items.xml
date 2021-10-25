@@ -14,13 +14,13 @@
 </itemClass>
 
 <item id="chocolate" name="Panzer Chocolate" iconFile="tablet" stackSize="10" castsSpellOnUse="chocolate" />
-    <buff id="chocolate" name="Eating" icon="lettersCopper" duration="10" school="water"
-        description="Increased courage and endurance, at the cost of cunning and swiftness." >
-        <stats courage="10" endurance="10" swiftness="-8" cunning="-8" />
+    <buff id="chocolate" name="Eating" icon="lettersCopper" duration="1" school="water"
+        description="React and recover faster." >
+        <stats swiftness="5" courage="5" />
     </buff>
     <spell id="chocolate" name="Eat" >
         <targets self="1" />
-        <function name="debuff" s1="wine" />
+        <function name="buff" s1="chocolate" />
     </spell>
     
 <item id="ammo" name="Ammunition" stackSize="100" sounds="ammo" />
