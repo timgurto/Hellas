@@ -97,6 +97,7 @@ void Client::initChatLog() {
 
   _chatContainer->id("Chat log");
   addUI(_chatContainer);
+  _chatContainer->hide();
 }
 
 void Client::initWindows() {

@@ -13,7 +13,7 @@ extern Renderer renderer;
 const std::string Sprite::EMPTY_NAME = "";
 const ScreenPoint Sprite::HIGHLIGHT_OFFSET{-1, -1};
 const double Sprite::ATTACK_ANIMATION_SPEED = 50.0;
-const double Sprite::ATTACK_ANIMATION_DISTANCE = 10.0;
+const double Sprite::ATTACK_ANIMATION_DISTANCE = -4.0;
 
 Sprite::Sprite(const SpriteType *type, const MapPoint &location, Client &client)
     : _client(client),

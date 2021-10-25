@@ -368,16 +368,22 @@ void Server::addUser(const Socket &socket, const std::string &name,
   if (isNewUser) {
     newUser.gear(Item::WHEELS) = {
         findItem("wheelsBasic"),
-        ServerItem::Instance::ReportingInfo::UserGear(newUser, Item::WHEELS),
+        ServerItem::Instance::ReportingInfo::UserGear(&newUser, Item::WHEELS),
         1};
     newUser.gear(Item::CHASSIS) = {
         findItem("chassisWood"),
-        ServerItem::Instance::ReportingInfo::UserGear(newUser, Item::CHASSIS),
+        ServerItem::Instance::ReportingInfo::UserGear(&newUser, Item::CHASSIS),
         1};
     newUser.gear(Item::WEAPON) = {
         findItem("machineGun"),
-        ServerItem::Instance::ReportingInfo::UserGear(newUser, Item::WEAPON),
+        ServerItem::Instance::ReportingInfo::UserGear(&newUser, Item::WEAPON),
         1};
+    newUser.gear(Item::FLAG) = {
+        findItem("flag-us"),
+        ServerItem::Instance::ReportingInfo::UserGear(&newUser, Item::FLAG), 1};
+    newUser.updateStats();
+
+    newUser.giveItem(findItem("ammo"), 300);
   }
 
   // Send him his gear

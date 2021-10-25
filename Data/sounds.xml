@@ -53,7 +53,6 @@
     <sound type="launch" file="bullet7" />
     <sound type="launch" file="bullet8" />
     <sound type="launch" file="bullet9" />
-    <sound type="impact" file="" />
 </soundProfile>
 
 <soundProfile id="paper" >
