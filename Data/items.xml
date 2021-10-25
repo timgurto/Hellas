@@ -32,7 +32,7 @@
 <item id="chassisWood" name="Wooden Platform" class="wood" ilvl="5" gearSlot="chassis" sounds="wood" >
 	<offset x="-2" y="-3" />
 </item>
-<item id="chassisTank" name="Tank Chassis" class="metal" ilvl="7" gearSlot="chassis" sounds="armourHeavy" >
+<item id="chassisTank" name="Tank Chassis" class="iron" ilvl="7" gearSlot="chassis" sounds="armourHeavy" >
     <stats armour="100"/>
 	<offset x="-1" y="-1" />
 </item>
@@ -61,11 +61,11 @@
 
 <item id="machineGun" name="Machine Gun" sounds="machineGun" class="iron" ilvl="5" gearSlot="weapon" >
 	<offset x="5" y="-3" />
-    <weapon damage="1" speed="0.2" range="25" consumes="ammo" projectile="smoothRock" />
+    <weapon damage="1" speed="0.2" range="25" consumes="ammo" projectile="bullet" />
 </item>
 <item id="cannon" name="Tank Cannon" class="iron" ilvl="7" gearSlot="weapon" sounds="cannon" >
 	<offset x="4" y="-4" />
-    <weapon damage="20" speed="2.0" range="25" consumes="ammo" projectile="smoothRock" />
+    <weapon damage="20" speed="2.0" range="25" consumes="ammo" projectile="shell" />
 </item>
 <item id="cannonTan" gearSlot="weapon" >
 	<offset x="-20" y="-4" />

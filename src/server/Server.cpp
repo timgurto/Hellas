@@ -364,6 +364,22 @@ void Server::addUser(const Socket &socket, const std::string &name,
       sendInventoryMessage(newUser, i, Serial::Inventory());
   }
 
+  // Give starting gear
+  if (isNewUser) {
+    newUser.gear(Item::WHEELS) = {
+        findItem("wheelsBasic"),
+        ServerItem::Instance::ReportingInfo::UserGear(newUser, Item::WHEELS),
+        1};
+    newUser.gear(Item::CHASSIS) = {
+        findItem("chassisWood"),
+        ServerItem::Instance::ReportingInfo::UserGear(newUser, Item::CHASSIS),
+        1};
+    newUser.gear(Item::WEAPON) = {
+        findItem("machineGun"),
+        ServerItem::Instance::ReportingInfo::UserGear(newUser, Item::WEAPON),
+        1};
+  }
+
   // Send him his gear
   for (size_t i = 0; i != User::GEAR_SLOTS; ++i) {
     if (newUser.gear(i).hasItem())

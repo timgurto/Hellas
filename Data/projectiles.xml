@@ -25,10 +25,10 @@
 </projectile>
 
 <projectile id="bullet" speed="350" particlesAtEnd="metal" sounds="machineGun" >
-
+    <drawRect x=-3 y=-34 w=6 h=37 />
 </projectile>
 <projectile id="shell" speed="350" particlesAtEnd="fireball" sounds="cannon" >
-
+    <drawRect x=-6 y=-37 w=12 h=43 />
 </projectile>
 
 <projectile id="arrow" speed=350 particlesAtEnd="blood" >

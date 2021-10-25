@@ -58,7 +58,6 @@
 
 <soundProfile id="paper" >
     <sound type="death" file="paperBreak" />
-    <sound type="defend" file="" />
 </soundProfile>
 
 <soundProfile id="tank" >
