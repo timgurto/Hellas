@@ -1,139 +1,23 @@
 <root>
 
-<class name="Athlete"
-    description="The athlete is a fearless warrior, and a master of physical combat. He is in his element drawing the fire of a strong enemy, or smiting him while establishing tactical control over the battlefield. In times of peace he dabbles in philosophy."
+<class name="Soldier"
+    description="A regular G.I."
     freeSpell="extraHit" >
-    <tree name="Soldier" >
+    <tree name="Offense" >
         <tier>
-            <cost tag="food" quantity="1" />
-            <talent type="stats" name="Train Reflexes" icon="outlineFoot" flavourText="Improved agility and reaction time help you to avoid being hit."><stats swiftness="2" /> </talent>
-            <talent type="stats" name="Train Willpower" icon="outlineHead" flavourText="Build willpower through discomfort and deprivation, strengthening your mental defenses."> <stats airResist="8" earthResist="8" fireResist="8" waterResist="8" /> </talent>
+            <talent type="stats" name="Sharpshooter" icon="eyes" flavourText="Your shots have improved accuracy."><stats cunning="2" crit="200" /> </talent>
+            <talent type="stats" name="Armour-Piercing Rounds" icon="dagger" flavourText="Your shots do more damage."> <stats might="4" /> </talent>
         </tier>
-        <tier>
-            <cost tag="food" quantity="2" />
-            <requires pointsInTree="5" tool="classAthlete" />
-            <talent type="spell" id="shieldBlock" flavourText="Raise your shield for a few seconds, greatly increasing your chance to block attacks." />
-            <talent type="stats" name="Train Endurance" icon="outlineRun" flavourText="Grueling physical training makes you stronger and tougher."> <stats endurance="2" /> </talent>
+        <!--tier>
+            <talent type="spell" id="poison" flavourText="Raise your shield for a few seconds, greatly increasing your chance to block attacks." />
+            <talent type="stats" name="Train Endurance" icon="fireball" flavourText="Grueling physical training makes you stronger and tougher."> <stats endurance="2" /> </talent>
             <talent type="spell" id="threatHit" flavourText="An attack that enrages your enemy, making him more likely to attack you." />
-        </tier>
+        </tier-->
     </tree>
-    <tree name="Brute" >
+    <tree name="Utility" >
         <tier>
-            <cost tag="food" quantity="1" />
-            <talent type="stats" name="Train Weapons" icon="outlineSword" flavourText="Learn how to best use different weapons, and get the most out of them."> <stats crit="100" /> </talent>
-            <talent type="stats" name="Train Strength" icon="outlineArm" flavourText="Increasing muscle mass and power puts more force behind your attacks."> <stats might="2" /> </talent>
-        </tier>
-        <tier>
-            <cost tag="food" quantity="2" />
-            <requires pointsInTree="5" tool="classAthlete" />
-            <talent type="spell" id="skirmisherStun" flavourText="Knock your enemy out with a strong blow to the head." />
-            <talent type="spell" id="bleed" flavourText="Give your enemy a deep cut, causing blood loss and sustained damage" />
-        </tier>
-    </tree>
-    <tree name="Philosopher" >
-        <tier>
-            <cost tag="food" quantity="1" />
-            <talent type="stats" name="Grammar" icon="lettersStone" flavourText="Memorize new facts, rules and relationships, giving you a larger pool of knowledge from which to draw."> <stats cunning="2" /> </talent>
-            <talent type="stats" name="Arche" icon="waterFire" flavourText="Water is the source of all matter, motion and change, and understanding this gives you new ways to quench fire."> <stats fireResist="17" /> </talent>
-            <talent type="stats" name="Epicureanism" icon="foodGrapes" flavourText="Overcoming the fear of death helps you to embrace life."> <stats health="7" /> </talent>
-        </tier>
-        <tier>
-            <cost tag="food" quantity="2" />
-            <requires pointsInTree="5" tool="classAthlete" />
-            <talent type="spell" id="airDot" flavourText="Engage your enemy in dialectic argument, frustrating and annoying him." />
-            <talent type="spell" id="threatDropPhilosopher" flavourText="All things flow like a river; nothing abides.  This includes you as a target, and your enemies' attention." />
-        </tier>
-    </tree>
-</class>
-
-<class name="Scholar"
-    description="The scholar prizes knowledge above all else; the more esoteric, the better. He can bring destructive magic to a whole battlefield, or the restoring touch of an expert physician. Many scholars also find themselves drawn to alchemy."
-    freeSpell="fireball" >
-    <tree name="Magus" >
-        <tier>
-            <cost tag="food" quantity="1" />
-            <talent type="stats" name="Study Widely" icon="scrollBlue"  flavourText="Consult a broad range of texts, to expand the general knowledge of magic on which you can draw."> <stats energy="7" /> </talent>
-            <talent type="stats" name="Study Deeply" icon="scrollRed" flavourText="Delve into magic you already know, making your spells more effective."> <stats intellect="2" /> </talent>
-        </tier>
-        <tier>
-            <cost tag="food" quantity="2" />
-            <requires pointsInTree="5" tool="classScholar" />
-            <talent type="stats" name="Study the Zodiac" icon="stars" flavourText="Each of us is born under a constellation.  Studying their effects helps you to live in harmony."> <stats health="7" /> </talent>
-            <talent type="spell" id="burn" flavourText="Ignite an enemy to make him burn over time." />
-        </tier>
-    </tree>
-    <tree name="Naturalist" >
-        <tier>
-            <cost tag="food" quantity="1" />
-            <talent type="stats" name="Study Poisons" icon="skullGreen" flavourText="Delving into the art of poisons may help you to avoid or resist them."> <stats earthResist="17" /> </talent>
-            <talent type="stats" name="Study Medicine" icon="rodOfAsclepius" flavourText="With more understanding of medicine comes a greater ability to mend the body."> <stats healing="333" /> </talent>
-        </tier>
-        <tier>
-            <cost tag="food" quantity="2" />
-            <requires pointsInTree="5" tool="classScholar" />
-            <talent type="spell" id="naturalistHOT" flavourText="Give a warm herbal drink to an ally, to help him recover from battle." />
-            <talent type="stats" name="Study Classification" icon="classification" flavourText="A habit of collecting and categorising nature helps you to find more when foraging and mining." > <stats gatherBonus="1" /> </talent> 
-            <talent type="spell" id="dispellEarthDebuff" flavourText="Apply leeches, to remove bad blood and associated disorders." />
-        </tier>
-    </tree>
-    <tree name="Alchemist" >
-        <tier>
-            <cost tag="food" quantity="1" />
-            <talent type="stats" name="Study Illusion" icon="eyes" flavourText="Avoid being hit, through mastery of deception and shadow."> <stats swiftness="2" /> </talent>
-            <talent type="stats" name="Transmute Skin" icon="stoneSkin" flavourText="Alter your skin, making it thicker and more resilient."> <stats endurance="2" /> </talent>
-        </tier>
-        <tier>
-            <cost tag="food" quantity="2" />
-            <requires pointsInTree="5" tool="classScholar" />
-            <talent type="spell" id="threatDropAlchemist" flavourText="Fade into darkness, making it harder for enemies to track you." />
-            <talent type="stats" name="Eternal Life" icon="waterCup" flavourText="The quest for an elixir of life comes ever closer to fruition."> <stats courage="2" /> </talent>
-            <!--talent type="spell" id="Transmute Metal" /-->
-        </tier>
-    </tree>
-</class>
-
-<class name="Zealot"
-    description="The zealot is devoted to the heavenly powers, and can effect their intervention. Mainstream worship lets him invoke healing magic, and the cults allow him to distract many enemies and shield himself from them. The zealot's interest in ceremony and spectacle may also extend to the performing arts."
-    freeSpell="selfHeal">
-    <tree name="Priest" >
-        <tier>
-            <cost tag="food" quantity="1" />
-            <talent type="stats" name="Reverence" icon="worship" flavourText="Sincere veneration makes the gods more generous when answering your prayers."> <stats healing="333" /> </talent>
-            <talent type="stats" name="Piety" icon="torch" flavourText="The very air around you is cleansed by your purity and innocence."> <stats airResist="17" /> </talent>
-        </tier>
-        <tier>
-            <cost tag="food" quantity="2" />
-            <requires pointsInTree="5" tool="classZealot" />
-            <!--talent type="spell" id="Blessing of Hephaestus" /-->
-            <talent type="spell" id="majorEnergyBuff" flavourText="The god of prophecy and truth grants increased knowledge to his friends." />
-            <talent type="spell" id="priestEconHeal" flavourText="Plead with the gods to heal the sick or save a life." />
-        </tier>
-    </tree>
-    <tree name="Cultist" >
-        <tier>
-            <cost tag="food" quantity="1" />
-            <talent type="stats" name="Devotion to Dionysus" icon="symbolDionysus" flavourText="The god of wine will gladly protect you from water."> <stats waterResist="17" /> </talent>
-            <talent type="stats" name="Devotion to Hermes Trismegistus" icon="symbolHermesTrismegistus" flavourText="Seek enlightenment from the divine master of writing and magic."> <stats intellect="2" /> </talent>
-        </tier>
-        <tier>
-            <cost tag="food" quantity="2" />
-            <requires pointsInTree="5" tool="classZealot" />
-            <talent type="spell" id="damageShield" flavourText="Invoke the protection of a noble spirit, to smite all who harm you." />
-            <talent type="stats" name="Devotion to Mithra" icon="symbolMithra" flavourText="The lord of light dazzles your enemies and fades their efforts."> <stats airResist="8" earthResist="8" fireResist="8" waterResist="8" /> </talent>
-        </tier>
-    </tree>
-    <tree name="Poet" >
-        <tier>
-            <cost tag="food" quantity="1" />
-            <talent type="stats" name="Practice Breathing" icon="whirlwind" flavourText="Breathing exercises are good for the lungs and great for the heart."> <stats endurance="2" /> </talent>
-            <talent type="stats" name="Practice Satire" icon="dagger" flavourText="Effective satire means finding and exploiting your enemy's weaknesses."> <stats cunning="2" /> </talent>
-        </tier>
-        <tier>
-            <cost tag="food" quantity="2" />
-            <requires pointsInTree="5" tool="classZealot" />
-            <talent type="spell" id="threatDropPoet" flavourText="It's hard to stay angry while laughing." />
-            <talent type="spell" id="poetStun" flavourText="Overwhelm your enemies with grief and regret." />
-            <talent type="stats" name="Practice Taking Criticism" icon="helmet" flavourText="Keeping your head in the face of critics--and rotten fruit--is essential to surviving the stage."> <stats swiftness="2" /> </talent>
+            <talent type="stats" name="Trained Mechanics" icon="whirlwind" flavourText="Mechanics tune up your vehicle, improving speed and agility."> <stats swiftness="4" /> </talent>
+            <talent type="stats" name="Reinforced Armour" icon="shield" flavourText="Increasing muscle mass and power puts more force behind your attacks."> <stats endurance="4" /> </talent>
         </tier>
     </tree>
 </class>

@@ -128,7 +128,7 @@
     id="enemy" name="Enemy Scout"
 	level="2" maxHealth="20" attack="5" attackTime="1780" isRanged="1" school="physical" projectile="smoothRock"
     xDrawOffset="-1" yDrawOffset="-1" >
-    <collisionRect x="-30" y="-20" w="60" h="40" />
+    <collisionRect x="-30" y="-20" w="60" h="40" /><customMouseOverRect x="-30" y="-40" w="60" h="60" />
     <humanoid>
         <gear id="chassisTankTan" />
         <gear id="tankTracksTan" />
@@ -147,6 +147,7 @@
     <loot id="niceItem" />
 </npcType>
 <npcType id="commander" name="Captain Jones" isCivilian="1" >
+    <customMouseOverRect x="-30" y="-40" w="60" h="60" />
     <humanoid>
         <gear id="chassisTank" />
         <gear id="tankTracks" />
@@ -156,6 +157,7 @@
 </npcType>
     <npc id="commander" y="39808" x="48560" />
 <npcType id="engineer" name="Engineer Bruce" isCivilian="1" >
+    <customMouseOverRect x="-30" y="-40" w="60" h="60" />
     <humanoid>
         <gear id="chassisWood" />
         <gear id="wheelsBasic" />
