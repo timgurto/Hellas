@@ -1,8 +1,7 @@
 <root>
 
 <class name="Soldier"
-    description="A regular G.I."
-    freeSpell="extraHit" >
+    description="A regular G.I." >
     <tree name="Offense" >
         <tier>
             <talent type="stats" name="Sharpshooter" icon="eyes" flavourText="Your shots have improved accuracy."><stats cunning="2" crit="200" /> </talent>
