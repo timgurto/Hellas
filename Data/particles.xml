@@ -13,6 +13,19 @@
 </particleProfile>
 
 <particleProfile
+    id="metal"
+    particlesPerSecond="4">
+    <particlesPerHit mean="8" sd="1" />
+    <distance mean="5" sd="0" />
+    <altitude mean="20" sd="4" />
+    <velocity mean="15" sd="3" />
+    <fallSpeed mean="0" sd="3" />
+    <variety imageFile="lightGreyPixel" />
+    <variety imageFile="darkGreyPixel" />
+    <variety imageFile="greyPixel" />
+</particleProfile>
+
+<particleProfile
     id="wood"
     particlesPerSecond="4">
     <particlesPerHit mean="3" sd="1" />
