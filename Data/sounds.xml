@@ -1,121 +1,83 @@
 <root>
 
 <soundProfile id="general" >
-    <sound type="quest" file="harpRiff" />
-    <sound type="levelUp" file="levelUp" />
+    <sound type="quest" file="drums" />
+    <sound type="levelUp" file="fanfare" />
 </soundProfile>
 
 <soundProfile id="avatar" >
-    <sound type="attack" file="punch0" />
-    <sound type="attack" file="punch1" />
-    <sound type="attack" file="punch2" />
-    <sound type="attack" file="punch3" />
-    <sound type="defend" file="grunt0" />
-    <sound type="defend" file="grunt1" />
-    <sound type="defend" file="grunt2" />
-    <sound type="defend" file="grunt3" />
-    <sound type="defend" file="grunt4" />
 </soundProfile>
 
 <soundProfile id="humanEnemy" >
-    <sound type="attack" file="punch0" />
-    <sound type="attack" file="punch1" />
-    <sound type="attack" file="punch2" />
-    <sound type="attack" file="punch3" />
-    <sound type="defend" file="manGrunt0" />
-    <sound type="defend" file="manGrunt1" />
-    <sound type="defend" file="manGrunt2" />
-    <sound type="defend" file="manGrunt3" />
-    <sound type="defend" file="manGrunt4" />
-    <sound type="defend" file="manGrunt5" />
-    <sound type="defend" file="manGrunt6" />
-    <sound type="defend" file="manGrunt7" />
-    <sound type="death" file="manDeath0" />
-    <sound type="death" file="manDeath1" />
-    <sound type="death" file="manDeath2" />
-    <sound type="death" file="manDeath3" />
-    <sound type="death" file="manDeath4" />
-    <sound type="death" file="manDeath5" />
-    <sound type="death" file="manDeath6" />
+    <sound type="attack" file="explosion0" />
+    <sound type="attack" file="explosion1" />
+    <sound type="attack" file="explosion2" />
+    <sound type="death" file="bigExplosion" />
 </soundProfile>
 
-<soundProfile id="brick" >
-    <sound type="drop" file="brick" />
+<soundProfile id="ammo" >
+    <sound type="drop" file="machineGunLoad" />
 </soundProfile>
 
-<soundProfile id="bone" >
-    <sound type="drop" file="boneDrop" />
-    <sound type="attack" file="boneThud0" />
-    <sound type="attack" file="boneThud1" />
-    <sound type="attack" file="boneThud2" />
-    <sound type="attack" file="boneThud3" />
-    <sound type="attack" file="boneThud4" />
-    <sound type="attack" file="boneThud5" />
-</soundProfile>
-
-<soundProfile id="stick" >
-    <sound type="drop" file="stick" />
-</soundProfile>
-
-<soundProfile id="rock" >
-    <sound type="impact" file="boneThud0" />
-    <sound type="impact" file="boneThud1" />
-    <sound type="impact" file="boneThud2" />
-    <sound type="impact" file="boneThud3" />
-    <sound type="impact" file="boneThud4" />
-    <sound type="impact" file="boneThud5" />
-    <sound type="drop" file="rock" />
-</soundProfile>
-
-<soundProfile id="ore" >
-    <sound type="drop" file="rockLong" />
-</soundProfile>
-
-<soundProfile id="ceramic" >
-    <sound type="drop" file="ceramic" />
-</soundProfile>
-
-<soundProfile id="leather" >
-    <sound type="drop" file="leather" />
-</soundProfile>
-
-<soundProfile id="mailArmor" >
-    <sound type="drop" file="chain" />
-    <sound type="defend" file="chain" />
-</soundProfile>
-
-<soundProfile id="metalBar" >
-    <sound type="drop" file="metalBar" />
-</soundProfile>
-
-<soundProfile id="metalTool" >
+<soundProfile id="armourLight" >
     <sound type="drop" file="metalTool" />
 </soundProfile>
 
-<soundProfile id="knapping" period="1000" >
-    <sound type="crafting" file="knap0" />
-    <sound type="crafting" file="knap1" />
-    <sound type="crafting" file="knap2" />
-    <sound type="crafting" file="knap3" />
+<soundProfile id="cannon" >
+    <sound type="drop" file="metalBar" />
+    <sound type="launch" file="cannon1" />
+    <sound type="launch" file="cannon2" />
+    <sound type="impact" file="explosion0" />
+    <sound type="impact" file="explosion1" />
+    <sound type="impact" file="explosion2" />
 </soundProfile>
 
-<soundProfile id="anvil" period="1700" >
-    <sound type="crafting" file="anvil0" />
-    <sound type="crafting" file="anvil1" />
-    <sound type="crafting" file="anvil2" />
-    <sound type="crafting" file="anvil3" />
-    <sound type="crafting" file="anvilDouble0" />
-    <sound type="crafting" file="anvilTriple0" />
-    <sound type="crafting" file="anvilTriple1" />
+<soundProfile id="concrete" >
+    <sound type="death" file="collapse" />
+    <sound type="defend" file="concreteImpact" />
 </soundProfile>
 
-<soundProfile id="dirt" period="1000" >
-    <sound type="gather" file="dig0" />
-    <sound type="gather" file="dig1" />
-    <sound type="gather" file="dig2" />
-    <sound type="gather" file="dig3" />
-    <sound type="gather" file="dig4" />
-    <sound type="gather" file="dig5" />
+<soundProfile id="leaves" >
+    <sound type="drop" file="leather" />
+</soundProfile>
+
+<soundProfile id="machineGun" >
+    <sound type="drop" file="machineGunLoad" />
+    <sound type="launch" file="bullet0" />
+    <sound type="launch" file="bullet1" />
+    <sound type="launch" file="bullet2" />
+    <sound type="launch" file="bullet3" />
+    <sound type="launch" file="bullet4" />
+    <sound type="launch" file="bullet5" />
+    <sound type="launch" file="bullet6" />
+    <sound type="launch" file="bullet7" />
+    <sound type="launch" file="bullet8" />
+    <sound type="launch" file="bullet9" />
+    <sound type="impact" file="" />
+</soundProfile>
+
+<soundProfile id="paper" >
+    <sound type="death" file="paperBreak" />
+    <sound type="defend" file="" />
+</soundProfile>
+
+<soundProfile id="tank" >
+    <sound type="gather" file="metalHammer0" />
+    <sound type="gather" file="metalHammer1" />
+    <sound type="gather" file="metalHammer2" />
+    <sound type="gather" file="metalHammer3" />
+    <sound type="gather" file="metalHammer4" />
+    <sound type="gather" file="metalHammer5" />
+    <sound type="gather" file="metalHammer6" />
+    <sound type="gather" file="metalHammer7" />
+    <sound type="gather" file="metalHammer8" />
+    <sound type="gather" file="metalHammer9" />
+    <sound type="gather" file="metalHammer10" />
+    <sound type="gather" file="metalHammer11" />
+</soundProfile>
+
+<soundProfile id="wood" >
+    <sound type="drop" file="lumber" />
 </soundProfile>
 
 <soundProfile id="tree" period="1200" >
@@ -131,132 +93,6 @@
     <sound type="gather" file="chop9" />
     <sound type="gather" file="chop10" />
     <sound type="gather" file="chop11" />
-</soundProfile>
-
-<soundProfile id="fireball" >
-    <sound type="launch" file="catchFlame" />
-    <sound type="impact" file="ignite" />
-</soundProfile>
-
-<soundProfile id="lightning" >
-    <sound type="launch" file="lightning0" />
-    <sound type="launch" file="lightning1" />
-    <sound type="drop" file="lightning1" />
-</soundProfile>
-
-<soundProfile id="meleeSkill" >
-    <sound type="attack" file="punch0" />
-    <sound type="attack" file="punch1" />
-    <sound type="attack" file="punch2" />
-    <sound type="attack" file="punch3" />
-</soundProfile>
-
-<soundProfile id="sprint" >
-    <sound type="launch" file="sprint" />
-</soundProfile>
-
-<soundProfile id="teleport" >
-    <sound type="launch" file="teleport" />
-</soundProfile>
-
-<soundProfile id="waterWalking" >
-    <sound type="launch" file="waterWalking" />
-</soundProfile>
-
-<soundProfile id="water" >
-    <sound type="impact" file="splash0" />
-    <sound type="impact" file="splash1" />
-    <sound type="impact" file="splash2" />
-    <sound type="impact" file="splash3" />
-    <sound type="impact" file="splash4" />
-</soundProfile>
-
-<soundProfile id="heal" >
-    <sound type="impact" file="choir" />
-</soundProfile>
-
-<soundProfile id="nymph" >
-    <sound type="defend" file="womanHit0" />
-    <sound type="defend" file="womanHit1" />
-    <sound type="defend" file="womanHit2" />
-    <sound type="defend" file="womanHit3" />
-    <sound type="defend" file="womanHit4" />
-    <sound type="defend" file="womanHit5" />
-    <sound type="death" file="womanDeath0" />
-    <sound type="death" file="womanDeath1" />
-    <sound type="death" file="womanDeath2" />
-</soundProfile>
-
-<soundProfile id="earthNymph" >
-    <sound type="defend" file="womanHit0" />
-    <sound type="defend" file="womanHit1" />
-    <sound type="defend" file="womanHit2" />
-    <sound type="defend" file="womanHit3" />
-    <sound type="defend" file="womanHit4" />
-    <sound type="defend" file="womanHit5" />
-    <sound type="death" file="womanDeath0" />
-    <sound type="death" file="womanDeath1" />
-    <sound type="death" file="womanDeath2" />
-</soundProfile>
-
-<soundProfile id="pig" >
-    <sound type="attack" file="bite0" />
-    <sound type="attack" file="bite1" />
-    <sound type="attack" file="bite2" />
-    <sound type="attack" file="bite3" />
-    <sound type="attack" file="bite4" />
-    <sound type="defend" file="pig0" />
-    <sound type="defend" file="pig1" />
-    <sound type="defend" file="pig2" />
-    <sound type="defend" file="pig3" />
-    <sound type="defend" file="pig4" />
-    <sound type="defend" file="pig5" />
-    <sound type="death" file="pigDeath0" />
-    <sound type="death" file="pigDeath1" />
-    <sound type="death" file="pigDeath2" />
-</soundProfile>
-
-<soundProfile id="goat" >
-    <sound type="defend" file="goat0" />
-    <sound type="defend" file="goat1" />
-    <sound type="defend" file="goat2" />
-    <sound type="defend" file="goat3" />
-    <sound type="death" file="goatLoud0" />
-    <sound type="death" file="goatLoud1" />
-    <sound type="attack" file="bite0" />
-    <sound type="attack" file="bite1" />
-    <sound type="attack" file="bite2" />
-    <sound type="attack" file="bite3" />
-    <sound type="attack" file="bite4" />
-</soundProfile>
-
-<soundProfile id="lizard" >
-    <sound type="defend" file="hiss0" />
-    <sound type="death" file="hiss1" />
-    <sound type="attack" file="bite0" />
-    <sound type="attack" file="bite1" />
-    <sound type="attack" file="bite2" />
-    <sound type="attack" file="bite3" />
-    <sound type="attack" file="bite4" />
-</soundProfile>
-
-<soundProfile id="snake" >
-    <sound type="defend" file="hiss0" />
-    <sound type="death" file="hiss1" />
-</soundProfile>
-
-<soundProfile id="tortoise" >
-    <sound type="attack" file="bite0" />
-    <sound type="attack" file="bite1" />
-    <sound type="attack" file="bite2" />
-    <sound type="attack" file="bite3" />
-    <sound type="attack" file="bite4" />
-    <sound type="defend" file="animalGrunt0" />
-    <sound type="defend" file="animalGrunt1" />
-    <sound type="defend" file="animalGrunt2" />
-    <sound type="defend" file="animalGrunt3" />
-    <sound type="death" file="animalGruntLong0" />
-    <sound type="death" file="animalGruntLong1" />
 </soundProfile>
 
 </root>

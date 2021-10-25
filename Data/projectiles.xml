@@ -24,6 +24,13 @@
     <drawRect x=-4 y=-28 w=9 h=32 />
 </projectile>
 
+<projectile id="bullet" speed="350" particlesAtEnd="metal" sounds="machineGun" >
+
+</projectile>
+<projectile id="shell" speed="350" particlesAtEnd="fireball" sounds="cannon" >
+
+</projectile>
+
 <projectile id="arrow" speed=350 particlesAtEnd="blood" >
     <drawRect x=-2 y=-27 w=4 h=30 />
     <tail image="stick" length=15 separation=1 x=-1 y=-26 w=2 h=29 />

@@ -24,7 +24,7 @@
     </spell>
     
 <item id="ammo" name="Ammunition" stackSize="100" sounds="ammo" />
-    <recipe id="ammo" time="2000" quantity="20" >
+    <recipe id="ammo" time="2000" quantity="20" sounds="anvil" >
         <material id="iron" />
         <unlockedBy gather="iron" chance="0.4" />
     </recipe>
@@ -32,11 +32,11 @@
 <item id="chassisWood" name="Wooden Platform" class="wood" ilvl="5" gearSlot="chassis" sounds="wood" >
 	<offset x="-2" y="-3" />
 </item>
-<item id="chassisTank" name="Tank Chassis" class="armourHeavy" ilvl="7" gearSlot="chassis" sounds="metalBar" >
+<item id="chassisTank" name="Tank Chassis" class="metal" ilvl="7" gearSlot="chassis" sounds="armourHeavy" >
     <stats armour="100"/>
 	<offset x="-1" y="-1" />
 </item>
-    <recipe id="chassisTank" time="6000" >
+    <recipe id="chassisTank" time="6000" sounds="anvil" >
         <material id="iron" quantity="8" />
         <unlockedBy gather="iron" chance="0.2" />
     </recipe>
@@ -80,7 +80,7 @@
         <unlockedBy gather="leaves" chance="0.5" />
     </recipe>
     
-<item id="flag-us" name="U.S. Flag" ilvl="1" gearSlot="flag" sounds="fabric" />
+<item id="flag-us" name="U.S. Flag" ilvl="1" gearSlot="flag"  />
 <item id="flag-aus" ilvl="1" gearSlot="flag" />
 <item id="flag-ger" ilvl="1" gearSlot="flag" />
 
