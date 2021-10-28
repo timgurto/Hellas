@@ -38,7 +38,7 @@
 </item>
     <recipe id="chassisTank" time="6000" sounds="anvil" >
         <material id="iron" quantity="8" />
-        <unlockedBy gather="iron" chance="0.2" />
+        <unlockedBy gather="iron" chance="0.4" />
     </recipe>
 <item id="chassisTankTan" gearSlot="chassis" >
 	<offset x="-1" y="-1" />
@@ -113,7 +113,7 @@
     xDrawOffset="-21" yDrawOffset="-96"
     canGather="1" sounds="tree" gatherParticles="tree" damageParticles="tree" gatherTime="2000" >
     <yield id="wood" initialMean="5.5" initialSD="1" initialMin="1" />
-    <yield id="leaves" initialMean="2" initialSD="0.5" />
+    <yield id="leaves" initialMean="3" initialSD="0.5" />
     <collisionRect x="-5" y="-4" w="10" h="7" />
 </objectType>
 
@@ -173,7 +173,7 @@
     Head to the range and shoot a few targets.  Make sure your equipment still works."
     debrief="Well the gun works, but those wheels aren't quite cut out for the fight ahead.  Here's an upgrade.
     I think you're ready to see some action!" >
-    <objective type="kill" id="practiceTarget" qty="3" />
+    <objective type="kill" id="practiceTarget" qty="2" />
     <reward type="item" id="tankTracks" />
 </quest>
 <quest id="killEnemies" name="A Taste of Blood" startsAt="commander" endsAt="engineer"
@@ -183,7 +183,7 @@
     Oh, and soldier?  Try not to get killed out there."
     debrief="G'day!  Stoked you made it through; I was starting to think that yank officer would never send any support." >
     <prerequisite id="targetPractice" />
-    <objective type="kill" id="enemy" qty="4" />
+    <objective type="kill" id="enemy" qty="3" />
     <reward type="item" id="chocolate" />
     <reward type="item" id="ammo" qty="20" />
 </quest>
