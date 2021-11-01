@@ -780,6 +780,11 @@ void Client::handleBufferedMessages(const std::string &msg) {
             isNew >> del;
         if (del != MSG_END) break;
 
+        const auto alreadyExists = _objects.find(serial) != _objects.end();
+        if (alreadyExists) {
+          break;
+        }
+
         const auto *itemType = findItem(itemID);
         auto *droppedItem = new CDroppedItem(*this, serial, location, *itemType,
                                              qty, health, suffixID, isNew != 0);
