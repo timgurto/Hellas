@@ -32,34 +32,37 @@ TEST_CASE("Gather an item from an object", "[gathering]") {
 /*
 One gather worth of 1 million units of iron
 1000 gathers worth of single rocks
-This is to test the new gather algorithm, which would favor rocks rather than
-iron. It will fail randomly about 1 every 1000 times
+This is to test the new gathering algorithm, which should favor rocks rather
+than iron. It will fail randomly about 1 every 1000 times
 */
 TEST_CASE_METHOD(ServerAndClientWithData,
                  "Gather chance is by gathers, not quantity", "[gathering]") {
-  useData(R"(
-    <objectType id="ironDeposit" canGather=1 gatherTime=100>
-        <yield id="rock" initialMean=1000 initialSD=0 />
-        <yield id="iron" initialMean=1000000 initialSD=0 gatherMean=1000000 gatherSD=0 />
-    </objectType>
-    <item id="rock" />
-    <item id="iron" stackSize=1000000 />
+  GIVEN(
+      "an object with one gather's worth of 1M iron, and 1000 gathers' worth "
+      "of single rocks") {
+    useData(R"(
+      <objectType id="ironDeposit" canGather=1 gatherTime=100>
+          <yield id="rock" initialMean=1000 initialSD=0 />
+          <yield id="iron" initialMean=1000000 initialSD=0 gatherMean=1000000 gatherSD=0 />
+      </objectType>
+      <item id="rock" />
+      <item id="iron" stackSize=1000000 />
   )");
+    const auto &ironDeposit = server->addObject("ironDeposit", {10, 10});
 
-  // Add a single iron deposit
-  const auto &ironDeposit = server->addObject("ironDeposit", {10, 10});
-  WAIT_UNTIL(client->objects().size() == 1);
+    WHEN("the user gathers from it once") {
+      client->sendMessage(CL_GATHER, makeArgs(ironDeposit.serial()));
+      WAIT_UNTIL(user->action() ==
+                 User::Action::GATHER);  // Wait for gathering to start
+      WAIT_UNTIL(user->action() ==
+                 User::Action::NO_ACTION);  // Wait for gathering to finish
 
-  // Gather
-  client->sendMessage(CL_GATHER, makeArgs(ironDeposit.serial()));
-  WAIT_UNTIL(user->action() ==
-             User::Action::GATHER);  // Wait for gathering to start
-  WAIT_UNTIL(user->action() ==
-             User::Action::NO_ACTION);  // Wait for gathering to finish
-
-  // Make sure user has a rock, and not the iron
-  const auto *rock = (*server)->findItem("rock");
-  CHECK(user->inventory(0).type() == rock);
+      THEN("he received a rock, and not iron") {
+        const auto *rock = (*server)->findItem("rock");
+        CHECK(user->inventory(0).type() == rock);
+      }
+    }
+  }
 }
 
 TEST_CASE("Minimum yields", "[gathering]") {
