@@ -147,7 +147,7 @@
 <!-- Below here to be commented out when holiday is not active -->
 
 
-<!--
+
 
 <npc id="anzacQG" x="64674" y="17774" />
 
@@ -218,6 +218,6 @@
 
 <object id="anzacStash" x="64737" y="17799" />
 
--->
+
 
 </root>

@@ -118,8 +118,8 @@ void Client::updateMapWindow(Element &e) {
   // Graveyard");
   //
   // Anzac Day event:
-  // client.addIconToMap({64674, 17774}, &images.mapRespawn,
-  //                  "Gallipolis Memorial");
+  client.addIconToMap({64674, 17774}, &images.mapRespawn,
+                      "Gallipolis Memorial");
 
   // Cities
   for (const auto &pair : client._cities) {
