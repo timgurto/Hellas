@@ -1,0 +1,48 @@
+\documentclass[12pt]{article}
+\usepackage[a4paper]{geometry}
+\usepackage{titling}
+
+\usepackage[cmintegrals,cmbraces]{newtxmath}
+\usepackage{ebgaramond-maths}
+\usepackage[T1]{fontenc}
+
+\linespread{1.05}
+
+
+\begin{document}
+\pagenumbering{gobble}
+
+\title{Hellas release process}
+\author{}
+\maketitle
+
+\begin{enumerate}
+
+\item Make sure everything's committed
+\item If tagging a major version:
+    \begin{enumerate}
+    \item Open command line
+    \item \fbox{\texttt{git tag}} to see current tags
+    \item \fbox{\texttt{git tag 0.13.6}} (make sure to use \texttt{0.15.0} and not \texttt{0.15})
+    \item \fbox{\texttt{git push origin 0.13.6}}
+    \item Run \texttt{generateVersionHeader.sh}
+    \end{enumerate}
+
+\item Build Release in Visual Studio (needs to build with new commit/tag as version)
+\item Update \texttt{release-notes.txt}, ensuring version is correct.
+\item Watch the server-recovery process.  Wait until its 20-second timer has just started.
+\item Quickly:
+\begin{enumerate}
+    \item Kill the currently running production server
+    \item Run publish-new-server script.
+\end{enumerate}
+\item Check reported server version on server-status page.
+\item Run publish-new-client script.
+\item Play Production as a quick smoke test
+\item Check reported server version in login screen.
+\item Make sure player-made objects have persisted.
+\item Make sure rocks/sticks/\emph{etc.}\,are spawning on the ground.
+
+\end{enumerate}
+
+\end{document}
