@@ -230,7 +230,7 @@
     // Draw game and world maps
     function drawPoint(ctx, position, colour){
         var OUTLINE_SIZE = 3;
-        var POINT_SIZE = 2.5;
+        var POINT_SIZE = 1.5;
         
         /*ctx.fillStyle = OUTLINE_COLOUR;
         ctx.beginPath();
@@ -265,8 +265,8 @@
     var gameMap = document.getElementById("gameMap");
     var ctx = gameMap.getContext("2d");
     var img = new Image;
-    var OFFLINE_COLOUR = "#5555553f";
-    var ONLINE_COLOUR = "#00ff003f";
+    var OFFLINE_COLOUR = "#7f7f00ff";
+    var ONLINE_COLOUR = "#00ff00ff";
     var OUTLINE_COLOUR = "#000";
     ctx.fillStyle = "#000";
     ctx.fillRect(0,0,gameMap.width,gameMap.height);
