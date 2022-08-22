@@ -96,9 +96,8 @@
         
         var gearText = "";
         for (var i = 0; i < user.gear.length; ++i){
-            var id = user.gear[i].id;
+            var id = user.gear[i];
             var item = itemsByID[id];
-            var qty = user.gear[i].qty;
             var icon = "<img width='16px'/>";
             
             if (id != ""){
@@ -114,9 +113,8 @@
         
         var inventoryText = "";
         for (var i = 0; i < user.inventory.length; ++i){
-            var id = user.inventory[i].id;
+            var id = user.inventory[i];
             var item = itemsByID[id];
-            var qty = user.inventory[i].qty;
             var icon = "<img width='16px'/>";
             if (id != ""){
                 var iconFile = id;
@@ -182,7 +180,7 @@
             if (isLocal)
                 stats.users[i].location.data.geo = {
                     "country_code":"AU",
-                    "country_name":"Australia",
+                    "country_name":"Australia (local machine)",
                     "region_name":"New South Wales",
                     "city":"Sydney",
                     "latitude":-33.8591,

@@ -31,9 +31,11 @@ void Server::writeUserToFile(const User &user, std::ostream &stream) const {
 
   stream << "\n{"
          << "name: \"" << user.name() << "\","
+         << "\n\t"
          << "online: " << user.hasSocket() << ","
          << "secondsPlayed: " << user.secondsPlayed() << ","
          << "secondsOnlineOrOffline: " << secondsOnlineOrOffline << ","
+         << "\n\t"
          << "class: \"" << className << "\","
          << "level: \"" << user.level() << "\","
          << "xp: \"" << user.xp() << "\","
@@ -43,30 +45,36 @@ void Server::writeUserToFile(const User &user, std::ostream &stream) const {
          << "y: \"" << user.location().y << "\","
          << "city: \"" << _cities.getPlayerCity(user.name()) << "\","
          << "isKing: " << _kings.isPlayerAKing(user.name()) << ","
+         << "\n\t"
          << "health: " << user.health() << ","
          << "maxHealth: " << user.stats().maxHealth << ","
          << "energy: " << user.energy() << ","
          << "maxEnergy: " << user.stats().maxEnergy << ","
+         << "\n\t"
          << "knownRecipes: " << user.knownRecipes().size() << ","
          << "completedQuests: " << user.questsCompleted().size() << ","
          << "knownConstructions: " << user.knownConstructions().size() << ","
          << "chunksExplored: " << user.exploration.numChunksExplored() << ","
-         << "chunksTotal: " << user.exploration.numChunks() << ","
-         << "location: " << user.realWorldLocation() << ",";
+         << "chunksTotal: " << user.exploration.numChunks() << ",";
 
-  stream << "inventory: [";
+  stream << "\n\t"
+         << "inventory: [";
   for (auto inventorySlot : user.inventory()) {
     auto id = inventorySlot.hasItem() ? inventorySlot.type()->id() : ""s;
-    stream << "{id:\"" << id << "\", qty:" << inventorySlot.quantity() << "},";
+    stream << "\"" << id << "\",";
   }
   stream << "],";
 
-  stream << "gear: [";
+  stream << "\n\t"
+         << "gear: [";
   for (auto gearSlot : user.gear()) {
     auto id = gearSlot.hasItem() ? gearSlot.type()->id() : ""s;
-    stream << "{id:\"" << id << "\", qty:" << gearSlot.quantity() << "},";
+    stream << "\"" << id << "\",";
   }
   stream << "],";
+
+  stream << "\n\t"
+         << "location: " << user.realWorldLocation() << ",";
 
   stream << "},";
 }
