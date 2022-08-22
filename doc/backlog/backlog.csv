@@ -1,26 +1,26 @@
 issue,description,value,effort,type,blockedBy,done,critical,milestone
-1,Heavy items that prevent player movement,8,8,Feature,,,TRUE,3 Bronze Age
-2,Region locks,8,55,Feature,,,TRUE,2 Tier-3
-3,"Region-specific, BoP talent items",8,13,Content,,,TRUE,2 Tier-3
-4,Region items are n-unique,1,21,Feature,3,,TRUE,2 Tier-3
+1,Heavy items that prevent player movement,8,8,Feature,,,TRUE,30 Bronze Age
+2,Region locks,8,55,Feature,,,TRUE,20 Tier-3
+3,"Region-specific, BoP talent items",8,13,Content,,,TRUE,20 Tier-3
+4,Region items are n-unique,1,21,Feature,3,,TRUE,20 Tier-3
 5,Granary objects,3,377,Feature,,,,
-6,Tier-3 talents,377,610,Content,3,,TRUE,2 Tier-3
-7,Tier-4 talents,21,610,Content,17,,TRUE,4 Tier-4
+6,Tier-3 talents,377,610,Content,3,,TRUE,20 Tier-3
+7,Tier-4 talents,21,610,Content,17,,TRUE,40 Tier-4
 8,Fill map with NPCs,233,987,Content,,,TRUE,
-9,Copper cauldron,1,8,Content,,,TRUE,3 Bronze Age
-10,Potions,21,233,Content,,,,3 Bronze Age
-11,Drop talent item on death,1,2,Feature,40,,TRUE,7 War
+9,Copper cauldron,1,8,Content,,,TRUE,30 Bronze Age
+10,Potions,21,233,Content,,,,30 Bronze Age
+11,Drop talent item on death,1,2,Feature,40,,TRUE,70 War
 12,Aggro range varies with level difference,2,8,Feature,,,,
 13,Interruptible cast times,55,55,Feature,,,,
-14,Horses,8,55,Content,,,TRUE,2 Tier-3
-15,Gold,8,55,Content,,,TRUE,2 Tier-3
-16,Acacia wood,8,55,Content,,,TRUE,2 Tier-3
-17,Subclass buildings,21,377,Content,,,TRUE,4 Tier-4
-18,Bronze + gear,21,144,Content,,,TRUE,3 Bronze Age
-19,Boiled leather + gear,21,144,Content,9,,TRUE,3 Bronze Age
-20,Serpent scales + gear,21,144,Content,,,TRUE,5 Iron Age
+14,Horses,8,55,Content,,,TRUE,20 Tier-3
+15,Gold,8,55,Content,,,TRUE,20 Tier-3
+16,Acacia wood,8,55,Content,,,TRUE,20 Tier-3
+17,Subclass buildings,21,377,Content,,,TRUE,40 Tier-4
+18,Bronze + gear,21,144,Content,,,TRUE,30 Bronze Age
+19,Boiled leather + gear,21,144,Content,9,,TRUE,30 Bronze Age
+20,Serpent scales + gear,21,144,Content,,,TRUE,50 Iron Age
 21,Consume small stacks first,5,21,Usability,,TRUE,,
-22,Allow declaring war on object,3,5,Usability,40,,,7 War
+22,Allow declaring war on object,3,5,Usability,40,,,70 War
 24,Crafting particles,21,5,Aesthetics,,,,
 25,Universal complete text outlines,2,3,Aesthetics,,TRUE,,
 26,Remapping keys,89,55,Usability,,,,
@@ -33,10 +33,10 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 34,"Play defend/death sounds on projectile hit, not launch",1,3,Bug,,,,
 35,SFX on aggro,89,21,Aesthetics,,,,
 36,Allow giving object to anyone,144,21,Feature,,TRUE,,
-37,Sanitise war declarations,1,2,Usability,40,,TRUE,7 War
+37,Sanitise war declarations,1,2,Usability,40,,TRUE,70 War
 38,Partial repairs,55,21,Feature,,,TRUE,
 39,Sanitise object granting,21,2,Usability,36,TRUE,TRUE,
-40,Fix war,34,89,Content,,TRUE,TRUE,7 War
+40,Fix war,34,89,Content,,TRUE,TRUE,70 War
 41,Weather particles,89,144,Aesthetics,,,,
 42,Recruitment invitations,2,3,Usability,,,TRUE,
 43,UI SFX,89,34,Aesthetics,,,,
@@ -46,14 +46,14 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 47,Show quantity available in merchant UI,3,5,Usability,,,,
 48,Idling AI,3,21,Feature,,,,
 49,Allow building roads under objects,3,3,Bug,,,,
-51,Make under-construction objects vulnerable,1,2,Feature,40,,,7 War
+51,Make under-construction objects vulnerable,1,2,Feature,40,,,70 War
 52,Fix gear-durability colours,13,34,Bug,,,TRUE,
 53,Show gear durability in main UI,8,21,Usability,,,,
 54,Show current tools in UI,144,144,Usability,,,,
 55,Show owned/missing tools in crafting window,144,5,Usability,54,,,
 56,Require full-text search for price items,3,1,Usability,,TRUE,,
 57,Restrict ware selection to items in container,3,21,Usability,,TRUE,,
-58,Gold enchantments,5,8,Content,15,,TRUE,2 Tier-3
+58,Gold enchantments,5,8,Content,15,,TRUE,20 Tier-3
 59,Themed UI windows,233,987,Aesthetics,,,,
 60,Magic dust shouldn't sound like a bone,1,2,Aesthetics,,,,
 61,Allow line break after -,3,2,Aesthetics,,,,
@@ -66,11 +66,11 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 68,Actual item dragging,13,34,Usability,,,,
 69,Stack splitting,5,34,Usability,,,,
 70,More altars in world,13,144,Content,,,,
-71,Tier-5 talents,5,89,Content,75,,TRUE,6 Tier-5
-72,Iron + gear,8,144,Content,18,,TRUE,5 Iron Age
-73,Silk + gear,8,144,Content,,,TRUE,3 Bronze Age
-74,Studded leather + gear,8,144,Content,19,,TRUE,3 Bronze Age
-75,Wonders,8,610,Content,121,,TRUE,6 Tier-5
+71,Tier-5 talents,5,89,Content,75,,TRUE,60 Tier-5
+72,Iron + gear,8,144,Content,18,,TRUE,50 Iron Age
+73,Silk + gear,8,144,Content,,,TRUE,30 Bronze Age
+74,Studded leather + gear,8,144,Content,19,,TRUE,30 Bronze Age
+75,Wonders,8,610,Content,121,,TRUE,60 Tier-5
 76,"Mobs should attack vehicles, not drivers",2,3,Feature,,,,
 77,Prevent spawns near player objects,2,21,Feature,,,,
 78,Keyboard targeting,13,55,Feature,,,,
@@ -89,7 +89,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 91,Don't damage weapon/armour on miss/dodge,2,2,Bug,,,TRUE,
 92,Usable items on hotbar,89,34,Usability,,,,
 93,Pet aggressive/defensive stance,3,21,Feature,,,,
-94,War/peace SFX,3,34,Usability,40,,,7 War
+94,War/peace SFX,3,34,Usability,40,,,70 War
 95,Music,144,987,Aesthetics,,,,
 96,Direct trading,144,377,Feature,,,TRUE,
 97,Block quest completion if multiple rewards would overfill inventory,2,5,Bug,,,TRUE,
@@ -104,28 +104,28 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 106,Mobs should target player objects,1,2,Feature,77,,,
 107,Revamp crafting window with categories,377,233,Usability,,,,
 108,Mandalorian quests/metal/armour,34,233,Content,,,,
-109,Stone blocks and quarries,34,34,Content,1,,TRUE,3 Bronze Age
-110,Vehicles that can transport heavy items,2,34,Feature,1,,TRUE,3 Bronze Age
+109,Stone blocks and quarries,34,34,Content,1,,TRUE,30 Bronze Age
+110,Vehicles that can transport heavy items,2,34,Feature,1,,TRUE,30 Bronze Age
 111,"Change oven to kiln, kiln to forge",3,5,Aesthetics,,,,
 112,Foundry (building with all moulds),1,34,Content,110,,,
-113,"Build vehicle out of pet (horse, oxcart, chariot)",2,89,Feature,,,TRUE,2 Tier-3
+113,"Build vehicle out of pet (horse, oxcart, chariot)",2,89,Feature,,,TRUE,20 Tier-3
 114,Gathering/crafting titles,34,89,Feature,,,,
-115,"Houses (player-unique, healing buff, teleport spell,storage)",34,55,Feature,118,,,1 Housing
-116,Houses restrict construction sites (excluding fires/farms/etc.),34,55,Feature,120,,,1 Housing
-117,Houses restrict city construction sites,1,21,Feature,128,,,1 Housing
-118,Wells,5,5,Content,,,,1 Housing
-119,Destroy player-unique building when new one is completed; don't restrict,1,8,Usability,,,,1 Housing
-120,Allow remote deletion of construction sites,5,144,Usability,,,,1 Housing
-121,Marble and quarries,5,34,Content,109,,TRUE,5 Iron Age
-122,Wheat farms/mills,5,34,Content,109,,,5 Iron Age
-123,Bridges,8,89,Feature,109,,,3 Bronze Age
+115,"Houses (player-unique, healing buff, teleport spell,storage)",34,55,Feature,118,,,10 Housing
+116,Houses restrict construction sites (excluding fires/farms/etc.),34,55,Feature,120,,,10 Housing
+117,Houses restrict city construction sites,1,21,Feature,128,,,10 Housing
+118,Wells,5,8,Content,,,,10 Housing
+119,Destroy player-unique building when new one is completed; don't restrict,1,8,Usability,,,,10 Housing
+120,Allow remote deletion of construction sites,5,144,Usability,,,,10 Housing
+121,Marble and quarries,5,34,Content,109,,TRUE,50 Iron Age
+122,Wheat farms/mills,5,34,Content,109,,,50 Iron Age
+123,Bridges,8,89,Feature,109,,,30 Bronze Age
 124,Adventure: primeval forest,377,987,Content,125,,,
 125,Move adventures to instances,13,610,Feature,,,,
 126,Salvage mats from unwanted items,34,34,Feature,,TRUE,,
 127,Random item drops,233,233,Feature,126,TRUE,,
-128,Allow remote deletion of city construction sites by king,1,5,Usability,120,,,1 Housing
+128,Allow remote deletion of city construction sites by king,1,5,Usability,120,,,10 Housing
 130,Make death more clear,5,34,Aesthetics,,,,
-131,Ships,13,377,Content,,,TRUE,2 Tier-3
+131,Ships,13,377,Content,,,TRUE,20 Tier-3
 132,lvl-30 adventure,144,987,Content,125,,,
 133,lvl-40 adventure,89,987,Content,125,,,
 134,lvl-50 adventure,55,987,Content,125,,,
@@ -141,3 +141,8 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 144,Right-click to move,89,34,Feature,,,,
 145,Allow giving object to a city,2,2,Feature,,,,
 146,Replace gloves with bellows as tin prereq,2,3,Content,,TRUE,TRUE,
+147,Repair item in exchange for item,13,13,Feature,,,TRUE,15 Restricted repairing
+148,"To repair a class-X item, require knowing a class-X recipe",21,5,Feature,147,,TRUE,15 Restricted repairing
+149,Allow multiple tool reqs for repairing,3,3,Feature,,,,
+150,"Check construction tools against footprint, not player",,,Feature,,,,10 Housing
+151,Trash items (overworld and dungeon),,,Content,,,,
