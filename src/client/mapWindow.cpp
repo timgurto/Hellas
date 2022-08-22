@@ -114,12 +114,11 @@ void Client::updateMapWindow(Element &e) {
 
   // TODO: STOP HARDCODING THIS
   // Halloween event:
-  // client.addIconToMap({33000, 33600}, &images.mapRespawn, "Thessaly
-  // Graveyard");
+  client.addIconToMap({33000, 33600}, &images.mapRespawn, "Thessaly Graveyard");
   //
   // Anzac Day event:
-  client.addIconToMap({64674, 17774}, &images.mapRespawn,
-                      "Gallipolis Memorial");
+  // client.addIconToMap({64674, 17774}, &images.mapRespawn, "Gallipolis
+  // Memorial");
 
   // Cities
   for (const auto &pair : client._cities) {

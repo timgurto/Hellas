@@ -4,7 +4,7 @@
 Mark graveyard on map: not hardcoded
 -->
 
-<quest id="halloween2021_freeTheGhost1" name="The Restless Dead" startsAt="mourner" endsAt="ghostFather"
+<quest id="halloween2022_freeTheGhost1" name="The Restless Dead" startsAt="mourner" endsAt="ghostFather"
     level="10"
     brief="Recently I've been haunted in my dreams; the shade of my deceased father is calling out to me, wailing and thrashing.  I'm afraid to go to sleep because it pains me to see him suffering.
     What's worse is that I think it's our fault.  My people in Thessaly have neglected the old funeral rites, and so the dead may be struggling to reach Hades.  We didn't want to waste good money on the dead.
@@ -14,12 +14,12 @@ Mark graveyard on map: not hardcoded
     What's this--a coin?  Thank you, stranger.  After these long weeks of wandering, I can finally pay the ferryman and reach Hades." >
     <objective type="fetch" id="tinCoin" />
 </quest>
-<quest id="halloween2021_freeTheGhost2" name="Be at Peace" startsAt="ghostFather" endsAt="mourner"
+<quest id="halloween2022_freeTheGhost2" name="Be at Peace" startsAt="ghostFather" endsAt="mourner"
     level="10"
     brief="Please return to my son, and tell him that I am at rest.  I will no longer haunt his sleep."
     debrief="Thank you for your help.  I feel better knowing that my father has been properly laid to rest.
     In my neglect, I failed to mark his grave.  You may have the monument if you wish; my father clearly has no need for it." >
-    <prerequisite id="halloween2021_freeTheGhost1" />
+    <prerequisite id="halloween2022_freeTheGhost1" />
     <reward type="item" id="halloweenGrave" />
 </quest>
     <npcType id="mourner" name="Pentheos"
@@ -39,7 +39,7 @@ Mark graveyard on map: not hardcoded
         <collisionRect x="-7" y="-3" w="16" h="7" />
     </objectType>
     
-<quest id="halloween2021_collectPumpkinFlowers" name="A Rose on the Grave" startsAt="witch" endsAt="witch"
+<quest id="halloween2022_collectPumpkinFlowers" name="A Rose on the Grave" startsAt="witch" endsAt="witch"
     level="12"
     brief="Greetings, traveler!  Strange things are afoot: the dead are restless, and other odd things have sprung up with them.
     There is an orange flower that I have seen growing throughout this graveyard.  I am an experienced botanist, but I do not recognise these flowers.
@@ -64,16 +64,16 @@ Mark graveyard on map: not hardcoded
     <item id="witchRobe" name="Wayward Robe" ilvl="1" class="woolBody" gearSlot="body" sounds="fabric" iconFile="leatherBlack" bind="pickup" >
         <offset x="-8" y="-3" />
     </item>
-    <item id="pumpkinFlower" name="Grave Flower" stackSize="10" exclusiveToQuest="halloween2021_collectPumpkinFlowers" bind="pickup" />
-    <objectType id="pumpkinFlower0" name="Grave Flower" xDrawOffset="-10" yDrawOffset="-11" isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="halloween2021_collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
-    <objectType id="pumpkinFlower1" name="Grave Flower" xDrawOffset="-9"  yDrawOffset="-8"  isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="halloween2021_collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
-    <objectType id="pumpkinFlower2" name="Grave Flower" xDrawOffset="-10" yDrawOffset="-8"  isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="halloween2021_collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
-    <objectType id="pumpkinFlower3" name="Grave Flower" xDrawOffset="-8"  yDrawOffset="-7"  isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="halloween2021_collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
-    <objectType id="pumpkinFlower4" name="Grave Flower" xDrawOffset="-9"  yDrawOffset="-9"  isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="halloween2021_collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
-    <objectType id="pumpkinFlower5" name="Grave Flower" xDrawOffset="-10" yDrawOffset="-10" isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="halloween2021_collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
-    <objectType id="pumpkinFlower6" name="Grave Flower" xDrawOffset="-9"  yDrawOffset="-8"  isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="halloween2021_collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
-    <objectType id="pumpkinFlower7" name="Grave Flower" xDrawOffset="-10" yDrawOffset="-10" isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="halloween2021_collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
-    <objectType id="pumpkinFlower8" name="Grave Flower" xDrawOffset="-9"  yDrawOffset="-8"  isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="halloween2021_collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
+    <item id="pumpkinFlower" name="Grave Flower" stackSize="10" exclusiveToQuest="halloween2022_collectPumpkinFlowers" bind="pickup" />
+    <objectType id="pumpkinFlower0" name="Grave Flower" xDrawOffset="-10" yDrawOffset="-11" isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="halloween2022_collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
+    <objectType id="pumpkinFlower1" name="Grave Flower" xDrawOffset="-9"  yDrawOffset="-8"  isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="halloween2022_collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
+    <objectType id="pumpkinFlower2" name="Grave Flower" xDrawOffset="-10" yDrawOffset="-8"  isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="halloween2022_collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
+    <objectType id="pumpkinFlower3" name="Grave Flower" xDrawOffset="-8"  yDrawOffset="-7"  isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="halloween2022_collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
+    <objectType id="pumpkinFlower4" name="Grave Flower" xDrawOffset="-9"  yDrawOffset="-9"  isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="halloween2022_collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
+    <objectType id="pumpkinFlower5" name="Grave Flower" xDrawOffset="-10" yDrawOffset="-10" isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="halloween2022_collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
+    <objectType id="pumpkinFlower6" name="Grave Flower" xDrawOffset="-9"  yDrawOffset="-8"  isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="halloween2022_collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
+    <objectType id="pumpkinFlower7" name="Grave Flower" xDrawOffset="-10" yDrawOffset="-10" isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="halloween2022_collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
+    <objectType id="pumpkinFlower8" name="Grave Flower" xDrawOffset="-9"  yDrawOffset="-8"  isFlat="1" canGather="1" gatherTime="6000" exclusiveToQuest="halloween2022_collectPumpkinFlowers"> <particles profile="fog"/><yield id="pumpkinFlower"/> </objectType>
 
 <objectType
     id="tradeMatBottomless4" name="Trade Mat" imageFile="tradeMat"
@@ -306,7 +306,7 @@ Mark graveyard on map: not hardcoded
 
 <!-- Below here to be commented out when holiday is not active -->
 
-<!--
+
 
 
 <permanentObject x="33000" y="33600" id="graveyardGround" />
@@ -368,6 +368,6 @@ Mark graveyard on map: not hardcoded
 <spawnPoint y="33600" x="33000" type="halloweenMummy"    quantity="12"  radius="600" respawnTime="120000" />
 <spawnPoint y="33600" x="33000" type="halloweenGhost"    quantity="5"   radius="450" respawnTime="120000" />
 
--->
+
 
 </root>
