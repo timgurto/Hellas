@@ -69,9 +69,10 @@
         if (user.location.hasOwnProperty("data") && user.location.data.hasOwnProperty("geo")){
             var geo = user.location.data.geo;
             var tooltip = geo.city + ", " + geo.region_name + ", " + geo.country_name;
-            flag = '<img src="https://www.countryflags.io/' + user.location.data.geo.country_code + '/flat/64.png" title="' + tooltip + '" height="20px">';
+            var country_iso = user.location.data.geo.country_code.toLowerCase()
+            flag = '<img src="https://flagcdn.com/h40/' + country_iso + '.png" title="' + tooltip + '" height="20px">';
         }
-        cells += '<td>' + flag + "</td>";
+        cells += '<td align="center">' + flag + "</td>";
         
         var tutorialString = user.isInTutorial ? " &#128700;" : "";
         cells += '<td>' + user.name + tutorialString + "</td>";
@@ -171,6 +172,27 @@
     $("#version").html(stats.version);
     $("#uptime").html(timeDisplay(stats.uptime));
     
+    function cleanUpUsers(){
+        for (var i = 0; i < stats.users.length; ++i){
+            if (!stats.users[i].location.hasOwnProperty("data")) continue;
+            
+            ip = stats.users[i].location.data.geo.ip
+            var isLocal = (parseInt(ip,10) == 192) || (ip == "127.0.0.1")
+            
+            if (isLocal)
+                stats.users[i].location.data.geo = {
+                    "country_code":"AU",
+                    "country_name":"Australia",
+                    "region_name":"New South Wales",
+                    "city":"Sydney",
+                    "latitude":-33.8591,
+                    "longitude":151.2002
+                };
+        }
+    }
+    
+    cleanUpUsers();
+    
     stats.users.sort(function(a, b){
         if (a.online != b.online)
             return a.isOnline ? -1 : 1;
@@ -233,6 +255,7 @@
     function getWorldMapCoords(user){
         if (!user.location.hasOwnProperty("data")) return {x:0, y:0};
         var geo = user.location.data.geo;
+        
         return {
             x: MAP_HEIGHT + (geo.longitude/180)*MAP_HEIGHT,
             y: MAP_HEIGHT/2 - (geo.latitude/180)*MAP_HEIGHT
