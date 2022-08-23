@@ -146,3 +146,4 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 149,Allow multiple tool reqs for repairing,3,3,Feature,,,,
 150,"Check construction tools against footprint, not player",,,Feature,,,,10 Housing
 151,Trash items (overworld and dungeon),,,Content,,,,
+152,Better-looking construction footprints,,,Aesthetics,,,,

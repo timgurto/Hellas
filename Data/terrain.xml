@@ -173,13 +173,32 @@ Must contain either <forbid> nodes only (for a blacklist) or <allow> nodes only 
     <allow id="volcanoMountain" />
 </list>
 
-<list id="fertile" description="Suitable on fertile ground." >
+<list id="fertile" description="Suitable only on fertile ground." >
     <allow id="fertile" />
     <allow id="plainsFertile" />
     <allow id="forestFertile" />
     <allow id="richFertile" />
     <allow id="swampFertile" />
     <allow id="nileFertile" />
+    <allow id="ruinsFertile" />
+    <allow id="volcanoFertile" />
+</list>
+
+<list id="nonArid" description="Suitable on any ground that isn't rocky or dry." >
+    <allow id="normal" />
+    <allow id="fertile" />
+    <allow id="plains" />
+    <allow id="plainsFertile" />
+    <allow id="forest" />
+    <allow id="forestFertile" />
+    <allow id="rich" />
+    <allow id="richFertile" />
+    <allow id="swamp" />
+    <allow id="swampFertile" />
+    <allow id="nile" />
+    <allow id="nileFertile" />
+    <allow id="beach" />
+    <allow id="ruins" />
     <allow id="ruinsFertile" />
     <allow id="volcanoFertile" />
 </list>

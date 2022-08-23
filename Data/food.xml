@@ -73,6 +73,8 @@
     <tool class="waterSource" />
     <unlockedBy item="smallPot" />
     <unlockedBy construction="flaxCrop0" />
+    <unlockedBy construction="rockWell" />
+    <unlockedBy construction="brickWell" />
 </recipe>
 <recipe
     id="emptyWaterVessel" name="Empty water vessel" product="smallPot" time="4000" >
@@ -93,26 +95,53 @@
     sounds="ceramic"
     returnsOnCast="smallPot" />
 
-<XobjectType id="rockWell" name="Primitive Well"
-    sounds="stone" damageParticles="rocks">
-    <tag name="water" toolSpeed="1.05" />
-    <material id="rock" quantity="20" />
-    <!--unlockedBy gather="rock" chance="0.02" />
-    <unlockedBy recipe="water" chance="0.05" /-->
+<objectType id="rockWell" name="Cistern"
+    sounds="stone" damageParticles="rocks"
+    allowedTerrain="fertile"
+    xDrawOffset="-24" yDrawOffset="-24" isFlat="1">
+    <collisionRect x="-22" y="-22" w="44" h="44" />
+    <tag name="waterSource" toolSpeed="1.05" />
+    <material id="rock" quantity="40" />
+    <grantsBuff id="wellEpsRock" radius="30" />
+    <unlockedBy gather="rock" chance="0.02" />
+    <unlockedBy recipe="water" chance="0.05" />
     <unlockedBy />
     <canBeRepaired cost="rock" />
-</XobjectType>
-<XobjectType id="brickWell" name="Well"
-    sounds="brick" damageParticles="brick" >
-    <tag name="water" toolSpeed="1.15" />
-    <material id="brick" quantity="12" />
+</objectType>
+<objectType id="brickWell" name="Well"
+    sounds="brick" damageParticles="brick"
+    allowedTerrain="nonArid"
+    xDrawOffset="-25" yDrawOffset="-42">
+    <collisionRect x="-26" y="-24" w="52" h="49" />
+    <tag name="waterSource" toolSpeed="1.25" />
+    <material id="brick" quantity="36" />
     <material id="rope" quantity="1" />
-    <!--unlockedBy gather="brick" chance="0.04" /-->
+    <material id="smallPot" quantity="1" />
+    <grantsBuff id="wellEpsBrick" radius="60" />
+    <unlockedBy gather="brick" chance="0.02" />
     <unlockedBy construction="rockWell" chance="0.2" />
     <canBeRepaired cost="brick" />
-</XobjectType>
-<!--objectType id="stoneWell" name="Deep Well" >
-    <tag name="water" toolSpeed="1.25" />
+</objectType>
+<!--objectType id="marbleWell" name="Fountain"
+    allowedTerrain="land">
+    <tag name="waterSource" toolSpeed="1.45" />
+    <grantsBuff id="wellEpsMarble" radius="120" />
 </objectType-->
+    <buff id="wellEpsRock" name="Refreshing Water" icon="waterRipples" description="Replenishing energy"
+        particles="waterSmall" >
+        <stats eps="200" />
+        <nonStacking category="well" />
+    </buff>
+    <buff id="wellEpsBrick" name="Refreshing Water" icon="waterRipples" description="Replenishing energy"
+        particles="waterSmall" >
+        <stats eps="800" />
+        <nonStacking category="well" />
+    </buff>
+    <buff id="wellEpsMarble" name="Refreshing Water" icon="waterRipples" description="Replenishing energy"
+        particles="waterSmall" >
+        <stats eps="2000" />
+        <nonStacking category="well" />
+    </buff>
+
 
 </root>
