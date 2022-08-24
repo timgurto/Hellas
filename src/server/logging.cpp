@@ -140,10 +140,15 @@ void Server::publishStats() {
 
   // World state
   auto numObjects = 0;
-  for (const auto *entity : _entities)
+  oss << "objectLocations: [";
+  for (const auto *entity : _entities) {
     if (!entity->excludedFromPersistentState()) {
+      oss << "{x:" << entity->location().x << ",y:" << entity->location().y
+          << "},";
       ++numObjects;
     }
+  }
+  oss << "],\n";
   oss << "objects: " << numObjects << ",\n";
 
   oss << "users: [";

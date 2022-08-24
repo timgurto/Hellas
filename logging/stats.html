@@ -231,7 +231,7 @@
     // Draw game and world maps
     function drawPoint(ctx, position, colour){
         var OUTLINE_SIZE = 3;
-        var POINT_SIZE = 1.5;
+        var POINT_SIZE = 1.0;
         
         /*ctx.fillStyle = OUTLINE_COLOUR;
         ctx.beginPath();
@@ -246,10 +246,10 @@
     
     var MAP_HEIGHT = 500;
     
-    function getGameMapCoords(user){
+    function getGameMapCoords(x,y){
         return {
-            x: user.x / 96000 * MAP_HEIGHT,
-            y: user.y / 96000 * MAP_HEIGHT
+            x: x / 96000 * MAP_HEIGHT,
+            y: y / 96000 * MAP_HEIGHT
         };
     }
     
@@ -268,6 +268,7 @@
     var img = new Image;
     var OFFLINE_COLOUR = "#7f7f00ff";
     var ONLINE_COLOUR = "#00ff00ff";
+    var OBJECT_COLOUR = "#666";
     var OUTLINE_COLOUR = "#000";
     ctx.fillStyle = "#000";
     ctx.fillRect(0,0,gameMap.width,gameMap.height);
@@ -276,18 +277,27 @@
         ctx.drawImage(img, 0, 0, gameMap.width, gameMap.height); 
         ctx.fillStyle = "rgba(0,0,0,0.8)";
         ctx.fillRect(0,0,gameMap.width,gameMap.height);
+        
+        // Objects
+        for (var i = 0; i < stats.objectLocations.length; ++i){
+            loc = stats.objectLocations[i]
+            drawPoint(ctx, getGameMapCoords(loc.x, loc.y), OBJECT_COLOUR);
+        }
     
+        // Offline users
         for (var i = 0; i < stats.users.length; ++i){
             var user = stats.users[i];
             if (user.online) continue;
             
-            drawPoint(ctx, getGameMapCoords(user), OFFLINE_COLOUR);
+            drawPoint(ctx, getGameMapCoords(user.x, user.y), OFFLINE_COLOUR);
         }
+        
+        // Online users
         for (var i = 0; i < stats.users.length; ++i){
             var user = stats.users[i];
             if (!user.online) continue;
             
-            drawPoint(ctx, getGameMapCoords(user), ONLINE_COLOUR);
+            drawPoint(ctx, getGameMapCoords(user.x, user.y), ONLINE_COLOUR);
         }
     }
         
