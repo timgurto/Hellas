@@ -963,6 +963,8 @@ void Client::CommonImages::initialise() {
   scrollArrowGreyUp = {"Images/arrowUpGrey.png", Color::MAGENTA};
   scrollArrowGreyDown = {"Images/arrowDownGrey.png", Color::MAGENTA};
 
+  constructionPeg = {"Images/constructionPeg.png", Color::MAGENTA};
+
   icons.initialise("Images/Icons");
 
   map = {"Images/map.png"};

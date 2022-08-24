@@ -69,8 +69,6 @@ void Client::draw() const {
   visibleSprites.cullHorizontally(leftX, rightX);
   visibleSprites.cullAndAdd(_spritesWithCustomCullDistances);
 
-  visibleSprites.drawConstructionSiteFootprints();
-
   // We may have a large flat entity, with combat happening on top, in which
   // case we don't want selection circles to be invisible.
   // In normal cases, flat entities like corpses should have a visible selection
@@ -404,24 +402,6 @@ void SpritesToDraw::cullHorizontally(double leftLimit, double rightLimit) {
       it = _container.erase(it);
     else
       ++it;
-  }
-}
-
-void SpritesToDraw::drawConstructionSiteFootprints() {
-  renderer.setDrawColor(Color::FOOTPRINT_ACTIVE);
-
-  for (const auto *sprite : _container) {
-    auto pObj = dynamic_cast<const ClientObject *>(sprite);
-    if (!pObj) continue;
-    if (!pObj->isBeingConstructed()) continue;
-
-    // Exception: if it has a custom construction descriptor, then it's probably
-    // some special mechanic piggybacking off construction, rather than an
-    // actual construction site, and thus shouldn't have a footprint.
-    const auto isSpecial = !pObj->objectType()->constructionText().empty();
-    if (isSpecial) continue;
-
-    _client.drawFootprint(pObj->collisionRect(), Color::FOOTPRINT_ACTIVE, 0x7f);
   }
 }
 

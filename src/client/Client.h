@@ -622,6 +622,8 @@ class Client : public TextEntryManager {
     Texture scrollArrowWhiteUp, scrollArrowWhiteDown, scrollArrowGreyUp,
         scrollArrowGreyDown;
 
+    Texture constructionPeg;
+
     MemoisedImageDirectory icons;
 
     Texture map;

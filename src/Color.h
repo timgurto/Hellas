@@ -45,7 +45,6 @@ class Color {
   static const Color FOOTPRINT_GOOD;
   static const Color FOOTPRINT_BAD;
   static const Color FOOTPRINT_COLLISION;
-  static const Color FOOTPRINT_ACTIVE;
 
   static const Color TOOLTIP_BACKGROUND;
   static const Color TOOLTIP_BORDER;

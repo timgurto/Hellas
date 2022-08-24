@@ -928,8 +928,36 @@ void ClientObject::update(double delta) {
   Sprite::update(delta);
 }
 
+bool ClientObject::shouldIndicateConstructionSite() const {
+  if (!isBeingConstructed()) return false;
+
+  // Exception: if it has a custom construction descriptor, then it's probably
+  // some special mechanic piggybacking off construction, rather than an
+  // actual construction site, and thus shouldn't have a footprint.
+  const auto isSpecial = !objectType()->constructionText().empty();
+  return !isSpecial;
+}
+
+void ClientObject::drawConstructionPegs(ConstructionPegSet toDraw) const {
+  const auto imageOffset = ScreenPoint{-1, -6};
+  auto footprint = toScreenRect(collisionRect());
+  footprint += _client.offset();
+  const auto left = footprint.x + imageOffset.x, right = left + footprint.w;
+
+  auto y = footprint.y + imageOffset.y;
+  if (toDraw == BOTTOM_PEGS) y += footprint.h;
+
+  _client.images.constructionPeg.draw(left, y);
+  _client.images.constructionPeg.draw(right, y);
+}
+
 void ClientObject::draw() const {
+  if (shouldIndicateConstructionSite()) drawConstructionPegs(TOP_PEGS);
+
   Sprite::draw();
+
+  if (shouldIndicateConstructionSite()) drawConstructionPegs(BOTTOM_PEGS);
+
   drawAppropriateQuestIndicator();
 }
 

@@ -120,6 +120,7 @@ class ClientObject : public Sprite, public ClientCombatant {
     _constructionMaterials = set;
   }
   bool isBeingConstructed() const { return !_constructionMaterials.isEmpty(); }
+  bool shouldIndicateConstructionSite() const;
   void transformTimer(ms_t remaining) { _transformTimer = remaining; }
   bool lootable() const { return _lootable; }
   void lootable(bool b) { _lootable = b; }
@@ -177,6 +178,8 @@ class ClientObject : public Sprite, public ClientCombatant {
       const override;  // Getter; creates tooltip on first call.
   void draw() const override;
   void drawAppropriateQuestIndicator() const;
+  enum ConstructionPegSet { TOP_PEGS, BOTTOM_PEGS };
+  void drawConstructionPegs(ConstructionPegSet toDraw) const;
   const Texture &cursor() const override;
   virtual Color nameColor() const override;
   virtual bool shouldDrawName() const override;

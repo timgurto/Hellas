@@ -113,7 +113,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 115,"Houses (player-unique, healing buff, teleport spell,storage)",34,55,Feature,118,,,10 Housing
 116,Houses restrict construction sites (excluding fires/farms/etc.),34,55,Feature,120,,,10 Housing
 117,Houses restrict city construction sites,1,21,Feature,128,,,10 Housing
-118,Wells,5,8,Content,,,,10 Housing
+118,Wells,5,8,Content,,TRUE,,10 Housing
 119,Destroy player-unique building when new one is completed; don't restrict,1,8,Usability,,,,10 Housing
 120,Allow remote deletion of construction sites,5,144,Usability,,,,10 Housing
 121,Marble and quarries,5,34,Content,109,,TRUE,50 Iron Age
@@ -146,4 +146,3 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 149,Allow multiple tool reqs for repairing,3,3,Feature,,,,
 150,"Check construction tools against footprint, not player",,,Feature,,,,10 Housing
 151,Trash items (overworld and dungeon),,,Content,,,,
-152,Better-looking construction footprints,,,Aesthetics,,,,

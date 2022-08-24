@@ -13,7 +13,6 @@ class SpritesToDraw {
   void cullAndAdd(const Sprite::set_t &unculledSprites);
   void cullHorizontally(double leftLimit, double rightLimit);
 
-  void drawConstructionSiteFootprints();
   void drawFlatSprites();
   void drawNonFlatSprites();
   void drawDrawOrder();
