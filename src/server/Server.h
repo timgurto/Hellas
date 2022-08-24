@@ -344,6 +344,9 @@ class Server {
 
   void publishGameData();
   void publishStats();
+  using ItemCounts = std::map<std::string, int>;
+  void countItemsOnUser(const User &user, ItemCounts &itemCounts) const;
+  void countItemsInObject(ItemCounts &itemCounts) const;
   static const ms_t PUBLISH_STATS_FREQUENCY = 5000;
   ms_t _timeStatsLastPublished;
   void logNumberOfOnlineUsers() const;

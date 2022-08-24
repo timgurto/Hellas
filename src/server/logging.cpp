@@ -138,6 +138,8 @@ void Server::publishStats() {
   oss << "constructions: " << _numBuildableObjects << ",\n";
   oss << "quests: " << _quests.size() << ",\n";
 
+  auto itemCounts = std::map<std::string, int>{};
+
   // World state
   auto numObjects = 0;
   oss << "objectLocations: [";
@@ -145,6 +147,7 @@ void Server::publishStats() {
     if (!entity->excludedFromPersistentState()) {
       oss << "{x:" << entity->location().x << ",y:" << entity->location().y
           << "},";
+      countItemsInObject(itemCounts);
       ++numObjects;
     }
   }
@@ -154,10 +157,12 @@ void Server::publishStats() {
   oss << "users: [";
 
   // Online users
-  for (const auto userEntry : _onlineUsersByName)
+  for (const auto userEntry : _onlineUsersByName) {
     writeUserToFile(*userEntry.second, oss);
+    countItemsOnUser(*userEntry.second, itemCounts);
+  }
 
-  // Ofline users
+  // Offline users
   auto offlineUsers = getUsersFromFiles();
   for (const auto &offlineUser : offlineUsers) {
     auto userIsOnline =
@@ -169,9 +174,17 @@ void Server::publishStats() {
     user.secondsOffline = offlineUser.second;
 
     writeUserToFile(user, oss);
+    countItemsOnUser(user, itemCounts);
   }
 
   oss << "\n],\n";
+
+  // Item counts
+  oss << "itemCounts: [";
+  for (auto pair : itemCounts)
+    oss << "{id:\"" << pair.first << "\",qty:" << pair.second << "},";
+
+  oss << "],\n";
 
   oss << "\n};\n";
 
@@ -186,3 +199,15 @@ void Server::logNumberOfOnlineUsers() const {
   std::ofstream{"logging/onlinePlayers.csv", std::ofstream::app}
       << currentTime << "," << _onlineUsersByName.size() << std::endl;
 }
+
+void Server::countItemsOnUser(const User &user, ItemCounts &itemCounts) const {
+  for (auto inventorySlot : user.inventory())
+    if (inventorySlot.hasItem())
+      itemCounts[inventorySlot.type()->id()] += inventorySlot.quantity();
+
+  for (auto gearSlot : user.gear())
+    if (gearSlot.hasItem())
+      itemCounts[gearSlot.type()->id()] += gearSlot.quantity();
+}
+
+void Server::countItemsInObject(ItemCounts &itemCounts) const {}

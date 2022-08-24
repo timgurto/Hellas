@@ -16,27 +16,36 @@
     
     <p><span class="heading"> Objects in the world:</span> <span id="numObjects" /></p>
     
-    <h2>Users <span id="numPlayersOnline"/></h2>
-    <table id="users" >
-    <tr>
-        <td class="heading"></td>
-        <td class="heading">Name</td>
-        <td class="heading">Offline/online</td>
-        <td class="heading">Total played</td>
-        <td class="heading">Class</td>
-        <!--td class="heading">XP</td-->
-        <td class="heading">City</td>
-        <!--td class="heading">Health</td-->
-        <!--td class="heading">Energy</td-->
-        <td class="heading">Location</td>
-        <td class="heading">Gear</td>
-        <td class="heading">Inventory</td>
-        <td class="heading">Expoloration</td>
-        <td class="heading">Quests</td>
-        <td class="heading">Recipes</td>
-        <td class="heading">Constructions</td>
-    </tr>
-    </table>
+    <div style="width: 100%; overflow: hidden;">
+        <div style="float:left; width:5%;">
+            <h2>Items</h2>
+            <table id="items" >
+            </table>
+        </div>
+        <div style="float:left; width:95%;">
+            <h2>Users <span id="numPlayersOnline"/></h2>
+            <table id="users" >
+            <tr>
+                <td class="heading"></td>
+                <td class="heading">Name</td>
+                <td class="heading">Offline/online</td>
+                <td class="heading">Total played</td>
+                <td class="heading">Class</td>
+                <!--td class="heading">XP</td-->
+                <td class="heading">City</td>
+                <!--td class="heading">Health</td-->
+                <!--td class="heading">Energy</td-->
+                <td class="heading">Location</td>
+                <td class="heading">Gear</td>
+                <td class="heading">Inventory</td>
+                <td class="heading">Expoloration</td>
+                <td class="heading">Quests</td>
+                <td class="heading">Recipes</td>
+                <td class="heading">Constructions</td>
+            </tr>
+            </table>
+        </div>
+    </div>
 </body>
 
 <script type="text/javascript" src="stats.js"></script>
@@ -62,6 +71,22 @@
         formattedTime += s + "s";
         
         return formattedTime;
+    }
+    
+    function makeItemRow(itemCount){
+        cells = "";
+        
+        var item = itemsByID[itemCount.id];
+        var iconFile = itemCount.id;
+        if (item.hasOwnProperty("iconFile")) iconFile = item.iconFile;
+        icon = "<img width='16px' src='../Images/Items/" + iconFile + ".png' title='" + itemCount.id + "'";
+        icon += " class='item-quality-" + item.quality + "'";
+        icon += ">";
+        cells += "<td>" + icon + "</td>"
+        
+        cells += "<td>" + itemCount.qty + "</td>";
+        
+        return cells;
     }
     
     function makeUserRow(user){
@@ -222,6 +247,13 @@
         $("#users").append("<tr" + classString + ">" + makeUserRow(stats.users[i]) + "</tr>");
     }
     
+    stats.itemCounts.sort(function(a,b){
+        return b.qty - a.qty;
+    });
+    for (var i = 0; i < stats.itemCounts.length; ++i){
+        $("#items").append("<tr>" + makeItemRow(stats.itemCounts[i]) + "</tr>");
+    }
+    
     document.title = "Hellas: " + numPlayersOnline + " online"
     if (numPlayersOnline > 0)
         $("#numPlayersOnline").html("(" + numPlayersOnline + ")");
@@ -329,7 +361,7 @@
         
 </script>
 <script type="text/javascript">
-  setTimeout(function () { location.reload(true); }, 10000);
+  //setTimeout(function () { location.reload(true); }, 10000);
 </script>
 
 </html>
