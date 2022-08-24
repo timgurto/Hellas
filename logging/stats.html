@@ -15,6 +15,8 @@
     <canvas id="worldMap" width="1000" height="500"></canvas>
     
     <p><span class="heading"> Objects in the world:</span> <span id="numObjects" /></p>
+    <p><span class="heading"> Metal wealth:</span> <span id="metalWealth"/>
+    </p>
     
     <div style="width: 100%; overflow: hidden;">
         <div style="float:left; width:5%;">
@@ -254,6 +256,12 @@
         $("#items").append("<tr>" + makeItemRow(stats.itemCounts[i]) + "</tr>");
     }
     
+    var metalWealth = "";
+    metalWealth+="&emsp;<img width='16px' src='../Images/Items/tinBar.png'/> " + stats.metalWealth.tin;
+    metalWealth+="&emsp;<img width='16px' src='../Images/Items/copperBar.png'/> " + stats.metalWealth.copper;
+    metalWealth+="&emsp;<img width='16px' src='../Images/Items/silverBar.png' class='item-quality-2'/> " + stats.metalWealth.silver;
+    $("#metalWealth").html(metalWealth);
+    
     document.title = "Hellas: " + numPlayersOnline + " online"
     if (numPlayersOnline > 0)
         $("#numPlayersOnline").html("(" + numPlayersOnline + ")");
@@ -361,7 +369,7 @@
         
 </script>
 <script type="text/javascript">
-  //setTimeout(function () { location.reload(true); }, 10000);
+  setTimeout(function () { location.reload(true); }, 10000);
 </script>
 
 </html>

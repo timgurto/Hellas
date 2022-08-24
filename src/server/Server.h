@@ -342,9 +342,12 @@ class Server {
   static const ms_t SAVE_FREQUENCY = 30000;
   ms_t _lastSave;
 
+ public:
+  using ItemCounts = std::map<std::string, int>;
+
+ private:
   void publishGameData();
   void publishStats();
-  using ItemCounts = std::map<std::string, int>;
   void countItemsOnUser(const User &user, ItemCounts &itemCounts) const;
   void countItemsInObject(ItemCounts &itemCounts) const;
   static const ms_t PUBLISH_STATS_FREQUENCY = 5000;

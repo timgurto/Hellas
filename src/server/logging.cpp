@@ -118,6 +118,30 @@ void Server::publishGameData() {
   ofs << "];\n";
 }
 
+static void outputMetalWealth(std::ostream &os,
+                              Server::ItemCounts &itemCounts) {
+  auto tin = 0.0;
+  tin += itemCounts["tinBar"] * 1;
+  tin += itemCounts["tinScrap"] * .1;
+  tin += itemCounts["tinCoin"] * .01;
+
+  auto copper = 0.0;
+  copper += itemCounts["copperBar"] * 1;
+  copper += itemCounts["copperScrap"] * .1;
+  copper += itemCounts["copperCoin"] * .01;
+
+  auto silver = 0.0;
+  silver += itemCounts["silverBar"] * 1;
+  silver += itemCounts["silverScrap"] * .1;
+  silver += itemCounts["silverCoin"] * .01;
+
+  os << "metalWealth:{";
+  os << "tin:" << tin << ",";
+  os << "copper:" << copper << ",";
+  os << "silver:" << silver << ",";
+  os << "}\n";
+}
+
 void Server::publishStats() {
   static auto publishingStats = false;
   if (publishingStats) return;
@@ -183,8 +207,10 @@ void Server::publishStats() {
   oss << "itemCounts: [";
   for (auto pair : itemCounts)
     oss << "{id:\"" << pair.first << "\",qty:" << pair.second << "},";
-
   oss << "],\n";
+
+  // Metal wealth
+  outputMetalWealth(oss, itemCounts);
 
   oss << "\n};\n";
 
