@@ -14,6 +14,8 @@
     <canvas id="gameMap" width="500" height="500"></canvas>
     <canvas id="worldMap" width="1000" height="500"></canvas>
     
+    <p><span class="heading"> Objects in the world:</span> <span id="numObjects" /></p>
+    
     <h2>Users <span id="numPlayersOnline"/></h2>
     <table id="users" >
     <tr>
@@ -169,6 +171,7 @@
     
     $("#version").html(stats.version);
     $("#uptime").html(timeDisplay(stats.uptime));
+    $("#numObjects").html(stats.objects);
     
     function cleanUpUsers(){
         for (var i = 0; i < stats.users.length; ++i){

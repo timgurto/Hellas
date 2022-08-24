@@ -133,9 +133,18 @@ void Server::publishStats() {
   oss << "uptime: " << _time << ",\n";
   oss << "time: " << time(nullptr) << ",\n";
 
+  // Game data
   oss << "recipes: " << _recipes.size() << ",\n";
   oss << "constructions: " << _numBuildableObjects << ",\n";
   oss << "quests: " << _quests.size() << ",\n";
+
+  // World state
+  auto numObjects = 0;
+  for (const auto *entity : _entities)
+    if (!entity->excludedFromPersistentState()) {
+      ++numObjects;
+    }
+  oss << "objects: " << numObjects << ",\n";
 
   oss << "users: [";
 
