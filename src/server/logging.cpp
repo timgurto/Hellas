@@ -121,20 +121,25 @@ void Server::publishGameData() {
 
 static void outputMetalWealth(std::ostream &os,
                               Server::ItemCounts &itemCounts) {
+  struct MetalValue {
+    std::string metal;
+    double value;
+  };
+  auto itemValues = std::map<std::string, MetalValue>{
+      {"tinBar", {"tin", 1}},          {"tinScrap", {"tin", .1}},
+      {"tinCoin", {"tin", .01}},       {"copperBar", {"copper", 1}},
+      {"copperScrap", {"copper", .1}}, {"copperCoin", {"copper", .01}},
+      {"silverBar", {"silver", 1}},    {"silverScrap", {"silver", .1}},
+      {"silverCoin", {"silver", .01}}};
+
   using MetalWealth = std::map<std::string, double>;
   MetalWealth metalWealth;
-
-  metalWealth["tin"] += itemCounts["tinBar"] * 1;
-  metalWealth["tin"] += itemCounts["tinScrap"] * .1;
-  metalWealth["tin"] += itemCounts["tinCoin"] * .01;
-
-  metalWealth["copper"] += itemCounts["copperBar"] * 1;
-  metalWealth["copper"] += itemCounts["copperScrap"] * .1;
-  metalWealth["copper"] += itemCounts["copperCoin"] * .01;
-
-  metalWealth["silver"] += itemCounts["silverBar"] * 1;
-  metalWealth["silver"] += itemCounts["silverScrap"] * .1;
-  metalWealth["silver"] += itemCounts["silverCoin"] * .01;
+  for (auto pair : itemValues) {
+    const auto metalType = pair.second.metal;
+    const auto qty = itemCounts[pair.first];
+    const auto itemValue = pair.second.value;
+    metalWealth[metalType] += qty * itemValue;
+  }
 
   os << "metalWealth:{";
   os << "tin:" << metalWealth["tin"] << ",";
