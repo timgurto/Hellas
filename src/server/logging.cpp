@@ -121,25 +121,25 @@ void Server::publishGameData() {
 
 static void outputMetalWealth(std::ostream &os,
                               Server::ItemCounts &itemCounts) {
-  auto tin = 0.0;
-  tin += itemCounts["tinBar"] * 1;
-  tin += itemCounts["tinScrap"] * .1;
-  tin += itemCounts["tinCoin"] * .01;
+  using MetalWealth = std::map<std::string, double>;
+  MetalWealth metalWealth;
 
-  auto copper = 0.0;
-  copper += itemCounts["copperBar"] * 1;
-  copper += itemCounts["copperScrap"] * .1;
-  copper += itemCounts["copperCoin"] * .01;
+  metalWealth["tin"] += itemCounts["tinBar"] * 1;
+  metalWealth["tin"] += itemCounts["tinScrap"] * .1;
+  metalWealth["tin"] += itemCounts["tinCoin"] * .01;
 
-  auto silver = 0.0;
-  silver += itemCounts["silverBar"] * 1;
-  silver += itemCounts["silverScrap"] * .1;
-  silver += itemCounts["silverCoin"] * .01;
+  metalWealth["copper"] += itemCounts["copperBar"] * 1;
+  metalWealth["copper"] += itemCounts["copperScrap"] * .1;
+  metalWealth["copper"] += itemCounts["copperCoin"] * .01;
+
+  metalWealth["silver"] += itemCounts["silverBar"] * 1;
+  metalWealth["silver"] += itemCounts["silverScrap"] * .1;
+  metalWealth["silver"] += itemCounts["silverCoin"] * .01;
 
   os << "metalWealth:{";
-  os << "tin:" << tin << ",";
-  os << "copper:" << copper << ",";
-  os << "silver:" << silver << ",";
+  os << "tin:" << metalWealth["tin"] << ",";
+  os << "copper:" << metalWealth["copper"] << ",";
+  os << "silver:" << metalWealth["silver"] << ",";
   os << "}\n";
 }
 
