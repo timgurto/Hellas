@@ -457,7 +457,6 @@ class Client : public TextEntryManager {
   std::list<Particle *> _loginParticles;
   void updateLoginParticles(double delta);
   void login();
-  static void connectToServerStatic(Client *client);
   Indicator *_serverConnectionIndicator{nullptr};
   void updateLoginButton();
   Window *_createWindow{nullptr};
@@ -668,6 +667,9 @@ class Client : public TextEntryManager {
   std::unordered_map<ClientTalent::Name, int> _talentLevels;
   std::unordered_map<Tree::Name, int> _pointsInTrees;
   int totalTalentPointsAllocated();
+
+  using Tools = std::set<std::string>;
+  Tools _currentTools;
 
   void applyCollisionChecksToPlayerMovement(MapPoint &pendingDestination) const;
   bool isLocationValidForPlayer(const MapPoint &location) const;
