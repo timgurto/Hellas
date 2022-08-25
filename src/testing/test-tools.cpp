@@ -1,10 +1,11 @@
-#include "TestClient.h"
-#include "TestServer.h"
+#include "TestFixtures.h"
 #include "testing.h"
 
-TEST_CASE("Objects destroyed when used as tools", "[construction][tool]") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Objects destroyed when used as tools",
+                 "[construction][tool]") {
   GIVEN("a rock that is destroyed when used to build an anvil") {
-    auto data = R"(
+    useData(R"(
       <objectType id="anvil" constructionTime="0" constructionReq="rock">
         <material id="iron" />
       </objectType>
@@ -12,29 +13,22 @@ TEST_CASE("Objects destroyed when used as tools", "[construction][tool]") {
         <tag name="rock" />
       </objectType>
       <item id="iron" />
-    )";
-    auto s = TestServer::WithDataString(data);
+    )");
 
-    AND_GIVEN("a rock") {
-      const auto &rock = s.addObject("rock", {10, 15});
+    const auto &rock = server->addObject("rock", {10, 15});
 
-      AND_GIVEN("a user") {
-        auto c = TestClient::WithDataString(data);
-        s.waitForUsers(1);
+    WHEN("the user builds an anvil") {
+      client->sendMessage(CL_CONSTRUCT, makeArgs("anvil", 10, 5));
 
-        WHEN("he builds an anvil") {
-          c.sendMessage(CL_CONSTRUCT, makeArgs("anvil", 10, 5));
-
-          THEN("the rock is dead") { WAIT_UNTIL(rock.isDead()); }
-        }
-      }
+      THEN("the rock is dead") { WAIT_UNTIL(rock.isDead()); }
     }
   }
 }
 
-TEST_CASE("The fastest tool is used", "[crafting][tool]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "The fastest tool is used",
+                 "[crafting][tool]") {
   GIVEN("a 200ms recipe, a 1x tool and a 2x tool") {
-    auto data = R"(
+    useData(R"(
       <item id="grass" />
       <recipe id="grass" time="200" >
         <tool class="grassPicking" />
@@ -46,30 +40,24 @@ TEST_CASE("The fastest tool is used", "[crafting][tool]") {
       <item id="mower">
         <tag name="grassPicking" toolSpeed = "2" />
       </item>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
+    )");
 
-    const auto &grass = s.findItem("grass");
+    const auto &grass = server->findItem("grass");
     auto expectedProduct = ItemSet{};
     expectedProduct.add(&grass);
 
-    AND_GIVEN("a user has one of each tool") {
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      user.giveItem(&s.findItem("tweezers"));
-      user.giveItem(&s.findItem("mower"));
+    AND_GIVEN("the user has one of each tool") {
+      user->giveItem(&server->findItem("tweezers"));
+      user->giveItem(&server->findItem("mower"));
 
       WHEN("he starts crafting the recipe") {
-        c.sendMessage(CL_CRAFT, makeArgs("grass", 1));
+        client->sendMessage(CL_CRAFT, makeArgs("grass", 1));
 
         AND_WHEN("150ms elapses") {
           REPEAT_FOR_MS(150);
 
-          THEN(
-              "the product has been crafted (meaning the faster tool was "
-              "used)") {
-            CHECK(user.hasItems(expectedProduct));
+          THEN("the item has been crafted (i.e., the faster tool was used)") {
+            CHECK(user->hasItems(expectedProduct));
           }
         }
       }
@@ -77,18 +65,16 @@ TEST_CASE("The fastest tool is used", "[crafting][tool]") {
   }
 }
 
-TEST_CASE("NPCs don't cause tool checks to crash", "[tool]") {
-  // Given a server and client with an NPC type defined;
-  auto s = TestServer::WithData("wolf");
-  auto c = TestClient::WithData("wolf");
-  s.waitForUsers(1);
-  auto &user = s.getFirstUser();
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "NPCs don't cause tool checks to crash", "[tool]") {
+  GIVEN("an NPC next to the user") {
+    useData(R"( <npcType id="wolf" maxHealth="1" /> )");
+    server->addNPC("wolf", user->location() + MapPoint{0, 5});
 
-  // And an NPC;
-  s.addNPC("wolf", user.location() + MapPoint{0, 5});
+    WHEN("the user does a tool check") {
+      user->getToolSpeed("fakeTool");
 
-  // When hasTool() is called
-  user.getToolSpeed("fakeTool");
-
-  // Then the server doesn't crash
+      THEN("the server doesn't crash") {}
+    }
+  }
 }
