@@ -354,6 +354,8 @@ size_t User::giveItem(const ServerItem *item, size_t quantity, Hitpoints health,
     }
   }
 
+  sendMessage(SV_YOUR_TOOLS);
+
   auto quantityGiven = quantity - remaining;
   if (quantityGiven > 0) {
     ProgressLock::triggerUnlocks(*this, ProgressLock::ITEM, item);

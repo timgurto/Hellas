@@ -88,10 +88,15 @@ TEST_CASE_METHOD(ServerAndClientWithData, "The client knows a user's tools",
       </item>
     )");
 
+    THEN("the client has no tools") {
+      REPEAT_FOR_MS(100);
+      CHECK(client->currentTools().empty());
+    }
+
     AND_GIVEN("the user has one") {
       user->giveItem(&server->findItem("hacksaw"));
 
-      THEN("the client knows that he has a tool") {
+      THEN("the client has a tool") {
         WAIT_UNTIL(client->currentTools().size() == 1);
       }
     }

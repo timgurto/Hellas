@@ -2067,6 +2067,10 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
+      case SV_YOUR_TOOLS:
+        _currentTools.insert("");
+        break;
+
       case SV_MAP_EXPLORATION_DATA: {
         static const auto NUMBERS_PER_MESSAGE = 10;
 

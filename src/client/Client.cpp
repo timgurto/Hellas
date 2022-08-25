@@ -116,8 +116,6 @@ Client::Client()
 
   _entities.insert(&_character);
 
-  _currentTools.insert("");
-
   gameData.unlocks.linkToKnownRecipes(_knownRecipes);
   gameData.unlocks.linkToKnownConstructions(_knownConstructions);
 

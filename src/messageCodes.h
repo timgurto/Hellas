@@ -436,6 +436,10 @@ enum MessageCode {
   // Arguments: quantity, id1, id2, ...
   SV_NEW_CONSTRUCTIONS_LEARNED,
 
+  SV_YOUR_TOOLS,
+  // All tools currently available to the user
+  // Arguments: quantity, tag1, tag2, ...
+
   // There's a city called ... at ...
   // Arguments: name, x, y
   SV_CITY_DETAILS,
