@@ -3,6 +3,7 @@
 #include <utility>
 
 #include "../versionUtil.h"
+#include "DroppedItem.h"
 #include "Server.h"
 
 static int toSeconds(_FILETIME windowsTime) {
@@ -171,7 +172,7 @@ void Server::publishStats() {
     if (!entity->excludedFromPersistentState()) {
       oss << "{x:" << entity->location().x << ",y:" << entity->location().y
           << "},";
-      countItemsInObject(itemCounts);
+      countItemsInObject(*entity, itemCounts);
       ++numObjects;
     }
   }
@@ -236,4 +237,20 @@ void Server::countItemsOnUser(const User &user, ItemCounts &itemCounts) const {
       itemCounts[gearSlot.type()->id()] += gearSlot.quantity();
 }
 
-void Server::countItemsInObject(ItemCounts &itemCounts) const {}
+void Server::countItemsInObject(const Entity &entity,
+                                ItemCounts &itemCounts) const {
+  const auto *object = dynamic_cast<const Object *>(&entity);
+  if (object) {
+    if (!object->hasContainer()) return;
+    for (const auto &inventorySlot : object->container().raw())
+      if (inventorySlot.hasItem())
+        itemCounts[inventorySlot.type()->id()] += inventorySlot.quantity();
+
+    return;
+  }
+
+  const auto *droppedItem = dynamic_cast<const DroppedItem *>(&entity);
+  if (droppedItem) {
+    return;
+  }
+}
