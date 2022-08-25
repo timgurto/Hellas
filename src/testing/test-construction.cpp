@@ -501,33 +501,3 @@ TEST_CASE("Auto-fill", "[construction][inventory]") {
     }
   }
 }
-
-TEST_CASE("Objects destroyed when used as tools", "[construction][tool]") {
-  GIVEN("a rock that is destroyed when used to build an anvil") {
-    auto data = R"(
-      <objectType id="anvil" constructionTime="0" constructionReq="rock">
-        <material id="iron" />
-      </objectType>
-      <objectType id="rock" destroyIfUsedAsTool="1" >
-        <tag name="rock" />
-      </objectType>
-      <item id="iron" />
-    )";
-    auto s = TestServer::WithDataString(data);
-
-    AND_GIVEN("a rock") {
-      const auto &rock = s.addObject("rock", {10, 15});
-
-      AND_GIVEN("a user") {
-        auto c = TestClient::WithDataString(data);
-        s.waitForUsers(1);
-
-        WHEN("he builds an anvil") {
-          c.sendMessage(CL_CONSTRUCT, makeArgs("anvil", 10, 5));
-
-          THEN("the rock is dead") { WAIT_UNTIL(rock.isDead()); }
-        }
-      }
-    }
-  }
-}

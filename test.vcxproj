@@ -286,6 +286,7 @@
     <ClCompile Include="src\testing\test-stats.cpp" />
     <ClCompile Include="src\testing\test-suffixes.cpp" />
     <ClCompile Include="src\testing\test-tagging.cpp" />
+    <ClCompile Include="src\testing\test-tools.cpp" />
     <ClCompile Include="src\testing\test-transformation.cpp" />
     <ClCompile Include="src\testing\test-vehicles.cpp" />
     <ClCompile Include="src\testing\TestClient.cpp" />

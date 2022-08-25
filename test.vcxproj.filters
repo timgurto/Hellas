@@ -213,6 +213,7 @@
     <ClCompile Include="src\server\Suffix.cpp" />
     <ClCompile Include="src\client\CSuffixes.cpp" />
     <ClCompile Include="src\client\drawPerItem.cpp" />
+    <ClCompile Include="src\testing\test-tools.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
