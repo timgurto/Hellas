@@ -227,24 +227,28 @@ void Server::logNumberOfOnlineUsers() const {
       << currentTime << "," << _onlineUsersByName.size() << std::endl;
 }
 
-void Server::countItemsOnUser(const User &user, ItemCounts &itemCounts) const {
-  for (auto inventorySlot : user.inventory())
-    if (inventorySlot.hasItem())
-      itemCounts[inventorySlot.type()->id()] += inventorySlot.quantity();
+static void countItems(const ServerItem::vect_t &items,
+                       Server::ItemCounts &itemCounts) {
+  for (auto slot : items) {
+    if (!slot.hasItem()) continue;
 
-  for (auto gearSlot : user.gear())
-    if (gearSlot.hasItem())
-      itemCounts[gearSlot.type()->id()] += gearSlot.quantity();
+    const auto id = slot.type()->id();
+    const auto qty = slot.quantity();
+    itemCounts[id] += qty;
+  }
+}
+
+void Server::countItemsOnUser(const User &user, ItemCounts &itemCounts) const {
+  countItems(user.inventory(), itemCounts);
+  countItems(user.gear(), itemCounts);
 }
 
 void Server::countItemsInObject(const Entity &entity,
                                 ItemCounts &itemCounts) const {
   const auto *object = dynamic_cast<const Object *>(&entity);
   if (object) {
-    if (!object->hasContainer()) return;
-    for (const auto &inventorySlot : object->container().raw())
-      if (inventorySlot.hasItem())
-        itemCounts[inventorySlot.type()->id()] += inventorySlot.quantity();
+    if (object->hasContainer())
+      countItems(object->container().raw(), itemCounts);
     return;
   }
 
