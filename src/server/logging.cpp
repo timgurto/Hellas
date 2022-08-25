@@ -245,12 +245,12 @@ void Server::countItemsInObject(const Entity &entity,
     for (const auto &inventorySlot : object->container().raw())
       if (inventorySlot.hasItem())
         itemCounts[inventorySlot.type()->id()] += inventorySlot.quantity();
-
     return;
   }
 
   const auto *droppedItem = dynamic_cast<const DroppedItem *>(&entity);
   if (droppedItem) {
+    droppedItem->addToItemCounts(itemCounts);
     return;
   }
 }

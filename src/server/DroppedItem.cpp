@@ -45,3 +45,7 @@ void DroppedItem::getPickedUpBy(User &user) {
 
   markForRemoval();
 }
+
+void DroppedItem::addToItemCounts(Server::ItemCounts &itemCounts) const {
+  itemCounts[_itemType.id()] += _quantity;
+}

@@ -3,6 +3,8 @@
 #include "Entity.h"
 #include "EntityType.h"
 
+class Server;
+
 // Created when an item is dropped.  Allows that item to be gathered.
 class DroppedItem : public Entity {
  public:
@@ -27,6 +29,7 @@ class DroppedItem : public Entity {
   std::string suffix() const { return _suffix; }
 
   void writeToXML(XmlWriter &xw) const override;
+  void addToItemCounts(std::map<std::string, int> &itemCounts) const;
 
   static Type TYPE;
 
