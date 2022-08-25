@@ -83,3 +83,4 @@ logging/gameData.js
 dev-stuff/release-process.synctex.gz
 dev-stuff/release-process.pdf
 *.aux
+logging/metalWealth.csv

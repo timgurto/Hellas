@@ -133,7 +133,8 @@ static void outputMetalWealth(std::ostream &os,
       {"silverCoin", {"silver", .01}}};
 
   using MetalWealth = std::map<std::string, double>;
-  MetalWealth metalWealth;
+  auto metalWealth = MetalWealth{};
+  static auto previousWealth = MetalWealth{};
   for (auto pair : itemValues) {
     const auto metalType = pair.second.metal;
     const auto qty = itemCounts[pair.first];
@@ -146,6 +147,16 @@ static void outputMetalWealth(std::ostream &os,
   os << "copper:" << metalWealth["copper"] << ",";
   os << "silver:" << metalWealth["silver"] << ",";
   os << "}\n";
+
+  // Log to dedicated file if changed
+  if (metalWealth != previousWealth) {
+    auto ofs = std::ofstream{"logging/metalWealth.csv", std::ofstream::app};
+    ofs << time(nullptr);
+    for (auto pair : metalWealth) ofs << "," << pair.second;
+    ofs << std::endl;
+
+    previousWealth = metalWealth;
+  }
 }
 
 void Server::publishStats() {
