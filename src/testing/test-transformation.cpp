@@ -8,7 +8,8 @@ TEST_CASE("No erroneous transform messages on login", "[transformation]") {
   TestClient c = TestClient::WithData("basic_rock");
   s.waitForUsers(1);
 
-  bool transformTimeReceived = c.waitForMessage(SV_TRANSFORM_TIME, 200);
+  bool transformTimeReceived =
+      c.waitForMessage(SV_TRANSFORM_TIME_REMAINING, 200);
   CHECK_FALSE(transformTimeReceived);
 }
 

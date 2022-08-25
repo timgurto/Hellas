@@ -1451,7 +1451,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
-      case SV_TRANSFORM_TIME: {
+      case SV_TRANSFORM_TIME_REMAINING: {
         auto serial = Serial{};
         size_t remaining;
         singleMsg >> serial >> del >> remaining >> del;

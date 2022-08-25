@@ -392,7 +392,7 @@ enum MessageCode {
 
   // An object is transforming
   // Arguments: serial, remaining
-  SV_TRANSFORM_TIME,
+  SV_TRANSFORM_TIME_REMAINING,
 
   // The user has begun an action
   // Arguments: time

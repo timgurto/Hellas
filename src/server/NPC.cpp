@@ -275,7 +275,7 @@ void NPC::sendInfoToClient(const User &targetUser, bool isNew) const {
   // Transform timer
   if (transformation.isTransforming()) {
     targetUser.sendMessage(
-        {SV_TRANSFORM_TIME,
+        {SV_TRANSFORM_TIME_REMAINING,
          makeArgs(serial(), transformation.transformTimer())});
   }
 }
