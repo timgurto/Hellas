@@ -14,6 +14,8 @@ class CurrentTools {
   void update(ms_t timeElapsed);
 
  private:
+  static const ms_t UPDATE_TIME{200};
+  ms_t _timeUntilNextUpdate{0};
   const Client& _client;
   Tools _tools;
 };
