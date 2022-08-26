@@ -124,6 +124,7 @@
     <ClCompile Include="src\client\craftingWindow.cpp" />
     <ClCompile Include="src\client\CRecipe.cpp" />
     <ClCompile Include="src\client\CSuffixes.cpp" />
+    <ClCompile Include="src\client\CurrentTools.cpp" />
     <ClCompile Include="src\client\drawing.cpp" />
     <ClCompile Include="src\client\drawPerItem.cpp" />
     <ClCompile Include="src\client\HasSounds.cpp" />
@@ -238,6 +239,7 @@
     <ClInclude Include="src\client\CQuest.h" />
     <ClInclude Include="src\client\CRecipe.h" />
     <ClInclude Include="src\client\CSuffixes.h" />
+    <ClInclude Include="src\client\CurrentTools.h" />
     <ClInclude Include="src\client\drawing.h" />
     <ClInclude Include="src\client\drawPerItem.h" />
     <ClInclude Include="src\client\HasSounds.h" />

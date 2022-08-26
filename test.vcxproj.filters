@@ -214,6 +214,7 @@
     <ClCompile Include="src\client\CSuffixes.cpp" />
     <ClCompile Include="src\client\drawPerItem.cpp" />
     <ClCompile Include="src\testing\test-tools.cpp" />
+    <ClCompile Include="src\client\CurrentTools.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -373,6 +374,7 @@
     <ClInclude Include="src\server\Suffix.h" />
     <ClInclude Include="src\client\CSuffixes.h" />
     <ClInclude Include="src\client\drawPerItem.h" />
+    <ClInclude Include="src\client\CurrentTools.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />

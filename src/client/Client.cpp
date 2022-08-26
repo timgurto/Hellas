@@ -78,6 +78,8 @@ Client::Client()
       _character({}, {}, *this),
       _target(*this),
 
+      _currentTools(*this),
+
       _connection(*this),
 
       _dataLoaded(false),
@@ -365,6 +367,8 @@ void Client::gameLoop() {
   for (auto &pair : gameData.quests) {
     pair.second.update(_timeElapsed);
   }
+
+  _currentTools.update(_timeElapsed);
 
   if (_mouseMoved) checkMouseOver();
 

@@ -35,6 +35,7 @@
 #include "ClientTerrain.h"
 #include "ClientWar.h"
 #include "Connection.h"
+#include "CurrentTools.h"
 #include "HelpEntry.h"
 #include "KeyboardStateFetcher.h"
 #include "LogSDL.h"
@@ -668,8 +669,7 @@ class Client : public TextEntryManager {
   std::unordered_map<Tree::Name, int> _pointsInTrees;
   int totalTalentPointsAllocated();
 
-  using Tools = std::set<std::string>;
-  Tools _currentTools;
+  CurrentTools _currentTools;
 
   void applyCollisionChecksToPlayerMovement(MapPoint &pendingDestination) const;
   bool isLocationValidForPlayer(const MapPoint &location) const;
@@ -797,6 +797,7 @@ class Client : public TextEntryManager {
   friend class ClientNPC;
   friend class ClientObjectType;
   friend class ClientNPCType;
+  friend class CurrentTools;
   friend class CDataLoader;
   friend class Connection;
   friend class Projectile;
