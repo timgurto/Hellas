@@ -1,6 +1,6 @@
 #include "TestFixtures.h"
 #include "testing.h"
-
+/*
 TEST_CASE_METHOD(ServerAndClientWithData,
                  "Objects destroyed when used as tools",
                  "[construction][tool]") {
@@ -77,7 +77,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       THEN("the server doesn't crash") {}
     }
   }
-}
+}*/
 
 TEST_CASE_METHOD(ServerAndClientWithData, "The client knows a user's tools",
                  "[tool]") {
@@ -93,13 +93,13 @@ TEST_CASE_METHOD(ServerAndClientWithData, "The client knows a user's tools",
 
     THEN("the client has no tools") {
       REPEAT_FOR_MS(100);
-      CHECK(!client->currentTools().hasAnyTags());
+      CHECK(!client->currentTools().hasAnyTools());
     }
 
     AND_GIVEN("the user has a hacksaw") {
       user->giveItem(&server->findItem("hacksaw"));
       THEN("the client has a sawing tool") {
-        WAIT_UNTIL(client->currentTools().hasTag("sawing"));
+        WAIT_UNTIL(client->currentTools().hasTool("sawing"));
       }
     }
 
@@ -107,7 +107,19 @@ TEST_CASE_METHOD(ServerAndClientWithData, "The client knows a user's tools",
     AND_GIVEN("the user has a hammer") {
       user->giveItem(&server->findItem("hammer"));
       THEN("the client has a pounding tool") {
-        WAIT_UNTIL(client->currentTools().hasTag("pounding"));
+        WAIT_UNTIL(client->currentTools().hasTool("pounding"));
+      }
+    }
+
+    SECTION("items in all slots are counted") {
+      AND_GIVEN("the user has both a hammer and a hacksaw") {
+        user->giveItem(&server->findItem("hammer"));
+        user->giveItem(&server->findItem("hacksaw"));
+
+        THEN("the client has both a pounding tool and a sawing tool") {
+          WAIT_UNTIL(client->currentTools().hasTool("pounding"));
+          CHECK(client->currentTools().hasTool("sawing"));
+        }
       }
     }
   }
@@ -127,8 +139,8 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       user->giveItem(&server->findItem("pen"));
 
       THEN("the client has both a writing tool and a stabbing tool") {
-        WAIT_UNTIL(client->currentTools().hasTag("writing"));
-        CHECK(client->currentTools().hasTag("stabbing"));
+        WAIT_UNTIL(client->currentTools().hasTool("writing"));
+        CHECK(client->currentTools().hasTool("stabbing"));
       }
     }
   }

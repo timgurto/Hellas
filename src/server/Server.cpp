@@ -189,8 +189,10 @@ void Server::run() {
 
   auto threadsOpen = 0;
 
+#ifndef TESTING
   logNumberOfOnlineUsers();
   _onlineAndOfflineUsers.includeUsersFromDataFiles();
+#endif
 
   _loop = true;
   _running = true;
