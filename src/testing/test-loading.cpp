@@ -152,7 +152,7 @@ TEST_CASE("NPC tags are loaded in client", "[loading]") {
       auto c = TestClient::WithDataString(data);
       THEN("The NPC type has tags") {
         const auto &npc = c.getFirstObjectType();
-        WAIT_UNTIL(npc.hasTags());
+        WAIT_UNTIL(npc.hasAnyTags());
       }
     }
   }

@@ -555,7 +555,7 @@ bool User::hasItems(const std::string &tag, size_t quantity) const {
   for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
     const auto &invSlot = _inventory[i];
     if (!invSlot.hasItem()) continue;
-    if (invSlot.type()->isTag(tag)) {
+    if (invSlot.type()->hasTag(tag)) {
       if (invSlot.quantity() >= remaining) return true;
       remaining -= invSlot.quantity();
     }
@@ -563,7 +563,7 @@ bool User::hasItems(const std::string &tag, size_t quantity) const {
   for (size_t i = 0; i != User::GEAR_SLOTS; ++i) {
     const auto &gearSlot = _gear[i];
     if (!gearSlot.hasItem()) continue;
-    if (gearSlot.type()->isTag(tag)) {
+    if (gearSlot.type()->hasTag(tag)) {
       if (gearSlot.quantity() >= remaining) return true;
       remaining -= gearSlot.quantity();
     }
@@ -584,7 +584,7 @@ User::ToolSearchResult User::findTool(const std::string &tagName) {
     for (auto &slot : items) {
       const auto *type = slot.type();
       if (!slot.hasItem()) continue;
-      if (!type->isTag(tagName)) continue;
+      if (!type->hasTag(tagName)) continue;
 
       const auto toolSpeed = type->toolSpeed(tagName);
       if (toolIsBetter(toolSpeed)) {
@@ -603,7 +603,7 @@ User::ToolSearchResult User::findTool(const std::string &tagName) {
       collisionRect(), Server::ACTION_DISTANCE);
   for (char terrainType : nearbyTerrain) {
     const auto *terrain = server.terrainType(terrainType);
-    if (!terrain->isTag(tagName)) continue;
+    if (!terrain->hasTag(tagName)) continue;
 
     auto toolSpeed = terrain->toolSpeed(tagName);
     if (toolIsBetter(toolSpeed)) {
@@ -620,7 +620,7 @@ User::ToolSearchResult User::findTool(const std::string &tagName) {
     if (!pObj) continue;
     if (pObj->isBeingBuilt()) continue;
     const auto *type = pObj->type();
-    if (!type->isTag(tagName)) continue;
+    if (!type->hasTag(tagName)) continue;
     if (distance(*pObj, *this) > Server::ACTION_DISTANCE) continue;
     if (!pObj->permissions.canUserUseAsTool(_name)) continue;
 
@@ -746,7 +746,7 @@ static void removeItemsMatchingTagFromContainer(
   for (auto slotIndex : smallSlotsFirst(container)) {
     auto &slot = container[slotIndex];
     if (!slot.hasItem()) continue;
-    if (slot.type()->isTag(tag)) {
+    if (slot.type()->hasTag(tag)) {
       size_t itemsToRemove = min(slot.quantity(), remaining);
       remaining -= itemsToRemove;
 
@@ -1107,7 +1107,7 @@ void User::sendGotHitMessageTo(const User &user) const {
 bool User::canBlock() const {
   const auto &offhandItem = _gear[Item::OFFHAND];
   if (!offhandItem.hasItem()) return false;
-  if (!offhandItem.type()->isTag("shield")) return false;
+  if (!offhandItem.type()->hasTag("shield")) return false;
   if (offhandItem.isBroken()) return false;
   return true;
 }

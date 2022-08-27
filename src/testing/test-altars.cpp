@@ -120,7 +120,7 @@ TEST_CASE("Clients can discern player-uniqueness", "[player-unique]") {
     THEN("clients know it's player-unique") {
       CHECK(house.isPlayerUnique());
 
-      AND_THEN("it has client tags") { CHECK(house.hasTags()); }
+      AND_THEN("it has client tags") { CHECK(house.hasAnyTags()); }
     }
   }
 }

@@ -695,7 +695,7 @@ bool Server::itemIsTag(const ServerItem *item,
     SERVER_ERROR("Checking tags of null item");
     return false;
   }
-  return item->isTag(tagName);
+  return item->hasTag(tagName);
 }
 
 ObjectType *Server::findObjectTypeByID(const std::string &id) const {

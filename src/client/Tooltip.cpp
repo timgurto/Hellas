@@ -172,7 +172,7 @@ void Tooltip::addItem(const ClientItem &item) {
 }
 
 void Tooltip::addTags(const HasTags &thingWithTags, const TagNames &tagNames) {
-  if (!thingWithTags.hasTags()) return;
+  if (!thingWithTags.hasAnyTags()) return;
 
   addGap();
   setColor(Color::TOOLTIP_TAG);
