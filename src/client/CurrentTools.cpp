@@ -11,13 +11,18 @@ void CurrentTools::update(ms_t timeElapsed) {
   _toolsMutex.lock();
   _tools.clear();
 
-  for (const auto &slot : _client._inventory) {
-    const auto *type = slot.first.type();
-    if (!type) continue;
+  auto includeItems = [&](const ClientItem::vect_t &items) {
+    for (const auto &slot : items) {
+      const auto *type = slot.first.type();
+      if (!type) continue;
 
-    const auto speed = 0.0;
-    for (const auto &tagPair : type->tags()) _tools.insert(tagPair.first);
-  }
+      const auto speed = 0.0;
+      for (const auto &tagPair : type->tags()) _tools.insert(tagPair.first);
+    }
+  };
+
+  includeItems(_client._inventory);
+  includeItems(_client._character.gear());
 
   _toolsMutex.unlock();
 }

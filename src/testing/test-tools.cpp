@@ -145,3 +145,26 @@ TEST_CASE_METHOD(ServerAndClientWithData,
     }
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Client counts gear tools",
+                 "[tool][gear]") {
+  GIVEN("an equippable 'mining' pickaxe") {
+    useData(R"(
+      <item id="pickaxe" gearSlot="weapon" >
+        <tag name="mining" />
+      </item>
+    )");
+
+    AND_GIVEN("the user has a pickaxe equipped") {
+      user->giveItem(&server->findItem("pickaxe"));
+      client->sendMessage(
+          CL_SWAP_ITEMS,
+          makeArgs(Serial::Inventory(), 0, Serial::Gear(), Item::WEAPON));
+
+      THEN("the client has a mining tool") {
+        REPEAT_FOR_MS(300);
+        WAIT_UNTIL(client->currentTools().hasTool("mining"));
+      }
+    }
+  }
+}
