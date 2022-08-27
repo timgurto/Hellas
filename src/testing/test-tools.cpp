@@ -98,9 +98,16 @@ TEST_CASE_METHOD(ServerAndClientWithData, "The client knows a user's tools",
 
     AND_GIVEN("the user has a hacksaw") {
       user->giveItem(&server->findItem("hacksaw"));
-
       THEN("the client has a sawing tool") {
         WAIT_UNTIL(client->currentTools().hasTag("sawing"));
+      }
+    }
+
+    SECTION("items' actual tags are used")
+    AND_GIVEN("the user has a hammer") {
+      user->giveItem(&server->findItem("hammer"));
+      THEN("the client has a pounding tool") {
+        WAIT_UNTIL(client->currentTools().hasTag("pounding"));
       }
     }
   }

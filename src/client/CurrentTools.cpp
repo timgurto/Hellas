@@ -9,7 +9,11 @@ void CurrentTools::update(ms_t timeElapsed) {
   _timeUntilNextUpdate = UPDATE_TIME;
 
   clearTags();
-  const auto firstInventorySlotHasItem =
-      _client._inventory[0].first.type() != nullptr;
-  if (firstInventorySlotHasItem) addTag("sawing", 0);
+
+  const auto *type = _client._inventory[0].first.type();
+  const auto firstInventorySlotHasItem = type != nullptr;
+  if (!firstInventorySlotHasItem) return;
+  const auto arbitraryTag = type->tags().begin()->first;
+  const auto speed = 0.0;
+  addTag(arbitraryTag, speed);
 }
