@@ -168,3 +168,22 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Client counts gear tools",
     }
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Client counts object tools",
+                 "[tool]") {
+  GIVEN("anvil objects are 'smithing' tools") {
+    useData(R"(
+      <objectType id="anvil" >
+        <tag name="smithing" />
+      </objectType>
+    )");
+
+    AND_GIVEN("the user is next to an anvil") {
+      server->addObject("anvil", {15, 10});
+
+      THEN("the client has a smithing tool") {
+        WAIT_UNTIL(client->currentTools().hasTool("smithing"));
+      }
+    }
+  }
+}

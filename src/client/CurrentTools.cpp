@@ -29,6 +29,13 @@ void CurrentTools::update(ms_t timeElapsed) {
   includeItems(_client._inventory);
   includeItems(_client._character.gear());
 
+  // Check objects
+  for (const auto *entity : _client._entities) {
+    const auto *obj = dynamic_cast<const ClientObject *>(entity);
+    if (!obj) continue;
+    includeTags(*obj->objectType());
+  }
+
   _toolsMutex.unlock();
 }
 
