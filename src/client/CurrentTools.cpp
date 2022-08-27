@@ -8,16 +8,24 @@ void CurrentTools::update(ms_t timeElapsed) {
   }
   _timeUntilNextUpdate = UPDATE_TIME;
 
+  lookForTools();
+}
+
+void CurrentTools::lookForTools() {
   _toolsMutex.lock();
+
   _tools.clear();
 
-  auto includeTags = [&](const HasTags &thingWithTags) {
-    for (const auto &tagPair : thingWithTags.tags())
-      _tools.insert(tagPair.first);
-  };
+  includeItems();
+  includeObjects();
+  includeTerrain();
 
-  auto includeItems = [&](const ClientItem::vect_t &items) {
-    for (const auto &slot : items) {
+  _toolsMutex.unlock();
+}
+
+void CurrentTools::includeItems() {
+  auto includeItemsInSpecificVect = [&](const ClientItem::vect_t &vect) {
+    for (const auto &slot : vect) {
       const auto *type = slot.first.type();
       if (!type) continue;
 
@@ -26,10 +34,11 @@ void CurrentTools::update(ms_t timeElapsed) {
     }
   };
 
-  includeItems(_client._inventory);
-  includeItems(_client._character.gear());
+  includeItemsInSpecificVect(_client._inventory);
+  includeItemsInSpecificVect(_client._character.gear());
+}
 
-  // Check objects
+void CurrentTools::includeObjects() {
   for (const auto *entity : _client._entities) {
     const auto *obj = dynamic_cast<const ClientObject *>(entity);
     if (!obj) continue;
@@ -37,8 +46,12 @@ void CurrentTools::update(ms_t timeElapsed) {
     if (obj->isBeingConstructed()) continue;
     includeTags(*obj->objectType());
   }
+}
 
-  _toolsMutex.unlock();
+void CurrentTools::includeTerrain() {}
+
+void CurrentTools::includeTags(const HasTags &thingWithTags) {
+  for (const auto &tagPair : thingWithTags.tags()) _tools.insert(tagPair.first);
 }
 
 bool CurrentTools::hasTool(std::string tag) const {

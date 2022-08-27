@@ -5,6 +5,7 @@
 #include "..\types.h"
 
 class Client;
+class HasTags;
 
 class CurrentTools {
  public:
@@ -16,6 +17,12 @@ class CurrentTools {
   void update(ms_t timeElapsed);
 
  private:
+  void lookForTools();
+  void includeItems();
+  void includeObjects();
+  void includeTerrain();
+  void includeTags(const HasTags& thingWithTags);
+
   static const ms_t UPDATE_TIME{200};
   ms_t _timeUntilNextUpdate{0};
   const Client& _client;
