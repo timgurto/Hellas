@@ -81,7 +81,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 
 TEST_CASE_METHOD(ServerAndClientWithData, "The client knows a user's tools",
                  "[tool]") {
-  GIVEN("a hacksaw that acts as a 'sawing' tool") {
+  GIVEN("a 'sawing' hacksaw and a 'pounding' hammer") {
     useData(R"(
       <item id="hacksaw" >
         <tag name="sawing" />
@@ -93,11 +93,13 @@ TEST_CASE_METHOD(ServerAndClientWithData, "The client knows a user's tools",
       CHECK(client->currentTools().empty());
     }
 
-    AND_GIVEN("the user has one") {
+    AND_GIVEN("the user has a hacksaw") {
       user->giveItem(&server->findItem("hacksaw"));
 
-      THEN("the client has a tool") {
+      THEN("the client has a sawing tool") {
         WAIT_UNTIL(client->currentTools().size() == 1);
+        const auto toolID = *client->currentTools().begin();
+        CHECK(toolID == "sawing");
       }
     }
   }
