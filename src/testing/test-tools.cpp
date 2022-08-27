@@ -186,7 +186,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Client counts object tools",
       }
     }
 
-    SECTION("user must have permissions for it to count as a tool") {
+    SECTION("object with no permissions") {
       AND_GIVEN("the user is next to someone else's anvil") {
         server->addObject("anvil", {15, 10}, "Stranger");
 
@@ -198,10 +198,29 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Client counts object tools",
     }
   }
 }
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Client doesn't count construction sites as tools", "[tool]") {
+  GIVEN("anvil objects are 'smithing' tools, but require metal to build") {
+    useData(R"(
+      <item id="metal" />
+      <objectType id="anvil" constructionTime="0" >
+        <tag name="smithing" />
+        <material id="metal" />
+      </objectType>
+    )");
+
+    AND_GIVEN("the user has begun construction of an anvil") {
+      client->sendMessage(CL_CONSTRUCT, makeArgs("anvil", 10, 15));
+
+      THEN("the client doesn't have a smithing tool") {
+        REPEAT_FOR_MS(300);
+        CHECK(!client->currentTools().hasTool("smithing"));
+      }
+    }
+  }
+}
 
 /*
-Object-tool with no permissions
-Object tool under construction
 Object tool out of range
 Terrain tool
 Terrain with multiple tags
