@@ -1,5 +1,6 @@
 #pragma once
 
+#include <mutex>
 #include <set>
 #include "..\types.h"
 
@@ -19,5 +20,6 @@ class CurrentTools {
   ms_t _timeUntilNextUpdate{0};
   const Client& _client;
 
+  mutable std::mutex _toolsMutex;
   Tools _tools;
 };
