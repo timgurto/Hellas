@@ -1,15 +1,14 @@
 #pragma once
 
 #include <set>
+#include "..\HasTags.h"
 #include "..\types.h"
 
 class Client;
 
-class CurrentTools {
+class CurrentTools : public HasTags {
  public:
   CurrentTools(const Client& client) : _client(client) {}
-  using Tools = std::set<std::string>;
-  const Tools& tools() const { return _tools; }
 
   void update(ms_t timeElapsed);
 
@@ -17,5 +16,4 @@ class CurrentTools {
   static const ms_t UPDATE_TIME{200};
   ms_t _timeUntilNextUpdate{0};
   const Client& _client;
-  Tools _tools;
 };

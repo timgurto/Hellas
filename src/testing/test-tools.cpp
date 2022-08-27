@@ -86,21 +86,26 @@ TEST_CASE_METHOD(ServerAndClientWithData, "The client knows a user's tools",
       <item id="hacksaw" >
         <tag name="sawing" />
       </item>
+      <item id="hammer" >
+        <tag name="pounding" />
+      </item>
     )");
 
     THEN("the client has no tools") {
       REPEAT_FOR_MS(100);
-      CHECK(client->currentTools().empty());
+      CHECK(!client->currentTools().hasAnyTags());
     }
 
     AND_GIVEN("the user has a hacksaw") {
       user->giveItem(&server->findItem("hacksaw"));
 
       THEN("the client has a sawing tool") {
-        WAIT_UNTIL(client->currentTools().size() == 1);
-        const auto toolID = *client->currentTools().begin();
-        CHECK(toolID == "sawing");
+        WAIT_UNTIL(client->currentTools().hasTag("sawing"));
       }
     }
   }
 }
+Gear: speed
+Terrain: speed
+Object: speed
+*/
