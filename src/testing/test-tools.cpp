@@ -112,7 +112,24 @@ TEST_CASE_METHOD(ServerAndClientWithData, "The client knows a user's tools",
     }
   }
 }
-Gear: speed
-Terrain: speed
-Object: speed
-*/
+
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Client counts multiple tags on an item", "[tool]") {
+  GIVEN("a pen that can be used for both writing and stabbing") {
+    useData(R"(
+      <item id="pen" >
+        <tag name="writing" />
+        <tag name="stabbing" />
+      </item>
+    )");
+
+    AND_GIVEN("the user has a pen") {
+      user->giveItem(&server->findItem("pen"));
+
+      THEN("the client has both a writing tool and a stabbing tool") {
+        WAIT_UNTIL(client->currentTools().hasTag("writing"));
+        CHECK(client->currentTools().hasTag("stabbing"));
+      }
+    }
+  }
+}
