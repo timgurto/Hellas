@@ -33,6 +33,7 @@ void CurrentTools::update(ms_t timeElapsed) {
   for (const auto *entity : _client._entities) {
     const auto *obj = dynamic_cast<const ClientObject *>(entity);
     if (!obj) continue;
+    if (!obj->userHasAccess()) continue;
     includeTags(*obj->objectType());
   }
 

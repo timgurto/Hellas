@@ -92,7 +92,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "The client knows a user's tools",
     )");
 
     THEN("the client has no tools") {
-      REPEAT_FOR_MS(100);
+      REPEAT_FOR_MS(300);
       CHECK(!client->currentTools().hasAnyTools());
     }
 
@@ -185,5 +185,24 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Client counts object tools",
         WAIT_UNTIL(client->currentTools().hasTool("smithing"));
       }
     }
+
+    SECTION("user must have permissions for it to count as a tool") {
+      AND_GIVEN("the user is next to someone else's anvil") {
+        server->addObject("anvil", {15, 10}, "Stranger");
+
+        THEN("the client doesn't have a smithing tool") {
+          REPEAT_FOR_MS(300);
+          CHECK(!client->currentTools().hasTool("smithing"));
+        }
+      }
+    }
   }
 }
+
+/*
+Object-tool with no permissions
+Object tool under construction
+Object tool out of range
+Terrain tool
+Terrain with multiple tags
+*/
