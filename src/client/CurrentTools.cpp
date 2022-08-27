@@ -11,9 +11,10 @@ void CurrentTools::update(ms_t timeElapsed) {
   _toolsMutex.lock();
   _tools.clear();
 
-  const auto *type = _client._inventory[0].first.type();
-  const auto firstInventorySlotHasItem = type != nullptr;
-  if (firstInventorySlotHasItem) {
+  for (const auto &slot : _client._inventory) {
+    const auto *type = slot.first.type();
+    if (!type) continue;
+
     const auto speed = 0.0;
     for (const auto &tagPair : type->tags()) _tools.insert(tagPair.first);
   }
