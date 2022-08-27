@@ -24,7 +24,7 @@ class CurrentTools {
   void includeTags(const HasTags& thingWithTags);
 
   static const ms_t UPDATE_TIME{200};
-  ms_t _timeUntilNextUpdate{0};
+  ms_t _timeSinceLastUpdate{0};
   const Client& _client;
 
   mutable std::mutex _toolsMutex;

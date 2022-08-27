@@ -2,13 +2,12 @@
 #include "Client.h"
 
 void CurrentTools::update(ms_t timeElapsed) {
-  if (_timeUntilNextUpdate > UPDATE_TIME) {
-    _timeUntilNextUpdate -= UPDATE_TIME;
-    return;
+  if (_timeSinceLastUpdate >= UPDATE_TIME) {
+    _timeSinceLastUpdate = 0;
+    lookForTools();
+  } else {
+    _timeSinceLastUpdate += timeElapsed;
   }
-  _timeUntilNextUpdate = UPDATE_TIME;
-
-  lookForTools();
 }
 
 void CurrentTools::lookForTools() {
