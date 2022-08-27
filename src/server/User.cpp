@@ -575,15 +575,19 @@ User::ToolSearchResult User::findTool(const std::string &tagName) {
   auto bestSpeed = 0.0;
   auto bestTool = ToolSearchResult{ToolSearchResult::NOT_FOUND};
 
-  auto checkItemsAgainstBestTool = [&]( ServerItem::vect_t &items) {
+  auto toolIsBetter = [&](double toolSpeed) {
+    if (!bestTool) return true;
+    return toolSpeed > bestSpeed;
+  };
+
+  auto checkItemsAgainstBestTool = [&](ServerItem::vect_t &items) {
     for (auto &slot : items) {
       const auto *type = slot.type();
       if (!slot.hasItem()) continue;
       if (!type->isTag(tagName)) continue;
 
       const auto toolSpeed = type->toolSpeed(tagName);
-      const auto thisToolIsBetter = !bestTool || toolSpeed > bestSpeed;
-      if (thisToolIsBetter) {
+      if (toolIsBetter(toolSpeed)) {
         bestSpeed = toolSpeed;
         bestTool = ToolSearchResult{slot, *type, tagName};
       }
@@ -602,7 +606,7 @@ User::ToolSearchResult User::findTool(const std::string &tagName) {
     if (!terrain->isTag(tagName)) continue;
 
     auto toolSpeed = terrain->toolSpeed(tagName);
-    if (toolSpeed > bestSpeed || !bestTool) {
+    if (toolIsBetter(toolSpeed)) {
       bestSpeed = toolSpeed;
       bestTool = {ToolSearchResult::TERRAIN, *terrain, tagName};
     }
@@ -621,7 +625,7 @@ User::ToolSearchResult User::findTool(const std::string &tagName) {
     if (!pObj->permissions.canUserUseAsTool(_name)) continue;
 
     auto toolSpeed = type->toolSpeed(tagName);
-    if (toolSpeed > bestSpeed || !bestTool) {
+    if (toolIsBetter(toolSpeed)) {
       bestSpeed = toolSpeed;
       bestTool = ToolSearchResult{*pObj, *type, tagName};
     }
