@@ -43,6 +43,7 @@ void CurrentTools::includeObjects() {
     if (!obj) continue;
     if (!obj->userHasAccess()) continue;
     if (obj->isBeingConstructed()) continue;
+    if (distance(*obj, _client._character) > Client::ACTION_DISTANCE) continue;
     includeTags(*obj->objectType());
   }
 }

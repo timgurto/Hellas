@@ -7,6 +7,7 @@
 #include "../Color.h"
 #include "../Log.h"
 #include "../util.h"
+#include "Avatar.h"
 #include "Client.h"
 #include "ClientNPC.h"
 #include "ClientObjectType.h"
@@ -1369,4 +1370,8 @@ bool ClientObject::Owner::operator==(Owner &rhs) const {
   if (type != rhs.type) return false;
   if (type == PLAYER || type == CITY) return name == rhs.name;
   return true;
+}
+
+double distance(const ClientObject &obj, const Avatar &player) {
+  return distance(obj.collisionRect(), player.collisionRect());
 }

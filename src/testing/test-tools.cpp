@@ -178,17 +178,33 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Client counts object tools",
       </objectType>
     )");
 
-    AND_GIVEN("the user is next to an anvil") {
-      server->addObject("anvil", {15, 10});
+    SECTION("Normal case") {
+      AND_GIVEN("the user is next to an anvil") {
+        server->addObject("anvil", {15, 10});
 
-      THEN("the client has a smithing tool") {
-        WAIT_UNTIL(client->currentTools().hasTool("smithing"));
+        THEN("the client has a smithing tool") {
+          WAIT_UNTIL(client->currentTools().hasTool("smithing"));
+        }
       }
     }
 
-    SECTION("object with no permissions") {
+    SECTION("No permission") {
       AND_GIVEN("the user is next to someone else's anvil") {
         server->addObject("anvil", {15, 10}, "Stranger");
+
+        THEN("the client doesn't have a smithing tool") {
+          REPEAT_FOR_MS(300);
+          CHECK(!client->currentTools().hasTool("smithing"));
+        }
+      }
+    }
+
+    SECTION("Too far away") {
+      AND_GIVEN(
+          "the user is out of range of an anvil (but the client still knows "
+          "about it") {
+        server->addObject("anvil", {200, 10});
+        WAIT_UNTIL(client->entities().size() == 2);
 
         THEN("the client doesn't have a smithing tool") {
           REPEAT_FOR_MS(300);

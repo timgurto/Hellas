@@ -21,6 +21,7 @@ class TakeContainer;
 class TextBox;
 class Window;
 
+class Avatar;
 class CQuest;
 
 // A client-side description of an object
@@ -217,5 +218,7 @@ class ClientObject : public Sprite, public ClientCombatant {
   // Return value: whether anything was added
   virtual bool addClassSpecificStuffToWindow() { return false; }
 };
+
+double distance(const ClientObject &obj, const Avatar &player);
 
 #endif
