@@ -575,33 +575,23 @@ User::ToolSearchResult User::findTool(const std::string &tagName) {
   auto bestSpeed = 0.0;
   auto bestTool = ToolSearchResult{ToolSearchResult::NOT_FOUND};
 
-  // Check gear
-  for (size_t i = 0; i != User::GEAR_SLOTS; ++i) {
-    auto &slot = _gear[i];
-    const auto *type = slot.type();
-    if (!slot.hasItem()) continue;
-    if (!type->isTag(tagName)) continue;
+  auto checkItemsAgainstBestTool = [&]( ServerItem::vect_t &items) {
+    for (auto &slot : items) {
+      const auto *type = slot.type();
+      if (!slot.hasItem()) continue;
+      if (!type->isTag(tagName)) continue;
 
-    auto toolSpeed = type->toolSpeed(tagName);
-    if (toolSpeed > bestSpeed || !bestTool) {
-      bestSpeed = toolSpeed;
-      bestTool = ToolSearchResult{slot, *type, tagName};
+      const auto toolSpeed = type->toolSpeed(tagName);
+      const auto thisToolIsBetter = !bestTool || toolSpeed > bestSpeed;
+      if (thisToolIsBetter) {
+        bestSpeed = toolSpeed;
+        bestTool = ToolSearchResult{slot, *type, tagName};
+      }
     }
-  }
+  };
 
-  // Check inventory
-  for (size_t i = 0; i != User::INVENTORY_SIZE; ++i) {
-    auto &slot = _inventory[i];
-    const auto *type = slot.type();
-    if (!slot.hasItem()) continue;
-    if (!type->isTag(tagName)) continue;
-
-    auto toolSpeed = type->toolSpeed(tagName);
-    if (toolSpeed > bestSpeed || !bestTool) {
-      bestSpeed = toolSpeed;
-      bestTool = ToolSearchResult{slot, *type, tagName};
-    }
-  }
+  checkItemsAgainstBestTool(_gear);
+  checkItemsAgainstBestTool(_inventory);
 
   // Check nearby terrain
   Server &server = *Server::_instance;
