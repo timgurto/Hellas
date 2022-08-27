@@ -1,6 +1,6 @@
 #include "TestFixtures.h"
 #include "testing.h"
-/*
+
 TEST_CASE_METHOD(ServerAndClientWithData,
                  "Objects destroyed when used as tools",
                  "[construction][tool]") {
@@ -77,7 +77,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       THEN("the server doesn't crash") {}
     }
   }
-}*/
+}
 
 TEST_CASE_METHOD(ServerAndClientWithData, "The client knows a user's tools",
                  "[tool]") {
@@ -237,7 +237,6 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 }
 
 /*
-Object tool out of range
 Terrain tool
 Terrain with multiple tags
 */
