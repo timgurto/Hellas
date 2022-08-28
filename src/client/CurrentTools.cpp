@@ -29,7 +29,7 @@ void CurrentTools::includeItems() {
       if (!type) continue;
 
       const auto speed = 0.0;
-      includeTags(*type);
+      includeAllTagsFrom(*type);
     }
   };
 
@@ -44,7 +44,7 @@ void CurrentTools::includeObjects() {
     if (!obj->userHasAccess()) continue;
     if (obj->isBeingConstructed()) continue;
     if (distance(*obj, _client._character) > Client::ACTION_DISTANCE) continue;
-    includeTags(*obj->objectType());
+    includeAllTagsFrom(*obj->objectType());
   }
 }
 
@@ -53,11 +53,11 @@ void CurrentTools::includeTerrain() {
       _client._map.terrainTypesOverlapping(_client._character.collisionRect());
   for (char terrainType : nearbyTerrain) {
     const auto it = _client.gameData.terrain.find(terrainType);
-    if (it != _client.gameData.terrain.end()) includeTags(it->second);
+    if (it != _client.gameData.terrain.end()) includeAllTagsFrom(it->second);
   }
 }
 
-void CurrentTools::includeTags(const HasTags &thingWithTags) {
+void CurrentTools::includeAllTagsFrom(const HasTags &thingWithTags) {
   for (const auto &tagPair : thingWithTags.tags()) _tools.insert(tagPair.first);
 }
 

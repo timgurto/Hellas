@@ -21,7 +21,7 @@ class CurrentTools {
   void includeItems();
   void includeObjects();
   void includeTerrain();
-  void includeTags(const HasTags& thingWithTags);
+  void includeAllTagsFrom(const HasTags& thingWithTags);
 
   static const ms_t UPDATE_TIME{200};
   ms_t _timeSinceLastUpdate{0};
