@@ -255,10 +255,9 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Terrain as tool",
 
       THEN("he has the item") { WAIT_UNTIL(user->inventory(0).hasItem()); }
     }
+
+    THEN("the client knows it has a 'flowering' tool") {
+      WAIT_UNTIL(client->currentTools().hasTool("flowering"));
+    }
   }
 }
-
-/*
-Terrain tool
-Terrain with multiple tags
-*/

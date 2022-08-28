@@ -48,7 +48,14 @@ void CurrentTools::includeObjects() {
   }
 }
 
-void CurrentTools::includeTerrain() {}
+void CurrentTools::includeTerrain() {
+  const auto nearbyTerrain =
+      _client._map.terrainTypesOverlapping(_client._character.collisionRect());
+  for (char terrainType : nearbyTerrain) {
+    const auto it = _client.gameData.terrain.find(terrainType);
+    if (it != _client.gameData.terrain.end()) includeTags(it->second);
+  }
+}
 
 void CurrentTools::includeTags(const HasTags &thingWithTags) {
   for (const auto &tagPair : thingWithTags.tags()) _tools.insert(tagPair.first);
