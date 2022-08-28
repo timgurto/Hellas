@@ -20,21 +20,26 @@ TEST_CASE("Recipes can be known by default", "[crafting]") {
   CHECK(itemInFirstSlot->id() == "box");
 }
 
-TEST_CASE("Terrain as tool", "[crafting][tool]") {
-  TestServer s = TestServer::WithData("daisy_chain");
-  TestClient c = TestClient::WithData("daisy_chain");
-  s.waitForUsers(1);
+TEST_CASE_METHOD(ServerAndClientWithData, "Terrain as tool",
+                 "[crafting][tool]") {
+  GIVEN("a daisy chain can be made using the 'flowering' grass everywhere") {
+    useData(R"(
+      <terrain index="G" id="grass">
+          <tag name="flowering" />
+      </terrain>
+      <item id="daisyChain" />
+      <recipe
+          id="daisyChain" time="100" >
+          <tool class="flowering" />
+      </recipe>
+    )");
 
-  User &user = s.getFirstUser();
-  c.sendMessage(CL_CRAFT, makeArgs("daisyChain", 1));
-  WAIT_UNTIL(user.action() ==
-             User::Action::CRAFT);  // Wait for gathering to start
-  WAIT_UNTIL(user.action() ==
-             User::Action::NO_ACTION);  // Wait for gathering to finish
+    WHEN("the user tries to make a daisy chain") {
+      client->sendMessage(CL_CRAFT, makeArgs("daisyChain", 1));
 
-  const ServerItem *itemInFirstSlot = user.inventory(0).type();
-  REQUIRE(itemInFirstSlot != nullptr);
-  CHECK(itemInFirstSlot->id() == "daisyChain");
+      THEN("he has the item") { WAIT_UNTIL(user->inventory(0).hasItem()); }
+    }
+  }
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Tools can have speed modifiers",
