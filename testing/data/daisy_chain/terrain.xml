@@ -1,8 +1,0 @@
-<root>
-    <terrain index="G" id="grass">
-        <tag name="grass" />
-    </terrain>
-    <list id="default" default="1" >
-        <allow id="grass" />
-    </list>
-</root>
