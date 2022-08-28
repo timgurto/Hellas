@@ -20,28 +20,6 @@ TEST_CASE("Recipes can be known by default", "[crafting]") {
   CHECK(itemInFirstSlot->id() == "box");
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Terrain as tool",
-                 "[crafting][tool]") {
-  GIVEN("a daisy chain can be made using the 'flowering' grass everywhere") {
-    useData(R"(
-      <terrain index="G" id="grass">
-          <tag name="flowering" />
-      </terrain>
-      <item id="daisyChain" />
-      <recipe
-          id="daisyChain" time="100" >
-          <tool class="flowering" />
-      </recipe>
-    )");
-
-    WHEN("the user tries to make a daisy chain") {
-      client->sendMessage(CL_CRAFT, makeArgs("daisyChain", 1));
-
-      THEN("he has the item") { WAIT_UNTIL(user->inventory(0).hasItem()); }
-    }
-  }
-}
-
 TEST_CASE_METHOD(ServerAndClientWithData, "Tools can have speed modifiers",
                  "[crafting][tool]") {
   GIVEN(
