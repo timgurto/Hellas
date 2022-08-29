@@ -345,8 +345,19 @@ void Client::refreshTools() const {
   const auto totalWidth = px_t{16} * numTools;
   auto x = (_toolsDisplay->width() - totalWidth) / 2;
   for (auto tag : _currentTools.getTools()) {
-    const auto &icon = images.toolIcons[tag];
-    _toolsDisplay->addChild(new Picture(x, 0, icon));
+    auto *picture = new Picture(x, 0, images.toolIcons[tag]);
+
+    const auto tagName = gameData.tagName(tag);
+    auto article = "a"s;
+    if (!tagName.empty()) {
+      const auto firstLetter = tagName[0];
+      if (firstLetter == 'E' || firstLetter == 'A' || firstLetter == 'O' ||
+          firstLetter == 'I' || firstLetter == 'U')
+        article = "an";
+    }
+    picture->setTooltip("You have " + article + " " + tagName + " tool.");
+
+    _toolsDisplay->addChild(picture);
     x += 16;
   }
 }
