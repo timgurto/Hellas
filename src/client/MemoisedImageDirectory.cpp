@@ -4,6 +4,10 @@ extern Renderer renderer;
 
 Texture MemoisedImageDirectory::defaultTexture;
 
+MemoisedImageDirectory::MemoisedImageDirectory(Color colorKey) {
+  _colorKey = colorKey;
+}
+
 void MemoisedImageDirectory::initialise(const std::string &directory) {
   _directory = directory;
 
@@ -17,7 +21,9 @@ const Texture &MemoisedImageDirectory::operator[](const std::string key) {
   if (it != _container.end()) return it->second;
 
   // Image doesn't exist: load it
-  auto tex = Texture{_directory + "/" + key + ".png"};
+  auto tex = _colorKey.hasValue()
+                 ? Texture{_directory + "/" + key + ".png", _colorKey.value()}
+                 : Texture{_directory + "/" + key + ".png"};
   if (tex) {
     _container[key] = tex;
     return _container[key];

@@ -627,7 +627,7 @@ class Client : public TextEntryManager {
     Texture constructionPeg;
 
     MemoisedImageDirectory icons;
-    MemoisedImageDirectory toolIcons;
+    MemoisedImageDirectory toolIcons{Color::MAGENTA};
 
     Texture map;
     Texture mapCityFriendly, mapCityNeutral, mapCityEnemy;
