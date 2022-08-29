@@ -970,6 +970,7 @@ void Client::CommonImages::initialise() {
   constructionPeg = {"Images/constructionPeg.png", Color::MAGENTA};
 
   icons.initialise("Images/Icons");
+  toolIcons.initialise("Images/Tools");
 
   map = {"Images/map.png"};
   mapCityFriendly = {"Images/UI/map-city-friendly.png", Color::MAGENTA};

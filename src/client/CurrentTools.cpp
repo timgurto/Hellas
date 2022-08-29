@@ -13,11 +13,15 @@ void CurrentTools::update(ms_t timeElapsed) {
 void CurrentTools::lookForTools() {
   _toolsMutex.lock();
 
+  const auto previousTools = _tools;
+
   _tools.clear();
 
   includeItems();
   includeObjects();
   includeTerrain();
+
+  if (_tools != previousTools) _hasChanged = true;
 
   _toolsMutex.unlock();
 }
@@ -49,8 +53,8 @@ void CurrentTools::includeObjects() {
 }
 
 void CurrentTools::includeTerrain() {
-  const auto nearbyTerrain =
-      _client._map.terrainTypesOverlapping(_client._character.collisionRect());
+  const auto nearbyTerrain = _client._map.terrainTypesOverlapping(
+      _client._character.collisionRect(), Client::ACTION_DISTANCE);
   for (char terrainType : nearbyTerrain) {
     const auto it = _client.gameData.terrain.find(terrainType);
     if (it != _client.gameData.terrain.end()) includeAllTagsFrom(it->second);
@@ -73,4 +77,10 @@ bool CurrentTools::hasAnyTools() const {
   const auto isEmpty = _tools.empty();
   _toolsMutex.unlock();
   return !isEmpty;
+}
+
+bool CurrentTools::hasChanged() const {
+  const auto ret = _hasChanged;
+  _hasChanged = false;
+  return ret;
 }

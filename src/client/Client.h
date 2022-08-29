@@ -379,6 +379,8 @@ class Client : public TextEntryManager {
   mutable ms_t _errorMessageTimer{0};
   Window *_escapeWindow{nullptr};
   List *_questProgress{nullptr};
+  Element *_toolsDisplay{nullptr};
+  void refreshTools() const;
 
   void initUI();
   void initChatLog();
@@ -625,6 +627,7 @@ class Client : public TextEntryManager {
     Texture constructionPeg;
 
     MemoisedImageDirectory icons;
+    MemoisedImageDirectory toolIcons;
 
     Texture map;
     Texture mapCityFriendly, mapCityNeutral, mapCityEnemy;

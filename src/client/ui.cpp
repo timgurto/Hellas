@@ -47,6 +47,10 @@ void Client::initUI() {
   initializeGearSlotNames();
   initCastBar();
   initHotbar();
+
+  _toolsDisplay = new Element({0, SCREEN_Y - 36, SCREEN_X, 20});
+  addUI(_toolsDisplay);
+
   initBuffsDisplay();
   initMenuBar();
   initPlayerPanels();
@@ -329,6 +333,22 @@ void Client::updateUI() {
     _errorMessageTimer -= _timeElapsed;
 
   updateToasts();
+  refreshTools();
+}
+
+void Client::refreshTools() const {
+  if (!_currentTools.hasChanged()) return;
+
+  _toolsDisplay->clearChildren();
+
+  const auto numTools = _currentTools.getTools().size();
+  const auto totalWidth = px_t{16} * numTools;
+  auto x = (_toolsDisplay->width() - totalWidth) / 2;
+  for (auto tag : _currentTools.getTools()) {
+    const auto &icon = images.toolIcons[tag];
+    _toolsDisplay->addChild(new Picture(x, 0, icon));
+    x += 16;
+  }
 }
 
 void Client::initMenuBar() {
