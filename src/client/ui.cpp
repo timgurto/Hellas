@@ -347,6 +347,14 @@ void Client::refreshTools() const {
   for (auto tag : _currentTools.getTools()) {
     auto *picture = new Picture(x, 0, images.toolIcons[tag]);
 
+    // Assumption: no icon = not a tool (e.g., food, shield)
+    if (picture->width() != 16) {
+      delete picture;
+      const auto newRect = _toolsDisplay->rect() + ScreenRect{8, 0};
+      _toolsDisplay->rect(newRect);
+      continue;
+    }
+
     const auto tagName = gameData.tagName(tag);
     auto article = "a"s;
     if (!tagName.empty()) {
