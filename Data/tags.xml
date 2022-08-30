@@ -41,6 +41,7 @@
 <tag id="silverDeposit" name="Mineable Silver" />
 
 <tag id="food" name="Food" />
+<tag id="shield" name="Shield" />
 
 <tag id="classAthlete"  name="Athlete Training" />
 <tag id="classScholar"  name="Scholar Training" />
