@@ -182,21 +182,28 @@ void Tooltip::addTags(const HasTags &thingWithTags, const Client &client) {
 
 void Tooltip::addSingleTag(std::string tag, const Client &client) {
   const auto tagName = client.gameData.tagNames[tag];
-  auto label = Texture{font, tagName, Color::TOOLTIP_TAG};
-
-  auto H_GAP = 2_px;
-  auto texture = Texture{16 + 3 * H_GAP + label.width(), 16};
-  renderer.pushRenderTarget(texture);
-
   const auto &icon = client.images.toolIcons[tag];
-  icon.draw(H_GAP, 0);
-  auto labelX = Client::ICON_SIZE + 2 * H_GAP;
-  auto labelY = (texture.height() - label.height()) / 2;
-  label.draw(labelX, labelY);
 
-  texture.setBlend();
-  renderer.popRenderTarget();
-  _content.push_back(texture);
+  const auto iconExists = icon.width() == 16;
+  if (iconExists) {
+    auto label = Texture{font, tagName, Color::TOOLTIP_TAG};
+
+    auto H_GAP = 2_px;
+    auto texture = Texture{16 + 3 * H_GAP + label.width(), 16};
+    renderer.pushRenderTarget(texture);
+
+    icon.draw(H_GAP, 0);
+    auto labelX = Client::ICON_SIZE + 2 * H_GAP;
+    auto labelY = (texture.height() - label.height()) / 2;
+    label.draw(labelX, labelY);
+
+    texture.setBlend();
+    renderer.popRenderTarget();
+    _content.push_back(texture);
+  } else {
+    setColor(Color::TOOLTIP_TAG);
+    addLine(tagName);
+  }
 }
 
 void Tooltip::addRecipe(const CRecipe &recipe, const TagNames &tagNames) {
