@@ -9,7 +9,7 @@ class HasTags;
 
 class CurrentTools {
  public:
-  CurrentTools(const Client& client) : _client(client) {}
+  CurrentTools(Client& client) : _client(client) {}
   using Tools = std::set<std::string>;
   bool hasTool(std::string tag) const;
   bool hasAnyTools() const;
@@ -29,7 +29,7 @@ class CurrentTools {
 
   static const ms_t UPDATE_TIME{200};
   ms_t _timeSinceLastUpdate{0};
-  const Client& _client;
+  Client& _client;
 
   mutable bool _hasChanged = true;
 

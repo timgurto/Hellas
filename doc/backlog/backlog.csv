@@ -50,7 +50,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 52,Fix gear-durability colours,13,34,Bug,,,TRUE,
 53,Show gear durability in main UI,8,21,Usability,,,,
 54,Show current tools in UI,144,144,Usability,,TRUE,,
-55,Show owned/missing tools in crafting window,144,5,Usability,54,,,
+55,Show owned/missing tools in crafting window,144,5,Usability,54,TRUE,,
 56,Require full-text search for price items,3,1,Usability,,TRUE,,
 57,Restrict ware selection to items in container,3,21,Usability,,TRUE,,
 58,Gold enchantments,5,8,Content,15,,TRUE,20 Tier-3

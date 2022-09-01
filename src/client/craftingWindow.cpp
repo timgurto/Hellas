@@ -246,15 +246,25 @@ void Client::refreshRecipeDetailsPane() {
   pane.addChild(
       new Label({0, y, paneRect.w, Element::TEXT_HEIGHT}, "Required tools:"));
   y += Element::TEXT_HEIGHT;
-  List *const toolsList = new List({5, y, paneRect.w, TOOLS_LIST_HEIGHT});
+  List *const toolsList = new List({5, y, paneRect.w, TOOLS_LIST_HEIGHT}, 16);
   y += TOOLS_LIST_HEIGHT + LINE_GAP;
   pane.addChild(toolsList);
   for (const std::string &tool : recipe.tools()) {
-    static const px_t TOOL_MARGIN = 5;
-    Label *entry = new Label(
-        {TOOL_MARGIN, 0, paneRect.w - TOOL_MARGIN, Element::TEXT_HEIGHT},
-        gameData.tagName(tool));
+    const auto toolName = gameData.tagNames[tool];
+    const auto &icon = images.toolIcons[tool];
+    const auto H_GAP = 2_px;
+    const auto colour =
+        _currentTools.hasTool(tool) ? Color::TOOL_PRESENT : Color::TOOL_MISSING;
+
+    auto *entry = new Element({0, 0, paneRect.w, 16});
     toolsList->addChild(entry);
+
+    entry->addChild(new Picture(H_GAP, 0, icon));
+    const auto LABEL_X = 16 + 2 * H_GAP;
+    auto *label = new Label({LABEL_X, 0, paneRect.w - LABEL_X, 16}, toolName,
+                            Label::LEFT_JUSTIFIED, Label::CENTER_JUSTIFIED);
+    label->setColor(colour);
+    entry->addChild(label);
   }
 
   // Unlocks

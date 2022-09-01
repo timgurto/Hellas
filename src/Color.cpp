@@ -50,6 +50,9 @@ const Color Color::TOOLTIP_INSTRUCTION = YELLOW * .8 + RED * .2;
 const Color Color::TOOLTIP_FLAVOUR = WHITE * .5;
 const Color Color::TOOLTIP_BAD = RED;
 
+const Color Color::TOOL_PRESENT = TOOLTIP_TAG;
+const Color Color::TOOL_MISSING = TOOLTIP_BAD;
+
 const Color Color::ITEM_QUALITY_COMMON = WHITE;
 const Color Color::ITEM_QUALITY_UNCOMMON = GREEN * .9 + YELLOW * .1;
 const Color Color::ITEM_QUALITY_RARE = BLUE * .4 + CYAN * .4;

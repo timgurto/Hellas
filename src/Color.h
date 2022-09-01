@@ -55,6 +55,9 @@ class Color {
   static const Color TOOLTIP_FLAVOUR;
   static const Color TOOLTIP_BAD;
 
+  static const Color TOOL_PRESENT;
+  static const Color TOOL_MISSING;
+
   static const Color ITEM_QUALITY_COMMON;
   static const Color ITEM_QUALITY_UNCOMMON;
   static const Color ITEM_QUALITY_RARE;

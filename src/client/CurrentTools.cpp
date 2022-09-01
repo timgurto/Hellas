@@ -21,7 +21,10 @@ void CurrentTools::lookForTools() {
   includeObjects();
   includeTerrain();
 
-  if (_tools != previousTools) _hasChanged = true;
+  if (_tools != previousTools) {
+    _hasChanged = true;
+    if (_client._detailsPane) _client.refreshRecipeDetailsPane();
+  }
 
   _toolsMutex.unlock();
 }
