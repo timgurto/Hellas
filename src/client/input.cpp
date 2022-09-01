@@ -667,7 +667,7 @@ void Client::updateTerrainTooltip() {
 
   auto it = gameData.terrain.find(_terrainUnderCursor);
   if (it != gameData.terrain.end()) {
-    _terrainTooltip.addTags(it->second, gameData.tagNames);
+    _terrainTooltip.addTags(it->second, *this);
   }
 
   auto allowedTerrain = TerrainList::findList(_allowedTerrain);

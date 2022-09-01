@@ -53,7 +53,8 @@ class Tooltip {
   void addItemGrid(const void *itemVector);  // To avoid recursive #includes
   void addMerchantSlots(const std::vector<ClientMerchantSlot> &slots);
   void addItem(const ClientItem &item);
-  void addTags(const HasTags &thingWithTags, const TagNames &tagNames);
+  void addTags(const HasTags &thingWithTags, const Client &client);
+  void addSingleTag(std::string tag, const Client &client);
   void addRecipe(const class CRecipe &recipe, const TagNames &tagNames);
 
   px_t width() const;

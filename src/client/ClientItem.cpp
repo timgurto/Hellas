@@ -103,7 +103,7 @@ const Tooltip &ClientItem::tooltip(std::string suffixID) const {
     if (hasLvlReq()) {
       if (_client->character().level() < lvlReq())
         tooltip.setColor(Color::TOOLTIP_BAD);
-      tooltip.addLine("Requires level "s + toString(lvlReq()));
+      tooltip.addLine("Requires level "s + toString(lvlReq()) + " to equip"s);
     }
 
     tooltip.setColor(Color::TOOLTIP_BODY);
@@ -122,7 +122,7 @@ const Tooltip &ClientItem::tooltip(std::string suffixID) const {
   }
 
   // Tags
-  tooltip.addTags(*this, _client->gameData.tagNames);
+  tooltip.addTags(*this, *_client);
 
   // Construction
   if (_constructsObject != nullptr) {
@@ -320,8 +320,7 @@ void ClientItem::Instance::createRepairTooltip() const {
     rt.addGap();
     rt.setColor(Color::TOOLTIP_BODY);
     rt.addLine("Requires tool:");
-    rt.setColor(Color::TOOLTIP_TAG);
-    rt.addLine(_type->_client->gameData.tagName(repairInfo.tool));
+    rt.addSingleTag(repairInfo.tool, *_type->_client);
   }
 
   if (repairInfo.hasCost()) {

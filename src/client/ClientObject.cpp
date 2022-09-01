@@ -1156,7 +1156,7 @@ void ClientObject::createRegularTooltip() const {
   }
 
   // Tags
-  tooltip.addTags(ot, _client.gameData.tagNames);
+  tooltip.addTags(ot, _client);
 
   // Any actions available?
   if (ot.merchantSlots() > 0 ||

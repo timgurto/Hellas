@@ -71,7 +71,7 @@ const Tooltip &ClientObjectType::constructionTooltip(
   for (const auto &line : descriptionLines) tooltip.addLine(line);
 
   // Tags
-  tooltip.addTags(*this, client.gameData.tagNames);
+  tooltip.addTags(*this, client);
 
   // Materials
   if (!_materials.isEmpty()) {
