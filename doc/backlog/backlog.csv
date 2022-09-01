@@ -49,7 +49,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 51,Make under-construction objects vulnerable,1,2,Feature,40,,,70 War
 52,Fix gear-durability colours,13,34,Bug,,,TRUE,
 53,Show gear durability in main UI,8,21,Usability,,,,
-54,Show current tools in UI,144,144,Usability,,,,
+54,Show current tools in UI,144,144,Usability,,TRUE,,
 55,Show owned/missing tools in crafting window,144,5,Usability,54,,,
 56,Require full-text search for price items,3,1,Usability,,TRUE,,
 57,Restrict ware selection to items in container,3,21,Usability,,TRUE,,
@@ -144,5 +144,5 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 147,Repair item in exchange for item,13,13,Feature,,,TRUE,15 Restricted repairing
 148,"To repair a class-X item, require knowing a class-X recipe",21,5,Feature,147,,TRUE,15 Restricted repairing
 149,Allow multiple tool reqs for repairing,3,3,Feature,,,,
-150,"Check construction tools against footprint, not player",,,Feature,,,,10 Housing
-151,Trash items (overworld and dungeon),,,Content,,,,
+150,"Check construction tools against footprint, not player",3,8,Feature,,,,10 Housing
+151,Trash items (overworld and dungeon),13,8,Content,,,,
