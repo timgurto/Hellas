@@ -30,6 +30,7 @@ double HasTags::toolSpeed(const std::string& tag) const {
   return it->second;
 }
 
+#ifdef CLIENT
 std::string HasTags::toolSpeedDisplayText(const std::string& tag) const {
   auto speed = toolSpeed(tag);
   if (speed == 1.0) return {};
@@ -40,3 +41,4 @@ std::string HasTags::toolSpeedDisplayText(const std::string& tag) const {
   oss << displayVal << "%";
   return oss.str();
 }
+#endif

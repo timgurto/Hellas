@@ -15,7 +15,9 @@ class HasTags {
   const Tags &tags() const { return _tags; }
   double toolSpeed(const std::string &tag) const;
 
+#ifdef CLIENT
   std::string toolSpeedDisplayText(const std::string &tag) const;
+#endif
 
  private:
   Tags _tags;
