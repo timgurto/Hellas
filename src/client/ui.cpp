@@ -342,8 +342,7 @@ void Client::refreshTools() const {
   _toolsDisplay->clearChildren();
 
   const auto numTools = _currentTools.getTools().size();
-  const auto totalWidth = px_t{16} * numTools;
-  auto x = (_toolsDisplay->width() - totalWidth) / 2;
+  auto x = 0_px;
   for (auto tag : _currentTools.getTools()) {
     auto *picture = new Picture(x, 0, images.toolIcons[tag]);
 
@@ -368,6 +367,9 @@ void Client::refreshTools() const {
     _toolsDisplay->addChild(picture);
     x += 16;
   }
+  const auto totalWidth = x;
+  _toolsDisplay->rect((SCREEN_X - totalWidth) / 2, SCREEN_Y - 36, totalWidth,
+                      20);
 }
 
 void Client::initMenuBar() {
