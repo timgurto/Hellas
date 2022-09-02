@@ -104,7 +104,6 @@
     <material id="rock" quantity="40" />
     <grantsBuff id="wellEpsRock" radius="30" />
     <unlockedBy gather="rock" chance="0.02" />
-    <unlockedBy recipe="water" chance="0.05" />
     <unlockedBy />
     <canBeRepaired cost="rock" />
 </objectType>
