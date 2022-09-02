@@ -21,12 +21,12 @@ void CurrentTools::lookForTools() {
   includeObjects();
   includeTerrain();
 
-  if (_tools != previousTools) {
-    _hasChanged = true;
-    if (_client._detailsPane) _client.refreshRecipeDetailsPane();
-  }
+  if (_tools != previousTools) _hasChanged = true;
 
   _toolsMutex.unlock();
+
+  // This calls hasTool(), which uses the mutex, hence its being unlocked first.
+  if (_hasChanged && _client._detailsPane) _client.refreshRecipeDetailsPane();
 }
 
 void CurrentTools::includeItems() {
