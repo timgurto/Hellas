@@ -154,6 +154,11 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       THEN("it has a level requirement of 5") {
         const auto &item = server->getFirstItem();
         CHECK(item.lvlReq() == 5);
+
+        AND_THEN("the client knows the correct level requirement") {
+          const auto &cItem = client->getFirstItem();
+          CHECK(cItem.lvlReq() == 5);
+        }
       }
     }
   }
