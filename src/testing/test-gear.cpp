@@ -142,6 +142,22 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Level requirements",
   }
 }
 
+TEST_CASE("Level requirements are modified by item quality",
+          "[gear][leveling]") {
+  GIVEN("an uncommon gear item with ilvl 15") {
+    auto server = TestServer::WithDataString(R"(
+      <item id="shinySword" ilvl="15" gearSlot="weapon" quality="2" />
+    )");
+
+    WHEN("the server loads") {
+      THEN("it has a level requirement of 5") {
+        const auto &item = server.getFirstItem();
+        CHECK(item.lvlReq() == 5);
+      }
+    }
+  }
+}
+
 TEST_CASE_METHOD(ServerAndClientWithData,
                  "Level requirements enforced on already-equipped gear",
                  "[gear][leveling]") {

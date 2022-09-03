@@ -30,8 +30,6 @@ void Item::setBinding(std::string mode) {
 }
 
 void Item::initialiseLvlReq() {
-  if (isGear()) return;
-
   switch (_quality) {
     case COMMON:
       _lvlReq = _ilvl - 5;
