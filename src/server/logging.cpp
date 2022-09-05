@@ -126,11 +126,9 @@ static void outputMetalWealth(std::ostream &os,
     double value;
   };
   auto itemValues = std::map<std::string, MetalValue>{
-      {"tinBar", {"tin", 1}},          {"tinScrap", {"tin", .1}},
-      {"tinCoin", {"tin", .01}},       {"copperBar", {"copper", 1}},
-      {"copperScrap", {"copper", .1}}, {"copperCoin", {"copper", .01}},
-      {"silverBar", {"silver", 1}},    {"silverScrap", {"silver", .1}},
-      {"silverCoin", {"silver", .01}}};
+      {"tinBar", {"tin", 1}},       {"tinCoin", {"tin", .01}},
+      {"copperBar", {"copper", 1}}, {"copperCoin", {"copper", .01}},
+      {"silverBar", {"silver", 1}}, {"silverCoin", {"silver", .01}}};
 
   using MetalWealth = std::map<std::string, double>;
   auto metalWealth = MetalWealth{};
