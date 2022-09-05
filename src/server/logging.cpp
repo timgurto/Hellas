@@ -151,6 +151,11 @@ static void outputMetalWealth(std::ostream &os,
   // Log to dedicated file if changed
   if (metalWealth != previousWealth) {
     auto ofs = std::ofstream{"logging/metalWealth.csv", std::ofstream::app};
+
+    ofs << time(nullptr);
+    for (auto pair : previousWealth) ofs << "," << pair.second;
+    ofs << std::endl;
+
     ofs << time(nullptr);
     for (auto pair : metalWealth) ofs << "," << pair.second;
     ofs << std::endl;
