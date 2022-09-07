@@ -23,6 +23,8 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
 
   ms_t _disappearTimer;  // When this hits zero, it disappears.
 
+  std::string _customName;
+
  public:
   Object(const ObjectType *type,
          const MapPoint &loc);  // Generates a new serial
@@ -65,6 +67,9 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
   const Deconstruction &deconstruction() const { return _deconstruction; }
 
   bool isAbleToDeconstruct(const User &user) const;
+
+  void setCustomName(const std::string &name) { _customName = name; }
+  bool hasCustomName() const { return !_customName.empty(); }
 
   bool isGate() const { return objType().isGate(); }
 

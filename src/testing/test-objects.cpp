@@ -252,7 +252,19 @@ TEST_CASE_METHOD(TwoClientsWithData, "Object naming") {
 
     THEN("it has the default name from its object type") {
       const auto &bobRock = cBob->waitForFirstObject();
-      WAIT_UNTIL(bobRock.name() == "Rock");
+      REPEAT_FOR_MS(100);
+      CHECK(bobRock.name() == "Rock");
+    }
+
+    AND_WHEN("Charlie logs in nearby") {
+      auto cCharlie = TestClient::WithUsernameAndDataString("Charlie", data);
+      server->waitForUsers(3);
+
+      THEN("it has the default name") {
+        const auto &charlieRock = cCharlie.waitForFirstObject();
+        REPEAT_FOR_MS(100);
+        CHECK(charlieRock.name() == "Rock");
+      }
     }
 
     WHEN("she names it \"Rocky\"") {
@@ -266,7 +278,7 @@ TEST_CASE_METHOD(TwoClientsWithData, "Object naming") {
         AND_WHEN("Charlie logs in nearby") {
           auto cCharlie =
               TestClient::WithUsernameAndDataString("Charlie", data);
-          server->waitForUsers(2);
+          server->waitForUsers(3);
 
           THEN("he knows its name") {
             const auto &charlieRock = cCharlie.waitForFirstObject();
@@ -286,5 +298,6 @@ TEST_CASE_METHOD(TwoClientsWithData, "Object naming") {
 // Others who log in or approach can see custom names
 // Names can contain spaces
 // Try with bad serial
+// Try with non-object-entity serial
 // Permissions
 // UI
