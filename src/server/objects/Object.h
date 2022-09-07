@@ -69,7 +69,6 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
   bool isAbleToDeconstruct(const User &user) const;
 
   void setCustomName(const std::string &name) { _customName = name; }
-  bool hasCustomName() const { return !_customName.empty(); }
 
   bool isGate() const { return objType().isGate(); }
 

@@ -268,7 +268,6 @@ TEST_CASE_METHOD(TwoClientsWithData, "Object naming") {
     }
 
     WHEN("she names it \"Rocky\"") {
-      cAlice->waitForFirstObject();
       cAlice->sendMessage(CL_SET_OBJECT_NAME, makeArgs(rock.serial(), "Rocky"));
 
       THEN("Bob knows its name") {
@@ -283,6 +282,24 @@ TEST_CASE_METHOD(TwoClientsWithData, "Object naming") {
           THEN("he knows its name") {
             const auto &charlieRock = cCharlie.waitForFirstObject();
             WAIT_UNTIL(charlieRock.name() == "Rocky");
+          }
+        }
+      }
+    }
+
+    SECTION("propagated object info includes correct name") {
+      WHEN("she names it \"Geodude\"") {
+        cAlice->sendMessage(CL_SET_OBJECT_NAME,
+                            makeArgs(rock.serial(), "Geodude"));
+
+        AND_WHEN("Charlie logs in nearby") {
+          auto cCharlie =
+              TestClient::WithUsernameAndDataString("Charlie", data);
+          server->waitForUsers(3);
+
+          THEN("he knows its correct name") {
+            const auto &charlieRock = cCharlie.waitForFirstObject();
+            WAIT_UNTIL(charlieRock.name() == "Geodude");
           }
         }
       }
