@@ -135,7 +135,8 @@ class ClientObject : public Sprite, public ClientCombatant {
 
   virtual void update(double delta) override;
   virtual const std::string &name() const override {
-    return objectType()->name();
+    static auto name = "Rocky"s;
+    return name;
   }
 
   MapRect collisionRect() const {

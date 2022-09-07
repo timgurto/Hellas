@@ -241,3 +241,28 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Object-health categories",
     }
   }
 }
+
+TEST_CASE_METHOD(TwoClientsWithData, "Object naming") {
+  GIVEN("Alice owns a rock") {
+    useData(R"(
+        <objectType id="rock" />
+      )");
+    const auto &rock = server->addObject("rock", {15, 15}, "Alice");
+
+    WHEN("she names it \"Rocky\"") {
+      cAlice->waitForFirstObject();
+      cAlice->sendMessage(CL_SET_OBJECT_NAME, makeArgs(rock.serial(), "Rocky"));
+
+      THEN("Bob knows its name") {
+        const auto &bobRock = cBob->waitForFirstObject();
+        WAIT_UNTIL(bobRock.name() == "Rocky");
+      }
+    }
+  }
+}
+
+// [Only] nearby users see the change
+// Owner always sees the change, regardless of distance
+// Enforce character limit
+// Reset
+// Limit to pets, merchants

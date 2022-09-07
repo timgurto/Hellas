@@ -79,6 +79,10 @@ enum MessageCode {
   // Arguments: serial
   CL_DESTROY_OBJECT,
 
+  // "I want to set object ...'s name to ..."
+  // Arguments: serial, name
+  CL_SET_OBJECT_NAME,
+
   // "I want to trade using merchant slot ... in object ..."
   // Arguments: serial, slot
   CL_TRADE,

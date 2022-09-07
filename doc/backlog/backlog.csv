@@ -9,7 +9,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 8,Fill map with NPCs,233,987,Content,,,TRUE,
 9,Copper cauldron,1,8,Content,,,TRUE,30 Bronze Age
 10,Potions,21,233,Content,,,,30 Bronze Age
-11,Drop talent item on death,1,2,Feature,40,,TRUE,70 War
+11,Drop talent item on death,1,2,Feature,3,,TRUE,70 War
 12,Aggro range varies with level difference,2,8,Feature,,,,
 13,Interruptible cast times,55,55,Feature,,,,
 14,Horses,8,55,Content,,,TRUE,20 Tier-3
