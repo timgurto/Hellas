@@ -146,6 +146,9 @@ void Object::sendInfoToClient(const User &targetUser, bool isNew) const {
     }
   }
 
+  // Custom name
+  targetUser.sendMessage({SV_OBJECT_NAME, makeArgs(serial(), "Rocky")});
+
   // Being gathered
   if (gatherable.numUsersGathering() > 0)
     targetUser.sendMessage({SV_OBJECT_BEING_GATHERED, serial()});

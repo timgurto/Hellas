@@ -244,9 +244,10 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Object-health categories",
 
 TEST_CASE_METHOD(TwoClientsWithData, "Object naming") {
   GIVEN("Alice owns a rock") {
-    useData(R"(
-        <objectType id="rock" name="Rock" />
-      )");
+    const auto data = R"(
+      <objectType id="rock" name="Rock" />
+    )";
+    useData(data);
     const auto &rock = server->addObject("rock", {15, 15}, "Alice");
 
     THEN("it has the default name from its object type") {
@@ -261,6 +262,17 @@ TEST_CASE_METHOD(TwoClientsWithData, "Object naming") {
       THEN("Bob knows its name") {
         const auto &bobRock = cBob->waitForFirstObject();
         WAIT_UNTIL(bobRock.name() == "Rocky");
+
+        AND_WHEN("Charlie logs in nearby") {
+          auto cCharlie =
+              TestClient::WithUsernameAndDataString("Charlie", data);
+          server->waitForUsers(2);
+
+          THEN("he knows its name") {
+            const auto &charlieRock = cCharlie.waitForFirstObject();
+            WAIT_UNTIL(charlieRock.name() == "Rocky");
+          }
+        }
       }
     }
   }
@@ -274,3 +286,5 @@ TEST_CASE_METHOD(TwoClientsWithData, "Object naming") {
 // Others who log in or approach can see custom names
 // Names can contain spaces
 // Try with bad serial
+// Permissions
+// UI
