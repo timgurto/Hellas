@@ -150,15 +150,14 @@ static void outputMetalWealth(std::ostream &os,
   if (metalWealth != previousWealth) {
     auto ofs = std::ofstream{"logging/metalWealth.csv", std::ofstream::app};
 
-    if (!previousWealth.empty()) {
+    auto logWealth = [&ofs](const MetalWealth &metalWealth) {
       ofs << time(nullptr);
-      for (auto pair : previousWealth) ofs << "," << pair.second;
+      for (auto pair : metalWealth) ofs << "," << pair.second;
       ofs << std::endl;
-    }
+    };
 
-    ofs << time(nullptr);
-    for (auto pair : metalWealth) ofs << "," << pair.second;
-    ofs << std::endl;
+    if (!previousWealth.empty()) logWealth(previousWealth);  // for neater plot
+    logWealth(metalWealth);
 
     previousWealth = metalWealth;
   }
