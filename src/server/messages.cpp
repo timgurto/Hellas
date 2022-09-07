@@ -311,6 +311,16 @@ HANDLE_MESSAGE(CL_DESTROY_OBJECT) {
   ent->setShorterCorpseTimerForFriendlyKill();
 }
 
+HANDLE_MESSAGE(CL_SET_OBJECT_NAME) {
+  auto serial = Serial{};
+  auto name = ""s;
+  READ_ARGS(serial, name);
+
+  auto *ent = _entities.find(serial);
+
+  broadcastToArea(ent->location(), {SV_OBJECT_NAME, makeArgs(serial, name)});
+}
+
 HANDLE_MESSAGE(CL_TRADE) {
   auto serial = Serial{};
   auto slot = size_t{0};
@@ -1500,6 +1510,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_TAKE_ITEM)
       SEND_MESSAGE_TO_HANDLER(CL_CEDE)
       SEND_MESSAGE_TO_HANDLER(CL_GIVE_OBJECT)
+      SEND_MESSAGE_TO_HANDLER(CL_SET_OBJECT_NAME)
       SEND_MESSAGE_TO_HANDLER(CL_TARGET_ENTITY)
       SEND_MESSAGE_TO_HANDLER(CL_TARGET_PLAYER)
       SEND_MESSAGE_TO_HANDLER(CL_SELECT_ENTITY)

@@ -245,9 +245,14 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Object-health categories",
 TEST_CASE_METHOD(TwoClientsWithData, "Object naming") {
   GIVEN("Alice owns a rock") {
     useData(R"(
-        <objectType id="rock" />
+        <objectType id="rock" name="Rock" />
       )");
     const auto &rock = server->addObject("rock", {15, 15}, "Alice");
+
+    THEN("it has the default name from its object type") {
+      const auto &bobRock = cBob->waitForFirstObject();
+      WAIT_UNTIL(bobRock.name() == "Rock");
+    }
 
     WHEN("she names it \"Rocky\"") {
       cAlice->waitForFirstObject();
@@ -261,8 +266,11 @@ TEST_CASE_METHOD(TwoClientsWithData, "Object naming") {
   }
 }
 
-// [Only] nearby users see the change
 // Owner always sees the change, regardless of distance
 // Enforce character limit
 // Reset
 // Limit to pets, merchants
+// Persistent
+// Others who log in or approach can see custom names
+// Names can contain spaces
+// Try with bad serial

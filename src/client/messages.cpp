@@ -902,6 +902,22 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
+      case SV_OBJECT_NAME: {
+        auto serial = Serial{};
+        auto name = ""s;
+        singleMsg >> serial >> del;
+        readString(singleMsg, name, MSG_END);
+        singleMsg >> del;
+        if (del != MSG_END) break;
+
+        const auto it = _objects.find(serial);
+        if (it == _objects.end()) break;
+
+        ClientObject &obj = *it->second;
+        obj.giveCustomName(name);
+        break;
+      }
+
       case SV_OBJECT_BEING_GATHERED: {
         Serial serial;
         singleMsg >> serial >> del;

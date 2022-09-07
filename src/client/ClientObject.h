@@ -36,6 +36,7 @@ class ClientObject : public Sprite, public ClientCombatant {
   };
 
   Serial _serial;
+  std::string _customName;  // If empty, then use default name
   Owner _owner;
   ClientItem::vect_t _container;
   std::vector<ClientMerchantSlot> _merchantSlots;
@@ -134,9 +135,13 @@ class ClientObject : public Sprite, public ClientCombatant {
   virtual char classTag() const override { return 'o'; }
 
   virtual void update(double delta) override;
+
+  void giveCustomName(const std::string &name) { _customName = name; }
   virtual const std::string &name() const override {
-    static auto name = "Rocky"s;
-    return name;
+    if (_customName.empty())
+      return objectType()->name();
+    else
+      return _customName;
   }
 
   MapRect collisionRect() const {
