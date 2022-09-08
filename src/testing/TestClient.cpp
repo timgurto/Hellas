@@ -197,6 +197,11 @@ ClientNPC &TestClient::getFirstNPC() {
   return *dynamic_cast<ClientNPC *>(obj);
 }
 
+ClientNPC &TestClient::waitForFirstNPC() {
+  WAIT_UNTIL(objects().size() == 1);
+  return getFirstNPC();
+}
+
 ClientObject &TestClient::getFirstObject() {
   auto objects = _client->_objects;
   REQUIRE(!objects.empty());

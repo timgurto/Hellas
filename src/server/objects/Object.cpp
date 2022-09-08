@@ -146,10 +146,6 @@ void Object::sendInfoToClient(const User &targetUser, bool isNew) const {
     }
   }
 
-  // Custom name
-  if (!_customName.empty())
-    targetUser.sendMessage({SV_OBJECT_NAME, makeArgs(serial(), _customName)});
-
   // Being gathered
   if (gatherable.numUsersGathering() > 0)
     targetUser.sendMessage({SV_OBJECT_BEING_GATHERED, serial()});
@@ -192,6 +188,8 @@ void Object::sendInfoToClient(const User &targetUser, bool isNew) const {
 
   // Quests
   QuestNode::sendQuestsToUser(targetUser);
+
+  Entity::sendInfoToClient(targetUser, isNew);
 }
 
 void Object::tellRelevantUsersAboutInventorySlot(size_t slot) const {

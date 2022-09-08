@@ -23,7 +23,6 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
 
   ms_t _disappearTimer;  // When this hits zero, it disappears.
 
-  std::string _customName;
 
  public:
   Object(const ObjectType *type,
@@ -68,7 +67,6 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
 
   bool isAbleToDeconstruct(const User &user) const;
 
-  void setCustomName(const std::string &name) { _customName = name; }
 
   bool isGate() const { return objType().isGate(); }
 

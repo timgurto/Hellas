@@ -278,6 +278,8 @@ void NPC::sendInfoToClient(const User &targetUser, bool isNew) const {
         {SV_TRANSFORM_TIME_REMAINING,
          makeArgs(serial(), transformation.transformTimer())});
   }
+
+  Entity::sendInfoToClient(targetUser, isNew);
 }
 
 ServerItem::Instance *NPC::getSlotToTakeFromAndSendErrors(size_t slotNum,

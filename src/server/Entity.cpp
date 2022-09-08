@@ -64,6 +64,12 @@ void Entity::markForRemoval() {
   Server::_instance->_entitiesToRemove.push_back(this);
 }
 
+void Entity::sendInfoToClient(const User &targetUser, bool isNew) const {
+  // Custom name
+  if (hasCustomName())
+    targetUser.sendMessage({SV_OBJECT_NAME, makeArgs(serial(), customName())});
+}
+
 void Entity::changeType(const EntityType *newType,
                         bool shouldSkipConstruction) {
   if (!newType) {

@@ -56,7 +56,7 @@ class Entity {
   void markForRemoval();
 
   virtual void sendInfoToClient(const User &targetUser,
-                                bool isNew = false) const = 0;
+                                bool isNew = false) const;
 
   virtual void writeToXML(XmlWriter &xw) const {}
 
@@ -211,6 +211,10 @@ class Entity {
 
   const Loot &loot() const;
 
+  void setCustomName(const std::string &name) { _customName = name; }
+  bool hasCustomName() const { return !_customName.empty(); }
+  const std::string &customName() const { return _customName; }
+
   /*
   Determine whether the proposed new location is legal, considering movement
   speed and time elapsed, and checking for collisions. Set location to the new,
@@ -249,6 +253,8 @@ class Entity {
   bool _excludedFromPersistentState{false};
 
   Spawner *_spawner{nullptr};  // The Spawner that created this entity, if any.
+
+  std::string _customName;
 
   // Space
   Serial _serial;

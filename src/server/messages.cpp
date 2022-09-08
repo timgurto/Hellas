@@ -317,11 +317,10 @@ HANDLE_MESSAGE(CL_SET_OBJECT_NAME) {
   READ_ARGS(serial, name);
 
   auto *ent = _entities.find(serial);
-  auto *obj = dynamic_cast<Object *>(ent);
 
-  obj->setCustomName(name);
+  ent->setCustomName(name);
 
-  broadcastToArea(obj->location(), {SV_OBJECT_NAME, makeArgs(serial, name)});
+  broadcastToArea(ent->location(), {SV_OBJECT_NAME, makeArgs(serial, name)});
 }
 
 HANDLE_MESSAGE(CL_TRADE) {

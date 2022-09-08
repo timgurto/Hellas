@@ -243,17 +243,18 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Object-health categories",
 }
 
 TEST_CASE_METHOD(TwoClientsWithData, "Object naming") {
-  GIVEN("Alice owns a rock") {
+  GIVEN("Alice owns a dog") {
     const auto data = R"(
-      <objectType id="rock" name="Rock" />
+      <npcType id="dog" name="Dog" />
     )";
     useData(data);
-    const auto &rock = server->addObject("rock", {15, 15}, "Alice");
+    auto &dog = server->addNPC("dog", {15, 15});
+    dog.permissions.setPlayerOwner("Alice");
 
-    THEN("it has the default name from its object type") {
-      const auto &bobRock = cBob->waitForFirstObject();
+    THEN("it's named the default, \"Dog\"") {
+      const auto &bobDog = cBob->waitForFirstNPC();
       REPEAT_FOR_MS(100);
-      CHECK(bobRock.name() == "Rock");
+      CHECK(bobDog.name() == "Dog");
     }
 
     AND_WHEN("Charlie logs in nearby") {
@@ -261,18 +262,18 @@ TEST_CASE_METHOD(TwoClientsWithData, "Object naming") {
       server->waitForUsers(3);
 
       THEN("it has the default name") {
-        const auto &charlieRock = cCharlie.waitForFirstObject();
+        const auto &charlieDog = cCharlie.waitForFirstNPC();
         REPEAT_FOR_MS(100);
-        CHECK(charlieRock.name() == "Rock");
+        CHECK(charlieDog.name() == "Dog");
       }
     }
 
-    WHEN("she names it \"Rocky\"") {
-      cAlice->sendMessage(CL_SET_OBJECT_NAME, makeArgs(rock.serial(), "Rocky"));
+    WHEN("she names it \"Rex\"") {
+      cAlice->sendMessage(CL_SET_OBJECT_NAME, makeArgs(dog.serial(), "Rex"));
 
       THEN("Bob knows its name") {
-        const auto &bobRock = cBob->waitForFirstObject();
-        WAIT_UNTIL(bobRock.name() == "Rocky");
+        const auto &bobDog = cBob->waitForFirstNPC();
+        WAIT_UNTIL(bobDog.name() == "Rex");
 
         AND_WHEN("Charlie logs in nearby") {
           auto cCharlie =
@@ -280,26 +281,25 @@ TEST_CASE_METHOD(TwoClientsWithData, "Object naming") {
           server->waitForUsers(3);
 
           THEN("he knows its name") {
-            const auto &charlieRock = cCharlie.waitForFirstObject();
-            WAIT_UNTIL(charlieRock.name() == "Rocky");
+            const auto &charlieDog = cCharlie.waitForFirstNPC();
+            WAIT_UNTIL(charlieDog.name() == "Rex");
           }
         }
       }
     }
 
     SECTION("propagated object info includes correct name") {
-      WHEN("she names it \"Geodude\"") {
-        cAlice->sendMessage(CL_SET_OBJECT_NAME,
-                            makeArgs(rock.serial(), "Geodude"));
+      WHEN("she names it \"Spot\"") {
+        cAlice->sendMessage(CL_SET_OBJECT_NAME, makeArgs(dog.serial(), "Spot"));
 
         AND_WHEN("Charlie logs in nearby") {
           auto cCharlie =
               TestClient::WithUsernameAndDataString("Charlie", data);
           server->waitForUsers(3);
 
-          THEN("he knows its correct name") {
-            const auto &charlieRock = cCharlie.waitForFirstObject();
-            WAIT_UNTIL(charlieRock.name() == "Geodude");
+          THEN("he knows it's named \"Spot\"") {
+            const auto &charlieDog = cCharlie.waitForFirstNPC();
+            WAIT_UNTIL(charlieDog.name() == "Spot");
           }
         }
       }
@@ -308,9 +308,11 @@ TEST_CASE_METHOD(TwoClientsWithData, "Object naming") {
 }
 
 // Owner always sees the change, regardless of distance
+// Citizens see difference
 // Enforce character limit
 // Reset
 // Limit to pets, merchants
+// Object must be nearby
 // Persistent
 // Others who log in or approach can see custom names
 // Names can contain spaces
