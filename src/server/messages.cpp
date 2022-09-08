@@ -319,7 +319,7 @@ HANDLE_MESSAGE(CL_SET_OBJECT_NAME) {
   auto *ent = _entities.find(serial);
 
   if (!ent->canHaveCustomName()) return;
-  if (distance(*ent, user) > ACTION_DISTANCE) return;
+  if (distance(*ent, user) > ACTION_DISTANCE) RETURN_WITH(WARNING_TOO_FAR)
 
   ent->setCustomName(name);
 

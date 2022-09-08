@@ -320,6 +320,10 @@ TEST_CASE_METHOD(TwoClientsWithData, "Object naming") {
             REPEAT_FOR_MS(300);
             CHECK(aliceDog.name() == "Dog");
           }
+
+          THEN("she gets a warning") {
+            CHECK(cAlice->waitForMessage(WARNING_TOO_FAR));
+          }
         }
       }
     }
