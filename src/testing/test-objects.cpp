@@ -304,6 +304,25 @@ TEST_CASE_METHOD(TwoClientsWithData, "Object naming") {
         }
       }
     }
+
+    SECTION("Target must be nearby") {
+      AND_GIVEN("she is out of range of the dog") {
+        dog.ai.giveOrder(AI::ORDER_TO_STAY);
+        uAlice->teleportTo({150, 0});
+        REPEAT_FOR_MS(100);
+
+        WHEN("she tries to name it") {
+          const auto &aliceDog = cAlice->waitForFirstNPC();
+          cAlice->sendMessage(CL_SET_OBJECT_NAME,
+                              makeArgs(dog.serial(), "Rex"));
+
+          THEN("it is still named \"Dog\"") {
+            REPEAT_FOR_MS(300);
+            CHECK(aliceDog.name() == "Dog");
+          }
+        }
+      }
+    }
   }
 
   SECTION("Plain objects can't be named") {
@@ -339,7 +358,6 @@ TEST_CASE_METHOD(TwoClientsWithData, "Object naming") {
 
         THEN("it has the new name") {
           const auto &aliceShop = cAlice->waitForFirstObject();
-          REPEAT_FOR_MS(100);
           WAIT_UNTIL(aliceShop.name() == "Caps for Sale");
         }
       }
@@ -347,11 +365,9 @@ TEST_CASE_METHOD(TwoClientsWithData, "Object naming") {
   }
 }
 
-// Owner always sees the change, regardless of distance
-// Citizens see difference
+// Owner and citizens always see the change, regardless of distance
 // Enforce character limit
 // Reset
-// Object must be nearby
 // Persistent
 // Try with bad serial
 // Permissions
