@@ -67,6 +67,7 @@ class NPC : public Entity, public QuestNode {
   int getLevelDifference(const User &user) const override;
   double combatDamage() const override;
   bool grantsXPOnDeath() const override { return type()->rewardsXP; }
+  virtual bool canHaveCustomName() const override { return true; }
   double getTameChance() const;
 
   char classTag() const override { return 'n'; }

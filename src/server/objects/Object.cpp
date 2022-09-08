@@ -125,6 +125,12 @@ bool Object::isAbleToDeconstruct(const User &user) const {
   return true;
 }
 
+bool Object::canHaveCustomName() const {
+  const auto isMerchantObject = objType().merchantSlots() > 0;
+  if (isMerchantObject) return true;
+  return false;
+}
+
 void Object::sendInfoToClient(const User &targetUser, bool isNew) const {
   const Server &server = Server::instance();
 
@@ -188,6 +194,8 @@ void Object::sendInfoToClient(const User &targetUser, bool isNew) const {
 
   // Quests
   QuestNode::sendQuestsToUser(targetUser);
+
+  Entity::sendInfoToClient(targetUser, isNew);
 }
 
 void Object::tellRelevantUsersAboutInventorySlot(size_t slot) const {

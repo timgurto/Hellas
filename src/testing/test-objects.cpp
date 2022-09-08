@@ -309,7 +309,7 @@ TEST_CASE_METHOD(TwoClientsWithData, "Object naming") {
   SECTION("Plain objects can't be named") {
     GIVEN("Alice has a simple rock object") {
       useData(R"(
-        <npcType id="rock" name="Rock" />
+        <objectType id="rock" name="Rock" />
       )");
       auto &rock = server->addObject("rock", {15, 15}, "Alice");
 
@@ -325,18 +325,34 @@ TEST_CASE_METHOD(TwoClientsWithData, "Object naming") {
       }
     }
   }
+
+  SECTION("Merchant objects can be renamed") {
+    GIVEN("Alice has a merchant object") {
+      useData(R"(
+        <objectType id="shop" name="Shop" merchantSlots="1" />
+      )");
+      auto &shop = server->addObject("shop", {15, 15}, "Alice");
+
+      WHEN("she tries to rename it") {
+        cAlice->sendMessage(CL_SET_OBJECT_NAME,
+                            makeArgs(shop.serial(), "Caps for Sale"));
+
+        THEN("it has the new name") {
+          const auto &aliceShop = cAlice->waitForFirstObject();
+          REPEAT_FOR_MS(100);
+          WAIT_UNTIL(aliceShop.name() == "Caps for Sale");
+        }
+      }
+    }
+  }
 }
 
 // Owner always sees the change, regardless of distance
 // Citizens see difference
 // Enforce character limit
 // Reset
-// Limit to pets, merchants
 // Object must be nearby
 // Persistent
-// Others who log in or approach can see custom names
-// Names can contain spaces
 // Try with bad serial
-// Try with non-object-entity serial
 // Permissions
 // UI

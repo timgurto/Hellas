@@ -318,6 +318,8 @@ HANDLE_MESSAGE(CL_SET_OBJECT_NAME) {
 
   auto *ent = _entities.find(serial);
 
+  if (!ent->canHaveCustomName()) return;
+
   ent->setCustomName(name);
 
   broadcastToArea(ent->location(), {SV_OBJECT_NAME, makeArgs(serial, name)});

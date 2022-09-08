@@ -23,7 +23,6 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
 
   ms_t _disappearTimer;  // When this hits zero, it disappears.
 
-
  public:
   Object(const ObjectType *type,
          const MapPoint &loc);  // Generates a new serial
@@ -67,6 +66,7 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
 
   bool isAbleToDeconstruct(const User &user) const;
 
+  virtual bool canHaveCustomName() const override;
 
   bool isGate() const { return objType().isGate(); }
 
