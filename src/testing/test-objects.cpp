@@ -305,6 +305,26 @@ TEST_CASE_METHOD(TwoClientsWithData, "Object naming") {
       }
     }
   }
+
+  SECTION("Plain objects can't be named") {
+    GIVEN("Alice has a simple rock object") {
+      useData(R"(
+        <npcType id="rock" name="Rock" />
+      )");
+      auto &rock = server->addObject("rock", {15, 15}, "Alice");
+
+      WHEN("she tries to rename it") {
+        cAlice->sendMessage(CL_SET_OBJECT_NAME,
+                            makeArgs(rock.serial(), "Rocky"));
+
+        THEN("it's still called \"Rock\"") {
+          const auto &aliceRock = cAlice->waitForFirstObject();
+          REPEAT_FOR_MS(100);
+          CHECK(aliceRock.name() == "Rock");
+        }
+      }
+    }
+  }
 }
 
 // Owner always sees the change, regardless of distance

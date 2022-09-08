@@ -188,8 +188,6 @@ void Object::sendInfoToClient(const User &targetUser, bool isNew) const {
 
   // Quests
   QuestNode::sendQuestsToUser(targetUser);
-
-  Entity::sendInfoToClient(targetUser, isNew);
 }
 
 void Object::tellRelevantUsersAboutInventorySlot(size_t slot) const {
