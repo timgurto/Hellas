@@ -185,6 +185,10 @@ bool Permissions::canUserGetBuffs(std::string username) const {
   return doesUserHaveNormalAccess(username);
 }
 
+bool Permissions::canUserRename(std::string username) const {
+  return doesUserHaveNormalAccess(username);
+}
+
 bool Permissions::canNPCOverlap(const NPC &rhs) const {
   if (!rhs.permissions.hasOwner()) return false;
   // Assume a player, not a city, as pets can't be owned by cities

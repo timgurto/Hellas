@@ -327,6 +327,18 @@ TEST_CASE_METHOD(TwoClientsWithData, "Object naming") {
         }
       }
     }
+
+    SECTION("User must have permission") {
+      WHEN("Bob tries to name it") {
+        cBob->sendMessage(CL_SET_OBJECT_NAME, makeArgs(dog.serial(), "Rex"));
+
+        THEN("it is still named \"Dog\"") {
+          REPEAT_FOR_MS(300);
+          const auto &aliceDog = cAlice->waitForFirstNPC();
+          CHECK(aliceDog.name() == "Dog");
+        }
+      }
+    }
   }
 
   SECTION("Plain objects can't be named") {
@@ -374,5 +386,4 @@ TEST_CASE_METHOD(TwoClientsWithData, "Object naming") {
 // Reset
 // Persistent
 // Try with bad serial
-// Permissions
 // UI

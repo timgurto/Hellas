@@ -315,11 +315,11 @@ HANDLE_MESSAGE(CL_SET_OBJECT_NAME) {
   auto serial = Serial{};
   auto name = ""s;
   READ_ARGS(serial, name);
-
   auto *ent = _entities.find(serial);
 
   if (!ent->canHaveCustomName()) return;
   if (distance(*ent, user) > ACTION_DISTANCE) RETURN_WITH(WARNING_TOO_FAR)
+  if (!ent->permissions.canUserRename(user.name())) return;
 
   ent->setCustomName(name);
 

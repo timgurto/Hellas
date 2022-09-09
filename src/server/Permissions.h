@@ -58,6 +58,7 @@ class Permissions : public EntityComponent {
   bool canUserUseAsTool(std::string username) const;
   bool canUserGather(std::string username) const;
   bool canUserGetBuffs(std::string username) const;
+  bool canUserRename(std::string username) const;
   bool canNPCOverlap(const NPC &rhs) const;
 
   void alertNearbyUsersToNewOwner() const;
