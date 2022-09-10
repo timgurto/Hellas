@@ -110,5 +110,7 @@ bool ClientNPC::addClassSpecificStuffToWindow() {
 
   _window->resize(newWidth, y);
 
+  addRenameButtonsToWindow();
+
   return true;
 }

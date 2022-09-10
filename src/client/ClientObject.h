@@ -205,7 +205,6 @@ class ClientObject : public Sprite, public ClientCombatant {
  protected:
   static const px_t BUTTON_HEIGHT, BUTTON_WIDTH, GAP, BUTTON_GAP;
 
- private:
   void addQuestsToWindow();
   void addConstructionToWindow(Client &client);
   void addMerchantSetupToWindow();
