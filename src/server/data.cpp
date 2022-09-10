@@ -647,6 +647,10 @@ void Server::loadEntities(XmlReader &xr,
 
     if (shouldBeExcludedFromPersistentState) npc.excludeFromPersistentState();
 
+    auto customName = ""s;
+    if (xr.findAttr(elem, "customName", customName))
+      npc.setCustomName(customName);
+
     auto health = Hitpoints{};
     if (xr.findAttr(elem, "health", health)) npc.health(health);
 
@@ -822,6 +826,8 @@ void NPC::writeToXML(XmlWriter &xw) const {
 
   xw.setAttr(e, "x", location().x);
   xw.setAttr(e, "y", location().y);
+
+  if (hasCustomName()) xw.setAttr(e, "customName", customName());
 
   xw.setAttr(e, "health", health());
 

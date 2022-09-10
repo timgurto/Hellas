@@ -476,22 +476,30 @@ TEST_CASE_METHOD(TwoClientsWithData,
 }
 
 TEST_CASE("Custom object names are persistent") {
-  // GIVEN an object with a custom name
+  // GIVEN an object and an NPC with custom names
   auto data = R"(
     <objectType id="shop" name="Shop" merchantSlots="1" />
+    <npcType id="dog" name="Dog" />
   )";
   {
     auto server = TestServer::WithDataString(data);
+
     auto &shop = server.addObject("shop", {10, 15});
     shop.setCustomName("Fancy Hats");
+
+    auto &dog = server.addNPC("dog", {15, 10});
+    dog.setCustomName("Rex");
 
     // When the server restarts
   }
   {
     auto server = TestServer::WithDataStringAndKeepingOldData(data);
 
-    // Then the object still has the custom name
+    // Then they still has the custom names
     auto &shop = server.getFirstObject();
     CHECK((shop.customName() == "Fancy Hats"));
+
+    auto &dog = server.getFirstNPC();
+    CHECK((dog.customName() == "Rex"));
   }
 }
