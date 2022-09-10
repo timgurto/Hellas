@@ -721,13 +721,16 @@ const Loot &Entity::loot() const {
   return *_loot;
 }
 
-void Entity::setCustomName(const std::string &name, const User &setter) {
+void Entity::setCustomName(std::string name, const User &setter) {
   if (!canHaveCustomName()) return;
   if (distance(*this, setter) > Server::ACTION_DISTANCE) {
     setter.sendMessage({WARNING_TOO_FAR});
     return;
   }
   if (!permissions.canUserRename(setter.name())) return;
+
+  const auto MAX_LENGTH = 20;
+  name = name.substr(0, MAX_LENGTH);
 
   _customName = name;
 

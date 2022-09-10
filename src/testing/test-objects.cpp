@@ -399,6 +399,28 @@ TEST_CASE_METHOD(TwoClientsWithData, "Object naming", "[permissions]") {
       }
     }
   }
+
+  SECTION("Max length") {
+    GIVEN("Alice has a merchant object") {
+      useData(R"(
+        <objectType id="shop" name="Shop" merchantSlots="1" />
+      )");
+      auto &shop = server->addObject("shop", {15, 15}, "Alice");
+
+      WHEN("she tries to rename it to a very long name") {
+        const auto attemptedName =
+            "This is a very long name, which should exceed the character limit for custom object names."s;
+        cAlice->sendMessage(CL_SET_OBJECT_NAME,
+                            makeArgs(shop.serial(), attemptedName));
+
+        THEN("its actual name is shorter") {
+          const auto &aliceShop = cAlice->waitForFirstObject();
+          WAIT_UNTIL(aliceShop.name() != "Shop");
+          CHECK(aliceShop.name().size() < attemptedName.size());
+        }
+      }
+    }
+  }
 }
 
 TEST_CASE_METHOD(TwoClientsWithData,
@@ -441,6 +463,5 @@ TEST_CASE_METHOD(TwoClientsWithData,
   }
 }
 
-// Enforce character limit
 // Persistent
 // Try with bad serial
