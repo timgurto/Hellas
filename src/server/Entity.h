@@ -212,7 +212,7 @@ class Entity {
   const Loot &loot() const;
 
   virtual bool canHaveCustomName() const { return false; }
-  void setCustomName(const std::string &name) { _customName = name; }
+  void setCustomName(const std::string &name, const User &setter);
   bool hasCustomName() const { return !_customName.empty(); }
   const std::string &customName() const { return _customName; }
 

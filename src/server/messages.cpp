@@ -317,19 +317,7 @@ HANDLE_MESSAGE(CL_SET_OBJECT_NAME) {
   READ_ARGS(serial, name);
   auto *ent = _entities.find(serial);
 
-  if (!ent->canHaveCustomName()) return;
-  if (distance(*ent, user) > ACTION_DISTANCE) RETURN_WITH(WARNING_TOO_FAR)
-  if (!ent->permissions.canUserRename(user.name())) return;
-
-  ent->setCustomName(name);
-
-  // Broadcast nearby
-  broadcastToArea(ent->location(), {SV_OBJECT_NAME, makeArgs(serial, name)});
-
-  // Broadcast to citizens (if city-owned)
-  const auto &owner = ent->permissions.owner();
-  if (owner.type == Permissions::Owner::CITY)
-    broadcastToCity(owner.name, {SV_OBJECT_NAME, makeArgs(serial, name)});
+  ent->setCustomName(name, user);
 }
 
 HANDLE_MESSAGE(CL_TRADE) {

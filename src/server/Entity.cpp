@@ -7,7 +7,7 @@
 #include "Server.h"
 #include "Spawner.h"
 #include "Spell.h"
-//#include "User.h"
+#include "User.h"
 
 const px_t Entity::MELEE_RANGE = Podes{4}.toPixels();
 
@@ -719,6 +719,27 @@ const Loot &Entity::loot() const {
   }
 
   return *_loot;
+}
+
+void Entity::setCustomName(const std::string &name, const User &setter) {
+  if (!canHaveCustomName()) return;
+  if (distance(*this, setter) > Server::ACTION_DISTANCE) {
+    setter.sendMessage({WARNING_TOO_FAR});
+    return;
+  }
+  if (!permissions.canUserRename(setter.name())) return;
+
+  _customName = name;
+
+  const auto message = Message{SV_OBJECT_NAME, makeArgs(_serial, name)};
+
+  // Broadcast nearby
+  const Server &server = *Server::_instance;
+  server.broadcastToArea(location(), message);
+
+  // Broadcast to citizens (if city-owned)
+  if (permissions.owner().type == Permissions::Owner::CITY)
+    server.broadcastToCity(permissions.owner().name, message);
 }
 
 void Entity::onSuccessfulSpellcast(const std::string &id, const Spell &spell) {
