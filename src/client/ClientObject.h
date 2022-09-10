@@ -73,6 +73,7 @@ class ClientObject : public Sprite, public ClientCombatant {
   ConfirmationWindow *_confirmCedeWindow;
   ConfirmationWindow *_confirmDemolishWindow = nullptr;
   InputWindow *_grantWindow = nullptr;
+  InputWindow *_renameWindow = nullptr;
 
   virtual std::string demolishVerb() const { return "demolish"; }
   virtual std::string demolishButtonText() const { return "Demolish"; }
@@ -213,6 +214,8 @@ class ClientObject : public Sprite, public ClientCombatant {
   void addActionToWindow();
   void performAction();
   void addMerchantTradeToWindow();
+  void addRenameButtonsToWindow();
+  void getInputAndRenameObject(void *objectToRename);
   void addCedeButtonToWindow();
   void confirmAndCedeObject(void *objectToCede);
   void addGiveButtonToWindow();

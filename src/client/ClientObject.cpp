@@ -550,6 +550,35 @@ void ClientObject::addMerchantTradeToWindow() {
   _window->resize(newWidth, y);
 }
 
+void ClientObject::addRenameButtonsToWindow() {
+  px_t x = BUTTON_GAP, y = _window->contentHeight(),
+       newWidth = _window->contentWidth();
+  y += BUTTON_GAP;
+  Button *giveButton = new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Rename",
+                                  [this]() { getInputAndRenameObject(this); });
+  giveButton->setTooltip(
+      "Set this object's name.  It will be visible to all players.");
+  _window->addChild(giveButton);
+  y += BUTTON_GAP + BUTTON_HEIGHT;
+  x += BUTTON_GAP + BUTTON_WIDTH;
+  if (newWidth < x) newWidth = x;
+
+  _window->resize(newWidth, y);
+}
+
+void ClientObject::getInputAndRenameObject(void *objectToRename) {
+  assert(objectToRename != nullptr);
+  ClientObject &obj = *reinterpret_cast<ClientObject *>(objectToRename);
+  auto windowText = "Please enter the new name:"s;
+  if (obj._renameWindow != nullptr)
+    _client.removeWindow(obj._renameWindow);
+  else
+    obj._renameWindow = new InputWindow(_client, windowText, CL_SET_OBJECT_NAME,
+                                        makeArgs(obj.serial()), TextBox::ALL);
+  _client.addWindow(obj._renameWindow);
+  obj._renameWindow->show();
+}
+
 void ClientObject::addCedeButtonToWindow() {
   px_t x = BUTTON_GAP, y = _window->contentHeight(),
        newWidth = _window->contentWidth();
@@ -695,10 +724,11 @@ void ClientObject::assembleWindow(Client &client) {
     return;
   }
 
-  const bool userIsOwner = _owner == Owner{Owner::PLAYER, client.username()},
+  const auto userIsOwner = _owner == Owner{Owner::PLAYER, client.username()},
              hasContainer = objType.containerSlots() > 0 && userHasAccess(),
              isMerchant =
                  objType.merchantSlots() > 0 && userHasMerchantAccess(),
+             canRename = true,
              canCede = (canBeOwnedByACity() &&
                         !client.character().cityName().empty()) &&
                        userIsOwner && (!objType.isPlayerUnique()),
@@ -739,6 +769,7 @@ void ClientObject::assembleWindow(Client &client) {
       if (objType.hasAction()) addActionToWindow();
       if (objType.canDeconstruct()) addDeconstructionToWindow();
       if (canCede) addCedeButtonToWindow();
+      if (canRename) addRenameButtonsToWindow();
       if (canGiveAway) addGiveButtonToWindow();
       if (canDemolish) addDemolishButtonToWindow();
       if (hasWindowText) addWindowTextToWindow();
