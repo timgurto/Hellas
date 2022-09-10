@@ -902,12 +902,17 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
-      case SV_OBJECT_NAME: {
+      case SV_OBJECT_NAME:
+      case SV_OBJECT_HAS_NO_NAME: {
         auto serial = Serial{};
         auto name = ""s;
         singleMsg >> serial >> del;
-        readString(singleMsg, name, MSG_END);
-        singleMsg >> del;
+
+        if (msgCode == SV_OBJECT_NAME) {
+          readString(singleMsg, name, MSG_END);
+          singleMsg >> del;
+        }
+
         if (del != MSG_END) break;
 
         const auto it = _objects.find(serial);

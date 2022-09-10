@@ -731,7 +731,9 @@ void Entity::setCustomName(const std::string &name, const User &setter) {
 
   _customName = name;
 
-  const auto message = Message{SV_OBJECT_NAME, makeArgs(_serial, name)};
+  const auto message = name.empty()
+                           ? Message{SV_OBJECT_HAS_NO_NAME, makeArgs(_serial)}
+                           : Message{SV_OBJECT_NAME, makeArgs(_serial, name)};
 
   // Broadcast nearby
   const Server &server = *Server::_instance;

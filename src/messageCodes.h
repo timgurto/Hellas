@@ -79,9 +79,13 @@ enum MessageCode {
   // Arguments: serial
   CL_DESTROY_OBJECT,
 
-  // "I want to set object ...'s name to ..."
+  // "I want to give object ... a custom name: ..."
   // Arguments: serial, name
   CL_SET_OBJECT_NAME,
+
+  // "I want to revert object ...'s custom name to default"
+  // Arguments: serial
+  CL_CLEAR_OBJECT_NAME,
 
   // "I want to trade using merchant slot ... in object ..."
   // Arguments: serial, slot
@@ -373,6 +377,10 @@ enum MessageCode {
   // An object's custom name
   // Arguments: serial, name
   SV_OBJECT_NAME,
+
+  // An object has no custom name
+  // Arguments: serial
+  SV_OBJECT_HAS_NO_NAME,
 
   // The details of a dropped item
   // Arguments: serial, x, y, type, quantity, health, suffix, isNew (0/1)

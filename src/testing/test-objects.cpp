@@ -379,6 +379,26 @@ TEST_CASE_METHOD(TwoClientsWithData, "Object naming", "[permissions]") {
       }
     }
   }
+
+  SECTION("Resetting") {
+    GIVEN("Alice has a merchant object named 'Custom Shop'") {
+      useData(R"(
+        <objectType id="shop" name="Shop" merchantSlots="1" />
+      )");
+      auto &shop = server->addObject("shop", {15, 15}, "Alice");
+      shop.setCustomName("Custom Shop", *uAlice);
+      auto &aliceShop = cAlice->waitForFirstObject();
+      WAIT_UNTIL(aliceShop.name() == "Custom Shop");
+
+      WHEN("she resets its custom name") {
+        cAlice->sendMessage(CL_CLEAR_OBJECT_NAME, makeArgs(shop.serial()));
+
+        THEN("it has its default name once again") {
+          WAIT_UNTIL(aliceShop.name() == "Shop");
+        }
+      }
+    }
+  }
 }
 
 TEST_CASE_METHOD(TwoClientsWithData,
@@ -422,7 +442,5 @@ TEST_CASE_METHOD(TwoClientsWithData,
 }
 
 // Enforce character limit
-// Reset
 // Persistent
 // Try with bad serial
-// UI
