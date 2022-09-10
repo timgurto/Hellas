@@ -554,11 +554,22 @@ void ClientObject::addRenameButtonsToWindow() {
   px_t x = BUTTON_GAP, y = _window->contentHeight(),
        newWidth = _window->contentWidth();
   y += BUTTON_GAP;
-  Button *giveButton = new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Rename",
-                                  [this]() { getInputAndRenameObject(this); });
-  giveButton->setTooltip(
+
+  Button *renameButton =
+      new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Rename",
+                 [this]() { getInputAndRenameObject(this); });
+  renameButton->setTooltip(
       "Set this object's name.  It will be visible to all players.");
-  _window->addChild(giveButton);
+  _window->addChild(renameButton);
+  x += BUTTON_GAP + BUTTON_WIDTH;
+  if (newWidth < x) newWidth = x;
+
+  Button *clearButton =
+      new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Reset name", [this]() {
+        _client.sendMessage({CL_CLEAR_OBJECT_NAME, serial()});
+      });
+  clearButton->setTooltip("Reset this object's name to the default.");
+  _window->addChild(clearButton);
   y += BUTTON_GAP + BUTTON_HEIGHT;
   x += BUTTON_GAP + BUTTON_WIDTH;
   if (newWidth < x) newWidth = x;
