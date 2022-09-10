@@ -517,6 +517,10 @@ void Server::loadEntities(XmlReader &xr,
     // file.
     if (shouldBeExcludedFromPersistentState) obj.excludeFromPersistentState();
 
+    auto customName = ""s;
+    if (xr.findAttr(elem, "customName", customName))
+      obj.setCustomName(customName);
+
     size_t n;
     ItemSet gatherContents;
     for (auto content : xr.getChildren("gatherable", elem)) {
@@ -749,6 +753,8 @@ void Object::writeToXML(XmlWriter &xw) const {
 
   xw.setAttr(e, "x", location().x);
   xw.setAttr(e, "y", location().y);
+
+  if (hasCustomName()) xw.setAttr(e, "customName", customName());
 
   for (auto &content : gatherable.contents()) {
     auto contentE = xw.addChild("gatherable", e);

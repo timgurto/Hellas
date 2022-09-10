@@ -721,7 +721,8 @@ const Loot &Entity::loot() const {
   return *_loot;
 }
 
-void Entity::setCustomName(std::string name, const User &setter) {
+void Entity::setCustomNameWithChecksAndAnnouncements(std::string name,
+                                                     const User &setter) {
   if (!canHaveCustomName()) return;
   if (distance(*this, setter) > Server::ACTION_DISTANCE) {
     setter.sendMessage({WARNING_TOO_FAR});
@@ -732,7 +733,7 @@ void Entity::setCustomName(std::string name, const User &setter) {
   const auto MAX_LENGTH = 20;
   name = name.substr(0, MAX_LENGTH);
 
-  _customName = name;
+  setCustomName(name);
 
   const auto message = name.empty()
                            ? Message{SV_OBJECT_HAS_NO_NAME, makeArgs(_serial)}

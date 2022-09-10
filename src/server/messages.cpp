@@ -318,7 +318,7 @@ HANDLE_MESSAGE(CL_CLEAR_OBJECT_NAME) {
 
   if (!ent) RETURN_WITH(WARNING_DOESNT_EXIST)
 
-  ent->setCustomName({}, user);
+  ent->setCustomNameWithChecksAndAnnouncements({}, user);
 }
 
 HANDLE_MESSAGE(CL_SET_OBJECT_NAME) {
@@ -329,7 +329,7 @@ HANDLE_MESSAGE(CL_SET_OBJECT_NAME) {
 
   if (!ent) RETURN_WITH(WARNING_DOESNT_EXIST)
 
-  ent->setCustomName(name, user);
+  ent->setCustomNameWithChecksAndAnnouncements(name, user);
 }
 
 HANDLE_MESSAGE(CL_TRADE) {

@@ -386,7 +386,7 @@ TEST_CASE_METHOD(TwoClientsWithData, "Object naming", "[permissions]") {
         <objectType id="shop" name="Shop" merchantSlots="1" />
       )");
       auto &shop = server->addObject("shop", {15, 15}, "Alice");
-      shop.setCustomName("Custom Shop", *uAlice);
+      shop.setCustomNameWithChecksAndAnnouncements("Custom Shop", *uAlice);
       auto &aliceShop = cAlice->waitForFirstObject();
       WAIT_UNTIL(aliceShop.name() == "Custom Shop");
 
@@ -475,4 +475,23 @@ TEST_CASE_METHOD(TwoClientsWithData,
   }
 }
 
-// Persistent
+TEST_CASE("Custom object names are persistent") {
+  // GIVEN an object with a custom name
+  auto data = R"(
+    <objectType id="shop" name="Shop" merchantSlots="1" />
+  )";
+  {
+    auto server = TestServer::WithDataString(data);
+    auto &shop = server.addObject("shop", {10, 15});
+    shop.setCustomName("Fancy Hats");
+
+    // When the server restarts
+  }
+  {
+    auto server = TestServer::WithDataStringAndKeepingOldData(data);
+
+    // Then the object still has the custom name
+    auto &shop = server.getFirstObject();
+    CHECK((shop.customName() == "Fancy Hats"));
+  }
+}
