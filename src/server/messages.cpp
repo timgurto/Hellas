@@ -316,6 +316,8 @@ HANDLE_MESSAGE(CL_CLEAR_OBJECT_NAME) {
   READ_ARGS(serial);
   auto *ent = _entities.find(serial);
 
+  if (!ent) return;
+
   ent->setCustomName({}, user);
 }
 
@@ -324,6 +326,8 @@ HANDLE_MESSAGE(CL_SET_OBJECT_NAME) {
   auto name = ""s;
   READ_ARGS(serial, name);
   auto *ent = _entities.find(serial);
+
+  if (!ent) return;
 
   ent->setCustomName(name, user);
 }
