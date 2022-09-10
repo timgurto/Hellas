@@ -323,7 +323,13 @@ HANDLE_MESSAGE(CL_SET_OBJECT_NAME) {
 
   ent->setCustomName(name);
 
+  // Broadcast nearby
   broadcastToArea(ent->location(), {SV_OBJECT_NAME, makeArgs(serial, name)});
+
+  // Broadcast to citizens (if city-owned)
+  const auto &owner = ent->permissions.owner();
+  if (owner.type == Permissions::Owner::CITY)
+    broadcastToCity(owner.name, {SV_OBJECT_NAME, makeArgs(serial, name)});
 }
 
 HANDLE_MESSAGE(CL_TRADE) {

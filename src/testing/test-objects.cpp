@@ -242,7 +242,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Object-health categories",
   }
 }
 
-TEST_CASE_METHOD(TwoClientsWithData, "Object naming") {
+TEST_CASE_METHOD(TwoClientsWithData, "Object naming", "[permissions]") {
   GIVEN("Alice owns a dog") {
     const auto data = R"(
       <npcType id="dog" name="Dog" />
@@ -381,7 +381,46 @@ TEST_CASE_METHOD(TwoClientsWithData, "Object naming") {
   }
 }
 
-// Owner and citizens always see the change, regardless of distance
+TEST_CASE_METHOD(TwoClientsWithData,
+                 "Distant citizens know when a city-owned object is renamed",
+                 "[city]") {
+  GIVEN("Bob is very far away from Alice") {
+    useData(R"(
+      <terrain index="G" id="grass" />
+      <list id="default" default="1" >
+          <allow id="grass" />
+      </list>
+      <newPlayerSpawn x="10" y="10" range="0" />
+      <size x="40" y="1" />
+      <row    y="0" terrain = "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG" />
+
+      <objectType id="shop" name="Shop" merchantSlots="1" />
+    )");
+    uBob->teleportTo({1200, 0});
+
+    GIVEN("Alice and Bob are in a city") {
+      server->cities().createCity("Athens", {}, {});
+      server->cities().addPlayerToCity(*uAlice, "Athens");
+      server->cities().addPlayerToCity(*uBob, "Athens");
+
+      AND_GIVEN("the city owns a merchant object near Alice") {
+        auto &shop = server->addObject("shop", {5, 5});
+        shop.permissions.setCityOwner("Athens");
+
+        WHEN("Alice renames the object") {
+          cAlice->sendMessage(CL_SET_OBJECT_NAME,
+                              makeArgs(shop.serial(), "Caps for Sale"));
+
+          THEN("Bob knows") {
+            const auto &bobShop = cBob->waitForFirstObject();
+            WAIT_UNTIL(bobShop.name() == "Caps for Sale");
+          }
+        }
+      }
+    }
+  }
+}
+
 // Enforce character limit
 // Reset
 // Persistent
