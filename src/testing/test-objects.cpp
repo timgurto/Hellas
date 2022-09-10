@@ -426,15 +426,13 @@ TEST_CASE_METHOD(TwoClientsWithData, "Object naming", "[permissions]") {
 TEST_CASE_METHOD(ServerAndClient, "Renaming nonexistent objects") {
   WHEN("the user tries to rename a nonexistent object") {
     client.sendMessage(CL_SET_OBJECT_NAME, makeArgs(1337, "Irrelevant"));
-
-    THEN("the server doesn't crash") { server.nop(); }
   }
-
   WHEN("the user tries to clear a nonexistent object's name") {
     client.sendMessage(CL_CLEAR_OBJECT_NAME, makeArgs(1337));
-
-    THEN("the server doesn't crash") { server.nop(); }
   }
+
+  // THEN the client receives a warning message
+  CHECK(client.waitForMessage(WARNING_DOESNT_EXIST));
 }
 
 TEST_CASE_METHOD(TwoClientsWithData,
@@ -478,4 +476,3 @@ TEST_CASE_METHOD(TwoClientsWithData,
 }
 
 // Persistent
-// Try with bad serial
