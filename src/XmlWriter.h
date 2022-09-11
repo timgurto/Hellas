@@ -31,6 +31,7 @@ class XmlWriter {
                       const std::string &val);
   static void setAttr(TiXmlElement *elem, const char *attr, int val);
   static void setAttr(TiXmlElement *elem, const char *attr, const char *val);
+  static void setAttr(TiXmlElement *elem, const char *attr, bool val);
 
   void publish();
 };

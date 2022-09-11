@@ -135,6 +135,9 @@ void Client::initWindows() {
   initializeEscapeWindow();
   addWindow(_escapeWindow);
 
+  initialiseOptionsWindow();
+  addWindow(_optionsWindow);
+
   initializeQuestLog();
   addWindow(_questLog);
 
@@ -307,13 +310,20 @@ void Client::refreshTargetBuffs() {
 
 void Client::initializeEscapeWindow() {
   const auto BUTTON_WIDTH = 80, BUTTON_HEIGHT = 20, GAP = 3,
-             WIN_WIDTH = BUTTON_WIDTH + 2 * GAP, NUM_BUTTONS = 2,
+             WIN_WIDTH = BUTTON_WIDTH + 2 * GAP, NUM_BUTTONS = 3,
              WIN_HEIGHT = NUM_BUTTONS * BUTTON_HEIGHT + (NUM_BUTTONS + 1) * GAP;
   _escapeWindow = Window::WithRectAndTitle({0, 0, WIN_WIDTH, WIN_HEIGHT},
                                            "System Menu"s, mouse());
   _escapeWindow->center();
   auto y = GAP;
   auto x = GAP;
+
+  _escapeWindow->addChild(
+      new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Options"s, [this]() {
+        _optionsWindow->show();
+        Window::hideWindow(_escapeWindow);
+      }));
+  y += BUTTON_HEIGHT + GAP;
 
   _escapeWindow->addChild(new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT},
                                      "Exit to desktop"s,

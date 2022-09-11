@@ -42,4 +42,8 @@ void XmlWriter::setAttr(TiXmlElement *elem, const char *attr, const char *val) {
   elem->SetAttribute(attr, val);
 }
 
+void XmlWriter::setAttr(TiXmlElement *elem, const char *attr, bool val) {
+  elem->SetAttribute(attr, val ? 1 : 0);
+}
+
 void XmlWriter::publish() { _doc.SaveFile(_filename); }

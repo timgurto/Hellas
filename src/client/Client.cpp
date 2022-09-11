@@ -166,6 +166,8 @@ void Client::initializeGearSlotNames() {
 }
 
 void Client::initStatics() {
+  // Make sure this all happens only once, regardless of how many clients are
+  // running in this process
   static auto alreadyInitialised = false;
   if (alreadyInitialised) return;
   alreadyInitialised = true;

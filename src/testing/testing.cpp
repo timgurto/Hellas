@@ -4,6 +4,7 @@
 #include "../Args.h"
 #include "../WorkerThread.h"
 #include "../client/Client.h"
+#include "../client/Options.h"
 #include "../client/Renderer.h"
 #include "catch.hpp"
 
@@ -12,6 +13,7 @@ FILE __iob_func[3] = {*stdin, *stdout, *stderr};
 }
 
 Args cmdLineArgs;  // MUST be defined before renderer
+Options options;
 
 // SDL requires all calls to be in the same thread.
 // Because the test project spins out clients into separate threads, there is

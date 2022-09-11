@@ -56,6 +56,7 @@ class XmlReader {
     return true;
   }
   static bool findAttr(TiXmlElement *elem, const char *attr, std::string &val);
+  static bool findAttr(TiXmlElement *elem, const char *attr, bool &val);
   static bool findAttr(TiXmlElement *elem, const char *attr,
                        class BasisPoints &val);
 

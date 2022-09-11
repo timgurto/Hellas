@@ -134,6 +134,7 @@
     <ClCompile Include="src\client\MemoisedImageDirectory.cpp" />
     <ClCompile Include="src\client\ImageWithHighlight.cpp" />
     <ClCompile Include="src\client\KeyboardStateFetcher.cpp" />
+    <ClCompile Include="src\client\Options.cpp" />
     <ClCompile Include="src\client\Projectile.cpp" />
     <ClCompile Include="src\client\SDLwrappers.cpp" />
     <ClCompile Include="src\client\socialWindow.cpp" />
@@ -247,6 +248,7 @@
     <ClInclude Include="src\client\MemoisedImageDirectory.h" />
     <ClInclude Include="src\client\ImageWithHighlight.h" />
     <ClInclude Include="src\client\KeyboardStateFetcher.h" />
+    <ClInclude Include="src\client\Options.h" />
     <ClInclude Include="src\client\Projectile.h" />
     <ClInclude Include="src\client\SDLwrappers.h" />
     <ClInclude Include="src\client\Sprite.h" />

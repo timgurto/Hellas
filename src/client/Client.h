@@ -378,6 +378,7 @@ class Client : public TextEntryManager {
   OutlinedLabel *_lastErrorMessage{nullptr};
   mutable ms_t _errorMessageTimer{0};
   Window *_escapeWindow{nullptr};
+  Window *_optionsWindow{nullptr};
   List *_questProgress{nullptr};
   Element *_toolsDisplay{nullptr};
   void refreshTools() const;
@@ -421,6 +422,7 @@ class Client : public TextEntryManager {
   void initTargetBuffs();
   void refreshTargetBuffs();
   void initializeEscapeWindow();
+  void initialiseOptionsWindow();
   void updateUI();
   List *_toasts{nullptr};
   void initToasts();

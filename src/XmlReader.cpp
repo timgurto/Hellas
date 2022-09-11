@@ -80,6 +80,16 @@ bool XmlReader::findAttr(TiXmlElement *elem, const char *attr,
   return false;
 }
 
+bool XmlReader::findAttr(TiXmlElement *elem, const char *attr, bool &val) {
+  if (elem == nullptr) return false;
+
+  const char *const cStrVal = elem->Attribute(attr);
+  if (!cStrVal) return false;
+
+  val = cStrVal != "0"s;
+  return true;
+}
+
 bool XmlReader::findAttr(TiXmlElement *elem, const char *attr,
                          BasisPoints &val) {
   auto rawNumber = short{};

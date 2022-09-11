@@ -120,6 +120,7 @@
     <ClCompile Include="src\client\drawing.cpp" />
     <ClCompile Include="src\client\drawPerItem.cpp" />
     <ClCompile Include="src\client\MemoisedImageDirectory.cpp" />
+    <ClCompile Include="src\client\Options.cpp" />
     <ClCompile Include="src\client\SDLwrappers.cpp" />
     <ClCompile Include="src\client\UIGroup.cpp" />
     <ClCompile Include="src\client\HasSounds.cpp" />
@@ -341,6 +342,7 @@
     <ClInclude Include="src\client\CSuffixes.h" />
     <ClInclude Include="src\client\drawPerItem.h" />
     <ClInclude Include="src\client\MemoisedImageDirectory.h" />
+    <ClInclude Include="src\client\Options.h" />
     <ClInclude Include="src\client\SDLwrappers.h" />
     <ClInclude Include="src\client\CurrentTools.h" />
     <ClInclude Include="src\client\UIGroup.h" />
