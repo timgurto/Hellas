@@ -8,8 +8,10 @@
 #include "../Args.h"
 #include "../WorkerThread.h"
 #include "../types.h"
+#include "Options.h"
 
 extern Args cmdLineArgs;
+extern Options options;
 extern Renderer renderer;
 
 size_t Renderer::_count = 0;
@@ -50,7 +52,17 @@ void Renderer::init() {
   const px_t screenH =
       cmdLineArgs.contains("height") ? cmdLineArgs.getInt("height") : 720;
 
-  bool fullScreen = cmdLineArgs.contains("fullscreen");
+  // Full screen or window?
+  // 1. If -window or -fullscreen arg is passed, use that.
+  // 2. Otherwise, if debug client, make it windowed.
+  // 3. Otherwise, use saved option.
+  // 4. Default (or unsaved) option is windowed.
+  bool fullScreen = options.graphics.fullScreen;
+#ifdef DEBUG
+  fullScreen = false;
+#endif
+  if (cmdLineArgs.contains("fullscreen")) fullScreen = true;
+  if (cmdLineArgs.contains("window")) fullScreen = false;
 
   SDL_THREAD_BEGIN(this, fullScreen, screenX, screenY, screenW, screenH)
   _window =

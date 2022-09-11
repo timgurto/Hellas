@@ -8,11 +8,17 @@
 void Options::save() {
   auto xw = XmlWriter{m_filePath};
 
+  auto *elemGraphics = xw.addChild("graphics");
+  xw.setAttr(elemGraphics, "fullScreen", graphics.fullScreen);
+
   xw.publish();
 }
 
 void Options::load() {
   auto xr = XmlReader::FromFile(m_filePath);
+
+  auto *elemGraphics = xr.findChild("graphics");
+  xr.findAttr(elemGraphics, "fullScreen", graphics.fullScreen);
 }
 
 void Options::getFilePath() {
@@ -53,4 +59,7 @@ void Client::initialiseOptionsWindow() {
     checkbox->onChange([](Client &) { options.save(); });
     contents->addChild(checkbox);
   };
+
+  addSection("Graphics");
+  addBoolOption("Full screen (requires restart)", options.graphics.fullScreen);
 }
