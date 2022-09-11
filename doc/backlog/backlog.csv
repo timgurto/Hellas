@@ -40,7 +40,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 41,Weather particles,89,144,Aesthetics,,,,
 42,Recruitment invitations,2,3,Usability,,,TRUE,
 43,UI SFX,89,34,Aesthetics,,,,
-44,Name pets,89,34,Feature,,,,
+44,Name pets,89,34,Feature,,TRUE,,
 45,Clear quest progress when abandoned,1,3,Bug,,,,
 46,Base humanoid-NPC SFX on gear,3,8,Aesthetics,,,,
 47,Show quantity available in merchant UI,3,5,Usability,,,,

@@ -1363,6 +1363,7 @@ Color ClientObject::nameColor() const {
 
 bool ClientObject::shouldDrawName() const {
   if (_client.currentMouseOverEntity() == this) return true;
+  if (!_customName.empty()) return true;
   return false;
 }
 
