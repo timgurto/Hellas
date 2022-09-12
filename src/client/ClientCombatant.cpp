@@ -24,7 +24,7 @@ void ClientCombatant::drawHealthBarIfAppropriate(const MapPoint &objectLocation,
                                                  px_t objHeight) const {
   if (!shouldDrawHealthBar()) return;
 
-  auto BAR_TOTAL_LENGTH = 10_px;
+  auto BAR_TOTAL_LENGTH = 15_px;
   if (!options.ui.uniformHealthBars)
     BAR_TOTAL_LENGTH = toInt(log(maxHealth(), 1.1) * 0.3);
 
