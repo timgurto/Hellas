@@ -25,11 +25,8 @@ void ClientCombatant::drawHealthBarIfAppropriate(const MapPoint &objectLocation,
   if (!shouldDrawHealthBar()) return;
 
   auto BAR_TOTAL_LENGTH = 10_px;
-  if (options.ui.proportionalHealthBars) {
-    const auto HEALTH_PER_PIXEL = 5;
-    BAR_TOTAL_LENGTH = toInt(maxHealth() / HEALTH_PER_PIXEL);
-    BAR_TOTAL_LENGTH = max(BAR_TOTAL_LENGTH, 2);
-  }
+  if (!options.ui.uniformHealthBars)
+    BAR_TOTAL_LENGTH = toInt(log(maxHealth(), 1.1) * 0.3);
 
   static const px_t BAR_HEIGHT = 2,
                     BAR_GAP =

@@ -16,7 +16,7 @@ struct Options {
   } audio;
 
   struct UI {
-    bool proportionalHealthBars{false};
+    bool uniformHealthBars{false};
   } ui;
 
   struct Parental {

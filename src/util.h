@@ -161,4 +161,6 @@ std::set<std::string> getXMLFiles(std::string path, std::string toExclude);
 
 Color getDifficultyColor(Level contentLevel, Level playerLevel);
 
+double log(double x, double base);
+
 #endif

@@ -216,3 +216,5 @@ Color getDifficultyColor(Level contentLevel, Level playerLevel) {
   if (difficulty <= 9) return Color::DIFFICULTY_HIGH;
   return Color::DIFFICULTY_VERY_HIGH;
 }
+
+double log(double x, double base) { return log(x) / log(base); }

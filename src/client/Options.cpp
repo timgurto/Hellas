@@ -15,7 +15,7 @@ void Options::save() {
   xw.setAttr(elem, "enableSFX", audio.enableSFX);
 
   elem = xw.addChild("ui");
-  xw.setAttr(elem, "proportionalHealthBars", ui.proportionalHealthBars);
+  xw.setAttr(elem, "uniformHealthBars", ui.uniformHealthBars);
 
   elem = xw.addChild("parental");
   xw.setAttr(elem, "showCustomNames", parental.showCustomNames);
@@ -33,7 +33,7 @@ void Options::load() {
   xr.findAttr(elem, "enableSFX", audio.enableSFX);
 
   elem = xr.findChild("ui");
-  xr.findAttr(elem, "proportionalHealthBars", ui.proportionalHealthBars);
+  xr.findAttr(elem, "uniformHealthBars", ui.uniformHealthBars);
 
   elem = xr.findChild("parental");
   xr.findAttr(elem, "showCustomNames", parental.showCustomNames);
@@ -87,8 +87,7 @@ void Client::initialiseOptionsWindow() {
   addGap();
 
   addSection("UI");
-  addBoolOption("Use proportional health bars",
-                options.ui.proportionalHealthBars);
+  addBoolOption("Uniform health bars", options.ui.uniformHealthBars);
   addGap();
 
   addSection("Parental Controls");
