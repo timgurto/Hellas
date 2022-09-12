@@ -1,5 +1,6 @@
 #include <cassert>
 
+#include "TemporaryUserStats.h"
 #include "TestClient.h"
 #include "TestFixtures.h"
 #include "TestServer.h"
@@ -194,6 +195,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       }
     }
   }
+
   GIVEN("a user with a shield that never blocks, and an enemy") {
     useData(R"(
       <item id="shield" gearSlot="offhand" >
@@ -213,6 +215,36 @@ TEST_CASE_METHOD(ServerAndClientWithData,
     WHEN("the enemy hits the player many times (mostly hits, no blocks)") {
       THEN("the shield is not damaged") {
         REPEAT_FOR_MS(50000) { REQUIRE_FALSE(shieldSlot.isDamaged()); }
+      }
+    }
+  }
+}
+
+TEST_CASE_METHOD(ServerAndClientWithData, "No gear is damaged on dodge",
+                 "[damage-on-use][combat]") {
+  GIVEN("a user with a hat, and an enemy who can't kill him") {
+    useData(R"(
+      <item id = "hat" gearSlot = "head" />
+      <npcType id="hummingbird" level="1" attack="1" attackTime="1"
+  maxHealth="1000000000" />
+    )");
+    auto &hummingbird = server->addNPC("hummingbird", {10, 15});
+    auto &headSlot = user->gear(Item::HEAD);
+    headSlot = {&server->getFirstItem(),
+                ItemReportingInfo::UserGear(user, Item::HEAD), 1};
+
+    AND_GIVEN("the user always dodges") {
+      CHANGE_BASE_USER_STATS.dodge(10000);
+      user->updateStats();
+
+      auto stats = hummingbird.stats();
+      stats.hit = 10000;  // Remove miss from hit table; we want only dodges
+      hummingbird.stats(stats);
+
+      WHEN("the enemy hits him many times") {
+        THEN("the hat is undamaged") {
+          REPEAT_FOR_MS(10000) { REQUIRE_FALSE(headSlot.isDamaged()); }
+        }
       }
     }
   }

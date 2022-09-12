@@ -86,7 +86,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 88,Help-topic list is missing shadow boxes,2,21,Bug,,,,
 89,"Damage shield on block, not hit",2,2,Bug,,TRUE,TRUE,
 90,Don't damage armour on block,2,2,Bug,,TRUE,TRUE,
-91,Don't damage weapon/armour on miss/dodge,2,2,Bug,,,TRUE,
+91,Don't damage weapon/armour on miss/dodge,2,2,Bug,,TRUE,TRUE,
 92,Usable items on hotbar,89,34,Usability,,,,
 93,Pet aggressive/defensive stance,3,21,Feature,,,,
 94,War/peace SFX,3,34,Usability,40,,,70 War
