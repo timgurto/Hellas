@@ -2,10 +2,13 @@
 
 #include "../Message.h"
 #include "Client.h"
+#include "Options.h"
 #include "UIGroup.h"
 #include "ui/Indicator.h"
 #include "ui/OutlinedLabel.h"
 #include "ui/TextBox.h"
+
+extern Options options;
 
 void Client::showErrorMessage(const std::string &message, Color color) const {
   if (!_lastErrorMessage) return;
@@ -552,6 +555,8 @@ void Client::initSkipTutorialButton() {
 
 void Client::refreshQuestProgress() {
   _questProgress->clearChildren();
+
+  if (!options.ui.showQuestProgress) return;
 
   auto isEmpty = true;
   for (const auto &pair : gameData.quests) {

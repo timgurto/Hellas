@@ -136,7 +136,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 139,Ships get stuck in rivers,21,5,Bug,,TRUE,,
 140,Constructions on hotbar,3,21,Usability,,,,
 141,Allow trading objects,21,13,Feature,96,,TRUE,
-142,Make quests hidable in UI,2,13,Usability,,,,
+142,Make quests hidable in UI,2,13,Usability,,TRUE,,
 143,Cancel action on spellcast,1,2,Exploit,,,,
 144,Right-click to move,89,34,Feature,,,,
 145,Allow giving object to a city,2,2,Feature,,,,

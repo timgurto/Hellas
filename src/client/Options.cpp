@@ -16,6 +16,7 @@ void Options::save() {
 
   elem = xw.addChild("ui");
   xw.setAttr(elem, "uniformHealthBars", ui.uniformHealthBars);
+  xw.setAttr(elem, "showQuestProgress", ui.showQuestProgress);
 
   elem = xw.addChild("parental");
   xw.setAttr(elem, "showCustomNames", parental.showCustomNames);
@@ -34,6 +35,7 @@ void Options::load() {
 
   elem = xr.findChild("ui");
   xr.findAttr(elem, "uniformHealthBars", ui.uniformHealthBars);
+  xr.findAttr(elem, "showQuestProgress", ui.showQuestProgress);
 
   elem = xr.findChild("parental");
   xr.findAttr(elem, "showCustomNames", parental.showCustomNames);
@@ -45,6 +47,10 @@ void Options::getFilePath() {
   if (!appDataPath) return;
   m_filePath = std::string{appDataPath} + "\\Hellas\\options.xml"s;
   free(appDataPath);
+}
+
+void Options::onAnyChange(Client &client) const {
+  client.refreshQuestProgress();
 }
 
 extern Options options;
@@ -74,7 +80,10 @@ void Client::initialiseOptionsWindow() {
     auto *checkbox = new CheckBox(
         *this, {0, 0, contents->contentWidth(), contents->childHeight()},
         linkedValue, description);
-    checkbox->onChange([](Client &) { options.save(); });
+    checkbox->onChange([](Client &client) {
+      options.onAnyChange(client);
+      options.save();
+    });
     contents->addChild(checkbox);
   };
 
@@ -88,6 +97,7 @@ void Client::initialiseOptionsWindow() {
 
   addSection("UI");
   addBoolOption("Uniform health bars", options.ui.uniformHealthBars);
+  addBoolOption("Show quest progress", options.ui.showQuestProgress);
   addGap();
 
   addSection("Parental Controls");

@@ -2,10 +2,13 @@
 
 #include <string>
 
+class Client;
+
 struct Options {
   Options() { getFilePath(); }
   void save();
   void load();
+  void onAnyChange(Client& client) const;
 
   struct Video {
     bool fullScreen{false};
@@ -17,6 +20,7 @@ struct Options {
 
   struct UI {
     bool uniformHealthBars{false};
+    bool showQuestProgress{true};
   } ui;
 
   struct Parental {
