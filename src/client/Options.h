@@ -12,8 +12,12 @@ struct Options {
   } video;
 
   struct Audio {
-    bool enableSFX;
+    bool enableSFX{true};
   } audio;
+
+  struct UI {
+    bool proportionalHealthBars{false};
+  } ui;
 
   struct Parental {
     bool showCustomNames{true};

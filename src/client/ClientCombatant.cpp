@@ -2,9 +2,11 @@
 
 #include "Client.h"
 #include "ClientCombatantType.h"
+#include "Options.h"
 #include "Renderer.h"
 
 extern Renderer renderer;
+extern Options options;
 
 ClientCombatant::ClientCombatant(Client &client,
                                  const ClientCombatantType *type)
@@ -22,7 +24,14 @@ void ClientCombatant::drawHealthBarIfAppropriate(const MapPoint &objectLocation,
                                                  px_t objHeight) const {
   if (!shouldDrawHealthBar()) return;
 
-  static const px_t BAR_TOTAL_LENGTH = 10, BAR_HEIGHT = 2,
+  auto BAR_TOTAL_LENGTH = 10_px;
+  if (options.ui.proportionalHealthBars) {
+    const auto HEALTH_PER_PIXEL = 5;
+    BAR_TOTAL_LENGTH = toInt(maxHealth() / HEALTH_PER_PIXEL);
+    BAR_TOTAL_LENGTH = max(BAR_TOTAL_LENGTH, 2);
+  }
+
+  static const px_t BAR_HEIGHT = 2,
                     BAR_GAP =
                         4;  // Gap between the bar and the top of the sprite
   px_t barLength = toInt(1.0 * BAR_TOTAL_LENGTH * health() / maxHealth());
