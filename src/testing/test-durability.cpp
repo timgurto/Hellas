@@ -13,8 +13,8 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   SECTION("item level") {
     GIVEN("copper is level-10 and bronze is level-20") {
       useData(R"(
-        <item id="copper" ilvl="1" />
-        <item id="bronze" ilvl="60" />
+        <item id="copper" ilvl="10" />
+        <item id="bronze" ilvl="20" />
       )");
 
       WHEN("a user has one of each") {
@@ -169,6 +169,31 @@ TEST_CASE("Combat reduces weapon/armour health", "[damage-on-use][combat]") {
   }
 }
 
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Shields are damaged by blocks and not hits",
+                 "[damage-on-use][combat]") {
+  GIVEN("a user with a shield that always blocks all damage, and an enemy") {
+    useData(R"(
+      <item id="shield" gearSlot="offhand" >
+        <stats block="10000" blockValue="10000" health="10000" />
+        <tag name="shield" />
+      </item>
+      <npcType id="hummingbird" level="1" attack="1" attackTime="1" maxHealth="1000000000" />
+    )");
+    server->addNPC("hummingbird", {10, 15});
+
+    auto &shieldSlot = user->gear(Item::OFFHAND);
+    shieldSlot = {&server->getFirstItem(),
+                  ItemReportingInfo::UserGear(user, Item::OFFHAND), 1};
+    user->updateStats();
+
+    WHEN("the enemy hits the player many times (mostly blocks, no hits)") {
+      THEN("the shield is damaged") {
+        auto &shieldSlot = user->gear(Item::OFFHAND);
+        WAIT_UNTIL_TIMEOUT(shieldSlot.isDamaged(), 10000);
+      }
+    }
+  }
 TEST_CASE("Thrown weapons don't take damage from attacking",
           "[damage-on-use][combat]") {
   GIVEN("a whale, and harpoons that can be thrown or shot") {

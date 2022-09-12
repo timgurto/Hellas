@@ -173,8 +173,8 @@ class Entity {
   virtual void onEnergyChange();    // Probably alerting relevant users.
   virtual void onDeath();           // Anything that needs to happen upon death.
   virtual void onAttackedBy(
-      Entity &attacker,
-      Threat threat);  // If the entity needs to react to an attack.
+      Entity &attacker, Threat threat,
+      CombatResult result);  // If the entity needs to react to an attack.
   virtual void onKilled(Entity &victim) {}  // Upon this entity killing another
   // Inform user that this entity has missed its target with a ranged attack.
   virtual void sendRangedMissMessageTo(const User &userToInform) const {}

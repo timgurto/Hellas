@@ -13,7 +13,9 @@ void DamageOnUse::onUseAsTool() {
 void DamageOnUse::onUseInCombat() {
   if (isBroken()) return;
 
-  if (randDouble() < chanceToGetDamagedOnUseInCombat()) damageFromUse();
+  if (randDouble() < chanceToGetDamagedOnUseInCombat()) {
+    damageFromUse();
+  }
 }
 
 double Object::chanceToGetDamagedOnUseAsTool() const {

@@ -1203,11 +1203,15 @@ void User::deregisterDestroyedObjectIfPlayerUnique(
   this->_playerUniqueCategoriesOwned.erase(type.playerUniqueCategory());
 }
 
-void User::onAttackedBy(Entity &attacker, Threat threat) {
+void User::onAttackedBy(Entity &attacker, Threat threat, CombatResult result) {
   cancelAction();
 
-  auto armourSlotToUse = Item::getRandomArmorSlot();
-  _gear[armourSlotToUse].onUseInCombat();
+  if (result == CombatResult::BLOCK) {
+    _gear[Item::OFFHAND].onUseInCombat();
+  } else {
+    auto armourSlotToUse = Item::getRandomArmorSlot();
+    _gear[armourSlotToUse].onUseInCombat();
+  }
 
   // Fight back if no current target
   if (!target() && attacker.canBeAttackedBy(*this)) {
@@ -1218,7 +1222,7 @@ void User::onAttackedBy(Entity &attacker, Threat threat) {
   // Sick nearby pets on the attacker
   for (auto *pet : findNearbyPets()) pet->makeAwareOf(attacker);
 
-  Object::onAttackedBy(attacker, threat);
+  Object::onAttackedBy(attacker, threat, result);
 }
 
 void User::onKilled(Entity &victim) {

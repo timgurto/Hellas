@@ -57,7 +57,8 @@ class NPC : public Entity, public QuestNode {
   void restoreHealthAndBroadcastTo(const MapPoint &p);
   void broadcastHealthTo(const MapPoint &p);
   void onDeath() override;
-  void onAttackedBy(Entity &attacker, Threat threat) override;
+  void onAttackedBy(Entity &attacker, Threat threat,
+                    CombatResult result) override;
   px_t attackRange() const override;
   void sendRangedHitMessageTo(const User &userToInform) const override;
   void sendRangedMissMessageTo(const User &userToInform) const override;

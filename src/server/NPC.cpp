@@ -183,7 +183,7 @@ void NPC::onDeath() {
   Entity::onDeath();
 }
 
-void NPC::onAttackedBy(Entity &attacker, Threat threat) {
+void NPC::onAttackedBy(Entity &attacker, Threat threat, CombatResult result) {
   if (attacker.classTag() == 'u') {
     if (_threatTable.isEmpty()) _timeEngaged = SDL_GetTicks();
     addThreat(dynamic_cast<User &>(attacker), threat);
@@ -191,7 +191,7 @@ void NPC::onAttackedBy(Entity &attacker, Threat threat) {
 
   makeAwareOf(attacker);
 
-  Entity::onAttackedBy(attacker, threat);
+  Entity::onAttackedBy(attacker, threat, result);
 }
 
 px_t NPC::attackRange() const {

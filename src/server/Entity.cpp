@@ -338,7 +338,7 @@ void Entity::update(ms_t timeElapsed) {
 
   // Give target opportunity to react.  This includes tagging, and so must be
   // done before damage (and possible death)
-  pTarget->onAttackedBy(*this, damage);
+  pTarget->onAttackedBy(*this, damage, outcome);
 
   pTarget->reduceHealth(damage);
 
@@ -517,7 +517,8 @@ void Entity::onDeath() {
   }
 }
 
-void Entity::onAttackedBy(Entity &attacker, Threat threat) {
+void Entity::onAttackedBy(Entity &attacker, Threat threat,
+                          CombatResult result) {
   // Tag target
   if (attacker.classTag() == 'u') {
     auto &attackerAsUser = dynamic_cast<User &>(attacker);

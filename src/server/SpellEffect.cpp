@@ -78,7 +78,7 @@ CombatResult SpellEffect::doDirectDamageWithModifiedThreat(
   // potentially lethal damage is done.
   auto threatScaler = effect._args.d1;
   auto threat = toInt(damage * threatScaler);
-  target.onAttackedBy(caster, threat);
+  target.onAttackedBy(caster, threat, outcome);
 
   target.reduceHealth(damage);
 
@@ -143,7 +143,7 @@ CombatResult SpellEffect::debuff(const SpellEffect &effect, Entity &caster,
       caster.generateHitAgainst(target, DEBUFF, effect._school, effect._range);
 
   target.applyDebuff(*debuffType, caster);
-  target.onAttackedBy(caster, 0);
+  target.onAttackedBy(caster, 0, outcome);
 
   return HIT;
 }

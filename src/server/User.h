@@ -242,7 +242,8 @@ class User : public Object {  // TODO: Don't inherit from Object
   void accountForOwnedEntities() const;
   void registerObjectIfPlayerUnique(const ObjectType &type) const;
   void deregisterDestroyedObjectIfPlayerUnique(const ObjectType &type) const;
-  void onAttackedBy(Entity &attacker, Threat threat) override;
+  void onAttackedBy(Entity &attacker, Threat threat,
+                    CombatResult result) override;
   void onKilled(Entity &victim) override;
   bool canAttack() override;
   void onCanAttack() override;
