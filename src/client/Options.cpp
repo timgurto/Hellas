@@ -96,7 +96,7 @@ void Client::initialiseOptionsWindow() {
   addGap();
 
   addSection("UI");
-  addBoolOption("Uniform health bars", options.ui.uniformHealthBars);
+  addBoolOption("Uniform-length health bars", options.ui.uniformHealthBars);
   addBoolOption("Show quest progress", options.ui.showQuestProgress);
   addGap();
 

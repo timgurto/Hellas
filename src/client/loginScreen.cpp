@@ -407,13 +407,19 @@ void Client::initLoginScreen() {
     }).detach();
 #endif
 
+    const auto BUTTON_X = SCREEN_X - BUTTON_W - GAP;
+    auto y = SCREEN_Y - BUTTON_HEIGHT - GAP;
+
+    _loginUI.push_back(new Button({BUTTON_X, y, BUTTON_W, BUTTON_HEIGHT},
+                                  "Quit", [this]() { _loop = false; }));
+
+    y -= (BUTTON_HEIGHT + 5);
+
     _loginUI.push_back(
-        new Button({SCREEN_X - BUTTON_W - GAP, SCREEN_Y - BUTTON_HEIGHT - GAP,
-                    BUTTON_W, BUTTON_HEIGHT},
-                   "Quit", [this]() { _loop = false; }));
+        new Button({BUTTON_X, y, BUTTON_W, BUTTON_HEIGHT}, "Options",
+                   [this]() { showWindowInFront(_optionsWindow); }));
 
-    auto y = 250_px, BUTTON_X = SCREEN_X - BUTTON_W - GAP;
-
+    y = 250_px;
     auto createButton = new Button(
         {BUTTON_X, y, BUTTON_W, BUTTON_HEIGHT}, "Create new account", [this]() {
           showWindowInFront(_createWindow);
