@@ -194,6 +194,30 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       }
     }
   }
+  GIVEN("a user with a shield that never blocks, and an enemy") {
+    useData(R"(
+      <item id="shield" gearSlot="offhand" >
+        <stats block="-10000" health="10000" />
+        <tag name="shield" />
+      </item>
+      <npcType id="hummingbird" level="1" attack="1" attackTime="1"
+  maxHealth="1000000000" />
+    )");
+    server->addNPC("hummingbird", {10, 15});
+
+    auto &shieldSlot = user->gear(Item::OFFHAND);
+    shieldSlot = {&server->getFirstItem(),
+                  ItemReportingInfo::UserGear(user, Item::OFFHAND), 1};
+    user->updateStats();
+
+    WHEN("the enemy hits the player many times (mostly hits, no blocks)") {
+      THEN("the shield is not damaged") {
+        REPEAT_FOR_MS(50000) { REQUIRE_FALSE(shieldSlot.isDamaged()); }
+      }
+    }
+  }
+}
+
 TEST_CASE("Thrown weapons don't take damage from attacking",
           "[damage-on-use][combat]") {
   GIVEN("a whale, and harpoons that can be thrown or shot") {

@@ -72,7 +72,7 @@ class Item : public HasTags {
 
   typedef std::vector<std::pair<const Item *, size_t> > vect_t;
 
-  static GearSlot getRandomArmorSlot();
+  static GearSlot getRandomArmorSlot(bool excludeOffhand = false);
 
   virtual void fetchAmmoItem() const = 0;
 

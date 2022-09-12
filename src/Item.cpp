@@ -94,8 +94,8 @@ bool Item::canBeDamaged() const {
   return true;
 }
 
-Item::GearSlot Item::getRandomArmorSlot() {
-  const auto choice = rand() % 6;
+Item::GearSlot Item::getRandomArmorSlot(bool excludeOffhand) {
+  const auto choice = rand() % (excludeOffhand ? 5 : 6);
   switch (choice) {
     case 0:
       return HEAD;

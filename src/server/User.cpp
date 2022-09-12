@@ -1209,7 +1209,8 @@ void User::onAttackedBy(Entity &attacker, Threat threat, CombatResult result) {
   if (result == CombatResult::BLOCK) {
     _gear[Item::OFFHAND].onUseInCombat();
   } else {
-    auto armourSlotToUse = Item::getRandomArmorSlot();
+    const auto excludeOffhand = canBlock();
+    auto armourSlotToUse = Item::getRandomArmorSlot(excludeOffhand);
     _gear[armourSlotToUse].onUseInCombat();
   }
 
