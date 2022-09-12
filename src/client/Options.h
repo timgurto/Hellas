@@ -11,6 +11,10 @@ struct Options {
     bool fullScreen{false};
   } graphics;
 
+  struct Audio {
+    bool enableSFX;
+  } audio;
+
   struct Parental {
     bool showCustomNames{true};
   } parental;

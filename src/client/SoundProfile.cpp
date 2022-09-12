@@ -3,8 +3,10 @@
 #include <SDL_mixer.h>
 
 #include "Client.h"
+#include "Options.h"
 
 extern Args cmdLineArgs;
+extern Options options;
 
 SoundsRecord SoundProfile::loopingSounds;
 
@@ -37,7 +39,9 @@ void SoundProfile::startLooping(const Client &client, const SoundType &type,
 Channel SoundProfile::checkAndPlaySound(const Client &client,
                                         const SoundType &type,
                                         bool loop) const {
-  if (cmdLineArgs.contains("mute")) return NO_CHANNEL;
+  const auto gameIsMuted =
+      cmdLineArgs.contains("mute") || !options.audio.enableSFX;
+  if (gameIsMuted) return NO_CHANNEL;
 
   auto it = _sounds.find(type);
   if (it == _sounds.end()) {

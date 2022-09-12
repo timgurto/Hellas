@@ -11,6 +11,9 @@ void Options::save() {
   auto *elemGraphics = xw.addChild("graphics");
   xw.setAttr(elemGraphics, "fullScreen", graphics.fullScreen);
 
+  auto *elemAudio = xw.addChild("audio");
+  xw.setAttr(elemAudio, "enableSFX", audio.enableSFX);
+
   auto *elemParental = xw.addChild("parental");
   xw.setAttr(elemParental, "showCustomNames", parental.showCustomNames);
 
@@ -22,6 +25,9 @@ void Options::load() {
 
   auto *elemGraphics = xr.findChild("graphics");
   xr.findAttr(elemGraphics, "fullScreen", graphics.fullScreen);
+
+  auto *elemAudio = xr.findChild("audio");
+  xr.findAttr(elemAudio, "enableSFX", audio.enableSFX);
 
   auto *elemParental = xr.findChild("parental");
   xr.findAttr(elemParental, "showCustomNames", parental.showCustomNames);
@@ -66,8 +72,12 @@ void Client::initialiseOptionsWindow() {
     contents->addChild(checkbox);
   };
 
-  addSection("Graphics");
+  addSection("Video");
   addBoolOption("Full screen (requires restart)", options.graphics.fullScreen);
+  addGap();
+
+  addSection("Audio");
+  addBoolOption("Enable sound effects", options.audio.enableSFX);
   addGap();
 
   addSection("Parental Controls");
