@@ -12,6 +12,7 @@
 #include "ClientNPC.h"
 #include "ClientObjectType.h"
 #include "ClientVehicle.h"
+#include "Options.h"
 #include "Particle.h"
 #include "Renderer.h"
 #include "Tooltip.h"
@@ -27,6 +28,7 @@
 #include "ui/Window.h"
 
 extern Renderer renderer;
+extern Options options;
 
 const px_t ClientObject::BUTTON_HEIGHT = 15;
 const px_t ClientObject::BUTTON_WIDTH = 60;
@@ -971,6 +973,17 @@ void ClientObject::update(double delta) {
   Sprite::update(delta);
 }
 
+bool ClientObject::willShowCustomName() const {
+  if (_customName.empty()) return false;
+  return options.parental.showCustomNames;
+}
+
+const std::string &ClientObject::name() const {
+  if (willShowCustomName()) return _customName;
+
+  return objectType()->name();
+}
+
 bool ClientObject::shouldIndicateConstructionSite() const {
   if (!isBeingConstructed()) return false;
 
@@ -1363,7 +1376,9 @@ Color ClientObject::nameColor() const {
 
 bool ClientObject::shouldDrawName() const {
   if (_client.currentMouseOverEntity() == this) return true;
-  if (!_customName.empty()) return true;
+
+  if (willShowCustomName()) return true;
+
   return false;
 }
 

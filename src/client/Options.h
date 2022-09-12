@@ -11,6 +11,10 @@ struct Options {
     bool fullScreen{false};
   } graphics;
 
+  struct Parental {
+    bool showCustomNames{true};
+  } parental;
+
  private:
   void getFilePath();
   std::string m_filePath;

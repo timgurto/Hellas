@@ -11,6 +11,9 @@ void Options::save() {
   auto *elemGraphics = xw.addChild("graphics");
   xw.setAttr(elemGraphics, "fullScreen", graphics.fullScreen);
 
+  auto *elemParental = xw.addChild("parental");
+  xw.setAttr(elemParental, "showCustomNames", parental.showCustomNames);
+
   xw.publish();
 }
 
@@ -19,6 +22,9 @@ void Options::load() {
 
   auto *elemGraphics = xr.findChild("graphics");
   xr.findAttr(elemGraphics, "fullScreen", graphics.fullScreen);
+
+  auto *elemParental = xr.findChild("parental");
+  xr.findAttr(elemParental, "showCustomNames", parental.showCustomNames);
 }
 
 void Options::getFilePath() {
@@ -62,4 +68,8 @@ void Client::initialiseOptionsWindow() {
 
   addSection("Graphics");
   addBoolOption("Full screen (requires restart)", options.graphics.fullScreen);
+  addGap();
+
+  addSection("Parental Controls");
+  addBoolOption("Show custom object names", options.parental.showCustomNames);
 }

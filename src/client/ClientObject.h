@@ -138,12 +138,8 @@ class ClientObject : public Sprite, public ClientCombatant {
   virtual void update(double delta) override;
 
   void giveCustomName(const std::string &name) { _customName = name; }
-  virtual const std::string &name() const override {
-    if (_customName.empty())
-      return objectType()->name();
-    else
-      return _customName;
-  }
+  bool willShowCustomName() const;
+  virtual const std::string &name() const override;
 
   MapRect collisionRect() const {
     return objectType()->collisionRect() + location();
