@@ -71,5 +71,6 @@ void Client::initialiseOptionsWindow() {
   addGap();
 
   addSection("Parental Controls");
-  addBoolOption("Show custom object names", options.parental.showCustomNames);
+  addBoolOption("Show others' custom object names",
+                options.parental.showCustomNames);
 }

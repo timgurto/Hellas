@@ -975,6 +975,7 @@ void ClientObject::update(double delta) {
 
 bool ClientObject::willShowCustomName() const {
   if (_customName.empty()) return false;
+  if (userHasAccess()) return true;
   return options.parental.showCustomNames;
 }
 
