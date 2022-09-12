@@ -8,14 +8,14 @@
 void Options::save() {
   auto xw = XmlWriter{m_filePath};
 
-  auto *elemGraphics = xw.addChild("video");
-  xw.setAttr(elemGraphics, "fullScreen", video.fullScreen);
+  auto *elem = xw.addChild("video");
+  xw.setAttr(elem, "fullScreen", video.fullScreen);
 
-  auto *elemAudio = xw.addChild("audio");
-  xw.setAttr(elemAudio, "enableSFX", audio.enableSFX);
+  elem = xw.addChild("audio");
+  xw.setAttr(elem, "enableSFX", audio.enableSFX);
 
-  auto *elemParental = xw.addChild("parental");
-  xw.setAttr(elemParental, "showCustomNames", parental.showCustomNames);
+  elem = xw.addChild("parental");
+  xw.setAttr(elem, "showCustomNames", parental.showCustomNames);
 
   xw.publish();
 }
@@ -23,14 +23,14 @@ void Options::save() {
 void Options::load() {
   auto xr = XmlReader::FromFile(m_filePath);
 
-  auto *elemGraphics = xr.findChild("video");
-  xr.findAttr(elemGraphics, "fullScreen", video.fullScreen);
+  auto *elem = xr.findChild("video");
+  xr.findAttr(elem, "fullScreen", video.fullScreen);
 
-  auto *elemAudio = xr.findChild("audio");
-  xr.findAttr(elemAudio, "enableSFX", audio.enableSFX);
+  elem = xr.findChild("audio");
+  xr.findAttr(elem, "enableSFX", audio.enableSFX);
 
-  auto *elemParental = xr.findChild("parental");
-  xr.findAttr(elemParental, "showCustomNames", parental.showCustomNames);
+  elem = xr.findChild("parental");
+  xr.findAttr(elem, "showCustomNames", parental.showCustomNames);
 }
 
 void Options::getFilePath() {
