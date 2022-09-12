@@ -57,7 +57,7 @@ void Renderer::init() {
   // 2. Otherwise, if debug client, make it windowed.
   // 3. Otherwise, use saved option.
   // 4. Default (or unsaved) option is windowed.
-  bool fullScreen = options.graphics.fullScreen;
+  bool fullScreen = options.video.fullScreen;
 #ifdef DEBUG
   fullScreen = false;
 #endif

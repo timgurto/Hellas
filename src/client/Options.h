@@ -7,9 +7,9 @@ struct Options {
   void save();
   void load();
 
-  struct Graphics {
+  struct Video {
     bool fullScreen{false};
-  } graphics;
+  } video;
 
   struct Audio {
     bool enableSFX;

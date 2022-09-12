@@ -8,8 +8,8 @@
 void Options::save() {
   auto xw = XmlWriter{m_filePath};
 
-  auto *elemGraphics = xw.addChild("graphics");
-  xw.setAttr(elemGraphics, "fullScreen", graphics.fullScreen);
+  auto *elemGraphics = xw.addChild("video");
+  xw.setAttr(elemGraphics, "fullScreen", video.fullScreen);
 
   auto *elemAudio = xw.addChild("audio");
   xw.setAttr(elemAudio, "enableSFX", audio.enableSFX);
@@ -23,8 +23,8 @@ void Options::save() {
 void Options::load() {
   auto xr = XmlReader::FromFile(m_filePath);
 
-  auto *elemGraphics = xr.findChild("graphics");
-  xr.findAttr(elemGraphics, "fullScreen", graphics.fullScreen);
+  auto *elemGraphics = xr.findChild("video");
+  xr.findAttr(elemGraphics, "fullScreen", video.fullScreen);
 
   auto *elemAudio = xr.findChild("audio");
   xr.findAttr(elemAudio, "enableSFX", audio.enableSFX);
@@ -73,7 +73,7 @@ void Client::initialiseOptionsWindow() {
   };
 
   addSection("Video");
-  addBoolOption("Full screen (requires restart)", options.graphics.fullScreen);
+  addBoolOption("Full screen (requires restart)", options.video.fullScreen);
   addGap();
 
   addSection("Audio");
