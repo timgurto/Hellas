@@ -504,6 +504,26 @@ TEST_CASE("Custom object names are persistent") {
   }
 }
 
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "A type can explicitly low custom names") {
+  GIVEN("a statue that can be renamed") {
+    useData(R"(
+      <objectType id="statue" name="Statue" allowsCustomName="1" />
+    )");
+    auto &statue = server->addObject("statue", {10, 15});
+
+    WHEN("a user tries to rename it") {
+      client->sendMessage(CL_SET_OBJECT_NAME,
+                          makeArgs(statue.serial(), "Some Guy"));
+
+      THEN("it has the new name") {
+        const auto &clientStatue = client->waitForFirstObject();
+        WAIT_UNTIL(clientStatue.name() == "Some Guy");
+      }
+    }
+  }
+}
+
 TEST_CASE_METHOD(ServerAndClientWithData, "Hidden objects") {
   GIVEN("a user owns a hidden ward object") {
     const auto data = R"(

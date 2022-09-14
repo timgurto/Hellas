@@ -51,6 +51,7 @@ class ObjectType : public EntityType, public QuestNodeType {
   bool _isGate{false};
 
   bool _isHidden{false};  // Hidden: visible only to its owner(s)
+  bool _canHaveCustomName{false};
 
  protected:
   ContainerType *_container;
@@ -105,6 +106,9 @@ class ObjectType : public EntityType, public QuestNodeType {
   void setMaxHealth(Hitpoints h) { _baseStats.maxHealth = h; }
   void markAsHidden() { _isHidden = true; }
   bool isHidden() const { return _isHidden; }
+
+  void allowCustomNames() { _canHaveCustomName = true; }
+  bool canHaveCustomName() const { return _canHaveCustomName; }
 
   virtual char classTag() const override { return 'o'; }
 

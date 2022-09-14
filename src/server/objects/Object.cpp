@@ -126,8 +126,11 @@ bool Object::isAbleToDeconstruct(const User &user) const {
 }
 
 bool Object::canHaveCustomName() const {
+  if (objType().canHaveCustomName()) return true;
+
   const auto isMerchantObject = objType().merchantSlots() > 0;
   if (isMerchantObject) return true;
+
   return false;
 }
 

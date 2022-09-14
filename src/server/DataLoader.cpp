@@ -207,6 +207,7 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
     if (xr.findAttr(elem, "collides", n)) ot->collides(n != 0);
     if (xr.findAttr(elem, "isGate", n)) ot->markAsGate();
     if (xr.findAttr(elem, "hidden", n)) ot->markAsHidden();
+    if (xr.findAttr(elem, "allowsCustomName", n)) ot->allowCustomNames();
 
     ot->loadTagsFromXML(xr, elem);
 
