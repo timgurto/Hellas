@@ -24,21 +24,15 @@ TEST_CASE("Leveling up restores health and energy", "[stats][leveling]") {
   WAIT_UNTIL(user.energy() == user.stats().maxEnergy);
 }
 
-TEST_CASE("Client has correct XP on level up", "[stats][leveling]") {
-  GIVEN("A player") {
-    auto s = TestServer{};
-    auto c = TestClient{};
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
+TEST_CASE_METHOD(ServerAndClient, "Client has correct XP on level up",
+                 "[stats][leveling]") {
+  WHEN("a player gets exactly enough XP to level up") {
+    auto xpToLevel = User::XP_PER_LEVEL[user->level()];
+    user->addXP(xpToLevel);
 
-    WHEN("he gets enough XP to level up") {
-      auto xpToLevel = User::XP_PER_LEVEL[user.level()];
-      user.addXP(xpToLevel);
-
-      THEN("he knows he has 0 XP") {
-        REPEAT_FOR_MS(100);
-        CHECK(c->xp() == 0);
-      }
+    THEN("he knows he has 0 XP") {
+      REPEAT_FOR_MS(100);
+      CHECK(client->xp() == 0);
     }
   }
 }
