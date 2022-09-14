@@ -2284,6 +2284,11 @@ void Server::sendRelevantEntitiesToUser(const User &user) {
     if (entity == &user) continue;
     if (abs(entity->location().y - loc.y) > CULL_DISTANCE)  // Cull y
       continue;
+    const auto *asObj = dynamic_cast<const Object *>(entity);
+
+    // If owned, it will get picked up in the next section.
+    if (asObj && asObj->objType().isHidden()) continue;
+
     entitiesToDescribe.insert(entity);
   }
 
@@ -2298,6 +2303,7 @@ void Server::sendRelevantEntitiesToUser(const User &user) {
       entitiesToDescribe.insert(pEntity);
 
       // Object-specific stuff
+      // Not part of sending info, but done here while we're looping through
       auto *pObject = dynamic_cast<const Object *>(pEntity);
       if (pObject && !pEntity->isDead())
         user.registerObjectIfPlayerUnique(pObject->objType());

@@ -503,3 +503,22 @@ TEST_CASE("Custom object names are persistent") {
     CHECK((dog.customName() == "Rex"));
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Hidden objects") {
+  GIVEN("a user owns a hidden ward object") {
+    const auto data = R"(
+      <objectType id="ward" hidden="1" />
+    )";
+    useData(data);
+    server->addObject("ward", {10, 15}, user->name());
+
+    WHEN("another user logs in") {
+      auto newUser = TestClient::WithDataString(data);
+      server->waitForUsers(2);
+
+      THEN("he doesn't know about the ward") {
+        REPEAT_FOR_MS(500) { REQUIRE(newUser.objects().size() == 0); }
+      }
+    }
+  }
+}

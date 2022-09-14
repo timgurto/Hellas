@@ -206,6 +206,7 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
     if (xr.findRectChild("collisionRect", elem, r)) ot->collisionRect(r);
     if (xr.findAttr(elem, "collides", n)) ot->collides(n != 0);
     if (xr.findAttr(elem, "isGate", n)) ot->markAsGate();
+    if (xr.findAttr(elem, "hidden", n)) ot->markAsHidden();
 
     ot->loadTagsFromXML(xr, elem);
 

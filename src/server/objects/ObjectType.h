@@ -50,6 +50,8 @@ class ObjectType : public EntityType, public QuestNodeType {
 
   bool _isGate{false};
 
+  bool _isHidden{false};  // Hidden: visible only to its owner(s)
+
  protected:
   ContainerType *_container;
   DeconstructionType *_deconstruction;
@@ -101,6 +103,8 @@ class ObjectType : public EntityType, public QuestNodeType {
   void markAsGate() { _isGate = true; }
   bool isGate() const { return _isGate; }
   void setMaxHealth(Hitpoints h) { _baseStats.maxHealth = h; }
+  void markAsHidden() { _isHidden = true; }
+  bool isHidden() const { return _isHidden; }
 
   virtual char classTag() const override { return 'o'; }
 
