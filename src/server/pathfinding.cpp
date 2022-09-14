@@ -139,8 +139,13 @@ Entity::StraightLineMoveResult Entity::moveLegallyTowards(
       char classTag = entity.classTag();
       if (classTag == 'u') continue;
 
-      if (abs(entity.location().y - newDest.y) <= Server::CULL_DISTANCE)
-        nearbyEntities.push_back(&entity);
+      if (abs(entity.location().y - newDest.y) > Server::CULL_DISTANCE)
+        continue;
+
+      const auto *asObject = dynamic_cast<const Object *>(&entity);
+      if (asObject && asObject->objType().isHidden()) continue;
+
+      nearbyEntities.push_back(&entity);
     }
     for (auto it = loY; it != hiY; ++it) {
       const Entity &entity = **it;

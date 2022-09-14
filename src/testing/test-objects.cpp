@@ -517,7 +517,46 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Hidden objects") {
       server->waitForUsers(2);
 
       THEN("he doesn't know about the ward") {
-        REPEAT_FOR_MS(500) { REQUIRE(newUser.objects().size() == 0); }
+        REPEAT_FOR_MS(500);
+        CHECK(newUser.objects().size() == 0);
+      }
+    }
+  }
+
+  SECTION("Approaching hidden objects") {
+    GIVEN("the user is very far away from an unowned ward") {
+      useData(R"(
+      <terrain index="G" id="grass" />
+      <list id="default" default="1" >
+          <allow id="grass" />
+      </list>
+      <newPlayerSpawn x="10" y="10" range="0" />
+      <size x="40" y="1" />
+      <row    y="0" terrain = "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG" />
+
+      <objectType id="ward" hidden="1" />
+    )");
+      server->addObject("ward", {1200, 0});
+
+      WHEN("he walks towards it") {
+        auto startTime = SDL_GetTicks();
+        while (true) {
+          const auto reachedTarget = user->location().x >= 1200;
+          if (reachedTarget) {
+            break;
+          }
+
+          const auto reachedTimeout = SDL_GetTicks() - startTime > 20000;
+          if (reachedTimeout) {
+            break;
+          }
+
+          client->sendMessage(CL_MOVE_TO, makeArgs(1200, 10));
+
+          // THEN he doesn't find out about it
+          REQUIRE(client->objects().size() == 0);
+          SDL_Delay(5);
+        }
       }
     }
   }
