@@ -505,7 +505,7 @@ TEST_CASE("Custom object names are persistent") {
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData,
-                 "A type can explicitly low custom names") {
+                 "A type can explicitly allow custom names") {
   GIVEN("a statue that can be renamed") {
     useData(R"(
       <objectType id="statue" name="Statue" allowsCustomName="1" />

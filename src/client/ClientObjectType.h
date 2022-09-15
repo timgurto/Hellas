@@ -85,35 +85,31 @@ class ClientObjectType : public SpriteType,
   const std::string &id() const { return _id; }
   const std::string &name() const { return _name; }
   void name(const std::string &s) { _name = s; }
+
+  // Graphics
   const std::string &imageFile() const { return _imageFile; }
   void imageFile(const std::string &s) { _imageFile = s; }
   void setCorpseImage(const std::string &filename) {
     _corpseImage = {filename};
   }
+  const ImageWithHighlight &constructionImage() const {
+    return _constructionImage;
+  }
+  const ImageWithHighlight &getProgressImage(ms_t timeRemaining) const;
+  const Texture &corpseImage() const { return _corpseImage.getNormalImage(); }
+  const Texture &corpseHighlightImage() const {
+    return _corpseImage.getHighlightImage();
+  }
+  void initialiseHumanoidCorpse();
+
   void setLevel(Level l) { _level = l; }
   Level level() const { return _level; }
+
+  // Gathering
   bool canGather(const CQuests &quests) const;
   void canGather(bool b) { _canGather = b; }
   const std::string &gatherReq() const { return _gatherReq; }
   void gatherReq(const std::string &req) { _gatherReq = req; }
-  const std::string &constructionReq() const { return _constructionReq; }
-  void constructionReq(const std::string &req) { _constructionReq = req; }
-  bool canDeconstruct() const { return _canDeconstruct; }
-  void canDeconstruct(bool b) { _canDeconstruct = b; }
-  const std::string &constructionText() const { return _constructionText; }
-  void constructionText(const std::string &text) { _constructionText = text; }
-  size_t containerSlots() const { return _containerSlots; }
-  void containerSlots(size_t n) { _containerSlots = n; }
-  size_t merchantSlots() const { return _merchantSlots; }
-  void merchantSlots(size_t n) { _merchantSlots = n; }
-  const MapRect &collisionRect() const { return _collisionRect; }
-  void collisionRect(const MapRect &r) {
-    _collisionRect = r;
-    _collides = true;
-  }
-  bool collides() const { return _collides; }
-  void collides(bool b) { _collides = b; }
-  const ParticleProfile *gatherParticles() const { return _gatherParticles; }
   void gatherParticles(const ParticleProfile *profile) {
     _gatherParticles = profile;
   }
@@ -121,6 +117,14 @@ class ClientObjectType : public SpriteType,
     _gatherChances[itemID] = chance;
   }
   const GatherChances &gatherChances() const { return _gatherChances; }
+
+  // Construction
+  const std::string &constructionReq() const { return _constructionReq; }
+  void constructionReq(const std::string &req) { _constructionReq = req; }
+  bool canDeconstruct() const { return _canDeconstruct; }
+  void canDeconstruct(bool b) { _canDeconstruct = b; }
+  const std::string &constructionText() const { return _constructionText; }
+  void constructionText(const std::string &text) { _constructionText = text; }
   void addMaterial(const ClientItem *item, size_t qty);
   const ItemSet &materials() const { return _materials; }
   const Tooltip &constructionTooltip(const Client &client) const;
@@ -129,22 +133,55 @@ class ClientObjectType : public SpriteType,
   }
   virtual void addClassSpecificStuffToConstructionTooltip(
       std::vector<std::string> &descriptionLines) const {}
+  void drawParticlesWhenUnderConstruction() {
+    _drawParticlesWhenUnderConstruction = true;
+  }
+  bool shouldDrawParticlesWhenUnderConstruction() const {
+    return _drawParticlesWhenUnderConstruction;
+  }
+
+  // Container
+  size_t containerSlots() const { return _containerSlots; }
+  void containerSlots(size_t n) { _containerSlots = n; }
+  std::string onlyAllowedItemInContainer;
+  DrawPerItemTypeInfo drawPerItemInfo;
+
+  // Merchant
+  size_t merchantSlots() const { return _merchantSlots; }
+  void merchantSlots(size_t n) { _merchantSlots = n; }
+
+  // Collision
+  const MapRect &collisionRect() const { return _collisionRect; }
+  void collisionRect(const MapRect &r) {
+    _collisionRect = r;
+    _collides = true;
+  }
+  bool collides() const { return _collides; }
+  void collides(bool b) { _collides = b; }
+  const ParticleProfile *gatherParticles() const { return _gatherParticles; }
+
+  // Transformation
   bool transforms() const { return _transformTime > 0; }
   void transformTime(ms_t time) { _transformTime = time; }
   ms_t transformTime() const { return _transformTime; }
   void addTransformImage(const std::string &filename);
-  const ImageWithHighlight &constructionImage() const {
-    return _constructionImage;
-  }
+
+  // Repairing
   const RepairInfo &repairInfo() const { return _repairInfo; }
   void makeRepairable() { _repairInfo.canBeRepaired = true; }
   void repairingCosts(const std::string &id) { _repairInfo.cost = id; }
   void repairingRequiresTool(const std::string &tag) { _repairInfo.tool = tag; }
+
+  // Player-uniqueness
   bool isPlayerUnique() const { return _isPlayerUnique; }
   void makePlayerUnique() { _isPlayerUnique = true; }
+
+  // Actions
   void action(ClientObjectAction *pAction) { _action = pAction; }
   const ClientObjectAction &action() const { return *_action; }
   bool hasAction() const { return _action != nullptr; }
+
+  // Quests
   void startsQuest(CQuest &quest) { _startsQuests.insert(&quest); }
   std::set<CQuest *> &startsQuests() { return _startsQuests; }
   const std::set<CQuest *> &startsQuests() const { return _startsQuests; }
@@ -155,6 +192,8 @@ class ClientObjectType : public SpriteType,
     _exclusiveToQuest = questID;
   }
   const std::string &exclusiveToQuest() const { return _exclusiveToQuest; }
+
+  // Allowed terrain
   void allowedTerrain(const std::string &terrainList) {
     _allowedTerrain = terrainList;
   }
@@ -162,23 +201,9 @@ class ClientObjectType : public SpriteType,
     if (_allowedTerrain.empty()) return TerrainList::defaultList().id();
     return _allowedTerrain;
   };
+
   void setWindowText(const std::string &text) { _windowText = text; }
   const std::string &windowText() const { return _windowText; }
-  void drawParticlesWhenUnderConstruction() {
-    _drawParticlesWhenUnderConstruction = true;
-  }
-  bool shouldDrawParticlesWhenUnderConstruction() const {
-    return _drawParticlesWhenUnderConstruction;
-  }
-  std::string onlyAllowedItemInContainer;
-  DrawPerItemTypeInfo drawPerItemInfo;
-
-  const ImageWithHighlight &getProgressImage(ms_t timeRemaining) const;
-  const Texture &corpseImage() const { return _corpseImage.getNormalImage(); }
-  const Texture &corpseHighlightImage() const {
-    return _corpseImage.getHighlightImage();
-  }
-  void initialiseHumanoidCorpse();
 
   virtual char classTag() const override { return 'o'; }
 
