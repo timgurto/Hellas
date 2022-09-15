@@ -505,8 +505,11 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
     if (xr.findAttr(elem, "customDrawHeight", customDrawHeight))
       cot->useCustomDrawHeight(customDrawHeight);
 
-    if (xr.findAttr(elem, "drawParticlesWhenUnderConstruction", n) && n > 0)
+    bool b;
+    if (xr.findAttr(elem, "drawParticlesWhenUnderConstruction", b))
       cot->drawParticlesWhenUnderConstruction();
+
+    if (xr.findAttr(elem, "allowsCustomName", b)) cot->allowCustomNames();
 
     auto name = id;
     xr.findAttr(elem, "name", name);

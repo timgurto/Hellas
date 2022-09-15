@@ -79,6 +79,8 @@ class ClientObjectType : public SpriteType,
   std::set<CQuest *> _endsQuests;
   std::string _exclusiveToQuest{};
 
+  bool _canHaveCustomName{false};
+
  public:
   ClientObjectType(const std::string &id);
 
@@ -204,6 +206,8 @@ class ClientObjectType : public SpriteType,
 
   void setWindowText(const std::string &text) { _windowText = text; }
   const std::string &windowText() const { return _windowText; }
+  void allowCustomNames() { _canHaveCustomName = true; }
+  bool canHaveCustomName() const { return _canHaveCustomName; }
 
   virtual char classTag() const override { return 'o'; }
 

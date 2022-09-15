@@ -204,10 +204,12 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
 
     MapRect r;
     if (xr.findRectChild("collisionRect", elem, r)) ot->collisionRect(r);
-    if (xr.findAttr(elem, "collides", n)) ot->collides(n != 0);
-    if (xr.findAttr(elem, "isGate", n)) ot->markAsGate();
-    if (xr.findAttr(elem, "hidden", n)) ot->markAsHidden();
-    if (xr.findAttr(elem, "allowsCustomName", n)) ot->allowCustomNames();
+
+    bool b;
+    if (xr.findAttr(elem, "collides", b)) ot->collides(n != 0);
+    if (xr.findAttr(elem, "isGate", b)) ot->markAsGate();
+    if (xr.findAttr(elem, "hidden", b)) ot->markAsHidden();
+    if (xr.findAttr(elem, "allowsCustomName", b)) ot->allowCustomNames();
 
     ot->loadTagsFromXML(xr, elem);
 
