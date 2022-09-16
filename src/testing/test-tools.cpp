@@ -261,10 +261,10 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Broken tool items don't count",
                  "[tool][damage-on-use]") {
   GIVEN("the user has a 'screwing' screwdriver tool") {
     useData(R"(
-        <item id="screwdriver" >
-          <tag name="screwing" />
-        </item>
-      )");
+      <item id="screwdriver" >
+        <tag name="screwing" />
+      </item>
+    )");
     user->giveItem(&server->getFirstItem());
 
     THEN("the client has a screwing tool") {
@@ -279,6 +279,34 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Broken tool items don't count",
 
           AND_THEN("the client knows he doesn't have a screwing tool") {
             WAIT_UNTIL(!client->currentTools().hasTool("screwing"));
+          }
+        }
+      }
+    }
+  }
+}
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Dead tool objects don't count",
+                 "[tool][damage-on-use]") {
+  GIVEN("the user has a 'baking' oven tool") {
+    useData(R"(
+      <objectType id="oven" >
+        <tag name="baking" />
+      </objectType>
+    )");
+    auto &oven = server->addObject("oven", {10, 15}, user->name());
+
+    THEN("the client has a baking tool") {
+      WAIT_UNTIL(client->currentTools().hasTool("baking"));
+
+      AND_GIVEN("it's dead") {
+        oven.kill();
+
+        THEN("the user doesn't have a baking tool") {
+          CHECK(user->getToolSpeed("baking") == 0);
+
+          AND_THEN("the client knows he doesn't have a baking tool") {
+            WAIT_UNTIL(!client->currentTools().hasTool("baking"));
           }
         }
       }

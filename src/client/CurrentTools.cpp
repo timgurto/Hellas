@@ -48,6 +48,7 @@ void CurrentTools::includeObjects() {
   for (const auto *entity : _client._entities) {
     const auto *obj = dynamic_cast<const ClientObject *>(entity);
     if (!obj) continue;
+    if (obj->isDead()) continue;
     if (!obj->userHasAccess()) continue;
     if (obj->isBeingConstructed()) continue;
     if (distance(*obj, _client._character) > Client::ACTION_DISTANCE) continue;
