@@ -327,6 +327,7 @@ class Client : public TextEntryManager {
     int zoomMultiplier{0};
     ScreenPoint displacement;
     Picture *fogOfWar{nullptr};
+    TextBox *objectFilter{nullptr};
   } mapWindow;
 
   // Social window

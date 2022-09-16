@@ -21,13 +21,11 @@ void Client::onMapScrollDown(Element &e) {
 }
 
 void Client::initializeMapWindow() {
+  const auto TOP_BAR_H = Element::TEXT_HEIGHT + 3, FILTER_LABEL_W = 110_px;
   _mapWindow = Window::WithRectAndTitle(
-
-      {(SCREEN_X - MAP_IMAGE_W) / 2, (SCREEN_Y - MAP_IMAGE_H) / 2,
-       MAP_IMAGE_W + 1, MAP_IMAGE_H + 2},
-      "Map", mouse());
-  _mapPicture =
-      new Picture(ScreenRect{0, 0, MAP_IMAGE_W, MAP_IMAGE_H}, images.map);
+      {0, 0, MAP_IMAGE_W + 1, MAP_IMAGE_H + 3}, "Map", mouse());
+  _mapPicture = new Picture(ScreenRect{0, TOP_BAR_H, MAP_IMAGE_W, MAP_IMAGE_H},
+                            images.map);
   _mapWindow->addChild(_mapPicture);
 
   mapWindow.fogOfWar = new Picture(0, 0, _fogOfWar);
@@ -40,6 +38,9 @@ void Client::initializeMapWindow() {
   _mapWindow->addChild(_mapPins);
   _mapWindow->addChild(_mapIcons);
 
+  // Top bar
+  _mapWindow->addChild(new ColorBlock({0, 0, MAP_IMAGE_W, TOP_BAR_H}));
+
   // Zoom buttons
   static const auto ZOOM_BUTTON_SIZE = 11;
   _zoomMapInButton = new Button(
@@ -51,10 +52,32 @@ void Client::initializeMapWindow() {
                                  "-", [this]() { zoomMapOut(); });
   _mapWindow->addChild(_zoomMapOutButton);
 
+  // Object filter
+  _mapWindow->addChild(new Label({1, 1, MAP_IMAGE_W, Element::TEXT_HEIGHT},
+                                 "Filter objects by name:"));
+  const auto FILTER_W = MAP_IMAGE_W - FILTER_LABEL_W - 2 * ZOOM_BUTTON_SIZE - 1;
+  mapWindow.objectFilter =
+      new TextBox(*this, {FILTER_LABEL_W, 0, FILTER_W, Element::TEXT_HEIGHT});
+  mapWindow.objectFilter->setOnChange(
+      [](void *pClient) {
+        auto &client = *reinterpret_cast<Client *>(pClient);
+        client.updateMapWindow(*client._mapWindow);
+      },
+      this);
+
+  _mapWindow->addChild(mapWindow.objectFilter);
+
   _mapWindow->setScrollUpFunction(onMapScrollUp);
   _mapWindow->setScrollDownFunction(onMapScrollDown);
 
   _mapWindow->setPreRefreshFunction(updateMapWindow);
+}
+
+static bool shouldFilterExclude(std::string name, std::string filterText) {
+  if (filterText.empty()) return false;
+
+  const auto nameContainsFilter = name.find(filterText) != std::string::npos;
+  return !nameContainsFilter;
 }
 
 void Client::updateMapWindow(Element &e) {
@@ -99,12 +122,18 @@ void Client::updateMapWindow(Element &e) {
 
   for (const auto &objPair : client._objects) {
     const auto &object = *objPair.second;
+    if (shouldFilterExclude(object.name(),
+                            client.mapWindow.objectFilter->text()))
+      continue;
     if (object.belongsToPlayer() || object.belongsToPlayerCity())
       client.addMapPin(object.location(), object.nameColor(), object.name());
   }
 
   for (const auto &pair : client._otherUsers) {
     const auto &avatar = *pair.second;
+    if (shouldFilterExclude(avatar.name(),
+                            client.mapWindow.objectFilter->text()))
+      continue;
     if (avatar.isInPlayersCity())
       client.addMapPin(avatar.location(), avatar.nameColor(), avatar.name());
   }
