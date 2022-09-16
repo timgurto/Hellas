@@ -81,6 +81,30 @@ TEST_CASE_METHOD(ServerAndClientWithData, "The fastest tool is used",
       }
     }
   }
+
+  SECTION("Objects") {
+    GIVEN("the user has a slow inkjet and a fast laser printer") {
+      useData(R"(
+        <objectType id="inkjet" >
+          <tag name="printing" />
+        </objectType>
+        <objectType id="laser" >
+          <tag name="printing" toolSpeed="2" />
+        </objectType>
+      )");
+
+      auto &inkjet = server->addObject("inkjet", {10, 15}, user->name());
+      auto &laser = server->addObject("laser", {10, 15}, user->name());
+
+      AND_GIVEN("the laser printer") {
+        laser.kill();
+
+        THEN("his tool speed is 1x") {
+          CHECK(user->getToolSpeed("printing") == 1);
+        }
+      }
+    }
+  }
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData,
