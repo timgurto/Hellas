@@ -85,19 +85,27 @@ TEST_CASE_METHOD(ServerAndClientWithData, "The fastest tool is used",
   SECTION("Objects") {
     GIVEN("the user has a slow inkjet and a fast laser printer") {
       useData(R"(
-        <objectType id="inkjet" >
+        <objectType id="inkjet" maxHealth="1000" >
           <tag name="printing" />
         </objectType>
         <objectType id="laser" >
-          <tag name="printing" toolSpeed="2" />
+          <tag name="printing" maxHealth="1000" toolSpeed="2" />
         </objectType>
       )");
 
       auto &inkjet = server->addObject("inkjet", {10, 15}, user->name());
       auto &laser = server->addObject("laser", {10, 15}, user->name());
 
-      AND_GIVEN("the laser printer") {
+      AND_GIVEN("the laser printer is dead") {
         laser.kill();
+
+        THEN("his tool speed is 1x") {
+          CHECK(user->getToolSpeed("printing") == 1);
+        }
+      }
+
+      AND_GIVEN("the laser printer has 100 health") {
+        laser.health(Object::DAMAGE_ON_USE_AS_TOOL);
 
         THEN("his tool speed is 1x") {
           CHECK(user->getToolSpeed("printing") == 1);

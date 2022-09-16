@@ -2,6 +2,7 @@
 
 #include "../util.h"
 #include "Objects/Object.h"
+#include "Server.h"
 #include "ServerItem.h"
 
 void DamageOnUse::onUseAsTool() {
@@ -23,7 +24,7 @@ double Object::chanceToGetDamagedOnUseAsTool() const {
   return DamageOnUse::chanceToGetDamagedOnUseAsTool();
 }
 
-void Object::damageFromUse() { reduceHealth(100); };
+void Object::damageFromUse() { reduceHealth(DAMAGE_ON_USE_AS_TOOL); }
 
 void Object::repair() { healBy(stats().maxHealth); }
 

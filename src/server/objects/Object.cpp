@@ -4,6 +4,8 @@
 #include "../Server.h"
 #include "ObjectLoot.h"
 
+const Hitpoints Object::DAMAGE_ON_USE_AS_TOOL = 100;
+
 Object::Object(const ObjectType *type, const MapPoint &loc)
     : Entity(type, loc),
       QuestNode(*type, serial()),

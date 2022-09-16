@@ -620,7 +620,7 @@ User::ToolSearchResult User::findTool(const std::string &tagName) {
     auto *pObj = dynamic_cast<Object *>(pEnt);
     if (!pObj) continue;
     if (pObj->isBeingBuilt()) continue;
-    if (pObj->isDead()) continue;
+    if (pObj->isBroken()) continue;
     const auto *type = pObj->type();
     if (!type->hasTag(tagName)) continue;
     if (distance(*pObj, *this) > Server::ACTION_DISTANCE) continue;

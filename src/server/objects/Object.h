@@ -107,7 +107,10 @@ class Object : public Entity, public QuestNode, public DamageOnUse {
   friend class Container;  // TODO: Remove once everything is componentized
 
   // From DamageOnUse
-  virtual bool isBroken() const override { return isDead(); }
+  static const Hitpoints DAMAGE_ON_USE_AS_TOOL;
+  virtual bool isBroken() const override {
+    return health() <= DAMAGE_ON_USE_AS_TOOL;
+  }
   virtual void damageFromUse() override;
   virtual double chanceToGetDamagedOnUseAsTool() const override;
   void repair() override;
