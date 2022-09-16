@@ -468,4 +468,19 @@
     <canBeRepaired cost="brick" />
 </objectType>
 
+<objectType id="flag" name="Flag" healthCategory="log"
+    xDrawOffset="-13" yDrawOffset="-31"
+    damageParticles="wood" sounds="wood"
+    deconstructs="flag" allowsCustomName="1" >
+    <canBeRepaired cost="linenCloth" />
+</objectType>
+    <item id="flag" name="Flag" hidden="1"
+    sounds="fabric" constructs="flag" stackSize="5" />
+        <recipe id="flag"
+            time="2000" >
+            <material id="linenCloth" />
+            <material id="stick" quantity="5" />
+            <unlockedBy recipe="linenCloth" />
+            <unlockedBy gather="stick" chance="0.02" />
+        </recipe>
 </root>
