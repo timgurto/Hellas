@@ -1414,10 +1414,16 @@ bool ClientObject::belongsToPlayerCity() const {
 }
 
 std::string ClientObject::additionalTextInName() const {
+  auto extraText = ""s;
+
+  // Broken tool?
+  if (objectType()->hasAnyTags() && health() <= 100) extraText += " (broken)"s;
+
   // Transform time
   if (_transformTimer > 0 && userHasAccess() && !isBeingConstructed())
-    return "("s + msAsTimeDisplay(_transformTimer) + " remaining)"s;
-  return {};
+    extraText += " ("s + msAsTimeDisplay(_transformTimer) + " remaining)"s;
+
+  return extraText;
 }
 
 bool ClientObject::isFlat() const { return Sprite::isFlat() || isDead(); }

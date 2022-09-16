@@ -98,8 +98,7 @@ void Sprite::drawShadow() const {
 }
 
 void Sprite::drawName() const {
-  auto text = name();
-  if (!additionalTextInName().empty()) text += " "s + additionalTextInName();
+  auto text = name() + additionalTextInName();
 
   const auto nameLabel = Texture{_client.defaultFont(), text, nameColor()};
   const auto nameOutline =
