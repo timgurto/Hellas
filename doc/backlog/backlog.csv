@@ -81,7 +81,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 83,Load map in background of login screen,8,21,Performance,,,,
 84,Warning if merchant object is full when trying to buy,2,2,Usability,,,,
 85,Allow followers onto vehicles,3,34,Feature,,,TRUE,
-86,Flag/sign objects,233,89,Feature,,,,
+86,Flag/sign objects,233,89,Feature,,TRUE,,
 87,Stop hardcoding map icons,2,2,Code Quality,,,,
 88,Help-topic list is missing shadow boxes,2,21,Bug,,,,
 89,"Damage shield on block, not hit",2,2,Bug,,TRUE,TRUE,
