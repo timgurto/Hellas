@@ -584,6 +584,7 @@ User::ToolSearchResult User::findTool(const std::string &tagName) {
     for (auto &slot : items) {
       const auto *type = slot.type();
       if (!slot.hasItem()) continue;
+      if (slot.isBroken()) continue;
       if (!type->hasTag(tagName)) continue;
 
       const auto toolSpeed = type->toolSpeed(tagName);

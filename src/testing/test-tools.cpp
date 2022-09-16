@@ -1,6 +1,13 @@
 #include "TestFixtures.h"
 #include "testing.h"
 
+#define BREAK_ITEM(ITEM)               \
+  for (auto i = 0; i != 100000; ++i) { \
+    (ITEM).onUseAsTool();              \
+    if ((ITEM).isBroken()) break;      \
+  }                                    \
+  CHECK((ITEM).isBroken());
+
 TEST_CASE_METHOD(ServerAndClientWithData,
                  "Objects destroyed when used as tools",
                  "[construction][tool]") {
@@ -58,6 +65,17 @@ TEST_CASE_METHOD(ServerAndClientWithData, "The fastest tool is used",
 
           THEN("the item has been crafted (i.e., the faster tool was used)") {
             CHECK(user->hasItems(expectedProduct));
+          }
+        }
+      }
+
+      SECTION("Slower tool is used if faster is broken") {
+        AND_GIVEN("his mower is broken") {
+          auto &mowerInInventory = user->inventory(1);
+          BREAK_ITEM(mowerInInventory);
+
+          THEN("his tool speed is 1x") {
+            CHECK(user->getToolSpeed("grassPicking") == 1);
           }
         }
       }
@@ -214,13 +232,6 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Client counts object tools",
     }
   }
 }
-
-#define BREAK_ITEM(ITEM)               \
-  for (auto i = 0; i != 100000; ++i) { \
-    (ITEM).onUseAsTool();              \
-    if ((ITEM).isBroken()) break;      \
-  }                                    \
-  CHECK((ITEM).isBroken());
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Broken tool items don't count",
                  "[tool][damage-on-use]") {
