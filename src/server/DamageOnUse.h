@@ -11,7 +11,10 @@ class DamageOnUse {
   void onUseAsTool();
   void onUseInCombat();
 
+  // Don't change this lightly.  It has been factored into balancing the total
+  // material costs of gathering/crafting.
   virtual double chanceToGetDamagedOnUseAsTool() const { return 0.25; }
+
   virtual double chanceToGetDamagedOnUseInCombat() const { return 0.01; }
   virtual void damageFromUse() = 0;
   virtual void damageOnPlayerDeath() {}

@@ -222,25 +222,27 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Client counts object tools",
   }                                    \
   CHECK((ITEM).isBroken());
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Client doesn't count broken tools",
+TEST_CASE_METHOD(ServerAndClientWithData, "Broken tool items don't count",
                  "[tool][damage-on-use]") {
-  SECTION("Broken tool item") {
-    GIVEN("the user has a 'screwing' screwdriver tool") {
-      useData(R"(
+  GIVEN("the user has a 'screwing' screwdriver tool") {
+    useData(R"(
         <item id="screwdriver" >
           <tag name="screwing" />
         </item>
       )");
-      user->giveItem(&server->getFirstItem());
+    user->giveItem(&server->getFirstItem());
 
-      THEN("the client has a screwing tool") {
-        WAIT_UNTIL(client->currentTools().hasTool("screwing"));
+    THEN("the client has a screwing tool") {
+      WAIT_UNTIL(client->currentTools().hasTool("screwing"));
 
-        AND_GIVEN("it's broken") {
-          auto &screwdriverInInventory = user->inventory(0);
-          BREAK_ITEM(screwdriverInInventory);
+      AND_GIVEN("it's broken") {
+        auto &screwdriverInInventory = user->inventory(0);
+        BREAK_ITEM(screwdriverInInventory);
 
-          THEN("the client doesn't have a screwing tool") {
+        THEN("the user doesn't have a screwing tool") {
+          CHECK(user->getToolSpeed("screwing") == 0);
+
+          AND_THEN("the client knows he doesn't have a screwing tool") {
             WAIT_UNTIL(!client->currentTools().hasTool("screwing"));
           }
         }

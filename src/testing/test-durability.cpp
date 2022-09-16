@@ -33,7 +33,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   }
 
   SECTION("item level") {
-    GIVEN("lead is common and gold is rare (with equal significant ilvls)") {
+    GIVEN("lead is common and gold is rare (with equal, significant ilvls)") {
       useData(R"(
         <item id="lead" quality="1" ilvl="60" />
         <item id="gold" quality="3" ilvl="60" />
