@@ -294,11 +294,12 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Broken tool items don't count",
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithData, "Dead tool objects don't count",
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Dead/broken tool objects don't count",
                  "[tool][damage-on-use]") {
   GIVEN("the user has a 'baking' oven tool") {
     useData(R"(
-      <objectType id="oven" >
+      <objectType id="oven" maxHealth="1000" >
         <tag name="baking" />
       </objectType>
     )");
@@ -316,6 +317,14 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Dead tool objects don't count",
           AND_THEN("the client knows he doesn't have a baking tool") {
             WAIT_UNTIL(!client->currentTools().hasTool("baking"));
           }
+        }
+      }
+
+      AND_GIVEN("it's low in health") {
+        oven.reduceHealth(950);
+
+        AND_THEN("the client knows he doesn't have a baking tool") {
+          WAIT_UNTIL(!client->currentTools().hasTool("baking"));
         }
       }
     }
