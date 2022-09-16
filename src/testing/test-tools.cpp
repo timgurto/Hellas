@@ -214,8 +214,43 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Client counts object tools",
     }
   }
 }
+
+#define BREAK_ITEM(ITEM)               \
+  for (auto i = 0; i != 100000; ++i) { \
+    (ITEM).onUseAsTool();              \
+    if ((ITEM).isBroken()) break;      \
+  }                                    \
+  CHECK((ITEM).isBroken());
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Client doesn't count broken tools",
+                 "[tool][damage-on-use]") {
+  SECTION("Broken tool item") {
+    GIVEN("the user has a 'screwing' screwdriver tool") {
+      useData(R"(
+        <item id="screwdriver" >
+          <tag name="screwing" />
+        </item>
+      )");
+      user->giveItem(&server->getFirstItem());
+
+      THEN("the client has a screwing tool") {
+        WAIT_UNTIL(client->currentTools().hasTool("screwing"));
+
+        AND_GIVEN("it's broken") {
+          auto &screwdriverInInventory = user->inventory(0);
+          BREAK_ITEM(screwdriverInInventory);
+
+          THEN("the client doesn't have a screwing tool") {
+            WAIT_UNTIL(!client->currentTools().hasTool("screwing"));
+          }
+        }
+      }
+    }
+  }
+}
+
 TEST_CASE_METHOD(ServerAndClientWithData,
-                 "Client doesn't count construction sites as tools", "[tool]") {
+                 "Client doesn't count unfinished objects as tools", "[tool]") {
   GIVEN("anvil objects are 'smithing' tools, but require metal to build") {
     useData(R"(
       <item id="metal" />

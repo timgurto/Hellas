@@ -34,8 +34,8 @@ void CurrentTools::includeItems() {
     for (const auto &slot : vect) {
       const auto *type = slot.first.type();
       if (!type) continue;
+      if (slot.first.health() == 0) continue;
 
-      const auto speed = 0.0;
       includeAllTagsFrom(*type);
     }
   };
