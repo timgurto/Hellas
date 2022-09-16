@@ -51,6 +51,7 @@ bool ClientCombatant::shouldDrawHealthBar() const {
   bool isDamaged = health() < maxHealth();
   if (isDamaged) return true;
   if (canBeAttackedByPlayer()) return true;
+  if (_maxHealth == 1) return false;
 
   bool selected = _cClient.targetAsCombatant() == this;
   bool mousedOver = _cClient.currentMouseOverEntity() == entityPointer();
