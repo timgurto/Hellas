@@ -24,7 +24,12 @@ double Object::chanceToGetDamagedOnUseAsTool() const {
   return DamageOnUse::chanceToGetDamagedOnUseAsTool();
 }
 
-void Object::damageFromUse() { reduceHealth(DAMAGE_ON_USE_AS_TOOL); }
+void Object::damageFromUse() {
+  if (objType().destroyIfUsedAsTool())
+    kill();
+  else
+    reduceHealth(DAMAGE_ON_USE_AS_TOOL);
+}
 
 void Object::repair() { healBy(stats().maxHealth); }
 
