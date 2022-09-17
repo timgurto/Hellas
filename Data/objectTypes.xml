@@ -475,7 +475,7 @@
     <canBeRepaired cost="linenCloth" />
 </objectType>
     <item id="flag" name="Flag" hidden="1"
-    sounds="fabric" constructs="flag" stackSize="5" />
+    sounds="fabric" constructs="flag" stackSize="20" />
         <recipe id="flag"
             time="2000" >
             <material id="linenCloth" />
