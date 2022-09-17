@@ -166,7 +166,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Multiple suffixes in a suffix set",
 
     WHEN("the user receives a shield in each inventory slot") {
       const auto *shield = &server->getFirstItem();
-      user->giveItem(shield, User::INVENTORY_SIZE);
+      for (auto i = 0; i != User::INVENTORY_SIZE; ++i) user->giveItem(shield);
 
       THEN(
           "at least one shield has fire resistance, and at least one has water "
