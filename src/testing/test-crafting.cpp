@@ -465,7 +465,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Crafting quantity", "[crafting]") {
         <recipe id="idea" time="100" >
           <tool class="inspiration" />
         </recipe>
-        <objectType id="flower" destroyIfUsedAsTool="1" >
+        <objectType id="flower" destroyIfUsedAsTool="1" maxHealth="1000" >
           <tag name="inspiration" />
         </objectType>
       )");

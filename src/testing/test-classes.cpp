@@ -28,7 +28,7 @@ TEST_CASE("A talent tier can require a tool", "[talents][tool]") {
       "a level-2 user, tagged objects, and talent tiers with various "
       "requirements") {
     auto data = R"(
-      <objectType id="rpa">
+      <objectType id="rpa" maxHealth="1000">
         <collisionRect x="0" y="0" w="1" h="1" />
         <tag name="medicalSchool"/>
       </objectType>

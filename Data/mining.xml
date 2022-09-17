@@ -56,7 +56,7 @@
     <unlockedBy recipe="tinBracket" />`
 </recipe>
 
-<objectType id="copper" name="Copper Deposit"
+<objectType id="copper" name="Copper Deposit" maxHealth="200"
     xDrawOffset="-13" yDrawOffset="-11" isFlat="1"
     allowedTerrain="rocky"
     destroyIfUsedAsTool="1" >
@@ -75,7 +75,7 @@
     <unlockedBy recipe="supportBeam" />
 </objectType>
 
-<objectType id="silver" name="Silver Deposit"
+<objectType id="silver" name="Silver Deposit" maxHealth="200"
     xDrawOffset="-13" yDrawOffset="-11" isFlat="1"
     allowedTerrain="rocky"
     destroyIfUsedAsTool="1" >

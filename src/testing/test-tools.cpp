@@ -16,7 +16,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       <objectType id="anvil" constructionTime="0" constructionReq="rock">
         <material id="iron" />
       </objectType>
-      <objectType id="rock" destroyIfUsedAsTool="1" >
+      <objectType id="rock" destroyIfUsedAsTool="1" maxHealth="1000" >
         <tag name="rock" />
       </objectType>
       <item id="iron" />
@@ -223,7 +223,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Client counts object tools",
                  "[tool]") {
   GIVEN("anvil objects are 'smithing' tools") {
     useData(R"(
-      <objectType id="anvil" >
+      <objectType id="anvil" maxHealth="1000" >
         <tag name="smithing" />
       </objectType>
     )");
@@ -336,7 +336,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   GIVEN("anvil objects are 'smithing' tools, but require metal to build") {
     useData(R"(
       <item id="metal" />
-      <objectType id="anvil" constructionTime="0" >
+      <objectType id="anvil" constructionTime="0" maxHealth="1000" >
         <tag name="smithing" />
         <material id="metal" />
       </objectType>
