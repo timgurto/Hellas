@@ -290,7 +290,7 @@ void AI::giveOrder(PetOrder newOrder) {
 void AI::Path::findPathTo(const MapRect &targetFootprint) {
   // A*
   const auto GRID = 25.0;
-  const auto DIAG = sqrt(GRID * GRID + GRID * GRID);
+  static const auto DIAG = sqrt(GRID * GRID + GRID * GRID);
   const auto closeEnough = _owner.ai.howCloseShouldPathfindingGet();
   const auto footprint = _owner.type()->collisionRect();
 
