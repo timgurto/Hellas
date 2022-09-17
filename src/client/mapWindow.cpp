@@ -76,6 +76,9 @@ void Client::initializeMapWindow() {
 static bool shouldFilterExclude(std::string name, std::string filterText) {
   if (filterText.empty()) return false;
 
+  name = toLower(name);
+  filterText = toLower(filterText);
+
   const auto nameContainsFilter = name.find(filterText) != std::string::npos;
   return !nameContainsFilter;
 }
