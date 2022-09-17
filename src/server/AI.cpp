@@ -457,19 +457,9 @@ void AI::calculatePathInSeparateThread() {
     Server::instance().incrementThreadCount();
 
     const auto distToTravel = distance(_owner.collisionRect(), targetFootprint);
-    const auto startTime = SDL_GetTicks();
 
     _activePath.findPathTo(targetFootprint);
     if (!_activePath.exists()) _failedToFindPath = true;
-
-    const auto endTime = SDL_GetTicks();
-    const auto timeElapsed = endTime - startTime;
-    auto of = std::ofstream{"pathfinding.log", std::ios_base::app};
-    of << _owner.type()->id()  // NPC ID
-       << "," << distToTravel  // Straight-line distance
-       << "," << timeElapsed   // Pathfinding time
-       << "," << (_failedToFindPath ? "failed" : "succeeded")  //
-       << std::endl;
 
     _pathfindingMutex.unlock();
     Server::instance().decrementThreadCount();
