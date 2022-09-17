@@ -352,13 +352,15 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Pathfinding", "[ai]") {
 
               AND_GIVEN("it is chasing him") {
                 wolf.makeAwareOf(*user);
-                WAIT_UNTIL(wolf.location() != wolfStart);
+                WAIT_UNTIL(distance(wolf.location(), wolfStart) >
+                           Server::ACTION_DISTANCE);
 
                 WHEN("the user teleports very far away") {
                   user->teleportTo({900, 30});
 
                   THEN("the wolf returns home") {
-                    WAIT_UNTIL(wolf.location() == wolfStart);
+                    WAIT_UNTIL(distance(wolf.location(), wolfStart) <=
+                               Server::ACTION_DISTANCE);
                   }
                 }
 
