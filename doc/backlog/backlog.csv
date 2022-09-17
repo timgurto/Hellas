@@ -47,7 +47,7 @@ issue,description,value,effort,type,blockedBy,done,critical,milestone
 48,Idling AI,3,21,Feature,,,,
 49,Allow building roads under objects,3,3,Bug,,,,
 51,Make under-construction objects vulnerable,1,2,Feature,40,,,70 War
-52,Fix gear-durability colours,13,34,Bug,,,TRUE,
+52,Fix gear-durability colours,13,34,Bug,,TRUE,TRUE,
 53,Show gear durability in main UI,8,21,Usability,,,,
 54,Show current tools in UI,144,144,Usability,,TRUE,,
 55,Show owned/missing tools in crafting window,144,5,Usability,54,TRUE,,

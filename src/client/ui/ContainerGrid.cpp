@@ -56,6 +56,7 @@ void ContainerGrid::refresh() {
                    y * (Client::ICON_SIZE + _gap + 2) + 1,
                    Client::ICON_SIZE + 2, Client::ICON_SIZE + 2};
     if (_solidBackground) {
+      renderer.setDrawColor(Color::BLACK);
       renderer.fillRect(slotRect + SLOT_BACKGROUND_OFFSET);
     }
     // Don't draw an item being moved by the mouse.
@@ -65,7 +66,13 @@ void ContainerGrid::refresh() {
       const auto *itemType = slot.first.type();
       if (itemType) {
         // Solid background (even if set to false)
-        renderer.fillRect(slotRect + SLOT_BACKGROUND_OFFSET);
+        if (slot.first.shouldDrawAsBroken()) {
+          renderer.setDrawColor(Color::DURABILITY_BROKEN);
+          renderer.fillRect(slotRect + SLOT_BACKGROUND_OFFSET);
+        } else if (slot.first.shouldDrawAsDamaged()) {
+          renderer.setDrawColor(Color::DURABILITY_LOW);
+          renderer.fillRect(slotRect + SLOT_BACKGROUND_OFFSET);
+        }
 
         // Quality border
         const auto qualityColour = itemType->nameColor();
@@ -75,11 +82,6 @@ void ContainerGrid::refresh() {
         }
 
         slot.first.type()->icon().draw(slotRect.x + 1, slotRect.y + 1);
-
-        if (slot.first.shouldDrawAsBroken())
-          Client::images.itemBroken.draw(slotRect.x + 1, slotRect.y + 1);
-        else if (slot.first.shouldDrawAsDamaged())
-          Client::images.itemDamaged.draw(slotRect.x + 1, slotRect.y + 1);
 
         if (slot.second > 1) {
           Texture label(font(), makeArgs(slot.second), FONT_COLOR),

@@ -604,7 +604,6 @@ class Client : public TextEntryManager {
 
   static struct CommonImages {
     void initialise();
-    void generateItemDamageOverlays();
 
     Texture shadow;
     Texture cursorNormal, cursorGather, cursorContainer, cursorAttack,
@@ -615,7 +614,6 @@ class Client : public TextEntryManager {
     Texture eliteWreath, bossWreath;
 
     Texture itemHighlightMouseOver, itemHighlightMatch, itemHighlightNoMatch;
-    Texture itemDamaged, itemBroken;
 
     Texture itemQualityMask;
     Texture cityIcon, playerIcon;
