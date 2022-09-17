@@ -50,7 +50,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Clients discern NPCs with no loot",
     WAIT_UNTIL(client->objects().size() == 1);
 
     WHEN("a user kills the ant") {
-      serverAnt.onAttackedBy(*user, 1,CombatResult::HIT);
+      serverAnt.onAttackedBy(*user, 1, CombatResult::HIT);
       serverAnt.kill();
 
       THEN("he doesn't believe he can loot it") {
@@ -100,7 +100,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Looting from a container",
       chest.container().addItems(&gold, 1000);
 
       WHEN("the user destroys the chest") {
-        chest.onAttackedBy(*user, 1,CombatResult::HIT);
+        chest.onAttackedBy(*user, 1, CombatResult::HIT);
         chest.kill();
         REQUIRE_FALSE(chest.loot().empty());
         REQUIRE(client->waitForMessage(SV_INVENTORY));
@@ -127,7 +127,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Looting from a container",
     }
 
     WHEN("the user destroys the chest") {
-      chest.onAttackedBy(*user, 1,CombatResult::HIT);
+      chest.onAttackedBy(*user, 1, CombatResult::HIT);
       chest.kill();
 
       THEN("there's no loot available") {
@@ -146,7 +146,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Looting from a container",
           chest.container().addItems(&gold, 100);
 
           WHEN("the user destroys the chest") {
-            chest.onAttackedBy(*user, 1,CombatResult::HIT);
+            chest.onAttackedBy(*user, 1, CombatResult::HIT);
             chest.reduceHealth(9999);
             REQUIRE_FALSE(chest.loot().empty());
 
@@ -182,7 +182,7 @@ TEST_CASE("New users are alerted to lootable objects", "[loot]") {
     s.waitForUsers(1);
     auto &user = s.getFirstUser();
 
-    goldbug.onAttackedBy(user, 1,CombatResult::HIT);
+    goldbug.onAttackedBy(user, 1, CombatResult::HIT);
     goldbug.kill();
 
     // And when Alice logs out and back in
@@ -335,7 +335,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Clients know when loot is all gone",
     auto &frog = server->addNPC("frog", {10, 15});
 
     WHEN("a user kills it") {
-      frog.onAttackedBy(*user, 1,CombatResult::HIT);
+      frog.onAttackedBy(*user, 1, CombatResult::HIT);
       frog.kill();
 
       THEN("he knows it's lootable") {
@@ -495,8 +495,8 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Looted gear and tools are broken",
         <loot id="fishingRod" />
         <loot id="fish" />
       </npcType>
-      <item id="tuxedo" gearSlot="body" class="repairable" />
-      <item id="fishingRod" class="repairable">
+      <item id="tuxedo" gearSlot="body" ilvl="1" class="repairable" />
+      <item id="fishingRod" ilvl="1" class="repairable">
         <tag name="fishing" />
       </item>
       <item id="fish" class="repairable" />
