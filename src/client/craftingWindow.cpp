@@ -9,6 +9,7 @@
 #include "ui/Element.h"
 #include "ui/Label.h"
 #include "ui/Line.h"
+#include "ui/Picture.h"
 
 extern Renderer renderer;
 
@@ -195,89 +196,82 @@ void Client::refreshRecipeDetailsPane() {
   _activeRecipe = &recipe;
   const ClientItem &product = *toClientItem(recipe.product());
 
-  // Title
-  std::string titleText = toClientItem(recipe.product())->name();
-  if (recipe.quantity() > 1)
-    titleText += " (x" + makeArgs(recipe.quantity()) + ")";
-  pane.addChild(new Label({0, 0, paneRect.w, HEADING_HEIGHT}, titleText,
-                          Element::CENTER_JUSTIFIED));
-  px_t y = HEADING_HEIGHT;
+  auto *details = new Scrollable({0, 0, pane.width(), BUTTON_Y - BUTTON_GAP});
+  pane.addChild(details);
 
-  // Icon
-  auto icon = new Picture({0, y, ICON_SIZE, ICON_SIZE}, product.icon());
-  icon->setTooltip(product.tooltip());
-  pane.addChild(icon);
-  y += ICON_SIZE;
+  auto y = 0_px;
 
-  // Divider
-  pane.addChild(new Line({0, y + LINE_GAP / 2}, paneRect.w));
-  y += LINE_GAP;
+  // Product tooltip
+  auto *tooltip =
+      new Picture({0, y, product.tooltip().width(), product.tooltip().height()},
+                  product.tooltip().asTexture());
+  details->addChild(tooltip);
+  y += tooltip->height();
 
-  // Materials list
-  const px_t TOTAL_LIST_SPACE =
-                 BUTTON_Y - BUTTON_GAP - y - 3 * Element::TEXT_HEIGHT,
-             MATS_LIST_HEIGHT = TOTAL_LIST_SPACE / 2,
-             UNLOCKS_HEIGHT = Element::TEXT_HEIGHT * 2,
-             TOOLS_LIST_HEIGHT = TOTAL_LIST_SPACE - MATS_LIST_HEIGHT -
-                                 LINE_GAP - UNLOCKS_HEIGHT;
-  pane.addChild(new Label({0, y, paneRect.w, Element::TEXT_HEIGHT},
-                          "Required materials:"));
-  y += Element::TEXT_HEIGHT;
-  List *const matsList =
-      new List({0, y, paneRect.w, MATS_LIST_HEIGHT}, ICON_SIZE);
-  y += MATS_LIST_HEIGHT;
-  pane.addChild(matsList);
-  for (const std::pair<const Item *, size_t> &matCost : recipe.materials()) {
-    assert(matCost.first);
-    const ClientItem &mat = *toClientItem(matCost.first);
-    const size_t qty = matCost.second;
-    std::string entryText = mat.name();
-    if (qty > 1) entryText += " x" + toString(qty);
-    Element *const entry = new Element({0, 0, paneRect.w, ICON_SIZE});
-    entry->setTooltip(mat.tooltip());
-    matsList->addChild(entry);
-    entry->addChild(new Picture({0, 0, ICON_SIZE, ICON_SIZE}, mat.icon()));
-    entry->addChild(new Label(
-        {ICON_SIZE + CheckBox::GAP, 0, paneRect.w, ICON_SIZE}, entryText,
-        Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
+  // Quantity
+  if (recipe.quantity() > 1) {
+    details->addChild(
+        new Label({0, y, pane.width(), Element::TEXT_HEIGHT},
+                  "Quantity produced: "s + makeArgs(recipe.quantity())));
+    y += HEADING_HEIGHT;
   }
 
-  // Tools list
-  pane.addChild(
+  // Materials
+  details->addChild(new Label({0, y, paneRect.w, Element::TEXT_HEIGHT},
+                              "Required materials:"));
+  y += Element::TEXT_HEIGHT;
+  const auto H_GAP = 2_px;
+  for (const auto &matCost : recipe.materials()) {
+    if (!matCost.first) continue;
+    const auto &mat = *toClientItem(matCost.first);
+    const auto qty = matCost.second;
+    auto entryText = mat.name();
+    if (qty > 1) entryText += " (x"s + toString(qty) + ")"s;
+
+    auto *icon = new Picture(0, y, mat.icon());
+    auto name = new Label({ICON_SIZE + CheckBox::GAP, y, paneRect.w, ICON_SIZE},
+                          entryText, Element::LEFT_JUSTIFIED,
+                          Element::CENTER_JUSTIFIED);
+    icon->setTooltip(mat.tooltip());
+    name->setTooltip(mat.tooltip());
+    details->addChild(icon);
+    details->addChild(name);
+
+    y += ICON_SIZE + H_GAP;
+  }
+
+  // Tools
+  details->addChild(
       new Label({0, y, paneRect.w, Element::TEXT_HEIGHT}, "Required tools:"));
   y += Element::TEXT_HEIGHT;
-  List *const toolsList = new List({5, y, paneRect.w, TOOLS_LIST_HEIGHT}, 16);
-  y += TOOLS_LIST_HEIGHT + LINE_GAP;
-  pane.addChild(toolsList);
-  for (const std::string &tool : recipe.tools()) {
+  for (const auto &tool : recipe.tools()) {
     const auto toolName = gameData.tagNames[tool];
-    const auto &icon = images.toolIcons[tool];
-    const auto H_GAP = 2_px;
+    const auto &iconImage = images.toolIcons[tool];
     const auto colour =
         _currentTools.hasTool(tool) ? Color::TOOL_PRESENT : Color::TOOL_MISSING;
 
-    auto *entry = new Element({0, 0, paneRect.w, 16});
-    toolsList->addChild(entry);
-
-    entry->addChild(new Picture(H_GAP, 0, icon));
-    const auto LABEL_X = 16 + 2 * H_GAP;
-    auto *label = new Label({LABEL_X, 0, paneRect.w - LABEL_X, 16}, toolName,
-                            Label::LEFT_JUSTIFIED, Label::CENTER_JUSTIFIED);
+    auto *icon = new Picture(0, y, iconImage);
+    details->addChild(icon);
+    auto *label =
+        new Label({icon->width() + CheckBox::GAP, y, paneRect.w, icon->width()},
+                  toolName, Label::LEFT_JUSTIFIED, Label::CENTER_JUSTIFIED);
     label->setColor(colour);
-    entry->addChild(label);
+    details->addChild(label);
+
+    y += ICON_SIZE + H_GAP;
   }
 
   // Unlocks
-  auto unlockInfo =
+  const auto &unlockInfo =
       gameData.unlocks.getEffectInfo({Unlocks::CRAFT, recipe.id()});
   if (unlockInfo.hasEffect) {
     auto wordWrapper = WordWrapper{Element::font(), paneRect.w};
-    auto lines = wordWrapper.wrap(unlockInfo.message);
+    const auto lines = wordWrapper.wrap(unlockInfo.message);
     for (const auto &line : lines) {
       auto l = new Label({0, y, paneRect.w, Element::TEXT_HEIGHT}, line);
-      y += Element::TEXT_HEIGHT;
       l->setColor(unlockInfo.color);
-      pane.addChild(l);
+      details->addChild(l);
+      y += Element::TEXT_HEIGHT;
     }
   }
 
@@ -332,10 +326,10 @@ void Client::populateFilters() {
 }
 
 void Client::onClickRecipe(Element &e, const ScreenPoint &mousePos) {
-  // This intermediary function is necessary because UI mouse events don't check
-  // for mouse collision, and so without it the details pane was redrawn between
-  // any mouse down and mouse up.  This effectively disabled the buttons in the
-  // pane.
+  // This intermediary function is necessary because UI mouse events don't
+  // check for mouse collision, and so without it the details pane was redrawn
+  // between any mouse down and mouse up.  This effectively disabled the
+  // buttons in the pane.
   if (!collision(mousePos, {0, 0, e.rect().w, e.rect().h})) return;
   e.client()->refreshRecipeDetailsPane();
 }

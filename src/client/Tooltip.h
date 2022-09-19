@@ -50,6 +50,7 @@ class Tooltip {
   using Lines = std::vector<std::string>;
   void addLines(const Lines &lines);
   void embed(const Tooltip &subTooltip);
+  Texture &asTexture() const;
   void addItemGrid(const void *itemVector);  // To avoid recursive #includes
   void addMerchantSlots(const std::vector<ClientMerchantSlot> &slots);
   void addItem(const ClientItem &item);

@@ -46,8 +46,12 @@ void Tooltip::addLines(const Lines &lines) {
 }
 
 void Tooltip::embed(const Tooltip &subTooltip) {
-  subTooltip.generateIfNecessary();
-  _content.push_back(subTooltip._generated);
+  _content.push_back(subTooltip.asTexture());
+}
+
+Texture &Tooltip::asTexture() const {
+  generateIfNecessary();
+  return _generated;
 }
 
 void Tooltip::addItemGrid(const void *itemVector) {
