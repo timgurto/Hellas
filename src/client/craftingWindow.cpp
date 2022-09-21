@@ -87,7 +87,7 @@ void Client::initializeCraftingWindow() {
   _recipeList = new ChoiceList(
       {0, HEADING_HEIGHT, RECIPES_PANE_W, CONTENT_H - HEADING_HEIGHT},
       ICON_SIZE + 2, *this);
-  //_recipeList->doNotScrollToTopOnClear();
+  _recipeList->doNotScrollToTopOnClear();
   recipesPane->addChild(_recipeList);
   // Click on a filter: force recipe list to refresh
   filterPane->setLeftMouseUpFunction(
