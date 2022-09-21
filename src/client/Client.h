@@ -243,6 +243,7 @@ class Client : public TextEntryManager {
 
   static void initializeCraftingWindow(Client &client);
   void initializeCraftingWindow();
+  void createCraftingWindowFilters();
   std::vector<CraftingWindowFilter *> _craftingWindowFilters;
   const CraftingWindowFilter *_selectedCraftingWindowFilter{nullptr};
   void indexRecipeInAllFilters(const CRecipe &recipe);

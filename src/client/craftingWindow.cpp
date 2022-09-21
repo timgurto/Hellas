@@ -14,6 +14,10 @@
 
 extern Renderer renderer;
 
+void Client::createCraftingWindowFilters() {
+  _craftingWindowFilters.push_back(new FilterRecipesByMaterial(*this));
+}
+
 void Client::initializeCraftingWindow(Client &client) {
   client.initializeCraftingWindow();
 }
@@ -37,9 +41,6 @@ void Client::initializeCraftingWindow() {
                                      CONTENT_H, Element::VERTICAL));
   _craftingWindow->addChild(new Line({DETAILS_PANE_X - PANE_GAP / 2, CONTENT_Y},
                                      CONTENT_H, Element::VERTICAL));
-
-  // Filters
-  _craftingWindowFilters.push_back(new FilterRecipesByMaterial(*this));
 
   auto *const filterPane =
       new Element({FILTERS_PANE_X, CONTENT_Y, FILTERS_PANE_W, CONTENT_H});

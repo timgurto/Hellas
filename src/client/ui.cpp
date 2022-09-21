@@ -83,6 +83,8 @@ void Client::initUI() {
   _instructionsLabel->id("Centre-screen Instructions");
   _instructionsLabel->ignoreMouseEvents();
   addUI(_instructionsLabel);
+
+  createCraftingWindowFilters();
 }
 
 void Client::initChatLog() {
