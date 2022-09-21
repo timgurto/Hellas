@@ -35,3 +35,18 @@ class FilterRecipesByMaterial : public CraftingWindowFilter {
   mutable ChoiceList *m_materialList{nullptr};
   const Client &m_client;
 };
+
+class FilterRecipesByTool : public CraftingWindowFilter {
+ public:
+  FilterRecipesByTool(const Client &client);
+  std::string buttonText() const override { return "Tool"s; }
+  void indexRecipe(const CRecipe &recipe) override;
+  void populateConfigurationPanel(Element &panel) const override;
+  MatchingRecipes getMatchingRecipes() const override;
+
+ private:
+  using IndexedRecipes = std::multimap<std::string, const CRecipe *>;
+  IndexedRecipes m_indexedRecipes;
+  mutable ChoiceList *m_toolsList{nullptr};
+  const Client &m_client;
+};

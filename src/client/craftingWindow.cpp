@@ -16,6 +16,7 @@ extern Renderer renderer;
 
 void Client::createCraftingWindowFilters() {
   _craftingWindowFilters.push_back(new FilterRecipesByMaterial(*this));
+  _craftingWindowFilters.push_back(new FilterRecipesByTool(*this));
 }
 
 void Client::initializeCraftingWindow(Client &client) {
@@ -61,6 +62,14 @@ void Client::initializeCraftingWindow() {
                    selectedFilter = matFilter;
                    configurationPanel->clearChildren();
                    matFilter->populateConfigurationPanel(*configurationPanel);
+                 }));
+  const auto *toolFilter = _craftingWindowFilters[1];
+  filterPane->addChild(
+      new Button({100, 0, 50, 15}, toolFilter->buttonText(),
+                 [&selectedFilter, toolFilter, configurationPanel]() {
+                   selectedFilter = toolFilter;
+                   configurationPanel->clearChildren();
+                   toolFilter->populateConfigurationPanel(*configurationPanel);
                  }));
   configurationPanel->height(filterPane->height() - 17);
 
@@ -330,4 +339,48 @@ void FilterRecipesByMaterial::populateConfigurationPanel(Element &panel) const {
         material->name(), Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
   }
   m_materialList->verifyBoxes();
+}
+
+FilterRecipesByTool::FilterRecipesByTool(const Client &client)
+    : m_client(client) {}
+
+void FilterRecipesByTool::indexRecipe(const CRecipe &recipe) {
+  for (const auto tool : recipe.tools()) {
+    m_indexedRecipes.insert(std::make_pair(tool, &recipe));
+  }
+}
+
+CraftingWindowFilter::MatchingRecipes FilterRecipesByTool::getMatchingRecipes()
+    const {
+  const auto selectedTool = m_toolsList->getSelected();
+  if (selectedTool.empty()) return {};
+
+  auto recipes = MatchingRecipes{};
+  auto startIt = m_indexedRecipes.lower_bound(selectedTool);
+  auto endIt = m_indexedRecipes.upper_bound(selectedTool);
+  for (auto it = startIt; it != endIt; ++it) recipes.insert(it->second);
+  return recipes;
+}
+
+void FilterRecipesByTool::populateConfigurationPanel(Element &panel) const {
+  auto toolsByName = std::map<std::string, std::string>{};
+  for (const auto &pair : m_indexedRecipes) {
+    const auto toolTag = pair.first;
+    const auto toolName = m_client.gameData.tagNames[toolTag];
+    toolsByName[toolName] = toolTag;
+  }
+
+  m_toolsList =
+      new ChoiceList(panel.rect(), Client::ICON_SIZE, *panel.client());
+  panel.addChild(m_toolsList);
+  for (const auto &pair : toolsByName) {
+    auto *entry = new Element({});
+    m_toolsList->addChild(entry);
+    entry->id(pair.second);
+    entry->addChild(new Picture(0, 0, m_client.images.toolIcons[pair.second]));
+    entry->addChild(new Label(
+        {Client::ICON_SIZE + 2, 0, entry->width(), entry->height()}, pair.first,
+        Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
+  }
+  m_toolsList->verifyBoxes();
 }
