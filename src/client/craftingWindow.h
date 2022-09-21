@@ -4,6 +4,7 @@
 
 class ChoiceList;
 class CRecipe;
+class TextBox;
 
 class CraftingWindowFilter {
  public:
@@ -49,4 +50,17 @@ class FilterRecipesByTool : public CraftingWindowFilter {
   IndexedRecipes m_indexedRecipes;
   mutable ChoiceList *m_toolsList{nullptr};
   const Client &m_client;
+};
+
+class FilterRecipesByLvlReq : public CraftingWindowFilter {
+ public:
+  std::string buttonText() const override { return "Level req"s; }
+  void indexRecipe(const CRecipe &recipe) override;
+  void populateConfigurationPanel(Element &panel) const override;
+  MatchingRecipes getMatchingRecipes() const override;
+
+ private:
+  using IndexedRecipes = std::multimap<Level, const CRecipe *>;
+  IndexedRecipes m_indexedRecipes;
+  mutable TextBox *m_minLevel{nullptr}, *m_maxLevel{nullptr};
 };

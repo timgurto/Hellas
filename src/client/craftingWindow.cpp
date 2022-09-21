@@ -14,11 +14,6 @@
 
 extern Renderer renderer;
 
-void Client::createCraftingWindowFilters() {
-  _craftingWindowFilters.push_back(new FilterRecipesByMaterial(*this));
-  _craftingWindowFilters.push_back(new FilterRecipesByTool(*this));
-}
-
 void Client::initializeCraftingWindow(Client &client) {
   client.initializeCraftingWindow();
 }
@@ -47,7 +42,8 @@ void Client::initializeCraftingWindow() {
   auto *const filterPane =
       new Element({FILTERS_PANE_X, CONTENT_Y, FILTERS_PANE_W, CONTENT_H});
   _craftingWindow->addChild(filterPane);
-  auto *configurationPanel = new Element({0, 17, filterPane->width()});
+  auto *configurationPanel = new Element({0, 0, filterPane->width()});
+  configurationPanel->setClient(*this);
   filterPane->addChild(configurationPanel);
   // Select-filter buttons
   const auto NUM_COLUMNS = 3;
@@ -56,13 +52,17 @@ void Client::initializeCraftingWindow() {
   auto col = 0;
   auto &selectedFilter = _selectedCraftingWindowFilter;
   filterPane->addChild(new Button({BUTTON_W * col, y, BUTTON_W, BUTTON_H},
-                                  "None",
+                                  "(None)",
                                   [&selectedFilter, configurationPanel]() {
                                     selectedFilter = nullptr;
                                     configurationPanel->clearChildren();
                                   }));
-  ++col;
   for (const auto *filter : _craftingWindowFilters) {
+    if (++col >= NUM_COLUMNS) {
+      col = 0;
+      y += BUTTON_H;
+    }
+
     filterPane->addChild(new Button(
         {BUTTON_W * col, y, BUTTON_W, BUTTON_H}, filter->buttonText(),
         [&selectedFilter, filter, configurationPanel]() {
@@ -70,14 +70,12 @@ void Client::initializeCraftingWindow() {
           configurationPanel->clearChildren();
           filter->populateConfigurationPanel(*configurationPanel);
         }));
-
-    if (++col > NUM_COLUMNS) {
-      col = 0;
-      y += BUTTON_H;
-    }
   }
-  if (col > 0) y += BUTTON_H;
-  configurationPanel->height(filterPane->height() - y);
+  y += BUTTON_H;
+  auto newRect = configurationPanel->rect();
+  newRect.y = y;
+  newRect.h = filterPane->height() - y;
+  configurationPanel->rect(newRect);
 
   // Recipes
   Element *const recipesPane =
@@ -301,6 +299,12 @@ void Client::indexRecipeInAllFilters(const CRecipe &recipe) {
   for (auto *filter : _craftingWindowFilters) filter->indexRecipe(recipe);
 }
 
+void Client::createCraftingWindowFilters() {
+  _craftingWindowFilters.push_back(new FilterRecipesByMaterial(*this));
+  _craftingWindowFilters.push_back(new FilterRecipesByTool(*this));
+  _craftingWindowFilters.push_back(new FilterRecipesByLvlReq);
+}
+
 FilterRecipesByMaterial::FilterRecipesByMaterial(const Client &client)
     : m_client(client) {}
 
@@ -389,4 +393,55 @@ void FilterRecipesByTool::populateConfigurationPanel(Element &panel) const {
         Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
   }
   m_toolsList->verifyBoxes();
+}
+
+void FilterRecipesByLvlReq::indexRecipe(const CRecipe &recipe) {
+  const auto &product = *recipe.product();
+  if (product.lvlReq() == 0) return;
+  if (!product.isGear()) return;
+
+  m_indexedRecipes.insert(std::make_pair(product.lvlReq(), &recipe));
+}
+
+CraftingWindowFilter::MatchingRecipes
+FilterRecipesByLvlReq::getMatchingRecipes() const {
+  Level minLevel = m_minLevel->hasText()
+                       ? static_cast<Level>(m_minLevel->textAsNum())
+                       : -1000;
+  Level maxLevel = m_maxLevel->hasText()
+                       ? static_cast<Level>(m_maxLevel->textAsNum())
+                       : +1000;
+  if (minLevel > maxLevel) return {};
+
+  auto recipes = MatchingRecipes{};
+  auto startIt = m_indexedRecipes.lower_bound(minLevel);
+  auto endIt = m_indexedRecipes.upper_bound(maxLevel);
+  for (auto it = startIt; it != endIt; ++it) recipes.insert(it->second);
+  return recipes;
+}
+
+void FilterRecipesByLvlReq::populateConfigurationPanel(Element &panel) const {
+  const auto GAP = 2_px, LABEL_W = 100_px, TEXT_W = 40_px, ROW_H = 13_px;
+  panel.addChild(new Label({GAP, GAP, LABEL_W, ROW_H}, "Min level required"));
+  panel.addChild(
+      new Label({GAP, ROW_H + GAP, LABEL_W, ROW_H}, "Max level required"));
+  m_minLevel = new TextBox(*panel.client(), {LABEL_W + GAP, GAP, TEXT_W, ROW_H},
+                           TextBox::NUMERALS);
+  m_maxLevel =
+      new TextBox(*panel.client(), {LABEL_W + GAP, ROW_H + GAP, TEXT_W, ROW_H},
+                  TextBox::NUMERALS);
+  panel.addChild(m_minLevel);
+  panel.addChild(m_maxLevel);
+  m_minLevel->setOnChange(
+      [](void *pClient) {
+        auto &client = *reinterpret_cast<Client *>(pClient);
+        client.populateRecipesList();
+      },
+      panel.client());
+  m_maxLevel->setOnChange(
+      [](void *pClient) {
+        auto &client = *reinterpret_cast<Client *>(pClient);
+        client.populateRecipesList();
+      },
+      panel.client());
 }

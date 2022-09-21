@@ -168,6 +168,8 @@ class Client : public TextEntryManager {
 
   void infoWindow(const std::string &text);
 
+  void populateRecipesList() { populateRecipesList(*_recipeList); }
+
   void showHelpTopic(const std::string &topic) {
     _helpWindow.showHelpTopic(topic);
   }
