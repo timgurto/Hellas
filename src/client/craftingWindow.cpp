@@ -43,35 +43,41 @@ void Client::initializeCraftingWindow() {
   _craftingWindow->addChild(new Line({DETAILS_PANE_X - PANE_GAP / 2, CONTENT_Y},
                                      CONTENT_H, Element::VERTICAL));
 
+  // Filters
   auto *const filterPane =
       new Element({FILTERS_PANE_X, CONTENT_Y, FILTERS_PANE_W, CONTENT_H});
   _craftingWindow->addChild(filterPane);
   auto *configurationPanel = new Element({0, 17, filterPane->width()});
   filterPane->addChild(configurationPanel);
-  // Select filter
+  // Select-filter buttons
+  const auto NUM_COLUMNS = 3;
+  const auto BUTTON_W = FILTERS_PANE_W / NUM_COLUMNS, BUTTON_H = 14_px;
+  auto y = 0_px;
+  auto col = 0;
   auto &selectedFilter = _selectedCraftingWindowFilter;
-  filterPane->addChild(new Button({0, 0, 50, 15}, "None",
+  filterPane->addChild(new Button({BUTTON_W * col, y, BUTTON_W, BUTTON_H},
+                                  "None",
                                   [&selectedFilter, configurationPanel]() {
                                     selectedFilter = nullptr;
                                     configurationPanel->clearChildren();
                                   }));
-  const auto *matFilter = _craftingWindowFilters[0];
-  filterPane->addChild(
-      new Button({50, 0, 50, 15}, matFilter->buttonText(),
-                 [&selectedFilter, matFilter, configurationPanel]() {
-                   selectedFilter = matFilter;
-                   configurationPanel->clearChildren();
-                   matFilter->populateConfigurationPanel(*configurationPanel);
-                 }));
-  const auto *toolFilter = _craftingWindowFilters[1];
-  filterPane->addChild(
-      new Button({100, 0, 50, 15}, toolFilter->buttonText(),
-                 [&selectedFilter, toolFilter, configurationPanel]() {
-                   selectedFilter = toolFilter;
-                   configurationPanel->clearChildren();
-                   toolFilter->populateConfigurationPanel(*configurationPanel);
-                 }));
-  configurationPanel->height(filterPane->height() - 17);
+  ++col;
+  for (const auto *filter : _craftingWindowFilters) {
+    filterPane->addChild(new Button(
+        {BUTTON_W * col, y, BUTTON_W, BUTTON_H}, filter->buttonText(),
+        [&selectedFilter, filter, configurationPanel]() {
+          selectedFilter = filter;
+          configurationPanel->clearChildren();
+          filter->populateConfigurationPanel(*configurationPanel);
+        }));
+
+    if (++col > NUM_COLUMNS) {
+      col = 0;
+      y += BUTTON_H;
+    }
+  }
+  if (col > 0) y += BUTTON_H;
+  configurationPanel->height(filterPane->height() - y);
 
   // Recipes
   Element *const recipesPane =
