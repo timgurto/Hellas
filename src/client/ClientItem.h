@@ -127,6 +127,10 @@ class ClientItem : public Item, public HasSounds {
   void draw(const ScreenPoint &screenLoc) const;
 
   static void init();
+
+  struct CompareName {
+    bool operator()(const ClientItem *lhs, const ClientItem *rhs);
+  };
 };
 
 const ClientItem *toClientItem(const Item *item);

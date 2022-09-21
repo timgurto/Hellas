@@ -356,3 +356,8 @@ std::string ClientItem::Instance::name() const {
 bool ClientItem::Instance::isDamaged() const {
   return _health < _type->maxHealth();
 }
+
+bool ClientItem::CompareName::operator()(const ClientItem *lhs,
+                                         const ClientItem *rhs) {
+  return lhs->name() < rhs->name();
+}

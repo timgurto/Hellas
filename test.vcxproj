@@ -338,6 +338,7 @@
     <ClInclude Include="src\client\Connection.h" />
     <ClInclude Include="src\client\CDataLoader.h" />
     <ClInclude Include="src\client\CQuest.h" />
+    <ClInclude Include="src\client\craftingWindow.h" />
     <ClInclude Include="src\client\CRecipe.h" />
     <ClInclude Include="src\client\CSuffixes.h" />
     <ClInclude Include="src\client\drawPerItem.h" />

@@ -964,6 +964,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
           auto it = gameData.recipes.find(recipe);
           if (it == gameData.recipes.end()) continue;
 
+          indexRecipeInAllFilters(*it);
+
           if (msgCode == SV_NEW_RECIPES_LEARNED) {
             auto message =
                 "You have learned how to craft a new recipe: " + it->name();
@@ -981,7 +983,6 @@ void Client::handleBufferedMessages(const std::string &msg) {
         populateBuildList();
         if (_recipeList) {
           _recipeList->markChanged();
-          populateFilters();
         }
 
         break;
@@ -1018,7 +1019,6 @@ void Client::handleBufferedMessages(const std::string &msg) {
         populateBuildList();
         if (_recipeList) {
           _recipeList->markChanged();
-          populateFilters();
         }
 
         break;

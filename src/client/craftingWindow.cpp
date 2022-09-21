@@ -3,6 +3,7 @@
 #include "Client.h"
 #include "Renderer.h"
 #include "Unlocks.h"
+#include "craftingWindow.h"
 #include "ui/Button.h"
 #include "ui/CheckBox.h"
 #include "ui/ColorBlock.h"
@@ -18,20 +19,6 @@ void Client::initializeCraftingWindow(Client &client) {
 }
 
 void Client::initializeCraftingWindow() {
-  // For crafting filters
-  for (const CRecipe &recipe : gameData.recipes) {
-    for (auto matPair : recipe.materials())
-      _matFilters[toClientItem(matPair.first)] = false;
-    for (const auto &pair : recipe.product()->tags()) {
-      const auto &tagName = pair.first;
-      _tagFilters[tagName] = false;
-    }
-  }
-  _haveMatsFilter = false;
-  _tagOr = _matOr = false;
-  _haveToolsFilter = true;
-  _tagFilterSelected = _matFilterSelected = false;
-
   // Set up crafting window
   static const px_t FILTERS_PANE_W = 150, RECIPES_PANE_W = 160,
                     DETAILS_PANE_W = 150, PANE_GAP = 6,
@@ -52,82 +39,29 @@ void Client::initializeCraftingWindow() {
                                      CONTENT_H, Element::VERTICAL));
 
   // Filters
-  Element *const filterPane =
+  _craftingWindowFilters.push_back(new FilterRecipesByMaterial(*this));
+
+  auto *const filterPane =
       new Element({FILTERS_PANE_X, CONTENT_Y, FILTERS_PANE_W, CONTENT_H});
   _craftingWindow->addChild(filterPane);
-  filterPane->addChild(new Label({0, 0, FILTERS_PANE_W, HEADING_HEIGHT},
-                                 "Filters", Element::CENTER_JUSTIFIED));
-  px_t y = HEADING_HEIGHT;
-  CheckBox *pCB =
-      new CheckBox(*this, {0, y, FILTERS_PANE_W, Element::TEXT_HEIGHT},
-                   _haveMatsFilter, "Have all materials");
-  pCB->setTooltip("Only show recipes for which you have the materials");
-  pCB->onChange([](Client &client) { client.scrollRecipeListToTop(); });
-  filterPane->addChild(pCB);
-  y += Element::TEXT_HEIGHT;
-  filterPane->addChild(new Line({0, y + LINE_GAP / 2}, FILTERS_PANE_W));
-  y += LINE_GAP;
-
-  static const px_t TOTAL_FILTERS_HEIGHT =
-                        CONTENT_H - y - 4 * Element::TEXT_HEIGHT - LINE_GAP,
-                    // TOTAL_FILTERS_HEIGHT = CRAFTING_WINDOW_H - PANE_GAP/2 - y
-                    // - 4 * Element::TEXT_HEIGHT - LINE_GAP,
-      TAG_LIST_HEIGHT = TOTAL_FILTERS_HEIGHT / 2,
-                    MATERIALS_LIST_HEIGHT =
-                        TOTAL_FILTERS_HEIGHT - TAG_LIST_HEIGHT;
-
-  // Tag filters
+  auto *configurationPanel = new Element({0, 17, filterPane->width()});
+  filterPane->addChild(configurationPanel);
+  // Select filter
+  auto &selectedFilter = _selectedCraftingWindowFilter;
+  filterPane->addChild(new Button({0, 0, 50, 15}, "None",
+                                  [&selectedFilter, configurationPanel]() {
+                                    selectedFilter = nullptr;
+                                    configurationPanel->clearChildren();
+                                  }));
+  const auto *matFilter = _craftingWindowFilters[0];
   filterPane->addChild(
-      new Label({0, y, FILTERS_PANE_W, Element::TEXT_HEIGHT}, "Item tag:"));
-  y += Element::TEXT_HEIGHT;
-  _tagList =
-      new List({0, y, FILTERS_PANE_W, TAG_LIST_HEIGHT}, Element::TEXT_HEIGHT);
-  filterPane->addChild(_tagList);
-  y += TAG_LIST_HEIGHT;
-
-  pCB = new CheckBox(*this, {0, y, FILTERS_PANE_W / 4, Element::TEXT_HEIGHT},
-                     _tagOr, "Any");
-  pCB->setTooltip(
-      "Only show recipes whose product has at least one of the selected tags.");
-  pCB->onChange([](Client &client) { client.scrollRecipeListToTop(); });
-  filterPane->addChild(pCB);
-
-  pCB = new CheckBox(
-      *this, {FILTERS_PANE_W / 2, y, FILTERS_PANE_W / 4, Element::TEXT_HEIGHT},
-      _tagOr, "All", true);
-  pCB->setTooltip(
-      "Only show recipes whose product has all of the selected tags.");
-  pCB->onChange([](Client &client) { client.scrollRecipeListToTop(); });
-  filterPane->addChild(pCB);
-
-  y += Element::TEXT_HEIGHT;
-  filterPane->addChild(new Line({0, y + LINE_GAP / 2}, FILTERS_PANE_W));
-  y += LINE_GAP;
-
-  // Material filters
-  filterPane->addChild(
-      new Label({0, y, FILTERS_PANE_W, Element::TEXT_HEIGHT}, "Materials:"));
-  y += Element::TEXT_HEIGHT;
-  _materialsList =
-      new List({0, y, FILTERS_PANE_W, MATERIALS_LIST_HEIGHT}, ICON_SIZE);
-  filterPane->addChild(_materialsList);
-  y += MATERIALS_LIST_HEIGHT;
-  pCB = new CheckBox(*this, {0, y, FILTERS_PANE_W / 4, Element::TEXT_HEIGHT},
-                     _matOr, "Any");
-  pCB->setTooltip(
-      "Only show recipes that require at least one of the selected materials.");
-  pCB->onChange([](Client &client) { client.scrollRecipeListToTop(); });
-  filterPane->addChild(pCB);
-
-  pCB = new CheckBox(
-      *this, {FILTERS_PANE_W / 2, y, FILTERS_PANE_W / 4, Element::TEXT_HEIGHT},
-      _matOr, "All", true);
-  pCB->setTooltip(
-      "Only show recipes that require all of the selected materials.");
-  pCB->onChange([](Client &client) { client.scrollRecipeListToTop(); });
-  filterPane->addChild(pCB);
-
-  populateFilters();
+      new Button({50, 0, 50, 15}, matFilter->buttonText(),
+                 [&selectedFilter, matFilter, configurationPanel]() {
+                   selectedFilter = matFilter;
+                   configurationPanel->clearChildren();
+                   matFilter->populateConfigurationPanel(*configurationPanel);
+                 }));
+  configurationPanel->height(filterPane->height() - 17);
 
   // Recipes
   Element *const recipesPane =
@@ -139,7 +73,7 @@ void Client::initializeCraftingWindow() {
   _recipeList = new ChoiceList(
       {0, HEADING_HEIGHT, RECIPES_PANE_W, CONTENT_H - HEADING_HEIGHT},
       ICON_SIZE + 2, *this);
-  _recipeList->doNotScrollToTopOnClear();
+  //_recipeList->doNotScrollToTopOnClear();
   recipesPane->addChild(_recipeList);
   // Click on a filter: force recipe list to refresh
   filterPane->setLeftMouseUpFunction(
@@ -278,53 +212,6 @@ void Client::refreshRecipeDetailsPane() {
   pane.markChanged();
 }
 
-void Client::populateFilters() {
-  const px_t FILTERS_PANE_W = _materialsList->parent()->width();
-
-  // Restrict shown filters to known recipes
-  std::set<std::string> knownTags;
-  std::set<const ClientItem *> knownMats;
-  for (const CRecipe &recipe : gameData.recipes)
-    if (_knownRecipes.find(recipe.id()) !=
-        _knownRecipes.end()) {  // user knows this recipe
-      for (const auto &pair : recipe.product()->tags()) {
-        const auto &tag = pair.first;
-        knownTags.insert(tag);
-      }
-      for (const auto &matPair : recipe.materials())
-        knownMats.insert(dynamic_cast<const ClientItem *>(matPair.first));
-    }
-
-  // Tags
-  _tagList->clearChildren();
-  for (auto &pair : _tagFilters) {
-    if (knownTags.find(pair.first) ==
-        knownTags.end())  // User doesn't know about this tag yet.
-      continue;
-    auto cb = new CheckBox(*this, {0, 0, FILTERS_PANE_W, Element::TEXT_HEIGHT},
-                           pair.second, gameData.tagName(pair.first));
-    cb->onChange([](Client &client) { client.scrollRecipeListToTop(); });
-    _tagList->addChild(cb);
-  }
-
-  // Materials
-  _materialsList->clearChildren();
-  for (auto &pair : _matFilters) {
-    if (knownMats.find(pair.first) == knownMats.end()) continue;
-    CheckBox *const mat = new CheckBox(*this, {}, pair.second);
-    static const px_t ICON_X = CheckBox::BOX_SIZE + CheckBox::GAP,
-                      LABEL_X = ICON_X + ICON_SIZE + CheckBox::GAP,
-                      LABEL_W = FILTERS_PANE_W - LABEL_X;
-    mat->addChild(
-        new Picture({ICON_X, 0, ICON_SIZE, ICON_SIZE}, pair.first->icon()));
-    mat->addChild(new Label({LABEL_X, 0, LABEL_W, ICON_SIZE},
-                            pair.first->name(), Element::LEFT_JUSTIFIED,
-                            Element::CENTER_JUSTIFIED));
-    mat->onChange([](Client &client) { client.scrollRecipeListToTop(); });
-    _materialsList->addChild(mat);
-  }
-}
-
 void Client::onClickRecipe(Element &e, const ScreenPoint &mousePos) {
   // This intermediary function is necessary because UI mouse events don't
   // check for mouse collision, and so without it the details pane was redrawn
@@ -338,21 +225,11 @@ void Client::populateRecipesList(Element &e) {
   auto &recipesList = dynamic_cast<ChoiceList &>(e);
   auto &client = *recipesList.client();
 
-  // Check which filters are applied
-  client._matFilterSelected = false;
-  for (const std::pair<const ClientItem *, bool> &filter : client._matFilters) {
-    if (filter.second) {
-      client._matFilterSelected = true;
-      break;
-    }
-  }
-  client._tagFilterSelected = false;
-  for (const std::pair<std::string, bool> &filter : client._tagFilters) {
-    if (filter.second) {
-      client._tagFilterSelected = true;
-      break;
-    }
-  }
+  // TODO: get list from filter, sort that alphabetically, and use it.
+  // Currently gets all known recipes, sorts, then checks against the filter.
+  const auto *filter = client._selectedCraftingWindowFilter;
+  const auto matchingRecipes = filter ? filter->getMatchingRecipes()
+                                      : CraftingWindowFilter::MatchingRecipes{};
 
   recipesList.clearChildren();
 
@@ -366,7 +243,12 @@ void Client::populateRecipesList(Element &e) {
   for (const CRecipe &recipe : client.gameData.recipes) {
     auto recipeIsKnown = knownRecipes.find(recipe.id()) != knownRecipes.end();
     if (!recipeIsKnown) continue;
-    if (!client.recipeMatchesFilters(recipe)) continue;
+
+    // Apply filter
+    if (filter) {
+      const auto recipeMatchesFilter = matchingRecipes.count(&recipe) > 0;
+      if (!recipeMatchesFilter) continue;
+    }
 
     knownRecipesSortedByName.insert(&recipe);
   }
@@ -399,67 +281,52 @@ void Client::populateRecipesList(Element &e) {
 
 void Client::scrollRecipeListToTop() { _recipeList->scrollToTop(); }
 
-bool Client::recipeMatchesFilters(const CRecipe &recipe) const {
-  // "Have materials" filters
-  if (_haveMatsFilter) {
-    for (const std::pair<const Item *, size_t> &materialsNeeded :
-         recipe.materials())
-      if (!playerHasItem(materialsNeeded.first, materialsNeeded.second))
-        return false;
-  }
+void Client::indexRecipeInAllFilters(const CRecipe &recipe) {
+  for (auto *filter : _craftingWindowFilters) filter->indexRecipe(recipe);
+}
 
-  // Material filters
-  bool matsFilterMatched = !_matFilterSelected || !_matOr;
-  if (_matFilterSelected) {
-    /*
-    "Or": check that the item matches any active material filter.
-    Faster to iterate through item's materials, rather than all filters.
-    */
-    if (_matOr) {
-      for (const std::pair<const Item *, size_t> &materialsNeeded :
-           recipe.materials()) {
-        const ClientItem *const matP = toClientItem(materialsNeeded.first);
-        if (_matFilters.find(matP)->second) {
-          matsFilterMatched = true;
-          break;
-        }
-      }
-      // "And": check that all active filters apply to the item.
-    } else {
-      for (const std::pair<const ClientItem *, bool> &matFilter : _matFilters) {
-        if (!matFilter.second)  // Filter is not active
-          continue;
-        const ClientItem *const matP = matFilter.first;
-        if (!recipe.materials().contains(matP)) return false;
-      }
-    }
-  }
+FilterRecipesByMaterial::FilterRecipesByMaterial(const Client &client)
+    : m_client(client) {}
 
-  // Tag filters
-  bool tagFilterMatched = !_tagFilterSelected || !_tagOr;
-  if (_tagFilterSelected) {
-    /*
-    "Or": check that the item matches any active tag filter.
-    Faster to iterate through item's tags, rather than all filters.
-    */
-    auto tags = recipe.product()->tags();
-    if (_tagOr) {
-      for (const auto &pair : tags) {
-        const auto &tagName = pair.first;
-        if (_tagFilters.find(tagName)->second) {
-          tagFilterMatched = true;
-          break;
-        }
-      }
-      // "And": check that all active filters apply to the item.
-    } else {
-      for (const std::pair<std::string, bool> &tagFilter : _tagFilters) {
-        if (!tagFilter.second)  // Filter is not active
-          continue;
-        if (tags.find(tagFilter.first) == tags.end()) return false;
-      }
-    }
+void FilterRecipesByMaterial::indexRecipe(const CRecipe &recipe) {
+  for (const auto &matPair : recipe.materials()) {
+    const ClientItem *material =
+        dynamic_cast<const ClientItem *>(matPair.first);
+    m_indexedRecipes.insert(std::make_pair(material, &recipe));
   }
+}
 
-  return matsFilterMatched && tagFilterMatched;
+CraftingWindowFilter::MatchingRecipes
+FilterRecipesByMaterial::getMatchingRecipes() const {
+  const auto selectedMatID = m_materialList->getSelected();
+  if (selectedMatID.empty()) return {};
+  const auto &items = m_client.gameData.items;
+  auto it = items.find(selectedMatID);
+  if (it == items.end()) return {};
+  const auto *selectedMat = &it->second;
+
+  auto recipes = MatchingRecipes{};
+  auto startIt = m_indexedRecipes.lower_bound(selectedMat);
+  auto endIt = m_indexedRecipes.upper_bound(selectedMat);
+  for (auto it = startIt; it != endIt; ++it) recipes.insert(it->second);
+  return recipes;
+}
+
+void FilterRecipesByMaterial::populateConfigurationPanel(Element &panel) const {
+  auto matsByName = std::set<const ClientItem *, ClientItem::CompareName>{};
+  for (const auto &pair : m_indexedRecipes) matsByName.insert(pair.first);
+
+  m_materialList =
+      new ChoiceList(panel.rect(), Client::ICON_SIZE, *panel.client());
+  panel.addChild(m_materialList);
+  for (const auto *material : matsByName) {
+    auto *entry = new Element({});
+    m_materialList->addChild(entry);
+    entry->id(material->id());
+    entry->addChild(new Picture(0, 0, material->icon()));
+    entry->addChild(new Label(
+        {Client::ICON_SIZE + 2, 0, entry->width(), entry->height()},
+        material->name(), Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
+  }
+  m_materialList->verifyBoxes();
 }

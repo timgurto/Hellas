@@ -47,6 +47,7 @@
 #include "Tag.h"
 #include "Target.h"
 #include "WordWrapper.h"
+#include "craftingWindow.h"
 #include "drawing.h"
 #include "ui/ChoiceList.h"
 #include "ui/ContainerGrid.h"
@@ -242,6 +243,9 @@ class Client : public TextEntryManager {
 
   static void initializeCraftingWindow(Client &client);
   void initializeCraftingWindow();
+  std::vector<CraftingWindowFilter *> _craftingWindowFilters;
+  const CraftingWindowFilter *_selectedCraftingWindowFilter{nullptr};
+  void indexRecipeInAllFilters(const CRecipe &recipe);
   bool _haveMatsFilter, _haveToolsFilter, _tagOr, _matOr;
   // The height of windows' section headings
   static const px_t HEADING_HEIGHT;
@@ -251,12 +255,7 @@ class Client : public TextEntryManager {
   const CRecipe *_activeRecipe{nullptr};
   // Called when the "Craft" button is clicked.  0 = infinite.
   void startCrafting(int quantity);
-  // Populated at load time, after _items
-  std::map<std::string, bool> _tagFilters;
-  std::map<const ClientItem *, bool> _matFilters;
-  mutable bool _tagFilterSelected,
-      _matFilterSelected;  // Whether any filters have been selected
-  bool recipeMatchesFilters(const CRecipe &recipe) const;
+
   // Called when filters pane is clicked, or new recipes are unlocked.
   static void populateRecipesList(Element &e);
   // Called when filters change
@@ -264,8 +263,6 @@ class Client : public TextEntryManager {
   // Called when a recipe is selected.
   static void onClickRecipe(Element &e, const ScreenPoint &mousePos);
   void refreshRecipeDetailsPane();
-  // Called when new recipes are unlocked.
-  void populateFilters();
   // Called when new construction items are unlocked
   void populateBuildList();
 
