@@ -84,7 +84,7 @@ Mark graveyard on map: not hardcoded
 <item id="pumpkin" name="Pumpkin" constructs="pumpkin" stackSize="10" />
 <item id="pumpkinPotionRecipe" name="Recipe: Potion of Disguise"
     castsSpellOnUse="teachRecipe" spellArg="pumpkinPotion" iconFile="parchment" />
-<recipe id="pumpkinPotion" time="8000" >
+<recipe id="pumpkinPotion" time="8000" category="Consumable" >
     <material id="pumpkin" />
     <material id="halloweenSkeletonMat" />
     <material id="halloweenGhostMat" />
@@ -116,7 +116,7 @@ Mark graveyard on map: not hardcoded
 <item id="jackOLantern" name="Carved Pumpkin" constructs="jackOLantern" />
 <item id="jackOLanternRecipe" name="Recipe: Carved Pumpkin"
     castsSpellOnUse="teachRecipe" spellArg="jackOLantern" iconFile="parchment" />
-<recipe id="jackOLantern" time="6000" >
+<recipe id="jackOLantern" time="6000" category="Decoration" >
     <material id="pumpkin" />
     <tool class="carving" />
     <unlockedBy />

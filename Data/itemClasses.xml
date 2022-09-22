@@ -38,7 +38,7 @@ For the salvage recipes, use these unlocks:
 
 
 <item id="ceramicScrap" name="Ceramic Shard" stackSize="50" />
-    <recipe id="salvageCeramic" name="Salvage Ceramics" product="crudeClay" time="1500" >
+    <recipe id="salvageCeramic" name="Salvage Ceramics" product="crudeClay" time="1500" category="Salvage" >
         <material id="ceramicScrap" quantity="10" />
         <tool class="grinding2" />
         <unlockedBy construction="grindstone" chance="0.1" />
@@ -46,7 +46,7 @@ For the salvage recipes, use these unlocks:
     </recipe>
 
 <item id="boneScrap" name="Bone Splinter" stackSize="50" />
-    <recipe id="salvageBone" name="Salvage Bone" product="boneDust" quantity="2" time="1500" >
+    <recipe id="salvageBone" name="Salvage Bone" product="boneDust" quantity="2" time="1500" category="Salvage" >
         <material id="boneScrap" quantity="10" />
         <tool class="grinding1" />
         <unlockedBy recipe="knapper" chance="0.1" />
@@ -55,7 +55,7 @@ For the salvage recipes, use these unlocks:
     </recipe>
 
 <item id="linenScrap" name="Scrap of Linen" stackSize="50" />
-    <recipe id="salvageLinen" name="Salvage Linen" product="linenCloth" time="1500" >
+    <recipe id="salvageLinen" name="Salvage Linen" product="linenCloth" time="1500" category="Salvage" >
         <material id="linenScrap" quantity="10" />
         <tool class="weaving" />
         <unlockedBy construction="loom" chance="0.1" />
@@ -63,7 +63,7 @@ For the salvage recipes, use these unlocks:
     </recipe>
 
 <item id="woolScrap" name="Scrap of Wool" stackSize="50" />
-    <recipe id="salvageWool" name="Salvage Wool" product="woolCloth" time="1500" >
+    <recipe id="salvageWool" name="Salvage Wool" product="woolCloth" time="1500" category="Salvage" >
         <material id="woolScrap" quantity="10" />
         <tool class="weaving" />
         <unlockedBy construction="loom" chance="0.1" />
@@ -71,7 +71,7 @@ For the salvage recipes, use these unlocks:
     </recipe>
 
 <item id="leatherScrap" name="Scrap of Leather" stackSize="50" />
-    <recipe id="salvageLeather" name="Salvage Leather" product="leather" time="1500" >
+    <recipe id="salvageLeather" name="Salvage Leather" product="leather" time="1500" category="Salvage" >
         <material id="leatherScrap" quantity="10" />
         <tool class="leatherStretching" />
         <unlockedBy construction="stretchingFrame" chance="0.1" />
@@ -80,7 +80,7 @@ For the salvage recipes, use these unlocks:
     </recipe>
 
 <item id="tinScrap" name="Tin Scrap" stackSize="50" />
-    <recipe id="salvageTin" name="Salvage Tin" product="tinBar" time="1500" >
+    <recipe id="salvageTin" name="Salvage Tin" product="tinBar" time="1500" category="Salvage" >
         <material id="tinScrap" quantity="10" />
         <tool class="smelting1" />
         <tool class="bellows" />
@@ -90,7 +90,7 @@ For the salvage recipes, use these unlocks:
     </recipe>
 
 <item id="copperScrap" name="Copper Scrap" stackSize="50" />
-    <recipe id="salvageCopper" name="Salvage Copper" product="copperBar" time="1500" >
+    <recipe id="salvageCopper" name="Salvage Copper" product="copperBar" time="1500" category="Salvage" >
         <material id="copperScrap" quantity="10" />
         <tool class="smelting2" />
         <tool class="bellows" />
@@ -99,7 +99,7 @@ For the salvage recipes, use these unlocks:
     </recipe>
 
 <item id="silverScrap" name="Silver Scrap" stackSize="50" />
-    <recipe id="salvageSilver" name="Salvage Silver" product="silverBar" time="1500" >
+    <recipe id="salvageSilver" name="Salvage Silver" product="silverBar" time="1500" category="Salvage" >
         <material id="silverScrap" quantity="10" />
         <tool class="smelting2" />
         <tool class="bellows" />

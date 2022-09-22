@@ -7,7 +7,7 @@
 <item id="silver"       name="Silver Ore"                               sounds="ore"       stackSize="10" quality="2" />
 <item id="silverBar"    name="Silver Ingot"   constructs="silverPile"   sounds="metalBar"  stackSize="10" quality="2" />
 
-<recipe id="tinBar"
+<recipe id="tinBar" category="Material"
     time="12000" >
     <material id="tin" quantity="3" />
     <tool class="smelting1" />
@@ -15,14 +15,14 @@
     <unlockedBy item="tin" />
     <unlockedBy recipe="bellows" />
 </recipe>
-<recipe id="copperBar"
+<recipe id="copperBar" category="Material"
     time="12000" >
     <material id="copper" quantity="4" />
     <tool class="smelting2" />
     <tool class="bellows" />
     <unlockedBy gather="copper" chance="0.2" />
 </recipe>
-<recipe id="silverBar"
+<recipe id="silverBar" category="Material"
     time="12000" >
     <material id="silver" quantity="4" />
     <tool class="smelting2" />
@@ -40,7 +40,7 @@
 </objectType>
 
 <item id="tinBracket" name="Metal Bracket" stackSize="20" />
-<recipe id="tinBracket"
+<recipe id="tinBracket" category="Material"
     time="4000" >
     <material id="tinBar" />
     <tool class="smelting1" />
@@ -49,7 +49,7 @@
 </recipe>
 
 <item id="supportBeam" name="Support Beam" stackSize="10" />
-<recipe id="supportBeam"
+<recipe id="supportBeam" category="Material"
     time="1000" >
     <material id="lumber" />
     <material id="tinBracket" quantity="2" />

@@ -7,7 +7,7 @@
     <particles profile="airSmall" x="-4" y="0" />
 </item>
     <recipe
-        id="airWand" time="10000" >
+        id="airWand" time="10000" category="Equipment" >
         <material id="stick" />
         <material id="airEssence" quantity="2" />
         <unlockedBy item="airEssence" chance="0.1" />
@@ -32,7 +32,7 @@
     <particles profile="waterSmall" x="-4" y="0" />
 </item>
     <recipe
-        id="waterWand" time="10000" >
+        id="waterWand" time="10000" category="Equipment" >
         <material id="stick" />
         <material id="waterEssence" quantity="2" />
         <unlockedBy item="waterEssence" chance="0.1" />
@@ -58,7 +58,7 @@
     <particles profile="earthSmall" x="-4" y="0" />
 </item>
     <recipe
-        id="earthWand" time="10000" >
+        id="earthWand" time="10000" category="Equipment" >
         <material id="stick" />
         <material id="earthEssence" quantity="2" />
         <unlockedBy item="earthEssence" chance="0.1" />
@@ -86,7 +86,7 @@
     <particles profile="fireSmall" x="-4" y="0" />
 </item>
     <recipe
-        id="fireWand" time="10000" >
+        id="fireWand" time="10000" category="Equipment" >
         <material id="stick" />
         <material id="fireEssence" quantity="2" />
         <unlockedBy item="fireEssence" chance="0.1" />
@@ -113,7 +113,7 @@
     <particles profile="airSmall" x="5" y="16" />
 </item>
     <recipe
-        id="airStaff" time="10000" >
+        id="airStaff" time="10000" category="Equipment" >
         <material id="pole2" />
         <material id="airEssence" quantity="5" />
         <tool class="wand" />
@@ -142,7 +142,7 @@
     <particles profile="waterSmall" x="5" y="16" />
 </item>
     <recipe
-        id="waterStaff" time="10000" >
+        id="waterStaff" time="10000" category="Equipment" >
         <material id="pole2" />
         <material id="waterEssence" quantity="5" />
         <tool class="wand" />
@@ -171,7 +171,7 @@
     <particles profile="earthSmall" x="5" y="16" />
 </item>
     <recipe
-        id="earthStaff" time="10000" >
+        id="earthStaff" time="10000" category="Equipment" >
         <material id="pole2" />
         <material id="earthEssence" quantity="5" />
         <tool class="wand" />
@@ -200,7 +200,7 @@
     <particles profile="fireSmall" x="5" y="16" />
 </item>
     <recipe
-        id="fireStaff" time="10000" >
+        id="fireStaff" time="10000" category="Equipment" >
         <material id="pole2" />
         <material id="fireEssence" quantity="5" />
         <tool class="wand" />
@@ -227,7 +227,7 @@
 <item id="fireDust"     name="Fire Dust"    stackSize="100" />
 <item id="waterDust"    name="Water Dust"   stackSize="100" />
 <recipe
-    id="boneDust" time="4000" quantity="2" >
+    id="boneDust" time="4000" quantity="2" category="Projectile" >
     <material id="bone" />
     <tool class="grinding1" />
     <unlockedBy item="bone" chance="0.1" />
@@ -237,28 +237,28 @@
     <unlockedBy recipe="waterWand" />
 </recipe>
 <recipe
-    id="airDust" time="4000" quantity="4" >
+    id="airDust" time="4000" quantity="4" category="Projectile" >
     <material id="boneDust" quantity="4" />
     <material id="airEssence" />
     <unlockedBy recipe="airStaff" />
     <unlockedBy recipe="boneDust" chance="0.02" />
 </recipe>
 <recipe
-    id="earthDust" time="4000" quantity="4" >
+    id="earthDust" time="4000" quantity="4" category="Projectile" >
     <material id="boneDust" quantity="4" />
     <material id="earthEssence" />
     <unlockedBy recipe="earthStaff" />
     <unlockedBy recipe="boneDust" chance="0.02" />
 </recipe>
 <recipe
-    id="fireDust" time="4000" quantity="4" >
+    id="fireDust" time="4000" quantity="4" category="Projectile" >
     <material id="boneDust" quantity="4" />
     <material id="fireEssence" />
     <unlockedBy recipe="fireStaff" />
     <unlockedBy recipe="boneDust" chance="0.02" />
 </recipe>
 <recipe
-    id="waterDust" time="4000" quantity="4" >
+    id="waterDust" time="4000" quantity="4" category="Projectile" >
     <material id="boneDust" quantity="4" />
     <material id="waterEssence" />
     <unlockedBy recipe="waterStaff" />

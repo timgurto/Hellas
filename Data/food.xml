@@ -17,7 +17,7 @@
 <item id="cookedMeat" name="Cooked Meat" stackSize="20" sounds="meat" castsSpellOnUse="food" >
     <tag name="food" />
 </item>
-<recipe id="cookedMeat"
+<recipe id="cookedMeat" category="Consumable"
     time="8000" >
     <material id="meat" />
     <tool class="cooking" />
@@ -34,7 +34,7 @@
 <item id="fishingNet" name="Fishing Net" ilvl="10" class="fishingNet" >
     <tag name="fishing" toolSpeed="2" />
 </item>
-<recipe id="fishingNet" >
+<recipe id="fishingNet" category="Tool" >
     <material id="rope" quantity="8" />
     <unlockedBy recipe="rope" chance="0.1" />
     <unlockedBy recipe="woodSpear" chance="0.1" />
@@ -44,7 +44,7 @@
 <item id="cookedFish" name="Cooked Fish" stackSize="20" sounds="meat" castsSpellOnUse="food" >
     <tag name="food" />
 </item>
-<recipe id="cookedFish"
+<recipe id="cookedFish" category="Consumable"
     time="8000" >
     <material id="fish" />
     <tool class="cooking" />
@@ -68,7 +68,7 @@
     returnsOnConstruction="smallPot"
     returnsOnCast="smallPot" />
 <recipe
-    id="water" time="4000" >
+    id="water" time="4000" category="Consumable" >
     <material id="smallPot" />
     <tool class="waterSource" />
     <unlockedBy item="smallPot" />
@@ -77,7 +77,7 @@
     <unlockedBy construction="brickWell" />
 </recipe>
 <recipe
-    id="emptyWaterVessel" name="Empty water vessel" product="smallPot" time="4000" >
+    id="emptyWaterVessel" name="Empty water vessel" product="smallPot" time="4000" category="Consumable" >
     <material id="water" />
     <unlockedBy recipe="water" />
 </recipe>

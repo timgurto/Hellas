@@ -30,7 +30,7 @@
 </npcType>
 <item id="collar" name="Collar" class="linenJunk"
     sounds="fabric" stackSize="10"/>
-    <recipe id="collar" time="10000">
+    <recipe id="collar" time="10000" category="Animal taming">
         <material id="linenCloth" quantity="7" />
         <material id="linenThread" quantity="5" />
         <tool class="sewing" />
@@ -43,7 +43,7 @@
     <offset x="-6" y="-16" />
     <weapon damage="9" speed="3" />
 </item>
-    <recipe id="staff1" time="10000">
+    <recipe id="staff1" time="10000" category="Equipment">
         <material id="pole1" />
         <unlockedBy item="bone" chance="0.01" />
         <unlockedBy gather="wool" chance="0.05" />
@@ -64,7 +64,7 @@
     <offset x="-3" y="-19" />
     <weapon damage="13" speed="3.2" />
 </item>
-    <recipe id="staff2" time="10000" >
+    <recipe id="staff2" time="10000" category="Equipment" >
         <material id="pole2" />
         <unlockedBy recipe="pole2" chance="0.05" />
         <unlockedBy recipe="staff1" chance="0.1" />

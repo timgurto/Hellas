@@ -2,7 +2,7 @@
 
 <!-- Intermediates -->
 <item id="silverStrip" name="Silver Strip" stackSize="10" quality="2" />
-<recipe id="silverStrip" time="15000" quantity="2" >
+<recipe id="silverStrip" time="15000" quantity="2" category="Material" >
     <material id="silverBar" />
     <tool class="hammering" />
     <tool class="anvil1" />
@@ -11,7 +11,7 @@
 </recipe>
 
 <item id="silverPowder" name="Silver Powder" stackSize="10" quality="2" />
-<recipe id="silverPowder" time="15000" quantity="2" >
+<recipe id="silverPowder" time="15000" quantity="2" category="Material" >
     <material id="silverBar" />
     <tool class="grinding2" />
     <unlockedBy recipe="silverBar" />
@@ -19,14 +19,14 @@
 
 <!-- Materials -->
 <item id="silverThread" name="Silver Thread" stackSize="10" quality="2" />
-<recipe id="silverThread" time="5000" >
+<recipe id="silverThread" time="5000" category="Material" >
     <material id="silverStrip" />
     <material id="linenThread" />
     <unlockedBy recipe="silverStrip" />
 </recipe>
 
 <item id="silverLeaf" name="Silver Leaf" stackSize="10" quality="2" />
-<recipe id="silverLeaf" time="5000" >
+<recipe id="silverLeaf" time="5000" category="Material" >
     <material id="silverStrip" />
     <tool class="hammering" />
     <tool class="anvil1" />
@@ -34,272 +34,272 @@
 </recipe>
 
 <item id="silverWire" name="Silver Wire" stackSize="10" quality="2" />
-<recipe id="silverWire" time="5000" >
+<recipe id="silverWire" time="5000" category="Material" >
     <material id="silverStrip" />
     <tool class="wireDrawing" />
     <unlockedBy recipe="silverStrip" />
 </recipe>
 
 <item id="silverLacquer" name="Silver Lacquer" stackSize="5" quality="2" />
-<recipe id="silverLacquer" time="5000" >
+<recipe id="silverLacquer" time="5000" category="Material" >
     <material id="silverPowder" />
     <material id="water" />
     <unlockedBy recipe="silverPowder" />
 </recipe>
 
 
-<recipe id="woolHoodSilver" time="10000" >
+<recipe id="woolHoodSilver" time="10000" category="Equipment" >
     <material id="woolHood" />
     <material id="silverThread" quantity="5" />
     <unlockedBy recipe="woolHood" chance="0.04" />
 </recipe>
-<recipe id="skullCapSilver" time="10000" >
+<recipe id="skullCapSilver" time="10000" category="Equipment" >
     <material id="skullCap" />
     <material id="silverLacquer" quantity="3" />
     <byproduct id="smallPot" quantity="3" />
     <unlockedBy recipe="skullCap" chance="0.04" />
 </recipe>
-<recipe id="copperHelmetSilver" time="10000" >
+<recipe id="copperHelmetSilver" time="10000" category="Equipment" >
     <material id="copperHelmet" />
     <material id="silverLeaf" quantity="5" />
     <unlockedBy recipe="copperHelmet" chance="0.04" />
 </recipe>
-<recipe id="linenCloakSilver" time="10000" >
+<recipe id="linenCloakSilver" time="10000" category="Equipment" >
     <material id="linenCloak" />
     <material id="silverThread" quantity="3" />
     <unlockedBy recipe="linenCloak" chance="0.04" />
 </recipe>
-<recipe id="woolCloakSilver" time="10000" >
+<recipe id="woolCloakSilver" time="10000" category="Equipment" >
     <material id="woolCloak" />
     <material id="silverThread" quantity="5" />
     <unlockedBy recipe="woolCloak" chance="0.04" />
 </recipe>
-<recipe id="tinLamellarSilver" time="10000" >
+<recipe id="tinLamellarSilver" time="10000" category="Equipment" >
     <material id="tinLamellar" />
     <material id="silverLeaf" quantity="3" />
     <unlockedBy recipe="tinLamellar" chance="0.04" />
 </recipe>
-<recipe id="copperLamellarSilver" time="10000" >
+<recipe id="copperLamellarSilver" time="10000" category="Equipment" >
     <material id="copperLamellar" />
     <material id="silverLeaf" quantity="5" />
     <unlockedBy recipe="copperLamellar" chance="0.04" />
 </recipe>
-<recipe id="tinHauberkSilver" time="10000" >
+<recipe id="tinHauberkSilver" time="10000" category="Equipment" >
     <material id="tinHauberk" />
     <material id="silverLeaf" quantity="3" />
     <unlockedBy recipe="tinHauberk" chance="0.04" />
 </recipe>
-<recipe id="copperHauberkSilver" time="10000" >
+<recipe id="copperHauberkSilver" time="10000" category="Equipment" >
     <material id="copperHauberk" />
     <material id="silverLeaf" quantity="5" />
     <unlockedBy recipe="copperHauberk" chance="0.04" />
 </recipe>
-<recipe id="linothoraxSilver" time="10000" >
+<recipe id="linothoraxSilver" time="10000" category="Equipment" >
     <material id="linothorax" />
     <material id="silverLeaf" quantity="3" />
     <unlockedBy recipe="linothorax" chance="0.04" />
 </recipe>
-<recipe id="copperCuirassSilver" time="10000" >
+<recipe id="copperCuirassSilver" time="10000" category="Equipment" >
     <material id="copperCuirass" />
     <material id="silverLeaf" quantity="5" />
     <unlockedBy recipe="copperCuirass" chance="0.04" />
 </recipe>
-<recipe id="leatherLamellarSilver" time="10000" >
+<recipe id="leatherLamellarSilver" time="10000" category="Equipment" >
     <material id="leatherLamellar" />
     <material id="silverLacquer" quantity="3" />
     <byproduct id="smallPot" quantity="3" />
     <unlockedBy recipe="leatherLamellar" chance="0.04" />
 </recipe>
-<recipe id="linenChitonSilver" time="10000" >
+<recipe id="linenChitonSilver" time="10000" category="Equipment" >
     <material id="linenChiton" />
     <material id="silverThread" quantity="3" />
     <unlockedBy recipe="linenChiton" chance="0.04" />
 </recipe>
-<recipe id="woolChitonSilver" time="10000" >
+<recipe id="woolChitonSilver" time="10000" category="Equipment" >
     <material id="woolChiton" />
     <material id="silverThread" quantity="5" />
     <unlockedBy recipe="woolChiton" chance="0.04" />
 </recipe>
-<recipe id="woolExomisSilver" time="10000" >
+<recipe id="woolExomisSilver" time="10000" category="Equipment" >
     <material id="woolExomis" />
     <material id="silverThread" quantity="5" />
     <unlockedBy recipe="woolExomis" chance="0.04" />
 </recipe>
-<recipe id="leatherGlovesSilver" time="10000" >
+<recipe id="leatherGlovesSilver" time="10000" category="Equipment" >
     <material id="leatherGloves" />
     <material id="silverLacquer" quantity="3" />
     <byproduct id="smallPot" quantity="3" />
     <unlockedBy recipe="leatherGloves" chance="0.04" />
 </recipe>
-<recipe id="woolWrappingsSilver" time="10000" >
+<recipe id="woolWrappingsSilver" time="10000" category="Equipment" >
     <material id="woolWrappings" />
     <material id="silverThread" quantity="5" />
     <unlockedBy recipe="woolWrappings" chance="0.04" />
 </recipe>
-<recipe id="copperBracersSilver" time="10000" >
+<recipe id="copperBracersSilver" time="10000" category="Equipment" >
     <material id="copperBracers" />
     <material id="silverLeaf" quantity="5" />
     <unlockedBy recipe="copperBracers" chance="0.04" />
 </recipe>
-<recipe id="woolShoesSilver" time="10000" >
+<recipe id="woolShoesSilver" time="10000" category="Equipment" >
     <material id="woolShoes" />
     <material id="silverThread" quantity="5" />
     <unlockedBy recipe="woolShoes" chance="0.04" />
 </recipe>
-<recipe id="sandalsSilver" time="10000" >
+<recipe id="sandalsSilver" time="10000" category="Equipment" >
     <material id="sandals" />
     <material id="silverLacquer" quantity="3" />
     <byproduct id="smallPot" quantity="3" />
     <unlockedBy recipe="sandals" chance="0.04" />
 </recipe>
-<recipe id="copperGreavesSilver" time="10000" >
+<recipe id="copperGreavesSilver" time="10000" category="Equipment" >
     <material id="copperGreaves" />
     <material id="silverLeaf" quantity="5" />
     <unlockedBy recipe="copperGreaves" chance="0.04" />
 </recipe>
-<recipe id="leatherShieldSilver" time="10000" >
+<recipe id="leatherShieldSilver" time="10000" category="Equipment" >
     <material id="leatherShield" />
     <material id="silverWire" quantity="3" />
     <unlockedBy recipe="leatherShield" chance="0.04" />
 </recipe>
-<recipe id="copperShieldSilver" time="10000" >
+<recipe id="copperShieldSilver" time="10000" category="Equipment" >
     <material id="copperShield" />
     <material id="silverLacquer" quantity="3" />
     <byproduct id="smallPot" quantity="3" />
     <unlockedBy recipe="copperShield" chance="0.04" />
 </recipe>
 
-<recipe id="stoneKnifeSilver" time="10000" >
+<recipe id="stoneKnifeSilver" time="10000" category="Equipment" >
     <material id="stoneKnife" />
     <material id="silverWire" quantity="2" />
     <unlockedBy recipe="stoneKnife" chance="0.04" />
 </recipe>
-<recipe id="tinKnifeSilver" time="10000" >
+<recipe id="tinKnifeSilver" time="10000" category="Equipment" >
     <material id="tinKnife" />
     <material id="silverWire" quantity="3" />
     <unlockedBy recipe="tinKnife" chance="0.04" />
 </recipe>
-<recipe id="copperKnifeSilver" time="10000" >
+<recipe id="copperKnifeSilver" time="10000" category="Equipment" >
     <material id="copperKnife" />
     <material id="silverWire" quantity="5" />
     <unlockedBy recipe="copperKnife" chance="0.04" />
 </recipe>
-<recipe id="stoneAxeSilver" time="10000" >
+<recipe id="stoneAxeSilver" time="10000" category="Equipment" >
     <material id="stoneAxe" />
     <material id="silverWire" quantity="2" />
     <unlockedBy recipe="stoneAxe" chance="0.04" />
 </recipe>
-<recipe id="tinAxeSilver" time="10000" >
+<recipe id="tinAxeSilver" time="10000" category="Equipment" >
     <material id="tinAxe" />
     <material id="silverWire" quantity="3" />
     <unlockedBy recipe="tinAxe" chance="0.04" />
 </recipe>
-<recipe id="copperAxeSilver" time="10000" >
+<recipe id="copperAxeSilver" time="10000" category="Equipment" >
     <material id="copperAxe" />
     <material id="silverWire" quantity="5" />
     <unlockedBy recipe="copperAxe" chance="0.04" />
 </recipe>
-<recipe id="copperHammerSilver" time="10000" >
+<recipe id="copperHammerSilver" time="10000" category="Equipment" >
     <material id="copperHammer" />
     <material id="silverWire" quantity="5" />
     <unlockedBy recipe="copperHammer" chance="0.04" />
 </recipe>
-<recipe id="woodSpearSilver" time="10000" >
+<recipe id="woodSpearSilver" time="10000" category="Equipment" >
     <material id="woodSpear" />
     <material id="silverWire" quantity="2" />
     <unlockedBy recipe="woodSpear" chance="0.04" />
 </recipe>
-<recipe id="tinSpearSilver" time="10000" >
+<recipe id="tinSpearSilver" time="10000" category="Equipment" >
     <material id="tinSpear" />
     <material id="silverWire" quantity="3" />
     <unlockedBy recipe="tinSpear" chance="0.04" />
 </recipe>
-<recipe id="copperSpearSilver" time="10000" >
+<recipe id="copperSpearSilver" time="10000" category="Equipment" >
     <material id="copperSpear" />
     <material id="silverWire" quantity="5" />
     <unlockedBy recipe="copperSpear" chance="0.04" />
 </recipe>
-<recipe id="copperSwordSilver" time="10000" >
+<recipe id="copperSwordSilver" time="10000" category="Equipment" >
     <material id="copperSword" />
     <material id="silverWire" quantity="5" />
     <unlockedBy recipe="copperSword" chance="0.04" />
 </recipe>
-<recipe id="slingSilver" time="10000" >
+<recipe id="slingSilver" time="10000" category="Equipment" >
     <material id="sling" />
     <material id="silverWire" quantity="3" />
     <unlockedBy recipe="sling" chance="0.04" />
 </recipe>
-<recipe id="bowSilver" time="10000" >
+<recipe id="bowSilver" time="10000" category="Equipment" >
     <material id="bow" />
     <material id="silverWire" quantity="3" />
     <unlockedBy recipe="bow" chance="0.04" />
 </recipe>
 
-<recipe id="tambourineSilver" time="10000" >
+<recipe id="tambourineSilver" time="10000" category="Equipment" >
     <material id="tambourine" />
     <material id="silverWire" quantity="3" />
     <unlockedBy recipe="tambourine" chance="0.04" />
 </recipe>
-<recipe id="tabletSilver" time="10000" >
+<recipe id="tabletSilver" time="10000" category="Equipment" >
     <material id="tablet" />
     <material id="silverLacquer" quantity="3" />
     <byproduct id="smallPot" quantity="3" />
     <unlockedBy recipe="tablet" chance="0.04" />
 </recipe>
-<recipe id="parchmentSilver" time="10000" >
+<recipe id="parchmentSilver" time="10000" category="Equipment" >
     <material id="parchment" />
     <material id="silverLacquer" quantity="5" />
     <byproduct id="smallPot" quantity="5" />
     <unlockedBy recipe="parchment" chance="0.04" />
 </recipe>
 
-<recipe id="airWandSilver" time="10000" >
+<recipe id="airWandSilver" time="10000" category="Equipment" >
     <material id="airWand" />
     <material id="silverWire" quantity="3" />
     <unlockedBy recipe="airWand" chance="0.04" />
 </recipe>
-<recipe id="earthWandSilver" time="10000" >
+<recipe id="earthWandSilver" time="10000" category="Equipment" >
     <material id="earthWand" />
     <material id="silverWire" quantity="3" />
     <unlockedBy recipe="earthWand" chance="0.04" />
 </recipe>
-<recipe id="fireWandSilver" time="10000" >
+<recipe id="fireWandSilver" time="10000" category="Equipment" >
     <material id="fireWand" />
     <material id="silverWire" quantity="3" />
     <unlockedBy recipe="fireWand" chance="0.04" />
 </recipe>
-<recipe id="waterWandSilver" time="10000" >
+<recipe id="waterWandSilver" time="10000" category="Equipment" >
     <material id="waterWand" />
     <material id="silverWire" quantity="3" />
     <unlockedBy recipe="waterWand" chance="0.04" />
 </recipe>
-<recipe id="airStaffSilver" time="10000" >
+<recipe id="airStaffSilver" time="10000" category="Equipment" >
     <material id="airStaff" />
     <material id="silverWire" quantity="3" />
     <unlockedBy recipe="airStaff" chance="0.04" />
 </recipe>
-<recipe id="earthStaffSilver" time="10000" >
+<recipe id="earthStaffSilver" time="10000" category="Equipment" >
     <material id="earthStaff" />
     <material id="silverWire" quantity="3" />
     <unlockedBy recipe="earthStaff" chance="0.04" />
 </recipe>
-<recipe id="fireStaffSilver" time="10000" >
+<recipe id="fireStaffSilver" time="10000" category="Equipment" >
     <material id="fireStaff" />
     <material id="silverWire" quantity="3" />
     <unlockedBy recipe="fireStaff" chance="0.04" />
 </recipe>
-<recipe id="waterStaffSilver" time="10000" >
+<recipe id="waterStaffSilver" time="10000" category="Equipment" >
     <material id="waterStaff" />
     <material id="silverWire" quantity="3" />
     <unlockedBy recipe="waterStaff" chance="0.04" />
 </recipe>
 
-<recipe id="staff1Silver" time="10000" >
+<recipe id="staff1Silver" time="10000" category="Equipment" >
     <material id="staff1" />
     <material id="silverWire" quantity="2" />
     <unlockedBy recipe="staff1" chance="0.04" />
 </recipe>
-<recipe id="staff2Silver" time="10000" >
+<recipe id="staff2Silver" time="10000" category="Equipment" >
     <material id="staff2" />
     <material id="silverWire" quantity="5" />
     <unlockedBy recipe="staff2" chance="0.04" />
