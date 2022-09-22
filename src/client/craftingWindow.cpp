@@ -329,11 +329,7 @@ CraftingWindowFilter::MatchingRecipes MaterialFilter::getMatchingRecipes()
   if (it == items.end()) return {};
   const auto *selectedMat = &it->second;
 
-  auto recipes = MatchingRecipes{};
-  auto startIt = m_indexedRecipes.lower_bound(selectedMat);
-  auto endIt = m_indexedRecipes.upper_bound(selectedMat);
-  for (auto it = startIt; it != endIt; ++it) recipes.insert(it->second);
-  return recipes;
+  return recipesMatching(m_indexedRecipes, selectedMat);
 }
 
 void MaterialFilter::populateConfigurationPanel(Element &panel) const {
@@ -367,11 +363,7 @@ CraftingWindowFilter::MatchingRecipes ToolFilter::getMatchingRecipes() const {
   const auto selectedTool = m_list->getSelected();
   if (selectedTool.empty()) return {};
 
-  auto recipes = MatchingRecipes{};
-  auto startIt = m_indexedRecipes.lower_bound(selectedTool);
-  auto endIt = m_indexedRecipes.upper_bound(selectedTool);
-  for (auto it = startIt; it != endIt; ++it) recipes.insert(it->second);
-  return recipes;
+  return recipesMatching(m_indexedRecipes, selectedTool);
 }
 
 void ToolFilter::populateConfigurationPanel(Element &panel) const {
@@ -459,11 +451,7 @@ CraftingWindowFilter::MatchingRecipes CategoryFilter::getMatchingRecipes()
   const auto selectedCategory = m_list->getSelected();
   if (selectedCategory.empty()) return {};
 
-  auto recipes = MatchingRecipes{};
-  auto startIt = m_indexedRecipes.lower_bound(selectedCategory);
-  auto endIt = m_indexedRecipes.upper_bound(selectedCategory);
-  for (auto it = startIt; it != endIt; ++it) recipes.insert(it->second);
-  return recipes;
+  return recipesMatching(m_indexedRecipes, selectedCategory);
 }
 
 void CategoryFilter::populateConfigurationPanel(Element &panel) const {

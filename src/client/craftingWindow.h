@@ -20,6 +20,16 @@ class CraftingWindowFilter {
 
   // Interpret configuration and apply it to the data model
   virtual MatchingRecipes getMatchingRecipes() const = 0;
+
+  template <typename T>
+  static MatchingRecipes recipesMatching(
+      const std::multimap<T, const CRecipe *> &indexedRecipes, T key) {
+    auto recipes = MatchingRecipes{};
+    auto startIt = indexedRecipes.lower_bound(key);
+    auto endIt = indexedRecipes.upper_bound(key);
+    for (auto it = startIt; it != endIt; ++it) recipes.insert(it->second);
+    return recipes;
+  }
 };
 
 class MaterialFilter : public CraftingWindowFilter {
