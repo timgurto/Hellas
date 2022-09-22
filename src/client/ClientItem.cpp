@@ -187,8 +187,8 @@ bool ClientItem::shouldWarnBeforeScrapping() const {
   }
 }
 
-Color ClientItem::nameColor() const {
-  switch (_quality) {
+Color ClientItem::qualityColor(Quality q) {
+  switch (q) {
     case COMMON:
       return Color::ITEM_QUALITY_COMMON;
     case UNCOMMON:
@@ -201,6 +201,23 @@ Color ClientItem::nameColor() const {
       return Color::ITEM_QUALITY_LEGENDARY;
     default:
       return Color::ITEM_QUALITY_COMMON;
+  }
+}
+
+std::string ClientItem::qualityName(Quality q) {
+  switch (q) {
+    case COMMON:
+      return "Common"s;
+    case UNCOMMON:
+      return "Uncommon"s;
+    case RARE:
+      return "Rare"s;
+    case EPIC:
+      return "Epic"s;
+    case LEGENDARY:
+      return "Legendary"s;
+    default:
+      return "None"s;
   }
 }
 

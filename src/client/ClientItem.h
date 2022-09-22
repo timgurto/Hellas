@@ -98,7 +98,9 @@ class ClientItem : public Item, public HasSounds {
   const Projectile::Type *projectile() const { return _projectile; }
   bool canUse() const;
   bool shouldWarnBeforeScrapping() const;
-  Color nameColor() const;
+  Color nameColor() const { return qualityColor(_quality); }
+  static Color qualityColor(Quality q);
+  static std::string qualityName(Quality q);
   bool canBeScrapped() const;
   void markAsQuestItem() { _isQuestItem = true; }
   bool isQuestItem() const { return _isQuestItem; }

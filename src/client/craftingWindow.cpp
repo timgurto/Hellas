@@ -304,10 +304,14 @@ void Client::indexRecipeInAllFilters(const CRecipe &recipe) {
 }
 
 void Client::createCraftingWindowFilters() {
+  // Filters about the recipe
   _craftingWindowFilters.push_back(new MaterialFilter(*this));
   _craftingWindowFilters.push_back(new ToolFilter(*this));
-  _craftingWindowFilters.push_back(new LvlReqFilter);
+
+  // Filters about the product
   _craftingWindowFilters.push_back(new CategoryFilter);
+  _craftingWindowFilters.push_back(new LvlReqFilter);
+  _craftingWindowFilters.push_back(new QualityFilter);
 }
 
 MaterialFilter::MaterialFilter(const Client &client) : m_client(client) {}
@@ -465,6 +469,37 @@ void CategoryFilter::populateConfigurationPanel(Element &panel) const {
     auto *entry = new Label({}, " "s + category);
     m_list->addChild(entry);
     entry->id(category);
+  }
+  m_list->verifyBoxes();
+}
+
+void QualityFilter::indexRecipe(const CRecipe &recipe) {
+  const auto &product = *recipe.product();
+  m_indexedRecipes.insert(std::make_pair(product.quality(), &recipe));
+}
+
+CraftingWindowFilter::MatchingRecipes QualityFilter::getMatchingRecipes()
+    const {
+  const auto qualityString = m_list->getSelected();
+  if (qualityString.empty()) return {};
+  const auto selectedQuality =
+      static_cast<Item::Quality>(std::stoi(qualityString));
+
+  return recipesMatching(m_indexedRecipes, selectedQuality);
+}
+
+void QualityFilter::populateConfigurationPanel(Element &panel) const {
+  auto uniqueQualities = std::set<Item::Quality>{};
+  for (const auto &pair : m_indexedRecipes) uniqueQualities.insert(pair.first);
+
+  m_list =
+      new ChoiceList(panel.rectToFill(), Element::TEXT_HEIGHT, *panel.client());
+  panel.addChild(m_list);
+  for (const auto quality : uniqueQualities) {
+    auto *entry = new Label({}, " "s + ClientItem::qualityName(quality));
+    entry->setColor(ClientItem::qualityColor(quality));
+    m_list->addChild(entry);
+    entry->id(toString(quality));
   }
   m_list->verifyBoxes();
 }
