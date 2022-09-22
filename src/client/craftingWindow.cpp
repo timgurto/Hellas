@@ -448,8 +448,10 @@ void FilterRecipesByLvlReq::populateConfigurationPanel(Element &panel) const {
 }
 
 void FilterRecipesByCategory::indexRecipe(const CRecipe &recipe) {
-  if (recipe.category().empty()) return;
-  m_indexedRecipes.insert(std::make_pair(recipe.category(), &recipe));
+  if (recipe.category().empty())
+    m_indexedRecipes.insert(std::make_pair("(Uncategorised)"s, &recipe));
+  else
+    m_indexedRecipes.insert(std::make_pair(recipe.category(), &recipe));
 }
 
 CraftingWindowFilter::MatchingRecipes
