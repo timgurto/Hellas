@@ -49,6 +49,7 @@ class Scrollable : public Element {
   void scrollToTop();
   void scrollToBottom();
   bool isScrolledToBottom() const { return _scrolledToBottom; }
+  bool isScrolledPastBottom() const;
   bool isScrollBarVisible() const { return _scrollBar->visible(); }
   px_t scrollPos() const { return _content->rect().y; }
   void scrollPos(px_t newPos);

@@ -289,6 +289,12 @@ void Client::populateRecipesList(Element &e) {
   recipesList.verifyBoxes();
   if (recipesList.getSelected() != oldSelectedRecipe)
     client.refreshRecipeDetailsPane();
+
+  // Make sure it isn't scrolled too far up
+  if (recipesList.contentHeight() < recipesList.height())
+    recipesList.scrollToTop();
+  else if (recipesList.isScrolledPastBottom())
+    recipesList.scrollToBottom();
 }
 
 void Client::scrollRecipeListToTop() { _recipeList->scrollToTop(); }

@@ -194,6 +194,12 @@ void Scrollable::scrollToBottom() {
   updateScrollBar();
 }
 
+bool Scrollable::isScrolledPastBottom() const {
+  if (_content->rect().y >= 0) return false;
+  const auto bottom = _content->rect().y + _content->rect().h;
+  return bottom < height();
+}
+
 void Scrollable::scrollPos(px_t newPos) {
   _content->setPosition(0, newPos);
   updateScrollBar();
