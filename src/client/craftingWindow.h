@@ -40,7 +40,7 @@ class FilterRecipesByMaterial : public CraftingWindowFilter {
 class FilterRecipesByTool : public CraftingWindowFilter {
  public:
   FilterRecipesByTool(const Client &client);
-  std::string buttonText() const override { return "Tool"s; }
+  std::string buttonText() const override { return "Tool req."s; }
   void indexRecipe(const CRecipe &recipe) override;
   void populateConfigurationPanel(Element &panel) const override;
   MatchingRecipes getMatchingRecipes() const override;
@@ -54,7 +54,7 @@ class FilterRecipesByTool : public CraftingWindowFilter {
 
 class FilterRecipesByLvlReq : public CraftingWindowFilter {
  public:
-  std::string buttonText() const override { return "Level req"s; }
+  std::string buttonText() const override { return "Level req."s; }
   void indexRecipe(const CRecipe &recipe) override;
   void populateConfigurationPanel(Element &panel) const override;
   MatchingRecipes getMatchingRecipes() const override;

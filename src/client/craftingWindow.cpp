@@ -42,7 +42,7 @@ void Client::initializeCraftingWindow() {
   auto *const filterPane =
       new Element({FILTERS_PANE_X, CONTENT_Y, FILTERS_PANE_W, CONTENT_H});
   _craftingWindow->addChild(filterPane);
-  auto *configurationPanel = new Element({0, 0, filterPane->width()});
+  auto *configurationPanel = new Element;
   configurationPanel->setClient(*this);
   filterPane->addChild(configurationPanel);
   // Select-filter buttons
@@ -71,11 +71,9 @@ void Client::initializeCraftingWindow() {
           filter->populateConfigurationPanel(*configurationPanel);
         }));
   }
-  y += BUTTON_H;
-  auto newRect = configurationPanel->rect();
-  newRect.y = y;
-  newRect.h = filterPane->height() - y;
-  configurationPanel->rect(newRect);
+  y += BUTTON_H + 2;
+  configurationPanel->rect(
+      {0, y, filterPane->width(), filterPane->height() - y});
 
   // Recipes
   Element *const recipesPane =
@@ -338,7 +336,7 @@ void FilterRecipesByMaterial::populateConfigurationPanel(Element &panel) const {
   for (const auto &pair : m_indexedRecipes) matsByName.insert(pair.first);
 
   m_materialList =
-      new ChoiceList(panel.rect(), Client::ICON_SIZE, *panel.client());
+      new ChoiceList(panel.rectToFill(), Client::ICON_SIZE, *panel.client());
   panel.addChild(m_materialList);
   for (const auto *material : matsByName) {
     auto *entry = new Element({});
@@ -382,7 +380,7 @@ void FilterRecipesByTool::populateConfigurationPanel(Element &panel) const {
   }
 
   m_toolsList =
-      new ChoiceList(panel.rect(), Client::ICON_SIZE, *panel.client());
+      new ChoiceList(panel.rectToFill(), Client::ICON_SIZE, *panel.client());
   panel.addChild(m_toolsList);
   for (const auto &pair : toolsByName) {
     auto *entry = new Element({});
@@ -471,7 +469,7 @@ void FilterRecipesByCategory::populateConfigurationPanel(Element &panel) const {
   for (const auto &pair : m_indexedRecipes) uniqueCategories.insert(pair.first);
 
   m_categoriesList =
-      new ChoiceList(panel.rect(), Element::TEXT_HEIGHT, *panel.client());
+      new ChoiceList(panel.rectToFill(), Element::TEXT_HEIGHT, *panel.client());
   panel.addChild(m_categoriesList);
   for (const auto category : uniqueCategories) {
     auto *entry = new Label({}, " "s + category);

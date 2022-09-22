@@ -83,6 +83,8 @@ void Element::height(px_t h) {
   _dimensionsChanged = true;
 }
 
+ScreenRect Element::rectToFill() { return {0, 0, _rect.w, _rect.h}; }
+
 void Element::markChanged() const {
   _changed = true;
   if (_parent != nullptr) _parent->markChanged();

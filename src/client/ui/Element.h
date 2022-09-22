@@ -136,6 +136,7 @@ class Element {
   virtual void width(px_t w);
   px_t height() const { return _rect.h; }
   virtual void height(px_t h);
+  ScreenRect rectToFill();
   bool changed() const { return _changed; }
   const std::string &id() const { return _id; }
   void id(const std::string &id) { _id = id; }
