@@ -992,6 +992,8 @@ void CDataLoader::loadRecipes(XmlReader &xr) {
     xr.findAttr(elem, "name", name);
     recipe.name(name);
 
+    if (xr.findAttr(elem, "category", s)) recipe.category(s);
+
     if (xr.findAttr(elem, "sounds", s)) recipe.setSoundProfile(_client, s);
 
     size_t n;

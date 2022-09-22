@@ -303,6 +303,7 @@ void Client::createCraftingWindowFilters() {
   _craftingWindowFilters.push_back(new FilterRecipesByMaterial(*this));
   _craftingWindowFilters.push_back(new FilterRecipesByTool(*this));
   _craftingWindowFilters.push_back(new FilterRecipesByLvlReq);
+  _craftingWindowFilters.push_back(new FilterRecipesByCategory);
 }
 
 FilterRecipesByMaterial::FilterRecipesByMaterial(const Client &client)
@@ -444,4 +445,36 @@ void FilterRecipesByLvlReq::populateConfigurationPanel(Element &panel) const {
         client.populateRecipesList();
       },
       panel.client());
+}
+
+void FilterRecipesByCategory::indexRecipe(const CRecipe &recipe) {
+  if (recipe.category().empty()) return;
+  m_indexedRecipes.insert(std::make_pair(recipe.category(), &recipe));
+}
+
+CraftingWindowFilter::MatchingRecipes
+FilterRecipesByCategory::getMatchingRecipes() const {
+  const auto selectedCategory = m_categoriesList->getSelected();
+  if (selectedCategory.empty()) return {};
+
+  auto recipes = MatchingRecipes{};
+  auto startIt = m_indexedRecipes.lower_bound(selectedCategory);
+  auto endIt = m_indexedRecipes.upper_bound(selectedCategory);
+  for (auto it = startIt; it != endIt; ++it) recipes.insert(it->second);
+  return recipes;
+}
+
+void FilterRecipesByCategory::populateConfigurationPanel(Element &panel) const {
+  auto uniqueCategories = std::set<std::string>{};
+  for (const auto &pair : m_indexedRecipes) uniqueCategories.insert(pair.first);
+
+  m_categoriesList =
+      new ChoiceList(panel.rect(), Element::TEXT_HEIGHT, *panel.client());
+  panel.addChild(m_categoriesList);
+  for (const auto category : uniqueCategories) {
+    auto *entry = new Label({}, category);
+    m_categoriesList->addChild(entry);
+    entry->id(category);
+  }
+  m_categoriesList->verifyBoxes();
 }

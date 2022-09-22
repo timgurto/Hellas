@@ -64,3 +64,16 @@ class FilterRecipesByLvlReq : public CraftingWindowFilter {
   IndexedRecipes m_indexedRecipes;
   mutable TextBox *m_minLevel{nullptr}, *m_maxLevel{nullptr};
 };
+
+class FilterRecipesByCategory : public CraftingWindowFilter {
+ public:
+  std::string buttonText() const override { return "Category"s; }
+  void indexRecipe(const CRecipe &recipe) override;
+  void populateConfigurationPanel(Element &panel) const override;
+  MatchingRecipes getMatchingRecipes() const override;
+
+ private:
+  using IndexedRecipes = std::multimap<std::string, const CRecipe *>;
+  IndexedRecipes m_indexedRecipes;
+  mutable ChoiceList *m_categoriesList{nullptr};
+};
