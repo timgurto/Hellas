@@ -298,16 +298,15 @@ void Client::indexRecipeInAllFilters(const CRecipe &recipe) {
 }
 
 void Client::createCraftingWindowFilters() {
-  _craftingWindowFilters.push_back(new FilterRecipesByMaterial(*this));
-  _craftingWindowFilters.push_back(new FilterRecipesByTool(*this));
-  _craftingWindowFilters.push_back(new FilterRecipesByLvlReq);
-  _craftingWindowFilters.push_back(new FilterRecipesByCategory);
+  _craftingWindowFilters.push_back(new MaterialFilter(*this));
+  _craftingWindowFilters.push_back(new ToolFilter(*this));
+  _craftingWindowFilters.push_back(new LvlReqFilter);
+  _craftingWindowFilters.push_back(new CategoryFilter);
 }
 
-FilterRecipesByMaterial::FilterRecipesByMaterial(const Client &client)
-    : m_client(client) {}
+MaterialFilter::MaterialFilter(const Client &client) : m_client(client) {}
 
-void FilterRecipesByMaterial::indexRecipe(const CRecipe &recipe) {
+void MaterialFilter::indexRecipe(const CRecipe &recipe) {
   for (const auto &matPair : recipe.materials()) {
     const ClientItem *material =
         dynamic_cast<const ClientItem *>(matPair.first);
@@ -315,8 +314,8 @@ void FilterRecipesByMaterial::indexRecipe(const CRecipe &recipe) {
   }
 }
 
-CraftingWindowFilter::MatchingRecipes
-FilterRecipesByMaterial::getMatchingRecipes() const {
+CraftingWindowFilter::MatchingRecipes MaterialFilter::getMatchingRecipes()
+    const {
   const auto selectedMatID = m_materialList->getSelected();
   if (selectedMatID.empty()) return {};
   const auto &items = m_client.gameData.items;
@@ -331,7 +330,7 @@ FilterRecipesByMaterial::getMatchingRecipes() const {
   return recipes;
 }
 
-void FilterRecipesByMaterial::populateConfigurationPanel(Element &panel) const {
+void MaterialFilter::populateConfigurationPanel(Element &panel) const {
   auto matsByName = std::set<const ClientItem *, ClientItem::CompareName>{};
   for (const auto &pair : m_indexedRecipes) matsByName.insert(pair.first);
 
@@ -350,17 +349,15 @@ void FilterRecipesByMaterial::populateConfigurationPanel(Element &panel) const {
   m_materialList->verifyBoxes();
 }
 
-FilterRecipesByTool::FilterRecipesByTool(const Client &client)
-    : m_client(client) {}
+ToolFilter::ToolFilter(const Client &client) : m_client(client) {}
 
-void FilterRecipesByTool::indexRecipe(const CRecipe &recipe) {
+void ToolFilter::indexRecipe(const CRecipe &recipe) {
   for (const auto tool : recipe.tools()) {
     m_indexedRecipes.insert(std::make_pair(tool, &recipe));
   }
 }
 
-CraftingWindowFilter::MatchingRecipes FilterRecipesByTool::getMatchingRecipes()
-    const {
+CraftingWindowFilter::MatchingRecipes ToolFilter::getMatchingRecipes() const {
   const auto selectedTool = m_toolsList->getSelected();
   if (selectedTool.empty()) return {};
 
@@ -371,7 +368,7 @@ CraftingWindowFilter::MatchingRecipes FilterRecipesByTool::getMatchingRecipes()
   return recipes;
 }
 
-void FilterRecipesByTool::populateConfigurationPanel(Element &panel) const {
+void ToolFilter::populateConfigurationPanel(Element &panel) const {
   auto toolsByName = std::map<std::string, std::string>{};
   for (const auto &pair : m_indexedRecipes) {
     const auto toolTag = pair.first;
@@ -394,7 +391,7 @@ void FilterRecipesByTool::populateConfigurationPanel(Element &panel) const {
   m_toolsList->verifyBoxes();
 }
 
-void FilterRecipesByLvlReq::indexRecipe(const CRecipe &recipe) {
+void LvlReqFilter::indexRecipe(const CRecipe &recipe) {
   const auto &product = *recipe.product();
   if (product.lvlReq() == 0) return;
   if (!product.isGear()) return;
@@ -402,8 +399,7 @@ void FilterRecipesByLvlReq::indexRecipe(const CRecipe &recipe) {
   m_indexedRecipes.insert(std::make_pair(product.lvlReq(), &recipe));
 }
 
-CraftingWindowFilter::MatchingRecipes
-FilterRecipesByLvlReq::getMatchingRecipes() const {
+CraftingWindowFilter::MatchingRecipes LvlReqFilter::getMatchingRecipes() const {
   Level minLevel = m_minLevel->hasText()
                        ? static_cast<Level>(m_minLevel->textAsNum())
                        : -1000;
@@ -419,7 +415,7 @@ FilterRecipesByLvlReq::getMatchingRecipes() const {
   return recipes;
 }
 
-void FilterRecipesByLvlReq::populateConfigurationPanel(Element &panel) const {
+void LvlReqFilter::populateConfigurationPanel(Element &panel) const {
   const auto GAP = 2_px, LABEL_W = 100_px, TEXT_W = 40_px, ROW_H = 13_px;
   panel.addChild(new Label({GAP, GAP, LABEL_W, ROW_H}, "Min level required"));
   panel.addChild(
@@ -445,15 +441,15 @@ void FilterRecipesByLvlReq::populateConfigurationPanel(Element &panel) const {
       panel.client());
 }
 
-void FilterRecipesByCategory::indexRecipe(const CRecipe &recipe) {
+void CategoryFilter::indexRecipe(const CRecipe &recipe) {
   if (recipe.category().empty())
     m_indexedRecipes.insert(std::make_pair("(Uncategorised)"s, &recipe));
   else
     m_indexedRecipes.insert(std::make_pair(recipe.category(), &recipe));
 }
 
-CraftingWindowFilter::MatchingRecipes
-FilterRecipesByCategory::getMatchingRecipes() const {
+CraftingWindowFilter::MatchingRecipes CategoryFilter::getMatchingRecipes()
+    const {
   const auto selectedCategory = m_categoriesList->getSelected();
   if (selectedCategory.empty()) return {};
 
@@ -464,7 +460,7 @@ FilterRecipesByCategory::getMatchingRecipes() const {
   return recipes;
 }
 
-void FilterRecipesByCategory::populateConfigurationPanel(Element &panel) const {
+void CategoryFilter::populateConfigurationPanel(Element &panel) const {
   auto uniqueCategories = std::set<std::string>{};
   for (const auto &pair : m_indexedRecipes) uniqueCategories.insert(pair.first);
 

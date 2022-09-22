@@ -22,9 +22,9 @@ class CraftingWindowFilter {
   virtual MatchingRecipes getMatchingRecipes() const = 0;
 };
 
-class FilterRecipesByMaterial : public CraftingWindowFilter {
+class MaterialFilter : public CraftingWindowFilter {
  public:
-  FilterRecipesByMaterial(const Client &client);
+  MaterialFilter(const Client &client);
   std::string buttonText() const override { return "Material"s; }
   void indexRecipe(const CRecipe &recipe) override;
   void populateConfigurationPanel(Element &panel) const override;
@@ -37,9 +37,9 @@ class FilterRecipesByMaterial : public CraftingWindowFilter {
   const Client &m_client;
 };
 
-class FilterRecipesByTool : public CraftingWindowFilter {
+class ToolFilter : public CraftingWindowFilter {
  public:
-  FilterRecipesByTool(const Client &client);
+  ToolFilter(const Client &client);
   std::string buttonText() const override { return "Tool req."s; }
   void indexRecipe(const CRecipe &recipe) override;
   void populateConfigurationPanel(Element &panel) const override;
@@ -52,7 +52,7 @@ class FilterRecipesByTool : public CraftingWindowFilter {
   const Client &m_client;
 };
 
-class FilterRecipesByLvlReq : public CraftingWindowFilter {
+class LvlReqFilter : public CraftingWindowFilter {
  public:
   std::string buttonText() const override { return "Level req."s; }
   void indexRecipe(const CRecipe &recipe) override;
@@ -65,7 +65,7 @@ class FilterRecipesByLvlReq : public CraftingWindowFilter {
   mutable TextBox *m_minLevel{nullptr}, *m_maxLevel{nullptr};
 };
 
-class FilterRecipesByCategory : public CraftingWindowFilter {
+class CategoryFilter : public CraftingWindowFilter {
  public:
   std::string buttonText() const override { return "Category"s; }
   void indexRecipe(const CRecipe &recipe) override;
