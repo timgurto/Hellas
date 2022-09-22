@@ -33,7 +33,7 @@ class MaterialFilter : public CraftingWindowFilter {
  private:
   using IndexedRecipes = std::multimap<const ClientItem *, const CRecipe *>;
   IndexedRecipes m_indexedRecipes;
-  mutable ChoiceList *m_materialList{nullptr};
+  mutable ChoiceList *m_list{nullptr};
   const Client &m_client;
 };
 
@@ -48,7 +48,7 @@ class ToolFilter : public CraftingWindowFilter {
  private:
   using IndexedRecipes = std::multimap<std::string, const CRecipe *>;
   IndexedRecipes m_indexedRecipes;
-  mutable ChoiceList *m_toolsList{nullptr};
+  mutable ChoiceList *m_list{nullptr};
   const Client &m_client;
 };
 

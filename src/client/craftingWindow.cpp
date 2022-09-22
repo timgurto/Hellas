@@ -52,7 +52,7 @@ void Client::initializeCraftingWindow() {
   auto col = 0;
   auto &selectedFilter = _selectedCraftingWindowFilter;
   filterPane->addChild(new Button({BUTTON_W * col, y, BUTTON_W, BUTTON_H},
-                                  "(None)",
+                                  "(Clear)",
                                   [&selectedFilter, configurationPanel]() {
                                     selectedFilter = nullptr;
                                     configurationPanel->clearChildren();
@@ -322,7 +322,7 @@ void MaterialFilter::indexRecipe(const CRecipe &recipe) {
 
 CraftingWindowFilter::MatchingRecipes MaterialFilter::getMatchingRecipes()
     const {
-  const auto selectedMatID = m_materialList->getSelected();
+  const auto selectedMatID = m_list->getSelected();
   if (selectedMatID.empty()) return {};
   const auto &items = m_client.gameData.items;
   auto it = items.find(selectedMatID);
@@ -340,19 +340,19 @@ void MaterialFilter::populateConfigurationPanel(Element &panel) const {
   auto matsByName = std::set<const ClientItem *, ClientItem::CompareName>{};
   for (const auto &pair : m_indexedRecipes) matsByName.insert(pair.first);
 
-  m_materialList =
+  m_list =
       new ChoiceList(panel.rectToFill(), Client::ICON_SIZE, *panel.client());
-  panel.addChild(m_materialList);
+  panel.addChild(m_list);
   for (const auto *material : matsByName) {
     auto *entry = new Element({});
-    m_materialList->addChild(entry);
+    m_list->addChild(entry);
     entry->id(material->id());
     entry->addChild(new Picture(0, 0, material->icon()));
     entry->addChild(new Label(
         {Client::ICON_SIZE + 2, 0, entry->width(), entry->height()},
         material->name(), Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
   }
-  m_materialList->verifyBoxes();
+  m_list->verifyBoxes();
 }
 
 ToolFilter::ToolFilter(const Client &client) : m_client(client) {}
@@ -364,7 +364,7 @@ void ToolFilter::indexRecipe(const CRecipe &recipe) {
 }
 
 CraftingWindowFilter::MatchingRecipes ToolFilter::getMatchingRecipes() const {
-  const auto selectedTool = m_toolsList->getSelected();
+  const auto selectedTool = m_list->getSelected();
   if (selectedTool.empty()) return {};
 
   auto recipes = MatchingRecipes{};
@@ -382,19 +382,19 @@ void ToolFilter::populateConfigurationPanel(Element &panel) const {
     toolsByName[toolName] = toolTag;
   }
 
-  m_toolsList =
+  m_list =
       new ChoiceList(panel.rectToFill(), Client::ICON_SIZE, *panel.client());
-  panel.addChild(m_toolsList);
+  panel.addChild(m_list);
   for (const auto &pair : toolsByName) {
     auto *entry = new Element({});
-    m_toolsList->addChild(entry);
+    m_list->addChild(entry);
     entry->id(pair.second);
     entry->addChild(new Picture(0, 0, m_client.images.toolIcons[pair.second]));
     entry->addChild(new Label(
         {Client::ICON_SIZE + 2, 0, entry->width(), entry->height()}, pair.first,
         Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
   }
-  m_toolsList->verifyBoxes();
+  m_list->verifyBoxes();
 }
 
 void LvlReqFilter::indexRecipe(const CRecipe &recipe) {
@@ -456,7 +456,7 @@ void CategoryFilter::indexRecipe(const CRecipe &recipe) {
 
 CraftingWindowFilter::MatchingRecipes CategoryFilter::getMatchingRecipes()
     const {
-  const auto selectedCategory = m_categoriesList->getSelected();
+  const auto selectedCategory = m_list->getSelected();
   if (selectedCategory.empty()) return {};
 
   auto recipes = MatchingRecipes{};
@@ -470,13 +470,13 @@ void CategoryFilter::populateConfigurationPanel(Element &panel) const {
   auto uniqueCategories = std::set<std::string>{};
   for (const auto &pair : m_indexedRecipes) uniqueCategories.insert(pair.first);
 
-  m_categoriesList =
+  m_list =
       new ChoiceList(panel.rectToFill(), Element::TEXT_HEIGHT, *panel.client());
-  panel.addChild(m_categoriesList);
+  panel.addChild(m_list);
   for (const auto category : uniqueCategories) {
     auto *entry = new Label({}, " "s + category);
-    m_categoriesList->addChild(entry);
+    m_list->addChild(entry);
     entry->id(category);
   }
-  m_categoriesList->verifyBoxes();
+  m_list->verifyBoxes();
 }
