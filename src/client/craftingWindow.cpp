@@ -474,7 +474,7 @@ void FilterRecipesByCategory::populateConfigurationPanel(Element &panel) const {
       new ChoiceList(panel.rect(), Element::TEXT_HEIGHT, *panel.client());
   panel.addChild(m_categoriesList);
   for (const auto category : uniqueCategories) {
-    auto *entry = new Label({}, category);
+    auto *entry = new Label({}, " "s + category);
     m_categoriesList->addChild(entry);
     entry->id(category);
   }
