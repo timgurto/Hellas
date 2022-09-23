@@ -329,6 +329,8 @@ CraftingWindowFilter::MatchingRecipes MaterialFilter::getMatchingRecipes()
 }
 
 void MaterialFilter::populateConfigurationPanel(Element &panel) const {
+  ListBasedFilter::populateConfigurationPanel(panel);
+
   auto matsByName = std::set<const ClientItem *, ClientItem::CompareName>{};
   for (const auto &pair : m_indexedRecipes) matsByName.insert(pair.first);
 
@@ -361,6 +363,8 @@ CraftingWindowFilter::MatchingRecipes ToolFilter::getMatchingRecipes() const {
 }
 
 void ToolFilter::populateConfigurationPanel(Element &panel) const {
+  ListBasedFilter::populateConfigurationPanel(panel);
+
   auto toolsByName = std::map<std::string, std::string>{};
   for (const auto &pair : m_indexedRecipes) {
     const auto toolTag = pair.first;
@@ -446,6 +450,8 @@ CraftingWindowFilter::MatchingRecipes CategoryFilter::getMatchingRecipes()
 }
 
 void CategoryFilter::populateConfigurationPanel(Element &panel) const {
+  ListBasedFilter::populateConfigurationPanel(panel);
+
   auto uniqueCategories = std::set<std::string>{};
   for (const auto &pair : m_indexedRecipes) uniqueCategories.insert(pair.first);
 
@@ -478,6 +484,8 @@ CraftingWindowFilter::MatchingRecipes QualityFilter::getMatchingRecipes()
 }
 
 void QualityFilter::populateConfigurationPanel(Element &panel) const {
+  ListBasedFilter::populateConfigurationPanel(panel);
+
   auto uniqueQualities = std::set<Item::Quality>{};
   for (const auto &pair : m_indexedRecipes) uniqueQualities.insert(pair.first);
 

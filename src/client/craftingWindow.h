@@ -27,6 +27,7 @@ class ListBasedFilter : public CraftingWindowFilter {
  public:
   using Key = K;
   using IndexedRecipes = std::multimap<Key, const CRecipe *>;
+
   static MatchingRecipes recipesMatching(const IndexedRecipes &indexedRecipes,
                                          Key key) {
     auto recipes = MatchingRecipes{};
@@ -40,6 +41,8 @@ class ListBasedFilter : public CraftingWindowFilter {
     for (const auto key : getKeysFromRecipe(recipe))
       m_indexedRecipes.insert(std::make_pair(key, &recipe));
   }
+
+  void populateConfigurationPanel(Element &panel) const override {}
 
  protected:
   using Keys = std::set<K>;
