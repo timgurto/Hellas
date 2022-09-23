@@ -62,14 +62,13 @@ class ListBasedFilter : public CraftingWindowFilter {
   mutable ChoiceList *m_list{nullptr};
 };
 
-class MaterialFilter : public ListBasedFilter<const ClientItem *> {
-  // TODO use a wrapper class instead, with built-in operator<
+class MaterialFilter : public ListBasedFilter<ClientItemAlphabetical> {
  public:
   MaterialFilter(const Client &client);
   std::string buttonText() const override { return "Material"s; }
   void populateConfigurationPanel(Element &panel) const override;
   MatchingRecipes getMatchingRecipes() const override;
-  std::set<const ClientItem *> getKeysFromRecipe(
+  std::set<ClientItemAlphabetical> getKeysFromRecipe(
       const CRecipe &recipe) override;
 
  private:

@@ -137,4 +137,18 @@ class ClientItem : public Item, public HasSounds {
 
 const ClientItem *toClientItem(const Item *item);
 
+class ClientItemAlphabetical {
+ public:
+  ClientItemAlphabetical(const ClientItem *item) : p(item) {}
+
+  bool operator<(const ClientItemAlphabetical &rhs) const {
+    return p->name() < rhs.p->name();
+  }
+
+  const ClientItem *operator->() const { return p; }
+
+ private:
+  const ClientItem *p;
+};
+
 #endif

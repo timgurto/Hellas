@@ -331,10 +331,7 @@ CraftingWindowFilter::MatchingRecipes MaterialFilter::getMatchingRecipes()
 void MaterialFilter::populateConfigurationPanel(Element &panel) const {
   ListBasedFilter::populateConfigurationPanel(panel);
 
-  auto matsByName = std::set<const ClientItem *, ClientItem::CompareName>{};
-  for (const auto &pair : m_indexedRecipes) matsByName.insert(pair.first);
-
-  for (const auto *material : matsByName) {
+  for (const auto material : uniqueIndexedKeys()) {
     auto *entry = new Element({});
     m_list->addChild(entry);
     entry->id(material->id());
@@ -347,7 +344,10 @@ void MaterialFilter::populateConfigurationPanel(Element &panel) const {
 }
 
 MaterialFilter::Keys MaterialFilter::getKeysFromRecipe(const CRecipe &recipe) {
-  return recipe.materials().itemsOnly<ClientItem>();
+  auto materials = Keys{};
+  for (const auto &pair : recipe.materials())
+    materials.insert(dynamic_cast<const ClientItem *>(pair.first));
+  return materials;
 }
 
 ToolFilter::ToolFilter(const Client &client) : m_client(client) {}
