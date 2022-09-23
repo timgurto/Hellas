@@ -332,20 +332,19 @@ void MaterialFilter::populateConfigurationPanel(Element &panel) const {
   ListBasedFilter::populateConfigurationPanel(panel);
 
   for (const auto material : uniqueIndexedKeys()) {
-    auto *entry = createEntry(material);
+    auto *entry = new Element;
     m_list->addChild(entry);
     entry->id(toStringID(material));
+    createEntry(*entry, material);
   }
   m_list->verifyBoxes();
 }
 
-Element *MaterialFilter::createEntry(Key key) const {
-  auto *entry = new Element({});
-  entry->addChild(new Picture(0, 0, key->icon()));
-  entry->addChild(new Label(
-      {Client::ICON_SIZE + 2, 0, entry->width(), entry->height()}, key->name(),
+void MaterialFilter::createEntry(Element &entry, Key key) const {
+  entry.addChild(new Picture(0, 0, key->icon()));
+  entry.addChild(new Label(
+      {Client::ICON_SIZE + 2, 0, entry.width(), entry.height()}, key->name(),
       Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
-  return entry;
 }
 
 MaterialFilter::Keys MaterialFilter::getKeysFromRecipe(const CRecipe &recipe) {
@@ -368,21 +367,20 @@ void ToolFilter::populateConfigurationPanel(Element &panel) const {
   ListBasedFilter::populateConfigurationPanel(panel);
 
   for (const auto toolTag : uniqueIndexedKeys()) {
-    auto *entry = createEntry(toolTag);
+    auto *entry = new Element;
     m_list->addChild(entry);
     entry->id(toStringID(toolTag));
+    createEntry(*entry, toolTag);
   }
   m_list->verifyBoxes();
 }
 
-Element *ToolFilter::createEntry(Key key) const {
-  auto *entry = new Element({});
+void ToolFilter::createEntry(Element &entry, Key key) const {
   const auto toolName = m_client.gameData.tagNames[key];
-  entry->addChild(new Picture(0, 0, m_client.images.toolIcons[key]));
-  entry->addChild(
-      new Label({Client::ICON_SIZE + 2, 0, entry->width(), entry->height()},
+  entry.addChild(new Picture(0, 0, m_client.images.toolIcons[key]));
+  entry.addChild(
+      new Label({Client::ICON_SIZE + 2, 0, entry.width(), entry.height()},
                 toolName, Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
-  return entry;
 }
 
 ToolFilter::Keys ToolFilter::getKeysFromRecipe(const CRecipe &recipe) {
@@ -451,15 +449,16 @@ void CategoryFilter::populateConfigurationPanel(Element &panel) const {
   ListBasedFilter::populateConfigurationPanel(panel);
 
   for (const auto category : uniqueIndexedKeys()) {
-    auto *entry = createEntry(category);
+    auto *entry = new Element;
     m_list->addChild(entry);
     entry->id(toStringID(category));
+    createEntry(*entry, category);
   }
   m_list->verifyBoxes();
 }
 
-Element *CategoryFilter::createEntry(Key key) const {
-  return new Label({}, " "s + key);
+void CategoryFilter::createEntry(Element &entry, Key key) const {
+  entry.addChild(new Label(entry.rectToFill(), " "s + key));
 }
 
 CategoryFilter::Keys CategoryFilter::getKeysFromRecipe(const CRecipe &recipe) {
@@ -483,17 +482,19 @@ void QualityFilter::populateConfigurationPanel(Element &panel) const {
   ListBasedFilter::populateConfigurationPanel(panel);
 
   for (const auto quality : uniqueIndexedKeys()) {
-    auto *entry = createEntry(quality);
+    auto *entry = new Element;
     m_list->addChild(entry);
-    entry->id(QualityFilter::toStringID(quality));
+    entry->id(toStringID(quality));
+    createEntry(*entry, quality);
   }
   m_list->verifyBoxes();
 }
 
-Element *QualityFilter::createEntry(Key key) const {
-  auto *entry = new Label({}, " "s + ClientItem::qualityName(key));
-  entry->setColor(ClientItem::qualityColor(key));
-  return entry;
+void QualityFilter::createEntry(Element &entry, Key key) const {
+  auto *label =
+      new Label(entry.rectToFill(), " "s + ClientItem::qualityName(key));
+  label->setColor(ClientItem::qualityColor(key));
+  entry.addChild(label);
 }
 
 QualityFilter::Keys QualityFilter::getKeysFromRecipe(const CRecipe &recipe) {

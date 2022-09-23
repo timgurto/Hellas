@@ -62,7 +62,7 @@ class ListBasedFilter : public CraftingWindowFilter {
   virtual px_t itemHeight() const { return Element::TEXT_HEIGHT; }
   virtual std::string toStringID(Key key) const = 0;
 
-  virtual Element *createEntry(Key key) const = 0;
+  virtual void createEntry(Element &entry, Key key) const = 0;
 
   IndexedRecipes m_indexedRecipes;
   mutable ChoiceList *m_list{nullptr};
@@ -78,7 +78,7 @@ class MaterialFilter : public ListBasedFilter<ClientItemAlphabetical> {
   MatchingRecipes getMatchingRecipes() const override;
   std::set<ClientItemAlphabetical> getKeysFromRecipe(
       const CRecipe &recipe) override;
-  Element *createEntry(Key key) const override;
+  void createEntry(Element &entry, Key key) const override;
 
  private:
   const Client &m_client;
@@ -93,7 +93,7 @@ class ToolFilter : public ListBasedFilter<std::string> {
   void populateConfigurationPanel(Element &panel) const override;
   MatchingRecipes getMatchingRecipes() const override;
   std::set<std::string> getKeysFromRecipe(const CRecipe &recipe) override;
-  Element *createEntry(Key key) const override;
+  void createEntry(Element &entry, Key key) const override;
 
  private:
   const Client &m_client;
@@ -119,7 +119,7 @@ class CategoryFilter : public ListBasedFilter<std::string> {
   void populateConfigurationPanel(Element &panel) const override;
   MatchingRecipes getMatchingRecipes() const override;
   std::set<std::string> getKeysFromRecipe(const CRecipe &recipe) override;
-  Element *createEntry(Key key) const override;
+  void createEntry(Element &entry, Key key) const override;
 };
 
 class QualityFilter : public ListBasedFilter<Item::Quality> {
@@ -129,5 +129,5 @@ class QualityFilter : public ListBasedFilter<Item::Quality> {
   void populateConfigurationPanel(Element &panel) const override;
   MatchingRecipes getMatchingRecipes() const override;
   std::set<Item::Quality> getKeysFromRecipe(const CRecipe &recipe) override;
-  Element *createEntry(Key key) const override;
+  void createEntry(Element &entry, Key key) const override;
 };
