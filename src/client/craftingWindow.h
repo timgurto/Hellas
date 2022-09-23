@@ -22,9 +22,10 @@ class CraftingWindowFilter {
   virtual MatchingRecipes getMatchingRecipes() const = 0;
 };
 
-template <typename Key>
+template <typename K>
 class ListBasedFilter : public CraftingWindowFilter {
  public:
+  using Key = K;
   using IndexedRecipes = std::multimap<Key, const CRecipe *>;
   static MatchingRecipes recipesMatching(const IndexedRecipes &indexedRecipes,
                                          Key key) {
@@ -41,7 +42,8 @@ class ListBasedFilter : public CraftingWindowFilter {
   }
 
  protected:
-  virtual std::set<Key> getKeysFromRecipe(const CRecipe &recipe) = 0;
+  using Keys = std::set<K>;
+  virtual Keys getKeysFromRecipe(const CRecipe &recipe) = 0;
 
   IndexedRecipes m_indexedRecipes;
   mutable ChoiceList *m_list{nullptr};

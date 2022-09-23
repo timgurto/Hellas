@@ -347,8 +347,7 @@ void MaterialFilter::populateConfigurationPanel(Element &panel) const {
   m_list->verifyBoxes();
 }
 
-std::set<const ClientItem *> MaterialFilter::getKeysFromRecipe(
-    const CRecipe &recipe) {
+MaterialFilter::Keys MaterialFilter::getKeysFromRecipe(const CRecipe &recipe) {
   return recipe.materials().itemsOnly<ClientItem>();
 }
 
@@ -384,7 +383,7 @@ void ToolFilter::populateConfigurationPanel(Element &panel) const {
   m_list->verifyBoxes();
 }
 
-std::set<std::string> ToolFilter::getKeysFromRecipe(const CRecipe &recipe) {
+ToolFilter::Keys ToolFilter::getKeysFromRecipe(const CRecipe &recipe) {
   return recipe.tools();
 }
 
@@ -461,7 +460,7 @@ void CategoryFilter::populateConfigurationPanel(Element &panel) const {
   m_list->verifyBoxes();
 }
 
-std::set<std::string> CategoryFilter::getKeysFromRecipe(const CRecipe &recipe) {
+CategoryFilter::Keys CategoryFilter::getKeysFromRecipe(const CRecipe &recipe) {
   if (recipe.category().empty())
     return {"(Uncategorised)"s};
   else
@@ -494,7 +493,6 @@ void QualityFilter::populateConfigurationPanel(Element &panel) const {
   m_list->verifyBoxes();
 }
 
-std::set<Item::Quality> QualityFilter::getKeysFromRecipe(
-    const CRecipe &recipe) {
+QualityFilter::Keys QualityFilter::getKeysFromRecipe(const CRecipe &recipe) {
   return {recipe.product()->quality()};
 }
