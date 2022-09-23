@@ -34,6 +34,9 @@ class ListBasedFilter : public CraftingWindowFilter {
     for (auto it = startIt; it != endIt; ++it) recipes.insert(it->second);
     return recipes;
   }
+
+ protected:
+  IndexedRecipes m_indexedRecipes;
 };
 
 class MaterialFilter : public ListBasedFilter<const ClientItem *> {
@@ -45,8 +48,6 @@ class MaterialFilter : public ListBasedFilter<const ClientItem *> {
   MatchingRecipes getMatchingRecipes() const override;
 
  private:
-  using IndexedRecipes = std::multimap<const ClientItem *, const CRecipe *>;
-  IndexedRecipes m_indexedRecipes;
   mutable ChoiceList *m_list{nullptr};
   const Client &m_client;
 };
@@ -60,8 +61,6 @@ class ToolFilter : public ListBasedFilter<std::string> {
   MatchingRecipes getMatchingRecipes() const override;
 
  private:
-  using IndexedRecipes = std::multimap<std::string, const CRecipe *>;
-  IndexedRecipes m_indexedRecipes;
   mutable ChoiceList *m_list{nullptr};
   const Client &m_client;
 };
@@ -87,8 +86,6 @@ class CategoryFilter : public ListBasedFilter<std::string> {
   MatchingRecipes getMatchingRecipes() const override;
 
  private:
-  using IndexedRecipes = std::multimap<std::string, const CRecipe *>;
-  IndexedRecipes m_indexedRecipes;
   mutable ChoiceList *m_list{nullptr};
 };
 
@@ -100,7 +97,5 @@ class QualityFilter : public ListBasedFilter<Item::Quality> {
   MatchingRecipes getMatchingRecipes() const override;
 
  private:
-  using IndexedRecipes = std::multimap<Item::Quality, const CRecipe *>;
-  IndexedRecipes m_indexedRecipes;
   mutable ChoiceList *m_list{nullptr};
 };
