@@ -47,6 +47,14 @@ class ListBasedFilter : public CraftingWindowFilter {
   void populateConfigurationPanel(Element &panel) const override {
     m_list = new ChoiceList(panel.rectToFill(), itemHeight(), *panel.client());
     panel.addChild(m_list);
+
+    for (const auto category : uniqueIndexedKeys()) {
+      auto *entry = new Element;
+      m_list->addChild(entry);
+      entry->id(toStringID(category));
+      createEntry(*entry, category);
+    }
+    m_list->verifyBoxes();
   }
 
  protected:
@@ -74,7 +82,6 @@ class MaterialFilter : public ListBasedFilter<ClientItemAlphabetical> {
   std::string buttonText() const override { return "Material"s; }
   std::string toStringID(Key key) const override { return key->id(); }
   px_t itemHeight() const override { return 16; }
-  void populateConfigurationPanel(Element &panel) const override;
   MatchingRecipes getMatchingRecipes() const override;
   std::set<ClientItemAlphabetical> getKeysFromRecipe(
       const CRecipe &recipe) override;
@@ -90,7 +97,6 @@ class ToolFilter : public ListBasedFilter<std::string> {
   std::string buttonText() const override { return "Tool req."s; }
   px_t itemHeight() const override { return 16; }
   std::string toStringID(Key key) const override { return key; }
-  void populateConfigurationPanel(Element &panel) const override;
   MatchingRecipes getMatchingRecipes() const override;
   std::set<std::string> getKeysFromRecipe(const CRecipe &recipe) override;
   void createEntry(Element &entry, Key key) const override;
@@ -116,7 +122,6 @@ class CategoryFilter : public ListBasedFilter<std::string> {
  public:
   std::string buttonText() const override { return "Category"s; }
   std::string toStringID(Key key) const override { return key; }
-  void populateConfigurationPanel(Element &panel) const override;
   MatchingRecipes getMatchingRecipes() const override;
   std::set<std::string> getKeysFromRecipe(const CRecipe &recipe) override;
   void createEntry(Element &entry, Key key) const override;
@@ -126,7 +131,6 @@ class QualityFilter : public ListBasedFilter<Item::Quality> {
  public:
   std::string buttonText() const override { return "Quality"s; }
   std::string toStringID(Key key) const override { return toString(key); }
-  void populateConfigurationPanel(Element &panel) const override;
   MatchingRecipes getMatchingRecipes() const override;
   std::set<Item::Quality> getKeysFromRecipe(const CRecipe &recipe) override;
   void createEntry(Element &entry, Key key) const override;

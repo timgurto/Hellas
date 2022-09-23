@@ -328,18 +328,6 @@ CraftingWindowFilter::MatchingRecipes MaterialFilter::getMatchingRecipes()
   return recipesMatching(m_indexedRecipes, selectedMat);
 }
 
-void MaterialFilter::populateConfigurationPanel(Element &panel) const {
-  ListBasedFilter::populateConfigurationPanel(panel);
-
-  for (const auto material : uniqueIndexedKeys()) {
-    auto *entry = new Element;
-    m_list->addChild(entry);
-    entry->id(toStringID(material));
-    createEntry(*entry, material);
-  }
-  m_list->verifyBoxes();
-}
-
 void MaterialFilter::createEntry(Element &entry, Key key) const {
   entry.addChild(new Picture(0, 0, key->icon()));
   entry.addChild(new Label(
@@ -361,18 +349,6 @@ CraftingWindowFilter::MatchingRecipes ToolFilter::getMatchingRecipes() const {
   if (selectedTool.empty()) return {};
 
   return recipesMatching(m_indexedRecipes, selectedTool);
-}
-
-void ToolFilter::populateConfigurationPanel(Element &panel) const {
-  ListBasedFilter::populateConfigurationPanel(panel);
-
-  for (const auto toolTag : uniqueIndexedKeys()) {
-    auto *entry = new Element;
-    m_list->addChild(entry);
-    entry->id(toStringID(toolTag));
-    createEntry(*entry, toolTag);
-  }
-  m_list->verifyBoxes();
 }
 
 void ToolFilter::createEntry(Element &entry, Key key) const {
@@ -445,18 +421,6 @@ CraftingWindowFilter::MatchingRecipes CategoryFilter::getMatchingRecipes()
   return recipesMatching(m_indexedRecipes, selectedCategory);
 }
 
-void CategoryFilter::populateConfigurationPanel(Element &panel) const {
-  ListBasedFilter::populateConfigurationPanel(panel);
-
-  for (const auto category : uniqueIndexedKeys()) {
-    auto *entry = new Element;
-    m_list->addChild(entry);
-    entry->id(toStringID(category));
-    createEntry(*entry, category);
-  }
-  m_list->verifyBoxes();
-}
-
 void CategoryFilter::createEntry(Element &entry, Key key) const {
   entry.addChild(new Label(entry.rectToFill(), " "s + key));
 }
@@ -476,18 +440,6 @@ CraftingWindowFilter::MatchingRecipes QualityFilter::getMatchingRecipes()
       static_cast<Item::Quality>(std::stoi(qualityString));
 
   return recipesMatching(m_indexedRecipes, selectedQuality);
-}
-
-void QualityFilter::populateConfigurationPanel(Element &panel) const {
-  ListBasedFilter::populateConfigurationPanel(panel);
-
-  for (const auto quality : uniqueIndexedKeys()) {
-    auto *entry = new Element;
-    m_list->addChild(entry);
-    entry->id(toStringID(quality));
-    createEntry(*entry, quality);
-  }
-  m_list->verifyBoxes();
 }
 
 void QualityFilter::createEntry(Element &entry, Key key) const {
