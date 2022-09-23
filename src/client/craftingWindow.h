@@ -1,6 +1,8 @@
 #pragma once
 
+#include <string.h>
 #include <map>
+#include "ui/Label.h"
 
 class ChoiceList;
 class CRecipe;
@@ -43,8 +45,7 @@ class ListBasedFilter : public CraftingWindowFilter {
   }
 
   void populateConfigurationPanel(Element &panel) const override {
-    m_list =
-        new ChoiceList(panel.rectToFill(), Client::ICON_SIZE, *panel.client());
+    m_list = new ChoiceList(panel.rectToFill(), itemHeight(), *panel.client());
     panel.addChild(m_list);
   }
 
@@ -58,6 +59,11 @@ class ListBasedFilter : public CraftingWindowFilter {
     return uniqueKeys;
   }
 
+  virtual px_t itemHeight() const { return Element::TEXT_HEIGHT; }
+  virtual std::string toStringID(Key key) const = 0;
+
+  virtual Element *createEntry(Key key) const = 0;
+
   IndexedRecipes m_indexedRecipes;
   mutable ChoiceList *m_list{nullptr};
 };
@@ -66,10 +72,13 @@ class MaterialFilter : public ListBasedFilter<ClientItemAlphabetical> {
  public:
   MaterialFilter(const Client &client);
   std::string buttonText() const override { return "Material"s; }
+  std::string toStringID(Key key) const override { return key->id(); }
+  px_t itemHeight() const override { return 16; }
   void populateConfigurationPanel(Element &panel) const override;
   MatchingRecipes getMatchingRecipes() const override;
   std::set<ClientItemAlphabetical> getKeysFromRecipe(
       const CRecipe &recipe) override;
+  Element *createEntry(Key key) const override;
 
  private:
   const Client &m_client;
@@ -79,9 +88,12 @@ class ToolFilter : public ListBasedFilter<std::string> {
  public:
   ToolFilter(const Client &client);
   std::string buttonText() const override { return "Tool req."s; }
+  px_t itemHeight() const override { return 16; }
+  std::string toStringID(Key key) const override { return key; }
   void populateConfigurationPanel(Element &panel) const override;
   MatchingRecipes getMatchingRecipes() const override;
   std::set<std::string> getKeysFromRecipe(const CRecipe &recipe) override;
+  Element *createEntry(Key key) const override;
 
  private:
   const Client &m_client;
@@ -103,15 +115,19 @@ class LvlReqFilter : public CraftingWindowFilter {
 class CategoryFilter : public ListBasedFilter<std::string> {
  public:
   std::string buttonText() const override { return "Category"s; }
+  std::string toStringID(Key key) const override { return key; }
   void populateConfigurationPanel(Element &panel) const override;
   MatchingRecipes getMatchingRecipes() const override;
   std::set<std::string> getKeysFromRecipe(const CRecipe &recipe) override;
+  Element *createEntry(Key key) const override;
 };
 
 class QualityFilter : public ListBasedFilter<Item::Quality> {
  public:
   std::string buttonText() const override { return "Quality"s; }
+  std::string toStringID(Key key) const override { return toString(key); }
   void populateConfigurationPanel(Element &panel) const override;
   MatchingRecipes getMatchingRecipes() const override;
   std::set<Item::Quality> getKeysFromRecipe(const CRecipe &recipe) override;
+  Element *createEntry(Key key) const override;
 };
