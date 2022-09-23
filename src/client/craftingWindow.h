@@ -37,6 +37,7 @@ class ListBasedFilter : public CraftingWindowFilter {
 
  protected:
   IndexedRecipes m_indexedRecipes;
+  mutable ChoiceList *m_list{nullptr};
 };
 
 class MaterialFilter : public ListBasedFilter<const ClientItem *> {
@@ -48,7 +49,6 @@ class MaterialFilter : public ListBasedFilter<const ClientItem *> {
   MatchingRecipes getMatchingRecipes() const override;
 
  private:
-  mutable ChoiceList *m_list{nullptr};
   const Client &m_client;
 };
 
@@ -61,7 +61,6 @@ class ToolFilter : public ListBasedFilter<std::string> {
   MatchingRecipes getMatchingRecipes() const override;
 
  private:
-  mutable ChoiceList *m_list{nullptr};
   const Client &m_client;
 };
 
@@ -84,9 +83,6 @@ class CategoryFilter : public ListBasedFilter<std::string> {
   void indexRecipe(const CRecipe &recipe) override;
   void populateConfigurationPanel(Element &panel) const override;
   MatchingRecipes getMatchingRecipes() const override;
-
- private:
-  mutable ChoiceList *m_list{nullptr};
 };
 
 class QualityFilter : public ListBasedFilter<Item::Quality> {
@@ -95,7 +91,4 @@ class QualityFilter : public ListBasedFilter<Item::Quality> {
   void indexRecipe(const CRecipe &recipe) override;
   void populateConfigurationPanel(Element &panel) const override;
   MatchingRecipes getMatchingRecipes() const override;
-
- private:
-  mutable ChoiceList *m_list{nullptr};
 };
