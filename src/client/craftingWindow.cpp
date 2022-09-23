@@ -334,9 +334,6 @@ void MaterialFilter::populateConfigurationPanel(Element &panel) const {
   auto matsByName = std::set<const ClientItem *, ClientItem::CompareName>{};
   for (const auto &pair : m_indexedRecipes) matsByName.insert(pair.first);
 
-  m_list =
-      new ChoiceList(panel.rectToFill(), Client::ICON_SIZE, *panel.client());
-  panel.addChild(m_list);
   for (const auto *material : matsByName) {
     auto *entry = new Element({});
     m_list->addChild(entry);
@@ -372,9 +369,6 @@ void ToolFilter::populateConfigurationPanel(Element &panel) const {
     toolsByName[toolName] = toolTag;
   }
 
-  m_list =
-      new ChoiceList(panel.rectToFill(), Client::ICON_SIZE, *panel.client());
-  panel.addChild(m_list);
   for (const auto &pair : toolsByName) {
     auto *entry = new Element({});
     m_list->addChild(entry);
@@ -455,9 +449,6 @@ void CategoryFilter::populateConfigurationPanel(Element &panel) const {
   auto uniqueCategories = std::set<std::string>{};
   for (const auto &pair : m_indexedRecipes) uniqueCategories.insert(pair.first);
 
-  m_list =
-      new ChoiceList(panel.rectToFill(), Element::TEXT_HEIGHT, *panel.client());
-  panel.addChild(m_list);
   for (const auto category : uniqueCategories) {
     auto *entry = new Label({}, " "s + category);
     m_list->addChild(entry);
@@ -489,9 +480,6 @@ void QualityFilter::populateConfigurationPanel(Element &panel) const {
   auto uniqueQualities = std::set<Item::Quality>{};
   for (const auto &pair : m_indexedRecipes) uniqueQualities.insert(pair.first);
 
-  m_list =
-      new ChoiceList(panel.rectToFill(), Element::TEXT_HEIGHT, *panel.client());
-  panel.addChild(m_list);
   for (const auto quality : uniqueQualities) {
     auto *entry = new Label({}, " "s + ClientItem::qualityName(quality));
     entry->setColor(ClientItem::qualityColor(quality));

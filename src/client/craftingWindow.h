@@ -42,7 +42,11 @@ class ListBasedFilter : public CraftingWindowFilter {
       m_indexedRecipes.insert(std::make_pair(key, &recipe));
   }
 
-  void populateConfigurationPanel(Element &panel) const override {}
+  void populateConfigurationPanel(Element &panel) const override {
+    m_list =
+        new ChoiceList(panel.rectToFill(), Client::ICON_SIZE, *panel.client());
+    panel.addChild(m_list);
+  }
 
  protected:
   using Keys = std::set<K>;
