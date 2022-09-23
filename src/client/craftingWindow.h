@@ -20,10 +20,14 @@ class CraftingWindowFilter {
 
   // Interpret configuration and apply it to the data model
   virtual MatchingRecipes getMatchingRecipes() const = 0;
+};
 
-  template <typename T>
-  static MatchingRecipes recipesMatching(
-      const std::multimap<T, const CRecipe *> &indexedRecipes, T key) {
+template <typename Key>
+class ListBasedFilter : public CraftingWindowFilter {
+ public:
+  using IndexedRecipes = std::multimap<Key, const CRecipe *>;
+  static MatchingRecipes recipesMatching(const IndexedRecipes &indexedRecipes,
+                                         Key key) {
     auto recipes = MatchingRecipes{};
     auto startIt = indexedRecipes.lower_bound(key);
     auto endIt = indexedRecipes.upper_bound(key);
@@ -32,7 +36,7 @@ class CraftingWindowFilter {
   }
 };
 
-class MaterialFilter : public CraftingWindowFilter {
+class MaterialFilter : public ListBasedFilter<const ClientItem *> {
  public:
   MaterialFilter(const Client &client);
   std::string buttonText() const override { return "Material"s; }
@@ -47,7 +51,7 @@ class MaterialFilter : public CraftingWindowFilter {
   const Client &m_client;
 };
 
-class ToolFilter : public CraftingWindowFilter {
+class ToolFilter : public ListBasedFilter<std::string> {
  public:
   ToolFilter(const Client &client);
   std::string buttonText() const override { return "Tool req."s; }
@@ -75,7 +79,7 @@ class LvlReqFilter : public CraftingWindowFilter {
   mutable TextBox *m_minLevel{nullptr}, *m_maxLevel{nullptr};
 };
 
-class CategoryFilter : public CraftingWindowFilter {
+class CategoryFilter : public ListBasedFilter<std::string> {
  public:
   std::string buttonText() const override { return "Category"s; }
   void indexRecipe(const CRecipe &recipe) override;
@@ -88,7 +92,7 @@ class CategoryFilter : public CraftingWindowFilter {
   mutable ChoiceList *m_list{nullptr};
 };
 
-class QualityFilter : public CraftingWindowFilter {
+class QualityFilter : public ListBasedFilter<Item::Quality> {
  public:
   std::string buttonText() const override { return "Quality"s; }
   void indexRecipe(const CRecipe &recipe) override;
