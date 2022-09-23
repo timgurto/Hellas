@@ -362,20 +362,14 @@ CraftingWindowFilter::MatchingRecipes ToolFilter::getMatchingRecipes() const {
 void ToolFilter::populateConfigurationPanel(Element &panel) const {
   ListBasedFilter::populateConfigurationPanel(panel);
 
-  auto toolsByName = std::map<std::string, std::string>{};
-  for (const auto &pair : m_indexedRecipes) {
-    const auto toolTag = pair.first;
-    const auto toolName = m_client.gameData.tagNames[toolTag];
-    toolsByName[toolName] = toolTag;
-  }
-
-  for (const auto &pair : toolsByName) {
+  for (const auto toolTag : uniqueIndexedKeys()) {
     auto *entry = new Element({});
     m_list->addChild(entry);
-    entry->id(pair.second);
-    entry->addChild(new Picture(0, 0, m_client.images.toolIcons[pair.second]));
+    entry->id(toolTag);
+    const auto toolName = m_client.gameData.tagNames[toolTag];
+    entry->addChild(new Picture(0, 0, m_client.images.toolIcons[toolTag]));
     entry->addChild(new Label(
-        {Client::ICON_SIZE + 2, 0, entry->width(), entry->height()}, pair.first,
+        {Client::ICON_SIZE + 2, 0, entry->width(), entry->height()}, toolName,
         Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
   }
   m_list->verifyBoxes();
@@ -446,10 +440,7 @@ CraftingWindowFilter::MatchingRecipes CategoryFilter::getMatchingRecipes()
 void CategoryFilter::populateConfigurationPanel(Element &panel) const {
   ListBasedFilter::populateConfigurationPanel(panel);
 
-  auto uniqueCategories = std::set<std::string>{};
-  for (const auto &pair : m_indexedRecipes) uniqueCategories.insert(pair.first);
-
-  for (const auto category : uniqueCategories) {
+  for (const auto category : uniqueIndexedKeys()) {
     auto *entry = new Label({}, " "s + category);
     m_list->addChild(entry);
     entry->id(category);
@@ -477,10 +468,7 @@ CraftingWindowFilter::MatchingRecipes QualityFilter::getMatchingRecipes()
 void QualityFilter::populateConfigurationPanel(Element &panel) const {
   ListBasedFilter::populateConfigurationPanel(panel);
 
-  auto uniqueQualities = std::set<Item::Quality>{};
-  for (const auto &pair : m_indexedRecipes) uniqueQualities.insert(pair.first);
-
-  for (const auto quality : uniqueQualities) {
+  for (const auto quality : uniqueIndexedKeys()) {
     auto *entry = new Label({}, " "s + ClientItem::qualityName(quality));
     entry->setColor(ClientItem::qualityColor(quality));
     m_list->addChild(entry);

@@ -52,11 +52,18 @@ class ListBasedFilter : public CraftingWindowFilter {
   using Keys = std::set<K>;
   virtual Keys getKeysFromRecipe(const CRecipe &recipe) = 0;
 
+  Keys uniqueIndexedKeys() const {
+    Keys uniqueKeys;
+    for (const auto &pair : m_indexedRecipes) uniqueKeys.insert(pair.first);
+    return uniqueKeys;
+  }
+
   IndexedRecipes m_indexedRecipes;
   mutable ChoiceList *m_list{nullptr};
 };
 
 class MaterialFilter : public ListBasedFilter<const ClientItem *> {
+  // TODO use a wrapper class instead, with built-in operator<
  public:
   MaterialFilter(const Client &client);
   std::string buttonText() const override { return "Material"s; }
