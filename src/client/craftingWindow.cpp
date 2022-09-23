@@ -316,14 +316,6 @@ void Client::createCraftingWindowFilters() {
 
 MaterialFilter::MaterialFilter(const Client &client) : m_client(client) {}
 
-void MaterialFilter::indexRecipe(const CRecipe &recipe) {
-  for (const auto &matPair : recipe.materials()) {
-    const ClientItem *material =
-        dynamic_cast<const ClientItem *>(matPair.first);
-    m_indexedRecipes.insert(std::make_pair(material, &recipe));
-  }
-}
-
 CraftingWindowFilter::MatchingRecipes MaterialFilter::getMatchingRecipes()
     const {
   const auto selectedMatID = m_list->getSelected();
@@ -355,13 +347,12 @@ void MaterialFilter::populateConfigurationPanel(Element &panel) const {
   m_list->verifyBoxes();
 }
 
-ToolFilter::ToolFilter(const Client &client) : m_client(client) {}
-
-void ToolFilter::indexRecipe(const CRecipe &recipe) {
-  for (const auto tool : recipe.tools()) {
-    m_indexedRecipes.insert(std::make_pair(tool, &recipe));
-  }
+std::set<const ClientItem *> MaterialFilter::getKeysFromRecipe(
+    const CRecipe &recipe) {
+  return recipe.materials().itemsOnly<ClientItem>();
 }
+
+ToolFilter::ToolFilter(const Client &client) : m_client(client) {}
 
 CraftingWindowFilter::MatchingRecipes ToolFilter::getMatchingRecipes() const {
   const auto selectedTool = m_list->getSelected();
@@ -391,6 +382,10 @@ void ToolFilter::populateConfigurationPanel(Element &panel) const {
         Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
   }
   m_list->verifyBoxes();
+}
+
+std::set<std::string> ToolFilter::getKeysFromRecipe(const CRecipe &recipe) {
+  return recipe.tools();
 }
 
 void LvlReqFilter::indexRecipe(const CRecipe &recipe) {
@@ -443,13 +438,6 @@ void LvlReqFilter::populateConfigurationPanel(Element &panel) const {
       panel.client());
 }
 
-void CategoryFilter::indexRecipe(const CRecipe &recipe) {
-  if (recipe.category().empty())
-    m_indexedRecipes.insert(std::make_pair("(Uncategorised)"s, &recipe));
-  else
-    m_indexedRecipes.insert(std::make_pair(recipe.category(), &recipe));
-}
-
 CraftingWindowFilter::MatchingRecipes CategoryFilter::getMatchingRecipes()
     const {
   const auto selectedCategory = m_list->getSelected();
@@ -473,9 +461,11 @@ void CategoryFilter::populateConfigurationPanel(Element &panel) const {
   m_list->verifyBoxes();
 }
 
-void QualityFilter::indexRecipe(const CRecipe &recipe) {
-  const auto &product = *recipe.product();
-  m_indexedRecipes.insert(std::make_pair(product.quality(), &recipe));
+std::set<std::string> CategoryFilter::getKeysFromRecipe(const CRecipe &recipe) {
+  if (recipe.category().empty())
+    return {"(Uncategorised)"s};
+  else
+    return {recipe.category()};
 }
 
 CraftingWindowFilter::MatchingRecipes QualityFilter::getMatchingRecipes()
@@ -502,4 +492,9 @@ void QualityFilter::populateConfigurationPanel(Element &panel) const {
     entry->id(toString(quality));
   }
   m_list->verifyBoxes();
+}
+
+std::set<Item::Quality> QualityFilter::getKeysFromRecipe(
+    const CRecipe &recipe) {
+  return {recipe.product()->quality()};
 }

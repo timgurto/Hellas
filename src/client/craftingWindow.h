@@ -35,7 +35,14 @@ class ListBasedFilter : public CraftingWindowFilter {
     return recipes;
   }
 
+  void indexRecipe(const CRecipe &recipe) {
+    for (const auto key : getKeysFromRecipe(recipe))
+      m_indexedRecipes.insert(std::make_pair(key, &recipe));
+  }
+
  protected:
+  virtual std::set<Key> getKeysFromRecipe(const CRecipe &recipe) = 0;
+
   IndexedRecipes m_indexedRecipes;
   mutable ChoiceList *m_list{nullptr};
 };
@@ -44,9 +51,10 @@ class MaterialFilter : public ListBasedFilter<const ClientItem *> {
  public:
   MaterialFilter(const Client &client);
   std::string buttonText() const override { return "Material"s; }
-  void indexRecipe(const CRecipe &recipe) override;
   void populateConfigurationPanel(Element &panel) const override;
   MatchingRecipes getMatchingRecipes() const override;
+  std::set<const ClientItem *> getKeysFromRecipe(
+      const CRecipe &recipe) override;
 
  private:
   const Client &m_client;
@@ -56,9 +64,9 @@ class ToolFilter : public ListBasedFilter<std::string> {
  public:
   ToolFilter(const Client &client);
   std::string buttonText() const override { return "Tool req."s; }
-  void indexRecipe(const CRecipe &recipe) override;
   void populateConfigurationPanel(Element &panel) const override;
   MatchingRecipes getMatchingRecipes() const override;
+  std::set<std::string> getKeysFromRecipe(const CRecipe &recipe) override;
 
  private:
   const Client &m_client;
@@ -80,15 +88,15 @@ class LvlReqFilter : public CraftingWindowFilter {
 class CategoryFilter : public ListBasedFilter<std::string> {
  public:
   std::string buttonText() const override { return "Category"s; }
-  void indexRecipe(const CRecipe &recipe) override;
   void populateConfigurationPanel(Element &panel) const override;
   MatchingRecipes getMatchingRecipes() const override;
+  std::set<std::string> getKeysFromRecipe(const CRecipe &recipe) override;
 };
 
 class QualityFilter : public ListBasedFilter<Item::Quality> {
  public:
   std::string buttonText() const override { return "Quality"s; }
-  void indexRecipe(const CRecipe &recipe) override;
   void populateConfigurationPanel(Element &panel) const override;
   MatchingRecipes getMatchingRecipes() const override;
+  std::set<Item::Quality> getKeysFromRecipe(const CRecipe &recipe) override;
 };

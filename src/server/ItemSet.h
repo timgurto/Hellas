@@ -40,6 +40,16 @@ class ItemSet {
   void remove(const ItemSet &rhs);
   bool isEmpty() const { return _set.empty(); }
 
+  template <typename T>
+  std::set<const T *> itemsOnly() const {
+    auto items = std::set<const T *>{};
+    for (auto pair : _set) {
+      const auto *item = dynamic_cast<const T *>(pair.first);
+      items.insert(item);
+    }
+    return items;
+  }
+
   void checkTotalQty() const;
 
   // Wrappers for inner
