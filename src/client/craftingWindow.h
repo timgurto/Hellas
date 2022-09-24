@@ -87,8 +87,7 @@ class MaterialFilter : public ListBasedFilter<ClientItemAlphabetical> {
   std::string toStringID(Key key) const override { return key->id(); }
   px_t itemHeight() const override { return 16; }
   MatchingRecipes getMatchingRecipes() const override;
-  std::set<ClientItemAlphabetical> getKeysFromRecipe(
-      const CRecipe &recipe) override;
+  Keys getKeysFromRecipe(const CRecipe &recipe) override;
   void populateEntry(Element &entry, Key key) const override;
 
   const Client &m_client;
@@ -103,7 +102,7 @@ class ToolFilter : public ListBasedFilter<std::string> {
   px_t itemHeight() const override { return 16; }
   std::string toStringID(Key key) const override { return key; }
   MatchingRecipes getMatchingRecipes() const override;
-  std::set<std::string> getKeysFromRecipe(const CRecipe &recipe) override;
+  Keys getKeysFromRecipe(const CRecipe &recipe) override;
   void populateEntry(Element &entry, Key key) const override;
 
   const Client &m_client;
@@ -129,7 +128,7 @@ class CategoryFilter : public ListBasedFilter<std::string> {
  private:
   std::string toStringID(Key key) const override { return key; }
   MatchingRecipes getMatchingRecipes() const override;
-  std::set<std::string> getKeysFromRecipe(const CRecipe &recipe) override;
+  Keys getKeysFromRecipe(const CRecipe &recipe) override;
   void populateEntry(Element &entry, Key key) const override;
 };
 
@@ -140,6 +139,6 @@ class QualityFilter : public ListBasedFilter<Item::Quality> {
  private:
   std::string toStringID(Key key) const override { return toString(key); }
   MatchingRecipes getMatchingRecipes() const override;
-  std::set<Item::Quality> getKeysFromRecipe(const CRecipe &recipe) override;
+  Keys getKeysFromRecipe(const CRecipe &recipe) override;
   void populateEntry(Element &entry, Key key) const override;
 };
