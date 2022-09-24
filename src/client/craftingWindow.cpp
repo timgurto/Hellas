@@ -314,6 +314,8 @@ void Client::createCraftingWindowFilters() {
   _craftingWindowFilters.push_back(new QualityFilter);
 }
 
+// MaterialFilter
+
 MaterialFilter::MaterialFilter(const Client &client) : m_client(client) {}
 
 CraftingWindowFilter::MatchingRecipes MaterialFilter::getMatchingRecipes()
@@ -342,6 +344,8 @@ MaterialFilter::Keys MaterialFilter::getKeysFromRecipe(const CRecipe &recipe) {
   return materials;
 }
 
+// ToolFilter
+
 ToolFilter::ToolFilter(const Client &client) : m_client(client) {}
 
 CraftingWindowFilter::MatchingRecipes ToolFilter::getMatchingRecipes() const {
@@ -362,6 +366,8 @@ void ToolFilter::populateEntry(Element &entry, Key key) const {
 ToolFilter::Keys ToolFilter::getKeysFromRecipe(const CRecipe &recipe) {
   return recipe.tools();
 }
+
+// LvlReqFilter
 
 void LvlReqFilter::indexRecipe(const CRecipe &recipe) {
   const auto &product = *recipe.product();
@@ -413,6 +419,8 @@ void LvlReqFilter::populateConfigurationPanel(Element &panel) const {
       panel.client());
 }
 
+// CategoryFilter
+
 CraftingWindowFilter::MatchingRecipes CategoryFilter::getMatchingRecipes()
     const {
   const auto selectedCategory = m_list->getSelected();
@@ -431,6 +439,8 @@ CategoryFilter::Keys CategoryFilter::getKeysFromRecipe(const CRecipe &recipe) {
   else
     return {recipe.category()};
 }
+
+// QualityFilter
 
 CraftingWindowFilter::MatchingRecipes QualityFilter::getMatchingRecipes()
     const {
