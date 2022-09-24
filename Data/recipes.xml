@@ -245,6 +245,7 @@
         id="leatherLamellar" time="4000" category="Equipment" >
         <material id="leatherScale" quantity="35" />
         <material id="linenThread" />
+        <tool class="sewing" />
         <unlockedBy recipe="leatherScale" />
     </recipe>
     <recipe
