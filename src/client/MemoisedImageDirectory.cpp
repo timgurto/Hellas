@@ -33,6 +33,11 @@ const Texture &MemoisedImageDirectory::operator[](const std::string key) {
   return defaultTexture;
 }
 
+bool MemoisedImageDirectory::doesTextureExistInDirectory(
+    const Texture &texture) {
+  return &texture != &defaultTexture;
+}
+
 void MemoisedImageDirectory::createDefaultTexture() {
   defaultTexture = {16, 16};
 

@@ -310,6 +310,7 @@ void Client::createCraftingWindowFilters() {
 
   // Filters about the product
   _craftingWindowFilters.push_back(new CategoryFilter);
+  _craftingWindowFilters.push_back(new ProductTagFilter(*this));
   _craftingWindowFilters.push_back(new LvlReqFilter);
   _craftingWindowFilters.push_back(new QualityFilter);
   _craftingWindowFilters.push_back(new GearSlotFilter);
@@ -490,4 +491,33 @@ GearSlotFilter::Keys GearSlotFilter::getKeysFromRecipe(
     return {};
   else
     return {gearSlot};
+}
+
+// Product-tag filter
+
+ProductTagFilter::ProductTagFilter(const Client &client) : m_client(client) {}
+
+CraftingWindowFilter::MatchingRecipes ProductTagFilter::getMatchingRecipes()
+    const {
+  const auto selectedTag = m_list->getSelected();
+  if (selectedTag.empty()) return {};
+
+  return recipesMatching(m_indexedRecipes, selectedTag);
+}
+
+void ProductTagFilter::populateEntry(Element &entry, Key key) const {
+  const auto tagName = m_client.gameData.tagNames[key];
+  const auto &icon = m_client.images.toolIcons[key];
+  if (MemoisedImageDirectory::doesTextureExistInDirectory(icon))
+    entry.addChild(new Picture(0, 0, icon));
+  entry.addChild(
+      new Label({Client::ICON_SIZE + 2, 0, entry.width(), entry.height()},
+                tagName, Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
+}
+
+ProductTagFilter::Keys ProductTagFilter::getKeysFromRecipe(
+    const CRecipe &recipe) const {
+  auto keys = Keys{};
+  for (const auto &pair : recipe.product()->tags()) keys.insert(pair.first);
+  return keys;
 }

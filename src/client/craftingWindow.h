@@ -153,3 +153,18 @@ class GearSlotFilter : public ListBasedFilter<Item::GearSlot> {
   Keys getKeysFromRecipe(const CRecipe &recipe) const override;
   void populateEntry(Element &entry, Key key) const override;
 };
+
+class ProductTagFilter : public ListBasedFilter<std::string> {
+ public:
+  ProductTagFilter(const Client &client);
+  std::string buttonText() const override { return "Item tag"s; }
+
+ private:
+  px_t itemHeight() const override { return 16; }
+  std::string toStringID(Key key) const override { return key; }
+  MatchingRecipes getMatchingRecipes() const override;
+  Keys getKeysFromRecipe(const CRecipe &recipe) const override;
+  void populateEntry(Element &entry, Key key) const override;
+
+  const Client &m_client;
+};

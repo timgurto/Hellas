@@ -14,6 +14,7 @@ class MemoisedImageDirectory {
   void initialise(const std::string &directory);
 
   const Texture &operator[](const std::string key);
+  static bool doesTextureExistInDirectory(const Texture &texture);
 
  private:
   using container = std::unordered_map<std::string, Texture>;
