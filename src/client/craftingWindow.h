@@ -59,6 +59,11 @@ class ListBasedFilter : public CraftingWindowFilter {
 
  protected:
   using Keys = std::set<K>;
+
+  IndexedRecipes m_indexedRecipes;
+  mutable ChoiceList *m_list{nullptr};
+
+ private:
   virtual Keys getKeysFromRecipe(const CRecipe &recipe) = 0;
 
   Keys uniqueIndexedKeys() const {
@@ -71,15 +76,14 @@ class ListBasedFilter : public CraftingWindowFilter {
   virtual std::string toStringID(Key key) const = 0;
 
   virtual void createEntry(Element &entry, Key key) const = 0;
-
-  IndexedRecipes m_indexedRecipes;
-  mutable ChoiceList *m_list{nullptr};
 };
 
 class MaterialFilter : public ListBasedFilter<ClientItemAlphabetical> {
  public:
   MaterialFilter(const Client &client);
   std::string buttonText() const override { return "Material"s; }
+
+ private:
   std::string toStringID(Key key) const override { return key->id(); }
   px_t itemHeight() const override { return 16; }
   MatchingRecipes getMatchingRecipes() const override;
@@ -87,7 +91,6 @@ class MaterialFilter : public ListBasedFilter<ClientItemAlphabetical> {
       const CRecipe &recipe) override;
   void createEntry(Element &entry, Key key) const override;
 
- private:
   const Client &m_client;
 };
 
@@ -95,13 +98,14 @@ class ToolFilter : public ListBasedFilter<std::string> {
  public:
   ToolFilter(const Client &client);
   std::string buttonText() const override { return "Tool req."s; }
+
+ private:
   px_t itemHeight() const override { return 16; }
   std::string toStringID(Key key) const override { return key; }
   MatchingRecipes getMatchingRecipes() const override;
   std::set<std::string> getKeysFromRecipe(const CRecipe &recipe) override;
   void createEntry(Element &entry, Key key) const override;
 
- private:
   const Client &m_client;
 };
 
@@ -121,6 +125,8 @@ class LvlReqFilter : public CraftingWindowFilter {
 class CategoryFilter : public ListBasedFilter<std::string> {
  public:
   std::string buttonText() const override { return "Category"s; }
+
+ private:
   std::string toStringID(Key key) const override { return key; }
   MatchingRecipes getMatchingRecipes() const override;
   std::set<std::string> getKeysFromRecipe(const CRecipe &recipe) override;
@@ -130,6 +136,8 @@ class CategoryFilter : public ListBasedFilter<std::string> {
 class QualityFilter : public ListBasedFilter<Item::Quality> {
  public:
   std::string buttonText() const override { return "Quality"s; }
+
+ private:
   std::string toStringID(Key key) const override { return toString(key); }
   MatchingRecipes getMatchingRecipes() const override;
   std::set<Item::Quality> getKeysFromRecipe(const CRecipe &recipe) override;
