@@ -591,7 +591,7 @@
                 <stats courage="10" />
                 <offset x="-5" y="-2" />
             </item>
-                <item id="tambourineSilver" name="Inlaid Tambourine" ilvl="20" class="tambourine" gearSlot="offhand" icon="tambourine" quality="2" bind="equip" >
+                <item id="tambourineSilver" name="Inlaid Tambourine" ilvl="20" class="tambourine" gearSlot="offhand" iconFile="tambourine" quality="2" bind="equip" >
                     <stats courage="14" />
                     <offset x="-5" y="-2" />
                 </item>
