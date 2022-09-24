@@ -328,7 +328,7 @@ CraftingWindowFilter::MatchingRecipes MaterialFilter::getMatchingRecipes()
   return recipesMatching(m_indexedRecipes, selectedMat);
 }
 
-void MaterialFilter::createEntry(Element &entry, Key key) const {
+void MaterialFilter::populateEntry(Element &entry, Key key) const {
   entry.addChild(new Picture(0, 0, key->icon()));
   entry.addChild(new Label(
       {Client::ICON_SIZE + 2, 0, entry.width(), entry.height()}, key->name(),
@@ -351,7 +351,7 @@ CraftingWindowFilter::MatchingRecipes ToolFilter::getMatchingRecipes() const {
   return recipesMatching(m_indexedRecipes, selectedTool);
 }
 
-void ToolFilter::createEntry(Element &entry, Key key) const {
+void ToolFilter::populateEntry(Element &entry, Key key) const {
   const auto toolName = m_client.gameData.tagNames[key];
   entry.addChild(new Picture(0, 0, m_client.images.toolIcons[key]));
   entry.addChild(
@@ -421,7 +421,7 @@ CraftingWindowFilter::MatchingRecipes CategoryFilter::getMatchingRecipes()
   return recipesMatching(m_indexedRecipes, selectedCategory);
 }
 
-void CategoryFilter::createEntry(Element &entry, Key key) const {
+void CategoryFilter::populateEntry(Element &entry, Key key) const {
   entry.addChild(new Label(entry.rectToFill(), " "s + key));
 }
 
@@ -442,7 +442,7 @@ CraftingWindowFilter::MatchingRecipes QualityFilter::getMatchingRecipes()
   return recipesMatching(m_indexedRecipes, selectedQuality);
 }
 
-void QualityFilter::createEntry(Element &entry, Key key) const {
+void QualityFilter::populateEntry(Element &entry, Key key) const {
   auto *label =
       new Label(entry.rectToFill(), " "s + ClientItem::qualityName(key));
   label->setColor(ClientItem::qualityColor(key));

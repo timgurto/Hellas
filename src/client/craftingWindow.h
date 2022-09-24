@@ -52,7 +52,7 @@ class ListBasedFilter : public CraftingWindowFilter {
       auto *entry = new Element;
       m_list->addChild(entry);
       entry->id(toStringID(category));
-      createEntry(*entry, category);
+      populateEntry(*entry, category);
     }
     m_list->verifyBoxes();
   }
@@ -75,7 +75,7 @@ class ListBasedFilter : public CraftingWindowFilter {
   virtual px_t itemHeight() const { return Element::TEXT_HEIGHT; }
   virtual std::string toStringID(Key key) const = 0;
 
-  virtual void createEntry(Element &entry, Key key) const = 0;
+  virtual void populateEntry(Element &entry, Key key) const = 0;
 };
 
 class MaterialFilter : public ListBasedFilter<ClientItemAlphabetical> {
@@ -89,7 +89,7 @@ class MaterialFilter : public ListBasedFilter<ClientItemAlphabetical> {
   MatchingRecipes getMatchingRecipes() const override;
   std::set<ClientItemAlphabetical> getKeysFromRecipe(
       const CRecipe &recipe) override;
-  void createEntry(Element &entry, Key key) const override;
+  void populateEntry(Element &entry, Key key) const override;
 
   const Client &m_client;
 };
@@ -104,7 +104,7 @@ class ToolFilter : public ListBasedFilter<std::string> {
   std::string toStringID(Key key) const override { return key; }
   MatchingRecipes getMatchingRecipes() const override;
   std::set<std::string> getKeysFromRecipe(const CRecipe &recipe) override;
-  void createEntry(Element &entry, Key key) const override;
+  void populateEntry(Element &entry, Key key) const override;
 
   const Client &m_client;
 };
@@ -130,7 +130,7 @@ class CategoryFilter : public ListBasedFilter<std::string> {
   std::string toStringID(Key key) const override { return key; }
   MatchingRecipes getMatchingRecipes() const override;
   std::set<std::string> getKeysFromRecipe(const CRecipe &recipe) override;
-  void createEntry(Element &entry, Key key) const override;
+  void populateEntry(Element &entry, Key key) const override;
 };
 
 class QualityFilter : public ListBasedFilter<Item::Quality> {
@@ -141,5 +141,5 @@ class QualityFilter : public ListBasedFilter<Item::Quality> {
   std::string toStringID(Key key) const override { return toString(key); }
   MatchingRecipes getMatchingRecipes() const override;
   std::set<Item::Quality> getKeysFromRecipe(const CRecipe &recipe) override;
-  void createEntry(Element &entry, Key key) const override;
+  void populateEntry(Element &entry, Key key) const override;
 };
