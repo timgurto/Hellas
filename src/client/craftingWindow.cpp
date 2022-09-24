@@ -337,7 +337,8 @@ void MaterialFilter::populateEntry(Element &entry, Key key) const {
       Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
 }
 
-MaterialFilter::Keys MaterialFilter::getKeysFromRecipe(const CRecipe &recipe) {
+MaterialFilter::Keys MaterialFilter::getKeysFromRecipe(
+    const CRecipe &recipe) const {
   auto materials = Keys{};
   for (const auto &pair : recipe.materials())
     materials.insert(dynamic_cast<const ClientItem *>(pair.first));
@@ -363,7 +364,7 @@ void ToolFilter::populateEntry(Element &entry, Key key) const {
                 toolName, Element::LEFT_JUSTIFIED, Element::CENTER_JUSTIFIED));
 }
 
-ToolFilter::Keys ToolFilter::getKeysFromRecipe(const CRecipe &recipe) {
+ToolFilter::Keys ToolFilter::getKeysFromRecipe(const CRecipe &recipe) const {
   return recipe.tools();
 }
 
@@ -433,7 +434,8 @@ void CategoryFilter::populateEntry(Element &entry, Key key) const {
   entry.addChild(new Label(entry.rectToFill(), " "s + key));
 }
 
-CategoryFilter::Keys CategoryFilter::getKeysFromRecipe(const CRecipe &recipe) {
+CategoryFilter::Keys CategoryFilter::getKeysFromRecipe(
+    const CRecipe &recipe) const {
   if (recipe.category().empty())
     return {"(Uncategorised)"s};
   else
@@ -459,6 +461,7 @@ void QualityFilter::populateEntry(Element &entry, Key key) const {
   entry.addChild(label);
 }
 
-QualityFilter::Keys QualityFilter::getKeysFromRecipe(const CRecipe &recipe) {
+QualityFilter::Keys QualityFilter::getKeysFromRecipe(
+    const CRecipe &recipe) const {
   return {recipe.product()->quality()};
 }

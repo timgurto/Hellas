@@ -64,7 +64,7 @@ class ListBasedFilter : public CraftingWindowFilter {
   mutable ChoiceList *m_list{nullptr};
 
  private:
-  virtual Keys getKeysFromRecipe(const CRecipe &recipe) = 0;
+  virtual Keys getKeysFromRecipe(const CRecipe &recipe) const = 0;
 
   Keys uniqueIndexedKeys() const {
     Keys uniqueKeys;
@@ -87,7 +87,7 @@ class MaterialFilter : public ListBasedFilter<ClientItemAlphabetical> {
   std::string toStringID(Key key) const override { return key->id(); }
   px_t itemHeight() const override { return 16; }
   MatchingRecipes getMatchingRecipes() const override;
-  Keys getKeysFromRecipe(const CRecipe &recipe) override;
+  Keys getKeysFromRecipe(const CRecipe &recipe) const override;
   void populateEntry(Element &entry, Key key) const override;
 
   const Client &m_client;
@@ -102,7 +102,7 @@ class ToolFilter : public ListBasedFilter<std::string> {
   px_t itemHeight() const override { return 16; }
   std::string toStringID(Key key) const override { return key; }
   MatchingRecipes getMatchingRecipes() const override;
-  Keys getKeysFromRecipe(const CRecipe &recipe) override;
+  Keys getKeysFromRecipe(const CRecipe &recipe) const override;
   void populateEntry(Element &entry, Key key) const override;
 
   const Client &m_client;
@@ -128,7 +128,7 @@ class CategoryFilter : public ListBasedFilter<std::string> {
  private:
   std::string toStringID(Key key) const override { return key; }
   MatchingRecipes getMatchingRecipes() const override;
-  Keys getKeysFromRecipe(const CRecipe &recipe) override;
+  Keys getKeysFromRecipe(const CRecipe &recipe) const override;
   void populateEntry(Element &entry, Key key) const override;
 };
 
@@ -139,6 +139,6 @@ class QualityFilter : public ListBasedFilter<Item::Quality> {
  private:
   std::string toStringID(Key key) const override { return toString(key); }
   MatchingRecipes getMatchingRecipes() const override;
-  Keys getKeysFromRecipe(const CRecipe &recipe) override;
+  Keys getKeysFromRecipe(const CRecipe &recipe) const override;
   void populateEntry(Element &entry, Key key) const override;
 };
