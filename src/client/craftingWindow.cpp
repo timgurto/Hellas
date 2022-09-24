@@ -312,6 +312,7 @@ void Client::createCraftingWindowFilters() {
   _craftingWindowFilters.push_back(new CategoryFilter);
   _craftingWindowFilters.push_back(new LvlReqFilter);
   _craftingWindowFilters.push_back(new QualityFilter);
+  _craftingWindowFilters.push_back(new GearSlotFilter);
 }
 
 // MaterialFilter
@@ -464,4 +465,29 @@ void QualityFilter::populateEntry(Element &entry, Key key) const {
 QualityFilter::Keys QualityFilter::getKeysFromRecipe(
     const CRecipe &recipe) const {
   return {recipe.product()->quality()};
+}
+
+// Gear-slot filter
+
+CraftingWindowFilter::MatchingRecipes GearSlotFilter::getMatchingRecipes()
+    const {
+  const auto slotString = m_list->getSelected();
+  if (slotString.empty()) return {};
+  const auto selectedSlot = static_cast<Item::GearSlot>(std::stoi(slotString));
+
+  return recipesMatching(m_indexedRecipes, selectedSlot);
+}
+
+void GearSlotFilter::populateEntry(Element &entry, Key key) const {
+  entry.addChild(
+      new Label(entry.rectToFill(), " "s + Client::GEAR_SLOT_NAMES[key]));
+}
+
+GearSlotFilter::Keys GearSlotFilter::getKeysFromRecipe(
+    const CRecipe &recipe) const {
+  auto gearSlot = recipe.product()->gearSlot();
+  if (gearSlot == Item::NOT_GEAR)
+    return {};
+  else
+    return {gearSlot};
 }
