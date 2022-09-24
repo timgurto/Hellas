@@ -499,3 +499,32 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Crafting quantity", "[crafting]") {
     }
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "A byproduct doesn't interfere with a recipe getting unlocked",
+                 "[crafting]") {
+  GIVEN(
+      "crafting a cake unlocks the recipe for a chocolate cake (that returns a "
+      "chocolate packet)") {
+    useData(R"(
+      <item id="cake" />
+      <item id="chocolateCake" />
+      <item id="chocolatePacket" />
+      <recipe id="cake" time="1" />
+      <recipe id="chocolatePacket" time="1" />
+      <recipe id="chocolateCake" time="1" >
+          <material id="cake" />
+          <byproduct id="chocolatePacket" />
+          <unlockedBy recipe="cake" />
+      </recipe>
+    )");
+
+    WHEN("the user crafts a cake") {
+      client->sendMessage(CL_CRAFT, makeArgs("cake", 1));
+
+      THEN("he has unlocked the split recipe") {
+        WAIT_UNTIL(user->knownRecipes().count("chocolateCake") > 0);
+      }
+    }
+  }
+}
