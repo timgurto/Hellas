@@ -108,6 +108,19 @@ class ToolFilter : public ListBasedFilter<std::string> {
   const Client &m_client;
 };
 
+class SearchFilter : public CraftingWindowFilter {
+ public:
+  std::string buttonText() const override { return "Search"s; }
+  void indexRecipe(const CRecipe &recipe) override;
+  void populateConfigurationPanel(Element &panel) const override;
+  MatchingRecipes getMatchingRecipes() const override;
+
+ private:
+  using IndexedRecipes = std::map<const CRecipe *, std::string>;
+  IndexedRecipes m_indexedRecipes;
+  mutable TextBox *m_searchBox{nullptr};
+};
+
 class LvlReqFilter : public CraftingWindowFilter {
  public:
   std::string buttonText() const override { return "Level req."s; }

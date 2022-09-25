@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cassert>
 
 #include "Client.h"
@@ -71,7 +72,7 @@ void Client::initializeCraftingWindow() {
           filter->populateConfigurationPanel(*configurationPanel);
         }));
   }
-  y += BUTTON_H + 2;
+  y += BUTTON_H + 4;
   configurationPanel->rect(
       {0, y, filterPane->width(), filterPane->height() - y});
 
@@ -305,6 +306,7 @@ void Client::indexRecipeInAllFilters(const CRecipe &recipe) {
 
 void Client::createCraftingWindowFilters() {
   // Filters about the recipe
+  _craftingWindowFilters.push_back(new SearchFilter());
   _craftingWindowFilters.push_back(new MaterialFilter(*this));
   _craftingWindowFilters.push_back(new ToolFilter(*this));
   _craftingWindowFilters.push_back(_unlockFilter = new UnlockFilter(*this));
@@ -370,6 +372,46 @@ void ToolFilter::populateEntry(Element &entry, Key key) const {
 
 ToolFilter::Keys ToolFilter::getKeysFromRecipe(const CRecipe &recipe) const {
   return recipe.tools();
+}
+
+// Search filter
+
+void SearchFilter::indexRecipe(const CRecipe &recipe) {
+  const auto &product = *dynamic_cast<const ClientItem *>(recipe.product());
+  auto searchableText = product.name() + "_"s + recipe.name();
+  std::transform(searchableText.begin(), searchableText.end(),
+                 searchableText.begin(), ::tolower);
+  m_indexedRecipes[&recipe] = searchableText;
+}
+
+CraftingWindowFilter::MatchingRecipes SearchFilter::getMatchingRecipes() const {
+  auto searchText = m_searchBox->text();
+  if (searchText.empty()) return {};
+  std::transform(searchText.begin(), searchText.end(), searchText.begin(),
+                 ::tolower);
+
+  auto recipes = MatchingRecipes{};
+  for (const auto &pair : m_indexedRecipes) {
+    const auto names = pair.second;
+    const auto recipeMatches = names.find(searchText) != std::string::npos;
+    if (recipeMatches) recipes.insert(pair.first);
+  }
+
+  return recipes;
+}
+
+void SearchFilter::populateConfigurationPanel(Element &panel) const {
+  const auto GAP = 2_px, LABEL_W = 60_px,
+             TEXT_W = panel.width() - LABEL_W - GAP, ROW_H = 13_px;
+  panel.addChild(new Label({GAP, GAP, LABEL_W, ROW_H}, "Search text:"));
+  panel.addChild(m_searchBox = new TextBox(
+                     *panel.client(), {LABEL_W + GAP, GAP, TEXT_W, ROW_H}));
+  m_searchBox->setOnChange(
+      [](void *pClient) {
+        auto &client = *reinterpret_cast<Client *>(pClient);
+        client.populateRecipesList();
+      },
+      panel.client());
 }
 
 // LvlReqFilter
