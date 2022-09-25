@@ -16,6 +16,7 @@ class Unlocks {
 
   enum TriggerType { CRAFT, ACQUIRE, CONSTRUCT, GATHER };
   enum EffectType { RECIPE, CONSTRUCTION };
+  enum UnlockChance { HIGH_CHANCE, MODERATE_CHANCE, SMALL_CHANCE };
 
   struct Trigger {
     TriggerType type;
@@ -33,8 +34,12 @@ class Unlocks {
     bool hasEffect{false};
     Color color;
     std::string message;
-    double chance{0.0};
+    double rawChance{0.0};
+    UnlockChance chance;
   };
+
+  static std::string chanceName(UnlockChance chance);
+  static Color chanceColor(UnlockChance chance);
 
   EffectInfo getEffectInfo(const Trigger &trigger) const;
 

@@ -26,6 +26,32 @@ void Unlocks::add(const Trigger &trigger, const Effect &effect, double chance) {
   _container[trigger][effect] = chance;
 }
 
+std::string Unlocks::chanceName(UnlockChance chance) {
+  switch (chance) {
+    case SMALL_CHANCE:
+      return "Small";
+    case MODERATE_CHANCE:
+      return "Moderate";
+    case HIGH_CHANCE:
+      return "High";
+    default:
+      return ""s;
+  }
+}
+
+Color Unlocks::chanceColor(UnlockChance chance) {
+  switch (chance) {
+    case SMALL_CHANCE:
+      return Color::CHANCE_SMALL;
+    case MODERATE_CHANCE:
+      return Color::CHANCE_MODERATE;
+    case HIGH_CHANCE:
+      return Color::CHANCE_HIGH;
+    default:
+      return Color::WHITE;
+  }
+}
+
 Unlocks::EffectInfo Unlocks::getEffectInfo(const Trigger &trigger) const {
   auto ret = EffectInfo{};
 
@@ -47,19 +73,15 @@ Unlocks::EffectInfo Unlocks::getEffectInfo(const Trigger &trigger) const {
 
   if (!ret.hasEffect) return ret;
 
-  ret.chance = highestChance;
+  ret.rawChance = highestChance;
 
   auto chanceDescription = "";
-  if (ret.chance <= 0.05) {
-    chanceDescription = "small";
-    ret.color = Color::CHANCE_SMALL;
-  } else if (ret.chance <= 0.4) {
-    chanceDescription = "moderate";
-    ret.color = Color::CHANCE_MODERATE;
-  } else {
-    chanceDescription = "high";
-    ret.color = Color::CHANCE_HIGH;
-  }
+  if (ret.rawChance <= 0.05)
+    ret.chance = SMALL_CHANCE;
+  else if (ret.rawChance <= 0.4)
+    ret.chance = MODERATE_CHANCE;
+  else
+    ret.chance = HIGH_CHANCE;
 
   auto actionDescription = ""s;
   switch (trigger.type) {
@@ -77,7 +99,8 @@ Unlocks::EffectInfo Unlocks::getEffectInfo(const Trigger &trigger) const {
       break;
   }
 
-  ret.message = actionDescription + " has a "s + chanceDescription +
+  ret.message = actionDescription + " has a "s + chanceName(ret.chance) +
                 " chance to unlock something.";
+  ret.color = chanceColor(ret.chance);
   return ret;
 }

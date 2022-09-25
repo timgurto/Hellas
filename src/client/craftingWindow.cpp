@@ -307,9 +307,10 @@ void Client::createCraftingWindowFilters() {
   // Filters about the recipe
   _craftingWindowFilters.push_back(new MaterialFilter(*this));
   _craftingWindowFilters.push_back(new ToolFilter(*this));
+  _craftingWindowFilters.push_back(new UnlockFilter(*this));
+  _craftingWindowFilters.push_back(new CategoryFilter);
 
   // Filters about the product
-  _craftingWindowFilters.push_back(new CategoryFilter);
   _craftingWindowFilters.push_back(new ProductTagFilter(*this));
   _craftingWindowFilters.push_back(new LvlReqFilter);
   _craftingWindowFilters.push_back(new QualityFilter);
@@ -520,4 +521,32 @@ ProductTagFilter::Keys ProductTagFilter::getKeysFromRecipe(
   auto keys = Keys{};
   for (const auto &pair : recipe.product()->tags()) keys.insert(pair.first);
   return keys;
+}
+
+// Unlock-chance filter
+
+UnlockFilter::UnlockFilter(const Client &client) : m_client(client) {}
+
+CraftingWindowFilter::MatchingRecipes UnlockFilter::getMatchingRecipes() const {
+  const auto chanceID = m_list->getSelected();
+  if (chanceID.empty()) return {};
+  const auto selectedChance =
+      static_cast<Unlocks::UnlockChance>(std::stoi(chanceID));
+
+  return recipesMatching(m_indexedRecipes, selectedChance);
+}
+
+void UnlockFilter::populateEntry(Element &entry, Key key) const {
+  const auto text = " "s + Unlocks::chanceName(key) + " chance"s;
+  auto *l = new Label(entry.rectToFill(), text);
+  l->setColor(Unlocks::chanceColor(key));
+  entry.addChild(l);
+}
+
+UnlockFilter::Keys UnlockFilter::getKeysFromRecipe(
+    const CRecipe &recipe) const {
+  const auto &unlockInfo =
+      m_client.gameData.unlocks.getEffectInfo({Unlocks::CRAFT, recipe.id()});
+  if (!unlockInfo.hasEffect) return {};
+  return {unlockInfo.chance};
 }

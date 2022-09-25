@@ -168,3 +168,17 @@ class ProductTagFilter : public ListBasedFilter<std::string> {
 
   const Client &m_client;
 };
+
+class UnlockFilter : public ListBasedFilter<Unlocks::UnlockChance> {
+public:
+ UnlockFilter(const Client &client);
+ std::string buttonText() const override { return "Unlocking"s; }
+
+private:
+ std::string toStringID(Key key) const override { return toString(key); }
+ MatchingRecipes getMatchingRecipes() const override;
+ Keys getKeysFromRecipe(const CRecipe &recipe) const override;
+ void populateEntry(Element &entry, Key key) const override;
+
+ const Client &m_client;
+};

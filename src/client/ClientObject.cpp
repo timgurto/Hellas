@@ -1174,7 +1174,7 @@ void ClientObject::createRegularTooltip() const {
       auto gatherChance = pair.second;
       auto unlockInfo =
           _client.gameData.unlocks.getEffectInfo({Unlocks::GATHER, itemID});
-      auto unlockChance = gatherChance * unlockInfo.chance;
+      auto unlockChance = gatherChance * unlockInfo.rawChance;
 
       if (unlockChance > bestUnlockChance) {
         bestUnlockChance = unlockChance;
