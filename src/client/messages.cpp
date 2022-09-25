@@ -111,6 +111,9 @@ void Client::handleBufferedMessages(const std::string &msg) {
         _loaded = true;
         _lastPingReply = _time;
         sendMessage(CL_FINISHED_RECEIVING_LOGIN_INFO);
+
+        if (_loaded) _unlockFilter->onUnlockChancesChanged(_knownRecipes);
+
         break;
 
       case SV_PING_REPLY: {
@@ -965,6 +968,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
           if (it == gameData.recipes.end()) continue;
 
           indexRecipeInAllFilters(*it);
+          if (_loaded) _unlockFilter->onUnlockChancesChanged(_knownRecipes);
 
           if (msgCode == SV_NEW_RECIPES_LEARNED) {
             auto message =
@@ -999,6 +1003,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
           readString(singleMsg, recipe, i == n - 1 ? MSG_END : MSG_DELIM);
           singleMsg >> del;
           _knownConstructions.insert(recipe);
+
+          if (_loaded) _unlockFilter->onUnlockChancesChanged(_knownRecipes);
 
           auto cot = findObjectType(recipe);
           if (!cot) continue;

@@ -248,6 +248,7 @@ class Client : public TextEntryManager {
   void createCraftingWindowFilters();
   std::vector<CraftingWindowFilter *> _craftingWindowFilters;
   const CraftingWindowFilter *_selectedCraftingWindowFilter{nullptr};
+  UnlockFilter *_unlockFilter{nullptr};  // So that we can manually refresh it
   void indexRecipeInAllFilters(const CRecipe &recipe);
   bool _haveMatsFilter, _haveToolsFilter, _tagOr, _matOr;
   // The height of windows' section headings

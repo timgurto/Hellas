@@ -307,7 +307,8 @@ void Client::createCraftingWindowFilters() {
   // Filters about the recipe
   _craftingWindowFilters.push_back(new MaterialFilter(*this));
   _craftingWindowFilters.push_back(new ToolFilter(*this));
-  _craftingWindowFilters.push_back(new UnlockFilter(*this));
+  _craftingWindowFilters.push_back(_unlockFilter = new UnlockFilter(*this));
+
   _craftingWindowFilters.push_back(new CategoryFilter);
 
   // Filters about the product
@@ -526,6 +527,15 @@ ProductTagFilter::Keys ProductTagFilter::getKeysFromRecipe(
 // Unlock-chance filter
 
 UnlockFilter::UnlockFilter(const Client &client) : m_client(client) {}
+
+void UnlockFilter::onUnlockChancesChanged(
+    const std::set<std::string> &knownRecipes) {
+  m_indexedRecipes.clear();
+  for (const auto &recipe : m_client.gameData.recipes) {
+    const auto recipeIsKnown = knownRecipes.count(recipe.id()) > 0;
+    if (recipeIsKnown) indexRecipe(recipe);
+  }
+}
 
 CraftingWindowFilter::MatchingRecipes UnlockFilter::getMatchingRecipes() const {
   const auto chanceID = m_list->getSelected();
