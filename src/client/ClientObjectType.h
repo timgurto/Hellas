@@ -48,7 +48,7 @@ class ClientObjectType : public SpriteType,
                                     // when items needed.
   size_t _containerSlots;
   size_t _merchantSlots;
-  MapRect _collisionRect;
+  MapRect _collisionRect{0, 0, 0, 0};
   bool _collides{false};
   const ParticleProfile *_gatherParticles;
   ItemSet _materials;

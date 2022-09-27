@@ -130,16 +130,18 @@ void Client::draw() const {
 
   // Construction footprint
   if (_constructionFootprint && _constructionFootprintType) {
-    auto footprintRect = _constructionFootprintType->collisionRect() +
-                         toMapPoint(_mouse) - _offset;
-    auto validLocation = true;
+    if (_constructionFootprintType->collides()) {
+      auto footprintRect = _constructionFootprintType->collisionRect() +
+                           toMapPoint(_mouse) - _offset;
+      auto validLocation = true;
 
-    if (distance(playerCollisionRect(), footprintRect) >
-        Client::ACTION_DISTANCE)
-      validLocation = false;
-    auto footprintColor =
-        validLocation ? Color::FOOTPRINT_GOOD : Color::FOOTPRINT_BAD;
-    drawFootprint(footprintRect, footprintColor, 0xaf);
+      if (distance(playerCollisionRect(), footprintRect) >
+          Client::ACTION_DISTANCE)
+        validLocation = false;
+      auto footprintColor =
+          validLocation ? Color::FOOTPRINT_GOOD : Color::FOOTPRINT_BAD;
+      drawFootprint(footprintRect, footprintColor, 0xaf);
+    }
 
     const ScreenRect &drawRect = _constructionFootprintType->drawRect();
     px_t x = toInt(_mouse.x + drawRect.x), y = toInt(_mouse.y + drawRect.y);
