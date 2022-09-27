@@ -11,8 +11,10 @@ std::set<std::string> StatsMod::namesOfIncludedStats() const {
 
   for (auto pair : composites) {
     auto statID = pair.first;
-    auto statName = Stats::compositeDefinitions[statID].name;
-    statNames.insert(statName);
+    auto compositeStat = Stats::compositeDefinitions[statID];
+    statNames.insert(compositeStat.name);
+    const auto subStatNames = compositeStat.stats.namesOfIncludedStats();
+    statNames.insert(subStatNames.begin(), subStatNames.end());
   }
 
   // if (attackTime > 0) statNames.insert("Attack speed");
