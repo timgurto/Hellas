@@ -581,3 +581,20 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Hidden objects") {
     }
   }
 }
+
+TEST_CASE_METHOD(TwoClientsWithData, "Newly built hidden objects are hidden") {
+  GIVEN("a hidden object type") {
+    useData(R"(
+      <objectType id="ward" hidden="1" />
+    )");
+
+    WHEN("Alice gets a new one") {
+      server->addObject("ward", {15, 15}, "Alice");
+
+      THEN("Bob doesn't know about it") {
+        REPEAT_FOR_MS(1000);
+        CHECK(cBob->objects().empty());
+      }
+    }
+  }
+}

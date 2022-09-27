@@ -469,12 +469,12 @@
 </objectType>
 
 <objectType id="flag" name="Flag" healthCategory="log"
-    xDrawOffset="-13" yDrawOffset="-31"
+    xDrawOffset="-13" yDrawOffset="-31" hidden="1"
     damageParticles="wood" sounds="wood"
     deconstructs="flag" allowsCustomName="1" >
     <canBeRepaired cost="linenCloth" />
 </objectType>
-    <item id="flag" name="Flag" hidden="1"
+    <item id="flag" name="Flag"
     sounds="fabric" constructs="flag" stackSize="20" />
         <recipe id="flag"
             time="2000" >

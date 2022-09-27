@@ -762,12 +762,21 @@ NPC &Server::addNPC(const NPCType *type, const MapPoint &location) {
 Entity &Server::addEntity(Entity *newEntity) {
   _entities.insert(newEntity);
   const MapPoint &loc = newEntity->location();
+  auto isNew = _running;  // i.e., not loading
 
   // Alert nearby users
-  if (newEntity->shouldBePropagatedToClients()) {
-    auto isNew = _running;  // i.e., not loading
+  const auto *objType = dynamic_cast<const ObjectType *>(newEntity->type());
+  const auto isHidden = objType && objType->isHidden();
+  const auto shouldAlertNearbyUsers =
+      newEntity->shouldBePropagatedToClients() && !isHidden;
+  if (shouldAlertNearbyUsers) {
     for (const User *userP : findUsersInArea(loc))
       newEntity->sendInfoToClient(*userP, isNew);
+  }
+  // Alert owners
+  for (const auto owner : newEntity->permissions.ownerAsUsernames()) {
+    const auto *onlineOwner = getUserByName(owner);
+    if (onlineOwner) newEntity->sendInfoToClient(*onlineOwner, isNew);
   }
 
   // Add entity to relevant chunk
@@ -778,7 +787,7 @@ Entity &Server::addEntity(Entity *newEntity) {
   _entitiesByX.insert(newEntity);
   _entitiesByY.insert(newEntity);
 
-  return const_cast<Entity &>(*newEntity);
+  return *newEntity;
 }
 
 void Server::giveWarDeclarationDebuffs(const Belligerent declarer) {
