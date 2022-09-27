@@ -159,13 +159,13 @@
 </recipe>
 <recipe id="leatherShieldSilver" time="10000" category="Equipment" >
     <material id="leatherShield" />
-    <material id="silverWire" quantity="3" />
+    <material id="silverLacquer" quantity="3" />
+    <byproduct id="smallPot" quantity="3" />
     <unlockedBy recipe="leatherShield" chance="0.04" />
 </recipe>
 <recipe id="copperShieldSilver" time="10000" category="Equipment" >
     <material id="copperShield" />
-    <material id="silverLacquer" quantity="3" />
-    <byproduct id="smallPot" quantity="3" />
+    <material id="silverWire" quantity="3" />
     <unlockedBy recipe="copperShield" chance="0.04" />
 </recipe>
 
