@@ -319,6 +319,7 @@ void Client::createCraftingWindowFilters() {
   _craftingWindowFilters.push_back(new LvlReqFilter);
   _craftingWindowFilters.push_back(new QualityFilter);
   _craftingWindowFilters.push_back(new GearSlotFilter);
+  _craftingWindowFilters.push_back(new StatsFilter);
 }
 
 // MaterialFilter
@@ -662,4 +663,21 @@ UnlockFilter::Keys UnlockFilter::getKeysFromRecipe(
       m_client.gameData.unlocks.getEffectInfo({Unlocks::CRAFT, recipe.id()});
   if (!unlockInfo.hasEffect) return {};
   return {unlockInfo.chance};
+}
+
+// Stats filter
+
+CraftingWindowFilter::MatchingRecipes StatsFilter::getMatchingRecipes() const {
+  const auto selectedTag = m_list->getSelected();
+  if (selectedTag.empty()) return {};
+
+  return recipesMatching(m_indexedRecipes, selectedTag);
+}
+
+void StatsFilter::populateEntry(Element &entry, Key key) const {
+  entry.addChild(new Label(entry.rectToFill(), " "s + key));
+}
+
+StatsFilter::Keys StatsFilter::getKeysFromRecipe(const CRecipe &recipe) const {
+  return recipe.product()->stats().namesOfIncludedStats();
 }

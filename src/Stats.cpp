@@ -6,6 +6,42 @@
 
 std::map<std::string, CompositeStat> Stats::compositeDefinitions;
 
+std::set<std::string> StatsMod::namesOfIncludedStats() const {
+  auto statNames = std::set<std::string>{};
+
+  for (auto pair : composites) {
+    auto statID = pair.first;
+    auto statName = Stats::compositeDefinitions[statID].name;
+    statNames.insert(statName);
+  }
+
+  // if (attackTime > 0) statNames.insert("Attack speed");
+  // if (weaponDamage > 0) statNames.insert("Weapon damage");
+  if (armor) statNames.insert("Armour");
+  if (maxHealth > 0) statNames.insert("Health");
+  if (maxEnergy > 0) statNames.insert("Energy");
+  if (hps) statNames.insert("Health regen");
+  if (eps) statNames.insert("Energy regen");
+  if (hit) statNames.insert("Hit chance");
+  if (crit) statNames.insert("Crit chance");
+  if (critResist) statNames.insert("Crit resistance");
+  if (dodge) statNames.insert("Dodge chance");
+  if (block) statNames.insert("Block chance");
+  if (blockValue) statNames.insert("Block value");
+  if (magicDamage) statNames.insert("Magic damage");
+  if (physicalDamage) statNames.insert("Physical damage");
+  if (healing) statNames.insert("Healing-spell amount");
+  if (airResist) statNames.insert("Air resistance");
+  if (earthResist) statNames.insert("Earth resistance");
+  if (fireResist) statNames.insert("Fire resistance");
+  if (waterResist) statNames.insert("Water resistance");
+  if (gatherBonus > 0) statNames.insert("Gathering bonus");
+  if (followerLimit > 0) statNames.insert("Follower limit");
+  if (speed != 1.0) statNames.insert("Run speed");
+
+  return statNames;
+}
+
 const Stats &Stats::operator&=(StatsMod mod) {
   modify(mod);
   return *this;

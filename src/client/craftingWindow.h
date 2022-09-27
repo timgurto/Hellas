@@ -211,3 +211,14 @@ class UnlockFilter : public ListBasedFilter<Unlocks::UnlockChance> {
 
   const Client &m_client;
 };
+
+class StatsFilter : public ListBasedFilter<std::string> {
+ public:
+  std::string buttonText() const override { return "Stats"s; }
+
+ private:
+  std::string toStringID(Key key) const override { return key; }
+  MatchingRecipes getMatchingRecipes() const override;
+  Keys getKeysFromRecipe(const CRecipe &recipe) const override;
+  void populateEntry(Element &entry, Key key) const override;
+};

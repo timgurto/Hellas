@@ -2,6 +2,7 @@
 #define STATS_H
 
 #include <map>
+#include <set>
 #include <vector>
 
 #include "SpellSchool.h"
@@ -39,6 +40,8 @@ struct StatsMod {
   std::map<std::string, int> composites;
 
   StatsMod operator*(int scalar) const;
+
+  std::set<std::string> namesOfIncludedStats() const;
 };
 
 struct CompositeStat {
