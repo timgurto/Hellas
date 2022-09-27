@@ -108,6 +108,21 @@ class ToolFilter : public ListBasedFilter<std::string> {
   const Client &m_client;
 };
 
+class ReadyFilter : public CraftingWindowFilter {
+ public:
+  ReadyFilter(Client &client);
+  std::string buttonText() const override { return "Ready now"s; }
+  void indexRecipe(const CRecipe &recipe) override;
+  void populateConfigurationPanel(Element &panel) const override;
+  MatchingRecipes getMatchingRecipes() const override;
+
+ private:
+  using IndexedRecipes = std::set<const CRecipe *>;
+  IndexedRecipes m_knownRecipes;
+  mutable bool m_requireAllTools{false}, m_requireAllMats{true};
+  Client &m_client;
+};
+
 class SearchFilter : public CraftingWindowFilter {
  public:
   std::string buttonText() const override { return "Search"s; }

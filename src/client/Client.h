@@ -116,6 +116,19 @@ class Client : public TextEntryManager {
   }
   std::string getUserCity(const std::string &name) const;
 
+  // Called when filters pane is clicked, or new recipes are unlocked.
+  static void populateRecipesList(Element &e);
+  // Called when filters change
+  void scrollRecipeListToTop();
+  // Called when a recipe is selected.
+  static void onClickRecipe(Element &e, const ScreenPoint &mousePos);
+  void refreshRecipeDetailsPane();
+  // Called when new construction items are unlocked
+  void populateBuildList();
+
+  bool playerHasItem(const Item *item, size_t quantity = 1) const;
+  const CurrentTools &currentTools() const { return _currentTools; }
+
   ConfirmationWindow *_groupInvitationWindow{nullptr};
 
   // Special types
@@ -240,9 +253,6 @@ class Client : public TextEntryManager {
 
   static void initializeGearSlotNames();
 
-  // Whether the user has the specified item(s).
-  bool playerHasItem(const Item *item, size_t quantity = 1) const;
-
   static void initializeCraftingWindow(Client &client);
   void initializeCraftingWindow();
   void createCraftingWindowFilters();
@@ -259,16 +269,6 @@ class Client : public TextEntryManager {
   const CRecipe *_activeRecipe{nullptr};
   // Called when the "Craft" button is clicked.  0 = infinite.
   void startCrafting(int quantity);
-
-  // Called when filters pane is clicked, or new recipes are unlocked.
-  static void populateRecipesList(Element &e);
-  // Called when filters change
-  void scrollRecipeListToTop();
-  // Called when a recipe is selected.
-  static void onClickRecipe(Element &e, const ScreenPoint &mousePos);
-  void refreshRecipeDetailsPane();
-  // Called when new construction items are unlocked
-  void populateBuildList();
 
   bool outsideCullRange(const MapPoint &loc, px_t hysteresis = 0) const;
   void closeWindowsFromOutOfRangeObjects();

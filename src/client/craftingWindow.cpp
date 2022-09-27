@@ -307,6 +307,7 @@ void Client::indexRecipeInAllFilters(const CRecipe &recipe) {
 void Client::createCraftingWindowFilters() {
   // Filters about the recipe
   _craftingWindowFilters.push_back(new SearchFilter());
+  _craftingWindowFilters.push_back(new ReadyFilter(*this));
   _craftingWindowFilters.push_back(new MaterialFilter(*this));
   _craftingWindowFilters.push_back(new ToolFilter(*this));
   _craftingWindowFilters.push_back(_unlockFilter = new UnlockFilter(*this));
@@ -372,6 +373,66 @@ void ToolFilter::populateEntry(Element &entry, Key key) const {
 
 ToolFilter::Keys ToolFilter::getKeysFromRecipe(const CRecipe &recipe) const {
   return recipe.tools();
+}
+
+// Ready filter
+
+ReadyFilter::ReadyFilter(Client &client) : m_client(client) {}
+
+void ReadyFilter::indexRecipe(const CRecipe &recipe) {
+  m_knownRecipes.insert(&recipe);
+}
+
+ReadyFilter::MatchingRecipes ReadyFilter::getMatchingRecipes() const {
+  if (!m_requireAllTools && !m_requireAllMats) return {};
+
+  auto recipesMatchingFilter = MatchingRecipes{};
+  for (const auto *recipe : m_knownRecipes) {
+    auto shouldExcludeThisRecipe = false;
+
+    // All required materials
+    if (m_requireAllMats) {
+      for (const auto pair : recipe->materials())
+        if (!m_client.playerHasItem(pair.first, pair.second)) {
+          shouldExcludeThisRecipe = true;
+          break;
+        }
+    }
+    if (shouldExcludeThisRecipe) continue;
+
+    // All required tools
+    if (m_requireAllTools) {
+      for (const auto tool : recipe->tools()) {
+        if (!m_client.currentTools().hasTool(tool)) {
+          shouldExcludeThisRecipe = true;
+          break;
+        }
+      }
+    }
+    if (shouldExcludeThisRecipe) continue;
+
+    recipesMatchingFilter.insert(recipe);
+  }
+
+  return recipesMatchingFilter;
+}
+
+void ReadyFilter::populateConfigurationPanel(Element &panel) const {
+  auto *cb = new CheckBox(m_client, {0, 0, panel.width(), Element::TEXT_HEIGHT},
+                          m_requireAllMats, "You have all materials");
+  panel.addChild(cb);
+  cb->onChange([](Client &client) {
+    client.populateRecipesList();
+    client.scrollRecipeListToTop();
+  });
+
+  cb = new CheckBox(m_client, {0, 13, panel.width(), Element::TEXT_HEIGHT},
+                    m_requireAllTools, "You have all tools");
+  panel.addChild(cb);
+  cb->onChange([](Client &client) {
+    client.populateRecipesList();
+    client.scrollRecipeListToTop();
+  });
 }
 
 // Search filter
