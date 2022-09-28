@@ -618,3 +618,17 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Level requirements on gear",
     }
   }
 }
+
+TEST_CASE("Non-colliding objects load correctly", "[loading]") {
+  GIVEN("an object with collides=\"0\"") {
+    auto server = TestServer::WithDataString(R"(
+      <objectType id="road"
+          collides="0" >
+          <collisionRect x="-16" y="-16" w="32" h="32" />
+      </objectType>
+    )");
+    const auto &road = server.addObject("road", {10, 10});
+
+    THEN("it doesn't collide") { CHECK_FALSE(road.collides()); }
+  }
+}

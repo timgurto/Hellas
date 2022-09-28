@@ -206,7 +206,7 @@ void DataLoader::loadObjectTypes(XmlReader &xr) {
     if (xr.findRectChild("collisionRect", elem, r)) ot->collisionRect(r);
 
     bool b;
-    if (xr.findAttr(elem, "collides", b)) ot->collides(n != 0);
+    if (xr.findAttr(elem, "collides", b)) ot->collides(b);
     if (xr.findAttr(elem, "isGate", b)) ot->markAsGate();
     if (xr.findAttr(elem, "hidden", b)) ot->markAsHidden();
     if (xr.findAttr(elem, "allowsCustomName", b)) ot->allowCustomNames();
