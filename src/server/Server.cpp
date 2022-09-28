@@ -773,10 +773,12 @@ Entity &Server::addEntity(Entity *newEntity) {
     for (const User *userP : findUsersInArea(loc))
       newEntity->sendInfoToClient(*userP, isNew);
   }
-  // Alert owners
-  for (const auto owner : newEntity->permissions.ownerAsUsernames()) {
-    const auto *onlineOwner = getUserByName(owner);
-    if (onlineOwner) newEntity->sendInfoToClient(*onlineOwner, isNew);
+  // Alert owner(s)
+  if (newEntity->permissions.hasOwner()) {
+    for (const auto owner : newEntity->permissions.ownerAsUsernames()) {
+      const auto *onlineOwner = getUserByName(owner);
+      if (onlineOwner) newEntity->sendInfoToClient(*onlineOwner, isNew);
+    }
   }
 
   // Add entity to relevant chunk
