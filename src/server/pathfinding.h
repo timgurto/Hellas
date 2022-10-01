@@ -1,5 +1,11 @@
 #pragma once
 
+#include <mutex>
+#include <queue>
+
+#include "../Point.h"
+#include "../Rect.h"
+
 class NPC;
 
 class Pathfinder {

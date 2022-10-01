@@ -216,6 +216,7 @@
     <ClCompile Include="src\client\CurrentTools.cpp" />
     <ClCompile Include="src\client\Options.cpp" />
     <ClCompile Include="src\server\movementValidity.cpp" />
+    <ClCompile Include="src\server\pathfinding.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
