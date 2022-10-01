@@ -5,7 +5,7 @@
 #include "Server.h"
 #include "User.h"
 
-AI::AI(NPC &owner) : _owner(owner), _activePath(owner) {
+AI::AI(NPC &owner) : Pathfinder(owner), _owner(owner) {
   _homeLocation = _owner.location();
 }
 
@@ -287,12 +287,12 @@ void AI::giveOrder(PetOrder newOrder) {
   }
 }
 
-void AI::Path::findPathTo(const MapRect &targetFootprint) {
+void Pathfinder::Path::findPathTo(const MapRect &targetFootprint) {
   // A*
   const auto GRID = 25.0;
   static const auto DIAG = sqrt(GRID * GRID + GRID * GRID);
-  const auto closeEnough = _owner.ai.howCloseShouldPathfindingGet();
-  const auto footprint = _owner.type()->collisionRect();
+  const auto closeEnough = _owningPathfinder.howCloseShouldPathfindingGet();
+  const auto footprint = owningNPC().type()->collisionRect();
 
   struct UniqueMapPointOrdering {
     bool operator()(const MapPoint &lhs, const MapPoint &rhs) const {
@@ -353,7 +353,7 @@ void AI::Path::findPathTo(const MapRect &targetFootprint) {
 
   // Start with the current location as the first node
   auto startNode = AStarNode{};
-  const auto startPoint = _owner.location();
+  const auto startPoint = owningNPC().location();
   startNode.f = distance(footprint + startPoint, targetFootprint);
   startNode.parentInBestPath = NO_PARENT;
   nodesByPoint[startPoint] = startNode;
@@ -403,7 +403,8 @@ void AI::Path::findPathTo(const MapRect &targetFootprint) {
       journeyRectToDestination.y += deltaToDestination.y;
     journeyRectToDestination.w += abs(deltaToDestination.x);
     journeyRectToDestination.h += abs(deltaToDestination.y);
-    if (Server::instance().isLocationValid(journeyRectToDestination, _owner)) {
+    if (Server::instance().isLocationValid(journeyRectToDestination,
+                                           owningNPC())) {
       _queue = tracePathTo(bestCandidatePoint);
       _queue.push(targetFootprint);
       return;
@@ -414,7 +415,7 @@ void AI::Path::findPathTo(const MapRect &targetFootprint) {
       const auto nextPoint = bestCandidatePoint + extension.delta;
       auto stepRect =
           footprint + bestCandidatePoint + extension.journeyRectDelta();
-      if (Server::instance().isLocationValid(stepRect, _owner)) {
+      if (Server::instance().isLocationValid(stepRect, owningNPC())) {
         const auto currentNode = nodesByPoint[bestCandidatePoint];
         auto nextNode = AStarNode{};
         nextNode.parentInBestPath = bestCandidatePoint;
@@ -422,7 +423,8 @@ void AI::Path::findPathTo(const MapRect &targetFootprint) {
         const auto h = distance(footprint + nextPoint, targetFootprint);
 
         const auto pathStraysTooFar =
-            h > PURSUIT_RANGE && !_owner.npcType()->pursuesEndlessly();
+            h > owningNPC().ai.PURSUIT_RANGE &&
+            !owningNPC().npcType()->pursuesEndlessly();
         if (pathStraysTooFar) continue;
 
         nextNode.f = nextNode.g + h;
@@ -451,7 +453,7 @@ void AI::calculatePathInSeparateThread() {
 
   std::thread([this, targetFootprint]() {
     setThreadName("Pathfinding for " + _owner.type()->id() + " serial " +
-                  toString(_owner.serial()));
+                  toString(_owningNPC.serial()));
     const auto thisThreadHasTheLock = _pathfindingMutex.try_lock();
     if (!thisThreadHasTheLock) return;
     Server::instance().incrementThreadCount();

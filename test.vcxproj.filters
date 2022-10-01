@@ -378,6 +378,7 @@
     <ClInclude Include="src\client\CurrentTools.h" />
     <ClInclude Include="src\client\Options.h" />
     <ClInclude Include="src\client\craftingWindow.h" />
+    <ClInclude Include="src\server\pathfinding.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />

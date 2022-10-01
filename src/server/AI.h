@@ -5,8 +5,9 @@
 
 #include "../Point.h"
 #include "../types.h"
+#include "pathfinding.h"
 
-class AI {
+class AI : public Pathfinder {
  public:
   static const px_t AGGRO_RANGE{70};
   static const px_t PURSUIT_RANGE{245};  // Assumption: this is farther than any
@@ -33,31 +34,14 @@ class AI {
   NPC &_owner;
 
   MapPoint _homeLocation;  // Where it returns after a chase.
-  std::mutex _pathfindingMutex;
-  bool _failedToFindPath{false};
 
   void transitionIfNecessary();
   void onTransition(AI::State previousState);
   void act();
 
-  void calculatePathInSeparateThread();
+  void calculatePathInSeparateThread() override;
   bool targetHasMoved() const;
   MapRect getTargetFootprint() const;
-  double howCloseShouldPathfindingGet() const;
+  double howCloseShouldPathfindingGet() const override;
   void pickRandomSpotNearSpawnPoint();
-
-  class Path {
-   public:
-    Path(const NPC &owner) : _owner(owner) {}
-    MapPoint currentWaypoint() const { return _queue.front(); }
-    MapPoint lastWaypoint() const { return _queue.back(); }
-    void changeToNextWaypoint() { _queue.pop(); }
-    void findPathTo(const MapRect &destinationFootprint);
-    void clear() { _queue = {}; }
-    bool exists() const { return !_queue.empty(); }
-
-   private:
-    std::queue<MapPoint> _queue;
-    const NPC &_owner;
-  } _activePath;
 };

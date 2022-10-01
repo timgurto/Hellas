@@ -432,6 +432,7 @@
     <ClInclude Include="src\server\objects\Object.h" />
     <ClInclude Include="src\server\objects\ObjectLoot.h" />
     <ClInclude Include="src\server\objects\ObjectType.h" />
+    <ClInclude Include="src\server\pathfinding.h" />
     <ClInclude Include="src\server\Permissions.h" />
     <ClInclude Include="src\server\ProgressLock.h" />
     <ClInclude Include="src\server\QuestNode.h" />
