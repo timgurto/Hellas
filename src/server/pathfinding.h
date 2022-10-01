@@ -10,7 +10,8 @@ class Pathfinder {
   std::mutex _pathfindingMutex;
   bool _failedToFindPath{false};
 
-  virtual void calculatePathInSeparateThread() = 0;
+  void calculatePathInSeparateThread();
+  virtual MapRect getTargetFootprint() const = 0;
   virtual double howCloseShouldPathfindingGet() const = 0;
 
   class Path {

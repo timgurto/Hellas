@@ -448,17 +448,18 @@ void Pathfinder::Path::findPathTo(const MapRect &targetFootprint) {
   clear();
 }
 
-void AI::calculatePathInSeparateThread() {
+void Pathfinder::calculatePathInSeparateThread() {
   const auto targetFootprint = getTargetFootprint();
 
   std::thread([this, targetFootprint]() {
-    setThreadName("Pathfinding for " + _owner.type()->id() + " serial " +
+    setThreadName("Pathfinding for " + _owningNPC.type()->id() + " serial " +
                   toString(_owningNPC.serial()));
     const auto thisThreadHasTheLock = _pathfindingMutex.try_lock();
     if (!thisThreadHasTheLock) return;
     Server::instance().incrementThreadCount();
 
-    const auto distToTravel = distance(_owner.collisionRect(), targetFootprint);
+    const auto distToTravel =
+        distance(_owningNPC.collisionRect(), targetFootprint);
 
     _activePath.findPathTo(targetFootprint);
     if (!_activePath.exists()) _failedToFindPath = true;

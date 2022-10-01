@@ -39,9 +39,8 @@ class AI : public Pathfinder {
   void onTransition(AI::State previousState);
   void act();
 
-  void calculatePathInSeparateThread() override;
   bool targetHasMoved() const;
-  MapRect getTargetFootprint() const;
+  MapRect getTargetFootprint() const override;
   double howCloseShouldPathfindingGet() const override;
   void pickRandomSpotNearSpawnPoint();
 };
