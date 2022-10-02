@@ -42,5 +42,7 @@ class AI : public Pathfinder {
   bool targetHasMoved() const;
   MapRect getTargetFootprint() const override;
   double howCloseShouldPathfindingGet() const override;
+  bool isDistanceTooFarToPathfind(double distance) const override;
+  std::string threadName() const override;
   void pickRandomSpotNearSpawnPoint();
 };

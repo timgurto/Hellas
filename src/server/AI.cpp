@@ -320,6 +320,16 @@ double AI::howCloseShouldPathfindingGet() const {
   return 0;
 }
 
+bool AI::isDistanceTooFarToPathfind(double distance) const {
+  if (_owner.npcType()->pursuesEndlessly()) return false;
+  return distance > PURSUIT_RANGE;
+}
+
+std::string AI::threadName() const {
+  return "Pathfinding for " + _owner.type()->id() + " serial " +
+         toString(_owner.serial());
+}
+
 void AI::pickRandomSpotNearSpawnPoint() {
   if (!_owner.spawner()) return;
 

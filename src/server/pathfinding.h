@@ -6,11 +6,12 @@
 #include "../Point.h"
 #include "../Rect.h"
 
-class NPC;
+class Entity;
 
 class Pathfinder {
  public:
-  Pathfinder(NPC &owningNPC) : _owningNPC(owningNPC), _activePath(*this) {}
+  Pathfinder(Entity &owningEntity)
+      : _owningEntity(owningEntity), _activePath(*this) {}
 
  protected:
   std::mutex _pathfindingMutex;
@@ -19,6 +20,8 @@ class Pathfinder {
   void calculatePathInSeparateThread();
   virtual MapRect getTargetFootprint() const = 0;
   virtual double howCloseShouldPathfindingGet() const = 0;
+  virtual bool isDistanceTooFarToPathfind(double dist) const = 0;
+  virtual std::string threadName() const { return "Pathfinding"; }
 
   class Path {
    public:
@@ -34,8 +37,10 @@ class Pathfinder {
    private:
     std::queue<MapPoint> _queue;
     const Pathfinder &_owningPathfinder;
-    const NPC &owningNPC() const { return _owningPathfinder._owningNPC; }
+    const Entity &owningEntity() const {
+      return _owningPathfinder._owningEntity;
+    }
   } _activePath;
 
-  NPC &_owningNPC;
+  Entity &_owningEntity;
 };

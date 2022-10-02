@@ -8,7 +8,7 @@ void Pathfinder::Path::findPathTo(const MapRect &targetFootprint) {
   const auto GRID = 25.0;
   static const auto DIAG = sqrt(GRID * GRID + GRID * GRID);
   const auto closeEnough = _owningPathfinder.howCloseShouldPathfindingGet();
-  const auto footprint = owningNPC().type()->collisionRect();
+  const auto footprint = owningEntity().type()->collisionRect();
 
   struct UniqueMapPointOrdering {
     bool operator()(const MapPoint &lhs, const MapPoint &rhs) const {
@@ -69,7 +69,7 @@ void Pathfinder::Path::findPathTo(const MapRect &targetFootprint) {
 
   // Start with the current location as the first node
   auto startNode = AStarNode{};
-  const auto startPoint = owningNPC().location();
+  const auto startPoint = owningEntity().location();
   startNode.f = distance(footprint + startPoint, targetFootprint);
   startNode.parentInBestPath = NO_PARENT;
   nodesByPoint[startPoint] = startNode;
@@ -120,7 +120,7 @@ void Pathfinder::Path::findPathTo(const MapRect &targetFootprint) {
     journeyRectToDestination.w += abs(deltaToDestination.x);
     journeyRectToDestination.h += abs(deltaToDestination.y);
     if (Server::instance().isLocationValid(journeyRectToDestination,
-                                           owningNPC())) {
+                                           owningEntity())) {
       _queue = tracePathTo(bestCandidatePoint);
       _queue.push(targetFootprint);
       return;
@@ -131,17 +131,13 @@ void Pathfinder::Path::findPathTo(const MapRect &targetFootprint) {
       const auto nextPoint = bestCandidatePoint + extension.delta;
       auto stepRect =
           footprint + bestCandidatePoint + extension.journeyRectDelta();
-      if (Server::instance().isLocationValid(stepRect, owningNPC())) {
+      if (Server::instance().isLocationValid(stepRect, owningEntity())) {
         const auto currentNode = nodesByPoint[bestCandidatePoint];
         auto nextNode = AStarNode{};
         nextNode.parentInBestPath = bestCandidatePoint;
         nextNode.g = currentNode.g + extension.distance;
         const auto h = distance(footprint + nextPoint, targetFootprint);
-
-        const auto pathStraysTooFar =
-            h > owningNPC().ai.PURSUIT_RANGE &&
-            !owningNPC().npcType()->pursuesEndlessly();
-        if (pathStraysTooFar) continue;
+        if (_owningPathfinder.isDistanceTooFarToPathfind(h)) continue;
 
         nextNode.f = nextNode.g + h;
         auto nodeIter = nodesByPoint.find(nextPoint);
@@ -168,14 +164,13 @@ void Pathfinder::calculatePathInSeparateThread() {
   const auto targetFootprint = getTargetFootprint();
 
   std::thread([this, targetFootprint]() {
-    setThreadName("Pathfinding for " + _owningNPC.type()->id() + " serial " +
-                  toString(_owningNPC.serial()));
+    setThreadName(threadName());
     const auto thisThreadHasTheLock = _pathfindingMutex.try_lock();
     if (!thisThreadHasTheLock) return;
     Server::instance().incrementThreadCount();
 
     const auto distToTravel =
-        distance(_owningNPC.collisionRect(), targetFootprint);
+        distance(_owningEntity.collisionRect(), targetFootprint);
 
     _activePath.findPathTo(targetFootprint);
     if (!_activePath.exists()) _failedToFindPath = true;
