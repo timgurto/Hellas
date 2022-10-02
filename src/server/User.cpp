@@ -34,6 +34,8 @@ const std::vector<XP> User::XP_PER_LEVEL{
 User::User(const std::string &name, const MapPoint &loc, const Socket *socket)
     : Object(&OBJECT_TYPE, loc),
 
+      pathfinder(*this),
+
       _name(name),
 
       exploration(Server::instance().map().width(),
@@ -53,10 +55,22 @@ User::User(const std::string &name, const MapPoint &loc, const Socket *socket)
 }
 
 User::User(const Socket &rhs)
-    : Object(MapPoint{}), _socket(rhs), exploration(0, 0) {}
+    : Object(MapPoint{}), _socket(rhs), exploration(0, 0), pathfinder(*this) {}
 
 User::User(const MapPoint &loc)
-    : Object(loc), _socket(Socket::Empty()), exploration(0, 0) {}
+    : Object(loc),
+      pathfinder(*this),
+      _socket(Socket::Empty()),
+      exploration(0, 0) {}
+
+User::User(const User &rhs)
+    : Object(rhs), exploration(rhs.exploration), pathfinder(*this) {}
+
+User &User::operator=(const User &rhs) {
+  User copy(rhs);
+  std::swap(copy, *this);
+  return *this;
+}
 
 void User::initialiseInventoryAndGear() {
   for (size_t i = 0; i != INVENTORY_SIZE; ++i)
@@ -2018,4 +2032,39 @@ User::ToolSearchResult::operator bool() const {
 void User::ToolSearchResult::use() const {
   if (!_toolToDamage) return;
   _toolToDamage->onUseAsTool();
+}
+
+// Pathfinding
+
+MapRect User::Pathfinding::getTargetFootprint() const {
+  switch (_pathfindingTarget.type) {
+    case PathfindingTarget::LOCATION:
+      return _pathfindingTarget.location;
+
+    case PathfindingTarget::ENTITY:
+
+    case PathfindingTarget::NONE:
+    default:
+      SERVER_ERROR("Pathfinding with no target");
+      return {_owningEntity.location()};
+  }
+}
+
+// Right-click something attackable: attack range
+// Otherwise: action distance
+double User::Pathfinding::howCloseShouldPathfindingGet() const {
+  return Server::ACTION_DISTANCE;
+}
+
+bool User::Pathfinding::isDistanceTooFarToPathfind(double distance) const {
+  return distance > 370;  // Should be on same screen
+}
+
+std::string User::Pathfinding::threadName() const {
+  return "Pathfinding for player "s + _owningUser.name();
+}
+
+void User::Pathfinding::startPathfindingToLocation(const MapPoint &p) {
+  _pathfindingTarget.type = PathfindingTarget::LOCATION;
+  _pathfindingTarget.location = p;
 }

@@ -17,6 +17,7 @@
 #include "SRecipe.h"
 #include "ServerItem.h"
 #include "objects/Object.h"
+#include "pathfinding.h"
 
 class NPC;
 class Server;
@@ -112,6 +113,8 @@ class User : public Object {  // TODO: Don't inherit from Object
   bool _isInCombat{false};
 
  public:
+  User(const User &rhs);
+  User &operator=(const User &rhs);
   User(const std::string &name, const MapPoint &loc, const Socket *socket);
   User(const Socket &rhs);  // for use with set::find(), allowing find-by-socket
   User(const MapPoint
@@ -420,6 +423,20 @@ class User : public Object {  // TODO: Don't inherit from Object
   };
   typedef std::set<const User *, User::compareXThenSocketThenAddress> byX_t;
   typedef std::set<const User *, User::compareYThenSocketThenAddress> byY_t;
+
+ public:
+  class Pathfinding : public Pathfinder {
+   public:
+    Pathfinding(User &owner) : Pathfinder(owner), _owningUser(owner) {}
+
+   private:
+    MapRect getTargetFootprint() const override;
+    double howCloseShouldPathfindingGet() const override;
+    bool isDistanceTooFarToPathfind(double distance) const override;
+    std::string threadName() const override;
+
+    User &_owningUser;
+  } pathfinder;
 };
 
 #endif

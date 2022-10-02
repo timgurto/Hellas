@@ -295,7 +295,7 @@ void Server::run() {
 
 void Server::addUser(const Socket &socket, const std::string &name,
                      const std::string &pwHash, const std::string &classID) {
-  auto newUserToInsert = User{name, {}, &socket};
+  User newUserToInsert{name, {}, &socket};
 
   // Add new user to list
   logNumberOfOnlineUsers();

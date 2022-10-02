@@ -214,7 +214,7 @@ void Server::publishStats() {
         _onlineUsersByName.find(offlineUser.first) != _onlineUsersByName.end();
     if (userIsOnline) continue;
 
-    auto user = User{offlineUser.first, {}, nullptr};
+    User user{offlineUser.first, {}, nullptr};
     readUserData(user, false);
     user.secondsOffline = offlineUser.second;
 
