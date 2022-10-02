@@ -973,6 +973,7 @@ void User::update(ms_t timeElapsed) {
     finishAction();
   }
 
+  pathfinder.progressPathfinding();
   Entity::update(timeElapsed);
 }
 
@@ -2062,6 +2063,18 @@ bool User::Pathfinding::isDistanceTooFarToPathfind(double distance) const {
 
 std::string User::Pathfinding::threadName() const {
   return "Pathfinding for player "s + _owningUser.name();
+}
+
+void User::Pathfinding::progressPathfinding() {
+  if (_pathfindingTarget.type != PathfindingTarget::LOCATION) {
+    return;
+  }
+  if (_owningUser.location() == _pathfindingTarget.location) {
+    _pathfindingTarget.type = PathfindingTarget::NONE;
+    return;
+  }
+
+  Pathfinder::progressPathfinding();
 }
 
 void User::Pathfinding::startPathfindingToLocation(const MapPoint &p) {

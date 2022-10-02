@@ -428,6 +428,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   class Pathfinding : public Pathfinder {
    public:
     Pathfinding(User &owner) : Pathfinder(owner), _owningUser(owner) {}
+    void progressPathfinding() override;
 
    private:
     MapRect getTargetFootprint() const override;
