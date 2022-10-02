@@ -435,7 +435,16 @@ class User : public Object {  // TODO: Don't inherit from Object
     bool isDistanceTooFarToPathfind(double distance) const override;
     std::string threadName() const override;
 
+    struct PathfindingTarget {
+      enum Type { NONE, ENTITY, LOCATION } type{NONE};
+      const Entity *entity{nullptr};
+      MapPoint location;
+    } _pathfindingTarget;
+
     User &_owningUser;
+
+   public:
+    void startPathfindingToLocation(const MapPoint &p);
   } pathfinder;
 };
 

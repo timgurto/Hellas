@@ -50,6 +50,12 @@ enum MessageCode {
   // Arguments: x, y
   CL_MOVE_TO,
 
+  // I want to automatically travel to ...
+  // Arguments: x, y
+  CL_PATHFIND_TO_LOCATION,
+  // arguments: serial
+  CL_PATHFIND_TO_ENTITY,
+
   // Cancel user's current action
   CL_CANCEL_ACTION,
 

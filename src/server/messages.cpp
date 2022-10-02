@@ -184,6 +184,15 @@ HANDLE_MESSAGE(CL_MOVE_TO) {
   }
 }
 
+HANDLE_MESSAGE(CL_PATHFIND_TO_LOCATION) {
+  double x, y;
+  READ_ARGS(x, y);
+
+  if (user.isWaitingForDeathAcknowledgement) return;
+
+  user.pathfinder.startPathfindingToLocation({x, y});
+}
+
 HANDLE_MESSAGE(CL_CANCEL_ACTION) {
   CHECK_NO_ARGS
   user.cancelAction();
@@ -1505,6 +1514,7 @@ void Server::handleBufferedMessages(const Socket &client,
       SEND_MESSAGE_TO_HANDLER(CL_REQUEST_TIME_PLAYED)
       SEND_MESSAGE_TO_HANDLER(CL_SKIP_TUTORIAL)
       SEND_MESSAGE_TO_HANDLER(CL_MOVE_TO)
+      SEND_MESSAGE_TO_HANDLER(CL_PATHFIND_TO_LOCATION)
       SEND_MESSAGE_TO_HANDLER(CL_CANCEL_ACTION)
       SEND_MESSAGE_TO_HANDLER(CL_CRAFT)
       SEND_MESSAGE_TO_HANDLER(CL_CONSTRUCT_FROM_ITEM)

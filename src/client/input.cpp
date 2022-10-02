@@ -330,11 +330,16 @@ void Client::handleInput(double delta) {
             if (rightMouseDownWasCaptured) break;
 
             // 3. Entity
-            if (_currentMouseOverEntity)
+            if (_currentMouseOverEntity) {
               _currentMouseOverEntity->onRightClick();
-            else
-              clearTarget();
-            refreshTargetBuffs();
+              refreshTargetBuffs();
+              break;
+            }
+
+            // 4. Map
+            const auto targetLocation = toMapPoint(_mouse) - _offset;
+            sendMessage({CL_PATHFIND_TO_LOCATION,
+                         makeArgs(targetLocation.x, targetLocation.y)});
           }
         }
         break;
