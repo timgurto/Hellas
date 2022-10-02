@@ -18,6 +18,8 @@ class Pathfinder {
   bool _failedToFindPath{false};
 
   void calculatePathInSeparateThread();
+  bool targetHasMoved() const;
+  void progressPathfinding();
   virtual MapRect getTargetFootprint() const = 0;
   virtual double howCloseShouldPathfindingGet() const = 0;
   virtual bool isDistanceTooFarToPathfind(double dist) const = 0;

@@ -220,27 +220,7 @@ void AI::act() {
     case PET_FOLLOW_OWNER:
     case CHASE:
     case RETREAT: {
-      if (!_activePath.exists()) {
-        calculatePathInSeparateThread();
-        break;
-      }
-
-      // Move towards target
-      if (targetHasMoved()) {
-        calculatePathInSeparateThread();
-        break;
-      }
-
-      // If reached the current waypoint, move to the next one
-      if (_owner.location() == _activePath.currentWaypoint())
-        _activePath.changeToNextWaypoint();
-      if (!_activePath.exists()) break;
-
-      const auto result =
-          _owner.moveLegallyTowards(_activePath.currentWaypoint());
-      if (result == Entity::MOVED_INTO_OBSTACLE)
-        calculatePathInSeparateThread();
-
+      progressPathfinding();
       break;
     }
 
@@ -284,19 +264,6 @@ void AI::giveOrder(PetOrder newOrder) {
     default:
       break;
   }
-}
-
-bool AI::targetHasMoved() const {
-  if (!_activePath.exists()) return false;
-
-  const auto pathEnd = MapRect{_activePath.lastWaypoint()};
-  const auto targetLocation = getTargetFootprint();
-
-  const auto MAX_TARGET_MOVEMENT_BEFORE_REPATH = 30.0;
-  const auto maxDistanceAllowed =
-      MAX_TARGET_MOVEMENT_BEFORE_REPATH + howCloseShouldPathfindingGet();
-  const auto gapBetweenTargetAndPathEnd = distance(pathEnd, targetLocation);
-  return gapBetweenTargetAndPathEnd > maxDistanceAllowed;
 }
 
 MapRect AI::getTargetFootprint() const {

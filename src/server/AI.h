@@ -39,7 +39,6 @@ class AI : public Pathfinder {
   void onTransition(AI::State previousState);
   void act();
 
-  bool targetHasMoved() const;
   MapRect getTargetFootprint() const override;
   double howCloseShouldPathfindingGet() const override;
   bool isDistanceTooFarToPathfind(double distance) const override;

@@ -160,6 +160,19 @@ void Pathfinder::Path::findPathTo(const MapRect &targetFootprint) {
   clear();
 }
 
+bool Pathfinder::targetHasMoved() const {
+  if (!_activePath.exists()) return false;
+
+  const auto pathEnd = MapRect{_activePath.lastWaypoint()};
+  const auto targetLocation = getTargetFootprint();
+
+  const auto MAX_TARGET_MOVEMENT_BEFORE_REPATH = 30.0;
+  const auto maxDistanceAllowed =
+      MAX_TARGET_MOVEMENT_BEFORE_REPATH + howCloseShouldPathfindingGet();
+  const auto gapBetweenTargetAndPathEnd = distance(pathEnd, targetLocation);
+  return gapBetweenTargetAndPathEnd > maxDistanceAllowed;
+}
+
 void Pathfinder::calculatePathInSeparateThread() {
   const auto targetFootprint = getTargetFootprint();
 
@@ -178,4 +191,26 @@ void Pathfinder::calculatePathInSeparateThread() {
     _pathfindingMutex.unlock();
     Server::instance().decrementThreadCount();
   }).detach();
+}
+
+void Pathfinder::progressPathfinding() {
+  if (!_activePath.exists()) {
+    calculatePathInSeparateThread();
+    return;
+  }
+
+  // Move towards target
+  if (targetHasMoved()) {
+    calculatePathInSeparateThread();
+    return;
+  }
+
+  // If reached the current waypoint, move to the next one
+  if (_owningEntity.location() == _activePath.currentWaypoint())
+    _activePath.changeToNextWaypoint();
+  if (!_activePath.exists()) return;
+
+  const auto result =
+      _owningEntity.moveLegallyTowards(_activePath.currentWaypoint());
+  if (result == Entity::MOVED_INTO_OBSTACLE) calculatePathInSeparateThread();
 }
