@@ -34,8 +34,6 @@ const std::vector<XP> User::XP_PER_LEVEL{
 User::User(const std::string &name, const MapPoint &loc, const Socket *socket)
     : Object(&OBJECT_TYPE, loc),
 
-      pathfinder(*this),
-
       _name(name),
 
       exploration(Server::instance().map().width(),
@@ -55,22 +53,10 @@ User::User(const std::string &name, const MapPoint &loc, const Socket *socket)
 }
 
 User::User(const Socket &rhs)
-    : Object(MapPoint{}), _socket(rhs), exploration(0, 0), pathfinder(*this) {}
+    : Object(MapPoint{}), _socket(rhs), exploration(0, 0) {}
 
 User::User(const MapPoint &loc)
-    : Object(loc),
-      pathfinder(*this),
-      _socket(Socket::Empty()),
-      exploration(0, 0) {}
-
-User::User(const User &rhs)
-    : Object(rhs), exploration(rhs.exploration), pathfinder(*this) {}
-
-User &User::operator=(const User &rhs) {
-  User copy(rhs);
-  std::swap(copy, *this);
-  return *this;
-}
+    : Object(loc), _socket(Socket::Empty()), exploration(0, 0) {}
 
 void User::initialiseInventoryAndGear() {
   for (size_t i = 0; i != INVENTORY_SIZE; ++i)
@@ -2047,7 +2033,7 @@ MapRect User::Pathfinding::getTargetFootprint() const {
     case PathfindingTarget::NONE:
     default:
       SERVER_ERROR("Pathfinding with no target");
-      return {_owningEntity.location()};
+      return {_owningEntity->location()};
   }
 }
 
@@ -2062,14 +2048,14 @@ bool User::Pathfinding::isDistanceTooFarToPathfind(double distance) const {
 }
 
 std::string User::Pathfinding::threadName() const {
-  return "Pathfinding for player "s + _owningUser.name();
+  return "Pathfinding for player "s + _owningUser->name();
 }
 
 void User::Pathfinding::progressPathfinding() {
   if (_pathfindingTarget.type != PathfindingTarget::LOCATION) {
     return;
   }
-  if (_owningUser.location() == _pathfindingTarget.location) {
+  if (_owningUser->location() == _pathfindingTarget.location) {
     _pathfindingTarget.type = PathfindingTarget::NONE;
     return;
   }

@@ -11,7 +11,8 @@ class Entity;
 class Pathfinder {
  public:
   Pathfinder(Entity &owningEntity)
-      : _owningEntity(owningEntity), _activePath(*this) {}
+      : _owningEntity(&owningEntity), _activePath(*this) {}
+  Pathfinder() : _activePath(*this) {}
 
   virtual void progressPathfinding();
 
@@ -41,9 +42,13 @@ class Pathfinder {
     std::queue<MapPoint> _queue;
     const Pathfinder &_owningPathfinder;
     const Entity &owningEntity() const {
-      return _owningPathfinder._owningEntity;
+      return *_owningPathfinder._owningEntity;
     }
   } _activePath;
 
-  Entity &_owningEntity;
+  Entity *_owningEntity{nullptr};  // TODO turn this into a virtual getter
 };
+
+// In vehicle
+// Right-click entity: ranged attack
+// Right-click moving enemy: chase then attack

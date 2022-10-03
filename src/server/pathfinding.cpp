@@ -183,7 +183,7 @@ void Pathfinder::calculatePathInSeparateThread() {
     Server::instance().incrementThreadCount();
 
     const auto distToTravel =
-        distance(_owningEntity.collisionRect(), targetFootprint);
+        distance(_owningEntity->collisionRect(), targetFootprint);
 
     _activePath.findPathTo(targetFootprint);
     if (!_activePath.exists()) _failedToFindPath = true;
@@ -206,11 +206,11 @@ void Pathfinder::progressPathfinding() {
   }
 
   // If reached the current waypoint, move to the next one
-  if (_owningEntity.location() == _activePath.currentWaypoint())
+  if (_owningEntity->location() == _activePath.currentWaypoint())
     _activePath.changeToNextWaypoint();
   if (!_activePath.exists()) return;
 
   const auto result =
-      _owningEntity.moveLegallyTowards(_activePath.currentWaypoint());
+      _owningEntity->moveLegallyTowards(_activePath.currentWaypoint());
   if (result == Entity::MOVED_INTO_OBSTACLE) calculatePathInSeparateThread();
 }

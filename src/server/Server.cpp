@@ -295,16 +295,15 @@ void Server::run() {
 
 void Server::addUser(const Socket &socket, const std::string &name,
                      const std::string &pwHash, const std::string &classID) {
-  User newUserToInsert{name, {}, &socket};
-
   // Add new user to list
   logNumberOfOnlineUsers();
   std::set<User>::const_iterator it =
-      _onlineUsers.insert(newUserToInsert).first;
+      _onlineUsers.insert({name, {}, &socket}).first;
   auto &newUser = const_cast<User &>(*it);
   _onlineUsersByName[name] = &*it;
   logNumberOfOnlineUsers();
 
+  newUser.pathfinder.setOwningUser(newUser);
   newUser.pwHash(pwHash);
 
   // Announce to all

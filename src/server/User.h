@@ -113,8 +113,6 @@ class User : public Object {  // TODO: Don't inherit from Object
   bool _isInCombat{false};
 
  public:
-  User(const User &rhs);
-  User &operator=(const User &rhs);
   User(const std::string &name, const MapPoint &loc, const Socket *socket);
   User(const Socket &rhs);  // for use with set::find(), allowing find-by-socket
   User(const MapPoint
@@ -427,8 +425,8 @@ class User : public Object {  // TODO: Don't inherit from Object
  public:
   class Pathfinding : public Pathfinder {
    public:
-    Pathfinding(User &owner) : Pathfinder(owner), _owningUser(owner) {}
     void progressPathfinding() override;
+    void setOwningUser(User &user) { _owningEntity = _owningUser = &user; }
 
    private:
     MapRect getTargetFootprint() const override;
@@ -442,7 +440,7 @@ class User : public Object {  // TODO: Don't inherit from Object
       MapPoint location;
     } _pathfindingTarget;
 
-    User &_owningUser;
+    User *_owningUser{nullptr};
 
    public:
     void startPathfindingToLocation(const MapPoint &p);
