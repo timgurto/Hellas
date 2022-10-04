@@ -1951,8 +1951,9 @@ int User::getGroupSize() const {
 
 void User::addXP(XP amount) {
   if (_level == MAX_LEVEL) return;
-  if (_bonusXP > 0) amount = 200;
-  _xp += amount;
+
+  const auto bonusXPToAward = min(amount, _bonusXP);
+  _xp += amount + bonusXPToAward;
 
   Server &server = Server::instance();
   sendMessage({SV_XP_GAIN, amount});

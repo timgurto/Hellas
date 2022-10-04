@@ -239,16 +239,25 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Bonus XP", "[xp]") {
       user->setBonusXP(1000);
 
       WHEN("he kills the enemy") {
-        CHECK_FALSE(kobold.isDead());
         client->sendMessage(CL_TARGET_ENTITY, makeArgs(kobold.serial()));
 
         THEN("he has 200XP") { WAIT_UNTIL(user->xp() == 200); }
       }
     }
+
+    GIVEN("a player has only 1 bonus XP") {
+      user->setBonusXP(1);
+
+      WHEN("he kills the enemy") {
+        client->sendMessage(CL_TARGET_ENTITY, makeArgs(kobold.serial()));
+
+        THEN("he has 101XP") { WAIT_UNTIL(user->xp() == 101); }
+      }
+    }
   }
 }
 
-// Partial
+// Used up
 // Persistent
 // Client knows
 // Assign it once per day
