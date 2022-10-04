@@ -227,3 +227,29 @@ TEST_CASE("Free spells", "[spells]") {
     }
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData, "Bonus XP", "[xp]") {
+  GIVEN("an enemy worth 100XP") {
+    useData(R"(
+      <npcType id="kobold" maxHealth="1" />
+    )");
+    const auto &kobold = server->addNPC("kobold", {10, 15});
+
+    GIVEN("a player has lots of bonus XP") {
+      user->setBonusXP(1000);
+
+      WHEN("he kills the enemy") {
+        CHECK_FALSE(kobold.isDead());
+        client->sendMessage(CL_TARGET_ENTITY, makeArgs(kobold.serial()));
+
+        THEN("he has 200XP") { WAIT_UNTIL(user->xp() == 200); }
+      }
+    }
+  }
+}
+
+// Partial
+// Persistent
+// Client knows
+// Assign it once per day
+// Only from kills, not quests

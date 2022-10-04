@@ -95,6 +95,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   bool _isInitialised{false};
 
   XP _xp = 0;
+  XP _bonusXP = 0;  // When XP is granted, give the same amount from this
   Level _level = 1;
   void sendXPMessage() const;
   void announceLevelUp() const;
@@ -223,6 +224,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   bool isAttackingTarget() const override { return _action == ATTACK; }
   SpellSchool school() const override;
   Level level() const override { return _level; }
+  void setBonusXP(XP newBonusXP) { _bonusXP = newBonusXP; }
   bool canEquip(const ServerItem &item) const;
   double combatDamage() const override;
   bool isInCombat() const { return _isInCombat; }

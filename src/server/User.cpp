@@ -1951,6 +1951,7 @@ int User::getGroupSize() const {
 
 void User::addXP(XP amount) {
   if (_level == MAX_LEVEL) return;
+  if (_bonusXP > 0) amount = 200;
   _xp += amount;
 
   Server &server = Server::instance();
