@@ -229,7 +229,7 @@ TEST_CASE("Free spells", "[spells]") {
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Bonus XP", "[xp]") {
-  /*GIVEN("an enemy worth 100XP") {
+  GIVEN("an enemy worth 100XP") {
     useData(R"(
       <npcType id="kobold" maxHealth="1" />
     )");
@@ -265,7 +265,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Bonus XP", "[xp]") {
         }
       }
     }
-  }*/
+  }
 
   SECTION("Quests don't award bonus XP; only kills") {
     GIVEN("the user is on a quest") {
@@ -296,6 +296,29 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Bonus XP", "[xp]") {
   }
 }
 
-// Persistent
+TEST_CASE("Bonus XP is persistent", "[xp][persistence]") {
+  // GIVEN Alice has 50 bonus XP
+  {
+    auto server = TestServer{};
+    auto client = TestClient::WithUsername("Alice");
+    server.waitForUsers(1);
+    server.getFirstUser().setBonusXP(50);
+
+    // WHEN the server restarts
+  }
+  {
+    auto server = TestServer::KeepingOldData();
+    auto client = TestClient::WithUsername("Alice");
+    server.waitForUsers(1);
+
+    // AND WHEN Alice gets 100xp from a kill
+    auto &user = server.getFirstUser();
+    user.addXP(100, User::XP_FROM_KILL);
+
+    // THEN Alice has 150 xp
+    CHECK(user.xp() == 150);
+  }
+}
+
 // Client knows
 // Assign it once per day

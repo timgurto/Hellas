@@ -49,6 +49,8 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     auto xp = XP{0};
     if (xr.findAttr(elem, "xp", xp)) user.xp(xp);
 
+    user.setBonusXP(50);
+
     auto n = 0;
 
     if (!xr.findAttr(elem, "isInTutorial", n) || n != 1)
