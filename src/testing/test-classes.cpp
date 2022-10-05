@@ -245,19 +245,29 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Bonus XP", "[xp]") {
       }
     }
 
-    GIVEN("a player has only 1 bonus XP") {
-      user->setBonusXP(1);
+    SECTION("Partial bonus xp remaining") {
+      GIVEN("a player has only 1 bonus XP") {
+        user->setBonusXP(1);
 
-      WHEN("he kills the enemy") {
-        client->sendMessage(CL_TARGET_ENTITY, makeArgs(kobold.serial()));
+        WHEN("he kills the enemy") {
+          client->sendMessage(CL_TARGET_ENTITY, makeArgs(kobold.serial()));
 
-        THEN("he has 101XP") { WAIT_UNTIL(user->xp() == 101); }
+          THEN("he has 101XP") { WAIT_UNTIL(user->xp() == 101); }
+
+          SECTION("bonus xp gets used up") {
+            AND_WHEN("he kills another one") {
+              const auto &kobold2 = server->addNPC("kobold", {10, 15});
+              client->sendMessage(CL_TARGET_ENTITY, makeArgs(kobold2.serial()));
+
+              THEN("he has 201XP") { WAIT_UNTIL(user->xp() == 201); }
+            }
+          }
+        }
       }
     }
   }
 }
 
-// Used up
 // Persistent
 // Client knows
 // Assign it once per day
