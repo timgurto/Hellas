@@ -371,6 +371,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   void xp(XP newXP) { _xp = newXP; }
   enum XPSource { XP_FROM_KILL, XP_FROM_QUEST };
   void addXP(XP amount, XPSource source);
+  XP bonusXP() const { return _bonusXP; }
   void levelUp();
   int getLevelDifference(const User &user) const override {
     return level() - user.level();

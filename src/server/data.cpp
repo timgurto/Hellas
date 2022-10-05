@@ -49,7 +49,7 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     auto xp = XP{0};
     if (xr.findAttr(elem, "xp", xp)) user.xp(xp);
 
-    user.setBonusXP(50);
+    if (xr.findAttr(elem, "bonusXP", xp)) user.setBonusXP(xp);
 
     auto n = 0;
 
@@ -301,6 +301,7 @@ void Server::writeUserData(const User &user) const {
   if (user.isInTutorial()) xw.setAttr(e, "isInTutorial", 1);
   xw.setAttr(e, "level", user.level());
   xw.setAttr(e, "xp", user.xp());
+  xw.setAttr(e, "bonusXP", user.bonusXP());
   if (user.isDriving()) xw.setAttr(e, "isDriving", 1);
 
   if (user.isMissingHealth()) xw.setAttr(e, "health", user.health());

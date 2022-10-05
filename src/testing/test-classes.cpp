@@ -297,26 +297,29 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Bonus XP", "[xp]") {
 }
 
 TEST_CASE("Bonus XP is persistent", "[xp][persistence]") {
-  // GIVEN Alice has 50 bonus XP
-  {
-    auto server = TestServer{};
-    auto client = TestClient::WithUsername("Alice");
-    server.waitForUsers(1);
-    server.getFirstUser().setBonusXP(50);
+  for (auto n : std::vector<XP>{0, 50}) {
+    // GIVEN Alice has n bonus XP
+    {
+      auto server = TestServer{};
+      auto client = TestClient::WithUsername("Alice");
+      server.waitForUsers(1);
+      server.getFirstUser().setBonusXP(n);
 
-    // WHEN the server restarts
-  }
-  {
-    auto server = TestServer::KeepingOldData();
-    auto client = TestClient::WithUsername("Alice");
-    server.waitForUsers(1);
+      // WHEN the server restarts
+    }
+    {
+      auto server = TestServer::KeepingOldData();
+      auto client = TestClient::WithUsername("Alice");
+      server.waitForUsers(1);
 
-    // AND WHEN Alice gets 100xp from a kill
-    auto &user = server.getFirstUser();
-    user.addXP(100, User::XP_FROM_KILL);
+      // AND WHEN Alice gets 100xp from a kill
+      auto &user = server.getFirstUser();
+      user.addXP(100, User::XP_FROM_KILL);
 
-    // THEN Alice has 150 xp
-    CHECK(user.xp() == 150);
+      // THEN Alice has the correct amount of xp
+      const auto expectedXP = 100 + n;
+      CHECK(user.xp() == expectedXP);
+    }
   }
 }
 
