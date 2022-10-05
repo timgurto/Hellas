@@ -17,7 +17,7 @@ TEST_CASE("Leveling up restores health and energy", "[stats][leveling]") {
   CHECK(user.energy() < user.stats().maxEnergy);
 
   // When the user levels up
-  user.addXP(User::XP_PER_LEVEL[1]);
+  user.addXP(User::XP_PER_LEVEL[1], User::XP_FROM_KILL);
 
   // Then the user's health and energy are full
   WAIT_UNTIL(!user.isMissingHealth());
@@ -28,7 +28,7 @@ TEST_CASE_METHOD(ServerAndClient, "Client has correct XP on level up",
                  "[stats][leveling]") {
   WHEN("a player gets exactly enough XP to level up") {
     auto xpToLevel = User::XP_PER_LEVEL[user->level()];
-    user->addXP(xpToLevel);
+    user->addXP(xpToLevel, User::XP_FROM_KILL);
 
     THEN("he knows he has 0 XP") {
       REPEAT_FOR_MS(100);

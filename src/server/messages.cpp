@@ -1846,7 +1846,7 @@ void Server::handleBufferedMessages(const Socket &client,
         if (del != MSG_END) return;
         if (!isDebug()) break;
         auto remainingXP = User::XP_PER_LEVEL[user->level()] - user->xp();
-        user->addXP(remainingXP);
+        user->addXP(remainingXP, User::XP_FROM_KILL);
         break;
       }
 

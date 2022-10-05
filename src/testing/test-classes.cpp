@@ -229,7 +229,7 @@ TEST_CASE("Free spells", "[spells]") {
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Bonus XP", "[xp]") {
-  GIVEN("an enemy worth 100XP") {
+  /*GIVEN("an enemy worth 100XP") {
     useData(R"(
       <npcType id="kobold" maxHealth="1" />
     )");
@@ -265,10 +265,37 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Bonus XP", "[xp]") {
         }
       }
     }
+  }*/
+
+  SECTION("Quests don't award bonus XP; only kills") {
+    GIVEN("the user is on a quest") {
+      useData(R"(
+        <objectType id="A" />
+        <quest id="quest" startsAt="A" endsAt="A" />
+      )");
+      const auto &questgiver = server->addObject("A", {10, 15});
+      client->sendMessage(CL_ACCEPT_QUEST,
+                          makeArgs("quest", questgiver.serial()));
+
+      AND_GIVEN("he has lots of bonus XP") {
+        user->setBonusXP(1000);
+
+        WHEN("he completes the quest") {
+          CHECK(user->xp() == 0);
+          client->sendMessage(CL_COMPLETE_QUEST,
+                              makeArgs("quest", questgiver.serial()));
+
+          THEN("he gets only the baseline xp for that quest") {
+            const auto &quest = server->getFirstQuest();
+            const auto baselineXP = quest.getXPFor(user->level());
+            WAIT_UNTIL(user->xp() == baselineXP);
+          }
+        }
+      }
+    }
   }
 }
 
 // Persistent
 // Client knows
 // Assign it once per day
-// Only from kills, not quests

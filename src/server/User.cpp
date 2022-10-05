@@ -1231,7 +1231,7 @@ void User::onAttackedBy(Entity &attacker, Threat threat, CombatResult result) {
 void User::onKilled(Entity &victim) {
   if (victim.grantsXPOnDeath()) {
     auto xp = appropriateXPForKill(victim);
-    addXP(xp);
+    addXP(xp, XP_FROM_KILL);
   }
 
   auto victimID = victim.type()->id();
@@ -1779,7 +1779,8 @@ void User::completeQuest(const Quest::ID &id) {
   _quests.erase(id);
 
   // Rewards
-  addXP(quest->getXPFor(_level));
+  const auto xpToAward = quest->getXPFor(_level);
+  addXP(xpToAward, XP_FROM_QUEST);
   for (const auto &reward : quest->rewards) giveQuestReward(reward);
 
   for (const auto &unlockedQuestID : quest->otherQuestsWithThisAsPrerequisite) {
@@ -1949,12 +1950,17 @@ int User::getGroupSize() const {
   return Server::instance().groups->getGroupSize(name());
 }
 
-void User::addXP(XP amount) {
+void User::addXP(XP amount, XPSource xpSource) {
   if (_level == MAX_LEVEL) return;
 
-  const auto bonusXPToAward = min(amount, _bonusXP);
-  _xp += amount + bonusXPToAward;
-  _bonusXP -= bonusXPToAward;
+  _xp += amount;
+
+  const auto shouldAwardBonusXP = xpSource == XP_FROM_KILL;
+  if (shouldAwardBonusXP) {
+    const auto bonusXPToAward = min(amount, _bonusXP);
+    _xp += bonusXPToAward;
+    _bonusXP -= bonusXPToAward;
+  }
 
   sendMessage({SV_XP_GAIN, amount});
 
