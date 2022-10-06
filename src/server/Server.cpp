@@ -44,7 +44,8 @@ Server::Server()
       _userFilesPath("Users/"),
       _lastSave(_time),
       _timeStatsLastPublished(_time),
-      groups(new Groups) {
+      groups(new Groups),
+      _dayChangeClock(new DayChangeClock) {
   _instance = this;
   _debugInstance = &_debug;
   if (cmdLineArgs.contains("quiet")) _debug.quiet();
@@ -270,6 +271,9 @@ void Server::run() {
     // Update spawners
     for (auto &spawner : _spawners) spawner.update(_time);
 
+    // Clock stuff
+    if (_dayChangeClock->hasDayChanged()) onDayChange();
+
     _cities.update(timeElapsed);
 
     // Deal with any messages from the server
@@ -291,6 +295,13 @@ void Server::run() {
   while (_threadsOpen > 0)
     ;
   _running = false;
+}
+
+void Server::onDayChange() {
+  for (auto &constUser : _onlineUsers) {
+    auto &user = const_cast<User &>(constUser);
+    user.setBonusXP(1000);
+  }
 }
 
 void Server::addUser(const Socket &socket, const std::string &name,

@@ -155,6 +155,13 @@ void TestServer::waitForUsers(size_t numUsers) const {
   for (auto &user : _server->_onlineUsers) WAIT_UNTIL(user.isInitialised());
 }
 
+/*MockDayChangeClock &TestServer::useMockDayChangeClock() {
+  delete _server->_dayChangeClock;
+  auto *newClock = new MockDayChangeClock;
+  _server->_dayChangeClock = newClock;
+  return *newClock;
+}*/
+
 void TestServer::saveData() {
   std::thread(Server::saveData, _server->_entities, _server->_wars,
               _server->_cities)

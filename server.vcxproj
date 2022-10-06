@@ -114,6 +114,7 @@
     <ClCompile Include="src\Rect.cpp" />
     <ClCompile Include="src\Serial.cpp" />
     <ClCompile Include="src\server\AI.cpp" />
+    <ClCompile Include="src\server\Clock.cpp" />
     <ClCompile Include="src\server\movementValidity.cpp" />
     <ClCompile Include="src\server\npc-ai.cpp" />
     <ClCompile Include="src\server\Buff.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="src\server\Buff.h" />
     <ClInclude Include="src\server\City.h" />
     <ClInclude Include="src\server\Class.h" />
+    <ClInclude Include="src\server\Clock.h" />
     <ClInclude Include="src\server\CollisionChunk.h" />
     <ClInclude Include="src\server\combat.h" />
     <ClInclude Include="src\server\DamageOnUse.h" />

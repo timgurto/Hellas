@@ -217,6 +217,7 @@
     <ClCompile Include="src\client\Options.cpp" />
     <ClCompile Include="src\server\movementValidity.cpp" />
     <ClCompile Include="src\testing\test-xp.cpp" />
+    <ClCompile Include="src\server\Clock.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Args.h" />
@@ -379,6 +380,7 @@
     <ClInclude Include="src\client\CurrentTools.h" />
     <ClInclude Include="src\client\Options.h" />
     <ClInclude Include="src\client\craftingWindow.h" />
+    <ClInclude Include="src\server\Clock.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="NatvisFile.natvis" />

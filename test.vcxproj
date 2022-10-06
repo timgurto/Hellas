@@ -196,6 +196,7 @@
     <ClCompile Include="src\server\Buff.cpp" />
     <ClCompile Include="src\server\City.cpp" />
     <ClCompile Include="src\server\Class.cpp" />
+    <ClCompile Include="src\server\Clock.cpp" />
     <ClCompile Include="src\server\CollisionChunk.cpp" />
     <ClCompile Include="src\server\collisionDetection.cpp" />
     <ClCompile Include="src\server\DamageOnUse.cpp" />
@@ -412,6 +413,7 @@
     <ClInclude Include="src\server\Buff.h" />
     <ClInclude Include="src\server\City.h" />
     <ClInclude Include="src\server\Class.h" />
+    <ClInclude Include="src\server\Clock.h" />
     <ClInclude Include="src\server\CollisionChunk.h" />
     <ClInclude Include="src\server\combat.h" />
     <ClInclude Include="src\server\DamageOnUse.h" />

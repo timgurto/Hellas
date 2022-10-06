@@ -98,10 +98,25 @@ TEST_CASE("Bonus XP is persistent", "[xp][persistence]") {
   }
 }
 
+TEST_CASE_METHOD(ServerAndClient, "On day change, users get bonus XP", "[xp]") {
+  // auto &clock = server.useMockDayChangeClock();
+
+  GIVEN("the user has no bonus XP") {
+    CHECK(user->bonusXP() == 0);
+
+    WHEN("the day changes") {
+      // clock.changeDay();
+      server.onDayChange();
+
+      THEN("he has bonus XP") { WAIT_UNTIL(user->bonusXP() > 0); }
+    }
+  }
+}
+
 // Assign it once per day
 // Offline players
 // Online players
 // Client knows amount (set while offline)
 // Client knows amount (set while online)
 // Client knows when bonus xp is awarded
-//
+// New users?

@@ -17,6 +17,7 @@
 #include "Buff.h"
 #include "City.h"
 #include "Class.h"
+#include "Clock.h"
 #include "CollisionChunk.h"
 #include "DataLoader.h"
 #include "Entities.h"
@@ -190,6 +191,9 @@ class Server {
   static const int MAX_CLIENTS = 100;
 
   ms_t _time, _lastTime;
+
+  IDayChangeClock *_dayChangeClock{nullptr};
+  void onDayChange();
 
   Socket _socket;
 

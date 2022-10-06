@@ -71,6 +71,9 @@ class TestServer {
   void createCityWithUserAsKing(std::string cityName, User &king);
   void waitForUsers(size_t numUsers) const;
 
+  // MockDayChangeClock &useMockDayChangeClock();
+  void onDayChange() { _server->onDayChange(); }
+
   void saveData();
 
   Server *operator->() { return _server; }
