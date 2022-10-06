@@ -192,7 +192,7 @@ class Server {
 
   ms_t _time, _lastTime;
 
-  IDayChangeClock *_dayChangeClock{nullptr};
+  DayChangeClock _dayChangeClock;
   void onDayChange();
 
   Socket _socket;

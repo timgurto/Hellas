@@ -44,8 +44,7 @@ Server::Server()
       _userFilesPath("Users/"),
       _lastSave(_time),
       _timeStatsLastPublished(_time),
-      groups(new Groups),
-      _dayChangeClock(new DayChangeClock) {
+      groups(new Groups) {
   _instance = this;
   _debugInstance = &_debug;
   if (cmdLineArgs.contains("quiet")) _debug.quiet();
@@ -272,7 +271,7 @@ void Server::run() {
     for (auto &spawner : _spawners) spawner.update(_time);
 
     // Clock stuff
-    if (_dayChangeClock->hasDayChanged()) onDayChange();
+    if (_dayChangeClock.hasDayChanged()) onDayChange();
 
     _cities.update(timeElapsed);
 

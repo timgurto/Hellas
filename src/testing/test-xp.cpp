@@ -99,13 +99,10 @@ TEST_CASE("Bonus XP is persistent", "[xp][persistence]") {
 }
 
 TEST_CASE_METHOD(ServerAndClient, "On day change, users get bonus XP", "[xp]") {
-  // auto &clock = server.useMockDayChangeClock();
-
   GIVEN("the user has no bonus XP") {
     CHECK(user->bonusXP() == 0);
 
     WHEN("the day changes") {
-      // clock.changeDay();
       server.onDayChange();
 
       THEN("he has bonus XP") { WAIT_UNTIL(user->bonusXP() > 0); }
