@@ -1,11 +1,17 @@
 #pragma once
 
+#include <ctime>
+
 class XmlWriter;
 class XmlReader;
 
 class DayChangeClock {
  public:
+  DayChangeClock();
+
   bool hasDayChanged();
-  void backup(XmlWriter &xw) const;
-  void restore(const XmlReader &xr);
+
+ private:
+  int currentDay();
+  int m_dayWhenLastChecked;
 };

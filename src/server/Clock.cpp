@@ -1,7 +1,20 @@
 #include "Clock.h"
 
-bool DayChangeClock::hasDayChanged() { return false; }
+DayChangeClock::DayChangeClock() : m_dayWhenLastChecked(currentDay()) {}
 
-void DayChangeClock::backup(XmlWriter &xw) const {}
+bool DayChangeClock::hasDayChanged() {
+  const auto thisDay = currentDay();
+  if (thisDay != m_dayWhenLastChecked) {
+    m_dayWhenLastChecked = thisDay;
+    return true;
+  }
 
-void DayChangeClock::restore(const XmlReader &xr) {}
+  return false;
+}
+
+int DayChangeClock::currentDay() {
+  auto rawTime = time_t{};
+  auto localTime = tm{};
+  localtime_s(&localTime, &rawTime);
+  return localTime.tm_yday;
+}
