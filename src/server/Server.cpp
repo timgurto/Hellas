@@ -299,7 +299,7 @@ void Server::run() {
 void Server::onDayChange() {
   for (auto &constUser : _onlineUsers) {
     auto &user = const_cast<User &>(constUser);
-    user.setBonusXP(1000);
+    user.onDayChange();
   }
 }
 

@@ -1730,6 +1730,8 @@ std::set<NPC *> User::findNearbyPets() {
   return ret;
 }
 
+void User::onDayChange() { _bonusXP = 1000; }
+
 void User::startQuest(const Quest &quest) {
   auto timeRemaining = static_cast<ms_t>(quest.timeLimit * 1000);
 

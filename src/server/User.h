@@ -391,6 +391,8 @@ class User : public Object {  // TODO: Don't inherit from Object
 
   std::set<NPC *> findNearbyPets();
 
+  void onDayChange();
+
   // Quests
   void startQuest(const Quest &quest);
   void completeQuest(const Quest::ID &id);
