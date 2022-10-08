@@ -1395,6 +1395,14 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
+      case SV_YOUR_BONUS_XP: {
+        auto bonusXP = XP{};
+        singleMsg >> bonusXP >> del;
+        if (del != MSG_END) break;
+        _bonusXP = bonusXP;
+        break;
+      }
+
       case SV_XP_GAIN: {
         auto newXP = XP{};
         singleMsg >> newXP >> del;

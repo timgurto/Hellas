@@ -99,6 +99,7 @@ class Client : public TextEntryManager {
   const HelpEntries &helpEntries() const { return _helpWindow.entries; }
   const Window &helpWindow() const { return *_helpWindow.window; }
   XP xp() const { return _xp; }
+  XP bonusXP() const { return _bonusXP; }
 
   bool isAtWarWith(const Avatar &user) const;
   bool isAtWarWithObjectOwner(const ClientObject::Owner &owner) const;
@@ -694,6 +695,7 @@ class Client : public TextEntryManager {
 
   XP _xp = 40;
   XP _maxXP = 100;
+  XP _bonusXP = 0;
 
   // Note: for now, this is used only for permanentObjects.
   Sprite::set_t _spritesWithCustomCullDistances;

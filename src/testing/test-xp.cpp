@@ -110,6 +110,18 @@ TEST_CASE_METHOD(ServerAndClient, "On day change, users get bonus XP", "[xp]") {
   }
 }
 
-// Client knows amount (set while offline)
-// Client knows amount (set while online)
+TEST_CASE_METHOD(ServerAndClient, "Client knows his bonus XP", "[xp]") {
+  THEN("the client knows he has no bonus XP") {
+    CHECK(client->bonusXP() == 0);
+
+    AND_WHEN("the day changes") {
+      server.onDayChange();
+
+      THEN("the client knows he has bonus XP") {
+        WAIT_UNTIL(client->bonusXP() > 0);
+      }
+    }
+  }
+}
+
 // Client knows when bonus xp is awarded

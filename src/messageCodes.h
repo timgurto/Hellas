@@ -330,7 +330,7 @@ enum MessageCode {
   SV_USER_OUT_OF_RANGE,
 
   // An object has moved far away from you, and you will stop getting updates
-  // from him.
+  // from it.
   // Arguments: serial
   SV_OBJECT_OUT_OF_RANGE,
 
@@ -608,8 +608,12 @@ enum MessageCode {
   // Arguments: XP, maxXP
   SV_YOUR_XP,
 
+  // How much bonus XP the user has
+  // Arguments: amount
+  SV_YOUR_BONUS_XP,
+
   // The user received new XP
-  // Arguments: XP
+  // Arguments: base XP, bonus XP
   SV_XP_GAIN,
 
   // A player leveled up
