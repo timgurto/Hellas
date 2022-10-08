@@ -224,7 +224,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   bool isAttackingTarget() const override { return _action == ATTACK; }
   SpellSchool school() const override;
   Level level() const override { return _level; }
-  void setBonusXP(XP newBonusXP) { _bonusXP = newBonusXP; }
+  void setBonusXP(XP newBonusXP);
   bool canEquip(const ServerItem &item) const;
   double combatDamage() const override;
   bool isInCombat() const { return _isInCombat; }

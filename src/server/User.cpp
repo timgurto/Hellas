@@ -1120,6 +1120,11 @@ SpellSchool User::school() const {
   return weapon.type()->stats().weaponSchool;
 }
 
+void User::setBonusXP(XP newBonusXP) {
+  _bonusXP = newBonusXP;
+  sendMessage({SV_YOUR_BONUS_XP, makeArgs(_bonusXP)});
+}
+
 bool User::canEquip(const ServerItem &item) const {
   return _level >= item.lvlReq();
 }
@@ -1730,10 +1735,7 @@ std::set<NPC *> User::findNearbyPets() {
   return ret;
 }
 
-void User::onDayChange() {
-  _bonusXP = 1000;
-  sendMessage({SV_YOUR_BONUS_XP, makeArgs(_bonusXP)});
-}
+void User::onDayChange() { setBonusXP(1000); }
 
 void User::startQuest(const Quest &quest) {
   auto timeRemaining = static_cast<ms_t>(quest.timeLimit * 1000);
