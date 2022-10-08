@@ -2,16 +2,15 @@
 
 #include <ctime>
 
-class XmlWriter;
-class XmlReader;
-
 class DayChangeClock {
  public:
   DayChangeClock();
 
   bool hasDayChanged();
 
+  static bool hasDayChangedSince(time_t previousTime);
+
  private:
-  int currentDay();
+  static int currentDay();
   int m_dayWhenLastChecked;
 };

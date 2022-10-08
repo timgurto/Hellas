@@ -12,8 +12,16 @@ bool DayChangeClock::hasDayChanged() {
   return false;
 }
 
+bool DayChangeClock::hasDayChangedSince(time_t previousTime) {
+  auto localTime = tm{};
+  localtime_s(&localTime, &previousTime);
+  auto previousDay = localTime.tm_yday;
+
+  return previousDay != currentDay();
+}
+
 int DayChangeClock::currentDay() {
-  auto rawTime = time_t{};
+  auto rawTime = time(0);
   auto localTime = tm{};
   localtime_s(&localTime, &rawTime);
   return localTime.tm_yday;
