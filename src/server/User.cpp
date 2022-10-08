@@ -1920,6 +1920,7 @@ void User::sendLostDebuffMsg(const Buff::ID &buff) const {
 void User::sendXPMessage() const {
   const Server &server = Server::instance();
   sendMessage({SV_YOUR_XP, makeArgs(_xp, XP_PER_LEVEL[_level])});
+  sendMessage({SV_YOUR_BONUS_XP, makeArgs(_bonusXP)});
 }
 
 void User::announceLevelUp() const {

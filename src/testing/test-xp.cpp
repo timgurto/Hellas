@@ -120,8 +120,24 @@ TEST_CASE_METHOD(ServerAndClient, "Client knows his bonus XP", "[xp]") {
       THEN("the client knows he has bonus XP") {
         WAIT_UNTIL(client->bonusXP() > 0);
       }
+
+      AND_WHEN("the user earns 1 XP (+1 bonus)") {
+        const auto bonusXPBefore = user->bonusXP();
+        user->addXP(1, User::XP_FROM_KILL);
+
+        THEN("the client knows he has 1 less bonus XP") {
+          WAIT_UNTIL(client->bonusXP() == bonusXPBefore - 1);
+        }
+      }
+
+      AND_WHEN("the user earns 2 XP (+2 bonus)") {
+        const auto bonusXPBefore = user->bonusXP();
+        user->addXP(2, User::XP_FROM_KILL);
+
+        THEN("the client knows he has 2 less bonus XP") {
+          WAIT_UNTIL(client->bonusXP() == bonusXPBefore - 2);
+        }
+      }
     }
   }
 }
-
-// Client knows when bonus xp is awarded
