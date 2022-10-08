@@ -378,6 +378,9 @@ class User : public Object {  // TODO: Don't inherit from Object
   }
   XP appropriateXPForKill(const Entity &victim) const;
   int getGroupSize() const;
+  bool _dayChangedWhileOffline{false};
+  void dayChangedWhileOffline() { _dayChangedWhileOffline = true; }
+  bool didDayChangeWhileOffline() const { return _dayChangedWhileOffline; }
 
   void sendMessage(const Message &msg) const;
 

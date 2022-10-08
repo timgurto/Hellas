@@ -464,6 +464,9 @@ void Server::addUser(const Socket &socket, const std::string &name,
   _entitiesByX.insert(&newUser);
   _entitiesByY.insert(&newUser);
 
+  // Give any daily rewards
+  if (newUser.didDayChangeWhileOffline()) newUser.onDayChange();
+
   newUser.sendMessage({SV_LOGIN_INFO_HAS_FINISHED});
 }
 

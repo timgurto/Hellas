@@ -28,6 +28,8 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
     auto secondsPlayed = 0;
     if (xr.findAttr(elem, "secondsPlayed", secondsPlayed))
       user.secondsPlayedBeforeThisSession(secondsPlayed);
+    if (DayChangeClock::hasDayChangedSince(timeWritten))
+      user.dayChangedWhileOffline();
 
     auto realWorldLocation = ""s;
     if (xr.findAttr(elem, "realWorldLocation", realWorldLocation))
@@ -48,14 +50,7 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
 
     auto xp = XP{0};
     if (xr.findAttr(elem, "xp", xp)) user.xp(xp);
-
-    // Note: this must happen BEFORE the day-change clock is checked.
     if (xr.findAttr(elem, "bonusXP", xp)) user.setBonusXP(xp);
-
-    // Note: this must happen AFTER bonus XP is loaded (so that its effects
-    // aren't overwritten).
-    if (allowSideEffects)
-      if (DayChangeClock::hasDayChangedSince(timeWritten)) user.onDayChange();
 
     auto n = 0;
 
