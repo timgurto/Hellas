@@ -113,4 +113,3 @@ TEST_CASE_METHOD(ServerAndClient, "On day change, users get bonus XP", "[xp]") {
 // Client knows amount (set while offline)
 // Client knows amount (set while online)
 // Client knows when bonus xp is awarded
-// New users?

@@ -465,7 +465,11 @@ void Server::addUser(const Socket &socket, const std::string &name,
   _entitiesByY.insert(&newUser);
 
   // Give any daily rewards
-  if (newUser.didDayChangeWhileOffline()) newUser.onDayChange();
+  auto shouldGiveDailyReward = newUser.didDayChangeWhileOffline();
+#ifndef TESTING  // Some tests make new players and expect normal XP behaviour
+  shouldGiveDailyReward = shouldGiveDailyReward || isNewUser;
+#endif
+  if (shouldGiveDailyReward) newUser.onDayChange();
 
   newUser.sendMessage({SV_LOGIN_INFO_HAS_FINISHED});
 }
