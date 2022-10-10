@@ -16,7 +16,7 @@
     onNewPlayers="1"
     particles="newPlayerClay" />
     
-<objectType id="crater" isFlat="1" isDecoration="1"
+<objectType id="crater"  collides="0" isFlat="1" isDecoration="1"
     xDrawOffset="-20" yDrawOffset="-14" >
     <particles profile="smoke" x="0" y="0" />
 </objectType>
