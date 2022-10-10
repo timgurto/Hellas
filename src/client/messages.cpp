@@ -1404,13 +1404,15 @@ void Client::handleBufferedMessages(const std::string &msg) {
       }
 
       case SV_XP_GAIN: {
-        auto newXP = XP{};
-        singleMsg >> newXP >> del;
+        auto base = XP{}, bonus = XP{};
+        singleMsg >> base >> del >> bonus >> del;
         if (del != MSG_END) return;
 
-        addFloatingCombatText("+"s + toString(newXP) + " XP"s,
-                              _character.location(), Color::STAT_XP);
+        auto text = "+"s + toString(base);
+        if (bonus > 0) text += " (+" + toString(bonus) + ")";
+        text += " XP"s;
 
+        addFloatingCombatText(text, _character.location(), Color::STAT_XP);
         break;
       }
 

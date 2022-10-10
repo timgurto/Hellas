@@ -1958,19 +1958,20 @@ int User::getGroupSize() const {
   return Server::instance().groups->getGroupSize(name());
 }
 
-void User::addXP(XP amount, XPSource xpSource) {
+void User::addXP(XP baseAmount, XPSource xpSource) {
   if (_level == MAX_LEVEL) return;
 
-  _xp += amount;
+  _xp += baseAmount;
 
   const auto shouldAwardBonusXP = xpSource == XP_FROM_KILL;
+  auto bonusXPToAward = XP{0};
   if (shouldAwardBonusXP) {
-    const auto bonusXPToAward = min(amount, _bonusXP);
+    bonusXPToAward = min(baseAmount, _bonusXP);
     _xp += bonusXPToAward;
     _bonusXP -= bonusXPToAward;
   }
 
-  sendMessage({SV_XP_GAIN, amount});
+  sendMessage({SV_XP_GAIN, makeArgs(baseAmount, bonusXPToAward)});
 
   // Level up if appropriate
   const auto maxXpThisLevel = XP_PER_LEVEL[_level];
