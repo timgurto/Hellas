@@ -120,7 +120,12 @@ void ProgressBarWithBonus<T>::checkIfChanged() {
     } else {
       _bar->width(toInt(1.0 * _numerator / _denominator * (width() - 2)));
       const auto spaceRemaining = width() - 2 - _bar->width();
-      auto bonusBarWidth = toInt(1.0 * _bonus / _denominator * (width() - 2));
+      // Note: doubling _bonus below so that this works with bonus XP
+      // (i.e., the bar shows how much XP will have been earned once the bonus
+      // XP is all used up.)
+      // If this class is used for anything else then this will need to change.
+      auto bonusBarWidth =
+          toInt(1.0 * _bonus * 2 / _denominator * (width() - 2));
       bonusBarWidth = min(bonusBarWidth, spaceRemaining);
       _bonusBar->width(bonusBarWidth);
       _bonusBar->left(_bar->right());
