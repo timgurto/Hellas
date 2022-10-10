@@ -67,6 +67,7 @@ class Color {
   static const Color STAT_HEALTH;
   static const Color STAT_ENERGY;
   static const Color STAT_XP;
+  static const Color STAT_XP_BONUS;
   static const Color STAT_AIR;
   static const Color STAT_EARTH;
   static const Color STAT_FIRE;

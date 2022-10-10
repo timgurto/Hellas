@@ -11,7 +11,7 @@ using namespace std::string_literals;
 template <typename T>
 class ProgressBar : public Element {
  public:
- private:
+ protected:  // TODO make as much private as possible
   ColorBlock *_bar;
 
   const T &_numerator, &_denominator;
@@ -20,7 +20,7 @@ class ProgressBar : public Element {
   bool _showValuesInTooltip = false;
   std::string _tooltipSuffix{};
 
-  void checkIfChanged() override;
+  virtual void checkIfChanged() override;
 
   void refresh() override {
     if (_showValuesInTooltip) {
@@ -75,6 +75,56 @@ void ProgressBar<T>::checkIfChanged() {
       _bar->width(width() - 2);
     else
       _bar->width(toInt(1.0 * _numerator / _denominator * (width() - 2)));
+    markChanged();
+  }
+  Element::checkIfChanged();
+}
+
+template <typename T>
+class ProgressBarWithBonus : public ProgressBar<T> {
+ private:
+  const T &_bonus;
+  T _lastBonusVal;
+  ColorBlock *_bonusBar;
+
+  void checkIfChanged() override;
+
+ public:
+  ProgressBarWithBonus(const ScreenRect &rect, const T &numerator,
+                       const T &denominator, const T &bonus,
+                       const Color &barColor = Color::WINDOW_FONT,
+                       const Color &bonusColor = Color::WINDOW_HEADING,
+                       const Color &backgroundColor = Color::UI_PROGRESS_BAR)
+      : ProgressBar(rect, numerator, denominator, barColor, backgroundColor),
+        _bonus(bonus) {
+    _bonusBar = new ColorBlock({1, 1, 1, rect.h - 2}, bonusColor);
+    addChild(_bonusBar);
+  }
+};
+
+template <typename T>
+void ProgressBarWithBonus<T>::checkIfChanged() {
+  bool changed = false;
+  if (_lastNumeratorVal != _numerator) {
+    _lastNumeratorVal = _numerator;
+    changed = true;
+  }
+  if (_lastDenominatorVal != _denominator) {
+    _lastDenominatorVal = _denominator;
+    changed = true;
+  }
+  if (true) {
+    if (_denominator == 0 || _numerator >= _denominator) {
+      _bar->width(width() - 2);
+      _bonusBar->width(0);
+    } else {
+      _bar->width(toInt(1.0 * _numerator / _denominator * (width() - 2)));
+      const auto spaceRemaining = width() - 2 - _bar->width();
+      auto bonusBarWidth = toInt(1.0 * _bonus / _denominator * (width() - 2));
+      bonusBarWidth = min(bonusBarWidth, spaceRemaining);
+      _bonusBar->width(bonusBarWidth);
+      _bonusBar->left(_bar->right());
+    }
     markChanged();
   }
   Element::checkIfChanged();

@@ -74,10 +74,11 @@ void CombatantPanel::hideEnergyBar() {
   }
 }
 
-void CombatantPanel::addXPBar(const XP &xp, const XP &maxXP) {
-  _xpBar = new ProgressBar<Energy>(
-      {GAP, Element::height(), ELEMENT_WIDTH, BAR_HEIGHT}, xp, maxXP,
-      Color::STAT_XP);
+void CombatantPanel::addXPBar(const XP &xp, const XP &maxXP,
+                              const XP &bonusXP) {
+  _xpBar = new ProgressBarWithBonus<Energy>(
+      {GAP, Element::height(), ELEMENT_WIDTH, BAR_HEIGHT}, xp, maxXP, bonusXP,
+      Color::STAT_XP, Color::STAT_XP_BONUS);
   height(Element::height() + BAR_HEIGHT + GAP);
   _xpBar->showValuesInTooltip(" experience");
   addChild(_xpBar);

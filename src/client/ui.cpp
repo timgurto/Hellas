@@ -475,7 +475,7 @@ void Client::initPlayerPanels() {
       playerPanelX, playerPanelY, CombatantPanel::STANDARD_WIDTH, _username,
       _character.health(), _character.maxHealth(), _character.energy(),
       _character.maxEnergy(), _character.level());
-  playerPanel->addXPBar(_xp, _maxXP);
+  playerPanel->addXPBar(_xp, _maxXP, _bonusXP);
   playerPanel->id("Player panel");
   playerPanel->setLevelColor(Color::DIFFICULTY_NEUTRAL);
   addUI(playerPanel);

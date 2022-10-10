@@ -133,6 +133,8 @@ class Element {
   void rect(const ScreenRect &rhs);
   void rect(px_t x, px_t y, px_t w, px_t h);
   px_t width() const { return _rect.w; }
+  void left(px_t x) { _rect.x = x; }
+  px_t right() const { return _rect.x + _rect.w; }
   virtual void width(px_t w);
   px_t height() const { return _rect.h; }
   virtual void height(px_t h);
