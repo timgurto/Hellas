@@ -20,15 +20,17 @@ class ProgressBar : public Element {
   bool _showValuesInTooltip = false;
   std::string _tooltipSuffix{};
 
+  virtual std::string tooltipText() const {
+    return toString(_numerator) + "/"s + toString(_denominator) +
+           _tooltipSuffix;
+  }
+
   void checkIfChanged() override;
   bool hasChanged();
   virtual void updateBarWidth();
 
   void refresh() override {
-    if (_showValuesInTooltip) {
-      setTooltip(toString(_numerator) + "/"s + toString(_denominator) +
-                 _tooltipSuffix);
-    }
+    if (_showValuesInTooltip) setTooltip(tooltipText());
     Element::refresh();
   }
 
@@ -100,6 +102,12 @@ class ProgressBarWithBonus : public ProgressBar<T> {
   ColorBlock *_bonusBar;
 
   void updateBarWidth() override;
+
+  std::string tooltipText() const override {
+    auto text = ProgressBar::tooltipText();
+    if (_bonus > 0) text += " (+"s + toString(_bonus) + " bonus)"s;
+    return text;
+  }
 
  public:
   ProgressBarWithBonus(const ScreenRect &rect, const T &numerator,
