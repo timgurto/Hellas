@@ -20,8 +20,9 @@ class ProgressBar : public Element {
   bool _showValuesInTooltip = false;
   std::string _tooltipSuffix{};
 
-  virtual void checkIfChanged() override;
+  void checkIfChanged() override;
   bool hasChanged();
+  virtual void updateBarWidth();
 
   void refresh() override {
     if (_showValuesInTooltip) {
@@ -66,7 +67,7 @@ void ProgressBar<T>::checkIfChanged() {
     if (_denominator == 0 || _numerator >= _denominator)
       _bar->width(width() - 2);
     else
-      _bar->width(toInt(1.0 * _numerator / _denominator * (width() - 2)));
+      updateBarWidth();
     markChanged();
   }
   Element::checkIfChanged();
@@ -87,13 +88,18 @@ bool ProgressBar<T>::hasChanged() {
 }
 
 template <typename T>
+void ProgressBar<T>::updateBarWidth() {
+  _bar->width(toInt(1.0 * _numerator / _denominator * (width() - 2)));
+}
+
+template <typename T>
 class ProgressBarWithBonus : public ProgressBar<T> {
  private:
   const T &_bonus;
   T _lastBonusVal;
   ColorBlock *_bonusBar;
 
-  void checkIfChanged() override;
+  void updateBarWidth() override;
 
  public:
   ProgressBarWithBonus(const ScreenRect &rect, const T &numerator,
@@ -109,27 +115,18 @@ class ProgressBarWithBonus : public ProgressBar<T> {
 };
 
 template <typename T>
-void ProgressBarWithBonus<T>::checkIfChanged() {
-  if (hasChanged()) {
-    if (_denominator == 0 || _numerator >= _denominator) {
-      _bar->width(width() - 2);
-      _bonusBar->width(0);
-    } else {
-      _bar->width(toInt(1.0 * _numerator / _denominator * (width() - 2)));
-      const auto spaceRemaining = width() - 2 - _bar->width();
-      // Note: doubling _bonus below so that this works with bonus XP
-      // (i.e., the bar shows how much XP will have been earned once the bonus
-      // XP is all used up.)
-      // If this class is used for anything else then this will need to change.
-      auto bonusBarWidth =
-          toInt(1.0 * _bonus * 2 / _denominator * (width() - 2));
-      bonusBarWidth = min(bonusBarWidth, spaceRemaining);
-      _bonusBar->width(bonusBarWidth);
-      _bonusBar->left(_bar->right());
-    }
-    markChanged();
-  }
-  Element::checkIfChanged();
+void ProgressBarWithBonus<T>::updateBarWidth() {
+  ProgressBar::updateBarWidth();
+
+  const auto spaceRemaining = width() - 2 - _bar->width();
+  // Note: doubling _bonus below so that this works with bonus XP
+  // (i.e., the bar shows how much XP will have been earned once the bonus
+  // XP is all used up.)
+  // If this class is used for anything else then this will need to change.
+  auto bonusBarWidth = toInt(1.0 * _bonus * 2 / _denominator * (width() - 2));
+  bonusBarWidth = min(bonusBarWidth, spaceRemaining);
+  _bonusBar->width(bonusBarWidth);
+  _bonusBar->left(_bar->right());
 }
 
 #endif
