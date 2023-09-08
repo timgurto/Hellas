@@ -18,6 +18,11 @@ a {
     color: #62BA6C;
 }
 
+h1 {
+    visibility:hidden;
+    position:absolute;
+}
+
 a:hover {
     color: white;
     text-decoration: none;
@@ -40,5 +45,21 @@ a:hover {
 }
 .btn-facebook:active, .btn-facebook:hover {
     background: #263961;
+    color: #fff;
+}
+
+.btn-discord {
+    background: #5865F2;
+    border-radius: 0;
+    color: #fff;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #4450BA; 
+}
+.btn-discord:link, .btn-discord:visited {
+    color: #fff;
+}
+.btn-discord:active, .btn-discord:hover {
+    background: #4450BA;
     color: #fff;
 }
