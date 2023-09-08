@@ -519,7 +519,7 @@ TEST_CASE("Tool objects lose durability",
   GIVEN("a user with a construction tool") {
     auto data = R"(
       <objectType id="hole" constructionReq="digging" />
-      <objectType id="earthMover" >
+      <objectType id="earthMover" maxHealth="10000000" >
         <tag name="digging" />
       </objectType>
     )";
@@ -534,7 +534,7 @@ TEST_CASE("Tool objects lose durability",
       const auto &earthMover = s.getFirstObject();
       for (auto i = 0; i != 200; ++i) {
         c.sendMessage(CL_CONSTRUCT, makeArgs("hole", 10, 15));
-        WAIT_UNTIL(s.entities().size() == i + 1);
+        WAIT_UNTIL(s.entities().size() == i + 2);
         if (earthMover.isMissingHealth()) break;
       }
 
