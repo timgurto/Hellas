@@ -273,6 +273,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
       case WARNING_PRICE_IS_BROKEN:
       case WARNING_CONTAINS_BOUND_ITEM:
       case WARNING_RESTRICTED_CONTAINER:
+      case WARNING_NO_HOUSE:
         errorMessageColor = Color::CHAT_WARNING;  // Yellow above, red below
       case ERROR_INVALID_USER:
       case ERROR_INVALID_ITEM:
@@ -3090,6 +3091,7 @@ void Client::initializeMessageNames() {
       "That container has a soulbound item.";
   _errorMessages[WARNING_RESTRICTED_CONTAINER] =
       "That container cannot hold that item.";
+  _errorMessages[WARNING_NO_HOUSE] = "You don't own a house.";
 }
 
 void Client::performCommand(const std::string &commandString) {

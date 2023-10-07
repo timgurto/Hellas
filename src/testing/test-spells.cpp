@@ -788,3 +788,32 @@ TEST_CASE_METHOD(ServerAndClientWithData, "A spell that summons an NPC",
     }
   }
 }
+
+TEST_CASE_METHOD(ServerAndClientWithData, "A teleport-home spell", "[spells]") {
+  GIVEN("a spell that teleports you to your house, and house objects") {
+    useData(R"(
+      <spell id="housePort" >
+        <targets self="1" />
+        <function name="teleportToHouse" />
+      </spell>
+      <objectType id="house" playerUnique="house" />
+    )");
+
+    AND_GIVEN("the user knows the spell") {
+      user->getClass().teachSpell("housePort");
+
+      AND_GIVEN("he has a house far away") {
+        const auto &house =
+            server->addObject("house", {250, 250}, user->name());
+
+        WHEN("he casts the spell") {
+          client->sendMessage(CL_CAST_SPELL, "housePort");
+
+          THEN("he is near his house") {
+            WAIT_UNTIL(distance(*user, house) <= 150.0);
+          }
+        }
+      }
+    }
+  }
+}

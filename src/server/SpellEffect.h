@@ -73,6 +73,7 @@ class SpellEffect {
   DECLARE_SPELL_FUNCTION(dispellDebuff);
   DECLARE_SPELL_FUNCTION(randomTeleport);
   DECLARE_SPELL_FUNCTION(teleportToCity);
+  DECLARE_SPELL_FUNCTION(teleportToHouse);
   DECLARE_SPELL_FUNCTION(teachRecipe);
   DECLARE_SPELL_FUNCTION(spawnNPC);
   DECLARE_SPELL_FUNCTION(randomBuff);

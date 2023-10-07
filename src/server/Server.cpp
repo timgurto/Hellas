@@ -903,6 +903,24 @@ const Recipe *Server::findRecipe(const std::string &recipeID) const {
   return &*it;
 }
 
+const Entity *Server::findUsersHouse(const User &user) const {
+  for (auto pEntity : _entities) {
+    if (pEntity->spawner()) continue;  // Optimisation and assumption
+
+    // Player owns directly
+    auto userOwnsThisObject = _objectsByOwner.isObjectOwnedBy(
+        pEntity->serial(), {Permissions::Owner::PLAYER, user.name()});
+    if (!userOwnsThisObject) continue;
+
+    const auto *obj = dynamic_cast<const Object *>(pEntity);
+    const auto isAHouse =
+        obj && obj->objType().playerUniqueCategory() == "house";
+    if (isAHouse) return pEntity;
+  }
+
+  return nullptr;
+}
+
 const Terrain *Server::terrainType(char index) const {
   auto it = _terrainTypes.find(index);
   if (it == _terrainTypes.end()) return nullptr;

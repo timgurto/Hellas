@@ -10,6 +10,7 @@ Functions:
     dispellDebuff (s1 = school)
     randomTeleport (i1 = distance in podes)
     teleportToCity ()
+    teleportToHouse ()
 -->
 
 <root>
@@ -18,6 +19,11 @@ Functions:
 <spell id="cityPort" name="Return to City" icon="arch" cooldown="2700" > <!-- 45 minutes -->
     <targets self="1" />
     <function name="teleportToCity" />
+    <aesthetics sounds="teleport" />
+</spell>
+<spell id="housePort" name="Return Home" icon="torch" cooldown="2700" > <!-- 45 minutes -->
+    <targets self="1" />
+    <function name="teleportToHouse" />
     <aesthetics sounds="teleport" />
 </spell>
 

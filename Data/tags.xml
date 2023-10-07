@@ -43,6 +43,9 @@
 <tag id="food" name="Food" />
 <tag id="shield" name="Shield" />
 
+<tag id="altar" name="Altar" />
+<tag id="house" name="House" />
+
 <tag id="classAthlete"  name="Athlete Training" />
 <tag id="classScholar"  name="Scholar Training" />
 <tag id="classZealot"   name="Zealot Training" />

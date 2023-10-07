@@ -97,6 +97,7 @@ class Server {
   Entity *findEntityBySerial(Serial serial);
   const MapRect *findNPCTemplate(const std::string &templateID) const;
   const Recipe *findRecipe(const std::string &recipeID) const;
+  const Entity *findUsersHouse(const User &user) const;
 
   struct ContainerInfo {
     ServerItem::vect_t *container{nullptr};

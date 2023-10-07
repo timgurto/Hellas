@@ -837,8 +837,10 @@ enum MessageCode {
                           // non-citizen
 
   // Objects
-  WARNING_DOESNT_EXIST,      // The user tried to perform an action on an object
-                             // that doesn't exist
+  WARNING_DOESNT_EXIST,  // The user tried to perform an action on an object
+                         // that doesn't exist
+  WARNING_NO_HOUSE,  // The user can't perform a house-related action because he
+                     // doesn't own one.
   ERROR_CANNOT_DECONSTRUCT,  // The user tried to deconstruct an object that
                              // cannot be deconstructed
   ERROR_DAMAGED_OBJECT,  // That action cannot be performed on a damaged object

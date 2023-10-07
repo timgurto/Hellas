@@ -17,6 +17,7 @@ SpellEffect::FunctionMap SpellEffect::functionMap = {
     {"dispellDebuff", dispellDebuff},
     {"randomTeleport", randomTeleport},
     {"teleportToCity", teleportToCity},
+    {"teleportToHouse", teleportToHouse},
     {"teachRecipe", teachRecipe},
     {"spawnNPC", spawnNPC},
     {"randomBuff", randomBuff},
@@ -214,6 +215,30 @@ CombatResult SpellEffect::teleportToCity(const SpellEffect &effect,
   auto cityLoc = server.cities().locationOf(cityName);
 
   const auto succeeded = target.teleportToValidLocationInCircle(cityLoc, 150.0);
+  return succeeded ? HIT : FAIL;
+}
+
+CombatResult SpellEffect::teleportToHouse(const SpellEffect &effect,
+                                          Entity &caster, Entity &target,
+                                          const std::string &supplementaryArg) {
+  auto &server = Server::instance();
+  const auto *casterAsUser = dynamic_cast<const User *>(&caster);
+  if (!casterAsUser) return FAIL;
+
+  const auto userOwnsAHouse = casterAsUser->hasPlayerUnique("house");
+  if (!userOwnsAHouse) {
+    casterAsUser->sendMessage(WARNING_NO_HOUSE);
+    return FAIL;
+  }
+
+  const auto *house = server.findUsersHouse(*casterAsUser);
+  if (!house) {
+    casterAsUser->sendMessage(WARNING_NO_HOUSE);
+    return FAIL;
+  }
+
+  const auto succeeded =
+      target.teleportToValidLocationInCircle(house->location(), 150.0);
   return succeeded ? HIT : FAIL;
 }
 
