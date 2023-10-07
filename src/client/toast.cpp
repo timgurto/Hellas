@@ -49,6 +49,8 @@ void Client::toast(const Texture &icon, const std::string &text) {
 
   toastInfo.push_back(t);
   populateToastsList();
+
+  _debug(text);
 }
 
 void Client::populateToastsList() {

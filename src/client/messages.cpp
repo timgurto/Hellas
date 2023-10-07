@@ -513,7 +513,6 @@ void Client::handleBufferedMessages(const std::string &msg) {
               "By the grace of Hermes, you shall return to this point should "
               "you ever fall in battle."s;
           toast("light"s, message);
-          _debug(message);
         }
         break;
       }
@@ -641,7 +640,6 @@ void Client::handleBufferedMessages(const std::string &msg) {
 
         auto message = "You have joined the city of "s + cityName + "."s;
         toast("column", message);
-        _debug(message);
 
         break;
       }
@@ -690,7 +688,6 @@ void Client::handleBufferedMessages(const std::string &msg) {
           message = "By the grace of Athena, you have founded the city of "s +
                     city + "."s;
         toast("arch"s, message);
-        _debug(message);
         break;
       }
 
@@ -702,7 +699,6 @@ void Client::handleBufferedMessages(const std::string &msg) {
 
         auto message = "The city of "s + city + " has been destroyed."s;
         toast("fireball"s, message);
-        _debug(message);
 
         _cities.remove(city);
         break;
@@ -975,7 +971,6 @@ void Client::handleBufferedMessages(const std::string &msg) {
             auto message =
                 "You have learned how to craft a new recipe: " + it->name();
             toast("leather", message);
-            _debug(message);
           }
         }
 
@@ -1013,7 +1008,6 @@ void Client::handleBufferedMessages(const std::string &msg) {
             auto message = "You have learned how to construct a new object: " +
                            cot->name();
             toast("hammer", message);
-            _debug(message);
           }
         }
 
@@ -1535,7 +1529,6 @@ void Client::handleBufferedMessages(const std::string &msg) {
         else
           youAre = "Your city is";
         auto message = youAre + " now at war with "s + name + "."s;
-        _debug(message);
         toast("helmet", message);
 
         _mapWindow->markChanged();
@@ -1691,7 +1684,6 @@ void Client::handleBufferedMessages(const std::string &msg) {
         else
           youAre = "Your city is";
         auto message = youAre + " now at peace with "s + name + "."s;
-        _debug(message);
         toast("helmet", message);
 
         _mapWindow->markChanged();
@@ -1956,7 +1948,6 @@ void Client::handleBufferedMessages(const std::string &msg) {
             "a talent point in "s +
             talentName + "."s;
         toast("skullRed"s, message);
-        _debug(message);
         break;
       }
 
@@ -2425,7 +2416,6 @@ void Client::handle_SV_NO_CITY(const std::string &username) {
 
     refreshCitySection();
     toast("column", message);
-    _debug(message);
     return;
   }
   auto userIt = _otherUsers.find(username);
@@ -2731,7 +2721,6 @@ void Client::handle_SV_LEVEL_UP(const std::string &username) {
     auto message =
         "You have reached level "s + toString(avatar->level()) + "!"s;
     toast("light", message);
-    _debug(message);
 
     // Refresh these, since they may change colour with the reduced difficulty
     populateQuestLog();
