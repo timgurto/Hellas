@@ -86,3 +86,4 @@ dev-stuff/release-process.pdf
 logging/metalWealth.csv
 publish-client.bat
 src/version.h
+/.vs
