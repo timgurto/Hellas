@@ -32,6 +32,14 @@ ClientTerrain::ClientTerrain(const std::string& imageFile, size_t frames,
     }
 }
 
+const Texture& ClientTerrain::frameToDraw() const {
+  if (_showRandomFrame) {
+    auto chosenFrame = rand() % _frames;
+    return _images[chosenFrame];
+  }
+  return _images[_animationFrame];
+}
+
 void ClientTerrain::draw(const ScreenRect& loc,
                          const ScreenRect& srcRect) const {
   frameToDraw().draw(loc, srcRect);
@@ -46,7 +54,7 @@ void ClientTerrain::setHalfAlpha() const { frameToDraw().setAlpha(0x7f); }
 void ClientTerrain::setQuarterAlpha() const { frameToDraw().setAlpha(0x3f); }
 
 void ClientTerrain::advanceTime(ms_t timeElapsed) {
-  const auto usesAnimation = _frameTime == 0;
+  const auto usesAnimation = _frameTime != 0 && !_showRandomFrame;
   if (!usesAnimation) return;
 
   _frameTimer += timeElapsed;

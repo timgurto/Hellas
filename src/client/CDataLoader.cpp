@@ -138,6 +138,9 @@ void CDataLoader::loadTerrain(XmlReader &xr) {
     auto n = 0;
     if (xr.findAttr(elem, "hardEdge", n) && n) terrain.setHardEdge();
 
+    if (xr.findAttr(elem, "showRandomFrame", n) && n)
+      terrain.setShowRandomFrame();
+
     terrain.loadTagsFromXML(xr, elem);
   }
 }

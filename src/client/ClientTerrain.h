@@ -19,6 +19,8 @@ class ClientTerrain : public Terrain {
   ms_t _frameTime;
   ms_t _frameTimer;
 
+  bool _showRandomFrame{false};
+
   bool _hasHardEdge{false};  // Disable blending with adjacent terrain
 
  public:
@@ -28,7 +30,9 @@ class ClientTerrain : public Terrain {
   void setHardEdge() { _hasHardEdge = true; }
   bool hasHardEdge() const { return _hasHardEdge; }
 
-  const Texture &frameToDraw() const { return _images[_animationFrame]; }
+  const Texture &frameToDraw() const;
+
+  void setShowRandomFrame() { _showRandomFrame = true; }
 
   void draw(const ScreenRect &loc, const ScreenRect &srcRect) const;
   void draw(px_t x, px_t y) const;
