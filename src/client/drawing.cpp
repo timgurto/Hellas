@@ -228,7 +228,8 @@ void Client::drawFootprint(const MapRect &rect, Color color,
 }
 
 void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const {
-  if (isDebug()) {
+  const auto skipBlending = isDebug();
+  if (skipBlending) {
     gameData.terrain.at(_map[x][y]).draw(xLoc, yLoc);
     return;
   }
@@ -322,9 +323,9 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const {
     terrainThis->draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
     terrainThis->draw(drawLoc + TOP_LEFT, TOP_LEFT);
   }
-  terrainThis->setQuarterAlpha();
 
   // Quarter-alpha L, R, E, F, G, H tiles
+  terrainThis->setQuarterAlpha();
   if (!yOdd || x != 0) {
     terrainL->draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
     terrainL->draw(drawLoc + TOP_LEFT, TOP_LEFT);
