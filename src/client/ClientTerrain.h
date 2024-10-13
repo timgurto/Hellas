@@ -10,8 +10,10 @@
 
 class ClientTerrain : public Terrain {
   std::vector<Texture> _images;
+
+  // The number of animation frames, or frames from which to choose randomly.
   size_t _frames;
-  size_t _frame;
+  size_t _animationFrame;
   ms_t _frameTime;
   ms_t _frameTimer;
 

@@ -9,7 +9,7 @@
 ClientTerrain::ClientTerrain(const std::string &imageFile, size_t frames,
                              ms_t frameTime)
     : _frames(frames),
-      _frame(0),
+      _animationFrame(0),
       _frameTime(frameTime),
       _frameTimer(frameTime) {
   if (_frames == 1)
@@ -34,21 +34,29 @@ ClientTerrain::ClientTerrain(const std::string &imageFile, size_t frames,
 
 void ClientTerrain::draw(const ScreenRect &loc,
                          const ScreenRect &srcRect) const {
-  _images[_frame].draw(loc, srcRect);
+  _images[_animationFrame].draw(loc, srcRect);
 }
 
-void ClientTerrain::draw(px_t x, px_t y) const { _images[_frame].draw(x, y); }
+void ClientTerrain::draw(px_t x, px_t y) const {
+  _images[_animationFrame].draw(x, y);
+}
 
-void ClientTerrain::setFullAlpha() const { _images[_frame].setAlpha(0xff); }
+void ClientTerrain::setFullAlpha() const {
+  _images[_animationFrame].setAlpha(0xff);
+}
 
-void ClientTerrain::setHalfAlpha() const { _images[_frame].setAlpha(0x7f); }
+void ClientTerrain::setHalfAlpha() const {
+  _images[_animationFrame].setAlpha(0x7f);
+}
 
-void ClientTerrain::setQuarterAlpha() const { _images[_frame].setAlpha(0x3f); }
+void ClientTerrain::setQuarterAlpha() const {
+  _images[_animationFrame].setAlpha(0x3f);
+}
 
 void ClientTerrain::advanceTime(ms_t timeElapsed) {
   if (_frameTime == 0) return;
 
   _frameTimer += timeElapsed;
   if (_frameTimer >= _frameTime * _frames) _frameTimer -= _frameTime * _frames;
-  _frame = _frameTimer / _frameTime;
+  _animationFrame = _frameTimer / _frameTime;
 }
