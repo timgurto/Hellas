@@ -46,7 +46,8 @@ void ClientTerrain::setHalfAlpha() const { frameToDraw().setAlpha(0x7f); }
 void ClientTerrain::setQuarterAlpha() const { frameToDraw().setAlpha(0x3f); }
 
 void ClientTerrain::advanceTime(ms_t timeElapsed) {
-  if (_frameTime == 0) return;
+  const auto usesAnimation = _frameTime == 0;
+  if (!usesAnimation) return;
 
   _frameTimer += timeElapsed;
   if (_frameTimer >= _frameTime * _frames) _frameTimer -= _frameTime * _frames;

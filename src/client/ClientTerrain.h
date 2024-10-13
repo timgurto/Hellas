@@ -13,11 +13,13 @@ class ClientTerrain : public Terrain {
 
   // The number of animation frames, or frames from which to choose randomly.
   size_t _frames;
+
+  // If animated, all tiles will show the same frame at any given time.
   size_t _animationFrame;
   ms_t _frameTime;
   ms_t _frameTimer;
 
-  bool _hasHardEdge{false};
+  bool _hasHardEdge{false};  // Disable blending with adjacent terrain
 
  public:
   ClientTerrain(const std::string &imageFile = "", size_t frames = 1,
