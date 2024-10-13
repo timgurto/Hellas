@@ -6,7 +6,7 @@
 #include "../util.h"
 #include "Client.h"
 
-ClientTerrain::ClientTerrain(const std::string &imageFile, size_t frames,
+ClientTerrain::ClientTerrain(const std::string& imageFile, size_t frames,
                              ms_t frameTime)
     : _frames(frames),
       _animationFrame(0),
@@ -26,15 +26,15 @@ ClientTerrain::ClientTerrain(const std::string &imageFile, size_t frames,
     }
 
   if (!isDebug())
-    for (Texture &frame : _images) {
+    for (Texture& frame : _images) {
       frame.setBlend(SDL_BLENDMODE_ADD);
       frame.setAlpha(0x3f);
     }
 }
 
-void ClientTerrain::draw(const ScreenRect &loc,
-                         const ScreenRect &srcRect) const {
   _images[_animationFrame].draw(loc, srcRect);
+void ClientTerrain::draw(const ScreenRect& loc,
+                         const ScreenRect& srcRect) const {
 }
 
 void ClientTerrain::draw(px_t x, px_t y) const {
