@@ -87,3 +87,4 @@ logging/metalWealth.csv
 publish-client.bat
 src/version.h
 /.vs
+*.recipe
