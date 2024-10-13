@@ -40,6 +40,7 @@ class ClientTerrain : public Terrain {
   void setFullAlpha() const;
   void setHalfAlpha() const;
   void setQuarterAlpha() const;
+  void setTerrainAlpha(Uint8 alpha) const;
 
   void advanceTime(ms_t timeElapsed);
 };

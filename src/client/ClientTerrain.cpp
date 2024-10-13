@@ -47,11 +47,13 @@ void ClientTerrain::draw(const ScreenRect& loc,
 
 void ClientTerrain::draw(px_t x, px_t y) const { frameToDraw().draw(x, y); }
 
-void ClientTerrain::setFullAlpha() const { frameToDraw().setAlpha(0xff); }
+void ClientTerrain::setHalfAlpha() const { setTerrainAlpha(0x7f); }
 
-void ClientTerrain::setHalfAlpha() const { frameToDraw().setAlpha(0x7f); }
+void ClientTerrain::setQuarterAlpha() const { setTerrainAlpha(0x3f); }
 
-void ClientTerrain::setQuarterAlpha() const { frameToDraw().setAlpha(0x3f); }
+void ClientTerrain::setTerrainAlpha(Uint8 alpha) const {
+  frameToDraw().setAlpha(alpha);
+}
 
 void ClientTerrain::advanceTime(ms_t timeElapsed) {
   const auto usesAnimation = _frameTime != 0 && !_showRandomFrame;
