@@ -32,26 +32,18 @@ ClientTerrain::ClientTerrain(const std::string& imageFile, size_t frames,
     }
 }
 
-  _images[_animationFrame].draw(loc, srcRect);
 void ClientTerrain::draw(const ScreenRect& loc,
                          const ScreenRect& srcRect) const {
+  frameToDraw().draw(loc, srcRect);
 }
 
-void ClientTerrain::draw(px_t x, px_t y) const {
-  _images[_animationFrame].draw(x, y);
-}
+void ClientTerrain::draw(px_t x, px_t y) const { frameToDraw().draw(x, y); }
 
-void ClientTerrain::setFullAlpha() const {
-  _images[_animationFrame].setAlpha(0xff);
-}
+void ClientTerrain::setFullAlpha() const { frameToDraw().setAlpha(0xff); }
 
-void ClientTerrain::setHalfAlpha() const {
-  _images[_animationFrame].setAlpha(0x7f);
-}
+void ClientTerrain::setHalfAlpha() const { frameToDraw().setAlpha(0x7f); }
 
-void ClientTerrain::setQuarterAlpha() const {
-  _images[_animationFrame].setAlpha(0x3f);
-}
+void ClientTerrain::setQuarterAlpha() const { frameToDraw().setAlpha(0x3f); }
 
 void ClientTerrain::advanceTime(ms_t timeElapsed) {
   if (_frameTime == 0) return;

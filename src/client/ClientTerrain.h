@@ -26,6 +26,8 @@ class ClientTerrain : public Terrain {
   void setHardEdge() { _hasHardEdge = true; }
   bool hasHardEdge() const { return _hasHardEdge; }
 
+  const Texture &frameToDraw() const { return _images[_animationFrame]; }
+
   void draw(const ScreenRect &loc, const ScreenRect &srcRect) const;
   void draw(px_t x, px_t y) const;
 
