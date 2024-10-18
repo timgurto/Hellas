@@ -15,7 +15,7 @@ frameTime          *
 <terrain index="c" id="rocky"           color="B09AB0" />
 <terrain index="d" id="mountain"        color="A7898F" />
 <terrain index="e" id="plains"          color="5D9A62" frames="6" showRandomFrame="1"/>
-<terrain index="f" id="plainsFertile"   color="2B6647" />
+<terrain index="f" id="plainsFertile"   color="2B6647" frames="6" showRandomFrame="1"/>
 <terrain index="g" id="plainsRocky"     color="83928F" />
 <terrain index="h" id="plainsMountain"  color="617B7C" />
 <terrain index="i" id="forest"          color="87715B" />
