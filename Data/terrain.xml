@@ -22,7 +22,7 @@ frameTime          *
 <terrain index="j" id="forestFertile"   color="2F5E44" />
 <terrain index="k" id="forestRocky"     color="6D7B81" />
 <terrain index="l" id="forestMountain"  color="4D5862" />
-<terrain index="m" id="rich"            color="A1C882" />
+<terrain index="m" id="rich"            color="A1C882" frames="6" showRandomFrame="1"/>
 <terrain index="n" id="richFertile"     color="7D9166" />
 <terrain index="o" id="richRocky"       color="89958C" />
 <terrain index="p" id="richMountain"    color="655884" />
