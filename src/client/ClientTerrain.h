@@ -30,12 +30,13 @@ class ClientTerrain : public Terrain {
   void setHardEdge() { _hasHardEdge = true; }
   bool hasHardEdge() const { return _hasHardEdge; }
 
-  const Texture &frameToDraw() const;
+  const Texture &frameToDraw(unsigned coordHash) const;
 
   void setShowRandomFrame() { _showRandomFrame = true; }
 
-  void draw(const ScreenRect &loc, const ScreenRect &srcRect) const;
-  void draw(px_t x, px_t y) const;
+  void draw(const ScreenRect &loc, const ScreenRect &srcRect,
+            unsigned coordHash) const;
+  void draw(px_t x, px_t y, unsigned coordHash) const;
 
   void setFullAlpha() const;
   void setHalfAlpha() const;
