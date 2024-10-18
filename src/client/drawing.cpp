@@ -1,7 +1,7 @@
 #include "drawing.h"
 
 #include <cassert>
-#include <functional>
+#include <random>
 
 #include "../TerrainList.h"
 #include "Client.h"
@@ -229,10 +229,12 @@ void Client::drawFootprint(const MapRect &rect, Color color,
 }
 
 void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const {
-  // Create hash from tile co-ordinates.  This will be used if each tile uses a
-  // random frame.
-  auto hashFunc = std::hash<size_t>{};
-  const auto coordHash = hashFunc(x) ^ (hashFunc(y) << 1);
+  // Create pseudorandom hash from tile co-ordinates.  This will be used if each
+  // tile uses a random frame.
+  auto deterministicRandomGenerator = std::default_random_engine{};
+  const auto tileIndex = y * 3000 + x;
+  deterministicRandomGenerator.seed(tileIndex);
+  const auto coordHash = deterministicRandomGenerator();
 
   const auto skipBlending = isDebug();
   if (skipBlending) {
