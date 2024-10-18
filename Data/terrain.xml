@@ -10,8 +10,8 @@ frames             *
 frameTime          *
 -->
 
-<terrain index="a" id="normal"          color="9BAE77" />
-<terrain index="b" id="fertile"         color="659A63" />
+<terrain index="a" id="normal"          color="9BAE77" frames="6" showRandomFrame="1"/>
+<terrain index="b" id="fertile"         color="659A63" frames="6" showRandomFrame="1"/>
 <terrain index="c" id="rocky"           color="B09AB0" />
 <terrain index="d" id="mountain"        color="A7898F" />
 <terrain index="e" id="plains"          color="5D9A62" />
