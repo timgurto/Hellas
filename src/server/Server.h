@@ -121,7 +121,7 @@ class Server {
   // Messages
   std::queue<std::pair<Socket, std::string>> _messages;
   static const size_t BUFFER_SIZE = 1023;
-  char _stringInputBuffer[BUFFER_SIZE + 1];
+  char _stringInputBuffer[BUFFER_SIZE + 1] = "";
   void sendMessage(const Socket &dstSocket, const Message &msg) const;
   void sendMessageIfOnline(const std::string username,
                            const Message &msg) const;
