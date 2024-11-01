@@ -240,6 +240,10 @@ HANDLE_MESSAGE(CL_GATHER) {
   user.cancelAction();
 
   auto *ent = _entities.find(serial);
+  if (!ent) {
+    SERVER_ERROR("Object not found");
+    return;
+  }
 
   if (!isEntityInRange(client, user, ent)) return;
   if (!ent->type()) {
@@ -478,6 +482,8 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
   if (from.hasWarning()) RETURN_WITH(from.warning)
   auto to = getContainer(user, obj2);
   if (to.hasWarning()) RETURN_WITH(from.warning)
+  assert(from.object);
+  assert(to.object);
 
   if (!from.container) RETURN_WITH(ERROR_NO_INVENTORY);
 
@@ -741,6 +747,7 @@ HANDLE_MESSAGE(CL_TAKE_ITEM) {
     pSlot = pEnt->getSlotToTakeFromAndSendErrors(slot, user);
   }
   if (!pSlot) return;
+  assert(pEnt);
   ServerItem::Instance &containerSlot = *pSlot;
 
   auto userHasPermissionToLoot = pEnt->permissions.canUserLoot((user.name()));
@@ -784,6 +791,7 @@ HANDLE_MESSAGE(CL_CEDE) {
 
   if (serial.isInventory() || serial.isGear()) RETURN_WITH(WARNING_DOESNT_EXIST)
   auto *ent = _entities.find(serial);
+  if (!ent) return;
 
   if (!ent->permissions.isOwnedByPlayer(user.name()))
     RETURN_WITH(WARNING_NO_PERMISSION)
@@ -1964,6 +1972,8 @@ void Server::handle_CL_SUE_FOR_PEACE(User &user, MessageCode code,
       codeForProposer = SV_YOUR_CITY_PROPOSED_PEACE_TO_CITY;
       codeForEnemy = SV_PEACE_WAS_PROPOSED_TO_YOUR_CITY_BY_CITY;
       break;
+    default:
+      return;
   }
 
   // If a city is proposing, make sure the player is a king
@@ -2016,6 +2026,8 @@ void Server::handle_CL_CANCEL_PEACE_OFFER(User &user, MessageCode code,
       codeForProposer = SV_YOUR_CITY_CANCELED_PEACE_OFFER_TO_CITY;
       codeForEnemy = SV_PEACE_OFFER_TO_YOUR_CITY_FROM_CITY_WAS_CANCELED;
       break;
+    default:
+      return;
   }
 
   // If a city is proposing, make sure the player is a king
@@ -2069,6 +2081,8 @@ void Server::handle_CL_ACCEPT_PEACE_OFFER(User &user, MessageCode code,
       codeForProposer = SV_YOUR_CITY_IS_AT_PEACE_WITH_CITY;
       codeForEnemy = SV_YOUR_CITY_IS_AT_PEACE_WITH_CITY;
       break;
+    default:
+      return;
   }
 
   auto accpeted = _wars.acceptPeaceOffer(proposer, enemy);
