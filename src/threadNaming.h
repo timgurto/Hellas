@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include <thread>
 
 void setThreadName(uint32_t dwThreadID, const char *threadName);
