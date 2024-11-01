@@ -102,6 +102,7 @@
     <ClCompile Include="src\client\ClientConfig.cpp" />
     <ClCompile Include="src\client\ClientItem.cpp" />
     <ClCompile Include="src\client\ClientMerchantSlot.cpp" />
+    <ClCompile Include="src\client\clientMessages.cpp" />
     <ClCompile Include="src\client\ClientNPC.cpp" />
     <ClCompile Include="src\client\ClientNPCType.cpp" />
     <ClCompile Include="src\client\ClientObject.cpp" />
@@ -134,10 +135,6 @@
     <ClCompile Include="src\client\loginScreen.cpp" />
     <ClCompile Include="src\client\LogSDL.cpp" />
     <ClCompile Include="src\client\mapWindow.cpp" />
-    <ClCompile Include="src\client\messages.cpp">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)messages-client</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)messages-client</ObjectFileName>
-    </ClCompile>
     <ClCompile Include="src\client\Particle.cpp" />
     <ClCompile Include="src\client\ParticleProfile.cpp" />
     <ClCompile Include="src\client\Projectile.cpp" />
