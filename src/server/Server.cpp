@@ -291,8 +291,7 @@ void Server::run() {
     writeUserData(user);
   }
 
-  while (_threadsOpen > 0)
-    ;
+  while (_threadsOpen > 0);
   _running = false;
 }
 
@@ -932,7 +931,6 @@ void Server::deleteUserFiles() {
   std::wstring path(_userFilesPath.begin(), _userFilesPath.end());
   std::replace(path.begin(), path.end(), '/', '\\');
   std::wstring filter = path + L"*.usr";
-  path.c_str();
   HANDLE hFind = FindFirstFileW(filter.c_str(), &fd);
   if (hFind != INVALID_HANDLE_VALUE) {
     do {

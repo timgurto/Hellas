@@ -194,7 +194,6 @@ std::set<std::string> getXMLFiles(std::string path, std::string toExclude) {
   path += "/"s;
   std::replace(path.begin(), path.end(), '/', '\\');
   std::string filter = path + "*.xml";
-  path.c_str();
   HANDLE hFind = FindFirstFile(filter.c_str(), &fd);
   if (hFind != INVALID_HANDLE_VALUE) {
     do {
