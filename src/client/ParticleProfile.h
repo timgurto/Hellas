@@ -19,8 +19,8 @@ class ParticleProfile {
   NormalVariable _particlesPerHit,  // For attacking
       _distance, _altitude, _velocity, _fallSpeed,
       _lifespan{
-          DEFAULT_LIFESPAN_MEAN,
-          DEFAULT_LIFESPAN_SD};  // The particle will disappear after this time
+          static_cast<double>(DEFAULT_LIFESPAN_MEAN),
+          static_cast<double>(DEFAULT_LIFESPAN_SD)};  // The particle will disappear after this time
   MapPoint _direction;
   Uint8 _alpha{0xff};
   bool _fadeInAndOut{false};
