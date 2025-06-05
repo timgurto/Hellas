@@ -49,7 +49,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)</OutDir>
     <TargetName>$(ProjectName)</TargetName>
-    <IncludePath>$(SolutionDir)third-party\catch-1.9.5;$(SolutionDir)third-party\tinyxml;$(SolutionDir)third-party\SDL2_ttf-2.0.12\include;$(SolutionDir)third-party\SDL2_mixer-2.0.0\include;$(SolutionDir)third-party\SDL2_image-2.0.0\include;$(SolutionDir)third-party\SDL2-2.0.3\include\SDL2;$(SolutionDir)third-party\libcurl\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)third-party\catch-2.10.0;$(SolutionDir)third-party\tinyxml;$(SolutionDir)third-party\SDL2_ttf-2.0.12\include;$(SolutionDir)third-party\SDL2_mixer-2.0.0\include;$(SolutionDir)third-party\SDL2_image-2.0.0\include;$(SolutionDir)third-party\SDL2-2.0.3\include\SDL2;$(SolutionDir)third-party\libcurl\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)third-party\SDL2_ttf-2.0.12\lib\x86;$(SolutionDir)third-party\SDL2_mixer-2.0.0\lib\x86;$(SolutionDir)third-party\SDL2_image-2.0.0\lib\x86;$(SolutionDir)third-party\SDL2-2.0.3\lib\x86;$(SolutionDir)third-party\libcurl\lib;$(LibraryPath)</LibraryPath>
     <IntDir>$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
