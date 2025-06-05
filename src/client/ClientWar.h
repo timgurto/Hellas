@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <string>
 
 enum PeaceState {
   NO_PEACE_PROPOSED,
