@@ -33,7 +33,7 @@ static void performAction(Client &client, int i) {
 }
 
 void Client::initHotbar() {
-  actions = std::vector<HotbarAction>(NUM_HOTBAR_BUTTONS, {});
+  actions = std::vector<HotbarAction>(NUM_HOTBAR_BUTTONS);
   icons = Icons(NUM_HOTBAR_BUTTONS, nullptr);
   _hotbar = new Element({0, 0, NUM_HOTBAR_BUTTONS * 18, 18});
   _hotbar->setPosition((SCREEN_X - _hotbar->width()) / 2,
