@@ -18,7 +18,7 @@ class TerrainList {
   static TerrainList _dummy;
 
   std::set<char> _list;
-  bool _isWhitelist;  // true if whitelist; false if blacklist.
+  bool _isWhitelist{true};  // true if whitelist; false if blacklist.
   static std::map<std::string, char> terrainCodes;
   std::string _id;
   std::string _description;
