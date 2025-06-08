@@ -86,3 +86,4 @@ dev-stuff/release-process.pdf
 logging/metalWealth.csv
 /Debug
 /.vs
+*.recipe
