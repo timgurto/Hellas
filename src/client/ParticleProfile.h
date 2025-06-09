@@ -79,9 +79,9 @@ class ParticleProfile {
   created.
   */
   void addVariety(const std::string &imageFile, size_t count,
-                  const ScreenRect &drawRect, const Client &client);
-  void addVariety(const std::string &imageFile, size_t count,
-                  const Client &client);  // Auto draw rect
+                  const ScreenRect &drawRect);
+  void addVariety(const std::string &imageFile,
+                  size_t count);  // Auto draw rect
 
   /*
   Create a new particle and return its pointer.  The caller takes responsibility
