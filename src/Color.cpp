@@ -142,7 +142,8 @@ Color Color::operator/(double s) const {
   if (r > 0xff) r = 0xff;
   if (g > 0xff) g = 0xff;
   if (b > 0xff) b = 0xff;
-  return Color(r, g, b);
+  return Color(static_cast<Uint8>(r), static_cast<Uint8>(g),
+               static_cast<Uint8>(b));
 }
 
 Color Color::operator/(int s) const { return *this / static_cast<double>(s); }
@@ -153,7 +154,8 @@ Color Color::operator*(double d) const {
   if (r > 0xff) r = 0xff;
   if (g > 0xff) g = 0xff;
   if (b > 0xff) b = 0xff;
-  return Color(r, g, b);
+  return Color(static_cast<Uint8>(r), static_cast<Uint8>(g),
+               static_cast<Uint8>(b));
 }
 
 Color Color::operator*(int s) const { return *this * static_cast<double>(s); }
