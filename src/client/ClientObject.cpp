@@ -566,10 +566,9 @@ void ClientObject::addRenameButtonsToWindow() {
   x += BUTTON_GAP + BUTTON_WIDTH;
   if (newWidth < x) newWidth = x;
 
-  Button *clearButton =
-      new Button({x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Reset name", [this]() {
-        _client.sendMessage({CL_CLEAR_OBJECT_NAME, serial()});
-      });
+  Button *clearButton = new Button(
+      {x, y, BUTTON_WIDTH, BUTTON_HEIGHT}, "Reset name",
+      [this]() { _client.sendMessage({CL_CLEAR_OBJECT_NAME, serial()}); });
   clearButton->setTooltip("Reset this object's name to the default.");
   _window->addChild(clearButton);
   y += BUTTON_GAP + BUTTON_HEIGHT;

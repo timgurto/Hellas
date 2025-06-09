@@ -169,9 +169,9 @@ class Entity {
   void reduceEnergy(int amount);
   void healBy(Hitpoints amount);
   bool isMissingHealth() const { return _health < _stats.maxHealth; }
-  virtual void onHealthChange(){};  // Probably alerting relevant users.
-  virtual void onEnergyChange();    // Probably alerting relevant users.
-  virtual void onDeath();           // Anything that needs to happen upon death.
+  virtual void onHealthChange() {};  // Probably alerting relevant users.
+  virtual void onEnergyChange();     // Probably alerting relevant users.
+  virtual void onDeath();  // Anything that needs to happen upon death.
   virtual void onAttackedBy(
       Entity &attacker, Threat threat,
       CombatResult result);  // If the entity needs to react to an attack.
@@ -181,7 +181,7 @@ class Entity {
   // Inform user that this entity has hit its target with a ranged attack.
   virtual void sendRangedHitMessageTo(const User &userToInform) const {}
   // Any final checks immediately before the attack
-  virtual void onOwnershipChange(){};
+  virtual void onOwnershipChange() {};
   virtual bool canAttack() { return true; }
   // Any reaction to a successful canAttack() check
   virtual void onCanAttack() {}
