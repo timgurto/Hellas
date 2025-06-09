@@ -62,7 +62,7 @@ void Client::loginScreenLoop() {
 
   showQueuedErrorMessages();
 
-  handleLoginInput(delta);
+  handleLoginInput();
 
   updateLoginParticles(delta);
 
@@ -537,7 +537,7 @@ void Client::showReleaseNotes() {
   }
 }
 
-void Client::handleLoginInput(double delta) {
+void Client::handleLoginInput() {
   auto mouseEventWasOnWindow = false;
   SDL_Event e;
   while (SDL_PollEvent(&e) != 0) {

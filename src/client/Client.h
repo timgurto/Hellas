@@ -550,7 +550,7 @@ class Client : public TextEntryManager {
 
  private:
   void handleInput(double delta);
-  void handleLoginInput(double delta);
+  void handleLoginInput();
   void onMouseMove();
 
   void drawLoadingScreen(const std::string &msg) const;
