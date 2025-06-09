@@ -261,7 +261,7 @@ void TestClient::simulateMouseMove(const ScreenPoint &position) {
   _client->onMouseMove();
 }
 
-void TestClient::simulateClick(const ScreenPoint &position, Uint8 button) {
+void TestClient::simulateClick(Uint8 button) {
   SDL_Event mouseDownEvent, mouseUpEvent;
   mouseDownEvent.type = SDL_MOUSEBUTTONDOWN;
   mouseUpEvent.type = SDL_MOUSEBUTTONUP;

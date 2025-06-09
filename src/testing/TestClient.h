@@ -128,7 +128,7 @@ class TestClient {
                       ms_t timeout = DEFAULT_TIMEOUT) const;
   void waitForRedraw();
   void simulateMouseMove(const ScreenPoint &position);
-  void simulateClick(const ScreenPoint &position, Uint8 button);
+  void simulateClick(Uint8 button);
   void simulateKeypress(SDL_Scancode key);
   bool isKeyPressed(SDL_Scancode key) const;
   void sendLocationUpdatesInstantly();
