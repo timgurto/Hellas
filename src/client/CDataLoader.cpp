@@ -197,7 +197,8 @@ void CDataLoader::loadParticles(XmlReader &xr) {
     if (xr.findAttr(elem, "noZDimension", n) && n != 0) profile->noZDimension();
     if (xr.findAttr(elem, "canBeUnderground", n) && n != 0)
       profile->canBeUnderground();
-    if (xr.findAttr(elem, "alpha", n) && n != 0xff) profile->alpha(n);
+    if (xr.findAttr(elem, "alpha", n) && n != 0xff)
+      profile->alpha(static_cast<Uint8>(n));
     if (xr.findAttr(elem, "fadesInAndOut", n) && n != 0)
       profile->makeFadeInAndOut();
     if (xr.findAttr(elem, "convergesToCentre", n) && n != 0)
