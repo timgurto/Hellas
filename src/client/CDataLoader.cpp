@@ -218,9 +218,9 @@ void CDataLoader::loadParticles(XmlReader &xr) {
       xr.findAttr(variety, "count", count);
       auto drawRect = ScreenRect{};
       if (xr.findRectChild("drawRect", variety, drawRect))
-        profile->addVariety(s, count, drawRect, _client);
+        profile->addVariety(s, count, drawRect);
       else
-        profile->addVariety(s, count, _client);
+        profile->addVariety(s, count);
     }
 
     _client.gameData.particleProfiles.insert(profile);
