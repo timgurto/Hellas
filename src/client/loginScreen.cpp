@@ -3,11 +3,11 @@
 #include <algorithm>
 #include <thread>
 
-#include "../Message.h"
-#include "../XmlWriter.h"
 #include "../curlUtil.h"
+#include "../Message.h"
 #include "../threadNaming.h"
 #include "../versionUtil.h"
+#include "../XmlWriter.h"
 #include "Client.h"
 #include "Particle.h"
 #include "ui/Indicator.h"

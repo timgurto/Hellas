@@ -6,17 +6,17 @@
 
 #include "../HasTags.h"
 #include "../Point.h"
-#include "../TerrainList.h"
 #include "../server/ItemSet.h"
+#include "../TerrainList.h"
 #include "../util.h"
-#include "CQuest.h"
 #include "ClientCombatantType.h"
 #include "ClientItem.h"
 #include "ClientObjectAction.h"
+#include "CQuest.h"
+#include "drawPerItem.h"
 #include "HasSounds.h"
 #include "SpriteType.h"
 #include "Texture.h"
-#include "drawPerItem.h"
 
 class ConfirmationWindow;
 class SoundProfile;

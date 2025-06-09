@@ -1,4 +1,5 @@
 #include "ClientConfig.h"
+
 #include "../XmlReader.h"
 
 void ClientConfig::loadFromFile(const std::string &filename) {

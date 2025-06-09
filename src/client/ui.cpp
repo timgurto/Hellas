@@ -3,10 +3,10 @@
 #include "../Message.h"
 #include "Client.h"
 #include "Options.h"
-#include "UIGroup.h"
 #include "ui/Indicator.h"
 #include "ui/OutlinedLabel.h"
 #include "ui/TextBox.h"
+#include "UIGroup.h"
 
 extern Options options;
 

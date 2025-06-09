@@ -16,7 +16,6 @@
 #include "Particle.h"
 #include "Renderer.h"
 #include "Tooltip.h"
-#include "Unlocks.h"
 #include "ui/Button.h"
 #include "ui/ConfirmationWindow.h"
 #include "ui/ContainerGrid.h"
@@ -26,6 +25,7 @@
 #include "ui/TakeContainer.h"
 #include "ui/TextBox.h"
 #include "ui/Window.h"
+#include "Unlocks.h"
 
 extern Renderer renderer;
 extern Options options;

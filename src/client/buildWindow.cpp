@@ -2,10 +2,10 @@
 
 #include "Client.h"
 #include "Tooltip.h"
-#include "Unlocks.h"
 #include "ui/CheckBox.h"
 #include "ui/Label.h"
 #include "ui/Line.h"
+#include "Unlocks.h"
 
 extern Renderer renderer;
 

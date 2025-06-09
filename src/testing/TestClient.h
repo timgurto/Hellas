@@ -1,11 +1,11 @@
 #ifndef TEST_CLIENT_H
 #define TEST_CLIENT_H
 
-#include "../Message.h"
 #include "../client/CDataLoader.h"
 #include "../client/CDroppedItem.h"
-#include "../client/CQuest.h"
 #include "../client/Client.h"
+#include "../client/CQuest.h"
+#include "../Message.h"
 #include "testing.h"
 
 class CQuest;
