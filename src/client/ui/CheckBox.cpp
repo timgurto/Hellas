@@ -43,7 +43,7 @@ void CheckBox::release(bool click) {
   if (_onChangeFunction) _onChangeFunction(_client);
 }
 
-void CheckBox::mouseDown(Element &e, const ScreenPoint &mousePos) {
+void CheckBox::mouseDown(Element &e, const ScreenPoint &) {
   CheckBox &checkBox = dynamic_cast<CheckBox &>(e);
   checkBox._mouseButtonDown = true;
   checkBox.depress();

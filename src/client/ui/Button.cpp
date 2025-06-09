@@ -47,7 +47,7 @@ void Button::release(bool click) {
   markChanged();
 }
 
-void Button::mouseDown(Element &e, const ScreenPoint &mousePos) {
+void Button::mouseDown(Element &e, const ScreenPoint &) {
   Button &button = dynamic_cast<Button &>(e);
   if (!button._enabled) return;
 

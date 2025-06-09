@@ -213,7 +213,7 @@ Element *Client::assembleBuffEntry(Client &client, const ClientBuffType &type,
 
   if (!isDebuff) {
     icon->setRightMouseDownFunction(
-        [&type, &client](Element &e, const ScreenPoint &mousePos) {
+        [&type, &client](Element &, const ScreenPoint &) {
           client.sendMessage({CL_DISMISS_BUFF, type.id()});
         });
   }

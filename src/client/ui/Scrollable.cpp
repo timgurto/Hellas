@@ -129,7 +129,7 @@ void Scrollable::cursorMouseDown(Element &e, const ScreenPoint &mousePos) {
   scrollable._cursorOffset = toInt(mousePos.y);
 }
 
-void Scrollable::mouseUp(Element &e, const ScreenPoint &mousePos) {
+void Scrollable::mouseUp(Element &e, const ScreenPoint &) {
   auto &scrollable = dynamic_cast<Scrollable &>(e);
   scrollable._mouseDownOnCursor = false;
 }

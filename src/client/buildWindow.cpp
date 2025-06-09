@@ -52,7 +52,7 @@ void Client::populateBuildList() {
   _buildList->markChanged();
 }
 
-void Client::chooseConstruction(Element &e, const ScreenPoint &mousePos) {
+void Client::chooseConstruction(Element &e, const ScreenPoint & /*mousePos*/) {
   auto &client = *e.client();
   const std::string selectedID = client._buildList->getSelected();
   if (selectedID.empty()) {

@@ -134,7 +134,7 @@ class ClientObjectType : public SpriteType,
     _constructionTooltip = Optional<Tooltip>{};
   }
   virtual void addClassSpecificStuffToConstructionTooltip(
-      std::vector<std::string> &descriptionLines) const {}
+      std::vector<std::string> & /*descriptionLines*/) const {}
   void drawParticlesWhenUnderConstruction() {
     _drawParticlesWhenUnderConstruction = true;
   }

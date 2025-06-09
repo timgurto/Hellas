@@ -44,7 +44,7 @@ class ClientCombatant {
                        const ScreenPoint &clientOffset) const;
   bool doesAnyBuffHideMe() const;
 
-  virtual void addMenuButtons(List &menu) {}
+  virtual void addMenuButtons(List & /*menu*/) {}
 
   void createDamageParticles() const;
   void createBuffParticles(double delta) const;

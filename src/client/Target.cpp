@@ -77,7 +77,7 @@ void Target::initializeMenu() {
   _menu->hide();
 }
 
-void Target::openMenu(Element &e, const ScreenPoint &mousePos) {
+void Target::openMenu(Element &e, const ScreenPoint &) {
   List &menu = dynamic_cast<List &>(e);
   menu.setPosition(toInt(_client.mouse().x), toInt(_client.mouse().y));
 

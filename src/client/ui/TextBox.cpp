@@ -47,7 +47,7 @@ void TextBox::refresh() {
   }
 }
 
-void TextBox::click(Element &e, const ScreenPoint &mousePos) {
+void TextBox::click(Element &e, const ScreenPoint &) {
   TextBox *newFocus = dynamic_cast<TextBox *>(&e);
   auto &currentFocus = newFocus->_manager.textBoxInFocus;
   if (newFocus == currentFocus) return;

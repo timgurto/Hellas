@@ -18,6 +18,8 @@
 #include "Tagger.h"
 #include "ThreatTable.h"
 
+#pragma warning(disable : 4100)
+
 class Spawner;
 class XmlWriter;
 class NPC;

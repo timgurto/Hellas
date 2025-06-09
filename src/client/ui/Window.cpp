@@ -99,18 +99,18 @@ void Window::addContent() {
   Element::addChild(_content);
 }
 
-void Window::startDragging(Element &e, const ScreenPoint &mousePos) {
+void Window::startDragging(Element &e, const ScreenPoint &) {
   Window &window = dynamic_cast<Window &>(e);
   window._dragOffset = window.client()->mouse() - ScreenPoint{window.rect()};
   window._dragging = true;
 }
 
-void Window::stopDragging(Element &e, const ScreenPoint &mousePos) {
+void Window::stopDragging(Element &e, const ScreenPoint &) {
   Window &window = dynamic_cast<Window &>(e);
   window._dragging = false;
 }
 
-void Window::drag(Element &e, const ScreenPoint &mousePos) {
+void Window::drag(Element &e, const ScreenPoint &) {
   Window &window = dynamic_cast<Window &>(e);
   if (window._dragging)
     window.setPosition(

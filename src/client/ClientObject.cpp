@@ -1256,7 +1256,7 @@ void ClientObject::createRegularTooltip() const {
   }
 }
 
-bool ClientObject::addClassSpecificStuffToTooltip(Tooltip &tooltip) const {
+bool ClientObject::addClassSpecificStuffToTooltip(Tooltip &) const {
   return false;
 }
 

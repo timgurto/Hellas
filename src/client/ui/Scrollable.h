@@ -30,10 +30,10 @@ class Scrollable : public Element {
   static void mouseMove(Element &e, const ScreenPoint &mousePos);
   static void scrollUpRaw(Element &e);
   static void scrollDownRaw(Element &e);
-  static void scrollUp(Element &e, const ScreenPoint &mousePos) {
+  static void scrollUp(Element &e, const ScreenPoint & /*mousePos*/) {
     scrollUpRaw(e);
   }
-  static void scrollDown(Element &e, const ScreenPoint &mousePos) {
+  static void scrollDown(Element &e, const ScreenPoint & /*mousePos*/) {
     scrollDownRaw(e);
   }
 

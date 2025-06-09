@@ -21,5 +21,5 @@ class DamageOnUse {
 
   virtual void repair() = 0;
 
-  virtual double toolSpeed(const std::string &tag) const { return 1.0; }
+  virtual double toolSpeed(const std::string &) const { return 1.0; }
 };
