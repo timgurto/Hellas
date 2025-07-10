@@ -54,8 +54,6 @@ const TerrainList &TerrainList::defaultList() {
 }
 
 void TerrainList::loadFromXML(XmlReader &xr) {
-  std::map<std::string, char>
-      terrainCodes;  // For easier lookup when compiling lists below.
   for (auto elem : xr.getChildren("terrain")) {
     char index;
     std::string id;
