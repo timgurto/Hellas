@@ -1,5 +1,5 @@
-#include "Server.h"
 #include "objects/Object.h"
+#include "Server.h"
 
 Entity::StraightLineMoveResult Entity::moveLegallyTowards(
     const MapPoint &requestedDest,
@@ -170,10 +170,14 @@ Entity::StraightLineMoveResult Entity::moveLegallyTowards(
   // Assemble list of newly nearby users (used at the end of this function)
   std::list<const User *> newlyNearbyUsers;
   {
-    auto loX = server._usersByX.lower_bound(&User(MapPoint{left, 0}));
-    auto hiX = server._usersByX.upper_bound(&User(MapPoint{right, 0}));
-    auto loY = server._usersByY.lower_bound(&User(MapPoint{0, top}));
-    auto hiY = server._usersByY.upper_bound(&User(MapPoint{0, bottom}));
+    const auto leftDummy = User{MapPoint{left, 0}};
+    const auto rightDummy = User{MapPoint{right, 0}};
+    const auto topDummy = User{MapPoint{0, top}};
+    const auto bottomDummy = User{MapPoint{0, bottom}};
+    auto loX = server._usersByX.lower_bound(&leftDummy);
+    auto hiX = server._usersByX.upper_bound(&rightDummy);
+    auto loY = server._usersByY.lower_bound(&topDummy);
+    auto hiY = server._usersByY.upper_bound(&bottomDummy);
     for (auto it = loX; it != hiX; ++it) {
       if (abs((*it)->location().y - newDest.y) <= Server::CULL_DISTANCE)
         newlyNearbyUsers.push_back(*it);
