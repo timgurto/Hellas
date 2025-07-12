@@ -1436,9 +1436,9 @@ HANDLE_MESSAGE(DG_SPAWN) {
   if (ot->classTag() == 'n') {
     auto *nt = dynamic_cast<NPCType *>(ot);
     if (!nt) return;
-    auto &npc = addNPC(nt, user.location() + MapPoint{50, 0});
+    addNPC(nt, user.location() + MapPoint{50, 0});
   } else {
-    auto &obj = addObject(ot, user.location() + MapPoint{50, 0}, {});
+    addObject(ot, user.location() + MapPoint{50, 0}, {});
   }
 }
 
