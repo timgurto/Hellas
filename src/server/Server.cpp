@@ -187,8 +187,6 @@ void Server::run() {
   loadWorldState();
   if (!cmdLineArgs.contains("nospawn")) spawnInitialObjects();
 
-  auto threadsOpen = 0;
-
 #ifndef TESTING
   logNumberOfOnlineUsers();
   _onlineAndOfflineUsers.includeUsersFromDataFiles();

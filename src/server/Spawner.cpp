@@ -61,7 +61,6 @@ const Entity *Spawner::spawn() {
 }
 
 void Spawner::scheduleSpawn() {
-  Log &d = Server::_instance->_debug;
   _spawnSchedule.push_back(SDL_GetTicks() + _respawnTime);
 }
 

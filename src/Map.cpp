@@ -38,7 +38,6 @@ size_t Map::getRow(double yCoord) const {
 size_t Map::getCol(double xCoord, size_t row) const {
   if (xCoord < 0) return 0;
 
-  double originalX = xCoord;
   if (row % 2 == 1) xCoord += TILE_W / 2;
   auto col = static_cast<size_t>(xCoord / TILE_W);
   if (col >= _w) col = _w - 1;

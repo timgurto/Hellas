@@ -221,7 +221,6 @@ void Wars::readFromXMLFile(const std::string &filename) {
 
     declare(b1, b2);
 
-    auto peaceState = War::NO_PEACE_PROPOSED;
     if (xr.findAttr(elem, "peaceProposedBy", n)) {
       switch (n) {
         case 1:

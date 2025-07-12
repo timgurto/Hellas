@@ -128,7 +128,6 @@ void ItemSelector::applyFilter() {
 std::vector<ClientItem *> ItemSelector::itemsMatchingSearchText() const {
   std::string searchText = _searchText->text();
   std::vector<ClientItem *> matchingItems;
-  const auto &items = _client->gameData.items;
   for (auto &pair : _client->gameData.items) {
     auto &item = pair.second;
     if (itemMatchesSearchText(item, searchText)) matchingItems.push_back(&item);

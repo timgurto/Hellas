@@ -312,10 +312,7 @@ void NPC::onOwnershipChange() { target(nullptr); }
 void NPC::updateStats() {
   if (isDead()) return;
 
-  const Server &server = *Server::_instance;
-
   auto oldMaxHealth = stats().maxHealth;
-  auto oldMaxEnergy = stats().maxEnergy;
 
   auto newStats = type()->baseStats();
 

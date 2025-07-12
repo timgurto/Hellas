@@ -456,8 +456,6 @@ void AI::calculatePathInSeparateThread() {
     if (!thisThreadHasTheLock) return;
     Server::instance().incrementThreadCount();
 
-    const auto distToTravel = distance(_owner.collisionRect(), targetFootprint);
-
     _activePath.findPathTo(targetFootprint);
     if (!_activePath.exists()) _failedToFindPath = true;
 

@@ -152,7 +152,6 @@ CombatResult SpellEffect::debuff(const SpellEffect &effect, Entity &caster,
 CombatResult SpellEffect::dispellDebuff(const SpellEffect &effect,
                                         Entity &caster, Entity &target,
                                         const std::string &supplementaryArg) {
-  const auto &server = Server::instance();
   auto schoolToDispell = SpellSchool{effect._args.s1};
   auto numDebuffsInThatSchool = 0;
   for (const auto &debuff : target.debuffs()) {

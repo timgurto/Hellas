@@ -42,10 +42,6 @@ const ClientItem *toClientItem(const Item *item) {
   return dynamic_cast<const ClientItem *>(item);
 }
 
-static ScreenPoint toScreenPoint(const MapPoint &rhs) {
-  return {toInt(rhs.x), toInt(rhs.y)};
-}
-
 void ClientItem::draw(const ScreenPoint &screenLoc) const {
   if (_gearSlot != Item::NOT_GEAR && _gearImage) {
     ScreenPoint drawLoc = _drawLoc +                // The item's offset

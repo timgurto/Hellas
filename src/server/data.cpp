@@ -89,7 +89,6 @@ bool Server::readUserData(User &user, bool allowSideEffects) {
   user.exploration.readFrom(xr);
 
   if (allowSideEffects) {
-    bool s = false;
     if (isLocationValid(location, user))
       user.location(location, /* firstInsertion */ true);
     else {
