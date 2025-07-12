@@ -5,9 +5,8 @@ static void createEmptyFile(const std::string &filename) {
   of.close();
 }
 
-bool Log::usingLogFile() const { return _logFileName.empty(); }
+bool Log::usingLogFile() const { return _logFile; }
 
-FileAppender Log::logFile() const { return {_logFileName}; }
 Log::Log(const std::string &logFileName) {
   if (!logFileName.empty()) createEmptyFile(logFileName);
 }

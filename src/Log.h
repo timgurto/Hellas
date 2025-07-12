@@ -8,8 +8,8 @@
 #include "Color.h"
 
 /*
-A message log which accepts, queues and displays messages to the screen
-Usage:
+Log class: A message log which accepts, queues and displays messages to the
+screen Usage:
 
 log("message");
     Add a message to the screen.
@@ -29,7 +29,29 @@ log << endl;
     End the current compilation, adding it to the screen.
 */
 
-class FileAppender;
+class FileAppender {
+ public:
+  FileAppender() = default;
+  FileAppender(const std::string &filename);
+  ~FileAppender();
+
+  template <typename T>
+  friend FileAppender &operator<<(FileAppender &lhs, const T &rhs);
+
+  operator bool() const { return _fileStream.is_open(); }
+
+ private:
+  std::ofstream _fileStream;
+
+  template <typename T>
+  friend FileAppender &operator<<(const FileAppender &lhs, const T &rhs);
+};
+
+template <typename T>
+FileAppender &operator<<(FileAppender &lhs, const T &rhs) {
+  if (lhs._fileStream.is_open()) lhs._fileStream << rhs;
+  return lhs;
+}
 
 class Log {
  public:
@@ -62,37 +84,18 @@ class Log {
  protected:
   template <typename T>
   void writeToFile(const T &val) const {
-    logFile() << val;
+    _logFile << val;
   }
 
   template <typename T>
   void writeLineToFile(const T &val) const {
-    logFile() << val << '\n';
+    _logFile << val << '\n';
   }
 
  private:
-  std::string _logFileName;
+  FileAppender _logFile;
 
   bool usingLogFile() const;
-  FileAppender logFile() const;
 };
-
-class FileAppender {
- public:
-  FileAppender(const std::string &filename);
-  ~FileAppender();
-
-  template <typename T>
-  friend FileAppender &operator<<(FileAppender &lhs, const T &rhs);
-
- private:
-  std::ofstream _fileStream;
-};
-
-template <typename T>
-FileAppender &operator<<(FileAppender &lhs, const T &rhs) {
-  if (lhs._fileStream.is_open()) lhs._fileStream << rhs;
-  return lhs;
-}
 
 #endif
