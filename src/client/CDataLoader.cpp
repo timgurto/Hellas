@@ -1212,7 +1212,8 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
 
     // Insert
     auto pair = _client.gameData.objectTypes.insert(nt);
-    if (!pair.second) {
+    const auto itemsNeedRedirecting = !pair.second;
+    if (itemsNeedRedirecting) {
       // A ClientObjectType is being pointed to by items; they need to point to
       // this instead.
       const ClientObjectType *dummy = *pair.first;
