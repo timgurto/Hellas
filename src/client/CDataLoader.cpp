@@ -1269,11 +1269,11 @@ void CDataLoader::loadQuests(XmlReader &xr) {
         objective.text = "Construct "s + (objType ? objType->name() : "???"s);
 
       } else if (type == "fetch") {
-        auto &it = _client.gameData.items.find(id);
+        auto it = _client.gameData.items.find(id);
         objective.text = it->second.name();
 
       } else if (type == "cast") {
-        auto &it = _client.gameData.spells.find(id);
+        auto it = _client.gameData.spells.find(id);
         objective.text = it->second->name();
       }
 
