@@ -117,30 +117,19 @@ void Server::checkSockets() {
 
   // Activity on server socket: new connection
   if (FD_ISSET(_socket.getRaw(), &readFDs)) {
-    if (false && _clientSockets.size() == MAX_CLIENTS) {
-      _debug("No room for additional clients; all slots full");
-      sockaddr_in clientAddr;
-      SOCKET tempSocket = accept(_socket.getRaw(), (sockaddr *)&clientAddr,
-                                 (int *)&Socket::sockAddrSize);
-      Socket s(tempSocket, {});
-      // Allow time for rejection message to be sent before closing socket
-      s.delayClosing(5000);
-      sendMessage(s, WARNING_SERVER_FULL);
+    sockaddr_in clientAddr;
+    SOCKET tempSocket = accept(_socket.getRaw(), (sockaddr *)&clientAddr,
+                               (int *)&Socket::sockAddrSize);
+    if (tempSocket == SOCKET_ERROR) {
+      _debug << Color::CHAT_ERROR
+             << "Error accepting connection: " << WSAGetLastError()
+             << Log::endl;
     } else {
-      sockaddr_in clientAddr;
-      SOCKET tempSocket = accept(_socket.getRaw(), (sockaddr *)&clientAddr,
-                                 (int *)&Socket::sockAddrSize);
-      if (tempSocket == SOCKET_ERROR) {
-        _debug << Color::CHAT_ERROR
-               << "Error accepting connection: " << WSAGetLastError()
-               << Log::endl;
-      } else {
-        auto ip = std::string{inet_ntoa(clientAddr.sin_addr)};
-        _debug << Color::CHAT_SUCCESS << "Connection accepted: " << ip << ":"
-               << ntohs(clientAddr.sin_port)
-               << ", socket number = " << tempSocket << Log::endl;
-        _clientSockets.insert({tempSocket, ip});
-      }
+      auto ip = std::string{inet_ntoa(clientAddr.sin_addr)};
+      _debug << Color::CHAT_SUCCESS << "Connection accepted: " << ip << ":"
+             << ntohs(clientAddr.sin_port) << ", socket number = " << tempSocket
+             << Log::endl;
+      _clientSockets.insert({tempSocket, ip});
     }
   }
 
