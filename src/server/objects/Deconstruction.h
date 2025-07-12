@@ -23,7 +23,7 @@ class DeconstructionType {
 
 class Deconstruction {
  public:
-  Deconstruction() {}
+  Deconstruction() : _type(nullptr) {}
   Deconstruction(Object &parent, const DeconstructionType &type);
 
   const ServerItem *becomes() const { return _type->_itemThisBecomes; }
