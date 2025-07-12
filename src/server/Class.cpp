@@ -138,8 +138,8 @@ Talent::Name Class::loseARandomLeafTalent() {
   --_talentRanks[talentToDrop];
   --_talentPointsAllocated;
 
-  _owner->sendMessage(
-      {SV_TALENT_INFO, makeArgs(talentToDrop->name(), _talentRanks[talentToDrop])});
+  _owner->sendMessage({SV_TALENT_INFO, makeArgs(talentToDrop->name(),
+                                                _talentRanks[talentToDrop])});
   _owner->sendMessage(
       {SV_POINTS_IN_TREE,
        makeArgs(talentToDrop->tree(), pointsInTree(talentToDrop->tree()))});

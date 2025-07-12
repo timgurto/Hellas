@@ -290,8 +290,7 @@ void Server::run() {
     writeUserData(user);
   }
 
-  while (_threadsOpen > 0)
-    ;
+  while (_threadsOpen > 0);
   _running = false;
 }
 

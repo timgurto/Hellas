@@ -186,8 +186,9 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg) {
     x += NAME_WIDTH + GAP;
 
     // Buy button
-    Button *button = new Button({x, GAP, BUTTON_WIDTH, BUTTON_HEIGHT}, "",
-                                [this, i]() { trade(_client, serial(), i); });
+    Button *button =
+        new Button({x, GAP, BUY_BUTTON_WIDTH, BUY_BUTTON_HEIGHT}, "",
+                   [this, i]() { trade(_client, serial(), i); });
     e.addChild(button);
     x = BUTTON_PADDING;
     button->addChild(
