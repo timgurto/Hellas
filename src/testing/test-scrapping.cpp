@@ -1,7 +1,7 @@
 #include "TestClient.h"
 #include "TestFixtures.h"
-#include "TestServer.h"
 #include "testing.h"
+#include "TestServer.h"
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping items", "[scrapping]") {
   GIVEN("wood that can be scrapped into a woodchip") {

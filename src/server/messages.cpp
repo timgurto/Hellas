@@ -5,10 +5,10 @@
 #include "../versionUtil.h"
 #include "DroppedItem.h"
 #include "Groups.h"
+#include "objects/Deconstruction.h"
 #include "ProgressLock.h"
 #include "Server.h"
 #include "Vehicle.h"
-#include "objects/Deconstruction.h"
 
 #define READ_ARGS(...)                                      \
   auto messageWasWellFormed = parser.readArgs(__VA_ARGS__); \
