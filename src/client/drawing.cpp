@@ -62,8 +62,8 @@ void Client::draw() const {
                leftX = -offset().x - DRAW_MARGIN_SIDES,
                rightX = -offset().x + SCREEN_X + DRAW_MARGIN_SIDES;
   // Cull by y
-  const auto topDummy = Sprite::YCoordOnly(topY);
-  const auto bottomDummy = Sprite::YCoordOnly(bottomY);
+  auto topDummy = Sprite::YCoordOnly(topY);
+  auto bottomDummy = Sprite::YCoordOnly(bottomY);
   auto top = _entities.lower_bound(&topDummy);
   auto bottom = _entities.upper_bound(&bottomDummy);
   auto visibleSprites = SpritesToDraw{*this};
