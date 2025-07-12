@@ -499,18 +499,18 @@ void Server::loadEntities(XmlReader &xr,
     auto owner = Permissions::Owner{};
     auto ownerElem = xr.findChild("owner", elem);
     if (ownerElem) {
-      std::string type, name;
-      xr.findAttr(ownerElem, "type", type);
+      std::string ownerType, name;
+      xr.findAttr(ownerElem, "type", ownerType);
       xr.findAttr(ownerElem, "name", name);
-      if (type == "player")
+      if (ownerType == "player")
         owner.type = Permissions::Owner::PLAYER;
-      else if (type == "city")
+      else if (ownerType == "city")
         owner.type = Permissions::Owner::CITY;
-      else if (type == "noAccess")
+      else if (ownerType == "noAccess")
         owner.type = Permissions::Owner::NO_ACCESS;
       else
         _debug << Color::CHAT_ERROR << "Skipping bad object owner type \""
-               << type << "\"." << Log::endl;
+               << ownerType << "\"." << Log::endl;
       owner.name = name;
     }
 
@@ -565,7 +565,7 @@ void Server::loadEntities(XmlReader &xr,
           &item, ServerItem::Instance::ReportingInfo::InObjectContainer(),
           health, suffix, q);
 
-      auto n = 0;
+      n = 0;
       if (xr.findAttr(inventory, "soulbound", n) && n != 0) invSlot.onEquip();
     }
 
@@ -662,18 +662,18 @@ void Server::loadEntities(XmlReader &xr,
 
     auto ownerElem = xr.findChild("owner", elem);
     if (ownerElem) {
-      std::string type, name;
-      xr.findAttr(ownerElem, "type", type);
+      std::string ownerType, name;
+      xr.findAttr(ownerElem, "type", ownerType);
       xr.findAttr(ownerElem, "name", name);
-      if (type == "player")
+      if (ownerType == "player")
         npc.permissions.setPlayerOwner(name);
-      else if (type == "city")
+      else if (ownerType == "city")
         npc.permissions.setCityOwner(name);
-      else if (type == "noAccess")
+      else if (ownerType == "noAccess")
         npc.permissions.setNoAccess();
       else
-        _debug << Color::CHAT_ERROR << "Skipping bad NPC owner type \"" << type
-               << "\"." << Log::endl;
+        _debug << Color::CHAT_ERROR << "Skipping bad NPC owner type \""
+               << ownerType << "\"." << Log::endl;
     }
 
     auto transformTimer = ms_t{};

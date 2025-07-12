@@ -74,15 +74,14 @@ void Sprite::draw() const {
   auto shouldDrawHighlightInstead = _client.currentMouseOverEntity() == this;
   const Texture &imageToDraw =
       shouldDrawHighlightInstead ? getHighlightImage() : image();
-  auto drawRect = this->drawRect() + _client.offset();
-  if (shouldDrawHighlightInstead) drawRect += HIGHLIGHT_OFFSET;
+  auto rect = this->drawRect() + _client.offset();
+  if (shouldDrawHighlightInstead) rect += HIGHLIGHT_OFFSET;
   if (imageToDraw)
-    imageToDraw.draw(drawRect.x, drawRect.y);
+    imageToDraw.draw(rect.x, rect.y);
   else {
     renderer.setDrawColor(Color::MISSING_IMAGE);
-    auto drawRect =
-        toScreenRect(MapRect{_location.x - 5, _location.y - 5, 10, 10});
-    renderer.fillRect(drawRect);
+    auto rect = toScreenRect(MapRect{_location.x - 5, _location.y - 5, 10, 10});
+    renderer.fillRect(rect);
   }
 }
 

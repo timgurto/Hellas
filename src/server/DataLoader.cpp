@@ -456,7 +456,7 @@ void DataLoader::loadQuests(XmlReader &xr) {
     }
 
     for (auto startsWithItem : xr.getChildren("startsWithItem", elem)) {
-      auto id = ""s;
+      id.clear();
       if (xr.findAttr(startsWithItem, "id", id)) q.startsWithItems.insert(id);
     }
 
@@ -836,7 +836,7 @@ void DataLoader::loadRecipes(XmlReader &xr) {
     if (byproduct) {
       auto byproductID = ""s;
       xr.findAttr(byproduct, "id", byproductID);
-      auto it = _server._items.find(byproductID);
+      it = _server._items.find(byproductID);
       if (it == _server._items.end()) {
         _server._debug << Color::CHAT_ERROR
                        << "Skipping recipe with invalid byproduct "
@@ -860,7 +860,7 @@ void DataLoader::loadRecipes(XmlReader &xr) {
       // Quantity
       xr.findAttr(child, "quantity", quantity);
       if (xr.findAttr(child, "id", matID)) {
-        auto it = _server._items.find(ServerItem(matID));
+        it = _server._items.find(ServerItem(matID));
         if (it == _server._items.end()) {
           _server._debug << Color::CHAT_ERROR
                          << "Skipping invalid recipe material " << matID

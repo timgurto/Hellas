@@ -121,7 +121,7 @@ void Client::populateClassWindow() {
       auto y = static_cast<px_t>(baseY + tier * yDist);
 
       const auto &talents = tierPair.second;
-      auto x = 1_px;
+      x = 1_px;
       auto xDist = 0_px;
       if (talents.size() > 1)
         xDist = (TREE_WIDTH - 18 - 2) / (talents.size() - 1);

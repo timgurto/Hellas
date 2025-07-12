@@ -130,12 +130,12 @@ void ClientObject::setMerchantSlot(size_t i, ClientMerchantSlot &mSlotArg) {
       QUANTITY_WIDTH = 30, BUTTON_PADDING = 1,
       TEXT_HEIGHT = Element::TEXT_HEIGHT, ICON_SIZE = Element::ITEM_HEIGHT,
       BUTTON_LABEL_WIDTH = 30 + QUANTITY_WIDTH,
-      BUTTON_HEIGHT = ICON_SIZE + 2 * BUTTON_PADDING, BUTTON_TOP = GAP + 2,
-      BUTTON_WIDTH =
+      BUY_BUTTON_HEIGHT = ICON_SIZE + 2 * BUTTON_PADDING, BUTTON_TOP = GAP + 2,
+      BUY_BUTTON_WIDTH =
           BUTTON_PADDING * 2 + BUTTON_LABEL_WIDTH + ICON_SIZE + NAME_WIDTH,
-      ROW_HEIGHT = BUTTON_HEIGHT + 2 * GAP,
+      ROW_HEIGHT = BUY_BUTTON_HEIGHT + 2 * GAP,
       TEXT_TOP = (ROW_HEIGHT - TEXT_HEIGHT) / 2,
-      BUTTON_TEXT_TOP = (BUTTON_HEIGHT - TEXT_HEIGHT) / 2,
+      BUTTON_TEXT_TOP = (BUY_BUTTON_HEIGHT - TEXT_HEIGHT) / 2,
       SET_BUTTON_WIDTH = 60, SET_BUTTON_HEIGHT = 15,
       SET_BUTTON_TOP = (ROW_HEIGHT - SET_BUTTON_HEIGHT) / 2;
 
@@ -283,7 +283,7 @@ void ClientObject::onRightClick() {
 void ClientObject::addQuestsToWindow() {
   px_t y = _window->contentHeight(), newWidth = _window->contentWidth();
 
-  const auto BUTTON_HEIGHT = 15, BUTTON_WIDTH = 150, MARGIN = 2;
+  const auto QUEST_BUTTON_WIDTH = 150, MARGIN = 2;
   const auto BUTTON_X = Client::images.startQuestIcon.width();
 
   auto questsToDisplay = std::map<CQuest *, bool>{};  // true=start, false=end
@@ -301,7 +301,7 @@ void ClientObject::addQuestsToWindow() {
         new Picture(0, y + (BUTTON_HEIGHT - icon.height()) / 2, icon));
 
     const auto buttonRect =
-        ScreenRect{BUTTON_X, y, BUTTON_WIDTH, BUTTON_HEIGHT};
+        ScreenRect{BUTTON_X, y, QUEST_BUTTON_WIDTH, BUTTON_HEIGHT};
     auto data = makeArgs(quest->info().id, serial());
     auto pendingState = startsThisQuest ? CQuest::ACCEPT : CQuest::COMPLETE;
     auto button = new Button(buttonRect, quest->info().name, [=]() {

@@ -291,7 +291,7 @@ void Avatar::addMenuButtons(List &menu) {
   menu.addChild(cityWarButton);
 
   if (_client.character().isKing()) {
-    auto *playerWarButton = new Button(0, "Declare city war", [this]() {
+    playerWarButton = new Button(0, "Declare city war", [this]() {
       _client.sendMessage({CL_DECLARE_WAR_ON_PLAYER_AS_CITY, _name});
     });
     if (_client.isCityAtWarWithPlayerDirectly(_name)) {
@@ -308,10 +308,9 @@ void Avatar::addMenuButtons(List &menu) {
     playerWarButton->setTooltip(tooltipText);
     menu.addChild(playerWarButton);
 
-    auto *cityWarButton =
-        new Button(0, "Declare city war against city", [this]() {
-          _client.sendMessage({CL_DECLARE_WAR_ON_CITY_AS_CITY, _city});
-        });
+    cityWarButton = new Button(0, "Declare city war against city", [this]() {
+      _client.sendMessage({CL_DECLARE_WAR_ON_CITY_AS_CITY, _city});
+    });
     if (_city.empty()) {
       cityWarButton->disable();
       tooltipText = _name + " is not a member of a city.";

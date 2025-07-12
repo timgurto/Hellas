@@ -271,7 +271,7 @@ void CDataLoader::loadProjectiles(XmlReader &xr) {
       auto imageFile = ""s;
       xr.findAttr(tailElem, "image", imageFile);
 
-      auto drawRect = ScreenRect{};
+      drawRect = {};
       xr.findAttr(tailElem, "x", drawRect.x);
       xr.findAttr(tailElem, "y", drawRect.y);
       xr.findAttr(tailElem, "w", drawRect.w);
@@ -550,7 +550,7 @@ void CDataLoader::loadObjectTypes(XmlReader &xr) {
         xr.findAttr(drawPerItem, "quantityShownToEnemies",
                     cot->drawPerItemInfo.quantityShownToEnemies);
         for (auto entry : xr.getChildren("entry", drawPerItem)) {
-          auto imageFile = ""s;
+          imageFile = {};
           auto offset = ScreenPoint{};
           if (!xr.findAttr(entry, "image", imageFile)) continue;
           if (!xr.findAttr(entry, "x", offset.x)) continue;
@@ -868,10 +868,10 @@ void CDataLoader::loadItems(XmlReader &xr) {
     for (auto particles : xr.getChildren("particles", elem)) {
       auto profileName = ""s;
       if (!xr.findAttr(particles, "profile", profileName)) continue;
-      MapPoint offset{};
-      xr.findAttr(particles, "x", offset.x);
-      xr.findAttr(particles, "y", offset.y);
-      item.addParticles(profileName, offset);
+      MapPoint particleOffset{};
+      xr.findAttr(particles, "x", particleOffset.x);
+      xr.findAttr(particles, "y", particleOffset.y);
+      item.addParticles(profileName, particleOffset);
     }
 
     if (xr.findAttr(elem, "exclusiveToQuest", s)) item.markAsQuestItem();
@@ -1004,7 +1004,7 @@ void CDataLoader::loadRecipes(XmlReader &xr) {
       int matQty = 1;
       xr.findAttr(child, "quantity", matQty);
       if (xr.findAttr(child, "id", s)) {
-        auto it = _client.gameData.items.find(s);
+        it = _client.gameData.items.find(s);
         if (it == _client.gameData.items.end()) {
           _client.showErrorMessage("Skipping invalid recipe material "s + s,
                                    Color::CHAT_ERROR);
@@ -1161,7 +1161,7 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
       nt->damageParticles(_client.findParticleProfile(s));
 
     for (auto gearElem : xr.getChildren("gear", humanoid)) {
-      auto id = ""s;
+      id = {};
       if (!xr.findAttr(gearElem, "id", id)) continue;
 
       auto it = _client.gameData.items.find(id);
@@ -1216,8 +1216,8 @@ void CDataLoader::loadNPCTypes(XmlReader &xr) {
       // A ClientObjectType is being pointed to by items; they need to point to
       // this instead.
       const ClientObjectType *dummy = *pair.first;
-      for (const auto &pair : _client.gameData.items) {
-        const ClientItem &item = pair.second;
+      for (const auto &itemPair : _client.gameData.items) {
+        const ClientItem &item = itemPair.second;
         if (item.constructsObject() == dummy) {
           ClientItem &nonConstItem = const_cast<ClientItem &>(item);
           nonConstItem.constructsObject(nt);
