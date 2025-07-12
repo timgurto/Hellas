@@ -1816,9 +1816,9 @@ void Server::handleBufferedMessages(const Socket &client,
         std::string message(_stringInputBuffer);
         iss >> del;
         if (del != MSG_END) return;
-        auto it = _onlineUsersByName.find(username);
-        if (it == _onlineUsersByName.end()) BREAK_WITH(ERROR_INVALID_USER)
-        const User *target = it->second;
+        auto userIt = _onlineUsersByName.find(username);
+        if (userIt == _onlineUsersByName.end()) BREAK_WITH(ERROR_INVALID_USER)
+        const User *target = userIt->second;
         sendMessage(target->socket(),
                     {SV_WHISPER, makeArgs(user->name(), message)});
 
@@ -1834,9 +1834,9 @@ void Server::handleBufferedMessages(const Socket &client,
         std::string id(_stringInputBuffer);
         iss >> del;
         if (del != MSG_END) return;
-        const auto it = _items.find(id);
-        if (it == _items.end()) BREAK_WITH(ERROR_INVALID_ITEM)
-        const ServerItem &item = *it;
+        const auto itemIt = _items.find(id);
+        if (itemIt == _items.end()) BREAK_WITH(ERROR_INVALID_ITEM)
+        const ServerItem &item = *itemIt;
         ;
         user->giveItem(&item, item.stackSize());
         break;

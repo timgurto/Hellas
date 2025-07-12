@@ -693,7 +693,7 @@ void Server::spawnInitialObjects() {
       SERVER_ERROR("Spawner has no type");
       return;
     }
-    for (size_t i = 0; i != spawner.quantity(); ++i) spawner.spawn();
+    for (size_t j = 0; j != spawner.quantity(); ++j) spawner.spawn();
     ++i;
 
     const auto REPORTING_TIME = 500;
