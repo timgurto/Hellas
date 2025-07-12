@@ -107,7 +107,9 @@ bool XmlReader::findAttr(TiXmlElement *elem, const char *attr, Color &val) {
     std::istringstream iss(cStrVal);
     Uint32 color;
     iss >> std::hex >> color;
-    Uint8 b = color % 0x100, g = color >> 8 % 0x100, r = color >> 16 % 100;
+    auto b = static_cast<Uint8>(color % 0x100),
+         g = static_cast<Uint8>(color >> 8 % 0x100),
+         r = static_cast<Uint8>(color >> 16 % 100);
     val = Color(r, g, b);
     return true;
   }

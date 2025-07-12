@@ -56,7 +56,7 @@ bool Spell::isTargetValid(const Entity &caster, const Entity &target) const {
 }
 
 bool Spell::canCastOnlyOnSelf() const {
-  for (auto i = 0; i != _validTargets.size(); ++i)
+  for (auto i = 0u; i != _validTargets.size(); ++i)
     if (i != SELF && _validTargets[i]) return false;
   return true;
 }

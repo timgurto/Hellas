@@ -75,8 +75,8 @@ void Spawner::TerrainCache::cacheTiles() {
   const auto &terrainList = _owner.type()->allowedTerrain();
 
   auto &server = Server::instance();
-  for (auto x = 0; x != server.map().width(); ++x)
-    for (auto y = 0; y != server.map().height(); ++y) {
+  for (auto x = 0u; x != server.map().width(); ++x)
+    for (auto y = 0u; y != server.map().height(); ++y) {
       // Check terrain is in list
       auto terrainAtThisTile = server.map()[x][y];
       if (!terrainList.allows(terrainAtThisTile)) continue;

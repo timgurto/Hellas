@@ -159,14 +159,15 @@ std::string timestamp() {
 std::string toPascal(std::string s) {
   if (s.empty()) return s;
 
-  s[0] = toupper(s[0]);
-  for (auto i = size_t{1}; i < s.size(); ++i) s[i] = tolower(s[i]);
+  s[0] = static_cast<char>(toupper(s[0]));
+  for (auto i = size_t{1}; i < s.size(); ++i)
+    s[i] = static_cast<char>(tolower(s[i]));
 
   return s;
 }
 
 std::string toLower(std::string in) {
-  for (auto &c : in) c = tolower(c);
+  for (auto &c : in) c = static_cast<char>(tolower(c));
   return in;
 }
 

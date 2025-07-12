@@ -14,7 +14,9 @@ bool AliasOfShort::operator!=(const AliasOfShort& rhs) const {
 
 void AliasOfShort::operator+=(const AliasOfShort& rhs) { _raw += rhs._raw; }
 
-void AliasOfShort::operator*=(int scalar) { _raw *= scalar; }
+void AliasOfShort::operator*=(int scalar) {
+  _raw = static_cast<short>(_raw * scalar);
+}
 
 AliasOfShort::operator bool() const { return _raw != 0; }
 
@@ -36,7 +38,7 @@ double ArmourClass::applyTo(double damage) const {
 }
 
 ArmourClass ArmourClass::modifyByLevelDiff(Level attacker, Level target) const {
-  auto diff = attacker - target;
+  short diff = attacker - target;
   return _raw - diff * 30;
 }
 
@@ -73,8 +75,8 @@ void BasisPoints::onChanged() {
 }
 
 Hitpoints Regen::getNextWholeAmount() const {
-  auto withRemainder = _raw + _remainder;
-  auto whole = withRemainder / 100;
+  short withRemainder = _raw + _remainder;
+  short whole = withRemainder / 100;
   _remainder = withRemainder - whole * 100;
   return whole;
 }

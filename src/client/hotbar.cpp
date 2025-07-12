@@ -95,7 +95,7 @@ static void assignButton(Client &client, HotbarCategory category,
 
 void Client::setHotbar(
     const std::vector<std::pair<int, std::string>> &buttons) {
-  for (auto i = 0; i != buttons.size(); ++i) {
+  for (size_t i = 0; i != buttons.size(); ++i) {
     auto category = HotbarCategory(buttons[i].first);
     buttonBeingAssigned = i;
     assignButton(*this, category, buttons[i].second);

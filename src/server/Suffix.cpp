@@ -6,7 +6,7 @@ const SuffixSets::Suffix& SuffixSets::chooseRandomSuffix(
   const auto chosenSuffix = rand() % suffixSet.size();
 
   auto it = suffixSet.begin();
-  for (auto i = 0; i != chosenSuffix; ++i) ++it;
+  for (auto i = 0u; i != chosenSuffix; ++i) ++it;
   return it->second;
 }
 

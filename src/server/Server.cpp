@@ -72,7 +72,8 @@ Server::Server()
 #else
   auto port = PRODUCTION_PORT;
 #endif
-  if (cmdLineArgs.contains("port")) port = cmdLineArgs.getInt("port");
+  if (cmdLineArgs.contains("port"))
+    port = static_cast<short>(cmdLineArgs.getInt("port"));
   serverAddr.sin_port = htons(port);
 
   _socket.bind(serverAddr);
@@ -412,7 +413,7 @@ void Server::addUser(const Socket &socket, const std::string &name,
       newUser.sendMessage({SV_QUEST_CAN_BE_FINISHED, questID});
     else {
       bool progressHasBeenMade = false;
-      for (auto i = 0; i != quest->objectives.size(); ++i) {
+      for (auto i = 0u; i != quest->objectives.size(); ++i) {
         auto &objective = quest->objectives[i];
         auto progress =
             newUser.questProgress(questID, objective.type, objective.id);

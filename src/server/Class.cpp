@@ -107,7 +107,7 @@ void Class::applyStatsTo(Stats &baseStats) const {
     if (talent->type() != Talent::STATS) continue;
 
     auto rank = pair.second;
-    for (auto i = 0; i != rank; ++i) baseStats &= talent->stats();
+    for (auto i = 0u; i != rank; ++i) baseStats &= talent->stats();
   }
 }
 

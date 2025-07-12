@@ -240,7 +240,7 @@ StatsMod StatsMod::operator*(int scalar) const {
   stats.critResist *= scalar;
   stats.dodge *= scalar;
   stats.block *= scalar;
-  stats.gatherBonus *= scalar;
+  stats.gatherBonus *= static_cast<short>(scalar);
   stats.unlockBonus *= scalar;
 
   double newSpeed = 1.0;

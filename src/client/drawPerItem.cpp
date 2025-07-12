@@ -102,7 +102,7 @@ void DrawPerItemInfo::generateImage(size_t quantity) const {
   // Create border from all items
   const auto borderOffsets =
       std::vector<ScreenPoint>{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-  for (auto i = 0; i != quantity; ++i) {
+  for (size_t i = 0; i != quantity; ++i) {
     const auto& entry = _type._entries[i];
     const auto& outlineTexture = _type.getTextures(entry.imageFile).outline;
     for (const auto borderOffset : borderOffsets)
@@ -111,7 +111,7 @@ void DrawPerItemInfo::generateImage(size_t quantity) const {
   }
 
   // Draw items normally on top
-  for (auto i = 0; i != quantity; ++i) {
+  for (size_t i = 0; i != quantity; ++i) {
     const auto& entry = _type._entries[i];
     const auto& itemTexture = _type.getTextures(entry.imageFile).original;
     auto texture = Texture{itemTexture};

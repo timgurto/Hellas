@@ -680,7 +680,7 @@ void Entity::sendAllLootToTaggers() const {
   for (auto memberName : taggersGroup) {
     auto asUser = server.getUserByName(memberName);
     if (!asUser) continue;
-    for (auto i = 0; i != loot().size(); ++i)
+    for (size_t i = 0; i != loot().size(); ++i)
       loot().sendSingleSlotToUser(*asUser, serial(), i);
   }
 }

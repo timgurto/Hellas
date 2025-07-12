@@ -182,11 +182,11 @@ void Object::sendInfoToClient(const User &targetUser, bool isNew) const {
 
   // Container
   if (hasContainer() && permissions.canUserAccessContainer(targetUser.name()))
-    for (auto i = 0; i != objType().container().slots(); ++i)
+    for (size_t i = 0; i != objType().container().slots(); ++i)
       server.sendInventoryMessage(targetUser, i, *this);
 
   // Merchant slots
-  for (auto i = 0; i != _merchantSlots.size(); ++i)
+  for (size_t i = 0; i != _merchantSlots.size(); ++i)
     server.sendMerchantSlotMessage(targetUser, *this, i);
 
   // Buffs/debuffs
