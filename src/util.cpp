@@ -149,10 +149,11 @@ bool isUsernameValid(const std::string name) {
 
 std::string timestamp() {
   auto t = std::time(nullptr);
-  auto tm = *std::localtime(&t);
+  auto result = tm{};
+  localtime_s(&result, &t);
 
   std::ostringstream oss;
-  oss << std::put_time(&tm, "%H:%M:%S") << " ";
+  oss << std::put_time(&result, "%H:%M:%S") << " ";
   return oss.str();
 }
 
