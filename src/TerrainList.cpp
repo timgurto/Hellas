@@ -3,6 +3,7 @@
 #include "XmlReader.h"
 using namespace std::string_literals;
 
+std::map<std::string, char> TerrainList::terrainCodes;
 std::map<std::string, TerrainList> TerrainList::_lists;
 const TerrainList *TerrainList::_default = nullptr;
 TerrainList TerrainList::_dummy{};
