@@ -35,23 +35,17 @@ class FileAppender {
   FileAppender(const std::string &filename);
   ~FileAppender();
 
-  template <typename T>
-  friend FileAppender &operator<<(FileAppender &lhs, const T &rhs);
-
   operator bool() const { return _fileStream.is_open(); }
+
+  template <typename T>
+  FileAppender &operator<<(const T &rhs) {
+    if (_fileStream.is_open()) _fileStream << rhs;
+    return *this;
+  }
 
  private:
   std::ofstream _fileStream;
-
-  template <typename T>
-  friend FileAppender &operator<<(const FileAppender &lhs, const T &rhs);
 };
-
-template <typename T>
-FileAppender &operator<<(FileAppender &lhs, const T &rhs) {
-  if (lhs._fileStream.is_open()) lhs._fileStream << rhs;
-  return lhs;
-}
 
 class Log {
  public:
@@ -93,7 +87,7 @@ class Log {
   }
 
  private:
-  FileAppender _logFile;
+  mutable FileAppender _logFile;
 
   bool usingLogFile() const;
 };
