@@ -1,6 +1,7 @@
 #include "drawing.h"
 
 #include <cassert>
+#include <random>
 
 #include "../TerrainList.h"
 #include "Client.h"
@@ -232,8 +233,16 @@ void Client::drawFootprint(const MapRect &rect, Color color,
 }
 
 void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const {
-  if (isDebug()) {
-    gameData.terrain.at(_map[x][y]).draw(xLoc, yLoc);
+  // Create pseudorandom hash from tile co-ordinates.  This will be used if each
+  // tile uses a random frame.
+  auto deterministicRandomGenerator = std::default_random_engine{};
+  const auto tileIndex = y * 3000 + x;
+  deterministicRandomGenerator.seed(tileIndex);
+  const auto coordHash = deterministicRandomGenerator();
+
+  const auto skipBlending = isDebug();
+  if (skipBlending) {
+    gameData.terrain.at(_map[x][y]).draw(xLoc, yLoc, coordHash);
     return;
   }
 
@@ -275,7 +284,7 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const {
   const auto *terrainThis = &gameData.terrain.at(tileID);
   if (terrainThis->hasHardEdge()) {
     terrainThis->setFullAlpha();
-    terrainThis->draw(xLoc, yLoc);
+    terrainThis->draw(xLoc, yLoc, coordHash);
     terrainThis->setQuarterAlpha();
     return;
   }
@@ -315,31 +324,31 @@ void Client::drawTile(size_t x, size_t y, px_t xLoc, px_t yLoc) const {
   // Half-alpha base tile
   terrainThis->setHalfAlpha();
   if (yOdd && x == 0) {
-    terrainThis->draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-    terrainThis->draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+    terrainThis->draw(drawLoc + TOP_RIGHT, TOP_RIGHT, coordHash);
+    terrainThis->draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT, coordHash);
   } else if (!yOdd && x == _map.width() - 1) {
-    terrainThis->draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-    terrainThis->draw(drawLoc + TOP_LEFT, TOP_LEFT);
+    terrainThis->draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT, coordHash);
+    terrainThis->draw(drawLoc + TOP_LEFT, TOP_LEFT, coordHash);
   } else {
-    terrainThis->draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-    terrainThis->draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
-    terrainThis->draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-    terrainThis->draw(drawLoc + TOP_LEFT, TOP_LEFT);
+    terrainThis->draw(drawLoc + TOP_RIGHT, TOP_RIGHT, coordHash);
+    terrainThis->draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT, coordHash);
+    terrainThis->draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT, coordHash);
+    terrainThis->draw(drawLoc + TOP_LEFT, TOP_LEFT, coordHash);
   }
-  terrainThis->setQuarterAlpha();
 
   // Quarter-alpha L, R, E, F, G, H tiles
+  terrainThis->setQuarterAlpha();
   if (!yOdd || x != 0) {
-    terrainL->draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-    terrainL->draw(drawLoc + TOP_LEFT, TOP_LEFT);
-    terrainG->draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT);
-    terrainH->draw(drawLoc + TOP_LEFT, TOP_LEFT);
+    terrainL->draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT, coordHash);
+    terrainL->draw(drawLoc + TOP_LEFT, TOP_LEFT, coordHash);
+    terrainG->draw(drawLoc + BOTTOM_LEFT, BOTTOM_LEFT, coordHash);
+    terrainH->draw(drawLoc + TOP_LEFT, TOP_LEFT, coordHash);
   }
   if (yOdd || x != _map.width() - 1) {
-    terrainR->draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-    terrainR->draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
-    terrainE->draw(drawLoc + TOP_RIGHT, TOP_RIGHT);
-    terrainF->draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT);
+    terrainR->draw(drawLoc + TOP_RIGHT, TOP_RIGHT, coordHash);
+    terrainR->draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT, coordHash);
+    terrainE->draw(drawLoc + TOP_RIGHT, TOP_RIGHT, coordHash);
+    terrainF->draw(drawLoc + BOTTOM_RIGHT, BOTTOM_RIGHT, coordHash);
   }
 
   /*if (!gameData.terrain[tileID].isTraversable()) {

@@ -31,7 +31,7 @@ class Deconstruction {
   bool exists() const { return _type != nullptr; }
 
  private:
-  const DeconstructionType *_type;
+  const DeconstructionType *_type = nullptr;
   Object *_parent = nullptr;
 
   friend class DeconstructionType;

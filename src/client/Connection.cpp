@@ -41,7 +41,7 @@ void Connection::getNewMessages() {
   }
 }
 
-void Connection::connect() {
+void Connection::connect() { 
   _aThreadIsConnecting = true;
 
   _state = TRYING_TO_CONNECT;

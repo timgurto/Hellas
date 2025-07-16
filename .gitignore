@@ -85,5 +85,6 @@ dev-stuff/release-process.pdf
 *.aux
 logging/metalWealth.csv
 /Debug
+publish-client.bat
 /.vs
 *.recipe

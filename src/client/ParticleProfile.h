@@ -18,10 +18,9 @@ class ParticleProfile {
   bool _canBeUnderground = false;  // If false, enforce a minimum altitude of 0.
   NormalVariable _particlesPerHit,  // For attacking
       _distance, _altitude, _velocity, _fallSpeed,
+      // The particle will disappear after this time
       _lifespan{static_cast<double>(DEFAULT_LIFESPAN_MEAN),
-                static_cast<double>(
-                    DEFAULT_LIFESPAN_SD)};  // The particle will disappear after
-                                            // this time
+                static_cast<double>(DEFAULT_LIFESPAN_SD)};
   MapPoint _direction;
   Uint8 _alpha{0xff};
   bool _fadeInAndOut{false};

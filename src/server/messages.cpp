@@ -482,6 +482,8 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
   if (from.hasWarning()) RETURN_WITH(from.warning)
   auto to = getContainer(user, obj2);
   if (to.hasWarning()) RETURN_WITH(from.warning)
+  assert(from.object);
+  assert(to.object);
 
   if (!from.container) RETURN_WITH(ERROR_NO_INVENTORY);
 
@@ -745,6 +747,7 @@ HANDLE_MESSAGE(CL_TAKE_ITEM) {
     pSlot = pEnt->getSlotToTakeFromAndSendErrors(slot, user);
   }
   if (!pSlot) return;
+  assert(pEnt);
   ServerItem::Instance &containerSlot = *pSlot;
 
   // TODO step through when taking from a gear slot, to see if execution gets
@@ -792,6 +795,7 @@ HANDLE_MESSAGE(CL_CEDE) {
 
   if (serial.isInventory() || serial.isGear()) RETURN_WITH(WARNING_DOESNT_EXIST)
   auto *ent = _entities.find(serial);
+  if (!ent) return;
 
   if (!ent->permissions.isOwnedByPlayer(user.name()))
     RETURN_WITH(WARNING_NO_PERMISSION)
@@ -2089,6 +2093,8 @@ void Server::handle_CL_ACCEPT_PEACE_OFFER(User &user, MessageCode code,
       codeForProposer = SV_YOUR_CITY_IS_AT_PEACE_WITH_CITY;
       codeForEnemy = SV_YOUR_CITY_IS_AT_PEACE_WITH_CITY;
       break;
+    default:
+      return;
   }
 
   auto accpeted = _wars.acceptPeaceOffer(proposer, enemy);

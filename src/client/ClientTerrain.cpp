@@ -6,10 +6,10 @@
 #include "../util.h"
 #include "Client.h"
 
-ClientTerrain::ClientTerrain(const std::string &imageFile, size_t frames,
+ClientTerrain::ClientTerrain(const std::string& imageFile, size_t frames,
                              ms_t frameTime)
     : _frames(frames),
-      _frame(0),
+      _animationFrame(0),
       _frameTime(frameTime),
       _frameTimer(frameTime) {
   if (_frames == 1)
@@ -26,30 +26,55 @@ ClientTerrain::ClientTerrain(const std::string &imageFile, size_t frames,
     }
 
   if (!isDebug())
-    for (Texture &frame : _images) {
+    for (Texture& frame : _images) {
       frame.setBlend(SDL_BLENDMODE_ADD);
       frame.setAlpha(0x3f);
     }
 }
 
-void ClientTerrain::draw(const ScreenRect &loc,
-                         const ScreenRect &srcRect) const {
-  _images[_frame].draw(loc, srcRect);
+const Texture& ClientTerrain::frameToDraw(unsigned coordHash) const {
+  if (_showRandomFrame) {
+    auto chosenFrame = coordHash % _frames;
+    return _images[chosenFrame];
+  }
+  return _images[_animationFrame];
 }
 
-void ClientTerrain::draw(px_t x, px_t y) const { _images[_frame].draw(x, y); }
+void ClientTerrain::draw(const ScreenRect& loc, const ScreenRect& srcRect,
+                         unsigned coordHash) const {
+  frameToDraw(coordHash).draw(loc, srcRect);
+}
 
-void ClientTerrain::setFullAlpha() const { _images[_frame].setAlpha(0xff); }
+void ClientTerrain::draw(px_t x, px_t y, unsigned coordHash) const {
+  frameToDraw(coordHash).draw(x, y);
+}
 
-void ClientTerrain::setHalfAlpha() const { _images[_frame].setAlpha(0x7f); }
+void ClientTerrain::setFullAlpha() const { setTerrainAlpha(0xff); }
 
-void ClientTerrain::setQuarterAlpha() const { _images[_frame].setAlpha(0x3f); }
+void ClientTerrain::setHalfAlpha() const { setTerrainAlpha(0x7f); }
+
+void ClientTerrain::setQuarterAlpha() const { setTerrainAlpha(0x3f); }
+
+void ClientTerrain::setTerrainAlpha(Uint8 alpha) const {
+  // Optimisation when not using random frame, since frame selection is
+  // predictable
+  if (_frameTime) {
+    frameToDraw(0).setAlpha(alpha);
+    return;
+  }
+
+  // Change alpha on all frames
+  // TODO try removing this bit and using just the above
+  for (auto& frame : _images) {
+    frame.setAlpha(alpha);
+  }
+}
 
 void ClientTerrain::advanceTime(ms_t timeElapsed) {
-  if (_frameTime == 0) return;
+  const auto usesAnimation = _frameTime != 0;
+  if (!usesAnimation) return;
 
   _frameTimer += timeElapsed;
-  if (_frameTimer >= _frameTime * _frames)
-    _frameTimer -= _frameTime * static_cast<ms_t>(_frames);
-  _frame = _frameTimer / _frameTime;
+  if (_frameTimer >= _frameTime * _frames) _frameTimer -= _frameTime * _frames;
+  _animationFrame = _frameTimer / _frameTime;
 }
