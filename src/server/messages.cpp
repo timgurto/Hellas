@@ -240,6 +240,10 @@ HANDLE_MESSAGE(CL_GATHER) {
   user.cancelAction();
 
   auto *ent = _entities.find(serial);
+  if (!ent) {
+    SERVER_ERROR("Can't gather from nonexistent object");
+    return;
+  }
 
   if (!isEntityInRange(client, user, ent)) return;
   if (!ent->type()) {
@@ -478,6 +482,8 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
   if (from.hasWarning()) RETURN_WITH(from.warning)
   auto to = getContainer(user, obj2);
   if (to.hasWarning()) RETURN_WITH(from.warning)
+  assert(from.object);
+  assert(to.object);
 
   if (!from.container) RETURN_WITH(ERROR_NO_INVENTORY);
 
@@ -743,6 +749,10 @@ HANDLE_MESSAGE(CL_TAKE_ITEM) {
   if (!pSlot) return;
   ServerItem::Instance &containerSlot = *pSlot;
 
+  // TODO step through when taking from a gear slot, to see if execution gets
+  // below and what happens with pEnt (which is presumably still null)
+  assert(pEnt);
+
   auto userHasPermissionToLoot = pEnt->permissions.canUserLoot((user.name()));
   userHasPermissionToLoot |=
       groups->areUsersInSameGroup(user.name(), pEnt->tagger.username());
@@ -798,6 +808,9 @@ HANDLE_MESSAGE(CL_CEDE) {
     if (obj->objType().isPlayerUnique()) RETURN_WITH(ERROR_CANNOT_CEDE)
   }
 
+  // TODO: step through to see what happens when ent is null; can execution get
+  // here?
+  assert(ent);
   ent->permissions.setCityOwner(city);
 }
 
@@ -1964,6 +1977,10 @@ void Server::handle_CL_SUE_FOR_PEACE(User &user, MessageCode code,
       codeForProposer = SV_YOUR_CITY_PROPOSED_PEACE_TO_CITY;
       codeForEnemy = SV_PEACE_WAS_PROPOSED_TO_YOUR_CITY_BY_CITY;
       break;
+    default:
+      SERVER_ERROR(
+          "Invalid message code when suing for peace; taking no action");
+      return;
   }
 
   // If a city is proposing, make sure the player is a king
@@ -2016,6 +2033,10 @@ void Server::handle_CL_CANCEL_PEACE_OFFER(User &user, MessageCode code,
       codeForProposer = SV_YOUR_CITY_CANCELED_PEACE_OFFER_TO_CITY;
       codeForEnemy = SV_PEACE_OFFER_TO_YOUR_CITY_FROM_CITY_WAS_CANCELED;
       break;
+    default:
+      SERVER_ERROR(
+          "Invalid message code when cancelling peace offer; taking no action");
+      return;
   }
 
   // If a city is proposing, make sure the player is a king
