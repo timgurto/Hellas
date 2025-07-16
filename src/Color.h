@@ -1,9 +1,9 @@
 #ifndef COLOR_H
 #define COLOR_H
 
-#include <iostream>
+#include <SDL.h>
 
-#include "SDL.h"
+#include <iostream>
 
 class Color {
  public:

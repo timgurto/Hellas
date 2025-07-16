@@ -1,5 +1,5 @@
-#include "../XmlReader.h"
 #include "../server/User.h"
+#include "../XmlReader.h"
 #include "Client.h"
 #include "ui/ContainerGrid.h"
 #include "ui/Label.h"

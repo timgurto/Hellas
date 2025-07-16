@@ -14,9 +14,9 @@
 #include "Class.h"
 #include "Entity.h"
 #include "Exploration.h"
-#include "SRecipe.h"
-#include "ServerItem.h"
 #include "objects/Object.h"
+#include "ServerItem.h"
+#include "SRecipe.h"
 
 class NPC;
 class Server;

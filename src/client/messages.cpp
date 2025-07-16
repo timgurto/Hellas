@@ -10,9 +10,9 @@
 #include "ClientObject.h"
 #include "ClientVehicle.h"
 #include "Particle.h"
-#include "UIGroup.h"
 #include "ui/ConfirmationWindow.h"
 #include "ui/ContainerGrid.h"
+#include "UIGroup.h"
 
 using namespace std::string_literals;
 
