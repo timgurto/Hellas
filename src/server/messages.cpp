@@ -1215,7 +1215,8 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
     numValidSlots = obj->objType().container().slots();
   }
 
-  if (slot >= numValidSlots) RETURN_WITH(ERROR_INVALID_SLOT);
+  if (static_cast<size_t>(slot) >= numValidSlots)
+    RETURN_WITH(ERROR_INVALID_SLOT);
 
   auto &containerSlot = (*container)[slot];
   const auto *itemToScrap = containerSlot.type();
