@@ -45,7 +45,7 @@ frameTime          *
 <terrain index="J" id="caveRocky"       color="5F5283" />
 <terrain index="K" id="caveMountain"    color="302A5D" />
 <terrain index="L" id="nile"            color="A8CB88" frames="6" showRandomFrame="1"/>
-<terrain index="M" id="nileFertile"     color="405D60" />
+<terrain index="M" id="nileFertile"     color="405D60" frames="6" showRandomFrame="1"/>
 <terrain index="R" id="volcanoFertile"  color="384F61" frames="6" showRandomFrame="1"/>
 <terrain index="N" id="volcanoRocky"    color="392354" />
 <terrain index="O" id="volcanoMountain" color="52234E" />
