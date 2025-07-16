@@ -482,8 +482,6 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
   if (from.hasWarning()) RETURN_WITH(from.warning)
   auto to = getContainer(user, obj2);
   if (to.hasWarning()) RETURN_WITH(from.warning)
-  assert(from.object);
-  assert(to.object);
 
   if (!from.container) RETURN_WITH(ERROR_NO_INVENTORY);
 
