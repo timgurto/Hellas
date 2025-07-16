@@ -141,6 +141,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 
       THEN("he has two semicircles") {
         WAIT_UNTIL(user->inventory()[0].quantity() == 2);
+        // TODO do the actual check
       }
     }
   }
