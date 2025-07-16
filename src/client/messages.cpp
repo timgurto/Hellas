@@ -1485,7 +1485,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
 
       case SV_TRANSFORM_TIME_REMAINING: {
         auto serial = Serial{};
-        size_t remaining;
+        ms_t remaining;
         singleMsg >> serial >> del >> remaining >> del;
         if (del != MSG_END) return;
         auto objIt = _objects.find(serial);

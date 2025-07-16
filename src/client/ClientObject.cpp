@@ -704,7 +704,7 @@ void ClientObject::addWindowTextToWindow() {
 size_t ClientObject::numItemsInContainer() const {
   auto sum = 0;
   for (const auto &pair : container()) {
-    sum += pair.second;
+    sum += static_cast<int>(pair.second);
   }
   return sum;
 }

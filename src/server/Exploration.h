@@ -21,7 +21,9 @@ class Exploration {
   void readFrom(XmlReader &xr);
 
   int numChunksExplored() const { return _numChunksExplored; }
-  int numChunks() const { return _map.size() * _map.front().size(); }
+  int numChunks() const {
+    return static_cast<int>(_map.size() * _map.front().size());
+  }
 
   void sendWholeMap(const Socket &socket) const;
   void sendSingleChunk(const Socket &socket, const Chunk &chunk) const;

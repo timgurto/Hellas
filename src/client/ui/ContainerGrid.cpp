@@ -29,7 +29,7 @@ ContainerGrid::ContainerGrid(Client &client, size_t rows, size_t cols,
   client.registerContainerGrid(this);
 
   for (size_t i = 0; i != _linked.size(); ++i) {
-    const px_t x = i % cols, y = i / cols;
+    const auto x = static_cast<px_t>(i % cols), y = static_cast<px_t>(i / cols);
     const auto slotRect =
         ScreenRect{x * (Client::ICON_SIZE + _gap + 2),
                    y * (Client::ICON_SIZE + _gap + 2) + 1,
@@ -50,7 +50,8 @@ void ContainerGrid::refresh() {
 
   renderer.setDrawColor(Color::BLACK);
   for (size_t i = 0; i != _linked.size(); ++i) {
-    const px_t x = i % _cols, y = i / _cols;
+    const auto x = static_cast<px_t>(i % _cols),
+               y = static_cast<px_t>(i / _cols);
     const auto slotRect =
         ScreenRect{x * (Client::ICON_SIZE + _gap + 2),
                    y * (Client::ICON_SIZE + _gap + 2) + 1,

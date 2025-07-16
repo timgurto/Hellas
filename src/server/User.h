@@ -332,7 +332,7 @@ class User : public Object {  // TODO: Don't inherit from Object
   void clearGear();
 
   // Configure user to craft an item
-  void beginCrafting(const SRecipe &item, double speed, size_t quantity);
+  void beginCrafting(const SRecipe &item, double speed, int quantity);
 
   // Configure user to construct an item, or an object from no item
   void beginConstructing(const ObjectType &obj, const MapPoint &location,
@@ -415,7 +415,7 @@ class User : public Object {  // TODO: Don't inherit from Object
                          const std::string &id, int qty);
   int questProgress(const Quest::ID &quest, Quest::Objective::Type type,
                     const std::string &id) const;
-  int numQuests() const { return _quests.size(); }
+  int numQuests() const { return static_cast<int>(_quests.size()); }
   bool isOnQuest(const Quest::ID &id) const {
     return _quests.find(id) != _quests.end();
   }

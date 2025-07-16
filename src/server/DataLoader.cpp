@@ -1150,8 +1150,9 @@ void DataLoader::loadSpawners(XmlReader &xr) {
     Spawner s(p, type);
 
     size_t n;
+    ms_t t;
     if (xr.findAttr(elem, "quantity", n)) s.quantity(n);
-    if (xr.findAttr(elem, "respawnTime", n)) s.respawnTime(n);
+    if (xr.findAttr(elem, "respawnTime", t)) s.respawnTime(t);
     double d;
     if (xr.findAttr(elem, "radius", d)) s.radius(d);
 

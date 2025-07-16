@@ -246,7 +246,7 @@ void Client::clearChunkFromFogOfWar(size_t x, size_t y) {
 
   renderer.pushRenderTarget(_fogOfWar);
 
-  transparentPixel.draw(x, y);
+  transparentPixel.draw(static_cast<px_t>(x), static_cast<px_t>(y));
 
   renderer.popRenderTarget();
 }

@@ -64,7 +64,7 @@ void ClientItem::init() {
     xr.findAttr(slot, "midY", gearOffsets[slotNum].y);
 
     // Draw order.  Without this, gear for this slot won't be drawn.
-    size_t order;
+    int order;
     if (xr.findAttr(slot, "drawOrder", order)) gearDrawOrder[order] = slotNum;
   }
 }

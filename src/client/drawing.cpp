@@ -38,17 +38,19 @@ void Client::draw() const {
 
   // Terrain
   size_t xMin = static_cast<size_t>(max<double>(0, -offset().x / Map::TILE_W)),
-         xMax = static_cast<size_t>(min<double>(
-             _map.width(), 1.0 * (-offset().x + SCREEN_X) / Map::TILE_W + 1.5)),
+         xMax = static_cast<size_t>(
+             min<double>(static_cast<double>(_map.width()),
+                         1.0 * (-offset().x + SCREEN_X) / Map::TILE_W + 1.5)),
          yMin = static_cast<size_t>(max<double>(0, -offset().y / Map::TILE_H)),
-         yMax = static_cast<size_t>(min<double>(
-             _map.height(), (-offset().y + SCREEN_Y) / Map::TILE_H + 1));
+         yMax = static_cast<size_t>(
+             min<double>(static_cast<double>(_map.height()),
+                         (-offset().y + SCREEN_Y) / Map::TILE_H + 1));
   assert(xMin <= xMax);
   assert(yMin <= yMax);
   for (size_t y = yMin; y != yMax; ++y) {
-    const px_t yLoc = y * Map::TILE_H + toInt(offset().y);
+    const px_t yLoc = static_cast<px_t>(y) * Map::TILE_H + toInt(offset().y);
     for (size_t x = xMin; x != xMax; ++x) {
-      px_t xLoc = x * Map::TILE_W + toInt(offset().x);
+      px_t xLoc = static_cast<px_t>(x) * Map::TILE_W + toInt(offset().x);
       if (y % 2 == 1) xLoc -= Map::TILE_W / 2;
       drawTile(x, y, xLoc, yLoc);
     }

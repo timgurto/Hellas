@@ -8,7 +8,10 @@
 #include "ui/Window.h"
 
 void Client::initializeInventoryWindow() {
-  static const px_t COLS = 5, ROWS = (Client::INVENTORY_SIZE - 1) / COLS + 1;
+  static const px_t COLS = 5,
+                    ROWS =
+                        (static_cast<px_t>(Client::INVENTORY_SIZE) - 1) / COLS +
+                        1;
   ContainerGrid *inventory =
       new ContainerGrid(*this, ROWS, COLS, _inventory, Serial::Inventory());
   const px_t HEIGHT = inventory->height() + 1, WIDTH = inventory->width(),

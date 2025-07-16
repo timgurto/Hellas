@@ -1182,7 +1182,7 @@ HANDLE_MESSAGE(CL_SCRAP_ITEM) {
   READ_ARGS(serial, slot);
 
   ServerItem::vect_t *container;
-  auto numValidSlots = 0;
+  size_t numValidSlots = 0;
   if (serial == Serial::Inventory()) {
     container = &user.inventory();
     numValidSlots = User::INVENTORY_SIZE;

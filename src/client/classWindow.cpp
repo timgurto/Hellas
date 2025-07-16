@@ -77,11 +77,12 @@ void Client::populateClassWindow() {
 
   _talentTrees->clearChildren();
 
-  const px_t GAP = 10, TOTAL_GAP_WIDTH = GAP * (classInfo.trees().size()),
-             TREE_WIDTH = (classInfo.trees().size() > 0
-                               ? (_talentTrees->rect().w - TOTAL_GAP_WIDTH) /
-                                     classInfo.trees().size()
-                               : 0),
+  const auto numTrees = static_cast<px_t>(classInfo.trees().size());
+  const px_t GAP = 10, TOTAL_GAP_WIDTH = GAP * numTrees,
+             TREE_WIDTH =
+                 (numTrees > 0
+                      ? (_talentTrees->rect().w - TOTAL_GAP_WIDTH) / numTrees
+                      : 0),
              TREE_HEIGHT = _talentTrees->rect().h;
   auto x = GAP / 2;
   auto treeElems = std::map<std::string, Element *>{};
@@ -115,7 +116,8 @@ void Client::populateClassWindow() {
     auto baseY = 30_px;
     auto yDist = 0_px;
     if (tree.numTiers() > 1)
-      yDist = (TREE_HEIGHT - 18 - baseY - GAP / 2) / (tree.numTiers() - 1);
+      yDist = (TREE_HEIGHT - 18 - baseY - GAP / 2) /
+              (static_cast<px_t>(tree.numTiers()) - 1);
     for (auto &tierPair : tree.talents) {
       auto tier = tierPair.first;
       auto y = static_cast<px_t>(baseY + tier * yDist);
@@ -124,7 +126,7 @@ void Client::populateClassWindow() {
       x = 1_px;
       auto xDist = 0_px;
       if (talents.size() > 1)
-        xDist = (TREE_WIDTH - 18 - 2) / (talents.size() - 1);
+        xDist = (TREE_WIDTH - 18 - 2) / (static_cast<px_t>(talents.size()) - 1);
       else
         x = (TREE_WIDTH - 18) / 2 + 1;
 

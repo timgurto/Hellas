@@ -22,7 +22,8 @@ void Yield::instantiate(ItemSet &contents) const {
 
 size_t Yield::generateInitialQuantity(const YieldEntry &entry) {
   const double raw = entry._initDistribution();
-  const double withMinimum = max<double>(entry._initMin, raw);
+  const double withMinimum =
+      max<double>(static_cast<double>(entry._initMin), raw);
   return toInt(withMinimum);
 }
 
@@ -62,7 +63,7 @@ void Yield::simulate(const User &recipient) const {
     instantiate(items);
     for (const auto &pair : items) {
       const auto item = pair.first;
-      const auto qty = pair.second;
+      const auto qty = static_cast<int>(pair.second);
 
       quantitiesByItem[item->id()][qty]++;
     }

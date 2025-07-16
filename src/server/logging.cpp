@@ -253,7 +253,7 @@ static void countItems(const ServerItem::vect_t &items,
     if (!slot.hasItem()) continue;
 
     const auto id = slot.type()->id();
-    const auto qty = slot.quantity();
+    const auto qty = static_cast<int>(slot.quantity());
     itemCounts[id] += qty;
   }
 }

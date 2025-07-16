@@ -31,8 +31,10 @@ bool Server::isLocationValid(const MapRect &rect,
 
   const double right = rect.x + rect.w, bottom = rect.y + rect.h;
   // Map edges
-  const double xLimit = _map.width() * Map::TILE_W - Map::TILE_W / 2,
-               yLimit = _map.height() * Map::TILE_H;
+  const auto xLimit = static_cast<double>(_map.width() * Map::TILE_W -
+                                          Map::TILE_W / 2),
+             yLimit = static_cast<double>(_map.height() * Map::TILE_H);
+
   if (rect.x < 0 || right > xLimit || rect.y < 0 || bottom > yLimit) {
     return false;
   }

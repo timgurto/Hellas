@@ -65,7 +65,7 @@ int Groups::getGroupSize(Username u) const {
   UNLOCK_GROUPS_BY_USER
 
   if (userIsInAGroup)
-    return it->second->size();
+    return static_cast<int>(it->second->size());
   else
     return 1;
 }

@@ -38,7 +38,7 @@ void TakeContainer::repopulate() {
   // Find the highest non-empty slot, to exclude all subsequent slots.
   // This will avoid trailing empty slots causing the window to scroll.
   bool thereIsAnyLoot = false;
-  int lastNonEmptySlot = _linked.size() - 1;
+  int lastNonEmptySlot = static_cast<int>(_linked.size() - 1);
   for (; lastNonEmptySlot >= 0; --lastNonEmptySlot)
     if (_linked[lastNonEmptySlot].first.type() != nullptr) {
       thereIsAnyLoot = true;

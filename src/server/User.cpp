@@ -410,7 +410,7 @@ void User::beginGathering(Entity *ent, double speedMultiplier) {
   sendMessage({SV_ACTION_STARTED, _actionProperties.timeRemaining});
 }
 
-void User::beginCrafting(const SRecipe &recipe, double speed, size_t quantity) {
+void User::beginCrafting(const SRecipe &recipe, double speed, int quantity) {
   _action = CRAFT;
   _actionProperties.recipe = &recipe;
   _actionProperties.timeRemaining = toInt(recipe.time() / speed);
@@ -779,10 +779,10 @@ int User::countItems(const ServerItem *item) const {
   auto count = 0;
 
   for (auto &slot : _gear)
-    if (slot.type() == item) count += slot.quantity();
+    if (slot.type() == item) count += static_cast<int>(slot.quantity());
 
   for (auto &slot : _inventory)
-    if (slot.type() == item) count += slot.quantity();
+    if (slot.type() == item) count += static_cast<int>(slot.quantity());
 
   return count;
 }

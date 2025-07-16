@@ -49,6 +49,7 @@ void ClientTerrain::advanceTime(ms_t timeElapsed) {
   if (_frameTime == 0) return;
 
   _frameTimer += timeElapsed;
-  if (_frameTimer >= _frameTime * _frames) _frameTimer -= _frameTime * _frames;
+  if (_frameTimer >= _frameTime * _frames)
+    _frameTimer -= _frameTime * static_cast<ms_t>(_frames);
   _frame = _frameTimer / _frameTime;
 }

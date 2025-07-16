@@ -47,5 +47,5 @@ void DroppedItem::getPickedUpBy(User &user) {
 }
 
 void DroppedItem::addToItemCounts(Server::ItemCounts &itemCounts) const {
-  itemCounts[_itemType.id()] += _quantity;
+  itemCounts[_itemType.id()] += static_cast<int>(_quantity);
 }

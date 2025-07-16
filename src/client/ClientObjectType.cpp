@@ -110,7 +110,7 @@ const ImageWithHighlight &ClientObjectType::getProgressImage(
   int index = static_cast<int>(progress * (numFrames + 1)) - 1;
   if (_transformImages.empty()) index = -1;
   index = max<int>(index, -1);
-  index = min<int>(index, _transformImages.size() -
+  index = min<int>(index, static_cast<int>(_transformImages.size()) -
                               1);  // Progress may be 100% due to server delay.
   if (index == -1) return imageWithHighlight();
   return _transformImages[index];
