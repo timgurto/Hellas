@@ -456,8 +456,9 @@ void DataLoader::loadQuests(XmlReader &xr) {
     }
 
     for (auto startsWithItem : xr.getChildren("startsWithItem", elem)) {
-      id.clear();
-      if (xr.findAttr(startsWithItem, "id", id)) q.startsWithItems.insert(id);
+      auto itemID = ""s;
+      if (xr.findAttr(startsWithItem, "id", itemID))
+        q.startsWithItems.insert(itemID);
     }
 
     xr.findAttr(elem, "exclusiveToClass", q.exclusiveToClass);
