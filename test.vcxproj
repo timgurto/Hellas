@@ -5,9 +5,17 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -23,7 +31,20 @@
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
@@ -36,7 +57,13 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
@@ -47,12 +74,22 @@
     <IncludePath>$(SolutionDir)third-party\PicoSHA2;$(SolutionDir)third-party\catch-2.10.0;$(SolutionDir)third-party\tinyxml;$(SolutionDir)third-party\SDL2_ttf-2.0.12\include;$(SolutionDir)third-party\SDL2_mixer-2.0.0\include;$(SolutionDir)third-party\SDL2_image-2.0.0\include;$(SolutionDir)third-party\SDL2-2.0.3\include\SDL2;$(SolutionDir)third-party\libcurl\include;$(IncludePath)</IncludePath>
     <IntDir>$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetName>$(ProjectName)-debug</TargetName>
+    <LibraryPath>$(SolutionDir)third-party\SDL2_ttf-2.24.0\lib\x64;$(SolutionDir)third-party\SDL2_mixer-2.8.1\lib\x64;$(SolutionDir)third-party\SDL2_image-2.8.8\lib\x64;$(SolutionDir)third-party\SDL2-2.32.2\lib\x64;$(SolutionDir)third-party\libcurl\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)third-party\PicoSHA2;$(SolutionDir)third-party\catch-2.10.0;$(SolutionDir)third-party\tinyxml;$(SolutionDir)third-party\SDL2_ttf-2.24.0\include;$(SolutionDir)third-party\SDL2_mixer-2.8.1\include;$(SolutionDir)third-party\SDL2_image-2.8.8\include;$(SolutionDir)third-party\SDL2-2.32.2\include;$(SolutionDir)third-party\libcurl\include\curl;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)</OutDir>
     <TargetName>$(ProjectName)</TargetName>
     <IncludePath>$(SolutionDir)third-party\catch-2.10.0;$(SolutionDir)third-party\tinyxml;$(SolutionDir)third-party\SDL2_ttf-2.0.12\include;$(SolutionDir)third-party\SDL2_mixer-2.0.0\include;$(SolutionDir)third-party\SDL2_image-2.0.0\include;$(SolutionDir)third-party\SDL2-2.0.3\include\SDL2;$(SolutionDir)third-party\libcurl\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)third-party\SDL2_ttf-2.0.12\lib\x86;$(SolutionDir)third-party\SDL2_mixer-2.0.0\lib\x86;$(SolutionDir)third-party\SDL2_image-2.0.0\lib\x86;$(SolutionDir)third-party\SDL2-2.0.3\lib\x86;$(SolutionDir)third-party\libcurl\lib;$(LibraryPath)</LibraryPath>
     <IntDir>$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <TargetName>$(ProjectName)</TargetName>
+    <IncludePath>$(SolutionDir)third-party\catch-2.10.0;$(SolutionDir)third-party\tinyxml;$(SolutionDir)third-party\SDL2_ttf-2.0.12\include;$(SolutionDir)third-party\SDL2_mixer-2.0.0\include;$(SolutionDir)third-party\SDL2_image-2.0.0\include;$(SolutionDir)third-party\SDL2-2.0.3\include\SDL2;$(SolutionDir)third-party\libcurl\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)third-party\SDL2_ttf-2.0.12\lib\x86;$(SolutionDir)third-party\SDL2_mixer-2.0.0\lib\x86;$(SolutionDir)third-party\SDL2_image-2.0.0\lib\x86;$(SolutionDir)third-party\SDL2-2.0.3\lib\x86;$(SolutionDir)third-party\libcurl\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -72,7 +109,44 @@
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>SERVER;CLIENT;TESTING;CURL_STATICLIB;%(PreprocessorDefinitions);_DEBUG</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)$(ProjectName)\</ObjectFileName>
+      <ProgramDataBaseFileName>$(IntDir)$(ProjectName)\vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4217;4098</DisableSpecificWarnings>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;ws2_32.lib;libcurl.lib</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>TESTING;CURL_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)$(ProjectName)\</ObjectFileName>
+      <ProgramDataBaseFileName>$(IntDir)$(ProjectName)\vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;ws2_32.lib;libcurl.lib</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
@@ -139,7 +213,9 @@
     <ClCompile Include="src\client\mapWindow.cpp" />
     <ClCompile Include="src\client\messages.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)messages-client</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)messages-client</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)messages-client</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)messages-client</ObjectFileName>
     </ClCompile>
     <ClCompile Include="src\client\Particle.cpp" />
     <ClCompile Include="src\client\ParticleProfile.cpp" />
@@ -205,7 +281,9 @@
     <ClCompile Include="src\server\DamageOnUse.cpp" />
     <ClCompile Include="src\server\data.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)$(ProjectName)\data-server</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)$(ProjectName)\data-server</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)$(ProjectName)\data-server</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(ProjectName)\data-server</ObjectFileName>
     </ClCompile>
     <ClCompile Include="src\server\DataLoader.cpp" />
     <ClCompile Include="src\server\DroppedItem.cpp" />
@@ -237,7 +315,9 @@
     <ClCompile Include="src\server\MerchantSlot.cpp" />
     <ClCompile Include="src\server\messages.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)messages-server</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)messages-server</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)messages-server</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)messages-server</ObjectFileName>
     </ClCompile>
     <ClCompile Include="src\server\NPC.cpp" />
     <ClCompile Include="src\server\NPCType.cpp" />
