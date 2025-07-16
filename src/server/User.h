@@ -84,8 +84,8 @@ class User : public Object {  // TODO: Don't inherit from Object
 
   bool _shouldSuppressAmmoWarnings{false};  // To prevent spam
 
-  ms_t _lastContact;
-  ms_t _latency;
+  ms_t _lastContact{0};
+  ms_t _latency{0};
 
   int _secondsPlayedBeforeThisSession{0};
   Uint32 _serverTicksAtLogin{SDL_GetTicks()};

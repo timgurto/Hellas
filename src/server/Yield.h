@@ -13,8 +13,8 @@
 class Yield {
   struct YieldEntry {
     NormalVariable _initDistribution, _gatherDistribution;
-    size_t _initMin;
-    double _gatherMean;
+    size_t _initMin{0};
+    double _gatherMean{0};
   };
 
   std::map<const ServerItem *, YieldEntry> _entries;

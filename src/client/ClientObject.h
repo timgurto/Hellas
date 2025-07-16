@@ -49,18 +49,18 @@ class ClientObject : public Sprite, public ClientCombatant {
                                    // constructed.
   ClientItem::vect_t
       _dropbox;  // A slot where construction materials can be added.
-  ms_t _transformTimer;
-  ms_t _gatherSoundTimer;
+  ms_t _transformTimer{0};
+  ms_t _gatherSoundTimer{0};
   DrawPerItemInfo drawPerItemInfo;
 
   /*
   True if the NPC is dead and has loot available.  This is used as the loot
   itself is unknown until a user opens the container.
   */
-  bool _lootable;
-  TakeContainer *_lootContainer;
+  bool _lootable{false};
+  TakeContainer *_lootContainer{nullptr};
 
-  TextBox *_actionTextEntry = nullptr;
+  TextBox *_actionTextEntry{nullptr};
 
   void createRegularTooltip() const;
   virtual bool addClassSpecificStuffToTooltip(Tooltip &tooltip) const;
@@ -68,12 +68,12 @@ class ClientObject : public Sprite, public ClientCombatant {
   void createRepairTooltip() const;
 
  protected:
-  Window *_window;  // For containers, etc; opens when the object is nearby and
-                    // right-clicked.
-  ConfirmationWindow *_confirmCedeWindow;
-  ConfirmationWindow *_confirmDemolishWindow = nullptr;
-  InputWindow *_grantWindow = nullptr;
-  InputWindow *_renameWindow = nullptr;
+  Window *_window{nullptr};  // For containers, etc; opens when the object is
+                             // nearby and right-clicked.
+  ConfirmationWindow *_confirmCedeWindow{nullptr};
+  ConfirmationWindow *_confirmDemolishWindow{nullptr};
+  InputWindow *_grantWindow{nullptr};
+  InputWindow *_renameWindow{nullptr};
 
   virtual std::string demolishVerb() const { return "demolish"; }
   virtual std::string demolishButtonText() const { return "Demolish"; }

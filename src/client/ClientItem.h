@@ -71,7 +71,7 @@ class ClientItem : public Item, public HasSounds {
   std::vector<Particles> _particles;
 
   // The object that this item can construct
-  const ClientObjectType *_constructsObject;
+  const ClientObjectType *_constructsObject{nullptr};
 
   static std::map<int, size_t> gearDrawOrder;
   static std::vector<ScreenPoint> gearOffsets;
