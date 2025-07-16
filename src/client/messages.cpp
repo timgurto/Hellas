@@ -45,7 +45,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
   char del;
   const auto BUFFER_SIZE = 1023;
   static char buffer[BUFFER_SIZE + 1];
-  std::mutex bufferMutex;
+  static std::mutex bufferMutex;
 
   // Read while there are new messages
   while (!iss.eof()) {
