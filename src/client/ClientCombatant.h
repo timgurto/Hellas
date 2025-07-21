@@ -65,9 +65,9 @@ class ClientCombatant {
  private:
   Client &_cClient;
 
-  const ClientCombatantType *_type;
-  Hitpoints _maxHealth, _health;
-  Energy _maxEnergy, _energy;
+  const ClientCombatantType* _type{ nullptr };
+  Hitpoints _maxHealth{ 0 }, _health{ 0 };
+  Energy _maxEnergy{ 0 }, _energy{ 0 };
   Buffs _buffs{}, _debuffs{};
   Level _level{0};
 };
