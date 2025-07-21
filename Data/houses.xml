@@ -1,0 +1,47 @@
+<root>
+
+<objectType id="rockHouse" name="Hut" healthCategory="primitiveHouse"
+    xDrawOffset="-5" yDrawOffset="-5" >
+    <collisionRect x="-5" y="-5" w="10" h="10" />
+    <material id="rock" quantity="30" />
+    <grantsBuff id="houseHpsRock" radius="60" />
+    <unlockedBy gather="rock" chance="0.05" />
+</objectType>
+    <buff id="houseHpsRock" name="Home Comforts" icon="fire" description="Replenishing health"
+        particles="waterSmall" >
+        <stats hps="200" />
+    </buff>
+
+<objectType id="logHouse" name="Cabin" healthCategory="logHouse"
+    xDrawOffset="-5" yDrawOffset="-5" >
+    <collisionRect x="-5" y="-5" w="10" h="10" />
+    <material id="log" quantity="15" />
+    <unlockedBy gather="log" chance="0.02" />
+    <unlockedBy construct="rockHouse" />
+</objectType>
+
+<objectType id="lumberHouse" name="Cottage" healthCategory="lumberHouse"
+    xDrawOffset="-5" yDrawOffset="-5" >
+    <collisionRect x="-5" y="-5" w="10" h="10" />
+    <material id="lumber" quantity="30" />
+    <unlockedBy craft="lumber" chance="0.02" />
+    <unlockedBy construct="logHouse" />
+</objectType>
+
+<objectType id="brickHouse" name="House" healthCategory="brickHouse"
+    xDrawOffset="-5" yDrawOffset="-5" >
+    <collisionRect x="-5" y="-5" w="10" h="10" />
+    <material id="brick" quantity="30" />
+    <unlockedBy gather="brick" chance="0.02" />
+    <unlockedBy construct="lumberHouse" />
+</objectType>
+
+
+
+
+<!--
+Villa
+Mansion
+-->
+
+</root>
