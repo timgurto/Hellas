@@ -84,3 +84,8 @@ dev-stuff/release-process.synctex.gz
 dev-stuff/release-process.pdf
 *.aux
 logging/metalWealth.csv
+/tools/Launcher/.vs/Launcher/v17
+/.vs/Hellas/v17
+*.FileListAbsolute.txt
+*.vsidx
+*.recipe
