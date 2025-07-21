@@ -197,6 +197,7 @@ Client::~Client() {
   delete groupUI;
 
   Socket::debug = nullptr;
+  _connection.abandonThreadsManually();  // Prevent pointless hanging
 }
 
 void Client::cleanUpStatics() {

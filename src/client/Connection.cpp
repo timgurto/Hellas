@@ -106,6 +106,8 @@ void Connection::showError(const std::string &msg) const {
   _client->_queuedToastsFromOtherThreads.push_back(msg);
 }
 
+void Connection::abandonThreadsManually() { _aThreadIsConnecting = false; }
+
 u_short Connection::getServerPort() {
   // Specified
   if (cmdLineArgs.contains("server-port"))

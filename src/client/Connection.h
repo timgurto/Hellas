@@ -36,6 +36,8 @@ class Connection {
 
   void showError(const std::string &msg) const;
 
+  void abandonThreadsManually();
+
  private:
   Socket _socket;
   State _state{INITIALIZING};
