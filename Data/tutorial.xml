@@ -116,14 +116,14 @@
     <item id="tutEntrails2" name="Sacrificial Entrails" iconFile="entrails" exclusiveToQuest="tutOfferings" bind="pickup" constructs="fattyOffering" />
     <item id="tutHide2"     name="Sacrificial Hide"     iconFile="hide"     exclusiveToQuest="tutOfferings" bind="pickup" />
     <item id="tutFat2"      name="Sacrificial Fat"      iconFile="fat"      exclusiveToQuest="tutOfferings" bind="pickup" />
-    <objectType id="leanOffering" name="Scrawny Sacrifice" healthCategory="primitive"
+    <objectType id="leanOffering" name="Deceptively Scrawny Sacrifice" healthCategory="primitive"
         allowedTerrain="tutOfferings" constructionTime="6000"  isUnbuildable="true" disappearAfter="300000"
         xDrawOffset="-9" yDrawOffset="-9" >
         <collisionRect x="-9" y="-4" w="18" h="9" />
         <material id="tutHide2" />
     </objectType>
     <object id="tutBrazier" x="3886" y="58420" />
-    <objectType id="fattyOffering" name="Fatty Sacrifice" healthCategory="primitive"
+    <objectType id="fattyOffering" name="Deceptively Fatty Sacrifice" healthCategory="primitive"
         allowedTerrain="tutOfferings" constructionTime="6000" isUnbuildable="true" disappearAfter="300000"
         xDrawOffset="-9" yDrawOffset="-9" >
         <collisionRect x="-9" y="-4" w="18" h="9" />
