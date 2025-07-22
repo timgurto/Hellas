@@ -425,7 +425,7 @@
         </humanoid>
     </npcType>
     
-    <objectType id="tutorialAltar" name="Altar to Eos"
+    <objectType id="tutorialAltar" name="Altar to Eos" healthCategory="brick"
         xDrawOffset="-18" yDrawOffset="-54"
         playerUnique="altar" >
         <collisionRect x="-19" y="-10" w="38" h="20" />
