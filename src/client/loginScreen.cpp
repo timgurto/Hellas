@@ -402,7 +402,7 @@ void Client::initLoginScreen() {
 #ifndef TESTING
     std::thread([this]() {
       _releaseNotesRaw =
-          readFromURL("http://playhellas.com/release-notes.txt");
+          readFromURL("https://playhellas.com/release-notes.txt");
       _releaseNotesStatus = RELEASE_NOTES_DOWNLOADED;
     }).detach();
 #endif
