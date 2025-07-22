@@ -45,6 +45,7 @@ void downloadFile(const std::string &srcURL, const std::string &dstFilename) {
     return;
   }
 
+  curl_easy_setopt(curl, CURLOPT_USERAGENT, "curl/7.88.1");
   curl_easy_setopt(curl, CURLOPT_URL, srcURL.c_str());
   curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, fwrite);
   curl_easy_setopt(curl, CURLOPT_WRITEDATA, outFile);

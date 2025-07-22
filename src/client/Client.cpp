@@ -11,12 +11,12 @@
 #include <string>
 #include <vector>
 
-#include "../XmlReader.h"
 #include "../curlUtil.h"
 #include "../messageCodes.h"
 #include "../server/User.h"
 #include "../util.h"
 #include "../versionUtil.h"
+#include "../XmlReader.h"
 #include "CDataLoader.h"
 #include "ClientCombatant.h"
 #include "ClientNPC.h"
@@ -25,8 +25,6 @@
 #include "SDLWrappers.h"
 #include "SpriteType.h"
 #include "Tooltip.h"
-#include "UIGroup.h"
-#include "Unlocks.h"
 #include "ui/Button.h"
 #include "ui/CombatantPanel.h"
 #include "ui/ConfirmationWindow.h"
@@ -34,6 +32,8 @@
 #include "ui/Element.h"
 #include "ui/LinkedLabel.h"
 #include "ui/ProgressBar.h"
+#include "UIGroup.h"
+#include "Unlocks.h"
 
 extern Args cmdLineArgs;
 extern Renderer renderer;
@@ -197,6 +197,7 @@ Client::~Client() {
   delete groupUI;
 
   Socket::debug = nullptr;
+  _connection.abandonThreadsManually();  // Prevent pointless hanging
 }
 
 void Client::cleanUpStatics() {
@@ -244,8 +245,7 @@ void Client::run() {
 
     SDL_Delay(1);
 
-    while (_freeze)
-      ;
+    while (_freeze);
   }
   _state = FINISHED;
   _connection.state(Connection::FINISHED);

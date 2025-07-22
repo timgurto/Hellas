@@ -15,10 +15,7 @@ void Connection::initialize() {
     serverIP = readFromURL(_client->_config.serverHostDirectory);  // Slow
 }
 
-Connection::~Connection() {
-  while (_aThreadIsConnecting)
-    ;
-}
+Connection::~Connection() { while (_aThreadIsConnecting); }
 
 void Connection::getNewMessages() {
   auto readFDs = fd_set{};
@@ -41,7 +38,7 @@ void Connection::getNewMessages() {
   }
 }
 
-void Connection::connect() { 
+void Connection::connect() {
   _aThreadIsConnecting = true;
 
   _state = TRYING_TO_CONNECT;
@@ -109,12 +106,14 @@ void Connection::showError(const std::string &msg) const {
   _client->_queuedToastsFromOtherThreads.push_back(msg);
 }
 
+void Connection::abandonThreadsManually() { _aThreadIsConnecting = false; }
+
 u_short Connection::getServerPort() {
   // Specified
   if (cmdLineArgs.contains("server-port"))
     return cmdLineArgs.getInt("server-port");
 
-    // Default
+  // Default
 #ifdef _DEBUG
   return DEBUG_PORT;
 #else
