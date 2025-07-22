@@ -71,18 +71,18 @@
     debrief="These will do nicely."
     >
     <prerequisite id="tutCombat" />
-    <objective type="fetch" id="tutMeat" qty="4" />
+    <objective type="fetch" id="tutMeat" qty="2" />
     <objective type="fetch" id="tutHide" />
-    <objective type="fetch" id="tutEntrails" qty="4" />
+    <objective type="fetch" id="tutEntrails" qty="2" />
     <objective type="fetch" id="tutFat" />
 </quest>
     <npcType
         id="tutGoat" name="Goat" template="goat"
         level="2" maxHealth="26" attack="7" attackTime="3780" isNeutral="1" >
         <loot id="tutMeat" > <normal mean="0.7" sd="0.5" /> </loot>
-        <loot id="tutHide" chance="0.2" />
+        <loot id="tutHide" chance="0.4" />
         <loot id="tutEntrails"> <normal mean="0.7" sd="0.5" /> </loot>
-        <loot id="tutFat" chance="0.2" />
+        <loot id="tutFat" chance="0.4" />
     </npcType>
     <item id="tutMeat"     name="Goat Meat"     iconFile="meat"     stackSize="10" exclusiveToQuest="tutParts" bind="pickup" />
     <item id="tutHide"     name="Goat Hide"     iconFile="hide"     stackSize="10" exclusiveToQuest="tutParts" bind="pickup" />
@@ -311,7 +311,7 @@
     debrief="They attack from far away?  How interesting.
     It also sounds like when they hit you, it isn't physical damage that you took, but rather magical damage based on the earth element." >
     <prerequisite id="tutLearnFire" />
-	<objective type="kill" id="tutSnake" qty="5" />
+	<objective type="kill" id="tutSnake" qty="4" />
 </quest>
     <npcType
         id="tutSnake" name="Snake" isFlat="1" template="snake"
@@ -325,7 +325,7 @@
     brief="Another fascinating new animal Themis created is tortoises.  They look quite strange; go north-east to the beach, and see if you can discern their gift."
     debrief="A shield that protects them from damage?  Huh ..." >
     <prerequisite id="tutSnakes" />
-	<objective type="kill" id="tutTortoise" qty="5" />
+	<objective type="kill" id="tutTortoise" qty="4" />
 </quest>
     <npcType
         id="tutTortoise" name="Tortoise" template="tortoise"
@@ -350,7 +350,7 @@
     brief="There's one final animal I want you to investigate: lizards.  I saw some crawling around out west past the forest, in a desert.  Please engage a few in combat."
     debrief="How very strange ... the lizards healed themselves while you fought?  That's quite a defense mechanism." >
     <prerequisite id="tutTortoises" />
-	<objective type="kill" id="tutLizard" qty="5" />
+	<objective type="kill" id="tutLizard" qty="4" />
 </quest>
     <npcType
         id="tutLizard" name="Lizard" template="lizard"
