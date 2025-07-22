@@ -87,4 +87,8 @@ logging/metalWealth.csv
 /Debug
 publish-client.bat
 /.vs
+/tools/Launcher/.vs/Launcher/v17
+/.vs/Hellas/v17
+*.FileListAbsolute.txt
+*.vsidx
 *.recipe
