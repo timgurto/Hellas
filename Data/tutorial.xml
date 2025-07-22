@@ -162,6 +162,7 @@
         <particles profile="fire" x="0" y="-6" />
         <particles profile="smoke" x="0" y="-10" />
         <unlockedBy />
+		<canBeRepaired cost="stick" />
     </objectType>
     <objectType id="tutExtinguishedFire" name="Extinguished Cooking Fire" healthCategory="primitiveWeak"
         xDrawOffset="-10" yDrawOffset="-7" imageFile="extinguishedFire"
