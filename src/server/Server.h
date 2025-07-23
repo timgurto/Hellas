@@ -198,6 +198,16 @@ class Server {
 
   Socket _socket;
 
+  struct MessageToSend {
+    Message message;
+    const Socket &destination;
+  };
+  mutable std::queue<MessageToSend>
+      _outgoingMessages;  // Caution: use only with the below mutex
+  mutable std::mutex outgoingMessageQueueMutex;
+  bool queueHasMessages() const;
+  void startMessageSendingThread();
+
   bool _loop{false};
   bool _running{false};  // True while run() is being executed.
 

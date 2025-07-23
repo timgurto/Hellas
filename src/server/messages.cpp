@@ -2176,8 +2176,10 @@ void Server::broadcastToGroup(Username aMember, const Message &msg) {
   }
 }
 
+// Innermost
 void Server::sendMessage(const Socket &dstSocket, const Message &msg) const {
-  _socket.sendMessage(msg, dstSocket);
+  std::lock_guard<std::mutex> lock(outgoingMessageQueueMutex);
+  _outgoingMessages.push({msg, dstSocket});
 }
 
 void Server::sendMessageIfOnline(const std::string username,
