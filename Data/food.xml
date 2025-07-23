@@ -95,7 +95,7 @@
     sounds="ceramic"
     returnsOnCast="smallPot" />
 
-<objectType id="rockWell" name="Cistern"
+<objectType id="rockWell" name="Cistern" healthCategory="primitive"
     sounds="stone" damageParticles="rocks"
     allowedTerrain="fertile"
     xDrawOffset="-24" yDrawOffset="-24" isFlat="1">
@@ -114,7 +114,7 @@
     <unlockedBy />
     <canBeRepaired cost="rock" />
 </objectType>
-<objectType id="brickWell" name="Well"
+<objectType id="brickWell" name="Well" healthCategory="brick"
     sounds="brick" damageParticles="brick"
     allowedTerrain="nonArid"
     xDrawOffset="-25" yDrawOffset="-42">
