@@ -659,13 +659,13 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
   // Alert relevant users
   if (obj1.isInventory() || obj1.isGear())
     sendInventoryMessage(user, slot1, obj1);
-  else
+  else if (from.object)
     from.object->tellRelevantUsersAboutInventorySlot(slot1);
 
   if (obj2.isInventory() || obj2.isGear()) {
     sendInventoryMessage(user, slot2, obj2);
     ProgressLock::triggerUnlocks(user, ProgressLock::ITEM, toItem.type());
-  } else
+  } else if (to.object)
     to.object->tellRelevantUsersAboutInventorySlot(slot2);
 
   // Remove newly empty containers for whom that is a rule
