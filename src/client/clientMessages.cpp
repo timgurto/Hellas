@@ -81,6 +81,9 @@ void Client::handleBufferedMessages(const std::string &msg) {
     _messagesReceived.push_back(MessageCode(msgCode));
     _messagesReceivedMutex.unlock();
 
+    if (_showingPostLoginLoadingScreen)
+      setPostLoginLoadingText(static_cast<MessageCode>(msgCode));
+
     Color errorMessageColor = Color::CHAT_ERROR;
 
     switch (msgCode) {
@@ -100,6 +103,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         _debug("Successfully logged in to server", Color::CHAT_SUCCESS);
 #endif
         _debug("Welcome to Hellas!");
+        _showingPostLoginLoadingScreen = true;
         _allOnlinePlayers.insert(_username);
         populateOnlinePlayersList();
         _inventoryWindow->show();
@@ -110,6 +114,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         _connection.state(Connection::LOADED);
         _loaded = true;
         _lastPingReply = _time;
+        _showingPostLoginLoadingScreen = false;
         sendMessage(CL_FINISHED_RECEIVING_LOGIN_INFO);
 
         if (_loaded) _unlockFilter->onUnlockChancesChanged(_knownRecipes);
@@ -3162,4 +3167,116 @@ void Client::performCommand(const std::string &commandString) {
 
 void Client::sendClearTargetMessage() const {
   sendMessage({CL_TARGET_ENTITY, 0});
+}
+
+void Client::setPostLoginLoadingText(MessageCode msg) {
+  static MessageCode lastMsg =
+      CL_LOGIN_EXISTING;  // An arbitrarily chosen client (not server) message
+  if (msg == lastMsg) return;
+  lastMsg = msg;
+
+  _debug << "Received message: " << msg << Log::endl;
+
+  auto text = ""s;
+  switch (msg) {
+    case SV_WELCOME:
+      text = "Logging in";
+      break;
+    case SV_LOGIN_INFO_HAS_FINISHED:
+      text = "Done logging in";
+      break;
+    case SV_USERS_ALREADY_ONLINE:
+      text = "Getting other online players";
+      break;
+    case SV_TIME_PLAYED:
+      text = "Receiving time played";
+      break;
+      // this and below: could be self, or could be other users.  Most likely
+      // the latter, except quickly at the beginning
+    case SV_MAX_HEALTH:
+    case SV_PLAYER_HEALTH:
+    case SV_MAX_ENERGY:
+    case SV_PLAYER_ENERGY:
+      text = "Getting nearby players";
+      break;
+
+    case SV_CLASS:
+    case SV_YOUR_XP:
+    case SV_YOUR_BONUS_XP:
+      text = "Getting your class";
+      break;
+    case SV_IN_CITY:
+    case SV_KING:
+      text = "Getting your city";
+      break;
+    case SV_GEAR:
+      text = "Getting your gear";
+      break;
+    case SV_PLAYER_GOT_BUFF:
+    case SV_REMAINING_BUFF_TIME:
+    case SV_PLAYER_GOT_DEBUFF:
+    case SV_REMAINING_DEBUFF_TIME:
+      text = "Getting your buffs and debuffs";
+      break;
+    case SV_VEHICLE_HAS_DRIVER:
+      text = "Getting your vehicle";
+      break;
+    case SV_AT_WAR_WITH_PLAYER:
+    case SV_YOU_PROPOSED_PEACE_TO_PLAYER:
+    case SV_PEACE_WAS_PROPOSED_TO_YOU_BY_PLAYER:
+    case SV_AT_WAR_WITH_CITY:
+    case SV_YOU_PROPOSED_PEACE_TO_CITY:
+    case SV_PEACE_WAS_PROPOSED_TO_YOUR_CITY_BY_PLAYER:
+    case SV_YOUR_CITY_AT_WAR_WITH_PLAYER:
+    case SV_PEACE_WAS_PROPOSED_TO_YOU_BY_CITY:
+    case SV_YOUR_CITY_AT_WAR_WITH_CITY:
+    case SV_YOUR_CITY_PROPOSED_PEACE_TO_CITY:
+    case SV_PEACE_WAS_PROPOSED_TO_YOUR_CITY_BY_CITY:
+      text = "Getting your wars";
+      break;
+
+    case SV_OBJECT_INFO:
+      text = "Getting known/nearby objects and NPCs";
+      break;
+    case SV_YOU_ARE_IN_THE_TUTORIAL:
+      text = "Getting tutorial status";
+      break;
+    case SV_GROUPMATES:
+      text = "Getting your group info";
+      break;
+    case SV_INVENTORY:
+      text = "Getting your inventory";
+      break;
+    case SV_YOUR_RECIPES:
+      text = "Getting your known recipes";
+      break;
+    case SV_YOUR_CONSTRUCTIONS:
+      text = "Getting your known constructions";
+      break;
+    case SV_TALENT_INFO:
+    case SV_POINTS_IN_TREE:
+      text = "Getting your talents";
+      break;
+    case SV_QUEST_CAN_BE_FINISHED:
+    case SV_QUEST_PROGRESS:
+    case SV_QUEST_IN_PROGRESS:
+      text = "Getting your quests";
+      break;
+    case HOTBAR_SPELL:
+    case SV_HOTBAR:
+    case SV_KNOWN_SPELLS:
+      text = "Getting your spells and hotbar";
+      break;
+    case SV_MAP_EXPLORATION_DATA:
+      text = "Getting the map you've explored";
+      break;
+    case SV_CITY_DETAILS:
+      text = "Getting your city";
+      break;
+    case SV_YOUR_SPAWN_POINT:
+      text = "Getting your spawn point";
+      break;
+  }
+
+  _postLoginLoadingText->changeText(text);
 }
