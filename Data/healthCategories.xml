@@ -1,4 +1,5 @@
 <root>
+<objectHealthCategory id="primitiveVehicle" level="5"  maxHealth="50" />
 <objectHealthCategory id="primitiveWeak" level="5"  maxHealth="150" />
 <objectHealthCategory id="primitive"     level="5"  maxHealth="700" />
 
