@@ -10,9 +10,9 @@
 #include "ClientObject.h"
 #include "ClientVehicle.h"
 #include "Particle.h"
+#include "UIGroup.h"
 #include "ui/ConfirmationWindow.h"
 #include "ui/ContainerGrid.h"
-#include "UIGroup.h"
 
 using namespace std::string_literals;
 
@@ -3174,8 +3174,6 @@ void Client::setPostLoginLoadingText(MessageCode msg) {
       CL_LOGIN_EXISTING;  // An arbitrarily chosen client (not server) message
   if (msg == lastMsg) return;
   lastMsg = msg;
-
-  _debug << "Received message: " << msg << Log::endl;
 
   auto text = ""s;
   switch (msg) {
