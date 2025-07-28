@@ -309,7 +309,7 @@ void Server::startMessageSendingThread() {
             addressedMessage.destination.sendMessage(addressedMessage.message);
             _outgoingMessages.pop();
           }
-          std::this_thread::sleep_for(std::chrono::milliseconds(10));
+          std::this_thread::sleep_for(std::chrono::milliseconds(1));
         } while (queueHasMessages());
       }
       std::this_thread::sleep_for(std::chrono::milliseconds(1));
