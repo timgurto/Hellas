@@ -632,11 +632,9 @@ TEST_CASE("Non-colliding objects load correctly", "[loading]") {
   }
 }
 
-TEST_CASE_METHOD(
-    ServerAndClientWithData,
-    "Teleporting to an area with many items doesn't kill the client connection",
-    "[loading]") {
-  GIVEN("15000 rocks, and a user far away from them") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Loading objects on teleport",
+                 "[loading]") {
+  GIVEN("rock objects and a large map") {
     useData(R"(
         <objectType id="rock" />
         <newPlayerSpawn x="10" y="10" range="0" />
@@ -746,15 +744,23 @@ TEST_CASE_METHOD(
         <row y="98" terrain = "...................................................................................................." />
         <row y="99" terrain = "...................................................................................................." />
     )");
-    for (auto i = 0; i != 15000; ++i) server->addObject("rock", {3000, 3000});
 
-    WHEN("the user teleports to the rocks") {
-      user->teleportTo({3000, 3000});
+    SECTION(
+        "Loading a large number of objects shouldn't cause a client "
+        "disconnect") {
+      GIVEN("15000 rocks, and a user far away from them") {
+        for (auto i = 0; i != 15000; ++i)
+          server->addObject("rock", {3000, 3000});
 
-      THEN("the client doesn't get disconnected after 10s") {
-        REPEAT_FOR_MS(10500);
+        WHEN("the user teleports to the rocks") {
+          user->teleportTo({3000, 3000});
 
-        CHECK(client->connected());
+          THEN("the client doesn't get disconnected after 10s") {
+            REPEAT_FOR_MS(10500);
+
+            CHECK(client->connected());
+          }
+        }
       }
     }
   }
