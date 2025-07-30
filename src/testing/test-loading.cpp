@@ -1,9 +1,9 @@
-#include "../client/ClientNPCType.h"
 #include "../XmlReader.h"
+#include "../client/ClientNPCType.h"
 #include "TestClient.h"
 #include "TestFixtures.h"
-#include "testing.h"
 #include "TestServer.h"
+#include "testing.h"
 
 TEST_CASE("Read XML file with root only", "[loading]") {
   auto xr = XmlReader::FromFile("testing/empty.xml");
@@ -748,7 +748,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Loading objects on teleport",
     SECTION(
         "Loading a large number of objects shouldn't cause a client "
         "disconnect") {
-      GIVEN("15000 rocks, and a user far away from them") {
+      AND_GIVEN("15000 rocks, and a user far away from them") {
         for (auto i = 0; i != 15000; ++i)
           server->addObject("rock", {3000, 3000});
 
@@ -765,17 +765,22 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Loading objects on teleport",
     }
 
     SECTION("Users shouldn't be re-told about their own objects") {
-      GIVEN("the user owns (and therefore knows about) a faraway rock") {
+      AND_GIVEN("the user owns (and therefore knows about) a faraway rock") {
         server->addObject("rock", {3000, 3000}, {user->name()});
         WAIT_UNTIL(client->entities().size() == 2);  // user + rock = 2
 
-        WHEN("The user teleports close to the rock") {
-          user->teleportTo({3000, 3000});
+        AND_GIVEN("the user knows that it's his") {
+          const auto &cRock = client->getFirstObject();
+          WAIT_UNTIL(cRock.isOwnedByPlayer(user->name()));
 
-          THEN("he doesn't receive information about it") {
-            const auto objectInfoWasReceived =
-                client->waitForMessage(SV_OBJECT_INFO, 500);
-            REQUIRE_FALSE(objectInfoWasReceived);
+          WHEN("The user teleports close to the rock") {
+            user->teleportTo({3000, 3000});
+
+            THEN("he doesn't receive information about it") {
+              const auto objectInfoWasReceived =
+                  client->waitForMessage(SV_OBJECT_INFO, 500);
+              REQUIRE_FALSE(objectInfoWasReceived);
+            }
           }
         }
       }
