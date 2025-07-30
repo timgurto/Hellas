@@ -763,5 +763,22 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Loading objects on teleport",
         }
       }
     }
+
+    SECTION("Users shouldn't be re-told about their own objects") {
+      GIVEN("the user owns (and therefore knows about) a faraway rock") {
+        server->addObject("rock", {3000, 3000}, {user->name()});
+        WAIT_UNTIL(client->entities().size() == 2);  // user + rock = 2
+
+        WHEN("The user teleports close to the rock") {
+          user->teleportTo({3000, 3000});
+
+          THEN("he doesn't receive information about it") {
+            const auto objectInfoWasReceived =
+                client->waitForMessage(SV_OBJECT_INFO, 500);
+            REQUIRE_FALSE(objectInfoWasReceived);
+          }
+        }
+      }
+    }
   }
 }
