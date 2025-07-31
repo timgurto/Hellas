@@ -498,7 +498,6 @@ class Client : public TextEntryManager {
 
   Label *_postLoginLoadingText{nullptr};
   void setPostLoginLoadingText(MessageCode msg);
-  bool _showingPostLoginLoadingScreen{false};
 
   // These are superficial, and relate only to the cast bar.
   ms_t _actionTimer{0};        // How long the character has been performing the

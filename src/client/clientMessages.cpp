@@ -81,7 +81,8 @@ void Client::handleBufferedMessages(const std::string &msg) {
     _messagesReceived.push_back(MessageCode(msgCode));
     _messagesReceivedMutex.unlock();
 
-    if (_showingPostLoginLoadingScreen)
+    const auto shouldShowLoadingScreen = !_loaded;
+    if (shouldShowLoadingScreen)
       setPostLoginLoadingText(static_cast<MessageCode>(msgCode));
 
     Color errorMessageColor = Color::CHAT_ERROR;
@@ -103,7 +104,6 @@ void Client::handleBufferedMessages(const std::string &msg) {
         _debug("Successfully logged in to server", Color::CHAT_SUCCESS);
 #endif
         _debug("Welcome to Hellas!");
-        _showingPostLoginLoadingScreen = true;
         _allOnlinePlayers.insert(_username);
         populateOnlinePlayersList();
         _inventoryWindow->show();
@@ -114,7 +114,6 @@ void Client::handleBufferedMessages(const std::string &msg) {
         _connection.state(Connection::LOADED);
         _loaded = true;
         _lastPingReply = _time;
-        _showingPostLoginLoadingScreen = false;
         sendMessage(CL_FINISHED_RECEIVING_LOGIN_INFO);
 
         if (_loaded) _unlockFilter->onUnlockChancesChanged(_knownRecipes);
