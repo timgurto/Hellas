@@ -634,13 +634,13 @@ TEST_CASE("Non-colliding objects load correctly", "[loading]") {
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Loading objects on teleport",
                  "[loading]") {
-  GIVEN("rock objects and a large map") {
+  Given("rock objects and a large map") {
     useData(R"(
         <objectType id="rock" />
         <newPlayerSpawn x="10" y="10" range="0" />
         <terrain index="." id="grass" />
         <list id="default" default="1" >
-          <allow id="grass" />
+            <allow id="grass" />
         </list>
         <size x="100" y="100" />
         <row y= "0" terrain = "...................................................................................................." />
@@ -743,19 +743,19 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Loading objects on teleport",
         <row y="97" terrain = "...................................................................................................." />
         <row y="98" terrain = "...................................................................................................." />
         <row y="99" terrain = "...................................................................................................." />
-    )");
+  )");
 
     SECTION(
         "Loading a large number of objects shouldn't cause a client "
         "disconnect") {
-      AND_GIVEN("15000 rocks, and a user far away from them") {
+      AndGiven("15000 rocks, and a user far away from them") {
         for (auto i = 0; i != 15000; ++i)
           server->addObject("rock", {3000, 3000});
 
-        WHEN("the user teleports to the rocks") {
+        When("the user teleports to the rocks") {
           user->teleportTo({3000, 3000});
 
-          THEN("the client doesn't get disconnected after 10s") {
+          Then("the client doesn't get disconnected after 10s") {
             REPEAT_FOR_MS(10500);
 
             CHECK(client->connected());
@@ -765,18 +765,19 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Loading objects on teleport",
     }
 
     SECTION("Users shouldn't be re-told about their own objects") {
-      AND_GIVEN("the user owns (and therefore knows about) a faraway rock") {
+      AndGiven("the user owns (and therefore knows about) a faraway rock") {
         server->addObject("rock", {3000, 3000}, {user->name()});
         WAIT_UNTIL(client->entities().size() == 2);  // user + rock = 2
 
-        AND_GIVEN("the user knows that it's his") {
+        AndGiven("the user knows that it's his") {
           const auto &cRock = client->getFirstObject();
           WAIT_UNTIL(cRock.isOwnedByPlayer(user->name()));
+          REPEAT_FOR_MS(100);
 
-          WHEN("The user teleports close to the rock") {
+          When("the user teleports close to the rock") {
             user->teleportTo({3000, 3000});
 
-            THEN("he doesn't receive information about it") {
+            Then("he doesn't receive information about it") {
               const auto objectInfoWasReceived =
                   client->waitForMessage(SV_OBJECT_INFO, 500);
               REQUIRE_FALSE(objectInfoWasReceived);
@@ -786,4 +787,3 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Loading objects on teleport",
       }
     }
   }
-}
