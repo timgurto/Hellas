@@ -110,6 +110,14 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
+      case SV_START_LOADING:
+        _loaded = false;
+        break;
+
+      case SV_DONE_LOADING:
+        _loaded = true;
+        break;
+
       case SV_DONE_LOADING_AFTER_LOGIN:
         _connection.state(Connection::LOADED);
         _loaded = true;
@@ -3181,6 +3189,9 @@ void Client::setPostLoginLoadingText(MessageCode msg) {
       break;
     case SV_DONE_LOADING_AFTER_LOGIN:
       text = "Done logging in";
+      break;
+    case SV_START_LOADING:
+      text = "Loading";
       break;
     case SV_USERS_ALREADY_ONLINE:
       text = "Getting other online players";
