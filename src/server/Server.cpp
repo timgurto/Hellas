@@ -485,7 +485,7 @@ void Server::addUser(const Socket &socket, const std::string &name,
 #endif
   if (shouldGiveDailyReward) newUser.onDayChange();
 
-  newUser.sendMessage({SV_LOGIN_INFO_HAS_FINISHED});
+  newUser.sendMessage({SV_DONE_LOADING_AFTER_LOGIN});
 }
 
 void Server::removeUser(const std::set<User>::iterator &it) {

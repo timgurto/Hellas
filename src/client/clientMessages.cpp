@@ -10,9 +10,9 @@
 #include "ClientObject.h"
 #include "ClientVehicle.h"
 #include "Particle.h"
-#include "UIGroup.h"
 #include "ui/ConfirmationWindow.h"
 #include "ui/ContainerGrid.h"
+#include "UIGroup.h"
 
 using namespace std::string_literals;
 
@@ -110,7 +110,7 @@ void Client::handleBufferedMessages(const std::string &msg) {
         break;
       }
 
-      case SV_LOGIN_INFO_HAS_FINISHED:
+      case SV_DONE_LOADING_AFTER_LOGIN:
         _connection.state(Connection::LOADED);
         _loaded = true;
         _lastPingReply = _time;
@@ -3180,7 +3180,7 @@ void Client::setPostLoginLoadingText(MessageCode msg) {
     case SV_WELCOME:
       text = "Logging in";
       break;
-    case SV_LOGIN_INFO_HAS_FINISHED:
+    case SV_DONE_LOADING_AFTER_LOGIN:
       text = "Done logging in";
       break;
     case SV_USERS_ALREADY_ONLINE:

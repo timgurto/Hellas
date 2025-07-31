@@ -290,7 +290,7 @@ enum MessageCode {
   SV_WELCOME,
 
   // The client has received all on-login info, and can hide the loading screen.
-  SV_LOGIN_INFO_HAS_FINISHED,
+  SV_DONE_LOADING_AFTER_LOGIN,
 
   // You have played for ... seconds
   SV_TIME_PLAYED,
