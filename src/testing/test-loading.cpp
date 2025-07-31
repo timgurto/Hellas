@@ -787,3 +787,4 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Loading objects on teleport",
       }
     }
   }
+}

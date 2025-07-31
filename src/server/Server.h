@@ -146,7 +146,9 @@ class Server {
   void alertUserToWar(const std::string &username,
                       const Belligerent &otherBelligerent,
                       bool isUserCityTheBelligerent) const;
-  void sendRelevantEntitiesToUser(const User &user);
+  enum RelevantEntitiesFilter { OwnershipOrProximity, SkipIfOwned };
+  void sendRelevantEntitiesToUser(
+      const User &user, RelevantEntitiesFilter filter = OwnershipOrProximity);
   void sendOnlineUsersTo(const User &recipient) const;
 
   // Getters

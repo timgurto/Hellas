@@ -112,7 +112,7 @@ Message User::teleportMessage(const MapPoint &destination) const {
 }
 
 void User::onTeleport() {
-  Server::instance().sendRelevantEntitiesToUser(*this);
+  Server::instance().sendRelevantEntitiesToUser(*this, Server::SkipIfOwned);
 }
 
 bool User::hasRoomFor(std::set<std::string> itemNames) const {
