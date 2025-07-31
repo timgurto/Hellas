@@ -595,6 +595,7 @@ class Client : public TextEntryManager {
   unsigned _fps{0};
 
   bool _loggedIn{false};
+  bool loggedIn() const { return _loggedIn; }
   // Whether the client has sufficient information to begin
   bool _loaded{false};
 

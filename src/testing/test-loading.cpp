@@ -1,9 +1,9 @@
-#include "../XmlReader.h"
 #include "../client/ClientNPCType.h"
+#include "../XmlReader.h"
 #include "TestClient.h"
 #include "TestFixtures.h"
-#include "TestServer.h"
 #include "testing.h"
+#include "TestServer.h"
 
 TEST_CASE("Read XML file with root only", "[loading]") {
   auto xr = XmlReader::FromFile("testing/empty.xml");
@@ -758,7 +758,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Loading objects on teleport",
           Then("the client doesn't get disconnected after 10s") {
             REPEAT_FOR_MS(10500);
 
-            CHECK(client->connected());
+            CHECK(client->loggedIn());
           }
         }
       }
