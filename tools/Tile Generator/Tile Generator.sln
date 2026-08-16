@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36202.13 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tile Generator", "Tile Generator\Tile Generator.vcxproj", "{DC76B67B-CFBB-48FE-B2AD-C63781D0A6EE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DC76B67B-CFBB-48FE-B2AD-C63781D0A6EE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DC76B67B-CFBB-48FE-B2AD-C63781D0A6EE}.Debug|Win32.Build.0 = Debug|Win32
+		{DC76B67B-CFBB-48FE-B2AD-C63781D0A6EE}.Release|Win32.ActiveCfg = Release|Win32
+		{DC76B67B-CFBB-48FE-B2AD-C63781D0A6EE}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {50CCECEB-3386-448B-95BF-DE40D44B7D33}
+	EndGlobalSection
+EndGlobal

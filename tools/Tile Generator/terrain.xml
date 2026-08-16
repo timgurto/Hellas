@@ -1,0 +1,14 @@
+<root>
+	<colour name="lightGreen" hex="00aa00" />
+	<colour name="darkGreen" hex="007700" />
+	<colour name="spiders" hex="ffffff" />
+	<colour name="background" hex="000000" />
+	<terrainTemplate name="spider" numVariants="2" >
+		<colourIn name="spiders" />
+		<colourIn name="background" />
+	</terrainTemplate>
+	<terrain name="spiderGrass" template="spider">
+		<colourOut name="darkGreen" />
+		<colourOut name="lightGreen" />
+	</terrain>
+</root>
