@@ -1,0 +1,22 @@
+<html><body style="background:#222;font-family:sans-serif;color:#eee;padding:20px">
+<h2>Terrain Colours (from Hellas palette)</h2>
+<div style="display:flex;flex-wrap:wrap;gap:10px">
+<script>
+var colours = [
+  "FFFFB2","BA6C62","62BA6C","357F51","154434",
+  "E8CE94","CE9B79","A34C5C","3478D8","394FB2",
+  "3C388C","772C67","2C6777","1F3C60","161B4C",
+  "170A33","E5E5E5","C4AAC0","8778A5","413168"
+];
+for (var i = 0; i < colours.length; i++) {
+  var c = colours[i];
+  var r = parseInt(c.substr(0,2),16), g = parseInt(c.substr(2,2),16), b = parseInt(c.substr(4,2),16);
+  var textCol = (r*0.299+g*0.587+b*0.114) > 128 ? "#333" : "#fff";
+  document.write('<div style="width:130px;border:1px solid #555;border-radius:4px;overflow:hidden">' +
+    '<div style="background:#'+c+';height:60px;display:flex;align-items:center;justify-content:center">' +
+    '<span style="font-size:24px;font-weight:bold;color:'+textCol+'">'+(i+1)+'</span></div>' +
+    '<div style="padding:4px 8px;font-size:13px;font-family:monospace">#'+c+'</div></div>');
+}
+</script>
+</div>
+</body></html>
