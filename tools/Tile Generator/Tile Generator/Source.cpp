@@ -45,7 +45,7 @@ std::vector<std::string> splitByComma(const std::string& s) {
   return result;
 }
 
-bool ColoursEqual(const SDL_Color& a, const SDL_Color& b) {
+bool coloursEqual(const SDL_Color& a, const SDL_Color& b) {
   return a.r == b.r && a.g == b.g && a.b == b.b;
 }
 
@@ -94,7 +94,7 @@ class Data {
     }
   }
 
-  void ReplaceColours(SDL_Surface* surface,
+  void replaceColours(SDL_Surface* surface,
                       const TerrainTemplate& terrainTemplate,
                       const TerrainToGenerate& terrain) {
     std::vector<std::pair<SDL_Color, SDL_Color>> mappings;
@@ -118,7 +118,7 @@ class Data {
         SDL_GetRGBA(pixel, surface->format, &r, &g, &b, &a);
 
         for (const auto& mapping : mappings) {
-          if (ColoursEqual({r, g, b, a}, mapping.first)) {
+          if (coloursEqual({r, g, b, a}, mapping.first)) {
             auto newPixel = SDL_MapRGBA(surface->format, mapping.second.r,
                                         mapping.second.g, mapping.second.b, a);
             *reinterpret_cast<Uint32*>(pixelAddress) = newPixel;
@@ -131,7 +131,7 @@ class Data {
     SDL_UnlockSurface(surface);
   }
 
-  void GenerateTerrain(const TerrainToGenerate& terrain) {
+  void generateTerrain(const TerrainToGenerate& terrain) {
     const TerrainTemplate& terrainTemplate = templates.at(terrain.templateName);
 
     for (int variant = 0; variant < terrainTemplate.numVariants; ++variant) {
@@ -144,7 +144,7 @@ class Data {
           "../../Images/Terrain/" + terrain.name + variantSuffix + ".png";
 
       auto surface = IMG_Load(inputPath.c_str());
-      ReplaceColours(surface, terrainTemplate, terrain);
+      replaceColours(surface, terrainTemplate, terrain);
       IMG_SavePNG(surface, outputPath.c_str());
       SDL_FreeSurface(surface);
 
@@ -162,7 +162,7 @@ int main(int argc, char* argv[]) {
   data.loadFromXML();
 
   for (const TerrainToGenerate& terrain : data.terrainsToGenerate) {
-    data.GenerateTerrain(terrain);
+    data.generateTerrain(terrain);
   }
 
   IMG_Quit();
