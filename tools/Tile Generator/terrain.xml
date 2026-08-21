@@ -20,6 +20,7 @@
 	<colour name="lightGrey"  hex="C4AAC0" />
 	<colour name="grey"       hex="8778A5" />
 	<colour name="darkGrey"   hex="413168" />
+	<colour name="black"      hex="000000" />
 
 	<!-- 6-variant ground template -->
 	<terrainTemplate name="grassy" numVariants="6">
@@ -190,5 +191,17 @@
 		<colourOut name="outline" />
 		<colourOut name="purple" />
 		<colourOut name="darkRed" />
+	</terrain>
+
+	<!-- Solid template (1 variant) -->
+	<terrainTemplate name="solid" numVariants="1">
+		<colourIn name="darkGrey" />
+	</terrainTemplate>
+
+	<terrain name="null" template="solid">
+		<colourOut name="black" />
+	</terrain>
+	<terrain name="sky" template="solid">
+		<colourOut name="lightBlue" />
 	</terrain>
 </root>
