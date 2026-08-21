@@ -21,7 +21,12 @@
 	<colour name="darkGrey"   hex="413168" />
 	<colour name="black"      hex="000000" />
 
-	<terrainTemplate name="grassy" numVariants="6" colours="darkGrey,white,lightGrey,grey" />
+	<colour name="background"   hex="357F51" />
+	<colour name="darkFeature"  hex="413168" />
+	<colour name="feature"      hex="8778A5" />
+	<colour name="lightFeature" hex="C4AAC0" />
+
+	<terrainTemplate name="grassy" numVariants="6" colours="background,lightFeature,feature,darkFeature" />
 	<terrain name="normal"         template="grassy" colours="yellow,lightGreen,green,lightRed" />
 	<terrain name="plains"         template="grassy" colours="green,yellow,lightGreen,darkGreen" />
 	<terrain name="rich"           template="grassy" colours="lightGreen,highlight,yellow,green" />
