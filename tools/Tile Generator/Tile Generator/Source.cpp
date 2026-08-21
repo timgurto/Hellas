@@ -5,6 +5,7 @@
 #include <tinyxml.h>
 
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -33,6 +34,15 @@ SDL_Color parseHexColour(const std::string& hex) {
   colour.a = 0xff;
 
   return colour;
+}
+
+std::vector<std::string> splitByComma(const std::string& s) {
+  std::vector<std::string> result;
+  std::istringstream stream(s);
+  std::string token;
+  while (std::getline(stream, token, ','))
+    result.push_back(token);
+  return result;
 }
 
 bool ColoursEqual(const SDL_Color& a, const SDL_Color& b) {
@@ -66,11 +76,7 @@ class Data {
 
       const char* numVariants = element->Attribute("numVariants");
       terrainTemplate.numVariants = std::atoi(numVariants);
-
-      FOR_EACH_XML(colourIn, element, "colourIn") {
-        const auto colourName = colourIn->Attribute("name");
-        terrainTemplate.colourIn.push_back(colourName);
-      }
+      terrainTemplate.colourIn = splitByComma(element->Attribute("colours"));
 
       const char* name = element->Attribute("name");
       templates[name] = terrainTemplate;
@@ -82,11 +88,7 @@ class Data {
 
       terrain.name = element->Attribute("name");
       terrain.templateName = element->Attribute("template");
-
-      FOR_EACH_XML(colourOut, element, "colourOut") {
-        auto colourName = colourOut->Attribute("name");
-        terrain.colourOut.push_back(colourName);
-      }
+      terrain.colourOut = splitByComma(element->Attribute("colours"));
 
       terrainsToGenerate.push_back(terrain);
     }

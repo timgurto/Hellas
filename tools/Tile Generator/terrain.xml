@@ -23,185 +23,44 @@
 	<colour name="black"      hex="000000" />
 
 	<!-- 6-variant ground template -->
-	<terrainTemplate name="grassy" numVariants="6">
-		<colourIn name="darkGrey" />
-		<colourIn name="white" />
-		<colourIn name="lightGrey" />
-		<colourIn name="grey" />
-	</terrainTemplate>
+	<terrainTemplate name="grassy" numVariants="6" colours="darkGrey,white,lightGrey,grey" />
 
-	<terrain name="normal" template="grassy">
-		<colourOut name="yellow" />
-		<colourOut name="lightGreen" />
-		<colourOut name="green" />
-		<colourOut name="lightRed" />
-	</terrain>
-	<terrain name="plains" template="grassy">
-		<colourOut name="green" />
-		<colourOut name="yellow" />
-		<colourOut name="lightGreen" />
-		<colourOut name="darkGreen" />
-	</terrain>
-	<terrain name="rich" template="grassy">
-		<colourOut name="lightGreen" />
-		<colourOut name="highlight" />
-		<colourOut name="yellow" />
-		<colourOut name="green" />
-	</terrain>
-	<terrain name="fertile" template="grassy">
-		<colourOut name="lightGreen" />
-		<colourOut name="yellow" />
-		<colourOut name="darkYellow" />
-		<colourOut name="green" />
-	</terrain>
-	<terrain name="swamp" template="grassy">
-		<colourOut name="lightTeal" />
-		<colourOut name="lightGreen" />
-		<colourOut name="grey" />
-		<colourOut name="green" />
-	</terrain>
-	<terrain name="nile" template="grassy">
-		<colourOut name="highlight" />
-		<colourOut name="yellow" />
-		<colourOut name="lightGreen" />
-		<colourOut name="green" />
-	</terrain>
-	<terrain name="volcanoFertile" template="grassy">
-		<colourOut name="darkGrey" />
-		<colourOut name="lightTeal" />
-		<colourOut name="green" />
-		<colourOut name="darkTeal" />
-	</terrain>
-	<terrain name="plainsFertile" template="grassy">
-		<colourOut name="darkGreen" />
-		<colourOut name="lightGreen" />
-		<colourOut name="green" />
-		<colourOut name="darkTeal" />
-	</terrain>
-	<terrain name="richFertile" template="grassy">
-		<colourOut name="green" />
-		<colourOut name="yellow" />
-		<colourOut name="darkYellow" />
-		<colourOut name="darkGreen" />
-	</terrain>
-	<terrain name="swampFertile" template="grassy">
-		<colourOut name="blue" />
-		<colourOut name="lightGreen" />
-		<colourOut name="green" />
-		<colourOut name="teal" />
-	</terrain>
+	<terrain name="normal"         template="grassy" colours="yellow,lightGreen,green,lightRed" />
+	<terrain name="plains"         template="grassy" colours="green,yellow,lightGreen,darkGreen" />
+	<terrain name="rich"           template="grassy" colours="lightGreen,highlight,yellow,green" />
+	<terrain name="fertile"        template="grassy" colours="lightGreen,yellow,darkYellow,green" />
+	<terrain name="swamp"          template="grassy" colours="lightTeal,lightGreen,grey,green" />
+	<terrain name="nile"           template="grassy" colours="highlight,yellow,lightGreen,green" />
+	<terrain name="volcanoFertile" template="grassy" colours="darkGrey,lightTeal,green,darkTeal" />
+	<terrain name="plainsFertile"  template="grassy" colours="darkGreen,lightGreen,green,darkTeal" />
+	<terrain name="richFertile"    template="grassy" colours="green,yellow,darkYellow,darkGreen" />
+	<terrain name="swampFertile"   template="grassy" colours="blue,lightGreen,green,teal" />
 
 	<!-- Mountain template (1 variant) -->
-	<terrainTemplate name="mountain" numVariants="1">
-		<colourIn name="grey" />
-		<colourIn name="darkYellow" />
-		<colourIn name="yellow" />
-		<colourIn name="darkGrey" />
-	</terrainTemplate>
+	<terrainTemplate name="mountain" numVariants="1" colours="grey,darkYellow,yellow,darkGrey" />
 
-	<terrain name="plainsMountain" template="mountain">
-		<colourOut name="green" />
-		<colourOut name="grey" />
-		<colourOut name="lightGrey" />
-		<colourOut name="darkGrey" />
-	</terrain>
-	<terrain name="desertMountain" template="mountain">
-		<colourOut name="grey" />
-		<colourOut name="yellow" />
-		<colourOut name="highlight" />
-		<colourOut name="darkGrey" />
-	</terrain>
-	<terrain name="snowMountain" template="mountain">
-		<colourOut name="darkGrey" />
-		<colourOut name="lightGrey" />
-		<colourOut name="white" />
-		<colourOut name="outline" />
-	</terrain>
-	<terrain name="beachMountain" template="mountain">
-		<colourOut name="darkGrey" />
-		<colourOut name="grey" />
-		<colourOut name="lightGrey" />
-		<colourOut name="yellow" />
-	</terrain>
-	<terrain name="richMountain" template="mountain">
-		<colourOut name="darkGrey" />
-		<colourOut name="grey" />
-		<colourOut name="lightGrey" />
-		<colourOut name="darkGreen" />
-	</terrain>
-	<terrain name="caveMountain" template="mountain">
-		<colourOut name="darkTeal" />
-		<colourOut name="darkGrey" />
-		<colourOut name="grey" />
-		<colourOut name="outline" />
-	</terrain>
-	<terrain name="volcanoMountain" template="mountain">
-		<colourOut name="outline" />
-		<colourOut name="purple" />
-		<colourOut name="lightRed" />
-		<colourOut name="darkRed" />
-	</terrain>
+	<terrain name="plainsMountain"  template="mountain" colours="green,grey,lightGrey,darkGrey" />
+	<terrain name="desertMountain"  template="mountain" colours="grey,yellow,highlight,darkGrey" />
+	<terrain name="snowMountain"    template="mountain" colours="darkGrey,lightGrey,white,outline" />
+	<terrain name="beachMountain"   template="mountain" colours="darkGrey,grey,lightGrey,yellow" />
+	<terrain name="richMountain"    template="mountain" colours="darkGrey,grey,lightGrey,darkGreen" />
+	<terrain name="caveMountain"    template="mountain" colours="darkTeal,darkGrey,grey,outline" />
+	<terrain name="volcanoMountain" template="mountain" colours="outline,purple,lightRed,darkRed" />
 
 	<!-- Rocky template (1 variant) -->
-	<terrainTemplate name="rocky" numVariants="1">
-		<colourIn name="lightGrey" />
-		<colourIn name="grey" />
-		<colourIn name="yellow" />
-		<colourIn name="darkYellow" />
-	</terrainTemplate>
+	<terrainTemplate name="rocky" numVariants="1" colours="lightGrey,grey,yellow,darkYellow" />
 
-	<terrain name="plainsRocky" template="rocky">
-		<colourOut name="lightGrey" />
-		<colourOut name="green" />
-		<colourOut name="grey" />
-		<colourOut name="darkGreen" />
-	</terrain>
-	<terrain name="desertRocky" template="rocky">
-		<colourOut name="highlight" />
-		<colourOut name="lightGrey" />
-		<colourOut name="yellow" />
-		<colourOut name="grey" />
-	</terrain>
-	<terrain name="snowRocky" template="rocky">
-		<colourOut name="white" />
-		<colourOut name="lightGrey" />
-		<colourOut name="grey" />
-		<colourOut name="purple" />
-	</terrain>
-	<terrain name="richRocky" template="rocky">
-		<colourOut name="lightGrey" />
-		<colourOut name="green" />
-		<colourOut name="darkYellow" />
-		<colourOut name="darkGreen" />
-	</terrain>
-	<terrain name="caveRocky" template="rocky">
-		<colourOut name="grey" />
-		<colourOut name="darkGrey" />
-		<colourOut name="darkTeal" />
-		<colourOut name="outline" />
-	</terrain>
-	<terrain name="beachRocky" template="rocky">
-		<colourOut name="yellow" />
-		<colourOut name="grey" />
-		<colourOut name="darkBlue" />
-		<colourOut name="darkBlue" />
-	</terrain>
-	<terrain name="volcanoRocky" template="rocky">
-		<colourOut name="darkGrey" />
-		<colourOut name="outline" />
-		<colourOut name="purple" />
-		<colourOut name="darkRed" />
-	</terrain>
+	<terrain name="plainsRocky"  template="rocky" colours="lightGrey,green,grey,darkGreen" />
+	<terrain name="desertRocky"  template="rocky" colours="highlight,lightGrey,yellow,grey" />
+	<terrain name="snowRocky"    template="rocky" colours="white,lightGrey,grey,purple" />
+	<terrain name="richRocky"    template="rocky" colours="lightGrey,green,darkYellow,darkGreen" />
+	<terrain name="caveRocky"    template="rocky" colours="grey,darkGrey,darkTeal,outline" />
+	<terrain name="beachRocky"   template="rocky" colours="yellow,grey,darkBlue,darkBlue" />
+	<terrain name="volcanoRocky" template="rocky" colours="darkGrey,outline,purple,darkRed" />
 
 	<!-- Solid template (1 variant) -->
-	<terrainTemplate name="solid" numVariants="1">
-		<colourIn name="darkGrey" />
-	</terrainTemplate>
+	<terrainTemplate name="solid" numVariants="1" colours="darkGrey" />
 
-	<terrain name="null" template="solid">
-		<colourOut name="black" />
-	</terrain>
-	<terrain name="sky" template="solid">
-		<colourOut name="lightBlue" />
-	</terrain>
+	<terrain name="null" template="solid" colours="black" />
+	<terrain name="sky"  template="solid" colours="lightBlue" />
 </root>
