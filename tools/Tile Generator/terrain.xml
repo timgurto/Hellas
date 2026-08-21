@@ -55,6 +55,10 @@
 	<terrain name="wood"     template="wood" colours="lightRed,purple,darkYellow,darkRed" />
 	<terrain name="woodDark" template="wood" colours="darkRed,purple,lightRed,darkGrey" />
 
+	<terrainTemplate name="road" numVariants="1" colours="grey,purple,darkYellow,darkGrey,lightBlue,darkBlue,blue,lightTeal" />
+	<terrain name="road"  template="road" colours="grey,purple,darkYellow,darkGrey,purple,purple,purple,darkGrey" />
+	<terrain name="ruins" template="road" colours="lightGrey,yellow,white,grey,grey,lightGrey,white,lightGrey" />
+
 	<terrainTemplate name="solid" numVariants="1" colours="darkGrey" />
 	<terrain name="null" template="solid" colours="black" />
 	<terrain name="sky"  template="solid" colours="lightBlue" />
