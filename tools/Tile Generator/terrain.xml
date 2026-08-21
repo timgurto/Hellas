@@ -1,5 +1,4 @@
 <root>
-	<!-- Named colours -->
 	<colour name="highlight"  hex="FFFFB2" />
 	<colour name="lightRed"   hex="BA6C62" />
 	<colour name="lightGreen" hex="62BA6C" />
@@ -22,9 +21,7 @@
 	<colour name="darkGrey"   hex="413168" />
 	<colour name="black"      hex="000000" />
 
-	<!-- 6-variant ground template -->
 	<terrainTemplate name="grassy" numVariants="6" colours="darkGrey,white,lightGrey,grey" />
-
 	<terrain name="normal"         template="grassy" colours="yellow,lightGreen,green,lightRed" />
 	<terrain name="plains"         template="grassy" colours="green,yellow,lightGreen,darkGreen" />
 	<terrain name="rich"           template="grassy" colours="lightGreen,highlight,yellow,green" />
@@ -36,9 +33,7 @@
 	<terrain name="richFertile"    template="grassy" colours="green,yellow,darkYellow,darkGreen" />
 	<terrain name="swampFertile"   template="grassy" colours="blue,lightGreen,green,teal" />
 
-	<!-- Mountain template (1 variant) -->
 	<terrainTemplate name="mountain" numVariants="1" colours="grey,darkYellow,yellow,darkGrey" />
-
 	<terrain name="plainsMountain"  template="mountain" colours="green,grey,lightGrey,darkGrey" />
 	<terrain name="desertMountain"  template="mountain" colours="grey,yellow,highlight,darkGrey" />
 	<terrain name="snowMountain"    template="mountain" colours="darkGrey,lightGrey,white,outline" />
@@ -47,9 +42,7 @@
 	<terrain name="caveMountain"    template="mountain" colours="darkTeal,darkGrey,grey,outline" />
 	<terrain name="volcanoMountain" template="mountain" colours="outline,purple,lightRed,darkRed" />
 
-	<!-- Rocky template (1 variant) -->
 	<terrainTemplate name="rocky" numVariants="1" colours="lightGrey,grey,yellow,darkYellow" />
-
 	<terrain name="plainsRocky"  template="rocky" colours="lightGrey,green,grey,darkGreen" />
 	<terrain name="desertRocky"  template="rocky" colours="highlight,lightGrey,yellow,grey" />
 	<terrain name="snowRocky"    template="rocky" colours="white,lightGrey,grey,purple" />
@@ -58,9 +51,11 @@
 	<terrain name="beachRocky"   template="rocky" colours="yellow,grey,darkBlue,darkBlue" />
 	<terrain name="volcanoRocky" template="rocky" colours="darkGrey,outline,purple,darkRed" />
 
-	<!-- Solid template (1 variant) -->
-	<terrainTemplate name="solid" numVariants="1" colours="darkGrey" />
+	<terrainTemplate name="wood" numVariants="1" colours="lightRed,purple,darkYellow,darkRed" />
+	<terrain name="wood"     template="wood" colours="lightRed,purple,darkYellow,darkRed" />
+	<terrain name="woodDark" template="wood" colours="darkRed,purple,lightRed,darkGrey" />
 
+	<terrainTemplate name="solid" numVariants="1" colours="darkGrey" />
 	<terrain name="null" template="solid" colours="black" />
 	<terrain name="sky"  template="solid" colours="lightBlue" />
 </root>
