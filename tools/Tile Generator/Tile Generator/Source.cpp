@@ -117,9 +117,9 @@ class Data {
 
         for (const auto& mapping : mappings) {
           if (ColoursEqual({r, g, b, a}, mapping.first)) {
-            *reinterpret_cast<Uint32*>(pixelAddress) =
-                SDL_MapRGBA(surface->format, mapping.second.r, mapping.second.g,
-                            mapping.second.b, a);
+            auto newPixel = SDL_MapRGBA(surface->format, mapping.second.r,
+                                        mapping.second.g, mapping.second.b, a);
+            *reinterpret_cast<Uint32*>(pixelAddress) = newPixel;
             break;
           }
         }
@@ -133,21 +133,20 @@ class Data {
     const TerrainTemplate& terrainTemplate = templates.at(terrain.templateName);
 
     for (int variant = 0; variant < terrainTemplate.numVariants; ++variant) {
-      std::string inputPath = "templates/" + terrain.templateName +
-                              std::to_string(variant) + ".png";
+      const auto inputPath = "templates/" + terrain.templateName +
+                             std::to_string(variant) + ".png";
 
-      std::string outputPath =
-          "generatedTiles/" + terrain.name + std::to_string(variant) + ".png";
+      const auto variantSuffix =
+          terrainTemplate.numVariants > 1 ? std::to_string(variant) : "";
+      const auto outputPath =
+          "../../Images/Terrain/" + terrain.name + variantSuffix + ".png";
+
+      auto surface = IMG_Load(inputPath.c_str());
+      ReplaceColours(surface, terrainTemplate, terrain);
+      IMG_SavePNG(surface, outputPath.c_str());
+      SDL_FreeSurface(surface);
 
       std::cout << inputPath << " -> " << outputPath << "\n";
-
-      SDL_Surface* surface = IMG_Load(inputPath.c_str());
-
-      ReplaceColours(surface, terrainTemplate, terrain);
-
-      IMG_SavePNG(surface, outputPath.c_str());
-
-      SDL_FreeSurface(surface);
     }
   }
 };

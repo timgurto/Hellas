@@ -18,8 +18,6 @@ ClientTerrain::ClientTerrain(const std::string& imageFile, size_t frames,
     for (size_t i = 0; i != frames; ++i) {
       std::ostringstream oss;
       oss << "Images/Terrain/" << imageFile;
-      // if (_frames > 100 && i < 100)
-      //    oss << "0";
       if (_frames > 10 && i < 10) oss << "0";
       oss << i << ".png";
       _images.push_back(oss.str());
