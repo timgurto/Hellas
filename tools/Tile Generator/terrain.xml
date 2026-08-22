@@ -22,21 +22,23 @@
 	<colour name="black"      hex="000000" />
 
 	<colour name="background"   hex="357F51" />
+	<colour name="noise"        hex="154434" />
 	<colour name="darkFeature"  hex="413168" />
 	<colour name="feature"      hex="8778A5" />
 	<colour name="lightFeature" hex="C4AAC0" />
 
-	<terrainTemplate name="grassy" numVariants="6" colours="background,lightFeature,feature,darkFeature" />
-	<terrain name="normal"         template="grassy" colours="yellow,lightGreen,green,lightRed" />
-	<terrain name="plains"         template="grassy" colours="green,yellow,lightGreen,darkGreen" />
-	<terrain name="rich"           template="grassy" colours="lightGreen,highlight,yellow,green" />
-	<terrain name="fertile"        template="grassy" colours="lightGreen,yellow,darkYellow,green" />
-	<terrain name="swamp"          template="grassy" colours="lightTeal,lightGreen,grey,green" />
-	<terrain name="nile"           template="grassy" colours="highlight,yellow,lightGreen,green" />
-	<terrain name="volcanoFertile" template="grassy" colours="darkGrey,lightTeal,green,darkTeal" />
-	<terrain name="plainsFertile"  template="grassy" colours="darkGreen,lightGreen,green,darkTeal" />
-	<terrain name="richFertile"    template="grassy" colours="green,yellow,darkYellow,darkGreen" />
-	<terrain name="swampFertile"   template="grassy" colours="blue,lightGreen,green,teal" />
+	<terrainTemplate name="grassy" numVariants="6" colours="background,noise,lightFeature,feature,darkFeature" />
+	<terrain name="plains"         template="grassy" colours="yellow,darkYellow,lightGreen,yellow,yellow" />
+	<terrain name="plainsFertile"  template="grassy" colours="yellow,lightGreen,lightGreen,green,darkGreen" />
+	<terrain name="normal"         template="grassy" colours="lightGreen,yellow,green,lightGreen,lightGreen" />
+	<terrain name="fertile"        template="grassy" colours="lightGreen,green,lightTeal,green,darkGreen" />
+	<terrain name="rich"           template="grassy" colours="green,lightGreen,darkGreen,green,green" />
+	<terrain name="richFertile"    template="grassy" colours="green,darkGreen,lightTeal,darkGreen,darkTeal" />
+	<terrain name="swamp"          template="grassy" colours="teal,lightTeal,green,teal,teal" />
+	<terrain name="swampFertile"   template="grassy" colours="teal,green,lightGreen,green,darkGreen" />
+	<terrain name="nile"           template="grassy" colours="highlight,yellow,lightGreen,highlight,highlight" />
+	<terrain name="nileFertile"    template="grassy" colours="highlight,yellow,lightGreen,green,darkGreen" />
+	<terrain name="volcanoFertile" template="grassy" colours="darkGrey,lightTeal,lightTeal,green,darkGreen" />
 
 	<terrainTemplate name="mountain" numVariants="1" colours="grey,darkYellow,yellow,darkGrey" />
 	<terrain name="plainsMountain"  template="mountain" colours="green,grey,lightGrey,darkGrey" />
