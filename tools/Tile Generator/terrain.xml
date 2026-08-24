@@ -26,6 +26,8 @@
 	<colour name="darkFeature"  hex="413168" />
 	<colour name="feature"      hex="8778A5" />
 	<colour name="lightFeature" hex="C4AAC0" />
+	<colour name="ground"       hex="357F51" />
+	<colour name="lightGround"  hex="62BA6C" />
 
 	<terrainTemplate name="grassy" numVariants="6" colours="background,noise,lightFeature,feature,darkFeature" />
 	<terrain name="plains"         template="grassy" colours="yellow,darkYellow,lightGreen,yellow,yellow" />
@@ -40,14 +42,15 @@
 	<terrain name="nileFertile"    template="grassy" colours="highlight,yellow,lightGreen,green,darkGreen" />
 	<terrain name="volcanoFertile" template="grassy" colours="darkGrey,lightTeal,lightTeal,green,darkGreen" />
 
-	<terrainTemplate name="mountain" numVariants="1" colours="grey,darkYellow,yellow,darkGrey" />
-	<terrain name="plainsMountain"  template="mountain" colours="green,grey,lightGrey,darkGrey" />
-	<terrain name="desertMountain"  template="mountain" colours="grey,yellow,highlight,darkGrey" />
-	<terrain name="snowMountain"    template="mountain" colours="darkGrey,lightGrey,white,outline" />
-	<terrain name="beachMountain"   template="mountain" colours="darkGrey,grey,lightGrey,yellow" />
-	<terrain name="richMountain"    template="mountain" colours="darkGrey,grey,lightGrey,darkGreen" />
-	<terrain name="caveMountain"    template="mountain" colours="darkTeal,darkGrey,grey,outline" />
-	<terrain name="volcanoMountain" template="mountain" colours="outline,purple,lightRed,darkRed" />
+	<terrainTemplate name="mountain" numVariants="2" colours="lightFeature,feature,darkFeature,lightGround,ground" />
+	<terrain name="mountain"        template="mountain" colours="lightGrey,grey,darkGrey,lightGreen,green" />
+	<terrain name="plainsMountain"  template="mountain" colours="yellow,lightRed,darkGrey,lightGreen,green" />
+	<terrain name="desertMountain"  template="mountain" colours="darkYellow,grey,darkGrey,highlight,yellow" />
+	<terrain name="snowMountain"    template="mountain" colours="lightGrey,grey,darkGrey,white,white" />
+	<terrain name="beachMountain"   template="mountain" colours="yellow,grey,darkGrey,highlight,highlight" />
+	<terrain name="richMountain"    template="mountain" colours="lightGrey,grey,darkGreen,lightGreen,green" />
+	<terrain name="caveMountain"    template="mountain" colours="darkGrey,darkTeal,outline,outline,outline" />
+	<terrain name="volcanoMountain" template="mountain" colours="darkGrey,darkTeal,outline,yellow,darkRed" />
 
 	<terrainTemplate name="rocky" numVariants="1" colours="lightGrey,grey,yellow,darkYellow" />
 	<terrain name="plainsRocky"  template="rocky" colours="lightGrey,green,grey,darkGreen" />

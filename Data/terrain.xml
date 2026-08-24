@@ -13,11 +13,11 @@ frameTime          *
 <terrain index="a" id="normal"          color="9BAE77" frames="6" showRandomFrame="1"/>
 <terrain index="b" id="fertile"         color="659A63" frames="6" showRandomFrame="1"/>
 <terrain index="c" id="rocky"           color="B09AB0" />
-<terrain index="d" id="mountain"        color="A7898F" />
+<terrain index="d" id="mountain"        color="A7898F" frames="2" showRandomFrame="1"/>
 <terrain index="e" id="plains"          color="5D9A62" frames="6" showRandomFrame="1"/>
 <terrain index="f" id="plainsFertile"   color="2B6647" frames="6" showRandomFrame="1"/>
 <terrain index="g" id="plainsRocky"     color="83928F" />
-<terrain index="h" id="plainsMountain"  color="617B7C" />
+<terrain index="h" id="plainsMountain"  color="617B7C" frames="2" showRandomFrame="1"/>
 <terrain index="i" id="forest"          color="87715B" />
 <terrain index="j" id="forestFertile"   color="2F5E44" />
 <terrain index="k" id="forestRocky"     color="6D7B81" />
@@ -25,30 +25,30 @@ frameTime          *
 <terrain index="m" id="rich"            color="A1C882" frames="6" showRandomFrame="1"/>
 <terrain index="n" id="richFertile"     color="7D9166" frames="6" showRandomFrame="1"/>
 <terrain index="o" id="richRocky"       color="89958C" />
-<terrain index="p" id="richMountain"    color="655884" />
+<terrain index="p" id="richMountain"    color="655884" frames="2" showRandomFrame="1"/>
 <terrain index="q" id="snow"            color="E5E4E4" />
 <terrain index="r" id="snowRocky"       color="CDC0CE" />
-<terrain index="s" id="snowMountain"    color="7F6D92" />
+<terrain index="s" id="snowMountain"    color="7F6D92" frames="2" showRandomFrame="1"/>
 <terrain index="t" id="swamp"           color="3D7C6D" frames="6" showRandomFrame="1"/>
 <terrain index="u" id="swampFertile"    color="396F78" frames="6" showRandomFrame="1"/>
 <terrain index="x" id="desert"          color="F3F3CA" />
 <terrain index="y" id="desertRocky"     color="E3D7B4" />
-<terrain index="z" id="desertMountain"  color="B3A19C" />
+<terrain index="z" id="desertMountain"  color="B3A19C" frames="2" showRandomFrame="1"/>
 <terrain index="T" id="beachCoast"      color="6893D7" imageFile="shallowWater" frames="32" frameTime="200" />
 <terrain index="A" id="beach"           color="F3E9AD" />
 <terrain index="C" id="beachRocky"      color="AF9C99" />
-<terrain index="D" id="beachMountain"   color="705F89" />
+<terrain index="D" id="beachMountain"   color="705F89" frames="2" showRandomFrame="1"/>
 <terrain index="E" id="ruins"           color="C7B4B8" />
 <terrain index="F" id="ruinsFertile"    color="91969E" />
 <terrain index="G" id="ruinsRocky"      color="A896B2" />
 <terrain index="H" id="ruinsMountain"   color="7B6A92" />
 <terrain index="J" id="caveRocky"       color="5F5283" />
-<terrain index="K" id="caveMountain"    color="302A5D" />
+<terrain index="K" id="caveMountain"    color="302A5D" frames="2" showRandomFrame="1"/>
 <terrain index="L" id="nile"            color="A8CB88" frames="6" showRandomFrame="1"/>
 <terrain index="M" id="nileFertile"     color="405D60" frames="6" showRandomFrame="1"/>
 <terrain index="R" id="volcanoFertile"  color="384F61" frames="6" showRandomFrame="1"/>
 <terrain index="N" id="volcanoRocky"    color="392354" />
-<terrain index="O" id="volcanoMountain" color="52234E" />
+<terrain index="O" id="volcanoMountain" color="52234E" frames="2" showRandomFrame="1"/>
 <terrain index="V" id="shallowWater"    color="3478D8" frames="32" frameTime="200"> <tag name="waterSource" /> </terrain>
 <terrain index="P" id="water"           color="394FB2" frames="32" frameTime="200"> <tag name="waterSource" /> </terrain>
 <terrain index="Q" id="deepWater"       color="1F3C60" frames="32" frameTime="200"/>
