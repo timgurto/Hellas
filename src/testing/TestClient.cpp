@@ -153,7 +153,8 @@ bool TestClient::waitForMessage(MessageCode desiredMsg, ms_t timeout) const {
   size_t currentSize = _client->_messagesReceived.size();
   _client->_messagesReceivedMutex.unlock();
 
-  for (ms_t startTime = SDL_GetTicks(); SDL_GetTicks() < startTime + timeout;) {
+  for (ms_t startTime = SDL_GetTicks(); SDL_GetTicks() < startTime + timeout;
+       SDL_Delay(1)) {
     if (messageWasReceivedSince(desiredMsg, currentSize)) return true;
   }
   return false;

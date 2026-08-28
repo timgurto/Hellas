@@ -7,7 +7,7 @@
 
 #define REPEAT_FOR_MS(TIME_TO_REPEAT)   \
   for (ms_t startTime = SDL_GetTicks(); \
-       SDL_GetTicks() < startTime + (TIME_TO_REPEAT);)
+       SDL_GetTicks() < startTime + (TIME_TO_REPEAT); SDL_Delay(1))
 #define WAIT_UNTIL_TIMEOUT(x, TIMEOUT) \
   do {                                 \
     REPEAT_FOR_MS(TIMEOUT) {           \
