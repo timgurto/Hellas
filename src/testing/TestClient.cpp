@@ -163,8 +163,6 @@ bool TestClient::messageWasReceivedSince(MessageCode desiredMsg,
                                          size_t startingIndex) const {
   std::lock_guard<std::mutex> guard(_client->_messagesReceivedMutex);
   const size_t NUM_MESSAGES = _client->_messagesReceived.size();
-  if (NUM_MESSAGES > _client->_messagesReceived.size())
-    FAIL("Message-count inconsistency");
   if (startingIndex >= NUM_MESSAGES) return false;
   for (size_t i = startingIndex; i != NUM_MESSAGES; ++i)
     if (_client->_messagesReceived[i] == desiredMsg) return true;
