@@ -1,65 +1,57 @@
 #include "TestClient.h"
 #include "TestFixtures.h"
-#include "TestServer.h"
 #include "testing.h"
+#include "TestServer.h"
 
-TEST_CASE("Simple gear equip", "[gear]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Simple gear equip", "[gear]") {
   GIVEN("a user with gear in his inventory") {
-    auto data = R"(
+    useData(R"(
       <item id="hat" gearSlot="head" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    const auto &hat = s.getFirstItem();
-    user.giveItem(&hat);
+    )");
+    const auto &hat = server->getFirstItem();
+    user->giveItem(&hat);
 
     WHEN("he tries to equip it") {
-      c.sendMessage(CL_SWAP_ITEMS,
-                    makeArgs(Serial::Inventory(), 0, Serial::Gear(), 0));
+      client->sendMessage(CL_SWAP_ITEMS,
+                          makeArgs(Serial::Inventory(), 0, Serial::Gear(), 0));
 
       THEN("he has an item in that gear slot") {
-        WAIT_UNTIL(user.gear(0).hasItem());
+        WAIT_UNTIL(user->gear(0).hasItem());
 
         AND_WHEN("he takes it off") {
-          c.sendMessage(CL_SWAP_ITEMS,
-                        makeArgs(Serial::Gear(), 0, Serial::Inventory(), 0));
+          client->sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Gear(), 0,
+                                                      Serial::Inventory(), 0));
 
-          THEN("the server survives") { s.nop(); }
+          THEN("the server survives") { server->nop(); }
         }
       }
     }
   }
 }
 
-TEST_CASE("Damage is updated when a weapon depletes", "[gear][stats]") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Damage is updated when a weapon depletes", "[gear][stats]") {
   GIVEN("a consumable weapon that deals 100 damage") {
-    auto data = R"(
+    useData(R"(
       <item id="rock" gearSlot="weapon" >
         <weapon consumes="rock" damage="100" speed="1" range="100" />
       </item>
       <npcType id="ant" maxHealth="1" />
-    )";
+    )");
 
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-
-    const auto rock = &s.getFirstItem();
-    user.gear(Item::WEAPON) = {
-        rock,
-        ServerItem::Instance::ReportingInfo::UserGear(&user, Item::WEAPON), 1};
-    user.updateStats();
+    const auto rock = &server->getFirstItem();
+    user->gear(Item::WEAPON) = {
+        rock, ServerItem::Instance::ReportingInfo::UserGear(user, Item::WEAPON),
+        1};
+    user->updateStats();
 
     WHEN("the weapon is used") {
-      s.addNPC("ant", {10, 15});
-      auto ant = s.getFirstNPC().serial();
-      c.sendMessage(CL_TARGET_ENTITY, makeArgs(ant));
+      server->addNPC("ant", {10, 15});
+      auto ant = server->getFirstNPC().serial();
+      client->sendMessage(CL_TARGET_ENTITY, makeArgs(ant));
 
       THEN("the player no longer does 100 damage") {
-        WAIT_UNTIL(user.stats().weaponDamage < 100);
+        WAIT_UNTIL(user->stats().weaponDamage < 100);
       }
     }
   }

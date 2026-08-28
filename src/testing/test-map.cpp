@@ -1,44 +1,44 @@
 #include "TestClient.h"
+#include "TestFixtures.h"
+#include "testing.h"
 #include "TestServer.h"
 
 extern Renderer renderer;
 
-TEST_CASE("Objects show up on the map when a client logs in") {
+TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+                 "Objects show up on the map when a client logs in") {
   // Given a server and client with rock objects;
-  TestServer s = TestServer::WithData("basic_rock");
-  TestClient c = TestClient::WithData("basic_rock");
+  useData("basic_rock");
 
   // And a rock near the user spawn point
-  s.addObject("rock", {10, 15});
+  server->addObject("rock", {10, 15});
 
   // When the client finds out his location;
-  CHECK(c.waitForMessage(SV_USER_LOCATION));
+  CHECK(client->waitForMessage(SV_USER_LOCATION));
 
   // And he opens his map window
-  c.mapWindow()->show();
+  client->mapWindow()->show();
 
   // The rock shows up on his map (in addition to the user himself)
-  WAIT_UNTIL(c.mapPins().size() == 2);
+  WAIT_UNTIL(client->mapPins().size() == 2);
 }
 
-TEST_CASE("A player shows up on his own map", "[.flaky]") {
-  // Given a server and client, and a 101x101 map on which players spawn at the
-  // center;
-  TestServer s = TestServer::WithData("big_map");
-  TestClient c = TestClient::WithData("big_map");
+TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+                 "A player shows up on his own map", "[.flaky]") {
+  useData("big_map");
 
   // When the client finds out his location;
-  CHECK(c.waitForMessage(SV_USER_LOCATION));
+  CHECK(client->waitForMessage(SV_USER_LOCATION));
 
   // And he opens his map window
-  c.mapWindow()->show();
+  client->mapWindow()->show();
 
   // Then the map has one pin;
-  WAIT_UNTIL(c.mapPins().size() == 1);
+  WAIT_UNTIL(client->mapPins().size() == 1);
 
   // And that pin has the player's color
   const ColorBlock *pin =
-      dynamic_cast<const ColorBlock *>(*c.mapPins().begin());
+      dynamic_cast<const ColorBlock *>(*client->mapPins().begin());
   CHECK(pin != nullptr);
   CHECK(pin->color() == Color::COMBATANT_SELF);
 
@@ -50,11 +50,11 @@ TEST_CASE("A player shows up on his own map", "[.flaky]") {
   WAIT_UNTIL(pin->rect() == ScreenRect(midMapX, midMapY, 1, 1));
 
   // And the map has one pin outline;
-  WAIT_UNTIL(c.mapPinOutlines().size() == 1);
+  WAIT_UNTIL(client->mapPinOutlines().size() == 1);
 
   // And that outline has the outline color
   const ColorBlock *outline =
-      dynamic_cast<const ColorBlock *>(*c.mapPinOutlines().begin());
+      dynamic_cast<const ColorBlock *>(*client->mapPinOutlines().begin());
   CHECK(outline != nullptr);
   CHECK(outline->color() == Color::UI_OUTLINE);
 
@@ -63,56 +63,44 @@ TEST_CASE("A player shows up on his own map", "[.flaky]") {
 
   // And pixels of the player's color and border color are in the correct places
   REPEAT_FOR_MS(100);
-  px_t xInScreen = midMapX + toInt(c.mapWindow()->position().x) + 1,
-       yInScreen = midMapY + toInt(c.mapWindow()->position().y) + 2 +
+  px_t xInScreen = midMapX + toInt(client->mapWindow()->position().x) + 1,
+       yInScreen = midMapY + toInt(client->mapWindow()->position().y) + 2 +
                    Window::HEADING_HEIGHT;
   CHECK(renderer.getPixel(xInScreen, yInScreen) == Color::COMBATANT_SELF);
   CHECK(renderer.getPixel(xInScreen - 1, yInScreen) == Color::UI_OUTLINE);
 }
 
-TEST_CASE("Other players show up on the map") {
-  // Given a server and two clients
-  TestServer s;
-  TestClient c1, c2;
-
-  // When both clients log in;
-  s.waitForUsers(2);
-
+TEST_CASE_METHOD(TwoClients, "Other players show up on the map") {
   // And the first client opens his map
-  c1.mapWindow()->show();
+  cAlice.mapWindow()->show();
 
   // Then there are two pins visible
-  WAIT_UNTIL(c1.mapPins().size() == 2);
+  WAIT_UNTIL(cAlice.mapPins().size() == 2);
 }
 
-TEST_CASE("When a player declares war, his map pin changes color",
-          "[war][.flaky]") {
-  // Given a server with two clients;
-  TestServer s;
-  auto c = TestClient{};
-  auto c2 = TestClient::WithUsername("Duteros");
-
+TEST_CASE_METHOD(TwoClients,
+                 "When a player declares war, his map pin changes color",
+                 "[war][.flaky]") {
   // And the first has his map open;
-  s.waitForUsers(2);
-  c.mapWindow()->show();
+  cAlice.mapWindow()->show();
 
   // And sees two map pins
-  WAIT_UNTIL(c.mapPins().size() == 2);
+  WAIT_UNTIL(cAlice.mapPins().size() == 2);
 
   // When the first declares war on the second;
-  c.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "Duteros");
+  cAlice.sendMessage(CL_DECLARE_WAR_ON_PLAYER, cBob.name());
 
   // And the war is confirmed to him;
-  WAIT_UNTIL(c.otherUsers().size() == 1);
-  const auto &duteros = c.getFirstOtherUser();
-  WAIT_UNTIL(c.isAtWarWith(duteros));
+  WAIT_UNTIL(cAlice.otherUsers().size() == 1);
+  const auto &otherUser = cAlice.getFirstOtherUser();
+  WAIT_UNTIL(cAlice.isAtWarWith(otherUser));
 
   // And the map refreshes
   REPEAT_FOR_MS(200);
 
   // Then his map has one blue pin and one red pin
   bool bluePinExists = false, redPinExists = false;
-  for (const auto *elemPin : c.mapPins()) {
+  for (const auto *elemPin : cAlice.mapPins()) {
     const auto &pin = dynamic_cast<const ColorBlock &>(*elemPin);
     if (pin.color() == Color::COMBATANT_SELF)
       bluePinExists = true;

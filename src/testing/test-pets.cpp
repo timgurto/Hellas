@@ -1,36 +1,33 @@
 #include "TestClient.h"
 #include "TestFixtures.h"
-#include "TestServer.h"
 #include "testing.h"
+#include "TestServer.h"
 
-TEST_CASE("Taming NPCs", "[pets]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Taming NPCs", "[pets]") {
   GIVEN("a tamable cat") {
-    auto data = R"(
+    useData(R"(
       <npcType id="cat" maxHealth="10000" >
         <canBeTamed />
       </npcType>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
+    )");
 
-    auto &cat = s.addNPC("cat");
+    auto &cat = server->addNPC("cat");
     cat.reduceHealth(9999);
 
     THEN("it has no owner") {
       CHECK((cat.owner().type == Permissions::Owner::MOB));
 
       WHEN("a user tries to tame it") {
-        c.sendMessage(CL_TAME_NPC, makeArgs(cat.serial()));
+        client->sendMessage(CL_TAME_NPC, makeArgs(cat.serial()));
 
         THEN("it belongs to the user") {
           WAIT_UNTIL((cat.owner().type == Permissions::Owner::PLAYER));
-          CHECK(cat.owner().name == c->username());
+          CHECK(cat.owner().name == (*client)->username());
         }
       }
 
       WHEN("a user tries to tame it with too many arguments") {
-        c.sendMessage(CL_TAME_NPC, makeArgs(cat.serial(), 42));
+        client->sendMessage(CL_TAME_NPC, makeArgs(cat.serial(), 42));
 
         THEN("it has no owner") {
           REPEAT_FOR_MS(50);
@@ -41,23 +38,21 @@ TEST_CASE("Taming NPCs", "[pets]") {
   }
 }
 
-TEST_CASE("Owned NPCs can't be tamed", "[pets][permissions]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Owned NPCs can't be tamed",
+                 "[pets][permissions]") {
   GIVEN("a tameable NPC") {
-    auto data = R"(
+    useData(R"(
       <npcType id="cat" maxHealth="1" >
         <canBeTamed />
       </npcType>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    auto &cat = s.addNPC("cat");
+    )");
+    auto &cat = server->addNPC("cat");
 
     AND_GIVEN("it's owned by an offline player, Alice") {
       cat.permissions.setPlayerOwner("Alice");
 
       WHEN("another player tries to tame it") {
-        s.waitForUsers(1);
-        c.sendMessage(CL_TAME_NPC, makeArgs(cat.serial()));
+        client->sendMessage(CL_TAME_NPC, makeArgs(cat.serial()));
 
         THEN("it's still owned by Alice") {
           REPEAT_FOR_MS(100);
@@ -68,46 +63,39 @@ TEST_CASE("Owned NPCs can't be tamed", "[pets][permissions]") {
   }
 }
 
-TEST_CASE("Bad arguments to taming command", "[pets]") {
+TEST_CASE_METHOD(ServerAndClient, "Bad arguments to taming command", "[pets]") {
   GIVEN("a server and client") {
-    auto s = TestServer{};
-    auto c = TestClient{};
-    s.waitForUsers(1);
-
     WHEN("the client tries to tame a nonexistent NPC") {
-      c.sendMessage(CL_TAME_NPC, makeArgs(42));
+      client.sendMessage(CL_TAME_NPC, makeArgs(42));
 
       THEN("the client receives a warning") {
-        CHECK(c.waitForMessage(WARNING_DOESNT_EXIST));
+        CHECK(client.waitForMessage(WARNING_DOESNT_EXIST));
       }
     }
   }
 }
 
-TEST_CASE("Taming an NPC untargets it", "[pets]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Taming an NPC untargets it",
+                 "[pets]") {
   GIVEN("a tamable NPC with plenty of health") {
-    auto data = R"(
+    useData(R"(
       <npcType id="hippo" maxHealth="100000000" >
         <canBeTamed />
       </npcType>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
+    )");
 
-    auto &hippo = s.addNPC("hippo");
+    auto &hippo = server->addNPC("hippo");
     hippo.reduceHealth(99990000);
 
     AND_GIVEN("a user is attacking it") {
-      c.sendMessage(CL_TARGET_ENTITY, makeArgs(hippo.serial()));
-      const auto &user = s.getFirstUser();
-      WAIT_UNTIL((user.action() == User::ATTACK));
+      client->sendMessage(CL_TARGET_ENTITY, makeArgs(hippo.serial()));
+      WAIT_UNTIL((user->action() == User::ATTACK));
 
       WHEN("he tames it") {
-        c.sendMessage(CL_TAME_NPC, makeArgs(hippo.serial()));
+        client->sendMessage(CL_TAME_NPC, makeArgs(hippo.serial()));
 
         THEN("he is no longer attacking it") {
-          WAIT_UNTIL((user.action() != User::ATTACK));
+          WAIT_UNTIL((user->action() != User::ATTACK));
         }
       }
     }
@@ -273,46 +261,42 @@ TEST_CASE("Pet shares owner's diplomacy",
   }
 }
 
-TEST_CASE("Pets follow their owners", "[pets][ai]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Pets follow their owners",
+                 "[pets][ai]") {
   GIVEN("A guinea pig") {
-    auto data = R"(
+    useData(R"(
       <npcType id="guineaPig" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto &guineaPig = s.addNPC("guineaPig", {10, 15});
+    )");
+    auto &guineaPig = server->addNPC("guineaPig", {10, 15});
 
     AND_GIVEN("It's owned by a player") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      guineaPig.permissions.setPlayerOwner(user.name());
+      guineaPig.permissions.setPlayerOwner(user->name());
 
       WHEN("The player moves away") {
-        user.teleportTo({100, 100});
+        user->teleportTo({100, 100});
 
         THEN("The guinea pig moves nearby") {
           const auto maxDist = AI::FOLLOW_DISTANCE;
           const auto timeAllowed = ms_t{10000};
-          WAIT_UNTIL_TIMEOUT(distance(guineaPig, user) <= maxDist, timeAllowed);
+          WAIT_UNTIL_TIMEOUT(distance(guineaPig, *user) <= maxDist,
+                             timeAllowed);
         }
       }
     }
   }
 }
 
-TEST_CASE("Non-tamable NPCs can't be tamed", "[pets]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Non-tamable NPCs can't be tamed",
+                 "[pets]") {
   GIVEN("A non-tamable tiger NPC") {
-    auto data = R"(
+    useData(R"(
       <npcType id="tiger" maxHealth="1" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    s.addNPC("tiger", {10, 15});
-    auto &tiger = s.getFirstNPC();
+    )");
+    server->addNPC("tiger", {10, 15});
+    auto &tiger = server->getFirstNPC();
 
     WHEN("a player tries to tame it") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      c.sendMessage(CL_TAME_NPC, makeArgs(tiger.serial()));
+      client->sendMessage(CL_TAME_NPC, makeArgs(tiger.serial()));
 
       THEN("it is still unowned") {
         REPEAT_FOR_MS(100);
@@ -322,33 +306,29 @@ TEST_CASE("Non-tamable NPCs can't be tamed", "[pets]") {
   }
 }
 
-TEST_CASE("Taming can require an item", "[pets]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Taming can require an item",
+                 "[pets]") {
   GIVEN("An NPC that can be tamed with an item") {
-    auto data = R"(
+    useData(R"(
       <item id="chocolate" />
       <item id="stinkBug" />
       <npcType id="girl" maxHealth="10000" >
         <canBeTamed consumes="chocolate" />
       </npcType>
-    )";
-    auto s = TestServer::WithDataString(data);
+    )");
 
-    const auto *chocolate = &s.findItem("chocolate");
-    const auto *stinkBug = &s.findItem("stinkBug");
+    const auto *chocolate = &server->findItem("chocolate");
+    const auto *stinkBug = &server->findItem("stinkBug");
 
-    auto &girl = s.addNPC("girl", {10, 15});
+    auto &girl = server->addNPC("girl", {10, 15});
     girl.reduceHealth(9999);
 
     AND_GIVEN("a player") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-
       WHEN("he tries to tame it") {
-        c.sendMessage(CL_TAME_NPC, makeArgs(girl.serial()));
+        client->sendMessage(CL_TAME_NPC, makeArgs(girl.serial()));
 
         THEN("he receives a warning") {
-          CHECK(c.waitForMessage(WARNING_ITEM_NEEDED));
+          CHECK(client->waitForMessage(WARNING_ITEM_NEEDED));
 
           AND_THEN("it is still unowned") {
             CHECK((girl.owner().type == Permissions::Owner::MOB));
@@ -357,10 +337,10 @@ TEST_CASE("Taming can require an item", "[pets]") {
       }
 
       AND_GIVEN("he has the item") {
-        user.giveItem(chocolate);
+        user->giveItem(chocolate);
 
         WHEN("he tries to tame the NPC") {
-          c.sendMessage(CL_TAME_NPC, makeArgs(girl.serial()));
+          client->sendMessage(CL_TAME_NPC, makeArgs(girl.serial()));
 
           THEN("it belongs to him") {
             WAIT_UNTIL((girl.owner().type == Permissions::Owner::PLAYER));
@@ -368,17 +348,17 @@ TEST_CASE("Taming can require an item", "[pets]") {
             AND_THEN("he no longer has the item") {
               auto consumable = ItemSet{};
               consumable.add(chocolate);
-              WAIT_UNTIL(!user.hasItems(consumable));
+              WAIT_UNTIL(!user->hasItems(consumable));
             }
           }
         }
       }
 
       AND_GIVEN("he has the wrong item") {
-        user.giveItem(stinkBug);
+        user->giveItem(stinkBug);
 
         WHEN("he tries to tame the NPC") {
-          c.sendMessage(CL_TAME_NPC, makeArgs(girl.serial()));
+          client->sendMessage(CL_TAME_NPC, makeArgs(girl.serial()));
 
           THEN("it is still unowned") {
             REPEAT_FOR_MS(100);
@@ -387,10 +367,10 @@ TEST_CASE("Taming can require an item", "[pets]") {
         }
 
         AND_GIVEN("he also has the right item, in the second inventory slot") {
-          user.giveItem(chocolate);
+          user->giveItem(chocolate);
 
           WHEN("he tries to tame the NPC") {
-            c.sendMessage(CL_TAME_NPC, makeArgs(girl.serial()));
+            client->sendMessage(CL_TAME_NPC, makeArgs(girl.serial()));
 
             THEN("it belongs to him") {
               WAIT_UNTIL((girl.owner().type == Permissions::Owner::PLAYER));
@@ -399,7 +379,7 @@ TEST_CASE("Taming can require an item", "[pets]") {
                 auto extraStuff = ItemSet{};
                 extraStuff.add(stinkBug);
                 REPEAT_FOR_MS(100);
-                CHECK(user.hasItems(extraStuff));
+                CHECK(user->hasItems(extraStuff));
               }
             }
           }
@@ -409,46 +389,38 @@ TEST_CASE("Taming can require an item", "[pets]") {
   }
 }
 
-TEST_CASE("Pets can be slaughtered", "[pets]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Pets can be slaughtered", "[pets]") {
   GIVEN("a player with a pet") {
-    auto data = R"(
+    useData(R"(
       <npcType id="pig" maxHealth="1" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    s.addNPC("pig", {10, 15});
-    auto &pig = s.getFirstNPC();
-
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    pig.permissions.setPlayerOwner(user.name());
+    )");
+    server->addNPC("pig", {10, 15});
+    auto &pig = server->getFirstNPC();
+    pig.permissions.setPlayerOwner(user->name());
 
     WHEN("he tries to slaughter it") {
-      c.sendMessage(CL_DESTROY_OBJECT, makeArgs(pig.serial()));
+      client->sendMessage(CL_DESTROY_OBJECT, makeArgs(pig.serial()));
 
       THEN("it dies") { WAIT_UNTIL(pig.isDead()); }
     }
   }
 }
 
-TEST_CASE("Neutral pets defend their owners", "[pets][combat][ai]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Neutral pets defend their owners",
+                 "[pets][combat][ai]") {
   GIVEN("an NPC attacking a player") {
-    auto data = R"(
+    useData(R"(
       <npcType id="dog" maxHealth="1000" attack="2" speed="1" isNeutral="1" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
+    )");
 
-    s.addNPC("dog", {10, 5});
-    auto &hostile = s.getFirstNPC();
-    hostile.makeAwareOf(user);
-    WAIT_UNTIL(hostile.target() == &user);
+    server->addNPC("dog", {10, 5});
+    auto &hostile = server->getFirstNPC();
+    hostile.makeAwareOf(*user);
+    WAIT_UNTIL(hostile.target() == user);
 
     WHEN("the player is given a neutral pet") {
-      auto &pet = s.addNPC("dog", {10, 15});
-      pet.permissions.setPlayerOwner(c->username());
+      auto &pet = server->addNPC("dog", {10, 15});
+      pet.permissions.setPlayerOwner((*client)->username());
 
       THEN("the pet attacks the hostile NPC") {
         WAIT_UNTIL(pet.target() == &hostile);
@@ -499,27 +471,23 @@ TEST_CASE("NPCs defend themselves against NPC attackers",
   }
 }
 
-TEST_CASE("Neutral pets have the correct UI colours", "[pets][ui]") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Neutral pets have the correct UI colours", "[pets][ui]") {
   GIVEN("a neutral NPC") {
-    auto data = R"(
+    useData(R"(
       <npcType id="dog" maxHealth="1" isNeutral="1" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto &dog = s.addNPC("dog", {10, 15});
+    )");
+    auto &dog = server->addNPC("dog", {10, 15});
 
     AND_GIVEN("a city and a citizen") {
-      auto c = TestClient::WithDataString(data);
-      s.cities().createCity("Athens", {}, {});
+      server->cities().createCity("Athens", {}, {});
+      server->cities().addPlayerToCity(*user, "Athens");
 
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      s.cities().addPlayerToCity(user, "Athens");
-
-      WAIT_UNTIL(c.objects().size() == 1);
-      const auto &cDog = c.getFirstNPC();
+      WAIT_UNTIL(client->objects().size() == 1);
+      const auto &cDog = client->getFirstNPC();
 
       WHEN("the NPC is owned by the player") {
-        dog.permissions.setPlayerOwner(user.name());
+        dog.permissions.setPlayerOwner(user->name());
 
         THEN("he sees it as 'self' coloured") {
           WAIT_UNTIL(cDog.nameColor() == Color::COMBATANT_SELF);
@@ -762,29 +730,26 @@ TEST_CASE("Follower limits", "[pets]") {
   }
 }
 
-TEST_CASE("Failed taming attempts should consume item", "[pets]") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Failed taming attempts should consume item", "[pets]") {
   GIVEN("an NPC that can be tamed with an item, with 0% success chance") {
-    auto data = R"(
+    useData(R"(
       <item id="chocolate" />
       <npcType id="girl" maxHealth="1" >
         <canBeTamed consumes="chocolate" />
       </npcType>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto &girl = s.addNPC("girl", {10, 15});
+    )");
+    auto &girl = server->addNPC("girl", {10, 15});
 
     AND_GIVEN("a user has the item") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      const auto &chocolate = s.getFirstItem();
-      user.giveItem(&chocolate);
+      const auto &chocolate = server->getFirstItem();
+      user->giveItem(&chocolate);
 
       WHEN("he tries to tame it") {
-        c.sendMessage(CL_TAME_NPC, makeArgs(girl.serial()));
+        client->sendMessage(CL_TAME_NPC, makeArgs(girl.serial()));
 
         THEN("he no longer has the item") {
-          WAIT_UNTIL(!user.inventory(0).hasItem());
+          WAIT_UNTIL(!user->inventory(0).hasItem());
         }
       }
     }
@@ -822,28 +787,25 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Ceding pets to the city",
   }
 }
 
-TEST_CASE("Pet orders", "[pets][ai]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Pet orders", "[pets][ai]") {
   GIVEN("a user and a dog") {
-    auto data = R"(
+    useData(R"(
       <npcType id="dog" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &dog = s.addNPC("dog", {10, 15});
+    )");
+    auto &dog = server->addNPC("dog", {10, 15});
 
     AND_GIVEN("the dog is the user's pet") {
-      dog.permissions.setPlayerOwner(c->username());
+      dog.permissions.setPlayerOwner((*client)->username());
 
-      c.sendMessage(CL_ORDER_PET_TO_STAY, makeArgs(dog.serial()));
+      client->sendMessage(CL_ORDER_PET_TO_STAY, makeArgs(dog.serial()));
       WAIT_UNTIL((dog.ai.currentOrder() == AI::ORDER_TO_STAY));
 
-      c.sendMessage(CL_ORDER_PET_TO_FOLLOW, makeArgs(dog.serial()));
+      client->sendMessage(CL_ORDER_PET_TO_FOLLOW, makeArgs(dog.serial()));
       WAIT_UNTIL((dog.ai.currentOrder() == AI::ORDER_TO_FOLLOW));
     }
 
     WHEN("he tries to order it to stay") {
-      c.sendMessage(CL_ORDER_PET_TO_STAY, makeArgs(dog.serial()));
+      client->sendMessage(CL_ORDER_PET_TO_STAY, makeArgs(dog.serial()));
 
       THEN("it is still set to Follow") {
         REPEAT_FOR_MS(100);
@@ -893,30 +855,28 @@ TEST_CASE("Order pet to stay", "[pets][ai]") {
   }
 }
 
-TEST_CASE("Ordering a pet to stay makes room for another follower",
-          "[pets][stats]") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Ordering a pet to stay makes room for another follower",
+                 "[pets][stats]") {
   GIVEN("two tameable NPCs") {
-    auto data = R"(
+    useData(R"(
       <npcType id="cat" maxHealth="10000" >
         <canBeTamed />
       </npcType>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
+    )");
 
-    auto &cat1 = s.addNPC("cat", {15, 10});
+    auto &cat1 = server->addNPC("cat", {15, 10});
     cat1.reduceHealth(9999);
-    auto &cat2 = s.addNPC("cat", {10, 15});
+    auto &cat2 = server->addNPC("cat", {10, 15});
     cat2.reduceHealth(9999);
 
     WHEN("a user tames one and orders it to stay") {
-      c.sendMessage(CL_TAME_NPC, makeArgs(cat1.serial()));
-      c.sendMessage(CL_ORDER_PET_TO_STAY, makeArgs(cat1.serial()));
+      client->sendMessage(CL_TAME_NPC, makeArgs(cat1.serial()));
+      client->sendMessage(CL_ORDER_PET_TO_STAY, makeArgs(cat1.serial()));
       WAIT_UNTIL((cat1.ai.currentOrder() == AI::ORDER_TO_STAY));
 
       AND_WHEN("he tames the other") {
-        c.sendMessage(CL_TAME_NPC, makeArgs(cat2.serial()));
+        client->sendMessage(CL_TAME_NPC, makeArgs(cat2.serial()));
 
         THEN("the new pet is following him") {
           REPEAT_FOR_MS(100);
@@ -927,31 +887,29 @@ TEST_CASE("Ordering a pet to stay makes room for another follower",
   }
 }
 
-TEST_CASE("Follow orders contribute to follower limit", "[pets][stats]") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Follow orders contribute to follower limit",
+                 "[pets][stats]") {
   GIVEN("a user has two pets ordered to stay") {
-    auto data = R"(
+    useData(R"(
       <npcType id="dog" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
+    )");
 
-    auto &dog1 = s.addNPC("dog", {15, 10});
-    dog1.permissions.setPlayerOwner(c->username());
+    auto &dog1 = server->addNPC("dog", {15, 10});
+    dog1.permissions.setPlayerOwner((*client)->username());
     dog1.ai.giveOrder(AI::ORDER_TO_STAY);
-    auto &dog2 = s.addNPC("dog", {10, 15});
-    dog2.permissions.setPlayerOwner(c->username());
+    auto &dog2 = server->addNPC("dog", {10, 15});
+    dog2.permissions.setPlayerOwner((*client)->username());
     dog2.ai.giveOrder(AI::ORDER_TO_STAY);
 
-    const auto &user = s.getFirstUser();
-    CHECK(user.followers.num() == 0);
+    CHECK(user->followers.num() == 0);
 
     WHEN("he orders one to follow") {
-      c.sendMessage(CL_ORDER_PET_TO_FOLLOW, makeArgs(dog1.serial()));
+      client->sendMessage(CL_ORDER_PET_TO_FOLLOW, makeArgs(dog1.serial()));
       REPEAT_FOR_MS(100);
 
       AND_WHEN("he orders the other to follow") {
-        c.sendMessage(CL_ORDER_PET_TO_FOLLOW, makeArgs(dog2.serial()));
+        client->sendMessage(CL_ORDER_PET_TO_FOLLOW, makeArgs(dog2.serial()));
 
         THEN("the second is not following") {
           REPEAT_FOR_MS(100);
@@ -1011,19 +969,17 @@ TEST_CASE("Persistence of pet orders", "[pets][persistence]") {
   }
 }
 
-TEST_CASE("Followers can count only once", "[pets][stats]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Followers can count only once",
+                 "[pets][stats]") {
   GIVEN("A user with two pets on Stay") {
-    auto data = R"(
+    useData(R"(
       <npcType id="dog" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
+    )");
 
-    auto &dog1 = s.addNPC("dog", {15, 10});
-    auto &dog2 = s.addNPC("dog", {10, 15});
-    dog1.permissions.setPlayerOwner(c->username());
-    dog2.permissions.setPlayerOwner(c->username());
+    auto &dog1 = server->addNPC("dog", {15, 10});
+    auto &dog2 = server->addNPC("dog", {10, 15});
+    dog1.permissions.setPlayerOwner((*client)->username());
+    dog2.permissions.setPlayerOwner((*client)->username());
     dog1.ai.giveOrder(AI::ORDER_TO_STAY);
     dog2.ai.giveOrder(AI::ORDER_TO_STAY);
 
@@ -1032,15 +988,14 @@ TEST_CASE("Followers can count only once", "[pets][stats]") {
       auto newStats = oldStats;
       newStats.followerLimit = 2;
       User::OBJECT_TYPE.baseStats(newStats);
-      auto &user = s.getFirstUser();
-      user.updateStats();
+      user->updateStats();
 
       WHEN("he orders the first pet to follow, twice") {
-        c.sendMessage(CL_ORDER_PET_TO_FOLLOW, makeArgs(dog1.serial()));
-        c.sendMessage(CL_ORDER_PET_TO_FOLLOW, makeArgs(dog1.serial()));
+        client->sendMessage(CL_ORDER_PET_TO_FOLLOW, makeArgs(dog1.serial()));
+        client->sendMessage(CL_ORDER_PET_TO_FOLLOW, makeArgs(dog1.serial()));
 
         AND_WHEN("he orders the second pet to follow") {
-          c.sendMessage(CL_ORDER_PET_TO_FOLLOW, makeArgs(dog2.serial()));
+          client->sendMessage(CL_ORDER_PET_TO_FOLLOW, makeArgs(dog2.serial()));
 
           THEN("the second pet is following") {
             WAIT_UNTIL((dog2.ai.currentOrder() == AI::ORDER_TO_FOLLOW));

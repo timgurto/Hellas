@@ -1,32 +1,30 @@
 #include "TestClient.h"
 #include "TestFixtures.h"
-#include "TestServer.h"
 #include "testing.h"
+#include "TestServer.h"
 
-TEST_CASE("Gather an item from an object", "[gathering]") {
-  auto s = TestServer::WithData("basic_rock");
-  auto c = TestClient::WithData("basic_rock");
+TEST_CASE_METHOD(ServerAndClientWithDataFiles, "Gather an item from an object",
+                 "[gathering]") {
+  useData("basic_rock");
 
   // Add a single rock
-  s.addObject("rock", {10, 10});
-  s.waitForUsers(1);
-  WAIT_UNTIL(c.objects().size() == 1);
+  server->addObject("rock", {10, 10});
+  WAIT_UNTIL(client->objects().size() == 1);
 
   // Gather
-  auto serial = c.objects().begin()->first;
-  c.sendMessage(CL_GATHER, makeArgs(serial));
-  auto &user = s.getFirstUser();
-  WAIT_UNTIL(user.action() ==
+  auto serial = client->objects().begin()->first;
+  client->sendMessage(CL_GATHER, makeArgs(serial));
+  WAIT_UNTIL(user->action() ==
              User::Action::GATHER);  // Wait for gathering to start
-  WAIT_UNTIL(user.action() ==
+  WAIT_UNTIL(user->action() ==
              User::Action::NO_ACTION);  // Wait for gathering to finish
 
   // Make sure user has item
-  const auto &item = *s.items().begin();
-  CHECK(user.inventory(0).type() == &item);
+  const auto &item = *server->items().begin();
+  CHECK(user->inventory(0).type() == &item);
 
   // Make sure object no longer exists
-  CHECK(s.entities().empty());
+  CHECK(server->entities().empty());
 }
 
 /*

@@ -1,26 +1,25 @@
 #include "../server/DroppedItem.h"
 #include "TestClient.h"
 #include "TestFixtures.h"
-#include "TestServer.h"
 #include "testing.h"
+#include "TestServer.h"
 
-TEST_CASE("Dropping an item creates an object", "[dropped-items]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Dropping an item creates an object",
+                 "[dropped-items]") {
   GIVEN("an item type") {
-    auto data = R"(
+    useData(R"(
       <item id="apple" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
+    )");
 
     AND_GIVEN("a user has an item") {
-      auto &user = s.getFirstUser();
-      user.giveItem(&s.getFirstItem());
+      user->giveItem(&server->getFirstItem());
 
       WHEN("he drops it") {
-        c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+        client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
 
-        THEN("there's an entity") { WAIT_UNTIL(s.entities().size() == 1); }
+        THEN("there's an entity") {
+          WAIT_UNTIL(server->entities().size() == 1);
+        }
       }
     }
   }
@@ -49,30 +48,27 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Equipped items can be dropped",
   }
 }
 
-TEST_CASE("Name is correct on client", "[dropped-items][loading]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Name is correct on client",
+                 "[dropped-items][loading]") {
   GIVEN("Apple and Orange item types") {
-    auto data = R"(
+    useData(R"(
       <item id="apple" name="Apple" />
       <item id="orange" name="Orange" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
+    )");
 
-    for (auto pair : c.items()) {
+    for (auto pair : client->items()) {
       auto id = pair.first;
       auto name = pair.second.name();
 
       AND_GIVEN("a user has a " + id) {
-        user.giveItem(s->findItem(id));
+        user->giveItem((*server)->findItem(id));
 
         WHEN("he drops it") {
-          c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
-          WAIT_UNTIL(c.entities().size() == 2);  // item + player
+          client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+          WAIT_UNTIL(client->entities().size() == 2);  // item + player
 
           THEN("the new entity is named \"" + name + "\"") {
-            const auto &di = c.getFirstDroppedItem();
+            const auto &di = client->getFirstDroppedItem();
             CHECK(di.name() == name);
           }
         }
@@ -81,28 +77,26 @@ TEST_CASE("Name is correct on client", "[dropped-items][loading]") {
   }
 }
 
-TEST_CASE("Dropped items have correct serials in client", "[dropped-items]") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Dropped items have correct serials in client",
+                 "[dropped-items]") {
   GIVEN("an item type") {
-    auto data = R"(
+    useData(R"(
       <item id="apple" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
+    )");
 
     AND_GIVEN("a user has an item") {
-      user.giveItem(&s.getFirstItem());
+      user->giveItem(&server->getFirstItem());
 
       WHEN("he drops it") {
-        c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+        client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
 
         THEN("the client entity has the correct serial number") {
-          WAIT_UNTIL(s.entities().size() == 1);
-          const auto &serverEntity = s.getFirstDroppedItem();
+          WAIT_UNTIL(server->entities().size() == 1);
+          const auto &serverEntity = server->getFirstDroppedItem();
 
-          WAIT_UNTIL(c.entities().size() == 2);  // item + player
-          const auto &clientEntity = c.getFirstDroppedItem();
+          WAIT_UNTIL(client->entities().size() == 2);  // item + player
+          const auto &clientEntity = client->getFirstDroppedItem();
 
           INFO("Client serial = "s + toString(clientEntity.serial()));
           INFO("Server serial = "s + toString(serverEntity.serial()));
@@ -113,36 +107,34 @@ TEST_CASE("Dropped items have correct serials in client", "[dropped-items]") {
   }
 }
 
-TEST_CASE("Dropped items land near the dropping player", "[dropped-items]") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Dropped items land near the dropping player",
+                 "[dropped-items]") {
   GIVEN("an item type") {
-    auto data = R"(
+    useData(R"(
       <item id="apple" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    auto *apple = &s.getFirstItem();
+    )");
+    auto *apple = &server->getFirstItem();
 
     AND_GIVEN("a user is at a random location") {
-      user.teleportTo(s->map().randomPoint());
+      user->teleportTo((*server)->map().randomPoint());
 
       AND_GIVEN("he has an item") {
-        user.giveItem(apple);
+        user->giveItem(apple);
 
         WHEN("he drops it") {
-          c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+          client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
 
           THEN("it is within action range of him") {
-            WAIT_UNTIL(s.entities().size() == 1);
-            const auto &di = s.getFirstDroppedItem();
+            WAIT_UNTIL(server->entities().size() == 1);
+            const auto &di = server->getFirstDroppedItem();
 
-            auto distanceFromDropper = distance(di, user);
+            auto distanceFromDropper = distance(di, *user);
             CHECK(distanceFromDropper < Server::ACTION_DISTANCE);
 
             AND_THEN("it is at the same location on the client") {
-              WAIT_UNTIL(c.entities().size() == 2);  // item + player
-              const auto &clientEntity = c.getFirstDroppedItem();
+              WAIT_UNTIL(client->entities().size() == 2);  // item + player
+              const auto &clientEntity = client->getFirstDroppedItem();
 
               CHECK(clientEntity.location() == di.location());
             }
@@ -152,17 +144,17 @@ TEST_CASE("Dropped items land near the dropping player", "[dropped-items]") {
     }
 
     AND_GIVEN("a user has two items") {
-      user.giveItem(apple, 2);
+      user->giveItem(apple, 2);
 
       WHEN("he drops them both") {
-        c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
-        c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 1));
-        WAIT_UNTIL(s.entities().size() == 2);
+        client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+        client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 1));
+        WAIT_UNTIL(server->entities().size() == 2);
 
         THEN("the two entities have different locations") {
           auto first = true;
           MapPoint loc1, loc2;
-          for (auto *e : s.entities()) {
+          for (auto *e : server->entities()) {
             if (first)
               loc1 = e->location();
             else
@@ -244,65 +236,58 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Dropped items don't overlap objects",
   }
 }
 
-TEST_CASE("If nowhere to drop an item, keep it in inventory",
-          "[dropped-items][inventory]") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "If nowhere to drop an item, keep it in inventory",
+                 "[dropped-items][inventory]") {
   GIVEN("an item type, and a colliding wall all around a user") {
-    auto data = R"(
+    useData(R"(
       <item id="apple" />
       <objectType id="wall">
         <collisionRect x="-50" y="-50" w="100" h="100" />
       </objectType>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    const auto &wall = s.addObject("wall", {40, 40});
-
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
+    )");
+    const auto &wall = server->addObject("wall", {40, 40});
 
     WHEN("the user tries drops the item") {
-      user.giveItem(&s.getFirstItem());
-      c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+      user->giveItem(&server->getFirstItem());
+      client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
 
       THEN("the user receives a warning") {
-        CHECK(c.waitForMessage(WARNING_NOWHERE_TO_DROP_ITEM));
+        CHECK(client->waitForMessage(WARNING_NOWHERE_TO_DROP_ITEM));
 
         AND_THEN("he still has it in his inventory") {
-          CHECK(user.inventory(0).hasItem());
+          CHECK(user->inventory(0).hasItem());
         }
       }
     }
   }
 }
 
-TEST_CASE("Picking items back up", "[inventory][dropped-items]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Picking items back up",
+                 "[inventory][dropped-items]") {
   GIVEN("an item type") {
-    auto data = R"(
+    useData(R"(
       <item id="apple" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    const auto *apple = &s.getFirstItem();
+    )");
+    const auto *apple = &server->getFirstItem();
 
     SECTION("Item added and entity removed") {
       AND_GIVEN("a user has dropped one") {
-        user.giveItem(apple);
-        c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
-        WAIT_UNTIL(!user.inventory(0).hasItem());
+        user->giveItem(apple);
+        client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+        WAIT_UNTIL(!user->inventory(0).hasItem());
 
         WHEN("he picks it back up") {
-          WAIT_UNTIL(c.entities().size() == 2);
-          auto &di = c.getFirstDroppedItem();
-          c.sendMessage(CL_PICK_UP_DROPPED_ITEM, makeArgs(di.serial()));
+          WAIT_UNTIL(client->entities().size() == 2);
+          auto &di = client->getFirstDroppedItem();
+          client->sendMessage(CL_PICK_UP_DROPPED_ITEM, makeArgs(di.serial()));
 
           THEN("he has the item again") {
-            WAIT_UNTIL(user.inventory(0).hasItem());
+            WAIT_UNTIL(user->inventory(0).hasItem());
 
             AND_THEN("the entity is gone") {
-              WAIT_UNTIL(s.entities().empty());
-              WAIT_UNTIL(c.entities().size() == 1);
+              WAIT_UNTIL(server->entities().empty());
+              WAIT_UNTIL(client->entities().size() == 1);
             }
           }
         }
@@ -311,24 +296,24 @@ TEST_CASE("Picking items back up", "[inventory][dropped-items]") {
 
     SECTION("Only the specified entity is removed") {
       AND_GIVEN("a user has dropped two of them") {
-        user.giveItem(apple, 2);
-        c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
-        c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 1));
+        user->giveItem(apple, 2);
+        client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+        client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 1));
 
         WHEN("he picks one back up") {
-          WAIT_UNTIL(c.entities().size() == 3);
-          auto &di = c.getFirstDroppedItem();
+          WAIT_UNTIL(client->entities().size() == 3);
+          auto &di = client->getFirstDroppedItem();
           auto serial = di.serial();
-          c.sendMessage(CL_PICK_UP_DROPPED_ITEM, makeArgs(serial));
+          client->sendMessage(CL_PICK_UP_DROPPED_ITEM, makeArgs(serial));
 
           THEN("he has the item again") {
-            WAIT_UNTIL(user.inventory(0).hasItem());
+            WAIT_UNTIL(user->inventory(0).hasItem());
 
             AND_THEN("there is still one entity left") {
-              WAIT_UNTIL(s.entities().size() == 1);
+              WAIT_UNTIL(server->entities().size() == 1);
 
               AND_THEN("the one he picked up is gone") {
-                CHECK(s->findEntityBySerial(serial) == nullptr);
+                CHECK((*server)->findEntityBySerial(serial) == nullptr);
               }
             }
           }
@@ -338,21 +323,21 @@ TEST_CASE("Picking items back up", "[inventory][dropped-items]") {
 
     SECTION("Too far away to pick up") {
       AND_GIVEN("a user has dropped one") {
-        user.giveItem(apple);
-        c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
-        WAIT_UNTIL(!user.inventory(0).hasItem());
+        user->giveItem(apple);
+        client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+        WAIT_UNTIL(!user->inventory(0).hasItem());
 
         AND_GIVEN("it's very far away") {
-          user.teleportTo({200, 200});
+          user->teleportTo({200, 200});
 
           WHEN("he tries to pick it back up") {
-            WAIT_UNTIL(c.entities().size() == 2);
-            auto &di = c.getFirstDroppedItem();
-            c.sendMessage(CL_PICK_UP_DROPPED_ITEM, makeArgs(di.serial()));
+            WAIT_UNTIL(client->entities().size() == 2);
+            auto &di = client->getFirstDroppedItem();
+            client->sendMessage(CL_PICK_UP_DROPPED_ITEM, makeArgs(di.serial()));
 
             THEN("he has no item") {
               REPEAT_FOR_MS(100);
-              CHECK(!user.inventory(0).hasItem());
+              CHECK(!user->inventory(0).hasItem());
             }
           }
         }
@@ -361,21 +346,21 @@ TEST_CASE("Picking items back up", "[inventory][dropped-items]") {
 
     SECTION("Inventory is full") {
       AND_GIVEN("a user has dropped one") {
-        user.giveItem(apple);
-        c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
-        WAIT_UNTIL(!user.inventory(0).hasItem());
-        WAIT_UNTIL(s.entities().size() == 1);
+        user->giveItem(apple);
+        client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+        WAIT_UNTIL(!user->inventory(0).hasItem());
+        WAIT_UNTIL(server->entities().size() == 1);
 
         AND_GIVEN("he has a full inventory") {
-          user.giveItem(apple, User::INVENTORY_SIZE);
+          user->giveItem(apple, User::INVENTORY_SIZE);
 
           WHEN("he tries to pick up the one he dropped") {
-            auto &di = s.getFirstDroppedItem();
-            c.sendMessage(CL_PICK_UP_DROPPED_ITEM, makeArgs(di.serial()));
+            auto &di = server->getFirstDroppedItem();
+            client->sendMessage(CL_PICK_UP_DROPPED_ITEM, makeArgs(di.serial()));
 
             THEN("the entity still exists on the server") {
               REPEAT_FOR_MS(100);
-              CHECK(s.entities().size() == 1);
+              CHECK(server->entities().size() == 1);
             }
           }
         }
@@ -385,31 +370,27 @@ TEST_CASE("Picking items back up", "[inventory][dropped-items]") {
 
   SECTION("A different item type") {
     GIVEN("bananas, oranges and plums") {
-      auto data = R"(
+      useData(R"(
         <item id="banana" />
         <item id="orange" />
         <item id="plum" />
-      )";
-      auto s = TestServer::WithDataString(data);
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
+      )");
 
       AND_GIVEN("a user has dropped an orange") {
-        user.giveItem(&s.findItem("orange"));
-        c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
-        WAIT_UNTIL(!user.inventory(0).hasItem());
+        user->giveItem(&server->findItem("orange"));
+        client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+        WAIT_UNTIL(!user->inventory(0).hasItem());
 
         WHEN("he picks it back up") {
-          WAIT_UNTIL(c.entities().size() == 2);
-          auto &di = c.getFirstDroppedItem();
-          c.sendMessage(CL_PICK_UP_DROPPED_ITEM, makeArgs(di.serial()));
+          WAIT_UNTIL(client->entities().size() == 2);
+          auto &di = client->getFirstDroppedItem();
+          client->sendMessage(CL_PICK_UP_DROPPED_ITEM, makeArgs(di.serial()));
 
           THEN("he has an item") {
-            WAIT_UNTIL(user.inventory(0).hasItem());
+            WAIT_UNTIL(user->inventory(0).hasItem());
 
             AND_THEN("it is an orange") {
-              CHECK(user.inventory(0).type()->id() == "orange");
+              CHECK(user->inventory(0).type()->id() == "orange");
             }
           }
         }
@@ -418,31 +399,28 @@ TEST_CASE("Picking items back up", "[inventory][dropped-items]") {
   }
 }
 
-TEST_CASE("Dropped-item stacks", "[dropped-items]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Dropped-item stacks",
+                 "[dropped-items]") {
   GIVEN("coins stack to 10") {
-    auto data = R"(
+    useData(R"(
         <item id="coin" stackSize="10" />
-      )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
+      )");
 
     for (size_t numCoins : std::vector<size_t>{1, 10}) {
       AND_GIVEN("a player has a stack of " << numCoins) {
-        user.giveItem(&s.getFirstItem(), numCoins);
+        user->giveItem(&server->getFirstItem(), numCoins);
 
         WHEN("he drops it") {
-          c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+          client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
 
           AND_WHEN("he picks it up again") {
-            WAIT_UNTIL(s.entities().size() == 1);
-            auto serial = s.getFirstDroppedItem().serial();
-            c.sendMessage(CL_PICK_UP_DROPPED_ITEM, makeArgs(serial));
+            WAIT_UNTIL(server->entities().size() == 1);
+            auto serial = server->getFirstDroppedItem().serial();
+            client->sendMessage(CL_PICK_UP_DROPPED_ITEM, makeArgs(serial));
 
             THEN("he has a stack of " << numCoins) {
-              WAIT_UNTIL(user.inventory(0).hasItem());
-              CHECK(user.inventory(0).quantity() == numCoins);
+              WAIT_UNTIL(user->inventory(0).hasItem());
+              CHECK(user->inventory(0).quantity() == numCoins);
             }
           }
         }
@@ -451,25 +429,22 @@ TEST_CASE("Dropped-item stacks", "[dropped-items]") {
   }
 }
 
-TEST_CASE("Dropped-item names reflect stack size", "[dropped-items]") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Dropped-item names reflect stack size", "[dropped-items]") {
   GIVEN("coins stack to 10") {
-    auto data = R"(
+    useData(R"(
         <item id="coin" name="Coin" stackSize="10" />
-      )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    const auto *coin = &s.getFirstItem();
+      )");
+    const auto *coin = &server->getFirstItem();
 
     for (auto numCoins : std::vector<size_t>{5, 10}) {
       WHEN("a player drops a stack of " << numCoins << " coins") {
-        user.giveItem(coin, numCoins);
-        c.sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
+        user->giveItem(coin, numCoins);
+        client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
 
         THEN("its name in the client is \"Coin x" << numCoins << "\"") {
-          WAIT_UNTIL(c.entities().size() == 2);
-          const auto &clientCoins = c.getFirstDroppedItem();
+          WAIT_UNTIL(client->entities().size() == 2);
+          const auto &clientCoins = client->getFirstDroppedItem();
           CHECK(clientCoins.name() == "Coin x"s + toString(numCoins));
         }
       }
@@ -477,15 +452,16 @@ TEST_CASE("Dropped-item names reflect stack size", "[dropped-items]") {
   }
 }
 
-TEST_CASE("Bad dropped-item calls", "[dropped-items]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Bad dropped-item calls",
+                 "[dropped-items]") {
   SECTION("Bad serial") {
     GIVEN("No entities") {
-      auto s = TestServer{};
-      auto c = TestClient{};
-      s.waitForUsers(1);
+      useData(R"(
+        <item id="filler" />
+      )");
 
       WHEN("the client calls CL_PICK_UP_DROPPED_ITEM") {
-        c.sendMessage(CL_PICK_UP_DROPPED_ITEM, "42"s);
+        client->sendMessage(CL_PICK_UP_DROPPED_ITEM, "42"s);
 
         THEN("the server survives") {}
       }
@@ -494,16 +470,13 @@ TEST_CASE("Bad dropped-item calls", "[dropped-items]") {
 
   SECTION("Wrong object type") {
     GIVEN("a box object") {
-      auto data = R"(
+      useData(R"(
         <objectType id="box" />
-      )";
-      auto s = TestServer::WithDataString(data);
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      const auto &box = s.addObject("box", {10, 15});
+      )");
+      const auto &box = server->addObject("box", {10, 15});
 
       WHEN("a user tries to pick up the box as if it were a dropped item") {
-        c.sendMessage(CL_PICK_UP_DROPPED_ITEM, makeArgs(box.serial()));
+        client->sendMessage(CL_PICK_UP_DROPPED_ITEM, makeArgs(box.serial()));
 
         THEN("the server survives") {}
       }

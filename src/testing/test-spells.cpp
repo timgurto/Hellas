@@ -1,34 +1,29 @@
 #include "TemporaryUserStats.h"
 #include "TestClient.h"
 #include "TestFixtures.h"
-#include "TestServer.h"
 #include "testing.h"
+#include "TestServer.h"
 
-TEST_CASE("Non-talent spells", "[spells]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Non-talent spells", "[spells]") {
   GIVEN("a spell") {
-    auto data = R"(
+    useData(R"(
       <spell id="fireball" >
         <targets enemy=1 />
       </spell>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
+    )");
 
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-
-    CHECK_FALSE(user.getClass().knowsSpell("fireball"));
+    CHECK_FALSE(user->getClass().knowsSpell("fireball"));
 
     WHEN("a player learns it") {
-      user.getClass().teachSpell("fireball");
+      user->getClass().teachSpell("fireball");
 
       THEN("he knows it") {
-        CHECK(user.getClass().knowsSpell("fireball"));
-        WAIT_UNTIL(c.knowsSpell("fireball"));
+        CHECK(user->getClass().knowsSpell("fireball"));
+        WAIT_UNTIL(client->knowsSpell("fireball"));
 
         AND_THEN("he doesn't know some other spell") {
-          CHECK_FALSE(user.getClass().knowsSpell("iceball"));
-          CHECK_FALSE(c.knowsSpell("iceball"));
+          CHECK_FALSE(user->getClass().knowsSpell("iceball"));
+          CHECK_FALSE(client->knowsSpell("iceball"));
         }
       }
     }
@@ -469,39 +464,35 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   }
 }
 
-TEST_CASE("Kills with spells give XP", "[spells][leveling]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Kills with spells give XP",
+                 "[spells][leveling]") {
   GIVEN("a high-damage spell and low-health NPC") {
-    auto data = R"(
+    useData(R"(
       <spell id="nuke" range=30 >
         <targets enemy=1 />
         <function name="doDirectDamage" i1=99999 />
       </spell>
       <npcType id="critter" maxHealth=1 />
-    )";
-    auto s = TestServer::WithDataString(data);
-    s.addNPC("critter", {10, 15});
+    )");
+    server->addNPC("critter", {10, 15});
+    user->getClass().teachSpell("nuke");
 
-    WHEN("a user knows the spell") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      user.getClass().teachSpell("nuke");
+    WHEN("a user kills the NPC with the spell") {
+      const auto &critter = server->getFirstNPC();
+      client->sendMessage(CL_SELECT_ENTITY, makeArgs(critter.serial()));
+      client->sendMessage(CL_CAST_SPELL, "nuke");
+      WAIT_UNTIL(critter.isDead());
 
-      AND_WHEN("he kills the NPC with the spell") {
-        const auto &critter = s.getFirstNPC();
-        c.sendMessage(CL_SELECT_ENTITY, makeArgs(critter.serial()));
-        c.sendMessage(CL_CAST_SPELL, "nuke");
-        WAIT_UNTIL(critter.isDead());
-
-        THEN("the user has some XP") { WAIT_UNTIL(user.xp() > 0); }
-      }
+      THEN("the user has some XP") { WAIT_UNTIL(user->xp() > 0); }
     }
   }
 }
 
-TEST_CASE("Relearning a talent skill after death", "[spells][death][talents]") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Relearning a talent skill after death",
+                 "[spells][death][talents]") {
   GIVEN("a talent that teaches a spell") {
-    auto data = R"(
+    useData(R"(
       <class name="Dancer">
           <tree name="Dancing">
               <tier>
@@ -514,25 +505,21 @@ TEST_CASE("Relearning a talent skill after death", "[spells][death][talents]") {
         <targets self="1" />
         <function name="doDirectDamage" s1="0" />
       </spell>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
+    )");
 
-    WHEN("a level-2 user takes the talent") {
-      user.levelUp();
-      c.sendMessage(CL_CHOOSE_TALENT, "Dance");
-      WAIT_UNTIL(user.getClass().knowsSpell("dance"));
+    WHEN("the level-2 user takes the talent") {
+      user->levelUp();
+      client->sendMessage(CL_CHOOSE_TALENT, "Dance");
+      WAIT_UNTIL(user->getClass().knowsSpell("dance"));
 
       AND_WHEN("he dies") {
-        user.kill();
+        user->kill();
 
         AND_WHEN("he tries to take the talent again") {
-          c.sendMessage(CL_CHOOSE_TALENT, "Dance");
+          client->sendMessage(CL_CHOOSE_TALENT, "Dance");
 
           THEN("he has the talent") {
-            WAIT_UNTIL(user.getClass().knowsSpell("dance"));
+            WAIT_UNTIL(user->getClass().knowsSpell("dance"));
           }
         }
       }
@@ -540,9 +527,10 @@ TEST_CASE("Relearning a talent skill after death", "[spells][death][talents]") {
   }
 }
 
-TEST_CASE("Non-damaging spells aggro NPCs", "[spells][ai]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Non-damaging spells aggro NPCs",
+                 "[spells][ai]") {
   GIVEN("a debuff spell, and an NPC out of range") {
-    auto data = R"(
+    useData(R"(
       <spell id="exhaust" range="100" >
         <targets enemy="1" />
         <function name="debuff" s1="exhausted" />
@@ -551,32 +539,29 @@ TEST_CASE("Non-damaging spells aggro NPCs", "[spells][ai]") {
         <stats energy="-1" />
       </buff>
       <npcType id="monster" maxHealth="100" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
+    )");
 
-    s.addNPC("monster", {200, 200});
+    server->addNPC("monster", {200, 200});
 
     WHEN("a user knows the spell") {
-      user.getClass().teachSpell("exhaust");
+      user->getClass().teachSpell("exhaust");
 
       AND_WHEN("he casts it on the NPC") {
-        const auto &monster = s.getFirstNPC();
-        c.sendMessage(CL_TARGET_ENTITY, makeArgs(monster.serial()));
-        c.sendMessage(CL_CAST_SPELL, "exhaust");
+        const auto &monster = server->getFirstNPC();
+        client->sendMessage(CL_TARGET_ENTITY, makeArgs(monster.serial()));
+        client->sendMessage(CL_CAST_SPELL, "exhaust");
         WAIT_UNTIL(monster.debuffs().size() == 1);
 
-        THEN("it is aware of him") { WAIT_UNTIL(monster.isAwareOf(user)); }
+        THEN("it is aware of him") { WAIT_UNTIL(monster.isAwareOf(*user)); }
       }
     }
   }
 }
 
-TEST_CASE("Cast-from-item returning an item", "[spells][inventory]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Cast-from-item returning an item",
+                 "[spells][inventory]") {
   GIVEN("items that can pour water; the bucket is returned afterwards") {
-    auto data = R"(
+    useData(R"(
       <spell id="pourWater"  >
         <targets self="1" />
         <function name="doDirectDamage" s1="0" />
@@ -586,33 +571,29 @@ TEST_CASE("Cast-from-item returning an item", "[spells][inventory]") {
       <item id="magicWaterBubble" castsSpellOnUse="pourWater" />
       <item id="emptyBucket" />
       <item id="emptyGlass" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    const auto &invSlot = user.inventory(0);
+    )");
+    const auto &invSlot = user->inventory(0);
 
     AND_GIVEN("a user has a bucket") {
-      auto &bucketOfWater = s.findItem("bucketOfWater");
-      user.giveItem(&bucketOfWater);
+      auto &bucketOfWater = server->findItem("bucketOfWater");
+      user->giveItem(&bucketOfWater);
 
       WHEN("he pours out the water") {
-        c.sendMessage(CL_CAST_SPELL_FROM_ITEM, "0");
+        client->sendMessage(CL_CAST_SPELL_FROM_ITEM, "0");
 
         THEN("he has an empty bucket") {
-          auto &emptyBucket = s.findItem("emptyBucket");
+          auto &emptyBucket = server->findItem("emptyBucket");
           WAIT_UNTIL(invSlot.hasItem() && invSlot.type() == &emptyBucket);
         }
       }
     }
 
     AND_GIVEN("a user has a magic water bubble") {
-      auto &magicWaterBubble = s.findItem("magicWaterBubble");
-      user.giveItem(&magicWaterBubble);
+      auto &magicWaterBubble = server->findItem("magicWaterBubble");
+      user->giveItem(&magicWaterBubble);
 
       WHEN("he pours out the water") {
-        c.sendMessage(CL_CAST_SPELL_FROM_ITEM, "0");
+        client->sendMessage(CL_CAST_SPELL_FROM_ITEM, "0");
 
         THEN("his inventory is empty") {
           REPEAT_FOR_MS(100);
@@ -622,14 +603,14 @@ TEST_CASE("Cast-from-item returning an item", "[spells][inventory]") {
     }
 
     AND_GIVEN("a user has a glass of water") {
-      auto &glassOfWater = s.findItem("glassOfWater");
-      user.giveItem(&glassOfWater);
+      auto &glassOfWater = server->findItem("glassOfWater");
+      user->giveItem(&glassOfWater);
 
       WHEN("he pours out the water") {
-        c.sendMessage(CL_CAST_SPELL_FROM_ITEM, "0");
+        client->sendMessage(CL_CAST_SPELL_FROM_ITEM, "0");
 
         THEN("he has an empty glass") {
-          auto &emptyGlass = s.findItem("emptyGlass");
+          auto &emptyGlass = server->findItem("emptyGlass");
           WAIT_UNTIL(invSlot.hasItem() && invSlot.type() == &emptyGlass);
         }
       }
@@ -648,7 +629,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Cast-from-item with no item removal",
       <item id="button" castsSpellOnUse="zap" keepOnCast="1" />
     )");
 
-    AND_GIVEN("the user has a button") {
+    AND_GIVEN("a user has a button") {
       user->giveItem(&server->getFirstItem());
 
       WHEN("he casts with it") {
@@ -663,74 +644,68 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Cast-from-item with no item removal",
   }
 }
 
-TEST_CASE("Cast a spell from a stackable item", "[spells][inventory]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Cast a spell from a stackable item",
+                 "[spells][inventory]") {
   GIVEN("stackable matches cast self-fireballs and return used matches") {
-    auto data = R"(
+    useData(R"(
       <spell id="fireball"  >
         <targets self="1" />
         <function name="doDirectDamage" i1="10" />
       </spell>
       <item id="match" stackSize="10" castsSpellOnUse="fireball" returnsOnCast="usedMatch" />
       <item id="usedMatch" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    const auto &match = s.findItem("match");
+    )");
+    const auto &match = server->findItem("match");
 
     AND_GIVEN("a user has three matches") {
-      user.giveItem(&match, 3);
+      user->giveItem(&match, 3);
 
       WHEN("he casts the spell") {
-        c.sendMessage(CL_CAST_SPELL_FROM_ITEM, "0");
+        client->sendMessage(CL_CAST_SPELL_FROM_ITEM, "0");
 
         THEN("he has two matches") {
-          const auto &invSlot = user.inventory(0);
+          const auto &invSlot = user->inventory(0);
           WAIT_UNTIL(invSlot.quantity() == 2);
         }
       }
     }
 
     AND_GIVEN("a user has no room for used matches") {
-      user.giveItem(&match, 10 * User::INVENTORY_SIZE);
+      user->giveItem(&match, 10 * User::INVENTORY_SIZE);
 
       WHEN("he casts the spell") {
-        c.sendMessage(CL_CAST_SPELL_FROM_ITEM, "0");
+        client->sendMessage(CL_CAST_SPELL_FROM_ITEM, "0");
 
         THEN("he is still at full health") {
           REPEAT_FOR_MS(100);
-          CHECK(!user.isMissingHealth());
+          CHECK(!user->isMissingHealth());
         }
       }
     }
   }
 }
 
-TEST_CASE("Target self if target is invalid", "[spells]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Target self if target is invalid",
+                 "[spells]") {
   GIVEN("a friendly-fire fireball spell and an enemy") {
-    auto data = R"(
+    useData(R"(
       <spell id="fireball"  >
         <targets friendly="1" self="1" />
         <function name="doDirectDamage" i1="10" />
       </spell>
       <npcType id="distraction" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    user.getClass().teachSpell("fireball");
-    const auto &distraction = s.addNPC("distraction", {50, 50});
+    )");
+    user->getClass().teachSpell("fireball");
+    const auto &distraction = server->addNPC("distraction", {50, 50});
 
     WHEN("a user targets the object") {
-      c.sendMessage(CL_TARGET_ENTITY, makeArgs(distraction.serial()));
+      client->sendMessage(CL_TARGET_ENTITY, makeArgs(distraction.serial()));
 
       AND_WHEN("he tries to cast the spell") {
-        c.sendMessage(CL_CAST_SPELL, "fireball");
+        client->sendMessage(CL_CAST_SPELL, "fireball");
 
         THEN("he himself has lost health") {
-          WAIT_UNTIL(user.isMissingHealth());
+          WAIT_UNTIL(user->isMissingHealth());
         }
       }
     }

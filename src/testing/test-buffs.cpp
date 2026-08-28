@@ -1,48 +1,42 @@
 #include "TestClient.h"
 #include "TestFixtures.h"
-#include "TestServer.h"
 #include "testing.h"
+#include "TestServer.h"
 
-TEST_CASE("Buffs can be applied", "[buffs]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Buffs can be applied", "[buffs]") {
   GIVEN("A buff") {
-    auto data = R"(
+    useData(R"(
       <buff id="intellect" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
+    )");
 
     WHEN("a user is given the buff") {
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      user.applyBuff(s.getFirstBuff(), user);
+      user->applyBuff(server->getFirstBuff(), *user);
 
-      THEN("he has the buff") { CHECK(user.buffs().size() == 1); }
+      THEN("he has the buff") { CHECK(user->buffs().size() == 1); }
     }
   }
 }
 
-TEST_CASE("Buffs disappear on death", "[buffs][death]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Buffs disappear on death",
+                 "[buffs][death]") {
   GIVEN("a dog and a flea buff") {
-    auto data = R"(
+    useData(R"(
       <buff id="flea" />
       <npcType id="dog" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
+    )");
 
-    s.addNPC("dog", {10, 15});
-    auto &dog = s.getFirstNPC();
+    server->addNPC("dog", {10, 15});
+    auto &dog = server->getFirstNPC();
 
     WHEN("the dog gets a flea buff and a flea debuff") {
-      auto &flea = s.getFirstBuff();
+      auto &flea = server->getFirstBuff();
       dog.applyBuff(flea, dog);
       dog.applyDebuff(flea, dog);
 
       CHECK(dog.debuffs().size() == 1);
 
-      WAIT_UNTIL(c.objects().size() == 1);
-      auto &cDog = c.getFirstNPC();
+      WAIT_UNTIL(client->objects().size() == 1);
+      auto &cDog = client->getFirstNPC();
       WAIT_UNTIL(cDog.debuffs().size() == 1);
 
       WHEN("the dog dies") {
@@ -153,66 +147,62 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   }
 }
 
-TEST_CASE("Non-interruptible buffs persist when attacked", "[buffs][combat]") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Non-interruptible buffs persist when attacked",
+                 "[buffs][combat]") {
   GIVEN("A buff, and a fox") {
-    auto data = R"(
+    useData(R"(
       <buff id="intellect" />
       <npcType id="fox" attack="1" attackTime="1" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
+    )");
 
-    s.addNPC("fox", {10, 15});
+    server->addNPC("fox", {10, 15});
 
     WHEN("a user near the fox has the buff") {
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      user.applyBuff(s.getFirstBuff(), user);
-      CHECK(user.buffs().size() == 1);
+      user->applyBuff(server->getFirstBuff(), *user);
+      CHECK(user->buffs().size() == 1);
 
-      THEN("he loses the buff") {
+      AND_WHEN("the player is attacked") {
         REPEAT_FOR_MS(100);
-        CHECK(user.buffs().size() == 1);
+
+        THEN("he still has the buff") { CHECK(user->buffs().size() == 1); }
       }
     }
   }
 }
 
-TEST_CASE("A buff that ends when out of energy", "[buffs][stats]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "A buff that ends when out of energy",
+                 "[buffs][stats]") {
   GIVEN("A user with a cancel-on-OOE buff") {
-    auto data = R"(
+    useData(R"(
       <buff id="focus" cancelsOnOOE="1" />
       <buff id="drainEnergy" >
         <stats eps="-10000" />
       </buff>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
+    )");
 
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    auto focus = s->findBuff("focus");
-    user.applyBuff(*focus, user);
-    CHECK(user.buffs().size() == 1);
+    auto focus = (*server)->findBuff("focus");
+    user->applyBuff(*focus, *user);
+    CHECK(user->buffs().size() == 1);
 
     WHEN("the user loses a small amount of energy") {
-      user.reduceEnergy(1);
+      user->reduceEnergy(1);
 
-      THEN("he still has a buff") { CHECK(user.buffs().size() == 1); }
+      THEN("he still has a buff") { CHECK(user->buffs().size() == 1); }
     }
 
     WHEN("the user has no energy") {
-      user.reduceEnergy(user.energy());
+      user->reduceEnergy(user->energy());
 
-      THEN("he has no buffs") { CHECK(user.buffs().empty()); }
+      THEN("he has no buffs") { CHECK(user->buffs().empty()); }
     }
 
     WHEN("he has a negative regen buff") {
-      auto drainEnergy = s->findBuff("drainEnergy");
-      user.applyBuff(*drainEnergy, user);
-      CHECK(user.buffs().size() == 2);
+      auto drainEnergy = (*server)->findBuff("drainEnergy");
+      user->applyBuff(*drainEnergy, *user);
+      CHECK(user->buffs().size() == 2);
 
-      THEN("he has no buffs") { WAIT_UNTIL(user.buffs().size() == 1); }
+      THEN("he has no buffs") { WAIT_UNTIL(user->buffs().size() == 1); }
     }
   }
 }
@@ -332,34 +322,31 @@ TEST_CASE("A buff on new players", "[buffs][persistence]") {
   }
 }
 
-TEST_CASE("Buff removal propagates to client", "[buffs]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Buff removal propagates to client",
+                 "[buffs]") {
   GIVEN("a buff that lasts 1s") {
-    auto data = R"(
+    useData(R"(
       <buff id="sneezy" duration="1" />
       <npcType id="cat" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    const auto &sneezy = s.getFirstBuff();
+    )");
+    const auto &sneezy = server->getFirstBuff();
 
     WHEN("a user gets the buff") {
-      user.applyBuff(sneezy, user);
+      user->applyBuff(sneezy, *user);
 
       AND_WHEN("the buff expires") {
-        WAIT_UNTIL(user.buffs().empty());
+        WAIT_UNTIL(user->buffs().empty());
 
         THEN("he knows he has no buffs") {
           REPEAT_FOR_MS(100);
-          CHECK(c->character().buffs().empty());
+          CHECK((*client)->character().buffs().empty());
         }
       }
     }
 
     WHEN("an NPC gets the buff") {
-      s.addNPC("cat", {10, 15});
-      auto &cat = s.getFirstNPC();
+      server->addNPC("cat", {10, 15});
+      auto &cat = server->getFirstNPC();
       cat.applyBuff(sneezy, cat);
 
       AND_WHEN("the buff expires") {
@@ -367,7 +354,7 @@ TEST_CASE("Buff removal propagates to client", "[buffs]") {
 
         THEN("the user knows that has it no buffs") {
           REPEAT_FOR_MS(100);
-          const auto &cCat = c.getFirstNPC();
+          const auto &cCat = client->getFirstNPC();
           CHECK(cCat.buffs().empty());
         }
       }
@@ -430,11 +417,11 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Object-granted buffs", "[buffs]") {
   }
 }
 
-TEST_CASE("Buffs that don't stack", "[buffs]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Buffs that don't stack", "[buffs]") {
   GIVEN(
       "Two non-stacking paint colours, and a nonStacking emotion "
       "category") {
-    auto data = R"(
+    useData(R"(
       <buff id="paintedRed" >
         <nonStacking category="paint" />
       </buff>
@@ -444,28 +431,24 @@ TEST_CASE("Buffs that don't stack", "[buffs]") {
       <buff id="happy" >
         <nonStacking category="emotion" />
       </buff>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
+    )");
 
-    const auto &paintedRed = s.findBuff("paintedRed");
-    const auto &paintedBlue = s.findBuff("paintedBlue");
-    const auto &happy = s.findBuff("happy");
+    const auto &paintedRed = server->findBuff("paintedRed");
+    const auto &paintedBlue = server->findBuff("paintedBlue");
+    const auto &happy = server->findBuff("happy");
 
     WHEN("both paints are applied to a user") {
-      user.applyBuff(paintedRed, user);
-      user.applyBuff(paintedBlue, user);
+      user->applyBuff(paintedRed, *user);
+      user->applyBuff(paintedBlue, *user);
 
-      THEN("the user has one buff") { CHECK(user.buffs().size() == 1); }
+      THEN("the user has one buff") { CHECK(user->buffs().size() == 1); }
     }
 
     WHEN("a paint and an emotion are applied to a user") {
-      user.applyBuff(paintedRed, user);
-      user.applyBuff(happy, user);
+      user->applyBuff(paintedRed, *user);
+      user->applyBuff(happy, *user);
 
-      THEN("the user has two buffs") { CHECK(user.buffs().size() == 2); }
+      THEN("the user has two buffs") { CHECK(user->buffs().size() == 2); }
     }
   }
 }

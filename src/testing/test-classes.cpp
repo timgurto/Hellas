@@ -1,7 +1,7 @@
 #include "TestClient.h"
 #include "TestFixtures.h"
-#include "TestServer.h"
 #include "testing.h"
+#include "TestServer.h"
 
 TEST_CASE("Class can be specified in TestClients") {
   GIVEN("Two classes, Class1 and Class2") {
@@ -23,11 +23,12 @@ TEST_CASE("Class can be specified in TestClients") {
   }
 }
 
-TEST_CASE("A talent tier can require a tool", "[talents][tool]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "A talent tier can require a tool",
+                 "[talents][tool]") {
   GIVEN(
       "a level-2 user, tagged objects, and talent tiers with various "
       "requirements") {
-    auto data = R"(
+    useData(R"(
       <objectType id="rpa" maxHealth="1000">
         <collisionRect x="0" y="0" w="1" h="1" />
         <tag name="medicalSchool"/>
@@ -48,53 +49,49 @@ TEST_CASE("A talent tier can require a tool", "[talents][tool]") {
               </tier>
           </tree>
       </class>
-    )";
-    auto s = TestServer::WithDataString(data);
-    const auto &doctor = s.getFirstClass();
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    user.levelUp();
+    )");
+    const auto &doctor = server->getFirstClass();
+    user->levelUp();
 
     WHEN("he tries to take the simple talent") {
-      c.sendMessage(CL_CHOOSE_TALENT, "Meditate");
+      client->sendMessage(CL_CHOOSE_TALENT, "Meditate");
 
       THEN("he has it") {
         const auto *talent = doctor.findTalent("Meditate");
-        WAIT_UNTIL(user.getClass().hasTalent(talent));
+        WAIT_UNTIL(user->getClass().hasTalent(talent));
       }
     }
 
     WHEN("there's a medicalSchool object nearby") {
-      s.addObject("rpa", {10, 15});
+      server->addObject("rpa", {10, 15});
 
       AND_WHEN("he tries to take the talent requiring a medicalSchool") {
-        c.sendMessage(CL_CHOOSE_TALENT, "Study");
+        client->sendMessage(CL_CHOOSE_TALENT, "Study");
 
         THEN("he has it") {
           const auto *talent = doctor.findTalent("Study");
-          WAIT_UNTIL(user.getClass().hasTalent(talent));
+          WAIT_UNTIL(user->getClass().hasTalent(talent));
         }
       }
 
       AND_WHEN("he tries to take the talent requiring a different tool") {
-        c.sendMessage(CL_CHOOSE_TALENT, "Eat");
+        client->sendMessage(CL_CHOOSE_TALENT, "Eat");
         REPEAT_FOR_MS(100);
 
         THEN("he doesn't have it") {
           const auto *talent = doctor.findTalent("Eat");
-          CHECK_FALSE(user.getClass().hasTalent(talent));
+          CHECK_FALSE(user->getClass().hasTalent(talent));
         }
       }
     }
 
     WHEN("he tries to take the talent with a tool requirement") {
-      c.sendMessage(CL_CHOOSE_TALENT, "Study");
+      client->sendMessage(CL_CHOOSE_TALENT, "Study");
       REPEAT_FOR_MS(100);
 
       THEN("he doesn't have it") {
         const auto *talent = doctor.findTalent("Study");
-        CHECK_FALSE(user.getClass().hasTalent(talent));
+        CHECK_FALSE(user->getClass().hasTalent(talent));
       }
     }
   }

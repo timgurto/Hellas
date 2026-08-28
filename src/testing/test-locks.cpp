@@ -1,7 +1,8 @@
 #include "TemporaryUserStats.h"
 #include "TestClient.h"
-#include "TestServer.h"
+#include "TestFixtures.h"
 #include "testing.h"
+#include "TestServer.h"
 
 TEST_CASE("Unlock-chance-bonus stat", "[.slow][unlocking]") {
   GIVEN("obtaining a fish has a 50% chance of teaching how to catch a fish") {
@@ -52,25 +53,22 @@ TEST_CASE("Unlock-chance-bonus stat", "[.slow][unlocking]") {
   }
 }
 
-TEST_CASE("The locking systems", "[unlocking][crafting]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "The locking systems",
+                 "[unlocking][crafting]") {
   GIVEN("obtaining an item has a 0% chance of unlocking a pencil recipe") {
-    auto data = R"(
+    useData(R"(
       <item id="pencil" />
       <recipe id="pencil" >
         <unlockedBy item="pencil" chance="0" />
       </recipe>
-    )";
-    auto server = TestServer::WithDataString(data);
+    )");
 
     WHEN("a user obtains an item") {
-      auto client = TestClient::WithDataString(data);
-      server.waitForUsers(1);
-      auto &user = server.getFirstUser();
-      const auto &item = server.getFirstItem();
-      user.giveItem(&item);
+      const auto &item = server->getFirstItem();
+      user->giveItem(&item);
 
       THEN("he doesn't know any recipes") {
-        REQUIRE(user.knownRecipes().size() == 0);
+        REQUIRE(user->knownRecipes().size() == 0);
       }
     }
   }

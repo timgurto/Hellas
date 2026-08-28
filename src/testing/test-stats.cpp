@@ -1,27 +1,23 @@
 #include "TemporaryUserStats.h"
 #include "TestClient.h"
 #include "TestFixtures.h"
-#include "TestServer.h"
 #include "testing.h"
+#include "TestServer.h"
 
-TEST_CASE("Leveling up restores health and energy", "[stats][leveling]") {
-  auto s = TestServer{};
-  auto c = TestClient{};
-
+TEST_CASE_METHOD(ServerAndClient, "Leveling up restores health and energy",
+                 "[stats][leveling]") {
   // Given a damaged user
-  s.waitForUsers(1);
-  auto &user = s.getFirstUser();
-  user.reduceHealth(5);
-  user.reduceEnergy(5);
-  CHECK(user.isMissingHealth());
-  CHECK(user.energy() < user.stats().maxEnergy);
+  user->reduceHealth(5);
+  user->reduceEnergy(5);
+  CHECK(user->isMissingHealth());
+  CHECK(user->energy() < user->stats().maxEnergy);
 
   // When the user levels up
-  user.addXP(User::XP_PER_LEVEL[1], User::XP_FROM_KILL);
+  user->addXP(User::XP_PER_LEVEL[1], User::XP_FROM_KILL);
 
   // Then the user's health and energy are full
-  WAIT_UNTIL(!user.isMissingHealth());
-  WAIT_UNTIL(user.energy() == user.stats().maxEnergy);
+  WAIT_UNTIL(!user->isMissingHealth());
+  WAIT_UNTIL(user->energy() == user->stats().maxEnergy);
 }
 
 TEST_CASE_METHOD(ServerAndClient, "Client has correct XP on level up",

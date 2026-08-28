@@ -1,10 +1,11 @@
-#include "../WorkerThread.h"
 #include "../client/ClientNPCType.h"
 #include "../client/ui/Label.h"
 #include "../client/ui/List.h"
+#include "../WorkerThread.h"
 #include "TestClient.h"
-#include "TestServer.h"
+#include "TestFixtures.h"
 #include "testing.h"
+#include "TestServer.h"
 
 extern WorkerThread SDLThread;
 
@@ -42,20 +43,19 @@ TEST_CASE("List is resized on new child", "[ui]") {
   }
 }
 
-TEST_CASE("View merchant slots in window", "[.flaky][ui][merchant]") {
+TEST_CASE_METHOD(ServerAndClientWithDataFiles, "View merchant slots in window",
+                 "[.flaky][ui][merchant]") {
   // Given a logged-in client and an object with merchant slots
-  TestServer s = TestServer::WithData("merchant");
-  TestClient c = TestClient::WithData("merchant");
-  // Move user to middle
-  s.waitForUsers(1);
-  User &user = s.getFirstUser();
-  user.moveLegallyTowards({10, 10});
-  // Add a single vending machine
-  s.addObject("vendingMachine", {10, 10});
-  WAIT_UNTIL(s.entities().size() == 1);
-  WAIT_UNTIL(c.objects().size() == 1);
+  useData("merchant");
 
-  auto objects = c.objects();
+  // Move user to middle
+  user->moveLegallyTowards({10, 10});
+  // Add a single vending machine
+  server->addObject("vendingMachine", {10, 10});
+  WAIT_UNTIL(server->entities().size() == 1);
+  WAIT_UNTIL(client->objects().size() == 1);
+
+  auto objects = client->objects();
   auto it = objects.begin();
   auto serial = it->first;
   ClientObject *cObj = it->second;
@@ -74,83 +74,55 @@ TEST_CASE("View merchant slots in window", "[.flaky][ui][merchant]") {
   WAIT_UNTIL(e->children().size() > 0);
 
   // Then the client successfully redraws without crashing
-  c.waitForRedraw();
+  client->waitForRedraw();
 }
 
-TEST_CASE("New client can build default constructions", "[ui][construction]") {
+TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+                 "New client can build default constructions",
+                 "[ui][construction]") {
   // Given a buildable brick wall object type with no pre-requisites
-  TestServer s = TestServer::WithData("brick_wall");
-
-  // When a client logs in
-  TestClient c = TestClient::WithData("brick_wall");
-  s.waitForUsers(1);
+  useData("brick_wall");
 
   // His construction window contains at least one item
-  CHECK_FALSE(c.uiBuildList().empty());
+  CHECK_FALSE(client->uiBuildList().empty());
 }
 
-TEST_CASE("New client has target UI hidden", "[ui]") {
-  // When a client logs in
-  TestServer s;
-  TestClient c;
-  s.waitForUsers(1);
-
+TEST_CASE_METHOD(ServerAndClient, "New client has target UI hidden", "[ui]") {
   // Then his targeting UI is hidden
-  CHECK_FALSE(c.target().panel()->visible());
+  CHECK_FALSE(client.target().panel()->visible());
 }
 
-TEST_CASE("Chat messages are added to chat log", "[ui][chat]") {
-  // Given a logged-in client
-  TestServer s;
-  TestClient c;
-  s.waitForUsers(1);
-
-  // When he sends a message
-  c.sendMessage(CL_SAY, "asdf");
+TEST_CASE_METHOD(ServerAndClient, "Chat messages are added to chat log",
+                 "[ui][chat]") {
+  // When a client sends a message
+  client.sendMessage(CL_SAY, "asdf");
 
   // Then his chat log contains at least one message
-  WAIT_UNTIL(c.chatLog()->size() > 0);
+  WAIT_UNTIL(client.chatLog()->size() > 0);
 }
 
-TEST_CASE("Windows start uninitialized", "[ui]") {
-  // Given a server and client
-  TestServer s;
-  TestClient c;
-
-  // When the client logs in
-  s.waitForUsers(1);
-
+TEST_CASE_METHOD(ServerAndClient, "Windows start uninitialized", "[ui]") {
   // Then the crafting window is uninitialized
-  CHECK_FALSE(c.craftingWindow()->isInitialized());
+  CHECK_FALSE(client.craftingWindow()->isInitialized());
 }
 
-TEST_CASE("Windows are initialized when used", "[ui]") {
-  // Given a server and client
-  TestServer s;
-  TestClient c;
-  s.waitForUsers(1);
-
+TEST_CASE_METHOD(ServerAndClient, "Windows are initialized when used", "[ui]") {
   // When the client opens the crafting window
-  c.craftingWindow()->show();
+  client.craftingWindow()->show();
 
   // Then it is initializezd
-  WAIT_UNTIL(c.craftingWindow()->isInitialized());
+  WAIT_UNTIL(client.craftingWindow()->isInitialized());
 }
 
-TEST_CASE("A visible window is fully-formed", "[ui]") {
-  // Given a server and client;
-  TestServer s;
-  TestClient c;
-  s.waitForUsers(1);
-
-  // When the client opens the build window
-  c.buildWindow()->show();
+TEST_CASE_METHOD(ServerAndClient, "A visible window is fully-formed", "[ui]") {
+  // When a client opens the build window
+  client.buildWindow()->show();
 
   // Then the build window has dimensions;
-  WAIT_UNTIL(c.buildWindow()->Element::width() > 0);
+  WAIT_UNTIL(client.buildWindow()->Element::width() > 0);
 
   // And the heading has a texture
-  WAIT_UNTIL(c.buildWindow()->getHeading()->texture());
+  WAIT_UNTIL(client.buildWindow()->getHeading()->texture());
 }
 
 TEST_CASE("Element gets initialized with Client", "[.flaky][ui]") {
@@ -159,24 +131,21 @@ TEST_CASE("Element gets initialized with Client", "[.flaky][ui]") {
   WAIT_UNTIL(Element::isInitialized());
 }
 
-TEST_CASE("Gear window can be viewed", "[gear][ui]") {
-  TestServer s;
-  TestClient c;
-  c.gearWindow()->show();
-  WAIT_UNTIL(c.gearWindow()->texture());
+TEST_CASE_METHOD(ServerAndClient, "Gear window can be viewed", "[gear][ui]") {
+  client.gearWindow()->show();
+  WAIT_UNTIL(client.gearWindow()->texture());
 }
 
-TEST_CASE("New clients survive recipe unlocks", "[ui][crafting][unlocking]") {
-  // Given a client and server
-  TestServer s = TestServer::WithData("secret_bread");
-  TestClient c = TestClient::WithData("secret_bread");
-  s.waitForUsers(1);
+TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+                 "New clients survive recipe unlocks",
+                 "[ui][crafting][unlocking]") {
+  useData("secret_bread");
 
   // When the server alerts the client to a recipe unlock
-  s.getFirstUser().sendMessage({SV_NEW_RECIPES_LEARNED, makeArgs(1, "asdf")});
+  user->sendMessage({SV_NEW_RECIPES_LEARNED, makeArgs(1, "asdf")});
 
   // The client receives it.
-  CHECK(c.waitForMessage(SV_NEW_RECIPES_LEARNED));
+  CHECK(client->waitForMessage(SV_NEW_RECIPES_LEARNED));
 }
 
 TEST_CASE("Gear-slot names are initialized once", "[.slow][gear][ui]") {
@@ -190,14 +159,15 @@ TEST_CASE("Gear-slot names are initialized once", "[.slow][gear][ui]") {
   }
 }
 
-TEST_CASE("A player's objects are the appropriate color", "[permissions][ui]") {
-  TestServer s = TestServer::WithData("basic_rock");
-  TestClient c = TestClient::WithUsernameAndData("Alice", "basic_rock");
+TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+                 "A player's objects are the appropriate color",
+                 "[permissions][ui]") {
+  useData("basic_rock");
 
-  s.addObject("rock", {10, 15}, "Alice");
+  server->addObject("rock", {10, 15}, user->name());
 
-  WAIT_UNTIL(c.objects().size() == 1);
-  const auto &rock = c.getFirstObject();
+  WAIT_UNTIL(client->objects().size() == 1);
+  const auto &rock = client->getFirstObject();
   WAIT_UNTIL(rock.nameColor() == Color::COMBATANT_SELF);
 }
 
@@ -221,23 +191,20 @@ TEST_CASE("Word wrapper", "[ui]") {
   }
 }
 
-TEST_CASE("Object windows close if they change to allow only demolition",
-          "[ui][quests]") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Object windows close if they change to allow only demolition",
+                 "[ui][quests]") {
   GIVEN("an object with a quest, owned by a user") {
-    auto data = R"(
+    useData(R"(
       <objectType id="A" />
       <objectType id="B" />
       <quest id="quest1" startsAt="A" endsAt="B" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    const auto &user = s.getFirstUser();
-    s.addObject("A", {10, 15}, user.name());
+    )");
+    server->addObject("A", {10, 15}, user->name());
 
     WHEN("he opens the object's window") {
-      WAIT_UNTIL(c.objects().size() == 1);
-      auto &cObject = c.getFirstObject();
+      WAIT_UNTIL(client->objects().size() == 1);
+      auto &cObject = client->getFirstObject();
       // Wait, to avoid concurrent calls to ClientObject::assembleWindow()
       REPEAT_FOR_MS(100);
       cObject.onRightClick();
@@ -245,7 +212,8 @@ TEST_CASE("Object windows close if they change to allow only demolition",
       CHECK(cObject.window()->visible());
 
       AND_WHEN("he accepts the quest") {
-        c.sendMessage(CL_ACCEPT_QUEST, makeArgs("quest1", cObject.serial()));
+        client->sendMessage(CL_ACCEPT_QUEST,
+                            makeArgs("quest1", cObject.serial()));
 
         THEN("the window closes") { WAIT_UNTIL(!cObject.window()->visible()); }
       }
@@ -253,18 +221,14 @@ TEST_CASE("Object windows close if they change to allow only demolition",
   }
 
   GIVEN("an object owned by a user") {
-    auto data = R"(
+    useData(R"(
       <objectType id="A" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    const auto &user = s.getFirstUser();
-    s.addObject("A", {10, 15}, user.name());
+    )");
+    server->addObject("A", {10, 15}, user->name());
 
     WHEN("he opens the object's window") {
-      WAIT_UNTIL(c.objects().size() == 1);
-      auto &cObject = c.getFirstObject();
+      WAIT_UNTIL(client->objects().size() == 1);
+      auto &cObject = client->getFirstObject();
       // Wait, to avoid concurrent calls to ClientObject::assembleWindow()
       REPEAT_FOR_MS(100);
       cObject.onRightClick();

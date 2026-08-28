@@ -100,49 +100,42 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Attack rate is respected",
   }
 }
 
-TEST_CASE("Belligerents can attack each other's objects",
-          "[combat][war][permissions]") {
-  // Given a logged-in user;
-  // And a vase object type with 1 health;
-  TestServer s = TestServer::WithData("vase");
-  TestClient c = TestClient::WithData("vase");
+TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+                 "Belligerents can attack each other's objects",
+                 "[combat][war][permissions]") {
+  useData("vase");
 
   // And a vase owned by Alice;
-  s.addObject("vase", {10, 15}, "Alice");
-  Object &vase = s.getFirstObject();
+  server->addObject("vase", {10, 15}, "Alice");
+  Object &vase = server->getFirstObject();
   REQUIRE(vase.health() == 1);
 
   // And that the user is at war with Alice
-  const std::string &username = c.name();
-  s.wars().declare(username, "Alice");
+  server->wars().declare(client->name(), "Alice");
 
   // When he targets the vase
-  s.waitForUsers(1);
-  c.sendMessage(CL_TARGET_ENTITY, makeArgs(vase.serial()));
+  client->sendMessage(CL_TARGET_ENTITY, makeArgs(vase.serial()));
 
   // Then the vase has 0 health
   WAIT_UNTIL(vase.health() == 0);
 }
 
-TEST_CASE("Players can target distant entities") {
-  // Given a server and client;
-  TestServer s = TestServer::WithData("wolf");
-  TestClient c = TestClient::WithData("wolf");
+TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+                 "Players can target distant entities") {
+  useData("wolf");
 
   // And a wolf NPC on the other side of the map
-  s.addNPC("wolf", {200, 200});
-  s.waitForUsers(1);
-  const NPC &wolf = s.getFirstNPC();
-  const User &user = s.getFirstUser();
-  REQUIRE(distance(wolf, user) > Server::ACTION_DISTANCE);
+  server->addNPC("wolf", {200, 200});
+  const NPC &wolf = server->getFirstNPC();
+  REQUIRE(distance(wolf, *user) > Server::ACTION_DISTANCE);
 
   // When the client attempts to target the wolf
-  WAIT_UNTIL(c.objects().size() == 1);
-  ClientNPC &clientWolf = c.getFirstNPC();
+  WAIT_UNTIL(client->objects().size() == 1);
+  ClientNPC &clientWolf = client->getFirstNPC();
   clientWolf.onRightClick();
 
   // Then his target is set to the wolf
-  WAIT_UNTIL(user.target() == &wolf);
+  WAIT_UNTIL(user->target() == &wolf);
 }
 
 TEST_CASE_METHOD(TwoClients, "Clients receive nearby users' health values") {
@@ -178,17 +171,16 @@ TEST_CASE_METHOD(ServerAndClient, "A player dying doesn't crash the server",
   }
 }
 
-TEST_CASE("Civilian NPCs", "[combat]") {
+TEST_CASE_METHOD(ServerAndClientWithDataFiles, "Civilian NPCs", "[combat]") {
   GIVEN("An NPC with \"isCivilian\" and 1 health") {
-    auto s = TestServer::WithData("civilian");
-    auto c = TestClient::WithData("civilian");
+    useData("civilian");
 
-    s.addNPC("civilian", {10, 15});
-    WAIT_UNTIL(c.objects().size() == 1);
+    server->addNPC("civilian", {10, 15});
+    WAIT_UNTIL(client->objects().size() == 1);
 
     WHEN("a client attempts to attack it") {
-      const auto &civilian = c.getFirstNPC();
-      c.sendMessage(CL_TARGET_ENTITY, toString(civilian.serial()));
+      const auto &civilian = client->getFirstNPC();
+      client->sendMessage(CL_TARGET_ENTITY, toString(civilian.serial()));
 
       THEN("it is still alive") {
         REPEAT_FOR_MS(500);

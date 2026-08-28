@@ -1,7 +1,7 @@
 #include "TestClient.h"
 #include "TestFixtures.h"
-#include "TestServer.h"
 #include "testing.h"
+#include "TestServer.h"
 
 TEST_CASE("City creation", "[city]") {
   GIVEN("a server") {
@@ -151,24 +151,20 @@ TEST_CASE("Clients know nearby players' cities", "[city]") {
   }
 }
 
-TEST_CASE("Ceding", "[city][permissions]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Ceding", "[city][permissions]") {
   GIVEN("rock objects and a user") {
-    auto data = R"(
+    useData(R"(
       <objectType id="rock" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    User &user = s.getFirstUser();
+    )");
 
     AND_GIVEN("a rock owned by nobody") {
-      const auto &rock = s.addObject("rock", {10, 15});
+      const auto &rock = server->addObject("rock", {10, 15});
 
       WHEN("the user tries to cede it") {
-        c.sendMessage(CL_CEDE, makeArgs(rock.serial()));
+        client->sendMessage(CL_CEDE, makeArgs(rock.serial()));
 
         THEN("he receives an error message") {
-          CHECK(c.waitForMessage(WARNING_NO_PERMISSION, 10000));
+          CHECK(client->waitForMessage(WARNING_NO_PERMISSION, 10000));
 
           AND_THEN("the rock does not belong to Athens") {
             CHECK_FALSE(rock.permissions.isOwnedByCity("Athens"));
@@ -178,34 +174,34 @@ TEST_CASE("Ceding", "[city][permissions]") {
     }
 
     AND_GIVEN("a rock owned by the user") {
-      const auto &rock = s.addObject("rock", {10, 15}, user.name());
+      const auto &rock = server->addObject("rock", {10, 15}, user->name());
 
       WHEN("he tries to cede it") {
-        c.sendMessage(CL_CEDE, makeArgs(rock.serial()));
+        client->sendMessage(CL_CEDE, makeArgs(rock.serial()));
 
         THEN("he receives an error message") {
-          REQUIRE(c.waitForMessage(ERROR_NOT_IN_CITY));
+          REQUIRE(client->waitForMessage(ERROR_NOT_IN_CITY));
 
           AND_THEN("it still belongs to him") {
-            CHECK(rock.permissions.isOwnedByPlayer(user.name()));
+            CHECK(rock.permissions.isOwnedByPlayer(user->name()));
           }
         }
       }
 
       AND_GIVEN("he is in Athens") {
-        s.cities().createCity("Athens", {}, {});
-        s.cities().addPlayerToCity(user, "Athens");
+        server->cities().createCity("Athens", {}, {});
+        server->cities().addPlayerToCity(*user, "Athens");
 
         WHEN("he tries to cede it") {
-          WAIT_UNTIL(c.objects().size() == 1);
-          Object &rock = s.getFirstObject();
-          c.sendMessage(CL_CEDE, makeArgs(rock.serial()));
+          WAIT_UNTIL(client->objects().size() == 1);
+          Object &rock = server->getFirstObject();
+          client->sendMessage(CL_CEDE, makeArgs(rock.serial()));
 
           THEN("it belongs to Athens") {
             WAIT_UNTIL(rock.permissions.isOwnedByCity("Athens"));
 
             AND_THEN("it doesn't belong to him") {
-              CHECK_FALSE(rock.permissions.isOwnedByPlayer(user.name()));
+              CHECK_FALSE(rock.permissions.isOwnedByPlayer(user->name()));
             }
           }
         }
@@ -244,18 +240,14 @@ TEST_CASE("A player can leave a city", "[.flaky][city]") {
   WAIT_UNTIL(c.cityName().empty());
 }
 
-TEST_CASE("A player can't leave a city if not in one", "[city]") {
-  GIVEN("a user") {
-    auto c = TestClient{};
-    auto s = TestServer{};
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-
+TEST_CASE_METHOD(ServerAndClient, "A player can't leave a city if not in one",
+                 "[city]") {
+  GIVEN("a user not in a city") {
     WHEN("he sends a leave-city message") {
-      c.sendMessage(CL_LEAVE_CITY);
+      client.sendMessage(CL_LEAVE_CITY);
 
       THEN("he receives an error message") {
-        CHECK(c.waitForMessage(ERROR_NOT_IN_CITY));
+        CHECK(client.waitForMessage(ERROR_NOT_IN_CITY));
       }
     }
   }

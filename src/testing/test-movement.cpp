@@ -1,71 +1,57 @@
 #include "TestClient.h"
 #include "TestFixtures.h"
-#include "TestServer.h"
 #include "testing.h"
+#include "TestServer.h"
 
-TEST_CASE("Thin objects block movement") {
-  // Given a server and client;
-  auto s = TestServer::WithData("thin_wall");
-  auto c = TestClient::WithData("thin_wall");
+TEST_CASE_METHOD(ServerAndClientWithDataFiles, "Thin objects block movement") {
+  useData("thin_wall");
 
   // And a wall just above the user
-  s.addObject("wall", {10, 5});
+  server->addObject("wall", {10, 5});
 
   // When the user tries to move up, through the wall
-  s.waitForUsers(1);
   REPEAT_FOR_MS(500) {
-    c.sendMessage(CL_MOVE_TO, makeArgs(10, 3));
+    client->sendMessage(CL_MOVE_TO, makeArgs(10, 3));
     SDL_Delay(5);
   }
 
   // He fails
-  auto &user = s.getFirstUser();
-  CHECK(user.location().y > 4);
+  CHECK(user->location().y > 4);
 }
 
-TEST_CASE("Dead objects don't block movement") {
-  // Given a server and client;
-  auto s = TestServer::WithData("thin_wall");
-  auto c = TestClient::WithData("thin_wall");
+TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+                 "Dead objects don't block movement") {
+  useData("thin_wall");
 
   // And a wall just above the user;
-  s.addObject("wall", {10, 5});
+  server->addObject("wall", {10, 5});
 
   // And that wall is dead
-  s.getFirstObject().reduceHealth(1000000);
+  server->getFirstObject().reduceHealth(1000000);
 
   // When the user tries to move up, through the wall
-  s.waitForUsers(1);
-  auto &user = s.getFirstUser();
   REPEAT_FOR_MS(3000) {
-    c.sendMessage(CL_MOVE_TO, makeArgs(10, 3));
+    client->sendMessage(CL_MOVE_TO, makeArgs(10, 3));
 
-    if (user.location().y < 3.5) break;
+    if (user->location().y < 3.5) break;
   }
   // He succeeds
-  CHECK(user.location().y < 3.5);
-  ;
+  CHECK(user->location().y < 3.5);
 }
 
-TEST_CASE("User and NPC overlap allowed") {
+TEST_CASE_METHOD(ServerAndClientWithData, "User and NPC overlap allowed") {
   GIVEN("a colliding NPC, and a user above it") {
-    auto data = R"(
+    useData(R"(
       <npcType id="monster" >
         <collisionRect x="-10" y="0" w="20" h="1" />
       </npcType>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.addNPC("monster", {10, 20});
-    s.waitForUsers(1);
+    )");
+    server->addNPC("monster", {10, 20});
 
     WHEN("the user tries to move through it") {
-      c.sendMessage(CL_MOVE_TO, makeArgs(10, 30));
+      client->sendMessage(CL_MOVE_TO, makeArgs(10, 30));
 
-      THEN("he gets past the NPC") {
-        const auto &user = s.getFirstUser();
-        WAIT_UNTIL(user.location().y > 20);
-      }
+      THEN("he gets past the NPC") { WAIT_UNTIL(user->location().y > 20); }
     }
   }
 }

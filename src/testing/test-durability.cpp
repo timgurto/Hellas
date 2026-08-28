@@ -3,8 +3,8 @@
 #include "TemporaryUserStats.h"
 #include "TestClient.h"
 #include "TestFixtures.h"
-#include "TestServer.h"
 #include "testing.h"
+#include "TestServer.h"
 
 using ItemReportingInfo = ServerItem::Instance::ReportingInfo;
 
@@ -54,60 +54,54 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   }
 }
 
-TEST_CASE("Newly given items have full health", "[damage-on-use]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Newly given items have full health",
+                 "[damage-on-use]") {
   GIVEN("apple items") {
-    auto data = R"(
+    useData(R"(
       <item id="apple" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    const auto &apple = s.getFirstItem();
+    )");
 
     WHEN("a user is given one") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
+      user->giveItem(&server->getFirstItem());
 
-      user.giveItem(&apple);
-
-      THEN("it has full health") { CHECK_FALSE(user.inventory(0).isDamaged()); }
+      THEN("it has full health") {
+        CHECK_FALSE(user->inventory(0).isDamaged());
+      }
     }
   }
 }
 
-TEST_CASE("Combat reduces weapon/armour health", "[damage-on-use][combat]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Combat reduces weapon/armour health",
+                 "[damage-on-use][combat]") {
   GIVEN(
       "a very fast, low-damage weapon; a very fast, low-damage enemy; some "
       "armour") {
-    auto data = R"(
+    useData(R"(
       <item id="tuningFork" gearSlot="weapon" >
         <weapon damage="1"  speed="0.01" />
       </item>
       <item id="hat" gearSlot="head" />
       <item id="shoes" gearSlot="feet" />
       <npcType id="hummingbird" level="1" attack="1" attackTime="10" maxHealth="1000000000" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
+    )");
 
-    auto &weaponSlot = user.gear(Item::WEAPON);
-    auto &headSlot = user.gear(Item::HEAD);
-    auto &feetSlot = user.gear(Item::FEET);
-    const auto &tuningFork = s.findItem("tuningFork");
-    const auto &hat = s.findItem("hat");
-    const auto &shoes = s.findItem("shoes");
+    auto &weaponSlot = user->gear(Item::WEAPON);
+    auto &headSlot = user->gear(Item::HEAD);
+    auto &feetSlot = user->gear(Item::FEET);
+    const auto &tuningFork = server->findItem("tuningFork");
+    const auto &hat = server->findItem("hat");
+    const auto &shoes = server->findItem("shoes");
 
-    s.addNPC("hummingbird", {10, 15});
-    const auto &hummingbird = s.getFirstNPC();
+    server->addNPC("hummingbird", {10, 15});
+    const auto &hummingbird = server->getFirstNPC();
 
     WHEN("a player has the weapon equipped") {
       weaponSlot = {&tuningFork,
-                    ItemReportingInfo::UserGear(&user, Item::WEAPON), 1};
-      user.updateStats();
+                    ItemReportingInfo::UserGear(user, Item::WEAPON), 1};
+      user->updateStats();
 
       AND_WHEN("he attacks the enemy with the weapon for a while") {
-        c.sendMessage(CL_TARGET_ENTITY, makeArgs(hummingbird.serial()));
+        client->sendMessage(CL_TARGET_ENTITY, makeArgs(hummingbird.serial()));
 
         THEN("the weapon's health is reduced") {
           // Should result in about 1000 hits.  Hopefully enough for durability
@@ -115,7 +109,7 @@ TEST_CASE("Combat reduces weapon/armour health", "[damage-on-use][combat]") {
           WAIT_UNTIL_TIMEOUT(weaponSlot.isDamaged(), 10000);
 
           AND_THEN("the user knows it") {
-            const auto &cWeaponSlot = c.gear()[Item::WEAPON];
+            const auto &cWeaponSlot = client->gear()[Item::WEAPON];
             WAIT_UNTIL(cWeaponSlot.first.type());
             WAIT_UNTIL(cWeaponSlot.first.isDamaged());
           }
@@ -123,7 +117,7 @@ TEST_CASE("Combat reduces weapon/armour health", "[damage-on-use][combat]") {
       }
 
       AND_WHEN("he dies") {
-        user.kill();
+        user->kill();
 
         THEN("the weapon's health is reduced") {
           CHECK(weaponSlot.isDamaged());
@@ -133,9 +127,9 @@ TEST_CASE("Combat reduces weapon/armour health", "[damage-on-use][combat]") {
 
     WHEN("a player has the weapon and armour equipped") {
       weaponSlot = {&tuningFork,
-                    ItemReportingInfo::UserGear(&user, Item::WEAPON), 1};
-      headSlot = {&hat, ItemReportingInfo::UserGear(&user, Item::HEAD), 1};
-      feetSlot = {&shoes, ItemReportingInfo::UserGear(&user, Item::FEET), 1};
+                    ItemReportingInfo::UserGear(user, Item::WEAPON), 1};
+      headSlot = {&hat, ItemReportingInfo::UserGear(user, Item::HEAD), 1};
+      feetSlot = {&shoes, ItemReportingInfo::UserGear(user, Item::FEET), 1};
 
       AND_WHEN("the enemy attacks for a while") {
         // Should happen automatically
@@ -147,7 +141,7 @@ TEST_CASE("Combat reduces weapon/armour health", "[damage-on-use][combat]") {
       }
 
       AND_WHEN("the enemy attacks once") {
-        auto &hummingbird = s.getFirstNPC();
+        auto &hummingbird = server->getFirstNPC();
         auto stats = hummingbird.stats();
         stats.attackTime = 1000;
         stats.crit = 0;
@@ -155,11 +149,11 @@ TEST_CASE("Combat reduces weapon/armour health", "[damage-on-use][combat]") {
 
         CHECK_FALSE(headSlot.isDamaged());
         CHECK_FALSE(feetSlot.isDamaged());
-        auto healthBefore = user.health();
+        auto healthBefore = user->health();
 
         REPEAT_FOR_MS(1000);
 
-        CHECK(user.health() >= healthBefore - 1);
+        CHECK(user->health() >= healthBefore - 1);
 
         THEN("a maximum of one piece of armour is damaged") {
           auto bothDamaged = headSlot.isDamaged() && feetSlot.isDamaged();
@@ -250,10 +244,11 @@ TEST_CASE_METHOD(ServerAndClientWithData, "No gear is damaged on dodge",
   }
 }
 
-TEST_CASE("Thrown weapons don't take damage from attacking",
-          "[damage-on-use][combat]") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Thrown weapons don't take damage from attacking",
+                 "[damage-on-use][combat]") {
   GIVEN("a whale, and harpoons that can be thrown or shot") {
-    auto data = R"(
+    useData(R"(
       <item id="harpoon" gearSlot="weapon" stackSize="1000000" >
         <weapon damage="1" speed="0.01" consumes="harpoon" />
       </item>
@@ -261,28 +256,25 @@ TEST_CASE("Thrown weapons don't take damage from attacking",
         <weapon damage="1" speed="0.01" consumes="harpoon" />
       </item>
       <npcType id="whale" level="1" attack="1" attackTime="1000000" maxHealth="1000000000" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
+    )");
 
-    s.addNPC("whale", {10, 15});
+    server->addNPC("whale", {10, 15});
 
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    const auto *harpoon = &s.findItem("harpoon");
-    const auto *harpoonGun = &s.findItem("harpoonGun");
-    user.giveItem(harpoon, 1000000);
-    user.giveItem(harpoonGun);
+    const auto *harpoon = &server->findItem("harpoon");
+    const auto *harpoonGun = &server->findItem("harpoonGun");
+    user->giveItem(harpoon, 1000000);
+    user->giveItem(harpoonGun);
 
     WHEN("the user equips harpoons") {
-      c.sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0,
-                                            Serial::Gear(), Item::WEAPON));
-      WAIT_UNTIL(user.gear(Item::WEAPON).hasItem());
+      client->sendMessage(
+          CL_SWAP_ITEMS,
+          makeArgs(Serial::Inventory(), 0, Serial::Gear(), Item::WEAPON));
+      WAIT_UNTIL(user->gear(Item::WEAPON).hasItem());
 
       AND_WHEN("he attacks the whale many times") {
-        const auto &equippedWeapon = user.gear(Item::WEAPON);
-        auto whaleSerial = s.getFirstNPC().serial();
-        c.sendMessage(CL_TARGET_ENTITY, makeArgs(whaleSerial));
+        const auto &equippedWeapon = user->gear(Item::WEAPON);
+        auto whaleSerial = server->getFirstNPC().serial();
+        client->sendMessage(CL_TARGET_ENTITY, makeArgs(whaleSerial));
         REPEAT_FOR_MS(5000) {
           if (equippedWeapon.isDamaged()) break;
         }
@@ -294,14 +286,15 @@ TEST_CASE("Thrown weapons don't take damage from attacking",
     }
 
     WHEN("the user equips a harpoon gun") {
-      c.sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 1,
-                                            Serial::Gear(), Item::WEAPON));
-      WAIT_UNTIL(user.gear(Item::WEAPON).hasItem());
+      client->sendMessage(
+          CL_SWAP_ITEMS,
+          makeArgs(Serial::Inventory(), 1, Serial::Gear(), Item::WEAPON));
+      WAIT_UNTIL(user->gear(Item::WEAPON).hasItem());
 
       AND_WHEN("he attacks the whale many times") {
-        const auto &equippedWeapon = user.gear(Item::WEAPON);
-        auto whaleSerial = s.getFirstNPC().serial();
-        c.sendMessage(CL_TARGET_ENTITY, makeArgs(whaleSerial));
+        const auto &equippedWeapon = user->gear(Item::WEAPON);
+        auto whaleSerial = server->getFirstNPC().serial();
+        client->sendMessage(CL_TARGET_ENTITY, makeArgs(whaleSerial));
         REPEAT_FOR_MS(5000) {
           if (equippedWeapon.isDamaged()) break;
         }
@@ -314,19 +307,16 @@ TEST_CASE("Thrown weapons don't take damage from attacking",
   }
 }
 
-TEST_CASE("Item damage is limited to 1", "[damage-on-use]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Item damage is limited to 1",
+                 "[damage-on-use]") {
   GIVEN("a user with an item") {
-    auto data = R"(
+    useData(R"(
       <item id="thing" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    user.giveItem(&s.getFirstItem());
+    )");
+    user->giveItem(&server->getFirstItem());
 
     WHEN("it is used") {
-      auto &itemInInventory = user.inventory(0);
+      auto &itemInInventory = user->inventory(0);
       itemInInventory.onUseAsTool();
 
       THEN("it has lost at most 1 health") {
@@ -338,19 +328,16 @@ TEST_CASE("Item damage is limited to 1", "[damage-on-use]") {
   }
 }
 
-TEST_CASE("Item damage happens randomly", "[damage-on-use]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Item damage happens randomly",
+                 "[damage-on-use]") {
   GIVEN("a user with an item") {
-    auto data = R"(
+    useData(R"(
       <item id="thing" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    user.giveItem(&s.getFirstItem());
+    )");
+    user->giveItem(&server->getFirstItem());
 
     WHEN("it is used {max-health} times") {
-      auto &itemInInventory = user.inventory(0);
+      auto &itemInInventory = user->inventory(0);
       for (auto i = 0; i != itemInInventory.type()->maxHealth(); ++i)
         itemInInventory.onUseAsTool();
 
@@ -361,9 +348,10 @@ TEST_CASE("Item damage happens randomly", "[damage-on-use]") {
   }
 }
 
-TEST_CASE("Crafting tools lose durability", "[damage-on-use][crafting][tool]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Crafting tools lose durability",
+                 "[damage-on-use][crafting][tool]") {
   GIVEN("a user with a crafting tool") {
-    auto data = R"(
+    useData(R"(
       <item id="rabbit" stackSize="1000" />
       <item id="hat">
         <tag name="rabbitHouse" />
@@ -371,17 +359,13 @@ TEST_CASE("Crafting tools lose durability", "[damage-on-use][crafting][tool]") {
       <recipe id="rabbit">
         <tool class="rabbitHouse" />
       </recipe>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    user.giveItem(&s.findItem("hat"));
-    auto &hat = user.inventory(0);
+    )");
+    user->giveItem(&server->findItem("hat"));
+    auto &hat = user->inventory(0);
 
     WHEN("the recipe is crafted many times") {
       for (auto i = 0; i != 200; ++i) {
-        c.sendMessage(CL_CRAFT, makeArgs("rabbit", 1));
+        client->sendMessage(CL_CRAFT, makeArgs("rabbit", 1));
         REPEAT_FOR_MS(20);
         if (hat.isDamaged()) break;
       }
@@ -390,7 +374,7 @@ TEST_CASE("Crafting tools lose durability", "[damage-on-use][crafting][tool]") {
         CHECK(hat.isDamaged());
 
         AND_THEN("the client knows it's damaged") {
-          auto &cItem = c.inventory()[0];
+          auto &cItem = client->inventory()[0];
           WAIT_UNTIL(cItem.first.type());
           WAIT_UNTIL(cItem.first.isDamaged());
         }
@@ -405,39 +389,35 @@ TEST_CASE("Crafting tools lose durability", "[damage-on-use][crafting][tool]") {
       CHECK(hat.isBroken());
 
       AND_WHEN("the user tries to craft the recipe") {
-        c.sendMessage(CL_CRAFT, makeArgs("rabbit", 1));
+        client->sendMessage(CL_CRAFT, makeArgs("rabbit", 1));
 
         THEN("he doesn't have any products") {
           REPEAT_FOR_MS(100);
-          CHECK_FALSE(user.inventory(1).hasItem());
+          CHECK_FALSE(user->inventory(1).hasItem());
         }
       }
     }
   }
 }
 
-TEST_CASE("Construction tools lose durability",
-          "[damage-on-use][construction][tool]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Construction tools lose durability",
+                 "[damage-on-use][construction][tool]") {
   GIVEN("a user with a construction tool") {
-    auto data = R"(
+    useData(R"(
       <objectType id="hole" constructionReq="digging" />
       <item id="shovel">
         <tag name="digging" />
       </item>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    user.giveItem(&s.findItem("shovel"));
-    user.addConstruction("hole");
+    )");
+    user->giveItem(&server->findItem("shovel"));
+    user->addConstruction("hole");
 
     WHEN("many objects are constructed") {
-      const auto &shovel = user.inventory(0);
+      const auto &shovel = user->inventory(0);
 
       for (auto i = 0; i != 200; ++i) {
-        c.sendMessage(CL_CONSTRUCT, makeArgs("hole", 10, 15));
-        WAIT_UNTIL(s.entities().size() == i);
+        client->sendMessage(CL_CONSTRUCT, makeArgs("hole", 10, 15));
+        WAIT_UNTIL(server->entities().size() == i);
         if (shovel.isDamaged()) break;
       }
 
@@ -446,10 +426,10 @@ TEST_CASE("Construction tools lose durability",
   }
 }
 
-TEST_CASE("Gathering tools lose durability",
-          "[damage-on-use][gathering][tool]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Gathering tools lose durability",
+                 "[damage-on-use][gathering][tool]") {
   GIVEN("a user with a shovel, and a garden with many onions") {
-    auto data = R"(
+    useData(R"(
       <objectType id="onionPatch" gatherReq="digging">
         <yield id="onion" initialMean="1000" />
       </objectType>
@@ -457,21 +437,17 @@ TEST_CASE("Gathering tools lose durability",
         <tag name="digging" />
       </item>
       <item id="onion" stackSize="1000"/>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
+    )");
 
-    s.addObject("onionPatch", {10, 15});
-
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    user.giveItem(&s.findItem("shovel"));
+    server->addObject("onionPatch", {10, 15});
+    user->giveItem(&server->findItem("shovel"));
 
     WHEN("many onions are gathered") {
-      const auto &shovel = user.inventory(0);
+      const auto &shovel = user->inventory(0);
 
       for (auto i = 0; i != 200; ++i) {
-        c.sendMessage(CL_GATHER, makeArgs(s.getFirstObject().serial()));
+        client->sendMessage(CL_GATHER,
+                            makeArgs(server->getFirstObject().serial()));
         REPEAT_FOR_MS(20);
         if (shovel.isDamaged()) break;
       }
@@ -514,27 +490,23 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   }
 }
 
-TEST_CASE("Tool objects lose durability",
-          "[damage-on-use][construction][tool]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Tool objects lose durability",
+                 "[damage-on-use][construction][tool]") {
   GIVEN("a user with a construction tool") {
-    auto data = R"(
+    useData(R"(
       <objectType id="hole" constructionReq="digging" />
       <objectType id="earthMover" maxHealth="10000000" >
         <tag name="digging" />
       </objectType>
-    )";
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-    s.addObject("earthMover", {15, 15});
-    user.addConstruction("hole");
+    )");
+    server->addObject("earthMover", {15, 15});
+    user->addConstruction("hole");
 
     WHEN("many objects are constructed") {
-      const auto &earthMover = s.getFirstObject();
+      const auto &earthMover = server->getFirstObject();
       for (auto i = 0; i != 200; ++i) {
-        c.sendMessage(CL_CONSTRUCT, makeArgs("hole", 10, 15));
-        WAIT_UNTIL(s.entities().size() == i + 2);
+        client->sendMessage(CL_CONSTRUCT, makeArgs("hole", 10, 15));
+        WAIT_UNTIL(server->entities().size() == i + 2);
         if (earthMover.isMissingHealth()) break;
       }
 
@@ -661,47 +633,44 @@ TEST_CASE("Persistence of item health: objects' contents",
   }                                    \
   CHECK((ITEM).isBroken());
 
-TEST_CASE("Broken weapons don't add attack", "[damage-on-use][stats][gear]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Broken weapons don't add attack",
+                 "[damage-on-use][stats][gear]") {
   GIVEN("a weapon that deals 42 damage") {
-    auto data = R"(
+    useData(R"(
       <item id="sword" gearSlot="weapon" class="weapon" >
         <weapon damage="42"  speed="1" />
       </item>
       <itemClass id="weapon">
         <canBeRepaired/>
       </itemClass>
-    )";
-    auto s = TestServer::WithDataString(data);
+    )");
 
     WHEN("a player has one equipped") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
       const auto DEFAULT_DAMAGE = User::OBJECT_TYPE.baseStats().weaponDamage;
 
-      auto &weaponSlot = user.gear(Item::WEAPON);
-      weaponSlot = {&s.getFirstItem(),
-                    ItemReportingInfo::UserGear(&user, Item::WEAPON), 1};
+      auto &weaponSlot = user->gear(Item::WEAPON);
+      weaponSlot = {&server->getFirstItem(),
+                    ItemReportingInfo::UserGear(user, Item::WEAPON), 1};
 
-      user.updateStats();
-      CHECK(user.stats().weaponDamage == 42);
+      user->updateStats();
+      CHECK(user->stats().weaponDamage == 42);
 
       AND_WHEN("it is broken") {
         for (auto i = 0; i != 100000; ++i) {
-          user.onAttack();
+          user->onAttack();
           if (weaponSlot.isBroken()) break;
         }
         CHECK(weaponSlot.isBroken());
 
         THEN("his attack is the baseline User attack") {
-          CHECK(user.stats().weaponDamage == DEFAULT_DAMAGE);
+          CHECK(user->stats().weaponDamage == DEFAULT_DAMAGE);
 
           AND_WHEN("he repairs it") {
-            c.sendMessage(CL_REPAIR_ITEM,
-                          makeArgs(Serial::Gear(), Item::WEAPON));
+            client->sendMessage(CL_REPAIR_ITEM,
+                                makeArgs(Serial::Gear(), Item::WEAPON));
 
             THEN("his attack is higher than the baseline again") {
-              WAIT_UNTIL(user.stats().weaponDamage > DEFAULT_DAMAGE);
+              WAIT_UNTIL(user->stats().weaponDamage > DEFAULT_DAMAGE);
             }
           }
         }
@@ -710,61 +679,54 @@ TEST_CASE("Broken weapons don't add attack", "[damage-on-use][stats][gear]") {
   }
 }
 
-TEST_CASE("Broken shields don't block", "[damage-on-use][stats][gear]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Broken shields don't block",
+                 "[damage-on-use][stats][gear]") {
   GIVEN("a shield") {
-    auto data = R"(
+    useData(R"(
       <item id="shield" gearSlot="offhand" >
         <tag name="shield" />
       </item>
-    )";
-    auto s = TestServer::WithDataString(data);
+    )");
 
     WHEN("a player has one equipped") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-
-      auto &offhand = user.gear(Item::OFFHAND);
-      offhand = {&s.getFirstItem(),
-                 ItemReportingInfo::UserGear(&user, Item::OFFHAND), 1};
-      user.updateStats();
-      CHECK(user.canBlock());
+      auto &offhand = user->gear(Item::OFFHAND);
+      offhand = {&server->getFirstItem(),
+                 ItemReportingInfo::UserGear(user, Item::OFFHAND), 1};
+      user->updateStats();
+      CHECK(user->canBlock());
 
       AND_WHEN("it is broken") {
-        auto &shield = user.gear(Item::OFFHAND);
+        auto &shield = user->gear(Item::OFFHAND);
         BREAK_ITEM(shield);
 
-        THEN("he can't block") { CHECK_FALSE(user.canBlock()); }
+        THEN("he can't block") { CHECK_FALSE(user->canBlock()); }
       }
     }
   }
 }
 
-TEST_CASE("Broken items can't be placed as objects",
-          "[damage-on-use][construction]") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Broken items can't be placed as objects",
+                 "[damage-on-use][construction]") {
   GIVEN("a seed that constructs a tree") {
-    auto data = R"(
+    useData(R"(
       <item id="seed" constructs="tree" />
       <objectType id="tree" constructionTime="1" />
-    )";
-    auto s = TestServer::WithDataString(data);
+    )");
 
     WHEN("a user has a seed") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      user.giveItem(&s.getFirstItem());
+      user->giveItem(&server->getFirstItem());
 
       AND_WHEN("it is broken") {
-        auto &seed = user.inventory(0);
+        auto &seed = user->inventory(0);
         BREAK_ITEM(seed);
 
         AND_WHEN("he tries to construct a tree from it") {
-          c.sendMessage(CL_CONSTRUCT_FROM_ITEM, makeArgs(0, 10, 15));
+          client->sendMessage(CL_CONSTRUCT_FROM_ITEM, makeArgs(0, 10, 15));
 
           THEN("there are no objects") {
             REPEAT_FOR_MS(100);
-            CHECK(s.entities().empty());
+            CHECK(server->entities().empty());
           }
         }
       }
@@ -772,33 +734,30 @@ TEST_CASE("Broken items can't be placed as objects",
   }
 }
 
-TEST_CASE("Broken items can't cast spells", "[damage-on-use][spells]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Broken items can't cast spells",
+                 "[damage-on-use][spells]") {
   GIVEN("a poisoned apple that deals damage to the user") {
-    auto data = R"(
+    useData(R"(
       <item id="poisonedApple" castsSpellOnUse="poison" />
       <spell id="poison" >
         <targets self="1" />
         <function name="doDirectDamage" i1="20" />
       </spell>
-    )";
-    auto s = TestServer::WithDataString(data);
+    )");
 
     WHEN("a user has one") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      user.giveItem(&s.getFirstItem());
+      user->giveItem(&server->getFirstItem());
 
       AND_WHEN("it is broken") {
-        auto &poisonedApple = user.inventory(0);
+        auto &poisonedApple = user->inventory(0);
         BREAK_ITEM(poisonedApple);
 
         AND_WHEN("he tries to use it") {
-          c.sendMessage(CL_CAST_SPELL_FROM_ITEM, "0");
+          client->sendMessage(CL_CAST_SPELL_FROM_ITEM, "0");
 
           THEN("he is still at full health") {
             REPEAT_FOR_MS(100);
-            CHECK(!user.isMissingHealth());
+            CHECK(!user->isMissingHealth());
           }
         }
       }
@@ -806,35 +765,32 @@ TEST_CASE("Broken items can't cast spells", "[damage-on-use][spells]") {
   }
 }
 
-TEST_CASE("Broken items can't be used as construction materials",
-          "[damage-on-use][construction]") {
+TEST_CASE_METHOD(ServerAndClientWithData,
+                 "Broken items can't be used as construction materials",
+                 "[damage-on-use][construction]") {
   GIVEN("a tuffet made out of a rock") {
-    auto data = R"(
+    useData(R"(
       <item id="rock" />
       <objectType id="tuffet" >
         <material id="rock" />
       </objectType>
-    )";
-    auto s = TestServer::WithDataString(data);
+    )");
 
     WHEN("a user has a rock") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
-      auto &user = s.getFirstUser();
-      user.giveItem(&s.getFirstItem());
+      user->giveItem(&server->getFirstItem());
 
       AND_WHEN("he places a tuffet construction site") {
-        c.sendMessage(CL_CONSTRUCT, makeArgs("tuffet", 10, 15));
+        client->sendMessage(CL_CONSTRUCT, makeArgs("tuffet", 10, 15));
 
         AND_WHEN("his rock is broken") {
-          auto &rock = user.inventory(0);
+          auto &rock = user->inventory(0);
           BREAK_ITEM(rock);
 
           AND_WHEN("he tries to use it to build the tuffet") {
-            WAIT_UNTIL(s.entities().size() == 1);
-            const auto &tuffet = s.getFirstObject();
-            c.sendMessage(CL_SWAP_ITEMS,
-                          makeArgs(Serial::Inventory(), 0, tuffet.serial(), 0));
+            WAIT_UNTIL(server->entities().size() == 1);
+            const auto &tuffet = server->getFirstObject();
+            client->sendMessage(CL_SWAP_ITEMS, makeArgs(Serial::Inventory(), 0,
+                                                        tuffet.serial(), 0));
 
             THEN("the tuffet is not finished") {
               REPEAT_FOR_MS(100);

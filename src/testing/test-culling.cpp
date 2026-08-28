@@ -1,7 +1,7 @@
 #include "TestClient.h"
 #include "TestFixtures.h"
-#include "TestServer.h"
 #include "testing.h"
+#include "TestServer.h"
 
 TEST_CASE("Connecting players are told about their distant objects",
           "[.flaky][persistence][permissions]") {
@@ -122,58 +122,52 @@ TEST_CASE_METHOD(ServerAndClientWithDataFiles,
   }
 }
 
-TEST_CASE("New citizens find out about city objects", "[city][permissions]") {
+TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+                 "New citizens find out about city objects",
+                 "[city][permissions]") {
   GIVEN("a city object far away from a player") {
-    auto s = TestServer::WithData("signpost");
-    auto c = TestClient::WithData("signpost");
+    useData("signpost");
 
-    s.cities().createCity("Athens", {}, {});
-    s.addObject("signpost", {1000, 1000}, {Permissions::Owner::CITY, "Athens"});
+    server->cities().createCity("Athens", {}, {});
+    server->addObject("signpost", {1000, 1000},
+                      {Permissions::Owner::CITY, "Athens"});
 
     THEN("the player doesn't know about the object") {
-      s.waitForUsers(1);
       REPEAT_FOR_MS(100);
-      CHECK(c.objects().empty());
+      CHECK(client->objects().empty());
 
       AND_WHEN("the player joins the city") {
-        s.cities().addPlayerToCity(s.getFirstUser(), "Athens");
+        server->cities().addPlayerToCity(*user, "Athens");
 
         THEN("he knows about the object") {
-          WAIT_UNTIL(c.objects().size() == 1);
+          WAIT_UNTIL(client->objects().size() == 1);
         }
       }
     }
   }
 }
 
-TEST_CASE("Unwatching NPCs", "[.flaky]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Unwatching NPCs", "[.flaky]") {
   GIVEN("an NPC with a window") {
-    auto data = R"(
+    useData(R"(
       <npcType id="questgiver" />
       <quest id="quest1" startsAt="questgiver" endsAt="questgiver" />
-    )";
-    auto s = TestServer::WithDataString(data);
-    s.addNPC("questgiver", {10, 15});
+    )");
+    server->addNPC("questgiver", {10, 15});
 
-    WHEN("a user logs in") {
-      auto c = TestClient::WithDataString(data);
-      s.waitForUsers(1);
+    WHEN("a user finds out about the NPC") {
+      WAIT_UNTIL(client->objects().size() == 1);
+      auto &clientNPC = client->getFirstNPC();
 
-      AND_WHEN("he finds out about the NPC") {
-        WAIT_UNTIL(c.objects().size() == 1);
-        auto &clientNPC = c.getFirstNPC();
+      AND_WHEN("he opens the window") {
+        clientNPC.onRightClick();
+        CHECK(clientNPC.window());
 
-        AND_WHEN("he opens the window") {
-          clientNPC.onRightClick();
-          CHECK(clientNPC.window());
+        AND_WHEN("he moves away from the NPC") {
+          user->teleportTo({200, 200});
 
-          AND_WHEN("he moves away from the NPC") {
-            auto &user = s.getFirstUser();
-            user.teleportTo({200, 200});
-
-            THEN("there is no error message") {
-              CHECK_FALSE(c.waitForMessage(WARNING_DOESNT_EXIST));
-            }
+          THEN("there is no error message") {
+            CHECK_FALSE(client->waitForMessage(WARNING_DOESNT_EXIST));
           }
         }
       }
@@ -181,25 +175,24 @@ TEST_CASE("Unwatching NPCs", "[.flaky]") {
   }
 }
 
-TEST_CASE("Out-of-range objects are forgotten", "[.slow]") {
+TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+                 "Out-of-range objects are forgotten", "[.slow]") {
   // Given a server and client with signpost objects;
-  TestServer s = TestServer::WithData("signpost");
-  TestClient c = TestClient::WithData("signpost");
+  useData("signpost");
 
   // And a signpost near the user spawn
-  s.addObject("signpost", {10, 15});
+  server->addObject("signpost", {10, 15});
 
   // And the client is aware of it
-  s.waitForUsers(1);
-  WAIT_UNTIL(c.objects().size() == 1);
+  WAIT_UNTIL(client->objects().size() == 1);
 
   // When the client moves out of range of the signpost
-  while (c->character().location().x < 1000) {
-    c.sendMessage(CL_MOVE_TO, makeArgs(1010, 10));
+  while ((*client)->character().location().x < 1000) {
+    client->sendMessage(CL_MOVE_TO, makeArgs(1010, 10));
 
     // Then he is no longer aware of it
-    if (c.objects().size() == 0) break;
+    if (client->objects().size() == 0) break;
     SDL_Delay(5);
   }
-  CHECK(c.objects().size() == 0);
+  CHECK(client->objects().size() == 0);
 }

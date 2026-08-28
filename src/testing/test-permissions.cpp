@@ -1,7 +1,7 @@
 #include "TestClient.h"
 #include "TestFixtures.h"
-#include "TestServer.h"
 #include "testing.h"
+#include "TestServer.h"
 
 TEST_CASE("Objects have no owner by default", "[permissions]") {
   // When a basic object is created
@@ -14,82 +14,80 @@ TEST_CASE("Objects have no owner by default", "[permissions]") {
   CHECK_FALSE(rock.permissions.hasOwner());
 }
 
-TEST_CASE("Constructing an object grants ownership",
-          "[permissions][construction]") {
-  GIVEN("a logged-in client") {
-    TestServer s = TestServer::WithData("brick_wall");
-    TestClient c = TestClient::WithData("brick_wall");
-    s.waitForUsers(1);
+TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+                 "Constructing an object grants ownership",
+                 "[permissions][construction]") {
+  useData("brick_wall");
 
+  GIVEN("a logged-in client") {
     WHEN("he constructs a wall") {
-      c.sendMessage(CL_CONSTRUCT, makeArgs("wall", 10, 15));
-      WAIT_UNTIL(s.entities().size() == 1);
+      client->sendMessage(CL_CONSTRUCT, makeArgs("wall", 10, 15));
+      WAIT_UNTIL(server->entities().size() == 1);
 
       THEN("he is the wall's owner") {
-        Object &wall = s.getFirstObject();
+        Object &wall = server->getFirstObject();
         CHECK(wall.permissions.hasOwner());
-        CHECK(wall.permissions.isOwnedByPlayer(c->username()));
+        CHECK(wall.permissions.isOwnedByPlayer(client->name()));
       }
     }
   }
 }
 
-TEST_CASE("Public-access objects", "[permissions][gathering]") {
+TEST_CASE_METHOD(ServerAndClientWithDataFiles, "Public-access objects",
+                 "[permissions][gathering]") {
+  useData("basic_rock");
+
   // Given a rock with no owner
-  TestServer s = TestServer::WithData("basic_rock");
-  TestClient c = TestClient::WithData("basic_rock");
-  const auto &rock = s.addObject("rock", {10, 10});
-  WAIT_UNTIL(c.objects().size() == 1);
+  const auto &rock = server->addObject("rock", {10, 10});
+  WAIT_UNTIL(client->objects().size() == 1);
 
   // When a user attempts to gather it
-  c.sendMessage(CL_GATHER, makeArgs(rock.serial()));
+  client->sendMessage(CL_GATHER, makeArgs(rock.serial()));
 
   // Then he gathers, receives a rock item, and the rock object disapears
-  User &user = s.getFirstUser();
-  WAIT_UNTIL((user.action() == User::Action::GATHER));
-  WAIT_UNTIL((user.action() == User::Action::NO_ACTION));
-  WAIT_UNTIL_TIMEOUT(s.entities().empty(), 200);
-  const Item &rockItem = s.getFirstItem();
-  WAIT_UNTIL_TIMEOUT(user.inventory()[0].type() == &rockItem, 200);
+  WAIT_UNTIL((user->action() == User::Action::GATHER));
+  WAIT_UNTIL((user->action() == User::Action::NO_ACTION));
+  WAIT_UNTIL_TIMEOUT(server->entities().empty(), 200);
+  const Item &rockItem = server->getFirstItem();
+  WAIT_UNTIL_TIMEOUT(user->inventory()[0].type() == &rockItem, 200);
 }
 
-TEST_CASE("The owner can access an owned object", "[permissions][gathering]") {
-  // Given a rock owned by a user
-  TestServer s = TestServer::WithData("basic_rock");
-  TestClient c = TestClient::WithData("basic_rock");
-  s.waitForUsers(1);
-  User &user = s.getFirstUser();
-  const auto &rock = s.addObject("rock", {10, 10}, user.name());
-  WAIT_UNTIL(c.objects().size() == 1);
+TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+                 "The owner can access an owned object",
+                 "[permissions][gathering]") {
+  useData("basic_rock");
+
+  // Given a rock owned by the user
+  const auto &rock = server->addObject("rock", {10, 10}, user->name());
+  WAIT_UNTIL(client->objects().size() == 1);
 
   // When he attempts to gather it
-  c.sendMessage(CL_GATHER, makeArgs(rock.serial()));
+  client->sendMessage(CL_GATHER, makeArgs(rock.serial()));
 
   // Then he gathers, receives a rock item, and the object disapears
-  WAIT_UNTIL((user.action() == User::Action::GATHER));
-  WAIT_UNTIL((user.action() == User::Action::NO_ACTION));
-  WAIT_UNTIL_TIMEOUT(s.entities().empty(), 200);
-  const Item &rockItem = s.getFirstItem();
-  WAIT_UNTIL_TIMEOUT(user.inventory()[0].type() == &rockItem, 200);
+  WAIT_UNTIL((user->action() == User::Action::GATHER));
+  WAIT_UNTIL((user->action() == User::Action::NO_ACTION));
+  WAIT_UNTIL_TIMEOUT(server->entities().empty(), 200);
+  const Item &rockItem = server->getFirstItem();
+  WAIT_UNTIL_TIMEOUT(user->inventory()[0].type() == &rockItem, 200);
 }
 
-TEST_CASE("A non-owner cannot access an owned object",
-          "[permissions][gathering]") {
+TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+                 "A non-owner cannot access an owned object",
+                 "[permissions][gathering]") {
   GIVEN("a rock owned by Alice") {
-    TestServer s = TestServer::WithData("basic_rock");
-    auto &rock = s.addObject("rock", {10, 10});
+    useData("basic_rock");
+    auto &rock = server->addObject("rock", {10, 10});
     rock.permissions.setPlayerOwner("Alice");
 
     WHEN("a different user attempts to gather it") {
-      TestClient c = TestClient::WithData("basic_rock");
-      WAIT_UNTIL(c.objects().size() == 1);
-      c.sendMessage(CL_GATHER, makeArgs(rock.serial()));
+      WAIT_UNTIL(client->objects().size() == 1);
+      client->sendMessage(CL_GATHER, makeArgs(rock.serial()));
       REPEAT_FOR_MS(500);
 
       THEN("the rock remains, and his inventory remains empty") {
-        CHECK_FALSE(s.entities().empty());
-        User &user = s.getFirstUser();
-        CHECK_FALSE(user.inventory()[0].hasItem());
+        CHECK_FALSE(server->entities().empty());
+        CHECK_FALSE(user->inventory()[0].hasItem());
       }
     }
   }
@@ -130,57 +128,54 @@ TEST_CASE("City ownership is persistent", "[city][permissions][persistence]") {
   CHECK(rock.permissions.isOwnedByCity("Athens"));
 }
 
-TEST_CASE("City members can use city objects",
-          "[city][permissions][gathering]") {
-  // Given a rock owned by Athens;
-  TestServer s = TestServer::WithData("basic_rock");
-  s.cities().createCity("Athens", {}, {});
-  s.addObject("rock", {10, 10});
-  Object &rock = s.getFirstObject();
+TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+                 "City members can use city objects",
+                 "[city][permissions][gathering]") {
+  useData("basic_rock");
+
+  // Given a rock owned by Athens
+  server->cities().createCity("Athens", {}, {});
+  server->addObject("rock", {10, 10});
+  Object &rock = server->getFirstObject();
   rock.permissions.setCityOwner("Athens");
-  // And a client, who is a member of Athens
-  TestClient c = TestClient::WithData("basic_rock");
-  s.waitForUsers(1);
-  User &user = s.getFirstUser();
-  s.cities().addPlayerToCity(user, "Athens");
+
+  // And the user is a member of Athens
+  server->cities().addPlayerToCity(*user, "Athens");
 
   // When he attempts to gather the rock
-  WAIT_UNTIL(c.objects().size() == 1);
-  c.sendMessage(CL_GATHER, makeArgs(rock.serial()));
+  WAIT_UNTIL(client->objects().size() == 1);
+  client->sendMessage(CL_GATHER, makeArgs(rock.serial()));
 
   // Then he gathers;
-  WAIT_UNTIL((user.action() == User::Action::GATHER));
-  WAIT_UNTIL((user.action() == User::Action::NO_ACTION));
+  WAIT_UNTIL((user->action() == User::Action::GATHER));
+  WAIT_UNTIL((user->action() == User::Action::NO_ACTION));
   // And he receives a Rock item;
-  const Item &rockItem = s.getFirstItem();
-  WAIT_UNTIL_TIMEOUT(user.inventory()[0].type() == &rockItem, 200);
+  const Item &rockItem = server->getFirstItem();
+  WAIT_UNTIL_TIMEOUT(user->inventory()[0].type() == &rockItem, 200);
   // And the Rock object disappears
-  WAIT_UNTIL_TIMEOUT(s.entities().empty(), 200);
+  WAIT_UNTIL_TIMEOUT(server->entities().empty(), 200);
 }
 
-TEST_CASE("Non-members cannot use city objects",
-          "[city][permissions][gathering]") {
+TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+                 "Non-members cannot use city objects",
+                 "[city][permissions][gathering]") {
   GIVEN("a rock owned by Athens") {
-    TestServer s = TestServer::WithData("basic_rock");
-    TestClient c = TestClient::WithData("basic_rock");
+    useData("basic_rock");
 
-    s.cities().createCity("Athens", {}, {});
-    s.addObject("rock", {10, 10});
-    Object &rock = s.getFirstObject();
+    server->cities().createCity("Athens", {}, {});
+    server->addObject("rock", {10, 10});
+    Object &rock = server->getFirstObject();
     rock.permissions.setCityOwner("Athens");
 
-    s.waitForUsers(1);
-
     WHEN("a user attempts to gather the rock") {
-      c.sendMessage(CL_GATHER, makeArgs(rock.serial()));
+      client->sendMessage(CL_GATHER, makeArgs(rock.serial()));
       REPEAT_FOR_MS(500);
 
       THEN("the rock remains") {
-        CHECK_FALSE(s.entities().empty());
+        CHECK_FALSE(server->entities().empty());
 
         AND_THEN("his inventory is empty") {
-          User &user = s.getFirstUser();
-          CHECK_FALSE(user.inventory()[0].hasItem());
+          CHECK_FALSE(user->inventory()[0].hasItem());
         }
       }
     }
@@ -380,19 +375,22 @@ TEST_CASE_METHOD(TwoClientsWithData, "Giving objects", "[permissions][city]") {
   }
 }
 
-TEST_CASE("New object permissions are propagated to clients", "[permissions]") {
+TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+                 "New object permissions are propagated to clients",
+                 "[permissions]") {
   GIVEN("an unowned Rock object") {
-    auto s = TestServer::WithData("basic_rock");
-    auto c = TestClient::WithData("basic_rock");
+    useData("basic_rock");
 
-    s.addObject("rock");
-    WAIT_UNTIL(c.objects().size() == 1);
+    server->addObject("rock");
+    WAIT_UNTIL(client->objects().size() == 1);
 
     WHEN("the rock's owner is set to the user") {
-      auto &rock = s.getFirstObject();
-      rock.permissions.setPlayerOwner(c->username());
+      auto &rock = server->getFirstObject();
+      rock.permissions.setPlayerOwner(client->name());
 
-      THEN("he finds out") { WAIT_UNTIL(c.getFirstObject().belongsToPlayer()); }
+      THEN("he finds out") {
+        WAIT_UNTIL(client->getFirstObject().belongsToPlayer());
+      }
     }
   }
 }

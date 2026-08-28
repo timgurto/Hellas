@@ -1,7 +1,7 @@
 #include "TestClient.h"
 #include "TestFixtures.h"
-#include "TestServer.h"
 #include "testing.h"
+#include "TestServer.h"
 
 TEST_CASE("A user can't build multiple player-unique objects",
           "[construction][player-unique]") {
@@ -125,136 +125,117 @@ TEST_CASE("Clients can discern player-uniqueness", "[player-unique]") {
   }
 }
 
-TEST_CASE("End-of-tutorial altar", "[death][object-action]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "End-of-tutorial altar",
+                 "[death][object-action]") {
   GIVEN("an altar that ends the tutorial, and a user next to it") {
-    auto data = R"(
+    useData(R"(
       <objectType id="altar">
         <action target="endTutorial" />
       </objectType>
       <postTutorialSpawn x="20" y="20" />
-    )";
+    )");
 
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
+    server->addObject("altar", {10, 15});
+    const auto &altar = server->getFirstObject();
 
-    s.addObject("altar", {10, 15});
-    const auto &altar = s.getFirstObject();
-
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-
-    auto oldLocation = user.location();
+    auto oldLocation = user->location();
     const auto expectedLocation = MapPoint{20, 20};
 
-    THEN("an altar can be added") { s.addObject("altar", {10, 15}); }
+    THEN("an altar can be added") { server->addObject("altar", {10, 15}); }
 
-    WHEN("a user worships there") {
-      c.sendMessage(CL_PERFORM_OBJECT_ACTION, makeArgs(altar.serial(), "_"s));
+    WHEN("the user worships there") {
+      client->sendMessage(CL_PERFORM_OBJECT_ACTION,
+                          makeArgs(altar.serial(), "_"s));
       REPEAT_FOR_MS(100);
 
       THEN("he is at the new specified location") {
-        CHECK(user.location() != oldLocation);
-        CHECK(user.location() == expectedLocation);
+        CHECK(user->location() != oldLocation);
+        CHECK(user->location() == expectedLocation);
       }
 
       AND_WHEN("he dies") {
-        user.reduceHealth(user.health());
+        user->reduceHealth(user->health());
 
         THEN("he respawns at the new location") {
           REPEAT_FOR_MS(100);
-          CHECK(user.location() == expectedLocation);
+          CHECK(user->location() == expectedLocation);
         }
       }
     }
   }
 
   GIVEN("a different post-tutorial location, (30, 30)") {
-    auto data = R"(
+    useData(R"(
       <objectType id="altar">
         <action target="endTutorial" />
       </objectType>
       <postTutorialSpawn x="30" y="30" />
-    )";
+    )");
 
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-
-    s.addObject("altar", {10, 15});
-    const auto &altar = s.getFirstObject();
-
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
+    server->addObject("altar", {10, 15});
+    const auto &altar = server->getFirstObject();
 
     const auto expectedLocation = MapPoint{30, 30};
 
     WHEN("a user worships at the altar") {
-      c.sendMessage(CL_PERFORM_OBJECT_ACTION, makeArgs(altar.serial(), "_"s));
+      client->sendMessage(CL_PERFORM_OBJECT_ACTION,
+                          makeArgs(altar.serial(), "_"s));
 
       THEN("he is at (30, 30)") {
-        WAIT_UNTIL(user.location() == expectedLocation);
+        WAIT_UNTIL(user->location() == expectedLocation);
       }
     }
   }
 
   GIVEN("a cost") {
-    auto data = R"(
+    useData(R"(
       <objectType id="altar">
         <action target="endTutorial" cost="coin" />
       </objectType>
       <item id="coin" />
-    )";
+    )");
 
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
-
-    s.addObject("altar", {10, 15});
-    const auto &altar = s.getFirstObject();
-
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
+    server->addObject("altar", {10, 15});
+    const auto &altar = server->getFirstObject();
 
     WHEN("the user has the required item") {
-      user.giveItem(&s.getFirstItem());
+      user->giveItem(&server->getFirstItem());
 
       AND_WHEN("he worships at the altar") {
-        c.sendMessage(CL_PERFORM_OBJECT_ACTION, makeArgs(altar.serial(), "_"s));
+        client->sendMessage(CL_PERFORM_OBJECT_ACTION,
+                            makeArgs(altar.serial(), "_"s));
 
-        THEN("he the server survives") {
+        THEN("the server survives") {
           REPEAT_FOR_MS(100);
-          s.nop();
+          server->nop();
         }
       }
     }
   }
 
   GIVEN("the user owns an object") {
-    auto data = R"(
+    useData(R"(
       <objectType id="altar">
         <action target="endTutorial" />
       </objectType>
       <objectType id="house" />
       <item id="coin" />
-    )";
+    )");
 
-    auto s = TestServer::WithDataString(data);
-    auto c = TestClient::WithDataString(data);
+    server->addObject("altar", {10, 15});
+    const auto &altar = server->getFirstObject();
 
-    s.addObject("altar", {10, 15});
-    const auto &altar = s.getFirstObject();
-
-    s.waitForUsers(1);
-    auto &user = s.getFirstUser();
-
-    s.addObject("house", {5, 5}, user.name());
+    server->addObject("house", {5, 5}, user->name());
 
     WHEN("he worships at the altar") {
-      c.sendMessage(CL_PERFORM_OBJECT_ACTION, makeArgs(altar.serial(), "_"s));
+      client->sendMessage(CL_PERFORM_OBJECT_ACTION,
+                          makeArgs(altar.serial(), "_"s));
 
       THEN("he owns no objects") {
         REPEAT_FOR_MS(100);
         const auto &objectsOwnedByUser =
-            s.objectsByOwner().getObjectsWithSpecificOwner(
-                {Permissions::Owner::PLAYER, user.name()});
+            server->objectsByOwner().getObjectsWithSpecificOwner(
+                {Permissions::Owner::PLAYER, user->name()});
         CHECK(objectsOwnedByUser.size() == 0);
       }
     }
