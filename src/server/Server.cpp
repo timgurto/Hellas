@@ -81,6 +81,8 @@ Server::Server()
   /*_debug << "Server address: " << inet_ntoa(serverAddr.sin_addr) << ":"
          << ntohs(serverAddr.sin_port) << Log::endl;*/
   _socket.listen();
+
+  startMessageSendingThread();
 }
 
 Server::~Server() {
@@ -290,6 +292,31 @@ void Server::onDayChange() {
   }
 }
 
+bool Server::queueHasMessages() const {
+  std::lock_guard<std::mutex> lock(outgoingMessageQueueMutex);
+  return !_outgoingMessages.empty();
+}
+
+void Server::startMessageSendingThread() {
+  std::thread{[this]() {
+    while (true) {
+      if (queueHasMessages()) {
+        do {
+          {
+            std::lock_guard<std::mutex> lock(outgoingMessageQueueMutex);
+            if (_outgoingMessages.empty()) break;
+            const auto addressedMessage = _outgoingMessages.front();
+            addressedMessage.destination.sendMessage(addressedMessage.message);
+            _outgoingMessages.pop();
+          }
+          std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        } while (queueHasMessages());
+      }
+      std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
+  }}.detach();
+}
+
 void Server::addUser(const Socket &socket, const std::string &name,
                      const std::string &pwHash, const std::string &classID) {
   auto newUserToInsert = User{name, {}, &socket};
@@ -458,7 +485,7 @@ void Server::addUser(const Socket &socket, const std::string &name,
 #endif
   if (shouldGiveDailyReward) newUser.onDayChange();
 
-  newUser.sendMessage({SV_LOGIN_INFO_HAS_FINISHED});
+  newUser.sendMessage({SV_DONE_LOADING_AFTER_LOGIN});
 }
 
 void Server::removeUser(const std::set<User>::iterator &it) {

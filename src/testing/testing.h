@@ -28,4 +28,10 @@
     CHECK(difference < epsilon);                      \
   }
 
+#define Given(S) INFO("GIVEN " S);
+#define AndGiven(S) INFO("AND GIVEN " S);
+#define When(S) INFO("WHEN " S);
+#define AndWhen(S) INFO("AND WHEN " S);
+#define Then(S) INFO("THEN " S);
+
 #endif

@@ -3,18 +3,18 @@
 <objectHealthCategory id="primitiveWeak"    level="5"  maxHealth="150" />
 <objectHealthCategory id="primitive"        level="5"  maxHealth="700" />
 <objectHealthCategory id="primitiveHouse"   level="5"  maxHealth="2900" />
-										    
+
 <objectHealthCategory id="logVehicle"       level="10" maxHealth="75" />
 <objectHealthCategory id="logWeak"          level="10" maxHealth="200" />
 <objectHealthCategory id="log"              level="10" maxHealth="1000" />
 <objectHealthCategory id="logHouse"         level="10" maxHealth="4200" />
 <objectHealthCategory id="logWall"          level="10" maxHealth="6400" />
-										    
+
 <objectHealthCategory id="lumberVehicle"    level="20" maxHealth="175" />
 <objectHealthCategory id="lumberWeak"       level="20" maxHealth="500" />
 <objectHealthCategory id="lumber"           level="20" maxHealth="2500" />
 <objectHealthCategory id="lumberHouse"      level="20" maxHealth="10000" />
-										    
+
 <objectHealthCategory id="brickWeak"        level="30" maxHealth="1200" />
 <objectHealthCategory id="brick"            level="30" maxHealth="6500" />
 <objectHealthCategory id="brickHouse"       level="30" maxHealth="25000" />

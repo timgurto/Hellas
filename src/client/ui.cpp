@@ -85,6 +85,10 @@ void Client::initUI() {
   addUI(_instructionsLabel);
 
   createCraftingWindowFilters();
+
+  _postLoginLoadingText =
+      new Label(ScreenRect(0, 0, SCREEN_X, SCREEN_Y), "",
+                Element::CENTER_JUSTIFIED, Element::CENTER_JUSTIFIED);
 }
 
 void Client::initChatLog() {

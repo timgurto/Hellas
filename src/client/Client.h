@@ -496,6 +496,9 @@ class Client : public TextEntryManager {
     List *releaseNotes{nullptr};
   } loginScreenElements;
 
+  Label *_postLoginLoadingText{nullptr};
+  void setPostLoginLoadingText(MessageCode msg);
+
   // These are superficial, and relate only to the cast bar.
   ms_t _actionTimer{0};        // How long the character has been performing the
                                // current action.
@@ -592,6 +595,7 @@ class Client : public TextEntryManager {
   unsigned _fps{0};
 
   bool _loggedIn{false};
+  bool loggedIn() const { return _loggedIn; }
   // Whether the client has sufficient information to begin
   bool _loaded{false};
 

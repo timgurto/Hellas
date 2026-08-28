@@ -289,8 +289,15 @@ enum MessageCode {
   // The client has been successfully registered
   SV_WELCOME,
 
+  // The client should go into a "loading" mode, since it's about to receive a
+  // lot of info.  Not for login.
+  SV_START_LOADING,
+
+  // Loading mode is finished
+  SV_DONE_LOADING,
+
   // The client has received all on-login info, and can hide the loading screen.
-  SV_LOGIN_INFO_HAS_FINISHED,
+  SV_DONE_LOADING_AFTER_LOGIN,
 
   // You have played for ... seconds
   SV_TIME_PLAYED,

@@ -16,7 +16,8 @@ void Client::draw() const {
   if (!_loggedIn || !_loaded) {
     renderer.setDrawColor(Color::BLACK);
     renderer.clear();
-    _chatLog->draw();
+    _postLoginLoadingText->draw();
+    //_chatLog->draw();
     renderer.present();
     return;
   }

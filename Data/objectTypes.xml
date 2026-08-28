@@ -16,7 +16,7 @@
     <yield id="rock" />
 </objectType>
 
-<objectType id="tree" name="Pine Tree"
+<objectType id="tree" name="Pine Tree" healthCategory="logWeak"
     xDrawOffset="-21" yDrawOffset="-96"
     canGather="1" sounds="tree" gatherParticles="tree" damageParticles="tree" gatherReq="woodcutting" gatherTime="3000"
     allowedTerrain="fertile" >
@@ -28,7 +28,7 @@
 <objectType id="dummyTree" name="Pine Tree" xDrawOffset="-21" yDrawOffset="-96" imageFile="tree" allowedTerrain="tutSticks" isDecoration="1">
     <collisionRect x="-5" y="-4" w="10" h="7" />
 </objectType>
-<objectType id="pineSapling" name="Pine Sapling"
+<objectType id="pineSapling" name="Pine Sapling" healthCategory="logWeak"
     allowedTerrain="fertile"
     xDrawOffset="-5" yDrawOffset="-12" >
     <collisionRect x="-5" y="-4" w="10" h="7" />
@@ -45,6 +45,7 @@
     <particles profile="fire" x="0" y="-6" />
     <particles profile="smoke" x="0" y="-10" />
     <unlockedBy />
+	<canBeRepaired cost="stick" />
 </objectType>
         <objectType id="decoFire" isDecoration="1"
             xDrawOffset="-10" yDrawOffset="-7" imageFile="fire" >

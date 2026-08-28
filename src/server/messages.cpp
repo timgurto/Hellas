@@ -5,10 +5,10 @@
 #include "../versionUtil.h"
 #include "DroppedItem.h"
 #include "Groups.h"
-#include "objects/Deconstruction.h"
 #include "ProgressLock.h"
 #include "Server.h"
 #include "Vehicle.h"
+#include "objects/Deconstruction.h"
 
 #define READ_ARGS(...)                                      \
   auto messageWasWellFormed = parser.readArgs(__VA_ARGS__); \
@@ -482,8 +482,6 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
   if (from.hasWarning()) RETURN_WITH(from.warning)
   auto to = getContainer(user, obj2);
   if (to.hasWarning()) RETURN_WITH(from.warning)
-  assert(from.object);
-  assert(to.object);
 
   if (!from.container) RETURN_WITH(ERROR_NO_INVENTORY);
 
@@ -661,13 +659,13 @@ HANDLE_MESSAGE(CL_SWAP_ITEMS) {
   // Alert relevant users
   if (obj1.isInventory() || obj1.isGear())
     sendInventoryMessage(user, slot1, obj1);
-  else
+  else if (from.object)
     from.object->tellRelevantUsersAboutInventorySlot(slot1);
 
   if (obj2.isInventory() || obj2.isGear()) {
     sendInventoryMessage(user, slot2, obj2);
     ProgressLock::triggerUnlocks(user, ProgressLock::ITEM, toItem.type());
-  } else
+  } else if (to.object)
     to.object->tellRelevantUsersAboutInventorySlot(slot2);
 
   // Remove newly empty containers for whom that is a rule
@@ -2178,8 +2176,10 @@ void Server::broadcastToGroup(Username aMember, const Message &msg) {
   }
 }
 
+// Innermost
 void Server::sendMessage(const Socket &dstSocket, const Message &msg) const {
-  _socket.sendMessage(msg, dstSocket);
+  std::lock_guard<std::mutex> lock(outgoingMessageQueueMutex);
+  _outgoingMessages.push({msg, dstSocket});
 }
 
 void Server::sendMessageIfOnline(const std::string username,
@@ -2295,11 +2295,12 @@ void Server::alertUserToWar(const std::string &username,
   sendMessage(it->second->socket(), {code, otherBelligerent.name});
 }
 
-void Server::sendRelevantEntitiesToUser(const User &user) {
+void Server::sendRelevantEntitiesToUser(const User &user,
+                                        RelevantEntitiesFilter filter) {
   std::set<const Entity *>
       entitiesToDescribe;  // Multiple sources; a set ensures no duplicates.
 
-  // (Nearby)
+  // Proximity
   const MapPoint &loc = user.location();
   auto loX =
       _entitiesByX.lower_bound(&Dummy::Location(loc.x - CULL_DISTANCE, 0));
@@ -2312,37 +2313,58 @@ void Server::sendRelevantEntitiesToUser(const User &user) {
       continue;
     const auto *asObj = dynamic_cast<const Object *>(entity);
 
-    // If owned, it will get picked up in the next section.
-    if (asObj && asObj->objType().isHidden()) continue;
+    if (asObj) {
+      // If owned, it will get picked up in the next section.
+      if (asObj->objType().isHidden()) continue;
+
+      // Exclude if owned (and not sharing based on ownership) since the user
+      // will already know about it
+      if (filter == SkipIfOwned) {
+        // Direct ownership
+        const auto userOwnsDirectly = _objectsByOwner.isObjectOwnedBy(
+            asObj->serial(), {Permissions::Owner::PLAYER, user.name()});
+        if (userOwnsDirectly) continue;
+
+        // Indirect ownership
+        if (_cities.isPlayerInACity(user.name())) {
+          const auto cityOwns = _objectsByOwner.isObjectOwnedBy(
+              asObj->serial(),
+              {Permissions::Owner::CITY, _cities.getPlayerCity(user.name())});
+          if (cityOwns) continue;
+        }
+      }
+    }
 
     entitiesToDescribe.insert(entity);
   }
 
-  // (Owned objects)
-  for (auto pEntity : _entities) {
-    if (pEntity->spawner()) continue;  // Optimisation and assumption
+  // Ownership
+  if (filter != SkipIfOwned) {
+    for (auto pEntity : _entities) {
+      if (pEntity->spawner()) continue;  // Optimisation and assumption
 
-    // Player owns directly
-    auto userOwnsThisObject = _objectsByOwner.isObjectOwnedBy(
-        pEntity->serial(), {Permissions::Owner::PLAYER, user.name()});
-    if (userOwnsThisObject) {
-      entitiesToDescribe.insert(pEntity);
+      // Player owns directly
+      auto userOwnsThisObject = _objectsByOwner.isObjectOwnedBy(
+          pEntity->serial(), {Permissions::Owner::PLAYER, user.name()});
+      if (userOwnsThisObject) {
+        entitiesToDescribe.insert(pEntity);
 
-      // Object-specific stuff
-      // Not part of sending info, but done here while we're looping through
-      auto *pObject = dynamic_cast<const Object *>(pEntity);
-      if (pObject && !pEntity->isDead())
-        user.registerObjectIfPlayerUnique(pObject->objType());
+        // Object-specific stuff
+        // Not part of sending info, but done here while we're looping through
+        auto *pObject = dynamic_cast<const Object *>(pEntity);
+        if (pObject && !pEntity->isDead())
+          user.registerObjectIfPlayerUnique(pObject->objType());
 
-      continue;
+        continue;
+      }
+
+      // City owns
+      if (!_cities.isPlayerInACity(user.name())) continue;
+      auto cityOwnsThisObject = _objectsByOwner.isObjectOwnedBy(
+          pEntity->serial(),
+          {Permissions::Owner::CITY, _cities.getPlayerCity(user.name())});
+      if (cityOwnsThisObject) entitiesToDescribe.insert(pEntity);
     }
-
-    // City owns
-    if (!_cities.isPlayerInACity(user.name())) continue;
-    auto cityOwnsThisObject = _objectsByOwner.isObjectOwnedBy(
-        pEntity->serial(),
-        {Permissions::Owner::CITY, _cities.getPlayerCity(user.name())});
-    if (cityOwnsThisObject) entitiesToDescribe.insert(pEntity);
   }
 
   // Send

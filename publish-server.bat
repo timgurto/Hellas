@@ -1,14 +1,13 @@
 @echo off
 
 rem Copy files
-copy server.exe "F:\Permanent\Hellas production server\"
-copy SDL2.dll "F:\Permanent\Hellas production server\"
-copy libcurl.dll "F:\Permanent\Hellas production server\"
-xcopy Data "F:\Permanent\Hellas production server\Data\" /E /Y
-xcopy logging "F:\Permanent\Hellas production server\logging\" /E /Y /EXCLUDE:*.csv
-xcopy Images\Items "F:\Permanent\Hellas production server\Images\Items\" /E /Y
+copy server.exe "C:\Hellas production server\"
+copy SDL2.dll "C:\Hellas production server\"
+copy libcurl.dll "C:\Hellas production server\"
+xcopy Data "C:\Hellas production server\Data\" /E /Y
+xcopy logging "C:\Hellas production server\logging\" /E /Y /EXCLUDE:*.csv
+xcopy Images\Items "C:\Hellas production server\Images\Items\" /E /Y
 
 rem Start server
-F:
-cd "F:\Permanent\Hellas production server"
+cd "C:\Hellas production server"
 launch.bat

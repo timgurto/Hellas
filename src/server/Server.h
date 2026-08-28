@@ -10,10 +10,10 @@
 #include "../Args.h"
 #include "../ItemClass.h"
 #include "../Map.h"
-#include "../messageCodes.h"
 #include "../Socket.h"
 #include "../Terrain.h"
 #include "../TerrainList.h"
+#include "../messageCodes.h"
 #include "Buff.h"
 #include "City.h"
 #include "Class.h"
@@ -24,16 +24,16 @@
 #include "ItemSet.h"
 #include "LogConsole.h"
 #include "NPC.h"
-#include "objects/Object.h"
 #include "ObjectsByOwner.h"
 #include "Quest.h"
+#include "SRecipe.h"
 #include "ServerItem.h"
 #include "Spawner.h"
 #include "Spell.h"
-#include "SRecipe.h"
 #include "Suffix.h"
 #include "User.h"
 #include "Wars.h"
+#include "objects/Object.h"
 
 class Groups;
 
@@ -146,7 +146,9 @@ class Server {
   void alertUserToWar(const std::string &username,
                       const Belligerent &otherBelligerent,
                       bool isUserCityTheBelligerent) const;
-  void sendRelevantEntitiesToUser(const User &user);
+  enum RelevantEntitiesFilter { OwnershipOrProximity, SkipIfOwned };
+  void sendRelevantEntitiesToUser(
+      const User &user, RelevantEntitiesFilter filter = OwnershipOrProximity);
   void sendOnlineUsersTo(const User &recipient) const;
 
   // Getters
@@ -197,6 +199,16 @@ class Server {
   void onDayChange();
 
   Socket _socket;
+
+  struct MessageToSend {
+    Message message;
+    const Socket &destination;
+  };
+  mutable std::queue<MessageToSend>
+      _outgoingMessages;  // Caution: use only with the below mutex
+  mutable std::mutex outgoingMessageQueueMutex;
+  bool queueHasMessages() const;
+  void startMessageSendingThread();
 
   bool _loop{false};
   bool _running{false};  // True while run() is being executed.
