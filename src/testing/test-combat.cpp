@@ -1,8 +1,8 @@
 #include "../client/ClientNPC.h"
 #include "TestClient.h"
 #include "TestFixtures.h"
-#include "TestServer.h"
 #include "testing.h"
+#include "TestServer.h"
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Players can attack immediately",
                  "[combat]") {
@@ -100,10 +100,16 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Attack rate is respected",
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+TEST_CASE_METHOD(ServerAndClientWithData,
                  "Belligerents can attack each other's objects",
                  "[combat][war][permissions]") {
-  useData("vase");
+  // Given a vase object type with 1 health;
+  useData(R"(
+    <item id="china" strength="1" />
+    <objectType id="vase">
+      <strength item="china" quantity="1" />
+    </objectType>
+  )");
 
   // And a vase owned by Alice;
   server->addObject("vase", {10, 15}, "Alice");
@@ -120,11 +126,14 @@ TEST_CASE_METHOD(ServerAndClientWithDataFiles,
   WAIT_UNTIL(vase.health() == 0);
 }
 
-TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+TEST_CASE_METHOD(ServerAndClientWithData,
                  "Players can target distant entities") {
-  useData("wolf");
-
-  // And a wolf NPC on the other side of the map
+  // Given a wolf NPC on the other side of the map
+  useData(R"(
+    <npcType id="wolf" maxHealth="40" attack="1" attackTime="100" >
+      <collisionRect x="0" y="0" w="1" h="1" />
+    </npcType>
+  )");
   server->addNPC("wolf", {200, 200});
   const NPC &wolf = server->getFirstNPC();
   REQUIRE(distance(wolf, *user) > Server::ACTION_DISTANCE);
@@ -171,9 +180,11 @@ TEST_CASE_METHOD(ServerAndClient, "A player dying doesn't crash the server",
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithDataFiles, "Civilian NPCs", "[combat]") {
+TEST_CASE_METHOD(ServerAndClientWithData, "Civilian NPCs", "[combat]") {
   GIVEN("An NPC with \"isCivilian\" and 1 health") {
-    useData("civilian");
+    useData(R"(
+      <npcType id="civilian" maxHealth="1" isCivilian="1" />
+    )");
 
     server->addNPC("civilian", {10, 15});
     WAIT_UNTIL(client->objects().size() == 1);

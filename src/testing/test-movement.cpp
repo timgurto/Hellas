@@ -3,10 +3,15 @@
 #include "testing.h"
 #include "TestServer.h"
 
-TEST_CASE_METHOD(ServerAndClientWithDataFiles, "Thin objects block movement") {
-  useData("thin_wall");
-
-  // And a wall just above the user
+TEST_CASE_METHOD(ServerAndClientWithData, "Thin objects block movement") {
+  // Given a wall just above the user
+  useData(R"(
+    <item id="brick" strength="1" />
+    <objectType id="wall" >
+      <collisionRect x="-5" y="0" w="10" h="1" />
+      <strength item="brick" quantity="1" />
+    </objectType>
+  )");
   server->addObject("wall", {10, 5});
 
   // When the user tries to move up, through the wall
@@ -19,11 +24,15 @@ TEST_CASE_METHOD(ServerAndClientWithDataFiles, "Thin objects block movement") {
   CHECK(user->location().y > 4);
 }
 
-TEST_CASE_METHOD(ServerAndClientWithDataFiles,
-                 "Dead objects don't block movement") {
-  useData("thin_wall");
-
-  // And a wall just above the user;
+TEST_CASE_METHOD(ServerAndClientWithData, "Dead objects don't block movement") {
+  // Given a wall just above the user;
+  useData(R"(
+    <item id="brick" strength="1" />
+    <objectType id="wall" >
+      <collisionRect x="-5" y="0" w="10" h="1" />
+      <strength item="brick" quantity="1" />
+    </objectType>
+  )");
   server->addObject("wall", {10, 5});
 
   // And that wall is dead

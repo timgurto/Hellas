@@ -3,9 +3,14 @@
 #include "testing.h"
 #include "TestServer.h"
 
-TEST_CASE_METHOD(ServerAndClientWithDataFiles, "Gather an item from an object",
+TEST_CASE_METHOD(ServerAndClientWithData, "Gather an item from an object",
                  "[gathering]") {
-  useData("basic_rock");
+  useData(R"(
+    <item id="stone" />
+    <objectType id="rock" canGather="1" gatherTime="100" >
+      <yield id="stone" initialMean="1" initialSD="0" />
+    </objectType>
+  )");
 
   // Add a single rock
   server->addObject("rock", {10, 10});
@@ -64,7 +69,13 @@ TEST_CASE_METHOD(ServerAndClientWithData,
 }
 
 TEST_CASE("Minimum yields", "[gathering]") {
-  auto s = TestServer::WithData("min_apples");
+  auto s = TestServer::WithDataString(R"(
+    <item id="apple" />
+    <objectType id="tree" canGather="1" >
+      <yield id="apple" initialMean="0" initialSD="1" initialMin="1" />
+    </objectType>
+    <spawnPoint index="1" type="tree" quantity="30" radius="150" x="150" y="150" />
+  )");
   for (auto entity : s.entities()) {
     const Object *obj = dynamic_cast<const Object *>(entity);
     CHECK(obj->gatherable.hasItems());

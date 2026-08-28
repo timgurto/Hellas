@@ -3,9 +3,12 @@
 #include "testing.h"
 #include "TestServer.h"
 
-TEST_CASE_METHOD(ServerAndClientWithDataFiles,
-                 "Recipes can be known by default", "[crafting]") {
-  useData("box_from_nothing");
+TEST_CASE_METHOD(ServerAndClientWithData, "Recipes can be known by default",
+                 "[crafting]") {
+  useData(R"(
+    <item id="box" />
+    <recipe id="box" time="100" product="box" />
+  )");
 
   client->sendMessage(CL_CRAFT, makeArgs("box", 1));
   WAIT_UNTIL(user->action() ==
@@ -115,21 +118,29 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Tools can have speed modifiers",
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithDataFiles, "Client sees default recipes",
+TEST_CASE_METHOD(ServerAndClientWithData, "Client sees default recipes",
                  "[crafting]") {
-  useData("box_from_nothing");
+  useData(R"(
+    <item id="box" />
+    <recipe id="box" time="100" product="box" />
+  )");
 
   client->showCraftingWindow();
 
   CHECK(client->recipeList().size() == 1);
 }
 
-TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+TEST_CASE_METHOD(ServerAndClientWithData,
                  "Crafting is allowed if materials will vacate a slot",
                  "[crafting][inventory]") {
-  // Given a server and client;
-  // And items/recipe for meat -> cooked meat;
-  useData("cooking_meat");
+  // Given items/recipe for meat -> cooked meat;
+  useData(R"(
+    <item id="meat" />
+    <item id="cookedMeat" />
+    <recipe id="cookedMeat" time="100" >
+      <material id="meat" />
+    </recipe>
+  )");
 
   // And the user has an inventory full of meat
   const ServerItem &meat = *server->items().find(ServerItem("meat"));

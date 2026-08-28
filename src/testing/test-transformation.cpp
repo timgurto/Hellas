@@ -1,11 +1,14 @@
 #include "TestClient.h"
-#include "TestServer.h"
 #include "testing.h"
+#include "TestServer.h"
 
 TEST_CASE("No erroneous transform messages on login", "[transformation]") {
-  TestServer s = TestServer::WithData("basic_rock");
+  auto data = R"(
+    <objectType id="rock" />
+  )";
+  TestServer s = TestServer::WithDataString(data);
   s.addObject("rock", {20, 20});
-  TestClient c = TestClient::WithData("basic_rock");
+  TestClient c = TestClient::WithDataString(data);
   s.waitForUsers(1);
 
   bool transformTimeReceived =

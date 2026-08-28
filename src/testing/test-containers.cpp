@@ -1,7 +1,7 @@
 #include "TestClient.h"
 #include "TestFixtures.h"
-#include "TestServer.h"
 #include "testing.h"
+#include "TestServer.h"
 
 TEST_CASE("Object container empty check", "[containers]") {
   TestServer s;
@@ -15,13 +15,21 @@ TEST_CASE("Object container empty check", "[containers]") {
   CHECK_FALSE(obj.container().isEmpty());
 }
 
-TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+TEST_CASE_METHOD(ServerAndClientWithData,
                  "Dismantle an object with an inventory",
                  "[.flaky][containers]") {
-  useData("dismantle");
-  // And a user at (10, 10);
+  // Given a box that's deconstructible and has inventory slots
+  useData(R"(
+    <item id="box" />
+    <objectType id="box" deconstructs="box" deconstructionTime="200" >
+      <container slots="10" />
+    </objectType>
+  )");
+
+  // And given a user at (10, 10);
   user->moveLegallyTowards({10, 10});
-  // And a box at (10, 10) that is deconstructible and has an empty inventory
+
+  // And a box at (10, 10) and has no inventory
   const auto &box = server->addObject("box", {10, 10});
   WAIT_UNTIL(client->objects().size() == 1);
 
@@ -32,9 +40,14 @@ TEST_CASE_METHOD(ServerAndClientWithDataFiles,
   CHECK(client->waitForMessage(SV_ACTION_STARTED));
 }
 
-TEST_CASE_METHOD(ServerAndClientWithDataFiles, "Place item in object",
+TEST_CASE_METHOD(ServerAndClientWithData, "Place item in object",
                  "[.flaky][containers]") {
-  useData("dismantle");
+  useData(R"(
+    <item id="box" />
+    <objectType id="box" deconstructs="box" deconstructionTime="200" >
+      <container slots="10" />
+    </objectType>
+  )");
 
   // Add a single box
   const auto &box = server->addObject("box", {10, 10});
@@ -52,10 +65,15 @@ TEST_CASE_METHOD(ServerAndClientWithDataFiles, "Place item in object",
   CHECK(client->waitForMessage(SV_INVENTORY));
 }
 
-TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+TEST_CASE_METHOD(ServerAndClientWithData,
                  "Client-side containers don't spontaneously clear",
                  "[containers]") {
-  useData("dismantle");
+  useData(R"(
+    <item id="box" />
+    <objectType id="box" deconstructs="box" deconstructionTime="200" >
+      <container slots="10" />
+    </objectType>
+  )");
 
   // And a single box belonging to the user
   server->addObject("box", {10, 10}, client->name());

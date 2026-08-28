@@ -1,14 +1,13 @@
-#include "../XmlReader.h"
 #include "../client/ClientNPCType.h"
+#include "../XmlReader.h"
 #include "TestClient.h"
 #include "TestFixtures.h"
-#include "TestServer.h"
 #include "testing.h"
+#include "TestServer.h"
 
 TEST_CASE("Read XML file with root only", "[loading]") {
   auto xr = XmlReader::FromFile("testing/empty.xml");
-  for (auto elem : xr.getChildren("nonexistent_tag"))
-    ;
+  for (auto elem : xr.getChildren("nonexistent_tag"));
 }
 
 TEST_CASE("No crash on bad data", "[loading]") {
@@ -41,7 +40,10 @@ TEST_CASE("Get spawn range from map file", "[loading]") {
 
 TEST_CASE("Constructible NPC is loaded as NPC", "[loading][construction]") {
   // Load an item that refers to an object type, then an NPC type to define it
-  TestClient c = TestClient::WithData("construct_an_npc");
+  TestClient c = TestClient::WithDataString(R"(
+    <item id="mechPigKit" constructs="mechPig" />
+    <npcType id="mechPig" maxHealth="5" />
+  )");
 
   const ClientObjectType &objType = **c.objectTypes().begin();
   REQUIRE(objType.classTag() == 'n');
@@ -54,7 +56,10 @@ TEST_CASE("Constructible NPC is loaded as NPC", "[loading][construction]") {
 TEST_CASE("Object spawners work", "[loading][spawning]") {
   // Given a spawner that maintains 3 rocks
   // When a server runs
-  TestServer s = TestServer::WithData("spawned_rocks");
+  TestServer s = TestServer::WithDataString(R"(
+    <objectType id="rock" />
+    <spawnPoint index="1" type="rock" quantity="3" radius="100" respawnTime="0" x="150" y="150" />
+  )");
 
   // Then there are 3 rocks
   WAIT_UNTIL(s.entities().size() == 3);
@@ -63,7 +68,10 @@ TEST_CASE("Object spawners work", "[loading][spawning]") {
 TEST_CASE("NPC spawners work", "[loading][spawning]") {
   // Given a spawner that maintains 3 chickens
   // When a server runs
-  TestServer s = TestServer::WithData("spawned_chickens");
+  TestServer s = TestServer::WithDataString(R"(
+    <npcType id="chicken" maxHealth="1" />
+    <spawnPoint index="1" type="chicken" quantity="3" radius="100" respawnTime="0" x="150" y="150" />
+  )");
 
   // Then there are 3 chickens
   WAIT_UNTIL(s.entities().size() == 3);
@@ -473,7 +481,9 @@ TEST_CASE_METHOD(ServerAndClientWithDataFiles,
 
 TEST_CASE("Composite stats from file", "[loading][stats]") {
   WHEN("a server starts with a composite stat in a data file") {
-    auto s = TestServer::WithData("a_composite_stat");
+    auto s = TestServer::WithDataString(R"(
+      <compositeStat id="charisma" />
+    )");
 
     THEN("there's a composite stat") {
       CHECK(Stats::compositeDefinitions.size() == 1);
@@ -492,7 +502,9 @@ TEST_CASE("Composite stats from file", "[loading][stats]") {
     auto s = TestServer{};
 
     WHEN("a client starts with a composite stat in a data file") {
-      auto c = TestClient::WithData("a_composite_stat");
+      auto c = TestClient::WithDataString(R"(
+        <compositeStat id="charisma" />
+      )");
 
       THEN("there's a composite stat") {
         CHECK(Stats::compositeDefinitions.size() == 1);

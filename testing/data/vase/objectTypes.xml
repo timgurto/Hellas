@@ -1,7 +1,0 @@
-<root>
-
-<objectType id="vase" name="Vase" >
-    <strength item="china" quantity="1" />
-</objectType>
-
-</root>

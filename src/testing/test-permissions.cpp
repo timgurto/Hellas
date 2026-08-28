@@ -5,7 +5,13 @@
 
 TEST_CASE("Objects have no owner by default", "[permissions]") {
   // When a basic object is created
-  TestServer s = TestServer::WithData("basic_rock");
+  auto data = R"(
+    <item id="stone" />
+    <objectType id="rock" canGather="1" gatherTime="100" >
+      <yield id="stone" initialMean="1" initialSD="0" />
+    </objectType>
+  )";
+  TestServer s = TestServer::WithDataString(data);
   s.addObject("rock", {10, 10});
   WAIT_UNTIL(s.entities().size() == 1);
 
@@ -14,28 +20,36 @@ TEST_CASE("Objects have no owner by default", "[permissions]") {
   CHECK_FALSE(rock.permissions.hasOwner());
 }
 
-TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+TEST_CASE_METHOD(ServerAndClientWithData,
                  "Constructing an object grants ownership",
                  "[permissions][construction]") {
-  useData("brick_wall");
+  useData(R"(
+    <item id="brick" />
+    <objectType id="wall" constructionTime="0" >
+      <material id="brick" quantity="1" />
+    </objectType>
+  )");
 
-  GIVEN("a logged-in client") {
-    WHEN("he constructs a wall") {
-      client->sendMessage(CL_CONSTRUCT, makeArgs("wall", 10, 15));
-      WAIT_UNTIL(server->entities().size() == 1);
+  WHEN("a user constructs a wall") {
+    client->sendMessage(CL_CONSTRUCT, makeArgs("wall", 10, 15));
+    WAIT_UNTIL(server->entities().size() == 1);
 
-      THEN("he is the wall's owner") {
-        Object &wall = server->getFirstObject();
-        CHECK(wall.permissions.hasOwner());
-        CHECK(wall.permissions.isOwnedByPlayer(client->name()));
-      }
+    THEN("he is the wall's owner") {
+      Object &wall = server->getFirstObject();
+      CHECK(wall.permissions.hasOwner());
+      CHECK(wall.permissions.isOwnedByPlayer(client->name()));
     }
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithDataFiles, "Public-access objects",
+TEST_CASE_METHOD(ServerAndClientWithData, "Public-access objects",
                  "[permissions][gathering]") {
-  useData("basic_rock");
+  useData(R"(
+    <item id="stone" />
+    <objectType id="rock" canGather="1" gatherTime="100" >
+      <yield id="stone" initialMean="1" initialSD="0" />
+    </objectType>
+  )");
 
   // Given a rock with no owner
   const auto &rock = server->addObject("rock", {10, 10});
@@ -52,10 +66,15 @@ TEST_CASE_METHOD(ServerAndClientWithDataFiles, "Public-access objects",
   WAIT_UNTIL_TIMEOUT(user->inventory()[0].type() == &rockItem, 200);
 }
 
-TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+TEST_CASE_METHOD(ServerAndClientWithData,
                  "The owner can access an owned object",
                  "[permissions][gathering]") {
-  useData("basic_rock");
+  useData(R"(
+    <item id="stone" />
+    <objectType id="rock" canGather="1" gatherTime="100" >
+      <yield id="stone" initialMean="1" initialSD="0" />
+    </objectType>
+  )");
 
   // Given a rock owned by the user
   const auto &rock = server->addObject("rock", {10, 10}, user->name());
@@ -72,11 +91,16 @@ TEST_CASE_METHOD(ServerAndClientWithDataFiles,
   WAIT_UNTIL_TIMEOUT(user->inventory()[0].type() == &rockItem, 200);
 }
 
-TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+TEST_CASE_METHOD(ServerAndClientWithData,
                  "A non-owner cannot access an owned object",
                  "[permissions][gathering]") {
   GIVEN("a rock owned by Alice") {
-    useData("basic_rock");
+    useData(R"(
+      <item id="stone" />
+      <objectType id="rock" canGather="1" gatherTime="100" >
+        <yield id="stone" initialMean="1" initialSD="0" />
+      </objectType>
+    )");
     auto &rock = server->addObject("rock", {10, 10});
     rock.permissions.setPlayerOwner("Alice");
 
@@ -95,7 +119,10 @@ TEST_CASE_METHOD(ServerAndClientWithDataFiles,
 
 TEST_CASE("A city can own an object", "[city][permissions]") {
   // Given a rock, and a city named Athens
-  TestServer s = TestServer::WithData("basic_rock");
+  auto data = R"(
+    <objectType id="rock" />
+  )";
+  TestServer s = TestServer::WithDataString(data);
   s.cities().createCity("Athens", {}, {});
   s.addObject("rock", {10, 10});
   Object &rock = s.getFirstObject();
@@ -112,8 +139,11 @@ TEST_CASE("A city can own an object", "[city][permissions]") {
 
 TEST_CASE("City ownership is persistent", "[city][permissions][persistence]") {
   // Given a rock owned by Athens
+  auto data = R"(
+    <objectType id="rock" />
+  )";
   {
-    TestServer s1 = TestServer::WithData("basic_rock");
+    TestServer s1 = TestServer::WithDataString(data);
     s1.cities().createCity("Athens", {}, {});
     s1.addObject("rock", {10, 10});
     Object &rock = s1.getFirstObject();
@@ -121,17 +151,21 @@ TEST_CASE("City ownership is persistent", "[city][permissions][persistence]") {
   }
 
   // When a new server starts up
-  TestServer s2 = TestServer::WithDataAndKeepingOldData("basic_rock");
+  TestServer s2 = TestServer::WithDataStringAndKeepingOldData(data);
 
   // Then the rock is still owned by Athens
   Object &rock = s2.getFirstObject();
   CHECK(rock.permissions.isOwnedByCity("Athens"));
 }
 
-TEST_CASE_METHOD(ServerAndClientWithDataFiles,
-                 "City members can use city objects",
+TEST_CASE_METHOD(ServerAndClientWithData, "City members can use city objects",
                  "[city][permissions][gathering]") {
-  useData("basic_rock");
+  useData(R"(
+    <item id="stone" />
+    <objectType id="rock" canGather="1" gatherTime="100" >
+      <yield id="stone" initialMean="1" initialSD="0" />
+    </objectType>
+  )");
 
   // Given a rock owned by Athens
   server->cities().createCity("Athens", {}, {});
@@ -156,11 +190,15 @@ TEST_CASE_METHOD(ServerAndClientWithDataFiles,
   WAIT_UNTIL_TIMEOUT(server->entities().empty(), 200);
 }
 
-TEST_CASE_METHOD(ServerAndClientWithDataFiles,
-                 "Non-members cannot use city objects",
+TEST_CASE_METHOD(ServerAndClientWithData, "Non-members cannot use city objects",
                  "[city][permissions][gathering]") {
   GIVEN("a rock owned by Athens") {
-    useData("basic_rock");
+    useData(R"(
+      <item id="stone" />
+      <objectType id="rock" canGather="1" gatherTime="100" >
+        <yield id="stone" initialMean="1" initialSD="0" />
+      </objectType>
+    )");
 
     server->cities().createCity("Athens", {}, {});
     server->addObject("rock", {10, 10});
@@ -184,7 +222,9 @@ TEST_CASE_METHOD(ServerAndClientWithDataFiles,
 
 TEST_CASE("Non-existent cities can't own objects", "[city][permissions]") {
   GIVEN("a rock, and no cities") {
-    TestServer s = TestServer::WithData("basic_rock");
+    TestServer s = TestServer::WithDataString(R"(
+      <objectType id="rock" />
+    )");
     s.addObject("rock", {10, 10});
 
     WHEN("the rock's owner is set to nonexistent city \"Athens\"") {
@@ -200,7 +240,9 @@ TEST_CASE("Non-existent cities can't own objects", "[city][permissions]") {
 
 TEST_CASE("New objects are added to owner index", "[permissions]") {
   // Given a server with rock objects
-  TestServer s = TestServer::WithData("basic_rock");
+  TestServer s = TestServer::WithDataString(R"(
+    <objectType id="rock" />
+  )");
 
   // When a rock is added, owned by Alice
   s.addObject("rock", {}, "Alice");
@@ -222,7 +264,9 @@ TEST_CASE("The object-owner index is initially empty", "[permissions]") {
 TEST_CASE("A removed object is removed from the object-owner index",
           "[permissions]") {
   // Given a server
-  TestServer s = TestServer::WithData("basic_rock");
+  TestServer s = TestServer::WithDataString(R"(
+    <objectType id="rock" />
+  )");
   // And a rock object owned by Alice
   s.addObject("rock", {}, "Alice");
 
@@ -238,7 +282,9 @@ TEST_CASE("A removed object is removed from the object-owner index",
 TEST_CASE("New ownership is reflected in the object-owner index",
           "[permissions]") {
   // Given a server with rock objects
-  TestServer s = TestServer::WithData("basic_rock");
+  TestServer s = TestServer::WithDataString(R"(
+    <objectType id="rock" />
+  )");
 
   // When a rock is added, owned by Alice;
   s.addObject("rock", {}, "Alice");
@@ -375,11 +421,16 @@ TEST_CASE_METHOD(TwoClientsWithData, "Giving objects", "[permissions][city]") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+TEST_CASE_METHOD(ServerAndClientWithData,
                  "New object permissions are propagated to clients",
                  "[permissions]") {
   GIVEN("an unowned Rock object") {
-    useData("basic_rock");
+    useData(R"(
+      <item id="stone" />
+      <objectType id="rock" canGather="1" gatherTime="100" >
+        <yield id="stone" initialMean="1" initialSD="0" />
+      </objectType>
+    )");
 
     server->addObject("rock");
     WAIT_UNTIL(client->objects().size() == 1);

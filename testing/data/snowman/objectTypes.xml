@@ -1,7 +1,0 @@
-<root>
-
-<objectType id="snowman" name="Snowman" >
-    <durability item="snowflake" quantity="1000" />
-</objectType>
-
-</root>

@@ -43,10 +43,12 @@ TEST_CASE("List is resized on new child", "[ui]") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithDataFiles, "View merchant slots in window",
+TEST_CASE_METHOD(ServerAndClientWithData, "View merchant slots in window",
                  "[.flaky][ui][merchant]") {
-  // Given a logged-in client and an object with merchant slots
-  useData("merchant");
+  // Given vending machines have merchant slots
+  useData(R"(
+    <objectType id="vendingMachine" merchantSlots="2" />
+  )");
 
   // Move user to middle
   user->moveLegallyTowards({10, 10});
@@ -77,11 +79,16 @@ TEST_CASE_METHOD(ServerAndClientWithDataFiles, "View merchant slots in window",
   client->waitForRedraw();
 }
 
-TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+TEST_CASE_METHOD(ServerAndClientWithData,
                  "New client can build default constructions",
                  "[ui][construction]") {
   // Given a buildable brick wall object type with no pre-requisites
-  useData("brick_wall");
+  useData(R"(
+    <item id="brick" />
+    <objectType id="wall" constructionTime="0" >
+      <material id="brick" quantity="1" />
+    </objectType>
+  )");
 
   // His construction window contains at least one item
   CHECK_FALSE(client->uiBuildList().empty());
@@ -136,10 +143,16 @@ TEST_CASE_METHOD(ServerAndClient, "Gear window can be viewed", "[gear][ui]") {
   WAIT_UNTIL(client.gearWindow()->texture());
 }
 
-TEST_CASE_METHOD(ServerAndClientWithDataFiles,
-                 "New clients survive recipe unlocks",
+TEST_CASE_METHOD(ServerAndClientWithData, "New clients survive recipe unlocks",
                  "[ui][crafting][unlocking]") {
-  useData("secret_bread");
+  useData(R"(
+    <item id="flour" />
+    <item id="bread" />
+    <recipe id="bread" time="10" product="bread" >
+      <material id="flour" />
+      <unlockedBy item="flour" />
+    </recipe>
+  )");
 
   // When the server alerts the client to a recipe unlock
   user->sendMessage({SV_NEW_RECIPES_LEARNED, makeArgs(1, "asdf")});
@@ -159,10 +172,12 @@ TEST_CASE("Gear-slot names are initialized once", "[.slow][gear][ui]") {
   }
 }
 
-TEST_CASE_METHOD(ServerAndClientWithDataFiles,
+TEST_CASE_METHOD(ServerAndClientWithData,
                  "A player's objects are the appropriate color",
                  "[permissions][ui]") {
-  useData("basic_rock");
+  useData(R"(
+    <objectType id="rock" />
+  )");
 
   server->addObject("rock", {10, 15}, user->name());
 

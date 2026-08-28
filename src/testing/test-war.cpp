@@ -165,12 +165,18 @@ TEST_CASE("Wars involving cities are persistent", "[persistence][city][war]") {
 TEST_CASE("The objects of an offline enemy in an enemy city can be attacked",
           "[city][war][permissions]") {
   GIVEN("a Chair object type") {
-    TestServer s = TestServer::WithData("chair");
+    auto data = R"(
+      <item id="wood" strength="5" />
+      <objectType id="chair" >
+        <strength item="wood" quantity="6" />
+      </objectType>
+    )";
+    TestServer s = TestServer::WithDataString(data);
 
     AND_GIVEN("Bob is an offline member of Athens") {
       s.cities().createCity("Athens", {}, {});
       {
-        auto bob = TestClient::WithUsernameAndData("Bob", "chair");
+        auto bob = TestClient::WithUsernameAndDataString("Bob", data);
         s.waitForUsers(1);
         s.cities().addPlayerToCity(s.getFirstUser(), "Athens");
       }
@@ -180,7 +186,8 @@ TEST_CASE("The objects of an offline enemy in an enemy city can be attacked",
         s.addObject("chair", {15, 15}, "Bob");
 
         AND_GIVEN("Alice is at war with Athens") {
-          TestClient alice = TestClient::WithUsernameAndData("Alice", "chair");
+          TestClient alice =
+              TestClient::WithUsernameAndDataString("Alice", data);
           s.wars().declare("Alice", Belligerent("Athens", Belligerent::CITY));
 
           WHEN("Alice becomes aware of the rock") {
