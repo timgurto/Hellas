@@ -16,6 +16,9 @@ jobs:
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v2
 
+      - name: Generate version header
+        run: echo '#define VERSION "ci"' > src/version.h
+
       - name: Build tests
         run: msbuild Hellas.sln /t:test /p:Configuration=Debug /verbosity:minimal
 
