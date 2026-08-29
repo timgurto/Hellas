@@ -12,7 +12,7 @@ TEST_CASE("No erroneous transform messages on login", "[transformation]") {
   s.waitForUsers(1);
 
   bool transformTimeReceived =
-      c.waitForMessage(SV_TRANSFORM_TIME_REMAINING, 200);
+      c.waitForMessageEver(SV_TRANSFORM_TIME_REMAINING, 200);
   CHECK_FALSE(transformTimeReceived);
 }
 

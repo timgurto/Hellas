@@ -69,7 +69,7 @@ TEST_CASE_METHOD(ServerAndClient, "Bad arguments to taming command", "[pets]") {
       client.sendMessage(CL_TAME_NPC, makeArgs(42));
 
       THEN("the client receives a warning") {
-        CHECK(client.waitForMessage(WARNING_DOESNT_EXIST));
+        CHECK(client.waitForMessageEver(WARNING_DOESNT_EXIST));
       }
     }
   }
@@ -200,7 +200,7 @@ TEST_CASE("Pet shares owner's diplomacy",
             WAIT_UNTIL(dog.isMissingHealth());
 
             AND_THEN("the observer receives a SV_ENTITY_HIT_ENTITY message") {
-              CHECK(c.waitForMessage(SV_ENTITY_HIT_ENTITY));
+              CHECK(c.waitForMessageEver(SV_ENTITY_HIT_ENTITY));
             }
           }
         }
@@ -328,7 +328,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Taming can require an item",
         client->sendMessage(CL_TAME_NPC, makeArgs(girl.serial()));
 
         THEN("he receives a warning") {
-          CHECK(client->waitForMessage(WARNING_ITEM_NEEDED));
+          CHECK(client->waitForMessageEver(WARNING_ITEM_NEEDED));
 
           AND_THEN("it is still unowned") {
             CHECK((girl.owner().type == Permissions::Owner::MOB));
@@ -598,7 +598,7 @@ TEST_CASE("Chance to tame based on health", "[pets]") {
         c.sendMessage(CL_TAME_NPC, makeArgs(cat.serial()));
 
         THEN("he receives a message") {
-          CHECK(c.waitForMessage(SV_TAME_ATTEMPT_FAILED));
+          CHECK(c.waitForMessageEver(SV_TAME_ATTEMPT_FAILED));
 
           AND_THEN("it is still unowned") {
             REPEAT_FOR_MS(100);

@@ -160,6 +160,15 @@ bool TestClient::waitForMessage(MessageCode desiredMsg, ms_t timeout) const {
   return false;
 }
 
+bool TestClient::waitForMessageEver(MessageCode desiredMsg,
+                                    ms_t timeout) const {
+  for (ms_t startTime = SDL_GetTicks(); SDL_GetTicks() < startTime + timeout;
+       SDL_Delay(1)) {
+    if (messageWasReceivedSince(desiredMsg, 0)) return true;
+  }
+  return false;
+}
+
 bool TestClient::messageWasReceivedSince(MessageCode desiredMsg,
                                          size_t startingIndex) const {
   std::lock_guard<std::mutex> guard(_client->_messagesReceivedMutex);

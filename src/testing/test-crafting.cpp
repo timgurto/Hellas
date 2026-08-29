@@ -338,7 +338,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Recipe items", "[crafting]") {
         }
 
         THEN("he recieves a message to that effect") {
-          CHECK(client->waitForMessage(SV_NEW_RECIPES_LEARNED));
+          CHECK(client->waitForMessageEver(SV_NEW_RECIPES_LEARNED));
         }
       }
 

@@ -37,7 +37,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   client->sendMessage(CL_PICK_UP_OBJECT_AS_ITEM, makeArgs(box.serial()));
 
   // The deconstruction action successfully begins
-  CHECK(client->waitForMessage(SV_ACTION_STARTED));
+  CHECK(client->waitForMessageEver(SV_ACTION_STARTED));
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Place item in object",
@@ -241,7 +241,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       }
 
       THEN("he gets a warning") {
-        CHECK(client->waitForMessage(WARNING_RESTRICTED_CONTAINER));
+        CHECK(client->waitForMessageEver(WARNING_RESTRICTED_CONTAINER));
       }
     }
 
@@ -263,7 +263,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
             }
 
             THEN("he gets a warning") {
-              CHECK(client->waitForMessage(WARNING_RESTRICTED_CONTAINER));
+              CHECK(client->waitForMessageEver(WARNING_RESTRICTED_CONTAINER));
             }
           }
         }

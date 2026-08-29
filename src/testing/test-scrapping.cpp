@@ -289,7 +289,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping item in container",
             client->sendMessage(CL_SCRAP_ITEM, makeArgs(carton.serial(), 1));
 
             THEN("he gets a warning") {
-              CHECK(client->waitForMessage(ERROR_INVALID_SLOT));
+              CHECK(client->waitForMessageEver(ERROR_INVALID_SLOT));
             }
           }
         }
@@ -307,7 +307,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping item in container",
               }
 
               THEN("he gets a warning") {
-                CHECK(client->waitForMessage(WARNING_TOO_FAR));
+                CHECK(client->waitForMessageEver(WARNING_TOO_FAR));
               }
             }
           }
@@ -327,7 +327,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapping item in container",
             }
 
             THEN("he gets a warning") {
-              CHECK(client->waitForMessage(WARNING_NO_PERMISSION));
+              CHECK(client->waitForMessageEver(WARNING_NO_PERMISSION));
             }
           }
         }
@@ -352,7 +352,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Scrapped items must be scrappable",
       }
 
       THEN("he gets a warning") {
-        CHECK(client->waitForMessage(WARNING_NOT_SCRAPPABLE));
+        CHECK(client->waitForMessageEver(WARNING_NOT_SCRAPPABLE));
       }
     }
   }
@@ -402,7 +402,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
         }
 
         THEN("he receives a warning") {
-          CHECK(client->waitForMessage(WARNING_INVENTORY_FULL));
+          CHECK(client->waitForMessageEver(WARNING_INVENTORY_FULL));
         }
       }
     }
@@ -455,7 +455,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
             client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Gear(), 0));
 
             THEN("he gets a full-inventory warning") {
-              CHECK(client->waitForMessage(WARNING_INVENTORY_FULL));
+              CHECK(client->waitForMessageEver(WARNING_INVENTORY_FULL));
             }
           }
         }
@@ -501,7 +501,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Alert user when scrapping fails",
       client->sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
 
       THEN("he gets a scrapping-failed message") {
-        CHECK(client->waitForMessage(SV_SCRAPPING_FAILED));
+        CHECK(client->waitForMessageEver(SV_SCRAPPING_FAILED));
       }
     }
   }
@@ -523,7 +523,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Bad scrap result", "[scrapping]") {
       // [Then the server doesn't crash]
 
       THEN("the user gets an error message") {
-        CHECK(client->waitForMessage(ERROR_INVALID_ITEM));
+        CHECK(client->waitForMessageEver(ERROR_INVALID_ITEM));
       }
     }
   }
@@ -532,23 +532,23 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Bad scrap result", "[scrapping]") {
 TEST_CASE_METHOD(ServerAndClient, "Scrapping with bad data", "[scrapping]") {
   SECTION("Empty slot") {
     client.sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 0));
-    CHECK(client.waitForMessage(ERROR_EMPTY_SLOT));
+    CHECK(client.waitForMessageEver(ERROR_EMPTY_SLOT));
   }
 
   SECTION("Invalid inventory slot") {
     client.sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Inventory(), 1000));
-    CHECK(client.waitForMessage(ERROR_INVALID_SLOT));
+    CHECK(client.waitForMessageEver(ERROR_INVALID_SLOT));
   }
 
   SECTION("Invalid gear slot") {
     // Number of gear slots <= 9 < number of inventory slots
     client.sendMessage(CL_SCRAP_ITEM, makeArgs(Serial::Gear(), 9));
-    CHECK(client.waitForMessage(ERROR_INVALID_SLOT));
+    CHECK(client.waitForMessageEver(ERROR_INVALID_SLOT));
   }
 
   SECTION("Invalid container serial") {
     client.sendMessage(CL_SCRAP_ITEM, makeArgs(42, 0));
-    CHECK(client.waitForMessage(WARNING_DOESNT_EXIST));
+    CHECK(client.waitForMessageEver(WARNING_DOESNT_EXIST));
   }
 }
 

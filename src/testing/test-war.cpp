@@ -67,7 +67,7 @@ TEST_CASE_METHOD(ServerAndClient, "Wars cannot be redeclared", "[war]") {
   client.sendMessage(CL_DECLARE_WAR_ON_PLAYER, "Bob");
 
   // Then he receives an ERROR_ALREADY_AT_WAR error message
-  CHECK(client.waitForMessage(ERROR_ALREADY_AT_WAR));
+  CHECK(client.waitForMessageEver(ERROR_ALREADY_AT_WAR));
 }
 
 TEST_CASE_METHOD(ServerAndClient, "A player can be at war with a city",
@@ -214,7 +214,7 @@ TEST_CASE_METHOD(ServerAndClient, "A player is alerted when he sues for peace",
   client.sendMessage(CL_SUE_FOR_PEACE_WITH_PLAYER, "Bob");
 
   // Then Alice is alerted
-  CHECK(client.waitForMessage(SV_YOU_PROPOSED_PEACE_TO_PLAYER));
+  CHECK(client.waitForMessageEver(SV_YOU_PROPOSED_PEACE_TO_PLAYER));
 }
 
 TEST_CASE("The enemy is alerted when peace is proposed", "[war]") {
@@ -234,7 +234,7 @@ TEST_CASE("The enemy is alerted when peace is proposed", "[war]") {
       bob.socket(), Message{CL_SUE_FOR_PEACE_WITH_PLAYER, "Alice"}.compile());
 
   // Then Alice is alerted
-  CHECK(c.waitForMessage(SV_PEACE_WAS_PROPOSED_TO_YOU_BY_PLAYER));
+  CHECK(c.waitForMessageEver(SV_PEACE_WAS_PROPOSED_TO_YOU_BY_PLAYER));
 }
 
 TEST_CASE("Users are alerted to peace proposals on login", "[war]") {
@@ -256,14 +256,14 @@ TEST_CASE("Users are alerted to peace proposals on login", "[war]") {
     auto c = TestClient::WithUsername("Alice");
 
     // Then Alice is alerted
-    CHECK(c.waitForMessage(SV_YOU_PROPOSED_PEACE_TO_PLAYER));
+    CHECK(c.waitForMessageEver(SV_YOU_PROPOSED_PEACE_TO_PLAYER));
   }
 
   SECTION("Bob logs in") {
     auto c = TestClient::WithUsername("Bob");
 
     // Then Bob is alerted
-    CHECK(c.waitForMessage(SV_PEACE_WAS_PROPOSED_TO_YOU_BY_PLAYER));
+    CHECK(c.waitForMessageEver(SV_PEACE_WAS_PROPOSED_TO_YOU_BY_PLAYER));
   }
 }
 

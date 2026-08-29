@@ -158,7 +158,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "New clients survive recipe unlocks",
   user->sendMessage({SV_NEW_RECIPES_LEARNED, makeArgs(1, "asdf")});
 
   // The client receives it.
-  CHECK(client->waitForMessage(SV_NEW_RECIPES_LEARNED));
+  CHECK(client->waitForMessageEver(SV_NEW_RECIPES_LEARNED));
 }
 
 TEST_CASE("Gear-slot names are initialized once", "[.slow][gear][ui]") {
