@@ -148,18 +148,6 @@ MessageCode TestClient::getNextMessage() const {
   return lastMessageCode;
 }
 
-bool TestClient::waitForMessage(MessageCode desiredMsg, ms_t timeout) const {
-  _client->_messagesReceivedMutex.lock();
-  size_t currentSize = _client->_messagesReceived.size();
-  _client->_messagesReceivedMutex.unlock();
-
-  for (ms_t startTime = SDL_GetTicks(); SDL_GetTicks() < startTime + timeout;
-       SDL_Delay(1)) {
-    if (messageWasReceivedSince(desiredMsg, currentSize)) return true;
-  }
-  return false;
-}
-
 bool TestClient::waitForMessageEver(MessageCode desiredMsg,
                                     ms_t timeout) const {
   for (ms_t startTime = SDL_GetTicks(); SDL_GetTicks() < startTime + timeout;

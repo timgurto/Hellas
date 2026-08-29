@@ -793,7 +793,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Loading objects on teleport",
 
             Then("he doesn't receive information about it") {
               const auto objectInfoWasReceived =
-                  client->waitForMessage(SV_OBJECT_INFO, 500);
+                  client->waitForMessageEver(SV_OBJECT_INFO, 500);
               REQUIRE_FALSE(objectInfoWasReceived);
             }
           }

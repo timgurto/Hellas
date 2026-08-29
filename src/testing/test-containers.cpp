@@ -56,7 +56,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Place item in object",
   // Give user a box item
   client->startCheckingMessagesFromNow();
   user->giveItem(&*server->items().begin());
-  CHECK(client->waitForMessage(SV_INVENTORY));
+  CHECK(client->waitForMessageEver(SV_INVENTORY));
 
   // Try to put item in object
   client->startCheckingMessagesFromNow();
@@ -64,7 +64,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Place item in object",
                       makeArgs(Serial::Gear(), 0, box.serial(), 0));
 
   // Should be the alert that the object's inventory has changed
-  CHECK(client->waitForMessage(SV_INVENTORY));
+  CHECK(client->waitForMessageEver(SV_INVENTORY));
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData,

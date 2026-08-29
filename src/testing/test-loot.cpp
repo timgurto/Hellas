@@ -104,7 +104,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Looting from a container",
         chest.onAttackedBy(*user, 1, CombatResult::HIT);
         chest.kill();
         REQUIRE_FALSE(chest.loot().empty());
-        REQUIRE(client->waitForMessage(SV_INVENTORY));
+        REQUIRE(client->waitForMessageEver(SV_INVENTORY));
 
         auto &clientChest = client->getFirstObject();
         WAIT_UNTIL(clientChest.lootable());
@@ -153,7 +153,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Looting from a container",
             REQUIRE_FALSE(chest.loot().empty());
 
             AND_WHEN("he loots it") {
-              client->waitForMessage(SV_INVENTORY);
+              client->waitForMessageEver(SV_INVENTORY);
               client->sendMessage(CL_TAKE_ITEM, makeArgs(chest.serial(), 0));
 
               THEN("he gets some gold") {
@@ -213,7 +213,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Non-taggers can't loot",
       goldbug.kill();
 
       THEN("the user isn't told that it's lootable") {
-        CHECK_FALSE(client->waitForMessage(SV_INVENTORY));
+        CHECK_FALSE(client->waitForMessageEver(SV_INVENTORY));
       }
 
       WHEN("the user tries to loot it") {
@@ -391,7 +391,7 @@ TEST_CASE("Grouped players can loot each other's kills",
         }
 
         THEN("Bob is told that it's lootable") {
-          CHECK(cBob.waitForMessage(SV_INVENTORY));
+          CHECK(cBob.waitForMessageEver(SV_INVENTORY));
         }
       }
     }
