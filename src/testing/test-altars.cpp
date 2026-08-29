@@ -1,4 +1,4 @@
-#include "TestClient.h"
+﻿#include "TestClient.h"
 #include "TestFixtures.h"
 #include "testing.h"
 #include "TestServer.h"
@@ -33,7 +33,7 @@ TEST_CASE("A user can't build multiple player-unique objects",
             c.sendMessage(CL_CONSTRUCT, makeArgs("redhead", 10, 15));
 
             THEN("he receives an error message") {
-              c.waitForMessageEver(WARNING_UNIQUE_OBJECT);
+              c.waitForMessage(WARNING_UNIQUE_OBJECT);
 
               AND_THEN("there is still only one object in the world") {
                 CHECK(s.entities().size() == 1);
@@ -75,7 +75,7 @@ TEST_CASE("A user can't build multiple player-unique objects",
               c.sendMessage(CL_CEDE, makeArgs(wife.serial()));
 
               THEN("hereceives an error message") {
-                c.waitForMessageEver(ERROR_CANNOT_CEDE);
+                c.waitForMessage(ERROR_CANNOT_CEDE);
 
                 AND_THEN("the wife still belongs to him") {
                   CHECK(wife.permissions.isOwnedByPlayer("Bob"));

@@ -1,4 +1,4 @@
-#include "../client/ui/TakeContainer.h"
+﻿#include "../client/ui/TakeContainer.h"
 #include "../server/Groups.h"
 #include "TestClient.h"
 #include "TestFixtures.h"
@@ -104,7 +104,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Looting from a container",
         chest.onAttackedBy(*user, 1, CombatResult::HIT);
         chest.kill();
         REQUIRE_FALSE(chest.loot().empty());
-        REQUIRE(client->waitForMessageEver(SV_INVENTORY));
+        REQUIRE(client->waitForMessage(SV_INVENTORY));
 
         auto &clientChest = client->getFirstObject();
         WAIT_UNTIL(clientChest.lootable());
@@ -153,7 +153,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Looting from a container",
             REQUIRE_FALSE(chest.loot().empty());
 
             AND_WHEN("he loots it") {
-              client->waitForMessageEver(SV_INVENTORY);
+              client->waitForMessage(SV_INVENTORY);
               client->sendMessage(CL_TAKE_ITEM, makeArgs(chest.serial(), 0));
 
               THEN("he gets some gold") {
@@ -193,7 +193,7 @@ TEST_CASE("New users are alerted to lootable objects", "[loot]") {
     auto c = TestClient::WithUsernameAndDataString("Alice", data);
 
     // Then she knows it's lootable
-    CHECK(c.waitForMessageEver(SV_INVENTORY));
+    CHECK(c.waitForMessage(SV_INVENTORY));
   }
 }
 
@@ -213,7 +213,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Non-taggers can't loot",
       goldbug.kill();
 
       THEN("the user isn't told that it's lootable") {
-        CHECK_FALSE(client->waitForMessageEver(SV_INVENTORY));
+        CHECK_FALSE(client->waitForMessage(SV_INVENTORY));
       }
 
       WHEN("the user tries to loot it") {
@@ -391,7 +391,7 @@ TEST_CASE("Grouped players can loot each other's kills",
         }
 
         THEN("Bob is told that it's lootable") {
-          CHECK(cBob.waitForMessageEver(SV_INVENTORY));
+          CHECK(cBob.waitForMessage(SV_INVENTORY));
         }
       }
     }

@@ -1,4 +1,4 @@
-#include "TestClient.h"
+﻿#include "TestClient.h"
 #include "testing.h"
 #include "TestServer.h"
 
@@ -12,7 +12,7 @@ TEST_CASE("No erroneous transform messages on login", "[transformation]") {
   s.waitForUsers(1);
 
   bool transformTimeReceived =
-      c.waitForMessageEver(SV_TRANSFORM_TIME_REMAINING, 200);
+      c.waitForMessage(SV_TRANSFORM_TIME_REMAINING, 200);
   CHECK_FALSE(transformTimeReceived);
 }
 

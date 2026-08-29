@@ -1,4 +1,4 @@
-#include "../client/ClientNPCType.h"
+﻿#include "../client/ClientNPCType.h"
 #include "../XmlReader.h"
 #include "TestClient.h"
 #include "TestFixtures.h"
@@ -793,7 +793,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Loading objects on teleport",
 
             Then("he doesn't receive information about it") {
               const auto objectInfoWasReceived =
-                  client->waitForMessageEver(SV_OBJECT_INFO, 500);
+                  client->waitForMessage(SV_OBJECT_INFO, 500);
               REQUIRE_FALSE(objectInfoWasReceived);
             }
           }

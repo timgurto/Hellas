@@ -1,4 +1,4 @@
-#include "TestClient.h"
+﻿#include "TestClient.h"
 #include "TestFixtures.h"
 #include "TestServer.h"
 #include "testing.h"
@@ -322,7 +322,7 @@ TEST_CASE_METHOD(TwoClientsWithData, "Object naming", "[permissions]") {
           }
 
           THEN("she gets a warning") {
-            CHECK(cAlice->waitForMessageEver(WARNING_TOO_FAR));
+            CHECK(cAlice->waitForMessage(WARNING_TOO_FAR));
           }
         }
       }
@@ -432,7 +432,7 @@ TEST_CASE_METHOD(ServerAndClient, "Renaming nonexistent objects") {
   }
 
   // THEN the client receives a warning message
-  CHECK(client.waitForMessageEver(WARNING_DOESNT_EXIST));
+  CHECK(client.waitForMessage(WARNING_DOESNT_EXIST));
 }
 
 TEST_CASE_METHOD(TwoClientsWithData,

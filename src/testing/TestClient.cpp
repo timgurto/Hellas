@@ -148,7 +148,7 @@ MessageCode TestClient::getNextMessage() const {
   return lastMessageCode;
 }
 
-bool TestClient::waitForMessageEver(MessageCode desiredMsg,
+bool TestClient::waitForMessage(MessageCode desiredMsg,
                                     ms_t timeout) const {
   for (ms_t startTime = SDL_GetTicks(); SDL_GetTicks() < startTime + timeout;
        SDL_Delay(1)) {

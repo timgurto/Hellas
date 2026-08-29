@@ -1,4 +1,4 @@
-#include "TestClient.h"
+﻿#include "TestClient.h"
 #include "TestFixtures.h"
 #include "testing.h"
 #include "TestServer.h"
@@ -338,7 +338,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Recipe items", "[crafting]") {
         }
 
         THEN("he recieves a message to that effect") {
-          CHECK(client->waitForMessageEver(SV_NEW_RECIPES_LEARNED));
+          CHECK(client->waitForMessage(SV_NEW_RECIPES_LEARNED));
         }
       }
 

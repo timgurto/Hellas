@@ -1,4 +1,4 @@
-#include <cassert>
+﻿#include <cassert>
 
 #include "TemporaryUserStats.h"
 #include "TestClient.h"
@@ -835,7 +835,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Broken items can't be traded",
         }
 
         THEN("he gets a warning") {
-          CHECK(client->waitForMessageEver(WARNING_PRICE_IS_BROKEN));
+          CHECK(client->waitForMessage(WARNING_PRICE_IS_BROKEN));
         }
       }
     }
@@ -848,7 +848,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Broken items can't be traded",
         client->sendMessage(CL_TRADE, makeArgs(appleCart.serial(), 0));
 
         THEN("he gets a warning") {
-          CHECK(client->waitForMessageEver(WARNING_WARE_IS_BROKEN));
+          CHECK(client->waitForMessage(WARNING_WARE_IS_BROKEN));
         }
       }
     }

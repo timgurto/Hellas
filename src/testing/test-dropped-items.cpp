@@ -1,4 +1,4 @@
-#include "../server/DroppedItem.h"
+﻿#include "../server/DroppedItem.h"
 #include "TestClient.h"
 #include "TestFixtures.h"
 #include "testing.h"
@@ -253,7 +253,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       client->sendMessage(CL_DROP, makeArgs(Serial::Inventory(), 0));
 
       THEN("the user receives a warning") {
-        CHECK(client->waitForMessageEver(WARNING_NOWHERE_TO_DROP_ITEM));
+        CHECK(client->waitForMessage(WARNING_NOWHERE_TO_DROP_ITEM));
 
         AND_THEN("he still has it in his inventory") {
           CHECK(user->inventory(0).hasItem());

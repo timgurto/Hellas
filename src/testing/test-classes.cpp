@@ -1,4 +1,4 @@
-#include "TestClient.h"
+﻿#include "TestClient.h"
 #include "TestFixtures.h"
 #include "testing.h"
 #include "TestServer.h"
@@ -219,7 +219,7 @@ TEST_CASE("Free spells", "[spells]") {
         auto c = TestClient::WithUsernameAndDataString("Alice", data);
 
         // THEN it doesn't get a new-spell notification
-        CHECK_FALSE(c.waitForMessageEver(SV_LEARNED_SPELL));
+        CHECK_FALSE(c.waitForMessage(SV_LEARNED_SPELL));
       }
     }
   }

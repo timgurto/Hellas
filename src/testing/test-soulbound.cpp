@@ -1,4 +1,4 @@
-#include "TestClient.h"
+﻿#include "TestClient.h"
 #include "TestFixtures.h"
 #include "TestServer.h"
 #include "testing.h"
@@ -157,7 +157,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
           }
 
           THEN("he receives a warning") {
-            CHECK(client->waitForMessageEver(WARNING_OBJECT_MUST_BE_PRIVATE));
+            CHECK(client->waitForMessage(WARNING_OBJECT_MUST_BE_PRIVATE));
           }
         }
 
@@ -175,7 +175,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
             }
 
             THEN("he receives a warning") {
-              CHECK(client->waitForMessageEver(WARNING_OBJECT_MUST_BE_PRIVATE));
+              CHECK(client->waitForMessage(WARNING_OBJECT_MUST_BE_PRIVATE));
             }
           }
         }
@@ -353,7 +353,7 @@ TEST_CASE_METHOD(TwoClientsWithData, "Soulbound items can't be traded",
               }
 
               THEN("he gets a warning") {
-                CHECK(cBob->waitForMessageEver(WARNING_WARE_IS_SOULBOUND));
+                CHECK(cBob->waitForMessage(WARNING_WARE_IS_SOULBOUND));
               }
             }
           }
@@ -365,7 +365,7 @@ TEST_CASE_METHOD(TwoClientsWithData, "Soulbound items can't be traded",
               cBob->sendMessage(CL_TRADE, makeArgs(store.serial(), 0));
 
               THEN("he gets a warning") {
-                CHECK(cBob->waitForMessageEver(WARNING_PRICE_IS_SOULBOUND));
+                CHECK(cBob->waitForMessage(WARNING_PRICE_IS_SOULBOUND));
               }
             }
           }
@@ -406,7 +406,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
             }
 
             THEN("he receives a warning") {
-              CHECK(client->waitForMessageEver(WARNING_CONTAINS_BOUND_ITEM));
+              CHECK(client->waitForMessage(WARNING_CONTAINS_BOUND_ITEM));
             }
           }
         }
@@ -442,7 +442,7 @@ TEST_CASE_METHOD(TwoClientsWithData,
           }
 
           THEN("she receives a warning") {
-            CHECK(cAlice->waitForMessageEver(WARNING_CONTAINS_BOUND_ITEM));
+            CHECK(cAlice->waitForMessage(WARNING_CONTAINS_BOUND_ITEM));
           }
         }
       }

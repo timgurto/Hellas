@@ -1,4 +1,4 @@
-#include "TestClient.h"
+﻿#include "TestClient.h"
 #include "TestFixtures.h"
 #include "testing.h"
 #include "TestServer.h"
@@ -84,7 +84,7 @@ TEST_CASE("Client is alerted to city membership", "[city]") {
         s.cities().addPlayerToCity(alice, "Athens");
 
         THEN("she receives a message to that effect") {
-          bool messageReceived = c.waitForMessageEver(SV_YOU_JOINED_CITY);
+          bool messageReceived = c.waitForMessage(SV_YOU_JOINED_CITY);
           REQUIRE(messageReceived);
 
           AND_THEN("she knows she is in Athens") {
@@ -164,7 +164,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Ceding", "[city][permissions]") {
         client->sendMessage(CL_CEDE, makeArgs(rock.serial()));
 
         THEN("he receives an error message") {
-          CHECK(client->waitForMessageEver(WARNING_NO_PERMISSION, 10000));
+          CHECK(client->waitForMessage(WARNING_NO_PERMISSION, 10000));
 
           AND_THEN("the rock does not belong to Athens") {
             CHECK_FALSE(rock.permissions.isOwnedByCity("Athens"));
@@ -180,7 +180,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Ceding", "[city][permissions]") {
         client->sendMessage(CL_CEDE, makeArgs(rock.serial()));
 
         THEN("he receives an error message") {
-          REQUIRE(client->waitForMessageEver(ERROR_NOT_IN_CITY));
+          REQUIRE(client->waitForMessage(ERROR_NOT_IN_CITY));
 
           AND_THEN("it still belongs to him") {
             CHECK(rock.permissions.isOwnedByPlayer(user->name()));
@@ -247,7 +247,7 @@ TEST_CASE_METHOD(ServerAndClient, "A player can't leave a city if not in one",
       client.sendMessage(CL_LEAVE_CITY);
 
       THEN("he receives an error message") {
-        CHECK(client.waitForMessageEver(ERROR_NOT_IN_CITY));
+        CHECK(client.waitForMessage(ERROR_NOT_IN_CITY));
       }
     }
   }
@@ -272,7 +272,7 @@ TEST_CASE("A king can't leave his city", "[city]") {
           c.sendMessage(CL_LEAVE_CITY);
 
           THEN("Alice receives an error message") {
-            CHECK(c.waitForMessageEver(ERROR_KING_CANNOT_LEAVE_CITY));
+            CHECK(c.waitForMessage(ERROR_KING_CANNOT_LEAVE_CITY));
 
             AND_THEN("Alice is still in Athens") {
               REPEAT_FOR_MS(100);

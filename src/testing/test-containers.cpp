@@ -1,4 +1,4 @@
-#include "TestClient.h"
+﻿#include "TestClient.h"
 #include "TestFixtures.h"
 #include "testing.h"
 #include "TestServer.h"
@@ -37,7 +37,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
   client->sendMessage(CL_PICK_UP_OBJECT_AS_ITEM, makeArgs(box.serial()));
 
   // The deconstruction action successfully begins
-  CHECK(client->waitForMessageEver(SV_ACTION_STARTED));
+  CHECK(client->waitForMessage(SV_ACTION_STARTED));
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Place item in object",
@@ -56,7 +56,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Place item in object",
   // Give user a box item
   client->startCheckingMessagesFromNow();
   user->giveItem(&*server->items().begin());
-  CHECK(client->waitForMessageEver(SV_INVENTORY));
+  CHECK(client->waitForMessage(SV_INVENTORY));
 
   // Try to put item in object
   client->startCheckingMessagesFromNow();
@@ -64,7 +64,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Place item in object",
                       makeArgs(Serial::Gear(), 0, box.serial(), 0));
 
   // Should be the alert that the object's inventory has changed
-  CHECK(client->waitForMessageEver(SV_INVENTORY));
+  CHECK(client->waitForMessage(SV_INVENTORY));
 }
 
 TEST_CASE_METHOD(ServerAndClientWithData,
@@ -243,7 +243,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
       }
 
       THEN("he gets a warning") {
-        CHECK(client->waitForMessageEver(WARNING_RESTRICTED_CONTAINER));
+        CHECK(client->waitForMessage(WARNING_RESTRICTED_CONTAINER));
       }
     }
 
@@ -265,7 +265,7 @@ TEST_CASE_METHOD(ServerAndClientWithData,
             }
 
             THEN("he gets a warning") {
-              CHECK(client->waitForMessageEver(WARNING_RESTRICTED_CONTAINER));
+              CHECK(client->waitForMessage(WARNING_RESTRICTED_CONTAINER));
             }
           }
         }

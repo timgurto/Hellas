@@ -124,7 +124,7 @@ class TestClient {
     _client->sendMessage({code, args});
   }
   MessageCode getNextMessage() const;
-  bool waitForMessageEver(MessageCode desiredMsg,
+  bool waitForMessage(MessageCode desiredMsg,
                           ms_t timeout = DEFAULT_TIMEOUT) const;
   void startCheckingMessagesFromNow();
   void waitForRedraw();

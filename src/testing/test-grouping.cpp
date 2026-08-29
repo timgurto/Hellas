@@ -1,4 +1,4 @@
-#include "../client/UIGroup.h"
+﻿#include "../client/UIGroup.h"
 #include "../server/Groups.h"
 #include "TestClient.h"
 #include "TestFixtures.h"
@@ -103,15 +103,15 @@ TEST_CASE_METHOD(ThreeClients, "Inviting and accepting", "[grouping]") {
     cAlice.sendMessage(CL_INVITE_TO_GROUP, "Bob");
 
     THEN("Bob receive an invitation") {
-      CHECK(cBob.waitForMessageEver(SV_INVITED_TO_GROUP));
+      CHECK(cBob.waitForMessage(SV_INVITED_TO_GROUP));
     }
 
     THEN("Alice does not receive an invitation") {
-      CHECK_FALSE(cAlice.waitForMessageEver(SV_INVITED_TO_GROUP));
+      CHECK_FALSE(cAlice.waitForMessage(SV_INVITED_TO_GROUP));
     }
 
     THEN("Alice does not receive a warning about Bob being in a group") {
-      CHECK_FALSE(cAlice.waitForMessageEver(WARNING_USER_ALREADY_IN_A_GROUP));
+      CHECK_FALSE(cAlice.waitForMessage(WARNING_USER_ALREADY_IN_A_GROUP));
     }
 
     AND_WHEN("Bob accepts") {
@@ -151,7 +151,7 @@ TEST_CASE_METHOD(TwoClients, "Invitations are case-insensitive", "[grouping]") {
   WHEN("Alice tries inviting \"bOb\" to a group") {
     cAlice.sendMessage(CL_INVITE_TO_GROUP, "bOb");
     THEN("Bob receives the invitation") {
-      CHECK(cBob.waitForMessageEver(SV_INVITED_TO_GROUP));
+      CHECK(cBob.waitForMessage(SV_INVITED_TO_GROUP));
     }
   }
 }
@@ -220,11 +220,11 @@ TEST_CASE_METHOD(ThreeClients, "Grouped players can't be invited",
       cCharlie.sendMessage(CL_INVITE_TO_GROUP, "Alice");
 
       THEN("Charlie receives a warning") {
-        CHECK(cCharlie.waitForMessageEver(WARNING_USER_ALREADY_IN_A_GROUP));
+        CHECK(cCharlie.waitForMessage(WARNING_USER_ALREADY_IN_A_GROUP));
       }
 
       THEN("Alice does not receive the invitation") {
-        CHECK_FALSE(cAlice.waitForMessageEver(SV_INVITED_TO_GROUP));
+        CHECK_FALSE(cAlice.waitForMessage(SV_INVITED_TO_GROUP));
       }
     }
   }
@@ -236,7 +236,7 @@ TEST_CASE_METHOD(ServerAndClient, "Group self-invites have no effect",
     client.sendMessage(CL_INVITE_TO_GROUP, user->name());
 
     THEN("he receives no invitation") {
-      CHECK_FALSE(client.waitForMessageEver(SV_INVITED_TO_GROUP));
+      CHECK_FALSE(client.waitForMessage(SV_INVITED_TO_GROUP));
     }
   }
 }

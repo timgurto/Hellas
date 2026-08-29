@@ -1,4 +1,4 @@
-#include "TestClient.h"
+﻿#include "TestClient.h"
 #include "TestFixtures.h"
 #include "TestServer.h"
 #include "testing.h"
@@ -169,6 +169,6 @@ TEST_CASE("The finished-loggin-in message", "[connection]") {
   GIVEN("a client connects to a server") {
     auto s = TestServer{};
     auto c = TestClient{};
-    CHECK(c.waitForMessageEver(SV_DONE_LOADING_AFTER_LOGIN));
+    CHECK(c.waitForMessage(SV_DONE_LOADING_AFTER_LOGIN));
   }
 }

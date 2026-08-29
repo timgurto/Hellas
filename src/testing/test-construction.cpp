@@ -1,4 +1,4 @@
-#include "TestClient.h"
+﻿#include "TestClient.h"
 #include "TestFixtures.h"
 #include "testing.h"
 #include "TestServer.h"
@@ -92,7 +92,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Unique objects are unique",
 
         THEN("he gets a warning") {
           bool isConstructionRejected =
-              client->waitForMessageEver(WARNING_UNIQUE_OBJECT);
+              client->waitForMessage(WARNING_UNIQUE_OBJECT);
           CHECK(isConstructionRejected);
 
           AND_THEN("there is still only the one object") {
@@ -192,7 +192,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Construction tools",
       client->sendMessage(CL_CONSTRUCT, makeArgs("computer", 10, 15));
 
       THEN("he gets a warning") {
-        CHECK(client->waitForMessageEver(WARNING_NEED_TOOLS));
+        CHECK(client->waitForMessage(WARNING_NEED_TOOLS));
 
         AND_THEN("no object was created") {
           CHECK(server->entities().size() == 0);

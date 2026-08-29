@@ -1,4 +1,4 @@
-#include "TestClient.h"
+﻿#include "TestClient.h"
 #include "TestFixtures.h"
 #include "testing.h"
 #include "TestServer.h"
@@ -167,7 +167,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Unwatching NPCs", "[.flaky]") {
           user->teleportTo({200, 200});
 
           THEN("there is no error message") {
-            CHECK_FALSE(client->waitForMessageEver(WARNING_DOESNT_EXIST));
+            CHECK_FALSE(client->waitForMessage(WARNING_DOESNT_EXIST));
           }
         }
       }

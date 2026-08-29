@@ -1,4 +1,4 @@
-#include <SDL.h>
+﻿#include <SDL.h>
 
 #include "../Color.h"
 #include "../HasTags.h"
@@ -96,11 +96,11 @@ TEST_CASE_METHOD(TwoClients, "Roll command", "[grouping]") {
     cAlice.sendMessage(CL_ROLL);
 
     THEN("She receives the result") {
-      CHECK(cAlice.waitForMessageEver(SV_ROLL_RESULT));
+      CHECK(cAlice.waitForMessage(SV_ROLL_RESULT));
     }
 
     THEN("Bob does not receive the result") {
-      CHECK_FALSE(cBob.waitForMessageEver(SV_ROLL_RESULT));
+      CHECK_FALSE(cBob.waitForMessage(SV_ROLL_RESULT));
     }
   }
 
@@ -111,7 +111,7 @@ TEST_CASE_METHOD(TwoClients, "Roll command", "[grouping]") {
       cAlice.sendMessage(CL_ROLL);
 
       THEN("Bob receives the result") {
-        CHECK(cBob.waitForMessageEver(SV_ROLL_RESULT));
+        CHECK(cBob.waitForMessage(SV_ROLL_RESULT));
       }
     }
   }
