@@ -23,4 +23,7 @@ jobs:
         run: msbuild Hellas.sln /t:test /p:Configuration=Debug /verbosity:minimal
 
       - name: Run tests
+        env:
+          SDL_VIDEODRIVER: dummy
+          SDL_AUDIODRIVER: dummy
         run: .\test-debug.exe
