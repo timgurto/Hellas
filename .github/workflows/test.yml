@@ -22,29 +22,11 @@ jobs:
       - name: Build tests
         run: msbuild Hellas.sln /t:test /p:Configuration=Debug /verbosity:minimal
 
-      - name: Check exe exists
-        run: Get-ChildItem .\test-debug.exe
+      - name: Check DLL dependencies
+        run: dumpbin /dependents .\test-debug.exe
 
-      - name: List available SDL video drivers
-        continue-on-error: true
-        run: |
-          $env:SDL_VIDEODRIVER = "dummy"
-          $env:SDL_AUDIODRIVER = "dummy"
-          .\test-debug.exe --list-tests 2>&1 | Select-Object -First 3
+      - name: List DLLs in repo root
+        run: Get-ChildItem .\*.dll | Select-Object Name
 
-      - name: Run one test with dummy drivers
-        continue-on-error: true
-        run: |
-          $env:SDL_VIDEODRIVER = "dummy"
-          $env:SDL_AUDIODRIVER = "dummy"
-          .\test-debug.exe "Start and stop server" 2>&1
-
-      - name: Run one test without dummy drivers
-        continue-on-error: true
-        run: .\test-debug.exe "Start and stop server" 2>&1
-
-      - name: Run all tests with dummy drivers
-        run: |
-          $env:SDL_VIDEODRIVER = "dummy"
-          $env:SDL_AUDIODRIVER = "dummy"
-          .\test-debug.exe 2>&1
+      - name: Run tests
+        run: .\test-debug.exe
