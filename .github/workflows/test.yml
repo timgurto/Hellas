@@ -23,4 +23,4 @@ jobs:
         run: msbuild Hellas.sln /t:test /p:Configuration=Debug /verbosity:minimal
 
       - name: Run tests
-        run: .\test-debug.exe ~[.flaky]
+        run: .\test-debug.exe
