@@ -54,10 +54,12 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Place item in object",
   WAIT_UNTIL(client->objects().size() == 1);
 
   // Give user a box item
+  client->startCheckingMessagesFromNow();
   user->giveItem(&*server->items().begin());
   CHECK(client->waitForMessage(SV_INVENTORY));
 
   // Try to put item in object
+  client->startCheckingMessagesFromNow();
   client->sendMessage(CL_SWAP_ITEMS,
                       makeArgs(Serial::Gear(), 0, box.serial(), 0));
 

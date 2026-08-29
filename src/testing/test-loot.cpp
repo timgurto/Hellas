@@ -100,6 +100,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Looting from a container",
       chest.container().addItems(&gold, 1000);
 
       WHEN("the user destroys the chest") {
+        client->startCheckingMessagesFromNow();
         chest.onAttackedBy(*user, 1, CombatResult::HIT);
         chest.kill();
         REQUIRE_FALSE(chest.loot().empty());
@@ -146,6 +147,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Looting from a container",
           chest.container().addItems(&gold, 100);
 
           WHEN("the user destroys the chest") {
+            client->startCheckingMessagesFromNow();
             chest.onAttackedBy(*user, 1, CombatResult::HIT);
             chest.reduceHealth(9999);
             REQUIRE_FALSE(chest.loot().empty());
@@ -191,7 +193,7 @@ TEST_CASE("New users are alerted to lootable objects", "[loot]") {
     auto c = TestClient::WithUsernameAndDataString("Alice", data);
 
     // Then she knows it's lootable
-    CHECK(c.waitForMessage(SV_INVENTORY));
+    CHECK(c.waitForMessageEver(SV_INVENTORY));
   }
 }
 
@@ -207,6 +209,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Non-taggers can't loot",
     auto &goldbug = server->addNPC("goldbug", {10, 15});
 
     WHEN("it dies without being tagged") {
+      client->startCheckingMessagesFromNow();
       goldbug.kill();
 
       THEN("the user isn't told that it's lootable") {
@@ -377,6 +380,7 @@ TEST_CASE("Grouped players can loot each other's kills",
       s->groups->addToGroup("Bob", "Alice");
 
       WHEN("Alice kills the mouse") {
+        cBob.startCheckingMessagesFromNow();
         mouse.onAttackedBy(alice, 1, CombatResult::HIT);
         mouse.kill();
 

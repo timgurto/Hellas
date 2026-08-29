@@ -128,6 +128,7 @@ class TestClient {
                       ms_t timeout = DEFAULT_TIMEOUT) const;
   bool waitForMessageEver(MessageCode desiredMsg,
                           ms_t timeout = DEFAULT_TIMEOUT) const;
+  void startCheckingMessagesFromNow();
   void waitForRedraw();
   void simulateMouseMove(const ScreenPoint &position);
   void simulateClick(Uint8 button);

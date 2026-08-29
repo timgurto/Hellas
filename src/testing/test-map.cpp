@@ -14,7 +14,7 @@ TEST_CASE_METHOD(ServerAndClientWithDataFiles,
   server->addObject("rock", {10, 15});
 
   // When the client finds out his location;
-  CHECK(client->waitForMessage(SV_USER_LOCATION));
+  CHECK(client->waitForMessageEver(SV_USER_LOCATION));
 
   // And he opens his map window
   client->mapWindow()->show();
@@ -28,7 +28,7 @@ TEST_CASE_METHOD(ServerAndClientWithDataFiles,
   useData("big_map");
 
   // When the client finds out his location;
-  CHECK(client->waitForMessage(SV_USER_LOCATION));
+  CHECK(client->waitForMessageEver(SV_USER_LOCATION));
 
   // And he opens his map window
   client->mapWindow()->show();

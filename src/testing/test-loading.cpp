@@ -788,6 +788,7 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Loading objects on teleport",
           REPEAT_FOR_MS(100);
 
           When("the user teleports close to the rock") {
+            client->startCheckingMessagesFromNow();
             user->teleportTo({3000, 3000});
 
             Then("he doesn't receive information about it") {

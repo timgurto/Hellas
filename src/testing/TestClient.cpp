@@ -169,6 +169,11 @@ bool TestClient::waitForMessageEver(MessageCode desiredMsg,
   return false;
 }
 
+void TestClient::startCheckingMessagesFromNow() {
+  std::lock_guard<std::mutex> guard(_client->_messagesReceivedMutex);
+  _client->_messagesReceived.clear();
+}
+
 bool TestClient::messageWasReceivedSince(MessageCode desiredMsg,
                                          size_t startingIndex) const {
   std::lock_guard<std::mutex> guard(_client->_messagesReceivedMutex);
