@@ -22,11 +22,5 @@ jobs:
       - name: Build tests
         run: msbuild Hellas.sln /t:test /p:Configuration=Debug /verbosity:minimal
 
-      - name: Check DLL dependencies
-        run: dumpbin /dependents .\test-debug.exe
-
-      - name: List DLLs in repo root
-        run: Get-ChildItem .\*.dll | Select-Object Name
-
       - name: Run tests
         run: .\test-debug.exe
