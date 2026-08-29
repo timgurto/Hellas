@@ -22,15 +22,15 @@ jobs:
       - name: Build tests
         run: msbuild Hellas.sln /t:test /p:Configuration=Debug /verbosity:minimal
 
-      - name: List DLLs present
-        run: Get-ChildItem .\*.dll | Select-Object Name, Length
-
-      - name: Try running tests
-        continue-on-error: true
+      - name: Copy debug runtime DLLs
         run: |
-          $p = Start-Process -FilePath .\test-debug.exe -ArgumentList "--list-tests" -Wait -PassThru -NoNewWindow
-          Write-Output "Exit code: $($p.ExitCode)"
+          $vsPath = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property installationPath
+          $debugCrt = Get-ChildItem "$vsPath\VC\Redist" -Recurse -Filter "msvcp140d.dll" | Where-Object { $_.FullName -match 'x86' } | Select-Object -First 1
+          $crtDir = $debugCrt.DirectoryName
+          Write-Output "Found debug CRT at: $crtDir"
+          Copy-Item "$crtDir\msvcp140d.dll" .
+          Copy-Item "$crtDir\vcruntime140d.dll" .
+          Copy-Item "C:\Windows\SysWOW64\ucrtbased.dll" .
 
-      - name: Check event log for errors
-        run: |
-          Get-WinEvent -FilterHashtable @{LogName='Application'; Level=1,2; StartTime=(Get-Date).AddMinutes(-5)} -MaxEvents 10 -ErrorAction SilentlyContinue | Format-List TimeCreated, Id, Message
+      - name: Run tests
+        run: .\test-debug.exe
