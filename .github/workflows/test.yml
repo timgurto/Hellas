@@ -25,18 +25,69 @@ jobs:
       - name: Diagnose
         run: |
           python -c "
-          import struct, subprocess, ctypes, os
-          # Check exe architecture
-          with open('test-debug.exe', 'rb') as f:
-              f.seek(60)
-              pe = struct.unpack('<I', f.read(4))[0]
-              f.seek(pe + 4)
-              m = struct.unpack('<H', f.read(2))[0]
-              arch = {0x14C: 'x86', 0x8664: 'x64'}.get(m, hex(m))
-              print(f'test-debug.exe: {arch}')
-          # Try running and capture error
+          import struct, subprocess, glob, os
+
+          def arch(path):
+              with open(path, 'rb') as f:
+                  f.seek(60)
+                  pe = struct.unpack('<I', f.read(4))[0]
+                  f.seek(pe + 4)
+                  m = struct.unpack('<H', f.read(2))[0]
+                  return {0x14C: 'x86', 0x8664: 'x64', 0xAA64: 'ARM64'}.get(m, hex(m))
+
+          # 1. Check all PE files in working dir
+          print('=== Architectures ===')
+          for f in ['test-debug.exe'] + sorted(glob.glob('*.dll')):
+              print(f'  {f}: {arch(f)}')
+
+          # 2. Try running and capture error
+          print('\n=== Run attempt ===')
           r = subprocess.run(['test-debug.exe', '--list-tests'], capture_output=True, timeout=10)
-          print(f'exit code: {r.returncode}')
-          print(f'stdout: {r.stdout[:200]}')
+          print(f'exit code: {r.returncode} (hex: {r.returncode & 0xFFFFFFFF:#010x})')
+          print(f'stdout: {r.stdout[:300]}')
           print(f'stderr: {r.stderr[:500]}')
+
+          # 3. Check debug DLLs in system
+          print('\n=== Debug DLLs in SysWOW64 ===')
+          for dll in ['msvcp140d.dll', 'vcruntime140d.dll', 'ucrtbased.dll']:
+              p = f'C:/Windows/SysWOW64/{dll}'
+              exists = os.path.exists(p)
+              print(f'  {dll}: {\"exists (\" + arch(p) + \")\" if exists else \"MISSING\"}')
+
+          # 4. Check debug DLLs in System32
+          print('\n=== Debug DLLs in System32 ===')
+          for dll in ['msvcp140d.dll', 'vcruntime140d.dll', 'ucrtbased.dll']:
+              p = f'C:/Windows/System32/{dll}'
+              exists = os.path.exists(p)
+              print(f'  {dll}: {\"exists (\" + arch(p) + \")\" if exists else \"MISSING\"}')
           "
+
+      - name: Try with debug DLLs in PATH
+        continue-on-error: true
+        shell: cmd
+        run: |
+          for /f "usebackq tokens=*" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property installationPath`) do set VSDIR=%%i
+          echo VS: %VSDIR%
+          set "PATH=%VSDIR%\VC\Redist\MSVC\14.44.35112\debug_nonredist\x86\Microsoft.VC143.DebugCRT;%PATH%"
+          test-debug.exe --list-tests 2>&1 | findstr /n "." | findstr /b "1: 2: 3:"
+
+      - name: Try with DLLs copied
+        continue-on-error: true
+        run: |
+          $vsPath = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property installationPath
+          $crt = Get-ChildItem "$vsPath\VC\Redist" -Recurse -Filter "msvcp140d.dll" | Where-Object { $_.FullName -match 'x86' -and $_.FullName -match 'VC143' } | Select-Object -First 1
+          Copy-Item "$($crt.DirectoryName)\*" . -Force
+          Copy-Item "C:\Windows\SysWOW64\ucrtbased.dll" . -Force
+          $p = Start-Process -FilePath .\test-debug.exe -ArgumentList "--list-tests" -Wait -PassThru -NoNewWindow
+          Write-Output "Exit code: $($p.ExitCode)"
+
+      - name: Try building and running hello world x86 Debug
+        continue-on-error: true
+        shell: cmd
+        run: |
+          echo #include ^<cstdio^> > hello.cpp
+          echo int main() { printf("hello from x86 debug\n"); return 0; } >> hello.cpp
+          for /f "usebackq tokens=*" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -find "VC\Tools\MSVC\*\bin\Hostx64\x86\cl.exe"`) do set CL=%%i
+          echo Compiler: %CL%
+          "%CL%" /MDd hello.cpp /Fe:hello.exe
+          hello.exe
