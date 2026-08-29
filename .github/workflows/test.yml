@@ -22,68 +22,13 @@ jobs:
       - name: Build tests
         run: msbuild Hellas.sln /t:test /p:Configuration=Debug /verbosity:minimal
 
-      - name: Diagnose
-        shell: python
+      - name: Set up runtime DLLs
         run: |
-          import struct, subprocess, glob, os
-
-          def arch(path):
-              with open(path, 'rb') as f:
-                  f.seek(60)
-                  pe = struct.unpack('<I', f.read(4))[0]
-                  f.seek(pe + 4)
-                  m = struct.unpack('<H', f.read(2))[0]
-                  return {0x14C: 'x86', 0x8664: 'x64', 0xAA64: 'ARM64'}.get(m, hex(m))
-
-          def check_dll(p):
-              if os.path.exists(p):
-                  return 'exists (' + arch(p) + ')'
-              return 'MISSING'
-
-          print('=== Architectures in working dir ===')
-          for f in ['test-debug.exe'] + sorted(glob.glob('*.dll')):
-              print('  ' + f + ': ' + arch(f))
-
-          print('\n=== Run attempt ===')
-          r = subprocess.run(['test-debug.exe', '--list-tests'], capture_output=True, timeout=10)
-          print('exit code: ' + str(r.returncode) + ' (hex: ' + hex(r.returncode & 0xFFFFFFFF) + ')')
-          print('stdout: ' + repr(r.stdout[:300]))
-          print('stderr: ' + repr(r.stderr[:500]))
-
-          print('\n=== Debug DLLs in SysWOW64 ===')
-          for dll in ['msvcp140d.dll', 'vcruntime140d.dll', 'ucrtbased.dll']:
-              print('  ' + dll + ': ' + check_dll('C:/Windows/SysWOW64/' + dll))
-
-          print('\n=== Debug DLLs in System32 ===')
-          for dll in ['msvcp140d.dll', 'vcruntime140d.dll', 'ucrtbased.dll']:
-              print('  ' + dll + ': ' + check_dll('C:/Windows/System32/' + dll))
-
-      - name: Try with debug DLLs in PATH
-        continue-on-error: true
-        shell: cmd
-        run: |
-          for /f "usebackq tokens=*" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property installationPath`) do set VSDIR=%%i
-          echo VS: %VSDIR%
-          set "PATH=%VSDIR%\VC\Redist\MSVC\14.44.35112\debug_nonredist\x86\Microsoft.VC143.DebugCRT;%PATH%"
-          test-debug.exe --list-tests 2>&1 | findstr /n "." | findstr /b "1: 2: 3:"
-
-      - name: Try with DLLs copied
-        continue-on-error: true
-        run: |
+          Remove-Item msvcp140.dll, msvcr110.dll, vcruntime140.dll
           $vsPath = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property installationPath
           $crt = Get-ChildItem "$vsPath\VC\Redist" -Recurse -Filter "msvcp140d.dll" | Where-Object { $_.FullName -match 'x86' -and $_.FullName -match 'VC143' } | Select-Object -First 1
           Copy-Item "$($crt.DirectoryName)\*" . -Force
           Copy-Item "C:\Windows\SysWOW64\ucrtbased.dll" . -Force
-          $p = Start-Process -FilePath .\test-debug.exe -ArgumentList "--list-tests" -Wait -PassThru -NoNewWindow
-          Write-Output "Exit code: $($p.ExitCode)"
 
-      - name: Try hello world x86 Debug
-        continue-on-error: true
-        shell: cmd
-        run: |
-          echo #include ^<cstdio^> > hello.cpp
-          echo int main() { printf("hello from x86 debug\n"); return 0; } >> hello.cpp
-          for /f "usebackq tokens=*" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -find "VC\Tools\MSVC\*\bin\Hostx64\x86\cl.exe"`) do set CL=%%i
-          echo Compiler: %CL%
-          "%CL%" /MDd hello.cpp /Fe:hello.exe
-          hello.exe
+      - name: Run tests
+        run: .\test-debug.exe
