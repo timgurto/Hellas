@@ -1,7 +1,7 @@
 ﻿#include "TestClient.h"
 #include "TestFixtures.h"
-#include "testing.h"
 #include "TestServer.h"
+#include "testing.h"
 
 TEST_CASE_METHOD(ServerAndClientWithData, "Construction materials can be added",
                  "[construction]") {
@@ -457,10 +457,14 @@ TEST_CASE_METHOD(ServerAndClientWithData, "Auto-fill",
     }
   }
 
-  WHEN("a user auto-fills with a bad serial") {
-    const auto BAD_SERIAL = "42";
-    client->sendMessage(CL_AUTO_CONSTRUCT, BAD_SERIAL);
+  GIVEN("a server and client") {
+    useData("");
 
-    THEN("the server survives") { server->nop(); }
+    WHEN("a user auto-fills with a bad serial") {
+      const auto BAD_SERIAL = "42";
+      client->sendMessage(CL_AUTO_CONSTRUCT, BAD_SERIAL);
+
+      THEN("the server survives") { server->nop(); }
+    }
   }
 }
