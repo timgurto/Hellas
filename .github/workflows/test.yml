@@ -1,0 +1,23 @@
+name: Tests
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: [master]
+
+jobs:
+  test:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Build tests
+        run: msbuild Hellas.sln /t:test /p:Configuration=Debug /verbosity:minimal
+
+      - name: Run tests
+        run: .\test-debug.exe ~[.flaky]
