@@ -125,29 +125,6 @@ void TestClient::waitForRedraw() {
   WAIT_UNTIL(_client->_drawingFinished);
 }
 
-MessageCode TestClient::getNextMessage() const {
-  _client->_messagesReceivedMutex.lock();
-  auto oldSize = _client->_messagesReceived.size();
-  _client->_messagesReceivedMutex.unlock();
-  size_t newSize = oldSize;
-
-  REPEAT_FOR_MS(10000) {
-    _client->_messagesReceivedMutex.lock();
-    newSize = _client->_messagesReceived.size();
-    _client->_messagesReceivedMutex.unlock();
-
-    if (newSize > oldSize) break;
-  }
-
-  if (newSize == oldSize) return NO_CODE;
-
-  _client->_messagesReceivedMutex.lock();
-  auto lastMessageCode = _client->_messagesReceived.back();
-  _client->_messagesReceivedMutex.unlock();
-
-  return lastMessageCode;
-}
-
 bool TestClient::waitForMessage(MessageCode desiredMsg, ms_t timeout) const {
   for (ms_t startTime = SDL_GetTicks(); SDL_GetTicks() < startTime + timeout;
        SDL_Delay(1)) {

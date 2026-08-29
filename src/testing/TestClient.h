@@ -123,7 +123,6 @@ class TestClient {
   void sendMessage(MessageCode code, const std::string &args = "") const {
     _client->sendMessage({code, args});
   }
-  MessageCode getNextMessage() const;
   bool waitForMessage(MessageCode desiredMsg,
                       ms_t timeout = DEFAULT_TIMEOUT) const;
   void startCheckingMessagesFromNow();
