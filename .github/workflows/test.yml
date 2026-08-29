@@ -39,6 +39,20 @@ jobs:
           Write-Output "ucrtbased.dll in SysWOW64: $(Test-Path C:\Windows\SysWOW64\ucrtbased.dll)"
           Copy-Item "C:\Windows\SysWOW64\ucrtbased.dll" .
 
+      - name: Check architectures
+        run: |
+          python -c "
+          import struct, glob
+          for f in ['test-debug.exe'] + glob.glob('*.dll'):
+              with open(f, 'rb') as fh:
+                  fh.seek(60)
+                  pe = struct.unpack('<I', fh.read(4))[0]
+                  fh.seek(pe + 4)
+                  m = struct.unpack('<H', fh.read(2))[0]
+                  arch = {0x14C: 'x86', 0x8664: 'x64', 0xAA64: 'ARM64'}.get(m, hex(m))
+                  print(f'{f}: {arch}')
+          "
+
       - name: Run tests
         run: |
           $p = Start-Process -FilePath .\test-debug.exe -Wait -PassThru -NoNewWindow
