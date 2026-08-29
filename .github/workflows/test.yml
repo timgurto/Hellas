@@ -22,31 +22,21 @@ jobs:
       - name: Build tests
         run: msbuild Hellas.sln /t:test /p:Configuration=Debug /verbosity:minimal
 
-      - name: Copy debug runtime DLLs
+      - name: Diagnose
         run: |
-          $vsPath = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property installationPath
-          Write-Output "VS install: $vsPath"
-          Get-ChildItem "$vsPath\VC\Redist" -Recurse -Filter "msvcp140d.dll" | ForEach-Object { Write-Output $_.FullName }
-          $debugCrt = Get-ChildItem "$vsPath\VC\Redist" -Recurse -Filter "msvcp140d.dll" | Where-Object { $_.FullName -match 'x86' -and $_.FullName -match 'VC143' } | Select-Object -First 1
-          if (-not $debugCrt) {
-            Write-Output "VC143 not found, falling back to any x86"
-            $debugCrt = Get-ChildItem "$vsPath\VC\Redist" -Recurse -Filter "msvcp140d.dll" | Where-Object { $_.FullName -match 'x86' } | Select-Object -Last 1
-          }
-          $crtDir = $debugCrt.DirectoryName
-          Write-Output "Using debug CRT from: $crtDir"
-          Copy-Item "$crtDir\msvcp140d.dll" .
-          Copy-Item "$crtDir\vcruntime140d.dll" .
-          Write-Output "ucrtbased.dll in SysWOW64: $(Test-Path C:\Windows\SysWOW64\ucrtbased.dll)"
-          Copy-Item "C:\Windows\SysWOW64\ucrtbased.dll" .
-
-      - name: Replace x64 DLLs with x86 versions
-        run: |
-          Copy-Item C:\Windows\SysWOW64\msvcp140.dll . -Force
-          Copy-Item C:\Windows\SysWOW64\vcruntime140.dll . -Force
-          Remove-Item msvcr110.dll
-
-      - name: Run tests
-        run: |
-          $p = Start-Process -FilePath .\test-debug.exe -Wait -PassThru -NoNewWindow
-          Write-Output "Exit code: $($p.ExitCode)"
-          if ($p.ExitCode -ne 0) { exit $p.ExitCode }
+          python -c "
+          import struct, subprocess, ctypes, os
+          # Check exe architecture
+          with open('test-debug.exe', 'rb') as f:
+              f.seek(60)
+              pe = struct.unpack('<I', f.read(4))[0]
+              f.seek(pe + 4)
+              m = struct.unpack('<H', f.read(2))[0]
+              arch = {0x14C: 'x86', 0x8664: 'x64'}.get(m, hex(m))
+              print(f'test-debug.exe: {arch}')
+          # Try running and capture error
+          r = subprocess.run(['test-debug.exe', '--list-tests'], capture_output=True, timeout=10)
+          print(f'exit code: {r.returncode}')
+          print(f'stdout: {r.stdout[:200]}')
+          print(f'stderr: {r.stderr[:500]}')
+          "
