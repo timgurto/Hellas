@@ -39,8 +39,11 @@ jobs:
           Write-Output "ucrtbased.dll in SysWOW64: $(Test-Path C:\Windows\SysWOW64\ucrtbased.dll)"
           Copy-Item "C:\Windows\SysWOW64\ucrtbased.dll" .
 
-      - name: Remove x64 DLLs that interfere with x86 exe
-        run: Remove-Item msvcp140.dll, msvcr110.dll, vcruntime140.dll
+      - name: Replace x64 DLLs with x86 versions
+        run: |
+          Copy-Item C:\Windows\SysWOW64\msvcp140.dll . -Force
+          Copy-Item C:\Windows\SysWOW64\vcruntime140.dll . -Force
+          Remove-Item msvcr110.dll
 
       - name: Run tests
         run: |
