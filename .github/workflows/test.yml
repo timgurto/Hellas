@@ -25,12 +25,22 @@ jobs:
       - name: Copy debug runtime DLLs
         run: |
           $vsPath = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property installationPath
-          $debugCrt = Get-ChildItem "$vsPath\VC\Redist" -Recurse -Filter "msvcp140d.dll" | Where-Object { $_.FullName -match 'x86' } | Select-Object -First 1
+          Write-Output "VS install: $vsPath"
+          Get-ChildItem "$vsPath\VC\Redist" -Recurse -Filter "msvcp140d.dll" | ForEach-Object { Write-Output $_.FullName }
+          $debugCrt = Get-ChildItem "$vsPath\VC\Redist" -Recurse -Filter "msvcp140d.dll" | Where-Object { $_.FullName -match 'x86' -and $_.FullName -match 'VC143' } | Select-Object -First 1
+          if (-not $debugCrt) {
+            Write-Output "VC143 not found, falling back to any x86"
+            $debugCrt = Get-ChildItem "$vsPath\VC\Redist" -Recurse -Filter "msvcp140d.dll" | Where-Object { $_.FullName -match 'x86' } | Select-Object -Last 1
+          }
           $crtDir = $debugCrt.DirectoryName
-          Write-Output "Found debug CRT at: $crtDir"
+          Write-Output "Using debug CRT from: $crtDir"
           Copy-Item "$crtDir\msvcp140d.dll" .
           Copy-Item "$crtDir\vcruntime140d.dll" .
+          Write-Output "ucrtbased.dll in SysWOW64: $(Test-Path C:\Windows\SysWOW64\ucrtbased.dll)"
           Copy-Item "C:\Windows\SysWOW64\ucrtbased.dll" .
 
       - name: Run tests
-        run: .\test-debug.exe
+        run: |
+          $p = Start-Process -FilePath .\test-debug.exe -Wait -PassThru -NoNewWindow
+          Write-Output "Exit code: $($p.ExitCode)"
+          if ($p.ExitCode -ne 0) { exit $p.ExitCode }
