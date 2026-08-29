@@ -148,11 +148,10 @@ MessageCode TestClient::getNextMessage() const {
   return lastMessageCode;
 }
 
-bool TestClient::waitForMessage(MessageCode desiredMsg,
-                                    ms_t timeout) const {
+bool TestClient::waitForMessage(MessageCode desiredMsg, ms_t timeout) const {
   for (ms_t startTime = SDL_GetTicks(); SDL_GetTicks() < startTime + timeout;
        SDL_Delay(1)) {
-    if (messageWasReceivedSince(desiredMsg, 0)) return true;
+    if (wasMessageReceived(desiredMsg)) return true;
   }
   return false;
 }
@@ -162,13 +161,10 @@ void TestClient::startCheckingMessagesFromNow() {
   _client->_messagesReceived.clear();
 }
 
-bool TestClient::messageWasReceivedSince(MessageCode desiredMsg,
-                                         size_t startingIndex) const {
+bool TestClient::wasMessageReceived(MessageCode desiredMsg) const {
   std::lock_guard<std::mutex> guard(_client->_messagesReceivedMutex);
-  const size_t NUM_MESSAGES = _client->_messagesReceived.size();
-  if (startingIndex >= NUM_MESSAGES) return false;
-  for (size_t i = startingIndex; i != NUM_MESSAGES; ++i)
-    if (_client->_messagesReceived[i] == desiredMsg) return true;
+  for (const auto msgReceived : _client->_messagesReceived)
+    if (msgReceived == desiredMsg) return true;
   return false;
 }
 

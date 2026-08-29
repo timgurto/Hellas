@@ -1,11 +1,11 @@
 #ifndef TEST_CLIENT_H
 #define TEST_CLIENT_H
 
+#include "../Message.h"
 #include "../client/CDataLoader.h"
 #include "../client/CDroppedItem.h"
-#include "../client/Client.h"
 #include "../client/CQuest.h"
-#include "../Message.h"
+#include "../client/Client.h"
 #include "testing.h"
 
 class CQuest;
@@ -125,7 +125,7 @@ class TestClient {
   }
   MessageCode getNextMessage() const;
   bool waitForMessage(MessageCode desiredMsg,
-                          ms_t timeout = DEFAULT_TIMEOUT) const;
+                      ms_t timeout = DEFAULT_TIMEOUT) const;
   void startCheckingMessagesFromNow();
   void waitForRedraw();
   void simulateMouseMove(const ScreenPoint &position);
@@ -151,8 +151,7 @@ class TestClient {
     CDataLoader::FromPath(*_client, path).load();
   }
 
-  bool TestClient::messageWasReceivedSince(MessageCode desiredMsg,
-                                           size_t startingIndex) const;
+  bool TestClient::wasMessageReceived(MessageCode desiredMsg) const;
 };
 
 #endif
