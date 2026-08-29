@@ -22,5 +22,8 @@ jobs:
       - name: Build tests
         run: msbuild Hellas.sln /t:test /p:Configuration=Debug /verbosity:minimal
 
+      - name: Smoke test (list tests)
+        run: .\test-debug.exe --list-tests 2>&1 | Select-Object -First 5
+
       - name: Run tests
         run: .\test-debug.exe
