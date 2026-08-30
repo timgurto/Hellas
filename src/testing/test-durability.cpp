@@ -3,8 +3,8 @@
 #include "TemporaryUserStats.h"
 #include "TestClient.h"
 #include "TestFixtures.h"
-#include "testing.h"
 #include "TestServer.h"
+#include "testing.h"
 
 using ItemReportingInfo = ServerItem::Instance::ReportingInfo;
 
@@ -619,11 +619,14 @@ TEST_CASE("Persistence of item health: objects' contents",
 
     // And when the server restarts
   }
-  auto s = TestServer::WithDataStringAndKeepingOldData(data);
+  SECTION("Then the item is still damaged to the same degree") {
+    auto s = TestServer::WithDataStringAndKeepingOldData(data);
 
-  // Then the item is still damaged to the same degree
-  auto &toybox = s.getFirstObject();
-  CHECK(toybox.container().at(0).health() == itemHealth);
+    auto &toybox = s.getFirstObject();
+    REQUIRE(toybox.hasContainer());
+    REQUIRE(toybox.container().at(0).hasItem());
+    CHECK(toybox.container().at(0).health() == itemHealth);
+  }
 }
 
 #define BREAK_ITEM(ITEM)               \
