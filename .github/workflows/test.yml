@@ -22,13 +22,28 @@ jobs:
       - name: Build tests
         run: msbuild Hellas.sln /t:test /p:Configuration=Debug /verbosity:minimal
 
-      - name: Set up runtime DLLs
+      - name: Set up debug runtime DLLs
         run: |
-          Remove-Item msvcp140.dll, msvcr110.dll, vcruntime140.dll
           $vsPath = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property installationPath
           $crt = Get-ChildItem "$vsPath\VC\Redist" -Recurse -Filter "msvcp140d.dll" | Where-Object { $_.FullName -match 'x86' -and $_.FullName -match 'VC143' } | Select-Object -First 1
-          Copy-Item "$($crt.DirectoryName)\*" . -Force
+          Copy-Item "$($crt.DirectoryName)\msvcp140d.dll" . -Force
+          Copy-Item "$($crt.DirectoryName)\vcruntime140d.dll" . -Force
           Copy-Item "C:\Windows\SysWOW64\ucrtbased.dll" . -Force
+
+      - name: Verify DLL architecture
+        run: |
+          $dumpbin = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -find "**\dumpbin.exe" | Select-Object -First 1
+          foreach ($dll in @("msvcp140.dll","vcruntime140.dll","msvcr110.dll","msvcp140d.dll","vcruntime140d.dll","ucrtbased.dll","SDL2.dll","libcurl.dll")) {
+            if (Test-Path $dll) {
+              $arch = & $dumpbin /headers $dll | Select-String "machine" | Select-Object -First 1
+              Write-Output "${dll}: $($arch.Line.Trim())"
+            } else {
+              Write-Output "${dll}: NOT FOUND"
+            }
+          }
+
+      - name: Smoke test
+        run: .\test-debug.exe --list-tests
 
       - name: Run tests
         run: .\test-debug.exe
