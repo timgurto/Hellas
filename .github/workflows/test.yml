@@ -43,4 +43,4 @@ jobs:
           }
 
       - name: Run tests
-        run: .\test-debug.exe -d yes
+        run: .\test-debug.exe --reporter compact -s
