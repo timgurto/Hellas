@@ -1,6 +1,8 @@
 #ifndef TEST_SERVER_H
 #define TEST_SERVER_H
 
+#include <thread>
+
 #include "../server/Server.h"
 
 class DroppedItem;
@@ -32,6 +34,7 @@ class TestServer {
   std::set<ServerItem> &items() { return _server->_items; }
   const std::set<ServerItem> &items() const { return _server->_items; }
   std::set<User> &users() { return _server->_onlineUsers; }
+  std::set<Socket> &clientSockets() { return _server->_clientSockets; }
   std::vector<Spawner> &spawners() { return _server->_spawners; }
   Wars &wars() { return _server->_wars; }
   Cities &cities() { return _server->_cities; }
@@ -84,6 +87,8 @@ class TestServer {
 
  private:
   Server *_server;
+  std::thread _thread;
+  std::thread _saveThread;
 
   enum StringType { DATA_PATH, DATA_STRING };
   TestServer(const std::string &string, StringType type);

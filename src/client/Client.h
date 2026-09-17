@@ -7,20 +7,23 @@
 #include <queue>
 #include <set>
 #include <string>
+#include <thread>
 #include <unordered_map>
 
 #include "../Args.h"
 #include "../Map.h"
-#include "../messageCodes.h"
 #include "../Point.h"
 #include "../Rect.h"
 #include "../Serial.h"
 #include "../Socket.h"
+#include "../messageCodes.h"
 #include "../types.h"
 #include "Avatar.h"
 #include "CCities.h"
 #include "CDroppedItem.h"
 #include "CGameData.h"
+#include "CQuest.h"
+#include "CRecipe.h"
 #include "ClientBuff.h"
 #include "ClientCombatant.h"
 #include "ClientConfig.h"
@@ -33,11 +36,7 @@
 #include "ClientTerrain.h"
 #include "ClientWar.h"
 #include "Connection.h"
-#include "CQuest.h"
-#include "craftingWindow.h"
-#include "CRecipe.h"
 #include "CurrentTools.h"
-#include "drawing.h"
 #include "HelpEntry.h"
 #include "KeyboardStateFetcher.h"
 #include "LogSDL.h"
@@ -48,13 +47,15 @@
 #include "Sprite.h"
 #include "Tag.h"
 #include "Target.h"
+#include "WordWrapper.h"
+#include "craftingWindow.h"
+#include "drawing.h"
 #include "ui/ChoiceList.h"
 #include "ui/ContainerGrid.h"
 #include "ui/Indicator.h"
 #include "ui/ItemSelector.h"
 #include "ui/OutlinedLabel.h"
 #include "ui/Window.h"
-#include "WordWrapper.h"
 
 struct GroupUI;
 class TextBox;
@@ -481,6 +482,7 @@ class Client : public TextEntryManager {
     RELEASE_NOTES_DISPLAYED
   } _releaseNotesStatus{RELEASE_NOTES_DOWNLOADING};
   std::string _releaseNotesRaw;
+  std::thread _releaseNotesThread;
   void showReleaseNotes();
   struct LoginScreenElements {
     TextBox *nameBox{nullptr};

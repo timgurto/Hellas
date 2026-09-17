@@ -46,6 +46,9 @@ class Socket {
   bool operator!=(const Socket &rhs) const { return _raw != rhs._raw; }
   bool operator<(const Socket &rhs) const { return _raw < rhs._raw; }
 
+  static size_t refCountsSize() { return _refCounts.size(); }
+
+  void allowPortReuse();
   void bind(sockaddr_in &socketAddr);
   void listen();
   bool isBound() const { return _isBound; }

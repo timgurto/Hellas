@@ -2,11 +2,24 @@
 
 #include "../Args.h"
 #include "../curlUtil.h"
+#include "../threadNaming.h"
 #include "Client.h"
 
 extern Args cmdLineArgs;
 
 Connection::Connection(Client &client) : _client(&client) {}
+
+Connection &Connection::operator=(Connection &&rhs) {
+  if (this == &rhs) return *this;
+  if (_connectThread.joinable()) _connectThread.join();
+  _socket = rhs._socket;
+  _state = rhs._state;
+  _client = rhs._client;
+  _timeOfLastConnectionAttempt = rhs._timeOfLastConnectionAttempt;
+  _aThreadIsConnecting = rhs._aThreadIsConnecting;
+  _connectThread = std::move(rhs._connectThread);
+  return *this;
+}
 
 void Connection::initialize() {
   if (cmdLineArgs.contains("server-ip"))
@@ -15,7 +28,17 @@ void Connection::initialize() {
     serverIP = readFromURL(_client->_config.serverHostDirectory);  // Slow
 }
 
-Connection::~Connection() { while (_aThreadIsConnecting); }
+Connection::~Connection() {
+  if (_connectThread.joinable()) _connectThread.join();
+}
+
+void Connection::connectInNewThread() {
+  if (_connectThread.joinable()) _connectThread.join();
+  _connectThread = std::thread([this]() {
+    setThreadName("Connecting to server");
+    connect();
+  });
+}
 
 void Connection::getNewMessages() {
   auto readFDs = fd_set{};

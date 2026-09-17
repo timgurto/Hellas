@@ -121,6 +121,76 @@ TEST_CASE("Bulk messages") {
   }
 }
 
+TEST_CASE("Client sockets are cleaned up after disconnect", "[networking]") {
+  auto s = TestServer{};
+
+  {
+    auto c = TestClient{};
+    s.waitForUsers(1);
+    CHECK(s.clientSockets().size() == 1);
+  }
+
+  WAIT_UNTIL(s.clientSockets().empty());
+}
+
+TEST_CASE("Client keeps the same socket over time", "[networking]") {
+  auto s = TestServer{};
+  auto c = TestClient{};
+  s.waitForUsers(1);
+
+  auto socketAtStart = s.users().begin()->socket().getRaw();
+
+  REPEAT_FOR_MS(10000) {}
+
+  CHECK(s.users().size() == 1);
+  auto socketAfter = s.users().begin()->socket().getRaw();
+  CHECK(socketAtStart == socketAfter);
+}
+
+TEST_CASE("Client on login screen keeps the same socket", "[networking]") {
+  auto s = TestServer{};
+  auto c = TestClient::WithoutLogin();
+  WAIT_UNTIL(s.clientSockets().size() == 1);
+
+  auto socketAtStart = s.clientSockets().begin()->getRaw();
+
+  REPEAT_FOR_MS(10000) {}
+
+  CHECK(s.clientSockets().size() == 1);
+  CHECK(s.clientSockets().begin()->getRaw() == socketAtStart);
+}
+
+TEST_CASE("Sockets are cleaned up after failed connection attempts",
+          "[networking]") {
+  auto refCountsBefore = Socket::refCountsSize();
+
+  {
+    auto c = TestClient::WithoutLogin();
+    REPEAT_FOR_MS(10000) {}
+  }
+
+  auto refCountsAfter = Socket::refCountsSize();
+  CHECK(refCountsAfter == refCountsBefore);
+}
+
+TEST_CASE("Sockets are cleaned up after server goes down", "[networking]") {
+  auto refCountsBefore = Socket::refCountsSize();
+
+  {
+    auto c = TestClient::WithoutLogin();
+
+    {
+      auto s = TestServer{};
+      WAIT_UNTIL(s.clientSockets().size() == 1);
+    }
+
+    REPEAT_FOR_MS(10000) {}
+  }
+
+  auto refCountsAfter = Socket::refCountsSize();
+  CHECK(refCountsAfter == refCountsBefore);
+}
+
 TEST_CASE("Real-world locations can be determined from IP addresses") {
   const auto result = getLocationFromIP("20.43.161.105"s);
   CHECK(result.find("\"status\":\"success\"") != std::string::npos);

@@ -56,8 +56,16 @@ void Socket::addRef() {
     _refCounts[_raw] = 1;
 }
 
+void Socket::allowPortReuse() {
+  const int ENABLED = 1;
+  setsockopt(_raw, SOL_SOCKET, SO_REUSEADDR, (const char *)&ENABLED,
+             sizeof(ENABLED));
+}
+
 void Socket::bind(sockaddr_in &socketAddr) {
   if (!valid()) return;
+
+  allowPortReuse();
 
   _isBound =
       ::bind(_raw, (sockaddr *)&socketAddr, sockAddrSize) != SOCKET_ERROR;

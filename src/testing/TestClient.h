@@ -1,6 +1,8 @@
 #ifndef TEST_CLIENT_H
 #define TEST_CLIENT_H
 
+#include <thread>
+
 #include "../Message.h"
 #include "../client/CDataLoader.h"
 #include "../client/CDroppedItem.h"
@@ -24,6 +26,7 @@ class TestClient {
                                               const std::string &data);
   static TestClient WithClassAndDataString(const std::string &classID,
                                            const std::string &data);
+  static TestClient WithoutLogin();
   ~TestClient();
 
   // Move constructor/assignment
@@ -136,8 +139,9 @@ class TestClient {
 
  private:
   Client *_client;
+  std::thread _thread;
 
-  enum StringType { USERNAME, CLASS, DATA_PATH, DATA_STRING };
+  enum StringType { USERNAME, CLASS, DATA_PATH, DATA_STRING, SPECIAL_MODE };
   using StringMap = std::map<StringType, std::string>;
   TestClient(const StringMap &strings);
   TestClient(const std::string &string, StringType type);

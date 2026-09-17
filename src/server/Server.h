@@ -5,6 +5,7 @@
 #include <queue>
 #include <set>
 #include <string>
+#include <thread>
 #include <utility>
 
 #include "../Args.h"
@@ -209,9 +210,13 @@ class Server {
   mutable std::mutex outgoingMessageQueueMutex;
   bool queueHasMessages() const;
   void startMessageSendingThread();
+  std::thread _messageSendingThread;
+  std::thread _saveThread;
+  std::thread _statsThread;
 
   bool _loop{false};
   bool _running{false};  // True while run() is being executed.
+  volatile bool _shuttingDown{false};
 
   // Clients
   // All connected sockets, including those without registered users

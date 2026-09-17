@@ -86,6 +86,11 @@ Server::Server()
 }
 
 Server::~Server() {
+  _shuttingDown = true;
+  if (_messageSendingThread.joinable()) _messageSendingThread.join();
+  if (_saveThread.joinable()) _saveThread.join();
+  if (_statsThread.joinable()) _statsThread.join();
+
   saveData(_entities, _wars, _cities);
   for (auto pair : _terrainTypes) delete pair.second;
   for (const auto &spellPair : _spells) delete spellPair.second;
@@ -225,10 +230,11 @@ void Server::run() {
         writeUserData(user);
       }
 
-      std::thread([this]() {
+      if (_saveThread.joinable()) _saveThread.join();
+      _saveThread = std::thread([this]() {
         setThreadName("Saving data on regular timer");
         saveData(_entities, _wars, _cities);
-      }).detach();
+      });
 
       _lastSave = _time;
     }
@@ -236,10 +242,11 @@ void Server::run() {
     // Publish stats
     if (!_isTestServer)
       if (_time - _timeStatsLastPublished >= PUBLISH_STATS_FREQUENCY) {
-        std::thread([this]() {
+        if (_statsThread.joinable()) _statsThread.join();
+        _statsThread = std::thread([this]() {
           setThreadName("Publishing server stats");
           publishStats();
-        }).detach();
+        });
 
         _timeStatsLastPublished = _time;
       }
@@ -298,8 +305,8 @@ bool Server::queueHasMessages() const {
 }
 
 void Server::startMessageSendingThread() {
-  std::thread{[this]() {
-    while (true) {
+  _messageSendingThread = std::thread{[this]() {
+    while (!_shuttingDown) {
       if (queueHasMessages()) {
         do {
           {
@@ -314,7 +321,7 @@ void Server::startMessageSendingThread() {
       }
       std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
-  }}.detach();
+  }};
 }
 
 void Server::addUser(const Socket &socket, const std::string &name,
@@ -682,10 +689,11 @@ void Server::gatherObject(Serial serial, User &user) {
 #ifdef SINGLE_THREAD
   saveData(_objects, _wars, _cities);
 #else
-  std::thread([this]() {
+  if (_saveThread.joinable()) _saveThread.join();
+  _saveThread = std::thread([this]() {
     setThreadName("Saving data after gather");
     saveData(_entities, _wars, _cities);
-  }).detach();
+  });
 #endif
 }
 

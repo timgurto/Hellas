@@ -1,6 +1,7 @@
 #pragma once
 
 #include <queue>
+#include <thread>
 
 #include "../Socket.h"
 
@@ -22,10 +23,12 @@ class Connection {
   using URL = std::string;
 
   Connection(Client &client);
+  Connection &operator=(Connection &&rhs);
   void initialize();
   ~Connection();
 
   void getNewMessages();
+  void connectInNewThread();
   void connect();
 
   const Socket &socket() const { return _socket; }  // TODO: remove
@@ -46,6 +49,7 @@ class Connection {
   ms_t _timeOfLastConnectionAttempt{0};
 
   bool _aThreadIsConnecting{false};
+  std::thread _connectThread;
 
   static u_short getServerPort();
 

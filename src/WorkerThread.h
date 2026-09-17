@@ -12,10 +12,13 @@ class WorkerThread {
   using Task = std::function<void()>;
 
   WorkerThread(const std::string threadName);
+  ~WorkerThread();
   void callBlocking(Task task);
 
  private:
   void run();
   Task _pendingTask;
   std::mutex _mutex;
+  std::thread _thread;
+  volatile bool _running{true};
 };

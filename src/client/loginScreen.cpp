@@ -3,11 +3,10 @@
 #include <algorithm>
 #include <thread>
 
-#include "../curlUtil.h"
 #include "../Message.h"
-#include "../threadNaming.h"
-#include "../versionUtil.h"
 #include "../XmlWriter.h"
+#include "../curlUtil.h"
+#include "../versionUtil.h"
 #include "Client.h"
 #include "Particle.h"
 #include "ui/Indicator.h"
@@ -23,13 +22,10 @@ void Client::loginScreenLoop() {
       _timeElapsed / 1000.0;  // Fraction of a second that has elapsed
 
   if (_connection.shouldAttemptReconnection()) {
-    _connection = {*this};
+    _connection = Connection{*this};
     _connection.initialize();
 
-    std::thread{[this]() {
-      setThreadName("Connecting to server");
-      _connection.connect();
-    }}.detach();
+    _connection.connectInNewThread();
   }
 
   if (_releaseNotesStatus == RELEASE_NOTES_DOWNLOADED) {
@@ -400,11 +396,11 @@ void Client::initLoginScreen() {
         new Label({}, "Fetching release notes . . ."));
     _loginUI.push_back(loginScreenElements.releaseNotes);
 #ifndef TESTING
-    std::thread([this]() {
+    _releaseNotesThread = std::thread([this]() {
       _releaseNotesRaw =
           readFromURL("https://playhellas.com/release-notes.txt");
       _releaseNotesStatus = RELEASE_NOTES_DOWNLOADED;
-    }).detach();
+    });
 #endif
 
     const auto BUTTON_X = SCREEN_X - BUTTON_W - GAP;

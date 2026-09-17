@@ -1,6 +1,7 @@
 #include "TestServer.h"
 
 #include <cassert>
+#include <exception>
 #include <thread>
 
 #include "../Args.h"
@@ -90,11 +91,20 @@ TestServer TestServer::WithDataString(const std::string &data) {
 
 TestServer::~TestServer() {
   if (_server == nullptr) return;
+  fprintf(stderr, "~TestServer: stopping\n");
   stop();
+  fprintf(stderr, "~TestServer: joining\n");
+  _thread.join();
+  if (_saveThread.joinable()) _saveThread.join();
+  fprintf(stderr, "~TestServer: deleting\n");
   delete _server;
+  fprintf(stderr, "~TestServer: done\n");
 }
 
-TestServer::TestServer(TestServer &rhs) : _server(rhs._server) {
+TestServer::TestServer(TestServer &rhs)
+    : _server(rhs._server),
+      _thread(std::move(rhs._thread)),
+      _saveThread(std::move(rhs._saveThread)) {
   rhs._server = nullptr;
 }
 
@@ -102,21 +112,27 @@ TestServer &TestServer::operator=(TestServer &rhs) {
   if (this == &rhs) return *this;
   delete _server;
   _server = rhs._server;
+  _thread = std::move(rhs._thread);
+  _saveThread = std::move(rhs._saveThread);
   rhs._server = nullptr;
   return *this;
 }
 
 void TestServer::run() {
-  std::thread([this]() {
+  _thread = std::thread([this]() {
     setThreadName("Server");
     _server->run();
-  }).detach();
+  });
   WAIT_UNTIL(_server->_running);
 }
 
 void TestServer::stop() {
   _server->_loop = false;
-  WAIT_UNTIL(!_server->_running);
+  // Always use non-throwing path — stop() is called from the noexcept
+  // destructor
+  REPEAT_FOR_MS(DEFAULT_TIMEOUT) {
+    if (!_server->_running) break;
+  }
 }
 
 Object &TestServer::addObject(const std::string &typeName, const MapPoint &loc,
@@ -156,9 +172,9 @@ void TestServer::waitForUsers(size_t numUsers) const {
 }
 
 void TestServer::saveData() {
-  std::thread(Server::saveData, _server->_entities, _server->_wars,
-              _server->_cities)
-      .detach();
+  if (_saveThread.joinable()) _saveThread.join();
+  _saveThread = std::thread(Server::saveData, _server->_entities,
+                            _server->_wars, _server->_cities);
 }
 
 User &TestServer::findUser(const std::string &username) {

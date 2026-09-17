@@ -1,6 +1,7 @@
 #include "TestClient.h"
 
 #include <cassert>
+#include <exception>
 #include <thread>
 
 #include "../threadNaming.h"
@@ -28,7 +29,8 @@ TestClient::TestClient(const StringMap &strings) : _client(new Client) {
 
   if (strings.count(CLASS) == 1) _client->_autoClassID = strings.at(CLASS);
 
-  _client->_shouldAutoLogIn = true;
+  _client->_shouldAutoLogIn = strings.count(SPECIAL_MODE) == 0 ||
+                              strings.at(SPECIAL_MODE) != "no-auto-login";
   run();
 }
 
@@ -74,13 +76,25 @@ TestClient TestClient::WithClassAndDataString(const std::string &classID,
   return TestClient(strings);
 }
 
-TestClient::~TestClient() {
-  if (_client == nullptr) return;
-  stop();
-  delete _client;
+TestClient TestClient::WithoutLogin() {
+  auto strings = StringMap{};
+  strings[SPECIAL_MODE] = "no-auto-login";
+  return TestClient(strings);
 }
 
-TestClient::TestClient(TestClient &rhs) : _client(rhs._client) {
+TestClient::~TestClient() {
+  if (_client == nullptr) return;
+  fprintf(stderr, "~TestClient: stopping %s\n", _client->username().c_str());
+  stop();
+  fprintf(stderr, "~TestClient: joining %s\n", _client->username().c_str());
+  _thread.join();
+  fprintf(stderr, "~TestClient: deleting %s\n", _client->username().c_str());
+  delete _client;
+  fprintf(stderr, "~TestClient: done\n");
+}
+
+TestClient::TestClient(TestClient &rhs)
+    : _client(rhs._client), _thread(std::move(rhs._thread)) {
   rhs._client = nullptr;
 }
 
@@ -88,6 +102,7 @@ TestClient &TestClient::operator=(TestClient &rhs) {
   if (this == &rhs) return *this;
   delete _client;
   _client = rhs._client;
+  _thread = std::move(rhs._thread);
   rhs._client = nullptr;
   return *this;
 }
@@ -97,17 +112,23 @@ void TestClient::loadDataFromString(const std::string &data) {
 }
 
 void TestClient::run() {
-  std::thread([this]() {
+  _thread = std::thread([this]() {
     setThreadName("Client ("s + _client->username() + ")");
     _client->run();
-  }).detach();
+  });
 }
 
 void TestClient::stop() {
   _client->_loop = false;
   _client->_freeze = false;
-  WAIT_UNTIL((_client->_state == Client::FINISHED));
-  WAIT_UNTIL((connectionState() != Connection::TRYING_TO_CONNECT));
+  // Always use non-throwing path — stop() is called from the noexcept
+  // destructor
+  REPEAT_FOR_MS(DEFAULT_TIMEOUT) {
+    if (_client->_state == Client::FINISHED) break;
+  }
+  REPEAT_FOR_MS(DEFAULT_TIMEOUT) {
+    if (connectionState() != Connection::TRYING_TO_CONNECT) break;
+  }
 }
 
 void TestClient::freeze() { _client->_freeze = true; }
